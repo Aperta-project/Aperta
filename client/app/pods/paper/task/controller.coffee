@@ -40,8 +40,7 @@ TaskController = Ember.Controller.extend AnimateOverlay, SavesDelayed, Controlle
   actions:
 
     closeAction: ->
-      @animateOverlayOut().then =>
-        @send(@get('onClose'))
+      @send(@get('onClose'))
 
     redirect: ->
       @transitionToRoute.apply(this, @get('controllers.application.overlayRedirect.lastObject'))

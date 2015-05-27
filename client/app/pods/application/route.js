@@ -22,6 +22,17 @@ export default Ember.Route.extend(AnimateOverlay, {
     return this.get('container').lookup("serializer:application");
   }),
 
+  cleanupAncillaryViews: function() {
+    this.controllerFor('application').send('hideNavigation');
+
+    this.animateOverlayOut().then(()=> {
+      this.disconnectOutlet({
+        outlet: 'overlay',
+        parentView: 'application'
+      });
+    });
+  },
+
   actions: {
     willTransition(transition) {
       let appController = this.controllerFor('application');
@@ -34,7 +45,8 @@ export default Ember.Route.extend(AnimateOverlay, {
           return;
         }
       }
-      return appController.send('hideNavigation');
+
+      this.cleanupAncillaryViews();
     },
 
     error(response, transition) {
@@ -55,12 +67,7 @@ export default Ember.Route.extend(AnimateOverlay, {
 
     closeOverlay() {
       this.flash.clearAllMessages();
-      this.animateOverlayOut().then(()=> {
-        this.disconnectOutlet({
-          outlet: 'overlay',
-          parentView: 'application'
-        });
-      });
+      this.cleanupAncillaryViews();
     },
 
     closeFeedbackOverlay() {

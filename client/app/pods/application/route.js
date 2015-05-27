@@ -101,7 +101,7 @@ export default Ember.Route.extend(AnimateOverlay, {
     destroyed(payload) {
       let description = "Pusher: destroyed";
       Utils.debug(description, payload);
-      let type = this.get('applicationSerializer').typeForRoot(payload.type);
+      let type = this.get('applicationSerializer').modelNameFromPayloadKey(payload.type);
       payload.ids.forEach((id) => {
         let record;
         if (type === "task") {

@@ -71,7 +71,7 @@ export default Ember.Mixin.create({
   */
 
   _typeFromModel: function(model) {
-    return model.get('constructor.typeKey').pluralize();
+    return model.get('constructor.modelName').camelize().pluralize();
   },
 
   /**

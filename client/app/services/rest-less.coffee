@@ -4,7 +4,7 @@
 RESTless = Ember.Namespace.create
   pathFor: (model) ->
     adapter = model.get('store').adapterFor(model)
-    resourceType = model.constructor.typeKey
+    resourceType = model.constructor.modelName
     adapter.buildURL(resourceType, model.get('id'))
 
   ajaxPromise: (method, path, data) ->

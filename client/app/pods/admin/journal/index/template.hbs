@@ -4,7 +4,7 @@
     <div class="col-md-4">
       <div class="row admin-user-search">
         {{input action="searchUsers" placeholder="SEARCH ALL USERS" class="admin-user-search-input" name="Admin Search Input" value=searchQuery}}
-        <button class="admin-user-search-button" {{action "searchUsers"}}><span class="glyphicon glyphicon-search"></span></button>
+        <button class="admin-user-search-button" {{action "searchUsers"}}><span class="fa fa-search"></span></button>
       </div>
     </div>
 
@@ -67,7 +67,7 @@
                 value=doiPublisherPrefix
                 placeholder="DOI prefix here"}}
       {{else}}
-        <span class="glyphicon glyphicon-pencil admin-doi-settings-edit-button" {{action "editDOI"}}></span>
+        <span class="fa fa-pencil admin-doi-settings-edit-button" {{action "editDOI"}}></span>
         <span class="publisher-prefix">{{doiPublisherPrefix}}</span>
       {{/if}}
     </label>

@@ -56,7 +56,7 @@ module 'Integration: Super AdHoc Card',
 
 test "Changing the title on an AdHoc Task", ->
   visit "/papers/#{currentPaper.id}/tasks/1"
-  click 'h1.inline-edit .glyphicon-pencil'
+  click 'h1.inline-edit .fa-pencil'
   fillIn '.large-edit input[name=title]', 'Shazam!'
   click '.large-edit .button--green:contains("Save")'
   andThen ->
@@ -64,7 +64,7 @@ test "Changing the title on an AdHoc Task", ->
 
 test "Adding a text block to an AdHoc Task", ->
   visit "/papers/#{currentPaper.id}/tasks/1"
-  click '.adhoc-content-toolbar .glyphicon-plus'
+  click '.adhoc-content-toolbar .fa-plus'
   click '.adhoc-content-toolbar .adhoc-toolbar-item--text'
   andThen ->
     Ember.$('.inline-edit-form div[contenteditable]')
@@ -73,7 +73,7 @@ test "Adding a text block to an AdHoc Task", ->
     click '.task-body .inline-edit-body-part .button--green:contains("Save")'
   andThen ->
     assertText('.inline-edit', 'yahoo')
-    click '.inline-edit-body-part .glyphicon-trash'
+    click '.inline-edit-body-part .fa-trash'
   andThen ->
     assertText('.inline-edit-body-part', 'Are you sure?')
     click '.inline-edit-body-part .delete-button'
@@ -83,7 +83,7 @@ test "Adding a text block to an AdHoc Task", ->
 test "Adding and removing a checkbox item to an AdHoc Task", ->
   visit "/papers/#{currentPaper.id}/tasks/1"
 
-  click '.adhoc-content-toolbar .glyphicon-plus'
+  click '.adhoc-content-toolbar .fa-plus'
   click '.adhoc-content-toolbar .adhoc-toolbar-item--list'
   andThen ->
     equal(find('.inline-edit-form .item-remove').length, 1, 'item remove button visible')
@@ -94,7 +94,7 @@ test "Adding and removing a checkbox item to an AdHoc Task", ->
   andThen ->
     assertText('.inline-edit', 'checkbox list item')
     equal(find('.inline-edit input[type=checkbox]').length, 1, 'checkbox item is visble')
-    click '.inline-edit-body-part .glyphicon-trash'
+    click '.inline-edit-body-part .fa-trash'
   andThen ->
     assertText('.inline-edit-body-part', 'Are you sure?')
     click '.inline-edit-body-part .delete-button'
@@ -103,7 +103,7 @@ test "Adding and removing a checkbox item to an AdHoc Task", ->
 
 test "Adding an email block to an AdHoc Task", ->
   visit "/papers/#{currentPaper.id}/tasks/1"
-  click '.adhoc-content-toolbar .glyphicon-plus'
+  click '.adhoc-content-toolbar .fa-plus'
   click '.adhoc-content-toolbar .adhoc-toolbar-item--email'
   fillIn '.inline-edit-form input[placeholder="Enter a subject"]', "Deep subject"
   andThen ->
@@ -121,7 +121,7 @@ test "User can send an email from an adhoc card", ->
 
   visit "/papers/#{currentPaper.id}/tasks/1"
 
-  click '.adhoc-content-toolbar .glyphicon-plus'
+  click '.adhoc-content-toolbar .fa-plus'
   click '.adhoc-content-toolbar .adhoc-toolbar-item--email'
   fillIn '.inline-edit-form input[placeholder="Enter a subject"]', "Deep subject"
   andThen ->

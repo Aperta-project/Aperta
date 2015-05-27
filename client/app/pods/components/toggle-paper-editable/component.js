@@ -19,12 +19,12 @@ export default Ember.Component.extend({
     canEdit: {
       buttonColor: 'button--green',
       prompt: 'start writing',
-      iconClass: 'glyphicon-pencil'
+      iconClass: 'fa-pencil'
     },
     disabled: {
       buttonColor: 'button--disabled',
       prompt: 'start writing',
-      iconClass: 'glyphicon-pencil'
+      iconClass: 'fa-pencil'
     }
   },
 

@@ -27,7 +27,7 @@ export default Ember.Controller.extend({
   showSaveStatusDiv: Ember.computed.and('testing', 'delayedSave'),
 
   specifiedAppName: function() {
-    return window.appName
+    return window.appName;
   }.property(),
 
   navigationVisible: false,

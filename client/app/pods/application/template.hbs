@@ -1,6 +1,6 @@
 <div class="navigation">
   <div class="navigation-title" {{action "hideNavigation"}}>
-    <span class="navigation-close">&times;</span>PLOS
+    <span class="navigation-close">&times;</span>{{specifiedAppName}}
   </div>
 
   {{#if isLoggedIn}}
@@ -35,14 +35,14 @@
   <hr>
 
   <div {{action "hideNavigation"}}>
-    <a href="#" class="navigation-item navigation-item-feedback" {{action "feedback"}}>Give Feedback on PLOS</a>
+    <a href="#" class="navigation-item navigation-item-feedback" {{action "feedback"}}>Give Feedback on {{specifiedAppName}}</a>
   </div>
 </div>
 
 <div class="main-content">
   <div class="main-content-cover" {{action "hideNavigation"}}></div>
   <div class="navigation-toggle" {{action "showNavigation"}}>
-    {{partial "svg/hamburger"}} PLOS
+    {{partial "svg/hamburger"}} {{specifiedAppName}}
   </div>
   {{outlet}}
 </div>

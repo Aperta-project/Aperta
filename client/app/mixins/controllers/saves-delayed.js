@@ -13,7 +13,8 @@ export default Ember.Mixin.create({
     if (this.get('saveInFlight')) { return; }
 
     this.set('saveInFlight', true);
-    this.get('model').save().finally(()=> {
+
+    return this.get('model').save().finally(()=> {
       this.set('saveInFlight', false);
       this.set('delayedSave', false);
     });

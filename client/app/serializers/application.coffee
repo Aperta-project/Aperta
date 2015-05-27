@@ -26,9 +26,9 @@ ApplicationSerializer = DS.ActiveModelSerializer.extend
   # uses correct model name for sideloaded payloads
   extractTypeName: (prop, hash) ->
     if hash.type
-      @typeForRoot hash.type
+      @modelNameFromPayloadKey hash.type
     else
-      @typeForRoot prop
+      @modelNameFromPayloadKey prop
 
   # private function taken directly from ember.js
   coerceId: (id) ->
@@ -36,7 +36,7 @@ ApplicationSerializer = DS.ActiveModelSerializer.extend
 
   # allow the sti serializers to override this easily.
   primaryTypeName: (primaryType) ->
-    primaryType.typeKey?.camelize()
+    primaryType.modelName
 
   # This is overridden from the RESTSerializer because finding a 'task' and getting back a root key of 'author_task' will
   # break the isPrimary check.
@@ -45,9 +45,9 @@ ApplicationSerializer = DS.ActiveModelSerializer.extend
     primaryTypeName = @primaryTypeName(primaryType)
     primaryRecord = undefined
     for prop of payload
-      typeName = @typeForRoot(prop)
+      typeName = @modelNameFromPayloadKey(prop)
       type = store.modelFor(typeName)
-      isPrimary = type.typeKey is primaryTypeName
+      isPrimary = type.modelName is primaryTypeName
       # legacy support for singular resources
       if isPrimary and Ember.typeOf(payload[prop]) isnt 'array'
         hash = payload[prop]
@@ -92,10 +92,10 @@ ApplicationSerializer = DS.ActiveModelSerializer.extend
       if prop.charAt(0) is '_'
         forcedSecondary = true
         typeKey = prop.substr(1)
-      typeName = @typeForRoot(typeKey)
+      typeName = @modelNameFromPayloadKey(typeKey)
       type = store.modelFor(typeName)
       arrayTypeSerializer = store.serializerFor(type) # cache the serializer based on the array's type key
-      isPrimary = (not forcedSecondary and (type.typeKey is primaryTypeName))
+      isPrimary = (not forcedSecondary and (type.modelName is primaryTypeName))
 
       #jshint loopfunc:true
       normalizedArray = Ember.ArrayPolyfills.map.call(payload[prop], (hash) ->
@@ -108,6 +108,7 @@ ApplicationSerializer = DS.ActiveModelSerializer.extend
         itemType = store.modelFor(@extractTypeName(prop, hash))
         itemSerializer.normalize(itemType, hash, prop)
       , this)
+
       if isPrimary
         primaryArray = normalizedArray
       else
@@ -117,7 +118,7 @@ ApplicationSerializer = DS.ActiveModelSerializer.extend
   pushPayload: (store, payload) ->
     payload = @normalizePayload(payload)
     for prop of payload
-      typeName = @typeForRoot(prop)
+      typeName = @modelNameFromPayloadKey(prop)
 
       #jshint loopfunc:true
       normalizedArray = Ember.ArrayPolyfills.map.call(Ember.makeArray(payload[prop]), (hash) ->

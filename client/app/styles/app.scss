@@ -1,4 +1,4 @@
-@import "bourbon";
+@import "bower_components/bourbon/app/assets/stylesheets/bourbon";
 @import 'bootstrap-sprockets';
 @import 'bootstrap';
 @import "variables";
@@ -12,14 +12,14 @@
 @import "overlays/base";
 @import "screens/base";
 @import "ui/base";
-@import "app";
+@import "base";
 
 // STANDARD CARDS
-@import "tahi_standard_tasks/application";
-@import "plos_authors/application";
+// @import "tahi_standard_tasks/application";
+// @import "plos_authors/application";
 
 // DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE
-@import 'plos_bio_internal_review/application';
-@import "plos_bio_tech_check/application";
-@import 'plos_billing/application';
-@import "tahi_upload_manuscript/application";
+// @import 'plos_bio_internal_review/application';
+// @import "plos_bio_tech_check/application";
+// @import 'plos_billing/application';
+// @import "tahi_upload_manuscript/application";

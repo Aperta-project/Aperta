@@ -31,7 +31,7 @@ input:focus, textarea:focus, *[contenteditable] {
 }
 
 a, button, .fa, {
-  @include transition(all 0.1s ease-in-out);
+  // @include transition(all 0.1s ease-in-out);
 }
 
 a {
@@ -59,7 +59,7 @@ textarea { resize: none; }
 
 .matte #tahi-container {
   padding-top: 114px;
-  @include transition(padding-top 0.2s);
+  // @include transition(padding-top 0.2s);
 
   main {
     max-width: 1120px;

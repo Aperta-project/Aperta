@@ -9,6 +9,12 @@ var app = new EmberApp({
   emberCliFontAwesome: { includeFontAwesomeAssets: false },
   'ember-cli-bootstrap-sassy': {
     'glyphicons': false
+  },
+  sassOptions: {
+    sourceMap: false,
+    includePaths: [
+      'bower_components/bourbon/app/assets/stylesheets'
+    ]
   }
 });
 
@@ -27,6 +33,13 @@ app.import('vendor/jquery.iframe-transport.js');
 app.import('vendor/jquery.fileupload/jquery.fileupload.css');
 app.import('vendor/jquery.fileupload/jquery.fileupload.js');
 
+// Bootstrap
+app.import('bower_components/bootstrap-sass/assets/javascripts/bootstrap/collapse.js');
+app.import('bower_components/bootstrap-sass/assets/javascripts/bootstrap/dropdown.js');
+app.import('bower_components/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js');
+app.import('bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css');
+app.import('bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js');
+
 // Select 2
 app.import('bower_components/select2/select2.js');
 app.import('bower_components/select2/select2.css');
@@ -34,6 +47,12 @@ var select2Assets = pickFiles('bower_components/select2', {
   srcDir: '/',
   files: ['*.gif', '*.png'],
   destDir: 'assets'
+});
+
+var fontAwesomeAssets = pickFiles('bower_components/font-awesome', {
+  srcDir: '/',
+  files: ['css/*', 'fonts/*'],
+  destDir: ''
 });
 
 // Ember-cli styles that live in Rails' /app/engines/
@@ -48,12 +67,13 @@ var addonStyles = addons.map(function(engineName) {
   });
 });
 
-// Bootstrap
-app.import('bower_components/bootstrap/js/collapse.js');
-app.import('bower_components/bootstrap/js/dropdown.js');
-app.import('bower_components/bootstrap/js/tooltip.js');
-app.import('bower_components/bootstrap-datepicker/css/datepicker3.css');
-app.import('bower_components/bootstrap-datepicker/js/bootstrap-datepicker.js');
+// app.import("bower_components/font-awesome/css/font-awesome.css");
+// app.import("bower_components/font-awesome/fonts/fontawesome-webfont.eot", { destDir: "fonts" });
+// app.import("bower_components/font-awesome/fonts/fontawesome-webfont.svg", { destDir: "fonts" });
+// app.import("bower_components/font-awesome/fonts/fontawesome-webfont.ttf", { destDir: "fonts" });
+// app.import("bower_components/font-awesome/fonts/fontawesome-webfont.woff", { destDir: "fonts" });
+// app.import("bower_components/font-awesome/fonts/fontawesome-webfont.woff2", { destDir: "fonts" });
+// app.import("bower_components/font-awesome/fonts/FontAwesome.otf", { destDir: "fonts" });
 
 if (app.env !== 'production') {
   app.import('bower_components/sinon/index.js', { type: 'test' });
@@ -61,4 +81,4 @@ if (app.env !== 'production') {
   app.import('vendor/pusher-test-stub.js', { type: 'test' });
 }
 
-module.exports = mergeTrees([app.toTree(), select2Assets].concat(addonStyles), {overwrite: true});
+module.exports = mergeTrees([app.toTree(), select2Assets, fontAwesomeAssets].concat(addonStyles), {overwrite: true});

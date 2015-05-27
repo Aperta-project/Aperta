@@ -1,6 +1,6 @@
 <div class="navigation">
   <div class="navigation-title" {{action "hideNavigation"}}>
-    <span class="navigation-close">&times;</span>Tahi
+    <span class="navigation-close">&times;</span>PLOS
   </div>
 
   {{#if isLoggedIn}}
@@ -35,14 +35,14 @@
   <hr>
 
   <div {{action "hideNavigation"}}>
-    <a href="#" class="navigation-item navigation-item-feedback" {{action "feedback"}}>Give Feedback on Tahi</a>
+    <a href="#" class="navigation-item navigation-item-feedback" {{action "feedback"}}>Give Feedback on PLOS</a>
   </div>
 </div>
 
 <div class="main-content">
   <div class="main-content-cover" {{action "hideNavigation"}}></div>
   <div class="navigation-toggle" {{action "showNavigation"}}>
-    {{partial "svg/hamburger"}} Tahi
+    {{partial "svg/hamburger"}} PLOS
   </div>
   {{outlet}}
 </div>

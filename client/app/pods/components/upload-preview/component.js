@@ -15,12 +15,6 @@ export default Ember.Component.extend({
    */
   upload: null,
 
-  //<validation>
-  _validate_upload: function() {
-    Ember.assert('The `upload` property must be set on the upload-preview component', !Ember.isEmpty(this.get('upload')));
-  }.on('init'),
-  //</validation>
-
   preview: function() {
     let preview = this.get('file.preview');
     return preview != null ? preview.toDataURL() : void 0;

@@ -42,12 +42,6 @@ export default Ember.Component.extend({
    */
   selectedValue: null,
 
-  //<validation>
-  _validate_selectedValue: function() {
-    Ember.assert('The `selectedValue` property must be set on the segmented-buttons component', !Ember.isEmpty(this.get('selectedValue')));
-  }.on('init'),
-  //</validation>
-
   /**
     Method called by child `segmented-button` components
 

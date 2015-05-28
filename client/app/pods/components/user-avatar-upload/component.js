@@ -10,11 +10,6 @@ export default Ember.Component.extend(FileUploadMixin, {
    * @required
    */
   user: null,
-  //<validation>
-  _validate_user: function() {
-    Ember.assert('The `user` property must be set on the user-avatar-upload component', !Ember.isEmpty(this.get('user')));
-  }.on('init'),
-  //</validation>
 
   actions: {
     uploadFinished(data, filename) {

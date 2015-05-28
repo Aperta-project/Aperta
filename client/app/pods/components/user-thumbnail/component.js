@@ -12,11 +12,6 @@ export default Ember.Component.extend({
    * @required
    */
   user: null,
-  //<validation>
-  _validate_user: function() {
-    Ember.assert('The `user` property must be set on the user-thumbnail component', !Ember.isEmpty(this.get('user')));
-  }.on('init'),
-  //</validation>
 
   toggle: 'tooltip',
   alt:    Ember.computed.alias('user.name'),

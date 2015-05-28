@@ -4,5 +4,5 @@ import Task from 'tahi/models/task';
 export default Task.extend({
   plosAuthors: DS.hasMany('plosAuthor'),
   qualifiedType: 'TahiStandardTasks::PlosAuthorsTask',
-  isMetadataTask: true
+  is_metadata_task: true
 });

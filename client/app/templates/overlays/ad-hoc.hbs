@@ -13,14 +13,14 @@
       delete="deleteBlock"
       model=model
       addItem="addCheckboxItem"}}
-      {{#each item in block}}
-        {{view 'inline-edit'
-          item=item
-          block=block
-          allUsers=allUsers
-          overlayParticipants=participants
-          emailSentStates=emailSentStates
-          isNew=false}}
+      {{#each block as |item|}}
+        {{view "inline-edit"
+               item=item
+               block=block
+               allUsers=allUsers
+               overlayParticipants=participants
+               emailSentStates=emailSentStates
+               isNew=false}}
       {{/each}}
     {{/inline-edit-body-part}}
   {{/each}}
@@ -34,14 +34,14 @@
       delete="deleteBlock"
       model=model
       addItem="addCheckboxItem"}}
-      {{#each item in block}}
-        {{view 'inline-edit'
-          item=item
-          block=block
-          allUsers=allUsers
-          overlayParticipants=participants
-          emailSentStates=emailSentStates
-          isNew=true}}
+      {{#each block as |item|}}
+        {{view "inline-edit"
+               item=item
+               block=block
+               allUsers=allUsers
+               overlayParticipants=participants
+               emailSentStates=emailSentStates
+               isNew=true}}
       {{/each}}
     {{/inline-edit-body-part}}
   {{/each}}

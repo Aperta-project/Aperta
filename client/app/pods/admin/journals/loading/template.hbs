@@ -1,7 +1,9 @@
-{{#if currentUser.siteAdmin}}
-  <div class="button-primary button--blue button--disabled pull-right">Add new journal</div>
-{{/if}}
+<div class="admin-section">
+  {{#if currentUser.siteAdmin}}
+    <div class="add-new-journal button-primary button--blue button--disabled">Add new journal</div>
+  {{/if}}
 
-<h2>Journals</h2>
+  <br><br><br>
 
-{{progress-spinner visible=true color="blue" size="large" center=true}}
+  {{progress-spinner visible=true color="blue" size="large"}}
+</div>

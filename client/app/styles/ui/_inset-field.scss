@@ -23,6 +23,15 @@
   margin-bottom: 15px;
 
   label { color: $tahi-grey; }
+
+  &.required::before {
+    content: '*';
+    font-size: 24pt;
+    font-weight: bold;
+    position: absolute;
+    color: #5d4aac;
+    left: -20px;
+  }
 }
 
 .inset-form-control-text {

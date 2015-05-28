@@ -41,10 +41,6 @@
     position: relative;
   }
 
-  ul.journals {
-    list-style-type: none;
-  }
-
   .admin-role-action-button {
     display: inline;
     width: 30px;
@@ -66,123 +62,11 @@
 
     button { float: right; }
   }
-
-  .journals {
-    padding: 0;
-  }
-
-  .journal-thumbnail {
-    overflow: hidden;
-    width: 250px;
-    height: 40px;
-    margin-bottom: 15px;
-
-    img { vertical-align: top; }
-    path, rect, circle {
-      fill: $tahi-blue;
-    }
-  }
-
-  .journal {
-    position: relative;
-    min-height: 100px;
-    margin-top: 35px;
-    border: 1px solid $tahi-grey-light;
-
-    p {
-      margin: 12px 0 0 0;
-      line-height: 120%;
-    }
-
-    .journal-thumbnail-show {
-      display: block;
-      width: 100%;
-      min-height: inherit;
-      text-decoration: none;
-      padding: 20px;
-      color: #000;
-    }
-
-    .journal-name {
-      margin: 0;
-      padding: 0;
-      display: inline-block;
-      margin-right: 15px;
-      color: $tahi-blue;
-      text-decoration: none;
-    }
-
-    .fa.edit-icon {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 5.5rem;
-      padding-top: 1.5rem;
-      padding-bottom: 2rem;
-      color: #d4d4d4;
-      font-size: 14px;
-      text-align: center;
-      cursor: pointer;
-
-      &:hover { color: $tahi-blue; }
-    }
-
-    .journal-paper-count {
-      float: right;
-      position: relative;
-      top: -27px;
-    }
-
-    .journal-thumbnail-edit-form {
-      background-color: $tahi-blue;
-      border-color: $tahi-blue;
-      padding: 20px 20px 12px 20px;
-      position: relative;
-
-      .link { margin-right: 10px; }
-      .journal-name-edit { padding: 0 10px; }
-
-      .form-group.required {
-        &.error {
-          input, textarea { border: 1px solid red; }
-        }
-
-        &.error-message {
-          color: red;
-          padding-bottom: 3px;
-        }
-      }
-      .form-group.required::before {
-        left: -17px;
-        color: $tahi-blue-dark;
-      }
-
-      .journal-description-edit {
-        height: 10rem;
-      }
-
-      .journal-edit-buttons {
-        text-align: right;
-        margin-top: 15px;
-      }
-
-      .journal-thumbnail {
-        path, rect, circle {
-          fill: #347bc5;
-        }
-      }
-    }
-  }
-}
-
-.admin-user-search {
-  overflow: hidden;
-  width: 100%;
-  margin-top: 30px;
 }
 
 .admin-user-search-input {
-  @include make-xs-column(10);
+  float: left;
+  width: 300px;
   border: 1px solid $tahi-blue;
   border-radius: 5px;
   border-top-right-radius: 0px;
@@ -197,7 +81,8 @@
 }
 
 .admin-user-search-button {
-  @include make-xs-column(2);
+  float: left;
+  width: 60px;
   border: 1px solid $tahi-blue;
   background: white;
   border-radius: 5px;
@@ -210,51 +95,26 @@
 }
 
 .admin-user-search-default-state-text {
+  clear: both;
   padding-top: 10px;
   color: $tahi-grey-dark;
   font-size: 22px;
   font-style: italic;
 }
 
-.journal-logo-spinner {
-  position: absolute;
-  top: 0;
-  width: 250px;
-  height: 40px;
-  text-align: center;
-  background-color: rgba(52,123,197, 0.8);
-
-  .progress-spinner {
-    margin-top: 5px;
-  }
-}
-
-.journal-logo-upload {
-  overflow: hidden;
-  position: relative;
-  height: 40px;
-  margin-bottom: 15px;
-  line-height: 40px;
-
- .journal-thumbnail {
-   float: left;
-   margin-right: 10px;
- }
-}
-
-.journal-logo-upload-note {
-  color: #fff;
-  font-style: italic;
-  padding-left: 10px;
+.add-new-journal {
+  margin-top: 50px;
 }
 
 .admin-users {
   width: 100%;
+  max-width: 600px;
   margin-top: 30px;
   border-collapse: separate;
   border-spacing: 0 10px;
   padding: 0;
   table-layout: fixed;
+  clear: both;
 
   th {
     font-size: 18px;

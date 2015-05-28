@@ -70,7 +70,7 @@ describe "update the Styleguide", js: true, selenium: true do
 
     scenario "admin" do
       visit '/admin'
-      find(".journals", visible: true)
+      find(".journal-thumbnail", visible: true)
       page.grab(name)
     end
 

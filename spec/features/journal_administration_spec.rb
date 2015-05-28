@@ -38,7 +38,7 @@ feature "Journal Administration", js: true do
 
       scenario "redirects to dashboard" do
         visit AdminDashboardPage.path
-        expect(page).to have_no_content(AdminDashboardPage.page_header)
+        expect(page).to have_no_content(AdminDashboardPage.admin_section)
       end
     end
   end

@@ -26,7 +26,7 @@ test 'show download links on control bar', ->
   records = paperWithTask('Task'
     id: 1
     title: "Metadata"
-    isMetadataTask: true
+    is_metadata_task: true
     completed: true
   )
 

@@ -12,7 +12,7 @@ moduleFor 'controller:paper/task', 'TaskController',
 
     currentUser = @currentUser
     @task = Ember.Object.create
-      isMetadataTask: true
+      is_metadata_task: true
       paper: @paper
 
     Ember.run =>
@@ -21,13 +21,13 @@ moduleFor 'controller:paper/task', 'TaskController',
 
 test '#isEditable: true when the task is not a metadata task', ->
   Ember.run =>
-    @task.set('isMetadataTask', false)
+    @task.set('is_metadata_task', false)
     equal @subject().get('isEditable'), true
 
 test '#isEditable: always true when the user is an admin', ->
   Ember.run =>
     @currentUser.set('siteAdmin', true)
-    @task.set('isMetadataTask', true)
+    @task.set('is_metadata_task', true)
     @paper.set('editable', false)
     equal @subject().get('isEditable'), true
 
@@ -39,5 +39,5 @@ test '#isEditable: true when paper is editable and task is a metadata task', ->
 test '#isEditable: false when the paper is not editable and the task is a metadata task', ->
   Ember.run =>
     @paper.set('editable', false)
-    @task.set('isMetadataTask', true)
+    @task.set('is_metadata_task', true)
     equal @subject().get('isEditable'), false

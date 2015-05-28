@@ -33,8 +33,8 @@ test 'displayTitle displays title if present', ->
 test 'Paper hasMany tasks (async)', ->
   stop()
   paperPromise = Ember.run =>
-    task1 = @store().createRecord 'task', type: 'Task', title: 'A message', isMetadataTask: false
-    task2 = @store().createRecord 'task', type: 'TechCheckTask', title: 'some task',isMetadataTask: true
+    task1 = @store().createRecord 'task', type: 'Task', title: 'A message', is_metadata_task: false
+    task2 = @store().createRecord 'task', type: 'TechCheckTask', title: 'some task',is_metadata_task: true
     paper = @store().createRecord 'paper',
       title: 'some really long title'
       shortTitle: 'test short title'
@@ -50,8 +50,8 @@ test 'Paper hasMany tasks (async)', ->
 test 'allMetadata tasks filters tasks by isMetaData', ->
   stop()
   paperPromise = Ember.run =>
-    task1 = @store().createRecord 'task', type: 'Task', title: 'A message', isMetadataTask: false
-    task2 = @store().createRecord 'task', type: 'TechCheckTask', title: 'some task',isMetadataTask: true
+    task1 = @store().createRecord 'task', type: 'Task', title: 'A message', is_metadata_task: false
+    task2 = @store().createRecord 'task', type: 'TechCheckTask', title: 'some task',is_metadata_task: true
     paper = @store().createRecord 'paper',
       title: 'some really long title'
       shortTitle: 'test short title'

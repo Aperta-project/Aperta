@@ -23,7 +23,7 @@ module 'Integration: Submitting Paper',
     records = paperWithTask('Task'
       id: 1
       title: "Metadata"
-      isMetadataTask: true
+      is_metadata_task: true
       completed: true
     )
     currentPaper = records[0]

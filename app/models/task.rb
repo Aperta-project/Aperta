@@ -105,12 +105,12 @@ class Task < ActiveRecord::Base
   end
 
   def metadata_task?
-    return false unless Task.metadata_types.present?
+    return false if Task.metadata_types.blank?
     Task.metadata_types.include?(self.class.name)
   end
 
   def submission_task?
-    return false unless Task.submission_types.present?
+    return false if Task.submission_types.blank?
     Task.submission_types.include?(self.class.name)
   end
 

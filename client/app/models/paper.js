@@ -34,8 +34,8 @@ export default DS.Model.extend({
   }.property('title', 'shortTitle'),
 
   allSubmissionTasks: function() {
-    return this.get('tasks').filterBy('is_submission_task');
-  }.property('tasks.content.@each.is_submission_task'),
+    return this.get('tasks').filterBy('isSubmissionTask');
+  }.property('tasks.content.@each.isSubmissionTask'),
 
   collaborators: function() {
     return this.get('collaborations').mapBy('user');

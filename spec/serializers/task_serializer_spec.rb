@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe TaskSerializer do
-  describe "is_metadata_task" do
+  describe "isMetadataTask" do
     before do
       PaperFactory.new(paper, user).create
 

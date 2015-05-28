@@ -40,8 +40,7 @@ namespace :tahi do
 
     # modify application.scss
     needle = "// DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE"
-
-    insert_after("client/app/styles/tahi.scss", needle, "@import '#{engine_path}/application';")
+    insert_after("app/assets/stylesheets/application.scss", needle, "@import '#{engine_path}/application';")
 
     # offer help
     help_url = "https://github.com/Tahi-project/tahi/wiki/HOWTO:-Customizing-Custom-Cards#custom-card-styles"

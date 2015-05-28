@@ -1,5 +1,6 @@
 module MetadataTask
   extend ActiveSupport::Concern
+  include SubmissionTask
 
   def authorize_update?(params, user)
     if user.site_admin?

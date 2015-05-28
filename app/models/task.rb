@@ -6,8 +6,10 @@ class Task < ActiveRecord::Base
   register_task default_title: "Ad-hoc", default_role: "user"
 
   cattr_accessor :metadata_types
+  cattr_accessor :submission_types
 
-  scope :metadata,    -> { where(type: metadata_types) }
+  scope :metadata,   -> { where(type: metadata_types) }
+  scope :submission, -> { where(type: submission_types) }
 
   # Scopes based on assignment
   scope :unassigned, -> { includes(:participations).where(participations: { id: nil }) }
@@ -102,9 +104,14 @@ class Task < ActiveRecord::Base
     journal.journal_task_types.find_by(kind: self.class.name)
   end
 
-  def submission_task?
+  def metadata_task?
     return false unless Task.metadata_types.present?
     Task.metadata_types.include?(self.class.name)
+  end
+
+  def submission_task?
+    return false unless Task.submission_types.present?
+    Task.submission_types.include?(self.class.name)
   end
 
   def array_attributes

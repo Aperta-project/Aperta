@@ -13,7 +13,8 @@ export default DS.Model.extend(CardThumbnailObserver, {
 
   body: DS.attr(),
   completed: DS.attr('boolean'),
-  isMetadataTask: DS.attr('boolean'),
+  is_metadata_task: DS.attr('boolean'),
+  is_submission_task: DS.attr('boolean'),
   paperTitle: DS.attr('string'),
   position: DS.attr('number'),
   qualifiedType: DS.attr('string'),

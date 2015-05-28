@@ -46,8 +46,8 @@ export default Ember.Mixin.create({
 
   metadataTasks: function() {
     return this.get('model.tasks').filter((task) => {
-      return task.get('is_metadata_task');
-    })
+      return task.get('isMetadataTask');
+    });
   }.property('model.tasks.@each.role'),
 
   taskSorting:         ['phase.position', 'position'],

@@ -56,11 +56,11 @@ test 'site admin can see the Add New Journal button', ->
   visit("/admin/")
 
   andThen ->
-    ok find('.journal').length, 'Journals visible'
+    ok find('.journal-thumbnail').length, 'Journals visible'
     ok find('.add-new-journal').length, 'Add New Journal button visible'
 
 test 'journal admin can not see the Add New Journal button', ->
   visit "/admin/"
   andThen ->
-    ok find('.journal').length, 'Journals visible'
+    ok find('.journal-thumbnail').length, 'Journals visible'
     ok !find('.add-new-journal').length, 'Add New Journal button not visible'

@@ -58,6 +58,7 @@ gem 'migration_data'
 gem 'bugsnag'
 gem 'pg_search'
 gem 'aasm'
+gem 'bootstrap-sass'
 gem 'pusher'
 
 # NOTE: Using this fork because it uses a compatible omniauth version

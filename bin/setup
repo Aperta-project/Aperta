@@ -6,8 +6,14 @@ rescue LoadError
   fail "Please run `gem install activesupport` first"
 end
 
+SLANGER_REPO = "git@github.com:Tahi-project/tahi-slanger.git"
+
+def cmd_available? cmd
+  `which #{cmd}` != ''
+end
+
 $os = `uname`.chomp.downcase.intern
-unless $os == :darwin || ($os == :linux && (`which apt-get` != ""))
+unless $os == :darwin || ($os == :linux && cmd_available?('apt-get'))
   fail 'This setup script is only designed for Mac OS or Debian/Ubuntu.'
 end
 
@@ -16,94 +22,167 @@ APP_ROOT = Pathname.new File.expand_path('../../',  __FILE__)
 
 def run_pg(cmd)
   case $os
+  when :darwin
+    `#{cmd}`
   when :linux
     cmd = cmd.gsub("\"", "\\\"") # escape quotes
     `sudo su postgres -c "#{cmd}"`
-  when :darwn
-    `#{cmd}`
+  end
+end
+
+def header message
+  full = "== #{message} =="
+  puts
+  puts "=" * full.length
+  puts full
+  puts "=" * full.length
+  puts
+end
+
+def brew_install package, options=nil
+  if `brew ls --versions #{package}`.present?
+    puts "#{package} is already installed"
+  else
+    system "brew install #{package} #{options}"
+  end
+end
+
+def ensure_go_setup
+  case $os
+  when :darwin
+    brew_install 'go'
+  when :linux
+    system 'sudo apt-get install -y golang'
+  end
+
+  if ENV['GOPATH'].blank?
+    puts <<-MESSAGE.gsub(/^    /, '')
+     Error: Please ensure your $GOPATH is configured correctly and run again.
+     Add the following to your shell initialization file (.bashrc, .zshrc, etc)
+
+        export GOPATH="$HOME/go"
+        export PATH=$PATH:$GOPATH/bin
+    MESSAGE
+    exit 1
+  end
+end
+
+def ensure_postgres_setup
+  if !cmd_available?('psql')
+    puts "psql isn't available."
+    puts "Would you like to install it right now? y/n"
+    if gets.match /y/i
+      case $os
+      when :darwin
+        system "brew install postgresql"
+      when :linux
+        system "apt-get install postgresql"
+      end
+    else
+      puts "Please ensure postgresql is installed and configured."
+      exit 1
+    end
+  end
+
+  if !system "psql -l"
+    puts
+    puts "Couldn't access postgresql database."
+    puts "Please make sure postgresql is running and try again."
+    exit 1
+  end
+end
+
+def copy_template source, dest
+  if File.exist?(dest)
+    puts "#{dest} already exists; not copying from #{source}."
+  else
+    puts "Copying #{source} to #{dest}."
+    system "cp #{source} #{dest}"
+  end
+end
+
+def setup_slanger
+  if Dir.exist? '../tahi-slanger'
+    puts "Slanger repo already cloned."
+  elsif !system "cd .. && git clone #{SLANGER_REPO}"
+    puts "Couldn't clone repo."
+    exit 1
+  end
+
+  header 'Installing tahi-slanger dependencies.'
+
+  if !system "cd ../tahi-slanger && bundle install"
+    exit 1
   end
 end
 
 Dir.chdir APP_ROOT do
-  # This script is a starting point to setup your application.
-  # Add necessary setup steps to this file:
+  system "rm -f setup.log"
 
-  puts '== Installing dependencies =='
+  header 'Checking database setup'
+  ensure_postgres_setup
 
+  header 'Checking Go dev environment'
+  ensure_go_setup
+
+  header 'Installing other package dependencies'
   case $os
   when :darwin
-    if `brew ls --versions imagemagick`.present?
-      puts "imagemagick is already installed"
-    else
-      system "brew install imagemagick --with-libtiff"
-    end
-
-    %w( postgresql redis go node watchman qt ).each do |package|
-      if `brew ls --versions #{package}`.present?
-        puts "#{package} is already installed"
-      else
-        system "brew install #{package}"
-      end
+    brew_install 'imagemagick', '--with-libtiff'
+    %w(redis node watchman qt).each do |package|
+      brew_install package
     end
   when :linux
-    system "sudo apt-get install -y imagemagick postgresql redis-server golang nodejs qt5-default libqt5webkit5-dev"
+    system "sudo apt-get install -y imagemagick redis-server nodejs qt5-default libqt5webkit5-dev"
   end
 
-  if ENV['GOPATH'].blank?
-    puts <<MESSAGE
- Error: Please ensure your $GOPATH is configured correctly and run again.
- Add the following to your shell initialization file (.bashrc, .zshrc, etc)
-
-    export GOPATH="$HOME/go"
-    export PATH=$PATH:$GOPATH/bin
-MESSAGE
-    Kernel.exit
-  end
   system 'go get github.com/tahi-project/golang-eventsource'
 
-  puts '== Installing gems =='
+  header 'Installing gems'
   system 'gem install bundler --conservative'
   system 'bundle check || bundle install'
 
-  puts '== Installing javascript dependencies =='
-  system 'npm install'
+  header 'Installing javascript dependencies (output logged to setup.log)'
+  system 'npm install >> setup.log'
   system 'bundle exec rake ember-cli:install_dependencies'
 
+  # NOTE rolname is not a typo
+  # http://stackoverflow.com/questions/8546759/how-to-check-if-a-postgres-user-exists
   if run_pg("psql postgres -tAc \"SELECT 1 FROM pg_roles WHERE rolname='tahi'\"").present?
-    puts '== PostgreSQL user already exists =='
+    header 'PostgreSQL user already exists'
   else
-    puts '== Creating the tahi PostgreSQL user =='
+    header 'Creating the tahi PostgreSQL user'
     run_pg('createuser -s -r tahi')
   end
 
-  puts '== Copying sample files =='
+  header 'Copying sample files'
+  copy_template 'config/database.yml.sample', 'config/database.yml'
+  copy_template '.env-sample', '.env.development'
+  copy_template 'Procfile.template', 'Procfile.local'
 
-  unless File.exist?('config/database.yml')
-    system 'cp config/database.yml.sample config/database.yml'
-  end
-
-  unless File.exist?('.env.development')
-    system 'cp .env-sample .env.development'
-  end
-
-  unless File.exist?('Procfile.local')
-    system 'cp Procfile.template Procfile.local'
-  end
-
-  puts '== Add binstubs to PATH in ~/.zshenv like this: =='
+  header 'Add binstubs to PATH in ~/.zshenv like this:'
   puts 'export PATH=".git/safe/../../bin:$PATH"'
 
-  puts '== Marking this project"s binstubs as safe =='
+  header "Marking this project's binstubs as safe"
   system 'mkdir -p .git/safe'
 
-  puts '== Adding pre-commit hook =='
+  header 'Adding pre-commit hook'
   system 'overcommit .'
 
-  puts '== Preparing database =='
-  system 'sleep 10; bin/rake db:setup'
-  system 'bin/rake db:setup RAILS_ENV=test'
+  # required for db setup
+  header 'Cloning tahi-slanger event server repo'
+  setup_slanger
 
-  puts '== Removing old logs and tempfiles =='
+  header 'Preparing development database (output logged to setup.log)'
+  system 'bin/rake db:setup >> setup.log'
+
+  header 'Preparing testing database (output logged to setup.log)'
+  system 'bin/rake db:setup RAILS_ENV=test >> setup.log'
+
+  header 'Removing old logs and tempfiles'
   system 'rm -f log/**/*'
   system 'rm -rf tmp/cache'
+
+  puts
+  puts 'Success! Please source .env.development.'
 end

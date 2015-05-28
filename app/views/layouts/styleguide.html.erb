@@ -7,6 +7,10 @@
 
     <%= csrf_meta_tags %>
 
+    <script type="text/javascript">
+      window.eventStreamConfig = <%= TahiPusher::Config.to_json.html_safe %>;
+    </script>
+
     <%#= render "shared/bugsnag_javascript" %>
 
     <style media="screen">

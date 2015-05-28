@@ -11,7 +11,7 @@ class AdminDashboardPage < Page
   end
 
   def self.admin_section
-    "Need to find a user? Search for them here."
+    "Journals"
   end
 
   def initialize(*args)
@@ -49,7 +49,7 @@ class AdminDashboardPage < Page
   end
 
   def edit_journal(journal_name)
-    find('.journal', text: journal_name).find('.edit-icon').click
+    find('.journal-thumbnail', text: journal_name).find('.edit-icon').click
     EditJournalFragment.new(find '.journal-thumbnail-edit-form')
   end
 

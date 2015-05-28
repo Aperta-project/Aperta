@@ -1,19 +1,24 @@
-@import 'bourbon';
+/*
+ *= require_self
+*/
+
+@import "bourbon";
 @import 'bootstrap-sprockets';
 @import 'bootstrap';
+@import "variables";
+@import "z-index";
+@import "webfonts";
+@import "mixins";
+@import "resets";
+@import "ui-components";
 
-@import 'variables';
-@import 'z-index';
-@import 'webfonts';
-@import 'mixins';
+@import "animations/base";
+@import "components/base";
+@import "overlays/base";
+@import "screens/base";
+@import "ui/base";
 
-@import 'animations/base';
-@import 'components/base';
-@import 'overlays/base';
-@import 'screens/base';
-@import 'ui/base';
-
-@import 'app';
+@import "tahi";
 
 // STANDARD CARDS
 @import 'tahi_standard_tasks/application';

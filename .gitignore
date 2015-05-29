@@ -4,6 +4,7 @@
 /tags
 /public/uploads
 doc/*.svg
+.DS_Store
 .zsh_rake_cache
 .env
 # ignore all .env.{environment} files ...

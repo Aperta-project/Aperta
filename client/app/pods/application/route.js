@@ -102,7 +102,10 @@ export default Ember.Route.extend(AnimateOverlay, {
     updated(payload) {
       let description = "Pusher: updated";
       Utils.debug(description, payload);
-      this.store.pushPayload(payload);
+
+      Ember.run.later(() => {
+        this.store.pushPayload(payload);
+      }, 100);
     },
 
     destroyed(payload) {

@@ -105,15 +105,18 @@ test 'on paper.edit as a participant on a task and author of paper', ->
       "Participant task is displayed in '#paper-assigned-tasks' for author"
 
 test 'visiting /edit-paper: Author completes all metadata cards', ->
-  expect(2)
-  visit("/papers/#{currentPaper.id}/edit").then ->
-    submitButton = find('button:contains("Submit")')
-    ok(submitButton.hasClass('button--disabled'), "Submit is disabled")
-  .then ->
-    for card in find('#paper-metadata-tasks .card-content')
-      click card
-      click '#task_completed'
-      click '.overlay-close-button:first'
+  expect(3)
+  visit("/papers/#{currentPaper.id}/edit")
+    .then ->
+      ok(!find('#paper-container.sidebar-empty').length, "The sidebar should NOT be hidden")
+    .then ->
+      submitButton = find('button:contains("Submit")')
+      ok(submitButton.hasClass('button--disabled'), "Submit is disabled")
+    .then ->
+      for card in find('#paper-metadata-tasks .card-content')
+        click card
+        click '#task_completed'
+        click '.overlay-close-button:first'
   andThen ->
     submitButton = find('button:contains("Submit")')
     ok(!submitButton.hasClass('button--disabled'), "Submit is enabled")
@@ -145,7 +148,7 @@ test 'on paper.edit when there are no metadata tasks', ->
 
   visit("/papers/#{currentPaper.id}/edit")
     .then ->
-      ok(find('#paper-container.sidebar-empty').length, "The sidebar should be hidden")
+      !ok(find('#paper-container.sidebar-empty').length, "The sidebar should be hidden")
     .then ->
       msg = "There is a submit manuscript button in the main area"
       ok(find('.no-sidebar-submit-manuscript.button--green:contains("Submit Manuscript")').length, msg)

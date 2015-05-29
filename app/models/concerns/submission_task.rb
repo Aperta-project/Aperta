@@ -2,9 +2,7 @@ module SubmissionTask
   extend ActiveSupport::Concern
 
   included do
-    Task.submission_types ||= []
-    unless Task.submission_types.include?(name)
-      Task.submission_types << name
-    end
+    Task.submission_types ||= Set.new
+    Task.submission_types.add name
   end
 end

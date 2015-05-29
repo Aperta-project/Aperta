@@ -11,9 +11,7 @@ module MetadataTask
   end
 
   included do
-    Task.metadata_types ||= []
-    unless Task.metadata_types.include?(name)
-      Task.metadata_types << name
-    end
+    Task.metadata_types ||= Set.new
+    Task.metadata_types.add name
   end
 end

@@ -73,7 +73,7 @@ export default Ember.Mixin.create({
     },
 
     confirmSubmitPaper() {
-      if (!this.get('model.allMetadataTasksCompleted')) { return; }
+      if (!this.get('model.allSubmissionTasksCompleted')) { return; }
 
       this.get('model').save();
       this.get('controllers.overlays/paperSubmit').set('model', this.get('model'));

@@ -22,11 +22,12 @@
                      action="viewCard"}}
     {{/each}}
   </div>
+  <hr>
 {{/if}}
 
-{{#if authorTasks}}
+{{#if metadataTasks}}
   <div id="paper-metadata-tasks">
-    {{#each sortedAuthorTasks as |task|}}
+    {{#each sortedMetadataTasks as |task|}}
       {{card-preview paper=model
                      task=task
                      commentLooks=commentLooks

@@ -28,13 +28,13 @@ export default Ember.Mixin.create({
 
   // Tasks:
   assignedTasks: function() {
-    let authorTasks = this.get('authorTasks');
+    let metadataTasks = this.get('metadataTasks');
     var that = this;
 
     return this.get('model.tasks').filter((task) => {
       return task.get('participations').mapBy('user').contains(that.get('currentUser'));
     }).filter(function(t) {
-      return !authorTasks.contains(t);
+      return !metadataTasks.contains(t);
     });
   }.property('model.tasks.@each'),
 
@@ -44,28 +44,22 @@ export default Ember.Mixin.create({
     }
   }.property('model.tasks.@each.role'),
 
-  authorTasks: function() {
-    let that = this;
+  metadataTasks: function() {
     return this.get('model.tasks').filter((task) => {
-      return task.get('role') === 'author';
-    })
-    .filter(function(t) {
-      return !(that.get('priorityTasks').contains(t.qualifiedType));
+      return task.get('isMetadataTask');
     });
   }.property('model.tasks.@each.role'),
 
-  priorityTasks:       ['TahiStandardTasks::ReviseTask',
-                        'PlosBioTechCheck::ChangesForAuthorTask'],
   taskSorting:         ['phase.position', 'position'],
-  sortedAuthorTasks:   Ember.computed.sort('authorTasks',   'taskSorting'),
+  sortedMetadataTasks: Ember.computed.sort('metadataTasks',   'taskSorting'),
   sortedAssignedTasks: Ember.computed.sort('assignedTasks', 'taskSorting'),
   sortedEditorTasks:   Ember.computed.sort('editorTasks',   'taskSorting'),
 
   noTasks: function() {
-    return [this.get('assignedTasks'), this.get('editorTasks'), this.get('authorTasks')].every((taskGroup)=> {
+    return [this.get('assignedTasks'), this.get('editorTasks'), this.get('metadataTasks')].every((taskGroup)=> {
       return Ember.isEmpty(taskGroup);
     });
-  }.property('assignedTasks.@each', 'editorTasks.@each', 'authorTasks.@each'),
+  }.property('assignedTasks.@each', 'editorTasks.@each', 'metadataTasks.@each'),
 
 
   actions: {

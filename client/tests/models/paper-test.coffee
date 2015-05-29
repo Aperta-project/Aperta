@@ -47,11 +47,11 @@ test 'Paper hasMany tasks (async)', ->
   ).then(start, start)
 
 
-test 'allMetadata tasks filters tasks by isMetaData', ->
+test 'allSubmissionTasks filters tasks by isSubmissionTask', ->
   stop()
   paperPromise = Ember.run =>
-    task1 = @store().createRecord 'task', type: 'Task', title: 'A message', isMetadataTask: false
-    task2 = @store().createRecord 'task', type: 'TechCheckTask', title: 'some task',isMetadataTask: true
+    task1 = @store().createRecord 'task', type: 'Task', title: 'A message', isSubmissionTask: false
+    task2 = @store().createRecord 'task', type: 'TechCheckTask', title: 'some task',isSubmissionTask: true
     paper = @store().createRecord 'paper',
       title: 'some really long title'
       shortTitle: 'test short title'
@@ -60,6 +60,5 @@ test 'allMetadata tasks filters tasks by isMetaData', ->
       paper
 
   paperPromise.then((paper) ->
-    deepEqual paper.get('allMetadataTasks').mapBy('type'), ['TechCheckTask']
+    deepEqual paper.get('allSubmissionTasks').mapBy('type'), ['TechCheckTask']
   ).then(start, start)
-

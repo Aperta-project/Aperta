@@ -2,6 +2,5 @@
 
 FigureTask = Task.extend
   qualifiedType: "TahiStandardTasks::FigureTask"
-  isMetadataTask: true
 
 `export default FigureTask`

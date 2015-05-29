@@ -24,6 +24,7 @@ module 'Integration: Submitting Paper',
       id: 1
       title: "Metadata"
       isMetadataTask: true
+      isSubmissionTask: true
       completed: true
     )
     currentPaper = records[0]
@@ -57,7 +58,7 @@ module 'Integration: Submitting Paper',
 
 test "User can submit a paper", ->
   visit("/papers/#{currentPaper.id}/edit")
-  click(".edit-paper button:contains('Submit Manuscript')")
+  click(".edit-paper button:contains('Submit')")
   click("button.button-submit-paper")
 
   andThen ->

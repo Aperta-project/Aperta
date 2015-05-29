@@ -1,7 +1,7 @@
 `import Ember from 'ember'`
 `import { test } from 'ember-qunit'`
 `import startApp from '../helpers/start-app'`
-`import { paperWithTask } from '../helpers/setups'`
+`import { paperWithTask, addUserAsParticipant } from '../helpers/setups'`
 `import setupMockServer from '../helpers/mock-server'`
 `import Factory from '../helpers/factory'`
 
@@ -31,6 +31,7 @@ module 'Integration: Billing',
     paperPayload = Factory.createPayload('paper')
     paperPayload.addRecords(records.concat([fakeUser]))
     paperResponse = paperPayload.toJSON()
+    paperResponse.participations = [addUserAsParticipant(billingTask, fakeUser)]
 
     taskPayload = Factory.createPayload('task')
     taskPayload.addRecords([billingTask, fakeUser])

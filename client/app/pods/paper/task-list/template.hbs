@@ -11,7 +11,7 @@
                      action="viewCard"}}
     {{/each}}
   </div>
-
+  <hr>
 {{/if}}
 {{#if editorTasks}}
   <div id="paper-editor-tasks">
@@ -22,8 +22,9 @@
                      action="viewCard"}}
     {{/each}}
   </div>
+  <hr>
 {{/if}}
-<hr>
+
 {{#if metadataTasks}}
   <div id="paper-metadata-tasks">
     {{#each sortedMetadataTasks as |task|}}

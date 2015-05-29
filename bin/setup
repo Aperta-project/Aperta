@@ -47,26 +47,6 @@ def brew_install package, options=nil
   end
 end
 
-def ensure_go_setup
-  case $os
-  when :darwin
-    brew_install 'go'
-  when :linux
-    system 'sudo apt-get install -y golang'
-  end
-
-  if ENV['GOPATH'].blank?
-    puts <<-MESSAGE.gsub(/^    /, '')
-     Error: Please ensure your $GOPATH is configured correctly and run again.
-     Add the following to your shell initialization file (.bashrc, .zshrc, etc)
-
-        export GOPATH="$HOME/go"
-        export PATH=$PATH:$GOPATH/bin
-    MESSAGE
-    exit 1
-  end
-end
-
 def ensure_postgres_setup
   if !cmd_available?('psql')
     puts "psql isn't available."
@@ -122,9 +102,6 @@ Dir.chdir APP_ROOT do
   header 'Checking database setup'
   ensure_postgres_setup
 
-  header 'Checking Go dev environment'
-  ensure_go_setup
-
   header 'Installing other package dependencies'
   case $os
   when :darwin
@@ -135,8 +112,6 @@ Dir.chdir APP_ROOT do
   when :linux
     system "sudo apt-get install -y imagemagick redis-server nodejs qt5-default libqt5webkit5-dev"
   end
-
-  system 'go get github.com/tahi-project/golang-eventsource'
 
   header 'Installing gems'
   system 'gem install bundler --conservative'

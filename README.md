@@ -35,7 +35,7 @@
 
 When you run `foreman start`, slanger will start up as the event stream server.
 
-By default, slanger will listed on port `4567` for API requests (requests
+By default, slanger will listen on port `4567` for API requests (requests
 coming from tahi rails server) and port `8080` for websocket requests (from
 tahi browser client).
 
@@ -158,11 +158,11 @@ heroku pgbackups:restore HEROKU_POSTGRESQL_CYAN_URL b002 --app tahi-performance
 ## Postgres Backups
 
 Backups should be run automatically every day. If you would like to run one
-manually run `heroku pgbackups:capture`
+manually run `heroku pg:backups capture`
 
-You can get the URL to download a backup by running `heroku pgbackups:url`
+You can get the URL to download a backup by running `heroku pg:backups public-url`
 
-To list current backups `heroku pgbackups`
+To list current backups `heroku pg:backups`
 
 Your output should look something like this:
 

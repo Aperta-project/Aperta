@@ -7,10 +7,18 @@ module JournalServices
         raise "No task types configured for journal #{journal.id}" unless task_types.present?
 
         phase = mmt.phase_templates.create! name: "Submission Data"
-        make_tasks phase, task_types, TahiStandardTasks::FigureTask, TahiStandardTasks::SupportingInformationTask, PlosAuthors::PlosAuthorsTask, TahiUploadManuscript::UploadManuscriptTask
+        make_tasks phase, task_types,
+          TahiStandardTasks::FigureTask,
+          TahiStandardTasks::SupportingInformationTask,
+          PlosAuthors::PlosAuthorsTask,
+          TahiUploadManuscript::UploadManuscriptTask,
+          TahiStandardTasks::CoverLetterTask
 
         phase = mmt.phase_templates.create! name: "Invite Editor"
-        make_tasks phase, task_types, TahiStandardTasks::PaperEditorTask, TahiStandardTasks::TechCheckTask, TahiStandardTasks::PaperAdminTask
+        make_tasks phase, task_types,
+          TahiStandardTasks::PaperEditorTask,
+          TahiStandardTasks::TechCheckTask,
+          TahiStandardTasks::PaperAdminTask
 
         phase = mmt.phase_templates.create! name: "Invite Reviewers"
         make_tasks phase, task_types, TahiStandardTasks::PaperReviewerTask

@@ -7,7 +7,7 @@
 App = null
 
 moduleForComponent 'card-preview', 'Unit: components/card-preview',
-  needs: ['helper:badge-count']
+  needs: ['helper:badge-count', 'store:main']
 
   setup: ->
     Ember.run ->

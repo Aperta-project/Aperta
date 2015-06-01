@@ -12,6 +12,7 @@
 
 <%- if devise_mapping.omniauthable? %>
   <%- resource_class.omniauth_providers.each do |provider| %>
-    <%= link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider), class: "button-primary auth-3rd-party-button auth-#{provider.to_s}" %><br>
+    <% next if Rails.configuration.orcid_enabled == false && provider == :orcid %>
+    <%= link_to "Sign in with #{provider.to_s.upcase}", omniauth_authorize_path(resource_name, provider), class: "button-primary auth-3rd-party-button auth-#{provider.to_s}" %><br>
   <% end -%>
 <% end -%>

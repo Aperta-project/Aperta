@@ -1,23 +1,12 @@
 `import TaskController from 'tahi/pods/paper/task/controller'`
 
 CoverLetterController = TaskController.extend
-  # resultsTemplate: (user) ->
-  #   user.email
-
-  # selectedTemplate: (user) ->
-  #   # Handle raw object or ember model
-  #   if typeof(user.email) is "string"
-  #     user.email
-  #   else
-  #     user.get('email')
+  letterBody: Ember.computed ->
+    @model.get('body')[0]
 
   actions:
     saveCoverLetter: ->
-      @send('saveModel')
-
-    # assignAdmin: (select2User) ->
-    #   @store.find('user', select2User.id).then (user) =>
-    #     @set('model.admin', user)
-    #     @send('saveModel')
+      @model.set 'body', [@get('letterBody')]
+      @model.save()
 
 `export default CoverLetterController`

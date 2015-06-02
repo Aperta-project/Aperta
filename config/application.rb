@@ -10,6 +10,11 @@ Bundler.require(:default, Rails.env)
 module Tahi
   class Application < Rails::Application
     config.eager_load = true
+
+    # use bin/rake tahi_standard_tasks:install:migrations
+    # see http://guides.rubyonrails.org/engines.html#engine-setup
+    # config.paths['db/migrate'].push 'engines/tahi_standard_tasks/db/migrate'
+
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += %W(#{config.root}/app/workers)
 

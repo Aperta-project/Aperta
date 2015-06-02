@@ -1,22 +1,37 @@
-<h1>
-  Hello <%= @invitee_name %>
-</h1>
-<h2>
-  You've been invited to the Editor's Discussion for the paper:
-</h2>
-
-<hr />
-
-<h3>
-  <%= @task.paper.display_title %>
-</h3>
-
-<h4>Abstract</h4>
-
-<p>
-  <%= @paper_preview %>
-</p>
-
-<hr />
-
-<%= link_to 'View Discussion', client_paper_task_url(@task.paper, @task) %>
+<div class='container'>
+  <div class='greeting'>
+    <h3 class='user-name'>
+      Hello <%= @invitee_name %>,
+    </h3>
+    <p class='message'>
+      You've been invited to the Editor's Discussion for the paper:
+    </p>
+  </div>
+  <hr>
+  <div class='paper-info'>
+    <div class='journal-info'>
+      <% if @task.paper.journal.logo_url %>
+        <img class='journal-logo' src='<%= @task.paper.journal.logo_url %>'>
+      <% else %>
+        <div class='journal-name'>
+          <%= @task.paper.journal.name %>
+        </div>
+      <% end %>
+    </div>
+    <div class='paper-name'>
+      <%= @task.paper.display_title %>
+    </div>
+    <div class='paper-abstract'>
+      <h5 class='abstract-title'>Abstract</h5>
+      <div class='abstract-text'>
+        <%= @paper_preview || @task.paper.body.truncate_words(100) %>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class='footer'>
+    <a class='button' href='<%= client_paper_task_url(@task.paper, @task) %>' target='_blank'>
+      View Discussion
+    </a>
+  </div>
+</div>

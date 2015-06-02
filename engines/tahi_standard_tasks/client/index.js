@@ -2,5 +2,9 @@
 'use strict';
 
 module.exports = {
-  name: 'tahi-standard-cards'
+  name: 'tahi-standard-cards',
+  isDevelopingAddon: function() {
+    return true;
+  }
 };
+

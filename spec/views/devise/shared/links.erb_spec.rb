@@ -1,11 +1,30 @@
 require 'rails_helper'
 
+
 describe "sign in / up page links: " do
+  module ApplicationHelper
+    def resource_name
+      :user
+    end
+
+    def resource
+      @resource ||= User.new
+    end
+
+    def devise_mapping
+      @devise_mapping ||= Devise.mappings[:user]
+    end
+
+    def resource_class
+      Devise
+    end
+  end
 
   describe "when Orcid is enabled" do
 
     before do
       Rails.configuration.orcid_enabled = true
+
       render partial: 'devise/shared/links'
     end
 

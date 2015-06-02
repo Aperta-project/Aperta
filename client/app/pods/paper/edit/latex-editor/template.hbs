@@ -32,7 +32,11 @@
                                mode="stex"}}
         </div>
         <div class="code-mirror-split code-mirror-split--right">
-          LaTeX Preview Here
+          {{#if imagePreviewUrls }}
+            {{#each imagePreviewUrls as |url| }}
+              <img src="http://localhost:1100/{{ url }}" />
+            {{/each }}
+          {{/if }}
         </div>
       </div>
 

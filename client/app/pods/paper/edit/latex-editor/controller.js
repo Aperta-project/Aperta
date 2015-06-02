@@ -4,6 +4,12 @@ import PaperEditMixin from 'tahi/mixins/controllers/paper-edit';
 import { ClientEvents, Bindings } from 'ember-pusher';
 
 export default Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, ClientEvents, Bindings, {
+  imagePreviewUrls: [],
+
+  paperChannelName: function() {
+    return `private-paper@${ this.get('model.id') }`;
+  }.property('model.id'),
+
   startEditing() {
     this.set('model.lockedBy', this.currentUser);
     this.get('model').save().then(()=> {
@@ -37,5 +43,20 @@ export default Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, ClientEve
       this.set('saveState', true);
       this.set('isSaving', false);
     });
+  },
+
+  editorSetup() {
+    this.pusher.wire(this, this.get('paperChannelName'), ["client-preview_images_updated"]);
+  },
+
+  editorTeardown() {
+    this.pusher.unwire(this, this.get('paperChannelName'));
+  },
+
+  actions: {
+    clientPreviewImagesUpdated(event_data) {
+      this.set('imagePreviewUrls', event_data.image_preview_urls);
+    }
   }
+
 });

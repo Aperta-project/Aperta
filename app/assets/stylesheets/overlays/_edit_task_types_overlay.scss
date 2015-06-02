@@ -1,4 +1,4 @@
-.edit-task-types-overlay {
+.edit-task-types-overlay.overlay--fullscreen {
   .overlay-close-x {
     color: $tahi-blue;
 
@@ -26,9 +26,8 @@
     }
   }
 
-  .inner-content {
+  .overlay-container {
     width: 500px;
-    margin: 0 auto;
   }
 }
 

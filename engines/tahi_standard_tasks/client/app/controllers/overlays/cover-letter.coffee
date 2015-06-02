@@ -1,6 +1,6 @@
 `import TaskController from 'tahi/pods/paper/task/controller'`
 
-CoverLetterController = TaskController.extend()
+CoverLetterController = TaskController.extend
   # resultsTemplate: (user) ->
   #   user.email
 
@@ -11,7 +11,10 @@ CoverLetterController = TaskController.extend()
   #   else
   #     user.get('email')
 
-  # actions:
+  actions:
+    saveCoverLetter: ->
+      @send('saveModel')
+
     # assignAdmin: (select2User) ->
     #   @store.find('user', select2User.id).then (user) =>
     #     @set('model.admin', user)

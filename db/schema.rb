@@ -230,8 +230,8 @@ ActiveRecord::Schema.define(version: 20150514201530) do
     t.datetime "updated_at"
     t.integer  "user_id"
     t.string   "paper_type",        limit: 255
-    t.boolean  "submitted",                     default: false, null: false
-    t.integer  "journal_id",                                    null: false
+    t.boolean  "submitted",                     default: false,  null: false
+    t.integer  "journal_id",                                     null: false
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
@@ -239,7 +239,7 @@ ActiveRecord::Schema.define(version: 20150514201530) do
     t.datetime "last_heartbeat_at"
     t.boolean  "editable",                      default: true
     t.text     "doi"
-    t.string   "editor_mode",       default: "html", null: false
+    t.string   "editor_mode",                   default: "html", null: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
@@ -347,8 +347,8 @@ ActiveRecord::Schema.define(version: 20150514201530) do
     t.string   "title",      limit: 255
     t.string   "caption"
     t.text     "body"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   add_index "tables", ["paper_id"], name: "index_tables_on_paper_id", using: :btree

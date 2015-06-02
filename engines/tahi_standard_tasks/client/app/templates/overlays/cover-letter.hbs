@@ -1,10 +1,13 @@
-<h1>Cover Letter</h1>
+<h1>Cover Letter Card</h1>
 
-<p>Enter your cover letter below.</p>
+<p>Please type or paste your cover letter into this text field:</p>
 
-{{textarea focus-out="saveLetter"
-           onEvent="false"
-           class="cover-letter-field"
-           placeholder="A boilerplate cover letter will appear here"
+{{textarea onEvent="false"
            disabled=false
-           value="asdf"}}
+           value=model.letter}}
+
+<button class="button-primary button--green"
+    {{action "saveCoverLetter"}}
+>
+    Save
+</button>

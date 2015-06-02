@@ -1,11 +1,7 @@
 <div class="question-text">{{{model.question}}}</div>
 <div class="additional-data">
   <span class="button-secondary button--green knockout fileinput-button">
-    {{#if model.questionAttachment}}
-      Replace File
-    {{else}}
-      Select &amp; upload
-    {{/if}}
+    {{if model.questionAttachment "Replace File" "Select & upload"}}
 
     {{file-uploader accept=accept
                     start="uploadStarted"

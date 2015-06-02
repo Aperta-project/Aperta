@@ -3,8 +3,7 @@ import FileUploadMixin from 'tahi/mixins/file-upload';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
-  tagName: 'li',
-  classNames: ['journal'],
+  classNames: ['journal-thumbnail'],
 
   canEdit: false,
   logoPreview: null,
@@ -28,9 +27,9 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
     Ember.run(() => {
       Ember.run.schedule('afterRender', ()=> {
         if (this.get('logoPreview')) {
-          return this.$('.journal-logo-preview').empty().append(this.get('logoPreview'));
+          return this.$('.journal-thumbnail-logo-preview').empty().append(this.get('logoPreview'));
         } else {
-          return this.$('.journal-logo-preview').html('');
+          return this.$('.journal-thumbnail-logo-preview').html('');
         }
       });
     });

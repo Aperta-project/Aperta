@@ -1,5 +1,5 @@
 class AdminDashboardPage < Page
-  text_assertions :journal_name, '.journal-name'
+  text_assertions :journal_name, '.journal-thumbnail-name'
 
   def self.path
     "/admin"
@@ -10,17 +10,17 @@ class AdminDashboardPage < Page
     new
   end
 
-  def self.page_header
+  def self.admin_section
     "Journals"
   end
 
   def initialize(*args)
     super
-    synchronize_content! self.class.page_header
+    synchronize_content! self.class.admin_section
   end
 
   def journal_names
-    all('.journal-name').map &:text
+    all('.journal-thumbnail-name').map &:text
   end
 
   def has_journal_names?(*names)
@@ -40,7 +40,7 @@ class AdminDashboardPage < Page
   end
 
   def journal_paper_counts
-    all('.journal-paper-count').map { |el| el.text.split(' ')[0].to_i }
+    all('.journal-thumbnail-paper-count').map { |el| el.text.split(' ')[0].to_i }
   end
 
   def create_journal
@@ -49,7 +49,7 @@ class AdminDashboardPage < Page
   end
 
   def edit_journal(journal_name)
-    find('.journal', text: journal_name).find('.edit-icon').click
+    find('.journal-thumbnail', text: journal_name).find('.edit-icon').click
     EditJournalFragment.new(find '.journal-thumbnail-edit-form')
   end
 

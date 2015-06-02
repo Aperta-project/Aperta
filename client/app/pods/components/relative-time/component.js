@@ -3,6 +3,11 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   tagName: 'span',
 
+  /**
+   * @property time
+   * @type Date
+   * @default null
+   */
   time: null,
 
   formatedTime: function() {

@@ -2,10 +2,10 @@
 
   <div class="journal-thumbnail-edit-form clearfix">
 
-    <div class="journal-logo-upload">
-      <div class="journal-thumbnail">
+    <div class="journal-thumbnail-logo-upload">
+      <div class="journal-thumbnail-logo">
         {{#if logoPreview}}
-          <span class="journal-logo-preview"></span>
+          <span class="journal-thumbnail-logo-preview"></span>
         {{else}}
           {{#if model.logoUrl}}
             <img src={{model.logoUrl}}>
@@ -15,31 +15,37 @@
         {{/if}}
       </div>
       {{partial "admin/journal/logo-upload"}}
-      <span class="journal-logo-upload-note">(250px x 40px)</span>
+      <span class="journal-thumbnail-logo-upload-note">(250px x 40px)</span>
       {{#if isUploading}}
-        <div class="journal-logo-spinner">
+        <div class="journal-thumbnail-logo-spinner">
           {{progress-spinner visible=true color="white"}}
         </div>
       {{/if}}
     </div>
 
-    <div class="form-group required {{if validationErrors.name "error"}}">
+    <div class="inset-form-control required {{if validationErrors.name "error"}}">
+      <div class="inset-form-control-text">
+        <label>Journal Title</label>
+        {{error-message message=validationErrors.name}}
+      </div>
       {{input type="text"
               value=model.name
-              class="form-control journal-name-edit"
-              placeholder="Journal Title"}}
-      {{error-message message=validationErrors.name}}
+              class="form-control journal-name-edit inset-form-control-input"
+              placeholder="PLOS Yeti"}}
     </div>
 
-    <div class="form-group required {{if validationErrors.description "error"}}">
+    <div class="inset-form-control required {{if validationErrors.description "error"}}">
+      <div class="inset-form-control-text">
+        <label>Journal Description</label>
+        {{error-message message=validationErrors.description}}
+      </div>
       {{textarea value=model.description
-                 class="form-group required journal-description-edit form-control"
-                 placeholder="Journal Description"}}
-      {{error-message message=validationErrors.description}}
+                 class="journal-description-edit inset-form-control-textarea"
+                 placeholder="Accelerating the publication of peer-reviewed science"}}
     </div>
 
     <div class="journal-edit-buttons">
-      <a href="#" class="button-link knockout" {{action "resetJournalDetails"}}>Cancel</a>
+      <a href="#" class="button-link button--white" {{action "resetJournalDetails"}}>Cancel</a>
       <a href="#" class="button-secondary button--blue knockout" {{action "saveJournalDetails"}}>Save</a>
     </div>
 
@@ -48,15 +54,15 @@
 {{else}}
 
   {{#link-to "admin.journal" model class="journal-thumbnail-show clearfix"}}
-    <div class="journal-thumbnail">
+    <div class="journal-thumbnail-logo">
       {{#if model.logoUrl}}
         <img src={{model.logoUrl}}>
       {{else}}
         {{partial "svg/default-journal-logo"}}
       {{/if}}
     </div>
-    <span class="journal-paper-count">{{pluralize model.paperCount "article"}}</span>
-    <h3 class="journal-name">{{model.name}}</h3>
+    <span class="journal-thumbnail-paper-count">{{pluralize model.paperCount "article"}}</span>
+    <h3 class="journal-thumbnail-name">{{model.name}}</h3>
     <p>{{model.description}}</p>
   {{/link-to}}
   {{#if canEdit}}

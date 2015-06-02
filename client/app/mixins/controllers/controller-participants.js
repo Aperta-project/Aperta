@@ -24,11 +24,12 @@ export default Ember.Mixin.create({
 
   actions: {
     saveNewParticipant(newParticipantId) {
+      let that = this;
       this.store.find('user', newParticipantId).then(function(user) {
-        let part = this.createParticipant(user);
+        let part = that.createParticipant(user);
         if (!part) { return; }
 
-        if (!this.get('model.isNew')) {
+        if (!that.get('model.isNew')) {
           return part.save();
         }
       });

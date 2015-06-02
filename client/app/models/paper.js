@@ -33,17 +33,17 @@ export default DS.Model.extend({
     return this.get('title') || this.get('shortTitle');
   }.property('title', 'shortTitle'),
 
-  allMetadataTasks: function() {
-    return this.get('tasks').filterBy('isMetadataTask');
-  }.property('tasks.content.@each.isMetadataTask'),
+  allSubmissionTasks: function() {
+    return this.get('tasks').filterBy('isSubmissionTask');
+  }.property('tasks.content.@each.isSubmissionTask'),
 
   collaborators: function() {
     return this.get('collaborations').mapBy('user');
   }.property('collaborations.@each'),
 
-  allMetadataTasksCompleted: function() {
-    return this.get('allMetadataTasks').everyProperty('completed', true);
-  }.property('allMetadataTasks.@each.completed'),
+  allSubmissionTasksCompleted: function() {
+    return this.get('allSubmissionTasks').everyProperty('completed', true);
+  }.property('allSubmissionTasks.@each.completed'),
 
   roleList: function() {
     return this.get('roles').sort().join(', ');

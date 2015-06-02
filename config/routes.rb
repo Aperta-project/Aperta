@@ -18,6 +18,8 @@ Tahi::Application.routes.draw do
   elsif Rails.env.development?
     get "/styleguide" => "styleguide#index"
     mount EmberCLI::Engine => "ember-tests"
+  elsif Rails.env.staging?
+    get "/styleguide" => "styleguide#index"
   end
 
 

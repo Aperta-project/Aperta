@@ -10,9 +10,10 @@ TaskController = Ember.Controller.extend AnimateOverlay, SavesDelayed, Controlle
   needs: ['application']
   onClose: 'closeOverlay'
   isLoading: false
-  isMetadata: Ember.computed.alias('model.isMetadataTask')
-  isUserEditable: Ember.computed 'model.paper.editable', 'isMetadata', ->
-    @get('model.paper.editable') || !@get('isMetadata')
+  isMetadataTask: Ember.computed.alias('model.isMetadataTask'),
+  isSubmissionTask: Ember.computed.alias('model.isSubmissionTask'),
+  isUserEditable: Ember.computed 'model.paper.editable', 'isSubmissionTask', ->
+    @get('model.paper.editable') || !@get('isSubmissionTask')
 
   isCurrentUserAdmin: Ember.computed.alias 'currentUser.siteAdmin'
   isEditable: Ember.computed.or('isUserEditable', 'isCurrentUserAdmin')

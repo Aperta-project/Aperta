@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   sortProperties: ['createdAt'],
   sortAscending: false,
-  placeholderText: 'Need to find a user?<br> Search for them here.',
+  placeholderText: 'Need to find a user? Search for them here.',
   searchQuery: '',
 
   resetSearch() {

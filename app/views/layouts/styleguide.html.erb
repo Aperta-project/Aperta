@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Tahi</title>
+    <title>
+      Tahi Styleguide
+    </title>
     <%= include_ember_stylesheet_tags :tahi %>
     <%= stylesheet_link_tag "application", media: "all" %>
 
     <%= csrf_meta_tags %>
 
-    <%#= render "shared/bugsnag_javascript" %>
+    <script type="text/javascript">
+      window.eventStreamConfig = <%= TahiPusher::Config.to_json.html_safe %>;
+    </script>
 
     <style media="screen">
     *[element-name] {
@@ -40,11 +44,15 @@
       display: none;
     }
     .color-bar {
-      height: 75px;
-      text-align: center;
-      color: white;
-      padding: 28px 0px 0px 0px;
-      width: 200px;
+    }
+    .color-bar .swatch {
+      height: 120px;
+    }
+    .color-bar p {
+      background-color: #E5E5E5;
+      color: #878787;
+      padding: 1em;
+      height: 160px;
     }
     .column-title-update-buttons {
       display: none !important;
@@ -97,12 +105,6 @@
   </head>
 
   <body>
-    <% if current_user %>
-      <script type="text/javascript">
-        window.currentUser = <%= UserSerializer.new(current_user).to_json.html_safe %>;
-      </script>
-    <% end %>
-
     <%= include_ember_script_tags :tahi %>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
     <div id="ember-app"></div>

@@ -359,6 +359,8 @@ FactoryAttributes.BillingTask =
   assignee_ids: []
   participant_ids: []
   comment_ids: []
+  is_metadata_task: false
+  is_submission_task: true
 
 FactoryAttributes.FigureTask =
   _rootKey: 'task'
@@ -375,6 +377,8 @@ FactoryAttributes.FigureTask =
   assignee_ids: []
   participant_ids: []
   comment_ids: []
+  is_metadata_task: true
+  is_submission_task: true
 
 FactoryAttributes.FinancialDisclosureTask =
   _rootKey: 'task'

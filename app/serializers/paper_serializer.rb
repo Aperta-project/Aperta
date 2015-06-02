@@ -18,7 +18,6 @@ class PaperSerializer < LitePaperSerializer
   has_one :journal, embed: :id, include: true
   has_one :locked_by, embed: :id, include: true, root: :users
   has_one :striking_image, embed: :id, include: true, root: :figures
-  has_one :cover_letter, embed: :id, include: true
 
   def status
     object.manuscript.try(:status)

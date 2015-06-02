@@ -1,6 +1,8 @@
 # TAHI
 
-[![Circle CI](https://circleci.com/gh/Tahi-project/tahi/tree/master.svg?style=svg)](https://circleci.com/gh/Tahi-project/tahi/tree/master)
+[![Circle CI](https://circleci.com/gh/Tahi-project/tahi/tree/master.svg?style=svg&circle-token=8f8d8e64dc324b8dd1af4e141632a46cffe78702)](https://circleci.com/gh/Tahi-project/tahi/tree/master)
+
+
 
 ## Development Notes
 

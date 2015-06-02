@@ -1,7 +1,6 @@
 # TAHI
 
-[![Build Status](https://semaphoreapp.com/api/v1/projects/c2f9758d-c74d-498b-9db5-9a0da89df9e6/325656/shields_badge.svg)](https://semaphoreapp.com/tahi-project/tahi)
-[![Deploy History](https://img.shields.io/badge/deploy-history-blue.svg)](https://semaphoreapp.com/tahi-project/tahi/servers/tahi-staging/)
+[![Circle CI](https://circleci.com/gh/Tahi-project/tahi/tree/master.svg?style=svg)](https://circleci.com/gh/Tahi-project/tahi/tree/master)
 
 ## Development Notes
 

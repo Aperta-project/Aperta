@@ -233,6 +233,9 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
   config.omniauth :orcid, ENV['ORCID_KEY'], ENV['ORCID_SECRET'], strategy: OmniAuth::Strategies::Orcid
+  if Rails.configuration.orcid_enabled
+    Rails.configuration.omniauth_providers << :orcid
+  end
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

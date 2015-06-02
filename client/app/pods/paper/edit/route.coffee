@@ -39,6 +39,7 @@ PaperEditRoute = AuthorizedRoute.extend
     editorController = @controllerFor(@get('editorLookup'))
     editorController.set('model', model)
     editorController.set('commentLooks', @store.all('commentLook'))
+    editorController.editorSetup()
 
     if @currentUser
       RESTless.authorize(editorController, "/api/papers/#{model.get('id')}/manuscript_manager", 'canViewManuscriptManager')
@@ -50,6 +51,7 @@ PaperEditRoute = AuthorizedRoute.extend
       controller: @get('editorLookup')
 
   deactivate: ->
+    @controllerFor(@get('editorLookup')).editorTeardown()
     @endHeartbeat()
 
   startHeartbeat: ->

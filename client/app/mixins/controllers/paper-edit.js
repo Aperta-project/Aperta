@@ -50,6 +50,16 @@ export default Ember.Mixin.create({
     });
   }.observes('saveState'),
 
+  /*
+   * editorSetup and editorTeardown are meant to implemented in
+   * editor specific controllers. They will be called by the
+   * paper.edit route in the lifecycle hooks:
+   * `setupController` and `deactivate`
+   */
+
+  editorSetup() { },
+  editorTeardown() { },
+
   savePaperDebounced() {
     this.set('isSaving', true);
     Ember.run.debounce(this, this.savePaper, 2000);

@@ -6,18 +6,16 @@
                    center=true
                    size="large"}}
 
-<div class="inner-content">
-  {{#each groupedFlows as |group|}}
-    {{#if group.logo}}
-      <img src={{unbound group.logo}} style="display:block; margin-bottom: 15px;">
-    {{else}}
-      <h2>{{group.title}}</h2>
-    {{/if}}
+{{#each groupedFlows as |group|}}
+  {{#if group.logo}}
+    <img src={{unbound group.logo}} style="display:block; margin-bottom: 15px;">
+  {{else}}
+    <h2>{{group.title}}</h2>
+  {{/if}}
 
-    {{#each group.flows as |flow|}}
-      <div class="button-secondary button--green flow-manager-button" {{action "createFlow" flow}}>{{flow.title}}</div>
-    {{/each}}
-
-    <br><br>
+  {{#each group.flows as |flow|}}
+    <div class="button-secondary button--green flow-manager-button" {{action "createFlow" flow}}>{{flow.title}}</div>
   {{/each}}
-</div>
+
+  <br><br>
+{{/each}}

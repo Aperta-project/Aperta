@@ -1,5 +1,5 @@
 module Tahi
-  module <%= @plugin_short.camelize %>
+  module <%= @plugin_module %>
     class <%= class_name %>Task < Task
 
       # uncomment the following line if you want to enable event
@@ -11,6 +11,7 @@ module Tahi
       def active_model_serializer
         <%= class_name %>TaskSerializer
       end
+
     end
   end
 end

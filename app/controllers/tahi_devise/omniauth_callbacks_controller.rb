@@ -1,11 +1,10 @@
 module TahiDevise
   class OmniauthCallbacksController < Devise::OmniauthCallbacksController
-    def orcid
-      oauthorize(:orcid)
-    end
 
-    def cas
-      oauthorize(:cas)
+    Rails.configuration.omniauth_providers.each do |provider|
+      define_method "#{provider}" do
+        oauthorize(provider)
+      end
     end
 
     private

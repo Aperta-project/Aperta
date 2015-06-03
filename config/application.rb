@@ -33,6 +33,6 @@ module Tahi
 
     config.orcid_key = ENV.fetch('ORCID_KEY', false)
     config.orcid_secret = ENV.fetch('ORCID_SECRET', false)
-    config.orcid_enabled = config.orcid_key && config.orcid_secret
+    config.orcid_enabled = !!(config.orcid_key && config.orcid_secret)
   end
 end

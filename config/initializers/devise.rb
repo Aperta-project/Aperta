@@ -233,7 +233,7 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
   config.omniauth :orcid, Rails.configuration.orcid_key, Rails.configuration.orcid_secret, strategy: OmniAuth::Strategies::Orcid
-  if Rails.configuration.orcid_enabled
+  if Rails.configuration.orcid_enabled || Rails.env.test?
     Rails.configuration.omniauth_providers << :orcid
   end
 

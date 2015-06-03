@@ -29,10 +29,10 @@
         </div>
       </li>
       <li class="control-bar-item">
-        <div class="control-bar-link contributors-link __with-icon" {{action "showDiscussion"}}>
+        {{#link-to "paper.workflow.discussions" model class="control-bar-link control-bar-button"}}
           <div class="control-bar-link-icon"><span class="fa fa-comment"></span></div>
-          <div class="control-bar-link-text">Discussion</div>
-        </div>
+          Discussions
+        {{/link-to}}
       </li>
       <li class="control-bar-item">
         {{#link-to "paper.edit" model class="control-bar-link control-bar-button"}}
@@ -62,3 +62,5 @@
     {{/each}}
   </div>
 </div>
+
+{{outlet}}

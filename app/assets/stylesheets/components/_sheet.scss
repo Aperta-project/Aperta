@@ -1,0 +1,41 @@
+$sheet-toolbar-height: 60px;
+
+.sheet {
+  @include position(fixed, 0px -450px 0px auto);
+  width: 450px;
+  background: rgba(255,255,255, 0.92);
+  z-index: z('sheet');
+}
+
+.sheet--visible {
+  @extend .sheet-animate-in;
+  right: 0;
+  box-shadow: 0 0 13px rgba(0,0,0, 0.13);
+}
+
+.sheet-toolbar {
+  @include position(absolute, 0px 0px auto 0px);
+  height: $sheet-toolbar-height;
+}
+
+.sheet-toolbar-button {
+  display: inline-block;
+  margin-left: 30px;
+  color: $tahi-green;
+  font-size: 18px;
+  cursor: pointer;
+  line-height: $sheet-toolbar-height;
+}
+
+.sheet-close-x {
+  float: right;
+  margin-right: 30px;
+  color: $tahi-green;
+  font-size: 40px;
+  cursor: pointer;
+}
+
+.sheet-content {
+  overflow: auto;
+  @include position(absolute, $sheet-toolbar-height 0px 0px 0px);
+}

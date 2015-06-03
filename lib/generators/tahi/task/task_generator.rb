@@ -9,15 +9,16 @@ module Tahi
       @plugin_module = plugin.camelize
 
       engine_path = find_engine_path(plugin)
-      app_dir = File.join(engine_path, 'app')
 
-      template 'model.rb',      File.join(app_dir, 'models',      plugin, "#{name}_task.rb")
-      template 'serializer.rb', File.join(app_dir, 'serializers', plugin, "#{name}_task_serializer.rb")
-      template 'policy.rb',     File.join(app_dir, 'policies',    plugin, "#{name}_tasks_policy.rb")
+      template 'model.rb',      File.join(engine_path, 'app', 'models',      plugin, "#{name}_task.rb")
+      template 'serializer.rb', File.join(engine_path, 'app', 'serializers', plugin, "#{name}_task_serializer.rb")
+      template 'policy.rb',     File.join(engine_path, 'app', 'policies',    plugin, "#{name}_tasks_policy.rb")
 
-      system "cd client && ember generate tahi-task #{name} #{engine_path}"
+      inside 'client' do
+        run "ember generate tahi-task #{name} ../#{engine_path}"
+      end
 
-      Rake::Task['data:create_task_types'].invoke()
+      rake 'data:create_task_types'
     end
 
     private

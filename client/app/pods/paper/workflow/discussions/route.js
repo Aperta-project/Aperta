@@ -8,7 +8,7 @@ export default Ember.Route.extend({
   // },
 
   actions: {
-    navigateToWorkflow() {
+    hideDiscussions() {
       this.transitionTo('paper.workflow');
     }
   }

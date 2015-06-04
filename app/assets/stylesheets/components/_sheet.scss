@@ -3,8 +3,17 @@ $sheet-toolbar-height: 60px;
 .sheet {
   @include position(fixed, 0px -450px 0px auto);
   width: 450px;
-  background: rgba(255,255,255, 0.92);
+  background: rgba(255,255,255, 0.94);
   z-index: z('sheet');
+
+  .liquid-container {
+    @include position(absolute, 0px 0px 0px 0px);
+  }
+
+  .liquid-child {
+    @include position(absolute, 0px auto 0px 0px);
+    width: 100%;
+  }
 }
 
 .sheet--visible {
@@ -28,11 +37,12 @@ $sheet-toolbar-height: 60px;
 }
 
 .sheet-close-x {
-  float: right;
-  margin-right: 30px;
+  @include position(absolute, -4px 0px auto auto);
+  padding-right: 30px;
   color: $tahi-green;
-  font-size: 40px;
+  font-size: 42px;
   cursor: pointer;
+  z-index: 1;
 }
 
 .sheet-content {

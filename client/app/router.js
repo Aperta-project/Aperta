@@ -13,8 +13,10 @@ Router.map(function() {
   this.resource('paper', { path: '/papers/:paper_id' }, function() {
     this.route('edit');
 
-    this.route('workflow', { path: '/workflow' }, function() {
-      this.route('discussions');
+    this.route('workflow', function() {
+      this.route('discussions', function() {
+        this.route('show', { path: '/:topic_id' });
+      });
     });
 
     this.route('task', { path: '/tasks' }, function() {

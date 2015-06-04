@@ -1,3 +1,33 @@
+// Index:
+
 .discussions-index-header {
   text-align: center;
+}
+
+.discussions-index-topic {
+  display: block;
+  margin: 0 30px;
+  border-top: 1px solid #eee;
+  padding: 1rem 5px;
+  color: #333;
+  font-size: 16px;
+
+  .badge {
+    background: #d00;
+  }
+}
+
+// Show:
+
+.discussions-show-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.discussions-show-title {
+  font-size: 21px;
+}
+
+.discussions-show-content {
+  padding: 0 30px;
 }

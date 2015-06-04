@@ -1,0 +1,35 @@
+<div class="sheet-toolbar">
+  {{#link-to "paper.workflow.discussions" class="sheet-toolbar-button"}}
+    <i class="fa fa-chevron-left"></i> back
+  {{/link-to}}
+</div>
+
+<div class="sheet-content discussions-show-content">
+  <div class="discussions-show-header">
+    <h1 class="discussions-show-title">Super Important Discussion Happening</h1>
+
+    {{participant-selector currentParticipants=participants
+                           everyone=allUsers
+                           label="Participants:"
+                           onRemove="removeParticipant"
+                           onSelect="addParticipantById"}}
+  </div>
+
+  {{comment-board-form save="postReply"}}
+
+  <br>
+
+  <div class="message-comment">
+    <img src="" class="user-thumbnail">
+    <span class="comment-name">Richard Prentice</span>
+    <span class="comment-date">posted 20 minutes ago</span>
+    <div class="comment-body">Lorem ipsum</div>
+  </div>
+
+  <div class="message-comment">
+    <img src="" class="user-thumbnail">
+    <span class="comment-name">Richard Prentice</span>
+    <span class="comment-date">posted 20 minutes ago</span>
+    <div class="comment-body">Lorem ipsum</div>
+  </div>
+</div>

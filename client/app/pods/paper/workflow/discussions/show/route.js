@@ -1,7 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  model(params) {
-    return {};
-  }
+  setupController(controller, model) {
+    this._super(controller, model);
+    controller.set('participants', [this.get('currentUser')]);
+  },
 });

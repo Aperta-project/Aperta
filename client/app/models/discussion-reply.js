@@ -5,5 +5,6 @@ export default DS.Model.extend({
   topic: DS.belongsTo('discussion-topic'),
   replier: DS.belongsTo('user'),
 
-  body: DS.attr('string')
+  body: DS.attr('string'),
+  createdAt: DS.attr('date')
 });

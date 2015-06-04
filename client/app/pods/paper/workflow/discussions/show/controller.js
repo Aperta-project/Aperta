@@ -5,7 +5,11 @@ export default Ember.Controller.extend({
   allUsers: [],
 
   actions: {
-    postReply(text) {
+    postReply(body) {
+      let reply = this.get('model.replies').createRecord({
+        replier: this.get('currentUser'),
+        body: body
+      });
     },
 
     removeParticipant(participant) {

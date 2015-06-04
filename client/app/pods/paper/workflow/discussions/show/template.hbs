@@ -6,7 +6,7 @@
 
 <div class="sheet-content discussions-show-content">
   <div class="discussions-show-header">
-    <h1 class="discussions-show-title">Super Important Discussion Happening</h1>
+    <h1 class="discussions-show-title">{{model.title}}</h1>
 
     {{participant-selector currentParticipants=participants
                            everyone=allUsers
@@ -19,17 +19,12 @@
 
   <br>
 
-  <div class="message-comment">
-    <img src="" class="user-thumbnail">
-    <span class="comment-name">Richard Prentice</span>
-    <span class="comment-date">posted 20 minutes ago</span>
-    <div class="comment-body">Lorem ipsum</div>
-  </div>
-
-  <div class="message-comment">
-    <img src="" class="user-thumbnail">
-    <span class="comment-name">Richard Prentice</span>
-    <span class="comment-date">posted 20 minutes ago</span>
-    <div class="comment-body">Lorem ipsum</div>
-  </div>
+  {{#each model.replies as |reply|}}
+    <div class="message-comment animation-fade-in">
+      {{user-thumbnail user=reply.replier}}
+      <span class="comment-name">{{reply.replier.fullName}}</span>
+      <span class="comment-date">posted 20 minutes ago</span>
+      <div class="comment-body">{{reply.body}}</div>
+    </div>
+  {{/each}}
 </div>

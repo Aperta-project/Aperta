@@ -6,5 +6,7 @@ export default DS.Model.extend({
   participants: DS.hasMany('user'),
 
   paperId: DS.attr('number'),
-  title: DS.attr('string')
+  title: DS.attr('string'),
+
+  unreadCount: DS.attr('number')
 });

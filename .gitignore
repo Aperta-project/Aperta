@@ -24,3 +24,4 @@ public/assets
 Procfile.local
 bin/eventsource
 setup.log
+db/tahi.dump

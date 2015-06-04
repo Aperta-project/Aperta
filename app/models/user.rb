@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable,
          authentication_keys: [:login],
-         omniauth_providers: [:orcid, :cas]
+         omniauth_providers: Rails.configuration.omniauth_providers
 
   def possible_flows
     Flow.where("role_id IN (?) OR role_id IS NULL", role_ids)

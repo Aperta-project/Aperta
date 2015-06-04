@@ -37,7 +37,7 @@ module Tahi
         fail Bundler::GemNotFound, "Could not find local gem '#{gem_name}' in "\
           " current bundle. Please ensure that it is a gem with a :path source."
       end
-      source.path.to_s
+      Pathname.new(source.path.to_s).expand_path
     end
   end
 end

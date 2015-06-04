@@ -10,6 +10,7 @@
     {{partial "overlay-completed-checkbox"}}
     {{participant-selector currentParticipants=participants
                            onRemove="removeParticipant"
+                           label="Following:"
                            paperId=model.paper.id
                            onSelect="saveNewParticipant"}}
     <a class="button-secondary button--green overlay-close-button" {{action "closeAction"}}>Close</a>

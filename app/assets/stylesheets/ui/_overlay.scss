@@ -41,7 +41,7 @@
     font-size: 48px;
   }
 
-  .discussion {
+  .overlay-discussion-board {
     width: 700px;
     margin-top: 30px;
 
@@ -50,6 +50,11 @@
       border-top: 1px solid #dfdfdf;
       padding: 10px 0 20px 9px;
       font-size: 20px;
+    }
+
+    .participant-selector {
+      float: left;
+      width: 66%;
     }
   }
 }

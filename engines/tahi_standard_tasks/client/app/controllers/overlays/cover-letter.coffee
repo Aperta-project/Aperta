@@ -2,14 +2,14 @@
 
 CoverLetterController = TaskController.extend
   letterBody: Ember.computed ->
-    @model.get('body')[0]
+    @model.get('body')
 
   editingLetter: Ember.computed ->
     if @get('letterBody').length == 0 then true else false
 
   actions:
     saveCoverLetter: ->
-      @model.set 'body', [@get('letterBody')]
+      @model.set 'body', [@get('letterBody').first]
       @model.save().then =>
         @set 'editingLetter', false
 

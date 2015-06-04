@@ -23,4 +23,4 @@ doc/ux
 public/assets
 Procfile.local
 bin/eventsource
-
+setup.log

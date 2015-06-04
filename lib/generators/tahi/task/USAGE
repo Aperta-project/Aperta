@@ -1,25 +1,30 @@
 Description:
     Generate a Tahi task in an existing Tahi plugin.
 
-    Tahi plugins must begin with the string `tahi-` and will be part
+    New Tahi plugins should begin with the string `tahi-` and will be part
     of the `Tahi` module.
 
-    Tasks should named foo_bar and will have the string `task`
+    Task names should be snake-cased and will have the string `task`
     appended appropriately.
-    
+
+    The tahi-task Ember blueprint is automatically invoked, and will generate
+    all of the JavaScript files relevant to the task.
+
+    The data:create_task_types Rake task is automatically invoked, and will add
+    the new task to all journals.
+
 Example:
-    rails generate tahi:task FOO_BAR tahi-BAZ
+    rails generate tahi:task cover_letter tahi_standard_tasks
 
     This will create:
-        engines/tahi-BAZ/app/models/tahi/BAZ/FOO_BAR_task.rb
-        engines/tahi-BAZ/app/policies/tahi/BAZ/FOO_BAR_tasks_policy.rb
-        engines/tahi-BAZ/app/serializers/tahi/BAZ/FOO_BAR_task_serializer.rb
+        engines/tahi_standard_tasks/app/models/tahi/tahi_standard_tasks/cover_letter_task.rb
+        engines/tahi_standard_tasks/app/policies/tahi/tahi_standard_tasks/cover_letter_tasks_policy.rb
+        engines/tahi_standard_tasks/app/serializers/tahi/tahi_standard_tasks/cover_letter_task_serializer.rb
 
-        engines/tahi-BAZ/client/app/adapters/FOO-BAR-task.js
-        engines/tahi-BAZ/client/app/controllers/overlays/FOO-BAR.js
-        engines/tahi-BAZ/client/app/models/FOO-BAR-task.js
-        engines/tahi-BAZ/client/app/serializers/FOO-BAR-task.js
-        engines/tahi-BAZ/client/app/templates/overlays/FOO-BAR.hbs
-        engines/tahi-BAZ/client/app/views/overlays/FOO-BAR.js
-
-(Do not use UPPERCASE, this is simply for emphasis.)
+    And invoke client/blueprints/tahi-task to create:
+        engines/tahi_standard_tasks/client/app/adapters/cover-letter-task.js
+        engines/tahi_standard_tasks/client/app/controllers/overlays/cover-letter.js
+        engines/tahi_standard_tasks/client/app/models/cover-letter-task.js
+        engines/tahi_standard_tasks/client/app/serializers/cover-letter-task.js
+        engines/tahi_standard_tasks/client/app/templates/overlays/cover-letter.hbs
+        engines/tahi_standard_tasks/client/app/views/overlays/cover-letter.js

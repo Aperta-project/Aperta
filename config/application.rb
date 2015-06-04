@@ -8,6 +8,10 @@ require "sprockets/railtie"
 Bundler.require(:default, Rails.env)
 
 module Tahi
+  def self.service_log
+    @@service_log ||= Logger.new(STDOUT)
+  end
+
   class Application < Rails::Application
     config.eager_load = true
 

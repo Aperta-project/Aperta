@@ -64,7 +64,7 @@ def ensure_postgres_setup
     end
   end
 
-  if !system "psql -l"
+  if !run_pg("psql -l")
     puts
     puts "Couldn't access postgresql database."
     puts "Please make sure postgresql is running and try again."

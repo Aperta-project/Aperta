@@ -26,3 +26,5 @@ end
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :cas, CasConfig.load_configuration
 end
+
+Rails.configuration.omniauth_providers << :cas

@@ -27,7 +27,7 @@ module Tahi
                          # use path_sources to find only Gemfile entries installed via :path
                          source = Bundler.definition.send(:sources).path_sources.detect { |s| s.name == plugin }
                          fail Exception, "Could not find gem '#{plugin}' in the current bundle. Please ensure that it is a gem with a :path source." unless source
-                         source.path.to_s
+                         Pathname.new(source.path.to_s).expand_path
                        end
     end
   end

@@ -25,6 +25,7 @@ class Paper < ActiveRecord::Base
   has_many :authors, -> { order 'authors.position ASC' }
   has_many :activities
   has_many :decisions, -> { order 'revision_number DESC' }, dependent: :destroy
+  has_many :discussion_topics, inverse_of: :paper, dependent: :destroy
 
   validates :paper_type, presence: true
   validates :short_title, presence: true, uniqueness: true

@@ -3,6 +3,239 @@
 </h2>
 
 <div class="constrain">
+  <h2 id="cards">
+    Cards
+  </h2>
+
+  <div class="row">
+    <div class="col-md-4">
+      <h3>Not Completed</h3>
+      {{card-preview task=taskIncomplete}}
+    </div>
+    <div class="col-md-4">
+      <h3>Completed</h3>
+      {{card-preview task=taskComplete}}
+    </div>
+  </div>
+
+  <hr/>
+
+  <h2 id="workflow">
+    Workflow
+  </h2>
+
+  {{render 'paper/workflow' paper}}
+
+  <div element-name="paper-manager" source-page-name="paper_manager" source-page-selector=".columns">
+    <div class="columns">
+      <span id="ember1044" class="ember-view add-column first-add-column" data-toggle="tooltip" data-placement="auto right" title="" data-original-title="Add Phase">
+        <i class="glyphicon glyphicon-plus"></i>
+      </span>
+      <div id="ember1105" class="ember-view column">
+        <span id="ember1106" class="ember-view add-column" data-toggle="tooltip" data-placement="auto right" title="" data-original-title="Add Phase">
+          <i class="glyphicon glyphicon-plus"></i>
+        </span>
+
+        <div id="ember1115" class="ember-view column-header">
+          <div class="column-title-wrapper" style="height: 40px;">
+            <h2 contenteditable="true" id="ember1126" class="ember-view column-title" placeholder="">Submission Data</h2>
+
+            <div class="column-title-update-buttons">
+              <button class="column-header-update-cancel btn-link" data-ember-action="1127">cancel</button>
+              <button class="column-header-update-save button-primary button--green" data-ember-action="1128">Save</button>
+            </div>
+
+            <span class="glyphicon glyphicon-pencil edit-icon column-icon"></span>
+          </div>
+        </div>
+
+        <div class="column-content" style="top: 51px;">
+          <div id="ember1142" class="ember-view card" draggable="true">
+            <div class="card-content" data-ember-action="1143">
+
+              <div class="card-completed-icon">
+              </div>
+              Upload Figures
+              <span class="card-remove" data-toggle="tooltip" data-placement="right" title="" data-ember-action="1151" data-original-title="Delete Card">
+              </span>
+            </div>
+          </div>
+          <div id="ember1153" class="ember-view card" draggable="true">
+            <div class="card-content" data-ember-action="1154">
+
+              <div class="card-completed-icon">
+              </div>
+              Supporting Info
+              <span class="card-remove" data-toggle="tooltip" data-placement="right" title="" data-ember-action="1158" data-original-title="Delete Card">
+              </span>
+            </div>
+          </div>
+          <div id="ember1160" class="ember-view card" draggable="true">
+            <div class="card-content" data-ember-action="1161">
+
+              <div class="card-completed-icon">
+              </div>
+              Add Authors
+              <span class="card-remove" data-toggle="tooltip" data-placement="right" title="" data-ember-action="1165" data-original-title="Delete Card">
+              </span>
+            </div>
+          </div>
+          <div id="ember1167" class="ember-view card card--completed" draggable="true">
+            <div class="card-content" data-ember-action="1168">
+
+              <div class="card-completed-icon">
+              </div>
+              Upload Manuscript
+              <span class="card-remove" data-toggle="tooltip" data-placement="right" title="" data-ember-action="1172" data-original-title="Delete Card">
+              </span>
+            </div>
+          </div>
+          <a class="button-secondary button--green" data-ember-action="1117">Add New Card</a>
+        </div>
+      </div>
+      <div id="ember1174" class="ember-view column">
+        <span id="ember1175" class="ember-view add-column" data-toggle="tooltip" data-placement="auto right" title="" data-original-title="Add Phase">
+          <i class="glyphicon glyphicon-plus"></i>
+        </span>
+
+        <div id="ember1176" class="ember-view column-header">
+          <div class="column-title-wrapper" style="height: 40px;">
+            <h2 contenteditable="true" id="ember1179" class="ember-view column-title" placeholder="">Invite Editor</h2>
+
+            <div class="column-title-update-buttons">
+              <button class="column-header-update-cancel btn-link" data-ember-action="1180">cancel</button>
+              <button class="column-header-update-save button-primary button--green" data-ember-action="1181">Save</button>
+            </div>
+
+            <span class="glyphicon glyphicon-pencil edit-icon column-icon"></span>
+          </div>
+        </div>
+
+        <div class="column-content" style="top: 51px;">
+          <div id="ember1185" class="ember-view card" draggable="true">
+            <div class="card-content" data-ember-action="1186">
+
+              <div class="card-completed-icon">
+              </div>
+              Assign Editor
+              <span class="card-remove" data-toggle="tooltip" data-placement="right" title="" data-ember-action="1190" data-original-title="Delete Card">
+              </span>
+            </div>
+          </div>
+          <div id="ember1192" class="ember-view card" draggable="true">
+            <div class="card-content" data-ember-action="1193">
+
+              <div class="card-completed-icon">
+              </div>
+              Tech Check
+              <span class="card-remove" data-toggle="tooltip" data-placement="right" title="" data-ember-action="1197" data-original-title="Delete Card">
+              </span>
+            </div>
+          </div>
+          <div id="ember1199" class="ember-view card" draggable="true">
+            <div class="card-content" data-ember-action="1200">
+
+              <div class="card-completed-icon">
+              </div>
+              Assign Admin
+              <span class="card-remove" data-toggle="tooltip" data-placement="right" title="" data-ember-action="1204" data-original-title="Delete Card">
+              </span>
+            </div>
+          </div>
+          <a class="button-secondary button--green" data-ember-action="1178">Add New Card</a>
+        </div>
+      </div>
+      <div id="ember1206" class="ember-view column">
+        <span id="ember1207" class="ember-view add-column" data-toggle="tooltip" data-placement="auto right" title="" data-original-title="Add Phase"><i class="glyphicon glyphicon-plus"></i>
+        </span>
+
+        <div id="ember1208" class="ember-view column-header">
+          <div class="column-title-wrapper" style="height: 40px;">
+            <h2 contenteditable="true" id="ember1211" class="ember-view column-title" placeholder="">Invite Reviewers</h2>
+
+            <div class="column-title-update-buttons">
+              <button class="column-header-update-cancel btn-link" data-ember-action="1212">cancel</button>
+              <button class="column-header-update-save button-primary button--green" data-ember-action="1213">Save</button>
+            </div>
+
+            <span class="glyphicon glyphicon-pencil edit-icon column-icon"></span>
+          </div>
+        </div>
+
+        <div class="column-content" style="top: 51px;">
+          <div id="ember1217" class="ember-view card" draggable="true">
+            <div class="card-content" data-ember-action="1218">
+
+              <div class="card-completed-icon">
+              </div>
+              Invite Reviewers
+              <span class="card-remove" data-toggle="tooltip" data-placement="right" title="" data-ember-action="1222" data-original-title="Delete Card">
+              </span>
+            </div>
+          </div>
+          <a class="button-secondary button--green" data-ember-action="1210">Add New Card</a>
+        </div>
+      </div>
+      <div id="ember1224" class="ember-view column">
+        <span id="ember1225" class="ember-view add-column" data-toggle="tooltip" data-placement="auto right" title="" data-original-title="Add Phase">
+          <i class="glyphicon glyphicon-plus"></i>
+        </span>
+
+        <div id="ember1226" class="ember-view column-header">
+          <div class="column-title-wrapper" style="height: 40px;">
+            <h2 contenteditable="true" id="ember1229" class="ember-view column-title" placeholder="">Get Reviews</h2>
+
+            <div class="column-title-update-buttons">
+              <button class="column-header-update-cancel btn-link" data-ember-action="1230">cancel</button>
+              <button class="column-header-update-save button-primary button--green" data-ember-action="1231">Save</button>
+            </div>
+
+            <span class="glyphicon glyphicon-pencil edit-icon column-icon"></span>
+            <span class="glyphicon glyphicon-remove remove-icon column-icon" data-ember-action="1233"></span>
+          </div>
+        </div>
+
+        <div class="column-content" style="top: 51px;">
+          <a class="button-secondary button--green" data-ember-action="1228">Add New Card</a>
+        </div>
+      </div>
+      <div id="ember1236" class="ember-view column">
+        <span id="ember1237" class="ember-view add-column" data-toggle="tooltip" data-placement="auto right" title="" data-original-title="Add Phase"><
+          i class="glyphicon glyphicon-plus"></i>
+        </span>
+
+        <div id="ember1238" class="ember-view column-header">
+          <div class="column-title-wrapper" style="height: 40px;">
+            <h2 contenteditable="true" id="ember1241" class="ember-view column-title" placeholder="">Make Decision</h2>
+
+            <div class="column-title-update-buttons">
+              <button class="column-header-update-cancel btn-link" data-ember-action="1242">cancel</button>
+              <button class="column-header-update-save button-primary button--green" data-ember-action="1243">Save</button>
+            </div>
+
+            <span class="glyphicon glyphicon-pencil edit-icon column-icon"></span>
+          </div>
+        </div>
+
+        <div class="column-content" style="top: 51px;">
+          <div id="ember1247" class="ember-view card" draggable="true">
+            <div class="card-content" data-ember-action="1248">
+
+              <div class="card-completed-icon">
+              </div>
+              Register Decision
+              <span class="card-remove" data-toggle="tooltip" data-placement="right" title="" data-ember-action="1252" data-original-title="Delete Card">
+              </span>
+            </div>
+          </div>
+          <a class="button-secondary button--green" data-ember-action="1240">Add New Card</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr/>
+
   <div id="ad-hoc" element-name="ad-hoc-card" source-page-name="card_ad_hoc" source-page-selector=".overlay-container">
     <div class="overlay-container">
 

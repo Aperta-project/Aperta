@@ -286,15 +286,15 @@ task default: :test
       end
 
       def engine?
-        full? || mountable?
+        true
       end
 
       def full?
-        options[:full]
+        true
       end
 
       def mountable?
-        options[:mountable]
+        true
       end
 
       def skip_git?

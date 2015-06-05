@@ -73,6 +73,7 @@ Tahi::Application.routes.draw do
     resources :journal_task_types, only: :update
     resources :journals, only: [:index, :show]
     resources :manuscript_manager_templates, only: [:create, :show, :update, :destroy]
+    resources :paper_roles, only: [:show]
     resources :papers, only: [:index, :create, :show, :update] do
       resource :editor, only: :destroy
       resource :manuscript_manager, only: :show

@@ -9,7 +9,7 @@ CoverLetterController = TaskController.extend
 
   actions:
     saveCoverLetter: ->
-      @model.set 'body', [@get('letterBody').first]
+      @model.set 'body', [@get('letterBody')]
       @model.save().then =>
         @set 'editingLetter', false
 

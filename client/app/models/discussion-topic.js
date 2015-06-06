@@ -2,11 +2,9 @@ import Ember from 'ember';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  replies: DS.hasMany('discussion-reply'),
+  discussionReplies: DS.hasMany('discussion-reply', {async: true}),
   participants: DS.hasMany('user'),
 
-  paperId: DS.attr('number'),
-  title: DS.attr('string'),
-
-  unreadCount: DS.attr('number')
+  paperId: DS.attr('string'),
+  title: DS.attr('string')
 });

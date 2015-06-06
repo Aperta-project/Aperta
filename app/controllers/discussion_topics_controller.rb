@@ -9,13 +9,15 @@ class DiscussionTopicsController < ApplicationController
   end
 
   def show
+    # @paper temp for Ember
+    @paper = DiscussionTopic.find(params[:id]).paper
     topic = accessible_topics.find(params[:id])
     respond_with topic
   end
 
   def create
     topic = DiscussionTopic.create(creation_params)
-    topic.discussion_replies.create(reply_params)
+    topic.discussion_replies.create(reply_params) if reply_params
     topic.discussion_participants.create(user: current_user)
     respond_with topic
   end
@@ -35,7 +37,8 @@ class DiscussionTopicsController < ApplicationController
   private
 
   def creation_params
-    params.require(:discussion_topic).permit(:title).merge(paper_id: paper.id)
+    # paper_id not outside of discussion_topic hash
+    params.require(:discussion_topic).permit([:title, :paper_id])
   end
 
   def update_params
@@ -43,7 +46,11 @@ class DiscussionTopicsController < ApplicationController
   end
 
   def reply_params
-    params.require(:discussion_reply).permit(:body).merge(replier: current_user)
+    # temp for Ember
+    return nil unless params[:discussion_reply]
+
+    # permit in place of require ok?
+    params.permit(:discussion_reply).permit(:body).merge(replier: current_user)
   end
 
   def accessible_topics

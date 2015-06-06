@@ -6,10 +6,11 @@ export default Ember.Controller.extend({
 
   actions: {
     postReply(body) {
-      let reply = this.get('model.replies').createRecord({
+      this.store.createRecord('discussion-reply', {
+        discussionTopic: this.get('model'),
         replier: this.get('currentUser'),
         body: body
-      });
+      }).save();
     },
 
     removeParticipant(participant) {

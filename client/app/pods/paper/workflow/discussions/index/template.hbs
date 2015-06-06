@@ -5,8 +5,9 @@
   </div>
 
   <br><br>
+
   {{#each model as |topic|}}
-    {{#link-to "paper.workflow.discussions.show" topic class="discussions-index-topic"}}
+    {{#link-to "paper.workflow.discussions.show" topic.id class="discussions-index-topic"}}
       {{#if topic.unreadCount}}
         <span class="badge">{{topic.unreadCount}}</span>
       {{/if}}

@@ -1,6 +1,6 @@
 <h1>Cover Letter</h1>
 {{#if editingLetter}}
-  <div class="editing-letter">
+  <div>
     <h4>Please type or paste your cover letter into this text field:</h4>
 
     {{textarea onEvent="false"
@@ -10,9 +10,9 @@
     <button class="button-primary button--green" {{action "saveCoverLetter"}}>Save</button>
   </div>
 {{else}}
-<div class="preview-letter">
-  <h3>Here is your cover letter:</h3>
-    <p>{{letterBody}}</p>
+<div>
+  <h4>Here is your cover letter:</h4>
+    <div class="cover-letter">{{formatCoverLetter}}</div>
     <button class="button-primary button--green" {{action "editCoverLetter"}}>Make Changes</button>
 </div>
 {{/if}}

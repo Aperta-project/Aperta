@@ -72,7 +72,11 @@ Tahi::Application.routes.draw do
     end
     resources :journal_task_types, only: :update
     resources :journals, only: [:index, :show] do
-      resources :roles, only: :index
+      resources :roles, only: :index, shallow: true do
+        namespace "roles", path: '' do
+          resources :users, only: :index
+        end
+      end
     end
     resources :manuscript_manager_templates, only: [:create, :show, :update, :destroy]
     resources :paper_roles, only: [:show]

@@ -14,15 +14,15 @@ describe RolesController do
     context "when the journal_id is provided" do
       it "lists all roles" do
         get :index, journal_id: journal.id
-        expected_role = {"id" => 5,
-                         "kind" => "custom",
-                         "name" => "1st Role",
+        expected_role = {"id" => role.id,
+                         "kind" => role.kind,
+                         "name" => role.name,
                          "required" => false,
                          "can_administer_journal" => false,
                          "can_view_assigned_manuscript_managers" => false,
                          "can_view_all_manuscript_managers" => false,
                          "can_view_flow_manager" => false,
-                         "journal_id" => 1,
+                         "journal_id" => role.journal_id,
                          "flow_ids" => []}
         expect(JSON.parse(response.body)["roles"]).to include(expected_role)
       end

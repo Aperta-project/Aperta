@@ -48,6 +48,12 @@ GIT
       activesupport (>= 4.1.0)
 
 PATH
+  remote: ../tahi-assign_team
+  specs:
+    tahi-assign_team (0.0.1)
+      rails (~> 4.2.1)
+
+PATH
   remote: engines/plos_authors
   specs:
     plos_authors (0.0.3)
@@ -624,6 +630,7 @@ DEPENDENCIES
   sidetiq
   simplecov
   sinatra
+  tahi-assign_team!
   tahi_epub!
   tahi_standard_tasks!
   tahi_upload_manuscript!

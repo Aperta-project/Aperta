@@ -1,6 +1,6 @@
 module TahiStandardTasks
   class CoverLetterTask < Task
-    include MetadataTask
+    include SubmissionTask
 
     register_task default_title: 'Cover Letter', default_role: 'author'
 
@@ -9,4 +9,3 @@ module TahiStandardTasks
     end
   end
 end
-

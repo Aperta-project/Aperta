@@ -71,7 +71,9 @@ Tahi::Application.routes.draw do
       put :reject, on: :member
     end
     resources :journal_task_types, only: :update
-    resources :journals, only: [:index, :show]
+    resources :journals, only: [:index, :show] do
+      resources :roles, only: :index
+    end
     resources :manuscript_manager_templates, only: [:create, :show, :update, :destroy]
     resources :paper_roles, only: [:show]
     resources :papers, only: [:index, :create, :show, :update] do

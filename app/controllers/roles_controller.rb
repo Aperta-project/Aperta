@@ -1,7 +1,14 @@
 class RolesController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy
+  before_action :enforce_policy, except: :index
   respond_to :json
+
+  def index
+    journal = Journal.find(params[:journal_id])
+    authorize_action! journal: journal
+
+    render json: journal.roles#, serializer: false, root: false
+  end
 
   def show
     respond_with Role.find(params[:id])

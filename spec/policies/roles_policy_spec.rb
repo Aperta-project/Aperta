@@ -10,6 +10,12 @@ describe RolesPolicy do
     include_examples "person who can administer journal roles"
   end
 
+  context "admin" do
+    let(:user) { FactoryGirl.create(:user, :site_admin) }
+
+    include_examples "person who can administer journal roles"
+  end
+
   context "non admin who does not administer the journal" do
     let(:user) { FactoryGirl.create(:user) }
 

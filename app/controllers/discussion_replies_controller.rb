@@ -31,16 +31,6 @@ class DiscussionRepliesController < ApplicationController
     params.require(:discussion_reply).permit(:body)
   end
 
-  # temp for Ember
-  def discussion_topic
-    @topic ||= DiscussionTopic.find(creation_params[:discussion_topic_id])
-  end
-
-  # temp for Ember
-  def paper
-    @paper ||= discussion_topic.paper
-  end
-
   def accessible_topics
     paper.discussion_topics.including(current_user)
   end

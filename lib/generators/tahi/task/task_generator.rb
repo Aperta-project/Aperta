@@ -28,7 +28,7 @@ module Tahi
       template 'policy.rb',     File.join(engine_path, 'app', 'policies',    plugin, "#{name}_tasks_policy.rb")
 
       inside 'client' do
-        run "ember generate tahi-task #{name} ../#{engine_path}"
+        run "ember generate tahi-task #{name} #{engine_path}"
       end
 
       rake 'data:create_task_types'

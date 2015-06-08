@@ -1,11 +1,11 @@
 <h1>Cover Letter</h1>
 {{#if editingLetter}}
-  <div>
+  <div class="edit-cover-letter">
     <h4>Please type or paste your cover letter into this text field:</h4>
 
     {{textarea onEvent="false"
                disabled=false
-               class="form-control taller-textarea"
+               class="taller-textarea"
                value=controller.letterBody}}
     <button class="button-primary button--green" {{action "saveCoverLetter"}}>Save</button>
   </div>

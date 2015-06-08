@@ -8,6 +8,10 @@ require "sprockets/railtie"
 Bundler.require(:default, Rails.env)
 
 module Tahi
+  def self.service_log
+    @@service_log ||= Logger.new(STDOUT)
+  end
+
   class Application < Rails::Application
     config.eager_load = true
     config.autoload_paths += %W(#{config.root}/lib)
@@ -29,8 +33,10 @@ module Tahi
       config.basic_auth_password = ENV.fetch('BASIC_HTTP_PASSWORD')
     end
 
+    config.omniauth_providers = []
+
     config.orcid_key = ENV.fetch('ORCID_KEY', false)
-    config.orcid_secret = ENV.fetch('ORCID_KEY', false)
-    config.orcid_enabled = config.orcid_key && config.orcid_secret
+    config.orcid_secret = ENV.fetch('ORCID_SECRET', false)
+    config.orcid_enabled = !!(config.orcid_key && config.orcid_secret)
   end
 end

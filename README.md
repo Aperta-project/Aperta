@@ -1,11 +1,25 @@
 # TAHI
 
-[![Build Status](https://semaphoreapp.com/api/v1/projects/c2f9758d-c74d-498b-9db5-9a0da89df9e6/325656/shields_badge.svg)](https://semaphoreapp.com/tahi-project/tahi)
-[![Deploy History](https://img.shields.io/badge/deploy-history-blue.svg)](https://semaphoreapp.com/tahi-project/tahi/servers/tahi-staging/)
+[![Circle CI](https://circleci.com/gh/Tahi-project/tahi/tree/master.svg?style=svg&circle-token=8f8d8e64dc324b8dd1af4e141632a46cffe78702)](https://circleci.com/gh/Tahi-project/tahi/tree/master)
 
-## Development Notes
 
-### Initial Setup
+
+# Initial Setup
+
+## Overview
+
+1. Run the partial setup script (`bin/setup`)
+1. Make sure the following servers are already running:
+    - PostgreSQL
+    - Redis (run manually with `redis-server`)
+1. Clone the event server repo (`tahi-slanger`) in a sibling directory
+1. Make sure the following ports are clear:
+    - 4567 (Slanger API)
+    - 8080 (Slanger websocket)
+    - 5000 (Rails server)
+1. Run with `foreman start`
+
+## Partial Automated Setup
 
 - Clone the repo, then run
 
@@ -13,67 +27,45 @@
 ./bin/setup
 ```
 
-Alternatively:
+## Event server
 
-#### Application Dependencies
+- Clone the [tahi-slanger](https://github.com/Tahi-project/tahi-slanger) github
+  repository and follow the installation instructions
 
-We're assuming you have ruby and rubygems configured.
-
-- `brew install node`
-- `brew install redis`
-- `brew install imagemagick --with-libtiff`
-- `bundle install`
-
-#### Ember dependencies
-- `brew install watchman` for more performant builds. It will fall back to node if you don't do this.
-- `npm install`
-- `rake ember:install`
-
-#### Database setup
-
-We're assuming you have postgresql installed. We recommend installing it via brew via or http://postgresapp.com/
-
-- `createuser -s -r tahi`
-- `cp .env-sample .env.development` and then uncomment the environment variables in `.env.development`
-- `cp config/database.yml.sample config/database.yml`
-
-#### Event server
-
-- Clone the [tahi-slanger](https://github.com/Tahi-project/tahi-slanger) github repository and follow the installation instructions
-
-- Set the following variables in `.env`:
-
-```shell
-  EVENT_STREAM_KEY=the-slanger-app-key #765ec374ae0a69f4ce44
-  EVENT_STREAM_SECRET=the-pusher-secret #509e5d114295
-```
+- Make sure `EVENT_STREAM_KEY` and `EVENT_STREAM_SECRET` are set in your environment.
 
 When you run `foreman start`, slanger will start up as the event stream server.
 
-By default, slanger will listed on port `4567` for API requests (requests coming from tahi rails server) and port `8080` for websocket requests (from tahi browser client).
+By default, slanger will listen on port `4567` for API requests (requests
+coming from tahi rails server) and port `8080` for websocket requests (from
+tahi browser client).
 
+# Running the server
 
-### Running the server
-- We're using Foreman to run everything in dev.  Run `foreman start` to
-  start the server with the correct Procfile.
+We're using Foreman to run everything in dev.  Run `foreman start` to start the
+server with the correct Procfile.
 
-### Inserting test data
+## Inserting test data
+
 Run `rake db:setup`. This will delete any data you already have in your
 database, and insert test users based on what you see in `db/seeds.rb`.
 
-### Sending Emails
-In development we sent emails through a simple SMTP server which catches any message sent to it to display in a web interface
+## Sending Emails
 
-If you have running mailcatcher already you are ready to go, if not, please follow this instructions:
+In development we sent emails through a simple SMTP server which catches any
+message sent to it to display in a web interface
+
+If you are running mailcatcher already you are ready to go, if not, please
+follow these instructions:
  - install the gem `gem install mailcatcher`.
  - run in the console `mailcatcher` to start the daemon.
  - Go to http://localhost:1080/
 
-for more information check http://mailcatcher.me/
+For more information check http://mailcatcher.me/
 
-### Running specs
+# Tests
 
-We use:
+## Running specs
 
 - RSpec for unit and integration specs
 - Capybara and Selenium
@@ -81,18 +73,19 @@ We use:
 In the project directory, running `rspec` will run all unit and integration
 specs. Firefox will pop up to run integration tests.
 
-#### Running qunit tests from the command line
+## Running qunit tests from the command line
 
 You can run the javascript specs via the command line with `rake ember:test`.
 
-#### Running qunit tests from the browser
+## Running qunit tests from the browser
 
-You can also run the javascript specs from the browser. To do this, visit `http://localhost:5000/ember-tests/#{app-name}`.
-So, in our case, visit `http://localhost:5000/ember-tests/tahi`.
+You can also run the javascript specs from the browser. To do this, visit http://localhost:5000/ember-tests/tahi.
 
 For help writing ember tests please see the [ember-cli testing section](http://www.ember-cli.com/#testing)
 
-#### Page Objects
+# Dev Notes
+
+## Page Objects
 
 When creating fragments, you can pass the context, if you wish to have access to
 the page the fragment belongs to. You've to pass the context as an option to the
@@ -102,18 +95,20 @@ fragment on initializing:
 EditModalFragment.new(find('tr'), context: page)
 ```
 
-### Configuring S3 direct uploads
+## Configuring S3 direct uploads
 
 Get access to S3 and make a new IAM user, for security reasons. Then take these
 keys and use them. (If someone has already set this up, reuse their keys).
 
 Ensure that the following environment variables are set:
 
-- `S3_URL=http://your-s3-bucket.amazonaws.com`
-- `S3_BUCKET=your-s3-bucket`
-- `AWS_ACCESS_KEY=your-aws-access-key-id`
-- `AWS_SECRET_KEY=your-aws-secret-key`
-- `AWS_REGION=us-west-1` or us-east-1, etc.
+```
+S3_URL=http://your-s3-bucket.amazonaws.com
+S3_BUCKET=your-s3-bucket
+AWS_ACCESS_KEY=your-aws-access-key-id
+AWS_SECRET_KEY=your-aws-secret-key
+AWS_REGION=us-west-1 or us-east-2, etc.
+```
 
 Then, you need to configure your s3 bucket for CORS:
 
@@ -121,44 +116,54 @@ Then, you need to configure your s3 bucket for CORS:
   - Darwin: `brew install awscli`
   - Linux: `sudo pip install awscli`
 2. Run the following command from the app's root directory:
-```
-aws s3api put-bucket-cors --bucket <your s3 bucket> --cors-configuration file://config/services/s3.cors.development.json
-```
+  ```
+  aws s3api put-bucket-cors --bucket <your s3 bucket> --cors-configuration file://config/services/s3.cors.development.json
+  ```
 
-### Load testing
+## Load testing
 
 To wipe and restore performance data in a pristine state on tahi-performance,
 run the following:
+
 ```
 heroku pgbackups:restore HEROKU_POSTGRESQL_CYAN_URL b001 --app tahi-performance
 ```
 
-A fully loaded database with thousands of records can be found on S3 here:
-```tahi-performance/tahi_performance_backup.sql.zip ```
+A fully-loaded database with thousands of records can be found on S3 here:
+
+```
+tahi-performance/tahi_performance_backup.sql.zip
+```
 
 This can be downloaded and loaded locally, if needed.
 
 The following rake task will create a new set of performance test data from scratch using FactoryGirl factories:
-```RAILS_ENV=performance bundle exec rake data:load:all```
+
+```
+RAILS_ENV=performance bundle exec rake data:load:all
+```
 
 This will take several days to reconstruct, so you will probably want to use one of the above steps instead.
 
-### Subset Load testing
+## Subset Load testing
 
 Subset data contains about 100 users and some associated records.
 
 To wipe and restore performance data in a pristine state on tahi-performance,
 run the following:
-```heroku pgbackups:restore HEROKU_POSTGRESQL_CYAN_URL b002 --app tahi-performance```
 
-### Postgres Backups
+```
+heroku pgbackups:restore HEROKU_POSTGRESQL_CYAN_URL b002 --app tahi-performance
+```
+
+## Postgres Backups
 
 Backups should be run automatically every day. If you would like to run one
-manually run ```heroku pgbackups:capture```
+manually run `heroku pg:backups capture`
 
-You can get the URL to download a backup by running ```heroku pgbackups:url```
+You can get the URL to download a backup by running `heroku pg:backups public-url`
 
-To list current backups ```heroku pgbackups```
+To list current backups `heroku pg:backups`
 
 Your output should look something like this:
 
@@ -178,14 +183,18 @@ b021  2014/10/16 14:04.13 +0000  Finished @ 2014/10/16 14:04.18 +0000  593.2KB  
 To restore to a specific backup, use the ID and Database in your list output.
 E.G.
 
-```heroku pgbackups:restore HEROKUPOSTGRESQL_ROSE_URL b020```
+```
+heroku pgbackups:restore HEROKUPOSTGRESQL_ROSE_URL b020
+```
 
-### Documentation
+# Documentation
 
 Open the generated documentation from `doc/rdoc/index.html` in your browser.
 
 To generate documentation, run the following command from the application root:
 
-`sdoc -g --markup=tomdoc --title="Tahi Documentation" --main="README.md" -o doc/rdoc -T sdoc app/models/**/*.rb`
+```
+sdoc -g --markup=tomdoc --title="Tahi Documentation" --main="README.md" -o doc/rdoc -T sdoc app/models/**/*.rb
+```
 
 We are using [Tomdoc](http://tomdoc.org/) documentation specification format. We are currently aiming to have all models documented.

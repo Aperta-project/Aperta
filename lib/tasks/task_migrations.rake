@@ -3,6 +3,7 @@ namespace :data do
   task :create_task_types => :environment do
     Rails.application.config.eager_load_namespaces.each(&:eager_load!)
     Journal.all.each do |journal|
+      Tahi.service_log.info "Creating/updating default task types for #{journal.name}..."
       JournalServices::CreateDefaultTaskTypes.call(journal)
     end
   end

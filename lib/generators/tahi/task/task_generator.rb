@@ -20,13 +20,20 @@ module Tahi
 
       @task_name     = camel_space(class_name) + " Task"
       @plugin_short  = plugin.gsub(/^tahi-/, '')
-      @plugin_module = @plugin_short.camelize
 
       engine_path = find_engine_path(plugin)
 
-      template 'model.rb',      File.join(engine_path, 'app', 'models',     'tahi', @plugin_short, "#{name}_task.rb")
-      template 'serializer.rb', File.join(engine_path, 'app', 'serializers','tahi', @plugin_short, "#{name}_task_serializer.rb")
-      template 'policy.rb',     File.join(engine_path, 'app', 'policies',   'tahi', @plugin_short, "#{name}_tasks_policy.rb")
+      if @legacy
+        @plugin_module = plugin.camelize
+        template 'model.rb',      File.join(engine_path, 'app', 'models',      plugin, "#{name}_task.rb")
+        template 'serializer.rb', File.join(engine_path, 'app', 'serializers', plugin, "#{name}_task_serializer.rb")
+        template 'policy.rb',     File.join(engine_path, 'app', 'policies',    plugin, "#{name}_tasks_policy.rb")
+      else
+        @plugin_module = "Tahi::" + @plugin_short.camelize
+        template 'model.rb',      File.join(engine_path, 'app', 'models',     'tahi', @plugin_short, "#{name}_task.rb")
+        template 'serializer.rb', File.join(engine_path, 'app', 'serializers','tahi', @plugin_short, "#{name}_task_serializer.rb")
+        template 'policy.rb',     File.join(engine_path, 'app', 'policies',   'tahi', @plugin_short, "#{name}_tasks_policy.rb")
+      end
 
       inside 'client' do
         run "ember generate tahi-task #{name} #{engine_path}"
@@ -39,7 +46,8 @@ module Tahi
 
     def name_check(plugin)
       if LEGACY_PLUGINS.include? plugin
-        puts 'Skipping prefix check for legacy plugin'
+        @legacy = true
+        puts 'DEPRECATION WARNING: This legacy plugin name may not be supported in the future. Skipping prefix check..'
       elsif !plugin.match /^tahi-/
         die "Plugins must be prefixed with 'tahi-'."
       end

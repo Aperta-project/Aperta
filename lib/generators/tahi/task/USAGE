@@ -17,9 +17,9 @@ Example:
     rails generate tahi:task cover_letter tahi_standard_tasks
 
     This will create:
-        engines/tahi_standard_tasks/app/models/tahi/tahi_standard_tasks/cover_letter_task.rb
-        engines/tahi_standard_tasks/app/policies/tahi/tahi_standard_tasks/cover_letter_tasks_policy.rb
-        engines/tahi_standard_tasks/app/serializers/tahi/tahi_standard_tasks/cover_letter_task_serializer.rb
+        engines/tahi_standard_tasks/app/models/tahi/standard_tasks/cover_letter_task.rb
+        engines/tahi_standard_tasks/app/policies/tahi/standard_tasks/cover_letter_tasks_policy.rb
+        engines/tahi_standard_tasks/app/serializers/tahi/standard_tasks/cover_letter_task_serializer.rb
 
     And invoke client/blueprints/tahi-task to create:
         engines/tahi_standard_tasks/client/app/adapters/cover-letter-task.js

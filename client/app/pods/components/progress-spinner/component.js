@@ -15,13 +15,16 @@ import Ember from 'ember';
  *   ```
  **/
 
+let computed = Ember.computed;
+
 export default Ember.Component.extend({
   classNames: ['progress-spinner'],
   classNameBindings: [
-    'visible',
-    'color',
-    'size',
-    'center'
+    '_visibleClass',
+    '_colorClass',
+    '_sizeClass',
+    '_alignClass',
+    'center:progress-spinner--absolute-center', // change to `absoluteCenter`
   ],
 
   /**
@@ -33,6 +36,13 @@ export default Ember.Component.extend({
    **/
   visible: false,
 
+  _visibleClass: computed('visible', 'align', function() {
+    if(!this.get('visible')) { return; }
+
+    let modifier = !this.get('align') ? 'inline' : 'block';
+    return 'progress-spinner--' + modifier;
+  }),
+
   /**
    *  Color. `green` or `blue` or `white`
    *
@@ -41,6 +51,7 @@ export default Ember.Component.extend({
    *  @default green
    **/
   color: 'green',
+  _colorClass: computed.concat('progress-spinner--', 'color'),
 
   /**
    *  Size. `small` or `large`
@@ -50,13 +61,25 @@ export default Ember.Component.extend({
    *  @default small
    **/
   size: 'small',
+  _sizeClass: computed.concat('progress-spinner--', 'size'),
 
   /**
-   *  Center. true or false. Uses absolute positioning
+   *  If true, absolute positioning is used to center vertically and horizontally
    *
    *  @property center
    *  @type boolean
    *  @default false
    **/
-  center: false
+  center: false,
+
+  /**
+   *  If set, spinner becomes a block level element.
+   *  Options are `middle`
+   *
+   *  @property align
+   *  @type String
+   *  @default null
+   **/
+  align: null,
+  _alignClass: computed.concat('progress-spinner--', 'align')
 });

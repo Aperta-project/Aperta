@@ -1,7 +1,6 @@
 `import TaskController from 'tahi/pods/paper/task/controller'`
 
 CoverLetterController = TaskController.extend
-
   formatCoverLetter: Ember.computed 'letterBody', ->
     result = ""
     @get('letterBody').split("\n").forEach (item) ->

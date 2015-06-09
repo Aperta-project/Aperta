@@ -11,8 +11,8 @@
     {{participant-selector currentParticipants=participants
                            everyone=allUsers
                            label="Participants:"
-                           onRemove="removeParticipant"
-                           onSelect="addParticipantById"}}
+                           onRemove="removeParticipantByUserId"
+                           onSelect="addParticipantByUserId"}}
   </div>
 
   {{comment-board-form save="postReply"}}

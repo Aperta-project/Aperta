@@ -1,7 +1,12 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  participants: [],
+  participants: Ember.computed('model.discussionParticipants.@each', function() {
+    return this.get('model.discussionParticipants').map(function(part) {
+      return part.get('user');
+    });
+  }),
+
   allUsers: [],
 
   actions: {
@@ -13,10 +18,24 @@ export default Ember.Controller.extend({
       }).save();
     },
 
-    removeParticipant(participant) {
+    removeParticipantByUserId(userId) {
+      console.log("if this worked, it would remove the participant... :|");
+      // this.store.find('discussion-participant', {
+      //   discussionTopicId: this.get('model.id'),
+      //   userId: userId,
+      // }).then( (participant) => {
+      //   participant.destroyRecord();
+      // });
     },
 
-    addParticipantById(id) {
+    addParticipantByUserId(userId) {
+      console.log("adding user#" + userId + " to the discussion!");
+      this.store.find('user', userId).then( (user) => {
+        this.store.createRecord('discussion-participant', {
+          discussionTopic: this.get('model'),
+          user: user,
+        }).save();
+      });
     }
   }
 });

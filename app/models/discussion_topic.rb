@@ -3,7 +3,7 @@ class DiscussionTopic < ActiveRecord::Base
   belongs_to :paper, inverse_of: :discussion_topics
 
   has_many :discussion_participants, inverse_of: :discussion_topic, dependent: :destroy
-  has_many :users, through: :discussion_participants
+  has_many :participants, through: :discussion_participants, source: :user, class_name: 'User'
   has_many :discussion_replies, inverse_of: :discussion_topic, dependent: :destroy
 
   def self.including(user)

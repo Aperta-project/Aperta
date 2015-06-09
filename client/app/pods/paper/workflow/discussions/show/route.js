@@ -8,6 +8,5 @@ export default Ember.Route.extend({
   setupController(controller, model) {
     this._super(controller, model);
     model.reload();
-    controller.set('participants', [this.get('currentUser')]);
   },
 });

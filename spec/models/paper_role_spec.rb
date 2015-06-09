@@ -14,4 +14,34 @@ describe PaperRole do
       end
     end
   end
+
+  describe "validations" do
+    let(:paper) { FactoryGirl.create :paper, :with_tasks }
+
+    context "when the role is in ALL_ROLES" do
+      let(:user) { FactoryGirl.build(:user) }
+
+      it "validates if the role is included in the ALL_ROLES list" do
+        PaperRole::ALL_ROLES.each do |role|
+          paper_role = PaperRole.new paper: paper,
+            user: user,
+            role: 'reviewer'
+          expect(paper_role).to be_valid
+        end
+      end
+    end
+
+    context "when the role is not in ALL_ROLES" do
+      let(:user) { FactoryGirl.build(:user) }
+
+      it "validates if the role is included in the ALL_ROLES list" do
+        PaperRole::ALL_ROLES.each do |role|
+          paper_role = PaperRole.new paper: paper,
+            user: user,
+            role: 'not_any_role'
+          expect(paper_role).to_not be_valid
+        end
+      end
+    end
+  end
 end

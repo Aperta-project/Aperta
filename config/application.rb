@@ -12,6 +12,10 @@ module Tahi
     @@service_log ||= Logger.new(STDOUT)
   end
 
+  def self.service_log= log
+    @@service_log = log
+  end
+
   class Application < Rails::Application
     config.eager_load = true
     config.autoload_paths += %W(#{config.root}/lib)

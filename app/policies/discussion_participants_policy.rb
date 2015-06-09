@@ -4,7 +4,7 @@ class DiscussionParticipantsPolicy < ApplicationPolicy
   def create?
     topic_policy.update?
   end
-  alias :destroy? :update?
+  alias :destroy? :create?
 
   private
 

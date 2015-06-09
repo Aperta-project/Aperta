@@ -15,7 +15,7 @@ class PaperRole < ActiveRecord::Base
   validates :paper, presence: true
 
   validates_uniqueness_of :role, scope: [:user_id, :paper_id]
-  validates_inclusion_of :role, within: ALL_ROLES
+  validate :role_exists
 
   def self.admins
     where(role: ADMIN)
@@ -55,5 +55,15 @@ class PaperRole < ActiveRecord::Base
 
   def description
     role.capitalize
+  end
+
+  private
+
+  def role_exists
+    errors.add(:base, "Invalid role provided") unless role.in?(valid_roles)
+  end
+
+  def valid_roles
+    ALL_ROLES | paper.journal.roles.map(&:name)
   end
 end

@@ -17,10 +17,9 @@ describe PaperRole do
 
   describe "validations" do
     let(:paper) { FactoryGirl.create :paper, :with_tasks }
+    let(:user) { FactoryGirl.build(:user) }
 
     context "when the role is in ALL_ROLES" do
-      let(:user) { FactoryGirl.build(:user) }
-
       it "validates if the role is included in the ALL_ROLES list" do
         PaperRole::ALL_ROLES.each do |role|
           paper_role = PaperRole.new paper: paper,
@@ -31,8 +30,21 @@ describe PaperRole do
       end
     end
 
+    context "when the role is one of the journal roles" do
+      before do
+        Role.create! name: "clean_coder", journal: paper.journal
+        paper.journal.roles.reload
+      end
+
+      it "validates if the role is included in the ALL_ROLES list" do
+        paper_role = PaperRole.new paper: paper,
+          user: user,
+          role: 'clean_coder'
+        expect(paper_role).to be_valid
+      end
+    end
+
     context "when the role is not in ALL_ROLES" do
-      let(:user) { FactoryGirl.build(:user) }
 
       it "validates if the role is included in the ALL_ROLES list" do
         PaperRole::ALL_ROLES.each do |role|

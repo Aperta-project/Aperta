@@ -47,7 +47,7 @@ module Tahi
     def name_check(plugin)
       if LEGACY_PLUGINS.include? plugin
         @legacy = true
-        puts 'DEPRECATION WARNING: This legacy plugin name may not be supported in the future. Skipping prefix check..'
+        print_wrapped 'DEPRECATION WARNING: This legacy plugin name may not be supported in the future. Skipping prefix check..'
       elsif !plugin.match /^tahi-/
         die "Plugins must be prefixed with 'tahi-'."
       end

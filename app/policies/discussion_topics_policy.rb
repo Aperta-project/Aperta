@@ -1,34 +1,29 @@
 class DiscussionTopicsPolicy < ApplicationPolicy
   primary_resource :discussion_topic
-
-  def connected_users
-    discussion_topic.discussion_participants
-  end
+  require_params :paper
 
   def index?
-    @papers_policy.show?
-  end
-
-  def show?
-    false
+    papers_policy.show?
   end
 
   def create?
-    @papers_policy.show?
+    papers_policy.update?
   end
 
-  def update?
-    false
+  def show?
+    papers_policy.show? && participating_in_discussion?
   end
-
-  def destroy?
-    false
-  end
+  alias :update? :show?
+  alias :destroy? :show?
 
   private
 
+  def participating_in_discussion?
+    discussion_topic.discussion_participants.where(user_id: current_user.id).exists?
+  end
+
   def papers_policy
-    @papers_policy ||= PapersPolicy.new(current_user: current_user, resource: discussion_topic.paper)
+    @papers_policy ||= PapersPolicy.new(current_user: current_user, resource: paper)
   end
 
 end

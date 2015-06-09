@@ -5,6 +5,7 @@ describe DiscussionTopicsController do
 
   let(:user) { FactoryGirl.create(:user) }
   let(:paper) { FactoryGirl.create(:paper) }
+  let!(:paper_role) { FactoryGirl.create(:paper_role, :editor, paper: paper, user: user) }
   let!(:topic_a) { FactoryGirl.create(:discussion_topic, paper: paper) }
   let!(:topic_b) { FactoryGirl.create(:discussion_topic, paper: paper) }
   let!(:unrelated_topic) { FactoryGirl.create(:discussion_topic) }
@@ -31,7 +32,7 @@ describe DiscussionTopicsController do
     let!(:last_reply) { FactoryGirl.create(:discussion_reply, discussion_topic: topic_a) }
 
     it "includes the discussion topic's replies" do
-      xhr :get, :show, format: :json, id: topic_a.id, paper_id: paper.id
+      xhr :get, :show, format: :json, id: topic_a.id
 
       topic = json["discussion_topic"]
       expect(topic['id']).to eq(topic_a.id)
@@ -48,13 +49,14 @@ describe DiscussionTopicsController do
     let(:body) { "You won't believe it!" }
     let(:creation_params) do
       {
-        paper_id: paper.id,
-        discussion_topic: { title: title },
-        discussion_reply: { body: body },
+        discussion_topic: {
+          paper_id: paper.id,
+          title: title,
+        }
       }
     end
 
-    it "includes the discussion topic's replies" do
+    it "creates a topic" do
       expect {
         xhr :post, :create, format: :json, **creation_params
       }.to change { DiscussionTopic.count }.by(1)
@@ -62,10 +64,6 @@ describe DiscussionTopicsController do
       topic = json["discussion_topic"]
       expect(topic['title']).to eq(title)
       expect(topic['paper_id']).to eq(paper.id)
-
-      reply = json['discussion_replies'].first
-      expect(reply['body']).to eq(body)
-      expect(reply['replier_id']).to eq(user.id)
     end
 
   end
@@ -74,9 +72,10 @@ describe DiscussionTopicsController do
     let(:new_title) { "EDIT: better topic title!" }
     let(:update_params) do
       {
-        paper_id: paper.id,
         id: topic_a.id,
-        discussion_topic: { title: new_title },
+        discussion_topic: {
+          title: new_title,
+        }
       }
     end
 
@@ -91,7 +90,7 @@ describe DiscussionTopicsController do
 
     it "destroys a topic" do
       expect {
-        xhr :delete, :destroy, format: :json, id: topic_a.id, paper_id: paper.id
+        xhr :delete, :destroy, format: :json, id: topic_a.id
       }.to change { DiscussionTopic.count }.by(-1)
     end
 

@@ -25,6 +25,7 @@ class User < ActiveRecord::Base
   has_many :invitations, foreign_key: :invitee_id, inverse_of: :invitee
   has_many :discussion_replies, inverse_of: :replier, dependent: :destroy
   has_many :discussion_participants, inverse_of: :user, dependent: :destroy
+  has_many :discussion_topics, through: :discussion_participants
 
   attr_accessor :login
 

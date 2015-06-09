@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Roles::UsersController do
-  # expect_policy_enforcement
+  expect_policy_enforcement
 
   let(:admin) { create :user, :site_admin }
   let(:journal) { FactoryGirl.create(:journal) }

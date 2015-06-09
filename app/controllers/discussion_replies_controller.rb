@@ -4,21 +4,18 @@ class DiscussionRepliesController < ApplicationController
   respond_to :json
 
   def create
-    topic = accessible_topics.find(creation_params[:discussion_topic_id])
-    reply = topic.discussion_replies.create(creation_params)
-    respond_with(reply)
+    discussion_reply.save
+    respond_with(discussion_reply)
   end
 
   def update
-    topic = accessible_topics.find(params[:id])
-    topic.update(update_params)
-    respond_with(reply)
+    discussion_reply.update(update_params)
+    respond_with(discussion_reply)
   end
 
   def destroy
-    reply = accessible_topics.find(params[:id])
-    reply.destroy
-    respond_with(reply)
+    discussion_reply.destroy
+    respond_with(discussion_reply)
   end
 
   private
@@ -31,11 +28,17 @@ class DiscussionRepliesController < ApplicationController
     params.require(:discussion_reply).permit(:body)
   end
 
-  def accessible_topics
-    paper.discussion_topics.including(current_user)
+  def discussion_reply
+    @discussion_reply ||= begin
+      if params[:id].present?
+        DiscussionReply.find(params[:id])
+      elsif params[:discussion_reply].present?
+        DiscussionReply.new(creation_params)
+      end
+    end
   end
 
   def enforce_policy
-    true #authorize_action!(paper: paper)
+    authorize_action!(discussion_reply: discussion_reply)
   end
 end

@@ -1,15 +1,43 @@
 require 'rails_helper'
 
-RSpec.describe AssignmentsController, type: :controller do
+describe AssignmentsController, type: :controller do
+  let(:admin) { create :user, :site_admin }
+  let(:journal) { FactoryGirl.create(:journal) }
+  let(:paper) { FactoryGirl.create(:paper, journal: journal) }
+  let!(:role) { FactoryGirl.create(:role, journal: journal) }
+
+  before do
+    sign_in(admin)
+  end
 
   describe "GET 'index'" do
-    pending "returns all of the paper roles for the paper" do
-      get :index, paper_id: 1
-      expect(JSON.parse(response.body)).to eq({ paper_roles: { user_id: 1, role_id: 1 } })
+    before do
+      @paper_role = PaperRole.create! role: role.name, user: admin, paper: paper
+    end
+
+    context "when the paper id is provided" do
+      expect_policy_enforcement
+
+      it "returns all of the paper roles for the paper" do
+        get :index, paper_id: paper.id
+        expect(JSON.parse(response.body)["assignments"]).to include({"id" => @paper_role.id,
+                                                                     "role" => role.name,
+                                                                     "paper_id" => paper.id,
+                                                                     "user_id" => admin.id})
+      end
+    end
+
+    context "when the paper_id isn't provided" do
+      it "returns 404" do
+        get :index
+        expect(response.status).to eq(404)
+      end
     end
   end
 
   describe "POST 'create'" do
+    expect_policy_enforcement
+
     let(:admin) { create :user, :site_admin }
     let(:journal) { FactoryGirl.create(:journal) }
     let(:paper) { FactoryGirl.create(:paper, journal: journal) }

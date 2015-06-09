@@ -1,9 +1,18 @@
 class AssignmentsController < ApplicationController
-  def index
+  before_action :authenticate_user!
 
+  def index
+    paper = Paper.find(params[:paper_id])
+    authorize_action! paper: paper
+
+    assignments = PaperRole.where(paper: paper)
+    render json: assignments, each_serializer: AssignmentSerializer
   end
 
   def create
+    paper = Paper.find(params[:assignment][:paper_id])
+    authorize_action! paper: paper
+
     assignment = PaperRole.new(params.require(:assignment).permit(:role, :user_id, :paper_id))
     assignment.save!
     render json: assignment, serializer: AssignmentSerializer

@@ -18,10 +18,10 @@ moduleFor 'controller:overlays/cover-letter', 'CoverLetterController',
       @ctrl = @subject()
       @ctrl.set('model', @task)
 
-test '#letterBody', ->
+test '#letterBody: returns the content of the cover letter', ->
   equal @ctrl.get('letterBody'), ''
 
-test '#formatCoverLetter', ->
+test '#formatCoverLetter: replaces newline with p tag', ->
   @ctrl.set('letterBody', "foo\nbar")
   result = @ctrl.get('formatCoverLetter')
   equal result, '<p>foo</p><p>bar</p>'
@@ -35,13 +35,13 @@ test "#editingLetter: returns true when the paper doesn't have cover letter", ->
 
   ok @ctrl.get 'editingLetter'
 
-test "#editCoverLetter", ->
+test "#editCoverLetter: toggle the state of the cover letter from preview to edit", ->
   @ctrl.set('editingLetter', false)
   @ctrl.send('editCoverLetter')
 
   ok @ctrl.get 'editingLetter'
 
-test '#saveCoverLetter: model.save got called', ->
+test '#saveCoverLetter', ->
   handler = ()->
 
   sinon.stub(@task, 'save').returns(new Ember.RSVP.Promise(handler, handler))

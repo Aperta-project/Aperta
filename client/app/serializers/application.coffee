@@ -64,7 +64,7 @@ ApplicationSerializer = DS.ActiveModelSerializer.extend
         typeName = @extractTypeName(prop, hash)
         # <=========== custom code for namespacing and sti ends here
         type = store.modelFor(typeName)
-        typeSerializer = store.serializerFor(type)
+        typeSerializer = store.serializerFor(typeName)
         hash = typeSerializer.normalize(type, hash, prop)
         isFirstCreatedRecord = isPrimary and not recordId and not primaryRecord
         isUpdatedRecord = isPrimary and @coerceId(hash.id) is recordId
@@ -94,7 +94,7 @@ ApplicationSerializer = DS.ActiveModelSerializer.extend
         typeKey = prop.substr(1)
       typeName = @modelNameFromPayloadKey(typeKey)
       type = store.modelFor(typeName)
-      arrayTypeSerializer = store.serializerFor(type) # cache the serializer based on the array's type key
+      arrayTypeSerializer = store.serializerFor(typeName) # cache the serializer based on the array's type key
       isPrimary = (not forcedSecondary and (type.modelName is primaryTypeName))
 
       #jshint loopfunc:true

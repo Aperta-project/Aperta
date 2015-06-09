@@ -4,6 +4,8 @@ class AssignmentsController < ApplicationController
   end
 
   def create
-    binding.pry
+    assignment = PaperRole.new(params.require(:assignment).permit(:role, :user_id, :paper_id))
+    assignment.save!
+    render json: assignment, serializer: AssignmentSerializer
   end
 end

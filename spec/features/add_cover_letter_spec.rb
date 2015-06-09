@@ -30,8 +30,4 @@ feature 'Adding cover letter', js: true do
       expect(page).to have_css('.edit-cover-letter')
     end
   end
-
-  context 'As an admin' do
-
-  end
 end

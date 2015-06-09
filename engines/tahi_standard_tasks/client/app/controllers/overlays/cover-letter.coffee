@@ -4,7 +4,7 @@ CoverLetterController = TaskController.extend
 
   formatCoverLetter: Ember.computed 'letterBody', ->
     result = ""
-    @get('model.body')[0].split("\n").forEach (item) ->
+    @get('letterBody').split("\n").forEach (item) ->
       result += "<p>" + item + "</p>"
     new Ember.Handlebars.SafeString(result)
 

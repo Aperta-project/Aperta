@@ -5,13 +5,9 @@ export default Ember.Route.extend({
     return this.store.find('discussion-topic', params.topic_id);
   },
 
-  afterModel(model) {
-    // NO
-    model.reload();
-  },
-
   setupController(controller, model) {
     this._super(controller, model);
+    model.reload();
     controller.set('participants', [this.get('currentUser')]);
   },
 });

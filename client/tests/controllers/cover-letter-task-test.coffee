@@ -13,6 +13,8 @@ moduleFor 'controller:overlays/cover-letter', 'CoverLetterController',
       paper: @paper
       body: ['']
       save: ->
+        then: (fn) ->
+          fn.call()
 
     Ember.run =>
       @ctrl = @subject()
@@ -41,10 +43,15 @@ test "#editCoverLetter: toggle the state of the cover letter from preview to edi
 
   ok @ctrl.get 'editingLetter'
 
-test '#saveCoverLetter', ->
+test '#saveCoverLetter: model got saved back', ->
   handler = ()->
 
   sinon.stub(@task, 'save').returns(new Ember.RSVP.Promise(handler, handler))
-  Ember.run =>
-    @ctrl.send('saveCoverLetter')
-    ok @task.save.called
+  @ctrl.send('saveCoverLetter')
+  ok @task.save.called
+
+test '#saveCoverLetter: toggle editCoverLetter to be false', ->
+  @ctrl.set('model.editingLetter', true)
+  @ctrl.send('saveCoverLetter')
+
+  equal @ctrl.get('editingLetter'), false

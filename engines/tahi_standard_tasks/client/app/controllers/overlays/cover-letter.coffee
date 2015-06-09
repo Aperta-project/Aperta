@@ -22,4 +22,5 @@ CoverLetterController = TaskController.extend
     editCoverLetter: ->
       @set 'editingLetter', true
 
+
 `export default CoverLetterController`

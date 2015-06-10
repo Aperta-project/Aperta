@@ -10,4 +10,9 @@ describe "routes for assignments" do
     expect({ post: '/api/assignments', format: :json }).to route_to controller: "assignments",
       action: "create"
   end
+
+  it "routes /api/assignments/1 to the destroy action in assignments controller" do
+    expect({ delete: '/api/assignments/:id', format: :json }).to route_to controller: "assignments",
+      action: "destroy", id: ":id"
+  end
 end

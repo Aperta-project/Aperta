@@ -80,7 +80,7 @@ Tahi::Application.routes.draw do
     end
     resources :manuscript_manager_templates, only: [:create, :show, :update, :destroy]
     resources :paper_roles, only: [:show]
-    resources :assignments, only: [:index, :create]
+    resources :assignments, only: [:index, :create, :destroy]
     resources :papers, only: [:index, :create, :show, :update] do
       resource :editor, only: :destroy
       resource :manuscript_manager, only: :show

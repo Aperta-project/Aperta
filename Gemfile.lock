@@ -31,6 +31,13 @@ GIT
       rails (~> 4.2.0)
 
 GIT
+  remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/tahi-assign_team
+  revision: 7b3e43baafb1b3891923c5512ce13d21e268a8b7
+  specs:
+    tahi-assign_team (0.0.1)
+      rails (~> 4.2.1)
+
+GIT
   remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/tahi_epub
   revision: 6df8cbc6ed8c46bc5ee9ece707216b1af40b94ea
   specs:
@@ -46,12 +53,6 @@ GIT
     activemodel-globalid (0.1.1)
       activemodel (>= 4.1.0)
       activesupport (>= 4.1.0)
-
-PATH
-  remote: ../tahi-assign_team
-  specs:
-    tahi-assign_team (0.0.1)
-      rails (~> 4.2.1)
 
 PATH
   remote: engines/plos_authors

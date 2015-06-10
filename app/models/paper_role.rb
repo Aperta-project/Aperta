@@ -15,7 +15,7 @@ class PaperRole < ActiveRecord::Base
   validates :paper, presence: true
   validates :user,  presence: true
 
-  validates_uniqueness_of :role, scope: [:user_id, :paper_id]
+  validates_uniqueness_of :role, scope: [:user_id, :paper_id], message: "already assigned to this user"
   validate :role_exists
 
   def self.admins

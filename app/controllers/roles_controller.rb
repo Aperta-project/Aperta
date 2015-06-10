@@ -7,7 +7,7 @@ class RolesController < ApplicationController
     journal = Journal.find(params[:journal_id])
     authorize_action! journal: journal
 
-    render json: journal.roles#, serializer: false, root: false
+    render json: journal.roles
   end
 
   def show

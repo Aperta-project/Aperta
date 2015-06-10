@@ -117,6 +117,12 @@ FactoryGirl.define do
     title "Invitable Task"
     role "user"
   end
+
+  factory :cover_letter_task, class: "TahiStandardTasks::CoverLetterTask" do
+    phase
+    title "Cover Letter"
+    role "author"
+  end
 end
 
 class InvitableTask < Task

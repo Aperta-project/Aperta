@@ -15,7 +15,7 @@ common: &default_settings
   # You must specify the license key associated with your New Relic
   # account.  This key binds your Agent's data to your account in the
   # New Relic service.
-  license_key: 'e4fbe58513033ce33cf7b6476bbbbec8e4fbaed2'
+  license_key: <%= ENV['NEWRELIC_KEY'] %>
 
   # Agent Enabled (Ruby/Rails Only)
   # Use this setting to force the agent to run or not run.
@@ -42,7 +42,7 @@ common: &default_settings
   #       - Ajax Service
   #       - All Services
   #
-  app_name: My Application
+  app_name: Tahi
 
   # When "true", the agent collects performance data about your
   # application and reports this data to the New Relic service at
@@ -217,7 +217,9 @@ test:
 production:
   <<: *default_settings
   monitor_mode: true
-  app_name: Tahi (Production)
+  app_name:
+    - Tahi
+    - Tahi (Lean Workflow)
 
 # Many applications have a staging environment which behaves
 # identically to production. Support for that environment is provided
@@ -225,7 +227,9 @@ production:
 staging:
   <<: *default_settings
   monitor_mode: true
-  app_name: Tahi (Staging)
+  app_name:
+    - Tahi
+    - Tahi (Staging)
 
 performance:
   <<: *default_settings

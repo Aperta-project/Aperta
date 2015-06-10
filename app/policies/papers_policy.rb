@@ -45,6 +45,10 @@ class PapersPolicy < ApplicationPolicy
     can_view_paper?
   end
 
+  def submit_tech?
+    submit?
+  end
+
   def activity?
     can_view_paper?
   end

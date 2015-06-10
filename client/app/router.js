@@ -12,7 +12,14 @@ Router.map(function() {
 
   this.resource('paper', { path: '/papers/:paper_id' }, function() {
     this.route('edit');
-    this.route('workflow');
+
+    this.route('workflow', function() {
+      this.route('discussions', function() {
+        this.route('new',  { path: '/new' });
+        this.route('show', { path: '/:topic_id' });
+      });
+    });
+
     this.route('task', { path: '/tasks' }, function() {
       this.route('index', { path: '/:task_id' });
     });

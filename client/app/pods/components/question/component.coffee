@@ -23,6 +23,14 @@ QuestionComponent = Ember.Component.extend
         decision: task.get('paper.latestDecision')
         additionalData: [{}]
 
+      # Used by initial-tech-check
+      data = {}
+      key = @get("additionalDataKey")
+      value = @get("additionalDataValue")
+      if key && value
+        data[key] = value
+        question.set("additionalData", [data])
+
       task.get('questions').pushObject(question)
 
     question

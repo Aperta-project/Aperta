@@ -8,4 +8,8 @@ class AssignmentsPolicy < ApplicationPolicy
   def create?
     can_administer_journal? paper.journal
   end
+
+  def destroy?
+    can_administer_journal? paper.journal
+  end
 end

@@ -16,6 +16,7 @@ describe AssignmentsPolicy do
     it "can modify everything" do
       expect(policy.index?).to be(true)
       expect(policy.create?).to be(true)
+      expect(policy.destroy?).to be(true)
     end
   end
 
@@ -24,6 +25,8 @@ describe AssignmentsPolicy do
 
     it "can modify everything" do
       expect(policy.index?).to be(false)
+      expect(policy.create?).to be(false)
+      expect(policy.destroy?).to be(false)
     end
   end
 
@@ -36,6 +39,8 @@ describe AssignmentsPolicy do
 
     it "can modify everything" do
       expect(policy.index?).to be(true)
+      expect(policy.create?).to be(true)
+      expect(policy.destroy?).to be(true)
     end
   end
 end

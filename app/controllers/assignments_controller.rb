@@ -17,4 +17,12 @@ class AssignmentsController < ApplicationController
     assignment.save!
     render json: assignment, serializer: AssignmentSerializer
   end
+
+  def destroy
+    assignment = PaperRole.find(params[:id])
+    authorize_action! paper: assignment.paper
+
+    assignment.destroy!
+    render json: assignment, serializer: AssignmentSerializer
+  end
 end

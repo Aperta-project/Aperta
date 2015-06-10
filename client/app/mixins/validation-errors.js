@@ -61,8 +61,8 @@ export default Ember.Mixin.create({
   _prepareResponseErrors: function(errors) {
     var errorsObject = Utils.deepJoinArrays(Utils.deepCamelizeKeys(errors));
     for(var key in errorsObject) {
-      errorsObject[key] = `${key.capitalize()} ${errors[key]}`
-    };
+      errorsObject[key] = `${key.capitalize()} ${errors[key]}`;
+    }
     return errorsObject;
   },
 

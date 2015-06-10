@@ -63,7 +63,7 @@ describe AssignmentsController, type: :controller do
       @paper_role = PaperRole.create! role: role.name, user: admin, paper: paper
     end
 
-    it "creates an assignment between a given role and the user for the paper" do
+    it "destroys an assignment" do
       delete :destroy, id: @paper_role.id
       expect(JSON.parse(response.body)["assignment"]).to include({"id" => @paper_role.id,
                                                                    "role" => role.name,

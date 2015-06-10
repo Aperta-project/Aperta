@@ -9,10 +9,11 @@ class PaperRole < ActiveRecord::Base
 
   ALL_ROLES = [REVIEWER, EDITOR, COLLABORATOR, ADMIN, PARTICIPANT]
 
-  belongs_to :user, inverse_of: :paper_roles
+  belongs_to :user,  inverse_of: :paper_roles
   belongs_to :paper, inverse_of: :paper_roles
 
   validates :paper, presence: true
+  validates :user,  presence: true
 
   validates_uniqueness_of :role, scope: [:user_id, :paper_id]
   validate :role_exists

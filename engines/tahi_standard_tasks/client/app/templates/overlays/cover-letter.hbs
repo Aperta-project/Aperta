@@ -2,11 +2,8 @@
 {{#if editingLetter}}
   <div class="edit-cover-letter">
     <h4>Please type or paste your cover letter into this text field:</h4>
+    {{content-editable value=letterBody class="taller-textarea"}}
 
-    {{textarea onEvent="false"
-               disabled=false
-               class="taller-textarea"
-               value=letterBody}}
     <button class="button-primary button--green" {{action "saveCoverLetter"}}>Save</button>
   </div>
 {{else}}

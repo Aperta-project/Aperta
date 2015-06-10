@@ -78,10 +78,13 @@ $comments-animation-speed: 0.3s;
   margin: 0 5px 0 0;
 }
 
-.comment-name { font-weight: bold; }
+.comment-name {
+  padding-left: 4px;
+  font-weight: bold;
+}
 
 .comment-body {
-  padding: 7px 0 0 40px;
+  padding: 0 0 0 40px;
   line-height: 1.3;
 }
 

@@ -59,8 +59,9 @@ ContentEditableComponent = Ember.Component.extend
     @unmute()
 
   setHTMLFromValue: ->
-    @.$().html(@get('value'))
-    @unmute()
+    if(@.$())
+      @.$().html(@get('value'))
+      @unmute()
 
   mute: ->
     @.$().addClass('content-editable-muted')

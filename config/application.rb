@@ -12,7 +12,7 @@ module Tahi
     @@service_log ||= Logger.new(STDOUT)
   end
 
-  def self.service_log= log
+  def self.service_log=(log)
     @@service_log = log
   end
 

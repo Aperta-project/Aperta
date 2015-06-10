@@ -2,7 +2,7 @@ import FactoryGuy from "ember-data-factory-guy";
 
 FactoryGuy.define('paper-editor-task', {
   default: {
-    title: 'Assign Editors',
+    title: 'Invite Editor',
     type: 'PaperEditorTask',
     completed: false,
   }

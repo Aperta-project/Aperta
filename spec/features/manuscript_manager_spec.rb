@@ -132,7 +132,7 @@ feature "Manuscript Manager", js: true, selenium: true do
 
     needs_editor_phase = TaskManagerPage.new
     needs_editor_phase.phase 'Invite Editor'
-    needs_editor_phase.view_card 'Assign Editor' do |overlay|
+    needs_editor_phase.view_card 'Invite Editor' do |overlay|
       expect(overlay).to_not be_completed
     end
   end

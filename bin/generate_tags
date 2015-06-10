@@ -1,0 +1,2 @@
+#!/bin/bash
+ctags -R --languages=JavaScript,Ruby --exclude=node_modules --exclude=bower_components --exclude=tmp app client lib engines

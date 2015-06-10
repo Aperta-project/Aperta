@@ -47,7 +47,7 @@ FactoryGirl.define do
 
   factory :paper_editor_task, class: 'TahiStandardTasks::PaperEditorTask' do
     phase
-    title "Assign Editor"
+    title "Invite Editor"
     role "admin"
   end
 
@@ -116,6 +116,12 @@ FactoryGirl.define do
     phase
     title "Invitable Task"
     role "user"
+  end
+
+  factory :cover_letter_task, class: "TahiStandardTasks::CoverLetterTask" do
+    phase
+    title "Cover Letter"
+    role "author"
   end
 end
 

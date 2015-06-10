@@ -3,10 +3,25 @@
 /tmp
 /tags
 /public/uploads
+/node_modules
 doc/*.svg
+doc/*.csv
+doc/dependencies.*
+doc/ux
+bin/eventsource
+coverage/
+config/database.yml
+config/secrets.yml
+public/assets
+spec/tmp
+dump.rdb
+spring
+setup.log
+Procfile.local
 .DS_Store
 .zsh_rake_cache
 .env
+.sass-cache
 # ignore all .env.{environment} files ...
 .env.*
 # except .env.test

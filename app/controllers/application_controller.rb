@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 
   before_action :authenticate_with_basic_http
   before_action :set_pusher_socket
-  before_filter :configure_permitted_parameters, if: :devise_controller?
+  before_action :configure_permitted_parameters, if: :devise_controller?
   rescue_from ActiveRecord::RecordInvalid, with: :render_errors
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 

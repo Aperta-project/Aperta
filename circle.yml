@@ -45,7 +45,7 @@ database:
 ## Customize test commands
 test:
   override:
-    - bin/circleci.sh:
+    - bin/circleci:
         parallel: true
 
 ## Customize heroku deployment

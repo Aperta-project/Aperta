@@ -1,4 +1,4 @@
-class AssignEditorOverlay < CardOverlay
+class InviteEditorOverlay < CardOverlay
   def paper_editor=(user)
     select2 user.email, css: '.editor-select2', search: true
   end

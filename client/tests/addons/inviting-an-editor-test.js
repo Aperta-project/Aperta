@@ -47,7 +47,7 @@ test("displays the email of the invitee", function(assert) {
   Ember.run(function() {
     TestHelper.handleFind(task);
     visit(`/papers/${paper.id}/workflow`);
-    click("#manuscript-manager .card-content:contains('Assign Editors')");
+    click("#manuscript-manager .card-content:contains('Invite Editor')");
     pickFromSelect2(".overlay-main-work", inviteeEmail);
 
     TestHelper.handleCreate("invitation").andReturn({state: "invited"});
@@ -67,7 +67,7 @@ test("can withdraw the invitation", function(assert) {
     TestHelper.handleFind(task);
 
     visit(`/papers/${paper.id}/workflow`);
-    click("#manuscript-manager .card-content:contains('Assign Editors')");
+    click("#manuscript-manager .card-content:contains('Invite Editor')");
 
     andThen(function() {
       let msgEl = find(".invite-editor-text:contains('foo@bar.com has been invited to be Editor on this manuscript.')");

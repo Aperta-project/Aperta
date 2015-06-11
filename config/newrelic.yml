@@ -219,7 +219,7 @@ production:
   monitor_mode: true
   app_name:
     - Tahi
-    - Tahi (Lean Workflow)
+     - <%= ENV['NEWRELIC_APP_NAME'] %>
 
 # Many applications have a staging environment which behaves
 # identically to production. Support for that environment is provided
@@ -229,7 +229,7 @@ staging:
   monitor_mode: true
   app_name:
     - Tahi
-    - Tahi (Staging)
+    - <%= ENV['NEWRELIC_APP_NAME'] %>
 
 performance:
   <<: *default_settings

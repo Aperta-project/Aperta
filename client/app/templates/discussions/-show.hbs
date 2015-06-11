@@ -10,6 +10,7 @@
 
     {{participant-selector currentParticipants=participants
                            everyone=allUsers
+                           paperId=model.paperId
                            label="Participants:"
                            onRemove="removeParticipantByUserId"
                            onSelect="addParticipantByUserId"}}

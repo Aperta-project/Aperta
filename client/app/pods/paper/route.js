@@ -16,12 +16,40 @@ export default AuthorizedRoute.extend({
     return 'private-paper@' + id;
   },
 
+  topicChannelName(topic) {
+    return 'private-discussiontopic@' + topic.get('id');
+  },
+
   afterModel(model) {
-    this.get('pusher').wire(this, this.channelName(model.get('id')), ['created', 'updated']);
+    let pusher = this.get('pusher');
+    let userChannelName = `private-user@${ this.currentUser.get('id') }`;
+
+    pusher.wire(this, this.channelName(model.get('id')), ['created', 'updated']);
+
+    this.store.find('discussion-topic', {
+      paper_id: model.get('id')
+    }).then((topics) => {
+      console.log("fetched topics: ", topics);
+      topics.forEach(this.subscribeToDiscussionTopic.bind(this));
+
+      pusher.wire(this, userChannelName, ["discussion-participant-created"]);
+    });
   },
 
   deactivate() {
     this.get('pusher').unwire(this, this.channelName(this.modelFor('paper').get('id')));
+    let topics = this.controller.get('subscribedTopics');
+    topics.forEach(this.unsubscribeFromDiscussionTopic.bind(this));
+  },
+
+  subscribeToDiscussionTopic(topic) {
+    this.get('pusher').wire(this, this.topicChannelName(topic), ['created', 'updated']);
+    this.controller.get('subscribedTopics').pushObject(topic);
+  },
+
+  unsubscribeFromDiscussionTopic(topic) {
+    this.get('pusher').unwire(this, this.topicChannelName(topic));
+    this.controller.get('subscribedTopics').removeObject(topic);
   },
 
   _pusherEventsId() {
@@ -74,6 +102,24 @@ export default AuthorizedRoute.extend({
         outlet: 'overlay',
         controller: controller
       });
+    },
+
+    discussionParticipantCreated(payload) {
+      let discussionParticipant = payload.discussion_participant;
+      this.store.findById('discussion-topic', discussionParticipant.discussion_topic_id).then((topic) => {
+        if(topic.get('paperId') === this.modelFor('paper').get('id')) {
+          console.log("Subscribing late to topic#", topic.getProperties('id', 'title', 'paperId'));
+          this.subscribeToDiscussionTopic(topic);
+        }
+      });
+    },
+
+    discussionTopicCreated(topic) {
+      this.subscribeToDiscussionTopic(topic);
+    },
+
+    discussionTopicDestroyed(topic) {
+      this.unsubscribeFromDiscussionTopic(topic);
     }
   }
 });

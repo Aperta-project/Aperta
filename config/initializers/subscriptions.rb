@@ -57,15 +57,33 @@ TahiNotifier.subscribe("discussion_topic:*") do |payload|
   record = payload[:record]
   excluded_socket_id = payload[:requester_socket_id]
 
-  # serialize the discussion_topic down the user channel
-  EventStream::Broadcaster.new(record).post(action: action, channel_scope: record.paper, excluded_socket_id: excluded_socket_id)
+  # serialize the discussion_topic down the discussion_topic channel
+  EventStream::Broadcaster.new(record).post(action: action, channel_scope: record, excluded_socket_id: excluded_socket_id)
 end
 
-TahiNotifier.subscribe("discussion_reply:*", "discussion_participant:*") do |payload|
+TahiNotifier.subscribe("discussion_participant:*") do |payload|
   action = payload[:action]
   record = payload[:record]
   excluded_socket_id = payload[:requester_socket_id]
 
-  # serialize the discussion_topic down the user channel
-  EventStream::Broadcaster.new(record).post(action: action, channel_scope: record.discussion_topic.paper, excluded_socket_id: excluded_socket_id)
+  # serialize the discussion_participant down the discussion_topic channel
+  EventStream::Broadcaster.new(record).post(action: action, channel_scope: record.discussion_topic, excluded_socket_id: excluded_socket_id)
+end
+
+TahiNotifier.subscribe("discussion_participant:created") do |payload|
+  action = payload[:action]
+  record = payload[:record]
+  excluded_socket_id = payload[:requester_socket_id]
+
+  # serialize the discussion_participant down the user channel so they can subscribe to the topic
+  EventStream::Broadcaster.new(record).post(action: "discussion-participant-created", channel_scope: record.user, excluded_socket_id: excluded_socket_id)
+end
+
+TahiNotifier.subscribe("discussion_reply:*") do |payload|
+  action = payload[:action]
+  record = payload[:record]
+  excluded_socket_id = payload[:requester_socket_id]
+
+  # serialize the discussion_reply down the discussion_topic channel
+  EventStream::Broadcaster.new(record).post(action: action, channel_scope: record.discussion_topic, excluded_socket_id: excluded_socket_id)
 end

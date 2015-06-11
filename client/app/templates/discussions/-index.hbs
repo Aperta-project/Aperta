@@ -6,7 +6,7 @@
 
   <br><br>
 
-  {{#each model as |topic|}}
+  {{#each paperTopics as |topic|}}
     {{#link-to topicsShowPath topic.id class="discussions-index-topic"}}
       {{#if topic.unreadCount}}
         <span class="badge">{{topic.unreadCount}}</span>

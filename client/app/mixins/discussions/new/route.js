@@ -17,6 +17,7 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
 
     save(model) {
       model.save().then(()=> {
+        this.send('discussionTopicCreated', model);
         this.transitionTo(this.get('topicsShowPath'), model);
       });
     }

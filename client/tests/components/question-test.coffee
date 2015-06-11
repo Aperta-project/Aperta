@@ -17,7 +17,7 @@ test '#model: gets tasks questions by ident', ->
   component = @subject(task: task, ident: "foo")
   equal component.get('model'), @q1, 'Finds its model by ident'
 
-test '#model: creates a new question and adds it to the task if it cant find one', ->
+test '#createNewQuestion: creates a new question and adds it to the task if it cant find one', ->
   task = Ember.Object.create(questions: [@q1], store: @fakeStore)
 
   component = @subject(task: task, ident: "bar")
@@ -26,7 +26,7 @@ test '#model: creates a new question and adds it to the task if it cant find one
   equal model.get('ident'), 'bar', "The model has the task's ident"
   ok task.get('questions').contains(model), 'the model is added to the task'
 
-test '#model.additionaData: set additional data onto model', ->
+test '#model.additionalData: set additional data onto model', ->
   task = Ember.Object.create(questions: [@q2], store: @fakeStore)
 
   component = @subject(task: task, ident: "foo", additionalDataKey: "key2", additionalDataValue: "value2")

@@ -4,7 +4,7 @@ set -x
 
 case $CIRCLE_NODE_INDEX in
   0)
-    bundle exec rspec spec --exclude-pattern spec/features --tag ~flaky
+    bundle exec rspec spec --exclude-pattern "spec/features/*_spec.rb" --tag ~flaky
     ;;
   1)
     rake ember:test

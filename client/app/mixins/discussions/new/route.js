@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions-route-paths';
+import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 
-export default Ember.Mixin.extend(DiscussionsRoutePathsMixin, {
+export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
   model() {
     return this.store.createRecord('discussion-topic', {
       paperId: this.modelFor('paper').get('id').toString(),

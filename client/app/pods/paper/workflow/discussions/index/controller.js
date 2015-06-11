@@ -1,2 +1,7 @@
 import Ember from 'ember';
-export default Ember.Controller.extend();
+import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions-route-paths';
+
+export default Ember.Controller.extend(DiscussionsRoutePathsMixin, {
+  // required by DiscussionsRoutePathsMixin:
+  subRouteName: 'workflow'
+});

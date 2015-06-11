@@ -1,12 +1,7 @@
 import Ember from 'ember';
+import DiscussionsShowRouteMixin from 'tahi/mixins/discussions/show/route';
 
-export default Ember.Route.extend({
-  model(params) {
-    return this.store.find('discussion-topic', params.topic_id);
-  },
-
-  setupController(controller, model) {
-    this._super(controller, model);
-    model.reload();
-  },
+export default Ember.Route.extend(DiscussionsShowRouteMixin, {
+  // required to generate route paths:
+  subRouteName: 'workflow'
 });

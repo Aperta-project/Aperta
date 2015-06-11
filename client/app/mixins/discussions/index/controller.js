@@ -5,8 +5,12 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
 
   paperId: undefined,
 
-  paperTopics: Ember.computed('model.@each', function() {
+  filteredTopics: Ember.computed('model.@each', function() {
     return this.get('model').filterBy('paperId', this.get('paperId'));
   }),
+
+  topicSort: ['createdAt:desc'],
+
+  paperTopics: Ember.computed.sort('filteredTopics', 'topicSort'),
 
 });

@@ -5,5 +5,6 @@ export default DS.Model.extend({
   discussionParticipants: DS.hasMany('discussion-participant'),
 
   paperId: DS.attr('string'),
-  title: DS.attr('string')
+  title: DS.attr('string'),
+  createdAt: DS.attr('date')
 });

@@ -20,7 +20,7 @@
 
   <br>
 
-  {{#each model.discussionReplies as |reply|}}
+  {{#each sortedReplies as |reply|}}
     <div class="message-comment">
       {{user-thumbnail user=reply.replier}}
       <span class="comment-name">{{reply.replier.fullName}}</span>

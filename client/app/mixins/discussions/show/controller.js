@@ -6,6 +6,9 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
     return this.get('model.discussionParticipants').mapBy('user');
   }),
 
+  replySort: ['createdAt:desc'],
+  sortedReplies: Ember.computed.sort('model.discussionReplies', 'replySort'),
+
   actions: {
     postReply(body) {
       this.store.createRecord('discussion-reply', {

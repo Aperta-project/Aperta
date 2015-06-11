@@ -1,4 +1,5 @@
 class DiscussionTopic < ActiveRecord::Base
+  include EventStream::Notifiable
 
   belongs_to :paper, inverse_of: :discussion_topics
 

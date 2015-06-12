@@ -369,8 +369,8 @@ GEM
       humanize
     orm_adapter (0.5.0)
     pdfkit (0.6.2)
-    pg (0.18.1)
-    pg_search (1.0.0)
+    pg (0.18.2)
+    pg_search (1.0.3)
       activerecord (>= 3.1)
       activesupport (>= 3.1)
       arel

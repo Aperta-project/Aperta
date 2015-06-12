@@ -54,17 +54,6 @@ export default Ember.Route.extend({
   actions: {
     willTransition(transition) {
       this.get('taskController').send('routeWillTransition', transition);
-    },
-
-    // Convenience method for rendering another template from within a task.
-    // Just make sure you transition routes with the right closeAction or
-    // redirect afterward.
-    renderArbitraryTemplate(controller, templateName) {
-      this.render(templateName, {
-        into: 'application',
-        outlet: 'overlay',
-        controller: controller
-      });
     }
   }
 });

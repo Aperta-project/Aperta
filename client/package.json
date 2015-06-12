@@ -48,7 +48,7 @@
       "../engines/tahi_upload_manuscript/client",
       "../../../../.rbenv/versions/2.2.0/lib/ruby/gems/2.2.0/bundler/gems/plos_bio_internal_review-965b8ea606e3/client",
       "../../plos_bio_tech_check/client",
-      "../../tahi-assign_team/client"
+      "../../../../.rbenv/versions/2.2.0/lib/ruby/gems/2.2.0/bundler/gems/tahi-assign_team-62cb7fc98c03/client"
     ]
   }
 }

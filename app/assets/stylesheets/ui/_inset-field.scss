@@ -25,15 +25,15 @@
   label { color: $tahi-grey; }
 
   &.required {
-    label { padding-left: 10px; }
+    label { padding-left: 12px; }
 
     &::before {
       content: '*';
-      font-size: 32px;
-      font-weight: bold;
       position: absolute;
-      color: #5d4aac;
-      left: 6px;
+      top: 4px;
+      left: 12px;
+      color: $tahi-green;
+      font-size: 24px;
     }
   }
 }

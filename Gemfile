@@ -109,5 +109,5 @@ group :test do
 end
 
 group :staging, :performance do
-  gem 'mail_safe', '0.3.1'
+  gem 'mail_safe'
 end

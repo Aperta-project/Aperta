@@ -95,6 +95,12 @@ fragment on initializing:
 EditModalFragment.new(find('tr'), context: page)
 ```
 
+## Why does package.json change all the time?
+
+All of the cards in Tahi are external engines. While Rails Engines work great as backend extensions, there is no easy way to package add-ons within the same repository as engines and have them auto-detected by the application. Obviously, this is because these are two separate platforms. To make it easier for plugin developers to swap in different engines only from a Gemfile, we created an initializer that detects if these are Tahi plugins (all gems prefixed `tahi-`). The detected plugin's path is injected into the `ember-addon.paths` object in `package.json` on every server run. That’s why you see package.json change all the time. 
+
+There is no problem in committing and pushing `package.json`, the ember-addons object is flushed at every server run to get the fresh and correct paths from Tahi plugins.
+
 ## Configuring S3 direct uploads
 
 Get access to S3 and make a new IAM user, for security reasons. Then take these

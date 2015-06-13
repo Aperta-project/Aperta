@@ -9,25 +9,36 @@ QuestionComponent = Ember.Component.extend
     ident = @get('ident')
     throw new Error("You must specify an ident, set to name attr") unless ident
 
-    if @get("versioned")
-      question = @get('task.paper.latestDecision.questions').findProperty('ident', ident)
-    else
-      question = @get('task.questions').findProperty('ident', ident)
+    question =
+      if @get("versioned")
+        @get('task.paper.latestDecision.questions').findProperty('ident', ident)
+      else
+        @get('task.questions').findProperty('ident', ident)
 
     unless question
-      task = @get('task')
-      question = task.get('store').createRecord 'question',
-        question: @get('question')
-        ident: ident
-        task: task
-        decision: task.get('paper.latestDecision')
-        additionalData: [{}]
-
-      task.get('questions').pushObject(question)
+      question = @createNewQuestion()
 
     question
-
   ).property('task', 'ident')
+
+  createNewQuestion: ->
+    task = @get('task')
+    question = task.get('store').createRecord 'question',
+      question: @get('question')
+      ident: @get('ident')
+      task: task
+      decision: task.get('paper.latestDecision')
+      additionalData: [{}]
+
+    data = {}
+    key = @get("additionalDataKey")
+    value = @get("additionalDataValue")
+    if key && value
+      data[key] = value
+      question.set("additionalData", [data])
+
+    task.get('questions').pushObject(question)
+    question
 
   additionalData: Ember.computed.alias('model.additionalData')
 

@@ -14,17 +14,17 @@ Description:
     the new task to all journals.
 
 Example:
-    rails generate tahi:task cover_letter tahi_standard_tasks
+    rails generate tahi:task author_portrait tahi-author
 
     This will create:
-        engines/tahi_standard_tasks/app/models/tahi/tahi_standard_tasks/cover_letter_task.rb
-        engines/tahi_standard_tasks/app/policies/tahi/tahi_standard_tasks/cover_letter_tasks_policy.rb
-        engines/tahi_standard_tasks/app/serializers/tahi/tahi_standard_tasks/cover_letter_task_serializer.rb
+        engines/tahi-author/app/models/tahi/author/author_portrait_task.rb
+        engines/tahi-author/app/policies/tahi/author/author_portrait_tasks_policy.rb
+        engines/tahi-author/app/serializers/tahi/author/author_portrait_task_serializer.rb
 
     And invoke client/blueprints/tahi-task to create:
-        engines/tahi_standard_tasks/client/app/adapters/cover-letter-task.js
-        engines/tahi_standard_tasks/client/app/controllers/overlays/cover-letter.js
-        engines/tahi_standard_tasks/client/app/models/cover-letter-task.js
-        engines/tahi_standard_tasks/client/app/serializers/cover-letter-task.js
-        engines/tahi_standard_tasks/client/app/templates/overlays/cover-letter.hbs
-        engines/tahi_standard_tasks/client/app/views/overlays/cover-letter.js
+        engines/tahi-author/client/app/adapters/author-portrait-task.js
+        engines/tahi-author/client/app/controllers/overlays/author-portrait.js
+        engines/tahi-author/client/app/models/author-portrait-task.js
+        engines/tahi-author/client/app/serializers/author-portrait-task.js
+        engines/tahi-author/client/app/templates/overlays/author-portrait.hbs
+        engines/tahi-author/client/app/views/overlays/author-portrait.js

@@ -16,8 +16,8 @@ export default {
         }
       } else {
         flash.displayMessage('error', error);
-        //logError('\n' + error.message + '\n' + error.stack + '\n');
-        //throw error;
+        logError('\n' + error.message + '\n' + error.stack + '\n');
+        throw error;
       }
     };
 

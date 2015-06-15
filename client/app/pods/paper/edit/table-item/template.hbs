@@ -1,5 +1,4 @@
-<div {{bind-attr class=":table-item :figure-item :row hasPlacement::unplaced isEditing:editing: isSaving:saving:"}}>
-
+<div class="table-item figure-item row {{if hasPlacement "" unplaced}} {{if isEditing "editing"}} {{if isSaving "saving"}}">
   <div class="figure-item-header">
     <div class="figure-item-header-inner">
       <span class="figure-label">{{#if hasPlacement}} {{unbound label}} {{else}} Not in manuscript {{/if}}

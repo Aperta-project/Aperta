@@ -2,7 +2,7 @@ import Ember from 'ember';
 import ENV from 'tahi/config/environment';
 
 export default {
-  name: '',
+  name: 'errorHandler',
 
   initialize(instance) {
     let flash    = instance.container.lookup('flashMessages:main');
@@ -12,11 +12,11 @@ export default {
     Ember.onerror = function(error) {
       if (ENV.environment === 'production') {
         if (Bugsnag && Bugsnag.notifyException) {
-          return Bugsnag.notifyException(error, "Uncaught Ember Error");
+          return Bugsnag.notifyException(error, 'Uncaught Ember Error');
         }
       } else {
         flash.displayMessage('error', error);
-        logError('\n' + error.message + '\n' + error.stack + '\n');
+        logError(error);
         throw error;
       }
     };

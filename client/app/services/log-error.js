@@ -1,5 +1,5 @@
-export default function(msg) {
-  let e = new Error(msg);
-  if (e.message) { console.log(e.message); }
-  console.log(e.stack || e.message);
+export default function(error) {
+  error = new Error(error);
+  if (error.message) { console.log('\n' + error.message + '\n'); }
+  if (error.stack)   { console.log('\n' + error.stack   + '\n'); }
 }

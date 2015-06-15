@@ -81,7 +81,7 @@
 }
 
 .assign-role-button {
-  @include size(25px, 30px);
+  @include size(25px 30px);
   display: inline-block;
   position: relative;
   margin: 0 0 0 3px;

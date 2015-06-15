@@ -599,19 +599,36 @@
 
   <div class="row">
     <div class="col-md-6">
-      <p>TODO</p>
+      <select class="select2" style="width: 100%">
+        <option>New York</option>
+        <option>Chicago</option>
+        <option>San Francisco</option>
+        <option>Dallas</option>
+        <option>Atlanta</option>
+      </select>
+      <p>Single select</p>
     </div>
     <div class="col-md-6">
-      <p>TODO</p>
+      <select class="select2" multiple style="width: 100%">
+        <option>New York</option>
+        <option>Chicago</option>
+        <option>San Francisco</option>
+        <option>Dallas</option>
+        <option>Atlanta</option>
+      </select>
+      <p>Multiple select</p>
     </div>
   </div>
+  <script>
+    $('.select2').select2();
+  </script>
 
   <hr/>
 
   <div class="row">
     <div class="col-md-12">
       <div class="inset-form-control">
-        <textarea rows="30" class="inset-form-control-textarea"></textarea>
+        <textarea rows="30" class="form-control"></textarea>
       </div>
       <p>Textarea</p>
     </div>
@@ -619,7 +636,35 @@
 
   <hr/>
 
+  <h2 id="radio-buttons-checkboxes">
+    Radio buttons & checkboxes
+  </h2>
+
   <div class="row">
+    <div class="col-md-4">
+      <label>
+        <input type="radio" name="mygroup">
+        Yes
+      </label>
+      <label>
+        <input type="radio" name="mygroup">
+        No
+      </label>
+      <p>Radio buttons</p>
+    </div>
+    <div class="col-md-4">
+      <form class="form-inline">
+        <label class="checkbox">
+          <input type="checkbox" name="mygroup" checked="checked">
+          Completed
+        </label>
+        <label class="checkbox">
+          <input type="checkbox" name="mygroup">
+          Completed
+        </label>
+        <p>Checkboxes</p>
+      </form>
+    </div>
   </div>
 
   <hr/>

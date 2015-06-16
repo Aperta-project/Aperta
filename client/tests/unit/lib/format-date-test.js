@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import formatDate from 'tahi/lib/format-date';
 
-module('FormatDateHelper');
+module('FormatDate');
 
 test('default formatting', function() {
   let helper_options = { hash: {} };

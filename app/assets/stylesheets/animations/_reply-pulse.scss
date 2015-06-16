@@ -1,0 +1,10 @@
+@include keyframes(reply-pulse) {
+  0%   { background-color: transparent; }
+  50%  { background-color: rgba(255, 255, 0, 0.35); }
+  100% { background-color: transparent; }
+}
+
+.animation-pulse {
+  @include animation-name(reply-pulse);
+  @include animation-duration(1500ms);
+}

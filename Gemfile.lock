@@ -18,7 +18,7 @@ GIT
 
 GIT
   remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_internal_review
-  revision: 76cd1c697f63757f5eac09442ff52dc4840c374c
+  revision: 934d405800c68d011dc86da96d53c479e0e90675
   specs:
     plos_bio_internal_review (0.0.1)
       rails (~> 4.2.1)
@@ -655,3 +655,6 @@ DEPENDENCIES
   unf
   vcr
   webmock
+
+BUNDLED WITH
+   1.10.3

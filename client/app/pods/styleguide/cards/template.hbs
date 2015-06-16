@@ -9,14 +9,67 @@
 
   <div class="row">
     <div class="col-md-4">
-      <h3>Not Completed</h3>
       {{card-preview task=taskIncomplete}}
+      <p>Card tile - incomplete<br>
+      height: auto<br>
+      min-width: 220px<br>
+      border-radius: 5px<br>
+      padding: 15px</p>
+
+      <p>Clicking the card tile opens the card.</p>
     </div>
     <div class="col-md-4">
-      <h3>Completed</h3>
       {{card-preview task=taskComplete}}
+      <p>Card tile - complete<br>
+      height: auto<br>
+      min-width: 220px<br>
+      border-radius: 5px<br>
+      padding: 15px</p>
+
+      <p>Completing a card changes the tile accordingly.</p>
     </div>
   </div>
+
+  <hr/>
+
+  <h2 id="pop-up-messages">
+    Pop-up messages
+  </h2>
+
+  <div class="flash-message flash-message--error">
+    <div class="flash-message-content">
+      Whoa Nelly
+      <div class="flash-message-remove">&times;</div>
+    </div>
+  </div>
+  <p>Error message<br>
+  background: #F7EFE9<br>
+  border: 1px solid #E6DD2<br>
+  color: #7A334E<br>
+  height: 46px<br>
+  width: 100%</p>
+
+  <div class="flash-message flash-message--success">
+    <div class="flash-message-content">
+      Aww Ya
+      <div class="flash-message-remove">&times;</div>
+    </div>
+  </div>
+  <p>Success message<br>
+  background: #EAFDE7<br>
+  border: 1px solid #D7F0D1<br>
+  color: $color-primary #7A334E</p>
+
+  <div class="flash-message flash-message--alert">
+    <div class="flash-message-content">
+      Be Aware
+      <div class="flash-message-remove">&times;</div>
+    </div>
+  </div>
+  <p>Warning message<br>
+  background: #F2F2D5<br>
+  border: 1px solid #E1E1E1<br>
+  color: #928B71</p>
 
   <hr/>
 

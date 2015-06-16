@@ -1,9 +1,9 @@
 import Ember from 'ember';
 
-export default Ember.Mixin.create({
+export default Ember.Component.extend({
   _setupGrowingTextarea: Ember.on('didInsertElement', function() {
     Ember.run.scheduleOnce('afterRender', this, function() {
-      this.$('.inset-form-control-textarea').on('input', function() {
+      this.$('textarea').on('input', function() {
         this.style.height = '';
         this.style.height = Math.min(this.scrollHeight, 300) + 'px';
       }).trigger('input');
@@ -11,6 +11,6 @@ export default Ember.Mixin.create({
   }),
 
   _teardownGrowingTextarea: Ember.on('willDestroyElement', function() {
-    this.$('.inset-form-control-textarea').off();
+    this.$('textarea').off();
   })
 });

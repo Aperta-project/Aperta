@@ -16,7 +16,9 @@
 
   <div class="inset-form-control">
     <label class="inset-form-control-text">Message</label>
-    {{textarea class="inset-form-control-textarea discussion-topic-comment-field" placeholder="First comment!"}}
+    {{#expanding-textarea}}
+      {{textarea class="inset-form-control-textarea discussion-topic-comment-field" placeholder="First comment!"}}
+    {{/expanding-textarea}}
   </div>
 
   <button class="button-primary button--green" {{action "save" model}}>Create Topic</button>

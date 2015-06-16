@@ -7,6 +7,8 @@ module EventStream
     end
 
     def post(action:, channel_scope:, excluded_socket_id: nil)
+      return unless TahiPusher::Config.enabled?
+
       if action == "destroyed"
         payload = record.destroyed_payload
         channel_name = TahiPusher::ChannelName.build(

@@ -80,4 +80,8 @@ class Invitation < ActiveRecord::Base
   def reject_allowed?
     task.reject_allowed?(self)
   end
+
+  def event_stream_serializer(user: nil)
+    InvitationIndexSerializer.new(self, root: "invitation")
+  end
 end

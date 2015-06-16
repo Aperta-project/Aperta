@@ -16,6 +16,15 @@ TahiNotifier.subscribe("task:*", "author:*", "figure:*", "invitation:*", "suppor
   EventStream::Broadcaster.new(record).post(action: action, channel_scope: record.paper, excluded_socket_id: excluded_socket_id)
 end
 
+TahiNotifier.subscribe("invitation:updated") do |payload|
+  action = payload[:action]
+  record = payload[:record]
+  excluded_socket_id = payload[:requester_socket_id]
+
+  # serialize the invitation model down the user channel
+  EventStream::Broadcaster.new(record).post(action: action, channel_scope: record.invitee, excluded_socket_id: excluded_socket_id)
+end
+
 TahiNotifier.subscribe("comment:*", "participation:*") do |payload|
   action = payload[:action]
   record = payload[:record]

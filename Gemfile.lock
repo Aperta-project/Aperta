@@ -497,6 +497,9 @@ GEM
       rspec-mocks (~> 3.3.0)
       rspec-support (~> 3.3.0)
     rspec-support (3.3.0)
+    rspec_junit_formatter (0.2.2)
+      builder (< 4)
+      rspec-core (>= 2, < 4, != 2.12.0)
     rubyzip (1.1.7)
     safe_yaml (1.0.4)
     sass (3.4.14)
@@ -635,6 +638,7 @@ DEPENDENCIES
   rspec-instafail
   rspec-its
   rspec-rails
+  rspec_junit_formatter (= 0.2.2)
   rubyzip
   sass-rails
   sdoc

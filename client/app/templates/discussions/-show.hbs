@@ -1,10 +1,12 @@
-<div class="sheet-toolbar">
-  {{link-to "< Back" topicsIndexPath class="sheet-toolbar-button"}}
-</div>
+<div class="sheet-header">
+  <div class="sheet-toolbar">
+    {{link-to "< Back" topicsIndexPath class="sheet-toolbar-button"}}
+  </div>
 
-<div class="sheet-content discussions-show-content">
   <div class="discussions-show-header">
-    <h1 class="discussions-show-title">{{model.title}}</h1>
+    <h1 class="discussions-show-title">
+      {{input value=model.title action="saveTopic" on="focus-out"}}
+    </h1>
 
     {{participant-selector currentParticipants=participants
                            everyone=allUsers

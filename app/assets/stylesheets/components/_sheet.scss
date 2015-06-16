@@ -1,5 +1,12 @@
 $sheet-toolbar-height: 60px;
 
+/*
+  .sheet
+    .sheet-toolbar
+    .sheet-header
+    .sheet-content
+*/
+
 .sheet {
   @include position(fixed, 0px -450px 0px auto);
   width: 450px;
@@ -12,6 +19,8 @@ $sheet-toolbar-height: 60px;
 
   .liquid-child {
     @include position(absolute, 0px auto 0px 0px);
+    @include display(flex);
+    @include flex-flow(column nowrap);
     width: 100%;
   }
 }
@@ -22,9 +31,18 @@ $sheet-toolbar-height: 60px;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
 }
 
+
+.sheet-close-x {
+  @include position(absolute, -4px 0px auto auto);
+  padding-right: 30px;
+  color: $tahi-green;
+  font-size: 42px;
+  cursor: pointer;
+  z-index: 1;
+}
+
 .sheet-toolbar {
-  @include position(absolute, 0px 0px auto 0px);
-  height: $sheet-toolbar-height;
+  min-height: $sheet-toolbar-height;
 }
 
 .sheet-toolbar-button {
@@ -36,16 +54,13 @@ $sheet-toolbar-height: 60px;
   line-height: $sheet-toolbar-height;
 }
 
-.sheet-close-x {
-  @include position(absolute, -4px 0px auto auto);
-  padding-right: 30px;
-  color: $tahi-green;
-  font-size: 42px;
-  cursor: pointer;
-  z-index: 1;
+
+.sheet-header {
+  @include flex(0 0 auto);
 }
 
+
 .sheet-content {
-  overflow: auto;
-  @include position(absolute, $sheet-toolbar-height 0px 0px 0px);
+  @include flex(0 1 100%);
+  overflow-y: scroll;
 }

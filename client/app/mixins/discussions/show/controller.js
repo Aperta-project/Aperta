@@ -10,6 +10,10 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
   sortedReplies: Ember.computed.sort('model.discussionReplies', 'replySort'),
 
   actions: {
+    saveTopic() {
+      this.get('model').save();
+    },
+
     postReply(body) {
       this.store.createRecord('discussion-reply', {
         discussionTopic: this.get('model'),

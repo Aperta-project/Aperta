@@ -1,6 +1,7 @@
 // Index:
 
 .discussions-index-header {
+  padding-top: 40px;
   text-align: center;
 }
 
@@ -26,8 +27,25 @@
 
 .discussions-show-title {
   font-size: 21px;
+
+  input {
+    width: 87%;
+    text-align: center;
+    border: 1px solid transparent;
+    background: transparent;
+
+    &:focus,
+    &:hover {
+      border-color: #ddd;
+      background: #fff;
+    }
+  }
 }
 
 .discussions-show-content {
+  padding: 0 30px;
+}
+
+.discussions-show-form {
   padding: 0 30px;
 }

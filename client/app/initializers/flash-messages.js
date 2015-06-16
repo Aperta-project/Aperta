@@ -4,8 +4,8 @@ import Flash from 'tahi/services/flash';
 export default {
   name: 'flashMessages',
 
-  initialize(container, application) {
-    container.register('flashMessages:main', Flash);
+  initialize(registry, application) {
+    application.register('flashMessages:main', Flash);
     application.inject('route', 'flash', 'flashMessages:main');
     application.inject('controller', 'flash', 'flashMessages:main');
     application.inject('component:flashMessages', 'flash', 'flashMessages:main');

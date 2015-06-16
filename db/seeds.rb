@@ -5,11 +5,11 @@ when 'development'
   Rake::Task['data:create_task_types'].invoke
 
   # Create Journal
-  plos_journal = Journal.first_or_create(name: 'PLOS Yeti', logo: '')
+  plos_journal = Journal.first_or_create!(name: 'PLOS Yeti', logo: '')
 
   # Create Users
   # These Users should match Personas, by convention
-  admin = User.where(email: 'admin@example.com').first_or_create do |user|
+  admin = User.where(email: 'admin@example.com').first_or_create! do |user|
     user.first_name = 'Admin'
     user.last_name = 'User'
     user.password = 'password'
@@ -19,7 +19,7 @@ when 'development'
     user.user_roles.new(role: plos_journal.roles.find_by(kind: Role::ADMIN))
   end
 
-  User.where(email: 'editor@example.com').first_or_create do |user|
+  User.where(email: 'editor@example.com').first_or_create! do |user|
     user.first_name = 'Editor'
     user.last_name = 'User'
     user.password = 'password'
@@ -28,7 +28,7 @@ when 'development'
     user.user_roles.new(role: plos_journal.roles.find_by(kind: Role::EDITOR))
   end
 
-  User.where(email: 'reviewer@example.com').first_or_create do |user|
+  User.where(email: 'reviewer@example.com').first_or_create! do |user|
     user.first_name = 'Reviewer'
     user.last_name = 'User'
     user.password = 'password'
@@ -37,7 +37,7 @@ when 'development'
     user.user_roles.new(role: plos_journal.roles.find_by(kind: Role::REVIEWER))
   end
 
-  User.where(email: 'flow_manager@example.com').first_or_create do |user|
+  User.where(email: 'flow_manager@example.com').first_or_create! do |user|
     user.first_name = 'FlowManager'
     user.last_name = 'User'
     user.password = 'password'
@@ -46,7 +46,7 @@ when 'development'
     user.user_roles.new(role: plos_journal.roles.find_by(kind: Role::FLOW_MANAGER))
   end
 
-  User.where(email: 'author@example.com').first_or_create do |user|
+  User.where(email: 'author@example.com').first_or_create! do |user|
     user.first_name = 'Author'
     user.last_name = 'User'
     user.password = 'password'
@@ -90,7 +90,7 @@ when 'development'
     last_name = name[1]
 
     email = "#{first_name.downcase}.#{last_name.downcase}@example.com"
-    User.where(email: email).first_or_create do |user|
+    User.where(email: email).first_or_create! do |user|
       user.first_name = first_name
       user.last_name = last_name
       user.username = "#{first_name.downcase}"

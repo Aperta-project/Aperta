@@ -98,7 +98,6 @@ end
 group :test do
   gem 'capybara'
   gem 'selenium-webdriver'
-  gem 'capybara-webkit'
   gem 'simplecov'
   gem 'codeclimate-test-reporter', require: nil
   gem 'vcr'
@@ -109,5 +108,5 @@ group :test do
 end
 
 group :staging, :performance do
-  gem 'mail_safe', '0.3.1'
+  gem 'mail_safe'
 end

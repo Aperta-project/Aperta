@@ -207,7 +207,7 @@ class Paper < ActiveRecord::Base
     #   editor?(user)        # => true
     #   collaborator?(user)  # => false
     #
-    # Returns an Array of User records.
+    # Returns true if the user has the role on the paper, false otherwise.
     #
     # Signature
     #

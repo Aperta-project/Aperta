@@ -1,5 +1,7 @@
 case Rails.env
 when 'development'
+  ENV['PUSHER_ENABLED'] = 'false'
+
   Rake::Task['data:create_task_types'].invoke
 
   # Create Journal

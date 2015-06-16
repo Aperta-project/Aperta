@@ -5,7 +5,8 @@ export default Ember.Component.extend({
     Ember.run.scheduleOnce('afterRender', this, function() {
       this.$('textarea').on('input', function() {
         this.style.height = '';
-        this.style.height = Math.min(this.scrollHeight, 300) + 'px';
+        let height = Math.min(this.scrollHeight, 300);
+        this.style.height = Math.max(32, height) + 'px';
       }).trigger('input');
     });
   }),

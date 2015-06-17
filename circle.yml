@@ -45,8 +45,12 @@ database:
 ## Customize test commands
 test:
   override:
-    - bin/circleci:
+    - bundle exec rspec --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec.xml:
         parallel: true
+        files:
+          - "spec/**/*_spec.rb"
+          - "engines/*/spec/**/*_spec.rb"
+    - bundle exec rake ember:test      
 
 ## Customize heroku deployment
 deployment:

@@ -38,7 +38,7 @@
 
         .select2-search-choice-close {
           @include position(absolute, -6px auto auto 17px);
-          @include size(14px, 14px);
+          @include size(14px 14px);
           display: none;
           border: 2px solid #fff;
           border-radius: 50%;
@@ -82,7 +82,7 @@
 }
 
 .add-participant-button {
-  @include size(25px, 25px);
+  @include size(25px 25px);
   border: 1px solid $tahi-green;
   border-radius: 3px;
   color: $tahi-green;

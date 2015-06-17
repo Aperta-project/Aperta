@@ -28,8 +28,8 @@ $progress-spinner-size-small: 30px;
 
 // - Size Modifiers -----------------------
 
-.progress-spinner--small { @include size($progress-spinner-size-small, $progress-spinner-size-small); }
-.progress-spinner--large { @include size($progress-spinner-size-large, $progress-spinner-size-large); }
+.progress-spinner--small { @include size($progress-spinner-size-small $progress-spinner-size-small); }
+.progress-spinner--large { @include size($progress-spinner-size-large $progress-spinner-size-large); }
 
 
 // - Position Modifiers -------------------

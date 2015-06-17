@@ -29,7 +29,6 @@ export default AuthorizedRoute.extend({
     this.store.find('discussion-topic', {
       paper_id: model.get('id')
     }).then((topics) => {
-      console.log("fetched topics: ", topics);
       topics.forEach(this.subscribeToDiscussionTopic.bind(this));
 
       pusher.wire(this, userChannelName, ["discussion-participant-created"]);
@@ -108,7 +107,6 @@ export default AuthorizedRoute.extend({
       let discussionParticipant = payload.discussion_participant;
       this.store.findById('discussion-topic', discussionParticipant.discussion_topic_id).then((topic) => {
         if(topic.get('paperId') === this.modelFor('paper').get('id')) {
-          console.log("Subscribing late to topic#", topic.getProperties('id', 'title', 'paperId'));
           this.subscribeToDiscussionTopic(topic);
         }
       });

@@ -13,7 +13,7 @@ export default Ember.Component.extend({
       if(Ember.isEmpty(createdAt)) { return; }
 
       // if created in the last 2 seconds, set to isNew
-      let diff = Math.floor(Date.now() / 1000) - Math.floor(createdAt.getTime() / 1000)
+      let diff = Math.floor(Date.now() / 1000) - Math.floor(createdAt.getTime() / 1000);
       if(diff < 2) {
         this.set('isNew', true);
       }

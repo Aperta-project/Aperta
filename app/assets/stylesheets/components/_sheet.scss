@@ -1,12 +1,5 @@
 $sheet-toolbar-height: 60px;
 
-/*
-  .sheet
-    .sheet-toolbar
-    .sheet-header
-    .sheet-content
-*/
-
 .sheet {
   @include position(fixed, 0px -450px 0px auto);
   width: 450px;

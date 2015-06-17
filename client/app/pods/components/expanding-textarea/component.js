@@ -6,7 +6,7 @@ export default Ember.Component.extend({
       this.$('textarea').on('input', function() {
         this.style.height = '';
         let height = Math.min(this.scrollHeight, 300);
-        this.style.height = Math.max(32, height) + 'px';
+        this.style.height = Math.max(34, height) + 'px';
       }).trigger('input');
     });
   }),

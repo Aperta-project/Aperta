@@ -1,8 +1,8 @@
-<div class="sheet-header">
-  <div class="sheet-toolbar">
-    {{link-to "< Back" topicsIndexPath class="sheet-toolbar-button"}}
-  </div>
+<div class="sheet-toolbar">
+  {{link-to "< Back" topicsIndexPath class="sheet-toolbar-button"}}
+</div>
 
+<div class="sheet-content discussions-show-content">
   <div class="discussions-show-header">
     <h1 class="discussions-show-title">
       {{input value=model.title action="saveTopic" on="focus-out"}}
@@ -21,9 +21,7 @@
   </div>
 
   <br>
-</div>
 
-<div class="sheet-content discussions-show-content">
   {{#each sortedReplies as |reply|}}
     {{discussion-reply reply=reply}}
   {{/each}}

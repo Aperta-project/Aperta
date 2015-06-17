@@ -1,7 +1,6 @@
 // Index:
 
 .discussions-index-header {
-  padding-top: 40px;
   text-align: center;
 }
 
@@ -36,6 +35,11 @@
 
     &:focus,
     &:hover {
+      border-color: rgba(0,0,0, 0.05);
+      background: rgba(255,255,255, 0.3);
+    }
+
+    &:focus {
       border-color: #ddd;
       background: #fff;
     }
@@ -43,9 +47,5 @@
 }
 
 .discussions-show-content {
-  padding: 0 30px;
-}
-
-.discussions-show-form {
   padding: 0 30px;
 }

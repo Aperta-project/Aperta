@@ -19,8 +19,6 @@ $sheet-toolbar-height: 60px;
 
   .liquid-child {
     @include position(absolute, 0px auto 0px 0px);
-    @include display(flex);
-    @include flex-flow(column nowrap);
     width: 100%;
   }
 }
@@ -42,7 +40,8 @@ $sheet-toolbar-height: 60px;
 }
 
 .sheet-toolbar {
-  min-height: $sheet-toolbar-height;
+  @include position(absolute, 0px 0px auto 0px);
+  height: $sheet-toolbar-height;
 }
 
 .sheet-toolbar-button {
@@ -55,12 +54,7 @@ $sheet-toolbar-height: 60px;
 }
 
 
-.sheet-header {
-  @include flex(0 0 auto);
-}
-
-
 .sheet-content {
-  @include flex(0 1 100%);
-  overflow-y: scroll;
+  @include position(absolute, $sheet-toolbar-height 0px 0px 0px);
+  overflow-y: auto;
 }

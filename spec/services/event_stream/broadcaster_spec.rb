@@ -7,6 +7,17 @@ describe EventStream::Broadcaster do
   let(:channel) { double(:channel, push: nil) }
 
   describe "#post" do
+    context "pusher is disabled" do
+      before do
+        allow(TahiPusher::Config).to receive(:enabled?).and_return(false)
+      end
+
+      it "does nothing" do
+        expect(TahiPusher::Channel).to_not receive(:new)
+        broadcaster.post(action: "destroyed", channel_scope: model)
+      end
+    end
+
     context "destroyed action" do
       it "sends to the system channel" do
         expect(TahiPusher::Channel).to receive(:new).with(channel_name: "system").and_return(channel)

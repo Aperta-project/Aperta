@@ -9,16 +9,36 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
     });
   },
 
+  // TODO: Remove this when we have routeable components.
+  // Controllers are currently singletons and this property sticks around
+  setupController(controller, model) {
+    this._super(controller, model);
+    controller.set('replyText', '');
+  },
+
+  createReply(replyText, topic) {
+    topic.get('discussionReplies').createRecord({
+      discussionTopic: topic,
+      replier: this.get('currentUser'),
+      body: replyText
+    }).save();
+  },
+
+
   actions: {
-    cancel(model) {
-      model.deleteRecord();
+    cancel(topic) {
+      topic.deleteRecord();
       this.transitionTo(this.get('topicsIndexPath'));
     },
 
-    save(model) {
-      model.save().then(()=> {
-        this.send('discussionTopicCreated', model);
-        this.transitionTo(this.get('topicsShowPath'), model);
+    save(topic, replyText) {
+      topic.save().then(()=> {
+        if(!Ember.isEmpty(replyText)) {
+          this.createReply(replyText, topic);
+        }
+
+        this.send('discussionTopicCreated', topic);
+        this.transitionTo(this.get('topicsShowPath'), topic);
       });
     }
   }

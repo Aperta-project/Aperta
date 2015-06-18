@@ -309,6 +309,20 @@
     <input type="checkbox" />
     Dataset is not available (This may be contradictory to the PLoS data policy)
   </label>
+  <ol class="question-list">
+    <li class="question">
+      <label class="checkbox">
+        <input type="checkbox" />
+        Does the manuscript describe a new zoological taxon name?
+      </label>
+    </li>
+    <li class="question">
+      <label class="checkbox">
+        <input type="checkbox" />
+        Does the manuscript describe a new botanical taxon name?
+      </label>
+    </li>
+  </ol>
   <hr/>
 
   <h3 id="buttons">Buttons</h3>
@@ -318,6 +332,39 @@
   <hr/>
 
   <h3 id="forms">Forms</h3>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="journal-thumbnail-edit-form">
+        <div class="journal-thumbnail-logo-upload">
+          <div class="journal-thumbnail-logo">
+            <img src="#" />
+          </div>
+          <span class="button-secondary fileinput-button button--blue knockout">Upload New</span>
+          <span class="journal-thumbnail-logo-upload-note">(250px x 40px)</span>
+        </div>
+        <div class="inset-form-control required ">
+          <div class="inset-form-control-text">
+            <label>Journal Title</label>
+            <div id="ember3396" class="ember-view error-message error-message--hidden"><!---->
+            </div>
+          </div>
+          <input id="ember3397" class="ember-view ember-text-field form-control journal-name-edit inset-form-control-input" placeholder="PLOS Yeti" type="text">
+        </div>
+        <div class="inset-form-control required ">
+          <div class="inset-form-control-text">
+            <label>Journal Title</label>
+            <div id="ember3396" class="ember-view error-message error-message--hidden"><!---->
+            </div>
+          </div>
+          <textarea id="ember3399" class="ember-view ember-text-area journal-description-edit inset-form-control-textarea" placeholder="Accelerating the publication of peer-reviewed science"><!----></textarea>
+        </div>
+        <div class="journal-edit-buttons">
+          <a href="#" class="button-link button--white" data-ember-action="3400">Cancel</a>
+          <a href="#" class="button-secondary button--blue knockout" data-ember-action="3401">Save</a>
+        </div>
+      </div>
+    </div>
+  </div>
   <hr/>
 
   <h3 id="content-entry">Content Entry</h3>

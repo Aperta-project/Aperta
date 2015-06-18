@@ -100,24 +100,12 @@ class PapersController < ApplicationController
     paper.update submitted: true, editable: false
 
     if paper.valid?
-      notify_paper_submitted!
-      UserMailer.delay.paper_submission paper.id
-      broadcast_paper_tech_fixed_event
+      notify_paper_submitted!()
+      broadcast_paper_submitted_event()
+      render json: paper
+    else
+      render json: paper, status: 422
     end
-
-    render_paper
-  end
-
-  def submit_tech
-    paper.update editable: false
-
-    if paper.valid?
-      notify_paper_tech_fixed!
-      UserMailer.delay.paper_tech_fix paper.id
-      broadcast_paper_submitted_event
-    end
-
-    render_paper
   end
 
   private
@@ -165,10 +153,6 @@ class PapersController < ApplicationController
     end
   end
 
-  def render_paper
-    render json: paper, status: paper.valid? ? 200 : 422
-  end
-
   def enforce_policy
     authorize_action!(paper: paper)
   end
@@ -214,22 +198,8 @@ class PapersController < ApplicationController
     )
   end
 
-  def notify_paper_tech_fixed!
-    Activity.create(
-      feed_name: 'manuscript',
-      activity_key: 'paper.tech_fixed',
-      subject: paper,
-      user: current_user,
-      message: 'Author tech changes were submitted'
-    )
-  end
-
   def broadcast_paper_submitted_event
     TahiNotifier.notify(event: "paper.submitted", payload: { paper_id: paper.id })
-  end
-
-  def broadcast_paper_tech_fixed_event
-    TahiNotifier.notify(event: "paper.tech_fixed", payload: { paper_id: paper.id })
   end
 
 end

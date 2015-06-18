@@ -2,6 +2,7 @@
 # This class represents the paper in the system.
 class Paper < ActiveRecord::Base
   include EventStream::Notifiable
+  include AASM
 
   belongs_to :creator, inverse_of: :submitted_papers, class_name: 'User', foreign_key: :user_id
   belongs_to :journal, inverse_of: :papers
@@ -36,6 +37,15 @@ class Paper < ActiveRecord::Base
 
   after_update :paper_submitted, if: -> { self.submitted_changed? from: false, to: true }
 
+  aasm column: :publishing_state do
+    state :ongoing, initial: true  # currently being authored
+    state :submitted
+    state :in_minor_revision # revision that does not require resubmission
+    state :in_revision # has revised decision and requires resubmission
+    state :accepted
+    state :rejected
+    state :published
+  end
   class << self
     # Public: Find papers in the 'submitted' state only.
     #

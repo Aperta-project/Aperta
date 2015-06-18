@@ -22,6 +22,7 @@ module('Integration: Discussions', {
     paper = make('paper', { phases: [], tasks: [] });
     topic = make('topic_with_replies', { paperId: paper.id, title: 'Hipster Ipsum Dolor' });
 
+    $.mockjax({url: /\/api\/papers\/\d+\/manuscript_manager/, status: 204});
     TestHelper.handleFind(paper);
     TestHelper.handleFindAll('discussion-topic', 1);
   }

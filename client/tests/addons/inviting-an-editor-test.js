@@ -40,6 +40,7 @@ module("Integration: inviting an editor", {
     task = FactoryGuy.make("paper-editor-task", { phase: phase });
     paper = FactoryGuy.make('paper', { phases: [phase], tasks: [task] });
     TestHelper.handleFind(paper);
+    TestHelper.handleFindAll('discussion-topic', 1);
   }
 });
 

@@ -31,7 +31,6 @@ class Paper < ActiveRecord::Base
   validates :paper_type, presence: true
   validates :short_title, presence: true, uniqueness: true
   validates :journal, presence: true
-  validate :metadata_tasks_completed?, if: :submitting?
 
   delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
 
@@ -45,7 +44,14 @@ class Paper < ActiveRecord::Base
     state :accepted
     state :rejected
     state :published
+
+    event(:submit, {
+      after: [:prevent_edits!]
+    }) do
+      transitions from: :ongoing, to: :submitted, guards: :metadata_tasks_completed?
+    end
   end
+
   class << self
     # Public: Find papers in the 'submitted' state only.
     #
@@ -169,10 +175,6 @@ class Paper < ActiveRecord::Base
     update_attribute(:locked_by, user)
   end
 
-  def submitting? # :nodoc:
-    submitted_changed? && submitted
-  end
-
   def unlock # :nodoc:
     update_attribute(:locked_by, nil)
   end
@@ -181,9 +183,12 @@ class Paper < ActiveRecord::Base
     update_attribute(:last_heartbeat_at, Time.now)
   end
 
-  def metadata_tasks_completed? # :nodoc:
-    return unless uncompleted_tasks?
-    errors.add(:base, "can't submit a paper when all of the metadata tasks aren't completed")
+  def metadata_tasks_completed?
+    tasks.metadata.count == tasks.metadata.completed.count
+  end
+
+  def prevent_edits!
+    update!(editable: false)
   end
 
   %w(admins editors reviewers collaborators).each do |relation|
@@ -245,9 +250,5 @@ class Paper < ActiveRecord::Base
   def paper_submitted
     itc_task = tasks.detect { |t| t.is_a? PlosBioTechCheck::InitialTechCheckTask }
     itc_task.increment_round! if itc_task
-  end
-
-  def uncompleted_tasks?
-    tasks.metadata.count != tasks.metadata.completed.count
   end
 end

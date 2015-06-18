@@ -97,15 +97,12 @@ class PapersController < ApplicationController
   end
 
   def submit
-    paper.update submitted: true, editable: false
-
-    if paper.valid?
+    paper.submit! do
       notify_paper_submitted!
+      UserMailer.delay.paper_submission(paper.id)
       broadcast_paper_submitted_event
-      render json: paper
-    else
-      render json: paper, status: 422
     end
+    respond_with paper
   end
 
   private

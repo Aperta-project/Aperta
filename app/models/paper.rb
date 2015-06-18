@@ -34,8 +34,6 @@ class Paper < ActiveRecord::Base
 
   delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
 
-  after_update :paper_submitted, if: -> { self.submitted_changed? from: false, to: true }
-
   aasm column: :publishing_state do
     state :ongoing, initial: true  # currently being authored
     state :submitted
@@ -46,7 +44,7 @@ class Paper < ActiveRecord::Base
     state :published
 
     event(:submit, {
-      after: [:prevent_edits!]
+      after: [:prevent_edits!, :paper_submitted]
     }) do
       transitions from: :ongoing, to: :submitted, guards: :metadata_tasks_completed?
     end
@@ -63,18 +61,6 @@ class Paper < ActiveRecord::Base
     # Returns an ActiveRelation.
     def submitted
       where(submitted: true)
-    end
-
-    # Public: Find papers that are not in 'submitted' state.
-    #
-    # Examples
-    #
-    #   Paper.ongoing
-    #   # => [<#123: Paper>, <#124: Paper>]
-    #
-    # Returns an ActiveRelation.
-    def ongoing
-      where(submitted: false)
     end
 
     # Public: Find papers that have been published.
@@ -247,6 +233,7 @@ class Paper < ActiveRecord::Base
     Nokogiri::HTML(body).text.truncate_words 100
   end
 
+  # TODO: this should be moved to the gem and can be triggered by looking at event stream notifications
   def paper_submitted
     itc_task = tasks.detect { |t| t.is_a? PlosBioTechCheck::InitialTechCheckTask }
     itc_task.increment_round! if itc_task

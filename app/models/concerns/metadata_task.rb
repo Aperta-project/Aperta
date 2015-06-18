@@ -6,7 +6,7 @@ module MetadataTask
     if user.site_admin?
       true
     else
-      !paper.submitted?
+      paper.ongoing? || paper.in_revision?
     end
   end
 

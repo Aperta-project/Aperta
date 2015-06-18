@@ -25,12 +25,13 @@ describe Task do
     let(:authorized) { task.authorize_update?(nil, user) }
     before do
       allow(task).to receive(:paper).and_return paper
-      allow(paper).to receive(:submitted?).and_return paper_submitted
+      allow(paper).to receive(:in_revision?).and_return false
+      allow(paper).to receive(:ongoing?).and_return ongoing
     end
 
     context "a non-metadata task with a submitted paper" do
       let(:task) { Task.new(type: 'Task') }
-      let(:paper_submitted) { true }
+      let(:ongoing) { false }
       let(:admin) { false }
 
       it 'generally returns true' do
@@ -46,7 +47,7 @@ describe Task do
       let(:task) { AMetadataTask.new(type: 'AMetadataTask') }
 
       context 'the paper has been submitted' do
-        let(:paper_submitted) { true }
+        let(:ongoing) { false }
 
         context "the user is an admin" do
           let(:admin) { true }
@@ -64,7 +65,7 @@ describe Task do
       end
 
       context 'the paper has not been submitted' do
-        let(:paper_submitted) { false }
+        let(:ongoing) { true }
         let(:admin) { false }
         it "allows a regular user" do
           expect(authorized).to eq(true)

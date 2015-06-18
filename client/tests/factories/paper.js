@@ -4,10 +4,10 @@ FactoryGuy.define("paper", {
   default: {
     title: '',
     shortTitle: '',
-    submitted: false,
+    publishingState: 'ongoing',
     roles: [],
     relatedAtDate: "2014-09-28T13:54:58.028Z",
-    editable: true,
+    editable: true
   },
 
   traits: {

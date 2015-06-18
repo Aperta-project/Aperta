@@ -26,7 +26,7 @@ export default DS.Model.extend({
   shortTitle: DS.attr('string'),
   status: DS.attr('string'),
   strikingImageId: DS.attr('string'),
-  submitted: DS.attr('boolean'),
+  publishing_state: DS.attr('string'),
   title: DS.attr('string'),
 
   displayTitle: function() {

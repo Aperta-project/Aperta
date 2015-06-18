@@ -4,6 +4,7 @@
 `import { paperWithTask, addUserAsParticipant, addUserAsCollaborator } from '../helpers/setups'`
 `import setupMockServer from '../helpers/mock-server'`
 `import Factory from '../helpers/factory'`
+`import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';`
 
 app = null
 server = null
@@ -20,6 +21,7 @@ module 'Integration: EditPaper',
     app = startApp()
     server = setupMockServer()
     fakeUser = window.currentUserData.user
+    TestHelper.handleFindAll('discussion-topic', 1)
 
     figureTaskId = 94139
 

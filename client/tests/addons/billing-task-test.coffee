@@ -4,6 +4,7 @@
 `import { paperWithTask, addUserAsParticipant } from '../helpers/setups'`
 `import setupMockServer from '../helpers/mock-server'`
 `import Factory from '../helpers/factory'`
+`import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';`
 
 app = null
 server = null
@@ -18,6 +19,7 @@ module 'Integration: Billing',
     app = startApp()
     server = setupMockServer()
     fakeUser = window.currentUserData.user
+    TestHelper.handleFindAll('discussion-topic', 1)
 
     billingTaskId = 94139
 

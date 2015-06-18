@@ -1,63 +1,87 @@
 `import Ember from 'ember'`
 `import { test } from 'ember-qunit'`
 `import startApp from '../helpers/start-app'`
-`import { paperWithTask } from '../helpers/setups'`
+`import { paperWithTask, addUserAsParticipant } from '../helpers/setups'`
 `import setupMockServer from '../helpers/mock-server'`
 `import Factory from '../helpers/factory'`
 
+app = null
 server = null
-module "Integration: FinancialDisclosureTask",
+fakeUser = null
+currentPaper = null
+
+module 'Integration: FinancialDisclosureTask',
+  teardown: ->
+    server.restore()
+    Ember.run(app, app.destroy)
   setup: ->
-    startApp()
+    app = startApp()
     server = setupMockServer()
+    fakeUser = window.currentUserData.user
 
-test "Viewing the card", ->
-  records = paperWithTask('FinancialDisclosureTask'
-    id: 1
-    role: "author"
-  )
+    financialDisclosureTaskId = 94139
 
-  payload = Factory.createPayload('paper')
+    records = paperWithTask('FinancialDisclosureTask'
+      id: financialDisclosureTaskId
+      role: "author"
+    )
 
-  paper = records[0]
-  task = records[1]
-  author = Factory.createAuthor(paper, first_name: "Bob", last_name: "Dole")
+    [currentPaper, financialDisclosureTask, journal, phase] = records
 
-  payload.addRecords(records.concat[author])
+    paperPayload = Factory.createPayload('paper')
 
-  taskPayload = Factory.createPayload('task')
+    paperPayload.addRecords(records.concat([fakeUser]))
+    paperResponse = paperPayload.toJSON()
+    paperResponse.participations = [addUserAsParticipant(financialDisclosureTask, fakeUser)]
 
-  taskPayload.addRecords([task, author])
+    taskPayload = Factory.createPayload('task')
+    taskPayload.addRecords([financialDisclosureTask, fakeUser])
+    financialDisclosureTask = taskPayload.toJSON()
 
-  server.respondWith 'GET', "/api/papers/#{paper.id}", [
-    200, {"Content-Type": "application/json"}, JSON.stringify payload.toJSON()
-  ]
+    collaborators = [
+      id: "35"
+      full_name: "Aaron Baker"
+      info: "testroles2, collaborator"
+    ]
 
-  server.respondWith 'GET', "/api/papers/#{paper.id}/#{task.id}", [
-    200, {"Content-Type": "application/json"}, JSON.stringify taskPayload.toJSON()
-  ]
+    server.respondWith 'GET', "/api/papers/#{currentPaper.id}", [
+      200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
+    ]
+    server.respondWith 'GET', "/api/tasks/#{financialDisclosureTaskId}", [
+      200, {"Content-Type": "application/json"}, JSON.stringify financialDisclosureTask
+    ]
+    server.respondWith 'PUT', /\/api\/tasks\/\d+/, [
+      204, {"Content-Type": "application/json"}, JSON.stringify {}
+    ]
+    server.respondWith 'GET', /\/api\/filtered_users\/users\/\d+/, [
+      200, {"Content-Type": "application/json"}, JSON.stringify []
+    ]
+
+    mirrorCreateResponse = (key, newId) ->
+      (xhr) ->
+        createdItem = JSON.parse(xhr.requestBody)
+        createdItem[key].id = newId
+        response = JSON.stringify createdItem
+        xhr.respond(201,{"Content-Type": "application/json"}, response)
+
+    server.respondWith 'POST', "/api/funders", mirrorCreateResponse('funder', 1)
+
+test 'Viewing card', ->
+  visit "/papers/#{currentPaper.id}/edit"
+  click ':contains("Financial")'
+  .then ->
+    equal find('.overlay-main-work h1').text().trim(), 'Financial Disclosures'
+    ok find("input[id='financial_disclosure.received_funding-yes']").length
+    ok !find("button:contains('Add Another Funder')").length, "User can add another funder"
+    ok !find("span.remove-funder").length, "User can add remove the funder"
+
+    jQuery("input[id='financial_disclosure.received_funding-yes']").click()
+    ok find("input[id='financial_disclosure.received_funding-yes']:checked").length
+    # andThen ->
+    # ok find("button:contains('Add Another Funder')").length, "User can add another funder"
+    # ok find("span.remove-funder").length, "User can add remove the funder"
 
 
-  mirrorCreateResponse = (key, newId) ->
-    (xhr) ->
-      createdItem = JSON.parse(xhr.requestBody)
-      createdItem[key].id = newId
-      response = JSON.stringify createdItem
-      xhr.respond(201,{"Content-Type": "application/json"}, response)
-
-  server.respondWith 'POST', "/api/funders", mirrorCreateResponse('funder', 1)
-
-  visit "/papers/#{paper.id}"
-  debugger
-  click ""
-  click "input#received-funding-yes"
-  click ".chosen-author input"
-  click "li.active-result:contains('Bob Dole')"
-  andThen ->
-    ok _.findWhere(server.requests, {method: "POST", url: "/api/funders"}), "It posts to the server"
-    ok find("button:contains('Add Another Funder')").length, "User can add another funder"
-    ok find("a.remove-funder-link").length, "User can add remove the funder"
-#
 # test "Removing an existing funder when there's only 1", ->
 #   ef = ETahi.Factory
 #   records = ETahi.Setups.paperWithTask ('FinancialDisclosureTask')

@@ -23,7 +23,7 @@ module 'Integration: Billing',
 
     records = paperWithTask('BillingTask'
       id: billingTaskId
-      role: "author"
+      role: "admin"
     )
 
     [currentPaper, billingTask, journal, phase] = records

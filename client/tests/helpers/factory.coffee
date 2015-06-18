@@ -395,7 +395,7 @@ FactoryAttributes.FinancialDisclosureTask =
   question_ids: []
   role: "author"
   title: "Financial Disclosure"
-  type: "TahiStandardTasks::FinancialDisclosureTask"
+  type: "FinancialDisclosureTask"
 
 FactoryAttributes.Funder =
   _rootKey: 'funder'

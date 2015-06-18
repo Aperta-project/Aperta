@@ -1,13 +1,13 @@
 <div class="navigation">
   <div class="navigation-title" {{action "hideNavigation"}}>
-    <span class="navigation-close">&times;</span>{{specifiedAppName}}
+    <span class="navigation-close">&times;</span>{{unbound attrs.specifiedAppName}}
   </div>
 
-  {{#if isLoggedIn}}
+  {{#if attrs.isLoggedIn}}
     <div {{action "hideNavigation"}}>
       {{#link-to "profile" class="navigation-item navigation-item--account"}}
-        <img src={{currentUser.avatarUrl}} class="user-thumbnail">
-        <span>{{unbound currentUser.fullName}}</span>
+        <img src={{unbound attrs.currentUser.avatarUrl}} class="user-thumbnail">
+        <span>{{unbound attrs.currentUser.fullName}}</span>
       {{/link-to}}
     </div>
 
@@ -15,12 +15,13 @@
       {{link-to "Dashboard" "dashboard" class="navigation-item"}}
     </div>
 
-    {{#if canViewFlowManagerLink}}
+    {{#if attrs.canViewFlowManagerLink}}
       <div {{action "hideNavigation"}}>
         {{link-to "Flow Manager" "flow_manager" class="navigation-item"}}
       </div>
     {{/if}}
-    {{#if canViewAdminLinks}}
+
+    {{#if attrs.canViewAdminLinks}}
       <div {{action "hideNavigation"}}>
         {{link-to "Admin" "admin" class="navigation-item navigation-item--admin"}}
       </div>
@@ -35,6 +36,6 @@
   <hr>
 
   <div {{action "hideNavigation"}}>
-    <a href="#" class="navigation-item navigation-item-feedback" {{action "feedback"}}>Give Feedback on {{specifiedAppName}}</a>
+    <a href="#" class="navigation-item navigation-item-feedback" {{action "showFeedbackOverlay"}}>Give Feedback on {{unbound attrs.specifiedAppName}}</a>
   </div>
 </div>

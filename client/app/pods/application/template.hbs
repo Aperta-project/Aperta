@@ -1,12 +1,11 @@
-{{tahi-nav
-    currentUser=currentUser
-    isLoggedIn=isLoggedIn
-    canViewFlowManagerLink=canViewFlowManagerLink
-    canViewAdminLinks=canViewAdminLinks
-    specifiedAppName=specifiedAppName
-    hideNavigation="hideNavigation"
-    showNavigation="showNavigation"
-    feedback="feedback"}}
+{{tahi-nav currentUser=currentUser
+           isLoggedIn=isLoggedIn
+           canViewFlowManagerLink=canViewFlowManagerLink
+           canViewAdminLinks=canViewAdminLinks
+           specifiedAppName=specifiedAppName
+           hideNavigation=(action "hideNavigation")
+           showNavigation=(action "showNavigation")
+           showFeedbackOverlay=(action "showFeedbackOverlay")}}
 
 <div class="main-content">
   <div class="main-content-cover" {{action "hideNavigation"}}></div>

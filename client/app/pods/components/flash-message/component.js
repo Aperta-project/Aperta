@@ -5,7 +5,6 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   classNames: ['flash-message'],
   classNameBindings: ['type'],
-  layoutName: 'flash-message',
 
   type: function() {
     return 'flash-message--' + this.get('message.type');

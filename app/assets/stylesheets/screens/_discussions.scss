@@ -1,0 +1,58 @@
+// Index:
+
+.discussions-index-header {
+  text-align: center;
+}
+
+.discussions-index-topic {
+  display: block;
+  margin: 0 30px;
+  border-top: 1px solid #ddd;
+  padding: 1rem 5px;
+  color: #333;
+  font-size: 16px;
+
+  .badge {
+    background: #d00;
+  }
+}
+
+// Show:
+
+.discussions-show-header {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.discussions-show-title {
+  font-size: 21px;
+
+  input {
+    width: 87%;
+    text-align: center;
+    border: 1px solid transparent;
+    background: transparent;
+
+    &:focus,
+    &:hover {
+      border-color: rgba(0,0,0, 0.05);
+      background: rgba(255,255,255, 0.3);
+    }
+
+    &:focus {
+      border-color: #ddd;
+      background: #fff;
+    }
+  }
+}
+
+.discussions-show-content {
+  padding: 0 30px;
+}
+
+.discussions-empty {
+  padding-top: 30px;
+  color: #999;
+  font-size: 21px;
+  text-align: center;
+}

@@ -17,6 +17,7 @@ module 'Integration: Commenting',
     TestHelper.setup(App)
     $.mockjax(url: "/api/admin/journals/authorization", status: 204)
     $.mockjax(url: "/api/user_flows/authorization", status: 204)
+    TestHelper.handleFindAll('discussion-topic', 1)
 
 
 test 'A card with more than 5 comments has the show all comments button', ->

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+grep -rs "\b${1}\b" . ../* --include=*.{js,coffee,hbs,rb} --exclude-dir={bower_components,node_modules,tmp}
+

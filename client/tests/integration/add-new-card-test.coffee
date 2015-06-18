@@ -3,6 +3,7 @@
 `import { test } from 'ember-qunit'`
 `import { paperWithParticipant } from '../helpers/setups'`
 `import setupMockServer from '../helpers/mock-server'`
+`import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';`
 
 app = null
 server = null
@@ -16,6 +17,7 @@ module 'Integration: adding a new card',
   setup: ->
     app = startApp()
     server = setupMockServer()
+    TestHelper.handleFindAll('discussion-topic', 1)
 
     adminJournalsResponse =
       admin_journal: {

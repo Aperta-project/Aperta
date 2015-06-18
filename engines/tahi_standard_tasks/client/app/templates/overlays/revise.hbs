@@ -1,10 +1,6 @@
-<h1>
-  Revise Manuscript
-</h1>
+<h1>Revise Manuscript</h1>
 
-<h3>
-  Current Revision
-</h3>
+<h3>Current Revision</h3>
 
 <div class="decision">
   <p>
@@ -12,45 +8,29 @@
     <span class="revision-number">
       {{latestDecision.revisionNumber}}
     </span>
-    at
+    on
     <span class="created-at">
-      {{latestDecision.createdAt}}
+      {{format-date latestDecision.createdAt}}
     </span>
   </p>
 
-  <p>
-    {{latestDecision.letter}}
-  </p>
+  <p>{{latestDecision.letter}}</p>
+</div>
+
+<div>
+  <h3>Revision Details:</h3>
+  {{#if editingAuthorResponse}}
+    {{content-editable value=latestDecision.authorResponse class="revise-overlay-response-field" placeholder="Please detail the changes you've made to your submission here"}}
+    <button class="button-primary button--green" {{action "saveAuthorResponse"}}>Save</button>
+  {{else}}
+    <div>{{display-line-breaks latestDecision.authorResponse}}</div>
+    <button class="button-primary button--green" {{action "editAuthorResponse"}}></button>
+  {{/if}}
 </div>
 
 {{#if previousDecisions}}
   <hr>
-
-  <h3>
-    Decision History
-  </h3>
+  <h3>Decision History</h3>
 {{/if}}
 
-<div class="previous-decisions">
-  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-  {{#each previousDecisions as |decision|}}
-    <div class="panel panel-default decision">
-      <div class="panel-heading" role="tab" id="decision-{{unbound decision.id}}" >
-        <h4 class="panel-title">
-          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{unbound decision.id}}" aria-expanded="false" aria-controls="collapse-{{unbound decision.id}}">
-            Revision
-            <span class="revision-number">{{decision.revisionNumber}}</span>
-          </a>
-        </h4>
-      </div>
-      <div id="collapse-{{unbound decision.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="decision-{{unbound decision.id}}">
-        <div class="panel-body">
-          <span class="letter">
-            {{decision.letter}}
-          </span>
-        </div>
-      </div>
-    </div>
-  {{/each}}
-  </div>
-</div>
+{{partial 'overlays/partials/decision-list'}}

@@ -2,9 +2,11 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   papers: [],
-  invitations: [],
   unreadComments: [],
-  pendingInvitations: Ember.computed.filterBy('invitations', 'state', 'invited'),
+  pendingInvitations: function() {
+    return this.get('currentUser.invitedInvitations');
+  }.property('currentUser.invitedInvitations'),
+
   hasPapers: Ember.computed.notEmpty('papers'),
   pageNumber: 1,
   relatedAtSort: ['relatedAtDate:desc'],

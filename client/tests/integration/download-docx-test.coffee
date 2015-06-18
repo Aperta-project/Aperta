@@ -5,6 +5,7 @@
 `import setupMockServer from '../helpers/mock-server'`
 `import Factory from '../helpers/factory'`
 `import Utils from 'tahi/services/utils'`
+`import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';`
 
 app = null
 server = null
@@ -21,6 +22,7 @@ module 'Integration: Paper Docx Download',
     app = startApp()
     server = setupMockServer()
     fakeUser = window.currentUserData.user
+    TestHelper.handleFindAll('discussion-topic', 1)
 
 test 'show download links on control bar', ->
   records = paperWithTask('Task'

@@ -1,0 +1,18 @@
+<div class="sheet-content">
+  <div class="discussions-index-header">
+    <h1>Discussions</h1>
+    {{link-to "Create New Topic" topicsNewPath class="button-secondary button--green"}}
+  </div>
+  <br><br>
+
+  {{#each paperTopics as |topic|}}
+    {{#link-to topicsShowPath topic.id class="discussions-index-topic"}}
+      {{#if topic.unreadCount}}
+        <span class="badge">{{topic.unreadCount}}</span>
+      {{/if}}
+      {{topic.title}}
+    {{/link-to}}
+  {{else}}
+    <div class="discussions-empty">No topics available</div>
+  {{/each}}
+</div>

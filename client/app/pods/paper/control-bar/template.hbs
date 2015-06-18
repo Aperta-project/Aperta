@@ -36,6 +36,12 @@
           <div class="control-bar-link-text">Recent Activity</div>
         </div>
       </li>
+      <li class="control-bar-item">
+        {{#link-to "paper.edit.discussions" model class="control-bar-link control-bar-button"}}
+          <div class="control-bar-link-icon"><span class="fa fa-comment"></span></div>
+          Discussions
+        {{/link-to}}
+      </li>
       {{#if canViewManuscriptManager}}
         <li class="control-bar-item">
           {{#link-to "paper.workflow" model class="control-bar-link control-bar-button"}}

@@ -89,14 +89,6 @@ test '(200 response) can see the Admin link', ->
   andThen ->
     equal(find(".navigation:contains('Admin')").length, 1)
 
-test '(200 response) can see the Flow Manager link', ->
-  respondAuthorized()
-
-  visit '/'
-  click '.navigation-toggle'
-  andThen ->
-    equal(find(".navigation:contains('Flow Manager')").length, 1)
-
 test '(403 response) cannot see the Admin link', ->
   respondUnauthorized()
 

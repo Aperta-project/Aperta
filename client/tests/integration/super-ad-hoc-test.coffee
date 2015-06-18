@@ -4,6 +4,7 @@
 `import setupMockServer from '../helpers/mock-server'`
 `import { paperWithTask } from '../helpers/setups'`
 `import Factory from '../helpers/factory'`
+`import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';`
 
 app = null
 server = null
@@ -20,6 +21,7 @@ module 'Integration: Super AdHoc Card',
     app = startApp()
     server = setupMockServer()
     fakeUser = window.currentUserData.user
+    TestHelper.handleFindAll('discussion-topic', 1)
 
     records = paperWithTask('Task'
       id: 1

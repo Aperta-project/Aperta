@@ -16,7 +16,6 @@ export default Ember.Route.extend({
     controller.set('papers', this.store.filter('paper', function(p) {
       return Ember.isPresent(p.get('roles'));
     }));
-    controller.set('invitations', this.currentUser.get('invitedInvitations'));
     return this._super(controller, model);
   },
 

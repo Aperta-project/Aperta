@@ -8,8 +8,8 @@ class Task < ActiveRecord::Base
   cattr_accessor :metadata_types
   cattr_accessor :submission_types
 
-  scope :metadata,   -> { where(type: metadata_types) }
-  scope :submission, -> { where(type: submission_types) }
+  scope :metadata,   -> { where(type: metadata_types.to_a) }
+  scope :submission, -> { where(type: submission_types.to_a) }
 
   # Scopes based on assignment
   scope :unassigned, -> { includes(:participations).where(participations: { id: nil }) }

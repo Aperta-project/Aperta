@@ -15,21 +15,14 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
 
   startEditing: function() {
     this.set('model.lockedBy', this.currentUser);
-    this.get('model').save().then(function() {
-      this.connectEditor();
-      this.send('startEditing');
-      this.set('saveState', false);
-    }.bind(this));
+    this.connectEditor();
+    this.send('startEditing');
   },
 
   stopEditing: function() {
-    this.set('model.body', this.get('editor').getBodyHtml());
-    this.set('model.lockedBy', null);
-    this.send('stopEditing');
     this.disconnectEditor();
-    this.get('model').save().then(function() {
-      this.set('saveState', true);
-    }.bind(this));
+    this.savePaper();
+    this.send('stopEditing');
   },
 
   updateEditor: function() {
@@ -42,6 +35,9 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
   savePaper: function() {
     if (!this.get('model.editable')) {
       return;
+    }
+    if (!this.get('lockedByCurrentUser')) {
+      throw new Error('Paper can not be saved as it is locked. Please try again later.')
     }
     var editor = this.get('editor');
     var paper = this.get('model');
@@ -64,6 +60,7 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
   disconnectEditor: function() {
     this.get('editor').disconnect();
   },
+
 });
 
 export default HtmlEditorController;

@@ -26,3 +26,4 @@ Procfile.local
 .env.*
 # except .env.test
 !.env.test
+engines/tahi-assess

@@ -349,12 +349,7 @@ GEM
     interception (0.5)
     ipaddress (0.8.0)
     json (1.8.3)
-<<<<<<< HEAD
-    jwt (0.1.13)
-      multi_json (>= 1.5)
-=======
     jwt (1.5.0)
->>>>>>> bb680af9fcd9cab4393865f4305fd11fc5247a8a
     kaminari (0.16.3)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)

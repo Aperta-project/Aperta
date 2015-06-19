@@ -47,44 +47,35 @@ class Paper < ActiveRecord::Base
       after: [:prevent_edits!, :paper_submitted]
     }) do
       transitions from: :ongoing, to: :submitted, guards: :metadata_tasks_completed?
-    end
-  end
-
-  class << self
-    # Public: Find papers in the 'submitted' state only.
-    #
-    # Examples
-    #
-    #   Paper.submitted
-    #   # => [<#123: Paper>, <#124: Paper>]
-    #
-    # Returns an ActiveRelation.
-    def submitted
-      where(submitted: true)
+      transitions from: :in_revision, to: :submitted, guards: :metadata_tasks_completed?
     end
 
-    # Public: Find papers that have been published.
-    #
-    # Examples
-    #
-    #   Paper.published
-    #   # => [<#123: Paper>, <#124: Paper>]
-    #
-    # Returns an ActiveRelation.
-    def published
-      where.not(published_at: nil)
+    event(:minor_revision, {
+      after: [:allow_edits!]
+    }) do
+      transitions from: :submitted, to: :in_minor_revision
     end
 
-    # Public: Find papers that haven't been published yet.
-    #
-    # Examples
-    #
-    #   Paper.unpublished
-    #   # => [<#123: Paper>, <#124: Paper>]
-    #
-    # Returns an ActiveRelation.
-    def unpublished
-      where(published_at: nil)
+    event(:submit_minor_revision, {
+      after: [:prevent_edits!]
+    }) do
+      transitions from: :in_minor_revision, to: :submitted, on_transition: :set_published_at
+    end
+
+    event(:revise) do
+      transitions from: :submitted, to: :in_revision
+    end
+
+    event(:accept) do
+      transitions from: :submitted, to: :accepted
+    end
+
+    event(:reject) do
+      transitions from: :submitted, to: :rejected
+    end
+
+    event(:publish) do
+      transitions from: :submitted, to: :published
     end
   end
 
@@ -175,6 +166,14 @@ class Paper < ActiveRecord::Base
 
   def prevent_edits!
     update!(editable: false)
+  end
+
+  def allow_edits!
+    update(editable: true)
+  end
+
+  def set_published_at
+    update(published_at, Time.current.utc())
   end
 
   %w(admins editors reviewers collaborators).each do |relation|

@@ -16,13 +16,11 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
   startEditing: function() {
     this.set('model.lockedBy', this.currentUser);
     this.connectEditor();
-    this.send('startEditing');
   },
 
   stopEditing: function() {
     this.disconnectEditor();
     this.savePaper();
-    this.send('stopEditing');
   },
 
   updateEditor: function() {

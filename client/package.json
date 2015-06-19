@@ -38,7 +38,8 @@
     "express": "^4.8.5",
     "glob": "^4.0.5",
     "liquid-fire": "0.19.4",
-    "tahi-fileupload": "substance/tahi-fileupload#master"
+    "tahi-fileupload": "substance/tahi-fileupload#master",
+    "tahi-editor-ve": "substance/tahi-editor-ve#master"
   },
   "ember-addon": {
     "paths": [

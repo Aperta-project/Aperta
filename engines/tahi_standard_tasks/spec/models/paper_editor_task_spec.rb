@@ -7,7 +7,7 @@ describe TahiStandardTasks::PaperEditorTask do
     let!(:task) do
       TahiStandardTasks::PaperEditorTask.create!({
         phase: paper.phases.first,
-        title: "Assign Editor",
+        title: "Invite Editor",
         role: "admin"
       })
     end
@@ -27,7 +27,7 @@ describe TahiStandardTasks::PaperEditorTask do
     let!(:task) do
       TahiStandardTasks::PaperEditorTask.create!({
         phase: paper.phases.first,
-        title: "Assign Editor",
+        title: "Invite Editor",
         role: "admin"
       })
     end

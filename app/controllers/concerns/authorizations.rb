@@ -19,7 +19,7 @@ module Authorizations
   end
 
   def render_forbidden
-    if request.xhr?
+    if request.xhr? || (request.format != :html)
       head :forbidden
     else
       redirect_to root_path

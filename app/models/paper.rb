@@ -25,6 +25,7 @@ class Paper < ActiveRecord::Base
   has_many :authors, -> { order 'authors.position ASC' }
   has_many :activities
   has_many :decisions, -> { order 'revision_number DESC' }, dependent: :destroy
+  has_many :discussion_topics, inverse_of: :paper, dependent: :destroy
 
   validates :paper_type, presence: true
   validates :short_title, presence: true, uniqueness: true
@@ -206,7 +207,7 @@ class Paper < ActiveRecord::Base
     #   editor?(user)        # => true
     #   collaborator?(user)  # => false
     #
-    # Returns an Array of User records.
+    # Returns true if the user has the role on the paper, false otherwise.
     #
     # Signature
     #

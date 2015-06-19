@@ -13,5 +13,5 @@ test 'it renders', ->
   equal component._state, 'preRender'
 
   # appends the component to the page
-  @append()
+  @render()
   equal component._state, 'inDOM'

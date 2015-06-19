@@ -9,5 +9,6 @@ export default DS.Model.extend({
   isLatest: DS.attr('boolean'),
   letter: DS.attr('string'),
   revisionNumber: DS.attr('number'),
-  verdict: DS.attr('string')
+  verdict: DS.attr('string'),
+  authorResponse: DS.attr('string'),
 });

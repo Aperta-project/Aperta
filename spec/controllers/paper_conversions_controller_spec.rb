@@ -23,12 +23,11 @@ describe PaperConversionsController, type: :controller do
 
     context "as a user with no access" do
       let(:user) { create :user }
-      it "returns a 401" do
+      it "returns a 403" do
         VCR.use_cassette('not_authorized_convert_to_docx') do
           get :export, id: paper.id, format: 'docx'
         end
-        expect(response.status).to eq(302)
-        expect(response).to redirect_to :root
+        expect(response.status).to eq(403)
       end
     end
   end

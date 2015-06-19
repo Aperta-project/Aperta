@@ -58,8 +58,15 @@ export default Ember.Mixin.create({
     @return {Object}
   */
 
-  _prepareResponseErrors: function(errors) {
-    return Utils.deepJoinArrays(Utils.deepCamelizeKeys(errors));
+  _prepareResponseErrors: function(errors, options) {
+    var errorsObject = Utils.deepJoinArrays(Utils.deepCamelizeKeys(errors));
+
+    if (options && options.includeNames) {
+      for(var key in errorsObject) {
+        errorsObject[key] = `${key.capitalize()} ${errors[key]}`;
+      }
+    }
+    return errorsObject;
   },
 
   /**
@@ -146,8 +153,8 @@ export default Ember.Mixin.create({
     @param {Object} response Hash from Ember Data `save` failure. Expected to be in format Rails sends.
   */
 
-  displayValidationErrorsFromResponse: function(response) {
-    this.set('validationErrors', this._prepareResponseErrors(response.errors));
+  displayValidationErrorsFromResponse: function(response, options) {
+    this.set('validationErrors', this._prepareResponseErrors(response.errors, options));
   },
 
   /**

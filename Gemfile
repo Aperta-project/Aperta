@@ -16,9 +16,10 @@ gem 'tahi_upload_manuscript', path: 'engines/tahi_upload_manuscript'
 gem 'plos_bio_tech_check', git: "https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check"
 gem 'plos_bio_internal_review', git: 'https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_internal_review'
 gem 'plos_billing', path: 'engines/plos_billing'
+gem 'tahi-assign_team', git: 'https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/tahi-assign_team'
 
 # Gems
-gem 'rails', '4.2.1'
+gem 'rails', '4.2.2'
 gem 'puma'
 gem 'rack-timeout'
 gem 'pg'
@@ -98,7 +99,6 @@ end
 group :test do
   gem 'capybara'
   gem 'selenium-webdriver'
-  gem 'capybara-webkit'
   gem 'simplecov'
   gem 'codeclimate-test-reporter', require: nil
   gem 'vcr'
@@ -106,8 +106,9 @@ group :test do
   gem 'thin'
   gem 'timecop'
   gem 'pusher-fake'
+  gem 'rspec_junit_formatter', '0.2.2'
 end
 
 group :staging, :performance do
-  gem 'mail_safe', '0.3.1'
+  gem 'mail_safe'
 end

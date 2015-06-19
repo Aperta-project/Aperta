@@ -51,6 +51,9 @@ Tahi::Application.routes.draw do
     resources :comments, only: [:create, :show]
     resources :comment_looks, only: [:index, :destroy]
     resources :decisions, only: [:create, :update]
+    resources :discussion_topics, only: [:index, :show, :create, :update, :destroy]
+    resources :discussion_participants, only: [:create, :destroy]
+    resources :discussion_replies, only: [:create, :update, :destroy]
     resources :errors, only: :create
     resources :feedback, only: :create
     resources :figures, only: [:destroy, :update] do
@@ -72,9 +75,16 @@ Tahi::Application.routes.draw do
       put :reject, on: :member
     end
     resources :journal_task_types, only: :update
-    resources :journals, only: [:index, :show]
+    resources :journals, only: [:index, :show] do
+      resources :roles, only: :index, shallow: true do
+        namespace "roles", path: '' do
+          resources :users, only: :index
+        end
+      end
+    end
     resources :manuscript_manager_templates, only: [:create, :show, :update, :destroy]
     resources :paper_roles, only: [:show]
+    resources :assignments, only: [:index, :create, :destroy]
     resources :papers, only: [:index, :create, :show, :update] do
       resource :editor, only: :destroy
       resource :manuscript_manager, only: :show

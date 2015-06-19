@@ -1,3 +1,4 @@
+// TODO: phase out
 .form-control.tall-text-field {
   width: 100%;
   height: 50px;
@@ -8,6 +9,8 @@
   }
 }
 
+// TODO: phase out
+// Should be placed within form-group div and above the input element
 .text-field-title {
   position: absolute;
   color: $tahi-grey;
@@ -24,13 +27,17 @@
 
   label { color: $tahi-grey; }
 
-  &.required::before {
-    content: '*';
-    font-size: 24pt;
-    font-weight: bold;
-    position: absolute;
-    color: #5d4aac;
-    left: -20px;
+  &.required {
+    label { padding-left: 12px; }
+
+    &::before {
+      content: '*';
+      position: absolute;
+      top: 4px;
+      left: 12px;
+      color: $tahi-green;
+      font-size: 24px;
+    }
   }
 }
 

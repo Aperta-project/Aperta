@@ -2,8 +2,8 @@
 `import RESTless from 'tahi/services/rest-less'`
 `import Heartbeat from 'tahi/services/heartbeat'`
 `import ENV from 'tahi/config/environment'`
-`import initializeVisualEditor from 'ember-cli-visualeditor/initializers/initialize_visual_editor'`
 `import AuthorizedRoute from 'tahi/routes/authorized'`
+`import loadVeEditorAssets from 'tahi-editor-ve/initializers/load-assets'`
 
 PaperEditRoute = AuthorizedRoute.extend
   fromSubmitOverlay: false
@@ -16,7 +16,7 @@ PaperEditRoute = AuthorizedRoute.extend
 
     # Yuck
     if paper.get('editorMode') is 'html'
-      editorInit = initializeVisualEditor(ENV).catch((error) ->
+      editorInit = loadVeEditorAssets(ENV).catch((error) ->
         Ember.Logger.error(error))
 
     taskLoad = new Ember.RSVP.Promise((resolve, reject) ->

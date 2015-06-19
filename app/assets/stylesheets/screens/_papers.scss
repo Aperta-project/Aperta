@@ -328,9 +328,15 @@ html.control-bar-sub-nav-active #paper-container {
 
 .paper-container-html .toolbar {
   @include position(fixed, $tahi-control-bar-height 0px auto 0px);
+  font-family: $tahi-font-family;
   background-color: $tahi-white;
+  z-index: 1;
 }
 
 .paper-container-html .manuscript-inner {
   overflow: hidden;
+}
+
+.paper-edit-overlay {
+  font-family: $tahi-font-family;
 }

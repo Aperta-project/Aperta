@@ -16,7 +16,6 @@ Controller = Ember.Controller.extend PaperBaseMixin, PaperEditMixin, Discussions
   # used to recover a selection when returning from another context (such as figures)
   isEditing: Ember.computed.alias('lockedByCurrentUser')
   hasOverlay: false
-  # used to switch editor implementation
   editorComponent: 'tahi-editor-ve'
 
   paperBodyDidChange: ( ->

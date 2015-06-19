@@ -19,7 +19,11 @@ View = Ember.View.extend PaperEditMixin,
   ).observes('isEditing')
 
   initializeEditingState: ( ->
-    @updateEditorLockedState()
+    # try tpo start editing
+    # TODO for now we should switch to a simplified locking strategy:
+    # When the editor is opened it will acquire the lock and release it when leaving
+    # If the paper is locked already we should indicate it somehow
+    @get('controller').startEditing()
   ).on('didInsertElement')
 
   destroyEditor: ( ->

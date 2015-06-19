@@ -259,7 +259,6 @@ ActiveRecord::Schema.define(version: 20150621091508) do
     t.datetime "updated_at"
     t.integer  "user_id"
     t.string   "paper_type",        limit: 255
-    t.boolean  "submitted",                     default: false,  null: false
     t.integer  "journal_id",                                     null: false
     t.text     "decision_letter"
     t.datetime "published_at"

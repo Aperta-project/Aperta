@@ -69,7 +69,7 @@ class EditPaperPage < Page
   def body=(string)
     code = <<HERE
 var editorController = Tahi.__container__.lookup("controller:paper/edit/html-editor");
-var editor = editorController.get("editor");
+var editor = editorController.get("editor.editor");
 editor.setCursor(0);
 editor.write("#{string}");
 HERE
@@ -111,13 +111,23 @@ HERE
   end
 
   def start_writing
-    find(".edit-paper-button").click
-    expect(self).to have_css('.edit-paper-prompt', text: 'STOP WRITING')
+    # NOTE: deactivated toggle for start/stop writing for now
+    # find(".edit-paper-button").click
+    # expect(self).to have_css('.edit-paper-prompt', text: 'STOP WRITING')
   end
 
   def stop_writing
-    find(".edit-paper-button").click
-    expect(self).to have_css('.edit-paper-prompt', text: 'START WRITING')
+    # NOTE: deactivated toggle for start/stop writing for now
+    # find(".edit-paper-button").click
+    # expect(self).to have_css('.edit-paper-prompt', text: 'START WRITING')
+  end
+
+  def save
+    code = <<HERE
+var editorController = Tahi.__container__.lookup("controller:paper/edit/html-editor");
+editorController.savePaper();
+HERE
+    page.execute_script code
   end
 
   def submit

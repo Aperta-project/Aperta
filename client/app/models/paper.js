@@ -8,6 +8,7 @@ export default DS.Model.extend({
   editors: DS.hasMany('user'),
   figures: DS.hasMany('figure', { inverse: 'paper' }),
   tables: DS.hasMany('table', { inverse: 'paper' }),
+  bibitems: DS.hasMany('bibitem', { inverse: 'paper' }),
   journal: DS.belongsTo('journal'),
   lockedBy: DS.belongsTo('user'),
   phases: DS.hasMany('phase'),

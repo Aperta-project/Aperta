@@ -17,13 +17,6 @@ GIT
       activerecord (>= 3.0)
 
 GIT
-  remote: https://a32661883ad21e1b710268e7e73e39530e1cab95:x-oauth-basic@github.com/PLOS/tahi-assess
-  revision: 9131e38fdafd9f1747f31929f4e396454d5f68b9
-  specs:
-    tahi-assess (0.0.1)
-      rails (~> 4.2.0, < 4.3)
-
-GIT
   remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_internal_review
   revision: 965b8ea606e341adcf3d20c6932a67c930968bd0
   specs:
@@ -65,6 +58,12 @@ PATH
   specs:
     plos_billing (0.0.1)
       rails (~> 4.2.0)
+
+PATH
+  remote: engines/tahi-assess
+  specs:
+    tahi-assess (0.0.1)
+      rails (~> 4.2.0, < 4.3)
 
 PATH
   remote: engines/tahi_standard_tasks

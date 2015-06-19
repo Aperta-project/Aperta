@@ -325,3 +325,12 @@ html.control-bar-sub-nav-active #paper-container {
     }
   }
 }
+
+.paper-container-html .toolbar {
+  @include position(fixed, $tahi-control-bar-height 0px auto 0px);
+  background-color: $tahi-white;
+}
+
+.paper-container-html .manuscript-inner {
+  overflow: hidden;
+}

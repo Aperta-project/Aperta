@@ -37,7 +37,7 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
       return;
     }
     if (!this.get('lockedByCurrentUser')) {
-      throw new Error('Paper can not be saved as it is locked. Please try again later.')
+      throw new Error('Paper can not be saved as it is locked. Please try again later.');
     }
     var editor = this.get('editor');
     var paper = this.get('model');

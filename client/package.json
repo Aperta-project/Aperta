@@ -39,7 +39,7 @@
     "glob": "^4.0.5",
     "liquid-fire": "0.19.4",
     "tahi-fileupload": "substance/tahi-fileupload#3d68c7702cc1b6ba0a544c13f3d65d66a0ab33e6",
-    "tahi-editor-ve": "substance/tahi-editor-ve#16d84448ef642fd36e7045daab649e29089d5b43"
+    "tahi-editor-ve": "substance/tahi-editor-ve#694556618fe9bc5c410ad533fe7aa37be3785196"
   },
   "ember-addon": {
     "paths": [
@@ -47,10 +47,9 @@
       "../engines/plos_billing/client",
       "../engines/tahi_standard_tasks/client",
       "../engines/tahi_upload_manuscript/client",
-      "../../../../.rbenv/versions/2.2.0/lib/ruby/gems/2.2.0/bundler/gems/plos_bio_internal_review-965b8ea606e3/client",
-      "../../plos_bio_tech_check/client",
-      "../../../../.rbenv/versions/2.2.0/lib/ruby/gems/2.2.0/bundler/gems/tahi-assign_team-62cb7fc98c03/client",
-      "../../../../.rbenv/versions/2.2.0/lib/ruby/gems/2.2.0/bundler/gems/plos_bio_internal_review-934d405800c6/client"
+      "../../../.rvm/gems/ruby-2.2.0-preview2@tahi/bundler/gems/plos_bio_internal_review-934d405800c6/client",
+      "../../../.rvm/gems/ruby-2.2.0-preview2@tahi/bundler/gems/plos_bio_tech_check-63666f01e6a4/client",
+      "../../../.rvm/gems/ruby-2.2.0-preview2@tahi/bundler/gems/tahi-assign_team-62cb7fc98c03/client"
     ]
   }
 }

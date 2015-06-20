@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check
-  revision: 63666f01e6a43941b2c17f3fa7a411349466ff9d
+  revision: 95acf546c9e6d3e087fa4ec73109547bc22cac3d
   specs:
     plos_bio_tech_check (0.0.1)
       rails (~> 4.2.0)
@@ -661,4 +661,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.10.3
+   1.10.4

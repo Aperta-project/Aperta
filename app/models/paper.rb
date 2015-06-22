@@ -35,7 +35,7 @@ class Paper < ActiveRecord::Base
   delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
 
   aasm column: :publishing_state do
-    state :ongoing, initial: true  # currently being authored
+    state :ongoing, initial: true # currently being authored
     state :submitted
     state :in_minor_revision # revision that does not require resubmission
     state :in_revision # has revised decision and requires resubmission
@@ -43,39 +43,41 @@ class Paper < ActiveRecord::Base
     state :rejected
     state :published
 
-    event(:submit, {
-      after: [:prevent_edits!, :paper_submitted]
-    }) do
-      transitions from: :ongoing, to: :submitted, guards: :metadata_tasks_completed?
-      transitions from: :in_revision, to: :submitted, guards: :metadata_tasks_completed?
+    event(:submit, after: [:prevent_edits!, :paper_submitted]) do
+      transitions from: [:ongoing, :in_revision],
+                  to: :submitted,
+                  guards: :metadata_tasks_completed?
     end
 
-    event(:minor_revision, {
-      after: [:allow_edits!]
-    }) do
-      transitions from: :submitted, to: :in_minor_revision
+    event(:minor_revision, after: [:allow_edits!]) do
+      transitions from: :submitted,
+                  to: :in_minor_revision
     end
 
-    event(:submit_minor_revision, {
-      after: [:prevent_edits!]
-    }) do
-      transitions from: :in_minor_revision, to: :submitted, on_transition: :set_published_at
+    event(:submit_minor_revision, after: [:prevent_edits!]) do
+      transitions from: :in_minor_revision,
+                  to: :submitted,
+                  on_transition: :set_published_at
     end
 
     event(:revise) do
-      transitions from: :submitted, to: :in_revision
+      transitions from: :submitted,
+                  to: :in_revision
     end
 
     event(:accept) do
-      transitions from: :submitted, to: :accepted
+      transitions from: :submitted,
+                  to: :accepted
     end
 
     event(:reject) do
-      transitions from: :submitted, to: :rejected
+      transitions from: :submitted,
+                  to: :rejected
     end
 
     event(:publish) do
-      transitions from: :submitted, to: :published
+      transitions from: :submitted,
+                  to: :published
     end
   end
 
@@ -173,7 +175,7 @@ class Paper < ActiveRecord::Base
   end
 
   def set_published_at
-    update(published_at, Time.current.utc())
+    update(published_at, Time.current.utc)
   end
 
   %w(admins editors reviewers collaborators).each do |relation|

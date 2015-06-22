@@ -8,15 +8,15 @@ class Task < ActiveRecord::Base
   cattr_accessor :metadata_types
   cattr_accessor :submission_types
 
-  scope :metadata,   -> { where(type: metadata_types.to_a) }
+  scope :metadata, -> { where(type: metadata_types.to_a) }
   scope :submission, -> { where(type: submission_types.to_a) }
 
   # Scopes based on assignment
   scope :unassigned, -> { includes(:participations).where(participations: { id: nil }) }
 
   # Scopes based on state
-  scope :completed,   -> { where(completed: true) }
-  scope :incomplete,  -> { where(completed: false) }
+  scope :completed, -> { where(completed: true) }
+  scope :incomplete, -> { where(completed: false) }
 
   scope :on_journals, ->(journals) { joins(:journal).where("journals.id" => journals.map(&:id)) }
 

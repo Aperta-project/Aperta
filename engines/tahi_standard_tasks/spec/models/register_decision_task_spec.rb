@@ -118,7 +118,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
 
   describe "#after_update" do
     before do
-      allow_any_instance_of(TahiStandardTasks::RegisterDecisionTask).to receive(:revise_decision?).and_return(true)
+      allow_any_instance_of(Decision).to receive(:revision?).and_return(true)
     end
 
     context "when the decision is 'revise' and task is incomplete" do

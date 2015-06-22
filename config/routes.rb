@@ -98,7 +98,6 @@ Tahi::Application.routes.draw do
         get :comment_looks
         get :export, to: "paper_conversions#export"
         put :heartbeat
-        put :submit_tech
         put :submit
         put :toggle_editable
         put :upload

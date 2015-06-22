@@ -21,6 +21,8 @@ module TahiStandardTasks
       # State-transition the paper
       paper.make_decision decision
 
+      DecisionReviser.new(self).process! if revise_decision?
+
       # Email the author
       RegisterDecisionMailer.delay.notify_author_email(decision_id: decision.id)
     end

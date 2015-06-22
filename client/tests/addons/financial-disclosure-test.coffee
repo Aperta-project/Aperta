@@ -9,8 +9,11 @@ app = null
 server = null
 fakeUser = null
 currentPaper = null
+financialDisclosureTaskId = 94139
+financialDisclosureTask = null
+paperPayload = null
 
-module 'Integration: FinancialDisclosureTask',
+module 'FinancialDisclosureTask',
   teardown: ->
     server.restore()
     Ember.run(app, app.destroy)
@@ -19,7 +22,6 @@ module 'Integration: FinancialDisclosureTask',
     server = setupMockServer()
     fakeUser = window.currentUserData.user
 
-    financialDisclosureTaskId = 94139
 
     records = paperWithTask('FinancialDisclosureTask'
       id: financialDisclosureTaskId
@@ -71,37 +73,32 @@ test 'Viewing card', ->
   click ':contains("Financial")'
   .then ->
     equal find('.overlay-main-work h1').text().trim(), 'Financial Disclosures'
-    ok find("input[id='financial_disclosure.received_funding-yes']").length
-    ok !find("button:contains('Add Another Funder')").length, "User can add another funder"
-    ok !find("span.remove-funder").length, "User can add remove the funder"
-
-    jQuery("input[id='financial_disclosure.received_funding-yes']").click()
-    ok find("input[id='financial_disclosure.received_funding-yes']:checked").length
-    # andThen ->
-    # ok find("button:contains('Add Another Funder')").length, "User can add another funder"
-    # ok find("span.remove-funder").length, "User can add remove the funder"
+    ok find("label:contains('Yes')").length
+    click "input:contains('Yes')"
+    .then ->
+      ok !find("button:contains('Add Another Funder')").length, "User can add another funder"
+      ok !find("span.remove-funder").length, "User can add remove the funder"
 
 
 # test "Removing an existing funder when there's only 1", ->
-#   ef = ETahi.Factory
-#   records = ETahi.Setups.paperWithTask ('FinancialDisclosureTask')
-#   paper = records[0]
-#   task = records[1]
-#   author = ef.createAuthor(paper)
-#   funder = ef.createRecord('Funder', author_ids: [author.id], task_id: task.id, id: 1)
-#   task.funder_ids = [1]
-#   payload = ef.createPayload('paper')
-#   payload.addRecords(records.concat([author, funder]))
+# #   ef = ETahi.Factory
+# #   records = ETahi.Setups.paperWithTask ('FinancialDisclosureTask')
+# #   paper = records[0]
+# #   task = records[1]
+# #   author = ef.createAuthor(paper)
+#   funder = Factory.createRecord('Funder', author_ids: 1, task_id: 94139, id: 1)
+#   financialDisclosureTask.funder_ids = [1]
+#   paperPayload.addRecords(records.concat([funder]))
 #
-#   server.respondWith 'GET', "/papers/1", [
-#     200, {"Content-Type": "application/json"}, JSON.stringify payload.toJSON()
+#   server.respondWith 'GET', "/papers/#{currentPaper.id}", [
+#     200, {"Content-Type": "application/json"}, JSON.stringify paperPayload.toJSON()
 #   ]
 #
 #   server.respondWith 'DELETE', "/funders/1", [
 #     204, {"Content-Type": "application/html"}, ""
 #   ]
 #
-#   visit '/papers/1/tasks/1'
+#   visit "/papers/#{currentPaper.id}"
 #   click "a.remove-funder-link"
 #   andThen ->
 #     ok _.findWhere(server.requests, {method: "DELETE", url: "/funders/1"}), "It posts to the server to delete the funder"

@@ -51,5 +51,10 @@ export default DS.Model.extend({
 
   latestDecision: function() {
     return this.get('decisions').findBy('isLatest', true);
-  }.property('decisions', 'decisions.@each')
+  }.property('decisions', 'decisions.@each'),
+
+  submittable: function() {
+    var state = this.get('publishingState');
+    return state === 'ongoing' || state === 'in_revision';
+  }.property('publishingState')
 });

@@ -1,12 +1,4 @@
-<div class="comment-board-form form-group {{if editing "editing"}}">
-  {{user-thumbnail user=currentUser}}
-  {{textarea classNames="new-comment-field" value=commentBody placeholder="Type your message here"}}
-
-  <div class="message-comment-buttons">
-    <button type="submit" class="button-secondary button--green" {{action "postComment"}}>Post Message</button>
-    <a href="#" class="button-link cancel-link" {{action "clearComment"}}>Cancel</a>
-  </div>
-</div>
+{{comment-board-form save="postComment"}}
 
 <ul class="message-comments">
   {{#if showingAllComments}}

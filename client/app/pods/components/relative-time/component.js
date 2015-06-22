@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import relativeTime from 'tahi/lib/relative-time';
 
 export default Ember.Component.extend({
   tagName: 'span',
@@ -11,7 +12,6 @@ export default Ember.Component.extend({
   time: null,
 
   formatedTime: function() {
-    if(Ember.isEmpty(this.get('time'))) { return ''; }
-    return moment(this.get('time').toISOString()).fromNow();
+    return relativeTime(this.get('time'));
   }.property('time')
 });

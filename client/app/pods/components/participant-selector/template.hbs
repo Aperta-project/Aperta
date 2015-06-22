@@ -1,4 +1,6 @@
-<span class="participant-selector-label">Following:</span>
+{{#if label}}
+  <span class="participant-selector-label">{{label}}</span>
+{{/if}}
 
 {{select-2-multiple value=""
                     class="participant-select2"

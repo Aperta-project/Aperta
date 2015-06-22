@@ -81,7 +81,7 @@ class Paper < ActiveRecord::Base
     end
   end
 
-  def make_decision decision
+  def make_decision(decision)
     case decision.verdict
     when "accepted"
       accept!

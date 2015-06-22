@@ -16,7 +16,6 @@ module TahiStandardTasks
     end
 
     def complete_decision
-      return unless on_card_completion?
       decision = paper.decisions.latest
 
       # State-transition the paper
@@ -24,7 +23,9 @@ module TahiStandardTasks
 
       # Email the author
       RegisterDecisionMailer.delay.notify_author_email(decision_id: decision.id)
+    end
 
+    def send_emails
     end
 
     def accept_letter

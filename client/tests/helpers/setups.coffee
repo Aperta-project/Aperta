@@ -13,7 +13,11 @@ paperWithParticipant = ->
 
 paperWithTask = (taskType, taskAttrs) ->
   journal = Factory.createRecord('Journal', id: 1)
-  paper = Factory.createRecord('Paper', journal_id: journal.id, editable: true, Factory.getNewId('paper'))
+  paper = Factory.createRecord('Paper',
+    journal_id: journal.id,
+    editable: true,
+    publishing_state: 'ongoing',
+    Factory.getNewId('paper'))
   phase = Factory.createPhase(paper)
   task = Factory.createTask(taskType, paper, phase, taskAttrs)
 

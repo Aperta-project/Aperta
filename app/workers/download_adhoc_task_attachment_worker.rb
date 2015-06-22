@@ -6,7 +6,7 @@ class DownloadAdhocTaskAttachmentWorker
     attachment.file.download! url
     attachment.title = attachment.file.filename
     if attachment.save
-      attachment.update_column('status', 'done')
+      attachment.update_attribute('status', 'done')
     end
   end
 end

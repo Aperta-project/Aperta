@@ -95,9 +95,83 @@ describe Paper do
         expect(paper).to_not be_editable
       end
     end
+
+    context "when minor-revising (as in a tech check)" do
+      let(:paper) { FactoryGirl.create(:paper, :submitted) }
+
+      it "marks the paper editable" do
+        paper.minor_revision!
+        expect(paper).to be_editable
+      end
+    end
+
+    context "when submitting a minor revision (as in a tech check)" do
+      let(:paper) { FactoryGirl.create(:paper, :submitted) }
+
+      it "marks the paper uneditable" do
+        paper.minor_revision!
+        paper.submit_minor_revision!
+        expect(paper).to_not be_editable
+      end
+    end
+
+    context "when publishing" do
+      let(:paper) { FactoryGirl.create(:paper, :submitted) }
+
+      it "marks the paper uneditable" do
+        paper.publish!
+        expect(paper.published_at).to be_truthy
+      end
+    end
   end
 
+  describe "#make_decision" do
+    let(:paper) { FactoryGirl.create(:paper, :submitted) }
 
+    context "acceptance" do
+      let(:decision) do
+        FactoryGirl.create(:decision, verdict: "accepted")
+      end
+
+      it "accepts the paper" do
+        paper.make_decision decision
+        expect(paper.publishing_state).to eq("accepted")
+      end
+    end
+
+    context "acceptance" do
+      let(:decision) do
+        FactoryGirl.create(:decision, verdict: "accepted")
+      end
+
+      it "accepts the paper" do
+        paper.make_decision decision
+        expect(paper.publishing_state).to eq("accepted")
+      end
+    end
+
+    context "rejection" do
+      let(:decision) do
+        FactoryGirl.create(:decision, verdict: "rejected")
+      end
+
+      it "rejects the paper" do
+        paper.make_decision decision
+        expect(paper.publishing_state).to eq("rejected")
+      end
+    end
+
+    context "revision" do
+      let(:decision) do
+        FactoryGirl.create(:decision, verdict: "revise")
+      end
+
+      it "puts the paper in_revision" do
+        paper.make_decision decision
+        expect(paper.publishing_state).to eq("in_revision")
+      end
+    end
+  end
 
 
   describe "callbacks" do

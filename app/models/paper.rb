@@ -49,20 +49,22 @@ class Paper < ActiveRecord::Base
                   guards: :metadata_tasks_completed?
     end
 
-    event(:minor_revision, after: [:allow_edits!]) do
+    event(:minor_revision) do
       transitions from: :submitted,
-                  to: :in_minor_revision
+                  to: :in_minor_revision,
+                  after: :allow_edits!
     end
 
-    event(:submit_minor_revision, after: [:prevent_edits!]) do
+    event(:submit_minor_revision) do
       transitions from: :in_minor_revision,
                   to: :submitted,
-                  after: :set_published_at
+                  after: :prevent_edits!
     end
 
     event(:revise) do
       transitions from: :submitted,
-                  to: :in_revision
+                  to: :in_revision,
+                  after: :allow_edits!
     end
 
     event(:accept) do
@@ -77,7 +79,8 @@ class Paper < ActiveRecord::Base
 
     event(:publish) do
       transitions from: :submitted,
-                  to: :published
+                  to: :published,
+                  after: :set_published_at!
     end
   end
 
@@ -182,11 +185,11 @@ class Paper < ActiveRecord::Base
   end
 
   def allow_edits!
-    update(editable: true)
+    update!(editable: true)
   end
 
-  def set_published_at
-    update(published_at, Time.current.utc)
+  def set_published_at!
+    update!(published_at: Time.current.utc)
   end
 
   %w(admins editors reviewers collaborators).each do |relation|

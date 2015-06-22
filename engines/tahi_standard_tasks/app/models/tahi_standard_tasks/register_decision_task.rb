@@ -29,8 +29,8 @@ module TahiStandardTasks
 
     def send_email
       decision = paper.decisions.latest
-      RegisterDecisionMailer.delay.notify_author_email
-        decision_id: decision.id
+      RegisterDecisionMailer.delay.notify_author_email(
+        decision_id: decision.id)
     end
 
     def send_emails

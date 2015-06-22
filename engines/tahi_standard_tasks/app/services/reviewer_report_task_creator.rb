@@ -23,7 +23,7 @@ class ReviewerReportTaskCreator
                                                            title: "Review by #{assignee.full_name}")
 
       ParticipationFactory.create(task: task, assignee: assignee)
-      ParticipationFactory.create(task: task, assignee: paper.editor)
+      ParticipationFactory.create(task: task, assignee: paper.editor) if paper.editor.present?
     else
       existing_reviewer_report_task.first.update!(completed: false)
     end

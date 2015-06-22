@@ -13,6 +13,6 @@ class DecisionsController < ApplicationController
   end
 
   def decision_params
-    params.require(:decision).permit(:verdict, :letter)
+    params.require(:decision).permit(:verdict, :letter, :author_response)
   end
 end

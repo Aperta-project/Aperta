@@ -548,6 +548,125 @@
     </div>
   </div>
 
+  <hr />
+
+  <h2 id="form-fields">
+    Form fields
+  </h2>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="inset-form-control">
+        <label class="inset-form-control-text">Label *</label>
+        <input class="inset-form-control-input" placeholder="Placeholder text" value="Input text" type="text" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="inset-form-control">
+        <label class="inset-form-control-text">Label</label>
+        <input class="inset-form-control-input" placeholder="Placeholder text" type="text" />
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+      <p>
+        Label<br>
+        Cabin Regular 12pt<br>
+        $color-medium<br>
+        #878787
+      </p>
+    </div>
+    <div class="col-md-3">
+      <p>
+        Input text<br>
+        Cabin Regular 17pt<br>
+        $color-dark<br>
+        #8ECB87
+      </p>
+    </div>
+    <div class="col-md-6">
+      <p>
+        Placeholder text<br>
+        $color-light<br>
+        #d5d5d5<br>
+      </p>
+    </div>
+  </div>
+
+  <hr/>
+
+  <div class="row">
+    <div class="col-md-6">
+      <select class="select2" style="width: 100%">
+        <option>New York</option>
+        <option>Chicago</option>
+        <option>San Francisco</option>
+        <option>Dallas</option>
+        <option>Atlanta</option>
+      </select>
+      <p>Single select</p>
+    </div>
+    <div class="col-md-6">
+      <select class="select2" multiple style="width: 100%">
+        <option>New York</option>
+        <option>Chicago</option>
+        <option>San Francisco</option>
+        <option>Dallas</option>
+        <option>Atlanta</option>
+      </select>
+      <p>Multiple select</p>
+    </div>
+  </div>
+  <script>
+    $('.select2').select2();
+  </script>
+
+  <hr/>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="inset-form-control">
+        <textarea rows="30" class="form-control"></textarea>
+      </div>
+      <p>Textarea</p>
+    </div>
+  </div>
+
+  <hr/>
+
+  <h2 id="radio-buttons-checkboxes">
+    Radio buttons & checkboxes
+  </h2>
+
+  <div class="row">
+    <div class="col-md-4">
+      <label>
+        <input type="radio" name="mygroup">
+        Yes
+      </label>
+      <label>
+        <input type="radio" name="mygroup">
+        No
+      </label>
+      <p>Radio buttons</p>
+    </div>
+    <div class="col-md-4">
+      <form class="form-inline">
+        <label class="checkbox">
+          <input type="checkbox" name="mygroup" checked="checked">
+          Completed
+        </label>
+        <label class="checkbox">
+          <input type="checkbox" name="mygroup">
+          Completed
+        </label>
+        <p>Checkboxes</p>
+      </form>
+    </div>
+  </div>
+
   <hr/>
 
   <div class="ui-element">

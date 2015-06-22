@@ -53,7 +53,7 @@ feature "Register Decision", js: true do
       expect(overlay.previous_decisions).to_not be_empty
       expect(overlay.previous_decisions.first.revision_number).to eq("0")
       overlay.find("#accordion h4.panel-title a").click # open Accordion
-      expect(overlay.previous_decisions.first.letter).to eq("Please revise the manuscript")
+      expect(overlay.previous_decisions.first.letter).to eq("Request for Revision: Please revise the manuscript")
     end
   end
 end

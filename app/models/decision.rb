@@ -28,6 +28,10 @@ class Decision < ActiveRecord::Base
     self == paper.decisions.latest
   end
 
+  def revision?
+    verdict == 'revise'
+  end
+
   def increment_revision_number
     return if persisted?
 

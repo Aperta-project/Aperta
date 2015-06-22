@@ -9,8 +9,8 @@
   {{inline-edit-checkbox
     bodyPart=view.item
     isNew=view.isNew
-    delete="deleteItem"
-    saveModel="saveModel"}}
+    delete=(action "deleteItem")
+    saveModel=(action "saveModel")}}
 {{/if}}
 {{#if view.isEmailItem}}
   {{inline-edit-email
@@ -18,8 +18,6 @@
     allUsers=view.allUsers
     overlayParticipants=view.overlayParticipants
     isNew=view.isNew
-    isSendable = view.isSendable
-    delete="deleteItem"
-    saveModel="saveModel"
-    sendEmail="sendEmail"}}
+    isSendable=view.isSendable
+    sendEmail=(action "sendEmail")}}
 {{/if}}

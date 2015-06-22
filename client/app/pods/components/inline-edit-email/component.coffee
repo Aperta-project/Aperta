@@ -43,7 +43,12 @@ InlineEditEmailComponent = Ember.Component.extend AdhocInlineEditItemMixin,
       bodyPart = @get('bodyPart')
       bodyPart.sent = moment().format('MMMM Do YYYY')
       @set('lastSentAt', bodyPart.sent)
-      @sendAction("sendEmail", body: bodyPart.value, subject: bodyPart.subject, recipients: recipientIds)
+
+      this.attrs.sendEmail
+        body: bodyPart.value
+        subject: bodyPart.subject
+        recipients: recipientIds
+
       @set('showChooseReceivers', false)
       @setSentState()
       @get('parentView').send('save')

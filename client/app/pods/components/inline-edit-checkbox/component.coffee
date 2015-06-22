@@ -14,9 +14,9 @@ InlineEditCheckboxComponent = Ember.Component.extend AdhocInlineEditItem,
 
   actions:
     saveModel: ->
-      @sendAction('saveModel')
+      this.attrs.saveModel()
 
     deleteItem: ->
-      @sendAction('delete', @get('bodyPart'), @get('parentView.block'))
+      this.attrs.delete(@get('bodyPart'), @get('parentView.block'))
 
 `export default InlineEditCheckboxComponent`

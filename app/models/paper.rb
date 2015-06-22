@@ -57,7 +57,7 @@ class Paper < ActiveRecord::Base
     event(:submit_minor_revision, after: [:prevent_edits!]) do
       transitions from: :in_minor_revision,
                   to: :submitted,
-                  on_transition: :set_published_at
+                  after: :set_published_at
     end
 
     event(:revise) do
@@ -78,6 +78,17 @@ class Paper < ActiveRecord::Base
     event(:publish) do
       transitions from: :submitted,
                   to: :published
+    end
+  end
+
+  def make_decision decision
+    case decision.verdict
+    when "accepted"
+      accept!
+    when "rejected"
+      reject!
+    when "revise"
+      revise!
     end
   end
 

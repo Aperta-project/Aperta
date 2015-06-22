@@ -12,19 +12,19 @@ module TahiStandardTasks
     register_task default_title: "Register Decision", default_role: "editor"
 
     def after_update
-      send_email
-      DecisionReviser.new(self).process! if revise_decision?
+      complete_decision if on_card_completion?
     end
 
-    # no-op
-    def send_emails
-    end
-
-    def send_email
+    def complete_decision
       return unless on_card_completion?
+      decision = paper.decisions.latest
 
-      latest_decision = paper.decisions.latest
-      RegisterDecisionMailer.delay.notify_author_email(decision_id: latest_decision.id)
+      # State-transition the paper
+      paper.make_decision decision
+
+      # Email the author
+      RegisterDecisionMailer.delay.notify_author_email(decision_id: decision.id)
+
     end
 
     def accept_letter

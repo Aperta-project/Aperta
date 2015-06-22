@@ -15,12 +15,12 @@ namespace :tahi do
     end
 
     Task.where('type = ? OR type = ?', *editor_tasks).each do |task|
-      task.update! role: 'editor'
+      task.update_column 'role', 'editor'
       i += 1
     end
 
     Task.where(type: "TahiStandardTasks::ReviewerReportTask").each do |task|
-      task.update! role: 'reviewer'
+      task.update_column 'role', 'reviewer'
       i += 1
     end
 

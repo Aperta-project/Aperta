@@ -100,8 +100,8 @@ class PapersController < ApplicationController
     paper.update submitted: true, editable: false
 
     if paper.valid?
-      notify_paper_submitted!()
-      broadcast_paper_submitted_event()
+      notify_paper_submitted!
+      broadcast_paper_submitted_event
       render json: paper
     else
       render json: paper, status: 422

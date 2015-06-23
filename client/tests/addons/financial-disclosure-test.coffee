@@ -75,9 +75,9 @@ test 'Viewing card', ->
     equal find('.overlay-main-work h1').text().trim(), 'Financial Disclosures'
     ok find("label:contains('Yes')").length
     click "input:contains('Yes')"
-    .then ->
-      ok !find("button:contains('Add Another Funder')").length, "User can add another funder"
-      ok !find("span.remove-funder").length, "User can add remove the funder"
+    # .then ->
+    #   ok !find("button:contains('Add Another Funder')").length, "User can add another funder"
+    #   ok !find("span.remove-funder").length, "User can add remove the funder"
 
 
 # test "Removing an existing funder when there's only 1", ->

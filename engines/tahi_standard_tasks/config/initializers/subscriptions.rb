@@ -3,6 +3,8 @@ TahiNotifier.subscribe("paper.submitted") do |payload|
 
   paper = Paper.find(record_id)
 
+  UserMailer.delay.paper_submission(paper.id)
+
   if paper.decisions.pending.exists?
     TahiStandardTasks::PaperReviewerTask.for_paper(paper).first.try(:incomplete!)
     TahiStandardTasks::RegisterDecisionTask.for_paper(paper).first.try(:incomplete!)

@@ -83,8 +83,6 @@ export default Ember.Route.extend(AnimateOverlay, {
       this.send('closeOverlay');
     },
 
-    editableDidChange() { return null; },
-
     feedback() {
       this.render('overlays/feedback', {
         into: 'application',

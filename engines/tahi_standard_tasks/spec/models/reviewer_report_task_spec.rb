@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe TahiStandardTasks::ReviewerReportTask do
   let(:paper) do

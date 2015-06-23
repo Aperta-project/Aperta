@@ -16,7 +16,7 @@ when 'development'
     user.username = 'admin'
     user.site_admin = true
     user.affiliations.first_or_initialize(name: "PLOS")
-    user.user_roles.new(role: plos_journal.roles.find_by(kind: Role::ADMIN))
+    user.user_roles.new(role: plos_journal.roles.where(kind: Role::ADMIN, name: Role::ADMIN.capitalize).first_or_initialize)
   end
 
   User.where(email: 'editor@example.com').first_or_create! do |user|
@@ -25,7 +25,7 @@ when 'development'
     user.password = 'password'
     user.username = 'editor'
     user.affiliations.first_or_initialize(name: "PLOS")
-    user.user_roles.new(role: plos_journal.roles.find_by(kind: Role::EDITOR))
+    user.user_roles.new(role: plos_journal.roles.where(kind: Role::EDITOR, name: Role::EDITOR.capitalize).first_or_initialize)
   end
 
   User.where(email: 'reviewer@example.com').first_or_create! do |user|
@@ -34,7 +34,7 @@ when 'development'
     user.password = 'password'
     user.username = 'reviewer'
     user.affiliations.first_or_initialize(name: "PLOS")
-    user.user_roles.new(role: plos_journal.roles.find_by(kind: Role::REVIEWER))
+    user.user_roles.new(role: plos_journal.roles.where(kind: Role::REVIEWER, name: Role::REVIEWER.capitalize).first_or_initialize)
   end
 
   User.where(email: 'flow_manager@example.com').first_or_create! do |user|
@@ -43,7 +43,7 @@ when 'development'
     user.password = 'password'
     user.username = 'flow_manager'
     user.affiliations.first_or_initialize(name: "PLOS")
-    user.user_roles.new(role: plos_journal.roles.find_by(kind: Role::FLOW_MANAGER))
+    user.user_roles.new(role: plos_journal.roles.where(kind: Role::FLOW_MANAGER, name: Role::FLOW_MANAGER.capitalize).first_or_initialize)
   end
 
   User.where(email: 'author@example.com').first_or_create! do |user|

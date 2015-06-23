@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150618161423) do
+ActiveRecord::Schema.define(version: 20150621091508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -203,7 +203,6 @@ ActiveRecord::Schema.define(version: 20150618161423) do
   add_index "invitations", ["task_id"], name: "index_invitations_on_task_id", using: :btree
 
   create_table "journal_task_types", force: :cascade do |t|
-    t.integer "task_type_id"
     t.integer "journal_id"
     t.string  "title"
     t.string  "role"
@@ -211,7 +210,6 @@ ActiveRecord::Schema.define(version: 20150618161423) do
   end
 
   add_index "journal_task_types", ["journal_id"], name: "index_journal_task_types_on_journal_id", using: :btree
-  add_index "journal_task_types", ["task_type_id"], name: "index_journal_task_types_on_task_type_id", using: :btree
 
   create_table "journals", force: :cascade do |t|
     t.string   "name"
@@ -283,7 +281,7 @@ ActiveRecord::Schema.define(version: 20150618161423) do
     t.integer  "striking_image_id"
     t.boolean  "editable",          default: true
     t.text     "doi"
-    t.string   "editor_mode",                   default: "html", null: false
+    t.string   "editor_mode",       default: "html", null: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
@@ -392,8 +390,8 @@ ActiveRecord::Schema.define(version: 20150618161423) do
     t.string   "title"
     t.string   "caption"
     t.text     "body"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "tables", ["paper_id"], name: "index_tables_on_paper_id", using: :btree

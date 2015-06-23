@@ -97,12 +97,15 @@ class PapersController < ApplicationController
   end
 
   def submit
-    paper.update(submitted: true, editable: false)
-    status = paper.valid? ? 200 : 422
-    notify_paper_submitted! if paper.valid?
-    UserMailer.delay.paper_submission(paper.id)
-    broadcast_paper_submitted_event
-    render json: paper, status: status
+    paper.update submitted: true, editable: false
+
+    if paper.valid?
+      notify_paper_submitted!
+      broadcast_paper_submitted_event
+      render json: paper
+    else
+      render json: paper, status: 422
+    end
   end
 
   private
@@ -198,4 +201,5 @@ class PapersController < ApplicationController
   def broadcast_paper_submitted_event
     TahiNotifier.notify(event: "paper.submitted", payload: { paper_id: paper.id })
   end
+
 end

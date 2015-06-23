@@ -11,6 +11,13 @@ Router.map(function() {
   this.route('flow_manager');
 
   this.resource('paper', { path: '/papers/:paper_id' }, function() {
+    this.route('index', { path: '/' }, function() {
+      this.route('discussions', function() {
+        this.route('new',  { path: '/new' });
+        this.route('show', { path: '/:topic_id' });
+      });
+    });
+
     this.route('edit', function() {
       this.route('discussions', function() {
         this.route('new',  { path: '/new' });

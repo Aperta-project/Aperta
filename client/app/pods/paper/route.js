@@ -93,16 +93,6 @@ export default AuthorizedRoute.extend({
       });
     },
 
-    showDiscussion() {
-      let controller = this.controllerFor('overlays/paper-discussions');
-
-      this.render('overlays/paper-discussions', {
-        into: 'application',
-        outlet: 'overlay',
-        controller: controller
-      });
-    },
-
     discussionParticipantCreated(payload) {
       let discussionParticipant = payload.discussion_participant;
       this.store.findById('discussion-topic', discussionParticipant.discussion_topic_id).then((topic) => {

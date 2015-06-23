@@ -43,10 +43,11 @@ class Paper < ActiveRecord::Base
     state :rejected
     state :published
 
-    event(:submit, after: [:prevent_edits!, :paper_submitted]) do
+    event(:submit) do
       transitions from: [:unsubmitted, :in_revision],
                   to: :submitted,
-                  guards: :metadata_tasks_completed?
+                  guards: :metadata_tasks_completed?,
+                  after: :prevent_edits!
     end
 
     event(:minor_revision) do
@@ -246,11 +247,5 @@ class Paper < ActiveRecord::Base
 
   def set_published_at!
     update!(published_at: Time.current.utc)
-  end
-
-  # TODO: this should be moved to the gem and can be triggered by looking at event stream notifications
-  def paper_submitted
-    itc_task = tasks.detect { |t| t.is_a? PlosBioTechCheck::InitialTechCheckTask }
-    itc_task.increment_round! if itc_task
   end
 end

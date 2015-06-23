@@ -125,7 +125,7 @@ describe UserMailer, redis: true do
 
   describe '#paper_submission' do
     let(:author) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create :paper, :with_tasks, creator: author, submitted: true }
+    let(:paper) { FactoryGirl.create :paper, :submitted, :with_tasks, creator: author }
     let(:email) { UserMailer.paper_submission(paper.id) }
 
     it "sends the email to the paper's author" do
@@ -143,7 +143,7 @@ describe UserMailer, redis: true do
   describe '#notify_editor_of_paper_resubmission' do
     let(:author) { FactoryGirl.create(:user) }
     let(:editor) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create :paper, :with_tasks, creator: author, submitted: true }
+    let(:paper) { FactoryGirl.create :paper, :submitted, :with_tasks, creator: author}
     let(:email) { UserMailer.notify_editor_of_paper_resubmission(paper.id) }
 
     before do
@@ -170,7 +170,7 @@ describe UserMailer, redis: true do
   describe '#notify_admin_of_paper_submission' do
     let(:author) { FactoryGirl.create(:user) }
     let(:admin) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create :paper, :with_tasks, creator: author, submitted: true }
+    let(:paper) { FactoryGirl.create :paper, :submitted, :with_tasks, creator: author }
     let(:email) { UserMailer.notify_admin_of_paper_submission(paper.id, admin.id) }
 
     before do

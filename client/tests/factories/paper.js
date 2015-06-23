@@ -1,19 +1,19 @@
-import FactoryGuy from "ember-data-factory-guy";
+import FactoryGuy from 'ember-data-factory-guy';
 
-FactoryGuy.define("paper", {
+FactoryGuy.define('paper', {
   default: {
     title: '',
     shortTitle: '',
-    submitted: false,
+    publishingState: 'unsubmitted',
     roles: [],
-    relatedAtDate: "2014-09-28T13:54:58.028Z",
-    editable: true,
+    relatedAtDate: '2014-09-28T13:54:58.028Z',
+    editable: true
   },
 
   traits: {
 
     withRoles: {
-      roles: ["participant"]
+      roles: ['participant']
     }
 
   }

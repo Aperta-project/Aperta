@@ -21,19 +21,17 @@ feature "Flow Manager", js: true, selenium: true do
   let(:journal) { FactoryGirl.create(:journal) }
 
   let!(:paper1) do
-    FactoryGirl.create(:paper, :with_tasks,
+    FactoryGirl.create(:paper, :submitted, :with_tasks,
       short_title: 'foobar',
       title: 'Foo bar',
-      submitted: true,
       journal: journal,
       creator: author)
   end
 
   let!(:paper2) do
-    FactoryGirl.create(:paper, :with_tasks,
+    FactoryGirl.create(:paper, :submitted, :with_tasks,
       short_title: 'bazqux',
       title: 'Baz Qux',
-      submitted: true,
       journal: journal,
       creator: author)
   end

@@ -99,7 +99,6 @@ class PapersController < ApplicationController
   def submit
     paper.submit! do
       notify_paper_submitted!
-      UserMailer.delay.paper_submission(paper.id)
       broadcast_paper_submitted_event
     end
     respond_with paper

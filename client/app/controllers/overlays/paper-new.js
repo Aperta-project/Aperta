@@ -3,8 +3,7 @@ import AnimateOverlay from 'tahi/mixins/animate-overlay';
 
 export default Ember.Controller.extend(AnimateOverlay, {
   overlayClass: 'overlay--fullscreen paper-new-overlay',
-  journals: null,
-  noJournalSelected: Ember.computed.not('model.journal'),
+  journals: null, // set on controller before rendering overlay
 
   journalProxies: function() {
     return this.get('journals').map(function(journal) {
@@ -13,7 +12,7 @@ export default Ember.Controller.extend(AnimateOverlay, {
         text: journal.get('name')
       };
     });
-  }.property('journal.@each'),
+  }.property(),
 
   // Select-2 requires data to be an object with an id key :\
   paperTypeProxies: function() {
@@ -38,15 +37,11 @@ export default Ember.Controller.extend(AnimateOverlay, {
 
   selectedPaperType: function() {
     let paperType = this.get('model.paperType');
-    if(Ember.isEmpty(paperType)) { return; }
+    if(Ember.isEmpty(paperType)) { paperType = ''; }
 
     return { id:   paperType,
              text: paperType };
   }.property('model.paperType'),
-
-  journalDidChange: function() {
-    this.set('model.paperType', this.get('model.journal.paperTypes.firstObject'));
-  }.observes('model.journal'),
 
   actions: {
     createNewPaper() {
@@ -60,6 +55,7 @@ export default Ember.Controller.extend(AnimateOverlay, {
     selectJournal(journalProxy) {
       let journal = this.get('journals').findBy('id', journalProxy.id);
       this.set('model.journal', journal);
+      this.set('model.paperType', null);
     },
 
     selectPaperType(paperTypeProxy) {

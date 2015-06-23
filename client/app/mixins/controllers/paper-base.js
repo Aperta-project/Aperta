@@ -38,12 +38,6 @@ export default Ember.Mixin.create({
     });
   }.property('model.tasks.@each'),
 
-  editorTasks: function() {
-    if (this.get('model.editors').contains(this.get('currentUser'))) {
-      return this.get('model.tasks').filterBy('role', 'reviewer');
-    }
-  }.property('model.tasks.@each.role'),
-
   metadataTasks: function() {
     return this.get('model.tasks').filter((task) => {
       return task.get('isMetadataTask');
@@ -53,13 +47,12 @@ export default Ember.Mixin.create({
   taskSorting:         ['phase.position', 'position'],
   sortedMetadataTasks: Ember.computed.sort('metadataTasks',   'taskSorting'),
   sortedAssignedTasks: Ember.computed.sort('assignedTasks', 'taskSorting'),
-  sortedEditorTasks:   Ember.computed.sort('editorTasks',   'taskSorting'),
 
   noTasks: function() {
-    return [this.get('assignedTasks'), this.get('editorTasks'), this.get('metadataTasks')].every((taskGroup)=> {
+    return [this.get('assignedTasks'), this.get('metadataTasks')].every((taskGroup)=> {
       return Ember.isEmpty(taskGroup);
     });
-  }.property('assignedTasks.@each', 'editorTasks.@each', 'metadataTasks.@each'),
+  }.property('assignedTasks.@each', 'metadataTasks.@each'),
 
 
   actions: {

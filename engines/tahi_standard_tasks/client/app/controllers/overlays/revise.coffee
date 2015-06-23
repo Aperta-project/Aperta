@@ -15,4 +15,15 @@ ReviseOverlayController = TaskController.extend
     @get('model.paper.decisions').sortBy('revisionNumber').reverse()[2..-1]
   ).property('model.paper.decisions.@each')
 
+  editingAuthorResponse: Ember.computed.empty('latestDecision.authorResponse')
+
+  actions:
+
+    saveAuthorResponse: ->
+      @get('latestDecision').save().then =>
+        @set 'editingAuthorResponse', false
+
+    editAuthorResponse: ->
+      @set 'editingAuthorResponse', true
+
 `export default ReviseOverlayController`

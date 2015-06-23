@@ -4,6 +4,8 @@
 `import { paperWithTask, addUserAsParticipant } from '../helpers/setups'`
 `import setupMockServer from '../helpers/mock-server'`
 `import Factory from '../helpers/factory'`
+`import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';`
+
 
 app = null
 server = null
@@ -21,6 +23,7 @@ module 'FinancialDisclosureTask',
     app = startApp()
     server = setupMockServer()
     fakeUser = window.currentUserData.user
+    TestHelper.handleFindAll('discussion-topic', 1)
 
 
     records = paperWithTask('FinancialDisclosureTask'
@@ -59,6 +62,10 @@ module 'FinancialDisclosureTask',
       200, {"Content-Type": "application/json"}, JSON.stringify []
     ]
 
+    server.respondWith 'POST', '/api/questions', [
+      204, {"Content-Type": "application/json"}, JSON.stringify []
+    ]
+
     mirrorCreateResponse = (key, newId) ->
       (xhr) ->
         createdItem = JSON.parse(xhr.requestBody)
@@ -74,10 +81,10 @@ test 'Viewing card', ->
   .then ->
     equal find('.overlay-main-work h1').text().trim(), 'Financial Disclosures'
     ok find("label:contains('Yes')").length
-    click "input:contains('Yes')"
+    click "label:contains('Yes')"
     .then ->
-      ok !find("button:contains('Add Another Funder')").length, "User can add another funder"
-      ok !find("span.remove-funder").length, "User can add remove the funder"
+      ok find("button:contains('Add Another Funder')").length, "User can add another funder"
+      ok find("span.remove-funder").length, "User can add remove the funder"
 
 
 # test "Removing an existing funder when there's only 1", ->

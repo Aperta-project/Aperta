@@ -188,10 +188,6 @@ class Paper < ActiveRecord::Base
     update!(editable: true)
   end
 
-  def set_published_at!
-    update!(published_at: Time.current.utc)
-  end
-
   %w(admins editors reviewers collaborators).each do |relation|
     ###
     # :method: <roles>
@@ -246,6 +242,10 @@ class Paper < ActiveRecord::Base
 
   def default_abstract
     Nokogiri::HTML(body).text.truncate_words 100
+  end
+
+  def set_published_at!
+    update!(published_at: Time.current.utc)
   end
 
   # TODO: this should be moved to the gem and can be triggered by looking at event stream notifications

@@ -26,3 +26,5 @@ Procfile.local
 .env.*
 # except .env.test
 !.env.test
+setup.log
+db/tahi.dump

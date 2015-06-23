@@ -10,11 +10,11 @@ server = null
 journalId = null
 
 module 'Integration: Admin Journal Test',
-  teardown: ->
+  afterEach: ->
     server.restore()
     Ember.run(app, app.destroy)
 
-  setup: ->
+  beforeEach: ->
     app = startApp()
     server = setupMockServer()
     journal = Factory.createRecord('AdminJournal')

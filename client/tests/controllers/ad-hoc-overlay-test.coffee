@@ -4,7 +4,7 @@
 
 moduleFor 'controller:overlays/ad-hoc', 'AdHocOverlayController',
   needs: ['controller:application', 'controller:paper/task']
-  teardown: ->
+  afterEach: ->
     RESTless.putModel.restore() # reset sinon stub
 
 test 'sendEmail calls send_message endpoint', ->

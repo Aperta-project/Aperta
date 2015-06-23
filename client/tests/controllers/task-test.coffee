@@ -3,7 +3,7 @@
 
 moduleFor 'controller:paper/task', 'TaskController',
   needs: ['controller:application']
-  setup: ->
+  beforeEach: ->
     @paper = Ember.Object.create
       editable: true
 

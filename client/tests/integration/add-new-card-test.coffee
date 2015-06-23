@@ -10,11 +10,12 @@ server = null
 
 module 'Integration: adding a new card',
 
-  teardown: ->
+  afterEach: ->
     server.restore()
+    Ember.run(-> TestHelper.teardown() )
     Ember.run(app, app.destroy)
 
-  setup: ->
+  beforeEach: ->
     app = startApp()
     server = setupMockServer()
     TestHelper.handleFindAll('discussion-topic', 1)

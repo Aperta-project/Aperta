@@ -2,7 +2,7 @@
 `import { test, moduleForComponent } from 'ember-qunit'`
 
 moduleForComponent 'question', 'Component: question-component',
-  setup: ->
+  beforeEach: ->
     @fakeStore =
       createRecord: (type, {question, task, ident}) ->
         equal type, 'question', 'creates a new question'

@@ -8,10 +8,8 @@ let App, paper, phase, task, inviteeEmail;
 
 module("Integration: inviting an editor", {
   afterEach() {
-    Ember.run(function() {
-      TestHelper.teardown();
-      App.destroy();
-    });
+    Ember.run(function() { TestHelper.teardown(); });
+    Ember.run(App, 'destroy');
   },
 
   beforeEach() {

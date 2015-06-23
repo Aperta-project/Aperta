@@ -5,7 +5,7 @@
 # TODO use server.respondWith
 moduleFor 'controller:paper.index', 'PaperIndexController',
   needs: ['controller:application', 'controller:paper']
-  setup: ->
+  beforeEach: ->
     startApp()
     @phase1 = Ember.Object.create position: 1
     @phase2 = Ember.Object.create position: 2
@@ -17,7 +17,7 @@ moduleFor 'controller:paper.index', 'PaperIndexController',
 
     sinon.stub(jQuery, "ajax")
 
-  teardown: ->
+  afterEach: ->
     jQuery.ajax.restore()
 
 test '#export: calls the export url in Tahi', ->

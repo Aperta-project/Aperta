@@ -12,11 +12,12 @@ fakeUser = null
 currentPaper = null
 
 module 'Integration: Submitting Paper',
-  teardown: ->
+  afterEach: ->
     server.restore()
+    Ember.run(-> TestHelper.teardown() )
     Ember.run(app, app.destroy)
 
-  setup: ->
+  beforeEach: ->
     app = startApp()
     server = setupMockServer()
     fakeUser = window.currentUserData.user

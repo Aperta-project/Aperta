@@ -10,7 +10,8 @@ moduleForComponent 'flow-column', 'Unit: components/flow-column',
     'component:flow-task-group'
     'component:select-2-single'
   ]
-  setup: -> startApp()
+
+  beforeEach: -> startApp()
 
 
 appendBasicComponent = (context, attrs) ->

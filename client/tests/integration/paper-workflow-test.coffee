@@ -4,20 +4,22 @@
 `import setupMockServer from '../helpers/mock-server'`
 `import { paperWithParticipant } from '../helpers/setups'`
 `import Factory from '../helpers/factory'`
+`import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';`
 
 app = null
 server = null
 
 module 'Integration: Paper Workflow page',
 
-  teardown: ->
+  afterEach: ->
     server.restore()
     Ember.run(app, app.destroy)
 
-  setup: ->
+  beforeEach: ->
     Factory.resetFactoryIds()
     app = startApp()
     server = setupMockServer()
+    TestHelper.handleFindAll('discussion-topic', 1)
 
     taskPayload =
       task:

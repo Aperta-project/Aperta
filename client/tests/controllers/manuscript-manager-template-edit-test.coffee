@@ -3,7 +3,7 @@
 `import { test, moduleFor } from 'ember-qunit'`
 
 moduleFor 'controller:admin/journal/manuscript-manager-template/edit', 'ManuscriptManagerTemplateEditController',
-  setup: ->
+  beforeEach: ->
     startApp()
 
     Ember.run =>

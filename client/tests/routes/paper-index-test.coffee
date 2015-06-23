@@ -3,7 +3,7 @@
 
 moduleFor 'route:paper/index', 'Unit: route/PaperIndex',
   needs: ['model:paper', 'route:paper'],
-  setup: ->
+  beforeEach: ->
     sinon.stub(@subject(), 'replaceWith')
 
 test 'transition to edit route if paper is editable', ->

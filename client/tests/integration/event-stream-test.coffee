@@ -6,9 +6,9 @@
 app = null
 
 module 'Integration: Pusher',
-  teardown: ->
+  afterEach: ->
     Ember.run(app, app.destroy)
-  setup: ->
+  beforeEach: ->
     app = startApp()
     1+1 # hangs if we return app. odd I know...
 

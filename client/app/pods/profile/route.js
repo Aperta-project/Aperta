@@ -5,6 +5,7 @@ export default Ember.Route.extend({
 
   afterModel: function(model) {
     return Ember.$.getJSON('/api/affiliations', function(data) {
+      if(!data) { return; }
       model.set('institutions', data.institutions);
     });
   }

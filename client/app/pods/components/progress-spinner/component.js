@@ -17,6 +17,15 @@ import Ember from 'ember';
 
 let computed = Ember.computed;
 
+let computedConcat = function(string, dependentKey) {
+  return Ember.computed(dependentKey, function(){
+    let value = Ember.get(this, dependentKey);
+
+    if(Ember.isEmpty(value)) { return null; }
+    return string + Ember.get(this, dependentKey);
+  });
+};
+
 export default Ember.Component.extend({
   classNames: ['progress-spinner'],
   classNameBindings: [
@@ -51,7 +60,7 @@ export default Ember.Component.extend({
    *  @default green
    **/
   color: 'green',
-  _colorClass: computed.concat('progress-spinner--', 'color'),
+  _colorClass: computedConcat('progress-spinner--', 'color'),
 
   /**
    *  Size. `small` or `large`
@@ -61,7 +70,7 @@ export default Ember.Component.extend({
    *  @default small
    **/
   size: 'small',
-  _sizeClass: computed.concat('progress-spinner--', 'size'),
+  _sizeClass: computedConcat('progress-spinner--', 'size'),
 
   /**
    *  If true, absolute positioning is used to center vertically and horizontally
@@ -81,5 +90,5 @@ export default Ember.Component.extend({
    *  @default null
    **/
   align: null,
-  _alignClass: computed.concat('progress-spinner--', 'align')
+  _alignClass: computedConcat('progress-spinner--', 'align')
 });

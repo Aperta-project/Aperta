@@ -16,14 +16,14 @@ createJournalWithTaskTemplate = (taskType) ->
 
 module 'Integration: Manuscript Manager Templates',
 
-  teardown: ->
+  afterEach: ->
     server.restore()
     Ember.run(app, app.destroy)
     Tahi.__container__.lookup(
       'controller:admin/journal/manuscript-manager-template/edit'
     )._actions.saveTemplateOnClick = Tahi.saveTemplateActionFunction
 
-  setup: ->
+  beforeEach: ->
     app = startApp()
     server = setupMockServer()
     Tahi.saveTemplateActionFunction = Tahi.__container__.lookup(

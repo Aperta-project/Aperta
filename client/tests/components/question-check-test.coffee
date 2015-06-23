@@ -16,7 +16,8 @@ moduleForComponent 'question-check', 'Component: question-check',
     'template:components/dataset-title'
     'template:components/dataset-url'
   ]
-  setup: -> startApp() # only here to inject the fillIn helper
+
+  beforeEach: -> startApp() # only here to inject the fillIn helper
 
 test 'it renders its question', ->
   fakeQuestion = Ember.Object.create
@@ -32,7 +33,7 @@ test 'it renders its question', ->
   @render()
   ok @subject().$().find("label:contains('Test Question')").length
 
-test 'with additional-datasets it renders them and a buton to add more', ->
+test 'with additional-datasets it renders them and a button to add more', ->
   fakeQuestion = Ember.Object.create
     ident: "foo"
     save: -> null

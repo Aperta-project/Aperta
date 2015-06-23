@@ -7,12 +7,11 @@
 App = null
 
 module 'Integration: Commenting',
-  teardown: ->
-    Ember.run ->
-      TestHelper.teardown()
-      App.destroy()
+  afterEach: ->
+    Ember.run(-> TestHelper.teardown() )
+    Ember.run(App, App.destroy)
 
-  setup: ->
+  beforeEach: ->
     App = startApp()
     TestHelper.setup(App)
     $.mockjax(url: "/api/admin/journals/authorization", status: 204)

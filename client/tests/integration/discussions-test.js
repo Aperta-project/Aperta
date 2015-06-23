@@ -9,10 +9,8 @@ let paper, topic;
 
 module('Integration: Discussions', {
   afterEach: function() {
-    Ember.run(function() {
-      TestHelper.teardown();
-      App.destroy();
-    });
+    Ember.run(function() { TestHelper.teardown(); });
+    Ember.run(App, 'destroy');
   },
 
   beforeEach: function() {

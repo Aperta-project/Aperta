@@ -5,7 +5,7 @@
 moduleFor 'controller:paper/edit/html-editor', 'Unit: paper/edit/html-editor controller',
   needs: ['controller:application', 'controller:paper', 'controller:overlays/paperSubmit']
 
-  setup: ->
+  beforeEach: ->
     startApp()
     currentUser = Ember.Object.create
       id: 1

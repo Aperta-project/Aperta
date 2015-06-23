@@ -1,8 +1,9 @@
 module 'Integration: Reporting Guidelines Card',
-  teardown: ->
+  afterEach: ->
     ETahi.reset()
     ETahi.paperEditActionStub.restore()
-  setup: ->
+
+  beforeEach: ->
     setupApp integration: true
     TahiTest.questionId = 553
 

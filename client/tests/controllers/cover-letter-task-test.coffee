@@ -5,7 +5,7 @@
 moduleFor 'controller:overlays/cover-letter', 'CoverLetterController',
   needs: ['controller:application']
 
-  setup: ->
+  beforeEach: ->
     startApp()
 
     @task = Ember.Object.create

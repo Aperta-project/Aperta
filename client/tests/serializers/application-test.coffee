@@ -7,7 +7,7 @@ subject = null
 container = null
 
 module 'integration/serializer',
-  setup: ->
+  beforeEach: ->
     app = startApp()
     container = app.__container__
     subject = container.lookup('serializer:application')

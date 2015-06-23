@@ -16,17 +16,15 @@ setupEventStream = ->
 
 module 'Integration: Dashboard Collaboration',
 
-  teardown: ->
-    Ember.run ->
-      TestHelper.teardown()
-      App.destroy()
+  afterEach: ->
+    Ember.run(-> TestHelper.teardown() )
+    Ember.run(App, App.destroy)
 
-  setup: ->
+  beforeEach: ->
     App = startApp()
     TestHelper.setup(App)
     $.mockjax(url: "/api/admin/journals/authorization", status: 204)
     $.mockjax(url: "/api/user_flows/authorization", status: 204)
-
 
 test 'The dashboard shows papers for a user if they have any role on the paper', ->
   Ember.run ->

@@ -6,14 +6,15 @@
 server = null
 
 moduleForComponent 'select-2', 'Unit: components/select-2',
-  setup: ->
+  beforeEach: ->
     startApp()
     server = setupMockServer()
 
     server.respondWith 'GET', /filtered_objects.*/, [
       200, {"Content-Type": "application/json"}, JSON.stringify [{id: 1, text: 'Aaron'}]
     ]
-  teardown: ->
+
+  afterEach: ->
     server.restore()
 
 # TODO: Use pcikfromselect2 helper

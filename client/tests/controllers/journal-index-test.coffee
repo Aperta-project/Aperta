@@ -3,7 +3,7 @@
 `import startApp from '../helpers/start-app'`
 
 moduleFor 'controller:admin/journal/index', 'JournalIndexController',
-  setup: ->
+  beforeEach: ->
     startApp()
     @store = getStore()
 

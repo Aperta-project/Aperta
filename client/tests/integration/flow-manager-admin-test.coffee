@@ -12,11 +12,11 @@ journal = null
 
 module 'Integration: Flow Manager Administration',
 
-  teardown: ->
+  afterEach: ->
     server.restore()
     Ember.run(app, app.destroy)
 
-  setup: ->
+  beforeEach: ->
     app = startApp()
     server = setupMockServer()
     journal = Factory.createRecord('AdminJournal')

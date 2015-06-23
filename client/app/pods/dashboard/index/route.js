@@ -42,8 +42,8 @@ export default Ember.Route.extend({
         this.controllerFor('overlays/paperNew').setProperties({
           journals: journals,
           model: this.store.createRecord('paper', {
-            journal: journals.get('content.firstObject'),
-            paperType: journals.get('content.firstObject.paperTypes.firstObject'),
+            journal: null,
+            paperType: null,
             editable: true,
             body: ''
           })

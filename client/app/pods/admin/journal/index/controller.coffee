@@ -46,7 +46,7 @@ JournalIndexController = Ember.Controller.extend ValidationErrorsMixin,
 
   actions:
     assignRoleToUser: (roleID, user)->
-      role = this.store.getById('role', roleID)
+      role = this.store.peekRecord('role', roleID)
 
       this.store.createRecord('userRole',
         user: user,
@@ -109,7 +109,7 @@ JournalIndexController = Ember.Controller.extend ValidationErrorsMixin,
     assignRole: (roleId, user) ->
       userRole = @store.createRecord 'userRole',
         user: user
-        role: @store.getById 'role', roleId
+        role: @store.peekRecord 'role', roleId
 
       userRole.save()
               .catch (res) ->
@@ -117,6 +117,6 @@ JournalIndexController = Ember.Controller.extend ValidationErrorsMixin,
                 userRole.deleteRecord()
 
     removeRole: (userRoleId) ->
-      @store.getById('userRole', userRoleId).destroyRecord()
+      @store.peekRecord('userRole', userRoleId).destroyRecord()
 
 `export default JournalIndexController`

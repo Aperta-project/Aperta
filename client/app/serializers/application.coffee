@@ -1,8 +1,8 @@
-`import Ember from 'ember'`
-`import DS from 'ember-data'`
-`import Utils from 'tahi/services/utils'`
+`import Ember from 'ember';`
+`import {ActiveModelSerializer} from 'active-model-adapter';`
+`import Utils from 'tahi/services/utils';`
 
-ApplicationSerializer = DS.ActiveModelSerializer.extend
+ApplicationSerializer = ActiveModelSerializer.extend
   # handles outgoing namespaced models
   serialize: (record, options) ->
     json = this._super(record, options)

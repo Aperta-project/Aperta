@@ -4,8 +4,8 @@ import RESTless from 'tahi/services/rest-less';
 export default Ember.Route.extend({
   model() {
     return Ember.RSVP.hash({
-      papers: this.store.find('paper'),
-      invitations: this.store.find('invitation')
+      papers: this.store.findAll('paper'),
+      invitations: this.store.findAll('invitation')
     });
   },
 

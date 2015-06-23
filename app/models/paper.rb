@@ -35,7 +35,7 @@ class Paper < ActiveRecord::Base
   delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
 
   aasm column: :publishing_state do
-    state :ongoing, initial: true # currently being authored
+    state :unsubmitted, initial: true # currently being authored
     state :submitted
     state :in_minor_revision # revision that does not require resubmission
     state :in_revision # has revised decision and requires resubmission
@@ -44,7 +44,7 @@ class Paper < ActiveRecord::Base
     state :published
 
     event(:submit, after: [:prevent_edits!, :paper_submitted]) do
-      transitions from: [:ongoing, :in_revision],
+      transitions from: [:unsubmitted, :in_revision],
                   to: :submitted,
                   guards: :metadata_tasks_completed?
     end

@@ -55,6 +55,6 @@ export default DS.Model.extend({
 
   submittable: function() {
     var state = this.get('publishingState');
-    return state === 'ongoing' || state === 'in_revision';
+    return state === 'unsubmitted' || state === 'in_revision';
   }.property('publishingState')
 });

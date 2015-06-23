@@ -1,12 +1,15 @@
 `import Ember from 'ember';`
 `import PaperBaseMixin from 'tahi/mixins/controllers/paper-base';`
 `import PaperEditMixin from 'tahi/mixins/controllers/paper-edit';`
+`import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';`
 `import TahiEditorExtensions from 'tahi-editor-extensions/index';`
 
 `import FigureCollectionAdapter from 'tahi/pods/paper/edit/adapters/figure-collection-adapter';`
 `import TableCollectionAdapter from 'tahi/pods/paper/edit/adapters/table-collection-adapter';`
 
-Controller = Ember.Controller.extend PaperBaseMixin, PaperEditMixin,
+Controller = Ember.Controller.extend PaperBaseMixin, PaperEditMixin, DiscussionsRoutePathsMixin,
+  subRouteName: 'edit'
+
   # initialized by paper/edit/view
   toolbar: null
 

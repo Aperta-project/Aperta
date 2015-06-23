@@ -38,6 +38,9 @@ export default Ember.Mixin.create({
     let animationName = animationEventName();
     let overlayElement = $(options.selector).hide();
 
+    // reset all classes on overlay
+    overlayElement.attr('class', 'overlay');
+
     if(options.extraClasses) {
       overlayElement.addClass(options.extraClasses);
     }

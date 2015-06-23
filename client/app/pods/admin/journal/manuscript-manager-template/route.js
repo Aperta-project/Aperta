@@ -8,7 +8,8 @@ export default Ember.Route.extend({
         journalTaskTypes: this.modelFor('admin.journal').get('journalTaskTypes')
       });
 
-      this.render('overlays/add-manuscript-template-card', {
+      this.send('openOverlay', {
+        template: 'overlays/add-manuscript-template-card',
         into: 'application',
         outlet: 'overlay',
         controller: 'overlays/chooseNewCardType'
@@ -29,7 +30,9 @@ export default Ember.Route.extend({
           model: newTask,
           isNewTask: true
         });
-        this.render('overlays/adHocTemplate', {
+
+        this.send('openOverlay', {
+          template: 'overlays/adHocTemplate',
           into: 'application',
           outlet: 'overlay',
           controller: 'overlays/adHocTemplate'
@@ -51,7 +54,8 @@ export default Ember.Route.extend({
     viewCard() {},
 
     showDeleteConfirm(task) {
-      this.render('overlays/cardDelete', {
+      this.send('openOverlay', {
+        template: 'overlays/cardDelete',
         into: 'application',
         outlet: 'overlay',
         controller: 'overlays/card-delete',

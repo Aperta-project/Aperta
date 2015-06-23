@@ -20,10 +20,12 @@ PaperManageRoute = AuthorizedRoute.extend
       @store.find('adminJournal', phase.get('paper.journal.id')).then (adminJournal) =>
         chooseNewCardTypeOverlay.set('journalTaskTypes', adminJournal.get('journalTaskTypes'))
 
-      @render('overlays/chooseNewCardType',
+      @send('openOverlay', {
+        template: 'overlays/chooseNewCardType'
         into: 'application'
         outlet: 'overlay'
-        controller: chooseNewCardTypeOverlay)
+        controller: chooseNewCardTypeOverlay
+      })
 
     viewCard: (task, queryParams) ->
       queryParams || = {queryParams: {}}
@@ -47,11 +49,12 @@ PaperManageRoute = AuthorizedRoute.extend
         @send 'viewCard', newTask, {queryParams: {isNewTask: true}}
 
     showDeleteConfirm: (task) ->
-      @render('overlays/card-delete',
+      @send('openOverlay', {
+        template: 'overlays/card-delete'
         into: 'application'
         outlet: 'overlay'
         controller: 'overlays/card-delete'
-        model: task)
-
+        model: task
+      })
 
 `export default PaperManageRoute`

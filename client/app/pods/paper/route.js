@@ -68,7 +68,8 @@ export default AuthorizedRoute.extend({
         allUsers: this.store.find('user')
       });
 
-      this.render('overlays/showCollaborators', {
+      this.send('openOverlay', {
+        template: 'overlays/showCollaborators',
         into: 'application',
         outlet: 'overlay',
         controller: controller
@@ -86,17 +87,8 @@ export default AuthorizedRoute.extend({
         });
       });
 
-      this.render('overlays/activity', {
-        into: 'application',
-        outlet: 'overlay',
-        controller: controller
-      });
-    },
-
-    showDiscussion() {
-      let controller = this.controllerFor('overlays/paper-discussions');
-
-      this.render('overlays/paper-discussions', {
+      this.send('openOverlay', {
+        template: 'overlays/activity',
         into: 'application',
         outlet: 'overlay',
         controller: controller

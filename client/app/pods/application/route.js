@@ -26,10 +26,7 @@ export default Ember.Route.extend(AnimateOverlay, {
     this.controllerFor('application').send('hideNavigation');
 
     this.animateOverlayOut().then(()=> {
-      this.disconnectOutlet({
-        outlet: 'overlay',
-        parentView: 'application'
-      });
+      this.controllerFor('application').set('showOverlay', false);
     });
   },
 
@@ -65,6 +62,15 @@ export default Ember.Route.extend(AnimateOverlay, {
       transition.abort();
     },
 
+    openOverlay(options) {
+      Ember.assert('You must pass a template name to `openOverlay`', options.template);
+
+      let renderOptions = options;
+      this.controllerFor('application').set('showOverlay', true);
+
+      this.render(options.template, renderOptions);
+    },
+
     closeOverlay() {
       this.flash.clearAllMessages();
       this.cleanupAncillaryViews();
@@ -86,6 +92,8 @@ export default Ember.Route.extend(AnimateOverlay, {
     editableDidChange() { return null; },
 
     feedback() {
+      this.controllerFor('application').set('showOverlay', true);
+
       this.render('overlays/feedback', {
         into: 'application',
         outlet: 'feedback-overlay',

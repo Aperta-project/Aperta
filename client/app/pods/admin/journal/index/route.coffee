@@ -20,10 +20,12 @@ JournalIndexRoute = Ember.Route.extend
         model: @modelFor('admin/journal/index')
         propertyName: key
 
-      @render "overlays/admin-journal-#{key.dasherize()}",
+      @send('openOverlay', {
+        template: "overlays/admin-journal-#{key.dasherize()}"
         into: 'application'
         outlet: 'overlay'
         controller: 'overlays/adminJournal'
+      })
 
     editEPubCSS: ->
       @send 'openEditOverlay', 'epubCss'
@@ -35,9 +37,11 @@ JournalIndexRoute = Ember.Route.extend
       @send 'openEditOverlay', 'manuscriptCss'
 
     editTaskTypes: ->
-      @render 'overlays/editTaskTypes',
+      @send('openOverlay', {
+        template: 'overlays/editTaskTypes'
         into: 'application'
         outlet: 'overlay'
         controller: 'overlays/editTaskTypes'
+      })
 
 `export default JournalIndexRoute`

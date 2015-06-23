@@ -8,10 +8,12 @@ AdminRoute = AuthorizedRoute.extend
   actions:
     viewUserDetails: (user) ->
       @controllerFor('overlays/userDetail').set('model', user)
-      @render 'overlays/userDetail',
+      @send('openOverlay', {
+        template: 'overlays/userDetail'
         into: 'application'
         outlet: 'overlay'
         controller: 'overlays/userDetail'
+      })
 
     didTransition: ->
       $('html').attr('screen', 'admin')

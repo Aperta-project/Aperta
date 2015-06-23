@@ -41,6 +41,7 @@ export default Ember.Route.extend({
     });
 
     this.render(this.controllerFor('application').get('overlayBackground'));
+    this.controllerFor('application').set('showOverlay', true);
   },
 
   deactivate() {

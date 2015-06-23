@@ -7,6 +7,7 @@ export default Ember.Controller.extend({
   isLoggedIn: Ember.computed.notEmpty('currentUser'),
   canViewAdminLinks: false,
   canViewFlowManagerLink: false,
+  showOverlay: false,
 
   clearError: function() {
     this.set('error', null);

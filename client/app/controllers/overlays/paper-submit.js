@@ -30,9 +30,8 @@ export default Ember.Controller.extend({
 
     closeSuccessOverlay() {
       this.send('closeOverlay');
-      this.transitionToRoute('application').then(()=> {
-        this.set('paperSubmitted', false);
-      });
+      this.set('paperSubmitted', false);
+      this.send('editableDidChange');
     }
   }
 });

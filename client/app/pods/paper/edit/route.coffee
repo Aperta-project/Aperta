@@ -30,7 +30,7 @@ PaperEditRoute = AuthorizedRoute.extend
       @set('heartbeatService', Heartbeat.create(resource: model))
       @startHeartbeat()
     else
-      @replaceWith('paper.index', model)
+      @transitionTo('paper.index', model)
 
   setupController: (controller, model) ->
     # paper/edit controller is not used.
@@ -114,7 +114,7 @@ PaperEditRoute = AuthorizedRoute.extend
 
     editableDidChange: ->
       if !@fromSubmitOverlay
-        @replaceWith('paper.index', @modelFor('paper'))
+        @transitionTo('paper.index', @modelFor('paper'))
       else
         @set 'fromSubmitOverlay', false
 

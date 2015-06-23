@@ -14,7 +14,7 @@ class ParticipationFactory
   def save
     return if task.participants.include?(assignee)
 
-    Participation.create(task: task, user: assignee, notify_requester: self_assigned?).tap do |_|
+    Participation.create!(task: task, user: assignee, notify_requester: self_assigned?).tap do |_|
       UserMailer.delay.add_participant(assigner.try(:id), assignee.id, task.id) unless self_assigned?
       CommentLookManager.sync_task(task)
     end

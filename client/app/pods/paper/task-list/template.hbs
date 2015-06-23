@@ -13,17 +13,6 @@
   </div>
   <hr>
 {{/if}}
-{{#if editorTasks}}
-  <div id="paper-editor-tasks">
-    {{#each sortedEditorTasks as |task|}}
-      {{card-preview paper=model
-                     task=task
-                     commentLooks=commentLooks
-                     action="viewCard"}}
-    {{/each}}
-  </div>
-  <hr>
-{{/if}}
 
 {{#if metadataTasks}}
   <div id="paper-metadata-tasks">

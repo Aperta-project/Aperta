@@ -24,6 +24,22 @@ describe TahiStandardTasks::PaperEditorTask do
 
   describe "#invitation_accepted" do
 
+    let!(:sample_editor_task) do
+      Task.create!({
+        phase: paper.phases.first,
+        title: "Sample Editor Task",
+        role: "editor"
+      })
+    end
+
+    let!(:sample_reviewer_report_task) do
+      TahiStandardTasks::ReviewerReportTask.create!({
+        phase: paper.phases.first,
+        title: "Sample Report Task",
+        role: "reviewer"
+      })
+    end
+
     let!(:task) do
       TahiStandardTasks::PaperEditorTask.create!({
         phase: paper.phases.first,
@@ -31,6 +47,7 @@ describe TahiStandardTasks::PaperEditorTask do
         role: "admin"
       })
     end
+
     let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
 
     it "replaces the old editor" do
@@ -38,15 +55,23 @@ describe TahiStandardTasks::PaperEditorTask do
       expect(paper.reload.editor).to eq(invitation.invitee)
     end
 
-    context "when there's an existing editor" do
+    it "follows tasks with editor role to the new editor" do
+      invitation.accept!
+      expect(sample_editor_task.participations.map(&:user)).to include(invitation.invitee)
+    end
 
+    it "follows all tasks that are reviewer reports" do
+      invitation.accept!
+      expect(sample_reviewer_report_task.participations.map(&:user)).to include(invitation.invitee)
+    end
+
+    context "when there's an existing editor" do
       before { FactoryGirl.create(:paper_role, :editor, paper: paper, user: FactoryGirl.create(:user)) }
 
       it "replaces the old editor" do
         invitation.accept!
         expect(paper.reload.editor).to eq(invitation.invitee)
       end
-
     end
   end
 end

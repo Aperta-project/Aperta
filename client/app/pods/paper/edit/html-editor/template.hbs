@@ -9,6 +9,18 @@
       {{flash-messages classNames="flash-messages-paper-editor"}}
       <article {{ bind-attr class=":manuscript isEditing:editing:read-only"}}>
 
+        <div class="manuscript-title-and-placeholder">
+          {{content-editable tagName="h2"
+                             id="paper-title"
+                             placeholder="Type your manuscript title here"
+                             value=model.title
+                             preventEnterKey="true"}}
+
+          {{#if showPlaceholder}}
+            <div id="paper-placeholder" {{action "tryHidingPlaceholder"}}>Type your manuscript here</div>
+          {{/if}}
+        </div>
+
         {{#if noTasks}}
           <div class="btn-group pull-right">
             <button {{action "submit" target="view"}} class="no-sidebar-submit-manuscript button-primary {{if model.allSubmissionTasksCompleted "button--green" "button--disabled"}}">

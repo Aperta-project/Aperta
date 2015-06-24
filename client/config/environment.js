@@ -52,14 +52,9 @@ module.exports = function(environment) {
     ENV.APP.LOG_VIEW_LOOKUPS = false;
 
     ENV.APP.rootElement = '#ember-testing';
-
-    ENV['ember-cli-visualeditor'].assetsRoot = '/assets';
   }
 
   if (environment === 'production') {
-    // manage assets manually (as workaround for problems
-    // with ember-cli assets pipeline / uglify)
-    //ENV['ember-cli-visualeditor'].assetsRoot = '/';
   }
 
   return ENV;

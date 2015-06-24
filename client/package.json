@@ -39,7 +39,7 @@
     "glob": "^4.0.5",
     "liquid-fire": "0.19.4",
     "tahi-fileupload": "substance/tahi-fileupload#3d68c7702cc1b6ba0a544c13f3d65d66a0ab33e6",
-    "tahi-editor-ve": "substance/tahi-editor-ve#6998dbbad01e60afc9155b71e4fc3fc5ad1a1c8f"
+    "tahi-editor-ve": "substance/tahi-editor-ve#289d79cf3ff44aef1ea01496b41646493dd2c443"
   },
   "ember-addon": {
     "paths": [

@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check
-  revision: db391c22b0bed033443a4656ec9897d7817c7d8c
+  revision: 24f7595774f46877c3efefbb2225956f5f701444
   specs:
     plos_bio_tech_check (0.0.1)
       rails (~> 4.2.0)
@@ -488,7 +488,7 @@ GEM
     rspec-mocks (3.3.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.3.0)
-    rspec-rails (3.3.1)
+    rspec-rails (3.3.2)
       actionpack (>= 3.0, < 4.3)
       activesupport (>= 3.0, < 4.3)
       railties (>= 3.0, < 4.3)
@@ -502,7 +502,7 @@ GEM
       rspec-core (>= 2, < 4, != 2.12.0)
     rubyzip (1.1.7)
     safe_yaml (1.0.4)
-    sass (3.4.14)
+    sass (3.4.15)
     sass-rails (5.0.3)
       railties (>= 4.0.0, < 5.0)
       sass (~> 3.1)
@@ -517,8 +517,8 @@ GEM
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
       websocket (~> 1.0)
-    sidekiq (3.3.4)
-      celluloid (>= 0.16.0)
+    sidekiq (3.4.1)
+      celluloid (~> 0.16.0)
       connection_pool (>= 2.1.1)
       json
       redis (>= 3.0.6)
@@ -540,7 +540,7 @@ GEM
     slop (3.6.0)
     sprockets (3.2.0)
       rack (~> 1.0)
-    sprockets-rails (2.3.1)
+    sprockets-rails (2.3.2)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
@@ -659,3 +659,6 @@ DEPENDENCIES
   unf
   vcr
   webmock
+
+BUNDLED WITH
+   1.10.4

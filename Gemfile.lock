@@ -1,14 +1,4 @@
 GIT
-  remote: git://github.com/dandorman/omniauth-cas.git
-  revision: 83210ff52667c2c4574666dcfc9b577542fb595f
-  ref: 83210ff52667c2c4574666dcfc9b577542fb595f
-  specs:
-    omniauth-cas (1.0.4)
-      addressable (~> 2.3)
-      nokogiri (~> 1.5)
-      omniauth (~> 1.2.0)
-
-GIT
   remote: git://github.com/swanandp/acts_as_list.git
   revision: 84325ede9ad528acbf68a97c5070cff113ee6a17
   ref: 84325ede9ad528acbf68a97c5070cff113ee6a17
@@ -383,6 +373,10 @@ GEM
     omniauth (1.2.2)
       hashie (>= 1.2, < 4)
       rack (~> 1.0)
+    omniauth-cas (1.1.0)
+      addressable (~> 2.3)
+      nokogiri (~> 1.5)
+      omniauth (~> 1.2.0)
     omniauth-oauth2 (1.3.0)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
@@ -623,7 +617,7 @@ DEPENDENCIES
   mini_magick
   newrelic_rpm
   nokogiri
-  omniauth-cas!
+  omniauth-cas
   omniauth-oauth2
   ordinalize
   pdfkit

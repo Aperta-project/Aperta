@@ -2,6 +2,7 @@
 # This class represents the paper in the system.
 class Paper < ActiveRecord::Base
   include EventStream::Notifiable
+  include AASM
 
   belongs_to :creator, inverse_of: :submitted_papers, class_name: 'User', foreign_key: :user_id
   belongs_to :journal, inverse_of: :papers
@@ -30,59 +31,68 @@ class Paper < ActiveRecord::Base
   validates :paper_type, presence: true
   validates :short_title, presence: true, uniqueness: true
   validates :journal, presence: true
-  validate :metadata_tasks_completed?, if: :submitting?
 
   delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
 
-  after_update :paper_submitted, if: -> { self.submitted_changed? from: false, to: true }
+  aasm column: :publishing_state do
+    state :unsubmitted, initial: true # currently being authored
+    state :submitted
+    state :in_minor_revision # revision that does not require resubmission
+    state :in_revision # has revised decision and requires resubmission
+    state :accepted
+    state :rejected
+    state :published
 
-  class << self
-    # Public: Find papers in the 'submitted' state only.
-    #
-    # Examples
-    #
-    #   Paper.submitted
-    #   # => [<#123: Paper>, <#124: Paper>]
-    #
-    # Returns an ActiveRelation.
-    def submitted
-      where(submitted: true)
+    event(:submit) do
+      transitions from: [:unsubmitted, :in_revision],
+                  to: :submitted,
+                  guards: :metadata_tasks_completed?,
+                  after: :prevent_edits!
     end
 
-    # Public: Find papers that are not in 'submitted' state.
-    #
-    # Examples
-    #
-    #   Paper.ongoing
-    #   # => [<#123: Paper>, <#124: Paper>]
-    #
-    # Returns an ActiveRelation.
-    def ongoing
-      where(submitted: false)
+    event(:minor_revision) do
+      transitions from: :submitted,
+                  to: :in_minor_revision,
+                  after: :allow_edits!
     end
 
-    # Public: Find papers that have been published.
-    #
-    # Examples
-    #
-    #   Paper.published
-    #   # => [<#123: Paper>, <#124: Paper>]
-    #
-    # Returns an ActiveRelation.
-    def published
-      where.not(published_at: nil)
+    event(:submit_minor_revision) do
+      transitions from: :in_minor_revision,
+                  to: :submitted,
+                  after: :prevent_edits!
     end
 
-    # Public: Find papers that haven't been published yet.
-    #
-    # Examples
-    #
-    #   Paper.unpublished
-    #   # => [<#123: Paper>, <#124: Paper>]
-    #
-    # Returns an ActiveRelation.
-    def unpublished
-      where(published_at: nil)
+    event(:revise) do
+      transitions from: :submitted,
+                  to: :in_revision,
+                  after: :allow_edits!
+    end
+
+    event(:accept) do
+      transitions from: :submitted,
+                  to: :accepted
+    end
+
+    event(:reject) do
+      transitions from: :submitted,
+                  to: :rejected
+    end
+
+    event(:publish) do
+      transitions from: :submitted,
+                  to: :published,
+                  after: :set_published_at!
+    end
+  end
+
+  def make_decision(decision)
+    case decision.verdict
+    when "accepted"
+      accept!
+    when "rejected"
+      reject!
+    when "revise"
+      revise!
     end
   end
 
@@ -159,10 +169,6 @@ class Paper < ActiveRecord::Base
     update_attribute(:locked_by, user)
   end
 
-  def submitting? # :nodoc:
-    submitted_changed? && submitted
-  end
-
   def unlock # :nodoc:
     update_attribute(:locked_by, nil)
   end
@@ -171,9 +177,16 @@ class Paper < ActiveRecord::Base
     update_attribute(:last_heartbeat_at, Time.now)
   end
 
-  def metadata_tasks_completed? # :nodoc:
-    return unless uncompleted_tasks?
-    errors.add(:base, "can't submit a paper when all of the metadata tasks aren't completed")
+  def metadata_tasks_completed?
+    tasks.metadata.count == tasks.metadata.completed.count
+  end
+
+  def prevent_edits!
+    update!(editable: false)
+  end
+
+  def allow_edits!
+    update!(editable: true)
   end
 
   %w(admins editors reviewers collaborators).each do |relation|
@@ -232,12 +245,7 @@ class Paper < ActiveRecord::Base
     Nokogiri::HTML(body).text.truncate_words 100
   end
 
-  def paper_submitted
-    itc_task = tasks.detect { |t| t.is_a? PlosBioTechCheck::InitialTechCheckTask }
-    itc_task.increment_round! if itc_task
-  end
-
-  def uncompleted_tasks?
-    tasks.metadata.count != tasks.metadata.completed.count
+  def set_published_at!
+    update!(published_at: Time.current.utc)
   end
 end

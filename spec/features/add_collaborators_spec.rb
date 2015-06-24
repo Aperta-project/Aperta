@@ -3,7 +3,7 @@ require 'rails_helper'
 feature "Editing paper", js: true do
   let(:author) { FactoryGirl.create :user }
   let(:journal) { FactoryGirl.create :journal }
-  let(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, submitted: false, short_title: 'foo bar', creator: author }
+  let(:paper) { FactoryGirl.create :paper, :with_tasks, journal: journal, short_title: 'foo bar', creator: author }
   let!(:user) { FactoryGirl.create :user }
 
   before do

@@ -123,7 +123,18 @@ FactoryGirl.define do
     title "Cover Letter"
     role "author"
   end
+
+  factory :metadata_task, class: "MockMetadataTask" do
+    phase
+    title "Metadata Task"
+    role "author"
+  end
 end
+
+class MockMetadataTask < Task
+  include MetadataTask
+end
+class MetadataTaskPolicy < TasksPolicy; end
 
 class InvitableTask < Task
   include TaskTypeRegistration

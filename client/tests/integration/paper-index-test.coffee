@@ -30,7 +30,7 @@ test 'on paper.index, contributors are visible', ->
 
   paperPayload.addRecords(records.concat([fakeUser]))
   paperResponse = paperPayload.toJSON()
-  paperResponse.paper.submitted = true
+  paperResponse.paper.publishingState = 'submitted'
 
   server.respondWith 'GET', "/api/papers/#{records[0].id}", [
     200, {"Content-Type": "application/json"}, JSON.stringify paperResponse

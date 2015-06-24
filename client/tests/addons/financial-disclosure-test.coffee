@@ -66,6 +66,11 @@ module 'FinancialDisclosureTask',
       204, {"Content-Type": "application/json"}, JSON.stringify []
     ]
 
+    server.respondWith 'DELETE', /\/api\/funders\/\d+/, [
+      204, {"Content-Type": "application/html"}, ""
+    ]
+
+
     mirrorCreateResponse = (key, newId) ->
       (xhr) ->
         createdItem = JSON.parse(xhr.requestBody)
@@ -75,38 +80,31 @@ module 'FinancialDisclosureTask',
 
     server.respondWith 'POST', "/api/funders", mirrorCreateResponse('funder', 1)
 
-test 'Viewing card', ->
+test 'Viewing the card and adding new funder', ->
   visit "/papers/#{currentPaper.id}/edit"
   click ':contains("Financial")'
   .then ->
     equal find('.overlay-main-work h1').text().trim(), 'Financial Disclosures'
     ok find("label:contains('Yes')").length
     click "label:contains('Yes')"
-    .then ->
+    andThen ->
       ok find("button:contains('Add Another Funder')").length, "User can add another funder"
       ok find("span.remove-funder").length, "User can add remove the funder"
+      Ember.$('#funder-name').val("Hello")
+      Ember.$('#grant-number').val("1234567890")
+      ok find("p:contains('by Hello')")
+      ok find("p:contains('grand number 1234567890')")
+      click("label:contains('Completed')")
+      click("a:contains('Close')")
+      andThen ->
+        ok find("div.card-completed-icon").length
 
-
-# test "Removing an existing funder when there's only 1", ->
-# #   ef = ETahi.Factory
-# #   records = ETahi.Setups.paperWithTask ('FinancialDisclosureTask')
-# #   paper = records[0]
-# #   task = records[1]
-# #   author = ef.createAuthor(paper)
-#   funder = Factory.createRecord('Funder', author_ids: 1, task_id: 94139, id: 1)
-#   financialDisclosureTask.funder_ids = [1]
-#   paperPayload.addRecords(records.concat([funder]))
-#
-#   server.respondWith 'GET', "/papers/#{currentPaper.id}", [
-#     200, {"Content-Type": "application/json"}, JSON.stringify paperPayload.toJSON()
-#   ]
-#
-#   server.respondWith 'DELETE', "/funders/1", [
-#     204, {"Content-Type": "application/html"}, ""
-#   ]
-#
-#   visit "/papers/#{currentPaper.id}"
-#   click "a.remove-funder-link"
-#   andThen ->
-#     ok _.findWhere(server.requests, {method: "DELETE", url: "/funders/1"}), "It posts to the server to delete the funder"
-#     ok find('input#received-funding-no:checked').length, "Received funding is set to 'no'"
+test "Removing an existing funder when there's only 1", ->
+  visit "/papers/#{currentPaper.id}/edit"
+  click ':contains("Financial")'
+  andThen ->
+    click "label:contains('Yes')"
+    andThen ->
+      click "span.remove-funder"
+      andThen ->
+        ok find('input#received-funding-no:checked').length, "Received funding is set to 'no'"

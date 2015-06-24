@@ -17,18 +17,6 @@
           </div>
         {{/if}}
 
-        <div class="manuscript-title-and-placeholder">
-          {{content-editable tagName="h2"
-                             id="paper-title"
-                             placeholder="Type your manuscript title here"
-                             value=model.title
-                             preventEnterKey="true"}}
-
-          {{#if showPlaceholder}}
-            <div id="paper-placeholder" {{action "tryHidingPlaceholder"}}>Type your manuscript here</div>
-          {{/if}}
-        </div>
-
         <div id="paper-body">
           {{component editorComponent
               viewName='editor'

@@ -94,7 +94,6 @@ class PageFragment
     end
   end
 
-  protected
   attr_reader :context
 
   def select2(value, options = {})

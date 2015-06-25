@@ -8,6 +8,8 @@ class AddVersionedText < ActiveRecord::Migration
       t.boolean :active, default: true
       t.boolean :copy_on_edit, default: false
       t.text :text
+
+      t.timestamps
     end
 
     execute(<<-statement)

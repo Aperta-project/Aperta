@@ -191,11 +191,13 @@ class Paper < ActiveRecord::Base
     update_attribute(:last_heartbeat_at, Time.now)
   end
 
-  def metadata_tasks_completed?(*args)
+  # Accepts any args the state transition accepts
+  def metadata_tasks_completed?(*)
     tasks.metadata.count == tasks.metadata.completed.count
   end
 
-  def prevent_edits!(*args)
+  # Accepts any args the state transition accepts
+  def prevent_edits!(*)
     update!(editable: false)
   end
 

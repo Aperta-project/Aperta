@@ -102,16 +102,8 @@ class Paper < ActiveRecord::Base
     latest_version.text
   end
 
-  def latest_version
-    versioned_texts.active.first_or_create
-  end
-
   def body= new_body
     latest_version.update(text: new_body)
-  end
-
-  def major_version! submitting_user
-    latest_version.major_version! submitting_user
   end
 
   def version_string
@@ -262,6 +254,14 @@ class Paper < ActiveRecord::Base
   end
 
   private
+
+  def latest_version
+    versioned_texts.active.first_or_create
+  end
+
+  def major_version! submitting_user
+    latest_version.major_version! submitting_user
+  end
 
   def default_abstract
     Nokogiri::HTML(body).text.truncate_words 100

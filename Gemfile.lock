@@ -125,8 +125,6 @@ GEM
       execjs
       json
     bcrypt (3.1.10)
-    binding_of_caller (0.7.2)
-      debug_inspector (>= 0.0.1)
     bootstrap-sass (3.3.5.1)
       autoprefixer-rails (>= 5.0.0.1)
       sass (>= 3.3.0)
@@ -159,7 +157,6 @@ GEM
     codeclimate-test-reporter (0.4.7)
       simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.1.0)
-    columnize (0.9.0)
     connection_pool (2.2.0)
     cookiejar (0.3.2)
     crack (0.4.2)
@@ -168,7 +165,6 @@ GEM
       addressable
     daemons (1.1.9)
     database_cleaner (1.4.1)
-    debug_inspector (0.0.2)
     devise (3.5.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -400,17 +396,14 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    pry-byebug (3.1.0)
-      byebug (~> 4.0)
-      pry (~> 0.10)
     pry-rails (0.3.4)
       pry (>= 0.9.10)
+    pry-remote (0.1.8)
+      pry (~> 0.9)
+      slop (~> 3.0)
     pry-rescue (1.4.2)
       interception (>= 0.5)
       pry
-    pry-stack_explorer (0.4.9.2)
-      binding_of_caller (>= 0.7)
-      pry (>= 0.9.11)
     puma (2.11.3)
       rack (>= 1.1, < 2.0)
     pusher (0.14.4)
@@ -629,10 +622,9 @@ DEPENDENCIES
   plos_bio_tech_check!
   premailer-rails
   progressbar
-  pry-byebug
   pry-rails
+  pry-remote
   pry-rescue
-  pry-stack_explorer
   puma
   pusher
   pusher-fake

@@ -102,7 +102,7 @@ class Paper < ActiveRecord::Base
     latest_version.text
   end
 
-  def body= new_body
+  def body=(new_body)
     latest_version.update(text: new_body)
   end
 
@@ -259,7 +259,7 @@ class Paper < ActiveRecord::Base
     versioned_texts.active.first_or_create
   end
 
-  def major_version! submitting_user
+  def major_version!(submitting_user)
     latest_version.major_version! submitting_user
   end
 

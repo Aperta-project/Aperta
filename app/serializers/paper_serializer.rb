@@ -44,6 +44,6 @@ class PaperSerializer < LitePaperSerializer
   end
 
   def versions
-    Hash[object.versioned_texts.collect {|v| [v.version_string, v.id]}]
+    Hash[object.versioned_texts.map { |v| [v.version_string, v.id] }]
   end
 end

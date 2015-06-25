@@ -8,7 +8,7 @@ class VersionedText < ActiveRecord::Base
   scope :active, -> { where(active: true) }
 
   # Called on paper sumbission and resubmission.
-  def major_version! submitting_user
+  def major_version!(submitting_user)
     update!(major_version: (major_version + 1),
             minor_version: 0,
             copy_on_edit: true,
@@ -16,7 +16,7 @@ class VersionedText < ActiveRecord::Base
   end
 
   def must_copy
-    copy_on_edit and not copy_on_edit_changed?
+    copy_on_edit && !copy_on_edit_changed?
   end
 
   # Make a copy and increment the minor version if the copy_on_edit

@@ -58,7 +58,6 @@ FactoryGirl.define do
       paper.decisions.create!
 
       paper.body = evaluator.body
-      p paper, paper.body
     end
 
     factory :paper_with_phases do

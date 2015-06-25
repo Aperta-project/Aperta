@@ -34,10 +34,11 @@
   border-radius: 5px;
   padding: 10px 15px;
   color: $tahi-green-dark;
-  font-size: 18px;
-  word-wrap: break-word;
+  font-size: 20px;
   background-color: $tahi-green-light;
   cursor: pointer;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
   .badge {
     position: absolute;
     top: -5px;
@@ -67,7 +68,7 @@
 // .card modifier:
 .card--completed {
   .card-content {
-    padding-left: 37px;
+    padding-left: 45px;
     color: $tahi-grey-light - #666;
     background: $tahi-grey-light;
   }

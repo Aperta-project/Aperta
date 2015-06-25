@@ -41,7 +41,8 @@ export default Ember.Mixin.create({
   },
 
   uploadFinished(data, filename) {
-    if (this.get('figures') || this.get('figures') === []) {
+    for (var key in data) { break; }
+    if (data[key]) {
       $('.upload-preview-filename').text('Upload Complete!');
 
       Ember.run.later(this, ()=> {

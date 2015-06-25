@@ -7,7 +7,7 @@ class AddVersionedText < ActiveRecord::Migration
       t.integer :minor_version, default: 0
       t.boolean :active, default: true
       t.boolean :copy_on_edit, default: false
-      t.text :text
+      t.text :text, default: ""
 
       t.timestamps
     end

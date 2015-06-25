@@ -2,6 +2,10 @@ require 'securerandom'
 
 FactoryGirl.define do
   factory :paper do
+    transient do
+      body "I am the very model of a modern journal article"
+    end
+
     journal
     creator factory: User
 
@@ -49,9 +53,12 @@ FactoryGirl.define do
       paper.paper_type ||= paper.journal.paper_types.first
     end
 
-    after(:create) do |paper|
+    after(:create) do |paper, evaluator|
       paper.paper_roles.create!(user: paper.creator, role: PaperRole::COLLABORATOR)
       paper.decisions.create!
+
+      paper.body = evaluator.body
+      p paper, paper.body
     end
 
     factory :paper_with_phases do

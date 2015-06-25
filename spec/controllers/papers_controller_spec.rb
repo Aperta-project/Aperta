@@ -165,11 +165,8 @@ describe PapersController do
 
       it "will not update the body if it is nil" do
         # test to check that weird ember ghost requests can't reset the body
-        body = "There is definitely a body"
-        paper.update(body: body)
-
         put :update, { id: paper.to_param, format: :json, paper: { body: nil }.merge(params) }
-        expect(paper.reload.body).to eq(body)
+        expect(paper.reload.body).to not_eq(nil)
       end
 
       context "when the paper is locked by another user" do

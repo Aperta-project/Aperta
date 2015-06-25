@@ -263,7 +263,8 @@ ActiveRecord::Schema.define(version: 20150626223620) do
   create_table "papers", force: :cascade do |t|
     t.string   "short_title",       limit: 255
     t.string   "title",             limit: 255
-    t.text     "body",                          default: ""
+    t.string   "short_title"
+    t.string   "title"
     t.text     "abstract",                      default: ""
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -499,9 +500,10 @@ ActiveRecord::Schema.define(version: 20150626223620) do
 
   create_table "versioned_texts", force: :cascade do |t|
     t.integer "submitting_user_id"
+    t.integer "paper_id"
     t.integer "major_version",      default: 0
     t.integer "minor_version",      default: 0
-    t.boolean "active"
+    t.boolean "active",             default: true
     t.boolean "copy_on_edit",       default: false
     t.text    "text"
   end

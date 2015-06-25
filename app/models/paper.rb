@@ -191,11 +191,11 @@ class Paper < ActiveRecord::Base
     update_attribute(:last_heartbeat_at, Time.now)
   end
 
-  def metadata_tasks_completed?
+  def metadata_tasks_completed?(*args)
     tasks.metadata.count == tasks.metadata.completed.count
   end
 
-  def prevent_edits!
+  def prevent_edits!(*args)
     update!(editable: false)
   end
 
@@ -260,7 +260,7 @@ class Paper < ActiveRecord::Base
   end
 
   def major_version!(submitting_user)
-    latest_version.major_version! submitting_user
+    latest_version.major_version!(submitting_user)
   end
 
   def default_abstract

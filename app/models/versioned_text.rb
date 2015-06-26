@@ -27,7 +27,7 @@ class VersionedText < ActiveRecord::Base
     old_version = dup
     old_version.text = text_was
     old_version.active = false
-    old_version.save
+    old_version.save!
 
     self.minor_version = minor_version + 1
   end

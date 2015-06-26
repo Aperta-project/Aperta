@@ -21,23 +21,16 @@ moduleFor 'controller:paper/edit/html-editor', 'Unit: paper/edit/html-editor con
       editorType: 'html'
 
     @editor =
-      fromHtml: sinon.stub()
       enable: sinon.stub()
       disable: sinon.stub()
+      update: sinon.stub()
 
     @subject().set 'model', paper
     @subject().set 'currentUser', currentUser
     @subject().set 'editor', @editor
 
-test 'when the paper is being edited, do not update editor', ->
-  @subject().set('model.lockedBy', @subject().get('currentUser'))
-  @editor.fromHtml.reset()
+test 'update editor on body change', ->
+  @editor.update.reset()
   @subject().set('model.body', 'foo')
 
-  ok !@editor.fromHtml.called, 'do not update editor'
-
-test 'when the paper is not being edited, update editor on body change', ->
-  @editor.fromHtml.reset()
-  @subject().set('model.body', 'foo')
-
-  ok @editor.fromHtml.called, 'update editor'
+  ok @editor.update.called, 'update editor'

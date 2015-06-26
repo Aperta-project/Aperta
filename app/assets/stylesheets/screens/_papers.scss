@@ -337,6 +337,15 @@ html.control-bar-sub-nav-active #paper-container {
   overflow: hidden;
 }
 
-.paper-edit-overlay {
+.paper-edit-overlay, .editor-overlay {
   font-family: $tahi-font-family;
+}
+
+.editor-overlay .overlay-body {
+  @include position(fixed, $tahi-control-bar-height+50px 0px auto 0px);
+}
+
+.figures-overlay .attachment-thumbnail-image {
+  float: initial;
+  width: 100%;
 }

@@ -9,28 +9,15 @@ var View = Ember.View.extend(PaperEditMixin, {
     this.set('controller.editor', this.get('editor'));
   }.observes('editor'),
 
-  updateEditorLockedState: function() {
-    var editor = this.get('controller.editor');
-    if (!editor) {
-      return;
-    }
-    if (this.get('isEditing')) {
-      editor.enable();
-    } else {
-      editor.disable();
-    }
-  }.observes('isEditing'),
-
   initializeEditingState: function() {
-    // try tpo start editing
-    // TODO for now we should switch to a simplified locking strategy:
-    // When the editor is opened it will acquire the lock and release it when leaving
-    // If the paper is locked already we should indicate it somehow
+    // start editing right away
     this.get('controller').startEditing();
   }.on('didInsertElement'),
 
   destroyEditor: function() {
     Ember.$(document).off('keyup.autoSave');
+    // stop editing when closing the editor
+    this.get('controller').stopEditing();
   }.on('willDestroyElement'),
 
   timeoutSave: function() {

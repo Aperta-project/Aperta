@@ -16,19 +16,19 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
   editorComponent: 'tahi-editor-ve',
 
   paperBodyDidChange: function() {
-    if (!this.get('lockedByCurrentUser')) {
-      this.updateEditor();
-    }
+    this.updateEditor();
   }.observes('model.body'),
 
   startEditing: function() {
-    this.set('model.lockedBy', this.currentUser);
-    this.connectEditor();
+    if (!this.get('model.lockedBy')) {
+      this.set('model.lockedBy', this.currentUser);
+      this.connectEditor();
+    }
   },
 
   stopEditing: function() {
     this.disconnectEditor();
-    this.savePaper();
+    this.set('model.lockedBy', null);
   },
 
   updateEditor: function() {
@@ -42,11 +42,13 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
     if (!this.get('model.editable')) {
       return;
     }
+    // Reject saving when the paper is not being locked by this user
     if (!this.get('lockedByCurrentUser')) {
       throw new Error('Paper can not be saved as it is locked. Please try again later.');
     }
     var editor = this.get('editor');
     var paper = this.get('model');
+    if (!editor) { return; }
     var manuscriptHtml = editor.getBodyHtml();
     paper.set('body', manuscriptHtml);
     if (paper.get('isDirty')) {

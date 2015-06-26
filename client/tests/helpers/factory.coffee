@@ -157,15 +157,15 @@ Factory =
     [].concat(paper, litePaper, journal, phases, allTasks)
 
   createLitePaper: (paper) ->
-    {short_title, title, id, submitted} = paper
+    {short_title, title, id, publishingState} = paper
     paper_id = id
-    paperAttrs = {short_title, title, id, submitted, paper_id}
+    paperAttrs = {short_title, title, id, publishingState, paper_id}
     Factory.createRecord('LitePaper', paperAttrs)
 
   createLitePaperWithRoles: (paper, roles) ->
-    {short_title, title, id, submitted} = paper
+    {short_title, title, id, publishingState} = paper
     paper_id = id
-    paperAttrs = {short_title, title, id, submitted, paper_id}
+    paperAttrs = {short_title, title, id, publishingState, paper_id}
     lp = Factory.createRecord('LitePaper', paperAttrs)
     lp.roles = roles
     lp
@@ -274,7 +274,7 @@ FactoryAttributes.Paper =
   short_title: "Paper"
   title: "Foo"
   body: null
-  submitted: false
+  publishing_state: "submitted"
   paper_type: "Research"
   status: null
   phase_ids: []
@@ -293,7 +293,7 @@ FactoryAttributes.LitePaper =
   title: "Foo"
   paper_id: null
   short_title: "Paper"
-  submitted: false
+  publishing_state: "submitted"
   roles: [] # an array of strings
 
 FactoryAttributes.MessageTask =

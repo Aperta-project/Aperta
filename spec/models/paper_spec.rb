@@ -29,6 +29,28 @@ describe Paper do
       end
     end
 
+    describe "metadata_tasks_completed?" do
+      context "paper with completed metadata task" do
+        let(:paper) do
+          FactoryGirl.create(:paper_with_task, task_params: { type: "MockMetadataTask", completed: true })
+        end
+
+        it "returns true" do
+          expect(paper.metadata_tasks_completed?).to eq(true)
+        end
+      end
+
+      context "paper with incomplete metadata task" do
+        let(:paper) do
+          FactoryGirl.create(:paper_with_task, task_params: { type: "MockMetadataTask", completed: false })
+        end
+
+        it "returns false" do
+          expect(paper.metadata_tasks_completed?).to eq(false)
+        end
+      end
+    end
+
     describe "short_title" do
       it "must be present" do
         paper = FactoryGirl.build(:paper, short_title: nil)
@@ -52,6 +74,106 @@ describe Paper do
     end
   end
 
+  describe "states" do
+    context "when submitting" do
+      let(:paper) { FactoryGirl.create(:paper) }
+
+      it "does not transition when metadata tasks are incomplete" do
+        expect(paper).to receive(:metadata_tasks_completed?).and_return(false)
+        expect{ paper.submit! }.to raise_error(AASM::InvalidTransition)
+      end
+
+      it "transitions to submitted" do
+        expect(paper).to receive(:metadata_tasks_completed?).and_return(true)
+        paper.submit!
+        expect(paper).to be_submitted
+      end
+
+      it "marks the paper not editable" do
+        expect(paper).to receive(:metadata_tasks_completed?).and_return(true)
+        paper.submit!
+        expect(paper).to_not be_editable
+      end
+    end
+
+    context "when minor-revising (as in a tech check)" do
+      let(:paper) { FactoryGirl.create(:paper, :submitted) }
+
+      it "marks the paper editable" do
+        paper.minor_revision!
+        expect(paper).to be_editable
+      end
+    end
+
+    context "when submitting a minor revision (as in a tech check)" do
+      let(:paper) { FactoryGirl.create(:paper, :submitted) }
+
+      it "marks the paper uneditable" do
+        paper.minor_revision!
+        paper.submit_minor_revision!
+        expect(paper).to_not be_editable
+      end
+    end
+
+    context "when publishing" do
+      let(:paper) { FactoryGirl.create(:paper, :submitted) }
+
+      it "marks the paper uneditable" do
+        paper.publish!
+        expect(paper.published_at).to be_truthy
+      end
+    end
+  end
+
+  describe "#make_decision" do
+    let(:paper) { FactoryGirl.create(:paper, :submitted) }
+
+    context "acceptance" do
+      let(:decision) do
+        FactoryGirl.create(:decision, verdict: "accepted")
+      end
+
+      it "accepts the paper" do
+        paper.make_decision decision
+        expect(paper.publishing_state).to eq("accepted")
+      end
+    end
+
+    context "acceptance" do
+      let(:decision) do
+        FactoryGirl.create(:decision, verdict: "accepted")
+      end
+
+      it "accepts the paper" do
+        paper.make_decision decision
+        expect(paper.publishing_state).to eq("accepted")
+      end
+    end
+
+    context "rejection" do
+      let(:decision) do
+        FactoryGirl.create(:decision, verdict: "rejected")
+      end
+
+      it "rejects the paper" do
+        paper.make_decision decision
+        expect(paper.publishing_state).to eq("rejected")
+      end
+    end
+
+    context "revision" do
+      let(:decision) do
+        FactoryGirl.create(:decision, verdict: "revise")
+      end
+
+      it "puts the paper in_revision" do
+        paper.make_decision decision
+        expect(paper.publishing_state).to eq("in_revision")
+      end
+    end
+  end
+
+
   describe "callbacks" do
     let(:user) { FactoryGirl.create(:user) }
     let(:paper) { FactoryGirl.build :paper, creator: user }
@@ -72,41 +194,6 @@ describe Paper do
         not_author = FactoryGirl.create(:user)
         paper.update! creator: not_author
         expect(tasks.all? { |t| t.assignee == user }).to eq true
-      end
-    end
-  end
-
-  describe "scopes" do
-    let(:ongoing_paper)   { create :paper, submitted: false }
-    let(:submitted_paper) { create :paper, submitted: true }
-    let(:published_paper) { create :paper, published_at: 2.days.ago }
-    let(:unpublished_paper) { create :paper }
-
-    describe ".submitted" do
-      it "returns submitted papers only" do
-        expect(Paper.submitted).to_not include(ongoing_paper)
-        expect(Paper.submitted).to include(submitted_paper)
-      end
-    end
-
-    describe ".ongoing" do
-      it "returns submitted papers only" do
-        expect(Paper.ongoing).to_not include(submitted_paper)
-        expect(Paper.ongoing).to include(ongoing_paper)
-      end
-    end
-
-    describe ".published" do
-      it "returns published papers only" do
-        expect(Paper.published).to include published_paper
-        expect(Paper.published).to_not include unpublished_paper
-      end
-    end
-
-    describe ".unpublished" do
-      it "returns published papers only" do
-        expect(Paper.unpublished).to include unpublished_paper
-        expect(Paper.unpublished).to_not include published_paper
       end
     end
   end

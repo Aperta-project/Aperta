@@ -1,31 +1,42 @@
-/.bundle
-/log
-/tmp
-/tags
-/public/uploads
-/node_modules
+# Basic Rails stuff
+log
+tmp
+
+# Assess Engine
+engines/tahi-assess
+
+# Other ephemeral development files
+.bundle
+tags
+node_modules
+
+# Assets
 doc/*.svg
 doc/*.csv
 doc/dependencies.*
 doc/ux
-bin/eventsource
-coverage/
+public/uploads
+public/assets
+
+# Asset generation
+.sass-cache
+
+# Local configuration
 config/database.yml
 config/secrets.yml
-public/assets
-spec/tmp
-dump.rdb
-spring
-setup.log
 Procfile.local
-.DS_Store
-.zsh_rake_cache
-.env
-.sass-cache
-# ignore all .env.{environment} files ...
-.env.*
-# except .env.test
-!.env.test
-engines/tahi-assess
+.env.local
+
+# Testing
+coverage
+spec/tmp
+
+# bin/setup's log file
+>>>>>>> 232fc51c8020ab88917c87046d71f6b340f7b65e
 setup.log
+
+# Other
+bin/eventsource
+dump.rdb
 db/tahi.dump
+spring

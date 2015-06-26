@@ -272,7 +272,6 @@ ActiveRecord::Schema.define(version: 20150621091508) do
     t.datetime "updated_at"
     t.integer  "user_id"
     t.string   "paper_type"
-    t.boolean  "submitted",         default: false,  null: false
     t.integer  "journal_id",                         null: false
     t.text     "decision_letter"
     t.datetime "published_at"
@@ -282,10 +281,12 @@ ActiveRecord::Schema.define(version: 20150621091508) do
     t.boolean  "editable",          default: true
     t.text     "doi"
     t.string   "editor_mode",       default: "html", null: false
+    t.string   "publishing_state"
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
   add_index "papers", ["journal_id"], name: "index_papers_on_journal_id", using: :btree
+  add_index "papers", ["publishing_state"], name: "index_papers_on_publishing_state", using: :btree
   add_index "papers", ["user_id"], name: "index_papers_on_user_id", using: :btree
 
   create_table "participations", force: :cascade do |t|

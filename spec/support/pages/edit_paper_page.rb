@@ -110,10 +110,18 @@ HERE
     select.select value
   end
 
-  def start_writing
+  def start_editing
+    code = <<HERE
+var editorController = Tahi.__container__.lookup("controller:paper/edit/html-editor");
+editorController.startEditing();
+HERE
   end
 
-  def stop_writing
+  def stop_editing
+    code = <<HERE
+var editorController = Tahi.__container__.lookup("controller:paper/edit/html-editor");
+editorController.stopEditing();
+HERE
   end
 
   def save

@@ -42,6 +42,9 @@ Tahi::Application.routes.draw do
   # TODO: namespace to api
   #
   scope '/api', constraints: { format: :json } do
+    get '/crossref/:query', to: 'external_references#crossref'
+    get '/doi/:doi', to: 'external_references#doi', constraints: { doi: /.*/ }
+
     resources :supporting_information_files, only: [:create, :destroy, :update]
     resources :affiliations, only: [:index, :create, :destroy]
     resources :attachments, only: [:destroy, :update]

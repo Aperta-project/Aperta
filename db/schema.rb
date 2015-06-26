@@ -201,9 +201,9 @@ ActiveRecord::Schema.define(version: 20150621091508) do
 
   create_table "journal_task_types", force: :cascade do |t|
     t.integer "journal_id"
-    t.string  "title",        limit: 255
-    t.string  "role",         limit: 255
-    t.string  "kind",         limit: 255
+    t.string  "title",      limit: 255
+    t.string  "role",       limit: 255
+    t.string  "kind",       limit: 255
   end
 
   add_index "journal_task_types", ["journal_id"], name: "index_journal_task_types_on_journal_id", using: :btree
@@ -273,8 +273,8 @@ ActiveRecord::Schema.define(version: 20150621091508) do
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
-    t.datetime "last_heartbeat_at"
     t.integer  "striking_image_id"
+    t.datetime "last_heartbeat_at"
     t.boolean  "editable",                      default: true
     t.text     "doi"
     t.string   "editor_mode",                   default: "html", null: false
@@ -356,17 +356,6 @@ ActiveRecord::Schema.define(version: 20150621091508) do
   add_index "questions", ["decision_id"], name: "index_questions_on_decision_id", using: :btree
   add_index "questions", ["task_id"], name: "index_questions_on_task_id", using: :btree
 
-  create_table "references", force: :cascade do |t|
-    t.integer  "paper_id"
-    t.string   "type"
-    t.json     "data"
-    t.text     "content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "references", ["paper_id"], name: "index_references_on_paper_id", using: :btree
-
   create_table "roles", force: :cascade do |t|
     t.string   "name",                                  limit: 255
     t.integer  "journal_id"
@@ -395,11 +384,11 @@ ActiveRecord::Schema.define(version: 20150621091508) do
 
   create_table "tables", force: :cascade do |t|
     t.integer  "paper_id"
-    t.string   "title"
+    t.string   "title",      limit: 255
     t.string   "caption"
     t.text     "body"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   add_index "tables", ["paper_id"], name: "index_tables_on_paper_id", using: :btree
@@ -500,8 +489,8 @@ ActiveRecord::Schema.define(version: 20150621091508) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "username",               limit: 255
-    t.boolean  "site_admin",                         default: false, null: false
     t.string   "avatar",                 limit: 255
+    t.boolean  "site_admin",                         default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

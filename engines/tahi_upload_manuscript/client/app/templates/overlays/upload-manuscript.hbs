@@ -1,5 +1,5 @@
 <h1>{{model.title}}</h1>
-{{#if isEditable}}
+{{#if canUploadManuscript}}
   <h2>You may upload a manuscript at any time.</h2>
   <div id="upload-file-wrapper">
     <span class="button-primary button--green fileinput-button">
@@ -16,7 +16,7 @@
     </span>
   </div>
   {{else}}
-  <p>Currently, Uploading a Manuscript is disabled</p>
+  <p>Currently, Uploading a Manuscript is disabled because the paper is locked by another user.</p>
 {{/if}}
 
 {{#if uploadError}}

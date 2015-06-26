@@ -356,17 +356,6 @@ ActiveRecord::Schema.define(version: 20150626223620) do
   add_index "questions", ["decision_id"], name: "index_questions_on_decision_id", using: :btree
   add_index "questions", ["task_id"], name: "index_questions_on_task_id", using: :btree
 
-  create_table "references", force: :cascade do |t|
-    t.integer  "paper_id"
-    t.string   "type"
-    t.json     "data"
-    t.text     "content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "references", ["paper_id"], name: "index_references_on_paper_id", using: :btree
-
   create_table "roles", force: :cascade do |t|
     t.string   "name",                                  limit: 255
     t.integer  "journal_id"

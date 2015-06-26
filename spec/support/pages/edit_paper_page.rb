@@ -111,15 +111,9 @@ HERE
   end
 
   def start_writing
-    # NOTE: deactivated toggle for start/stop writing for now
-    # find(".edit-paper-button").click
-    # expect(self).to have_css('.edit-paper-prompt', text: 'STOP WRITING')
   end
 
   def stop_writing
-    # NOTE: deactivated toggle for start/stop writing for now
-    # find(".edit-paper-button").click
-    # expect(self).to have_css('.edit-paper-prompt', text: 'START WRITING')
   end
 
   def save

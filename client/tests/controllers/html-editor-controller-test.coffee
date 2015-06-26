@@ -29,14 +29,7 @@ moduleFor 'controller:paper/edit/html-editor', 'Unit: paper/edit/html-editor con
     @subject().set 'currentUser', currentUser
     @subject().set 'editor', @editor
 
-test 'when the paper is being edited, do not update editor', ->
-  @subject().set('model.lockedBy', @subject().get('currentUser'))
-  @editor.update.reset()
-  @subject().set('model.body', 'foo')
-
-  ok !@editor.update.called, 'do not update editor'
-
-test 'when the paper is not being edited, update editor on body change', ->
+test 'update editor on body change', ->
   @editor.update.reset()
   @subject().set('model.body', 'foo')
 

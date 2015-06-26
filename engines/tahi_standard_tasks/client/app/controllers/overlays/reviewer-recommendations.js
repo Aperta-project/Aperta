@@ -28,11 +28,11 @@ export default TaskController.extend(ValidationErrorsMixin, {
     },
 
     saveNewRecommendation: function() {
-      let newRecommendation = this.store.createRecord('reviewerRecommendation', this.get('newRecommendation'))
+      let newRecommendation = this.store.createRecord('reviewerRecommendation', this.get('newRecommendation'));
 
       newRecommendation
         .set('reviewerRecommendationsTask', this.get('model'))
-        .save().then((savedRecommendation) => {
+        .save().then(() => {
           this.resetForm();
         }).catch((response) => {
           newRecommendation.destroyRecord();

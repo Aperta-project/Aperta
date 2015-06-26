@@ -13,7 +13,6 @@ export default Ember.Mixin.create({
     let uploads = this.get('uploads');
     let newUpload = uploads.findBy('file.name', filename);
     uploads.removeObject(newUpload);
-    return $(window).off('beforeunload.cancelUploads.' + filename);
   },
 
   uploadStarted(data, fileUploadXHR) {
@@ -41,7 +40,8 @@ export default Ember.Mixin.create({
   },
 
   uploadFinished(data, filename) {
-    for (var key in data) { break; }
+    $(window).off('beforeunload.cancelUploads.' + filename);
+    var key = Object.keys(data)[0];
     if (data[key]) {
       $('.upload-preview-filename').text('Upload Complete!');
 

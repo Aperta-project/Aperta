@@ -41,8 +41,9 @@ export default Ember.Mixin.create({
 
   uploadFinished(data, filename) {
     $(window).off('beforeunload.cancelUploads.' + filename);
-    var key = Object.keys(data)[0];
-    if (data[key]) {
+
+    for (var key in data) { break; } // Grabs first key
+    if ( key && data[key]) {
       $('.upload-preview-filename').text('Upload Complete!');
 
       Ember.run.later(this, ()=> {

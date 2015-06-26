@@ -64,6 +64,7 @@ Tahi::Application.routes.draw do
       put :update_attachment, on: :member
     end
     resources :tables, only: [:create, :update, :destroy]
+    resources :bibitems, only: [:create, :update, :destroy]
     resources :filtered_users do
       collection do
         get "admins/:paper_id", to: "filtered_users#admins"
@@ -94,6 +95,7 @@ Tahi::Application.routes.draw do
       resource :manuscript_manager, only: :show
       resources :figures, only: :create
       resources :tables, only: :create
+      resources :bibitems, only: :create
       resources :tasks, only: [:update, :create, :destroy] do
         resources :comments, only: :create
       end

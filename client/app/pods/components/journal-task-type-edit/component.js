@@ -20,18 +20,25 @@ export default Ember.Component.extend({
   availableTaskRoles: Ember.computed.sort('roles', 'journalRoleSort'),
 
   formattedTaskRoles: function() {
-    return this.get('availableTaskRoles').map(function(taskRole) {
+    var formattedTaskRoles =  this.get('availableTaskRoles').map(function(taskRole) {
       return {
         id: taskRole.get('id'),
         text: taskRole.get('name')
       };
     });
+
+    formattedTaskRoles.unshift({ id: null, text: "Reset to Default Role" });
+    return formattedTaskRoles;
   }.property('availableTaskRoles.@each'),
 
   actions: {
     save(roleProxy) {
-      let role = this.get('availableTaskRoles').findBy('name', roleProxy.text);
-      this.set('model.role', role.get('kind'));
+      if (Em.isEmpty(roleProxy.id)) { 
+        this.set('model.role', null);
+      } else {
+        let role = this.get('availableTaskRoles').findBy('name', roleProxy.text);
+        this.set('model.role', role.get('kind'));
+      }
       this.get('model').save();
     }
   }

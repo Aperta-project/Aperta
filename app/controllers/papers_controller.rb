@@ -119,7 +119,9 @@ class PapersController < ApplicationController
       phase_ids: [],
       assignee_ids: [],
       editor_ids: [],
-      figure_ids: []
+      figure_ids: [],
+      table_ids: [],
+      bibitem_ids: []
     )
   end
 
@@ -137,7 +139,9 @@ class PapersController < ApplicationController
       phase_ids: [],
       assignee_ids: [],
       editor_ids: [],
-      figure_ids: []
+      figure_ids: [],
+      table_ids: [],
+      bibitem_ids: []
     )
   end
 

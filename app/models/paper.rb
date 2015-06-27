@@ -14,6 +14,7 @@ class Paper < ActiveRecord::Base
 
   has_many :figures, dependent: :destroy
   has_many :tables, dependent: :destroy
+  has_many :bibitems, dependent: :destroy
   has_many :supporting_information_files, dependent: :destroy
   has_many :paper_roles, inverse_of: :paper, dependent: :destroy
   has_many :assigned_users, -> { uniq }, through: :paper_roles, source: :user

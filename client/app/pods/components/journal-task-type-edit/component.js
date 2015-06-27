@@ -35,11 +35,8 @@ export default Ember.Component.extend({
     },
 
     save(roleProxy) {
-      if (Ember.isEmpty(roleProxy.id)) {
-      } else {
-        let role = this.get('availableTaskRoles').findBy('name', roleProxy.text);
-        this.set('model.role', role.get('kind'));
-      }
+      let role = this.get('availableTaskRoles').findBy('name', roleProxy.text);
+      this.set('model.role', role.get('kind'));
       this.get('model').save();
     }
   }

@@ -333,10 +333,6 @@ html.control-bar-sub-nav-active #paper-container {
   z-index: 1;
 }
 
-.paper-container-html .manuscript-inner {
-  overflow: hidden;
-}
-
 .paper-edit-overlay, .editor-overlay {
   font-family: $tahi-font-family;
 }
@@ -348,4 +344,8 @@ html.control-bar-sub-nav-active #paper-container {
 .figures-overlay .attachment-thumbnail-image {
   float: initial;
   width: 100%;
+}
+
+.paper-container-html .manuscript-inner {
+  min-height: 600px;
 }

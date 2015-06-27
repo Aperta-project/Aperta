@@ -4,7 +4,8 @@ class JournalTaskTypesController < ApplicationController
   respond_to :json
 
   def update
-    journal_task_type.update_attributes(journal_task_types_params)
+    params[:journal_task_type][:role] = TaskType.types[journal_task_type.kind][:default_role] unless params[:journal_task_type][:role]
+    journal_task_type.update!(journal_task_types_params)
     respond_with journal_task_type
   end
 

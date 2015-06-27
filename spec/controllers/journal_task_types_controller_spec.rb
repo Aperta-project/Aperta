@@ -18,7 +18,6 @@ describe JournalTaskTypesController do
     end
 
     context "when the task type's role is set to nil" do
-
       before do
         journal_task_type.update! role: "editor"
       end

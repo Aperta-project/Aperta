@@ -35,7 +35,7 @@ export default TaskController.extend(ValidationErrorsMixin, {
         .save().then(() => {
           this.resetForm();
         }).catch((response) => {
-          newRecommendation.destroyRecord();
+          newRecommendation.deleteRecord();
           this.displayValidationErrorsFromResponse(response);
         });
     },

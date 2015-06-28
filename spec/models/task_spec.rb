@@ -32,4 +32,18 @@ describe Task do
       end
     end
   end
+
+  describe "#questions" do
+    it "destroys questions on destroy" do
+      task = FactoryGirl.create(:task, :with_questions)
+      question_ids = task.questions.pluck :id
+      expect(question_ids).to have_at_least(1).id
+
+      expect {
+        task.destroy
+      }.to change {
+        Question.where(id: question_ids).count
+      }.from(question_ids.count).to(0)
+    end
+  end
 end

@@ -65,7 +65,7 @@ export default AuthorizedRoute.extend({
         paper: this.modelFor('paper'),
         collaborations: collaborations,
         initialCollaborations: collaborations.slice(),
-        allUsers: this.store.find('user')
+        allUsers: this.store.findAll('user')
       });
 
       this.send('openOverlay', {

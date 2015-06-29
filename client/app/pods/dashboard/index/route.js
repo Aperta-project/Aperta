@@ -10,7 +10,7 @@ export default Ember.Route.extend({
   },
 
   setupController(controller, model) {
-    this.store.find('comment-look').then(function(commentLooks) {
+    this.store.findAll('comment-look').then(function(commentLooks) {
       return controller.set('unreadComments', commentLooks);
     });
     controller.set('papers', this.store.filter('paper', function(p) {
@@ -41,7 +41,7 @@ export default Ember.Route.extend({
     },
 
     showNewPaperOverlay() {
-      return this.store.find('journal').then((journals)=> {
+      return this.store.findAll('journal').then((journals)=> {
         this.controllerFor('overlays/paper-new').setProperties({
           journals: journals,
           model: this.store.createRecord('paper', {

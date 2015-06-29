@@ -2,9 +2,7 @@
   {{progress-spinner visible=true size="large" center=true}}
 </div>
 
-<h1>
-  Register Decision
-</h1>
+<h1>Register Decision</h1>
 
 {{#if model.completed}}
   {{#if finalDecision}}
@@ -56,10 +54,7 @@
 
 {{#if previousDecisions}}
   <hr>
-
-  <h3>
-    Decision History
-  </h3>
+  <h3>Decision History</h3>
 {{/if}}
 
-{{partial 'overlays/partials/decision-list'}}
+{{partial "overlays/partials/decision-list"}}

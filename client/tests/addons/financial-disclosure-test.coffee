@@ -107,4 +107,5 @@ test "Removing an existing funder when there's only 1", ->
     andThen ->
       click "span.remove-funder"
       andThen ->
-        ok find('input#received-funding-no:checked').length, "Received funding is set to 'no'"
+        ok !find('input#received-funding-no:checked').length, "Returned to netual"
+        ok !find('input#received-funding-yes:checked').length, "Returned to netual"

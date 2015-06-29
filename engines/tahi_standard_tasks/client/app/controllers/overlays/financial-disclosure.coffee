@@ -7,17 +7,19 @@ FinancialDisclosureOverlayController = TaskController.extend
 
   # ye olde tri-state boolean (explicit selection)
   receivedFunding: null
+  answer: null
 
   numFundersObserver: (->
     # No explicitly chosen, bail
     return if @get('receivedFunding') == false
-
     if @get('funders.length') > 0
       # definitely funders, choose Yes
       @set("receivedFunding", true)
+      @set("answer", "Yes")
     else
       # require explicit selection of No
       @set("receivedFunding", null)
+      @set("answer", null)
   ).observes('funders.@each')
 
   actions:

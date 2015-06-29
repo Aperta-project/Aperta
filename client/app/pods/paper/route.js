@@ -4,7 +4,7 @@ import AuthorizedRoute from 'tahi/routes/authorized';
 
 export default AuthorizedRoute.extend({
   model(params) {
-    return this.store.fetchById('paper', params.paper_id);
+    return this.store.findRecord('paper', params.paper_id, { reload: true });
   },
 
   setupController(controller, model) {

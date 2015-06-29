@@ -40,7 +40,7 @@ ApplicationSerializer = ActiveModelSerializer.extend
 
   # This is overridden from the RESTSerializer because finding a 'task' and getting back a root key of 'author_task' will
   # break the isPrimary check.
-  extractSingle: (store, primaryType, payload, recordId) ->
+  normalizeSingleResponse: (store, primaryType, payload, recordId) ->
     payload = @normalizePayload(payload)
     primaryTypeName = @primaryTypeName(primaryType)
     primaryRecord = undefined
@@ -82,7 +82,7 @@ ApplicationSerializer = ActiveModelSerializer.extend
 
     primaryRecord
 
-  extractArray: (store, primaryType, payload) ->
+  normalizeArrayResponse: (store, primaryType, payload) ->
     payload = @normalizePayload(payload)
     primaryTypeName = @primaryTypeName(primaryType)
     primaryArray = undefined

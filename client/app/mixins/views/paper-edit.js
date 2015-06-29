@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import RedirectsIfEditable from 'tahi/mixins/views/redirects-if-editable';
 
+let on = Ember.on;
+
 export default Ember.Mixin.create(RedirectsIfEditable, {
   classNames: ['edit-paper'],
   editor: null,
@@ -10,19 +12,27 @@ export default Ember.Mixin.create(RedirectsIfEditable, {
   downloadsVisible: false,
   contributorsVisible: false,
 
-  setBackgroundColor: function() {
+  setBackgroundColor: on('didInsertElement', function() {
     $('html').addClass('matte');
-  }.on('didInsertElement'),
+  }),
 
-  resetBackgroundColor: function() {
-    return $('html').removeClass('matte');
-  }.on('willDestroyElement'),
+  resetBackgroundColor: on('willDestroyElement', function() {
+    $('html').removeClass('matte');
+  }),
 
-  applyManuscriptCss: function() {
+  applyManuscriptCss: on('didInsertElement', function() {
     $('#paper-body').attr('style', this.get('controller.model.journal.manuscriptCss'));
-  }.on('didInsertElement'),
+  }),
 
-  subNavVisibleDidChange: function() {
+  teardownControlBarSubNav: on('willDestroyElement', function() {
+    $('html').removeClass('control-bar-sub-nav-active');
+  }),
+
+  saveTitleChanges: on('willDestroyElement', function() {
+    this.timeoutSave();
+  }),
+
+  subNavVisibleDidChange: Ember.observer('subNavVisible', function() {
     if (this.get('subNavVisible')) {
       $('.paper-toolbar').css('top', '103px');
       $('html').addClass('control-bar-sub-nav-active');
@@ -30,15 +40,7 @@ export default Ember.Mixin.create(RedirectsIfEditable, {
       $('.paper-toolbar').css('top', '60px');
       $('html').removeClass('control-bar-sub-nav-active');
     }
-  }.observes('subNavVisible'),
-
-  teardownControlBarSubNav: function() {
-    $('html').removeClass('control-bar-sub-nav-active');
-  }.on('willDestroyElement'),
-
-  saveTitleChanges: function() {
-    this.timeoutSave();
-  }.on('willDestroyElement'),
+  }),
 
   actions: {
     submit() {

@@ -90,7 +90,7 @@ export default Ember.Route.extend(AnimateOverlay, {
     },
 
     feedback() {
-      this.controllerFor('application').set('showOverlay', true);
+      this.controllerFor('application').set('showFeedbackOverlay', true);
 
       this.render('overlays/feedback', {
         into: 'application',

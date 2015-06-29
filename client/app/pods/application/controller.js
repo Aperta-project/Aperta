@@ -8,6 +8,7 @@ export default Ember.Controller.extend({
   canViewAdminLinks: false,
   canViewFlowManagerLink: false,
   showOverlay: false,
+  showFeedbackOverlay: false,
 
   clearError: function() {
     this.set('error', null);

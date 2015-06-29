@@ -9,7 +9,7 @@ export default QuestionComponent.extend({
   selectedYes: Ember.computed.equal("model.answer", "Yes"),
 
   changeAnswer: function() {
-    this.set('model.answer', this.get('answer'));
+    this.set("model.answer", this.get("answer"));
   }.observes("answer"),
 
   selectedNo: function() {
@@ -18,10 +18,10 @@ export default QuestionComponent.extend({
 
   actions: {
     yesAction() {
-      this.sendAction('yesAction');
+      this.sendAction("yesAction");
     },
     noAction() {
-      this.sendAction('noAction');
+      this.sendAction("noAction");
     }
   }
 });

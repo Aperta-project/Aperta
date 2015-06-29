@@ -14,7 +14,7 @@
     </span>
   </p>
 
-  <p>{{latestDecision.letter}}</p>
+  <p>{{display-line-breaks latestDecision.letter}}</p>
 </div>
 
 <div>
@@ -33,4 +33,4 @@
   <h3>Decision History</h3>
 {{/if}}
 
-{{partial 'overlays/partials/decision-list'}}
+{{partial "overlays/partials/decision-list"}}

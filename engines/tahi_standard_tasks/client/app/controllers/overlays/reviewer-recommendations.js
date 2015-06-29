@@ -5,7 +5,15 @@ import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 export default TaskController.extend(ValidationErrorsMixin, {
   showNewReviewerForm: false,
   newRecommendation: {},
-  reset: function() {
+
+  // Doing this to prevent short period of time where `newRecommendation` is in the DOM
+  // while save is happening. If it becomes invalid after save it is removed. This creates
+  // a glitchy look to the list.
+  validReviewerRecommendations: Ember.computed('model.reviewerRecommendations.@each.isNew', function() {
+    return this.get('model.reviewerRecommendations').filterBy('isNew', false);
+  }),
+
+  resetForm: function() {
     this.setProperties({
       showNewReviewerForm: false,
       newRecommendation: {}
@@ -13,23 +21,27 @@ export default TaskController.extend(ValidationErrorsMixin, {
 
     this.clearAllValidationErrors();
   },
+
   actions: {
     toggleReviewerForm: function() {
       this.toggleProperty('showNewReviewerForm');
     },
-    saveNewRecommendation: function() {
-      this.set('newRecommendation.reviewerRecommendationsTask', this.get('model'));
 
-      this.store.createRecord('reviewerRecommendation', this.get('newRecommendation'))
-      .save().then((savedRecommendation) => {
-        this.get('model.reviewerRecommendations').addObject(savedRecommendation);
-        this.reset();
-      }).catch((response) => {
-        this.displayValidationErrorsFromResponse(response);
-      });
+    saveNewRecommendation: function() {
+      let newRecommendation = this.store.createRecord('reviewerRecommendation', this.get('newRecommendation'));
+
+      newRecommendation
+        .set('reviewerRecommendationsTask', this.get('model'))
+        .save().then(() => {
+          this.resetForm();
+        }).catch((response) => {
+          newRecommendation.deleteRecord();
+          this.displayValidationErrorsFromResponse(response);
+        });
     },
+
     cancelEdit: function() {
-      this.reset();
+      this.resetForm();
     }
   }
 });

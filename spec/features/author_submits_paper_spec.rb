@@ -13,7 +13,7 @@ feature "Paper Submission" do
 
     dashboard_page = DashboardPage.new
     new_submission_page = dashboard_page.new_submission
-    edit_submission_page = new_submission_page.create_submission 'This is a short title', journal: journal.name
+    edit_submission_page = new_submission_page.create_submission short_title: 'This is a short title', journal: journal.name, paper_type: journal.manuscript_manager_templates.pluck(:paper_type)
 
     expect(edit_submission_page).to have_journal(journal.name)
     dashboard_page = edit_submission_page.visit_dashboard

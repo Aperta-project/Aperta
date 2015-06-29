@@ -131,7 +131,7 @@ test 'on paper.edit when paper.editable changes, user transitions to paper.index
       getStore().getById('paper', currentPaper.id).set('editable', false)
   andThen ->
     ok !find('.button-primary:contains("Submit")').length
-    equal currentRouteName(), "paper.index"
+    equal currentRouteName(), "paper.index.index"
 
 test 'on paper.edit when there are no metadata tasks', ->
   expect(2)

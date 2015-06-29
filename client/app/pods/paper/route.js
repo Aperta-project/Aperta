@@ -88,7 +88,6 @@ export default AuthorizedRoute.extend({
       });
 
       this.send('openOverlay', {
-        template: 'overlays/activity',
         into: 'application',
         outlet: 'overlay',
         controller: controller

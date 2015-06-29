@@ -79,6 +79,7 @@ export default Ember.Component.extend({
    *  @type boolean
    *  @default false
    **/
+  // TODO: this should be renamed to something like "absoluteCenter"
   center: false,
 
   /**

@@ -7,6 +7,10 @@ FactoryGirl.define do
     trait :with_participant do
       participants { [FactoryGirl.create(:user)] }
     end
+
+    trait :with_questions do
+      questions { FactoryGirl.create_list(:question, 3) }
+    end
   end
 
   factory :competing_interests_task, class: 'TahiStandardTasks::CompetingInterestsTask' do
@@ -123,7 +127,18 @@ FactoryGirl.define do
     title "Cover Letter"
     role "author"
   end
+
+  factory :metadata_task, class: "MockMetadataTask" do
+    phase
+    title "Metadata Task"
+    role "author"
+  end
 end
+
+class MockMetadataTask < Task
+  include MetadataTask
+end
+class MetadataTaskPolicy < TasksPolicy; end
 
 class InvitableTask < Task
   include TaskTypeRegistration

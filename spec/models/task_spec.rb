@@ -19,60 +19,6 @@ describe Task do
     end
   end
 
-  describe "authorize_update?" do
-    let(:paper) { double('paper') }
-    let(:user)  { build(:user, site_admin: admin) }
-    let(:authorized) { task.authorize_update?(nil, user) }
-    before do
-      allow(task).to receive(:paper).and_return paper
-      allow(paper).to receive(:submitted?).and_return paper_submitted
-    end
-
-    context "a non-metadata task with a submitted paper" do
-      let(:task) { Task.new(type: 'Task') }
-      let(:paper_submitted) { true }
-      let(:admin) { false }
-
-      it 'generally returns true' do
-        expect(authorized).to eq(true)
-      end
-    end
-
-    context "a metadata task" do
-      class AMetadataTask < Task
-        include MetadataTask
-      end
-
-      let(:task) { AMetadataTask.new(type: 'AMetadataTask') }
-
-      context 'the paper has been submitted' do
-        let(:paper_submitted) { true }
-
-        context "the user is an admin" do
-          let(:admin) { true }
-          it 'always allows admins' do
-            expect(authorized).to eq(true)
-          end
-        end
-
-        context "the user is not an admin" do
-          let(:admin) { false }
-          it "doesn't allow a regular user" do
-            expect(authorized).to eq(false)
-          end
-        end
-      end
-
-      context 'the paper has not been submitted' do
-        let(:paper_submitted) { false }
-        let(:admin) { false }
-        it "allows a regular user" do
-          expect(authorized).to eq(true)
-        end
-      end
-    end
-  end
-
   describe "#invitations" do
     let(:phase) { FactoryGirl.create :phase }
     let(:task) { FactoryGirl.create :invitable_task, phase: phase }
@@ -84,6 +30,20 @@ describe Task do
           task.destroy!
         }.to change { Invitation.count }.by(-1)
       end
+    end
+  end
+
+  describe "#questions" do
+    it "destroys questions on destroy" do
+      task = FactoryGirl.create(:task, :with_questions)
+      question_ids = task.questions.pluck :id
+      expect(question_ids).to have_at_least(1).id
+
+      expect {
+        task.destroy
+      }.to change {
+        Question.where(id: question_ids).count
+      }.from(question_ids.count).to(0)
     end
   end
 end

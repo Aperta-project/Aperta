@@ -114,22 +114,11 @@ describe TahiStandardTasks::RegisterDecisionTask do
         expect(task.paper_decision_letter).to eq("Rejecting because I can")
       end
     end
-
-    describe "#send_email" do
-      context "if the task transitions to completed" do
-        it "sends emails to the paper's author" do
-          allow(TahiStandardTasks::RegisterDecisionMailer).to receive_message_chain("delay.notify_author_email") { true }
-          task.completed = true
-          task.save!
-          expect(task.send_email).to eq true
-        end
-      end
-    end
   end
 
   describe "#after_update" do
     before do
-      allow_any_instance_of(TahiStandardTasks::RegisterDecisionTask).to receive(:revise_decision?).and_return(true)
+      allow_any_instance_of(Decision).to receive(:revision?).and_return(true)
     end
 
     context "when the decision is 'revise' and task is incomplete" do

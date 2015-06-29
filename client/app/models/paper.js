@@ -8,6 +8,7 @@ export default DS.Model.extend({
   editors: DS.hasMany('user'),
   figures: DS.hasMany('figure', { inverse: 'paper' }),
   tables: DS.hasMany('table', { inverse: 'paper' }),
+  bibitems: DS.hasMany('bibitem', { inverse: 'paper' }),
   journal: DS.belongsTo('journal'),
   lockedBy: DS.belongsTo('user'),
   phases: DS.hasMany('phase'),
@@ -26,7 +27,7 @@ export default DS.Model.extend({
   shortTitle: DS.attr('string'),
   status: DS.attr('string'),
   strikingImageId: DS.attr('string'),
-  submitted: DS.attr('boolean'),
+  publishingState: DS.attr('string'),
   title: DS.attr('string'),
 
   displayTitle: function() {
@@ -51,5 +52,10 @@ export default DS.Model.extend({
 
   latestDecision: function() {
     return this.get('decisions').findBy('isLatest', true);
-  }.property('decisions', 'decisions.@each')
+  }.property('decisions', 'decisions.@each'),
+
+  submittable: function() {
+    var state = this.get('publishingState');
+    return state === 'unsubmitted' || state === 'in_revision';
+  }.property('publishingState')
 });

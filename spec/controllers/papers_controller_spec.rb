@@ -1,13 +1,17 @@
 require 'rails_helper'
 
 describe PapersController do
-  let(:permitted_params) { [:short_title, :title, :abstract, :body, :paper_type, :submitted, :decision, :decision_letter, :journal_id, {authors: [:first_name, :last_name, :affiliation, :email], reviewer_ids: [], phase_ids: [], figure_ids: [], assignee_ids: [], editor_ids: []}] }
+  let(:permitted_params) { [:short_title, :title, :abstract, :body, :paper_type, :decision, :decision_letter, :journal_id, {authors: [:first_name, :last_name, :affiliation, :email], reviewer_ids: [], phase_ids: [], figure_ids: [], assignee_ids: [], editor_ids: []}] }
 
   let(:user) { create :user, :site_admin }
 
   let(:submitted) { false }
   let(:paper) do
-    FactoryGirl.create(:paper, submitted: submitted, creator: user, body: "This is the body")
+    if submitted
+      FactoryGirl.create(:paper, :submitted, creator: user, body: "This is the body")
+    else
+      FactoryGirl.create(:paper, creator: user, body: "This is the body")
+    end
   end
 
   before { sign_in user }
@@ -204,8 +208,8 @@ describe PapersController do
 
     it "submits the paper" do
       put :submit, id: paper.id, format: :json
-      expect(response.status).to eq(200)
-      expect(paper.reload.submitted).to eq true
+      expect(response.status).to eq(204)
+      expect(paper.reload.submitted?).to eq true
       expect(paper.editable).to eq false
     end
 

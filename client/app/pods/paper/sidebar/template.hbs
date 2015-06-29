@@ -1,6 +1,15 @@
 <aside class="sidebar">
   <div class="task-list">
     {{partial "paper/task-list"}}
-    <button {{action "submit" target="view"}} class="button-primary {{if model.allSubmissionTasksCompleted "button--green" "button--disabled"}}">Submit</button>
+
+    {{#if model.submittable}}
+    <button {{action "submit" target="view"}}
+            id="sidebar-submit-paper"
+            class="button-primary
+                   {{if model.allSubmissionTasksCompleted "button--green" "button--disabled"}}">
+      Submit
+    </button>
+    {{/if}}
+
   </div>
 </aside>

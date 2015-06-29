@@ -2,8 +2,8 @@
 `import RESTless from 'tahi/services/rest-less'`
 `import Heartbeat from 'tahi/services/heartbeat'`
 `import ENV from 'tahi/config/environment'`
-`import initializeVisualEditor from 'ember-cli-visualeditor/initializers/initialize_visual_editor'`
 `import AuthorizedRoute from 'tahi/routes/authorized'`
+`import loadVeEditorAssets from 'tahi-editor-ve/initializers/load-assets'`
 
 PaperEditRoute = AuthorizedRoute.extend
   fromSubmitOverlay: false
@@ -14,9 +14,8 @@ PaperEditRoute = AuthorizedRoute.extend
     paper = @modelFor('paper')
     editorInit = Ember.RSVP.Promise.resolve()
 
-    # Yuck
     if paper.get('editorMode') is 'html'
-      editorInit = initializeVisualEditor(ENV).catch((error) ->
+      editorInit = loadVeEditorAssets(ENV).catch((error) ->
         Ember.Logger.error(error))
 
     taskLoad = new Ember.RSVP.Promise((resolve, reject) ->
@@ -30,12 +29,16 @@ PaperEditRoute = AuthorizedRoute.extend
       @set('heartbeatService', Heartbeat.create(resource: model))
       @startHeartbeat()
     else
-      @replaceWith('paper.index', model)
+      @transitionTo('paper.index', model)
 
   setupController: (controller, model) ->
     # paper/edit controller is not used.
     # Controller is chosen based on Paper document type
-    @set('editorLookup', 'paper.edit.' + model.get('editorMode') + '-editor')
+    switch model.get('editorMode')
+      when 'latex' then editorLookup = 'paper.edit.latex-editor'
+      when 'html' then editorLookup = 'paper.edit.html-editor'
+    @set('editorLookup', editorLookup)
+
     editorController = @controllerFor(@get('editorLookup'))
     editorController.set('model', model)
     editorController.set('commentLooks', @store.all('commentLook'))
@@ -63,34 +66,6 @@ PaperEditRoute = AuthorizedRoute.extend
     lockedBy = @modelFor('paper').get('lockedBy')
     lockedBy and lockedBy == @currentUser
 
-  openOverlay: (overlayName) ->
-    controller = @controllerFor(@get('editorLookup'))
-    editor = controller.get('editor')
-    editor.freeze()
-    # do not handle model changes while overlay is open
-    controller.disconnectEditor()
-    controller.set('hasOverlay', true)
-
-    overlayController = @controllerFor(overlayName)
-    overlayController.set('manuscriptEditor', controller.get('editor'))
-
-    @render overlayName,
-      into: 'application'
-      outlet: 'overlay'
-      controller: overlayName
-      model: @modelFor('paper.edit')
-
-  closeOverlay: ->
-    controller = @controllerFor(@get('editorLookup'))
-    controller.set('hasOverlay', false)
-
-    # Yuck:
-    if @modelFor('paper').get('editorMode') is 'html'
-      controller.connectEditor()
-      controller.get('editor').unfreeze()
-
-    return true
-
   actions:
     viewCard: (task) ->
       paper = @modelFor('paper')
@@ -116,41 +91,8 @@ PaperEditRoute = AuthorizedRoute.extend
 
     editableDidChange: ->
       if !@fromSubmitOverlay
-        @replaceWith('paper.index', @modelFor('paper'))
+        @transitionTo('paper.index', @modelFor('paper'))
       else
         @set 'fromSubmitOverlay', false
-
-    openFigures: ->
-      @openOverlay('paper/edit/figures')
-
-    openTables: ->
-      @openOverlay('paper/edit/tables')
-
-    insertFigure: (figureId) ->
-      editor = @controllerFor(@get('editorLookup')).get('editor')
-      # NOTE: we need to provide the full HTML representation right away
-      @closeOverlay()
-      figure = @modelFor('paper.edit').get('figures').findBy('id', figureId)
-      if figure
-        editor.getSurfaceView().execute('figure', 'insert', figure.toHtml())
-      else
-        console.error('No figure with id', figureId)
-
-    insertTable: (tableId) ->
-      editor = @controllerFor(@get('editorLookup')).get('editor')
-      # NOTE: we need to provide the full HTML representation right away
-      @closeOverlay()
-      table = @modelFor('paper.edit').get('tables').findBy('id', tableId)
-      if table
-        editor.getSurfaceView().execute('figure', 'insert', table.toHtml())
-      else
-        console.error('No figure with id', tableId)
-
-    closeOverlay: ->
-      @closeOverlay()
-
-    destroyAttachment: (attachment) ->
-      @modelFor('paper').get('figures').removeObject(attachment)
-      attachment.destroyRecord()
 
 `export default PaperEditRoute`

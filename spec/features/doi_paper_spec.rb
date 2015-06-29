@@ -8,6 +8,9 @@ feature "Editing paper", selenium: true, js: true do
     doi_journal_prefix: nil,
     last_doi_issued: nil
   }
+  let(:paper_type) {
+    journal.manuscript_manager_templates.pluck(:paper_type).first
+  }
 
   context "As an author on the paper page" do
 
@@ -22,10 +25,11 @@ feature "Editing paper", selenium: true, js: true do
       scenario "it doesn't contain any doi artifacts" do
         visit '/'
         click_button 'Create New Submission'
-        within('.overlay-container') do |page|
-          fill_in 'paper-short-title', with: "A paper with no doi"
-          click_button 'Create'
-        end
+        fill_in 'paper-short-title', with: "A paper with no doi"
+        p = PageFragment.new(find('#overlay'))
+        p.select2(journal.name, css: '.paper-new-journal-select')
+        p.select2(paper_type,  css: '.paper-new-paper-type-select')
+        click_button 'Create'
         wait_for_ajax
         expect(page.current_path).to match %r{/papers/\d+/edit}
         within "#paper-container" do
@@ -44,10 +48,11 @@ feature "Editing paper", selenium: true, js: true do
       scenario "shows the doi on the page" do
         visit '/'
         click_button 'Create New Submission'
-        within('.overlay-container') do |page|
-          fill_in 'paper-short-title', with: "A paper with doi"
-          click_button 'Create'
-        end
+        fill_in 'paper-short-title', with: "A paper with doi"
+        p = PageFragment.new(find('#overlay'))
+        p.select2(journal.name, css: '.paper-new-journal-select')
+        p.select2(paper_type,  css: '.paper-new-paper-type-select')
+        click_button 'Create'
         wait_for_ajax
 
         within ".task-list-doi" do

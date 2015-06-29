@@ -40,6 +40,19 @@ feature "Register Decision", js: true do
     end
   end
 
+  scenario "persist the decision radio button" do
+    dashboard_page = DashboardPage.new
+    manuscript_page = dashboard_page.view_submitted_paper paper
+    manuscript_page.view_card 'Register Decision' do |overlay|
+      overlay.register_decision = "Rejected"
+    end
+
+    visit current_path # Revisit
+    manuscript_page.view_card 'Register Decision' do |overlay|
+      expect(find("input[value='rejected']")).to be_checked
+    end
+  end
+
   scenario "User checks previous decision history" do
     paper.decisions.first.update! verdict: "revise",
                                   letter: "Please revise the manuscript"

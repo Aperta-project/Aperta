@@ -8,6 +8,13 @@ class Decision < ActiveRecord::Base
   default_scope { order('revision_number DESC') }
 
   validates :revision_number, uniqueness: { scope: :paper_id }
+  validate :verdict_valid?, if: -> { verdict }
+
+  VERDICTS = ['revise', 'accepted', 'rejected']
+
+  def verdict_valid?
+    VERDICTS.include? verdict
+  end
 
   def self.latest
     first
@@ -19,6 +26,10 @@ class Decision < ActiveRecord::Base
 
   def latest?
     self == paper.decisions.latest
+  end
+
+  def revision?
+    verdict == 'revise'
   end
 
   def increment_revision_number

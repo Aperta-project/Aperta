@@ -4,11 +4,18 @@ class JournalTaskTypesController < ApplicationController
   respond_to :json
 
   def update
-    journal_task_type.update_attributes(journal_task_types_params)
+    reset_empty_role
+    journal_task_type.update!(journal_task_types_params)
     respond_with journal_task_type
   end
 
   private
+
+  def reset_empty_role
+    unless params[:journal_task_type][:role]
+      params[:journal_task_type][:role] = TaskType.types[journal_task_type.kind][:default_role]
+    end
+  end
 
   def journal_task_types_params
     params.require(:journal_task_type).permit(:role, :title)

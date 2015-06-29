@@ -499,13 +499,15 @@ ActiveRecord::Schema.define(version: 20150626223620) do
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
   create_table "versioned_texts", force: :cascade do |t|
-    t.integer "submitting_user_id"
-    t.integer "paper_id"
-    t.integer "major_version",      default: 0
-    t.integer "minor_version",      default: 0
-    t.boolean "active",             default: true
-    t.boolean "copy_on_edit",       default: false
-    t.text    "text"
+    t.integer  "submitting_user_id"
+    t.integer  "paper_id"
+    t.integer  "major_version",      default: 0
+    t.integer  "minor_version",      default: 0
+    t.boolean  "active",             default: true
+    t.boolean  "copy_on_edit",       default: false
+    t.text     "text",               default: ""
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_foreign_key "decisions", "papers"

@@ -65,7 +65,7 @@ JournalIndexController = Ember.Controller.extend ValidationErrorsMixin,
         
     searchUsers: ->
       @resetSearch()
-      @store.find 'AdminJournalUser', query: @get('searchQuery'), journal_id: @get('model.id')
+      @store.find 'admin-journal-user', query: @get('searchQuery'), journal_id: @get('model.id')
       .then (users) =>
         @set 'adminJournalUsers', users
         if Ember.isEmpty @get('adminJournalUsers')

@@ -61,7 +61,7 @@ InlineEditEmailComponent = Ember.Component.extend
 
     addRecipientById: (recipientId)->
       store = @container.lookup('store:main')
-      store.find('user', recipientId).then (recipient)=>
+      store.findRecord('user', recipientId).then (recipient)=>
         @get('recipients').addObject(recipient)
 
 `export default InlineEditEmailComponent`

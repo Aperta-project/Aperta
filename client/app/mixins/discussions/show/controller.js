@@ -29,7 +29,7 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
     },
 
     addParticipantByUserId(userId) {
-      this.store.find('user', userId).then((user) => {
+      this.store.findRecord('user', userId).then((user) => {
         this.store.createRecord('discussion-participant', {
           discussionTopic: this.get('model'),
           user: user,

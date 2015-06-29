@@ -12,6 +12,8 @@ import customAssertions from './custom-assertions';
 import Factory from './factory';
 import TestHelper from "ember-data-factory-guy/factory-guy-test-helper";
 
+import HtmlEditorController from "tahi/pods/paper/edit/html-editor/controller";
+
 export default function startApp(attrs) {
   var application;
 
@@ -48,6 +50,14 @@ export default function startApp(attrs) {
       }
       responseJson[Ember.String.pluralize(modelName)] = json;
       return responseJson;
+    }
+  });
+
+  // Note: deactivating some implementation for testing
+  HtmlEditorController.reopen({
+    // override `say` to add an ! at the end
+    startEditing: function() {
+      this.set('isEditing', true);
     }
   });
 

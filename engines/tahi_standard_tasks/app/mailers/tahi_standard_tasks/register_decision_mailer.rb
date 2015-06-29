@@ -3,7 +3,7 @@ module TahiStandardTasks
     include Rails.application.routes.url_helpers
     layout "mailer"
 
-    default from: ENV.fetch('FROM_EMAIL')
+    default from: ENV.fetch('FROM_EMAIL', 'no-reply@example.com')
 
     def notify_author_email(decision_id:)
       @decision = Decision.find(decision_id)

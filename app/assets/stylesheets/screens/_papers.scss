@@ -98,7 +98,6 @@ html.control-bar-sub-nav-active #paper-container {
   visibility: hidden;
 }
 
-
 #paper-container main {
   height: 100%;
   width: 100%;
@@ -144,37 +143,11 @@ html.control-bar-sub-nav-active #paper-container {
   background: $tahi-white;
   min-height: 600px;
 }
-  .paper-container-html  #paper-body { padding: 30px 50px; }
-  .paper-container-latex #paper-body { padding: 30px 0; }
 
+.paper-container-html  #paper-body { padding: 30px 50px; }
+.paper-container-latex #paper-body { padding: 30px 0; }
 
 .manuscript.read-only {
-  cursor: default;
-}
-
-.manuscript .ve-ui-surface .ve-ce-documentNode {
-  font-size: 0.95em;
-  min-height: 600px;
-  // HACK: without padding the cursor is not visible
-  padding-left: 1px;
-}
-
-// TODO: _contenteditable.scss is a bit too optimistic
-//       affecting all contenteditables
-
-.ve-ui-surface div[contenteditable=true] {
-  min-height: initial;
-  margin-bottom: initial;
-  background-color: initial;
-  padding: initial;
-}
-
-.ve-ui-surface .ve-ce-documentNode {
-  padding: 0px;
-  margin: 0px;
-}
-
-.ve-ui-surface .ve-ce-documentNode[contenteditable=false] {
   cursor: default;
 }
 
@@ -238,11 +211,6 @@ html.control-bar-sub-nav-active #paper-container {
 .paper-toolbar {
   position: fixed;
   top: 60px;
-
-  .ve-toolbar {
-    max-width: $tahi-paper-width;
-    margin: 0px auto;
-  }
 }
 
 #paper-container {
@@ -358,351 +326,26 @@ html.control-bar-sub-nav-active #paper-container {
   }
 }
 
-// figures
-
-.manuscript figure {
-  margin-top: 20px;
-  margin-bottom: 20px;
-
-  img {
-    max-width: 600px;
-  }
-
-  [itemprop=title] {
-    margin-bottom: 10px;
-  }
-
-  figcaption {
-    margin-top: 10px;
-  }
-}
-
-article.manuscript figure[data-content-type=table] {
-  border-left: none;
-  padding-left: 0px;
-  table {
-    width: 100%;
-    table-layout: fixed;
-  }
-}
-
-// figures overlay section
-
-.figures-overlay {
-  display: block;
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  z-index: z('figures-overlay');
-  background: $tahi-white;
-  padding-bottom: 20px;
-}
-
-.figures-overlay .figures-header {
-  width: 100%;
-  height: 60px;
-  color: $tahi-green;
-  padding: 0px 15px;
-  border-bottom: solid 1px $tahi-grey-xlight;
-}
-
-.figures-header .overlay-title {
-  display: inline-block;
-  line-height: 30px;
-  font-size: 24px;
-  padding: 15px 10px;
-}
-
-.figures-overlay .figures-toolbar {
-  display: inline-block;
-  width: 100%;
-  padding: 5px 20px;
-  border-bottom: solid 1px $tahi-grey-xlight;
-}
-
-.figures-overlay .close-overlay {
-  display: inline;
-  color: $tahi-green;
-  cursor: pointer;
-}
-
-.figures-overlay .figures-body {
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  padding: 10px 20px;
-  padding-bottom: 100px;
-}
-
-.figure-item {
-  position: relative;
-  border: solid 1px $tahi-grey-light;
-  border-radius: 2px;
-  margin-bottom: 10px;
-  padding: 10px 20px;
-}
-
-.figure-item *[contenteditable] {
-  min-height: initial;
-  margin-bottom: initial;
-}
-
-.figure-item .attachment-thumbnail-image {
-  float: left;
-  width: 30%;
-  text-align: center;
+.paper-container-html .toolbar {
+  @include position(fixed, $tahi-control-bar-height 0px auto 0px);
+  font-family: $tahi-font-family;
+  background-color: $tahi-white;
   z-index: 1;
 }
 
-.figure-item .attachment-thumbnail-image img {
+.paper-edit-overlay, .editor-overlay {
+  font-family: $tahi-font-family;
+}
+
+.editor-overlay .overlay-body {
+  @include position(fixed, $tahi-control-bar-height+50px 0px auto 0px);
+}
+
+.figures-overlay .attachment-thumbnail-image {
+  float: initial;
   width: 100%;
 }
 
-.figure-item .btn:not(.enabled) {
-  visibility: hidden;
-}
-
-.figure-item .btn.enabled {
-  color: $tahi-grey-dark;
-}
-
-.figure-item a.btn.enabled:hover {
-  color: $tahi-grey;
-}
-
-.figure-item .btn.active {
-  color: $tahi-black;
-}
-
-.figure-item .btn.active:hover {
-  color: $tahi-grey;
-}
-
-.figure-item .edit-button.active {
-  background-color: $tahi-green;
-  color: $tahi-white;
-}
-
-.figure-item .edit-button.active:hover {
-  background-color: $tahi-grey-light;
-  border-color: $tahi-green;
-}
-
-
-.figure-item .figure-item-detailed-view {
-  position: relative;
-  top: 0px;
-  margin-bottom: 0px;
-}
-
-.figure-item-header {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  width: 70%;
-  z-index: 1;
-}
-
-.figure-item-header-inner {
-  line-height: 40px;
-  padding-left: 50px;
-}
-
-.figure-item .figure-label {
-  margin: 10px 0px;
-  padding: 2px 5px;
-  font-size: 16px;
-  font-style: italic;
-  color: $tahi-green;
-}
-
-.figure-item.unplaced .figure-label {
-  color: $tahi-error-red;
-}
-
-.figure-item-header .first-button-group {
-  margin-left: 20px;
-}
-
-.figure-item-header .saving-spinner {
-  visibility: hidden;
-}
-
-.figure-item.saving .saving-spinner {
-  visibility:initial;
-  color: $tahi-green;
-}
-
-.figure-item .insert-into-manuscript {
-  padding-right: 30px;
-}
-
-.figure-item .insert-into-manuscript i.second {
-  position: relative;
-  left: -10px;
-}
-
-.figure-item-footer {
-  position: absolute;
-  bottom: 10px;
-  right: 0px;
-  width: 70%;
-}
-
-.figure-item-footer-inner {
-  padding: 0px 50px;
-}
-
-.figure-item-editor .ve-ce-surface {
-  padding: 40px;
-  max-width: 700px;
-}
-
-.figure-item-editor .ve-ce-branchNode-slug {
-  display: none;
-}
-
-.figure-item-editor figure {
-  margin: 0px;
-  border: none;
-}
-
-.figure-item-editor .figure-title {
-  font-size: 21px;
-}
-
-.figure-item-editor .figure-title:before {
-  content: "Title:";
-  margin-right: 100px;
-}
-
-.figure-item-editor .figure-image {
-  display: none;
-}
-
-.figure-item-editor figcaption label {
-  display: none;
-}
-
-.figure-item-editor figcaption .text-input-view.caption:before {
-  content: "Caption:";
-  margin-right: 90px;
-}
-
-.figure-item-editor .form-entry-view.figure-caption {
-  margin-top: 10px;
-  font-size: 16px;
-  white-space: pre-wrap;
-}
-
-.figure-item-editor .form-entry-view.figure-caption .text-input-view {
-  min-width: 10px;
-  min-height: 20px;
-}
-
-.figure-item-editor .ve-ui-surface:after {
-  display: none;
-}
-
-.figure-item-editor .ve-ce-documentNode {
-  margin-left: 0px;
-  padding-left: 0px;
-}
-
-.figure-item-editor .form-view {
-  margin-left: 0px;
-  padding-left: 0px;
-}
-
-.figure-item-editor .form-entry-view {
-  margin-left: 0px;
-  padding-left: 0px;
-}
-
-.figure-item-editor .text-input-view {
-  min-height: initial;
-}
-
-.figure-item .title .placeholder {
-  background: transparent !important;
-  font-size: 28px;
-  line-height: 34px;
-}
-
-.figure-item .text-property-view {
-  display: inline;
-}
-
-.figure-item .caption .placeholder {
-  background: transparent !important;
-  font-size: 18px;
-  line-height: 24px;
-}
-
-.figure-item .striking-image-checkbox {
-  vertical-align: center;
-}
-
-.figure-item .striking-image-checkbox input {
-  width: 15px;
-  height: 15px;
-}
-
-.figure-item .striking-image-checkbox label {
-  font-size: 18px;
-  font-weight: normal;
-  margin-left: 10px;
-}
-
-.figure-item-detailed-view {
-  margin-top: 40px;
-}
-
-
-// tables overlay
-
-.table-item {
-  padding: 0px;
-}
-
-.table-item .figure-item-header {
-  position: relative;
-  width: 100%;
-  z-index: 1;
-}
-
-.table-item .figure-item-header-inner {
-  padding-left: 20px;
-}
-
-.table-item .figure-item-editor {
-  position: relative;
-}
-
-.table-item .ve-ce-surface {
-  width: 100%;
-  max-width: initial;
-  padding: 20px 20px;
-}
-
-.table-item figure {
-  border-left: none;
-  padding-left: 0px;
-}
-
-.table-item table {
-  margin: 20px 0px;
-  width: 100%;
-  min-height: 200px !important;
-  table-layout: fixed;
-}
-
-.table-item table .ve-ce-branchNode-slug {
-  display:initial;
-}
-
-.table-item figcaption label {
-  display: none;
+.paper-container-html .manuscript-inner {
+  min-height: 600px;
 }

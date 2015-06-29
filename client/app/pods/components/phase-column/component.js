@@ -79,9 +79,10 @@ export default Ember.Component.extend({
   actions: {
     chooseNewCardTypeOverlay(phase) { this.sendAction('chooseNewCardTypeOverlay', phase); },
     viewCard(task, queryParams) { this.sendAction('viewCard', task, queryParams); },
-    savePhase(phase)   { this.sendAction('savePhase', phase); },
-    addPhase(position) { this.sendAction('addPhase', position); },
-    removePhase(phase) { this.sendAction('removePhase', phase); },
-    showDeleteConfirm(task) { this.sendAction('showDeleteConfirm', task); }
+    savePhase(phase)            { this.sendAction('savePhase', phase); },
+    addPhase(position)          { this.sendAction('addPhase', position); },
+    removePhase(phase)          { this.sendAction('removePhase', phase); },
+    rollbackPhase(phase)        { this.sendAction('rollbackPhase', phase); },
+    showDeleteConfirm(task)     { this.sendAction('showDeleteConfirm', task); }
   }
 });

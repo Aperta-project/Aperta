@@ -1,10 +1,5 @@
 #!/usr/bin/env ruby
 require 'pathname'
-begin
-  require 'active_support/core_ext/object/blank'
-rescue LoadError
-  fail "Please run `gem install activesupport` first"
-end
 
 SLANGER_REPO = "git@github.com:Tahi-project/tahi-slanger.git"
 
@@ -21,12 +16,19 @@ end
 APP_ROOT = Pathname.new File.expand_path('../../',  __FILE__)
 
 def run_pg(cmd)
-  case $os
+  out = case $os
   when :darwin
     `#{cmd}`
   when :linux
     cmd = cmd.gsub("\"", "\\\"") # escape quotes
     `sudo su postgres -c "#{cmd}"`
+  end
+
+  if $?.to_i != 0
+    "postgres command failed: #{out}"
+    exit 1
+  else
+    out
   end
 end
 
@@ -40,7 +42,7 @@ def header message
 end
 
 def brew_install package, options=nil
-  if `brew ls --versions #{package}`.present?
+  if system("brew ls #{package} &>/dev/null")
     puts "#{package} is already installed"
   else
     system "brew install #{package} #{options}"
@@ -64,17 +66,16 @@ def ensure_postgres_setup
     end
   end
 
-  if !run_pg("psql -l")
-    puts
-    puts "Couldn't access postgresql database."
-    puts "Please make sure postgresql is running and try again."
-    exit 1
+  puts "Checking to see if postgres is running and accessible..."
+
+  if run_pg("psql -l")
+    puts "Success!"
   end
 end
 
 def copy_template source, dest
   if File.exist?(dest)
-    puts "#{dest} already exists; not copying from #{source}."
+    puts "Not copying from #{source} (#{dest} already exists)."
   else
     puts "Copying #{source} to #{dest}."
     system "cp #{source} #{dest}"
@@ -106,47 +107,47 @@ Dir.chdir APP_ROOT do
   case $os
   when :darwin
     brew_install 'imagemagick', '--with-libtiff'
-    %w(redis node watchman qt).each do |package|
+    %w(node watchman qt).each do |package|
       brew_install package
     end
   when :linux
-    system "sudo apt-get install -y imagemagick redis-server nodejs qt5-default libqt5webkit5-dev"
+    system "sudo apt-get install -y imagemagick nodejs qt5-default libqt5webkit5-dev"
   end
 
   header 'Installing gems'
   system 'gem install bundler --conservative'
-  system 'bundle check || bundle install'
+  system 'bundle install'
 
   header 'Installing javascript dependencies (output logged to setup.log)'
   system 'npm install >> setup.log'
   system 'bundle exec rake ember-cli:install_dependencies'
 
+  header 'Ensuring PostgreSQL tahi role exists'
   # NOTE rolname is not a typo
   # http://stackoverflow.com/questions/8546759/how-to-check-if-a-postgres-user-exists
-  if run_pg("psql postgres -tAc \"SELECT 1 FROM pg_roles WHERE rolname='tahi'\"").present?
-    header 'PostgreSQL user already exists'
+  roles = run_pg %q[psql postgres -tAc "SELECT 1 FROM pg_roles WHERE rolname='tahi'"]
+  if !roles.empty?
+    puts 'PostgreSQL user already exists'
   else
-    header 'Creating the tahi PostgreSQL user'
+    puts 'Creating the tahi PostgreSQL user'
     run_pg('createuser -s -r tahi')
   end
 
   header 'Copying sample files'
   copy_template 'config/database.yml.sample', 'config/database.yml'
-  copy_template '.env-sample', '.env.development'
   copy_template 'Procfile.template', 'Procfile.local'
-
-  header 'Add binstubs to PATH in ~/.zshenv like this:'
-  puts 'export PATH=".git/safe/../../bin:$PATH"'
-
-  header "Marking this project's binstubs as safe"
-  system 'mkdir -p .git/safe'
-
-  header 'Adding pre-commit hook'
-  system 'overcommit .'
 
   # required for db setup
   header 'Cloning tahi-slanger event server repo'
   setup_slanger
+
+  if ! File.exists? '.env.local'
+    header 'Generating local Rails secret token'
+    File.open '.env.local', 'w+' do |f|
+      f.write "RAILS_SECRET_TOKEN=#{`bin/rake secret`}"
+    end
+    puts "Wrote to .env.local"
+  end
 
   header 'Preparing development database (output logged to setup.log)'
   system 'bin/rake db:setup >> setup.log'
@@ -159,5 +160,5 @@ Dir.chdir APP_ROOT do
   system 'rm -rf tmp/cache'
 
   puts
-  puts 'Success! Please source .env.development.'
+  puts 'Success!'
 end

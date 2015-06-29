@@ -101,7 +101,7 @@ FlowColumnComponent = Ember.Component.extend
       Ember.run.schedule('afterRender', this, Utils.resizeColumnHeaders)
 
     cancel: ->
-      @get('flow').rollback()
+      @get('flow').rollbackAttributes()
       @send 'toggleEdit'
       Ember.run.schedule('afterRender', this, Utils.resizeColumnHeaders)
 

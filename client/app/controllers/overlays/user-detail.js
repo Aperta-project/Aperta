@@ -19,7 +19,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     },
 
     rollbackUser() {
-      this.get('model').rollback();
+      this.get('model').rollbackAttributes();
       this.clearAllValidationErrors();
       this.send('closeOverlay');
     },

@@ -58,7 +58,7 @@ export default Ember.Controller.extend({
     },
 
     rollbackPhase(phase) {
-      phase.rollback();
+      phase.rollbackAttributes();
     },
 
     toggleEditable() {

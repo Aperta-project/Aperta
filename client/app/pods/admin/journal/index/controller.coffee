@@ -92,7 +92,7 @@ JournalIndexController = Ember.Controller.extend ValidationErrorsMixin,
       @set 'doiEditState', true
 
     cancelDOI: ->
-      @get('model').rollback()
+      @get('model').rollbackAttributes()
       @set 'doiEditState', false
 
     saveDOI: ->

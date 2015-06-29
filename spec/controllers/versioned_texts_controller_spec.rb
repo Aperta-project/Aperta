@@ -2,7 +2,7 @@ require 'rails_helper'
 
 require 'rails_helper'
 
-describe VersionedTextsController, focus: true do
+describe VersionedTextsController do
   let(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: user) }
   let(:versioned_text) { FactoryGirl.create(:versioned_text, paper: paper) }
   let(:user) { create(:user, tasks: []) }

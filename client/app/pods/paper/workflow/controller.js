@@ -28,7 +28,7 @@ export default Ember.Controller.extend({
   actions: {
     changePhaseForTask(task, targetPhaseId) {
       this.beginPropertyChanges();
-      this.store.getById('phase', targetPhaseId).get('tasks').addObject(task);
+      this.store.peekRecord('phase', targetPhaseId).get('tasks').addObject(task);
       this.endPropertyChanges();
     },
 

@@ -8,7 +8,7 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
   },
 
   topicsFromStore() {
-    return this.store.findAll('discussion-topic');
+    return this.store.peekAll('discussion-topic');
   },
 
   setupController(controller, model) {

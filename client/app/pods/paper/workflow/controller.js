@@ -6,11 +6,11 @@ export default Ember.Controller.extend({
   sortedPhases: Ember.computed.sort('model.phases', 'positionSort'),
 
   commentLooks: Ember.computed(function() {
-    return this.store.all('comment-look');
+    return this.store.peekAll('comment-look');
   }),
 
   allTaskIds() {
-    return this.store.all('phase').reduce(function(taskIds, phase) {
+    return this.store.peekAll('phase').reduce(function(taskIds, phase) {
       return taskIds.concat(phase.get('tasks').map(function(task) {
         return task.get('id');
       }));

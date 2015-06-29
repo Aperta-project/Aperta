@@ -28,8 +28,8 @@ export default AuthorizedRoute.extend({
   setupController(controller, model) {
     controller.setProperties({
       model: model,
-      commentLooks: this.store.all('comment-look'),
-      journalTaskType: this.store.all('journal-task-type')
+      commentLooks: this.store.peekAll('comment-look'),
+      journalTaskType: this.store.peekAll('journal-task-type')
     });
   },
 

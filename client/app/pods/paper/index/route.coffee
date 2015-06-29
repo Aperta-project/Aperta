@@ -43,7 +43,7 @@ PaperIndexRoute = AuthorizedRoute.extend
 
     editorController = @controllerFor(@get('editorLookup'))
     editorController.set('model', model)
-    editorController.set('commentLooks', @store.all('commentLook'))
+    editorController.set('commentLooks', @store.peekAll('commentLook'))
 
     if @currentUser
       RESTless.authorize(editorController, "/api/papers/#{model.get('id')}/manuscript_manager", 'canViewManuscriptManager')

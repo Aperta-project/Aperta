@@ -92,8 +92,6 @@ test 'Viewing the card and adding new funder', ->
       ok find("span.remove-funder").length, "User can add remove the funder"
       Ember.$('#funder-name').val("Hello")
       Ember.$('#grant-number').val("1234567890")
-      ok find("p:contains('by Hello')")
-      ok find("p:contains('grand number 1234567890')")
       click("label:contains('Completed')")
       click("a:contains('Close')")
       andThen ->

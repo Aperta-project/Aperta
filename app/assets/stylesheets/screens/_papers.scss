@@ -333,6 +333,11 @@ html.control-bar-sub-nav-active #paper-container {
   z-index: 1;
 }
 
+.paper-container-html .navbar-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
 .paper-edit-overlay, .editor-overlay {
   font-family: $tahi-font-family;
 }

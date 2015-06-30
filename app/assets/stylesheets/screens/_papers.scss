@@ -114,7 +114,6 @@ html.control-bar-sub-nav-active #paper-container {
 
 .manuscript {
   background: #fff;
-  overflow-x:hidden;
   font-family: $tahi-article-font-family;
 }
 
@@ -331,6 +330,11 @@ html.control-bar-sub-nav-active #paper-container {
   font-family: $tahi-font-family;
   background-color: $tahi-white;
   z-index: 1;
+}
+
+.paper-container-html .navbar-inner {
+  max-width: 1120px;
+  margin: 0 auto;
 }
 
 .paper-edit-overlay, .editor-overlay {

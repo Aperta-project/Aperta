@@ -29,6 +29,11 @@ export default Ember.Component.extend({
   }.property('availableTaskRoles.@each'),
 
   actions: {
+    clearRole() {
+      this.set('model.role', null);
+      this.get('model').save();
+    },
+
     save(roleProxy) {
       let role = this.get('availableTaskRoles').findBy('name', roleProxy.text);
       this.set('model.role', role.get('kind'));

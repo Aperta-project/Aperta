@@ -2,14 +2,18 @@
   Cards
 </h2>
 
-<p>TAHI runs by using "cards" that pop up througout the entire App.</p>
+<p>
+  Tahi makes extensive use of Card Overlays that pop up as modals througout the App.
+</p>
 
 <div class="constrain">
   <h2 id="format">
     Format
   </h2>
 
-  <p>The basic structure for a card looks like this:</p>
+  <p>
+    The basic structure for a Card is documented below.
+  </p>
 
   <div class="overlay-container">
     <div id="ember2539" class="ember-view animation-fade-in">
@@ -399,7 +403,10 @@
   </ul>
   <textarea id="ember1877" class="ember-view ember-text-area form-control" name="reviewer_report.competing_interests"></textarea>
 
-  <h4>Radio button with Text Entry</h4>
+  <h4>
+    Radio button with Text Entry
+  </h4>
+
   <div class="yes-no-with-comments">
     <div id="ember1892" class="ember-view">
       <label>
@@ -418,6 +425,191 @@
 
     </div>
   </div>
+
   <hr/>
 
+  <section>
+    <h3>
+      select-2-single
+    </h3>
+    {{select-2-single
+        allowClear=true
+        placeholder="Cities"
+        selectedData=selectedTaskType
+        selectionCleared="removeTypeQuery"
+        selectionSelected="updateTypeQuery"
+        width="50%"
+        source=cities}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      check-box
+    </h3>
+
+    <label>
+      {{check-box checked=true action="saveModel"}}
+      Checkbox Label
+    </label>
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      error-message
+    </h3>
+
+    {{error-message message="Uh oh. There was an error, and this is the Message."}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      file-uploader
+    </h3>
+
+    {{file-uploader
+        url="https://example.com/upload"
+        railsMethod="PUT"
+        accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
+        multiple=false
+        filePrefix="paper/figures"
+        start="uploadStarted"
+        progress="uploadProgress"
+        done="uploadFinished"
+        cancel="cancelUploads"}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      content-editable
+    </h3>
+
+    {{content-editable value="Awesome Text" class="editable" tagName='label'}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      card-preview
+    </h3>
+
+    {{card-preview paper=paper
+                   task=task
+                   canRemoveCard=true
+                   showDeleteConfirm="showDeleteConfirm"
+                   canDragCard=true
+                   action="viewCard"}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      add-column
+    </h3>
+
+    {{add-column position=1 action="addPhase"}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      inline-edit-body-part
+    </h3>
+
+    {{#inline-edit-body-part
+      block=cities
+      cancel="resetBlock"
+      save="saveBlock"
+      delete="deleteBlock"
+      addItem="addCheckboxItem"}}
+      Body....
+    {{/inline-edit-body-part}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      participant-selector
+    </h3>
+
+    {{participant-selector currentParticipants=users
+                           everyone=users
+                           paperId=paper.id
+                           label="Participants:"
+                           onRemove="removeParticipantByUserId"
+                           onSelect="addParticipantByUserId"}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      timed-message
+    </h3>
+
+    {{timed-message message="Timed Message goes here"}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      relative-time
+    </h3>
+
+    {{relative-time time=paper2.relatedAtDate}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      user-thumbnail
+    </h3>
+
+    {{user-thumbnail user=user3}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      (4) radio-button-action
+    </h3>
+
+    {{#each cities as |option|}}
+      <label>
+        {{radio-button-action selection="model.answer" name=option.id value=option.id action='select'}}
+        {{option.text}}
+      </label>
+    {{/each}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      flow-column
+    </h3>
+
+    {{flow-column flow=flow
+                  papers=flow.papers
+                  editable=false
+                  journalName=flow.journalName
+                  journalLogo=flow.journalLogo
+                  saveFlow="saveFlow"
+                  removeFlow="removeFlow"
+                  viewCard="viewCard"}}
+  </section>
 </div>

@@ -23,7 +23,7 @@ def rails_env
 end
 
 Bundler.with_clean_env do
-  Dotenv.load(".env.#{rails_env}")
+  Dotenv.load
   validate_slanger!
   validate_event_stream_config!
   verbose = "-v" if rails_env == "development"

@@ -7,6 +7,10 @@ FactoryGirl.define do
     trait :with_participant do
       participants { [FactoryGirl.create(:user)] }
     end
+
+    trait :with_questions do
+      questions { FactoryGirl.create_list(:question, 3) }
+    end
   end
 
   factory :competing_interests_task, class: 'TahiStandardTasks::CompetingInterestsTask' do

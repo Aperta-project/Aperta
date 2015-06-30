@@ -10,8 +10,6 @@ AdminRoute = AuthorizedRoute.extend
       @controllerFor('overlays/userDetail').set('model', user)
       @send('openOverlay', {
         template: 'overlays/userDetail'
-        into: 'application'
-        outlet: 'overlay'
         controller: 'overlays/userDetail'
       })
 

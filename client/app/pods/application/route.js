@@ -64,11 +64,11 @@ export default Ember.Route.extend(AnimateOverlay, {
 
     openOverlay(options) {
       Ember.assert('You must pass a template name to `openOverlay`', options.template);
+      if(Ember.isEmpty(options.into))   { options.into   = 'application'; }
+      if(Ember.isEmpty(options.outlet)) { options.outlet = 'overlay'; }
 
-      let renderOptions = options;
       this.controllerFor('application').set('showOverlay', true);
-
-      this.render(options.template, renderOptions);
+      this.render(options.template, options);
     },
 
     closeOverlay() {
@@ -76,25 +76,15 @@ export default Ember.Route.extend(AnimateOverlay, {
       this.cleanupAncillaryViews();
     },
 
-    closeFeedbackOverlay() {
-      this.animateOverlayOut({selector: '#feedback-overlay'}).then(()=> {
-        this.disconnectOutlet({
-          outlet: 'feedback-overlay',
-          parentView: 'application'
-        });
-      });
-    },
-
     closeAction() {
       this.send('closeOverlay');
     },
 
     feedback() {
-      this.controllerFor('application').set('showFeedbackOverlay', true);
+      this.controllerFor('overlays/feedback').set('feedbackSubmitted', false);
 
-      this.render('overlays/feedback', {
-        into: 'application',
-        outlet: 'feedback-overlay',
+      this.send('openOverlay', {
+        template: 'overlays/feedback',
         controller: 'overlays/feedback'
       });
     },

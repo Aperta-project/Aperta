@@ -10,8 +10,6 @@ export default Ember.Route.extend({
 
       this.send('openOverlay', {
         template: 'overlays/add-manuscript-template-card',
-        into: 'application',
-        outlet: 'overlay',
         controller: 'overlays/chooseNewCardType'
       });
     },
@@ -33,8 +31,6 @@ export default Ember.Route.extend({
 
         this.send('openOverlay', {
           template: 'overlays/adHocTemplate',
-          into: 'application',
-          outlet: 'overlay',
           controller: 'overlays/adHocTemplate'
         });
       } else {
@@ -56,8 +52,6 @@ export default Ember.Route.extend({
     showDeleteConfirm(task) {
       this.send('openOverlay', {
         template: 'overlays/cardDelete',
-        into: 'application',
-        outlet: 'overlay',
         controller: 'overlays/card-delete',
         model: task
       });

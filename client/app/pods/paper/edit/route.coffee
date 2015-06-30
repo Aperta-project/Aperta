@@ -83,8 +83,6 @@ PaperEditRoute = AuthorizedRoute.extend
     showConfirmSubmitOverlay: ->
       @send('openOverlay', {
         template: 'overlays/paperSubmit'
-        into: 'application',
-        outlet: 'overlay',
         controller: 'overlays/paperSubmit'
       })
       @set 'fromSubmitOverlay', true

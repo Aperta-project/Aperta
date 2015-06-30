@@ -22,8 +22,6 @@ PaperManageRoute = AuthorizedRoute.extend
 
       @send('openOverlay', {
         template: 'overlays/chooseNewCardType'
-        into: 'application'
-        outlet: 'overlay'
         controller: chooseNewCardTypeOverlay
       })
 
@@ -51,8 +49,6 @@ PaperManageRoute = AuthorizedRoute.extend
     showDeleteConfirm: (task) ->
       @send('openOverlay', {
         template: 'overlays/card-delete'
-        into: 'application'
-        outlet: 'overlay'
         controller: 'overlays/card-delete'
         model: task
       })

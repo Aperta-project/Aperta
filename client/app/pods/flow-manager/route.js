@@ -42,8 +42,6 @@ export default AuthorizedRoute.extend({
 
       this.send('openOverlay', {
         template: 'overlays/chooseNewFlowManagerColumn',
-        into: 'application',
-        outlet: 'overlay',
         controller: controller
       });
     },

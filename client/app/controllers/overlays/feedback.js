@@ -23,11 +23,6 @@ export default Ember.Controller.extend({
       });
     },
 
-    closeAction() {
-      this.send('closeFeedbackOverlay');
-      this.set('feedbackSubmitted', false);
-    },
-
     uploadFinished(data, filename) {
       this.set('isUploading', false);
       this.get('model.screenshots').pushObject({

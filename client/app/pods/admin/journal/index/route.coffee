@@ -22,8 +22,6 @@ JournalIndexRoute = Ember.Route.extend
 
       @send('openOverlay', {
         template: "overlays/admin-journal-#{key.dasherize()}"
-        into: 'application'
-        outlet: 'overlay'
         controller: 'overlays/adminJournal'
       })
 
@@ -39,8 +37,6 @@ JournalIndexRoute = Ember.Route.extend
     editTaskTypes: ->
       @send('openOverlay', {
         template: 'overlays/editTaskTypes'
-        into: 'application'
-        outlet: 'overlay'
         controller: 'overlays/editTaskTypes'
       })
 

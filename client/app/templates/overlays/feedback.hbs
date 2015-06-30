@@ -8,18 +8,18 @@
   </div>
   <div class="feedback-overlay-content">
     {{textarea class="form-control feedback-overlay-remarks"
-    name="remarks"
-    value=model.remarks
-    placeholder="Write your message"
-    autofocus="autofocus"}}
+               name="remarks"
+               value=model.remarks
+               placeholder="Write your message"
+               autofocus="autofocus"}}
     <div class="call-to-action">
       <div class="button-secondary button--green feeback-overlay-screenshot-uploader fileinput-button">
         Attach Files
         {{file-uploader accept=".jpg,.jpeg,.tiff,.tif,.gif,.png"
-        start="uploadStarted"
-        done="uploadFinished"
-        multiple="true"
-        filePrefix="feedback_attachment"}}
+                        start="uploadStarted"
+                        done="uploadFinished"
+                        multiple="true"
+                        filePrefix="feedback_attachment"}}
       </div>
 
       <div class="overlay-footer-content feedback-overlay-footer-content">

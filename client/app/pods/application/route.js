@@ -70,23 +70,16 @@ export default Ember.Route.extend(AnimateOverlay, {
       this.cleanupAncillaryViews();
     },
 
-    closeFeedbackOverlay() {
-      this.animateOverlayOut({selector: '#feedback-overlay'}).then(()=> {
-        this.disconnectOutlet({
-          outlet: 'feedback-overlay',
-          parentView: 'application'
-        });
-      });
-    },
-
     closeAction() {
       this.send('closeOverlay');
     },
 
     feedback() {
+      this.controllerFor('overlays/feedback').set('feedbackSubmitted', false);
+
       this.render('overlays/feedback', {
         into: 'application',
-        outlet: 'feedback-overlay',
+        outlet: 'overlay',
         controller: 'overlays/feedback'
       });
     },

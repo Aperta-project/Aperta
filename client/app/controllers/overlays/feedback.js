@@ -24,7 +24,7 @@ export default Ember.Controller.extend({
     },
 
     closeAction() {
-      this.send('closeFeedbackOverlay');
+      this.send('closeOverlay');
       this.set('feedbackSubmitted', false);
     },
 

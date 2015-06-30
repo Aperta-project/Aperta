@@ -1,0 +1,45 @@
+<div id="tahi-container">
+  <h2 class="paper-tracker-message">Hello, {{currentUser.firstName}}</h2>
+  <p class="paper-tracker-paper-count">You have {{pluralize model.length "paper"}} in your tracker.</p>
+  <br><br><br>
+
+  {{#sortable-table class="paper-tracker-table" content=model as |table|}}
+    <tr>
+      <th></th>
+      {{sortable-table-header text="Title"
+                              sortProperty="title"
+                              sortAscending=table.sortAscending
+                              activeSortProperty=table.sortProperty}}
+      {{sortable-table-header text="Paper ID"
+                              sortProperty="id"
+                              sortAscending=table.sortAscending
+                              activeSortProperty=table.sortProperty}}
+      {{sortable-table-header text="Date Submitted"
+                              sortProperty="dateSubmitted"
+                              sortAscending=table.sortAscending
+                              activeSortProperty=table.sortProperty}}
+      {{sortable-table-header text="Paper Type"
+                              sortProperty="paperType"
+                              sortAscending=table.sortAscending
+                              activeSortProperty=table.sortProperty}}
+      <th>Members</th>
+    </tr>
+    {{#each table.arrangedContent as |paper|}}
+      <tr>
+        <td></td>
+        <td class="paper-tracker-paper-title">
+          {{link-to paper.title "paper" paper.id}}
+        </td>
+        <td>
+          {{link-to paper.id "paper" paper.id}}
+        </td>
+        <td>
+          {{format-date paper.dateSubmitted}}<br>
+          {{relative-time time=paper.dateSubmitted}}
+        </td>
+        <td>{{paper.paperType}}</td>
+        <td>&mdash;</td>
+      </tr>
+    {{/each}}
+  {{/sortable-table}}
+</div>

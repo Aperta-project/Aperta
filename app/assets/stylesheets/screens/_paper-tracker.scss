@@ -1,0 +1,40 @@
+.paper-tracker-message {
+  margin-bottom: 0;
+  font-size: 40px;
+}
+
+.paper-tracker-paper-count {
+  font-size: 18px;
+}
+
+.paper-tracker-table {
+  width: 100%;
+
+  .sortable-table-header {
+    cursor: pointer;
+  }
+
+  th, td {
+    font-size: 14px;
+    vertical-align: top;
+  }
+
+  th {
+    border-bottom: 1px solid $tahi-grey-light;
+    padding: 1rem 0;
+    font-weight: bold;
+  }
+
+  td {
+    border-bottom: 1px solid #f2f2f2;
+    padding: 2rem 0;
+  }
+
+  td.paper-tracker-paper-title {
+    font-size: 16px;
+  }
+
+  td a {
+    text-decoration: underline;
+  }
+}

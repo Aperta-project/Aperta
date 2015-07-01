@@ -8,10 +8,6 @@ export default QuestionComponent.extend({
   noValue: "No",
   selectedYes: Ember.computed.equal("model.answer", "Yes"),
 
-  changeAnswer: function() {
-    this.set("model.answer", this.get("answer"));
-  }.observes("answer"),
-
   selectedNo: function() {
     return Ember.isEqual(this.get("model.answer"), this.get("noValue"));
   }.property("model.answer", "noValue"),

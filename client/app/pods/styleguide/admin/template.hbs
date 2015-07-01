@@ -1,0 +1,97 @@
+<h2 id="admin">
+  Admin
+</h2>
+
+<div class="constrain">
+
+  <hr>
+
+  <section>
+    <h3>
+      card-preview
+    </h3>
+
+    {{card-preview paper=paper
+                   task=task
+                   canRemoveCard=true
+                   showDeleteConfirm="showDeleteConfirm"
+                   canDragCard=true
+                   action="viewCard"}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      phase-column
+    </h3>
+
+    <ul class="columns">
+      {{phase-column phase=phase
+                     paper=paper
+                     savePhase="savePhase"
+                     addPhase="addPhase"
+                     showDeleteConfirm="showDeleteConfirm"
+                     removePhase="removePhase"
+                     rollbackPhase="rollbackPhase"
+                     viewCard="viewCard"
+                     chooseNewCardTypeOverlay="chooseNewCardTypeOverlay"
+                     changePhaseForTask="changePhaseForTask"}}
+    </ul>
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      flow-column
+    </h3>
+
+    <ul class="columns">
+      {{flow-column flow=flow
+                    papers=flow.papers
+                    editable=false
+                    journalName=flow.journalName
+                    journalLogo=flow.journalLogo
+                    saveFlow="saveFlow"
+                    removeFlow="removeFlow"
+                    viewCard="viewCard"}}
+    </ul>
+  </section>
+
+
+  <hr>
+
+  <section>
+    <h3>
+      flow-task-group
+    </h3>
+
+    {{flow-task-group task=task
+                      viewCard="viewCard"}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      add-column
+    </h3>
+
+    {{add-column position=1 action="addPhase"}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      user-role-selector
+    </h3>
+
+    {{user-role-selector journalRoles=cities
+                         userJournalRoles=cities
+                         selected="assignRole"
+                         removed="removeRole"}}
+
+  </section>
+</div>

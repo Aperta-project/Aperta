@@ -119,6 +119,12 @@
   }
 }
 
+.button-pre-submit-paper {
+  width: 100%;
+  height: 45px;
+  margin-top: 8px;
+}
+
 .button-submit-paper {
   @extend .button;
   color: $tahi-green;

@@ -54,8 +54,22 @@ export default DS.Model.extend({
     return this.get('decisions').findBy('isLatest', true);
   }.property('decisions', 'decisions.@each'),
 
-  submittable: function() {
+  submittableState: function() {
     var state = this.get('publishingState');
     return state === 'unsubmitted' || state === 'in_revision';
-  }.property('publishingState')
+  }.property('publishingState'),
+
+  preSubmission: function() {
+    return (this.get('submittableState') &&
+            !this.get('allSubmissionTasksCompleted'));
+  }.property('submittableState', 'allSubmissionTasksCompleted'),
+
+  readyToSubmit: function() {
+    return (this.get('submittableState') &&
+            this.get('allSubmissionTasksCompleted'));
+  }.property('submittableState', 'allSubmissionTasksCompleted'),
+
+  postSubmission: function() {
+    return !this.get('submittableState');
+  }.property('submittableState')
 });

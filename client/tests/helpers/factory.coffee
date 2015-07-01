@@ -395,7 +395,7 @@ FactoryAttributes.FinancialDisclosureTask =
   question_ids: []
   role: "author"
   title: "Financial Disclosure"
-  type: "StandardTasks::FinancialDisclosureTask"
+  type: "FinancialDisclosureTask"
 
 FactoryAttributes.Funder =
   _rootKey: 'funder'
@@ -422,7 +422,7 @@ FactoryAttributes.ReportingGuidelinesTask =
   question_ids: []
   role: "author"
   title: "Reporting Guidelines"
-  type: "StandardTasks::ReportingGuidelinesTask"
+  type: "TahiStandardTasks::ReportingGuidelinesTask"
 
 FactoryAttributes.Comment =
   _rootKey: 'comment'

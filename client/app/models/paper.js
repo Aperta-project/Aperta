@@ -1,4 +1,5 @@
 import DS from 'ember-data';
+import Ember from 'ember';
 
 export default DS.Model.extend({
   authors: DS.hasMany('author'),
@@ -54,8 +55,20 @@ export default DS.Model.extend({
     return this.get('decisions').findBy('isLatest', true);
   }.property('decisions', 'decisions.@each'),
 
-  submittable: function() {
+  submittableState: function() {
     var state = this.get('publishingState');
     return state === 'unsubmitted' || state === 'in_revision';
-  }.property('publishingState')
+  }.property('publishingState'),
+
+  preSubmission: function() {
+    return (this.get('submittableState') &&
+            !this.get('allSubmissionTasksCompleted'));
+  }.property('submittableState', 'allSubmissionTasksCompleted'),
+
+  readyToSubmit: function() {
+    return (this.get('submittableState') &&
+            this.get('allSubmissionTasksCompleted'));
+  }.property('submittableState', 'allSubmissionTasksCompleted'),
+
+  postSubmission: Ember.computed.not('submittableState')
 });

@@ -31,6 +31,7 @@ module 'Integration: Billing',
     [currentPaper, billingTask, journal, phase] = records
 
     paperPayload = Factory.createPayload('paper')
+
     paperPayload.addRecords(records.concat([fakeUser]))
     paperResponse = paperPayload.toJSON()
     paperResponse.participations = [addUserAsParticipant(billingTask, fakeUser)]

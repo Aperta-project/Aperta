@@ -48,6 +48,7 @@ html.control-bar-sub-nav-active #paper-container {
 }
 
 #paper-container .sidebar {
+  padding-top: 8px;
   float: right;
   width: $paper-edit-sidebar-width;
   background: $tahi-white;

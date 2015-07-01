@@ -1,17 +1,19 @@
 <div class="auth-container">
   <h1>Forgot your password?</h1>
 
-  <%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post, :class => "auth-left", :style => "min-height: 200px;" }) do |f| %>
-    <%= devise_error_messages! %>
+  <div class="auth-left auth-group">
+    <%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post, :style => "min-height: 200px;" }) do |f| %>
+      <%= devise_error_messages! %>
 
-    <div class="auth-field auth-field--text-input">
-      <%= f.email_field :email, :autofocus => true, placeholder: "Email" %>
-    </div>
+      <div class="auth-field auth-field--text-input">
+        <%= f.email_field :email, :autofocus => true, placeholder: "Email" %>
+      </div>
 
-    <div><%= f.submit "Send reset password instructions", class: "button-primary button--green" %></div>
-  <% end %>
+      <div><%= f.submit "Send reset password instructions", class: "button-primary button--green" %></div>
+    <% end %>
+  </div>
 
-  <div class="auth-right">
+  <div class="auth-right auth-group">
     <%= render "devise/shared/links" %>
   </div>
 </div>

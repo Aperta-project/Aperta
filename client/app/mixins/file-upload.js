@@ -23,6 +23,7 @@ export default Ember.Mixin.create({
       file: file,
       xhr: fileUploadXHR
     }));
+    debugger;
 
     $(window).on('beforeunload.cancelUploads.' + filename, function() {
       return 'You are uploading, are you sure you want to abort uploading?';
@@ -43,7 +44,7 @@ export default Ember.Mixin.create({
     $(window).off('beforeunload.cancelUploads.' + filename);
 
     var key = Object.keys(data || {})[0];
-    if ( key && data[key]) {
+    if ( (key && data[key]) || data[key] === [] ) {
       $('.upload-preview-filename').text('Upload Complete!');
 
       Ember.run.later(this, ()=> {

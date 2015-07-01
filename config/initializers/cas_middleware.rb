@@ -1,5 +1,5 @@
 module CasConfig
-  def self.extract_environment_variables
+  def self.load_configuration
     opts = {
       'ssl'                      => ENV['CAS_SSL'].present?,
       'disable_ssl_verification' => ENV['CAS_DISABLE_SSL_VERIFICATION'].present?,
@@ -15,19 +15,23 @@ module CasConfig
     opts['ca_path'] = ENV["CAS_HOST"] if ENV['CAS_HOST'].present?
 
     opts[:fetch_raw_info] = lambda { |strategy, options, ticket, user_info|
+      Rails.logger.info("[CasConfig] received cas response: #{user_info}")
       NedProfile.new(cas_id: user_info['user']).to_h
     }
 
     opts
   end
+end
 
-  def self.load_configuration
-    CasConfig.extract_environment_variables
+Tahi::Application.configure do
+  config.cas_enabled = ENV['CAS_ENABLED'] == 'true'
+
+  if config.cas_enabled
+
+    # enable for devise
+    Devise.omniauth :cas, CasConfig.load_configuration
+
+    # enable on the user model
+    Rails.configuration.omniauth_providers << :cas
   end
 end
-
-Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :cas, CasConfig.load_configuration
-end
-
-Rails.configuration.omniauth_providers << :cas

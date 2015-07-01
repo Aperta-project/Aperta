@@ -130,6 +130,7 @@ Tahi::Application.routes.draw do
       get :potential_flows, on: :collection
     end
     resources :user_roles, only: [:index, :create, :destroy]
+    resources :versioned_texts, only: [:show]
 
     # Internal Admin API
     #

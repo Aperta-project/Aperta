@@ -3,6 +3,8 @@ class NedProfile
   BASE_URL = ENV['NED_API_URL']
   APP_ID = ENV['NED_CAS_APP_ID']
   APP_PASSWORD = ENV['NED_CAS_APP_PASSWORD']
+  NED_DISABLE_SSL_VERIFICATION = ENV['NED_DISABLE_SSL_VERIFICATION'] == 'true'
+  NED_SSL_VERIFY = !NED_DISABLE_SSL_VERIFICATION
 
   attr_accessor :cas_id
 
@@ -50,7 +52,7 @@ class NedProfile
   private
 
   def conn
-    @conn ||= Faraday.new(url: BASE_URL) do |faraday|
+    @conn ||= Faraday.new(url: BASE_URL, ssl: { verify: NED_SSL_VERIFY }) do |faraday|
       faraday.response :json
       faraday.request  :url_encoded
       faraday.use      Faraday::Response::RaiseError

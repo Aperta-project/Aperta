@@ -1,17 +1,18 @@
 import Ember from 'ember';
+import RESTless from 'tahi/services/rest-less';
+import Utils from 'tahi/services/utils';
 
 export default Ember.Route.extend({
   model() {
-    return [{
-      title: 'Life Changing Science Right Here Super Awesome Sauce Science Life Changing Science Right Here Super Awesome Sauce Science',
-      id: 11111,
-      dateSubmitted: new Date(),
-      paperType: 'Research'
-    }, {
-      title: 'Super Awesome Sauce Science',
-      id: 22222,
-      dateSubmitted: new Date(),
-      paperType: 'Besearch'
-    }];
+    return RESTless.get('/api/paper_tracker');
+  },
+
+  setupController(controller, data) {
+    let formattedData = Utils.deepCamelizeKeys(data.papers);
+    formattedData.forEach(function(paper) {
+      paper.submittedAt = new Date(paper.submittedAt);
+    });
+
+    controller.set('model', formattedData);
   }
 });

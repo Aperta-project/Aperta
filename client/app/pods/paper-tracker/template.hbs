@@ -3,11 +3,13 @@
   <p class="paper-tracker-paper-count">You have {{pluralize model.length "paper"}} in your tracker.</p>
   <br><br><br>
 
-  {{#sortable-table class="paper-tracker-table" content=model as |table|}}
+  {{#sortable-table class="paper-tracker-table"
+                    content=model
+                    sortProperty="submittedAt" as |table|}}
     <tr>
       <th></th>
       {{sortable-table-header text="Title"
-                              sortProperty="title"
+                              sortProperty="displayTitle"
                               sortAscending=table.sortAscending
                               activeSortProperty=table.sortProperty}}
       {{sortable-table-header text="Paper ID"
@@ -15,7 +17,7 @@
                               sortAscending=table.sortAscending
                               activeSortProperty=table.sortProperty}}
       {{sortable-table-header text="Date Submitted"
-                              sortProperty="dateSubmitted"
+                              sortProperty="submittedAt"
                               sortAscending=table.sortAscending
                               activeSortProperty=table.sortProperty}}
       {{sortable-table-header text="Paper Type"
@@ -25,37 +27,7 @@
       <th>Members</th>
     </tr>
     {{#each table.arrangedContent as |paper|}}
-      <tr>
-        <td>
-          {{#if paper.commentLook}}
-            <span class="badge badge--red">{{paper.commentLook}}</span>
-          {{/if}}
-        </td>
-        <td>
-          {{link-to paper.title "paper" paper.id}}
-        </td>
-        <td class="paper-tracker-paper-id-column">
-          {{link-to paper.id "paper" paper.id}}
-        </td>
-        <td class="paper-tracker-date-column">
-          {{format-date paper.dateSubmitted}}<br>
-          {{relative-time time=paper.dateSubmitted}}
-        </td>
-        <td class="paper-tracker-type-column">{{paper.paperType}}</td>
-        <td class="paper-tracker-members-column">
-          {{#if false}}
-          <div class="paper-tracker-members-group">
-            <span>Author:</span> Amanda Chan
-          </div>
-          <div class="paper-tracker-members-group">
-            <span>Editor:</span> Gina Winkler
-          </div>
-          <div class="paper-tracker-members-group">
-            <span>Reviewer:</span> Aaron Crispy, Chris Westra, Willa Wang, Kristen Chan, Andi Plantenburg, Adam Hyde, Felix Flores
-          </div>
-          {{/if}}
-        </td>
-      </tr>
+      {{partial "paper-tracker/row"}}
     {{/each}}
   {{/sortable-table}}
 </div>

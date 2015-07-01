@@ -10,7 +10,7 @@ module TahiDevise
       user.last_name = ned.last_name
       user.email = ned.email
       user.username = ned.display_name
-      user.auto_generate_password
+      user.auto_generate_password if user.encrypted_password.blank?
 
       if user.save
         sign_in_and_redirect(user, event: :authentication)

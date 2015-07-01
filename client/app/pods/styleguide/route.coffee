@@ -17,6 +17,8 @@ StyleguideRoute = Ember.Route.extend
     # })
 
   setupController: (controller, model) ->
+    journal = @store.find "journal", 1
+
     upload = {
       id: 1
       file: {
@@ -111,21 +113,25 @@ StyleguideRoute = Ember.Route.extend
 
     paper = @store.createRecord("paper", {
       title: 'Long Paper Title of Amazingness'
-      shortTitle: 'Short Paper Title'
+      shortTitle: 'Short Paper Title',
+      roles: []
     })
+
+    role = {
+      name: "Test Role"
+      journal: journal
+      canAdministerJournal: true
+      canViewAssignedManuscriptManagers: true
+      canViewAllManuscriptManagers: true
+      canViewFlowManager: true
+      flows: []
+    }
 
     paper2 = @store.find("paper", 1)
 
     taskIncomplete2 = @store.createRecord "task",
       title: "Ethics"
-
-    phase1 = @store.createRecord 'phase',
-      name: 'Submission Data'
-      paper: paper
-
-    phase2 = @store.createRecord 'phase',
-      name: 'Phase 2'
-      paper: paper
+      position: 1
 
     taskIncomplete =
       title: "Ethics"
@@ -150,15 +156,33 @@ StyleguideRoute = Ember.Route.extend
       answer: true
 
     task = Ember.Object.create(
-      title: "Styleguide Card",
+      title: "Styleguide Card"
       questions: [fakeQuestion]
     )
+
+    phase1 = @store.createRecord 'phase',
+      name: 'Submission Data'
+      paper: paper
+      position: 1
+      tasks: [taskIncomplete2]
+
+    phase2 = @store.createRecord 'phase',
+      name: 'Phase 2'
+      paper: paper
 
     arrayOfOptions = [
       { id: 1, text: 'Text 1'},
       { id: 2, text: 'Text 2'},
       { id: 3, text: 'Text 3'}
     ]
+
+    questionAttachment = {
+      question: fakeQuestion,
+      filename: "foo.png",
+      src: "foo.txt",
+      status: "za",
+      title: "Test Question Attachment"
+    }
 
     cities = [
       {
@@ -183,27 +207,61 @@ StyleguideRoute = Ember.Route.extend
       }
     ]
 
-    comment = @store.createRecord 'comment', {
-      body: "test comment"
-    }
-
     # Ember-data versions of Users
     user3 = @store.createRecord 'user', user
     user4 = @store.createRecord 'user', user2
-    users = @store.find 'user'
+
+    comment1 = @store.createRecord 'comment', {
+      body: "These fine words are a test comment on Open Science",
+      commenter: user3
+    }
+
+    comment2 = @store.createRecord 'comment', {
+      body: "These fine words are a test comment on Open Everything",
+      commenter: user4
+    }
+
+    comments = [comment1, comment2]
+
+    inlineEditBody = {
+      subject: "Greetings!", value: "Welcome to Vulcan!"
+    }
+
+    commentReply = {
+      commenter: user
+      replier: user2
+      task: task
+      body: "Here's a Test Comment Reply"
+    }
+
+    journalTaskType = @store.createRecord 'JournalTaskType',
+      title: "Ad-Hoc"
+      kind: "Task"
+      journal: journal
 
     flow = @store.find 'flow', 1
+    users = @store.find 'user'
+
+    journalRoles = @store.find("role")
 
     controller.set('arrayOfOptions', arrayOfOptions)
     controller.set('cities', cities)
-    controller.set('comment', comment)
+    controller.set('comment', comment1)
+    controller.set('commentReply', commentReply)
+    controller.set('comments', comments)
     controller.set('flash', flash)
+    controller.set('flashMessage', flash.messages[1])
     controller.set('flow', flow)
     controller.set('fullAuthor', fullAuthor)
+    controller.set('inlineEditBody', inlineEditBody)
+    controller.set('journalRoles', journalRoles)
+    controller.set('journalTaskType', journalTaskType)
     controller.set('newAuthor', newAuthor)
     controller.set('paper', paper)
     controller.set('paper2', paper2)
-    controller.set('phases', [phase1, phase2])
+    controller.set('phase', phase1)
+    controller.set('role', role)
+    controller.set('roles', [role])
     controller.set('supportedDownloadFormats', supportedDownloadFormats)
     controller.set('task', task)
     controller.set('taskComplete', taskComplete)

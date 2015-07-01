@@ -442,6 +442,22 @@
         source=cities}}
   </section>
 
+  <hr/>
+
+  <section>
+    <h3>
+      select-2-multiple
+    </h3>
+    {{select-2-multiple value=""
+                        class="participant-select23"
+                        name="add_participant"
+                        minimumInputLength=3
+                        source=users
+                        width="50%"
+                        dropdownClass="participant-dropdown"
+                        placeholder="Add People"}}
+  </section>
+
   <hr>
 
   <section>
@@ -611,5 +627,425 @@
                   saveFlow="saveFlow"
                   removeFlow="removeFlow"
                   viewCard="viewCard"}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      date-picker
+    </h3>
+
+    {{date-picker type="text"
+                  role="startPicker"
+                  date="2015-01-01"
+                  placeholder="Start Date"}}
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      comment-board-form
+    </h3>
+
+    {{comment-board-form save="postComment"}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      task-comment
+    </h3>
+
+    {{task-comment comment=comment}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      inline-edit-h1
+    </h3>
+
+    {{inline-edit-h1 title=paper.title setTitle="setTitle" editOnOpen=false}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      direct-download-link
+    </h3>
+
+    {{#direct-download-link link=downloadLink extension=".epub"}}
+      {{partial "svg/epub-icon"}}
+    {{/direct-download-link}}
+  </section>
+  <hr>
+
+  <section>
+    <h3>
+      segmented-buttons & segmented-button
+    </h3>
+
+    {{#segmented-buttons selectedValue=sortBy action="setSortOrder"}}
+      {{#segmented-button value="asc"}}Sort by Oldest{{/segmented-button}}
+      {{#segmented-button value="desc"}}Sort by Newest{{/segmented-button}}
+    {{/segmented-buttons}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      phase-header
+    </h3>
+
+    {{phase-header phase=phase1
+                   savePhase="savePhase"
+                   removePhase="removePhase"
+                   rollbackPhase="rollbackPhase"}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      attachment-thumbnail
+    </h3>
+
+    {{attachment-thumbnail attachment=model.questionAttachment
+                          destroyAttachment="destroyAttachment"}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      reveal-adhoc-toolbar-buttons
+    </h3>
+
+    {{#reveal-adhoc-toolbar-buttons}}
+      {{partial "components/reveal-adhoc-toolbar-buttons/buttons"}}
+    {{/reveal-adhoc-toolbar-buttons}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      upload-preview
+    </h3>
+
+    {{upload-preview upload=upload}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      binary-radio-button
+    </h3>
+
+    {{binary-radio-button name="recommend-or-oppose"
+                          yesLabel="Yes"
+                          yesValue="yesValue"
+                          noLabel="No"
+                          noValue="noValue"}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      autosave-icon
+    </h3>
+
+    {{autosave-icon modelIsSaving=true}}
+    <br>
+    <br>
+    {{autosave-icon modelIsSaving=false}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      flow-task-group
+    </h3>
+
+    {{flow-task-group task=task
+                      viewCard="viewCard"}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      dashboard-link
+    </h3>
+
+    {{dashboard-link model=paper}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      flash-message
+    </h3>
+
+    {{flash-message remove="removeMessage"
+                    message=flashMessage}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      code-mirror-editor
+    </h3>
+
+    {{code-mirror-editor value=paper.body
+                         readOnly=false
+                         mode="stex"}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      toggle-paper-editable
+    </h3>
+
+    {{toggle-paper-editable action="toggleEditing"
+                            canEdit=true
+                            isEditing=false}}
+
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      phase-column
+    </h3>
+
+    {{phase-column phase=phase
+                   paper=paper
+                   savePhase="savePhase"
+                   addPhase="addPhase"
+                   showDeleteConfirm="showDeleteConfirm"
+                   removePhase="removePhase"
+                   rollbackPhase="rollbackPhase"
+                   viewCard="viewCard"
+                   chooseNewCardTypeOverlay="chooseNewCardTypeOverlay"
+                   changePhaseForTask="changePhaseForTask"}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      datepicker-group
+    </h3>
+
+    {{#datepicker-group}}
+      {{date-picker type="text"
+                    role="startPicker"
+                    date="2015-01-01"
+                    placeholder="Start Date"}}
+
+      {{date-picker type="text"
+                    role="endPicker"
+                    date="2015-07-01"
+                    placeholder="End Date"}}
+    {{/datepicker-group}}
+
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      replace-image
+    </h3>
+
+    {{#replace-image}}
+      <span>Replace Image</span>
+      {{file-uploader
+          url="http://example.com/post"
+          railsMethod="PUT"
+          accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
+          multiple=false
+          filePrefix="paper/figures"
+          start="uploadStarted"
+          progress="uploadProgress"
+          done="uploadFinished"
+          cancel="cancelUploads"}}
+    {{/replace-image}}
+
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      user-role-selector
+    </h3>
+
+    {{user-role-selector journalRoles=cities
+                         userJournalRoles=cities
+                         selected="assignRole"
+                         removed="removeRole"}}
+
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      datum-definition
+    </h3>
+
+    {{#datum-definition datum=datum}}
+      "Something yielded in a datum-definition"
+    {{/datum-definition}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      comment-board
+    </h3>
+
+    {{comment-board comments=comments
+                    currentUser=user
+                    postComment="postComment"}}
+
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      expanding-textarea
+    </h3>
+
+    {{#expanding-textarea}}
+      {{textarea value="Reply Text Goes Here" class="inset-form-control-textarea discussion-topic-comment-field" placeholder="First comment!"}}
+    {{/expanding-textarea}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      discussion-reply
+    </h3>
+
+    {{discussion-reply reply=commentReply}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      inline-edit-text
+    </h3>
+
+    {{inline-edit-text
+      bodyPart=inlineEditBody
+      isNew=true
+      delete="deleteItem"
+      saveModel="saveModel"}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      inline-edit-checkbox
+    </h3>
+
+    {{inline-edit-checkbox
+      bodyPart=inlineEditBody
+      isNew=true
+      delete="deleteItem"
+      saveModel="saveModel"}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      inline-edit-email
+    </h3>
+
+    {{inline-edit-email
+      bodyPart=inlineEditBody
+      allUsers=users
+      overlayParticipants=view.overlayParticipants
+      isNew=view.isNew
+      isSendable=view.isSendable
+      delete="deleteItem"
+      saveModel="saveModel"
+      sendEmail="sendEmail"}}
+
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      journal-thumbnail
+    </h3>
+
+    {{journal-thumbnail model=journal canEdit=true}}
+    <br>
+    <br>
+    {{journal-thumbnail model=journal canEdit=false}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      admin-role
+    </h3>
+
+    {{admin-role model=role}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      admin-journal-user
+    </h3>
+
+    {{admin-journal-user model=user
+                         journalRoles=journalRoles
+                         assignRole="assignRoleToUser"}}
+  </section>
+
+  <hr>
+
+  <section>
+    <h3>
+      journal-task-type-edit
+    </h3>
+
+    {{journal-task-type-edit model=journalTaskType}}
   </section>
 </div>

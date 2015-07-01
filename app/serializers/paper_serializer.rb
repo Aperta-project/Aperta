@@ -1,7 +1,10 @@
 class PaperSerializer < LitePaperSerializer
-  # TODO Inheriting from LitePaper since we need related_at_date and roles so that
-  # the dashboard updates correctly when the event stream triggers
-  attributes :id, :short_title, :title, :doi, :body, :publishing_state, :paper_type, :status, :updated_at, :editable, :links
+  # TODO Inheriting from LitePaper since we need related_at_date and
+  # roles so that the dashboard updates correctly when the event
+  # stream triggers
+  attributes :id, :short_title, :title, :doi, :body,
+             :publishing_state, :paper_type, :status, :updated_at,
+             :editable, :links, :versions
 
   %i(phases figures tables bibitems authors supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true
@@ -40,4 +43,7 @@ class PaperSerializer < LitePaperSerializer
     { comment_looks: comment_looks_paper_path(object) }
   end
 
+  def versions
+    Hash[object.versioned_texts.map { |v| [v.version_string, v.id] }]
+  end
 end

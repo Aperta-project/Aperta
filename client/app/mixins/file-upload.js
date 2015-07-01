@@ -23,7 +23,6 @@ export default Ember.Mixin.create({
       file: file,
       xhr: fileUploadXHR
     }));
-    debugger;
 
     $(window).on('beforeunload.cancelUploads.' + filename, function() {
       return 'You are uploading, are you sure you want to abort uploading?';

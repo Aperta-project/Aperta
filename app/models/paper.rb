@@ -13,7 +13,9 @@ class Paper < ActiveRecord::Base
   has_one :manuscript, dependent: :destroy
 
   has_many :figures, dependent: :destroy
+  has_many :versioned_texts, dependent: :destroy
   has_many :tables, dependent: :destroy
+  has_many :bibitems, dependent: :destroy
   has_many :supporting_information_files, dependent: :destroy
   has_many :paper_roles, inverse_of: :paper, dependent: :destroy
   has_many :assigned_users, -> { uniq }, through: :paper_roles, source: :user
@@ -47,7 +49,7 @@ class Paper < ActiveRecord::Base
       transitions from: [:unsubmitted, :in_revision],
                   to: :submitted,
                   guards: :metadata_tasks_completed?,
-                  after: :prevent_edits!
+                  after: [:prevent_edits!, :major_version!]
     end
 
     event(:minor_revision) do
@@ -94,6 +96,18 @@ class Paper < ActiveRecord::Base
     when "revise"
       revise!
     end
+  end
+
+  def body
+    latest_version.text
+  end
+
+  def body=(new_body)
+    latest_version.update(text: new_body)
+  end
+
+  def version_string
+    latest_version.version_string
   end
 
   # Public: Find `PaperRole`s for the given role and user.
@@ -177,11 +191,13 @@ class Paper < ActiveRecord::Base
     update_attribute(:last_heartbeat_at, Time.now)
   end
 
-  def metadata_tasks_completed?
+  # Accepts any args the state transition accepts
+  def metadata_tasks_completed?(*)
     tasks.metadata.count == tasks.metadata.completed.count
   end
 
-  def prevent_edits!
+  # Accepts any args the state transition accepts
+  def prevent_edits!(*)
     update!(editable: false)
   end
 
@@ -240,6 +256,14 @@ class Paper < ActiveRecord::Base
   end
 
   private
+
+  def latest_version
+    versioned_texts.active.first_or_initialize
+  end
+
+  def major_version!(submitting_user)
+    latest_version.major_version!(submitting_user)
+  end
 
   def default_abstract
     Nokogiri::HTML(body).text.truncate_words 100

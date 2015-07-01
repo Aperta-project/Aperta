@@ -1,11 +1,13 @@
 <p>{{model.title}}</p>
 <div class="role-dropdown">
-  {{select-2-single placeholder="No Role Assigned"
+  {{select-2-single placeholder="Role"
                     selectionSelected="save"
                     source=formattedTaskRoles
                     class="collaborator-select"
                     selectedData=selectedRole
                     width="150"}}
+  <button class="clear-role-button button-secondary button--blue" {{action "clearRole"}}>Clear</button>
 </div>
+
 
 {{autosave-icon modelIsSaving=model.isSaving}}

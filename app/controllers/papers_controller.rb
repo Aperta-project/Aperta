@@ -97,7 +97,7 @@ class PapersController < ApplicationController
   end
 
   def submit
-    paper.submit! do
+    paper.submit! current_user do
       notify_paper_submitted!
       broadcast_paper_submitted_event
     end
@@ -119,7 +119,9 @@ class PapersController < ApplicationController
       phase_ids: [],
       assignee_ids: [],
       editor_ids: [],
-      figure_ids: []
+      figure_ids: [],
+      table_ids: [],
+      bibitem_ids: []
     )
   end
 
@@ -137,7 +139,9 @@ class PapersController < ApplicationController
       phase_ids: [],
       assignee_ids: [],
       editor_ids: [],
-      figure_ids: []
+      figure_ids: [],
+      table_ids: [],
+      bibitem_ids: []
     )
   end
 
@@ -190,7 +194,7 @@ class PapersController < ApplicationController
       activity_key: 'paper.submitted',
       subject: paper,
       user: current_user,
-      message: 'Paper was submitted'
+      message: "Paper was submitted; latest version is #{paper.version_string}"
     )
   end
 

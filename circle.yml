@@ -47,6 +47,7 @@ test:
   override:
     # run only our tests, not all tahi test
     - "bundle exec rspec --format documentation -P \"`bundle show tahi-assess`/spec/**/*_spec.rb,spec/**/*_spec.rb\" --exclude-pattern \"spec/features/**/*.rb\""
+    - "bundle exec rake assets:precompile"
 
 ## Customize heroku deployment
 deployment:

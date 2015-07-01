@@ -43,6 +43,11 @@ Tahi::Application.routes.draw do
   # TODO: namespace to api
   #
   scope '/api', constraints: { format: :json } do
+    namespace :editor do
+      get '/crossref/:query', to: 'external_references#crossref'
+      get '/doi/:doi', to: 'external_references#doi', constraints: { doi: /.*/ }
+    end
+
     resources :supporting_information_files, only: [:create, :destroy, :update]
     resources :affiliations, only: [:index, :create, :destroy]
     resources :attachments, only: [:destroy, :update]
@@ -60,6 +65,7 @@ Tahi::Application.routes.draw do
       put :update_attachment, on: :member
     end
     resources :tables, only: [:create, :update, :destroy]
+    resources :bibitems, only: [:create, :update, :destroy]
     resources :filtered_users do
       collection do
         get "admins/:paper_id", to: "filtered_users#admins"
@@ -90,6 +96,7 @@ Tahi::Application.routes.draw do
       resource :manuscript_manager, only: :show
       resources :figures, only: :create
       resources :tables, only: :create
+      resources :bibitems, only: :create
       resources :tasks, only: [:update, :create, :destroy] do
         resources :comments, only: :create
       end
@@ -124,6 +131,7 @@ Tahi::Application.routes.draw do
       get :potential_flows, on: :collection
     end
     resources :user_roles, only: [:index, :create, :destroy]
+    resources :versioned_texts, only: [:show]
 
     # Internal Admin API
     #

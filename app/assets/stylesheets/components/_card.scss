@@ -37,14 +37,17 @@
   font-size: 18px;
   background-color: $tahi-green-light;
   cursor: pointer;
-  text-overflow: ellipsis;
-  overflow-x: hidden;
+
   .badge {
     position: absolute;
     top: -5px;
     left: -5px;
     padding: 1px 5px;
     background: #d00;
+  }
+  .card-title {
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   .card-completed-icon {
     color: $tahi-green;

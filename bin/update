@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# quit immediately on any non-zero exit code
+set -e
+
+git pull
+bundle install
+bundle exec rake db:migrate
+
+(cd ../tahi-slanger && git pull && bundle install)

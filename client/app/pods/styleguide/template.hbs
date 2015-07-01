@@ -8,7 +8,7 @@
     {{partial 'styleguide/nav'}}
 
     <div id="myTabContent" class="tab-content">
-      <div class="tab-pane active in" id="core">
+      <div class="tab-pane active in" id="core-tab">
         <div class="row">
           <div class="col-md-2">
             {{partial 'styleguide/core/nav'}}
@@ -25,6 +25,16 @@
           </div>
           <div class="col-md-10">
             {{partial 'styleguide/cards'}}
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" id="admin-tab">
+        <div class="row">
+          <div class="col-md-2">
+            {{partial 'styleguide/admin/nav'}}
+          </div>
+          <div class="col-md-10">
+            {{partial 'styleguide/admin'}}
           </div>
         </div>
       </div>

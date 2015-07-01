@@ -1,21 +1,21 @@
-`import Ember from 'ember';`
-`import Utils from 'tahi/services/utils';`
+`import Ember from "ember";`
+`import Utils from "tahi/services/utils";`
 
 Component = Ember.Component.extend
-  classNames: ['dataset']
+  classNames: ["dataset"]
 
   uniqueName: (->
     "funder-had-influence-#{Utils.generateUUID()}"
   ).property()
 
   _saveModel: ->
-    @get('model').save()
+    @get("model").save()
 
   change: (e) ->
     Ember.run.debounce(@, @_saveModel, 400)
 
   actions:
     removeFunder: ->
-      @get('model').destroyRecord()
+      @get("model").destroyRecord()
 
 `export default Component;`

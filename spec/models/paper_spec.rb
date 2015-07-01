@@ -3,6 +3,7 @@ require 'rails_helper'
 describe Paper do
   let(:paper) { FactoryGirl.create :paper }
   let(:doi) { 'pumpkin/doughnut.888888' }
+  let(:user) { FactoryGirl.create :user }
 
   describe "#create" do
     it "also create Decision" do
@@ -80,18 +81,18 @@ describe Paper do
 
       it "does not transition when metadata tasks are incomplete" do
         expect(paper).to receive(:metadata_tasks_completed?).and_return(false)
-        expect{ paper.submit! }.to raise_error(AASM::InvalidTransition)
+        expect{ paper.submit! user }.to raise_error(AASM::InvalidTransition)
       end
 
       it "transitions to submitted" do
         expect(paper).to receive(:metadata_tasks_completed?).and_return(true)
-        paper.submit!
+        paper.submit! user
         expect(paper).to be_submitted
       end
 
       it "marks the paper not editable" do
         expect(paper).to receive(:metadata_tasks_completed?).and_return(true)
-        paper.submit!
+        paper.submit! user
         expect(paper).to_not be_editable
       end
     end

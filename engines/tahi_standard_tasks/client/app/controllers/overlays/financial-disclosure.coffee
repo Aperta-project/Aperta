@@ -1,4 +1,4 @@
-`import TaskController from 'tahi/pods/paper/task/controller'`
+`import TaskController from "tahi/pods/paper/task/controller"`
 
 FinancialDisclosureOverlayController = TaskController.extend
   task: Em.computed.alias("model")
@@ -10,33 +10,35 @@ FinancialDisclosureOverlayController = TaskController.extend
 
   numFundersObserver: (->
     # No explicitly chosen, bail
-    return if @get('receivedFunding') == false
-
-    if @get('funders.length') > 0
+    return if @get("receivedFunding") == false
+    if @get("funders.length") > 0
       # definitely funders, choose Yes
       @set("receivedFunding", true)
+      @set("task.questions.firstObject.answer", "Yes")
     else
       # require explicit selection of No
       @set("receivedFunding", null)
-  ).observes('funders.@each')
+      if @get("task.questions.firstObject.answer")
+        @set("task.questions.firstObject.answer", null)
+  ).observes("funders.@each")
 
   actions:
     choseFundingReceived: ->
       # explicitly choose Yes
-      @set('receivedFunding', true)
-      if @get('funders.length') < 1
-        @send('addFunder')
+      @set("receivedFunding", true)
+      if @get("funders.length") < 1
+        @send("addFunder")
 
     choseFundingNotReceived: ->
       # explicitly choose No
-      @set('receivedFunding', false)
-      @get('funders').toArray().forEach (funder) ->
-        if funder.get('isNew')
+      @set("receivedFunding", false)
+      @get("funders").toArray().forEach (funder) ->
+        if funder.get("isNew")
           funder.deleteRecord()
         else
           funder.destroyRecord()
 
     addFunder: ->
-      @store.createRecord('funder', task: @get('task')).save()
+      @store.createRecord("funder", task: @get("task")).save()
 
 `export default FinancialDisclosureOverlayController`

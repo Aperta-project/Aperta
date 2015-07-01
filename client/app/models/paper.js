@@ -1,4 +1,5 @@
 import DS from 'ember-data';
+import Ember from 'ember';
 
 export default DS.Model.extend({
   authors: DS.hasMany('author'),
@@ -69,7 +70,5 @@ export default DS.Model.extend({
             this.get('allSubmissionTasksCompleted'));
   }.property('submittableState', 'allSubmissionTasksCompleted'),
 
-  postSubmission: function() {
-    return !this.get('submittableState');
-  }.property('submittableState')
+  postSubmission: Ember.computed.not('submittableState')
 });

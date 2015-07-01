@@ -113,7 +113,7 @@ test 'visiting /edit-paper: Author completes all metadata cards', ->
       ok(!find('#paper-container.sidebar-empty').length, "The sidebar should NOT be hidden")
     .then ->
       submitButton = find('button:contains("Submit")')
-      ok(submitButton.hasClass('button--disabled'), "Submit is disabled")
+      ok(!submitButton.length, "Submit is disabled")
     .then ->
       for card in find('#paper-metadata-tasks .card-content')
         click card

@@ -59,6 +59,11 @@ class User < ActiveRecord::Base
     roles.can_view_flow_manager.present?
   end
 
+  def flow_managable_journals
+    p roles.can_view_flow_manager
+    roles.can_view_flow_manager.map { |r| r.journal }
+  end
+
   def auto_generate_password(length=10)
     self.password = SecureRandom.urlsafe_base64(length-1)
   end

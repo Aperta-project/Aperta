@@ -13,6 +13,9 @@ export default OverlayView.extend({
       extraClasses: this.get('controller.overlayClass')
     };
 
+    // TEMP HACK: Remove when on Ember 1.13
+    this.get('controller').set('feedbackSubmitted', false);
+
     Ember.run.scheduleOnce('afterRender', this, this.animateOverlayIn, options);
   }.on('didInsertElement'),
 });

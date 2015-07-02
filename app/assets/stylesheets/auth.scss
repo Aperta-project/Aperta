@@ -81,7 +81,7 @@ a {
 
 .auth-container {
   @include flex(0 1 auto);
-  padding: 0 115px 35px 115px;
+  padding: 0 60px 35px 60px;
   background: rgba(255,255,255, 0.95);
   @include display(flex);
   @include flex-flow(row wrap);
@@ -91,19 +91,22 @@ a {
     @include flex(0 0 100%);
     margin-top: 45px;
     margin-bottom: 1rem;
+    text-align: center;
     font-size: 44px;
   }
 
 }
 
-.auth-left {
+.auth-group {
   @include flex(1 0 auto);
-  padding-top: 15px;
-}
+  padding: 15px 65px;
+  @include display(flex);
+  @include flex-flow(column nowrap);
+  @include align-items(center);
 
-.auth-right {
-  @include flex(1 0 auto);
-  padding-top: 15px;
+  & > * {
+    @include flex(0 0 auto);
+  }
 }
 
 .auth-group:nth-of-type(2) {
@@ -130,7 +133,6 @@ a {
 .auth-3rd-party-button {
   display: block;
   width: 210px;
-  margin: 0 0 0 auto;
   padding: 10px 20px;
   font-size: 16px;
   font-weight: 600;

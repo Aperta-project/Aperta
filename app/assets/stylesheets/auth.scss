@@ -54,7 +54,7 @@ a {
 }
 
 .auth-flash {
-  position: relative;
+  @include flex(0 0 100%);
   padding: 15px 20px;
 
   span {
@@ -75,9 +75,10 @@ a {
 }
 
 .auth-flash--notice {
+  border: 1px solid #d7f0d1;
+  color: $tahi-green;
+  background: #eafde7;
 }
-
-
 
 .auth-container {
   @include flex(0 1 auto);

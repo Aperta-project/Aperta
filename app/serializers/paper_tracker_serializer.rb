@@ -4,8 +4,4 @@ class PaperTrackerSerializer < ActiveModel::Serializer
   def display_title
     object.title || object.short_title
   end
-
-  def submitted_at
-    object.created_at
-  end
 end

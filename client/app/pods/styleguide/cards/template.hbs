@@ -159,13 +159,13 @@
 
 <hr/>
 
-<h2 id="form-patterns">
+<h3 id="form-patterns">
   Form Patterns
-</h2>
-
-<h3>
-  Form Block: Numbered List
 </h3>
+
+<h4>
+  Form Block: Numbered List
+</h4>
 
 <div class="constrain">
   <div element-name="numbered-list" source-page-name="card_ethics" source-page-selector="ol.question-list">
@@ -249,9 +249,9 @@
 </div>
 <br>
 
-<h3>
+<h4>
   Form Block: Unstyled Bulleted List
-</h3>
+</h4>
 
 <div class="constrain">
   <div element-name="bulleted-list" source-page-name="card_tech_check_task" source-page-selector="ul.numbered-list">
@@ -264,9 +264,9 @@
 </div>
 <br>
 
-<h3>
+<h4>
   Form Block: Styled Bulleted List
-</h3>
+</h4>
 
 <div class="constrain">
   <div element-name="styled-bulleted-list" source-page-name="card_reviewer_report_task" source-page-selector="ol.question-list .question:nth-child(2) ul.question-help">
@@ -279,9 +279,9 @@
 </div>
 <br>
 
-<h3>
+<h4>
   Form Block: Single Input
-</h3>
+</h4>
 
 <div class="constrain">
   {{!--
@@ -313,9 +313,9 @@ But it feels too coupled at the moment.
 </div>
 <br>
 
-<h3>
+<h4>
   Form Block: Multi Input
-</h3>
+</h4>
 
 <div class="constrain">
   <div element-name="full-width-multi-block-input" source-page-name="card_data_availability" source-page-selector="li.item:last .question-dataset">
@@ -455,9 +455,9 @@ But it feels too coupled at the moment.
 
 <div class="row">
   <div class="col-md-6">
-    <h2 id="edit-delete">
+    <h3 id="edit-delete">
       Edit/Delete
-    </h2>
+    </h3>
 
     <p>
       The Edit and Delete icons usually appear together. There are two main style; large block-level hover, and small in-line.
@@ -467,9 +467,9 @@ But it feels too coupled at the moment.
 
 <div class="row">
   <div class="col-md-2">
-    <p>
+    <h4>
       Large Block Level
-    </p>
+    </h4>
 
     {{!-- figure-thumbnail --}}
     {{!-- attachment-thumbnail --}}
@@ -481,18 +481,23 @@ But it feels too coupled at the moment.
 
   </div>
   <div class="col-md-2">
-    <p>
+    <h4>
       Small Inline
-    </p>
+    </h4>
     <span class="glyphicon glyphicon-pencil small"></span>
     <span class="glyphicon glyphicon-trash small"></span>
   </div>
 </div>
 
 <div class="constrain">
-  Create
-  <br> {{add-author-form}} HoverState
+  <h4>
+    Create
+  </h4>
+  {{add-author-form}}
   <br>
+  <h4>
+    HoverState
+  </h4>
   <br>{{!-- <div class="alert alert-warning">
 Hover coming soon!
 </div> --}}
@@ -528,9 +533,10 @@ Hover coming soon!
 EditState
 <br><br>
 {{author-view editState=true hoverState=true author=fullAuthor}} -->
-
-  Delete State
   <br>
+  <h4>
+    Delete State
+  </h4>
   <br> {{author-view deleteState=true}}
 </div>
 

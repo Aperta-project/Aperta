@@ -47,4 +47,47 @@ namespace :maintenance do
       end
     end
   end
+
+  desc "Capture screenshots of all pages in Tahi"
+  task :screenshot => :environment do
+    return unless Rails.env.development?
+    require 'auto_screenshot'
+
+    base_path = "http://localhost:5000"
+
+    # TODO: update this list of urls when new urls are added to Tahi
+    urls = [
+      "/users/sign_up",
+      "/users/password/new",
+      "/users/sign_in",
+      "/",
+
+      "/profile",
+
+      "/papers/1/edit",
+      "/papers/1/edit/discussions",
+      "/papers/1/workflow",
+
+      # Tasks
+      "/papers/1/tasks/1",
+      "/papers/1/tasks/2",
+      "/papers/1/tasks/3",
+      "/papers/1/tasks/4",
+      "/papers/1/tasks/5",
+
+      "/flow_manager",
+
+      "/admin/journals",
+      "/admin/journals/1",
+      "/admin/journals/1/roles/1/flow_manager",
+      "/admin/journals/1/manuscript_manager_templates/1/edit"
+    ]
+
+    urls = urls.map { |url| "#{base_path}#{url}" }
+    client = AutoScreenshot::Screenshot.new(urls: urls)
+    client.action_map = {
+      "http://localhost:5000/users/sign_in" => :wait
+    }
+    client.go
+  end
 end

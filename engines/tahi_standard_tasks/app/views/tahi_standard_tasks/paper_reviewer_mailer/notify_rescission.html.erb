@@ -1,11 +1,33 @@
-<p>
-Hello <%= @invitee.full_name %>,
-</p>
-
-<p>
-Your invitation to become a reviewer on "<%= @paper.display_title %>" has been rescinded. Please email us if you have any questions.
-</p>
-
-<p>
-<%= root_url %>
-</p>
+<div class='container'>
+  <div class='greeting'>
+    <h3 class='user-name'>
+      Hello <%= @invitee.full_name %>
+    </h3>
+  </div>
+  <hr>
+  <div class='paper-info'>
+    <div class='journal-info'>
+      <% if @paper.journal.logo_url %>
+        <img class='journal-logo' src='<%= @paper.journal.logo_url %>'>
+      <% else %>
+        <div class='journal-name'>
+          <%= @paper.journal.name %>
+        </div>
+      <% end %>
+    </div>
+    <div class='paper-abstract'>
+      <p>
+        Your invitation to become a reviewer on "<%= @paper.display_title %>" has been rescinded. Please email us if you have any questions.
+      </p>
+      <p>
+        <%= root_url %>
+      </p>
+    </div>
+  </div>
+  <hr>
+  <div class='footer'>
+    <p>
+      Team Tahi
+    </p>
+  </div>
+</div>

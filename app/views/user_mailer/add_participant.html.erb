@@ -1,15 +1,20 @@
-<p>
-Hello <%= @assignee_name %>
-</p>
-
-<p>
-<%= @assigner_name %> just added you to a conversation on Tahi. Visit this link to view the conversation:
-</p>
-
-<p>
-<%= client_paper_task_url(@task.paper, @task) %>
-</p>
-
-<p>
-Team Tahi
-</p>
+<div class='container'>
+  <div class='greeting'>
+    <h3 class='user-name'>
+      Hello <%= @assignee_name %>
+    </h3>
+    <p class='message'>
+      <%= @assigner_name %> just added you to a conversation on Tahi.
+    </p>
+  </div>
+  <hr>
+  <div class='paper-info'>
+    <div class='paper-abstract'>
+      Visit this link to view the conversation: <%= client_paper_task_url(@task.paper, @task) %>
+    </div>
+  </div>
+  <hr>
+  <div class='footer'>
+    Team Tahi
+  </div>
+</div>

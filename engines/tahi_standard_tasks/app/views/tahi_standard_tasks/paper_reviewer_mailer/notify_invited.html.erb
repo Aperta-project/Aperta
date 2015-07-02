@@ -1,15 +1,37 @@
-<p>
-Hello <%= @invitee.full_name %>,
-</p>
-
-<p>
-You've been assigned as a reviewer on a paper titled "<%= @paper.display_title %>".
-</p>
-
-<p>
-<%= root_url %>
-</p>
-
-<p>
-We look forward to your contributions!
-</p>
+<div class='container'>
+  <div class='greeting'>
+    <h3 class='user-name'>
+      Hello <%= @invitee.full_name %>
+    </h3>
+    <p class='message'>
+      You've been assigned as a Reviewer on a Manuscript
+    </p>
+  </div>
+  <hr>
+  <div class='paper-info'>
+    <div class='journal-info'>
+      <% if @paper.journal.logo_url %>
+        <img class='journal-logo' src='<%= @paper.journal.logo_url %>'>
+      <% else %>
+        <div class='journal-name'>
+          <%= @paper.journal.name %>
+        </div>
+      <% end %>
+    </div>
+    <div class='paper-name'>
+      <%= @paper.display_title %>
+    </div>
+    <div class='paper-abstract'>
+      You've been assigned as a Reviewer on a Manuscript titled "<%= @paper.display_title %>".
+    </div>
+    <p>
+      <a class='button' href='<%= client_paper_url(@paper) %>' target='_blank'>
+        View Paper
+      </a>
+    </p>
+  </div>
+  <hr>
+  <div class='footer'>
+    We look forward to your contributions! - Team Tahi
+  </div>
+</div>

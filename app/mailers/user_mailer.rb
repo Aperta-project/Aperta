@@ -44,7 +44,7 @@ class UserMailer < ActionMailer::Base
     @task = Task.find task_id
     invitee = User.find invitee_id
     @invitee_name = display_name(invitee)
-    @paper_preview = paper_preview
+    @paper = @task.paper
 
     mail(
       to: invitee.email,
@@ -100,13 +100,5 @@ class UserMailer < ActionMailer::Base
     mail(
       to: @admin.email,
       subject: "Manuscript #{@paper.title} has been submitted on Tahi")
-  end
-
-  private
-
-  # Might make sense to move it to the paper model, but it's good enough for this one use case.
-  def paper_preview
-    return @task.paper.abstract if @task.paper.abstract.present?
-    "#{@task.paper.body.split[0..100].join ' '}..."
   end
 end

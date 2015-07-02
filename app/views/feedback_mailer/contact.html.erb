@@ -1,34 +1,44 @@
-<p>
-Feedback from:
-<br>
-<%= @user.username %>
-</p>
-
-<p>
-On the page:
-<br>
-<a href="<%= @feedback[:referrer] %>"><%= @feedback[:referrer] %></a>
-</p>
-
-<p>
-Current Rails environment:
-<br>
-<%= Rails.env %>
-</p>
-
-<p>
-Body:
-<br>
-<%= @feedback[:remarks] %>
-</p>
-
-<% if @feedback[:screenshots] %>
-  <p>
-    Screenshots:
-    <br>
-    <% @feedback[:screenshots].each do |screenshot| %>
-      <%= image_tag screenshot[:url], alt: screenshot[:filename] %>
+<div class='container'>
+  <div class='greeting'>
+    <h3 class='user-name'>
+      Feedback from: <%= @user.username %>
+    </h3>
+    <p class='message'>
+      On the page:
       <br>
-    <% end %>
-  </p>
-<% end %>
+      <a href="<%= @feedback[:referrer] %>"><%= @feedback[:referrer] %></a>
+    </p>
+  </div>
+  <hr>
+  <div class='paper-info'>
+    <div class='paper-name'>
+    </div>
+    <div class='paper-abstract'>
+      <p>
+      Current Rails Environment:
+      <br>
+      <%= Rails.env %>
+      </p>
+
+      <p>
+      Body:
+      <br>
+      <%= @feedback[:remarks] %>
+      </p>
+
+      <% if @feedback[:screenshots] %>
+        <p>
+          Screenshots:
+          <br>
+          <% @feedback[:screenshots].each do |screenshot| %>
+            <%= image_tag screenshot[:url], alt: screenshot[:filename] %>
+            <br>
+          <% end %>
+        </p>
+      <% end %>
+    </div>
+  </div>
+  <hr>
+  <div class='footer'>
+  </div>
+</div>

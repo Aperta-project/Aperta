@@ -8,14 +8,14 @@ module TahiPusher
 
     def authenticate(socket_id:)
       message = "Authenticating channel_name=#{channel_name}, socket=#{socket_id}"
-      with_logging(message) do
+      swallow_with_logging(message) do
         Pusher[channel_name].authenticate(socket_id)
       end
     end
 
     def push(event_name:, payload:, excluded_socket_id: nil)
       message = "Pushing event_name=#{event_name}, channel=#{channel_name}, payload=#{payload}, excluded_socket_id=#{excluded_socket_id}"
-      with_logging(message) do
+      swallow_with_logging(message) do
         excluded_socket = {}
         excluded_socket.merge!( { socket_id: excluded_socket_id }) if excluded_socket_id.present?
         Pusher.trigger(channel_name, event_name, payload, excluded_socket)
@@ -24,7 +24,7 @@ module TahiPusher
 
     def authorized?(user:)
       message = "Checking authorization on channel_name=#{channel_name} for user_id=#{user.id}"
-      with_logging(message) do
+      swallow_with_logging(message) do
         return true unless parsed_channel.active_record_backed?
         authorized_users.include?(user)
       end
@@ -43,12 +43,11 @@ module TahiPusher
       @parsed_channel ||= ChannelName.parse(channel_name)
     end
 
-    def with_logging(message)
+    def swallow_with_logging(message)
       Pusher.logger.info("** [Pusher] #{message}") if TahiPusher::Config.verbose_logging?
       yield
-    rescue Pusher::HTTPError => e
+    rescue Pusher::HTTPError, Pusher::Error => e
       Pusher.logger.error("** [Pusher] #{e.message}")
-      raise e
     end
   end
 end

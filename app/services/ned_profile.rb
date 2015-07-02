@@ -1,3 +1,5 @@
+class NedProfileConnectionError < StandardError; end
+
 class NedProfile
 
   BASE_URL = ENV['NED_API_URL']
@@ -63,6 +65,8 @@ class NedProfile
 
   def raw_attrs
     @raw_attrs ||= conn.get("/individuals/CAS/#{cas_id}").body
+  rescue Faraday::ClientError => e
+    raise NedProfileConnectionError.new(e.response[:body])
   end
 
   def credential

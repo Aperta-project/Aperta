@@ -18,6 +18,10 @@ class RegisterDecisionOverlay < CardOverlay
     find('.decision-letter-field').get()
   end
 
+  def radio_selected?
+    all('input[type=radio]').any?(&:checked?)
+  end
+
   def accepted?
     find('input[value="accepted"]')
   end

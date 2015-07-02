@@ -26,7 +26,12 @@
   </div>
 
   <div class="overlay-action-buttons">
-    <span class="button-link button--green" {{action "closeAction"}}>cancel</span>
-    <button type="submit" class="button-primary button--green" {{action "createNewPaper"}}>Create</button>
+    {{#if paperSaving}}
+      <span class="animation-fade-in">Creating new submission&#8230; &nbsp; &nbsp;</span>
+      <button type="submit" class="button-primary button--disabled">Create</button>
+    {{else}}
+      <span class="button-link button--green" {{action "closeAction"}}>cancel</span>
+      <button type="submit" class="button-primary button--green" {{action "createNewPaper"}}>Create</button>
+    {{/if}}
   </div>
 </div>

@@ -6,6 +6,10 @@ class PapersController < ApplicationController
   before_action :sanitize_title, only: [:create, :update]
   before_action :prevent_update_on_locked!, only: [:update, :toggle_editable, :submit, :upload]
 
+  rescue_from ActionController::ParameterMissing do
+    render nothing: true, status: :unprocessable_entity
+  end
+
   respond_to :json
 
   def index
@@ -107,7 +111,11 @@ class PapersController < ApplicationController
   private
 
   def paper_params
-    params.require(:paper).permit(
+    pp = params.require(:paper)
+    # ensure we have a journal_id & paper_type
+    pp.require(:journal_id)
+    pp.require(:paper_type)
+    pp.permit(
       :short_title, :title, :abstract,
       :body, :paper_type, :submitted, :editable,
       :journal_id,

@@ -9,7 +9,7 @@ Router.map(function() {
   this.route('dashboard', { path: '/' }, function() {});
 
   this.route('flow_manager');
-  this.route('paper_tracker');
+  this.route('paper_tracker', function() {});
 
   this.resource('paper', { path: '/papers/:paper_id' }, function() {
     this.route('index', { path: '/' }, function() {

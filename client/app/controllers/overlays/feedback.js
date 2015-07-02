@@ -25,7 +25,6 @@ export default Ember.Controller.extend({
 
     closeAction() {
       this.send('closeFeedbackOverlay');
-      this.set('feedbackSubmitted', false);
     },
 
     uploadFinished(data, filename) {

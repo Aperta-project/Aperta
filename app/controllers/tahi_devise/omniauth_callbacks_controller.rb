@@ -17,6 +17,9 @@ module TahiDevise
       else
         raise 'TODO: Figure out what to do when this errors out!'
       end
+
+    rescue NedProfileConnectionError => ex
+      redirect_to new_user_session_path, alert: "We were unable to authenticate with CAS at this time."
     end
 
     # it looks like orcid actually returns user profile information, so why are we redirecting to a page to add additional info?

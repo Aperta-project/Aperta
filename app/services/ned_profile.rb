@@ -66,7 +66,9 @@ class NedProfile
   def raw_attrs
     @raw_attrs ||= conn.get("/individuals/CAS/#{cas_id}").body
   rescue Faraday::ClientError => e
-    raise NedProfileConnectionError.new(e.response[:body])
+    ned_error = NedProfileConnectionError.new(e.response[:body])
+    Bugsnag.notify(ned_error)
+    raise ned_error
   end
 
   def credential

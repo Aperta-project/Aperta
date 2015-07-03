@@ -39,7 +39,8 @@ export default Ember.Route.extend({
 
     showNewPaperOverlay() {
       return this.store.find('journal').then((journals)=> {
-        this.controllerFor('overlays/paperNew').setProperties({
+        this.controllerFor('overlays/paper-new').setProperties({
+          paperSaving: false,
           journals: journals,
           model: this.store.createRecord('paper', {
             journal: null,
@@ -49,10 +50,10 @@ export default Ember.Route.extend({
           })
         });
 
-        this.render('overlays/paperNew', {
+        this.render('overlays/paper-new', {
           into: 'application',
           outlet: 'overlay',
-          controller: 'overlays/paperNew'
+          controller: 'overlays/paper-new'
         });
       });
     },

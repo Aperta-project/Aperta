@@ -27,9 +27,12 @@ class RegisterDecisionOverlay < CardOverlay
   end
 
   def disabled?
-    find("#task_completed[disabled]") != nil &&
     all("input[type='radio'][disabled]").size == 3 &&
     find("textarea[disabled]") != nil
+  end
+
+  def click_send_email_button
+    find(".send-email-action").click
   end
 end
 

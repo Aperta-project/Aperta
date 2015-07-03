@@ -2,7 +2,9 @@
   {{progress-spinner visible=true size="large" center=true}}
 </div>
 
-<h1>Register Decision</h1>
+<h1>
+  Register Decision
+</h1>
 
 {{#if model.completed}}
   {{#if finalDecision}}
@@ -10,6 +12,13 @@
     A final Decision of {{latestDecision.verdict}} has been registered.
   </div>
   {{/if}}
+{{else}}
+  {{#unless controller.publishable}}
+    <div class="alert alert-warning">
+      A Decision cannot be Registered at this time.
+      The Manuscript is not in a Submitted state.
+    </div>
+  {{/unless}}
 {{/if}}
 
 <div class="decision-selections">
@@ -17,7 +26,7 @@
     {{decision-radio-button value="accepted"
                             action="setDecisionTemplate"
                             selection=latestDecision.verdict
-                            disabled=model.completed
+                            disabled=controller.nonPublishable
                             name="decision"}}
     Accepted
   </label>
@@ -26,7 +35,7 @@
     {{decision-radio-button value="rejected"
                             action="setDecisionTemplate"
                             selection=latestDecision.verdict
-                            disabled=model.completed
+                            disabled=controller.nonPublishable
                             name="decision"}}
     Rejected
   </label>
@@ -35,7 +44,7 @@
     {{decision-radio-button value="revise"
                             action="setDecisionTemplate"
                             selection=latestDecision.verdict
-                            disabled=model.completed
+                            disabled=controller.nonPublishable
                             name="decision"}}
     Revise
   </label>
@@ -51,6 +60,10 @@
            placeholder="A boilerplate decision letter will appear here"
            disabled=model.completed
            value=latestDecision.letter}}
+
+<button class="btn send-email-action {{unless controller.publishable 'disabled'}}" {{action 'registerDecision'}}>
+  Register Decision and Email the Author
+</button>
 
 {{#if previousDecisions}}
   <hr>

@@ -27,7 +27,10 @@
 
   <div class="overlay-action-buttons">
     {{#if paperSaving}}
-      <span class="animation-fade-in">Creating new submission&#8230; &nbsp; &nbsp;</span>
+      <span class="paper-new-paper-saving animation-fade-in">
+        Creating new submission&#8230;
+        {{progress-spinner visible=true size="small"}}
+      </span>
       <button type="submit" class="button-primary button--disabled">Create</button>
     {{else}}
       <span class="button-link button--green" {{action "closeAction"}}>cancel</span>

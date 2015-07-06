@@ -7,8 +7,8 @@ feature 'Adding cover letter', js: true do
 
   context 'As an author' do
     scenario 'finishes the cover letter and save it', selenium: true do
-      sign_in_page = SignInPage.visit
-      edit_page = sign_in_page.sign_in author
+      login_as author
+      visit "/"
 
       click_link(paper.title)
       expect(page).to have_content 'Cover Letter'

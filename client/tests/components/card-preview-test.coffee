@@ -7,8 +7,6 @@
 App = null
 
 moduleForComponent 'card-preview', 'Unit: components/card-preview',
-  needs: ['helper:badge-count']
-
   setup: ->
     Ember.run ->
       App = startApp()

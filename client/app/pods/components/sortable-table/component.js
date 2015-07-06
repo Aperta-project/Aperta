@@ -25,10 +25,7 @@ export default Ember.Component.extend(Ember.SortableMixin, {
   tagName: 'table',
   classNames: ['sortable-table'],
 
-  // attrs:
   content: [],
-
-
   sortAscending: true,
   sortProperty: null,
   sortProperties: Ember.computed('sortProperty', function() {

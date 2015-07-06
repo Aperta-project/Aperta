@@ -1,0 +1,31 @@
+<tr>
+  <td>
+    {{#if paper.commentLook}}
+      <span class="badge badge--red">{{paper.commentLook}}</span>
+    {{/if}}
+  </td>
+  <td>
+    {{link-to paper.displayTitle "paper.edit" paper.id}}
+  </td>
+  <td class="paper-tracker-paper-id-column">
+    {{link-to paper.id "paper.edit" paper.id}}
+  </td>
+  <td class="paper-tracker-date-column">
+    {{format-date paper.submittedAt}}<br>
+    {{relative-time time=paper.submittedAt}}
+  </td>
+  <td class="paper-tracker-type-column">{{paper.paperType}}</td>
+  <td class="paper-tracker-members-column">
+    {{#if false}}
+    <div class="paper-tracker-members-group">
+      <span>Author:</span> Amanda Chan
+    </div>
+    <div class="paper-tracker-members-group">
+      <span>Editor:</span> Gina Winkler
+    </div>
+    <div class="paper-tracker-members-group">
+      <span>Reviewer:</span> Aaron Crispy, Chris Westra, Willa Wang, Kristen Chan, Andi Plantenburg, Adam Hyde, Felix Flores
+    </div>
+    {{/if}}
+  </td>
+</tr>

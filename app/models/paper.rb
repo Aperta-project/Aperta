@@ -49,7 +49,9 @@ class Paper < ActiveRecord::Base
       transitions from: [:unsubmitted, :in_revision],
                   to: :submitted,
                   guards: :metadata_tasks_completed?,
-                  after: [:prevent_edits!, :major_version!]
+                  after: [:prevent_edits!,
+                          :major_version!,
+                          :set_submitted_at!]
     end
 
     event(:minor_revision) do
@@ -271,5 +273,9 @@ class Paper < ActiveRecord::Base
 
   def set_published_at!
     update!(published_at: Time.current.utc)
+  end
+
+  def set_submitted_at!
+    update!(submitted_at: Time.current.utc)
   end
 end

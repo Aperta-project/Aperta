@@ -82,7 +82,6 @@ describe UserMailer, redis: true do
         expect(email.body).to_not include abstract
         expect(email.body).to match task.paper.body
       end
-
     end
   end
 
@@ -96,7 +95,7 @@ describe UserMailer, redis: true do
     end
 
     it 'tells the user they have been added as an editor' do
-      expect(email.body).to match(/been assigned as an editor/)
+      expect(email.body).to match(/been assigned as an Editor/)
     end
   end
 
@@ -116,7 +115,7 @@ describe UserMailer, redis: true do
 
     it 'tells the user they have been mentioned' do
       expect(email.body).to include "You've been mentioned by #{comment.commenter.full_name}"
-      expect(email.body).to include paper.title
+      expect(email.body).to include paper.display_title
       expect(email.body).to include paper.tasks.first.title
       expect(email.body).to include comment.body
       expect(email.body).to include client_paper_task_url(paper, paper.tasks.first)

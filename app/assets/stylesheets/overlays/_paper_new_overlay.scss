@@ -3,3 +3,13 @@
     float: right;
   }
 }
+
+.paper-new-paper-saving {
+  font-style: italic;
+
+  .progress-spinner {
+    position: relative;
+    top: 11px;
+    margin: 0 15px 0 5px;
+  }
+}

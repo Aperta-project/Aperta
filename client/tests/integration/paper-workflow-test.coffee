@@ -4,6 +4,7 @@
 `import setupMockServer from '../helpers/mock-server'`
 `import { paperWithParticipant } from '../helpers/setups'`
 `import Factory from '../helpers/factory'`
+`import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';`
 
 app = null
 server = null
@@ -18,6 +19,7 @@ module 'Integration: Paper Workflow page',
     Factory.resetFactoryIds()
     app = startApp()
     server = setupMockServer()
+    TestHelper.handleFindAll('discussion-topic', 1)
 
     taskPayload =
       task:

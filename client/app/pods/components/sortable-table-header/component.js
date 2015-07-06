@@ -2,7 +2,10 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   tagName: 'th',
-  classNameBindings: ['active:sortable-table-header-active', ':sortable-table-header'],
+  classNameBindings: [
+    'active:sortable-table-header-active',
+    ':sortable-table-header'
+  ],
 
   // attrs:
   text: null,

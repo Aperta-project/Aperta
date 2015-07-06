@@ -14,7 +14,7 @@ describe PaperTrackerController do
 
   before { sign_in user }
 
-  describe "index", focus: true do
+  describe "index" do
     context "there's a paper in the assigned journal" do
       let!(:paper) { FactoryGirl.create(:paper, :submitted, journal: assigned_journal) }
       let(:response) { get :index, format: :json }
@@ -26,7 +26,7 @@ describe PaperTrackerController do
     end
   end
 
-  describe "index", focus: true do
+  describe "index" do
     context "there's a paper in the unassigned journal" do
       let!(:paper) { FactoryGirl.create(:paper, :submitted, journal: unassigned_journal) }
       let(:response) { get :index, format: :json }
@@ -38,7 +38,7 @@ describe PaperTrackerController do
     end
   end
 
-  describe "index", focus: true do
+  describe "index" do
     context "there's an unsubmitted paper in the assigned journal" do
       let!(:paper) { FactoryGirl.create(:paper, journal: assigned_journal) }
       let(:response) { get :index, format: :json }

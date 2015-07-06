@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://dev:dev@192.168.59.103:8081/individuals/CAS/00000000-f8d2-4a8d-b8e4-21aa01a81aab
+    uri: http://dev:dev@ned.ned:8081/individuals/CAS/00000000-f8d2-4a8d-b8e4-21aa01a81aab
     body:
       encoding: US-ASCII
       string: ''
@@ -33,7 +33,7 @@ http_interactions:
   recorded_at: Thu, 02 Jul 2015 13:04:22 GMT
 - request:
     method: get
-    uri: http://dev:dev@192.168.59.103:8081/individuals/CAS/something-invalid
+    uri: http://dev:dev@ned.ned:8081/individuals/CAS/something-invalid
     body:
       encoding: US-ASCII
       string: ''

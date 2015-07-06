@@ -44,6 +44,10 @@ class User < ActiveRecord::Base
     devise :trackable, :omniauthable, omniauth_providers: Rails.configuration.omniauth_providers
   end
 
+  def password_required?
+    Rails.configuration.password_auth_enabled && super
+  end
+
   def possible_flows
     Flow.where("role_id IN (?) OR role_id IS NULL", role_ids)
   end

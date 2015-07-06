@@ -39,7 +39,7 @@ feature "Resetting password", js: true do
     SignInPage.visit
     click_link('Forgot your password?')
     fill_in('user_email', with: user.email)
-    click_button('Send reset password instructions')
+    click_button('Send reset instructions')
     expect(page).to have_content 'You will receive an email with instructions about how to reset your password in a few minutes.'
   end
 end

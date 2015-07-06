@@ -10,12 +10,9 @@ module TahiDevise
       user.last_name = ned.last_name
       user.email = ned.email
       user.username = ned.display_name
+      user.save!
 
-      if user.save
-        sign_in_and_redirect(user, event: :authentication)
-      else
-        raise 'TODO: Figure out what to do when this errors out!'
-      end
+      sign_in_and_redirect(user, event: :authentication)
 
     rescue NedProfileConnectionError => ex
       redirect_to new_user_session_path, alert: "We were unable to authenticate with CAS at this time."
@@ -38,7 +35,7 @@ module TahiDevise
       if credential
         credential.user
       else
-        User.new.tap do |u|
+        User.new do |u|
           u.credentials.build(uid: uid, provider: provider)
         end
       end

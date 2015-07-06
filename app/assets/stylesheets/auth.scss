@@ -100,7 +100,7 @@ a {
 
 .auth-group {
   @include flex(1 0 auto);
-  padding: 15px 65px;
+  padding: 15px 0;
   @include display(flex);
   @include flex-flow(column nowrap);
   @include align-items(center);
@@ -135,6 +135,7 @@ a {
   display: block;
   width: 210px;
   padding: 10px 20px;
+  margin-bottom: 20px;
   font-size: 16px;
   font-weight: 600;
   text-transform: none;

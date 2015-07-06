@@ -1,21 +1,29 @@
-<p>
-Hi <%= @commentee.full_name %>,
-</p>
-
-<p>
-You've been mentioned by <%= @commenter.full_name %> on <%= @paper.title %>'s <%= @task.title %>:
-</p>
-
-<p>
-<%= @comment.body %>
-</p>
-
-
-<p>
-View the card here: <%= client_paper_task_url(@paper, @task) %>.
-</p>
-
-<p>
-With Love,<br>
-Team Tahi
-</p>
+<div class='container'>
+  <div class='greeting'>
+    <h3 class='user-name'>
+      Hi <%= @commentee.full_name %>
+    </h3>
+    <p class='message'>
+      You've been assigned as an Editor on a Manuscript
+    </p>
+  </div>
+  <hr>
+  <div class='paper-info'>
+    <div class='paper-abstract'>
+      <p>
+        You've been mentioned by <%= @commenter.full_name %> on <%= @paper.display_title %>'s
+        <%= @task.title %>.
+      </p>
+      <p>
+        <%= @comment.body %>
+      </p>
+      <p>
+        View the card here: <%= client_paper_task_url(@paper, @task) %>.
+      </p>
+    </div>
+  </div>
+  <hr>
+  <div class='footer'>
+    Team Tahi
+  </div>
+</div>

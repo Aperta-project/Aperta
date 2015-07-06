@@ -1,15 +1,27 @@
-<p>
-Hello <%= @reviewer_name %>,
-</p>
+<div class='container'>
+  <div class='greeting'>
+    <h3 class='user-name'>
+      Hello <%= @reviewer_name %>
+    </h3>
+    <p class='message'>
+      You've been assigned as a Reviewer on a Manuscript
+    </p>
+  </div>
+  <hr>
+  <div class='paper-info'>
+    <div class='paper-abstract'>
+      <p>
+        You've been assigned as a Reviewer on a Manuscript titled "<%= @paper.display_title %>".
+      </p>
 
-<p>
-You've been assigned as a reviewer on a paper titled <%= @paper.display_title %>:
-</p>
-
-<p>
-<%= client_paper_url(@paper) %>
-</p>
-
-<p>
-We look forward to your contributions!
-</p>
+      <p>
+        Visit this link to view the paper:
+        <%= client_paper_url(@paper) %>
+      </p>
+    </div>
+  </div>
+  <hr>
+  <div class='footer'>
+    We look forward to your contributions! - Team Tahi
+  </div>
+</div>

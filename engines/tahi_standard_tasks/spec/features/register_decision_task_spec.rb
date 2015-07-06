@@ -45,6 +45,7 @@ feature "Register Decision", js: true do
     manuscript_page = dashboard_page.view_submitted_paper paper
     manuscript_page.view_card 'Register Decision' do |overlay|
       overlay.register_decision = "Rejected"
+      overlay.radio_selected?
     end
 
     visit current_path # Revisit

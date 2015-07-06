@@ -1,16 +1,38 @@
-<p>
-  Hello <%= @assigner.first_name %>,
-</p>
-
-<p>
-  <%= @reviewer.full_name %> has declined your invitation to review the paper: "<%= @paper.title %>"
-</p>
-
-<p>
-  <a href="<%= client_paper_task_url(@paper, @invite_reviewer_task) %>">View the status of your invitation.</a>
-</p>
-
-<p class="signature">
-  Sincerely,<br>
-  <%= @journal.name %> Team
-</p>
+<div class='container'>
+  <div class='greeting'>
+    <h3 class='user-name'>
+      Hello <%= @assigner.first_name %>
+    </h3>
+    <p class='message'>
+      <%= @reviewer.full_name %> has declined your invitation
+    </p>
+  </div>
+  <hr>
+  <div class='paper-info'>
+    <div class='journal-info'>
+      <% if @paper.journal.logo_url %>
+        <img class='journal-logo' src='<%= @paper.journal.logo_url %>'>
+      <% else %>
+        <div class='journal-name'>
+          <%= @paper.journal.name %>
+        </div>
+      <% end %>
+    </div>
+    <div class='paper-name'>
+      <%= @paper.display_title %>
+    </div>
+    <div class='paper-abstract'>
+      <p>
+        <%= @reviewer.full_name %> has declined your invitation to review the Manuscript: "<%= @paper.display_title %>".
+      </p>
+      <p>
+        <a href="<%= client_paper_task_url(@paper, @invite_reviewer_task) %>">View your Invitation</a>
+      </p>
+    </div>
+  </div>
+  <hr>
+  <div class='footer'>
+    Sincerely,<br>
+    <%= @journal.name %> Team
+  </div>
+</div>

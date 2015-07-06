@@ -1,15 +1,32 @@
-<p>
-Hello <%= @invitee_name %>
-</p>
-
-<p>
-<%= @invitor_name %> just added you as a contributor to a paper titled "<%= @paper.display_title %>." Visit this link to view the paper in Tahi:
-</p>
-
-<p>
-<%= client_edit_paper_url(@paper) %>
-</p>
-
-<p>
-Team Tahi
-</p>
+<div class='container'>
+  <div class='greeting'>
+    <h3 class='user-name'>
+      Hello <%= @invitee_name %>
+    </h3>
+    <p class='message'>
+      <%= @invitor_name %> just added you as a contributor to a paper titled "<%= @paper.display_title %>."
+    </p>
+  </div>
+  <hr>
+  <div class='paper-info'>
+    <div class='journal-info'>
+      <% if @paper.journal.logo_url %>
+        <img class='journal-logo' src='<%= @paper.journal.logo_url %>'>
+      <% else %>
+        <div class='journal-name'>
+          <%= @paper.journal.name %>
+        </div>
+      <% end %>
+    </div>
+    <div class='paper-name'>
+      <%= @paper.display_title %>
+    </div>
+    <div class='paper-abstract'>
+      Visit this link to view the paper in Tahi: <%= client_edit_paper_url(@paper) %>
+    </div>
+  </div>
+  <hr>
+  <div class='footer'>
+    Team Tahi
+  </div>
+</div>

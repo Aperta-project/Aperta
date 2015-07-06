@@ -8,7 +8,7 @@ feature "Invite Admin", js: true do
 
   before do
     assign_journal_role(paper.journal, admin, :admin)
-    SignInPage.visit.sign_in site_admin
+    login_as admin
   end
 
   scenario "Site Admin can invite a Paper Admin to a Paper", selenium: true do

@@ -10,7 +10,7 @@ feature "Invite Editor", js: true do
     assign_journal_role(paper.journal, admin, :editor)
     assign_journal_role(paper.journal, editor, :editor)
 
-    SignInPage.visit.sign_in admin
+    login_as admin
   end
 
   scenario "Admin can invite an editor to a paper", selenium: true do

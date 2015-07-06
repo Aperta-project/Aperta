@@ -16,8 +16,8 @@ feature "Invite Reviewer", js: true do
     paper.paper_roles.create user: editor, role: PaperRole::COLLABORATOR
     task.participants << editor
 
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in editor
+    login_as editor
+    visit "/"
   end
 
   scenario "Editor can invite a reviewer to a paper" do
@@ -47,6 +47,5 @@ feature "Invite Reviewer", js: true do
       expect(overlay.active_invitations.count).to eq 2
       expect(overlay.total_invitations.count).to eq 4
     end
-
   end
 end

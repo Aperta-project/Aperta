@@ -83,6 +83,7 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   config.include TahiHelperMethods
   config.extend TahiHelperClassMethods
+  config.include Warden::Test::Helpers
 
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation, except: ['task_types'])

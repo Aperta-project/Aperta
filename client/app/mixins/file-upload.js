@@ -43,9 +43,8 @@ export default Ember.Mixin.create({
     $(window).off('beforeunload.cancelUploads.' + filename);
 
     var key = Object.keys(data || {})[0];
-    if ( (key && data[key]) || data[key] === [] ) {
+    if ( (key && data[key]) || key && data[key] === [] ) {
       $('.upload-preview-filename').text('Upload Complete!');
-
       Ember.run.later(this, ()=> {
         $('.progress').fadeOut(()=>{
           this.unloadUploads(data, filename);
@@ -54,6 +53,7 @@ export default Ember.Mixin.create({
     } else {
       this.unloadUploads(data, filename);
     }
+
   },
 
   cancelUploads() {

@@ -60,7 +60,7 @@ class User < ActiveRecord::Base
   end
 
   def flow_managable_journals
-    roles.can_view_flow_manager.map(&:journal)
+    journals.merge(Role.can_view_flow_manager)
   end
 
   def auto_generate_password(length=10)

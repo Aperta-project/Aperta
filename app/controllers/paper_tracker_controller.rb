@@ -5,7 +5,7 @@ class PaperTrackerController < ApplicationController
 
   def index
     journals = current_user.flow_managable_journals
-    papers = Paper.where(journal: journals, publishing_state: "submitted")
+    papers = Paper.where(journal: journals).submitted
     respond_with papers, each_serializer: PaperTrackerSerializer, root: 'papers'
   end
 end

@@ -23,6 +23,11 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
     if (!this.get('model.lockedBy')) {
       this.set('model.lockedBy', this.currentUser);
       this.connectEditor();
+      // when the paper is saved, the server knows who acquired the lock (this is required for the heartbeat to work)
+      // when the save succeeds, we send the `startEditing` action, which is defined on `paper/edit/route`, which now starts the heartbeat
+      this.get('model').save().then(()=> {
+        this.send('startEditing');
+      });
     }
   },
 

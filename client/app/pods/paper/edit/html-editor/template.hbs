@@ -30,12 +30,14 @@
         {{/if}}
 
         <div id="paper-body">
-          {{component editorComponent
+          {{tahi-editor-ve
               viewName='editor'
               paper=model
               isSaving=isSaving
               savedAt=savedAt
               statusMessage=statusMessage
+              lockedByCurrentUser=lockedByCurrentUser
+              lockedByOther=lockedByOther
               isEditable=lockedByCurrentUser
           }}
         </div>

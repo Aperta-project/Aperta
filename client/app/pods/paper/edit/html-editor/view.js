@@ -5,6 +5,9 @@ var View = Ember.View.extend(PaperEditMixin, {
 
   editor: null,
 
+  // Note: this is done because we instantiate the editor component
+  // via template. To be able to access the component from within
+  // the controller, here we pass it through.
   propagateEditor: function() {
     this.set('controller.editor', this.get('editor'));
   }.observes('editor'),
@@ -16,16 +19,20 @@ var View = Ember.View.extend(PaperEditMixin, {
 
   destroyEditor: function() {
     Ember.$(document).off('keyup.autoSave');
+    var controller = this.get('controller');
     // stop editing when closing the editor
-    this.get('controller').stopEditing();
+    if (controller.get('lockedByCurrentUser')) {
+      controller.savePaper().then(function() {
+        controller.releaseLock();
+      });
+    }
   }.on('willDestroyElement'),
 
   timeoutSave: function() {
     if (Ember.testing) {
       return;
     }
-    this.saveEditorChanges();
-    this.get('controller').send('savePaper');
+    this.get('controller').savePaper();
     Ember.run.cancel(this.short);
     Ember.run.cancel(this.long);
     this.short = null;
@@ -36,11 +43,6 @@ var View = Ember.View.extend(PaperEditMixin, {
   short: null,
   long: null,
   keyCount: 0,
-
-  saveEditorChanges: function() {
-    var documentBody = this.get('editor').getBodyHtml();
-    this.get('controller').send('updateDocumentBody', documentBody);
-  },
 });
 
 export default View;

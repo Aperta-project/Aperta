@@ -22,11 +22,14 @@ var View = Ember.View.extend(PaperEditMixin, {
     var controller = this.get('controller');
     // stop editing when closing the editor
     if (controller.get('lockedByCurrentUser')) {
-      controller.savePaper().then(function() {
-        controller.releaseLock();
-      });
+      controller.releaseLock();
     }
   }.on('willDestroyElement'),
+
+  // Note: this must be here as it is used by mixins/views/paper-edit
+  saveEditorChanges: function() {
+    this.get('controller').savePaper();
+  },
 
   timeoutSave: function() {
     if (Ember.testing) {

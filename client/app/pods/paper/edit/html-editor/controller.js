@@ -3,6 +3,8 @@ import PaperBaseMixin from 'tahi/mixins/controllers/paper-base';
 import PaperEditMixin from 'tahi/mixins/controllers/paper-edit';
 import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 
+var Promise = Ember.RSVP.Promise;
+
 var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, DiscussionsRoutePathsMixin, {
   subRouteName: 'edit',
 
@@ -43,6 +45,8 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
     paper.set('lockedBy', this.currentUser);
     // HACK: make sure pending changes are written out
     paper.set('body', this.get('editor').getBodyHtml());
+    // HACK: guard to prevent errors during testing
+    if (Ember.testing) { return; }
     paper.save().then(()=>{
       this.send('startEditing');
     });
@@ -51,6 +55,8 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
   releaseLock: function() {
     var paper = this.get('model');
     paper.set('lockedBy', null);
+    // HACK: guard to prevent errors during testing
+    if (Ember.testing) { return; }
     paper.save().then(()=>{
       // FIXME: don't know why but when calling this during willDestroyElement
       // this action will not be handled.
@@ -67,7 +73,7 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
 
   savePaper: function() {
     if (!this.get('model.editable')) {
-      return;
+      return new Promise(function(resolve) { resolve(); });
     }
     // Reject saving when the paper is not being locked by this user
     if (!this.get('lockedByCurrentUser')) {

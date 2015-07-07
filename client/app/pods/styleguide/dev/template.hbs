@@ -1,0 +1,277 @@
+<section id="replace-image">
+  <h3>
+    Replace Image
+  </h3>
+
+  {{#replace-image}}
+    <span>Replace Image</span>
+    {{file-uploader url="http://example.com/post" railsMethod="PUT" accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps" multiple=false filePrefix="paper/figures" start="uploadStarted" progress="uploadProgress" done="uploadFinished" cancel="cancelUploads"}}
+  {{/replace-image}}
+
+</section>
+
+<hr>
+
+<section id="upload-progress-bar">
+  <h3>
+    Upload Progress Bar
+  </h3>
+
+  {{upload-preview upload=upload}}
+</section>
+
+<hr>
+
+<section id="select-2-single">
+  <h3>
+    Select2 Single
+  </h3>
+  {{select-2-single allowClear=true placeholder="Cities" selectedData=selectedTaskType selectionCleared="removeTypeQuery" selectionSelected="updateTypeQuery" width="50%" source=cities}}
+</section>
+
+<hr/>
+
+<section id="select-2-multiple">
+  <h3>
+    Select2 Multiple
+  </h3>
+  {{select-2-multiple value="" class="participant-select23" name="add_participant" minimumInputLength=3 source=users width="50%" dropdownClass="participant-dropdown" placeholder="Add People"}}
+</section>
+
+<hr>
+
+<section id="checkbox">
+  <h3>
+    Checkbox
+  </h3>
+
+  <label>
+    {{check-box checked=true action="saveModel"}} Checkbox Label
+  </label>
+</section>
+
+<hr>
+<section id="file-uploader">
+  <h3>
+    File Uploader
+  </h3>
+
+  {{file-uploader url="https://example.com/upload" railsMethod="PUT" accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps" multiple=false filePrefix="paper/figures" start="uploadStarted" progress="uploadProgress" done="uploadFinished" cancel="cancelUploads"}}
+</section>
+
+<hr>
+
+<section id="content-editable">
+  <h3>
+    Editable Content
+  </h3>
+
+  {{content-editable value="Awesome Text" class="editable" tagName='label'}}
+</section>
+
+<hr>
+
+<section id="inline-body-edit">
+  <h3>
+    Inline Body Edit / Delete
+  </h3>
+
+  {{#inline-edit-body-part block=cities cancel="resetBlock" save="saveBlock" delete="deleteBlock" addItem="addCheckboxItem" }}
+    Body....
+  {{/inline-edit-body-part}}
+</section>
+
+<hr>
+
+<section id="participant-selector">
+  <h3>
+    Participant Selector
+  </h3>
+
+  {{participant-selector currentParticipants=users everyone=users paperId=paper.id label="Participants:" onRemove="removeParticipantByUserId" onSelect="addParticipantByUserId"}}
+</section>
+
+<hr>
+
+<section id="relative-time">
+  <h3>
+    Relative Time
+  </h3>
+
+  {{relative-time time=paper2.relatedAtDate}}
+</section>
+
+<hr>
+
+<section id="user-thumbnail">
+  <h3>
+    User Thumbnail
+  </h3>
+
+  {{user-thumbnail user=user3}}
+</section>
+
+<hr>
+
+<h3 id="datepicker">
+  Date Picker
+</h3>
+<br>
+
+<section id="datepicker-single">
+  <h4>
+    Single
+  </h4>
+
+  {{date-picker type="text" role="startPicker" date="2015-01-01" placeholder="Start Date"}}
+
+</section>
+
+<hr>
+
+<section id="datepicker-group">
+  <h4>
+    Group
+  </h4>
+
+  {{#datepicker-group}}
+    {{date-picker type="text" role="startPicker" date="2015-01-01" placeholder="Start Date"}} {{date-picker type="text" role="endPicker" date="2015-07-01" placeholder="End Date"}}
+  {{/datepicker-group}}
+
+</section>
+
+<hr>
+
+<section id="comment-form">
+  <h3>
+    Discussion Board Form
+  </h3>
+
+  {{comment-board-form save="postComment"}}
+</section>
+
+<hr>
+
+<section id="card-comment">
+  <h3>
+    Card Comment
+  </h3>
+
+  {{task-comment comment=comment}}
+</section>
+
+<hr>
+
+<section id="inline-edit-h1">
+  <h3>
+    H1 Inline Edit
+  </h3>
+
+  {{inline-edit-h1 title=paper.title setTitle="setTitle" editOnOpen=false}}
+</section>
+
+<hr>
+
+<section id="direct-download-link">
+  <h3>
+    Direct Download Link
+  </h3>
+
+  {{#direct-download-link link=downloadLink extension=".epub" }}
+    {{partial "svg/epub-icon"}}
+  {{/direct-download-link}}
+</section>
+
+<hr>
+
+<section id="segmented-buttons">
+  <h3>
+    Segmented Buttons
+  </h3>
+
+  {{#segmented-buttons selectedValue=sortBy action="setSortOrder" }}
+    {{#segmented-button value="asc" }}Sort by Oldest{{/segmented-button}}
+    {{#segmented-button value="desc" }}Sort by Newest{{/segmented-button}}
+  {{/segmented-buttons}}
+</section>
+
+<hr>
+
+<section id="reveal-adhoc-toolbar-buttons">
+  <h3>
+    Ad Hoc Button Revealer
+  </h3>
+
+  {{#reveal-adhoc-toolbar-buttons}}
+    {{partial "components/reveal-adhoc-toolbar-buttons/buttons"}}
+  {{/reveal-adhoc-toolbar-buttons}}
+</section>
+
+<hr>
+
+<section id="dashboard-link">
+  <h3>
+    Dashboard Link
+  </h3>
+
+  {{dashboard-link model=paper}}
+</section>
+
+<hr>
+
+<h2 id="question-components">
+  Question Components
+</h2>
+
+<div>
+  <h5>
+    question-input
+  </h5>
+
+  {{question-input ident="foo"
+  task=task
+  question="Placeholder Text"}}
+</div>
+
+<div>
+  <h5>
+    question-radio
+  </h5>
+
+  {{question-radio ident="foo"
+  task=task
+  question="Placeholder Text"}}
+</div>
+
+<div>
+  <h5>
+    question-textarea
+  </h5>
+
+  {{question-textarea ident="foo"
+  task=task}}
+</div>
+
+<div>
+  <h5>
+    question-select
+  </h5>
+
+  {{question-select ident="foo"
+  task=task
+  question="Placeholder Text"
+  class=""
+  selectionSelected=''
+  source=arrayOfOptions}}
+</div>
+
+<div>
+  <h5>
+    question-check
+  </h5>
+
+  {{question-check ident="foo"
+  task=task}}
+</div>
+
+<hr/>

@@ -79,6 +79,7 @@ group :doc do
 end
 
 group :development, :test, :performance do
+  gem 'auto_screenshot', require: false
   gem 'factory_girl_rails'
   gem 'progressbar'
   gem 'rspec-rails'

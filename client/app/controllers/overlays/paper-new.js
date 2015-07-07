@@ -4,6 +4,7 @@ import AnimateOverlay from 'tahi/mixins/animate-overlay';
 export default Ember.Controller.extend(AnimateOverlay, {
   overlayClass: 'overlay--fullscreen paper-new-overlay',
   journals: null, // set on controller before rendering overlay
+  paperSaving: false,
 
   journalProxies: function() {
     return this.get('journals').map(function(journal) {
@@ -45,10 +46,14 @@ export default Ember.Controller.extend(AnimateOverlay, {
 
   actions: {
     createNewPaper() {
+      this.set('paperSaving', true);
+
       this.get('model').save().then((paper)=> {
         this.transitionToRoute('paper.edit', paper);
       }, (response)=> {
         this.flash.displayErrorMessagesFromResponse(response);
+      }).finally(()=> {
+        this.set('paperSaving', false);
       });
     },
 

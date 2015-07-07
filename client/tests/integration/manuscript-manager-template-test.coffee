@@ -118,7 +118,7 @@ test 'Adding an Ad-Hoc card', ->
   visit("/admin/journals/1/manuscript_manager_templates/1/edit")
   click('a.button--green:contains("Add New Card")')
 
-  pickFromSelect2('.overlay', 'Ad Hoc')
+  pickFromSelect2('.task-type-select', 'Ad Hoc')
 
   click('.overlay .button--green:contains("Add")').then ->
     ok find('h1.inline-edit:contains("Ad Hoc")').length
@@ -149,7 +149,7 @@ test 'Adding an Ad-Hoc card', ->
 createCard = ->
   visit("/admin/journals/1/manuscript_manager_templates/1/edit")
   click('a.button--green:contains("Add New Card")')
-  pickFromSelect2('.overlay', 'Ad Hoc')
+  pickFromSelect2('.task-type-select', 'Ad Hoc')
   click '.button--green:contains("Add")'
     .then -> ok find('h1.inline-edit:contains("Ad Hoc")').length, 'It finds the ad hocs'
   andThen ->

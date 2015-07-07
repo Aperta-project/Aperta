@@ -1,0 +1,54 @@
+.paper-tracker-message {
+  margin-bottom: 0;
+  font-size: 40px;
+}
+
+.paper-tracker-paper-count {
+  font-size: 18px;
+}
+
+.paper-tracker-members-group {
+  margin-bottom: 0.65rem;
+  font-size: 12px;
+  line-height: 120%;
+
+  span { font-weight: bold; }
+}
+
+.paper-tracker-members-column  { width: 380px; }
+.paper-tracker-date-column     { min-width: 150px; }
+.paper-tracker-type-column     { min-width: 110px; }
+.paper-tracker-paper-id-column { min-width: 100px; }
+
+.paper-tracker-table {
+  width: 100%;
+
+  .sortable-table-header {
+    cursor: pointer;
+  }
+
+  th, td {
+    padding-right: 5px;
+    padding-left: 5px;
+    font-size: 14px;
+    vertical-align: top;
+  }
+
+  th {
+    border-bottom: 1px solid $tahi-grey-light;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    font-weight: bold;
+
+    .fa {
+      color: $tahi-green;
+      margin-left: 8px;
+    }
+  }
+
+  td {
+    border-bottom: 1px solid #f2f2f2;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+}

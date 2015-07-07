@@ -7,10 +7,6 @@ export default TaskController.extend(FileUploadMixin, {
   isProcessing: false,
   showProgress: true,
 
-  isEditable: function() {
-    return (!this.get('model.paper.lockedBy') && (this.get('isUserEditable') || this.get('isCurrentUserAdmin')));
-  }.property('model.paper.lockedBy', 'isUserEditable', 'isCurrentUserAdmin'),
-
   canUploadManuscript: function() {
     return (this.get('currentUser') === this.get('model.paper.lockedBy')) || this.get('isEditable');
   }.property('model.paper.lockedBy', 'isEditable'),

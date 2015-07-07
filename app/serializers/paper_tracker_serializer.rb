@@ -1,5 +1,5 @@
 class PaperTrackerSerializer < ActiveModel::Serializer
-  attributes :id, :display_title, :paper_type, :roles, :submitted_at
+  attributes :id, :display_title, :paper_type, :roles, :submitted_at, :comment_looks
 
   def display_title
     object.title.presence || object.short_title
@@ -14,5 +14,11 @@ class PaperTrackerSerializer < ActiveModel::Serializer
         users: users
       }
     end.compact!
+  end
+
+  def comment_looks
+    CommentLook.joins(:user, {
+      comment: {task: { phase: :paper }}
+    }).where("papers.id = #{object.id}").count
   end
 end

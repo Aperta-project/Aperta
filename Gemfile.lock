@@ -126,6 +126,11 @@ GEM
     addressable (2.3.8)
     american_date (1.1.0)
     arel (6.0.0)
+    auto_screenshot (0.0.3)
+      capybara
+      json
+      nokogiri
+      selenium-webdriver
     autoprefixer-rails (5.2.1)
       execjs
       json
@@ -586,6 +591,7 @@ DEPENDENCIES
   activemodel-globalid!
   acts_as_list!
   american_date
+  auto_screenshot
   bootstrap-sass
   bourbon
   bugsnag
@@ -660,3 +666,6 @@ DEPENDENCIES
   unf
   vcr
   webmock
+
+BUNDLED WITH
+   1.10.5

@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import RESTless from 'tahi/services/rest-less';
-import Utils from 'tahi/services/utils';
 
 export default Ember.Route.extend({
   model() {

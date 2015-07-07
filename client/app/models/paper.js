@@ -24,6 +24,7 @@ export default DS.Model.extend({
   eventName: DS.attr('string'),
   paperType: DS.attr('string'),
   relatedAtDate: DS.attr('date'),
+  allRoles: DS.attr(),
   roles: DS.attr(),
   shortTitle: DS.attr('string'),
   status: DS.attr('string'),

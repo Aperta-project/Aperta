@@ -16,15 +16,11 @@
   </td>
   <td class="paper-tracker-type-column">{{paper.paperType}}</td>
   <td class="paper-tracker-members-column">
-    {{#if false}}
-    {{#each paper.roles as |role|}}
+    {{#each paper.allRoles as |role|}}
       <div class="paper-tracker-members-group">
-        <span>{{role.name}}:</span>
-        {{#each role.users as |user|}}
-          {{user.firstName}} {{user.lastName}}
-        {{/each}}
+        <span>{{pluralize-string role.name count=role.users.length}}:</span>
+        {{comma-separated-user-list role.users}}
       </div>
     {{/each}}
-    {{/if}}
   </td>
 </tr>

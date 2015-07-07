@@ -1,19 +1,18 @@
 class PaperTrackerSerializer < ActiveModel::Serializer
-  attributes :id, :display_title, :paper_type, :roles, :submitted_at, :comment_looks
+  attributes :id, :display_title, :paper_type, :roles, :submitted_at
 
   def display_title
     object.title.presence || object.short_title
   end
 
   def roles
-    object.journal.valid_roles.map do |role|
-      users = object.paper_roles.where(role: role).joins(:user).map(&:user)
-      next if users.none?
+    role_hash = object.paper_roles.group_by &:role
+    role_hash.map do |name, roles|
       {
-        name: role.capitalize,
-        users: users
+        name: name.capitalize,
+        users: roles.map(&:user)
       }
-    end.compact!
+    end
   end
 
   def comment_looks

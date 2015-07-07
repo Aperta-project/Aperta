@@ -31,5 +31,10 @@ describe ApplicationController do
       get :index
       expect(response).to be_success
     end
+
+    it 'should fail when pusher raises a non-Pusher errors' do
+      expect(Pusher).to receive(:trigger).and_raise(Exception)
+      expect { get :index }.to raise_error Exception
+    end
   end
 end

@@ -16,16 +16,13 @@
   </td>
   <td class="paper-tracker-type-column">{{paper.paperType}}</td>
   <td class="paper-tracker-members-column">
-    {{#if false}}
-    <div class="paper-tracker-members-group">
-      <span>Author:</span> Amanda Chan
-    </div>
-    <div class="paper-tracker-members-group">
-      <span>Editor:</span> Gina Winkler
-    </div>
-    <div class="paper-tracker-members-group">
-      <span>Reviewer:</span> Aaron Crispy, Chris Westra, Willa Wang, Kristen Chan, Andi Plantenburg, Adam Hyde, Felix Flores
-    </div>
-    {{/if}}
+    {{#each paper.roles as |role|}}
+      <div class="paper-tracker-members-group">
+        <span>{{role.name}}:</span>
+        {{#each role.users as |user|}}
+          {{user.firstName}} {{user.lastName}}
+        {{/each}}
+      </div>
+    {{/each}}
   </td>
 </tr>

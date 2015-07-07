@@ -7,10 +7,12 @@ class PaperTrackerSerializer < ActiveModel::Serializer
 
   def roles
     object.journal.valid_roles.map do |role|
+      users = object.paper_roles.where(role: role).joins(:user).map(&:user)
+      next if users.none?
       {
-        role_name: role,
-        users: object.paper_roles.where(role: role).joins(:user).map(&:user)
+        name: role.capitalize,
+        users: users
       }
-    end
+    end.compact!
   end
 end

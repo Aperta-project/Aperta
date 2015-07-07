@@ -13,7 +13,6 @@ export default Ember.Mixin.create({
     let uploads = this.get('uploads');
     let newUpload = uploads.findBy('file.name', filename);
     uploads.removeObject(newUpload);
-    return $(window).off('beforeunload.cancelUploads.' + filename);
   },
 
   uploadStarted(data, fileUploadXHR) {
@@ -41,9 +40,11 @@ export default Ember.Mixin.create({
   },
 
   uploadFinished(data, filename) {
-    if (this.get('figures') || this.get('figures') === []) {
-      $('.upload-preview-filename').text('Upload Complete!');
+    $(window).off('beforeunload.cancelUploads.' + filename);
 
+    var key = Object.keys(data || {})[0];
+    if ( (key && data[key]) || key && data[key] === [] ) {
+      $('.upload-preview-filename').text('Upload Complete!');
       Ember.run.later(this, ()=> {
         $('.progress').fadeOut(()=>{
           this.unloadUploads(data, filename);
@@ -52,6 +53,7 @@ export default Ember.Mixin.create({
     } else {
       this.unloadUploads(data, filename);
     }
+
   },
 
   cancelUploads() {

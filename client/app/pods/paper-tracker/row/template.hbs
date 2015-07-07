@@ -16,7 +16,7 @@
   </td>
   <td class="paper-tracker-type-column">{{paper.paperType}}</td>
   <td class="paper-tracker-members-column">
-    {{#each paper.allRoles as |role|}}
+    {{#each paper.relatedUsers as |role|}}
       <div class="paper-tracker-members-group">
         <span>{{pluralize-string role.name count=role.users.length}}:</span>
         {{comma-separated-user-list role.users}}

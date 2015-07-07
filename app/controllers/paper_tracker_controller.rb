@@ -7,6 +7,6 @@ class PaperTrackerController < ApplicationController
     journals = current_user.flow_managable_journals
 
     papers = Paper.where(journal: journals).submitted
-    respond_with papers, each_serializer: LitePaperSerializer, root: 'papers'
+    respond_with papers, each_serializer: PaperTrackerSerializer, root: 'papers'
   end
 end

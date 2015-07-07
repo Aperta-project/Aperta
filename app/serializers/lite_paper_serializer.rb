@@ -1,7 +1,5 @@
 class LitePaperSerializer < ActiveModel::Serializer
-  attributes :id, :title, :short_title, :publishing_state, :roles,
-             :related_at_date, :editable, :paper_type, :submitted_at,
-             :all_roles
+  attributes :id, :title, :short_title, :publishing_state, :roles, :related_at_date, :editable
 
   def related_at_date
     return unless scoped_user.present?
@@ -20,17 +18,6 @@ class LitePaperSerializer < ActiveModel::Serializer
     }.map(&:description)
     roles << "My Paper" if object.user_id == scoped_user.id
     roles
-  end
-
-  # Danger danger watch for leaking info you shouldn't!
-  def all_roles
-    role_hash = object.paper_roles.group_by &:role
-    role_hash.map do |name, roles|
-      {
-        name: name.capitalize,
-        users: roles.map(&:user)
-      }
-    end
   end
 
   private

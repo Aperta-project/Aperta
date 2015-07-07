@@ -1,7 +1,7 @@
 require "rails_helper"
 
-describe LitePaperSerializer, focus: true do
-  describe "all_roles" do
+describe PaperTrackerSerializer do
+  describe "related_users" do
     let(:creator) { FactoryGirl.create :user }
     let(:paper) { FactoryGirl.create :paper, creator: creator }
 
@@ -21,9 +21,9 @@ describe LitePaperSerializer, focus: true do
 
     let(:roles) do
       serialized_paper = JSON.parse(
-        LitePaperSerializer.new(paper).to_json,
+        PaperTrackerSerializer.new(paper).to_json,
         symbolize_names: true)
-      serialized_paper[:lite_paper][:all_roles]
+      serialized_paper[:paper_tracker][:related_users]
     end
 
     it "lists the author" do

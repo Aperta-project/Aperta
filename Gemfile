@@ -106,7 +106,7 @@ group :test do
   gem 'thin'
   gem 'timecop'
   gem 'pusher-fake'
-  gem 'rspec_junit_formatter', '0.2.2'
+  gem 'rspec_junit_formatter'
 end
 
 group :staging, :performance do

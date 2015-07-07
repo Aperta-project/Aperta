@@ -4,35 +4,20 @@ import Utils from 'tahi/services/utils';
 
 export default Ember.Route.extend({
   model() {
-    return this.getData();
-  },
+    return RESTless.get('/api/paper_tracker').then((data)=> {
+      this.store.pushPayload('paper', data);
+      let paperIds = data.papers.mapBy('id');
 
-  setupController(controller, data) {
-    controller.set('model', this.formatPaperPayload(data.papers));
-  },
-
-
-  getData() {
-    let controller    = this.controllerFor('paper-tracker.index');
-    let preloadedData = controller.get('model');
-
-    // Data has not been loaded previously
-    if(Ember.isEmpty(preloadedData)) {
-      return RESTless.get('/api/paper_tracker');
-    }
-
-    // Data was loaded previously, return old data and background refresh
-    RESTless.get('/api/paper_tracker').then((newData)=> {
-      controller.set('model', this.formatPaperPayload(newData.papers));
+      return this.store.all('paper').filter(function(p) {
+        if(paperIds.contains( parseInt(p.get('id')) )) {
+          return p;
+        }
+      });
     });
-
-    return { papers: preloadedData };
   },
 
-  formatPaperPayload(payload) {
-    return Utils.deepCamelizeKeys(payload).map(function(paper) {
-      paper.submittedAt = new Date(paper.submittedAt);
-      return paper;
-    });
+  setupController(controller, model) {
+    this.store.find('comment-look');
+    this._super(controller, model);
   }
 });

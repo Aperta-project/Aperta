@@ -28,6 +28,7 @@ export default DS.Model.extend({
   shortTitle: DS.attr('string'),
   status: DS.attr('string'),
   strikingImageId: DS.attr('string'),
+  submittedAt: DS.attr('date'),
   publishingState: DS.attr('string'),
   title: DS.attr('string'),
 

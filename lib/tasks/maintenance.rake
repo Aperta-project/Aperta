@@ -49,11 +49,19 @@ namespace :maintenance do
   end
 
   desc "Capture screenshots of all pages in Tahi"
-  task :screenshot => :environment do
+  task :screenshot => :environment do |task, args|
     return unless Rails.env.development?
     require 'auto_screenshot'
 
-    base_path = "http://localhost:5000"
+    options = {}
+    o = OptionParser.new
+    o.on("--url URL") { |url|
+      options[:url] = url
+    }
+    args = o.order!(ARGV) {}
+    o.parse!(args)
+
+    base_path = options[:url] || "http://localhost:5000"
 
     # TODO: update this list of urls when new urls are added to Tahi
     urls = [

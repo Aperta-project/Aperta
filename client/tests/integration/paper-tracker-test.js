@@ -25,12 +25,11 @@ module('Integration: Paper Tracker', {
 
   beforeEach: function() {
     App = startApp();
-
     $.mockjax({url: '/api/paper_tracker', status: 200, responseText: payload});
   }
 });
 
-test('clicking the feedback button sends feedback to the backend', function(assert) {
+test('viewing papers', function(assert) {
   let record   = payload.papers[0];
   let roleName = record.roles[0].name;
   let lastName = record.roles[0].users[0].last_name;

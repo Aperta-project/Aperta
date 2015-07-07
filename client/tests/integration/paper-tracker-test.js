@@ -27,6 +27,9 @@ module('Integration: Paper Tracker', {
   beforeEach: function() {
     App = startApp();
     $.mockjax({url: '/api/paper_tracker', status: 200, responseText: payload});
+    $.mockjax({url: '/api/admin/journals/authorization', status: 204});
+    $.mockjax({url: '/api/user_flows/authorization', status: 204});
+    $.mockjax({url: '/api/comment_looks', status: 200, responseText: {comment_looks: []}});
   }
 });
 

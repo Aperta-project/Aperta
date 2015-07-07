@@ -23,6 +23,9 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
     if (!this.get('model.lockedBy')) {
       this.set('model.lockedBy', this.currentUser);
       this.connectEditor();
+      this.get('model').save().then(()=> {
+        this.send('startEditing');
+      });
     }
   },
 

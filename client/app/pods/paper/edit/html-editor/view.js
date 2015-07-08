@@ -13,14 +13,22 @@ var View = Ember.View.extend(PaperEditMixin, {
   }.observes('editor'),
 
   initializeEditingState: function() {
-    // start editing right away
-    this.get('controller').startEditing();
+    var controller = this.get('controller');
+    // When the paper is not locked we take a click
+    // on the paper body to acquire the lock
+    this.$('.paper-body').on('click', (e)=>{
+      if (!controller.get('model.lockedBy')) {
+        e.preventDefault();
+        e.stopPropagation();
+        controller.acquireLock();
+      }
+    });
   }.on('didInsertElement'),
 
   destroyEditor: function() {
     Ember.$(document).off('keyup.autoSave');
     var controller = this.get('controller');
-    // stop editing when closing the editor
+    // Unlock the paper when leaving
     if (controller.get('lockedByCurrentUser')) {
       controller.releaseLock();
     }
@@ -35,7 +43,7 @@ var View = Ember.View.extend(PaperEditMixin, {
     if (Ember.testing) {
       return;
     }
-    this.get('controller').savePaper();
+    this.saveEditorChanges();
     Ember.run.cancel(this.short);
     Ember.run.cancel(this.long);
     this.short = null;

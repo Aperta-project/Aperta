@@ -3,29 +3,22 @@ import PaperBaseMixin from 'tahi/mixins/controllers/paper-base';
 import PaperEditMixin from 'tahi/mixins/controllers/paper-edit';
 import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 
-var Promise = Ember.RSVP.Promise;
-
 var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, DiscussionsRoutePathsMixin, {
   subRouteName: 'edit',
 
   // initialized by paper/edit/view
   toolbar: null,
+  hasOverlay: false,
 
   // used to recover a selection when returning from another context (such as figures)
   isEditing: Ember.computed.alias('lockedByCurrentUser'),
-
-  lockedByOther: function() {
-    var lockedBy = this.get('model.lockedBy');
-    return (lockedBy && lockedBy !== this.currentUser);
-  }.property('model.lockedBy'),
-
-  hasOverlay: false,
 
   paperBodyDidChange: function() {
     this.updateEditor();
   }.observes('model.body'),
 
   startEditing: function() {
+    this.acquireLock();
     this.connectEditor();
   },
 
@@ -35,8 +28,11 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
   },
 
   acquireLock: function() {
-    // Note: when the paper is saved, the server knows who acquired the lock (this is required for the heartbeat to work)
-    // when the save succeeds, we send the `startEditing` action, which is defined on `paper/edit/route`, which now starts the heartbeat
+    // Note:
+    // when the paper is saved, the server knows who acquired the lock
+    // (this is required for the heartbeat to work)
+    // when the save succeeds, we send the `startEditing` action,
+    // which is defined on `paper/edit/route`, which now starts the heartbeat
     // Thus, to acquire the lock it is necessary to
     // 1. set model.lockedBy = this.currentUser
     // 2. save the model, which sends the updated lockedBy to the server
@@ -60,9 +56,17 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
     paper.save().then(()=>{
       // FIXME: don't know why but when calling this during willDestroyElement
       // this action will not be handled.
-      // this.send('stopEditing');
+      this.send('stopEditing');
     });
   },
+
+  updateEditorLockState: function() {
+    if (this.get('lockedByCurrentUser')) {
+      this.connectEditor();
+    } else {
+      this.disconnectEditor();
+    }
+  }.observes('lockedByCurrentUser'),
 
   updateEditor: function() {
     var editor = this.get('editor');
@@ -73,16 +77,8 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
 
   savePaper: function() {
     if (!this.get('model.editable')) {
-      return new Promise(function(resolve) { resolve(); });
+      return;
     }
-    // Reject saving when the paper is not being locked by this user
-    if (!this.get('lockedByCurrentUser')) {
-      throw new Error('Paper can not be saved as it is locked. Please try again later.');
-    }
-    return this._savePaper();
-  },
-
-  _savePaper: function() {
     var editor = this.get('editor');
     var paper = this.get('model');
     if (!editor) { return; }
@@ -106,7 +102,6 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
   disconnectEditor: function() {
     this.get('editor').disconnect();
   },
-
 });
 
 export default HtmlEditorController;

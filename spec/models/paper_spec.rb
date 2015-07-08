@@ -131,7 +131,7 @@ describe Paper do
 
     context "acceptance" do
       let(:decision) do
-        FactoryGirl.create(:decision, verdict: "accepted")
+        FactoryGirl.create(:decision, verdict: "accept")
       end
 
       it "accepts the paper" do
@@ -142,7 +142,7 @@ describe Paper do
 
     context "acceptance" do
       let(:decision) do
-        FactoryGirl.create(:decision, verdict: "accepted")
+        FactoryGirl.create(:decision, verdict: "accept")
       end
 
       it "accepts the paper" do
@@ -153,7 +153,7 @@ describe Paper do
 
     context "rejection" do
       let(:decision) do
-        FactoryGirl.create(:decision, verdict: "rejected")
+        FactoryGirl.create(:decision, verdict: "reject")
       end
 
       it "rejects the paper" do
@@ -167,6 +167,26 @@ describe Paper do
         FactoryGirl.create(:decision, verdict: "revise")
       end
 
+      it "puts the paper in_revision" do
+        paper.make_decision decision
+        expect(paper.publishing_state).to eq("in_revision")
+      end
+    end
+
+    context "minor revision" do
+      let(:decision) do
+        FactoryGirl.create(:decision, verdict: "minor")
+      end
+      it "puts the paper in_revision" do
+        paper.make_decision decision
+        expect(paper.publishing_state).to eq("in_revision")
+      end
+    end
+
+    context "major revision" do
+      let(:decision) do
+        FactoryGirl.create(:decision, verdict: "major")
+      end
       it "puts the paper in_revision" do
         paper.make_decision decision
         expect(paper.publishing_state).to eq("in_revision")

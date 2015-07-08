@@ -32,7 +32,9 @@ Capybara.register_driver :selenium do |app|
   if ENV['EMBER_DEBUG']
     profile.add_extension("#{File.dirname(__FILE__)}/support/lib/ember_inspector-1.8.0-fx.xpi")
   end
-  Capybara::Selenium::Driver.new(app, :browser => :firefox, :profile => profile)
+  client = Selenium::WebDriver::Remote::Http::Default.new
+  client.timeout = 90
+  Capybara::Selenium::Driver.new(app, browser: :firefox, profile: profile, http_client: client)
 end
 
 Capybara.javascript_driver = :selenium
@@ -109,7 +111,7 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with(:truncation, except: ['task_types'])
   end
 
-  config.before(:each) do |example|
+  config.before(:each) do
     DatabaseCleaner.start
   end
 

@@ -135,6 +135,21 @@ describe PapersController do
         expect(json['paper']['id']).to eq(Paper.first.id)
       end
 
+      it 'returns a 422 if no journal_id supplied' do
+        post :create, { paper: { title: new_title,
+                                 short_title: 'ABC101' },
+                        format: :json }
+        expect(response.status).to eq(422)
+      end
+
+      it 'returns a 422 if no article_type supplied' do
+        post :create, { paper: { title: new_title,
+                                 short_title: 'ABC101',
+                                 journal_id: journal.id },
+                        format: :json }
+        expect(response.status).to eq(422)
+      end
+
       it "renders the errors for the paper if it can't be saved" do
         post :create, paper: { short_title: '', journal_id: journal.id }, format: :json
         expect(response.status).to eq(422)

@@ -94,5 +94,12 @@ describe PaperFactory do
         expect(subject.errors[:paper_type].length).to eq(1)
       end
     end
+
+    context "without a journal" do
+      let(:paper_attrs) { FactoryGirl.attributes_for(:paper, journal_id: nil, paper_type: mmt.paper_type) }
+
+      specify { expect(subject).to_not be_valid }
+      specify { expect(subject.errors[:journal].length).to eq(1) }
+    end
   end
 end

@@ -65,6 +65,8 @@ class PaperRole < ActiveRecord::Base
   private
 
   def role_exists
+    return unless paper.journal
+
     errors.add(:base, "Invalid role provided") unless role.in?(paper.journal.valid_roles)
   end
 end

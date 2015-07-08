@@ -26,7 +26,6 @@ module TahiStandardTasks
     end
 
     def send_email
-      binding.pry
       RegisterDecisionMailer.delay.notify_author_email(
         decision_id: decision_content.id)
     end

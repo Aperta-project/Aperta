@@ -8,11 +8,13 @@ feature "Invite Reviewer", js: true do
   let(:editor) { create :user }
   let!(:reviewer1) { create :user }
   let!(:reviewer2) { create :user }
+  let!(:reviewer3) { create :user }
 
   before do
     assign_journal_role journal, editor, :editor
     assign_journal_role journal, reviewer1, :reviewer
     assign_journal_role journal, reviewer2, :reviewer
+    assign_journal_role journal, reviewer3, :reviewer
     paper.paper_roles.create user: editor, role: PaperRole::COLLABORATOR
     task.participants << editor
 
@@ -34,18 +36,18 @@ feature "Invite Reviewer", js: true do
     manuscript_page = dashboard_page.view_submitted_paper paper
 
     manuscript_page.view_card task.title do |overlay|
-      overlay.paper_reviewers = [reviewer2, reviewer1]
-      expect(overlay.active_invitations.count).to eq 2
+      overlay.paper_reviewers = [reviewer1]
+      expect(overlay.active_invitations.count).to eq 1
     end
 
     paper.decisions.create!
 
     manuscript_page.reload
     manuscript_page.view_card task.title do |overlay|
-      overlay.paper_reviewers = [reviewer2, reviewer1]
-      expect(overlay.expired_invitations.count).to eq 2
+      overlay.paper_reviewers = [reviewer3, reviewer2]
+      expect(overlay.expired_invitations.count).to eq 1
       expect(overlay.active_invitations.count).to eq 2
-      expect(overlay.total_invitations.count).to eq 4
+      expect(overlay.total_invitations.count).to eq 3
     end
   end
 end

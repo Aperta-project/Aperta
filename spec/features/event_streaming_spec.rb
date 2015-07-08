@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "Event streaming", js: true, selenium: true do
+feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
   let!(:author) { FactoryGirl.create :user, :site_admin }
   let!(:journal) { FactoryGirl.create :journal }
   let!(:paper) { FactoryGirl.create :paper, :with_tasks, creator: author, journal: journal }

@@ -36,4 +36,7 @@ Tahi::Application.configure do
   config.carrierwave_storage = :fog
 
   config.action_mailer.default_url_options = {host: "localhost", port: 5000, protocol: "http://"}
+
+  # Enable skylight.io
+  # config.skylight.environments += ['development']
 end

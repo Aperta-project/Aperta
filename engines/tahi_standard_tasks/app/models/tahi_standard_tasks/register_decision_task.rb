@@ -26,12 +26,13 @@ module TahiStandardTasks
     end
 
     def send_email
+      binding.pry
       RegisterDecisionMailer.delay.notify_author_email(
         decision_id: decision_content.id)
     end
 
     def decision_content
-      paper.decisions.reject {|d| d.verdict.nil?}.last
+      paper.decisions.select { |d| d.verdict_valid? }.last
     end
 
     def send_emails

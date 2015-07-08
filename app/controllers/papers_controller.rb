@@ -71,7 +71,7 @@ class PapersController < ApplicationController
       paper.heartbeat
       PaperUnlockerWorker.perform_async(paper.id, true)
     end
-    respond_with paper
+    head :no_content
   end
 
   def download

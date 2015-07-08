@@ -9,9 +9,8 @@ feature "Add contributing authors", js: true do
   before do
     task.participants << creator
     paper.paper_roles.create(user: creator, role: PaperRole::COLLABORATOR)
-
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in creator
+    login_as creator
+    visit "/"
   end
 
   scenario "Author specifies contributing authors" do

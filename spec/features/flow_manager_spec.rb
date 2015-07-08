@@ -49,8 +49,8 @@ feature "Flow Manager", js: true, selenium: true do
   before do
     @old_size = page.driver.browser.manage.window.size
     page.driver.browser.manage.window.resize_to(1250,550)
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in admin
+    login_as admin
+    visit "/"
   end
 
   after do

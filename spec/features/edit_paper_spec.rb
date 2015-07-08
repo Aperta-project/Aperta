@@ -9,8 +9,8 @@ feature "Editing paper", js: true do
     before do
       make_user_paper_admin(user, paper)
 
-      sign_in_page = SignInPage.visit
-      sign_in_page.sign_in user
+      login_as user
+      visit "/"
 
       click_link(paper.title)
     end

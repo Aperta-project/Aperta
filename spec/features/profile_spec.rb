@@ -5,8 +5,9 @@ feature "Profile Page", js: true do
   let(:profile_page) { ProfilePage.new }
 
   before do
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in admin
+    login_as admin
+    visit "/"
+
     within ".navigation" do
       click_link admin.full_name
     end

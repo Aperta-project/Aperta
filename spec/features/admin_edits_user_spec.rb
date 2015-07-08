@@ -8,8 +8,8 @@ feature "Admin can edit user details and initiate password reset", js: true do
   before do
     create :user, first_name: "Bob", last_name: "Merlyn", username: 'shadow_missing2010'
 
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in user
+    login_as user
+    visit "/"
 
     within('.navigation') do
       click_link 'Admin'

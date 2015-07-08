@@ -13,8 +13,8 @@ feature "Upload paper", js: true, selenium: true do
   end
 
   before do
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in author
+    login_as author
+    visit "/"
   end
 
   scenario "Author uploads paper in Word format" do

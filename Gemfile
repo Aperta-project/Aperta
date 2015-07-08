@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-# Remember to also change circle.yml when the ruby version changes
-ruby "2.2.0"
+# Remember to also change circle.yml and .ruby-gemset when the ruby version changes
+ruby "2.2.2"
 
 # Configuration
 group :development, :test, :performance do

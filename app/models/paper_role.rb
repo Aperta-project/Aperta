@@ -65,10 +65,6 @@ class PaperRole < ActiveRecord::Base
   private
 
   def role_exists
-    errors.add(:base, "Invalid role provided") unless role.in?(valid_roles)
-  end
-
-  def valid_roles
-    ALL_ROLES | paper.journal.roles.map(&:name)
+    errors.add(:base, "Invalid role provided") unless role.in?(paper.journal.valid_roles)
   end
 end

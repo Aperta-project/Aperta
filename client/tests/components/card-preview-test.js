@@ -7,8 +7,6 @@ import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 let App = null;
 
 moduleForComponent('card-preview', 'Unit: components/card-preview', {
-  needs: ['helper:badge-count'],
-
   beforeEach: function() {
     Ember.run(function() {
       App = startApp();

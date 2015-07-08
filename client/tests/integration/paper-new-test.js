@@ -25,6 +25,8 @@ module('Integration: Create new paper', {
     TestHelper.handleFindAll('paper', 0);
     TestHelper.handleFindAll('invitation', 0);
     TestHelper.handleFindAll('comment-look', 0);
+    TestHelper.handleFindAll('discussion-topic', 0);
+    $.mockjax({url: /\/api\/papers\/\d+\/manuscript_manager/, status: 204});
   }
 });
 

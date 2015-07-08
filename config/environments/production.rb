@@ -87,4 +87,7 @@ Tahi::Application.configure do
     domain: 'heroku.com',
     enable_starttls_auto: true
   }
+
+  # Skylight.io is enabled by default for the production environment
+  # config.skylight.environments += ['production']
 end

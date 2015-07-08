@@ -8,8 +8,8 @@ feature "Event streaming", js: true, selenium: true do
   let(:text_body) { { type: "text", value: "Hi there!" } }
 
   before do
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in author
+    login_as author
+    visit "/"
   end
 
   context "on the workflow page" do

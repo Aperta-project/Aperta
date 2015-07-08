@@ -5,8 +5,8 @@ feature 'Upload default CSS on journal admin page', js: true do
   let!(:journal) { create :journal }
 
   before do
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in admin
+    login_as admin
+    visit "/"
   end
 
   let(:admin_page) { AdminDashboardPage.visit }

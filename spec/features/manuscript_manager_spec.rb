@@ -10,8 +10,7 @@ feature "Manuscript Manager", js: true, selenium: true do
 
     page.driver.browser.manage.window.maximize
 
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in admin
+    login_as admin
     visit "/papers/#{paper.id}/workflow"
   end
 

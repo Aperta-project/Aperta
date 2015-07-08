@@ -13,8 +13,8 @@ feature "Displaying task", js: true do
   end
 
   before do
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in admin
+    login_as admin
+    visit "/"
     click_link paper.title
     click_link "Workflow"
     find("div.card-content", text: /#{task.title}/).click

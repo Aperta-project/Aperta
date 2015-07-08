@@ -119,6 +119,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
   describe "#after_update" do
     before do
       allow_any_instance_of(Decision).to receive(:revision?).and_return(true)
+      task.paper.decisions.latest.update_attribute(:verdict, 'revise')
     end
 
     context "when the decision is 'revise' and task is incomplete" do
@@ -139,10 +140,14 @@ describe TahiStandardTasks::RegisterDecisionTask do
       before do
         task.save!
         task.update_attributes completed: true
+        task.paper.update_attribute(:publishing_state, 'submitted')
+        task.paper.decisions.latest.update_attribute(:verdict, 'revise')
         task.after_update
       end
 
       it "paper revise event is broadcasted" do
+        task.paper.update_attribute(:publishing_state, 'submitted')
+        task.paper.decisions.latest.update_attribute(:verdict, 'revise')
         event_subscriber = :not_called
         event_payload = []
         TahiNotifier.subscribe 'paper.revised' do |payload|

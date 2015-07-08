@@ -31,6 +31,8 @@ feature "Upload Supporting Information", js: true, selenium: true do
     # upload file
     edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|
       overlay.attach_supporting_information
+      expect(overlay).to have_no_content('Loading')
+      expect(overlay).to have_no_content('Upload Complete!')
       expect(overlay).to have_file 'yeti.jpg'
     end
 

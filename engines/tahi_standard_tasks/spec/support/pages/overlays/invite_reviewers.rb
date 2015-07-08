@@ -2,9 +2,10 @@ class InviteReviewersOverlay < CardOverlay
   text_assertions :reviewer, '.invitee-full-name'
   def paper_reviewers=(reviewers)
     reviewers.each do |reviewer|
-      session.has_no_css?('#delayedSave', visible: false)
-      session.has_no_css?('.select2-searching', visible: false)
-      select2 reviewer.email, css: '.reviewer-select2', search: true
+      if find('.select2-chosen')
+        select2 reviewer.email, css: '.reviewer-select2', search: true
+      end
+      page.has_no_css?('.select2-searching', visible: false)
       if find('.select2-chosen').text == reviewer.email
         find('.invite-reviewer-button').click
       else

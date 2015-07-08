@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150626223620) do
+ActiveRecord::Schema.define(version: 20150702193023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -263,8 +263,6 @@ ActiveRecord::Schema.define(version: 20150626223620) do
   create_table "papers", force: :cascade do |t|
     t.string   "short_title",       limit: 255
     t.string   "title",             limit: 255
-    t.string   "short_title"
-    t.string   "title"
     t.text     "abstract",                      default: ""
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -280,6 +278,7 @@ ActiveRecord::Schema.define(version: 20150626223620) do
     t.text     "doi"
     t.string   "editor_mode",                   default: "html", null: false
     t.string   "publishing_state"
+    t.datetime "submitted_at"
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree

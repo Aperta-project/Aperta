@@ -47,7 +47,7 @@ test("displays the email of the invitee", function(assert) {
     TestHelper.handleFind(task);
     visit(`/papers/${paper.id}/workflow`);
     click("#manuscript-manager .card-content:contains('Invite Editor')");
-    pickFromSelect2(".overlay-main-work", inviteeEmail);
+    pickFromSelect2(".editor-select2", inviteeEmail);
 
     TestHelper.handleCreate("invitation").andReturn({state: "invited"});
 

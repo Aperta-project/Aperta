@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check
-  revision: d876b657e0c6b1e0f33cf3bb279e2d7d6a411ef2
+  revision: bc64d2686bc7c467e80bb684e440fb3f624604f8
   specs:
     plos_bio_tech_check (0.0.1)
       rails (~> 4.2.0)
@@ -126,6 +126,11 @@ GEM
     addressable (2.3.8)
     american_date (1.1.0)
     arel (6.0.0)
+    auto_screenshot (0.0.3)
+      capybara
+      json
+      nokogiri
+      selenium-webdriver
     autoprefixer-rails (5.2.1)
       execjs
       json
@@ -138,7 +143,7 @@ GEM
     bourbon (4.2.3)
       sass (~> 3.4)
       thor
-    bugsnag (2.8.9)
+    bugsnag (2.8.10)
       json (~> 1.7, >= 1.7.7)
     builder (3.2.2)
     byebug (4.0.5)
@@ -498,7 +503,7 @@ GEM
       rspec-mocks (~> 3.3.0)
       rspec-support (~> 3.3.0)
     rspec-support (3.3.0)
-    rspec_junit_formatter (0.2.2)
+    rspec_junit_formatter (0.2.3)
       builder (< 4)
       rspec-core (>= 2, < 4, != 2.12.0)
     rubyzip (1.1.7)
@@ -586,6 +591,7 @@ DEPENDENCIES
   activemodel-globalid!
   acts_as_list!
   american_date
+  auto_screenshot
   bootstrap-sass
   bourbon
   bugsnag
@@ -639,7 +645,7 @@ DEPENDENCIES
   rspec-instafail
   rspec-its
   rspec-rails
-  rspec_junit_formatter (= 0.2.2)
+  rspec_junit_formatter
   rubyzip
   sass-rails
   sdoc
@@ -660,3 +666,6 @@ DEPENDENCIES
   unf
   vcr
   webmock
+
+BUNDLED WITH
+   1.10.5

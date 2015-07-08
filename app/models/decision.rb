@@ -10,7 +10,7 @@ class Decision < ActiveRecord::Base
   validates :revision_number, uniqueness: { scope: :paper_id }
   validate :verdict_valid?, if: -> { verdict }
 
-  VERDICTS = ['minor', 'major', 'revise', 'accept', 'reject']
+  VERDICTS = ['minor_revision', 'revise', 'accept', 'reject']
 
   def verdict_valid?
     VERDICTS.include? verdict

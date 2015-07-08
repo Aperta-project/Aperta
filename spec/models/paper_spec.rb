@@ -175,23 +175,14 @@ describe Paper do
 
     context "minor revision" do
       let(:decision) do
-        FactoryGirl.create(:decision, verdict: "minor")
+        FactoryGirl.create(:decision, verdict: "minor_revision")
       end
       it "puts the paper in_revision" do
         paper.make_decision decision
-        expect(paper.publishing_state).to eq("in_revision")
+        expect(paper.publishing_state).to eq("in_minor_revision")
       end
     end
 
-    context "major revision" do
-      let(:decision) do
-        FactoryGirl.create(:decision, verdict: "major")
-      end
-      it "puts the paper in_revision" do
-        paper.make_decision decision
-        expect(paper.publishing_state).to eq("in_revision")
-      end
-    end
   end
 
 

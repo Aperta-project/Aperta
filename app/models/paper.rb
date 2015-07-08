@@ -72,18 +72,6 @@ class Paper < ActiveRecord::Base
                   after: :allow_edits!
     end
 
-    event(:minor) do
-      transitions from: :submitted,
-                  to: :in_revision,
-                  after: :allow_edits!
-    end
-
-    event(:major) do
-      transitions from: :submitted,
-                  to: :in_revision,
-                  after: :allow_edits!
-    end
-
     event(:accept) do
       transitions from: :submitted,
                   to: :accepted

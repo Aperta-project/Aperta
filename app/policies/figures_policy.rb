@@ -1,10 +1,6 @@
 class FiguresPolicy < ApplicationPolicy
   primary_resource :figure
 
-  def connected_users
-    papers_policy.connected_users
-  end
-
   def create?
     papers_policy.show?
   end

@@ -1,10 +1,6 @@
 class UserRolesPolicy < ApplicationPolicy
   primary_resource :user_role
 
-  def connected_users
-    (journal.admins + User.site_admins).uniq
-  end
-
   def index?
     can_administer_journal?(journal)
   end

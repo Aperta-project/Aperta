@@ -1,10 +1,6 @@
 class TablesPolicy < ApplicationPolicy
   primary_resource :table
 
-  def connected_users
-    papers_policy.connected_users
-  end
-
   def create?
     papers_policy.show?
   end

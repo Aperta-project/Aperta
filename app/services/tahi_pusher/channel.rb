@@ -31,8 +31,8 @@ module TahiPusher
       with_logging(message) do
         system_channel? || policy.show?
       end
-    rescue ActiveRecord::RecordNotFound
-      return false
+    rescue TahiPusher::ChannelResourceNotFound
+      false
     end
 
     private

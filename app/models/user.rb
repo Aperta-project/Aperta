@@ -37,11 +37,16 @@ class User < ActiveRecord::Base
 
   mount_uploader :avatar, AvatarUploader
 
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable,
-         authentication_keys: [:login],
-         omniauth_providers: Rails.configuration.omniauth_providers
+  if Rails.configuration.password_auth_enabled
+    devise :trackable, :omniauthable, :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable,
+      authentication_keys: [:login], omniauth_providers: Rails.configuration.omniauth_providers
+  else
+    devise :trackable, :omniauthable, omniauth_providers: Rails.configuration.omniauth_providers
+  end
+
+  def password_required?
+    Rails.configuration.password_auth_enabled && super
+  end
 
   def possible_flows
     Flow.where("role_id IN (?) OR role_id IS NULL", role_ids)

@@ -47,7 +47,7 @@ gem "skylight"
 gem "rest-client"
 gem 'gepub', "~> 0.7.0beta1"
 gem 'rubyzip', require: 'zip'
-gem "active_model_serializers"
+gem "active_model_serializers", "0.8.3"
 gem 'pdfkit'
 gem 'mini_magick'
 gem 'timeliness'

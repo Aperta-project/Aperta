@@ -579,7 +579,7 @@ PLATFORMS
 
 DEPENDENCIES
   aasm
-  active_model_serializers
+  active_model_serializers (= 0.8.3)
   active_record-acts_as
   activemodel-globalid!
   acts_as_list!

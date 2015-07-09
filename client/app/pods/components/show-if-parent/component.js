@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  showContent: Ember.computed.oneWay('initialShowState'),
+  showContent: Ember.computed.reads('initialShowState'),
 
   initialShowState: function() {
     return this.get(this.get('propName'));

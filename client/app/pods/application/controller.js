@@ -17,7 +17,7 @@ export default Ember.Controller.extend({
     window.scrollTo(0, 0);
   }.observes('currentPath'),
 
-  overlayBackground: Ember.computed.oneWay('defaultBackground'),
+  overlayBackground: Ember.computed.reads('defaultBackground'),
   overlayRedirect: [],
   defaultBackground: 'overlay-background',
 

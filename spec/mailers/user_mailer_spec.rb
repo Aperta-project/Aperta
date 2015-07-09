@@ -36,7 +36,7 @@ describe UserMailer, redis: true do
     end
 
     it 'tells the user they have been added as a collaborator' do
-      expect(email.body).to match(/added you as a contributor/)
+      expect(email.body).to match(/added you as a collaborator/)
     end
   end
 

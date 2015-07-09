@@ -18,7 +18,15 @@ module TahiDevise
       redirect_to new_user_session_path, alert: "We were unable to authenticate with CAS at this time."
     end
 
-    # it looks like orcid actually returns user profile information, so why are we redirecting to a page to add additional info?
+    # We are using the "Orcid Member API", which gives us access to privilaged information.
+    # It let's us query for detailed profile information. Unfortunately, Orcid's default is
+    # that email addresses are private. The user can change their email address to be public,
+    # and we can get it back, but let's face it, nobody's going to do that. Even though we
+    # are reading "limited access data", the field is private and this prevents Orcid
+    # from sending us the email address.
+    #
+    # So, redirect to a page that prefills any orcid profile information and collects email.
+    #
     def orcid
       user = get_user_with_credential(auth[:uid], :orchid)
       if credential.present?

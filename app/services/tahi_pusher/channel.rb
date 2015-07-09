@@ -2,6 +2,10 @@ module TahiPusher
   class Channel
     attr_reader :channel_name
 
+    def self.push(channel_name:, **args)
+      new(channel_name: channel_name).push(**args)
+    end
+
     def initialize(channel_name:)
       @channel_name = channel_name
     end

@@ -4,7 +4,7 @@ module TahiStandardTasks
     add_template_helper ClientRouteHelper
     layout "mailer"
 
-    default from: ENV.fetch('FROM_EMAIL', 'no-reply@example.com')
+    default from: Rails.configuration.from_email
 
     def notify_invited(invitation_id:)
       invitation = Invitation.find(invitation_id)

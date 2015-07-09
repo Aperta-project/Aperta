@@ -5,7 +5,7 @@ module TahiStandardTasks
 
     layout "mailer"
 
-    default from: ENV.fetch('FROM_EMAIL', 'no-reply@example.com')
+    default from: Rails.configuration.from_email
 
     def reviewer_accepted(invite_reviewer_task_id:, reviewer_id:, assigner_id:)
       @assigner = User.find_by(id: assigner_id)

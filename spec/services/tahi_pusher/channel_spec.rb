@@ -32,7 +32,7 @@ describe TahiPusher::Channel do
   describe "authorized?" do
     let(:user) { double(:user, id: 1) }
 
-    context "when target is not active record object" do
+    context "when target is the system channel" do
       let(:channel) { TahiPusher::Channel.new(channel_name: "system") }
 
       it "returns true" do
@@ -46,14 +46,16 @@ describe TahiPusher::Channel do
       context "when the target exists" do
         context "when user has access to the target" do
           it "returns true" do
-            allow(channel).to receive(:authorized_users).and_return([user])
+            happy_policy = double(:policy, show?: true)
+            allow(channel).to receive(:policy_for).and_return(happy_policy)
             expect(channel.authorized?(user: user)).to eq(true)
           end
         end
 
         context "when user does not have access to the target" do
           it "returns false" do
-            allow(channel).to receive(:authorized_users).and_return([])
+            sad_policy = double(:policy, show?: false)
+            allow(channel).to receive(:policy_for).and_return(sad_policy)
             expect(channel.authorized?(user: user)).to eq(false)
           end
         end
@@ -61,7 +63,7 @@ describe TahiPusher::Channel do
 
       context "when the target does not exist" do
         it "returns false" do
-          allow(channel).to receive(:authorized_users).and_raise(ActiveRecord::RecordNotFound)
+          allow(channel).to receive(:policy_for).and_raise(TahiPusher::ChannelResourceNotFound)
           expect(channel.authorized?(user: user)).to eq(false)
         end
       end

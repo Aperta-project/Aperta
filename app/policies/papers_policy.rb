@@ -1,10 +1,6 @@
 class PapersPolicy < ApplicationPolicy
   primary_resource :paper
 
-  def connected_users
-    paper.assigned_users
-  end
-
   def show?
     can_view_paper?
   end
@@ -52,7 +48,7 @@ class PapersPolicy < ApplicationPolicy
   private
 
   def can_view_paper?
-    current_user.site_admin? || connected_users.exists?(current_user.id) || can_view_manuscript_manager?
+    current_user.site_admin? || paper.assigned_users.where(id: current_user.id).exists? || can_view_manuscript_manager?
   end
 
   PaperRole::ALL_ROLES.each do |role|

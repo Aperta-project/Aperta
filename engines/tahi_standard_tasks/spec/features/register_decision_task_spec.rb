@@ -12,8 +12,8 @@ feature "Register Decision", js: true do
   before do
     task.participants << user
     paper.paper_roles.create!(user: user, role: PaperRole::COLLABORATOR)
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in(user)
+    login_as user
+    visit "/"
   end
 
   scenario "Participant registers a decision on the paper" do

@@ -97,6 +97,17 @@ def setup_slanger
   end
 end
 
+def create_config_file(path)
+  return if File.exists?(path)
+
+  header "Generating default #{path}"
+  File.open(path, 'w+') do |f|
+    yield f
+  end
+  puts "Wrote to #{path}"
+end
+
+
 Dir.chdir APP_ROOT do
   system "rm -f setup.log"
 
@@ -141,13 +152,16 @@ Dir.chdir APP_ROOT do
   header 'Cloning tahi-slanger event server repo'
   setup_slanger
 
-  if ! File.exists? '.env.local'
-    header 'Generating local Rails secret token'
-    File.open '.env.local', 'w+' do |f|
-      f.write "RAILS_SECRET_TOKEN=#{`bin/rake secret`}"
-    end
-    puts "Wrote to .env.local"
+  create_config_file('.env.development') do |f|
+    f.puts "RAILS_SECRET_TOKEN=#{`bin/rake secret`}"
   end
+
+  create_config_file('.foreman') do |f|
+    f.puts "port: 5000"
+    f.puts "procfile: Procfile.local"
+    f.puts "env: .env,.env.development"
+  end
+
 
   header 'Preparing development database (output logged to setup.log)'
   system 'bin/rake db:setup >> setup.log'

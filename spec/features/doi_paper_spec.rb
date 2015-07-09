@@ -16,8 +16,8 @@ feature "Editing paper", selenium: true, js: true do
 
     before do
       assign_journal_role(journal, user, :admin)
-      sign_in_page = SignInPage.visit
-      sign_in_page.sign_in user
+      login_as user
+      visit "/"
     end
 
     context "on a journal without a doi prefix set" do

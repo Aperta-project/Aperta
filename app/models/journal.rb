@@ -63,6 +63,9 @@ class Journal < ActiveRecord::Base
     manuscript_manager_templates.where(paper_type: paper_type).first
   end
 
+  def valid_roles
+    PaperRole::ALL_ROLES | roles.map(&:name)
+  end
 
   private
 

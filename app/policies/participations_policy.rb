@@ -3,10 +3,6 @@ class ParticipationsPolicy < ApplicationPolicy
 
   include TaskAccessCriteria
 
-  def connected_users
-    tasks_policy.connected_users
-  end
-
   def show?
     authorized_to_modify_task?
   end

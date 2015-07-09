@@ -4,13 +4,13 @@ Devise.setup do |config|
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
-  config.secret_key = '3802b8972038d185a90b848d1d3c905516efec5833c086334295d07ce4fa27eb370c681db6487049f91303609208ef527e9ffe458e3e54efeb0d5e830b57c48b'
+  # config.secret_key = '3802b8972038d185a90b848d1d3c905516efec5833c086334295d07ce4fa27eb370c681db6487049f91303609208ef527e9ffe458e3e54efeb0d5e830b57c48b'
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = "tahiprojectteam@plos.org"
+  config.mailer_sender = Rails.configuration.from_email
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
@@ -232,10 +232,6 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
-  config.omniauth :orcid, Rails.configuration.orcid_key, Rails.configuration.orcid_secret, strategy: OmniAuth::Strategies::Orcid
-  if Rails.configuration.orcid_enabled || Rails.env.test?
-    Rails.configuration.omniauth_providers << :orcid
-  end
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

@@ -6,28 +6,32 @@
   {{#sortable-table class="paper-tracker-table"
                     content=model
                     sortProperty="submittedAt" as |table|}}
-    <tr>
-      <th></th>
-      {{sortable-table-header text="Title"
-                              sortProperty="displayTitle"
-                              sortAscending=table.sortAscending
-                              activeSortProperty=table.sortProperty}}
-      {{sortable-table-header text="Paper ID"
-                              sortProperty="id"
-                              sortAscending=table.sortAscending
-                              activeSortProperty=table.sortProperty}}
-      {{sortable-table-header text="Date Submitted"
-                              sortProperty="submittedAt"
-                              sortAscending=table.sortAscending
-                              activeSortProperty=table.sortProperty}}
-      {{sortable-table-header text="Paper Type"
-                              sortProperty="paperType"
-                              sortAscending=table.sortAscending
-                              activeSortProperty=table.sortProperty}}
-      <th>Members</th>
-    </tr>
-    {{#each table.arrangedContent as |paper|}}
-      {{partial "paper-tracker/row"}}
-    {{/each}}
+    <thead>
+      <tr>
+        <th></th>
+        {{sortable-table-header text="Title"
+                                sortProperty="displayTitle"
+                                sortAscending=table.sortAscending
+                                activeSortProperty=table.sortProperty}}
+        {{sortable-table-header text="Paper ID"
+                                sortProperty="id"
+                                sortAscending=table.sortAscending
+                                activeSortProperty=table.sortProperty}}
+        {{sortable-table-header text="Date Submitted"
+                                sortProperty="submittedAt"
+                                sortAscending=table.sortAscending
+                                activeSortProperty=table.sortProperty}}
+        {{sortable-table-header text="Paper Type"
+                                sortProperty="paperType"
+                                sortAscending=table.sortAscending
+                                activeSortProperty=table.sortProperty}}
+        <th>Members</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each table.arrangedContent as |paper|}}
+        {{partial "paper-tracker/row"}}
+      {{/each}}
+    </tbody>
   {{/sortable-table}}
 </div>

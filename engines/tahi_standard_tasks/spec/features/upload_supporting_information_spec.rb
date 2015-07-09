@@ -14,8 +14,8 @@ feature "Upload Supporting Information", js: true, selenium: true do
 
 
   before do
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in author
+    login_as author
+    visit "/"
 
     allow(DownloadSupportingInfoWorker).to receive(:perform_async) do |supporting_info_id, url|
       supporting_info = SupportingInformationFile.find(supporting_info_id)

@@ -92,6 +92,14 @@ describe TahiPusher::ChannelName do
       end
     end
 
+    describe "private-paper@4 (when paper does not exist)" do
+      let(:channel_name) { "private-paper@4" }
+
+      it "raises an error" do
+        expect { TahiPusher::ChannelName.parse(channel_name).target }.to raise_error(TahiPusher::ChannelResourceNotFound)
+      end
+    end
+
     describe "private-latex" do
       let(:channel_name) { "private-latex" }
 

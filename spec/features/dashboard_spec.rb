@@ -15,7 +15,8 @@ feature "Dashboard", js: true do
     context "when there are more than 15 papers" do
       let(:paper_count) { 18 }
       scenario "only 15 papers are beamed down but total paper count is present" do
-        SignInPage.visit.sign_in user
+        login_as user
+        visit "/"
         expect(dashboard.total_paper_count).to eq paper_count
         expect(dashboard.paper_count).to eq Paper.default_per_page
         load_more_button = dashboard.load_more_papers_button
@@ -40,7 +41,9 @@ feature "Dashboard", js: true do
     end
 
     scenario "only displays invitations from latest revision cycle" do
-      SignInPage.visit.sign_in user
+      login_as user
+      visit "/"
+
       expect(dashboard.active_invitation_count).to eq 2
       decision = paper.decisions.create!
       dashboard.reload
@@ -58,4 +61,3 @@ feature "Dashboard", js: true do
     end
   end
 end
-

@@ -168,7 +168,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
         expect(task.participants).to_not include paper.creator
       end
 
-      describe " Revise Task" do
+      describe "Revise Task" do
         it "task is not nil" do
           expect(revise_task).to_not be_nil
         end
@@ -189,7 +189,38 @@ describe TahiStandardTasks::RegisterDecisionTask do
           expect(revise_task.body.first.first['value']).to include task.revise_letter
         end
       end
+    end
 
+    describe "#complete_decision" do
+      let(:decision) { paper.decisions.first }
+
+      before do
+        allow(task).to receive(:paper).and_return(paper)
+        allow_any_instance_of(Decision).to receive(:revision?).and_return(true)
+      end
+
+      it "saves the decision to paper", focus: true do
+        expect(paper).to receive(:make_decision).with(decision)
+
+        task.complete_decision
+      end
+
+      it "prepares a new decision task" do
+        expect {
+          task.complete_decision
+        }.to change { task.paper.tasks.size }.by 1
+      end
+    end
+
+    describe "#decision_content" do
+      let(:decision) { Decision.create(paper: paper, verdict: "revise") }
+
+      it "gets the made decision" do
+        paper.decisions << decision
+        paper.decisions << Decision.new(paper: paper)
+
+        expect(task.decision_content).to eq(decision)
+      end
     end
   end
 end

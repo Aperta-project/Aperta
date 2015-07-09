@@ -18,7 +18,7 @@ describe EventStream::Broadcaster do
       end
     end
 
-    context "destroyed action" do
+    context "destroyed action", sidekiq: :inline! do
       it "sends to the system channel" do
         expect(TahiPusher::Channel).to receive(:new).with(channel_name: "system").and_return(channel)
         broadcaster.post(action: "destroyed", channel_scope: model)
@@ -37,7 +37,7 @@ describe EventStream::Broadcaster do
       end
     end
 
-    context "created or updated action" do
+    context "created or updated action", sidekiq: :inline! do
       it "sends to the paper channel" do
         expect(TahiPusher::Channel).to receive(:new).with(channel_name: "private-paper@#{model.id}").and_return(channel)
         broadcaster.post(action: "updated", channel_scope: model)

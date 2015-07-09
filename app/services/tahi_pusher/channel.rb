@@ -2,6 +2,10 @@ module TahiPusher
   class Channel
     attr_reader :channel_name
 
+    def self.push(channel_name:, **args)
+      new(channel_name: channel_name).push(**args)
+    end
+
     def initialize(channel_name:)
       @channel_name = channel_name
     end
@@ -25,22 +29,24 @@ module TahiPusher
     def authorized?(user:)
       message = "Checking authorization on channel_name=#{channel_name} for user_id=#{user.id}"
       with_logging(message) do
-        return true unless parsed_channel.active_record_backed?
-        authorized_users.include?(user)
+        system_channel? || policy_for(user).show?
       end
-    rescue ActiveRecord::RecordNotFound
-      return false
+    rescue TahiPusher::ChannelResourceNotFound
+      false
     end
-
 
     private
 
-    def authorized_users
-      Accessibility.new(parsed_channel.target).users
+    def policy_for(user)
+      EventStreamPolicy.new(current_user: user, resource: parsed_channel.target)
     end
 
     def parsed_channel
       @parsed_channel ||= ChannelName.parse(channel_name)
+    end
+
+    def system_channel?
+      !parsed_channel.active_record_backed?
     end
 
     def with_logging(message)

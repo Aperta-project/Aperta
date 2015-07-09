@@ -106,12 +106,12 @@ describe Paper do
       end
     end
 
-    context "when submitting a minor revision (as in a tech check)" do
+    context "when submitting a minor change (as in a tech check)" do
       let(:paper) { FactoryGirl.create(:paper, :submitted) }
 
       it "marks the paper uneditable" do
-        paper.minor_revision!
-        paper.submit_minor_revision!
+        paper.minor_check!
+        paper.submit_minor_check!
         expect(paper).to_not be_editable
       end
     end
@@ -179,7 +179,7 @@ describe Paper do
       end
       it "puts the paper in_revision" do
         paper.make_decision decision
-        expect(paper.publishing_state).to eq("in_minor_revision")
+        expect(paper.publishing_state).to eq("in_revision")
       end
     end
 

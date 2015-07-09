@@ -39,7 +39,7 @@ class Paper < ActiveRecord::Base
   aasm column: :publishing_state do
     state :unsubmitted, initial: true # currently being authored
     state :submitted
-    state :in_minor_revision # revision that does not require resubmission
+    state :in_checking_state # small change that does not require resubmission, as in a tech check
     state :in_revision # has revised decision and requires resubmission
     state :accepted
     state :rejected
@@ -54,16 +54,22 @@ class Paper < ActiveRecord::Base
                           :set_submitted_at!]
     end
 
-    event(:minor_revision) do
+    event(:minor_check) do
       transitions from: :submitted,
-                  to: :in_minor_revision,
+                  to: :in_checking_state,
                   after: :allow_edits!
     end
 
-    event(:submit_minor_revision) do
-      transitions from: :in_minor_revision,
+    event(:submit_minor_check) do
+      transitions from: :in_checking_state,
                   to: :submitted,
                   after: :prevent_edits!
+    end
+
+    event(:minor_revision) do
+      transitions from: :submitted,
+                  to: :in_revision,
+                  after: :allow_edits!
     end
 
     event(:revise) do

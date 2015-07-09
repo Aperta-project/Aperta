@@ -1,3 +1,0 @@
-port: 5000
-procfile: Procfile.local
-env: .env,.env.local

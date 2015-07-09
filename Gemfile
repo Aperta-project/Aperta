@@ -62,10 +62,7 @@ gem 'pg_search'
 gem 'aasm'
 gem 'bootstrap-sass'
 gem 'pusher'
-
-# NOTE: Using this fork because it uses a compatible omniauth version
-# https://github.com/dlindahl/omniauth-cas/pull/28
-gem 'omniauth-cas', github: "dandorman/omniauth-cas", ref: "83210ff52667c2c4574666dcfc9b577542fb595f"
+gem 'omniauth-cas'
 
 gem 'tahi_epub', git: "https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/tahi_epub"
 
@@ -88,10 +85,9 @@ group :development, :test, :performance do
   gem 'rspec-instafail'
   gem 'launchy'
   gem 'database_cleaner'
-  gem 'pry-byebug'
-  gem 'pry-stack_explorer'
   gem 'pry-rescue'
   gem 'pry-rails'
+  gem 'pry-remote'
   gem 'foreman'
   gem 'quiet_assets'
   gem 'generator_spec'

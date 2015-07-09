@@ -4,10 +4,6 @@ module PlosAuthors
 
     include TaskAccessCriteria
 
-    def connected_users
-      TasksPolicy.new(current_user: current_user, resource: task).connected_users
-    end
-
     def show?
       authorized_to_modify_task?
     end

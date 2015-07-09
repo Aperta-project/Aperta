@@ -1,4 +1,6 @@
 module TahiPusher
+  class ChannelResourceNotFound < StandardError; end
+
   class ChannelName
     CHANNEL_SEPARATOR = "-"
     MODEL_SEPARATOR   = "@"
@@ -41,6 +43,8 @@ module TahiPusher
       else
         model
       end
+    rescue ActiveRecord::RecordNotFound
+      raise ChannelResourceNotFound
     end
 
     # "private-paper@4" --> true, "system" --> false

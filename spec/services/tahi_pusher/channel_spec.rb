@@ -47,7 +47,7 @@ describe TahiPusher::Channel do
         context "when user has access to the target" do
           it "returns true" do
             happy_policy = double(:policy, show?: true)
-            allow(channel).to receive(:policy).and_return(happy_policy)
+            allow(channel).to receive(:policy_for).and_return(happy_policy)
             expect(channel.authorized?(user: user)).to eq(true)
           end
         end
@@ -55,7 +55,7 @@ describe TahiPusher::Channel do
         context "when user does not have access to the target" do
           it "returns false" do
             sad_policy = double(:policy, show?: false)
-            allow(channel).to receive(:policy).and_return(sad_policy)
+            allow(channel).to receive(:policy_for).and_return(sad_policy)
             expect(channel.authorized?(user: user)).to eq(false)
           end
         end
@@ -63,7 +63,7 @@ describe TahiPusher::Channel do
 
       context "when the target does not exist" do
         it "returns false" do
-          allow(channel).to receive(:policy).and_raise(TahiPusher::ChannelResourceNotFound)
+          allow(channel).to receive(:policy_for).and_raise(TahiPusher::ChannelResourceNotFound)
           expect(channel.authorized?(user: user)).to eq(false)
         end
       end

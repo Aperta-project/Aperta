@@ -29,7 +29,7 @@ module TahiPusher
     def authorized?(user:)
       message = "Checking authorization on channel_name=#{channel_name} for user_id=#{user.id}"
       with_logging(message) do
-        system_channel? || policy.show?
+        system_channel? || policy_for(user).show?
       end
     rescue TahiPusher::ChannelResourceNotFound
       false
@@ -37,8 +37,8 @@ module TahiPusher
 
     private
 
-    def policy
-      @policy ||= EventStreamPolicy.new(current_user: user, resource: parsed_channel.target)
+    def policy_for(user)
+      EventStreamPolicy.new(current_user: user, resource: parsed_channel.target)
     end
 
     def parsed_channel

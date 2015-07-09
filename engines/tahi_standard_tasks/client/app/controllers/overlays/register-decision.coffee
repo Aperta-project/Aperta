@@ -14,7 +14,7 @@ RegisterDecisionOverlayController = TaskController.extend
   ).property('model.paper.decisions.@each.revisionNumber')
 
   finalDecision: (->
-    @get("latestDecision.verdict") is "accepted" or @get("latestDecision.verdict") is "rejected"
+    @get("latestDecision.verdict") is "accept" or @get("latestDecision.verdict") is "reject"
   ).property("latestDecision")
 
   saveModel: ->

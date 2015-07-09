@@ -6,29 +6,29 @@
 
 {{#if model.completed}}
   {{#if finalDecision}}
-  <div class="alert alert-info">
-    A final Decision of {{latestDecision.verdict}} has been registered.
-  </div>
+    <div class="alert alert-info">
+      A final Decision of {{latestDecision.verdict}} has been registered.
+    </div>
   {{/if}}
 {{/if}}
 
 <div class="decision-selections">
   <label class="decision-label">
-    {{decision-radio-button value="accepted"
+    {{decision-radio-button value="accept"
                             action="setDecisionTemplate"
                             selection=latestDecision.verdict
                             disabled=model.completed
                             name="decision"}}
-    Accepted
+    Accept
   </label>
 
   <label class="decision-label">
-    {{decision-radio-button value="rejected"
+    {{decision-radio-button value="reject"
                             action="setDecisionTemplate"
                             selection=latestDecision.verdict
                             disabled=model.completed
                             name="decision"}}
-    Rejected
+    Reject
   </label>
 
   <label class="decision-label">
@@ -37,7 +37,16 @@
                             selection=latestDecision.verdict
                             disabled=model.completed
                             name="decision"}}
-    Revise
+    Major Revision
+  </label>
+
+  <label class="decision-label">
+    {{decision-radio-button value="minor_revision"
+                            action="setDecisionTemplate"
+                            selection=latestDecision.verdict
+                            disabled=model.completed
+                            name="decision"}}
+    Minor Revision
   </label>
 </div>
 

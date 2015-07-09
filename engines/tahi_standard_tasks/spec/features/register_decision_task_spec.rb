@@ -20,7 +20,7 @@ feature "Register Decision", js: true do
     dashboard_page = DashboardPage.new
     manuscript_page = dashboard_page.view_submitted_paper paper
     manuscript_page.view_card 'Register Decision' do |overlay|
-      overlay.register_decision = "Accepted"
+      overlay.register_decision = "Accept"
       overlay.decision_letter = "Accepting this because I can"
       overlay.mark_as_complete
       expect(overlay).to be_completed
@@ -31,12 +31,12 @@ feature "Register Decision", js: true do
     dashboard_page = DashboardPage.new
     manuscript_page = dashboard_page.view_submitted_paper paper
     manuscript_page.view_card 'Register Decision' do |overlay|
-      overlay.register_decision = "Accepted"
+      overlay.register_decision = "Accept"
       overlay.decision_letter = "Accepting this because I can"
       overlay.mark_as_complete
       expect(overlay).to be_completed
-      expect(overlay.find(".alert-info").text).to eq("A final Decision of accepted has been registered.")
-      expect(overlay).to be_disabled
+      expect(overlay.find(".alert-info").text).to eq("A final Decision of accept has been registered.")
+      expect(first('input[name=decision]')).to be_disabled
     end
   end
 
@@ -44,13 +44,13 @@ feature "Register Decision", js: true do
     dashboard_page = DashboardPage.new
     manuscript_page = dashboard_page.view_submitted_paper paper
     manuscript_page.view_card 'Register Decision' do |overlay|
-      overlay.register_decision = "Rejected"
+      overlay.register_decision = "Reject"
       overlay.radio_selected?
     end
 
     visit current_path # Revisit
     manuscript_page.view_card 'Register Decision' do |overlay|
-      expect(find("input[value='rejected']")).to be_checked
+      expect(find("input[value='reject']")).to be_checked
     end
   end
 

@@ -146,6 +146,9 @@ GEM
     bugsnag (2.8.10)
       json (~> 1.7, >= 1.7.7)
     builder (3.2.2)
+    bullet (4.14.7)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.9.0)
     byebug (4.0.5)
       columnize (= 0.9.0)
     capybara (2.4.4)
@@ -573,6 +576,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.1)
+    uniform_notifier (1.9.0)
     vcr (2.9.3)
     warden (1.2.3)
       rack (>= 1.0)
@@ -597,6 +601,7 @@ DEPENDENCIES
   bootstrap-sass
   bourbon
   bugsnag
+  bullet
   capybara
   carrierwave
   codeclimate-test-reporter

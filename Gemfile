@@ -97,6 +97,10 @@ group :development, :test, :performance do
   gem 'generator_spec'
 end
 
+group :development do
+  gem 'bullet'
+end
+
 group :test do
   gem 'capybara'
   gem 'selenium-webdriver'

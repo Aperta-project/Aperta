@@ -17,5 +17,5 @@ on_worker_boot do
     ActiveRecord::Base.establish_connection(ar_config)
   end
 
-  puts "Puma Worker started with THREADS=#{thread_count}"
+  Rails.logger.info "Puma Worker started with THREADS=#{thread_count}"
 end

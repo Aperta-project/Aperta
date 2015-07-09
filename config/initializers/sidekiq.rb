@@ -14,7 +14,7 @@ Sidekiq.configure_server do |config|
     ActiveRecord::Base.establish_connection(ar_config)
   end
 
-  puts "Sidekiq started with WORKERS=#{sidekiq_workers}"
+  Rails.logger.info "Sidekiq started with WORKERS=#{sidekiq_workers}"
 end
 
 Sidekiq.configure_client do |config|

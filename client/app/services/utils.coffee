@@ -13,7 +13,7 @@ Utils = Ember.Namespace.create
       return thing if (!thing || typeof thing != 'object')
       return thing.map(spelunk) if (Ember.isArray(thing))
 
-      Ember.keys(thing).reduce (previousValue, key) ->
+      Object.keys(thing).reduce (previousValue, key) ->
         isDate = Object.prototype.toString.call(thing[key]) == '[object Date]'
         previousValue[Ember.String.camelize(key)] = (if isDate then thing[key] else spelunk(thing[key]))
         previousValue

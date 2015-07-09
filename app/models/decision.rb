@@ -13,7 +13,7 @@ class Decision < ActiveRecord::Base
   VERDICTS = ['minor_revision', 'revise', 'accept', 'reject']
 
   def verdict_valid?
-    VERDICTS.include? verdict
+    errors.add(:verdict, "must be a valid choice.") unless VERDICTS.include?(verdict)
   end
 
   def self.latest

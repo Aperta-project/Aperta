@@ -8,8 +8,8 @@ feature "Editing paper", js: true do
 
   before do
     make_user_paper_admin(author, paper)
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in author
+    login_as author
+    visit "/"
   end
 
   scenario "Managing collaborators" do

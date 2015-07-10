@@ -36,4 +36,16 @@ Tahi::Application.configure do
   config.carrierwave_storage = :fog
 
   config.action_mailer.default_url_options = {host: "localhost", port: 5000, protocol: "http://"}
+
+  # Enable skylight.io
+  # config.skylight.environments += ['development']
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.bullet_logger = true
+    Bullet.console = true
+    Bullet.rails_logger = true
+    Bullet.add_footer = true
+    Bullet.stacktrace_includes = ['plos_authors', 'tahi_standard_tasks', 'tahi_upload_manuscript', 'plos_bio_tech_check', 'plos_bio_internal_review', 'plos_billing', 'tahi-assign_team']
+  end
 end
+

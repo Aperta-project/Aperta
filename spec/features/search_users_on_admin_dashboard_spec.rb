@@ -10,8 +10,8 @@ feature "Search Users on Admin Dashboard", js: true do
     create :user, first_name: "Sam", last_name: "Smith", username: 'bobby'
     create :user, first_name: "Jane", last_name: "Doe", username: 'janny'
 
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in user
+    login_as user
+    visit "/"
   end
 
   let(:admin_page) { AdminDashboardPage.visit }

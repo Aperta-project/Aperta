@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "Event streaming", js: true, selenium: true do
+feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
   let!(:author) { FactoryGirl.create :user, :site_admin }
   let!(:journal) { FactoryGirl.create :journal }
   let!(:paper) { FactoryGirl.create :paper, :with_tasks, creator: author, journal: journal }
@@ -8,8 +8,8 @@ feature "Event streaming", js: true, selenium: true do
   let(:text_body) { { type: "text", value: "Hi there!" } }
 
   before do
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in author
+    login_as author
+    visit "/"
   end
 
   context "on the workflow page" do

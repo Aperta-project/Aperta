@@ -10,8 +10,8 @@ feature 'journal admin role', js: true do
   context 'non-admin user with journal admin role' do
     before do
       assign_journal_role(journal, user, :admin)
-      sign_in_page = SignInPage.visit
-      sign_in_page.sign_in user
+      login_as user
+      visit "/"
     end
 
     scenario 'the user can see the admin link on the dashboard' do
@@ -27,8 +27,8 @@ feature 'journal admin role', js: true do
 
   context 'non-admin user without journal admin role' do
     before do
-      sign_in_page = SignInPage.visit
-      sign_in_page.sign_in user
+      login_as user
+      visit "/"
     end
 
     scenario 'the user does not see the admin link on the dashboard' do
@@ -36,4 +36,3 @@ feature 'journal admin role', js: true do
     end
   end
 end
-

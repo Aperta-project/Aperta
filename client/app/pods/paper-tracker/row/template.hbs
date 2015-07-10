@@ -1,10 +1,10 @@
 <tr>
   <td>
-    {{#if paper.commentLook}}
-      <span class="badge badge--red">{{paper.commentLook}}</span>
+    {{#if paper.commentLooks}}
+      <span class="badge badge--red">{{paper.commentLooks.length}}</span>
     {{/if}}
   </td>
-  <td>
+  <td class="paper-tracker-title-column">
     {{link-to paper.displayTitle "paper.edit" paper.id}}
   </td>
   <td class="paper-tracker-paper-id-column">
@@ -16,16 +16,11 @@
   </td>
   <td class="paper-tracker-type-column">{{paper.paperType}}</td>
   <td class="paper-tracker-members-column">
-    {{#if false}}
-    <div class="paper-tracker-members-group">
-      <span>Author:</span> Amanda Chan
-    </div>
-    <div class="paper-tracker-members-group">
-      <span>Editor:</span> Gina Winkler
-    </div>
-    <div class="paper-tracker-members-group">
-      <span>Reviewer:</span> Aaron Crispy, Chris Westra, Willa Wang, Kristen Chan, Andi Plantenburg, Adam Hyde, Felix Flores
-    </div>
-    {{/if}}
+    {{#each paper.relatedUsers as |role|}}
+      <div class="paper-tracker-members-group">
+        <span>{{pluralize-string role.name count=role.users.length}}:</span>
+        {{comma-separated-user-list role.users}}
+      </div>
+    {{/each}}
   </td>
 </tr>

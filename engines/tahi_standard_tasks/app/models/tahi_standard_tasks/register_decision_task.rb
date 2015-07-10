@@ -20,17 +20,18 @@ module TahiStandardTasks
 
     def complete_decision
       decision = paper.decisions.latest
-
       paper.make_decision decision
-
       # If it's a revise decision, prepare a new decision task.
       DecisionReviser.new(self).process! if decision.revision?
     end
 
     def send_email
-      decision = paper.decisions.latest
       RegisterDecisionMailer.delay.notify_author_email(
-        decision_id: decision.id)
+        decision_id: decision_content.id)
+    end
+
+    def decision_content
+      paper.decisions.select(&:verdict_valid?).last
     end
 
     def send_emails

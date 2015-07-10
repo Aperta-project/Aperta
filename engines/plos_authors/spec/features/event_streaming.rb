@@ -7,8 +7,8 @@ feature "event streaming", js: true do
   let!(:plos_authors_task) { FactoryGirl.create(:plos_authors_task, phase: phase) }
 
   before do
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in(user)
+    login_as user
+    visit "/"
   end
 
   describe "plos authors task" do

@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-# Remember to also change circle.yml when the ruby version changes
-ruby "2.2.0"
+# Remember to also change circle.yml and .ruby-gemset when the ruby version changes
+ruby "2.2.2"
 
 # Configuration
 group :development, :test, :performance do
@@ -44,10 +44,11 @@ gem "carrierwave"
 gem "fog"
 gem "unf"
 gem 'newrelic_rpm'
+gem "skylight"
 gem "rest-client"
 gem 'gepub', "~> 0.7.0beta1"
 gem 'rubyzip', require: 'zip'
-gem "active_model_serializers"
+gem "active_model_serializers", "0.8.3"
 gem 'pdfkit'
 gem 'mini_magick'
 gem 'timeliness'
@@ -62,10 +63,7 @@ gem 'pg_search'
 gem 'aasm'
 gem 'bootstrap-sass'
 gem 'pusher'
-
-# NOTE: Using this fork because it uses a compatible omniauth version
-# https://github.com/dlindahl/omniauth-cas/pull/28
-gem 'omniauth-cas', github: "dandorman/omniauth-cas", ref: "83210ff52667c2c4574666dcfc9b577542fb595f"
+gem 'omniauth-cas'
 
 gem 'tahi_epub', git: "https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/tahi_epub"
 
@@ -88,13 +86,16 @@ group :development, :test, :performance do
   gem 'rspec-instafail'
   gem 'launchy'
   gem 'database_cleaner'
-  gem 'pry-byebug'
-  gem 'pry-stack_explorer'
   gem 'pry-rescue'
   gem 'pry-rails'
+  gem 'pry-remote'
   gem 'foreman'
   gem 'quiet_assets'
   gem 'generator_spec'
+end
+
+group :development do
+  gem 'bullet'
 end
 
 group :test do
@@ -107,7 +108,7 @@ group :test do
   gem 'thin'
   gem 'timecop'
   gem 'pusher-fake'
-  gem 'rspec_junit_formatter', '0.2.2'
+  gem 'rspec_junit_formatter'
 end
 
 group :staging, :performance do

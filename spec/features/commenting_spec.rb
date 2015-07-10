@@ -6,8 +6,8 @@ feature 'Comments on cards', js: true do
   let!(:paper) { FactoryGirl.create(:paper_with_phases, :submitted, creator: admin) }
 
   before do
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in admin
+    login_as admin
+    visit "/"
   end
 
   describe "being made aware of commenting" do

@@ -24,10 +24,12 @@ export default DS.Model.extend({
   eventName: DS.attr('string'),
   paperType: DS.attr('string'),
   relatedAtDate: DS.attr('date'),
+  relatedUsers: DS.attr(),
   roles: DS.attr(),
   shortTitle: DS.attr('string'),
   status: DS.attr('string'),
   strikingImageId: DS.attr('string'),
+  submittedAt: DS.attr('date'),
   publishingState: DS.attr('string'),
   title: DS.attr('string'),
 

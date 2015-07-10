@@ -1,10 +1,6 @@
 class AuthorsPolicy < ApplicationPolicy
   primary_resource :author
 
-  def connected_users
-    papers_policy.connected_users
-  end
-
   def show?
     papers_policy.show?
   end

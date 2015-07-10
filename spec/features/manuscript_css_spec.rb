@@ -6,8 +6,8 @@ feature "Manuscript CSS", js: true do
 
   before do
     paper
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in author
+    login_as author
+    visit "/"
     click_link(paper.title)
   end
 

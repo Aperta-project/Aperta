@@ -1,14 +1,4 @@
 GIT
-  remote: git://github.com/dandorman/omniauth-cas.git
-  revision: 83210ff52667c2c4574666dcfc9b577542fb595f
-  ref: 83210ff52667c2c4574666dcfc9b577542fb595f
-  specs:
-    omniauth-cas (1.0.4)
-      addressable (~> 2.3)
-      nokogiri (~> 1.5)
-      omniauth (~> 1.2.0)
-
-GIT
   remote: git://github.com/swanandp/acts_as_list.git
   revision: 84325ede9ad528acbf68a97c5070cff113ee6a17
   ref: 84325ede9ad528acbf68a97c5070cff113ee6a17
@@ -142,19 +132,18 @@ GEM
       execjs
       json
     bcrypt (3.1.10)
-    binding_of_caller (0.7.2)
-      debug_inspector (>= 0.0.1)
     bootstrap-sass (3.3.5.1)
       autoprefixer-rails (>= 5.0.0.1)
       sass (>= 3.3.0)
     bourbon (4.2.3)
       sass (~> 3.4)
       thor
-    bugsnag (2.8.9)
+    bugsnag (2.8.10)
       json (~> 1.7, >= 1.7.7)
     builder (3.2.2)
-    byebug (4.0.5)
-      columnize (= 0.9.0)
+    bullet (4.14.7)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.9.0)
     capybara (2.4.4)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -173,7 +162,6 @@ GEM
     codeclimate-test-reporter (0.4.7)
       simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.1.0)
-    columnize (0.9.0)
     connection_pool (2.2.0)
     cookiejar (0.3.2)
     crack (0.4.2)
@@ -182,7 +170,6 @@ GEM
       addressable
     daemons (1.1.9)
     database_cleaner (1.4.1)
-    debug_inspector (0.0.2)
     devise (3.5.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -228,12 +215,12 @@ GEM
     ffi (1.9.10)
     fission (0.5.0)
       CFPropertyList (~> 2.2)
-    fog (1.31.0)
+    fog (1.32.0)
       fog-atmos
-      fog-aws (~> 0.0)
+      fog-aws (>= 0.6.0)
       fog-brightbox (~> 0.4)
-      fog-core (~> 1.30)
-      fog-ecloud
+      fog-core (~> 1.32)
+      fog-ecloud (= 0.1.1)
       fog-google (>= 0.0.2)
       fog-json
       fog-local
@@ -254,26 +241,26 @@ GEM
     fog-atmos (0.1.0)
       fog-core
       fog-xml
-    fog-aws (0.4.1)
+    fog-aws (0.7.2)
       fog-core (~> 1.27)
       fog-json (~> 1.0)
       fog-xml (~> 0.1)
       ipaddress (~> 0.8)
-    fog-brightbox (0.7.1)
+    fog-brightbox (0.7.2)
       fog-core (~> 1.22)
       fog-json
       inflecto (~> 0.0.2)
-    fog-core (1.30.0)
+    fog-core (1.32.0)
       builder
       excon (~> 0.45)
       formatador (~> 0.2)
       mime-types
       net-scp (~> 1.1)
       net-ssh (>= 2.1.3)
-    fog-ecloud (0.1.3)
+    fog-ecloud (0.1.1)
       fog-core
       fog-xml
-    fog-google (0.0.5)
+    fog-google (0.0.7)
       fog-core
       fog-json
       fog-xml
@@ -304,7 +291,7 @@ GEM
     fog-serverlove (0.1.2)
       fog-core
       fog-json
-    fog-softlayer (0.4.6)
+    fog-softlayer (0.4.7)
       fog-core
       fog-json
     fog-storm_on_demand (0.1.1)
@@ -368,7 +355,7 @@ GEM
     mini_magick (4.2.7)
     mini_portile (0.6.2)
     minitest (5.7.0)
-    multi_json (1.11.1)
+    multi_json (1.11.2)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
     mustache (1.0.2)
@@ -390,6 +377,10 @@ GEM
     omniauth (1.2.2)
       hashie (>= 1.2, < 4)
       rack (~> 1.0)
+    omniauth-cas (1.1.0)
+      addressable (~> 2.3)
+      nokogiri (~> 1.5)
+      omniauth (~> 1.2.0)
     omniauth-oauth2 (1.3.0)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
@@ -413,17 +404,14 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    pry-byebug (3.1.0)
-      byebug (~> 4.0)
-      pry (~> 0.10)
     pry-rails (0.3.4)
       pry (>= 0.9.10)
+    pry-remote (0.1.8)
+      pry (~> 0.9)
+      slop (~> 3.0)
     pry-rescue (1.4.2)
       interception (>= 0.5)
       pry
-    pry-stack_explorer (0.4.9.2)
-      binding_of_caller (>= 0.7)
-      pry (>= 0.9.11)
     puma (2.11.3)
       rack (>= 1.1, < 2.0)
     pusher (0.14.4)
@@ -513,7 +501,7 @@ GEM
       rspec-mocks (~> 3.3.0)
       rspec-support (~> 3.3.0)
     rspec-support (3.3.0)
-    rspec_junit_formatter (0.2.2)
+    rspec_junit_formatter (0.2.3)
       builder (< 4)
       rspec-core (>= 2, < 4, != 2.12.0)
     rubyzip (1.1.7)
@@ -553,6 +541,8 @@ GEM
       rack (~> 1.4)
       rack-protection (~> 1.4)
       tilt (>= 1.3, < 3)
+    skylight (0.6.1)
+      activesupport (>= 3.0.0)
     slop (3.6.0)
     sprockets (3.2.0)
       rack (~> 1.0)
@@ -581,6 +571,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.1)
+    uniform_notifier (1.9.0)
     vcr (2.9.3)
     warden (1.2.3)
       rack (>= 1.0)
@@ -596,7 +587,7 @@ PLATFORMS
 
 DEPENDENCIES
   aasm
-  active_model_serializers
+  active_model_serializers (= 0.8.3)
   active_record-acts_as
   activemodel-globalid!
   acts_as_list!
@@ -605,6 +596,7 @@ DEPENDENCIES
   bootstrap-sass
   bourbon
   bugsnag
+  bullet
   capybara
   carrierwave
   codeclimate-test-reporter
@@ -626,7 +618,7 @@ DEPENDENCIES
   mini_magick
   newrelic_rpm
   nokogiri
-  omniauth-cas!
+  omniauth-cas
   omniauth-oauth2
   ordinalize
   pdfkit
@@ -638,10 +630,9 @@ DEPENDENCIES
   plos_bio_tech_check!
   premailer-rails
   progressbar
-  pry-byebug
   pry-rails
+  pry-remote
   pry-rescue
-  pry-stack_explorer
   puma
   pusher
   pusher-fake
@@ -655,7 +646,7 @@ DEPENDENCIES
   rspec-instafail
   rspec-its
   rspec-rails
-  rspec_junit_formatter (= 0.2.2)
+  rspec_junit_formatter
   rubyzip
   sass-rails
   sdoc
@@ -665,6 +656,7 @@ DEPENDENCIES
   simplecov
   sinatra
   tahi-assess!
+  skylight
   tahi-assign_team!
   tahi_epub!
   tahi_standard_tasks!

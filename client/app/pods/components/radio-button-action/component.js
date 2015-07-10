@@ -5,9 +5,13 @@ export default Ember.Component.extend({
   type: 'radio',
   attributeBindings: ['name', 'type', 'value', 'checked:checked', 'disabled'],
 
-  checked: function() {
-    return this.get('selection') === this.get('value');
-  }.property('selection'),
+  _throwDeprecationWarning: Ember.on('init', function() {
+    Ember.warn('TAHI DEPRECATION: RadioButtonAction is deprecated in favor of RadioButton. https://github.com/Tahi-project/tahi/wiki/Tahi-Ember-1.13-Transition-Guide#radiobuttonaction');
+  }),
+
+  checked: Ember.computed('selection', 'value', function() {
+    return Ember.isEqual(this.get('selection'), this.get('value'));
+  }),
 
   change() {
     this.set('selection', this.get('value'));

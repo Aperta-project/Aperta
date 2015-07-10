@@ -4,13 +4,14 @@ feature "Register Decision", js: true do
   let(:user) { FactoryGirl.create(:user) }
   let(:task) { FactoryGirl.create(:register_decision_task) }
   let!(:paper) do
-    task.paper.update_attributes({
-      creator:  user,
+    task.paper.update_attributes(
+      creator: user,
       publishing_state: "submitted"
-    })
+    )
     task.paper
   end
   let(:dashboard_page) { DashboardPage.new }
+  let(:manuscript_page) { dashboard_page.view_submitted_paper paper }
 
   before do
     task.participants << user
@@ -20,7 +21,18 @@ feature "Register Decision", js: true do
   end
 
   context "Registering a decision on a paper" do
-    let(:manuscript_page) { dashboard_page.view_submitted_paper paper }
+    context "with a non-submitted Paper" do
+      before do
+        paper.update_attributes(publishing_state: "unsubmitted")
+      end
+
+      scenario "Participant registers a decision on the paper" do
+        manuscript_page.view_card 'Register Decision' do |overlay|
+          expect(overlay.invalid_state_message).to be true
+          expect(overlay).to be_disabled
+        end
+      end
+    end
 
     scenario "Participant registers a decision on the paper" do
       manuscript_page.view_card 'Register Decision' do |overlay|
@@ -37,7 +49,7 @@ feature "Register Decision", js: true do
         overlay.decision_letter = "Accepting this because I can"
         overlay.click_send_email_button
         expect(overlay).to be_completed
-        expect(overlay.find(".alert-info").text).to eq("A final Decision of accepted has been registered.")
+        expect(overlay.success_state_message).to be true
         expect(overlay).to be_disabled
       end
     end
@@ -69,19 +81,21 @@ feature "Register Decision", js: true do
     end
   end
 
-  scenario "User checks previous decision history" do
-    paper.decisions.first.update! verdict: "revise",
-                                  letter: "Please revise the manuscript"
-    paper.decisions.create!
-    paper.reload
+  context "With previous decision history" do
+    before do
+      paper.decisions.first.update! verdict: "revise",
+                                    letter: "Please revise the manuscript"
+      paper.decisions.create!
+      paper.reload
+    end
 
-    manuscript_page = dashboard_page.view_submitted_paper paper
-
-    manuscript_page.view_card 'Register Decision' do |overlay|
-      expect(overlay.previous_decisions).to_not be_empty
-      expect(overlay.previous_decisions.first.revision_number).to eq("0")
-      overlay.find("#accordion h4.panel-title a").click # open Accordion
-      expect(overlay.previous_decisions.first.letter).to eq("Request for Revision: Please revise the manuscript")
+    scenario "User checks previous decision history" do
+      manuscript_page.view_card 'Register Decision' do |overlay|
+        expect(overlay.previous_decisions).to_not be_empty
+        expect(overlay.previous_decisions.first.revision_number).to eq("0")
+        overlay.find("#accordion h4.panel-title a").click # open Accordion
+        expect(overlay.previous_decisions.first.letter).to eq("Request for Revision: Please revise the manuscript")
+      end
     end
   end
 end

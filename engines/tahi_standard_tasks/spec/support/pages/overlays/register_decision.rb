@@ -1,6 +1,6 @@
 class RegisterDecisionOverlay < CardOverlay
   def previous_decisions
-    all('div.decision').map { |decision_div|
+    all('.previous-decisions .decision').map { |decision_div|
       DecisionComponent.new(decision_div)
     }
   end
@@ -33,6 +33,16 @@ class RegisterDecisionOverlay < CardOverlay
 
   def click_send_email_button
     find(".send-email-action").click
+    # and wait for the flash message to show
+    find(".alert")
+  end
+
+  def success_state_message
+    find(".alert-info").text == "A final decision of accepted has been registered."
+  end
+
+  def invalid_state_message
+    !find(".alert-warning").nil?
   end
 end
 

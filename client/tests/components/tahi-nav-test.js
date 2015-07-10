@@ -1,11 +1,20 @@
-import { test, moduleForComponent } from 'ember-qunit';
+import {
+  moduleForComponent,
+  test
+} from 'ember-qunit';
 
-moduleForComponent('tahi-nav', 'TahiNavComponent');
+import hbs from 'htmlbars-inline-precompile';
+
+moduleForComponent('tahi-nav', 'TahiNavComponent', {
+  integration: true
+});
 
 test('it renders', function(assert) {
-  let component = this.subject();
+  assert.expect(1);
 
-  assert.equal(component._state, 'preRender', 'preRender state');
-  this.render();
-  assert.equal(component._state, 'inDOM', 'inDOM state');
+  this.render(hbs`
+    {{tahi-nav}}
+  `);
+
+  assert.equal(this.$('.navigation').length, 1);
 });

@@ -4,9 +4,10 @@
   <li class="question">
   {{#question-radio ident="publishing_related_questions.published_elsewhere"
                     task=model
-                    question="Have the results, data, or figures in this manuscript been published elsewhere? Are they under consideration for publication elsewhere?"}}
+                    question="Have the results, data, or figures in this manuscript been published elsewhere? Are they under consideration for publication elsewhere?"
+                    as |selected|}}
 
-    {{#show-if-parent prop="selectedYes"}}
+    {{#if selected.yes}}
       <div class="question-dataset">
         Please identify which results, data, or figures have been taken from other published or pending manuscripts, and explain why inclusion in this submission does not constitute dual publication.
         {{question-input ident="publishing_related_questions.published_elsewhere.taken_from_manuscripts"
@@ -20,15 +21,16 @@
                             updateStore="updateStore"
                             accept=".docx,.pdf"}}
       </div>
-    {{/show-if-parent}}
+    {{/if}}
   {{/question-radio}}
   </li>
   <li class="question">
   {{#question-radio ident="publishing_related_questions.submitted_in_conjunction"
                     task=model
-                    question="Is this manuscript being submitted in conjunction with another submission?"}}
+                    question="Is this manuscript being submitted in conjunction with another submission?"
+                    as |selected|}}
 
-    {{#show-if-parent prop="selectedYes"}}
+    {{#if selected.yes}}
       <div class="question-dataset">
         <div class="question-dataset-header">Please provide the title of that submission and the corresponding author.</div>
         {{question-input ident="publishing_related_questions.submitted_in_conjunction.corresponding_title"
@@ -46,7 +48,7 @@
                          label="Corresponding Author"
                          placeholderText="Corresponding Author Name"}}
       </div>
-    {{/show-if-parent}}
+    {{/if}}
   {{/question-radio}}
   </li>
   <li class="question">

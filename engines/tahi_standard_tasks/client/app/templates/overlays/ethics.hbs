@@ -4,10 +4,11 @@
 <ol class="question-list">
   <li class="question">
     {{#question-radio ident="ethics.human_subjects"
-      task=model
-      question="Does your study involve Human Subject Research (human participants and/or tissue)?"}}
+                      task=model
+                      question="Does your study involve Human Subject Research (human participants and/or tissue)?"
+                      as |selected|}}
 
-      {{#show-if-parent prop="selectedYes"}}
+      {{#if selected.yes}}
         <div class="question-dataset">
           {{question-textarea ident="ethics.human_subjects.participants"
                               task=model
@@ -19,16 +20,17 @@
             <p>Informed consent, written or oral, should also have been obtained from the participants.  If no consent was given, the reason must be explained (e.g. the data were analyzed anonymously) and reported.  The form of consent (written/oral), or reason for lack of consent, should be indicated in the Methods section of your manuscript.</p>
           </div>
         </div>
-      {{/show-if-parent}}
+      {{/if}}
     {{/question-radio}}
   </li>
 
   <li class="question">
     {{#question-radio ident="ethics.animal_subjects"
                       task=model
-                      question="Does your study involve Animal Research (vertebrate animals, embryos or tissues)?"}}
+                      question="Does your study involve Animal Research (vertebrate animals, embryos or tissues)?"
+                      as |selected|}}
 
-      {{#show-if-parent prop="selectedYes"}}
+      {{#if selected.yes}}
         <div class="question-info">
           <p>All animal work must have been conducted according to relevant national and international guidelines. If your study involved non-human primates, you must provide details regarding animal welfare and steps taken to ameliorate suffering; this is in accordance with the recommendations of the Weatherall report, "<a href="http://www.acmedsci.ac.uk/more/news/the-use-of-non-human-primates-in-research/" target="_blank">The use of non-human primates in research.</a>" The relevant guidelines followed and the committee that approved the study should be identified in the ethics statement.</p>
           <p>If anesthesia, euthanasia or any kind of animal sacrifice is part of the study, please include briefly in your statement which substances and/or methods were applied.</p>
@@ -44,7 +46,7 @@
                               task=model
                               question="Please enter your statement below:"}}
         </div>
-      {{/show-if-parent}}
+      {{/if}}
     {{/question-radio}}
   </li>
 </ol>

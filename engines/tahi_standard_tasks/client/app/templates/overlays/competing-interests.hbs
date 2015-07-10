@@ -5,17 +5,17 @@
     {{#question-radio ident="competing_interests.any"
                       task=model
                       question="<p>You are responsible for recognizing and disclosing on behalf of all authors any competing interest that could be perceived to bias their work, acknowledging all financial support and any other relevant financial or non-financial competing interests.</p><p>Do any authors of this manuscript have competing interests (as described in the <a target='_blank' href='http://www.plosbiology.org/static/policies#competing'>PLOS Policy on Declaration and Evaluation of Competing Interests</a>)?</p>"
-                      noValue=declareNoCompeteCopy}}
+                      noValue=declareNoCompeteCopy as |selected|}}
 
-      {{#show-if-parent prop="selectedYes"}}
+      {{#if selected.yes}}
         <div class="question-dataset">
           {{question-textarea ident="competing_interests.competing_interests"
                               task=model
                               question="Please provide details about any and all competing interests in the box below. Your response should begin with this statement: &quot;I have read the journal's policy and the authors of this manuscript have the following competing interests.&quot;"
                               helpText="Please note that if your manuscript is accepted, this statement will be published."}}
         </div>
-      {{/show-if-parent}}
-      {{#show-if-parent prop="selectedNo"}}
+      {{/if}}
+      {{#if selected.no}}
         <div class="question-dataset">
           <div class="question-text">
             Your competing interests statement will appear as: "{{declareNoCompeteCopy}}"
@@ -24,7 +24,7 @@
             Please note that if your manuscript is accepted, this statement will be published.
           </ul>
         </div>
-      {{/show-if-parent}}
+      {{/if}}
     {{/question-radio}}
   </li>
 </ol>

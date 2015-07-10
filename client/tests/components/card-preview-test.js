@@ -1,42 +1,61 @@
+import {
+  moduleForComponent,
+  test
+} from 'ember-qunit';
+
 import Ember from 'ember';
-import { test, moduleForComponent } from 'ember-qunit';
-import FactoryGuy from 'ember-data-factory-guy';
-import startApp from '../helpers/start-app';
-import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import hbs from 'htmlbars-inline-precompile';
 
-let App = null;
+moduleForComponent('card-preview', 'CardPreviewComponent', {
+  integration: true,
 
-moduleForComponent('card-preview', 'Unit: components/card-preview', {
-  beforeEach: function() {
-    Ember.run(function() {
-      App = startApp();
-      TestHelper.setup();
+  beforeEach() {
+    this.set('task', {
+      title: 'Example Card',
+      commentLooks: [{}, {}]
     });
-  },
-
-  afterEach: function() {
-    Ember.run(function() { TestHelper.teardown(); });
-    Ember.run(App, 'destroy');
   }
 });
 
-test('#unreadCommentsCount returns unread comments count', function(assert) {
-  let task      = FactoryGuy.make('task', 'withUnreadComments');
-  let component = this.subject({
-    task: task
-  });
+test('task is required', function(assert) {
+  assert.expect(1);
 
-  assert.equal(component.get('unreadCommentsCount'), 2);
+  assert.throws(function() {
+    this.render(hbs`
+      {{card-preview}}
+    `);
+  }, Error, 'has thrown an Error');
 });
 
-test('#unreadCommentsCount gets updated when commentLook is "read"', function(assert) {
-  let task      = FactoryGuy.make('task', 'withUnreadComments');
-  let component = this.subject({
-    task: task
-  });
+test('it renders', function(assert) {
+  assert.expect(1);
 
-  Ember.run(function() {
-    task.get('commentLooks').removeAt(0, 2);
-    assert.equal(component.get('unreadCommentsCount'), 0);
+  this.render(hbs`
+    {{card-preview task=task}}
+  `);
+
+  assert.equal(this.$('.card').length, 1);
+});
+
+test('#unread-comments-count badge displays when there are commentLooks', function(assert) {
+  assert.expect(1);
+
+  this.render(hbs`
+    {{card-preview task=task}}
+  `);
+
+  assert.equal(this.$('.unread-comments-count').text(), '2', 'correct badge count');
+});
+
+test('#unread-comments-count badge is removed when commentLooks are "read"', function(assert) {
+  assert.expect(1);
+
+  this.render(hbs`
+    {{card-preview task=task}}
+  `);
+
+  Ember.run(this, function() {
+    this.set('task.commentLooks', []);
+    assert.equal(this.$('.unread-comments-count').length, 0, 'badge is not displayed');
   });
 });

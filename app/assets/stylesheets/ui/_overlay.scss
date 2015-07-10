@@ -145,9 +145,15 @@
   h1 {
     text-align: center;
     padding-top: 150px;
-    padding-bottom: 100px;
+    padding-bottom: 75px;
     margin: 0 !important;
   }
+}
+
+.overlay-supporting-text {
+  color: $tahi-grey-dark;
+  padding-bottom: 75px;
+  text-align: center;
 }
 
 .overlay-main-work {

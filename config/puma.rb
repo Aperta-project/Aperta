@@ -1,6 +1,6 @@
-workers Integer(ENV['PUMA_WORKERS'] || 3)
+workers Integer(ENV.fetch 'PUMA_WORKERS', 3)
 # Lock thread usage to a constant value.
-thread_count = Integer(ENV['MAX_THREADS'] || 16)
+thread_count = Integer(ENV.fetch 'MAX_THREADS', 16)
 threads thread_count, thread_count
 
 preload_app!

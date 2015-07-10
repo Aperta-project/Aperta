@@ -5,7 +5,7 @@ Sidekiq.configure_server do |config|
 
   # allow configuration of concurrency without redeploy
   # controls the number of redis connections
-  sidekiq_workers = Integer(ENV['SIDEKIQ_CONCURRENCY'] || 25)
+  sidekiq_workers = Integer(ENV.fetch 'SIDEKIQ_CONCURRENCY', 25)
   config.options[:concurrency] = sidekiq_workers
 
   ActiveSupport.on_load(:active_record) do

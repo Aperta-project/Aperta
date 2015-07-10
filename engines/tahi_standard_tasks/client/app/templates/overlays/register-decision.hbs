@@ -14,36 +14,34 @@
 
 <div class="decision-selections">
   <label class="decision-label">
-    {{decision-radio-button value="accepted"
-                            action="setDecisionTemplate"
-                            selection=latestDecision.verdict
-                            disabled=model.completed
-                            name="decision"}}
+    {{radio-button value="accepted"
+                   action="setDecisionTemplate"
+                   selection=latestDecision.verdict
+                   disabled=model.completed
+                   name="decision"}}
     Accepted
   </label>
 
   <label class="decision-label">
-    {{decision-radio-button value="rejected"
-                            action="setDecisionTemplate"
-                            selection=latestDecision.verdict
-                            disabled=model.completed
-                            name="decision"}}
+    {{radio-button value="rejected"
+                   action="setDecisionTemplate"
+                   selection=latestDecision.verdict
+                   disabled=model.completed
+                   name="decision"}}
     Rejected
   </label>
 
   <label class="decision-label">
-    {{decision-radio-button value="revise"
-                            action="setDecisionTemplate"
-                            selection=latestDecision.verdict
-                            disabled=model.completed
-                            name="decision"}}
+    {{radio-button value="revise"
+                   action="setDecisionTemplate"
+                   selection=latestDecision.verdict
+                   disabled=model.completed
+                   name="decision"}}
     Revise
   </label>
 </div>
 
-<p>
-  Feel free to modify the standard decision letter. Your changes will be saved.
-</p>
+<p>Feel free to modify the standard decision letter. Your changes will be saved.</p>
 
 {{textarea focus-out="saveLatestDecision"
            onEvent="false"

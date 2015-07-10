@@ -24,11 +24,11 @@ RegisterDecisionOverlayController = TaskController.extend
 
   actions:
     saveLatestDecision: ->
+      @set 'isSavingData', true
       @get('latestDecision').save().then =>
         @set 'isSavingData', false
 
     setDecisionTemplate: (decision) ->
-      @set "isSavingData", true
       @get("latestDecision").set "verdict", decision
       @get("latestDecision").set "letter", @get("model.#{decision}LetterTemplate")
 

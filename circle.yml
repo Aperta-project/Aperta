@@ -45,8 +45,7 @@ database:
 ## Customize test commands
 test:
   override:
-    # run only our tests, not all tahi test
-    - "bundle exec rspec --format documentation -P \"`bundle show tahi-assess`/spec/**/*_spec.rb,spec/**/*_spec.rb\" --exclude-pattern \"spec/features/**/*.rb\""
+    - "bundle exec rake tahi_assess:rspec"
     - "bundle exec rake assets:precompile"
 
 ## Customize heroku deployment
@@ -56,3 +55,4 @@ deployment:
     commands:
       - git push git@heroku.com:tahi-assess.git -f $CIRCLE_SHA1:refs/heads/master
       - heroku run rake db:migrate --app tahi-assess
+      - WEBDRIVER_TARGET_URL=https://plos:shrimp@tahi-assess.herokuapp.com rake tahi_assess:integration RAILS_ENV=test

@@ -7,6 +7,14 @@ GIT
       activerecord (>= 3.0)
 
 GIT
+  remote: https://a32661883ad21e1b710268e7e73e39530e1cab95:x-oauth-basic@github.com/PLOS/tahi-assess
+  revision: e9013edf7cbdce3187521644f7030ab11c8eaac1
+  specs:
+    tahi-assess (0.0.1)
+      mustache (~> 1.0)
+      rails (~> 4.2.0, < 4.3)
+
+GIT
   remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_internal_review
   revision: 934d405800c68d011dc86da96d53c479e0e90675
   specs:
@@ -122,7 +130,7 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.3.8)
     american_date (1.1.0)
-    arel (6.0.0)
+    arel (6.0.1)
     auto_screenshot (0.0.3)
       capybara
       json
@@ -359,8 +367,6 @@ GEM
     multi_xml (0.5.5)
     multipart-post (2.0.0)
     mustache (1.0.2)
-      net-scp (= 1.2.1)
-      net-ssh (>= 2.6.5)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
@@ -669,6 +675,3 @@ DEPENDENCIES
   unf
   vcr
   webmock
-
-BUNDLED WITH
-   1.10.5

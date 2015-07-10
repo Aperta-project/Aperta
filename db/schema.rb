@@ -276,7 +276,7 @@ ActiveRecord::Schema.define(version: 20150709230305) do
   create_table "papers", force: :cascade do |t|
     t.string   "short_title"
     t.string   "title"
-    t.text     "abstract",          default: ""
+    t.text     "abstract",                      default: ""
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
@@ -421,6 +421,16 @@ ActiveRecord::Schema.define(version: 20150709230305) do
   end
 
   add_index "tahi_assess_assistants", ["task_id"], name: "index_tahi_assess_assistants_on_task_id", using: :btree
+
+  create_table "tahi_assess_evaluations", force: :cascade do |t|
+    t.boolean "finished"
+    t.integer "previous_evaluation_id"
+    t.integer "paper_id"
+    t.integer "user_id"
+    t.integer "version_id"
+    t.integer "name_disclosure"
+    t.text    "coi_statement"
+  end
 
   create_table "tahi_assess_notepads", force: :cascade do |t|
     t.integer  "user_id",                 null: false

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "Upload paper", js: true, selenium: true do
+feature "Upload paper", js: true, selenium: true, sidekiq: :inline! do
   let(:author) { FactoryGirl.create :user }
   let!(:paper) do
     FactoryGirl.create :paper_with_task,
@@ -13,17 +13,17 @@ feature "Upload paper", js: true, selenium: true do
   end
 
   before do
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in author
-  end
-
-  scenario "Author uploads paper in Word format" do
     allow_any_instance_of(IhatJobRequest).to receive(:queue) do
       paper.create_manuscript(status: "done")
       paper.update(title: "This is a Title About Turtles", body: "And this is my subtitle")
     end
 
-    click_link paper.reload.title
+    login_as author
+    visit "/"
+  end
+
+  scenario "Author uploads paper in Word format" do
+    click_link paper.title
     edit_paper_page = EditPaperPage.new
     edit_paper_page.view_card('Upload Manuscript').upload_word_doc
 

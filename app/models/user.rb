@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
   has_many :credentials, inverse_of: :user, dependent: :destroy
   has_many :assigned_papers, ->{ uniq }, through: :paper_roles, class_name: 'Paper', source: :paper
   has_many :invitations, foreign_key: :invitee_id, inverse_of: :invitee
-  has_many :discussion_replies, inverse_of: :replier, dependent: :destroy
+  has_many :discussion_replies, foreign_key: :replier_id, inverse_of: :replier, dependent: :destroy
   has_many :discussion_participants, inverse_of: :user, dependent: :destroy
   has_many :discussion_topics, through: :discussion_participants
 
@@ -37,11 +37,16 @@ class User < ActiveRecord::Base
 
   mount_uploader :avatar, AvatarUploader
 
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable,
-         authentication_keys: [:login],
-         omniauth_providers: Rails.configuration.omniauth_providers
+  if Rails.configuration.password_auth_enabled
+    devise :trackable, :omniauthable, :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable,
+      authentication_keys: [:login], omniauth_providers: Rails.configuration.omniauth_providers
+  else
+    devise :trackable, :omniauthable, omniauth_providers: Rails.configuration.omniauth_providers
+  end
+
+  def password_required?
+    Rails.configuration.password_auth_enabled && super
+  end
 
   def possible_flows
     Flow.where("role_id IN (?) OR role_id IS NULL", role_ids)

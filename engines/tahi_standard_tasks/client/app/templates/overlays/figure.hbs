@@ -33,7 +33,6 @@
   {{/each}}
 </div>
 
-{{#if isEditable}}
   {{#each figures as |figure|}}
     {{figure-thumbnail attachment=figure
                        action="changeStrikingImage"
@@ -41,10 +40,6 @@
                        destroyAttachment="destroyAttachment"
                        uploadFinished="uploadFinished"
                        uploadStarted="uploadStarted"
-                       uploadProgress="uploadProgress"}}
+                       uploadProgress="uploadProgress"
+                       isEditable=isEditable}}
   {{/each}}
-{{else}}
-  {{#each figures as |attachment|}}
-    {{partial "attachment_thumbnail_locked"}}
-  {{/each}}
-{{/if}}

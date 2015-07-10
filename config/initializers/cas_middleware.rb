@@ -1,30 +1,37 @@
 module CasConfig
-  def self.extract_environment_variables
-    {
+  def self.load_configuration
+    opts = {
       'ssl'                      => ENV['CAS_SSL'].present?,
       'disable_ssl_verification' => ENV['CAS_DISABLE_SSL_VERIFICATION'].present?,
       'host'                     => ENV["CAS_HOST"],
       'port'                     => ENV["CAS_PORT"],
       'service_validate_url'     => ENV["CAS_SERVICE_VALIDATE_URL"],
-      'callback_url'             => ENV["CAS_CALLBACK_URL"],
-      'logout_url'               => ENV["CAS_LOGOUT_URL"],
-      'login_url'                => ENV["CAS_LOGIN_URL"],
-      'uid_field'                => ENV["CAS_UID_FIELD"],
-      'ca_path'                  => ENV["CAS_HOST"]
     }
-  end
 
-  def self.load_configuration
-    if ENV['CAS_HOST'].present?
-      CasConfig.extract_environment_variables
-    else
-      YAML.load_file(File.join(Rails.root, 'config', 'cas.yml'))[Rails.env]
-    end
+    opts['callback_url'] = ENV["CAS_CALLBACK_URL"] if ENV["CAS_CALLBACK_URL"].present?
+    opts['logout_url'] = ENV["CAS_LOGOUT_URL"] if ENV['CAS_LOGOUT_URL'].present?
+    opts['login_url'] = ENV["CAS_LOGIN_URL"] if ENV['CAS_LOGIN_URL'].present?
+    opts['uid_field'] = ENV["CAS_UID_FIELD"] if ENV['CAS_UID_FIELD'].present?
+    opts['ca_path'] = ENV["CAS_HOST"] if ENV['CAS_HOST'].present?
+
+    opts[:fetch_raw_info] = lambda { |strategy, options, ticket, user_info|
+      Rails.logger.info("[CasConfig] received cas response: #{user_info}")
+      NedProfile.new(cas_id: user_info['user']).to_h
+    }
+
+    opts
   end
 end
 
-Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :cas, CasConfig.load_configuration
-end
+Tahi::Application.configure do
+  config.cas_enabled = ENV['CAS_ENABLED'] == 'true'
 
-Rails.configuration.omniauth_providers << :cas
+  if config.cas_enabled
+
+    # enable for devise
+    Devise.omniauth :cas, CasConfig.load_configuration
+
+    # enable on the user model
+    Rails.configuration.omniauth_providers << :cas
+  end
+end

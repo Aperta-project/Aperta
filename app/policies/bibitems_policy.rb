@@ -1,10 +1,6 @@
 class BibitemsPolicy < ApplicationPolicy
   primary_resource :bibitem
 
-  def connected_users
-    papers_policy.connected_users
-  end
-
   def create?
     papers_policy.show?
   end

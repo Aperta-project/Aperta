@@ -11,7 +11,7 @@ class InviteReviewersOverlay < CardOverlay
       else
         raise 'Did not find any matching reviewers'
       end
-      find('.invitee-full-name', text: reviewer.full_name)
+      find('table .active-invitations .invitee-full-name', text: reviewer.full_name)
     end
   end
 

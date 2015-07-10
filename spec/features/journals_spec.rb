@@ -6,8 +6,8 @@ feature "Journal Administration", js: true do
   let!(:journal2) { create :journal, description: 'journal 2 description' }
 
   before do
-    sign_in_page = SignInPage.visit
-    sign_in_page.sign_in user
+    login_as user
+    visit "/"
   end
 
   let(:admin_page) { AdminDashboardPage.visit }

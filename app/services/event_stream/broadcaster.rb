@@ -22,7 +22,7 @@ module EventStream
           access: TahiPusher::ChannelName::PRIVATE
         )
       end
-      TahiPusher::Channel.new(channel_name: channel_name).push(event_name: action, payload: payload, excluded_socket_id: excluded_socket_id)
+      TahiPusher::Channel.delay(queue: :eventstream, retry: false).push(channel_name: channel_name, event_name: action, payload: payload, excluded_socket_id: excluded_socket_id)
     end
   end
 end

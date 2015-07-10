@@ -30,6 +30,7 @@ module Tahi
     config.carrierwave_storage = :fog
     config.action_mailer.default_url_options = { host: ENV.fetch('DEFAULT_MAILER_URL', 'tahi.example.com') }
     config.admin_email = ENV.fetch('ADMIN_EMAIL', 'admin@example.com')
+    config.from_email = ENV.fetch('FROM_EMAIL', 'no-reply@example.com')
 
     # Raise an error within after_rollback & after_commit
     config.active_record.raise_in_transactional_callbacks = true
@@ -43,9 +44,5 @@ module Tahi
     end
 
     config.omniauth_providers = []
-
-    config.orcid_key = ENV.fetch('ORCID_KEY', false)
-    config.orcid_secret = ENV.fetch('ORCID_SECRET', false)
-    config.orcid_enabled = !!(config.orcid_key && config.orcid_secret)
   end
 end

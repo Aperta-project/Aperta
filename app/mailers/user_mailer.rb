@@ -1,7 +1,7 @@
 class UserMailer < ActionMailer::Base
   include MailerHelper
   add_template_helper ClientRouteHelper
-  default from: ENV.fetch('FROM_EMAIL', 'no-reply@example.com')
+  default from: Rails.configuration.from_email
   layout "mailer"
 
   after_action :prevent_delivery_to_invalid_recipient

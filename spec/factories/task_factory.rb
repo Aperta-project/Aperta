@@ -112,7 +112,7 @@ FactoryGirl.define do
 
   factory :editors_discussion_task, class: 'PlosBioInternalReview::EditorsDiscussionTask' do
     phase
-    title "Editor's Discussion"
+    title "Editors' Discussion"
     role "admin"
   end
 

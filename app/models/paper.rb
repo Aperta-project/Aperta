@@ -96,7 +96,7 @@ class Paper < ActiveRecord::Base
   end
 
   def make_decision(decision)
-    send(decision.verdict + '!')
+    public_send "#{decision.verdict}!"
   end
 
   def body

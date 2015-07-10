@@ -162,9 +162,9 @@ describe Paper do
       end
     end
 
-    context "revision" do
+    context "major revision" do
       let(:decision) do
-        FactoryGirl.create(:decision, verdict: "revise")
+        FactoryGirl.create(:decision, verdict: "major_revision")
       end
 
       it "puts the paper in_revision" do

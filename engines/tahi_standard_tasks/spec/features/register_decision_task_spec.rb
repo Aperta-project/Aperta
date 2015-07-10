@@ -55,7 +55,7 @@ feature "Register Decision", js: true do
   end
 
   scenario "User checks previous decision history" do
-    paper.decisions.first.update! verdict: "revise",
+    paper.decisions.first.update! verdict: "major_revision",
                                   letter: "Please revise the manuscript"
     paper.decisions.create!
     paper.reload

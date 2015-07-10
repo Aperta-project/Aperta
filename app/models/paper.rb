@@ -72,7 +72,7 @@ class Paper < ActiveRecord::Base
                   after: :allow_edits!
     end
 
-    event(:revise) do
+    event(:major_revision) do
       transitions from: :submitted,
                   to: :in_revision,
                   after: :allow_edits!

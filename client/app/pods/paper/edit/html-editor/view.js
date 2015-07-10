@@ -38,7 +38,10 @@ var View = Ember.View.extend(PaperEditMixin, {
   keyCount: 0,
 
   saveEditorChanges: function() {
-    var documentBody = this.get('editor').getBodyHtml();
+    let editor = this.get('editor');
+    if(Ember.isEmpty(editor)) { return; }
+
+    var documentBody = editor.getBodyHtml();
     this.get('controller').send('updateDocumentBody', documentBody);
   },
 });

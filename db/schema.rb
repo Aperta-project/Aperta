@@ -179,9 +179,9 @@ ActiveRecord::Schema.define(version: 20150709230305) do
     t.integer  "paper_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "title",      limit: 255
+    t.string   "title"
     t.text     "caption"
-    t.string   "status",     limit: 255, default: "processing"
+    t.string   "status",     default: "processing"
   end
 
   add_index "figures", ["paper_id"], name: "index_figures_on_paper_id", using: :btree
@@ -274,9 +274,9 @@ ActiveRecord::Schema.define(version: 20150709230305) do
   add_index "paper_roles", ["user_id"], name: "index_paper_roles_on_user_id", using: :btree
 
   create_table "papers", force: :cascade do |t|
-    t.string   "short_title",       limit: 255
-    t.string   "title",             limit: 255
-    t.text     "abstract",                      default: ""
+    t.string   "short_title"
+    t.string   "title"
+    t.text     "abstract",          default: ""
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"

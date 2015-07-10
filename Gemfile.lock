@@ -655,8 +655,8 @@ DEPENDENCIES
   sidetiq
   simplecov
   sinatra
-  tahi-assess!
   skylight
+  tahi-assess!
   tahi-assign_team!
   tahi_epub!
   tahi_standard_tasks!

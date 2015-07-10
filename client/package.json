@@ -50,7 +50,10 @@
       "../engines/tahi_upload_manuscript/client",
       "../../../.rvm/gems/ruby-2.2.0@tahi/bundler/gems/plos_bio_internal_review-934d405800c6/client",
       "../../../.rvm/gems/ruby-2.2.0@tahi/bundler/gems/plos_bio_tech_check-d876b657e0c6/client",
-      "../../../.rvm/gems/ruby-2.2.0@tahi/bundler/gems/tahi-assign_team-62cb7fc98c03/client"
+      "../../../.rvm/gems/ruby-2.2.0@tahi/bundler/gems/tahi-assign_team-62cb7fc98c03/client",
+      "../../../.rvm/gems/ruby-2.2.2@tahi/bundler/gems/plos_bio_internal_review-934d405800c6/client",
+      "../../../.rvm/gems/ruby-2.2.2@tahi/bundler/gems/plos_bio_tech_check-bc64d2686bc7/client",
+      "../../../.rvm/gems/ruby-2.2.2@tahi/bundler/gems/tahi-assign_team-62cb7fc98c03/client"
     ]
   }
 }

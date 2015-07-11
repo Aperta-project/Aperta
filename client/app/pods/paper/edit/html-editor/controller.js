@@ -41,10 +41,7 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
     // 3. let the router know that we are starting editing
     var paper = this.get('model');
     paper.set('lockedBy', this.currentUser);
-    // HACK: make sure pending changes are written out
     paper.set('body', this.get('editor').getBodyHtml());
-    // HACK: guard to prevent errors during testing
-    if (Ember.testing) { return; }
     paper.save().then(()=>{
       this.send('startEditing');
     });
@@ -53,8 +50,6 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
   releaseLock: function() {
     var paper = this.get('model');
     paper.set('lockedBy', null);
-    // HACK: guard to prevent errors during testing
-    if (Ember.testing) { return; }
     paper.save().then(()=>{
       // FIXME: don't know why but when calling this during willDestroyElement
       // this action will not be handled.

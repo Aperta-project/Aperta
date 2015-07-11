@@ -20,11 +20,11 @@ export default Ember.Component.extend({
   }),
 
   actions: {
-    viewCard(task) {
+    viewCard() {
       this.sendAction('action', this.get('task'));
     },
 
-    promptDelete(task) {
+    promptDelete() {
       this.sendAction('showDeleteConfirm', this.get('task'));
     }
   }

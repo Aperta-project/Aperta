@@ -18,11 +18,15 @@ feature "Editing paper", js: true do
     scenario "Author edits paper", selenium: true do
       # editing the paper
       edit_paper = EditPaperPage.new
+      edit_paper.start_editing
       edit_paper.title = "Lorem Ipsum Dolor Sit Amet"
       edit_paper.body = "Contrary to popular belief"
+      # check if changes are applied
+      expect(edit_paper).to have_paper_title("Lorem Ipsum Dolor Sit Amet")
+      expect(edit_paper).to have_body_text("Contrary to popular belief")
       edit_paper.save
       edit_paper.reload
-
+      # check if changes are persisted
       expect(edit_paper).to have_paper_title("Lorem Ipsum Dolor Sit Amet")
       expect(edit_paper).to have_body_text("Contrary to popular belief")
     end

@@ -104,6 +104,17 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
   disconnectEditor: function() {
     this.get('editor').disconnect();
   },
+
+  getBodyHtml: function() {
+    var editor = this.get('editor');
+    return editor.getBodyHtml();
+  },
+
+  setBodyHtml: function(html) {
+    var editor = this.get('editor');
+    return editor.setBodyHtml(html);
+  },
+
 });
 
 export default HtmlEditorController;

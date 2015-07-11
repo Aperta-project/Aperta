@@ -6,6 +6,8 @@ import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, DiscussionsRoutePathsMixin, {
   subRouteName: 'edit',
 
+  editorComponent: "tahi-editor-ve",
+
   // initialized by paper/edit/view
   toolbar: null,
   hasOverlay: false,

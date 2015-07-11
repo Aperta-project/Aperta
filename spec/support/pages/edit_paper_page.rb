@@ -70,7 +70,7 @@ class EditPaperPage < Page
     code = <<HERE
 var editorController = Tahi.__container__.lookup("controller:paper/edit/html-editor");
 var editor = editorController.get("editor.editor");
-editor.setCursor(0);
+editor.selectAll();
 editor.write("#{string}");
 HERE
     page.execute_script code
@@ -115,6 +115,7 @@ HERE
 var editorController = Tahi.__container__.lookup("controller:paper/edit/html-editor");
 editorController.startEditing();
 HERE
+    page.execute_script code
   end
 
   def stop_editing
@@ -122,6 +123,7 @@ HERE
 var editorController = Tahi.__container__.lookup("controller:paper/edit/html-editor");
 editorController.stopEditing();
 HERE
+    page.execute_script code
   end
 
   def save

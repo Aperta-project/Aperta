@@ -1,31 +1,49 @@
 import Ember from 'ember';
 import PaperEditMixin from 'tahi/mixins/views/paper-edit';
 
-var View = Ember.View.extend(PaperEditMixin, {
+export default Ember.View.extend(PaperEditMixin, {
 
   editor: null,
 
+  // Note: this is done because we instantiate the editor component
+  // via template. To be able to access the component from within
+  // the controller, here we pass it through.
   propagateEditor: function() {
     this.set('controller.editor', this.get('editor'));
   }.observes('editor'),
 
   initializeEditingState: function() {
-    // start editing right away
-    this.get('controller').startEditing();
+    var controller = this.get('controller');
+    // When the paper is not locked we take a click
+    // on the paper body to acquire the lock
+    this.$('.paper-body').on('click', (e)=>{
+      if (!controller.get('model.lockedBy')) {
+        e.preventDefault();
+        e.stopPropagation();
+        controller.acquireLock();
+      }
+    });
   }.on('didInsertElement'),
 
   destroyEditor: function() {
     Ember.$(document).off('keyup.autoSave');
-    // stop editing when closing the editor
-    this.get('controller').stopEditing();
+    var controller = this.get('controller');
+    // Unlock the paper when leaving
+    if (controller.get('lockedByCurrentUser')) {
+      controller.releaseLock();
+    }
   }.on('willDestroyElement'),
+
+  // Note: this must be here as it is used by mixins/views/paper-edit
+  saveEditorChanges: function() {
+    this.get('controller').savePaper();
+  },
 
   timeoutSave: function() {
     if (Ember.testing) {
       return;
     }
     this.saveEditorChanges();
-    this.get('controller').send('savePaper');
     Ember.run.cancel(this.short);
     Ember.run.cancel(this.long);
     this.short = null;
@@ -35,15 +53,5 @@ var View = Ember.View.extend(PaperEditMixin, {
 
   short: null,
   long: null,
-  keyCount: 0,
-
-  saveEditorChanges: function() {
-    let editor = this.get('editor');
-    if(Ember.isEmpty(editor)) { return; }
-
-    var documentBody = editor.getBodyHtml();
-    this.get('controller').send('updateDocumentBody', documentBody);
-  },
+  keyCount: 0
 });
-
-export default View;

@@ -53,12 +53,9 @@ export default function startApp(attrs) {
     }
   });
 
-  // Note: deactivating some implementation for testing
+  // Note: use a mock component for testing
   HtmlEditorController.reopen({
-    // override `say` to add an ! at the end
-    startEditing: function() {
-      this.set('isEditing', true);
-    }
+    editorComponent: "mock-html-editor",
   });
 
   Ember.run(function() {

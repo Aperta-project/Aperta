@@ -11,5 +11,5 @@ export default Ember.Handlebars.makeBoundHelper(function(text='') {
     string = text.string;
   }
 
-  return new Ember.Handlebars.SafeString(lineBreakToTag(string));
+  return Ember.String.htmlSafe(lineBreakToTag(string));
 });

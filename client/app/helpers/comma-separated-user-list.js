@@ -5,5 +5,5 @@ export default Ember.Handlebars.makeBoundHelper(function(users) {
     return `${u.first_name} ${u.last_name}`;
   }).join(', ');
 
-  return new Ember.Handlebars.SafeString(string);
+  return Ember.String.htmlSafe(string);
 });

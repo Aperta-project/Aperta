@@ -17,6 +17,6 @@ class ManuscriptPage(PlosPage):
 
   #POM Actions
   def click_workflow_button(self):
-    print ('Click workflow button')
+    """Click workflow button"""
     self._get(self._click_workflow_button).click()
     return self

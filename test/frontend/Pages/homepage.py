@@ -29,32 +29,33 @@ class HomePage(PlosPage):
 
   #POM Actions
   def click_create_new_submision_button(self):
-    print ('Click Create new submission button')
+    """Click Create new submission button"""
     self._get(self._create_new_submission_button).click()
     return self
 
   def click_on_existing_manuscript_link(self, title):
-    print ('Click on existing manuscript link')
+    """Click on existing manuscript link"""
     self._click_existing_manuscript = (By.LINK_TEXT,title)
     self._get(self._click_existing_manuscript).click()
     return self
 
   def click_on_existing_manuscript_link_partial_title(self, partial_title):
-    print ('Click on existing manuscript link using partial title')
+    """Click on existing manuscript link using partial title"""
     self.driver.find_element_by_partial_link_text(partial_title).click()
-    return self
-  
+    return self  
 
   def verify_editor_invites(self):
+    """Verify invites for editor"""
     editorInvitation = '1'
-    print ('Starting validation of editor invitation count...')
+    #Starting validation of editor invitation count...
     actualText = self._get(self._check_for_one_invite).text
     actualInvitationText = (re.search(r'\d+',actualText).group())
     self._validate_individual_text(actualInvitationText, editorInvitation)
 
   def verify_editor_invites_at_home(self):
+    """Verify invites for editor at homepage"""
     editorInvitation = 'Hi, Hendrik W.. You have 1 manuscript.'
-    print ('Starting validation of editor invitation count in homepage...')
+    #Starting validation of editor invitation count in homepage...
     actualText = self._get(self._check_for_one_invite_home).text
     self._validate_individual_text(actualText, editorInvitation)
 
@@ -71,31 +72,32 @@ class HomePage(PlosPage):
     self._validate_individual_text(actualText, errorAssertFail)
 
   def click_view_invitations_button(self):
-    print ('Click on invitation button')
+    """Click on invitation button"""
     self._get(self._click_view_invitations_button).click()
     return self
 
   def click_yes_to_invitations(self):
-    print ('Click yes button')
+    """Click yes button"""
     self._get(self._click_yes_to_invitations_button).click()
     return self
 
   def click_no_to_invitations(self):
-    print ('Click no button')
+    """Click no button"""
     self._get(self._click_no_to_invitations_button).click()
     return self
 
   def click_left_nav(self):
-    print ('Click left navigation')
+    """Click left navigation"""
     self._get(self._click_left_nav).click()
     return self
 
   def click_sign_out_link(self):
-    print ('Click sign out link')
+    """Click sign out link"""
     self._get(self._click_sign_out_link).click()
     return self
 
   def _validate_individual_text(self, actualText, expectedText):
+    # Why a validation method in a PO?
     print ('Verifying text "%s":' % actualText,)
     assert actualText == expectedText
     print ('PRESENT',)

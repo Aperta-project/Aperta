@@ -20,18 +20,18 @@ class LoginPage(PlosPage):
 
   #POM Actions
   def enter_login_field(self, email):
-    print ('Entering email')
+    """Enter email"""
     self._get(self._login_textbox).clear()
     self._get(self._login_textbox).send_keys(email)
     return self
 
   def enter_password_field(self, password):
-    print ('Entering email')
+    """Entering password"""
     self._get(self._password_textbox).clear()
     self._get(self._password_textbox).send_keys(password)
     return self
 
   def click_sign_in_button(self):
-    print ('Click Sign In button')
+    """Click Sign In button"""
     self._get(self._signin_button).click()
     return self

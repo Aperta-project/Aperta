@@ -1,39 +1,38 @@
 import Ember from 'ember';
+import { computed } from 'ember';
 import TaskController from 'tahi/pods/paper/task/controller';
 
 export default TaskController.extend({
   title: 'Add Authors',
   newAuthorFormVisible: false,
 
-  authors: (function() {
+  authors: computed('model.plosAuthors.@each.paper', function() {
     return this.get('model.plosAuthors').filterBy('paper', this.get('paper'));
-  }).property('model.plosAuthors.@each.paper'),
+  }),
 
   authorSort: ['position:asc'],
-  sortedAuthors: Ember.computed.sort('model.plosAuthors', 'authorSort'),
-  fetchAffiliations: function() {
-    let self = this;
-
-    Ember.$.getJSON('/api/affiliations', function(data) {
-      self.set('model.institutions', data.institutions);
+  sortedAuthors: computed.sort('model.plosAuthors', 'authorSort'),
+  fetchAffiliations: Ember.on('didSetupController', function() {
+    Ember.$.getJSON('/api/affiliations', (data)=> {
+      this.set('model.institutions', data.institutions);
     });
-  }.on('didSetupController'),
+  }),
 
-  sortedAuthorsWithErrors: (function() {
+  sortedAuthorsWithErrors: computed('sortedAuthors.@each', 'validationErrors', function() {
     return this.createModelProxyObjectWithErrors(this.get('sortedAuthors'));
-  }).property('sortedAuthors.@each', 'validationErrors'),
+  }),
 
-  shiftAuthorPositions: function(author, newPosition) {
+  shiftAuthorPositions(author, newPosition) {
     author.set('position', newPosition).save();
   },
 
   actions: {
-    toggleAuthorForm: function() {
+    toggleAuthorForm() {
       this.toggleProperty('newAuthorFormVisible');
       return false;
     },
 
-    saveNewAuthor: function(newAuthorHash) {
+    saveNewAuthor(newAuthorHash) {
       Ember.merge(newAuthorHash, {
         paper: this.get('model.paper'),
         plosAuthorsTask: this.get('model'),
@@ -44,12 +43,12 @@ export default TaskController.extend({
       this.toggleProperty('newAuthorFormVisible');
     },
 
-    saveAuthor: function(plosAuthor) {
+    saveAuthor(plosAuthor) {
       this.clearAllValidationErrorsForModel(plosAuthor);
       plosAuthor.save();
     },
 
-    removeAuthor: function(plosAuthor) {
+    removeAuthor(plosAuthor) {
       plosAuthor.destroyRecord();
     }
   }

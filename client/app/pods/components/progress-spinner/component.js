@@ -15,8 +15,6 @@ import Ember from 'ember';
  *   ```
  **/
 
-let computed = Ember.computed;
-
 let computedConcat = function(string, dependentKey) {
   return Ember.computed(dependentKey, function(){
     let value = Ember.get(this, dependentKey);
@@ -45,7 +43,7 @@ export default Ember.Component.extend({
    **/
   visible: false,
 
-  _visibleClass: computed('visible', 'align', function() {
+  _visibleClass: Ember.computed('visible', 'align', function() {
     if(!this.get('visible')) { return; }
 
     let modifier = !this.get('align') ? 'inline' : 'block';

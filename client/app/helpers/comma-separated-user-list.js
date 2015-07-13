@@ -1,7 +1,8 @@
 import Ember from 'ember';
 
-export default Ember.Handlebars.makeBoundHelper(function(users) {
-  let string = users.map(function(u) {
+// For Paper Tracker
+export default Ember.Helper.helper(function(params, hash) {
+  let string = hash.users.map(function(u) {
     return `${u.first_name} ${u.last_name}`;
   }).join(', ');
 

@@ -74,22 +74,20 @@
   <div class="form-group form-inline">
     <div class="form-group author-half {{if validationErrors.affiliation "error"}}">
       {{error-message message=validationErrors.affiliation}}
-      {{select-2-single
-          class="affiliation-field"
-          placeholder="* Affiliation"
-          selectedData=selectedAffiliation
-          source=selectableInstitutions
-          value=newAuthor.affiliation}}
+      {{select-2-single class="affiliation-field"
+                        placeholder="* Affiliation"
+                        selectedData=selectedAffiliation
+                        source=selectableInstitutions
+                        selectionSelected="affiliationSelected"}}
     </div>
 
     <div class="form-group author-half author-bump {{if validationErrors.secondaryAffiliation "error"}}">
       {{error-message message=validationErrors.secondaryAffiliation}}
-      {{select-2-single
-          class="secondary-affiliation-field"
-          placeholder="Secondary Affiliation (optional)"
-          selectedData=selectedSecondaryAffiliation
-          source=selectableInstitutions
-          value=newAuthor.secondaryAffiliation}}
+      {{select-2-single class="secondary-affiliation-field"
+                        placeholder="Secondary Affiliation (optional)"
+                        selectedData=selectedSecondaryAffiliation
+                        source=selectableInstitutions
+                        selectionSelected="secondaryAffiliationSelected"}}
     </div>
   </div>
 

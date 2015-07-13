@@ -1,6 +1,7 @@
 import Ember from 'ember';
-import { computed } from 'ember';
 import TaskController from 'tahi/pods/paper/task/controller';
+
+let computed = Ember.computed;
 
 export default TaskController.extend({
   title: 'Add Authors',

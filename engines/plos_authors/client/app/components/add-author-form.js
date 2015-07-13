@@ -48,27 +48,35 @@ export default Ember.Component.extend({
   }.property("newAuthor"),
 
   actions: {
-    cancelEdit: function() {
+    cancelEdit() {
       this.resetAuthor();
       this.sendAction("hideAuthorForm");
     },
 
-    saveNewAuthor: function() {
+    saveNewAuthor() {
       this.sendAction("saveAuthor", this.get("newAuthor"));
       this.resetAuthor();
     },
 
-    addContribution: function(name) {
+    addContribution(name) {
       this.get("newAuthor.contributions").addObject(name);
     },
 
-    removeContribution: function(name) {
+    removeContribution(name) {
       this.get("newAuthor.contributions").removeObject(name);
     },
 
-    resolveContributions: function(newContributions, unmatchedContributions) {
+    resolveContributions(newContributions, unmatchedContributions) {
       this.get("newAuthor.contributions").removeObjects(unmatchedContributions);
       this.get("newAuthor.contributions").addObjects(newContributions);
+    },
+
+    affiliationSelected(affiliationProxy) {
+      this.set('newAuthor.affiliation', affiliationProxy.text);
+    },
+
+    secondaryAffiliationSelected(affiliationProxy) {
+      this.set('newAuthor.secondaryAffiliation', affiliationProxy.text);
     }
   }
 });

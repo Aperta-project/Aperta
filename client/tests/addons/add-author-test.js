@@ -9,7 +9,7 @@ let App, paper, phase, task;
 module("Integration: adding an author", {
   afterEach() {
     Ember.run(function() { TestHelper.teardown(); });
-    Ember.run(App, 'destroy');
+    Ember.run(App, "destroy");
   },
 
   beforeEach() {
@@ -24,7 +24,7 @@ module("Integration: adding an author", {
     task = FactoryGuy.make("plos-authors-task", { phase: phase });
     paper = FactoryGuy.make("paper", { phases: [phase], tasks: [task], editable: true });
     TestHelper.handleFind(paper);
-    TestHelper.handleFindAll('discussion-topic', 1);
+    TestHelper.handleFindAll("discussion-topic", 1);
   }
 });
 

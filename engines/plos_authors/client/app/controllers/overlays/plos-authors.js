@@ -19,7 +19,8 @@ export default TaskController.extend({
     });
   }),
 
-  sortedAuthorsWithErrors: computed('sortedAuthors.@each', 'validationErrors', function() {
+  sortedAuthorsWithErrors: computed(
+    'sortedAuthors.@each', 'validationErrors', function() {
     return this.createModelProxyObjectWithErrors(this.get('sortedAuthors'));
   }),
 

@@ -63,7 +63,10 @@ export default Ember.Route.extend(AnimateOverlay, {
     },
 
     openOverlay(options) {
-      Ember.assert('You must pass a template name to `openOverlay`', options.template);
+      Ember.assert(
+        'You must pass a template name to `openOverlay`',
+        options.template
+      );
       if(Ember.isEmpty(options.into))   { options.into   = 'application'; }
       if(Ember.isEmpty(options.outlet)) { options.outlet = 'overlay'; }
 

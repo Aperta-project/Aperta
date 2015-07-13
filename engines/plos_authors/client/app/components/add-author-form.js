@@ -72,11 +72,11 @@ export default Ember.Component.extend({
     },
 
     affiliationSelected(affiliationProxy) {
-      this.set('newAuthor.affiliation', affiliationProxy.text);
+      this.set("newAuthor.affiliation", affiliationProxy.text);
     },
 
     secondaryAffiliationSelected(affiliationProxy) {
-      this.set('newAuthor.secondaryAffiliation', affiliationProxy.text);
+      this.set("newAuthor.secondaryAffiliation", affiliationProxy.text);
     }
   }
 });

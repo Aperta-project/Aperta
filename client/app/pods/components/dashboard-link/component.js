@@ -12,7 +12,9 @@ export default Ember.Component.extend({
   refreshTooltips: function() {
     Ember.run.scheduleOnce('afterRender', this, ()=> {
       if(this.$()) {
-        this.$('.link-tooltip').tooltip('destroy').tooltip({placement: 'bottom'});
+        this.$('.link-tooltip')
+            .tooltip('destroy')
+            .tooltip({placement: 'bottom'});
       }
     });
   },
@@ -23,6 +25,10 @@ export default Ember.Component.extend({
   }).on('didInsertElement'),
 
   teardownTooltips: function() {
-    this.removeObserver('model.unreadCommentsCount', this, this.refreshTooltips);
+    this.removeObserver(
+      'model.unreadCommentsCount',
+      this,
+      this.refreshTooltips
+    );
   }.on('willDestroyElement')
 });

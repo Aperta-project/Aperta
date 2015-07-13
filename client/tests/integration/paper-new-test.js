@@ -1,8 +1,8 @@
-import Ember from "ember";
-import { module, test } from "qunit";
-import startApp from "tahi/tests/helpers/start-app";
-import FactoryGuy from "ember-data-factory-guy";
-import TestHelper from "ember-data-factory-guy/factory-guy-test-helper";
+import Ember from 'ember';
+import { module, test } from 'qunit';
+import startApp from 'tahi/tests/helpers/start-app';
+import FactoryGuy from 'ember-data-factory-guy';
+import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 
 let App = null;
 let title = 'Crystalized Magnificence in the Modern World';
@@ -47,7 +47,7 @@ test('author successfully creates a submission', function(assert) {
 
 test('author unsuccessfully creates a submission', function(assert) {
   TestHelper.handleCreate('paper').andFail({
-    status: 422, response: {"errors":{"paper_type":["can't be blank"]}}
+    status: 422, response: {'errors':{'paper_type':['can\'t be blank']}}
   });
 
   visit('/');

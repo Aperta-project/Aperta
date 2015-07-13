@@ -9,7 +9,7 @@ let App, paper, phase, task, inviteeEmail;
 module("Integration: inviting an editor", {
   afterEach() {
     Ember.run(function() { TestHelper.teardown(); });
-    Ember.run(App, 'destroy');
+    Ember.run(App, "destroy");
   },
 
   beforeEach() {
@@ -36,9 +36,9 @@ module("Integration: inviting an editor", {
 
     phase = FactoryGuy.make("phase");
     task = FactoryGuy.make("paper-editor-task", { phase: phase });
-    paper = FactoryGuy.make('paper', { phases: [phase], tasks: [task] });
+    paper = FactoryGuy.make("paper", { phases: [phase], tasks: [task] });
     TestHelper.handleFind(paper);
-    TestHelper.handleFindAll('discussion-topic', 1);
+    TestHelper.handleFindAll("discussion-topic", 1);
   }
 });
 

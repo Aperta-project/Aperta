@@ -1,3 +1,5 @@
+// jshint unused:true
+
 import Ember from 'ember';
 import lineBreakToTag from 'tahi/lib/line-break-to-tag';
 

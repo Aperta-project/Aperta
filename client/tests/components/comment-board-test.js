@@ -24,7 +24,10 @@ test('#firstComments returns the latest 5 comments in reverse order', function(a
     return comment.get('body');
   });
 
-  assert.deepEqual(expectedCommentBodies, ["comment 8", "comment 7", "comment 6", "comment 5", "comment 4"]);
+  assert.deepEqual(
+    expectedCommentBodies,
+    ["comment 8", "comment 7", "comment 6", "comment 5", "comment 4"]
+  );
 });
 
 test('#showingAllComments returns false if there are more than 5 comments', function(assert) {

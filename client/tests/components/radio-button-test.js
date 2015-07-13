@@ -52,9 +52,12 @@ test('it updates', function(assert) {
   assert.expect(8);
 
   this.render(hbs`
-    {{radio-button id="red"   name="color" value="red"  selection=color action=(action "changeColor")}}
-    {{radio-button id="blue"  name="color" value="blue" selection=color action=(action "changeColor")}}
-    {{radio-button id="green" name="color" value="green"selection=color action=(action "changeColor")}}
+    {{radio-button id="red"   name="color" value="red"  selection=color
+                   action=(action "changeColor")}}
+    {{radio-button id="blue"  name="color" value="blue" selection=color
+                   action=(action "changeColor")}}
+    {{radio-button id="green" name="color" value="green"selection=color
+                   action=(action "changeColor")}}
   `);
 
   assert.equal(this.$('input:checked').length, 0, 'none checked');

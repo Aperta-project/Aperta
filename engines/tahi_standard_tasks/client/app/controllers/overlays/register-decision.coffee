@@ -1,10 +1,7 @@
 `import TaskController from 'tahi/pods/paper/task/controller'`
+`import RESTless from 'tahi/services/rest-less'`
 
 RegisterDecisionOverlayController = TaskController.extend
-  isEditable: (->
-    !@get("model.completed")
-  ).property('model.completed')
-
   latestDecision: (->
     @get('model.paper.decisions.firstObject')
   ).property("previousDecisions")
@@ -17,12 +14,37 @@ RegisterDecisionOverlayController = TaskController.extend
     @get("latestDecision.verdict") is "accepted" or @get("latestDecision.verdict") is "rejected"
   ).property("latestDecision")
 
+  paperPublishingState: (->
+    @get("model.paper.publishingState")
+  ).property("model.paper")
+
+  publishable: (->
+    @get("paperPublishingState") is "submitted" and
+    @get("model.completed") is false
+  ).property("paperPublishingState", "model.completed")
+
+  nonPublishable: (->
+    !@get("publishable")
+  ).property("publishable")
+
+  successText: ->
+    journalName = @get('model.paper.journal.name')
+    "Thank you. Your changes have been sent to #{journalName}."
+
   saveModel: ->
     @_super()
       .then () =>
         @send("saveLatestDecision")
 
   actions:
+    registerDecision: ->
+      taskId = @get("model.id")
+
+      RESTless.post('/api/register_decision/' + taskId + '/decide').then =>
+        @set('model.completed', true)
+        @send('saveModel')
+        @flash.displayMessage('success', @successText())
+
     saveLatestDecision: ->
       @get('latestDecision').save().then =>
         @set 'isSavingData', false

@@ -8,14 +8,14 @@ GIT
 
 GIT
   remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_internal_review
-  revision: 934d405800c68d011dc86da96d53c479e0e90675
+  revision: e93b5380876f24b6bcb23ecb82540b16f2a8208f
   specs:
     plos_bio_internal_review (0.0.1)
       rails (~> 4.2.1)
 
 GIT
   remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check
-  revision: bc64d2686bc7c467e80bb684e440fb3f624604f8
+  revision: 9ba481a5c492a79a2024d48164d25333cdcea750
   specs:
     plos_bio_tech_check (0.0.1)
       rails (~> 4.2.0)
@@ -115,7 +115,7 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.3.8)
     american_date (1.1.0)
-    arel (6.0.0)
+    arel (6.0.2)
     auto_screenshot (0.0.3)
       capybara
       json

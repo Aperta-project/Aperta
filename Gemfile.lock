@@ -194,7 +194,7 @@ GEM
       sprockets (>= 2.0)
     erubis (2.7.0)
     eventmachine (1.0.7)
-    excon (0.45.3)
+    excon (0.45.4)
     execjs (2.5.2)
     factory_girl (4.5.0)
       activesupport (>= 3.0.0)
@@ -234,7 +234,7 @@ GEM
     fog-atmos (0.1.0)
       fog-core
       fog-xml
-    fog-aws (0.7.2)
+    fog-aws (0.7.3)
       fog-core (~> 1.27)
       fog-json (~> 1.0)
       fog-xml (~> 0.1)
@@ -317,7 +317,7 @@ GEM
     heroku-deflater (0.5.3)
       rack (>= 1.4.5)
     hitimes (1.2.2)
-    htmlentities (4.3.3)
+    htmlentities (4.3.4)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     http_parser.rb (0.6.0)
@@ -576,7 +576,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  aasm
+  aasm (~> 4.1.0)
   active_model_serializers (= 0.8.3)
   active_record-acts_as
   activemodel-globalid!

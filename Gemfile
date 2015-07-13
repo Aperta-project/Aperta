@@ -59,7 +59,7 @@ gem 'ordinalize'
 gem 'migration_data'
 gem 'bugsnag'
 gem 'pg_search'
-gem 'aasm'
+gem 'aasm', "~> 4.1.0"
 gem 'bootstrap-sass'
 gem 'pusher'
 gem 'omniauth-cas'

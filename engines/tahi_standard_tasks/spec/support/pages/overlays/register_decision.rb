@@ -1,8 +1,10 @@
 class RegisterDecisionOverlay < CardOverlay
   def previous_decisions
-    all('.previous-decisions .decision').map { |decision_div|
-      DecisionComponent.new(decision_div)
-    }
+    within(".previous-decisions") do
+      all('.decision').map { |decision_div|
+        DecisionComponent.new(decision_div)
+      }
+    end
   end
 
   def register_decision=(decision)
@@ -19,6 +21,7 @@ class RegisterDecisionOverlay < CardOverlay
   end
 
   def radio_selected?
+    find('input[type=radio]', match: :first)
     all('input[type=radio]').any?(&:checked?)
   end
 
@@ -27,6 +30,7 @@ class RegisterDecisionOverlay < CardOverlay
   end
 
   def disabled?
+    find("input[type='radio']", match: :first)
     all("input[type='radio'][disabled]").size == 3 &&
     find("textarea[disabled]") != nil
   end

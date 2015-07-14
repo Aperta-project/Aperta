@@ -18,9 +18,21 @@ export default Ember.Component.extend({
   showSpinner: Ember.computed.or('isProcessing', 'isUploading'),
   attachmentType: 'attachment',
 
+  preview: function() {
+    return this.get('attachment.previewSrc') && !this.get('showSpinner');
+  }.property('previewSrc', 'showSpinner'),
+
+  fileIcon: function() {
+    return !this.get('attachment.previewSrc') && !this.get('showSpinner');
+  }.property('previewSrc', 'showSpinner'),
+
   attachmentUrl: function() {
-    return '/api/figures/' + this.get('attachment.id') + '/update_attachment';
-  }.property('attachment.id'),
+    if (this.get('figure')) {
+      return '/api/figures/' + this.get('attachment.id') + '/update_attachment';
+    } else {
+      return '/api/supporting_information_files/' + this.get('attachment.id') + '/update_attachment';
+    }
+  }.property('attachment.id', 'figure'),
 
   focusOnFirstInput() {
     Ember.run.schedule('afterRender', this, function() {
@@ -41,9 +53,11 @@ export default Ember.Component.extend({
     },
 
     toggleEditState() {
-      this.toggleProperty('editState');
-      if (this.get('editState')) {
-        this.focusOnFirstInput();
+      if (this.get('isEditable')) {
+        this.toggleProperty('editState');
+        if (this.get('editState')) {
+          this.focusOnFirstInput();
+        }
       }
     },
 
@@ -67,6 +81,7 @@ export default Ember.Component.extend({
     },
 
     uploadStarted(data, fileUploadXHR) {
+      this.set('isUploading', true);
       this.sendAction('uploadStarted', data, fileUploadXHR);
     },
 
@@ -75,6 +90,7 @@ export default Ember.Component.extend({
     },
 
     uploadFinished(data, filename) {
+      this.set('isUploading', false);
       this.sendAction('uploadFinished', data, filename);
     },
 
@@ -83,6 +99,11 @@ export default Ember.Component.extend({
       if (this.get('previewState')) {
         this.scrollToView();
       }
+    },
+
+    toggleStrikingImageFromCheckbox(checkbox) {
+      var newValue = checkbox.get('checked') ? checkbox.get('attachment.id') : null;
+      this.sendAction('strikingImageAction', newValue);
     }
   }
 });

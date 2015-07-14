@@ -8,6 +8,7 @@ export default TaskController.extend(FileUploadMixin, {
 
   actions: {
     uploadFinished: function(data, filename) {
+      console.log("OK here");
       this.uploadFinished(data, filename);
       this.store.pushPayload('supportingInformationFile', data);
       // TODO: Do we need these anymore? Ember-Data should handle relationships now

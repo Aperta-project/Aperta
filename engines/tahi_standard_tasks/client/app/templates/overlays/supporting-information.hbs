@@ -1,5 +1,19 @@
 <h1>{{model.title}}</h1>
 
+<div class="paper-figures">
+  {{#each model.paper.supportingInformationFiles as |file|}}
+    {{attachment-thumbnail attachment=file
+                           destroyAttachment="destroyAttachment"
+                           figure=false
+                           isEditable=model.paper.editable}}
+  {{/each}}
+</div>
+
+<div id="paper-file-uploads">
+  {{#each uploads as |upload|}}
+    {{upload-preview upload=upload}}
+  {{/each}}
+</div>
 {{#if isEditable}}
   <span class="button-primary button--green fileinput-button">
     <span>Add New Supporting Information</span>
@@ -12,21 +26,3 @@
                     progress="uploadProgress"}}
   </span>
 {{/if}}
-<div id="paper-file-uploads">
-  {{#each uploads as |upload|}}
-    {{upload-preview upload=upload}}
-  {{/each}}
-</div>
-
-<div class="paper-figures">
-  {{#if isEditable}}
-    {{#each model.paper.supportingInformationFiles as |file|}}
-      {{attachment-thumbnail attachment=file
-                             destroyAttachment="destroyAttachment"}}
-    {{/each}}
-  {{else}}
-    {{#each model.paper.supportingInformationFiles as |attachment|}}
-      {{partial "attachment_thumbnail_locked"}}
-    {{/each}}
-  {{/if}}
-</div>

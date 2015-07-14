@@ -13,6 +13,25 @@
 
 <hr>
 
+{{#each figures as |figure|}}
+  {{attachment-thumbnail attachment=figure
+                         figure=true
+                         strikingImageAction="changeStrikingImage"
+                         saveAttachment="updateStrikingImage"
+                         destroyAttachment="destroyAttachment"
+                         uploadFinished="uploadFinished"
+                         uploadStarted="uploadStarted"
+                         uploadProgress="uploadProgress"
+                         isEditable=model.paper.editable}}
+{{/each}}
+
+
+<div id="paper-attachment-uploads">
+  {{#each uploads as |upload|}}
+    {{upload-preview upload=upload}}
+  {{/each}}
+</div>
+
 {{#if isEditable}}
   <span class="button-primary button--green fileinput-button">
     <span>Add new Figures</span>
@@ -26,20 +45,3 @@
                     multiple=true}}
   </span>
 {{/if}}
-
-<div id="paper-attachment-uploads">
-  {{#each uploads as |upload|}}
-    {{upload-preview upload=upload}}
-  {{/each}}
-</div>
-
-  {{#each figures as |figure|}}
-    {{figure-thumbnail attachment=figure
-                       action="changeStrikingImage"
-                       saveAttachment="updateStrikingImage"
-                       destroyAttachment="destroyAttachment"
-                       uploadFinished="uploadFinished"
-                       uploadStarted="uploadStarted"
-                       uploadProgress="uploadProgress"
-                       isEditable=isEditable}}
-  {{/each}}

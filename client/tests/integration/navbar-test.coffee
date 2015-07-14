@@ -3,6 +3,7 @@
 `import startApp from '../helpers/start-app'`
 `import setupMockServer from '../helpers/mock-server'`
 `import Factory from '../helpers/factory'`
+`import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';`
 
 app = null
 server = null
@@ -12,10 +13,14 @@ module 'Integration: Navbar',
   afterEach: ->
     server.restore()
     Ember.run(app, app.destroy)
+    Ember.run ->
+      TestHelper.teardown()
 
   beforeEach: ->
     app = startApp()
     server = setupMockServer()
+    TestHelper.handleFindAll('paper', 0)
+    TestHelper.handleFindAll('invitation', 0)
 
     dashboardResponse = dashboards: [ id: 1 ]
 

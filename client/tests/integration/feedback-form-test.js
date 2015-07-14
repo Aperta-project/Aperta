@@ -11,6 +11,7 @@ module('Integration: Feedback Form', {
 
   beforeEach: function() {
     App = startApp();
+    $.mockjax({url: '/api/admin/journals/authorization', status: 204});
     $.mockjax({url: '/api/affiliations', status: 304 });
     $.mockjax({
       url: '/api/feedback',

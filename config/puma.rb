@@ -1,7 +1,15 @@
+app_dir = File.expand_path("../..", __FILE__)
+shared_dir = "#{app_dir}/shared"
+
 workers Integer(ENV.fetch 'PUMA_WORKERS', 3)
 # Lock thread usage to a constant value.
 thread_count = Integer(ENV.fetch 'MAX_THREADS', 16)
 threads thread_count, thread_count
+
+# set up socket
+bind "unix://#{shared_dir}/tmp/sockets/puma.sock"
+pidfile "#{shared_dir}/pids/puma.pid"
+state_path "#{shared_dir}/pids/puma.state"
 
 preload_app!
 

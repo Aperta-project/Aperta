@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_internal_review
-  revision: e93b5380876f24b6bcb23ecb82540b16f2a8208f
+  revision: 634f9b964025bdc518f33fc02e1284b9d960a9f7
   specs:
     plos_bio_internal_review (0.0.1)
       rails (~> 4.2.1)

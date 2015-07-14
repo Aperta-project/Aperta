@@ -2,7 +2,6 @@
 
 Please email us and say hello: TODO
 
-
 ## Contributing
 
 When creating a new pull request, please paste in the following rubric. Please
@@ -13,6 +12,7 @@ When creating a new pull request, please paste in the following rubric. Please
  will help you along**
 
     ## Pull Request Checklist
+    - [ ] changelog has been updated
     - [ ] ask yourself: is this PR complicated enough that you should write
           integration tests?
     - [ ] ask yourself: do you feel that things are well abstracted?
@@ -47,9 +47,6 @@ When creating a new pull request, please paste in the following rubric. Please
     - [ ] you announced the deploy with a few words summary to chatrooms
     - [ ] you have opened https://dashboard.heroku.com/apps for rollback
 
-At some point we may consider adding this bullet point to the list:
-
-    - [ ] changelog has been updated
 
 codeofconduct
 =============

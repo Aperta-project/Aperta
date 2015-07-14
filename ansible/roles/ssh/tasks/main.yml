@@ -7,15 +7,20 @@
   notify:
     - restart ssh
 
-# aaron-chandu pairing machine
+# alex-aaron pairing
 - authorized_key:
     user: deploy
-    key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDWemOfB7Hw1Irt3sLac8ZJmeR5sikRm4p5qswyX5++y/vzWrswWJiEqbxR/6vS/CGeX5myPc27XivQaQTUQz+rAq9p6f6dzqq3OYOZCy1/OgNmHQdh54RgHP4vDH+J82TvR7+MnjbXm45VmmfHI8vO4MFBPXYn0GJ9L3w6x+K2/YbkyyWxHw7e00HJNuDXgteusfjwMcMmTY0gcs/AWJCDVTqSMBpafiLSz9iECQw7HMrUGtHdiyvKYU4In0Tjv1bDRLJWb2mWb8thddoQrCtov33qHpRhQ8yrWGE47T2R3PpWZ/De7u9RD0XW4zelkt5ldCudgKhQoB4iw7TCzd9V neo@Neo-Mac.neo
+    key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDihEyvLvqR/EBeAvKlEMk3RMxHZgv9E2JxVd/p6vvnQXb/duNVsZBl5u2d9rUXke42GFUPS2B8gC+4V1sNSmwIVHIm8hgnWUrFHx1Vdy7ucMFltQoC5tpfRxucMbIVB3UOgs6z1dT+V+OXoW1xznFsNSM7d5ZHowcPWIdwbwPfhTDVcl34RN6qxxdovUJ0K1uOn8iQIMcGsgSZfSSAiHTCc4SoS9z1EbkgBjUTPdNJxDFM4vpnn9+upxtE8gzj0RzxUxGwoZS7SeuG9lZBt1FQlZnc2WXkbUsel/R5cTPMy/3TqpDoFzZM86cA2THwPBoXZv7uFN3C822gAriaDcO/N6kltAbwoIbXwT2Tv0dtkm/h/EPe80k/rBnDZjl2xM0kyGyntBXa5tbFqvSalncU73860a7Fpeh+qnzYe9cObHX6bSEpL4gJ92Q6nuzggv4zHGq3Ym0E2fBp4dZw4HCwCfqkU0KrGWGSDbG74F8UEIGlPZWEOi8NiJWYaiktv6Z9rmFT5N5nYSjZSA3UnMYw2TPh2Y7z5MCsVhsaxL43/kE74Ubpl60VDqooMR4sIYVRzuNfmdeEt78hf/bzvwHFQSZMkfTR0NOWp/d5Jl17HEKW5EWGX6Uli2jRfWWRdiLtcXWx8BueQO3JLpBWUQ1HPiJGoILO9eiZCjYJWFt6+Q== plos@Mutuallys-iMac-2.local
     manage_dir: true
     state: present
+
 # jure
 - authorized_key:
     user: deploy
     key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDOJpInFQa4ckKDlhhz5c2o1YQGs9WuFzNHJHvzKFjeVnw9zwmv8B3E0bxT1/+i/9KOepnBU+AZRV3MR+pY4dW0wU+4C9+iPgg2suIHk5xrlHOpOrWqaESPzhcY46FNA6xQjtKRh0VjIPffYTOxYF9HSHuF02Ch3bYUqSad6Aa5ip31tHYJUnsT240mFypvKuodADRWh9YhSpuN6p92oc4Y2Tjk0hysQrq5NWfk3WvcOXjCqvtMibI705e6vpUlM3TdIGQsB9WHOfLNXRW9462mYatzKzcwQT91tr3TCRrk3RQYdEbRmkZtQOMqFv0j5Zac7CgAzrUJKp1eQ5KRqERL juretriglav@gmail.com
     manage_dir: true
     state: present
+
+
+
+

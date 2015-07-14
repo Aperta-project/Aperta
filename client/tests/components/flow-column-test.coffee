@@ -20,10 +20,10 @@ appendBasicComponent = (context, attrs) ->
     context.component.setProperties(attrs)
   context.render()
 
-test "clicking the X should send 'removeFlow'", ->
+test "clicking the X should send 'removeFlow'", (assert) ->
   targetObject =
     externalAction: (flow) ->
-      ok true
+      assert.ok true
   componentAttrs =
     removeFlow: 'externalAction'
     targetObject: targetObject
@@ -32,10 +32,10 @@ test "clicking the X should send 'removeFlow'", ->
   appendBasicComponent(this, componentAttrs)
   click '.remove-column'
 
-test 'it forwards viewCard', ->
+test 'it forwards viewCard', (assert) ->
   targetObject =
     externalAction: (card) ->
-      equal card, "test"
+      assert.equal card, "test"
   componentAttrs =
     viewCard: 'externalAction'
     targetObject: targetObject

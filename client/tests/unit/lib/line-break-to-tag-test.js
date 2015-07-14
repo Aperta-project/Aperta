@@ -1,4 +1,4 @@
-import { module, test, equal } from 'qunit';
+import { module, test } from 'qunit';
 import lineBreakToTag from 'tahi/lib/line-break-to-tag';
 
 module('LineBreakToTag');

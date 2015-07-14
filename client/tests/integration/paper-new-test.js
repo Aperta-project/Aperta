@@ -27,6 +27,7 @@ module('Integration: Create new paper', {
     TestHelper.handleFindAll('discussion-topic', 0);
     $.mockjax({url: /\/api\/papers\/\d+\/manuscript_manager/, status: 204});
     $.mockjax({url: '/api/admin/journals/authorization', status: 204});
+    $.mockjax({url: '/api/user_flows/authorization', status: 204});
   }
 });
 

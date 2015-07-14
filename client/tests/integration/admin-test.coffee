@@ -49,18 +49,18 @@ module 'Integration: Admin Test',
       JSON.stringify adminJournalPayload
     ]
 
-test 'site admin can see the Add New Journal button', ->
+test 'site admin can see the Add New Journal button', (assert) ->
   Ember.run =>
     getCurrentUser().set('siteAdmin', true)
 
   visit("/admin/")
 
   andThen ->
-    ok find('.journal-thumbnail').length, 'Journals visible'
-    ok find('.add-new-journal').length, 'Add New Journal button visible'
+    assert.ok find('.journal-thumbnail').length, 'Journals visible'
+    assert.ok find('.add-new-journal').length, 'Add New Journal button visible'
 
-test 'journal admin can not see the Add New Journal button', ->
+test 'journal admin can not see the Add New Journal button', (assert) ->
   visit "/admin/"
   andThen ->
-    ok find('.journal-thumbnail').length, 'Journals visible'
-    ok !find('.add-new-journal').length, 'Add New Journal button not visible'
+    assert.ok find('.journal-thumbnail').length, 'Journals visible'
+    assert.ok !find('.add-new-journal').length, 'Add New Journal button not visible'

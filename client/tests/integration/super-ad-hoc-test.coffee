@@ -57,15 +57,15 @@ module 'Integration: Super AdHoc Card',
       200, {"Content-Type": "application/json"}, JSON.stringify []
     ]
 
-test "Changing the title on an AdHoc Task", ->
+test "Changing the title on an AdHoc Task", (assert) ->
   visit "/papers/#{currentPaper.id}/tasks/1"
   click 'h1.inline-edit .fa-pencil'
   fillIn '.large-edit input[name=title]', 'Shazam!'
   click '.large-edit .button--green:contains("Save")'
   andThen ->
-    equal(find('h1.inline-edit:contains("Shazam!")').length, 1, 'title is changed')
+    assert.equal(find('h1.inline-edit:contains("Shazam!")').length, 1, 'title is changed')
 
-test "Adding a text block to an AdHoc Task", ->
+test "Adding a text block to an AdHoc Task", (assert) ->
   visit "/papers/#{currentPaper.id}/tasks/1"
   click '.adhoc-content-toolbar .fa-plus'
   click '.adhoc-content-toolbar .adhoc-toolbar-item--text'
@@ -75,15 +75,15 @@ test "Adding a text block to an AdHoc Task", ->
     .trigger('keyup')
     click '.task-body .inline-edit-body-part .button--green:contains("Save")'
   andThen ->
-    assertText('.inline-edit', 'yahoo')
+    assert.textPresent('.inline-edit', 'yahoo')
     click '.inline-edit-body-part .fa-trash'
   andThen ->
-    assertText('.inline-edit-body-part', 'Are you sure?')
+    assert.textPresent('.inline-edit-body-part', 'Are you sure?')
     click '.inline-edit-body-part .delete-button'
   andThen ->
-    assertNoText('.inline-edit', 'yahoo')
+    assert.textNotPresent('.inline-edit', 'yahoo')
 
-test "Adding and removing a checkbox item to an AdHoc Task", ->
+test "Adding and removing a checkbox item to an AdHoc Task", (assert) ->
   visit "/papers/#{currentPaper.id}/tasks/1"
 
   click '.adhoc-content-toolbar .fa-plus'
@@ -95,16 +95,16 @@ test "Adding and removing a checkbox item to an AdHoc Task", ->
     .trigger('keyup')
     click '.task-body .inline-edit-body-part .button--green:contains("Save")'
   andThen ->
-    assertText('.inline-edit', 'checkbox list item')
-    equal(find('.inline-edit input[type=checkbox]').length, 1, 'checkbox item is visble')
+    assert.textPresent('.inline-edit', 'checkbox list item')
+    assert.equal(find('.inline-edit input[type=checkbox]').length, 1, 'checkbox item is visble')
     click '.inline-edit-body-part .fa-trash'
   andThen ->
-    assertText('.inline-edit-body-part', 'Are you sure?')
+    assert.textPresent('.inline-edit-body-part', 'Are you sure?')
     click '.inline-edit-body-part .delete-button'
   andThen ->
-    assertNoText('.inline-edit', 'checkbox list item')
+    assert.textNotPresent('.inline-edit', 'checkbox list item')
 
-test "Adding an email block to an AdHoc Task", ->
+test "Adding an email block to an AdHoc Task", (assert) ->
   visit "/papers/#{currentPaper.id}/tasks/1"
   click '.adhoc-content-toolbar .fa-plus'
   click '.adhoc-content-toolbar .adhoc-toolbar-item--email'
@@ -113,11 +113,10 @@ test "Adding an email block to an AdHoc Task", ->
     Ember.$('.inline-edit-form div[contenteditable]').html("Awesome email body!").trigger('keyup')
     click '.task-body .inline-edit-body-part .button--green:contains("Save")'
   andThen ->
-    assertText('.inline-edit .item-subject', 'Deep')
-    assertText('.inline-edit .item-text', 'Awesome')
+    assert.textPresent('.inline-edit .item-subject', 'Deep')
+    assert.textPresent('.inline-edit .item-text', 'Awesome')
 
-
-test "User can send an email from an adhoc card", ->
+test "User can send an email from an adhoc card", (assert) ->
   server.respondWith 'PUT', /\/api\/tasks\/\d+\/send_message/, [
     204, {"Content-Type": "application/json"}, JSON.stringify {}
   ]
@@ -135,6 +134,6 @@ test "User can send an email from an adhoc card", ->
   click('.send-email-action')
 
   andThen ->
-    ok find('.bodypart-last-sent').length, 'The sent at time should appear'
-    ok find('.bodypart-email-sent-overlay').length, 'The sent confirmation should appear'
-    ok _.findWhere(server.requests, {method: "PUT", url: "/api/tasks/1/send_message"}), "It posts to the server"
+    assert.ok find('.bodypart-last-sent').length, 'The sent at time should appear'
+    assert.ok find('.bodypart-email-sent-overlay').length, 'The sent confirmation should appear'
+    assert.ok _.findWhere(server.requests, {method: "PUT", url: "/api/tasks/1/send_message"}), "It posts to the server"

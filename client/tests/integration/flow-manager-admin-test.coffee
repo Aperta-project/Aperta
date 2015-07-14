@@ -48,21 +48,21 @@ module 'Integration: Flow Manager Administration',
       200, "Content-Type": "application/json", JSON.stringify { admin_journal_users: [] }
     ]
 
-test 'Flow manager edit link should show up on a role with permission in edit mode', ->
+test 'Flow manager edit link should show up on a role with permission in edit mode', (assert) ->
   visit "/admin/journals/#{journal.id}"
   click('.admin-role-action-button.fa.fa-pencil')
   andThen ->
-    ok !find('a:contains("Edit Flows")').length, "No flow manager link should show up without permission"
+    assert.ok !find('a:contains("Edit Flows")').length, "No flow manager link should show up without permission"
   click('input[name="role[canViewFlowManager]"]')
   andThen ->
-    ok find('a:contains("Edit Flows")').length
+    assert.ok find('a:contains("Edit Flows")').length
 
-test "Admin can add a new column in a role's flow-manager", ->
+test "Admin can add a new column in a role's flow-manager", (assert) ->
   visit "/admin/journals/#{journal.id}"
   click '.admin-role-action-button.fa.fa-pencil'
   click 'input[name="role[canViewFlowManager]"]'
   click 'a:contains("Edit Flows")'
   andThen ->
-    ok find('.back-link').text().match /Flow Manager/
-    ok find '.control-bar-link-text:contains("Add New Column")'
+    assert.ok find('.back-link').text().match /Flow Manager/
+    assert.ok find '.control-bar-link-text:contains("Add New Column")'
   # click '.add-flow-column-button'

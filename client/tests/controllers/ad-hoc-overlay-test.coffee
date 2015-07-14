@@ -7,7 +7,7 @@ moduleFor 'controller:overlays/ad-hoc', 'AdHocOverlayController',
   afterEach: ->
     RESTless.putModel.restore() # reset sinon stub
 
-test 'sendEmail calls send_message endpoint', ->
+test 'sendEmail calls send_message endpoint', (assert) ->
   sinon.stub(RESTless, 'putModel')
   @subject().send 'sendEmail', 'Foo'
-  ok RESTless.putModel.getCall(0).args[2].task == 'Foo'
+  assert.ok RESTless.putModel.getCall(0).args[2].task == 'Foo'

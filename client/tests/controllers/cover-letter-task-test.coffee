@@ -20,38 +20,38 @@ moduleFor 'controller:overlays/cover-letter', 'CoverLetterController',
       @ctrl = @subject()
       @ctrl.set('model', @task)
 
-test '#letterBody: returns the content of the cover letter', ->
-  equal @ctrl.get('letterBody'), ''
+test '#letterBody: returns the content of the cover letter', (assert) ->
+  assert.equal @ctrl.get('letterBody'), ''
 
-test '#formatCoverLetter: replaces newline with p tag', ->
+test '#formatCoverLetter: replaces newline with p tag', (assert) ->
   @ctrl.set('letterBody', "foo\nbar")
   result = @ctrl.get('formatCoverLetter')
-  equal result, '<p>foo</p><p>bar</p>'
+  assert.equal result, '<p>foo</p><p>bar</p>'
 
-test "#editingLetter: returns false when the paper has cover letter", ->
-  ok !@ctrl.get('editingLetter')
+test "#editingLetter: returns false when the paper has cover letter", (assert) ->
+  assert.ok !@ctrl.get('editingLetter')
 
-test "#editingLetter: returns true when the paper doesn't have cover letter", ->
+test "#editingLetter: returns true when the paper doesn't have cover letter", (assert) ->
   @task.body = []
   @ctrl.set('model', @task)
 
-  ok @ctrl.get 'editingLetter'
+  assert.ok @ctrl.get 'editingLetter'
 
-test "#editCoverLetter: toggle the state of the cover letter from preview to edit", ->
+test "#editCoverLetter: toggle the state of the cover letter from preview to edit", (assert) ->
   @ctrl.set('editingLetter', false)
   @ctrl.send('editCoverLetter')
 
-  ok @ctrl.get 'editingLetter'
+  assert.ok @ctrl.get 'editingLetter'
 
-test '#saveCoverLetter: model got saved back', ->
+test '#saveCoverLetter: model got saved back', (assert) ->
   handler = ()->
 
   sinon.stub(@task, 'save').returns(new Ember.RSVP.Promise(handler, handler))
   @ctrl.send('saveCoverLetter')
-  ok @task.save.called
+  assert.ok @task.save.called
 
-test '#saveCoverLetter: toggle editCoverLetter to be false', ->
+test '#saveCoverLetter: toggle editCoverLetter to be false', (assert) ->
   @ctrl.set('model.editingLetter', true)
   @ctrl.send('saveCoverLetter')
 
-  equal @ctrl.get('editingLetter'), false
+  assert.equal @ctrl.get('editingLetter'), false

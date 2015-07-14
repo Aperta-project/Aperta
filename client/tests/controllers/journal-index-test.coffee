@@ -17,15 +17,15 @@ moduleFor 'controller:admin/journal/index', 'JournalIndexController',
     Ember.run =>
       @controller = @subject()
 
-test '#logo returns false if a logoUrl doesnt exist', ->
+test '#logo returns false if a logoUrl doesnt exist', (assert) ->
   @controller.set('model', @journal)
-  equal @controller.get('logo'), false
+  assert.equal @controller.get('logo'), false
 
-test '#logo returns model.logoUrl if it exists', ->
+test '#logo returns model.logoUrl if it exists', (assert) ->
   @controller.set('model', @journalWithLogo)
-  equal @controller.get('logo'), @journalWithLogo.logoUrl
+  assert.equal @controller.get('logo'), @journalWithLogo.logoUrl
 
-test '#destroyMMTemplate does not delete the last MMT', ->
+test '#destroyMMTemplate does not delete the last MMT', (assert) ->
   Ember.run =>
     @journal.set('manuscriptManagerTemplates', [])
     @controller.set('model', @journal)
@@ -33,9 +33,9 @@ test '#destroyMMTemplate does not delete the last MMT', ->
     @controller.get('model.manuscriptManagerTemplates').addObject(@mmt)
     @controller.send 'destroyMMTemplate', @mmt
 
-  equal(@controller.get('model.manuscriptManagerTemplates.length'), 1)
+  assert.equal(@controller.get('model.manuscriptManagerTemplates.length'), 1)
 
-test '#destroyMMTemplate deletes the given MMT when there are more than one MMTs', ->
+test '#destroyMMTemplate deletes the given MMT when there are more than one MMTs', (assert) ->
   handler = ()->
 
   Ember.run =>
@@ -45,7 +45,7 @@ test '#destroyMMTemplate deletes the given MMT when there are more than one MMTs
     @controller.set('model', @journal)
 
   sinon.stub(@mmt2, 'destroyRecord').returns(new Ember.RSVP.Promise(handler, handler))
-  equal(@controller.get('model.manuscriptManagerTemplates.length'), 2)
+  assert.equal(@controller.get('model.manuscriptManagerTemplates.length'), 2)
   Ember.run =>
     @controller.send 'destroyMMTemplate', @mmt2
-    ok @mmt2.destroyRecord.called
+    assert.ok @mmt2.destroyRecord.called

@@ -1,16 +1,21 @@
+`import Ember from 'ember'`
+`import { module, test } from 'ember-qunit'`
+`import startApp from '../helpers/start-app'`
+
+app = null
+questionId = 553
+
 module 'Integration: Reporting Guidelines Card',
   afterEach: ->
-    ETahi.reset()
-    ETahi.paperEditActionStub.restore()
+    Ember.run(app, app.destroy)
 
   beforeEach: ->
-    setupApp integration: true
-    TahiTest.questionId = 553
+    app = startApp()
 
     questionResponse =
       question:
         _rootKey: "question"
-        id: TahiTest.questionId
+        id: questionId
         ident: "reporting_guidelines.systematic_reviews"
         question: "Systematic Reviews"
         answer: "false"
@@ -22,7 +27,7 @@ module 'Integration: Reporting Guidelines Card',
     # we have to change the answer to true on click
     questionModifiedResponse =
       question:
-        id: TahiTest.questionId
+        id: questionId
         ident: "reporting_guidelines.systematic_reviews"
         question: "Systematic Reviews"
         answer: "true"
@@ -34,7 +39,7 @@ module 'Integration: Reporting Guidelines Card',
     ef = ETahi.Factory
     records = ETahi.Setups.paperWithTask "ReportingGuidelinesTask",
       id: TahiTest.reportingGuidelinesId
-      question_ids: [TahiTest.questionId]
+      question_ids: [questionId]
     [paper, task, _] = records
 
     paperPayload = ef.createPayload('paper')
@@ -55,28 +60,28 @@ module 'Integration: Reporting Guidelines Card',
       200, {"Content-Type": "application/json"}, JSON.stringify questionModifiedResponse
     ]
 
-test 'Supporting Guideline is a meta data card, contains the right questions and sub-questions', ->
-  ok false
+test 'Supporting Guideline is a meta data card, contains the right questions and sub-questions', (assert) ->
+  assert.ok false
   findQuestionLi = (questionText) ->
     find('.question .item').filter (i, el) -> Ember.$(el).find('label').text().trim() is questionText
 
   visit "/papers/#{TahiTest.paperId}/edit"
   .then ->
-    ok exists find '.card-content:contains("Reporting Guidelines")'
+    assert.ok exists find '.card-content:contains("Reporting Guidelines")'
     ETahi.paperEditActionStub = sinon.stub(ETahi.__container__.lookup('controller:paperEdit')._actions, "savePaper")
 
   click '.card-content:contains("Reporting Guidelines")'
   .then ->
-    equal find('.question .item').length, 6
-    equal find('h1').text(), 'Reporting Guidelines'
+    assert.equal find('.question .item').length, 6
+    assert.equal find('h1').text(), 'Reporting Guidelines'
     questionLi = findQuestionLi 'Systematic Reviews'
-    ok exists questionLi.find('.additional-data.hidden')
+    assert.ok exists questionLi.find('.additional-data.hidden')
 
   click 'input[name="reporting_guidelines.systematic_reviews"]'
   .then ->
     questionLi = findQuestionLi 'Systematic Reviews'
-    ok !(exists questionLi.find('.additional-data.hidden'))
-    ok exists questionLi.find('.additional-data')
+    assert.ok !(exists questionLi.find('.additional-data.hidden'))
+    assert.ok exists questionLi.find('.additional-data')
     additionalDataText = questionLi.find('.additional-data').first().text().trim()
-    ok additionalDataText.indexOf('Select & upload') > -1
-    ok additionalDataText.indexOf('Provide a completed PRISMA checklist as supporting information.') > -1
+    assert.ok additionalDataText.indexOf('Select & upload') > -1
+    assert.ok additionalDataText.indexOf('Provide a completed PRISMA checklist as supporting information.') > -1

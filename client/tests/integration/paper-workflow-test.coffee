@@ -47,34 +47,34 @@ module 'Integration: Paper Workflow page',
       200, {"Content-Type": "application/json"}, '{}'
     ]
 
-test 'show delete confirmation overlay on deletion of a Task', ->
+test 'show delete confirmation overlay on deletion of a Task', (assert) ->
   visit '/papers/1/workflow'
   andThen ->
     $("div.card .card-remove").show()
     click("div.card .card-remove")
   andThen ->
-    equal(find('h1:contains("about to delete this card forever")').length, 1)
-    equal(find('h2:contains("Are you sure?")').length, 1)
-    equal(find('.overlay button:contains("cancel")').length, 1)
-    equal(find('.overlay button:contains("Yes, Delete this Card")').length, 1)
+    assert.equal(find('h1:contains("about to delete this card forever")').length, 1)
+    assert.equal(find('h2:contains("Are you sure?")').length, 1)
+    assert.equal(find('.overlay button:contains("cancel")').length, 1)
+    assert.equal(find('.overlay button:contains("Yes, Delete this Card")').length, 1)
 
-test 'click delete confirmation overlay cancel button', ->
+test 'click delete confirmation overlay cancel button', (assert) ->
   visit '/papers/1/workflow'
   andThen ->
     equal find(".card-content").length, 1
     $("div.card .card-remove").show()
     click("div.card .card-remove")
     click('.overlay button:contains("cancel")')
-    equal find(".card-content").length, 1
+    assert.equal find(".card-content").length, 1
 
-test 'click delete confirmation overlay submit button', ->
+test 'click delete confirmation overlay submit button', (assert) ->
   visit '/papers/1/workflow'
   andThen ->
-    equal(find(".card-content").length, 1, "card exists")
+    assert.equal(find(".card-content").length, 1, "card exists")
     $("div.card .card-remove").show()
     click("div.card .card-remove")
     click('.overlay button:contains("Yes, Delete this Card")')
   andThen ->
-    equal(find(".card-content").length, 0, "card deleted")
+    assert.equal(find(".card-content").length, 0, "card deleted")
     req = _.findWhere(server.requests, {method: "DELETE", url: "/api/tasks/1"})
-    equal(req.status, 200, "It sends DELETE request to the server")
+    assert.equal(req.status, 200, "It sends DELETE request to the server")

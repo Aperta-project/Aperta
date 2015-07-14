@@ -59,7 +59,7 @@ module 'Integration: EditPaper',
       200, {"Content-Type": "application/json"}, JSON.stringify []
     ]
 
-test 'on paper.edit as a participant on a task but not author of paper', ->
+test 'on paper.edit as a participant on a task but not author of paper', (assert) ->
   expect(1)
 
   records = paperWithTask('Task'
@@ -80,9 +80,9 @@ test 'on paper.edit as a participant on a task but not author of paper', ->
   ]
 
   visit("/papers/#{currentPaper.id}/edit").then ->
-    ok !!find('#paper-assigned-tasks .card-content:contains("ReviewMe")').length
+    assert.ok !!find('#paper-assigned-tasks .card-content:contains("ReviewMe")').length
 
-test 'on paper.edit as a participant on a task and author of paper', ->
+test 'on paper.edit as a participant on a task and author of paper', (assert) ->
   expect(1)
 
   records = paperWithTask('ReviseTask'
@@ -104,17 +104,17 @@ test 'on paper.edit as a participant on a task and author of paper', ->
   ]
 
   visit("/papers/#{currentPaper.id}/edit").then ->
-    ok !!find('#paper-assigned-tasks .card-content:contains("Revise Task")'),
+    assert.ok !!find('#paper-assigned-tasks .card-content:contains("Revise Task")'),
       "Participant task is displayed in '#paper-assigned-tasks' for author"
 
-test 'visiting /edit-paper: Author completes all metadata cards', ->
+test 'visiting /edit-paper: Author completes all metadata cards', (assert) ->
   expect(3)
   visit("/papers/#{currentPaper.id}/edit")
     .then ->
-      ok(!find('#paper-container.sidebar-empty').length, "The sidebar should NOT be hidden")
+      assert.ok(!find('#paper-container.sidebar-empty').length, "The sidebar should NOT be hidden")
     .then ->
       submitButton = find('button:contains("Submit")')
-      ok(!submitButton.length, "Submit is disabled")
+      assert.ok(!submitButton.length, "Submit is disabled")
     .then ->
       for card in find('#paper-metadata-tasks .card-content')
         click card
@@ -122,18 +122,18 @@ test 'visiting /edit-paper: Author completes all metadata cards', ->
         click '.overlay-close-button:first'
   andThen ->
     submitButton = find('button:contains("Submit")')
-    ok(!submitButton.hasClass('button--disabled'), "Submit is enabled")
+    assert.ok(!submitButton.hasClass('button--disabled'), "Submit is enabled")
 
-test 'on paper.edit when paper.editable changes, user transitions to paper.index', ->
+test 'on paper.edit when paper.editable changes, user transitions to paper.index', (assert) ->
   visit "/papers/#{currentPaper.id}/edit"
   .then ->
     Ember.run ->
       getStore().getById('paper', currentPaper.id).set('editable', false)
   andThen ->
-    ok !find('.button-primary:contains("Submit")').length
-    equal currentRouteName(), "paper.index.index"
+    assert.ok !find('.button-primary:contains("Submit")').length
+    assert.equal currentRouteName(), "paper.index.index"
 
-test 'on paper.edit when there are no metadata tasks', ->
+test 'on paper.edit when there are no metadata tasks', (assert) ->
   expect(2)
   records = paperWithTask('Task'
     id: 2
@@ -151,13 +151,13 @@ test 'on paper.edit when there are no metadata tasks', ->
 
   visit("/papers/#{currentPaper.id}/edit")
     .then ->
-      !ok(find('#paper-container.sidebar-empty').length, "The sidebar should be hidden")
+      !assert.ok(find('#paper-container.sidebar-empty').length, "The sidebar should be hidden")
     .then ->
       msg = "There is a submit manuscript button in the main area"
-      ok(find('.no-sidebar-submit-manuscript.button--green:contains("Submit Manuscript")').length, msg)
+      assert.ok(find('.no-sidebar-submit-manuscript.button--green:contains("Submit Manuscript")').length, msg)
 
 
-test 'on paper.index when there are no metadata tasks', ->
+test 'on paper.index when there are no metadata tasks', (assert) ->
   expect(2)
   records = paperWithTask('Task'
     id: 3
@@ -177,7 +177,8 @@ test 'on paper.index when there are no metadata tasks', ->
   .then ->
     Ember.run ->
       getStore().getById('paper', currentPaper.id).set('editable', false)
+
   andThen ->
-    ok find('#paper-container.sidebar-empty').length, "The sidebar should be hidden"
+    assert.ok find('#paper-container.sidebar-empty').length, "The sidebar should be hidden"
     msg = "There is no submit manuscript button in the main area"
-    ok !find('.manuscript-container .no-sidebar-submit-manuscript.button--green:contains("Submit Manuscript")').length, msg
+    assert.ok !find('.manuscript-container .no-sidebar-submit-manuscript.button--green:contains("Submit Manuscript")').length, msg

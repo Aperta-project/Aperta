@@ -20,11 +20,11 @@ moduleFor 'controller:paper.index', 'PaperIndexController',
   afterEach: ->
     jQuery.ajax.restore()
 
-test '#export: calls the export url in Tahi', ->
+test '#export: calls the export url in Tahi', (assert) ->
   basePaperController = @subject()
   basePaperController.set('model', @paper)
   downloadType =
     url: "http://example.com"
     format: "docx"
   basePaperController.send 'export', downloadType
-  ok jQuery.ajax.calledWithMatch {url: "/api/papers/#{@paper.id}/export", data: {format: downloadType.format}}
+  assert.ok jQuery.ajax.calledWithMatch {url: "/api/papers/#{@paper.id}/export", data: {format: downloadType.format}}

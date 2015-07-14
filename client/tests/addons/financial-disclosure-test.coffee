@@ -15,7 +15,7 @@ financialDisclosureTaskId = 94139
 financialDisclosureTask = null
 paperPayload = null
 
-module 'FinancialDisclosureTask',
+module 'Integration: FinancialDisclosure',
   teardown: ->
     server.restore()
     Ember.run(app, app.destroy)
@@ -24,7 +24,6 @@ module 'FinancialDisclosureTask',
     server = setupMockServer()
     fakeUser = window.currentUserData.user
     TestHelper.handleFindAll('discussion-topic', 1)
-
 
     records = paperWithTask('FinancialDisclosureTask'
       id: financialDisclosureTaskId
@@ -80,30 +79,29 @@ module 'FinancialDisclosureTask',
 
     server.respondWith 'POST', "/api/funders", mirrorCreateResponse('funder', 1)
 
-test 'Viewing the card and adding new funder', ->
+test 'Viewing the card and adding new funder', (assert) ->
   visit "/papers/#{currentPaper.id}/edit"
   click ':contains("Financial")'
   .then ->
-    equal find('.overlay-main-work h1').text().trim(), 'Financial Disclosures'
-    ok find("label:contains('Yes')").length
+    assert.equal find('.overlay-main-work h1').text().trim(), 'Financial Disclosures'
+    assert.ok find("label:contains('Yes')").length
     click "label:contains('Yes')"
     andThen ->
-      ok find("button:contains('Add Another Funder')").length, "User can add another funder"
-      ok find("span.remove-funder").length, "User can add remove the funder"
+      assert.ok find("button:contains('Add Another Funder')").length, "User can add another funder"
+      assert.ok find("span.remove-funder").length, "User can add remove the funder"
       Ember.$('#funder-name').val("Hello")
       Ember.$('#grant-number').val("1234567890")
       click("label:contains('Completed')")
       click("a:contains('Close')")
       andThen ->
-        ok find("div.card-completed-icon").length
+        assert.ok find("div.card-completed-icon").length
 
-test "Removing an existing funder when there's only 1", ->
+test "Removing an existing funder when there's only 1", (assert) ->
   visit "/papers/#{currentPaper.id}/edit"
   click ':contains("Financial")'
+  click "label:contains('Yes')"
+  click "span.remove-funder"
+
   andThen ->
-    click "label:contains('Yes')"
-    andThen ->
-      click "span.remove-funder"
-      andThen ->
-        ok !find('input#received-funding-no:checked').length, "Returned to netual"
-        ok !find('input#received-funding-yes:checked').length, "Returned to netual"
+    assert.ok !find('input#received-funding-no:checked').length, "Returned to netual"
+    assert.ok !find('input#received-funding-yes:checked').length, "Returned to netual"

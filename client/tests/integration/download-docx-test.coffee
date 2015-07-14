@@ -25,7 +25,7 @@ module 'Integration: Paper Docx Download',
     fakeUser = window.currentUserData.user
     TestHelper.handleFindAll('discussion-topic', 1)
 
-test 'show download links on control bar', ->
+test 'show download links on control bar', (assert) ->
   records = paperWithTask('Task'
     id: 1
     title: "Metadata"
@@ -68,5 +68,5 @@ test 'show download links on control bar', ->
     click('.docx')
 
   andThen ->
-    ok _.findWhere(server.requests, { method: 'GET', url: exportUrl }), 'Download request made'
+    assert.ok _.findWhere(server.requests, { method: 'GET', url: exportUrl }), 'Download request made'
     mock.restore()

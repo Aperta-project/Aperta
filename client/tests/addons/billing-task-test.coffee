@@ -61,11 +61,11 @@ module 'Integration: Billing',
       200, {"Content-Type": "application/json"}, JSON.stringify []
     ]
 
-test 'Viewing card', ->
+test 'Viewing card', (assert) ->
   visit "/papers/#{currentPaper.id}/edit"
   click ':contains(Billing)'
   .then ->
-    equal find('.overlay-main-work h1').text().trim(), 'Publication Fees'
+    assert.equal find('.overlay-main-work h1').text().trim(), 'Publication Fees'
   click '.select2-choice'
   .then ->
-    ok Ember.$('.select2-result').length > 0
+    assert.ok Ember.$('.select2-result').length > 0

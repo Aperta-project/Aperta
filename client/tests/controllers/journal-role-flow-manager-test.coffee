@@ -3,7 +3,7 @@
 
 moduleFor('controller:admin/journal/flow-manager', 'Unit: controller/journalFlowManager')
 
-test 'newFlowPosition puts the new flow at the highest position', ->
+test 'newFlowPosition puts the new flow at the highest position', (assert) ->
   eo = Ember.Object
   flows = [
     eo.create(position: 1)
@@ -13,4 +13,4 @@ test 'newFlowPosition puts the new flow at the highest position', ->
   controller = @subject()
   controller.set 'model', role
 
-  equal controller.newFlowPosition(), 3
+  assert.equal controller.newFlowPosition(), 3

@@ -3,16 +3,22 @@ import Application from '../../app';
 import Router from '../../router';
 import config from '../../config/environment';
 
-import asyncHelpers from './async-helpers';
-import storeHelpers from './store-helpers';
-import containerHelpers from './container-helpers';
-import select2Helpers from './select2-helpers';
-import customAssertions from './custom-assertions';
+import registerCustomAssertions from './custom-assertions';
+import registerAsyncHelpers     from './async-helpers';
+import regsiterStoreHelpers     from './store-helpers';
+import registerContainerHelpers from './container-helpers';
+import registerSelect2Helpers   from './select2-helpers';
 
 import Factory from './factory';
-import TestHelper from "ember-data-factory-guy/factory-guy-test-helper";
+import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import HtmlEditorController from 'tahi/pods/paper/edit/html-editor/controller';
 
-import HtmlEditorController from "tahi/pods/paper/edit/html-editor/controller";
+registerCustomAssertions();
+registerAsyncHelpers();
+regsiterStoreHelpers();
+registerContainerHelpers();
+registerSelect2Helpers();
+
 
 export default function startApp(attrs) {
   var application;
@@ -24,20 +30,20 @@ export default function startApp(attrs) {
     location: 'none'
   });
 
-  var currentUser = Factory.createRecord('User', {
+  let currentUser = Factory.createRecord('User', {
     id: 1,
-    full_name: "Fake User",
-    username: "fakeuser",
-    email: "fakeuser@example.com"
+    full_name: 'Fake User',
+    username: 'fakeuser',
+    email: 'fakeuser@example.com'
   });
 
   window.currentUserData = {user: currentUser};
 
   window.eventStreamConfig = {
-    key: "fakeAppKey123456",
-    host: "localhost",
-    port: "59198",
-    auth_endpoint_path: "/event_stream/auth"
+    key: 'fakeAppKey123456',
+    host: 'localhost',
+    port: '59198',
+    auth_endpoint_path: '/event_stream/auth'
   };
 
   TestHelper.reopen({
@@ -55,7 +61,7 @@ export default function startApp(attrs) {
 
   // Note: use a mock component for testing
   HtmlEditorController.reopen({
-    editorComponent: "mock-html-editor",
+    editorComponent: 'mock-html-editor',
   });
 
   Ember.run(function() {

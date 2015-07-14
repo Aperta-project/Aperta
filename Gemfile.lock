@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/capistrano/maintenance.git
+  revision: b31962d2ac134fae5e2f536380956a1042895c1e
+  specs:
+    capistrano-maintenance (1.0.0)
+      capistrano (>= 3.0)
+
+GIT
   remote: git://github.com/swanandp/acts_as_list.git
   revision: 84325ede9ad528acbf68a97c5070cff113ee6a17
   ref: 84325ede9ad528acbf68a97c5070cff113ee6a17
@@ -114,6 +121,8 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.3.8)
+    airbrussh (0.6.0)
+      sshkit (>= 1.6.1, != 1.7.0)
     american_date (1.1.0)
     arel (6.0.2)
     auto_screenshot (0.0.3)
@@ -137,6 +146,24 @@ GEM
     bullet (4.14.7)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.9.0)
+    capistrano (3.3.5)
+      capistrano-stats (~> 1.1.0)
+      i18n
+      rake (>= 10.0.0)
+      sshkit (~> 1.3)
+    capistrano-bundler (1.1.4)
+      capistrano (~> 3.1)
+      sshkit (~> 1.2)
+    capistrano-rails (1.1.3)
+      capistrano (~> 3.1)
+      capistrano-bundler (~> 1.1)
+    capistrano-sidekiq (0.5.3)
+      capistrano
+      sidekiq
+    capistrano-stats (1.1.1)
+    capistrano3-puma (1.1.0)
+      capistrano (~> 3.0)
+      puma (>= 2.6)
     capybara (2.4.4)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -155,6 +182,7 @@ GEM
     codeclimate-test-reporter (0.4.7)
       simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.1.0)
+    colorize (0.7.7)
     connection_pool (2.2.0)
     cookiejar (0.3.2)
     crack (0.4.2)
@@ -537,6 +565,10 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
+    sshkit (1.7.1)
+      colorize (>= 0.7.0)
+      net-scp (>= 1.1.2)
+      net-ssh (>= 2.8.0)
     thin (1.6.3)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0)
@@ -578,12 +610,18 @@ DEPENDENCIES
   active_record-acts_as
   activemodel-globalid!
   acts_as_list!
+  airbrussh
   american_date
   auto_screenshot
   bootstrap-sass
   bourbon
   bugsnag
   bullet
+  capistrano (~> 3.3.0)
+  capistrano-maintenance!
+  capistrano-rails
+  capistrano-sidekiq
+  capistrano3-puma
   capybara
   carrierwave
   codeclimate-test-reporter

@@ -1,0 +1,16 @@
+require 'pry'
+namespace :setup do
+  desc "copy database.yml file"
+  task :copy_database_yml do
+    on roles(:web) do |host|
+      upload! "config/database.yml", "#{shared_path}/config/"
+    end
+  end
+
+  desc "copy .env variable file"
+  task :copy_env do
+    on roles(:web) do |host|
+      upload! ".env.#{fetch(:stage)}", shared_path
+    end
+  end
+end

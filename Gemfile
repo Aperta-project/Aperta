@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 ruby "2.2.2"
 
 # Configuration
-group :development, :test, :performance do
+group :production, :development, :test, :performance do
   gem 'dotenv-rails', :require => 'dotenv/rails-now'
 end
 
@@ -94,6 +94,12 @@ end
 
 group :development do
   gem 'bullet'
+  gem 'capistrano', '~> 3.3.0'
+  gem 'capistrano-rails'
+  gem 'capistrano-sidekiq'
+  gem 'capistrano3-puma'
+  gem 'capistrano-maintenance', github: 'capistrano/maintenance', require: false
+  gem 'airbrussh', require: false
 end
 
 group :test do

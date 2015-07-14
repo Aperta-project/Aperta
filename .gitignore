@@ -24,6 +24,7 @@ config/secrets.yml
 Procfile.local
 .env.local
 .env.development
+.env.production
 .foreman
 
 # Testing

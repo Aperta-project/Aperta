@@ -1,5 +1,8 @@
-app_dir = File.expand_path("../..", __FILE__)
-shared_dir = "#{app_dir}/shared"
+require 'dotenv'
+Dotenv.load!(".env", ".env.production")
+
+app_dir = Pathname.new(File.expand_path("../..", __FILE__))
+shared_dir = app_dir.join("../shared")
 
 workers Integer(ENV.fetch 'PUMA_WORKERS', 3)
 # Lock thread usage to a constant value.
@@ -8,14 +11,13 @@ threads thread_count, thread_count
 
 # set up socket
 bind "unix://#{shared_dir}/tmp/sockets/puma.sock"
-pidfile "#{shared_dir}/pids/puma.pid"
-state_path "#{shared_dir}/pids/puma.state"
+pidfile "#{shared_dir}/tmp/pids/puma.pid"
+state_path "#{shared_dir}/tmp/pids/puma.state"
 
-preload_app!
-
-rackup      DefaultRackup
 port        ENV['PORT']     || 3000
 environment ENV['RACK_ENV'] || 'development'
+
+preload_app!
 
 on_worker_boot do
   # worker specific setup

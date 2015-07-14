@@ -2,16 +2,16 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   actions: {
-    hideNavigation: function() {
+    hideNavigation() {
       this.attrs.hideNavigation();
     },
 
-    showNavigation: function() {
-      this.sendAction.showNavigation();
+    showNavigation() {
+      this.attrs.showNavigation();
     },
 
-    showFeedbackOverlay: function() {
-      this.sendAction('showFeedbackOverlay');
+    showFeedbackOverlay() {
+      this.attrs.showFeedbackOverlay();
     }
   }
 });

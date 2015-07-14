@@ -1,7 +1,7 @@
 import DS from 'ember-data';
 
 export default DS.Store.extend({
-  push: function(type, data, _partial) {
+  push(type, data, _partial) {
     let oldRecord;
     let oldType = type;
     let dataType = data.type;
@@ -15,7 +15,8 @@ export default DS.Store.extend({
     }
     return this._super(this.modelFor(modelType), data, _partial);
   },
-  findTask: function(id) {
+
+  findTask(id) {
     let matchingTask = this.allTaskClasses().find(function(tm) {
       return tm.idToRecord[id];
     });
@@ -23,7 +24,8 @@ export default DS.Store.extend({
       return matchingTask.idToRecord[id];
     }
   },
-  allTaskClasses: function() {
+
+  allTaskClasses() {
     return Object.keys(this.typeMaps).reduce((function(_this) {
       return function(memo, key) {
         let typeMap = _this.typeMaps[key];

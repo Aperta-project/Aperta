@@ -42,7 +42,7 @@ common: &default_settings
   #       - Ajax Service
   #       - All Services
   #
-  app_name: Tahi
+  app_name: <%= ENV['NEWRELIC_APP_NAME'] %>
 
   # When "true", the agent collects performance data about your
   # application and reports this data to the New Relic service at
@@ -217,9 +217,6 @@ test:
 production:
   <<: *default_settings
   monitor_mode: true
-  app_name:
-    - Tahi
-     - <%= ENV['NEWRELIC_APP_NAME'] %>
 
 # Many applications have a staging environment which behaves
 # identically to production. Support for that environment is provided
@@ -227,11 +224,7 @@ production:
 staging:
   <<: *default_settings
   monitor_mode: true
-  app_name:
-    - Tahi
-    - <%= ENV['NEWRELIC_APP_NAME'] %>
 
 performance:
   <<: *default_settings
   monitor_mode: true
-  app_name: Tahi (Performance)

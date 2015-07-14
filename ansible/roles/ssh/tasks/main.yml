@@ -1,0 +1,21 @@
+- copy:
+    src: sshd_config
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+  sudo: yes
+  notify:
+    - restart ssh
+
+# aaron-chandu pairing machine
+- authorized_key:
+    user: deploy
+    key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDWemOfB7Hw1Irt3sLac8ZJmeR5sikRm4p5qswyX5++y/vzWrswWJiEqbxR/6vS/CGeX5myPc27XivQaQTUQz+rAq9p6f6dzqq3OYOZCy1/OgNmHQdh54RgHP4vDH+J82TvR7+MnjbXm45VmmfHI8vO4MFBPXYn0GJ9L3w6x+K2/YbkyyWxHw7e00HJNuDXgteusfjwMcMmTY0gcs/AWJCDVTqSMBpafiLSz9iECQw7HMrUGtHdiyvKYU4In0Tjv1bDRLJWb2mWb8thddoQrCtov33qHpRhQ8yrWGE47T2R3PpWZ/De7u9RD0XW4zelkt5ldCudgKhQoB4iw7TCzd9V neo@Neo-Mac.neo
+    manage_dir: true
+    state: present
+# jure
+- authorized_key:
+    user: deploy
+    key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDOJpInFQa4ckKDlhhz5c2o1YQGs9WuFzNHJHvzKFjeVnw9zwmv8B3E0bxT1/+i/9KOepnBU+AZRV3MR+pY4dW0wU+4C9+iPgg2suIHk5xrlHOpOrWqaESPzhcY46FNA6xQjtKRh0VjIPffYTOxYF9HSHuF02Ch3bYUqSad6Aa5ip31tHYJUnsT240mFypvKuodADRWh9YhSpuN6p92oc4Y2Tjk0hysQrq5NWfk3WvcOXjCqvtMibI705e6vpUlM3TdIGQsB9WHOfLNXRW9462mYatzKzcwQT91tr3TCRrk3RQYdEbRmkZtQOMqFv0j5Zac7CgAzrUJKp1eQ5KRqERL juretriglav@gmail.com
+    manage_dir: true
+    state: present

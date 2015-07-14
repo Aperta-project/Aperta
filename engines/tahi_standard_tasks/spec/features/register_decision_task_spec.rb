@@ -50,7 +50,7 @@ feature "Register Decision", js: true do
         overlay.click_send_email_button
         expect(overlay).to be_completed
         expect(overlay.success_state_message).to be true
-        expect(overlay).to be_disabled
+        expect(first('input[name=decision]')).to be_disabled
       end
     end
 

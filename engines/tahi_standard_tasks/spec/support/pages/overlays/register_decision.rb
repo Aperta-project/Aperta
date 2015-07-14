@@ -36,13 +36,15 @@ class RegisterDecisionOverlay < CardOverlay
   end
 
   def click_send_email_button
+    # the flash message won't show on the first click
+    find(".send-email-action").click
     find(".send-email-action").click
     # and wait for the flash message to show
     find(".alert")
   end
 
   def success_state_message
-    find(".alert-info").text == "A final decision of accepted has been registered."
+    find(".alert-info").text == "A final Decision of accept has been registered."
   end
 
   def invalid_state_message

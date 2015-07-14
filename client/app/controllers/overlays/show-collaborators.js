@@ -1,29 +1,31 @@
 import Ember from 'ember';
 
+let computed = Ember.computed;
+
 export default Ember.Controller.extend({
   overlayClass: 'overlay--fullscreen show-collaborators-overlay',
-  availableCollaborators: Ember.computed.setDiff('allUsers', 'collaborators'),
+  availableCollaborators: computed.setDiff('allUsers', 'collaborators'),
 
-  formattedCollaborators: function() {
+  formattedCollaborators: computed('availableCollaborators.@each', function() {
     return this.get('availableCollaborators').map(function(collab) {
       return {
         id: collab.get('id'),
         text: collab.get('fullName')
       };
     });
-  }.property('availableCollaborators.@each'),
+  }),
 
-  addedCollaborations: Ember.computed.setDiff('collaborations', 'initialCollaborations'),
-  removedCollaborations: Ember.computed.setDiff('initialCollaborations', 'collaborations'),
+  addedCollaborations: computed.setDiff('collaborations', 'initialCollaborations'),
+  removedCollaborations: computed.setDiff('initialCollaborations', 'collaborations'),
   allUsers: null,
   selectedCollaborator: null,
   paper: null,
   initialCollaborations: null,
 
   collaborations: null,
-  collaborators: function() {
+  collaborators: computed('collaborations.@each', function() {
     return this.get('collaborations').mapBy('user');
-  }.property('collaborations.@each'),
+  }),
 
   actions: {
     addNewCollaborator(formattedOption) {
@@ -72,8 +74,8 @@ export default Ember.Controller.extend({
         return collaboration.destroyRecord();
       });
 
-      Ember.RSVP.all(_.union(addPromises, deletePromises)).then(()=> {
-        return this.send('closeOverlay');
+      Ember.RSVP.all(addPromises.concat(deletePromises)).then(()=> {
+        this.send('closeOverlay');
       });
     }
   }

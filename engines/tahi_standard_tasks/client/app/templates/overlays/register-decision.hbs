@@ -2,21 +2,30 @@
   {{progress-spinner visible=true size="large" center=true}}
 </div>
 
-<h1>Register Decision</h1>
+<h1>
+  Register Decision
+</h1>
 
 {{#if model.completed}}
   {{#if finalDecision}}
     <div class="alert alert-info">
-      A final Decision of {{latestDecision.verdict}} has been registered.
+      A final decision of {{latestDecision.verdict}} has been registered.
     </div>
   {{/if}}
+{{else}}
+  {{#unless controller.publishable}}
+    <div class="alert alert-warning">
+      A decision cannot be registered at this time.
+      The manuscript is not in a submitted state.
+    </div>
+  {{/unless}}
 {{/if}}
 
 <div class="decision-selections">
   <label class="decision-label">
     {{radio-button value="accepted"
                    selection=latestDecision.verdict
-                   disabled=model.completed
+                   disabled=controller.nonPublishable
                    name="decision"
                    action=(action "setDecisionTemplate")}}
     Accepted
@@ -25,7 +34,7 @@
   <label class="decision-label">
     {{radio-button value="rejected"
                    selection=latestDecision.verdict
-                   disabled=model.completed
+                   disabled=controller.nonPublishable
                    name="decision"
                    action=(action "setDecisionTemplate")}}
     Rejected
@@ -34,7 +43,7 @@
   <label class="decision-label">
     {{radio-button value="revise"
                    selection=latestDecision.verdict
-                   disabled=model.completed
+                   disabled=controller.nonPublishable
                    name="decision"
                    action=(action "setDecisionTemplate")}}
     Revise
@@ -47,8 +56,12 @@
            onEvent="false"
            class="decision-letter-field"
            placeholder="A boilerplate decision letter will appear here"
-           disabled=model.completed
+           disabled=controller.nonPublishable
            value=latestDecision.letter}}
+
+<button class="btn send-email-action" disabled={{controller.nonPublishable}} {{action "registerDecision"}}>
+  Register Decision and Email the Author
+</button>
 
 {{#if previousDecisions}}
   <hr>

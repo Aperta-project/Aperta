@@ -8,14 +8,14 @@ GIT
 
 GIT
   remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_internal_review
-  revision: 934d405800c68d011dc86da96d53c479e0e90675
+  revision: e93b5380876f24b6bcb23ecb82540b16f2a8208f
   specs:
     plos_bio_internal_review (0.0.1)
       rails (~> 4.2.1)
 
 GIT
   remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check
-  revision: bc64d2686bc7c467e80bb684e440fb3f624604f8
+  revision: fb4fbd1765beb1a6d36a499b4d9c2043b9bd4af9
   specs:
     plos_bio_tech_check (0.0.1)
       rails (~> 4.2.0)
@@ -115,7 +115,7 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.3.8)
     american_date (1.1.0)
-    arel (6.0.0)
+    arel (6.0.2)
     auto_screenshot (0.0.3)
       capybara
       json
@@ -189,12 +189,12 @@ GEM
     em-websocket (0.5.1)
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0.6.0)
-    ember-cli-rails (0.3.2)
+    ember-cli-rails (0.3.3)
       railties (>= 3.1, < 5)
       sprockets (>= 2.0)
     erubis (2.7.0)
     eventmachine (1.0.7)
-    excon (0.45.3)
+    excon (0.45.4)
     execjs (2.5.2)
     factory_girl (4.5.0)
       activesupport (>= 3.0.0)
@@ -234,7 +234,7 @@ GEM
     fog-atmos (0.1.0)
       fog-core
       fog-xml
-    fog-aws (0.7.2)
+    fog-aws (0.7.3)
       fog-core (~> 1.27)
       fog-json (~> 1.0)
       fog-xml (~> 0.1)
@@ -317,7 +317,7 @@ GEM
     heroku-deflater (0.5.3)
       rack (>= 1.4.5)
     hitimes (1.2.2)
-    htmlentities (4.3.3)
+    htmlentities (4.3.4)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     http_parser.rb (0.6.0)
@@ -377,7 +377,7 @@ GEM
     ordinalize (0.0.3)
       humanize
     orm_adapter (0.5.0)
-    pdfkit (0.7.0)
+    pdfkit (0.8.0)
     pg (0.18.2)
     pg_search (1.0.4)
       activerecord (>= 3.1)
@@ -496,7 +496,7 @@ GEM
       rspec-core (>= 2, < 4, != 2.12.0)
     rubyzip (1.1.7)
     safe_yaml (1.0.4)
-    sass (3.4.15)
+    sass (3.4.16)
     sass-rails (5.0.3)
       railties (>= 4.0.0, < 5.0)
       sass (~> 3.1)
@@ -576,7 +576,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  aasm
+  aasm (~> 4.1.0)
   active_model_serializers (= 0.8.3)
   active_record-acts_as
   activemodel-globalid!

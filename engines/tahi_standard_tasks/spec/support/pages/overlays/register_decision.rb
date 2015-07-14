@@ -1,8 +1,10 @@
 class RegisterDecisionOverlay < CardOverlay
   def previous_decisions
-    all('div.decision').map { |decision_div|
-      DecisionComponent.new(decision_div)
-    }
+    within(".previous-decisions") do
+      all('.decision').map { |decision_div|
+        DecisionComponent.new(decision_div)
+      }
+    end
   end
 
   def register_decision=(decision)
@@ -19,6 +21,7 @@ class RegisterDecisionOverlay < CardOverlay
   end
 
   def radio_selected?
+    find('input[type=radio]', match: :first)
     all('input[type=radio]').any?(&:checked?)
   end
 
@@ -27,9 +30,23 @@ class RegisterDecisionOverlay < CardOverlay
   end
 
   def disabled?
-    find("#task_completed[disabled]") != nil &&
+    find("input[type='radio']", match: :first)
     all("input[type='radio'][disabled]").size == 3 &&
     find("textarea[disabled]") != nil
+  end
+
+  def click_send_email_button
+    find(".send-email-action").click
+    # and wait for the flash message to show
+    find(".alert")
+  end
+
+  def success_state_message
+    find(".alert-info").text == "A final decision of accepted has been registered."
+  end
+
+  def invalid_state_message
+    !find(".alert-warning").nil?
   end
 end
 

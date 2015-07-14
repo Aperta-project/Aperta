@@ -52,6 +52,20 @@ describe Paper do
       end
     end
 
+    describe "title" do
+      it "is within 255 chars" do
+        paper = FactoryGirl.build(:paper, title: "a" * 256)
+        expect(paper).to_not be_valid
+        expect(paper).to have(1).errors_on(:title)
+
+        paper.title = "a" * 254
+        expect(paper).to be_valid
+
+        paper.title = "a" * 255
+        expect(paper).to be_valid
+      end
+    end
+
     describe "short_title" do
       it "must be present" do
         paper = FactoryGirl.build(:paper, short_title: nil)
@@ -64,6 +78,18 @@ describe Paper do
         dup_paper = FactoryGirl.build(:paper, short_title: 'Duplicate')
         expect(dup_paper).to_not be_valid
         expect(dup_paper).to have(1).errors_on(:short_title)
+      end
+
+      it "is within 255 chars" do
+        paper = FactoryGirl.build(:paper, short_title: "a" * 256)
+        expect(paper).to_not be_valid
+        expect(paper).to have(1).errors_on(:short_title)
+
+        paper.short_title = "a" * 254
+        expect(paper).to be_valid
+
+        paper.short_title = "a" * 255
+        expect(paper).to be_valid
       end
     end
 

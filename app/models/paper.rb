@@ -34,6 +34,8 @@ class Paper < ActiveRecord::Base
   validates :short_title, presence: true, uniqueness: true
   validates :journal, presence: true
 
+  validates :short_title, :title, length: { maximum: 255 }
+
   delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
 
   aasm column: :publishing_state do

@@ -11,13 +11,6 @@ module TahiStandardTasks
 
     register_task default_title: "Register Decision", default_role: "editor"
 
-    def after_update
-      if on_card_completion?
-        complete_decision
-        send_email
-      end
-    end
-
     def complete_decision
       decision = paper.decisions.latest
       paper.make_decision decision

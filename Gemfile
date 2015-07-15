@@ -100,6 +100,8 @@ group :development do
   gem 'capistrano-sidekiq'
   gem 'capistrano3-puma'
   gem 'capistrano-maintenance', github: 'capistrano/maintenance', require: false
+  gem 'capistrano-npm'
+  gem 'capistrano-bower'
   gem 'airbrussh', require: false
 end
 

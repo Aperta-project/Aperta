@@ -27,4 +27,10 @@ set :linked_files, %w{config/database.yml}
 set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'public/assets', 'public/system')
 
 # Default value for keep_releases is 5
+# npm
+set :npm_target_path, -> { "#{release_path}/client" }
+set :bower_target_path, -> { "#{release_path}/client" }
+set :bower_bin, "source ~/.profile && bower"
+
+# release cycle
 set :keep_releases, 3

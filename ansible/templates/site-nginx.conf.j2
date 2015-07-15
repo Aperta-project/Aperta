@@ -1,5 +1,5 @@
 upstream app_server {
-  server unix://var/www/tahi/current/tmp/sockets/puma.sock fail_timeout=0;
+  server unix:/var/www/tahi/shared/tmp/sockets/puma.sock fail_timeout=0;
 }
 
 server {

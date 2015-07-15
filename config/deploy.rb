@@ -43,10 +43,5 @@ set :puma_worker_timeout, nil
 set :puma_init_active_record, true
 set :puma_preload_app, true
 
-# npm
-set :npm_target_path, -> { "#{release_path}/client" }
-set :bower_target_path, -> { "#{release_path}/client" }
-set :bower_bin, "source ~/.profile && bower"
-
 # release cycle
 set :keep_releases, 3

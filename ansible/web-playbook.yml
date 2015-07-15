@@ -16,12 +16,6 @@
     - {role: nginx, when: vagrant is not defined}
     - redis
     - ruby
-    - role: nvm
-      nvm:
-        user: deploy
-        version: 'v0.25.4'
-        node_version: '0.12'
-        bower_version: '1.4.1'
   tasks:
     - name: copy nginx
       template:

@@ -1,0 +1,32 @@
+namespace :javascript do
+  desc "root npm install (installs bower)"
+  task :root_npm_install do
+    on roles(:web) do |host|
+      within(release_path) do
+        execute "npm", "install", "--production --no-spin"
+      end
+    end
+  end
+
+  desc "client npm install (installs js deps)"
+  task :client_npm_install do
+    on roles(:web) do |host|
+      within("#{release_path}/client") do
+        execute "npm", "install", "--production --no-spin"
+      end
+    end
+  end
+
+  desc "bower install (installs more js deps)"
+  task :bower_install do
+    on roles(:web) do |host|
+      within("#{release_path}/client") do
+        execute "../node_modules/bower/bin/bower", "install", "--config.interactive=false"
+      end
+    end
+  end
+
+  task :install => [:root_npm_install, :client_npm_install, :bower_install]
+
+  before "deploy:updated", "javascript:install"
+end

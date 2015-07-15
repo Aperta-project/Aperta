@@ -27,6 +27,11 @@ Procfile.local
 .env.production
 .foreman
 
+# SSL
+ansible/files/*.crt
+ansible/files/*.csr
+ansible/files/*.key
+
 # Testing
 coverage
 spec/tmp

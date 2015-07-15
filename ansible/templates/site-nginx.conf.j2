@@ -1,55 +1,40 @@
-upstream app_server {
+upstream puma_app {
   server unix:/var/www/tahi/shared/tmp/sockets/puma.sock fail_timeout=0;
 }
 
+# redirect to https version of site
 server {
   listen 80;
+  rewrite ^(.*) https://$host$1 permanent;
+}
+
+server {
+  listen 443 default;
   server_name _; # catch all
-
-  add_header X-Frame-Options DENY;
-  add_header X-Content-Type-Options nosniff;
-  add_header Strict-Transport-Security "max-age=86400";
-
-  client_max_body_size 4G;
-
   root /var/www/tahi/current/public;
 
-  try_files $uri/index.html $uri.html $uri @app;
+  ssl on;
+  ssl_certificate /etc/ssl/certs/{{ssl_cert_file}};
+  ssl_certificate_key /etc/ssl/private/{{ssl_key_file}};
 
-  location @app {
-      # an HTTP header important enough to have its own Wikipedia entry:
-      #   http://en.wikipedia.org/wiki/X-Forwarded-For
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  ssl_session_timeout 5m;
 
-      # enable this if you forward HTTPS traffic to unicorn,
-      # this helps Rack set the proper URL scheme for doing redirects:
-      # proxy_set_header X-Forwarded-Proto $scheme;
+  location ^~ /assets/ {
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+  }
 
-      # pass the Host: header from the client right along so redirects
-      # can be set properly within the Rack application
-      proxy_set_header Host $http_host;
-
-      # we don't want nginx trying to do something clever with
-      # redirects, we set the Host: header above already.
-      proxy_redirect off;
-
-      # set "proxy_buffering off" *only* for Rainbows! when doing
-      # Comet/long-poll/streaming.  It's also safe to set if you're using
-      # only serving fast clients with Unicorn + nginx, but not slow
-      # clients.  You normally want nginx to buffer responses to slow
-      # clients, even with Rails 3.1 streaming because otherwise a slow
-      # client can become a bottleneck of Unicorn.
-      #
-      # The Rack application may also set "X-Accel-Buffering (yes|no)"
-      # in the response headers do disable/enable buffering on a
-      # per-response basis.
-      # proxy_buffering off;
-
-      proxy_pass http://app_server;
+  try_files $uri/index.html $uri @puma_app;
+  location @puma_app {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Proto https;
+    proxy_redirect off;
+    proxy_pass http://puma_app;
   }
 
   error_page 500 502 503 504 /500.html;
-  location = /500.html {
-    root /var/www/tahi/current/public;
-  }
+  client_max_body_size 4G;
+  keepalive_timeout 10;
 }

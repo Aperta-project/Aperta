@@ -21,11 +21,6 @@
     pkg: ruby2.2-dev
     state: latest
 
-- name: add nodejs
-  apt:
-    pkg: nodejs
-    state: installed
-
 - name: add libpq-dev
   apt:
     pkg: libpq-dev

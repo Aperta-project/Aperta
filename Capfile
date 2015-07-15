@@ -12,7 +12,5 @@ require 'capistrano/rails/migrations'
 require 'capistrano/sidekiq'
 require 'capistrano/puma'
 require 'capistrano/maintenance'
-require 'capistrano/npm'
-require 'capistrano/bower'
 
 Dir.glob('lib/capistrano/tasks/*.cap').each { |r| import r }

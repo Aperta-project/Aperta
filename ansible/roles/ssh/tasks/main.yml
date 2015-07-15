@@ -21,6 +21,9 @@
     manage_dir: true
     state: present
 
-
-
-
+# phad pairing
+- authorized_key:
+    user: deploy
+    key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDH+ZXFjQW2LIciD3Hm2TUnJKKTcvkYOcD1tnerQt4FPtqk8zbcEteGnnFNjBYeQSXWWJdV4FbMIKcIdOEZ21I2gtqWb9AoRDleJp/mBNHct25wjfDnuyXx2NmBBH0/QBNS59GtTdjloJZfI48iUtIVpaTCuOY4ST2hhEQoTqsWx52wZzWvdh/zBfkz3j4AXQhATYt35uvjU+AzgOCQBe5xwcgs4dfrCwof43ZsbfOKOWzom6qoZS+aK2Ll5ZFeXVy9IOhMu0Ap2mvypUgjbeljYEWPmMSP0kDGB8xSdAOR+0FIv1m/LIGRYZBGlDQcW92fsiA3ipgmVlhVV456rmp1 plos@Mutuallys-iMac-3.local
+    manage_dir: true
+    state: present

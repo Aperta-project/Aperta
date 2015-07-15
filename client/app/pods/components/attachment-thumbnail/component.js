@@ -27,11 +27,12 @@ export default Ember.Component.extend({
   }.property('previewSrc', 'showSpinner'),
 
   attachmentUrl: function() {
+    var urlRoot = '/api/supporting_information_files/';
     if (this.get('figure')) {
-      return '/api/figures/' + this.get('attachment.id') + '/update_attachment';
-    } else {
-      return '/api/supporting_information_files/' + this.get('attachment.id') + '/update_attachment';
+      urlRoot = '/api/figures/';
     }
+
+    return urlRoot + this.get('attachment.id') + '/update_attachment';
   }.property('attachment.id', 'figure'),
 
   focusOnFirstInput() {
@@ -102,7 +103,10 @@ export default Ember.Component.extend({
     },
 
     toggleStrikingImageFromCheckbox(checkbox) {
-      var newValue = checkbox.get('checked') ? checkbox.get('attachment.id') : null;
+      var newValue = null;
+      if (checkbox.get('checked')) {
+          newValue = checkbox.get('attachment.id');
+      }
       this.sendAction('strikingImageAction', newValue);
     }
   }

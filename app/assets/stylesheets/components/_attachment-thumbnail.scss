@@ -1,16 +1,10 @@
-// .attachment-thumbnail
-//   .attachment-thumbnail-image
-//   .attachment-thumbnail-edit-content
-//   .attachment-thumbnail-text-content
-//   .attachment-thumbnail-destroy-overlay
-
 .attachment-thumbnail {
   margin-bottom: 20px;
 
   .outline {
     @include clearfix;
     position: relative;
-    border: 1px solid #d7d7d7;
+    border: 1pxx solid #d7d7d7;
     padding: 20px;
 
     &.tall {
@@ -18,11 +12,11 @@
     }
 
     .left-column {
-      width: 40%;
       float: left;
       margin: 0;
-      padding: 0;
       border-radius: 0;
+      padding: 0;
+      width: 40%;
 
       .download-link {
         text-align: center;
@@ -48,10 +42,10 @@
 
         .image-hover-buttons {
           display: none;
-          width: 100%;
           position: absolute;
           top: 40%;
           left: 0;
+          width: 100%;
           text-align: center;
 
           input {
@@ -79,10 +73,10 @@
 
       .info {
         .title {
-          margin: 8px 0 1em 0;
-          font-size: 21px;
-          outline: none;
           word-wrap: break-word;
+          margin: 8px 0 1em 0;
+          outline: none;
+          font-size: 21px;
         }
 
         .caption {
@@ -105,11 +99,11 @@
         height: 100%;
 
         input[type=text], textarea {
-          display: block;
-          width: 100%;
-          border: 1px solid #999;
           border-radius: 3px;
+          display: block;
+          border: 1px solid #999;
           padding: 4px;
+          width: 100%;
           color: #555;
         }
 
@@ -137,10 +131,11 @@
       right: 20px;
       color: #d4d4d4;
       font-size: 18px;
+
       .fa {
         &:hover { color: $tahi-green-dark; }
-        padding-left: 10px;
         cursor: pointer;
+        padding-left: 10px;
       }
     }
 
@@ -163,30 +158,30 @@
     top: -5px;
     margin-bottom: 20px;
     border: 13px solid #000;
-    padding: 13px;
-    color: #fff;
-    text-align: center;
     background: #fff;
+    padding: 13px;
+    text-align: center;
+    color: #fff;
 
     img { max-width: 100%; }
 
     &:before {
-      content: ' ';
+      @include triangle(24px, #000, up);
       position: absolute;
       top: -25px;
       left: 20%;
-      @include triangle(24px, #000, up);
+      content: ' ';
     }
 
     .close {
       @include position(absolute, 0px 0px auto auto);
+      background: #000;
+      cursor: pointer;
       padding: 0 5px 18px 15px;
+      line-height: 35px;
       color: #fff;
       font-size: 68px;
       font-weight: bold;
-      line-height: 35px;
-      background: #000;
-      cursor: pointer;
     }
   }
 }

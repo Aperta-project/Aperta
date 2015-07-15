@@ -25,6 +25,10 @@
     group: deploy
     state: present
 
+- name: set default shell to bash
+  user: name=deploy shell=/bin/bash
+  sudo: yes
+
 - name: copy sudoers file and chmod
   copy:
     src: sudoers

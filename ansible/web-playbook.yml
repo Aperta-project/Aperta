@@ -6,7 +6,7 @@
   sudo: yes
   remote_user: ubuntu
   vars_files:
-    - ../.env.{{ lookup('env', 'ENV') }}
+    - vars/common.yml
   handlers:
     - include: roles/nginx/handlers/main.yml
   roles:
@@ -37,3 +37,13 @@
         owner: deploy
         group: deploy
         mode: 0755
+
+    - name: copy tahi-project cert
+      copy:
+        src: files/{{ssl_cert_file}}
+        dest: /etc/ssl/certs/{{ssl_cert_file}}
+
+    - name: copy tahi-project key
+      copy:
+        src: files/{{ssl_key_file}}
+        dest: /etc/ssl/private/{{ssl_key_file}}

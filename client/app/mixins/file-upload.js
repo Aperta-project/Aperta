@@ -44,6 +44,7 @@ export default Ember.Mixin.create({
 
     var key = Object.keys(data || {})[0];
     if ( (key && data[key]) || key && data[key] === [] ) {
+      // TODO: DOM manipulation in mixin? This is used by controllers too
       $('.upload-preview-filename').text('Upload Complete!');
       Ember.run.later(this, ()=> {
         $('.progress').fadeOut(()=>{

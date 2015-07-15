@@ -1,0 +1,20 @@
+<h3 class="mmt-thumbnail-title">{{model.paperType}}</h3>
+
+<ul class="mmt-thumbnail-stats">
+  <li><span>{{model.phaseTemplates.length}}</span> Phases</li>
+</ul>
+
+<div class="mmt-thumbnail-overlay mmt-thumbnail-overlay-edit-options">
+  {{link-to "" "admin.journal.manuscript_manager_template.edit" model class="fa fa-pencil animation-scale-in"}}
+  {{#if attrs.canDestroy}}
+    <span class="fa fa-trash animation-scale-in" {{action "toggleConfirmDestroy"}}></span>
+  {{/if}}
+</div>
+
+{{#if confirmDestroy}}
+  <div class="mmt-thumbnail-overlay mmt-thumbnail-overlay-confirm-destroy">
+    <p>This will permanently delete your template. Are you sure?</p>
+    <button class="button-secondary button--blue knockout" {{action "toggleConfirmDestroy"}}>Cancel</button>
+    <button class="button-secondary button--blue knockout mmt-thumbnail-delete-button" {{action "destroyTemplate"}}>Delete</button>
+  </div>
+{{/if}}

@@ -80,8 +80,7 @@ module 'Integration: FinancialDisclosure',
     server.respondWith 'POST', "/api/funders", mirrorCreateResponse('funder', 1)
 
 test 'Viewing the card and adding new funder', (assert) ->
-  visit "/papers/#{currentPaper.id}/edit"
-  click ':contains("Financial")'
+  visit "/papers/#{currentPaper.id}/tasks/#{financialDisclosureTaskId}"
   .then ->
     assert.equal find('.overlay-main-work h1').text().trim(), 'Financial Disclosures'
     assert.ok find("label:contains('Yes')").length
@@ -89,16 +88,12 @@ test 'Viewing the card and adding new funder', (assert) ->
     andThen ->
       assert.ok find("button:contains('Add Another Funder')").length, "User can add another funder"
       assert.ok find("span.remove-funder").length, "User can add remove the funder"
-      Ember.$('#funder-name').val("Hello")
-      Ember.$('#grant-number').val("1234567890")
+      Ember.$('[name="funder-name"]').val("Hello")
+      Ember.$('[name="grant-number"]').val("1234567890")
       click("label:contains('Completed')")
-      click("a:contains('Close')")
-      andThen ->
-        assert.ok find("div.card-completed-icon").length
 
 test "Removing an existing funder when there's only 1", (assert) ->
-  visit "/papers/#{currentPaper.id}/edit"
-  click ':contains("Financial")'
+  visit "/papers/#{currentPaper.id}/tasks/#{financialDisclosureTaskId}"
   click "label:contains('Yes')"
   click "span.remove-funder"
 

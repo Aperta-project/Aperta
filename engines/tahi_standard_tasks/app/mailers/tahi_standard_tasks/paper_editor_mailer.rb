@@ -7,7 +7,7 @@ module TahiStandardTasks
     default from: Rails.configuration.from_email
 
     def notify_invited(invitation_id:)
-      invitation = Invitation.find(invitation_id)
+      @invitation = Invitation.find(invitation_id)
       @invitee = invitation.invitee
       @paper = invitation.paper
 

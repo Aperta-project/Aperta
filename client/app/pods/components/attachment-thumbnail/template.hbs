@@ -1,81 +1,136 @@
 <div class="attachment-thumbnail">
-  <span class="fa fa-trash attachment-thumbnail-destroy-icon" {{action "confirmDestroyAttachment"}}></span>
+  <div class="outline {{if fileIcon 'tall'}} {{if showSpinner 'tall'}}">
+    <div class="left-column">
+      <div class="thumbnail-preview">
+        {{#if fileIcon}}
+          <span class="fa fa-file-image-o fa-5x file-thumbnail"></span>
+        {{/if}}
 
-  {{#if attachment.previewSrc}}
-    <div class="attachment-thumbnail-image">
-      <div class="replace-spinner"></div>
-      <img class="attachment-thumbnail-image-preview" src={{attachment.previewSrc}} alt={{attachment.alt}}>
-      <div class="attachment-thumbnail-edit-overlay">
-        <div class="attachment-thumbnail-edit-overlay-buttons">
-          {{#replace-image}}
-            <span>Replace Image</span>
-            {{file-uploader
-                url=attachmentUrl
-                railsMethod="PUT"
-                accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
-                multiple=false
-                filePrefix="paper/figures"
-                start="uploadStarted"
-                progress="uploadProgress"
-                done="uploadFinished"
-                cancel="cancelUploads"}}
-          {{/replace-image}}
-          <button class="button-secondary button--green knockout view-attachment-detail" {{action "togglePreview"}}><span class="fa fa-search-plus"></span>View Detail</button>
+        {{#if preview}}
+          <img src="{{attachment.previewSrc}}" alt={{attachment.alt}} class="image-thumbnail" />
+        {{/if}}
+
+        {{#if showSpinner}}
+          {{progress-spinner visible=true size="large"}}
+        {{/if}}
+
+        <div class="image-hover-buttons">
+
+          {{#if preview}}
+            <button class="button-secondary button--green knockout view-attachment-detail"
+              {{action "togglePreview"}}>
+              <span class="fa fa-search-plus"></span>View Detail
+            </button>
+          {{/if}}
+
+          {{#if isEditable}}
+            {{#replace-image}}
+              <span>Replace File</span>
+              {{file-uploader
+              url=attachmentUrl
+              railsMethod="PUT"
+              multiple=false
+              filePrefix="supporting-info"
+              start="uploadStarted"
+              progress="uploadProgress"
+              done="uploadFinished"
+              cancel="cancelUploads"}}
+            {{/replace-image}}
+          {{/if}}
+
         </div>
       </div>
-    </div>
-  {{else}}
-    <div class="attachment-thumbnail-image attachment-thumbnail-image-placeholder">
-      <div class="replace-spinner">
-        {{progress-spinner visible=showSpinner}}
+
+      <div class="download-link">
+        <a target="_blank"
+          data-toggle="tooltip"
+          data-placement="right"
+          title="Download original image"
+          href="{{attachment.src}}">
+          {{attachment.filename}}
+        </a>
       </div>
     </div>
-  {{/if}}
 
-  <a class="attachment-original-download-link" target="_blank" data-toggle="tooltip" data-placement="right" title="Download original image" href={{attachment.src}} >{{attachment.filename}}</a>
+    <div class="right-column">
+      {{#if editState}}
+        <div class="edit-info">
+          <div class="field title">
+            {{input placeholder="Enter a title"
+            class="attachment-title-field"
+            autofocus="autofocus"
+            value=attachment.title}}
+          </div>
+          <div class="field caption">
+            {{textarea placeholder="Enter a caption for this attachment"
+            class="attachment-caption-field"
+            value=attachment.caption rows="5"}}
+          </div>
 
-  {{#if editState}}
-    <div class="attachment-thumbnail-edit-content">
-      <div class="field">
-        {{input placeholder="Enter a title"
-                class="attachment-title-field"
-                autofocus="autofocus"
-                value=attachment.title}}
-      </div>
-      <div class="field">
-        {{textarea placeholder="Enter a caption for this attachment"
-                   class="attachment-caption-field"
-                   value=attachment.caption rows="5"}}
-      </div>
+          {{#if figure}}
+          <div class="field striking">
+            <label>
+              {{check-box checked=attachment.isStrikingImage action="toggleStrikingImageFromCheckbox" attachment=attachment}}
+              This is the striking image
+            </label>
+          </div>
+          {{/if}}
 
-      <div class="attachment-thumbnail-edit-actions">
-        <a href="#" class="button-link button--green" {{action "cancelEditing"}}>cancel</a>
-        <a href="#" class="button-secondary button--green" {{action "saveAttachment"}}>Save</a>
-      </div>
+          <div class="actions">
+            <a href="#" class="button-link button--green" {{action "cancelEditing"}}>cancel</a>
+            <a href="#" class="button-primary button--green" {{action "saveAttachment"}}>Save</a>
+          </div>
+
+
+        </div>
+      {{else}}
+        <div class="info">
+          <h2 class="title"
+            {{action "toggleEditState" on="doubleClick"}}>
+            {{if attachment.title attachment.title "Attachment title"}}
+          </h2>
+
+          <div class="caption"
+            {{action "toggleEditState" on="doubleClick"}}>
+            {{if attachment.caption attachment.caption "There is no caption for this file."}}
+          </div>
+
+          {{#if attachment.isStrikingImage}}
+            <div class="striking">
+              <span class="fa fa-check"></span> This is the striking image
+            </div>
+          {{/if}}
+        </div>
+            {{/if}}
     </div>
-  {{/if}}
 
-  <div class="attachment-thumbnail-text-content">
-    <h2 class="attachment-thumbnail-title" {{action "toggleEditState" on="doubleClick"}}>
-      {{if attachment.title attachment.title "Attachment title"}}
-    </h2>
-    <span class="fa fa-pencil attachment-edit-icon" {{action "toggleEditState"}}></span>
+    {{#if isEditable}}
+      <div class="edit-icons">
+        <span class="fa fa-pencil" {{action "toggleEditState"}}></span>
+        <span class="fa fa-trash" {{action "confirmDestroyAttachment"}}></span>
+      </div>
+    {{/if}}
 
-    <div class="attachment-thumbnail-caption" {{action "toggleEditState" on="doubleClick"}}>
-      {{if attachment.caption attachment.caption "There is no caption for this file."}}
-    </div>
+    {{#if destroyState}}
+      <div class="delete-confirmation">
+        <p>This will permanently delete this file. Are you sure?</p>
+        <button class="button-secondary button--green knockout"
+          {{action "cancelDestroyAttachment"}}>
+          Cancel
+        </button>
+
+        <button class="button-secondary button--green knockout attachment-delete-button"
+          {{action "destroyAttachment"}}>
+          Delete Forever
+        </button>
+      </div>
+    {{/if}}
   </div>
 
-  <div class="attachment-thumbnail-destroy-overlay">
-    <p>This will permanently delete your image. Are you sure?</p>
-    <button class="button-secondary button--green knockout" {{action "cancelDestroyAttachment"}}>Cancel</button>
-    <button class="button-secondary button--green knockout attachment-delete-button" {{action "destroyAttachment"}}>Delete Forever</button>
-  </div>
+  {{#if view.previewState}}
+    <div class="big-preview">
+      <div {{action "togglePreview"}} class="close">&times;</div>
+      <img src={{attachment.detailSrc}} alt={{attachment.alt}}>
+    </div>
+  {{/if}}
 </div>
-
-{{#if view.previewState}}
-  <div class="attachment-thumbnail-preview">
-    <div {{action "togglePreview"}} class="attachment-thumbnail-preview-close">&times;</div>
-    <img src={{attachment.detailSrc}} alt={{attachment.alt}}>
-  </div>
-{{/if}}

@@ -17,6 +17,10 @@ class SupportingInformationFilesPolicy < ApplicationPolicy
     papers_policy.show?
   end
 
+  def update_attachment?
+    papers_policy.show?
+  end
+
   private
 
   def papers_policy

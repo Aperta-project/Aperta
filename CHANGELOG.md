@@ -1,6 +1,6 @@
 # Change Log
 All notable changes to this project will be documented in this file.
-This project adheres to [Semantic Versioning](http://semver.org/). Follow 
+This project adheres to [Semantic Versioning](http://semver.org/). Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
@@ -8,7 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Changed
--
+- Gussied up Figures and Supporting Information thumbnails
 
 ### Deprecated
 -
@@ -30,7 +30,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [1.1.0] - 2015-07-14
 ### Added
 - NED/Akita profile information integration (turned OFF until further development work).
-- Editorial Dashboard (“Paper Tracker”): Available to all users with the Flow Manager permission. Located under hamburger menu. 
+- Editorial Dashboard (“Paper Tracker”): Available to all users with the Flow Manager permission. Located under hamburger menu.
 - Make Admin follower on the Changes for Author card.
 - Versioning of the Manuscript: Backend work only.  UI/UX in process for later release.
 - Enhancements to Style Guide.

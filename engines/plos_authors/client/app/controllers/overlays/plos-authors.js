@@ -34,6 +34,10 @@ export default TaskController.extend({
       return false;
     },
 
+    changeAuthorPosition(author, newPosition) {
+      this.shiftAuthorPositions(author, newPosition);
+    },
+
     saveNewAuthor(newAuthorHash) {
       Ember.merge(newAuthorHash, {
         paper: this.get('model.paper'),

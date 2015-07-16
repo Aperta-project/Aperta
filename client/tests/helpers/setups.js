@@ -6,7 +6,7 @@ export function addUserAsParticipant(task, user) {
       id: task.id,
       type: task.type
     },
-    user_id: user.id
+    userId: user.id
   });
 
   Factory.mergeArrays(task, 'participation_ids', [participation.id]);
@@ -20,7 +20,7 @@ export function paperWithParticipant() {
   });
 
   let paper = Factory.createRecord('Paper', {
-    journal_id: journal.id,
+    journalId: journal.id,
     id: 1
   });
 
@@ -28,12 +28,14 @@ export function paperWithParticipant() {
   let phase     = Factory.createPhase(paper);
   let task      = Factory.createTask('Task', paper, phase);
   let user      = Factory.createRecord('User', {
-    full_name: 'Some Guy'
+    fullName: 'Some Guy'
   });
 
   let participation = addUserAsParticipant(task, user);
 
-  return Factory.createPayload('paper').addRecords([journal, paper, litePaper, phase, task, user, participation]);
+  return Factory.createPayload('paper').addRecords([
+    journal, paper, litePaper, phase, task, user, participation
+  ]);
 }
 
 export function paperWithTask(taskType, taskAttrs) {
@@ -42,9 +44,9 @@ export function paperWithTask(taskType, taskAttrs) {
   });
 
   let paper = Factory.createRecord('Paper', {
-    journal_id: journal.id,
+    journalId: journal.id,
     editable: true,
-    publishing_state: 'unsubmitted'
+    publishingState: 'unsubmitted'
   }, Factory.getNewId('paper'));
 
   let phase = Factory.createPhase(paper);
@@ -55,8 +57,8 @@ export function paperWithTask(taskType, taskAttrs) {
 
 export function addUserAsCollaborator(paper, user) {
   let collaboration = Factory.createRecord('Collaboration', {
-    paper_id: paper.id,
-    user_id: user.id
+    paperId: paper.id,
+    userId: user.id
   });
 
   Factory.mergeArrays(paper, 'collaboration_ids', [collaboration.id]);
@@ -70,7 +72,7 @@ export function paperWithRoles(id, roles) {
   });
 
   let paper = Factory.createRecord('Paper', {
-    journal_id: journal.id,
+    journalId: journal.id,
     id: id
   });
 

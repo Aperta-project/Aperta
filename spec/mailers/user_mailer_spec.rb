@@ -69,7 +69,7 @@ describe UserMailer, redis: true do
     context 'when the paper has an abstract' do
       it 'sends a specific email to the editor invitee' do
         task.paper.update! abstract: abstract
-        expect(email.subject).to eq "You've been invited to the Editors' Discussion for paper \"#{task.paper.display_title}\""
+        expect(email.subject).to eq "You've been invited to the Editor Discussion for paper \"#{task.paper.display_title}\""
         expect(email.body).to include 'View Discussion'
         expect(email.body).to include abstract
       end
@@ -77,7 +77,7 @@ describe UserMailer, redis: true do
 
     context 'when the paper has no abstract' do
       it 'sends a specific email to the editor invitee' do
-        expect(email.subject).to eq "You've been invited to the Editors' Discussion for paper \"#{task.paper.display_title}\""
+        expect(email.subject).to eq "You've been invited to the Editor Discussion for paper \"#{task.paper.display_title}\""
         expect(email.body).to include 'View Discussion'
         expect(email.body).to_not include abstract
         expect(email.body).to match task.paper.body

@@ -3,7 +3,11 @@ class SupportingInformationFile < ActiveRecord::Base
 
   belongs_to :paper
 
-  mount_uploader :attachment, SupportingInformationFileUploader
+  default_scope { order(:id) }
+
+  mount_uploader :attachment, AdhocAttachmentUploader
+
+  IMAGE_TYPES = %w{jpg jpeg tiff tif gif png eps tif}
 
   def filename
     self[:attachment]
@@ -23,6 +27,26 @@ class SupportingInformationFile < ActiveRecord::Base
 
   def access_details
     { filename: filename, alt: alt, id: id, src: src }
+  end
+
+  def detail_src
+    if image?
+      attachment.url(:detail)
+    end
+  end
+
+  def preview_src
+    if image?
+      attachment.url(:preview)
+    end
+  end
+
+  def image?
+    if attachment.file
+      IMAGE_TYPES.include? attachment.file.extension
+    else
+      false
+    end
   end
 
   def insert_title

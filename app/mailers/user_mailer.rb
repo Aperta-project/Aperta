@@ -48,7 +48,7 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: invitee.email,
-      subject: "You've been invited to the Editors' Discussion for paper \"#{@task.paper.display_title}\"")
+      subject: "You've been invited to the Editor Discussion for paper \"#{@task.paper.display_title}\"")
   end
 
   def assigned_editor(editor_id, paper_id)

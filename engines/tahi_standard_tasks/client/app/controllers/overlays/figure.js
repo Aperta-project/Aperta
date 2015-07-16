@@ -22,6 +22,7 @@ export default TaskController.extend(FileUploadMixin, {
 
     changeStrikingImage(newValue) {
       this.get('model.paper').set('strikingImageId', newValue);
+      this.get('model.paper').save();
     },
 
     updateStrikingImage() {

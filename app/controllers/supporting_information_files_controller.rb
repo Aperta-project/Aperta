@@ -19,6 +19,12 @@ class SupportingInformationFilesController < ApplicationController
     head :no_content
   end
 
+  def update_attachment
+    file.update_attribute(:status, "processing")
+    DownloadSupportingInfoWorker.perform_async(file.id, params[:url])
+    respond_with file
+  end
+
   private
 
   def paper

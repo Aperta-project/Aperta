@@ -12,7 +12,16 @@ describe TahiStandardTasks::RegisterDecisionController do
     sign_in admin
   end
 
-  describe "#decide" do
+  describe "POST #decide" do
+
+    before do
+      allow(Task).to receive(:find).with(task.to_param).and_return(task)
+    end
+
+    subject(:do_request) do
+      post :decide, format: :json, id: task.to_param
+    end
+
     context "Paper in a submitted state, with a valid Decision" do
       let(:paper) {
         FactoryGirl.create(:paper, :submitted, :with_tasks,
@@ -24,16 +33,21 @@ describe TahiStandardTasks::RegisterDecisionController do
 
       before do
         paper.decisions.first.update(verdict: "revise")
-        post :decide, format: :json, id: task.id
       end
 
-      pending("expect task.complete_decision to be called")
+      it "invoke complete_decision on task" do
+        expect(task).to receive(:complete_decision)
+        do_request
+      end
 
-      pending("expect task.send_email to be called")
+      it "invoke send_email on task" do
+        expect(task).to receive(:send_email)
+        do_request
+      end
 
-      it "returns 200 - success" do
-        expect(response.status).to eq 200
-        expect(res_body["success"]).to eq true
+      it "return head ok" do
+        do_request
+        expect(response).to be_success
       end
     end
 
@@ -46,11 +60,18 @@ describe TahiStandardTasks::RegisterDecisionController do
           creator: admin)
       }
 
-      before do
-        post :decide, format: :json, id: task.id
+      it "does not invoke complete_decision on task" do
+        expect(task).to_not receive(:complete_decision)
+        do_request
+      end
+
+      it "does not invoke send_email on task" do
+        expect(task).to_not receive(:send_email)
+        do_request
       end
 
       it "returns an error" do
+        do_request
         expect(res_body["error"]).to eq "Invalid Task and/or Paper"
       end
     end

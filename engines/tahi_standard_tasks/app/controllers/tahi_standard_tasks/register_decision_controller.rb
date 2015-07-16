@@ -7,7 +7,7 @@ module TahiStandardTasks
       if task && task.paper.publishing_state == "submitted"
         task.complete_decision
         task.send_email
-        render json: { success: true }, status: 200
+        head :ok
       else
         render json: { error: "Invalid Task and/or Paper" }
       end

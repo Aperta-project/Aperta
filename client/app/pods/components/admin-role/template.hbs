@@ -1,7 +1,10 @@
 <div class="admin-role-name">
   {{#if isEditing}}
     <span class={{if validationErrors.name "error"}}>
-      {{input name="role[name]" value=model.name placeholder="Role name" action="save"}}
+      {{input name="role[name]"
+              value=model.name
+              placeholder="Role name"
+              enter="save"}}
     </span>
     {{error-message message=validationErrors.name}}
   {{else}}

@@ -5,6 +5,7 @@ module TahiStandardTasks
     include Invitable
 
     def invitation_invited(invitation)
+      invitation.update! information: "Here are the authors on the paper: #{paper.authors_list}"
       PaperEditorMailer.delay.notify_invited({
         invitation_id: invitation.id
       })

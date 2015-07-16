@@ -9,6 +9,15 @@ Tahi::Application.routes.draw do
   mount PlosBioTechCheck::Engine => "/api"
   mount PlosBilling::Engine => "/api"
 
+  scope :leak_test do
+    get 'rack' => lambda { |env| [200, {}, ["Pinged at #{Time.zone.now}"]] }
+    get 'plaintext' => 'leak_test#plaintext'
+    get 'boringhtml' => 'leak_test#boringhtml'
+    get 'dbcount' => 'leak_test#dbcount'
+    get 'basicquery' => 'leak_test#basicquery'
+    get 'paper' => 'leak_test#paper'
+  end
+
 
   # Test specific
   #

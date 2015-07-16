@@ -11,7 +11,7 @@ export default {
     // The global error handler for internal ember errors
     Ember.onerror = function(error) {
       if (ENV.environment === 'production') {
-        if (Bugsnag && Bugsnag.notifyException) {
+        if (typeof Bugsnag !== 'undefined' && Bugsnag && Bugsnag.notifyException) {
           return Bugsnag.notifyException(error, 'Uncaught Ember Error');
         }
       } else {

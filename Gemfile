@@ -19,7 +19,6 @@ gem 'tahi-assign_team', git: 'https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x
 
 # Gems
 gem 'rails', '4.2.3'
-gem 'puma'
 gem 'rack-timeout'
 gem 'pg'
 gem 'ember-cli-rails'
@@ -98,7 +97,7 @@ group :development do
   gem 'capistrano', '~> 3.3.0'
   gem 'capistrano-rails'
   gem 'capistrano-sidekiq'
-  gem 'capistrano3-puma'
+  gem 'capistrano-passenger'
   gem 'capistrano-maintenance', github: 'capistrano/maintenance', require: false
   gem 'airbrussh', require: false
 end

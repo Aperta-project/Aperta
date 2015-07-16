@@ -1,6 +1,7 @@
-upstream puma_app {
-  server unix:/var/www/tahi/shared/tmp/sockets/puma.sock fail_timeout=0;
-}
+# global passenger
+passenger_root /usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini;
+passenger_ruby /usr/bin/ruby;
+passenger_max_pool_size 10;
 
 # redirect to https version of site
 server {
@@ -11,30 +12,19 @@ server {
 server {
   listen 443 default;
   server_name _; # catch all
-  root /var/www/tahi/current/public;
 
+  # ssl
   ssl on;
   ssl_certificate /etc/ssl/certs/{{ssl_cert_file}};
   ssl_certificate_key /etc/ssl/private/{{ssl_key_file}};
-
   ssl_session_timeout 5m;
 
-  location ^~ /assets/ {
-    gzip_static on;
-    expires max;
-    add_header Cache-Control public;
-  }
+  # passenger
+  root /var/www/tahi/current/public;
+  passenger_enabled on;
+  rails_env production;
 
-  try_files $uri/index.html $uri @puma_app;
-  location @puma_app {
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header Host $host;
-    proxy_set_header X-Forwarded-Proto https;
-    proxy_redirect off;
-    proxy_pass http://puma_app;
-  }
-
-  error_page 500 502 503 504 /500.html;
+  # connections
   client_max_body_size 4G;
   keepalive_timeout 10;
 }

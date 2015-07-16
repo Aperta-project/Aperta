@@ -38,8 +38,8 @@
     "express": "^4.8.5",
     "glob": "^4.0.5",
     "liquid-fire": "0.19.4",
-    "tahi-fileupload": "substance/tahi-fileupload#3d68c7702cc1b6ba0a544c13f3d65d66a0ab33e6",
-    "tahi-editor-ve": "substance/tahi-editor-ve#cdf22bedf8ffe8970633dc796334ddc3c32f8eb5"
+    "tahi-fileupload": "Tahi-project/tahi-fileupload#3d68c7702cc1b6ba0a544c13f3d65d66a0ab33e6",
+    "tahi-editor-ve": "Tahi-project/tahi-editor-ve#1f2e07bdeb97cbe0939438fe65c51e4351c25cf3"
   },
   "ember-addon": {
     "paths": [

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import DragNDrop from 'tahi/services/drag-n-drop';
 
-export default Ember.View.extend(DragNDrop.DroppableMixin, {
+export default Ember.Component.extend(DragNDrop.DroppableMixin, {
   classNames: ['column'],
 
   nextPosition: function() {
@@ -26,7 +26,11 @@ export default Ember.View.extend(DragNDrop.DroppableMixin, {
 
   drop(e) {
     this.removeDragStyles();
-    this.get('controller').send('changeTaskPhase', DragNDrop.dragItem, this.get('content'));
+    this.get('controller').send(
+      'changeTaskPhase',
+      DragNDrop.dragItem,
+      this.get('content')
+    );
     DragNDrop.dragItem = null;
     return DragNDrop.cancel(e);
   }

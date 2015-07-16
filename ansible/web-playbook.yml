@@ -16,7 +16,7 @@
     - {role: nginx, when: vagrant is not defined}
     - redis
     - ruby
-    - role: nodejs
+    - role: nodesource.node
       nodejs_version: "0.12"
       nodejs_nodesource_pin_priority: 500
     - npm

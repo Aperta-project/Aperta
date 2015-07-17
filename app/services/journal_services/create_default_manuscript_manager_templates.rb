@@ -17,7 +17,6 @@ module JournalServices
         phase = mmt.phase_templates.create! name: "Invite Editor"
         make_tasks phase, task_types,
           TahiStandardTasks::PaperEditorTask,
-          TahiStandardTasks::TechCheckTask,
           TahiStandardTasks::PaperAdminTask
 
         phase = mmt.phase_templates.create! name: "Invite Reviewers"

@@ -6,7 +6,7 @@ module TahiStandardTasks
 
     def invitation_invited(invitation)
       if paper.authors_list.present?
-        invitation.update! information: "Here are the authors on the paper:\n#{paper.authors_list}"
+        invitation.update! information: "Here are the authors on the paper:\n\n#{paper.authors_list}"
       end
       PaperEditorMailer.delay.notify_invited({
         invitation_id: invitation.id

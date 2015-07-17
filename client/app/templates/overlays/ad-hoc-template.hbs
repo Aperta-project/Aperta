@@ -2,31 +2,34 @@
 
 <div class="task-body">
   {{#each blocks as |block|}}
-    {{#inline-edit-body-part
-      block=block
-      cancel="resetBlock"
-      save="saveBlock"
-      delete="deleteBlock"
-      addItem="addCheckboxItem"}}
+    {{#inline-edit-body-part block=block
+                             editing=false
+                             cancel="resetBlock"
+                             save="saveBlock"
+                             delete="deleteBlock"
+                             addItem="addCheckboxItem"
+                             as |editing|}}
       {{#each block as |item|}}
         {{view "inlineEdit"
                item=item
+               editing=editing
                isSendable=false
                isNew=false}}
       {{/each}}
     {{/inline-edit-body-part}}
   {{/each}}
   {{#each newBlocks as |block|}}
-    {{#inline-edit-body-part
-      block=block
-      editing=true
-      cancel="resetBlock"
-      save="saveBlock"
-      delete="deleteBlock"
-      addItem="addCheckboxItem"}}
+    {{#inline-edit-body-part block=block
+                             editing=true
+                             cancel="resetBlock"
+                             save="saveBlock"
+                             delete="deleteBlock"
+                             addItem="addCheckboxItem"
+                             as |editing|}}
       {{#each block as |item|}}
         {{view "inlineEdit"
                item=item
+               editing=editing
                isSendable=false
                isNew=true}}
       {{/each}}

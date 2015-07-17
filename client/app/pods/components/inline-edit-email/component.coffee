@@ -1,7 +1,11 @@
 `import Ember from 'ember'`
-`import AdhocInlineEditItemMixin from 'tahi/mixins/components/adhoc-inline-edit-item'`
 
-InlineEditEmailComponent = Ember.Component.extend AdhocInlineEditItemMixin,
+InlineEditEmailComponent = Ember.Component.extend
+  editing: false
+  isNew: false
+  bodyPart: null
+  bodyPartType: Ember.computed.alias('bodyPart.type')
+
   isSendable: true
   showChooseReceivers: false
   mailRecipients: []

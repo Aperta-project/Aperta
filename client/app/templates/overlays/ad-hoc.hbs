@@ -6,17 +6,18 @@
   {{/each}}
 
   {{#each blocks as |block|}}
-    {{#inline-edit-body-part
-      block=block
-      cancel="resetBlock"
-      save="saveBlock"
-      delete="deleteBlock"
-      model=model
-      addItem="addCheckboxItem"}}
+    {{#inline-edit-body-part block=block
+                             editing=false
+                             cancel="resetBlock"
+                             save="saveBlock"
+                             delete="deleteBlock"
+                             addItem="addCheckboxItem"
+                             as |editing|}}
       {{#each block as |item|}}
         {{view "inline-edit"
                item=item
                block=block
+               editing=editing
                allUsers=allUsers
                overlayParticipants=participants
                emailSentStates=emailSentStates
@@ -26,18 +27,18 @@
   {{/each}}
 
   {{#each newBlocks as |block|}}
-    {{#inline-edit-body-part
-      block=block
-      editing=true
-      cancel="resetBlock"
-      save="saveBlock"
-      delete="deleteBlock"
-      model=model
-      addItem="addCheckboxItem"}}
+    {{#inline-edit-body-part block=block
+                             editing=true
+                             cancel="resetBlock"
+                             save="saveBlock"
+                             delete="deleteBlock"
+                             addItem="addCheckboxItem"
+                             as |editing|}}
       {{#each block as |item|}}
         {{view "inline-edit"
                item=item
                block=block
+               editing=editing
                allUsers=allUsers
                overlayParticipants=participants
                emailSentStates=emailSentStates

@@ -7,7 +7,8 @@ class InvitationIndexSerializer < ActiveModel::Serializer
              :invitation_type,
              :created_at,
              :updated_at,
-             :invitee_id
+             :invitee_id,
+             :information
 
   def title
     object.paper.title

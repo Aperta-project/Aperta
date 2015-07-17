@@ -17,12 +17,12 @@ export default Ember.Component.extend({
   }),
 
   actions: {
-    saveModel() {
-      this.attrs.saveModel();
+    saveChanges() {
+      this.attrs.save();
     },
 
     deleteItem() {
-      this.attrs['delete'](this.get('bodyPart'), this.get('parentView.block'));
+      this.attrs['delete']();
     }
   }
 });

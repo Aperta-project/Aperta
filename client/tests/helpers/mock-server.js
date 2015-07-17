@@ -21,10 +21,15 @@ export default function() {
   ]);
 
   server.respondWith('GET', '/api/comment_looks', [
-    200, { 'Content-Type': 'application/json' }, JSON.stringify({ comment_looks: [] })
+    200, { 'Content-Type': 'application/json' },
+    JSON.stringify({ comment_looks: [] })
   ]);
 
-  server.respondWith('GET', /\/api\/papers\/\d+\/manuscript_manager/, [403, {}, JSON.stringify({})]);
+  server.respondWith(
+    'GET',
+    /\/api\/papers\/\d+\/manuscript_manager/,
+    [403, {}, JSON.stringify({})]
+  );
 
   return server;
 }

@@ -26,11 +26,11 @@ export default Ember.Component.extend(DragNDrop.DroppableMixin, {
     }
   },
 
-  dragLeave(e) {
+  dragLeave() {
     this.removeDragStyles();
   },
 
-  dragEnd(e) {
+  dragEnd() {
     this.removeDragStyles();
   },
 

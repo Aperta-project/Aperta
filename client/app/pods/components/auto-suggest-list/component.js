@@ -5,7 +5,7 @@ import PositionNearMixin from 'tahi/mixins/components/position-near';
 Block Style:
 
 {{#if peeps}}
-  {{#auto-complete-list positionNearSelector="#search-user-input"
+  {{#auto-suggest-list positionNearSelector="#search-user-input"
                         class="animation-fade-in"
                         items=peeps
                         selectItem="selectUser"
@@ -13,23 +13,23 @@ Block Style:
     <img class="user-search-list-avatar" src={{item.avatar}}>
     {{item.fullName}}
     <span class="user-search-list-email">[{{item.email}}]</span>
-  {{/auto-complete-list}}
+  {{/auto-suggest-list}}
 {{/if}}
 
 Non Block Style with partial:
 
 {{#if peeps}}
-  {{auto-complete-list positionNearSelector="#search-user-input"
-                       class="animation-fade-in"
-                       selectItem="selectUser"
-                       items=peeps
-                       itemPartial="user-search-list-item"
-                       itemClass="user-search-list-item"}}
+  {{auto-suggest-list positionNearSelector="#search-user-input"
+                      class="animation-fade-in"
+                      selectItem="selectUser"
+                      items=peeps
+                      itemPartial="user-search-list-item"
+                      itemClass="user-search-list-item"}}
 {{/if}}
 */
 
 export default Ember.Component.extend(PositionNearMixin, {
-  classNames: ['auto-complete'],
+  classNames: ['auto-suggest'],
   positionNearSelector: Ember.computed.alias('selector'),
 
   items: [],

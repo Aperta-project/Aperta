@@ -1,10 +1,10 @@
-.auto-complete {
+.auto-suggest {
   list-style-type: none;
   border-bottom: 1px solid #BFBFBF;
-  z-index: z('auto-complete');
+  z-index: z('auto-suggest');
 }
 
-.auto-complete-item {
+.auto-suggest-item {
   overflow: hidden;
   border-right: 1px solid #BFBFBF;
   border-left: 1px solid #BFBFBF;
@@ -16,12 +16,12 @@
   background: rgba(255,255,255, 0.96);
 }
 
-.auto-complete-item:hover {
+.auto-suggest-item:hover {
   background: rgba(230, 230, 230, 0.95);
 }
 
-.auto-complete-item--highlight,
-.auto-complete-item--highlight:hover {
+.auto-suggest-item--highlight,
+.auto-suggest-item--highlight:hover {
   border-right-color: rgb(38, 131, 226);
   border-left-color: rgb(38, 131, 226);
   color: #fff;

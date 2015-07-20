@@ -244,6 +244,11 @@ StyleguideRoute = Ember.Route.extend
 
     journalRoles = @store.find("role")
 
+    autoSuggestData = [{
+      fullName: 'Joe Bob', email: 'joe.bob@example.com'
+    },
+    { fullName: 'Bob Joe', email: 'bob.joe@example.com' }]
+
     controller.set('arrayOfOptions', arrayOfOptions)
     controller.set('cities', cities)
     controller.set('comment', comment1)
@@ -272,5 +277,9 @@ StyleguideRoute = Ember.Route.extend
     controller.set('user3', user3)
     controller.set('user4', user4)
     controller.set('users', users)
+    controller.set('autoSuggestData', autoSuggestData)
+
+  actions:
+    selectAutoSuggestItem: ->
 
 `export default StyleguideRoute`

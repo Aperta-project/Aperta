@@ -4,28 +4,28 @@ import PositionNearMixin from 'tahi/mixins/components/position-near';
 /*
 Block Style:
 
-{{#if peeps}}
+{{#if userResults}}
   {{#auto-suggest-list positionNearSelector="#search-user-input"
-                        class="animation-fade-in"
-                        items=peeps
-                        selectItem="selectUser"
-                        itemClass="user-search-list-item" as |item|}}
-    <img class="user-search-list-avatar" src={{item.avatar}}>
-    {{item.fullName}}
-    <span class="user-search-list-email">[{{item.email}}]</span>
+                       selectItem="selectUser"
+                       items=userResults as |item|}}
+    {{item.fullName}} - {{item.email}}
   {{/auto-suggest-list}}
 {{/if}}
 
 Non Block Style with partial:
 
-{{#if peeps}}
+{{#if userResults}}
   {{auto-suggest-list positionNearSelector="#search-user-input"
-                      class="animation-fade-in"
                       selectItem="selectUser"
-                      items=peeps
-                      itemPartial="user-search-list-item"
-                      itemClass="user-search-list-item"}}
+                      items=userResults
+                      itemPartial="user-search-list-item"}}
 {{/if}}
+
+Customizing List Items:
+
+Since you are passing a block or partial to the component, you can display whatever content you want.
+
+To set extra classes on each item in the list by setting the itemClass property on auto-suggest-list. {{auto-suggest-list ... itemClass="user-list-item"}}
 */
 
 export default Ember.Component.extend(PositionNearMixin, {

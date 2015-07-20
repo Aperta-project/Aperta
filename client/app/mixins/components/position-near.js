@@ -1,8 +1,6 @@
 import Ember from 'ember';
 
-export default Ember.Component.extend({
-  classNameBindings: [':position-near', 'animationClass'],
-
+export default Ember.Mixin.create({
   matchWidth: true,
   setMaxHeight: false,
   width: null,
@@ -11,7 +9,7 @@ export default Ember.Component.extend({
   // attrs:
   selector: null,
 
-  _position: Ember.on('didInsertElement', function() {
+  position: Ember.on('didInsertElement', function() {
     let selector = this.get('selector');
     if(Ember.isEmpty(selector)) { return; }
 
@@ -20,8 +18,9 @@ export default Ember.Component.extend({
     let targetHeight = target.outerHeight();
 
     let css = {
-      top:   offset.top + targetHeight,
-      left:  offset.left
+      position: 'absolute',
+      top: offset.top + targetHeight,
+      left: offset.left
     };
 
     if(this.get('matchWidth')) {
@@ -33,5 +32,15 @@ export default Ember.Component.extend({
     }
 
     this.$().css(css);
+  }),
+
+  _setupResizeListener: Ember.on('didInsertElement', function() {
+    $(window).on('resize.positionnear', ()=> {
+      this.position();
+    });
+  }),
+
+  _teardownResizeListener: Ember.on('willDestroyElement', function() {
+    $(window).off('resize.positionnear');
   })
 });

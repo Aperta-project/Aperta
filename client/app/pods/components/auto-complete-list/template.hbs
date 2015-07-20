@@ -1,0 +1,11 @@
+{{#each items as |item|}}
+  {{#auto-complete-item item=item
+                        highlightedItem=highlightedItem
+                        class=itemClass}}
+    {{#if template.blockParams}}
+      {{yield item}}
+    {{else}}
+      {{partial itemPartial}}
+    {{/if}}
+  {{/auto-complete-item}}
+{{/each}}

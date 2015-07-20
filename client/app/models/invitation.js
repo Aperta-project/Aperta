@@ -12,6 +12,7 @@ export default DS.Model.extend({
   createdAt: DS.attr('date'),
   updatedAt: DS.attr('date'),
   invitationType: DS.attr('string'),
+  information: DS.attr('string'),
 
   accepted: Ember.computed('state', function() {
     return this.get('state') === 'accepted';

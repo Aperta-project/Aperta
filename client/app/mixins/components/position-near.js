@@ -14,7 +14,7 @@ export default Ember.Mixin.create({
     if(Ember.isEmpty(selector)) { return; }
 
     let target = Ember.$(selector);
-    let offset = target.offset();
+    let offset = target.position();
     let targetHeight = target.outerHeight();
 
     let css = {

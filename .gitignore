@@ -34,7 +34,7 @@ coverage
 spec/tmp
 
 # bin/setup's log file
->>>>>>> 232fc51c8020ab88917c87046d71f6b340f7b65e
+npm-debug.log
 setup.log
 
 # Other

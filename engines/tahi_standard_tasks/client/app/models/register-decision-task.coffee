@@ -7,14 +7,17 @@ RegisterDecisionTask = Task.extend
   decisionLetters: a('string')
   paperDecision: a('string')
   paperDecisionLetter: a('string')
-  acceptedLetterTemplate: (->
-    JSON.parse(@get('decisionLetters')).Accepted
+  acceptLetterTemplate: (->
+    JSON.parse(@get('decisionLetters')).accept
   ).property 'decisionLetters'
-  rejectedLetterTemplate: (->
-    JSON.parse(@get('decisionLetters')).Rejected
+  rejectLetterTemplate: (->
+    JSON.parse(@get('decisionLetters')).reject
   ).property 'decisionLetters'
-  reviseLetterTemplate: (->
-    JSON.parse(@get('decisionLetters')).Revise
+  majorRevisionLetterTemplate: (->
+    JSON.parse(@get('decisionLetters')).major_revision
+  ).property 'decisionLetters'
+  minorRevisionLetterTemplate: (->
+    JSON.parse(@get('decisionLetters')).minor_revision
   ).property 'decisionLetters'
 
 `export default RegisterDecisionTask`

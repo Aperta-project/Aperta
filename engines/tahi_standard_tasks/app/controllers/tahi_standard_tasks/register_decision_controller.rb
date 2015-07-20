@@ -4,7 +4,7 @@ module TahiStandardTasks
     def decide
       task = Task.find(params[:id])
 
-      if task && task.paper.publishing_state == "submitted"
+      if task && task.paper.submitted?
         task.complete_decision
         task.send_email
         render json: {}, status: 200

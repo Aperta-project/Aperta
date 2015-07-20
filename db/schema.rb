@@ -190,6 +190,7 @@ ActiveRecord::Schema.define(version: 20150720185210) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.integer  "decision_id"
+    t.string   "information"
   end
 
   add_index "invitations", ["actor_id"], name: "index_invitations_on_actor_id", using: :btree

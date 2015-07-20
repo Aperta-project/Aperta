@@ -259,6 +259,12 @@ class Paper < ActiveRecord::Base
     super.present? ? super : default_abstract
   end
 
+  def authors_list
+    authors.map.with_index { |author, index|
+      "#{index + 1}. #{author.last_name}, #{author.first_name} from #{author.specific.affiliation}"
+    }.join("\n")
+  end
+
   private
 
   def latest_version

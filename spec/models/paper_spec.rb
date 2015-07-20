@@ -19,6 +19,19 @@ describe Paper do
       expect(subject).to eq paper
       expect(subject.destroyed?).to eq true
     end
+
+    context "with tasks" do
+      let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
+
+      it "delete Phases and Tasks" do
+        expect(paper).to have_at_least(1).phase
+        expect(paper).to have_at_least(1).task
+        paper.destroy
+
+        expect(Phase.where(paper_id: paper.id).count).to be 0
+        expect(Task.count).to be 0
+      end
+    end
   end
 
   describe "validations" do

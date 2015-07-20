@@ -8,6 +8,7 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
   selectedReviewer: null
   resultsTemplate: (user) -> user.email
   selectedTemplate: (user) -> user.email
+  composingEmail: false
   decisions: Ember.computed.alias 'model.paper.decisions'
 
   latestDecision: (->
@@ -15,6 +16,14 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
   ).property('decisions', 'decisions.@each.isLatest')
 
   actions:
+    cancelAction: ->
+      @set 'selectedReviewer', null
+      @set 'composingEmail', false
+
+    composeInvite: ->
+      return unless @get('selectedReviewer')
+      @set 'composingEmail', true
+
     destroyInvitation: (invitation) -> invitation.destroyRecord()
     didSelectReviewer: (selectedReviewer) ->
       @set 'selectedReviewer', selectedReviewer
@@ -26,6 +35,7 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
         email: @get 'selectedReviewer.email'
       .save().then (invitation) =>
         @get('latestDecision.invitations').addObject invitation
+        @set 'composingEmail', false
         @set 'selectedReviewer', null
 
     removeReviewer: (selectedReviewer) ->

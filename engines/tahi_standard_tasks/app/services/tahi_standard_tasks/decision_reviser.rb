@@ -2,8 +2,8 @@ module TahiStandardTasks
   class DecisionReviser
     attr_reader :task, :paper, :decision
 
-    def initialize(decision_task, decision)
-      @task = decision_task
+    def initialize(register_decision_task, decision)
+      @task = register_decision_task
       @paper = task.paper
       @decision = decision
     end

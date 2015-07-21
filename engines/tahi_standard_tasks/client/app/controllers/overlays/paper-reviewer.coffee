@@ -15,7 +15,10 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
     @get('decisions').findBy 'isLatest', true
   ).property('decisions', 'decisions.@each.isLatest')
 
-  letterTemplate: Ember.computed.alias 'model.editInviteTemplate'
+  letterTemplate: Ember.computed "model.editInviteTemplate", ->
+    @get('model.editInviteTemplate').replace(/\[REVIEWER NAME\]/, @get('selectedReviewer.full_name'))
+      .replace(/\[YOUR NAME\]/, @get('currentUser.fullName'))
+
 
   actions:
     cancelAction: ->

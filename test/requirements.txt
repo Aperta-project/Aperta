@@ -1,0 +1,8 @@
+Appium-Python-Client==0.16
+beautifulsoup4==4.3.2
+browsermob-proxy==0.7.0
+ddt==1.0.0
+enum34==1.0.4
+mysql-connector-python==2.0.4
+requests==2.7.0
+selenium==2.46.0

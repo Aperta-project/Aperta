@@ -17,7 +17,6 @@ module TahiStandardTasks
       end
     end
 
-
     private
 
     def setup_paper!
@@ -41,7 +40,7 @@ module TahiStandardTasks
                         title: "Revise Manuscript",
                         role: "author",
                         phase_id: task.phase.id,
-                        body: [[{ type: 'text', value: task.public_send("#{decision.verdict}_letter")}]],
+                        body: [[{ type: 'text', value: task.public_send("#{decision.verdict}_letter") }]],
                         participants: participants,
                         completed: false
                        ).save!

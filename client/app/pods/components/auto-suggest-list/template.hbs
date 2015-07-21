@@ -2,7 +2,7 @@
   {{#auto-suggest-item item=item
                        highlightedItem=highlightedItem
                        class=itemClass}}
-    {{#if template.blockParams}}
+    {{#if hasBlock}}
       {{yield item}}
     {{else}}
       {{partial itemPartial}}

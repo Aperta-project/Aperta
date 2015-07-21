@@ -38,7 +38,6 @@ class RegisterDecisionOverlay < CardOverlay
   def click_send_email_button
     # the flash message won't show on the first click
     find(".send-email-action").click
-    find(".send-email-action").click
     # and wait for the flash message to show
     find(".alert")
   end

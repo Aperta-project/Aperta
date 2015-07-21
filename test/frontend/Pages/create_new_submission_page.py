@@ -4,8 +4,6 @@ from selenium.webdriver.common.by import By
 from Base.PlosPage import PlosPage
 import uuid
 from selenium.webdriver.common.keys import Keys
-import time
-
 
 __author__ = 'fcabrales'
 
@@ -19,14 +17,22 @@ class CreateANewSubmissionPage(PlosPage):
   def __init__(self, driver):
     super(CreateANewSubmissionPage, self).__init__(driver, '/')
 
+    # check if element is present
+    # self.assertTrue(self._get(By.CSS_SELECTOR, 'html.overlay-open'))
+
     #Locators - Instance members
+    self._create_modal = (By.CSS_SELECTOR, 'html.overlay-open')    
     self._title_text_field = (By.CSS_SELECTOR, '#paper-short-title')
     self._first_select = (By.XPATH, "//div[contains(@class, 'form-group')]/div[1]")
     self._second_select = (By.XPATH, "//div[contains(@class, 'form-group')]/div[3]")
-    self._select_journal_from_dropdown = (By.XPATH,'//div[contains(@class, "form-group")]/div[1]/a')
+    self._select_journal_from_dropdown = (By.XPATH,
+      '//div[contains(@class, "form-group")]/div[1]/a')
     self._select_type_from_dropdown = (By.XPATH,'//div[contains(@class, "form-group")]/div[3]/a')
-    self._cancel_button = (By.CSS_SELECTOR,'button-link.button--green')
-    self._create_button = (By.CSS_SELECTOR,'div.inner-content div.overlay-action-buttons button.button-primary.button--green')
+    self._cancel_button = (By.CSS_SELECTOR, 'button-link.button--green')
+    self._create_button = (By.CSS_SELECTOR, 
+      'div.inner-content div.overlay-action-buttons button.button-primary.button--green')
+
+    self._get(self._create_modal)
 
   #POM Actions
   def enter_title_field(self, title):

@@ -34,28 +34,27 @@ class HomePage(PlosPage):
     return self
 
   def click_on_existing_manuscript_link(self, title):
-    """Click on existing manuscript link"""
-    self._click_existing_manuscript = (By.LINK_TEXT,title)
-    self._get(self._click_existing_manuscript).click()
+    """Click on a link given a title"""
+    first_matching_manuscript_link = self._get((By.LINK_TEXT,title))
+    first_matching_manuscript_link.click()
     return self
 
   def click_on_existing_manuscript_link_partial_title(self, partial_title):
     """Click on existing manuscript link using partial title"""
-    self.driver.find_element_by_partial_link_text(partial_title).click()
-    return self  
+    first_article_link = self.driver.find_element_by_partial_link_text(partial_title)
+    first_article_link.click()
+    return first_article_link.text
 
   def verify_editor_invites(self):
-    """Verify invites for editor"""
     editorInvitation = '1'
-    #Starting validation of editor invitation count...
+    print ('Starting validation of editor invitation count...')
     actualText = self._get(self._check_for_one_invite).text
     actualInvitationText = (re.search(r'\d+',actualText).group())
     self._validate_individual_text(actualInvitationText, editorInvitation)
 
   def verify_editor_invites_at_home(self):
-    """Verify invites for editor at homepage"""
     editorInvitation = 'Hi, Hendrik W.. You have 1 manuscript.'
-    #Starting validation of editor invitation count in homepage...
+    print ('Starting validation of editor invitation count in homepage...')
     actualText = self._get(self._check_for_one_invite_home).text
     self._validate_individual_text(actualText, editorInvitation)
 
@@ -97,9 +96,7 @@ class HomePage(PlosPage):
     return self
 
   def _validate_individual_text(self, actualText, expectedText):
-    # Why a validation method in a PO?
+    """Validate text"""
     print ('Verifying text "%s":' % actualText,)
     assert actualText == expectedText
     print ('PRESENT',)
-
-

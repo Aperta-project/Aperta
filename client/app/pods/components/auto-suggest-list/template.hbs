@@ -1,0 +1,11 @@
+{{#each items as |item|}}
+  {{#auto-suggest-item item=item
+                       highlightedItem=highlightedItem
+                       class=itemClass}}
+    {{#if template.blockParams}}
+      {{yield item}}
+    {{else}}
+      {{partial itemPartial}}
+    {{/if}}
+  {{/auto-suggest-item}}
+{{/each}}

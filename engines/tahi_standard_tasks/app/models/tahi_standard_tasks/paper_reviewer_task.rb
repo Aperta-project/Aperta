@@ -36,5 +36,25 @@ module TahiStandardTasks
     def invitee_role
       'reviewer'
     end
+
+    def invite_letter
+      template = <<-TEXT.strip_heredoc
+        Dear [REVIEWER NAME],
+
+        I would love to invite you to be a reviewer for %{manuscript_title}.  View the manuscript on Tahi and let me know if you accept or reject this offer.
+
+        Thank you,
+        [YOUR NAME]
+        %{journal_name}
+      TEXT
+
+      template % template_data
+    end
+
+    private
+    def template_data
+      { manuscript_title: paper.title,
+        journal_name: paper.journal.name}
+    end
   end
 end

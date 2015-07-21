@@ -12,9 +12,8 @@
       </h3>
 
       {{textarea type="text"
-                 value=""
-                 class="form-control taller-textarea"
-                 placeholder="Optional: reason for your recommending or opposing this reviewer"}}
+                 value=letterTemplate
+                 class="form-control taller-textarea"}}
 
       {{#if model.isSaving}}
         {{progress-spinner visible=true size="small"}}

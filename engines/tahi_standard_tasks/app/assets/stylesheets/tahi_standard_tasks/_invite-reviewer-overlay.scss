@@ -9,7 +9,8 @@
   }
 }
 
-.invite-reviewer-button {
+.invite-reviewer-button,
+.compose-invite-button {
   @extend .invite-editor-button;
 }
 

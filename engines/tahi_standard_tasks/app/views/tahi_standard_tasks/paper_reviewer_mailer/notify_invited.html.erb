@@ -18,6 +18,10 @@
         </div>
       <% end %>
     </div>
+    <div class='paper-name'>
+      <%= @paper.display_title %>
+    </div>
+
     <div>
       <%= simple_format @task.body[0] %>
     </div>

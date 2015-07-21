@@ -119,9 +119,10 @@ describe TahiStandardTasks::RegisterDecisionTask do
   describe "#after_update" do
     before do
       allow_any_instance_of(Decision).to receive(:revision?).and_return(true)
+      task.paper.decisions.latest.update_attribute(:verdict, 'major_revision')
     end
 
-    context "when the decision is 'revise' and task is incomplete" do
+    context "when the decision is 'Major Revision' and task is incomplete" do
       it "does not create a new task for the paper" do
         expect {
           task.save!
@@ -129,7 +130,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
       end
     end
 
-    context "when the decision is 'revise' and task is completed" do
+    context "when the decision is 'Major Revision' and task is completed" do
       let(:revise_task) do
         task.paper.tasks.detect do |paper_task|
           paper_task.type == "TahiStandardTasks::ReviseTask"

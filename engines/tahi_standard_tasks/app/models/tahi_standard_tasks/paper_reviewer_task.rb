@@ -52,9 +52,10 @@ module TahiStandardTasks
     end
 
     private
+
     def template_data
       { manuscript_title: paper.title,
-        journal_name: paper.journal.name}
+        journal_name: paper.journal.name }
     end
   end
 end

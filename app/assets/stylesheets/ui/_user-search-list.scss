@@ -1,0 +1,16 @@
+.user-search-list-email {
+  color: #aaa;
+}
+
+.user-search-list-avatar {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin: -3px 4px 0 0;
+}
+
+.auto-suggest-item--highlight {
+  .user-search-list-email {
+    color: #fff;
+  }
+}

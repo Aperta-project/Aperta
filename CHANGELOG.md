@@ -9,6 +9,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ### Changed
 - Gussied up Figures and Supporting Information thumbnails
+- Register Decision card now has 'Minor Revision' and 'Major Revision' options instead of 'Revise'
 
 ### Deprecated
 -

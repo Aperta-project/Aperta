@@ -43,7 +43,7 @@ test 'has a custom extractTypeName function to make things easier', (assert) ->
   assert.equal propType, 'cow', 'uses the prop for the typeName otherwise'
 
 test "extractSingle puts sideloaded things into the store via their 'type' attribute", (assert) ->
-  TechCheckTask = DS.Model.extend
+  InitialTechCheckTask = DS.Model.extend
     title: DS.attr('string')
     type: DS.attr('string')
   PlosAuthorsTask = DS.Model.extend
@@ -51,23 +51,22 @@ test "extractSingle puts sideloaded things into the store via their 'type' attri
     type: DS.attr('string')
 
   store = getStore()
-  container.register("model:tech-check-task", TechCheckTask)
   container.register("model:plos-authors-task", PlosAuthorsTask)
 
   jsonHash =
     tasks:
-      [ {id: '1', type: 'TechCheckTask', title: 'Tech Check'}
+      [ {id: '1', type: 'InitialTechCheckTask', title: 'Initial Tech Check'}
         {id: '2', type: 'Foo::PlosAuthorsTask', title: 'Check Authors'}
       ]
     phase:
       id: '1'
-      tasks: [{id: '1', type: 'TechCheckTask'}, {id: '2', type: 'PlosAuthorsTask'}]
+      tasks: [{id: '1', type: 'InitialTechCheckTask'}, {id: '2', type: 'PlosAuthorsTask'}]
 
   Ember.run ->
     result = subject.extractSingle(store, store.modelFor('phase'), jsonHash)
     assert.equal store.getById('task', 1), null, 'no Task gets pushed into the store'
-    store.find('techCheckTask', 1).then (task) ->
-      assert.equal task.get('title'), 'Tech Check', 'the message task is in the store'
+    store.find('initialTechCheckTask', 1).then (task) ->
+      assert.equal task.get('title'), 'Initial Tech Check', 'the message task is in the store'
     store.find('plosAuthorsTask', 2).then (task) ->
       assert.equal task.get('title'), 'Check Authors', 'the namespaced authors task is in the store'
 

@@ -19,6 +19,19 @@ describe Paper do
       expect(subject).to eq paper
       expect(subject.destroyed?).to eq true
     end
+
+    context "with tasks" do
+      let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
+
+      it "delete Phases and Tasks" do
+        expect(paper).to have_at_least(1).phase
+        expect(paper).to have_at_least(1).task
+        paper.destroy
+
+        expect(Phase.where(paper_id: paper.id).count).to be 0
+        expect(Task.count).to be 0
+      end
+    end
   end
 
   describe "validations" do
@@ -132,12 +145,12 @@ describe Paper do
       end
     end
 
-    context "when submitting a minor revision (as in a tech check)" do
+    context "when submitting a minor change (as in a tech check)" do
       let(:paper) { FactoryGirl.create(:paper, :submitted) }
 
       it "marks the paper uneditable" do
-        paper.minor_revision!
-        paper.submit_minor_revision!
+        paper.minor_check!
+        paper.submit_minor_check!
         expect(paper).to_not be_editable
       end
     end
@@ -157,7 +170,7 @@ describe Paper do
 
     context "acceptance" do
       let(:decision) do
-        FactoryGirl.create(:decision, verdict: "accepted")
+        FactoryGirl.create(:decision, verdict: "accept")
       end
 
       it "accepts the paper" do
@@ -168,7 +181,7 @@ describe Paper do
 
     context "acceptance" do
       let(:decision) do
-        FactoryGirl.create(:decision, verdict: "accepted")
+        FactoryGirl.create(:decision, verdict: "accept")
       end
 
       it "accepts the paper" do
@@ -179,7 +192,7 @@ describe Paper do
 
     context "rejection" do
       let(:decision) do
-        FactoryGirl.create(:decision, verdict: "rejected")
+        FactoryGirl.create(:decision, verdict: "reject")
       end
 
       it "rejects the paper" do
@@ -188,9 +201,9 @@ describe Paper do
       end
     end
 
-    context "revision" do
+    context "major revision" do
       let(:decision) do
-        FactoryGirl.create(:decision, verdict: "revise")
+        FactoryGirl.create(:decision, verdict: "major_revision")
       end
 
       it "puts the paper in_revision" do
@@ -198,6 +211,17 @@ describe Paper do
         expect(paper.publishing_state).to eq("in_revision")
       end
     end
+
+    context "minor revision" do
+      let(:decision) do
+        FactoryGirl.create(:decision, verdict: "minor_revision")
+      end
+      it "puts the paper in_revision" do
+        paper.make_decision decision
+        expect(paper.publishing_state).to eq("in_revision")
+      end
+    end
+
   end
 
 
@@ -274,6 +298,15 @@ describe Paper do
       it "returns #default_abstract" do
         expect(paper.abstract).to eq "a bunch of words"
       end
+    end
+  end
+
+  describe "#authors_list" do
+    let!(:plos_author1) { FactoryGirl.create :plos_author, paper: paper }
+    let!(:plos_author2) { FactoryGirl.create :plos_author, paper: paper }
+
+    it "returns authors' last name, first name and affiliation name in an ordered list" do
+      expect(paper.authors_list).to eq "1. #{plos_author1.last_name}, #{plos_author1.first_name} from #{plos_author1.specific.affiliation}\n2. #{plos_author2.last_name}, #{plos_author2.first_name} from #{plos_author2.specific.affiliation}"
     end
   end
 end

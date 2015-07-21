@@ -23,30 +23,39 @@
 
 <div class="decision-selections">
   <label class="decision-label">
-    {{radio-button value="accepted"
-                   selection=latestDecision.verdict
-                   disabled=nonPublishable
-                   name="decision"
-                   action=(action "setDecisionTemplate")}}
-    Accepted
+    {{decision-radio-button value="accept"
+                            selection=latestDecision.verdict
+                            disabled=controller.nonPublishable
+                            name="decision"
+                            action=(action "setDecisionTemplate")}}
+    Accept
   </label>
 
   <label class="decision-label">
-    {{radio-button value="rejected"
-                   selection=latestDecision.verdict
-                   disabled=nonPublishable
-                   name="decision"
-                   action=(action "setDecisionTemplate")}}
-    Rejected
+    {{decision-radio-button value="reject"
+                            selection=latestDecision.verdict
+                            disabled=controller.nonPublishable
+                            name="decision"
+                            action=(action "setDecisionTemplate")}}
+    Reject
   </label>
 
   <label class="decision-label">
-    {{radio-button value="revise"
-                   selection=latestDecision.verdict
-                   disabled=nonPublishable
-                   name="decision"
-                   action=(action "setDecisionTemplate")}}
-    Revise
+    {{decision-radio-button value="major_revision"
+                            selection=latestDecision.verdict
+                            disabled=controller.nonPublishable
+                            name="decision"
+                            action=(action "setDecisionTemplate")}}
+    Major Revision
+  </label>
+
+  <label class="decision-label">
+    {{decision-radio-button value="minor_revision"
+                            selection=latestDecision.verdict
+                            disabled=model.completed
+                            name="decision"
+                            action=(action "setDecisionTemplate")}}
+    Minor Revision
   </label>
 </div>
 

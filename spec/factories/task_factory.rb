@@ -91,12 +91,6 @@ FactoryGirl.define do
     role "author"
   end
 
-  factory :tech_check_task, class: 'TahiStandardTasks::TechCheckTask' do
-    phase
-    title "Tech Check"
-    role "admin"
-  end
-
   factory :initial_tech_check_task, class: 'PlosBioTechCheck::InitialTechCheckTask' do
     phase
     title 'Initial Tech Check'

@@ -74,6 +74,7 @@ namespace :maintenance do
 
       "/papers/1/edit",
       "/papers/1/edit/discussions",
+      "/papers/1/edit/discussions/new",
       "/papers/1/workflow",
 
       # Tasks
@@ -85,6 +86,8 @@ namespace :maintenance do
 
       "/flow_manager",
 
+      "/paper_tracker",
+
       "/admin/journals",
       "/admin/journals/1",
       "/admin/journals/1/roles/1/flow_manager",
@@ -94,7 +97,7 @@ namespace :maintenance do
     urls = urls.map { |url| "#{base_path}#{url}" }
     client = AutoScreenshot::Screenshot.new(urls: urls)
     client.action_map = {
-      "http://localhost:5000/users/sign_in" => :wait
+      "#{base_path}/sign_in" => :wait
     }
     client.go
   end

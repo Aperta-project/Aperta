@@ -4,7 +4,7 @@
       Hello <%= @invitee.full_name %>
     </h3>
     <p class='message'>
-      You've been assigned as an Editor on a Manuscript
+      You've been invited as an Editor on a Manuscript.
     </p>
   </div>
   <hr>
@@ -22,8 +22,13 @@
       <%= @paper.display_title %>
     </div>
     <div class='paper-abstract'>
-      You've been assigned as an Editor on a Manuscript titled "<%= @paper.display_title %>".
+      You've been invited as an Editor on a Manuscript titled "<%= @paper.display_title %>".
     </div>
+    <% if @invitation.information.present? %>
+      <div class='invitation-information'>
+        <%= simple_format @invitation.information %>
+      </div>
+    <% end %>
     <p>
       <a class='button' href='<%= client_paper_url(@paper) %>' target='_blank'>
         View Paper

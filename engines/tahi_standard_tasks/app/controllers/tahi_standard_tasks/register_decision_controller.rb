@@ -4,10 +4,10 @@ module TahiStandardTasks
     def decide
       task = Task.find(params[:id])
 
-      if task && task.paper.publishing_state == "submitted"
+      if task && task.paper.submitted?
         task.complete_decision
         task.send_email
-        render json: {}, status: 200
+        render json: {}, status: :created
       else
         render json: { error: "Invalid Task and/or Paper" }
       end

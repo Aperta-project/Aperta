@@ -1,0 +1,10 @@
+{{input value=resultText bubbles=true placeholder=placeholder}}
+
+{{#if searchResults}}
+  {{#auto-suggest-list selectItem="selectItem"
+                       selectUnknownItem="selectUnknownItem"
+                       highlightedItem=highlightedItem
+                       items=searchResults as |item|}}
+    {{yield item}}
+  {{/auto-suggest-list}}
+{{/if}}

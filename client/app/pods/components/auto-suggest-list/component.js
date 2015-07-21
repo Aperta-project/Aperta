@@ -42,9 +42,9 @@ export default Ember.Component.extend(PositionNearMixin, {
     return this.get('items').indexOf( this.get('highlightedItem') );
   }),
 
-  highlightFirstItem: Ember.on('didInsertElement', function() {
+  highlightFirstItem() {
     this.set('highlightedItem', this.get('items.firstObject'));
-  }),
+  },
 
   highlightlastItem() {
     this.set('highlightedItem', this.get('items.lastObject'));
@@ -72,17 +72,9 @@ export default Ember.Component.extend(PositionNearMixin, {
     }
   },
 
-  click() {
-    this.sendAction('selectItem', this.get('highlightedItem'));
-  },
-
   _setupKeybindings: Ember.on('didInsertElement', function() {
-    $(document).on('keyup.autocomplete', (event)=> {
+    $(document).on('keyup.autosuggestlist', (event)=> {
       switch(event.which) {
-        case 13:
-          // enter
-          this.sendAction('selectItem', this.get('highlightedItem'));
-          break;
         case 38:
           // arrow up
           this.highlightPrevious();
@@ -96,6 +88,12 @@ export default Ember.Component.extend(PositionNearMixin, {
   }),
 
   _teardownKeybindings: Ember.on('willDestroyElement', function() {
-    $(document).off('keyup.autocomplete');
-  })
+    $(document).off('keyup.autosuggestlist');
+  }),
+
+  actions: {
+    selectItem(item) {
+      this.sendAction('selectItem', item);
+    }
+  }
 });

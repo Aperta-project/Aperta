@@ -27,6 +27,7 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
       @set 'composingEmail', true
 
     destroyInvitation: (invitation) -> invitation.destroyRecord()
+
     didSelectReviewer: (selectedReviewer) ->
       @set 'selectedReviewer', selectedReviewer
 
@@ -44,5 +45,10 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
       @store.find('user', selectedReviewer.id).then (user) =>
         @get('reviewers').removeObject(user)
         @send('saveModel')
+
+    setLetterBody: ->
+      @set 'model.body', [@get('letterTemplate')]
+      @model.save()
+      @send 'inviteReviewer'
 
 `export default PaperReviewerOverlayController`

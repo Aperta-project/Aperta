@@ -11,16 +11,12 @@
         [{{selectedReviewer.email}}]
       </h3>
 
-      {{textarea type="text"
-                 value=letterTemplate
-                 class="form-control taller-textarea"}}
 
-      {{#if model.isSaving}}
-        {{progress-spinner visible=true size="small"}}
-      {{/if}}
+      {{content-editable value=letterTemplate class="form-control taller-textarea"}}
+
       <div class="invite-reviewer-cta">
         <button class="button-link button--green cancel" {{action "cancelAction"}}>cancel</button>
-        <button class="button-primary button--green" {{action "inviteReviewer"}}>Send Invitation</button>
+        <button class="button-primary button--green" {{action "setLetterBody"}}>Send Invitation</button>
       </div>
    </div>
   {{else}}

@@ -1,10 +1,11 @@
 module TahiStandardTasks
   class DecisionReviser
-    attr_reader :task, :paper
+    attr_reader :task, :paper, :decision
 
-    def initialize(decision_task)
-      @task = decision_task
+    def initialize(register_decision_task, decision)
+      @task = register_decision_task
       @paper = task.paper
+      @decision = decision
     end
 
     def process!
@@ -15,7 +16,6 @@ module TahiStandardTasks
         broadcast_revision
       end
     end
-
 
     private
 
@@ -40,7 +40,7 @@ module TahiStandardTasks
                         title: "Revise Manuscript",
                         role: "author",
                         phase_id: task.phase.id,
-                        body: [[{ type: 'text', value: task.revise_letter }]],
+                        body: [[{ type: 'text', value: task.public_send("#{decision.verdict}_letter") }]],
                         participants: participants,
                         completed: false
                        ).save!

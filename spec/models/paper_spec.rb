@@ -145,12 +145,12 @@ describe Paper do
       end
     end
 
-    context "when submitting a minor revision (as in a tech check)" do
+    context "when submitting a minor change (as in a tech check)" do
       let(:paper) { FactoryGirl.create(:paper, :submitted) }
 
       it "marks the paper uneditable" do
-        paper.minor_revision!
-        paper.submit_minor_revision!
+        paper.minor_check!
+        paper.submit_minor_check!
         expect(paper).to_not be_editable
       end
     end
@@ -170,7 +170,7 @@ describe Paper do
 
     context "acceptance" do
       let(:decision) do
-        FactoryGirl.create(:decision, verdict: "accepted")
+        FactoryGirl.create(:decision, verdict: "accept")
       end
 
       it "accepts the paper" do
@@ -181,7 +181,7 @@ describe Paper do
 
     context "acceptance" do
       let(:decision) do
-        FactoryGirl.create(:decision, verdict: "accepted")
+        FactoryGirl.create(:decision, verdict: "accept")
       end
 
       it "accepts the paper" do
@@ -192,7 +192,7 @@ describe Paper do
 
     context "rejection" do
       let(:decision) do
-        FactoryGirl.create(:decision, verdict: "rejected")
+        FactoryGirl.create(:decision, verdict: "reject")
       end
 
       it "rejects the paper" do
@@ -201,9 +201,9 @@ describe Paper do
       end
     end
 
-    context "revision" do
+    context "major revision" do
       let(:decision) do
-        FactoryGirl.create(:decision, verdict: "revise")
+        FactoryGirl.create(:decision, verdict: "major_revision")
       end
 
       it "puts the paper in_revision" do
@@ -211,6 +211,17 @@ describe Paper do
         expect(paper.publishing_state).to eq("in_revision")
       end
     end
+
+    context "minor revision" do
+      let(:decision) do
+        FactoryGirl.create(:decision, verdict: "minor_revision")
+      end
+      it "puts the paper in_revision" do
+        paper.make_decision decision
+        expect(paper.publishing_state).to eq("in_revision")
+      end
+    end
+
   end
 
 

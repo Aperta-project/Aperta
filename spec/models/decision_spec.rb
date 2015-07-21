@@ -33,6 +33,18 @@ describe Decision do
     expect(invalid_decision.revision_number).to_not eq(1)
   end
 
+  describe '#revision?' do
+    it 'counts major_revision as a revision' do
+      decision.update_attribute(:verdict, 'major_revision')   
+      expect(decision.revision?).to be true
+    end
+
+    it 'counts minor_revision as a revision' do
+      decision.update_attribute(:verdict, 'minor_revision') 
+      expect(decision.revision?).to be true
+    end
+  end
+
   describe '#latest?' do
     it 'returns true if it is the latest decision' do
       early_decision = paper.decisions.create!
@@ -41,6 +53,37 @@ describe Decision do
       latest_decision = paper.decisions.create!
       expect(early_decision.latest?).to be false
       expect(latest_decision.latest?).to be true
+    end
+  end
+
+  describe '#verdict_valid?' do
+    context 'when the verdict is valid' do
+      it 'validates for major_revision' do
+        decision.update_attribute(:verdict, 'major_revision')   
+        expect(decision.valid?).to be true
+      end
+
+      it 'validates for minor_revision' do
+        decision.update_attribute(:verdict, 'minor_revision') 
+        expect(decision.valid?).to be true
+      end
+
+      it 'validates for accept' do
+        decision.update_attribute(:verdict, 'accept') 
+        expect(decision.valid?).to be true
+      end
+
+      it 'validates for reject' do
+        decision.update_attribute(:verdict, 'reject') 
+        expect(decision.valid?).to be true
+      end
+    end
+
+    context 'when the verdict is invalid' do
+      it 'fails validation for an unknown verdict' do
+        decision.update_attribute(:verdict, 'Woop de doo') 
+        expect(decision.valid?).to be false
+      end
     end
   end
 end

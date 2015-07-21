@@ -12,7 +12,7 @@ class RegisterDecisionOverlay < CardOverlay
   end
 
   def decision_letter=(body)
-    synchronize_content!("Accepted")
+    synchronize_content!("Accept")
     find('.decision-letter-field').set(body)
   end
 
@@ -42,7 +42,7 @@ class RegisterDecisionOverlay < CardOverlay
   end
 
   def success_state_message
-    find(".alert-info").text == "A final decision of accepted has been registered."
+    find(".alert-info").text == "A final decision of accept has been registered."
   end
 
   def invalid_state_message

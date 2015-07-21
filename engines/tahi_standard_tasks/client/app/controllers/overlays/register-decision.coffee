@@ -11,7 +11,7 @@ RegisterDecisionOverlayController = TaskController.extend
   ).property('model.paper.decisions.@each.revisionNumber')
 
   finalDecision: (->
-    @get("latestDecision.verdict") is "accepted" or @get("latestDecision.verdict") is "rejected"
+    @get("latestDecision.verdict") is "accept" or @get("latestDecision.verdict") is "reject"
   ).property("latestDecision")
 
   paperPublishingState: (->
@@ -52,7 +52,7 @@ RegisterDecisionOverlayController = TaskController.extend
     setDecisionTemplate: (decision) ->
       @set "isSavingData", true
       @get("latestDecision").set "verdict", decision
-      @get("latestDecision").set "letter", @get("model.#{decision}LetterTemplate")
+      @get("latestDecision").set "letter", @get("model.#{decision.camelize()}LetterTemplate")
 
       @send("saveLatestDecision")
 

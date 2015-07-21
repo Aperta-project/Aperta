@@ -41,7 +41,7 @@ class Paper < ActiveRecord::Base
   aasm column: :publishing_state do
     state :unsubmitted, initial: true # currently being authored
     state :submitted
-    state :in_minor_revision # revision that does not require resubmission
+    state :checking # small change that does not require resubmission, as in a tech check
     state :in_revision # has revised decision and requires resubmission
     state :accepted
     state :rejected
@@ -56,19 +56,25 @@ class Paper < ActiveRecord::Base
                           :set_submitted_at!]
     end
 
-    event(:minor_revision) do
+    event(:minor_check) do
       transitions from: :submitted,
-                  to: :in_minor_revision,
+                  to: :checking,
                   after: :allow_edits!
     end
 
-    event(:submit_minor_revision) do
-      transitions from: :in_minor_revision,
+    event(:submit_minor_check) do
+      transitions from: :checking,
                   to: :submitted,
                   after: :prevent_edits!
     end
 
-    event(:revise) do
+    event(:minor_revision) do
+      transitions from: :submitted,
+                  to: :in_revision,
+                  after: :allow_edits!
+    end
+
+    event(:major_revision) do
       transitions from: :submitted,
                   to: :in_revision,
                   after: :allow_edits!
@@ -92,14 +98,7 @@ class Paper < ActiveRecord::Base
   end
 
   def make_decision(decision)
-    case decision.verdict
-    when "accepted"
-      accept!
-    when "rejected"
-      reject!
-    when "revise"
-      revise!
-    end
+    public_send "#{decision.verdict}!"
   end
 
   def body

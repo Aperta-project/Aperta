@@ -23,9 +23,12 @@ Non Block Style with partial:
 
 Customizing List Items:
 
-Since you are passing a block or partial to the component, you can display whatever content you want.
+Since you are passing a block or partial to the component,
+you can display whatever content you want.
 
-To set extra classes on each item in the list by setting the itemClass property on auto-suggest-list. {{auto-suggest-list ... itemClass="user-list-item"}}
+To set extra classes on each item in the list by setting the
+itemClass property on auto-suggest-list:
+{{auto-suggest-list ... itemClass="user-list-item"}}
 */
 
 export default Ember.Component.extend(PositionNearMixin, {

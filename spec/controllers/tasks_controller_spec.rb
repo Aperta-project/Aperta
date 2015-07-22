@@ -107,9 +107,8 @@ describe TasksController, redis: true do
 
       it "calls the Task subclass's appropriate serializer when rendering JSON" do
         do_request
-        data_attributes = JSON.parse response.body
         serializer = task.active_model_serializer.new(task, user: user)
-        expect(data_attributes.keys).to match_array(serializer.as_json.stringify_keys.keys)
+        expect(res_body.keys).to match_array(serializer.as_json.stringify_keys.keys)
       end
     end
   end

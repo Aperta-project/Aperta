@@ -16,8 +16,7 @@ describe PaperConversionsController, type: :controller do
           get :export, id: paper.id, format: 'docx'
         end
         expect(response.status).to eq(203)
-        response_hash = JSON.parse(response.body)
-        expect(response_hash['jobs']['id']).to eq job_id
+        expect(res_body['jobs']['id']).to eq job_id
       end
     end
 
@@ -38,8 +37,7 @@ describe PaperConversionsController, type: :controller do
       VCR.use_cassette('check_docx_status') do
         get :status, id: job_id
         expect(response.status).to eq 200
-        json_response = JSON.parse(response.body)
-        expect(json_response['jobs']['status']).to eq "pending"
+        expect(res_body['jobs']['status']).to eq "pending"
       end
     end
   end

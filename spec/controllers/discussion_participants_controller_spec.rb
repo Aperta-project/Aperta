@@ -8,7 +8,7 @@ describe DiscussionParticipantsController do
   let!(:topic_a) { FactoryGirl.create(:discussion_topic, paper: paper) }
   let!(:participation) { topic_a.discussion_participants.create!(user: user) }
 
-  let(:json) { JSON.parse(response.body) }
+  let(:json) { res_body }
 
   before { sign_in user }
 

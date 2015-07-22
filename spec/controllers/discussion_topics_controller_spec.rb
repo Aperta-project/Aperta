@@ -11,7 +11,7 @@ describe DiscussionTopicsController do
   let!(:unrelated_topic) { FactoryGirl.create(:discussion_topic) }
   let!(:participation) { topic_a.discussion_participants.create!(user: user) }
 
-  let(:json) { JSON.parse(response.body) }
+  let(:json) { res_body }
 
   before { sign_in user }
 

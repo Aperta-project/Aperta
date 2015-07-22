@@ -31,7 +31,7 @@ describe UserFlowsController do
 
       it "returns a serialized user_flow" do
         post :create, user_flow: {flow_id: flow.id}
-        expect(JSON.parse(response.body)["user_flow"]).to_not be_nil
+        expect(res_body["user_flow"]).to_not be_nil
       end
 
       it "associates a flow with the current_user" do
@@ -49,7 +49,7 @@ describe UserFlowsController do
     end
 
     it "returns potential flow json" do
-      expect(JSON.parse(response.body)["flows"][0]["title"]).to eq("My tasks")
+      expect(res_body["flows"][0]["title"]).to eq("My tasks")
     end
   end
 end

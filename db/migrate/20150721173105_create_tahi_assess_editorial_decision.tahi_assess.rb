@@ -6,6 +6,7 @@ class CreateTahiAssessEditorialDecision < ActiveRecord::Migration
       t.integer :paper_id, null: false
       t.integer :user_id, null: false
       t.boolean :finished, default: false
+      t.json    :criteria, default: {}
       t.string  :recommendation
       t.string  :comments
 

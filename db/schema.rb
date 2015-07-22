@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150720173538) do
+ActiveRecord::Schema.define(version: 20150721202909) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -423,14 +423,16 @@ ActiveRecord::Schema.define(version: 20150720173538) do
   add_index "tahi_assess_assistants", ["task_id"], name: "index_tahi_assess_assistants_on_task_id", using: :btree
 
   create_table "tahi_assess_editorial_decisions", force: :cascade do |t|
-    t.integer  "decision_id",                    null: false
-    t.integer  "paper_id",                       null: false
-    t.integer  "user_id",                        null: false
-    t.boolean  "finished",       default: false
+    t.integer  "decision_id",                                null: false
+    t.integer  "paper_id",                                   null: false
+    t.integer  "user_id",                                    null: false
+    t.boolean  "finished",                   default: false
+    t.json     "criteria",                   default: {}
     t.string   "recommendation"
     t.string   "comments"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "editorial_decision_task_id"
   end
 
   create_table "tahi_assess_evaluations", force: :cascade do |t|

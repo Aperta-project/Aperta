@@ -3,9 +3,10 @@ module TahiStandardTasks
     attributes :id, :decision_letters, :paper_decision_letter
 
     def decision_letters
-      { Accepted: object.accept_letter,
-        Rejected: object.reject_letter,
-        Revise: object.revise_letter }.to_json
+      { accept: object.accept_letter,
+        reject: object.reject_letter,
+        major_revision: object.major_revision_letter,
+        minor_revision: object.minor_revision_letter }.to_json
     end
   end
 end

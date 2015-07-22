@@ -68,8 +68,8 @@ class User < ActiveRecord::Base
     journals.merge(Role.can_view_flow_manager)
   end
 
-  def auto_generate_password(length=10)
-    self.password = SecureRandom.urlsafe_base64(length-1)
+  def auto_generate_password(length=50)
+    self.password = SecureRandom.urlsafe_base64(length-1) if password_required?
   end
 
   def administered_journals

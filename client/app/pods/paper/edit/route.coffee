@@ -14,7 +14,7 @@ PaperEditRoute = AuthorizedRoute.extend
     paper = @modelFor('paper')
     editorInit = Ember.RSVP.Promise.resolve()
 
-    if paper.get('editorMode') is 'html'
+    if paper.get('editorMode') is 'html' and not Ember.testing
       editorInit = loadVeEditorAssets(ENV).catch((error) ->
         Ember.Logger.error(error))
 

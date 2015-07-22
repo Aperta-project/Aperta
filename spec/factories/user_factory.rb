@@ -37,10 +37,9 @@ FactoryGirl.define do
     trait :orcid do
       credentials { [create(:orcid_credential)] }
     end
-  end
 
-  factory :orcid_credential, class: Credential do
-    provider "orcid"
-    uid "abc123"
+    trait :cas do
+      credentials { [create(:cas_credential)] }
+    end
   end
 end

@@ -37,7 +37,7 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: user.try(:email),
-      subject: "You've been added as a reviewer on Tahi")
+      subject: "You've been invited to be a reviewer on Tahi")
   end
 
   def add_editor_to_editors_discussion(invitee_id, task_id)
@@ -48,7 +48,7 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: invitee.email,
-      subject: "You've been invited to the Editors' Discussion for paper \"#{@task.paper.display_title}\"")
+      subject: "You've been invited to the Editor Discussion for paper \"#{@task.paper.display_title}\"")
   end
 
   def assigned_editor(editor_id, paper_id)

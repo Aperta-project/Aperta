@@ -38,16 +38,16 @@ feature "Upload Supporting Information", js: true, selenium: true do
 
     # edit file
     edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|
-      find('.attachment-edit-icon').click
-      title   = find('.attachment-thumbnail-edit-content input[type=text]')
-      caption = find('.attachment-thumbnail-edit-content textarea')
+      find('.attachment-thumbnail .edit-icons .fa-pencil').click
+      title = find('.attachment-thumbnail .edit-info input[type=text]')
+      caption = find('.attachment-thumbnail .edit-info textarea')
 
       title.set 'new_file_title'
       caption.set 'New file caption'
-      find('.attachment-thumbnail-edit-content .button-secondary').click
+      find('.attachment-thumbnail .edit-info .button-primary').click
 
-      expect(find('.attachment-thumbnail-title').text).to eq 'new_file_title'
-      expect(find('.attachment-thumbnail-caption').text).to eq 'New file caption'
+      expect(find('.attachment-thumbnail .info .title').text).to eq 'new_file_title'
+      expect(find('.attachment-thumbnail .info .caption').text).to eq 'New file caption'
     end
 
     file = paper.supporting_information_files.last

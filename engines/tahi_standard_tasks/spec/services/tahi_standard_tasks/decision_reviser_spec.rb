@@ -4,7 +4,7 @@ describe "TahiStandardTasks::DecisionReviser" do
 
   let(:task) { FactoryGirl.create(:register_decision_task, paper: paper) }
   let(:paper) { FactoryGirl.create(:paper) }
-  let(:service) { TahiStandardTasks::DecisionReviser.new(task) }
+  let(:service) { TahiStandardTasks::DecisionReviser.new(task, double(:decision, verdict: "major_revision")) }
 
   describe "#process!" do
 

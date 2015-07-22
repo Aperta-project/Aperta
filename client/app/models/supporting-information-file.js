@@ -10,6 +10,8 @@ export default DS.Model.extend({
   status: a('string'),
   title: a('string'),
   caption: a('string'),
+  detailSrc: DS.attr('string'),
+  previewSrc: DS.attr('string'),
 
   // when a file is loaded via the event stream the paper's
   // hasMany relationship isn't automatically updated.  This

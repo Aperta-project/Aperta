@@ -32,6 +32,15 @@ export default Ember.View.extend({
     $(".navigation")[0].remove();
     $(".navigation").css("position", "initial");
 
+    $('#auto-suggest-input').on('keyup', (event)=> {
+      let input = $(event.target);
+      if(Ember.isEmpty(input.val())) {
+        this.set('showAutoSuggest', false);
+      } else {
+        this.set('showAutoSuggest', true);
+      }
+    });
+
     $(window).resize(setScrollWindow());
     $('.show-child-mmt-thumbnail .mmt-thumbnail .mmt-thumbnail-overlay--edit-options').show();
     return $('.show-child-confirm-destroy .mmt-thumbnail-overlay--confirm-destroy').show();

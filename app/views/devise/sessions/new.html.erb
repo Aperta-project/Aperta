@@ -62,7 +62,9 @@
     </div>
   <% end %>
 
-  <div class="auth-right auth-group">
-    <%= render "devise/shared/links" %>
-  </div>
+  <% if Rails.configuration.omniauth_providers.present? %>
+    <div class="auth-right auth-group">
+      <%= render "devise/shared/links" %>
+    </div>
+  <% end %>
 </div>

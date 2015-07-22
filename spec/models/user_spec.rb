@@ -102,6 +102,26 @@ describe User do
     end
   end
 
+  context "password authentication" do
+    let(:user) { User.new }
+    before { expect(Rails.configuration).to receive(:password_auth_enabled).and_return(enabled) }
+
+    context "is enabled" do
+      let(:enabled) { true }
+
+      specify { expect(user.password_required?).to eq(enabled) }
+      specify { expect(user.auto_generate_password).to be_present }
+    end
+
+    context "is disabled" do
+      let(:enabled) { false }
+
+      specify { expect(user.password_required?).to eq(enabled) }
+      specify { expect(user.auto_generate_password).to be_blank }
+    end
+  end
+
+
   describe ".fuzzy_search" do
     it "searches by user's first_name and last_name" do
       user = create :user, first_name: 'David', last_name: 'Wang'

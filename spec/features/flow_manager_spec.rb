@@ -16,6 +16,15 @@ feature "Flow Manager", js: true, selenium: true do
   before do
     admin.flows << flow
     author.flows << flow
+
+    @old_size = page.driver.browser.manage.window.size
+    page.driver.browser.manage.window.resize_to(1250,550)
+    login_as admin
+    visit "/"
+  end
+
+  after do
+    page.driver.browser.manage.window.size = @old_size
   end
 
   let(:journal) { FactoryGirl.create(:journal) }
@@ -44,17 +53,6 @@ feature "Flow Manager", js: true, selenium: true do
 
   def complete_tasks(paper, titles)
     paper.tasks.each { |t| t.update(completed: true) if titles.include? t.title }
-  end
-
-  before do
-    @old_size = page.driver.browser.manage.window.size
-    page.driver.browser.manage.window.resize_to(1250,550)
-    login_as admin
-    visit "/"
-  end
-
-  after do
-    page.driver.browser.manage.window.size = @old_size
   end
 
   it "admin removes a column from their flow manager" do

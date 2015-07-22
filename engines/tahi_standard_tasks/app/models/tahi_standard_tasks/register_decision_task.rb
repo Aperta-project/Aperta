@@ -11,18 +11,11 @@ module TahiStandardTasks
 
     register_task default_title: "Register Decision", default_role: "editor"
 
-    def after_update
-      if on_card_completion?
-        complete_decision
-        send_email
-      end
-    end
-
     def complete_decision
       decision = paper.decisions.latest
       paper.make_decision decision
       # If it's a revise decision, prepare a new decision task.
-      DecisionReviser.new(self).process! if decision.revision?
+      DecisionReviser.new(self, decision).process! if decision.revision?
     end
 
     def send_email
@@ -59,7 +52,40 @@ module TahiStandardTasks
       template % template_data
     end
 
-    def revise_letter
+    def minor_revision_letter
+      template = <<-TEXT.strip_heredoc
+        THIS IS THE MINOR REVISION
+        Dear Dr. %{author_last_name},
+
+        Thank you for submitting your manuscript, %{manuscript_title} to %{journal_name}. After careful consideration, we feel that it has merit, but is not suitable for publication as it currently stands. Therefore, my decision is "Major Revision."
+
+        We invite you to submit a revised version of the manuscript that addresses the points below:
+
+        ***
+
+        ACADEMIC EDITOR:
+
+        PLEASE INSERT COMMENTS HERE GIVING CONTEXT TO THE REVIEWS AND EXPLAINING WHICH REVIEWER COMMENTS MUST BE ADDRESSED.
+
+        ***
+
+        We encourage you to submit your revision within forty-five days of the date of this decision.
+
+        When your files are ready, please submit your revision by logging on to tahi-staging.herokuapp.com and following the instructions for resubmission. Do not submit a revised manuscript as a new submission.
+
+        If you choose not to submit a revision, please notify us.
+
+        Yours sincerely,
+
+        %{ae_full_name}
+        Academic Editor
+        %{journal_name}
+      TEXT
+
+      template % template_data
+    end
+
+    def major_revision_letter
       template = <<-TEXT.strip_heredoc
         Dear Dr. %{author_last_name},
 

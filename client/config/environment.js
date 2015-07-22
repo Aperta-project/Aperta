@@ -23,6 +23,10 @@ module.exports = function(environment) {
       assetsRoot: '/'
     },
 
+    'tahi-editor-ve': {
+      mathJaxUrl: '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+    },
+
     contentSecurityPolicy: {
       'default-src': "'none'",
       'script-src': "'self' 'unsafe-eval'", // loading visualEditor via getScript

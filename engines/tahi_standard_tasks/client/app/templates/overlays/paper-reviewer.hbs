@@ -22,6 +22,16 @@
   {{else}}
     <div class='invite-reviewers'>
       <label for="reviewer">Email</label>
+
+      <input id="auto-suggest-input" style="width:200px;">
+
+      {{#auto-suggest-list positionNearSelector="#auto-suggest-input"
+                           class="animation-fade-in"
+                           selectItem="selectAutoSuggestItem"
+                           items=autoSuggestData as |user|}}
+        {{user.fullName}} - {{user.email}}
+      {{/auto-suggest-list}}
+
       {{select-2-single
           class="reviewer-select2"
           minimumInputLength=3

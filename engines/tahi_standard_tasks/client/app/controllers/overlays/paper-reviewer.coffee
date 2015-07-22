@@ -9,6 +9,11 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
   composingEmail: false
   decisions: Ember.computed.alias 'model.paper.decisions'
 
+  autoSuggestData: [{
+    fullName: 'Joe Bob', email: 'joe.bob@example.com'
+  },
+  { fullName: 'Bob Joe', email: 'bob.joe@example.com' }]
+
   latestDecision: (->
     @get('decisions').findBy 'isLatest', true
   ).property('decisions', 'decisions.@each.isLatest')
@@ -22,6 +27,9 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
     @set('updatedTemplate', customTemplate)
 
   actions:
+    selectAutoSuggestItem: ->
+      alert("selectAutoSuggestItem")
+
     cancelAction: ->
       @set 'selectedReviewer', null
       @set 'composingEmail', false

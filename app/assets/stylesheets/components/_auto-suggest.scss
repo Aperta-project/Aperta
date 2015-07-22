@@ -1,19 +1,22 @@
 .auto-suggest {
   list-style-type: none;
-  border-bottom: 1px solid #BFBFBF;
+  position: absolute;
+  top: 100%;
+  left: 0px;
   z-index: z('auto-suggest');
+  border: 1px solid $tahi-grey-light;
+  border-top: 0;
+  width: 100%;
 }
 
 .auto-suggest-item {
-  overflow: hidden;
-  border-right: 1px solid #BFBFBF;
-  border-left: 1px solid #BFBFBF;
+  background: rgba(255,255,255, 0.96);
+  cursor: pointer;
   padding: 0 25px;
+  overflow: hidden;
+  line-height: 30px;
   color: #000;
   font-size: 14px;
-  line-height: 30px;
-  cursor: pointer;
-  background: rgba(255,255,255, 0.96);
 }
 
 .auto-suggest-item:hover {
@@ -24,6 +27,32 @@
 .auto-suggest-item--highlight:hover {
   border-right-color: rgb(38, 131, 226);
   border-left-color: rgb(38, 131, 226);
-  color: #fff;
   background: rgba(38, 131, 226, 0.95);
+  color: #fff;
+}
+
+.auto-suggest-border .auto-suggest-no-border {
+  display: block;
+  margin: 0;
+  border: 0;
+  background-color: transparent;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.auto-suggest-border {
+  position: relative;
+}
+
+.auto-suggest-border .auto-suggest {
+  border-top: 1px solid $tahi-grey-light;
+}
+
+.auto-suggest-border .progress-spinner {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 20px;
+  height: 20px;
 }

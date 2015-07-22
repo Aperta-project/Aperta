@@ -10,6 +10,7 @@ module TahiStandardTasks
       invitation = Invitation.find(invitation_id)
       @invitee = invitation.invitee
       @paper = invitation.paper
+      @task = invitation.task
 
       mail({
         to: invitation.email,

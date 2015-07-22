@@ -1,4 +1,16 @@
-.invite-reviewer-button {
+.invite-reviewer-edit-invite {
+  width: 700px;
+  .taller-textarea {
+      height: 265px;
+      margin: 20px 0;
+  }
+  .invite-reviewer-cta {
+    float: right;
+  }
+}
+
+.invite-reviewer-button,
+.compose-invite-button {
   @extend .invite-editor-button;
 }
 
@@ -8,6 +20,7 @@
     width: 37px;
     height: 37px;
   }
+  padding: 0;
 }
 
 .invite-reviewer-remove {

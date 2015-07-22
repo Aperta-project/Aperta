@@ -4,7 +4,7 @@
       Hello <%= @invitee.full_name %>
     </h3>
     <p class='message'>
-      You've been assigned as a Reviewer on a Manuscript
+      You've been invited to be a Reviewer on a Manuscript
     </p>
   </div>
   <hr>
@@ -21,9 +21,11 @@
     <div class='paper-name'>
       <%= @paper.display_title %>
     </div>
-    <div class='paper-abstract'>
-      You've been assigned as a Reviewer on a Manuscript titled "<%= @paper.display_title %>".
+
+    <div>
+      <%= simple_format @task.body[0] %>
     </div>
+
     <p>
       <a class='button' href='<%= client_paper_url(@paper) %>' target='_blank'>
         View Paper

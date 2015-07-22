@@ -7,6 +7,7 @@ class InviteReviewersOverlay < CardOverlay
       end
       page.has_no_css?('.select2-searching', visible: false)
       if find('.select2-chosen').text == reviewer.email
+        find('.compose-invite-button').click
         find('.invite-reviewer-button').click
       else
         raise 'Did not find any matching reviewers'

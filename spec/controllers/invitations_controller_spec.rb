@@ -59,6 +59,28 @@ describe InvitationsController do
       expect(invitation.actor).to be_nil
       expect(invitation.state).to eq("invited")
     end
+
+    it "create an invitation for new user" do
+      new_user_email = "custom-email@example.com"
+
+      post(:create, {
+        format: "json",
+        invitation: {
+          email: new_user_email,
+          task_id: task.id
+        }
+      })
+      expect(response.status).to eq 201
+
+      data = res_body.with_indifferent_access
+      invitation = Invitation.find(data[:invitation][:id])
+
+      expect(invitation.invitee).to eq nil
+      expect(invitation.email).to eq(new_user_email)
+      expect(invitation.code).to be_present
+      expect(invitation.actor).to be_nil
+      expect(invitation.state).to eq("invited")
+    end
   end
 
   describe "DELETE /invitations/:id", redis: true do

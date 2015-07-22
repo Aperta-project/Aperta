@@ -18,7 +18,7 @@ describe PapersController do
 
   describe "GET index" do
     let(:paper_count) { 20 }
-    let(:response_papers) { JSON.parse(response.body)['papers'] }
+    let(:response_papers) { res_body['papers'] }
 
     before do
       paper_count.times { FactoryGirl.create :paper, creator: user }
@@ -131,8 +131,7 @@ describe PapersController do
       it "returns a 201 and the paper's id in json" do
         do_request
         expect(response.status).to eq(201)
-        json = JSON.parse(response.body)
-        expect(json['paper']['id']).to eq(Paper.first.id)
+        expect(res_body['paper']['id']).to eq(Paper.first.id)
       end
 
       it "renders the errors for the paper if it can't be saved" do
@@ -178,7 +177,7 @@ describe PapersController do
         it "returns an error" do
           do_request
           expect(response.status).to eq(422)
-          expect(JSON.parse(response.body)["errors"]).to have_key("locked_by_id")
+          expect(res_body["errors"]).to have_key("locked_by_id")
         end
       end
 

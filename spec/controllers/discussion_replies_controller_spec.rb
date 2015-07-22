@@ -8,7 +8,7 @@ describe DiscussionRepliesController do
   let!(:participation) { topic_a.discussion_participants.create!(user: user) }
   let!(:reply) { FactoryGirl.create(:discussion_reply, discussion_topic: topic_a) }
 
-  let(:json) { JSON.parse(response.body) }
+  let(:json) { res_body }
 
   before { sign_in user }
 

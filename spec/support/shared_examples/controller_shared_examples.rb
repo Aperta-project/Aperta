@@ -20,7 +20,7 @@ shared_examples_for "a controller rendering an invalid model" do
   it "returns 422 and the model's errors" do
     do_request
     expect(response.status).to eq(422)
-    expect(JSON.parse(response.body)).to have_key('errors')
+    expect(res_body).to have_key('errors')
   end
 end
 

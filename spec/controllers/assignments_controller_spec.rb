@@ -20,7 +20,7 @@ describe AssignmentsController, type: :controller do
 
       it "returns all of the paper roles for the paper" do
         get :index, paper_id: paper.id
-        expect(JSON.parse(response.body)["assignments"]).to include({"id" => @paper_role.id,
+        expect(res_body["assignments"]).to include({"id" => @paper_role.id,
                                                                      "created_at" => kind_of(String),
                                                                      "role" => role.name,
                                                                      "paper_id" => paper.id,
@@ -47,7 +47,7 @@ describe AssignmentsController, type: :controller do
     it "creates an assignment between a given role and the user for the paper" do
       assignment_attributes = {"role" => role.name, "user_id" => admin.id, "paper_id" => paper.id }
       post :create, "assignment" => assignment_attributes
-      expect(JSON.parse(response.body)["assignment"]).to include(assignment_attributes)
+      expect(res_body["assignment"]).to include(assignment_attributes)
     end
   end
 
@@ -65,7 +65,7 @@ describe AssignmentsController, type: :controller do
 
     it "destroys an assignment" do
       delete :destroy, id: @paper_role.id
-      expect(JSON.parse(response.body)["assignment"]).to include({"id" => @paper_role.id,
+      expect(res_body["assignment"]).to include({"id" => @paper_role.id,
                                                                    "role" => role.name,
                                                                    "paper_id" => paper.id,
                                                                    "user_id" => admin.id})

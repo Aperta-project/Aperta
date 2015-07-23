@@ -156,10 +156,18 @@
   <div class="form-group form-inline">
     <div class="form-group author-half {{if validationErrors.department "error"}}">
       {{error-message message=null}}
-      {{question-select ident="plos_billing.country"
-                        task=model
-                        question="Please select your Country"
-                        source=countries}}
+      {{#if countries}}
+        {{question-select ident="plos_billing.country"
+                          task=model
+                          question="Please select your Country"
+                          source=countries
+                          width="100%"}}
+      {{else}}
+        <div class="plos-billing-country-loading">
+          {{progress-spinner visible=true size="mini"}}
+          Loading countries
+        </div>
+      {{/if}}
     </div>
   </div>
 </div>

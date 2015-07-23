@@ -1,5 +1,6 @@
 import Ember from "ember";
 import TaskController from "tahi/pods/paper/task/controller";
+import RESTless from "tahi/services/rest-less";
 
 const DATA = {
   institutionalAccountProgramList: [
@@ -54,11 +55,6 @@ const DATA = {
     { id: "University of Warwick",           text: "University of Warwick" },
     // United States
     { id: "George Mason University", text: "George Mason University" },
-  ],
-
-  countries: [
-    {id: 1, text: "USA"},
-    {id: 2, text: "Mexico"}
   ],
 
   groupOneAndTwoCountries: [
@@ -305,6 +301,15 @@ export default TaskController.extend({
   journals:  DATA.journals,
   responses: DATA.responses,
   groupOneAndTwoCountries: DATA.groupOneAndTwoCountries,
+
+  countries: [],
+  _getCountries: Ember.on('init', function() {
+    RESTless.get('/api/countries').then((data)=> {
+      this.set('countries', data.countries.map(function(c) {
+        return { id: c, text: c };
+      }));
+    });
+  }),
 
   journalName: "PLOS One",
   inviteCode: "",

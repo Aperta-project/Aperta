@@ -367,6 +367,7 @@ GEM
       mime-types (>= 1.16, < 3)
     mail_safe (0.3.4)
       actionmailer (>= 3.0.0)
+    memory_profiler (0.9.4)
     method_source (0.8.2)
     migration_data (0.0.4)
       rails (>= 4.0.0.rc1)
@@ -636,6 +637,7 @@ DEPENDENCIES
   kaminari
   launchy
   mail_safe
+  memory_profiler
   migration_data
   mini_magick
   nokogiri

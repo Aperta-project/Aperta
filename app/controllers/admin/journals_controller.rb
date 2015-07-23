@@ -8,7 +8,14 @@ class Admin::JournalsController < ApplicationController
     journals = current_user.administered_journals
       .includes(:journal_task_types, roles: :flows, manuscript_manager_templates: { phase_templates: { task_templates: :journal_task_type } })
 
-    respond_with journals, each_serializer: AdminJournalSerializer, root: 'admin_journals'
+    log_file = Rails.root.join('log/memory_profiler.log')
+    Rails.logger.fatal("LOGGING MEMORY PROFILING TO #{log_file}")
+
+    MemoryProfiler.report do
+      j = ActiveModel::ArraySerializer.new(journals, serializer: AdminJournalSerializer, root: 'admin_journals').to_json
+    end.pretty_print(to_file: log_file)
+
+    respond_with j
   end
 
   def show

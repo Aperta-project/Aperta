@@ -3,6 +3,7 @@ module TahiStandardTasks
     embed :ids
     has_one :editor, serializer: UserSerializer, include: true, root: :users
     has_one :invitation, include: true
+    attributes :letter
 
     def editor
       object.paper.editor
@@ -14,6 +15,10 @@ module TahiStandardTasks
 
     def include_invitation?
       invitation && !invitation.accepted?
+    end
+
+    def letter
+      { Letter: object.invite_letter }.to_json
     end
   end
 end

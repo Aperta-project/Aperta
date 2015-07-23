@@ -22,7 +22,27 @@ module TahiStandardTasks
       'editor'
     end
 
+    def invite_letter
+      template = <<-TEXT.strip_heredoc
+        Dear [EDITOR NAME],
+
+        I would love to invite you to be an editor for %{manuscript_title}.  View the manuscript on Tahi and let me know if you accept or reject this offer.
+
+        Thank you,
+        [YOUR NAME]
+        %{journal_name}
+
+        TEXT
+
+        template % template_date
+    end
+
     private
+
+    def template_date
+      { manuscript_title: paper.title,
+        journal_name: paper.journal.name }
+    end
 
     def replace_editor_and_follow_tasks(invitation)
       TaskRoleUpdater.new(task: self,

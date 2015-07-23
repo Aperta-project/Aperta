@@ -43,7 +43,6 @@ gem "nokogiri"
 gem "carrierwave"
 gem "fog"
 gem "unf"
-gem 'newrelic_rpm'
 gem "rest-client"
 gem 'gepub', "~> 0.7.0beta1"
 gem 'rubyzip', require: 'zip'

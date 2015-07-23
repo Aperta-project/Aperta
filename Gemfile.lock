@@ -402,7 +402,7 @@ GEM
     pry-rescue (1.4.2)
       interception (>= 0.5)
       pry
-    puma (2.12.0)
+    puma (2.12.2)
     pusher (0.14.4)
       httpclient (~> 2.5)
       multi_json (~> 1.0)

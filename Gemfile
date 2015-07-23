@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 ruby "2.2.2"
 
 # Configuration
-group :development, :test, :performance do
+group :production, :development, :test, :performance do
   gem 'dotenv-rails', :require => 'dotenv/rails-now'
 end
 

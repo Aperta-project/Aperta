@@ -55,10 +55,13 @@ test("displays the email of the invitee", function(assert) {
     TestHelper.handleCreate("invitation").andReturn({state: "invited"});
 
     click(".compose-invite-button");
-    click(".invite-editor-button");
 
     andThen(function() {
-      assert.ok(find(`.overlay-main-work:contains('${inviteeEmail} has been invited to be Editor on this manuscript.')`).length);
+      click(".invite-editor-button");
+
+      andThen(function() {
+        assert.ok(find(`.overlay-main-work:contains('${inviteeEmail} has been invited to be Editor on this manuscript.')`).length);
+      });
     });
   });
 });

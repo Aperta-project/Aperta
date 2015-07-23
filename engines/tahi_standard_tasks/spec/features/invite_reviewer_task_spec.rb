@@ -37,7 +37,7 @@ feature "Invite Reviewer", js: true do
 
     manuscript_page.view_card task.title do |overlay|
       overlay.paper_reviewers = [reviewer1]
-      expect(overlay.active_invitations.count).to eq 1
+      expect(overlay.active_invitations_count(1)).to be true
     end
 
     paper.decisions.create!
@@ -45,9 +45,9 @@ feature "Invite Reviewer", js: true do
     manuscript_page.reload
     manuscript_page.view_card task.title do |overlay|
       overlay.paper_reviewers = [reviewer3, reviewer2]
-      expect(overlay.expired_invitations.count).to eq 1
-      expect(overlay.active_invitations.count).to eq 2
-      expect(overlay.total_invitations.count).to eq 3
+      expect(overlay.expired_invitations_count(1)).to be true
+      expect(overlay.active_invitations_count(2)).to be true
+      expect(overlay.total_invitations_count(3)).to be true
     end
   end
 end

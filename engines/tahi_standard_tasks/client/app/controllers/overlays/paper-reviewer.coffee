@@ -19,10 +19,6 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
 
   updatedTemplate: ''
 
-  setTemplate: (->
-    @setLetterTemplate()
-  ).observes('selectedReviewer.id')
-
   setLetterTemplate: ->
     customTemplate = @get('template').replace(/\[REVIEWER NAME\]/, @get('selectedReviewer.full_name'))
       .replace(/\[YOUR NAME\]/, @get('currentUser.fullName'))
@@ -36,7 +32,7 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
 
     composeInvite: ->
       return unless @get('selectedReviewer')
-      @send 'letterTemplate'
+      @setLetterTemplate()
       @set 'composingEmail', true
 
     destroyInvitation: (invitation) -> invitation.destroyRecord()
@@ -53,10 +49,6 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
         @get('latestDecision.invitations').addObject invitation
         @set 'composingEmail', false
         @set 'selectedReviewer', null
-
-    letterTemplate: ->
-      @get('template').replace(/\[REVIEWER NAME\]/, @get('selectedReviewer.full_name'))
-        .replace(/\[YOUR NAME\]/, @get('currentUser.fullName'))
 
     removeReviewer: (selectedReviewer) ->
       @store.find('user', selectedReviewer.id).then (user) =>

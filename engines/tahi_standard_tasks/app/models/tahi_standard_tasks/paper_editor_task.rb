@@ -32,9 +32,9 @@ module TahiStandardTasks
         [YOUR NAME]
         %{journal_name}
 
-        TEXT
+      TEXT
 
-        template % template_date
+      template % template_date
     end
 
     private

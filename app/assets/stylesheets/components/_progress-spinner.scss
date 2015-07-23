@@ -1,5 +1,6 @@
 $progress-spinner-size-large: 50px;
 $progress-spinner-size-small: 30px;
+$progress-spinner-size-mini:  18px;
 
 @mixin color-way($dark, $light) {
   border-top: 2px solid $dark;
@@ -28,6 +29,7 @@ $progress-spinner-size-small: 30px;
 
 // - Size Modifiers -----------------------
 
+.progress-spinner--mini  { @include size($progress-spinner-size-mini  $progress-spinner-size-mini); }
 .progress-spinner--small { @include size($progress-spinner-size-small $progress-spinner-size-small); }
 .progress-spinner--large { @include size($progress-spinner-size-large $progress-spinner-size-large); }
 

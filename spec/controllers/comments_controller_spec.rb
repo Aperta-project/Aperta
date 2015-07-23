@@ -60,8 +60,7 @@ describe CommentsController do
       it "returns the new comment as json" do
         do_request
         expect(response.status).to eq(201)
-        json = JSON.parse(response.body)
-        expect(json["comment"]["id"]).to eq(Comment.last.id)
+        expect(res_body["comment"]["id"]).to eq(Comment.last.id)
       end
 
       it_behaves_like "an unauthenticated json request"

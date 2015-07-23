@@ -261,7 +261,7 @@ class CountriesController < ApplicationController
         tc["description"] == "Country Types"
       }
 
-      countries = conn.get("/typeclasses/#{typeclass["id"]}/typevalues").body.map { |c|
+      countries = conn.get("/typeclasses/#{typeclass['id']}/typevalues").body.map { |c|
         c["shortdescription"]
       }
     end

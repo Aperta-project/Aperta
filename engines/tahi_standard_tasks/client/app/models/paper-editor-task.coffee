@@ -6,7 +6,7 @@ PaperEditorTask = Task.extend
   invitation: DS.belongsTo('invitation')
   letter: DS.attr('string')
   editInviteTemplate: (->
-    JSON.parse(@get('letter')).Letter
+    JSON.parse(@get('letter'))
   ).property 'letter'
 
 `export default PaperEditorTask`

@@ -38,8 +38,6 @@ PaperEditorOverlayController = TaskController.extend Select2Assignees,
 
   template: Ember.computed.alias 'model.editInviteTemplate'
 
-  updatedTemplate: ''
-
   setLetterTemplate: ->
     customTemplate = @get('template').replace(/\[EDITOR NAME\]/, @get('selectedUser.fullName'))
       .replace(/\[YOUR NAME\]/, @get('currentUser.fullName'))

@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+require 'logger'
+require 'pathname'
+
+rails_root = Pathname.new(__FILE__).dirname.join("..").realpath
+log_file = rails_root.join("log").join("memory_monitor.log")
+
+logger = Logger.new(log_file)
+
+Signal.trap("QUIT") { logger.close }
+Signal.trap("TERM") { logger.close }
+
+loop do
+  stats = `ps aux | grep "puma: cluster worker" | grep -v grep`
+  stats.lines.each do |worker_stats|
+    worker_num = worker_stats =~ /puma: cluster worker (\d+)/ && $1
+    mem = (worker_stats.split(' ')[5].to_i.to_f / 1024).round(2)
+    logger.info("worker #{worker_num}: #{mem}MB")
+  end
+  sleep(6)
+end

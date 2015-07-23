@@ -1,0 +1,17 @@
+.plos-billing-table {
+  width: 85%;
+
+  th {
+    padding-bottom: 15px;
+  }
+
+  th, td {
+    padding: 5px 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: right;
+  }
+
+  .plos-billing-table-data-left {
+    text-align: left;
+  }
+}

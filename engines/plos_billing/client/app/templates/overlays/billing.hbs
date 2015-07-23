@@ -15,8 +15,8 @@
       </span>
       {{question-input ident="plos_billing.first_name"
                        task=model
-                       question='First Name'
-                       placeholderText='Jane'}}
+                       question="First Name"
+                       placeholderText="Jane"}}
     </div>
 
     <div class="form-group author-half author-bump {{if validationErrors.lastName "error"}}">
@@ -26,8 +26,8 @@
       </span>
       {{question-input ident="plos_billing.last_name"
                        task=model
-                       question='Last Name'
-                       placeholderText='Goodall'}}
+                       question="Last Name"
+                       placeholderText="Goodall"}}
     </div>
   </div>
   <div class="form-group form-inline">
@@ -38,7 +38,7 @@
       </span>
       {{question-input ident="plos_billing.title"
                        task=model
-                       question='Title'
+                       question="Title"
                        placeholderText="World's Foremost Expert on Chimpanzees"}}
     </div>
 
@@ -49,8 +49,8 @@
       </span>
       {{question-input ident="plos_billing.department"
                        task=model
-                       question='Department'
-                       placeholderText='Primatology'}}
+                       question="Department"
+                       placeholderText="Primatology"}}
     </div>
   </div>
   <div class="form-group form-inline">
@@ -61,7 +61,7 @@
                         question="Affiliation"
                         class="affiliation-field"
                         source=ringgold
-                        placeholderText='Affiliation'
+                        placeholderText="Affiliation"
                         width="100%"}}
     </div>
 
@@ -69,7 +69,7 @@
       {{error-message message=null}}
       {{question-select ident="plos_billing.affiliation2"
                         task=model
-                        question='Secondary Affiliation'
+                        question="Secondary Affiliation"
                         placeholderText="Secondary Affiliation (optional)"
                         class="secondary-affiliation-field"
                         source=ringgold
@@ -84,7 +84,7 @@
       </span>
       {{question-input ident="plos_billing.phone_number"
                        task=model
-                       question='Phone'
+                       question="Phone"
                        placeholderText="415-555-5555"}}
 
     </div>
@@ -95,7 +95,7 @@
       </span>
       {{question-input ident="plos_billing.email_address"
                        task=model
-                       question='Email'
+                       question="Email"
                        placeholderText="jane.goodll@science.com"}}
 
     </div>
@@ -108,7 +108,7 @@
       </span>
       {{question-input ident="plos_billing.address1"
                        task=model
-                       question='Address line one'
+                       question="Address line one"
                        placeholderText="1581 Le Roy Ave"}}
     </div>
   </div>
@@ -120,7 +120,7 @@
       </span>
       {{question-input ident="plos_billing.address2"
                        task=model
-                       question='Address line two'
+                       question="Address line two"
                        placeholderText="Suite 3"}}
     </div>
   </div>
@@ -132,7 +132,7 @@
       </span>
       {{question-input ident="plos_billing.city"
                        task=model
-                       question='City'
+                       question="City"
                        placeholderText="Berkeley"}}
     </div>
 
@@ -149,7 +149,7 @@
       </span>
       {{question-input ident="plos_billing.postal_code"
                        task=model
-                       question='Postal Code'
+                       question="Postal Code"
                        placeholderText="94708"}}
     </div>
   </div>
@@ -172,7 +172,7 @@
 
 {{partial "intro"}}
 
-<ol class='question-list'>
+<ol class="question-list">
   <li class="question">
     <h3>
       How would you like to pay?
@@ -184,15 +184,15 @@
                         task=model
                         question="Select One"
                         class="affiliation-field"
-                        selectionSelected='paymentMethodSelected'
+                        selectionSelected="paymentMethodSelected"
                         source=responses
-                        width="resolve"}}
+                        width="350"}}
     </div>
   </li>
 
-  {{partial 'self_payment'}}
-  {{partial 'institutional'}}
-  {{partial 'gpi'}}
-  {{partial 'pfa'}}
-  {{partial 'special_collection'}}
+  {{partial "self_payment"}}
+  {{partial "institutional"}}
+  {{partial "gpi"}}
+  {{partial "pfa"}}
+  {{partial "special_collection"}}
 </ol>

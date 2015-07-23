@@ -19,16 +19,16 @@
     <p>
       Submissions to Special Collections are by invitation only
       and are subject to
-      <a href="#">specific terms and charges</a>.
+      <a href="https://www.plos.org/publications/publication-fees/special-collection-fees/" target="_blank">specific terms and charges</a>.
     </p>
 
     <p>
       If you have not received and read the
-      PLOS Colletions Terms of Submission,
+      PLOS Collections Terms of Submission,
       or have not received specific submission instructions
       directing you to select this option,
       please contact
-      <a href="mailto:collections@plos.org">colletions@plos.org</a>
+      <a href="mailto:collections@plos.org">collections@plos.org</a>
       before proceeding.
     </p>
 
@@ -45,34 +45,34 @@
       Surcharge on publication:
     </p>
 
-    <table border="1">
+    <table class="plos-billing-table">
       <tr>
-        <th>
+        <th class="plos-billing-table-data-left">
           Journal
         </th>
         <th>
-          Article Processing Charge
+          Article Processing Charge (USD)
         </th>
         <th>
-          Collection Surcharge
+          Collection Surcharge (USD)
         </th>
         <th>
-          Total
+          Total (USD)
         </th>
       </tr>
       {{#each journals as |journal|}}
       <tr>
-        <td>
+        <td class="plos-billing-table-data-left">
           {{journal.name}}
         </td>
         <td>
-          ${{journal.price}} USD
+          ${{journal.price}}
         </td>
         <td>
-          ${{journal.collectionSurcharge}} USD
+          ${{journal.collectionSurcharge}}
         </td>
         <td>
-          ${{journal.totalPrice}} USD
+          ${{journal.totalPrice}}
         </td>
       </tr>
       {{/each}}
@@ -96,7 +96,7 @@
       {{question-check ident="plos_billing.agree_collections"
                        task=model}}
       I have read and agree to the
-      <a href="#">
+      <a href="https://www.plos.org/wp-content/uploads/2015/02/PLOS-Collections-Terms.pdf" target="_blank">
         Terms of Submission to PLOS Collections
       </a>
     </p>

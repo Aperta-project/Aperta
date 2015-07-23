@@ -6,7 +6,7 @@ import TestHelper from "ember-data-factory-guy/factory-guy-test-helper";
 
 let App, paper, phase, task, inviteeEmail;
 
-module("Integration: inviting an editor", {
+module("Integration: Inviting an editor", {
   afterEach() {
     Ember.run(function() {
       TestHelper.teardown();
@@ -25,6 +25,7 @@ module("Integration: inviting an editor", {
       import_formats: [],
       export_formats: []
     }});
+    $.mockjax({url: /\/api\/tasks\/\d+/, type: 'PUT', status: 200, responseText: {}});
 
     inviteeEmail = window.currentUserData.user.email;
     $.mockjax({
@@ -37,7 +38,7 @@ module("Integration: inviting an editor", {
     });
 
     phase = FactoryGuy.make("phase");
-    task = FactoryGuy.make("paper-editor-task", { phase: phase });
+    task = FactoryGuy.make("paper-editor-task", { phase: phase, letter: '"A letter"' });
     paper = FactoryGuy.make('paper', { phases: [phase], tasks: [task] });
     TestHelper.handleFind(paper);
     TestHelper.handleFindAll('discussion-topic', 1);
@@ -53,10 +54,11 @@ test("displays the email of the invitee", function(assert) {
 
     TestHelper.handleCreate("invitation").andReturn({state: "invited"});
 
+    click(".compose-invite-button");
     click(".invite-editor-button");
 
     andThen(function() {
-      assert.ok(find(`.overlay-main-work:contains('${inviteeEmail} has been invited to be Editor on this manuscript.')`));
+      assert.ok(find(`.overlay-main-work:contains('${inviteeEmail} has been invited to be Editor on this manuscript.')`).length);
     });
   });
 });

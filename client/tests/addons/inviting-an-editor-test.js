@@ -45,27 +45,6 @@ module("Integration: Inviting an editor", {
   }
 });
 
-test("displays the email of the invitee", function(assert) {
-  Ember.run(function() {
-    TestHelper.handleFind(task);
-    visit(`/papers/${paper.id}/workflow`);
-    click("#manuscript-manager .card-content:contains('Invite Editor')");
-    pickFromSelect2(".editor-select2", inviteeEmail);
-
-    TestHelper.handleCreate("invitation").andReturn({state: "invited"});
-
-    click(".compose-invite-button");
-
-    andThen(function() {
-      click(".invite-editor-button");
-
-      andThen(function() {
-        assert.ok(find(`.overlay-main-work:contains('${inviteeEmail} has been invited to be Editor on this manuscript.')`).length);
-      });
-    });
-  });
-});
-
 test("can withdraw the invitation", function(assert) {
   Ember.run(function() {
     let invitation = FactoryGuy.make("invitation", {email: "foo@bar.com", state: "invited"});

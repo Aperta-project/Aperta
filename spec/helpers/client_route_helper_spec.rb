@@ -22,8 +22,10 @@ describe ClientRouteHelper do
   describe "#client_paper_url" do
     it "generates the url to the client paper" do
       url = client_paper_url(paper)
-      expect(url).to eq("http://test.host/papers/1")
+      expect(url).to eq("http://test.host/papers/1/")
     end
+
+    pending "handle params"
   end
 
   describe "#client_edit_paper_url" do

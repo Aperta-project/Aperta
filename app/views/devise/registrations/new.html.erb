@@ -41,9 +41,11 @@
         </div>
       <% end %>
 
-      <%= f.hidden_field :invitation_code, value: params["invitation_code"] %>
+      <%= hidden_field_tag :invitation_code, @invitation_code %>
 
-      <div><%= f.submit "Sign up", class: "button-primary button--green auth-signin" %></div>
+      <div>
+        <%= f.submit "Sign up", class: "button-primary button--green auth-signin" %>
+      </div>
     <% end %>
   </div>
 

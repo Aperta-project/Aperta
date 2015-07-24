@@ -9,11 +9,11 @@ module ClientRouteHelper
   end
 
   def client_paper_url(paper, params = {})
-    if params.empty?
-      "#{root_url}papers/#{paper.to_param}"
-    else
-      "#{root_url}users/sign_up?#{params.to_query}"
+    if params.present?
+      query = "?#{params.to_query}"
     end
+
+    "#{root_url}papers/#{paper.to_param}/#{query}"
   end
 
   def client_edit_paper_url(paper)

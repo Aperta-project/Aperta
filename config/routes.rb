@@ -27,7 +27,8 @@ Tahi::Application.routes.draw do
   #
   devise_for :users, controllers: {
     omniauth_callbacks: "tahi_devise/omniauth_callbacks",
-    registrations: "tahi_devise/registrations"
+    registrations: "tahi_devise/registrations",
+    sessions: "tahi_devise/sessions"
   }
   devise_scope :user do
     if !Rails.configuration.password_auth_enabled

@@ -2,8 +2,6 @@ class CountriesController < ApplicationController
   BASE_URL = ENV['NED_API_URL']
   APP_ID = ENV['NED_CAS_APP_ID']
   APP_PASSWORD = ENV['NED_CAS_APP_PASSWORD']
-  NED_DISABLE_SSL_VERIFICATION = ENV['NED_DISABLE_SSL_VERIFICATION'] == 'true'
-  NED_SSL_VERIFY = !NED_DISABLE_SSL_VERIFICATION
 
   COUNTRIES = [
     "Afghanistan",
@@ -257,23 +255,30 @@ class CountriesController < ApplicationController
     countries = COUNTRIES
 
     if BASE_URL != ""
-      typeclass = conn.get("/typeclasses").body.detect { |tc|
+      typeclass = search("/typeclasses").body.detect { |tc|
         tc["description"] == "Country Types"
       }
 
-      countries = conn.get("/typeclasses/#{typeclass['id']}/typevalues").body.map { |c|
+      countries = search("/typeclasses/#{typeclass['id']}/typevalues").body.map { |c|
         c["shortdescription"]
       }
     end
-
 
     render json: { countries: countries }
   end
 
   private
 
+  def search url
+    conn.get(url)
+  rescue Faraday::ClientError => e
+    ned_error = InstitutionsConnectionError.new(e.response[:body])
+    Bugsnag.notify(ned_error)
+    raise ned_error
+  end
+
   def conn
-    @conn ||= Faraday.new(url: BASE_URL, ssl: { verify: NED_SSL_VERIFY }) do |faraday|
+    @conn ||= Faraday.new(url: BASE_URL) do |faraday|
       faraday.response :json
       faraday.request  :url_encoded
       faraday.use      Faraday::Response::RaiseError

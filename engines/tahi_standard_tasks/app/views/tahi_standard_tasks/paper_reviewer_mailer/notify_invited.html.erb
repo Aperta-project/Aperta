@@ -14,12 +14,14 @@
       <%= simple_format @task.body[0] %>
     </div>
 
+    <p>
+      <a class='button' href='<%= client_dashboard_url({ invitation_code: @invitation.code }) %>' target='_blank'>
+        View Invitation
+      </a>
+    </p>
   </div>
+  <hr>
   <div class='footer'>
-    <a class='button' href='<%= client_dashboard_url %>' target='_blank'>
-      View Invitation
-    </a>
-    <hr>
     <div class='paper-title'>
       "<%= @paper.display_title %>"
     </div>

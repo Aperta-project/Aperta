@@ -1,7 +1,7 @@
 module TahiDevise
   class RegistrationsController < Devise::RegistrationsController
     def create
-      invite_code = params["user"]["invite_code"]
+      invitation_code = params["user"]["invitation_code"]
 
       super do |user|
         if session["devise.provider"].present?
@@ -10,8 +10,8 @@ module TahiDevise
         end
 
         # TODO: ensure no errors
-        if invite_code.present?
-          invitation = Invitation.where(code: invite_code).first
+        if invitation_code.present?
+          invitation = Invitation.where(code: invitation_code).first
 
           if invitation && user
             invitation.update(invitee: user)

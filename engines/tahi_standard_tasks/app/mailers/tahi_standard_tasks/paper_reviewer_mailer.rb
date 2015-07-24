@@ -7,14 +7,13 @@ module TahiStandardTasks
     default from: ENV.fetch('FROM_EMAIL', 'no-reply@example.com')
 
     def notify_invited(invitation_id:)
-      invitation = Invitation.find(invitation_id)
-      @invitee = invitation.invitee
-      @paper = invitation.paper
-      @journal = @paper.journal
-      @task = invitation.task
+      @invitation = Invitation.find(invitation_id)
+      @invitee = @invitation.invitee
+      @paper = @invitation.paper
+      @task = @invitation.task
 
       mail({
-        to: invitation.email,
+        to: @invitation.email,
         subject: "You have been invited as a reviewer for the manuscript, \"#{@paper.display_title}\""
       })
     end

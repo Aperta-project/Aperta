@@ -23,14 +23,17 @@
     <div class='invite-reviewers'>
       <label for="reviewer">Email</label>
 
-      <input id="auto-suggest-input" style="width:200px;">
+      {{!-- <input id="auto-suggest-input" style="width:200px;"> --}}
 
-      {{#auto-suggest-list positionNearSelector="#auto-suggest-input"
+      {{!#auto-suggest-list positionNearSelector="#auto-suggest-input"
                            class="animation-fade-in"
                            selectItem="selectAutoSuggestItem"
                            items=autoSuggestData as |user|}}
-        {{user.fullName}} - {{user.email}}
-      {{/auto-suggest-list}}
+        {{!user.fullName}} - {{!user.email}}
+      {{!/auto-suggest-list}}
+
+      {{input value=customEmail}}
+      <button {{action "sendCustomEmail"}}>POST new email Invitation</button>
 
       {{select-2-single
           class="reviewer-select2"

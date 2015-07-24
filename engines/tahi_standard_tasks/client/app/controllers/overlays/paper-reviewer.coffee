@@ -13,6 +13,7 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
     fullName: 'Joe Bob', email: 'joe.bob@example.com'
   },
   { fullName: 'Bob Joe', email: 'bob.joe@example.com' }]
+  customEmail: "test@lvh.me"
 
   latestDecision: (->
     @get('decisions').findBy 'isLatest', true
@@ -27,7 +28,13 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
     @set('updatedTemplate', customTemplate)
 
   actions:
-    selectAutoSuggestItem: ->
+    sendCustomEmail: ->
+      @set("selectedReviewer", { email: @get("customEmail") })
+      @send("inviteReviewer")
+
+    selectAutoSuggestItem: (item)->
+      # set something for now
+      #
       alert("selectAutoSuggestItem")
 
     cancelAction: ->

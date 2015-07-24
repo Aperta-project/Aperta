@@ -269,7 +269,7 @@ class CountriesController < ApplicationController
 
   private
 
-  def search url
+  def search(url)
     conn.get(url)
   rescue Faraday::ClientError => e
     ned_error = InstitutionsConnectionError.new(e.response[:body])
@@ -280,9 +280,9 @@ class CountriesController < ApplicationController
   def conn
     @conn ||= Faraday.new(url: BASE_URL) do |faraday|
       faraday.response :json
-      faraday.request  :url_encoded
-      faraday.use      Faraday::Response::RaiseError
-      faraday.adapter  Faraday.default_adapter
+      faraday.request :url_encoded
+      faraday.use Faraday::Response::RaiseError
+      faraday.adapter Faraday.default_adapter
       faraday.basic_auth(APP_ID, APP_PASSWORD)
     end
   end

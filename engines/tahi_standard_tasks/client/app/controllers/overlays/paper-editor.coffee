@@ -6,6 +6,7 @@
 PaperEditorOverlayController = TaskController.extend Select2Assignees,
 
   selectedUser: null
+  composingEmail: false
 
   hasInvitedInvitation: Ember.computed.equal('model.invitation.state', 'invited')
   hasRejectedInvitation: Ember.computed.equal('model.invitation.state', 'rejected')
@@ -35,7 +36,23 @@ PaperEditorOverlayController = TaskController.extend Select2Assignees,
   select2RemoteUrl: Ember.computed 'model.paper', ->
     "/api/filtered_users/editors/#{@get 'model.paper.id'}/"
 
+  template: Ember.computed.alias 'model.editInviteTemplate'
+
+  setLetterTemplate: ->
+    customTemplate = @get('template').replace(/\[EDITOR NAME\]/, @get('selectedUser.fullName'))
+      .replace(/\[YOUR NAME\]/, @get('currentUser.fullName'))
+
+    @set('updatedTemplate', customTemplate)
+
   actions:
+    cancelAction: ->
+      @set 'selectedUser', null
+      @set 'composingEmail', false
+
+    composeInvite: ->
+      return unless @get('selectedUser')
+      @setLetterTemplate()
+      @set 'composingEmail', true
 
     didSelectEditor: (select2User) ->
       @store.find('user', select2User.id).then (user) => @set('selectedUser', user)
@@ -50,14 +67,17 @@ PaperEditorOverlayController = TaskController.extend Select2Assignees,
         # Consider making editor a role instead of user.
         @get('model')._relationships['editor'].setCanonicalRecord(null)
 
-    sendInvitation: ->
-      @send('saveModel')
+    setLetterBody: ->
+      @set 'model.body', [@get('updatedTemplate')]
+      @model.save()
+      @send 'inviteEditor'
 
     inviteEditor: ->
       invitation = @store.createRecord 'invitation',
         task: @get('model')
         email: @get('selectedUser.email')
       invitation.save().then => @get('model').set('invitation', invitation)
+      @set 'composingEmail', false
 
     destroyInvitation: ->
       @get('model.invitation').destroyRecord()

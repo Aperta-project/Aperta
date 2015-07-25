@@ -15,10 +15,13 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
     @get('decisions').findBy 'isLatest', true
   ).property('decisions', 'decisions.@each.isLatest')
 
-  letterTemplate: (->
-    @get('model.editInviteTemplate').replace(/\[REVIEWER NAME\]/, @get('selectedReviewer.full_name'))
+  template: Ember.computed.alias 'model.editInviteTemplate'
+
+  setLetterTemplate: ->
+    customTemplate = @get('template').replace(/\[REVIEWER NAME\]/, @get('selectedReviewer.full_name'))
       .replace(/\[YOUR NAME\]/, @get('currentUser.fullName'))
-  ).property('selectedReviewer')
+
+    @set('updatedTemplate', customTemplate)
 
   actions:
     cancelAction: ->
@@ -27,6 +30,7 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
 
     composeInvite: ->
       return unless @get('selectedReviewer')
+      @setLetterTemplate()
       @set 'composingEmail', true
 
     destroyInvitation: (invitation) -> invitation.destroyRecord()
@@ -50,7 +54,7 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
         @send('saveModel')
 
     setLetterBody: ->
-      @set 'model.body', [@get('letterTemplate')]
+      @set 'model.body', [@get('updatedTemplate')]
       @model.save()
       @send 'inviteReviewer'
 

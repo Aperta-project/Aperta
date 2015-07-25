@@ -8,7 +8,7 @@ PaperReviewerTask = Task.extend
   relationshipsToSerialize: ['reviewers', 'participants', 'letter']
   letter: a('string')
   editInviteTemplate: (->
-    JSON.parse(@get('letter')).Letter
+    JSON.parse(@get('letter'))
   ).property 'letter'
 
 `export default PaperReviewerTask`

@@ -31,12 +31,10 @@
       <h3>
         New Affiliation
       </h3>
-      {{select-2-single
-          class="profile-affiliation-field"
-          placeholder="Affiliation Name"
-          source=selectableInstitutions
-          value=newAffiliation.name}}
-      {{error-message message=validationErrors.name}}
+      {{institution-search
+        class="profile-affiliation-field"
+        institutionSelected="institutionSelected"
+        placeholder="Institution"}}
 
       {{input type="text"
               value=newAffiliation.department

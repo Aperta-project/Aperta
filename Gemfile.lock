@@ -57,6 +57,13 @@ PATH
       rails (~> 4.2.0)
 
 PATH
+  remote: engines/tahi-assess
+  specs:
+    tahi-assess (0.0.1)
+      mustache (~> 1.0)
+      rails (~> 4.2.0, < 4.3)
+
+PATH
   remote: engines/tahi_standard_tasks
   specs:
     tahi_standard_tasks (0.0.1)
@@ -351,6 +358,7 @@ GEM
     multi_json (1.11.2)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
+    mustache (1.0.2)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
@@ -645,6 +653,7 @@ DEPENDENCIES
   simplecov
   sinatra
   skylight
+  tahi-assess!
   tahi-assign_team!
   tahi_epub!
   tahi_standard_tasks!

@@ -6,6 +6,7 @@ Tahi::Application.routes.draw do
   mount PlosAuthors::Engine => "/api", as: "plos_custom_authors"
   ### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###
   mount PlosBioInternalReview::Engine => '/api'
+  mount Tahi::Assess::Engine => '/api'
   mount PlosBioTechCheck::Engine => "/api"
   mount PlosBilling::Engine => "/api"
 

@@ -2,6 +2,9 @@
 log
 tmp
 
+# Assess Engine
+engines/tahi-assess
+
 # Other ephemeral development files
 .bundle
 tags
@@ -31,6 +34,7 @@ coverage
 spec/tmp
 
 # bin/setup's log file
+npm-debug.log
 setup.log
 
 # Other

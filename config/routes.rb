@@ -51,7 +51,7 @@ Tahi::Application.routes.draw do
       get '/doi/:doi', to: 'external_references#doi', constraints: { doi: /.*/ }
     end
 
-    get 'countries', to: 'countries#index'
+    resources :countries, only: :index
 
     get 'paper_tracker', to: 'paper_tracker#index'
     resources :supporting_information_files, only: [:create, :destroy, :update] do

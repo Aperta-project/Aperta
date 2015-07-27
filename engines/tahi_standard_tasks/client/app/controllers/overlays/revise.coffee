@@ -15,7 +15,7 @@ ReviseOverlayController = TaskController.extend
     @get('model.paper.decisions').sortBy('revisionNumber').reverse()[2..-1]
   ).property('model.paper.decisions.@each')
 
-  editingAuthorResponse: Ember.computed.empty('latestDecision.authorResponse')
+  editingAuthorResponse: false
 
   actions:
 

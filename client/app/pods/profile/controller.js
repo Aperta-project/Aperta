@@ -28,7 +28,6 @@ export default Ember.Controller.extend(FileUploadMixin, ValidationErrorsMixin, {
 
   actions: {
     resetPassword() {
-      // TODO: WUT?
       $.get('/api/users/reset').always(() => {
         this.set('resetPasswordSuccess', true);
       });

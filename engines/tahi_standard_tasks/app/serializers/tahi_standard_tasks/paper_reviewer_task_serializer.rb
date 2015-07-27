@@ -10,7 +10,7 @@ module TahiStandardTasks
     end
 
     def letter
-      { Letter: object.invite_letter }.to_json
+      object.invite_letter.to_json
     end
   end
 end

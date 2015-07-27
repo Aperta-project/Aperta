@@ -25,6 +25,7 @@ class UserMailer < ActionMailer::Base
     assignee = User.find_by(id: assignee_id)
     @assigner_name = display_name(assigner)
     @assignee_name = display_name(assignee)
+    @journal = @task.journal
 
     mail(
       to: assignee.try(:email),
@@ -57,6 +58,7 @@ class UserMailer < ActionMailer::Base
     @paper = Paper.find(paper_id)
     user = User.find(editor_id)
     @editor_name = display_name(user)
+    @journal = @paper.journal
 
     mail(
       to: user.try(:email),

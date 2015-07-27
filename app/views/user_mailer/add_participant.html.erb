@@ -4,17 +4,20 @@
       Hello <%= @assignee_name %>
     </h3>
     <p class='message'>
-      <%= @assigner_name %> just added you to a conversation on Tahi.
+      <%= @assigner_name %> just added you to a conversation.
     </p>
   </div>
   <hr>
   <div class='paper-info'>
     <div class='paper-abstract'>
-      Visit this link to view the conversation: <%= client_paper_task_url(@task.paper, @task) %>
+      Visit this link to view the conversation:
+      <%= link_to client_paper_task_url(@task.paper, @task), client_paper_task_url(@task.paper, @task) %>
     </div>
   </div>
   <hr>
   <div class='footer'>
-    Team Tahi
+    Sincerely,
+    <br>
+    <%= @journal.name %> Team
   </div>
 </div>

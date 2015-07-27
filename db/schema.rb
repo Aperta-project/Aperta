@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 20150720185210) do
     t.string   "department"
     t.string   "title"
     t.string   "country"
+    t.string   "ringgold_id"
   end
 
   add_index "affiliations", ["user_id"], name: "index_affiliations_on_user_id", using: :btree
@@ -330,6 +331,8 @@ ActiveRecord::Schema.define(version: 20150720185210) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "contributions"
+    t.string   "ringgold_id"
+    t.string   "secondary_ringgold_id"
   end
 
   create_table "question_attachments", force: :cascade do |t|

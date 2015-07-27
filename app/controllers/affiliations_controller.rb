@@ -1,6 +1,12 @@
 class AffiliationsController < ApplicationController
   def index
-    render json: Institution.instance.names, root: :institutions
+    query = params.get(:query)
+    if not query
+      institutions = []
+    else
+      institutions = Institutions.instance.matching_institutions(query)[0..10]
+    end
+    render json: institutions, root: :institutions
   end
 
   def create
@@ -23,6 +29,6 @@ class AffiliationsController < ApplicationController
   end
 
   def affiliation_params
-    params.require(:affiliation).permit(:name, :start_date, :end_date, :email, :department, :title, :country)
+    params.require(:affiliation).permit(:name, :start_date, :end_date, :email, :department, :title, :country, :ringgold_id)
   end
 end

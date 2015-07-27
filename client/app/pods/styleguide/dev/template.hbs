@@ -296,3 +296,59 @@
 </div>
 
 <hr/>
+
+<section id="did-you-mean">
+  <h3>
+    Did you mean?
+  </h3>
+
+  <p>Useful for sloooowww autocomplete queries, or when you want to
+    strongly prefer in-set answers to the questions, and merely
+    *allow* out-of-set answers.
+  </p>
+
+  <p>
+    {{#did-you-mean endpoint="/api/affiliations"
+                    queryParameter="query"
+                    parseResponseFunction=parseInstitutions
+                    itemNameFunction=displayInstitution
+                    itemSelected="institutionSelected"
+                    unknownItemFunction=unknownInstitution
+                    placeholder=placeholder
+                    selectedItem=value
+                    as |institution|}}
+      {{ institution.name }}
+    {{/did-you-mean}}
+  </p>
+
+  <pre>
+  \{{#did-you-mean endpoint="/api/affiliations"
+                  queryParameter="query"
+                  parseResponseFunction=parseInstitutions
+                  itemNameFunction=displayInstitution
+                  itemSelected="institutionSelected"
+                  unknownItemFunction=unknownInstitution
+                  placeholder=placeholder
+                  selectedItem=value
+                  as |institution|}}
+    \{{ institution.name }}
+  \{{/did-you-mean}}
+  </pre>
+
+
+  <p>
+    <ul>
+      <li><tt>endpoint</tt> is an endpoint that takes a query and returns an array of options.</li>
+      <li><tt>queryParameter</tt> is the parameter name to send the endpoint (ie "/api/foo?[queryParameter]=fred.")</li>
+      <li><tt>parseInstitutions</tt> takes the response json from the endpoint and returns an array.</li>
+      <li><tt>itemNameFunction</tt> takes an item from the array and returns the text name of that item.</li>
+      <li><tt>unknownItemFunction</tt> gets called when the user opts not to take any suggested option; it takes some text and returns an acceptable item.</li>
+      <li><tt>placeholder</tt> is placeholder text.</li>
+      <li><tt>selectedItem</tt> is only present if the item has been pre-selected (i.e. if the user is returning to this form).</li>
+    </ul>
+
+  </p>
+  <p>  If you're using this to select an institution, use \{{ institution-search }}. </p>
+</section>
+
+<hr>

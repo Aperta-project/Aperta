@@ -59,7 +59,7 @@ export default Ember.Component.extend({
     search() {
       this.set('focused', false);
       let search = this.get('resultText');
-      if (!search || search === this.previousSearch) return;
+      if (!search || search === this.previousSearch) { return; };
 
       this.incrementProperty('searching');
       this.previousSearch = search;
@@ -70,7 +70,7 @@ export default Ember.Component.extend({
       data[this.get('queryParameter')] = search;
 
       RESTless.get(url, data).then((response) => {
-        this.decrementProperty("searching");
+        this.decrementProperty('searching');
         let results = this.get('parseResponseFunction')(response);
         if (results.length === 0) {
           this.selectUnknown();

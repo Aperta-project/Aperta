@@ -19,7 +19,7 @@ export default Ember.Component.extend({
 
   actions: {
     institutionSelected(institution){
-      this.sendAction("institutionSelected", institution);
+      this.sendAction('institutionSelected', institution);
     }
   }
 });

@@ -67,23 +67,23 @@ export default Ember.Component.extend({
     },
 
     institutionSelected: function(institution) {
-      this.set('newAuthor.affiliation', institution.name);
-      this.set('newAuthor.ringgoldId', institution['institution-id']);
+      this.set("newAuthor.affiliation", institution.name);
+      this.set("newAuthor.ringgoldId", institution["institution-id"]);
     },
 
     unknownInstitutionSelected: function(institutionName) {
-      this.set('newAuthor.affiliation', institutionName);
-      this.set('newAuthor.ringgoldId', '');
+      this.set("newAuthor.affiliation", institutionName);
+      this.set("newAuthor.ringgoldId", "");
     },
 
     secondaryInstitutionSelected: function(institution) {
-      this.set('newAuthor.secondaryAffiliation', institution.name);
-      this.set('newAuthor.secondaryRinggoldId', institution['institution-id']);
+      this.set("newAuthor.secondaryAffiliation", institution.name);
+      this.set("newAuthor.secondaryRinggoldId", institution["institution-id"]);
     },
 
     unknownSecondaryInstitutionSelected: function(institutionName) {
-      this.set('newAuthor.secondaryAffiliation', institutionName);
-      this.set('newAuthor.secondaryRinggoldId', '');
+      this.set("newAuthor.secondaryAffiliation", institutionName);
+      this.set("newAuthor.secondaryRinggoldId", "");
     }
   }
 });

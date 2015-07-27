@@ -1,18 +1,96 @@
 import Ember from 'ember';
 import RESTless from 'tahi/services/rest-less';
 
+/* Template:
+ * {{#auto-suggest endpoint="/api/users"
+ *                 queryParameter="email"
+ *                 placeholder="Search for user by email address"
+ *                 parseResponseFunction="parseUserSearch"
+ *                 itemDisplayTextFunction="something"
+ *                 itemSelected="userSelected"
+ *                 unknownItemSelected="newUserSelected"
+ *                 as |user|}}
+ *   {{user.fullName}} - {{user.email}}
+ * {{/auto-suggest}}
+ *
+ * Controller: {
+ *   parseUserResponse() {
+ *     return function(response) {
+ *       ..
+ *     }
+ *   },
+ *
+ *   something() {
+ *     return function(user) {
+ *       return user.email;
+ *     }
+ *   }
+ * }
+*/
+
 export default Ember.Component.extend({
   classNames: ['form-control', 'auto-suggest-border'],
 
-  // attrs:
-  endpoint: null,
-  queryParameter: null,
-  parseResponseFunction: null,
-  itemDisplayTextFunction: null,
-  placeholder: null,
-  debounce: 300,
+  // -- attrs:
 
-  // props:
+  /**
+   *  Endpoint for HTTP request
+   *
+   *  @property endpoint
+   *  @type String
+   *  @default null
+   *  @required
+   **/
+  endpoint: null,
+
+  /**
+   *  Query tacked on end of endpoint
+   *  /api/users?email=
+   *
+   *  @property queryParameter
+   *  @type String
+   *  @default null
+   *  @required
+   **/
+  queryParameter: null,
+
+  /**
+   *  Function called to manipulate data before displaying in component
+   *  function(response) { return response.users.sort.map.filter.etc.etc.etc; }
+   *
+   *  @property queryParameter
+   *  @type String
+   *  @default null
+   *  @required
+   *  @param {Object} http request response
+   **/
+  parseResponseFunction: null,
+
+  /**
+   *  When an item is chosen from the list, this function can be used
+   *  to display text in the input.
+   *
+   *  @property itemDisplayTextFunction
+   *  @type Function
+   *  @default null
+   *  @param {Object|Array} A single item from your datasource
+   *  @return String
+   **/
+  itemDisplayTextFunction: null,
+
+  /**
+   *  Placeholder text for input
+   *
+   *  @property placeholder
+   *  @type String
+   *  @default null
+   **/
+  placeholder: null,
+  // itemSelected (action)
+  // unknownItemSelected (action)
+
+  // -- props:
+  debounce: 300,
   highlightedItem: null,
   resultText: null,
   searchAllowed: true,
@@ -21,7 +99,7 @@ export default Ember.Component.extend({
   searching: 0,
 
   search() {
-    if (!this.get('resultText')) return;
+    if (!this.get('resultText')) { return; }
 
     this.incrementProperty('searching');
     let url = this.get('endpoint');
@@ -33,7 +111,7 @@ export default Ember.Component.extend({
       this.set('searchResults',  results);
       this.decrementProperty('searching');
     },
-    (response) => {
+    () => {
       this.decrementProperty('searching');
     });
   },
@@ -70,9 +148,12 @@ export default Ember.Component.extend({
     this.set('searchAllowed', false);
     this.set('selectedItem', item);
     this.sendAction('itemSelected', item);
-    let textForInput = this.itemDisplayTextFunction(item);
 
-    this.set('resultText', textForInput);
+    if(this.itemDisplayTextFunction) {
+      let textForInput = this.itemDisplayTextFunction(item);
+      this.set('resultText', textForInput);
+    }
+
     this.set('searchResults', null);
   },
 

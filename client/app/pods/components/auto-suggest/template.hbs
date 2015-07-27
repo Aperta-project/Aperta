@@ -5,7 +5,8 @@
 {{/if}}
 
 {{#if searchResults}}
-  {{#auto-suggest-list selectItem="selectItem"
+  {{#auto-suggest-list class="animation-fade-in"
+                       selectItem="selectItem"
                        selectUnknownItem="selectUnknownItem"
                        highlightedItem=highlightedItem
                        items=searchResults as |item|}}

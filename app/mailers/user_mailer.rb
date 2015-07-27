@@ -77,10 +77,11 @@ class UserMailer < ActionMailer::Base
     @commentee = User.find(commentee_id)
     @task = @comment.task
     @paper = @task.paper
+    @journal = @paper.journal
 
     mail(
       to: @commentee.try(:email),
-      subject: "You've been mentioned on Tahi")
+      subject: "You've been mentioned on #{app_name}")
   end
 
   def paper_submission(paper_id)

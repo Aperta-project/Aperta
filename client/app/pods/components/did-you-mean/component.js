@@ -59,7 +59,7 @@ export default Ember.Component.extend({
     search() {
       this.set('focused', false);
       let search = this.get('resultText');
-      if (!search || search === this.previousSearch) { return; };
+      if (!search || search === this.previousSearch) { return; }
 
       this.incrementProperty('searching');
       this.previousSearch = search;

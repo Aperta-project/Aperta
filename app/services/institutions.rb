@@ -12,7 +12,6 @@ class Institutions
   NED_DISABLE_SSL_VERIFICATION = ENV['NED_DISABLE_SSL_VERIFICATION'] == 'true'
   NED_SSL_VERIFY = !NED_DISABLE_SSL_VERIFICATION
 
-
   def matching_institutions(query)
     if USE_NED_INSTITUTIONS
       search_ned query

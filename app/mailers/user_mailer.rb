@@ -12,10 +12,11 @@ class UserMailer < ActionMailer::Base
     invitee = User.find_by(id: invitee_id)
     @invitor_name = display_name(invitor)
     @invitee_name = display_name(invitee)
+    @journal = @paper.journal
 
     mail(
       to: invitee.try(:email),
-      subject: "You've been added as a collaborator to a paper on Tahi")
+      subject: "You've been added as a collaborator to a manuscript on #{app_name}")
   end
 
   def add_participant(assigner_id, assignee_id, task_id)
@@ -27,17 +28,18 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: assignee.try(:email),
-      subject: "You've been added to a conversation on Tahi")
+      subject: "You've been added to a conversation on #{app_name}")
   end
 
   def add_reviewer(reviewer_id, paper_id)
     @paper = Paper.find(paper_id)
     user = User.find(reviewer_id)
     @reviewer_name = display_name(user)
+    @journal = @paper.journal
 
     mail(
       to: user.try(:email),
-      subject: "You've been invited to be a reviewer on Tahi")
+      subject: "You have been invited as a Reviewer in #{app_name}")
   end
 
   def add_editor_to_editors_discussion(invitee_id, task_id)
@@ -58,7 +60,7 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: user.try(:email),
-      subject: "You've been assigned as an editor on Tahi")
+      subject: "You've been assigned as an editor on #{app_name}")
   end
 
   def notify_editor_of_paper_resubmission(paper_id)
@@ -68,7 +70,7 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: @editor.email,
-      subject: "Manuscript has been resubmitted in Tahi")
+      subject: "Manuscript has been resubmitted in #{app_name}")
   end
 
   def mention_collaborator(comment_id, commentee_id)
@@ -90,7 +92,7 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: @author.try(:email),
-      subject: "Thank You for submitting a Manuscript on Tahi")
+      subject: "Thank You for submitting a Manuscript on #{app_name}")
   end
 
   def notify_admin_of_paper_submission(paper_id, user_id)
@@ -100,6 +102,6 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: @admin.email,
-      subject: "Manuscript #{@paper.title} has been submitted on Tahi")
+      subject: "Manuscript #{@paper.title} has been submitted on #{app_name}")
   end
 end

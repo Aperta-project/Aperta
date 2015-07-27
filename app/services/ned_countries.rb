@@ -6,22 +6,19 @@ class NedCountries
   APP_ID = ENV['NED_CAS_APP_ID']
   APP_PASSWORD = ENV['NED_CAS_APP_PASSWORD']
 
+  def self.enabled?
+    BASE_URL.present?
+  end
+
   def countries
-    if enabled
-      typeclass = search("/typeclasses").body.detect { |tc|
-        tc["description"] == "Country Types"
-      }
+    typeclass = search("/typeclasses").body.detect { |tc|
+      tc["description"] == "Country Types"
+    }
 
-      search("/typeclasses/#{typeclass['id']}/typevalues").body.map { |c|
-        c["shortdescription"]
-      }
-    end
+    search("/typeclasses/#{typeclass['id']}/typevalues").body.map { |c|
+      c["shortdescription"]
+    }
   end
-
-  def enabled
-    BASE_URL != ""
-  end
-
 
   private
 

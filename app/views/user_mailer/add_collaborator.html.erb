@@ -1,32 +1,37 @@
 <div class='container'>
   <div class='greeting'>
-    <h3 class='user-name'>
-      Hello <%= @invitee_name %>
-    </h3>
     <p class='message'>
-      <%= @invitor_name %> just added you as a collaborator to a paper titled "<%= @paper.display_title %>."
+      You have been added as a collaborator to a Manuscript
     </p>
   </div>
   <hr>
   <div class='paper-info'>
     <div class='journal-info'>
-      <% if @paper.journal.logo_url %>
-        <img class='journal-logo' src='<%= @paper.journal.logo_url %>'>
+      <% if @journal.logo_url %>
+        <img class='journal-logo' src='<%= @journal.logo_url %>'>
       <% else %>
         <div class='journal-name'>
-          <%= @paper.journal.name %>
+          <%= @journal.name %>
         </div>
       <% end %>
     </div>
-    <div class='paper-name'>
-      <%= @paper.display_title %>
-    </div>
+    <p>
+      Hello <%= @invitee_name %>,
+    </p>
+    <p>
+      <%= @invitor_name %> just added you as a collaborator to a manuscript titled "<%= @paper.display_title %>."
+      Collaborator status does not denote authorship of the manuscript.
+      All authors should be listed in the Add Authors card, and must meet PLOS Biology’s authorship criteria.
+    </p>
     <div class='paper-abstract'>
-      Visit this link to view the paper in Tahi: <%= client_edit_paper_url(@paper) %>
+      Visit this link to view the manuscript:
+      <%= link_to client_edit_paper_url(@paper), client_edit_paper_url(@paper) %>
     </div>
   </div>
   <hr>
   <div class='footer'>
-    Team Tahi
+    Sincerely,
+    <br>
+    <%= @journal.name %> Team
   </div>
 </div>

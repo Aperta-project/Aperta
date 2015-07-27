@@ -89,6 +89,7 @@ class UserMailer < ActionMailer::Base
   def paper_submission(paper_id)
     @paper = Paper.find(paper_id)
     @author = @paper.creator
+    @journal = @paper.journal
 
     mail(
       to: @author.try(:email),

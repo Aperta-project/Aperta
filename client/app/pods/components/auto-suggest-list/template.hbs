@@ -3,10 +3,6 @@
                        highlightedItem=highlightedItem
                        selectItem="selectItem"
                        class=itemClass}}
-    {{#if template.blockParams}}
-      {{yield item}}
-    {{else}}
-      {{partial itemPartial}}
-    {{/if}}
+    {{yield item}}
   {{/auto-suggest-item}}
 {{/each}}

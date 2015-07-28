@@ -7,18 +7,9 @@ Block Style:
 {{#if userResults}}
   {{#auto-suggest-list positionNearSelector="#search-user-input"
                        selectItem="selectUser"
-                       items=userResults as |item|}}
-    {{item.fullName}} - {{item.email}}
+                       items=userResults as |user|}}
+    {{user.fullName}} - {{user.email}}
   {{/auto-suggest-list}}
-{{/if}}
-
-Non Block Style with partial:
-
-{{#if userResults}}
-  {{auto-suggest-list positionNearSelector="#search-user-input"
-                      selectItem="selectUser"
-                      items=userResults
-                      itemPartial="user-search-list-item"}}
 {{/if}}
 
 Customizing List Items:

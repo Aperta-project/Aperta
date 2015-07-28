@@ -14,6 +14,8 @@ export default Ember.Mixin.create({
     if(Ember.isEmpty(selector)) { return; }
 
     let target = Ember.$(selector);
+    Ember.assert('position-near could not find target selector', target.length);
+
     let offset = target.position();
     let targetHeight = target.outerHeight();
 

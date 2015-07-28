@@ -5,12 +5,11 @@ class InviteReviewersOverlay < CardOverlay
       if find('.select2-chosen')
         select2 reviewer.email, css: '.reviewer-select2', search: true
       end
-      page.has_no_css?('.select2-searching', visible: false)
-      if find('.select2-chosen').text == reviewer.email
-        find('.invite-reviewer-button').click
-      else
-        raise 'Did not find any matching reviewers'
-      end
+      page.has_no_css? '.select2-searching', visible: false
+      page.has_css? '.select2-chosen', text: reviewer.email
+      find('.compose-invite-button').click
+      find('.invite-reviewer-button').click
+
       find('table .active-invitations .invitee-full-name', text: reviewer.full_name)
     end
   end
@@ -29,15 +28,15 @@ class InviteReviewersOverlay < CardOverlay
     all('a.select2-search-choice-close').each &:click
   end
 
-  def total_invitations
-    all '.invitation'
+  def total_invitations_count(count)
+    page.has_css? '.invitees .invitation', count: count
   end
 
-  def active_invitations
-    all '.invitees .active-invitations .invitation'
+  def active_invitations_count(count)
+    page.has_css? '.invitees .active-invitations .invitation', count: count
   end
 
-  def expired_invitations
-    all '.invitees .expired-invitations .invitation'
+  def expired_invitations_count(count)
+    page.has_css? '.invitees .expired-invitations .invitation', count: count
   end
 end

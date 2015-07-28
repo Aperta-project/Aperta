@@ -12,8 +12,7 @@ describe PhaseTemplatesController do
   it "creates a record" do
     post :create, format: :json, phase_template: { name: "A Phase", manuscript_manager_template_id: mmt.id, position: 0 }
     expect(response.status).to eq(201)
-    response_json = JSON.parse(response.body, symbolize_names: true)
-    expect(PhaseTemplate.find(response_json[:phase_template][:id])).to_not be_nil
+    expect(PhaseTemplate.find(res_body.with_indifferent_access[:phase_template][:id])).to_not be_nil
   end
 
   it "updates a record" do
@@ -26,4 +25,3 @@ describe PhaseTemplatesController do
     expect(response.status).to eq(204)
   end
 end
-

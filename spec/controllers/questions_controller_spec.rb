@@ -46,7 +46,7 @@ describe QuestionsController do
       put :update, format: :json, id: question.id, question: question.attributes.merge(answer: "42")
       expect(question.reload.answer).to eq("42")
       expect(response.status).to eq(200)
-      expect(JSON.parse(response.body)).to have_key('question')
+      expect(res_body).to have_key('question')
     end
 
     it_behaves_like "processing attachments"

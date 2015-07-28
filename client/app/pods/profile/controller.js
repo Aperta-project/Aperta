@@ -20,6 +20,7 @@ export default Ember.Controller.extend(FileUploadMixin, ValidationErrorsMixin, {
   countries: [],
   _getCountries: Ember.on('init', function() {
     RESTless.get('/api/countries').then((data)=> {
+      if(Ember.isEmpty(data.countries)) { return; }
       this.set('countries', data.countries.map(function(c) {
         return { id: c, text: c };
       }));

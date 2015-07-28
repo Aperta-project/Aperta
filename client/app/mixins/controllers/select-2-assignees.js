@@ -20,7 +20,7 @@ export default Ember.Mixin.create({
   }.property('select2RemoteUrl'),
 
   resultsTemplate(user) {
-    return user.full_name;
+    return `${user.full_name} <span class="select2-assignee-email">[${user.email}]</span>`;
   },
 
   selectedTemplate(user) {

@@ -11,6 +11,7 @@ export default DS.Model.extend({
   name: DS.attr('string'),
   startDate: DS.attr('string'),
   title: DS.attr('string'),
+  ringgoldId: DS.attr('string'),
 
   isCurrent: function() {
     return Ember.isBlank(this.get('endDate'));

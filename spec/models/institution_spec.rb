@@ -1,11 +1,12 @@
 require 'rails_helper'
 
-describe Institution do
-  subject(:names) { Institution.instance.names }
+describe Institutions, focus: true do
+  let(:institutions) { Institutions.instance.matching_institutions "Health" }
+  let(:names) { institutions.map { |i| i['name'] } }
 
   it "returns the parsed hash" do
-    expect(names).to include "A.T. Still University of Health Sciences"
-    expect(names).to include "Westmont College"
-    expect(names).to include "Virginia State University"
+    expect(names).to include "Adventist University of Health Sciences"
+    expect(names).to include "Pennsylvania College of Health Sciences"
+    expect(names).to include "Berkeley College School of Health Studies"
   end
 end

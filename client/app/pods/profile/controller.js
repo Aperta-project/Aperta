@@ -8,15 +8,6 @@ export default Ember.Controller.extend(FileUploadMixin, ValidationErrorsMixin, {
   errorText: '',
   affiliations: Ember.computed.alias('model.affiliationsByDate'),
 
-  selectableInstitutions: Ember.computed('model.institutions', function() {
-    return this.get('model.institutions').map(function(institution) {
-      return {
-        id: institution,
-        text: institution
-      };
-    });
-  }),
-
   countries: [],
   _getCountries: Ember.on('init', function() {
     RESTless.get('/api/countries').then((data)=> {
@@ -65,6 +56,11 @@ export default Ember.Controller.extend(FileUploadMixin, ValidationErrorsMixin, {
         affiliation.set('user', null);
         this.displayValidationErrorsFromResponse(response);
       });
+    },
+
+    institutionSelected(institution) {
+      this.set('newAffiliation.name', institution.name);
+      this.set('newAffiliation.ringgoldId', institution['institution-id']);
     }
   }
 });

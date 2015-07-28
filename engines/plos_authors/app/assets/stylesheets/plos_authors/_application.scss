@@ -132,6 +132,10 @@
     background: none;
     width: initial;
   }
+
+  .form-inline .form-group {
+    vertical-align: top;
+  }
 }
 
 .authors-overlay-item .add-author-form { margin: 0; }

@@ -48,14 +48,13 @@ InlineEditEmailComponent = Ember.Component.extend
       bodyPart.sent = moment().format('MMMM Do YYYY')
       @set('lastSentAt', bodyPart.sent)
 
-      this.attrs.sendEmail
+      @.attrs.sendEmail
         body: bodyPart.value
         subject: bodyPart.subject
         recipients: recipientIds
 
       @set('showChooseReceivers', false)
       @setSentState()
-      @get('parentView').send('save')
 
     removeRecipient: (recipient)->
       @get('recipients').removeObject(recipient)

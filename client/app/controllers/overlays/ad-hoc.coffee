@@ -36,6 +36,7 @@ AdHocOverlayController = TaskController.extend BuildsTaskTemplate, FileUploadMix
 
     sendEmail: (data) ->
       RESTless.putModel(@get('model'), "/send_message", task: data)
+      @send('saveModel')
 
     destroyAttachment: (attachment) ->
       attachment.destroyRecord()

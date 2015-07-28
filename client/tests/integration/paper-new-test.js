@@ -7,7 +7,7 @@ let App = null;
 let title = 'Crystalized Magnificence in the Modern World';
 
 module('Integration: Create new paper', {
-  afterEach: function() {
+  afterEach() {
     Ember.run(function() {
       TestHelper.teardown();
       App.destroy();
@@ -15,7 +15,7 @@ module('Integration: Create new paper', {
     });
   },
 
-  beforeEach: function() {
+  beforeEach() {
     App = startApp();
     TestHelper.setup(App);
 

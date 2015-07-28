@@ -42,7 +42,7 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: user.try(:email),
-      subject: "You have been invited as a Reviewer in #{app_name}")
+      subject: "You have been invited as a reviewer in #{app_name}")
   end
 
   def add_editor_to_editors_discussion(invitee_id, task_id)
@@ -53,7 +53,7 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: invitee.email,
-      subject: "You've been invited to the Editor Discussion for paper \"#{@task.paper.display_title}\"")
+      subject: "You've been invited to the Editor Discussion for manuscript \"#{@task.paper.display_title}\"")
   end
 
   def assigned_editor(editor_id, paper_id)
@@ -97,7 +97,7 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: @author.try(:email),
-      subject: "Thank You for submitting a Manuscript on #{app_name}")
+      subject: "Thank you for submitting a manuscript on #{app_name}")
   end
 
   def notify_admin_of_paper_submission(paper_id, user_id)

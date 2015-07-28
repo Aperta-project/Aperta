@@ -1,7 +1,7 @@
 <div class='container'>
   <div class='greeting'>
     <p class='message'>
-      You've been invited as a Reviewer on a Manuscript
+      You've been invited as a reviewer on a manuscript
     </p>
   </div>
   <hr>
@@ -11,7 +11,7 @@
         Hello <%= @reviewer_name %>
       </p>
       <p>
-        You've been invited as a Reviewer on "<%= @paper.display_title %>",
+        You've been invited as a reviewer on "<%= @paper.display_title %>",
         for <%= @journal.name %>.
         You can accept or decline this invitation here:
         <%= link_to client_dashboard_url, client_dashboard_url %>

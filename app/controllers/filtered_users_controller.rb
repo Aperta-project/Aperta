@@ -16,8 +16,10 @@ class FilteredUsersController < ApplicationController
     render_selectable_users(:admins)
   end
 
-  def reviewers
-    render_selectable_users(:reviewers)
+  def all_users
+    users = User.fuzzy_search params[:query]
+    paper = Paper.find(params[:paper_id])
+    respond_with filter_available_reviewers(users, paper), each_serializer: SelectableUserSerializer
   end
 
   private

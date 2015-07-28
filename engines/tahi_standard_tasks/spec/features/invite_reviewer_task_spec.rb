@@ -12,9 +12,6 @@ feature "Invite Reviewer", js: true do
 
   before do
     assign_journal_role journal, editor, :editor
-    assign_journal_role journal, reviewer1, :reviewer
-    assign_journal_role journal, reviewer2, :reviewer
-    assign_journal_role journal, reviewer3, :reviewer
     paper.paper_roles.create user: editor, role: PaperRole::COLLABORATOR
     task.participants << editor
 

@@ -2,21 +2,18 @@ module TahiDevise
   class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     def cas
-      ned = NedProfile.new(cas_id: auth[:uid])
-      user = get_user_with_credential(ned.cas_id, :cas)
+      user = get_user_with_credential(auth[:uid], :cas)
+      ned = auth[:extra]
 
       # update user profile with latest attributes from NED
-      user.first_name = ned.first_name
-      user.last_name = ned.last_name
-      user.email = ned.email
-      user.username = ned.display_name
+      user.first_name = ned[:firstName]
+      user.last_name = ned[:lastName]
+      user.email = ned[:emailAddress]
+      user.username = ned[:displayName]
       user.auto_generate_password
       user.save!
 
       sign_in_and_redirect(user, event: :authentication)
-
-    rescue NedProfileConnectionError => ex
-      redirect_to new_user_session_path, alert: "We were unable to authenticate with CAS at this time."
     end
 
     # We are using the "Orcid Member API", which gives us access to privilaged information.

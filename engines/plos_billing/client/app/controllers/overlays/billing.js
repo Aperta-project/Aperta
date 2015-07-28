@@ -306,7 +306,6 @@ let computed = Ember.computed;
 export default TaskController.extend({
   ringgold: [],
   institutionalAccountProgramList: DATA.institutionalAccountProgramList,
-  countries: DATA.countries,
   states:    DATA.states,
   pubFee:    DATA.pubFee,
   journals:  DATA.journals,

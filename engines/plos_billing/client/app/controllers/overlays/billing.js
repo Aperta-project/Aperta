@@ -14,14 +14,16 @@ const DATA = {
       text: "Faculty of Humanities and Social Sciences Library" },
     // Denmark
     { id: "Odense University Hospital", text: "Odense University Hospital" },
-    { id: "University of Southern Denmark", text: "University of Southern Denmark" },
+    { id: "University of Southern Denmark",
+      text: "University of Southern Denmark" },
     // Germany
     { id: "Bielefeld University",           text: "Bielefeld University" },
     { id: "Helmholtz Association of German Research Centres",
       text: "Helmholtz Association of German Research Centres" },
     { id: "Max Planck Institutes",          text: "Max Planck Institutes" },
     { id: "Ruhr University Bochum",         text: "Ruhr University Bochum" },
-    { id: "Technische Universität München", text: "Technische Universität München" },
+    { id: "Technische Universität München",
+      text: "Technische Universität München" },
     { id: "University of Potsdam",          text: "University of Potsdam" },
     { id: "University of Regensburg",       text: "University of Regensburg" },
     { id: "University of Stuttgart",        text: "University of Stuttgart" },
@@ -34,7 +36,8 @@ const DATA = {
     // Netherlands
     { id: "Delft University of Technology", text: "Delft University of Technology" },
     // Singapore
-    { id: "Temasek Life Sciences Laboratory", text: "Temasek Life Sciences Laboratory" },
+    { id: "Temasek Life Sciences Laboratory",
+      text: "Temasek Life Sciences Laboratory" },
     // Sweden
     { id: "Lund University", text: "Lund University" },
     // Switzerland
@@ -43,9 +46,12 @@ const DATA = {
     { id: "Brunel University",               text: "Brunel University" },
     { id: "John Innes Centre",               text: "John Innes Centre" },
     { id: "Newcastle University",            text: "Newcastle University" },
-    { id: "Queen Mary University of London", text: "Queen Mary University of London" },
-    { id: "Queen's University Belfast",      text: "Queen's University Belfast" },
-    { id: "University College London (UCL)", text: "University College London (UCL)" },
+    { id: "Queen Mary University of London",
+      text: "Queen Mary University of London" },
+    { id: "Queen's University Belfast",
+      text: "Queen's University Belfast" },
+    { id: "University College London (UCL)",
+      text: "University College London (UCL)" },
     { id: "University of Birmingham",        text: "University of Birmingham" },
     { id: "University of Bristol",           text: "University of Bristol" },
     { id: "University of Edinburgh",         text: "University of Edinburgh" },
@@ -53,7 +59,7 @@ const DATA = {
     { id: "University of Leeds",             text: "University of Leeds" },
     { id: "University of Manchester",        text: "University of Manchester" },
     { id: "University of Reading",           text: "University of Reading" },
-    { id: "University of St. Andrews ",      text: "University of St. Andrews " },
+    { id: "University of St. Andrews ",      text: "University of St. Andrews" },
     { id: "University of Stirling",          text: "University of Stirling" },
     { id: "University of Warwick",           text: "University of Warwick" },
     // United States
@@ -293,11 +299,16 @@ const DATA = {
   ],
 
   responses: [
-    { id: "self_payment",       text: "I will pay the full fee upon article acceptance" },
-    { id: "institutional",      text: "Institutional Account Program" },
-    { id: "gpi",                text: "PLOS Global Participation Initiative (GPI)" },
-    { id: "pfa",                text: "PLOS Publication Fee Assistance Program (PFA)" },
-    { id: "special_collection", text: "I have been invited to submit to a Special Collection" }
+    { id: "self_payment",
+      text: "I will pay the full fee upon article acceptance" },
+    { id: "institutional",
+      text: "Institutional Account Program" },
+    { id: "gpi",
+      text: "PLOS Global Participation Initiative (GPI)" },
+    { id: "pfa",
+      text: "PLOS Publication Fee Assistance Program (PFA)" },
+    { id: "special_collection",
+      text: "I have been invited to submit to a Special Collection" }
   ]
 };
 
@@ -313,9 +324,9 @@ export default TaskController.extend({
   groupOneAndTwoCountries: DATA.groupOneAndTwoCountries,
 
   countries: [],
-  _getCountries: Ember.on('init', function() {
-    RESTless.get('/api/countries').then((data)=> {
-      this.set('countries', data.countries.map(function(c) {
+  _getCountries: Ember.on("init", function() {
+    RESTless.get("/api/countries").then((data)=> {
+      this.set("countries", data.countries.map(function(c) {
         return { id: c, text: c };
       }));
     });

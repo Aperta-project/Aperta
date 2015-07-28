@@ -95,13 +95,13 @@ describe FilteredUsersController do
     #  3 Editors
     #  2 Admins
     context "when searching from select2 dropdowns" do
-      let(:reviewer2) { FactoryGirl.create :user, email: "reviewer@example.com" }
+      let(:reviewer2) { FactoryGirl.create :user, email: "reviewer@example.com", first_name: "Jane", last_name: "Doe" }
       let(:reviewer3) { FactoryGirl.create :user }
       let(:reviewer4) { FactoryGirl.create :user }
-      let(:editor1)   { FactoryGirl.create :user, email: "editor@example.com" }
+      let(:editor1)   { FactoryGirl.create :user, email: "editor@example.com", first_name: "Jane", last_name: "Roe" }
       let(:editor2)   { FactoryGirl.create :user }
       let(:editor3)   { FactoryGirl.create :user }
-      let(:admin1)    { FactoryGirl.create :user, email: "admin@example.com" }
+      let(:admin1)    { FactoryGirl.create :user, email: "admin@example.com", first_name: "John", last_name: "Doe" }
       let(:admin2)    { FactoryGirl.create :user }
 
       before do
@@ -121,8 +121,15 @@ describe FilteredUsersController do
           expect(res_body["filtered_users"].count).to eq 3
         end
 
-        it "filters editors by query string" do
+        it "filters editors by email" do
           get :editors, paper_id: paper.id, query: "editor", format: :json
+          expect(res_body["filtered_users"].count).to eq 1
+          expect(res_body["filtered_users"].first["id"]).to eq editor1.id
+          expect(res_body["filtered_users"].first["email"]).to eq editor1.email
+        end
+
+        it "filters editors by name" do
+          get :editors, paper_id: paper.id, query: "roe", format: :json
           expect(res_body["filtered_users"].count).to eq 1
           expect(res_body["filtered_users"].first["id"]).to eq editor1.id
           expect(res_body["filtered_users"].first["email"]).to eq editor1.email
@@ -135,8 +142,15 @@ describe FilteredUsersController do
           expect(res_body["filtered_users"].count).to eq 2
         end
 
-        it "filters admins by query string" do
+        it "filters admins by email" do
           get :admins, paper_id: paper.id, query: "admin", format: :json
+          expect(res_body["filtered_users"].count).to eq 1
+          expect(res_body["filtered_users"].first["id"]).to eq admin1.id
+          expect(res_body["filtered_users"].first["email"]).to eq admin1.email
+        end
+
+        it "filters admins by name" do
+          get :admins, paper_id: paper.id, query: "john", format: :json
           expect(res_body["filtered_users"].count).to eq 1
           expect(res_body["filtered_users"].first["id"]).to eq admin1.id
           expect(res_body["filtered_users"].first["email"]).to eq admin1.email
@@ -149,14 +163,20 @@ describe FilteredUsersController do
           expect(res_body["filtered_users"].count).to eq 4
         end
 
-        it "returns reviewers by query string" do
+        it "filters reviewers by email" do
           get :reviewers, paper_id: paper.id, query: "reviewer", format: :json
+          expect(res_body["filtered_users"].count).to eq 1
+          expect(res_body["filtered_users"].first["id"]).to eq reviewer2.id
+          expect(res_body["filtered_users"].first["email"]).to eq reviewer2.email
+        end
+
+        it "filters reviewers by name" do
+          get :reviewers, paper_id: paper.id, query: "jane", format: :json
           expect(res_body["filtered_users"].count).to eq 1
           expect(res_body["filtered_users"].first["id"]).to eq reviewer2.id
           expect(res_body["filtered_users"].first["email"]).to eq reviewer2.email
         end
       end
     end
-
   end
 end

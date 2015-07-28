@@ -26,12 +26,8 @@ class FilteredUsersController < ApplicationController
     paper = Paper.find(params[:paper_id])
     journal_role_ids = paper.journal.send(role).pluck(:id)
 
-    if params[:query]
-      users = User.fuzzy_search(email: params[:query])
-                  .where(id: journal_role_ids)
-    else
-      users = User.where(id: journal_role_ids)
-    end
+    users = User.where(id: journal_role_ids)
+    users = users.fuzzy_search(email: params[:query]) if params[:query]
 
     respond_with filter_available_reviewers(users, paper), each_serializer: SelectableUserSerializer
   end

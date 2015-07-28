@@ -30,11 +30,13 @@ const DATA = {
     // Italy
     { id: "Fondazione Telethon", text: "Fondazione Telethon" },
     // Luxembourg
-    { id: "Institute for Health & Behavior", text: "Institute for Health & Behavior" },
+    { id: "Institute for Health & Behavior",
+      text: "Institute for Health & Behavior" },
     // Mexico
     { id: "CINVESTAV Unidad Irapuato", text: "CINVESTAV Unidad Irapuato" },
     // Netherlands
-    { id: "Delft University of Technology", text: "Delft University of Technology" },
+    { id: "Delft University of Technology",
+      text: "Delft University of Technology" },
     // Singapore
     { id: "Temasek Life Sciences Laboratory",
       text: "Temasek Life Sciences Laboratory" },
@@ -52,16 +54,16 @@ const DATA = {
       text: "Queen's University Belfast" },
     { id: "University College London (UCL)",
       text: "University College London (UCL)" },
-    { id: "University of Birmingham",        text: "University of Birmingham" },
-    { id: "University of Bristol",           text: "University of Bristol" },
-    { id: "University of Edinburgh",         text: "University of Edinburgh" },
-    { id: "University of Glasgow",           text: "University of Glasgow" },
-    { id: "University of Leeds",             text: "University of Leeds" },
-    { id: "University of Manchester",        text: "University of Manchester" },
-    { id: "University of Reading",           text: "University of Reading" },
-    { id: "University of St. Andrews ",      text: "University of St. Andrews" },
-    { id: "University of Stirling",          text: "University of Stirling" },
-    { id: "University of Warwick",           text: "University of Warwick" },
+    { id: "University of Birmingham",   text: "University of Birmingham" },
+    { id: "University of Bristol",      text: "University of Bristol" },
+    { id: "University of Edinburgh",    text: "University of Edinburgh" },
+    { id: "University of Glasgow",      text: "University of Glasgow" },
+    { id: "University of Leeds",        text: "University of Leeds" },
+    { id: "University of Manchester",   text: "University of Manchester" },
+    { id: "University of Reading",      text: "University of Reading" },
+    { id: "University of St. Andrews ", text: "University of St. Andrews" },
+    { id: "University of Stirling",     text: "University of Stirling" },
+    { id: "University of Warwick",      text: "University of Warwick" },
     // United States
     { id: "George Mason University", text: "George Mason University" },
   ],
@@ -348,7 +350,9 @@ export default TaskController.extend({
   institutional: computed.equal("selectedPaymentMethod", "institutional"),
   gpi: computed.equal("selectedPaymentMethod", "gpi"),
   pfa: computed.equal("selectedPaymentMethod", "pfa"),
-  specialCollection: computed.equal("selectedPaymentMethod", "special_collection"),
+  specialCollection: computed.equal(
+    "selectedPaymentMethod", "special_collection"
+  ),
 
   agreeCollections: false,
 

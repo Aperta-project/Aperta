@@ -1,6 +1,7 @@
 class UserMailer < ActionMailer::Base
   include MailerHelper
   add_template_helper ClientRouteHelper
+  add_template_helper TemplateHelper
   default from: Rails.configuration.from_email
   layout "mailer"
 
@@ -21,11 +22,12 @@ class UserMailer < ActionMailer::Base
 
   def add_participant(assigner_id, assignee_id, task_id)
     @task = Task.find(task_id)
+    @paper = @task.paper
+    @journal = @paper.journal
     assigner = User.find_by(id: assigner_id)
     assignee = User.find_by(id: assignee_id)
     @assigner_name = display_name(assigner)
     @assignee_name = display_name(assignee)
-    @journal = @task.journal
 
     mail(
       to: assignee.try(:email),

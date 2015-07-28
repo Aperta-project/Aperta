@@ -3,7 +3,8 @@ include ClientRouteHelper
 
 describe UserMailer, redis: true do
   before do
-    @app_name = ENV["APP_NAME"] = "TEST-APP-NAME"
+    stub_const('ENV', { 'APP_NAME' => 'TEST-APP-NAME' })
+    @app_name = ENV["APP_NAME"]
   end
 
   shared_examples_for "invitor is not available" do

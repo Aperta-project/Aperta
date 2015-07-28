@@ -1,43 +1,50 @@
 <div class='container'>
   <div class='greeting'>
-    <h3 class='user-name'>
-      Hello <%= @author.full_name %>,
-    </h3>
     <p class='message'>
       Thank you for submitting your manuscript,
-      <%= @paper.display_title %>, to <%= @paper.journal.name %>.
+      <%= @paper.display_title %>, to <%= @journal.name %>.
       Our staff will be in touch with next steps.
     </p>
   </div>
   <hr>
   <div class='paper-info'>
     <div class='journal-info'>
-      <% if @paper.journal.logo_url %>
-        <img class='journal-logo' src='<%= @paper.journal.logo_url %>'>
+      <% if @journal.logo_url %>
+        <img class='journal-logo' src='<%= @journal.logo_url %>'>
       <% else %>
         <div class='journal-name'>
-          <%= @paper.journal.name %>
+          <%= @journal.name %>
         </div>
       <% end %>
     </div>
+    <p>
+      Hello <%= @author.full_name %>,
+    </p>
+    <p class='message'>
+      Thank you for submitting your manuscript, "<%= @paper.display_title %>",
+      to <%= @journal.name %>.
+      Your initial submission is complete, and our staff will be in touch with next steps.
+    </p>
+    <p>
+      You will be able to check on the progress of your paper by logging in here:
+      <%= link_to client_dashboard_url, client_dashboard_url %>.
+    </p>
+    <p>
+      Paper Details:
+    </p>
     <div class='paper-name'>
       <%= @paper.display_title %>
     </div>
     <div class='paper-abstract'>
       <h5 class='abstract-title'>Abstract</h5>
       <div class='abstract-text'>
-        <%= @paper.abstract || @paper.body.truncate_words(100) %>
+        <%= @paper.abstract %>
       </div>
     </div>
   </div>
   <hr>
   <div class='footer'>
-    <a class='button' href='<%= client_paper_url(@paper) %>' target='_blank'>
-      View Paper
-    </a>
-    <p>
-    Sincerely,<br>
-    <%= @paper.journal.name %> Team
-    </p>
+    Sincerely,
+    <%= @journal.name %> Team
   </div>
 </div>

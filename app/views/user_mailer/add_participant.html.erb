@@ -1,20 +1,27 @@
 <div class='container'>
   <div class='greeting'>
-    <h3 class='user-name'>
-      Hello <%= @assignee_name %>
-    </h3>
-    <p class='message'>
-      <%= @assigner_name %> just added you to a conversation on Tahi.
-    </p>
+    <%= @assigner_name %> added you to a conversation
+    in <%= app_name %>
   </div>
   <hr>
   <div class='paper-info'>
+    <p>
+      Hello <%= @assignee_name %>,
+    </p>
+    <p class='message'>
+      <%= @assigner_name %> just added you to a conversation in <%= app_name %> for the manuscript,
+      "<%= @paper.display_title %>".
+    </p>
     <div class='paper-abstract'>
-      Visit this link to view the conversation: <%= client_paper_task_url(@task.paper, @task) %>
+      Visit this link to view the conversation,
+      and to post your comment:
+      <%= link_to client_paper_task_url(@task.paper, @task), client_paper_task_url(@task.paper, @task) %>
     </div>
   </div>
   <hr>
   <div class='footer'>
-    Team Tahi
+    Sincerely,
+    <br>
+    <%= @journal.name %> Team
   </div>
 </div>

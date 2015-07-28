@@ -24,13 +24,13 @@ class FilteredUsersController < ApplicationController
 
   def render_selectable_users(role)
     paper = Paper.find(params[:paper_id])
-    journal_reviewer_ids = paper.journal.send(role).pluck(:id)
+    journal_role_ids = paper.journal.send(role).pluck(:id)
 
     if params[:query]
       users = User.fuzzy_search(email: params[:query])
-                  .where(id: journal_reviewer_ids)
+                  .where(id: journal_role_ids)
     else
-      users = User.where(id: journal_reviewer_ids)
+      users = User.where(id: journal_role_ids)
     end
 
     respond_with filter_available_reviewers(users, paper), each_serializer: SelectableUserSerializer

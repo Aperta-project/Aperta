@@ -2,9 +2,11 @@ require 'rails_helper'
 include ClientRouteHelper
 
 describe UserMailer, redis: true do
+  let(:app_name) { 'TEST-APP-NAME' }
+
   before do
-    stub_const('ENV', { 'APP_NAME' => 'TEST-APP-NAME' })
-    @app_name = ENV["APP_NAME"]
+    allow_any_instance_of(MailerHelper).to receive(:app_name).and_return app_name
+    allow_any_instance_of(TemplateHelper).to receive(:app_name).and_return app_name
   end
 
   shared_examples_for "invitor is not available" do
@@ -137,7 +139,7 @@ describe UserMailer, redis: true do
     end
 
     it "emails the author user they have been mentioned" do
-      expect(email.subject).to eq "Thank you for submitting a manuscript on #{@app_name}"
+      expect(email.subject).to eq "Thank you for submitting a manuscript on #{app_name}"
       expect(email.body).to include "Thank you for submitting your manuscript"
       expect(email.body).to include paper.title
       expect(email.body).to include paper.journal.name
@@ -159,7 +161,7 @@ describe UserMailer, redis: true do
     end
 
     it "specify subject line" do
-      expect(email.subject).to eq "Manuscript has been resubmitted in #{@app_name}"
+      expect(email.subject).to eq "Manuscript has been resubmitted in #{app_name}"
     end
 
     it "tells the editor paper has been (re)submitted" do
@@ -186,7 +188,7 @@ describe UserMailer, redis: true do
     end
 
     it "specify subject line" do
-      expect(email.subject).to eq "Manuscript #{paper.title} has been submitted on #{@app_name}"
+      expect(email.subject).to eq "Manuscript #{paper.title} has been submitted on #{app_name}"
     end
 
     it "tells admin that paper has been submitted" do

@@ -1,13 +1,11 @@
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
-  needs: ['application'],
-  currentUser: Ember.computed.alias('controllers.application.currentUser'),
   participations: [],
 
-  participants: function() {
+  participants: Ember.computed('participations.@each.user', function() {
     return this.get('participations').mapBy('user');
-  }.property('participations.@each.user'),
+  }),
 
   createParticipant(newParticipant) {
     if (newParticipant && !this.get('participants').contains(newParticipant)) {
@@ -24,12 +22,11 @@ export default Ember.Mixin.create({
 
   actions: {
     saveNewParticipant(newParticipantId) {
-      let that = this;
-      this.store.find('user', newParticipantId).then(function(user) {
-        let part = that.createParticipant(user);
+      this.store.find('user', newParticipantId).then((user) => {
+        let part = this.createParticipant(user);
         if (!part) { return; }
 
-        if (!that.get('model.isNew')) {
+        if (!this.get('model.isNew')) {
           return part.save();
         }
       });

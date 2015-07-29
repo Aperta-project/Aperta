@@ -41,8 +41,8 @@ export default TaskController.extend(ValidationErrorsMixin, {
     },
 
     institutionSelected: function(institution) {
-      this.set("newRecommendation.affiliation", institution.name);
-      this.set("newRecommendation.ringgoldId", institution['institution-id']);
+      this.set('newRecommendation.affiliation', institution.name);
+      this.set('newRecommendation.ringgoldId', institution['institution-id']);
     },
 
     cancelEdit: function() {

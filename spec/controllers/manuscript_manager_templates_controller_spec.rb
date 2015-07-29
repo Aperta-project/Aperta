@@ -5,7 +5,7 @@ describe ManuscriptManagerTemplatesController do
   expect_policy_enforcement
 
   def validate_template_json(test_params)
-    template = JSON.parse(response.body)['manuscript_manager_template']
+    template = res_body['manuscript_manager_template']
 
     test_params.each do |k, v|
       expect(template[k.to_s]).to eq(v)
@@ -40,7 +40,7 @@ describe ManuscriptManagerTemplatesController do
 
     it "renders the given template as json" do
       do_request
-      expect(JSON.parse(response.body)).to have_key('manuscript_manager_template')
+      expect(res_body).to have_key('manuscript_manager_template')
     end
   end
 
@@ -75,7 +75,7 @@ describe ManuscriptManagerTemplatesController do
       it "returns an error" do
         expect(journal.manuscript_manager_templates.count).to eq 1
         do_request
-        expect(JSON.parse(response.body)).to have_key('errors')
+        expect(res_body).to have_key('errors')
       end
     end
 

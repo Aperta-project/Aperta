@@ -23,8 +23,7 @@ describe Roles::UsersController do
                            "username" => admin.username,
                            "email" => admin.email}
 
-      expect(JSON.parse(response.body)["users"]).to include(expected_response)
+      expect(res_body["users"]).to include(expected_response)
     end
   end
 end
-

@@ -1,4 +1,9 @@
 module MailerHelper
+
+  def app_name
+    ENV["APP_NAME"] || 'Aperta'
+  end
+
   def display_name(user)
     return "Someone" unless user.present?
     user.full_name.presence || user.username

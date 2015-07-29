@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150716185433) do
+ActiveRecord::Schema.define(version: 20150722152003) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 20150716185433) do
     t.string   "department"
     t.string   "title"
     t.string   "country"
+    t.string   "ringgold_id"
   end
 
   add_index "affiliations", ["user_id"], name: "index_affiliations_on_user_id", using: :btree
@@ -330,6 +331,8 @@ ActiveRecord::Schema.define(version: 20150716185433) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "contributions"
+    t.string   "ringgold_id"
+    t.string   "secondary_ringgold_id"
   end
 
   create_table "question_attachments", force: :cascade do |t|

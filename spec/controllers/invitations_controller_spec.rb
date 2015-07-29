@@ -27,7 +27,7 @@ describe InvitationsController do
       get(:index, format: :json)
       expect(response.status).to eq(200)
 
-      data = JSON.parse(response.body).with_indifferent_access
+      data = res_body.with_indifferent_access
 
       expect(data).to have_key(:invitations)
       invitation_json = data[:invitations][0]
@@ -50,7 +50,7 @@ describe InvitationsController do
       })
       expect(response.status).to eq(201)
 
-      data = JSON.parse(response.body).with_indifferent_access
+      data = res_body.with_indifferent_access
       invitation = Invitation.find(data[:invitation][:id])
 
       expect(invitation.invitee).to eq(invitee)

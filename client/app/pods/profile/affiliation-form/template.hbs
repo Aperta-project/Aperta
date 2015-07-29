@@ -31,11 +31,10 @@
       <h3>
         New Affiliation
       </h3>
-      {{select-2-single
-          class="profile-affiliation-field"
-          placeholder="Affiliation Name"
-          source=selectableInstitutions
-          value=newAffiliation.name}}
+      {{institution-search
+        class="profile-affiliation-field"
+        institutionSelected="institutionSelected"
+        placeholder="Institution"}}
       {{error-message message=validationErrors.name}}
 
       {{input type="text"
@@ -48,13 +47,16 @@
               placeholder="Title"
               class="profile-affiliation-field form-control"}}
 
-      {{select-2-single
-        class="profile-affiliation-field"
-        placeholder="Country"
-        selectedData=selectedData
-        source=countries
-        value=newAffiliation.country
-      }}
+      {{#if countries}}
+        {{select-2-single class="profile-affiliation-field"
+                          placeholder="Country"
+                          selectedData=selectedData
+                          source=countries
+                          value=newAffiliation.country}}
+      {{else}}
+        {{progress-spinner visible=true size="mini"}}
+        Loading countries
+      {{/if}}
 
       <div class="form-group">
         {{#datepicker-group}}

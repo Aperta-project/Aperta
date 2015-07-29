@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150722152003) do
+ActiveRecord::Schema.define(version: 20150729195638) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,12 +35,12 @@ ActiveRecord::Schema.define(version: 20150722152003) do
 
   create_table "affiliations", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "name",       limit: 255
+    t.string   "name",        limit: 255
     t.date     "start_date"
     t.date     "end_date"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "email",      limit: 255
+    t.string   "email",       limit: 255
     t.string   "department"
     t.string   "title"
     t.string   "country"
@@ -432,6 +432,7 @@ ActiveRecord::Schema.define(version: 20150722152003) do
     t.text     "reason"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "ringgold_id"
   end
 
   create_table "task_templates", force: :cascade do |t|

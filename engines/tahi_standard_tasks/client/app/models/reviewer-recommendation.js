@@ -12,6 +12,7 @@ export default DS.Model.extend({
   title: a('string'),
   department: a('string'),
   affiliation: a('string'),
+  ringgoldId: a('string'),
   recommendOrOppose: a('string'),
   reason: a('string'),
   reviewerRecommendationsTask: DS.belongsTo('reviewerRecommendationsTask'),

@@ -30,6 +30,11 @@ Procfile.local
 coverage
 spec/tmp
 
+# ssl
+*.crt
+*.csr
+*.key
+
 # bin/setup's log file
 setup.log
 

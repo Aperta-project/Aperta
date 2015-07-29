@@ -1,0 +1,50 @@
+{{#if selectedItem}}
+  <div class="did-you-mean-what-you-meant">
+    {{yield selectedItem}}
+    {{#if recognized}}
+      <i class="fa fa-check-circle"></i>
+    {{/if}}
+    <span {{action "tryAgain"}} class="did-you-mean-change">change</span>
+  </div>
+{{else}}
+
+  <div {{bind-attr class="focused:did-you-mean-focused
+                          searchResults:did-you-mean-input-expanded
+                          :form-control
+                          :did-you-mean-input"}}>
+    {{input value=resultText
+            bubbles=true
+            placeholder=placeholder
+            action="search"
+            class=""
+            focus-in="focus"
+            focus-out="search"}}
+
+    {{#if searching}}
+      {{progress-spinner visible=true size="small"}}
+    {{else}}
+      <button class="did-you-mean-button"
+        tabindex=-1
+        {{action "search"}}>
+        <i class="fa fa-search"></i>
+      </button>
+    {{/if}}
+  </div>
+
+  {{#if searchResults}}
+    <div class="did-you-mean-expanded">
+      <div class="did-you-mean-question">Did you mean one of these?</div>
+      <div class="did-you-mean-options">
+        {{#each searchResults}}
+          <div class="did-you-mean-item" {{action "selectItem" this}}>
+            {{yield this}}
+          </div>
+        {{/each}}
+      </div>
+      <div class="did-you-mean-no-thanks" {{action "selectUnknownItem"}}>
+        No thanks, I meant "{{ resultText }}".
+      </div>
+    </div>
+  {{/if}}
+
+{{/if}}

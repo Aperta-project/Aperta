@@ -21,10 +21,10 @@ feature "Profile Page", js: true do
     expect(current_path).to eq new_user_session_path
   end
 
-  scenario "affiliation errors are handled" do
+  scenario "affiliation errors are handled", vcr: { cassette_name: "ned_countries" }  do
     profile_page.start_adding_affiliate
     profile_page.submit
-    expect(page).to have_content(/name can't be blank/i)
+    expect(page).to have_content(/can't be blank/i)
     expect(profile_page).to have_no_application_error
   end
 

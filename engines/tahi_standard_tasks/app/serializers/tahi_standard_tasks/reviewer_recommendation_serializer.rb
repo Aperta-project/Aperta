@@ -8,6 +8,7 @@ module TahiStandardTasks
                :title,
                :department,
                :affiliation,
+               :ringgold_id,
                :recommend_or_oppose,
                :reason
   end

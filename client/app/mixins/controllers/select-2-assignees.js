@@ -22,6 +22,7 @@ export default Ember.Mixin.create({
   resultsTemplate(user) {
     /* Handle raw object or ember model */
     let email = (typeof(user.email) === 'string') ? user.email : user.get('email');
-    return `${user.full_name || user.get('fullName')} <span class="select2-assignee-email">[${email}]</span>`;
+    let fullName = user.full_name || user.get('fullName');
+    return `${fullName} <span class="select2-assignee-email">[${email}]</span>`;
   }
 });

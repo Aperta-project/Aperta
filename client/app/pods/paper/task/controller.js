@@ -38,7 +38,7 @@ export default Ember.Controller.extend(
   },
 
   saveModel() {
-    this._super().then(()=> {
+    return this._super().then(()=> {
       this.clearAllValidationErrors();
     }, (response) => {
       this.displayValidationErrorsFromResponse(response);

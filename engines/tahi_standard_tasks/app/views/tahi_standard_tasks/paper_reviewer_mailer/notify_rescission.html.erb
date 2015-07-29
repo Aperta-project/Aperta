@@ -1,8 +1,6 @@
 <div class='container'>
   <div class='greeting'>
-    <h3 class='user-name'>
-      Hello <%= @invitee.full_name %>
-    </h3>
+    Invitation Rescinded
   </div>
   <hr>
   <div class='paper-info'>
@@ -15,6 +13,9 @@
         </div>
       <% end %>
     </div>
+    <p>
+      Hello <%= @invitee.full_name %>,
+    </p>
     <div class='paper-abstract'>
       <p>
         Your invitation to become a reviewer on "<%= @paper.display_title %>" has been rescinded. Please email us if you have any questions.
@@ -26,8 +27,8 @@
   </div>
   <hr>
   <div class='footer'>
-    <p>
-      Team Tahi
-    </p>
+    Sincerely,
+    <br>
+    <%= @paper.journal.name %> Team
   </div>
 </div>

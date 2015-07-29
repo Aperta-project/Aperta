@@ -1,0 +1,105 @@
+.did-you-mean {
+  width: 100%;
+  position: relative;
+
+  .did-you-mean-what-you-meant {
+    font-weight: bold;
+    padding: 6px 0 6px 12px;
+
+    .did-you-mean-change {
+      font-style: italic;
+      position: relative;
+      bottom: 1px;
+      margin-left: 1em;
+      cursor: pointer;
+      text-decoration: underline;
+      color: $tahi-blue;
+      font-size: .8em;
+    }
+
+    .fa-check-circle {
+      color: $tahi-green;
+    }
+  }
+
+  .did-you-mean-input {
+    position: relative;
+    padding-right: 26px;
+    width: 100%;
+
+    &.did-you-mean-input-expanded {
+      @include border-bottom-radius(0px);
+    }
+
+    &.did-you-mean-focused {
+      -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+      outline: 0;
+      border: 1px solid #66afe9;
+    }
+
+    input {
+      display: block;
+      margin: 0;
+      border: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .progress-spinner {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 20px;
+      height: 20px;
+    }
+
+    .did-you-mean-button {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      border-width: 0 0 0 1px;
+      background-color: $tahi-grey-light;
+      height: 100%;
+      @include background(linear-gradient(to top, #ccc 0%, #eee 60%));
+    }
+  }
+
+  .did-you-mean-expanded {
+    @include border-bottom-radius(4px);
+    border: 1px solid $tahi-grey-light;
+    border-top: 0;
+    background-color: #fff;
+
+    .did-you-mean-question {
+      background-color: 2px solid #f2f2d5;
+      padding: .5em 1em;
+      font-weight: bold;
+    }
+
+    .did-you-mean-options {
+      overflow-y: auto;
+      border: 1px solid $tahi-grey-light;
+      border-width: 0 0;
+      max-height: 10em;
+    }
+
+    .did-you-mean-item {
+      cursor: pointer;
+      padding: .5em 2em;
+      line-height: 1.1;
+
+      &:hover {
+        background-color: $tahi-grey-light;
+      }
+    }
+
+    .did-you-mean-no-thanks {
+      cursor: pointer;
+      padding: .5em 1em;
+      text-decoration: underline;
+      color: $tahi-blue;
+    }
+  }
+}

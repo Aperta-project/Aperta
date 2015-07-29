@@ -24,27 +24,22 @@ export default Ember.Component.extend({
     }
   },
 
-  selectableInstitutions: function() {
-    return (this.get("institutions") || []).map(function(institution) {
+  affiliation: function() {
+    if (this.get("newAuthor.affiliation")) {
       return {
-        id: institution,
-        text: institution
+        id: this.get("newAuthor.ringgoldId"),
+        name: this.get("newAuthor.affiliation")
       };
-    });
-  }.property("institutions"),
-
-  selectedAffiliation: function() {
-    return {
-      id: this.get("newAuthor.affiliation"),
-      text: this.get("newAuthor.affiliation")
-    };
+    }
   }.property("newAuthor"),
 
-  selectedSecondaryAffiliation: function() {
-    return {
-      id: this.get("newAuthor.secondaryAffiliation"),
-      text: this.get("newAuthor.secondaryAffiliation")
-    };
+  secondaryAffiliation: function() {
+    if (this.get("newAuthor.secondaryAffiliation")) {
+      return {
+        id: this.get("newAuthor.secondaryRinggoldId"),
+        name: this.get("newAuthor.secondaryAffiliation")
+      };
+    }
   }.property("newAuthor"),
 
   actions: {
@@ -69,6 +64,26 @@ export default Ember.Component.extend({
     resolveContributions: function(newContributions, unmatchedContributions) {
       this.get("newAuthor.contributions").removeObjects(unmatchedContributions);
       this.get("newAuthor.contributions").addObjects(newContributions);
+    },
+
+    institutionSelected: function(institution) {
+      this.set("newAuthor.affiliation", institution.name);
+      this.set("newAuthor.ringgoldId", institution["institution-id"]);
+    },
+
+    unknownInstitutionSelected: function(institutionName) {
+      this.set("newAuthor.affiliation", institutionName);
+      this.set("newAuthor.ringgoldId", "");
+    },
+
+    secondaryInstitutionSelected: function(institution) {
+      this.set("newAuthor.secondaryAffiliation", institution.name);
+      this.set("newAuthor.secondaryRinggoldId", institution["institution-id"]);
+    },
+
+    unknownSecondaryInstitutionSelected: function(institutionName) {
+      this.set("newAuthor.secondaryAffiliation", institutionName);
+      this.set("newAuthor.secondaryRinggoldId", "");
     }
   }
 });

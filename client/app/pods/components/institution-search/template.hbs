@@ -1,0 +1,11 @@
+{{#did-you-mean endpoint="/api/affiliations"
+                queryParameter="query"
+                parseResponseFunction=parseInstitutions
+                itemNameFunction=displayInstitution
+                itemSelected="institutionSelected"
+                unknownItemFunction=unknownInstitution
+                placeholder=placeholder
+                selectedItem=value
+                as |institution|}}
+  {{ institution.name }}
+{{/did-you-mean}}

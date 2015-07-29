@@ -1,27 +1,44 @@
 <div class='container'>
   <div class='greeting'>
-    <h3 class='user-name'>
-      Hello <%= @reviewer_name %>
-    </h3>
     <p class='message'>
-      You've been assigned as a Reviewer on a Manuscript
+      You've been invited as a reviewer on a manuscript
     </p>
   </div>
   <hr>
   <div class='paper-info'>
     <div class='paper-abstract'>
       <p>
-        You've been assigned as a Reviewer on a Manuscript titled "<%= @paper.display_title %>".
+        Hello <%= @reviewer_name %>
       </p>
-
       <p>
-        Visit this link to view the paper:
-        <%= client_paper_url(@paper) %>
+        You've been invited as a reviewer on "<%= @paper.display_title %>",
+        for <%= @journal.name %>.
+        You can accept or decline this invitation here:
+        <%= link_to client_dashboard_url, client_dashboard_url %>
+      </p>
+      <p>
+        The abstract is included below.
+        We would ideally like to have reviews returned to us within 10 days.
+        If you require additional time, please do let us know so that we may plan accordingly.
+      </p>
+      <p>
+        Please only accept this invitation if you have no conflicts of interest.
+        If in doubt, please feel free to contact us for advice.
+        If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
+      </p>
+      <p>
+        We look forward to hearing from you.
       </p>
     </div>
   </div>
   <hr>
   <div class='footer'>
-    We look forward to your contributions! - Team Tahi
+    Sincerely,
+    <br>
+    <%= @journal.name %> Team
   </div>
+
+  <p>
+    <%= @paper.abstract %>
+  </p>
 </div>

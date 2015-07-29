@@ -1,15 +1,10 @@
 class AttachmentSerializer < ActiveModel::Serializer
-  attributes :id, :title, :caption, :kind, :src, :status, :preview_src, :attachable, :filename
+  has_one :task, embed: :id
+
+  attributes :id, :title, :caption, :kind, :src, :status, :preview_src, :filename
 
   def src
     object.file.url
-  end
-
-  def attachable
-    {
-      type: object.task.class.name,
-      id: object.task.id
-    }
   end
 
   def preview_src

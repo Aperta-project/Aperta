@@ -2,8 +2,8 @@
   <h1 class="overlay-header-title feedback-overlay-thanks">Here are your invitations.</h1>
 </header>
 <ul class="dashboard-submitted-papers">
-  {{#each pendingInvitations as |invitation|}}
-    <div class='pending-invitation'>
+  {{#each invitations as |invitation|}}
+    <div class="pending-invitation">
       <h4>{{invitation.invitationType}} Invitation</h4>
       <li class="dashboard-paper-title">
         {{partial "svg/manuscript-icon"}}

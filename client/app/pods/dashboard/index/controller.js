@@ -3,9 +3,9 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   papers: [],
   unreadComments: [],
-  pendingInvitations: function() {
+  pendingInvitations: Ember.computed('currentUser.invitedInvitations', function() {
     return this.get('currentUser.invitedInvitations');
-  }.property('currentUser.invitedInvitations'),
+  }),
 
   hasPapers: Ember.computed.notEmpty('papers'),
   pageNumber: 1,

@@ -57,8 +57,7 @@ export default Ember.Route.extend({
       });
     },
 
-    viewInvitations(invitations) {
-      this.controllerFor('overlays/invitations').set('model', invitations);
+    viewInvitations() {
       this.send('openOverlay', {
         template: 'overlays/invitations',
         controller: 'overlays/invitations'

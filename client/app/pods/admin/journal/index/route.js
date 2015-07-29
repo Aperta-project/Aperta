@@ -22,14 +22,14 @@ export default Ember.Route.extend({
 
   actions: {
     openEditOverlay(key) {
-      this.controllerFor('overlays/adminJournal').setProperties({
+      this.controllerFor('overlays/admin-journal').setProperties({
         model: this.modelFor('admin/journal/index'),
         propertyName: key
       });
 
       this.send('openOverlay', {
         template: 'overlays/admin-journal-' + (key.dasherize()),
-        controller: 'overlays/adminJournal'
+        controller: 'overlays/admin-journal'
       });
     },
 
@@ -47,8 +47,8 @@ export default Ember.Route.extend({
 
     editTaskTypes() {
       this.send('openOverlay', {
-        template: 'overlays/editTaskTypes',
-        controller: 'overlays/editTaskTypes',
+        template: 'overlays/edit-task-types',
+        controller: 'overlays/edit-task-types',
         model: this.modelFor('admin/journal/index')
       });
     }

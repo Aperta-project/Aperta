@@ -3,10 +3,12 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   needs: ['dashboard/index'],
   overlayClass: 'overlay--fullscreen invitations-overlay',
-  pendingInvitations: Ember.computed.alias('controllers.dashboard/index.pendingInvitations'),
+
+  invitations: Ember.computed.reads('currentUser.invitedInvitations'),
+
   didCompleteAllInvitations: function() {
-    if(Ember.isEmpty(this.get('pendingInvitations'))) {
+    if(Ember.isEmpty(this.get('invitations'))) {
       this.send('closeOverlay');
     }
-  }.observes('pendingInvitations.@each')
+  }.observes('invitations.@each')
 });

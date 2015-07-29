@@ -1,47 +1,50 @@
 import Ember from 'ember';
 
+let computed = Ember.computed;
+
 export default Ember.Mixin.create({
-  needs: ['overlays/paperSubmit'],
   editor: null,
   saveState: false,
   isSaving: false,
   errorText: '',
   defaultBody: 'Type your manuscript here',
 
-  isBodyEmpty: Ember.computed('model.body', function() {
+  isBodyEmpty: computed('model.body', function() {
     return Ember.isBlank($(this.get('model.body')).text());
   }),
 
-  statusMessage: Ember.computed.any('processingMessage', 'userEditingMessage', 'saveStateMessage'),
+  statusMessage: computed.any('processingMessage', 'userEditingMessage', 'saveStateMessage'),
 
-  processingMessage: function() {
+  processingMessage: computed('model.status', function() {
     return this.get('model.status') === 'processing' ? 'Processing Manuscript' : null;
-  }.property('model.status'),
+  }),
 
-  userEditingMessage: function() {
+  userEditingMessage: computed('model.lockedBy', 'lockedByCurrentUser', function() {
     if (this.get('model.lockedBy') && !this.get('lockedByCurrentUser')) {
-      return '<span class="edit-paper-locked-by">' + this.get('model.lockedBy.fullName') + '</span> <span>is editing</span>';
+      return '<span class="edit-paper-locked-by">' +
+             this.get('model.lockedBy.fullName')   +
+             '</span> <span>is editing</span>';
     } else {
       return null;
     }
-  }.property('model.lockedBy', 'lockedByCurrentUser'),
+  }),
 
-  isEditing: Ember.computed.alias('lockedByCurrentUser'),
+  isEditing: computed.alias('lockedByCurrentUser'),
 
-  cannotEdit: function() {
+  cannotEdit: computed('model.status', 'lockedByCurrentUser', function() {
     return this.get('model.status') === 'processing' || !this.get('lockedByCurrentUser');
-  }.property('model.status', 'lockedByCurrentUser'),
+  }),
 
-  canEdit: Ember.computed.not('cannotEdit'),
+  canEdit: computed.not('cannotEdit'),
 
-  canToggleEditing: function() {
+  canToggleEditing: computed('model.lockedBy', 'canEdit', function() {
     return this.get('canEdit') || Ember.isEmpty(this.get('model.lockedBy'));
-  }.property('model.lockedBy', 'canEdit'),
+  }),
 
-  lockedByCurrentUser: function() {
+  lockedByCurrentUser: computed('model.lockedBy', function() {
     let lockedBy = this.get('model.lockedBy');
     return !!(lockedBy && lockedBy === this.get('currentUser'));
-  }.property('model.lockedBy'),
+  }),
 
   saveStateDidChange: function() {
     this.setProperties({
@@ -74,9 +77,7 @@ export default Ember.Mixin.create({
 
     confirmSubmitPaper() {
       if (!this.get('model.allSubmissionTasksCompleted')) { return; }
-
       this.get('model').save();
-      this.get('controllers.overlays/paperSubmit').set('model', this.get('model'));
       this.send('showConfirmSubmitOverlay');
     }
   }

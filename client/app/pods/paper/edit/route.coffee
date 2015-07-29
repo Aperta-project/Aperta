@@ -81,10 +81,13 @@ PaperEditRoute = AuthorizedRoute.extend
       @endHeartbeat()
 
     showConfirmSubmitOverlay: ->
+      @controllerFor('overlays/paper-submit').set('model', this.modelFor('paper.edit'))
+
       @send('openOverlay', {
-        template: 'overlays/paperSubmit'
-        controller: 'overlays/paperSubmit'
+        template: 'overlays/paper-submit'
+        controller: 'overlays/paper-submit'
       })
+
       @set 'fromSubmitOverlay', true
 
     editableDidChange: ->

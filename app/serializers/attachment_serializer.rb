@@ -1,5 +1,5 @@
 class AttachmentSerializer < ActiveModel::Serializer
-  attributes :id, :title, :caption, :kind, :src, :status, :preview_src, :attachable
+  attributes :id, :title, :caption, :kind, :src, :status, :preview_src, :attachable, :filename
 
   def src
     object.file.url
@@ -8,7 +8,7 @@ class AttachmentSerializer < ActiveModel::Serializer
   def attachable
     {
       type: object.task.class.name,
-      id: object.id
+      id: object.task.id
     }
   end
 

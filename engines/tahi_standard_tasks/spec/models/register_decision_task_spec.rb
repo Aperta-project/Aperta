@@ -195,7 +195,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
         allow_any_instance_of(Decision).to receive(:revision?).and_return(true)
       end
 
-      it "saves the decision to paper", focus: true do
+      it "saves the decision to paper" do
         expect(paper).to receive(:make_decision).with(decision)
 
         task.complete_decision

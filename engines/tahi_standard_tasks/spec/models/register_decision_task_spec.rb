@@ -35,21 +35,39 @@ describe TahiStandardTasks::RegisterDecisionTask do
       end
     end
 
-    describe "#revise_letter" do
+    describe "#minor_revision_letter" do
       it "returns the letter with the author's name filled in" do
-        expect(task.revise_letter).to match(/Mazur/)
+        expect(task.minor_revision_letter).to match(/Mazur/)
       end
 
       it "returns the letter with the editor's name filled in" do
-        expect(task.revise_letter).to match(/Andi Plantenberg/)
+        expect(task.minor_revision_letter).to match(/Andi Plantenberg/)
       end
 
       it "returns the letter with journal name filled in" do
-        expect(task.revise_letter).to match(/PLOS Yeti/)
+        expect(task.minor_revision_letter).to match(/PLOS Yeti/)
       end
 
       it "returns the letter with paper title filled in" do
-        expect(task.revise_letter).to match(/Crazy stubbing tests on rats/)
+        expect(task.minor_revision_letter).to match(/Crazy stubbing tests on rats/)
+      end
+    end
+
+    describe "#major_revision_letter" do
+      it "returns the letter with the author's name filled in" do
+        expect(task.major_revision_letter).to match(/Mazur/)
+      end
+
+      it "returns the letter with the editor's name filled in" do
+        expect(task.major_revision_letter).to match(/Andi Plantenberg/)
+      end
+
+      it "returns the letter with journal name filled in" do
+        expect(task.major_revision_letter).to match(/PLOS Yeti/)
+      end
+
+      it "returns the letter with paper title filled in" do
+        expect(task.major_revision_letter).to match(/Crazy stubbing tests on rats/)
       end
     end
 
@@ -116,6 +134,21 @@ describe TahiStandardTasks::RegisterDecisionTask do
     end
   end
 
+  describe "#complete_decision" do
+    before do
+      allow_any_instance_of(Decision).to receive(:revision?).and_return(true)
+      task.paper.decisions.latest.update_attribute(:verdict, 'major_revision')
+
+      paper.update(publishing_state: :submitted)
+      task.reload
+    end
+
+    it "invokes DecisionReviser" do
+      expect_any_instance_of(TahiStandardTasks::DecisionReviser).to receive(:process!)
+      task.complete_decision
+    end
+  end
+
   describe "#after_update" do
     before do
       allow_any_instance_of(Decision).to receive(:revision?).and_return(true)
@@ -143,47 +176,12 @@ describe TahiStandardTasks::RegisterDecisionTask do
         task.after_update
       end
 
-      it "paper revise event is broadcasted" do
-        event_subscriber = :not_called
-        event_payload = []
-        TahiNotifier.subscribe 'paper.revised' do |payload|
-          event_subscriber = :called
-          event_payload = payload
-        end
-
-        task.after_update
-        expect(event_subscriber).to eq :called
-        expect(event_payload[:paper_id]).to eq(paper.id)
-      end
-
       it "task has no participants" do
         expect(task.participants).to be_empty
       end
 
       it "task participants does not include author" do
         expect(task.participants).to_not include paper.creator
-      end
-
-      describe "Revise Task" do
-        it "task is not nil" do
-          expect(revise_task).to_not be_nil
-        end
-
-        it "task has paper" do
-          expect(revise_task.paper).to eq paper
-        end
-
-        it "task role is `author`" do
-          expect(revise_task.role).to eq 'author'
-        end
-
-        it "task participants include the paper's author" do
-          expect(revise_task.participants).to eq [paper.creator]
-        end
-
-        it "task body includes the revise letter" do
-          expect(revise_task.body.first.first['value']).to include task.revise_letter
-        end
       end
     end
 
@@ -197,11 +195,12 @@ describe TahiStandardTasks::RegisterDecisionTask do
 
       it "saves the decision to paper" do
         expect(paper).to receive(:make_decision).with(decision)
-
         task.complete_decision
       end
 
       it "prepares a new decision task" do
+        paper.update(publishing_state: "submitted")
+
         expect {
           task.complete_decision
         }.to change { task.paper.tasks.size }.by 1
@@ -209,13 +208,14 @@ describe TahiStandardTasks::RegisterDecisionTask do
     end
 
     describe "#decision_content" do
-      let(:decision) { Decision.create(paper: paper, verdict: "revise") }
+      let(:decision) { Decision.create(paper: paper, verdict: "major_revision") }
+      let(:latest_decision) { Decision.create(paper: paper, verdict: "minor_revision") }
 
       it "gets the made decision" do
         paper.decisions << decision
-        paper.decisions << Decision.new(paper: paper)
+        paper.decisions << latest_decision
 
-        expect(task.decision_content).to eq(decision)
+        expect(task.decision_content).to eq(latest_decision)
       end
     end
   end

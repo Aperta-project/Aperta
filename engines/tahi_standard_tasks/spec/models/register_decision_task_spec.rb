@@ -135,8 +135,6 @@ describe TahiStandardTasks::RegisterDecisionTask do
   end
 
   describe "#complete_decision" do
-    let (:subject) { task.complete_decision }
-
     before do
       allow_any_instance_of(Decision).to receive(:revision?).and_return(true)
       task.paper.decisions.latest.update_attribute(:verdict, 'major_revision')
@@ -147,7 +145,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
 
     it "invokes DecisionReviser" do
       expect_any_instance_of(TahiStandardTasks::DecisionReviser).to receive(:process!)
-      subject
+      task.complete_decision
     end
   end
 

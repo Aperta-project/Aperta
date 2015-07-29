@@ -7,8 +7,8 @@ class AttachmentSerializer < ActiveModel::Serializer
 
   def attachable
     {
-      type: object.attachable_type,
-      id: object.attachable_id
+      type: object.task.class.name,
+      id: object.id
     }
   end
 

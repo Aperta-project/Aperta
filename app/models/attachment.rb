@@ -1,5 +1,9 @@
 class Attachment < ActiveRecord::Base
-  belongs_to :attachable, polymorphic: true
+  include EventStream::Notifiable
+
+  belongs_to :task
+  has_one :paper, through: :task
+
   mount_uploader :file, AdhocAttachmentUploader
 
   IMAGE_TYPES = %w{jpg jpeg tiff tif gif png eps tif}

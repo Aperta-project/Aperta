@@ -356,9 +356,77 @@ export default TaskController.extend({
 
   agreeCollections: false,
 
+  affiliation1Question: computed("model.questions.@each", function() {
+    let q = this.get("model.questions")
+                .findProperty("ident", "plos_billing.affiliation1");
+
+    if(Ember.isEmpty(q)) {
+      q = this.createNewAffiliationQuestion(
+        "plos_billing.affiliation1", "Secondary Affiliation"
+      );
+    }
+
+    return q;
+  }),
+
+  affiliation2Question: computed("model.questions.@each", function() {
+    let q = this.get("model.questions")
+                .findProperty("ident", "plos_billing.affiliation2");
+
+    if(Ember.isEmpty(q)) {
+      q = this.createNewAffiliationQuestion(
+        "plos_billing.affiliation2", "Secondary Affiliation"
+      );
+    }
+
+    return q;
+  }),
+
+  // institution-search component expects data to be hash
+  // with name property
+  affiliation1Proxy: computed("affiliation1Question", function(){
+    return { name: this.get("affiliation1Question.answer") };
+  }),
+
+  // institution-search component expects data to be hash
+  // with name property
+  affiliation2Proxy: computed("affiliation2Question", function(){
+    return { name: this.get("affiliation2Question.answer") }
+  }),
+
+  createNewAffiliationQuestion(ident, question) {
+    let task = this.get("model")
+    return task.get("store").createRecord("question", {
+      question: "Affiliation",
+      ident: ident,
+      task: task,
+      additionalData: {}
+    });
+  },
+
+  setAffiliationAnswer(index, answer) {
+    let question = this.get("affiliation" + index + "Question");
+
+    if(typeof answer === "string") {
+      question.setProperties({
+        answer: answer
+      });
+    } else if(typeof answer === "object") {
+      question.setProperties({
+        answer: answer.name,
+        additionalData: answer
+      });
+    }
+
+    question.save();
+  },
+
   actions: {
     paymentMethodSelected(selection) {
       this.set("selectedPaymentMethod", selection.id);
-    }
+    },
+
+    affiliation1Selected(answer) { this.setAffiliationAnswer("1", answer); },
+    affiliation2Selected(answer) { this.setAffiliationAnswer("2", answer); }
   }
 });

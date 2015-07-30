@@ -33,12 +33,12 @@ class ApplicationController < ActionController::Base
     end
 
     if session["invitation_code"] && current_user
-      associate_user_by_invitation_code(current_user)
+      associate_user_with_invitation(current_user)
     end
   end
 
   # called after login or signup
-  def associate_user_by_invitation_code(user)
+  def associate_user_with_invitation(user)
     # if we have an invitation_code in the session, try to associate it with the user
     if invitation_code = session["invitation_code"]
       invitation = Invitation.where(code: invitation_code).first

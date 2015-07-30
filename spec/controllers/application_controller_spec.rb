@@ -7,7 +7,9 @@ describe ApplicationController do
     end
   end
 
-  let(:invitation_code) { "12345" }
+  let(:invitation) { FactoryGirl.create(:invitation) }
+  let(:invitation_code) { invitation.code }
+  let(:user) { FactoryGirl.create(:user) }
 
   describe "#set_invitation_code" do
     context "without an ?invitation_code" do
@@ -23,6 +25,21 @@ describe ApplicationController do
         get :index, invitation_code: invitation_code
         expect(session["invitation_code"]).to eq invitation_code
       end
+    end
+  end
+
+  describe "#associate_user_with_invitation" do
+    before do
+      session["invitation_code"] = invitation_code
+      invitation.update(invitee: nil)
+    end
+
+    it "associates current user with invitation_code to the " do
+      sign_in user
+      expect(invitation.invitee).to eq nil
+      get :index
+
+      expect(invitation.reload.invitee).to eq user
     end
   end
 

@@ -46,6 +46,7 @@ export default DS.Model.extend({
   submittedAt: attr('date'),
   publishingState: attr('string'),
   title: attr('string'),
+  versions: DS.attr(),
 
   displayTitle: computed('title', 'shortTitle', function() {
     return this.get('title') || this.get('shortTitle');
@@ -86,5 +87,13 @@ export default DS.Model.extend({
             this.get('allSubmissionTasksCompleted'));
   }),
 
+<<<<<<< HEAD
   postSubmission: computed.not('submittableState')
+=======
+  postSubmission: Ember.computed.not('submittableState'),
+
+  versionedBody: function() {
+    return this.get('currentVersionBody') || this.get('body');
+  }.property('currentVersionBody', 'body')
+>>>>>>> Versioning toolbar component.
 });

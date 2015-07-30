@@ -23,7 +23,6 @@ class PlosPage(object):
   PROD_URL = ''
 
   def __init__(self, driver, urlSuffix=''):
-    super(PlosPage, self).__init__()
     # Internal WebDriver-related protected members
     self._driver = driver
     self._wait = WebDriverWait(self._driver, Config.wait_timeout)

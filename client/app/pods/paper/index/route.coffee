@@ -2,6 +2,8 @@
 `import RESTless from 'tahi/services/rest-less'`
 
 PaperIndexRoute = AuthorizedRoute.extend
+  cardOverlayService: Ember.inject.service('card-overlay')
+
   afterModel: (model) ->
     @replaceWith('paper.edit', model) if model.get('editable')
 
@@ -13,11 +15,12 @@ PaperIndexRoute = AuthorizedRoute.extend
 
   actions:
     viewCard: (task) ->
-      paper = @modelFor('paper')
-      redirectParams = ['paper.index', @modelFor('paper')]
-      @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
-      @controllerFor('application').set('overlayBackground', 'paper/index')
-      @transitionTo('paper.task', paper, task.id)
+      @get('cardOverlayService').setProperties({
+        previousRouteOptions: ['paper.index', @modelFor('paper')],
+        overlayBackground: 'paper/index'
+      })
+
+      @transitionTo('paper.task', @modelFor('paper'), task.id)
 
     editableDidChange: ->
       @replaceWith('paper.edit', @modelFor('paper'))

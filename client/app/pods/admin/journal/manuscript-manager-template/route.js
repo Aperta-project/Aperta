@@ -47,6 +47,7 @@ export default Ember.Route.extend({
       this.send('closeOverlay');
     },
 
+    // Noop. We don't want to open cards in MMT screen
     viewCard() {},
 
     showDeleteConfirm(task) {

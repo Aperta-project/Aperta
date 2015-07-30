@@ -8,12 +8,11 @@ let alias = Ember.computed.alias;
 export default Ember.Controller.extend(
   SavesDelayed, ControllerParticipants, ValidationErrorsMixin, Ember.Evented, {
 
-  needs: ['application'],
+  cardOverlayService: Ember.inject.service('card-overlay'),
   queryParams: ['isNewTask'],
   isNewTask: false,
   onClose: 'closeOverlay',
   isLoading: false,
-  redirectStack: alias('controllers.application.overlayRedirect'),
 
   isMetadataTask: alias('model.isMetadataTask'),
   isSubmissionTask: alias('model.isSubmissionTask'),
@@ -27,13 +26,12 @@ export default Ember.Controller.extend(
   comments: [],
 
   clearCachedModel(transition) {
-    let redirectStack = this.get('redirectStack');
+    let routeOptions = this.get('cardOverlayService.previousRouteOptions');
 
-    if (!Ember.isEmpty(redirectStack)) {
-      let redirectRoute = redirectStack.popObject();
-      if (transition.targetName !== redirectRoute.get('firstObject')) {
-        this.get('controllers.application').set('cachedModel', null);
-      }
+    if(Ember.isEmpty(routeOptions)) { return; }
+
+    if (transition.targetName !== routeOptions.get('firstObject')) {
+      this.set('cardOverlayService.cachedModel', null);
     }
   },
 
@@ -53,7 +51,7 @@ export default Ember.Controller.extend(
 
     redirect() {
       this.transitionToRoute.apply(
-        this, this.get('controllers.application.overlayRedirect.lastObject')
+        this, this.get('cardOverlayService.previousRouteOptions')
       );
     },
 

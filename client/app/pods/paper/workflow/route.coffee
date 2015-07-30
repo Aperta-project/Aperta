@@ -3,7 +3,13 @@
 `import Utils from 'tahi/services/utils'`
 
 PaperManageRoute = AuthorizedRoute.extend
+  cardOverlayService: Ember.inject.service('card-overlay'),
+
   afterModel: (paper, transition) ->
+    # TODO: No no. We should be able to remove or move this check to somewhere
+    # that doesn't block rendering. We only do this now because all tasks are
+    # loaded for all users. This will be changing in the future.
+
     # Ping manuscript_manager url for authorization
     promise = new Ember.RSVP.Promise (resolve, reject) ->
       Ember.$.ajax
@@ -26,12 +32,13 @@ PaperManageRoute = AuthorizedRoute.extend
       })
 
     viewCard: (task, queryParams) ->
+      @get('cardOverlayService').setProperties({
+        previousRouteOptions: ['paper.workflow', @modelFor('paper')]
+        overlayBackground: 'paper/workflow'
+      })
+
       queryParams || = {queryParams: {}}
-      paper = @modelFor('paper')
-      redirectParams = ['paper.workflow', @modelFor('paper')]
-      @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
-      @controllerFor('application').set('overlayBackground', 'paper/workflow')
-      @transitionTo('paper.task', paper, task.id, queryParams)
+      @transitionTo('paper.task', @modelFor('paper'), task.id, queryParams)
 
     addTaskType: (phase, taskType) ->
       return unless taskType

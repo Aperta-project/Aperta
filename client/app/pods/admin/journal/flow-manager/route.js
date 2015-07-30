@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  cardOverlayService: Ember.inject.service('card-overlay'),
+
   model: function(params) {
     return this.store.find('role', params.role_id);
   },
@@ -24,11 +26,18 @@ export default Ember.Route.extend({
 
   actions: {
     viewCard(task) {
-      let paperId = task.get('paper.id');
-      let redirectParams = ['admin.journal.flow_manager', this.modelFor('admin.journal'), this.modelFor('admin.journal.flow_manager')];
-      this.controllerFor('application').get('overlayRedirect').pushObject(redirectParams);
-      this.controllerFor('application').set('overlayBackground', 'admin.journal.flow_manager');
-      this.transitionTo('paper.task', paperId, task.get('id'));
+      let redirectParams = [
+        'admin.journal.flow_manager',
+        this.modelFor('admin.journal'),
+        this.modelFor('admin.journal.flow_manager')
+      ];
+
+      this.get('cardOverlayService').setProperties({
+        previousRouteOptions: redirectParams,
+        overlayBackground: 'admin.journal.flow_manager'
+      });
+
+      this.transitionTo('paper.task', task.get('paper.id'), task.get('id'));
     }
   }
 });

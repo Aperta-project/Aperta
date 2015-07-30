@@ -6,6 +6,7 @@
 `import loadVeEditorAssets from 'tahi-editor-ve/initializers/load-assets'`
 
 PaperEditRoute = AuthorizedRoute.extend
+  cardOverlayService: Ember.inject.service('card-overlay'),
   fromSubmitOverlay: false
 
   heartbeatService: null
@@ -68,11 +69,12 @@ PaperEditRoute = AuthorizedRoute.extend
 
   actions:
     viewCard: (task) ->
-      paper = @modelFor('paper')
-      redirectParams = ['paper.edit', paper]
-      @controllerFor('application').get('overlayRedirect').pushObject(redirectParams)
-      @controllerFor('application').set('overlayBackground', @get('editorLookup'))
-      @transitionTo('paper.task', paper, task.id)
+      @get('cardOverlayService').setProperties({
+        previousRouteOptions: ['paper.edit', @modelFor('paper')],
+        overlayBackground: @get('editorLookup')
+      })
+
+      @transitionTo('paper.task', @modelFor('paper'), task.id)
 
     startEditing: ->
       @startHeartbeat()

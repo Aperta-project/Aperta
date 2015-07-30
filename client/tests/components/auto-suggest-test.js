@@ -32,11 +32,11 @@ test('it renders', function(assert) {
 
   let name = this.get('items.firstObject').name;
 
-  this.render(hbs`
+  this.render(hbs(`
     {{#auto-suggest-list items=items as |user|}}
       {{user.name}}
     {{/auto-suggest-list}}
-  `);
+  `));
 
   assert.equal(this.$('.auto-suggest').length, 1);
   assert.equal(this.$('.auto-suggest-item:first').text().trim(), name, 'Block template is rendered');
@@ -45,11 +45,11 @@ test('it renders', function(assert) {
 test('it highlights the first item', function(assert) {
   assert.expect(1);
 
-  this.render(hbs`
+  this.render(hbs(`
     {{#auto-suggest-list items=items as |user|}}
       {{user.name}}
     {{/auto-suggest-list}}
-  `);
+  `));
 
   let hasClass = this.$('.auto-suggest-item:first')
                      .hasClass('auto-suggest-item--highlight');
@@ -60,7 +60,7 @@ test('it highlights the first item', function(assert) {
 test('it positions near target', function(assert) {
   assert.expect(2);
 
-  this.render(hbs`
+  this.render(hbs(`
     <div style="position:absolute; top:0; left:0;">
       <div id="target-dom-node"
            style="position:absolute; top:40px; left:40px; width:100px; height:20px;"></div>
@@ -70,7 +70,7 @@ test('it positions near target', function(assert) {
         {{user.name}}
       {{/auto-suggest-list}}
     </div>
-  `);
+  `));
 
   Ember.run(this, function() {
     let listPosition = this.$('.auto-suggest').position();

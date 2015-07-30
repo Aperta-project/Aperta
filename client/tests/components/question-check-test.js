@@ -23,9 +23,9 @@ test('it renders', function(assert) {
     questions: [fakeQuestion]
   }));
 
-  this.render(hbs`
+  this.render(hbs(`
     {{question-check ident="foo" task=task}}
-  `);
+  `));
 
   assert.equal(this.$('label:contains("Test Question")').length, 1);
 });

@@ -23,11 +23,11 @@ test('with additional-datasets it renders them and a button to add more', functi
     questions: [question]
   }));
 
-  this.render(hbs`
+  this.render(hbs(`
     {{#question-check ident="foo" task=task}}
       {{#additional-datasets}}{{/additional-datasets}}
     {{/question-check}}
-  `);
+  `));
 
   assert.equal(this.$(".question-dataset").length, 2, 'Renders a dataset for each one in the model');
   assert.ok(this.$("button:contains('Add Dataset')").length, 'Renders an Add Dataset button');
@@ -55,7 +55,7 @@ test('it uses dataset-* components to render attributes on additionalData', func
     questions: [question]
   }));
 
-  this.render(hbs`
+  this.render(hbs(`
     {{#question-check ident="foo" task=task}}
       {{#additional-datasets}}
         {{dataset-contact}}
@@ -66,7 +66,7 @@ test('it uses dataset-* components to render attributes on additionalData', func
         {{dataset-url}}
       {{/additional-datasets}}
     {{/question-check}}
-  `);
+  `));
 
   assert.equal(this.$('textarea[name="contact"]').val(),  'test contact',     'contact is a textarea');
   assert.equal(this.$('input[name="description"]').val(), 'test description', 'description is an input');

@@ -12,9 +12,9 @@ moduleForComponent('tahi-nav', 'TahiNavComponent', {
 test('it renders', function(assert) {
   assert.expect(1);
 
-  this.render(hbs`
+  this.render(hbs(`
     {{tahi-nav}}
-  `);
+  `));
 
   assert.equal(this.$('.navigation').length, 1);
 });

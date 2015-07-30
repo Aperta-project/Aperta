@@ -38,10 +38,6 @@ class ApplicationController < ActionController::Base
     head 404
   end
 
-  def store_location
-    store_location_for(:user, request.original_fullpath) unless request.xhr?
-  end
-
   # customize devise signout path
   def after_sign_out_path_for(resource_or_scope)
     new_user_session_path

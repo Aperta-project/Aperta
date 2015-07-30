@@ -6,4 +6,10 @@ class EmberController < ApplicationController
 
   def index
   end
+
+  private
+
+  def store_location
+    store_location_for(:user, request.original_fullpath)
+  end
 end

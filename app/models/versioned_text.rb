@@ -1,3 +1,4 @@
+# coding: utf-8
 class VersionedText < ActiveRecord::Base
   belongs_to :paper
 
@@ -6,6 +7,8 @@ class VersionedText < ActiveRecord::Base
   before_update :minor_version!, if: :must_copy
 
   scope :active, -> { where(active: true) }
+
+  default_scope { order('updated_at DESC') }
 
   # Called on paper sumbission and resubmission.
   def major_version!(submitting_user)
@@ -23,6 +26,7 @@ class VersionedText < ActiveRecord::Base
   # flag is true.
   def minor_version!
     self.copy_on_edit = false
+    self.submitting_user = nil
 
     old_version = dup
     old_version.text = text_was
@@ -32,7 +36,15 @@ class VersionedText < ActiveRecord::Base
     self.minor_version = minor_version + 1
   end
 
+  def creator_name
+    if submitting_user
+        submitting_user.full_name
+    else
+      "(draft)"
+    end
+  end
+
   def version_string
-    "#{major_version}.#{minor_version}"
+    "R#{major_version}.#{minor_version} — #{updated_at.strftime('%m/%d/%y')} #{creator_name}"
   end
 end

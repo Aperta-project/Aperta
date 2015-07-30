@@ -6,8 +6,10 @@ module SidekiqHelperMethods
         klass.drain
       end
 
-      sleep 1
+      # Without this sleep Sidekiq may not see a job that was getting queued up
+      # during the processing the current job.
+      sleep 0.25
     end
   end
-  
+
 end

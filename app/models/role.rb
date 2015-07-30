@@ -2,11 +2,10 @@ class Role < ActiveRecord::Base
 
   ADMIN    = "admin"
   EDITOR   = "editor"
-  REVIEWER = "reviewer"
   CUSTOM   = "custom"
   FLOW_MANAGER = "flow manager"
 
-  REQUIRED_KINDS = [ADMIN, EDITOR, REVIEWER, FLOW_MANAGER]
+  REQUIRED_KINDS = [ADMIN, EDITOR, FLOW_MANAGER]
   KINDS = REQUIRED_KINDS + [CUSTOM]
 
   belongs_to :journal, inverse_of: :roles
@@ -26,10 +25,6 @@ class Role < ActiveRecord::Base
 
   def self.editors
     where(kind: EDITOR)
-  end
-
-  def self.reviewers
-    where(kind: REVIEWER)
   end
 
   def self.flow_managers

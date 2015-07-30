@@ -35,10 +35,9 @@ class FilteredUsersController < ApplicationController
   end
 
   def filter_available_reviewers(users, current_paper)
-    # get the users without pending invitations
     users.reject do |user|
       user.invitations_from_latest_revision.select do |invitation|
-        invitation.paper == current_paper && invitation.state == "invited"
+        invitation.paper == current_paper && (invitation.state == 'invited' || invitation.state == 'accepted' || invitation.state == 'rejected')
       end.any?
     end
   end

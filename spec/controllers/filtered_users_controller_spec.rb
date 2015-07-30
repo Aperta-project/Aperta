@@ -13,50 +13,54 @@ class TestTask < Task
   def invitation_accepted(_invitation)
     "accepted"
   end
+
+  def invitee_role
+    "user"
+  end
 end
 
 describe FilteredUsersController do
   let(:user) { create :user }
   let(:journal) { FactoryGirl.create(:journal) }
-  let(:role) { FactoryGirl.create(:role, :reviewer, journal: journal) }
+  let(:role) { FactoryGirl.create(:role, :editor, journal: journal) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
 
   before do
-    assign_journal_role(journal, user, :reviewer)
     sign_in(user)
   end
 
-  describe "#reviewers /filtered_users/reviewers/:paper_id" do
-    let!(:paper) { FactoryGirl.create(:paper, journal: journal) }
+  describe "inviting reviewers" do
+    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
     let(:phase) { paper.phases.create! }
     let(:task) do
       phase.tasks.create(type: "TestTask",
                          title: "Test",
-                         role: "reviewer").extend Invitable
+                         role: "editor").extend Invitable
     end
     let(:invitation) { create :invitation, task: task, invitee: user }
 
     context "when a user has any invitation for expired revision cycles" do
       before do
-        get :reviewers, paper_id: paper.id, format: :json
-        expect(res_body["filtered_users"].count).to eq 1
-        expect(res_body["filtered_users"].first["id"]).to eq user.id
+        get :all_users, paper_id: paper.id, query: 'example', format: :json
+        expect(res_body["filtered_users"].count).to eq 2
+        expect(res_body["filtered_users"].map { |user| user["id"] }).to include user.id
         invitation.invite!
+        invitation.run_callbacks(:commit)
         paper.decisions.create!
       end
 
       it "sends the user after a new round of revision cycle starts" do
-        get :reviewers, paper_id: paper.id, format: :json
-        expect(res_body["filtered_users"].count).to eq 1
-        expect(res_body["filtered_users"].first["id"]).to eq user.id
+        get :all_users, paper_id: paper.id, query: 'example', format: :json
+        expect(res_body["filtered_users"].count).to eq 4
+        expect(res_body["filtered_users"].map { |user| user["id"] }).to include user.id
       end
 
-      context "when the user is already a reviewer" do
+      context "when the user was formerly a reviewer" do
         before { make_user_paper_reviewer user, paper }
 
         it "sends the user" do
-          get :reviewers, paper_id: paper.id, format: :json
-          expect(res_body["filtered_users"].count).to eq 1
+          get :all_users, paper_id: paper.id, query: 'example', format: :json
+          expect(res_body["filtered_users"].count).to eq 4
           expect(res_body["filtered_users"].first["id"]).to eq user.id
         end
       end
@@ -66,8 +70,27 @@ describe FilteredUsersController do
       before { invitation.invite! }
 
       it "does not send the user" do
-        get :reviewers, paper_id: paper.id, format: :json
-        expect(res_body["filtered_users"]).to be_empty
+        get :all_users, paper_id: paper.id, query: 'example', format: :json
+        expect(res_body["filtered_users"].count).to eq 3
+        expect(res_body["filtered_users"].map { |user| user["id"] }).to_not include user.id
+      end
+    end
+
+    context "when a user has an accepted invitation for the latest revision cycle" do
+      before do
+        invitation.invite!
+        invitation.accept!
+      end
+
+      it "does not send the user" do
+        expect(invitation.reload.state).to eq "accepted"
+
+        get :all_users, paper_id: paper.id, query: 'example', format: :json
+
+        expect(user.invitations.first).to eq invitation
+
+        expect(res_body["filtered_users"].count).to eq 3
+        expect(res_body["filtered_users"].map { |user| user["id"] }).to_not include user.id
       end
     end
 
@@ -75,39 +98,34 @@ describe FilteredUsersController do
       before { paper.decisions.create! }
 
       it 'sends the user' do
-        get :reviewers, paper_id: paper.id, format: :json
-        expect(res_body["filtered_users"].count).to eq 1
-        expect(res_body["filtered_users"].first["id"]).to eq user.id
-        expect(res_body["filtered_users"].first["email"]).to eq user.email
+        get :all_users, paper_id: paper.id, query: 'example', format: :json
+        expect(res_body["filtered_users"].count).to eq 2
+        expect(res_body["filtered_users"].map { |user| user["id"] }).to include user.id
       end
 
-      it "sends the user even if the user is already a paper reviewer" do
+      it "sends the user even if the user was formerly a paper reviewer" do
         make_user_paper_reviewer user, paper
-        get :reviewers, paper_id: paper.id, format: :json
-        expect(res_body["filtered_users"].count).to eq 1
-        expect(res_body["filtered_users"].first["id"]).to eq user.id
-        expect(res_body["filtered_users"].first["email"]).to eq user.email
+        get :all_users, paper_id: paper.id, query: 'example', format: :json
+        expect(res_body["filtered_users"].count).to eq 2
+        expect(res_body["filtered_users"].map { |user| user["id"] }).to include user.id
       end
     end
 
     # Create a total of:
-    #  4 Reviewers
+    #  3 Random Users
     #  3 Editors
     #  2 Admins
     context "when searching from select2 dropdowns" do
-      let(:reviewer2) { FactoryGirl.create :user, email: "reviewer@example.com", first_name: "Jane", last_name: "Doe" }
-      let(:reviewer3) { FactoryGirl.create :user }
-      let(:reviewer4) { FactoryGirl.create :user }
-      let(:editor1)   { FactoryGirl.create :user, email: "editor@example.com", first_name: "Jane", last_name: "Roe" }
+      let(:rando2)    { FactoryGirl.create :user, email: "reviewer@example.com" }
+      let(:rando3)    { FactoryGirl.create :user }
+      let(:rando4)    { FactoryGirl.create :user }
+      let(:editor1)   { FactoryGirl.create :user, email: "editor@example.com" }
       let(:editor2)   { FactoryGirl.create :user }
       let(:editor3)   { FactoryGirl.create :user }
       let(:admin1)    { FactoryGirl.create :user, email: "admin@example.com", first_name: "John", last_name: "Doe" }
       let(:admin2)    { FactoryGirl.create :user }
 
       before do
-        assign_journal_role(journal, reviewer2, :reviewer)
-        assign_journal_role(journal, reviewer3, :reviewer)
-        assign_journal_role(journal, reviewer4, :reviewer)
         assign_journal_role(journal, editor1, :editor)
         assign_journal_role(journal, editor2, :editor)
         assign_journal_role(journal, editor3, :editor)
@@ -157,17 +175,10 @@ describe FilteredUsersController do
         end
       end
 
-      describe "#reviewers" do
-        it "returns reviewers" do
-          get :reviewers, paper_id: paper.id, format: :json
-          expect(res_body["filtered_users"].count).to eq 4
-        end
-
-        it "filters reviewers by email" do
-          get :reviewers, paper_id: paper.id, query: "reviewer", format: :json
-          expect(res_body["filtered_users"].count).to eq 1
-          expect(res_body["filtered_users"].first["id"]).to eq reviewer2.id
-          expect(res_body["filtered_users"].first["email"]).to eq reviewer2.email
+      describe "#query_all_users" do
+        it "returns users by query string" do
+          get :all_users, paper_id: paper.id, query: "example", format: :json
+          expect(res_body["filtered_users"].count).to eq 7
         end
 
         it "filters reviewers by name" do

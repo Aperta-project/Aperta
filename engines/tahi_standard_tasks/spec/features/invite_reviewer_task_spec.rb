@@ -19,7 +19,7 @@ feature "Invite Reviewer", js: true do
     visit "/"
   end
 
-  scenario "Editor can invite a reviewer to a paper" do
+  scenario "Editor can invite any user as a reviewer to a paper" do
     dashboard_page = DashboardPage.new
     manuscript_page = dashboard_page.view_submitted_paper paper
     manuscript_page.view_card task.title do |overlay|

@@ -32,6 +32,7 @@ export default DS.Model.extend({
   submittedAt: DS.attr('date'),
   publishingState: DS.attr('string'),
   title: DS.attr('string'),
+  versions: DS.attr(),
 
   displayTitle: function() {
     return this.get('title') || this.get('shortTitle');
@@ -72,5 +73,9 @@ export default DS.Model.extend({
             this.get('allSubmissionTasksCompleted'));
   }.property('submittableState', 'allSubmissionTasksCompleted'),
 
-  postSubmission: Ember.computed.not('submittableState')
+  postSubmission: Ember.computed.not('submittableState'),
+
+  versionedBody: function() {
+    return this.get('currentVersionBody') || this.get('body');
+  }.property('currentVersionBody', 'body')
 });

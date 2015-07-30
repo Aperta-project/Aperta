@@ -14,6 +14,10 @@ export default Ember.Component.extend({
     }
   },
 
+  setupObserver: function() {
+    this.addObserver('selectedVersion', this, "showVersion");
+  }.on('didInsertElement'),
+
   versioningModeTransition: Ember.computed.or('transitioning', 'versioningMode'),
 
   actions: {
@@ -24,15 +28,10 @@ export default Ember.Component.extend({
         this.set('versioningMode', true);
         this.set('transitioning', false);
       }, 500);
-
-      this.addObserver('selectedVersion', this, "showVersion");
-      this.set('selectedVersion', this.get('paper.versions')[0]);
-      this.showVersion();
     },
 
     closeVersioningMode() {
       this.set('versioningMode', false);
-      this.removeObserver('selectedVersion', this, "showVersion");
     }
   }
 });

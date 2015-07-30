@@ -7,5 +7,6 @@ class MakeTaskAssociationOnAttachment < ActiveRecord::Migration
   def down
     rename_column :attachments, :task_id, :attachable_id
     add_column :attachments, :attachable_type, :string
+    execute "UPDATE attachments SET attachable_type='Task';"
   end
 end

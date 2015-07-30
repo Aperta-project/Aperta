@@ -39,7 +39,7 @@ when **WEBDRIVER_ENVIRONMENT** is `dev`
 """
 
 environment = getenv('WEBDRIVER_ENVIRONMENT', 'dev')
-base_url = getenv('WEBDRIVER_TARGET_URL', 'http://one-dpro.plosjournals.org/wombat')
+base_url = getenv('WEBDRIVER_TARGET_URL', 'https://plos:lean@lean-workflow.tahi-project.org/')
 
 
 """

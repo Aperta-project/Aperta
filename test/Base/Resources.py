@@ -29,6 +29,12 @@ friendly_testhostname = 'https://plos:shrimp@tahi-assess.herokuapp.com/'
 user_email = 'admin'
 user_pw= 'yetishrimp'
 
+login_valid_email = 'jgray@plos.org'
+login_invalid_email = 'jgrey@plos.org'
+login_valid_uid = 'jgray'
+login_invalid_pw = 'in|fury7'
+login_valid_pw = 'in|fury8'
+
 editor_name_0='Hendrik W. van Veen'
 user_email_0 = 'trash87567@ariessc.com'
 editor_name_1='Anthony George'

@@ -38,13 +38,19 @@ class VersionedText < ActiveRecord::Base
 
   def creator_name
     if submitting_user
-        submitting_user.full_name
+      submitting_user.full_name
     else
       "(draft)"
     end
   end
 
   def version_string
-    "R#{major_version}.#{minor_version} — #{updated_at.strftime('%m/%d/%y')} #{creator_name}"
+    if updated_at
+      date = updated_at.strftime('%m/%d/%y')
+    else
+      date = ""
+    end
+
+    "R#{major_version}.#{minor_version} — #{date} #{creator_name}"
   end
 end

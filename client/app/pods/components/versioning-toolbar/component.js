@@ -6,19 +6,23 @@ export default Ember.Component.extend({
   currentBody: null,
 
   showVersion() {
-    let version = this.get("selectedVersion");
+    let version = this.get('selectedVersion');
     if (version) {
-      RESTless.get("/api/versioned_texts/" + version.id).then((response) => {
-        this.set("paper.currentVersionBody", response.versioned_text.text);
+      RESTless.get('/api/versioned_texts/' + version.id).then((response) => {
+        this.set('paper.currentVersionBody',
+                 response['versioned_text']['text']);
       });
     }
   },
 
   setupObserver: function() {
-    this.addObserver('selectedVersion', this, "showVersion");
+    this.addObserver('selectedVersion', this, 'showVersion');
   }.on('didInsertElement'),
 
-  versioningModeTransition: Ember.computed.or('transitioning', 'versioningMode'),
+  versioningModeTransition: Ember.computed.or(
+    'transitioning',
+    'versioningMode'
+  ),
 
   actions: {
     openVersioningMode() {

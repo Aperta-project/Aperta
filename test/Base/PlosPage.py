@@ -2,11 +2,13 @@
 
 __author__ = 'jkrzemien@plos.org'
 
+import platform
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
+from selenium.webdriver.common.keys import Keys
 from CustomException import ElementDoesNotExistAssertionError
 from bs4 import BeautifulSoup, NavigableString
 from LinkVerifier import LinkVerifier
@@ -21,7 +23,6 @@ class PlosPage(object):
   PROD_URL = ''
 
   def __init__(self, driver, urlSuffix=''):
-
     # Internal WebDriver-related protected members
     self._driver = driver
     self._wait = WebDriverWait(self._driver, Config.wait_timeout)
@@ -104,8 +105,21 @@ class PlosPage(object):
     print(clean_out)
     return clean_out
 
+  def open_new_tab(self):
+    """Open a new tab"""
+    os = platform.system()
+    if os in ('Linux', 'Windows'):
+      self._get((By.CSS_SELECTOR, 'body')).send_keys(Keys.CONTROL + 't')
+    elif os == 'Darwin':
+      self._get((By.CSS_SELECTOR, 'body')).send_keys(Keys.COMMAND + 't')
+    return self
+
+  def go_to_tab(self, tab_number):
+    """Go to the requested tab"""
+    self._get((By.CSS_SELECTOR, 'body')).send_keys(Keys.ALT + str(tab_number))
+    return self
+
   def refresh(self):
-    """
-    refreshes the whole page
-    """
+    """refreshes current page"""
     self._driver.refresh()
+    return self

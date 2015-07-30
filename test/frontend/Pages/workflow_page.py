@@ -19,6 +19,8 @@ class WorkflowPage(PlosPage):
       "//div[@class='column-content']/div/div//div[contains(., '[A] Reviewer Agreement')]")
     self._reviewer_recommendation_button = (By.XPATH, 
       "//div[@class='column-content']/div/div//div[contains(., '[A] Reviewer Report')]")
+    self._completed_review_button = (By.XPATH, 
+      "//div[@class='column-content']/div/div//div[contains(., '[A] Completed Review')]")    
     self._assess_button = (By.XPATH, "//div[@class='column-content']/div/div//div[contains(., '[A] Reviewer Report')]")
     self._editorial_decision_button = (By.XPATH, "//div[@class='column-content']/div/div//div[contains(., '[A] Editorial Decision')]")
     self._click_left_nav = (By.CSS_SELECTOR, 'div.navigation-toggle')
@@ -36,6 +38,11 @@ class WorkflowPage(PlosPage):
   def click_reviewer_agreement_button(self):
     """Click reviewer agreement button"""
     self._get(self._reviewer_agreement_button).click()
+    return self
+
+  def click_completed_review_button(self):
+    """Click completed review button"""
+    self._get(self._completed_review_button).click()
     return self
 
   def click_reviewer_recommendation_button(self):

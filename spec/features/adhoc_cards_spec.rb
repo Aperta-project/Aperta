@@ -16,12 +16,10 @@ feature 'Adhoc cards', js: true do
       visit "/papers/#{paper.id}"
 
       edit_paper = EditPaperPage.new
-      edit_paper.find_card("Ad Hoc").click
-
-      adhoc_overlay = AdhocOverlay.new
-      adhoc_overlay.attach_and_upload_file
-
-      expect(page).to have_link("a", text: Attachment.last.filename)
+      edit_paper.view_card('Ad Hoc', AdhocOverlay) do |overlay|
+        overlay.attach_and_upload_file
+        expect(page).to have_link("a", text: Attachment.last.filename)
+      end
     end
   end
 end

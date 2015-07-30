@@ -32,17 +32,16 @@ class ApplicationController < ActionController::Base
       session["invitation_code"] = invitation_code
     end
 
-    # Set @invitation_code for all Controllers
-    if session["invitation_code"].present?
-      @invitation_code = session["invitation_code"]
+    if session["invitation_code"] && current_user
+      associate_user_by_invitation_code(current_user)
     end
   end
 
   # called after login or signup
   def associate_user_by_invitation_code(user)
     # if we have an invitation_code in the session, try to associate it with the user
-    if @invitation_code
-      invitation = Invitation.where(code: @invitation_code).first
+    if invitation_code = session["invitation_code"]
+      invitation = Invitation.where(code: invitation_code).first
 
       if invitation
         invitation.update(invitee: user)
@@ -54,7 +53,6 @@ class ApplicationController < ActionController::Base
 
   def clear_invitation_code
     session["invitation_code"] = nil
-    @invitation_code = nil
   end
 
   def unmunge_empty_arrays!(model_key, model_attributes)

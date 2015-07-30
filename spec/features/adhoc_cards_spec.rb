@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 feature 'Adhoc cards', js: true do
-  include SidekiqHelperMethods
-
   let(:admin) { FactoryGirl.create :user, :site_admin }
 
   let(:author) { create :user, first_name: 'Author' }

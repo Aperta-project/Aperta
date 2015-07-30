@@ -14,11 +14,6 @@ module CasConfig
     opts['uid_field'] = ENV["CAS_UID_FIELD"] if ENV['CAS_UID_FIELD'].present?
     opts['ca_path'] = ENV["CAS_HOST"] if ENV['CAS_HOST'].present?
 
-    opts[:fetch_raw_info] = lambda { |strategy, options, ticket, user_info|
-      Rails.logger.info("[CasConfig] received cas response: #{user_info}")
-      NedProfile.new(cas_id: user_info['user']).to_h
-    }
-
     opts
   end
 end

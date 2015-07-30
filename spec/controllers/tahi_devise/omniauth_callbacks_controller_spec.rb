@@ -39,11 +39,13 @@ describe TahiDevise::OmniauthCallbacksController do
 
   describe "#cas" do
 
+    let(:cas_id) { FactoryGirl.attributes_for(:cas_credential).fetch(:uid) }
+    let(:auth_hash) { { provider: :cas, uid: cas_id, extra: { firstName: "Bill", lastName: "Jones", emailAddress: "email@example.com", displayName: "bjones" } } }
+
     context "a new cas user attempts to log into plos", vcr: { cassette_name: 'ned' } do
-      let(:cas_id) { FactoryGirl.attributes_for(:cas_credential).fetch(:uid) }
 
       before(:each) do
-        allow_any_instance_of(TahiDevise::OmniauthCallbacksController).to receive(:auth).and_return({uid: cas_id, provider: "cas"})
+        allow_any_instance_of(TahiDevise::OmniauthCallbacksController).to receive(:auth).and_return(auth_hash)
         expect_any_instance_of(User).to receive(:password_required?).at_least(:once).and_return(true)
       end
 
@@ -64,8 +66,8 @@ describe TahiDevise::OmniauthCallbacksController do
       let(:credential) { user.credentials.first }
 
       before(:each) do
-        allow_any_instance_of(TahiDevise::OmniauthCallbacksController).to receive(:auth).and_return({uid: credential.uid, provider: credential.provider})
-        expect_any_instance_of(User).to receive(:password_required?).at_least(:once).and_return(false)
+        allow_any_instance_of(TahiDevise::OmniauthCallbacksController).to receive(:auth).and_return(auth_hash)
+        allow_any_instance_of(User).to receive(:password_required?).and_return(false)
       end
 
       it "will not autogenerate a password" do

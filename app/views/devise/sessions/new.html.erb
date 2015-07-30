@@ -10,7 +10,7 @@
     var matches = navigator.userAgent.match(IERegex);
 
     if (matches != null && parseInt(matches[1]) >= 10) {
-      $('#tahi-container').prepend('<h3 class="browsehappy">You are using an <strong>unsupported</strong> browser. Tahi works best in open source browsers, such as Firefox and Chrome. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</h3>');
+      $('#tahi-container').prepend("<h3 class='browsehappy'>You are using an <strong>unsupported</strong> browser. #{app_name} works best in open source browsers, such as Firefox and Chrome. Please <a href='http://browsehappy.com/'>upgrade your browser</a> to improve your experience.</h3>");
     }
   }
 
@@ -18,7 +18,7 @@
 </script>
 
 <div class="auth-container">
-  <h1>Welcome to Tahi</h1>
+  <h1>Welcome to <%= app_name %></h1>
 
   <% if flash.present? %>
     <% if notice %>

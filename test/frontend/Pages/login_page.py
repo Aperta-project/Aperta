@@ -1,7 +1,6 @@
 #!/usr/bin/env python2
 
 from selenium.webdriver.common.by import By
-#from integration_tests.Base.PlosPage import PlosPage
 from Base.PlosPage import PlosPage
 
 __author__ = 'fcabrales'

@@ -15,6 +15,11 @@ class AdhocOverlay < CardOverlay
     process_sidekiq_jobs
   end
 
+  # wait_for_attachment_to_upload exists because feature specs run multiple
+  # threads: a thread for running tests and another for running the app for
+  # selenium, etc. Not knowing the order of execution between the threads
+  # this is for providing ample time and opportunity for an Attachment
+  # to be uploaded and created before moving on in a test.
   def wait_for_attachment_to_upload(seconds=10, &blk)
     Timeout.timeout(seconds) do
       original_count = Attachment.count

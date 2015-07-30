@@ -9,5 +9,5 @@ class RoleSerializer < ActiveModel::Serializer
              :can_view_flow_manager
 
   has_one :journal, embed: :id
-  has_many :flows, embed: :id, include: true
+  has_many :flows, embed: :id
 end

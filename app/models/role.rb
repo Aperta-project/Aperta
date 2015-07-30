@@ -60,6 +60,12 @@ class Role < ActiveRecord::Base
     "#{journal.name} #{name}"
   end
 
+  def member?(user)
+    return false if user.nil?
+
+    users.where(id: user.id).exists?
+  end
+
   private
 
   def prevent_destroying_required_role

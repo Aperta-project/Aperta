@@ -14,14 +14,14 @@ describe AttachmentSerializer do
   describe "serialized content" do
     subject(:deserialized_attachment){ deserialized_content[:attachment] }
 
-    it { should include(id: attachment.id) }
-    it { should include(title: attachment.title) }
-    it { should include(caption: attachment.caption) }
-    it { should include(kind: attachment.kind) }
-    it { should include(src: attachment.file.url) }
-    it { should include(status: attachment.status) }
+    it { is_expected.to include(id: attachment.id) }
+    it { is_expected.to include(title: attachment.title) }
+    it { is_expected.to include(caption: attachment.caption) }
+    it { is_expected.to include(kind: attachment.kind) }
+    it { is_expected.to include(src: attachment.file.url) }
+    it { is_expected.to include(status: attachment.status) }
 
-    it { should include(task_id: attachment.task_id)}
+    it { is_expected.to include(task_id: attachment.task_id)}
 
     context "and the attachment is an image" do
       before do
@@ -34,10 +34,10 @@ describe AttachmentSerializer do
     end
 
     context "and the attachment is not an image" do
-      it { should include(preview_src: nil) }
+      it { is_expected.to include(preview_src: nil) }
     end
 
-    it { should include(filename: attachment.filename) }
+    it { is_expected.to include(filename: attachment.filename) }
   end
 
 end

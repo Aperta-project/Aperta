@@ -2,7 +2,11 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   _throwDeprecationWarning: Ember.on('init', function() {
-    Ember.warn('TAHI DEPRECATION: ShowIfParent is deprecated. https://github.com/Tahi-project/tahi/wiki/Tahi-Ember-1.13-Transition-Guide#showifparent-component');
+    Ember.deprecate(
+      'APERTA DEPRECATION: ShowIfParent is deprecated.',
+      false,
+      { url: 'https://github.com/Tahi-project/tahi/wiki/Tahi-Ember-1.13-Transition-Guide#showifparent-component' }
+    );
   }),
 
   showContent: Ember.computed.reads('initialShowState'),

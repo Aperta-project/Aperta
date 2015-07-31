@@ -85,7 +85,7 @@ class User < ActiveRecord::Base
   end
 
   def invitations_from_latest_revision
-    invitations.invited.select do |invitation|
+    invitations.select do |invitation|
       invitation.decision.latest?
     end
   end

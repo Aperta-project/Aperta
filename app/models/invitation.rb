@@ -39,6 +39,14 @@ class Invitation < ActiveRecord::Base
     end
   end
 
+  def self.find_uninvited_users_for_paper(possible_users, paper)
+    invited_users = Invitation.where(
+      decision_id: paper.decisions.latest.id,
+      state: ["invited", "accepted", "rejected"]
+    ).includes(:invitee).map(&:invitee)
+    available_users = possible_users - invited_users
+  end
+
   private
 
   def assign_to_latest_decision

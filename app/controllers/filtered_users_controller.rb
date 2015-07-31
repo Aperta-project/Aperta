@@ -16,10 +16,10 @@ class FilteredUsersController < ApplicationController
     render_selectable_users(:admins)
   end
 
-  def all_users
+  def uninvited_users
     users = User.fuzzy_search params[:query]
     paper = Paper.find(params[:paper_id])
-    respond_with filter_available_reviewers(users, paper), each_serializer: SelectableUserSerializer
+    respond_with find_uninvited_users(users, paper), each_serializer: SelectableUserSerializer
   end
 
   private
@@ -31,14 +31,10 @@ class FilteredUsersController < ApplicationController
     users = User.where(id: journal_role_ids)
     users = users.fuzzy_search(params[:query]) if params[:query]
 
-    respond_with filter_available_reviewers(users, paper), each_serializer: SelectableUserSerializer
+    respond_with find_uninvited_users(users, paper), each_serializer: SelectableUserSerializer
   end
 
-  def filter_available_reviewers(users, current_paper)
-    users.reject do |user|
-      user.invitations_from_latest_revision.select do |invitation|
-        invitation.paper == current_paper && (invitation.state == 'invited' || invitation.state == 'accepted' || invitation.state == 'rejected')
-      end.any?
-    end
+  def find_uninvited_users(users, paper)
+    Invitation.find_uninvited_users_for_paper(users, paper)
   end
 end

@@ -41,16 +41,15 @@ describe FilteredUsersController do
 
     context "when a user has any invitation for expired revision cycles" do
       before do
-        get :all_users, paper_id: paper.id, query: 'example', format: :json
+        get :uninvited_users, paper_id: paper.id, query: 'example', format: :json
         expect(res_body["filtered_users"].count).to eq 2
         expect(res_body["filtered_users"].map { |user| user["id"] }).to include user.id
         invitation.invite!
-        invitation.run_callbacks(:commit)
         paper.decisions.create!
       end
 
       it "sends the user after a new round of revision cycle starts" do
-        get :all_users, paper_id: paper.id, query: 'example', format: :json
+        get :uninvited_users, paper_id: paper.id, query: 'example', format: :json
         expect(res_body["filtered_users"].count).to eq 4
         expect(res_body["filtered_users"].map { |user| user["id"] }).to include user.id
       end
@@ -59,7 +58,7 @@ describe FilteredUsersController do
         before { make_user_paper_reviewer user, paper }
 
         it "sends the user" do
-          get :all_users, paper_id: paper.id, query: 'example', format: :json
+          get :uninvited_users, paper_id: paper.id, query: 'example', format: :json
           expect(res_body["filtered_users"].count).to eq 4
           expect(res_body["filtered_users"].first["id"]).to eq user.id
         end
@@ -70,7 +69,7 @@ describe FilteredUsersController do
       before { invitation.invite! }
 
       it "does not send the user" do
-        get :all_users, paper_id: paper.id, query: 'example', format: :json
+        get :uninvited_users, paper_id: paper.id, query: 'example', format: :json
         expect(res_body["filtered_users"].count).to eq 3
         expect(res_body["filtered_users"].map { |user| user["id"] }).to_not include user.id
       end
@@ -85,7 +84,7 @@ describe FilteredUsersController do
       it "does not send the user" do
         expect(invitation.reload.state).to eq "accepted"
 
-        get :all_users, paper_id: paper.id, query: 'example', format: :json
+        get :uninvited_users, paper_id: paper.id, query: 'example', format: :json
 
         expect(user.invitations.first).to eq invitation
 
@@ -98,14 +97,14 @@ describe FilteredUsersController do
       before { paper.decisions.create! }
 
       it 'sends the user' do
-        get :all_users, paper_id: paper.id, query: 'example', format: :json
+        get :uninvited_users, paper_id: paper.id, query: 'example', format: :json
         expect(res_body["filtered_users"].count).to eq 2
         expect(res_body["filtered_users"].map { |user| user["id"] }).to include user.id
       end
 
       it "sends the user even if the user was formerly a paper reviewer" do
         make_user_paper_reviewer user, paper
-        get :all_users, paper_id: paper.id, query: 'example', format: :json
+        get :uninvited_users, paper_id: paper.id, query: 'example', format: :json
         expect(res_body["filtered_users"].count).to eq 2
         expect(res_body["filtered_users"].map { |user| user["id"] }).to include user.id
       end
@@ -177,12 +176,12 @@ describe FilteredUsersController do
 
       describe "#query_all_users" do
         it "returns users by query string" do
-          get :all_users, paper_id: paper.id, query: "example", format: :json
+          get :uninvited_users, paper_id: paper.id, query: "example", format: :json
           expect(res_body["filtered_users"].count).to eq 7
         end
 
         it "filters reviewers by name" do
-          get :all_users, paper_id: paper.id, query: "john", format: :json
+          get :uninvited_users, paper_id: paper.id, query: "john", format: :json
           expect(res_body["filtered_users"].count).to eq 1
           expect(res_body["filtered_users"].first["id"]).to eq admin1.id
           expect(res_body["filtered_users"].first["email"]).to eq admin1.email

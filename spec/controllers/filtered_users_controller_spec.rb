@@ -119,10 +119,10 @@ describe FilteredUsersController do
       let(:rando2)    { FactoryGirl.create :user, email: "reviewer@example.com" }
       let(:rando3)    { FactoryGirl.create :user }
       let(:rando4)    { FactoryGirl.create :user }
-      let(:editor1)   { FactoryGirl.create :user, email: "editor@example.com" }
+      let(:editor1)   { FactoryGirl.create :user, email: "editor@example.com", last_name: "Doe" }
       let(:editor2)   { FactoryGirl.create :user }
       let(:editor3)   { FactoryGirl.create :user }
-      let(:admin1)    { FactoryGirl.create :user, email: "admin@example.com", first_name: "John", last_name: "Doe" }
+      let(:admin1)    { FactoryGirl.create :user, email: "admin@example.com", first_name: "John" }
       let(:admin2)    { FactoryGirl.create :user }
 
       before do
@@ -147,7 +147,7 @@ describe FilteredUsersController do
         end
 
         it "filters editors by name" do
-          get :editors, paper_id: paper.id, query: "roe", format: :json
+          get :editors, paper_id: paper.id, query: "doe", format: :json
           expect(res_body["filtered_users"].count).to eq 1
           expect(res_body["filtered_users"].first["id"]).to eq editor1.id
           expect(res_body["filtered_users"].first["email"]).to eq editor1.email
@@ -182,10 +182,10 @@ describe FilteredUsersController do
         end
 
         it "filters reviewers by name" do
-          get :reviewers, paper_id: paper.id, query: "jane", format: :json
+          get :all_users, paper_id: paper.id, query: "john", format: :json
           expect(res_body["filtered_users"].count).to eq 1
-          expect(res_body["filtered_users"].first["id"]).to eq reviewer2.id
-          expect(res_body["filtered_users"].first["email"]).to eq reviewer2.email
+          expect(res_body["filtered_users"].first["id"]).to eq admin1.id
+          expect(res_body["filtered_users"].first["email"]).to eq admin1.email
         end
       end
     end

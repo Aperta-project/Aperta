@@ -19,8 +19,6 @@ class FlowSerializer < ActiveModel::Serializer
     object.journal
   end
 
-  private
-
   def flow_query
     @query ||= FlowQuery.new(scoped_user, flow)
   end

@@ -44,7 +44,7 @@ class Invitation < ActiveRecord::Base
       decision_id: paper.decisions.latest.id,
       state: ["invited", "accepted", "rejected"]
     ).includes(:invitee).map(&:invitee)
-    available_users = possible_users - invited_users
+    possible_users - invited_users
   end
 
   private

@@ -82,7 +82,7 @@ Tahi::Application.routes.draw do
         get "users/:paper_id", to: "filtered_users#users"
       end
     end
-    resources :flows, only: [:show, :create, :update, :destroy]
+    resources :flows, except: [:new, :edit]
     resources :formats, only: [:index]
     resources :invitations, only: [:index, :create, :destroy] do
       put :accept, on: :member

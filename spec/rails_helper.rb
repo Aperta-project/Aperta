@@ -107,6 +107,10 @@ RSpec.configure do |config|
     Sidekiq::Extensions::DelayedMailer.jobs.clear
   end
 
+  config.before(:each) do
+    Sidekiq::Worker.clear_all
+  end
+
   config.before(:context, redis: true) do
     DatabaseCleaner.clean_with(:truncation, except: ['task_types'])
   end

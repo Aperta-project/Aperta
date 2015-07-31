@@ -10,7 +10,7 @@ AdHocOverlayController = TaskController.extend BuildsTaskTemplate, FileUploadMix
 
   imageUploadUrl: (->
     "/api/tasks/#{@get('model.id')}/attachments"
-  ).property()
+  ).property('model.id')
 
   taskController: Ember.computed.alias 'controllers.paper/task'
   isNewTask: Ember.computed.alias 'taskController.isNewTask'

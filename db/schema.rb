@@ -56,14 +56,13 @@ ActiveRecord::Schema.define(version: 20150729195638) do
   end
 
   create_table "attachments", force: :cascade do |t|
-    t.string   "file",            limit: 255
-    t.integer  "attachable_id"
-    t.string   "attachable_type", limit: 255
+    t.string   "file",       limit: 255
+    t.integer  "task_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "title",           limit: 255
-    t.string   "caption",         limit: 255
-    t.string   "status",          limit: 255, default: "processing"
+    t.string   "title",      limit: 255
+    t.string   "caption",    limit: 255
+    t.string   "status",     limit: 255, default: "processing"
     t.string   "kind"
   end
 

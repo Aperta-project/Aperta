@@ -5,7 +5,7 @@ class TestTask < Task
   include Invitable
   register_task default_title: "Test Task", default_role: "user"
 
-  def invitation_rescinded(paper_id:, invitee_id:)
+  def invitation_rescinded(code:)
     true
   end
 end
@@ -86,21 +86,39 @@ describe InvitationsController do
   describe "DELETE /invitations/:id", redis: true do
     let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task) }
 
-    it "deletes the invitation queues up email job", redis: true do
+    it "initiates the task callback" do
+      expect_any_instance_of(InvitableTask).to receive(:invitation_rescinded).with(code: invitation.code)
       delete(:destroy, {
         format: "json",
         id: invitation.id
       })
-      expect(response.status).to eq 204
-      expect(Invitation.exists?(id: invitation.id)).to eq(false)
     end
 
-    it "initiates the task callback" do
-      expect_any_instance_of(InvitableTask).to receive(:invitation_rescinded).with(paper_id: task.paper.id, invitee_id: invitee.id)
-      delete(:destroy, {
-        format: "json",
-        id: invitation.id
-      })
+    context "Invitation with invitee" do
+      let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task) }
+
+      it "deletes the invitation queues up email job", redis: true do
+        delete(:destroy, {
+          format: "json",
+          id: invitation.id
+        })
+        expect(response.status).to eq 204
+        expect(Invitation.exists?(id: invitation.id)).to eq(false)
+      end
+    end
+
+    context "Invitation witout invitee" do
+      let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: nil, email: "test@example.com", task: task) }
+
+      it "deletes the invitation queues up email job", redis: true do
+        expect(invitation.invitee).to be nil
+        delete(:destroy, {
+          format: "json",
+          id: invitation.id
+        })
+        expect(response.status).to eq 204
+        expect(Invitation.exists?(id: invitation.id)).to eq(false)
+      end
     end
   end
 

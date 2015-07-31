@@ -14,7 +14,7 @@
       <% end %>
     </div>
     <p>
-      Hello <%= @invitee.full_name %>,
+      Hello <%= @invitee ? @invitee.full_name : @invitation.email %>,
     </p>
     <div class='paper-abstract'>
       <p>

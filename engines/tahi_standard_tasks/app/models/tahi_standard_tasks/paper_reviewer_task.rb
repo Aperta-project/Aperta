@@ -17,8 +17,8 @@ module TahiStandardTasks
       ReviewerMailer.delay.reviewer_declined(invite_reviewer_task_id: id, assigner_id: paper.editor.try(:id), reviewer_id: invitation.try(:invitee_id))
     end
 
-    def invitation_rescinded(paper_id:, invitee_id:)
-      PaperReviewerMailer.delay.notify_rescission paper_id: paper_id, invitee_id: invitee_id
+    def invitation_rescinded(code:)
+      PaperReviewerMailer.delay.notify_rescission(code: code)
     end
 
     def array_attributes

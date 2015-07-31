@@ -18,12 +18,13 @@ module TahiStandardTasks
       })
     end
 
-    def notify_rescission(paper_id:, invitee_id:)
-      @invitee = User.find invitee_id
-      @paper = Paper.find paper_id
+    def notify_rescission(code:)
+      @invitation = Invitation.where(code: code).first
+      @invitee = @invitation.invitee
+      @paper = @invitation.paper
 
       mail({
-        to: @invitee.email,
+        to: @invitation.email,
         subject: "Your invitation to be a reviewer has been rescinded for the manuscript, \"#{@paper.display_title}\""
       })
     end

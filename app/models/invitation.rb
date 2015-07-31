@@ -54,7 +54,7 @@ class Invitation < ActiveRecord::Base
   end
 
   def invitation_rescinded
-    task.invitation_rescinded(paper_id: paper.id, invitee_id: invitee.id)
+    task.invitation_rescinded(code: code)
   end
 
   def notify_invitation_invited

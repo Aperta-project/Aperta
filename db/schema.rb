@@ -57,8 +57,7 @@ ActiveRecord::Schema.define(version: 20150730165645) do
 
   create_table "attachments", force: :cascade do |t|
     t.string   "file"
-    t.integer  "attachable_id"
-    t.string   "attachable_type"
+    t.integer  "task_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "title"

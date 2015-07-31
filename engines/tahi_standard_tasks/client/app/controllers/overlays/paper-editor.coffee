@@ -27,12 +27,6 @@ PaperEditorOverlayController = TaskController.extend Select2Assignees,
       results: data.filtered_users
   ).property('select2RemoteUrl')
 
-  resultsTemplate: (user) ->
-    user.email
-
-  selectedTemplate: (user) ->
-    user.email || user.get('email')
-
   select2RemoteUrl: Ember.computed 'model.paper', ->
     "/api/filtered_users/editors/#{@get 'model.paper.id'}/"
 

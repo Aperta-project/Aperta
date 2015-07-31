@@ -21,6 +21,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ### Fixed
 - Decreased memory consumption on `admin/journal` by decreasing amount of serialized data
+- Update all Devise error messages to Aperta's basic alert-warning styles (red)
 
 ### Security
 -

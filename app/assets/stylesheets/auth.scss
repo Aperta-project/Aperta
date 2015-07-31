@@ -68,6 +68,13 @@ a {
   }
 }
 
+// only for /users/sign_in
+.new_user {
+  .auth-flash {
+    margin-bottom: 30px;
+  }
+}
+
 .auth-flash--alert {
   border: 1px solid #EBE4DB;
   color: #853F59;

@@ -385,17 +385,23 @@ export default TaskController.extend({
   // institution-search component expects data to be hash
   // with name property
   affiliation1Proxy: computed("affiliation1Question", function(){
-    return { name: this.get("affiliation1Question.answer") };
+    let answer = this.get("affiliation1Question.answer");
+    if(!Ember.isEmpty(answer)) {
+      return { name: answer };
+    }
   }),
 
   // institution-search component expects data to be hash
   // with name property
   affiliation2Proxy: computed("affiliation2Question", function(){
-    return { name: this.get("affiliation2Question.answer") }
+    let answer = this.get("affiliation2Question.answer");
+    if(!Ember.isEmpty(answer)) {
+      return { name: answer };
+    }
   }),
 
-  createNewAffiliationQuestion(ident, question) {
-    let task = this.get("model")
+  createNewAffiliationQuestion(ident) {
+    let task = this.get("model");
     return task.get("store").createRecord("question", {
       question: "Affiliation",
       ident: ident,

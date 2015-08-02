@@ -86,102 +86,106 @@ module('Integration: Super AdHoc Card', {
   }
 });
 
-// test('Changing the title on an AdHoc Task', function(assert) {
-//   visit('/papers/' + currentPaper.id + '/tasks/1');
-//   click('h1.inline-edit .fa-pencil');
-//   fillIn('.large-edit input[name=title]', 'Shazam!');
-//   click('.large-edit .button--green:contains("Save")');
-// 
-//   andThen(function() {
-//     assert.equal(
-//       find('h1.inline-edit:contains("Shazam!")').length, 1, 'title is changed'
-//     );
-//   });
-// });
-// 
-// test('Adding a text block to an AdHoc Task', function(assert) {
-//   visit('/papers/' + currentPaper.id + '/tasks/1');
-//   click('.adhoc-content-toolbar .fa-plus');
-//   click('.adhoc-content-toolbar .adhoc-toolbar-item--text');
-// 
-//   andThen(function() {
-//     Ember.$('.inline-edit-form div[contenteditable]')
-//          .html('New contenteditable, yahoo!')
-//          .trigger('keyup');
-//     click('.task-body .inline-edit-body-part .button--green:contains("Save")');
-//   });
-// 
-//   andThen(function() {
-//     assert.textPresent('.inline-edit', 'yahoo');
-//     click('.inline-edit-body-part .fa-trash');
-//   });
-// 
-//   andThen(function() {
-//     assert.textPresent('.inline-edit-body-part', 'Are you sure?');
-//     click('.inline-edit-body-part .delete-button');
-//   });
-// 
-//   andThen(function() {
-//     assert.textNotPresent('.inline-edit', 'yahoo');
-//   });
-// });
-// 
-// test('Adding and removing a checkbox item to an AdHoc Task', function(assert) {
-//   visit('/papers/' + currentPaper.id + '/tasks/1');
-//   click('.adhoc-content-toolbar .fa-plus');
-//   click('.adhoc-content-toolbar .adhoc-toolbar-item--list');
-// 
-//   andThen(function() {
-//     assert.equal(
-//       find('.inline-edit-form .item-remove').length, 1, 'item remove button visible'
-//     );
-// 
-//     Ember.$('.inline-edit-form label[contenteditable]')
-//          .html('Here is a checkbox list item')
-//          .trigger('keyup');
-// 
-//     click('.task-body .inline-edit-body-part .button--green:contains("Save")');
-//   });
-// 
-//   andThen(function() {
-//     assert.textPresent('.inline-edit', 'checkbox list item');
-//     assert.equal(
-//       find('.inline-edit input[type=checkbox]').length, 1, 'checkbox item is visble'
-//     );
-//     click('.inline-edit-body-part .fa-trash');
-//   });
-// 
-//   andThen(function() {
-//     assert.textPresent('.inline-edit-body-part', 'Are you sure?');
-//     click('.inline-edit-body-part .delete-button');
-//   });
-// 
-//   andThen(function() {
-//     assert.textNotPresent('.inline-edit', 'checkbox list item');
-//   });
-// });
-// 
-// test('Adding an email block to an AdHoc Task', function(assert) {
-//   visit('/papers/' + currentPaper.id + '/tasks/1');
-//   click('.adhoc-content-toolbar .fa-plus');
-//   click('.adhoc-content-toolbar .adhoc-toolbar-item--email');
-// 
-//   fillIn(
-//     '.inline-edit-form input[placeholder="Enter a subject"]', 'Deep subject'
-//   );
-// 
-//   andThen(function() {
-//     Ember.$('.inline-edit-form div[contenteditable]')
-//          .html('Awesome email body!')
-//          .trigger('keyup');
-//     click('.task-body .inline-edit-body-part .button--green:contains("Save")');
-//   });
-// 
-//   andThen(function() {
-//     assert.textPresent('.inline-edit .item-subject', 'Deep');
-//     assert.textPresent('.inline-edit .item-text', 'Awesome');
-//   });
-// });
+test('Changing the title on an AdHoc Task', function(assert) {
+  visit('/papers/' + currentPaper.id + '/tasks/1');
+  click('h1.inline-edit .fa-pencil');
+  fillIn('.large-edit input[name=title]', 'Shazam!');
+  click('.large-edit .button--green:contains("Save")');
+
+  andThen(function() {
+    assert.equal(
+      find('h1.inline-edit:contains("Shazam!")').length, 1, 'title is changed'
+    );
+  });
+});
+
+test('Adding a text block to an AdHoc Task', function(assert) {
+  visit('/papers/' + currentPaper.id + '/tasks/1');
+  click('.adhoc-content-toolbar .fa-plus');
+  click('.adhoc-content-toolbar .adhoc-toolbar-item--text');
+
+  andThen(function() {
+    Ember.$('.inline-edit-form div[contenteditable]')
+         .html('New contenteditable, yahoo!')
+         .trigger('keyup');
+    click('.task-body .inline-edit-body-part .button--green:contains("Save")');
+  });
+
+  andThen(function() {
+    assert.textPresent('.inline-edit', 'yahoo');
+    click('.inline-edit-body-part .fa-trash');
+  });
+
+  andThen(function() {
+    assert.textPresent('.inline-edit-body-part', 'Are you sure?');
+    click('.inline-edit-body-part .delete-button');
+  });
+
+  andThen(function() {
+    assert.textNotPresent('.inline-edit', 'yahoo');
+  });
+});
+
+test('Adding and removing a checkbox item to an AdHoc Task', function(assert) {
+  visit('/papers/' + currentPaper.id + '/tasks/1');
+  click('.adhoc-content-toolbar .fa-plus');
+  click('.adhoc-content-toolbar .adhoc-toolbar-item--list');
+
+  andThen(function() {
+    assert.equal(
+      find('.inline-edit-form .item-remove').length,
+      1,
+      'item remove button visible'
+    );
+
+    Ember.$('.inline-edit-form label[contenteditable]')
+         .html('Here is a checkbox list item')
+         .trigger('keyup');
+
+    click('.task-body .inline-edit-body-part .button--green:contains("Save")');
+  });
+
+  andThen(function() {
+    assert.textPresent('.inline-edit', 'checkbox list item');
+    assert.equal(
+      find('.inline-edit input[type=checkbox]').length,
+      1,
+      'checkbox item is visble'
+    );
+    click('.inline-edit-body-part .fa-trash');
+  });
+
+  andThen(function() {
+    assert.textPresent('.inline-edit-body-part', 'Are you sure?');
+    click('.inline-edit-body-part .delete-button');
+  });
+
+  andThen(function() {
+    assert.textNotPresent('.inline-edit', 'checkbox list item');
+  });
+});
+
+test('Adding an email block to an AdHoc Task', function(assert) {
+  visit('/papers/' + currentPaper.id + '/tasks/1');
+  click('.adhoc-content-toolbar .fa-plus');
+  click('.adhoc-content-toolbar .adhoc-toolbar-item--email');
+
+  fillIn(
+    '.inline-edit-form input[placeholder="Enter a subject"]', 'Deep subject'
+  );
+
+  andThen(function() {
+    Ember.$('.inline-edit-form div[contenteditable]')
+         .html('Awesome email body!')
+         .trigger('keyup');
+    click('.task-body .inline-edit-body-part .button--green:contains("Save")');
+  });
+
+  andThen(function() {
+    assert.textPresent('.inline-edit .item-subject', 'Deep');
+    assert.textPresent('.inline-edit .item-text', 'Awesome');
+  });
+});
 
 test('User can send an email from an adhoc card', function(assert) {
   server.respondWith('PUT', /\/api\/tasks\/\d+\/send_message/, [

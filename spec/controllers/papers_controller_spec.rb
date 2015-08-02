@@ -84,7 +84,7 @@ describe PapersController do
     let(:submitted) { true }
     subject(:do_request) { get :show, id: paper.to_param, format: :json }
 
-    it { should be_success }
+    it { is_expected.to be_success }
 
     context "passing in a doi" do
       before do

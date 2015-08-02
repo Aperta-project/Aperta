@@ -22,28 +22,50 @@ describe "TahiStandardTasks::DecisionReviser" do
       end
     end
 
-    describe "ReviseTask" do
-      context "if one already exists" do
-        let!(:revise_task) { FactoryGirl.create(:revise_task, paper: paper, completed: true) }
+    describe "#process!" do
+      describe "ReviseTask" do
+        context "if one already exists" do
+          let!(:revise_task) { FactoryGirl.create(:revise_task, paper: paper, completed: true) }
 
-        it "marks it incomplete" do
-          service.process!
-          expect(revise_task.reload.completed?).to eq(false)
-        end
-      end
-
-      context "if does not already exist" do
-        it "new one is created" do
-          expect {
+          it "marks it incomplete" do
             service.process!
-          }.to change(paper.tasks.where(type: "TahiStandardTasks::ReviseTask"), :count).by(1)
+            expect(revise_task.reload.completed?).to eq(false)
+          end
+
+          it "task has paper" do
+            expect(revise_task.paper).to eq paper
+          end
+
+          it "task role is `author`" do
+            expect(revise_task.role).to eq 'author'
+          end
         end
 
-        it "has participants of paper editor and paper creator" do
-          FactoryGirl.create(:paper_role, :editor, paper: paper)
-          service.process!
-          revise_task = paper.tasks.find_by(type: "TahiStandardTasks::ReviseTask")
-          expect(revise_task.participants).to match_array([ paper.editor, paper.creator ])
+        context "if one does not already exist" do
+          subject { service.process! }
+          let(:revise_task) { paper.tasks.find_by(type: "TahiStandardTasks::ReviseTask") }
+
+          it "new one is created" do
+            expect {
+              subject
+            }.to change(paper.tasks.where(type: "TahiStandardTasks::ReviseTask"), :count).by(1)
+          end
+
+          it "has participants of paper editor and paper creator" do
+            FactoryGirl.create(:paper_role, :editor, paper: paper)
+            subject
+            expect(revise_task.participants).to match_array([ paper.editor, paper.creator ])
+          end
+
+          it "task participants include the paper's author" do
+            subject
+            expect(revise_task.participants).to eq [paper.creator]
+          end
+
+          it "task body includes the revise letter" do
+            subject
+            expect(revise_task.body.first.first['value']).to include task.major_revision_letter
+          end
         end
       end
     end

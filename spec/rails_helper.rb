@@ -1,7 +1,5 @@
-if ENV['COVERAGE']
-  require 'simplecov'
-  SimpleCov.start 'rails'
-end
+require 'codeclimate-test-reporter'
+CodeClimate::TestReporter.start
 
 ENV["RAILS_ENV"] ||= 'test'
 require 'spec_helper'
@@ -43,19 +41,6 @@ Capybara.default_wait_time = 10
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema! if defined?(ActiveRecord::Migration)
-
-if ENV['CI']
-  require 'simplecov'
-  require "codeclimate-test-reporter"
-  SimpleCov.add_filter 'vendor'
-  SimpleCov.formatters = []
-  SimpleCov.start CodeClimate::TestReporter.configuration.profile
-  RSpec.configure do |config|
-    config.after(:suite) do
-      CodeClimate::TestReporter::Formatter.new.format(SimpleCov.result)
-    end
-  end
-end
 
 VCR.configure do |config|
   config.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
@@ -105,6 +90,10 @@ RSpec.configure do |config|
     DatabaseCleaner[:active_record].strategy = :truncation, { except: ['task_types'] }
     DatabaseCleaner[:redis].strategy = :truncation
     Sidekiq::Extensions::DelayedMailer.jobs.clear
+  end
+
+  config.before(:each) do
+    Sidekiq::Worker.clear_all
   end
 
   config.before(:context, redis: true) do

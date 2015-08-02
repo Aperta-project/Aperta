@@ -9,7 +9,7 @@ describe JournalServices::CreateDefaultRoles do
 
   it "will create default roles" do
     roles = JournalServices::CreateDefaultRoles.call(journal)
-    expect(roles.count).to eq(4)
+    expect(roles.count).to eq(3)
   end
 
   it "will raise a service error if it fails" do

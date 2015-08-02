@@ -72,11 +72,9 @@
   <div class="form-group form-inline">
     <div class="form-group author-half {{if validationErrors.affiliation "error"}}">
       {{error-message message=validationErrors.affiliation}}
-      {{select-2-single value=newRecommendation.affiliation
-                        class="affiliation-field"
-                        placeholder="Affiliation"
-                        selectedData=selectedAffiliation
-                        source=model.institutions}}
+      {{institution-search
+        institutionSelected="institutionSelected"
+        placeholder="Institution"}}
     </div>
   </div>
 

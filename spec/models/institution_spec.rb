@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Institutions, focus: true do
+describe Institutions do
   let(:institutions) { Institutions.instance.matching_institutions "Health" }
   let(:names) { institutions.map { |i| i['name'] } }
 

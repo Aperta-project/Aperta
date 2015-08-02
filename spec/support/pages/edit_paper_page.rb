@@ -25,6 +25,10 @@ class EditPaperPage < Page
     super
   end
 
+  def find_card(text)
+    find('.card-content', text: text)
+  end
+
   def visit_dashboard
     click_link 'Dashboard'
     DashboardPage.new

@@ -78,11 +78,11 @@ Tahi::Application.routes.draw do
       collection do
         get "admins/:paper_id", to: "filtered_users#admins"
         get "editors/:paper_id", to: "filtered_users#editors"
-        get "reviewers/:paper_id", to: "filtered_users#reviewers"
         get "users/:paper_id", to: "filtered_users#users"
+        get "uninvited_users/:paper_id", to: "filtered_users#uninvited_users"
       end
     end
-    resources :flows, only: [:show, :create, :update, :destroy]
+    resources :flows, except: [:new, :edit]
     resources :formats, only: [:index]
     resources :invitations, only: [:index, :create, :destroy] do
       put :accept, on: :member

@@ -16,32 +16,25 @@ class FilteredUsersController < ApplicationController
     render_selectable_users(:admins)
   end
 
-  def reviewers
-    render_selectable_users(:reviewers)
+  def uninvited_users
+    users = User.fuzzy_search params[:query]
+    paper = Paper.find(params[:paper_id])
+    respond_with find_uninvited_users(users, paper), each_serializer: SelectableUserSerializer
   end
 
   private
 
   def render_selectable_users(role)
     paper = Paper.find(params[:paper_id])
-    journal_reviewer_ids = paper.journal.send(role).pluck(:id)
+    journal_role_ids = paper.journal.send(role).pluck(:id)
 
-    if params[:query]
-      users = User.fuzzy_search(email: params[:query])
-                  .where(id: journal_reviewer_ids)
-    else
-      users = User.where(id: journal_reviewer_ids)
-    end
+    users = User.where(id: journal_role_ids)
+    users = users.fuzzy_search(params[:query]) if params[:query]
 
-    respond_with filter_available_reviewers(users, paper), each_serializer: SelectableUserSerializer
+    respond_with find_uninvited_users(users, paper), each_serializer: SelectableUserSerializer
   end
 
-  def filter_available_reviewers(users, current_paper)
-    # get the users without pending invitations
-    users.reject do |user|
-      user.invitations_from_latest_revision.select do |invitation|
-        invitation.paper == current_paper && invitation.state == "invited"
-      end.any?
-    end
+  def find_uninvited_users(users, paper)
+    Invitation.find_uninvited_users_for_paper(users, paper)
   end
 end

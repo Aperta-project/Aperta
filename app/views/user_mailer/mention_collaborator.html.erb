@@ -1,29 +1,33 @@
 <div class='container'>
   <div class='greeting'>
-    <h3 class='user-name'>
-      Hi <%= @commentee.full_name %>
-    </h3>
     <p class='message'>
-      You've been assigned as an Editor on a Manuscript
+      You've been mentioned on a manuscript
     </p>
   </div>
   <hr>
   <div class='paper-info'>
     <div class='paper-abstract'>
       <p>
-        You've been mentioned by <%= @commenter.full_name %> on <%= @paper.display_title %>'s
-        <%= @task.title %>.
+        Hello <%= @commentee.full_name %>,
+      </p>
+      <p>
+        You've been mentioned by <%= @commenter.full_name %>
+        on the <%= @task.title %> for the manuscript
+        "<%= @paper.display_title %>".
       </p>
       <p>
         <%= @comment.body %>
       </p>
       <p>
-        View the card here: <%= client_paper_task_url(@paper, @task) %>.
+        View the card here:
+        <%= link_to client_paper_task_url(@paper, @task), client_paper_task_url(@paper, @task) %>.
       </p>
     </div>
   </div>
   <hr>
   <div class='footer'>
-    Team Tahi
+    Sincerely,
+    <br>
+    <%= @journal.name %> Team
   </div>
 </div>

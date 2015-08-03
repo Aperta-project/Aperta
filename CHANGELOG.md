@@ -10,6 +10,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Changed
 - Gussied up Figures and Supporting Information thumbnails
 - Register Decision card now has 'Minor Revision' and 'Major Revision' options instead of 'Revise'
+- Upgraded to CAS v2 which properly handles redirection back to main application
 
 ### Deprecated
 -
@@ -18,7 +19,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Fixed
--
+- Decreased memory consumption on `admin/journal` by decreasing amount of serialized data
 
 ### Security
 -

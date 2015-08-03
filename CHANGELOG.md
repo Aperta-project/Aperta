@@ -7,6 +7,10 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Added
 - Countries endpoint through NED
 - Ability to download attachments on adhoc cards
+- Ability for any user in system to become a reviewer on a paper
+- Whitelabel application so that application name can be changed via configuration
+- Institutions are now fetched from NED
+- Introduce Auto Suggest List component
 
 ### Changed
 - Gussied up Figures and Supporting Information thumbnails
@@ -15,12 +19,19 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Update notify_invited email formatting
 - Updated Puma to 2.12.2
 - Billing card copy and typos. Using countries endpoint
+- Improve email text
+- PLOS Bio InitialTechCheckTask has become the new TechCheckTask
+- Upgraded Puma to 2.12.2
+- Upgraded Sidekiq to 3.4.2
+- Upgraded ember cli rails to 0.3.4
+- Upgrade PlosBioTechCheck
 
 ### Deprecated
 -
 
 ### Removed
--
+- Minor check publishing state
+- TahiStandardTasks::TechCheckTask is removed
 
 ### Fixed
 - Decreased memory consumption on `admin/journal` by decreasing amount of serialized data

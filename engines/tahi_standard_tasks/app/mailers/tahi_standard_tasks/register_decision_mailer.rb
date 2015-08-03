@@ -12,7 +12,7 @@ module TahiStandardTasks
       @recipient = User.find(@paper.user_id)
 
       mail(to: @recipient.email,
-           subject: "A Decision has been Registered on #{@paper.title}")
+           subject: "A decision has been registered on the manuscript, \"#{@paper.display_title}\"")
     end
   end
 end

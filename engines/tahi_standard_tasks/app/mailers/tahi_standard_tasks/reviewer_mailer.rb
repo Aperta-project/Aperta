@@ -17,7 +17,7 @@ module TahiStandardTasks
       @paper = @invite_reviewer_task.paper
       @journal = @paper.journal
 
-      mail(to: @assigner.email, subject: "Reviewer has accepted reviewer invitation")
+      mail(to: @assigner.email, subject: "Reviewer invitation was accepted on the manuscript, \"#{@paper.display_title}\"")
     end
 
     def reviewer_declined(invite_reviewer_task_id:, reviewer_id:, assigner_id:)
@@ -30,7 +30,7 @@ module TahiStandardTasks
       @paper = @invite_reviewer_task.paper
       @journal = @paper.journal
 
-      mail(to: @assigner.email, subject: "Reviewer has declined reviewer invitation")
+      mail(to: @assigner.email, subject: "Reviewer invitation was declined on the manuscript, \"#{@paper.display_title}\"")
     end
   end
 end

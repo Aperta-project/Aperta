@@ -30,7 +30,7 @@ describe EventStream::Notifiable do
 
     context "when updated" do
       let(:payload) do
-        comment = Paper.find(model.id)
+        comment = Comment.find(model.id)
         comment.touch
         comment.event_payload
       end
@@ -42,7 +42,7 @@ describe EventStream::Notifiable do
 
     context "when destroyed" do
       let(:payload) do
-        comment = Paper.find(model.id)
+        comment = Comment.find(model.id)
         comment.destroy
         comment.event_payload
       end

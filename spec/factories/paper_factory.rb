@@ -2,8 +2,9 @@ require 'securerandom'
 
 FactoryGirl.define do
   factory :paper do
-    transient do
-      body "I am the very model of a modern journal article"
+    after(:create) do |paper|
+      paper.save!
+      paper.body = "I am the very model of a modern journal article"
     end
 
     journal
@@ -23,7 +24,9 @@ FactoryGirl.define do
     end
 
     trait(:submitted) do
-      publishing_state "submitted"
+      after(:create) do |paper|
+        paper.submit! paper.creator
+      end
     end
 
     trait(:with_tasks) do
@@ -46,6 +49,15 @@ FactoryGirl.define do
       after(:create) do |paper|
         editor = FactoryGirl.build(:user)
         FactoryGirl.create(:paper_role, :editor, paper: paper, user: editor)
+      end
+    end
+
+    trait(:with_versions) do
+      after(:create) do |paper|
+        paper.submit! paper.creator
+        paper.major_revision!
+        paper.body = "OK second body"
+        paper.save!
       end
     end
 

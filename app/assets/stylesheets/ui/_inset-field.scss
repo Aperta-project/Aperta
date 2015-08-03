@@ -1,4 +1,4 @@
-// TODO: phase out
+// TODO: DEPRECATED: see inset-form-control below
 .form-control.tall-text-field {
   width: 100%;
   height: 50px;
@@ -9,8 +9,7 @@
   }
 }
 
-// TODO: phase out
-// Should be placed within form-group div and above the input element
+// TODO: DEPRECATED: see inset-form-control below
 .text-field-title {
   position: absolute;
   color: $tahi-grey;
@@ -19,6 +18,14 @@
   background: $tahi-white;
   pointer-events: none;
 }
+
+/*
+  .inset-form-control
+    .inset-form-control-text
+      input
+      .error-message
+    .inset-form-control-input
+*/
 
 
 .inset-form-control {

@@ -35,9 +35,9 @@
     <div class="did-you-mean-expanded">
       <div class="did-you-mean-question">Did you mean one of these?</div>
       <div class="did-you-mean-options">
-        {{#each searchResults}}
-          <div class="did-you-mean-item" {{action "selectItem" this}}>
-            {{yield this}}
+        {{#each searchResults as |result|}}
+          <div class="did-you-mean-item" {{action "selectItem" result}}>
+            {{yield result}}
           </div>
         {{/each}}
       </div>

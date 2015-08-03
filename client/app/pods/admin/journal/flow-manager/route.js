@@ -7,6 +7,10 @@ export default Ember.Route.extend({
     return this.store.find('role', params.role_id);
   },
 
+  afterModel: function(role) {
+    return this.store.find('flow', { role_id: role.get('id') });
+  },
+
   setupController: function(controller, model) {
     controller.setProperties({
       model: model,

@@ -34,7 +34,6 @@ when 'development'
     user.password = 'password'
     user.username = 'reviewer'
     user.affiliations.first_or_initialize(name: "PLOS")
-    user.user_roles.new(role: plos_journal.roles.where(kind: Role::REVIEWER, name: Role::REVIEWER.capitalize).first_or_initialize)
   end
 
   User.where(email: 'flow_manager@example.com').first_or_create! do |user|

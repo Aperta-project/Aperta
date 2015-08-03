@@ -24,7 +24,7 @@ module TahiStandardTasks
     end
 
     def decision_content
-      paper.decisions.select(&:verdict_valid?).last
+      paper.decisions.select(&:verdict_valid?).first
     end
 
     def send_emails

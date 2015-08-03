@@ -1,7 +1,18 @@
 class FlowsController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy
+  before_action :enforce_policy, except: [:index]
   respond_to :json
+
+  def index
+    role = Role.find(params[:role_id])
+    role_policy = RolesPolicy.new(current_user: current_user, journal: role.journal, role: role)
+
+    if role_policy.show?
+      respond_with role.flows
+    else
+      head 403
+    end
+  end
 
   def show
     respond_with flow

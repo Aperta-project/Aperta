@@ -9,7 +9,7 @@ AdHocOverlayController = TaskController.extend BuildsTaskTemplate, FileUploadMix
 
   imageUploadUrl: (->
     "/api/tasks/#{@get('model.id')}/attachments"
-  ).property()
+  ).property('model.id')
 
   actions:
     setTitle: (title) ->

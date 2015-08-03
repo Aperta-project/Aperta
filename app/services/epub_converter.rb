@@ -145,6 +145,7 @@ class EpubConverter
 <body>
   #{body}
 </body>
+</html>
     HTML
   end
 

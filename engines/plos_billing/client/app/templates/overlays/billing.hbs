@@ -11,155 +11,147 @@
     <div class="form-group author-half {{if validationErrors.firstName "error"}}">
       <span class="text-field-title">
         First Name
-        {{error-message message=null}}
       </span>
       {{question-input ident="plos_billing.first_name"
                        task=model
-                       question='First Name'
-                       placeholderText='Jane'}}
+                       question="First Name"
+                       placeholderText="Jane"}}
     </div>
 
     <div class="form-group author-half author-bump {{if validationErrors.lastName "error"}}">
       <span class="text-field-title">
         Last Name
-        {{error-message message=null}}
       </span>
       {{question-input ident="plos_billing.last_name"
                        task=model
-                       question='Last Name'
-                       placeholderText='Goodall'}}
+                       question="Last Name"
+                       placeholderText="Goodall"}}
     </div>
   </div>
   <div class="form-group form-inline">
     <div class="form-group author-half {{if validationErrors.title "error"}}">
       <span class="text-field-title">
         Title
-        {{error-message message=null}}
       </span>
       {{question-input ident="plos_billing.title"
                        task=model
-                       question='Title'
+                       question="Title"
                        placeholderText="World's Foremost Expert on Chimpanzees"}}
     </div>
 
     <div class="form-group author-half author-bump {{if validationErrors.department "error"}}">
       <span class="text-field-title">
         Department
-        {{error-message message=null}}
       </span>
       {{question-input ident="plos_billing.department"
                        task=model
-                       question='Department'
-                       placeholderText='Primatology'}}
+                       question="Department"
+                       placeholderText="Primatology"}}
     </div>
   </div>
   <div class="form-group form-inline">
     <div class="form-group author-half {{if validationErrors.affiliation "error"}}">
-      {{error-message message=null}}
-      {{question-select ident="plos_billing.affiliation1"
-                        task=model
-                        question="Affiliation"
-                        class="affiliation-field"
-                        source=ringgold
-                        placeholderText='Affiliation'
-                        width="100%"}}
+      {{institution-search value=affiliation1Proxy
+                           institutionSelected="affiliation1Selected"
+                           placeholder="Affiliation"}}
     </div>
 
     <div class="form-group author-half author-bump {{if validationErrors.secondaryAffiliation "error"}}">
-      {{error-message message=null}}
-      {{question-select ident="plos_billing.affiliation2"
-                        task=model
-                        question='Secondary Affiliation'
-                        placeholderText="Secondary Affiliation (optional)"
-                        class="secondary-affiliation-field"
-                        source=ringgold
-                        width="100%"}}
+      {{institution-search value=affiliation2Proxy
+                           institutionSelected="affiliation2Selected"
+                           placeholder="Secondary Affiliation (optional)"}}
     </div>
   </div>
   <div class="form-group form-inline">
     <div class="form-group author-half {{if validationErrors.phone "error"}}">
       <span class="text-field-title">
         Phone
-        {{error-message message=null}}
       </span>
       {{question-input ident="plos_billing.phone_number"
                        task=model
-                       question='Phone'
+                       question="Phone"
                        placeholderText="415-555-5555"}}
 
     </div>
     <div class="form-group author-half author-bump {{if validationErrors.email "error"}}">
       <span class="text-field-title">
         Email
-        {{error-message message=null}}
       </span>
       {{question-input ident="plos_billing.email_address"
                        task=model
-                       question='Email'
+                       question="Email"
                        placeholderText="jane.goodll@science.com"}}
 
     </div>
   </div>
   <div class="form-group form-inline">
-    <div class={{if validationErrors.department "error"}}>
+    <div class={{if validationErrors.address1 "error"}}>
       <span class="text-field-title">
         Address Line 1 (optional)
-        {{error-message message=null}}
       </span>
       {{question-input ident="plos_billing.address1"
                        task=model
-                       question='Address line one'
+                       question="Address line one"
                        placeholderText="1581 Le Roy Ave"}}
     </div>
   </div>
   <div class="form-group form-inline">
-    <div class={{if validationErrors.department "error"}}>
+    <div class={{if validationErrors.address2 "error"}}>
       <span class="text-field-title">
         Address Line 2 (optional)
-        {{error-message message=null}}
       </span>
       {{question-input ident="plos_billing.address2"
                        task=model
-                       question='Address line two'
+                       question="Address line two"
                        placeholderText="Suite 3"}}
     </div>
   </div>
   <div class="form-group form-inline">
-    <div class="form-group author-half {{if validationErrors.department "error"}}">
+    <div class="form-group author-half {{if validationErrors.city "error"}}">
       <span class="text-field-title">
         City
-        {{error-message message=null}}
       </span>
       {{question-input ident="plos_billing.city"
                        task=model
-                       question='City'
+                       question="City"
                        placeholderText="Berkeley"}}
     </div>
 
-    <div class="form-group author-name author-bump {{if validationErrors.department "error"}}">
-      {{question-select ident="plos_billing.state"
-                        task=model
-                        question="Select State"
-                        source=states}}
-    </div>
-    <div class="form-group author-name {{if validationErrors.department "error"}}">
+    <div class="form-group author-name author-bump {{if validationErrors.state "error"}}">
       <span class="text-field-title">
-        Postal Code
-        {{error-message message=null}}
+        State or Province
+      </span>
+
+      {{question-input ident="plos_billing.state"
+                       task=model
+                       question="Enter State or Province"
+                       placeholderText="State or Province"}}
+    </div>
+    <div class="form-group author-name author-bump {{if validationErrors.postal_code "error"}}">
+      <span class="text-field-title">
+        ZIP or Postal Code
       </span>
       {{question-input ident="plos_billing.postal_code"
                        task=model
-                       question='Postal Code'
+                       question="Postal Code"
                        placeholderText="94708"}}
     </div>
   </div>
+
   <div class="form-group form-inline">
-    <div class="form-group author-half {{if validationErrors.department "error"}}">
-      {{error-message message=null}}
-      {{question-select ident="plos_billing.country"
-                        task=model
-                        question="Please select your Country"
-                        source=countries}}
+    <div class="form-group author-half {{if validationErrors.country "error"}}">
+      {{#if countries}}
+        {{question-select ident="plos_billing.country"
+                          task=model
+                          question="Please select your Country"
+                          source=countries
+                          width="100%"}}
+      {{else}}
+        <div class="plos-billing-country-loading">
+          {{progress-spinner visible=true size="mini"}}
+          Loading countries
+        </div>
+      {{/if}}
     </div>
   </div>
 </div>
@@ -172,27 +164,26 @@
 
 {{partial "intro"}}
 
-<ol class='question-list'>
+<ol class="question-list">
   <li class="question">
     <h3>
       How would you like to pay?
     </h3>
 
     <div class="form-group author-half author-bump payment-method {{if validationErrors.affiliation "error"}}">
-      {{error-message message=null}}
       {{question-select ident="plos_billing.payment_method"
                         task=model
                         question="Select One"
                         class="affiliation-field"
-                        selectionSelected='paymentMethodSelected'
+                        selectionSelected="paymentMethodSelected"
                         source=responses
-                        width="resolve"}}
+                        width="350"}}
     </div>
   </li>
 
-  {{partial 'self_payment'}}
-  {{partial 'institutional'}}
-  {{partial 'gpi'}}
-  {{partial 'pfa'}}
-  {{partial 'special_collection'}}
+  {{partial "self_payment"}}
+  {{partial "institutional"}}
+  {{partial "gpi"}}
+  {{partial "pfa"}}
+  {{partial "special_collection"}}
 </ol>

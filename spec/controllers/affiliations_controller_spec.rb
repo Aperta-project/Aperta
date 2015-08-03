@@ -4,7 +4,7 @@ describe AffiliationsController do
   let(:user) { FactoryGirl.create(:user) }
   before { sign_in user }
 
-  it "returns a list of the institution names", focus: true do
+  it "returns a list of the institution names" do
     get :index, query: "Harvard"
     institution_names = res_body['institutions'].map { |i| i['name'] }
     expect(institution_names).to include('Harvard University')

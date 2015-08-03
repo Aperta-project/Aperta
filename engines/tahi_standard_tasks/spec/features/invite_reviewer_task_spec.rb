@@ -12,9 +12,6 @@ feature "Invite Reviewer", js: true do
 
   before do
     assign_journal_role journal, editor, :editor
-    assign_journal_role journal, reviewer1, :reviewer
-    assign_journal_role journal, reviewer2, :reviewer
-    assign_journal_role journal, reviewer3, :reviewer
     paper.paper_roles.create user: editor, role: PaperRole::COLLABORATOR
     task.participants << editor
 
@@ -22,7 +19,7 @@ feature "Invite Reviewer", js: true do
     visit "/"
   end
 
-  scenario "Editor can invite a reviewer to a paper" do
+  scenario "Editor can invite any user as a reviewer to a paper" do
     dashboard_page = DashboardPage.new
     manuscript_page = dashboard_page.view_submitted_paper paper
     manuscript_page.view_card task.title do |overlay|

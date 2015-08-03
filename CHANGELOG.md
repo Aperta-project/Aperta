@@ -5,13 +5,15 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
--
+- Countries endpoint through NED
 
 ### Changed
 - Gussied up Figures and Supporting Information thumbnails
 - Register Decision card now has 'Minor Revision' and 'Major Revision' options instead of 'Revise'
 - Upgraded to CAS v2 which properly handles redirection back to main application
 - Update notify_invited email formatting
+- Updated Puma to 2.12.2
+- Billing card copy and typos. Using countries endpoint
 
 ### Deprecated
 -

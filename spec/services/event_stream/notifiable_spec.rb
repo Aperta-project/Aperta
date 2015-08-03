@@ -8,7 +8,7 @@ describe EventStream::Notifiable do
 
   describe "#event_payload without requester notification" do
     # a model with an event_stream_notifier included
-    let(:model) { FactoryGirl.create(:paper) }
+    let(:model) { FactoryGirl.create(:comment) }
 
     let(:payload) do
       model.event_payload
@@ -30,9 +30,9 @@ describe EventStream::Notifiable do
 
     context "when updated" do
       let(:payload) do
-        paper = Paper.find(model.id)
-        paper.touch
-        paper.event_payload
+        comment = Paper.find(model.id)
+        comment.touch
+        comment.event_payload
       end
 
       it "sends the 'updated' action" do
@@ -42,9 +42,9 @@ describe EventStream::Notifiable do
 
     context "when destroyed" do
       let(:payload) do
-        paper = Paper.find(model.id)
-        paper.destroy
-        paper.event_payload
+        comment = Paper.find(model.id)
+        comment.destroy
+        comment.event_payload
       end
 
       it "sends the 'destroyed' action" do
@@ -55,7 +55,7 @@ describe EventStream::Notifiable do
 
   describe "#event_payload with requester notification" do
     # a model with an event_stream_notifier included
-    let(:model) { FactoryGirl.create(:paper, notify_requester: true) }
+    let(:model) { FactoryGirl.create(:comment, notify_requester: true) }
 
     let(:payload) do
       model.event_payload

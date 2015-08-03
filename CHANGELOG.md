@@ -5,7 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
--
+- Autosuggest ember component
 
 ### Changed
 - Gussied up Figures and Supporting Information thumbnails

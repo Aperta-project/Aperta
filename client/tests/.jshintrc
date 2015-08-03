@@ -2,10 +2,15 @@
   "predef": [
     "document",
     "window",
+    "-Promise",
+    "Spinner",
+    "moment",
+    "$",
+    "CodeMirror",
+    "Bugsnag",
+    "_",
     "location",
     "setTimeout",
-    "$",
-    "-Promise",
     "define",
     "console",
     "visit",
@@ -25,8 +30,7 @@
     "currentPath",
     "currentRouteName",
     "pickFromSelect2",
-    "pickFromChosenSingle",
-    "_"
+    "pickFromChosenSingle"
   ],
   "node": false,
   "browser": false,

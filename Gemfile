@@ -43,7 +43,6 @@ gem "carrierwave"
 gem "fog"
 gem "unf"
 gem 'newrelic_rpm'
-gem "skylight"
 gem "rest-client"
 gem 'gepub', "~> 0.7.0beta1"
 gem 'rubyzip', require: 'zip'

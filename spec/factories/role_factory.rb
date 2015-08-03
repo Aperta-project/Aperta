@@ -13,10 +13,6 @@ FactoryGirl.define do
       kind Role::EDITOR
     end
 
-    trait :reviewer do
-      kind Role::REVIEWER
-    end
-
     trait :flow_manager do
       kind Role::FLOW_MANAGER
       can_view_flow_manager true

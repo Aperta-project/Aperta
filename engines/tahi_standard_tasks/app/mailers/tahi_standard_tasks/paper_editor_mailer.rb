@@ -14,7 +14,7 @@ module TahiStandardTasks
 
       mail({
         to: @invitation.email,
-        subject: "You have been invited as an editor on Tahi"
+        subject: "You've been invited as an editor for the manuscript, \"#{@paper.display_title}\""
       })
     end
   end

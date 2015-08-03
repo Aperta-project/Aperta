@@ -4,8 +4,10 @@ require 'rails_helper'
 
 describe VersionedTextsController do
   let(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: user) }
-  let(:versioned_text) { FactoryGirl.create(:versioned_text, paper: paper) }
   let(:user) { create(:user, tasks: []) }
+  # this will have been automagically created by setting the paper
+  # body
+  let(:versioned_text) { VersionedText.where(paper: paper).first }
 
   before { sign_in user }
 

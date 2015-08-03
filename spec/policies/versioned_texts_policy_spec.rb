@@ -3,7 +3,9 @@ require 'rails_helper'
 describe VersionedTextsPolicy do
   let(:user) { FactoryGirl.create(:user) }
   let(:paper) { FactoryGirl.create(:paper) }
-  let(:versioned_text) { FactoryGirl.create(:versioned_text, paper: paper) }
+  # this will have been automagically created by setting the paper
+  # body
+  let(:versioned_text) { VersionedText.where(paper: paper).first }
   let(:policy) { VersionedTextsPolicy.new(current_user: user, resource: versioned_text) }
 
   describe "show?" do

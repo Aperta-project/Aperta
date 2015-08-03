@@ -50,4 +50,13 @@ describe VersionedText do
       expect(versioned_text.submitting_user).to eq(user)
     end
   end
+  
+  describe "#create" do
+    it "should not allow creating multiple versions with the same number" do
+      FactoryGirl.create(:versioned_text, paper_id: 1, major_version: 1, minor_version: 0)
+      expect do
+        FactoryGirl.create(:versioned_text, paper_id: 1, major_version: 1, minor_version: 0)
+      end.to raise_exception(ActiveRecord::RecordNotUnique)
+    end
+  end
 end

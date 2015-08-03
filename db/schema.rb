@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150730165645) do
+ActiveRecord::Schema.define(version: 20150803230248) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -513,6 +513,8 @@ ActiveRecord::Schema.define(version: 20150730165645) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "versioned_texts", ["minor_version", "major_version", "paper_id"], name: "unique_version", unique: true, using: :btree
 
   add_foreign_key "decisions", "papers"
   add_foreign_key "discussion_participants", "discussion_topics"

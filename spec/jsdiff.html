@@ -1,0 +1,70 @@
+<html>
+<body>
+  <script src="./node_modules/diff/diff.js"></script>
+<div style="display: none">
+<textarea id="one" rows="10" cols="40"></textarea><br/>
+---------------<br />
+<textarea id="two" rows="10" cols="40"></textarea><br/>
+<input type="button" value="Go" onclick="go()" />
+<pre id="display">
+<script src="./node_modules/diff/diff.js"></script>
+</pre>
+
+<div id="divone">I am a <em>happy camper</em>.</div>
+<div id="divtwo">I am a camper.</div>
+</div>
+
+<script>
+function go() {
+  var one = document.getElementById("one").value;
+  var two = document.getElementById("two").value;
+
+  var diff = JsDiff.diffWords("I am a <em>happy camper</em>.", "I am a camper.").forEach(display);
+  document.write("<br>");
+  var diff = JsDiff.diffWords("I am a <em>happy camper</em>", "I am a camper.").forEach(display);
+  document.write("<br>");
+  var diff = JsDiff.diffSentences("I am a <em>happy camper</em>", "I am a camper.").forEach(display);
+  document.write("<br>");
+  var diff = JsDiff.diffWords("I am a <em>happy camper</em>", "I am a camper.").forEach(display);
+  document.write("<br>");
+//  var diff = JsDiff.diffWords('<p><span typeof="math"><span property="source" data-format="tex">\forall x \in X, \quad \exists y \leq \epsilon</span></span></p>', '<p><span typeof="math"><span property="source" data-format="tex">\forall x \in X, \quad \exists y \leq \epsilon</span></span></p>').forEach(display);
+  document.write("<br>");
+
+  console.log("As JSON");
+  //var divone = document.getElementById("divone");
+  //var divtwo = document.getElementById("divtwo");
+  var one = {
+    a: 5,
+    b: {
+     C: 2
+    }
+  };
+  var two = {
+    a: 5,
+    b: {
+      a: 1,
+      b: 2
+    }
+  }
+  var diff = JsDiff.diffJson(one, two).forEach(display);
+  document.write("<br>");
+}
+
+function display(part) {
+  console.log(part);
+  if (part.added) {
+    document.write("<span style='color: blue'>" + part.value + "</span>");
+  }
+  else if (part.removed) {
+    document.write("<span style='color: red'>" + part.value + "</span>");
+  }
+  else {
+    document.write(part.value);
+  }
+}
+ go();
+
+
+</script>
+</body>
+</html>

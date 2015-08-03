@@ -19,18 +19,18 @@ module 'Integration: Manuscript Manager Templates',
   afterEach: ->
     server.restore()
     Ember.run(app, app.destroy)
-    Tahi.__container__.lookup(
+    app.__container__.lookup(
       'controller:admin/journal/manuscript-manager-template/edit'
-    )._actions.saveTemplateOnClick = Tahi.saveTemplateActionFunction
+    )._actions.saveTemplateOnClick = app.saveTemplateActionFunction
 
   beforeEach: ->
     app = startApp()
     server = setupMockServer()
-    Tahi.saveTemplateActionFunction = Tahi.__container__.lookup(
+    app.saveTemplateActionFunction = app.__container__.lookup(
       'controller:admin/journal/manuscript-manager-template/edit'
     )._actions.saveTemplateOnClick
 
-    Tahi.__container__.lookup(
+    app.__container__.lookup(
       'controller:admin/journal/manuscript-manager-template/edit'
     )._actions.saveTemplateOnClick = -> console.log 'No Action'
 

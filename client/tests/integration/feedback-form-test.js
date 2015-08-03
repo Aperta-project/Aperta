@@ -20,6 +20,11 @@ module('Integration: Feedback Form', {
       status: 201,
       responseText: {}
     });
+    $.mockjax({
+      url: '/api/countries',
+      status: 200,
+      responseText: { countries: [{ id: 1, text: 'Peru'}] }
+    });
   }
 });
 

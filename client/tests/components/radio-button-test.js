@@ -22,9 +22,9 @@ test('value is required', function(assert) {
   assert.expect(1);
 
   assert.throws(function() {
-    this.render(hbs(`
+    this.render(hbs`
       {{radio-button}}
-    `));
+    `);
   }, Error, 'has thrown an Error');
 });
 
@@ -32,18 +32,18 @@ test('selection is required', function(assert) {
   assert.expect(1);
 
   assert.throws(function() {
-    this.render(hbs(`
+    this.render(hbs`
       {{radio-button value="red"}}
-    `));
+    `);
   }, Error, 'has thrown an Error');
 });
 
 test('it renders', function(assert) {
   assert.expect(1);
 
-  this.render(hbs(`
+  this.render(hbs`
     {{radio-button value="red" selection=color}}
-  `));
+  `);
 
   assert.equal(this.$('input[type=radio]').length, 1);
 });
@@ -51,14 +51,14 @@ test('it renders', function(assert) {
 test('it updates', function(assert) {
   assert.expect(8);
 
-  this.render(hbs(`
+  this.render(hbs`
     {{radio-button id="red"   name="color" value="red"  selection=color
                    action=(action "changeColor")}}
     {{radio-button id="blue"  name="color" value="blue" selection=color
                    action=(action "changeColor")}}
     {{radio-button id="green" name="color" value="green"selection=color
                    action=(action "changeColor")}}
-  `));
+  `);
 
   assert.equal(this.$('input:checked').length, 0, 'none checked');
 

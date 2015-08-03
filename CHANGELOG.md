@@ -5,12 +5,17 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
-- Countries endpoint through NED
+- Countries endpoint through NED (Ringold)
 - Ability to download attachments on adhoc cards
 - Ability for any user in system to become a reviewer on a paper
 - Whitelabel application so that application name can be changed via configuration
-- Institutions are now fetched from NED
+- Invitations of new user
+- Institutions are now fetched from NED (Ringold)
 - Introduce Auto Suggest List component
+- Customizable letter on invite editor card
+- Visual Editor supports MathJax
+- Searching for editors using name or email
+- More information included when sending an editor invitation
 
 ### Changed
 - Gussied up Figures and Supporting Information thumbnails
@@ -24,7 +29,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Upgraded Puma to 2.12.2
 - Upgraded Sidekiq to 3.4.2
 - Upgraded ember cli rails to 0.3.4
-- Upgrade PlosBioTechCheck
+- Upgrade to latest PlosBioTechCheck
+- Upgrade to latest VisualEditor
 
 ### Deprecated
 -

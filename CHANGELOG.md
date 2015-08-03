@@ -6,6 +6,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [Unreleased][unreleased]
 ### Added
 - Countries endpoint through NED
+- Ability to download attachments on adhoc cards
 
 ### Changed
 - Gussied up Figures and Supporting Information thumbnails

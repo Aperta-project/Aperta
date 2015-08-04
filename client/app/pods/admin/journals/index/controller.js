@@ -11,7 +11,7 @@ export default Ember.ArrayController.extend(Ember.SortableMixin, {
   actions: {
     addNewJournal() {
       if (!this.get('newJournalPresent')) {
-        this.store.createRecord('adminJournal');
+        this.store.createRecord('admin-journal');
       }
     }
   }

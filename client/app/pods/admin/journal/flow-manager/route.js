@@ -14,9 +14,9 @@ export default Ember.Route.extend({
   setupController(controller, model) {
     controller.setProperties({
       model: model,
-      commentLooks: this.store.all('commentLook'),
+      commentLooks: this.store.all('comment-look'),
       journal: this.modelFor('admin.journal'),
-      journalTaskTypes: this.store.all('journalTaskType')
+      journalTaskTypes: this.store.all('journal-task-type')
     });
   },
 

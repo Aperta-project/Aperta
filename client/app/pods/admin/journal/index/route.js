@@ -13,7 +13,7 @@ export default Ember.Route.extend({
   },
 
   fetchAdminJournalUsers(journalId) {
-    return this.store.find('AdminJournalUser', {
+    return this.store.find('admin-journal-user', {
       journal_id: journalId
     }).then((users)=> {
       this.set('controller.adminJournalUsers', users);

@@ -1,8 +1,8 @@
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  journal: DS.belongsTo('adminJournal'),
-  userRoles: DS.hasMany('userRole'),
+  journal: DS.belongsTo('admin-journal'),
+  userRoles: DS.hasMany('user-role'),
   flows: DS.hasMany('flow', { async: true }),
 
   canAdministerJournal: DS.attr('boolean'),

@@ -17,7 +17,7 @@ export default AuthorizedRoute.extend({
       this.get('cardOverlayService').set('cachedModel', null);
       return cachedModel;
     } else {
-      return this.store.find('userFlow');
+      return this.store.find('user-flow');
     }
   },
 
@@ -28,8 +28,8 @@ export default AuthorizedRoute.extend({
   setupController(controller, model) {
     controller.setProperties({
       model: model,
-      commentLooks: this.store.all('commentLook'),
-      journalTaskType: this.store.all('journalTaskType')
+      commentLooks: this.store.all('comment-look'),
+      journalTaskType: this.store.all('journal-task-type')
     });
   },
 

@@ -15,7 +15,7 @@ export default Ember.Route.extend({
     },
 
     addTaskType(phaseTemplate, taskType) {
-      let newTask = this.store.createRecord('taskTemplate', {
+      let newTask = this.store.createRecord('task-template', {
         title: taskType.get('title'),
         journalTaskType: taskType,
         phaseTemplate: phaseTemplate,

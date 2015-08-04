@@ -1,9 +1,9 @@
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  manuscriptManagerTemplates: DS.hasMany('manuscriptManagerTemplate'),
+  manuscriptManagerTemplates: DS.hasMany('manuscript-manager-template'),
   roles: DS.hasMany('role'),
-  journalTaskTypes: DS.hasMany('journalTaskType'),
+  journalTaskTypes: DS.hasMany('journal-task-type'),
 
   createdAt: DS.attr('date'),
   description: DS.attr('string'),

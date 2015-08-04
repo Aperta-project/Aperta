@@ -27,7 +27,7 @@ export default Ember.Controller.extend({
 
   actions: {
     createFlow(flow) {
-      this.store.createRecord('userFlow', {
+      this.store.createRecord('user-flow', {
         title: flow.title,
         flowId: flow.id,
         journalName: flow.journal_name,

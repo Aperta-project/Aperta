@@ -9,7 +9,7 @@ export default Ember.Controller.extend({
   paper: Ember.computed.alias('model'),
 
   commentLooks: Ember.computed(function() {
-    return this.store.all('commentLook');
+    return this.store.all('comment-look');
   }),
 
   allTaskIds() {

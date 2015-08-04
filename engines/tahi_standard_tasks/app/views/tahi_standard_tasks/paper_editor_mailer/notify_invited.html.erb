@@ -1,20 +1,17 @@
 <div class='container'>
   <div class='greeting'>
-    <h3 class='user-name'>
-      Hello <%= @invitee.full_name %>
-    </h3>
     <p class='message'>
-      You've been invited as an Editor on a Manuscript.
+      You've been invited as an editor on a manuscript
     </p>
   </div>
   <hr>
   <div class='paper-info'>
     <div class='journal-info'>
-      <% if @paper.journal.logo_url %>
-        <img class='journal-logo' src='<%= @paper.journal.logo_url %>'>
+      <% if @journal.logo_url %>
+        <img class='journal-logo' src='<%= @journal.logo_url %>'>
       <% else %>
         <div class='journal-name'>
-          <%= @paper.journal.name %>
+          <%= @journal.name %>
         </div>
       <% end %>
     </div>
@@ -30,13 +27,15 @@
       </div>
     <% end %>
     <p>
-      <a class='button' href='<%= client_paper_url(@paper) %>' target='_blank'>
-        View Paper
+      <a class='button' href='<%= client_dashboard_url %>' target='_blank'>
+        View Invitation
       </a>
     </p>
   </div>
   <hr>
   <div class='footer'>
-    We look forward to your contributions! - Team Tahi
+    Sincerely,
+    <br>
+    <%= @paper.journal.name %> Team
   </div>
 </div>

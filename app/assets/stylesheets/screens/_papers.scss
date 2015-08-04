@@ -75,6 +75,14 @@ html.control-bar-sub-nav-active #paper-container {
 
   &.not-ve {
     font-size: .95em;
+
+    .added {
+      background-color: $tahi-green-light;
+    }
+
+    .removed {
+      background-color: $tahi-light-red;
+    }
   }
 }
 

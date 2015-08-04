@@ -17,6 +17,8 @@ $tahi-black: #000000;
 
 $tahi-white: #fff;
 $tahi-error-red: #BB0000;
+$tahi-light-red: lighten($tahi-error-red, 50%);
+$tahi-error-background-red: #f7efe9;
 
 $tahi-font-family: 'Cabin', helvetica, sans-serif;
 $tahi-article-font-family: 'librebaskerville', times, serif;

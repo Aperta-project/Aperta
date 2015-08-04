@@ -26,13 +26,13 @@ class VersionedText < ActiveRecord::Base
   # flag is true.
   def minor_version!
     self.copy_on_edit = false
-    self.submitting_user = nil
 
     old_version = dup
     old_version.text = text_was
     old_version.active = false
     old_version.save!
 
+    self.submitting_user = nil
     self.minor_version = minor_version + 1
   end
 

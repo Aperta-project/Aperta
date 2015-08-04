@@ -31,7 +31,7 @@ describe TahiStandardTasks::PaperReviewerMailer do
 
     describe "email body content" do
       it "includes appropriate body text" do
-        expect(email.body).to include "You've been invited to be a Reviewer on a Manuscript"
+        expect(email.body).to include "You've been invited to be a reviewer on a manuscript"
       end
     end
   end

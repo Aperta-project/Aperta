@@ -5,6 +5,25 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
+-
+
+### Changed
+-
+
+### Deprecated
+-
+
+### Removed
+-
+
+### Fixed
+-
+
+### Security
+-
+
+## [1.2.0] - 2015-08-04
+### Added
 - Countries endpoint through NED (Ringold)
 - Ability to download attachments on adhoc cards
 - Ability for any user in system to become a reviewer on a paper
@@ -32,9 +51,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Upgrade to latest PlosBioTechCheck
 - Upgrade to latest VisualEditor
 
-### Deprecated
--
-
 ### Removed
 - Minor check publishing state
 - TahiStandardTasks::TechCheckTask is removed
@@ -42,10 +58,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Fixed
 - Decreased memory consumption on `admin/journal` by decreasing amount of serialized data
 - Update all Devise error messages to Aperta's basic alert-warning styles (red)
-
-### Security
--
-
 
 ## [1.1.1] - 2015-07-14
 ### Changed
@@ -109,7 +121,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 _Changes too big to document, initial release_
 
-[unreleased]: https://github.com/tahi-project/tahi/compare/v1.1.1...HEAD
+[unreleased]: https://github.com/tahi-project/tahi/compare/v1.2.0...HEAD
+[1.1.1]: https://github.com/tahi-project/tahi/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/tahi-project/tahi/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/tahi-project/tahi/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/tahi-project/tahi/compare/v1.0.0...v1.0.1

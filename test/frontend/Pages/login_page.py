@@ -37,7 +37,7 @@ class LoginPage(PlosPage):
   # POM Actions
   def validate_initial_page_elements_styles(self):
     welcome_msg = self._get(self._welcome_message)
-    assert welcome_msg.text == 'Welcome to Tahi'
+    assert welcome_msg.text == 'Welcome to PLOS'
     assert 'helvetica' in welcome_msg.value_of_css_property('font-family')
     assert welcome_msg.value_of_css_property('font-size') == '44px'
     assert welcome_msg.value_of_css_property('font-weight') == '400'

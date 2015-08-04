@@ -1,7 +1,10 @@
 require 'sinatra/base'
-require "pry"
 
 class UploadServer < Sinatra::Base
+  def self.clear_all_uploads
+    store.clear
+  end
+
   def self.store
     @@store ||= {}
   end

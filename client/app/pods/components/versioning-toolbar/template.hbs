@@ -15,7 +15,7 @@
             content=paper.versions
             optionValuePath="content.id"
             optionLabelPath="content.name"
-            selection=selectedVersion}}
+            selection=fromVersion}}
         </div>
         <div class="toolbar-item">
           Compare With:
@@ -25,7 +25,7 @@
             content=paper.versions
             optionValuePath="content.id"
             optionLabelPath="content.name"
-            selection=compareVersion}}
+            selection=compareToVersion}}
         </div>
       {{else}}
         <a class="versioning-mode-button" {{action "openVersioningMode"}}>

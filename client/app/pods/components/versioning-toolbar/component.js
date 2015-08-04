@@ -4,37 +4,36 @@ import RESTless from 'tahi/services/rest-less';
 export default Ember.Component.extend({
   oldText: null,
   currentBody: null,
-  leftText: null,
-  rightText: null,
+  fromText: null,
+  compareToText: null,
 
-  getRightText() {
-    let edited = this.get('compareVersion');
+  getCompareToText() {
+    let edited = this.get('compareToVersion');
     if (edited) {
       RESTless.get('/api/versioned_texts/' + edited.id).then((response) => {
-        this.rightText = response['versioned_text']['text'];
+        this.compareToText = response['versioned_text']['text'];
         this.setPaperBody();
       });
     } else {
-      this.rightText = null;
+      this.compareToText = null;
       this.setPaperBody();
     }
   },
 
-  showVersion() {
-    let version = this.get('selectedVersion');
+  getFromVersion() {
+    let version = this.get('fromVersion');
 
     if (version) {
-      console.log('showVersion', version.id);
       RESTless.get('/api/versioned_texts/' + version.id).then((response) => {
-        this.leftText = response['versioned_text']['text'];
+        this.fromText = response['versioned_text']['text'];
         this.setPaperBody();
       });
     }
   },
 
   setPaperBody() {
-    if (this.rightText == null) {
-      this.set('paper.currentVersionBody', this.leftText);
+    if (this.compareToText == null) {
+      this.set('paper.currentVersionBody', this.fromText);
     }
     else {
       this.set('paper.currentVersionBody', this.setDiffedBody());
@@ -52,7 +51,7 @@ export default Ember.Component.extend({
   setDiffedBody() {
     let body = "";
     console.log(this.SentenceDiff);
-    let diff = this.SentenceDiff.diff(this.rightText, this.leftText);
+    let diff = this.SentenceDiff.diff(this.compareToText, this.fromText);
     console.log(diff);
     return "<span>" + _.map(diff, this.styleDiffChunk, this).join("");
   },
@@ -75,8 +74,8 @@ export default Ember.Component.extend({
   },
 
   setupObserver: function() {
-    this.addObserver('selectedVersion', this, 'showVersion');
-    this.addObserver('compareVersion', this, 'getRightText');
+    this.addObserver('fromVersion', this, 'getFromVersion');
+    this.addObserver('compareToVersion', this, 'getCompareToText');
   }.on('didInsertElement'),
 
   versioningModeTransition: Ember.computed.or(
@@ -87,7 +86,7 @@ export default Ember.Component.extend({
   actions: {
     openVersioningMode() {
       this.set('transitioning', true);
-      this.showVersion();
+      this.getFromVersion();
       Ember.run.later(()=>{
         this.set('versioningMode', true);
         this.set('transitioning', false);

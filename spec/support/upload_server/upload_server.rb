@@ -1,5 +1,20 @@
 require 'sinatra/base'
 
+# UploadServer is used to mimick Amazon S3 and handle file uploads when running
+# integration/feature specs.
+#
+# The reason this exists is because uploading files in a browser (e.g. through
+# Selenium) POST/PUTs them directly to Amazon S3 (per the S3_URL env
+# var). Due to this VCR cannot be used to intercept those requests and stub
+# their responses. This also prevents the uploads from successfully completing
+# when running feature specs.
+#
+# Additional Notes:
+#
+# * uploading a file will store it in-memory, you can later GET that file back
+# * be sure to call UploadServer.clear_all_uploads to eliminate bleed over from
+#   one test to another.
+#
 class UploadServer < Sinatra::Base
   def self.clear_all_uploads
     store.clear

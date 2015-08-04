@@ -32,7 +32,7 @@ export default Ember.Mixin.create({
     }
 
     if(this.get('setMaxHeight')) {
-      css.height = $(window).height() - offset.top - targetHeight - 10;
+      css.maxHeight = $(window).height() - offset.top - targetHeight - 10;
     }
 
     this.$().css(css);

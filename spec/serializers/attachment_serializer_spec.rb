@@ -29,12 +29,17 @@ describe AttachmentSerializer do
       end
 
       it "has :preview_src" do
-        expect(deserialized_attachment[:preview_src]).to match(/http.*yeti.png/)
+        expect(deserialized_attachment[:preview_src]).to match(/\/preview_yeti.png/)
+      end
+
+      it "has :detail_src" do
+        expect(deserialized_attachment[:detail_src]).to match(/\/yeti.tiff/)
       end
     end
 
     context "and the attachment is not an image" do
       it { is_expected.to include(preview_src: nil) }
+      it { is_expected.to include(detail_src: nil) }
     end
 
     it { is_expected.to include(filename: attachment.filename) }

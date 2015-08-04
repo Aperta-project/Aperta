@@ -9,13 +9,13 @@ export default Ember.Component.extend({
   disabled: false,
   indeterminate: false,
 
-  _setupOnChange: function() {
+  _setupOnChange: Ember.on('init', function() {
     this.on('change', this, this._updateElementValue);
-  }.on('init'),
+  }),
 
-  _setupIndeterminate: function() {
+  _setupIndeterminate: Ember.on('didInsertElement', function() {
     this.get('element').indeterminate = !!this.get('indeterminate');
-  }.on('didInsertElement'),
+  }),
 
   _updateElementValue() {
     this.set('checked', this.$().prop('checked'));

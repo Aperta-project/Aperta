@@ -2,9 +2,9 @@ import Ember from 'ember';
 import FileUpload from 'tahi/models/file-upload';
 
 export default Ember.Mixin.create({
-  _initFileUpload: function() {
+  _initFileUpload: Ember.on('init', function() {
     return this.set('uploads', []);
-  }.on('init'),
+  }),
 
   uploads: null,
   isUploading: Ember.computed.notEmpty('uploads'),
@@ -42,7 +42,7 @@ export default Ember.Mixin.create({
   uploadFinished(data, filename) {
     $(window).off('beforeunload.cancelUploads.' + filename);
 
-    var key = Object.keys(data || {})[0];
+    let key = Object.keys(data || {})[0];
     if ( (key && data[key]) || key && data[key] === [] ) {
       // TODO: DOM manipulation in mixin? This is used by controllers too
       $('.upload-preview-filename').text('Upload Complete!');
@@ -65,8 +65,8 @@ export default Ember.Mixin.create({
 
   actions: {
     uploadProgress(data) { this.uploadProgress(data); },
-    cancelUploads()      { this.cancelUploads(); },
-    uploadFinished(data, filename)     { this.uploadFinished(data, filename); },
+    cancelUploads() { this.cancelUploads(); },
+    uploadFinished(data, filename) { this.uploadFinished(data, filename); },
     uploadStarted(data, fileUploadXHR) { this.uploadStarted(data, fileUploadXHR); }
   }
 });

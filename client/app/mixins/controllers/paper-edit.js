@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-let computed = Ember.computed;
+const { computed } = Ember;
 
 export default Ember.Mixin.create({
   editor: null,
@@ -46,12 +46,12 @@ export default Ember.Mixin.create({
     return !!(lockedBy && lockedBy === this.get('currentUser'));
   }),
 
-  saveStateDidChange: function() {
+  saveStateDidChange: Ember.observer('saveState', function() {
     this.setProperties({
       saveStateMessage: this.get('saveState') ? 'Saved' : null,
       savedAt: this.get('saveState') ? new Date() : null
     });
-  }.observes('saveState'),
+  }),
 
   savePaperDebounced() {
     this.set('isSaving', true);

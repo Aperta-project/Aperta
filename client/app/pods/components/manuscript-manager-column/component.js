@@ -4,9 +4,9 @@ import DragNDrop from 'tahi/services/drag-n-drop';
 export default Ember.Component.extend(DragNDrop.DroppableMixin, {
   classNames: ['column'],
 
-  nextPosition: function() {
+  nextPosition: Ember.computed('content.position', function() {
     return this.get('content.position') + 1;
-  }.property('content.position'),
+  }),
 
   removeDragStyles() {
     this.$().removeClass('current-drop-target');

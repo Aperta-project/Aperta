@@ -13,9 +13,9 @@ export default DS.Model.extend({
 
   // unique id extracted from citeproc json if available
   getUniqueId() {
-    var uuid = null;
+    let uuid = null;
     if (this.get('format') === 'citeproc') {
-      var data = JSON.parse(this.get('content'));
+      let data = JSON.parse(this.get('content'));
       uuid = data.DOI || data.ISSN || data.ISBN;
     }
     return uuid || 'bibitem_'+this.get('id');

@@ -2,7 +2,7 @@ import Ember from 'ember';
 import DocumentDownload from 'tahi/services/document-download';
 import ENV from 'tahi/config/environment';
 
-let computed = Ember.computed;
+const { computed } = Ember;
 
 export default Ember.Mixin.create({
   needs: ['application', 'paper'],

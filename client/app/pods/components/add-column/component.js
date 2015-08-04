@@ -13,7 +13,7 @@ export default Ember.Component.extend({
     this.sendAction('action', this.get('position'));
   },
 
-  setupTooltip: function() {
+  setupTooltip: Ember.on('didInsertElement', function() {
     this.$().tooltip();
-  }.on('didInsertElement')
+  })
 });

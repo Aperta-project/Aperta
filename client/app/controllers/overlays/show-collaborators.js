@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-let computed = Ember.computed;
+const { computed } = Ember;
 
 export default Ember.Controller.extend({
   overlayClass: 'overlay--fullscreen show-collaborators-overlay',

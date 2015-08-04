@@ -5,14 +5,14 @@ export default Ember.Controller.extend({
   taskTypeSort: ['title:asc'],
   taskType: null,
   sortedTaskTypes: Ember.computed.sort('journalTaskTypes', 'taskTypeSort'),
-  formattedTaskTypes: function() {
+  formattedTaskTypes: Ember.computed('sortedTaskTypes.@each', function() {
     return this.get('sortedTaskTypes').map(function(taskType) {
       return {
         id: taskType.get('id'),
         text: taskType.get('title')
       };
     });
-  }.property('sortedTaskTypes.@each'),
+  }),
   formattedTaskTypesReady: Ember.computed.notEmpty('formattedTaskTypes'),
 
   actions: {

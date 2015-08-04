@@ -5,9 +5,9 @@ export default Ember.Controller.extend({
 
   invitations: Ember.computed.reads('currentUser.invitedInvitations'),
 
-  didCompleteAllInvitations: function() {
+  didCompleteAllInvitations: Ember.observer('invitations.@each', function() {
     if(Ember.isEmpty(this.get('invitations'))) {
       this.send('closeOverlay');
     }
-  }.observes('invitations.@each')
+  })
 });

@@ -6,13 +6,13 @@ export default Ember.Component.extend({
   classNames: ['flash-message'],
   classNameBindings: ['type'],
 
-  type: function() {
+  type: Ember.computed('message.type', function() {
     return 'flash-message--' + this.get('message.type');
-  }.property('message.type'),
+  }),
 
-  fadeIn: function() {
+  fadeIn: Ember.on('didInsertElement', function() {
     this.$().hide().fadeIn(250);
-  }.on('didInsertElement'),
+  }),
 
   actions: {
     remove() {

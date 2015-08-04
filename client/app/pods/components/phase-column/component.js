@@ -6,19 +6,19 @@ export default Ember.Component.extend({
   phase: null,
   paper: null,
 
-  nextPosition: function() {
+  nextPosition: Ember.computed('phase.position', function() {
     return this.get('phase.position') + 1;
-  }.property('phase.position'),
+  }),
 
   commentLooks: null,
 
-  sortedTasks: function() {
+  sortedTasks: Ember.computed('phase.tasks.[]', function() {
     return this.get('phase.tasks').sortBy('position');
-  }.property('phase.tasks.[]'),
+  }),
 
   noCards: Ember.computed.empty('sortedTasks'),
 
-  setupSortable: function() {
+  setupSortable: Ember.on('didInsertElement', function() {
     let phaseId = this.get('phase.id');
     let self = this;
 
@@ -59,7 +59,7 @@ export default Ember.Component.extend({
         $(ui.item).closest('.column-content').removeClass('column-content--dragging');
       }
     });
-  }.on('didInsertElement'),
+  }),
 
   updateSortOrder(updatedOrder) {
     this.beginPropertyChanges();

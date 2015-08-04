@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
@@ -7,7 +8,7 @@ export default DS.Model.extend({
   lastName: DS.attr('string'),
   position: DS.attr('number'),
 
-  fullName: function() {
+  fullName: Ember.computed('firstName', 'middleInitial', 'lastName', function() {
     return [this.get('firstName'), this.get('middleInitial'), this.get('lastName')].compact().join(' ');
-  }.property('firstName', 'middleInitial', 'lastName')
+  })
 });

@@ -11,25 +11,25 @@ export default Ember.Component.extend({
 
   showContent: Ember.computed.reads('initialShowState'),
 
-  initialShowState: function() {
+  initialShowState: Ember.computed('parentView', function() {
     return this.get(this.get('propName'));
-  }.property('parentView'),
+  }),
 
   prop: '',
 
-  propName: function() {
+  propName: Ember.computed('prop', function() {
     return 'parentView.' + this.get('prop');
-  }.property('prop'),
+  }),
 
   showPropDidChange(sender, key) {
     this.set('showContent', sender.get(key));
   },
 
-  setupObserver: function() {
+  setupObserver: Ember.on('didInsertElement', function() {
     this.addObserver(this.get('propName'), this, this.showPropDidChange);
-  }.on('didInsertElement'),
+  }),
 
-  removeObserver: function() {
+  removeObserver: Ember.on('willDestroyElement', function() {
     Ember.removeObserver(this, this.get('propName'), this, this.showPropDidChange);
-  }.on('willDestroyElement')
+  })
 });

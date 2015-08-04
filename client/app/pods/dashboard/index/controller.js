@@ -12,16 +12,16 @@ export default Ember.Controller.extend({
   relatedAtSort: ['relatedAtDate:desc'],
   sortedPapers: Ember.computed.sort('papers', 'relatedAtSort'),
 
-  totalPaperCount: function() {
+  totalPaperCount: Ember.computed('papers.length', function() {
     let numPapersFromServer       = this.store.metadataFor('paper').total_papers;
     let numDashboardPapersInStore = this.get('papers.length');
 
     return numDashboardPapersInStore > numPapersFromServer ? numDashboardPapersInStore : numPapersFromServer;
-  }.property('papers.length'),
+  }),
 
-  canLoadMore: function() {
+  canLoadMore: Ember.computed('pageNumber', function() {
     return this.get('pageNumber') !== this.store.metadataFor('paper').total_pages;
-  }.property('pageNumber'),
+  }),
 
   actions: {
     loadMorePapers() {

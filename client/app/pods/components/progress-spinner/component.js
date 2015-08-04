@@ -15,7 +15,7 @@ import Ember from 'ember';
  *   ```
  **/
 
-let computedConcat = function(string, dependentKey) {
+const computedConcat = function(string, dependentKey) {
   return Ember.computed(dependentKey, function(){
     let value = Ember.get(this, dependentKey);
 

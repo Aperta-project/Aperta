@@ -33,11 +33,11 @@ export default Ember.Component.extend({
 
   // Private
 
-  _editorSetup: function() {
+  _editorSetup: Ember.on('didInsertElement', function() {
     this._loadAssets().then(()=> {
       this._initCodemirror();
     });
-  }.on('didInsertElement'),
+  }),
 
   _windowResizeSetup() {
     $(window).on('resize.codemirror', ()=>{
@@ -48,9 +48,9 @@ export default Ember.Component.extend({
     }).resize();
   },
 
-  _windowResizeTeardown: function() {
+  _windowResizeTeardown: Ember.on('willDestroyElement', function() {
     $(window).off('resize.codemirror');
-  }.on('willDestroyElement'),
+  }),
 
   _loadAssets() {
     this._loadCSS();

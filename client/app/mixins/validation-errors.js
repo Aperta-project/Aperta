@@ -46,9 +46,9 @@ export default Ember.Mixin.create({
   */
 
   validationErrors: null,
-  _initValidationErrors: (function() {
+  _initValidationErrors: Ember.on('init', function() {
     this.set('validationErrors', {});
-  }).on('init'),
+  }),
 
   /**
     Take response from Rails, camelize keys and join arrays.
@@ -59,7 +59,7 @@ export default Ember.Mixin.create({
   */
 
   _prepareResponseErrors(errors, options) {
-    var errorsObject = Utils.deepJoinArrays(Utils.deepCamelizeKeys(errors));
+    let errorsObject = Utils.deepJoinArrays(Utils.deepCamelizeKeys(errors));
 
     if (options && options.includeNames) {
       for(var key in errorsObject) {

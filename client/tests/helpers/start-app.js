@@ -21,9 +21,9 @@ registerSelect2Helpers();
 
 
 export default function startApp(attrs) {
-  var application;
+  let application;
 
-  var attributes = Ember.merge({}, config.APP);
+  let attributes = Ember.merge({}, config.APP);
   attributes = Ember.merge(attributes, attrs); // use defaults, but you can override;
 
   Router.reopen({
@@ -48,7 +48,7 @@ export default function startApp(attrs) {
 
   TestHelper.reopen({
     mapFind: function(modelName, json) {
-      var responseJson = {};
+      let responseJson = {};
       // hack to work around
       // https://github.com/danielspaniel/ember-data-factory-guy/issues/82
       if ((/Task/).test(modelName)) {

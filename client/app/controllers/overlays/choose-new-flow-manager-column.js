@@ -6,7 +6,7 @@ export default Ember.Controller.extend({
   isLoading: false,
   flows: [],
 
-  groupedFlows: function() {
+  groupedFlows: Ember.computed('flows.[]', function() {
     let result = [];
 
     this.get('flows').forEach(function(flow) {
@@ -23,7 +23,7 @@ export default Ember.Controller.extend({
     });
 
     return result;
-  }.property('flows.[]'),
+  }),
 
   actions: {
     createFlow(flow) {

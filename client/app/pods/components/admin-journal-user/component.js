@@ -7,23 +7,23 @@ export default Ember.Component.extend({
   journalRoles: null,
   userJournalRoles: Ember.computed.mapBy('model.userRoles', 'role'),
 
-  selectableJournalRoles: function() {
+  selectableJournalRoles: Ember.computed('journalRoles', function() {
     return this.get('journalRoles').map(function(jr) {
       return {
         id: jr.get('id'),
         text: jr.get('name')
       };
     });
-  }.property('journalRoles'),
+  }),
 
-  selectableUserJournalRoles: function() {
+  selectableUserJournalRoles: Ember.computed('userJournalRoles', function() {
     return this.get('userJournalRoles').map(function(jr) {
       return {
         id: jr.get('id'),
         text: jr.get('name')
       };
     });
-  }.property('userJournalRoles'),
+  }),
 
   actions: {
     removeRole(roleObj) {

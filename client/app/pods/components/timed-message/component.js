@@ -43,11 +43,11 @@ export default Ember.Component.extend({
 
   message: '',
 
-  messageDidChange: (function() {
+  messageDidChange: Ember.observer('message', function() {
     this.$().html(this.get('message'));
 
     Ember.run.later(this, function() {
       this.set('message', '');
     }, this.get('duration'));
-  }).observes('message')
+  })
 });

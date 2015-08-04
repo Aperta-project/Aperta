@@ -15,16 +15,16 @@ export default Ember.Component.extend({
    */
   upload: null,
 
-  preview: function() {
+  preview: Ember.computed('file.preview', function() {
     let preview = this.get('file.preview');
     return preview != null ? preview.toDataURL() : void 0;
-  }.property('file.preview'),
+  }),
 
-  progress: function() {
+  progress: Ember.computed('upload.dataLoaded', 'upload.dataTotal', function() {
     return Math.round(this.get('upload.dataLoaded') * 100 / this.get('upload.dataTotal'));
-  }.property('upload.dataLoaded', 'upload.dataTotal'),
+  }),
 
-  progressBarStyle: function() {
+  progressBarStyle: Ember.computed('progress', function() {
     return Ember.String.htmlSafe('width: ' + (this.get('progress')) + '%;');
-  }.property('progress')
+  })
 });

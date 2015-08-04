@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import DS from 'ember-data';
 
 let a = DS.attr;
@@ -17,7 +18,7 @@ export default DS.Model.extend({
   // hasMany relationship isn't automatically updated.  This
   // is a somewhat well-known ember data bug. we need to manually
   // update the relationship for now.
-  updatePaperFiles: function() {
+  updatePaperFiles: Ember.on('didLoad', function() {
     this.get('paper.supportingInformationFiles').addObject(this);
-  }.on('didLoad')
+  })
 });

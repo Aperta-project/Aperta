@@ -9,17 +9,17 @@ export default Ember.Controller.extend({
   canViewFlowManagerLink: false,
   showOverlay: false,
 
-  clearError: function() {
+  clearError: Ember.observer('currentPath', function() {
     this.set('error', null);
-  }.observes('currentPath'),
+  }),
 
-  resetScrollPosition: function() {
+  resetScrollPosition: Ember.observer('currentPath', function() {
     window.scrollTo(0, 0);
-  }.observes('currentPath'),
+  }),
 
-  testing: function() {
+  testing: Ember.computed(function() {
     return Ember.testing || ENV.environment === 'test';
-  }.property(),
+  }),
 
   showSaveStatusDiv: Ember.computed.and('testing', 'delayedSave'),
 
@@ -27,9 +27,9 @@ export default Ember.Controller.extend({
 
   navigationVisible: false,
 
-  toggleNavigation: function() {
+  toggleNavigation: Ember.observer('navigationVisible', function() {
     $('html')[this.get('navigationVisible') ? 'addClass' : 'removeClass']('navigation-visible');
-  }.observes('navigationVisible'),
+  }),
 
   actions: {
     showNavigation() { this.set('navigationVisible', true); },

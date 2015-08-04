@@ -27,9 +27,9 @@ export default Ember.Component.extend({
     }
   },
 
-  phaseNameDidChange: function() {
+  phaseNameDidChange: Ember.observer('phase.name', function() {
     return Ember.run.scheduleOnce('afterRender', this, Utils.resizeColumnHeaders);
-  }.observes('phase.name'),
+  }),
 
   actions: {
     save() {

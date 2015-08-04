@@ -17,9 +17,9 @@ export default Ember.Component.extend({
    * @type Boolean
    * @readOnly
    **/
-  active: function() {
+  active: Ember.computed('value', 'parentView.selectedValue', function() {
     return this.get('value') === this.get('parentView.selectedValue');
-  }.property('value', 'parentView.selectedValue'),
+  }),
 
   click() {
     this.get('parentView').valueSelected(this.get('value'));

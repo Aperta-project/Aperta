@@ -1,5 +1,5 @@
 import Ember from 'ember';
-let computed = Ember.computed;
+const { computed } = Ember;
 
 export default Ember.Component.extend({
   selection: null,

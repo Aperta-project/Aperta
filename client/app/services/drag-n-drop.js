@@ -117,9 +117,9 @@ export default {
       @param {Object} event jQuery event to stop
       @return {Boolean} false
     */
-    _dragEnter: function(e) {
+    _dragEnter: Ember.on('dragEnter', function(e) {
       return cancelDragEvent(e);
-    }.on('dragEnter'),
+    }),
 
     /**
       Prevent annoying HTML5 drag-n-drop nonsense
@@ -130,9 +130,9 @@ export default {
       @return {Boolean} false
     */
 
-    _dragOver: function(e) {
+    _dragOver: Ember.on('dragOver', function(e) {
       return cancelDragEvent(e);
-    }.on('dragOver'),
+    }),
 
     /**
       Catch drop event

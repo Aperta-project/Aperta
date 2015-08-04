@@ -5,10 +5,10 @@ export default Ember.Controller.extend({
   feedbackSubmitted: false,
   isUploading: false,
 
-  setupModel: function() {
+  setupModel: Ember.on('init', function() {
     this.resetModel();
     this.set('model.screenshots', []);
-  }.on('init'),
+  }),
 
   resetModel() {
     this.set('model', this.store.createRecord('feedback'));

@@ -11,7 +11,7 @@ export default Ember.Component.extend({
    */
   time: null,
 
-  formatedTime: function() {
+  formatedTime: Ember.computed('time', function() {
     return relativeTime(this.get('time'));
-  }.property('time')
+  })
 });

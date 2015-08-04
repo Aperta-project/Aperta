@@ -1,9 +1,9 @@
 import Ember from 'ember';
 
 let animationEventName = function() {
-  var a;
-  var el = document.createElement('fakeelement');
-  var animations = {
+  let a;
+  let el = document.createElement('fakeelement');
+  let animations = {
     'animation': 'animationend',
     'OAnimation': 'oanimationend',
     'MSAnimation': 'msAnimationEnd',

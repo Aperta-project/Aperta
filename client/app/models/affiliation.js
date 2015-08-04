@@ -13,7 +13,7 @@ export default DS.Model.extend({
   title: DS.attr('string'),
   ringgoldId: DS.attr('string'),
 
-  isCurrent: function() {
+  isCurrent: Ember.computed('endDate', function() {
     return Ember.isBlank(this.get('endDate'));
-  }.property('endDate')
+  })
 });

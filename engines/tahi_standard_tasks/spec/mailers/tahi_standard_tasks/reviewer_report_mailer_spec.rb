@@ -36,6 +36,10 @@ describe TahiStandardTasks::ReviewerReportMailer do
 
     let(:email) { described_class.notify_editor_email(task_id: task.id, recipient_id: editor.id) }
 
+    it "has correct subject line" do
+      expect(email.subject).to eq "A review has been completed for the manuscript, \"#{paper.display_title}\""
+    end
+
     it "sends to paper's editors" do
       expect(email.to).to eq(paper.editors.map(&:email))
     end

@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import PositionNearMixin from 'tahi/mixins/components/position-near';
 
+const { computed, on } = Ember;
+
 /*
 Block Style:
 
@@ -24,12 +26,12 @@ itemClass property on auto-suggest-list:
 
 export default Ember.Component.extend(PositionNearMixin, {
   classNames: ['auto-suggest'],
-  positionNearSelector: Ember.computed.alias('selector'),
+  positionNearSelector: computed.alias('selector'),
 
   items: [],
 
   highlightedItem: null,
-  highlightedItemIndex: Ember.computed('highlightedItem', function() {
+  highlightedItemIndex: computed('highlightedItem', function() {
     return this.get('items').indexOf( this.get('highlightedItem') );
   }),
 
@@ -63,7 +65,7 @@ export default Ember.Component.extend(PositionNearMixin, {
     }
   },
 
-  _setupKeybindings: Ember.on('didInsertElement', function() {
+  _setupKeybindings: on('didInsertElement', function() {
     $(document).on('keyup.autosuggestlist', (event)=> {
       switch(event.which) {
         case 38:
@@ -78,7 +80,7 @@ export default Ember.Component.extend(PositionNearMixin, {
     });
   }),
 
-  _teardownKeybindings: Ember.on('willDestroyElement', function() {
+  _teardownKeybindings: on('willDestroyElement', function() {
     $(document).off('keyup.autosuggestlist');
   }),
 

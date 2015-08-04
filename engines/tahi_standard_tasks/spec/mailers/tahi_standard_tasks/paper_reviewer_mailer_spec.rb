@@ -1,4 +1,5 @@
 require 'rails_helper'
+include ClientRouteHelper
 
 shared_examples_for 'an invitation notification email' do |email_identifier_word:|
   it "implements an `email` object" do
@@ -26,6 +27,10 @@ describe TahiStandardTasks::PaperReviewerMailer do
     describe "email content and formatting" do
       it "has correct subject line" do
         expect(email.subject).to eq "You have been invited as a reviewer for the manuscript, \"#{task.paper.display_title}\""
+      end
+
+      it "has a dashboard link" do
+        expect(email.body).to include client_dashboard_url
       end
     end
 

@@ -5,19 +5,39 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
--
+- Countries endpoint through NED (Ringold)
+- Ability to download attachments on adhoc cards
+- Ability for any user in system to become a reviewer on a paper
+- Whitelabel application so that application name can be changed via configuration
+- Invitations of new user
+- Institutions are now fetched from NED (Ringold)
+- Introduce Auto Suggest List component
+- Customizable letter on invite editor card
+- Visual Editor supports MathJax
+- Searching for editors using name or email
+- More information included when sending an editor invitation
 
 ### Changed
 - Gussied up Figures and Supporting Information thumbnails
 - Register Decision card now has 'Minor Revision' and 'Major Revision' options instead of 'Revise'
 - Upgraded to CAS v2 which properly handles redirection back to main application
 - Update notify_invited email formatting
+- Updated Puma to 2.12.2
+- Billing card copy and typos. Using countries endpoint
+- Improve email text
+- PLOS Bio InitialTechCheckTask has become the new TechCheckTask
+- Upgraded Puma to 2.12.2
+- Upgraded Sidekiq to 3.4.2
+- Upgraded ember cli rails to 0.3.4
+- Upgrade to latest PlosBioTechCheck
+- Upgrade to latest VisualEditor
 
 ### Deprecated
 -
 
 ### Removed
--
+- Minor check publishing state
+- TahiStandardTasks::TechCheckTask is removed
 
 ### Fixed
 - Decreased memory consumption on `admin/journal` by decreasing amount of serialized data

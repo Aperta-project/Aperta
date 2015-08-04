@@ -29,10 +29,10 @@ test 'normalizeType denamespaces really deeply namespaced task types', (assert) 
 
 test 'serializing a model that was originally namespaced will correctly re-namespace it', (assert) ->
   Ember.run =>
-    task = getStore().createRecord('task', qualifiedType: "Foo::BarTask")
+    task = getStore().createRecord('task', qualifiedType: 'Foo::BarTask')
     snapshot = task._createSnapshot()
     json = subject.serialize(snapshot)
-    assert.equal json.type, "Foo::BarTask"
+    assert.equal json.type, 'Foo::BarTask'
     assert.equal undefined, json.qualified_type, 'deletes qualified_type from the payload'
 
 test 'has a custom extractTypeName function to make things easier', (assert) ->
@@ -51,7 +51,8 @@ test "extractSingle puts sideloaded things into the store via their 'type' attri
     type: DS.attr('string')
 
   store = getStore()
-  container.register("model:plos-authors-task", PlosAuthorsTask)
+  container.register('model:initial-tech-check-task', InitialTechCheckTask)
+  container.register('model:plos-authors-task', PlosAuthorsTask)
 
   jsonHash =
     tasks:
@@ -65,9 +66,9 @@ test "extractSingle puts sideloaded things into the store via their 'type' attri
   Ember.run ->
     result = subject.extractSingle(store, store.modelFor('phase'), jsonHash)
     assert.equal store.getById('task', 1), null, 'no Task gets pushed into the store'
-    store.find('initialTechCheckTask', 1).then (task) ->
+    store.find('initial-tech-check-task', 1).then (task) ->
       assert.equal task.get('title'), 'Initial Tech Check', 'the message task is in the store'
-    store.find('plosAuthorsTask', 2).then (task) ->
+    store.find('plos-authors-task', 2).then (task) ->
       assert.equal task.get('title'), 'Check Authors', 'the namespaced authors task is in the store'
 
 test "extractMany puts normalizes things via their 'type' attribute", (assert) ->
@@ -77,11 +78,11 @@ test "extractMany puts normalizes things via their 'type' attribute", (assert) -
     uniqueProperty: DS.attr('string')
 
   store = getStore()
-  container.register("model:paper-editor-task", PaperEditorTask)
+  container.register('model:paper-editor-task', PaperEditorTask)
 
   jsonHash =
     users: [{id: '1', username: 'editorGuy'}]
-    tasks: [{id: '1', type: 'PaperEditorTask', title: 'Edit Stuff', unique_property: "foo" }]
+    tasks: [{id: '1', type: 'PaperEditorTask', title: 'Edit Stuff', unique_property: 'foo' }]
 
   Ember.run ->
     result = subject.extractArray(store, store.modelFor('task'), jsonHash)

@@ -90,8 +90,8 @@ test 'Viewing the card and adding new funder', ->
     andThen ->
       ok find("button:contains('Add Another Funder')").length, "User can add another funder"
       ok find("span.remove-funder").length, "User can add remove the funder"
-      Ember.$('#funder-name').val("Hello")
-      Ember.$('#grant-number').val("1234567890")
+      Ember.$('.funder-name').val("Hello")
+      Ember.$('.grant-number').val("1234567890")
       click("label:contains('Completed')")
       click("a:contains('Close')")
       andThen ->

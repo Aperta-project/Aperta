@@ -4,6 +4,7 @@
   "browser": true,
   "camelcase": true,
   "curly": true,
+  "esnext": true,
   "forin": true,
   "immed": true,
   "latedef": "nofunc",

@@ -78,7 +78,7 @@ test('it positions near target', function(assert) {
     let left = listPosition.left;
 
     // target-dom-node top + height
-    assert.equal(top,  60, 'positioned directly below target');
-    assert.equal(left, 40, 'positioned left aligned with target');
+    assert.equal(Math.round(top),  60, 'positioned directly below target');
+    assert.equal(Math.round(left), 40, 'positioned left aligned with target');
   });
 });

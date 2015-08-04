@@ -1,4 +1,5 @@
-### This class represents the paper in the system.
+##
+# This class represents the paper in the system.
 class Paper < ActiveRecord::Base
   include EventStream::Notifiable
   include AASM

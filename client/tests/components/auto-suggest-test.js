@@ -42,21 +42,6 @@ test('it renders', function(assert) {
   assert.equal(this.$('.auto-suggest-item:first').text().trim(), name, 'Block template is rendered');
 });
 
-test('it highlights the first item', function(assert) {
-  assert.expect(1);
-
-  this.render(hbs`
-    {{#auto-suggest-list items=items as |user|}}
-      {{user.name}}
-    {{/auto-suggest-list}}
-  `);
-
-  let hasClass = this.$('.auto-suggest-item:first')
-                     .hasClass('auto-suggest-item--highlight');
-
-  assert.ok(hasClass, 'highlight class on first item');
-});
-
 test('it positions near target', function(assert) {
   assert.expect(2);
 

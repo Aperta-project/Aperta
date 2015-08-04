@@ -19,7 +19,17 @@
       <div id="paper-title" class="manuscript-title-and-placeholder">
         <h2 id="paper-title">{{{model.title}}}</h2>
       </div>
-      <div id="paper-body">{{{model.versionedBody}}}</div>
+
+      {{#if model.diff}}
+        <div id="paper-body">
+          {{#each model.diff}}
+            {{{diff-chunk this}}}
+          {{/each}}
+        </div>
+      {{else}}
+        <div id="paper-body">{{{model.versionedBody}}}</div>
+      {{/if}}
+
       </article>
       </main>
     </div>

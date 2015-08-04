@@ -2,80 +2,54 @@ import Ember from 'ember';
 import RESTless from 'tahi/services/rest-less';
 
 export default Ember.Component.extend({
-  oldText: null,
-  currentBody: null,
-  fromText: null,
+  nowViewingText: null,
   compareToText: null,
 
   getCompareToText() {
-    let edited = this.get('compareToVersion');
-    if (edited) {
-      RESTless.get('/api/versioned_texts/' + edited.id).then((response) => {
+    let version = this.get('compareToVersion');
+    if (version) {
+      RESTless.get('/api/versioned_texts/' + version.id).then((response) => {
         this.compareToText = response['versioned_text']['text'];
-        this.setPaperBody();
+        this.setCurrentVersionBody();
       });
     } else {
       this.compareToText = null;
-      this.setPaperBody();
+      this.set('paper.diff', null);
+      this.setCurrentVersionBody();
     }
   },
 
-  getFromVersion() {
-    let version = this.get('fromVersion');
+  getNowViewingVersion() {
+    let version = this.get('nowViewingVersion');
 
     if (version) {
       RESTless.get('/api/versioned_texts/' + version.id).then((response) => {
-        this.fromText = response['versioned_text']['text'];
-        this.setPaperBody();
+        this.nowViewingText = response['versioned_text']['text'];
+        this.setCurrentVersionBody();
       });
     }
   },
 
-  setPaperBody() {
-    if (this.compareToText == null) {
-      this.set('paper.currentVersionBody', this.fromText);
+  setCurrentVersionBody() {
+    if (this.compareToText === null) {
+      this.set('paper.currentVersionBody', this.nowViewingText);
     }
     else {
-      this.set('paper.currentVersionBody', this.setDiffedBody());
+      let diff = this.Differ.diff(this.compareToText, this.nowViewingText);
+      this.set('paper.diff', diff);
     }
-  },
-
-  ourDiff: function() {
-    console.log('our diff');
-    this.SentenceDiff = new JsDiff.Diff();
-    this.SentenceDiff.tokenize = function(value) {
-      return value.split(/(\S.+?(?:[.!?]|<.*?>))/);
-    };
-  }.on('didInsertElement'),
-
-  setDiffedBody() {
-    let body = "";
-    console.log(this.SentenceDiff);
-    let diff = this.SentenceDiff.diff(this.compareToText, this.fromText);
-    console.log(diff);
-    return "<span>" + _.map(diff, this.styleDiffChunk, this).join("");
-  },
-
-  styleDiffChunk(chunk) {
-    return (this.makeSpan(chunk) +
-            chunk.value.replace(/<.*?>/g, "</span>$&" + this.makeSpan(chunk)) +
-            "</span>");
-  },
-
-  makeSpan(chunk) {
-    let cssClass = "";
-    if (chunk.added) {
-      cssClass="added";
-    }
-    if (chunk.removed) {
-      cssClass="removed";
-    }
-    return "<span class='" + cssClass + "'>";
   },
 
   setupObserver: function() {
-    this.addObserver('fromVersion', this, 'getFromVersion');
+    this.addObserver('nowViewingVersion', this, 'getNowViewingVersion');
     this.addObserver('compareToVersion', this, 'getCompareToText');
+  }.on('didInsertElement'),
+
+  setupDiffer: function() {
+    this.Differ = new JsDiff.Diff();
+    this.Differ.tokenize = function(value) {
+      return value.split(/(\S.+?(?:[.!?]|<.*?>))/);
+    };
   }.on('didInsertElement'),
 
   versioningModeTransition: Ember.computed.or(
@@ -86,7 +60,8 @@ export default Ember.Component.extend({
   actions: {
     openVersioningMode() {
       this.set('transitioning', true);
-      this.getFromVersion();
+      this.getNowViewingVersion();
+
       Ember.run.later(()=>{
         this.set('versioningMode', true);
         this.set('transitioning', false);

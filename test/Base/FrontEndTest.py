@@ -6,7 +6,8 @@ __author__ = 'jkrzemien@plos.org'
 import unittest
 import random
 from WebDriverFactory import WebDriverFactory
-
+from teamcity import is_running_under_teamcity
+from teamcity.unittestpy import TeamcityTestRunner
 
 class FrontEndTest(unittest.TestCase):
 
@@ -62,4 +63,8 @@ class FrontEndTest(unittest.TestCase):
     in, at least, a non linear fashion.
     """
     unittest.TestLoader.sortTestMethodsUsing = lambda _, x, y: random.choice([-1, 1])
-    unittest.main()
+    if is_running_under_teamcity():
+      runner = TeamcityTestRunner()
+    else:
+      runner = unittest.TextTestRunner()
+    unittest.main(testRunner=runner)

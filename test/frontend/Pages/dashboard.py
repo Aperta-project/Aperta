@@ -44,6 +44,7 @@ class DashboardPage(AuthenticatedPage):
   def validate_initial_page_elements_styles(self):
     papers = []
     welcome_msg = self._get(self._dashboard_title)
+    # TODO: When we get the ability to log into the DB, we need to validate the text of this welcome_msg
     print(welcome_msg).text
     assert 'helvetica' in welcome_msg.value_of_css_property('font-family')
     assert welcome_msg.value_of_css_property('font-size') == '48px'
@@ -59,6 +60,8 @@ class DashboardPage(AuthenticatedPage):
     assert cns_btn.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
     assert cns_btn.value_of_css_property('text-align') == 'center'
     assert cns_btn.value_of_css_property('text-transform') == 'uppercase'
+    # TODO: When we get the ability to log into the DB, we need to validate the display of the relevant papers and the
+    # TODO:   roles the user has wrt those papers.
     self.set_timeout(1)
     try:
       papers = self._gets(self._dashboard_paper_title)

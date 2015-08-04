@@ -38,6 +38,10 @@ describe UserMailer, redis: true do
     it_behaves_like "invitor is not available"
     it_behaves_like "recipient without email address"
 
+    it 'has correct subject line' do
+      expect(email.subject).to eq "You've been added as a collaborator to the manuscript, \"#{paper.display_title}\""
+    end
+
     it 'sends the email to the inivitees email address' do
       expect(email.to).to include(invitee.email)
     end
@@ -55,6 +59,10 @@ describe UserMailer, redis: true do
 
     it_behaves_like "invitor is not available"
     it_behaves_like "recipient without email address"
+
+    it 'has correct subject line' do
+      expect(email.subject).to eq "You've been added to a conversation on the manuscript, \"#{task.paper.display_title}\""
+    end
 
     it 'sends the email to the inivitees email address' do
       expect(email.to).to include(invitee.email)
@@ -76,7 +84,7 @@ describe UserMailer, redis: true do
     context 'when the paper has an abstract' do
       it 'sends a specific email to the editor invitee' do
         task.paper.update! abstract: abstract
-        expect(email.subject).to eq "You've been invited to the Editor Discussion for manuscript \"#{task.paper.display_title}\""
+        expect(email.subject).to eq "You've been invited to the editor discussion for the manuscript, \"#{task.paper.display_title}\""
         expect(email.body).to include 'View Discussion'
         expect(email.body).to include abstract
       end
@@ -84,7 +92,7 @@ describe UserMailer, redis: true do
 
     context 'when the paper has no abstract' do
       it 'sends a specific email to the editor invitee' do
-        expect(email.subject).to eq "You've been invited to the Editor Discussion for manuscript \"#{task.paper.display_title}\""
+        expect(email.subject).to eq "You've been invited to the editor discussion for the manuscript, \"#{task.paper.display_title}\""
         expect(email.body).to include 'View Discussion'
         expect(email.body).to_not include abstract
         expect(email.body).to match task.paper.body
@@ -96,6 +104,10 @@ describe UserMailer, redis: true do
     let(:invitee) { FactoryGirl.create(:user) }
     let(:task) { FactoryGirl.create(:task) }
     let(:email) { UserMailer.assigned_editor(invitee.id, task.paper.id) }
+
+    it 'has correct subject line' do
+      expect(email.subject).to eq "You've been assigned as an editor for the manuscript, \"#{task.paper.display_title}\""
+    end
 
     it 'sends the email to the inivitees email address' do
       expect(email.to).to include(invitee.email)
@@ -116,6 +128,10 @@ describe UserMailer, redis: true do
 
     it_behaves_like "recipient without email address"
 
+    it 'has correct subject line' do
+      expect(email.subject).to eq "You've been mentioned on the manuscript, #{app_name}"
+    end
+
     it 'sends the email to the mentioned user' do
       expect(email.to).to eq [invitee.email]
     end
@@ -134,12 +150,16 @@ describe UserMailer, redis: true do
     let(:paper) { FactoryGirl.create :paper, :submitted, :with_tasks, creator: author }
     let(:email) { UserMailer.paper_submission(paper.id) }
 
+    it 'has correct subject line' do
+      expect(email.subject).to eq "Thank you for submitting your manuscript to PLOS #{app_name}"
+    end
+
     it "sends the email to the paper's author" do
       expect(email.to).to eq [author.email]
     end
 
     it "emails the author user they have been mentioned" do
-      expect(email.subject).to eq "Thank you for submitting a manuscript on #{app_name}"
+      expect(email.subject).to eq "Thank you for submitting your manuscript to PLOS #{app_name}"
       expect(email.body).to include "Thank you for submitting your manuscript"
       expect(email.body).to include paper.title
       expect(email.body).to include paper.journal.name
@@ -161,7 +181,7 @@ describe UserMailer, redis: true do
     end
 
     it "specify subject line" do
-      expect(email.subject).to eq "Manuscript has been resubmitted in #{app_name}"
+      expect(email.subject).to eq "The manuscript, \"#{paper.display_title}\" has been resubmitted"
     end
 
     it "tells the editor paper has been (re)submitted" do
@@ -188,7 +208,7 @@ describe UserMailer, redis: true do
     end
 
     it "specify subject line" do
-      expect(email.subject).to eq "Manuscript #{paper.title} has been submitted on #{app_name}"
+      expect(email.subject).to eq "New manuscript submitted to PLOS #{paper.journal.name}: \"#{paper.display_title}\""
     end
 
     it "tells admin that paper has been submitted" do

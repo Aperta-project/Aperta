@@ -1,4 +1,5 @@
 class FeedbackMailer < ActionMailer::Base
+  include MailerHelper
   layout "mailer"
 
   def contact(user, feedback)
@@ -8,6 +9,6 @@ class FeedbackMailer < ActionMailer::Base
     mail(
       from: user.email,
       to: Rails.configuration.admin_email,
-      subject: "Tahi Feedback")
+      subject: "#{app_name} Feedback")
   end
 end

@@ -10,11 +10,12 @@ module TahiStandardTasks
       invitation = Invitation.find(invitation_id)
       @invitee = invitation.invitee
       @paper = invitation.paper
+      @journal = @paper.journal
       @task = invitation.task
 
       mail({
         to: invitation.email,
-        subject: "You have been invited as a reviewer in Tahi"
+        subject: "You have been invited as a reviewer for the manuscript, \"#{@paper.display_title}\""
       })
     end
 
@@ -24,7 +25,7 @@ module TahiStandardTasks
 
       mail({
         to: @invitee.email,
-        subject: 'Your invitation to be a reviewer has been rescinded'
+        subject: "Your invitation to be a reviewer has been rescinded for the manuscript, \"#{@paper.display_title}\""
       })
     end
   end

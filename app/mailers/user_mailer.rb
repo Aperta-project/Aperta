@@ -17,7 +17,7 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: invitee.try(:email),
-      subject: "You've been added as a collaborator to a manuscript on #{app_name}")
+      subject: "You've been added as a collaborator to the manuscript, \"#{@paper.display_title}\"")
   end
 
   def add_participant(assigner_id, assignee_id, task_id)
@@ -31,18 +31,7 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: assignee.try(:email),
-      subject: "You've been added to a conversation on #{app_name}")
-  end
-
-  def add_reviewer(reviewer_id, paper_id)
-    @paper = Paper.find(paper_id)
-    user = User.find(reviewer_id)
-    @reviewer_name = display_name(user)
-    @journal = @paper.journal
-
-    mail(
-      to: user.try(:email),
-      subject: "You have been invited as a reviewer in #{app_name}")
+      subject: "You've been added to a conversation on the manuscript, \"#{@paper.display_title}\"")
   end
 
   def add_editor_to_editors_discussion(invitee_id, task_id)
@@ -53,7 +42,7 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: invitee.email,
-      subject: "You've been invited to the Editor Discussion for manuscript \"#{@task.paper.display_title}\"")
+      subject: "You've been invited to the editor discussion for the manuscript, \"#{@paper.display_title}\"")
   end
 
   def assigned_editor(editor_id, paper_id)
@@ -64,7 +53,7 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: user.try(:email),
-      subject: "You've been assigned as an editor on #{app_name}")
+      subject: "You've been assigned as an editor for the manuscript, \"#{@paper.display_title}\"")
   end
 
   def notify_editor_of_paper_resubmission(paper_id)
@@ -74,7 +63,7 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: @editor.email,
-      subject: "Manuscript has been resubmitted in #{app_name}")
+      subject: "The manuscript, \"#{@paper.display_title}\" has been resubmitted")
   end
 
   def mention_collaborator(comment_id, commentee_id)
@@ -87,7 +76,7 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: @commentee.try(:email),
-      subject: "You've been mentioned on #{app_name}")
+      subject: "You've been mentioned on the manuscript, #{app_name}")
   end
 
   def paper_submission(paper_id)
@@ -97,7 +86,7 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: @author.try(:email),
-      subject: "Thank you for submitting a manuscript on #{app_name}")
+      subject: "Thank you for submitting your manuscript to PLOS #{app_name}")
   end
 
   def notify_admin_of_paper_submission(paper_id, user_id)
@@ -107,6 +96,6 @@ class UserMailer < ActionMailer::Base
 
     mail(
       to: @admin.email,
-      subject: "Manuscript #{@paper.title} has been submitted on #{app_name}")
+      subject: "New manuscript submitted to PLOS #{@journal.name}: \"#{@paper.display_title}\"")
   end
 end

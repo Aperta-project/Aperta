@@ -1,10 +1,7 @@
 <div class='container'>
   <div class='greeting'>
-    <h3 class='user-name'>
-      Hello <%= @invitee.full_name %>
-    </h3>
     <p class='message'>
-      You've been invited to be a Reviewer on a Manuscript
+      You've been invited to be a reviewer on a manuscript
     </p>
   </div>
   <hr>
@@ -18,6 +15,13 @@
         </div>
       <% end %>
     </div>
+    <p>
+      Hello <%= @invitee.full_name %>,
+    </p>
+    <p class='message'>
+      You've been invited to be a reviewer on a manuscript
+    </p>
+
     <div class='paper-name'>
       <%= @paper.display_title %>
     </div>

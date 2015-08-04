@@ -309,4 +309,15 @@ describe Paper do
       expect(paper.authors_list).to eq "1. #{plos_author1.last_name}, #{plos_author1.first_name} from #{plos_author1.specific.affiliation}\n2. #{plos_author2.last_name}, #{plos_author2.first_name} from #{plos_author2.specific.affiliation}"
     end
   end
+
+  describe "#latest_version" do
+    it "returns the latest version" do
+      # create a bunch of old minor versions
+      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 1, active: true)
+      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 2, active: true)
+      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 3, active: true)
+      versioned_text = FactoryGirl.create(:versioned_text, paper: paper, major_version: 1, minor_version: 0, active: true)
+      expect(paper.send(:latest_version)).to eq(versioned_text)
+    end
+  end
 end

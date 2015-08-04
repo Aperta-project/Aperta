@@ -5,6 +5,7 @@ class VersionedText < ActiveRecord::Base
 
   before_update :minor_version!, if: :must_copy
 
+  default_scope -> { order('major_version DESC, minor_version DESC') }
   scope :active, -> { where(active: true) }
 
   # Called on paper sumbission and resubmission.

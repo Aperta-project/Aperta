@@ -39,7 +39,7 @@ database:
     - bundle exec rake db:create db:schema:load
   post:
     # npm install here so that it is cached by circle for parallel tests
-    - npm install && bundle exec rake ember:install
+    - npm install && bower install && bundle exec rake ember:install
 
 
 ## Customize test commands

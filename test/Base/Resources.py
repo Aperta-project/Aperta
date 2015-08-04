@@ -29,6 +29,12 @@ friendly_testhostname = 'https://plos:shrimp@tahi-assess.herokuapp.com/'
 user_email = 'admin'
 user_pw= 'yetishrimp'
 
+user_data = {'admin': {'password':'yetishrimp',
+                      'email':'shrimp@mailinator.com',
+                      'full_name':'AD Shrimp',
+                      'password':'yetishrimp'}
+                      }
+
 login_valid_email = 'jgray@plos.org'
 login_invalid_email = 'jgrey@plos.org'
 login_valid_uid = 'jgray'

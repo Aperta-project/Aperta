@@ -6,7 +6,10 @@ __author__ = 'jkrzemien@plos.org'
 import unittest
 import random
 from WebDriverFactory import WebDriverFactory
-
+from Base.Resources import login_valid_email, login_valid_pw
+from frontend.Pages.login_page import LoginPage
+from frontend.Pages.homepage import HomePage
+from frontend.Pages.create_new_submission_page import CreateANewSubmissionPage
 
 class FrontEndTest(unittest.TestCase):
 
@@ -63,3 +66,31 @@ class FrontEndTest(unittest.TestCase):
     """
     unittest.TestLoader.sortTestMethodsUsing = lambda _, x, y: random.choice([-1, 1])
     unittest.main()
+
+  def _login(self):
+    login_page = LoginPage(self.getDriver())
+    login_page.enter_login_field(login_valid_email)
+    login_page.enter_password_field(login_valid_pw)
+    login_page.click_sign_in_button()
+    return HomePage(self.getDriver())
+
+  def _select_preexisting_article(self, title='Hendrik', init=True):
+    """
+    Select a preexisting article using a word as a partial name 
+    for the title. from_ variable is 0 when the user is not logged in
+    and need to invoque login script to reach the homepage. 
+    """
+    home_page = self._login() if init else HomePage(self.getDriver())
+    return home_page.click_on_existing_manuscript_link_partial_title(title)
+
+  def _create_article(self, title='', journal='journal', type_='Research1'):
+    home_page = self._login()
+    home_page.click_create_new_submision_button()
+    create_new_submission_page = CreateANewSubmissionPage(self.getDriver())
+    # Create new submission
+    if not title:
+      title = create_new_submission_page.title_generator()
+    create_new_submission_page.enter_title_field(title)
+    create_new_submission_page.select_journal(journal, type_)
+    create_new_submission_page.click_create_button()
+    return title

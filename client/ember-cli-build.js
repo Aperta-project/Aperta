@@ -37,6 +37,9 @@ module.exports = function(defaults) {
     destDir: '/assets'
   });
 
+  // JsDiff
+  app.import('bower_components/jsdiff/diff.js');
+
   // Bootstrap
   app.import('bower_components/bootstrap/js/collapse.js');
   app.import('bower_components/bootstrap/js/dropdown.js');

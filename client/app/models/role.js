@@ -13,7 +13,7 @@ export default DS.Model.extend({
   name: DS.attr('string'),
   required: DS.attr('boolean'),
 
-  destroyRecord: function() {
+  destroyRecord() {
     this.get('userRoles').invoke('unloadRecord');
     this._super();
   }

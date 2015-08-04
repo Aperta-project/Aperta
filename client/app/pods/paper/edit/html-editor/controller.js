@@ -19,17 +19,17 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
     this.updateEditor();
   }.observes('model.body'),
 
-  startEditing: function() {
+  startEditing() {
     this.acquireLock();
     this.connectEditor();
   },
 
-  stopEditing: function() {
+  stopEditing() {
     this.disconnectEditor();
     this.releaseLock();
   },
 
-  acquireLock: function() {
+  acquireLock() {
     // Note:
     // when the paper is saved, the server knows who acquired the lock
     // (this is required for the heartbeat to work)
@@ -47,7 +47,7 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
     });
   },
 
-  releaseLock: function() {
+  releaseLock() {
     var paper = this.get('model');
     paper.set('lockedBy', null);
     paper.save().then(()=>{
@@ -65,14 +65,14 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
     }
   }.observes('lockedByCurrentUser'),
 
-  updateEditor: function() {
+  updateEditor() {
     var editor = this.get('editor');
     if (editor) {
       editor.update();
     }
   },
 
-  savePaper: function() {
+  savePaper() {
     if (!this.get('model.editable')) {
       return;
     }
@@ -93,23 +93,23 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
     }
   },
 
-  connectEditor: function() {
+  connectEditor() {
     this.get('editor').connect();
   },
 
-  disconnectEditor: function() {
+  disconnectEditor() {
     // TODO: temp fix?
     if(this.get('editor')) {
       this.get('editor').disconnect();
     }
   },
 
-  getBodyHtml: function() {
+  getBodyHtml() {
     var editor = this.get('editor');
     return editor.getBodyHtml();
   },
 
-  setBodyHtml: function(html) {
+  setBodyHtml(html) {
     var editor = this.get('editor');
     return editor.setBodyHtml(html);
   },

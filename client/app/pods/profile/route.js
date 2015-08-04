@@ -1,9 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  model: function() { return this.currentUser; },
+  model() { return this.currentUser; },
 
-  afterModel: function(model) {
+  afterModel(model) {
     return Ember.$.getJSON('/api/affiliations', function(data) {
       if(!data) { return; }
       model.set('institutions', data.institutions);

@@ -35,11 +35,11 @@ export default Ember.View.extend(PaperEditMixin, {
   }.on('willDestroyElement'),
 
   // Note: this must be here as it is used by mixins/views/paper-edit
-  saveEditorChanges: function() {
+  saveEditorChanges() {
     this.get('controller').savePaper();
   },
 
-  timeoutSave: function() {
+  timeoutSave() {
     if (Ember.testing) {
       return;
     }

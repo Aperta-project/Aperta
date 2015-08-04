@@ -6,12 +6,12 @@ export default Ember.Mixin.create({
       url: this.get('select2RemoteUrl'),
       dataType: 'json',
       quietMillis: 500,
-      data: function(term) {
+      data(term) {
         return {
           query: term
         };
       },
-      results: function(data) {
+      results(data) {
         return {
           results: data.filtered_users
         };

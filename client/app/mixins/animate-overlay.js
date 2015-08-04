@@ -24,7 +24,7 @@ $.fn.redraw = function() {
 };
 
 export default Ember.Mixin.create({
-  out: function(options) {
+  out(options) {
     $(options.selector).hide().attr('class', 'overlay');
 
     return {
@@ -63,7 +63,7 @@ export default Ember.Mixin.create({
     });
   },
 
-  animateOverlayIn: function(options={}) {
+  animateOverlayIn(options={}) {
     if (!options.selector) { options.selector = '#overlay'; }
 
     Ember.run.later(function() { $('html').addClass('overlay-open'); }, 30);
@@ -71,7 +71,7 @@ export default Ember.Mixin.create({
     return this['in'](options);
   },
 
-  animateOverlayOut: function(options={}) {
+  animateOverlayOut(options={}) {
     if (!options.selector) { options.selector = '#overlay'; }
     $('html').removeClass('overlay-open');
     return this.out(options);

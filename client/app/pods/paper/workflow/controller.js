@@ -12,7 +12,7 @@ export default Ember.Controller.extend({
     return this.store.all('commentLook');
   }),
 
-  allTaskIds: function() {
+  allTaskIds() {
     return this.store.all('phase').reduce(function(taskIds, phase) {
       return taskIds.concat(phase.get('tasks').map(function(task) {
         return task.get('id');
@@ -20,7 +20,7 @@ export default Ember.Controller.extend({
     }, []);
   },
 
-  updatePositions: function(phase) {
+  updatePositions(phase) {
     let relevantPhases = this.get('model.phases').filter(function(p) {
       return p !== phase && p.get('position') >= phase.get('position');
     });

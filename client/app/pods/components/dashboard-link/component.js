@@ -9,7 +9,7 @@ export default Ember.Component.extend({
     return this.get('unreadCommentsCount') + ' new posts';
   }.property('unreadCommentsCount'),
 
-  refreshTooltips: function() {
+  refreshTooltips() {
     Ember.run.scheduleOnce('afterRender', this, ()=> {
       if(this.$()) {
         this.$('.link-tooltip')

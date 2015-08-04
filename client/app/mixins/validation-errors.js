@@ -58,7 +58,7 @@ export default Ember.Mixin.create({
     @return {Object}
   */
 
-  _prepareResponseErrors: function(errors, options) {
+  _prepareResponseErrors(errors, options) {
     var errorsObject = Utils.deepJoinArrays(Utils.deepCamelizeKeys(errors));
 
     if (options && options.includeNames) {
@@ -77,7 +77,7 @@ export default Ember.Mixin.create({
     @return {String}
   */
 
-  _typeFromModel: function(model) {
+  _typeFromModel(model) {
     return model.get('constructor.modelName').camelize().pluralize();
   },
 
@@ -106,7 +106,7 @@ export default Ember.Mixin.create({
     @return {Array}
   */
 
-  validationErrorsForType: function(model) {
+  validationErrorsForType(model) {
     return this.get('validationErrors')[this._typeFromModel(model)] || [];
   },
 
@@ -118,7 +118,7 @@ export default Ember.Mixin.create({
     @return {Hash}
   */
 
-  validationErrorsForModel: function(model) {
+  validationErrorsForModel(model) {
     return this.validationErrorsForType(model)[model.get('id')];
   },
 
@@ -130,7 +130,7 @@ export default Ember.Mixin.create({
     @param {String|Array} value
   */
 
-  displayValidationError: function(key, value) {
+  displayValidationError(key, value) {
     this.set('validationErrors.' + key, (Ember.isArray(value) ? value.join(', ') : value));
   },
 
@@ -153,7 +153,7 @@ export default Ember.Mixin.create({
     @param {Object} response Hash from Ember Data `save` failure. Expected to be in format Rails sends.
   */
 
-  displayValidationErrorsFromResponse: function(response, options) {
+  displayValidationErrorsFromResponse(response, options) {
     this.set('validationErrors', this._prepareResponseErrors(response.errors, options));
   },
 
@@ -168,7 +168,7 @@ export default Ember.Mixin.create({
     @method clearAllValidationErrors
   */
 
-  clearAllValidationErrors: function() {
+  clearAllValidationErrors() {
     this.set('validationErrors', {});
   },
 
@@ -179,7 +179,7 @@ export default Ember.Mixin.create({
     @param {DS.Model}
   */
 
-  clearAllValidationErrorsForModel: function(model) {
+  clearAllValidationErrorsForModel(model) {
     delete this.validationErrorsForType(model)[model.get('id')];
   }
 });

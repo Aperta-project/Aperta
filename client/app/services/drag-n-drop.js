@@ -86,7 +86,7 @@ export default {
     @param {Object} event jQuery event to stop
   */
 
-  cancel: function(e) {
+  cancel(e) {
     return cancelDragEvent(e);
   },
 
@@ -105,7 +105,7 @@ export default {
       @param {Object} event jQuery event
     */
 
-    dragStart: function() { throw new Error("Implement dragStart"); }
+    dragStart() { throw new Error("Implement dragStart"); }
   }),
 
   DroppableMixin: Ember.Mixin.create({
@@ -148,6 +148,6 @@ export default {
       @param {Object} event jQuery
     */
 
-    drop: function() { throw new Error("Implement drop"); }
+    drop() { throw new Error("Implement drop"); }
   })
 };

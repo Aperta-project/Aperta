@@ -35,7 +35,7 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
     });
   }.observes('logoPreview'),
 
-  stopEditing: function() {
+  stopEditing() {
     this.setProperties({
       isEditing: false,
       uploadLogoFunction: null,
@@ -43,7 +43,7 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
     });
   },
 
-  saveJournal: function() {
+  saveJournal() {
     this.get('model').save().then(()=> {
       this.stopEditing();
     }, (response)=> {

@@ -4,7 +4,7 @@ import ENV from 'tahi/config/environment';
 export default {
   name: 'pusher-override',
   before: 'pusher',
-  initialize: function() {
+  initialize() {
     ENV['APP']['PUSHER_OPTS'] = {
       key: window.eventStreamConfig.key,
       connection: {

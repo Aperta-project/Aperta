@@ -4,7 +4,7 @@ import RESTless from 'tahi/services/rest-less';
 import Utils from 'tahi/services/utils';
 
 export default Ember.Route.extend(AnimateOverlay, {
-  setupController: function(controller, model) {
+  setupController(controller, model) {
     controller.set('model', model);
     if (this.currentUser) {
       // subscribe to user and system channels
@@ -22,7 +22,7 @@ export default Ember.Route.extend(AnimateOverlay, {
     return this.get('container').lookup("serializer:application");
   }),
 
-  cleanupAncillaryViews: function() {
+  cleanupAncillaryViews() {
     this.controllerFor('application').send('hideNavigation');
 
     this.animateOverlayOut().then(()=> {

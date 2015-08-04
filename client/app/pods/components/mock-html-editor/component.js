@@ -4,19 +4,19 @@ export default Ember.Component.extend({
 
   paper: null,
 
-  getBodyHtml: function() {
+  getBodyHtml() {
     return this.get('paper.body');
   },
 
-  update: function() {
+  update() {
     // TODO: maybe we want to detect if this got called
   },
 
-  connect: function() {
+  connect() {
     // TODO: maybe we want to detect if this got called
   },
 
-  disconnect: function() {
+  disconnect() {
     // TODO: maybe we want to detect if this got called
   },
 

@@ -3,15 +3,15 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   cardOverlayService: Ember.inject.service('card-overlay'),
 
-  model: function(params) {
+  model(params) {
     return this.store.find('role', params.role_id);
   },
 
-  afterModel: function(role) {
+  afterModel(role) {
     return this.store.find('flow', { role_id: role.get('id') });
   },
 
-  setupController: function(controller, model) {
+  setupController(controller, model) {
     controller.setProperties({
       model: model,
       commentLooks: this.store.all('commentLook'),
@@ -20,7 +20,7 @@ export default Ember.Route.extend({
     });
   },
 
-  renderTemplate: function() {
+  renderTemplate() {
     this._super();
     this.render('flow-manager-buttons', {
       outlet: 'controlBarButtons',

@@ -9,7 +9,7 @@ export default ApplicationSerializer.extend({
   // could just provide a sparse view of the task itself. At that point,
   // this code would be unnecessary.
   //
-  normalize: function(typeClass, hash, prop) {
+  normalize(typeClass, hash, prop) {
     hash.card_thumbnail_id = hash.task.id;
     return this._super(typeClass, hash, prop);
   }

@@ -12,7 +12,7 @@ export default DS.Model.extend({
   updatedAt: DS.attr('date'),
 
   // unique id extracted from citeproc json if available
-  getUniqueId: function() {
+  getUniqueId() {
     var uuid = null;
     if (this.get('format') === 'citeproc') {
       var data = JSON.parse(this.get('content'));

@@ -28,7 +28,7 @@ feature "Profile Page", js: true do
     expect(profile_page).to have_no_application_error
   end
 
-  describe "canceling affiliation creation" do
+  describe "canceling affiliation creation", vcr: {cassette_name: 'ned_countries', record: :none} do
     before do
       profile_page.start_adding_affiliate
     end

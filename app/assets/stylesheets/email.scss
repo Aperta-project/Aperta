@@ -72,12 +72,20 @@ hr {
 }
 
 .footer {
-  text-align: center;
   margin-top: 30px;
   margin-bottom: 30px;
+  text-align: center;
+
+  .paper-title {
+    margin: 20px auto;
+  }
+
+  .paper-abstract {
+    text-align: left;
+  }
 
   .button {
-    margin: 0 auto;
+    margin: 0 auto 20px 0;
     display: inline-block;
     border: 1px solid transparent;
     border-radius: 4px;

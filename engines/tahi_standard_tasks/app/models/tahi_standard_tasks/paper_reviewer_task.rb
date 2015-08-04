@@ -41,11 +41,16 @@ module TahiStandardTasks
       template = <<-TEXT.strip_heredoc
         Dear [REVIEWER NAME],
 
-        I would love to invite you to be a reviewer for %{manuscript_title}.  View the manuscript on Tahi and let me know if you accept or reject this offer.
+        You've been invited as a Reviewer on “%{manuscript_title}”, for %{journal_name}.
 
-        Thank you,
-        [YOUR NAME]
-        %{journal_name}
+        The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
+
+        Please only accept this invitation if you have no conflicts of interest. If in doubt, please feel free to contact us for advice. If you are unable to review this manuscript, we would appreciate suggestions of other potential reviewers.
+
+        We look forward to hearing from you.
+
+        Sincerely,
+        %{journal_name} Team
       TEXT
 
       template % template_data

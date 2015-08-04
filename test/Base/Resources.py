@@ -6,6 +6,8 @@ test cases. It eventually should be replaced with more robust,
 less static, variable definitions.
 '''
 
+from os import getenv
+
 # General resources
 # set friendly_testhostname to 'prod' to run suite against production
 # Two fields need to be changed to support running tests in your local development
@@ -25,7 +27,7 @@ else:
 friendly_testhostname = 'https://plos:shrimp@tahi-assess.herokuapp.com/'
 
 
-# registration resources
+# Aperta registration resources
 user_email = 'admin'
 user_pw= 'yetishrimp'
 
@@ -34,6 +36,23 @@ login_invalid_email = 'jgrey@plos.org'
 login_valid_uid = 'jgray'
 login_invalid_pw = 'in|fury7'
 login_valid_pw = 'in|fury8'
+au_login = 'jgray_author'     # author login
+rv_login = 'jgray_reviewer'   # reviewer login
+ae_login = 'jgray_assocedit'  # associate editor login mm permissions
+he_login = 'jgray_editor'     # handling editor login amm permissions
+fm_login = 'jgray_flowmgr'    # flow manager permissions
+oa_login = 'jgray_oa'         # ordinary admin login
+sa_login = 'jgray'            # super admin login
+
+
+# Define connector information for Aperta's Tahi component postgres instance
+psql_hname = ('APERTA_PSQL_HOST', '')
+psql_port = ('APERTA_PSQL_PORT', '')
+psql_uname = ('APERTA_PSQL_USER', '')
+psql_pw = ('APERTA_PSQL_PW', '')
+psql_db = ('APERTA_PSQL_DBNAME', '')
+
+
 
 editor_name_0='Hendrik W. van Veen'
 user_email_0 = 'trash87567@ariessc.com'

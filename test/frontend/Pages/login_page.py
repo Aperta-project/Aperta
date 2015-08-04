@@ -52,7 +52,6 @@ class LoginPage(PlosPage):
     assert forgot_msg.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     remember_cb = self._get(self._remember_me_cb)
     assert not remember_cb.is_selected()
-
     self._get(self._remember_me_cb)
     remember_msg = self._get(self._remember_me_label).text
     assert remember_msg == 'Remember me'

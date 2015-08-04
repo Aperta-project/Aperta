@@ -15,7 +15,6 @@ export default Ember.Component.extend({
         this.setPaperBody();
       });
     } else {
-      console.log("no value");
       this.rightText = null;
       this.setPaperBody();
     }
@@ -34,7 +33,7 @@ export default Ember.Component.extend({
   },
 
   setPaperBody() {
-    if (this.leftText && this.rightText != null ) {
+    if (this.rightText == null) {
       this.set('paper.currentVersionBody', this.leftText);
     }
     else {

@@ -10,6 +10,10 @@ describe TahiStandardTasks::ReviewerMailer do
     context "with an assigner" do
       let(:email) { described_class.reviewer_accepted(invite_reviewer_task_id: reviewer_task.id, reviewer_id: reviewer.id, assigner_id: assigner.id) }
 
+      it "has correct subject line" do
+        expect(email.subject).to eq "Reviewer invitation was accepted on the manuscript, \"#{paper.display_title}\""
+      end
+
       it "sends to the assigner" do
         expect(email.to).to match_array(assigner.email)
       end
@@ -35,6 +39,10 @@ describe TahiStandardTasks::ReviewerMailer do
   describe ".reviewer_declined" do
     context "with an assigner" do
       let(:email) { described_class.reviewer_declined(invite_reviewer_task_id: reviewer_task.id, reviewer_id: reviewer.id, assigner_id: assigner.id) }
+
+      it "has correct subject line" do
+        expect(email.subject).to eq "Reviewer invitation was declined on the manuscript, \"#{paper.display_title}\""
+      end
 
       it "sends to the assigner" do
         expect(email.to).to match_array(assigner.email)

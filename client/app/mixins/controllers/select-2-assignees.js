@@ -20,10 +20,9 @@ export default Ember.Mixin.create({
   }.property('select2RemoteUrl'),
 
   resultsTemplate(user) {
-    return user.full_name;
-  },
-
-  selectedTemplate(user) {
-    return user.full_name || user.get('fullName');
+    /* Handle raw object or ember model */
+    let email = (typeof(user.email) === 'string') ? user.email : user.get('email');
+    let fullName = user.full_name || user.get('fullName');
+    return `${fullName} <span class="select2-assignee-email">[${email}]</span>`;
   }
 });

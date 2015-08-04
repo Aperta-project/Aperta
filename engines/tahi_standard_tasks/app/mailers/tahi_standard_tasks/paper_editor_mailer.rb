@@ -10,11 +10,12 @@ module TahiStandardTasks
       @invitation = Invitation.find(invitation_id)
       @invitee = @invitation.invitee
       @paper = @invitation.paper
+      @journal = @paper.journal
       @task = @invitation.task
 
       mail({
         to: @invitation.email,
-        subject: "You have been invited as an editor on Tahi"
+        subject: "You've been invited as an editor for the manuscript, \"#{@paper.display_title}\""
       })
     end
   end

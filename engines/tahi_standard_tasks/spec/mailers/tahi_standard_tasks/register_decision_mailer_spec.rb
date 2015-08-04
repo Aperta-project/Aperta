@@ -34,7 +34,7 @@ describe TahiStandardTasks::RegisterDecisionMailer do
     end
 
     it "includes email subject" do
-      expect(email.subject).to eq "A Decision has been Registered on #{paper.title}"
+      expect(email.subject).to eq "A decision has been registered on the manuscript, \"#{paper.title}\""
     end
 
     it "email body is paper.decision_letter" do

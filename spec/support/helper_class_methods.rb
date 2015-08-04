@@ -10,4 +10,10 @@ module TahiHelperClassMethods
       allow_any_instance_of(klass).to receive(:authorized?).and_return(bool)
     end
   end
+
+  def action_policy(klass, action, bool)
+    before do
+      allow_any_instance_of(klass).to receive("#{action}?".to_sym).and_return(bool)
+    end
+  end
 end

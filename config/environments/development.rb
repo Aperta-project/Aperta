@@ -37,8 +37,6 @@ Tahi::Application.configure do
 
   config.action_mailer.default_url_options = {host: "localhost", port: 5000, protocol: "http://"}
 
-  # Enable skylight.io
-  # config.skylight.environments += ['development']
   config.after_initialize do
     Bullet.enable = true
     Bullet.bullet_logger = true

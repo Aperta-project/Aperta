@@ -4,7 +4,7 @@ ruby:
 coffee_script:
   enabled: true
   config_file: coffeelint.json
-java_script:
+javascript:
   config_file: .javascript-style.json
 scss:
   enabled: false

@@ -76,12 +76,64 @@ html.control-bar-sub-nav-active #paper-container {
   &.not-ve {
     font-size: .95em;
 
-    .added {
-      background-color: $tahi-green-light;
+    figure {
+      h1 {
+        font: inherit;
+        font-size: 20px;
+        font-weight: bolder;
+      }
     }
 
-    .removed {
-      background-color: $tahi-light-red;
+    td, th {
+	    border: 1px dotted #ccc;
+	    padding: 0.25em 0.5em;
+      min-height: 1em;
+
+      p {
+        margin: 0;
+        min-height: 1em;
+      }
+    }
+
+    th {
+	    background: #e7e7e7;
+    }
+
+    table {
+      width: 100%;
+      table-layout: fixed;
+	    border-spacing: 0;
+	    border-collapse: collapse;
+	    cursor: default;
+    }
+
+
+    .diff-chunk {
+      display: inline;
+
+      &.added, &.removed {
+        figure {
+          padding: 15px;
+        }
+
+        td, th {
+	        border: 1px dotted #333;
+        }
+      }
+
+      &.added >* {
+        background-color: $tahi-green-light;
+        th {
+          background: darken($tahi-green-light, 5%);
+        }
+      }
+
+      &.removed >* {
+        background-color: $tahi-light-red;
+        th {
+          background: darken($tahi-light-red, 5%);
+        }
+      }
     }
   }
 }

@@ -17,7 +17,7 @@ export default Ember.Component.extend({
 
   preview: Ember.computed('file.preview', function() {
     let preview = this.get('file.preview');
-    return preview != null ? preview.toDataURL() : void 0;
+    return preview !== null ? preview.toDataURL() : void 0;
   }),
 
   progress: Ember.computed('upload.dataLoaded', 'upload.dataTotal', function() {

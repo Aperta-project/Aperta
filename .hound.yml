@@ -1,10 +1,11 @@
 ruby:
   enabled: true
   config_file: .rubocop.yml
-coffee_script:
+coffeescript:
   enabled: true
   config_file: coffeelint.json
 javascript:
+  enabled: true
   config_file: .javascript-style.json
 scss:
   enabled: false

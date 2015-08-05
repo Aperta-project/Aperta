@@ -26,10 +26,9 @@ describe Decision do
 
   it "makes sure that the revision number is always unique" do
     invalid_decision = paper.decisions.create! # 1
-    expect {
+    expect do
       invalid_decision.update_attribute :revision_number, 0
-    }.to raise_error
-
+    end.to raise_error(ActiveRecord::RecordNotUnique)
     expect(invalid_decision.revision_number).to_not eq(1)
   end
 

@@ -41,7 +41,7 @@ describe SerializeIdsWithPolymorphism do
       let(:task_type) { "Funky::Crazy::blah" }
 
       it "raises if task type is not qualified" do
-        expect{ result }.to raise_error
+        expect { result }.to raise_error(RuntimeError, "The task type: 'Funky::Crazy::blah' is not qualified.")
       end
     end
   end

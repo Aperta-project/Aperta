@@ -43,7 +43,7 @@ class WorkflowPage(PlosPage):
     self._editable_checkbox = (By.XPATH, 
       ".//div[@class='control-bar-inner-wrapper']/ul[2]/li/label/input")
     self._recent_activity_icon = (By.XPATH, 
-      ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[2]/div/div/*[local-name() = 'svg']")
+      ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[2]/div/div/*[local-name() = 'svg']/*[local-name() = 'path']")
     self._recent_activity_text = (By.XPATH, 
       ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[2]/div/div[2]")
     self._discussions_icon = (By.XPATH, 
@@ -51,8 +51,8 @@ class WorkflowPage(PlosPage):
     self._discussions_text = (By.XPATH, 
       ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[3]/a")
     self._manuscript_icon = (By.XPATH, 
-      ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div/*[local-name() = 'svg']")
-    self._discussions_text = (By.XPATH, 
+      ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div/*[local-name() = 'svg']/*[local-name() = 'path']")
+    self._manuscript_text = (By.XPATH, 
       ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div[2]")
     
 
@@ -67,87 +67,83 @@ class WorkflowPage(PlosPage):
                 ',14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,'
                 '22,28,22z')
     left_nav = self._get(self._left_nav)
-    assert left_nav.text == 'Tahi'
-    assert left_nav.value_of_css_property('color') == '#39a329'
+    assert left_nav.text == 'PLOS'
+    assert left_nav.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     assert 'Cabin' in left_nav.value_of_css_property('font-family')
     assert left_nav.value_of_css_property('font-size') == '24px'
     assert left_nav.value_of_css_property('font-weight') == '700'
     assert left_nav.value_of_css_property('text-transform') == 'uppercase'
     left_nav_menu = self._get(self._left_nav_menu)
     assert left_nav_menu
-    # check for close
-    left_nav_close_icon = self._get(self._navigation_close)
-    assert left_nav_close_icon    
-    # check for title
-    left_nav_title= self._get(self._navigation_title)
-    assert left_nav_title.text == 'Tahi'
-    navigation_image = self._get(self._navigation_image)
-    assert navigation_image
-    assert navigation_image.value_of_css_property('width') == '32px'
-    assert navigation_image.value_of_css_property('height') == '32px'
-    assert navigation_image.value_of_css_property('border-radius') == '4px'
-    navigation_name = self._get(self._navigation_name)
-    assert navigation_name
-    assert navigation_name.value_of_css_property('text-transform') == 'capitalize'
-    self.assertEqual(navigation_name.value_of_css_property('font-size'), '15px')
-    self.assertEqual(navigation_name.value_of_css_property('color'), '#fff')
-    self.assertIn('Cabin', navigation_image.value_of_css_property('font-family'))
     # 
     editable = self._get(self._editable_label)
-    self.assertEqual(editable.text, 'Editable')
-    self.assertEqual(editable.value_of_css_property('font-size'), '10px')
-    self.assertEqual(editable.value_of_css_property('color'), 'rgb(57, 163, 41)')
-    self.assertEqual(editable.value_of_css_property('font-weight'), '700')
-    self.assertIn('Cabin', editable.value_of_css_property('font-family'))
-    self.assertEqual(editable.value_of_css_property('text-transform'), 'uppercase')
-    self.assertEqual(editable.value_of_css_property('line-height'), '20px')
-    self.assertEqual(editable.value_of_css_property('text-align'), 'center')
+    assert editable.text == 'EDITABLE'
+    assert editable.value_of_css_property('font-size') == '10px'
+    assert editable.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    assert editable.value_of_css_property('font-weight') == '700'
+    assert 'Cabin' in editable.value_of_css_property('font-family')
+    assert editable.value_of_css_property('text-transform') == 'uppercase'
+    assert editable.value_of_css_property('line-height') == '20px'
+    assert editable.value_of_css_property('text-align') == 'center'
     editable_checkbox = self._get(self._editable_checkbox)
-    self.assertEqual(editable_checkbox.get_attribute('type'), 'checkbox')
-    self.assertEqual(editable_checkbox.value_of_css_property('color'), 'rgb(60, 60, 60)')
-    self.assertEqual(editable_checkbox.value_of_css_property('font-size'), '10px')
-    self.assertEqual(editable_checkbox.value_of_css_property('font-weight'), '700')
-
+    assert editable_checkbox.get_attribute('type') == 'checkbox'
+    assert editable_checkbox.value_of_css_property('color') == 'rgba(60, 60, 60, 1)'
+    assert editable_checkbox.value_of_css_property('font-size') == '10px'
+    assert editable_checkbox.value_of_css_property('font-weight') == '700'
     recent_activity_icon = self._get(self._recent_activity_icon)
-    self.assertEqual(recent_activity_icon.get_attribute('d'),
-               ('M-171.3,403.5c-2.4,0-4.5,1.4-5.5,3.5c0,0-0.1,0-0.1,0h-9.9l-6.5-17.2  '
+    assert recent_activity_icon.get_attribute('d') == ('M-171.3,403.5c-2.4,0-4.5,1.4-5.5,3.5c0,'
+                '0-0.1,0-0.1,0h-9.9l-6.5-17.2  '
                 'c-0.5-1.2-1.7-2-3-1.9c-1.3,0.1-2.4,1-2.7,2.3l-4.3,18.9l-4-43.4c-0.1-1'
                 '.4-1.2-2.5-2.7-2.7c-1.4-0.1-2.7,0.7-3.2,2.1l-12.5,41.6  h-16.2c-1.6,0'
                 '-3,1.3-3,3c0,1.6,1.3,3,3,3h18.4c1.3,0,2.5-0.9,2.9-2.1l8.7-29l4.3,46.8'
                 'c0.1,1.5,1.3,2.6,2.8,2.7c0.1,0,0.1,0,0.2,0  c1.4,0,2.6-1,2.9-2.3l6.2-'
                 '27.6l3.7,9.8c0.4,1.2,1.5,1.9,2.8,1.9h11.9c0.2,0,0.3-0.1,0.5-0.1c1.1,1'
-                '.7,3,2.8,5.1,2.8  c3.4,0,6.1-2.7,6.1-6.1C-165.3,406.2-168,403.5-171.3,403.5z'))
-    self.assertEqual(recent_activity_icon.value_of_css_property('color'), 'rgb(57, 163, 41)')
+                '.7,3,2.8,5.1,2.8  c3.4,0,6.1-2.7,6.1-6.1C-165.3,406.2-168,403.5-171.3,403.5z')
+    assert recent_activity_icon.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     recent_activity_text = self._get(self._recent_activity_text)
-    self.asserTrue(recent_activity_text)
-    self.assertEqual(recent_activity_text.text, 'Recent Activity')
-    self.assertEqual(recent_activity_text.value_of_css_property('font-size'), '10px')
-    self.assertEqual(recent_activity_text.value_of_css_property('color'), 'rgb(57, 163, 41)')
-    self.assertEqual(recent_activity_text.value_of_css_property('font-weight'), '700')
-    self.assertIn('Cabin', recent_activity_text.value_of_css_property('font-family'))
-    self.assertEqual(recent_activity_text.value_of_css_property('text-transform'), 'uppercase')
-    self.assertEqual(recent_activity_text.value_of_css_property('line-height'), '20px')
-    self.assertEqual(recent_activity_text.value_of_css_property('text-align'), 'center')
+    assert recent_activity_text
+    assert recent_activity_text.text, 'Recent Activity'
+    assert recent_activity_text.value_of_css_property('font-size') == '10px'
+    assert recent_activity_text.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    assert recent_activity_text.value_of_css_property('font-weight') == '700'
+    assert 'Cabin' in recent_activity_text.value_of_css_property('font-family')
+    assert recent_activity_text.value_of_css_property('text-transform') == 'uppercase'
+    assert recent_activity_text.value_of_css_property('line-height') == '20px'
+    assert recent_activity_text.value_of_css_property('text-align') == 'center'
     discussions_icon = self._get(self._discussions_icon)
-    self.asserTrue(discussions_icon)
-    self.assertEqual(discussions_icon.value_of_css_property('font-family'), 'FontAwesome')
-    self.assertEqual(discussions_icon.value_of_css_property('font-size'), '16px')
-    self.assertEqual(discussions_icon.value_of_css_property('color'), 'rgb(57, 163, 41)')
-    self.assertEqual(discussions_icon.value_of_css_property('font-weight'), '400')
-    self.assertEqual(discussions_icon.value_of_css_property('text-transform'), 'uppercase')
-    self.assertEqual(discussions_icon.value_of_css_property('font-style'), 'normal')
-
+    assert discussions_icon
+    assert discussions_icon.value_of_css_property('font-family') == 'FontAwesome'
+    assert discussions_icon.value_of_css_property('font-size') == '16px'
+    assert discussions_icon.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    assert discussions_icon.value_of_css_property('font-weight') == '400'
+    assert discussions_icon.value_of_css_property('text-transform') == 'uppercase'
+    assert discussions_icon.value_of_css_property('font-style') == 'normal'
     discussions_text = self._get(self._discussions_text)
-    self.asserTrue(discussions_text)
-    self.assertEqual(discussions_text.text, 'Discussions')
+    assert discussions_text
+    assert discussions_text.text == 'DISCUSSIONS'
+    return self
 
 
+  def validate_navigation_elements_styles(self):
+    """ """
+    # check for close
+    left_nav_close_icon = self._get(self._navigation_close)
+    assert left_nav_close_icon    
+    # check for title
+    left_nav_title= self._get(self._navigation_title)
+    assert 'PLOS' in left_nav_title.text
+    navigation_image = self._get(self._navigation_image)
+    assert navigation_image
+    assert navigation_image.value_of_css_property('width') == '260px'
+    assert navigation_image.value_of_css_property('height') == '52px'
+    navigation_name = self._get(self._navigation_name)
+    assert navigation_name
+    assert navigation_name.value_of_css_property('text-transform') == 'capitalize'
+    assert navigation_name.value_of_css_property('font-size') == '15px'
+    assert navigation_name.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
+    assert 'Cabin' in navigation_image.value_of_css_property('font-family')
+    return self
 
-
-
-
-    assert welcome_msg.text == 'Welcome to Tahi'
-    assert 'helvetica' in welcome_msg.value_of_css_property('font-family')
 
   #def is_navigation_menu_visible(self):
   #  """ """
@@ -194,4 +190,9 @@ class WorkflowPage(PlosPage):
   def click_sign_out_link(self):
     """Click sign out link"""
     self._get(self._sign_out_link).click()
+    return self
+
+  def click_close_navigation(self):
+    """Click on the close icon to close left navigation bar"""
+    self._get(self._navigation_close).click()
     return self

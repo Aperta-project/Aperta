@@ -38,6 +38,10 @@ class ApertaWorkflowTest(FrontEndTest):
     """
     workflow_page = self._go_to_workflow()
     workflow_page.validate_initial_page_elements_styles()
+    # Activate navigation
+    workflow_page.click_left_nav()
+    workflow_page.validate_navigation_elements_styles()
+    workflow_page.click_close_navigation()
     
 
     return self

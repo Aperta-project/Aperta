@@ -53,7 +53,7 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
 
     setLetterBody: ->
       @set 'model.body', [@get('updatedTemplate')]
-      @model.save()
-      @send 'inviteReviewer'
+      @model.save().then =>
+        @send 'inviteReviewer'
 
 `export default PaperReviewerOverlayController`

@@ -10,11 +10,15 @@ export default Ember.Component.extend({
     if (version) {
       RESTless.get('/api/versioned_texts/' + version.id).then((response) => {
         this.compareToText = response['versioned_text']['text'];
-        this.setCurrentVersionBody();
+        this.set('paper.compareToText', this.compareToText);
+        var that = this;
+        setTimeout( function() { that.setCurrentVersionBody(); }, 1000);
+        //this.setCurrentVersionBody();
       });
     } else {
       this.compareToText = null;
       this.set('paper.diff', null);
+      this.set('paper.compareToText', null);
       this.setCurrentVersionBody();
     }
   },
@@ -25,6 +29,7 @@ export default Ember.Component.extend({
     if (version) {
       RESTless.get('/api/versioned_texts/' + version.id).then((response) => {
         this.nowViewingText = response['versioned_text']['text'];
+        this.set('paper.nowViewingText', this.nowViewingText);
         this.setCurrentVersionBody();
       });
     }
@@ -33,9 +38,12 @@ export default Ember.Component.extend({
   setCurrentVersionBody() {
     if (this.compareToText === null) {
       this.set('paper.currentVersionBody', this.nowViewingText);
+      this.set('paper.nowViewingText', this.nowViewingText);
     }
     else {
-      let diff = this.Differ.diff(this.compareToText, this.nowViewingText);
+      let compareToText = $("#paper-version-2");
+      let nowViewingText = $("#paper-version-1");
+      let diff = this.Differ.diff(compareToText, nowViewingText);
       this.set('paper.diff', diff);
     }
   },
@@ -48,7 +56,18 @@ export default Ember.Component.extend({
   setupDiffer: function() {
     this.Differ = new JsDiff.Diff();
     this.Differ.tokenize = function(value) {
-      return value.split(/(\S.+?(?:[.!?]|<.*?>))/);
+      console.log("children", value.contents());
+      var ourMap = value.contents().map( function(i, element) {
+        console.log("element", element, element.textContent);
+        if (element.outerHTML) {
+          return element.outerHTML;
+        } else {
+          return element.textContent;
+        }
+      }).get();
+
+      console.log("our map", ourMap);
+      return ourMap;
     };
   }.on('didInsertElement'),
 

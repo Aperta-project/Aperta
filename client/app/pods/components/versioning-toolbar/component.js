@@ -12,8 +12,8 @@ export default Ember.Component.extend({
         this.compareToText = response['versioned_text']['text'];
         this.set('paper.compareToText', this.compareToText);
         var that = this;
+        //TODOMPM - can we get rid of this timeout?
         setTimeout( function() { that.setCurrentVersionBody(); }, 1000);
-        //this.setCurrentVersionBody();
       });
     } else {
       this.compareToText = null;
@@ -53,51 +53,58 @@ export default Ember.Component.extend({
     this.addObserver('compareToVersion', this, 'getCompareToText');
   }.on('didInsertElement'),
 
+  getTags: function(element) {
+    if (this.isTextNode(element)) {
+      return ['',''];
+    }
 
-  wrapInSpan: function(text) {
-    return "<span>" + text + "</span>";
+    let tagName = element.nodeName.toLowerCase();
+    let regex = new RegExp('<\/' + tagName + '>', 'i');
+    let startTag = $(element).clone().empty().prop("outerHTML").replace(regex,'');
+    let endTag = '</' + tagName + '>';
+    return [startTag, endTag];
   },
 
-  breakIntoSentences: function(text) {
-    var sents = text.split(/(\S.+?[.!?])/);
-    return _.map(sents, this.wrapInSpan, this);
+  shouldExplode: function(element) {
+    if (element.nodeName && !this.isTextNode(element)) {
+      return $.inArray(element.nodeName.toLowerCase(), ["p"]) >= 0;
+    }
+    return false;
   },
 
-  explodeParagraph: function(element) {
+  isTextNode: function(element) {
+    return element.nodeType === 3;
+  },
+
+  explodeElement: function(element) {
     var that = this;
-    let paragraphMap = $(element).contents().map( function(i, element) {
-      if (element.nodeType === 3) {
-        return that.breakIntoSentences(element.textContent);
+    let elementMap = $(element).contents().map( function(i, element) {
+      if (that.isTextNode(element)) {
+        return element.textContent.split(/(\S.+?[.!?])/);
       } else {
         return element.outerHTML;
       }
     }).get();
-
-    let startTag = $(element).clone().empty().prop("outerHTML").replace(/<\/p>/i,'');
-    paragraphMap.unshift(startTag);
-    paragraphMap.push("</p>");
-    return paragraphMap;
+    let tags = that.getTags(element);
+    elementMap.unshift(tags[0]);
+    elementMap.push(tags[1]);
+    return elementMap;
   },
 
   setupDiffer: function() {
-    var that = this;
     this.Differ = new JsDiff.Diff();
+    var that = this;
     this.Differ.tokenize = function(value) {
       var ourMap = value.contents().map( function(i, element) {
-        if ($(element).is("p")) {
-          return that.explodeParagraph(element);
-
-        } else if (element.nodeType === 3){
-          // It's a text node, treat it very similarly to a paragraph.
-          return that.breakIntoSentences(element.textContent);
-
+        if (that.shouldExplode(element)) {
+          return that.explodeElement(element);
+        }
+        else if (that.isTextNode(element)) {
+          return element.textContent.split(/(\S.+?[.!?])/);
         } else {
           return element.outerHTML;
         }
-
       }).get();
-
-      console.log("our map", ourMap);
       return _.flatten(ourMap);
     };
   }.on('didInsertElement'),

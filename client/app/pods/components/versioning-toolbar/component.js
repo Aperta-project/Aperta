@@ -59,15 +59,24 @@ export default Ember.Component.extend({
       console.log("children", value.contents());
       var ourMap = value.contents().map( function(i, element) {
         console.log("element", element, element.textContent);
-        if (element.outerHTML) {
+        if ($(element).is("p")) {
+          return $(element).contents().map( function(i, element) {
+            if (element.nodeType === 3) {
+              return element.textContent.split(/(\S.+?[.!?])/);
+            } else {
+              return element.outerHTML;
+            }
+          }).get();
+        }
+        else if (element.outerHTML) {
           return element.outerHTML;
-        } else {
-          return element.textContent;
+        } else if (element.nodeType === 3){
+          return element.textContent.split(/(\S.+?[.!?])/);
         }
       }).get();
 
       console.log("our map", ourMap);
-      return ourMap;
+      return _.flatten(ourMap);
     };
   }.on('didInsertElement'),
 

@@ -93,6 +93,10 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
+    UploadServer.clear_all_uploads
+  end
+
+  config.before(:each) do
     Sidekiq::Worker.clear_all
   end
 

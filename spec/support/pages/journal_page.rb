@@ -17,11 +17,15 @@ class JournalPage < Page
   end
 
   def mmt_names
+    find(".mmt-thumbnail", match: :first)
     all(".mmt-thumbnail .mmt-thumbnail-title").map(&:text)
   end
 
   def mmt_thumbnail(mmt)
-    find(".mmt-thumbnail", text: mmt.paper_type)
+    find(".mmt-thumbnail", match: :first)
+    all(".mmt-thumbnail").detect do |ele|
+      ele.find(".mmt-thumbnail-title", text: mmt.paper_type)
+    end
   end
 
   def visit_mmt(mmt)
@@ -54,7 +58,7 @@ class JournalPage < Page
   end
 
   def update_epub_css css
-    find('button', :text => 'EDIT EPUB CSS').click
+    find('button', text: 'EDIT EPUB CSS').click
     find('textarea').set css
     click_on 'Save'
   end
@@ -80,7 +84,7 @@ class JournalPage < Page
   end
 
   def update_pdf_css css
-    find('button', :text => 'EDIT PDF CSS').click
+    find('button', text: 'EDIT PDF CSS').click
     find('textarea').set css
     click_on 'Save'
   end
@@ -90,7 +94,7 @@ class JournalPage < Page
   end
 
   def update_manuscript_css css
-    find('button', :text => 'EDIT MANUSCRIPT CSS').click
+    find('button', text: 'EDIT MANUSCRIPT CSS').click
     find('textarea').set css
     click_on 'Save'
   end

@@ -17,7 +17,7 @@ feature 'Adhoc cards', js: true do
 
       edit_paper = EditPaperPage.new
       edit_paper.view_card('Ad Hoc', AdhocOverlay) do |overlay|
-        overlay.attach_and_upload_file
+        overlay.attach_and_upload_file("yeti.jpg")
         expect(page).to have_css(".download-link a[href*='#{Attachment.last.file.path}']")
         expect(page).to have_css(".thumbnail-preview img[src*='#{Attachment.last.file.versions[:preview].path}']")
 

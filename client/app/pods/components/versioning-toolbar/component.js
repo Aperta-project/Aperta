@@ -60,13 +60,16 @@ export default Ember.Component.extend({
       var ourMap = value.contents().map( function(i, element) {
         console.log("element", element, element.textContent);
         if ($(element).is("p")) {
-          return $(element).contents().map( function(i, element) {
+          let paragraphMap = $(element).contents().map( function(i, element) {
             if (element.nodeType === 3) {
               return element.textContent.split(/(\S.+?[.!?])/);
             } else {
               return element.outerHTML;
             }
           }).get();
+          paragraphMap.unshift("<p>");
+          paragraphMap.push("</p>");
+          return paragraphMap;
         }
         else if (element.outerHTML) {
           return element.outerHTML;

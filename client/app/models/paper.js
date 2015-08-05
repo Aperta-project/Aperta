@@ -5,19 +5,30 @@ const { computed } = Ember;
 const { attr, belongsTo, hasMany } = DS;
 
 export default DS.Model.extend({
-  authors: hasMany('author'),
-  collaborations: hasMany('collaboration'),
+  authors: hasMany('author', { async: false }),
+  collaborations: hasMany('collaboration', { async: false }),
   commentLooks: hasMany('comment-look', { inverse: 'paper', async: true }),
-  decisions: hasMany('decision'),
-  editors: hasMany('user'),
-  figures: hasMany('figure', { inverse: 'paper' }),
-  tables: hasMany('table', { inverse: 'paper' }),
-  bibitems: hasMany('bibitem', { inverse: 'paper' }),
-  journal: belongsTo('journal'),
-  lockedBy: belongsTo('user'),
-  phases: hasMany('phase'),
-  reviewers: hasMany('user'),
-  supportingInformationFiles: hasMany('supporting-information-file'),
+  decisions: hasMany('decision', { async: false }),
+  editors: hasMany('user', { async: false }),
+  figures: hasMany('figure', {
+    inverse: 'paper',
+    async: false
+  }),
+  tables: hasMany('table', {
+    inverse: 'paper',
+    async: false
+  }),
+  bibitems: hasMany('bibitem', {
+    inverse: 'paper',
+    async: false
+  }),
+  journal: belongsTo('journal', { async: false }),
+  lockedBy: belongsTo('user', { async: false }),
+  phases: hasMany('phase', { async: false }),
+  reviewers: hasMany('user', { async: false }),
+  supportingInformationFiles: hasMany('supporting-information-file', {
+    async: false
+  }),
   tasks: hasMany('task', { async: true, polymorphic: true }),
 
   body: attr('string'),

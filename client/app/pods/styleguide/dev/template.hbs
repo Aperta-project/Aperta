@@ -10,6 +10,7 @@
     {{#auto-suggest-list positionNearSelector="#auto-suggest-input"
                          class="animation-fade-in"
                          selectItem="selectAutoSuggestItem"
+                         setMaxHeight=true
                          items=autoSuggestData as |user|}}
       {{user.fullName}} - {{user.email}}
     {{/auto-suggest-list}}

@@ -57,6 +57,7 @@ feature "Register Decision", js: true do
     scenario "persist the decision radio button" do
       manuscript_page.view_card 'Register Decision' do |overlay|
         overlay.register_decision = "Reject"
+        wait_for_ajax
         overlay.radio_selected?
       end
 
@@ -70,6 +71,7 @@ feature "Register Decision", js: true do
       scenario "display flash message and disable card" do
         manuscript_page.view_card 'Register Decision' do |overlay|
           overlay.register_decision = "Reject"
+          wait_for_ajax
           overlay.radio_selected?
         end
 

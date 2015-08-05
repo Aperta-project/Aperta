@@ -17,11 +17,16 @@ describe FlowQuery do
   end
 
   describe "#tasks" do
-    it "returns an empty relation if flow query is empty" do
-      flow = FactoryGirl.build(:flow, query: {})
-      tasks = FlowQuery.new(user, flow).tasks
 
-      expect(tasks).to match_array []
+    context "query is empty" do
+      let!(:task) { FactoryGirl.create(:task, phase: phase) } # this test always passes unless a Task exists...
+      let(:query) { {} }
+      let(:flow) { FactoryGirl.build(:flow, journal: user_journal, query: query) }
+
+      it "returns an empty relation" do
+        tasks = FlowQuery.new(user, flow).tasks
+        expect(tasks).to be_empty
+      end
     end
 
     context "scoping tasks by journal" do

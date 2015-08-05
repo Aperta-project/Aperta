@@ -7,7 +7,7 @@ class FlowQuery
   end
 
   def tasks
-    return Task.none if flow.query.nil?
+    return Task.none if flow.query.blank?
 
     scope = by_journal(Task.all)
 

@@ -17,7 +17,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Fixed
--
+- No longer perform unfiltered searches in Flow Manager
 
 ### Security
 -

@@ -88,8 +88,8 @@ test 'Viewing the card and adding new funder', (assert) ->
     andThen ->
       assert.ok find("button:contains('Add Another Funder')").length, "User can add another funder"
       assert.ok find("span.remove-funder").length, "User can add remove the funder"
-      Ember.$('[name="funder-name"]').val("Hello")
-      Ember.$('[name="grant-number"]').val("1234567890")
+      Ember.$('.funder-name').val("Hello")
+      Ember.$('.grant-number').val("1234567890")
       click("label:contains('Completed')")
 
 test "Removing an existing funder when there's only 1", (assert) ->

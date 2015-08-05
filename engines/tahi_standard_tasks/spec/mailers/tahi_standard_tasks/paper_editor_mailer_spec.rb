@@ -12,7 +12,7 @@ describe TahiStandardTasks::PaperEditorMailer do
     end
 
     it "has correct body content" do
-      expect(email.body).to include "You've been invited as an Editor on a Manuscript."
+      expect(email.body).to include "You've been invited as an editor on a manuscript"
     end
 
     it "sends email to the invitations email" do

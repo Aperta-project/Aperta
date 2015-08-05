@@ -18,7 +18,7 @@ feature "Journal Administration", js: true do
     context "when the user is a site admin" do
       let(:user) { create :user, :site_admin }
 
-      scenario "shows all journals", selenium: true do
+      scenario "shows all journals" do
         journal_names = [journal, another_journal].map(&:name)
         expect(admin_page.journal_names).to match_array(journal_names)
       end
@@ -55,10 +55,17 @@ feature "Journal Administration", js: true do
       expect(mmt_page).to have_paper_type(mmt.paper_type)
     end
 
-    scenario "deleting a MMT", flaky: true do
-      mmt_to_delete = FactoryGirl.create(:manuscript_manager_template, journal: journal)
-      journal_page.delete_mmt(mmt_to_delete)
-      expect(journal_page).to have_no_mmt_name(mmt_to_delete.paper_type)
+    describe "deleting a MMT" do
+      let!(:mmt_to_delete) { FactoryGirl.create(:manuscript_manager_template, journal: journal) }
+
+      before do
+        journal.reload
+      end
+
+      it "deletes MMT" do
+        journal_page.delete_mmt(mmt_to_delete)
+        expect(journal_page).to have_no_mmt_name(mmt_to_delete.paper_type)
+      end
     end
 
     describe "Interacting with roles" do
@@ -83,7 +90,7 @@ feature "Journal Administration", js: true do
         expect(role).to have_name("a different name")
       end
 
-      scenario "deleting a role", selenium: true do
+      scenario "deleting a role" do
         role = journal_page.find_role(existing_role.name)
         role.delete
         expect(page).to have_no_content(existing_role.name)

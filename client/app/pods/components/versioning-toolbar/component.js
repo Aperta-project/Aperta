@@ -53,32 +53,48 @@ export default Ember.Component.extend({
     this.addObserver('compareToVersion', this, 'getCompareToText');
   }.on('didInsertElement'),
 
+
+  wrapInSpan: function(text) {
+    return "<span>" + text + "</span>";
+  },
+
+  breakIntoSentences: function(text) {
+    var sents = text.split(/(\S.+?[.!?])/);
+    return _.map(sents, this.wrapInSpan, this);
+  },
+
+  explodeParagraph: function(element) {
+    var that = this;
+    let paragraphMap = $(element).contents().map( function(i, element) {
+      if (element.nodeType === 3) {
+        return that.breakIntoSentences(element.textContent);
+      } else {
+        return element.outerHTML;
+      }
+    }).get();
+
+    let startTag = $(element).clone().empty().prop("outerHTML").replace(/<\/p>/i,'');
+    paragraphMap.unshift(startTag);
+    paragraphMap.push("</p>");
+    return paragraphMap;
+  },
+
   setupDiffer: function() {
+    var that = this;
     this.Differ = new JsDiff.Diff();
     this.Differ.tokenize = function(value) {
-      console.log("children", value.contents());
       var ourMap = value.contents().map( function(i, element) {
-        console.log("element", element, element.textContent);
         if ($(element).is("p")) {
-          console.log("p", element);
-          let paragraphMap = $(element).contents().map( function(i, element) {
-            if (element.nodeType === 3) {
-              return element.textContent.split(/(\S.+?[.!?])/);
-            } else {
-              return element.outerHTML;
-            }
-          }).get();
-          console.log("p2", $(element));
-          let startTag = $(element).clone().empty().prop("outerHTML").replace(/<\/p>/i,'');
-          paragraphMap.unshift(startTag);
-          paragraphMap.push("</p>");
-          return paragraphMap;
-        }
-        else if (element.outerHTML) {
-          return element.outerHTML;
+          return that.explodeParagraph(element);
+
         } else if (element.nodeType === 3){
-          return element.textContent.split(/(\S.+?[.!?])/);
+          // It's a text node, treat it very similarly to a paragraph.
+          return that.breakIntoSentences(element.textContent);
+
+        } else {
+          return element.outerHTML;
         }
+
       }).get();
 
       console.log("our map", ourMap);

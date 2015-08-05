@@ -60,6 +60,7 @@ export default Ember.Component.extend({
       var ourMap = value.contents().map( function(i, element) {
         console.log("element", element, element.textContent);
         if ($(element).is("p")) {
+          console.log("p", element);
           let paragraphMap = $(element).contents().map( function(i, element) {
             if (element.nodeType === 3) {
               return element.textContent.split(/(\S.+?[.!?])/);
@@ -67,7 +68,9 @@ export default Ember.Component.extend({
               return element.outerHTML;
             }
           }).get();
-          paragraphMap.unshift("<p>");
+          console.log("p2", $(element));
+          let startTag = $(element).clone().empty().prop("outerHTML").replace(/<\/p>/i,'');
+          paragraphMap.unshift(startTag);
           paragraphMap.push("</p>");
           return paragraphMap;
         }

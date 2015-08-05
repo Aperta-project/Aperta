@@ -28,7 +28,7 @@ Capybara.server_port = ENV["CAPYBARA_SERVER_PORT"]
 Capybara.register_driver :selenium do |app|
   profile = Selenium::WebDriver::Firefox::Profile.new
   if ENV['EMBER_DEBUG']
-    profile.add_extension("#{File.dirname(__FILE__)}/support/lib/ember_inspector-1.8.0-fx.xpi")
+    profile.add_extension("#{File.dirname(__FILE__)}/support/lib/ember_inspector-1.8.3-fx.xpi")
   end
   client = Selenium::WebDriver::Remote::Http::Default.new
   client.timeout = 90

@@ -8,6 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Autosuggest ember component
 
 ### Changed
+- Upgraded to Ember 1.13 [Aperta Transition Guide](https://github.com/Tahi-project/tahi/wiki/Aperta-Ember-1.13-Transition-Guide)
 - Gussied up Figures and Supporting Information thumbnails
 - Register Decision card now has 'Minor Revision' and 'Major Revision' options instead of 'Revise'
 - Upgraded to CAS v2 which properly handles redirection back to main application

@@ -22,6 +22,7 @@
     "bootstrap": "~3.3.2",
     "ember-pusher": "0.1.0",
     "jquery-mockjax": "~1.6.2",
-    "jsdiff": "~1.4.0"
+    "jsdiff": "~1.4.0",
+    "MathJax": "~2.5.3"
   }
 }

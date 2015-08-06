@@ -276,11 +276,11 @@ class Paper < ActiveRecord::Base
     }.join("\n")
   end
 
-  private
-
   def latest_version
-    versioned_texts.active.first
+    versioned_texts(true).active.first
   end
+
+  private
 
   def new_major_version!
     latest_version.new_major_version!

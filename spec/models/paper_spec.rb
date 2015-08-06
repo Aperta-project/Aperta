@@ -137,7 +137,7 @@ describe Paper do
 
       it "sets the submitting_user of the latest version" do
         paper.submit! user
-        expect(paper.send(:latest_version).submitting_user).to eq(user)
+        expect(paper.latest_version.submitting_user).to eq(user)
       end
     end
 
@@ -150,9 +150,9 @@ describe Paper do
       end
 
       it "creates a new minor version" do
-        expect(paper.send(:latest_version).version_string).to eq("0.0")
+        expect(paper.latest_version.version_string).to eq("0.0")
         paper.minor_check!
-        expect(paper.send(:latest_version).version_string).to eq("0.1")
+        expect(paper.latest_version.version_string).to eq("0.1")
       end
     end
 
@@ -168,7 +168,7 @@ describe Paper do
       it "sets the submitting_user of the latest version" do
         paper.minor_check!
         paper.submit_minor_check! user
-        expect(paper.send(:latest_version).submitting_user).to eq(user)
+        expect(paper.latest_version.submitting_user).to eq(user)
       end
     end
 
@@ -229,9 +229,9 @@ describe Paper do
       end
 
       it "creates a new major version" do
-        expect(paper.send(:latest_version).version_string).to eq("0.0")
+        expect(paper.latest_version.version_string).to eq("0.0")
         paper.make_decision decision
-        expect(paper.send(:latest_version).version_string).to eq("1.0")
+        expect(paper.latest_version.version_string).to eq("1.0")
       end
     end
 
@@ -246,9 +246,9 @@ describe Paper do
       end
 
       it "creates a new major version" do
-        expect(paper.send(:latest_version).version_string).to eq("0.0")
+        expect(paper.latest_version.version_string).to eq("0.0")
         paper.make_decision decision
-        expect(paper.send(:latest_version).version_string).to eq("1.0")
+        expect(paper.latest_version.version_string).to eq("1.0")
       end
     end
   end
@@ -345,7 +345,7 @@ describe Paper do
       FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 2, active: true)
       FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 3, active: true)
       versioned_text = FactoryGirl.create(:versioned_text, paper: paper, major_version: 1, minor_version: 0, active: true)
-      expect(paper.send(:latest_version)).to eq(versioned_text)
+      expect(paper.latest_version).to eq(versioned_text)
     end
   end
 end

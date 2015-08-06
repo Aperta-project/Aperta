@@ -16,4 +16,10 @@ class Phase < ActiveRecord::Base
   def self.default_phases
     DEFAULT_PHASE_NAMES.map.with_index { |name, pos| Phase.new name: name, position: pos + 1 }
   end
+
+  # order tasks using explicit ordering using task_positions
+  def tasks_by_position
+    task_order_sql = task_positions.map { |t| "tasks.id=#{t} DESC" }.join(",")
+    tasks.order(task_order_sql)
+  end
 end

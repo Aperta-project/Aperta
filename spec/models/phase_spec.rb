@@ -24,4 +24,31 @@ describe Phase do
     end
   end
 
+  describe ".tasks_by_position" do
+    let(:phase) { FactoryGirl.create(:phase)}
+
+    context "with no tasks" do
+      specify { expect(phase.tasks_by_position).to be_empty }
+    end
+
+    context "with a single task" do
+      let(:tasks) { [FactoryGirl.create(:task, phase: phase)] }
+
+      specify { expect(phase.tasks_by_position).to eq(tasks) }
+    end
+
+    context "with many tasks" do
+      let(:tasks) { FactoryGirl.create_list(:task, 5, phase: phase) }
+
+      # pretend the tasks are re-sorted in reverse
+      before { phase.update!(task_positions: tasks.map(&:id).reverse) }
+
+      it "tasks order match the order they appear in task_positions" do
+        expect(phase.tasks.order(id: :asc)).to eq(tasks)
+        expect(phase.tasks_by_position).to eq(tasks.reverse)
+      end
+    end
+
+  end
+
 end

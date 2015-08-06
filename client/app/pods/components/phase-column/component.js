@@ -12,11 +12,7 @@ export default Ember.Component.extend({
 
   commentLooks: null,
 
-  sortedTasks: Ember.computed('phase.tasks.[]', function() {
-    return this.get('phase.tasks').sortBy('position');
-  }),
-
-  noCards: Ember.computed.empty('sortedTasks'),
+  noCards: Ember.computed.empty('phase.tasks'),
 
   setupSortable: Ember.on('didInsertElement', function() {
     let phaseId = this.get('phase.id');
@@ -29,7 +25,6 @@ export default Ember.Component.extend({
       connectWith: '.sortable',
 
       update(event, ui) {
-        let updatedOrder    = {};
         let senderPhaseId   = phaseId;
         let receiverPhaseId = ui.item.parent().data('phase-id') + '';
         let task            = self.getTaskByID(ui.item.find('.card-content').data('id'));
@@ -41,9 +36,9 @@ export default Ember.Component.extend({
           });
         }
 
-        $(this).find('.card-content').each(function(index) {
-          updatedOrder[$(this).data('id')] = index + 1;
-        });
+        let updatedOrder = $(this).find('.card-content').map(function(i,card) {
+          return $(card).data('id');
+        }).toArray();
 
         self.updateSortOrder(updatedOrder);
       },
@@ -62,12 +57,8 @@ export default Ember.Component.extend({
   }),
 
   updateSortOrder(updatedOrder) {
-    this.beginPropertyChanges();
-    this.get('phase.tasks').forEach(function(task) {
-      task.set('position', updatedOrder[task.get('id')]);
-    });
-    this.endPropertyChanges();
-    this.get('phase.tasks').invoke('save');
+    this.set('phase.task_positions', updatedOrder);
+    this.get('phase').save();
   },
 
   getTaskByID(taskId) {

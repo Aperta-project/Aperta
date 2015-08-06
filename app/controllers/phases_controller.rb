@@ -4,13 +4,13 @@ class PhasesController < ApplicationController
 
   def create
     paper = Paper.find(params[:phase][:paper_id])
-    phase = paper.phases.create!(new_phase_params)
+    phase = paper.phases.create(new_phase_params)
     respond_with phase
   end
 
   def update
     phase = Phase.find params[:id]
-    phase.update_attributes! update_phase_params
+    phase.update_attributes(update_phase_params)
     respond_with phase
   end
 
@@ -35,6 +35,6 @@ class PhasesController < ApplicationController
   end
 
   def update_phase_params
-    params.require(:phase).permit(:name)
+    params.require(:phase).permit(:name, task_positions: [])
   end
 end

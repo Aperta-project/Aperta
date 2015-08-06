@@ -29,8 +29,6 @@ class Task < ActiveRecord::Base
 
   belongs_to :phase, inverse_of: :tasks
 
-  acts_as_list scope: :phase
-
   validates :title, :role, presence: true
   validates :title, length: { maximum: 255 }
 
@@ -88,7 +86,7 @@ class Task < ActiveRecord::Base
     #
     # Returns an Array of attributes.
     def permitted_attributes
-      [:completed, :title, :phase_id, :position]
+      [:completed, :title, :phase_id]
     end
 
     def assigned_to(*users)
@@ -98,6 +96,15 @@ class Task < ActiveRecord::Base
         joins(participations: :user).where("participations.user_id" => users)
       end
     end
+  end
+
+  def position
+    Rails.logger.warn("Task.position is deprecated! Phases now keep track of the order of their tasks with Phase#task_positions")
+    phase.task_positions.index(self.id)
+  end
+
+  def position=(_pos)
+    raise NotImplementedError.new("Task.position= is deprecated! Phases now keep track of the order of their tasks with Phase#task_positions")
   end
 
   def journal_task_type

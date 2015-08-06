@@ -7,7 +7,12 @@ export default Ember.TextField.extend({
   date: null,
 
   _setup: Ember.on('didInsertElement', function() {
-    this.get('group').registerPicker(this);
+    const partOfGroup = !!this.get('group');
+
+    if(partOfGroup) {
+      this.get('group').registerPicker(this);
+    }
+
     this.set('value', this.get('date'));
 
     let $picker = this.$().datepicker({
@@ -16,12 +21,12 @@ export default Ember.TextField.extend({
 
     $picker.on('changeDate', (event)=> {
       this.set('date', event.format());
-      this.get('group').dateChanged();
+      if(partOfGroup) { this.get('group').dateChanged(); }
     });
 
     $picker.on('clearDate', ()=> {
       this.set('date', null);
-      this.get('group').dateChanged();
+      if(partOfGroup) { this.get('group').dateChanged(); }
     });
 
     this.set('$picker', $picker);

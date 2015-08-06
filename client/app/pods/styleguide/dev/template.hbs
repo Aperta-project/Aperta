@@ -151,14 +151,23 @@
 
 <hr>
 
-<section id="datepicker-group">
+<section id="date-picker-group">
   <h4>
     Group
   </h4>
 
-  {{#datepicker-group}}
-    {{date-picker type="text" role="startPicker" date="2015-01-01" placeholder="Start Date"}} {{date-picker type="text" role="endPicker" date="2015-07-01" placeholder="End Date"}}
-  {{/datepicker-group}}
+  {{#date-picker-group as |group|}}
+    {{date-picker group=group
+                  type="text"
+                  role="startPicker"
+                  date="2015-01-01"
+                  placeholder="Start Date"}}
+    {{date-picker group=group
+                  type="text"
+                  role="endPicker"
+                  date="2015-07-01"
+                  placeholder="End Date"}}
+  {{/date-picker-group}}
 
 </section>
 

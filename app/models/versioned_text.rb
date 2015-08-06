@@ -5,6 +5,10 @@ class VersionedText < ActiveRecord::Base
 
   default_scope -> { order('major_version DESC, minor_version DESC') }
 
+  before_update do
+    fail ActiveRecord::ReadOnlyRecord unless (paper.latest_version == self) && paper.editable?
+  end
+
   # Make a copy of the text and give it a new MAJOR version.
   def new_major_version!
     new_version!(major_version + 1, minor_version)

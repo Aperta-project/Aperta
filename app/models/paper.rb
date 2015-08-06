@@ -55,9 +55,10 @@ class Paper < ActiveRecord::Base
       transitions from: [:unsubmitted, :in_revision],
                   to: :submitted,
                   guards: :metadata_tasks_completed?,
-                  after: [:prevent_edits!,
+                  after: [:set_submitting_user!,
                           :set_submitted_at!,
-                          :set_submitting_user!]
+                          :prevent_edits!]
+                          
     end
 
     event(:minor_check) do
@@ -70,8 +71,8 @@ class Paper < ActiveRecord::Base
     event(:submit_minor_check) do
       transitions from: :checking,
                   to: :submitted,
-                  after: [:prevent_edits!,
-                          :set_submitting_user!]
+                  after: [:set_submitting_user!,
+                          :prevent_edits!]
     end
 
     event(:minor_revision) do

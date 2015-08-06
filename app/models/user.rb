@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   pg_search_scope :fuzzy_search,
     against: [:first_name, :last_name, :email, :username],
     ignoring: :accents,
-    using: { tsearch: { prefix: true }, trigram: { threshold: 0.08 } }
+    using: { tsearch: { prefix: true } }
 
   has_many :affiliations, inverse_of: :user
   has_many :submitted_papers, inverse_of: :creator, class_name: 'Paper'

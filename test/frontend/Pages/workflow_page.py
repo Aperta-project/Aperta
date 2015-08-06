@@ -2,6 +2,7 @@
 
 from selenium.webdriver.common.by import By
 from Base.PlosPage import PlosPage
+import time
 
 __author__ = 'fcabrales'
 
@@ -29,16 +30,7 @@ class WorkflowPage(PlosPage):
     self._left_nav_menu = (By.XPATH, ".//div/div/div[@class='navigation']")
     self._navigation_close = (By.XPATH, ".//div[@class='navigation']/div/span[@class='navigation-close']")
     self._navigation_title = (By.XPATH, ".//div[@class='navigation']/div")
-    self._sign_out_link = (By.XPATH, './/div/div[1]/a')
-    self._navigation_image = (By.XPATH, ".//div[@class='navigation']/div[2]/a")
-    self._navigation_name = (By.XPATH, ".//div[@class='navigation']/div[2]/a/span")
-    self._navigation_menu_dashboard = (By.XPATH, ".//div[@class='navigation']/div[3]/a")
-    self._navigation_menu_flow_manager = (By.XPATH, ".//div[@class='navigation']/div[4]/a")
-    self._navigation_menu_paper_tracker = (By.XPATH, ".//div[@class='navigation']/div[5]/a")
-    self._navigation_menu_admin = (By.XPATH, ".//div[@class='navigation']/div[6]/a")
-    self._navigation_menu_signout = (By.XPATH, ".//div[@class='navigation']/div[7]/a")
     self._navigation_menu_line = (By.XPATH, ".//div[@class='navigation']/hr")
-    self._navigation_menu_feedback_link = (By.XPATH, ".//div[@class='navigation']/div[8]/a")
     self._editable_label = (By.XPATH, ".//div[@class='control-bar-inner-wrapper']/ul[2]/li/label")
     self._editable_checkbox = (By.XPATH, 
       ".//div[@class='control-bar-inner-wrapper']/ul[2]/li/label/input")
@@ -54,7 +46,16 @@ class WorkflowPage(PlosPage):
       ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div/*[local-name() = 'svg']/*[local-name() = 'path']")
     self._manuscript_text = (By.XPATH, 
       ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div[2]")
-    
+    self._column_header = (By.XPATH, 
+      ".//div[contains(@class, 'column-header')]/div/h2")
+    self._column_header_save = (By.XPATH, 
+      ".//div[contains(@class, 'column-header')]/div/div/button[2]")
+    self._column_header_cancel = (By.XPATH, 
+      ".//div[contains(@class, 'column-header')]/div/div/button")
+    self._add_card_button = (By.XPATH, 
+      ".//a[contains(@class, 'add-new-card-button')]")
+    self._add_card_overlay = (By.XPATH, 
+      ".//div[@class='overlay-container']/div/div/h1")
 
   #POM Actions
 
@@ -121,29 +122,9 @@ class WorkflowPage(PlosPage):
     discussions_text = self._get(self._discussions_text)
     assert discussions_text
     assert discussions_text.text == 'DISCUSSIONS'
+    column_header = self._get(self._column_header)
+    assert column_header
     return self
-
-
-  def validate_navigation_elements_styles(self):
-    """ """
-    # check for close
-    left_nav_close_icon = self._get(self._navigation_close)
-    assert left_nav_close_icon    
-    # check for title
-    left_nav_title= self._get(self._navigation_title)
-    assert 'PLOS' in left_nav_title.text
-    navigation_image = self._get(self._navigation_image)
-    assert navigation_image
-    assert navigation_image.value_of_css_property('width') == '260px'
-    assert navigation_image.value_of_css_property('height') == '52px'
-    navigation_name = self._get(self._navigation_name)
-    assert navigation_name
-    assert navigation_name.value_of_css_property('text-transform') == 'capitalize'
-    assert navigation_name.value_of_css_property('font-size') == '15px'
-    assert navigation_name.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
-    assert 'Cabin' in navigation_image.value_of_css_property('font-family')
-    return self
-
 
   #def is_navigation_menu_visible(self):
   #  """ """
@@ -195,4 +176,39 @@ class WorkflowPage(PlosPage):
   def click_close_navigation(self):
     """Click on the close icon to close left navigation bar"""
     self._get(self._navigation_close).click()
+    return self
+
+  #def get_column_header_(self):
+  #  """ """
+  #  return self._get(self._column_header).text
+
+  def click_column_header(self):
+    """Click on the first column header and returns the text"""
+    column_header = self._get(self._column_header)
+    column_header.click()
+    return column_header.text
+
+  def click_cancel_column_header(self):
+    """ """
+    self._get(self._column_header_cancel).click()
+    return self
+
+  def modify_column_header(self, title, blank=True):
+    column_header = self._get(self._column_header)
+    if blank:
+      column_header.clear()
+    column_header.send_keys(title)
+    self._get(self._column_header_save).click()
+    return self
+  
+  def click_add_new_card(self):
+    """ """
+    self._get(self._add_card_button).click()
+    return self
+
+  def check_overlay(self):
+    """ """
+    card_overlay = self._get(self._add_card_overlay)
+    assert card_overlay.text == 'Pick the type of card to add'
+
     return self

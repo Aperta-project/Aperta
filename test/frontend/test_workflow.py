@@ -11,7 +11,8 @@ from Pages.login_page import LoginPage
 from Base.Resources import login_valid_email, login_valid_pw
 from frontend.Pages.manuscript_page import ManuscriptPage
 from frontend.Pages.workflow_page import WorkflowPage
-
+from frontend.Pages.authenticated_page import AuthenticatedPage
+import time
 
 @MultiBrowserFixture
 class ApertaWorkflowTest(FrontEndTest):
@@ -38,12 +39,34 @@ class ApertaWorkflowTest(FrontEndTest):
     """
     workflow_page = self._go_to_workflow()
     workflow_page.validate_initial_page_elements_styles()
-    # Activate navigation
-    workflow_page.click_left_nav()
-    workflow_page.validate_navigation_elements_styles()
-    workflow_page.click_close_navigation()
-    
+    return self
 
+  def test_headers(self):
+    """ """
+    workflow_page = self._go_to_workflow()
+    # check for cancel edit
+    original_header_text = workflow_page.click_column_header()
+    # modify
+    workflow_page.modify_column_header('XX', blank=False)
+    time.sleep(1)
+    header_text = workflow_page.click_column_header()
+    assert 'XX' in header_text
+    # restore original value
+    workflow_page.modify_column_header(original_header_text)
+    # Test cancel button
+    header_text = workflow_page.click_column_header()
+    workflow_page.click_cancel_column_header()
+    return self
+
+  def test_add_new_card(self):
+    """ """
+    workflow_page = self._go_to_workflow()
+    # Test add new card
+    workflow_page.click_add_new_card()
+    # Elements in add new card
+    workflow_page.check_overlay()
+
+    time.sleep(5)
     return self
 
 

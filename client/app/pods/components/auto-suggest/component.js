@@ -5,7 +5,7 @@ import RESTless from 'tahi/services/rest-less';
  * {{#auto-suggest endpoint="/api/users"
  *                 queryParameter="email"
  *                 placeholder="Search for user by email address"
- *                 parseResponseFunction=parseUserSearch
+ *                 parseResponseFunction=parseUserSearchResponse
  *                 itemDisplayTextFunction=something
  *                 itemSelected="userSelected"
  *                 unknownItemSelected="newUserSelected"
@@ -14,7 +14,7 @@ import RESTless from 'tahi/services/rest-less';
  * {{/auto-suggest}}
  *
  * Controller: {
- *   parseUserResponse(response) {
+ *   parseUserSearchResponse(response) {
  *     return response.users;
  *   },
  *

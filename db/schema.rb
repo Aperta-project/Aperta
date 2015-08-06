@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150803230248) do
+ActiveRecord::Schema.define(version: 20150803233256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,7 +62,7 @@ ActiveRecord::Schema.define(version: 20150803230248) do
     t.datetime "updated_at"
     t.string   "title"
     t.string   "caption"
-    t.string   "status",          default: "processing"
+    t.string   "status",     default: "processing"
     t.string   "kind"
   end
 
@@ -504,9 +504,9 @@ ActiveRecord::Schema.define(version: 20150803230248) do
 
   create_table "versioned_texts", force: :cascade do |t|
     t.integer  "submitting_user_id"
-    t.integer  "paper_id"
-    t.integer  "major_version",      default: 0
-    t.integer  "minor_version",      default: 0
+    t.integer  "paper_id",                           null: false
+    t.integer  "major_version",                      null: false
+    t.integer  "minor_version",                      null: false
     t.boolean  "active",             default: true
     t.boolean  "copy_on_edit",       default: false
     t.text     "text",               default: ""

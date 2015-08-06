@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe VersionedText do
-  let(:versioned_text) { FactoryGirl.create :versioned_text, paper_id: 0 }
+  let(:versioned_text) { FactoryGirl.create :versioned_text, paper_id: 0, major_version: 0, minor_version: 0 }
 
   describe "#new_major_version!" do
     it "creates a new major version while retaining the old" do

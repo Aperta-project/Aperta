@@ -275,7 +275,7 @@ class Paper < ActiveRecord::Base
   private
 
   def latest_version
-    versioned_texts.active.first_or_initialize
+    versioned_texts.active.first_or_initialize(major_version: 0, minor_version: 0)
   end
 
   def new_major_version!

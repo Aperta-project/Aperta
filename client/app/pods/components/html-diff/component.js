@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import RESTless from 'tahi/services/rest-less';
 import LazyLoader from 'ember-cli-lazyloader/lib/lazy-loader';
 
 
@@ -14,7 +13,7 @@ export default Ember.Component.extend({
 
   tokenizeInsideElements: ['p'],
 
-  sentenceDelimiter: /(\S.+?[.!?,;]\s*)/g,
+  sentenceDelimiter: /([.!?,;]\s*)/g,
 
   manuscript: function() {
     if (!this.get('comparisonText')) {

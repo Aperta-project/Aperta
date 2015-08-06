@@ -3,6 +3,14 @@
     padding: 15px;
   }
 
+  span.added, span.removed {
+    padding: 1px 3px;
+  }
+
+  span.removed {
+    text-decoration: line-through;
+  }
+
   .added, .removed {
     td, th {
 	    border: 1px dotted #333;
@@ -18,10 +26,16 @@
 
   .removed {
     opacity: .8;
-    background-color: rgba($tahi-light-red, .5);
+    background-color: rgba($tahi-red-light, .5);
     text-decoration: strikethrough;
     th {
-      background: darken($tahi-light-red, 5%);
+      background: darken($tahi-red-light, 5%);
     }
+  }
+
+  cite:after {
+    font-style: normal;
+    content: "[\2020]";
+    padding: 3px;
   }
 }

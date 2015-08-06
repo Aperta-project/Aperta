@@ -12,5 +12,6 @@ export default DS.Model.extend({
   title: a('string'),
   caption: a('string'),
   detailSrc: DS.attr('string'),
-  previewSrc: DS.attr('string')
+  previewSrc: DS.attr('string'),
+  publishable: DS.attr('boolean')
 });

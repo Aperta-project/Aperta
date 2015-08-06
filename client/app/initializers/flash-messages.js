@@ -11,9 +11,9 @@ export default {
     application.inject('component:flashMessages', 'flash', 'flashMessages:main');
 
     Ember.Route.reopen({
-      _teardownFlashMessages: function() {
+      _teardownFlashMessages: Ember.on('deactivate', function() {
         this.flash.clearAllMessages();
-      }.on('deactivate')
+      })
     });
   }
 };

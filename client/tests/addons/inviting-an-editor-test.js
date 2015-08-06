@@ -8,10 +8,8 @@ let App, paper, phase, task, inviteeEmail;
 
 module("Integration: Inviting an editor", {
   afterEach() {
-    Ember.run(function() {
-      TestHelper.teardown();
-      App.destroy();
-    });
+    Ember.run(function() { TestHelper.teardown(); });
+    Ember.run(App, "destroy");
   },
 
   beforeEach() {
@@ -38,10 +36,10 @@ module("Integration: Inviting an editor", {
     });
 
     phase = FactoryGuy.make("phase");
-    task = FactoryGuy.make("paper-editor-task", { phase: phase, letter: '"A letter"' });
-    paper = FactoryGuy.make('paper', { phases: [phase], tasks: [task] });
+    task  = FactoryGuy.make("paper-editor-task", { phase: phase, letter: '"A letter"' });
+    paper = FactoryGuy.make("paper", { phases: [phase], tasks: [task] });
     TestHelper.handleFind(paper);
-    TestHelper.handleFindAll('discussion-topic', 1);
+    TestHelper.handleFindAll("discussion-topic", 1);
   }
 });
 

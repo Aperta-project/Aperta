@@ -4,7 +4,7 @@ import AnimateOverlay from 'tahi/mixins/animate-overlay';
 export default Ember.View.extend(AnimateOverlay, {
   skipAnimation: true,
 
-  animateIn: function() {
+  animateIn: Ember.on('didInsertElement', function() {
     let options = {
       extraClasses: this.get('controller.overlayClass'),
       skipAnimation: this.get('skipAnimation')
@@ -14,13 +14,13 @@ export default Ember.View.extend(AnimateOverlay, {
       this.$().addClass('animation-fade-in');
       this.animateOverlayIn(options);
     });
-  }.on('didInsertElement'),
+  }),
 
-  removeExtraClasses: function() {
+  removeExtraClasses: Ember.on('willDestroyElement', function() {
     $('.overlay').attr('class', 'overlay');
-  }.on('willDestroyElement'),
+  }),
 
-  setupKeyup: function() {
+  setupKeyup: Ember.on('didInsertElement', function() {
     $('body').on('keyup.' + this.get('elementId'), (e)=> {
       if (e.keyCode === 27 || e.which === 27) {
         if ($(e.target).is(':not(input, textarea)')) {
@@ -28,9 +28,9 @@ export default Ember.View.extend(AnimateOverlay, {
         }
       }
     });
-  }.on('didInsertElement'),
+  }),
 
-  tearDownKeyup: function() {
+  tearDownKeyup: Ember.on('willDestroyElement', function() {
     $('body').off('keyup.' + this.get('elementId'));
-  }.on('willDestroyElement')
+  })
 });

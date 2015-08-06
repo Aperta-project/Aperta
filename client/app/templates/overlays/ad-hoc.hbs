@@ -1,4 +1,4 @@
-{{inline-edit-h1 title=model.title setTitle="setTitle" editOnOpen=isNewTask}}
+{{inline-edit-h1 title=model.title setTitle="setTitle"}}
 
 <div class="task-body">
   {{#each uploads as |upload|}}
@@ -6,42 +6,49 @@
   {{/each}}
 
   {{#each blocks as |block|}}
-    {{#inline-edit-body-part
-      block=block
-      cancel="resetBlock"
-      save="saveBlock"
-      delete="deleteBlock"
-      model=model
-      addItem="addCheckboxItem"}}
+    {{#inline-edit-body-part block=block
+                             editing=false
+                             cancel="resetBlock"
+                             save="saveBlock"
+                             delete="deleteBlock"
+                             addItem="addCheckboxItem"
+                             as |editing|}}
       {{#each block as |item|}}
-        {{view "inline-edit"
-               item=item
-               block=block
-               allUsers=allUsers
-               overlayParticipants=participants
-               emailSentStates=emailSentStates
-               isNew=false}}
+        {{inline-edit-item item=item
+                           block=block
+                           editing=editing
+                           allUsers=allUsers
+                           overlayParticipants=participants
+                           emailSentStates=emailSentStates
+                           isNew=false
+                           saveModel=(action "saveModel")
+                           deleteBlock=(action "deleteBlock")
+                           deleteItem=(action "deleteItem")
+                           sendEmail=(action "sendEmail")}}
       {{/each}}
     {{/inline-edit-body-part}}
   {{/each}}
 
   {{#each newBlocks as |block|}}
-    {{#inline-edit-body-part
-      block=block
-      editing=true
-      cancel="resetBlock"
-      save="saveBlock"
-      delete="deleteBlock"
-      model=model
-      addItem="addCheckboxItem"}}
+    {{#inline-edit-body-part block=block
+                             editing=true
+                             cancel="resetBlock"
+                             save="saveBlock"
+                             delete="deleteBlock"
+                             addItem="addCheckboxItem"
+                             as |editing|}}
       {{#each block as |item|}}
-        {{view "inline-edit"
-               item=item
-               block=block
-               allUsers=allUsers
-               overlayParticipants=participants
-               emailSentStates=emailSentStates
-               isNew=true}}
+        {{inline-edit-item item=item
+                           block=block
+                           editing=editing
+                           allUsers=allUsers
+                           overlayParticipants=participants
+                           emailSentStates=emailSentStates
+                           isNew=true
+                           saveModel=(action "saveModel")
+                           deleteBlock=(action "deleteBlock")
+                           deleteItem=(action "deleteItem")
+                           sendEmail=(action "sendEmail")}}
       {{/each}}
     {{/inline-edit-body-part}}
   {{/each}}

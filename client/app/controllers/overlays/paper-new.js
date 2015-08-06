@@ -6,17 +6,17 @@ export default Ember.Controller.extend(AnimateOverlay, {
   journals: null, // set on controller before rendering overlay
   paperSaving: false,
 
-  journalProxies: function() {
+  journalProxies: Ember.computed(function() {
     return this.get('journals').map(function(journal) {
       return {
         id: journal.get('id'),
         text: journal.get('name')
       };
     });
-  }.property(),
+  }),
 
   // Select-2 requires data to be an object with an id key :\
-  paperTypeProxies: function() {
+  paperTypeProxies: Ember.computed('model.journal.paperTypes.@each', function() {
     let paperTypes = this.get('model.journal.paperTypes');
     if(Ember.isEmpty(paperTypes)) { return []; }
 
@@ -26,23 +26,23 @@ export default Ember.Controller.extend(AnimateOverlay, {
         text: paperType
       };
     });
-  }.property('model.journal.paperTypes.@each'),
+  }),
 
-  selectedJournal: function() {
+  selectedJournal: Ember.computed('model.journal', function() {
     let journal = this.get('model.journal');
     if(Ember.isEmpty(journal)) { return; }
 
     return { id:   journal.get('id'),
              text: journal.get('name') };
-  }.property('model.journal'),
+  }),
 
-  selectedPaperType: function() {
+  selectedPaperType: Ember.computed('model.paperType', function() {
     let paperType = this.get('model.paperType');
     if(Ember.isEmpty(paperType)) { paperType = ''; }
 
     return { id:   paperType,
              text: paperType };
-  }.property('model.paperType'),
+  }),
 
   actions: {
     createNewPaper() {

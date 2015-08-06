@@ -1,7 +1,7 @@
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  question: DS.belongsTo('question'),
+  question: DS.belongsTo('question', { async: false }),
 
   filename: DS.attr('string'),
   src: DS.attr('string'),

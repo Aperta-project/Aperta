@@ -10,7 +10,7 @@ moduleForModel 'paper', 'Unit: Paper Model',
     'model:card-thumbnail', 'model:question', 'model:collaboration',
     'model:supporting-information-file']
 
-test 'displayTitle displays short title if title is missing', ->
+test 'displayTitle displays short title if title is missing', (assert) ->
   shortTitle = 'test short title'
 
   paper = Ember.run =>
@@ -18,9 +18,9 @@ test 'displayTitle displays short title if title is missing', ->
       title: ''
       shortTitle: shortTitle
 
-  equal paper.get('displayTitle'), shortTitle
+  assert.equal paper.get('displayTitle'), shortTitle
 
-test 'displayTitle displays title if present', ->
+test 'displayTitle displays title if present', (assert) ->
   title = 'Test Title'
 
   paper = Ember.run =>
@@ -28,9 +28,9 @@ test 'displayTitle displays title if present', ->
       title: title
       shortTitle: 'test short title'
 
-  equal paper.get('displayTitle'), title
+  assert.equal paper.get('displayTitle'), title
 
-test 'Paper hasMany tasks (async)', ->
+test 'Paper hasMany tasks (async)', (assert) ->
   stop()
   paperPromise = Ember.run =>
     task1 = @store().createRecord 'task', type: 'Task', title: 'A message', isMetadataTask: false
@@ -43,11 +43,11 @@ test 'Paper hasMany tasks (async)', ->
       paper
 
   paperPromise.then((paper) ->
-    deepEqual paper.get('tasks').mapBy('type'), ['Task', 'InitialTechCheckTask']
+    assert.deepEqual paper.get('tasks').mapBy('type'), ['Task', 'InitialTechCheckTask']
   ).then(start, start)
 
 
-test 'allSubmissionTasks filters tasks by isSubmissionTask', ->
+test 'allSubmissionTasks filters tasks by isSubmissionTask', (assert) ->
   stop()
   paperPromise = Ember.run =>
     task1 = @store().createRecord 'task', type: 'Task', title: 'A message', isSubmissionTask: false
@@ -60,5 +60,5 @@ test 'allSubmissionTasks filters tasks by isSubmissionTask', ->
       paper
 
   paperPromise.then((paper) ->
-    deepEqual paper.get('allSubmissionTasks').mapBy('type'), ['InitialTechCheckTask']
+    assert.deepEqual paper.get('allSubmissionTasks').mapBy('type'), ['InitialTechCheckTask']
   ).then(start, start)

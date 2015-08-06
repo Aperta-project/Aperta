@@ -8,10 +8,7 @@
   </div>
 {{else}}
 
-  <div {{bind-attr class="focused:did-you-mean-focused
-                          searchResults:did-you-mean-input-expanded
-                          :form-control
-                          :did-you-mean-input"}}>
+  <div class="form-control did-you-mean-input {{if focused "did-you-mean-focused"}} {{if searchResults "did-you-mean-input-expanded"}}">
     {{input value=resultText
             bubbles=true
             placeholder=placeholder

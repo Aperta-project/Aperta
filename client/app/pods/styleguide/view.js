@@ -1,11 +1,11 @@
 import Ember from 'ember';
 
 export default Ember.View.extend({
-  didInsertElement: function() {
+  didInsertElement() {
     this._super();
     return Ember.run.scheduleOnce('afterRender', this, this.afterRenderEvent);
   },
-  afterRenderEvent: function() {
+  afterRenderEvent() {
     $('#card-overlays > a').click(function() {
       return $(this).next().removeClass('hide');
     });

@@ -9,10 +9,8 @@ let paper, topic;
 
 module('Integration: Discussions', {
   afterEach: function() {
-    Ember.run(function() {
-      TestHelper.teardown();
-      App.destroy();
-    });
+    Ember.run(function() { TestHelper.teardown(); });
+    Ember.run(App, 'destroy');
   },
 
   beforeEach: function() {
@@ -22,6 +20,8 @@ module('Integration: Discussions', {
     paper = make('paper', { phases: [], tasks: [] });
     topic = make('topic_with_replies', { paperId: paper.id, title: 'Hipster Ipsum Dolor' });
 
+    $.mockjax({url: '/api/user_flows/authorization', status: 204});
+    $.mockjax({url: '/api/admin/journals/authorization', status: 204});
     $.mockjax({url: /\/api\/papers\/\d+\/manuscript_manager/, status: 204});
     TestHelper.handleFind(paper);
     TestHelper.handleFindAll('discussion-topic', 1);

@@ -5,10 +5,10 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
--
+- Autosuggest ember component
 
 ### Changed
--
+- Upgraded to Ember 1.13 [Aperta Transition Guide](https://github.com/Tahi-project/tahi/wiki/Aperta-Ember-1.13-Transition-Guide)
 
 ### Deprecated
 -
@@ -17,7 +17,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Fixed
--
+- No longer perform unfiltered searches in Flow Manager
 
 ### Security
 -

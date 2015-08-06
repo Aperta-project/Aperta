@@ -12,10 +12,12 @@ fakeUser = null
 currentPaper = null
 
 module "Integration: Billing",
-  teardown: ->
+  afterEach: ->
     server.restore()
+    Ember.run(-> TestHelper.teardown() )
     Ember.run(app, app.destroy)
-  setup: ->
+
+  beforeEach: ->
     app = startApp()
     server = setupMockServer()
     fakeUser = window.currentUserData.user
@@ -69,7 +71,7 @@ test "Viewing card", (assert) ->
   visit "/papers/#{currentPaper.id}/edit"
   click ":contains(Billing)"
   .then ->
-    equal find(".overlay-main-work h1").text().trim(), "Publication Fees"
+    assert.equal find(".overlay-main-work h1").text().trim(), "Publication Fees"
   click ".select2-choice"
   .then ->
     assert.ok Ember.$(".select2-result").length > 0

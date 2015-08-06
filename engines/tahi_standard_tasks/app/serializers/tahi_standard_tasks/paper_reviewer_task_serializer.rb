@@ -2,7 +2,6 @@ module TahiStandardTasks
   class PaperReviewerTaskSerializer < ::TaskSerializer
     embed :ids
     has_many :reviewers, include: true, root: :users, serializer: UserSerializer
-    has_many :invitations, include: true
     attributes :letter
 
     def reviewers

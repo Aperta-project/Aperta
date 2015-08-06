@@ -1304,12 +1304,12 @@
     <div class="col-md-4">
       {{!-- Render `user_thumbnail.js.coffee` here,
           or refactor that to a component.
-          It uses using Handlebars.SafeString. --}}
+          It uses using Ember.String.htmlSafe. --}}
       <img src="/images/profile-no-image.png" data-bindattr-1041="1041" class="user-thumbnail">
     </div>
     <div class="col-md-4">
       {{!-- This one is rendered from `participant-selector-component.js.coffee`s `selectedTemplate` function
-          using Handlebars.SafeString --}}
+          using Ember.String.htmlSafe --}}
       <img alt="User Name" class="user-thumbnail-small" src="/images/profile-no-image.png" data-toggle="tooltip" title="" data-original-title="User Name">
     </div>
   </div>

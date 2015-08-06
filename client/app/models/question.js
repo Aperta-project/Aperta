@@ -1,9 +1,13 @@
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  questionAttachment: DS.belongsTo('question-attachment'),
-  task: DS.belongsTo('task', { polymorphic: true, inverse: 'questions' }),
-  decision: DS.belongsTo('decision'),
+  decision: DS.belongsTo('decision', { async: false }),
+  questionAttachment: DS.belongsTo('question-attachment', { async: false }),
+  task: DS.belongsTo('task', {
+    polymorphic: true,
+    inverse: 'questions',
+    async: false
+  }),
 
   additionalData: DS.attr(),
   answer: DS.attr('string'),

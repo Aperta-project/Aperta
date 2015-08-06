@@ -4,7 +4,7 @@ export default Ember.Component.extend({
   tagName: 'a',
   attributeBindings: ['href'],
 
-  href: function() {
+  href: Ember.computed('link', function() {
     return this.get('link') + (this.get('extension') || '');
-  }.property('link')
+  })
 });

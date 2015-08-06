@@ -1,6 +1,6 @@
-require 'rails_helper'
+require "rails_helper"
 
-feature "Profile Page", js: true do
+feature "Profile Page", js: true, vcr: {cassette_name: "ned_countries", record: :none} do
   let(:admin) { create :user, :site_admin }
   let(:profile_page) { ProfilePage.new }
 
@@ -21,7 +21,7 @@ feature "Profile Page", js: true do
     expect(current_path).to eq new_user_session_path
   end
 
-  scenario "affiliation errors are handled", vcr: { cassette_name: "ned_countries" }  do
+  scenario "affiliation errors are handled" do
     profile_page.start_adding_affiliate
     profile_page.submit
     expect(page).to have_content(/can't be blank/i)
@@ -34,15 +34,15 @@ feature "Profile Page", js: true do
     end
 
     it "hides the form" do
-      expect(page).to have_css('.profile-affiliations-form')
-      find('a', text: 'cancel').click
-      expect(page).to have_no_css('.profile-affiliations-form')
+      expect(page).to have_css(".profile-affiliations-form")
+      find("a", text: "cancel").click
+      expect(page).to have_no_css(".profile-affiliations-form")
     end
 
     it "clears the form" do
       profile_page.fill_in_email("foo")
-      find('a', text: 'cancel').click
-      find('a', text: 'ADD NEW AFFILIATION').click
+      find("a", text: "cancel").click
+      find("a", text: "ADD NEW AFFILIATION").click
       expect(page).to have_no_content("foo")
     end
   end

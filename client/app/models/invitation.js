@@ -2,8 +2,11 @@ import Ember from 'ember';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  task: DS.belongsTo('task', { polymorphic: true }),
-  invitee: DS.belongsTo('user', { inverse: 'invitations' }),
+  task: DS.belongsTo('task', {
+    polymorphic: true,
+    async: false
+  }),
+  invitee: DS.belongsTo('user', { inverse: 'invitations', async: true }),
 
   title: DS.attr('string'),
   abstract: DS.attr('string'),

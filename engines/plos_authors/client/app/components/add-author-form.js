@@ -10,13 +10,31 @@ export default Ember.Component.extend({
     "Contributed to the writing of the manuscript"
   ],
 
-  setNewAuthor: function() {
+  setNewAuthor: Ember.on("init", function(){
     if (!this.get("newAuthor")) {
       this.set("newAuthor", {contributions: []});
     }
-  }.on("init"),
+  }),
 
-  resetAuthor: function() {
+  affiliation: Ember.computed("newAuthor", function() {
+    if (this.get("newAuthor.affiliation")) {
+      return {
+        id: this.get("newAuthor.ringgoldId"),
+        name: this.get("newAuthor.affiliation")
+      };
+    }
+  }),
+
+  secondaryAffiliation: Ember.computed("newAuthor", function() {
+    if (this.get("newAuthor.secondaryAffiliation")) {
+      return {
+        id: this.get("newAuthor.secondaryRinggoldId"),
+        name: this.get("newAuthor.secondaryAffiliation")
+      };
+    }
+  }),
+
+  resetAuthor() {
     if (Ember.typeOf(this.get("newAuthor")) === "object") {
       this.set("newAuthor", {contributons: []});
     } else {
@@ -24,64 +42,46 @@ export default Ember.Component.extend({
     }
   },
 
-  affiliation: function() {
-    if (this.get("newAuthor.affiliation")) {
-      return {
-        id: this.get("newAuthor.ringgoldId"),
-        name: this.get("newAuthor.affiliation")
-      };
-    }
-  }.property("newAuthor"),
-
-  secondaryAffiliation: function() {
-    if (this.get("newAuthor.secondaryAffiliation")) {
-      return {
-        id: this.get("newAuthor.secondaryRinggoldId"),
-        name: this.get("newAuthor.secondaryAffiliation")
-      };
-    }
-  }.property("newAuthor"),
-
   actions: {
-    cancelEdit: function() {
+    cancelEdit() {
       this.resetAuthor();
       this.sendAction("hideAuthorForm");
     },
 
-    saveNewAuthor: function() {
+    saveNewAuthor() {
       this.sendAction("saveAuthor", this.get("newAuthor"));
       this.resetAuthor();
     },
 
-    addContribution: function(name) {
+    addContribution(name) {
       this.get("newAuthor.contributions").addObject(name);
     },
 
-    removeContribution: function(name) {
+    removeContribution(name) {
       this.get("newAuthor.contributions").removeObject(name);
     },
 
-    resolveContributions: function(newContributions, unmatchedContributions) {
+    resolveContributions(newContributions, unmatchedContributions) {
       this.get("newAuthor.contributions").removeObjects(unmatchedContributions);
       this.get("newAuthor.contributions").addObjects(newContributions);
     },
 
-    institutionSelected: function(institution) {
+    institutionSelected(institution) {
       this.set("newAuthor.affiliation", institution.name);
       this.set("newAuthor.ringgoldId", institution["institution-id"]);
     },
 
-    unknownInstitutionSelected: function(institutionName) {
+    unknownInstitutionSelected(institutionName) {
       this.set("newAuthor.affiliation", institutionName);
       this.set("newAuthor.ringgoldId", "");
     },
 
-    secondaryInstitutionSelected: function(institution) {
+    secondaryInstitutionSelected(institution) {
       this.set("newAuthor.secondaryAffiliation", institution.name);
       this.set("newAuthor.secondaryRinggoldId", institution["institution-id"]);
     },
 
-    unknownSecondaryInstitutionSelected: function(institutionName) {
+    unknownSecondaryInstitutionSelected(institutionName) {
       this.set("newAuthor.secondaryAffiliation", institutionName);
       this.set("newAuthor.secondaryRinggoldId", "");
     }

@@ -3,19 +3,24 @@
 `import startApp from '../helpers/start-app'`
 `import setupMockServer from '../helpers/mock-server'`
 `import Factory from '../helpers/factory'`
+`import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';`
 
 app = null
 server = null
 
 module 'Integration: Navbar',
 
-  teardown: ->
+  afterEach: ->
     server.restore()
     Ember.run(app, app.destroy)
+    Ember.run ->
+      TestHelper.teardown()
 
-  setup: ->
+  beforeEach: ->
     app = startApp()
     server = setupMockServer()
+    TestHelper.handleFindAll('paper', 0)
+    TestHelper.handleFindAll('invitation', 0)
 
     dashboardResponse = dashboards: [ id: 1 ]
 
@@ -56,7 +61,7 @@ setCurrentUserAdmin = (bool) ->
   store.find 'user', getCurrentUser().get('id')
   .then (currentUser) -> currentUser.set 'admin', bool
 
-test 'all users can see their username', ->
+test 'all users can see their username', (assert) ->
   respondUnauthorized()
   setCurrentUserAdmin(false)
 
@@ -65,7 +70,7 @@ test 'all users can see their username', ->
   andThen ->
     equal(find(".navigation-item--account span:contains('Fake User')").length, 1)
 
-test '(200 response) can see the Flow Manager link', ->
+test '(200 response) can see the Flow Manager link', (assert) ->
   respondAuthorized()
 
   visit '/'
@@ -73,7 +78,7 @@ test '(200 response) can see the Flow Manager link', ->
   andThen ->
     equal(find(".navigation:contains('Flow Manager')").length, 1)
 
-test '(403 response) cannot see the Flow Manager link', ->
+test '(403 response) cannot see the Flow Manager link', (assert) ->
   respondUnauthorized()
 
   visit '/'
@@ -81,7 +86,7 @@ test '(403 response) cannot see the Flow Manager link', ->
   andThen ->
     equal(find(".navigation:contains('Flow Manager')").length, 0)
 
-test '(200 response) can see the Admin link', ->
+test '(200 response) can see the Admin link', (assert) ->
   respondAuthorized()
 
   visit '/'
@@ -89,7 +94,7 @@ test '(200 response) can see the Admin link', ->
   andThen ->
     equal(find(".navigation:contains('Admin')").length, 1)
 
-test '(403 response) cannot see the Admin link', ->
+test '(403 response) cannot see the Admin link', (assert) ->
   respondUnauthorized()
 
   visit '/'
@@ -97,7 +102,7 @@ test '(403 response) cannot see the Admin link', ->
   andThen ->
     equal(find(".navigation:contains('Admin')").length, 0)
 
-test '(403 response) cannot see the Flow Manager link', ->
+test '(403 response) cannot see the Flow Manager link', (assert) ->
   respondUnauthorized()
 
   visit '/'

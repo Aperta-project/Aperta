@@ -4,14 +4,14 @@ export default Ember.ArrayController.extend(Ember.SortableMixin, {
   sortProperties: ['isNew', 'name'],
   sortAscending: false,
 
-  newJournalPresent: function() {
+  newJournalPresent: Ember.computed('arrangedContent.@each.isNew', function() {
     return this.get('arrangedContent').any((a) => a.get('isNew'));
-  }.property('arrangedContent.@each.isNew'),
+  }),
 
   actions: {
     addNewJournal() {
       if (!this.get('newJournalPresent')) {
-        this.store.createRecord('adminJournal');
+        this.store.createRecord('admin-journal');
       }
     }
   }

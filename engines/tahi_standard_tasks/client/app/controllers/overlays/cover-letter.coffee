@@ -5,7 +5,7 @@ CoverLetterController = TaskController.extend
     result = ""
     @get('letterBody').split("\n").forEach (item) ->
       result += "<p>" + item + "</p>"
-    new Ember.Handlebars.SafeString(result)
+    Ember.String.htmlSafe(result)
 
   letterBody: Ember.computed ->
     @model.get('body')[0]

@@ -1,14 +1,13 @@
-import Ember from "ember";
-import { module, test } from "qunit";
-import startApp from "tahi/tests/helpers/start-app";
-import FactoryGuy from "ember-data-factory-guy";
-import TestHelper from "ember-data-factory-guy/factory-guy-test-helper";
+import Ember from 'ember';
+import { module, test } from 'qunit';
+import startApp from 'tahi/tests/helpers/start-app';
+import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 
 let App = null;
 let title = 'Crystalized Magnificence in the Modern World';
 
 module('Integration: Create new paper', {
-  afterEach: function() {
+  afterEach() {
     Ember.run(function() {
       TestHelper.teardown();
       App.destroy();
@@ -16,7 +15,7 @@ module('Integration: Create new paper', {
     });
   },
 
-  beforeEach: function() {
+  beforeEach() {
     App = startApp();
     TestHelper.setup(App);
 
@@ -25,6 +24,10 @@ module('Integration: Create new paper', {
     TestHelper.handleFindAll('paper', 0);
     TestHelper.handleFindAll('invitation', 0);
     TestHelper.handleFindAll('comment-look', 0);
+    TestHelper.handleFindAll('discussion-topic', 0);
+    $.mockjax({url: /\/api\/papers\/\d+\/manuscript_manager/, status: 204});
+    $.mockjax({url: '/api/admin/journals/authorization', status: 204});
+    $.mockjax({url: '/api/user_flows/authorization', status: 204});
   }
 });
 
@@ -45,7 +48,7 @@ test('author successfully creates a submission', function(assert) {
 
 test('author unsuccessfully creates a submission', function(assert) {
   TestHelper.handleCreate('paper').andFail({
-    status: 422, response: {"errors":{"paper_type":["can't be blank"]}}
+    status: 422, response: {'errors':{'paper_type':['can\'t be blank']}}
   });
 
   visit('/');

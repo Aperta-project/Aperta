@@ -8,15 +8,14 @@ export default Ember.Route.extend({
         journalTaskTypes: this.modelFor('admin.journal').get('journalTaskTypes')
       });
 
-      this.render('overlays/add-manuscript-template-card', {
-        into: 'application',
-        outlet: 'overlay',
+      this.send('openOverlay', {
+        template: 'overlays/add-manuscript-template-card',
         controller: 'overlays/chooseNewCardType'
       });
     },
 
     addTaskType(phaseTemplate, taskType) {
-      let newTask = this.store.createRecord('taskTemplate', {
+      let newTask = this.store.createRecord('task-template', {
         title: taskType.get('title'),
         journalTaskType: taskType,
         phaseTemplate: phaseTemplate,
@@ -29,9 +28,9 @@ export default Ember.Route.extend({
           model: newTask,
           isNewTask: true
         });
-        this.render('overlays/adHocTemplate', {
-          into: 'application',
-          outlet: 'overlay',
+
+        this.send('openOverlay', {
+          template: 'overlays/adHocTemplate',
           controller: 'overlays/adHocTemplate'
         });
       } else {
@@ -48,12 +47,12 @@ export default Ember.Route.extend({
       this.send('closeOverlay');
     },
 
+    // Noop. We don't want to open cards in MMT screen
     viewCard() {},
 
     showDeleteConfirm(task) {
-      this.render('overlays/cardDelete', {
-        into: 'application',
-        outlet: 'overlay',
+      this.send('openOverlay', {
+        template: 'overlays/cardDelete',
         controller: 'overlays/card-delete',
         model: task
       });

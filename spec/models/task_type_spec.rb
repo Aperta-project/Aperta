@@ -28,7 +28,7 @@ describe TaskType do
 
     context "without a registered class" do
       it "errors" do
-        expect{ TaskType.constantize!("NotASampleTask") }.to raise_error
+        expect { TaskType.constantize!("NotASampleTask") }.to raise_error(RuntimeError, "NotASampleTask is not a registered TaskType")
       end
     end
   end

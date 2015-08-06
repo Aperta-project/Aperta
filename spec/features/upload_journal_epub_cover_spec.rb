@@ -6,13 +6,13 @@ feature "Upload default ePub cover for journal", js: true do
 
   before do
     login_as admin
-    visit "/"
   end
 
   let(:admin_page) { AdminDashboardPage.visit }
-  let(:journal_page) { admin_page.visit_journal(journal) }
 
   scenario "uploading an ePub cover" do
-    # removed because changing in next PR with backgrounding
+    admin_page.visit_journal(journal)
+    admin_page.attach_and_upload_cover_image(journal, 'yeti.jpg')
+    expect(page).to have_content("yeti.jpg")
   end
 end

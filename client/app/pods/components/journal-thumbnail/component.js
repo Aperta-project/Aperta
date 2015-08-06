@@ -15,15 +15,15 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
     this.set('isEditing', this.get('model.isDirty'));
   }.on('init').observes('model.isDirty'),
 
-  thumbnailId: function() {
+  thumbnailId: Ember.computed('model.id', function() {
     return 'journal-logo-' + (this.get('model.id'));
-  }.property('model.id'),
+  }),
 
-  logoUploadUrl: function() {
+  logoUploadUrl: Ember.computed('model.id', function() {
     return '/api/admin/journals/' + this.get('model.id') + '/upload_logo';
-  }.property('model.id'),
+  }),
 
-  togglePreview: function() {
+  togglePreview() {
     Ember.run(() => {
       Ember.run.schedule('afterRender', ()=> {
         if (this.get('logoPreview')) {
@@ -33,9 +33,9 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
         }
       });
     });
-  }.observes('logoPreview'),
+  },
 
-  stopEditing: function() {
+  stopEditing() {
     this.setProperties({
       isEditing: false,
       uploadLogoFunction: null,
@@ -43,7 +43,7 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
     });
   },
 
-  saveJournal: function() {
+  saveJournal() {
     this.get('model').save().then(()=> {
       this.stopEditing();
     }, (response)=> {

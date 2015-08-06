@@ -10,11 +10,11 @@ server = null
 journalId = null
 
 module 'Integration: Admin Journal Test',
-  teardown: ->
+  afterEach: ->
     server.restore()
     Ember.run(app, app.destroy)
 
-  setup: ->
+  beforeEach: ->
     app = startApp()
     server = setupMockServer()
     journal = Factory.createRecord('AdminJournal')
@@ -53,7 +53,7 @@ module 'Integration: Admin Journal Test',
       200, "Content-Type": "application/json", JSON.stringify stubbedAdminJournalUserResponse
     ]
 
-test 'saving doi info will send a put request to the admin journal controller', ->
+test 'saving doi info will send a put request to the admin journal controller', (assert) ->
   adminPage = "/admin/journals/#{journalId}"
   visit adminPage
   .then ->
@@ -63,9 +63,9 @@ test 'saving doi info will send a put request to the admin journal controller', 
     fillIn('.admin-doi-setting-section .last_doi_issued', '10000')
     click('.admin-doi-setting-section button')
   andThen ->
-    ok _.findWhere(server.requests, { method: 'PUT', url: "/api#{adminPage}" })
+    assert.ok _.findWhere(server.requests, { method: 'PUT', url: "/api#{adminPage}" })
 
-test 'saving invalid doi info will display an error', ->
+test 'saving invalid doi info will display an error', (assert) ->
   server.respondWith 'PUT', "/api/admin/journals/#{journalId}", [
     422, "Content-Type": "application/json", JSON.stringify {errors: {doi: ["Invalid"]}}
   ]
@@ -79,4 +79,4 @@ test 'saving invalid doi info will display an error', ->
     fillIn('.admin-doi-setting-section .last_doi_issued', '10000')
     click('.admin-doi-setting-section button')
   andThen ->
-    ok find('.admin-doi-setting-section .error-message').text().match(/Invalid/)
+    assert.ok find('.admin-doi-setting-section .error-message').text().match(/Invalid/)

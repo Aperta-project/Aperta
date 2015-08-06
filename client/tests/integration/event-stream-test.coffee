@@ -6,13 +6,13 @@
 app = null
 
 module 'Integration: Pusher',
-  teardown: ->
+  afterEach: ->
     Ember.run(app, app.destroy)
-  setup: ->
+  beforeEach: ->
     app = startApp()
     1+1 # hangs if we return app. odd I know...
 
-test 'action:created for anything other than a task will put the payload in the store', ->
+test 'action:created for anything other than a task will put the payload in the store', (assert) ->
   expect(1)
   data =
     comment:
@@ -23,9 +23,9 @@ test 'action:created for anything other than a task will put the payload in the 
     route.router = null # this is needed for ember integration testing when calling internal methods
     route.send("created", data)
     comment = getStore().getById('comment', 1)
-    equal comment.get('body'), "HEY", "it puts the correct payload in the store"
+    assert.equal comment.get('body'), "HEY", "it puts the correct payload in the store"
 
-test 'action:created for a task will put the payload in the store', ->
+test 'action:created for a task will put the payload in the store', (assert) ->
   expect(1)
   data =
     task:
@@ -37,9 +37,9 @@ test 'action:created for a task will put the payload in the store', ->
     route.router = null # this is needed for ember integration testing when calling internal methods
     route.send("created", data)
     task = getStore().findTask(10)
-    equal task.get('title'), "task is here", "it puts the correct payload in the store"
+    assert.equal task.get('title'), "task is here", "it puts the correct payload in the store"
 
-test 'action:created will still overwrite existing models', ->
+test 'action:created will still overwrite existing models', (assert) ->
   expect(1)
 
   data =
@@ -54,9 +54,9 @@ test 'action:created will still overwrite existing models', ->
     route.router = null # this is needed for ember integration testing when calling internal methods
     route.send("created", data)
     comment = store.getById('comment', 1)
-    equal comment.get('body'), "NEW", "it overrides the current state"
+    assert.equal comment.get('body'), "NEW", "it overrides the current state"
 
-test 'action:destroy will delete the task from the store', ->
+test 'action:destroy will delete the task from the store', (assert) ->
   expect(2)
 
   data =
@@ -69,5 +69,5 @@ test 'action:destroy will delete the task from the store', ->
     route = getContainer().lookup("route:application")
     route.router = null # this is needed for ember integration testing when calling internal methods
     route.send("destroyed", data)
-    ok store.getById('task', 1) is null
-    ok store.getById('task', 2) isnt null
+    assert.ok store.getById('task', 1) is null
+    assert.ok store.getById('task', 2) isnt null

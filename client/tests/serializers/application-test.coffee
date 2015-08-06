@@ -7,42 +7,42 @@ subject = null
 container = null
 
 module 'integration/serializer',
-  setup: ->
+  beforeEach: ->
     app = startApp()
     container = app.__container__
     subject = container.lookup('serializer:application')
 
-test 'normalizeType denamespaces task types', ->
+test 'normalizeType denamespaces task types', (assert) ->
   result = subject.normalizeType({type: 'Foo::BarTask'})
-  equal result.qualified_type, 'Foo::BarTask', 'saves the original type as qualified_type'
-  equal result.type, 'BarTask', 'strips the namespace off the type'
+  assert.equal result.qualified_type, 'Foo::BarTask', 'saves the original type as qualified_type'
+  assert.equal result.type, 'BarTask', 'strips the namespace off the type'
 
-test 'normalizeType denamespaces deeply namespaced task types', ->
+test 'normalizeType denamespaces deeply namespaced task types', (assert) ->
   result = subject.normalizeType({type: 'Foo::Baz::BarTask'})
-  equal result.qualified_type, 'Foo::Baz::BarTask', 'saves the original type as qualified_type'
-  equal result.type, 'BarTask', 'strips the namespace off the type'
+  assert.equal result.qualified_type, 'Foo::Baz::BarTask', 'saves the original type as qualified_type'
+  assert.equal result.type, 'BarTask', 'strips the namespace off the type'
 
-test 'normalizeType denamespaces really deeply namespaced task types', ->
+test 'normalizeType denamespaces really deeply namespaced task types', (assert) ->
   result = subject.normalizeType({type: 'Tahi::Foo::Baz::BarTask'})
-  equal result.qualified_type, 'Tahi::Foo::Baz::BarTask', 'saves the original type as qualified_type'
-  equal result.type, 'BarTask', 'strips the namespace off the type'
+  assert.equal result.qualified_type, 'Tahi::Foo::Baz::BarTask', 'saves the original type as qualified_type'
+  assert.equal result.type, 'BarTask', 'strips the namespace off the type'
 
-test 'serializing a model that was originally namespaced will correctly re-namespace it', ->
+test 'serializing a model that was originally namespaced will correctly re-namespace it', (assert) ->
   Ember.run =>
-    task = getStore().createRecord('task', qualifiedType: "Foo::BarTask")
+    task = getStore().createRecord('task', qualifiedType: 'Foo::BarTask')
     snapshot = task._createSnapshot()
     json = subject.serialize(snapshot)
-    equal json.type, "Foo::BarTask"
-    equal undefined, json.qualified_type, 'deletes qualified_type from the payload'
+    assert.equal json.type, 'Foo::BarTask'
+    assert.equal undefined, json.qualified_type, 'deletes qualified_type from the payload'
 
-test 'has a custom extractTypeName function to make things easier', ->
+test 'has a custom extractTypeName function to make things easier', (assert) ->
   hashType = subject.extractTypeName('foo', {type: 'bar'})
-  equal hashType, 'bar', 'extracts the type from the hash if it exists'
+  assert.equal hashType, 'bar', 'extracts the type from the hash if it exists'
 
   propType = subject.extractTypeName('cow', {otherStuff: 'whoah'})
-  equal propType, 'cow', 'uses the prop for the typeName otherwise'
+  assert.equal propType, 'cow', 'uses the prop for the typeName otherwise'
 
-test "extractSingle puts sideloaded things into the store via their 'type' attribute", ->
+test "extractSingle puts sideloaded things into the store via their 'type' attribute", (assert) ->
   InitialTechCheckTask = DS.Model.extend
     title: DS.attr('string')
     type: DS.attr('string')
@@ -51,7 +51,8 @@ test "extractSingle puts sideloaded things into the store via their 'type' attri
     type: DS.attr('string')
 
   store = getStore()
-  container.register("model:plos-authors-task", PlosAuthorsTask)
+  container.register('model:initial-tech-check-task', InitialTechCheckTask)
+  container.register('model:plos-authors-task', PlosAuthorsTask)
 
   jsonHash =
     tasks:
@@ -64,25 +65,25 @@ test "extractSingle puts sideloaded things into the store via their 'type' attri
 
   Ember.run ->
     result = subject.extractSingle(store, store.modelFor('phase'), jsonHash)
-    equal store.getById('task', 1), null, 'no Task gets pushed into the store'
-    store.find('initialTechCheckTask', 1).then (task) ->
-      equal task.get('title'), 'Initial Tech Check', 'the message task is in the store'
-    store.find('plosAuthorsTask', 2).then (task) ->
-      equal task.get('title'), 'Check Authors', 'the namespaced authors task is in the store'
+    assert.equal store.getById('task', 1), null, 'no Task gets pushed into the store'
+    store.find('initial-tech-check-task', 1).then (task) ->
+      assert.equal task.get('title'), 'Initial Tech Check', 'the message task is in the store'
+    store.find('plos-authors-task', 2).then (task) ->
+      assert.equal task.get('title'), 'Check Authors', 'the namespaced authors task is in the store'
 
-test "extractMany puts normalizes things via their 'type' attribute", ->
+test "extractMany puts normalizes things via their 'type' attribute", (assert) ->
   PaperEditorTask = DS.Model.extend
     title: DS.attr('string')
     type: DS.attr('string')
     uniqueProperty: DS.attr('string')
 
   store = getStore()
-  container.register("model:paper-editor-task", PaperEditorTask)
+  container.register('model:paper-editor-task', PaperEditorTask)
 
   jsonHash =
     users: [{id: '1', username: 'editorGuy'}]
-    tasks: [{id: '1', type: 'PaperEditorTask', title: 'Edit Stuff', unique_property: "foo" }]
+    tasks: [{id: '1', type: 'PaperEditorTask', title: 'Edit Stuff', unique_property: 'foo' }]
 
   Ember.run ->
     result = subject.extractArray(store, store.modelFor('task'), jsonHash)
-    ok result[0].unique_property
+    assert.ok result[0].unique_property

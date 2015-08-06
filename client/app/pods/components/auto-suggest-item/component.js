@@ -10,7 +10,7 @@ export default Ember.Component.extend({
     return Ember.isEqual(this.get('highlightedItem'), this.get('item'));
   }),
 
-  mouseEnter() {
-    this.set('highlightedItem', this.get('item'));
+  click() {
+    this.sendAction('selectItem', this.get('item'));
   }
 });

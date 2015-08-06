@@ -72,7 +72,7 @@ export default Ember.Object.extend({
     @param {String} message Message displayed to user
   */
 
-  displayMessage: function(type, message) {
+  displayMessage(type, message) {
     this.get('messages').pushObject({
       text: message,
       type: type
@@ -95,7 +95,7 @@ export default Ember.Object.extend({
     @param {Object} response Hash from Ember Data `save` failure. Expected to be in format Rails sends.
   */
 
-  displayErrorMessagesFromResponse: function(response) {
+  displayErrorMessagesFromResponse(response) {
     for (var key in response.errors) {
       if(!response.errors.hasOwnProperty(key)) { continue; }
       if(Ember.isEmpty(response.errors[key]))  { continue; }
@@ -110,7 +110,7 @@ export default Ember.Object.extend({
     @param {Object} message to be removed
   */
 
-  removeMessage: function(message) {
+  removeMessage(message) {
     this.get('messages').removeObject(message);
   },
 
@@ -124,7 +124,7 @@ export default Ember.Object.extend({
     @method clearAllMessages
   */
 
-  clearAllMessages: function() {
+  clearAllMessages() {
     this.set('messages', []);
   },
 
@@ -136,7 +136,7 @@ export default Ember.Object.extend({
     @return {String}
   */
 
-  _formatKey: function(key) {
+  _formatKey(key) {
     return key.underscore().replace('_', ' ').capitalize();
   }
 });

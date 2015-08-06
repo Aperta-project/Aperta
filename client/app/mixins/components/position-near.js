@@ -1,4 +1,5 @@
 import Ember from 'ember';
+const { on } = Ember;
 
 export default Ember.Mixin.create({
   matchWidth: true,
@@ -9,18 +10,21 @@ export default Ember.Mixin.create({
   // attrs:
   selector: null,
 
-  position: Ember.on('didInsertElement', function() {
+  position: on('didInsertElement', function() {
     let selector = this.get('selector');
     if(Ember.isEmpty(selector)) { return; }
 
     let target = Ember.$(selector);
-    let offset = target.position();
+    Ember.assert('position-near could not find target selector', target.length);
+
+    let position = target.position();
+    let offset   = target.offset();
     let targetHeight = target.outerHeight();
 
     let css = {
       position: 'absolute',
-      top: offset.top + targetHeight,
-      left: offset.left
+      top: Math.round(position.top) + targetHeight,
+      left: Math.round(position.left)
     };
 
     if(this.get('matchWidth')) {
@@ -28,19 +32,19 @@ export default Ember.Mixin.create({
     }
 
     if(this.get('setMaxHeight')) {
-      css.height = $(window).height() - offset.top - targetHeight - 10;
+      css.maxHeight = $(window).height() - offset.top - targetHeight - 10;
     }
 
     this.$().css(css);
   }),
 
-  _setupResizeListener: Ember.on('didInsertElement', function() {
+  _setupResizeListener: on('didInsertElement', function() {
     $(window).on('resize.positionnear', ()=> {
       this.position();
     });
   }),
 
-  _teardownResizeListener: Ember.on('willDestroyElement', function() {
+  _teardownResizeListener: on('willDestroyElement', function() {
     $(window).off('resize.positionnear');
   })
 });

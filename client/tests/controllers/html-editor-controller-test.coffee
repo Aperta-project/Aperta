@@ -2,10 +2,10 @@
 `import { test, moduleFor } from 'ember-qunit'`
 `import startApp from '../helpers/start-app'`
 
-moduleFor 'controller:paper/edit/html-editor', 'Unit: paper/edit/html-editor controller',
-  needs: ['controller:application', 'controller:paper', 'controller:overlays/paperSubmit']
+moduleFor 'controller:paper/edit/html-editor', 'HTMLEditorController',
+  needs: ['controller:application', 'controller:paper', 'controller:overlays/paper-submit']
 
-  setup: ->
+  beforeEach: ->
     startApp()
     currentUser = Ember.Object.create
       id: 1
@@ -29,8 +29,8 @@ moduleFor 'controller:paper/edit/html-editor', 'Unit: paper/edit/html-editor con
     @subject().set 'currentUser', currentUser
     @subject().set 'editor', @editor
 
-test 'update editor on body change', ->
+test 'update editor on body change', (assert) ->
   @editor.update.reset()
   @subject().set('model.body', 'foo')
 
-  ok @editor.update.called, 'update editor'
+  assert.ok @editor.update.called, 'update editor'

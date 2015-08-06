@@ -21,31 +21,20 @@
    </div>
   {{else}}
     <div class='invite-reviewers'>
-      <label for="reviewer">Email</label>
+      <label for="reviewer">Reviewer</label>
 
-      {{!-- <input id="auto-suggest-input" style="width:200px;"> --}}
+      <input type="hidden" name=""/>
+      {{#auto-suggest endpoint=autoSuggestSourceUrl
+                  queryParameter="query"
+                  placeholder="Find reviewer by name or email"
+                  parseResponseFunction=parseUserSearchResponse
+                  itemSelected="didSelectReviewer"
+                  unknownItemSelected="didSelectReviewer"
+                  itemDisplayTextFunction=displayUserSelected
+                  as |user|}}
+        {{user.full_name}} [{{user.email}}]
+      {{/auto-suggest}}
 
-      {{!#auto-suggest-list positionNearSelector="#auto-suggest-input"
-                           class="animation-fade-in"
-                           selectItem="selectAutoSuggestItem"
-                           items=autoSuggestData as |user|}}
-        {{!user.fullName}} - {{!user.email}}
-      {{!/auto-suggest-list}}
-
-      {{input value=customEmail}}
-      <button {{action "sendCustomEmail"}}>POST new email Invitation</button>
-
-      {{select-2-single
-          class="reviewer-select2"
-          minimumInputLength=3
-          name="invite_reviewer"
-          placeholder="Please select reviewer"
-          resultsTemplate=resultsTemplate
-          remoteSource=select2RemoteSource
-          selectedData=selectedReviewer
-          selectedTemplate=resultsTemplate
-          selectionSelected="didSelectReviewer"
-          value=""}}
       <button class="button-primary button--green compose-invite-button" {{action "composeInvite"}}>
         Compose Invite
       </button>

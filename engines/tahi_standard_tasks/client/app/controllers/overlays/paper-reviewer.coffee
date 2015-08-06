@@ -3,16 +3,12 @@
 `import { formatDate } from 'tahi/helpers/format-date'`
 
 PaperReviewerOverlayController = TaskController.extend Select2Assignees,
-  select2RemoteUrl: Ember.computed 'model.paper.id', ->
+  autoSuggestSourceUrl: Ember.computed 'model.paper.id', ->
     "/api/filtered_users/uninvited_users/#{@get 'model.paper.id'}"
   selectedReviewer: null
   composingEmail: false
   decisions: Ember.computed.alias 'model.paper.decisions'
 
-  autoSuggestData: [{
-    fullName: 'Joe Bob', email: 'joe.bob@example.com'
-  },
-  { fullName: 'Bob Joe', email: 'bob.joe@example.com' }]
   customEmail: "test@lvh.me"
 
   latestDecision: (->
@@ -27,15 +23,16 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
 
     @set('updatedTemplate', customTemplate)
 
+  parseUserSearchResponse: (response) ->
+    response.filtered_users
+
+  displayUserSelected: (user) ->
+    "#{user.full_name} [#{user.email}]"
+
   actions:
     sendCustomEmail: ->
       @set("selectedReviewer", { email: @get("customEmail") })
       @send("inviteReviewer")
-
-    selectAutoSuggestItem: (item)->
-      # set something for now
-      #
-      alert("selectAutoSuggestItem")
 
     cancelAction: ->
       @set 'selectedReviewer', null
@@ -49,7 +46,10 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
     destroyInvitation: (invitation) -> invitation.destroyRecord()
 
     didSelectReviewer: (selectedReviewer) ->
-      @set 'selectedReviewer', selectedReviewer
+      if typeof selectedReviewer is 'string'
+        @set 'selectedReviewer', { email: selectedReviewer, full_name: "you" }
+      else
+        @set 'selectedReviewer', selectedReviewer
 
     inviteReviewer: ->
       return unless @get('selectedReviewer')

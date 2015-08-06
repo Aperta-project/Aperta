@@ -88,12 +88,11 @@
             {{if attachment.title attachment.title "Attachment title"}}
           </h2>
 
-          <div class="caption"
-            {{action "toggleEditState" on="doubleClick"}}>
+          <div class="caption" {{action "toggleEditState" on="doubleClick"}}>
             {{if attachment.caption attachment.caption "There is no caption for this file."}}
           </div>
 
-          <label>
+          <label class="publishable">
             {{check-box checked=attachment.publishable action="togglePublishable" attachment=attachment}}
             For publication
           </label>

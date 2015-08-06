@@ -55,7 +55,7 @@ class Paper < ActiveRecord::Base
       transitions from: [:unsubmitted, :in_revision],
                   to: :submitted,
                   guards: :metadata_tasks_completed?,
-                  after: [:set_submitting_user!,
+                  after: [:set_submitting_user_and_touch!,
                           :set_submitted_at!,
                           :prevent_edits!]
                           
@@ -71,7 +71,7 @@ class Paper < ActiveRecord::Base
     event(:submit_minor_check) do
       transitions from: :checking,
                   to: :submitted,
-                  after: [:set_submitting_user!,
+                  after: [:set_submitting_user_and_touch!,
                           :prevent_edits!]
     end
 
@@ -311,7 +311,8 @@ class Paper < ActiveRecord::Base
     update!(submitted_at: Time.current.utc)
   end
 
-  def set_submitting_user!(submitting_user) # rubocop:disable Style/AccessorMethodName
+  def set_submitting_user_and_touch!(submitting_user) # rubocop:disable Style/AccessorMethodName
     latest_version.update!(submitting_user: submitting_user)
+    latest_version.touch
   end
 end

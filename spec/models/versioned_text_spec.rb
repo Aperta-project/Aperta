@@ -11,6 +11,12 @@ describe VersionedText do
       expect(old_version.minor_version).to eq(0)
       expect(VersionedText.where(paper: paper, major_version: 1, minor_version: 0).count).to eq(1)
     end
+
+    it "sets the created_at timestamp" do
+      paper.latest_version.update!(created_at: Time.zone.now - 10.days)
+      paper.latest_version.new_major_version!
+      expect(paper.latest_version.created_at.utc).to be_within(1.second).of Time.zone.now
+    end
   end
 
   describe "#new_minor_version!" do
@@ -20,6 +26,12 @@ describe VersionedText do
       expect(old_version.major_version).to eq(0)
       expect(old_version.minor_version).to eq(0)
       expect(VersionedText.where(paper: paper, major_version: 0, minor_version: 1).count).to eq(1)
+    end
+
+    it "sets the created_at timestamp" do
+      paper.latest_version.update!(created_at: Time.zone.now - 10.days)
+      paper.latest_version.new_minor_version!
+      expect(paper.latest_version.created_at.utc).to be_within(1.second).of Time.zone.now
     end
   end
 

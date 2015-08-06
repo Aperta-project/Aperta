@@ -154,6 +154,12 @@ describe Paper do
         paper.submit! user
         expect(paper.latest_version.submitting_user).to eq(user)
       end
+
+      it "sets the updated_at of the latest version" do
+        paper.latest_version.update!(updated_at: Time.zone.now - 10.days)
+        paper.submit! user
+        expect(paper.latest_version.updated_at.utc).to be_within(1.second).of Time.zone.now
+      end
     end
 
     context "when minor-checking (as in a tech check)" do
@@ -184,6 +190,13 @@ describe Paper do
         paper.minor_check!
         paper.submit_minor_check! user
         expect(paper.latest_version.submitting_user).to eq(user)
+      end
+
+      it "sets the updated_at of the latest version" do
+        paper.latest_version.update!(updated_at: Time.zone.now - 10.days)
+        paper.minor_check!
+        paper.submit_minor_check! user
+        expect(paper.latest_version.updated_at.utc).to be_within(1.second).of Time.zone.now
       end
     end
 

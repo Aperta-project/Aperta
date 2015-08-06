@@ -10,6 +10,21 @@ describe Paper do
       expect(paper.decisions.length).to eq 1
       expect(paper.decisions.first.class).to eq Decision
     end
+
+    it "can set body on creation" do
+      paper2 = FactoryGirl.create :paper, body: 'foo'
+      expect(paper2.body).to eq('foo')
+      expect(paper2.latest_version.text).to eq('foo')
+    end
+
+    it "can use body= before save" do
+      paper2 = FactoryGirl.build :paper
+      paper2.body = 'foo'
+      expect(paper2.body).to eq('foo')
+      paper.save!
+      paper.reload
+      expect(paper2.body).to eq('foo')
+    end
   end
 
   describe "#destroy" do

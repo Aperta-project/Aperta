@@ -39,7 +39,7 @@ class Paper < ActiveRecord::Base
   delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
 
   after_create do
-    versioned_texts.create(major_version: 0, minor_version: 0)
+    versioned_texts.create(major_version: 0, minor_version: 0, text: (@new_body || ''))
   end
 
   aasm column: :publishing_state do
@@ -115,11 +115,19 @@ class Paper < ActiveRecord::Base
   end
 
   def body
-    latest_version.text
+    @new_body || latest_version.text
   end
 
   def body=(new_body)
-    latest_version.update(text: new_body)
+    # We have an issue here. the first version is created on
+    # after_create (because it needs the paper_id). But if this is
+    # called before creation, it will fail. Get around this by storing
+    # the text in @new_body if there is no latest version
+    if latest_version.nil?
+      @new_body = new_body
+    else
+      latest_version.update(text: new_body)
+    end
   end
 
   def version_string

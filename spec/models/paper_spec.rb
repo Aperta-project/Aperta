@@ -136,11 +136,11 @@ describe Paper do
       end
     end
 
-    context "when minor-revising (as in a tech check)" do
+    context "when minor-checking (as in a tech check)" do
       let(:paper) { FactoryGirl.create(:paper, :submitted) }
 
       it "marks the paper editable" do
-        paper.minor_revision!
+        paper.minor_check!
         expect(paper).to be_editable
       end
     end

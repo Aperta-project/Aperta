@@ -1,5 +1,7 @@
 import Ember from 'ember';
 import RESTless from 'tahi/services/rest-less';
+import LazyLoader from 'ember-cli-lazyloader/lib/lazy-loader';
+
 
 export default Ember.Component.extend({
   classNames: ['html-diff'],
@@ -42,7 +44,6 @@ export default Ember.Component.extend({
       let elements = $(html).toArray();
       let tokens = _.map(elements, that.tokenizeElement, that);
       tokens =  _.flatten(tokens);
-      console.log(tokens);
       return tokens;
     };
   }.on('didInsertElement'),
@@ -122,5 +123,22 @@ export default Ember.Component.extend({
     } else {
       return element.outerHTML;
     }
-  }
+  },
+
+  // MATHJAX for rendering equations:
+
+  loadScripts: function() {
+    let scripts = [
+      '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+    ];
+
+    LazyLoader.loadScripts(scripts);
+  }.on('didInsertElement'),
+
+
+  renderEquations: function() {
+    Ember.run.next(() => {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    });
+  }.observes('manuscript').on('init')
 });

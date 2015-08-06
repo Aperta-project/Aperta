@@ -45,11 +45,11 @@ export default Ember.Component.extend({
   actions: {
     openVersioningMode() {
       this.set('transitioning', true);
-      this.reset();
 
       Ember.run.later(()=>{
         this.set('versioningMode', true);
         this.set('transitioning', false);
+        this.reset();
       }, 500);
     },
 

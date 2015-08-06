@@ -11,6 +11,7 @@ export default Ember.Component.extend({
   // This is the text of the version we're comparing with (right dropdown)
   comparisonText: null,
 
+  // These are elements that contain sentences worth diffing individually.
   tokenizeInsideElements: ['p'],
 
   sentenceDelimiter: /([.!?,;]\s*)/g,
@@ -77,19 +78,19 @@ export default Ember.Component.extend({
   // Bleckley. Sorry. - 08/06/2015
 
   forceValidHTML(element, tokens) {
-    // Adda the fake tag pairs
+    // Add the fake tag pairs
     let tagName = element.nodeName.toLowerCase();
     tokens.unshift("<fake-open-" + tagName + "></fake-open-" + tagName + ">");
     tokens.push("<fake-close-" + tagName + "></fake-close-" + tagName + ">");
   },
 
   unForceValidHTML: function(value) {
-    // Removea the fake tag pairs
+    // Remove the fake tag pairs
     _.each(this.tokenizeInsideElements, (elt) => {
+      value = value.replace((new RegExp("<fake-open-" + elt + ".*?>")), "</" + elt + ">");
+      value = value.replace((new RegExp("<fake-close-" + elt + ".*?>")), "<" + elt + ">");
       value = value.replace((new RegExp("</fake-open-" + elt + ">")), "");
-      value = value.replace((new RegExp("<fake-close-" + elt + ".*?>")), "");
-      value = value.replace((new RegExp("fake-open-" + elt)), elt);
-      value = value.replace((new RegExp("fake-close-" + elt)), elt);
+      value = value.replace((new RegExp("</fake-close-" + elt + ">")), "");
     });
     return value;
   },
@@ -109,8 +110,8 @@ export default Ember.Component.extend({
 
   tokenizeElement: function(element) {
     if (this.shouldRecur(element)) {
-      let elts = $(element).contents().toArray();
-      let tokens = _.map(elts, this.tokenizeElement, this);
+      let elements = $(element).contents().toArray();
+      let tokens = _.map(elements, this.tokenizeElement, this);
       this.forceValidHTML(element, tokens);
       return tokens;
 
@@ -124,7 +125,7 @@ export default Ember.Component.extend({
     }
   },
 
-  // MATHJAX for rendering equations:
+  // MATHJAX (for rendering equations):
 
   loadScripts: function() {
     let scripts = [

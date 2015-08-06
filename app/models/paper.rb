@@ -277,7 +277,7 @@ class Paper < ActiveRecord::Base
   end
 
   def latest_version
-    versioned_texts(true).active.first
+    versioned_texts(true).first
   end
 
   private

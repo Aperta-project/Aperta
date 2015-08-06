@@ -341,10 +341,10 @@ describe Paper do
   describe "#latest_version" do
     it "returns the latest version" do
       # create a bunch of old minor versions
-      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 1, active: true)
-      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 2, active: true)
-      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 3, active: true)
-      versioned_text = FactoryGirl.create(:versioned_text, paper: paper, major_version: 1, minor_version: 0, active: true)
+      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 1)
+      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 2)
+      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 3)
+      versioned_text = FactoryGirl.create(:versioned_text, paper: paper, major_version: 1, minor_version: 0)
       expect(paper.latest_version).to eq(versioned_text)
     end
   end

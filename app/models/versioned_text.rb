@@ -4,7 +4,6 @@ class VersionedText < ActiveRecord::Base
   belongs_to :submitting_user, class_name: "User"
 
   default_scope -> { order('major_version DESC, minor_version DESC') }
-  scope :active, -> { where(active: true) }
 
   # Make a copy of the text and give it a new MAJOR version.
   def new_major_version!

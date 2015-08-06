@@ -58,7 +58,6 @@ class Paper < ActiveRecord::Base
                   after: [:set_submitting_user_and_touch!,
                           :set_submitted_at!,
                           :prevent_edits!]
-                          
     end
 
     event(:minor_check) do

@@ -1,56 +1,26 @@
 require 'rails_helper'
 
 describe VersionedText do
-  let(:versioned_text) { FactoryGirl.create :versioned_text }
-  let(:user) { FactoryGirl.create :user }
+  let(:versioned_text) { FactoryGirl.create :versioned_text, paper_id: 0 }
 
-  describe "#update" do
-    context "No copy on edit necessary" do
-      it "simply updates" do
-        versioned_text.update!(text: "foo")
-        expect(VersionedText.count()).to eq(1)
-      end
-    end
-
-    context "Copy on edit" do
-      let(:versioned_text) do
-        FactoryGirl.create(:versioned_text, :copy_on_edit)
-      end
-
-      it "makes a copy" do
-        versioned_text.update!(text: "foo")
-        expect(VersionedText.count()).to eq(2)
-      end
-
-      it "clears the copy on edit flag" do
-        versioned_text.update!(text: "foo")
-        expect(versioned_text.copy_on_edit).to eq(false)
-      end
-    end
-  end
-
-  describe "#major_version!" do
-    it "increments major version" do
-      versioned_text.major_version! user
-      expect(versioned_text.major_version).to eq(1)
-    end
-
-    it "zeroes the minor version" do
-      versioned_text.major_version! user
+  describe "#new_major_version!" do
+    it "creates a new major version while retaining the old" do
+      versioned_text.new_major_version!
+      expect(versioned_text.major_version).to eq(0)
       expect(versioned_text.minor_version).to eq(0)
-    end
-
-    it "sets copy on edit flag" do
-      versioned_text.major_version! user
-      expect(versioned_text.copy_on_edit).to eq(true)
-    end
-
-    it "sets the submitting user" do
-      versioned_text.major_version! user
-      expect(versioned_text.submitting_user).to eq(user)
+      expect(VersionedText.where(paper_id: 0, major_version: 1, minor_version: 0).count).to eq(1)
     end
   end
-  
+
+  describe "#new_minor_version!" do
+    it "creates a new minor version while retaining the old" do
+      versioned_text.new_minor_version!
+      expect(versioned_text.major_version).to eq(0)
+      expect(versioned_text.minor_version).to eq(0)
+      expect(VersionedText.where(paper_id: 0, major_version: 0, minor_version: 1).count).to eq(1)
+    end
+  end
+
   describe "#create" do
     it "should not allow creating multiple versions with the same number" do
       FactoryGirl.create(:versioned_text, paper_id: 1, major_version: 1, minor_version: 0)

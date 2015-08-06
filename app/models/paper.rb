@@ -52,32 +52,40 @@ class Paper < ActiveRecord::Base
                   to: :submitted,
                   guards: :metadata_tasks_completed?,
                   after: [:prevent_edits!,
-                          :major_version!,
-                          :set_submitted_at!]
+                          :set_submitted_at!,
+                          :set_submitting_user!]
     end
 
     event(:minor_check) do
       transitions from: :submitted,
                   to: :checking,
-                  after: :allow_edits!
+                  after: [:allow_edits!,
+                          :new_minor_version!]
     end
 
     event(:submit_minor_check) do
       transitions from: :checking,
                   to: :submitted,
-                  after: :prevent_edits!
+                  after: [:prevent_edits!,
+                          :set_submitting_user!]
     end
 
     event(:minor_revision) do
       transitions from: :submitted,
                   to: :in_revision,
-                  after: :allow_edits!
+                  after: [:allow_edits!,
+                          # there is a terminology mismatch here: it
+                          # needs MINOR revision but we use a MAJOR
+                          # version to track all papers send back
+                          # after peer review.
+                          :new_major_version!]
     end
 
     event(:major_revision) do
       transitions from: :submitted,
                   to: :in_revision,
-                  after: :allow_edits!
+                  after: [:allow_edits!,
+                          :new_major_version!]
     end
 
     event(:accept) do
@@ -270,8 +278,12 @@ class Paper < ActiveRecord::Base
     versioned_texts.active.first_or_initialize
   end
 
-  def major_version!(submitting_user)
-    latest_version.major_version!(submitting_user)
+  def new_major_version!
+    latest_version.new_major_version!
+  end
+
+  def new_minor_version!
+    latest_version.new_minor_version!
   end
 
   def default_abstract
@@ -284,5 +296,9 @@ class Paper < ActiveRecord::Base
 
   def set_submitted_at!
     update!(submitted_at: Time.current.utc)
+  end
+
+  def set_submitting_user!(submitting_user) # rubocop:disable Style/AccessorMethodName
+    latest_version.update!(submitting_user: submitting_user)
   end
 end

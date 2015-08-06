@@ -3,37 +3,29 @@ class VersionedText < ActiveRecord::Base
 
   belongs_to :submitting_user, class_name: "User"
 
-  before_update :minor_version!, if: :must_copy
-
   default_scope -> { order('major_version DESC, minor_version DESC') }
   scope :active, -> { where(active: true) }
 
-  # Called on paper sumbission and resubmission.
-  def major_version!(submitting_user)
-    update!(major_version: (major_version + 1),
-            minor_version: 0,
-            copy_on_edit: true,
-            submitting_user: submitting_user)
+  # Make a copy of the text and give it a new MAJOR version.
+  def new_major_version!
+    new_version!(major_version + 1, minor_version)
   end
 
-  def must_copy
-    copy_on_edit && !copy_on_edit_changed?
-  end
-
-  # Make a copy and increment the minor version if the copy_on_edit
-  # flag is true.
-  def minor_version!
-    self.copy_on_edit = false
-
-    old_version = dup
-    old_version.text = text_was
-    old_version.active = false
-    old_version.save!
-
-    self.minor_version = minor_version + 1
+  # Make a copy of the text and give it a new MINOR version
+  def new_minor_version!
+    new_version!(major_version, minor_version + 1)
   end
 
   def version_string
     "#{major_version}.#{minor_version}"
+  end
+
+  private
+
+  def new_version!(new_major_version, new_minor_version)
+    new_version = dup
+    new_version.update(major_version: new_major_version,
+                       minor_version: new_minor_version)
+    new_version.save!
   end
 end

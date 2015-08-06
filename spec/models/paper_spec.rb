@@ -134,6 +134,11 @@ describe Paper do
         paper.submit! user
         expect(paper).to_not be_editable
       end
+
+      it "sets the submitting_user of the latest version" do
+        paper.submit! user
+        expect(paper.send(:latest_version).submitting_user).to eq(user)
+      end
     end
 
     context "when minor-checking (as in a tech check)" do
@@ -143,6 +148,12 @@ describe Paper do
         paper.minor_check!
         expect(paper).to be_editable
       end
+
+      it "creates a new minor version" do
+        expect(paper.send(:latest_version).version_string).to eq("0.0")
+        paper.minor_check!
+        expect(paper.send(:latest_version).version_string).to eq("0.1")
+      end
     end
 
     context "when submitting a minor change (as in a tech check)" do
@@ -150,8 +161,14 @@ describe Paper do
 
       it "marks the paper uneditable" do
         paper.minor_check!
-        paper.submit_minor_check!
+        paper.submit_minor_check! user
         expect(paper).to_not be_editable
+      end
+
+      it "sets the submitting_user of the latest version" do
+        paper.minor_check!
+        paper.submit_minor_check! user
+        expect(paper.send(:latest_version).submitting_user).to eq(user)
       end
     end
 
@@ -210,20 +227,31 @@ describe Paper do
         paper.make_decision decision
         expect(paper.publishing_state).to eq("in_revision")
       end
+
+      it "creates a new major version" do
+        expect(paper.send(:latest_version).version_string).to eq("0.0")
+        paper.make_decision decision
+        expect(paper.send(:latest_version).version_string).to eq("1.0")
+      end
     end
 
     context "minor revision" do
       let(:decision) do
         FactoryGirl.create(:decision, verdict: "minor_revision")
       end
+
       it "puts the paper in_revision" do
         paper.make_decision decision
         expect(paper.publishing_state).to eq("in_revision")
       end
+
+      it "creates a new major version" do
+        expect(paper.send(:latest_version).version_string).to eq("0.0")
+        paper.make_decision decision
+        expect(paper.send(:latest_version).version_string).to eq("1.0")
+      end
     end
-
   end
-
 
   describe "callbacks" do
     let(:user) { FactoryGirl.create(:user) }

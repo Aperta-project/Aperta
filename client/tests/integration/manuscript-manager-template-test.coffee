@@ -16,21 +16,21 @@ createJournalWithTaskTemplate = (taskType) ->
 
 module 'Integration: Manuscript Manager Templates',
 
-  teardown: ->
+  afterEach: ->
     server.restore()
     Ember.run(app, app.destroy)
-    Tahi.__container__.lookup(
+    app.__container__.lookup(
       'controller:admin/journal/manuscript-manager-template/edit'
-    )._actions.saveTemplateOnClick = Tahi.saveTemplateActionFunction
+    )._actions.saveTemplateOnClick = app.saveTemplateActionFunction
 
-  setup: ->
+  beforeEach: ->
     app = startApp()
     server = setupMockServer()
-    Tahi.saveTemplateActionFunction = Tahi.__container__.lookup(
+    app.saveTemplateActionFunction = app.__container__.lookup(
       'controller:admin/journal/manuscript-manager-template/edit'
     )._actions.saveTemplateOnClick
 
-    Tahi.__container__.lookup(
+    app.__container__.lookup(
       'controller:admin/journal/manuscript-manager-template/edit'
     )._actions.saveTemplateOnClick = -> console.log 'No Action'
 
@@ -104,25 +104,25 @@ module 'Integration: Manuscript Manager Templates',
       200, {"Content-Type": "application/json"}, JSON.stringify(response)
     ]
 
-test 'Changing phase name', ->
+test 'Changing phase name', (assert) ->
   columnTitleSelect = 'h2.column-title:contains("Phase 1")'
   visit("/admin/journals/1/manuscript_manager_templates/1/edit")
     .then ->
-      ok find(columnTitleSelect).length
+      assert.ok find(columnTitleSelect).length
   click columnTitleSelect
     .then -> Ember.$(columnTitleSelect).html('Shazam!')
   andThen ->
-    ok find('h2.column-title:contains("Shazam!")').length
+    assert.ok find('h2.column-title:contains("Shazam!")').length
 
-test 'Adding an Ad-Hoc card', ->
+test 'Adding an Ad-Hoc card', (assert) ->
   visit("/admin/journals/1/manuscript_manager_templates/1/edit")
   click('a.button--green:contains("Add New Card")')
 
   pickFromSelect2('.task-type-select', 'Ad Hoc')
 
   click('.overlay .button--green:contains("Add")').then ->
-    ok find('h1.inline-edit:contains("Ad Hoc")').length
-    ok(
+    assert.ok find('h1.inline-edit:contains("Ad Hoc")').length
+    assert.ok(
       find('h1.inline-edit').hasClass('editing'),
       "The title should be editable to start"
     )
@@ -137,13 +137,13 @@ test 'Adding an Ad-Hoc card', ->
     click('.task-body .inline-edit-body-part .button--green:contains("Save")')
 
   andThen ->
-    assertText('.inline-edit', 'yahoo')
+    assert.textPresent('.inline-edit', 'yahoo')
     click('.inline-edit-body-part .fa-trash')
   andThen ->
-    assertText('.inline-edit-body-part', 'Are you sure?')
+    assert.textPresent('.inline-edit-body-part', 'Are you sure?')
     click('.inline-edit-body-part .delete-button')
   andThen ->
-    assertNoText('.inline-edit', 'yahoo')
+    assert.textNotPresent('.inline-edit', 'yahoo')
     click('.overlay-close-button:first')
 
 createCard = ->
@@ -156,26 +156,26 @@ createCard = ->
     click '.overlay-close-button:first'
 
 # see also paper_workflow_test.js.coffee; tests are very similar
-test 'show delete confirmation overlay on deletion of a card', ->
+test 'show delete confirmation overlay on deletion of a card', (assert) ->
   createCard()
   andThen ->
     click(".card-remove")
   andThen ->
-    equal find('.overlay button:contains("Yes, Delete this Card")').length, 1
+    assert.equal find('.overlay button:contains("Yes, Delete this Card")').length, 1
     click find('.overlay button:contains("Yes, Delete this Card")')
   andThen ->
-    equal 0, find('.card-content').length
+    assert.equal 0, find('.card-content').length
 
-test 'click delete confirmation overlay cancel button', ->
+test 'click delete confirmation overlay cancel button', (assert) ->
   createCard()
   andThen ->
     equal find(".card-content").length, 1
     $("div.card .card-remove").show()
     click("div.card .card-remove")
     click('.overlay button:contains("cancel")')
-    equal find(".card-content").length, 1
+    assert.equal find(".card-content").length, 1
 
-test 'click delete confirmation overlay submit button', ->
+test 'click delete confirmation overlay submit button', (assert) ->
   createCard()
   andThen ->
     # first POST to /task_templates
@@ -187,7 +187,7 @@ test 'click delete confirmation overlay submit button', ->
     # causes DELETE to /task_templates/1
     click('.overlay button:contains("Yes, Delete this Card")')
   andThen ->
-    equal find(".card-content").length, 0, "The card is gone"
+    assert.equal find(".card-content").length, 0, "The card is gone"
   andThen ->
     search = { method: "DELETE", url: "/api/task_templates/1" }
-    ok _.findWhere(server.responses, search), "It sends DELETE request to the server"
+    assert.ok _.findWhere(server.responses, search), "It sends DELETE request to the server"

@@ -5,14 +5,11 @@ export default Ember.Controller.extend({
   positionSort: ['position:asc'],
   sortedPhases: Ember.computed.sort('model.phases', 'positionSort'),
 
-  // TODO: can we remove this alias? No reference to `paper` in controller or template
-  paper: Ember.computed.alias('model'),
-
   commentLooks: Ember.computed(function() {
-    return this.store.all('commentLook');
+    return this.store.all('comment-look');
   }),
 
-  allTaskIds: function() {
+  allTaskIds() {
     return this.store.all('phase').reduce(function(taskIds, phase) {
       return taskIds.concat(phase.get('tasks').map(function(task) {
         return task.get('id');
@@ -20,7 +17,7 @@ export default Ember.Controller.extend({
     }, []);
   },
 
-  updatePositions: function(phase) {
+  updatePositions(phase) {
     let relevantPhases = this.get('model.phases').filter(function(p) {
       return p !== phase && p.get('position') >= phase.get('position');
     });

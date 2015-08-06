@@ -2,8 +2,11 @@ import Ember from 'ember';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  affiliations: DS.hasMany('affiliation'),
-  invitations: DS.hasMany('invitation', { inverse: 'invitee' }),
+  affiliations: DS.hasMany('affiliation', { async: false }),
+  invitations: DS.hasMany('invitation', {
+    inverse: 'invitee',
+    async: false
+  }),
 
   avatarUrl: DS.attr('string'),
   email: DS.attr('string'),
@@ -16,7 +19,7 @@ export default DS.Model.extend({
   affiliationSort: ['isCurrent:desc', 'endDate:desc', 'startDate:asc'],
   affiliationsByDate: Ember.computed.sort('affiliations', 'affiliationSort'),
 
-  invitedInvitations: function() {
+  invitedInvitations: Ember.computed('invitations.@each.state', function() {
     return this.get('invitations').filterBy('state', 'invited');
-  }.property('invitations.@each.state')
+  })
 });

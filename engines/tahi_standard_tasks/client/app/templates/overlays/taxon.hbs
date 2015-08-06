@@ -4,15 +4,17 @@
   <div class="question">
     {{#question-check ident="taxon.zoological"
                       task=model
-                      question="Does this manuscript describe a new zoological taxon name?"}}
+                      question="Does this manuscript describe a new zoological taxon name?"
+                      as |checked|}}
 
-      <div class="question-text">
-        <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
-      </div>
-      {{question-check ident="taxon.zoological.complies"
-                       task=model
-                       question="All authors comply with the Policies Regarding Submission of a new Taxon Name" }}
-
+      {{#if checked}}
+        <div class="question-text">
+          <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
+        </div>
+        {{question-check ident="taxon.zoological.complies"
+                         task=model
+                         question="All authors comply with the Policies Regarding Submission of a new Taxon Name" }}
+      {{/if}}
     {{/question-check}}
   </div>
 
@@ -21,15 +23,17 @@
   <div class="question">
     {{#question-check ident="taxon.botanical"
                       task=model
-                      question="Does this manuscript describe a new botantical taxon name?"}}
+                      question="Does this manuscript describe a new botantical taxon name?"
+                      as |checked|}}
 
-      <div class="question-text">
-        <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
-      </div>
+      {{#if checked}}
+        <div class="question-text">
+          <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
+        </div>
         {{question-check ident="taxon.botanical.complies"
                          task=model
                          question="All authors comply with the Policies Regarding Submission of a new Taxon Name" }}
-
+      {{/if}}
     {{/question-check}}
   </div>
 </div>

@@ -7,37 +7,33 @@ export default Ember.Controller.extend({
   isLoggedIn: Ember.computed.notEmpty('currentUser'),
   canViewAdminLinks: false,
   canViewFlowManagerLink: false,
+  showOverlay: false,
 
-  clearError: function() {
+  clearError: Ember.observer('currentPath', function() {
     this.set('error', null);
-  }.observes('currentPath'),
+  }),
 
-  resetScrollPosition: function() {
+  resetScrollPosition: Ember.observer('currentPath', function() {
     window.scrollTo(0, 0);
-  }.observes('currentPath'),
+  }),
 
-  overlayBackground: Ember.computed.oneWay('defaultBackground'),
-  overlayRedirect: [],
-  defaultBackground: 'overlay-background',
-
-  testing: function() {
+  testing: Ember.computed(function() {
     return Ember.testing || ENV.environment === 'test';
-  }.property(),
+  }),
 
   showSaveStatusDiv: Ember.computed.and('testing', 'delayedSave'),
 
-  specifiedAppName: function() {
-    return window.appName;
-  }.property(),
+  specifiedAppName: window.appName,
 
   navigationVisible: false,
 
-  toggleNavigation: function() {
+  toggleNavigation: Ember.observer('navigationVisible', function() {
     $('html')[this.get('navigationVisible') ? 'addClass' : 'removeClass']('navigation-visible');
-  }.observes('navigationVisible'),
+  }),
 
   actions: {
     showNavigation() { this.set('navigationVisible', true); },
-    hideNavigation() { this.set('navigationVisible', false); }
+    hideNavigation() { this.set('navigationVisible', false); },
+    showFeedbackOverlay() { this.send('feedback'); }
   }
 });

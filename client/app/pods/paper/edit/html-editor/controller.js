@@ -3,7 +3,7 @@ import PaperBaseMixin from 'tahi/mixins/controllers/paper-base';
 import PaperEditMixin from 'tahi/mixins/controllers/paper-edit';
 import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 
-var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, DiscussionsRoutePathsMixin, {
+export default Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, DiscussionsRoutePathsMixin, {
   subRouteName: 'edit',
 
   editorComponent: "tahi-editor-ve",
@@ -15,21 +15,21 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
   // used to recover a selection when returning from another context (such as figures)
   isEditing: Ember.computed.alias('lockedByCurrentUser'),
 
-  paperBodyDidChange: function() {
+  paperBodyDidChange: Ember.observer('model.body', function() {
     this.updateEditor();
-  }.observes('model.body'),
+  }),
 
-  startEditing: function() {
+  startEditing() {
     this.acquireLock();
     this.connectEditor();
   },
 
-  stopEditing: function() {
+  stopEditing() {
     this.disconnectEditor();
     this.releaseLock();
   },
 
-  acquireLock: function() {
+  acquireLock() {
     // Note:
     // when the paper is saved, the server knows who acquired the lock
     // (this is required for the heartbeat to work)
@@ -39,7 +39,7 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
     // 1. set model.lockedBy = this.currentUser
     // 2. save the model, which sends the updated lockedBy to the server
     // 3. let the router know that we are starting editing
-    var paper = this.get('model');
+    let paper = this.get('model');
     paper.set('lockedBy', this.currentUser);
     paper.set('body', this.get('editor').getBodyHtml());
     paper.save().then(()=>{
@@ -47,8 +47,8 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
     });
   },
 
-  releaseLock: function() {
-    var paper = this.get('model');
+  releaseLock() {
+    let paper = this.get('model');
     paper.set('lockedBy', null);
     paper.save().then(()=>{
       // FIXME: don't know why but when calling this during willDestroyElement
@@ -57,29 +57,30 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
     });
   },
 
-  updateEditorLockState: function() {
+  updateEditorLockState: Ember.observer('lockedByCurrentUser', function() {
     if (this.get('lockedByCurrentUser')) {
       this.connectEditor();
     } else {
       this.disconnectEditor();
     }
-  }.observes('lockedByCurrentUser'),
+  }),
 
-  updateEditor: function() {
-    var editor = this.get('editor');
+  updateEditor() {
+    let editor = this.get('editor');
     if (editor) {
       editor.update();
     }
   },
 
-  savePaper: function() {
+  savePaper() {
     if (!this.get('model.editable')) {
       return;
     }
-    var editor = this.get('editor');
-    var paper = this.get('model');
-    if (!editor) { return; }
-    var manuscriptHtml = editor.getBodyHtml();
+    let editor = this.get('editor');
+    if(Ember.isEmpty(editor)) { return; }
+
+    let paper = this.get('model');
+    let manuscriptHtml = editor.getBodyHtml();
     paper.set('body', manuscriptHtml);
     if (paper.get('isDirty')) {
       return paper.save().then(()=>{
@@ -92,24 +93,25 @@ var HtmlEditorController = Ember.Controller.extend(PaperBaseMixin, PaperEditMixi
     }
   },
 
-  connectEditor: function() {
+  connectEditor() {
     this.get('editor').connect();
   },
 
-  disconnectEditor: function() {
-    this.get('editor').disconnect();
+  disconnectEditor() {
+    // TODO: temp fix?
+    if(this.get('editor')) {
+      this.get('editor').disconnect();
+    }
   },
 
-  getBodyHtml: function() {
-    var editor = this.get('editor');
+  getBodyHtml() {
+    let editor = this.get('editor');
     return editor.getBodyHtml();
   },
 
-  setBodyHtml: function(html) {
-    var editor = this.get('editor');
+  setBodyHtml(html) {
+    let editor = this.get('editor');
     return editor.setBodyHtml(html);
   },
 
 });
-
-export default HtmlEditorController;

@@ -3,7 +3,7 @@
 `import { test, moduleFor } from 'ember-qunit'`
 
 moduleFor 'controller:admin/journal/manuscript-manager-template/edit', 'ManuscriptManagerTemplateEditController',
-  setup: ->
+  beforeEach: ->
     startApp()
 
     Ember.run =>
@@ -22,18 +22,18 @@ moduleFor 'controller:admin/journal/manuscript-manager-template/edit', 'Manuscri
         model: @template
         store: @store
 
-test '#rollbackPhase sets the given old name on the given phase', ->
+test '#rollbackPhase sets the given old name on the given phase', (assert) ->
   phase = Ember.Object.create name: "Captain Picard"
   @ctrl.send 'rollbackPhase', phase, "Captain Kirk"
-  equal(phase.get('name'), "Captain Kirk")
+  assert.equal(phase.get('name'), "Captain Kirk")
 
-test '#addPhase adds a phase at a specified index', ->
+test '#addPhase adds a phase at a specified index', (assert) ->
   Ember.run =>
     @ctrl.send 'addPhase', 0
-    equal @ctrl.get('sortedPhaseTemplates.firstObject.name'), 'New Phase'
+    assert.equal @ctrl.get('sortedPhaseTemplates.firstObject.name'), 'New Phase'
 
-test "#removeTask removes the given task from the template's phase", ->
+test "#removeTask removes the given task from the template's phase", (assert) ->
   Ember.run =>
     @ctrl.send 'removeTask', @task1
     tasks = @phase.get('taskTemplates')
-    deepEqual tasks.mapBy('title'), ['BTask']
+    assert.deepEqual tasks.mapBy('title'), ['BTask']

@@ -3,7 +3,11 @@
     <h2 class="admin-section-title">Users</h2>
     <div class="col-md-4">
       <div class="row admin-user-search">
-        {{input action="searchUsers" placeholder="SEARCH ALL USERS" class="admin-user-search-input" name="Admin Search Input" value=searchQuery}}
+        {{input enter="searchUsers"
+                placeholder="SEARCH ALL USERS"
+                class="admin-user-search-input"
+                name="Admin Search Input"
+                value=searchQuery}}
         <button class="admin-user-search-button" {{action "searchUsers"}}><span class="fa fa-search"></span></button>
       </div>
     </div>
@@ -48,7 +52,9 @@
     <button class="button-primary button--blue" {{action "addMMTemplate" phase taskType}}>Add New Template</button>
     <br><br>
     {{#each model.manuscriptManagerTemplates as |mmt|}}
-      {{view "admin/journal/manuscript-manager-template/thumbnail" content=mmt}}
+      {{manuscript-manager-template model=mmt
+                                    canDestroy=canDeleteManuscriptMangerTemplates
+                                    destroyTemplate=(action "destroyMMTemplate")}}
     {{/each}}
   </div>
 

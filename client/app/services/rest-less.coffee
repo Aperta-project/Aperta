@@ -39,7 +39,7 @@ RESTless = Ember.Namespace.create
       if errors = xhr.responseJSON.errors
         errors = Utils.camelizeKeys(errors)
         modelErrors = model.get('errors')
-        Ember.keys(errors).forEach (key) ->
+        Object.keys(errors).forEach (key) ->
           modelErrors.add(key, errors[key])
       throw {status: xhr.status, model: model}
 

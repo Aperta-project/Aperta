@@ -1,76 +1,90 @@
 import DS from 'ember-data';
 import Ember from 'ember';
 
+const { computed } = Ember;
+const { attr, belongsTo, hasMany } = DS;
+
 export default DS.Model.extend({
-  authors: DS.hasMany('author'),
-  collaborations: DS.hasMany('collaboration'),
-  commentLooks: DS.hasMany('comment-look', { inverse: 'paper', async: true }),
-  decisions: DS.hasMany('decision'),
-  editors: DS.hasMany('user'),
-  figures: DS.hasMany('figure', { inverse: 'paper' }),
-  tables: DS.hasMany('table', { inverse: 'paper' }),
-  bibitems: DS.hasMany('bibitem', { inverse: 'paper' }),
-  journal: DS.belongsTo('journal'),
-  lockedBy: DS.belongsTo('user'),
-  phases: DS.hasMany('phase'),
-  reviewers: DS.hasMany('user'),
-  supportingInformationFiles: DS.hasMany('supporting-information-file'),
-  tasks: DS.hasMany('task', { async: true, polymorphic: true }),
+  authors: hasMany('author', { async: false }),
+  collaborations: hasMany('collaboration', { async: false }),
+  commentLooks: hasMany('comment-look', { inverse: 'paper', async: true }),
+  decisions: hasMany('decision', { async: false }),
+  editors: hasMany('user', { async: false }),
+  figures: hasMany('figure', {
+    inverse: 'paper',
+    async: false
+  }),
+  tables: hasMany('table', {
+    inverse: 'paper',
+    async: false
+  }),
+  bibitems: hasMany('bibitem', {
+    inverse: 'paper',
+    async: false
+  }),
+  journal: belongsTo('journal', { async: false }),
+  lockedBy: belongsTo('user', { async: false }),
+  phases: hasMany('phase', { async: false }),
+  reviewers: hasMany('user', { async: false }),
+  supportingInformationFiles: hasMany('supporting-information-file', {
+    async: false
+  }),
+  tasks: hasMany('task', { async: true, polymorphic: true }),
 
-  body: DS.attr('string'),
-  doi: DS.attr('string'),
-  editable: DS.attr('boolean'),
-  editorMode: DS.attr('string', { defaultValue: 'html' }),
-  eventName: DS.attr('string'),
-  paperType: DS.attr('string'),
-  relatedAtDate: DS.attr('date'),
-  relatedUsers: DS.attr(),
-  roles: DS.attr(),
-  shortTitle: DS.attr('string'),
-  status: DS.attr('string'),
-  strikingImageId: DS.attr('string'),
-  submittedAt: DS.attr('date'),
-  publishingState: DS.attr('string'),
-  title: DS.attr('string'),
+  body: attr('string'),
+  doi: attr('string'),
+  editable: attr('boolean'),
+  editorMode: attr('string', { defaultValue: 'html' }),
+  eventName: attr('string'),
+  paperType: attr('string'),
+  relatedAtDate: attr('date'),
+  relatedUsers: attr(),
+  roles: attr(),
+  shortTitle: attr('string'),
+  status: attr('string'),
+  strikingImageId: attr('string'),
+  submittedAt: attr('date'),
+  publishingState: attr('string'),
+  title: attr('string'),
 
-  displayTitle: function() {
+  displayTitle: computed('title', 'shortTitle', function() {
     return this.get('title') || this.get('shortTitle');
-  }.property('title', 'shortTitle'),
+  }),
 
-  allSubmissionTasks: function() {
+  allSubmissionTasks: computed('tasks.content.@each.isSubmissionTask', function() {
     return this.get('tasks').filterBy('isSubmissionTask');
-  }.property('tasks.content.@each.isSubmissionTask'),
+  }),
 
-  collaborators: function() {
+  collaborators: computed('collaborations.@each', function() {
     return this.get('collaborations').mapBy('user');
-  }.property('collaborations.@each'),
+  }),
 
-  allSubmissionTasksCompleted: function() {
+  allSubmissionTasksCompleted: computed('allSubmissionTasks.@each.completed', function() {
     return this.get('allSubmissionTasks').everyProperty('completed', true);
-  }.property('allSubmissionTasks.@each.completed'),
+  }),
 
-  roleList: function() {
+  roleList: computed('roles.@each', 'roles.[]', function() {
     return this.get('roles').sort().join(', ');
-  }.property('roles.@each', 'roles.[]'),
+  }),
 
-  latestDecision: function() {
+  latestDecision: computed('decisions', 'decisions.@each', function() {
     return this.get('decisions').findBy('isLatest', true);
-  }.property('decisions', 'decisions.@each'),
+  }),
 
-  submittableState: function() {
-    var state = this.get('publishingState');
+  submittableState: computed('publishingState', function() {
+    let state = this.get('publishingState');
     return state === 'unsubmitted' || state === 'in_revision';
-  }.property('publishingState'),
+  }),
 
-  preSubmission: function() {
+  preSubmission: computed('submittableState', 'allSubmissionTasksCompleted', function() {
     return (this.get('submittableState') &&
             !this.get('allSubmissionTasksCompleted'));
-  }.property('submittableState', 'allSubmissionTasksCompleted'),
+  }),
 
-  readyToSubmit: function() {
+  readyToSubmit: computed('submittableState', 'allSubmissionTasksCompleted', function() {
     return (this.get('submittableState') &&
             this.get('allSubmissionTasksCompleted'));
-  }.property('submittableState', 'allSubmissionTasksCompleted'),
+  }),
 
-  postSubmission: Ember.computed.not('submittableState')
+  postSubmission: computed.not('submittableState')
 });

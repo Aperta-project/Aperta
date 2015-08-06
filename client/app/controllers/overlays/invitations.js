@@ -1,12 +1,13 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  needs: ['dashboard/index'],
   overlayClass: 'overlay--fullscreen invitations-overlay',
-  pendingInvitations: Ember.computed.alias('controllers.dashboard/index.pendingInvitations'),
-  didCompleteAllInvitations: function() {
-    if(Ember.isEmpty(this.get('pendingInvitations'))) {
+
+  invitations: Ember.computed.reads('currentUser.invitedInvitations'),
+
+  didCompleteAllInvitations: Ember.observer('invitations.@each', function() {
+    if(Ember.isEmpty(this.get('invitations'))) {
       this.send('closeOverlay');
     }
-  }.observes('pendingInvitations.@each')
+  })
 });

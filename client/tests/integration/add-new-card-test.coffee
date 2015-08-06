@@ -10,11 +10,12 @@ server = null
 
 module 'Integration: adding a new card',
 
-  teardown: ->
+  afterEach: ->
     server.restore()
+    Ember.run(-> TestHelper.teardown() )
     Ember.run(app, app.destroy)
 
-  setup: ->
+  beforeEach: ->
     app = startApp()
     server = setupMockServer()
     TestHelper.handleFindAll('discussion-topic', 1)
@@ -58,10 +59,10 @@ module 'Integration: adding a new card',
       200, 'Content-Type': 'application/json', JSON.stringify adminJournalsResponse
     ]
 
-test 'user sees task overlay when the task is added', ->
+test 'user sees task overlay when the task is added', (assert) ->
   visit('/papers/1/workflow')
   click("a:contains('Add New Card')")
   pickFromSelect2 '.task-type-select', 'Ad Hoc'
   click '.button--green:contains("Add")'
   andThen ->
-    ok find('div.overlay-container').length
+    assert.ok find('div.overlay-container').length

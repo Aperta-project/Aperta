@@ -5,7 +5,7 @@
 moduleFor 'controller:overlays/ad-hoc', 'AdHocOverlayController',
   needs: ['controller:application', 'controller:paper/task']
 
-  setup: ->
+  beforeEach: ->
     sinon.stub(RESTless, 'putModel')
 
     @task = Ember.Object.create
@@ -15,14 +15,11 @@ moduleFor 'controller:overlays/ad-hoc', 'AdHocOverlayController',
       @ctrl = @subject()
       @ctrl.set('model', @task)
 
-  teardown: ->
+  afterEach: ->
     RESTless.putModel.restore()  # reset sinon stub
 
-test 'sendEmail calls send_message endpoint', ->
-  @subject().send 'sendEmail', 'Foo'
-  ok RESTless.putModel.getCall(0).args[2].task == 'Foo'
-
-test 'imageUploadUrl updates when model is changed', ->
-  equal "/api/tasks/99/attachments", @ctrl.get('imageUploadUrl')
-  @ctrl.get('model').set('id', 111)
-  equal "/api/tasks/111/attachments", @ctrl.get('imageUploadUrl')
+test 'imageUploadUrl updates when model is changed', (assert)->
+  assert.equal "/api/tasks/99/attachments", @ctrl.get('imageUploadUrl')
+  Ember.run =>
+    @ctrl.set('model.id', 111)
+  assert.equal "/api/tasks/111/attachments", @ctrl.get('imageUploadUrl')

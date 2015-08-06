@@ -14,28 +14,32 @@
       <li class="item">
         {{#question-check ident="reporting_guidelines.systematic_reviews"
                           task=model
-                          question="Systematic Reviews"}}
-          <div class="question-dataset">
-            {{question-uploader ident="reporting_guidelines.systematic_reviews.prisma_checklist"
-                                task=model
-                                question="Provide a completed PRISMA checklist as supporting information. You can <a href='http://www.prisma-statement.org/' target='_blank'>download it here</a>."
-                                updateStore="updateStore"
-                                accept=".docx,.pdf"}}
-          </div>
+                          question="Systematic Reviews" as |checked|}}
+          {{#if checked}}
+            <div class="question-dataset">
+              {{question-uploader ident="reporting_guidelines.systematic_reviews.prisma_checklist"
+                                  task=model
+                                  question="Provide a completed PRISMA checklist as supporting information. You can <a href='http://www.prisma-statement.org/' target='_blank'>download it here</a>."
+                                  updateStore="updateStore"
+                                  accept=".docx,.pdf"}}
+            </div>
+          {{/if}}
         {{/question-check}}
       </li>
 
       <li class="item">
         {{#question-check ident="reporting_guidelines.meta_analyses"
                           task=model
-                          question="Meta-analyses"}}
-          <div class="question-dataset">
-            {{question-uploader ident="reporting_guidelines.meta_analyses.prisma_checklist"
-                                task=model
-                                question="Provide a completed PRISMA checklist as supporting information."
-                                updateStore="updateStore"
-                                accept=".docx,.pdf"}}
-          </div>
+                          question="Meta-analyses" as |checked|}}
+          {{#if checked}}
+            <div class="question-dataset">
+              {{question-uploader ident="reporting_guidelines.meta_analyses.prisma_checklist"
+                                  task=model
+                                  question="Provide a completed PRISMA checklist as supporting information."
+                                  updateStore="updateStore"
+                                  accept=".docx,.pdf"}}
+            </div>
+          {{/if}}
         {{/question-check}}
       </li>
 

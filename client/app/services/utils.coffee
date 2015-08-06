@@ -4,7 +4,7 @@
 Utils = Ember.Namespace.create
   camelizeKeys: (object) ->
     camelized = {}
-    Ember.keys(object).forEach (key) ->
+    Object.keys(object).forEach (key) ->
       camelized[Ember.String.camelize(key)] = object[key]
     camelized
 
@@ -13,7 +13,7 @@ Utils = Ember.Namespace.create
       return thing if (!thing || typeof thing != 'object')
       return thing.map(spelunk) if (Ember.isArray(thing))
 
-      Ember.keys(thing).reduce (previousValue, key) ->
+      Object.keys(thing).reduce (previousValue, key) ->
         isDate = Object.prototype.toString.call(thing[key]) == '[object Date]'
         previousValue[Ember.String.camelize(key)] = (if isDate then thing[key] else spelunk(thing[key]))
         previousValue
@@ -23,7 +23,7 @@ Utils = Ember.Namespace.create
 
   deepJoinArrays: (hash) ->
     spelunk = (thing) ->
-      Ember.keys(thing).forEach (key) ->
+      Object.keys(thing).forEach (key) ->
         return thing if (!thing || typeof thing != 'object')
         if Ember.isArray(thing[key])
           thing[key] = thing[key].join(', ')

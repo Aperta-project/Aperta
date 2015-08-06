@@ -4,17 +4,17 @@
   <div class="question">
 
     {{#question-radio ident="financial_disclosure.received_funding"
-                     task=model
-                     question="Did any of the authors receive specific funding for this work?"
-                     yesAction="choseFundingReceived"
-                     noAction="choseFundingNotReceived"}}
-      {{#show-if-parent prop="selectedYes"}}
+                      task=model
+                      question="Did any of the authors receive specific funding for this work?"
+                      yesAction="choseFundingReceived"
+                      noAction="choseFundingNotReceived" as |selected|}}
+      {{#if selected.yes}}
         <span>Please describe all sources of funding that have supported your work.</span>
-      {{/show-if-parent}}
+      {{/if}}
 
-      {{#show-if-parent prop="selectedNo"}}
+      {{#if selected.no}}
         <span>Your Financial Disclosure Statement will appear as: The author(s) received no specific funding for this work.</span>
-      {{/show-if-parent}}
+      {{/if}}
 
     {{/question-radio}}
   </div>
@@ -36,7 +36,25 @@
     </p>
 
     {{#each funders as |funder|}}
-      {{view "funder-influence-statement" funder=funder}}
+      {{#funder-influence-statement funder=funder as |statement|}}
+        <p>
+          This work was supported by
+
+          {{#if funder.formattedWebsite}}
+            <a href={{funder.formattedWebsite}} target="_blank">
+              <strong>{{if funder.name funder.name "[funder name]"}}</strong>
+            </a>
+          {{~else~}}
+            <strong>{{if funder.name funder.name "[funder name]"}}</strong>
+          {{~/if~}}
+
+          {{#if funder.grantNumber}}
+            (grant number <strong>{{funder.grantNumber}}</strong>)
+          {{~/if~}}.
+
+          {{statement}}
+        </p>
+      {{/funder-influence-statement}}
     {{/each}}
   {{/if}}
 </div>

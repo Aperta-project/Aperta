@@ -21,7 +21,9 @@
     {{/if}}
   {{/if}}
 
-  {{view "author-drop-target" index=0}}
+  {{author-drop-target index=0
+                       isEditable=isEditable
+                       changePosition=(action "changeAuthorPosition")}}
 
   {{#each sortedAuthorsWithErrors as |authorWithErrors|}}
     {{author-view isEditable=isEditable
@@ -30,6 +32,8 @@
                   save="saveAuthor"
                   plosAuthor=authorWithErrors.model
                   errors=authorWithErrors.errors}}
-    {{view "author-drop-target" index=authorWithErrors.model.position}}
+    {{author-drop-target index=authorWithErrors.model.position
+                         isEditable=isEditable
+                         changePosition=(action "changeAuthorPosition")}}
   {{/each}}
 </div>

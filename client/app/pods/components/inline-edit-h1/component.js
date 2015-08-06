@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  editing: Ember.computed.oneWay('editOnOpen'),
+  editing: Ember.computed.reads('editOnOpen'),
   snapshot: null,
 
   createSnapshot() {

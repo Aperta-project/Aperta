@@ -23,8 +23,8 @@ export default Ember.Mixin.create({
 
     let css = {
       position: 'absolute',
-      top: position.top + targetHeight,
-      left: position.left
+      top: Math.round(position.top) + targetHeight,
+      left: Math.round(position.left)
     };
 
     if(this.get('matchWidth')) {

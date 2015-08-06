@@ -36,7 +36,7 @@ export default {
       if (status === 401) { return document.location.href = '/users/sign_in'; }
 
       let msg = `Error with ${type} request to ${url}. Server returned ${status}: ${statusText}. ${thrownError}`;
-      logError(msg);
+      logError(new Error(msg));
       // TODO: Remove this condidition when we switch to run loop respecting http mocks
       if (!Ember.testing) { flash.displayMessage('error', msg); }
     });

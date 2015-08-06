@@ -28,11 +28,11 @@ export default Ember.Component.extend({
     }
   },
 
-  buttonState: function() {
+  buttonState: Ember.computed('canEdit', 'isEditing', function() {
     if (!this.get('canEdit'))  { return 'disabled';  }
     if (this.get('isEditing')) { return 'isEditing'; }
     return 'canEdit';
-  }.property('canEdit', 'isEditing'),
+  }),
 
   click() {
     if (this.get('buttonState') !== 'disabled') {

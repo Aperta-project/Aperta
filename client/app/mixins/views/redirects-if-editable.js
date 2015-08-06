@@ -11,12 +11,12 @@ export default Ember.Mixin.create({
     }
   },
 
-  setupEditableToggle: function() {
+  setupEditableToggle: Ember.on('didInsertElement', function() {
     this.set('lastEditable', this.get('editable'));
     this.addObserver('editable', this, this.toggleEditable);
-  }.on('didInsertElement'),
+  }),
 
-  teardownEditableToggle: function() {
+  teardownEditableToggle: Ember.on('willDestroyElement', function() {
     this.removeObserver('editable', this, this.toggleEditable);
-  }.on('willDestroyElement')
+  })
 });

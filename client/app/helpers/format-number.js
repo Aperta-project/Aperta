@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import formatNumber from 'tahi/lib/format-number';
 
-export default Ember.Handlebars.makeBoundHelper(function(number) {
-  return formatNumber(number);
+export default Ember.Helper.helper(function(params, hash) {
+  return formatNumber(hash.number);
 });

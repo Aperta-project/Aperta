@@ -1,6 +1,0 @@
-ruby:
-  enabled: true
-
-coffee_script:
-  enabled: true
-  config_file: config/style_guides/coffeescript.json

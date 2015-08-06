@@ -50,19 +50,16 @@ export default Ember.Route.extend({
           })
         });
 
-        this.render('overlays/paper-new', {
-          into: 'application',
-          outlet: 'overlay',
+        this.send('openOverlay', {
+          template: 'overlays/paper-new',
           controller: 'overlays/paper-new'
         });
       });
     },
 
-    viewInvitations(invitations) {
-      this.controllerFor('overlays/invitations').set('model', invitations);
-      this.render('overlays/invitations', {
-        into: 'application',
-        outlet: 'overlay',
+    viewInvitations() {
+      this.send('openOverlay', {
+        template: 'overlays/invitations',
         controller: 'overlays/invitations'
       });
     }

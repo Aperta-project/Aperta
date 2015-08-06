@@ -7,7 +7,7 @@ export default Ember.Object.extend({
   preview: null,
   xhr: null,
 
-  abort: function() {
+  abort() {
     if(!this.get('xhr')) { return; }
     this.get('xhr').abort();
   }

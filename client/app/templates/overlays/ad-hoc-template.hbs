@@ -2,33 +2,44 @@
 
 <div class="task-body">
   {{#each blocks as |block|}}
-    {{#inline-edit-body-part
-      block=block
-      cancel="resetBlock"
-      save="saveBlock"
-      delete="deleteBlock"
-      addItem="addCheckboxItem"}}
-      {{#each item in block}}
-        {{view "inlineEdit"
-               item=item
-               isSendable=false
-               isNew=false}}
+    {{#inline-edit-body-part block=block
+                             editing=false
+                             cancel="resetBlock"
+                             save="saveBlock"
+                             delete="deleteBlock"
+                             addItem="addCheckboxItem"
+                             as |editing|}}
+      {{#each block as |item|}}
+        {{inline-edit-item item=item
+                           block=block
+                           editing=editing
+                           isSendable=false
+                           isNew=false
+                           saveModel=(action "saveModel")
+                           deleteBlock=(action "deleteBlock")
+                           deleteItem=(action "deleteItem")
+                           sendEmail=(action "sendEmail")}}
       {{/each}}
     {{/inline-edit-body-part}}
   {{/each}}
   {{#each newBlocks as |block|}}
-    {{#inline-edit-body-part
-      block=block
-      editing=true
-      cancel="resetBlock"
-      save="saveBlock"
-      delete="deleteBlock"
-      addItem="addCheckboxItem"}}
+    {{#inline-edit-body-part block=block
+                             editing=true
+                             cancel="resetBlock"
+                             save="saveBlock"
+                             delete="deleteBlock"
+                             addItem="addCheckboxItem"
+                             as |editing|}}
       {{#each block as |item|}}
-        {{view "inlineEdit"
-               item=item
-               isSendable=false
-               isNew=true}}
+        {{inline-edit-item item=item
+                           block=block
+                           editing=editing
+                           isSendable=false
+                           isNew=true
+                           saveModel=(action "saveModel")
+                           deleteBlock=(action "deleteBlock")
+                           deleteItem=(action "deleteItem")
+                           sendEmail=(action "sendEmail")}}
       {{/each}}
     {{/inline-edit-body-part}}
   {{/each}}

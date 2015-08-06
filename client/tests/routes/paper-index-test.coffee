@@ -3,17 +3,17 @@
 
 moduleFor 'route:paper/index', 'Unit: route/PaperIndex',
   needs: ['model:paper', 'route:paper'],
-  setup: ->
+  beforeEach: ->
     sinon.stub(@subject(), 'replaceWith')
 
-test 'transition to edit route if paper is editable', ->
+test 'transition to edit route if paper is editable', (assert) ->
   editablePaper = Ember.Object.create editable: true
   @subject().afterModel editablePaper
 
-  ok @subject().replaceWith.calledWithExactly('paper.edit', editablePaper)
+  assert.ok @subject().replaceWith.calledWithExactly('paper.edit', editablePaper)
 
-test 'does not transition to edit route if paper has been submitted', ->
+test 'does not transition to edit route if paper has been submitted', (assert) ->
   uneditablePaper = Ember.Object.create editable: false
   @subject().afterModel uneditablePaper
 
-  ok !@subject().replaceWith.called
+  assert.ok !@subject().replaceWith.called

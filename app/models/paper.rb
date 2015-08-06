@@ -38,6 +38,10 @@ class Paper < ActiveRecord::Base
 
   delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
 
+  after_create do
+    versioned_texts.create(major_version: 0, minor_version: 0)
+  end
+
   aasm column: :publishing_state do
     state :unsubmitted, initial: true # currently being authored
     state :submitted
@@ -275,7 +279,7 @@ class Paper < ActiveRecord::Base
   private
 
   def latest_version
-    versioned_texts.active.first_or_initialize(major_version: 0, minor_version: 0)
+    versioned_texts.active.first
   end
 
   def new_major_version!

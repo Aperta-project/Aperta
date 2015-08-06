@@ -5,9 +5,6 @@ export default Ember.Controller.extend({
   positionSort: ['position:asc'],
   sortedPhases: Ember.computed.sort('model.phases', 'positionSort'),
 
-  // TODO: can we remove this alias? No reference to `paper` in controller or template
-  paper: Ember.computed.alias('model'),
-
   commentLooks: Ember.computed(function() {
     return this.store.all('comment-look');
   }),

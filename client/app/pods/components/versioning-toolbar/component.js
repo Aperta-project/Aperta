@@ -12,7 +12,6 @@ export default Ember.Component.extend({
         this.compareToText = response['versioned_text']['text'];
         this.set('paper.compareToText', this.compareToText);
         var that = this;
-        //TODOMPM - can we get rid of this timeout?
         setTimeout( function() { that.setCurrentVersionBody(); }, 1000);
       });
     } else {
@@ -35,7 +34,7 @@ export default Ember.Component.extend({
     }
   },
 
-  setCurrentVersionBody() {
+  setCurrentVersionBody: function() {
     if (this.compareToText === null) {
       this.set('paper.currentVersionBody', this.nowViewingText);
       this.set('paper.nowViewingText', this.nowViewingText);
@@ -46,6 +45,13 @@ export default Ember.Component.extend({
       let diff = this.Differ.diff(compareToText, nowViewingText);
       this.set('paper.diff', diff);
     }
+
+    setTimeout(this.updateMath, 500);
+  },
+
+  updateMath: function() {
+    console.log("Updating Equations");
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
   },
 
   setupObserver: function() {
@@ -118,6 +124,7 @@ export default Ember.Component.extend({
     openVersioningMode() {
       this.set('transitioning', true);
       this.getNowViewingVersion();
+      this.getCompareToText();
 
       Ember.run.later(()=>{
         this.set('versioningMode', true);

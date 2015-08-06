@@ -3,11 +3,11 @@
 QuestionComponent = Ember.Component.extend
   tagName: 'div'
   helpText: null
-  displayContent: false
+  disabled: false,
 
   model: (->
     ident = @get('ident')
-    throw new Error("You must specify an ident, set to name attr") unless ident
+    Ember.assert('You must specify an ident, set to name attr', ident)
 
     question =
       if @get("versioned")

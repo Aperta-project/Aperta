@@ -16,19 +16,17 @@ setupEventStream = ->
 
 module 'Integration: Dashboard Collaboration',
 
-  teardown: ->
-    Ember.run ->
-      TestHelper.teardown()
-      App.destroy()
+  afterEach: ->
+    Ember.run(-> TestHelper.teardown() )
+    Ember.run(App, App.destroy)
 
-  setup: ->
+  beforeEach: ->
     App = startApp()
     TestHelper.setup(App)
     $.mockjax(url: "/api/admin/journals/authorization", status: 204)
     $.mockjax(url: "/api/user_flows/authorization", status: 204)
 
-
-test 'The dashboard shows papers for a user if they have any role on the paper', ->
+test 'The dashboard shows papers for a user if they have any role on the paper', (assert) ->
   Ember.run ->
     TestHelper.handleFindAll("comment-look", 0)
     TestHelper.handleFindAll("invitation", 0)
@@ -37,9 +35,9 @@ test 'The dashboard shows papers for a user if they have any role on the paper',
     visit('/')
 
     andThen ->
-      equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 6, 'All papers with roles should be visible'
+      assert.equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 6, 'All papers with roles should be visible'
 
-test 'The dashboard shows paginated papers', ->
+test 'The dashboard shows paginated papers', (assert) ->
   perPage =  15
   extra = 2
   Ember.run ->
@@ -53,9 +51,9 @@ test 'The dashboard shows paginated papers', ->
     visit '/'
 
     andThen ->
-      ok(find('.load-more-papers').length, "sees load more button")
-      ok(Ember.isPresent(find('.welcome-message').text().match("You have #{perPage + extra} manuscripts")), "sees welcome message")
-      equal(find('.dashboard-submitted-papers .dashboard-paper-title').length, perPage, "num papers per page")
+      assert.ok(find('.load-more-papers').length, "sees load more button")
+      assert.ok(Ember.isPresent(find('.welcome-message').text().match("You have #{perPage + extra} manuscripts")), "sees welcome message")
+      assert.equal(find('.dashboard-submitted-papers .dashboard-paper-title').length, perPage, "num papers per page")
 
     andThen ->
       morePapers = FactoryGuy.makeList("paper", extra, "withRoles")
@@ -65,4 +63,4 @@ test 'The dashboard shows paginated papers', ->
 
     andThen ->
       equal(find('.dashboard-submitted-papers .dashboard-paper-title').length, perPage + extra, "paginated result count")
-      ok(!find('.load-more-papers').length, "no longer sees load more button")
+      assert.ok(!find('.load-more-papers').length, "no longer sees load more button")

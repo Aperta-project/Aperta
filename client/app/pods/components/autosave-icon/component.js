@@ -6,11 +6,11 @@ export default Ember.Component.extend({
   isSaving: false,
   showCheckMark: false,
 
-  setup: function() {
+  setup: Ember.on('init', function() {
     this.set('isSaving', this.get('modelIsSaving'));
-  }.on('init'),
+  }),
 
-  modelIsSavingDidChange: function() {
+  modelIsSavingDidChange: Ember.observer('modelIsSaving', function() {
     if (this.get('modelIsSaving')) {
       this.set('isSaving', true);
     } else {
@@ -20,7 +20,7 @@ export default Ember.Component.extend({
         this.hideCheckMarkAfterDelay();
       }, 1000);
     }
-  }.observes('modelIsSaving'),
+  }),
 
   hideCheckMarkAfterDelay() {
     Ember.run.later(this, function() {

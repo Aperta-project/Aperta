@@ -1,23 +1,23 @@
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
-  select2RemoteSource: function() {
+  select2RemoteSource: Ember.computed('select2RemoteUrl', function() {
     return {
       url: this.get('select2RemoteUrl'),
       dataType: 'json',
       quietMillis: 500,
-      data: function(term) {
+      data(term) {
         return {
           query: term
         };
       },
-      results: function(data) {
+      results(data) {
         return {
           results: data.filtered_users
         };
       }
     };
-  }.property('select2RemoteUrl'),
+  }),
 
   resultsTemplate(user) {
     /* Handle raw object or ember model */

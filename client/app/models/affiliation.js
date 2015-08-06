@@ -2,7 +2,7 @@ import Ember from 'ember';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  user: DS.belongsTo('user'),
+  user: DS.belongsTo('user', { async: false }),
 
   country: DS.attr('string'),
   department: DS.attr('string'),
@@ -13,7 +13,7 @@ export default DS.Model.extend({
   title: DS.attr('string'),
   ringgoldId: DS.attr('string'),
 
-  isCurrent: function() {
+  isCurrent: Ember.computed('endDate', function() {
     return Ember.isBlank(this.get('endDate'));
-  }.property('endDate')
+  })
 });

@@ -5,10 +5,10 @@ export default Ember.Controller.extend({
   feedbackSubmitted: false,
   isUploading: false,
 
-  setupModel: function() {
+  setupModel: Ember.on('init', function() {
     this.resetModel();
     this.set('model.screenshots', []);
-  }.on('init'),
+  }),
 
   resetModel() {
     this.set('model', this.store.createRecord('feedback'));
@@ -21,10 +21,6 @@ export default Ember.Controller.extend({
         this.set('feedbackSubmitted', true);
         this.resetModel();
       });
-    },
-
-    closeAction() {
-      this.send('closeFeedbackOverlay');
     },
 
     uploadFinished(data, filename) {

@@ -1,9 +1,12 @@
+require 'support/sidekiq_helper_methods'
+
 class ContentNotSynchronized < StandardError; end
 #
 # Page Fragment can be any element in the page.
 #
 class PageFragment
   include RSpec::Matchers
+  include SidekiqHelperMethods
 
   attr_reader :element
 
@@ -92,6 +95,30 @@ class PageFragment
     else
       overlay
     end
+  end
+
+  # wait_for_attachment_to_upload exists because feature specs run multiple
+  # threads: a thread for running tests and another for running the app for
+  # selenium, etc. Not knowing the order of execution between the threads
+  # this is for providing ample time and opportunity for an Attachment
+  # to be uploaded and created before moving on in a test.
+  def wait_for_attachment_to_upload(sentinel, seconds=10, &blk)
+    Timeout.timeout(seconds) do
+      original = sentinel.call
+      yield
+      loop do
+        break if original != sentinel.call
+        sleep 0.25
+      end
+    end
+  end
+
+  def upload_file(element_id:, file_name:, sentinel:)
+    file_path = Rails.root.join('spec', 'fixtures', file_name)
+    wait_for_attachment_to_upload(sentinel) do
+      attach_file element_id, file_path, visible: false
+    end
+    process_sidekiq_jobs
   end
 
   attr_reader :context

@@ -1,20 +1,26 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  afterModel: function(role) {
+  cardOverlayService: Ember.inject.service('card-overlay'),
+
+  model(params) {
+    return this.store.find('role', params.role_id);
+  },
+
+  afterModel(role) {
     return this.store.find('flow', { role_id: role.get('id') });
   },
 
-  setupController: function(controller, model) {
+  setupController(controller, model) {
     controller.setProperties({
       model: model,
-      commentLooks: this.store.all('commentLook'),
+      commentLooks: this.store.all('comment-look'),
       journal: this.modelFor('admin.journal'),
-      journalTaskTypes: this.store.all('journalTaskType')
+      journalTaskTypes: this.store.all('journal-task-type')
     });
   },
 
-  renderTemplate: function() {
+  renderTemplate() {
     this._super();
     this.render('flow-manager-buttons', {
       outlet: 'controlBarButtons',
@@ -24,11 +30,18 @@ export default Ember.Route.extend({
 
   actions: {
     viewCard(task) {
-      let paperId = task.get('paper.id');
-      let redirectParams = ['admin.journal.flow_manager', this.modelFor('admin.journal'), this.modelFor('admin.journal.flow_manager')];
-      this.controllerFor('application').get('overlayRedirect').pushObject(redirectParams);
-      this.controllerFor('application').set('overlayBackground', 'admin.journal.flow_manager');
-      this.transitionTo('paper.task', paperId, task.get('id'));
+      let redirectParams = [
+        'admin.journal.flow_manager',
+        this.modelFor('admin.journal'),
+        this.modelFor('admin.journal.flow_manager')
+      ];
+
+      this.get('cardOverlayService').setProperties({
+        previousRouteOptions: redirectParams,
+        overlayBackground: 'admin.journal.flow_manager'
+      });
+
+      this.transitionTo('paper.task', task.get('paper.id'), task.get('id'));
     }
   }
 });

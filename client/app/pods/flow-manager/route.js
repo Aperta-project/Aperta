@@ -1,7 +1,10 @@
 import AuthorizedRoute from 'tahi/routes/authorized';
+import Ember from 'ember';
 import RESTless from 'tahi/services/rest-less';
 
 export default AuthorizedRoute.extend({
+  cardOverlayService: Ember.inject.service('card-overlay'),
+
   beforeModel(transition) {
     if (!this.currentUser) {
       return this.handleUnauthorizedRequest(transition);
@@ -9,12 +12,12 @@ export default AuthorizedRoute.extend({
   },
 
   model() {
-    let cachedModel = this.controllerFor('application').get('cachedModel');
+    let cachedModel = this.get('cardOverlayService').get('cachedModel');
     if (cachedModel) {
-      this.controllerFor('application').set('cachedModel', null);
+      this.get('cardOverlayService').set('cachedModel', null);
       return cachedModel;
     } else {
-      return this.store.find('userFlow');
+      return this.store.find('user-flow');
     }
   },
 
@@ -25,8 +28,8 @@ export default AuthorizedRoute.extend({
   setupController(controller, model) {
     controller.setProperties({
       model: model,
-      commentLooks: this.store.all('commentLook'),
-      journalTaskType: this.store.all('journalTaskType')
+      commentLooks: this.store.all('comment-look'),
+      journalTaskType: this.store.all('journal-task-type')
     });
   },
 
@@ -40,9 +43,8 @@ export default AuthorizedRoute.extend({
         controller.set('flows', data.flows);
       });
 
-      this.render('overlays/chooseNewFlowManagerColumn', {
-        into: 'application',
-        outlet: 'overlay',
+      this.send('openOverlay', {
+        template: 'overlays/chooseNewFlowManagerColumn',
         controller: controller
       });
     },
@@ -51,12 +53,13 @@ export default AuthorizedRoute.extend({
     saveFlow(flow)   { flow.save(); },
 
     viewCard(task) {
-      let paperId = task.get('paper.id');
-      let redirectParams = ['flow_manager'];
-      this.controllerFor('application').get('overlayRedirect').pushObject(redirectParams);
-      this.controllerFor('application').set('cachedModel', this.modelFor('flow_manager'));
-      this.controllerFor('application').set('overlayBackground', 'flow_manager');
-      this.transitionTo('paper.task', paperId, task.get('id'));
+      this.get('cardOverlayService').setProperties({
+        previousRouteOptions: ['flow_manager'],
+        cachedModel: this.modelFor('flow_manager'),
+        overlayBackground: 'flow_manager'
+      });
+
+      this.transitionTo('paper.task', task.get('paper.id'), task.get('id'));
     }
   }
 });

@@ -19,14 +19,14 @@ export default Ember.Component.extend({
   journalRoleSort: ['name: asc'],
   availableTaskRoles: Ember.computed.sort('roles', 'journalRoleSort'),
 
-  formattedTaskRoles: function() {
+  formattedTaskRoles: Ember.computed('availableTaskRoles.@each', function() {
     return this.get('availableTaskRoles').map(function(taskRole) {
       return {
         id: taskRole.get('id'),
         text: taskRole.get('name')
       };
     });
-  }.property('availableTaskRoles.@each'),
+  }),
 
   actions: {
     clearRole() {

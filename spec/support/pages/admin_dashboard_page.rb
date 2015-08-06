@@ -74,6 +74,12 @@ class AdminDashboardPage < Page
     synchronize_content! "Username"
     UserRowInSearch.new(all('.admin-users .user-row').first, context: page)
   end
+
+  def attach_and_upload_cover_image(journal, file_name)
+    upload_file(element_id: "epub-cover-upload",
+                file_name: file_name,
+                sentinel: Proc.new{ journal.reload.epub_cover.blank? })
+  end
 end
 
 class UserRowInSearch < PageFragment

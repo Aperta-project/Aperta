@@ -59,17 +59,19 @@
       {{/if}}
 
       <div class="form-group">
-        {{#datepicker-group}}
-          {{date-picker type="text"
+        {{#date-picker-group as |group|}}
+          {{date-picker group=group
+                        type="text"
                         role="startPicker"
                         date=newAffiliation.startDate
                         placeholder="Start Date"}}
 
-          {{date-picker type="text"
+          {{date-picker group=group
+                        type="text"
                         role="endPicker"
                         date=newAffiliation.endDate
                         placeholder="End Date"}}
-        {{/datepicker-group}}
+        {{/date-picker-group}}
 
         {{input type="text"
                 value=newAffiliation.email

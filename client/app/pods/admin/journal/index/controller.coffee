@@ -73,6 +73,7 @@ JournalIndexController = Ember.Controller.extend ValidationErrorsMixin,
 
     destroyMMTemplate: (template) ->
       if @get('canDeleteManuscriptMangerTemplates')
+        # TODO: Ember-Data handles this now, right?
         template.destroyRecord().then =>
           @get('model.manuscriptManagerTemplates').removeObject(template)
 

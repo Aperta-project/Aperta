@@ -1,4 +1,8 @@
 import Ember from 'ember';
-import AdhocInlineEditItemMixin from 'tahi/mixins/components/adhoc-inline-edit-item';
 
-export default Ember.Component.extend(AdhocInlineEditItemMixin);
+export default Ember.Component.extend({
+  editing: false,
+  isNew: false,
+  bodyPart: null,
+  bodyPartType: Ember.computed.alias('bodyPart.type')
+});

@@ -1,7 +1,11 @@
 `import Ember from 'ember'`
-`import AdhocInlineEditItemMixin from 'tahi/mixins/components/adhoc-inline-edit-item'`
 
-InlineEditEmailComponent = Ember.Component.extend AdhocInlineEditItemMixin,
+InlineEditEmailComponent = Ember.Component.extend
+  editing: false
+  isNew: false
+  bodyPart: null
+  bodyPartType: Ember.computed.alias('bodyPart.type')
+
   isSendable: true
   showChooseReceivers: false
   mailRecipients: []
@@ -43,10 +47,14 @@ InlineEditEmailComponent = Ember.Component.extend AdhocInlineEditItemMixin,
       bodyPart = @get('bodyPart')
       bodyPart.sent = moment().format('MMMM Do YYYY')
       @set('lastSentAt', bodyPart.sent)
-      @sendAction("sendEmail", body: bodyPart.value, subject: bodyPart.subject, recipients: recipientIds)
+
+      @.attrs.sendEmail
+        body: bodyPart.value
+        subject: bodyPart.subject
+        recipients: recipientIds
+
       @set('showChooseReceivers', false)
       @setSentState()
-      @get('parentView').send('save')
 
     removeRecipient: (recipient)->
       @get('recipients').removeObject(recipient)

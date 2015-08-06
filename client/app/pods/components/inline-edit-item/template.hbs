@@ -1,0 +1,23 @@
+{{#if isTextItem}}
+  {{inline-edit-text bodyPart=attrs.item
+                     editing=attrs.editing
+                     isNew=attrs.isNew}}
+{{/if}}
+
+{{#if isCheckboxItem}}
+  {{inline-edit-checkbox bodyPart=attrs.item
+                         editing=attrs.editing
+                         isNew=attrs.isNew
+                         delete=(action "deleteItem" item)
+                         save=(action attrs.saveModel)}}
+{{/if}}
+
+{{#if isEmailItem}}
+  {{inline-edit-email bodyPart=attrs.item
+                      editing=attrs.editing
+                      allUsers=attrs.allUsers
+                      overlayParticipants=attrs.overlayParticipants
+                      isNew=attrs.isNew
+                      isSendable=isSendable
+                      sendEmail=(action attrs.sendEmail)}}
+{{/if}}

@@ -1,5 +1,5 @@
 <div class="inline-edit-body-part clearfix {{if confirmDelete "confirm-delete"}} {{if editing "editing"}} {{bodyPartType}}">
-  {{yield}}
+  {{yield editing}}
 
   <div class="view-actions">
     <span class="fa fa-pencil inline-edit-icon" {{action "toggleEdit"}}></span>

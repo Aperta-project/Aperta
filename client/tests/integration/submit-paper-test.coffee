@@ -12,11 +12,12 @@ fakeUser = null
 currentPaper = null
 
 module 'Integration: Submitting Paper',
-  teardown: ->
+  afterEach: ->
     server.restore()
+    Ember.run(-> TestHelper.teardown() )
     Ember.run(app, app.destroy)
 
-  setup: ->
+  beforeEach: ->
     app = startApp()
     server = setupMockServer()
     fakeUser = window.currentUserData.user
@@ -58,10 +59,12 @@ module 'Integration: Submitting Paper',
       200, 'Content-Type': 'application/json', JSON.stringify(dashboardResponse)
     ]
 
-test "User can submit a paper", ->
+test "User can submit a paper", (assert) ->
   visit("/papers/#{currentPaper.id}/edit")
   click(".edit-paper button:contains('Submit')")
   click("button.button-submit-paper")
 
   andThen ->
-    ok _.findWhere(server.requests, {method: "PUT", url: "/api/papers/#{currentPaper.id}/submit"}), "It posts to the server"
+    assert.ok _.findWhere(server.requests, {
+      method: "PUT", url: "/api/papers/#{currentPaper.id}/submit"
+    }), "It posts to the server"

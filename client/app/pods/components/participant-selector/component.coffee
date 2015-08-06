@@ -23,7 +23,7 @@ ParticipantSelectorComponent = Ember.Component.extend
   selectedTemplate: (user) ->
     name = (user.full_name || user.get('fullName'))
     url  = (user.avatar_url || user.get('avatarUrl'))
-    new Ember.Handlebars.SafeString "<img alt='#{name}' class='user-thumbnail-small' src='#{url}' data-toggle='tooltip' title='#{name}'/>"
+    Ember.String.htmlSafe "<img alt='#{name}' class='user-thumbnail-small' src='#{url}' data-toggle='tooltip' title='#{name}'/>"
 
   sortByCollaboration: (a, b) ->
     # sort first by if they are collaborators, then by name

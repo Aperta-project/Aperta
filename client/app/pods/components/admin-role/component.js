@@ -6,24 +6,24 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   isEditing: false,
   notEditing: Ember.computed.not('isEditing'),
 
-  setIsEditing: function() {
+  setIsEditing: Ember.on('init', function() {
     if(this.get('model.isNew')) {
       this.set('isEditing', true);
     }
-  }.on('init'),
+  }),
 
-  _animateInIfNewRole: function() {
+  _animateInIfNewRole: Ember.on('didInsertElement', function() {
     if (this.get('model.isNew')) {
       this.$().hide().fadeIn(250);
     }
-  }.on('didInsertElement'),
+  }),
 
-  focusObserver: function() {
+  focusObserver: Ember.observer('isEditing', function() {
     if (!this.get('isEditing')) { return; }
     Ember.run.schedule('afterRender', this, function() {
       this.$('input:first').focus();
     });
-  }.observes('isEditing'),
+  }),
 
   click(e) {
     if (!this.get('isEditing')) {

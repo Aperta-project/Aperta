@@ -4,7 +4,7 @@ import RESTless from 'tahi/services/rest-less';
 import Utils from 'tahi/services/utils';
 
 export default Ember.Route.extend(AnimateOverlay, {
-  setupController: function(controller, model) {
+  setupController(controller, model) {
     controller.set('model', model);
     if (this.currentUser) {
       // subscribe to user and system channels
@@ -22,14 +22,11 @@ export default Ember.Route.extend(AnimateOverlay, {
     return this.get('container').lookup("serializer:application");
   }),
 
-  cleanupAncillaryViews: function() {
+  cleanupAncillaryViews() {
     this.controllerFor('application').send('hideNavigation');
 
     this.animateOverlayOut().then(()=> {
-      this.disconnectOutlet({
-        outlet: 'overlay',
-        parentView: 'application'
-      });
+      this.controllerFor('application').set('showOverlay', false);
     });
   },
 
@@ -65,18 +62,21 @@ export default Ember.Route.extend(AnimateOverlay, {
       transition.abort();
     },
 
+    openOverlay(options) {
+      Ember.assert(
+        'You must pass a template name to `openOverlay`',
+        options.template
+      );
+      if(Ember.isEmpty(options.into))   { options.into   = 'application'; }
+      if(Ember.isEmpty(options.outlet)) { options.outlet = 'overlay'; }
+
+      this.controllerFor('application').set('showOverlay', true);
+      this.render(options.template, options);
+    },
+
     closeOverlay() {
       this.flash.clearAllMessages();
       this.cleanupAncillaryViews();
-    },
-
-    closeFeedbackOverlay() {
-      this.animateOverlayOut({selector: '#feedback-overlay'}).then(()=> {
-        this.disconnectOutlet({
-          outlet: 'feedback-overlay',
-          parentView: 'application'
-        });
-      });
     },
 
     closeAction() {
@@ -84,9 +84,10 @@ export default Ember.Route.extend(AnimateOverlay, {
     },
 
     feedback() {
-      this.render('overlays/feedback', {
-        into: 'application',
-        outlet: 'feedback-overlay',
+      this.controllerFor('overlays/feedback').set('feedbackSubmitted', false);
+
+      this.send('openOverlay', {
+        template: 'overlays/feedback',
         controller: 'overlays/feedback'
       });
     },

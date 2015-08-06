@@ -86,7 +86,7 @@ export default {
     @param {Object} event jQuery event to stop
   */
 
-  cancel: function(e) {
+  cancel(e) {
     return cancelDragEvent(e);
   },
 
@@ -105,7 +105,7 @@ export default {
       @param {Object} event jQuery event
     */
 
-    dragStart: function() { throw new Error("Implement dragStart"); }
+    dragStart() { throw new Error("Implement dragStart"); }
   }),
 
   DroppableMixin: Ember.Mixin.create({
@@ -117,9 +117,9 @@ export default {
       @param {Object} event jQuery event to stop
       @return {Boolean} false
     */
-    _dragEnter: function(e) {
+    _dragEnter: Ember.on('dragEnter', function(e) {
       return cancelDragEvent(e);
-    }.on('dragEnter'),
+    }),
 
     /**
       Prevent annoying HTML5 drag-n-drop nonsense
@@ -130,9 +130,9 @@ export default {
       @return {Boolean} false
     */
 
-    _dragOver: function(e) {
+    _dragOver: Ember.on('dragOver', function(e) {
       return cancelDragEvent(e);
-    }.on('dragOver'),
+    }),
 
     /**
       Catch drop event
@@ -148,6 +148,6 @@ export default {
       @param {Object} event jQuery
     */
 
-    drop: function() { throw new Error("Implement drop"); }
+    drop() { throw new Error("Implement drop"); }
   })
 };

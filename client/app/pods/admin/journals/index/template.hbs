@@ -5,8 +5,9 @@
     <button class="add-new-journal button-primary button--blue {{if newJournalPresent "button--disabled"}}" {{action "addNewJournal"}}>
       Add new journal
     </button>
-    <br class="clear">
   {{/if}}
+
+  <br class="clear">
 
   {{#each arrangedContent as |journal|}}
     {{journal-thumbnail model=journal canEdit=currentUser.siteAdmin}}

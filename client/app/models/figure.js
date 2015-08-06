@@ -2,7 +2,7 @@ import Ember from 'ember';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  paper: DS.belongsTo('paper'),
+  paper: DS.belongsTo('paper', { async: false }),
 
   alt: DS.attr('string'),
   caption: DS.attr('string'),
@@ -14,11 +14,6 @@ export default DS.Model.extend({
   src: DS.attr('string'),
   status: DS.attr('string'),
   title: DS.attr('string'),
-
-  updatePaperFigures: function() {
-    let paperFigures = this.get('paper.figures');
-    paperFigures.addObject(this);
-  }.on('didLoad'),
 
   isStrikingImage: false,
 

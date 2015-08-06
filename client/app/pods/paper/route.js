@@ -68,9 +68,8 @@ export default AuthorizedRoute.extend({
         allUsers: this.store.find('user')
       });
 
-      this.render('overlays/showCollaborators', {
-        into: 'application',
-        outlet: 'overlay',
+      this.send('openOverlay', {
+        template: 'overlays/showCollaborators',
         controller: controller
       });
     },
@@ -86,9 +85,8 @@ export default AuthorizedRoute.extend({
         });
       });
 
-      this.render('overlays/activity', {
-        into: 'application',
-        outlet: 'overlay',
+      this.send('openOverlay', {
+        template: 'overlays/activity',
         controller: controller
       });
     },

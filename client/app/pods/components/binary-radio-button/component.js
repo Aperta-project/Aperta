@@ -1,4 +1,5 @@
 import Ember from 'ember';
+const { computed } = Ember;
 
 export default Ember.Component.extend({
   selection: null,
@@ -8,21 +9,21 @@ export default Ember.Component.extend({
   yesLabel: 'Yes',
   noLabel: 'No',
 
-  idYes: function() {
+  idYes: computed('name', function() {
     return this.get('name') + '-yes';
-  }.property('name'),
+  }),
 
-  idNo: function() {
+  idNo: computed('name', function() {
     return this.get('name') + '-no';
-  }.property('name'),
+  }),
 
-  yesChecked: function() {
-    return this.get('yesValue') === this.get('selection');
-  }.property('selection', 'yesValue'),
+  yesChecked: computed('selection', 'yesValue', function() {
+    return Ember.isEqual(this.get('yesValue'), this.get('selection'));
+  }),
 
-  noChecked: function() {
-    return this.get('noValue') === this.get('selection');
-  }.property('selection', 'noValue'),
+  noChecked: computed('selection', 'noValue', function() {
+    return Ember.isEqual(this.get('noValue'), this.get('selection'));
+  }),
 
   actions: {
     selectYes() {

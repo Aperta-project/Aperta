@@ -5,15 +5,15 @@ export default Ember.Mixin.create({
   blocks: null,
   emailSentStates: null,
 
-  _init: function() {
+  _init: Ember.on('init', function() {
     this.set('newBlocks', []);
-  }.on('init'),
+  }),
 
-  setEmailStates: function() {
+  setEmailStates: Ember.on('init', function() {
     this.set('emailSentStates', Ember.ArrayProxy.create({
       content: []
     }));
-  }.on('init'),
+  }),
 
   isNew(block) {
     return this.get('newBlocks').contains(block);

@@ -15,9 +15,6 @@ export default TaskController.extend(FileUploadMixin, {
     uploadFinished(data, filename) {
       this.uploadFinished(data, filename);
       this.store.pushPayload('figure', data);
-
-      let figure = this.store.getById('figure', data.figure.id);
-      this.get('model.paper.figures').pushObject(figure);
     },
 
     changeStrikingImage(newValue) {
@@ -30,7 +27,6 @@ export default TaskController.extend(FileUploadMixin, {
     },
 
     destroyAttachment(attachment) {
-      this.get('model.paper.figures').removeObject(attachment);
       attachment.destroyRecord();
     }
   }

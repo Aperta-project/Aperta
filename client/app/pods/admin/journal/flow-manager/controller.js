@@ -17,27 +17,17 @@ export default Ember.Controller.extend({
     },
 
     removeFlow(flow) {
-      flow.get('role.flows').then(function(flows) {
-        flows.removeObject(flow);
-      });
-
       flow.destroyRecord();
     },
 
     addFlow() {
-      let flow = this.store.createRecord('flow', {
+      this.store.createRecord('flow', {
         title: 'Up for grabs',
         role: this.get('model'),
         position: this.newFlowPosition(),
         query: {},
         taskRoles: []
-      });
-
-      flow.save().then(function(flow) {
-        flow.get('role.flows').then(function(flows) {
-          flows.addObject(flow);
-        });
-      });
+      }).save();
     }
   }
 });

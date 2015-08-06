@@ -22,8 +22,8 @@
       <div class="columns manuscript-manager-template-columns">
         {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
         {{#each sortedPhaseTemplates as |phaseTemplate|}}
-          {{#view "manuscript-manager-column" content=phaseTemplate}}
-            {{add-column position=view.nextPosition action="addPhase"}}
+          {{#manuscript-manager-column content=phaseTemplate as |nextPosition|}}
+            {{add-column position=nextPosition action="addPhase"}}
 
             {{phase-header phase=phaseTemplate
                            savePhase="savePhase"
@@ -42,7 +42,7 @@
               {{/each}}
               <a {{action "chooseNewCardTypeOverlay" phaseTemplate}} class="button-secondary button--green">Add New Card</a>
             </div>
-          {{/view}}
+          {{/manuscript-manager-column}}
         {{/each}}
       </div>
     </div>

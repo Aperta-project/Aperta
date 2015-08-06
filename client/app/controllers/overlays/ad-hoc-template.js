@@ -9,6 +9,10 @@ export default Ember.Controller.extend(BuildsTaskTemplate, {
   actions: {
     closeAction() {
       this.send('addTaskAndClose');
-    }
+    },
+
+    // noops
+    saveModel() { },
+    sendEmail() { }
   }
 });

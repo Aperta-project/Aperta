@@ -1,9 +1,9 @@
 import Ember from 'ember';
 
 let animationEventName = function() {
-  var a;
-  var el = document.createElement('fakeelement');
-  var animations = {
+  let a;
+  let el = document.createElement('fakeelement');
+  let animations = {
     'animation': 'animationend',
     'OAnimation': 'oanimationend',
     'MSAnimation': 'msAnimationEnd',
@@ -24,7 +24,7 @@ $.fn.redraw = function() {
 };
 
 export default Ember.Mixin.create({
-  out: function(options) {
+  out(options) {
     $(options.selector).hide().attr('class', 'overlay');
 
     return {
@@ -37,6 +37,9 @@ export default Ember.Mixin.create({
   'in': function(options) {
     let animationName = animationEventName();
     let overlayElement = $(options.selector).hide();
+
+    // reset all classes on overlay
+    overlayElement.attr('class', 'overlay');
 
     if(options.extraClasses) {
       overlayElement.addClass(options.extraClasses);
@@ -60,7 +63,7 @@ export default Ember.Mixin.create({
     });
   },
 
-  animateOverlayIn: function(options={}) {
+  animateOverlayIn(options={}) {
     if (!options.selector) { options.selector = '#overlay'; }
 
     Ember.run.later(function() { $('html').addClass('overlay-open'); }, 30);
@@ -68,7 +71,7 @@ export default Ember.Mixin.create({
     return this['in'](options);
   },
 
-  animateOverlayOut: function(options={}) {
+  animateOverlayOut(options={}) {
     if (!options.selector) { options.selector = '#overlay'; }
     $('html').removeClass('overlay-open');
     return this.out(options);

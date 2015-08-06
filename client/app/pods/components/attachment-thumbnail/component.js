@@ -18,22 +18,22 @@ export default Ember.Component.extend({
   showSpinner: Ember.computed.or('isProcessing', 'isUploading'),
   attachmentType: 'attachment',
 
-  preview: function() {
+  preview: Ember.computed('previewSrc', 'showSpinner', function() {
     return this.get('attachment.previewSrc') && !this.get('showSpinner');
-  }.property('previewSrc', 'showSpinner'),
+  }),
 
-  fileIcon: function() {
+  fileIcon: Ember.computed('previewSrc', 'showSpinner', function() {
     return !this.get('attachment.previewSrc') && !this.get('showSpinner');
-  }.property('previewSrc', 'showSpinner'),
+  }),
 
-  attachmentUrl: function() {
-    var urlRoot = '/api/supporting_information_files/';
+  attachmentUrl: Ember.computed('attachment.id', 'figure', function() {
+    let urlRoot = '/api/supporting_information_files/';
     if (this.get('figure')) {
       urlRoot = '/api/figures/';
     }
 
     return urlRoot + this.get('attachment.id') + '/update_attachment';
-  }.property('attachment.id', 'figure'),
+  }),
 
   focusOnFirstInput() {
     Ember.run.schedule('afterRender', this, function() {
@@ -103,7 +103,7 @@ export default Ember.Component.extend({
     },
 
     toggleStrikingImageFromCheckbox(checkbox) {
-      var newValue = null;
+      let newValue = null;
       if (checkbox.get('checked')) {
           newValue = checkbox.get('attachment.id');
       }

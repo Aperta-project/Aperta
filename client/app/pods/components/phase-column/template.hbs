@@ -6,8 +6,8 @@
                rollbackPhase="rollbackPhase"}}
 
 <div class="column-content">
-  <div {{bind-attr class=":sortable noCards:sortable-no-cards"}} data-phase-id="{{unbound phase.id}}">
-    {{#each task in sortedTasks}}
+  <div class="sortable {{if noCards "sortable-no-cards"}}" data-phase-id="{{unbound phase.id}}">
+    {{#each sortedTasks as |task|}}
       {{card-preview paper=paper
                      task=task
                      canRemoveCard=true

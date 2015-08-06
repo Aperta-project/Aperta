@@ -1,19 +1,19 @@
 import Ember from 'ember';
 import PaperEditMixin from 'tahi/mixins/views/paper-edit';
 
-var View = Ember.View.extend(PaperEditMixin, {
+export default Ember.View.extend(PaperEditMixin, {
 
   editor: null,
 
   // Note: this is done because we instantiate the editor component
   // via template. To be able to access the component from within
   // the controller, here we pass it through.
-  propagateEditor: function() {
+  propagateEditor: Ember.observer('editor', function() {
     this.set('controller.editor', this.get('editor'));
-  }.observes('editor'),
+  }),
 
-  initializeEditingState: function() {
-    var controller = this.get('controller');
+  initializeEditingState: Ember.on('didInsertElement', function() {
+    let controller = this.get('controller');
     // When the paper is not locked we take a click
     // on the paper body to acquire the lock
     this.$('.paper-body').on('click', (e)=>{
@@ -23,23 +23,23 @@ var View = Ember.View.extend(PaperEditMixin, {
         controller.acquireLock();
       }
     });
-  }.on('didInsertElement'),
+  }),
 
-  destroyEditor: function() {
+  destroyEditor: Ember.on('willDestroyElement', function() {
     Ember.$(document).off('keyup.autoSave');
-    var controller = this.get('controller');
+    let controller = this.get('controller');
     // Unlock the paper when leaving
     if (controller.get('lockedByCurrentUser')) {
       controller.releaseLock();
     }
-  }.on('willDestroyElement'),
+  }),
 
   // Note: this must be here as it is used by mixins/views/paper-edit
-  saveEditorChanges: function() {
+  saveEditorChanges() {
     this.get('controller').savePaper();
   },
 
-  timeoutSave: function() {
+  timeoutSave() {
     if (Ember.testing) {
       return;
     }
@@ -53,7 +53,5 @@ var View = Ember.View.extend(PaperEditMixin, {
 
   short: null,
   long: null,
-  keyCount: 0,
+  keyCount: 0
 });
-
-export default View;

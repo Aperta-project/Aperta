@@ -7,7 +7,7 @@
 <div class={{wrapperClass}}>
   {{binary-radio-button name=ident
                         selection=model.answer
-                        yesValue="Yes"
+                        yesValue=yesValue
                         noValue=noValue
                         yesLabel=yesLabel
                         noLabel=noLabel
@@ -16,7 +16,7 @@
 
   {{#if template}}
     <div class="additional-data">
-      {{yield}}
+      {{yield selectedYield}}
     </div>
   {{/if}}
 </div>

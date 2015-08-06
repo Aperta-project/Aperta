@@ -9,6 +9,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ### Changed
 - Added ability to view old versions of manuscripts.
+- Upgraded to Ember 1.13 [Aperta Transition Guide](https://github.com/Tahi-project/tahi/wiki/Aperta-Ember-1.13-Transition-Guide)
 
 ### Deprecated
 -
@@ -17,8 +18,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Fixed
-- Decreased memory consumption on `admin/journal` by decreasing amount of serialized data
-- Update all Devise error messages to Aperta's basic alert-warning styles (red)
+- No longer perform unfiltered searches in Flow Manager
 
 ### Security
 -

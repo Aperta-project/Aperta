@@ -2,117 +2,39 @@ import Ember from 'ember';
 import RESTless from 'tahi/services/rest-less';
 
 export default Ember.Component.extend({
-  nowViewingText: null,
-  compareToText: null,
+  reset() {
+    // Resets page to viewing a single version
+    this.comparisonText = null;
+    this.set('paper.comparisonText', null);
+    this.set('compareToVersion', null);
+  },
 
-  getCompareToText() {
-    let version = this.get('compareToVersion');
+  getComparisonText() {
+    // Fetches version of the text to compare with the version we're viewing
+    let version = this.get('comparisonVersion');
     if (version) {
       RESTless.get('/api/versioned_texts/' + version.id).then((response) => {
-        this.compareToText = response['versioned_text']['text'];
-        this.set('paper.compareToText', this.compareToText);
-        var that = this;
-        setTimeout( function() { that.setCurrentVersionBody(); }, 1000);
+        this.set('paper.comparisonText', response['versioned_text']['text']);
       });
     } else {
-      this.compareToText = null;
-      this.set('paper.diff', null);
-      this.set('paper.compareToText', null);
-      this.setCurrentVersionBody();
+      this.reset();
     }
   },
 
-  getNowViewingVersion() {
-    let version = this.get('nowViewingVersion');
+  getViewingText() {
+    // Fetches a version of the text to view
+    let version = this.get('viewingVersion');
 
     if (version) {
       RESTless.get('/api/versioned_texts/' + version.id).then((response) => {
-        this.nowViewingText = response['versioned_text']['text'];
-        this.set('paper.nowViewingText', this.nowViewingText);
-        this.setCurrentVersionBody();
+        this.set('paper.viewingText', response['versioned_text']['text']);
       });
     }
-  },
-
-  setCurrentVersionBody: function() {
-    if (this.compareToText === null) {
-      this.set('paper.currentVersionBody', this.nowViewingText);
-      this.set('paper.nowViewingText', this.nowViewingText);
-    }
-    else {
-      let compareToText = $("#paper-version-2");
-      let nowViewingText = $("#paper-version-1");
-      let diff = this.Differ.diff(compareToText, nowViewingText);
-      this.set('paper.diff', diff);
-    }
-
-    setTimeout(this.updateMath, 500);
-  },
-
-  updateMath: function() {
-    console.log("Updating Equations");
-    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
   },
 
   setupObserver: function() {
-    this.addObserver('nowViewingVersion', this, 'getNowViewingVersion');
-    this.addObserver('compareToVersion', this, 'getCompareToText');
-  }.on('didInsertElement'),
-
-  getTags: function(element) {
-    if (this.isTextNode(element)) {
-      return ['',''];
-    }
-
-    let tagName = element.nodeName.toLowerCase();
-    let regex = new RegExp('<\/' + tagName + '>', 'i');
-    let startTag = $(element).clone().empty().prop("outerHTML").replace(regex,'');
-    let endTag = '</' + tagName + '>';
-    return [startTag, endTag];
-  },
-
-  shouldExplode: function(element) {
-    if (element.nodeName && !this.isTextNode(element)) {
-      return $.inArray(element.nodeName.toLowerCase(), ["p"]) >= 0;
-    }
-    return false;
-  },
-
-  isTextNode: function(element) {
-    return element.nodeType === 3;
-  },
-
-  explodeElement: function(element) {
-    var that = this;
-    let elementMap = $(element).contents().map( function(i, element) {
-      if (that.isTextNode(element)) {
-        return element.textContent.split(/(\S.+?[.!?])/);
-      } else {
-        return element.outerHTML;
-      }
-    }).get();
-    let tags = that.getTags(element);
-    elementMap.unshift(tags[0]);
-    elementMap.push(tags[1]);
-    return elementMap;
-  },
-
-  setupDiffer: function() {
-    this.Differ = new JsDiff.Diff();
-    var that = this;
-    this.Differ.tokenize = function(value) {
-      var ourMap = value.contents().map( function(i, element) {
-        if (that.shouldExplode(element)) {
-          return that.explodeElement(element);
-        }
-        else if (that.isTextNode(element)) {
-          return element.textContent.split(/(\S.+?[.!?])/);
-        } else {
-          return element.outerHTML;
-        }
-      }).get();
-      return _.flatten(ourMap);
-    };
+    this.addObserver('viewingVersion', this, 'getViewingText');
+    this.addObserver('comparisonVersion', this, 'getComparisonText');
   }.on('didInsertElement'),
 
   versioningModeTransition: Ember.computed.or(
@@ -123,8 +45,7 @@ export default Ember.Component.extend({
   actions: {
     openVersioningMode() {
       this.set('transitioning', true);
-      this.getNowViewingVersion();
-      this.getCompareToText();
+      this.reset();
 
       Ember.run.later(()=>{
         this.set('versioningMode', true);

@@ -11,8 +11,6 @@
   {{partial "paper/sidebar"}}
 
   {{#if versioningMode}}
-    <div id="paper-version-1" style="display: none; border: 5px solid green">{{{model.nowViewingText}}}</div>
-    <div id="paper-version-2" style="display: none; border: 5px solid red">{{{model.compareToText}}}</div>
     <div class="manuscript-container not-ve">
       <main>
       {{flash-messages classNames="flash-messages-paper-editor"}}
@@ -20,18 +18,11 @@
       <div id="paper-title" class="manuscript-title-and-placeholder">
         <h2 id="paper-title">{{{model.title}}}</h2>
       </div>
-
-      {{#if model.diff}}
-
         <div id="paper-body">
-          {{#each model.diff}}
-            <div {{bind-attr class=":diff-chunk added:added removed:removed"}}>{{{value}}}</div>
-          {{/each}}
+          {{html-diff
+            comparisonText=model.comparisonText
+            viewingText=model.viewingText}}
         </div>
-      {{else}}
-        <div id="paper-body">{{{model.versionedBody}}}</div>
-      {{/if}}
-
       </article>
       </main>
     </div>

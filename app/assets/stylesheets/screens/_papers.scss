@@ -106,35 +106,6 @@ html.control-bar-sub-nav-active #paper-container {
 	    border-collapse: collapse;
 	    cursor: default;
     }
-
-
-    .diff-chunk {
-      display: inline;
-
-      &.added, &.removed {
-        figure {
-          padding: 15px;
-        }
-
-        td, th {
-	        border: 1px dotted #333;
-        }
-      }
-
-      &.added >* {
-        background-color: $tahi-green-light;
-        th {
-          background: darken($tahi-green-light, 5%);
-        }
-      }
-
-      &.removed >* {
-        background-color: $tahi-light-red;
-        th {
-          background: darken($tahi-light-red, 5%);
-        }
-      }
-    }
   }
 }
 

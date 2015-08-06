@@ -87,13 +87,9 @@ export default DS.Model.extend({
             this.get('allSubmissionTasksCompleted'));
   }),
 
-<<<<<<< HEAD
-  postSubmission: computed.not('submittableState')
-=======
-  postSubmission: Ember.computed.not('submittableState'),
+  postSubmission: computed.not('submittableState'),
 
-  versionedBody: function() {
+  versionedBody: computed('currentVersionBody', 'body', function() {
     return this.get('currentVersionBody') || this.get('body');
-  }.property('currentVersionBody', 'body')
->>>>>>> Versioning toolbar component.
+  })
 });

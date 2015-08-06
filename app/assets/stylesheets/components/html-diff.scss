@@ -1,0 +1,27 @@
+.html-diff {
+  figure.added, figure.removed {
+    padding: 15px;
+  }
+
+  .added, .removed {
+    td, th {
+	    border: 1px dotted #333;
+    }
+  }
+
+  .added {
+    background-color: rgba($tahi-green-light, .5);
+    th {
+      background: darken($tahi-green-light, 5%);
+    }
+  }
+
+  .removed {
+    opacity: .8;
+    background-color: rgba($tahi-light-red, .5);
+    text-decoration: strikethrough;
+    th {
+      background: darken($tahi-light-red, 5%);
+    }
+  }
+}

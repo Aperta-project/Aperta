@@ -40,6 +40,7 @@ class ApertaDashboardTest(FrontEndTest):
 
     dashboard_page = DashboardPage(self.getDriver())
     dashboard_page.validate_initial_page_elements_styles()
+    dashboard_page.validate_dynamic_content(user_type)
 
     # The dashboard navigation elements will change based on a users permissions
     # Author gets Close, Title, Profile Link with Image, Dashboard Link, Signout Link, separator, Feedback Link

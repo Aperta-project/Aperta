@@ -46,11 +46,11 @@ sa_login = 'jgray'            # super admin login
 
 
 # Define connector information for Aperta's Tahi component postgres instance
-psql_hname = ('APERTA_PSQL_HOST', '')
-psql_port = ('APERTA_PSQL_PORT', '')
-psql_uname = ('APERTA_PSQL_USER', '')
-psql_pw = ('APERTA_PSQL_PW', '')
-psql_db = ('APERTA_PSQL_DBNAME', '')
+psql_hname =getenv('APERTA_PSQL_HOST', 'ec2-54-163-228-35.compute-1.amazonaws.com')
+psql_port = getenv('APERTA_PSQL_PORT', '5652')
+psql_uname = getenv('APERTA_PSQL_USER', 'u6over81t87q49')
+psql_pw = getenv('APERTA_PSQL_PW', 'pch646pphdfqog9v38otlchvvpn')
+psql_db = getenv('APERTA_PSQL_DBNAME', 'd1kdmn5r5e9aj5')
 
 
 

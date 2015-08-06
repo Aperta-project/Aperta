@@ -3,6 +3,9 @@
 from selenium.webdriver.common.by import By
 from authenticated_page import AuthenticatedPage
 import time
+from Base.PostgreSQL import PgSQL
+# import psycopg2
+# from Base.Resources import psql_hname, psql_port, psql_uname, psql_pw, psql_db
 
 __author__ = 'jgray@plos.org'
 
@@ -31,7 +34,8 @@ class DashboardPage(AuthenticatedPage):
     self._dashboard_title = (By.CSS_SELECTOR, 'h2.welcome-message')
     self._dashboard_create_new_submission_btn = (By.CSS_SELECTOR, 'button.button-primary.button--green')
     self._dashboard_paper_title = (By.CSS_SELECTOR, 'li.dashboard-paper-title a')
-    self._dashboard_info_text = B=(By.CLASS_NAME, 'dashboard-info-text')
+    self._dashboard_paper_icon = (By.CLASS_NAME, 'manuscript-icon')
+    self._dashboard_info_text = (By.CLASS_NAME, 'dashboard-info-text')
 
     self._click_view_invitations_button = (By.XPATH, './/div[2]/div[5]/section[1]/button')
     self._click_yes_to_invitations_button = (By.XPATH, './/div[3]/div/div/ul/li/button[1]')
@@ -42,15 +46,6 @@ class DashboardPage(AuthenticatedPage):
 
   #POM Actions
   def validate_initial_page_elements_styles(self):
-    papers = []
-    welcome_msg = self._get(self._dashboard_title)
-    # TODO: When we get the ability to log into the DB, we need to validate the text of this welcome_msg
-    print(welcome_msg).text
-    assert 'helvetica' in welcome_msg.value_of_css_property('font-family')
-    assert welcome_msg.value_of_css_property('font-size') == '48px'
-    assert welcome_msg.value_of_css_property('font-weight') == '500'
-    assert welcome_msg.value_of_css_property('line-height') == '52.8px'
-    assert welcome_msg.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
     cns_btn = self._get(self._dashboard_create_new_submission_btn)
     assert cns_btn.text.lower() == 'create new submission'
     assert 'helvetica' in cns_btn.value_of_css_property('font-family')
@@ -60,14 +55,47 @@ class DashboardPage(AuthenticatedPage):
     assert cns_btn.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
     assert cns_btn.value_of_css_property('text-align') == 'center'
     assert cns_btn.value_of_css_property('text-transform') == 'uppercase'
+
+  def validate_dynamic_content(self, username):
+    papers = []
+    welcome_msg = self._get(self._dashboard_title)
+    # Get first name for validation of dashboard welcome message
+    first_name = PgSQL().query('SELECT first_name FROM users WHERE username = \'' + username + '\';')[0][0]
+    uid = PgSQL().query('SELECT id FROM users WHERE username = \'' + username + '\';')[0][0]
+    # # Get count of distinct papers from paper_roles for validating count of manuscripts on dashboard welcome message
+    manuscript_count = PgSQL().query('SELECT count(distinct paper_id) FROM paper_roles where user_id = \'' + str(uid)
+                                     + '\';')[0][0]
+    # # Put together a list of papers for user for validating tooltip role display and paper titles on dashboard
+    paper_tuples = PgSQL().query('SELECT distinct paper_id FROM paper_roles WHERE user_id = \'' + str(uid) + '\' ORDER BY paper_id DESC;')
+    db_papers = []
+    for tuple in paper_tuples:
+      db_papers.append(tuple[0])
+    print(db_papers)
+    if manuscript_count > 1:
+      assert 'Hi, ' + first_name + '. You have ' + str(manuscript_count) + ' manuscripts.' in welcome_msg.text, \
+        welcome_msg.text
+    elif manuscript_count == 1:
+      assert 'Hi, ' + first_name + '. You have ' + str(manuscript_count) + ' manuscript.' in welcome_msg.text, \
+        welcome_msg.text
+    else:
+      assert 'Hi, ' + first_name + '. You have no manuscripts.' in welcome_msg.text, welcome_msg.text
+    assert 'helvetica' in welcome_msg.value_of_css_property('font-family')
+    assert welcome_msg.value_of_css_property('font-size') == '48px'
+    assert welcome_msg.value_of_css_property('font-weight') == '500'
+    assert welcome_msg.value_of_css_property('line-height') == '52.8px'
+    assert welcome_msg.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
     # TODO: When we get the ability to log into the DB, we need to validate the display of the relevant papers and the
     # TODO:   roles the user has wrt those papers.
-    self.set_timeout(1)
-    try:
+    if manuscript_count > 0:
       papers = self._gets(self._dashboard_paper_title)
-    except:
-      print('No papers present on user dashboard')
-      self.restore_timeout()
+      count = 0
+      for paper in papers:
+          print(str(db_papers[count]))
+          short_title = PgSQL().query('SELECT short_title FROM papers WHERE id =\'' + str(db_papers[count]) + '\';')[0][0]
+          print short_title
+          count = count + 1
+          print(paper.text)
+          assert short_title == paper.text, 'DB: ' + short_title + ' is not equal to ' + paper.text + ', from page.'
     if papers:
       for paper in papers:
         self._actions.move_to_element(welcome_msg).perform()
@@ -92,8 +120,6 @@ class DashboardPage(AuthenticatedPage):
       assert info_text.value_of_css_property('font-style') == 'italic'
       assert info_text.value_of_css_property('line-height') == '24px'
       assert info_text.value_of_css_property('color') == 'rgba(128, 128, 128, 1)'
-
-
 
   def click_create_new_submision_button(self):
     """Click Create new submission button"""

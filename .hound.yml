@@ -6,6 +6,6 @@ coffeescript:
   config_file: coffeelint.json
 javascript:
   enabled: true
-  config_file: .javascript-style.json
+  config_file: client/.jshintrc
 scss:
   enabled: false

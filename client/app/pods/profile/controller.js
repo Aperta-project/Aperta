@@ -48,10 +48,8 @@ export default Ember.Controller.extend(FileUploadMixin, ValidationErrorsMixin, {
       affiliation.set('user', this.get('model'));
       this.clearAllValidationErrors();
 
-      affiliation.save().then((a) => {
+      affiliation.save().then(() => {
         this.send('hideNewAffiliationForm');
-        // TODO: Remove when Ember-Data handles relationships
-        a.get('user.affiliations').addObject(a);
       }, (response) => {
         affiliation.set('user', null);
         this.displayValidationErrorsFromResponse(response);

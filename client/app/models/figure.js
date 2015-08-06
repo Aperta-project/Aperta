@@ -15,11 +15,6 @@ export default DS.Model.extend({
   status: DS.attr('string'),
   title: DS.attr('string'),
 
-  updatePaperFigures: function() {
-    let paperFigures = this.get('paper.figures');
-    paperFigures.addObject(this);
-  }.on('didLoad'),
-
   isStrikingImage: false,
 
   strikingImageDidChange: function() {

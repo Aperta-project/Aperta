@@ -6,7 +6,7 @@ module Rails; end
 describe EmberAddonsInstaller do
   describe "#add_addons_from_gems" do
 
-    context "when the file is empty" do
+    context "when the package.json file is empty" do
       let(:package_file_path) { File.expand_path '../../fixtures/client/package_empty.json', __FILE__ }
       let!(:before_file_contents) { JSON.load File.open(package_file_path) }
 
@@ -28,7 +28,7 @@ describe EmberAddonsInstaller do
       end
     end
 
-    context "when the file is not empty" do
+    context "when the package.json file is not empty" do
       let(:package_file_path) { File.expand_path '../../fixtures/client/package_with_tahi_gems.json', __FILE__ }
       let!(:before_file_contents) { JSON.load File.open(package_file_path) }
 

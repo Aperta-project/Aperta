@@ -1,28 +1,14 @@
-<div id="versioning-bar" {{bind-attr class="versioningMode:versioning-mode-open:versioning-mode-closed"}}>
-  <div {{bind-attr class=":versioning-bar-limit versioningModeTransition:versioning-mode-open:versioning-mode-closed"}}>
-    <div class="versioning-bar-background">
-      {{#if versioningModeTransition}}
-        {{#if togglable}}
-          <a class="versioning-mode-button bar-item" {{action "closeVersioningMode"}}>
-            Exit Versions
-            <div class="fa fa-large fa-chevron-circle-right"></div>
-          </a>
-        {{/if}}
-        <div class="bar-item">
-          Now viewing:
-          {{view "select"
-            name="view_version"
-            content=paper.versions
-            optionValuePath="content.id"
-            optionLabelPath="content.name"
-            selection=selectedVersion}}
-        </div>
-      {{else}}
-        <a class="versioning-mode-button" {{action "openVersioningMode"}}>
-          <div class="fa fa-large fa-chevron-circle-left"></div>
-          View Versions
-        </a>
-      {{/if}}
-    </div>
+<div id="versioning-bar">
+</div>
+
+<div id="versioning-bar2">
+  <div class="bar-item2">
+    Now viewing:
+    {{view "select"
+      name="view_version"
+      content=paper.versions
+      optionValuePath="content.id"
+      optionLabelPath="content.name"
+      selection=selectedVersion}}
   </div>
 </div>

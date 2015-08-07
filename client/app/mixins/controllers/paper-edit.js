@@ -29,7 +29,13 @@ export default Ember.Mixin.create({
     }
   }),
 
-  isEditing: computed.alias('lockedByCurrentUser'),
+  isEditable: computed('model.lockedBy', 'model.versioningMode', function() {
+    if (this.get('model.versioningMode')){
+      return false
+    } else {
+      return this.get('lockedByCurrentUser')
+    }
+  }),
 
   cannotEdit: computed('model.status', 'lockedByCurrentUser', function() {
     return this.get('model.status') === 'processing' || !this.get('lockedByCurrentUser');

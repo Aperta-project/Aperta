@@ -11,7 +11,7 @@
     </ul>
     <ul>
       <li class="control-bar-item">
-        <div class="control-bar-link versions-link __with-icon" {{action "showSubNav" "versions" target="view"}}>
+        <div class="control-bar-link versions-link __with-icon" {{action "toggleVersioningMode" "versions" target="view"}}>
           <div class="control-bar-link-icon"><i class="fa fa-files-o"></i></div>
           <div class="control-bar-link-text">
             <span class="control-bar-toggle {{if view.versionsVisible "control-bar-toggle--active"}}">{{partial "svg/plus"}}</span>

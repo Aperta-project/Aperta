@@ -4,40 +4,38 @@
 
   {{partial "paper/sidebar"}}
 
-  <div class="manuscript-container">
+  <div class="manuscript-container {{if model.versioningMode 'not-ve'}}">
     <main>
       {{flash-messages classNames="flash-messages-paper-editor"}}
-      <article class="manuscript {{if isEditing "editing" "read-only"}}">
-
+      <article class="manuscript {{if isEditable "editing" "read-only"}}">
         <div class="manuscript-title-and-placeholder">
-          {{content-editable tagName="h2"
-                             id="paper-title"
-                             placeholder="Type your manuscript title here"
-                             value=model.title
-                             preventEnterKey="true"}}
-
-          {{#if showPlaceholder}}
-            <div id="paper-placeholder" {{action "tryHidingPlaceholder"}}>Type your manuscript here</div>
+          {{#if model.versioningMode}}
+            <h2 id="paper-title">{{{model.title}}}</h2>
+          {{else}}
+            {{content-editable tagName="h2"
+                               id="paper-title"
+                               placeholder="Type your manuscript title here"
+                               value=model.title
+                               preventEnterKey="true"}}
+            {{#if showPlaceholder}}
+              <div id="paper-placeholder" {{action "tryHidingPlaceholder"}}>Type your manuscript here</div>
+            {{/if}}
           {{/if}}
         </div>
 
-        {{#if noTasks}}
-          <div class="btn-group pull-right">
-            <button {{action "submit" target="view"}} class="no-sidebar-submit-manuscript button-primary {{if model.allSubmissionTasksCompleted "button--green" "button--disabled"}}">
-              Submit Manuscript
-            </button>
-          </div>
-        {{/if}}
-
         <div id="paper-body">
-          {{component editorComponent
-              viewName='editor'
-              paper=model
-              isSaving=isSaving
-              savedAt=savedAt
-              statusMessage=statusMessage
-              currentUser=currentUser
-          }}
+          {{#if model.versioningMode}}
+            <div id="paper-body">{{{model.versionedBody}}}</div>
+          {{else}}
+            {{component editorComponent
+                viewName='editor'
+                paper=model
+                isSaving=isSaving
+                savedAt=savedAt
+                statusMessage=statusMessage
+                currentUser=currentUser
+            }}
+          {{/if}}
         </div>
       </article>
     </main>

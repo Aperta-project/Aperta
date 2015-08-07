@@ -11,6 +11,7 @@ export default Ember.Mixin.create(RedirectsIfEditable, {
   subNavVisible: false,
   downloadsVisible: false,
   contributorsVisible: false,
+  versionsVisible: false,
 
   setBackgroundColor: on('didInsertElement', function() {
     $('html').addClass('matte');
@@ -73,6 +74,11 @@ export default Ember.Mixin.create(RedirectsIfEditable, {
     showDownloads() {
       this.set('contributorsVisible', false);
       this.set('downloadsVisible', true);
+    },
+
+    toggleVersioningMode() {
+      this.set('controller.model.versioningMode', true)
+      this.send('showSubNav', 'version');
     }
   }
 });

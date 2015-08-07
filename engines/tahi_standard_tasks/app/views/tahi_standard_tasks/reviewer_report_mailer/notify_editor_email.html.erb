@@ -1,6 +1,6 @@
 <div class='container'>
   <div class='greeting'>
-    A review of '<%= @paper.display_title %>' has been completed
+    A review of "<%= @paper.display_title %>" has been completed
   </div>
   <hr>
   <div class='paper-info'>
@@ -17,7 +17,7 @@
       Hello <%= @recipient.full_name %>,
     </p>
     <p class='message'>
-      A review of "<%= @paper.display_title %>" has been completed by <%=%>.
+      A review of "<%= @paper.display_title %>" has been completed.
       Visit this link to view the Reviewer Report in <%= app_name %>:
       <%= link_to client_paper_task_url(@paper, @task), client_paper_task_url(@paper, @task) %>
     </p>

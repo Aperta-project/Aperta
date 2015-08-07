@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import DS from 'ember-data';
 
 export default DS.Store.extend({
@@ -29,7 +28,7 @@ export default DS.Store.extend({
   },
 
   allTaskClasses() {
-    return Ember.keys(this.typeMaps).reduce((memo, key) => {
+    return Object.keys(this.typeMaps).reduce((memo, key) => {
       let typeMap = this.typeMaps[key];
 
       if (typeMap.type.toString().match(/:.*task:/)) {

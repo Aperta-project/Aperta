@@ -1,4 +1,4 @@
-#! /usr/bin/env python2
+#!/usr/bin/env python2
 
 from selenium.webdriver.common.by import By
 from authenticated_page import AuthenticatedPage

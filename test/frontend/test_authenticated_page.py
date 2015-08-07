@@ -12,15 +12,15 @@ from Pages.login_page import LoginPage
 from Pages.authenticated_page import AuthenticatedPage
 from Base.Resources import login_valid_pw, au_login, rv_login, fm_login, ae_login, he_login, sa_login, oa_login
 import random
-import time
 
-users = [ au_login, rv_login, fm_login, ae_login, he_login, sa_login, oa_login ]
+users = [au_login, rv_login, fm_login, ae_login, he_login, sa_login, oa_login]
 
-pages = [ '/',
-           '/flow_manager',
-           '/paper_tracker',
-           '/admin',
-        ]
+pages = ['/',
+         '/flow_manager',
+         '/paper_tracker',
+         '/admin',
+         ]
+
 
 @MultiBrowserFixture
 class ApertaAuthPageTest(FrontEndTest):

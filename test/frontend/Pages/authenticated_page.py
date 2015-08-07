@@ -1,10 +1,10 @@
-#! /usr/bin/env python2
+#!/usr/bin/env python2
 
 from selenium.webdriver.common.by import By
 from Base.PlosPage import PlosPage
-import random
 
 __author__ = 'jgray@plos.org'
+
 
 class AuthenticatedPage(PlosPage):
   """
@@ -28,13 +28,13 @@ class AuthenticatedPage(PlosPage):
     self._nav_signout_link = (By.CSS_SELECTOR, 'div.navigation > a')
     self._nav_feedback_link = (By.CLASS_NAME, 'navigation-item-feedback')
 
-  #POM Actions
+  # POM Actions
   def click_left_nav(self):
     """Click left navigation"""
     self._get(self._nav_toggle).click()
 
   def validate_nav_elements(self, permissions):
-    elevated = [ 'jgray_flowmgr', 'jgray' ]
+    elevated = ['jgray_flowmgr', 'jgray']
     self._get(self._nav_close)
     self._get(self._nav_title)
     self._get(self._nav_profile_link)
@@ -47,7 +47,7 @@ class AuthenticatedPage(PlosPage):
       self._get(self._nav_flowmgr_link)
       self._get(self._nav_paper_tracker_link)
     # Must have admin or superadmin
-    if permissions == ( 'jgray_oa', 'jgray' ):
+    if permissions == ('jgray_oa', 'jgray'):
       self._get(self._nav_admin_link)
 
   def click_sign_out_link(self):

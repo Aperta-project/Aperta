@@ -27,10 +27,7 @@ export default Ember.Controller.extend({
 
   actions: {
     changePhaseForTask(task, targetPhaseId) {
-      // TODO: deprecated:
-      this.beginPropertyChanges();
       this.store.getById('phase', targetPhaseId).get('tasks').addObject(task);
-      this.endPropertyChanges();
     },
 
     addPhase(position) {

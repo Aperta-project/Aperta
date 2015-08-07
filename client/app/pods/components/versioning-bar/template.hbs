@@ -1,14 +1,14 @@
-<div id="versioning-toolbar" {{bind-attr class="versioningMode:versioning-mode-open:versioning-mode-closed"}}>
-  <div {{bind-attr class=":versioning-toolbar-limit versioningModeTransition:versioning-mode-open:versioning-mode-closed"}}>
-    <div class="versioning-toolbar-background">
+<div id="versioning-bar" {{bind-attr class="versioningMode:versioning-mode-open:versioning-mode-closed"}}>
+  <div {{bind-attr class=":versioning-bar-limit versioningModeTransition:versioning-mode-open:versioning-mode-closed"}}>
+    <div class="versioning-bar-background">
       {{#if versioningModeTransition}}
         {{#if togglable}}
-          <a class="versioning-mode-button toolbar-item" {{action "closeVersioningMode"}}>
+          <a class="versioning-mode-button bar-item" {{action "closeVersioningMode"}}>
             Exit Versions
             <div class="fa fa-large fa-chevron-circle-right"></div>
           </a>
         {{/if}}
-        <div class="toolbar-item">
+        <div class="bar-item">
           Now viewing:
           {{view "select"
             name="view_version"

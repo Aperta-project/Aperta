@@ -52,7 +52,8 @@ export default TaskController.extend(BuildsTaskTemplate, FileUploadMixin, {
       this.uploadFinished(data, filename);
       this.store.pushPayload('attachment', data);
 
-      let attachment = this.store.getById('attachment', data.attachment.id);
+      // TODO: ember-data handles relationships now
+      let attachment = this.store.peekRecord('attachment', data.attachment.id);
       this.get('model.attachments').pushObject(attachment);
     }
   }

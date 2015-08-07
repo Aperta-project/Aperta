@@ -131,7 +131,7 @@ GEM
     bourbon (4.2.3)
       sass (~> 3.4)
       thor
-    bugsnag (2.8.11)
+    bugsnag (2.8.12)
       json (~> 1.7, >= 1.7.7)
     builder (3.2.2)
     bullet (4.14.7)

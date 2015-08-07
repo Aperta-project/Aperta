@@ -14,7 +14,7 @@ module TahiStandardTasks
       @paper = @task.paper
 
       mail(to: @recipient.email,
-           subject: "A review has been completed for the manuscript, \"#{@paper.display_title}\"")
+           subject: "Reviewer has completed the review on #{app_name}")
     end
   end
 end

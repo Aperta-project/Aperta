@@ -9,8 +9,11 @@ class SupportingInformationOverlay < CardOverlay
     session.execute_script "$('#file_attachment').css('position', 'absolute')"
   end
 
+  def publishable_checkbox
+    find(".publishable")
+  end
+
   def upload_files
     click_button "Upload File"
   end
 end
-

@@ -2,6 +2,8 @@ require 'rails_helper'
 
 describe TahiStandardTasks::ReviewerReportMailer do
   describe ".notify_editor_email" do
+    let(:app_name) { 'TEST-APP-NAME' }
+
     let(:paper) {
       FactoryGirl.create(:paper,
                          title: "Studies on the effects of saying Abracadabra",
@@ -32,12 +34,15 @@ describe TahiStandardTasks::ReviewerReportMailer do
 
       phase = Phase.create paper: paper
       task.update phase: phase
+
+      allow_any_instance_of(MailerHelper).to receive(:app_name).and_return app_name
+      allow_any_instance_of(TemplateHelper).to receive(:app_name).and_return app_name
     end
 
     let(:email) { described_class.notify_editor_email(task_id: task.id, recipient_id: editor.id) }
 
     it "has correct subject line" do
-      expect(email.subject).to eq "A review has been completed for the manuscript, \"#{paper.display_title}\""
+      expect(email.subject).to eq "Reviewer has completed the review on #{app_name}"
     end
 
     it "sends to paper's editors" do

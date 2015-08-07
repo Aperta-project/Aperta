@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150730165645) do
+ActiveRecord::Schema.define(version: 20150805225422) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -380,7 +380,8 @@ ActiveRecord::Schema.define(version: 20150730165645) do
     t.string   "attachment", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "status",     limit: 255, default: "processing"
+    t.string   "status",     default: "processing"
+    t.boolean  "publishable", default: true
   end
 
   add_index "supporting_information_files", ["paper_id"], name: "index_supporting_information_files_on_paper_id", using: :btree

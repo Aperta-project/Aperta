@@ -101,15 +101,14 @@ class DashboardPage(AuthenticatedPage):
   def validate_manu_dynamic_content(self, username):
     welcome_msg = self._get(self._dashboard_my_subs_title)
     # Get first name for validation of dashboard welcome message
-    first_name = PgSQL().query('SELECT first_name FROM users WHERE username = \'' + username + '\';')[0][0]
-    uid = PgSQL().query('SELECT id FROM users WHERE username = \'' + username + '\';')[0][0]
+    first_name = PgSQL().query('SELECT first_name FROM users WHERE username = %s;', (username,))[0][0]
+    uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
     # # Get count of distinct papers from paper_roles for validating count of manuscripts on dashboard welcome message
-    manuscript_count = PgSQL().query('SELECT count(distinct paper_id) FROM paper_roles WHERE user_id = \'' + str(uid)
-                                     + '\';')[0][0]
+    manuscript_count = PgSQL().query('SELECT count(distinct paper_id) FROM paper_roles WHERE user_id=%s;', (uid,))[0][0]
     # # Put together a list of papers for user for validating tooltip role display and paper titles on dashboard
     paper_tuples = PgSQL().query('SELECT distinct paper_id FROM paper_roles '
-                                 'WHERE user_id = \'' + str(uid) + '\' '
-                                 'ORDER BY paper_id DESC;')
+                                 'WHERE user_id = %s '
+                                 'ORDER BY paper_id DESC;', (uid,))
     db_papers = []
     for i in paper_tuples:
       db_papers.append(i[0])
@@ -130,16 +129,16 @@ class DashboardPage(AuthenticatedPage):
       papers = self._gets(self._dashboard_paper_title)
       count = 0
       for paper in papers:
-        title = PgSQL().query('SELECT title FROM papers WHERE id =\'' + str(db_papers[count]) + '\';')[0][0]
+        title = PgSQL().query('SELECT title FROM papers WHERE id = %s ;', (db_papers[count],))[0][0]
         if not title:
-          title = PgSQL().query('SELECT short_title FROM papers WHERE id =\'' + str(db_papers[count]) + '\';')[0][0]
+          title = PgSQL().query('SELECT short_title FROM papers WHERE id = %s ;', (db_papers[count],))[0][0]
         assert title == paper.text, 'DB: ' + str(title) + ' is not equal to ' + paper.text + ', from page.'
         paper_roles = PgSQL().query('SELECT role FROM paper_roles '
                                     'INNER JOIN papers ON papers.id = paper_roles.paper_id '
-                                    'AND paper_roles.paper_id = \'' + str(db_papers[count]) + '\' AND '
-                                    'paper_roles.user_id=\'' + str(uid) + '\';')
-        is_my_paper = PgSQL().query('SELECT user_id FROM papers  WHERE id = \'' + str(db_papers[count]) + '\' AND '
-                                    'user_id=\'' + str(uid) + '\';')
+                                    'AND paper_roles.paper_id = %s AND '
+                                    'paper_roles.user_id= %s ;', (db_papers[count], uid))
+        is_my_paper = PgSQL().query('SELECT user_id FROM papers  WHERE id = %s AND '
+                                    'user_id=%s ;', (db_papers[count], uid))
         if is_my_paper:
           paper_roles.append(('my paper',))
         role_list = []
@@ -178,9 +177,9 @@ class DashboardPage(AuthenticatedPage):
 
   @staticmethod
   def is_invite_stanza_present(username):
-    uid = PgSQL().query('SELECT id FROM users WHERE username = \'' + username + '\';')[0][0]
+    uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
     invitation_count = PgSQL().query('SELECT COUNT(*) FROM invitations '
-                                     'WHERE state = \'invited\' AND invitee_id = \'' + str(uid) + '\';')[0][0]
+                                     'WHERE state = %s AND invitee_id = %s;', ('invited',uid))[0][0]
     return invitation_count
 
   def validate_view_invites(self, username):
@@ -195,9 +194,9 @@ class DashboardPage(AuthenticatedPage):
     # assert modal_title.value_of_css_property('line-height') == '43.2px'
     assert modal_title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
     # per invite elements
-    uid = PgSQL().query('SELECT id FROM users WHERE username = \'' + username + '\';')[0][0]
+    uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
     invitations = PgSQL().query('SELECT task_id FROM invitations '
-                                'WHERE state = \'invited\' AND invitee_id = \'' + str(uid) + '\';')
+                                'WHERE state = %s AND invitee_id = %s;', ('invited', uid))
     tasks = []
     for invite in invitations:
       tasks.append(invite[0])
@@ -206,8 +205,8 @@ class DashboardPage(AuthenticatedPage):
     for task in tasks:
       paper_id = PgSQL().query('SELECT paper_id FROM phases '
                                'INNER JOIN tasks ON tasks.phase_id = phases.id '
-                               'WHERE tasks.id = \'' + str(task) + '\';')[0][0]
-      title = PgSQL().query('SELECT title FROM papers WHERE id = \'' + str(paper_id) + '\';')[0][0]
+                               'WHERE tasks.id = %s;', (task,))[0][0]
+      title = PgSQL().query('SELECT title FROM papers WHERE id = %s;', (paper_id,))[0][0]
       # The ultimate plan here is to compare titles from the database to those presented on the page,
       # however, the ordering of the presentation of the invite blocks is currently non-deterministic, so this
       # can't currently be done. https://www.pivotaltracker.com/n/projects/880854/stories/100832196

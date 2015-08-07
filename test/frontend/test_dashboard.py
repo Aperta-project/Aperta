@@ -5,7 +5,7 @@ This test case validates the Aperta dashboard page and its associated View Invit
 overlays.
 
 Note that this case does NOT test actually creating a new manuscript, or accepting or declining an invitation
-Those acts are expected to be defined in a separate test case
+Those acts are expected to be defined in
 
 """
 __author__ = 'jgray@plos.org'

@@ -1,10 +1,12 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-'''
+"""
 This Resource File sets variables that are used in individual
 test cases. It eventually should be replaced with more robust,
 less static, variable definitions.
-'''
+"""
+
+from os import getenv
 
 # General resources
 # set friendly_testhostname to 'prod' to run suite against production
@@ -25,22 +27,37 @@ else:
 friendly_testhostname = 'https://plos:shrimp@tahi-assess.herokuapp.com/'
 
 
-# registration resources
+# Aperta registration resources
 user_email = 'admin'
-user_pw= 'yetishrimp'
+user_pw = 'yetishrimp'
 
 login_valid_email = 'jgray@plos.org'
 login_invalid_email = 'jgrey@plos.org'
 login_valid_uid = 'jgray'
 login_invalid_pw = 'in|fury7'
 login_valid_pw = 'in|fury8'
+au_login = 'jgray_author'     # author login
+rv_login = 'jgray_reviewer'   # reviewer login
+ae_login = 'jgray_assocedit'  # associate editor login mm permissions
+he_login = 'jgray_editor'     # handling editor login amm permissions
+fm_login = 'jgray_flowmgr'    # flow manager permissions
+oa_login = 'jgray_oa'         # ordinary admin login
+sa_login = 'jgray'            # super admin login
 
-editor_name_0='Hendrik W. van Veen'
+
+# Define connector information for Aperta's Tahi component postgres instance
+psql_hname = getenv('APERTA_PSQL_HOST', 'ec2-54-163-228-35.compute-1.amazonaws.com')
+psql_port = getenv('APERTA_PSQL_PORT', '5652')
+psql_uname = getenv('APERTA_PSQL_USER', 'u6over81t87q49')
+psql_pw = getenv('APERTA_PSQL_PW', 'pch646pphdfqog9v38otlchvvpn')
+psql_db = getenv('APERTA_PSQL_DBNAME', 'd1kdmn5r5e9aj5')
+
+editor_name_0 = 'Hendrik W. van Veen'
 user_email_0 = 'trash87567@ariessc.com'
-editor_name_1='Anthony George'
+editor_name_1 = 'Anthony George'
 user_email_1 = 'trash261121@ariessc.com'
-user_pw_editor= 'test_password'
+user_pw_editor = 'test_password'
 
 # Apache AuthType
-#aa_username = 'plos'
-#aa_password = 'shrimp'
+# aa_username = 'plos'
+# aa_password = 'shrimp'

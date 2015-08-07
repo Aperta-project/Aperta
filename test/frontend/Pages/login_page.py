@@ -37,7 +37,7 @@ class LoginPage(PlosPage):
   # POM Actions
   def validate_initial_page_elements_styles(self):
     welcome_msg = self._get(self._welcome_message)
-    assert welcome_msg.text == 'Welcome to Tahi'
+    assert welcome_msg.text == 'Welcome to PLOS'
     assert 'helvetica' in welcome_msg.value_of_css_property('font-family')
     assert welcome_msg.value_of_css_property('font-size') == '44px'
     assert welcome_msg.value_of_css_property('font-weight') == '400'
@@ -52,7 +52,6 @@ class LoginPage(PlosPage):
     assert forgot_msg.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     remember_cb = self._get(self._remember_me_cb)
     assert not remember_cb.is_selected()
-
     self._get(self._remember_me_cb)
     remember_msg = self._get(self._remember_me_label).text
     assert remember_msg == 'Remember me'

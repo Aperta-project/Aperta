@@ -2,6 +2,7 @@
 
 from selenium.webdriver.common.by import By
 from Base.PlosPage import PlosPage
+from selenium.webdriver.common.keys import Keys
 import time
 
 __author__ = 'fcabrales'
@@ -52,13 +53,18 @@ class WorkflowPage(PlosPage):
       ".//div[contains(@class, 'column-header')]/div/div/button[2]")
     self._column_header_cancel = (By.XPATH, 
       ".//div[contains(@class, 'column-header')]/div/div/button")
-    self._add_card_button = (By.XPATH, 
+    self._add_card_button = (By.XPATH,
       ".//a[contains(@class, 'add-new-card-button')]")
-    self._add_card_overlay = (By.XPATH, 
+    self._add_card_overlay = (By.XPATH,
       ".//div[@class='overlay-container']/div/div/h1")
-
-
-
+    self._close_icon_overlay = (By.XPATH,
+      ".//span[contains(@class, 'overlay-close-x')]")
+    self._select_in_overlay = (By.XPATH,
+      ".//div[contains(@class, 'select2-container')]/input")
+    self._add_button_overlay = (By.XPATH,
+      ".//div[@class='overlay-action-buttons']/button[1]")
+    self._cancel_button_overlay = (By.XPATH,
+      ".//div[@class='overlay-action-buttons']/button[2]")
 
   #POM Actions
 
@@ -208,6 +214,7 @@ class WorkflowPage(PlosPage):
     """ """
     self._get(self._add_card_button).click()
     return self
+  
 
   def check_overlay(self):
     """ """
@@ -218,5 +225,30 @@ class WorkflowPage(PlosPage):
     assert card_overlay.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
     assert card_overlay.value_of_css_property('font-weight') == '500'
     assert card_overlay.value_of_css_property('text-align') == 'center'
+    close_icon_overlay = self._get(self._close_icon_overlay)
+    assert close_icon_overlay.value_of_css_property('font-size') == '90px'
+    assert 'Cabin' in close_icon_overlay.value_of_css_property('font-family')
+    assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    select_task = self._get(self._select_in_overlay)
+    assert 'Cabin' in select_task.value_of_css_property('font-family')
+    assert select_task.value_of_css_property('font-size') == '14px'
+    assert select_task.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+    add_button_overlay = self._get(self._add_button_overlay)
+    assert 'Cabin' in add_button_overlay.value_of_css_property('font-family')
+    assert add_button_overlay.value_of_css_property('font-size') == '14px'
+    assert add_button_overlay.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
+    assert add_button_overlay.text == 'ADD'
+    cancel_button_overlay = self._get(self._cancel_button_overlay)
+    assert 'Cabin' in cancel_button_overlay.value_of_css_property('font-family')
+    assert cancel_button_overlay.value_of_css_property('font-size') == '14px'
+    assert cancel_button_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    assert cancel_button_overlay.value_of_css_property('text-align') == 'center'
+    assert cancel_button_overlay.text == 'cancel'
+    select_task.click()
+    # NOTE: Must have at least one fixed item
+    select_task.send_keys('Ad-hoc' + Keys.ENTER)
+    self.click_add_new_card()
+    time.sleep(10)
+    # new page: isNewTask
 
     return self

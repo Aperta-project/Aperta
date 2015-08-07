@@ -15,28 +15,30 @@ __author__ = 'jgray@plos.org'
 import psycopg2
 from Resources import psql_hname, psql_port, psql_uname, psql_pw, psql_db
 
+
 class PgSQL(object):
 
-  def _getConnection(self):
+  @staticmethod
+  def _get_connection():
     cnxstring = 'host=' + str(psql_hname) + ' ' + 'port=' + str(psql_port) + ' ' + 'user=' + str(psql_uname) + ' ' \
                 + 'password=' + str(psql_pw) + ' ' + 'dbname=' + str(psql_db)
     conn = psycopg2.connect(cnxstring)
     return conn
 
-  def query(self, query, queryArgsTuple=None):
-    conn = self._getConnection()
+  def query(self, query, query_args_tuple=None):
+    conn = self._get_connection()
 
     with conn.cursor() as cursor:
-      cursor.execute(query, queryArgsTuple)
+      cursor.execute(query, query_args_tuple)
       results = cursor.fetchall()
       cursor.close()
     conn.close()
     return results
 
-  def modify(self, query, queryArgsTuple=None):
-    conn = self._getConnection()
+  def modify(self, query, query_args_tuple=None):
+    conn = self._get_connection()
     with conn.cursor() as cursor:
-      cursor.execute(query, queryArgsTuple)
+      cursor.execute(query, query_args_tuple)
       conn.commit()
       cursor.close()
     conn.close()

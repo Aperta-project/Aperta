@@ -1,10 +1,10 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-'''
+"""
 This Resource File sets variables that are used in individual
 test cases. It eventually should be replaced with more robust,
 less static, variable definitions.
-'''
+"""
 
 from os import getenv
 
@@ -29,7 +29,7 @@ friendly_testhostname = 'https://plos:shrimp@tahi-assess.herokuapp.com/'
 
 # Aperta registration resources
 user_email = 'admin'
-user_pw= 'yetishrimp'
+user_pw = 'yetishrimp'
 
 login_valid_email = 'jgray@plos.org'
 login_invalid_email = 'jgrey@plos.org'
@@ -46,20 +46,18 @@ sa_login = 'jgray'            # super admin login
 
 
 # Define connector information for Aperta's Tahi component postgres instance
-psql_hname =getenv('APERTA_PSQL_HOST', 'ec2-54-163-228-35.compute-1.amazonaws.com')
+psql_hname = getenv('APERTA_PSQL_HOST', 'ec2-54-163-228-35.compute-1.amazonaws.com')
 psql_port = getenv('APERTA_PSQL_PORT', '5652')
 psql_uname = getenv('APERTA_PSQL_USER', 'u6over81t87q49')
 psql_pw = getenv('APERTA_PSQL_PW', 'pch646pphdfqog9v38otlchvvpn')
 psql_db = getenv('APERTA_PSQL_DBNAME', 'd1kdmn5r5e9aj5')
 
-
-
-editor_name_0='Hendrik W. van Veen'
+editor_name_0 = 'Hendrik W. van Veen'
 user_email_0 = 'trash87567@ariessc.com'
-editor_name_1='Anthony George'
+editor_name_1 = 'Anthony George'
 user_email_1 = 'trash261121@ariessc.com'
-user_pw_editor= 'test_password'
+user_pw_editor = 'test_password'
 
 # Apache AuthType
-#aa_username = 'plos'
-#aa_password = 'shrimp'
+# aa_username = 'plos'
+# aa_password = 'shrimp'

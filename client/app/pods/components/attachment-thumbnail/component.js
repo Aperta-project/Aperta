@@ -108,6 +108,12 @@ export default Ember.Component.extend({
           newValue = checkbox.get('attachment.id');
       }
       this.sendAction('strikingImageAction', newValue);
+    },
+
+    togglePublishable(checkbox) {
+      var newValue = checkbox.get('attachment.publishable');
+      this.set('publishable', newValue);
+      this.send("saveAttachment");
     }
   }
 });

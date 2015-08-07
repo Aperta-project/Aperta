@@ -80,8 +80,6 @@
             <a href="#" class="button-link button--green" {{action "cancelEditing"}}>cancel</a>
             <a href="#" class="button-primary button--green" {{action "saveAttachment"}}>Save</a>
           </div>
-
-
         </div>
       {{else}}
         <div class="info">
@@ -90,10 +88,14 @@
             {{if attachment.title attachment.title "Attachment title"}}
           </h2>
 
-          <div class="caption"
-            {{action "toggleEditState" on="doubleClick"}}>
+          <div class="caption" {{action "toggleEditState" on="doubleClick"}}>
             {{if attachment.caption attachment.caption "There is no caption for this file."}}
           </div>
+
+          <label class="publishable">
+            {{check-box checked=attachment.publishable action="togglePublishable" attachment=attachment}}
+            For publication
+          </label>
 
           {{#if attachment.isStrikingImage}}
             <div class="striking">
@@ -101,7 +103,7 @@
             </div>
           {{/if}}
         </div>
-            {{/if}}
+      {{/if}}
     </div>
 
     {{#if isEditable}}

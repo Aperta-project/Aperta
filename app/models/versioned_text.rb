@@ -3,7 +3,7 @@ class VersionedText < ActiveRecord::Base
 
   belongs_to :submitting_user, class_name: "User"
 
-  default_scope -> { order('major_version DESC, minor_version DESC') }
+  scope :desc, -> { order('major_version DESC, minor_version DESC') }
 
   before_update do
     fail ActiveRecord::ReadOnlyRecord unless

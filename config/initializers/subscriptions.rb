@@ -7,7 +7,7 @@ TahiNotifier.subscribe("paper:*") do |payload|
   EventStream::Broadcaster.new(record).post(action: action, channel_scope: record, excluded_socket_id: excluded_socket_id)
 end
 
-TahiNotifier.subscribe("task:*", "author:*", "figure:*", "invitation:*", "supporting_information_file:*", "attachment:*") do |payload|
+TahiNotifier.subscribe("phase:*", "task:*", "author:*", "figure:*", "invitation:*", "supporting_information_file:*", "attachment:*") do |payload|
   action = payload[:action]
   record = payload[:record]
   excluded_socket_id = payload[:requester_socket_id]

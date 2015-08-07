@@ -11,7 +11,6 @@ from Pages.login_page import LoginPage
 from Base.Resources import login_valid_email, login_valid_pw
 from frontend.Pages.manuscript_page import ManuscriptPage
 from frontend.Pages.workflow_page import WorkflowPage
-from frontend.Pages.authenticated_page import AuthenticatedPage
 import time
 
 @MultiBrowserFixture

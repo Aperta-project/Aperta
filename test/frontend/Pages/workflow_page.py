@@ -57,6 +57,9 @@ class WorkflowPage(PlosPage):
     self._add_card_overlay = (By.XPATH, 
       ".//div[@class='overlay-container']/div/div/h1")
 
+
+
+
   #POM Actions
 
   def validate_initial_page_elements_styles(self):
@@ -210,5 +213,10 @@ class WorkflowPage(PlosPage):
     """ """
     card_overlay = self._get(self._add_card_overlay)
     assert card_overlay.text == 'Pick the type of card to add'
+    assert 'Cabin' in card_overlay.value_of_css_property('font-family')
+    assert card_overlay.value_of_css_property('font-size') == '48px'
+    assert card_overlay.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+    assert card_overlay.value_of_css_property('font-weight') == '500'
+    assert card_overlay.value_of_css_property('text-align') == 'center'
 
     return self

@@ -44,6 +44,15 @@ describe VersionedText do
     end
   end
 
+  describe "#submitted?" do
+    it 'should be true if submitting_user is set' do
+      paper = FactoryGirl.create :paper
+      expect(paper.latest_version.submitted?).to be(false)
+      paper.latest_version.update!(submitting_user_id: 1)
+      expect(paper.latest_version.submitted?).to be(true)
+    end
+  end
+
   it "should prevent writes on an old version" do
     old_version = paper.latest_version
     paper.latest_version.new_minor_version!
@@ -52,6 +61,11 @@ describe VersionedText do
 
   it "should prevent writes if paper is not editable" do
     paper.update!(editable: false)
+    expect { paper.latest_version.update!(text: "foo") }.to raise_exception(ActiveRecord::ReadOnlyRecord)
+  end
+
+  it "should prevent writes if version is not a draft" do
+    paper.latest_version.update!(submitting_user_id: 1)
     expect { paper.latest_version.update!(text: "foo") }.to raise_exception(ActiveRecord::ReadOnlyRecord)
   end
 end

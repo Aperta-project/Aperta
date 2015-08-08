@@ -70,6 +70,17 @@
   </li>
 </ol>
 
+
+
+{{#if submissionConfirmed}}
+  <h4>Once you submit the report, you will no longer be able to edit it. Are you sure?</h4>
+
+  <button class="button-primary button--green" {{action "submitReport"}}>Yes, I’m sure</button>
+  <button class="button-secondary button--green" {{action "cancelSubmission"}}>Nope</button>
+{{else}}
+  <button class="button-primary button--green" {{action "confirmSubmission"}}>Submit this Report</button>
+{{/if}}
+
 {{#if previousDecisions}}
   <hr>
 

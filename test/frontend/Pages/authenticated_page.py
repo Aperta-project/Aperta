@@ -50,7 +50,42 @@ class AuthenticatedPage(PlosPage):
     if permissions == ('jgray_oa', 'jgray'):
       self._get(self._nav_admin_link)
 
+  def click_nav_close_link(self):
+    """Click sign out link"""
+    self._get(self._nav_close).click()
+    return self
+
+  def click_profile_link(self):
+    """Click sign out link"""
+    self._get(self._nav_profile_link).click()
+    return self
+
+  def click_dashboard_link(self):
+    """Click sign out link"""
+    self._get(self._nav_dashboard_link).click()
+    return self
+
+  def click_flow_mgr_link(self):
+    """Click sign out link"""
+    self._get(self._nav_flowmgr_link).click()
+    return self
+
+  def click_paper_tracker_link(self):
+    """Click sign out link"""
+    self._get(self._nav_paper_tracker_link).click()
+    return self
+
+  def click_admin_link(self):
+    """Click sign out link"""
+    self._get(self._nav_admin_link).click()
+    return self
+
   def click_sign_out_link(self):
     """Click sign out link"""
     self._get(self._nav_signout_link).click()
+    return self
+
+  def click_feedback_link(self):
+    """Click sign out link"""
+    self._get(self._nav_feedback_link).click()
     return self

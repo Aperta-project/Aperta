@@ -1,0 +1,74 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+"""
+This test case validates the Aperta dashboard page and its associated View Invitations and Create New Submission
+overlays.
+
+Note that this case does NOT test actually creating a new manuscript, or accepting or declining an invitation
+Those acts are expected to be defined in
+
+"""
+__author__ = 'jgray@plos.org'
+
+from Base.Decorators import MultiBrowserFixture
+from Base.FrontEndTest import FrontEndTest
+from Pages.login_page import LoginPage
+from Pages.authenticated_page import AuthenticatedPage
+from Pages.paper_tracker import PaperTrackerPage
+from Base.Resources import login_valid_pw, au_login, rv_login, fm_login, ae_login, he_login, sa_login, oa_login
+import random
+
+users = [# au_login,
+#          rv_login,
+#          fm_login,
+#          ae_login,
+#          he_login,
+         sa_login,
+         oa_login
+         ]
+
+
+@MultiBrowserFixture
+class ApertaPaperTrackerTest(FrontEndTest):
+  """
+  Self imposed AC:
+     - validate page elements and styles for:
+         - dashboard page:
+            - Optional Invitation elements
+              - title, buttons
+            - Submissions section
+              - title, button, manuscript details
+         - view invitations modal dialog elements and function
+         - create new submission modal dialog and function
+  """
+  def test_validate_components_styles(self):
+    """
+    Validates the presence of the following elements:
+      Optional Invitation Welcome text and button,
+      My Submissions Welcome Text, button, info text and manuscript display
+      Modals: View Invites and Create New Submission
+    """
+    user_type = random.choice(users)
+    login_page = LoginPage(self.getDriver())
+    login_page.enter_login_field(user_type)
+    login_page.enter_password_field(login_valid_pw)
+    login_page.click_sign_in_button()
+
+    authenticated_page = AuthenticatedPage(self.getDriver())
+    authenticated_page.click_left_nav()
+    authenticated_page.click_paper_tracker_link()
+    authenticated_page.click_nav_close_link()
+
+    pt_page = PaperTrackerPage(self.getDriver())
+    pt_page.validate_initial_page_elements_styles()
+    # pt_page.validate_nav_elements()
+
+
+    # The dashboard navigation elements will change based on a users permissions
+    # Author gets Close, Title, Profile Link with Image, Dashboard Link, Signout Link, separator, Feedback Link
+    #
+    pt_page.click_left_nav()
+    pt_page.validate_nav_elements(user_type)
+
+if __name__ == '__main__':
+  FrontEndTest._run_tests_randomly()

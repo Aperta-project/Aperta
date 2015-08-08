@@ -1,116 +1,140 @@
 <h1>Reviewer Report</h1>
 
-<ol class="question-list">
-  <li class="question">
-    {{question-textarea ident="reviewer_report.competing_interests"
-      task=model
-      versioned=true
-      question="Do you have any potential or perceived competing interests that may influence your review?"
-      helpText="<li>Please review our Competing Interests policy and declare any potential interests that you feel the Editor should be aware of when considering your review. If you have no competing interests, please write: <strong>&quot;I have no competing interests.&quot;</strong></li>"}}
-  </li>
+<div class="reviewer-report-wrapper">
+  {{#if model.body.submitted}}
+    <ol class="question-list reviewer-report-questions">
+      {{#each model.questions as |question|}}
+      {{#if question.question}}
+        <li class="question">
+          <div class="question-text">{{question.question}}</div>
+          <div class="answer-text">{{question.answer}}</div>
+        </li>
+      {{else}}
+        <div class="answer-text">{{question.answer}}</div>
+      {{/if}}
+      {{/each}}
+    </ol>
 
-  <li class="question">
-      {{#question-radio ident="reviewer_report.support_conclusions"
+    <div class="feedback reviewer-report-feedback">
+      <i class="fa fa-check-circle"></i>
+      This report has been submitted
+    </div>
+
+  {{else}}
+  <ol class="question-list">
+    <li class="question">
+      {{question-textarea ident="reviewer_report.competing_interests"
+        task=model
+        versioned=true
+        question="Do you have any potential or perceived competing interests that may influence your review?"
+        helpText="<li>Please review our Competing Interests policy and declare any potential interests that you feel the Editor should be aware of when considering your review. If you have no competing interests, please write: <strong>&quot;I have no competing interests.&quot;</strong></li>"}}
+    </li>
+
+    <li class="question">
+        {{#question-radio ident="reviewer_report.support_conclusions"
+                          task=model
+                          versioned=true
+                          question="Is the manuscript technically sound, and do the data support the conclusions?"
+                          helpText="<li>The manuscript must describe a technically sound piece of scientific research with data that supports the conclusions.</li><li>Experiments must have been conducted rigorously, with appropriate controls, replication, and sample sizes.</li><li>The conclusions must be drawn appropriately based on the data presented.</li>"
+                          wrapperClass="yes-no-with-comments"}}
+          {{question-textarea ident="reviewer_report.support_conclusions.explanation" task=model versioned=true}}
+        {{/question-radio}}
+    </li>
+
+    <li class="question">
+      {{#question-radio ident="reviewer_report.statistical_analysis"
                         task=model
                         versioned=true
-                        question="Is the manuscript technically sound, and do the data support the conclusions?"
-                        helpText="<li>The manuscript must describe a technically sound piece of scientific research with data that supports the conclusions.</li><li>Experiments must have been conducted rigorously, with appropriate controls, replication, and sample sizes.</li><li>The conclusions must be drawn appropriately based on the data presented.</li>"
+                        question="Has the statistical analysis been performed appropriately and rigorously?"
+                        helpText="<li>Authors must follow field-specific standards for data deposition in publicly available resources and should include accession numbers in the manuscript when relevant. The manuscript should explain what steps have been taken to make data available, particularly in cases where the data cannot be publicly deposited.</li>"
                         wrapperClass="yes-no-with-comments"}}
-        {{question-textarea ident="reviewer_report.support_conclusions.explanation" task=model versioned=true}}
+        {{question-textarea ident="reviewer_report.statistical_analysis.explanation" task=model versioned=true}}
       {{/question-radio}}
-  </li>
+    </li>
 
-  <li class="question">
-    {{#question-radio ident="reviewer_report.statistical_analysis"
-                      task=model
-                      versioned=true
-                      question="Has the statistical analysis been performed appropriately and rigorously?"
-                      helpText="<li>Authors must follow field-specific standards for data deposition in publicly available resources and should include accession numbers in the manuscript when relevant. The manuscript should explain what steps have been taken to make data available, particularly in cases where the data cannot be publicly deposited.</li>"
-                      wrapperClass="yes-no-with-comments"}}
-      {{question-textarea ident="reviewer_report.statistical_analysis.explanation" task=model versioned=true}}
-    {{/question-radio}}
-  </li>
-
-  <li class="question">
-    {{#question-radio ident="reviewer_report.standards"
-                      task=model
-                      versioned=true
-                      question="Does the manuscript adhere to standards in this field for data availability?"
-                      helpText="<li>The manuscript should explain what steps have been taken to make data available, particularly in cases where the data cannot be publicly deposited.</li>"
-                      wrapperClass="yes-no-with-comments"}}
-      {{question-textarea ident="reviewer_report.standards.explanation" task=model versioned=true}}
-    {{/question-radio}}
-  </li>
-
-  <li class="question">
-    {{#question-radio ident="reviewer_report.intelligible"
-                      task=model
-                      versioned=true
-                      question="Is the manuscript presented in an intelligible fashion and written in standard English?"
-                      helpText="<li>PLOS ONE does not copyedit accepted manuscripts, so the language in submitted articles must be clear, correct, and unambiguous. Any typographical or grammatical errors should be corrected at revision, so please note any specific errors below.</li>"
-                      wrapperClass="yes-no-with-comments"}}
-      {{question-textarea ident="reviewer_report.intelligible.explanation" task=model versioned=true}}
-    {{/question-radio}}
-  </li>
-
-  <li class="question">
-    {{question-textarea ident="reviewer_report.additional_comments"
-                        question="(Optional) Please offer any additional comments to the author."
+    <li class="question">
+      {{#question-radio ident="reviewer_report.standards"
                         task=model
                         versioned=true
-                        helpText="<li>Additional comments may include concerns about dual publication, research or publication ethics.</li>"}}
-  </li>
+                        question="Does the manuscript adhere to standards in this field for data availability?"
+                        helpText="<li>The manuscript should explain what steps have been taken to make data available, particularly in cases where the data cannot be publicly deposited.</li>"
+                        wrapperClass="yes-no-with-comments"}}
+        {{question-textarea ident="reviewer_report.standards.explanation" task=model versioned=true}}
+      {{/question-radio}}
+    </li>
 
-  <li class="question">
-    {{question-textarea ident="reviewer_report.identity"
-                        question="(Optional) If you'd like your identity to be revealed to the authors, please include your name here."
+    <li class="question">
+      {{#question-radio ident="reviewer_report.intelligible"
                         task=model
                         versioned=true
-                        helpText="<li>Your name and review will not be published with the manuscript.</li>"}}
-  </li>
-</ol>
+                        question="Is the manuscript presented in an intelligible fashion and written in standard English?"
+                        helpText="<li>PLOS ONE does not copyedit accepted manuscripts, so the language in submitted articles must be clear, correct, and unambiguous. Any typographical or grammatical errors should be corrected at revision, so please note any specific errors below.</li>"
+                        wrapperClass="yes-no-with-comments"}}
+        {{question-textarea ident="reviewer_report.intelligible.explanation" task=model versioned=true}}
+      {{/question-radio}}
+    </li>
+
+    <li class="question">
+      {{question-textarea ident="reviewer_report.additional_comments"
+                          question="(Optional) Please offer any additional comments to the author."
+                          task=model
+                          versioned=true
+                          helpText="<li>Additional comments may include concerns about dual publication, research or publication ethics.</li>"}}
+    </li>
+
+    <li class="question">
+      {{question-textarea ident="reviewer_report.identity"
+                          question="(Optional) If you'd like your identity to be revealed to the authors, please include your name here."
+                          task=model
+                          versioned=true
+                          helpText="<li>Your name and review will not be published with the manuscript.</li>"}}
+    </li>
+  </ol>
 
 
+    <div class="reviewer-report-confirmation">
+      {{#if submissionConfirmed}}
+        <h4>Once you submit the report, you will no longer be able to edit it. Are you sure?</h4>
 
-{{#if submissionConfirmed}}
-  <h4>Once you submit the report, you will no longer be able to edit it. Are you sure?</h4>
+        <button class="button-primary button--green" {{action "submitReport"}}>Yes, I’m sure</button>
+        <button class="button-secondary button--green" {{action "cancelSubmission"}}>Nope</button>
+      {{else}}
+        <button class="button-primary button--green" {{action "confirmSubmission"}}>Submit this Report</button>
+      {{/if}}
+    </div>
+  {{/if}}
 
-  <button class="button-primary button--green" {{action "submitReport"}}>Yes, I’m sure</button>
-  <button class="button-secondary button--green" {{action "cancelSubmission"}}>Nope</button>
-{{else}}
-  <button class="button-primary button--green" {{action "confirmSubmission"}}>Submit this Report</button>
-{{/if}}
+  {{#if previousDecisions}}
+    <hr>
 
-{{#if previousDecisions}}
-  <hr>
+    <h3>Review History</h3>
 
-  <h3>Review History</h3>
-
-  <div class="previous-decisions">
-    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-      {{#each previousDecisions as |decision|}}
-      <div class="panel panel-default decision">
-        <div class="panel-heading" role="tab" id="decision-{{unbound decision.id}}" >
-          <h4 class="panel-title">
-            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{unbound decision.id}}" aria-expanded="false" aria-controls="collapse-{{unbound decision.id}}">
-              Revision {{decision.revisionNumber}}
-            </a>
-          </h4>
-        </div>
-        <div id="collapse-{{unbound decision.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="decision-{{unbound decision.id}}">
-          <div class="panel-body">
-            <ol>
-            {{#each decision.questions as |question|}}
-              <li>
-                <div class="question-text">{{question.question}}</div>
-                <div class="answer-text">{{question.answer}}</div>
-              </li>
-            {{/each}}
-            </ol>
+    <div class="previous-decisions">
+      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        {{#each previousDecisions as |decision|}}
+        <div class="panel panel-default decision">
+          <div class="panel-heading" role="tab" id="decision-{{unbound decision.id}}" >
+            <h4 class="panel-title">
+              <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse-{{unbound decision.id}}" aria-expanded="false" aria-controls="collapse-{{unbound decision.id}}">
+                Revision {{decision.revisionNumber}}
+              </a>
+            </h4>
+          </div>
+          <div id="collapse-{{unbound decision.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="decision-{{unbound decision.id}}">
+            <div class="panel-body">
+              <ol>
+              {{#each decision.questions as |question|}}
+                <li>
+                  <div class="question-text">{{question.question}}</div>
+                  <div class="answer-text">{{question.answer}}</div>
+                </li>
+              {{/each}}
+              </ol>
+            </div>
           </div>
         </div>
+        {{/each}}
       </div>
-      {{/each}}
     </div>
-  </div>
-{{/if}}
+  {{/if}}
+</div>

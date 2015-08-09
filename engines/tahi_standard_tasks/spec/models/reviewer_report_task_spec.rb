@@ -52,7 +52,7 @@ describe TahiStandardTasks::ReviewerReportTask do
     context "when it has a custom value" do
       it "returns that value" do
         task.update! body: { hello: :world }
-        expect(task.reload.body).to eq({ "hello" => "world"})
+        expect(task.reload.body).to eq("hello" => "world")
       end
     end
 

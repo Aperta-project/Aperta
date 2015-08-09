@@ -47,4 +47,29 @@ describe TahiStandardTasks::ReviewerReportTask do
       end
     end
   end
+
+  describe "#body" do
+    context "when it has a custom value" do
+      it "returns that value" do
+        task.update! body: { hello: :world }
+        expect(task.reload.body).to eq({ "hello" => "world"})
+      end
+    end
+
+    context "when it is not set" do
+      it "returns an empty hash" do
+        expect(task.body).to eq({})
+      end
+    end
+  end
+
+  describe "#can_change?" do
+    let!(:question) { Question.create! task: task, ident: "hello", answer: "I shouldn't change" }
+
+    it "doesn't let update questions" do
+      task.update! body: { submitted: true }
+      question.update answer: "Changed"
+      expect(question.reload.answer).to eq("I shouldn't change")
+    end
+  end
 end

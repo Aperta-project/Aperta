@@ -138,6 +138,23 @@ class Task < ActiveRecord::Base
     UserMailer.delay.add_participant current_user.id, participation.user_id, id
   end
 
+  # Public: This method can be used by models associated with tasks before 
+  # validation, see ReviewerReportTask and Question model for example usage.
+  #
+  # You should override this method in inherited tasks if needed.
+  #
+  # association_object  - Object associated with task
+  #
+  # Examples
+  #
+  #   can_change?(association)
+  #   # => true
+  #
+  # Returns ActiveRecord::Relation with tasks.
+  def can_change?(association_object)
+    true
+  end
+
   private
 
   def on_card_completion?

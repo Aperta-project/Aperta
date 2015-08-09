@@ -64,3 +64,33 @@
   font-weight: normal;
   font-style: normal;
 }
+
+@font-face {
+  font-family: 'source-sans';
+  src: asset-url('SourceSansPro-Bold.eot');
+  src: asset-url('SourceSansPro-Bold.eot?#iefix') format('embedded-opentype'),
+       asset-url('SourceSansPro-Bold.woff') format('woff'),
+       asset-url('SourceSansPro-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'source-sans';
+  src: asset-url('SourceSansPro-It.eot');
+  src: asset-url('SourceSansPro-It.eot?#iefix') format('embedded-opentype'),
+       asset-url('SourceSansPro-It.woff') format('woff'),
+       asset-url('SourceSansPro-It.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'source-sans';
+  src: asset-url('SourceSansPro-Regular.eot');
+  src: asset-url('SourceSansPro-Regular.eot?#iefix') format('embedded-opentype'),
+       asset-url('SourceSansPro-Regular.woff') format('woff'),
+       asset-url('SourceSansPro-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}

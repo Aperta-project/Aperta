@@ -6,8 +6,6 @@ ReviewerReportOverlayController = TaskController.extend
   previousDecisions: Em.computed 'model.paper.decisions', ->
     @get('model.paper.decisions').without @get('latestDecision')
 
-  # submissionConfirmed: Em.computed.alias 'model.body.submitted'
-
   actions:
     confirmSubmission: ->
       @set('submissionConfirmed', true)
@@ -16,8 +14,8 @@ ReviewerReportOverlayController = TaskController.extend
       @set('submissionConfirmed', false)
 
     submitReport: ->
-      console.log @get('model.body')
       @set('model.body.submitted', true)
+      @set('model.completed', true)
       @get('model').save()
 
 `export default ReviewerReportOverlayController`

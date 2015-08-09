@@ -65,6 +65,31 @@ class WorkflowPage(PlosPage):
       ".//div[@class='overlay-action-buttons']/button[1]")
     self._cancel_button_overlay = (By.XPATH,
       ".//div[@class='overlay-action-buttons']/button[2]")
+    self._new_taks_overlay_cancel = (By.XPATH,
+      ".//div[@class='overlay-main-work']/div/div/div[2]")
+    self._new_taks_overlay_save = (By.XPATH,
+      ".//div[@class='overlay-main-work']/div/div/div[1]")
+    self._new_taks_overlay_plus = (By.XPATH,
+      ".//span[@class='fa-plus']")
+    self._new_taks_overlay_title = (By.XPATH,
+      ".//header[@class='overlay-header']/h2/a")
+    self._new_taks_overlay_close_top = (By.XPATH,
+      ".//header[@class='overlay-header']/a")
+    self._new_taks_overlay_discussion = (By.XPATH,
+      ".//div[@class='overlay-discussion-board']/h2")
+    self._new_taks_overlay_msg = (By.XPATH,
+      ".//div[@class='overlay-discussion-board']/div/div/textarea")
+    self._new_taks_overlay_msg_discussion_cancel = (By.XPATH,
+      ".//div[@class='message-comment-buttons']/a")
+    self._new_taks_overlay_msg_discussion_save = (By.XPATH,
+      ".//div[@class='message-comment-buttons']/button")
+    self._new_taks_overlay_following = (By.XPATH,
+      ".//footer/div/div[2]/span")
+    self._new_taks_overlay_comp_chkbx = (By.XPATH,
+      ".//footer/div/div/div/input")
+    self._new_taks_overlay_comp_chkbx_lbl = (By.XPATH,
+      ".//footer/div/div/div/label")
+    self._new_taks_overlay_close_bottom = (By.XPATH, ".//footer/div/a")
 
   #POM Actions
 

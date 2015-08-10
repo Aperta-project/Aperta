@@ -3,7 +3,9 @@
 from selenium.webdriver.common.by import By
 from Base.PlosPage import PlosPage
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
 import time
+import pdb
 
 __author__ = 'fcabrales'
 
@@ -264,17 +266,22 @@ class WorkflowPage(PlosPage):
     return self
 
   def count_cards_first_column(self):
-    """ """
-    cards = self._gets(self._first_column_cards)
-    return len(cards)
+    """Count the cards in the first column"""
+    return len(self._gets(self._first_column_cards))
 
   def remove_last_task(self):
-    """ """
+    """
+    Remove the last task from the first column
+    This test the removal process and is used for housekeeping
+    """
     cards = self._gets(self._first_column_cards)
     last_card = cards[-1]
-    print last_card
-    #._get(self._inline_remove)
+    hov = ActionChains(self._driver).move_to_element(last_card)
+    hov.perform()
+    close = last_card.find_element_by_xpath('//div/span')
+    close.click()
+    time.sleep(10)
+    #ElementNotVisibleException: Message: Element is not currently visible and so may not be interacted with
 
-
-
+    
     return self

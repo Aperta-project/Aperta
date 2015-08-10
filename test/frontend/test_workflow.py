@@ -62,10 +62,11 @@ class ApertaWorkflowTest(FrontEndTest):
     workflow_page = self._go_to_workflow()
     # GET URL
     time.sleep(2)
-    driver = self.getDriver()
-    workflow_url = driver.current_url
+    #driver = self.getDriver()
+    workflow_url = self._driver.current_url
     # Count cards in first column
     cards = workflow_page.count_cards_first_column()
+    # DEBUGGING: 
     workflow_page.remove_last_task()
     # Test add new card
     workflow_page.click_add_new_card()

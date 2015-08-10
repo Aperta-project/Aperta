@@ -9,7 +9,7 @@
   width: 100%;
   height: $tahi-control-bar-height;
   border-bottom: 1px solid #F5F5F5;
-  background: rgba(255,255,255, 0.9);
+  background: $tahi-white;
   z-index: z('control-bar');
   @include transition(height 0.2s ease-in-out);
 }

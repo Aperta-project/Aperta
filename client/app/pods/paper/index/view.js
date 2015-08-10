@@ -54,7 +54,7 @@ export default Ember.View.extend(RedirectsIfEditable, {
         versionsVisible: false
       });
     },
-    
+
     showContributors() {
       this.send('hideVisible');
       this.set('contributorsVisible', true);
@@ -71,7 +71,7 @@ export default Ember.View.extend(RedirectsIfEditable, {
     },
 
     toggleVersioningMode() {
-      this.set('controller.model.versioningMode', true);
+      this.toggleProperty('controller.model.versioningMode');
       this.send('showSubNav', 'versions');
     }
   }

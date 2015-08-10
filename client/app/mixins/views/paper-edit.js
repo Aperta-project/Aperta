@@ -87,7 +87,7 @@ export default Ember.Mixin.create(RedirectsIfEditable, {
     },
 
     toggleVersioningMode() {
-      this.set('controller.model.versioningMode', true);
+      this.toggleProperty('controller.model.versioningMode');
       this.send('showSubNav', 'versions');
     }
   }

@@ -17,6 +17,7 @@ from Pages.authenticated_page import AuthenticatedPage
 from Pages.paper_tracker import PaperTrackerPage
 from Base.Resources import login_valid_pw, au_login, rv_login, fm_login, ae_login, he_login, sa_login, oa_login
 import random
+import time
 
 users = [# au_login,
 #          rv_login,
@@ -57,16 +58,9 @@ class ApertaPaperTrackerTest(FrontEndTest):
     authenticated_page = AuthenticatedPage(self.getDriver())
     authenticated_page.click_left_nav()
     authenticated_page.click_paper_tracker_link()
-    authenticated_page.click_nav_close_link()
 
     pt_page = PaperTrackerPage(self.getDriver())
     pt_page.validate_initial_page_elements_styles()
-    # pt_page.validate_nav_elements()
-
-
-    # The dashboard navigation elements will change based on a users permissions
-    # Author gets Close, Title, Profile Link with Image, Dashboard Link, Signout Link, separator, Feedback Link
-    #
     pt_page.click_left_nav()
     pt_page.validate_nav_elements(user_type)
 

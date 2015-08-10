@@ -54,7 +54,7 @@ class EditPaperPage < Page
   end
 
   def version_button
-    first(:css, '.versioning-mode-button')
+    first(:css, '.versions-link')
   end
 
   def version_dropdown

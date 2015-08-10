@@ -23,10 +23,10 @@
           {{/if}}
         </div>
 
-        <div id="paper-body">
-          {{#if model.versioningMode}}
-            <div id="paper-body">{{{model.versionedBody}}}</div>
-          {{else}}
+        {{#if model.versioningMode}}
+          <div id="paper-body">{{{model.versionedBody}}}</div>
+        {{else}}
+          <div id="paper-body">
             {{component editorComponent
                 viewName='editor'
                 paper=model
@@ -35,8 +35,8 @@
                 statusMessage=statusMessage
                 currentUser=currentUser
             }}
-          {{/if}}
-        </div>
+          </div>
+        {{/if}}
       </article>
     </main>
   </div>

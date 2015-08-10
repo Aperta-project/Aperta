@@ -19,6 +19,10 @@ export default Ember.Component.extend({
     this.addObserver('selectedVersion', this, 'showVersion');
   }.on('didInsertElement'),
 
+  setInitialVersion: function() {
+    this.set('selectedVersion', this.get('paper.versions').slice(-1).pop());
+  }.on('init'),
+
   versioningModeTransition: Ember.computed.or(
     'transitioning',
     'versioningMode'

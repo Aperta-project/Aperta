@@ -31,7 +31,7 @@ class ApertaWorkflowTest(FrontEndTest):
 
     return self
 
-  def test_validate_components_styles(self):
+  def _test_validate_components_styles(self):
     """
     Validates the presence of the following provided elements:
       
@@ -40,7 +40,7 @@ class ApertaWorkflowTest(FrontEndTest):
     workflow_page.validate_initial_page_elements_styles()
     return self
 
-  def test_headers(self):
+  def _test_headers(self):
     """ """
     workflow_page = self._go_to_workflow()
     # check for cancel edit
@@ -60,12 +60,25 @@ class ApertaWorkflowTest(FrontEndTest):
   def test_add_new_card(self):
     """ """
     workflow_page = self._go_to_workflow()
+    # GET URL
+    time.sleep(2)
+    driver = self.getDriver()
+    workflow_url = driver.current_url
+    # Count cards in first column
+    cards = workflow_page.count_cards_first_column()
+    workflow_page.remove_last_task()
     # Test add new card
     workflow_page.click_add_new_card()
     # Elements in add new card
     workflow_page.check_overlay()
-
-    time.sleep(5)
+    workflow_page.check_new_tasks_overlay()
+    # Going to workflow from scrach to avoid using card elements
+    # go here to the URL
+    driver.get(workflow_url)
+    time.sleep(2)
+    workflow_page.remove_last_task()
+    
+    #time.sleep(10)
     return self
 
 

@@ -65,31 +65,11 @@ class WorkflowPage(PlosPage):
       ".//div[@class='overlay-action-buttons']/button[1]")
     self._cancel_button_overlay = (By.XPATH,
       ".//div[@class='overlay-action-buttons']/button[2]")
-    self._new_taks_overlay_cancel = (By.XPATH,
-      ".//div[@class='overlay-main-work']/div/div/div[2]")
-    self._new_taks_overlay_save = (By.XPATH,
-      ".//div[@class='overlay-main-work']/div/div/div[1]")
-    self._new_taks_overlay_plus = (By.XPATH,
-      ".//span[@class='fa-plus']")
-    self._new_taks_overlay_title = (By.XPATH,
-      ".//header[@class='overlay-header']/h2/a")
-    self._new_taks_overlay_close_top = (By.XPATH,
-      ".//header[@class='overlay-header']/a")
-    self._new_taks_overlay_discussion = (By.XPATH,
-      ".//div[@class='overlay-discussion-board']/h2")
-    self._new_taks_overlay_msg = (By.XPATH,
-      ".//div[@class='overlay-discussion-board']/div/div/textarea")
-    self._new_taks_overlay_msg_discussion_cancel = (By.XPATH,
-      ".//div[@class='message-comment-buttons']/a")
-    self._new_taks_overlay_msg_discussion_save = (By.XPATH,
-      ".//div[@class='message-comment-buttons']/button")
-    self._new_taks_overlay_following = (By.XPATH,
-      ".//footer/div/div[2]/span")
-    self._new_taks_overlay_comp_chkbx = (By.XPATH,
-      ".//footer/div/div/div/input")
-    self._new_taks_overlay_comp_chkbx_lbl = (By.XPATH,
-      ".//footer/div/div/div/label")
-    self._new_taks_overlay_close_bottom = (By.XPATH, ".//footer/div/a")
+    self._first_column = (By.XPATH,
+      ".//div[@class='column-content']/div")
+    self._first_column_cards = (By.XPATH,
+      ".//div/div[contains(@class, 'column')][1]/div[2]/div/div[contains(@class, 'card')]")
+    self._inline_remove = (By.XPATH, ".//span")
 
   #POM Actions
 
@@ -236,13 +216,13 @@ class WorkflowPage(PlosPage):
     return self
   
   def click_add_new_card(self):
-    """ """
+    """Click on the add new card button"""
     self._get(self._add_card_button).click()
     return self
   
 
   def check_overlay(self):
-    """ """
+    """Check CSS properties of the overlay that appears when the user click on add new card"""
     card_overlay = self._get(self._add_card_overlay)
     assert card_overlay.text == 'Pick the type of card to add'
     assert 'Cabin' in card_overlay.value_of_css_property('font-family')
@@ -269,11 +249,32 @@ class WorkflowPage(PlosPage):
     assert cancel_button_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     assert cancel_button_overlay.value_of_css_property('text-align') == 'center'
     assert cancel_button_overlay.text == 'cancel'
+    # new page: isNewTask
+
+    return self
+
+  def check_new_tasks_overlay(self):
+    """On the add new task overlay, select a card"""
+    select_task = self._get(self._select_in_overlay)
     select_task.click()
     # NOTE: Must have at least one fixed item
     select_task.send_keys('Ad-hoc' + Keys.ENTER)
-    self.click_add_new_card()
-    time.sleep(10)
-    # new page: isNewTask
+    self._get(self._add_button_overlay).click()
+    time.sleep(2)
+    return self
+
+  def count_cards_first_column(self):
+    """ """
+    cards = self._gets(self._first_column_cards)
+    return len(cards)
+
+  def remove_last_task(self):
+    """ """
+    cards = self._gets(self._first_column_cards)
+    last_card = cards[-1]
+    print last_card
+    #._get(self._inline_remove)
+
+
 
     return self

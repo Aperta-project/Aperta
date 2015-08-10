@@ -31,9 +31,9 @@ export default Ember.Mixin.create({
 
   isEditable: computed('model.lockedBy', 'model.versioningMode', function() {
     if (this.get('model.versioningMode')){
-      return false
+      return false;
     } else {
-      return this.get('lockedByCurrentUser')
+      return this.get('lockedByCurrentUser');
     }
   }),
 

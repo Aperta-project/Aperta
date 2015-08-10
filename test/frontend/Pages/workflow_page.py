@@ -5,7 +5,6 @@ from Base.PlosPage import PlosPage
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 import time
-import pdb
 
 __author__ = 'fcabrales'
 
@@ -71,9 +70,19 @@ class WorkflowPage(PlosPage):
       ".//div[@class='column-content']/div")
     self._first_column_cards = (By.XPATH,
       ".//div/div[contains(@class, 'column')][1]/div[2]/div/div[contains(@class, 'card')]")
-    self._inline_remove = (By.XPATH, ".//span")
+    # Note: Not used due to not reaching this menu from automation
+    self._remove_confirmation_title = (By.XPATH, 
+        ".//div[contains(@class, 'delete-card-title')]/h1")
+    self._remove_confirmation_subtitle = (By.XPATH, 
+        ".//div[contains(@class, 'delete-card-title')]/h2")
+    self._remove_yes_button = (By.XPATH,
+        ".//div[contains(@class, 'delete-card-action-buttons')]/div/button")
+    self._remove_cancel_button = (By.XPATH,
+        ".//div[contains(@class, 'delete-card-action-buttons')]/div[2]/button")
+    # End of not used elements
 
   #POM Actions
+
 
   def validate_initial_page_elements_styles(self):
     """ """
@@ -281,7 +290,34 @@ class WorkflowPage(PlosPage):
     close = last_card.find_element_by_xpath('//div/span')
     close.click()
     time.sleep(10)
-    #ElementNotVisibleException: Message: Element is not currently visible and so may not be interacted with
+    return self
 
-    
+  def validate_confirm_delete_styles(self):
+    """
+    Styles validation for delete card
+    This is not used until finding a way to automate reaching this place
+    """
+    remove_title = self._get(self._remove_confirmation_title)
+    assert remove_title.text == "You're about to delete this card forever."
+    assert remove_title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+    assert 'Cabin' in remove_title.value_of_css_property('font-family')
+    assert remove_title.value_of_css_property('font-size') == '48px'
+    assert remove_title.value_of_css_property('font-weight') == '500'
+    remove_subtitle = self._get(self._remove_confirmation_subtitle)
+    assert remove_subtitle.text == "Are you sure?"
+    assert remove_subtitle.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+    assert 'Cabin' in remove_subtitle.value_of_css_property('font-family')
+    assert remove_subtitle.value_of_css_property('font-size') == '30px'
+    assert remove_subtitle.value_of_css_property('font-weight') == '500'
+    remove_yes = self._get(self._remove_confirmation_title)
+    assert remove_yes.text == "Yes, Delete this Card"
+    assert remove_yes.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
+    assert remove_yes.value_of_css_property('background-color') == 'rgba(57, 163, 41, 1)'
+    assert 'Cabin' in remove_yes.value_of_css_property('font-family')
+    assert remove_yes.value_of_css_property('font-size') == '14px'
+    remove_cancel = self._get(self._remove_confirmation_subtitle)
+    assert remove_cancel.text == "cancel"
+    assert remove_cancel.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    assert 'Cabin' in remove_cancel.value_of_css_property('font-family')
+    assert remove_cancel.value_of_css_property('font-size') == '14px'
     return self

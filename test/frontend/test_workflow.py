@@ -18,30 +18,28 @@ class ApertaWorkflowTest(FrontEndTest):
   """
   Self imposed AC:
      - validate page elements and styles for:
-         - XXXX
-         - XXXX
+         - WorkflowPage
+         - Adding cards
+         - Removing cards (NOT READY)
   """
   def _go_to_workflow(self):
-
+    """Internal method to reach workflow page"""
     self._select_preexisting_article()
     #self._create_article()
     create_manuscript_page = ManuscriptPage(self.getDriver())
     create_manuscript_page.click_workflow_button()
     return WorkflowPage(self.getDriver())
 
-    return self
-
-  def _test_validate_components_styles(self):
+  def test_validate_components_styles(self):
     """
-    Validates the presence of the following provided elements:
-      
+    Validates the presence of the initial page elements      
     """
     workflow_page = self._go_to_workflow()
     workflow_page.validate_initial_page_elements_styles()
     return self
 
-  def _test_headers(self):
-    """ """
+  def test_headers(self):
+    """Test headers of columns in Workflow"""
     workflow_page = self._go_to_workflow()
     # check for cancel edit
     original_header_text = workflow_page.click_column_header()
@@ -58,30 +56,27 @@ class ApertaWorkflowTest(FrontEndTest):
     return self
 
   def test_add_new_card(self):
-    """ """
+    """Testing adding a new card"""
     workflow_page = self._go_to_workflow()
     # GET URL
     time.sleep(2)
     #driver = self.getDriver()
     workflow_url = self._driver.current_url
     # Count cards in first column
-    cards = workflow_page.count_cards_first_column()
-    # DEBUGGING: 
-    workflow_page.remove_last_task()
+    start_cards = workflow_page.count_cards_first_column()
     # Test add new card
     workflow_page.click_add_new_card()
     # Elements in add new card
     workflow_page.check_overlay()
     workflow_page.check_new_tasks_overlay()
     # Going to workflow from scrach to avoid using card elements
-    # go here to the URL
-    driver.get(workflow_url)
+    self._driver.get(workflow_url)
     time.sleep(2)
-    workflow_page.remove_last_task()
-    
-    #time.sleep(10)
+    current_cards = workflow_page.count_cards_first_column()
+    # Check that there is one more card after adding a card
+    assert start_cards + 1 == current_cards
+    # NOTE: Missing deleting a new card
     return self
-
 
 
 if __name__ == '__main__':

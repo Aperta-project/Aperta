@@ -1,5 +1,9 @@
 #!/usr/bin/env python2
-
+# -*- coding: utf-8 -*-
+"""
+A class to be inherited from every page for which one is authenticated and wants to access
+the navigation menu.
+"""
 from selenium.webdriver.common.by import By
 from Base.PlosPage import PlosPage
 
@@ -34,6 +38,12 @@ class AuthenticatedPage(PlosPage):
     self._get(self._nav_toggle).click()
 
   def validate_nav_elements(self, permissions):
+    """
+    Validates the appearance of elements in the navigation menu for
+    every logged in page
+    :param permissions: username
+    :return: None
+    """
     elevated = ['jgray_flowmgr', 'jgray']
     self._get(self._nav_close)
     self._get(self._nav_title)

@@ -1,4 +1,8 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+"""
+Page Object Model for the Paper Tracker Page. Validates global and dynamic elements and their styles
+"""
 
 from selenium.webdriver.common.by import By
 from authenticated_page import AuthenticatedPage

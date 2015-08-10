@@ -1,4 +1,8 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+"""
+Page Object Model for the Login page and the Forgot Your Password page.
+"""
 
 from selenium.webdriver.common.by import By
 from Base.PlosPage import PlosPage
@@ -36,6 +40,10 @@ class LoginPage(PlosPage):
 
   # POM Actions
   def validate_initial_page_elements_styles(self):
+    """
+    Validates elements and styles of the login page and the Forgot Your Password page.
+    :return: None
+    """
     welcome_msg = self._get(self._welcome_message)
     assert welcome_msg.text == 'Welcome to PLOS'
     assert 'helvetica' in welcome_msg.value_of_css_property('font-family')
@@ -58,20 +66,35 @@ class LoginPage(PlosPage):
     self._get(self._signup_link)
 
   def enter_login_field(self, email):
-    """Enter email"""
+    """
+    Inputs the Email or Username for the test user
+    :param email: email address or username
+    :return: None
+    """
     self._get(self._login_textbox).clear()
     self._get(self._login_textbox).send_keys(email)
 
   def enter_password_field(self, password):
-    """Entering password"""
+    """
+    Inputs the password for the test user
+    :param password: password
+    :return: None
+    """
     self._get(self._password_textbox).clear()
     self._get(self._password_textbox).send_keys(password)
 
   def click_sign_in_button(self):
-    """Click Sign In button"""
+    """
+    Click the Sign-In button
+    :return: None
+    """
     self._get(self._signin_button).click()
 
   def validate_signed_out_msg(self):
+    """
+    Validate the sign out message and its style
+    :return: None
+    """
     signout_msg = self._get(self._notice_text)
     assert 'helvetica' in signout_msg.value_of_css_property('font-family')
     assert signout_msg.value_of_css_property('font-size') == '14px'
@@ -82,6 +105,10 @@ class LoginPage(PlosPage):
     assert 'Signed out successfully.' in signout_msg.text  # why is there an extra span here?
 
   def validate_reset_pw_msg(self):
+    """
+    Validate the Reset Password Sent message and its style
+    :return: None
+    """
     reset_msg = self._get(self._notice_text)
     assert 'helvetica' in reset_msg.value_of_css_property('font-family')
     assert reset_msg.value_of_css_property('font-size') == '14px'
@@ -93,6 +120,10 @@ class LoginPage(PlosPage):
            in reset_msg.text  # why is there an extra span here?
 
   def validate_invalid_login_attempt(self):
+    """
+    Validate the error message for an invalid login attempt
+    :return: None
+    """
     alert_msg = self._get(self._alert_text)
     assert 'Invalid email or password.' in alert_msg.text  # why is there an extra span here?
     assert 'helvetica' in alert_msg.value_of_css_property('font-family')
@@ -103,22 +134,41 @@ class LoginPage(PlosPage):
     assert alert_msg.value_of_css_property('background-color') == 'rgba(246, 239, 232, 1)'
 
   def enter_fyp_field(self, email):
-    """Enter email"""
+    """
+    Enters and email address for test user into the forgot your password field
+    :param email: email address
+    :return: None
+    """
     self._get(self._fyp_email_field).clear()
     self._get(self._fyp_email_field).send_keys(email)
 
   def click_sri_button(self):
-    """Click Send Reset instructions button"""
+    """
+    Initiates the Send Reset Instructions function
+    :return: None
+    """
     self._get(self._fyp_send_reset_btn).click()
 
   def open_fyp(self):
+    """
+    Opens the Forgot Your Password Page
+    :return: None
+    """
     self._get(self._forgot_pw_link).click()
 
   def close_fyp(self):
+    """
+    Closes the Forgot your Password page, returning to the main Login page
+    :return: None
+    """
     signin_btn = self._get(self._fyp_signin_btn)
     signin_btn.click()
 
   def validate_fyp_elements_styles_function(self):
+    """
+    Validates the elements and their styles for the Forgot Your Password page, including error messaging.
+    :return: None
+    """
     pw_reset_ttl = self._get(self._fyp_title)
     assert pw_reset_ttl.text == 'Forgot your password?'
     assert 'helvetica' in pw_reset_ttl.value_of_css_property('font-family')
@@ -152,6 +202,11 @@ class LoginPage(PlosPage):
     assert signin_btn.value_of_css_property('vertical-align') == 'middle'
 
   def validate_fyp_email_fmt_error(self):
+    """
+    Validates the special styling of the email field when an error occurs. The field is highlighted
+    in a light red shade.
+    :return: None
+    """
     email_field = self._get(self._fyp_email_field)
     assert email_field.value_of_css_property('border-top-color') == 'rgba(204, 204, 205, 1)'
     assert email_field.value_of_css_property('border-bottom-color') == 'rgba(204, 204, 205, 1)'
@@ -159,6 +214,10 @@ class LoginPage(PlosPage):
     assert email_field.value_of_css_property('border-right-color') == 'rgba(204, 204, 205, 1)'
 
   def click_remember_me(self):
+    """
+    Click the Remember Me checkbox, triggering a cookie to be set on Login.
+    :return: None
+    """
     self._get(self._remember_me_cb).click()
 
   def validate_remember_me(self, login, pw):
@@ -177,5 +236,9 @@ class LoginPage(PlosPage):
     assert cookie
 
   def sign_out(self):
+    """
+    After sucessful Login, opens the Nav menu and logs out.
+    :return: None
+    """
     self._get(self._loggedin_nav_toggle).click()
     self._get(self._loggedin_signout_link).click()

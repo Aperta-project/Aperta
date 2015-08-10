@@ -1,4 +1,10 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+"""
+A page model for the dashboard page that validates state-dependent element existence
+and style and functionality of the View Invitations and Create New Submission flows
+without executing an invitation accept or reject, and without a CNS creation.
+"""
 
 from selenium.webdriver.common.by import By
 from authenticated_page import AuthenticatedPage
@@ -51,6 +57,10 @@ class DashboardPage(AuthenticatedPage):
 
   # POM Actions
   def validate_initial_page_elements_styles(self):
+    """
+    Validates the static page elements existence and styles
+    :return: None
+    """
     cns_btn = self._get(self._dashboard_create_new_submission_btn)
     assert cns_btn.text.lower() == 'create new submission'
     assert 'helvetica' in cns_btn.value_of_css_property('font-family')
@@ -62,13 +72,18 @@ class DashboardPage(AuthenticatedPage):
     assert cns_btn.value_of_css_property('text-transform') == 'uppercase'
 
   def validate_invite_dynamic_content(self, username):
+    """
+    Validates the "view invites" stanza and function if present
+    :param username: username
+    :return: None
+    """
     invitation_count = self.is_invite_stanza_present(username)
     if invitation_count > 0:
       welcome_msg = self._get(self._dashboard_invite_title)
       if invitation_count == 1:
         assert welcome_msg.text == 'You have 1 invitation.', welcome_msg.text
       else:
-        assert welcome_msg.text == 'You have %s invitations.' %invitation_count, \
+        assert welcome_msg.text == 'You have %s invitations.' % invitation_count, \
                                    welcome_msg.text + ' ' + str(invitation_count)
       assert 'helvetica' in welcome_msg.value_of_css_property('font-family')
       assert welcome_msg.value_of_css_property('font-size') == '48px'
@@ -86,6 +101,11 @@ class DashboardPage(AuthenticatedPage):
       assert view_invites_btn.value_of_css_property('text-transform') == 'uppercase'
 
   def validate_manu_dynamic_content(self, username):
+    """
+    Validates the manuscript stanza dynamic display based on assigned papers and roles
+    :param username: username
+    :return: None
+    """
     welcome_msg = self._get(self._dashboard_my_subs_title)
     # Get first name for validation of dashboard welcome message
     first_name = PgSQL().query('SELECT first_name FROM users WHERE username = %s;', (username,))[0][0]
@@ -164,12 +184,23 @@ class DashboardPage(AuthenticatedPage):
 
   @staticmethod
   def is_invite_stanza_present(username):
+    """
+    Determine whether the View Invites stanza should be present for username
+    :param username: username
+    :return: Count of unaccepted invites (does not include rejected or accepted invites)
+    """
     uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
     invitation_count = PgSQL().query('SELECT COUNT(*) FROM invitations '
                                      'WHERE state = %s AND invitee_id = %s;', ('invited', uid))[0][0]
     return invitation_count
 
   def validate_view_invites(self, username):
+    """
+    Validates the display of the View Invites overlay and the dynamic presentation of the
+    current pending invitations for username.
+    :param username: username
+    :return: None
+    """
     # global elements
     modal_title = self._get(self._view_invites_title)
     assert 'helvetica' in modal_title.value_of_css_property('font-family')
@@ -220,6 +251,11 @@ class DashboardPage(AuthenticatedPage):
     time.sleep(1)
 
   def validate_create_new_submission(self):
+    """
+    Validates the function of the Create New Submissions button, and the elements and error handling
+    of the overlay that the CNS button launches.
+    :return: None
+    """
     closer = self._get(self._cns_closer)
     overlay_title = self._get(self._cns_title)
     assert overlay_title.text == 'Create a New Submission'

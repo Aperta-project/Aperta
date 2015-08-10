@@ -15,17 +15,13 @@ from Base.FrontEndTest import FrontEndTest
 from Pages.login_page import LoginPage
 from Pages.dashboard import DashboardPage
 from Pages.paper_tracker import PaperTrackerPage
-from Base.Resources import login_valid_pw, au_login, rv_login, fm_login, ae_login, he_login, sa_login, oa_login
+from Base.Resources import login_valid_pw, fm_login, he_login, sa_login, oa_login
 import random
-import time
 
-users = [ au_login,
-          rv_login,
-          fm_login,
-          ae_login,
-          he_login,
+users = [fm_login,
+         he_login,
+         oa_login,
          sa_login,
-         oa_login
          ]
 
 

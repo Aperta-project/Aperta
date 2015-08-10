@@ -86,9 +86,11 @@
     </div>
 
     <div class="versions {{if view.versionsVisible "active"}}">
-      {{versioning-bar
-        paper=model
-      }}
+      {{#if view.versionsVisible}}
+        {{versioning-bar
+          paper=model
+        }}
+      {{/if}}
     </div>
   </div>
 </div>

@@ -1,5 +1,7 @@
-#versioning-bar2 {
+#versioning-bar {
   width: 100%;
+  float: left;
+  position: relative;
   display: inline-block;
   vertical-align: text-top;
   select {
@@ -8,85 +10,7 @@
   }
 }
 
-.bar-item2 {
-  width: 65%;
+.bar-item {
+  width: $tahi-paper-width;
   margin: auto;
-}
-
-#versioning-bar {
-  position: fixed;
-  height: 0px;
-  top: 60px;
-  left: 0px;
-  width: 100%;
-  font-size: 12px;
-  z-index: 99;
-
-  &.versioning-mode-open {
-    height: 34px;
-    background-color: #fff;
-  }
-
-  .versioning-bar-limit {
-    position: relative;
-    margin: 0 auto;
-    max-width: 1120px;
-
-    .versioning-bar-background {
-      transition: left 0.5s;
-      @include clearfix;
-      position: absolute;
-      left: 0px;
-      margin: 7px 0;
-      background-color: #fff;
-      width: 100%;
-      height: 20px;
-    }
-
-    &.versioning-mode-closed {
-      .versioning-bar-background {
-        left: 635px;
-        width: 200px;
-        padding-left: 15px;
-        border-left: 1px solid #ccc;
-      }
-    }
-
-    &.versioning-mode-open {
-      padding-left: 0px;
-    }
-
-    .versioning-mode-button {
-      font-size: 10px;
-      float: left;
-      cursor: pointer;
-      padding-top: 6px;
-      text-align: center;
-      text-transform: uppercase;
-      line-height: 1;
-      color: $tahi-green;
-      font-weight: bold;
-
-      &:hover {
-        color: $tahi-green-dark;
-        text-decoration: none;
-      }
-
-      .fa-large {
-        font-size: 14px;
-        margin: -3px 7px 0 0;
-        float: left;
-      }
-    }
-
-    .bar-item {
-      margin: 0 10px;
-      display: inline-block;
-      vertical-align: text-top;
-      select {
-        margin-left: 5px;
-        width: 200px;
-      }
-    }
-  }
 }

@@ -5,11 +5,8 @@ export default {
     let data = window.currentUserData;
     if($.isEmptyObject(data)) { return; }
 
-    delete data.affiliations;
-    delete data.user.affiliation_ids;
-
     let store = instance.container.lookup('service:store');
-    store.push('user', data.user);
+    store.pushPayload(data);
 
     let user = store.getById('user', data.user.id);
     instance.container.register('user:current', user, {

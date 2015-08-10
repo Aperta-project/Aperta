@@ -56,7 +56,7 @@ class ApertaPaperTrackerTest(FrontEndTest):
     dashboard_page.click_paper_tracker_link()
 
     pt_page = PaperTrackerPage(self.getDriver())
-    pt_page.validate_initial_page_elements_styles()
+    pt_page.validate_initial_page_elements_styles(user_type)
     pt_page.click_left_nav()
     pt_page.validate_nav_elements(user_type)
 

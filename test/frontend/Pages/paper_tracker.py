@@ -4,6 +4,7 @@
 Page Object Model for the Paper Tracker Page. Validates global and dynamic elements and their styles
 """
 
+from Base.PostgreSQL import PgSQL
 from selenium.webdriver.common.by import By
 from authenticated_page import AuthenticatedPage
 
@@ -29,9 +30,19 @@ class PaperTrackerPage(AuthenticatedPage):
 
 
   # POM Actions
-  def validate_initial_page_elements_styles(self):
+  def validate_initial_page_elements_styles(self, username):
     title = self._get(self._paper_tracker_title)
+    # The following call to validate consistency in title styles across the app
+    # fails due to https://www.pivotaltracker.com/n/projects/880854/stories/100948640
+    # self.validate_title_style(title)
+    first_name = PgSQL().query('SELECT first_name FROM users WHERE username = %s;', (username,))[0][0]
+    assert title.text == 'Hello, %s!' % first_name, 'Incorrect Tracker Title: ' + title.text
     subhead = self._get(self._paper_tracker_subhead)
+    assert 'helvetica' in subhead.value_of_css_property('font-family')
+    assert subhead.value_of_css_property('font-size') == '18px'
+    assert subhead.value_of_css_property('line-height') == '25.7167px'
+    assert subhead.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+    #assert subhead.text == 'You have ' + paper_count + ' papers in your tracker.'
     table = self._get(self._paper_tracker_table)
     title_th = self._get(self._paper_tracker_table_title_th)
     papid_th = self._get(self._paper_tracker_table_paper_id_th)

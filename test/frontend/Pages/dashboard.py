@@ -6,10 +6,11 @@ and style and functionality of the View Invitations and Create New Submission fl
 without executing an invitation accept or reject, and without a CNS creation.
 """
 
+from Base.PostgreSQL import PgSQL
 from selenium.webdriver.common.by import By
 from authenticated_page import AuthenticatedPage
 import time
-from Base.PostgreSQL import PgSQL
+
 
 __author__ = 'jgray@plos.org'
 
@@ -63,13 +64,7 @@ class DashboardPage(AuthenticatedPage):
     """
     cns_btn = self._get(self._dashboard_create_new_submission_btn)
     assert cns_btn.text.lower() == 'create new submission'
-    assert 'helvetica' in cns_btn.value_of_css_property('font-family')
-    assert cns_btn.value_of_css_property('font-size') == '14px'
-    assert cns_btn.value_of_css_property('font-weight') == '400'
-    assert cns_btn.value_of_css_property('line-height') == '20px'
-    assert cns_btn.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
-    assert cns_btn.value_of_css_property('text-align') == 'center'
-    assert cns_btn.value_of_css_property('text-transform') == 'uppercase'
+    self.validate_green_backed_button_style(cns_btn)
 
   def validate_invite_dynamic_content(self, username):
     """
@@ -85,20 +80,9 @@ class DashboardPage(AuthenticatedPage):
       else:
         assert welcome_msg.text == 'You have %s invitations.' % invitation_count, \
                                    welcome_msg.text + ' ' + str(invitation_count)
-      assert 'helvetica' in welcome_msg.value_of_css_property('font-family')
-      assert welcome_msg.value_of_css_property('font-size') == '48px'
-      assert welcome_msg.value_of_css_property('font-weight') == '500'
-      assert welcome_msg.value_of_css_property('line-height') == '52.8px'
-      assert welcome_msg.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+      self.validate_title_style(welcome_msg)
       view_invites_btn = self._get(self._dashboard_view_invitations_btn)
-      assert view_invites_btn.text.lower() == 'view invitations'
-      assert 'helvetica' in view_invites_btn.value_of_css_property('font-family')
-      assert view_invites_btn.value_of_css_property('font-size') == '14px'
-      assert view_invites_btn.value_of_css_property('font-weight') == '400'
-      assert view_invites_btn.value_of_css_property('line-height') == '20px'
-      assert view_invites_btn.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
-      assert view_invites_btn.value_of_css_property('text-align') == 'center'
-      assert view_invites_btn.value_of_css_property('text-transform') == 'uppercase'
+      self.validate_green_backed_button_style(view_invites_btn)
 
   def validate_manu_dynamic_content(self, username):
     """
@@ -127,11 +111,7 @@ class DashboardPage(AuthenticatedPage):
              welcome_msg.text
     else:
       assert 'Hi, ' + first_name + '. You have no manuscripts.' in welcome_msg.text, welcome_msg.text
-    assert 'helvetica' in welcome_msg.value_of_css_property('font-family')
-    assert welcome_msg.value_of_css_property('font-size') == '48px'
-    assert welcome_msg.value_of_css_property('font-weight') == '500'
-    assert welcome_msg.value_of_css_property('line-height') == '52.8px'
-    assert welcome_msg.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+    self.validate_title_style(welcome_msg)
     if manuscript_count > 0:
       papers = self._gets(self._dashboard_paper_title)
       count = 0
@@ -203,6 +183,10 @@ class DashboardPage(AuthenticatedPage):
     """
     # global elements
     modal_title = self._get(self._view_invites_title)
+    # The following call will fail because of an inconsistent implementation of the style of this heading
+    # thus for the time being, I am using the one off validations. These should be removed when the bug
+    # is fixed.
+    # self.validate_title_style(modal_title)
     assert 'helvetica' in modal_title.value_of_css_property('font-family')
     assert modal_title.value_of_css_property('font-size') == '48px'
     assert modal_title.value_of_css_property('font-weight') == '500'
@@ -268,6 +252,7 @@ class DashboardPage(AuthenticatedPage):
     paper_type_chooser = self._get(self._cns_paper_type_chooser_div).find_element(*self._cns_chooser_chosen)
     assert paper_type_chooser.text == 'Choose Paper Type'
     create_btn = self._get(self._cns_action_buttons_div).find_element(*self._cns_create)
+    self.validate_green_backed_button_style(create_btn)
     create_btn.click()
     self._get(self._cns_error_div)
     error_msgs = self._gets(self._cns_error_message)

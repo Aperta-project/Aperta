@@ -13,17 +13,17 @@ __author__ = 'jgray@plos.org'
 from Base.Decorators import MultiBrowserFixture
 from Base.FrontEndTest import FrontEndTest
 from Pages.login_page import LoginPage
-from Pages.authenticated_page import AuthenticatedPage
+from Pages.dashboard import DashboardPage
 from Pages.paper_tracker import PaperTrackerPage
 from Base.Resources import login_valid_pw, au_login, rv_login, fm_login, ae_login, he_login, sa_login, oa_login
 import random
 import time
 
-users = [# au_login,
-#          rv_login,
-#          fm_login,
-#          ae_login,
-#          he_login,
+users = [ au_login,
+          rv_login,
+          fm_login,
+          ae_login,
+          he_login,
          sa_login,
          oa_login
          ]
@@ -55,9 +55,9 @@ class ApertaPaperTrackerTest(FrontEndTest):
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
 
-    authenticated_page = AuthenticatedPage(self.getDriver())
-    authenticated_page.click_left_nav()
-    authenticated_page.click_paper_tracker_link()
+    dashboard_page = DashboardPage(self.getDriver())
+    dashboard_page.click_left_nav()
+    dashboard_page.click_paper_tracker_link()
 
     pt_page = PaperTrackerPage(self.getDriver())
     pt_page.validate_initial_page_elements_styles()

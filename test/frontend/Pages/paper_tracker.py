@@ -34,20 +34,3 @@ class PaperTrackerPage(AuthenticatedPage):
     subdate_th = self._get(self._paper_tracker_table_submit_date_th)
     paptype_th = self._get(self._paper_tracker_table_paper_type_th)
     members_th = self._get(self._paper_tracker_table_members_th)
-
-  def validate_nav_elements(self, permissions):
-    elevated = ['jgray_flowmgr', 'jgray']
-    self._get(self._nav_close)
-    self._get(self._nav_title)
-    self._get(self._nav_profile_link)
-    self._get(self._nav_profile_img)
-    self._get(self._nav_dashboard_link)
-    self._get(self._nav_signout_link)
-    self._get(self._nav_feedback_link)
-    # Must have flow mgr, admin or superadmin
-    if permissions in elevated:
-      self._get(self._nav_flowmgr_link)
-      self._get(self._nav_paper_tracker_link)
-    # Must have admin or superadmin
-    if permissions == ('jgray_oa', 'jgray'):
-      self._get(self._nav_admin_link)

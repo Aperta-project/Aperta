@@ -7,7 +7,7 @@ PaperReviewerTask = Task.extend
   reviewers: DS.hasMany 'user'
   relationshipsToSerialize: ['reviewers', 'participants', 'letter']
   letter: a('string')
-  editInviteTemplate: (->
+  invitationTemplate: (->
     JSON.parse(@get('letter'))
   ).property 'letter'
 

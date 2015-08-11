@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 A class to be inherited from every page for which one is authenticated and wants to access
-the navigation menu.
+the navigation menu also vital for ensuring style consistency across the application.
 """
 from selenium.webdriver.common.by import By
 from Base.PlosPage import PlosPage
@@ -101,7 +101,8 @@ class AuthenticatedPage(PlosPage):
     self._get(self._nav_feedback_link).click()
     return self
 
-  def validate_title_style(self, title):
+  @staticmethod
+  def validate_title_style(title):
     """
     Ensure consistency in rendering page and overlay main headings across the application
     :param title: title to validate
@@ -113,10 +114,11 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('line-height') == '52.8px'
     assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
 
-  def validate_green_backed_button_style(self, button):
+  @staticmethod
+  def validate_green_backed_button_style(button):
     """
     Ensure consistency in rendering page and overlay green-backed, white text buttons across the application
-    :param title: button to validate
+    :param button: button to validate
     :return: None
     """
     assert 'helvetica' in button.value_of_css_property('font-family')
@@ -126,3 +128,18 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
     assert button.value_of_css_property('text-align') == 'center'
     assert button.value_of_css_property('text-transform') == 'uppercase'
+
+  @staticmethod
+  def validate_table_heading_style(th):
+    """
+    Ensure consistency in rendering table headings across the application
+    :param th: table heading to validate
+    :return: None
+    """
+    assert 'helvetica' in th.value_of_css_property('font-family')
+    assert th.value_of_css_property('font-size') == '14px'
+    assert th.value_of_css_property('font-weight') == '700'
+    assert th.value_of_css_property('line-height') == '20px'
+    assert th.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+    assert th.value_of_css_property('text-align') == 'left'
+    assert th.value_of_css_property('vertical-align') == 'top'

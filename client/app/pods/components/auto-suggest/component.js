@@ -162,8 +162,6 @@ export default Ember.Component.extend({
       Ember.run.debounce(this, this.search, this.get('debounce'));
     }
 
-    this.sendAction('inputChanged', this.get('resultText'));
-
     this.set('searchAllowed', true);
   }),
 
@@ -183,6 +181,8 @@ export default Ember.Component.extend({
 
         this.set('highlightedItem', null);
         this.set('searchResults', null);
+      } else {
+        this.sendAction('inputChanged', this.get('resultText'));
       }
     });
   }),

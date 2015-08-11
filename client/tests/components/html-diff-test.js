@@ -1,5 +1,5 @@
 import { test, moduleForComponent } from 'ember-qunit';
-import startApp from '../helpers/start-app';
+
 
 moduleForComponent('html-diff', 'Unit: components/html-diff', {
   needs: [],
@@ -33,21 +33,22 @@ test("It can diff a single paragraph of two sentences", function(assert) {
   );
 });
 
-test("forceValidHTML adds pairs of elements to `tokens` based on `element`", function(assert) {
-  var tokens =  ["a", "b", "c"];
-  this.component.forceValidHTML($("<p>Grandiose</p>")[0], tokens);
+test("forceValidHTML adds pairs of elements to `tokens`", function(assert) {
+       var tokens =  ["a", "b", "c"];
+       this.component.forceValidHTML($("<p>Grandiose</p>")[0], tokens);
 
-  assert.deepEqual(
-    tokens,
-    [
-      "<fake-open-p></fake-open-p>",
-      "a", "b", "c",
-      "<fake-close-p></fake-close-p>"
-    ]
-  );
-});
+       assert.deepEqual(
+         tokens,
+         [
+           "<fake-open-p></fake-open-p>",
+           "a", "b", "c",
+           "<fake-close-p></fake-close-p>"
+         ]
+       );
+     }
+);
 
-test("unForceValidHTML replaces pairs of fake- elements with real ones", function(assert) {
+test("unForceValidHTML replaces fake- elts with real ones", function(assert) {
   var fakes = "<fake-open-p></fake-open-p>abc<fake-close-p></fake-close-p>";
 
   assert.equal(
@@ -71,14 +72,14 @@ test("shouldRecur returns false if the node is a <figure>", function(assert) {
 });
 
 test("tokenizeElement breaks sentences into spans", function(assert) {
-  var para = $("<p>Elucidate the prognistication. Deviate from supposition.</p>")[0];
+  var para = $("<p>Elucidate the pingoal. Deviate from supposition.</p>")[0];
 
   assert.deepEqual(
     this.component.tokenizeElement(para),
     [
       "<fake-open-p></fake-open-p>",
       [
-        "<span>Elucidate the prognistication</span>",
+        "<span>Elucidate the pingoal</span>",
         "<span>. </span>",
         "<span>Deviate from supposition</span>",
         "<span>.</span>",
@@ -98,7 +99,7 @@ test("tokenizeElement leaves figures as atoms", function(assert) {
   );
 });
 
-test("addDiffStylingClass adds 'added' class to added chunks", function(assert) {
+test("addDiffStylingClass adds class to added chunks", function(assert) {
   assert.equal(
     this.component.addDiffStylingClass({
       value: "<div>Defy the rails on which the world rides.</div>",
@@ -108,7 +109,7 @@ test("addDiffStylingClass adds 'added' class to added chunks", function(assert) 
   );
 });
 
-test("addDiffStylingClass adds 'removed' class to added chunks", function(assert) {
+test("addDiffStylingClass adds class to removed chunks", function(assert) {
   assert.equal(
     this.component.addDiffStylingClass({
       value: "<div>We who are about to die would rather not.</div>",

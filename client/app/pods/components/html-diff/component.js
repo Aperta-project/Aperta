@@ -89,10 +89,14 @@ export default Ember.Component.extend({
   unForceValidHTML: function(value) {
     // Remove the fake tag pairs
     _.each(this.tokenizeInsideElements, (elt) => {
-      value = value.replace((new RegExp("<fake-open-" + elt + ".*?>")), "<" + elt + ">");
-      value = value.replace((new RegExp("<fake-close-" + elt + ".*?>")), "</" + elt + ">");
-      value = value.replace((new RegExp("</fake-open-" + elt + ">")), "");
-      value = value.replace((new RegExp("</fake-close-" + elt + ">")), "");
+      value = value.replace(
+        (new RegExp("<fake-open-" + elt + ".*?>")), "<" + elt + ">");
+      value = value.replace(
+        (new RegExp("<fake-close-" + elt + ".*?>")), "</" + elt + ">");
+      value = value.replace(
+        (new RegExp("</fake-open-" + elt + ">")), "");
+      value = value.replace(
+        (new RegExp("</fake-close-" + elt + ">")), "");
     });
     return value;
   },
@@ -100,10 +104,8 @@ export default Ember.Component.extend({
   shouldRecur(element) {
     // Is this an element we want to diff inside (like a <p>), or
     // should we treat it atomically -- like a figure, or an equation?
-    if (element.nodeName && !this.isTextNode(element)) {
-      return this.tokenizeInsideElements.indexOf(element.nodeName.toLowerCase()) >= 0;
-    }
-    return false;
+    let name = element.nodeName.toLowerCase();
+    return this.tokenizeInsideElements.indexOf(name) >= 0;
   },
 
   isTextNode(element) {
@@ -111,16 +113,17 @@ export default Ember.Component.extend({
   },
 
   tokenizeElement: function(element) {
-    if (this.shouldRecur(element)) {
+    if (this.isTextNode(element)) {
+      // Split the text into sentence fragments.
+      let chunks = element.textContent.split(this.sentenceDelimiter);
+      return _.map(chunks, (e) => { return "<span>" + e + "</span>"; });
+
+    } else if (this.shouldRecur(element)) {
+      // Recurse within this element
       let elements = $(element).contents().toArray();
       let tokens = _.map(elements, this.tokenizeElement, this);
       this.forceValidHTML(element, tokens);
       return tokens;
-
-    } else if (this.isTextNode(element)) {
-      // Split the text into sentence fragments.
-      let chunks = element.textContent.split(this.sentenceDelimiter);
-      return _.map(chunks, (e) => { return "<span>" + e + "</span>"; });
 
     } else {
       return element.outerHTML;

@@ -1,7 +1,7 @@
 <div class='container'>
   <div class='greeting'>
     <p>
-      Hello, <%= @invitee.full_name %>. 
+      Hello <%= @invitee.full_name %>,
     </p>
     <p class='message'>
       You've been invited to be a reviewer on a manuscript
@@ -33,7 +33,7 @@
       "<%= @paper.display_title %>"
     </div>
     <div class='paper-abstract'>
-      <%= @paper.abstract %>
+      <%= simple_format @paper.abstract %>
     </div>
   </div>
 </div>

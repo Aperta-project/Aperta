@@ -1,7 +1,4 @@
 <div class='container'>
-  <div class='greeting'>
-    A review of "<%= @paper.display_title %>" has been completed
-  </div>
   <hr>
   <div class='paper-info'>
     <div class='journal-info'>
@@ -18,14 +15,19 @@
     </p>
     <p class='message'>
       A review of "<%= @paper.display_title %>" has been completed.
-      Visit this link to view the Reviewer Report in <%= app_name %>:
-      <%= link_to client_paper_task_url(@paper, @task), client_paper_task_url(@paper, @task) %>
-    </p>
+  </div>
+  <div class='footer'>
+    <a class='button' href='<%= client_paper_task_url(@paper, @task) %>' target='_blank'>
+      View Reviewer Report in <%= app_name %>
+    </a>
+    <div class='signature'>
+      <p>
+        Sincerely,
+      </p>
+      <p>
+        <%= @paper.journal.name %> Team
+      </p>
+    </div>
   </div>
   <hr>
-  <div class='footer'>
-    Sincerely,
-    <br>
-    <%= @paper.journal.name %> Team
-  </div>
 </div>

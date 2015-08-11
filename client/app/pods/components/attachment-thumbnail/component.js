@@ -11,6 +11,7 @@ export default Ember.Component.extend({
    */
   attachment: null,
 
+  confidentiality: false,
   destroyState: false,
   previewState: false,
   editState: false,

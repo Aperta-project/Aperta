@@ -26,7 +26,7 @@ describe Invitation do
 
   describe '#destroy' do
     it "calls #after_destroy hook" do
-      expect(task).to receive(:invitation_rescinded).with paper_id: invitation.paper.id, invitee_id: invitation.invitee.id
+      expect(task).to receive(:invitation_rescinded).with invitation
       invitation.destroy!
     end
   end
@@ -80,6 +80,28 @@ describe Invitation do
       invitation.run_callbacks(:commit)
       expect(invitation.invited?).to be_truthy
       expect(invitation.rejected?).to be_falsey
+    end
+  end
+
+  describe "#recipient_name" do
+    let(:invitee){ FactoryGirl.build(:user, first_name: "Ben", last_name: "Howard")}
+
+    before do
+      invitation.invitee = invitee
+      invitation.email = "ben.howard@example.com"
+    end
+
+    context "and there is an invitee" do
+      it "returns the's invitee's full_name" do
+        expect(invitation.recipient_name).to eq("Ben Howard")
+      end
+    end
+
+    context "and there is no invitee" do
+      it "returns the email that the invitation is for" do
+        invitation.invitee = nil
+        expect(invitation.recipient_name).to eq("ben.howard@example.com")
+      end
     end
   end
 end

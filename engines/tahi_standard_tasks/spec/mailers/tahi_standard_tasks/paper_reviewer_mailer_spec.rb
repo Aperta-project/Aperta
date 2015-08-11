@@ -8,7 +8,7 @@ shared_examples_for 'an invitation notification email' do |email_identifier_word
 
   it "sends an invitation email to the invitee" do
     expect(email.to.length).to eq 1
-    expect(email.to.first).to eq invitation.invitee.email
+    expect(email.to.first).to eq invitation.email
   end
 
   specify { expect(email.body).to match(/#{task.paper.display_title}/) }
@@ -42,7 +42,16 @@ describe TahiStandardTasks::PaperReviewerMailer do
   end
 
   describe ".notify_rescission" do
-    let(:email) { described_class.notify_rescission paper_id: invitation.paper.id, invitee_id: invitation.invitee.id }
+    let(:invitation){ create :invitation, task: task, email: "foo@bar.com" }
+
+    let(:email) do
+      described_class.notify_rescission(
+        recipient_email: invitation.email,
+        recipient_name: invitation.invitee.full_name,
+        paper_id: invitation.paper.id
+      )
+    end
+
     it_behaves_like 'an invitation notification email', email_identifier_word: 'rescinded'
 
     describe "email content and formatting" do

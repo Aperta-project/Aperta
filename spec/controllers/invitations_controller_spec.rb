@@ -92,7 +92,7 @@ describe InvitationsController do
     let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task) }
 
     it "initiates the task callback" do
-      expect_any_instance_of(InvitableTask).to receive(:invitation_rescinded).with(code: invitation.code)
+      expect_any_instance_of(InvitableTask).to receive(:invitation_rescinded).with(invitation)
       delete(:destroy, {
         format: "json",
         id: invitation.id

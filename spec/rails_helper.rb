@@ -6,6 +6,7 @@ require 'spec_helper'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'capybara/rspec'
+require "email_spec"
 require 'sidekiq/testing'
 require 'pusher-fake/support/rspec'
 
@@ -71,6 +72,8 @@ RSpec.configure do |config|
   config.include TahiHelperMethods
   config.extend TahiHelperClassMethods
   config.include Warden::Test::Helpers
+  config.include(EmailSpec::Helpers)
+  config.include(EmailSpec::Matchers)
 
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation, except: ['task_types'])

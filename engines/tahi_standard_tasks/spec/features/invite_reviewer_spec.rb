@@ -24,7 +24,7 @@ feature "Invite Reviewer", js: true do
     manuscript_page = dashboard_page.view_submitted_paper paper
     manuscript_page.view_card task.title do |overlay|
       overlay.paper_reviewers = [reviewer1]
-      expect(overlay).to have_reviewers reviewer1
+      expect(overlay).to have_reviewers reviewer1.full_name
     end
   end
 

@@ -16,13 +16,20 @@ class InviteReviewersOverlay < CardOverlay
     end
   end
 
+  def invite_new_reviewer(email)
+    fill_in "Reviewer", with: email
+    find('.compose-invite-button').click
+    find('.invite-reviewer-button').click
+    find('table .active-invitations .invitee-full-name', text: email)
+  end
+
   def paper_reviewers
     all('.invitee-full-name').map &:text
   end
 
   def has_reviewers?(*reviewers)
     reviewers.all? do |reviewer|
-      has_reviewer? reviewer.full_name
+      has_reviewer?(reviewer)
     end
   end
 

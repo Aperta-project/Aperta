@@ -46,8 +46,8 @@ export default Ember.Mixin.create({
   }),
 
   taskSorting:         ['phase.position', 'position'],
-  sortedMetadataTasks: Ember.computed.sort('metadataTasks',   'taskSorting'),
-  sortedAssignedTasks: Ember.computed.sort('assignedTasks', 'taskSorting'),
+  sortedMetadataTasks: Ember.computed.sort('metadataTasks.@each.position', 'taskSorting'),
+  sortedAssignedTasks: Ember.computed.sort('assignedTasks.@each.position', 'taskSorting'),
 
   noTasks: computed('assignedTasks.@each', 'metadataTasks.@each', function() {
     return [this.get('assignedTasks'), this.get('metadataTasks')].every((taskGroup)=> {

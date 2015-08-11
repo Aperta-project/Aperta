@@ -7,7 +7,7 @@
 
 <div class="column-content">
   <div class="sortable {{if noCards "sortable-no-cards"}}" data-phase-id="{{unbound phase.id}}">
-    {{#each phase.tasks as |task|}}
+    {{#each sortedTasks as |task|}}
       {{card-preview paper=paper
                      task=task
                      canRemoveCard=true

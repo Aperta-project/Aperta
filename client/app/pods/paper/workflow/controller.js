@@ -26,8 +26,17 @@ export default Ember.Controller.extend({
   },
 
   actions: {
-    changePhaseForTask(task, targetPhaseId) {
-      this.store.getById('phase', targetPhaseId).get('tasks').addObject(task);
+    changePhaseForTask(taskId, targetPhaseId, taskPositions) {
+      let new_phase = this.store.getById('phase', targetPhaseId);
+      new_phase.set('taskPositions', taskPositions);
+
+      let res = RESTless.putModel(new_phase, '/move_task_to_phase', {
+        task_id: taskId,
+        task_positions: taskPositions,
+      });
+
+      let task = this.store.findTask(taskId);
+      task.set('phase', this.store.getById('phase', targetPhaseId));
     },
 
     addPhase(position) {

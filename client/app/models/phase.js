@@ -10,7 +10,8 @@ export default DS.Model.extend({
 
   name: DS.attr('string'),
   position: DS.attr('number'),
-  task_positions: DS.attr(''),
+  taskPositions: DS.attr(''),
 
-  noTasks: Ember.computed.empty('tasks.[]')
+  noTasks: Ember.computed.empty('tasks.[]'),
+
 });

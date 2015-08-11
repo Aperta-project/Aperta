@@ -121,7 +121,9 @@ Tahi::Application.routes.draw do
     end
     resources :participations, only: [:create, :show, :destroy]
     resources :phase_templates
-    resources :phases, only: [:create, :update, :show, :destroy]
+    resources :phases, only: [:create, :update, :show, :destroy] do
+      put :move_task_to_phase, on: :member
+    end
     resources :question_attachments, only: [:destroy]
     resources :questions, only: [:create, :update]
     resources :roles, only: [:show, :create, :update, :destroy]

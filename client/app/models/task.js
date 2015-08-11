@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import DS from 'ember-data';
 import CardThumbnailObserver from 'tahi/mixins/models/card-thumbnail-observer';
 
@@ -31,9 +32,13 @@ export default DS.Model.extend(CardThumbnailObserver, {
   isMetadataTask: DS.attr('boolean'),
   isSubmissionTask: DS.attr('boolean'),
   paperTitle: DS.attr('string'),
-  position: DS.attr('number'),
   qualifiedType: DS.attr('string'),
   role: DS.attr('string'),
   title: DS.attr('string'),
-  type: DS.attr('string')
+  type: DS.attr('string'),
+
+  position: Ember.computed('phase.taskPositions.[]', function() {
+    return this.get('phase.taskPositions').indexOf(this.get('id'));
+  }),
+
 });

@@ -7,4 +7,8 @@ class PhaseSerializer < ActiveModel::Serializer
     object.tasks_by_position
   end
 
+  def task_positions
+    object.task_positions.map(&:to_s)
+  end
+
 end

@@ -4,7 +4,6 @@
 // Styleguide UI.ControlBar
 
 .control-bar {
-  overflow: hidden;
   @include position(fixed, 0px 0px auto 0px);
   width: 100%;
   height: $tahi-control-bar-height;
@@ -20,7 +19,6 @@
 }
 
 .control-bar-inner-wrapper {
-  overflow: hidden;
   position: relative;
   height: 60px;
   margin: 0 auto;
@@ -150,6 +148,22 @@
 .control-bar-message {
   padding: 2px 5px;
   border-radius: 5px;
+}
+
+ul.dropdown-menu {
+  margin-right: 5px;
+  padding: 5px;
+
+  a {
+    text-transform: none;
+  }
+  li {
+    padding: 5px;
+
+    .fa {
+      padding-right: 10px;
+    }
+  }
 }
 
 .manuscript-manager-icon {

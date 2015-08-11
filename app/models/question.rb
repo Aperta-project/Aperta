@@ -4,4 +4,12 @@ class Question < ActiveRecord::Base
   has_one :question_attachment, dependent: :destroy
 
   validates :ident, presence: true
+
+  validate :verify_from_task
+
+  private
+
+  def verify_from_task
+    task.can_change?(self)
+  end
 end

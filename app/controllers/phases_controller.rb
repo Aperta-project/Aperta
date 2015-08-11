@@ -9,7 +9,7 @@ class PhasesController < ApplicationController
   end
 
   def update
-    phase = Phase.find params[:id]
+    phase = Phase.find(params[:id])
     phase.update_attributes(update_phase_params)
     respond_with phase
   end
@@ -20,7 +20,7 @@ class PhasesController < ApplicationController
   end
 
   def destroy
-    phase = Phase.find params[:id]
+    phase = Phase.find(params[:id])
     if phase.tasks.empty? && phase.destroy
       render json: true
     else

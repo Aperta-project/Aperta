@@ -50,10 +50,9 @@ module 'Integration: Admin Test',
     ]
 
 test 'site admin can see the Add New Journal button', (assert) ->
-  Ember.run =>
-    getCurrentUser().set('siteAdmin', true)
-
-  visit("/admin/")
+  visit("/admin/").then ->
+    Ember.run =>
+      getCurrentUser().set('siteAdmin', true)
 
   andThen ->
     assert.ok find('.journal-thumbnail').length, 'Journals visible'

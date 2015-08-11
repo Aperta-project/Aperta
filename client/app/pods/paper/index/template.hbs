@@ -13,7 +13,11 @@
         <h2 id="paper-title" class="manuscript-title-and-placeholder">
           {{{model.title}}}
         </h2>
-        <div id="paper-body">{{{model.versionedBody}}}</div>
+        <div id="paper-body">
+          {{html-diff
+            comparisonText=model.comparisonText
+            viewingText=model.viewingText}}
+        </div>
       </article>
     </main>
   </div>

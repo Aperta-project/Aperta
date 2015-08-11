@@ -14,6 +14,8 @@ export default Ember.Component.extend({
   // These are elements that contain sentences worth diffing individually.
   tokenizeInsideElements: ['p'],
 
+  renderEquations: true,
+
   sentenceDelimiter: /([.!?,;]\s*)/g,
 
   manuscript: function() {
@@ -87,8 +89,8 @@ export default Ember.Component.extend({
   unForceValidHTML: function(value) {
     // Remove the fake tag pairs
     _.each(this.tokenizeInsideElements, (elt) => {
-      value = value.replace((new RegExp("<fake-open-" + elt + ".*?>")), "</" + elt + ">");
-      value = value.replace((new RegExp("<fake-close-" + elt + ".*?>")), "<" + elt + ">");
+      value = value.replace((new RegExp("<fake-open-" + elt + ".*?>")), "<" + elt + ">");
+      value = value.replace((new RegExp("<fake-close-" + elt + ".*?>")), "</" + elt + ">");
       value = value.replace((new RegExp("</fake-open-" + elt + ">")), "");
       value = value.replace((new RegExp("</fake-close-" + elt + ">")), "");
     });
@@ -125,20 +127,23 @@ export default Ember.Component.extend({
     }
   },
 
-  // MATHJAX (for rendering equations):
+  // MATHJAX (for rendering equations).
 
   loadScripts: function() {
-    let scripts = [
-      '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
-    ];
+    if (this.renderEquations) {
+      let scripts = [
+        '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+      ];
 
-    LazyLoader.loadScripts(scripts);
+      LazyLoader.loadScripts(scripts);
+      this.addObserver('manuscript', this, 'refreshEquations');
+    }
   }.on('didInsertElement'),
 
 
-  renderEquations: function() {
+  refreshEquations: function() {
     Ember.run.next(() => {
       MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
     });
-  }.observes('manuscript').on('init')
+  }
 });

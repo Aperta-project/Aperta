@@ -8,7 +8,7 @@ import RESTless from 'tahi/services/rest-less';
  *                 parseResponseFunction=parseUserSearchResponse
  *                 itemDisplayTextFunction=something
  *                 itemSelected="userSelected"
- *                 unknownItemSelected="newUserSelected"
+ *                 inputChanged="inputChanged"
  *                 as |user|}}
  *   {{user.fullName}} - {{user.email}}
  * {{/auto-suggest}}

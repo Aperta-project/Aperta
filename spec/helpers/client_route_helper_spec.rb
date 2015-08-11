@@ -10,6 +10,11 @@ describe ClientRouteHelper do
       url = client_dashboard_url
       expect(url).to eq("http://test.host/")
     end
+
+    it "passes URL options thru" do
+      url = client_dashboard_url(code: "123")
+      expect(url).to eq("http://test.host/?code=123")
+    end
   end
 
   describe "#client_paper_task_url" do

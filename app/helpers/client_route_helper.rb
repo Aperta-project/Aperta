@@ -1,7 +1,7 @@
 module ClientRouteHelper
 
-  def client_dashboard_url
-    root_url
+  def client_dashboard_url(*args)
+    root_url(*args)
   end
 
   def client_paper_task_url(paper, task)

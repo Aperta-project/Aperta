@@ -21,25 +21,5 @@ export default Ember.Component.extend({
 
   setInitialVersion: function() {
     this.set('selectedVersion', this.get('paper.versions').slice(-1).pop());
-  }.on('init'),
-
-  versioningModeTransition: Ember.computed.or(
-    'transitioning',
-    'versioningMode'
-  ),
-
-  actions: {
-    openVersioningMode() {
-      this.set('transitioning', true);
-
-      Ember.run.later(()=>{
-        this.set('versioningMode', true);
-        this.set('transitioning', false);
-      }, 500);
-    },
-
-    closeVersioningMode() {
-      this.set('versioningMode', false);
-    }
-  }
+  }.on('init')
 });

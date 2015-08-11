@@ -29,7 +29,7 @@
                   placeholder="Find reviewer by name or email"
                   parseResponseFunction=parseUserSearchResponse
                   itemSelected="didSelectReviewer"
-                  unknownItemSelected="didSelectReviewer"
+                  inputChanged="inputChanged"
                   itemDisplayTextFunction=displayUserSelected
                   as |user|}}
         {{user.full_name}} [{{user.email}}]

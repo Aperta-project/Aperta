@@ -129,6 +129,8 @@ export default Ember.Component.extend({
       Ember.run.debounce(this, this.search, this.get('debounce'));
     }
 
+    this.sendAction('inputChanged', this.get('resultText'));
+
     this.set('searchAllowed', true);
   }),
 
@@ -138,14 +140,14 @@ export default Ember.Component.extend({
         this.set('highlightedItem', null);
       }
 
+      // return or esc
       if(event.which === 13 || event.which === 27) {
         let highlightedItem = this.get('highlightedItem');
 
         if(highlightedItem) {
           this.selectItem(highlightedItem);
-        } else {
-          this.sendAction('unknownItemSelected', this.get('resultText'));
         }
+
         this.set('highlightedItem', null);
         this.set('searchResults', null);
       }

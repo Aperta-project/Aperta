@@ -42,10 +42,7 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
     destroyInvitation: (invitation) -> invitation.destroyRecord()
 
     didSelectReviewer: (selectedReviewer) ->
-      if typeof selectedReviewer is 'string'
-        @set 'selectedReviewer', { email: selectedReviewer }
-      else
-        @set 'selectedReviewer', selectedReviewer
+      @set 'selectedReviewer', selectedReviewer
 
     inviteReviewer: ->
       return unless @get('selectedReviewer')
@@ -62,5 +59,9 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
       @store.find('user', selectedReviewer.id).then (user) =>
         @get('reviewers').removeObject(user)
         @send('saveModel')
+
+    inputChanged: (val) ->
+      @set 'selectedReviewer', { email: val }
+
 
 `export default PaperReviewerOverlayController`

@@ -19,6 +19,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ### Fixed
 - No longer perform unfiltered searches in Flow Manager
+- No longer shows publishable checkbox in Figures, since it only applies to Supporting Information Files
 
 ### Security
 -

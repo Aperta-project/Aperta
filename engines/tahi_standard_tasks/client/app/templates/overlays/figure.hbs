@@ -9,7 +9,8 @@
 
 {{question-check ident="figures.complies"
                  task=model
-                 question="Yes - I confirm our figures comply with the guidelines."}}
+                 question="Yes - I confirm our figures comply with the guidelines."
+                 disabled=isSubmissionTaskNotEditable}}
 
 <hr>
 
@@ -22,7 +23,7 @@
                          uploadFinished="uploadFinished"
                          uploadStarted="uploadStarted"
                          uploadProgress="uploadProgress"
-                         isEditable=model.paper.editable}}
+                         isEditable=isSubmissionTaskEditable}}
 {{/each}}
 
 
@@ -32,7 +33,7 @@
   {{/each}}
 </div>
 
-{{#if isEditable}}
+{{#if isSubmissionTaskEditable}}
   <span class="button-primary button--green fileinput-button">
     <span>Add new Figures</span>
     {{file-uploader id="figure_attachment"

@@ -23,10 +23,16 @@
           {{/if}}
         </div>
 
-        {{#if model.versioningMode}}
-          <div id="paper-body">{{{model.versionedBody}}}</div>
-        {{else}}
-          <div id="paper-body">
+        {{#if noTasks}}
+          <div class="btn-group pull-right">
+            <button {{action "submit" target="view"}} class="no-sidebar-submit-manuscript button-primary {{if model.allSubmissionTasksCompleted "button--green" "button--disabled"}}">
+              Submit Manuscript
+            </button>
+          </div>
+        {{/if}}
+
+        <div id="paper-body">
+            {{{model.versionedBody}}}
             {{component editorComponent
                 viewName='editor'
                 paper=model
@@ -35,8 +41,7 @@
                 statusMessage=statusMessage
                 currentUser=currentUser
             }}
-          </div>
-        {{/if}}
+        </div>
       </article>
     </main>
   </div>

@@ -11,12 +11,12 @@
         [{{selectedReviewer.email}}]
       </h3>
 
-      {{textarea value=updatedTemplate
+      {{textarea value=invitationBody
                  class="form-control taller-textarea"}}
 
       <div class="invite-reviewer-cta">
         <button class="button-link button--green cancel" {{action "cancelAction"}}>cancel</button>
-        <button class="button-primary button--green invite-reviewer-button" {{action "setLetterBody"}}>Send Invitation</button>
+        <button class="button-primary button--green invite-reviewer-button" {{action "inviteReviewer"}}>Send Invitation</button>
       </div>
    </div>
   {{else}}

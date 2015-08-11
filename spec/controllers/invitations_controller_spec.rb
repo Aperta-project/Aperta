@@ -39,13 +39,17 @@ describe InvitationsController do
   end
 
   describe "POST /invitations" do
+    let(:invitation_body){
+      "Hard to find a black cat in a dark room, especially if there is no cat."
+    }
 
     it "creates a invited invitation" do
       post(:create, {
         format: "json",
         invitation: {
           email: invitee.email,
-          task_id: task.id
+          task_id: task.id,
+          body: invitation_body
         }
       })
       expect(response.status).to eq(201)
@@ -58,6 +62,7 @@ describe InvitationsController do
       expect(invitation.code).to be_present
       expect(invitation.actor).to be_nil
       expect(invitation.state).to eq("invited")
+      expect(invitation.body).to eq(invitation_body)
     end
 
     it "create an invitation for new user" do

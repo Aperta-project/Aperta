@@ -18,10 +18,10 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
   template: Ember.computed.alias 'model.editInviteTemplate'
 
   setLetterTemplate: ->
-    customTemplate = @get('template').replace(/\[REVIEWER NAME\]/, @get('selectedReviewer.full_name'))
+    letterBody = @get('template').replace(/\[REVIEWER NAME\]/, @get('selectedReviewer.full_name'))
       .replace(/\[YOUR NAME\]/, @get('currentUser.fullName'))
 
-    @set('updatedTemplate', customTemplate)
+    @set('invitationBody', letterBody)
 
   parseUserSearchResponse: (response) ->
     response.filtered_users
@@ -30,10 +30,6 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
     "#{user.full_name} [#{user.email}]"
 
   actions:
-    sendCustomEmail: ->
-      @set("selectedReviewer", { email: @get("customEmail") })
-      @send("inviteReviewer")
-
     cancelAction: ->
       @set 'selectedReviewer', null
       @set 'composingEmail', false
@@ -47,7 +43,7 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
 
     didSelectReviewer: (selectedReviewer) ->
       if typeof selectedReviewer is 'string'
-        @set 'selectedReviewer', { email: selectedReviewer, full_name: "you" }
+        @set 'selectedReviewer', { email: selectedReviewer }
       else
         @set 'selectedReviewer', selectedReviewer
 
@@ -56,6 +52,7 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
       @store.createRecord 'invitation',
         task: @get 'model'
         email: @get 'selectedReviewer.email'
+        body: @get 'invitationBody'
       .save().then (invitation) =>
         @get('latestDecision.invitations').addObject invitation
         @set 'composingEmail', false
@@ -65,10 +62,5 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
       @store.find('user', selectedReviewer.id).then (user) =>
         @get('reviewers').removeObject(user)
         @send('saveModel')
-
-    setLetterBody: ->
-      @set 'model.body', [@get('updatedTemplate')]
-      @model.save().then =>
-        @send 'inviteReviewer'
 
 `export default PaperReviewerOverlayController`

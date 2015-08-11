@@ -20,11 +20,12 @@
       </div>
    </div>
   {{else}}
-    <div class='invite-reviewers'>
-      <label for="reviewer">Reviewer</label>
+    <div class="invite-reviewers">
+      <label for="invitation-recipient">Reviewer</label>
 
       {{#auto-suggest endpoint=autoSuggestSourceUrl
                   queryParameter="query"
+                  inputId="invitation-recipient"
                   placeholder="Invite reviewer by name or email"
                   parseResponseFunction=parseUserSearchResponse
                   itemSelected="didSelectReviewer"

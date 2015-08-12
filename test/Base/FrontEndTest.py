@@ -8,17 +8,13 @@ import random
 from WebDriverFactory import WebDriverFactory
 from Base.Resources import login_valid_email, login_valid_pw
 from frontend.Pages.login_page import LoginPage
-from frontend.Pages.homepage import HomePage
-from frontend.Pages.create_new_submission_page import CreateANewSubmissionPage
+from frontend.Pages.dashboard import DashboardPage
 
 class FrontEndTest(unittest.TestCase):
-
   """
-
-  Base class to provide Front End tests with desired WebDriver instances, as defined in [[Config.py]].
-
+  Base class to provide Front End tests with desired WebDriver instances, as defined in 
+  [[Config.py]].
   It inherits from `TestCase` in order to count as a test suite for Python's `unittest` framework.
-
   """
 
   # This defines any `FrontEndTest` derived class as able to be run by Nose in a parallel way.
@@ -72,7 +68,7 @@ class FrontEndTest(unittest.TestCase):
     login_page.enter_login_field(login_valid_email)
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
-    return HomePage(self.getDriver())
+    return DashboardPage(self.getDriver())
 
   def _select_preexisting_article(self, title='Hendrik', init=True):
     """
@@ -80,17 +76,16 @@ class FrontEndTest(unittest.TestCase):
     for the title. from_ variable is 0 when the user is not logged in
     and need to invoque login script to reach the homepage. 
     """
-    home_page = self._login() if init else HomePage(self.getDriver())
-    return home_page.click_on_existing_manuscript_link_partial_title(title)
+    dashboard = self._login() if init else DashboardPage(self.getDriver())
+    return dashboard.click_on_existing_manuscript_link_partial_title(title)
 
   def _create_article(self, title='', journal='journal', type_='Research1'):
-    home_page = self._login()
-    home_page.click_create_new_submision_button()
-    create_new_submission_page = CreateANewSubmissionPage(self.getDriver())
+    dashboard = self._login()
+    dashboard.click_create_new_submision_button()
     # Create new submission
     if not title:
-      title = create_new_submission_page.title_generator()
-    create_new_submission_page.enter_title_field(title)
-    create_new_submission_page.select_journal(journal, type_)
-    create_new_submission_page.click_create_button()
+      title = dashboard.title_generator()
+    dashboard.enter_title_field(title)
+    dashboard.select_journal(journal, type_)
+    dashboard.click_create_button()
     return title

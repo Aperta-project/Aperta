@@ -1,14 +1,17 @@
 #!/usr/bin/env python2
 
-from selenium.webdriver.common.by import By
-from Base.PlosPage import PlosPage
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
 import time
 
-__author__ = 'fcabrales'
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 
-class WorkflowPage(PlosPage):
+from authenticated_page import AuthenticatedPage
+
+
+__author__ = 'sbassi@plos.org'
+
+
+class WorkflowPage(AuthenticatedPage):
   """
   Model workflow page
   """
@@ -26,12 +29,6 @@ class WorkflowPage(PlosPage):
       "//div[@class='column-content']/div/div//div[contains(., '[A] Completed Review')]")    
     self._assess_button = (By.XPATH, "//div[@class='column-content']/div/div//div[contains(., '[A] Reviewer Report')]")
     self._editorial_decision_button = (By.XPATH, "//div[@class='column-content']/div/div//div[contains(., '[A] Editorial Decision')]")
-    self._left_nav = (By.CSS_SELECTOR, 'div.navigation-toggle')
-    self._hamburger_icon = (By.XPATH, 
-      "//div[@class='navigation-toggle']/*[local-name() = 'svg']/*[local-name() = 'path']")
-    self._left_nav_menu = (By.XPATH, ".//div/div/div[@class='navigation']")
-    self._navigation_close = (By.XPATH, ".//div[@class='navigation']/div/span[@class='navigation-close']")
-    self._navigation_title = (By.XPATH, ".//div[@class='navigation']/div")
     self._navigation_menu_line = (By.XPATH, ".//div[@class='navigation']/hr")
     self._editable_label = (By.XPATH, ".//div[@class='control-bar-inner-wrapper']/ul[2]/li/label")
     self._editable_checkbox = (By.XPATH, 
@@ -87,21 +84,15 @@ class WorkflowPage(PlosPage):
   def validate_initial_page_elements_styles(self):
     """ """
     # Validate menu elements (title and icon)
-    hamburger_icon = self._get(self._hamburger_icon)
-    assert hamburger_icon.get_attribute('d') == ('M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z '
-                'M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28'
-                ',14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,'
-                '22,28,22z')
-    left_nav = self._get(self._left_nav)
+    left_nav = self._get(self._nav_toggle)
     assert left_nav.text == 'PLOS'
     assert left_nav.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     assert 'Cabin' in left_nav.value_of_css_property('font-family')
     assert left_nav.value_of_css_property('font-size') == '24px'
     assert left_nav.value_of_css_property('font-weight') == '700'
     assert left_nav.value_of_css_property('text-transform') == 'uppercase'
-    left_nav_menu = self._get(self._left_nav_menu)
-    assert left_nav_menu
-    # 
+    assert self._get(self._nav_menu)
+    # Right menu items
     editable = self._get(self._editable_label)
     assert editable.text == 'EDITABLE'
     assert editable.value_of_css_property('font-size') == '10px'
@@ -188,11 +179,6 @@ class WorkflowPage(PlosPage):
     self._get(self._assess_button).click()
     return self
 
-  def click_left_nav(self):
-    """Click left navigation"""
-    self._get(self._left_nav).click()
-    return self
-
   def click_sign_out_link(self):
     """Click sign out link"""
     self._get(self._sign_out_link).click()
@@ -200,7 +186,7 @@ class WorkflowPage(PlosPage):
 
   def click_close_navigation(self):
     """Click on the close icon to close left navigation bar"""
-    self._get(self._navigation_close).click()
+    self._get(self._nav_close).click()
     return self
 
   #def get_column_header_(self):
@@ -236,10 +222,7 @@ class WorkflowPage(PlosPage):
     """Check CSS properties of the overlay that appears when the user click on add new card"""
     card_overlay = self._get(self._add_card_overlay)
     assert card_overlay.text == 'Pick the type of card to add'
-    assert 'Cabin' in card_overlay.value_of_css_property('font-family')
-    assert card_overlay.value_of_css_property('font-size') == '48px'
-    assert card_overlay.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
-    assert card_overlay.value_of_css_property('font-weight') == '500'
+    self.validate_title_style(card_overlay)
     assert card_overlay.value_of_css_property('text-align') == 'center'
     close_icon_overlay = self._get(self._close_icon_overlay)
     assert close_icon_overlay.value_of_css_property('font-size') == '90px'
@@ -250,9 +233,7 @@ class WorkflowPage(PlosPage):
     assert select_task.value_of_css_property('font-size') == '14px'
     assert select_task.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
     add_button_overlay = self._get(self._add_button_overlay)
-    assert 'Cabin' in add_button_overlay.value_of_css_property('font-family')
-    assert add_button_overlay.value_of_css_property('font-size') == '14px'
-    assert add_button_overlay.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
+    self.validate_green_backed_button_style(add_button_overlay)
     assert add_button_overlay.text == 'ADD'
     cancel_button_overlay = self._get(self._cancel_button_overlay)
     assert 'Cabin' in cancel_button_overlay.value_of_css_property('font-family')
@@ -260,8 +241,6 @@ class WorkflowPage(PlosPage):
     assert cancel_button_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     assert cancel_button_overlay.value_of_css_property('text-align') == 'center'
     assert cancel_button_overlay.text == 'cancel'
-    # new page: isNewTask
-
     return self
 
   def check_new_tasks_overlay(self):
@@ -285,10 +264,9 @@ class WorkflowPage(PlosPage):
     """
     cards = self._gets(self._first_column_cards)
     last_card = cards[-1]
-    hov = ActionChains(self._driver).move_to_element(last_card)
-    hov.perform()
-    close = last_card.find_element_by_xpath('//div/span')
-    close.click()
+    # TODO: Find how to reach delete screen
+    remove = last_card.find_element_by_xpath('//div/span')
+    remove.click()
     time.sleep(10)
     return self
 
@@ -299,10 +277,7 @@ class WorkflowPage(PlosPage):
     """
     remove_title = self._get(self._remove_confirmation_title)
     assert remove_title.text == "You're about to delete this card forever."
-    assert remove_title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
-    assert 'Cabin' in remove_title.value_of_css_property('font-family')
-    assert remove_title.value_of_css_property('font-size') == '48px'
-    assert remove_title.value_of_css_property('font-weight') == '500'
+    self.validate_title_style(remove_title)
     remove_subtitle = self._get(self._remove_confirmation_subtitle)
     assert remove_subtitle.text == "Are you sure?"
     assert remove_subtitle.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
@@ -310,11 +285,8 @@ class WorkflowPage(PlosPage):
     assert remove_subtitle.value_of_css_property('font-size') == '30px'
     assert remove_subtitle.value_of_css_property('font-weight') == '500'
     remove_yes = self._get(self._remove_confirmation_title)
+    self.validate_green_backed_button_style(remove_yes)
     assert remove_yes.text == "Yes, Delete this Card"
-    assert remove_yes.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
-    assert remove_yes.value_of_css_property('background-color') == 'rgba(57, 163, 41, 1)'
-    assert 'Cabin' in remove_yes.value_of_css_property('font-family')
-    assert remove_yes.value_of_css_property('font-size') == '14px'
     remove_cancel = self._get(self._remove_confirmation_subtitle)
     assert remove_cancel.text == "cancel"
     assert remove_cancel.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'

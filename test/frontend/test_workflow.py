@@ -5,13 +5,15 @@ This test case validates the Aperta workflow page
 """
 __author__ = 'sbassi@plos.org'
 
+import time
+
 from Base.Decorators import MultiBrowserFixture
 from Base.FrontEndTest import FrontEndTest
-from Pages.login_page import LoginPage
 from Base.Resources import login_valid_email, login_valid_pw
 from frontend.Pages.manuscript_page import ManuscriptPage
 from frontend.Pages.workflow_page import WorkflowPage
-import time
+from Pages.login_page import LoginPage
+
 
 @MultiBrowserFixture
 class ApertaWorkflowTest(FrontEndTest):
@@ -20,8 +22,9 @@ class ApertaWorkflowTest(FrontEndTest):
      - validate page elements and styles for:
          - WorkflowPage
          - Adding cards
-         - Removing cards (NOT READY)
+         - TODO: Removing cards (NOT READY)
   """
+  
   def _go_to_workflow(self):
     """Internal method to reach workflow page"""
     self._select_preexisting_article()

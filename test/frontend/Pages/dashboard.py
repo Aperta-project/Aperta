@@ -6,11 +6,12 @@ and style and functionality of the View Invitations and Create New Submission fl
 without executing an invitation accept or reject, and without a CNS creation.
 """
 
-from Base.PostgreSQL import PgSQL
-from selenium.webdriver.common.by import By
-from authenticated_page import AuthenticatedPage
 import time
 
+from selenium.webdriver.common.by import By
+
+from Base.PostgreSQL import PgSQL
+from authenticated_page import AuthenticatedPage
 
 __author__ = 'jgray@plos.org'
 

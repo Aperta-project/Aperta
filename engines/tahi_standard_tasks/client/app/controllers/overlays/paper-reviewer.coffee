@@ -15,13 +15,26 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
     @get('decisions').findBy 'isLatest', true
   ).property('decisions', 'decisions.@each.isLatest')
 
-  template: Ember.computed.alias 'model.invitationTemplate'
+  applyTemplateReplacements: (str) ->
+    reviewerName = @get('selectedReviewer.full_name')
+    if reviewerName
+      str = str.replace /\[REVIEWER NAME\]/g, reviewerName
+    str.replace(/\[YOUR NAME\]/g, @get('currentUser.fullName'))
 
   setLetterTemplate: ->
-    letterBody = @get('template').replace(/\[REVIEWER NAME\]/, @get('selectedReviewer.full_name'))
-      .replace(/\[YOUR NAME\]/, @get('currentUser.fullName'))
+    template = @get('model.invitationTemplate')
 
-    @set('invitationBody', letterBody)
+    if template.salutation and @get('selectedReviewer.full_name')
+      salutation = @applyTemplateReplacements(template.salutation) + "\n\n"
+    else
+      salutation = ""
+
+    if template.body
+      body = @applyTemplateReplacements(template.body)
+    else
+      body = ""
+
+    @set('invitationBody', "#{salutation}#{body}")
 
   parseUserSearchResponse: (response) ->
     response.filtered_users

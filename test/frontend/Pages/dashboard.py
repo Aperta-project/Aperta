@@ -1,34 +1,29 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+"""
+A page model for the dashboard page that validates state-dependent element existence
+and style and functionality of the View Invitations and Create New Submission flows
+without executing an invitation accept or reject, and without a CNS creation.
+"""
+
+import time
 
 from selenium.webdriver.common.by import By
-from authenticated_page import AuthenticatedPage
-import time
+
 from Base.PostgreSQL import PgSQL
+from authenticated_page import AuthenticatedPage
 
 __author__ = 'jgray@plos.org'
 
 
 class DashboardPage(AuthenticatedPage):
   """
-  Model an aperta dashboard page
+  Model an Aperta dashboard page
   """
   def __init__(self, driver, url_suffix='/'):
     super(DashboardPage, self).__init__(driver, url_suffix)
 
     # Locators - Instance members
-    # Navigation Menu Locators
-    self._nav_toggle = (By.CLASS_NAME, 'navigation-toggle')
-    self._nav_close = (By.CLASS_NAME, 'navigation-close')
-    self._nav_title = (By.CLASS_NAME, 'navigation-title')
-    self._nav_profile_link = (By.CSS_SELECTOR, 'div.navigation a[href="/profile"]')
-    self._nav_profile_img = (By.CSS_SELECTOR, 'div.navigation a[href="/profile"] img')
-    self._nav_dashboard_link = (By.CSS_SELECTOR, 'div.navigation a[href="/"]')
-    self._nav_flowmgr_link = (By.CSS_SELECTOR, 'div.navigation a[href="/flow_manager"]')
-    self._nav_paper_tracker_link = (By.CSS_SELECTOR, 'div.navigation a[href="/paper_tracker"]')
-    self._nav_admin_link = (By.CSS_SELECTOR, 'div.navigation a[href="/admin"]')
-    self._nav_signout_link = (By.CSS_SELECTOR, 'div.navigation > a')
-    self._nav_feedback_link = (By.CLASS_NAME, 'navigation-item-feedback')
-
     # Base Page Locators
     self._dashboard_invite_title = (By.CSS_SELECTOR, 'h2.welcome-message')
     self._dashboard_view_invitations_btn = (By.CSS_SELECTOR,
@@ -64,41 +59,38 @@ class DashboardPage(AuthenticatedPage):
 
   # POM Actions
   def validate_initial_page_elements_styles(self):
+    """
+    Validates the static page elements existence and styles
+    :return: None
+    """
     cns_btn = self._get(self._dashboard_create_new_submission_btn)
     assert cns_btn.text.lower() == 'create new submission'
-    assert 'helvetica' in cns_btn.value_of_css_property('font-family')
-    assert cns_btn.value_of_css_property('font-size') == '14px'
-    assert cns_btn.value_of_css_property('font-weight') == '400'
-    assert cns_btn.value_of_css_property('line-height') == '20px'
-    assert cns_btn.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
-    assert cns_btn.value_of_css_property('text-align') == 'center'
-    assert cns_btn.value_of_css_property('text-transform') == 'uppercase'
+    self.validate_green_backed_button_style(cns_btn)
 
   def validate_invite_dynamic_content(self, username):
+    """
+    Validates the "view invites" stanza and function if present
+    :param username: username
+    :return: None
+    """
     invitation_count = self.is_invite_stanza_present(username)
     if invitation_count > 0:
       welcome_msg = self._get(self._dashboard_invite_title)
       if invitation_count == 1:
         assert welcome_msg.text == 'You have 1 invitation.', welcome_msg.text
       else:
-        assert welcome_msg.text == 'You have ' + str(invitation_count) + ' invitations.', \
+        assert welcome_msg.text == 'You have %s invitations.' % invitation_count, \
                                    welcome_msg.text + ' ' + str(invitation_count)
-      assert 'helvetica' in welcome_msg.value_of_css_property('font-family')
-      assert welcome_msg.value_of_css_property('font-size') == '48px'
-      assert welcome_msg.value_of_css_property('font-weight') == '500'
-      assert welcome_msg.value_of_css_property('line-height') == '52.8px'
-      assert welcome_msg.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+      self.validate_title_style(welcome_msg)
       view_invites_btn = self._get(self._dashboard_view_invitations_btn)
-      assert view_invites_btn.text.lower() == 'view invitations'
-      assert 'helvetica' in view_invites_btn.value_of_css_property('font-family')
-      assert view_invites_btn.value_of_css_property('font-size') == '14px'
-      assert view_invites_btn.value_of_css_property('font-weight') == '400'
-      assert view_invites_btn.value_of_css_property('line-height') == '20px'
-      assert view_invites_btn.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
-      assert view_invites_btn.value_of_css_property('text-align') == 'center'
-      assert view_invites_btn.value_of_css_property('text-transform') == 'uppercase'
+      self.validate_green_backed_button_style(view_invites_btn)
 
   def validate_manu_dynamic_content(self, username):
+    """
+    Validates the manuscript stanza dynamic display based on assigned papers and roles
+    :param username: username
+    :return: None
+    """
     welcome_msg = self._get(self._dashboard_my_subs_title)
     # Get first name for validation of dashboard welcome message
     first_name = PgSQL().query('SELECT first_name FROM users WHERE username = %s;', (username,))[0][0]
@@ -120,11 +112,7 @@ class DashboardPage(AuthenticatedPage):
              welcome_msg.text
     else:
       assert 'Hi, ' + first_name + '. You have no manuscripts.' in welcome_msg.text, welcome_msg.text
-    assert 'helvetica' in welcome_msg.value_of_css_property('font-family')
-    assert welcome_msg.value_of_css_property('font-size') == '48px'
-    assert welcome_msg.value_of_css_property('font-weight') == '500'
-    assert welcome_msg.value_of_css_property('line-height') == '52.8px'
-    assert welcome_msg.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+    self.validate_title_style(welcome_msg)
     if manuscript_count > 0:
       papers = self._gets(self._dashboard_paper_title)
       count = 0
@@ -177,14 +165,29 @@ class DashboardPage(AuthenticatedPage):
 
   @staticmethod
   def is_invite_stanza_present(username):
+    """
+    Determine whether the View Invites stanza should be present for username
+    :param username: username
+    :return: Count of unaccepted invites (does not include rejected or accepted invites)
+    """
     uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
     invitation_count = PgSQL().query('SELECT COUNT(*) FROM invitations '
-                                     'WHERE state = %s AND invitee_id = %s;', ('invited',uid))[0][0]
+                                     'WHERE state = %s AND invitee_id = %s;', ('invited', uid))[0][0]
     return invitation_count
 
   def validate_view_invites(self, username):
+    """
+    Validates the display of the View Invites overlay and the dynamic presentation of the
+    current pending invitations for username.
+    :param username: username
+    :return: None
+    """
     # global elements
     modal_title = self._get(self._view_invites_title)
+    # The following call will fail because of an inconsistent implementation of the style of this heading
+    # thus for the time being, I am using the one off validations. These should be removed when the bug
+    # is fixed.
+    # self.validate_title_style(modal_title)
     assert 'helvetica' in modal_title.value_of_css_property('font-family')
     assert modal_title.value_of_css_property('font-size') == '48px'
     assert modal_title.value_of_css_property('font-weight') == '500'
@@ -233,6 +236,11 @@ class DashboardPage(AuthenticatedPage):
     time.sleep(1)
 
   def validate_create_new_submission(self):
+    """
+    Validates the function of the Create New Submissions button, and the elements and error handling
+    of the overlay that the CNS button launches.
+    :return: None
+    """
     closer = self._get(self._cns_closer)
     overlay_title = self._get(self._cns_title)
     assert overlay_title.text == 'Create a New Submission'
@@ -245,6 +253,7 @@ class DashboardPage(AuthenticatedPage):
     paper_type_chooser = self._get(self._cns_paper_type_chooser_div).find_element(*self._cns_chooser_chosen)
     assert paper_type_chooser.text == 'Choose Paper Type'
     create_btn = self._get(self._cns_action_buttons_div).find_element(*self._cns_create)
+    self.validate_green_backed_button_style(create_btn)
     create_btn.click()
     self._get(self._cns_error_div)
     error_msgs = self._gets(self._cns_error_message)
@@ -259,29 +268,3 @@ class DashboardPage(AuthenticatedPage):
     assert 'Paper type can\'t be blank' in errors
     assert 'Short title can\'t be blank' in errors
     closer.click()
-
-  def click_left_nav(self):
-    """Click left navigation"""
-    self._get(self._nav_toggle).click()
-
-  def validate_nav_elements(self, permissions):
-    elevated = ['jgray_flowmgr', 'jgray']
-    self._get(self._nav_close)
-    self._get(self._nav_title)
-    self._get(self._nav_profile_link)
-    self._get(self._nav_profile_img)
-    self._get(self._nav_dashboard_link)
-    self._get(self._nav_signout_link)
-    self._get(self._nav_feedback_link)
-    # Must have flow mgr, admin or superadmin
-    if permissions in elevated:
-      self._get(self._nav_flowmgr_link)
-      self._get(self._nav_paper_tracker_link)
-    # Must have admin or superadmin
-    if permissions == ('jgray_oa', 'jgray'):
-      self._get(self._nav_admin_link)
-
-  def click_sign_out_link(self):
-    """Click sign out link"""
-    self._get(self._nav_signout_link).click()
-    return self

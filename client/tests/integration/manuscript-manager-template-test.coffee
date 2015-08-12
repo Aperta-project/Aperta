@@ -170,8 +170,8 @@ test 'click delete confirmation overlay cancel button', (assert) ->
   createCard()
   andThen ->
     equal find(".card-content").length, 1
-    $("div.card .card-remove").show()
-    click("div.card .card-remove")
+    $(".card .card-remove").show()
+    click(".card .card-remove")
     click('.overlay button:contains("cancel")')
     assert.equal find(".card-content").length, 1
 
@@ -182,8 +182,8 @@ test 'click delete confirmation overlay submit button', (assert) ->
     click('.paper-type-save-button:contains("Save Template")')
   andThen ->
     equal find(".card-content").length, 1, "It finds the card content"
-    $("div.card .card-remove").show()
-    click("div.card .card-remove")
+    $(".card .card-remove").show()
+    click(".card .card-remove")
     # causes DELETE to /task_templates/1
     click('.overlay button:contains("Yes, Delete this Card")')
   andThen ->

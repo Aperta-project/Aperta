@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
   def associate_user_with_invitation(user)
     # if we have an invitation_code in the session, try to associate it with the user
     if invitation_code = session["invitation_code"]
-      invitation = Invitation.where(code: invitation_code).first
+      invitation = Invitation.where(code: invitation_code).not_accepted.first
 
       if invitation
         invitation.update(invitee: user)

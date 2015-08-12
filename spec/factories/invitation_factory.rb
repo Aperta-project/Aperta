@@ -15,5 +15,9 @@ FactoryGirl.define do
     trait :invited do
       state "invited"
     end
+
+    trait :accepted do
+      state "accepted"
+    end
   end
 end

@@ -7,7 +7,7 @@ describe ApplicationController do
     end
   end
 
-  let(:invitation) { FactoryGirl.create(:invitation) }
+  let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee:nil) }
   let(:invitation_code) { invitation.code }
   let(:user) { FactoryGirl.create(:user) }
 
@@ -31,15 +31,23 @@ describe ApplicationController do
   describe "#associate_user_with_invitation" do
     before do
       session["invitation_code"] = invitation_code
-      invitation.update(invitee: nil)
-    end
-
-    it "associates current user with invitation_code to the " do
       sign_in user
       expect(invitation.invitee).to eq nil
       get :index
+    end
 
-      expect(invitation.reload.invitee).to eq user
+    context "and the invitation is open" do
+      it "associates current user with the right invitation" do
+        expect(invitation.reload.invitee).to eq user
+      end
+    end
+
+    context "and the invitation is not open" do
+      let(:invitation) { FactoryGirl.create(:invitation, :accepted, invitee:nil) }
+
+      it "does not associate the current user with invitation " do
+        expect(invitation.reload.invitee).to be nil
+      end
     end
   end
 

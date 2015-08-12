@@ -113,47 +113,56 @@ class PaperTrackerPage(AuthenticatedPage):
       page_members_by_role = members.text.split('\n')
       for role in page_members_by_role:
         if role.startswith('Participant'):
-          print('Participants')
           role = role.split(': ')[1]
           participants = role.split(', ')
           db_participants = PgSQL().query('SELECT users.first_name, users.last_name '
                                           'FROM paper_roles INNER JOIN users '
                                           'ON paper_roles.user_id = users.id '
                                           'WHERE paper_id= %s AND paper_roles.role = %s;', (papid.text, 'participant'))
-          print(participants)
-          print(db_participants)
+          name = []
+          for participant in db_participants:
+            name.append(participant[0] + ' ' + participant[1])
+          db_participants = name
+          assert participants.sort() == db_participants.sort()
         elif role.startswith('Collaborator'):
-          print('Colloborators')
           role = role.split(': ')[1]
           collaborators = role.split(', ')
           db_collaborators = PgSQL().query('SELECT users.first_name, users.last_name '
                                            'FROM paper_roles INNER JOIN users '
                                            'ON paper_roles.user_id = users.id '
                                            'WHERE paper_id= %s AND paper_roles.role = %s;', (papid.text, 'collaborator'))
-          print(collaborators)
-          print(db_collaborators)
+          name = []
+          for collaborator in db_collaborators:
+            name.append(collaborator[0] + ' ' + collaborator[1])
+          db_collaborators = name
+          assert collaborators.sort() == db_collaborators.sort()
         elif role.startswith('Reviewer'):
-          print('Reviewers')
           role = role.split(': ')[1]
           reviewers = role.split(', ')
           db_reviewers = PgSQL().query('SELECT users.first_name, users.last_name '
                                        'FROM paper_roles INNER JOIN users '
                                        'ON paper_roles.user_id = users.id '
                                        'WHERE paper_id= %s AND paper_roles.role = %s;', (papid.text, 'reviewer'))
-          print(reviewers)
-          print(db_reviewers)
+          name = []
+          for reviewer in db_reviewers:
+            name.append(reviewer[0] + ' ' + reviewer[1])
+          db_reviewers = name
+          assert reviewers.sort() == db_reviewers.sort()
         elif role.startswith('Editor'):
-          print('Editors')
           role = role.split(': ')[1]
           editors = role.split(', ')
           db_editors = PgSQL().query('SELECT users.first_name, users.last_name '
                                      'FROM paper_roles INNER JOIN users '
                                      'ON paper_roles.user_id = users.id '
                                      'WHERE paper_id= %s AND paper_roles.role = %s;', (papid.text, 'collaborator'))
-          print(editors)
-          print(db_editors)
+          name = []
+          for editor in db_editors:
+            name.append(editor[0] + ' ' + editor[1])
+          db_editors = name
+          assert editors.sort() == db_editors.sort()
         else:
           print(role)
+          return False
       count += 1
     # Validate sort function
     self._get(self._paper_tracker_table_header_sort_up).click()

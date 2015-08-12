@@ -52,18 +52,6 @@ export default Ember.Component.extend({
    **/
   queryParameter: null,
 
-
-  /**
-   *  Query tacked on end of endpoint
-   *  /api/users?email=
-   *
-   *  @property queryParameter
-   *  @type String
-   *  @default null
-   *  @required
-   **/
-  queryParameter: null,
-
   /**
    *  Function called to manipulate data before displaying in component
    *  function(response) { return response.users.sort.map.filter.etc.etc.etc; }

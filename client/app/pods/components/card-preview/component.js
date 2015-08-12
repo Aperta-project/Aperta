@@ -1,14 +1,5 @@
-/*global Tahi:false */
-
 import Ember from 'ember';
 import ENV from 'tahi/config/environment';
-
-// `getRouter` and the `href` property are hacky but the way we're
-// handling routes + urls is un-ember-ish.
-
-let getRouter = function() {
-  return Tahi.__container__.lookup('router:main');
-};
 
 export default Ember.Component.extend({
   tagName: 'a',
@@ -25,10 +16,16 @@ export default Ember.Component.extend({
   classes: '',
   canRemoveCard: false,
 
+  // This is hack but the way we are creating a link but
+  // not actually navigating to the link is non-ember-ish
+  getRouter() {
+    return this.container.lookup('router:main');
+  },
+
   href: Ember.computed(function() {
-    // Getting access to the router from tests seems impossible, sorry
-    if(ENV.environment === 'test') { return '#'; }
-    let router = getRouter();
+    // Getting access to the router from tests is impossible, sorry
+    if(ENV.environment === 'test' || Ember.testing) { return '#'; }
+    let router = this.getRouter();
     let args = ['paper.task', this.get('task.paper'), this.get('task')];
     return router.generate.apply(router, args);
   }),

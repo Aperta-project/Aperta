@@ -52,8 +52,6 @@
           </label>
         <% end -%>
 
-        <%= hidden_field_tag :invitation_code, @invitation_code %>
-
         <%= f.submit "Sign in", class: "button-primary button--green auth-signin" %>
         &nbsp; &nbsp;
         <%- if devise_mapping.registerable? && controller_name != "registrations" %>

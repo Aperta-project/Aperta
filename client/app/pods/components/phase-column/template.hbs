@@ -8,8 +8,7 @@
 <div class="column-content">
   <div class="sortable {{if noCards "sortable-no-cards"}}" data-phase-id="{{unbound phase.id}}">
     {{#each sortedTasks as |task|}}
-      {{card-preview paper=paper
-                     task=task
+      {{card-preview task=task
                      canRemoveCard=true
                      showDeleteConfirm="showDeleteConfirm"
                      canDragCard=true

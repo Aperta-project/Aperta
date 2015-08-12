@@ -8,6 +8,7 @@
   position: relative;
   display: block;
   margin-bottom: 8px;
+  @include user-select(none);
 }
 
 .card:focus,

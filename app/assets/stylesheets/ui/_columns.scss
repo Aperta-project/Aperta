@@ -150,6 +150,7 @@
   width: 235px;
   padding: 10px 0 0 15px;
   white-space: normal; // IE needs this for some reason :-\
+  @include user-select(none);
 
   > ul {
     list-style-type: none;

@@ -48,20 +48,17 @@ export default Ember.Component.extend({
         }
       },
 
-      remove(event, ui) {
+      remove() {
         // leaving one phase
         self.updateSortOrder(this);
-        console.log(new Date, ui, ui.item);
       },
 
       receive(event, ui) {
         // entering a new phase
         let receiverPhaseId = ui.item.parent().data('phase-id') + '';
         let taskId = ui.item.find('.card-content').data('id');
-        Ember.run.schedule('afterRender', this, function() {
-          let updatedOrder = self.calculateTaskPositions(this);
-          self.sendAction('changePhaseForTask', taskId, receiverPhaseId, updatedOrder);
-        });
+        let updatedOrder = self.calculateTaskPositions(this);
+        self.sendAction('changePhaseForTask', taskId, receiverPhaseId, updatedOrder);
       },
 
       start(event, ui) {
@@ -84,11 +81,9 @@ export default Ember.Component.extend({
   },
 
   updateSortOrder(phaseColumn) {
-    Ember.run.schedule('afterRender', this, function() {
-      let updatedOrder = this.calculateTaskPositions(phaseColumn);
-      this.set('phase.taskPositions', updatedOrder);
-      this.get('phase').save();
-    });
+    let updatedOrder = this.calculateTaskPositions(phaseColumn);
+    this.set('phase.taskPositions', updatedOrder);
+    this.get('phase').save();
   },
 
   getTaskByID(taskId) {

@@ -72,8 +72,8 @@ RSpec.configure do |config|
   config.include TahiHelperMethods
   config.extend TahiHelperClassMethods
   config.include Warden::Test::Helpers
-  config.include(EmailSpec::Helpers)
-  config.include(EmailSpec::Matchers)
+  config.include EmailSpec::Helpers
+  config.include EmailSpec::Matchers
 
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation, except: ['task_types'])

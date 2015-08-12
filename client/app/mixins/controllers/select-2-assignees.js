@@ -23,7 +23,7 @@ export default Ember.Mixin.create({
     let email = (typeof(user.email) === 'string') ? user.email : user.get('email');
 
     if (user.full_name) {
-      let fullName = user.full_name
+      let fullName = user.full_name;
       return `${fullName} <span class="select2-assignee-email">[${email}]</span>`;
     } else {
       return `${email} <span class="select2-assignee-email">[${email}]</span>`;

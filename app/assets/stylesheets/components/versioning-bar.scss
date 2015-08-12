@@ -10,6 +10,19 @@
   }
 }
 
+.version-visible {
+  .paper-body {
+    display: none;
+  }
+}
+
+#paper-body {
+  .normal-body {
+    display: none;
+  }
+}
+
+
 .bar-item {
   width: $tahi-paper-width;
   margin: auto;

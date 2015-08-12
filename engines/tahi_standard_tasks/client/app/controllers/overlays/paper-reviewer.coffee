@@ -2,7 +2,7 @@
 `import Select2Assignees from 'tahi/mixins/controllers/select-2-assignees'`
 `import { formatDate } from 'tahi/helpers/format-date'`
 
-PaperReviewerOverlayController = TaskController.extend Select2Assignees,
+PaperReviewerOverlayController = TaskController.extend
   autoSuggestSourceUrl: Ember.computed 'model.paper.id', ->
     "/api/filtered_users/uninvited_users/#{@get 'model.paper.id'}"
   selectedReviewer: null

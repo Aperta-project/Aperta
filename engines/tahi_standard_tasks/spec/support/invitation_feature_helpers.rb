@@ -23,6 +23,6 @@ module InvitationFeatureHelpers
 
   def sign_up_as(email)
     click_on "Sign up"
-    dashboard_page = SignUpPage.new.sign_up_as(email:email)
+    SignUpPage.new.sign_up_as(email: email)
   end
 end

@@ -16,11 +16,14 @@ shared_examples_for 'an invitation notification email' do |email_identifier_word
 end
 
 describe TahiStandardTasks::PaperReviewerMailer do
-  let(:task) { create :paper_reviewer_task }
-  let(:invitation) { create(:invitation,
-    body: "Dear SoAndSo, You've been invited to be a reviewer on a manuscript",
-    task: task
-  )}
+  let(:task){ create(:paper_reviewer_task) }
+  let(:invitation) do
+    create(
+      :invitation,
+      body: "Dear SoAndSo, You've been invited to be a reviewer on a manuscript",
+      task: task
+    )
+  end
 
   describe ".notify_invited" do
     let(:email) { described_class.notify_invited invitation_id: invitation.id }
@@ -48,7 +51,7 @@ describe TahiStandardTasks::PaperReviewerMailer do
   end
 
   describe ".notify_rescission" do
-    let(:invitation){ create :invitation, task: task, email: "foo@bar.com" }
+    let(:invitation) { create :invitation, task: task, email: "foo@bar.com" }
 
     let(:email) do
       described_class.notify_rescission(

@@ -8,7 +8,7 @@ module ClientRouteHelper
     "#{root_url}papers/#{paper.to_param}/tasks/#{task.to_param}"
   end
 
-  def client_paper_url(paper, params = {})
+  def client_paper_url(paper, params={})
     if params.present?
       query = "?#{params.to_query}"
     end

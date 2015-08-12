@@ -20,6 +20,6 @@ export default Ember.Component.extend({
   }.on('didInsertElement'),
 
   setInitialVersion: function() {
-    this.set('selectedVersion', this.get('paper.versions').slice(-1).pop());
+    this.set('selectedVersion', this.get('paper.versions.firstObject'));
   }.on('init')
 });

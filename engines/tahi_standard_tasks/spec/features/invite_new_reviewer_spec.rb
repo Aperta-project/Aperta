@@ -65,11 +65,8 @@ feature "Inviting a new reviewer", js: true do
       expect(invitation.text).to match(paper.title)
       invitation.accept
     end
+    process_sidekiq_jobs
 
-    #
-    # TODO: this part fails because I don't think we're sending slanger updates
-    # that tells the page about it. If we refresh the page the paper shows up.
-    #
     expect(dashboard_page).to have_submission(paper.title)
   end
 end

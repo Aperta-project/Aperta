@@ -1,8 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-This test case validates the Aperta dashboard page and its associated View Invitations and Create New Submission
-overlays.
+This test case validates the Aperta paper_tracker page.
 
 Note that this case does NOT test actually creating a new manuscript, or accepting or declining an invitation
 Those acts are expected to be defined in
@@ -56,7 +55,7 @@ class ApertaPaperTrackerTest(FrontEndTest):
     dashboard_page.click_paper_tracker_link()
 
     pt_page = PaperTrackerPage(self.getDriver())
-    pt_page.validate_initial_page_elements_styles(user_type)
+    pt_page.validate_page_elements_styles_functions(user_type)
     pt_page.click_left_nav()
     pt_page.validate_nav_elements(user_type)
 

@@ -5,6 +5,7 @@ Page Object Model for the Paper Tracker Page. Validates global and dynamic eleme
 """
 
 from Base.PostgreSQL import PgSQL
+from Base.Resources import psql_uname, psql_pw
 from selenium.webdriver.common.by import By
 from authenticated_page import AuthenticatedPage
 import time
@@ -30,9 +31,10 @@ class PaperTrackerPage(AuthenticatedPage):
     self._paper_tracker_table_members_th = (By.XPATH, '//th[6]')
     self._paper_tracker_table_header_sort_up = (By.CLASS_NAME, 'fa-caret-up')
     self._paper_tracker_table_header_sort_down = (By.CLASS_NAME, 'fa-caret-down')
+    self._paper_tracker_table_tbody_row = (By.CSS_SELECTOR, 'tbody tr')
 
   # POM Actions
-  def validate_initial_page_elements_styles(self, username):
+  def validate_page_elements_styles_functions(self, username):
     title = self._get(self._paper_tracker_title)
     # The following call to validate consistency in title styles across the app
     # fails due to https://www.pivotaltracker.com/n/projects/880854/stories/100948640
@@ -62,6 +64,8 @@ class PaperTrackerPage(AuthenticatedPage):
       assert subhead.text == 'You have ' + str(paper_count) + ' paper in your tracker.'
     else:
       assert subhead.text == 'You have ' + str(paper_count) + ' papers in your tracker.'
+
+    # Validate the contents of the table: papers, links, sorting, roles
     title_th = self._get(self._paper_tracker_table_title_th)
     self.validate_table_heading_style(title_th)
     papid_th = self._get(self._paper_tracker_table_paper_id_th)
@@ -72,8 +76,91 @@ class PaperTrackerPage(AuthenticatedPage):
     self.validate_table_heading_style(paptype_th)
     members_th = self._get(self._paper_tracker_table_members_th)
     self.validate_table_heading_style(members_th)
-    # Need to do some validation of the displayed papers here
-    # TODO: validate the complete list of papers in the list
-    # TODO: validate the function of the submit date sort arrows
+    papers = PgSQL().query('SELECT title, id, submitted_at, paper_type, short_title '
+                           'FROM papers '
+                           'WHERE journal_id IN (%s) AND publishing_state = %s '
+                           'ORDER BY submitted_at ASC;', (journals, 'submitted'))
+    table_rows = self._gets(self._paper_tracker_table_tbody_row)
+    count = 0
+    for row in table_rows:
+      # Once again, while less than ideal, these must be defined on the fly
+      self._paper_tracker_table_tbody_title = (By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-title-column"]/a'
+                                               % str(count + 1))
+      self._paper_tracker_table_tbody_papid = (By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-paper-id-column"]/a'
+                                               % str(count + 1))
+      self._paper_tracker_table_tbody_subdate = (By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-date-column"]'
+                                                 % str(count + 1))
+      self._paper_tracker_table_tbody_paptype = (By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-type-column"]'
+                                                 % str(count + 1))
+      self._paper_tracker_table_tbody_members = (By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-members-column"]'
+                                                 % str(count + 1))
+
+      title = self._get(self._paper_tracker_table_tbody_title)
+      if papers[count][0]:
+        # Oi! Dirty data - how do tabs get into one spot and spaces in another?
+        assert ' '.join(title.text.split()) == ' '.join(papers[count][0].split())
+      else:
+        # Oi! Dirty data - how do tabs get into one spot and spaces in another?
+        assert ' '.join(title.text.split()) == ' '.join(papers[count][4].split())
+      papid = self._get(self._paper_tracker_table_tbody_papid)
+      assert '/papers/%s/edit' % papid.text in title.get_attribute('href')
+      assert int(papid.text) == papers[count][1]
+      assert '/papers/%s/edit' % papid.text in papid.get_attribute('href')
+      self._get(self._paper_tracker_table_tbody_subdate)
+      paptype = self._get(self._paper_tracker_table_tbody_paptype)
+      assert paptype.text == papers[count][3]
+      members = self._get(self._paper_tracker_table_tbody_members)
+      page_members_by_role = members.text.split('\n')
+      for role in page_members_by_role:
+        if role.startswith('Participant'):
+          print('Participants')
+          role = role.split(': ')[1]
+          participants = role.split(', ')
+          db_participants = PgSQL().query('SELECT users.first_name, users.last_name '
+                                          'FROM paper_roles INNER JOIN users '
+                                          'ON paper_roles.user_id = users.id '
+                                          'WHERE paper_id= %s AND paper_roles.role = %s;', (papid.text, 'participant'))
+          print(participants)
+          print(db_participants)
+        elif role.startswith('Collaborator'):
+          print('Colloborators')
+          role = role.split(': ')[1]
+          collaborators = role.split(', ')
+          db_collaborators = PgSQL().query('SELECT users.first_name, users.last_name '
+                                           'FROM paper_roles INNER JOIN users '
+                                           'ON paper_roles.user_id = users.id '
+                                           'WHERE paper_id= %s AND paper_roles.role = %s;', (papid.text, 'collaborator'))
+          print(collaborators)
+          print(db_collaborators)
+        elif role.startswith('Reviewer'):
+          print('Reviewers')
+          role = role.split(': ')[1]
+          reviewers = role.split(', ')
+          db_reviewers = PgSQL().query('SELECT users.first_name, users.last_name '
+                                       'FROM paper_roles INNER JOIN users '
+                                       'ON paper_roles.user_id = users.id '
+                                       'WHERE paper_id= %s AND paper_roles.role = %s;', (papid.text, 'reviewer'))
+          print(reviewers)
+          print(db_reviewers)
+        elif role.startswith('Editor'):
+          print('Editors')
+          role = role.split(': ')[1]
+          editors = role.split(', ')
+          db_editors = PgSQL().query('SELECT users.first_name, users.last_name '
+                                     'FROM paper_roles INNER JOIN users '
+                                     'ON paper_roles.user_id = users.id '
+                                     'WHERE paper_id= %s AND paper_roles.role = %s;', (papid.text, 'collaborator'))
+          print(editors)
+          print(db_editors)
+        else:
+          print(role)
+      count += 1
+    # Validate sort function
     self._get(self._paper_tracker_table_header_sort_up).click()
+    self._paper_tracker_table_tbody_papid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
+    papid = int(self._get(self._paper_tracker_table_tbody_papid).text)
+    assert papid == papers[len(papers) - 1][1]
     self._get(self._paper_tracker_table_header_sort_down).click()
+    self._paper_tracker_table_tbody_papid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
+    papid = int(self._get(self._paper_tracker_table_tbody_papid).text)
+    assert papid == papers[0][1]

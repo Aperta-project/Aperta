@@ -31,19 +31,19 @@
           </div>
         {{/if}}
 
-        <div id="paper-body">
-          {{#if model.versioningMode}}
+        <div id="paper-body" class="{{if model.versioningMode "version-visible"}}">
+          <div class="{{if model.versioningMode "versioned-body" "normal-body"}}">
             {{{model.versionedBody}}}
-          {{else}}
-            {{component editorComponent
-                viewName='editor'
-                paper=model
-                isSaving=isSaving
-                savedAt=savedAt
-                statusMessage=statusMessage
-                currentUser=currentUser
-            }}
-          {{/if}}
+          </div>
+
+          {{component editorComponent
+              viewName='editor'
+              paper=model
+              isSaving=isSaving
+              savedAt=savedAt
+              statusMessage=statusMessage
+              currentUser=currentUser
+          }}
         </div>
 
       </article>

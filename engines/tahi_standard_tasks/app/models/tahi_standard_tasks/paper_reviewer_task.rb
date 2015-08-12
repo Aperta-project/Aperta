@@ -41,25 +41,8 @@ module TahiStandardTasks
       'reviewer'
     end
 
-    class Letter
-      attr_reader :salutation, :body
-
-      def initialize(salutation:, body:)
-        @salutation = salutation
-        @body = body
-      end
-
-      def as_json
-        { salutation: salutation, body: body }
-      end
-
-      def to_json
-        as_json.to_json
-      end
-    end
-
     def invitation_template
-      Letter.new(
+      LetterTemplate.new(
         salutation: "Dear [REVIEWER NAME],",
         body: invitation_template_body
       )

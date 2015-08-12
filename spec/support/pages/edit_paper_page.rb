@@ -95,7 +95,6 @@ HERE
   def has_body_text?(text)
     find('.ve-ce-documentNode').has_text?(text)
   end
-  alias_method :have_body_text?, :has_body_text?
 
   def journal
     find(:css, '.paper-journal').text

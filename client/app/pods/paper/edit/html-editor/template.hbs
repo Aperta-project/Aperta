@@ -4,7 +4,7 @@
 
   {{partial "paper/sidebar"}}
 
-  <div class="manuscript-container {{if model.versioningMode 'not-ve'}}">
+  <div class="manuscript-container">
     <main>
       {{flash-messages classNames="flash-messages-paper-editor"}}
       <article class="manuscript {{if isEditable "editing" "read-only"}}">
@@ -33,7 +33,13 @@
 
         <div id="paper-body">
           {{#if model.versioningMode}}
-            {{{model.versionedBody}}}
+            <div class='manuscript'>
+              <div class='ve-ui-surface'>
+                <div class='ve-ce-documentNode'>
+                  {{{model.versionedBody}}}
+                </div>
+              </div>
+            </div>
           {{else}}
             {{component editorComponent
                 viewName='editor'

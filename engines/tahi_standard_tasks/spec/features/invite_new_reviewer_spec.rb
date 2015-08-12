@@ -38,14 +38,12 @@ feature "Inviting a new reviewer", js: true do
     }.to change(ActionMailer::Base.deliveries, :count)
     expect(find_email("malz@example.com")).to_not be_nil
 
-
     #
     # Third step: make sure the user can open the email and click on a link
     # that brings them to the site to sign up.
     #
     open_email "malz@example.com"
     visit_in_email root_path(invitation_code: Invitation.last.code)
-
 
     #
     # Fourth step: Go through the sign up process and verify that we have

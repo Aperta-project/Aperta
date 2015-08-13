@@ -8,8 +8,6 @@ class VersionedText < ActiveRecord::Base
 
   scope :active, -> { where(active: true) }
 
-  default_scope { order('updated_at DESC') }
-
   # Called on paper sumbission and resubmission.
   def major_version!(submitting_user)
     update!(major_version: (major_version + 1),
@@ -37,7 +35,9 @@ class VersionedText < ActiveRecord::Base
   end
 
   def version_string
-    "R#{major_version}.#{minor_version} — #{updated_at.strftime('%b %d, %Y')} #{creator_name}"
+    date = ""
+    date = updated_at.strftime('%b %d, %Y') if updated_at
+    "R#{major_version}.#{minor_version} — #{date} #{creator_name}"
   end
 
   private

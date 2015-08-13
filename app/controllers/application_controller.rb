@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   include Authorizations
   include TahiPusher::SocketTracker
+  include InvitationCodes
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -10,7 +11,6 @@ class ApplicationController < ActionController::Base
 
   before_action :authenticate_with_basic_http
   before_action :set_pusher_socket
-  before_action :set_invitation_code
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   rescue_from ActiveRecord::RecordInvalid, with: :render_errors
@@ -20,36 +20,6 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up).concat %i(first_name last_name email username)
-  end
-
-  # called every request
-  def set_invitation_code
-    invitation_code = params["invitation_code"]
-
-    if invitation_code.present?
-      if Invitation.where(code: invitation_code).invited.exists?
-        session["invitation_code"] = invitation_code
-      else
-        flash[:alert] = "The invitation is no longer active or has expired."
-      end
-    end
-
-    if session["invitation_code"] && current_user
-      associate_user_with_invitation(current_user)
-    end
-  end
-
-  # called after login or signup
-  def associate_user_with_invitation(user)
-    if invitation_code = session["invitation_code"]
-      invitation = Invitation.where(code: invitation_code).invited.first
-      invitation.update(invitee: user) if invitation
-      clear_invitation_code
-    end
-  end
-
-  def clear_invitation_code
-    session["invitation_code"] = nil
   end
 
   def unmunge_empty_arrays!(model_key, model_attributes)

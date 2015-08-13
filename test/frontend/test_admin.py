@@ -29,7 +29,7 @@ class ApertaAdminTest(FrontEndTest):
          - Navigation Menu (changed colors)
          - Title element and Journal links
        - Journal specific admin page
-         - Menu Bar
+         # TODO: - Menu Bar
          - User Search
          - User List and role assignment
          - Role Title, Add Role, Role table, Edit and Delete Roles
@@ -57,12 +57,12 @@ class ApertaAdminTest(FrontEndTest):
 
     dashboard_page = DashboardPage(self.getDriver())
     dashboard_page.click_left_nav()
-    dashboard_page.click_paper_tracker_link()
+    dashboard_page.click_admin_link()
 
-    pt_page = PaperTrackerPage(self.getDriver())
-    pt_page.validate_page_elements_styles_functions(user_type)
-    pt_page.click_left_nav()
-    pt_page.validate_nav_elements(user_type)
+    adm_page = AdminPage(self.getDriver())
+    adm_page.validate_page_elements_styles_functions(user_type)
+    adm_page.click_left_nav()
+    adm_page.validate_nav_elements(user_type)
 
 if __name__ == '__main__':
   FrontEndTest._run_tests_randomly()

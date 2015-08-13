@@ -26,5 +26,59 @@ feature 'Adhoc cards', js: true do
         expect(page).to have_css(".big-preview img[src*='#{Attachment.last.file.versions[:detail].path}']")
       end
     end
+
+    scenario "replaces an attachment on ad-hoc card", selenium: true do
+      login_as author
+      visit "/papers/#{paper.id}"
+
+      edit_paper = EditPaperPage.new
+      edit_paper.view_card('Ad Hoc', AdhocOverlay) do |overlay|
+        overlay.attach_and_upload_file("yeti.jpg")
+        expect(page).to have_css(".download-link a[href*='#{Attachment.last.file.path}']")
+        expect(page).to have_css(".thumbnail-preview img[src*='#{Attachment.last.file.versions[:preview].path}']")
+
+        find(".thumbnail-preview").hover
+        find(".replace").click
+        overlay.attach_and_upload_file("yeti2.jpg")
+        expect(page).to have_css(".download-link a[href*='#{Attachment.last.file.path}']")
+      end
+    end
+
+    scenario "edits attachment info on ad-hoc card", selenium: true do
+      login_as author
+      visit "/papers/#{paper.id}"
+
+      edit_paper = EditPaperPage.new
+      edit_paper.view_card('Ad Hoc', AdhocOverlay) do |overlay|
+        overlay.attach_and_upload_file("yeti.jpg")
+        expect(page).to have_css(".download-link a[href*='#{Attachment.last.file.path}']")
+        expect(page).to have_css(".thumbnail-preview img[src*='#{Attachment.last.file.versions[:preview].path}']")
+
+        all(".fa-pencil").last.click
+        find(".attachment-title-field").set("Super Great Title")
+        find(".attachment-caption-field").set("Super great desription.")
+
+        find(".attachment-save-button").click
+        expect(page).to have_css(".title", text: 'Super Great Title')
+        expect(page).to have_css(".caption", text: 'Super great desription.')
+      end
+    end
+
+    scenario "deletes attachment from an ad-hoc card", selenium: true do
+      login_as author
+      visit "/papers/#{paper.id}"
+
+      edit_paper = EditPaperPage.new
+      edit_paper.view_card('Ad Hoc', AdhocOverlay) do |overlay|
+        overlay.attach_and_upload_file("yeti.jpg")
+        expect(page).to have_css(".download-link a[href*='#{Attachment.last.file.path}']")
+        expect(page).to have_css(".thumbnail-preview img[src*='#{Attachment.last.file.versions[:preview].path}']")
+
+        find(".fa-trash").click
+        find(".attachment-delete-button").click
+
+        expect(page).not_to have_css(".thumbnail-preview")
+      end
+    end
   end
 end

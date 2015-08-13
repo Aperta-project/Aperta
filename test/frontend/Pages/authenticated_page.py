@@ -128,6 +128,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
     assert button.value_of_css_property('text-align') == 'center'
     assert button.value_of_css_property('text-transform') == 'uppercase'
+    assert button.value_of_css_property('background-color') == 'rgba(57, 163, 41, 1)'
 
   @staticmethod
   def validate_table_heading_style(th):

@@ -2,35 +2,30 @@ module InvitationCodes
   extend ActiveSupport::Concern
 
   included do
-    before_action :set_invitation_code
+    before_action :set_invitation_code_from_params
+    before_action :associate_current_user_with_invitation_code_from_session
   end
 
   private
 
-  # called every request
-  def set_invitation_code
+  def set_invitation_code_from_params
     invitation_code = params["invitation_code"]
+    return if invitation_code.blank?
 
-    if invitation_code.present?
-      if Invitation.where(code: invitation_code).invited.exists?
-        session["invitation_code"] = invitation_code
-      else
-        flash[:alert] = "The invitation is no longer active or has expired."
-      end
-    end
-
-    if session["invitation_code"] && current_user
-      associate_user_with_invitation(current_user)
+    if Invitation.where(code: invitation_code).invited.exists?
+      session["invitation_code"] = invitation_code
+    else
+      flash[:alert] = "The invitation is no longer active or has expired."
     end
   end
 
-  # called after login or signup
-  def associate_user_with_invitation(user)
-    if invitation_code = session["invitation_code"]
-      invitation = Invitation.where(code: invitation_code).invited.first
-      invitation.update(invitee: user) if invitation
-      clear_invitation_code
-    end
+  def associate_current_user_with_invitation_code_from_session
+    invitation_code = session["invitation_code"]
+    return unless invitation_code.present? && current_user
+
+    invitation = Invitation.where(code: invitation_code).invited.first
+    invitation.update(invitee: current_user) if invitation
+    clear_invitation_code
   end
 
   def clear_invitation_code

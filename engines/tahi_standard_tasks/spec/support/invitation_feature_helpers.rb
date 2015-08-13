@@ -11,9 +11,9 @@ module InvitationFeatureHelpers
   end
 
   def ensure_email_got_sent_to(email)
-    expect {
+    expect do
       process_sidekiq_jobs
-    }.to change(ActionMailer::Base.deliveries, :count)
+    end.to change(ActionMailer::Base.deliveries, :count)
     expect(find_email(email)).to_not be_nil
   end
 

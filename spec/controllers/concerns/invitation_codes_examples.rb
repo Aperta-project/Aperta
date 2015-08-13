@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.shared_examples_for "controller supports invitation codes" do
-  let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee:nil) }
+  let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: nil) }
   let(:user) { FactoryGirl.create(:user) }
 
   describe "handling invitation codes" do

@@ -6,9 +6,9 @@ describe Invitation do
   let(:invitation) { FactoryGirl.build :invitation, task: task }
 
   describe ".invited" do
-    let!(:open_invitation_1){ FactoryGirl.create(:invitation, :invited) }
-    let!(:open_invitation_2){ FactoryGirl.create(:invitation, :invited) }
-    let!(:accepted_invitation){ FactoryGirl.create(:invitation, state: 'accepted') }
+    let!(:open_invitation_1) { FactoryGirl.create(:invitation, :invited) }
+    let!(:open_invitation_2) { FactoryGirl.create(:invitation, :invited) }
+    let!(:accepted_invitation) { FactoryGirl.create(:invitation, state: 'accepted') }
 
     it "returns invitations that are in the 'invited' state" do
       expect(Invitation.invited).to include(open_invitation_1, open_invitation_2)
@@ -98,7 +98,7 @@ describe Invitation do
   end
 
   describe "#recipient_name" do
-    let(:invitee){ FactoryGirl.build(:user, first_name: "Ben", last_name: "Howard")}
+    let(:invitee) { FactoryGirl.build(:user, first_name: "Ben", last_name: "Howard")}
 
     before do
       invitation.invitee = invitee

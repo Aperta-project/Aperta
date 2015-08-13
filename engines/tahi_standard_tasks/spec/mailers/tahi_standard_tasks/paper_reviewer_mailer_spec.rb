@@ -16,7 +16,7 @@ shared_examples_for 'an invitation notification email' do |email_identifier_word
 end
 
 describe TahiStandardTasks::PaperReviewerMailer do
-  let(:task){ create(:paper_reviewer_task) }
+  let(:task) { create(:paper_reviewer_task) }
   let(:invitation) do
     create(
       :invitation,

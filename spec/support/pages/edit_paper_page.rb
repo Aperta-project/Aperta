@@ -57,10 +57,6 @@ class EditPaperPage < Page
     first(:css, '.versions-link')
   end
 
-  def version_dropdown
-    find(:css, '#versioning-toolbar select')
-  end
-
   def visit_task_manager
     click_link 'Workflow'
     TaskManagerPage.new

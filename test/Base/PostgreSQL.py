@@ -13,6 +13,7 @@ Psycopg2 can be installed via the following command:
 __author__ = 'jgray@plos.org'
 
 import psycopg2
+
 from Resources import psql_hname, psql_port, psql_uname, psql_pw, psql_db
 
 

@@ -4,6 +4,7 @@
 A class to be inherited from every page for which one is authenticated and wants to access
 the navigation menu also vital for ensuring style consistency across the application.
 """
+
 from selenium.webdriver.common.by import By
 from Base.PlosPage import PlosPage
 
@@ -12,7 +13,6 @@ __author__ = 'jgray@plos.org'
 
 class AuthenticatedPage(PlosPage):
   """
-  Model the common elements of an aperta authenticated page
   Model the common styles of elements of the authenticated pages to enforce consistency
   """
 
@@ -121,7 +121,8 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('font-weight') == '500'
     assert title.value_of_css_property('line-height') == '52.8px'
     assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
-
+    return None
+    
   @staticmethod
   def validate_green_backed_button_style(button):
     """
@@ -137,6 +138,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('background-color') == 'rgba(57, 163, 41, 1)'
     assert button.value_of_css_property('text-align') == 'center'
     assert button.value_of_css_property('text-transform') == 'uppercase'
+    return None
 
   @staticmethod
   def validate_table_heading_style(th):
@@ -152,3 +154,4 @@ class AuthenticatedPage(PlosPage):
     assert th.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
     assert th.value_of_css_property('text-align') == 'left'
     assert th.value_of_css_property('vertical-align') == 'top'
+    return None

@@ -9,6 +9,8 @@ from WebDriverFactory import WebDriverFactory
 from Base.Resources import login_valid_email, login_valid_pw
 from frontend.Pages.login_page import LoginPage
 from frontend.Pages.dashboard import DashboardPage
+from teamcity import is_running_under_teamcity
+from teamcity.unittestpy import TeamcityTestRunner
 
 class FrontEndTest(unittest.TestCase):
   """
@@ -54,15 +56,6 @@ class FrontEndTest(unittest.TestCase):
         self._driver = self.factory.setup_webdriver()
     return self._driver
 
-  @staticmethod
-  def _run_tests_randomly():
-    """
-    *Static* method for every test suite inheriting this class to be able to run its tests
-    in, at least, a non linear fashion.
-    """
-    unittest.TestLoader.sortTestMethodsUsing = lambda _, x, y: random.choice([-1, 1])
-    unittest.main()
-
   def _login(self):
     login_page = LoginPage(self.getDriver())
     login_page.enter_login_field(login_valid_email)
@@ -89,3 +82,16 @@ class FrontEndTest(unittest.TestCase):
     dashboard.select_journal(journal, type_)
     dashboard.click_create_button()
     return title
+
+  @staticmethod
+  def _run_tests_randomly():
+    """
+    *Static* method for every test suite inheriting this class to be able to run its tests
+    in, at least, a non linear fashion.
+    """
+    unittest.TestLoader.sortTestMethodsUsing = lambda _, x, y: random.choice([-1, 1])
+    if is_running_under_teamcity():
+      runner = TeamcityTestRunner()
+    else:
+      runner = unittest.TextTestRunner()
+    unittest.main(testRunner=runner)

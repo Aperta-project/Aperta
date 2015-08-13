@@ -8,7 +8,6 @@ from selenium.webdriver.common.keys import Keys
 
 from authenticated_page import AuthenticatedPage
 from Base.PostgreSQL import PgSQL
-from Base.PlosPage import PlosPage
 
 
 __author__ = 'jgray@plos.org'
@@ -346,5 +345,3 @@ class DashboardPage(AuthenticatedPage):
     """Click sign out link"""
     self._get(self._nav_signout_link).click()
     return self
-
-

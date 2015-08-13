@@ -2,8 +2,6 @@ import Ember from 'ember';
 import ENV from 'tahi/config/environment';
 
 export default Ember.Component.extend({
-  tagName: 'a',
-  attributeBindings: ['href'],
   classNameBindings: [':card', 'task.completed:card--completed', 'classes'],
 
   // TODO: The templates always pass an attr of paper but it is never used

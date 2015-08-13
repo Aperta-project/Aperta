@@ -50,4 +50,17 @@ describe VersionedText do
       expect(versioned_text.submitting_user).to eq(user)
     end
   end
+
+  describe '#version_string' do
+    it "displays creator_name when submitting user is defined" do
+      versioned_text.submitting_user = user
+      versioned_text.updated_at = Time.local(2015, 12, 1, 10, 5, 0)
+      expect(versioned_text.version_string).to eq("R0.0 — Dec 01, 2015 #{user.full_name}")
+    end
+
+    it "displays 'draft' when submitting_user is not defined" do
+      versioned_text.updated_at = Time.local(2015, 12, 1, 10, 5, 0)
+      expect(versioned_text.version_string).to eq("R0.0 — Dec 01, 2015 (draft)")
+    end
+  end
 end

@@ -24,12 +24,14 @@ class ApplicationController < ActionController::Base
 
   # called every request
   def set_invitation_code
-    # Look for an invitation_code in query params
     invitation_code = params["invitation_code"]
 
-    # Set the invitation_code in the Session
     if invitation_code.present?
-      session["invitation_code"] = invitation_code
+      if Invitation.where(code: invitation_code).invited.exists?
+        session["invitation_code"] = invitation_code
+      else
+        flash[:alert] = "The invitation is no longer active or has expired."
+      end
     end
 
     if session["invitation_code"] && current_user
@@ -39,15 +41,10 @@ class ApplicationController < ActionController::Base
 
   # called after login or signup
   def associate_user_with_invitation(user)
-    # if we have an invitation_code in the session, try to associate it with the user
     if invitation_code = session["invitation_code"]
-      invitation = Invitation.where(code: invitation_code).not_accepted.first
-
-      if invitation
-        invitation.update(invitee: user)
-      end
-
-      clear_invitation_code # clear if we found an invitation or not
+      invitation = Invitation.where(code: invitation_code).invited.first
+      invitation.update(invitee: user) if invitation
+      clear_invitation_code
     end
   end
 

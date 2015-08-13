@@ -5,17 +5,17 @@ describe Invitation do
   let(:task) { FactoryGirl.create :invitable_task, phase: phase }
   let(:invitation) { FactoryGirl.build :invitation, task: task }
 
-  describe ".not_accepted" do
+  describe ".invited" do
     let!(:open_invitation_1){ FactoryGirl.create(:invitation, :invited) }
     let!(:open_invitation_2){ FactoryGirl.create(:invitation, :invited) }
     let!(:accepted_invitation){ FactoryGirl.create(:invitation, state: 'accepted') }
 
-    it "returns invitations that have been not been accepted" do
-      expect(Invitation.not_accepted).to include(open_invitation_1, open_invitation_2)
+    it "returns invitations that are in the 'invited' state" do
+      expect(Invitation.invited).to include(open_invitation_1, open_invitation_2)
     end
 
     it "does not include invitations that are not in the 'invited' state" do
-      expect(Invitation.not_accepted).to_not include(accepted_invitation)
+      expect(Invitation.invited).to_not include(accepted_invitation)
     end
   end
 

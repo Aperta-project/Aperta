@@ -46,6 +46,8 @@ feature "Inviting a new reviewer", js: true do
     sign_out
 
     visit invitation_link
+    expect(page).to have_content("The invitation is no longer active or has expired.")
+
     dashboard_page = sign_up_as("a-malz-imposter@example.com")
     expect(dashboard_page).to_not have_content('View invitations')
     expect(dashboard_page).to_not have_submission(paper.title)

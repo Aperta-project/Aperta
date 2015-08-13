@@ -2,8 +2,6 @@ class Invitation < ActiveRecord::Base
   include EventStream::Notifiable
   include AASM
 
-  scope :not_accepted, -> { where(state: 'invited') }
-
   belongs_to :task
   belongs_to :decision
   has_one :paper, through: :task

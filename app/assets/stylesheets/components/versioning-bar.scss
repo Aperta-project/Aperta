@@ -4,6 +4,10 @@
   position: relative;
   display: inline-block;
   vertical-align: text-top;
+  .bar-item {
+    width: $tahi-paper-width;
+    margin: auto;
+  }
   select {
     margin-left: 5px;
     width: 200px;
@@ -23,7 +27,3 @@
 }
 
 
-.bar-item {
-  width: $tahi-paper-width;
-  margin: auto;
-}

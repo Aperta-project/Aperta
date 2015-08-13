@@ -72,6 +72,9 @@ html.control-bar-sub-nav-active #paper-container {
   position: relative;
   background: $tahi-grey-xlight;
   width: calc(100% - #{$paper-edit-sidebar-width} - 1px);
+  &.not-ve {
+    font-size: .95em;
+  }
 }
 
 .paper-toolbar {

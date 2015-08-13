@@ -4,7 +4,7 @@
 
   {{partial "paper/sidebar"}}
 
-  <div class="manuscript-container">
+  <div class="manuscript-container {{if model.versioningMode 'not-ve'}}">
     <main>
       {{flash-messages classNames="flash-messages-paper-editor"}}
       <article class="manuscript {{if isEditable "editing" "read-only"}}">

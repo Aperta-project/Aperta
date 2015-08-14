@@ -121,7 +121,9 @@ export default Ember.Component.extend({
   }),
 
   _setupKeybindings: Ember.on('didInsertElement', function() {
-    $(document).on('keyup.autosuggest', (event) => {
+    let eventName = 'keyup.autosuggest-' + this.$().id;
+
+    $(document).on(eventName, (event) => {
       if (event.which === 27) {
         this.set('highlightedItem', null);
       }
@@ -138,6 +140,11 @@ export default Ember.Component.extend({
         this.set('searchResults', null);
       }
     });
+  }),
+
+  _teardownKeybindings: Ember.on('willDestroyElement', function() {
+    let eventName = 'keyup.autosuggest-' + this.$().id;
+    $(document).off(eventName);
   }),
 
   selectItem(item) {

@@ -73,3 +73,53 @@ class AdminPage(AuthenticatedPage):
     self._get(self._base_admin_user_search_button)
     self._get(self._base_admin_user_search_default_state_text)
     # Validate Journals section elements
+    self._get(self._base_admin_journals_section_title)
+    if username == 'jgray':
+      self._get(self._base_admin_journals_su_add_new_journal_btn)
+      # Validate the presentation of journal blocks
+      # Super Admin gets all journals
+      db_journals = PgSQL().query('SELECT journals.logo,journals.name,journals.description,count(papers.id)'
+                                  'FROM journals INNER JOIN papers '
+                                  'ON journals.id = papers.journal_id '
+                                  'GROUP BY journals.id;')
+    else:
+      # Ordinary Admin role is assigned on a per journal basis
+      uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
+      roles = PgSQL().query('SELECT role_id FROM user_roles WHERE user_id = %s;', (uid,))
+      role_list = []
+      for role in roles:
+        role_list.append(role[0])
+      journals = []
+      for role in role_list:
+        journals.append(PgSQL().query('SELECT journal_id FROM roles WHERE id = %s;', (role,))[0][0])
+      db_journals = []
+      for journal in journals:
+        db_journals.append(PgSQL().query('SELECT journals.logo, journals.name, journals.description, '
+                                         'count(papers.id) '
+                                         'FROM journals INNER JOIN papers '
+                                         'ON journals.id = papers.journal_id '
+                                         'WHERE journals.id = %s '
+                                         'GROUP BY journals.id;', (journal,))[0])
+    journal_blocks = self._gets(self._base_admin_journals_section_journal_block)
+    count = 0
+    for journal_block in journal_blocks:
+      journal_link = self._get(self._base_admin_journal_block_link)
+      try:
+        journal_logo_empty = self._get(self._base_admin_journal_block_logo_blank)
+        if journal_logo_empty:
+          journal_logo = None
+      except:
+        journal_logo_populated = self._get(self._base_admin_journal_block_logo_img)
+        journal_logo = 'image.jpg'  # placeholder
+      journal_paper_count = self._get(self._base_admin_journal_block_paper_count)
+      journal_title = self._get(self._base_admin_journal_block_name)
+      journal_desc = self._get(self._base_admin_journal_block_desc)
+      print(journal_logo, journal_title.text, journal_desc.text, str(journal_paper_count.text.split()[0]) + 'L')
+      print(db_journals)
+      #assert (journal_title.text, journal_desc.text, str(journal_paper_count.text.split()[0]) + 'L') in db_journals
+    for db_journal in db_journals:
+      db_logo = db_journal[0]
+      db_name = db_journal[1]
+      db_desc = db_journal[2]
+      db_art_count = db_journal[3]
+      print db_logo, db_name, db_desc, db_art_count

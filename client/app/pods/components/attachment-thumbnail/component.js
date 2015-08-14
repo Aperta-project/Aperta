@@ -11,6 +11,7 @@ export default Ember.Component.extend({
    */
   attachment: null,
 
+  confidentiality: false,
   destroyState: false,
   previewState: false,
   editState: false,
@@ -30,6 +31,9 @@ export default Ember.Component.extend({
     let urlRoot = '/api/supporting_information_files/';
     if (this.get('figure')) {
       urlRoot = '/api/figures/';
+    }
+    if (this.get('attachment')) {
+      urlRoot = '/api/tasks/' + this.get('attachment.task.id') + '/attachments/';
     }
 
     return urlRoot + this.get('attachment.id') + '/update_attachment';

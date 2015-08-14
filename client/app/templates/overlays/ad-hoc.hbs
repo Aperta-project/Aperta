@@ -55,7 +55,8 @@
 
   {{#each model.attachments as |attachment|}}
     {{attachment-thumbnail attachment=attachment
-                           destroyAttachment="destroyAttachment"}}
+                           destroyAttachment="destroyAttachment"
+                           isEditable=model.paper.editable}}
   {{/each}}
 </div>
 

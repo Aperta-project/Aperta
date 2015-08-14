@@ -5,7 +5,7 @@
 <div class="sheet-content discussions-show-content">
   <div class="discussions-show-header">
     <h1 class="discussions-show-title">
-      {{input value=model.title action="saveTopic" on="focus-out"}}
+      {{input value=model.title focus-out="saveTopic"}}
     </h1>
 
     {{participant-selector currentParticipants=participants

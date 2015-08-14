@@ -11,7 +11,7 @@
     </ul>
     <ul>
       <li class="control-bar-item">
-        <div class="control-bar-link versions-link __with-icon" {{action "toggleVersioningMode" "versions" target="view"}}>
+        <div class="control-bar-link versions-link __with-icon" {{action "toggleVersioningMode" "versions"}}>
           <div class="control-bar-link-icon"><i class="fa fa-files-o"></i></div>
           <div class="control-bar-link-text">
             <span class="control-bar-toggle {{if view.versionsVisible "control-bar-toggle--active"}}">{{partial "svg/plus"}}</span>
@@ -20,7 +20,7 @@
         </div>
       </li>
       <li class="control-bar-item">
-        <div class="control-bar-link contributors-link __with-icon" {{action "showSubNav" "contributors" target="view"}}>
+        <div class="control-bar-link contributors-link __with-icon" {{action "showSubNav" "contributors"}}>
           <div class="control-bar-link-icon">
             <span class="fa fa-user"></span>
           </div>
@@ -31,7 +31,7 @@
         </div>
       </li>
       <li class="control-bar-item">
-        <div class="control-bar-link downloads-link __with-icon" {{action "showSubNav" "downloads" target="view"}}>
+        <div class="control-bar-link downloads-link __with-icon" {{action "showSubNav" "downloads"}}>
           <div class="control-bar-link-icon">{{partial "svg/downloads"}}</div>
           <div class="control-bar-link-text">
             <span class="control-bar-toggle {{if view.downloadsVisible "control-bar-toggle--active"}}">{{partial "svg/plus"}}</span>

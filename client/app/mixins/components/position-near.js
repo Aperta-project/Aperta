@@ -1,16 +1,84 @@
 import Ember from 'ember';
+
 const { on } = Ember;
 
-export default Ember.Mixin.create({
-  matchWidth: true,
-  setMaxHeight: false,
-  width: null,
-  animationClass: null,
-  positionOver: false,
+/**
+ *  position-near is a mixin for components to position
+ *  them near other DOM nodes
+ *
+ *  @extends Ember.Mixin
+ *  @since 1.3.0
+**/
 
-  // attrs:
+export default Ember.Mixin.create({
+  // -- attrs:
+
+  /**
+   *  jquery selector for target to postion next to
+   *
+   *  @property selector
+   *  @type String
+   *  @default null
+   *  @required
+  **/
   selector: null,
 
+  /**
+   *  The default is to position directly below the target,
+   *  this option will put it directly over
+   *
+   *  @property positionOver
+   *  @type Boolean
+   *  @default false
+   *  @optional
+  **/
+  positionOver: false,
+
+  /**
+   *  This option will decrease the css max-height property to prevent
+   *  the list from flowing out of the viewport. A class will need to
+   *  be assigned to the component mixining this position-near. The class
+   *  will need `overflow: auto` to be set (see example). This mixin
+   *
+   *  @example
+   *    {{#my-component selector="#some-node"
+   *                    setMaxHeight=true
+   *                    class="my-component"}}
+   *
+   *    .my-component { overflow: auto; }
+   *
+   *  @property setMaxHeight
+   *  @type Boolean
+   *  @default false
+   *  @optional
+  **/
+  setMaxHeight: false,
+
+  /**
+   *  The default is match the width of target component.
+   *  this option will override the matchWidth attribute
+   *
+   *  @property width
+   *  @type String
+   *  @default null
+   *  @optional
+  **/
+  width: null,
+
+  /**
+   *  Match the width of target component
+   *
+   *  @property matchWidth
+   *  @type Boolean
+   *  @default true
+   *  @optional
+  **/
+  matchWidth: true,
+
+  /**
+   *  @method position
+   *  @public
+  **/
   position: on('didInsertElement', function() {
     let selector = this.get('selector');
     Ember.assert('position-near requires a selector property', selector);
@@ -61,13 +129,24 @@ export default Ember.Mixin.create({
     this.$().css(css);
   }),
 
+  /**
+   *  Start listening for window resize events.
+   *  If `setMaxHeight` is true we may need to adjust height.
+   *
+   *  @method _setupResizeListener
+   *  @private
+  **/
   _setupResizeListener: on('didInsertElement', function() {
-    $(window).on('resize.positionnear', ()=> {
-      this.position();
+    let eventName = 'resize.positionnear-' + this.$().id;
+    $(window).on(eventName, ()=> {
+      if(this.get('setMaxHeight')) {
+        this.position();
+      }
     });
   }),
 
   _teardownResizeListener: on('willDestroyElement', function() {
-    $(window).off('resize.positionnear');
+    let eventName = 'resize.positionnear-' + this.$().id;
+    $(window).off(eventName);
   })
 });

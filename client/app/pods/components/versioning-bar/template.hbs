@@ -1,0 +1,11 @@
+<div id="versioning-bar">
+  <div class="bar-item">
+    Now viewing:
+    {{view "select"
+      name="view_version"
+      content=paper.versions
+      optionValuePath="content.id"
+      optionLabelPath="content.name"
+      selection=selectedVersion}}
+  </div>
+</div>

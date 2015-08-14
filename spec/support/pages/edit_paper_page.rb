@@ -53,6 +53,10 @@ class EditPaperPage < Page
     find '.contributors-add'
   end
 
+  def version_button
+    first(:css, '.versions-link')
+  end
+
   def visit_task_manager
     click_link 'Workflow'
     TaskManagerPage.new
@@ -82,6 +86,10 @@ HERE
 
   def body
     find('.ve-ce-documentNode').text
+  end
+
+  def versioned_body
+    find('#paper-body').text
   end
 
   def has_body_text?(text)

@@ -1,3 +1,4 @@
+# coding: utf-8
 class VersionedText < ActiveRecord::Base
   belongs_to :paper
 
@@ -23,6 +24,7 @@ class VersionedText < ActiveRecord::Base
   # flag is true.
   def minor_version!
     self.copy_on_edit = false
+    self.submitting_user = nil
 
     old_version = dup
     old_version.text = text_was
@@ -33,6 +35,14 @@ class VersionedText < ActiveRecord::Base
   end
 
   def version_string
-    "#{major_version}.#{minor_version}"
+    date = ""
+    date = updated_at.strftime('%b %d, %Y') if updated_at
+    "R#{major_version}.#{minor_version} — #{date} #{creator_name}"
+  end
+
+  private
+
+  def creator_name
+    submitting_user ? submitting_user.full_name : "(draft)"
   end
 end

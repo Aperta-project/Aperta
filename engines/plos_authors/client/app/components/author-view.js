@@ -13,7 +13,7 @@ export default Ember.Component.extend(DragNDrop.DraggableMixin, {
   }.property('plosAuthor.errors'),
 
   attachHoverEvent: function() {
-    if (this.get('disabled') === true) { return };
+    if (this.get('disabled') === true) { return; }
     let self = this;
     let toggleHoverClass = function() {
       self.toggleProperty('hoverState');

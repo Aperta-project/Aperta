@@ -20,8 +20,17 @@
 <div>
   <h3>Revision Details:</h3>
   {{#if editingAuthorResponse}}
-    {{content-editable value=latestDecision.authorResponse class="revise-overlay-response-field" placeholder="Please detail the changes you've made to your submission here"}}
-    <button class="button-primary button--green" {{action "saveAuthorResponse"}}>Save</button>
+    {{content-editable
+      value=latestDecision.authorResponse
+      class="revise-overlay-response-field"
+      placeholder="Please detail the changes you've made to your submission here"
+      editable=isSubmissionTaskEditable}}
+    <button
+      class="button-primary button--green"
+      {{bind-attr disabled='isSubmissionTaskNotEditable'}}
+      {{action "saveAuthorResponse"}}>
+      Save
+    </button>
   {{else}}
     <div>{{display-line-breaks latestDecision.authorResponse}}</div>
     <button class="button-primary button--green" {{action "editAuthorResponse"}}>Edit Response</button>

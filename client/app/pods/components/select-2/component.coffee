@@ -64,6 +64,8 @@ Select2Component = Ember.TextField.extend
     options[opt] = @get(opt) for opt in passThroughOptions when @get(opt)
 
     @.$().select2(options)
+    if @get('enable') == false
+      @.$().select2('enable', false)
     @setupSelectedListener()
     @setupRemovedListener()
     @setupClosedListener()

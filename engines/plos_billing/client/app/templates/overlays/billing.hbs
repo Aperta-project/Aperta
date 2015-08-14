@@ -158,7 +158,8 @@
                           task=model
                           question="Please select your Country"
                           source=countries
-                          width="100%"}}
+                          width="100%"
+                          enable=isSubmissionTaskEditable}}
       {{else}}
         <div class="plos-billing-country-loading">
           {{progress-spinner visible=true size="mini"}}
@@ -190,7 +191,8 @@
                         class="affiliation-field"
                         selectionSelected="paymentMethodSelected"
                         source=responses
-                        width="350"}}
+                        width="350"
+                        enable=isSubmissionTaskEditable}}
     </div>
   </li>
 

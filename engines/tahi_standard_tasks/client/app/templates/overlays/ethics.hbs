@@ -6,12 +6,14 @@
     {{#question-radio ident="ethics.human_subjects"
                       task=model
                       question="Does your study involve Human Subject Research (human participants and/or tissue)?"
+                      disabled=isSubmissionTaskNotEditable
                       as |selected|}}
 
       {{#if selected.yes}}
         <div class="question-dataset">
           {{question-textarea ident="ethics.human_subjects.participants"
                               task=model
+                              disabled=isSubmissionTaskNotEditable
                               question="Please enter the name of the IRB or Ethics Committee that approved this study in the space below. Include the approval number and/or a statement indicating approval of this research."}}
 
           <div class="question-info">
@@ -28,6 +30,7 @@
     {{#question-radio ident="ethics.animal_subjects"
                       task=model
                       question="Does your study involve Animal Research (vertebrate animals, embryos or tissues)?"
+                      disabled=isSubmissionTaskNotEditable
                       as |selected|}}
 
       {{#if selected.yes}}
@@ -44,6 +47,7 @@
         <div class="question-dataset">
           {{question-textarea ident="ethics.animal_subjects.field_permit"
                               task=model
+                              disabled=isSubmissionTaskNotEditable
                               question="Please enter your statement below:"}}
         </div>
       {{/if}}

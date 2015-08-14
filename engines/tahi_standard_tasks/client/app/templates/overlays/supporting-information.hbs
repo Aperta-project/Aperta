@@ -7,7 +7,8 @@
                            destroyAttachment="destroyAttachment"
                            figure=false
                            isEditable=model.paper.editable
-                           confidentiality=true}}
+                           confidentiality=true
+                           disabled=isSubmissionTaskNotEditable}}
   {{/each}}
 </div>
 
@@ -25,6 +26,7 @@
                     start="uploadStarted"
                     done="uploadFinished"
                     cancel="cancelUploads"
-                    progress="uploadProgress"}}
+                    progress="uploadProgress"
+                    disabled=isSubmissionTaskNotEditable}}
   </span>
 {{/if}}

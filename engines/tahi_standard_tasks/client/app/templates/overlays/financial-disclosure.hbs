@@ -7,7 +7,9 @@
                       task=model
                       question="Did any of the authors receive specific funding for this work?"
                       yesAction="choseFundingReceived"
-                      noAction="choseFundingNotReceived" as |selected|}}
+                      noAction="choseFundingNotReceived"
+                      disabled=isSubmissionTaskNotEditable
+                      as |selected|}}
       {{#if selected.yes}}
         <span>Please describe all sources of funding that have supported your work.</span>
       {{/if}}
@@ -21,12 +23,14 @@
 
   {{#each funders as |funder|}}
     <div class="question-dataset constrained-form-width">
-      {{funder-dataset model=funder}}
+      {{funder-dataset
+        model=funder
+        disabled=isSubmissionTaskNotEditable}}
     </div>
   {{/each}}
 
   {{#if receivedFunding}}
-    <button class="button-secondary button--green" {{action "addFunder"}}>Add Another Funder</button>
+    <button class="button-secondary button--green" {{bind-attr disabled='isSubmissionTaskNotEditable'}} {{action "addFunder"}}>Add Another Funder</button>
 
     <hr>
 

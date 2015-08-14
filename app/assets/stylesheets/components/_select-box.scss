@@ -1,0 +1,70 @@
+$select-box-border-radius: 5px;
+
+
+// -- select replacement element
+
+.select-box-element {
+  position: relative;
+  border: 1px solid $tahi-grey-light;
+  padding: 10px 15px;
+  border-radius: $select-box-border-radius;
+  font-size: 14px;
+  cursor: pointer;
+  @include user-select(none);
+
+  &:after {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    width: 0;
+    height: 0;
+    margin-top: -2px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid $tahi-grey-light;
+    font-size: 0;
+    line-height: 0;
+    content: '';
+  }
+}
+
+
+// -- select box background cover
+
+.select-box-background-cover {
+  @include position(fixed, 0px 0px 0px 0px);
+  z-index: z('floating-list-bg');
+}
+
+
+// -- select list
+
+.select-box-list {
+  overflow: auto;
+  border: 1px solid $tahi-grey-light;
+  border-radius: $select-box-border-radius;
+  background: #fff;
+  z-index: z('floating-list-active');
+}
+
+
+// -- select list item
+
+.select-box-item {
+  padding: 10px 15px;
+  color: $tahi-grey;
+  font-size: 14px;
+  cursor: pointer;
+  @include user-select(none);
+
+  &:hover { background: #f6f6f6; }
+
+  &[aria-selected=true] {
+    color: #fff;
+    background: #2C85DF;
+  }
+}
+
+.select-box-item--placeholder {
+  font-style: italic;
+}

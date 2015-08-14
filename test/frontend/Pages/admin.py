@@ -4,6 +4,8 @@
 Page Object Model for the Admin Page. Validates global and dynamic elements and their styles
 """
 
+import time
+
 from selenium.webdriver.common.by import By
 
 from Base.PostgreSQL import PgSQL
@@ -46,12 +48,6 @@ class AdminPage(AuthenticatedPage):
 
 
     self._base_admin_journals_section_journal_block = (By.CLASS_NAME, 'journal-thumbnail')
-    self._base_admin_journal_block_link = (By.CLASS_NAME, 'journal-thumbnail-show')
-    self._base_admin_journal_block_logo_blank = (By.CSS_SELECTOR, 'div.journal-thumbnail-logo svg')
-    self._base_admin_journal_block_logo_img = (By.CSS_SELECTOR, 'div.journal-thumbnail-logo img')
-    self._base_admin_journal_block_paper_count = (By.CLASS_NAME, 'journal-thumbnail-paper-count')
-    self._base_admin_journal_block_name = (By.CLASS_NAME, 'journal-thumbnail-name')
-    self._base_admin_journal_block_desc = (By.CSS_SELECTOR, 'a.journal-thumbnail-show p')
     # User Details Overlay
     self._ud_overlay_title = (By.CSS_SELECTOR, 'div.overlay-container div h1')
     self._ud_overlay_closer = (By.CLASS_NAME, 'overlay-close-x')
@@ -78,8 +74,8 @@ class AdminPage(AuthenticatedPage):
       self._get(self._base_admin_journals_su_add_new_journal_btn)
       # Validate the presentation of journal blocks
       # Super Admin gets all journals
-      db_journals = PgSQL().query('SELECT journals.logo,journals.name,journals.description,count(papers.id)'
-                                  'FROM journals INNER JOIN papers '
+      db_journals = PgSQL().query('SELECT journals.name,journals.description,count(papers.id)'
+                                  'FROM journals LEFT JOIN papers '
                                   'ON journals.id = papers.journal_id '
                                   'GROUP BY journals.id;')
     else:
@@ -94,32 +90,30 @@ class AdminPage(AuthenticatedPage):
         journals.append(PgSQL().query('SELECT journal_id FROM roles WHERE id = %s;', (role,))[0][0])
       db_journals = []
       for journal in journals:
-        db_journals.append(PgSQL().query('SELECT journals.logo, journals.name, journals.description, '
-                                         'count(papers.id) '
-                                         'FROM journals INNER JOIN papers '
+        db_journals.append(PgSQL().query('SELECT journals.name, journals.description, count(papers.id) '
+                                         'FROM journals LEFT JOIN papers '
                                          'ON journals.id = papers.journal_id '
                                          'WHERE journals.id = %s '
                                          'GROUP BY journals.id;', (journal,))[0])
     journal_blocks = self._gets(self._base_admin_journals_section_journal_block)
     count = 0
     for journal_block in journal_blocks:
-      journal_link = self._get(self._base_admin_journal_block_link)
-      try:
-        journal_logo_empty = self._get(self._base_admin_journal_block_logo_blank)
-        if journal_logo_empty:
-          journal_logo = None
-      except:
-        journal_logo_populated = self._get(self._base_admin_journal_block_logo_img)
-        journal_logo = 'image.jpg'  # placeholder
+      # Once again, while less than ideal, these must be defined on the fly
+      self._base_admin_journal_block_paper_count = \
+          (By.XPATH,
+           '//div[@class="ember-view journal-thumbnail"][%s]/a/span[@class="journal-thumbnail-paper-count"]'
+           % str(count + 1))
+      self._base_admin_journal_block_name = \
+          (By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]/a/h3[@class="journal-thumbnail-name"]'
+           % str(count + 1))
+      self._base_admin_journal_block_desc = (By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]/a/p'
+                                             % str(count + 1))
+
       journal_paper_count = self._get(self._base_admin_journal_block_paper_count)
       journal_title = self._get(self._base_admin_journal_block_name)
-      journal_desc = self._get(self._base_admin_journal_block_desc)
-      print(journal_logo, journal_title.text, journal_desc.text, str(journal_paper_count.text.split()[0]) + 'L')
-      print(db_journals)
-      #assert (journal_title.text, journal_desc.text, str(journal_paper_count.text.split()[0]) + 'L') in db_journals
-    for db_journal in db_journals:
-      db_logo = db_journal[0]
-      db_name = db_journal[1]
-      db_desc = db_journal[2]
-      db_art_count = db_journal[3]
-      print db_logo, db_name, db_desc, db_art_count
+      journal_desc = self._iget(self._base_admin_journal_block_desc).text
+      if len(journal_desc) == 0:
+        journal_desc = None
+      journal_t = (journal_title.text, journal_desc, long(journal_paper_count.text.split()[0]))
+      assert journal_t in db_journals
+      count += 1

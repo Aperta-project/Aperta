@@ -15,7 +15,7 @@ module InvitationCodes
     if Invitation.where(code: invitation_code).invited.exists?
       session["invitation_code"] = invitation_code
     else
-      flash[:alert] = "The invitation is no longer active or has expired."
+      flash[:alert] = "We're sorry, the invitation is no longer active."
     end
   end
 

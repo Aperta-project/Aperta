@@ -11,7 +11,7 @@ RSpec.shared_examples_for "controller supports invitation codes" do
       end
 
       it "sets a flash[:alert] message for the user" do
-        expect(flash[:alert]).to eq "The invitation is no longer active or has expired."
+        expect(flash[:alert]).to eq "We're sorry, the invitation is no longer active."
       end
     end
 

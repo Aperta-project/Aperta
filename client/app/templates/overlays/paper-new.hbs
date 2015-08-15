@@ -13,19 +13,36 @@
   </div>
 
   <div class="form-group">
-    {{select-2-single placeholder="Choose Journal"
-                      class="paper-new-journal-select"
-                      width="300"
-                      selectionSelected="selectJournal"
-                      source=journalProxies
-                      selectedData=selectedJournal}}
+    <label class="paper-new-label">
+      What journal are you submitting to?
+    </label>
 
-    {{select-2-single placeholder="Choose Paper Type"
-                      class="paper-new-paper-type-select"
-                      width="300"
-                      selectionSelected="selectPaperType"
-                      source=paperTypeProxies
-                      selectedData=selectedPaperType}}
+    {{#select-box items=journals
+                  selectedItem=model.journal
+                  placeholder="Please select a journal"
+                  allowDeselect=true
+                  makeSelection=(action "selectJournal")
+                  clearSelection=(action "clearJournal")
+                  as |journal|}}
+      {{journal.name}}
+    {{/select-box}}
+  </div>
+
+  <div class="form-group">
+    <label class="paper-new-label">
+      Choose the type of paper you're submitting.
+    </label>
+
+    {{#select-box items=model.journal.paperTypes
+                  selectedItem=model.paperType
+                  placeholder="Please select a paper type"
+                  allowDeselect=true
+                  disabled=journalEmpty
+                  makeSelection=(action "selectPaperType")
+                  clearSelection=(action "clearPaperType")
+                  as |paperType|}}
+      {{paperType}}
+    {{/select-box}}
   </div>
 
   <div class="overlay-action-buttons">

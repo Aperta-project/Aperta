@@ -65,6 +65,25 @@ test('it displays a list', function(assert) {
   );
 });
 
+test('it does not display list when disabled', function(assert) {
+  assert.expect(1);
+
+  this.render(hbs`
+    {{#select-box items=people
+                  selectedItem=selectedPerson
+                  disabled=true
+                  makeSelection=(action "selectPerson")
+                  clearSelection=(action "clearPerson")
+                  as |user|}}
+      {{user.name}}
+    {{/select-box}}
+  `);
+
+  this.$('.select-box-element').click();
+
+  assert.equal(this.$('.select-box-list').length, 0, 'list is not rendered');
+});
+
 test('it displays a placeholder', function(assert) {
   assert.expect(4);
 

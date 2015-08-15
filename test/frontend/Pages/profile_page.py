@@ -19,7 +19,14 @@ class ProfilePage(AuthenticatedPage):
     super(ProfilePage, self).__init__(driver, '/')
 
     #Locators - Instance members
-    self._click_editor_assignment_button = (By.XPATH, './/div[2]/div[2]/div/div[4]/div')
+    self._profile_name_title = (By.XPATH, './/div["profile-section"]/h1')
+    self._profile_name = (By.XPATH, './/div["profile-section"]/h2')
+    self._profile_username_title = (By.XPATH, './/div[@id="profile-username"]/h1')
+    self._profile_username = (By.XPATH, './/div[@id="profile-username"]/h2')
+    self._profile_email_title = (By.XPATH, './/div[@id="profile-email"]/h1')
+    self._profile_email = (By.XPATH, './/div[@id="profile-email"]/h2')
+
+
   #POM Actions
 
 
@@ -30,7 +37,23 @@ class ProfilePage(AuthenticatedPage):
     self.validate_nav_elements(username)
     # Close nav bar
     self.click_left_nav()
+    name_title = self._get(self._profile_name_title)
+    assert 'First and last name:' in name_title.text
+    self.validate_profile_title_style(name_title)
+    name = self._get(self._profile_name)
+    self.validate_title_style(name)
+    username_title = self._get(self._profile_username_title)
+    assert 'Username:' in username_title.text
+    self.validate_profile_title_style(username_title)
+    profile_username = self._get(self._profile_username)
+    self.validate_title_style(profile_username, '27', '29.7')
+    email_title = self._get(self._profile_email_title)
+    assert 'Email:' in email_title.text
+    self.validate_profile_title_style(email_title)
+    email = self._get(self._profile_email)
+    self.validate_title_style(email, '27', '29.7')
     
+    ##
 
     return self
 

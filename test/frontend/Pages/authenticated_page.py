@@ -118,17 +118,31 @@ class AuthenticatedPage(PlosPage):
     return self
 
   @staticmethod
-  def validate_title_style(title):
+  def validate_title_style(title, size='48', line='52.8'):
     """
     Ensure consistency in rendering page and overlay main headings across the application
     :param title: title to validate
     :return: None
     """
     assert 'helvetica' in title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == '48px'
+    assert title.value_of_css_property('font-size') == '%spx'%size
     assert title.value_of_css_property('font-weight') == '500'
-    assert title.value_of_css_property('line-height') == '52.8px'
+    assert title.value_of_css_property('line-height') == '%spx'%line
     assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+    return None
+
+  @staticmethod
+  def validate_profile_title_style(title):
+    """
+    Ensure consistency in rendering page and overlay main headings across the application
+    :param title: title to validate
+    :return: None
+    """
+    assert 'helvetica' in title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '14px'
+    assert title.value_of_css_property('font-weight') == '500'
+    assert title.value_of_css_property('line-height') == '15.4px'
+    assert title.value_of_css_property('color') == 'rgba(153, 153, 153, 1)'
     return None
     
   @staticmethod

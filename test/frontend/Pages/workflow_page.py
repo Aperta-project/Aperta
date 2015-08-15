@@ -102,11 +102,11 @@ class WorkflowPage(AuthenticatedPage):
     assert editable.value_of_css_property('text-transform') == 'uppercase'
     assert editable.value_of_css_property('line-height') == '20px'
     assert editable.value_of_css_property('text-align') == 'center'
-    editable_checkbox = self._get(self._editable_checkbox)
-    assert editable_checkbox.get_attribute('type') == 'checkbox'
-    assert editable_checkbox.value_of_css_property('color') == 'rgba(60, 60, 60, 1)'
-    assert editable_checkbox.value_of_css_property('font-size') == '10px'
-    assert editable_checkbox.value_of_css_property('font-weight') == '700'
+    ec = self._get(self._editable_checkbox)
+    assert ec.get_attribute('type') == 'checkbox'
+    assert ec.value_of_css_property('color') in ('rgba(49, 55, 57, 1)', 'rgba(60, 60, 60, 1)')
+    assert ec.value_of_css_property('font-size') == '10px'
+    assert ec.value_of_css_property('font-weight') == '700'
     recent_activity_icon = self._get(self._recent_activity_icon)
     assert recent_activity_icon.get_attribute('d') == ('M-171.3,403.5c-2.4,0-4.5,1.4-5.5,3.5c0,'
                 '0-0.1,0-0.1,0h-9.9l-6.5-17.2  '

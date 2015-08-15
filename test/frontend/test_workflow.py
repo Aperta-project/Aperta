@@ -41,23 +41,6 @@ class ApertaWorkflowTest(FrontEndTest):
     workflow_page.validate_initial_page_elements_styles()
     return self
 
-  def test_headers(self):
-    """Test headers of columns in Workflow"""
-    workflow_page = self._go_to_workflow()
-    # check for cancel edit
-    original_header_text = workflow_page.click_column_header()
-    # modify
-    workflow_page.modify_column_header('XX', blank=False)
-    time.sleep(1)
-    header_text = workflow_page.click_column_header()
-    assert 'XX' in header_text
-    # restore original value
-    workflow_page.modify_column_header(original_header_text)
-    # Test cancel button
-    header_text = workflow_page.click_column_header()
-    workflow_page.click_cancel_column_header()
-    return self
-
   def test_add_new_card(self):
     """Testing adding a new card"""
     workflow_page = self._go_to_workflow()

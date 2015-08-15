@@ -7,11 +7,14 @@ without executing an invitation accept or reject, and without a CNS creation.
 """
 
 import time
+import uuid
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 
 from Base.PostgreSQL import PgSQL
 from authenticated_page import AuthenticatedPage
+
 
 __author__ = 'jgray@plos.org'
 
@@ -23,6 +26,7 @@ class DashboardPage(AuthenticatedPage):
   def __init__(self, driver, url_suffix='/'):
     super(DashboardPage, self).__init__(driver, url_suffix)
 
+    self.driver = driver
     # Locators - Instance members
     # Base Page Locators
     self._dashboard_invite_title = (By.CSS_SELECTOR, 'h2.welcome-message')
@@ -57,7 +61,31 @@ class DashboardPage(AuthenticatedPage):
     self._cns_cancel = (By.CLASS_NAME, 'button-link')
     self._cns_create = (By.CLASS_NAME, 'button-primary')
 
+    #self._create_modal = (By.CSS_SELECTOR, 'html.overlay-open')    
+    #self._title_text_field = (By.CSS_SELECTOR, '#paper-short-title')
+    #self._first_select = (By.XPATH, "//div[contains(@class, 'form-group')]/div[1]")
+    #self._second_select = (By.XPATH, "//div[contains(@class, 'form-group')]/div[3]")
+    #self._select_journal_from_dropdown = (By.XPATH,
+    #  '//div[contains(@class, "form-group")]/div[1]/a')
+    #self._select_type_from_dropdown = (By.XPATH,'//div[contains(@class, "form-group")]/div[3]/a')
+    #self._cancel_button = (By.CSS_SELECTOR, 'button-link.button--green')
+    #self._create_button = (By.CSS_SELECTOR, 
+    #  'div.inner-content div.overlay-action-buttons button.button-primary.button--green')
+
+
   # POM Actions
+  def click_on_existing_manuscript_link(self, title):
+    """Click on a link given a title"""
+    first_matching_manuscript_link = self._get((By.LINK_TEXT,title))
+    first_matching_manuscript_link.click()
+    return self
+
+  def click_on_existing_manuscript_link_partial_title(self, partial_title):
+    """Click on existing manuscript link using partial title"""
+    first_article_link = self.driver.find_element_by_partial_link_text(partial_title)
+    first_article_link.click()
+    return first_article_link.text
+
   def validate_initial_page_elements_styles(self):
     """
     Validates the static page elements existence and styles
@@ -158,10 +186,40 @@ class DashboardPage(AuthenticatedPage):
   def click_create_new_submission_button(self):
     """Click Create new submission button"""
     self._get(self._dashboard_create_new_submission_btn).click()
+    return self
+
+  def enter_title_field(self, title):
+    """Enter title for the publication"""
+    self._get(self._title_text_field).clear()
+    self._get(self._title_text_field).send_keys(title)
+    return self
+
+  def click_create_button(self):
+    """Click create button"""
+    self._get(self._create_button).click()
+    return self
+
+  def click_cancel_button(self):
+    """Click cancel button"""
+    self._get(self._create_button).click()
+    return self
+
+  def select_journal(self, jtitle='Assess', jtype='Research'):
+    """Select a journal with its type"""
+    self._get(self._first_select).click()
+    self._get(self._select_journal_from_dropdown).send_keys(jtitle + Keys.ENTER)
+    self._get(self._second_select).click()
+    self._get(self._select_type_from_dropdown).send_keys(jtype + Keys.ENTER)
+    return self
+
+  def title_generator(self):
+    """Creates a new unique title"""
+    return 'Hendrik %s'%uuid.uuid4()
 
   def click_view_invites_button(self):
     """Click View Invitations button"""
     self._get(self._dashboard_view_invitations_btn).click()
+    return self
 
   @staticmethod
   def is_invite_stanza_present(username):

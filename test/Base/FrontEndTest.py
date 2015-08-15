@@ -6,17 +6,17 @@ __author__ = 'jkrzemien@plos.org'
 import unittest
 import random
 from WebDriverFactory import WebDriverFactory
+from Base.Resources import login_valid_email, login_valid_pw
+from frontend.Pages.login_page import LoginPage
+from frontend.Pages.dashboard import DashboardPage
 from teamcity import is_running_under_teamcity
 from teamcity.unittestpy import TeamcityTestRunner
 
 class FrontEndTest(unittest.TestCase):
-
   """
-
-  Base class to provide Front End tests with desired WebDriver instances, as defined in [[Config.py]].
-
+  Base class to provide Front End tests with desired WebDriver instances, as defined in 
+  [[Config.py]].
   It inherits from `TestCase` in order to count as a test suite for Python's `unittest` framework.
-
   """
 
   # This defines any `FrontEndTest` derived class as able to be run by Nose in a parallel way.
@@ -55,6 +55,33 @@ class FrontEndTest(unittest.TestCase):
       else:
         self._driver = self.factory.setup_webdriver()
     return self._driver
+
+  def _login(self):
+    login_page = LoginPage(self.getDriver())
+    login_page.enter_login_field(login_valid_email)
+    login_page.enter_password_field(login_valid_pw)
+    login_page.click_sign_in_button()
+    return DashboardPage(self.getDriver())
+
+  def _select_preexisting_article(self, title='Hendrik', init=True):
+    """
+    Select a preexisting article using a word as a partial name 
+    for the title. from_ variable is 0 when the user is not logged in
+    and need to invoque login script to reach the homepage. 
+    """
+    dashboard = self._login() if init else DashboardPage(self.getDriver())
+    return dashboard.click_on_existing_manuscript_link_partial_title(title)
+
+  def _create_article(self, title='', journal='journal', type_='Research1'):
+    dashboard = self._login()
+    dashboard.click_create_new_submision_button()
+    # Create new submission
+    if not title:
+      title = dashboard.title_generator()
+    dashboard.enter_title_field(title)
+    dashboard.select_journal(journal, type_)
+    dashboard.click_create_button()
+    return title
 
   @staticmethod
   def _run_tests_randomly():

@@ -135,33 +135,11 @@ export default Ember.Component.extend({
    *  Used to give unique id to element placed in body to capture clicks
    *  outside of select-box
    *
-   *  @property _generatedIdBackgroundCoverId
-   *  @type String
-   *  @private
-  **/
-  _generatedIdBackgroundCoverId: computed('_generatedId', function() {
-    return this.get('_generatedId') + '-background-cover';
-  }),
-
-  /**
-   *  Used to give unique id to element placed in body to capture clicks
-   *  outside of select-box
-   *
    *  @method _setGeneratedId
    *  @private
   **/
   _setGeneratedId: on('didInsertElement', function() {
     this.set('_generatedId', this.$().attr('id') + '-select');
-  }),
-
-  /**
-   *  Make sure background cover doesn't hang around
-   *
-   *  @method _setGeneratedId
-   *  @private
-  **/
-  _teardownBackgroundCover: on('willDestroyElement', function() {
-    this.removeBackgroundCover();
   }),
 
   /**
@@ -171,10 +149,21 @@ export default Ember.Component.extend({
    *  @private
   **/
   _setupKeybindings: on('didInsertElement', function() {
-    Ember.$(document).on('keyup.selectbox', (event) => {
-      // escape pressed
+    let eventName = 'keyup.' + this.get('_generatedId');
+    Ember.$(document).on(eventName, (event) => {
+      // escape
       if (event.which === 27 && this.get('_showOptions')) {
-        this.toggleShowOptions();
+        this.hideOptions();
+        return;
+      }
+
+      // space
+      if(event.which === 32) {
+        let hasFocus = this.$('.select-box-element').is(':focus');
+        if(!this.get('_showOptions') && hasFocus) {
+          this.showOptions();
+          return;
+        }
       }
     });
   }),
@@ -186,46 +175,78 @@ export default Ember.Component.extend({
    *  @private
   **/
   _teardownKeybindings: on('willDestroyElement', function() {
-    Ember.$(document).off('keyup.selectbox');
+    let eventName = 'keyup.' + this.get('_generatedId');
+    Ember.$(document).off(eventName);
   }),
 
   /**
-   *  Show select-box-list
+   *  Toggle select-box-list
    *
    *  @method toggleShowOptions
    *  @public
   **/
   toggleShowOptions() {
-    this.toggleProperty('_showOptions');
-
     if(this.get('_showOptions')) {
-      this._appendBackgroundCover();
+      this.hideOptions();
     } else {
-      this.removeBackgroundCover();
+      this.showOptions();
     }
   },
 
   /**
-   *  Div placed in body to capture clicks outside of select-box
+   *  Show select-box-list
    *
-   *  @method _appendBackgroundCover
+   *  @method showOptions
+   *  @public
+  **/
+  showOptions() {
+    if(this.get('disabled')) { return; }
+
+    this.set('_showOptions', true);
+    this._listenForDocumentClick();
+  },
+
+  /**
+   *  Hide select-box-list
+   *
+   *  @method hideOptions
+   *  @public
+  **/
+  hideOptions() {
+    this.set('_showOptions', false);
+    this._removeDocumentClickListener();
+  },
+
+  /**
+   *  Listen for clicks outside of select-box to close
+   *
+   *  @method _listenForDocumentClick
    *  @private
   **/
-  _appendBackgroundCover() {
-    let id = this.get('_generatedIdBackgroundCoverId');
-    Ember.$('body').append(
-      `<div class="select-box-background-cover" id="${id}"></div>`
-    );
+  _listenForDocumentClick() {
+    let eventName = 'click.' + this.get('_generatedId');
 
-    Ember.$('#' + id).on('click.selectBoxBackgroundCover', ()=> {
-      this.toggleShowOptions();
+    $(document).on(eventName, (e)=> {
+      Ember.run(this, ()=> {
+        let selectBox = $(e.target).parent('.select-box');
+        let outsideSelectBox = !selectBox.is(this.$());
+        if(outsideSelectBox) {
+          this.hideOptions();
+        }
+      });
     });
   },
 
-  removeBackgroundCover() {
-    let id = this.get('_generatedIdBackgroundCoverId');
-    Ember.$('#' + id).off().remove();
-  },
+  /**
+   *  Remove document click listener. Also fire before tearing down component
+   *
+   *  @method _removeDocumentClickListener
+   *  @private
+  **/
+  _removeDocumentClickListener: on('willDestroyElement', function(){
+    let eventName = 'click.' + this.get('_generatedId');
+    $(document).off(eventName);
+  }),
 
   actions: {
     toggleShowOptions() {
@@ -233,7 +254,7 @@ export default Ember.Component.extend({
     },
 
     makeSelection(selection) {
-      this.toggleShowOptions();
+      this.hideOptions();
       Ember.assert(
         'select-box requires the makeSelection action to be set',
         !Ember.isEmpty(this.attrs.makeSelection)
@@ -242,7 +263,7 @@ export default Ember.Component.extend({
     },
 
     clearSelection() {
-      this.toggleShowOptions();
+      this.hideOptions();
       Ember.assert(
         'select-box allowDeselect was enabled but the clearSelection action was not set',
         !Ember.isEmpty(this.attrs.clearSelection)

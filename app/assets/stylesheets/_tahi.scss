@@ -195,7 +195,7 @@ html.navigation-visible .main-content-cover { display: block; }
 
 .navigation-toggle {
   @include position(fixed, 0px auto auto 0px);
-  padding: 14px 0 10px 54px;
+  padding: 13px 0 10px 54px;
   color: $tahi-green;
   font-size: 24px;
   font-weight: 700;

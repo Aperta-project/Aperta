@@ -64,6 +64,7 @@ class PlosPage(object):
   def _iget(self, locator):
     """
     Unlike the regular _get() function, this one will be successful for elements with a width and or height of zero
+    stupid name, but suggesting 'i' for invisible as a zero width/height element.
     :param locator: locator
     """
     try:

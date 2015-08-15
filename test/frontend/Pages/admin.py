@@ -9,6 +9,7 @@ import time
 from selenium.webdriver.common.by import By
 
 from Base.PostgreSQL import PgSQL
+from Base.Resources import sa_login
 from authenticated_page import AuthenticatedPage
 
 __author__ = 'jgray@plos.org'
@@ -17,6 +18,7 @@ __author__ = 'jgray@plos.org'
 class AdminPage(AuthenticatedPage):
   """
   Model an aperta Admin page
+  still have to cover journal editing, new journal creation, and user details update
   """
   def __init__(self, driver, url_suffix='/'):
     super(AdminPage, self).__init__(driver, url_suffix)
@@ -70,7 +72,7 @@ class AdminPage(AuthenticatedPage):
     self._get(self._base_admin_user_search_default_state_text)
     # Validate Journals section elements
     self._get(self._base_admin_journals_section_title)
-    if username == 'jgray':
+    if username == sa_login:
       self._get(self._base_admin_journals_su_add_new_journal_btn)
       # Validate the presentation of journal blocks
       # Super Admin gets all journals

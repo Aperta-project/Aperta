@@ -42,7 +42,7 @@ ae_login = 'jgray_assocedit'  # associate editor login mm permissions
 he_login = 'jgray_editor'     # handling editor login amm permissions
 fm_login = 'jgray_flowmgr'    # flow manager permissions
 oa_login = 'jgray_oa'         # ordinary admin login
-sa_login = 'jgray'            # super admin login
+sa_login = 'jgray_sa'         # super admin login
 
 
 # Define connector information for Aperta's Tahi component postgres instance

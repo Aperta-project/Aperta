@@ -9,6 +9,7 @@ from WebDriverFactory import WebDriverFactory
 from Base.Resources import login_valid_email, login_valid_pw
 from frontend.Pages.login_page import LoginPage
 from frontend.Pages.dashboard import DashboardPage
+from frontend.Pages.profile_page import ProfilePage
 from teamcity import is_running_under_teamcity
 from teamcity.unittestpy import TeamcityTestRunner
 
@@ -57,11 +58,19 @@ class FrontEndTest(unittest.TestCase):
     return self._driver
 
   def _login(self):
+    """Login into Aperta"""
     login_page = LoginPage(self.getDriver())
     login_page.enter_login_field(login_valid_email)
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
     return DashboardPage(self.getDriver())
+
+  def _go_to_profile(self, init=True):
+    """Go to the profile page"""
+    dashboard = self._login() if init else DashboardPage(self.getDriver())
+    dashboard.click_left_nav()
+    dashboard.click_profile_link()
+    return ProfilePage(self.getDriver())
 
   def _select_preexisting_article(self, title='Hendrik', init=True):
     """

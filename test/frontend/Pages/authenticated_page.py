@@ -61,6 +61,14 @@ class AuthenticatedPage(PlosPage):
       '96,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0'
       '.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2'
       '  S29.104,22,28,22z')
+    nav_toogle = self._get(self._nav_toggle)
+    assert nav_toogle.text == 'PLOS'
+    assert nav_toogle.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    assert 'Cabin' in nav_toogle.value_of_css_property('font-family')
+    assert nav_toogle.value_of_css_property('font-size') == '24px'
+    assert nav_toogle.value_of_css_property('font-weight') == '700'
+    assert nav_toogle.value_of_css_property('text-transform') == 'uppercase'
+    
     # Must have flow mgr, admin or superadmin
     if permissions in elevated:
       self._get(self._nav_flowmgr_link)

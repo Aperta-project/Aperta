@@ -170,16 +170,18 @@ class AuthenticatedPage(PlosPage):
     :return: None
     """
     assert 'helvetica' in button.value_of_css_property('font-family')
-    #assert button.value_of_css_property('font-size') == '15px'    
-    assert button.value_of_css_property('font-size') == '14px'
-    #assert button.value_of_css_property('font-weight') == '400'    
-    assert button.value_of_css_property('font-weight') == 'normal'
-    # Note: in the browser I see 'line-height' = 20px
-    assert button.value_of_css_property('line-height') == '20px'
-    #assert button.value_of_css_property('line-height') == '21.4333px'
-    assert button.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
-    assert button.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
-    assert button.value_of_css_property('text-align') == 'center'
+    #assert button.value_of_css_property('font-size') == '14px'
+    assert button.value_of_css_property('font-size') == '15px'    
+    #assert button.value_of_css_property('font-weight') == 'normal'
+    assert button.value_of_css_property('font-weight') == '400'    
+    #assert button.value_of_css_property('line-height') == '20px'
+    assert button.value_of_css_property('line-height') == '21.4333px'
+    #assert button.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
+    assert button.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
+    #assert button.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
+    assert button.value_of_css_property('background-color') == 'transparent'
+    #assert button.value_of_css_property('text-align') == 'center'
+    assert button.value_of_css_property('text-align') == 'start'
     assert button.value_of_css_property('text-transform') == 'uppercase'
     return None
 

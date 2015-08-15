@@ -163,6 +163,27 @@ class AuthenticatedPage(PlosPage):
     return None
 
   @staticmethod
+  def validate_grey_secondary_button_style(button):
+    """
+    Ensure consistency in rendering page and overlay grey text buttons across the application
+    :param button: button to validate
+    :return: None
+    """
+    assert 'helvetica' in button.value_of_css_property('font-family')
+    #assert button.value_of_css_property('font-size') == '15px'    
+    assert button.value_of_css_property('font-size') == '14px'
+    #assert button.value_of_css_property('font-weight') == '400'    
+    assert button.value_of_css_property('font-weight') == 'normal'
+    # Note: in the browser I see 'line-height' = 20px
+    assert button.value_of_css_property('line-height') == '20px'
+    #assert button.value_of_css_property('line-height') == '21.4333px'
+    assert button.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
+    assert button.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
+    assert button.value_of_css_property('text-align') == 'center'
+    assert button.value_of_css_property('text-transform') == 'uppercase'
+    return None
+
+  @staticmethod
   def validate_table_heading_style(th):
     """
     Ensure consistency in rendering table headings across the application

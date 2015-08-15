@@ -10,7 +10,6 @@ import time
 from Base.Decorators import MultiBrowserFixture
 from Base.FrontEndTest import FrontEndTest
 from Base.Resources import login_valid_uid
-#from frontend.Pages.profile_page import ProfilePage
 from Pages.login_page import LoginPage
 
 

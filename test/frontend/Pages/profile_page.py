@@ -59,7 +59,8 @@ class ProfilePage(AuthenticatedPage):
     affiliation_btn = self._get(self._affiliation_btn)
     self.validate_secondary_button_style(affiliation_btn)
     reset_btn = self._get(self._reset_btn)
-    self.validate_secondary_button_style(reset_btn, transform='capitalize')
+    self.validate_secondary_button_style(reset_btn, color='rgba(57, 163, 41, 1)', 
+                                         transform='capitalize')
     ##
 
 

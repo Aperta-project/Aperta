@@ -175,7 +175,6 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-size') == '15px' #'14px'   
     assert button.value_of_css_property('font-weight') == '400' #'normal'
     assert button.value_of_css_property('line-height') == '21.4333px' #'20px'
-    print "****", button.value_of_css_property('color')
     assert button.value_of_css_property('color') == color #'rgba(119,119,119,1)'
     # Reset button color according to browser: 'rgba(57, 163, 41, 1)'
     assert button.value_of_css_property('background-color') == 'transparent' #'rgba(255,255,255,1)'

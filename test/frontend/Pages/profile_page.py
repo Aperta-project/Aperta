@@ -28,6 +28,8 @@ class ProfilePage(AuthenticatedPage):
     self._profile_affiliation_title = (By.XPATH, './/div["col-md-10"]/div[4]/h1')
     self._affiliation_btn = (By.XPATH, './/div["col-md-10"]/div[4]/a')
     self._reset_btn = (By.XPATH, './/div["col-md-10"]/a')
+    self._avatar = (By.XPATH, './/div[@id="profile-avatar"]/img')
+    self._avatar_hover = (By.XPATH, './/div[@id="profile-avatar-hover"]')    
   #POM Actions
 
 
@@ -61,6 +63,9 @@ class ProfilePage(AuthenticatedPage):
     reset_btn = self._get(self._reset_btn)
     self.validate_secondary_button_style(reset_btn, color='rgba(57, 163, 41, 1)', 
                                          transform='capitalize')
+    avatar = self._get(self._avatar)
+    avatar.value_of_css_property('height') == '160px'
+    avatar.value_of_css_property('width') == '160px'    
     ##
 
 

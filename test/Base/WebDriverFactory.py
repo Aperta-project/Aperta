@@ -8,12 +8,15 @@ from datetime import datetime
 from time import time
 from inspect import getfile
 from os.path import abspath, dirname
+from os import getenv
+
 from selenium import webdriver
 from selenium.webdriver.support.events import EventFiringWebDriver
+from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from browsermobproxy import Server
 from appium import webdriver as appiumDriver
-
 from WebDriverListener import WebDriverListener
+
 import Config
 
 
@@ -166,7 +169,12 @@ class WebDriverFactory(object):
 
     **Returns** a Web Driver instance of a Firefox browser
     """
-    driver = webdriver.Firefox(firefox_profile=profile)
+    ff_path = getenv('ff_path', 'default')
+    if ff_path == 'default':
+      driver = webdriver.Firefox(firefox_profile=profile)
+    else:
+      driver = webdriver.Firefox(firefox_profile=profile, firefox_binary=FirefoxBinary(ff_path))
+
     efDriver = EventFiringWebDriver(driver, WebDriverListener())
     efDriver.implicitly_wait(Config.wait_timeout)
     efDriver.set_page_load_timeout(Config.page_load_timeout)

@@ -27,7 +27,7 @@ class ProfilePage(AuthenticatedPage):
     self._profile_email = (By.XPATH, './/div[@id="profile-email"]/h2')
     self._profile_affiliation_title = (By.XPATH, './/div["col-md-10"]/div[4]/h1')
     self._affiliation_btn = (By.XPATH, './/div["col-md-10"]/div[4]/a')
-
+    self._reset_btn = (By.XPATH, './/div["col-md-10"]/a')
   #POM Actions
 
 
@@ -57,9 +57,11 @@ class ProfilePage(AuthenticatedPage):
     assert 'Affiliations:' in profile_at.text
     self.validate_profile_title_style(profile_at)
     affiliation_btn = self._get(self._affiliation_btn)
-    self.validate_grey_secondary_button_style(affiliation_btn)
-
+    self.validate_secondary_button_style(affiliation_btn)
+    reset_btn = self._get(self._reset_btn)
+    self.validate_secondary_button_style(reset_btn, transform='capitalize')
     ##
+
 
     return self
 

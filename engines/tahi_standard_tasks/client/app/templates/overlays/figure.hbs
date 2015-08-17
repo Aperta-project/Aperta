@@ -33,16 +33,16 @@
   {{/each}}
 </div>
 
-{{#if isSubmissionTaskEditable}}
-  <span class="button-primary button--green fileinput-button">
-    <span>Add new Figures</span>
-    {{file-uploader id="figure_attachment"
-                    accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
-                    url=figureUploadUrl
-                    filePrefix="paper/figures"
-                    start="uploadStarted"
-                    done="uploadFinished"
-                    progress="uploadProgress"
-                    multiple=true}}
-  </span>
-{{/if}}
+
+<span {{bind-attr class="isSubmissionTaskNotEditable:button--disabled :button-primary :button--green :fileinput-button"}}>
+  <span>Add new Figures</span>
+  {{file-uploader id="figure_attachment"
+                  accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
+                  url=figureUploadUrl
+                  filePrefix="paper/figures"
+                  start="uploadStarted"
+                  done="uploadFinished"
+                  progress="uploadProgress"
+                  multiple=true
+                  disabled=isSubmissionTaskNotEditable}}
+</span>

@@ -26,6 +26,6 @@
 <div class="preview-cover-letter">
   <h4>Here is your cover letter:</h4>
     <div class="cover-letter">{{formatCoverLetter}}</div>
-    <button class="button-primary button--green" {{bind-attr disabled=isSubmissionTaskNotEditable}} {{action "editCoverLetter"}}>Make Changes</button>
+    <button {{bind-attr class="isSubmissionTaskNotEditable:button--disabled :button-primary :button--green" disabled="isSubmissionTaskNotEditable"}} {{action "editCoverLetter"}}>Make Changes</button>
 </div>
 {{/if}}

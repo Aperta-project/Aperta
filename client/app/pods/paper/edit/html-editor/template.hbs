@@ -4,20 +4,22 @@
 
   {{partial "paper/sidebar"}}
 
-  <div class="manuscript-container">
+  <div class="manuscript-container {{if model.versioningMode 'not-ve'}}">
     <main>
       {{flash-messages classNames="flash-messages-paper-editor"}}
-      <article class="manuscript {{if isEditing "editing" "read-only"}}">
-
+      <article class="manuscript {{if isEditable "editing" "read-only"}}">
         <div class="manuscript-title-and-placeholder">
-          {{content-editable tagName="h2"
-                             id="paper-title"
-                             placeholder="Type your manuscript title here"
-                             value=model.title
-                             preventEnterKey="true"}}
-
-          {{#if showPlaceholder}}
-            <div id="paper-placeholder" {{action "tryHidingPlaceholder"}}>Type your manuscript here</div>
+          {{#if model.versioningMode}}
+            <h2 id="paper-title">{{{model.title}}}</h2>
+          {{else}}
+            {{content-editable tagName="h2"
+                               id="paper-title"
+                               placeholder="Type your manuscript title here"
+                               value=model.title
+                               preventEnterKey="true"}}
+            {{#if showPlaceholder}}
+              <div id="paper-placeholder" {{action "tryHidingPlaceholder"}}>Type your manuscript here</div>
+            {{/if}}
           {{/if}}
         </div>
 
@@ -29,7 +31,11 @@
           </div>
         {{/if}}
 
-        <div id="paper-body">
+        <div id="paper-body" class="{{if model.versioningMode "version-visible"}}">
+          <div class="{{if model.versioningMode "versioned-body" "normal-body"}}">
+            {{{model.versionedBody}}}
+          </div>
+
           {{component editorComponent
               viewName='editor'
               paper=model
@@ -39,6 +45,7 @@
               currentUser=currentUser
           }}
         </div>
+
       </article>
     </main>
   </div>

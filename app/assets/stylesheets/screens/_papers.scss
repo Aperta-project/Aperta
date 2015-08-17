@@ -78,6 +78,9 @@ html.control-bar-sub-nav-active #paper-container {
   position: relative;
   background: $tahi-grey-xlight;
   width: calc(100% - #{$paper-edit-sidebar-width} - 1px);
+  &.not-ve {
+    font-size: .95em;
+  }
 }
 
 .paper-toolbar {
@@ -138,6 +141,9 @@ html.control-bar-sub-nav-active #paper-container {
 
 .manuscript-title-and-placeholder {
   padding: 50px 50px 20px 50px;
+  h2 {
+    padding: 5px 0;
+  }
 }
 
 #paper-title {

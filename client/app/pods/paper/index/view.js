@@ -43,21 +43,36 @@ export default Ember.View.extend(RedirectsIfEditable, {
     },
 
     hideSubNav() {
+      this.set('subNavVisible', false);
+      this.send('hideVisible');
+    },
+
+    hideVisible() {
       this.setProperties({
-        subNavVisible: false,
         contributorsVisible: false,
-        downloadsVisible: false
+        downloadsVisible: false,
+        versionsVisible: false
       });
     },
 
     showContributors() {
+      this.send('hideVisible');
       this.set('contributorsVisible', true);
-      this.set('downloadsVisible', false);
     },
 
     showDownloads() {
-      this.set('contributorsVisible', false);
+      this.send('hideVisible');
       this.set('downloadsVisible', true);
+    },
+
+    showVersions() {
+      this.send('hideVisible');
+      this.set('versionsVisible', true);
+    },
+
+    toggleVersioningMode() {
+      this.toggleProperty('controller.model.versioningMode');
+      this.send('showSubNav', 'versions');
     }
   }
 });

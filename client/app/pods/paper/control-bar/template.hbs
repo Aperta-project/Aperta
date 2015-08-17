@@ -11,6 +11,15 @@
     </ul>
     <ul>
       <li class="control-bar-item">
+        <div class="control-bar-link versions-link __with-icon" {{action "toggleVersioningMode" "versions" target="view"}}>
+          <div class="control-bar-link-icon"><i class="fa fa-files-o"></i></div>
+          <div class="control-bar-link-text">
+            <span class="control-bar-toggle {{if view.versionsVisible "control-bar-toggle--active"}}">{{partial "svg/plus"}}</span>
+            Versions
+          </div>
+        </div>
+      </li>
+      <li class="control-bar-item">
         <div class="control-bar-link contributors-link __with-icon" {{action "showSubNav" "contributors" target="view"}}>
           <div class="control-bar-link-icon">
             <span class="fa fa-user"></span>
@@ -96,6 +105,14 @@
         {{partial "svg/pdf-icon"}}
       {{/direct-download-link}}
 
+    </div>
+
+    <div class="versions {{if view.versionsVisible "active"}}">
+      {{#if view.versionsVisible}}
+        {{versioning-bar
+          paper=model
+        }}
+      {{/if}}
     </div>
   </div>
 </div>

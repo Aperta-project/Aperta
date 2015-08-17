@@ -14,7 +14,7 @@
         <div class="control-bar-link versions-link __with-icon" {{action "toggleVersioningMode" "versions"}}>
           <div class="control-bar-link-icon"><i class="fa fa-files-o"></i></div>
           <div class="control-bar-link-text">
-            <span class="control-bar-toggle {{if view.versionsVisible "control-bar-toggle--active"}}">{{partial "svg/plus"}}</span>
+            <span class="control-bar-toggle {{if versionsVisible "control-bar-toggle--active"}}">{{partial "svg/plus"}}</span>
             Versions
           </div>
         </div>
@@ -25,7 +25,7 @@
             <span class="fa fa-user"></span>
           </div>
           <div class="control-bar-link-text">
-            <span class="control-bar-toggle {{if view.contributorsVisible "control-bar-toggle--active"}}">{{partial "svg/plus"}}</span>
+            <span class="control-bar-toggle {{if contributorsVisible "control-bar-toggle--active"}}">{{partial "svg/plus"}}</span>
             Collaborators
           </div>
         </div>
@@ -34,7 +34,7 @@
         <div class="control-bar-link downloads-link __with-icon" {{action "showSubNav" "downloads"}}>
           <div class="control-bar-link-icon">{{partial "svg/downloads"}}</div>
           <div class="control-bar-link-text">
-            <span class="control-bar-toggle {{if view.downloadsVisible "control-bar-toggle--active"}}">{{partial "svg/plus"}}</span>
+            <span class="control-bar-toggle {{if downloadsVisible "control-bar-toggle--active"}}">{{partial "svg/plus"}}</span>
             Downloads
           </div>
         </div>
@@ -74,7 +74,7 @@
             </a>
           </li>
           <li>
-                <button {{action "submit" target="view"}}
+                <button {{action "submit"}}
         id="sidebar-submit-paper"
         class="button-primary button-pre-submit-paper button--green">
         Submit
@@ -90,7 +90,7 @@
   </div>
 
   <div class="control-bar-sub-items">
-    <div class="contributors {{if view.contributorsVisible "active"}}">
+    <div class="contributors {{if contributorsVisible "active"}}">
       <a class="contributors-add" {{action "addContributors"}}>Add Collaborators</a>
 
       {{#each model.collaborators as |contributor|}}
@@ -98,7 +98,7 @@
       {{/each}}
     </div>
 
-    <div class="manuscript-download-links {{if view.downloadsVisible "active"}}">
+    <div class="manuscript-download-links {{if downloadsVisible "active"}}">
 
       {{#each supportedDownloadFormats as |downloadType|}}
         <a href="#" {{action "export" downloadType}} class="{{unbound downloadType.format}}" title="Download {{unbound downloadType.format}}">{{partial downloadType.icon}}</a>
@@ -112,8 +112,8 @@
 
     </div>
 
-    <div class="versions {{if view.versionsVisible "active"}}">
-      {{#if view.versionsVisible}}
+    <div class="versions {{if versionsVisible "active"}}">
+      {{#if versionsVisible}}
         {{versioning-bar
           paper=model
         }}

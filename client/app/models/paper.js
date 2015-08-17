@@ -47,6 +47,8 @@ export default DS.Model.extend({
   publishingState: attr('string'),
   title: attr('string'),
   versions: DS.attr(),
+  versions: attr(),
+  versioningMode: attr('boolean', {defaultValue: false}),
 
   displayTitle: computed('title', 'shortTitle', function() {
     return this.get('title') || this.get('shortTitle');
@@ -89,7 +91,7 @@ export default DS.Model.extend({
 
   postSubmission: computed.not('submittableState'),
 
-  versionedBody: computed('currentVersionBody', 'body', function() {
+  versionedBody: function() {
     return this.get('currentVersionBody') || this.get('body');
-  })
+  }.property('currentVersionBody', 'body')
 });

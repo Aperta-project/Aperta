@@ -6,12 +6,14 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [Unreleased][unreleased]
 ### Added
 - Autosuggest ember component
+- Reviewer Reports can now be submitted, and can't be edited after that
+- Added ability to view and diff old versions of manuscripts.
 
 ### Changed
-- Upgraded to Ember 1.13 [Aperta Transition Guide](https://github.com/Tahi-project/tahi/wiki/Aperta-Ember-1.13-Transition-Guide)
-- Gussied up Figures and Supporting Information thumbnails
-- Register Decision card now has 'Minor Revision' and 'Major Revision' options instead of 'Revise'
 - Added ability to view old versions of manuscripts.
+- Upgraded to Ember 1.13 [Aperta Transition Guide](https://github.com/Tahi-project/tahi/wiki/Aperta-Ember-1.13-Transition-Guide)
+- Make card previews (green boxes with task name) into hyperlinks to allow for right click / ctrl click to open cards in a new tab
+- Changed Typography to use fonts that have better rendering and more glyphs
 
 ### Deprecated
 -
@@ -21,6 +23,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ### Fixed
 - No longer perform unfiltered searches in Flow Manager
+- No longer shows publishable checkbox in Figures, since it only applies to Supporting Information Files
 
 ### Security
 -

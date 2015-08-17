@@ -1,74 +1,56 @@
 {{partial "paper/control-bar"}}
 
-{{versioning-toolbar
-  togglable=true
-  versioningMode=versioningMode
-  paper=model}}
-
-
 <div id="paper-container" class="clearfix paper-container-html {{if noTasks "sidebar-empty"}}">
 
   {{partial "paper/sidebar"}}
 
-  {{#if versioningMode}}
-    <div class="manuscript-container not-ve">
-      <main>
+  <div class="manuscript-container {{if model.versioningMode 'not-ve'}}">
+    <main>
       {{flash-messages classNames="flash-messages-paper-editor"}}
-      <article class="manuscript read-only">
-      <div id="paper-title" class="manuscript-title-and-placeholder">
-        <h2 id="paper-title">{{{model.title}}}</h2>
-      </div>
-        <div id="paper-body">
-          {{html-diff
-            comparisonText=model.comparisonText
-            viewingText=model.viewingText}}
-        </div>
-      </article>
-      </main>
-    </div>
-
-  {{else}}
-
-    <div class="manuscript-container">
-      <main>
-      {{flash-messages classNames="flash-messages-paper-editor"}}
-      <article class="manuscript {{if isEditing "editing" "read-only"}}">
-          <div class="manuscript-title-and-placeholder">
+      <article class="manuscript {{if isEditable "editing" "read-only"}}">
+        <div class="manuscript-title-and-placeholder">
+          {{#if model.versioningMode}}
+            <h2 id="paper-title">{{{model.title}}}</h2>
+          {{else}}
             {{content-editable tagName="h2"
                                id="paper-title"
                                placeholder="Type your manuscript title here"
                                value=model.title
                                preventEnterKey="true"}}
-
             {{#if showPlaceholder}}
               <div id="paper-placeholder" {{action "tryHidingPlaceholder"}}>Type your manuscript here</div>
             {{/if}}
-          </div>
-
-          {{#if noTasks}}
-            <div class="btn-group pull-right">
-              <button {{action "submit" target="view"}} class="no-sidebar-submit-manuscript button-primary {{if model.allSubmissionTasksCompleted "button--green" "button--disabled"}}">
-                Submit Manuscript
-              </button>
-            </div>
           {{/if}}
+        </div>
 
-          <div id="paper-body">
-            {{component editorComponent
-                viewName='editor'
-                paper=model
-                isSaving=isSaving
-                savedAt=savedAt
-                statusMessage=statusMessage
-                currentUser=currentUser
-            }}
+        {{#if noTasks}}
+          <div class="btn-group pull-right">
+            <button {{action "submit" target="view"}} class="no-sidebar-submit-manuscript button-primary {{if model.allSubmissionTasksCompleted "button--green" "button--disabled"}}">
+              Submit Manuscript
+            </button>
           </div>
-        </article>
-      </main>
-    </div>
+        {{/if}}
 
-  {{/if}}
+        <div id="paper-body" class="{{if model.versioningMode "version-visible"}}">
+          <div class="{{if model.versioningMode "versioned-body" "normal-body"}}">
+            {{html-diff
+              comparisonText=model.comparisonText
+              viewingText=model.viewingText}}
+          </div>
 
+          {{component editorComponent
+              viewName='editor'
+              paper=model
+              isSaving=isSaving
+              savedAt=savedAt
+              statusMessage=statusMessage
+              currentUser=currentUser
+          }}
+        </div>
+
+      </article>
+    </main>
+  </div>
 </div>
 
 {{outlet}}

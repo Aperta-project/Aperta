@@ -82,7 +82,7 @@
 
           <div class="actions">
             <a href="#" class="button-link button--green" {{action "cancelEditing"}}>cancel</a>
-            <a href="#" class="button-primary button--green" {{action "saveAttachment"}}>Save</a>
+            <a href="#" class="button-primary button--green attachment-save-button" {{action "saveAttachment"}}>Save</a>
           </div>
         </div>
       {{else}}
@@ -96,10 +96,12 @@
             {{if attachment.caption attachment.caption "There is no caption for this file."}}
           </div>
 
+          {{#if confidentiality}}
           <label class="publishable">
             {{check-box checked=attachment.publishable action="togglePublishable" attachment=attachment}}
             For publication
           </label>
+          {{/if}}
 
           {{#if attachment.isStrikingImage}}
             <div class="striking">

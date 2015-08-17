@@ -21,6 +21,7 @@
   background: #fff;
   border: thin solid #fff;
   margin: 20px auto;
+  padding: 30px 0;
 }
 
 .greeting,
@@ -104,5 +105,9 @@ hr {
     color: #fff;
 
     &:hover { text-decoration: none; }
+  }
+
+  .signature {
+    text-align: left;
   }
 }

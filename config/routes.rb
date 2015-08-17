@@ -126,7 +126,9 @@ Tahi::Application.routes.draw do
     resources :questions, only: [:create, :update]
     resources :roles, only: [:show, :create, :update, :destroy]
     resources :tasks, only: [:update, :create, :show, :destroy] do
-      resources :attachments, only: [:create]
+      resources :attachments, only: [:create, :update, :destroy] do
+        put :update_attachment, on: :member
+      end
       put :send_message, on: :member
     end
     resources :task_templates

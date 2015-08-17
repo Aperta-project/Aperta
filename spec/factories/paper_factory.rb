@@ -53,10 +53,18 @@ FactoryGirl.define do
     end
 
     trait(:with_versions) do
-      after(:create) do |paper|
+      transient do
+        first_version_body  'first body'
+        second_version_body 'second body'
+      end
+
+      after(:create) do |paper, evaluator|
+        paper.body = evaluator.first_version_body
+        paper.save!
+
         paper.submit! paper.creator
         paper.major_revision!
-        paper.body = "OK second body"
+        paper.body = evaluator.second_version_body
         paper.save!
       end
     end

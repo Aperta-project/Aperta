@@ -50,8 +50,8 @@ module 'Integration: Paper Workflow page',
 test 'show delete confirmation overlay on deletion of a Task', (assert) ->
   visit '/papers/1/workflow'
   andThen ->
-    $("div.card .card-remove").show()
-    click("div.card .card-remove")
+    $(".card .card-remove").show()
+    click(".card .card-remove")
   andThen ->
     assert.equal(find('h1:contains("about to delete this card forever")').length, 1)
     assert.equal(find('h2:contains("Are you sure?")').length, 1)
@@ -62,8 +62,8 @@ test 'click delete confirmation overlay cancel button', (assert) ->
   visit '/papers/1/workflow'
   andThen ->
     equal find(".card-content").length, 1
-    $("div.card .card-remove").show()
-    click("div.card .card-remove")
+    $(".card .card-remove").show()
+    click(".card .card-remove")
     click('.overlay button:contains("cancel")')
     assert.equal find(".card-content").length, 1
 
@@ -71,8 +71,8 @@ test 'click delete confirmation overlay submit button', (assert) ->
   visit '/papers/1/workflow'
   andThen ->
     assert.equal(find(".card-content").length, 1, "card exists")
-    $("div.card .card-remove").show()
-    click("div.card .card-remove")
+    $(".card .card-remove").show()
+    click(".card .card-remove")
     click('.overlay button:contains("Yes, Delete this Card")')
   andThen ->
     assert.equal(find(".card-content").length, 0, "card deleted")

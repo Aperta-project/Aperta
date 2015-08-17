@@ -54,11 +54,7 @@ class EditPaperPage < Page
   end
 
   def version_button
-    first(:css, '.versioning-mode-button')
-  end
-
-  def version_dropdown
-    find(:css, '#versioning-toolbar select')
+    first(:css, '.versions-link')
   end
 
   def visit_task_manager

@@ -1,14 +1,14 @@
 module TahiStandardTasks
   class ReviewerReportTask < Task
-    def self.permitted_attributes
-      super + [{ paper_review_attributes: [:body, :id] }]
-    end
-
     register_task default_title: 'Reviewer Report', default_role: 'reviewer'
 
-    has_one :paper_review, foreign_key: 'task_id'
+    def body
+      super.blank? ? {} : super
+    end
 
-    accepts_nested_attributes_for :paper_review
+    def can_change?(question)
+      question.errors.add :question, "can't change question" if body.has_key?("submitted")
+    end
 
     def send_emails
       return unless on_card_completion?

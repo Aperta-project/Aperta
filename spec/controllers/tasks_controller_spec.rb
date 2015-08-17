@@ -91,6 +91,25 @@ describe TasksController, redis: true do
         xhr :patch, :update, { format: 'json', paper_id: paper.to_param, id: reviewer_task.to_param, task: { completed: true } }
       end
     end
+
+    context "when the paper is not editable" do
+      before { paper.update! editable: false }
+
+      it "returns a 422" do
+        do_request
+        expect(response.status).to eq 422
+      end
+
+      it "does not update the task" do
+        do_request
+        expect(task.reload).not_to be_completed
+      end
+
+      it "raises an error" do
+        do_request
+        expect(response.body).to include "This paper cannot be edited at this time."
+      end
+    end
   end
 
   describe "GET 'show'" do

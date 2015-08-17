@@ -19,6 +19,11 @@ class TasksController < ApplicationController
   end
 
   def update
+    unless task.paper.editable?
+      task.paper.errors.add(:editable, "This paper cannot be edited at this time.")
+      raise ActiveRecord::RecordInvalid, task.paper
+    end
+
     task.assign_attributes(task_params(task.class))
     @task_completion_change = task.completed_changed?
     task.save!

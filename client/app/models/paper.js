@@ -46,7 +46,6 @@ export default DS.Model.extend({
   submittedAt: attr('date'),
   publishingState: attr('string'),
   title: attr('string'),
-  versions: DS.attr(),
   versions: attr(),
   versioningMode: attr('boolean', {defaultValue: false}),
 

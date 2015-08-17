@@ -1,7 +1,5 @@
 {{partial "paper/control-bar"}}
 
-{{versioning-toolbar versioningMode=true togglable=false paper=model}}
-
 <div id="paper-container" class="clearfix {{pageContainerHTMLClass}} {{if noTasks "sidebar-empty"}}">
   {{partial "paper/sidebar"}}
 
@@ -14,9 +12,13 @@
           {{{model.title}}}
         </h2>
         <div id="paper-body">
-          {{html-diff
-            comparisonText=model.comparisonText
-            viewingText=model.viewingText}}
+          {{#if model.versioningMode}}
+            {{html-diff
+              comparisonText=model.comparisonText
+              viewingText=model.viewingText}}
+          {{else}}
+            {{{model.body}}}
+          {{/if}}
         </div>
       </article>
     </main>

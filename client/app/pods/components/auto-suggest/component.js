@@ -112,6 +112,18 @@ export default Ember.Component.extend({
     });
   },
 
+  /**
+   *  Unique documenet keyup event name for component instance.
+   *  Don't use this before the component is in the DOM
+   *
+   *  @method getKeyupEventName
+   *  @return {String}
+   *  @public
+  **/
+  getKeyupEventName() {
+    return 'keyup.autosuggest-' + this.$().id;
+  },
+
   _resultTextChanged: Ember.observer('resultText', function() {
     if(this.get('searchAllowed')) {
       Ember.run.debounce(this, this.search, this.get('debounce'));
@@ -121,9 +133,7 @@ export default Ember.Component.extend({
   }),
 
   _setupKeybindings: Ember.on('didInsertElement', function() {
-    let eventName = 'keyup.autosuggest-' + this.$().id;
-
-    $(document).on(eventName, (event) => {
+    $(document).on(this.getKeyupEventName(), (event) => {
       if (event.which === 27) {
         this.set('highlightedItem', null);
       }
@@ -143,8 +153,7 @@ export default Ember.Component.extend({
   }),
 
   _teardownKeybindings: Ember.on('willDestroyElement', function() {
-    let eventName = 'keyup.autosuggest-' + this.$().id;
-    $(document).off(eventName);
+    $(document).off(this.getKeyupEventName());
   }),
 
   selectItem(item) {

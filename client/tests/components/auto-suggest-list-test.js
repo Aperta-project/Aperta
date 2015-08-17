@@ -40,5 +40,9 @@ test('it renders', function(assert) {
   `);
 
   assert.equal(this.$('.auto-suggest').length, 1);
-  assert.equal(this.$('.auto-suggest-item:first').text().trim(), name, 'Block template is rendered');
+  assert.equal(
+    this.$('.auto-suggest-item:first').text().trim(),
+    name,
+    'Block template is rendered'
+  );
 });

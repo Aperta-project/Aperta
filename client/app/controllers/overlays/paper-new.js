@@ -7,6 +7,11 @@ export default Ember.Controller.extend(AnimateOverlay, {
   paperSaving: false,
   journalEmpty: Ember.computed.empty('model.journal'),
 
+  shortTitleCount: Ember.computed('model.shortTitle', function() {
+    let title = this.get('model.shortTitle');
+    return title ? title.length : 0;
+  }),
+
   actions: {
     createNewPaper() {
       this.set('paperSaving', true);

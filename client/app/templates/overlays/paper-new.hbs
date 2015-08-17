@@ -4,12 +4,21 @@
 
 {{flash-messages}}
 <div class="inner-content">
-  <div class="inset-form-control">
-    <label class="inset-form-control-text">Short Title</label>
+
+  <div class="form-group">
+    <label class="paper-new-label" for="paper-short-title">
+      Give your paper a short title:
+    </label>
     {{input type="text"
             value=model.shortTitle
-            class="inset-form-control-input"
-            placeholder="Crystalized Magnificence in the Modern World" id="paper-short-title"}}
+            class="paper-new-input"
+            placeholder="Crystalized Magnificence in the Modern World"
+            id="paper-short-title"}}
+
+    <span class="paper-new-char-count">{{shortTitleCount}}</span>
+    {{#if shortTitleCount}}
+      <span class="paper-new-valid-icon"><i class="fa fa-check"></i></span>
+    {{/if}}
   </div>
 
   <div class="form-group">
@@ -26,6 +35,10 @@
                   as |journal|}}
       {{journal.name}}
     {{/select-box}}
+
+    {{#if model.journal}}
+      <span class="paper-new-valid-icon animation-fade-in"><i class="fa fa-check"></i></span>
+    {{/if}}
   </div>
 
   <div class="form-group">
@@ -43,6 +56,10 @@
                   as |paperType|}}
       {{paperType}}
     {{/select-box}}
+
+    {{#if model.paperType}}
+      <span class="paper-new-valid-icon animation-fade-in"><i class="fa fa-check"></i></span>
+    {{/if}}
   </div>
 
   <div class="overlay-action-buttons">
@@ -53,8 +70,14 @@
       </span>
       <button type="submit" class="button-primary button--disabled">Create</button>
     {{else}}
-      <span class="button-link button--green" {{action "closeAction"}}>cancel</span>
-      <button type="submit" class="button-primary button--green" {{action "createNewPaper"}}>Create</button>
+      <button type="submit" class="button-secondary button--green" {{action "createNewPaper"}}>
+        <i class="fa fa-upload"></i> Upload Document
+      </button>
+
+      <button type="submit" class="button-secondary button--green" {{action "createNewPaper"}}>
+        <i class="fa fa-pencil"></i> Create Document
+      </button>
     {{/if}}
   </div>
+
 </div>

@@ -19,3 +19,29 @@
   color: $tahi-grey;
   font-size: 18px;
 }
+
+.paper-new-input {
+  width: 100%;
+  border: 1px solid $tahi-grey-light;
+  border-radius: 5px;
+  padding: 10px 50px 10px 15px;
+  font-size: 14px;
+}
+
+.paper-new-char-count {
+  @include position(absolute, 44px 20px auto auto);
+  text-align: right;
+}
+
+.paper-new-valid-icon {
+  position: absolute;
+  top: 44px;
+  right: -35px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: #fff;
+  text-align: center;
+  background-color: $tahi-green;
+}

@@ -171,9 +171,9 @@ describe Paper do
       end
 
       it "creates a new minor version" do
-        expect(paper.latest_version.version_string).to eq("0.0")
+        expect(paper.latest_version.version_string).to match(/^R0.0/)
         paper.minor_check!
-        expect(paper.latest_version.version_string).to eq("0.1")
+        expect(paper.latest_version.version_string).to match(/^R0.1/)
       end
     end
 
@@ -193,8 +193,8 @@ describe Paper do
       end
 
       it "sets the updated_at of the latest version" do
-        paper.latest_version.update!(updated_at: Time.zone.now - 10.days)
         paper.minor_check!
+        paper.latest_version.update!(updated_at: Time.zone.now - 10.days)
         paper.submit_minor_check! user
         expect(paper.latest_version.updated_at.utc).to be_within(1.second).of Time.zone.now
       end
@@ -257,9 +257,9 @@ describe Paper do
       end
 
       it "creates a new major version" do
-        expect(paper.latest_version.version_string).to eq("0.0")
+        expect(paper.latest_version.version_string).to match(/^R0.0/)
         paper.make_decision decision
-        expect(paper.latest_version.version_string).to eq("1.0")
+        expect(paper.latest_version.version_string).to match(/^R1.0/)
       end
     end
 
@@ -274,9 +274,9 @@ describe Paper do
       end
 
       it "creates a new major version" do
-        expect(paper.latest_version.version_string).to eq("0.0")
+        expect(paper.latest_version.version_string).to match(/^R0.0/)
         paper.make_decision decision
-        expect(paper.latest_version.version_string).to eq("1.0")
+        expect(paper.latest_version.version_string).to match(/^R1.0/)
       end
     end
   end

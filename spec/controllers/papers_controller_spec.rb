@@ -86,16 +86,6 @@ describe PapersController do
 
     it { is_expected.to be_success }
 
-    context "passing in a doi" do
-      before do
-        paper.update_column(:doi, "foobar/baz")
-      end
-
-      skip "returns the paper" do
-        get :show, publisher_prefix: "foobar", suffix: "baz", format: :json
-        expect(response.status).to eq(200)
-      end
-    end
   end
 
   describe "POST 'create'" do

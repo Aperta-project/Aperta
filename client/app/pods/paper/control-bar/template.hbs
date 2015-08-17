@@ -11,6 +11,15 @@
     </ul>
     <ul>
       <li class="control-bar-item">
+        <div class="control-bar-link versions-link __with-icon" {{action "toggleVersioningMode" "versions" target="view"}}>
+          <div class="control-bar-link-icon"><i class="fa fa-files-o"></i></div>
+          <div class="control-bar-link-text">
+            <span class="control-bar-toggle {{if view.versionsVisible "control-bar-toggle--active"}}">{{partial "svg/plus"}}</span>
+            Versions
+          </div>
+        </div>
+      </li>
+      <li class="control-bar-item">
         <div class="control-bar-link contributors-link __with-icon" {{action "showSubNav" "contributors" target="view"}}>
           <div class="control-bar-link-icon">
             <span class="fa fa-user"></span>
@@ -43,13 +52,35 @@
         {{/link-to}}
       </li>
       {{#if canViewManuscriptManager}}
-        <li class="control-bar-item">
-          {{#link-to "paper.workflow" model class="control-bar-link control-bar-button"}}
-            <div class="control-bar-link-icon">{{partial "svg/manuscript-manager-icon"}}</div>
-            Workflow
-          {{/link-to}}
-        </li>
+      <li class="control-bar-item">
+        {{#link-to "paper.workflow" model class="control-bar-link control-bar-button"}}
+          <div class="control-bar-link-icon">{{partial "svg/manuscript-manager-icon"}}</div>
+          Workflow
+        {{/link-to}}
+      </li>
       {{/if}}
+      <li class="control-bar-item dropdown">
+        <a id="more-dropdown-menu" class="control-bar-link" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+          <div class="control-bar-link-icon">
+            <span class="fa fa-ellipsis-v"></span>
+          </div>
+          More
+        </a>
+        <ul class="dropdown-menu pull-right" aria-labelledby="more-dropdown-menu">
+          <li>
+            <a href="#">
+              <span class="fa fa-image"></span>
+              Appeal
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span class="fa fa-trash fa-lg"></span>
+              Withdrawal Manuscript
+            </a>
+          </li>
+        </ul>
+      </li>
     </ul>
   </div>
 
@@ -74,6 +105,14 @@
         {{partial "svg/pdf-icon"}}
       {{/direct-download-link}}
 
+    </div>
+
+    <div class="versions {{if view.versionsVisible "active"}}">
+      {{#if view.versionsVisible}}
+        {{versioning-bar
+          paper=model
+        }}
+      {{/if}}
     </div>
   </div>
 </div>

@@ -24,7 +24,7 @@ class JournalPage < Page
   def mmt_thumbnail(mmt)
     find(".mmt-thumbnail", match: :first)
     all(".mmt-thumbnail").detect do |ele|
-      ele.find(".mmt-thumbnail-title", text: mmt.paper_type)
+      ele.first(".mmt-thumbnail-title", text: mmt.paper_type)
     end
   end
 

@@ -63,9 +63,10 @@ setCurrentUserAdmin = (bool) ->
 
 test 'all users can see their username', (assert) ->
   respondUnauthorized()
-  setCurrentUserAdmin(false)
 
-  visit '/'
+  visit('/').then ->
+    setCurrentUserAdmin(false)
+
   click '.navigation-toggle'
   andThen ->
     equal(find(".navigation-item--account span:contains('Fake User')").length, 1)

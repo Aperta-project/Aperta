@@ -20,6 +20,12 @@ describe SupportingInformationFile, redis: true do
     end
   end
 
+  describe "#publishable" do
+    it "defaults to true" do
+      expect(file.publishable).to eq true
+    end
+  end
+
   describe "#src" do
     it "returns the file url" do
       expect(file.src).to match /yeti\.tiff/

@@ -12,7 +12,6 @@ feature "Upload Supporting Information", js: true, selenium: true do
       }
   end
 
-
   before do
     login_as author
     visit "/"
@@ -53,6 +52,15 @@ feature "Upload Supporting Information", js: true, selenium: true do
     file = paper.supporting_information_files.last
     expect(file.title).to eq 'new_file_title'
     expect(file.caption).to eq 'New file caption'
+
+    # edit publishable state
+    edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|
+      expect(file.publishable).to eq true
+      overlay.publishable_checkbox.click
+      wait_for_ajax
+    end
+    visit current_path
+    expect(file.reload.publishable).to eq false
 
     # delete file
     edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|

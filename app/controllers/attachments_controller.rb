@@ -15,7 +15,13 @@ class AttachmentsController < ApplicationController
 
   def update
     attachment = Attachment.find(params[:id])
-    attachment.update(attachment_params)
+    attachment.update_attributes attachment_params
+    respond_with attachment
+  end
+
+  def update_attachment
+    attachment = task.attachments.find(params[:id])
+    DownloadAdhocTaskAttachmentWorker.perform_async(attachment.id, params[:url])
     respond_with attachment
   end
 

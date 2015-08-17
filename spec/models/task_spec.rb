@@ -46,4 +46,17 @@ describe Task do
       }.from(question_ids.count).to(0)
     end
   end
+
+  describe "#can_change?: associations can use this method to update based on task" do
+    let(:task) {
+      Task.create! title: "Paper Admin",
+        completed: true,
+        role: 'admin',
+        phase_id: 3
+    }
+
+    it "returns true" do
+      expect(task.can_change? double).to eq(true)
+    end
+  end
 end

@@ -3,9 +3,11 @@
 <div class="paper-figures">
   {{#each model.paper.supportingInformationFiles as |file|}}
     {{attachment-thumbnail attachment=file
+                           togglePublishable="togglePublishable"
                            destroyAttachment="destroyAttachment"
                            figure=false
-                           isEditable=model.paper.editable}}
+                           isEditable=model.paper.editable
+                           confidentiality=true}}
   {{/each}}
 </div>
 

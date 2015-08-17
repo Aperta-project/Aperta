@@ -12,6 +12,10 @@
 
         {{#if showSpinner}}
           {{progress-spinner visible=true size="large"}}
+          <div class="progress-text">
+            <h3>Figure Processing</h3>
+            <h4>but you can continue working!</h4>
+          </div>
         {{/if}}
 
         <div class="image-hover-buttons">
@@ -78,10 +82,8 @@
 
           <div class="actions">
             <a href="#" class="button-link button--green" {{action "cancelEditing"}}>cancel</a>
-            <a href="#" class="button-primary button--green" {{action "saveAttachment"}}>Save</a>
+            <a href="#" class="button-primary button--green attachment-save-button" {{action "saveAttachment"}}>Save</a>
           </div>
-
-
         </div>
       {{else}}
         <div class="info">
@@ -90,10 +92,16 @@
             {{if attachment.title attachment.title "Attachment title"}}
           </h2>
 
-          <div class="caption"
-            {{action "toggleEditState" on="doubleClick"}}>
+          <div class="caption" {{action "toggleEditState" on="doubleClick"}}>
             {{if attachment.caption attachment.caption "There is no caption for this file."}}
           </div>
+
+          {{#if confidentiality}}
+          <label class="publishable">
+            {{check-box checked=attachment.publishable action="togglePublishable" attachment=attachment}}
+            For publication
+          </label>
+          {{/if}}
 
           {{#if attachment.isStrikingImage}}
             <div class="striking">
@@ -101,7 +109,7 @@
             </div>
           {{/if}}
         </div>
-            {{/if}}
+      {{/if}}
     </div>
 
     {{#if isEditable}}
@@ -113,7 +121,7 @@
 
     {{#if destroyState}}
       <div class="delete-confirmation">
-        <p>This will permanently delete this file. Are you sure?</p>
+        <h3>This will permanently delete this file. Are you sure?</h3>
         <button class="button-secondary button--green knockout"
           {{action "cancelDestroyAttachment"}}>
           Cancel

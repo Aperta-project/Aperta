@@ -8,6 +8,7 @@ class SupportingInformationFileSerializer < ActiveModel::Serializer
              :title,
              :caption,
              :detail_src,
+             :publishable,
              :preview_src,
              :created_at
   has_one :paper, embed: :id, include: false

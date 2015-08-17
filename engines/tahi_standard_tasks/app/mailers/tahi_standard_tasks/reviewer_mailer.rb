@@ -1,8 +1,9 @@
 module TahiStandardTasks
   class ReviewerMailer < ActionMailer::Base
     include Rails.application.routes.url_helpers
+    include MailerHelper
     add_template_helper ClientRouteHelper
-
+    add_template_helper TemplateHelper
     layout "mailer"
 
     default from: Rails.configuration.from_email

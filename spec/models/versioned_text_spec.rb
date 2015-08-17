@@ -1,7 +1,9 @@
+# coding: utf-8
 require 'rails_helper'
 
 describe VersionedText do
   let(:paper) { FactoryGirl.create :paper }
+  let(:user) { FactoryGirl.create :user }
 
   describe "#new_major_version!" do
     it "creates a new major version while retaining the old" do
@@ -50,6 +52,19 @@ describe VersionedText do
       expect(paper.latest_version.submitted?).to be(false)
       paper.latest_version.update!(submitting_user_id: 1)
       expect(paper.latest_version.submitted?).to be(true)
+    end
+  end
+
+  describe '#version_string' do
+    it "displays creator_name when submitting user is defined" do
+      paper.latest_version.update!(submitting_user: user,
+                                   updated_at: Time.local(2015, 12, 1, 10, 5, 0))
+      expect(paper.version_string).to eq("R0.0 — Dec 01, 2015 #{user.full_name}")
+    end
+
+    it "displays 'draft' when submitting_user is not defined" do
+      paper.latest_version.update(updated_at: Time.local(2015, 12, 1, 10, 5, 0))
+      expect(paper.version_string).to eq("R0.0 — Dec 01, 2015 (draft)")
     end
   end
 

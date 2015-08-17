@@ -7,6 +7,10 @@
     padding: 1px;
   }
 
+  span.removed {
+    text-decoration: line-through;
+  }
+
   .added, .removed {
     td, th {
 	    border: 1px dotted #333;
@@ -23,7 +27,6 @@
   .removed {
     opacity: .8;
     background-color: rgba($tahi-red-light, .5);
-    text-decoration: strikethrough;
     th {
       background: darken($tahi-red-light, 5%);
     }

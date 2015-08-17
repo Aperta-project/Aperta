@@ -6,11 +6,11 @@ import {
 import Ember from 'ember';
 import hbs   from 'htmlbars-inline-precompile';
 
-moduleForComponent('floating-list', 'FloatingList', {
+moduleForComponent('position-near', 'PositionNear', {
   integration: true
 });
 
-test('floating-list positions below target', function(assert) {
+test('position-near positions below target', function(assert) {
   assert.expect(2);
 
   this.render(hbs`
@@ -18,11 +18,11 @@ test('floating-list positions below target', function(assert) {
       <div id="target-dom-node"
            style="position:absolute; top:40px; left:40px; width:100px; height:20px;"></div>
 
-      {{#floating-list items=items
+      {{#position-near items=items
                        class="tha-list"
                        positionNearSelector="#target-dom-node"}}
         List goes here
-      {{/floating-list}}
+      {{/position-near}}
     </div>
   `);
 
@@ -37,7 +37,7 @@ test('floating-list positions below target', function(assert) {
   });
 });
 
-test('floating-list on top of target', function(assert) {
+test('position-near on top of target', function(assert) {
   assert.expect(2);
 
   this.render(hbs`
@@ -45,12 +45,12 @@ test('floating-list on top of target', function(assert) {
       <div id="target-dom-node"
            style="position:absolute; top:40px; left:40px; width:100px; height:20px;"></div>
 
-      {{#floating-list items=items
+      {{#position-near items=items
                        class="tha-list"
                        positionOver=true
                        positionNearSelector="#target-dom-node"}}
         List goes here
-      {{/floating-list}}
+      {{/position-near}}
     </div>
   `);
 

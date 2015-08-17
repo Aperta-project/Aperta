@@ -12,7 +12,7 @@
 </div>
 
 {{#if _showOptions}}
-  {{#floating-list positionNearSelector=_generatedIdSelector
+  {{#position-near positionNearSelector=_generatedIdSelector
                    setMaxHeight=true
                    class="select-box-list animation-fade-in"
                    positionOver=true}}
@@ -30,5 +30,5 @@
         {{yield item}}
       </div>
     {{/each}}
-  {{/floating-list}}
+  {{/position-near}}
 {{/if}}

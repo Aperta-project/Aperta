@@ -76,8 +76,9 @@ class AuthenticatedPage(PlosPage):
     # Must have admin or superadmin
     if permissions == ('jgray_oa', 'jgray'):
       self._get(self._nav_admin_link)
+    return None
 
-  def click_nav_close_link(self):
+  def click_nav_close(self):
     """Click sign out link"""
     self._get(self._nav_close).click()
     return self

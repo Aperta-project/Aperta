@@ -29,6 +29,7 @@ class ProfilePage(AuthenticatedPage):
     self._affiliation_btn = (By.XPATH, './/div["col-md-10"]/div[4]/a')
     self._reset_btn = (By.XPATH, './/div["col-md-10"]/a')
     self._avatar = (By.XPATH, './/div[@id="profile-avatar"]/img')
+    self._avatar_div = (By.XPATH, './/div[@id="profile-avatar"]')
     self._avatar_hover = (By.XPATH, './/div[@id="profile-avatar-hover"]')    
   #POM Actions
 
@@ -39,7 +40,7 @@ class ProfilePage(AuthenticatedPage):
     self.click_left_nav()
     self.validate_nav_elements(username)
     # Close nav bar
-    self.click_left_nav()
+    self.click_nav_close()
     name_title = self._get(self._profile_name_title)
     assert 'First and last name:' in name_title.text
     self.validate_profile_title_style(name_title)
@@ -61,11 +62,19 @@ class ProfilePage(AuthenticatedPage):
     affiliation_btn = self._get(self._affiliation_btn)
     self.validate_secondary_button_style(affiliation_btn)
     reset_btn = self._get(self._reset_btn)
-    self.validate_secondary_button_style(reset_btn, color='rgba(57, 163, 41, 1)', 
-                                         transform='capitalize')
+    self.validate_secondary_button_style(reset_btn, transform='capitalize')
     avatar = self._get(self._avatar)
     avatar.value_of_css_property('height') == '160px'
     avatar.value_of_css_property('width') == '160px'    
+    self._actions.move_to_element(self._get(self._avatar_div)).perform()
+    time.sleep(1)
+    avatar_hover = self._get(self._avatar_hover)
+    assert avatar_hover.text == 'UPLOAD NEW'
+    assert avatar_hover.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+    assert avatar_hover.value_of_css_property('font-size') == '14px'
+    assert avatar_hover.value_of_css_property('background-color') == 'rgba(0, 145, 0, 0.8)'
+    assert 'helvetica' in avatar_hover.value_of_css_property('font-family')
+    
     ##
 
 

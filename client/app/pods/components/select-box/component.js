@@ -149,8 +149,7 @@ export default Ember.Component.extend({
    *  @private
   **/
   _setupKeybindings: on('didInsertElement', function() {
-    let eventName = 'keyup.' + this.get('_generatedId');
-    Ember.$(document).on(eventName, (event) => {
+    Ember.$(document).on(this.getKeyupEventName(), (event) => {
       // escape
       if (event.which === 27 && this.get('_showOptions')) {
         this.hideOptions();
@@ -175,8 +174,7 @@ export default Ember.Component.extend({
    *  @private
   **/
   _teardownKeybindings: on('willDestroyElement', function() {
-    let eventName = 'keyup.' + this.get('_generatedId');
-    Ember.$(document).off(eventName);
+    Ember.$(document).off(this.getKeyupEventName());
   }),
 
   /**
@@ -191,6 +189,30 @@ export default Ember.Component.extend({
     } else {
       this.showOptions();
     }
+  },
+
+  /**
+   *  Unique document keyup event name for component instance.
+   *  Don't use this before the component is in the DOM
+   *
+   *  @method getKeyupEventName
+   *  @return {String}
+   *  @public
+  **/
+  getKeyupEventName() {
+    return 'keyup.' + this.get('_generatedId');
+  },
+
+  /**
+   *  Unique document click event name for component instance.
+   *  Don't use this before the component is in the DOM
+   *
+   *  @method getClickEventName
+   *  @return {String}
+   *  @public
+  **/
+  getClickEventName() {
+    return 'click.' + this.get('_generatedId');
   },
 
   /**
@@ -224,9 +246,7 @@ export default Ember.Component.extend({
    *  @private
   **/
   _listenForDocumentClick() {
-    let eventName = 'click.' + this.get('_generatedId');
-
-    $(document).on(eventName, (e)=> {
+    $(document).on(this.getClickEventName(), (e)=> {
       Ember.run(this, ()=> {
         let selectBox = $(e.target).parent('.select-box');
         let outsideSelectBox = !selectBox.is(this.$());
@@ -244,8 +264,7 @@ export default Ember.Component.extend({
    *  @private
   **/
   _removeDocumentClickListener: on('willDestroyElement', function(){
-    let eventName = 'click.' + this.get('_generatedId');
-    $(document).off(eventName);
+    $(document).off(this.getClickEventName());
   }),
 
   actions: {

@@ -55,8 +55,8 @@ export default Ember.Mixin.create({
   setMaxHeight: false,
 
   /**
-   *  The default is match the width of target component.
-   *  this option will override the matchWidth attribute
+   *  The default will match the width of target component.
+   *  This option will override the matchWidth attribute
    *
    *  @property width
    *  @type String
@@ -74,6 +74,29 @@ export default Ember.Mixin.create({
    *  @optional
   **/
   matchWidth: true,
+
+  /**
+   *  This offset is to prevent the bottom of the select-box-list
+   *  from being flush with the bottom of the viewport
+   *
+   *  @property offsetFromBottom
+   *  @type Number
+   *  @default 10
+   *  @required
+  **/
+  offsetFromBottom: 10,
+
+  /**
+   *  Unique window resize event name for component instance.
+   *  Don't use this before the component is in the DOM
+   *
+   *  @method getResizeEventName
+   *  @return {String}
+   *  @public
+  **/
+  getResizeEventName() {
+    return 'resize.positionnear-' + this.$().id;
+  },
 
   /**
    *  @method position
@@ -117,7 +140,7 @@ export default Ember.Mixin.create({
     // css maxHeight
 
     if(this.get('setMaxHeight')) {
-      let height = windowHeight - offset.top - targetHeight - 10;
+      let height = windowHeight - offset.top - targetHeight - this.get('offsetFromBottom');
 
       if(height < targetHeight) {
         height = targetHeight;
@@ -137,8 +160,7 @@ export default Ember.Mixin.create({
    *  @private
   **/
   _setupResizeListener: on('didInsertElement', function() {
-    let eventName = 'resize.positionnear-' + this.$().id;
-    $(window).on(eventName, ()=> {
+    $(window).on(this.getResizeEventName(), ()=> {
       if(this.get('setMaxHeight')) {
         this.position();
       }
@@ -146,7 +168,6 @@ export default Ember.Mixin.create({
   }),
 
   _teardownResizeListener: on('willDestroyElement', function() {
-    let eventName = 'resize.positionnear-' + this.$().id;
-    $(window).off(eventName);
+    $(window).off(this.getResizeEventName());
   })
 });

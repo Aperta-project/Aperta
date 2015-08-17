@@ -89,7 +89,7 @@ export default Ember.Component.extend({
   placeholder: null,
 
   /**
-   *  Prevent displat of select-box-list
+   *  Prevent display of select-box-list
    *
    *  @property disabled
    *  @type Boolean

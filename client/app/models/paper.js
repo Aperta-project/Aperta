@@ -88,9 +88,5 @@ export default DS.Model.extend({
             this.get('allSubmissionTasksCompleted'));
   }),
 
-  postSubmission: computed.not('submittableState'),
-
-  versionedBody: function() {
-    return this.get('currentVersionBody') || this.get('body');
-  }.property('currentVersionBody', 'body')
+  postSubmission: computed.not('submittableState')
 });

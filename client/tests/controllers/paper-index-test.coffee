@@ -21,7 +21,7 @@ moduleFor 'controller:paper.index', 'PaperIndexController',
     jQuery.ajax.restore()
 
 test '#export: calls the export url in Tahi', (assert) ->
-  basePaperController = @subject()
+  basePaperController = @subject(renderEquations: false)
   basePaperController.set('model', @paper)
   downloadType =
     url: "http://example.com"

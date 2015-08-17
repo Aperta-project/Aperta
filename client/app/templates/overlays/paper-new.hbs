@@ -63,21 +63,22 @@
   </div>
 
   <div class="overlay-action-buttons">
-    {{#if paperSaving}}
-      <span class="paper-new-paper-saving animation-fade-in">
-        Creating new submission&#8230;
-        {{progress-spinner visible=true size="small"}}
-      </span>
-      <button type="submit" class="button-primary button--disabled">Create</button>
-    {{else}}
-      <button type="submit" class="button-secondary button--green" {{action "createNewPaper"}}>
-        <i class="fa fa-upload"></i> Upload Document
-      </button>
+    {{file-uploader id="upload-files"
+                    class="button-secondary button--green"
+                    railsMethod="PUT"
+                    accept=".docx"
+                    uploadImmediately=false
+                    uploadReady="uploadReady"
+                    start="uploadStarted"
+                    progress="uploadProgress"
+                    done="uploadFinished"
+                    error="uploadError"
+                    filePrefix="paper/manuscript"
+                    url=manuscriptUploadUrl}}
 
-      <button type="submit" class="button-secondary button--green" {{action "createNewPaper"}}>
-        <i class="fa fa-pencil"></i> Create Document
-      </button>
-    {{/if}}
+    <button type="submit" class="button-secondary button--green" {{action "createNewPaper"}}>
+      <i class="fa fa-pencil"></i> Create Document
+    </button>
   </div>
 
 </div>

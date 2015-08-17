@@ -98,6 +98,9 @@ FileUploaderComponent = Ember.TextField.extend
 
     uploader.on 'fileuploadprocessalways', (e, data) =>
       @sendAction('processingDone', data.files[0])
+
+    uploader.on 'fileuploadfail', (e, data) =>
+      @sendAction('error', data)
   ).on('didInsertElement')
 
 `export default FileUploaderComponent`

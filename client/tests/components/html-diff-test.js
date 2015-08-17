@@ -17,7 +17,8 @@ test("It can diff a single paragraph of a single-sentence", function(assert) {
 
   assert.equal(
     this.component.diff(),
-    '<p><span class=\"removed\">Hi there</span><span class=\"added\">Hello there</span></p>'
+    '<p><span class=\"removed\">Hi there</span>' +
+      '<span class=\"added\">Hello there</span></p>'
   );
 });
 
@@ -29,7 +30,10 @@ test("It can diff a single paragraph of two sentences", function(assert) {
 
   assert.equal(
     this.component.diff(),
-    '<p><span class=\"unchanged\">Hello there</span><span class=\"unchanged\">. </span><span class=\"removed\">I am a dog</span><span class=\"added\">I am a cat</span><span class=\"unchanged\">.</span><span class=\"unchanged\"></span></p>'
+    '<p><span class=\"unchanged\">Hello there</span>' +
+      '<span class=\"unchanged\">. </span><span class=\"removed\">' +
+      'I am a dog</span><span class=\"added\">I am a cat</span>' +
+      '<span class=\"unchanged\">.</span><span class=\"unchanged\"></span></p>'
   );
 });
 

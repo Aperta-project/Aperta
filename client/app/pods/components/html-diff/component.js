@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import LazyLoader from 'ember-cli-lazyloader/lib/lazy-loader';
+import ENV from 'tahi/config/environment';
 
 
 export default Ember.Component.extend({
@@ -134,11 +135,7 @@ export default Ember.Component.extend({
 
   loadScripts: function() {
     if (this.renderEquations) {
-      let scripts = [
-        '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
-      ];
-
-      LazyLoader.loadScripts(scripts);
+      LazyLoader.loadScripts([ENV['tahi-editor-ve']['mathJaxUrl']]);
       this.addObserver('manuscript', this, 'refreshEquations');
     }
   }.on('didInsertElement'),

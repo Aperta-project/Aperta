@@ -5,7 +5,7 @@ import {
 
 import hbs   from 'htmlbars-inline-precompile';
 
-moduleForComponent('select-box', 'SelectBox', {
+moduleForComponent('select-box', 'SelectBoxComponent', {
   integration: true,
 
   beforeEach() {

@@ -79,12 +79,12 @@ export default Ember.Mixin.create({
    *  This offset is to prevent the bottom of the select-box-list
    *  from being flush with the bottom of the viewport
    *
-   *  @property offsetFromBottom
+   *  @property offsetFromEdge
    *  @type Number
    *  @default 10
    *  @required
   **/
-  offsetFromBottom: 10,
+  offsetFromEdge: 10,
 
   /**
    *  Unique window resize event name for component instance.
@@ -114,6 +114,10 @@ export default Ember.Mixin.create({
     let targetHeight = target.outerHeight();
     let windowHeight = $(window).height();
 
+    let heightBottom    = windowHeight - offset.top - targetHeight;
+    let heightTop       = offset.top;
+    let closerToBottom  = heightTop > heightBottom;
+
     // css left
 
     let css = {
@@ -121,12 +125,22 @@ export default Ember.Mixin.create({
       left: Math.round(position.left)
     };
 
-    // css top
+    // css vertical
 
-    if(this.get('positionOver')) {
-      css.top = Math.round(position.top);
+    if(closerToBottom) {
+      let bottom = Math.round(heightBottom);
+      if(this.get('positionOver')) {
+        css.bottom = bottom;
+      } else {
+        css.bottom = Math.round(bottom + targetHeight);
+      }
     } else {
-      css.top = Math.round(position.top) + targetHeight;
+      let top = Math.round(position.top);
+      if(this.get('positionOver')) {
+        css.top = top;
+      } else {
+        css.top = Math.round(top + targetHeight);
+      }
     }
 
     // css width
@@ -140,13 +154,12 @@ export default Ember.Mixin.create({
     // css maxHeight
 
     if(this.get('setMaxHeight')) {
-      let height = windowHeight - offset.top - targetHeight - this.get('offsetFromBottom');
-
-      if(height < targetHeight) {
-        height = targetHeight;
+      let height = closerToBottom ? heightTop : heightBottom;
+      if(this.get('positionOver')) {
+        height += targetHeight;
       }
 
-      css.maxHeight = height;
+      css.maxHeight = height - this.get('offsetFromEdge');
     }
 
     this.$().css(css);

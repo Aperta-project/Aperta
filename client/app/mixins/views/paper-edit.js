@@ -33,6 +33,10 @@ export default Ember.Mixin.create(RedirectsIfEditable, {
     submit() {
       this.saveEditorChanges();
       this.get('controller').send('confirmSubmitPaper');
+    },
+
+    withdrawManuscript() {
+      this.get('controller').send('showConfirmWithdrawOverlay');
     }
   }
 });

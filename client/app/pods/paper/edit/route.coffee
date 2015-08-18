@@ -92,6 +92,14 @@ PaperEditRoute = AuthorizedRoute.extend
 
       @set 'fromSubmitOverlay', true
 
+    showConfirmWithdrawOverlay: ->
+      @controllerFor('overlays/paper-withdraw').set('model', this.modelFor('paper.edit'))
+
+      @send('openOverlay', {
+        template: 'overlays/paper-withdraw'
+        controller: 'overlays/paper-withdraw'
+      })
+
     editableDidChange: ->
       if !@fromSubmitOverlay
         @transitionTo('paper.index', @modelFor('paper'))

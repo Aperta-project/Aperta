@@ -30,7 +30,8 @@ class ProfilePage(AuthenticatedPage):
     self._reset_btn = (By.XPATH, './/div["col-md-10"]/a')
     self._avatar = (By.XPATH, './/div[@id="profile-avatar"]/img')
     self._avatar_div = (By.XPATH, './/div[@id="profile-avatar"]')
-    self._avatar_hover = (By.XPATH, './/div[@id="profile-avatar-hover"]')    
+    self._avatar_hover = (By.XPATH, './/div[@id="profile-avatar-hover"]')
+    self._add_affiliation_title = (By.CSS_SELECTOR, 'div.profile-affiliations-form h3')
   #POM Actions
 
 
@@ -60,9 +61,11 @@ class ProfilePage(AuthenticatedPage):
     assert 'Affiliations:' in profile_at.text
     self.validate_profile_title_style(profile_at)
     affiliation_btn = self._get(self._affiliation_btn)
-    self.validate_secondary_button_style(affiliation_btn)
+    self.validate_secondary_button_style(affiliation_btn, color='rgba(119, 119, 119, 1)')
     reset_btn = self._get(self._reset_btn)
-    self.validate_secondary_button_style(reset_btn, transform='capitalize')
+    self.validate_secondary_button_style(reset_btn, line_height='21.4333px', font_size='15px', 
+                                         transform='capitalize', background_color='transparent',
+                                         text_align='start')
     avatar = self._get(self._avatar)
     avatar.value_of_css_property('height') == '160px'
     avatar.value_of_css_property('width') == '160px'    
@@ -74,10 +77,6 @@ class ProfilePage(AuthenticatedPage):
     assert avatar_hover.value_of_css_property('font-size') == '14px'
     assert avatar_hover.value_of_css_property('background-color') == 'rgba(0, 145, 0, 0.8)'
     assert 'helvetica' in avatar_hover.value_of_css_property('font-family')
-    
-    ##
-
-
     return self
 
   def click_reviewer_recommendation_button(self):
@@ -95,4 +94,8 @@ class ProfilePage(AuthenticatedPage):
     self._get(self._nav_close).click()
     return self
 
+  def validate_affiliation_form_css(self):
+    """Validate css from add affiliation form"""
+    assert self._get(self._add_affiliation_title)
+    return self
 

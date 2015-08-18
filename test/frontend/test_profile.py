@@ -35,6 +35,7 @@ class ApertaProfileTest(FrontEndTest):
     # add affiliations
     profile_page.click_add_affiliation_button()
     # Check affiliation css elements
+    profile_page.validate_affiliation_form_css()
 
     return self
 

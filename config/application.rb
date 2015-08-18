@@ -31,6 +31,9 @@ module Tahi
     config.action_mailer.default_url_options = { host: ENV.fetch('DEFAULT_MAILER_URL', 'tahi.example.com') }
     config.admin_email = ENV.fetch('ADMIN_EMAIL', 'admin@example.com')
     config.from_email = ENV.fetch('FROM_EMAIL', 'no-reply@example.com')
+    config.salesforce_username = ENV.fetch('DATABASEDOTCOM_USERNAME', :not_set)
+    config.salesforce_password = ENV.fetch('DATABASEDOTCOM_PASSWORD', :not_set)
+    config.salesforce_host = ENV.fetch('DATABASEDOTCOM_HOST', :not_set)
 
     # Raise an error within after_rollback & after_commit
     config.active_record.raise_in_transactional_callbacks = true

@@ -9,7 +9,7 @@ import random
 
 from Base.Decorators import MultiBrowserFixture
 from Base.FrontEndTest import FrontEndTest
-from Base.Resources import login_valid_pw, sa_login, oa_login
+from Base.Resources import login_valid_pw, sa_login, oa_login, au_login, rv_login, ae_login, he_login, fm_login
 from Pages.admin import AdminPage
 from Pages.dashboard import DashboardPage
 from Pages.login_page import LoginPage
@@ -18,6 +18,14 @@ users = [oa_login,
          sa_login,
          ]
 
+all_users = [sa_login,
+             oa_login,
+             au_login,
+             rv_login,
+             ae_login,
+             he_login,
+             fm_login,
+             ]
 
 @MultiBrowserFixture
 class ApertaAdminTest(FrontEndTest):
@@ -61,6 +69,8 @@ class ApertaAdminTest(FrontEndTest):
 
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_page_elements_styles_functions(user_type)
+    adm_page.validate_search_edit_user(random.choice(all_users))
+    adm_page.validate_add_new_journal(user_type)
     adm_page.click_left_nav()
     adm_page.validate_nav_elements(user_type)
 

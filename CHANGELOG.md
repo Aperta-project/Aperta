@@ -6,6 +6,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [Unreleased][unreleased]
 ### Added
 - Autosuggest ember component
+- Select box ember component
 - Reviewer Reports can now be submitted, and can't be edited after that
 
 ### Changed

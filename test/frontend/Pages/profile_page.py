@@ -32,6 +32,19 @@ class ProfilePage(AuthenticatedPage):
     self._avatar_div = (By.XPATH, './/div[@id="profile-avatar"]')
     self._avatar_hover = (By.XPATH, './/div[@id="profile-avatar-hover"]')
     self._add_affiliation_title = (By.CSS_SELECTOR, 'div.profile-affiliations-form h3')
+    self._institution_input = (By.XPATH, 
+        ".//div[contains(@class, 'profile-affiliations-form')]/div/div/div/input")
+    self._department_input = (By.XPATH, 
+        ".//div[contains(@class, 'profile-affiliations-form')]/input")
+    self._tile_input = (By.XPATH, 
+        ".//div[contains(@class, 'profile-affiliations-form')]/input[2]")
+    self._country = (By.XPATH, 
+        ".//div[contains(@class, 'profile-affiliations-form')]/div[3]/input")
+    self._datepicker_1 = (By.XPATH, 
+        ".//div[contains(@class, 'profile-affiliations-form')]/div[5]/div/input")
+    self._datepicker_2 = (By.XPATH, 
+        ".//div[contains(@class, 'profile-affiliations-form')]/div[5]/div/input[2]")
+
   #POM Actions
 
 
@@ -96,6 +109,24 @@ class ProfilePage(AuthenticatedPage):
 
   def validate_affiliation_form_css(self):
     """Validate css from add affiliation form"""
-    assert self._get(self._add_affiliation_title)
+    add_aff_title = self._get(self._add_affiliation_title)
+    assert 'helvetica' in add_aff_title.value_of_css_property('font-family')
+    assert add_aff_title.text == 'New Affiliation'
+    assert add_aff_title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+    assert add_aff_title.value_of_css_property('font-size') == '24px'
+    institution_input = self._get(self._institution_input)
+    self.validate_input_form_style(institution_input)
+    department_input = self._get(self._department_input)
+    self.validate_input_form_style(department_input)
+    title_input = self._get(self._tile_input)
+    self.validate_input_form_style(title_input)
+    country = self._get(self._country)
+    self.validate_input_form_style(country, color='rgba(51, 51, 51, 1)')
+    datepicker_1 = self._get(self._datepicker_1)
+    self.validate_input_form_style(datepicker_1)
+    datepicker_2 = self._get(self._datepicker_2)
+    self.validate_input_form_style(datepicker_2)
+
+
     return self
 

@@ -175,13 +175,13 @@ class AuthenticatedPage(PlosPage):
     TODO: Find out why I see the commented values in the browser
     """
     assert 'helvetica' in button.value_of_css_property('font-family')
-    assert button.value_of_css_property('font-size') == font_size #'14px'   
-    assert button.value_of_css_property('font-weight') == '400' #'normal'
-    assert button.value_of_css_property('line-height') == line_height #'20px'
-    assert button.value_of_css_property('color') == color #''rgba(119, 119, 119, 1)''
+    assert button.value_of_css_property('font-size') == font_size
+    assert button.value_of_css_property('font-weight') == '400'
+    assert button.value_of_css_property('line-height') == line_height
+    assert button.value_of_css_property('color') == color
     # Reset button color according to browser: 'rgba(57, 163, 41, 1)'
-    assert button.value_of_css_property('background-color') == background_color #'rgba(255,255,255,1)'
-    assert button.value_of_css_property('text-align') == text_align #'center'
+    assert button.value_of_css_property('background-color') == background_color
+    assert button.value_of_css_property('text-align') == text_align
     assert button.value_of_css_property('text-transform') == transform
     return None
 
@@ -200,3 +200,18 @@ class AuthenticatedPage(PlosPage):
     assert th.value_of_css_property('text-align') == 'left'
     assert th.value_of_css_property('vertical-align') == 'top'
     return None
+
+  @staticmethod
+  def validate_input_form_style(input_, color='rgba(85, 85, 85, 1)'):
+    """
+    Ensure consistency in rendering input in forms across the application
+    :return: None
+    """
+    assert 'helvetica' in input_.value_of_css_property('font-family')
+    assert input_.value_of_css_property('font-size') == '14px'
+    assert input_.value_of_css_property('font-weight') == '400'
+    assert input_.value_of_css_property('line-height') == '20px'
+    assert input_.value_of_css_property('color') == color
+    assert input_.value_of_css_property('text-align') == 'start'
+    return None
+

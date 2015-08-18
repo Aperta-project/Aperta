@@ -26,8 +26,8 @@
       placeholder="Please detail the changes you've made to your submission here"
       editable=isSubmissionTaskEditable}}
     <button
-      {{bind-attr class="isSubmissionTaskNotEditable:button--disabled :button-primary :button--green"}}
-      {{bind-attr disabled='isSubmissionTaskNotEditable'}}
+      class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}"
+      disabled={{isSubmissionTaskNotEditable}}
       {{action "saveAuthorResponse"}}>
       Save
     </button>

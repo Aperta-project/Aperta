@@ -1,6 +1,6 @@
 <div class="question-text">{{{model.question}}}</div>
 <div class="additional-data">
-  <span {{bind-attr class="disabled:button--disabled :button-primary :button--green :fileinput-button"}}>
+  <span class="button-primary button--green fileinput-button {{if disabled 'button--disabled'}}">
     {{if model.questionAttachment "Replace File" "Select & upload"}}
 
     {{file-uploader accept=accept

@@ -34,7 +34,7 @@
 </div>
 
 
-<span {{bind-attr class="isSubmissionTaskNotEditable:button--disabled :button-primary :button--green :fileinput-button"}}>
+<span class="button-primary button--green fileinput-button {{if isSubmissionTaskNotEditable 'button--disabled'}}">
   <span>Add new Figures</span>
   {{file-uploader id="figure_attachment"
                   accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"

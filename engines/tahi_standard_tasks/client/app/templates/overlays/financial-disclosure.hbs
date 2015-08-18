@@ -30,7 +30,7 @@
   {{/each}}
 
   {{#if receivedFunding}}
-    <button {{bind-attr class="isSubmissionTaskNotEditable:button--disabled :button-secondary :button--green"}} {{bind-attr disabled='isSubmissionTaskNotEditable'}} {{action "addFunder"}}>Add Another Funder</button>
+    <button class="button-secondary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "addFunder"}}>Add Another Funder</button>
 
     <hr>
 

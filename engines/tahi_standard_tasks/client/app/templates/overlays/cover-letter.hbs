@@ -20,12 +20,12 @@
     placeholder="Please type or paste your cover letter into this text field"
     editable=isSubmissionTaskEditable}}
 
-    <button class="button-primary button--green" {{bind-attr disabled=isSubmissionTaskNotEditable}} {{action "saveCoverLetter"}}>Save</button>
+    <button class="button-primary button--green" disabled={{isSubmissionTaskNotEditable}} {{action "saveCoverLetter"}}>Save</button>
 </div>
 {{else}}
 <div class="preview-cover-letter">
   <h4>Here is your cover letter:</h4>
     <div class="cover-letter">{{formatCoverLetter}}</div>
-    <button {{bind-attr class="isSubmissionTaskNotEditable:button--disabled :button-primary :button--green" disabled="isSubmissionTaskNotEditable"}} {{action "editCoverLetter"}}>Make Changes</button>
+    <button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "editCoverLetter"}}>Make Changes</button>
 </div>
 {{/if}}

@@ -18,7 +18,7 @@
   {{/each}}
 </div>
 {{#if isEditable}}
-  <span {{bind-attr class="isSubmissionTaskNotEditable:button--disabled :button-primary :button--green :fileinput-button"}}>
+  <span class="button-primary button--green fileinput-button {{if isSubmissionTaskNotEditable 'button--disabled'}}">
     <span>Add New Supporting Information</span>
     {{file-uploader id="file_attachment"
                     filePrefix="supporting-info"

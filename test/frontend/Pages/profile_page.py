@@ -26,7 +26,7 @@ class ProfilePage(AuthenticatedPage):
     self._profile_email_title = (By.XPATH, './/div[@id="profile-email"]/h1')
     self._profile_email = (By.XPATH, './/div[@id="profile-email"]/h2')
     self._profile_affiliation_title = (By.XPATH, './/div["col-md-10"]/div[4]/h1')
-    self._affiliation_btn = (By.XPATH, './/div["col-md-10"]/div[4]/a')
+    self._affiliation_btn = (By.CSS_SELECTOR, 'a.button--grey')
     self._reset_btn = (By.XPATH, './/div["col-md-10"]/a')
     self._avatar = (By.XPATH, './/div[@id="profile-avatar"]/img')
     self._avatar_div = (By.XPATH, './/div[@id="profile-avatar"]')
@@ -85,6 +85,10 @@ class ProfilePage(AuthenticatedPage):
     self._get(self._reviewer_recommendation_button).click()
     return self
 
+  def click_add_affiliation_button(self):
+    """Click add addiliation button"""
+    self._get(self._affiliation_btn).click()
+    return self
 
   def click_close_navigation(self):
     """Click on the close icon to close left navigation bar"""

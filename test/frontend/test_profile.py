@@ -9,7 +9,7 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.FrontEndTest import FrontEndTest
-from Base.Resources import login_valid_uid
+from Base.Resources import login_valid_uid, affiliation
 from Pages.login_page import LoginPage
 
 
@@ -19,6 +19,8 @@ class ApertaProfileTest(FrontEndTest):
   Self imposed AC:
      - validate page elements and styles for:
          - ProfilePage
+     - add/delete affiliations
+     - reset password
   """
   
   def test_validate_components_styles(self):
@@ -27,27 +29,13 @@ class ApertaProfileTest(FrontEndTest):
     profile_page.validate_initial_page_elements_styles(login_valid_uid)
     return self
 
-  def _test_add_new_card(self):
-    """Testing adding a new card"""
-    workflow_page = self._go_to_workflow()
-    # GET URL
-    time.sleep(2)
-    #driver = self.getDriver()
-    workflow_url = self._driver.current_url
-    # Count cards in first column
-    start_cards = workflow_page.count_cards_first_column()
-    # Test add new card
-    workflow_page.click_add_new_card()
-    # Elements in add new card
-    workflow_page.check_overlay()
-    workflow_page.check_new_tasks_overlay()
-    # Going to workflow from scrach to avoid using card elements
-    self._driver.get(workflow_url)
-    time.sleep(2)
-    current_cards = workflow_page.count_cards_first_column()
-    # Check that there is one more card after adding a card
-    assert start_cards + 1 == current_cards
-    # NOTE: Missing deleting a new card
+  def test_affiliations(self):
+    """Testing add/delete affiliations"""
+    profile_page = self._go_to_profile()
+    # add affiliations
+    profile_page.click_add_affiliation_button()
+    # Check affiliation css elements
+
     return self
 
 

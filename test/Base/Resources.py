@@ -65,6 +65,7 @@ editor_name_1 = 'Anthony George'
 user_email_1 = 'trash261121@ariessc.com'
 user_pw_editor = 'test_password'
 
-# Apache AuthType
-# aa_username = 'plos'
-# aa_password = 'shrimp'
+# Fake affiliations
+affiliation = {'institution':'Universidad Del Este', 'title': 'Dr.',
+               'country':'Argentina', 'start':'12/01/2014', 
+               'end':'08/11/2015', 'email': 'test@test.org'}

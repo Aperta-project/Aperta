@@ -33,9 +33,14 @@ describe TasksController, redis: true do
 
   describe "PATCH 'update'" do
     let(:task) { FactoryGirl.create(:task, phase: paper.phases.first) }
+    let(:cover_letter_task) { FactoryGirl.create(:cover_letter_task, phase: paper.phases.first) }
 
     subject(:do_request) do
       xhr :patch, :update, { format: 'json', paper_id: paper.to_param, id: task.to_param, task: { completed: '1' } }
+    end
+
+    subject(:do_unathorized_request) do
+      xhr :patch, :update, { format: 'json', paper_id: paper.to_param, id: cover_letter_task.to_param, task: { completed: '1' } }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -95,19 +100,38 @@ describe TasksController, redis: true do
     context "when the paper is not editable" do
       before { paper.update! editable: false }
 
-      it "returns a 422" do
-        do_request
-        expect(response.status).to eq 422
+      describe "a submission card" do
+        it "returns a 422" do
+          do_unathorized_request
+          expect(response.status).to eq 422
+        end
+
+        it "does not update the task" do
+          do_unathorized_request
+          expect(task.reload).not_to be_completed
+        end
+
+        it "raises an error" do
+          do_unathorized_request
+          expect(response.body).to include "This paper cannot be edited at this time."
+        end
       end
 
-      it "does not update the task" do
-        do_request
-        expect(task.reload).not_to be_completed
-      end
+      describe "a non-submission card" do
+        it "returns a 200" do
+          do_request
+          expect(response.status).to eq 200
+        end
 
-      it "raises an error" do
-        do_request
-        expect(response.body).to include "This paper cannot be edited at this time."
+        it "does update the task" do
+          do_request
+          expect(task.reload).to be_completed
+        end
+
+        it "does not raises an error" do
+          do_request
+          expect(response.body).not_to include "This paper cannot be edited at this time."
+        end
       end
     end
   end

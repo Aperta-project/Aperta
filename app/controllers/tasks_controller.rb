@@ -19,7 +19,7 @@ class TasksController < ApplicationController
   end
 
   def update
-    unless task.paper.editable?
+    unless task.authorize_update?
       task.paper.errors.add(:editable, "This paper cannot be edited at this time.")
       raise ActiveRecord::RecordInvalid, task.paper
     end

@@ -11,9 +11,15 @@ export default AuthorizedRoute.extend({
     }
   },
 
-  setupController(controller, model) {
+  setupController(controller, model, transition) {
     controller.set('model', model);
     controller.set('commentLooks', this.store.all('commentLook'));
+
+    controller.set('showVersions', transition.queryParams.showVersions);
+    if(transition.queryParams.showVersions){
+      controller.set('versionsVisible', true);
+      controller.set('subNavVisible', true);
+    }
 
     if (this.currentUser) {
       RESTless.authorize(controller, '/api/papers/' + (model.get('id')) + '/manuscript_manager', 'canViewManuscriptManager');

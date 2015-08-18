@@ -7,6 +7,9 @@ import ENV from 'tahi/config/environment';
 export default Ember.Controller.extend(PaperBaseMixin, DiscussionsRoutePathsMixin, {
   subRouteName: 'index',
 
+  queryParams: ['showVersions'],
+  showVersions: null,
+
   // MATHJAX (for rendering equations).
   renderEquations: true,
 

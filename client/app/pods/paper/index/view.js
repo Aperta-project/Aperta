@@ -4,9 +4,20 @@ import RedirectsIfEditable from 'tahi/mixins/views/redirects-if-editable';
 const { observer, on } = Ember;
 
 export default Ember.View.extend(RedirectsIfEditable, {
-  subNavVisible: false,
   downloadsVisible: false,
   contributorsVisible: false,
+
+  init: function(){
+    this._super.apply(this, arguments);
+  },
+
+  subNavVisible: function(){
+    return this.controller.get('subNavVisible');
+  }.observes('controller.subNavVisible'),
+
+  versionsVisible: function(){
+    return this.controller.get('versionsVisible');
+  }.observes('controller.versionsVisible'),
 
   applyManuscriptCss: on('didInsertElement', function() {
     $('#paper-body').attr('style', this.get('controller.model.journal.manuscriptCss'));
@@ -73,6 +84,11 @@ export default Ember.View.extend(RedirectsIfEditable, {
     toggleVersioningMode() {
       this.toggleProperty('controller.model.versioningMode');
       this.send('showSubNav', 'versions');
+      if(!this.get('controller.model.versioningMode')){
+        this.get('controller').set('showVersions', 1);
+      } else {
+        this.get('controller').set('showVersions', null);
+      }
     }
   }
 });

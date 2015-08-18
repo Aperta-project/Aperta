@@ -14,7 +14,7 @@
         <div class="control-bar-link versions-link __with-icon" {{action "toggleVersioningMode" "versions" target="view"}}>
           <div class="control-bar-link-icon"><i class="fa fa-files-o"></i></div>
           <div class="control-bar-link-text">
-            <span class="control-bar-toggle {{if view.versionsVisible "control-bar-toggle--active"}}">{{partial "svg/plus"}}</span>
+            <span class="control-bar-toggle {{if versionsVisible "control-bar-toggle--active"}}">{{partial "svg/plus"}}</span>
             Versions
           </div>
         </div>
@@ -107,8 +107,8 @@
 
     </div>
 
-    <div class="versions {{if view.versionsVisible "active"}}">
-      {{#if view.versionsVisible}}
+    <div class="versions {{if versionsVisible "active"}}">
+      {{#if versionsVisible}}
         {{versioning-bar
           paper=model
         }}

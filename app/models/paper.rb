@@ -284,8 +284,8 @@ class Paper < ActiveRecord::Base
     }.join("\n")
   end
 
-  def latest_version
-    versioned_texts(true).desc.first
+  def latest_version(reload=false)
+    versioned_texts(reload).desc.first
   end
 
   private

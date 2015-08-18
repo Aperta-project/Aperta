@@ -34,6 +34,8 @@ export default Ember.Controller.extend(AnimateOverlay, FileUploadMixin, {
       this.set('paperSaving', true);
       this.get('model').save().then((paper)=> {
         this.get('uploadFunction')();
+      }, (response)=> {
+        this.flash.displayErrorMessagesFromResponse(response);
       });
     },
 

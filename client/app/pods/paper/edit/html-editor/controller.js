@@ -114,4 +114,13 @@ export default Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, Discussio
     return editor.setBodyHtml(html);
   },
 
+  actions: {
+    lock: function() {
+      this.acquireLock();
+    },
+    unlock: function() {
+      this.releaseLock();
+    },
+  },
+
 });

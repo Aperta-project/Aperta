@@ -13,6 +13,14 @@ export default Ember.Controller.extend(PaperBaseMixin, DiscussionsRoutePathsMixi
   // MATHJAX (for rendering equations).
   renderEquations: true,
 
+  modelVersioningModeChanged: function(){
+    if(this.get('model.versioningMode')){
+      this.set('showVersions', 1);
+    } else {
+      this.set('showVersions', null);
+    }
+  }.observes('model.versioningMode'),
+
   loadScripts: function() {
     console.log("hellp");
     if (this.renderEquations) {

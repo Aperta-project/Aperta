@@ -12,14 +12,13 @@ export default AuthorizedRoute.extend({
   },
 
   setupController(controller, model, transition) {
+    model.set('versioningMode', !!transition.queryParams.showVersions);
+
     controller.set('model', model);
     controller.set('commentLooks', this.store.all('commentLook'));
 
-    controller.set('showVersions', transition.queryParams.showVersions);
-    if(transition.queryParams.showVersions){
-      controller.set('versionsVisible', true);
-      controller.set('subNavVisible', true);
-    }
+    controller.set('versionsVisible', !!transition.queryParams.showVersions);
+    controller.set('subNavVisible', !!transition.queryParams.showVersions);
 
     if (this.currentUser) {
       RESTless.authorize(controller, '/api/papers/' + (model.get('id')) + '/manuscript_manager', 'canViewManuscriptManager');

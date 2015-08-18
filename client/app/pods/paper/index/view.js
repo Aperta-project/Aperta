@@ -9,6 +9,7 @@ export default Ember.View.extend(RedirectsIfEditable, {
 
   init: function(){
     this._super.apply(this, arguments);
+    this.subNavVisibleDidChange();
   },
 
   subNavVisible: function(){

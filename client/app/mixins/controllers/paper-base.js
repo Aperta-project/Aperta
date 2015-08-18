@@ -113,9 +113,7 @@ export default Ember.Mixin.create({
     },
 
     toggleVersioningMode() {
-      this.toggleProperty('model.versioningMode');
       this.send('showSubNav', 'versions');
     }
-
   }
 });

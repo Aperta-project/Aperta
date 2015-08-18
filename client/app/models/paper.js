@@ -47,7 +47,10 @@ export default DS.Model.extend({
   publishingState: attr('string'),
   title: attr('string'),
   versions: attr(),
-  versioningMode: attr('boolean', {defaultValue: false}),
+
+  // For diffing:
+  viewingText: attr('string'),
+  comparisonText: attr('string'),
 
   displayTitle: computed('title', 'shortTitle', function() {
     return this.get('title') || this.get('shortTitle');

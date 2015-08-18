@@ -4,12 +4,12 @@
 
   {{partial "paper/sidebar"}}
 
-  <div class="manuscript-container {{if model.versioningMode 'not-ve'}}">
+  <div class="manuscript-container {{if hideEditor 'not-ve'}}">
     <main>
       {{flash-messages classNames="flash-messages-paper-editor"}}
       <article class="manuscript {{if isEditable "editing" "read-only"}}">
         <div class="manuscript-title-and-placeholder">
-          {{#if model.versioningMode}}
+          {{#if hideEditor}}
             <h2 id="paper-title">{{{model.title}}}</h2>
           {{else}}
             {{content-editable tagName="h2"
@@ -31,13 +31,15 @@
           </div>
         {{/if}}
 
-        <div id="paper-body" class="{{if model.versioningMode "version-visible"}}">
-          <div class="{{if model.versioningMode "versioned-body" "normal-body"}}">
-            {{html-diff
-              comparisonText=model.comparisonText
-              viewingText=model.viewingText}}
-          </div>
+        <div id="paper-body" class="{{if hideEditor "version-visible"}}">
+          {{#if hideEditor}}
+          {{html-diff
+            default=model.body
+            comparisonText=model.comparisonText
+            viewingText=model.viewingText}}
+          {{/if}}
 
+          {{#if model.editable}}
           {{component editorComponent
               viewName='editor'
               paper=model
@@ -45,7 +47,8 @@
               savedAt=savedAt
               statusMessage=statusMessage
               currentUser=currentUser
-          }}
+              }}
+          {{/if}}
         </div>
 
       </article>

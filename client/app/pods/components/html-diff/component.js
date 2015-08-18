@@ -12,6 +12,9 @@ export default Ember.Component.extend({
   // This is the text of the version we're comparing with (right dropdown)
   comparisonText: null,
 
+  // This is the default if nothing else is set
+  default: null,
+
   // These are elements that contain sentences worth diffing individually.
   tokenizeInsideElements: ['p'],
 
@@ -20,7 +23,9 @@ export default Ember.Component.extend({
   sentenceDelimiter: /([.!?,;]\s*)/g,
 
   manuscript: function() {
-    if (!this.get('comparisonText')) {
+    if (!this.get('viewingText')) {
+      return this.get('default');
+    } else if (!this.get('comparisonText')) {
       return this.get('viewingText');
     } else {
       return this.diff();
@@ -29,7 +34,7 @@ export default Ember.Component.extend({
 
   diff() {
     // Calculate the diff
-    let diff = this.Differ.diff(
+    let diff = this.getDiffer().diff(
       this.get('comparisonText'),
       this.get('viewingText'));
 
@@ -40,16 +45,20 @@ export default Ember.Component.extend({
     }).join('');
   },
 
-  setupDiffer: function() {
-    this.Differ = new JsDiff.Diff();
-    var that = this;
-    this.Differ.tokenize = function(html) {
-      let elements = $(html).toArray();
-      let tokens = _.map(elements, that.tokenizeElement, that);
-      tokens =  _.flatten(tokens);
-      return tokens;
-    };
-  }.on('didInsertElement'),
+  getDiffer: function() {
+    if (!this.differ) {
+      this.differ = new JsDiff.Diff();
+      var that = this;
+      this.differ.tokenize = function(html) {
+        let elements = $(html).toArray();
+        let tokens = _.map(elements, that.tokenizeElement, that);
+        tokens =  _.flatten(tokens);
+        return tokens;
+      };
+    }
+
+    return this.differ;
+  },
 
   addDiffStylingClass(chunk) {
     let cssClass = null;
@@ -133,17 +142,21 @@ export default Ember.Component.extend({
 
   // MATHJAX (for rendering equations).
 
-  loadScripts: function() {
+  loadMathJax: function() {
     if (this.renderEquations) {
-      LazyLoader.loadScripts([ENV['tahi-editor-ve']['mathJaxUrl']]);
-      this.addObserver('manuscript', this, 'refreshEquations');
+      LazyLoader.loadScripts([ENV['tahi-editor-ve']['mathJaxUrl']]).then(() => {
+        this.refreshEquations();
+      });
     }
-  }.on('didInsertElement'),
+  },
 
+  refreshEquations:  function() {
+    if (!this.renderEquations) { return; }
+    else if (!MathJax) { this.loadMathJax(); }
+    else if (!MathJax.Hub) { console.log("fuck"); return; }
 
-  refreshEquations: function() {
     Ember.run.next(() => {
-      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.$()[0]]);
     });
-  }
+  }.observes('manuscript').on('didInsertElement')
 });

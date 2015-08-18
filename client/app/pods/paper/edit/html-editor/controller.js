@@ -114,4 +114,7 @@ export default Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, Discussio
     return editor.setBodyHtml(html);
   },
 
+  hideEditor: Ember.computed('model.editable', 'versionsVisible', function() {
+    return !(this.get('model.editable')) || this.get('versionsVisible');
+  })
 });

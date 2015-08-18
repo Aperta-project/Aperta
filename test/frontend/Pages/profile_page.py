@@ -44,6 +44,13 @@ class ProfilePage(AuthenticatedPage):
         ".//div[contains(@class, 'profile-affiliations-form')]/div[5]/div/input")
     self._datepicker_2 = (By.XPATH, 
         ".//div[contains(@class, 'profile-affiliations-form')]/div[5]/div/input[2]")
+    self._email = (By.XPATH, 
+        ".//div[contains(@class, 'profile-affiliations-form')]/div[5]/input")
+    self._add_done_btn = (By.XPATH, 
+        ".//div[contains(@class, 'profile-affiliations-form')]/button")
+    self._add_cancel_btn = (By.XPATH, 
+        ".//div[contains(@class, 'profile-affiliations-form')]/a")
+
 
   #POM Actions
 
@@ -126,7 +133,14 @@ class ProfilePage(AuthenticatedPage):
     self.validate_input_form_style(datepicker_1)
     datepicker_2 = self._get(self._datepicker_2)
     self.validate_input_form_style(datepicker_2)
-
-
+    email = self._get(self._email)
+    self.validate_input_form_style(email)
+    add_done_btn = self._get(self._add_done_btn)
+    self.validate_secondary_button_style(add_done_btn, color='rgba(57, 163, 41, 1)')    
+    add_cancel_btn = self._get(self._add_cancel_btn)
+    assert add_cancel_btn.value_of_css_property('font-size') == '14px'
+    assert add_cancel_btn.value_of_css_property('font-weight') == '400'
+    assert add_cancel_btn.value_of_css_property('line-height') == '20px'
+    assert add_cancel_btn.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     return self
 

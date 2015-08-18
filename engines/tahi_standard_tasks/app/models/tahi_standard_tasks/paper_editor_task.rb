@@ -17,8 +17,8 @@ module TahiStandardTasks
       replace_editor_and_follow_tasks invitation
       follow_reviewer_reports invitation
       PaperAdminMailer.delay.notify_admin_of_editor_invite_accepted(
-          paper_id:  invitation.paper.id,
-          editor_id: invitation.invitee.id
+        paper_id:  invitation.paper.id,
+        editor_id: invitation.invitee.id
       )
     end
 

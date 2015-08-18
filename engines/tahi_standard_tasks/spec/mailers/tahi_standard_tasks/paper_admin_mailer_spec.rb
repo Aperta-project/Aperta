@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe TahiStandardTasks::PaperAdminMailer do
-  let(:user)       { FactoryGirl.create(:user) }
-  let(:invitation) { FactoryGirl.create(:invitation) }
+  let(:user)        { FactoryGirl.create(:user) }
+  let(:invitation)  { FactoryGirl.create(:invitation) }
   let!(:admin_role) { FactoryGirl.create(:paper_role, :admin, paper: invitation.paper, user: user) }
   let(:email) { described_class.notify_admin_of_editor_invite_accepted(paper_id: invitation.paper.id, editor_id: invitation.invitee.id) }
 

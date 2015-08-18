@@ -8,6 +8,8 @@ less static, variable definitions.
 
 from os import getenv
 
+from os import getenv
+
 # General resources
 # set friendly_testhostname to 'prod' to run suite against production
 # Two fields need to be changed to support running tests in your local development
@@ -31,6 +33,12 @@ friendly_testhostname = 'https://plos:shrimp@tahi-assess.herokuapp.com/'
 user_email = 'admin'
 user_pw = 'yetishrimp'
 
+user_data = {'admin': {'password':'yetishrimp',
+                      'email':'shrimp@mailinator.com',
+                      'full_name':'AD Shrimp',
+                      'password':'yetishrimp'}
+                      }
+
 login_valid_email = 'sealresq+7@gmail.com'
 login_invalid_email = 'jgrey@plos.org'
 login_valid_uid = 'jgray_sa'
@@ -43,7 +51,6 @@ he_login = 'jgray_editor'     # handling editor login amm permissions
 fm_login = 'jgray_flowmgr'    # flow manager permissions
 oa_login = 'jgray_oa'         # ordinary admin login
 sa_login = 'jgray_sa'         # super admin login
-
 
 # Define connector information for Aperta's Tahi component postgres instance
 # Lean data

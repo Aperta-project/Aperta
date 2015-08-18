@@ -61,24 +61,27 @@
       <span class="paper-new-valid-icon animation-fade-in"><i class="fa fa-check"></i></span>
     {{/if}}
   </div>
-
-  <div class="overlay-action-buttons">
-    {{file-uploader id="upload-files"
-                    class="button-secondary button--green"
-                    railsMethod="PUT"
-                    accept=".docx"
-                    uploadImmediately=false
-                    uploadReady="uploadReady"
-                    start="uploadStarted"
-                    progress="uploadProgress"
-                    done="uploadFinished"
-                    error="uploadError"
-                    filePrefix="paper/manuscript"
-                    url=manuscriptUploadUrl}}
-
-    <button type="submit" class="button-secondary button--green" {{action "createNewPaper"}}>
-      <i class="fa fa-pencil"></i> Create Document
-    </button>
+    <div id="upload-file-wrapper">
+      <div class="actions">
+        <span class="button-secondary button--green fileinput-button button--fixed-size">
+          <i class="fa fa-upload"></i> Upload Word Document
+          {{file-uploader id="upload-files"
+                          class="button--fixed-size button-secondary button--green"
+                          railsMethod="PUT"
+                          accept=".docx"
+                          uploadImmediately=false
+                          uploadReady="uploadReady"
+                          start="uploadStarted"
+                          progress="uploadProgress"
+                          done="uploadFinished"
+                          error="uploadError"
+                          filePrefix="paper/manuscript"
+                          url=manuscriptUploadUrl}}
+      </span>
+      <button type="submit" class="button--fixed-size button-secondary button--green" {{action "createNewPaper"}}>
+        <i class="fa fa-pencil"></i> Start Writing
+      </button>
+    </div>
   </div>
 
 </div>

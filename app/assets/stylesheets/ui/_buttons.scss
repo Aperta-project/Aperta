@@ -167,7 +167,11 @@
   }
 }
 
-// .button modifier
+// .button modifiers
 .button--small {
   padding: 1px 5px;
+}
+
+.button--fixed-size {
+  width: 250px
 }

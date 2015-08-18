@@ -18,7 +18,7 @@ __author__ = 'jgray@plos.org'
 class AdminPage(AuthenticatedPage):
   """
   Model an aperta Admin page
-  still have to cover journal editing, new journal creation, and user details update
+  still have to user details update
   """
   def __init__(self, driver, url_suffix='/'):
     super(AdminPage, self).__init__(driver, url_suffix)
@@ -125,6 +125,17 @@ class AdminPage(AuthenticatedPage):
       db_initial_journal_count = int(PgSQL().query('SELECT count(*) from journals')[0][0])
       page_initial_journal_count = self._gets(self._base_admin_journals_section_journal_block)
       anj_button = self._get(self._base_admin_journals_su_add_new_journal_btn)
+      assert anj_button.text == 'ADD NEW JOURNAL'
+      assert 'helvetica' in anj_button.value_of_css_property('font-family')
+      assert anj_button.value_of_css_property('font-size') == '14px'
+      assert anj_button.value_of_css_property('font-weight') == '400'
+      assert anj_button.value_of_css_property('font-style') == 'normal'
+      assert anj_button.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
+      assert anj_button.value_of_css_property('text-transform') == 'uppercase'
+      assert anj_button.value_of_css_property('background-color') == 'rgba(45, 133, 222, 1)'
+      assert anj_button.value_of_css_property('line-height') == '20px'
+      assert anj_button.value_of_css_property('text-align') == 'center'
+      assert anj_button.value_of_css_property('vertical-align') == 'middle'
       self._actions.move_to_element(anj_button).perform()
       anj_button.click()
       page_secondary_journal_count = self._gets(self._base_admin_journals_section_journal_block)
@@ -133,17 +144,90 @@ class AdminPage(AuthenticatedPage):
       # Stopping here as I don't want to automatedly create a journal without a clean means
       # of deleting the same. Need to ask after a safe method of deleting a created journal to move forward
       upload_button = self._get(self._base_admin_journals_edit_logo_upload_btn)
-      self._actions.move_to_element(upload_button)
+      assert upload_button.text == 'UPLOAD NEW'
+      assert 'helvetica' in upload_button.value_of_css_property('font-family')
+      assert upload_button.value_of_css_property('font-size') == '14px'
+      assert upload_button.value_of_css_property('font-weight') == '400'
+      assert upload_button.value_of_css_property('color') == 'rgba(32, 94, 156, 1)'
+      assert upload_button.value_of_css_property('background-color') == 'rgba(148, 184, 224, 1)'
+      assert upload_button.value_of_css_property('line-height') == '20px'
+      assert upload_button.value_of_css_property('text-align') == 'center'
+      self._actions.move_to_element(upload_button).perform()
+      time.sleep(1)
+      assert upload_button.value_of_css_property('color') == 'rgba(45, 133, 222, 1)'
+      assert upload_button.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
       upload_note = self._get(self._base_admin_journals_edit_logo_upload_note)
+      assert upload_note.text == '(250px x 40px)'
+      assert 'helvetica' in upload_note.value_of_css_property('font-family')
+      assert upload_note.value_of_css_property('font-size') == '14px'
+      assert upload_note.value_of_css_property('font-style') == 'italic'
+      assert upload_note.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
+      assert upload_note.value_of_css_property('line-height') == '40px'
+      assert upload_note.value_of_css_property('padding-left') == '10px'
       journal_title_label = self._get(self._base_admin_journals_edit_title_label)
+      assert journal_title_label.text == 'Journal Title'
+      assert 'helvetica' in journal_title_label.value_of_css_property('font-family')
+      assert journal_title_label.value_of_css_property('font-size') == '14px'
+      assert journal_title_label.value_of_css_property('font-weight') == '400'
+      assert journal_title_label.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
+      assert journal_title_label.value_of_css_property('line-height') == '20px'
+      assert journal_title_label.value_of_css_property('padding-left') == '12px'
+      assert journal_title_label.value_of_css_property('margin-bottom') == '5px'
       journal_title_field = self._get(self._base_admin_journals_edit_title_field)
+      assert journal_title_field.get_attribute('placeholder') == 'PLOS Yeti'
+      assert 'helvetica' in journal_title_field.value_of_css_property('font-family')
+      assert journal_title_field.value_of_css_property('font-size') == '14px'
+      assert journal_title_field.value_of_css_property('font-weight') == '400'
+      assert journal_title_field.value_of_css_property('font-style') == 'normal'
+      assert journal_title_field.value_of_css_property('color') == 'rgba(85, 85, 85, 1)'
+      assert journal_title_field.value_of_css_property('line-height') == '20px'
+      assert journal_title_field.value_of_css_property('padding-left') == '12px'
       journal_desc_label = self._get(self._base_admin_journals_edit_desc_label)
+      assert journal_desc_label.text == 'Journal Description'
+      assert 'helvetica' in journal_desc_label.value_of_css_property('font-family')
+      assert journal_desc_label.value_of_css_property('font-size') == '14px'
+      assert journal_desc_label.value_of_css_property('font-weight') == '400'
+      assert journal_desc_label.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
+      assert journal_desc_label.value_of_css_property('line-height') == '20px'
+      assert journal_desc_label.value_of_css_property('padding-left') == '12px'
+      assert journal_desc_label.value_of_css_property('margin-bottom') == '5px'
       journal_desc_field = self._get(self._base_admin_journals_edit_desc_field)
+      assert journal_desc_field.get_attribute('placeholder') == 'Accelerating the publication of peer-reviewed science'
+      assert 'helvetica' in journal_desc_field.value_of_css_property('font-family')
+      assert journal_desc_field.value_of_css_property('font-size') == '14px'
+      assert journal_desc_field.value_of_css_property('font-weight') == '400'
+      assert journal_desc_field.value_of_css_property('font-style') == 'normal'
+      assert journal_desc_field.value_of_css_property('color') == 'rgba(85, 85, 85, 1)'
+      assert journal_desc_field.value_of_css_property('line-height') == '20px'
+      assert journal_desc_field.value_of_css_property('padding-left') == '12px'
       save_button = self._get(self._base_admin_journals_edit_save_button)
+      assert save_button.text == 'SAVE'
+      assert 'helvetica' in save_button.value_of_css_property('font-family')
+      assert save_button.value_of_css_property('font-size') == '14px'
+      assert save_button.value_of_css_property('font-weight') == '400'
+      assert save_button.value_of_css_property('color') == 'rgba(32, 94, 156, 1)'
+      assert save_button.value_of_css_property('background-color') == 'rgba(148, 184, 224, 1)'
+      assert save_button.value_of_css_property('line-height') == '20px'
+      assert save_button.value_of_css_property('text-align') == 'center'
       self._actions.move_to_element(save_button).perform()
-      cancel_button = self._get(self._base_admin_journals_edit_cancel_link)
-      self._actions.move_to_element(cancel_button).perform()
-      cancel_button.click()
+      time.sleep(1)
+      assert save_button.value_of_css_property('color') == 'rgba(45, 133, 222, 1)'
+      assert save_button.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
+      cancel_link = self._get(self._base_admin_journals_edit_cancel_link)
+      assert cancel_link.text == 'Cancel'
+      assert 'helvetica' in cancel_link.value_of_css_property('font-family')
+      assert cancel_link.value_of_css_property('font-size') == '14px'
+      assert cancel_link.value_of_css_property('font-weight') == '400'
+      assert cancel_link.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
+      assert cancel_link.value_of_css_property('background-color') == 'transparent'
+      assert cancel_link.value_of_css_property('line-height') == '20px'
+      assert cancel_link.value_of_css_property('text-align') == 'center'
+      assert cancel_link.value_of_css_property('vertical-align') == 'middle'
+      self._actions.move_to_element(cancel_link).perform()
+      time.sleep(1)
+      assert cancel_link.value_of_css_property('text-decoration') == 'underline'
+      self._actions.move_to_element(cancel_link).perform()
+      cancel_link.click()
       page_tertiary_journal_count = self._gets(self._base_admin_journals_section_journal_block)
       assert len(page_tertiary_journal_count) == db_initial_journal_count
 
@@ -159,11 +243,28 @@ class AdminPage(AuthenticatedPage):
     self._get(self._base_admin_user_search_results_table_fname_header)
     self._get(self._base_admin_user_search_results_table_lname_header)
     self._get(self._base_admin_user_search_results_table_uname_header)
+    # TODO: Determine the search heuristic and enforce it. It seems overly broad currently.
     result_set = self._gets(self._base_admin_user_search_results_row)
     success_count = 0
     for result in result_set:
       if username in result.text:
         success_count += 1
+      result.click()
+      # TODO: Validate Styles for these elements
+      user_details_title = self._get(self._ud_overlay_title)
+      user_details_closer = self._get(self._ud_overlay_closer)
+      user_details_fname_label = self._get(self._ud_overlay_fname_label)
+      user_details_fname_field = self._get(self._ud_overlay_fname_field)
+      user_details_lname_label = self._get(self._ud_overlay_lname_label)
+      user_details_lname_field = self._get(self._ud_overlay_lname_field)
+      user_details_uname_label = self._get(self._ud_overlay_uname_label)
+      user_details_uname_field = self._get(self._ud_overlay_uname_field)
+      user_details_reset_pw_btn = self._get(self._ud_overlay_reset_pw_btn)
+      user_details_reset_pw_btn.click()
+      user_details_reset_pw_success_msg = self._get(self._ud_overlay_reset_pw_success_msg)
+      user_details_cancel_link = self._get(self._ud_overlay_cancel_link)
+      user_details_save_btn = self._get(self._ud_overlay_save_btn)
+      user_details_closer.click()
     assert success_count > 0
 
   def _search_user(self, username):

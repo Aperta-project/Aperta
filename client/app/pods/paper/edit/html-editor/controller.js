@@ -96,11 +96,13 @@ export default Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, Discussio
   },
 
   connectEditor() {
-    this.get('editor').enable();
+    let editor = this.get('editor');
+    if(editor) {
+      editor.enable();
+    }
   },
 
   disconnectEditor() {
-    // TODO: temp fix?
     let editor = this.get('editor');
     if(editor) {
       editor.disable();

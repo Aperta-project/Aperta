@@ -104,6 +104,11 @@ class PapersController < ApplicationController
     respond_with paper
   end
 
+  def withdraw
+    paper.withdraw!
+    respond_with paper
+  end
+
   private
 
   def paper_params

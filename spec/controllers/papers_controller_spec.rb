@@ -213,6 +213,15 @@ describe PapersController do
     end
   end
 
+  describe "PUT 'withdraw'" do
+    it "withdraw the paper" do
+      put :withdraw, id: paper.id, format: :json
+      expect(response.status).to eq(204)
+      expect(paper.reload.withdrawn?).to eq true
+      expect(paper.editable).to eq false
+    end
+  end
+
   describe "PUT 'toggle_editable'" do
     expect_policy_enforcement
 

@@ -100,7 +100,7 @@ class PapersController < ApplicationController
     paper.submit! current_user do
       notify_paper_submitted!
       # TODO: rename
-      send_stuff_to_salesforce(paper)
+      send_stuff_to_salesforce(paper: paper)
       broadcast_paper_submitted_event
     end
     respond_with paper
@@ -111,8 +111,8 @@ class PapersController < ApplicationController
     respond_with paper
   end
 
-  def send_stuff_to_salesforce(paper)
-    SalesforceServices::API.instance.create_manuscript(paper)
+  def send_stuff_to_salesforce(paper:)
+    SalesforceServices::API.instance.create_manuscript(paper: paper)
   end
 
   private

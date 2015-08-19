@@ -48,7 +48,7 @@
     "glob": "^4.0.5",
     "liquid-fire": "0.20.4",
     "tahi-fileupload": "git+https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/Tahi-project/tahi-fileupload#3d68c7702cc1b6ba0a544c13f3d65d66a0ab33e6",
-    "tahi-editor-ve": "git+https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/Tahi-project/tahi-editor-ve#c417f3fd0854f75694b0e7ac3deb0a1c259d7ddc"
+    "tahi-editor-ve": "git+https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/Tahi-project/tahi-editor-ve#01e3d5ac9b83f5303138f736644dcfd69e8f7dbb"
   },
   "ember-addon": {
     "paths": [

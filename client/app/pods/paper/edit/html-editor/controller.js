@@ -6,6 +6,9 @@ import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 export default Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, DiscussionsRoutePathsMixin, {
   subRouteName: 'edit',
 
+  // Note: we create the editor component via name
+  // so that we can override that property when running tests
+  // to use a mock implementation
   editorComponent: "tahi-editor-ve",
 
   // initialized by paper/edit/view
@@ -100,7 +103,7 @@ export default Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, Discussio
     // TODO: temp fix?
     let editor = this.get('editor');
     if(editor) {
-      this.get('editor').disable();
+      editor.disable();
     }
   },
 

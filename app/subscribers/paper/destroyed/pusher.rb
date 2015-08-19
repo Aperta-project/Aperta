@@ -1,11 +1,11 @@
 class Paper::Destroyed::Pusher < PusherSubscriber
 
-  def resource
-    record
-  end
-
   def channel
     record.paper
+  end
+
+  def payload
+    record.destroyed_payload
   end
 
 end

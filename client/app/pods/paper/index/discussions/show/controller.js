@@ -3,5 +3,5 @@ import DiscussionsShowControllerMixin from 'tahi/mixins/discussions/show/control
 
 export default Ember.Controller.extend(DiscussionsShowControllerMixin, {
   // required to generate route paths:
-  subRouteName: 'index'
+  subRouteName: 'edit'
 });

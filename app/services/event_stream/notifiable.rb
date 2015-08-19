@@ -8,7 +8,7 @@ module EventStream::Notifiable
     attr_accessor :notify_requester
 
     def notify
-      Notifier.notify(event: event_name, payload: event_payload)
+      Notifier.notify(event: event_name, data: event_payload)
     end
 
     def event_payload

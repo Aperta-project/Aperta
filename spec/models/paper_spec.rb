@@ -143,6 +143,11 @@ describe Paper do
         paper.withdraw!
         expect(paper).to be_withdrawn
       end
+
+      it "marks the paper not editable" do
+        paper.withdraw!
+        expect(paper).to_not be_editable
+      end
     end
 
     context "when minor-revising (as in a tech check)" do

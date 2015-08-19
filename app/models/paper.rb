@@ -98,7 +98,8 @@ class Paper < ActiveRecord::Base
     end
 
     event(:withdraw) do
-      transitions to: :withdrawn
+      transitions to: :withdrawn,
+                  after: :prevent_edits!
     end
   end
 

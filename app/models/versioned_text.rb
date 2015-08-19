@@ -8,8 +8,6 @@ class VersionedText < ActiveRecord::Base
 
   scope :active, -> { where(active: true) }
 
-  default_scope { order('updated_at DESC') }
-
   # Called on paper sumbission and resubmission.
   def major_version!(submitting_user)
     update!(major_version: (major_version + 1),

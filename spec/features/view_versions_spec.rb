@@ -25,11 +25,11 @@ feature "Viewing Versions:", js: true do
       page = EditPaperPage.new
       page.version_button.click
       wait_for_ajax
-      select paper.versioned_texts.last.version_string, from: "view_version"
+      select paper.versioned_texts.first.version_string, from: "view_version"
 
       expect(page.versioned_body).to include "OK second body"
 
-      select paper.versioned_texts.first.version_string, from: "view_version"
+      select paper.versioned_texts.last.version_string, from: "view_version"
       wait_for_ajax
 
       expect(page.versioned_body).to include "OK first body"

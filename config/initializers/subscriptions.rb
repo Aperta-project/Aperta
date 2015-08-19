@@ -2,6 +2,9 @@ EVENTS = {
   'paper:created' => [Paper::Created::Pusher],
   'paper:updated' => [Paper::Updated::Pusher],
   'paper:destroyed' => [Paper::Destroyed::Pusher],
+
+  'paper_role:created' => [PaperRole::Created::NotifyPaperMembers, PaperRole::Created::NotifyAssignee],
+  'paper_role:destroyed' => [PaperRole::Destroyed::NotifyPaperMembers],
 }
 
 EVENTS.each do |event_name, subscriber_list|

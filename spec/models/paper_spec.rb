@@ -136,6 +136,15 @@ describe Paper do
       end
     end
 
+    context "when withdrawing" do
+      let(:paper) { FactoryGirl.create(:paper, :submitted) }
+
+      it "transitions to withdrawn" do
+        paper.withdraw!
+        expect(paper).to be_withdrawn
+      end
+    end
+
     context "when minor-revising (as in a tech check)" do
       let(:paper) { FactoryGirl.create(:paper, :submitted) }
 

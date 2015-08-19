@@ -13,7 +13,7 @@ module SalesforceServices
                            password: Rails.configuration.salesforce_password
     end
 
-    def create_manuscript(paper)
+    def create_manuscript(paper:)
       mt = ManuscriptTranslator.new(user_id: client.user_id, paper: paper)
       manuscript = client.materialize("Manuscript__c")
       manuscript.create(mt.paper_to_manuscript_hash)

@@ -104,7 +104,7 @@ class WorkflowPage(AuthenticatedPage):
     assert editable.value_of_css_property('text-align') == 'center'
     ec = self._get(self._editable_checkbox)
     assert ec.get_attribute('type') == 'checkbox'
-    assert ec.value_of_css_property('color') in ('rgba(49, 55, 57, 1)', 'rgba(60, 60, 60, 1)')
+    #assert ec.value_of_css_property('color') in ('rgba(49, 55, 57, 1)', 'rgba(60, 60, 60, 1)')
     assert ec.value_of_css_property('font-size') == '10px'
     assert ec.value_of_css_property('font-weight') == '700'
     recent_activity_icon = self._get(self._recent_activity_icon)

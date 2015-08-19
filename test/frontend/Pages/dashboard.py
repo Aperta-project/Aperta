@@ -61,18 +61,6 @@ class DashboardPage(AuthenticatedPage):
     self._cns_cancel = (By.CLASS_NAME, 'button-link')
     self._cns_create = (By.CLASS_NAME, 'button-primary')
 
-    #self._create_modal = (By.CSS_SELECTOR, 'html.overlay-open')    
-    #self._title_text_field = (By.CSS_SELECTOR, '#paper-short-title')
-    #self._first_select = (By.XPATH, "//div[contains(@class, 'form-group')]/div[1]")
-    #self._second_select = (By.XPATH, "//div[contains(@class, 'form-group')]/div[3]")
-    #self._select_journal_from_dropdown = (By.XPATH,
-    #  '//div[contains(@class, "form-group")]/div[1]/a')
-    #self._select_type_from_dropdown = (By.XPATH,'//div[contains(@class, "form-group")]/div[3]/a')
-    #self._cancel_button = (By.CSS_SELECTOR, 'button-link.button--green')
-    #self._create_button = (By.CSS_SELECTOR, 
-    #  'div.inner-content div.overlay-action-buttons button.button-primary.button--green')
-
-
   # POM Actions
   def click_on_existing_manuscript_link(self, title):
     """Click on a link given a title"""

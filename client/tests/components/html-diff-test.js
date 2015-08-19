@@ -4,8 +4,7 @@ import { test, moduleForComponent } from 'ember-qunit';
 moduleForComponent('html-diff', 'Unit: components/html-diff', {
   needs: [],
   beforeEach: function() {
-    this.component = this.subject();
-    this.component.setupDiffer();
+    this.component = this.subject({refreshEquations: false});
   }
 });
 

@@ -57,6 +57,7 @@
   &:hover, &:focus { color: $color-hover; }
 }
 
+
 // Meant for @extend. Does not have any colors
 .button {
   display: inline-block;
@@ -85,18 +86,18 @@
   color: #fff;
   &:hover { text-decoration: none; }
 
-  &.button--green      { @include button-primary-modifier($tahi-green, $tahi-green-dark); }
-  &.button--blue       { @include button-primary-modifier($tahi-blue, $tahi-blue-dark); }
-  &.button--grey       { @include button-primary-modifier($tahi-grey, $tahi-grey-dark); }
+  &.button--green { @include button-primary-modifier($tahi-green, $tahi-green-dark); }
+  &.button--blue  { @include button-primary-modifier($tahi-blue, $tahi-blue-dark); }
+  &.button--grey  { @include button-primary-modifier($tahi-grey, $tahi-grey-dark); }
 }
 
 .button-secondary {
   @extend .button;
   background: #fff;
 
-  &.button--green      { @include button-secondary-modifier($tahi-green, $tahi-green-light, $tahi-green-dark); }
-  &.button--blue       { @include button-secondary-modifier($tahi-blue, $tahi-blue-light, $tahi-blue-dark); }
-  &.button--grey       { @include button-secondary-modifier($tahi-grey, $tahi-grey-light, $tahi-grey-dark); }
+  &.button--green { @include button-secondary-modifier($tahi-green, $tahi-green-light, $tahi-green-dark); }
+  &.button--blue  { @include button-secondary-modifier($tahi-blue, $tahi-blue-light, $tahi-blue-dark); }
+  &.button--grey  { @include button-secondary-modifier($tahi-grey, $tahi-grey-light, $tahi-grey-dark); }
 }
 
 .button-link {
@@ -104,29 +105,16 @@
   text-transform: none;
   background: transparent;
 
-  &.button--green      { @include button-link-modifier($tahi-green, $tahi-green-dark); }
-  &.button--blue       { @include button-link-modifier($tahi-blue, $tahi-blue-dark); }
-  &.button--grey       { @include button-link-modifier($tahi-grey, $tahi-grey-dark); }
-  &.button--white       { @include button-link-modifier($tahi-white, $tahi-white); }
+  &.button--green { @include button-link-modifier($tahi-green, $tahi-green-dark); }
+  &.button--blue  { @include button-link-modifier($tahi-blue, $tahi-blue-dark); }
+  &.button--grey  { @include button-link-modifier($tahi-grey, $tahi-grey-dark); }
+  &.button--white { @include button-link-modifier($tahi-white, $tahi-white); }
 
   &:hover {
     text-decoration: underline;
   }
 }
 
-.button-pre-submit-paper {
-  width: 100%;
-  height: 45px;
-  margin-top: 8px;
-}
-
-.button-submit-paper {
-  @extend .button;
-  color: $tahi-green;
-  &:hover { text-decoration: none; }
-
-  &.button--white      { @include button-primary-modifier($tahi-white, $tahi-green-light); }
-}
 
 // .button modifier
 .button--disabled {
@@ -172,6 +160,7 @@
     }
   }
 }
+
 
 // .button modifier
 .button--small {

@@ -57,3 +57,11 @@
     text-align: inherit;
   }
 }
+
+.button-submit-paper {
+  @extend .button;
+  color: $tahi-green;
+  &:hover { text-decoration: none; }
+
+  &.button--white  { @include button-primary-modifier($tahi-white, $tahi-green-light); }
+}

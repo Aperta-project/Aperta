@@ -1,7 +1,7 @@
 module EventStream::Notifiable
   extend ActiveSupport::Concern
   included do
-    after_commit :notify
+    after_commit :notify, if: -> { previous_changes.present? }
 
     # if false (default), do not send event stream message to original requester
     # if true, send event stream message to the original requester

@@ -20,6 +20,7 @@ class ApertaProfileTest(FrontEndTest):
      - validate page elements and styles for:
          - ProfilePage
      - add/delete affiliations
+     - upload image
      - reset password
   """
   
@@ -32,11 +33,14 @@ class ApertaProfileTest(FrontEndTest):
   def test_affiliations(self):
     """Testing add/delete affiliations"""
     profile_page = self._go_to_profile()
+    # Validate image upload
+    # Following test not working
+    ##profile_page.validate_image_upload()
     # add affiliations
     profile_page.click_add_affiliation_button()
     # Check affiliation css elements
     profile_page.validate_affiliation_form_css()
-
+    profile_page.validate_reset_password()
     return self
 
 

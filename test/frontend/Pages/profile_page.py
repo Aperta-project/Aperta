@@ -7,6 +7,7 @@ from selenium.webdriver.common.keys import Keys
 
 from authenticated_page import AuthenticatedPage
 from Base.Resources import affiliation
+import os
 
 __author__ = 'sbassi@plos.org'
 
@@ -27,10 +28,11 @@ class ProfilePage(AuthenticatedPage):
     self._profile_email = (By.XPATH, './/div[@id="profile-email"]/h2')
     self._profile_affiliation_title = (By.XPATH, './/div["col-md-10"]/div[4]/h1')
     self._affiliation_btn = (By.CSS_SELECTOR, 'a.button--grey')
-    self._reset_btn = (By.XPATH, './/div["col-md-10"]/a')
+    self._reset_btn = (By.CSS_SELECTOR, 'a.reset-password-link')
     self._avatar = (By.XPATH, './/div[@id="profile-avatar"]/img')
     self._avatar_div = (By.XPATH, './/div[@id="profile-avatar"]')
-    self._avatar_hover = (By.XPATH, './/div[@id="profile-avatar-hover"]')
+    self._avatar_hover = (By.XPATH, './/div[@id="profile-avatar-hover"]/span')
+    self._avatar_input = (By.CSS_SELECTOR, 'input[type="file"]')
     self._add_affiliation_title = (By.CSS_SELECTOR, 'div.profile-affiliations-form h3')
     self._institution_input = (By.XPATH, 
         ".//div[contains(@class, 'profile-affiliations-form')]/div/div/div/input")
@@ -52,6 +54,7 @@ class ProfilePage(AuthenticatedPage):
         ".//div[contains(@class, 'profile-affiliations-form')]/a")
     self._profile_affiliations = (By.CSS_SELECTOR, 'div.profile-affiliation')
     self._remove_affiliation_icon = (By.CSS_SELECTOR, 'div.profile-remove-affiliation')
+    self._success_message = (By.CSS_SELECTOR, 'div.success')
 
   #POM Actions
 
@@ -84,9 +87,8 @@ class ProfilePage(AuthenticatedPage):
     affiliation_btn = self._get(self._affiliation_btn)
     self.validate_secondary_button_style(affiliation_btn, color='rgba(119, 119, 119, 1)')
     reset_btn = self._get(self._reset_btn)
-    self.validate_secondary_button_style(reset_btn, line_height='21.4333px', font_size='15px', 
-                                         transform='capitalize', background_color='transparent',
-                                         text_align='start')
+    self.validate_secondary_button_style(reset_btn, color='rgba(57, 163, 41, 1)', 
+                                         background_color='rgba(255, 255, 255, 1)')
     avatar = self._get(self._avatar)
     avatar.value_of_css_property('height') == '160px'
     avatar.value_of_css_property('width') == '160px'    
@@ -94,9 +96,7 @@ class ProfilePage(AuthenticatedPage):
     time.sleep(1)
     avatar_hover = self._get(self._avatar_hover)
     assert avatar_hover.text == 'UPLOAD NEW'
-    assert avatar_hover.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
     assert avatar_hover.value_of_css_property('font-size') == '14px'
-    assert avatar_hover.value_of_css_property('background-color') == 'rgba(0, 145, 0, 0.8)'
     assert 'helvetica' in avatar_hover.value_of_css_property('font-family')
     return self
 
@@ -114,6 +114,28 @@ class ProfilePage(AuthenticatedPage):
     """Click on the close icon to close left navigation bar"""
     self._get(self._nav_close).click()
     return self
+
+  def validate_image_upload(self):
+    """Validate uploading a new image as profile avatar"""
+    # Test uploading an image
+    self._actions.move_to_element(self._get(self._avatar_div)).perform()
+    self._get(self._avatar_hover).click()
+    avatar_input = self._get()
+    avatar_input.clear(self._avatar_input)
+    avatar_input.send_keys(os.path.join(os.getcwd(), 
+                           "/frontend/assets/imgs/plos.gif" + Keys.RETURN))
+    time.sleep(1)
+    return self
+
+  def validate_reset_password(self):
+    """Validate reset password button"""
+    reset_btn = self._get(self._reset_btn)
+    #self._actions.move_to_element(reset_btn).perform()
+    reset_btn.click()
+    time.sleep(3)
+    message = self._get(self._success_message).text
+    assert "Reset password instructions have been sent to the your email address." in message
+
 
   def validate_affiliation_form_css(self):
     """Validate css from add affiliation form"""
@@ -155,9 +177,8 @@ class ProfilePage(AuthenticatedPage):
     add_done_btn.click()
     # Look for data
     # Give some time to end AJAX call
-    time.sleep(5)
+    time.sleep(2)
     affiliations = self._get(self._profile_affiliations)
-    print '****', affiliations.text
     assert affiliation['institution'] in affiliations.text
     assert affiliation['department'] in affiliations.text
     assert affiliation['title'] in affiliations.text
@@ -167,10 +188,8 @@ class ProfilePage(AuthenticatedPage):
     assert affiliation['email'] in affiliations.text
     remove_icon = self._get(self._remove_affiliation_icon)
     remove_icon.click()
-    time.sleep(1)
     alert = self._driver.switch_to_alert()
     alert.accept()
     time.sleep(1)
-
     return self
 

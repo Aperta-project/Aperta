@@ -8,8 +8,6 @@ export default Ember.Component.extend({
     return this.get('paper.body');
   },
 
-  update() {},
-
   connect() {},
 
   disconnect() {},
@@ -17,6 +15,8 @@ export default Ember.Component.extend({
   disable() {},
 
   enable() {},
+
+  update() {},
 
   writeToModel() {},
 

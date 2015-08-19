@@ -27,6 +27,8 @@ all_users = [sa_login,
              fm_login,
              ]
 
+user_search = ['OA', 'FM', 'MM', 'RV']
+
 @MultiBrowserFixture
 class ApertaAdminTest(FrontEndTest):
   """
@@ -58,6 +60,7 @@ class ApertaAdminTest(FrontEndTest):
 
     """
     user_type = random.choice(users)
+    print('Logging in as user: ' + user_type)
     login_page = LoginPage(self.getDriver())
     login_page.enter_login_field(user_type)
     login_page.enter_password_field(login_valid_pw)
@@ -69,7 +72,7 @@ class ApertaAdminTest(FrontEndTest):
 
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_page_elements_styles_functions(user_type)
-    adm_page.validate_search_edit_user(random.choice(all_users))
+    adm_page.validate_search_edit_user(random.choice(user_search))
     adm_page.validate_add_new_journal(user_type)
     adm_page.click_left_nav()
     adm_page.validate_nav_elements(user_type)

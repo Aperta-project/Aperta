@@ -209,8 +209,9 @@ class AdminPage(AuthenticatedPage):
       assert save_button.value_of_css_property('background-color') == 'rgba(148, 184, 224, 1)'
       assert save_button.value_of_css_property('line-height') == '20px'
       assert save_button.value_of_css_property('text-align') == 'center'
+      self._actions.move_to_element(anj_button).perform()
       self._actions.move_to_element(save_button).perform()
-      time.sleep(1)
+      time.sleep(2)
       assert save_button.value_of_css_property('color') == 'rgba(45, 133, 222, 1)'
       assert save_button.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
       cancel_link = self._get(self._base_admin_journals_edit_cancel_link)
@@ -266,6 +267,7 @@ class AdminPage(AuthenticatedPage):
       user_details_save_btn = self._get(self._ud_overlay_save_btn)
       user_details_closer.click()
     assert success_count > 0
+
 
   def _search_user(self, username):
     user_search_field = self._get(self._base_admin_user_search_field)

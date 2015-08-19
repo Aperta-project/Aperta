@@ -2,9 +2,11 @@ class ManuscriptManagersPolicy < ApplicationPolicy
 
   require_params :paper
 
-  def show?
+  def can_manage_manuscript?
     super_admin? || can_manage_any_manuscript? || can_manage_this_manuscript?
   end
+
+  alias_method :show?, :can_manage_manuscript?
 
   private
 
@@ -17,7 +19,12 @@ class ManuscriptManagersPolicy < ApplicationPolicy
   end
 
   def can_manage_this_manuscript?
-    paper.tasks.assigned_to(current_user).exists? &&
-    roles.merge(Role.can_view_assigned_manuscript_managers).exists?
+    (paper.tasks.assigned_to(current_user).exists? ||
+    PaperRole.for_user(current_user).where(paper: paper).exists?) &&
+    journal_roles.merge(Role.can_view_assigned_manuscript_managers).exists?
+  end
+
+  def journal_roles
+    current_user.roles.where(journal: paper.journal)
   end
 end

@@ -39,9 +39,9 @@ user_data = {'admin': {'password':'yetishrimp',
                       'password':'yetishrimp'}
                       }
 
-login_valid_email = 'jgray@plos.org'
+login_valid_email = 'sealresq+7@gmail.com'
 login_invalid_email = 'jgrey@plos.org'
-login_valid_uid = 'jgray'
+login_valid_uid = 'jgray_sa'
 login_invalid_pw = 'in|fury7'
 login_valid_pw = 'in|fury8'
 au_login = 'jgray_author'     # author login
@@ -50,14 +50,21 @@ ae_login = 'jgray_assocedit'  # associate editor login mm permissions
 he_login = 'jgray_editor'     # handling editor login amm permissions
 fm_login = 'jgray_flowmgr'    # flow manager permissions
 oa_login = 'jgray_oa'         # ordinary admin login
-sa_login = 'jgray'            # super admin login
+sa_login = 'jgray_sa'         # super admin login
 
 # Define connector information for Aperta's Tahi component postgres instance
+# Lean data
 psql_hname = getenv('APERTA_PSQL_HOST', 'ec2-54-163-228-35.compute-1.amazonaws.com')
 psql_port = getenv('APERTA_PSQL_PORT', '5652')
 psql_uname = getenv('APERTA_PSQL_USER', 'u6over81t87q49')
 psql_pw = getenv('APERTA_PSQL_PW', 'pch646pphdfqog9v38otlchvvpn')
 psql_db = getenv('APERTA_PSQL_DBNAME', 'd1kdmn5r5e9aj5')
+# Staging data
+# psql_hname = getenv('APERTA_PSQL_HOST', 'ec2-50-17-192-136.compute-1.amazonaws.com')
+# psql_port = getenv('APERTA_PSQL_PORT', '5432')
+# psql_uname = getenv('APERTA_PSQL_USER', 'egdqveertucqpn')
+# psql_pw = getenv('APERTA_PSQL_PW', 'KlqQFwD6y3t2fIAstwFQ9EvYol')
+# psql_db = getenv('APERTA_PSQL_DBNAME', 'd1pe0d7udlodof')
 
 editor_name_0 = 'Hendrik W. van Veen'
 user_email_0 = 'trash87567@ariessc.com'

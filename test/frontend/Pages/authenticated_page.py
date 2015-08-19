@@ -32,13 +32,18 @@ class AuthenticatedPage(PlosPage):
     self._nav_admin_link = (By.CSS_SELECTOR, 'div.navigation a[href="/admin"]')
     self._nav_signout_link = (By.CSS_SELECTOR, 'div.navigation > a')
     self._nav_feedback_link = (By.CLASS_NAME, 'navigation-item-feedback')
-    self._nav_hamburger_icon = (By.XPATH, 
+    self._nav_hamburger_icon = (By.XPATH,
       "//div[@class='navigation-toggle']/*[local-name() = 'svg']/*[local-name() = 'path']")
     self._nav_menu = (By.CLASS_NAME, 'navigation')
 
   # POM Actions
   def click_left_nav(self):
     """Click left navigation"""
+    hamburger_icon = self._get(self._nav_hamburger_icon)
+    assert hamburger_icon.get_attribute('d') == ('M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.8'
+      '96,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0'
+      '.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2'
+      '  S29.104,22,28,22z')
     self._get(self._nav_toggle).click()
 
   def validate_nav_elements(self, permissions):
@@ -56,11 +61,6 @@ class AuthenticatedPage(PlosPage):
     self._get(self._nav_dashboard_link)
     self._get(self._nav_signout_link)
     self._get(self._nav_feedback_link)
-    hamburger_icon = self._get(self._nav_hamburger_icon)
-    assert hamburger_icon.get_attribute('d') == ('M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.8'
-      '96,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0'
-      '.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2'
-      '  S29.104,22,28,22z')
     # Must have flow mgr, admin or superadmin
     if permissions in elevated:
       self._get(self._nav_flowmgr_link)
@@ -138,7 +138,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('background-color') == 'rgba(57, 163, 41, 1)'
     assert button.value_of_css_property('text-align') == 'center'
     assert button.value_of_css_property('text-transform') == 'uppercase'
-    return None
+    assert button.value_of_css_property('background-color') == 'rgba(57, 163, 41, 1)'
 
   @staticmethod
   def validate_table_heading_style(th):

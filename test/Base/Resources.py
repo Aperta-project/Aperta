@@ -68,4 +68,5 @@ user_pw_editor = 'test_password'
 # Fake affiliations
 affiliation = {'institution':'Universidad Del Este', 'title': 'Dr.',
                'country':'Argentina', 'start':'12/01/2014', 
-               'end':'08/11/2015', 'email': 'test@test.org'}
+               'end':'08/11/2015', 'email': 'test@test.org',
+               'department':'Molecular Biology'}

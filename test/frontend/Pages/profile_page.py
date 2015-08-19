@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 from authenticated_page import AuthenticatedPage
-
+from Base.Resources import affiliation
 
 __author__ = 'sbassi@plos.org'
 
@@ -50,7 +50,8 @@ class ProfilePage(AuthenticatedPage):
         ".//div[contains(@class, 'profile-affiliations-form')]/button")
     self._add_cancel_btn = (By.XPATH, 
         ".//div[contains(@class, 'profile-affiliations-form')]/a")
-
+    self._profile_affiliations = (By.CSS_SELECTOR, 'div.profile-affiliation')
+    self._remove_affiliation_icon = (By.CSS_SELECTOR, 'div.profile-remove-affiliation')
 
   #POM Actions
 
@@ -142,5 +143,34 @@ class ProfilePage(AuthenticatedPage):
     assert add_cancel_btn.value_of_css_property('font-weight') == '400'
     assert add_cancel_btn.value_of_css_property('line-height') == '20px'
     assert add_cancel_btn.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    # Fill the form
+    institution_input.send_keys(affiliation['institution'])
+    department_input.send_keys(affiliation['department'])
+    title_input.send_keys(affiliation['title'])
+    country.send_keys(affiliation['country'] + Keys.RETURN)
+    time.sleep(1)
+    datepicker_1.send_keys(affiliation['start'] + Keys.RETURN)
+    datepicker_2.send_keys(affiliation['end'] + Keys.RETURN)
+    email.send_keys(affiliation['email'])
+    add_done_btn.click()
+    # Look for data
+    # Give some time to end AJAX call
+    time.sleep(5)
+    affiliations = self._get(self._profile_affiliations)
+    print '****', affiliations.text
+    assert affiliation['institution'] in affiliations.text
+    assert affiliation['department'] in affiliations.text
+    assert affiliation['title'] in affiliations.text
+    assert affiliation['country'] in affiliations.text
+    assert affiliation['start'][-4:] in affiliations.text
+    assert affiliation['end'][-4:] in affiliations.text
+    assert affiliation['email'] in affiliations.text
+    remove_icon = self._get(self._remove_affiliation_icon)
+    remove_icon.click()
+    time.sleep(1)
+    alert = self._driver.switch_to_alert()
+    alert.accept()
+    time.sleep(1)
+
     return self
 

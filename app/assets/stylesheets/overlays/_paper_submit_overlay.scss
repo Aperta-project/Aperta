@@ -63,5 +63,12 @@
   color: $tahi-green;
   &:hover { text-decoration: none; }
 
-  &.button--white  { @include button-primary-modifier($tahi-white, $tahi-green-light); }
+  &.button--white  {
+    background-color: $tahi-white;
+
+    &:focus, &:hover {
+      color: #fff;
+      background-color: $tahi-green-light;
+    }
+  }
 }

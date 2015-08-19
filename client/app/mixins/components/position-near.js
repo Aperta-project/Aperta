@@ -24,17 +24,6 @@ export default Ember.Mixin.create({
   selector: null,
 
   /**
-   *  The default is to position directly below the target,
-   *  this option will put it directly over
-   *
-   *  @property positionOver
-   *  @type Boolean
-   *  @default false
-   *  @optional
-  **/
-  positionOver: false,
-
-  /**
    *  This option will decrease the css max-height property to prevent
    *  the list from flowing out of the viewport. A class will need to
    *  be assigned to the component mixining this position-near. The class
@@ -143,10 +132,6 @@ export default Ember.Mixin.create({
 
     if(this.get('setMaxHeight')) {
       let height = closerToBottom ? heightTop : heightBottom;
-      if(this.get('positionOver')) {
-        height += targetHeight;
-      }
-
       css.maxHeight = height - this.get('offsetFromEdge');
     }
 

@@ -12,10 +12,26 @@ moduleForComponent 'question', 'Component: question-component',
 
 
 test '#model: gets tasks questions by ident', (assert) ->
+  q3 = Ember.Object.create(ident: 'foo')
+  otherTask = Ember.Object.create(questions: [q3])
   task = Ember.Object.create(questions: [@q1, @q2])
 
   component = @subject(task: task, ident: "foo")
   assert.equal component.get('model'), @q1, 'Finds its model by ident'
+  assert.notEqual component.get('model'), q3, 'Does not find a question with the same ident attached to another task'
+
+test '#model: gets tasks questions by ident for versioned questions', (assert) ->
+  q3 = Ember.Object.create(ident: 'foo')
+  q4 = Ember.Object.create(ident: 'foo')
+  otherTask = Ember.Object.create(questions: [q3])
+  paper = Ember.Object.create(latestDecision: Ember.Object.create(questions: [q4]))
+  task = Ember.Object.create(questions: [@q1, @q2], paper: paper)
+  q4.set('task', task)
+
+  component = @subject(task: task, ident: "foo", versioned: true)
+  assert.equal component.get('model'), q4, 'Finds its model by ident'
+  assert.notEqual component.get('model'), q3, 'Does not find a question with the same ident attached to another task'
+  assert.notEqual component.get('model'), @q2, 'Does not find a old version of a question with the same ident'
 
 test '#createNewQuestion: creates a new question and adds it to the task if it cant find one', (assert) ->
   task = Ember.Object.create(questions: [@q1], store: @fakeStore)

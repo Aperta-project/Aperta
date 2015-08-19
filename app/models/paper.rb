@@ -3,6 +3,7 @@
 class Paper < ActiveRecord::Base
   include EventStream::Notifiable
   include AASM
+  extend HasFeedActivities
 
   belongs_to :creator, inverse_of: :submitted_papers, class_name: 'User', foreign_key: :user_id
   belongs_to :journal, inverse_of: :papers
@@ -104,6 +105,12 @@ class Paper < ActiveRecord::Base
         withdrawal_reasons << withdrawal_reason
       end
     end
+  end
+
+  feed_activities feed_names: ['manuscript'], subject: Proc.new { self } do
+    activity :created, "Paper was created"
+    activity :edited, "Paper was edited"
+    activity :submitted, "Paper was submitted"
   end
 
   def make_decision(decision)

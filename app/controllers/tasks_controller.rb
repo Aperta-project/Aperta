@@ -25,8 +25,10 @@ class TasksController < ApplicationController
     end
 
     task.assign_attributes(task_params(task.class))
-    @task_completion_change = task.completed_changed?
     task.save!
+
+    notify_task_updated!
+
     task.send_emails if task.respond_to?(:send_emails)
     task.after_update
     render task.update_responder.new(task, view_context).response
@@ -87,16 +89,10 @@ class TasksController < ApplicationController
   end
 
   def notify_task_updated!
-    if @task_completion_change
-      action = task.completed? ? 'complete' : 'incomplete'
-      feed_name = task.submission_task? ? 'manuscript' : 'workflow'
-      Activity.create(
-        feed_name: feed_name,
-        activity_key: "task.#{action}",
-        subject: task.paper,
-        user: current_user,
-        message: "#{task.title} card was marked as #{action}"
-      )
+    if task.newly_complete?
+      task.completed_activity! current_user
+    elsif task.newly_incomplete?
+      task.incompleted_activity! current_user
     end
   end
 end

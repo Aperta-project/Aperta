@@ -1,5 +1,6 @@
 class Participation < ActiveRecord::Base
   include EventStream::Notifiable
+  extend HasFeedActivities
 
   belongs_to :task, inverse_of: :participations
   belongs_to :user, inverse_of: :participations
@@ -10,6 +11,10 @@ class Participation < ActiveRecord::Base
   after_create :add_paper_role
   after_destroy :remove_paper_role
 
+  feed_activities subject: :paper, default_feeds: ['manuscript'] do
+    activity(:created) { "Added Contributor: #{user.full_name}" }
+    activity(:destroyed) { "Removed Contributor: #{user.full_name}" }
+  end
 
   private
 

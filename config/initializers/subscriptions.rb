@@ -1,3 +1,13 @@
+EVENTS = {
+  'paper:created' => [Paper::Created::Pusher],
+  'paper:updated' => [Paper::Updated::Pusher],
+  'paper:destroyed' => [Paper::Destroyed::Pusher],
+}
+
+EVENTS.each do |event_name, subscriber_list|
+  Notifier.subscribe(event_name, subscriber_list)
+end
+
 # TahiNotifier.subscribe("paper:*") do |payload|
 #   action = payload[:action]
 #   record = payload[:record]

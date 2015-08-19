@@ -2,23 +2,27 @@ import Ember from 'ember';
 import AnimateOverlay from 'tahi/mixins/animate-overlay';
 import FileUploadMixin from 'tahi/mixins/file-upload';
 
+const { computed } = Ember;
+
 export default Ember.Controller.extend(AnimateOverlay, FileUploadMixin, {
   overlayClass: 'overlay--fullscreen paper-new-overlay',
   journals: null, // set on controller before rendering overlay
-  paperSaving: false,
-  journalEmpty: Ember.computed.empty('model.journal'),
+  paperSaving: true,
+  journalEmpty: computed.empty('model.journal'),
 
-  shortTitleCount: Ember.computed('model.shortTitle', function() {
+  shortTitleCount: computed('model.shortTitle', function() {
     let title = this.get('model.shortTitle');
     return title ? title.length : 0;
   }),
 
-  manuscriptUploadUrl: Ember.computed('model.id', function() {
+  manuscriptUploadUrl: computed('model.id', function() {
     return '/api/papers/' + this.get('model.id') + '/upload';
   }),
 
   actions: {
     createNewPaper() {
+      if(this.get('paperSaving')) { return; }
+
       this.set('paperSaving', true);
 
       this.get('model').save().then((paper)=> {
@@ -32,7 +36,7 @@ export default Ember.Controller.extend(AnimateOverlay, FileUploadMixin, {
 
     createPaperWithUpload() {
       this.set('paperSaving', true);
-      this.get('model').save().then((paper)=> {
+      this.get('model').save().then(()=> {
         this.get('uploadFunction')();
       }, (response)=> {
         this.flash.displayErrorMessagesFromResponse(response);
@@ -65,10 +69,6 @@ export default Ember.Controller.extend(AnimateOverlay, FileUploadMixin, {
     uploadFinished(data, filename) {
       this.uploadFinished(data, filename);
       this.transitionToRoute('paper.edit', this.get('model'));
-    },
-
-    uploadError(data) {
-      debugger;
     }
   }
 });

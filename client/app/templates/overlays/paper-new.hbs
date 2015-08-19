@@ -7,7 +7,7 @@
 
   <div class="form-group">
     <label class="paper-new-label" for="paper-short-title">
-      Give your paper a short title:
+      Give your paper a short title
     </label>
     {{input type="text"
             value=model.shortTitle
@@ -17,7 +17,7 @@
 
     <span class="paper-new-char-count">{{shortTitleCount}}</span>
     {{#if shortTitleCount}}
-      <span class="paper-new-valid-icon"><i class="fa fa-check"></i></span>
+      <span class="paper-new-valid-icon animation-fade-in"><i class="fa fa-check"></i></span>
     {{/if}}
   </div>
 
@@ -29,6 +29,7 @@
     {{#select-box items=journals
                   selectedItem=model.journal
                   placeholder="Please select a journal"
+                  class="paper-new-journal-select"
                   allowDeselect=true
                   makeSelection=(action "selectJournal")
                   clearSelection=(action "clearJournal")
@@ -43,12 +44,13 @@
 
   <div class="form-group">
     <label class="paper-new-label">
-      Choose the type of paper you're submitting.
+      Choose the type of paper you're submitting
     </label>
 
     {{#select-box items=model.journal.paperTypes
                   selectedItem=model.paperType
                   placeholder="Please select a paper type"
+                  class="paper-new-paper-type-select"
                   allowDeselect=true
                   disabled=journalEmpty
                   makeSelection=(action "selectPaperType")
@@ -61,27 +63,33 @@
       <span class="paper-new-valid-icon animation-fade-in"><i class="fa fa-check"></i></span>
     {{/if}}
   </div>
-    <div id="upload-file-wrapper">
-      <div class="actions">
-        <span class="button-secondary button--green fileinput-button button--fixed-size">
-          <i class="fa fa-upload"></i> Upload Word Document
-          {{file-uploader id="upload-files"
-                          class="button-secondary button--green"
-                          railsMethod="PUT"
-                          accept=".docx"
-                          uploadImmediately=false
-                          uploadReady="uploadReady"
-                          start="uploadStarted"
-                          progress="uploadProgress"
-                          done="uploadFinished"
-                          error="uploadError"
-                          filePrefix="paper/manuscript"
-                          url=manuscriptUploadUrl}}
-      </span>
-      <button type="submit" class="button--fixed-size button-secondary button--green" {{action "createNewPaper"}}>
-        <i class="fa fa-pencil"></i> Start Writing
-      </button>
-    </div>
+  <div class="paper-new-submit-actions">
+    <span class="button-secondary button--green fileinput-button {{if paperSaving "button--disabled"}}">
+      <i class="fa fa-upload"></i> Upload Document
+      {{file-uploader id="upload-files"
+                      class="button-secondary button--green"
+                      railsMethod="PUT"
+                      accept=".docx"
+                      uploadImmediately=false
+                      uploadReady="uploadReady"
+                      start="uploadStarted"
+                      progress="uploadProgress"
+                      done="uploadFinished"
+                      error="uploadError"
+                      filePrefix="paper/manuscript"
+                      disabled=paperSaving
+                      url=manuscriptUploadUrl}}
+    </span>
+    <button type="submit"
+            class="button-secondary button--green paper-new-start-writing-button {{if paperSaving "button--disabled"}}"
+            {{action "createNewPaper"}}>
+      <i class="fa fa-pencil"></i> Start Writing
+    </button>
+    {{#if paperSaving}}
+      <div class="paper-new-paper-saving animation-fade-in">
+        {{progress-spinner visible=true size="medium"}}
+        Creating new Submission&#8230;
+      </div>
+    {{/if}}
   </div>
-
 </div>

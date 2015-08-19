@@ -37,9 +37,9 @@ test('author successfully creates a submission', function(assert) {
   visit('/');
   click('.button-primary:contains(Create New Submission)');
   fillIn('#paper-short-title', title);
-  pickFromSelect2('.paper-new-journal-select', 'PLOS Yeti 1');
-  pickFromSelect2('.paper-new-paper-type-select', 'Research');
-  click('.overlay .button-primary');
+  pickFromSelectBox('.paper-new-journal-select', 'PLOS Yeti 1');
+  pickFromSelectBox('.paper-new-paper-type-select', 'Research');
+  click('.paper-new-start-writing-button');
 
   andThen(function() {
     assert.ok(find('#paper-title').length, 'on Paper Edit screen');
@@ -54,8 +54,8 @@ test('author unsuccessfully creates a submission', function(assert) {
   visit('/');
   click('.button-primary:contains(Create New Submission)');
   fillIn('#paper-short-title', title);
-  pickFromSelect2('.paper-new-journal-select', 'PLOS Yeti 1');
-  click('.overlay .button-primary');
+  pickFromSelectBox('.paper-new-journal-select', 'PLOS Yeti 1');
+  click('.paper-new-start-writing-button');
 
   andThen(function() {
     assert.ok(find('.flash-message--error').length, 'error on screen');
@@ -74,6 +74,5 @@ test('feedback is displayed after submission', function(assert) {
 
   andThen(function() {
     assert.ok(find('.progress-spinner').length, 'spinner visible');
-    assert.ok(find('.button--disabled:contains(Create)').length, 'submit button disabled');
   });
 });

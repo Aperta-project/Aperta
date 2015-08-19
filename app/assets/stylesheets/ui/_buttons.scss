@@ -1,23 +1,19 @@
 // Should work on any element type: div, span, button, a, etc.
-//
-// .button--green      - Make the button GREEN
-// .button--blue       - Make the button LIGHT BLUE
-// .button--grey       - Make the button GREY
-// .button--disabled   - Style the button as disabled
-//
-// Styleguide UI.Button
-
-// Base button classes
+// Base button classes:
 //
 // .button-primary
 // .button-secondary
 // .button-link
-// Styleguide UI.Button.Classes
-
-// Button Widths
 //
-// .button--small      - Less padding all around
+// Styleguide UI.Button.Classes
+//
+//
+// Modifiers:
+// .button--green      - Make the button GREEN
+// .button--blue       - Make the button LIGHT BLUE
+// .button--grey       - Make the button GREY
 // .button--disabled   - Style the button as disabled
+// .button--small      - Less padding all around
 //
 // Styleguide UI.Button.States
 
@@ -113,7 +109,6 @@
   &.button--grey       { @include button-link-modifier($tahi-grey, $tahi-grey-dark); }
   &.button--white       { @include button-link-modifier($tahi-white, $tahi-white); }
 
-
   &:hover {
     text-decoration: underline;
   }
@@ -144,8 +139,7 @@
     background-color: $tahi-grey-light;
   }
 
-  &.button-primary,
-  &.button-secondary {
+  &.button-primary {
     color: #eee;
     border-color: $tahi-grey-light;
     background-color: $tahi-grey-light;
@@ -154,6 +148,18 @@
       color: #eee;
       border-color: $tahi-grey-light;
       background-color: $tahi-grey-light;
+    }
+  }
+
+  &.button-secondary {
+    color: $tahi-grey-light;
+    border-color: $tahi-grey-light;
+    background: #fff;
+
+    &:focus, &:hover {
+      color: $tahi-grey-light;
+      border-color: $tahi-grey-light;
+      background: #fff;
     }
   }
 
@@ -167,11 +173,7 @@
   }
 }
 
-// .button modifiers
+// .button modifier
 .button--small {
   padding: 1px 5px;
-}
-
-.button--fixed-size {
-  width: 48%;
 }

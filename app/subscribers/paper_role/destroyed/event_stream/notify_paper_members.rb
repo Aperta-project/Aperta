@@ -5,7 +5,7 @@ class PaperRole::Destroyed::EventStream::NotifyPaperMembers < EventStreamSubscri
   end
 
   def payload
-    record.paper.payload
+    record.paper.destroyed_payload
   end
 
 end

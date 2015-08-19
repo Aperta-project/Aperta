@@ -1,4 +1,5 @@
 EVENTS = {
+  '.*' => [EventLogger],
   'paper:created' => [Paper::Created::EventStream],
   'paper:updated' => [Paper::Updated::EventStream],
   'paper:destroyed' => [Paper::Destroyed::EventStream],

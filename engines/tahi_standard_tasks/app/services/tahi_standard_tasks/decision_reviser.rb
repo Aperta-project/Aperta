@@ -47,7 +47,7 @@ module TahiStandardTasks
     end
 
     def broadcast_revision
-      TahiNotifier.notify(event: "paper.revised", payload: { paper_id: paper.id })
+      # TahiNotifier.notify(event: "paper.revised", payload: { paper_id: paper.id })
     end
   end
 end

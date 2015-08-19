@@ -1,7 +1,7 @@
 module SubmissionTask
   extend ActiveSupport::Concern
 
-  def authorize_update?
+  def allow_update?
     paper.editable?
   end
 

@@ -46,6 +46,7 @@ class Paper < ActiveRecord::Base
     state :accepted
     state :rejected
     state :published
+    state :withdrawn
 
     event(:submit) do
       transitions from: [:unsubmitted, :in_revision],
@@ -94,6 +95,10 @@ class Paper < ActiveRecord::Base
       transitions from: :submitted,
                   to: :published,
                   after: :set_published_at!
+    end
+
+    event(:withdraw) do
+      transitions to: :withdrawn
     end
   end
 

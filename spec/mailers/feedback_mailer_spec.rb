@@ -27,7 +27,7 @@ describe FeedbackMailer, redis: true do
     end
 
     it "includes link to screenshots in mailer body" do
-      expect(email.body).not_to include feedback['screenshots']
+      expect(email.body).to include feedback['screenshots']
     end
   end
 end

@@ -1,0 +1,41 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://cs9.salesforce.com/services/oauth2/token?client_id=3MVG9FS3IyroMOh4aBMHbfRbXKX._hh4FxYttVhYdR3vSZPp26m7x9C5FxLkispk7XbKq0wjNwtPV7C4XQTl0&client_secret=4273174531479571356&grant_type=password&password=Openaccess4me&username=integrationuser@plos.org.plostest2
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 19 Aug 2015 21:43:08 GMT
+      Set-Cookie:
+      - BrowserId=c9GJVA2FQJ-3uHQL-4MgBA;Path=/;Domain=.salesforce.com;Expires=Sun,
+        18-Oct-2015 21:43:08 GMT
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Pragma:
+      - no-cache
+      Cache-Control:
+      - no-cache, no-store
+      Content-Type:
+      - application/json;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: ASCII-8BIT
+      string: '{"access_token":"00DK000000XN2av!ARcAQIZe7nknpLyTrDVJNioP0TnJV1ittgbG5MhuF0X41xOU4Crms58vm71lB9KQMUfnCfjLmEWHrBFqo65g61k8ffomW2cI","instance_url":"https://cs9.salesforce.com","id":"https://test.salesforce.com/id/00DK000000XN2avMAD/005U0000002AXTZIA4","token_type":"Bearer","issued_at":"1440020588263","signature":"IzeuTp4W6GSKpwvwUEiqycpBtWIsSbx/hF5QbzzuTUk="}'
+    http_version: 
+  recorded_at: Wed, 19 Aug 2015 21:43:08 GMT
+recorded_with: VCR 2.9.3

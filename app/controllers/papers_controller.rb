@@ -31,7 +31,7 @@ class PapersController < ApplicationController
 
   def create
     @paper = PaperFactory.create(paper_params, current_user)
-    notify_paper_created! if @paper.valid?
+    @paper.created_activity!(current_user) if @paper.valid?
     respond_with(@paper)
   end
 
@@ -45,7 +45,7 @@ class PapersController < ApplicationController
       paper.update(update_paper_params)
     end
 
-    notify_paper_edited! if params[:paper][:locked_by_id].present?
+    paper.edited_activity!(current_user) if params[:paper][:locked_by_id].present?
 
     respond_with paper
   end
@@ -98,7 +98,7 @@ class PapersController < ApplicationController
 
   def submit
     paper.submit! current_user do
-      notify_paper_submitted!
+      paper.submitted_activity! current_user
       broadcast_paper_submitted_event
     end
     respond_with paper
@@ -175,36 +175,6 @@ class PapersController < ApplicationController
       paper.errors.add(:locked_by_id, "This paper is locked for editing by #{paper.locked_by.full_name}.")
       raise ActiveRecord::RecordInvalid, paper
     end
-  end
-
-  def notify_paper_created!
-    Activity.create(
-      feed_name: 'manuscript',
-      activity_key: 'paper.created',
-      subject: paper,
-      user: current_user,
-      message: 'Paper was created'
-    )
-  end
-
-  def notify_paper_edited!
-    Activity.create(
-      feed_name: 'manuscript',
-      activity_key: 'paper.edited',
-      subject: paper,
-      user: current_user,
-      message: 'Paper was edited'
-    )
-  end
-
-  def notify_paper_submitted!
-    Activity.create(
-      feed_name: 'manuscript',
-      activity_key: 'paper.submitted',
-      subject: paper,
-      user: current_user,
-      message: "Paper was submitted; latest version is #{paper.version_string}"
-    )
   end
 
   def broadcast_paper_submitted_event

@@ -1,4 +1,4 @@
-class PusherSubscriber
+class EventStreamSubscriber
 
   attr_reader :action, :record, :excluded_socket_id
 

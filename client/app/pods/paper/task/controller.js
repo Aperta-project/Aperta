@@ -16,9 +16,10 @@ export default Ember.Controller.extend(
 
   isMetadataTask: alias('model.isMetadataTask'),
   isSubmissionTask: alias('model.isSubmissionTask'),
+  isSubmissionTaskEditable: alias('model.paper.editable'),
+  isSubmissionTaskNotEditable: Ember.computed.not('model.paper.editable'),
   isEditable: Ember.computed.or('isUserEditable', 'currentUser.siteAdmin'),
-  isUserEditable: Ember.computed(
-    'model.paper.editable', 'isSubmissionTask', function() {
+  isUserEditable: Ember.computed('model.paper.editable', 'isSubmissionTask', function() {
     return this.get('model.paper.editable') || !this.get('isSubmissionTask');
   }),
 

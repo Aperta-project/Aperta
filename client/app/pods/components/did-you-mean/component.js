@@ -83,6 +83,7 @@ export default Ember.Component.extend({
     },
 
     tryAgain() {
+      if (this.get('disabled')) { return; }
       this.set('selectedItem', null);
       this.previousSearch = null;
     },

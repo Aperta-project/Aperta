@@ -4,7 +4,7 @@
 {{#if showNewReviewerForm}}
   {{partial "overlays/partials/new-reviewer-recommendation-form"}}
 {{else}}
-<a class="button-primary button--green" {{action "toggleReviewerForm"}}>New Reviewer Recommendation</a>
+<button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "toggleReviewerForm"}}>New Reviewer Recommendation</button>
 {{/if}}
 
 {{#each validReviewerRecommendations as |reviewerRecommendation|}}

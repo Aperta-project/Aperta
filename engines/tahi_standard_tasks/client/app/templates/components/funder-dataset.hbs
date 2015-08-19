@@ -1,25 +1,46 @@
 <h4 class="block-title">FUNDER</h4>
-<span {{action "removeFunder"}} class="remove-funder fa fa-trash small"></span>
+<span {{action "removeFunder" isSubmissionTaskNotEditable}} class="remove-funder fa fa-trash small"></span>
 <div class="form-group">
   <span class="text-field-title">Funder</span>
-  {{input type="text" name="name" value=model.name class="funder-name form-control tall-text-field" placeholder="Funder Name"}}
+  {{input
+    type="text"
+    name="name"
+    value=model.name
+    class="funder-name form-control tall-text-field"
+    placeholder="Funder Name"
+    disabled=disabled}}
 </div>
 
 <div class="form-group">
   <span class="text-field-title">Grant Number</span>
-  {{input type="text" name="grant_number" value=model.grantNumber class="grant-number form-control tall-text-field" placeholder="502-686353647"}}
+  {{input
+    type="text"
+    name="grant_number"
+    value=model.grantNumber
+    class="grant-number form-control tall-text-field"
+    placeholder="502-686353647"
+    disabled=disabled}}
 </div>
 
 <div class="form-group">
   <span class="text-field-title">Website</span>
-  {{input type="text" name="website" value=model.website class="form-control tall-text-field" placeholder="www.funder.org"}}
+  {{input
+    type="text"
+    name="website"
+    value=model.website
+    class="form-control tall-text-field"
+    placeholder="www.funder.org"
+    disabled=disabled}}
 </div>
 
 <div class="question-text">
   Did the funder have a role in study design, data collection and analysis, decision to publish, or preparation of the manuscript?
 </div>
 
-{{binary-radio-button name=uniqueName selection=model.funderHadInfluence}}
+{{binary-radio-button
+  name=uniqueName
+  selection=model.funderHadInfluence
+  disabled=disabled}}
 
 {{#if model.funderHadInfluence}}
   <p class="question-text">
@@ -28,6 +49,10 @@
   </p>
   <div class="form-group">
     <span class="text-field-title">Role of sponsors or funders</span>
-    {{textarea value=model.funderInfluenceDescription class="form-control tall-textarea" placeholder="Description"}}
+    {{textarea
+      value=model.funderInfluenceDescription
+      class="form-control tall-textarea"
+      placeholder="Description"
+      disabled=disabled}}
   </div>
 {{/if}}

@@ -12,8 +12,4 @@ module ClientRouteHelper
     "#{root_url}papers/#{paper.to_param}"
   end
 
-  def client_edit_paper_url(paper)
-    "#{root_url}papers/#{paper.to_param}/edit"
-  end
-
 end

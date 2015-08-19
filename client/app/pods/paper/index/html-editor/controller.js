@@ -4,11 +4,11 @@ import PaperEditMixin from 'tahi/mixins/controllers/paper-edit';
 import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 
 export default Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, DiscussionsRoutePathsMixin, {
-  subRouteName: 'edit',
+  subRouteName: 'index',
 
   editorComponent: "tahi-editor-ve",
 
-  // initialized by paper/edit/view
+  // initialized by paper/index/view
   toolbar: null,
   hasOverlay: false,
 
@@ -34,7 +34,7 @@ export default Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, Discussio
     // when the paper is saved, the server knows who acquired the lock
     // (this is required for the heartbeat to work)
     // when the save succeeds, we send the `startEditing` action,
-    // which is defined on `paper/edit/route`, which now starts the heartbeat
+    // which is defined on `paper/index/route`, which now starts the heartbeat
     // Thus, to acquire the lock it is necessary to
     // 1. set model.lockedBy = this.currentUser
     // 2. save the model, which sends the updated lockedBy to the server

@@ -31,7 +31,7 @@ feature "Editing paper", selenium: true, js: true do
         p.select2(paper_type,  css: '.paper-new-paper-type-select')
         click_button 'Create'
         wait_for_ajax
-        expect(page.current_path).to match %r{/papers/\d+/edit}
+        expect(page.current_path).to match %r{/papers/\d+}
         within "#paper-container" do
           expect(page).to_not have_text("DOI:")
         end
@@ -58,7 +58,7 @@ feature "Editing paper", selenium: true, js: true do
         within ".task-list-doi" do
           expect(page).to have_content "DOI: vicious/robots.8888"
         end
-        expect(page.current_path).to eq("/papers/#{Paper.last.id}/edit")
+        expect(page.current_path).to eq("/papers/#{Paper.last.id}")
       end
     end
 

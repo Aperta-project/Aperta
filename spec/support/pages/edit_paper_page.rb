@@ -76,7 +76,7 @@ class EditPaperPage < Page
   # implemented in ember-cli-visualeditor/models/visual-editor.js.
   def body=(string)
     code = <<HERE
-var editorController = Tahi.__container__.lookup("controller:paper/edit/html-editor");
+var editorController = Tahi.__container__.lookup("controller:paper/index/html-editor");
 var editor = editorController.get("editor.editor");
 editor.selectAll();
 editor.write("#{string}");
@@ -124,7 +124,7 @@ HERE
 
   def start_editing
     code = <<HERE
-var editorController = Tahi.__container__.lookup("controller:paper/edit/html-editor");
+var editorController = Tahi.__container__.lookup("controller:paper/index/html-editor");
 editorController.startEditing();
 HERE
     page.execute_script code
@@ -132,7 +132,7 @@ HERE
 
   def stop_editing
     code = <<HERE
-var editorController = Tahi.__container__.lookup("controller:paper/edit/html-editor");
+var editorController = Tahi.__container__.lookup("controller:paper/index/html-editor");
 editorController.stopEditing();
 HERE
     page.execute_script code
@@ -140,7 +140,7 @@ HERE
 
   def save
     code = <<HERE
-var editorController = Tahi.__container__.lookup("controller:paper/edit/html-editor");
+var editorController = Tahi.__container__.lookup("controller:paper/index/html-editor");
 editorController.savePaper();
 HERE
     page.execute_script code

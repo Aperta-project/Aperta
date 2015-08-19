@@ -11,7 +11,7 @@ import registerSelect2Helpers   from './select2-helpers';
 
 import Factory from './factory';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
-import HtmlEditorController from 'tahi/pods/paper/edit/html-editor/controller';
+import HtmlEditorController from 'tahi/pods/paper/index/html-editor/controller';
 
 registerCustomAssertions();
 registerAsyncHelpers();

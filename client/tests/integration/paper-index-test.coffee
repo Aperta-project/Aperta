@@ -59,7 +59,7 @@ module 'Integration: EditPaper',
       200, {"Content-Type": "application/json"}, JSON.stringify []
     ]
 
-test 'on paper.edit as a participant on a task but not author of paper', (assert) ->
+test 'on paper.index as a participant on a task but not author of paper', (assert) ->
   expect(1)
 
   records = paperWithTask('Task'
@@ -82,7 +82,7 @@ test 'on paper.edit as a participant on a task but not author of paper', (assert
   visit("/papers/#{currentPaper.id}/edit").then ->
     assert.ok !!find('#paper-assigned-tasks .card-content:contains("ReviewMe")').length
 
-test 'on paper.edit as a participant on a task and author of paper', (assert) ->
+test 'on paper.index as a participant on a task and author of paper', (assert) ->
   expect(1)
 
   records = paperWithTask('ReviseTask'
@@ -124,7 +124,7 @@ test 'visiting /edit-paper: Author completes all metadata cards', (assert) ->
     submitButton = find('button:contains("Submit")')
     assert.ok(!submitButton.hasClass('button--disabled'), "Submit is enabled")
 
-test 'on paper.edit when paper.editable changes, user transitions to paper.index', (assert) ->
+test 'on paper.index when paper.editable changes, user transitions to paper.index', (assert) ->
   visit "/papers/#{currentPaper.id}/edit"
   .then ->
     Ember.run ->
@@ -133,7 +133,7 @@ test 'on paper.edit when paper.editable changes, user transitions to paper.index
     assert.ok !find('.button-primary:contains("Submit")').length
     assert.equal currentRouteName(), "paper.index.index"
 
-test 'on paper.edit when there are no metadata tasks', (assert) ->
+test 'on paper.index when there are no metadata tasks', (assert) ->
   expect(2)
   records = paperWithTask('Task'
     id: 2

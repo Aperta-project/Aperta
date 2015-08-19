@@ -49,7 +49,7 @@ export default Ember.Controller.extend(AnimateOverlay, {
       this.set('paperSaving', true);
 
       this.get('model').save().then((paper)=> {
-        this.transitionToRoute('paper.edit', paper);
+        this.transitionToRoute('paper.index', paper);
       }, (response)=> {
         this.flash.displayErrorMessagesFromResponse(response);
       }).finally(()=> {

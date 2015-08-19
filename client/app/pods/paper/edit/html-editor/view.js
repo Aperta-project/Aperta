@@ -23,6 +23,7 @@ export default Ember.View.extend(PaperEditMixin, {
         controller.acquireLock();
       }
     });
+    controller.updateEditorLockState();
   }),
 
   destroyEditor: Ember.on('willDestroyElement', function() {

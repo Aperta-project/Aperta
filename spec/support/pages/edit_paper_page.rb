@@ -65,7 +65,7 @@ class EditPaperPage < Page
   def title=(string)
     code = <<HERE
 var editorController = Tahi.__container__.lookup("controller:paper/edit/html-editor");
-var veEditor = editorController.get("editor.titleEditor.editor");
+var editor = editorController.get("editor.titleEditor.editor");
 editor.selectAll();
 editor.write("#{string}");
 HERE

@@ -71,7 +71,7 @@ export default Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, Discussio
   updateEditor() {
     let editor = this.get('editor');
     if (editor) {
-      editor.update();
+      editor.loadContentFromModel();
     }
   },
 

@@ -1,4 +1,4 @@
-class PaperRole::Destroyed::NotifyPaperMembers < PusherSubscriber
+class PaperRole::Destroyed::EventStream::NotifyPaperMembers < EventStreamSubscriber
 
   def channel
     record.paper

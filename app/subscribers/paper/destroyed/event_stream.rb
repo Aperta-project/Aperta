@@ -1,4 +1,4 @@
-class Paper::Destroyed::Pusher < PusherSubscriber
+class Paper::Destroyed::EventStream < EventStreamSubscriber
 
   def channel
     record.paper

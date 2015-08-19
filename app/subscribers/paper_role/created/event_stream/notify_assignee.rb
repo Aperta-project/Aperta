@@ -1,4 +1,4 @@
-class PaperRole::Created::NotifyAssignee < PusherSubscriber
+class PaperRole::Created::EventStream::NotifyAssignee < EventStreamSubscriber
 
   # this is necessary when the user is just now given access to the paper
   # and has yet to subscribe to the paper channel

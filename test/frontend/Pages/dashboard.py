@@ -154,7 +154,8 @@ class DashboardPage(AuthenticatedPage):
         count += 1
         self._actions.move_to_element(welcome_msg).perform()
         time.sleep(1)  # make sure the focus is not accidentally on a paper link, and account for transition
-        assert 'librebaskerville' in paper.value_of_css_property('font-family')
+        # font-family is in transition just now, so validating on the 2nd fallback font until this stabilizes
+        assert 'helvetica' in paper.value_of_css_property('font-family')
         assert paper.value_of_css_property('font-size') == '18px'
         assert paper.value_of_css_property('line-height') == '27px'
         assert paper.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'

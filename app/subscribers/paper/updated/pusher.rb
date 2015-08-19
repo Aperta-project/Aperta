@@ -1,11 +1,11 @@
 class Paper::Updated::Pusher < PusherSubscriber
 
-  def resource
+  def channel
     record
   end
 
-  def channel
-    record
+  def payload
+    record.payload
   end
 
 end

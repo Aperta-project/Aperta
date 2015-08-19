@@ -14,16 +14,15 @@ class PusherSubscriber
   end
 
   def run
-    broadcaster = EventStream::Broadcaster.new(resource)
-    broadcaster.post(action: action, channel_scope: channel, excluded_socket_id: excluded_socket_id)
+    EventStream::Broadcaster.post(action: action, payload: payload, channel_scope: channel, excluded_socket_id: excluded_socket_id)
   end
 
-  def resource
-    raise NotImplementedError.new("You must define the ActiveRecord record to pass to the Broadcaster!")
+  def payload
+    raise NotImplementedError.new("You must define the data that is sent to pusher")
   end
 
   def channel
-    raise NotImplementedError.new("You must define the Pusher Channel to send the data!")
+    raise NotImplementedError.new("You must define the ActiveRecord model that determines the pusher channel")
   end
 
 end

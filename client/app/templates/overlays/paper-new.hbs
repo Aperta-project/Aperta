@@ -27,6 +27,7 @@
     </label>
 
     {{#select-box items=journals
+                  class="paper-new-journal-select"
                   selectedItem=model.journal
                   placeholder="Please select a journal"
                   class="paper-new-journal-select"
@@ -48,6 +49,7 @@
     </label>
 
     {{#select-box items=model.journal.paperTypes
+                  class="paper-new-paper-type-select"
                   selectedItem=model.paperType
                   placeholder="Please select a paper type"
                   class="paper-new-paper-type-select"

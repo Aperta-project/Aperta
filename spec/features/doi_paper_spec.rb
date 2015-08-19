@@ -29,7 +29,7 @@ feature "Editing paper", selenium: true, js: true do
         p = PageFragment.new(find('#overlay'))
         p.select2(journal.name, css: '.paper-new-journal-select')
         p.select2(paper_type,  css: '.paper-new-paper-type-select')
-        click_button 'Create'
+        click_button 'Start Writing'
         wait_for_ajax
         expect(page.current_path).to match %r{/papers/\d+/edit}
         within "#paper-container" do
@@ -52,7 +52,7 @@ feature "Editing paper", selenium: true, js: true do
         p = PageFragment.new(find('#overlay'))
         p.select2(journal.name, css: '.paper-new-journal-select')
         p.select2(paper_type,  css: '.paper-new-paper-type-select')
-        click_button 'Create'
+        click_button 'Start Writing'
         wait_for_ajax
 
         within ".task-list-doi" do

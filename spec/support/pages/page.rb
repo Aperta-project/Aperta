@@ -135,8 +135,14 @@ class PageFragment
       select2_container = first("label", text: select_name).find(:xpath, '..').find(".select2-container")
     end
 
+    drop_container = ".select2-drop"
+    drop_specifier = "li.select2-result-selectable"
     # Open select2 field
-    if select2_container.has_selector?(".select2-choice")
+    if select2_container.has_selector?(".select-box-element")
+      select2_container.find(".select-box-element").click
+      drop_container = ".select-box-item"
+      drop_specifier = ""
+    elsif select2_container.has_selector?(".select2-choice")
       select2_container.find(".select2-choice").click
     else
       select2_container.find(".select2-choices").click
@@ -146,12 +152,10 @@ class PageFragment
       find(:xpath, "//body").find(".select2-with-searchbox input.select2-input").set(value)
       page.execute_script(%|$("input.select2-input:visible").keyup();|)
       drop_container = ".select2-results"
-    else
-      drop_container = ".select2-drop"
     end
 
     [value].flatten.each do |value|
-      find(:xpath, "//body").find("#{drop_container} li.select2-result-selectable", text: value).click
+      find(:xpath, "//body").find("#{drop_container} #{drop_specifier}", text: value).click
     end
   end
 

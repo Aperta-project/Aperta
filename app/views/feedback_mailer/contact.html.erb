@@ -28,7 +28,7 @@
 
       <% if @feedback[:screenshots] %>
         <p>
-          Screenshots:
+          Attachments:
           <br>
           <% @feedback[:screenshots].each do |screenshot| %>
             <%= link_to screenshot[:filename], screenshot[:url] %>

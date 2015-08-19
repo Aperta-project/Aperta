@@ -2,7 +2,7 @@ import Ember from 'ember';
 import RESTless from 'tahi/services/rest-less';
 
 export default Ember.Controller.extend({
-  overlayClass: 'overlay--fullscreen overlay--green paper-submit-overlay',
+  overlayClass: 'overlay--fullscreen overlay--grey',
 
   actions: {
     withdraw() {

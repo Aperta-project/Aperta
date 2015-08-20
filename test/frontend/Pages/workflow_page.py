@@ -5,7 +5,7 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-from authenticated_page import AuthenticatedPage
+from authenticated_page import AuthenticatedPage, application_typeface
 
 
 __author__ = 'sbassi@plos.org'
@@ -87,8 +87,7 @@ class WorkflowPage(AuthenticatedPage):
     left_nav = self._get(self._nav_toggle)
     assert left_nav.text == 'PLOS'
     assert left_nav.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-    # font-family is in transition just now, so validating on the 2nd fallback font until this stabilizes
-    assert 'helvetica' in left_nav.value_of_css_property('font-family')
+    assert application_typeface in left_nav.value_of_css_property('font-family')
     assert left_nav.value_of_css_property('font-size') == '24px'
     assert left_nav.value_of_css_property('font-weight') == '700'
     assert left_nav.value_of_css_property('text-transform') == 'uppercase'
@@ -223,7 +222,7 @@ class WorkflowPage(AuthenticatedPage):
     """Check CSS properties of the overlay that appears when the user click on add new card"""
     card_overlay = self._get(self._add_card_overlay)
     assert card_overlay.text == 'Pick the type of card to add'
-    self.validate_title_style(card_overlay)
+    self.validate_application_h1_style(card_overlay)
     assert card_overlay.value_of_css_property('text-align') == 'center'
     close_icon_overlay = self._get(self._close_icon_overlay)
     assert close_icon_overlay.value_of_css_property('font-size') == '90px'
@@ -278,7 +277,7 @@ class WorkflowPage(AuthenticatedPage):
     """
     remove_title = self._get(self._remove_confirmation_title)
     assert remove_title.text == "You're about to delete this card forever."
-    self.validate_title_style(remove_title)
+    self.validate_application_h1_style(remove_title)
     remove_subtitle = self._get(self._remove_confirmation_subtitle)
     assert remove_subtitle.text == "Are you sure?"
     assert remove_subtitle.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'

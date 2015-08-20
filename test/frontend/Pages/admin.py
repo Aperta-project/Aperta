@@ -4,13 +4,14 @@
 Page Object Model for the Admin Page. Validates global and dynamic elements and their styles
 """
 
+import random
 import time
 
 from selenium.webdriver.common.by import By
 
 from Base.PostgreSQL import PgSQL
 from Base.Resources import sa_login
-from authenticated_page import AuthenticatedPage
+from authenticated_page import AuthenticatedPage, application_typeface
 
 __author__ = 'jgray@plos.org'
 
@@ -49,6 +50,7 @@ class AdminPage(AuthenticatedPage):
     self._base_admin_journals_edit_save_button = (By.XPATH, '//div[@class="journal-edit-buttons"]/a[2]')
 
     self._base_admin_journals_section_journal_block = (By.CLASS_NAME, 'journal-thumbnail')
+
     # User Details Overlay
     self._ud_overlay_title = (By.CSS_SELECTOR, 'div.overlay-container div h1')
     self._ud_overlay_closer = (By.CLASS_NAME, 'overlay-close-x')
@@ -70,7 +72,8 @@ class AdminPage(AuthenticatedPage):
     self._get(self._base_admin_user_search_button)
     self._get(self._base_admin_user_search_default_state_text)
     # Validate Journals section elements
-    self._get(self._base_admin_journals_section_title)
+    journals_title = self._get(self._base_admin_journals_section_title)
+    self.validate_application_h2_style(journals_title)
     if username == sa_login:
       self._get(self._base_admin_journals_su_add_new_journal_btn)
       # Validate the presentation of journal blocks
@@ -126,16 +129,7 @@ class AdminPage(AuthenticatedPage):
       page_initial_journal_count = self._gets(self._base_admin_journals_section_journal_block)
       anj_button = self._get(self._base_admin_journals_su_add_new_journal_btn)
       assert anj_button.text == 'ADD NEW JOURNAL'
-      assert 'helvetica' in anj_button.value_of_css_property('font-family')
-      assert anj_button.value_of_css_property('font-size') == '14px'
-      assert anj_button.value_of_css_property('font-weight') == '400'
-      assert anj_button.value_of_css_property('font-style') == 'normal'
-      assert anj_button.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
-      assert anj_button.value_of_css_property('text-transform') == 'uppercase'
-      assert anj_button.value_of_css_property('background-color') == 'rgba(45, 133, 222, 1)'
-      assert anj_button.value_of_css_property('line-height') == '20px'
-      assert anj_button.value_of_css_property('text-align') == 'center'
-      assert anj_button.value_of_css_property('vertical-align') == 'middle'
+      self.validate_blue_backed_button_style(anj_button)
       self._actions.move_to_element(anj_button).perform()
       anj_button.click()
       page_secondary_journal_count = self._gets(self._base_admin_journals_section_journal_block)
@@ -145,20 +139,14 @@ class AdminPage(AuthenticatedPage):
       # of deleting the same. Need to ask after a safe method of deleting a created journal to move forward
       upload_button = self._get(self._base_admin_journals_edit_logo_upload_btn)
       assert upload_button.text == 'UPLOAD NEW'
-      assert 'helvetica' in upload_button.value_of_css_property('font-family')
-      assert upload_button.value_of_css_property('font-size') == '14px'
-      assert upload_button.value_of_css_property('font-weight') == '400'
-      assert upload_button.value_of_css_property('color') == 'rgba(32, 94, 156, 1)'
-      assert upload_button.value_of_css_property('background-color') == 'rgba(148, 184, 224, 1)'
-      assert upload_button.value_of_css_property('line-height') == '20px'
-      assert upload_button.value_of_css_property('text-align') == 'center'
+      self.validate_blue_on_blue_button_style(upload_button)
       self._actions.move_to_element(upload_button).perform()
       time.sleep(1)
       assert upload_button.value_of_css_property('color') == 'rgba(45, 133, 222, 1)'
       assert upload_button.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
       upload_note = self._get(self._base_admin_journals_edit_logo_upload_note)
       assert upload_note.text == '(250px x 40px)'
-      assert 'helvetica' in upload_note.value_of_css_property('font-family')
+      assert application_typeface in upload_note.value_of_css_property('font-family')
       assert upload_note.value_of_css_property('font-size') == '14px'
       assert upload_note.value_of_css_property('font-style') == 'italic'
       assert upload_note.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
@@ -166,16 +154,10 @@ class AdminPage(AuthenticatedPage):
       assert upload_note.value_of_css_property('padding-left') == '10px'
       journal_title_label = self._get(self._base_admin_journals_edit_title_label)
       assert journal_title_label.text == 'Journal Title'
-      assert 'helvetica' in journal_title_label.value_of_css_property('font-family')
-      assert journal_title_label.value_of_css_property('font-size') == '14px'
-      assert journal_title_label.value_of_css_property('font-weight') == '400'
-      assert journal_title_label.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
-      assert journal_title_label.value_of_css_property('line-height') == '20px'
-      assert journal_title_label.value_of_css_property('padding-left') == '12px'
-      assert journal_title_label.value_of_css_property('margin-bottom') == '5px'
+      self.validate_input_field_label_style(journal_title_label)
       journal_title_field = self._get(self._base_admin_journals_edit_title_field)
       assert journal_title_field.get_attribute('placeholder') == 'PLOS Yeti'
-      assert 'helvetica' in journal_title_field.value_of_css_property('font-family')
+      assert application_typeface in journal_title_field.value_of_css_property('font-family')
       assert journal_title_field.value_of_css_property('font-size') == '14px'
       assert journal_title_field.value_of_css_property('font-weight') == '400'
       assert journal_title_field.value_of_css_property('font-style') == 'normal'
@@ -184,16 +166,10 @@ class AdminPage(AuthenticatedPage):
       assert journal_title_field.value_of_css_property('padding-left') == '12px'
       journal_desc_label = self._get(self._base_admin_journals_edit_desc_label)
       assert journal_desc_label.text == 'Journal Description'
-      assert 'helvetica' in journal_desc_label.value_of_css_property('font-family')
-      assert journal_desc_label.value_of_css_property('font-size') == '14px'
-      assert journal_desc_label.value_of_css_property('font-weight') == '400'
-      assert journal_desc_label.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
-      assert journal_desc_label.value_of_css_property('line-height') == '20px'
-      assert journal_desc_label.value_of_css_property('padding-left') == '12px'
-      assert journal_desc_label.value_of_css_property('margin-bottom') == '5px'
+      self.validate_input_field_label_style(journal_desc_label)
       journal_desc_field = self._get(self._base_admin_journals_edit_desc_field)
       assert journal_desc_field.get_attribute('placeholder') == 'Accelerating the publication of peer-reviewed science'
-      assert 'helvetica' in journal_desc_field.value_of_css_property('font-family')
+      assert application_typeface in journal_desc_field.value_of_css_property('font-family')
       assert journal_desc_field.value_of_css_property('font-size') == '14px'
       assert journal_desc_field.value_of_css_property('font-weight') == '400'
       assert journal_desc_field.value_of_css_property('font-style') == 'normal'
@@ -202,13 +178,7 @@ class AdminPage(AuthenticatedPage):
       assert journal_desc_field.value_of_css_property('padding-left') == '12px'
       save_button = self._get(self._base_admin_journals_edit_save_button)
       assert save_button.text == 'SAVE'
-      assert 'helvetica' in save_button.value_of_css_property('font-family')
-      assert save_button.value_of_css_property('font-size') == '14px'
-      assert save_button.value_of_css_property('font-weight') == '400'
-      assert save_button.value_of_css_property('color') == 'rgba(32, 94, 156, 1)'
-      assert save_button.value_of_css_property('background-color') == 'rgba(148, 184, 224, 1)'
-      assert save_button.value_of_css_property('line-height') == '20px'
-      assert save_button.value_of_css_property('text-align') == 'center'
+      self.validate_blue_on_blue_button_style(save_button)
       self._actions.move_to_element(anj_button).perform()
       self._actions.move_to_element(save_button).perform()
       time.sleep(2)
@@ -216,7 +186,7 @@ class AdminPage(AuthenticatedPage):
       assert save_button.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
       cancel_link = self._get(self._base_admin_journals_edit_cancel_link)
       assert cancel_link.text == 'Cancel'
-      assert 'helvetica' in cancel_link.value_of_css_property('font-family')
+      assert application_typeface in cancel_link.value_of_css_property('font-family')
       assert cancel_link.value_of_css_property('font-size') == '14px'
       assert cancel_link.value_of_css_property('font-weight') == '400'
       assert cancel_link.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
@@ -268,7 +238,6 @@ class AdminPage(AuthenticatedPage):
       user_details_closer.click()
     assert success_count > 0
 
-
   def _search_user(self, username):
     user_search_field = self._get(self._base_admin_user_search_field)
     user_search_btn = self._get(self._base_admin_user_search_button)
@@ -276,3 +245,8 @@ class AdminPage(AuthenticatedPage):
     user_search_field.send_keys(username)
     user_search_btn.click()
 
+  def select_random_journal(self):
+    journal_blocks = self._gets(self._base_admin_journals_section_journal_block)
+    selected_journal = random.choice(journal_blocks)
+    print('Opening ' + selected_journal.find_element(*self._base_admin_journal_block_name).text + ' journal.')
+    selected_journal.find_element(*self._base_admin_journal_block_name).click()

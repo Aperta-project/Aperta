@@ -7,7 +7,7 @@ Page Object Model for the Paper Tracker Page. Validates global and dynamic eleme
 from Base.PostgreSQL import PgSQL
 from Base.Resources import psql_uname, psql_pw
 from selenium.webdriver.common.by import By
-from authenticated_page import AuthenticatedPage
+from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface
 import time
 
 __author__ = 'jgray@plos.org'
@@ -38,11 +38,11 @@ class PaperTrackerPage(AuthenticatedPage):
     title = self._get(self._paper_tracker_title)
     # The following call to validate consistency in title styles across the app
     # fails due to https://www.pivotaltracker.com/n/projects/880854/stories/100948640
-    # self.validate_title_style(title)
+    # self.validate_application_h1_style(title)
     first_name = PgSQL().query('SELECT first_name FROM users WHERE username = %s;', (username,))[0][0]
     assert title.text == 'Hello, %s!' % first_name, 'Incorrect Tracker Title: ' + title.text
     subhead = self._get(self._paper_tracker_subhead)
-    assert 'helvetica' in subhead.value_of_css_property('font-family')
+    assert application_typeface in subhead.value_of_css_property('font-family')
     assert subhead.value_of_css_property('font-size') == '18px'
     assert subhead.value_of_css_property('line-height') == '25.7167px'
     assert subhead.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'

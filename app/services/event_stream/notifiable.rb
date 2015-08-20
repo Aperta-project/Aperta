@@ -1,7 +1,7 @@
 module EventStream::Notifiable
   extend ActiveSupport::Concern
   included do
-    after_commit :notify, if: -> { previous_changes.present? }
+    after_commit :notify, if: :changes_committed?
 
     # if false (default), do not send event stream message to original requester
     # if true, send event stream message to the original requester
@@ -44,6 +44,10 @@ module EventStream::Notifiable
 
     def klass_name
       self.class.base_class.name.underscore
+    end
+
+    def changes_committed?
+      destroyed? || previous_changes.present?
     end
 
     def action

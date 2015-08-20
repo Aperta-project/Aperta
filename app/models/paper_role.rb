@@ -1,5 +1,6 @@
 class PaperRole < ActiveRecord::Base
   include EventStream::Notifiable
+  extend HasFeedActivities
 
   REVIEWER = 'reviewer'
   EDITOR = 'editor'
@@ -21,6 +22,10 @@ class PaperRole < ActiveRecord::Base
   }
 
   validate :role_exists
+
+  feed_activities subject: :paper, feed_names: ['workflow'] do
+    activity(:created) { "#{user.full_name} was added as #{description}" }
+  end
 
   def self.admins
     where(role: ADMIN)

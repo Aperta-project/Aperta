@@ -66,7 +66,7 @@
     {{/if}}
   </div>
   <div class="paper-new-submit-actions">
-    <span class="button-secondary button--green fileinput-button {{if paperSaving "button--disabled"}}">
+    <span class="button-secondary button--green fileinput-button {{if model.isSaving "button--disabled"}}">
       <i class="fa fa-upload"></i> Upload Document
       {{file-uploader id="upload-files"
                       railsMethod="PUT"
@@ -78,15 +78,15 @@
                       done="uploadFinished"
                       error="uploadError"
                       filePrefix="paper/manuscript"
-                      disabled=paperSaving
+                      disabled=model.isSaving
                       url=manuscriptUploadUrl}}
     </span>
     <button type="submit"
-            class="button-secondary button--green paper-new-create-document-button {{if paperSaving "button--disabled"}}"
+            class="button-secondary button--green paper-new-create-document-button {{if model.isSaving "button--disabled"}}"
             {{action "createNewPaper"}}>
       <i class="fa fa-pencil"></i> Create Document
     </button>
-    {{#if paperSaving}}
+    {{#if model.isSaving}}
       <div class="paper-new-paper-saving animation-fade-in">
         {{progress-spinner visible=true size="medium"}}
         Creating new Submission&#8230;

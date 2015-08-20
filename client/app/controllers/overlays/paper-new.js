@@ -7,7 +7,6 @@ const { computed } = Ember;
 export default Ember.Controller.extend(AnimateOverlay, FileUploadMixin, {
   overlayClass: 'overlay--fullscreen paper-new-overlay',
   journals: null, // set on controller before rendering overlay
-  paperSaving: true,
   journalEmpty: computed.empty('model.journal'),
 
   shortTitleCount: computed('model.shortTitle', function() {
@@ -21,26 +20,20 @@ export default Ember.Controller.extend(AnimateOverlay, FileUploadMixin, {
 
   actions: {
     createNewPaper() {
-      if(this.get('paperSaving')) { return; }
-
-      this.set('paperSaving', true);
+      if(this.get('model.isSaving')) { return; }
 
       this.get('model').save().then((paper)=> {
         this.transitionToRoute('paper.edit', paper);
       }, (response)=> {
         this.flash.displayErrorMessagesFromResponse(response);
-      }).finally(()=> {
-        this.set('paperSaving', false);
       });
     },
 
     createPaperWithUpload() {
-      this.set('paperSaving', true);
       this.get('model').save().then(()=> {
         this.get('uploadFunction')();
       }, (response)=> {
         this.flash.displayErrorMessagesFromResponse(response);
-        this.set('paperSaving', false);
       });
     },
 

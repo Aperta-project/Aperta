@@ -66,9 +66,10 @@ test('feedback is displayed after submission', function(assert) {
   let paperNewController = App.__container__.lookup('controller:overlays/paper-new');
 
   visit('/');
-  click('.paper-new-create-document-button').then(function() {
+  click('.button-primary:contains(Create New Submission)').then(function() {
     Ember.run(this, function() {
-      paperNewController.set('paperSaving', true);
+      paperNewController.set('model', {});
+      paperNewController.set('model.isSaving', true);
     });
   });
 

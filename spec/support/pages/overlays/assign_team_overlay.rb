@@ -6,7 +6,7 @@ class AssignTeamOverlay < CardOverlay
 
     new.tap do |overlay|
       if block_given?
-        yield overlay
+        blk.call overlay
         overlay.dismiss
       end
     end

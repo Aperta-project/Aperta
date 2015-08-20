@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'Assign team', js: true do
-  let!(:plos_journal){ create(:journal) }
+  let!(:plos_journal) { create(:journal) }
   let!(:paper) { create(:paper_with_phases, journal: plos_journal, creator: author) }
 
   let!(:author) { create :user, first_name: "Albert", last_name: "Author" }
@@ -24,7 +24,7 @@ feature 'Assign team', js: true do
     end
   end
 
-  let!(:assign_team_task){ FactoryGirl.create(:assign_team_task, phase:paper.phases.first) }
+  let!(:assign_team_task) { FactoryGirl.create(:assign_team_task, phase: paper.phases.first) }
 
   scenario "Journal admin can assign a user with a journal role to a paper" do
     custom_reviewer_role_name = custom_reviewer.roles.first.name
@@ -67,7 +67,6 @@ feature 'Assign team', js: true do
   end
 
   scenario "A user who can view assigned manuscript managers can assign members on a paper they themselves are assigned to" do
-begin
     custom_reviewer_role_name = custom_reviewer.roles.first.name
     journal_editor.roles.first.update_attribute :can_view_assigned_manuscript_managers, true
 
@@ -112,8 +111,5 @@ begin
 
       expect(overlay).to have_content("#{custom_reviewer.full_name} has been assigned as #{custom_reviewer_role_name}")
     end
-rescue => ex
-  binding.pry
-end
   end
 end

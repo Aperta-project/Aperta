@@ -19,9 +19,13 @@ class ManuscriptManagersPolicy < ApplicationPolicy
   end
 
   def can_manage_this_manuscript?
-    (paper.tasks.assigned_to(current_user).exists? ||
-    PaperRole.for_user(current_user).where(paper: paper).exists?) &&
-    journal_roles.merge(Role.can_view_assigned_manuscript_managers).exists?
+    user_assigned_to_paper?(current_user, paper) &&
+      journal_roles.merge(Role.can_view_assigned_manuscript_managers).exists?
+  end
+
+  def user_assigned_to_paper?(user, paper)
+    (paper.tasks.assigned_to(user).exists? ||
+      PaperRole.for_user(user).where(paper: paper).exists?)
   end
 
   def journal_roles

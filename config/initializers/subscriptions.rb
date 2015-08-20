@@ -23,6 +23,10 @@ EVENTS = {
   'supporting_information_file:updated' => [SupportingInformationFile::Updated::EventStream],
   'supporting_information_file:destroyed' => [SupportingInformationFile::Destroyed::EventStream],
 
+  'attachment:created' => [Attachment::Created::EventStream],
+  'attachment:updated' => [Attachment::Updated::EventStream],
+  'attachment:destroyed' => [Attachment::Destroyed::EventStream],
+
 }
 
 EVENTS.each do |event_name, subscriber_list|

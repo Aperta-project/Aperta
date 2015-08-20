@@ -38,7 +38,7 @@ class PaperTrackerPage(AuthenticatedPage):
     title = self._get(self._paper_tracker_title)
     # The following call to validate consistency in title styles across the app
     # fails due to https://www.pivotaltracker.com/n/projects/880854/stories/100948640
-    # self.validate_title_style(title)
+    # self.validate_application_h1_style(title)
     first_name = PgSQL().query('SELECT first_name FROM users WHERE username = %s;', (username,))[0][0]
     assert title.text == 'Hello, %s!' % first_name, 'Incorrect Tracker Title: ' + title.text
     subhead = self._get(self._paper_tracker_subhead)

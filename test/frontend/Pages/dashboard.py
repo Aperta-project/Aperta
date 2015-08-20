@@ -97,7 +97,7 @@ class DashboardPage(AuthenticatedPage):
       else:
         assert welcome_msg.text == 'You have %s invitations.' % invitation_count, \
                                    welcome_msg.text + ' ' + str(invitation_count)
-      self.validate_title_style(welcome_msg)
+      self.validate_page_title_style(welcome_msg)
       view_invites_btn = self._get(self._dashboard_view_invitations_btn)
       self.validate_green_backed_button_style(view_invites_btn)
 
@@ -128,7 +128,7 @@ class DashboardPage(AuthenticatedPage):
              welcome_msg.text
     else:
       assert 'Hi, ' + first_name + '. You have no manuscripts.' in welcome_msg.text, welcome_msg.text
-    self.validate_title_style(welcome_msg)
+    self.validate_application_h1_style(welcome_msg)
     if manuscript_count > 0:
       papers = self._gets(self._dashboard_paper_title)
       count = 0
@@ -234,7 +234,7 @@ class DashboardPage(AuthenticatedPage):
     # The following call will fail because of an inconsistent implementation of the style of this heading
     # thus for the time being, I am using the one off validations. These should be removed when the bug
     # is fixed.
-    # self.validate_title_style(modal_title)
+    # self.validate_application_h1_style(modal_title)
     assert 'helvetica' in modal_title.value_of_css_property('font-family')
     assert modal_title.value_of_css_property('font-size') == '48px'
     assert modal_title.value_of_css_property('font-weight') == '500'

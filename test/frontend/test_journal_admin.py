@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-This test case validates the Aperta Admin page.
+This test case validates the Aperta Journal-specific Admin page.
 """
 __author__ = 'jgray@plos.org'
 
@@ -30,25 +30,21 @@ all_users = [sa_login,
 
 user_search = ['OA', 'FM', 'MM', 'RV']
 
+
 @MultiBrowserFixture
 class ApertaAdminTest(FrontEndTest):
   """
   Self imposed AC:
      - validate page elements and styles for:
-       - Base Admin page
-         - User Search
-         - Navigation Menu (changed colors)
-         - Title element and Journal links
-       - Journal specific admin page
          # TODO: - Menu Bar
-         - User Search
-         - User List and role assignment
-         - Role Title, Add Role, Role table, Edit and Delete Roles
-         - Available Task Types
-         - Edit Task Types
-         - Manuscript Manager Templates
-         - Add Template, Edit Template and Delete Template
-         - Style Settings
+         - User Search  # Minimal coverage
+         # TODO: User List and role assignment
+         - Role Title, Add Role, Role table, Edit and Delete Roles  # Covering title only
+         # TODO: Available Task Types
+         # TODO:  Edit Task Types
+         # TODO:  Manuscript Manager Templates
+         # TODO:  Add Template, Edit Template and Delete Template
+         # TODO:  Style Settings
            - Upload Epub Cover
            - Edit Epub CSS
            - Edit PDF CSS
@@ -57,8 +53,6 @@ class ApertaAdminTest(FrontEndTest):
   def test_validate_components_styles(self):
     """
     Validates the presence of the following elements:
-
-
     """
     user_type = random.choice(users)
     print('Logging in as user: ' + user_type)

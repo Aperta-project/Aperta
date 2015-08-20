@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 Page Object Model for the Journal specific Admin Page. Validates global and dynamic elements and their styles
+This is really a shell of a test. It minimally validates the page elements, and not yet any of their functions.
+We can extend this at a later time.
 """
 
 import random
@@ -42,11 +44,10 @@ class JournalAdminPage(AdminPage):
     self._journal_admin_manu_mgr_templates_title = (By.XPATH, '//div[@class="admin-section"][3]/h2')
     self._journal_admin_style_settings_title = (By.XPATH, '//div[@class="admin-section"][4]/h2')
 
-
   # POM Actions
   def validate_page_elements_styles(self):
     # Validate User section elements
-    self.validate_users_section()
+    self._validate_users_section()
     roles_title = self._get(self._journal_admin_roles_title)
     self.validate_application_h2_style(roles_title)
     att_title = self._get(self._journal_admin_avail_task_types_title)
@@ -56,7 +57,7 @@ class JournalAdminPage(AdminPage):
     style_settings_title = self._get(self._journal_admin_style_settings_title)
     self.validate_application_h2_style(style_settings_title)
 
-  def validate_users_section(self):
+  def _validate_users_section(self):
     users_title = self._get(self._journal_admin_users_title)
     self.validate_application_h2_style(users_title)
     self._get(self._journal_admin_user_search_field)

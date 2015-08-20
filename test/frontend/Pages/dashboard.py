@@ -13,7 +13,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 from Base.PostgreSQL import PgSQL
-from authenticated_page import AuthenticatedPage
+from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface
 
 
 __author__ = 'jgray@plos.org'
@@ -155,7 +155,7 @@ class DashboardPage(AuthenticatedPage):
         self._actions.move_to_element(welcome_msg).perform()
         time.sleep(1)  # make sure the focus is not accidentally on a paper link, and account for transition
         # font-family is in transition just now, so validating on the 2nd fallback font until this stabilizes
-        assert 'helvetica' in paper.value_of_css_property('font-family')
+        assert manuscript_typeface in paper.value_of_css_property('font-family')
         assert paper.value_of_css_property('font-size') == '18px'
         assert paper.value_of_css_property('line-height') == '27px'
         assert paper.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
@@ -166,7 +166,7 @@ class DashboardPage(AuthenticatedPage):
     else:
       info_text = self._get(self._dashboard_info_text)
       assert info_text.text == 'Your scientific paper submissions will\nappear here.'
-      assert 'helvetica' in info_text.value_of_css_property('font-family')
+      assert application_typeface in info_text.value_of_css_property('font-family')
       assert info_text.value_of_css_property('font-size') == '24px'
       assert info_text.value_of_css_property('font-style') == 'italic'
       assert info_text.value_of_css_property('line-height') == '24px'
@@ -235,7 +235,7 @@ class DashboardPage(AuthenticatedPage):
     # thus for the time being, I am using the one off validations. These should be removed when the bug
     # is fixed.
     # self.validate_application_h1_style(modal_title)
-    assert 'helvetica' in modal_title.value_of_css_property('font-family')
+    assert application_typeface in modal_title.value_of_css_property('font-family')
     assert modal_title.value_of_css_property('font-size') == '48px'
     assert modal_title.value_of_css_property('font-weight') == '500'
     # Current implementation seems wrong Pivotal Ticket:

@@ -11,7 +11,7 @@ from selenium.webdriver.common.by import By
 
 from Base.PostgreSQL import PgSQL
 from Base.Resources import sa_login
-from authenticated_page import AuthenticatedPage
+from authenticated_page import AuthenticatedPage, application_typeface
 
 __author__ = 'jgray@plos.org'
 
@@ -146,7 +146,7 @@ class AdminPage(AuthenticatedPage):
       assert upload_button.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
       upload_note = self._get(self._base_admin_journals_edit_logo_upload_note)
       assert upload_note.text == '(250px x 40px)'
-      assert 'helvetica' in upload_note.value_of_css_property('font-family')
+      assert application_typeface in upload_note.value_of_css_property('font-family')
       assert upload_note.value_of_css_property('font-size') == '14px'
       assert upload_note.value_of_css_property('font-style') == 'italic'
       assert upload_note.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
@@ -157,7 +157,7 @@ class AdminPage(AuthenticatedPage):
       self.validate_input_field_label_style(journal_title_label)
       journal_title_field = self._get(self._base_admin_journals_edit_title_field)
       assert journal_title_field.get_attribute('placeholder') == 'PLOS Yeti'
-      assert 'helvetica' in journal_title_field.value_of_css_property('font-family')
+      assert application_typeface in journal_title_field.value_of_css_property('font-family')
       assert journal_title_field.value_of_css_property('font-size') == '14px'
       assert journal_title_field.value_of_css_property('font-weight') == '400'
       assert journal_title_field.value_of_css_property('font-style') == 'normal'
@@ -169,7 +169,7 @@ class AdminPage(AuthenticatedPage):
       self.validate_input_field_label_style(journal_desc_label)
       journal_desc_field = self._get(self._base_admin_journals_edit_desc_field)
       assert journal_desc_field.get_attribute('placeholder') == 'Accelerating the publication of peer-reviewed science'
-      assert 'helvetica' in journal_desc_field.value_of_css_property('font-family')
+      assert application_typeface in journal_desc_field.value_of_css_property('font-family')
       assert journal_desc_field.value_of_css_property('font-size') == '14px'
       assert journal_desc_field.value_of_css_property('font-weight') == '400'
       assert journal_desc_field.value_of_css_property('font-style') == 'normal'
@@ -186,7 +186,7 @@ class AdminPage(AuthenticatedPage):
       assert save_button.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
       cancel_link = self._get(self._base_admin_journals_edit_cancel_link)
       assert cancel_link.text == 'Cancel'
-      assert 'helvetica' in cancel_link.value_of_css_property('font-family')
+      assert application_typeface in cancel_link.value_of_css_property('font-family')
       assert cancel_link.value_of_css_property('font-size') == '14px'
       assert cancel_link.value_of_css_property('font-weight') == '400'
       assert cancel_link.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'

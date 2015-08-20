@@ -5,7 +5,7 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-from authenticated_page import AuthenticatedPage
+from authenticated_page import AuthenticatedPage, application_typeface
 
 
 __author__ = 'sbassi@plos.org'
@@ -87,8 +87,7 @@ class WorkflowPage(AuthenticatedPage):
     left_nav = self._get(self._nav_toggle)
     assert left_nav.text == 'PLOS'
     assert left_nav.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-    # font-family is in transition just now, so validating on the 2nd fallback font until this stabilizes
-    assert 'helvetica' in left_nav.value_of_css_property('font-family')
+    assert application_typeface in left_nav.value_of_css_property('font-family')
     assert left_nav.value_of_css_property('font-size') == '24px'
     assert left_nav.value_of_css_property('font-weight') == '700'
     assert left_nav.value_of_css_property('text-transform') == 'uppercase'

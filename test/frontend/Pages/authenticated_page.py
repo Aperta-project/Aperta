@@ -12,10 +12,13 @@ from Base.PlosPage import PlosPage
 from Base.Resources import au_login, rv_login, ae_login, he_login, fm_login, oa_login, sa_login
 
 # Variable definitions
+# We are in process of migrating fonts in the interface, until this is deployed to lean, we can
+#    only enforce the fallback font and have it work in both environments. Source-Sans-Pro and Lora are what we are
+#    moving to when the next push to lean happens we can correct the following entries.
 # application_typeface = 'source-sans-pro'
 application_typeface = 'helvetica'
-manuscript_typeface = 'lora'
-
+# manuscript_typeface = 'lora'
+manuscript_typeface = 'times'
 
 class AuthenticatedPage(PlosPage):
   """

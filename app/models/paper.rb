@@ -107,7 +107,7 @@ class Paper < ActiveRecord::Base
     end
   end
 
-  feed_activities feed_names: ['manuscript'], subject: Proc.new { self } do
+  feed_activities feed_names: ['manuscript', 'workflow'], subject: Proc.new { self } do
     activity :created, "Paper was created"
     activity :edited, "Paper was edited"
     activity :submitted, "Paper was submitted"

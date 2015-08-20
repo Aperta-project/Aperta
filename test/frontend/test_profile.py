@@ -24,7 +24,7 @@ class ApertaProfileTest(FrontEndTest):
      - reset password
   """
   
-  def test_validate_components_styles(self):
+  def _test_validate_components_styles(self):
     """Validates the presence of the initial page elements"""
     profile_page = self._go_to_profile()
     profile_page.validate_initial_page_elements_styles(login_valid_uid)
@@ -34,8 +34,8 @@ class ApertaProfileTest(FrontEndTest):
     """Testing add/delete affiliations"""
     profile_page = self._go_to_profile()
     # Validate image upload
-    # Following test not working
-    ##profile_page.validate_image_upload()
+    # TODO: Check following method after Pivotal #101632186 is fixed
+    profile_page.validate_image_upload()
     # add affiliations
     profile_page.click_add_affiliation_button()
     # Check affiliation css elements

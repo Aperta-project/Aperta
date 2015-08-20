@@ -68,6 +68,18 @@ class PlosPage(object):
       print '\t[WebDriver Error] WebDriver timed out while trying to identify element by %s.' % str(locator)
       raise ElementDoesNotExistAssertionError(locator)
 
+  def _iget(self, locator):
+    """
+    Unlike the regular _get() function, this one will be successful for elements with a width and or height of zero
+    stupid name, but suggesting 'i' for invisible as a zero width/height element.
+    :param locator: locator
+    """
+    try:
+      return self._wait.until(EC.presence_of_element_located(locator))
+    except TimeoutException:
+      print '\t[WebDriver Error] WebDriver timed out while trying to identify element by %s.' % str(locator)
+      raise ElementDoesNotExistAssertionError(locator)
+
   def _gets(self, locator):
     try:
       return self._wait.until(EC.presence_of_all_elements_located(locator))

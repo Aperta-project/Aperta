@@ -117,11 +117,13 @@ class ProfilePage(AuthenticatedPage):
 
   def validate_image_upload(self):
     """Validate uploading a new image as profile avatar"""
-    # Test uploading an image
+    # TODO: Check this when Pivotal#101632186 is fixed.
     self._actions.move_to_element(self._get(self._avatar_div)).perform()
     self._get(self._avatar_hover).click()
-    avatar_input = self._get()
-    avatar_input.clear(self._avatar_input)
+    avatar_input = self._iget(self._avatar_input)
+    time.sleep(2)
+    avatar_input.clear()
+    time.sleep(2)
     avatar_input.send_keys(os.path.join(os.getcwd(), 
                            "/frontend/assets/imgs/plos.gif" + Keys.RETURN))
     time.sleep(1)
@@ -190,6 +192,6 @@ class ProfilePage(AuthenticatedPage):
     remove_icon.click()
     alert = self._driver.switch_to_alert()
     alert.accept()
-    time.sleep(1)
+    # TODO: Validate errors after #101686744 and #101686944 are fixed 
     return self
 

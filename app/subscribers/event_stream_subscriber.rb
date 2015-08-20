@@ -10,7 +10,7 @@ class EventStreamSubscriber
   def initialize(event_name, event_data)
     @action = event_data[:action]
     @record = event_data[:record]
-    @excluded_socket_id = event_data[:excluded_socket_id]
+    @excluded_socket_id = event_data[:requester_socket_id]
   end
 
   def run

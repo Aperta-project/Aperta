@@ -63,6 +63,15 @@ describe CommentsController do
         expect(res_body["comment"]["id"]).to eq(Comment.last.id)
       end
 
+      it "creates an activity" do
+        activity = {
+          subject: paper,
+          message: "A comment was added to #{task.title} card"
+        }
+        expect(Activity).to receive(:create).with(hash_including(activity))
+        do_request
+      end
+
       it_behaves_like "an unauthenticated json request"
     end
   end

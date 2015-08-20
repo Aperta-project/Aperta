@@ -1,5 +1,6 @@
 class Comment < ActiveRecord::Base
   include EventStream::Notifiable
+  extend HasFeedActivities
 
   belongs_to :task, inverse_of: :comments
   belongs_to :commenter, class_name: 'User', inverse_of: :comments
@@ -10,6 +11,14 @@ class Comment < ActiveRecord::Base
   validates_presence_of :commenter
 
   before_save :set_mentions
+
+  feed_activities feed_names: ['workflow'], subject: :paper do
+    activity(:created) { "A comment was added to #{task.title} card" }
+  end
+
+  def paper
+    task.paper
+  end
 
   def created_by?(user)
     commenter_id == user.id

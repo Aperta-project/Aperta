@@ -8,6 +8,8 @@ export default Ember.Controller.extend(FileUploadMixin, ValidationErrorsMixin, {
   errorText: '',
   affiliations: Ember.computed.alias('model.affiliationsByDate'),
 
+  today: new Date(),
+
   countries: [],
   _getCountries: Ember.on('init', function() {
     RESTless.get('/api/countries').then((data)=> {

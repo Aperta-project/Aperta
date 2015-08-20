@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ParticipationsController, focus: true do
+describe ParticipationsController do
   render_views
   let(:user) { create(:user) }
   let(:participant) { create(:user) }

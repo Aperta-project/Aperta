@@ -28,9 +28,13 @@ module TahiHelperMethods
     paper.reload
   end
 
-  def assign_journal_role(journal, user, type)
-    role = journal.roles.where(kind: type).first
-    role ||= FactoryGirl.create(:role, type, journal: journal)
+  def assign_journal_role(journal, user, role_or_type)
+    if role_or_type.is_a?(Role)
+      role = role_or_type
+    else
+      role = journal.roles.where(kind: role_or_type).first
+      role ||= FactoryGirl.create(:role, role_or_type, journal: journal)
+    end
     UserRole.create!(user: user, role: role)
     role
   end

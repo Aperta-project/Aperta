@@ -18,6 +18,11 @@ EVENTS = {
   'figure:created' => [Figure::Created::EventStream],
   'figure:updated' => [Figure::Updated::EventStream],
   'figure:destroyed' => [Figure::Destroyed::EventStream],
+
+  'supporting_information_file:created' => [SupportingInformationFile::Created::EventStream],
+  'supporting_information_file:updated' => [SupportingInformationFile::Updated::EventStream],
+  'supporting_information_file:destroyed' => [SupportingInformationFile::Destroyed::EventStream],
+
 }
 
 EVENTS.each do |event_name, subscriber_list|

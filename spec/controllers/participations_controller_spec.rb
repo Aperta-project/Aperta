@@ -2,17 +2,18 @@ require 'rails_helper'
 
 describe ParticipationsController, focus: true do
   render_views
+  let(:user) { create(:user) }
+  let(:participant) { create(:user) }
   let!(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: user) }
   let(:phase) { paper.phases.first }
-  let(:user) { create(:user) }
-
   let(:task) { create(:task, phase: phase) }
+
   before { sign_in user }
 
   describe 'POST create' do
     subject(:do_request) do
       xhr :post, :create, format: :json,
-        participation: {user_id: user.id,
+        participation: {user_id: participant.id,
                         task_id: task.id}
     end
 
@@ -46,9 +47,8 @@ describe ParticipationsController, focus: true do
       it "creates an activity" do
         activity = {
           subject: paper,
-          message: "Added Contributor: #{user.full_name}"
+          message: "Added Contributor: #{participant.full_name}"
         }
-        print user
         expect(Activity).to receive(:create).with(hash_including(activity))
         do_request
       end

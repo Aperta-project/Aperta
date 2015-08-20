@@ -35,7 +35,7 @@ http_interactions:
       - chunked
     body:
       encoding: ASCII-8BIT
-      string: '{"access_token":"00DK000000XN2av!ARcAQFwbGKUJqzTvS1zYVBYxCru.X5uAcfzhzqNS3DMfAi5D5RZ3C8xTtZYfC5PwSPzef3A9wLhLaYXSygrVi3B4aK5DcIYx","instance_url":"https://cs9.salesforce.com","id":"https://test.salesforce.com/id/00DK000000XN2avMAD/005U0000002AXTZIA4","token_type":"Bearer","issued_at":"1440096791077","signature":"sGyCowc0Igrg2FyrXV4f9zyRF8drhfYY9MFVdbDyaMQ="}'
+      string: '{"access_token":"00DK000000XN2av!ARcAQFwbGKUJqzTvS1zYVBYxCru.X5uAcfzhzqNS3DMfAi5D5RZ3C8xTtZYfC5PwSPzef3A9wLhLaYXSygrVi3B4aK5DcIYx","instance_url":"https://salesforce_host","id":"https://test.salesforce.com/id/00DK000000XN2avMAD/005U0000002AXTZIA4","token_type":"Bearer","issued_at":"1440096791077","signature":"sGyCowc0Igrg2FyrXV4f9zyRF8drhfYY9MFVdbDyaMQ="}'
     http_version:
   recorded_at: Thu, 20 Aug 2015 18:53:11 GMT
 recorded_with: VCR 2.9.3

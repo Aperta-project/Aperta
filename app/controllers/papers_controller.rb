@@ -107,7 +107,7 @@ class PapersController < ApplicationController
   end
 
   def create_paper_in_salesforce(paper:)
-    SalesforceServices::API.instance.create_manuscript(paper: paper)
+    SalesforceServices::API.delay.create_manuscript(paper_id: paper.id)
   end
 
   private

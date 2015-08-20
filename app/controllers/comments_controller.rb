@@ -7,6 +7,7 @@ class CommentsController < ApplicationController
 
   def create
     ParticipationFactory.create(task: comment.task, assignee: current_user, assigner: current_user)
+    comment.created_activity! current_user
     respond_with comment if CommentLookManager.sync_comment(comment)
   end
 

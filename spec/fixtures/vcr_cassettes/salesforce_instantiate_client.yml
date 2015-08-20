@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://cs9.salesforce.com/services/oauth2/token?client_id=3MVG9FS3IyroMOh4aBMHbfRbXKX._hh4FxYttVhYdR3vSZPp26m7x9C5FxLkispk7XbKq0wjNwtPV7C4XQTl0&client_secret=4273174531479571356&grant_type=password&password=Openaccess4me&username=integrationuser@plos.org.plostest2
+    uri: https://salesforce_host/services/oauth2/token?client_id=salesforce_client_id&client_secret=salesforce_client_secret&grant_type=password&password=salesforce_pass&username=salesforce_user
     body:
       encoding: UTF-8
       string: ''
@@ -19,10 +19,10 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 19 Aug 2015 21:43:08 GMT
+      - Thu, 20 Aug 2015 18:53:10 GMT
       Set-Cookie:
-      - BrowserId=c9GJVA2FQJ-3uHQL-4MgBA;Path=/;Domain=.salesforce.com;Expires=Sun,
-        18-Oct-2015 21:43:08 GMT
+      - BrowserId=pGy-efM0SqCjk9lFCgnWKQ;Path=/;Domain=.salesforce.com;Expires=Mon,
+        19-Oct-2015 18:53:10 GMT
       Expires:
       - Thu, 01 Jan 1970 00:00:00 GMT
       Pragma:
@@ -35,7 +35,7 @@ http_interactions:
       - chunked
     body:
       encoding: ASCII-8BIT
-      string: '{"access_token":"00DK000000XN2av!ARcAQIZe7nknpLyTrDVJNioP0TnJV1ittgbG5MhuF0X41xOU4Crms58vm71lB9KQMUfnCfjLmEWHrBFqo65g61k8ffomW2cI","instance_url":"https://cs9.salesforce.com","id":"https://test.salesforce.com/id/00DK000000XN2avMAD/005U0000002AXTZIA4","token_type":"Bearer","issued_at":"1440020588263","signature":"IzeuTp4W6GSKpwvwUEiqycpBtWIsSbx/hF5QbzzuTUk="}'
-    http_version: 
-  recorded_at: Wed, 19 Aug 2015 21:43:08 GMT
+      string: '{"access_token":"00DK000000XN2av!ARcAQFwbGKUJqzTvS1zYVBYxCru.X5uAcfzhzqNS3DMfAi5D5RZ3C8xTtZYfC5PwSPzef3A9wLhLaYXSygrVi3B4aK5DcIYx","instance_url":"https://cs9.salesforce.com","id":"https://test.salesforce.com/id/00DK000000XN2avMAD/005U0000002AXTZIA4","token_type":"Bearer","issued_at":"1440096791077","signature":"sGyCowc0Igrg2FyrXV4f9zyRF8drhfYY9MFVdbDyaMQ="}'
+    http_version:
+  recorded_at: Thu, 20 Aug 2015 18:53:11 GMT
 recorded_with: VCR 2.9.3

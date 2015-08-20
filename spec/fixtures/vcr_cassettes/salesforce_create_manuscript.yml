@@ -8,7 +8,7 @@ http_interactions:
       string: ''
     headers:
       Authorization:
-      - OAuth 00DK000000XN2av!ARcAQIZe7nknpLyTrDVJNioP0TnJV1ittgbG5MhuF0X41xOU4Crms58vm71lB9KQMUfnCfjLmEWHrBFqo65g61k8ffomW2cI
+      - OAuth 00DK000000XN2av!ARcAQFwbGKUJqzTvS1zYVBYxCru.X5uAcfzhzqNS3DMfAi5D5RZ3C8xTtZYfC5PwSPzef3A9wLhLaYXSygrVi3B4aK5DcIYx
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:
@@ -21,22 +21,22 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 19 Aug 2015 21:48:07 GMT
+      - Thu, 20 Aug 2015 18:53:11 GMT
       Set-Cookie:
-      - BrowserId=FMBlXZcxQ_uX809BsSTERg;Path=/;Domain=.salesforce.com;Expires=Sun,
-        18-Oct-2015 21:48:07 GMT
+      - BrowserId=psxIMFr7Tu6FKjQLpxJRtw;Path=/;Domain=.salesforce.com;Expires=Mon,
+        19-Oct-2015 18:53:11 GMT
       Expires:
       - Thu, 01 Jan 1970 00:00:00 GMT
       Sforce-Limit-Info:
-      - api-usage=5562/5000000
+      - api-usage=5536/5000000
       Org.eclipse.jetty.server.include.etag:
-      - f7e14054
+      - 52e2895d
       Last-Modified:
-      - Thu, 13 Aug 2015 16:56:35 GMT
+      - Thu, 20 Aug 2015 15:52:07 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Etag:
-      - f7e1405-gzip"
+      - 52e2895-gzip"
       Transfer-Encoding:
       - chunked
     body:
@@ -215,18 +215,18 @@ http_interactions:
         Manuscript Title","length":200,"name":"Currents_Manuscript_Title__c","nameField":false,"namePointing":false,"nillable":true,"picklistValues":[],"precision":0,"referenceTo":[],"relationshipName":null,"relationshipOrder":null,"restrictedPicklist":false,"scale":0,"soapType":"xsd:string","sortable":true,"type":"string","unique":false,"updateable":true,"writeRequiresMasterRead":false}],"keyPrefix":"a06","label":"Manuscript","labelPlural":"Manuscripts","layoutable":true,"listviewable":null,"lookupLayoutable":null,"mergeable":false,"name":"Manuscript__c","queryable":true,"recordTypeInfos":[{"available":true,"defaultRecordTypeMapping":false,"name":"Currents","recordTypeId":"012U0000000E4ARIA0"},{"available":true,"defaultRecordTypeMapping":true,"name":"PLOS
         Journals","recordTypeId":"012U0000000E4ASIA0"},{"available":true,"defaultRecordTypeMapping":false,"name":"Master","recordTypeId":"012000000000000AAA"}],"replicateable":true,"retrieveable":true,"searchLayoutable":null,"searchable":true,"triggerable":true,"undeletable":true,"updateable":true,"urls":{"rowTemplate":"/services/data/v22.0/sobjects/Manuscript__c/{ID}","uiDetailTemplate":"https://cs9.salesforce.com/{ID}","uiEditTemplate":"https://cs9.salesforce.com/{ID}/e","describe":"/services/data/v22.0/sobjects/Manuscript__c/describe","uiNewRecord":"https://cs9.salesforce.com/a06/e","sobject":"/services/data/v22.0/sobjects/Manuscript__c"}}'
     http_version: 
-  recorded_at: Wed, 19 Aug 2015 21:48:07 GMT
+  recorded_at: Thu, 20 Aug 2015 18:53:12 GMT
 - request:
     method: post
     uri: https://cs9.salesforce.com/services/data/v22.0/sobjects/Manuscript__c
     body:
       encoding: UTF-8
-      string: '{"RecordTypeId":"012U0000000E4ASIA0","OwnerId":"005U0000002AXTZIA4","Editorial_Process_Close__c":false,"Display_Technical_Notes__c":false,"CreatedByDeltaMigration__c":false,"Editorial_Status_Date__c":"2015-08-19T14:48:07.505-0700","Revision__c":"0.0"}'
+      string: '{"RecordTypeId":"012U0000000E4ASIA0","OwnerId":"005U0000002AXTZIA4","Editorial_Process_Close__c":false,"Display_Technical_Notes__c":false,"CreatedByDeltaMigration__c":false,"Editorial_Status_Date__c":"2015-08-20T11:53:12.180-0700","Revision__c":"0.0"}'
     headers:
       Content-Type:
       - application/json
       Authorization:
-      - OAuth 00DK000000XN2av!ARcAQIZe7nknpLyTrDVJNioP0TnJV1ittgbG5MhuF0X41xOU4Crms58vm71lB9KQMUfnCfjLmEWHrBFqo65g61k8ffomW2cI
+      - OAuth 00DK000000XN2av!ARcAQFwbGKUJqzTvS1zYVBYxCru.X5uAcfzhzqNS3DMfAi5D5RZ3C8xTtZYfC5PwSPzef3A9wLhLaYXSygrVi3B4aK5DcIYx
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:
@@ -239,23 +239,23 @@ http_interactions:
       message: Created
     headers:
       Date:
-      - Wed, 19 Aug 2015 21:48:07 GMT
+      - Thu, 20 Aug 2015 18:53:12 GMT
       Set-Cookie:
-      - BrowserId=H501oqiHTSiO2imbwvGFrQ;Path=/;Domain=.salesforce.com;Expires=Sun,
-        18-Oct-2015 21:48:07 GMT
+      - BrowserId=J0c37VQJSMifNdAjd1pTMQ;Path=/;Domain=.salesforce.com;Expires=Mon,
+        19-Oct-2015 18:53:12 GMT
       Expires:
       - Thu, 01 Jan 1970 00:00:00 GMT
       Sforce-Limit-Info:
-      - api-usage=5562/5000000
+      - api-usage=5537/5000000
       Location:
-      - "/services/data/v22.0/sobjects/Manuscript__c/a06K000000Bk3pEIAR"
+      - "/services/data/v22.0/sobjects/Manuscript__c/a06K000000Bl81LIAR"
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
       - chunked
     body:
       encoding: ASCII-8BIT
-      string: '{"id":"a06K000000Bk3pEIAR","success":true,"errors":[]}'
+      string: '{"id":"a06K000000Bl81LIAR","success":true,"errors":[]}'
     http_version: 
-  recorded_at: Wed, 19 Aug 2015 21:48:07 GMT
+  recorded_at: Thu, 20 Aug 2015 18:53:12 GMT
 recorded_with: VCR 2.9.3

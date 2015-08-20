@@ -6,6 +6,11 @@ EVENTS = {
 
   'paper_role:created' => [PaperRole::Created::EventStream::NotifyPaperMembers, PaperRole::Created::EventStream::NotifyAssignee],
   'paper_role:destroyed' => [PaperRole::Destroyed::EventStream::NotifyPaperMembers],
+
+  'task:created' => [Task::Created::EventStream],
+  'task:updated' => [Task::Updated::EventStream],
+  'task:destroyed' => [Task::Destroyed::EventStream],
+
 }
 
 EVENTS.each do |event_name, subscriber_list|

@@ -14,6 +14,10 @@ EVENTS = {
   'question_attachment:created' => [QuestionAttachment::Created::EventStream],
   'question_attachment:updated' => [QuestionAttachment::Updated::EventStream],
   'question_attachment:destroyed' => [QuestionAttachment::Destroyed::EventStream],
+
+  'figure:created' => [Figure::Created::EventStream],
+  'figure:updated' => [Figure::Updated::EventStream],
+  'figure:destroyed' => [Figure::Destroyed::EventStream],
 }
 
 EVENTS.each do |event_name, subscriber_list|

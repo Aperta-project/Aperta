@@ -10,7 +10,6 @@ module('Integration: Create new paper', {
   afterEach() {
     Ember.run(function() {
       TestHelper.teardown();
-      App.destroy();
       Ember.run(App, 'destroy');
     });
   },
@@ -19,7 +18,8 @@ module('Integration: Create new paper', {
     App = startApp();
     TestHelper.setup(App);
 
-    // NOTE: We don't care about having data on the page when testing the feedback form
+    // We don't care about having data on the page when testing the new paper form
+
     TestHelper.handleFindAll('journal', 1);
     TestHelper.handleFindAll('paper', 0);
     TestHelper.handleFindAll('invitation', 0);
@@ -39,7 +39,7 @@ test('author successfully creates a submission', function(assert) {
   fillIn('#paper-short-title', title);
   pickFromSelectBox('.paper-new-journal-select', 'PLOS Yeti 1');
   pickFromSelectBox('.paper-new-paper-type-select', 'Research');
-  click('.paper-new-start-writing-button');
+  click('.paper-new-create-document-button');
 
   andThen(function() {
     assert.ok(find('#paper-title').length, 'on Paper Edit screen');
@@ -55,7 +55,7 @@ test('author unsuccessfully creates a submission', function(assert) {
   click('.button-primary:contains(Create New Submission)');
   fillIn('#paper-short-title', title);
   pickFromSelectBox('.paper-new-journal-select', 'PLOS Yeti 1');
-  click('.paper-new-start-writing-button');
+  click('.paper-new-create-document-button');
 
   andThen(function() {
     assert.ok(find('.flash-message--error').length, 'error on screen');
@@ -66,7 +66,7 @@ test('feedback is displayed after submission', function(assert) {
   let paperNewController = App.__container__.lookup('controller:overlays/paper-new');
 
   visit('/');
-  click('.button-primary:contains(Create New Submission)').then(function() {
+  click('.paper-new-create-document-button').then(function() {
     Ember.run(this, function() {
       paperNewController.set('paperSaving', true);
     });

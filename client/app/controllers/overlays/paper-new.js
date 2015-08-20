@@ -40,6 +40,7 @@ export default Ember.Controller.extend(AnimateOverlay, FileUploadMixin, {
         this.get('uploadFunction')();
       }, (response)=> {
         this.flash.displayErrorMessagesFromResponse(response);
+        this.set('paperSaving', false);
       });
     },
 
@@ -61,11 +62,29 @@ export default Ember.Controller.extend(AnimateOverlay, FileUploadMixin, {
       this.set('model.paperType', null);
     },
 
+    /**
+     *  Called by `file-uploader` in template
+     *  We're hanging on to the upload function to fire later
+     *  after the paper model is saved
+     *
+     *  @method uploadReady
+     *  @param {Function} [func] Function to trigger upload of file
+     *  @public
+    **/
     uploadReady(func) {
       this.set('uploadFunction', func);
       this.send('createPaperWithUpload');
     },
 
+    /**
+     *  Overrides action provided by FileUploadMixin
+     *  Called by `file-uploader` in template
+     *
+     *  @method uploadFinished
+     *  @param {Object} [data]
+     *  @param {String} [filename]
+     *  @public
+    **/
     uploadFinished(data, filename) {
       this.uploadFinished(data, filename);
       this.transitionToRoute('paper.edit', this.get('model'));

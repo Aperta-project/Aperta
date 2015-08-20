@@ -9,7 +9,7 @@ class CardOverlay < Page
   text_assertions :assignee, '.chosen-assignee.chosen-container', ->(name){ name.upcase }
 
   def assignee
-    all('.chosen-assignee.chosen-container').first.text
+    all('.chosen-assignee.chosen-container').first
   end
 
   def assignee=(name)
@@ -17,11 +17,11 @@ class CardOverlay < Page
   end
 
   def title
-    find('main h1').text
+    find('main h1')
   end
 
   def body
-    find('main > p').text
+    find('main > p')
   end
 
   def completed_checkbox
@@ -76,7 +76,7 @@ class CardOverlay < Page
 
   def post_message(new_message)
     find('.new-comment-field').set(new_message)
-    find('.comment-board-form .button-secondary', text: "POST MESSAGE").click
+    find('.button-secondary', text: "POST MESSAGE").click
     expect(page).to have_content new_message
   end
 

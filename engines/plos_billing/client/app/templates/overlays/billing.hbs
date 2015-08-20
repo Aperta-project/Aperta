@@ -1,5 +1,5 @@
 <h1>
-  Publication Fees
+  Billing
 </h1>
 
 <h3>
@@ -15,7 +15,8 @@
       {{question-input ident="plos_billing.first_name"
                        task=model
                        question="First Name"
-                       placeholderText="Jane"}}
+                       placeholderText="Jane"
+                       disabled=isSubmissionTaskNotEditable}}
     </div>
 
     <div class="form-group author-half author-bump {{if validationErrors.lastName "error"}}">
@@ -25,7 +26,8 @@
       {{question-input ident="plos_billing.last_name"
                        task=model
                        question="Last Name"
-                       placeholderText="Goodall"}}
+                       placeholderText="Goodall"
+                       disabled=isSubmissionTaskNotEditable}}
     </div>
   </div>
   <div class="form-group form-inline">
@@ -36,7 +38,8 @@
       {{question-input ident="plos_billing.title"
                        task=model
                        question="Title"
-                       placeholderText="World's Foremost Expert on Chimpanzees"}}
+                       placeholderText="World's Foremost Expert on Chimpanzees"
+                       disabled=isSubmissionTaskNotEditable}}
     </div>
 
     <div class="form-group author-half author-bump {{if validationErrors.department "error"}}">
@@ -46,20 +49,23 @@
       {{question-input ident="plos_billing.department"
                        task=model
                        question="Department"
-                       placeholderText="Primatology"}}
+                       placeholderText="Primatology"
+                       disabled=isSubmissionTaskNotEditable}}
     </div>
   </div>
   <div class="form-group form-inline">
     <div class="form-group author-half {{if validationErrors.affiliation "error"}}">
       {{institution-search value=affiliation1Proxy
                            institutionSelected="affiliation1Selected"
-                           placeholder="Affiliation"}}
+                           placeholder="Affiliation"
+                           disabled=isSubmissionTaskNotEditable}}
     </div>
 
     <div class="form-group author-half author-bump {{if validationErrors.secondaryAffiliation "error"}}">
       {{institution-search value=affiliation2Proxy
                            institutionSelected="affiliation2Selected"
-                           placeholder="Secondary Affiliation (optional)"}}
+                           placeholder="Secondary Affiliation (optional)"
+                           disabled=isSubmissionTaskNotEditable}}
     </div>
   </div>
   <div class="form-group form-inline">
@@ -70,7 +76,8 @@
       {{question-input ident="plos_billing.phone_number"
                        task=model
                        question="Phone"
-                       placeholderText="415-555-5555"}}
+                       placeholderText="415-555-5555"
+                       disabled=isSubmissionTaskNotEditable}}
 
     </div>
     <div class="form-group author-half author-bump {{if validationErrors.email "error"}}">
@@ -80,7 +87,8 @@
       {{question-input ident="plos_billing.email_address"
                        task=model
                        question="Email"
-                       placeholderText="jane.goodll@science.com"}}
+                       placeholderText="jane.goodll@science.com"
+                       disabled=isSubmissionTaskNotEditable}}
 
     </div>
   </div>
@@ -92,7 +100,8 @@
       {{question-input ident="plos_billing.address1"
                        task=model
                        question="Address line one"
-                       placeholderText="1581 Le Roy Ave"}}
+                       placeholderText="1581 Le Roy Ave"
+                       disabled=isSubmissionTaskNotEditable}}
     </div>
   </div>
   <div class="form-group form-inline">
@@ -103,7 +112,8 @@
       {{question-input ident="plos_billing.address2"
                        task=model
                        question="Address line two"
-                       placeholderText="Suite 3"}}
+                       placeholderText="Suite 3"
+                       disabled=isSubmissionTaskNotEditable}}
     </div>
   </div>
   <div class="form-group form-inline">
@@ -114,7 +124,8 @@
       {{question-input ident="plos_billing.city"
                        task=model
                        question="City"
-                       placeholderText="Berkeley"}}
+                       placeholderText="Berkeley"
+                       disabled=isSubmissionTaskNotEditable}}
     </div>
 
     <div class="form-group author-name author-bump {{if validationErrors.state "error"}}">
@@ -125,7 +136,8 @@
       {{question-input ident="plos_billing.state"
                        task=model
                        question="Enter State or Province"
-                       placeholderText="State or Province"}}
+                       placeholderText="State or Province"
+                       disabled=isSubmissionTaskNotEditable}}
     </div>
     <div class="form-group author-name author-bump {{if validationErrors.postal_code "error"}}">
       <span class="text-field-title">
@@ -134,23 +146,28 @@
       {{question-input ident="plos_billing.postal_code"
                        task=model
                        question="Postal Code"
-                       placeholderText="94708"}}
+                       placeholderText="94708"
+                       disabled=isSubmissionTaskNotEditable}}
     </div>
   </div>
 
   <div class="form-group form-inline">
     <div class="form-group author-half {{if validationErrors.country "error"}}">
-      {{#if countries}}
+      {{#if countries.loaded}}
         {{question-select ident="plos_billing.country"
                           task=model
-                          question="Please select your Country"
-                          source=countries
-                          width="100%"}}
-      {{else}}
-        <div class="plos-billing-country-loading">
-          {{progress-spinner visible=true size="mini"}}
-          Loading countries
-        </div>
+                          question="Select your Country"
+                          source=formattedCountries
+                          width="100%"
+                          enable=isSubmissionTaskEditable}}
+      {{/if}}
+      {{#if countries.loading}}
+        {{progress-spinner visible=true size="mini"}}
+        Loading countries
+      {{/if}}
+      {{#if countries.error}}
+        <i class="fa fa-exclamation-triangle"></i>
+        Error loading countries
       {{/if}}
     </div>
   </div>
@@ -177,7 +194,8 @@
                         class="affiliation-field"
                         selectionSelected="paymentMethodSelected"
                         source=responses
-                        width="350"}}
+                        width="350"
+                        enable=isSubmissionTaskEditable}}
     </div>
   </li>
 

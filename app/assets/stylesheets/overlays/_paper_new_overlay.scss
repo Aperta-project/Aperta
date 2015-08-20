@@ -1,15 +1,69 @@
-.paper-new-overlay {
-  .paper-new-paper-type-select {
-    float: right;
-  }
+.paper-new-overlay .overlay-title-text h1 {
+  padding-top: 75px;
+}
+
+.paper-new-overlay .form-group {
+  margin-bottom: 30px;
 }
 
 .paper-new-paper-saving {
+  padding-top: 30px;
+  font-size: 15px;
   font-style: italic;
 
   .progress-spinner {
     position: relative;
     top: 11px;
-    margin: 0 15px 0 5px;
+    margin: 0 12px 0 5px;
   }
 }
+
+.paper-new-label {
+  margin-bottom: 0.85rem;
+  color: $tahi-grey;
+  font-size: 18px;
+}
+
+.paper-new-input {
+  width: 100%;
+  border: 1px solid $tahi-grey-light;
+  border-radius: 5px;
+  padding: 15px 50px 15px 15px;
+  font-size: 14px;
+}
+
+.paper-new-char-count {
+  @include position(absolute, 49px 20px auto auto);
+  text-align: right;
+}
+
+.paper-new-valid-icon {
+  position: absolute;
+  top: 49px;
+  right: -35px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: #fff;
+  text-align: center;
+  background-color: $tahi-green;
+}
+
+.paper-new-submit-actions {
+  overflow: hidden;
+  padding: 25px 0;
+
+  .button-secondary {
+    width: 48%;
+    padding: 13px 0;
+    font-size: 22px;
+  }
+
+  .fa {
+    margin-right: 10px;
+    font-size: 115%;
+  }
+}
+
+.paper-new-create-document-button { float: right; }

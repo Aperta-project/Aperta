@@ -16,5 +16,4 @@ class CountriesController < ApplicationController
       countries_list
     end
   end
-
 end

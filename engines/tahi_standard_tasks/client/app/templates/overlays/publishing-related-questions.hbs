@@ -5,6 +5,7 @@
   {{#question-radio ident="publishing_related_questions.published_elsewhere"
                     task=model
                     question="Have the results, data, or figures in this manuscript been published elsewhere? Are they under consideration for publication elsewhere?"
+                    disabled=isSubmissionTaskNotEditable
                     as |selected|}}
 
     {{#if selected.yes}}
@@ -14,12 +15,14 @@
                          question="Please identify which results, data, or figures have been taken from other published or pending manuscripts, and explain why inclusion in this submission does not constitute dual publication."
                          task=model
                          label="Results, data or figures"
-                         placeholderText="Figure 1.2 - contains new data points"}}
+                         placeholderText="Figure 1.2 - contains new data points"
+                         disabled=isSubmissionTaskNotEditable}}
         <br>
         {{question-uploader ident="publishing_related_questions.published_elsewhere.upload_related_work" task=model
                             question="Please also upload a copy of the related work with your submission as a 'Related Manuscript' item. Note that reviewers may be asked to comment on the overlap between the related submissions."
                             updateStore="updateStore"
-                            accept=".docx,.pdf"}}
+                            accept=".docx,.pdf"
+                            disabled=isSubmissionTaskNotEditable}}
       </div>
     {{/if}}
   {{/question-radio}}
@@ -28,6 +31,7 @@
   {{#question-radio ident="publishing_related_questions.submitted_in_conjunction"
                     task=model
                     question="Is this manuscript being submitted in conjunction with another submission?"
+                    disabled=isSubmissionTaskNotEditable
                     as |selected|}}
 
     {{#if selected.yes}}
@@ -38,7 +42,8 @@
                          task=model
                          question="Title"
                          label="Title"
-                         placeholderText="Submission Title"}}
+                         placeholderText="Submission Title"
+                         disabled=isSubmissionTaskNotEditable}}
 
         <br>
         {{question-input ident="publishing_related_questions.submitted_in_conjunction.corresponding_author"
@@ -46,7 +51,8 @@
                          task=model
                          question="Corresponding author"
                          label="Corresponding Author"
-                         placeholderText="Corresponding Author Name"}}
+                         placeholderText="Corresponding Author Name"
+                         disabled=isSubmissionTaskNotEditable}}
       </div>
     {{/if}}
   {{/question-radio}}
@@ -57,12 +63,14 @@
       {{#question-check ident="publishing_related_questions.previous_interactions.this_manuscript"
                         task=model
                         question="I have had previous interactions about this manuscript with a staff editor or Academic Editor of this journal."
+                        disabled=isSubmissionTaskNotEditable
                         as |checked|}}
         {{#if checked}}
           <div class="question-dataset">
             {{question-textarea ident="publishing_related_questions.previous_interactions.this_manuscript.submission_details"
                                 task=model
-                                question="Please enter manuscript number and editor name, if known"}}
+                                question="Please enter manuscript number and editor name, if known"
+                                disabled=isSubmissionTaskNotEditable}}
           </div>
         {{/if}}
       {{/question-check}}
@@ -70,12 +78,14 @@
       {{#question-check ident="publishing_related_questions.previous_interactions.presubmission_inquiry"
                         task=model
                         question="I submitted a presubmission inquiry for this manuscript."
+                        disabled=isSubmissionTaskNotEditable
                         as |checked|}}
         {{#if checked}}
           <div class="question-dataset">
             {{question-textarea ident="publishing_related_questions.previous_interactions.presubmission_inquiry.submission_details"
                                 task=model
-                                question="Please enter manuscript number and editor name, if known"}}
+                                question="Please enter manuscript number and editor name, if known"
+                                disabled=isSubmissionTaskNotEditable}}
           </div>
         {{/if}}
       {{/question-check}}
@@ -83,20 +93,23 @@
       {{#question-check ident="publishing_related_questions.previous_interactions.other_journal_submission"
                         task=model
                         question="This manuscript was previously submitted to a different PLOS journal as either a presubmission inquiry or a full submission."
+                        disabled=isSubmissionTaskNotEditable
                         as |checked|}}
 
         {{#if checked}}
           <div class="question-dataset">
             {{question-textarea ident="publishing_related_questions.previous_interactions.other_journal_submission.submission_details"
                                 task=model
-                                question="Please enter manuscript number and editor name, if known"}}
+                                question="Please enter manuscript number and editor name, if known"
+                                disabled=isSubmissionTaskNotEditable}}
           </div>
         {{/if}}
       {{/question-check}}
 
       {{question-check ident="publishing_related_questions.previous_interactions.journal_editor"
                        task=model
-                       question="One or more of the authors (including myself) currently serve, or have previously served, as an Academic Editor or Guest Editor for this journal."}}
+                       question="One or more of the authors (including myself) currently serve, or have previously served, as an Academic Editor or Guest Editor for this journal."
+                       disabled=isSubmissionTaskNotEditable}}
   </li>
   <li class="question">
     If your submission is intended for a PLOS Collection, enter the name of the collection in the box below. Please also ensure the name of the collection is included in your cover letter.
@@ -104,13 +117,15 @@
                       task=model
                       question="If your submission is intended for a PLOS Collection, enter the name of the collection in the box below. Please also ensure the name of the collection is included in your cover letter."
                       label="Name of PLOS Collection"
-                      placeholderText="Collection Name"}}
+                      placeholderText="Collection Name"
+                      disabled=isSubmissionTaskNotEditable}}
 
   </li>
   <li class="question">
     {{question-radio ident="publishing_related_questions.us_government_employees"
                      task=model
                      question="Are you or any of the contributing authors an employee of the United States Government?"
-                     helpText="Papers authored by one or more U.S. government employees are not copyrighted, but are licensed under a <a target='_blank' href='http://creativecommons.org/about/cc0'>CC0 Public Domain Dedication</a>, which allows unlimited distribution and reuse of the article for any lawful purpose. This is a legal requirement for U.S. government employees."}}
+                     helpText="Papers authored by one or more U.S. government employees are not copyrighted, but are licensed under a <a target='_blank' href='http://creativecommons.org/about/cc0'>CC0 Public Domain Dedication</a>, which allows unlimited distribution and reuse of the article for any lawful purpose. This is a legal requirement for U.S. government employees."
+                     disabled=isSubmissionTaskNotEditable}}
   </li>
 </ol>

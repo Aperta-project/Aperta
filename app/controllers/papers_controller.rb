@@ -99,18 +99,21 @@ class PapersController < ApplicationController
   def submit
     paper.submit! current_user do
       notify_paper_submitted!
-      # TODO: rename
-      send_stuff_to_salesforce(paper: paper)
       broadcast_paper_submitted_event
     end
-    respond_with paper
+    render json: paper, status: :ok
   end
 
-  def send_stuff_to_salesforce(paper:)
-    SalesforceServices::API.instance.create_manuscript(paper: paper)
+  def withdraw
+    paper.withdraw! withdrawal_params[:reason]
+    render json: paper, status: :ok
   end
 
   private
+
+  def withdrawal_params
+    params.permit(:reason)
+  end
 
   def paper_params
     params.require(:paper).permit(

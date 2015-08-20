@@ -1,4 +1,13 @@
-{{partial "paper/control-bar"}}
+{{control-bar paper=model
+              showActivity="showActivity"
+              addContributors="addContributors"
+              exportDocument="exportDocument"
+              showConfirmWithdrawOverlay="showConfirmWithdrawOverlay"
+              topicsIndexPath=topicsIndexPath
+              canViewManuscriptManager=canViewManuscriptManager
+              supportedDownloadFormats=supportedDownloadFormats}}
+
+{{withdrawal-banner paper=model}}
 
 <div id="paper-container" class="clearfix {{pageContainerHTMLClass}} {{if noTasks "sidebar-empty"}}">
   {{partial "paper/sidebar"}}

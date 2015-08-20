@@ -13,6 +13,12 @@ FactoryGirl.define do
     end
   end
 
+  factory :assign_team_task, class: 'Tahi::AssignTeam::AssignTeamTask' do
+    phase
+    title "Assign Team"
+    role "admin"
+  end
+
   factory :competing_interests_task, class: 'TahiStandardTasks::CompetingInterestsTask' do
     phase
     title "Competing Interests"
@@ -33,7 +39,7 @@ FactoryGirl.define do
 
   factory :figure_task, class: 'TahiStandardTasks::FigureTask' do
     phase
-    title "Upload Figures"
+    title "Figures"
     role "author"
   end
 
@@ -122,9 +128,15 @@ FactoryGirl.define do
     role "author"
   end
 
-  factory :metadata_task, class: "MockMetadataTask" do
+  factory :metadata_task, class: 'MockMetadataTask' do
     phase
     title "Metadata Task"
+    role "author"
+  end
+
+  factory :billing_task, class: 'PlosBilling::BillingTask' do
+    phase
+    title "Billing"
     role "author"
   end
 end
@@ -152,7 +164,7 @@ class InvitableTask < Task
     :rejected
   end
 
-  def invitation_rescinded(paper_id:, invitee_id:)
+  def invitation_rescinded(invitation)
     :rescinded
   end
 

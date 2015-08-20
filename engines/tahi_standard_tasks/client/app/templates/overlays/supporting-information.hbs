@@ -7,7 +7,8 @@
                            destroyAttachment="destroyAttachment"
                            figure=false
                            isEditable=model.paper.editable
-                           confidentiality=true}}
+                           confidentiality=true
+                           disabled=isSubmissionTaskNotEditable}}
   {{/each}}
 </div>
 
@@ -17,7 +18,7 @@
   {{/each}}
 </div>
 {{#if isEditable}}
-  <span class="button-primary button--green fileinput-button">
+  <span class="button-primary button--green fileinput-button {{if isSubmissionTaskNotEditable 'button--disabled'}}">
     <span>Add New Supporting Information</span>
     {{file-uploader id="file_attachment"
                     filePrefix="supporting-info"
@@ -25,6 +26,7 @@
                     start="uploadStarted"
                     done="uploadFinished"
                     cancel="cancelUploads"
-                    progress="uploadProgress"}}
+                    progress="uploadProgress"
+                    disabled=isSubmissionTaskNotEditable}}
   </span>
 {{/if}}

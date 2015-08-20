@@ -5,7 +5,7 @@ export default Ember.ArrayController.extend(Ember.SortableMixin, {
   sortAscending: false,
 
   newJournalPresent: Ember.computed('arrangedContent.@each.isNew', function() {
-    return this.get('arrangedContent').any((a) => a.get('isNew'));
+    return this.get('arrangedContent').isAny('isNew', true);
   }),
 
   actions: {

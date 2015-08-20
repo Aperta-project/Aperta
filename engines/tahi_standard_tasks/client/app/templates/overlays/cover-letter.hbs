@@ -12,16 +12,20 @@
     <li>What other novel findings do you present?</li>
     <li>Is there additional information that we should take into account?</li>
   </ul>
-  <h5>Please note that your cover letter may be seen by reviewers as well as the editorial staff and academic board members. If you wish to request to exclude specific scientists from the evaluation process, you may do this in the Reviewer Recommendation card, where you should also provide a reason for suggested exclusions. Please also <a href="http://journals.plos.org/plosbiology/s/competing-interests">read our policy about competing interests</a> before submitting your inquiry.</h5>
+  <h5>Please note that your cover letter may be seen by reviewers as well as the editorial staff and academic board members. If you wish to request to exclude specific scientists from the evaluation process, you may do this in the Reviewer Candidates card, where you should also provide a reason for suggested exclusions. Please also <a href="http://journals.plos.org/plosbiology/s/competing-interests">read our policy about competing interests</a> before submitting your inquiry.</h5>
 
-  {{content-editable value=letterBody class="taller-textarea" placeholder="Please type or paste your cover letter into this text field"}}
+  {{content-editable
+    value=letterBody
+    class="taller-textarea"
+    placeholder="Please type or paste your cover letter into this text field"
+    editable=isSubmissionTaskEditable}}
 
-    <button class="button-primary button--green" {{action "saveCoverLetter"}}>Save</button>
+    <button class="button-primary button--green" disabled={{isSubmissionTaskNotEditable}} {{action "saveCoverLetter"}}>Save</button>
 </div>
 {{else}}
 <div class="preview-cover-letter">
   <h4>Here is your cover letter:</h4>
     <div class="cover-letter">{{formatCoverLetter}}</div>
-    <button class="button-primary button--green" {{action "editCoverLetter"}}>Make Changes</button>
+    <button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "editCoverLetter"}}>Make Changes</button>
 </div>
 {{/if}}

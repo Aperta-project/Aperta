@@ -317,6 +317,8 @@ const DATA = {
 let computed = Ember.computed;
 
 export default TaskController.extend({
+  countries: Ember.inject.service(),
+
   ringgold: [],
   institutionalAccountProgramList: DATA.institutionalAccountProgramList,
   states:    DATA.states,
@@ -325,12 +327,12 @@ export default TaskController.extend({
   responses: DATA.responses,
   groupOneAndTwoCountries: DATA.groupOneAndTwoCountries,
 
-  countries: [],
-  _getCountries: Ember.on("init", function() {
-    RESTless.get("/api/countries").then((data)=> {
-      this.set("countries", data.countries.map(function(c) {
-        return { id: c, text: c };
-      }));
+  _fetchCountries: Ember.on('init', function() {
+    this.get('countries').fetch();
+  }),
+  formattedCountries: computed('countries.data', function() {
+    return this.get('countries.data').map(function(c) {
+      return { id: c, text: c };
     });
   }),
 

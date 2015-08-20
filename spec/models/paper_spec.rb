@@ -10,6 +10,21 @@ describe Paper do
       expect(paper.decisions.length).to eq 1
       expect(paper.decisions.first.class).to eq Decision
     end
+
+    it "can set body on creation" do
+      paper_new = FactoryGirl.create :paper, body: 'foo'
+      expect(paper_new.body).to eq('foo')
+      expect(paper_new.latest_version.text).to eq('foo')
+    end
+
+    it "can use body= before save" do
+      paper_new = FactoryGirl.build :paper
+      paper_new.body = 'foo'
+      expect(paper_new.body).to eq('foo')
+      paper.save!
+      paper.reload
+      expect(paper_new.body).to eq('foo')
+    end
   end
 
   describe "#destroy" do
@@ -31,6 +46,17 @@ describe Paper do
         expect(Phase.where(paper_id: paper.id).count).to be 0
         expect(Task.count).to be 0
       end
+    end
+  end
+
+  describe "#latest_withdrawal_reason" do
+    let(:paper) { FactoryGirl.create(:paper, :submitted) }
+
+    it "returns the latest withdrawal_reason" do
+      paper.withdrawal_reasons << "Some excuse"
+      paper.withdrawal_reasons << "Some other excuse"
+
+      expect(paper.latest_withdrawal_reason).to eq "Some other excuse"
     end
   end
 
@@ -134,14 +160,55 @@ describe Paper do
         paper.submit! user
         expect(paper).to_not be_editable
       end
+
+      it "submits billing and pfa info to salesforce" do
+        expect(paper).to receive(:create_billing_and_pfa_case).and_return(true)
+        paper.submit! user
+      end
+
+      it "sets the submitting_user of the latest version" do
+        paper.submit! user
+        expect(paper.latest_version.submitting_user).to eq(user)
+      end
+
+      it "sets the updated_at of the latest version" do
+        paper.latest_version.update!(updated_at: Time.zone.now - 10.days)
+        paper.submit! user
+        expect(paper.latest_version.updated_at.utc).to be_within(1.second).of Time.zone.now
+      end
+    end
+
+    context "when withdrawing" do
+      let(:paper) { FactoryGirl.create(:paper, :submitted) }
+
+      it "transitions to withdrawn without a reason" do
+        paper.withdraw!
+        expect(paper).to be_withdrawn
+      end
+
+      it "transitions to withdrawn with a reason" do
+        paper.withdraw! "Don't want to."
+        expect(paper.withdrawn?).to eq true
+      end
+
+      it "marks the paper not editable" do
+        paper.withdraw!
+        expect(paper).to_not be_editable
+      end
     end
 
     context "when minor-revising (as in a tech check)" do
       let(:paper) { FactoryGirl.create(:paper, :submitted) }
 
       it "marks the paper editable" do
-        paper.minor_revision!
+        paper.minor_check!
         expect(paper).to be_editable
+      end
+
+      it "creates a new minor version" do
+        expect(paper.latest_version.version_string).to match(/^R0.0/)
+        paper.minor_check!
+        expect(paper.latest_version.version_string).to match(/^R0.1/)
       end
     end
 
@@ -150,8 +217,21 @@ describe Paper do
 
       it "marks the paper uneditable" do
         paper.minor_check!
-        paper.submit_minor_check!
+        paper.submit_minor_check! user
         expect(paper).to_not be_editable
+      end
+
+      it "sets the submitting_user of the latest version" do
+        paper.minor_check!
+        paper.submit_minor_check! user
+        expect(paper.latest_version.submitting_user).to eq(user)
+      end
+
+      it "sets the updated_at of the latest version" do
+        paper.minor_check!
+        paper.latest_version.update!(updated_at: Time.zone.now - 10.days)
+        paper.submit_minor_check! user
+        expect(paper.latest_version.updated_at.utc).to be_within(1.second).of Time.zone.now
       end
     end
 
@@ -210,20 +290,31 @@ describe Paper do
         paper.make_decision decision
         expect(paper.publishing_state).to eq("in_revision")
       end
+
+      it "creates a new major version" do
+        expect(paper.latest_version.version_string).to match(/^R0.0/)
+        paper.make_decision decision
+        expect(paper.latest_version.version_string).to match(/^R1.0/)
+      end
     end
 
     context "minor revision" do
       let(:decision) do
         FactoryGirl.create(:decision, verdict: "minor_revision")
       end
+
       it "puts the paper in_revision" do
         paper.make_decision decision
         expect(paper.publishing_state).to eq("in_revision")
       end
+
+      it "creates a new major version" do
+        expect(paper.latest_version.version_string).to match(/^R0.0/)
+        paper.make_decision decision
+        expect(paper.latest_version.version_string).to match(/^R1.0/)
+      end
     end
-
   end
-
 
   describe "callbacks" do
     let(:user) { FactoryGirl.create(:user) }
@@ -307,6 +398,20 @@ describe Paper do
 
     it "returns authors' last name, first name and affiliation name in an ordered list" do
       expect(paper.authors_list).to eq "1. #{plos_author1.last_name}, #{plos_author1.first_name} from #{plos_author1.specific.affiliation}\n2. #{plos_author2.last_name}, #{plos_author2.first_name} from #{plos_author2.specific.affiliation}"
+    end
+  end
+
+  describe "#latest_version" do
+    before do
+      # create a bunch of old minor versions
+      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 1)
+      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 2)
+      FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 3)
+    end
+    
+    it "returns the latest version" do
+      versioned_text = FactoryGirl.create(:versioned_text, paper: paper, major_version: 1, minor_version: 0)
+      expect(paper.latest_version).to eq(versioned_text)
     end
   end
 end

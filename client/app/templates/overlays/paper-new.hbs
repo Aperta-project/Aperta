@@ -4,40 +4,93 @@
 
 {{flash-messages}}
 <div class="inner-content">
-  <div class="inset-form-control">
-    <label class="inset-form-control-text">Short Title</label>
+
+  <div class="form-group">
+    <label class="paper-new-label" for="paper-short-title">
+      Give your paper a short title
+    </label>
     {{input type="text"
             value=model.shortTitle
-            class="inset-form-control-input"
-            placeholder="Crystalized Magnificence in the Modern World" id="paper-short-title"}}
+            class="paper-new-input"
+            placeholder="Crystalized Magnificence in the Modern World"
+            id="paper-short-title"}}
+
+    <span class="paper-new-char-count">{{shortTitleCount}}</span>
+    {{#if shortTitleCount}}
+      <span class="paper-new-valid-icon animation-fade-in"><i class="fa fa-check"></i></span>
+    {{/if}}
   </div>
 
   <div class="form-group">
-    {{select-2-single placeholder="Choose Journal"
-                      class="paper-new-journal-select"
-                      width="300"
-                      selectionSelected="selectJournal"
-                      source=journalProxies
-                      selectedData=selectedJournal}}
+    <label class="paper-new-label">
+      What journal are you submitting to?
+    </label>
 
-    {{select-2-single placeholder="Choose Paper Type"
-                      class="paper-new-paper-type-select"
-                      width="300"
-                      selectionSelected="selectPaperType"
-                      source=paperTypeProxies
-                      selectedData=selectedPaperType}}
+    {{#select-box items=journals
+                  selectedItem=model.journal
+                  class="paper-new-journal-select"
+                  placeholder="Select a journal"
+                  class="paper-new-journal-select"
+                  allowDeselect=true
+                  makeSelection=(action "selectJournal")
+                  clearSelection=(action "clearJournal")
+                  as |journal|}}
+      {{journal.name}}
+    {{/select-box}}
+
+    {{#if model.journal}}
+      <span class="paper-new-valid-icon animation-fade-in"><i class="fa fa-check"></i></span>
+    {{/if}}
   </div>
 
-  <div class="overlay-action-buttons">
-    {{#if paperSaving}}
-      <span class="paper-new-paper-saving animation-fade-in">
-        Creating new submission&#8230;
-        {{progress-spinner visible=true size="small"}}
-      </span>
-      <button type="submit" class="button-primary button--disabled">Create</button>
-    {{else}}
-      <span class="button-link button--green" {{action "closeAction"}}>cancel</span>
-      <button type="submit" class="button-primary button--green" {{action "createNewPaper"}}>Create</button>
+  <div class="form-group">
+    <label class="paper-new-label">
+      Choose the type of paper you're submitting
+    </label>
+
+    {{#select-box items=model.journal.paperTypes
+                  selectedItem=model.paperType
+                  class="paper-new-paper-type-select"
+                  placeholder="Select a paper type"
+                  class="paper-new-paper-type-select"
+                  allowDeselect=true
+                  disabled=journalEmpty
+                  makeSelection=(action "selectPaperType")
+                  clearSelection=(action "clearPaperType")
+                  as |paperType|}}
+      {{paperType}}
+    {{/select-box}}
+
+    {{#if model.paperType}}
+      <span class="paper-new-valid-icon animation-fade-in"><i class="fa fa-check"></i></span>
+    {{/if}}
+  </div>
+  <div class="paper-new-submit-actions">
+    <span class="button-secondary button--green fileinput-button {{if model.isSaving "button--disabled"}}">
+      <i class="fa fa-upload"></i> Upload Document
+      {{file-uploader id="upload-files"
+                      railsMethod="PUT"
+                      accept=".docx"
+                      uploadImmediately=false
+                      uploadReady="uploadReady"
+                      start="uploadStarted"
+                      progress="uploadProgress"
+                      done="uploadFinished"
+                      error="uploadError"
+                      filePrefix="paper/manuscript"
+                      disabled=model.isSaving
+                      url=manuscriptUploadUrl}}
+    </span>
+    <button type="submit"
+            class="button-secondary button--green paper-new-create-document-button {{if model.isSaving "button--disabled"}}"
+            {{action "createNewPaper"}}>
+      <i class="fa fa-pencil"></i> Create Document
+    </button>
+    {{#if model.isSaving}}
+      <div class="paper-new-paper-saving animation-fade-in">
+        {{progress-spinner visible=true size="medium"}}
+        Creating new Submission&#8230;
+      </div>
     {{/if}}
   </div>
 </div>

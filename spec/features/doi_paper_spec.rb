@@ -29,8 +29,10 @@ feature "Editing paper", selenium: true, js: true do
         p = PageFragment.new(find('#overlay'))
         p.select2(journal.name, css: '.paper-new-journal-select')
         p.select2(paper_type,  css: '.paper-new-paper-type-select')
-        click_button 'Create'
-        wait_for_ajax
+        click_button 'Create Document'
+        using_wait_time 10 do
+          wait_for_ajax
+        end
         expect(page.current_path).to match %r{/papers/\d+/edit}
         within "#paper-container" do
           expect(page).to_not have_text("DOI:")
@@ -52,22 +54,15 @@ feature "Editing paper", selenium: true, js: true do
         p = PageFragment.new(find('#overlay'))
         p.select2(journal.name, css: '.paper-new-journal-select')
         p.select2(paper_type,  css: '.paper-new-paper-type-select')
-        click_button 'Create'
-        wait_for_ajax
+        click_button 'Create Document'
+        using_wait_time 10 do
+          wait_for_ajax
+        end
 
         within ".task-list-doi" do
           expect(page).to have_content "DOI: vicious/robots.8888"
         end
         expect(page.current_path).to eq("/papers/#{Paper.last.id}/edit")
-
-        click_link 'Workflow'
-        uncheck 'paper-editable'
-        click_link 'Manuscript'
-
-        within ".task-list-doi" do
-          expect(page).to have_content "DOI: vicious/robots.8888"
-        end
-        expect(page.current_path).to eq("/papers/#{Paper.last.id}")
       end
     end
 

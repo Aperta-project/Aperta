@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   include Authorizations
   include TahiPusher::SocketTracker
+  include InvitationCodes
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -11,6 +12,7 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_with_basic_http
   before_action :set_pusher_socket
   before_action :configure_permitted_parameters, if: :devise_controller?
+
   rescue_from ActiveRecord::RecordInvalid, with: :render_errors
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
@@ -45,7 +47,8 @@ class ApplicationController < ActionController::Base
 
   def authenticate_with_basic_http
     return unless Rails.configuration.basic_auth_required
-    return if request.path =~ /\A\/api.*/
+    # Make assets available for bugsnag
+    return if request.path =~ %r{\A/(api|assets).*\Z}
 
     unless session[:authenticated]
       authenticate_or_request_with_http_basic do |name, password|

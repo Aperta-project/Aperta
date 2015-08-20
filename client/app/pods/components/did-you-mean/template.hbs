@@ -4,7 +4,7 @@
     {{#if recognized}}
       <i class="fa fa-check-circle"></i>
     {{/if}}
-    <span {{action "tryAgain"}} class="did-you-mean-change">change</span>
+    <span {{action "tryAgain" disabled}} class="did-you-mean-change">change</span>
   </div>
 {{else}}
 
@@ -12,10 +12,11 @@
     {{input value=resultText
             bubbles=true
             placeholder=placeholder
-            action="search"
             class=""
+            enter="search"
             focus-in="focus"
-            focus-out="search"}}
+            focus-out="search"
+            disabled=disabled}}
 
     {{#if searching}}
       {{progress-spinner visible=true size="small"}}

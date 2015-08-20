@@ -1,29 +1,24 @@
 #versioning-bar {
   width: 100%;
-  float: left;
-  position: relative;
-  display: inline-block;
-  vertical-align: text-top;
-  .bar-item {
+
+  .versioning-bar-container {
     width: $tahi-paper-width;
-    margin: auto;
-  }
-  select {
-    margin-left: 5px;
-    width: 200px;
+    margin: 5px auto;
+
+    .bar-item {
+      float: left;
+      margin-right: 15px;
+
+      select {
+        margin-left: 5px;
+        width: 200px;
+      }
+    }
   }
 }
 
 .version-visible {
-  .paper-body {
+  .paper-body, .title-editor {
     display: none;
   }
 }
-
-#paper-body {
-  .normal-body {
-    display: none;
-  }
-}
-
-

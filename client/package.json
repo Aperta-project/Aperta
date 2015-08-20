@@ -21,11 +21,10 @@
   "devDependencies": {
     "broccoli-asset-rev": "^2.1.2",
     "broccoli-funnel": "0.2.3",
-    "broccoli-leasot": "^1.0.7",
     "broccoli-merge-trees": "0.2.1",
     "ember-cli": "1.13.8",
     "ember-cli-app-version": "0.5.0",
-    "ember-cli-babel": "^5.1.3",
+    "ember-cli-babel": "5.1.3",
     "ember-cli-coffeescript": "~0.4.0",
     "ember-cli-content-security-policy": "0.4.0",
     "ember-cli-dependency-checker": "^1.0.1",
@@ -39,16 +38,16 @@
     "ember-cli-rails-addon": "0.0.12",
     "ember-cli-release": "0.2.3",
     "ember-cli-sri": "^1.0.3",
-    "ember-cli-uglify": "^1.2.0",
+    "ember-cli-deprecation-workflow": "0.1.4",
     "ember-data": "1.0.0-beta.18",
     "ember-data-factory-guy": "1.0.7",
     "ember-disable-proxy-controllers": "^1.0.0",
     "ember-export-application-global": "^1.0.3",
     "express": "^4.8.5",
     "glob": "^4.0.5",
-    "liquid-fire": "0.20.4",
-    "tahi-fileupload": "git+https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/Tahi-project/tahi-fileupload#3d68c7702cc1b6ba0a544c13f3d65d66a0ab33e6",
-    "tahi-editor-ve": "git+https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/Tahi-project/tahi-editor-ve#530159a1978ab185ae9a5d9e0052020dbc64e0f2"
+    "liquid-fire": "0.21.2",
+    "tahi-fileupload": "git+https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/Tahi-project/tahi-fileupload#a087596c01e694a163f407b41245aaa72a5e5ddb",
+    "tahi-editor-ve": "git+https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/Tahi-project/tahi-editor-ve#5c426e0d22c57b87af678919d5e150f483ae428a"
   },
   "ember-addon": {
     "paths": [

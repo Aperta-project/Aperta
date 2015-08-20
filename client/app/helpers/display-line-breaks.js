@@ -11,5 +11,5 @@ export default Ember.Helper.helper(function(params) {
     string = params[0].string;
   }
 
-  return Ember.String.htmlSafe(lineBreakToTag(string));
+  return lineBreakToTag(string);
 });

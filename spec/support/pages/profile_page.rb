@@ -6,15 +6,15 @@ class ProfilePage < Page
   text_assertions :email, '#profile-email h2'
 
   def full_name
-    find('#profile-name').text
+    find('#profile-name')
   end
 
   def username
-    find('#profile-username h2').text
+    find('#profile-username h2')
   end
 
   def email
-    all('#profile-email h2').last.text
+    all('#profile-email h2').last
   end
 
   def start_adding_affiliate

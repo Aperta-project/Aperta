@@ -24,7 +24,7 @@ const { computed, on } = Ember;
  *  @example
  *    {{#select-box items=journalsDataSource
  *                  selectedItem=model.journal
- *                  placeholder="Please select a journal"
+ *                  placeholder="Select a journal"
  *                  allowDeselect=true
  *                  makeSelection=(action "selectJournal")
  *                  clearSelection=(action "clearJournal")

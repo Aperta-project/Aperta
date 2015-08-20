@@ -1,4 +1,18 @@
 module TahiHelperMethods
+  module FeatureHelpers
+    def login_as(user)
+      visit "/"
+      fill_in "user[login]", with: user.username
+      fill_in "user[password]", with: "password"
+      page.click_button "Sign in"
+      wait_for_ajax
+    end
+
+    def sign_out
+      DashboardPage.new.sign_out
+    end
+  end
+
   def res_body
     JSON.parse(response.body)
   end
@@ -28,9 +42,13 @@ module TahiHelperMethods
     paper.reload
   end
 
-  def assign_journal_role(journal, user, type)
-    role = journal.roles.where(kind: type).first
-    role ||= FactoryGirl.create(:role, type, journal: journal)
+  def assign_journal_role(journal, user, role_or_type)
+    if role_or_type.is_a?(Role)
+      role = role_or_type
+    else
+      role = journal.roles.where(kind: role_or_type).first
+      role ||= FactoryGirl.create(:role, role_or_type, journal: journal)
+    end
     UserRole.create!(user: user, role: role)
     role
   end
@@ -41,4 +59,16 @@ module TahiHelperMethods
       yield
     end
   end
+
+  def with_valid_salesforce_credentials
+    sf_credentials       = Dotenv.load('.env.development').select{|k,v| k.include? 'DATABASEDOTCOM'}
+    old_test_credentials = sf_credentials.inject({}){|hash, el| hash[el[0]] = ENV[el[0]]; hash }
+
+    sf_credentials.each {|k,v| ENV[k] = v} #use real creds
+
+    yield
+
+    old_test_credentials.each {|k,v| ENV[k] = v} #reset to dummy creds
+  end
+
 end

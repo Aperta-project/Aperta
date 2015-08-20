@@ -1,4 +1,5 @@
 require 'support/sidekiq_helper_methods'
+require 'support/wait_for_ajax'
 
 class ContentNotSynchronized < StandardError; end
 #
@@ -7,6 +8,8 @@ class ContentNotSynchronized < StandardError; end
 class PageFragment
   include RSpec::Matchers
   include SidekiqHelperMethods
+  extend WaitForAjax
+  include WaitForAjax
 
   attr_reader :element
 
@@ -135,8 +138,14 @@ class PageFragment
       select2_container = first("label", text: select_name).find(:xpath, '..').find(".select2-container")
     end
 
+    drop_container = ".select2-drop"
+    drop_specifier = "li.select2-result-selectable"
     # Open select2 field
-    if select2_container.has_selector?(".select2-choice")
+    if select2_container.has_selector?(".select-box-element")
+      select2_container.find(".select-box-element").click
+      drop_container = ".select-box-item"
+      drop_specifier = ""
+    elsif select2_container.has_selector?(".select2-choice")
       select2_container.find(".select2-choice").click
     else
       select2_container.find(".select2-choices").click
@@ -146,31 +155,25 @@ class PageFragment
       find(:xpath, "//body").find(".select2-with-searchbox input.select2-input").set(value)
       page.execute_script(%|$("input.select2-input:visible").keyup();|)
       drop_container = ".select2-results"
-    else
-      drop_container = ".select2-drop"
     end
 
     [value].flatten.each do |value|
-      find(:xpath, "//body").find("#{drop_container} li.select2-result-selectable", text: value).click
+      find(:xpath, "//body").find("#{drop_container} #{drop_specifier}", text: value).click
     end
   end
 
 
   private
 
-  def synchronize_content! content
-    unless (session.has_content?(content) ||
-            session.has_content?(content.upcase) ||
-            session.has_content?(content.downcase))
-      raise ContentNotSynchronized.new("Page has no content #{content}")
+  def synchronize_content!(content)
+    unless session.has_content?(Regexp.new(Regexp.escape(content), Regexp::IGNORECASE))
+      fail ContentNotSynchronized, "Page has no content #{content}"
     end
   end
 
-  def synchronize_no_content! content
-    unless (session.has_no_content?(content) ||
-            session.has_no_content?(content.upcase) ||
-            session.has_no_content?(content.downcase))
-      raise ContentNotSynchronized.new("Page expected to not have content \"#{content}\", but it does")
+  def synchronize_no_content!(content)
+    unless session.has_no_content?(Regexp.new(Regexp.escape(content), Regexp::IGNORECASE))
+      fail ContentNotSynchronized, "Page expected to not have content \"#{content}\", but it does"
     end
   end
 end
@@ -211,7 +214,7 @@ class Page < PageFragment
   end
 
   def notice
-    find('p.notice').text
+    find('p.notice')
   end
 
   def navigate_to_dashboard

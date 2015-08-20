@@ -24,17 +24,6 @@ export default Ember.Mixin.create({
   selector: null,
 
   /**
-   *  The default is to position directly below the target,
-   *  this option will put it directly over
-   *
-   *  @property positionOver
-   *  @type Boolean
-   *  @default false
-   *  @optional
-  **/
-  positionOver: false,
-
-  /**
    *  This option will decrease the css max-height property to prevent
    *  the list from flowing out of the viewport. A class will need to
    *  be assigned to the component mixining this position-near. The class
@@ -110,14 +99,14 @@ export default Ember.Mixin.create({
     Ember.assert('position-near could not find target selector', target.length);
 
     let position = target.position();
+    let windowScrollTop = $(window).scrollTop();
     let offset   = target.offset();
     let targetHeight = target.outerHeight();
     let windowHeight = $(window).height();
 
-    let heightBottom    = windowHeight - offset.top - targetHeight;
-    let heightTop       = offset.top;
+    let heightTop       = offset.top - windowScrollTop;
+    let heightBottom    = windowHeight - heightTop;
     let closerToBottom  = heightTop > heightBottom;
-
     // css left
 
     let css = {
@@ -125,22 +114,14 @@ export default Ember.Mixin.create({
       left: Math.round(position.left)
     };
 
+    if(target.css("position") === "relative"){
+      css.left = 0;
+    }
+
     // css vertical
 
     if(closerToBottom) {
-      let bottom = Math.round(heightBottom);
-      if(this.get('positionOver')) {
-        css.bottom = bottom;
-      } else {
-        css.bottom = Math.round(bottom + targetHeight);
-      }
-    } else {
-      let top = Math.round(position.top);
-      if(this.get('positionOver')) {
-        css.top = top;
-      } else {
-        css.top = Math.round(top + targetHeight);
-      }
+      css.marginTop = -1 * this.$().height() - targetHeight;
     }
 
     // css width
@@ -155,10 +136,6 @@ export default Ember.Mixin.create({
 
     if(this.get('setMaxHeight')) {
       let height = closerToBottom ? heightTop : heightBottom;
-      if(this.get('positionOver')) {
-        height += targetHeight;
-      }
-
       css.maxHeight = height - this.get('offsetFromEdge');
     }
 

@@ -1,4 +1,4 @@
-{{input value=resultText bubbles=true placeholder=placeholder class="auto-suggest-no-border"}}
+{{input id=inputId value=resultText bubbles=true placeholder=placeholder name=inputName class="auto-suggest-no-border"}}
 
 {{#if searching}}
   {{progress-spinner visible=true size="small"}}
@@ -6,6 +6,7 @@
 
 {{#if searchResults}}
   {{#auto-suggest-list class="animation-fade-in"
+                       positionNearSelector=positionNearSelector
                        selectItem="selectItem"
                        selectUnknownItem="selectUnknownItem"
                        highlightedItem=highlightedItem

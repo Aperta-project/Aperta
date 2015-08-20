@@ -26,12 +26,8 @@ export default Ember.Component.extend(DragNDrop.DroppableMixin, {
 
   drop(e) {
     this.removeDragStyles();
-    this.get('controller').send(
-      'changeTaskPhase',
-      DragNDrop.dragItem,
-      this.get('content')
-    );
+    this.sendAction('changeTaskPhase', DragNDrop.dragItem, this.get('content'));
     DragNDrop.dragItem = null;
-    return DragNDrop.cancel(e);
+    DragNDrop.cancel(e);
   }
 });

@@ -6,6 +6,7 @@ require 'spec_helper'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'capybara/rspec'
+require "email_spec"
 require 'sidekiq/testing'
 require 'pusher-fake/support/rspec'
 
@@ -14,6 +15,9 @@ require 'pusher-fake/support/rspec'
 require_relative 'support/pages/page'
 require_relative 'support/pages/overlay'
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
+
+# Build our ember app NOW and not on demand
+EmberCLI.compile!
 
 Tahi.service_log = Logger.new "#{::Rails.root}/log/service.log"
 
@@ -36,7 +40,6 @@ Capybara.register_driver :selenium do |app|
 end
 
 Capybara.javascript_driver = :selenium
-Capybara.default_wait_time = 10
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
@@ -67,10 +70,13 @@ RSpec.configure do |config|
   config.order = "random"
 
   config.include Devise::TestHelpers, type: :controller
+  config.include Warden::Test::Helpers, type: :controller
   config.include FactoryGirl::Syntax::Methods
   config.include TahiHelperMethods
   config.extend TahiHelperClassMethods
-  config.include Warden::Test::Helpers
+  config.include EmailSpec::Helpers
+  config.include EmailSpec::Matchers
+  config.include TahiHelperMethods::FeatureHelpers, type: :feature
 
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation, except: ['task_types'])
@@ -110,5 +116,9 @@ RSpec.configure do |config|
 
   config.append_after(:each) do
     DatabaseCleaner.clean
+  end
+
+  config.before(:each) do
+    ActionMailer::Base.deliveries.clear
   end
 end

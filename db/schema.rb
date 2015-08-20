@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150809211043) do
+ActiveRecord::Schema.define(version: 20150821183003) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,7 +62,7 @@ ActiveRecord::Schema.define(version: 20150809211043) do
     t.datetime "updated_at"
     t.string   "title"
     t.string   "caption"
-    t.string   "status",          default: "processing"
+    t.string   "status",     default: "processing"
     t.string   "kind"
   end
 
@@ -191,6 +191,7 @@ ActiveRecord::Schema.define(version: 20150809211043) do
     t.datetime "updated_at",  null: false
     t.integer  "decision_id"
     t.string   "information"
+    t.text     "body"
   end
 
   add_index "invitations", ["actor_id"], name: "index_invitations_on_actor_id", using: :btree
@@ -255,22 +256,24 @@ ActiveRecord::Schema.define(version: 20150809211043) do
   create_table "papers", force: :cascade do |t|
     t.string   "short_title"
     t.string   "title"
-    t.text     "abstract",          default: ""
+    t.text     "abstract",                 default: ""
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
     t.string   "paper_type"
-    t.integer  "journal_id",                         null: false
+    t.integer  "journal_id",                                null: false
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
     t.datetime "last_heartbeat_at"
     t.integer  "striking_image_id"
-    t.boolean  "editable",          default: true
+    t.boolean  "editable",                 default: true
     t.text     "doi"
-    t.string   "editor_mode",       default: "html", null: false
+    t.string   "editor_mode",              default: "html", null: false
     t.string   "publishing_state"
     t.datetime "submitted_at"
+    t.string   "salesforce_manuscript_id"
+    t.text     "withdrawal_reasons",       default: [],                  array: true
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
@@ -372,7 +375,7 @@ ActiveRecord::Schema.define(version: 20150809211043) do
     t.string   "attachment"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "status",     default: "processing"
+    t.string   "status",      default: "processing"
     t.boolean  "publishable", default: true
   end
 
@@ -496,15 +499,15 @@ ActiveRecord::Schema.define(version: 20150809211043) do
 
   create_table "versioned_texts", force: :cascade do |t|
     t.integer  "submitting_user_id"
-    t.integer  "paper_id"
-    t.integer  "major_version",      default: 0
-    t.integer  "minor_version",      default: 0
-    t.boolean  "active",             default: true
-    t.boolean  "copy_on_edit",       default: false
+    t.integer  "paper_id",                        null: false
+    t.integer  "major_version",                   null: false
+    t.integer  "minor_version",                   null: false
     t.text     "text",               default: ""
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "versioned_texts", ["minor_version", "major_version", "paper_id"], name: "unique_version", unique: true, using: :btree
 
   add_foreign_key "decisions", "papers"
   add_foreign_key "discussion_participants", "discussion_topics"

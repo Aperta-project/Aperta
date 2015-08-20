@@ -108,7 +108,7 @@ class Task < ActiveRecord::Base
 
   def feed_names
     if submission_task?
-      ['manuscript']
+      ['manuscript', 'workflow']
     else
       ['workflow']
     end

@@ -37,9 +37,7 @@ feature 'Adhoc cards', js: true do
         expect(page).to have_css(".download-link a[href*='#{Attachment.last.file.path}']")
         expect(page).to have_css(".thumbnail-preview img[src*='#{Attachment.last.file.versions[:preview].path}']")
 
-        find(".thumbnail-preview").hover
-        find(".replace").click
-        overlay.attach_and_upload_file("yeti2.jpg")
+        overlay.replace_file("yeti2.jpg")
         expect(page).to have_css(".download-link a[href*='#{Attachment.last.file.path}']")
       end
     end

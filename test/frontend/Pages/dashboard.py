@@ -166,7 +166,7 @@ class DashboardPage(AuthenticatedPage):
     else:
       info_text = self._get(self._dashboard_info_text)
       assert info_text.text == 'Your scientific paper submissions will\nappear here.'
-      assert manuscript_typeface in info_text.value_of_css_property('font-family')
+      assert application_typeface in info_text.value_of_css_property('font-family')
       assert info_text.value_of_css_property('font-size') == '24px'
       assert info_text.value_of_css_property('font-style') == 'italic'
       assert info_text.value_of_css_property('line-height') == '24px'
@@ -234,8 +234,8 @@ class DashboardPage(AuthenticatedPage):
     # The following call will fail because of an inconsistent implementation of the style of this heading
     # thus for the time being, I am using the one off validations. These should be removed when the bug
     # is fixed.
-    # self.validate_title_style(modal_title)
-    assert manuscript_typeface in modal_title.value_of_css_property('font-family')
+    # self.validate_application_h1_style(modal_title)
+    assert application_typeface in modal_title.value_of_css_property('font-family')
     assert modal_title.value_of_css_property('font-size') == '48px'
     assert modal_title.value_of_css_property('font-weight') == '500'
     # Current implementation seems wrong Pivotal Ticket:

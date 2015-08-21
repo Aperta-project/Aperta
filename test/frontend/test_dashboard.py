@@ -48,6 +48,7 @@ class ApertaDashboardTest(FrontEndTest):
       Modals: View Invites and Create New Submission
     """
     user_type = random.choice(users)
+    print('Logging in as user: ' + user_type)
     login_page = LoginPage(self.getDriver())
     login_page.enter_login_field(user_type)
     login_page.enter_password_field(login_valid_pw)

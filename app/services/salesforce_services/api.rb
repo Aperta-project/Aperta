@@ -14,14 +14,39 @@ module SalesforceServices
 
       client
     end
+
     def self.client
       @@client ||= self.get_client
     end
 
     def self.create_manuscript(paper_id:)
-      mt = ManuscriptTranslator.new(user_id: client.user_id, paper: Paper.find(paper_id))
+      paper = Paper.find(paper_id)
+
+      mt = ManuscriptTranslator.new(user_id: client.user_id, paper: paper)
       manuscript = self.client.materialize("Manuscript__c")
-      manuscript.create(mt.paper_to_manuscript_hash)
+      sf_paper = manuscript.create(mt.paper_to_manuscript_hash)
+
+      paper.update_attribute(:salesforce_manuscript_id, sf_paper.Id)
     end
+
+    def self.update_manuscript(paper_id:)
+      paper = Paper.find(paper_id)
+
+      mt = ManuscriptTranslator.new(user_id: client.user_id, paper: paper)
+      manuscript = self.client.materialize("Manuscript__c")
+      sf_paper = manuscript.find(paper.salesforce_manuscript_id)
+
+      sf_paper.update_attributes mt.paper_to_manuscript_hash
+    end
+
+    def self.find_or_create_manuscript(paper_id:)
+      p = Paper.find(paper_id)
+      if p.salesforce_manuscript_id
+        self.update_manuscript(paper_id: paper_id)
+      else
+        self.create_manuscript(paper_id: paper_id)
+      end
+    end
+
   end
 end

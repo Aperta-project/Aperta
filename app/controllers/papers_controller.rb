@@ -105,11 +105,16 @@ class PapersController < ApplicationController
   end
 
   def withdraw
+    paper.update_column(:withdrawal_reason, withdrawal_params[:reason])
     paper.withdraw!
     respond_with paper
   end
 
   private
+
+  def withdrawal_params
+    params.permit(:reason)
+  end
 
   def paper_params
     params.require(:paper).permit(

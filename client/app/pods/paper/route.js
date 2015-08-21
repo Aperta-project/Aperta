@@ -92,7 +92,7 @@ export default AuthorizedRoute.extend({
     },
 
     showConfirmWithdrawOverlay() {
-      this.controllerFor('overlays/paper-withdraw').set('model', this.modelFor('paper.edit'));
+      this.controllerFor('overlays/paper-withdraw').set('model', this.currentModel);
 
       this.send('openOverlay', {
         template: 'overlays/paper-withdraw',

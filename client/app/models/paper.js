@@ -48,6 +48,7 @@ export default DS.Model.extend({
   title: attr('string'),
   versions: attr(),
   versioningMode: attr('boolean', {defaultValue: false}),
+  withdrawalReason: attr('string'),
 
   displayTitle: computed('title', 'shortTitle', function() {
     return this.get('title') || this.get('shortTitle');

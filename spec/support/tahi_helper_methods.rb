@@ -41,4 +41,16 @@ module TahiHelperMethods
       yield
     end
   end
+
+  def with_valid_salesforce_credentials
+    sf_credentials       = Dotenv.load('.env.development').select{|k,v| k.include? 'DATABASEDOTCOM'}
+    old_test_credentials = sf_credentials.inject({}){|hash, el| hash[el[0]] = ENV[el[0]]; hash }
+
+    sf_credentials.each {|k,v| ENV[k] = v} #use real creds
+
+    yield
+
+    old_test_credentials.each {|k,v| ENV[k] = v} #reset to dummy creds
+  end
+
 end

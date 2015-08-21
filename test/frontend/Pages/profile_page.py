@@ -132,7 +132,6 @@ class ProfilePage(AuthenticatedPage):
   def validate_reset_password(self):
     """Validate reset password button"""
     reset_btn = self._get(self._reset_btn)
-    #self._actions.move_to_element(reset_btn).perform()
     reset_btn.click()
     time.sleep(3)
     message = self._get(self._success_message).text
@@ -140,14 +139,6 @@ class ProfilePage(AuthenticatedPage):
 
   def validate_affiliation_form_css(self):
     """Validate css from add affiliation form"""
-    # Delete previous affiliation is any
-    
-    #self.set_timeout(2)
-    #remove_icons = self._gets(self._remove_affiliation_icon)
-    #for remove_icon in remove_icons:
-    #    remove_icon.click()
-    #self.restore_timeout()
-
     add_aff_title = self._get(self._add_affiliation_title)
     assert 'helvetica' in add_aff_title.value_of_css_property('font-family')
     assert add_aff_title.text == 'New Affiliation'

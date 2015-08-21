@@ -125,6 +125,10 @@ export default Ember.Mixin.create({
       left: Math.round(position.left)
     };
 
+    if(target.css("position") === "relative"){
+      css.left = 0;
+    }
+
     // css vertical
 
     if(closerToBottom) {

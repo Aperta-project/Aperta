@@ -23,12 +23,12 @@ feature "Editing paper", js: true do
       edit_paper.body = "Contrary to popular belief"
       # check if changes are applied
       expect(edit_paper).to have_paper_title("Lorem Ipsum Dolor Sit Amet")
-      expect(edit_paper).to have_body_text("Contrary to popular belief")
+      expect(edit_paper.has_body_text?("Contrary to popular belief")).to be(true)
       edit_paper.save
       edit_paper.reload
       # check if changes are persisted
       expect(edit_paper).to have_paper_title("Lorem Ipsum Dolor Sit Amet")
-      expect(edit_paper).to have_body_text("Contrary to popular belief")
+      expect(edit_paper.has_body_text?("Contrary to popular belief")).to be(true)
     end
   end
 end

@@ -99,6 +99,7 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'email_spec'
   gem 'selenium-webdriver'
   gem 'simplecov'
   gem 'codeclimate-test-reporter', require: nil

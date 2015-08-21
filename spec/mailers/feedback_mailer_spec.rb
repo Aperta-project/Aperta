@@ -6,7 +6,8 @@ describe FeedbackMailer, redis: true do
   let(:user) { FactoryGirl.create(:user) }
   let(:feedback) {
     { referrer: "http://example.com/referrer",
-      remarks: "Here is my feedback"
+      remarks: "Here is my feedback",
+      screenshots: [{url: "http://tahi.s3.amazonaws.com/pic.pdf", filename: "pic.pdf"}]
     }
   }
   let(:email) { FeedbackMailer.contact(user, feedback) }
@@ -23,6 +24,10 @@ describe FeedbackMailer, redis: true do
 
     it "includes remarks in mailer body" do
       expect(email.body).to include feedback['remarks']
+    end
+
+    it "includes link to screenshots in mailer body" do
+      expect(email.body).to include feedback['screenshots']
     end
   end
 end

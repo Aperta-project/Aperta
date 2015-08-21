@@ -1,6 +1,6 @@
 <div class="question-text">{{{model.question}}}</div>
 <div class="additional-data">
-  <span class="button-secondary button--green knockout fileinput-button">
+  <span class="button-primary button--green fileinput-button {{if disabled 'button--disabled'}}">
     {{if model.questionAttachment "Replace File" "Select & upload"}}
 
     {{file-uploader accept=accept
@@ -8,11 +8,13 @@
                     progress="uploadProgress"
                     done="uploadFinished"
                     error="uploadError"
-                    filePrefix="question_attachment"}}
+                    filePrefix="question_attachment"
+                    disabled=disabled}}
   </span>
   {{#if fileUpload}}
     <div id="paper-file-uploads">
-      {{upload-preview upload=fileUpload}}
+      {{upload-preview upload=fileUpload
+                       disabled=disabled}}
     </div>
   {{/if}}
   {{#if model.questionAttachment}}

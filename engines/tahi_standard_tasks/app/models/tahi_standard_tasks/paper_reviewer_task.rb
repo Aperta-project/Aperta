@@ -17,8 +17,12 @@ module TahiStandardTasks
       ReviewerMailer.delay.reviewer_declined(invite_reviewer_task_id: id, assigner_id: paper.editor.try(:id), reviewer_id: invitation.try(:invitee_id))
     end
 
-    def invitation_rescinded(paper_id:, invitee_id:)
-      PaperReviewerMailer.delay.notify_rescission paper_id: paper_id, invitee_id: invitee_id
+    def invitation_rescinded(invitation)
+      PaperReviewerMailer.delay.notify_rescission(
+        recipient_email: invitation.email,
+        recipient_name: invitation.recipient_name,
+        paper_id: invitation.paper.id
+      )
     end
 
     def array_attributes
@@ -37,10 +41,17 @@ module TahiStandardTasks
       'reviewer'
     end
 
-    def invite_letter
-      template = <<-TEXT.strip_heredoc
-        Dear [REVIEWER NAME],
+    def invitation_template
+      LetterTemplate.new(
+        salutation: "Dear [REVIEWER NAME],",
+        body: invitation_template_body
+      )
+    end
 
+    private
+
+    def invitation_template_body
+      template = <<-TEXT.strip_heredoc
         You've been invited as a Reviewer on “%{manuscript_title}”, for %{journal_name}.
 
         The abstract is included below. We would ideally like to have reviews returned to us within 10 days. If you require additional time, please do let us know so that we may plan accordingly.
@@ -52,11 +63,8 @@ module TahiStandardTasks
         Sincerely,
         %{journal_name} Team
       TEXT
-
       template % template_data
     end
-
-    private
 
     def template_data
       { manuscript_title: paper.title,

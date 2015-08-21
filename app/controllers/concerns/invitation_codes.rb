@@ -13,6 +13,9 @@ module InvitationCodes
     return if invitation_code.blank?
 
     if Invitation.where(code: invitation_code).invited.exists?
+      unless current_user
+        flash[:notice] = "To accept or decline your invitation, please sign in or create an account."
+      end
       session["invitation_code"] = invitation_code
     else
       flash[:alert] = "We're sorry, the invitation is no longer active."

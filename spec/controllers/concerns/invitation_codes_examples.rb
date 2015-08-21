@@ -44,6 +44,17 @@ RSpec.shared_examples_for "controller supports invitation codes" do
         get :index, invitation_code: invitation.code
         expect(session["invitation_code"]).to eq invitation.code
       end
+
+      it "sets a flash[:notice] message when the user is not signed in" do
+        get :index, invitation_code: invitation.code
+        expect(flash[:notice]).to eq "To accept or decline your invitation, please sign in or create an account."
+      end
+
+      it "doesn't set a flash[:notice] message when the user is signed in" do
+        sign_in user
+        get :index, invitation_code: invitation.code
+        expect(flash[:notice]).to be nil
+      end
     end
   end
 

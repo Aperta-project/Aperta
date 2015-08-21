@@ -25,6 +25,7 @@ feature "Inviting a new reviewer", js: true do
 
     open_email "malz@example.com"
     visit_in_email root_path(invitation_code: Invitation.last.code)
+    expect(page).to have_content("To accept or decline your invitation, please sign in or create an account.")
 
     dashboard_page = sign_up_as("malz@example.com")
     dashboard_page.accept_invitation_for_paper(paper)

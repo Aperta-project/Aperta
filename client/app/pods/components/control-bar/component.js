@@ -2,9 +2,9 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   classNames: ['control-bar'],
-  classNameBindings: ['subNavVisible:control-bar-sub-nav-active'],
+  classNameBindings: ['submenuVisible:control-bar-sub-nav-active'],
   hasJournalLogo: Ember.computed.notEmpty('paper.journal.logoUrl'),
-  subNavVisible: false,
+  submenuVisible: false,
   contributorsVisible: false,
   downloadsVisible: false,
   versionsVisible: false,
@@ -13,42 +13,24 @@ export default Ember.Component.extend({
     return '/papers/' + this.get('paper.id') + '/download';
   }),
 
-  hideVisible() {
-    this.setProperties({
-      contributorsVisible: false,
-      downloadsVisible: false,
-      versionsVisible: false
-    });
+  resetSubmenuFlags() {
+    this.setProperties({ contributorsVisible: false, downloadsVisible: false, versionsVisible: false });
   },
 
-  hideSubNav() {
-    this.set('subNavVisible', false);
-    this.hideVisible();
-  },
-
-  showVersions() {
-    this.hideVisible();
-    this.set('versionsVisible', true);
-  },
-
-  showContributors() {
-    this.hideVisible();
-    this.set('contributorsVisible', true);
-  },
-
-  showDownloads() {
-    this.hideVisible();
-    this.set('downloadsVisible', true);
+  showSection(sectionName) {
+    this.resetSubmenuFlags();
+    this.set('submenuVisible', true);
+    this.set(`${sectionName}Visible`, true);
   },
 
   actions: {
 
     showSubNav(sectionName) {
-      if (this.get('subNavVisible') && this.get(`${sectionName}Visible`)) {
-        this.hideSubNav();
+      if (this.get('submenuVisible') && this.get(`${sectionName}Visible`)) {
+        this.resetSubmenuFlags();
+        this.set('submenuVisible', false);
       } else {
-        this.set('subNavVisible', true);
-        this.trigger(`show${sectionName.capitalize()}`);
+        this.showSection(sectionName);
       }
     },
 

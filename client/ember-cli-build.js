@@ -7,7 +7,6 @@ module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
     storeConfigInMeta: false,
     emberCliFontAwesome: { includeFontAwesomeAssets: false },
-    exportApplicationGlobal: true,
     markers: {
       enabled: true,
       kinds: ['TODO', 'FIXME']

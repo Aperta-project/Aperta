@@ -13,48 +13,48 @@ export default Ember.Component.extend({
     return '/papers/' + this.get('paper.id') + '/download';
   }),
 
+  hideVisible() {
+    this.setProperties({
+      contributorsVisible: false,
+      downloadsVisible: false,
+      versionsVisible: false
+    });
+  },
+
+  hideSubNav() {
+    this.set('subNavVisible', false);
+    this.hideVisible();
+  },
+
+  showVersions() {
+    this.hideVisible();
+    this.set('versionsVisible', true);
+  },
+
+  showContributors() {
+    this.hideVisible();
+    this.set('contributorsVisible', true);
+  },
+
+  showDownloads() {
+    this.hideVisible();
+    this.set('downloadsVisible', true);
+  },
+
   actions: {
 
     showSubNav(sectionName) {
       if (this.get('subNavVisible') && this.get(sectionName + 'Visible')) {
-        this.send('hideSubNav');
+        this.hideSubNav();
       } else {
         this.set('subNavVisible', true);
-        this.send('show' + (sectionName.capitalize()));
+        this.trigger('show' + (sectionName.capitalize()));
       }
-    },
-
-    hideSubNav() {
-      this.set('subNavVisible', false);
-      this.send('hideVisible');
-    },
-
-    hideVisible() {
-      this.setProperties({
-        contributorsVisible: false,
-        downloadsVisible: false,
-        versionsVisible: false
-      });
     },
 
     toggleVersioningMode() {
       this.toggleProperty('paper.versioningMode');
       this.send('showSubNav', 'versions');
-    },
-
-    showVersions() {
-      this.send('hideVisible');
-      this.set('versionsVisible', true);
-    },
-
-    showContributors() {
-      this.send('hideVisible');
-      this.set('contributorsVisible', true);
-    },
-
-    showDownloads() {
-      this.send('hideVisible');
-      this.set('downloadsVisible', true);
     },
 
     addContributors(activity) {

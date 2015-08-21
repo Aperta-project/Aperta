@@ -50,6 +50,14 @@
         Discussions
       {{/link-to}}
     </li>
+    {{#if canViewManuscriptManager}}
+      <li class="control-bar-item">
+        {{#link-to "paper.workflow" paper class="control-bar-link control-bar-button"}}
+          <div class="control-bar-link-icon">{{partial "svg/manuscript-manager-icon"}}</div>
+          Workflow
+        {{/link-to}}
+      </li>
+    {{/if}}
   </ul>
 </div>
 

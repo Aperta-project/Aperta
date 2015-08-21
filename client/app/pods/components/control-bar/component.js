@@ -49,6 +49,10 @@ export default Ember.Component.extend({
 
     showActivity(activity) {
       this.sendAction('showActivity', activity);
+    },
+
+    exportDocument(downloadType) {
+      this.sendAction('exportDocument', downloadType);
     }
   }
 });

@@ -99,7 +99,7 @@
     <div class="manuscript-download-links active">
 
       {{#each supportedDownloadFormats as |downloadType|}}
-        <a href="#" {{action "export" downloadType}} class="{{unbound downloadType.format}}" title="Download {{unbound downloadType.format}}">{{partial downloadType.icon}}</a>
+        <a href="#" {{action "exportDocument" downloadType}} class="{{unbound downloadType.format}}" title="Download {{unbound downloadType.format}}">{{partial downloadType.icon}}</a>
       {{/each}}
 
       {{#direct-download-link link=downloadLink extension=".epub"}}

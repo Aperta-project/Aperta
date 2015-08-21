@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   classNameBindings: ['subNavVisible:control-bar-sub-nav-active'],
   hasJournalLogo: Ember.computed.notEmpty('paper.journal.logoUrl'),
   subNavVisible: false,
+  contributorsVisible: false,
   versionsVisible: false,
 
   actions: {
@@ -39,6 +40,11 @@ export default Ember.Component.extend({
     showVersions() {
       this.send('hideVisible');
       this.set('versionsVisible', true);
-    }
+    },
+
+    showContributors() {
+      this.send('hideVisible');
+      this.set('contributorsVisible', true);
+    },
   }
 });

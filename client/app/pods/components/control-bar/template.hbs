@@ -18,10 +18,31 @@
         </div>
       </div>
     </li>
+    <li class="control-bar-item">
+      <div class="control-bar-link contributors-link __with-icon" {{action "showSubNav" "contributors"}}>
+        <div class="control-bar-link-icon">
+          <span class="fa fa-user"></span>
+        </div>
+        <div class="control-bar-link-text">
+          <span class="control-bar-toggle {{if contributorsVisible "control-bar-toggle--active"}}">{{partial "svg/plus"}}</span>
+          Collaborators
+        </div>
+      </div>
+    </li>
   </ul>
 </div>
 
 <div class="control-bar-sub-items">
+
+  {{#if contributorsVisible}}
+    <div class="contributors active">
+      <a class="contributors-add" {{action "addContributors"}}>Add Collaborators</a>
+
+      {{#each paper.collaborators as |contributor|}}
+        <div class="contributor">{{unbound contributor.fullName}}</div>
+      {{/each}}
+    </div>
+  {{/if}}
 
   {{#if versionsVisible}}
     <div class="versions active">

@@ -9,6 +9,7 @@ export default DS.Model.extend({
   invitee: DS.belongsTo('user', { inverse: 'invitations', async: true }),
 
   title: DS.attr('string'),
+  body: DS.attr('string'),
   abstract: DS.attr('string'),
   state: DS.attr('string'),
   email: DS.attr('string'),

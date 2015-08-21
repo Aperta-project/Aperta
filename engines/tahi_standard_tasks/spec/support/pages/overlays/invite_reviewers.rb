@@ -1,17 +1,26 @@
 class InviteReviewersOverlay < CardOverlay
   text_assertions :reviewer, '.invitee-full-name'
+
   def paper_reviewers=(reviewers)
     reviewers.each do |reviewer|
-      if find('.select2-chosen')
-        select2 reviewer.email, css: '.reviewer-select2', search: true
-      end
-      page.has_no_css? '.select2-searching', visible: false
-      page.has_css? '.select2-chosen', text: reviewer.email
+      # Find thru auto-suggest
+      fill_in "Reviewer", with: reviewer.full_name
+      find(".auto-suggest-item", text: "#{reviewer.full_name} [#{reviewer.email}]").click
+
+      # Invite
       find('.compose-invite-button').click
       find('.invite-reviewer-button').click
 
+      # Make sure we see they were invited
       find('table .active-invitations .invitee-full-name', text: reviewer.full_name)
     end
+  end
+
+  def invite_new_reviewer(email)
+    fill_in "Reviewer", with: email
+    find('.compose-invite-button').click
+    find('.invite-reviewer-button').click
+    find('table .active-invitations .invitee-full-name', text: email)
   end
 
   def paper_reviewers
@@ -20,12 +29,8 @@ class InviteReviewersOverlay < CardOverlay
 
   def has_reviewers?(*reviewers)
     reviewers.all? do |reviewer|
-      has_reviewer? reviewer.full_name
+      has_reviewer?(reviewer)
     end
-  end
-
-  def remove_all_paper_reviewers!
-    all('a.select2-search-choice-close').each &:click
   end
 
   def total_invitations_count(count)

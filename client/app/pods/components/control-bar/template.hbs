@@ -45,21 +45,21 @@
       </div>
     </li>
     <li class="control-bar-item">
-      {{#link-to topicsIndexPath paper class="control-bar-link control-bar-button"}}
+      {{#link-to topicsIndexPath paper class="control-bar-link control-bar-button discussions-link"}}
         <div class="control-bar-link-icon"><span class="fa fa-comment"></span></div>
         Discussions
       {{/link-to}}
     </li>
     {{#if canViewManuscriptManager}}
       <li class="control-bar-item">
-        {{#link-to "paper.workflow" paper class="control-bar-link control-bar-button"}}
+        {{#link-to "paper.workflow" paper class="control-bar-link control-bar-button workflow-link"}}
           <div class="control-bar-link-icon">{{partial "svg/manuscript-manager-icon"}}</div>
           Workflow
         {{/link-to}}
       </li>
     {{/if}}
     <li class="control-bar-item dropdown">
-      <a id="more-dropdown-menu" class="control-bar-link" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+      <a id="more-dropdown-menu" class="control-bar-link more-link" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
         <div class="control-bar-link-icon">
           <span class="fa fa-ellipsis-v"></span>
         </div>
@@ -67,13 +67,13 @@
       </a>
       <ul class="dropdown-menu pull-right" aria-labelledby="more-dropdown-menu">
         <li>
-          <a href="#">
+          <a href="#" class="appeal-link">
             <span class="fa fa-image"></span>
             Appeal
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="#" class="withdraw-link">
             <span class="fa fa-trash fa-lg"></span>
             Withdrawal Manuscript
           </a>

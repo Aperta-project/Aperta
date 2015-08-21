@@ -8,4 +8,24 @@
       {{/if}}
     </li>
   </ul>
+  <ul>
+    <li class="control-bar-item">
+      <div class="control-bar-link versions-link __with-icon" {{action "toggleVersioningMode" "versions"}}>
+        <div class="control-bar-link-icon"><i class="fa fa-files-o"></i></div>
+        <div class="control-bar-link-text">
+          <span class="control-bar-toggle {{if versionsVisible "control-bar-toggle--active"}}">{{partial "svg/plus"}}</span>
+          Versions
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div class="control-bar-sub-items">
+
+  {{#if versionsVisible}}
+    <div class="versions active">
+      {{versioning-bar paper=paper}}
+    </div>
+  {{/if}}
 </div>

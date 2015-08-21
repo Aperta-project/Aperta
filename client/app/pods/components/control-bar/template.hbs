@@ -29,6 +29,15 @@
         </div>
       </div>
     </li>
+    <li class="control-bar-item">
+      <div class="control-bar-link downloads-link __with-icon" {{action "showSubNav" "downloads"}}>
+        <div class="control-bar-link-icon">{{partial "svg/downloads"}}</div>
+        <div class="control-bar-link-text">
+          <span class="control-bar-toggle {{if downloadsVisible "control-bar-toggle--active"}}">{{partial "svg/plus"}}</span>
+          Downloads
+        </div>
+      </div>
+    </li>
   </ul>
 </div>
 
@@ -41,6 +50,23 @@
       {{#each paper.collaborators as |contributor|}}
         <div class="contributor">{{unbound contributor.fullName}}</div>
       {{/each}}
+    </div>
+  {{/if}}
+
+  {{#if downloadsVisible}}
+    <div class="manuscript-download-links active">
+
+      {{#each supportedDownloadFormats as |downloadType|}}
+        <a href="#" {{action "export" downloadType}} class="{{unbound downloadType.format}}" title="Download {{unbound downloadType.format}}">{{partial downloadType.icon}}</a>
+      {{/each}}
+
+      {{#direct-download-link link=downloadLink extension=".epub"}}
+        {{partial "svg/epub-icon"}}
+      {{/direct-download-link}}
+
+      {{#direct-download-link link=downloadLink extension=".pdf"}}
+        {{partial "svg/pdf-icon"}}
+      {{/direct-download-link}}
     </div>
   {{/if}}
 

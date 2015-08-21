@@ -6,7 +6,12 @@ export default Ember.Component.extend({
   hasJournalLogo: Ember.computed.notEmpty('paper.journal.logoUrl'),
   subNavVisible: false,
   contributorsVisible: false,
+  downloadsVisible: false,
   versionsVisible: false,
+
+  downloadLink: Ember.computed('paper.id', function() {
+    return '/papers/' + this.get('paper.id') + '/download';
+  }),
 
   actions: {
 
@@ -46,5 +51,10 @@ export default Ember.Component.extend({
       this.send('hideVisible');
       this.set('contributorsVisible', true);
     },
+
+    showDownloads() {
+      this.send('hideVisible');
+      this.set('downloadsVisible', true);
+    }
   }
 });

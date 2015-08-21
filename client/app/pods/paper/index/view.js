@@ -15,10 +15,6 @@ export default Ember.View.extend(RedirectsIfEditable, {
 
   resetBackgroundColor: on('willDestroyElement', function() {
     $('html').removeClass('matte paper-submitted');
-  }),
-
-  teardownControlBarSubNav: on('willDestroyElement', function() {
-    $('html').removeClass('control-bar-sub-nav-active');
-  }),
+  })
 
 });

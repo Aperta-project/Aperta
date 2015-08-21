@@ -44,11 +44,11 @@ export default Ember.Component.extend({
   actions: {
 
     showSubNav(sectionName) {
-      if (this.get('subNavVisible') && this.get(sectionName + 'Visible')) {
+      if (this.get('subNavVisible') && this.get(`${sectionName}Visible`)) {
         this.hideSubNav();
       } else {
         this.set('subNavVisible', true);
-        this.trigger('show' + (sectionName.capitalize()));
+        this.trigger(`show${sectionName.capitalize()}`);
       }
     },
 

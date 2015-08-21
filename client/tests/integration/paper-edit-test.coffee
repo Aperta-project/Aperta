@@ -153,8 +153,8 @@ test 'on paper.edit when there are no metadata tasks', (assert) ->
     .then ->
       !assert.ok(find('#paper-container.sidebar-empty').length, "The sidebar should be hidden")
     .then ->
-      msg = "There is a submit manuscript button in the main area"
-      assert.ok(find('.no-sidebar-submit-manuscript.button--green:contains("Submit Manuscript")').length, msg)
+      msg = "There is a submit button in the main area"
+      assert.ok(find('.no-sidebar-submit-manuscript.button--green:contains("Submit")').length, msg)
 
 
 test 'on paper.index when there are no metadata tasks', (assert) ->
@@ -180,5 +180,5 @@ test 'on paper.index when there are no metadata tasks', (assert) ->
 
   andThen ->
     assert.ok find('#paper-container.sidebar-empty').length, "The sidebar should be hidden"
-    msg = "There is no submit manuscript button in the main area"
-    assert.ok !find('.manuscript-container .no-sidebar-submit-manuscript.button--green:contains("Submit Manuscript")').length, msg
+    msg = "There is no submit button in the main area"
+    assert.ok !find('.manuscript-container .no-sidebar-submit-manuscript.button--green:contains("Submit")').length, msg

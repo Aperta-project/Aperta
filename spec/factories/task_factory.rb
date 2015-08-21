@@ -152,7 +152,7 @@ class InvitableTask < Task
     :rejected
   end
 
-  def invitation_rescinded(paper_id:, invitee_id:)
+  def invitation_rescinded(invitation)
     :rescinded
   end
 

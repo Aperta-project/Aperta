@@ -5,7 +5,7 @@ class TestTask < Task
   include Invitable
   register_task default_title: "Test Task", default_role: "user"
 
-  def invitation_rescinded(paper_id:, invitee_id:)
+  def invitation_rescinded(code:)
     true
   end
 end
@@ -39,13 +39,17 @@ describe InvitationsController do
   end
 
   describe "POST /invitations" do
+    let(:invitation_body){
+      "Hard to find a black cat in a dark room, especially if there is no cat."
+    }
 
     it "creates a invited invitation" do
       post(:create, {
         format: "json",
         invitation: {
           email: invitee.email,
-          task_id: task.id
+          task_id: task.id,
+          body: invitation_body
         }
       })
       expect(response.status).to eq(201)
@@ -58,27 +62,68 @@ describe InvitationsController do
       expect(invitation.code).to be_present
       expect(invitation.actor).to be_nil
       expect(invitation.state).to eq("invited")
+      expect(invitation.body).to eq(invitation_body)
+    end
+
+    it "create an invitation for new user" do
+      new_user_email = "custom-email@example.com"
+
+      post(:create, {
+        format: "json",
+        invitation: {
+          email: new_user_email,
+          task_id: task.id
+        }
+      })
+      expect(response.status).to eq 201
+
+      data = res_body.with_indifferent_access
+      invitation = Invitation.find(data[:invitation][:id])
+
+      expect(invitation.invitee).to eq nil
+      expect(invitation.email).to eq(new_user_email)
+      expect(invitation.code).to be_present
+      expect(invitation.actor).to be_nil
+      expect(invitation.state).to eq("invited")
     end
   end
 
   describe "DELETE /invitations/:id", redis: true do
     let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task) }
 
-    it "deletes the invitation queues up email job", redis: true do
+    it "initiates the task callback" do
+      expect_any_instance_of(InvitableTask).to receive(:invitation_rescinded).with(invitation)
       delete(:destroy, {
         format: "json",
         id: invitation.id
       })
-      expect(response.status).to eq 204
-      expect(Invitation.exists?(id: invitation.id)).to eq(false)
     end
 
-    it "initiates the task callback" do
-      expect_any_instance_of(InvitableTask).to receive(:invitation_rescinded).with(paper_id: task.paper.id, invitee_id: invitee.id)
-      delete(:destroy, {
-        format: "json",
-        id: invitation.id
-      })
+    context "Invitation with invitee" do
+      let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task) }
+
+      it "deletes the invitation queues up email job", redis: true do
+        delete(:destroy, {
+          format: "json",
+          id: invitation.id
+        })
+        expect(response.status).to eq 204
+        expect(Invitation.exists?(id: invitation.id)).to eq(false)
+      end
+    end
+
+    context "Invitation witout invitee" do
+      let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: nil, email: "test@example.com", task: task) }
+
+      it "deletes the invitation queues up email job", redis: true do
+        expect(invitation.invitee).to be nil
+        delete(:destroy, {
+          format: "json",
+          id: invitation.id
+        })
+        expect(response.status).to eq 204
+        expect(Invitation.exists?(id: invitation.id)).to eq(false)
+      end
     end
   end
 

@@ -19,11 +19,6 @@ export default Ember.Mixin.create({
     return '/papers/' + this.get('model.id') + '/download';
   }),
 
-  logoUrl: computed('model.journal.logoUrl', function() {
-    let logoUrl = this.get('model.journal.logoUrl');
-    return (/default-journal-logo/.test(logoUrl)) ? false : logoUrl;
-  }),
-
   pageContainerHTMLClass: computed('model.editorMode', function() {
     return 'paper-container-' + this.get('model.editorMode');
   }),

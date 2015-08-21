@@ -1,0 +1,11 @@
+<div class="control-bar-inner-wrapper">
+  <ul>
+    <li id="control-bar-paper-journal-logo" class="control-bar-item">
+      {{#if hasJournalLogo}}
+        <img src="{{unbound paper.journal.logoUrl}}" alt="{{unbound paper.journal.name}}">
+      {{else}}
+        <div class="paper-journal">{{unbound paper.journal.name}}</div>
+      {{/if}}
+    </li>
+  </ul>
+</div>

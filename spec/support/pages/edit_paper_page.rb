@@ -62,8 +62,14 @@ class EditPaperPage < Page
     TaskManagerPage.new
   end
 
-  def title=(val)
-    find('#paper-title').set(val)
+  def title=(string)
+    code = <<HERE
+var editorController = Tahi.__container__.lookup("controller:paper/edit/html-editor");
+var editor = editorController.get("editor.titleEditor.editor");
+editor.selectAll();
+editor.write("#{string}");
+HERE
+    page.execute_script code
   end
 
   def abstract=(val)
@@ -77,7 +83,7 @@ class EditPaperPage < Page
   def body=(string)
     code = <<HERE
 var editorController = Tahi.__container__.lookup("controller:paper/edit/html-editor");
-var editor = editorController.get("editor.editor");
+var editor = editorController.get("editor.bodyEditor.editor");
 editor.selectAll();
 editor.write("#{string}");
 HERE
@@ -85,7 +91,7 @@ HERE
   end
 
   def body
-    find('.ve-ce-documentNode').text
+    find('.paper-body .ve-ce-documentNode').text
   end
 
   def versioned_body
@@ -93,7 +99,7 @@ HERE
   end
 
   def has_body_text?(text)
-    find('.ve-ce-documentNode').has_text?(text)
+    find('.paper-body .ve-ce-documentNode').has_text?(text)
   end
 
   def journal
@@ -101,7 +107,8 @@ HERE
   end
 
   def title
-    find(:css, '#paper-title').text
+    find('#paper-title .ve-ce-documentNode').text
+
   end
 
   def cards

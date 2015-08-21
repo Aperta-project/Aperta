@@ -55,6 +55,10 @@ export default Ember.Component.extend({
     showDownloads() {
       this.send('hideVisible');
       this.set('downloadsVisible', true);
+    },
+
+    showActivity(activity) {
+      this.sendAction('showActivity', activity);
     }
   }
 });

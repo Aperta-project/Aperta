@@ -99,15 +99,9 @@ class PapersController < ApplicationController
   def submit
     paper.submit! current_user do
       notify_paper_submitted!
-      # TODO: rename
-      create_paper_in_salesforce(paper: paper)
       broadcast_paper_submitted_event
     end
     respond_with paper
-  end
-
-  def create_paper_in_salesforce(paper:)
-    SalesforceServices::API.delay.create_manuscript(paper_id: paper.id)
   end
 
   private

@@ -53,7 +53,8 @@ class Paper < ActiveRecord::Base
                   guards: :metadata_tasks_completed?,
                   after: [:prevent_edits!,
                           :major_version!,
-                          :set_submitted_at!]
+                          :set_submitted_at!,
+                          :find_or_create_paper_in_salesforce]
     end
 
     event(:minor_check) do
@@ -284,5 +285,17 @@ class Paper < ActiveRecord::Base
 
   def set_submitted_at!
     update!(submitted_at: Time.current.utc)
+  end
+
+  def create_paper_in_salesforce!(paper:)
+    SalesforceServices::API.delay.create_manuscript(paper_id: self.id)
+  end
+
+  def update_paper_in_salesforce!(paper:)
+    SalesforceServices::API.delay.update_manuscript(paper_id: self.id)
+  end
+
+  def find_or_create_paper_in_salesforce
+    SalesforceServices::API.delay.find_or_create_manuscript(paper_id: self.id)
   end
 end

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import RedirectsIfEditable from 'tahi/mixins/views/redirects-if-editable';
 
-const { observer, on } = Ember;
+const { on } = Ember;
 
 export default Ember.View.extend(RedirectsIfEditable, {
 

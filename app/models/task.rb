@@ -126,7 +126,7 @@ class Task < ActiveRecord::Base
     UpdateResponders::Task
   end
 
-  def authorize_update?(params, user)
+  def allow_update?
     true
   end
 

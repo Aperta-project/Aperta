@@ -8,6 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Autosuggest ember component
 - Select box ember component
 - Reviewer Reports can now be submitted, and can't be edited after that
+- Reviewers can be invited that are currently not in the system
 
 ### Changed
 - Added ability to view old versions of manuscripts.

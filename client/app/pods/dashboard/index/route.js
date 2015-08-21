@@ -34,7 +34,10 @@ export default Ember.Route.extend({
     acceptInvitation(invitation) {
       RESTless.putModel(invitation, '/accept').then(function() {
         invitation.accept();
-      });
+
+        // Force the user's papers to load
+        this.store.find('paper');
+      }.bind(this));
     },
 
     showNewPaperOverlay() {

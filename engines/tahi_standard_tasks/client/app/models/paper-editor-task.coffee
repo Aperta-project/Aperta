@@ -5,7 +5,7 @@ PaperEditorTask = Task.extend
   editor: DS.belongsTo('user')
   invitation: DS.belongsTo('invitation')
   letter: DS.attr('string')
-  editInviteTemplate: (->
+  invitationTemplate: (->
     JSON.parse(@get('letter'))
   ).property 'letter'
 

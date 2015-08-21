@@ -5,6 +5,7 @@
     {{#question-radio ident="competing_interests.any"
                       task=model
                       question="<p>You are responsible for recognizing and disclosing on behalf of all authors any competing interest that could be perceived to bias their work, acknowledging all financial support and any other relevant financial or non-financial competing interests.</p><p>Do any authors of this manuscript have competing interests (as described in the <a target='_blank' href='http://www.plosbiology.org/static/policies#competing'>PLOS Policy on Declaration and Evaluation of Competing Interests</a>)?</p>"
+                      disabled=isSubmissionTaskNotEditable
                       noValue=declareNoCompeteCopy as |selected|}}
 
       {{#if selected.yes}}
@@ -12,7 +13,8 @@
           {{question-textarea ident="competing_interests.competing_interests"
                               task=model
                               question="Please provide details about any and all competing interests in the box below. Your response should begin with this statement: &quot;I have read the journal's policy and the authors of this manuscript have the following competing interests.&quot;"
-                              helpText="Please note that if your manuscript is accepted, this statement will be published."}}
+                              helpText="Please note that if your manuscript is accepted, this statement will be published."
+                              disabled=isSubmissionTaskNotEditable}}
         </div>
       {{/if}}
       {{#if selected.no}}

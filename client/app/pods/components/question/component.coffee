@@ -10,8 +10,9 @@ QuestionComponent = Ember.Component.extend
     Ember.assert('You must specify an ident, set to name attr', ident)
 
     question =
-      if @get("versioned")
-        @get('task.paper.latestDecision.questions').findProperty('ident', ident)
+      if @get('versioned')
+        @get('task.paper.latestDecision.questions').find (item)=>
+          item.get('task') == @get('task') && item.get('ident') == ident
       else
         @get('task.questions').findProperty('ident', ident)
 

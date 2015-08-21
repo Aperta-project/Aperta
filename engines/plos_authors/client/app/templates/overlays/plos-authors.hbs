@@ -10,7 +10,9 @@
 
 <div class="authors-overlay-list">
   {{#if isEditable}}
-    <a class="button-primary button--green" {{action "toggleAuthorForm" group}}>Add a New Author</a>
+    <button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "toggleAuthorForm" group}}>
+      Add a New Author
+    </button>
 
     {{error-message message=validationErrors.corresponding}}
 
@@ -31,7 +33,8 @@
                   delete="removeAuthor"
                   save="saveAuthor"
                   plosAuthor=authorWithErrors.model
-                  errors=authorWithErrors.errors}}
+                  errors=authorWithErrors.errors
+                  disabled=isSubmissionTaskNotEditable}}
     {{author-drop-target index=authorWithErrors.model.position
                          isEditable=isEditable
                          changePosition=(action "changeAuthorPosition")}}

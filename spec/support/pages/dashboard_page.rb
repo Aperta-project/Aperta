@@ -77,6 +77,18 @@ class DashboardPage < Page
     invitation_count.empty? ? 0 : invitation_count.first.text[/\d+/].to_i
   end
 
+  def accept_invitation_for_paper(paper)
+    tap do
+      view_invitations do |invitations|
+        expect(invitations.count).to eq 1
+        invitation = invitations.first
+        expect(invitation.text).to match(paper.title)
+        invitation.accept
+      end
+      process_sidekiq_jobs
+    end
+  end
+
   def view_invitations &block
     click_button 'View invitations'
 

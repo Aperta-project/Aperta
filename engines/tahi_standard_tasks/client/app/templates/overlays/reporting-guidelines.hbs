@@ -8,20 +8,24 @@
       <li class="item">
         {{question-check ident="reporting_guidelines.clinical_trial"
                          task=model
-                         question="Clinical Trial"}}
+                         question="Clinical Trial"
+                         disabled=isSubmissionTaskNotEditable}}
       </li>
 
       <li class="item">
         {{#question-check ident="reporting_guidelines.systematic_reviews"
                           task=model
-                          question="Systematic Reviews" as |checked|}}
+                          question="Systematic Reviews"
+                          disabled=isSubmissionTaskNotEditable
+                          as |checked|}}
           {{#if checked}}
             <div class="question-dataset">
               {{question-uploader ident="reporting_guidelines.systematic_reviews.prisma_checklist"
                                   task=model
                                   question="Provide a completed PRISMA checklist as supporting information. You can <a href='http://www.prisma-statement.org/' target='_blank'>download it here</a>."
                                   updateStore="updateStore"
-                                  accept=".docx,.pdf"}}
+                                  accept=".docx,.pdf"
+                                  disabled=isSubmissionTaskNotEditable}}
             </div>
           {{/if}}
         {{/question-check}}
@@ -30,14 +34,17 @@
       <li class="item">
         {{#question-check ident="reporting_guidelines.meta_analyses"
                           task=model
-                          question="Meta-analyses" as |checked|}}
+                          question="Meta-analyses"
+                          disabled=isSubmissionTaskNotEditable
+                          as |checked|}}
           {{#if checked}}
             <div class="question-dataset">
               {{question-uploader ident="reporting_guidelines.meta_analyses.prisma_checklist"
                                   task=model
                                   question="Provide a completed PRISMA checklist as supporting information."
                                   updateStore="updateStore"
-                                  accept=".docx,.pdf"}}
+                                  accept=".docx,.pdf"
+                                  disabled=isSubmissionTaskNotEditable}}
             </div>
           {{/if}}
         {{/question-check}}
@@ -46,19 +53,22 @@
       <li class="item">
         {{question-check ident="reporting_guidelines.diagnostic_studies"
                          task=model
-                         question="Diagnostic studies"}}
+                         question="Diagnostic studies"
+                         disabled=isSubmissionTaskNotEditable}}
       </li>
 
       <li class="item">
         {{question-check ident="reporting_guidelines.epidemiological_studies"
                          task=model
-                         question="Epidemiological studies"}}
+                         question="Epidemiological studies"
+                         disabled=isSubmissionTaskNotEditable}}
       </li>
 
       <li class="item">
         {{question-check ident="reporting_guidelines.microarray_studies"
                          task=model
-                         question="Microarray studies"}}
+                         question="Microarray studies"
+                         disabled=isSubmissionTaskNotEditable}}
       </li>
     </ul>
   </li>

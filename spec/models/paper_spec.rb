@@ -145,6 +145,11 @@ describe Paper do
         paper.submit! user
         expect(paper).to_not be_editable
       end
+
+      it "submits the paper to salesforce" do
+        expect(subject).to receive(:find_or_create_paper_in_salesforce).and_return(true)
+        paper.submit! user
+      end
     end
 
     context "when withdrawing" do

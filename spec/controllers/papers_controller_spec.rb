@@ -213,11 +213,6 @@ describe PapersController do
         submit
       }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
     end
-
-    it "submits the paper to salesforce" do
-      expect(subject).to receive(:create_paper_in_salesforce).and_return(true)
-      submit
-    end
   end
 
   describe "PUT 'withdraw'" do

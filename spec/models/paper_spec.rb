@@ -147,9 +147,10 @@ describe Paper do
       end
 
       it "submits the paper to salesforce" do
-        expect(subject).to receive(:find_or_create_paper_in_salesforce).and_return(true)
+        expect(paper).to receive(:find_or_create_paper_in_salesforce).and_return(true)
         paper.submit! user
       end
+
     end
 
     context "when withdrawing" do

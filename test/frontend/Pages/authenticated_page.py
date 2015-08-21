@@ -10,6 +10,14 @@ from Base.PlosPage import PlosPage
 
 __author__ = 'jgray@plos.org'
 
+# Variable definitions
+# We are in process of migrating fonts in the interface, until this is deployed to lean, we can
+#    only enforce the fallback font and have it work in both environments. Source-Sans-Pro and Lora are what we are
+#    moving to when the next push to lean happens we can correct the following entries.
+# application_typeface = 'source-sans-pro'
+application_typeface = 'helvetica'
+# manuscript_typeface = 'lora'
+manuscript_typeface = 'times'
 
 class AuthenticatedPage(PlosPage):
   """
@@ -125,7 +133,7 @@ class AuthenticatedPage(PlosPage):
     :param title: title to validate
     :return: None
     """
-    assert 'helvetica' in title.value_of_css_property('font-family')
+    assert application_typeface in title.value_of_css_property('font-family')
     assert title.value_of_css_property('font-size') == '%spx'%size
     assert title.value_of_css_property('font-weight') == '500'
     assert title.value_of_css_property('line-height') == '%spx'%line
@@ -139,7 +147,7 @@ class AuthenticatedPage(PlosPage):
     :param title: title to validate
     :return: None
     """
-    assert 'helvetica' in title.value_of_css_property('font-family')
+    assert application_typeface in title.value_of_css_property('font-family')
     assert title.value_of_css_property('font-size') == '14px'
     assert title.value_of_css_property('font-weight') == '500'
     assert title.value_of_css_property('line-height') == '15.4px'
@@ -153,7 +161,7 @@ class AuthenticatedPage(PlosPage):
     :param button: button to validate
     :return: None
     """
-    assert 'helvetica' in button.value_of_css_property('font-family')
+    assert application_typeface in button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px'
     assert button.value_of_css_property('font-weight') == '400'
     assert button.value_of_css_property('line-height') == '20px'
@@ -174,7 +182,7 @@ class AuthenticatedPage(PlosPage):
     :return: None
     TODO: Find out why I see the commented values in the browser
     """
-    assert 'helvetica' in button.value_of_css_property('font-family')
+    assert application_typeface in button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == font_size
     assert button.value_of_css_property('font-weight') == '400'
     assert button.value_of_css_property('line-height') == line_height
@@ -192,7 +200,7 @@ class AuthenticatedPage(PlosPage):
     :param th: table heading to validate
     :return: None
     """
-    assert 'helvetica' in th.value_of_css_property('font-family')
+    assert application_typeface in th.value_of_css_property('font-family')
     assert th.value_of_css_property('font-size') == '14px'
     assert th.value_of_css_property('font-weight') == '700'
     assert th.value_of_css_property('line-height') == '20px'
@@ -207,7 +215,7 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering input in forms across the application
     :return: None
     """
-    assert 'helvetica' in input_.value_of_css_property('font-family')
+    assert application_typeface in input_.value_of_css_property('font-family')
     assert input_.value_of_css_property('font-size') == '14px'
     assert input_.value_of_css_property('font-weight') == '400'
     assert input_.value_of_css_property('line-height') == '20px'

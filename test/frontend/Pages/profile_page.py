@@ -125,7 +125,7 @@ class ProfilePage(AuthenticatedPage):
     avatar_input.clear()
     time.sleep(2)
     avatar_input.send_keys(os.path.join(os.getcwd(), 
-                           "/frontend/assets/imgs/plos.gif" + Keys.RETURN))
+                           "/frontend/assets/imgs/plos.gif" + Keys.RETURN + Keys.RETURN))
     time.sleep(1)
     return self
 
@@ -138,9 +138,16 @@ class ProfilePage(AuthenticatedPage):
     message = self._get(self._success_message).text
     assert "Reset password instructions have been sent to the your email address." in message
 
-
   def validate_affiliation_form_css(self):
     """Validate css from add affiliation form"""
+    # Delete previous affiliation is any
+    
+    #self.set_timeout(2)
+    #remove_icons = self._gets(self._remove_affiliation_icon)
+    #for remove_icon in remove_icons:
+    #    remove_icon.click()
+    #self.restore_timeout()
+
     add_aff_title = self._get(self._add_affiliation_title)
     assert 'helvetica' in add_aff_title.value_of_css_property('font-family')
     assert add_aff_title.text == 'New Affiliation'
@@ -167,7 +174,7 @@ class ProfilePage(AuthenticatedPage):
     assert add_cancel_btn.value_of_css_property('font-weight') == '400'
     assert add_cancel_btn.value_of_css_property('line-height') == '20px'
     assert add_cancel_btn.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-    # Fill the form
+    # Insert affiliation data
     institution_input.send_keys(affiliation['institution'])
     department_input.send_keys(affiliation['department'])
     title_input.send_keys(affiliation['title'])
@@ -180,16 +187,16 @@ class ProfilePage(AuthenticatedPage):
     # Look for data
     # Give some time to end AJAX call
     time.sleep(2)
-    affiliations = self._get(self._profile_affiliations)
-    assert affiliation['institution'] in affiliations.text
-    assert affiliation['department'] in affiliations.text
-    assert affiliation['title'] in affiliations.text
-    assert affiliation['country'] in affiliations.text
-    assert affiliation['start'][-4:] in affiliations.text
-    assert affiliation['end'][-4:] in affiliations.text
-    assert affiliation['email'] in affiliations.text
-    remove_icon = self._get(self._remove_affiliation_icon)
-    remove_icon.click()
+    affiliations = self._gets(self._profile_affiliations)
+    assert affiliation['institution'] in affiliations[-1].text
+    assert affiliation['department'] in affiliations[-1].text
+    assert affiliation['title'] in affiliations[-1].text
+    assert affiliation['country'] in affiliations[-1].text
+    assert affiliation['start'][-4:] in affiliations[-1].text
+    assert affiliation['end'][-4:] in affiliations[-1].text
+    assert affiliation['email'] in affiliations[-1].text
+    remove_icons = self._gets(self._remove_affiliation_icon)
+    remove_icons[-1].click()
     alert = self._driver.switch_to_alert()
     alert.accept()
     # TODO: Validate errors after #101686744 and #101686944 are fixed 

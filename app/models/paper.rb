@@ -295,7 +295,7 @@ class Paper < ActiveRecord::Base
     SalesforceServices::API.delay.update_manuscript(paper_id: self.id)
   end
 
-  def find_or_create_paper_in_salesforce
+  def find_or_create_paper_in_salesforce(*)
     SalesforceServices::API.delay.find_or_create_manuscript(paper_id: self.id)
   end
 end

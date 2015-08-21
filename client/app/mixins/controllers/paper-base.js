@@ -13,11 +13,7 @@ export default Ember.Mixin.create({
     return ENV.APP.iHatExportFormats.map(formatType => {
       return {format: formatType, icon: `svg/${formatType}-icon`};
     });
-  }),
-
-  downloadLink: computed('model.id', function() {
-    return '/papers/' + this.get('model.id') + '/download';
-  }),
+  })
 
   pageContainerHTMLClass: computed('model.editorMode', function() {
     return 'paper-container-' + this.get('model.editorMode');

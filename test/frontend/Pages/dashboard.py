@@ -13,7 +13,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 from Base.PostgreSQL import PgSQL
-from authenticated_page import AuthenticatedPage
+from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface
 
 
 __author__ = 'jgray@plos.org'
@@ -61,18 +61,6 @@ class DashboardPage(AuthenticatedPage):
     self._cns_cancel = (By.CLASS_NAME, 'button-link')
     self._cns_create = (By.CLASS_NAME, 'button-primary')
 
-    #self._create_modal = (By.CSS_SELECTOR, 'html.overlay-open')    
-    #self._title_text_field = (By.CSS_SELECTOR, '#paper-short-title')
-    #self._first_select = (By.XPATH, "//div[contains(@class, 'form-group')]/div[1]")
-    #self._second_select = (By.XPATH, "//div[contains(@class, 'form-group')]/div[3]")
-    #self._select_journal_from_dropdown = (By.XPATH,
-    #  '//div[contains(@class, "form-group")]/div[1]/a')
-    #self._select_type_from_dropdown = (By.XPATH,'//div[contains(@class, "form-group")]/div[3]/a')
-    #self._cancel_button = (By.CSS_SELECTOR, 'button-link.button--green')
-    #self._create_button = (By.CSS_SELECTOR, 
-    #  'div.inner-content div.overlay-action-buttons button.button-primary.button--green')
-
-
   # POM Actions
   def click_on_existing_manuscript_link(self, title):
     """Click on a link given a title"""
@@ -109,7 +97,7 @@ class DashboardPage(AuthenticatedPage):
       else:
         assert welcome_msg.text == 'You have %s invitations.' % invitation_count, \
                                    welcome_msg.text + ' ' + str(invitation_count)
-      self.validate_title_style(welcome_msg)
+      self.validate_page_title_style(welcome_msg)
       view_invites_btn = self._get(self._dashboard_view_invitations_btn)
       self.validate_green_backed_button_style(view_invites_btn)
 
@@ -140,7 +128,7 @@ class DashboardPage(AuthenticatedPage):
              welcome_msg.text
     else:
       assert 'Hi, ' + first_name + '. You have no manuscripts.' in welcome_msg.text, welcome_msg.text
-    self.validate_title_style(welcome_msg)
+    self.validate_application_h1_style(welcome_msg)
     if manuscript_count > 0:
       papers = self._gets(self._dashboard_paper_title)
       count = 0
@@ -166,7 +154,8 @@ class DashboardPage(AuthenticatedPage):
         count += 1
         self._actions.move_to_element(welcome_msg).perform()
         time.sleep(1)  # make sure the focus is not accidentally on a paper link, and account for transition
-        assert 'librebaskerville' in paper.value_of_css_property('font-family')
+        # font-family is in transition just now, so validating on the 2nd fallback font until this stabilizes
+        assert manuscript_typeface in paper.value_of_css_property('font-family')
         assert paper.value_of_css_property('font-size') == '18px'
         assert paper.value_of_css_property('line-height') == '27px'
         assert paper.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
@@ -177,7 +166,7 @@ class DashboardPage(AuthenticatedPage):
     else:
       info_text = self._get(self._dashboard_info_text)
       assert info_text.text == 'Your scientific paper submissions will\nappear here.'
-      assert 'helvetica' in info_text.value_of_css_property('font-family')
+      assert manuscript_typeface in info_text.value_of_css_property('font-family')
       assert info_text.value_of_css_property('font-size') == '24px'
       assert info_text.value_of_css_property('font-style') == 'italic'
       assert info_text.value_of_css_property('line-height') == '24px'
@@ -246,7 +235,7 @@ class DashboardPage(AuthenticatedPage):
     # thus for the time being, I am using the one off validations. These should be removed when the bug
     # is fixed.
     # self.validate_title_style(modal_title)
-    assert 'helvetica' in modal_title.value_of_css_property('font-family')
+    assert manuscript_typeface in modal_title.value_of_css_property('font-family')
     assert modal_title.value_of_css_property('font-size') == '48px'
     assert modal_title.value_of_css_property('font-weight') == '500'
     # Current implementation seems wrong Pivotal Ticket:

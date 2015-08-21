@@ -8,8 +8,6 @@ less static, variable definitions.
 
 from os import getenv
 
-from os import getenv
-
 # General resources
 # set friendly_testhostname to 'prod' to run suite against production
 # Two fields need to be changed to support running tests in your local development

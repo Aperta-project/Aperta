@@ -14,8 +14,8 @@ __author__ = 'jgray@plos.org'
 # We are in process of migrating fonts in the interface, until this is deployed to lean, we can
 #    only enforce the fallback font and have it work in both environments. Source-Sans-Pro and Lora are what we are
 #    moving to when the next push to lean happens we can correct the following entries.
-# application_typeface = 'source-sans-pro'
-application_typeface = 'helvetica'
+application_typeface = 'source-sans-pro' # stage
+#application_typeface = 'helvetica'
 # manuscript_typeface = 'lora'
 manuscript_typeface = 'times'
 
@@ -127,7 +127,7 @@ class AuthenticatedPage(PlosPage):
     return self
 
   @staticmethod
-  def validate_title_style(title, size='48', line='52.8'):
+  def validate_application_h1_style(title, size='48', line='52.8'):
     """
     Ensure consistency in rendering page and overlay main headings across the application
     :param title: title to validate
@@ -139,6 +139,17 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('line-height') == '%spx'%line
     assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
     return None
+
+  def validate_application_h2_style(title):
+    """
+    Ensure consistency in rendering page and overlay h2 section headings across the application
+    :param title: title to validate
+    """
+    assert application_typeface in title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '30px'
+    assert title.value_of_css_property('font-weight') == '500'
+    assert title.value_of_css_property('line-height') == '33px'
+    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
 
   @staticmethod
   def validate_profile_title_style(title):
@@ -168,7 +179,12 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
     assert button.value_of_css_property('background-color') == 'rgba(57, 163, 41, 1)'
     assert button.value_of_css_property('text-align') == 'center'
+    assert button.value_of_css_property('vertical-align') == 'middle'
     assert button.value_of_css_property('text-transform') == 'uppercase'
+    assert button.value_of_css_property('padding-top') == '6px'
+    assert button.value_of_css_property('padding-bottom') == '6px'
+    assert button.value_of_css_property('padding-left') == '12px'
+    assert button.value_of_css_property('padding-right') == '12px'    
     return None
 
   @staticmethod

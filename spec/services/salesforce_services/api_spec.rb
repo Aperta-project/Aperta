@@ -25,4 +25,10 @@ describe SalesforceServices::API do
       expect(@manuscript.class).to eq Manuscript__c
     end
   end
+  describe "#update_manuscript" do
+    it "updates a Salesforce Manuscript__c object" do
+      with_valid_salesforce_credentials do
+      end
+    end
+  end
 end

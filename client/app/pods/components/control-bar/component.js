@@ -57,6 +57,10 @@ export default Ember.Component.extend({
       this.set('downloadsVisible', true);
     },
 
+    addContributors(activity) {
+      this.sendAction('addContributors', activity);
+    },
+
     showActivity(activity) {
       this.sendAction('showActivity', activity);
     }

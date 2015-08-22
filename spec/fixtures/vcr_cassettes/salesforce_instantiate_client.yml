@@ -19,10 +19,10 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Thu, 20 Aug 2015 18:53:10 GMT
+      - Sat, 22 Aug 2015 02:48:20 GMT
       Set-Cookie:
-      - BrowserId=pGy-efM0SqCjk9lFCgnWKQ;Path=/;Domain=.salesforce.com;Expires=Mon,
-        19-Oct-2015 18:53:10 GMT
+      - BrowserId=i48w93yFRmuSYTCXyGB0BA;Path=/;Domain=.salesforce.com;Expires=Wed,
+        21-Oct-2015 02:48:20 GMT
       Expires:
       - Thu, 01 Jan 1970 00:00:00 GMT
       Pragma:
@@ -35,7 +35,7 @@ http_interactions:
       - chunked
     body:
       encoding: ASCII-8BIT
-      string: '{"access_token":"00DK000000XN2av!ARcAQFwbGKUJqzTvS1zYVBYxCru.X5uAcfzhzqNS3DMfAi5D5RZ3C8xTtZYfC5PwSPzef3A9wLhLaYXSygrVi3B4aK5DcIYx","instance_url":"https://salesforce_host","id":"https://test.salesforce.com/id/00DK000000XN2avMAD/005U0000002AXTZIA4","token_type":"Bearer","issued_at":"1440096791077","signature":"sGyCowc0Igrg2FyrXV4f9zyRF8drhfYY9MFVdbDyaMQ="}'
+      string: '{"access_token":"00DK000000XN2av!ARcAQNtxYmqLYB9ZtkhRpNfdNl1wYtQYgU_FaEMmAtGP91YnGAbtNMwqVuZKrI1cAxO5nhUrzCd.3TY3AZT0ixvgcX2XrZV3","instance_url":"https://salesforce_host","id":"https://test.salesforce.com/id/00DK000000XN2avMAD/005U0000002AXTZIA4","token_type":"Bearer","issued_at":"1440211700550","signature":"4q6Vge/65id0ThhMOySBz0usgxKzn2aRg9GQU2tr3T4="}'
     http_version:
-  recorded_at: Thu, 20 Aug 2015 18:53:11 GMT
+  recorded_at: Sat, 22 Aug 2015 02:48:20 GMT
 recorded_with: VCR 2.9.3

@@ -27,6 +27,7 @@ module SalesforceServices
       sf_paper = manuscript.create(mt.paper_to_manuscript_hash)
 
       paper.update_attribute(:salesforce_manuscript_id, sf_paper.Id)
+      sf_paper
     end
 
     def self.update_manuscript(paper_id:)
@@ -35,8 +36,8 @@ module SalesforceServices
       mt = ManuscriptTranslator.new(user_id: client.user_id, paper: paper)
       manuscript = self.client.materialize("Manuscript__c")
       sf_paper = manuscript.find(paper.salesforce_manuscript_id)
-
       sf_paper.update_attributes mt.paper_to_manuscript_hash
+      sf_paper
     end
 
     def self.find_or_create_manuscript(paper_id:)

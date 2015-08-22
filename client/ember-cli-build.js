@@ -5,7 +5,9 @@ var Funnel     = require('broccoli-funnel');
 
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
+    // calculated config will be stored in the final tahi.js file
     storeConfigInMeta: false,
+
     emberCliFontAwesome: { includeFontAwesomeAssets: false },
     sourcemaps: {
       enabled: true,
@@ -15,6 +17,16 @@ module.exports = function(defaults) {
 
   app.import('bower_components/underscore/underscore.js');
   app.import('bower_components/moment/moment.js');
+
+  // Pusher
+  app.import(app.bowerDirectory + '/pusher/dist/pusher.js');
+  app.import(app.bowerDirectory + '/ember-pusher/ember-pusher.amd.js', {
+    exports: {
+      'ember-pusher/controller':    ['Controller'],
+      'ember-pusher/bindings':      ['Bindings'],
+      'ember-pusher/client_events': ['ClientEvents']
+    }
+  });
 
   // jQuery UI
   app.import('bower_components/jquery-ui/ui/core.js');

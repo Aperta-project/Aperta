@@ -50,7 +50,7 @@ test:
         files:
           - "spec/**/*_spec.rb"
           - "engines/*/spec/**/*_spec.rb"
-    - bundle exec rake ember:test
+    - "cd client && ./node_modules/.bin/ember test --silent -r xunit | grep -v ^Warning > $CIRCLE_TEST_REPORTS/qunit.xml"
 
 ## Customize heroku deployment
 deployment:

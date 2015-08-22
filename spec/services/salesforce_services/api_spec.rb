@@ -26,21 +26,16 @@ describe SalesforceServices::API do
     end
   end
 
-
-
-
-
-
-
-
   describe "#update_manuscript" do
     it "updates a Salesforce Manuscript__c object" do
-      with_valid_salesforce_credentials do
-        VCR.use_cassette("salesforce_update_manuscript") do
-          @manuscript = @api.update_manuscript(paper_id: paper.id)
-        end
-        expect(@manuscript.class).to eq Manuscript__c
+      VCR.use_cassette("salesforce_create_manuscript") do
+        @manuscript = @api.create_manuscript(paper_id: paper.id)
       end
+      VCR.use_cassette("salesforce_update_manuscript") do
+        @manuscript = @api.update_manuscript(paper_id: paper.id)
+      end
+
+      expect(@manuscript.class).to eq Manuscript__c
     end
   end
 

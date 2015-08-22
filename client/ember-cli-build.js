@@ -8,13 +8,17 @@ module.exports = function(defaults) {
     storeConfigInMeta: false,
     emberCliFontAwesome: { includeFontAwesomeAssets: false },
     exportApplicationGlobal: true,
+    sourcemaps: {
+      enabled: true,
+      extensions: ['js']
+    },
     markers: {
       enabled: true,
       kinds: ['TODO', 'FIXME']
     }
   });
 
-  app.import('bower_components/underscore/underscore-min.js');
+  app.import('bower_components/underscore/underscore.js');
   app.import('bower_components/moment/moment.js');
 
   // jQuery UI

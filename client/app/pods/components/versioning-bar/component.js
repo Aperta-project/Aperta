@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import RESTless from 'tahi/services/rest-less';
 
 export default Ember.Component.extend({
+  restless: Ember.inject.service('restless'),
   reset() {
     // Resets page to viewing a single version
     this.comparisonText = null;
@@ -13,7 +13,7 @@ export default Ember.Component.extend({
     // Fetches version of the text to compare with the version we're viewing
     let version = this.get('comparisonVersion');
     if (version) {
-      RESTless.get('/api/versioned_texts/' + version.id).then((response) => {
+      this.get('restless').get('/api/versioned_texts/' + version.id).then((response) => {
         this.set('paper.comparisonText', response['versioned_text']['text']);
       });
     } else {
@@ -26,7 +26,7 @@ export default Ember.Component.extend({
     let version = this.get('viewingVersion');
 
     if (version) {
-      RESTless.get('/api/versioned_texts/' + version.id).then((response) => {
+      this.get('restless').get('/api/versioned_texts/' + version.id).then((response) => {
         this.set('paper.viewingText', response['versioned_text']['text']);
       });
     }

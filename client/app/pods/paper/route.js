@@ -1,8 +1,10 @@
-import RESTless from 'tahi/services/rest-less';
+import Ember from 'ember';
 import Utils from 'tahi/services/utils';
 import AuthorizedRoute from 'tahi/routes/authorized';
 
 export default AuthorizedRoute.extend({
+  restless: Ember.inject.service('restless'),
+
   model(params) {
     return this.store.fetchById('paper', params.paper_id);
   },
@@ -78,7 +80,7 @@ export default AuthorizedRoute.extend({
       let controller = this.controllerFor('overlays/activity');
       controller.set('isLoading', true);
 
-      RESTless.get(`/api/papers/${this.modelFor('paper').get('id')}/activity/${type}`).then(function(data) {
+      this.get('restless').get(`/api/papers/${this.modelFor('paper').get('id')}/activity/${type}`).then(function(data) {
         controller.setProperties({
           isLoading: false,
           model: Utils.deepCamelizeKeys(data.feeds)

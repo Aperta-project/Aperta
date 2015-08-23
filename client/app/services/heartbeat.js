@@ -1,16 +1,9 @@
 import Ember from 'ember';
-import RESTless from 'tahi/services/rest-less';
 
-export default Ember.Object.extend({
+const heartbeat =  Ember.Object.extend({
   interval: 90 * 1000,
   intervalId: null,
   resource: null,
-
-  init() {
-    if (!this.get('resource')) {
-      throw new Error("need to specify resource");
-    }
-  },
 
   start() {
     this.heartbeat();
@@ -26,6 +19,18 @@ export default Ember.Object.extend({
   },
 
   heartbeat() {
-    return RESTless.putModel(this.get('resource'), "/heartbeat");
+    return this.get('restless').putModel(this.get('resource'), '/heartbeat');
+  }
+});
+
+export default Ember.Service.extend({
+  restless: Ember.inject.service('restless'),
+
+  create(resource) {
+    Ember.assert('Heartbeat: need to specify resource', Ember.isEmpty(this.get('resource')));
+    return heartbeat.create({
+      resource: resource,
+      restless: this.get('restless')
+    });
   }
 });

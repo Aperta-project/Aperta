@@ -1,5 +1,4 @@
 `import Ember from 'ember'`
-`import RESTless from 'tahi/services/rest-less'`
 `import Heartbeat from 'tahi/services/heartbeat'`
 `import ENV from 'tahi/config/environment'`
 `import AuthorizedRoute from 'tahi/routes/authorized'`
@@ -10,6 +9,7 @@ PaperIndexRoute = AuthorizedRoute.extend
   controllerName: 'paper/index'
   templateName: 'paper/index'
   cardOverlayService: Ember.inject.service('card-overlay'),
+  restless: Ember.inject.service('restless')
   fromSubmitOverlay: false
 
   heartbeatService: null
@@ -46,7 +46,7 @@ PaperIndexRoute = AuthorizedRoute.extend
     editorController.set('commentLooks', @store.all('commentLook'))
 
     if @currentUser
-      RESTless.authorize(editorController, "/api/papers/#{model.get('id')}/manuscript_manager", 'canViewManuscriptManager')
+      this.get('restless').authorize(editorController, "/api/papers/#{model.get('id')}/manuscript_manager", 'canViewManuscriptManager')
 
   renderTemplate: (paperEditController, model) ->
     @render @get('editorLookup'),

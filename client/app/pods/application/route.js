@@ -1,9 +1,10 @@
 import Ember from 'ember';
 import AnimateOverlay from 'tahi/mixins/animate-overlay';
-import RESTless from 'tahi/services/rest-less';
 import Utils from 'tahi/services/utils';
 
 export default Ember.Route.extend(AnimateOverlay, {
+  restless: Ember.inject.service('restless'),
+
   setupController(controller, model) {
     controller.set('model', model);
     if (this.currentUser) {
@@ -13,8 +14,8 @@ export default Ember.Route.extend(AnimateOverlay, {
       pusher.wire(this, userChannelName, ["created", "updated", "destroyed"]);
       pusher.wire(this, "system", ["destroyed"]);
 
-      RESTless.authorize(controller, '/api/admin/journals/authorization', 'canViewAdminLinks');
-      RESTless.authorize(controller, '/api/user_flows/authorization', 'canViewFlowManagerLink');
+      this.get('restless').authorize(controller, '/api/admin/journals/authorization', 'canViewAdminLinks');
+      this.get('restless').authorize(controller, '/api/user_flows/authorization', 'canViewFlowManagerLink');
     }
   },
 

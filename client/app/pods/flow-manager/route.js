@@ -1,8 +1,8 @@
 import AuthorizedRoute from 'tahi/routes/authorized';
 import Ember from 'ember';
-import RESTless from 'tahi/services/rest-less';
 
 export default AuthorizedRoute.extend({
+  restless: Ember.inject.service('restless'),
   cardOverlayService: Ember.inject.service('card-overlay'),
 
   beforeModel(transition) {
@@ -38,7 +38,7 @@ export default AuthorizedRoute.extend({
       let controller = this.controllerFor('overlays/chooseNewFlowManagerColumn');
       controller.set('isLoading', true);
 
-      RESTless.get('/api/user_flows/potential_flows').then(function(data) {
+      this.get('restless').get('/api/user_flows/potential_flows').then(function(data) {
         controller.set('isLoading', false);
         controller.set('flows', data.flows);
       });

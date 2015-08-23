@@ -3,7 +3,7 @@
 import Ember from 'ember';
 import Utils from 'tahi/services/utils';
 
-export default Ember.Namespace.create({
+export default Ember.Service.extend({
   pathFor(model) {
     let adapter = model.get('store').adapterFor(model);
     let resourceType = model.constructor.modelName;
@@ -11,7 +11,7 @@ export default Ember.Namespace.create({
   },
 
   ajaxPromise(method, path, data) {
-    let socketId = window.Tahi.__container__.lookup('pusher:main').get('socketId');
+    let socketId = this.container.lookup('pusher:main').get('socketId');
 
     return new Ember.RSVP.Promise(function(resolve, reject) {
       return Ember.$.ajax({

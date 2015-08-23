@@ -1,7 +1,8 @@
 import Ember from 'ember';
-import RESTless from 'tahi/services/rest-less';
 
 export default Ember.Controller.extend({
+  restless: Ember.inject.service('restless'),
+
   positionSort: ['position:asc'],
   sortedPhases: Ember.computed.sort('model.phases', 'positionSort'),
 
@@ -68,7 +69,7 @@ export default Ember.Controller.extend({
     },
 
     toggleEditable() {
-      RESTless.putUpdate(this.get('model'), '/toggle_editable').catch((arg) => {
+      this.get('restless').putUpdate(this.get('model'), '/toggle_editable').catch((arg) => {
         let model   = arg.model;
         let message = (function() {
           switch (arg.status) {

@@ -1,8 +1,8 @@
 import Ember from 'ember';
 import AuthorizedRoute from 'tahi/routes/authorized';
-import RESTless from 'tahi/services/rest-less';
 
 export default AuthorizedRoute.extend({
+  restless: Ember.inject.service('restless'),
   cardOverlayService: Ember.inject.service('card-overlay'),
 
   afterModel(model) {
@@ -16,7 +16,8 @@ export default AuthorizedRoute.extend({
     controller.set('commentLooks', this.store.all('commentLook'));
 
     if (this.currentUser) {
-      RESTless.authorize(controller, '/api/papers/' + (model.get('id')) + '/manuscript_manager', 'canViewManuscriptManager');
+      let url = '/api/papers/' + (model.get('id')) + '/manuscript_manager';
+      this.get('restless').authorize(controller, url, 'canViewManuscriptManager');
     }
   },
 

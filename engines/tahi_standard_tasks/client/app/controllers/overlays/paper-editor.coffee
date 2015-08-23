@@ -1,9 +1,9 @@
 `import TaskController from 'tahi/pods/paper/task/controller'`
 `import Select2Assignees from 'tahi/mixins/controllers/select-2-assignees'`
-`import RESTless from 'tahi/services/rest-less'`
 `import Ember from 'ember'`
 
 PaperEditorOverlayController = TaskController.extend Select2Assignees,
+  restless: Ember.inject.service('restless')
 
   selectedUser: null
   composingEmail: false
@@ -53,7 +53,7 @@ PaperEditorOverlayController = TaskController.extend Select2Assignees,
 
     removeEditor: ->
       promises = []
-      promises.push(RESTless.delete("/api/papers/#{@get('model.paper.id')}/editor"))
+      promises.push(@get('restless').delete("/api/papers/#{@get('model.paper.id')}/editor"))
       promises.push(@get('model.invitation').destroyRecord()) if @get('model.invitation')
       Ember.RSVP.all(promises).then =>
         # TODO: Not dependant on server response - pretend editor is gone

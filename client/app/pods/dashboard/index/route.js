@@ -1,7 +1,8 @@
 import Ember from 'ember';
-import RESTless from 'tahi/services/rest-less';
 
 export default Ember.Route.extend({
+  restless: Ember.inject.service('restless'),
+
   model() {
     return Ember.RSVP.hash({
       papers: this.store.find('paper'),
@@ -26,13 +27,13 @@ export default Ember.Route.extend({
     },
 
     rejectInvitation(invitation) {
-      RESTless.putModel(invitation, '/reject').then(function() {
+      this.get('restless').putModel(invitation, '/reject').then(function() {
         invitation.reject();
       });
     },
 
     acceptInvitation(invitation) {
-      RESTless.putModel(invitation, '/accept').then(function() {
+      this.get('restless').putModel(invitation, '/accept').then(function() {
         invitation.accept();
 
         // Force the user's papers to load

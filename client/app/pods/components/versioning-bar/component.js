@@ -1,14 +1,14 @@
 import Ember from 'ember';
-import RESTless from 'tahi/services/rest-less';
 
 export default Ember.Component.extend({
+  restless: Ember.inject.service('restless'),
   oldText: null,
   currentBody: null,
 
   showVersion() {
     let version = this.get('selectedVersion');
     if (version) {
-      RESTless.get('/api/versioned_texts/' + version.id).then((response) => {
+      this.get('restless').get('/api/versioned_texts/' + version.id).then((response) => {
         this.set('paper.currentVersionBody',
                  response['versioned_text']['text']);
       });

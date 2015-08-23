@@ -1,15 +1,14 @@
 `import Ember from 'ember'`
-`import RESTless from 'tahi/services/rest-less'`
-`import Heartbeat from 'tahi/services/heartbeat'`
 `import ENV from 'tahi/config/environment'`
 `import AuthorizedRoute from 'tahi/routes/authorized'`
 `import loadVeEditorAssets from 'tahi-editor-ve/initializers/load-assets'`
 
 PaperEditRoute = AuthorizedRoute.extend
-  cardOverlayService: Ember.inject.service('card-overlay'),
-  fromSubmitOverlay: false
+  restless: Ember.inject.service('restless')
+  heartbeatService: Ember.inject.service('heartbeat')
+  cardOverlayService: Ember.inject.service('card-overlay')
 
-  heartbeatService: null
+  fromSubmitOverlay: false
 
   model: ->
     paper = @modelFor('paper')
@@ -27,7 +26,7 @@ PaperEditRoute = AuthorizedRoute.extend
 
   afterModel: (model) ->
     if model.get('editable')
-      @set('heartbeatService', Heartbeat.create(resource: model))
+      @set('heartbeat', this.get('heartbeatService').create(model))
       @startHeartbeat()
     else
       @transitionTo('paper.index', model)
@@ -45,7 +44,7 @@ PaperEditRoute = AuthorizedRoute.extend
     editorController.set('commentLooks', @store.all('commentLook'))
 
     if @currentUser
-      RESTless.authorize(editorController, "/api/papers/#{model.get('id')}/manuscript_manager", 'canViewManuscriptManager')
+      @get('restless').authorize(editorController, "/api/papers/#{model.get('id')}/manuscript_manager", 'canViewManuscriptManager')
 
   renderTemplate: (paperEditController, model) ->
     @render @get('editorLookup'),
@@ -58,10 +57,10 @@ PaperEditRoute = AuthorizedRoute.extend
 
   startHeartbeat: ->
     if @isLockedByCurrentUser()
-      @get('heartbeatService').start()
+      @get('heartbeat').start()
 
   endHeartbeat: ->
-    @get('heartbeatService').stop()
+    @get('heartbeat').stop()
 
   isLockedByCurrentUser: ->
     lockedBy = @modelFor('paper').get('lockedBy')

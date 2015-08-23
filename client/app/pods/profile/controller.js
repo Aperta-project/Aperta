@@ -1,16 +1,17 @@
 import Ember from 'ember';
 import FileUploadMixin from 'tahi/mixins/file-upload';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
-import RESTless from 'tahi/services/rest-less';
 
 export default Ember.Controller.extend(FileUploadMixin, ValidationErrorsMixin, {
+  restless: Ember.inject.service('restless'),
+
   showAffiliationForm: false,
   errorText: '',
   affiliations: Ember.computed.alias('model.affiliationsByDate'),
 
   countries: [],
   _getCountries: Ember.on('init', function() {
-    RESTless.get('/api/countries').then((data)=> {
+    this.get('restless').get('/api/countries').then((data)=> {
       if(Ember.isEmpty(data.countries)) { return; }
       this.set('countries', data.countries.map(function(c) {
         return { id: c, text: c };

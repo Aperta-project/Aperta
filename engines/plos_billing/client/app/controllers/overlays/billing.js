@@ -1,6 +1,5 @@
 import Ember from "ember";
 import TaskController from "tahi/pods/paper/task/controller";
-import RESTless from "tahi/services/rest-less";
 
 const DATA = {
   institutionalAccountProgramList: [
@@ -317,6 +316,8 @@ const DATA = {
 let computed = Ember.computed;
 
 export default TaskController.extend({
+  restless: Ember.inject.service('restless'),
+
   ringgold: [],
   institutionalAccountProgramList: DATA.institutionalAccountProgramList,
   states:    DATA.states,
@@ -327,7 +328,7 @@ export default TaskController.extend({
 
   countries: [],
   _getCountries: Ember.on("init", function() {
-    RESTless.get("/api/countries").then((data)=> {
+    this.get('restless').get("/api/countries").then((data)=> {
       this.set("countries", data.countries.map(function(c) {
         return { id: c, text: c };
       }));

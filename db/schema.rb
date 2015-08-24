@@ -62,7 +62,7 @@ ActiveRecord::Schema.define(version: 20150811135403) do
     t.datetime "updated_at"
     t.string   "title"
     t.string   "caption"
-    t.string   "status",          default: "processing"
+    t.string   "status",     default: "processing"
     t.string   "kind"
   end
 
@@ -373,7 +373,7 @@ ActiveRecord::Schema.define(version: 20150811135403) do
     t.string   "attachment"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "status",     default: "processing"
+    t.string   "status",      default: "processing"
     t.boolean  "publishable", default: true
   end
 

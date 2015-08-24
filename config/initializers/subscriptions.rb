@@ -27,6 +27,10 @@ EVENTS = {
   'attachment:updated' => [Attachment::Updated::EventStream],
   'attachment:destroyed' => [Attachment::Destroyed::EventStream],
 
+
+  'comment:created' => [Comment::Created::EventStream],
+  'comment:updated' => [Comment::Updated::EventStream],
+  'comment:destroyed' => [Comment::Destroyed::EventStream],
 }
 
 EVENTS.each do |event_name, subscriber_list|

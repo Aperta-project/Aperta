@@ -24,7 +24,7 @@ TahiNotifier.subscribe("paper.data_extracted") do |payload|
   paper = Paper.find(record_id)
 
   paper.tasks_for_type("TahiUploadManuscript::UploadManuscriptTask").each do |task|
-    task[:completed] = true
+    task.completed = true
     task.save!
   end
 end

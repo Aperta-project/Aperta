@@ -1,0 +1,27 @@
+{{control-bar paper=model
+              showActivity="showActivity"
+              addContributors="addContributors"
+              exportDocument="exportDocument"
+              topicsIndexPath=topicsIndexPath
+              canViewManuscriptManager=canViewManuscriptManager
+              supportedDownloadFormats=supportedDownloadFormats}}
+
+<div id="paper-container" class="clearfix {{pageContainerHTMLClass}} {{if noTasks "sidebar-empty"}}">
+  {{partial "paper/sidebar"}}
+
+  <div class="vertical-divider"></div>
+
+  <div class="manuscript-container">
+    <main>
+      <article class="manuscript read-only">
+        <h2 id="paper-title" class="manuscript-title-and-placeholder">
+          {{{model.title}}}
+        </h2>
+        <div id="paper-body">{{{model.versionedBody}}}</div>
+      </article>
+    </main>
+  </div>
+
+</div>
+
+{{outlet}}

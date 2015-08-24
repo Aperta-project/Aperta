@@ -9,24 +9,10 @@ export default Ember.Mixin.create({
   isAdmin: Ember.computed.alias('currentUser.siteAdmin'),
   canViewManuscriptManager: false,
 
-  downloadsVisible: false,
-  contributorsVisible: false,
-  versionsVisible: false,
-  subNavVisible: false,
-
   supportedDownloadFormats: computed(function() {
     return ENV.APP.iHatExportFormats.map(formatType => {
       return {format: formatType, icon: `svg/${formatType}-icon`};
     });
-  }),
-
-  downloadLink: computed('model.id', function() {
-    return '/papers/' + this.get('model.id') + '/download';
-  }),
-
-  logoUrl: computed('model.journal.logoUrl', function() {
-    let logoUrl = this.get('model.journal.logoUrl');
-    return (/default-journal-logo/.test(logoUrl)) ? false : logoUrl;
   }),
 
   pageContainerHTMLClass: computed('model.editorMode', function() {
@@ -60,60 +46,9 @@ export default Ember.Mixin.create({
     });
   }),
 
-  subNavVisibleDidChange: Ember.observer('subNavVisible', function() {
-    if (this.get('subNavVisible')) {
-      $('.paper-toolbar').css('top', '103px');
-      $('html').addClass('control-bar-sub-nav-active');
-    } else {
-      $('.paper-toolbar').css('top', '60px');
-      $('html').removeClass('control-bar-sub-nav-active');
-    }
-  }),
-
   actions: {
-    'export': function(downloadType) {
+    exportDocument(downloadType) {
       return DocumentDownload.initiate(this.get('model.id'), downloadType.format);
-    },
-
-    hideVisible() {
-      this.setProperties({
-        contributorsVisible: false,
-        downloadsVisible: false,
-        versionsVisible: false
-      });
-    },
-
-    showVersions() {
-      this.send('hideVisible');
-      this.set('versionsVisible', true);
-    },
-
-    showContributors() {
-      this.send('hideVisible');
-      this.set('contributorsVisible', true);
-    },
-
-    showDownloads() {
-      this.send('hideVisible');
-      this.set('downloadsVisible', true);
-    },
-
-    showSubNav(sectionName) {
-      if (this.get('subNavVisible') && this.get(sectionName + 'Visible')) {
-        this.send('hideSubNav');
-      } else {
-        this.set('subNavVisible', true);
-        this.send('show' + (sectionName.capitalize()));
-      }
-    },
-
-    hideSubNav() {
-      this.set('subNavVisible', false);
-      this.send('hideVisible');
-    },
-
-    toggleVersioningMode() {
-      this.send('showSubNav', 'versions');
     }
   }
 });

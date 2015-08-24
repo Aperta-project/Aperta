@@ -1,18 +1,110 @@
 import Ember from 'ember';
+
 const { on } = Ember;
 
-export default Ember.Mixin.create({
-  matchWidth: true,
-  setMaxHeight: false,
-  width: null,
-  animationClass: null,
+/**
+ *  position-near is a mixin for components to position
+ *  them near other DOM nodes
+ *
+ *  @extends Ember.Mixin
+ *  @since 1.3.0
+**/
 
-  // attrs:
+export default Ember.Mixin.create({
+  // -- attrs:
+
+  /**
+   *  jquery selector for target to postion next to
+   *
+   *  @property selector
+   *  @type String
+   *  @default null
+   *  @required
+  **/
   selector: null,
 
+  /**
+   *  The default is to position directly below the target,
+   *  this option will put it directly over
+   *
+   *  @property positionOver
+   *  @type Boolean
+   *  @default false
+   *  @optional
+  **/
+  positionOver: false,
+
+  /**
+   *  This option will decrease the css max-height property to prevent
+   *  the list from flowing out of the viewport. A class will need to
+   *  be assigned to the component mixining this position-near. The class
+   *  will need `overflow: auto` to be set (see example). This mixin
+   *
+   *  @example
+   *    {{#my-component selector="#some-node"
+   *                    setMaxHeight=true
+   *                    class="my-component"}}
+   *
+   *    .my-component { overflow: auto; }
+   *
+   *  @property setMaxHeight
+   *  @type Boolean
+   *  @default false
+   *  @optional
+  **/
+  setMaxHeight: false,
+
+  /**
+   *  The default will match the width of target component.
+   *  This option will override the matchWidth attribute
+   *
+   *  @property width
+   *  @type String
+   *  @default null
+   *  @optional
+  **/
+  width: null,
+
+  /**
+   *  Match the width of target component
+   *
+   *  @property matchWidth
+   *  @type Boolean
+   *  @default true
+   *  @optional
+  **/
+  matchWidth: true,
+
+  /**
+   *  This offset is to prevent the bottom of the select-box-list
+   *  from being flush with the bottom of the viewport
+   *
+   *  @property offsetFromEdge
+   *  @type Number
+   *  @default 10
+   *  @required
+  **/
+  offsetFromEdge: 10,
+
+  /**
+   *  Unique window resize event name for component instance.
+   *  Don't use this before the component is in the DOM
+   *
+   *  @method getResizeEventName
+   *  @return {String}
+   *  @public
+  **/
+  getResizeEventName() {
+    return 'resize.positionnear-' + this.$().id;
+  },
+
+  /**
+   *  @method position
+   *  @public
+  **/
   position: on('didInsertElement', function() {
     let selector = this.get('selector');
-    if(Ember.isEmpty(selector)) { return; }
+    Ember.assert('position-near requires a selector property', selector);
 
     let target = Ember.$(selector);
     Ember.assert('position-near could not find target selector', target.length);
@@ -20,31 +112,79 @@ export default Ember.Mixin.create({
     let position = target.position();
     let offset   = target.offset();
     let targetHeight = target.outerHeight();
+    let windowHeight = $(window).height();
+
+    let heightBottom    = windowHeight - offset.top - targetHeight;
+    let heightTop       = offset.top;
+    let closerToBottom  = heightTop > heightBottom;
+
+    // css left
 
     let css = {
       position: 'absolute',
-      top: Math.round(position.top) + targetHeight,
       left: Math.round(position.left)
     };
 
-    if(this.get('matchWidth')) {
+    if(target.css("position") === "relative"){
+      css.left = 0;
+    }
+
+    // css vertical
+
+    if(closerToBottom) {
+      let bottom = Math.round(heightBottom);
+      if(this.get('positionOver')) {
+        css.bottom = bottom;
+      } else {
+        css.bottom = Math.round(bottom + targetHeight);
+      }
+    } else {
+      let top = Math.round(position.top);
+      if(this.get('positionOver')) {
+        css.top = top;
+      } else {
+        css.top = Math.round(top + targetHeight);
+      }
+    }
+
+    // css width
+
+    if(this.get('width')) {
+      css.width = this.get('width');
+    } else if(this.get('matchWidth')) {
       css.width = target.outerWidth();
     }
 
+    // css maxHeight
+
     if(this.get('setMaxHeight')) {
-      css.maxHeight = $(window).height() - offset.top - targetHeight - 10;
+      let height = closerToBottom ? heightTop : heightBottom;
+      if(this.get('positionOver')) {
+        height += targetHeight;
+      }
+
+      css.maxHeight = height - this.get('offsetFromEdge');
     }
 
     this.$().css(css);
   }),
 
+  /**
+   *  Start listening for window resize events.
+   *  If `setMaxHeight` is true we may need to adjust height.
+   *
+   *  @method _setupResizeListener
+   *  @private
+  **/
   _setupResizeListener: on('didInsertElement', function() {
-    $(window).on('resize.positionnear', ()=> {
-      this.position();
+    $(window).on(this.getResizeEventName(), ()=> {
+      if(this.get('setMaxHeight')) {
+        this.position();
+      }
     });
   }),
 
   _teardownResizeListener: on('willDestroyElement', function() {
-    $(window).off('resize.positionnear');
+    $(window).off(this.getResizeEventName());
   })
 });

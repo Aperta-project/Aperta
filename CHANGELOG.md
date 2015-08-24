@@ -6,8 +6,10 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [Unreleased][unreleased]
 ### Added
 - Autosuggest ember component
+- Select box ember component
 - Reviewer Reports can now be submitted, and can't be edited after that
 - Ability to view and diff old versions of manuscripts.
+- Reviewers can be invited that are currently not in the system
 
 ### Changed
 - Upgraded to Ember 1.13 [Aperta Transition Guide](https://github.com/Tahi-project/tahi/wiki/Aperta-Ember-1.13-Transition-Guide)

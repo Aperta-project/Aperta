@@ -1,10 +1,11 @@
-<div class="card-content" {{action "viewCard"}} data-id="{{unbound task.id}}">
+<a href={{unbound href}} class="card-content" {{action "viewCard"}} data-id="{{unbound task.id}}">
   {{#if unreadCommentsCount}}
     <span class="badge badge--red unread-comments-count">{{unreadCommentsCount}}</span>
   {{/if}}
   <div class="card-completed-icon"></div>
   <div class="card-title">{{task.title}}</div>
-  {{#if canRemoveCard}}
-    <span {{action "promptDelete" bubbles=false}} class="card-remove" title="Delete Card"></span>
-  {{/if}}
-</div>
+</a>
+
+{{#if canRemoveCard}}
+  <span {{action "promptDelete" bubbles=false}} class="card-remove" title="Delete Card"></span>
+{{/if}}

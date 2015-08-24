@@ -6,11 +6,7 @@ var Funnel     = require('broccoli-funnel');
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
     storeConfigInMeta: false,
-    emberCliFontAwesome: { includeFontAwesomeAssets: false },
-    markers: {
-      enabled: true,
-      kinds: ['TODO', 'FIXME']
-    }
+    emberCliFontAwesome: { includeFontAwesomeAssets: false }
   });
 
   app.import('bower_components/underscore/underscore-min.js');

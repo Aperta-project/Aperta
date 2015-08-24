@@ -1,0 +1,120 @@
+<div class="control-bar-inner-wrapper">
+  <ul>
+    <li id="control-bar-paper-journal-logo" class="control-bar-item">
+      {{#if hasJournalLogo}}
+        <img src="{{unbound paper.journal.logoUrl}}" alt="{{unbound paper.journal.name}}">
+      {{else}}
+        <div class="paper-journal">{{unbound paper.journal.name}}</div>
+      {{/if}}
+    </li>
+  </ul>
+  <ul>
+    <li class="control-bar-item">
+      <div class="control-bar-link versions-link __with-icon" {{action "toggleVersioningMode" "versions"}}>
+        <div class="control-bar-link-icon"><i class="fa fa-files-o"></i></div>
+        <div class="control-bar-link-text">
+          <span class="control-bar-toggle {{if versionsVisible "control-bar-toggle--active"}}">{{partial "svg/plus"}}</span>
+          Versions
+        </div>
+      </div>
+    </li>
+    <li class="control-bar-item">
+      <div class="control-bar-link contributors-link __with-icon" {{action "showSubNav" "contributors"}}>
+        <div class="control-bar-link-icon">
+          <span class="fa fa-user"></span>
+        </div>
+        <div class="control-bar-link-text">
+          <span class="control-bar-toggle {{if contributorsVisible "control-bar-toggle--active"}}">{{partial "svg/plus"}}</span>
+          Collaborators
+        </div>
+      </div>
+    </li>
+    <li class="control-bar-item">
+      <div class="control-bar-link downloads-link __with-icon" {{action "showSubNav" "downloads"}}>
+        <div class="control-bar-link-icon">{{partial "svg/downloads"}}</div>
+        <div class="control-bar-link-text">
+          <span class="control-bar-toggle {{if downloadsVisible "control-bar-toggle--active"}}">{{partial "svg/plus"}}</span>
+          Downloads
+        </div>
+      </div>
+    </li>
+    <li class="control-bar-item">
+      <div class="control-bar-link activity-link __with-icon" {{action "showActivity" "manuscript"}}>
+        <div class="control-bar-link-icon">{{partial "svg/heartbeat"}}</div>
+        <div class="control-bar-link-text">Recent Activity</div>
+      </div>
+    </li>
+    <li class="control-bar-item">
+      {{#link-to topicsIndexPath paper class="control-bar-link control-bar-button discussions-link"}}
+        <div class="control-bar-link-icon"><span class="fa fa-comment"></span></div>
+        Discussions
+      {{/link-to}}
+    </li>
+    {{#if canViewManuscriptManager}}
+      <li class="control-bar-item">
+        {{#link-to "paper.workflow" paper class="control-bar-link control-bar-button workflow-link"}}
+          <div class="control-bar-link-icon">{{partial "svg/manuscript-manager-icon"}}</div>
+          Workflow
+        {{/link-to}}
+      </li>
+    {{/if}}
+    <li class="control-bar-item dropdown">
+      <a id="more-dropdown-menu" class="control-bar-link more-link" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+        <div class="control-bar-link-icon">
+          <span class="fa fa-ellipsis-v"></span>
+        </div>
+        More
+      </a>
+      <ul class="dropdown-menu pull-right" aria-labelledby="more-dropdown-menu">
+        <li>
+          <a href="#" class="appeal-link">
+            <span class="fa fa-image"></span>
+            Appeal
+          </a>
+        </li>
+        <li>
+          <a href="#" class="withdraw-link">
+            <span class="fa fa-trash fa-lg"></span>
+            Withdrawal Manuscript
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<div class="control-bar-sub-items">
+
+  {{#if contributorsVisible}}
+    <div class="contributors active">
+      <a class="contributors-add" {{action "addContributors"}}>Add Collaborators</a>
+
+      {{#each paper.collaborators as |contributor|}}
+        <div class="contributor">{{unbound contributor.fullName}}</div>
+      {{/each}}
+    </div>
+  {{/if}}
+
+  {{#if downloadsVisible}}
+    <div class="manuscript-download-links active">
+
+      {{#each supportedDownloadFormats as |downloadType|}}
+        <a href="#" {{action "exportDocument" downloadType}} class="{{unbound downloadType.format}}" title="Download {{unbound downloadType.format}}">{{partial downloadType.icon}}</a>
+      {{/each}}
+
+      {{#direct-download-link link=downloadLink extension=".epub"}}
+        {{partial "svg/epub-icon"}}
+      {{/direct-download-link}}
+
+      {{#direct-download-link link=downloadLink extension=".pdf"}}
+        {{partial "svg/pdf-icon"}}
+      {{/direct-download-link}}
+    </div>
+  {{/if}}
+
+  {{#if versionsVisible}}
+    <div class="versions active">
+      {{versioning-bar paper=paper}}
+    </div>
+  {{/if}}
+</div>

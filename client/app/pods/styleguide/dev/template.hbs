@@ -20,6 +20,25 @@
 
 <hr>
 
+<section id="select-box">
+  <h3>
+    Select Box
+  </h3>
+
+ {{#select-box items=autoSuggestData
+               selectedItem=selectBoxSelection
+               placeholder="Please select a person"
+               allowDeselect=true
+               makeSelection=(action "selectSelectBoxSelection")
+               clearSelection=(action "clearSelectBoxSelection")
+               as |person|}}
+   {{person.fullName}}
+ {{/select-box}}
+
+</section>
+
+<hr>
+
 <section id="replace-image">
   <h3>
     Replace Image

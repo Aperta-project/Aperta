@@ -15,7 +15,8 @@ Component = Ember.Component.extend
     Ember.run.debounce(@, @_saveModel, 400)
 
   actions:
-    removeFunder: ->
+    removeFunder: (disabled) ->
+      return if (@get('disabled'))
       @get("model").destroyRecord()
 
 `export default Component;`

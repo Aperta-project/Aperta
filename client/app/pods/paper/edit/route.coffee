@@ -93,5 +93,4 @@ PaperEditRoute = AuthorizedRoute.extend
 
       @set 'fromSubmitOverlay', true
 
-
 `export default PaperEditRoute`

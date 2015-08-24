@@ -7,6 +7,7 @@ import registerCustomAssertions from './custom-assertions';
 import registerAsyncHelpers     from './async-helpers';
 import regsiterStoreHelpers     from './store-helpers';
 import registerContainerHelpers from './container-helpers';
+import registerSelectHelpers    from './select-native-helper';
 import registerSelect2Helpers   from './select2-helpers';
 
 import Factory from './factory';
@@ -17,6 +18,7 @@ registerCustomAssertions();
 registerAsyncHelpers();
 regsiterStoreHelpers();
 registerContainerHelpers();
+registerSelectHelpers();
 registerSelect2Helpers();
 
 

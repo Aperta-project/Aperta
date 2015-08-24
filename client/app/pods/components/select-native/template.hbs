@@ -4,9 +4,15 @@
   </option>
 {{/if}}
 
-{{#each content key="@index" as |item|}}
-  <option value="{{read-path item optionValuePath}}"
-          selected={{is-equal item selection}}>
-    {{read-path item optionLabelPath}}
-   </option>
-{{/each}}
+{{#if optionValuePath}}
+  {{#each content key="@index" as |item|}}
+    <option value="{{read-path item optionValuePath}}"
+            selected={{is-equal item selection}}>
+      {{read-path item optionLabelPath}}
+     </option>
+  {{/each}}
+{{else}}
+  {{#each content key="@index" as |item|}}
+    <option value=item selected={{is-equal item selection}}>{{item}}</option>
+  {{/each}}
+{{/if}}

@@ -23,6 +23,13 @@ import Ember from 'ember';
  *                    selection=selectedPerson
  *                    action=(action "someActionNameHere")}}
  *
+ *  The example below uses an array as the data source
+ *  (don't supply an optionValuePath or optionLabelPath path)
+ *  @example
+ *    {{select-native content=someArray
+ *                    selection=selectedPerson
+ *                    action=(action "someActionNameHere")}}
+ *
  *  @class SelectNativeComponent
  *  @extends Ember.Component
  *  @since 1.3.0
@@ -54,8 +61,8 @@ export default Ember.Component.extend({
   **/
   prompt: null,
 
-  optionValuePath: 'id',
-  optionLabelPath: 'title',
+  optionValuePath: null,
+  optionLabelPath: null,
   action: Ember.K, // action to fire on change
 
   /**

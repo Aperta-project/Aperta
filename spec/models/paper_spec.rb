@@ -34,6 +34,17 @@ describe Paper do
     end
   end
 
+  describe "#latest_withdrawal_reason" do
+    let(:paper) { FactoryGirl.create(:paper, :submitted) }
+
+    it "returns the latest withdrawal_reason" do
+      paper.withdrawal_reasons << "Some excuse"
+      paper.withdrawal_reasons << "Some other excuse"
+
+      expect(paper.latest_withdrawal_reason).to eq "Some other excuse"
+    end
+  end
+
   describe "validations" do
     describe "paper_type" do
       it "is required" do

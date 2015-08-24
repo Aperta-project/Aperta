@@ -29,11 +29,12 @@ export default Ember.Component.extend({
 
   attachmentUrl: Ember.computed('attachment.id', 'figure', function() {
     let urlRoot = '/api/supporting_information_files/';
-    if (this.get('figure')) {
-      urlRoot = '/api/figures/';
-    }
-    if (this.get('attachment')) {
+
+    if (this.get('attachment.task')) {
       urlRoot = '/api/tasks/' + this.get('attachment.task.id') + '/attachments/';
+    }
+    else if (this.get('figure')) {
+      urlRoot = '/api/figures/';
     }
 
     return urlRoot + this.get('attachment.id') + '/update_attachment';

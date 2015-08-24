@@ -1,17 +1,61 @@
 import Ember from 'ember';
 
+/**
+ *  select-native is a component for the html select element.
+ *  - It will iterate over the content attr and yield each item,
+ *    as an option element
+ *  - The action attr should be an action that mutates 
+ *    the selection (see examples below)
+ *
+ *  The example below mutates the selectedPerson on-change
+ *  @example
+ *    {{select-native content=paper.versions
+ *                    optionValuePath="id"
+ *                    optionLabelPath="name"
+ *                    selection=selectedPerson
+ *                    action=(action (mut selectedPerson))}}
+ *
+ *  The example below calls an action from a parent component
+ *  @example
+ *    {{select-native content=paper.versions
+ *                    optionValuePath="id"
+ *                    optionLabelPath="name"
+ *                    selection=selectedPerson
+ *                    action=(action "someActionNameHere")}}
+ *
+ *  @class SelectNativeComponent
+ *  @extends Ember.Component
+ *  @since 1.3.0
+**/
+
 export default Ember.Component.extend({
   tagName: 'select',
 
   // possible passed-in values with their defaults:
   content: null,
+
+  /**
+   *  Will display as first option, disabled.
+   *  The prompt will be selected when a selection is not made
+   *
+   *  @property prompt
+   *  @type String
+   *  @default null
+   *  @optional
+  **/
   prompt: null,
+
   optionValuePath: 'id',
   optionLabelPath: 'title',
   action: Ember.K, // action to fire on change
 
-  // shadow the passed-in `selection` to avoid
-  // leaking changes to it via a 2-way binding
+  /**
+   *  Shadow the passed-in `selection` to avoid
+   *  leaking changes to it via a 2-way binding
+   *
+   *  @property _selection
+   *  @private
+  **/
   _selection: Ember.computed.reads('selection'),
 
   init() {
@@ -21,6 +65,11 @@ export default Ember.Component.extend({
     }
   },
 
+  /**
+   *  Event fired when the selection is changed
+   *
+   *  @public
+  **/
   change() {
     const selectEl = this.$()[0];
     const selectedIndex = selectEl.selectedIndex;

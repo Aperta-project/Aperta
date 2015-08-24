@@ -101,7 +101,7 @@ class Paper < ActiveRecord::Base
       transitions to: :withdrawn,
                   after: :prevent_edits!
       before do |withdrawal_reason|
-        self.withdrawal_reasons << withdrawal_reason
+        withdrawal_reasons << withdrawal_reason
       end
     end
   end

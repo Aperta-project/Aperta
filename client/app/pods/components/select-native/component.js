@@ -30,6 +30,15 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   tagName: 'select',
+  attributeBindings: [
+    'autofocus',
+    'disabled',
+    'form',
+    'name',
+    'required',
+    'size',
+    'tabindex'
+  ],
 
   // possible passed-in values with their defaults:
   content: null,

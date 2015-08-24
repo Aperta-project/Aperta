@@ -1,5 +1,5 @@
 {{#if prompt}}
-  <option disabled selected={{is-not selection}}>
+  <option disabled selected={{if selection "false" "true"}}>
     {{prompt}}
   </option>
 {{/if}}

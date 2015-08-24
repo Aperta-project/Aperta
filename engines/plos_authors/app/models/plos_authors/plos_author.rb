@@ -21,7 +21,7 @@ module PlosAuthors
       where(paper_id: paper)
     end
 
-    feed_activities feed_names: ['manuscript', 'workflow'], subject: :paper do
+    feed_activities feed_names: ['manuscript'], subject: :paper do
      activity :created, "Added Author"
     end
 

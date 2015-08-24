@@ -30,7 +30,6 @@ feature 'Comments on cards', js: true do
     scenario "displays user entered comment as non-escaped string" do
       page = TaskManagerPage.new
       find('.card-content').click
-      binding.pry
       expect(page).to have_content "#{task.comments.first.body}"
     end
   end

@@ -19,7 +19,7 @@ TahiNotifier.subscribe("paper.submitted") do |payload|
   end
 end
 
-TahiNotifier.subscribe("paper.manuscript_uploaded") do |payload|
+TahiNotifier.subscribe("paper.data_extracted") do |payload|
   record_id = payload[:paper_id]
   paper = Paper.find(record_id)
 

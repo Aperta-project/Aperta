@@ -7,7 +7,7 @@ class PaperUpdateWorker
     @paper = Paper.find(paper_id)
     @epub_stream = Faraday.get(epub_url).body
     sync!
-    TahiNotifier.notify(event: "paper.manuscript_uploaded", payload: { paper_id: paper.id })
+    TahiNotifier.notify(event: "paper.data_extracted", payload: { paper_id: paper.id })
   end
 
   def sync!

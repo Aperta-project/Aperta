@@ -48,7 +48,6 @@ module TahiHelperMethods
 
     sf_credentials.each {|k,v| ENV[k] = v} #use real creds
 
-    ap ENV
     yield
 
     old_test_credentials.each {|k,v| ENV[k] = v} #reset to dummy creds

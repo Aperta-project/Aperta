@@ -1,70 +1,86 @@
 import Ember from 'ember';
 import AnimateOverlay from 'tahi/mixins/animate-overlay';
+import FileUploadMixin from 'tahi/mixins/file-upload';
 
-export default Ember.Controller.extend(AnimateOverlay, {
+const { computed } = Ember;
+
+export default Ember.Controller.extend(AnimateOverlay, FileUploadMixin, {
   overlayClass: 'overlay--fullscreen paper-new-overlay',
   journals: null, // set on controller before rendering overlay
-  paperSaving: false,
+  journalEmpty: computed.empty('model.journal'),
 
-  journalProxies: Ember.computed(function() {
-    return this.get('journals').map(function(journal) {
-      return {
-        id: journal.get('id'),
-        text: journal.get('name')
-      };
-    });
+  shortTitleCount: computed('model.shortTitle', function() {
+    let title = this.get('model.shortTitle');
+    return title ? title.length : 0;
   }),
 
-  // Select-2 requires data to be an object with an id key :\
-  paperTypeProxies: Ember.computed('model.journal.paperTypes.@each', function() {
-    let paperTypes = this.get('model.journal.paperTypes');
-    if(Ember.isEmpty(paperTypes)) { return []; }
-
-    return this.get('model.journal.paperTypes').map(function(paperType) {
-      return {
-        id: paperType,
-        text: paperType
-      };
-    });
-  }),
-
-  selectedJournal: Ember.computed('model.journal', function() {
-    let journal = this.get('model.journal');
-    if(Ember.isEmpty(journal)) { return; }
-
-    return { id:   journal.get('id'),
-             text: journal.get('name') };
-  }),
-
-  selectedPaperType: Ember.computed('model.paperType', function() {
-    let paperType = this.get('model.paperType');
-    if(Ember.isEmpty(paperType)) { paperType = ''; }
-
-    return { id:   paperType,
-             text: paperType };
+  manuscriptUploadUrl: computed('model.id', function() {
+    return '/api/papers/' + this.get('model.id') + '/upload';
   }),
 
   actions: {
     createNewPaper() {
-      this.set('paperSaving', true);
+      if(this.get('model.isSaving')) { return; }
 
       this.get('model').save().then((paper)=> {
         this.transitionToRoute('paper.edit', paper);
       }, (response)=> {
         this.flash.displayErrorMessagesFromResponse(response);
-      }).finally(()=> {
-        this.set('paperSaving', false);
       });
     },
 
-    selectJournal(journalProxy) {
-      let journal = this.get('journals').findBy('id', journalProxy.id);
+    createPaperWithUpload() {
+      this.get('model').save().then(()=> {
+        this.get('uploadFunction')();
+      }, (response)=> {
+        this.flash.displayErrorMessagesFromResponse(response);
+      });
+    },
+
+    selectJournal(journal) {
       this.set('model.journal', journal);
       this.set('model.paperType', null);
     },
 
-    selectPaperType(paperTypeProxy) {
-      this.set('model.paperType', paperTypeProxy.text);
+    clearJournal() {
+      this.set('model.journal', null);
+      this.set('model.paperType', null);
+    },
+
+    selectPaperType(paperType) {
+      this.set('model.paperType', paperType);
+    },
+
+    clearPaperType() {
+      this.set('model.paperType', null);
+    },
+
+    /**
+     *  Called by `file-uploader` in template
+     *  We're hanging on to the upload function to fire later
+     *  after the paper model is saved
+     *
+     *  @method uploadReady
+     *  @param {Function} [func] Function to trigger upload of file
+     *  @public
+    **/
+    uploadReady(func) {
+      this.set('uploadFunction', func);
+      this.send('createPaperWithUpload');
+    },
+
+    /**
+     *  Overrides action provided by FileUploadMixin
+     *  Called by `file-uploader` in template
+     *
+     *  @method uploadFinished
+     *  @param {Object} [data]
+     *  @param {String} [filename]
+     *  @public
+    **/
+    uploadFinished(data, filename) {
+      this.uploadFinished(data, filename);
+      this.transitionToRoute('paper.edit', this.get('model'));
     }
   }
 });

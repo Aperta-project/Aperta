@@ -7,7 +7,8 @@ export default Ember.Controller.extend({
   actions: {
     withdraw() {
       var reason = this.get('model.withdrawalReason');
-      RESTless.putUpdate(this.get('model'), '/withdraw', {'reason': reason}).then(()=> {
+      RESTless.putUpdate(this.get('model'), '/withdraw', {'reason': reason})
+      .then(()=> {
         this.send('closeOverlay');
       });
     }

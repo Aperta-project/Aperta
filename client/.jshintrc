@@ -32,7 +32,8 @@
     "pickFromSelect2",
     "pickFromChosenSingle",
     "MathJax",
-    "JsDiff"
+    "JsDiff",
+    "pickFromSelectBox"
   ],
   "boss": true,
   "browser": true,

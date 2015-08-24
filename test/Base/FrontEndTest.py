@@ -57,6 +57,7 @@ class FrontEndTest(unittest.TestCase):
     return self._driver
 
   def _login(self):
+    """Login into Aperta"""
     login_page = LoginPage(self.getDriver())
     login_page.enter_login_field(login_valid_email)
     login_page.enter_password_field(login_valid_pw)

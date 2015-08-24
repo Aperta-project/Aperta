@@ -13,10 +13,10 @@ class ManuscriptPage(PlosPage):
     super(ManuscriptPage, self).__init__(driver, '/')
 
     #Locators - Instance members
-    self._click_workflow_button = (By.XPATH,'.//div/ul/li[5]/a')
+    self._workflow_button = (By.XPATH,".//a[contains(., 'Workflow')]")
 
   #POM Actions
   def click_workflow_button(self):
     """Click workflow button"""
-    self._get(self._click_workflow_button).click()
+    self._get(self._workflow_button).click()
     return self

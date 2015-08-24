@@ -65,8 +65,7 @@ class WorkflowPage(AuthenticatedPage):
       ".//div[@class='overlay-action-buttons']/button[2]")
     self._first_column = (By.XPATH,
       ".//div[@class='column-content']/div")
-    self._first_column_cards = (By.XPATH,
-      ".//div/div[contains(@class, 'column')][1]/div[2]/div/div[contains(@class, 'card')]")
+    self._first_column_cards = (By.CSS_SELECTOR, 'div.card')
     # Note: Not used due to not reaching this menu from automation
     self._remove_confirmation_title = (By.XPATH, 
         ".//div[contains(@class, 'delete-card-title')]/h1")
@@ -98,7 +97,7 @@ class WorkflowPage(AuthenticatedPage):
     assert editable.value_of_css_property('font-size') == '10px'
     assert editable.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     assert editable.value_of_css_property('font-weight') == '700'
-    assert 'Cabin' in editable.value_of_css_property('font-family')
+    assert application_typeface in editable.value_of_css_property('font-family')
     assert editable.value_of_css_property('text-transform') == 'uppercase'
     assert editable.value_of_css_property('line-height') == '20px'
     assert editable.value_of_css_property('text-align') == 'center'
@@ -123,7 +122,7 @@ class WorkflowPage(AuthenticatedPage):
     assert recent_activity_text.value_of_css_property('font-size') == '10px'
     assert recent_activity_text.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     assert recent_activity_text.value_of_css_property('font-weight') == '700'
-    assert 'Cabin' in recent_activity_text.value_of_css_property('font-family')
+    assert application_typeface in recent_activity_text.value_of_css_property('font-family')
     assert recent_activity_text.value_of_css_property('text-transform') == 'uppercase'
     assert recent_activity_text.value_of_css_property('line-height') == '20px'
     assert recent_activity_text.value_of_css_property('text-align') == 'center'
@@ -226,17 +225,17 @@ class WorkflowPage(AuthenticatedPage):
     assert card_overlay.value_of_css_property('text-align') == 'center'
     close_icon_overlay = self._get(self._close_icon_overlay)
     assert close_icon_overlay.value_of_css_property('font-size') == '90px'
-    assert 'Cabin' in close_icon_overlay.value_of_css_property('font-family')
+    assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
     assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     select_task = self._get(self._select_in_overlay)
-    assert 'Cabin' in select_task.value_of_css_property('font-family')
+    assert application_typeface in select_task.value_of_css_property('font-family')
     assert select_task.value_of_css_property('font-size') == '14px'
     assert select_task.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
     add_button_overlay = self._get(self._add_button_overlay)
     self.validate_green_backed_button_style(add_button_overlay)
     assert add_button_overlay.text == 'ADD'
     cancel_button_overlay = self._get(self._cancel_button_overlay)
-    assert 'Cabin' in cancel_button_overlay.value_of_css_property('font-family')
+    assert application_typeface in cancel_button_overlay.value_of_css_property('font-family')
     assert cancel_button_overlay.value_of_css_property('font-size') == '14px'
     assert cancel_button_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     assert cancel_button_overlay.value_of_css_property('text-align') == 'center'
@@ -281,7 +280,7 @@ class WorkflowPage(AuthenticatedPage):
     remove_subtitle = self._get(self._remove_confirmation_subtitle)
     assert remove_subtitle.text == "Are you sure?"
     assert remove_subtitle.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
-    assert 'Cabin' in remove_subtitle.value_of_css_property('font-family')
+    assert application_typeface in remove_subtitle.value_of_css_property('font-family')
     assert remove_subtitle.value_of_css_property('font-size') == '30px'
     assert remove_subtitle.value_of_css_property('font-weight') == '500'
     remove_yes = self._get(self._remove_confirmation_title)
@@ -290,6 +289,6 @@ class WorkflowPage(AuthenticatedPage):
     remove_cancel = self._get(self._remove_confirmation_subtitle)
     assert remove_cancel.text == "cancel"
     assert remove_cancel.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-    assert 'Cabin' in remove_cancel.value_of_css_property('font-family')
+    assert application_typeface in remove_cancel.value_of_css_property('font-family')
     assert remove_cancel.value_of_css_property('font-size') == '14px'
     return self

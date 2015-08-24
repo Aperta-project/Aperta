@@ -76,8 +76,9 @@ class AuthenticatedPage(PlosPage):
     # Must have admin or superadmin
     if permissions == (oa_login, sa_login):
       self._get(self._nav_admin_link)
+    return None
 
-  def click_nav_close_link(self):
+  def click_nav_close(self):
     """Click sign out link"""
     self._get(self._nav_close).click()
     return self
@@ -130,6 +131,21 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('font-weight') == '500'
     assert title.value_of_css_property('line-height') == '52.8px'
     assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+    return None
+
+  @staticmethod
+  def validate_profile_title_style(title):
+    """
+    Ensure consistency in rendering page and overlay main headings across the application
+    :param title: title to validate
+    :return: None
+    """
+    assert application_typeface in title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '14px'
+    assert title.value_of_css_property('font-weight') == '500'
+    assert title.value_of_css_property('line-height') == '15.4px'
+    assert title.value_of_css_property('color') == 'rgba(153, 153, 153, 1)'
+    return None
     
   @staticmethod
   def validate_application_h2_style(title):
@@ -181,6 +197,26 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('padding-bottom') == '6px'
     assert button.value_of_css_property('padding-left') == '12px'
     assert button.value_of_css_property('padding-right') == '12px'
+
+  @staticmethod
+  def validate_secondary_green_button_style(button):
+    """
+    Ensure consistency in rendering page and overlay light green-backed, green text buttons across the application
+    :param button: button to validate
+    """
+    assert application_typeface in button.value_of_css_property('font-family')
+    assert button.value_of_css_property('font-size') == '14px'
+    assert button.value_of_css_property('font-weight') == '400'
+    assert button.value_of_css_property('line-height') == '20px'
+    assert button.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    assert button.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
+    assert button.value_of_css_property('vertical-align') == 'middle'
+    assert button.value_of_css_property('text-transform') == 'uppercase'
+    assert button.value_of_css_property('padding-top') == '6px'
+    assert button.value_of_css_property('padding-bottom') == '6px'
+    assert button.value_of_css_property('padding-left') == '12px'
+    assert button.value_of_css_property('padding-right') == '12px'
+
 
   @staticmethod
   def validate_small_green_backed_button_style(button):
@@ -261,6 +297,44 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('padding-left') == '5px'
     assert button.value_of_css_property('padding-right') == '5px'
 
+  @staticmethod
+  def validate_secondary_button_style(button):
+    """
+    Ensure consistency in rendering page and overlay text buttons across the application
+    :param button: button to validate
+    :return: None
+    TODO: Find out why I see the commented values in the browser
+    """
+    assert application_typeface in button.value_of_css_property('font-family')
+    assert button.value_of_css_property('font-size') == '14px'
+    assert button.value_of_css_property('font-weight') == '400'
+    assert button.value_of_css_property('line-height') == '20px'
+    assert button.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
+    assert button.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
+    assert button.value_of_css_property('text-align') == 'center'
+    assert button.value_of_css_property('text-transform') == 'uppercase'
+    return None
+
+  @staticmethod
+  def validate_secondary_grey_small_button_style(button):
+    """
+    Ensure consistency in rendering page and overlay text buttons across the application
+    :param button: button to validate
+    :return: None
+    TODO: Find out why I see the commented values in the browser
+    """
+    assert application_typeface in button.value_of_css_property('font-family')
+    assert button.value_of_css_property('font-size') == '14px'
+    assert button.value_of_css_property('font-weight') == '400'
+    assert button.value_of_css_property('line-height') == '20px'
+    assert button.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
+    assert button.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
+    assert button.value_of_css_property('text-align') == 'center'
+    assert button.value_of_css_property('text-transform') == 'uppercase'
+    return None
+
+
+
   # Form Styles ==============================
   @staticmethod
   def validate_input_field_label_style(label):
@@ -277,7 +351,6 @@ class AuthenticatedPage(PlosPage):
     assert label.value_of_css_property('padding-left') == '12px'
     assert label.value_of_css_property('margin-bottom') == '5px'
 
-
   # Table Styles =============================
   @staticmethod
   def validate_table_heading_style(th):
@@ -292,3 +365,17 @@ class AuthenticatedPage(PlosPage):
     assert th.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
     assert th.value_of_css_property('text-align') == 'left'
     assert th.value_of_css_property('vertical-align') == 'top'
+
+  @staticmethod
+  def validate_input_form_style(input_, color='rgba(85, 85, 85, 1)'):
+    """
+    Ensure consistency in rendering input in forms across the application
+    :return: None
+    """
+    assert application_typeface in input_.value_of_css_property('font-family')
+    assert input_.value_of_css_property('font-size') == '14px'
+    assert input_.value_of_css_property('font-weight') == '400'
+    assert input_.value_of_css_property('line-height') == '20px'
+    assert input_.value_of_css_property('color') == color
+    assert input_.value_of_css_property('text-align') == 'start'
+    return None

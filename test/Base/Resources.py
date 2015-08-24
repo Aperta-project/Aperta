@@ -8,8 +8,6 @@ less static, variable definitions.
 
 from os import getenv
 
-from os import getenv
-
 # General resources
 # set friendly_testhostname to 'prod' to run suite against production
 # Two fields need to be changed to support running tests in your local development
@@ -72,6 +70,8 @@ editor_name_1 = 'Anthony George'
 user_email_1 = 'trash261121@ariessc.com'
 user_pw_editor = 'test_password'
 
-# Apache AuthType
-# aa_username = 'plos'
-# aa_password = 'shrimp'
+# Fake affiliations
+affiliation = {'institution':'Universidad Del Este', 'title': 'Dr.',
+               'country':'Argentina', 'start':'12/01/2014', 
+               'end':'08/11/2015', 'email': 'test@test.org',
+               'department':'Molecular Biology'}

@@ -60,14 +60,14 @@ test("unForceValidHTML replaces fake- elts with real ones", function(assert) {
   );
 });
 
-test("shouldRecurseInto returns true if the node is a <p>", function(assert) {
+test("shouldRecurseInto is true if the node is a <p>", function(assert) {
   assert.equal(
     this.component.shouldRecurseInto($("<p>Circumspect</p>")[0]),
     true
   );
 });
 
-test("shouldRecurseInto returns false if the node is a <figure>", function(assert) {
+test("shouldRecurseInto is false if the node is a <figure>", function(assert) {
   assert.equal(
     this.component.shouldRecurseInto($("<figure>Objective</figure>")[0]),
     false

@@ -269,4 +269,41 @@ describe PapersController do
       end
     end
   end
+
+  describe "GET 'activity'" do
+    let(:weak_user) { FactoryGirl.create :user }
+
+    before do
+      PaperRole.create(
+        user: weak_user,
+        paper: paper,
+        role: PaperRole::COLLABORATOR)
+    end
+
+    context "for manuscript feed" do
+      it "returns the feed" do
+        get :activity, { id: paper.to_param, name: 'manuscript', format: :json }
+        expect(response.status).to eq(200)
+      end
+
+      it "returns the feed even to paper-view-only users" do
+        sign_in weak_user
+        get :activity, { id: paper.to_param, name: 'manuscript', format: :json }
+        expect(response.status).to eq(200)
+      end
+    end
+
+    context "for workflow feed" do
+      it "returns the feed if authorized for the manuscript manager" do
+        get :activity, { id: paper.to_param, name: 'workflow', format: :json }
+        expect(response.status).to eq(200)
+      end
+
+      it "blocks paper-view-only users" do
+        sign_in weak_user
+        get :activity, { id: paper.to_param, name: 'workflow', format: :json }
+        expect(response.status).to eq(403)
+      end
+    end
+  end
 end

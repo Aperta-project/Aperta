@@ -57,7 +57,13 @@ class PapersController < ApplicationController
 
   def activity
     # TODO: params[:name] probably needs some securitifications
-    activities = Activity.where(feed_name: params[:name], subject_id: paper.id).order('created_at DESC')
+    if params[:name] == 'workflow'
+      feed_name = ['workflow', 'manuscript'] # All manuscript events show in workflow
+    else
+      feed_name = params[:name]
+    end
+
+    activities = Activity.where(feed_name: feed_name, subject_id: paper.id).order('created_at DESC')
     respond_with activities, each_serializer: ActivitySerializer, root: 'feeds'
   end
 
@@ -163,7 +169,7 @@ class PapersController < ApplicationController
   end
 
   def enforce_policy
-    authorize_action!(paper: paper)
+    authorize_action!(paper: paper, params: params)
   end
 
   def sanitize_title

@@ -1,5 +1,6 @@
 class PapersPolicy < ApplicationPolicy
   primary_resource :paper
+  allow_params :params
 
   def show?
     can_view_paper?
@@ -46,7 +47,11 @@ class PapersPolicy < ApplicationPolicy
   end
 
   def activity?
-    can_view_paper?
+    if params[:name] == 'manuscript'
+      can_view_paper?
+    else
+      can_view_manuscript_manager?
+    end
   end
 
   private
@@ -62,7 +67,7 @@ class PapersPolicy < ApplicationPolicy
   end
 
   def can_view_manuscript_manager?
-    current_user.roles.where(journal_id: paper.journal).
+    current_user.site_admin? || current_user.roles.where(journal_id: paper.journal).
       where("can_view_assigned_manuscript_managers = ? OR can_view_all_manuscript_managers = ?", true, true).
       exists?
   end

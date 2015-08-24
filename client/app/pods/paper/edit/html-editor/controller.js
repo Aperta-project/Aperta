@@ -115,10 +115,11 @@ export default Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, Discussio
     },
     unlock: function() {
       this.releaseLock();
-    },
+    }
   },
 
-  hideEditor: Ember.computed('model.editable', 'model.versioningMode', function() {
-    return !(this.get('model.editable')) || this.get('model.versioningMode');
-  })
+  hideEditor: Ember.computed('model.editable', 'model.versioningMode',
+    function() {
+      return !(this.get('model.editable')) || this.get('model.versioningMode');
+    })
 });

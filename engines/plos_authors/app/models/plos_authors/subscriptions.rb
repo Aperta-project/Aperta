@@ -1,18 +1,10 @@
-# TahiNotifier.subscribe("author:created") do |payload|
-#   record = payload[:record]
-#
-#   # generic Authors may have been created in a different task, so
-#   # convert them to PlosAuthors
-#   record.paper.tasks_for_type("PlosAuthors::PlosAuthorsTask").each do |task|
-#     task.convert_generic_authors!
-#   end
-# end
-#
-# TahiNotifier.subscribe("plos_authors/plos_author:*") do |payload|
-#   action = payload[:action]
-#   record = payload[:record]
-#   excluded_socket_id = payload[:requester_socket_id]
-#
-#   # serialize the plos_author down the paper channel
-#   EventStream::Broadcaster.new(record).post(action: action, channel_scope: record.plos_authors_task.paper, excluded_socket_id: excluded_socket_id)
-# end
+AUTHOR_EVENTS = {
+  'author:updated' => [PlosAuthors::PlosAuthor::Updated::NotifyPlosAuthorChange],
+  'plos_authors/plos_author:created' => [PlosAuthors::PlosAuthor::Created::EventStream],
+  'plos_authors/plos_author:updated' => [PlosAuthors::PlosAuthor::Updated::EventStream, PlosAuthors::PlosAuthor::Updated::NotifyAuthorChange],
+  'plos_authors/plos_author:destroyed' => [PlosAuthors::PlosAuthor::Destroyed::EventStream],
+}
+
+AUTHOR_EVENTS.each do |event_name, subscriber_list|
+  Notifier.subscribe(event_name, subscriber_list)
+end

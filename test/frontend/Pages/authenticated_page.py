@@ -120,16 +120,16 @@ class AuthenticatedPage(PlosPage):
 
   # Heading Styles ===========================
   @staticmethod
-  def validate_application_h1_style(title, size='48', line='52.8'):
+  def validate_application_h1_style(title):
     """
     Ensure consistency in rendering page and overlay main headings across the application
     Not used for the Manuscript Title!
     :param title: title to validate
     """
     assert application_typeface in title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == '%spx'%size
+    assert title.value_of_css_property('font-size') == '48px'
     assert title.value_of_css_property('font-weight') == '500'
-    assert title.value_of_css_property('line-height') == '%spx'%line
+    assert title.value_of_css_property('line-height') == '52.8px'
     assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
     return None
 
@@ -197,6 +197,26 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('padding-bottom') == '6px'
     assert button.value_of_css_property('padding-left') == '12px'
     assert button.value_of_css_property('padding-right') == '12px'
+
+  @staticmethod
+  def validate_secondary_green_button_style(button):
+    """
+    Ensure consistency in rendering page and overlay light green-backed, green text buttons across the application
+    :param button: button to validate
+    """
+    assert application_typeface in button.value_of_css_property('font-family')
+    assert button.value_of_css_property('font-size') == '14px'
+    assert button.value_of_css_property('font-weight') == '400'
+    assert button.value_of_css_property('line-height') == '20px'
+    assert button.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    assert button.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
+    assert button.value_of_css_property('vertical-align') == 'middle'
+    assert button.value_of_css_property('text-transform') == 'uppercase'
+    assert button.value_of_css_property('padding-top') == '6px'
+    assert button.value_of_css_property('padding-bottom') == '6px'
+    assert button.value_of_css_property('padding-left') == '12px'
+    assert button.value_of_css_property('padding-right') == '12px'
+
 
   @staticmethod
   def validate_small_green_backed_button_style(button):
@@ -278,10 +298,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('padding-right') == '5px'
 
   @staticmethod
-  def validate_secondary_button_style(button, color='rgba(255, 255, 255, 1)',
-                                      transform='uppercase', font_size='14px',
-                                      line_height='20px', background_color='rgba(255, 255, 255, 1)',
-                                      text_align='center'):
+  def validate_secondary_button_style(button):
     """
     Ensure consistency in rendering page and overlay text buttons across the application
     :param button: button to validate
@@ -289,15 +306,34 @@ class AuthenticatedPage(PlosPage):
     TODO: Find out why I see the commented values in the browser
     """
     assert application_typeface in button.value_of_css_property('font-family')
-    assert button.value_of_css_property('font-size') == font_size
+    assert button.value_of_css_property('font-size') == '14px'
     assert button.value_of_css_property('font-weight') == '400'
-    assert button.value_of_css_property('line-height') == line_height
-    assert button.value_of_css_property('color') == color
-    # Reset button color according to browser: 'rgba(57, 163, 41, 1)'
-    assert button.value_of_css_property('background-color') == background_color
-    assert button.value_of_css_property('text-align') == text_align
-    assert button.value_of_css_property('text-transform') == transform
+    assert button.value_of_css_property('line-height') == '20px'
+    assert button.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
+    assert button.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
+    assert button.value_of_css_property('text-align') == 'center'
+    assert button.value_of_css_property('text-transform') == 'uppercase'
     return None
+
+  @staticmethod
+  def validate_secondary_grey_small_button_style(button):
+    """
+    Ensure consistency in rendering page and overlay text buttons across the application
+    :param button: button to validate
+    :return: None
+    TODO: Find out why I see the commented values in the browser
+    """
+    assert application_typeface in button.value_of_css_property('font-family')
+    assert button.value_of_css_property('font-size') == '14px'
+    assert button.value_of_css_property('font-weight') == '400'
+    assert button.value_of_css_property('line-height') == '20px'
+    assert button.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
+    assert button.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
+    assert button.value_of_css_property('text-align') == 'center'
+    assert button.value_of_css_property('text-transform') == 'uppercase'
+    return None
+
+
 
   # Form Styles ==============================
   @staticmethod

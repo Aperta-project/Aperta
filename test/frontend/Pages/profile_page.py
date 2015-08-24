@@ -1,13 +1,14 @@
 #!/usr/bin/env python2
 
 import time
+import os
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-from authenticated_page import AuthenticatedPage
+from authenticated_page import AuthenticatedPage, application_typeface
 from Base.Resources import affiliation
-import os
+
 
 __author__ = 'sbassi@plos.org'
 
@@ -58,6 +59,19 @@ class ProfilePage(AuthenticatedPage):
 
   #POM Actions
 
+  @staticmethod
+  def validate_profile_title_style_big(title):
+    """
+    Ensure consistency in rendering page and overlay main headings across the application
+    :param title: title to validate
+    :return: None
+    """
+    assert application_typeface in title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '27px'
+    assert title.value_of_css_property('font-weight') == '500'
+    assert title.value_of_css_property('line-height') == '29.7px'
+    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+    return None
 
   def validate_initial_page_elements_styles(self, username):
     """Validate initial page elements styles of Profile page"""
@@ -70,25 +84,24 @@ class ProfilePage(AuthenticatedPage):
     assert 'First and last name:' in name_title.text
     self.validate_profile_title_style(name_title)
     name = self._get(self._profile_name)
-    self.validate_title_style(name)
+    self.validate_application_h1_style(name)
     username_title = self._get(self._profile_username_title)
     assert 'Username:' in username_title.text
     self.validate_profile_title_style(username_title)
-    profile_username = self._get(self._profile_username)
-    self.validate_title_style(profile_username, '27', '29.7')
+    username = self._get(self._profile_username)
+    self.validate_profile_title_style_big(username)
     email_title = self._get(self._profile_email_title)
     assert 'Email:' in email_title.text
     self.validate_profile_title_style(email_title)
     email = self._get(self._profile_email)
-    self.validate_title_style(email, '27', '29.7')
+    self.validate_profile_title_style_big(email)
     profile_at = self._get(self._profile_affiliation_title)
-    assert 'Affiliations:' in profile_at.text
+    assert 'Affiliations:' in profile_at.text    
     self.validate_profile_title_style(profile_at)
     affiliation_btn = self._get(self._affiliation_btn)
-    self.validate_secondary_button_style(affiliation_btn, color='rgba(119, 119, 119, 1)')
+    self.validate_secondary_grey_small_button_style(affiliation_btn)
     reset_btn = self._get(self._reset_btn)
-    self.validate_secondary_button_style(reset_btn, color='rgba(57, 163, 41, 1)', 
-                                         background_color='rgba(255, 255, 255, 1)')
+    self.validate_secondary_green_button_style(reset_btn)
     avatar = self._get(self._avatar)
     avatar.value_of_css_property('height') == '160px'
     avatar.value_of_css_property('width') == '160px'    

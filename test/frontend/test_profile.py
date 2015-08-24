@@ -3,6 +3,7 @@
 """
 This test case validates the Aperta workflow page
 """
+
 __author__ = 'sbassi@plos.org'
 
 import time
@@ -11,6 +12,7 @@ from Base.Decorators import MultiBrowserFixture
 from Base.FrontEndTest import FrontEndTest
 from Base.Resources import login_valid_uid, affiliation
 from Pages.login_page import LoginPage
+from frontend.Pages.profile_page import ProfilePage
 
 
 @MultiBrowserFixture
@@ -24,13 +26,20 @@ class ApertaProfileTest(FrontEndTest):
      - reset password
   """
   
-  def _test_validate_components_styles(self):
+  def _go_to_profile(self, init=True):
+    """Go to the profile page"""
+    dashboard = self._login() if init else DashboardPage(self.getDriver())
+    dashboard.click_left_nav()
+    dashboard.click_profile_link()
+    return ProfilePage(self.getDriver())
+
+  def test_validate_components_styles(self):
     """Validates the presence of the initial page elements"""
     profile_page = self._go_to_profile()
     profile_page.validate_initial_page_elements_styles(login_valid_uid)
     return self
 
-  def test_affiliations(self):
+  def _test_affiliations(self):
     """Testing add/delete affiliations"""
     profile_page = self._go_to_profile()
     # Validate image upload

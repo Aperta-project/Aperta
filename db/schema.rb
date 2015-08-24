@@ -272,7 +272,7 @@ ActiveRecord::Schema.define(version: 20150811135403) do
     t.string   "editor_mode",       default: "html", null: false
     t.string   "publishing_state"
     t.datetime "submitted_at"
-    t.text     "withdrawal_reason"
+    t.text     "withdrawal_reasons", default: [],                  array: true
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree

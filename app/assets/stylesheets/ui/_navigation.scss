@@ -3,7 +3,7 @@
   @include position(fixed, 0px auto 0px -310px);
   width: 310px;
   padding-left: 50px;
-  background: rgba(30,30,30, 0.92);
+  background: rgb(35,35,35);
   z-index: z('navigation');
   @include user-select(none);
 
@@ -28,7 +28,7 @@ html.navigation-visible .navigation {
   position: relative;
   display: block;
   margin-bottom: 25px;
-  padding: 15px 0 10px 66px;
+  padding: 16px 0 10px 70px;
   color: #fff;
   font-size: 24px;
   text-transform: uppercase;
@@ -43,8 +43,8 @@ html.navigation-visible .navigation {
 
 
 .navigation-close {
-  @include position(absolute, -10px auto auto 30px);
-  font-size: 54px;
+  @include position(absolute, -5px auto auto 32px);
+  font-size: 52px;
 }
 
 

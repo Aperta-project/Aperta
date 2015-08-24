@@ -105,8 +105,7 @@ class PapersController < ApplicationController
   end
 
   def withdraw
-    paper.update_column(:withdrawal_reason, withdrawal_params[:reason])
-    paper.withdraw!
+    paper.withdraw! withdrawal_params[:reason]
     respond_with paper
   end
 

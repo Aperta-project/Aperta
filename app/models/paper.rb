@@ -100,6 +100,9 @@ class Paper < ActiveRecord::Base
     event(:withdraw) do
       transitions to: :withdrawn,
                   after: :prevent_edits!
+      before do |withdrawal_reason|
+        self.withdrawal_reason = withdrawal_reason
+      end
     end
   end
 

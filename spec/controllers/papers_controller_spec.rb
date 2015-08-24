@@ -214,10 +214,11 @@ describe PapersController do
   end
 
   describe "PUT 'withdraw'" do
-    it "withdraw the paper" do
-      put :withdraw, id: paper.id, format: :json
+    it "withdraws the paper" do
+      put :withdraw, id: paper.id, reason:'Conflict of interest', format: :json
       expect(response.status).to eq(204)
-      expect(paper.reload.withdrawn?).to eq true
+      expect(paper.reload.withdrawal_reason).to eq('Conflict of interest')
+      expect(paper.withdrawn?).to eq true
       expect(paper.editable).to eq false
     end
   end

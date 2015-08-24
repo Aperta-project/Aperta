@@ -139,9 +139,14 @@ describe Paper do
     context "when withdrawing" do
       let(:paper) { FactoryGirl.create(:paper, :submitted) }
 
-      it "transitions to withdrawn" do
+      it "transitions to withdrawn without a reason" do
         paper.withdraw!
         expect(paper).to be_withdrawn
+      end
+
+      it "transitions to withdrawn with a reason" do
+        paper.withdraw! "Don't want to."
+        expect(paper.withdrawn?).to eq true
       end
 
       it "marks the paper not editable" do

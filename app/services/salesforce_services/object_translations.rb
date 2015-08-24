@@ -1,5 +1,6 @@
 module SalesforceServices
   module ObjectTranslations
+
     class ManuscriptTranslator
       def initialize(user_id:, paper:)
         @user_id = user_id
@@ -18,5 +19,19 @@ module SalesforceServices
         }
       end
     end
+
+    class BillingTranslator
+      def initialize(paper:)
+        @paper = paper
+      end
+
+      def paper_to_billing_hash
+        #TODO: find out what to send
+        {
+          
+        }
+      end
+    end
   end
+
 end

@@ -140,6 +140,11 @@ describe Paper do
         paper.submit! user
       end
 
+      it "submits billing and pfa info to salesforce" do
+        expect(paper).to receive(:create_billing_and_pfa_case).and_return(true)
+        paper.submit! user
+      end
+
     end
 
     context "when minor-revising (as in a tech check)" do

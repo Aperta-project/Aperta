@@ -54,4 +54,14 @@ describe SalesforceServices::API do
     end
   end
 
+  describe "#create_billing_and_pfa_case" do
+    it "creates and returns a salesforce case object" do
+      VCR.use_cassette("salesforce_create_billing_and_pfa") do
+        @kase = @api.create_billing_and_pfa_case(paper_id: paper.id)
+      end
+      expect(@kase.class).to eq Case
+    end
+    
+  end
+
 end

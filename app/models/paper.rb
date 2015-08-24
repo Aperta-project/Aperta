@@ -54,7 +54,8 @@ class Paper < ActiveRecord::Base
                   after: [:prevent_edits!,
                           :major_version!,
                           :set_submitted_at!,
-                          :find_or_create_paper_in_salesforce]
+                          :find_or_create_paper_in_salesforce,
+                          :create_billing_and_pfa_case]
     end
 
     event(:minor_check) do
@@ -287,15 +288,19 @@ class Paper < ActiveRecord::Base
     update!(submitted_at: Time.current.utc)
   end
 
-  def create_paper_in_salesforce!(paper:)
+  def create_paper_in_salesforce!(*)
     SalesforceServices::API.delay.create_manuscript(paper_id: self.id)
   end
 
-  def update_paper_in_salesforce!(paper:)
+  def update_paper_in_salesforce!(*)
     SalesforceServices::API.delay.update_manuscript(paper_id: self.id)
   end
 
   def find_or_create_paper_in_salesforce(*)
     SalesforceServices::API.delay.find_or_create_manuscript(paper_id: self.id)
+  end
+
+  def create_billing_and_pfa_case(*)
+    SalesforceServices::API.delay.create_billing_and_pfa_case(paper_id: self.id)
   end
 end

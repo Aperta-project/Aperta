@@ -47,6 +47,11 @@ class Invitation < ActiveRecord::Base
     possible_users - invited_users
   end
 
+  def recipient_name
+    return invitee.full_name if invitee
+    email
+  end
+
   private
 
   def assign_to_latest_decision
@@ -54,7 +59,7 @@ class Invitation < ActiveRecord::Base
   end
 
   def invitation_rescinded
-    task.invitation_rescinded(paper_id: paper.id, invitee_id: invitee.id)
+    task.invitation_rescinded(self)
   end
 
   def notify_invitation_invited

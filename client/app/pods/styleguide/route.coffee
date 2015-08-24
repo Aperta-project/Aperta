@@ -278,6 +278,7 @@ StyleguideRoute = Ember.Route.extend
     controller.set('user4', user4)
     controller.set('users', users)
     controller.set('autoSuggestData', autoSuggestData)
+    controller.set('selectBoxData', autoSuggestData)
 
   actions:
     selectAutoSuggestItem: ->

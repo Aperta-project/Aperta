@@ -2,7 +2,16 @@
   {{#each latestDecisionInvitations as |invitation|}}
   <tr class='invitation'>
     <td><span>{{user-thumbnail user=invitation.invitee classNames='invitee-thumbnail'}}</span></td>
-    <td><span class='invitee-full-name'>{{invitation.invitee.fullName}}</span> has been invited</td>
+    <td>
+      <span class='invitee-full-name'>
+      {{#if invitation.invitee}}
+        {{invitation.invitee.fullName}}
+      {{else}}
+        {{invitation.email}}
+      {{/if}}
+      </span>
+      has been invited
+    </td>
     <td><span class='invitation-updated-at'>{{format-date invitation.updatedAt format='LLL'}}</span></td>
     <td><span class='invitation-state'>{{invitation.state}}</span></td>
     {{#unless invitation.accepted}}
@@ -22,7 +31,16 @@
   {{#each decision.filteredInvitations as |invitation|}}
   <tr class='invitation'>
     <td><span>{{user-thumbnail user=invitation.invitee classNames='invitee-thumbnail'}}</span></td>
-    <td><span class='invitee-full-name'>{{invitation.invitee.fullName}}</span> has been invited</td>
+    <td>
+      <span class='invitee-full-name'>
+      {{#if invitation.invitee}}
+        {{invitation.invitee.fullName}}
+      {{else}}
+        {{invitation.email}}
+      {{/if}}
+      </span>
+      has been invited
+    </td>
     <td><span class='invitation-updated-at'>{{format-date invitation.updatedAt format='LLL'}}</span></td>
     <td><span class='invitation-state'>{{invitation.state}}</span></td>
   </tr>

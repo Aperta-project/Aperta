@@ -30,7 +30,7 @@ PaperEditorOverlayController = TaskController.extend Select2Assignees,
   select2RemoteUrl: Ember.computed 'model.paper', ->
     "/api/filtered_users/editors/#{@get 'model.paper.id'}/"
 
-  template: Ember.computed.alias 'model.editInviteTemplate'
+  template: Ember.computed.alias 'model.invitationTemplate'
 
   setLetterTemplate: ->
     customTemplate = @get('template').replace(/\[EDITOR NAME\]/, @get('selectedUser.fullName'))

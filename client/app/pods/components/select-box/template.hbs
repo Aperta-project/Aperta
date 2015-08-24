@@ -1,0 +1,33 @@
+<div id={{_generatedId}}
+     class="select-box-element {{if _showOptions "select-box-element--active"}} {{if disabled "select-box-element--disabled"}}"
+     tabindex="0"
+     {{action "toggleShowOptions"}}>
+  {{#if attrs.selectedItem}}
+    {{yield attrs.selectedItem}}
+  {{else}}
+    {{#if attrs.placeholder}}
+     {{attrs.placeholder}}
+    {{/if}}
+  {{/if}}
+</div>
+
+{{#if _showOptions}}
+  {{#position-near positionNearSelector=_generatedIdSelector
+                   setMaxHeight=true
+                   class="select-box-list animation-fade-in"}}
+    {{#if attrs.allowDeselect}}
+      <div role="option"
+           class="select-box-item select-box-item--placeholder"
+           {{action "clearSelection"}}>
+        {{attrs.placeholder}}
+      </div>
+    {{/if}}
+    {{#each items as |item|}}
+      <div aria-selected={{is-equal item selectedItem}}
+           class="select-box-item"
+           {{action "makeSelection" item}}>
+        {{yield item}}
+      </div>
+    {{/each}}
+  {{/position-near}}
+{{/if}}

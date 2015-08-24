@@ -9,11 +9,15 @@ FactoryGirl.define do
     association(:decision, factory: :decision)
 
     after(:build) do |invitation, evaluator|
-      invitation.email = evaluator.invitee.email
+      invitation.email = evaluator.invitee.email if evaluator.invitee
     end
 
     trait :invited do
       state "invited"
+    end
+
+    trait :accepted do
+      state "accepted"
     end
   end
 end

@@ -8,7 +8,8 @@
       {{input type="text"
               value=newRecommendation.firstName
               class="form-control tall-text-field"
-              placeholder="Jane"}}
+              placeholder="Jane"
+              disabled=isSubmissionTaskNotEditable}}
     </div>
 
     <div class="form-group author-middle {{if validationErrors.middleInitial "error"}}">
@@ -19,7 +20,8 @@
       {{input type="text"
               value=newRecommendation.middleInitial
               class="form-control tall-text-field"
-              placeholder="M"}}
+              placeholder="M"
+              disabled=isSubmissionTaskNotEditable}}
     </div>
 
     <div class="form-group author-name {{if validationErrors.lastName "error"}}">
@@ -30,7 +32,8 @@
       {{input type="text"
               value=newRecommendation.lastName
               class="form-control tall-text-field"
-              placeholder="Goodall"}}
+              placeholder="Goodall"
+              disabled=isSubmissionTaskNotEditable}}
     </div>
 
     <div class="form-group author-half author-bump {{if validationErrors.email "error"}}">
@@ -41,7 +44,8 @@
       {{input type="text"
               value=newRecommendation.email
               class="form-control tall-text-field"
-              placeholder="jane.goodall@science.com"}}
+              placeholder="jane.goodall@science.com"
+              disabled=isSubmissionTaskNotEditable}}
     </div>
   </div>
 
@@ -54,7 +58,8 @@
       {{input type="text"
               value=newRecommendation.title
               class="form-control tall-text-field"
-              placeholder="World's Foremost Expert on Chimpanzees"}}
+              placeholder="World's Foremost Expert on Chimpanzees"
+              disabled=isSubmissionTaskNotEditable}}
     </div>
 
     <div class="form-group author-half author-bump {{if validationErrors.department "error"}}">
@@ -65,7 +70,8 @@
       {{input type="text"
               value=newRecommendation.department
               class="form-control tall-text-field"
-              placeholder="Primatology"}}
+              placeholder="Primatology"
+              disabled=isSubmissionTaskNotEditable}}
     </div>
   </div>
 
@@ -74,7 +80,8 @@
       {{error-message message=validationErrors.affiliation}}
       {{institution-search
         institutionSelected="institutionSelected"
-        placeholder="Institution"}}
+        placeholder="Institution"
+        disabled=isSubmissionTaskNotEditable}}
     </div>
   </div>
 
@@ -85,7 +92,8 @@
                           yesLabel="Recommend"
                           yesValue="recommend"
                           noLabel="Oppose"
-                          noValue="oppose"}}
+                          noValue="oppose"
+                          disabled=isSubmissionTaskNotEditable}}
     {{error-message message=validationErrors.recommendOrOppose}}
   </div>
 
@@ -93,13 +101,14 @@
     {{textarea type="text"
                value=newRecommendation.reason
                class="form-control"
-               placeholder="Optional: reason for your recommending or opposing this reviewer"}}
+               placeholder="Optional: reason for your recommending or opposing this reviewer"
+               disabled=isSubmissionTaskNotEditable}}
   </div>
 
   <div class="form-group control-buttons">
     <span class="pull-right author-form-buttons">
-      <a class="button-link button--green author-cancel" {{action "cancelEdit" bubbles=false}}>cancel</a>
-      <button class="button-secondary button--green knockout" {{action "saveNewRecommendation"}}>done</button>
+      <a class="button-link button--green author-cancel" disabled={{isSubmissionTaskNotEditable}} {{action "cancelEdit" bubbles=false}}>cancel</a>
+      <button class="button-secondary button--green knockout" disabled={{isSubmissionTaskNotEditable}} {{action "saveNewRecommendation"}}>done</button>
     </span>
   </div>
 </div>

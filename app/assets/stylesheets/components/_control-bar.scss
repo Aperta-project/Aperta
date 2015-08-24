@@ -13,9 +13,13 @@
   @include transition(height 0.2s ease-in-out);
 }
 
-.control-bar-sub-nav-active .control-bar {
+.control-bar-sub-nav-active.control-bar {
   @include transition(height 0.2s ease-in-out);
   height: 105px;
+}
+
+.control-bar-sub-nav-active .control-bar-sub-items {
+  height: 45px;
 }
 
 .control-bar-inner-wrapper {
@@ -31,10 +35,6 @@
   font-size: 12px;
   line-height: 30px;
   @include transition(height 0.2s);
-}
-
-.control-bar-sub-nav-active .control-bar-sub-items {
-  height: 45px;
 }
 
 .control-bar ul {
@@ -56,6 +56,9 @@
   display: block;
   font-size: 10px;
   line-height: 20px;
+  height: 58px;
+  z-index: 2;
+  background-color: white;
 }
 
 // creates bigger click area in top right corner of screen

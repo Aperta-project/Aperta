@@ -28,10 +28,10 @@
 
       <% if @feedback[:screenshots] %>
         <p>
-          Screenshots:
+          Attachments:
           <br>
           <% @feedback[:screenshots].each do |screenshot| %>
-            <%= image_tag screenshot[:url], alt: screenshot[:filename] %>
+            <%= link_to screenshot[:filename], screenshot[:url] %>
             <br>
           <% end %>
         </p>

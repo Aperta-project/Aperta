@@ -5,6 +5,7 @@
     {{#question-check ident="taxon.zoological"
                       task=model
                       question="Does this manuscript describe a new zoological taxon name?"
+                      disabled=isSubmissionTaskNotEditable
                       as |checked|}}
 
       {{#if checked}}
@@ -13,7 +14,8 @@
         </div>
         {{question-check ident="taxon.zoological.complies"
                          task=model
-                         question="All authors comply with the Policies Regarding Submission of a new Taxon Name" }}
+                         question="All authors comply with the Policies Regarding Submission of a new Taxon Name"
+                         disabled=isSubmissionTaskNotEditable}}
       {{/if}}
     {{/question-check}}
   </div>
@@ -24,6 +26,7 @@
     {{#question-check ident="taxon.botanical"
                       task=model
                       question="Does this manuscript describe a new botantical taxon name?"
+                      disabled=isSubmissionTaskNotEditable
                       as |checked|}}
 
       {{#if checked}}
@@ -32,7 +35,8 @@
         </div>
         {{question-check ident="taxon.botanical.complies"
                          task=model
-                         question="All authors comply with the Policies Regarding Submission of a new Taxon Name" }}
+                         question="All authors comply with the Policies Regarding Submission of a new Taxon Name"
+                         disabled=isSubmissionTaskNotEditable}}
       {{/if}}
     {{/question-check}}
   </div>

@@ -6,6 +6,9 @@ import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 export default Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, DiscussionsRoutePathsMixin, {
   subRouteName: 'edit',
 
+  // Note: we create the editor component via name
+  // so that we can override that property when running tests
+  // to use a mock implementation
   editorComponent: "tahi-editor-ve",
 
   // initialized by paper/edit/view
@@ -41,7 +44,7 @@ export default Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, Discussio
     // 3. let the router know that we are starting editing
     let paper = this.get('model');
     paper.set('lockedBy', this.currentUser);
-    paper.set('body', this.get('editor').getBodyHtml());
+    this.get('editor').writeToModel();
     paper.save().then(()=>{
       this.send('startEditing');
     });
@@ -80,8 +83,7 @@ export default Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, Discussio
     if(Ember.isEmpty(editor)) { return; }
 
     let paper = this.get('model');
-    let manuscriptHtml = editor.getBodyHtml();
-    paper.set('body', manuscriptHtml);
+    editor.writeToModel();
     if (paper.get('isDirty')) {
       return paper.save().then(()=>{
         this.set('saveState', true);
@@ -94,24 +96,26 @@ export default Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, Discussio
   },
 
   connectEditor() {
-    this.get('editor').connect();
-  },
-
-  disconnectEditor() {
-    // TODO: temp fix?
-    if(this.get('editor')) {
-      this.get('editor').disconnect();
+    let editor = this.get('editor');
+    if(editor) {
+      editor.enable();
     }
   },
 
-  getBodyHtml() {
+  disconnectEditor() {
     let editor = this.get('editor');
-    return editor.getBodyHtml();
+    if(editor) {
+      editor.disable();
+    }
   },
 
-  setBodyHtml(html) {
-    let editor = this.get('editor');
-    return editor.setBodyHtml(html);
+  actions: {
+    lock: function() {
+      this.acquireLock();
+    },
+    unlock: function() {
+      this.releaseLock();
+    },
   },
 
 });

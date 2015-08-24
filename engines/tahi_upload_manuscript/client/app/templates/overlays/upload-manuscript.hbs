@@ -2,7 +2,7 @@
 {{#if canUploadManuscript}}
   <h2>You may upload a manuscript at any time.</h2>
   <div id="upload-file-wrapper">
-    <span class="button-primary button--green fileinput-button">
+    <span class="button-primary button--green fileinput-button {{if isSubmissionTaskNotEditable 'button--disabled'}}">
       Select and upload a document
       {{file-uploader id="upload-files"
                       railsMethod="PUT"
@@ -12,7 +12,8 @@
                       done="uploadFinished"
                       error="uploadError"
                       filePrefix="paper/manuscript"
-                      url=manuscriptUploadUrl}}
+                      url=manuscriptUploadUrl
+                      disabled=isSubmissionTaskNotEditable}}
     </span>
   </div>
   {{else}}

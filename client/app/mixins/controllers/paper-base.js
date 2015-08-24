@@ -15,15 +15,6 @@ export default Ember.Mixin.create({
     });
   }),
 
-  downloadLink: computed('model.id', function() {
-    return '/papers/' + this.get('model.id') + '/download';
-  }),
-
-  logoUrl: computed('model.journal.logoUrl', function() {
-    let logoUrl = this.get('model.journal.logoUrl');
-    return (/default-journal-logo/.test(logoUrl)) ? false : logoUrl;
-  }),
-
   pageContainerHTMLClass: computed('model.editorMode', function() {
     return 'paper-container-' + this.get('model.editorMode');
   }),
@@ -56,7 +47,7 @@ export default Ember.Mixin.create({
   }),
 
   actions: {
-    'export': function(downloadType) {
+    exportDocument(downloadType) {
       return DocumentDownload.initiate(this.get('model.id'), downloadType.format);
     }
   }

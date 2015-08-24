@@ -2,24 +2,45 @@
 `import Select2Assignees from 'tahi/mixins/controllers/select-2-assignees'`
 `import { formatDate } from 'tahi/helpers/format-date'`
 
-PaperReviewerOverlayController = TaskController.extend Select2Assignees,
-  select2RemoteUrl: Ember.computed 'model.paper.id', ->
+PaperReviewerOverlayController = TaskController.extend
+  autoSuggestSourceUrl: Ember.computed 'model.paper.id', ->
     "/api/filtered_users/uninvited_users/#{@get 'model.paper.id'}"
   selectedReviewer: null
   composingEmail: false
   decisions: Ember.computed.alias 'model.paper.decisions'
 
+  customEmail: "test@lvh.me"
+
   latestDecision: (->
     @get('decisions').findBy 'isLatest', true
   ).property('decisions', 'decisions.@each.isLatest')
 
-  template: Ember.computed.alias 'model.editInviteTemplate'
+  applyTemplateReplacements: (str) ->
+    reviewerName = @get('selectedReviewer.full_name')
+    if reviewerName
+      str = str.replace /\[REVIEWER NAME\]/g, reviewerName
+    str.replace(/\[YOUR NAME\]/g, @get('currentUser.fullName'))
 
   setLetterTemplate: ->
-    customTemplate = @get('template').replace(/\[REVIEWER NAME\]/, @get('selectedReviewer.full_name'))
-      .replace(/\[YOUR NAME\]/, @get('currentUser.fullName'))
+    template = @get('model.invitationTemplate')
 
-    @set('updatedTemplate', customTemplate)
+    if template.salutation and @get('selectedReviewer.full_name')
+      salutation = @applyTemplateReplacements(template.salutation) + "\n\n"
+    else
+      salutation = ""
+
+    if template.body
+      body = @applyTemplateReplacements(template.body)
+    else
+      body = ""
+
+    @set('invitationBody', "#{salutation}#{body}")
+
+  parseUserSearchResponse: (response) ->
+    response.filtered_users
+
+  displayUserSelected: (user) ->
+    "#{user.full_name} [#{user.email}]"
 
   actions:
     cancelAction: ->
@@ -41,6 +62,7 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
       @store.createRecord 'invitation',
         task: @get 'model'
         email: @get 'selectedReviewer.email'
+        body: @get 'invitationBody'
       .save().then (invitation) =>
         @get('latestDecision.invitations').addObject invitation
         @set 'composingEmail', false
@@ -51,9 +73,8 @@ PaperReviewerOverlayController = TaskController.extend Select2Assignees,
         @get('reviewers').removeObject(user)
         @send('saveModel')
 
-    setLetterBody: ->
-      @set 'model.body', [@get('updatedTemplate')]
-      @model.save().then =>
-        @send 'inviteReviewer'
+    inputChanged: (val) ->
+      @set 'selectedReviewer', { email: val }
+
 
 `export default PaperReviewerOverlayController`

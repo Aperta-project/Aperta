@@ -1,13 +1,4 @@
 <div class='container'>
-  <div class='greeting'>
-    <p>
-      Hello <%= @invitee.full_name %>,
-    </p>
-    <p class='message'>
-      You've been invited to be a reviewer on a manuscript
-    </p>
-  </div>
-  <hr>
   <div class='paper-info'>
     <div class='journal-info'>
       <% if @paper.journal.logo_url %>
@@ -20,20 +11,22 @@
     </div>
 
     <div class='custom-email'>
-      <%= simple_format @task.body[0] %>
+      <%= simple_format @invitation.body %>
     </div>
 
+    <p>
+      <a class='button' href='<%= client_dashboard_url({ invitation_code: @invitation.code }) %>' target='_blank'>
+        View Invitation
+      </a>
+    </p>
   </div>
+  <hr>
   <div class='footer'>
-    <a class='button' href='<%= client_dashboard_url %>' target='_blank'>
-      View Invitation
-    </a>
-    <hr>
     <div class='paper-title'>
       "<%= @paper.display_title %>"
     </div>
     <div class='paper-abstract'>
-      <%= simple_format @paper.abstract %>
+      <%=h @paper.abstract %>
     </div>
   </div>
 </div>

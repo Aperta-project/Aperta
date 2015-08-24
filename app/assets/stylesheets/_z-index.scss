@@ -1,12 +1,13 @@
 $z-layers: (
-  paper-placeholder:  1002,
-  auto-suggest:       1003,
-  ve-toolbar:         1004,
-  control-bar:        1005,
-  navigation-toggle:  1006,
-  main-content-cover: 1007,
-  navigation:         1008,
-  figures-overlay:    1100,
+  paper-placeholder:    1001,
+  ve-toolbar:           1002,
+  control-bar:          1003,
+  navigation-toggle:    1004,
+  main-content-cover:   1005,
+  navigation:           1006,
+  floating-list-bg:     1007,
+  floating-list-active: 1008,
+  figures-overlay:      1100,
   overlay: (
     base: 1200,
     close-x: 100

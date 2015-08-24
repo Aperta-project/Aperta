@@ -34,13 +34,15 @@ export default Ember.Route.extend({
     acceptInvitation(invitation) {
       RESTless.putModel(invitation, '/accept').then(function() {
         invitation.accept();
-      });
+
+        // Force the user's papers to load
+        this.store.find('paper');
+      }.bind(this));
     },
 
     showNewPaperOverlay() {
       return this.store.find('journal').then((journals)=> {
         this.controllerFor('overlays/paper-new').setProperties({
-          paperSaving: false,
           journals: journals,
           model: this.store.createRecord('paper', {
             journal: null,

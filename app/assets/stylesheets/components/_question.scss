@@ -77,10 +77,16 @@
   border-radius: 5px;
 }
 
-.overlay-content {
+.question-checkbox {
+  position: relative;
+  input {
+    position: absolute;
+    top: 0px;
+  }
+
   .model-question {
-      padding-left: 20px;
-      margin: 0;
+    margin: 0;
+    padding-left: 20px;
   }
 
   .additional-notes {

@@ -8,6 +8,7 @@ import registerAsyncHelpers     from './async-helpers';
 import regsiterStoreHelpers     from './store-helpers';
 import registerContainerHelpers from './container-helpers';
 import registerSelect2Helpers   from './select2-helpers';
+import registerSelectBoxHelpers from './select-box-helpers';
 
 import Factory from './factory';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
@@ -18,6 +19,7 @@ registerAsyncHelpers();
 regsiterStoreHelpers();
 registerContainerHelpers();
 registerSelect2Helpers();
+registerSelectBoxHelpers();
 
 
 export default function startApp(attrs) {

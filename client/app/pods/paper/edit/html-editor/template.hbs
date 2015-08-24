@@ -1,4 +1,10 @@
-{{partial "paper/control-bar"}}
+{{control-bar paper=model
+              showActivity="showActivity"
+              addContributors="addContributors"
+              exportDocument="exportDocument"
+              topicsIndexPath=topicsIndexPath
+              canViewManuscriptManager=canViewManuscriptManager
+              supportedDownloadFormats=supportedDownloadFormats}}
 
 <div id="paper-container" class="clearfix paper-container-html {{if noTasks "sidebar-empty"}}">
 
@@ -8,20 +14,6 @@
     <main>
       {{flash-messages classNames="flash-messages-paper-editor"}}
       <article class="manuscript {{if isEditable "editing" "read-only"}}">
-        <div class="manuscript-title-and-placeholder">
-          {{#if model.versioningMode}}
-            <h2 id="paper-title">{{{model.title}}}</h2>
-          {{else}}
-            {{content-editable tagName="h2"
-                               id="paper-title"
-                               placeholder="Type your manuscript title here"
-                               value=model.title
-                               preventEnterKey="true"}}
-            {{#if showPlaceholder}}
-              <div id="paper-placeholder" {{action "tryHidingPlaceholder"}}>Type your manuscript here</div>
-            {{/if}}
-          {{/if}}
-        </div>
 
         {{#if noTasks}}
           <div class="btn-group pull-right">
@@ -39,10 +31,15 @@
           {{component editorComponent
               viewName='editor'
               paper=model
+              isEditing=isEditing
               isSaving=isSaving
               savedAt=savedAt
               statusMessage=statusMessage
               currentUser=currentUser
+              savePaper="savePaper"
+              toggleEditing="toggleEditing"
+              lock="lock"
+              unlock="unlock"
           }}
         </div>
 

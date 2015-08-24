@@ -111,7 +111,7 @@ export default Ember.Component.extend({
     return value;
   },
 
-  shouldRecur(element) {
+  shouldRecurseInto(element) {
     // Is this an element we want to diff inside (like a <p>), or
     // should we treat it atomically -- like a figure, or an equation?
     let name = element.nodeName.toLowerCase();
@@ -128,7 +128,7 @@ export default Ember.Component.extend({
       let chunks = element.textContent.split(this.sentenceDelimiter);
       return _.map(chunks, (e) => { return "<span>" + e + "</span>"; });
 
-    } else if (this.shouldRecur(element)) {
+    } else if (this.shouldRecurseInto(element)) {
       // Recurse within this element
       let elements = $(element).contents().toArray();
       let tokens = _.map(elements, this.tokenizeElement, this);

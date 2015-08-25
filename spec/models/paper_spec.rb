@@ -12,18 +12,18 @@ describe Paper do
     end
 
     it "can set body on creation" do
-      paper2 = FactoryGirl.create :paper, body: 'foo'
-      expect(paper2.body).to eq('foo')
-      expect(paper2.latest_version.text).to eq('foo')
+      paper_new = FactoryGirl.create :paper, body: 'foo'
+      expect(paper_new.body).to eq('foo')
+      expect(paper_new.latest_version.text).to eq('foo')
     end
 
     it "can use body= before save" do
-      paper2 = FactoryGirl.build :paper
-      paper2.body = 'foo'
-      expect(paper2.body).to eq('foo')
+      paper_new = FactoryGirl.build :paper
+      paper_new.body = 'foo'
+      expect(paper_new.body).to eq('foo')
       paper.save!
       paper.reload
-      expect(paper2.body).to eq('foo')
+      expect(paper_new.body).to eq('foo')
     end
   end
 
@@ -367,11 +367,14 @@ describe Paper do
   end
 
   describe "#latest_version" do
-    it "returns the latest version" do
+    before do
       # create a bunch of old minor versions
       FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 1)
       FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 2)
       FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 3)
+    end
+    
+    it "returns the latest version" do
       versioned_text = FactoryGirl.create(:versioned_text, paper: paper, major_version: 1, minor_version: 0)
       expect(paper.latest_version).to eq(versioned_text)
     end

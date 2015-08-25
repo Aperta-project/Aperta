@@ -124,15 +124,6 @@ test 'visiting /edit-paper: Author completes all metadata cards', (assert) ->
     submitButton = find('button:contains("Submit")')
     assert.ok(!submitButton.hasClass('button--disabled'), "Submit is enabled")
 
-test 'on paper.edit when paper.editable changes, user transitions to paper.index', (assert) ->
-  visit "/papers/#{currentPaper.id}/edit"
-  .then ->
-    Ember.run ->
-      getStore().getById('paper', currentPaper.id).set('editable', false)
-  andThen ->
-    assert.ok !find('.button-primary:contains("Submit")').length
-    assert.equal currentRouteName(), "paper.index.index"
-
 test 'on paper.edit when there are no metadata tasks', (assert) ->
   expect(2)
   records = paperWithTask('Task'
@@ -155,30 +146,3 @@ test 'on paper.edit when there are no metadata tasks', (assert) ->
     .then ->
       msg = "There is a submit manuscript button in the main area"
       assert.ok(find('.no-sidebar-submit-manuscript.button--green:contains("Submit Manuscript")').length, msg)
-
-
-test 'on paper.index when there are no metadata tasks', (assert) ->
-  expect(2)
-  records = paperWithTask('Task'
-    id: 3
-    role: "admin"
-  )
-
-  currentPaper = records[0]
-  paperPayload = Factory.createPayload('paper')
-  paperPayload.addRecords(records.concat([fakeUser]))
-  paperResponse = paperPayload.toJSON()
-
-  server.respondWith 'GET', "/api/papers/#{currentPaper.id}", [
-    200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
-  ]
-
-  visit "/papers/#{currentPaper.id}/edit"
-  .then ->
-    Ember.run ->
-      getStore().getById('paper', currentPaper.id).set('editable', false)
-
-  andThen ->
-    assert.ok find('#paper-container.sidebar-empty').length, "The sidebar should be hidden"
-    msg = "There is no submit manuscript button in the main area"
-    assert.ok !find('.manuscript-container .no-sidebar-submit-manuscript.button--green:contains("Submit Manuscript")').length, msg

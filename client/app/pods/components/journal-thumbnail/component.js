@@ -10,17 +10,20 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
   journal: null,
   uploadLogoFunction: null,
   isEditing: false,
+  journalName: null,
+  journalDescription: null,
+
 
   modelIsDirtyDidChange: function() {
-    this.set('isEditing', this.get('model.isDirty'));
-  }.on('init').observes('model.isDirty'),
+    this.set('isEditing', this.get('journal.isDirty'));
+  }.on('init').observes('journal.isDirty'),
 
-  thumbnailId: Ember.computed('model.id', function() {
-    return 'journal-logo-' + (this.get('model.id'));
+  thumbnailId: Ember.computed('journal.id', function() {
+    return 'journal-logo-' + (this.get('journal.id'));
   }),
 
-  logoUploadUrl: Ember.computed('model.id', function() {
-    return '/api/admin/journals/' + this.get('model.id') + '/upload_logo';
+  logoUploadUrl: Ember.computed('journal.id', function() {
+    return '/api/admin/journals/' + this.get('journal.id') + '/upload_logo';
   }),
 
   togglePreview() {
@@ -44,7 +47,7 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
   },
 
   saveJournal() {
-    this.get('model').save().then(()=> {
+    this.get('journal').save().then(()=> {
       this.stopEditing();
     }, (response)=> {
       this.displayValidationErrorsFromResponse(response);
@@ -58,15 +61,21 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
 
     uploadFinished(data, filename) {
       this.uploadFinished(data, filename);
-      this.set('model.logoUrl', data.admin_journal.logo_url);
+      this.set('journal.logoUrl', data.admin_journal.logo_url);
       this.saveJournal();
     },
 
     saveJournalDetails() {
       let updateLogo = this.get('uploadLogoFunction');
 
-      if(this.get('model.isNew')) {
-        this.get('model').save().then(() => {
+      if(this.get('journal.isNew')) {
+
+        this.get('journal').setProperties({
+          name: this.get('journalName').trim('string'),
+          description: this.get('journalDescription') || null
+        });
+
+        this.get('journal').save().then(() => {
           return (updateLogo || this.stopEditing).call(this);
         }, (response) => {
           this.displayValidationErrorsFromResponse(response);
@@ -80,7 +89,7 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
     },
 
     resetJournalDetails() {
-      this.get('model').rollback();
+      this.get('journal').rollback();
       this.set('isEditing', false);
       this.clearAllValidationErrors();
     },

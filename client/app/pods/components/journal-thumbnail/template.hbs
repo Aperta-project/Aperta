@@ -7,8 +7,8 @@
         {{#if logoPreview}}
           <span class="journal-thumbnail-logo-preview"></span>
         {{else}}
-          {{#if model.logoUrl}}
-            <img src={{model.logoUrl}}>
+          {{#if journal.logoUrl}}
+            <img src={{journal.logoUrl}}>
           {{else}}
             {{partial "svg/default-journal-logo"}}
           {{/if}}
@@ -29,7 +29,7 @@
         {{error-message message=validationErrors.name}}
       </div>
       {{input type="text"
-              value=model.name
+              value=journalName
               class="form-control journal-name-edit inset-form-control-input"
               placeholder="PLOS Yeti"}}
     </div>
@@ -39,7 +39,7 @@
         <label>Journal Description</label>
         {{error-message message=validationErrors.description}}
       </div>
-      {{textarea value=model.description
+      {{textarea value=journalDescription
                  class="journal-description-edit inset-form-control-textarea"
                  placeholder="Accelerating the publication of peer-reviewed science"}}
     </div>
@@ -53,17 +53,17 @@
 
 {{else}}
 
-  {{#link-to "admin.journal" model class="journal-thumbnail-show clearfix"}}
+  {{#link-to "admin.journal" journal class="journal-thumbnail-show clearfix"}}
     <div class="journal-thumbnail-logo">
-      {{#if model.logoUrl}}
-        <img src={{model.logoUrl}}>
+      {{#if journal.logoUrl}}
+        <img src={{journal.logoUrl}}>
       {{else}}
         {{partial "svg/default-journal-logo"}}
       {{/if}}
     </div>
-    <span class="journal-thumbnail-paper-count">{{pluralize model.paperCount "article"}}</span>
-    <h3 class="journal-thumbnail-name">{{model.name}}</h3>
-    <p>{{model.description}}</p>
+    <span class="journal-thumbnail-paper-count">{{pluralize journal.paperCount "article"}}</span>
+    <h3 class="journal-thumbnail-name">{{journal.name}}</h3>
+    <p>{{journal.description}}</p>
   {{/link-to}}
   {{#if canEdit}}
     <div class="fa fa-pencil edit-icon" {{action "editJournalDetails"}}></div>

@@ -32,13 +32,7 @@ feature 'Assign team', js: true do
     login_as journal_admin
 
     AssignTeamOverlay.visit(assign_team_task) do |overlay|
-      overlay.select2 custom_reviewer_role_name, from: "Role"
-      wait_for_ajax
-
-      overlay.select2 custom_reviewer.full_name, from: "User"
-      wait_for_ajax
-
-      click_button "Assign"
+      AssignTeamOverlay.navigate_assign_ui custom_reviewer_role_name, custom_reviewer.full_name
 
       expect(overlay).to have_content("#{custom_reviewer.full_name} has been assigned as #{custom_reviewer_role_name}")
     end
@@ -54,13 +48,7 @@ feature 'Assign team', js: true do
 
     journal_editor.roles.first.update_attribute :can_view_all_manuscript_managers, true
     AssignTeamOverlay.visit(assign_team_task) do |overlay|
-      overlay.select2 custom_reviewer_role_name, from: "Role"
-      wait_for_ajax
-
-      overlay.select2 custom_reviewer.full_name, from: "User"
-      wait_for_ajax
-
-      click_button "Assign"
+      AssignTeamOverlay.navigate_assign_ui custom_reviewer_role_name, custom_reviewer.full_name
 
       expect(overlay).to have_content("#{custom_reviewer.full_name} has been assigned as #{custom_reviewer_role_name}")
     end
@@ -82,13 +70,7 @@ feature 'Assign team', js: true do
     login_as journal_admin
 
     AssignTeamOverlay.visit(assign_team_task) do |overlay|
-      overlay.select2 "Editor", from: "Role"
-      wait_for_ajax
-
-      overlay.select2 journal_editor.full_name, from: "User"
-      wait_for_ajax
-
-      click_button "Assign"
+      AssignTeamOverlay.navigate_assign_ui "Editor", journal_editor.full_name
 
       expect(overlay).to have_content("#{journal_editor.full_name} has been assigned as Editor")
     end
@@ -101,13 +83,7 @@ feature 'Assign team', js: true do
     login_as journal_editor
 
     AssignTeamOverlay.visit(assign_team_task) do |overlay|
-      overlay.select2 custom_reviewer_role_name, from: "Role"
-      wait_for_ajax
-
-      overlay.select2 custom_reviewer.full_name, from: "User"
-      wait_for_ajax
-
-      click_button "Assign"
+      AssignTeamOverlay.navigate_assign_ui custom_reviewer_role_name, custom_reviewer.full_name
 
       expect(overlay).to have_content("#{custom_reviewer.full_name} has been assigned as #{custom_reviewer_role_name}")
     end
@@ -125,11 +101,9 @@ feature 'Assign team', js: true do
 
       expect(overlay).to_not have_content(custom_reviewer.full_name)
     end
-    
+
     AssignTeamOverlay.visit(assign_team_task) do |overlay|
       expect(overlay).to_not have_content(custom_reviewer.full_name)
     end
   end
-
-
 end

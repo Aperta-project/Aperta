@@ -12,4 +12,16 @@ class AssignTeamOverlay < CardOverlay
     end
   end
 
+  def self.navigate_assign_ui(role_name, user_name)
+    new.tap do |overlay|
+      overlay.select2 role_name, from: "Role"
+      wait_for_ajax
+
+      overlay.select2 user_name, from: "User"
+      wait_for_ajax
+
+      overlay.click_button "Assign"
+    end
+  end
+
 end

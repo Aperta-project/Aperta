@@ -10,6 +10,8 @@ class InvitationIndexSerializer < ActiveModel::Serializer
              :invitee_id,
              :information
 
+  has_one :task, embed: :id, polymorphic: true, include: true
+
   def title
     object.paper.title
   end

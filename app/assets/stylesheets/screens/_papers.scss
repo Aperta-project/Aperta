@@ -15,8 +15,8 @@ $paper-edit-sidebar-width: 280px;
 #control-bar-paper-short-title {
   min-width: 5px;
   font-size: 18px;
-
-  // TODO: Do we need the h2?
+  max-width: 90%;
+  z-index: 1;
   h2 {
     overflow: hidden;
     padding: 21px 0 0 5px;
@@ -24,9 +24,6 @@ $paper-edit-sidebar-width: 280px;
     font-size: 18px;
     line-height: 22px;
     white-space: nowrap;
-    // override from generic h2:
-    margin: 0;
-    z-index: 1;
   }
 }
 

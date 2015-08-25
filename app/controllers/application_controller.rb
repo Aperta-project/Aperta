@@ -47,7 +47,8 @@ class ApplicationController < ActionController::Base
 
   def authenticate_with_basic_http
     return unless Rails.configuration.basic_auth_required
-    return if request.path =~ /\A\/api.*/
+    # Make assets available for bugsnag
+    return if request.path =~ %r{\A/(api|assets).*\Z}
 
     unless session[:authenticated]
       authenticate_or_request_with_http_basic do |name, password|

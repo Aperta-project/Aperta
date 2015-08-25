@@ -6,10 +6,14 @@ var Funnel     = require('broccoli-funnel');
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
     storeConfigInMeta: false,
-    emberCliFontAwesome: { includeFontAwesomeAssets: false }
+    emberCliFontAwesome: { includeFontAwesomeAssets: false },
+    sourcemaps: {
+      enabled: true,
+      extensions: ['js']
+    }
   });
 
-  app.import('bower_components/underscore/underscore-min.js');
+  app.import('bower_components/underscore/underscore.js');
   app.import('bower_components/moment/moment.js');
 
   // jQuery UI
@@ -32,6 +36,9 @@ module.exports = function(defaults) {
     files: ['*.gif', '*.png'],
     destDir: '/assets'
   });
+
+  // JsDiff
+  app.import('bower_components/jsdiff/diff.js');
 
   // Bootstrap
   app.import('bower_components/bootstrap/js/collapse.js');

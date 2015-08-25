@@ -44,7 +44,7 @@ class PaperSerializer < LitePaperSerializer
   end
 
   def versions
-    object.versioned_texts.map do |v|
+    object.versioned_texts.order('updated_at DESC').map do |v|
       {
         name: v.version_string,
         id: v.id

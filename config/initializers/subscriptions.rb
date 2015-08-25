@@ -35,6 +35,8 @@ EVENTS = {
   'author:updated' => [Author::Updated::EventStream],
   'author:destroyed' => [Author::Destroyed::EventStream],
 
+  'participation:created' => [Participation::Created::EventStream],
+  'participation:destroyed' => [Participation::Destroyed::EventStream],
 
   'comment_look:created' => [CommentLook::Created::EventStream],
   'comment_look:destroyed' => [CommentLook::Destroyed::EventStream],

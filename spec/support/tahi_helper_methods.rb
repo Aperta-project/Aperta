@@ -39,6 +39,10 @@ module TahiHelperMethods
     role
   end
 
+  def sign_out
+    DashboardPage.new.sign_out
+  end
+
   def with_aws_cassette(name)
     ignored_attributes = ["X-Amz-Algorithm", "X-Amz-Credential", "X-Amz-Date", "X-Amz-Expires", "X-Amz-Signature", "X-Amz-SignedHeaders"]
     VCR.use_cassette(name, match_requests_on: [:method, VCR.request_matchers.uri_without_params(*ignored_attributes)], record: :new_episodes) do

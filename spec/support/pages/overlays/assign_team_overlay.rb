@@ -12,16 +12,20 @@ class AssignTeamOverlay < CardOverlay
     end
   end
 
-  def self.navigate_assign_ui(role_name, user_name)
-    new.tap do |overlay|
-      overlay.select2 role_name, from: "Role"
-      wait_for_ajax
+  def assign_role_for_user(role_name, user)
+    select2 role_name, from: "Role"
+    wait_for_ajax
 
-      overlay.select2 user_name, from: "User"
-      wait_for_ajax
+    select2 user.full_name, from: "User"
+    wait_for_ajax
 
-      overlay.click_button "Assign"
-    end
+    click_button "Assign"
+  end
+
+  def unassign_user(user)
+    trash_icon = find(".invitation", text: user.full_name).find(".invite-reviewer-remove")
+    trash_icon.click
+    wait_for_ajax
   end
 
 end

@@ -32,8 +32,7 @@ feature 'Assign team', js: true do
     login_as journal_admin
 
     AssignTeamOverlay.visit(assign_team_task) do |overlay|
-      AssignTeamOverlay.navigate_assign_ui custom_reviewer_role_name, custom_reviewer.full_name
-
+      overlay.assign_role_for_user custom_reviewer_role_name, custom_reviewer
       expect(overlay).to have_content("#{custom_reviewer.full_name} has been assigned as #{custom_reviewer_role_name}")
     end
   end
@@ -48,8 +47,7 @@ feature 'Assign team', js: true do
 
     journal_editor.roles.first.update_attribute :can_view_all_manuscript_managers, true
     AssignTeamOverlay.visit(assign_team_task) do |overlay|
-      AssignTeamOverlay.navigate_assign_ui custom_reviewer_role_name, custom_reviewer.full_name
-
+      overlay.assign_role_for_user custom_reviewer_role_name, custom_reviewer
       expect(overlay).to have_content("#{custom_reviewer.full_name} has been assigned as #{custom_reviewer_role_name}")
     end
   end
@@ -62,7 +60,7 @@ feature 'Assign team', js: true do
 
     AssignTeamOverlay.visit(assign_team_task)
     expect(page).to have_content("You don't have access to that content")
-    DashboardPage.new.sign_out
+    sign_out
 
     #
     # assign user
@@ -70,12 +68,11 @@ feature 'Assign team', js: true do
     login_as journal_admin
 
     AssignTeamOverlay.visit(assign_team_task) do |overlay|
-      AssignTeamOverlay.navigate_assign_ui "Editor", journal_editor.full_name
-
+      overlay.assign_role_for_user "Editor", journal_editor
       expect(overlay).to have_content("#{journal_editor.full_name} has been assigned as Editor")
     end
 
-    DashboardPage.new.sign_out
+    sign_out
 
     #
     # Log in and verify
@@ -83,26 +80,21 @@ feature 'Assign team', js: true do
     login_as journal_editor
 
     AssignTeamOverlay.visit(assign_team_task) do |overlay|
-      AssignTeamOverlay.navigate_assign_ui custom_reviewer_role_name, custom_reviewer.full_name
-
+      overlay.assign_role_for_user custom_reviewer_role_name, custom_reviewer
       expect(overlay).to have_content("#{custom_reviewer.full_name} has been assigned as #{custom_reviewer_role_name}")
     end
   end
 
   scenario "A user who can manage the manuscript can remove members on a paper they are assigned to" do
-    assign_paper_role( paper, custom_reviewer, "editor")
+    assign_paper_role(paper, custom_reviewer, "editor")
 
     login_as journal_admin
 
     AssignTeamOverlay.visit(assign_team_task) do |overlay|
-      trash_icon = overlay.find(".invitation", text: custom_reviewer.full_name).find(".invite-reviewer-remove")
-      trash_icon.click
-      wait_for_ajax
-
+      overlay.unassign_user custom_reviewer
       expect(overlay).to_not have_content(custom_reviewer.full_name)
-    end
 
-    AssignTeamOverlay.visit(assign_team_task) do |overlay|
+      overlay.reload
       expect(overlay).to_not have_content(custom_reviewer.full_name)
     end
   end

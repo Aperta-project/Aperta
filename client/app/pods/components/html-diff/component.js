@@ -153,7 +153,6 @@ export default Ember.Component.extend({
   refreshEquations:  function() {
     if (!this.renderEquations) { return; }
     else if (!MathJax) { this.loadMathJax(); }
-    else if (!MathJax.Hub) { console.log("fuck"); return; }
 
     Ember.run.next(() => {
       MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.$()[0]]);

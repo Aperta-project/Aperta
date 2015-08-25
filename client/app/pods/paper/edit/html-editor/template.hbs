@@ -25,6 +25,7 @@
 
         <div id="paper-body" class="{{if hideEditor "version-visible"}}">
           {{#if hideEditor}}
+            <h2 id="paper-title" class="uneditable">{{{model.title}}}</h2>
             {{html-diff
               default=model.body
               comparisonText=model.comparisonText

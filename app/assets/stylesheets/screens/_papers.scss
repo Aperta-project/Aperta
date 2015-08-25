@@ -180,6 +180,11 @@ html.control-bar-sub-nav-active #paper-container {
   margin-bottom: 0px;
   font-family: $tahi-article-font-family;
   font-size: 38px;
+
+  &.uneditable {
+    margin-bottom: 25px;
+    margin-top: 5px;
+  }
 }
 
 #paper-body {

@@ -39,7 +39,7 @@ class Paper < ActiveRecord::Base
   delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
 
   after_create do
-    versioned_texts.create(major_version: 0, minor_version: 0, text: (@new_body || ''))
+    versioned_texts.create!(major_version: 0, minor_version: 0, text: (@new_body || ''))
   end
 
   aasm column: :publishing_state do

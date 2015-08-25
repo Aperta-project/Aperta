@@ -1,3 +1,5 @@
+# This class intentionally uses class methods instead of a singleton since the author of Sidekiq extentions
+# "strongly recommends avoiding delaying methods on instances"
 module SalesforceServices
   class API
     include ObjectTranslations

@@ -36,6 +36,9 @@ EVENTS = {
   'author:destroyed' => [Author::Destroyed::EventStream],
 
 
+  'comment_look:created' => [CommentLook::Created::EventStream],
+  'comment_look:destroyed' => [CommentLook::Destroyed::EventStream],
+
   'discussion_topic:created' => [DiscussionTopic::Created::EventStream],
   'discussion_topic:updated' => [DiscussionTopic::Updated::EventStream],
   'discussion_topic:destroyed' => [DiscussionTopic::Destroyed::EventStream],

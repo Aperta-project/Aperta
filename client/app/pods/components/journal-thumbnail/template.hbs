@@ -29,7 +29,7 @@
         {{error-message message=validationErrors.name}}
       </div>
       {{input type="text"
-              value=journalName
+              value=journal.name
               class="form-control journal-name-edit inset-form-control-input"
               placeholder="PLOS Yeti"}}
     </div>
@@ -39,7 +39,7 @@
         <label>Journal Description</label>
         {{error-message message=validationErrors.description}}
       </div>
-      {{textarea value=journalDescription
+      {{textarea value=journal.description
                  class="journal-description-edit inset-form-control-textarea"
                  placeholder="Accelerating the publication of peer-reviewed science"}}
     </div>

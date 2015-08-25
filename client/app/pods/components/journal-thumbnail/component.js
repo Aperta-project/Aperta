@@ -10,8 +10,6 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
   journal: null,
   uploadLogoFunction: null,
   isEditing: false,
-  journalName: null,
-  journalDescription: null,
 
 
   modelIsDirtyDidChange: function() {
@@ -71,8 +69,8 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
       if(this.get('journal.isNew')) {
 
         this.get('journal').setProperties({
-          name: this.get('journalName').trim('string'),
-          description: this.get('journalDescription') || null
+          name: this.get('journal.name').trim('string'),
+          description: this.get('journal.description') || null
         });
 
         this.get('journal').save().then(() => {

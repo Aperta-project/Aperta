@@ -6,6 +6,7 @@ QuestionSelectComponent = QuestionComponent.extend
     @get('source').findBy 'id', id
   actions:
     selectionSelected: (selection) ->
+      @set('model.answer', selection.id)
       @sendAction 'selectionSelected', selection
 
 `export default QuestionSelectComponent`

@@ -14,6 +14,7 @@ export default Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, Discussio
   // initialized by paper/edit/view
   toolbar: null,
   hasOverlay: false,
+  versioningMode: false,
 
   // used to recover a selection when returning from another context (such as figures)
   isEditing: Ember.computed.alias('lockedByCurrentUser'),
@@ -118,8 +119,8 @@ export default Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, Discussio
     }
   },
 
-  hideEditor: Ember.computed('model.editable', 'model.versioningMode',
+  hideEditor: Ember.computed('model.editable', 'versioningMode',
     function() {
-      return !(this.get('model.editable')) || this.get('model.versioningMode');
+      return !(this.get('model.editable')) || this.get('versioningMode');
     })
 });

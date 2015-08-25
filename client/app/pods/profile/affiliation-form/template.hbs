@@ -15,7 +15,12 @@
       <div>
         {{affiliation.country}}
       </div>
-        {{format-date affiliation.startDate}} - {{#if affiliation.isCurrent}} Current {{else}} {{format-date affiliation.endDate}} {{/if}}
+        {{format-date affiliation.startDate format="ll"}} -
+        {{#if affiliation.isCurrent}}
+          Current
+        {{else}}
+          {{format-date affiliation.endDate format="ll"}}
+        {{/if}}
       </div>
       <div>{{affiliation.email}}</div>
     </div>
@@ -64,6 +69,7 @@
                         type="text"
                         role="startPicker"
                         date=newAffiliation.startDate
+                        endDate=today
                         placeholder="Start Date"}}
 
           {{date-picker group=group

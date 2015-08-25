@@ -31,7 +31,8 @@
     "currentRouteName",
     "pickFromSelect",
     "pickFromSelect2",
-    "pickFromChosenSingle"
+    "pickFromChosenSingle",
+    "pickFromSelectBox"
   ],
   "boss": true,
   "browser": true,

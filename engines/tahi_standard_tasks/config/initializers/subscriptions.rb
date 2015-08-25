@@ -18,3 +18,13 @@ TahiNotifier.subscribe("paper.submitted") do |payload|
     UserMailer.delay.notify_admin_of_paper_submission(paper.id, user.id)
   end
 end
+
+TahiNotifier.subscribe("paper.data_extracted") do |payload|
+  record_id = payload[:paper_id]
+  paper = Paper.find(record_id)
+
+  paper.tasks_for_type("TahiUploadManuscript::UploadManuscriptTask").each do |task|
+    task.completed = true
+    task.save!
+  end
+end

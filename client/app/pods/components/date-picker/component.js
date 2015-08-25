@@ -16,7 +16,8 @@ export default Ember.TextField.extend({
     this.set('value', this.get('date'));
 
     let $picker = this.$().datepicker({
-      autoclose: true
+      autoclose: true,
+      endDate: this.get('endDate')
     });
 
     $picker.on('changeDate', (event)=> {
@@ -36,7 +37,26 @@ export default Ember.TextField.extend({
   setStartDate(dateString) {
     this.get('$picker').datepicker('setStartDate', dateString);
   },
+
   setEndDate(dateString) {
+    let newDate = dateString;
+    let endDate = this.get('endDate');
+
+    // if developer has set an endDate and newDate
+    // is empty from another field being cleared
+    if(endDate && Ember.isEmpty(newDate)) {
+      this.get('$picker').datepicker('setEndDate', endDate);
+      return;
+    }
+
+    // If the developer set an endDate, don't let
+    // the newDate go into the future
+    let pastEndDate = moment(newDate).isAfter(endDate);
+    if(pastEndDate) {
+      this.get('$picker').datepicker('setEndDate', endDate);
+      return;
+    }
+
     this.get('$picker').datepicker('setEndDate', dateString);
   }
 });

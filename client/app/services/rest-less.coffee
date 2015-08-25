@@ -8,7 +8,7 @@ RESTless = Ember.Namespace.create
     adapter.buildURL(resourceType, model.get('id'))
 
   ajaxPromise: (method, path, data) ->
-    socketId = Tahi.__container__.lookup('pusher:main').get('socketId')
+    socketId = window.Tahi.__container__.lookup('pusher:main').get('socketId')
     new Ember.RSVP.Promise (resolve, reject) ->
       Ember.$.ajax
         url: path

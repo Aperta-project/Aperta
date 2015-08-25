@@ -41,6 +41,10 @@ class PapersPolicy < ApplicationPolicy
     can_view_paper?
   end
 
+  def withdraw?
+    can_view_paper?
+  end
+
   def activity?
     can_view_paper?
   end

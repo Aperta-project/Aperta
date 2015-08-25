@@ -47,8 +47,11 @@ export default DS.Model.extend({
   publishingState: attr('string'),
   title: attr('string'),
   versions: attr(),
-  versioningMode: attr('boolean', {defaultValue: false}),
   withdrawalReason: attr('string'),
+
+  // For diffing:
+  viewingText: attr('string'),
+  comparisonText: attr('string'),
 
   displayTitle: computed('title', 'shortTitle', function() {
     return this.get('title') || this.get('shortTitle');
@@ -89,9 +92,5 @@ export default DS.Model.extend({
             this.get('allSubmissionTasksCompleted'));
   }),
 
-  postSubmission: computed.not('submittableState'),
-
-  versionedBody: function() {
-    return this.get('currentVersionBody') || this.get('body');
-  }.property('currentVersionBody', 'body')
+  postSubmission: computed.not('submittableState')
 });

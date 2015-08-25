@@ -1,0 +1,40 @@
+#paper-container .not-ve .html-diff {
+  figure.added, figure.removed {
+    padding: 15px;
+  }
+
+  span.added, span.removed {
+    padding: 1px;
+  }
+
+  span.removed {
+    text-decoration: line-through;
+  }
+
+  .added, .removed {
+    td, th {
+      border: 1px dotted #333;
+    }
+  }
+
+  .added {
+    background-color: rgba($tahi-green-light, .5);
+    th {
+      background: darken($tahi-green-light, 5%);
+    }
+  }
+
+  .removed {
+    opacity: .8;
+    background-color: rgba($tahi-red-light, .5);
+    th {
+      background: darken($tahi-red-light, 5%);
+    }
+  }
+
+  cite:after {
+    font-style: normal;
+    content: "[\2020]";
+    padding: 3px;
+  }
+}

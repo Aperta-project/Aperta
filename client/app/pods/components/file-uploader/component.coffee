@@ -7,6 +7,7 @@ FileUploaderComponent = Ember.TextField.extend
   accept: null
   filePrefix: null
   uploadImmediately: true
+  disabled: false
 
   dataType: 'json'
   method: 'POST'
@@ -58,6 +59,8 @@ FileUploaderComponent = Ember.TextField.extend
     uploader.fileupload(params)
 
     uploader.on 'fileuploadadd', (e, uploadData) =>
+      return if @get 'disabled'
+
       Ember.run.bind(this, @checkFileType)
       file = uploadData.files[0]
       self = @
@@ -98,6 +101,9 @@ FileUploaderComponent = Ember.TextField.extend
 
     uploader.on 'fileuploadprocessalways', (e, data) =>
       @sendAction('processingDone', data.files[0])
+
+    uploader.on 'fileuploadfail', (e, data) =>
+      @sendAction('error', data)
   ).on('didInsertElement')
 
 `export default FileUploaderComponent`

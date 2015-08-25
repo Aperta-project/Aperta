@@ -5,17 +5,17 @@
               showConfirmWithdrawOverlay="showConfirmWithdrawOverlay"
               topicsIndexPath=topicsIndexPath
               canViewManuscriptManager=canViewManuscriptManager
-              supportedDownloadFormats=supportedDownloadFormats}}
+              supportedDownloadFormats=supportedDownloadFormats
+              versionsVisible=versioningMode}}
 
 <div id="paper-container" class="clearfix paper-container-html {{if noTasks "sidebar-empty"}}">
 
   {{partial "paper/sidebar"}}
 
-  <div class="manuscript-container {{if model.versioningMode 'not-ve'}}">
+  <div class="manuscript-container {{if hideEditor 'not-ve'}}">
     <main>
       {{flash-messages classNames="flash-messages-paper-editor"}}
       <article class="manuscript {{if isEditable "editing" "read-only"}}">
-
         {{#if noTasks}}
           <div class="btn-group pull-right">
             <button {{action "submit" target="view"}} class="no-sidebar-submit-manuscript button-primary {{if model.allSubmissionTasksCompleted "button--green" "button--disabled"}}">
@@ -24,11 +24,16 @@
           </div>
         {{/if}}
 
-        <div id="paper-body" class="{{if model.versioningMode "version-visible"}}">
-          <div class="{{if model.versioningMode "versioned-body" "normal-body"}}">
-            {{{model.versionedBody}}}
-          </div>
+        <div id="paper-body" class="{{if hideEditor "version-visible"}}">
+          {{#if hideEditor}}
+            <h2 id="paper-title">{{{model.title}}}</h2>
+            {{html-diff
+              default=model.body
+              comparisonText=model.comparisonText
+              viewingText=model.viewingText}}
+          {{/if}}
 
+          {{#if model.editable}}
           {{component editorComponent
               viewName='editor'
               paper=model
@@ -41,7 +46,8 @@
               toggleEditing="toggleEditing"
               lock="lock"
               unlock="unlock"
-          }}
+              }}
+          {{/if}}
         </div>
 
       </article>

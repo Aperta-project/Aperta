@@ -87,11 +87,12 @@
 }
 
 .overlay-close-x {
-  @include position(fixed, 0px 40px auto auto);
+  @include position(fixed, 0px 0px auto auto);
   display: none;
   width: auto !important; //bootstrap/glyphicon override
+  padding: 0 30px 0 20px;
   color: $tahi-green;
-  font-size: 90px;
+  font-size: 80px;
   line-height: 100%;
   cursor: pointer;
   z-index: z('overlay', 'close-x');

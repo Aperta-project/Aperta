@@ -31,6 +31,7 @@ class VersionedText < ActiveRecord::Base
     old_version.active = false
     old_version.save!
 
+    self.submitting_user = nil
     self.minor_version = minor_version + 1
   end
 

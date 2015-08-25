@@ -3,7 +3,7 @@ import {
   test
 } from 'ember-qunit';
 
-import hbs   from 'htmlbars-inline-precompile';
+import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('select-box', 'SelectBoxComponent', {
   integration: true,

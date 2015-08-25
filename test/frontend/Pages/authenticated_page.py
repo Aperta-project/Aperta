@@ -298,24 +298,6 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('padding-right') == '5px'
 
   @staticmethod
-  def validate_secondary_button_style(button):
-    """
-    Ensure consistency in rendering page and overlay text buttons across the application
-    :param button: button to validate
-    :return: None
-    TODO: Find out why I see the commented values in the browser
-    """
-    assert application_typeface in button.value_of_css_property('font-family')
-    assert button.value_of_css_property('font-size') == '14px'
-    assert button.value_of_css_property('font-weight') == '400'
-    assert button.value_of_css_property('line-height') == '20px'
-    assert button.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
-    assert button.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
-    assert button.value_of_css_property('text-align') == 'center'
-    assert button.value_of_css_property('text-transform') == 'uppercase'
-    return None
-
-  @staticmethod
   def validate_secondary_grey_small_button_style(button):
     """
     Ensure consistency in rendering page and overlay text buttons across the application
@@ -332,7 +314,6 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('text-align') == 'center'
     assert button.value_of_css_property('text-transform') == 'uppercase'
     return None
-
 
 
   # Form Styles ==============================
@@ -379,3 +360,16 @@ class AuthenticatedPage(PlosPage):
     assert input_.value_of_css_property('color') == color
     assert input_.value_of_css_property('text-align') == 'start'
     return None
+
+  @staticmethod
+  def validate_default_link_style(link):
+    """
+    Ensure consistency in rendering links across the application
+    :param link: link to validate
+    """
+    assert application_typeface in link.value_of_css_property('font-family')
+    assert link.value_of_css_property('font-size') == '14px'
+    assert link.value_of_css_property('line-height') == '20px'
+    assert link.value_of_css_property('background-color') == 'transparent'    
+    assert link.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    assert link.value_of_css_property('font-weight') == '400'

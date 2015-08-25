@@ -17,7 +17,7 @@ export default Ember.Controller.extend(FileUploadMixin, ValidationErrorsMixin, {
       this.set('countries', data.countries.map(function(c) {
         return { id: c, text: c };
       }));
-    });
+    }, Ember.K);
   }),
 
   actions: {

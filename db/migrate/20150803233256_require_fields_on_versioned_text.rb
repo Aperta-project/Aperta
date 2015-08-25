@@ -16,10 +16,8 @@ class RequireFieldsOnVersionedText < ActiveRecord::Migration
     reversible do |dir|
       dir.up do
         # ensure all papers have a latest_version
-        Paper.all.each do |paper|
-          if paper.versioned_texts.empty?
-            paper.versioned_texts.create(major_version: 0, minor_version: 0, text: '')
-          end
+        execute("SELECT id FROM papers WHERE id NOT IN (SELECT paper_id FROM versioned_texts WHERE paper_id IS NOT NULL);").each do |row|
+          execute("INSERT INTO versioned_texts (major_version, minor_version, text, paper_id) VALUES (0, 0, '', #{row['id']});")
         end
       end
     end

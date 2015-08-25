@@ -31,6 +31,7 @@ module Tahi
     config.action_mailer.default_url_options = { host: ENV.fetch('DEFAULT_MAILER_URL', 'tahi.example.com') }
     config.admin_email = ENV.fetch('ADMIN_EMAIL', 'admin@example.com')
     config.from_email = ENV.fetch('FROM_EMAIL', 'no-reply@example.com')
+
     config.salesforce_username = ENV.fetch('DATABASEDOTCOM_USERNAME', :not_set)
     config.salesforce_password = ENV.fetch('DATABASEDOTCOM_PASSWORD', :not_set)
     config.salesforce_client_id = ENV.fetch('DATABASEDOTCOM_CLIENT_ID', :not_set)

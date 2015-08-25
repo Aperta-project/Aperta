@@ -3,15 +3,24 @@ module SalesforceServices
     include ObjectTranslations
 
     def self.get_client
-      client = Databasedotcom::Client.new(
-        host: Rails.configuration.salesforce_host,
-        client_id: Rails.configuration.salesforce_client_id,
-        client_secret: Rails.configuration.salesforce_client_secret
-      )
+      unless self.has_valid_creds?
+        Rails.logger.warn "SalesForce credentials are not set. Information will NOT be synced to SalesForce" 
+        return 
+      end
 
-      client.authenticate username: Rails.configuration.salesforce_username,
-                          password: Rails.configuration.salesforce_password
+      begin
+        client = Databasedotcom::Client.new(
+          host: Rails.configuration.salesforce_host,
+          client_id: Rails.configuration.salesforce_client_id,
+          client_secret: Rails.configuration.salesforce_client_secret
+        )
 
+        client.authenticate username: Rails.configuration.salesforce_username,
+                            password: Rails.configuration.salesforce_password
+      rescue
+        Rails.logger.warn("Failed authentication to SalesForce API") 
+        return
+      end
       client
     end
 
@@ -41,6 +50,11 @@ module SalesforceServices
     end
 
     def self.find_or_create_manuscript(paper_id:)
+      unless self.client
+        Rails.logger.warn "No valid SalesForce client. Information will NOT be synced to SalesForce" 
+        return
+      end
+       
       p = Paper.find(paper_id)
       if p.salesforce_manuscript_id
         self.update_manuscript(paper_id: paper_id)
@@ -48,6 +62,16 @@ module SalesforceServices
         self.create_manuscript(paper_id: paper_id)
       end
     end
+    
+    def self.has_valid_creds?
+      [ :salesforce_client_id, :salesforce_host, :salesforce_client_secret, :salesforce_username, :salesforce_password ].each do |key|
+        return false if !Rails.configuration.respond_to?(key) || Rails.configuration.send(key) == :not_set 
+      end
+      true
+      #TODO: 
+      #may want to remove :not_set from application.rb
+    end
 
   end
+
 end

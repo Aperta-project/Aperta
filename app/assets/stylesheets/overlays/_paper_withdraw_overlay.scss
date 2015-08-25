@@ -1,0 +1,25 @@
+.paper-withdraw-wrapper {
+
+  text-align: center;
+  width: 70%;
+  margin: auto;
+
+  i {
+    font-size: 75px;
+    margin-top: 150px;
+  }
+
+  p {
+    color: $tahi-black;
+  }
+
+  textarea.form-control {
+    height: 120px;
+    margin: 20px auto;
+    border-radius: 8px;
+  }
+
+  .cancel-button {
+    color: #fff;
+  }
+}

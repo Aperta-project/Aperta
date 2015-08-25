@@ -112,4 +112,24 @@ feature 'Assign team', js: true do
       expect(overlay).to have_content("#{custom_reviewer.full_name} has been assigned as #{custom_reviewer_role_name}")
     end
   end
+
+  scenario "A user who can manage the manuscript can remove members on a paper they are assigned to" do
+    assign_paper_role( paper, custom_reviewer, "editor")
+
+    login_as journal_admin
+
+    AssignTeamOverlay.visit(assign_team_task) do |overlay|
+      trash_icon = overlay.find(".invitation", text: custom_reviewer.full_name).find(".invite-reviewer-remove")
+      trash_icon.click
+      wait_for_ajax
+
+      expect(overlay).to_not have_content(custom_reviewer.full_name)
+    end
+    
+    AssignTeamOverlay.visit(assign_team_task) do |overlay|
+      expect(overlay).to_not have_content(custom_reviewer.full_name)
+    end
+  end
+
+
 end

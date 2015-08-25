@@ -2,7 +2,7 @@ module SalesforceServices
   class API
     include ObjectTranslations
 
-    def self.get_client
+    def self.build_client
       client = Databasedotcom::Client.new(
         host: Rails.configuration.salesforce_host,
         client_id: Rails.configuration.salesforce_client_id,
@@ -16,10 +16,29 @@ module SalesforceServices
     end
 
     def self.client
-      @@client ||= self.get_client
+      @client ||= build_client
     end
 
-    def self.create_manuscript(paper_id:)
+    def self.instance
+      @instance ||= new(client)
+    end
+
+    def self.sync_manuscript(paper_id:)
+      p = Paper.find(paper_id)
+      if p.salesforce_manuscript_id
+        instance.update_manuscript(paper_id: paper_id)
+      else
+        instance.create_manuscript(paper_id: paper_id)
+      end
+    end
+
+    attr_reader :client
+
+    def initialize(client)
+      @client = client
+    end
+
+    def create_manuscript(paper_id:)
       paper = Paper.find(paper_id)
 
       mt = ManuscriptTranslator.new(user_id: client.user_id, paper: paper)
@@ -30,7 +49,7 @@ module SalesforceServices
       sf_paper
     end
 
-    def self.update_manuscript(paper_id:)
+    def update_manuscript(paper_id:)
       paper = Paper.find(paper_id)
 
       mt = ManuscriptTranslator.new(user_id: client.user_id, paper: paper)
@@ -38,15 +57,6 @@ module SalesforceServices
       sf_paper = manuscript.find(paper.salesforce_manuscript_id)
       sf_paper.update_attributes mt.paper_to_manuscript_hash
       sf_paper
-    end
-
-    def self.find_or_create_manuscript(paper_id:)
-      p = Paper.find(paper_id)
-      if p.salesforce_manuscript_id
-        self.update_manuscript(paper_id: paper_id)
-      else
-        self.create_manuscript(paper_id: paper_id)
-      end
     end
 
   end

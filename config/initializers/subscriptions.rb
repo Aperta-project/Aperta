@@ -29,7 +29,6 @@ EVENTS = {
 
 
   'comment:created' => [Comment::Created::EventStream],
-  'comment:updated' => [Comment::Updated::EventStream],
   'comment:destroyed' => [Comment::Destroyed::EventStream],
 
   'author:created' => [Author::Created::EventStream],

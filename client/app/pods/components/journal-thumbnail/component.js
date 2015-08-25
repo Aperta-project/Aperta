@@ -45,6 +45,12 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
   },
 
   saveJournal() {
+
+    this.get('journal').setProperties({
+      name: this.get('journal.name').trim('string'),
+      description: this.get('journal.description') || null
+    });
+
     this.get('journal').save().then(()=> {
       this.stopEditing();
     }, (response)=> {

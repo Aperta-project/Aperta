@@ -37,6 +37,17 @@ EVENTS = {
   'author:destroyed' => [Author::Destroyed::EventStream],
 
 
+  'discussion_topic:created' => [DiscussionTopic::Created::EventStream],
+  'discussion_topic:updated' => [DiscussionTopic::Updated::EventStream],
+  'discussion_topic:destroyed' => [DiscussionTopic::Destroyed::EventStream],
+
+  'discussion_participant:created' => [DiscussionParticipant::Created::NotifyExistingParticipants, DiscussionParticipant::Created::NotifyAssignee],
+  'discussion_participant:destroyed' => [DiscussionParticipant::Destroyed::EventStream],
+
+  'discussion_reply:created' => [DiscussionReply::Created::EventStream],
+  'discussion_reply:updated' => [DiscussionReply::Updated::EventStream],
+  'discussion_reply:destroyed' => [DiscussionReply::Destroyed::EventStream],
+
 }
 
 EVENTS.each do |event_name, subscriber_list|

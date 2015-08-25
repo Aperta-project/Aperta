@@ -45,7 +45,7 @@ module HasFeedActivities
     key = "#{name.downcase}.#{activity_name.to_s}"
 
     define_method activity_name.to_s + "_activity!" do |acting_user|
-      message = message || instance_eval(&block)
+      final_message = message || instance_eval(&block)
 
       feed_names = options[:feed_names]
       if !(feed_names.is_a? Array)
@@ -58,7 +58,7 @@ module HasFeedActivities
           activity_key: key,
           subject: instance_eval(&(options[:subject])),
           user: acting_user,
-          message: message
+          message: final_message
         )
       end
     end

@@ -3,7 +3,7 @@
 `import { test, moduleFor } from 'ember-qunit'`
 
 # TODO use server.respondWith
-moduleFor 'controller:paper.index', 'PaperIndexController',
+moduleFor 'controller:paper.edit.html-editor', 'PaperEditController',
   needs: ['controller:application', 'controller:paper']
   beforeEach: ->
     startApp()
@@ -20,7 +20,7 @@ moduleFor 'controller:paper.index', 'PaperIndexController',
   afterEach: ->
     jQuery.ajax.restore()
 
-test '#export: calls the export url in Tahi', (assert) ->
+test '#exportDocument: calls the export url in Tahi', (assert) ->
   basePaperController = @subject()
   basePaperController.set('model', @paper)
   downloadType =

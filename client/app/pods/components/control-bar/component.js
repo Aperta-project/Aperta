@@ -53,6 +53,10 @@ export default Ember.Component.extend({
 
     exportDocument(downloadType) {
       this.sendAction('exportDocument', downloadType);
+    },
+
+    withdrawManuscript() {
+      this.sendAction('showConfirmWithdrawOverlay');
     }
   }
 });

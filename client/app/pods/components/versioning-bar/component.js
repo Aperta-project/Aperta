@@ -32,13 +32,20 @@ export default Ember.Component.extend({
     }
   },
 
-  setupObservers: function() {
-    this.addObserver('viewingVersion', this, 'getViewingText');
-    this.addObserver('comparisonVersion', this, 'getComparisonText');
-  }.on('init'),
-
-  resetter: function() {
+  resetter: Ember.on('didInsertElement', function() {
     this.set('viewingVersion', this.get('paper.versions.firstObject'));
     this.reset();
-  }.on('didInsertElement')
+  }),
+
+  actions: {
+    changeViewingVersion(version) {
+      this.set('viewingVersion', version);
+      this.getViewingText();
+    },
+
+    changeComparisonVersion(version) {
+      this.set('comparisonVersion', version);
+      this.getComparisonText();
+    }
+  }
 });

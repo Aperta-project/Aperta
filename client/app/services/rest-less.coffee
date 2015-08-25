@@ -36,7 +36,7 @@ RESTless = Ember.Namespace.create
     @put("#{@pathFor(model)}#{path}", data)
 
   putUpdate: (model, path, data) ->
-    @putModel(model, path).then (response) ->
+    @putModel(model, path, data).then (response) ->
       model.get('store').pushPayload(response)
     , (xhr) ->
       if errors = xhr.responseJSON.errors

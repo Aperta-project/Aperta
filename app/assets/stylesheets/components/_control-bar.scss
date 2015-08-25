@@ -66,6 +66,19 @@
   padding-right: 30px;
 }
 
+.control-bar ul:last-of-type .control-bar-item:first-of-type::before {
+  width: 40px;
+  height: 58px;
+  display: inline-block;
+  content: '';
+  margin-left: -40px;
+  position: absolute;
+  top: 0;
+  background: -webkit-linear-gradient(right, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%);
+  background: linear-gradient(to left, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%);
+  z-index: 5;
+}
+
 .control-bar-page-title {
   font-size: 24px;
 

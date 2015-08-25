@@ -77,6 +77,15 @@
   background-color: rgba(57,163,41, 0.95);
 }
 
+.overlay--grey {
+  color: $tahi-grey;
+  background-color: #f2f2f2;
+
+  .overlay-close-x {
+    color: $tahi-grey;
+  }
+}
+
 .overlay-close-x {
   @include position(fixed, 0px 0px auto auto);
   display: none;

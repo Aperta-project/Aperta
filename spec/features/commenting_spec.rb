@@ -14,7 +14,7 @@ feature 'Comments on cards', js: true do
     let!(:task) { create :task, phase: paper.phases.first, participants: [admin, albert] }
 
     before do
-      task.comments.create(commenter: albert, body: "<script>alert('DOOM')</script>")
+      task.comments.create(commenter: albert, body: "<script>\nalert('DOOM')\n</script>")
       CommentLookManager.sync_task(task)
       click_link paper.title
       within ".control-bar" do
@@ -31,6 +31,13 @@ feature 'Comments on cards', js: true do
       page = TaskManagerPage.new
       find('.card-content').click
       expect(page).to have_content "#{task.comments.first.body}"
+    end
+
+    scenario "breaks text at newlines" do
+      page = TaskManagerPage.new
+      find('.card-content').click
+      # This is checking to see that there are indeed three seperate lines of text
+      expect(page.find('.comment-body').native.text.split("\n").count).to eq 3
     end
   end
 end

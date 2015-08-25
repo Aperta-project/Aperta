@@ -18,13 +18,7 @@
 }
 
 .version-visible {
-  .paper-body {
-    display: none;
-  }
-}
-
-#paper-body {
-  .normal-body {
+  .paper-body, .title-editor {
     display: none;
   }
 }

@@ -47,6 +47,7 @@ export default DS.Model.extend({
   publishingState: attr('string'),
   title: attr('string'),
   versions: attr(),
+  withdrawalReason: attr('string'),
 
   // For diffing:
   viewingText: attr('string'),

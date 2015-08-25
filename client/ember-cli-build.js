@@ -7,7 +7,11 @@ module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
     // calculated config will be stored in the final tahi.js file
     storeConfigInMeta: false,
-    emberCliFontAwesome: { includeFontAwesomeAssets: false }
+    emberCliFontAwesome: { includeFontAwesomeAssets: false },
+    sourcemaps: {
+      enabled: true,
+      extensions: ['js']
+    }
   });
 
   var b = app.bowerDirectory + '/';

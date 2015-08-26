@@ -68,8 +68,6 @@ module SalesforceServices
         return false if !Rails.configuration.respond_to?(key) || Rails.configuration.send(key) == :not_set 
       end
       true
-      #TODO: 
-      #may want to remove :not_set from application.rb
     end
 
   end

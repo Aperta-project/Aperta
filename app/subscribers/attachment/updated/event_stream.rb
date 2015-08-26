@@ -5,7 +5,7 @@ class Attachment::Updated::EventStream < EventStreamSubscriber
   end
 
   def payload
-    record.payload
+    AttachmentSerializer.new(record).to_json
   end
 
 end

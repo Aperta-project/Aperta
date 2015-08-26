@@ -5,7 +5,7 @@ class PlosAuthors::PlosAuthor::Updated::EventStream < EventStreamSubscriber
   end
 
   def payload
-    record.payload
+    PlosAuthors::PlosAuthorsSerializer.new(record.plos_authors_task.plos_authors, root: :plos_authors).to_json
   end
 
 end

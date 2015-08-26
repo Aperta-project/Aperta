@@ -1,11 +1,11 @@
 class Paper::Created::EventStream < EventStreamSubscriber
 
   def channel
-    record.paper
+    record
   end
 
   def payload
-    record.payload
+    PaperSerializer.new(record).to_json
   end
 
 end

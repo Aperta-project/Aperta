@@ -8,7 +8,7 @@ class PaperRole::Created::EventStream::NotifyPaperMembers < EventStreamSubscribe
   end
 
   def payload
-    record.paper.payload
+    PaperSerializer.new(record.paper)
   end
 
 end

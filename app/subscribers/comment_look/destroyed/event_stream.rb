@@ -5,7 +5,7 @@ class CommentLook::Destroyed::EventStream < EventStreamSubscriber
   end
 
   def payload
-    record.destroyed_payload
+    destroyed_payload
   end
 
 end

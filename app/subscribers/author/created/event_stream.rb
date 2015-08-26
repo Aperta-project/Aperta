@@ -5,7 +5,7 @@ class Author::Created::EventStream < EventStreamSubscriber
   end
 
   def payload
-    record.payload
+    AuthorsSerializer.new(record.paper.authors, root: :authors).to_json
   end
 
 end

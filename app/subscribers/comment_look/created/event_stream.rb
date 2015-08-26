@@ -6,7 +6,7 @@ class CommentLook::Created::EventStream < EventStreamSubscriber
 
   def payload
     owner = record.user
-    record.payload(user: owner)
+    CommentLookSerializer.new(record, user: owner).to_json
   end
 
 end

@@ -5,7 +5,7 @@ class DiscussionParticipant::Created::NotifyExistingParticipants < EventStreamSu
   end
 
   def payload
-    record.payload
+    DiscussionParticipantSerializer.new(record).to_json
   end
 
 end

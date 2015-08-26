@@ -40,9 +40,7 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
 
   stopEditing() {
     this.setProperties({
-      isEditing: false,
-      uploadLogoFunction: null,
-      logoPreview: null
+      isEditing: false, uploadLogoFunction: null, logoPreview: null
     });
   },
 
@@ -85,7 +83,7 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
 
     cancel() {
       this.get('journal').rollback();
-      this.set('isEditing', false);
+      this.stopEditing();
       this.clearAllValidationErrors();
     },
 

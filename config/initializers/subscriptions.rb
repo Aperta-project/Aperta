@@ -27,19 +27,21 @@ EVENTS = {
   'attachment:updated' => [Attachment::Updated::EventStream],
   'attachment:destroyed' => [Attachment::Destroyed::EventStream],
 
+  'invitation:created' => [Invitation::Created::EventStream::NotifyPaperMembers, Invitation::Created::EventStream::NotifyInvitee],
+  'invitation:updated' => [Invitation::Updated::EventStream::NotifyPaperMembers, Invitation::Updated::EventStream::NotifyInvitee],
+  'invitation:destroyed' => [Invitation::Destroyed::EventStream],
 
   'comment:created' => [Comment::Created::EventStream],
   'comment:destroyed' => [Comment::Destroyed::EventStream],
 
+  'comment_look:created' => [CommentLook::Created::EventStream],
+  'comment_look:destroyed' => [CommentLook::Destroyed::EventStream],
   'author:created' => [Author::Created::EventStream],
   'author:updated' => [Author::Updated::EventStream],
   'author:destroyed' => [Author::Destroyed::EventStream],
 
   'participation:created' => [Participation::Created::EventStream],
   'participation:destroyed' => [Participation::Destroyed::EventStream],
-
-  'comment_look:created' => [CommentLook::Created::EventStream],
-  'comment_look:destroyed' => [CommentLook::Destroyed::EventStream],
 
   'discussion_topic:created' => [DiscussionTopic::Created::EventStream],
   'discussion_topic:updated' => [DiscussionTopic::Updated::EventStream],

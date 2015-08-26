@@ -19,23 +19,6 @@ module EventStream::Notifiable
       }
     end
 
-    def payload(user: nil)
-      # user can be optionally passed into serializer
-      event_stream_serializer(user: user).to_json
-    end
-
-    def event_stream_serializer(user: nil)
-      # user can be optionally passed into serializer
-      active_model_serializer.new(self, user: user)
-    end
-
-    def destroyed_payload
-      {
-        type: self.class.base_class.name.demodulize.tableize,
-        ids: [self.id]
-      }.to_json
-    end
-
     private
 
     def event_name

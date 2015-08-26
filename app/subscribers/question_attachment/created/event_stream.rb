@@ -5,7 +5,7 @@ class QuestionAttachment::Created::EventStream < EventStreamSubscriber
   end
 
   def payload
-    record.payload
+    QuestionAttachmentSerializer.new(record).to_json
   end
 
 end

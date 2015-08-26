@@ -1,4 +1,4 @@
-class DiscussionTopic::Destroyed::EventStream < EventStreamSubscriber
+class Invitation::Destroyed::EventStream < EventStreamSubscriber
 
   def channel
     record

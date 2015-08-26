@@ -5,7 +5,7 @@ class Paper::Updated::EventStream < EventStreamSubscriber
   end
 
   def payload
-    record.payload
+    PaperSerializer.new(record).to_json
   end
 
 end

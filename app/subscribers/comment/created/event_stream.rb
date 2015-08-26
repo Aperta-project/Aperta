@@ -5,7 +5,7 @@ class Comment::Created::EventStream < EventStreamSubscriber
   end
 
   def payload
-    record.payload
+    CommentSerializer.new(record).to_json
   end
 
 end

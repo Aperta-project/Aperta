@@ -5,7 +5,7 @@ class Task::Created::EventStream < EventStreamSubscriber
   end
 
   def payload
-    record.payload
+    TaskSerializer.new(record).to_json
   end
 
 end

@@ -18,7 +18,7 @@ class PlosAuthors::PlosAuthor::Updated::NotifyAuthorChange < EventStreamSubscrib
   end
 
   def payload
-    record.author.payload
+    ::AuthorsSerializer.new(record.paper.authors, root: :authors).to_json
   end
 
   def run

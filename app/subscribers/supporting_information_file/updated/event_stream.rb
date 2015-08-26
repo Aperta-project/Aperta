@@ -5,7 +5,7 @@ class SupportingInformationFile::Updated::EventStream < EventStreamSubscriber
   end
 
   def payload
-    record.payload
+    SupportingInformationFileSerializer.new(record).to_json
   end
 
 end

@@ -25,4 +25,11 @@ class EventStreamSubscriber
     raise NotImplementedError.new("You must define the ActiveRecord model that determines the pusher channel")
   end
 
+  def destroyed_payload
+    {
+      type: record.class.base_class.name.demodulize.tableize,
+      ids: [record.id]
+    }.to_json
+  end
+
 end

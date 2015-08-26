@@ -1,4 +1,6 @@
 class InvitationIndexSerializer < ActiveModel::Serializer
+  self.root = :invitation
+
   attributes :id,
              :state,
              :title,
@@ -10,7 +12,7 @@ class InvitationIndexSerializer < ActiveModel::Serializer
              :invitee_id,
              :information
 
-  has_one :task, embed: :id, polymorphic: true, include: true
+  has_one :task, embed: :id, polymorphic: true
 
   def title
     object.paper.title

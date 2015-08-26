@@ -14,7 +14,23 @@
           {{/if}}
         {{/if}}
       </div>
-      {{partial "admin/journal/logo-upload"}}
+
+      <span class="button-secondary fileinput-button button--blue knockout">
+        <span>Upload New</span>
+        {{file-uploader id=thumbnailId
+                        accept=".jpg,.jpeg,.tiff,.gif,.png"
+                        start="uploadStarted"
+                        done="uploadFinished"
+                        progress="uploadProgress"
+                        cancel="cancelUploads"
+                        processingDone="showPreview"
+                        uploadReady="uploadReady"
+                        filePrefix="journal/logo"
+                        uploadImmediately=false
+                        railsMethod="PUT"
+                        url=logoUploadUrl}}
+      </span>
+
       <span class="journal-thumbnail-logo-upload-note">(250px x 40px)</span>
       {{#if isUploading}}
         <div class="journal-thumbnail-logo-spinner">
@@ -65,6 +81,7 @@
     <h3 class="journal-thumbnail-name">{{journal.name}}</h3>
     <p>{{journal.description}}</p>
   {{/link-to}}
+
   {{#if canEdit}}
     <div class="fa fa-pencil edit-icon" {{action "editJournalDetails"}}></div>
   {{/if}}

@@ -5,7 +5,7 @@ class Invitation::Updated::EventStream::NotifyInvitee < EventStreamSubscriber
   end
 
   def payload
-    InvitationIndexSerializer.new(record).to_json
+    InvitationIndexSerializer.new(record).as_json
   end
 
 end

@@ -40,7 +40,7 @@ class EventStreamSubscriber
     {
       type: record.class.base_class.name.demodulize.tableize,
       ids: [record.id]
-    }.to_json
+    }.as_json
   end
 
 end

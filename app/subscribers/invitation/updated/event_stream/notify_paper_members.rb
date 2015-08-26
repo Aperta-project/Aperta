@@ -5,7 +5,7 @@ class Invitation::Updated::EventStream::NotifyPaperMembers < EventStreamSubscrib
   end
 
   def payload
-    InvitationSerializer.new(record).to_json
+    InvitationSerializer.new(record).as_json
   end
 
 end

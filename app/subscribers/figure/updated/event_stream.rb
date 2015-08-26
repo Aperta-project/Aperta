@@ -5,7 +5,7 @@ class Figure::Updated::EventStream < EventStreamSubscriber
   end
 
   def payload
-    FigureSerializer.new(record).to_json
+    FigureSerializer.new(record).as_json
   end
 
 end

@@ -59,15 +59,6 @@ feature "Editing paper", selenium: true, js: true do
           expect(page).to have_content "DOI: vicious/robots.8888"
         end
         expect(page.current_path).to eq("/papers/#{Paper.last.id}/edit")
-
-        click_link 'Workflow'
-        uncheck 'paper-editable'
-        click_link 'Manuscript'
-
-        within ".task-list-doi" do
-          expect(page).to have_content "DOI: vicious/robots.8888"
-        end
-        expect(page.current_path).to eq("/papers/#{Paper.last.id}")
       end
     end
 

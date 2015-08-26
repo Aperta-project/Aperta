@@ -29,6 +29,7 @@
     "currentURL",
     "currentPath",
     "currentRouteName",
+    "pickFromSelect",
     "pickFromSelect2",
     "pickFromChosenSingle",
     "pickFromSelectBox"

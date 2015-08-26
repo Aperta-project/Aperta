@@ -4,6 +4,7 @@ export default Ember.Component.extend({
   classNames: ['control-bar'],
   classNameBindings: ['submenuVisible:control-bar-sub-nav-active'],
   hasJournalLogo: Ember.computed.notEmpty('paper.journal.logoUrl'),
+  paperWithdrawn: Ember.computed.equal('paper.publishingState', 'withdrawn'),
   submenuVisible: false,
   contributorsVisible: false,
   downloadsVisible: false,
@@ -53,6 +54,10 @@ export default Ember.Component.extend({
 
     exportDocument(downloadType) {
       this.sendAction('exportDocument', downloadType);
+    },
+
+    withdrawManuscript() {
+      this.sendAction('showConfirmWithdrawOverlay');
     }
   }
 });

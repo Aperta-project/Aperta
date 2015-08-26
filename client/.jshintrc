@@ -29,8 +29,11 @@
     "currentURL",
     "currentPath",
     "currentRouteName",
+    "pickFromSelect",
     "pickFromSelect2",
     "pickFromChosenSingle",
+    "MathJax",
+    "JsDiff",
     "pickFromSelectBox"
   ],
   "boss": true,

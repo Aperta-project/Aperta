@@ -1,6 +1,5 @@
-class NedCountiesConnectionError < StandardError; end
-
 class NedCountries
+  class ConnectionError < StandardError; end
 
   BASE_URL = ENV['NED_API_URL']
   APP_ID = ENV['NED_CAS_APP_ID']
@@ -25,7 +24,7 @@ class NedCountries
   def search(url)
     conn.get(url)
   rescue Faraday::ClientError => e
-    ned_error = NedCountiesConnectionError.new(e.response[:body])
+    ned_error = ConnectionError.new(e.response[:body])
     Bugsnag.notify(ned_error)
     raise ned_error
   end

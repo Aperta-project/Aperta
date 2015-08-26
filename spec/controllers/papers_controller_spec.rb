@@ -192,10 +192,12 @@ describe PapersController do
   describe "PUT 'submit'" do
     expect_policy_enforcement
 
+    let(:submit) { put :submit, id: paper.id, format: :json}
+
     authorize_policy(PapersPolicy, true)
 
     it "submits the paper" do
-      put :submit, id: paper.id, format: :json
+      submit
       expect(response.status).to eq(204)
       expect(paper.reload.submitted?).to eq true
       expect(paper.editable).to eq false
@@ -203,13 +205,23 @@ describe PapersController do
 
     it "broadcasts 'paper.submitted' event" do
       expect(TahiNotifier).to receive(:notify).with(event: "paper.submitted", payload: { paper_id: paper.id })
-      put :submit, id: paper.id, format: :json
+      submit
     end
 
     it "queue submission email to author upon paper submission" do
       expect {
-        put :submit, id: paper.id, format: :json
+        submit
       }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
+    end
+  end
+
+  describe "PUT 'withdraw'" do
+    it "withdraws the paper" do
+      put :withdraw, id: paper.id, reason:'Conflict of interest', format: :json
+      expect(response.status).to eq(200)
+      expect(paper.reload.latest_withdrawal_reason).to eq('Conflict of interest')
+      expect(paper.withdrawn?).to eq true
+      expect(paper.editable).to eq false
     end
   end
 

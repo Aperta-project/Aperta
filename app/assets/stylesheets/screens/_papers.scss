@@ -1,7 +1,7 @@
 $paper-edit-sidebar-width: 280px;
 
 #control-bar-paper-journal-logo {
-  height: 71px;
+  height: 50px;
   margin-top: 9px;
   margin-right: 20px;
 
@@ -15,8 +15,8 @@ $paper-edit-sidebar-width: 280px;
 #control-bar-paper-short-title {
   min-width: 5px;
   font-size: 18px;
-
-  // TODO: Do we need the h2?
+  max-width: 90%;
+  z-index: 1;
   h2 {
     overflow: hidden;
     padding: 21px 0 0 5px;
@@ -24,9 +24,6 @@ $paper-edit-sidebar-width: 280px;
     font-size: 18px;
     line-height: 22px;
     white-space: nowrap;
-    // override from generic h2:
-    margin: 0;
-    z-index: 1;
   }
 }
 
@@ -76,8 +73,40 @@ html.control-bar-sub-nav-active #paper-container {
   position: relative;
   background: $tahi-grey-xlight;
   width: calc(100% - #{$paper-edit-sidebar-width} - 1px);
+
   &.not-ve {
     font-size: .95em;
+
+    figure {
+      h1 {
+        font: inherit;
+        font-size: 20px;
+        font-weight: bolder;
+      }
+    }
+
+    td, th {
+	    border: 1px dotted #ccc;
+	    padding: 0.25em 0.5em;
+      min-height: 1em;
+
+      p {
+        margin: 0;
+        min-height: 1em;
+      }
+    }
+
+    th {
+      background: #e7e7e7;
+    }
+
+    table {
+      width: 100%;
+      table-layout: fixed;
+	    border-spacing: 0;
+	    border-collapse: collapse;
+	    cursor: default;
+    }
   }
 }
 
@@ -148,6 +177,11 @@ html.control-bar-sub-nav-active #paper-container {
   margin-bottom: 0px;
   font-family: $tahi-article-font-family;
   font-size: 38px;
+
+  &.uneditable {
+    margin-bottom: 25px;
+    margin-top: 5px;
+  }
 }
 
 #paper-body {

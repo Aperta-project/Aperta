@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150811135403) do
+ActiveRecord::Schema.define(version: 20150821183003) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -256,22 +256,24 @@ ActiveRecord::Schema.define(version: 20150811135403) do
   create_table "papers", force: :cascade do |t|
     t.string   "short_title"
     t.string   "title"
-    t.text     "abstract",          default: ""
+    t.text     "abstract",                 default: ""
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
     t.string   "paper_type"
-    t.integer  "journal_id",                         null: false
+    t.integer  "journal_id",                                null: false
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
     t.datetime "last_heartbeat_at"
     t.integer  "striking_image_id"
-    t.boolean  "editable",          default: true
+    t.boolean  "editable",                 default: true
     t.text     "doi"
-    t.string   "editor_mode",       default: "html", null: false
+    t.string   "editor_mode",              default: "html", null: false
     t.string   "publishing_state"
     t.datetime "submitted_at"
+    t.string   "salesforce_manuscript_id"
+    t.text     "withdrawal_reasons",       default: [],                  array: true
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree

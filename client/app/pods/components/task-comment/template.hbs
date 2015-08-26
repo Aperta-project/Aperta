@@ -1,4 +1,4 @@
 {{user-thumbnail user=commenter}}
 <span class="comment-name">{{commenter.fullName}}</span>
-<span class="comment-date">posted {{relative-time time=createdAt}}</span>
-<div class="comment-body">{{display-line-breaks highlightedBody}}</div>
+<span class="comment-date">posted {{format-date createdAt}}</span>
+<div class="comment-body">{{highlightedBody}}</div>

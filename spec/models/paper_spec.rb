@@ -34,6 +34,17 @@ describe Paper do
     end
   end
 
+  describe "#latest_withdrawal_reason" do
+    let(:paper) { FactoryGirl.create(:paper, :submitted) }
+
+    it "returns the latest withdrawal_reason" do
+      paper.withdrawal_reasons << "Some excuse"
+      paper.withdrawal_reasons << "Some other excuse"
+
+      expect(paper.latest_withdrawal_reason).to eq "Some other excuse"
+    end
+  end
+
   describe "validations" do
     describe "paper_type" do
       it "is required" do
@@ -132,6 +143,25 @@ describe Paper do
       it "marks the paper not editable" do
         expect(paper).to receive(:metadata_tasks_completed?).and_return(true)
         paper.submit! user
+        expect(paper).to_not be_editable
+      end
+    end
+
+    context "when withdrawing" do
+      let(:paper) { FactoryGirl.create(:paper, :submitted) }
+
+      it "transitions to withdrawn without a reason" do
+        paper.withdraw!
+        expect(paper).to be_withdrawn
+      end
+
+      it "transitions to withdrawn with a reason" do
+        paper.withdraw! "Don't want to."
+        expect(paper.withdrawn?).to eq true
+      end
+
+      it "marks the paper not editable" do
+        paper.withdraw!
         expect(paper).to_not be_editable
       end
     end

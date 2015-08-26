@@ -46,6 +46,7 @@ class Paper < ActiveRecord::Base
     state :accepted
     state :rejected
     state :published
+    state :withdrawn
 
     event(:submit) do
       transitions from: [:unsubmitted, :in_revision],
@@ -94,6 +95,14 @@ class Paper < ActiveRecord::Base
       transitions from: :submitted,
                   to: :published,
                   after: :set_published_at!
+    end
+
+    event(:withdraw) do
+      transitions to: :withdrawn,
+                  after: :prevent_edits!
+      before do |withdrawal_reason|
+        withdrawal_reasons << withdrawal_reason
+      end
     end
   end
 
@@ -176,6 +185,10 @@ class Paper < ActiveRecord::Base
 
   def unlocked? # :nodoc:
     !locked?
+  end
+
+  def latest_withdrawal_reason
+    withdrawal_reasons.last
   end
 
   def locked_by?(user) # :nodoc:

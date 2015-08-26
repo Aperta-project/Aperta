@@ -17,11 +17,11 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
   }.on('init').observes('journal.isDirty'),
 
   thumbnailId: Ember.computed('journal.id', function() {
-    return 'journal-logo-' + (this.get('journal.id'));
+    return `journal-logo-${this.get('journal.id')}`;
   }),
 
   logoUploadUrl: Ember.computed('journal.id', function() {
-    return '/api/admin/journals/' + this.get('journal.id') + '/upload_logo';
+    return `/api/admin/journals/${this.get('journal.id')}/upload_logo`;
   }),
 
   togglePreview() {

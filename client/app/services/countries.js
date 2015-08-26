@@ -9,7 +9,7 @@ export default Ember.Service.extend({
   _data: [],
   data: Ember.computed({
     get() {
-      if(Ember.isEmpty(this.get('_data'))) { return this.fetch(); }
+      if(Ember.isEmpty(this.get('_data'))) { this.fetch(); return []; }
       return this.get('_data');
     },
 

@@ -51,11 +51,11 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
 
   saveJournal() {
 
-    setJournalProperties();
+    this.setJournalProperties();
 
     this.get('journal').save().then(()=> {
       this.stopEditing();
-    }, (response)=> {
+    }, (response) => {
       this.displayValidationErrorsFromResponse(response);
     });
   },
@@ -86,7 +86,7 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
       }
     },
 
-    resetJournalDetails() {
+    cancel() {
       this.get('journal').rollback();
       this.set('isEditing', false);
       this.clearAllValidationErrors();

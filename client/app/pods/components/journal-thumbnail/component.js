@@ -66,12 +66,6 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
       this.set('isEditing', true);
     },
 
-    uploadFinished(data, filename) {
-      this.uploadFinished(data, filename);
-      this.set('journal.logoUrl', data.admin_journal.logo_url);
-      this.saveJournal();
-    },
-
     saveJournalDetails() {
       let updateLogo = this.get('uploadLogoFunction');
 
@@ -96,6 +90,14 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
       this.get('journal').rollback();
       this.set('isEditing', false);
       this.clearAllValidationErrors();
+    },
+
+    // Actions passed to the file-uploader component
+
+    uploadFinished(data, filename) {
+      this.uploadFinished(data, filename);
+      this.set('journal.logoUrl', data.admin_journal.logo_url);
+      this.saveJournal();
     },
 
     showPreview(file) {

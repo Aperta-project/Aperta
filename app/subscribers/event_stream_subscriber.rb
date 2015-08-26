@@ -14,7 +14,7 @@ class EventStreamSubscriber
   end
 
   def run
-    EventStream::Broadcaster.post(action: action, payload: payload, channel_scope: channel, excluded_socket_id: excluded_socket_id)
+    TahiPusher::Channel.delay(queue: :eventstream, retry: false).push(channel_name: channel, event_name: action, payload: payload, excluded_socket_id: excluded_socket_id)
   end
 
   def payload
@@ -22,7 +22,18 @@ class EventStreamSubscriber
   end
 
   def channel
-    raise NotImplementedError.new("You must define the ActiveRecord model that determines the pusher channel")
+    raise NotImplementedError.new("You must define the channel name for pusher")
+  end
+
+
+  private
+
+  def private_channel_for(model)
+    TahiPusher::ChannelName.build(target: model, access: TahiPusher::ChannelName::PRIVATE)
+  end
+
+  def system_channel
+    TahiPusher::ChannelName.build(target: TahiPusher::Config::SYSTEM_CHANNEL, access: TahiPusher::ChannelName::PUBLIC)
   end
 
   def destroyed_payload

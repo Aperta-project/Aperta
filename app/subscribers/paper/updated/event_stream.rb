@@ -1,7 +1,7 @@
 class Paper::Updated::EventStream < EventStreamSubscriber
 
   def channel
-    record
+    private_channel_for(record)
   end
 
   def payload

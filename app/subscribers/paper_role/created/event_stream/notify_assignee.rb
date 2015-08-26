@@ -4,7 +4,7 @@ class PaperRole::Created::EventStream::NotifyAssignee < EventStreamSubscriber
   # and has yet to subscribe to the paper channel
 
   def channel
-    record.user
+    private_channel_for(record.user)
   end
 
   def payload

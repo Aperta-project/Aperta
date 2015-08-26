@@ -1,7 +1,7 @@
 class Author::Destroyed::EventStream < EventStreamSubscriber
 
   def channel
-    record.paper
+    system_channel
   end
 
   def payload

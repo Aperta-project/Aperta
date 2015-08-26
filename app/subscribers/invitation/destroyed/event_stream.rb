@@ -1,7 +1,7 @@
 class Invitation::Destroyed::EventStream < EventStreamSubscriber
 
   def channel
-    record
+    system_channel
   end
 
   def payload

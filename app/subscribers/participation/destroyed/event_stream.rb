@@ -1,7 +1,7 @@
 class Participation::Destroyed::EventStream < EventStreamSubscriber
 
   def channel
-    record.task.paper
+    system_channel
   end
 
   def payload

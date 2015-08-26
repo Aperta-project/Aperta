@@ -1,7 +1,7 @@
 class DiscussionParticipant::Created::NotifyExistingParticipants < EventStreamSubscriber
 
   def channel
-    record.discussion_topic
+    private_channel_for(record.discussion_topic)
   end
 
   def payload

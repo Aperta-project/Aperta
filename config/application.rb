@@ -32,6 +32,12 @@ module Tahi
     config.admin_email = ENV.fetch('ADMIN_EMAIL', 'admin@example.com')
     config.from_email = ENV.fetch('FROM_EMAIL', 'no-reply@example.com')
 
+    config.salesforce_username = ENV.fetch('DATABASEDOTCOM_USERNAME', :not_set)
+    config.salesforce_password = ENV.fetch('DATABASEDOTCOM_PASSWORD', :not_set)
+    config.salesforce_client_id = ENV.fetch('DATABASEDOTCOM_CLIENT_ID', :not_set)
+    config.salesforce_client_secret = ENV.fetch('DATABASEDOTCOM_CLIENT_SECRET', :not_set)
+    config.salesforce_host = ENV.fetch('DATABASEDOTCOM_HOST', :not_set)
+
     # Raise an error within after_rollback & after_commit
     config.active_record.raise_in_transactional_callbacks = true
 

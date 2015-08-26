@@ -55,15 +55,14 @@ class PapersController < ApplicationController
     respond_with(comment_looks, root: :comment_looks)
   end
 
-  def activity
-    # TODO: params[:name] probably needs some securitifications
-    if params[:name] == 'workflow'
-      feed_name = ['workflow', 'manuscript'] # All manuscript events show in workflow
-    else
-      feed_name = params[:name]
-    end
+  def workflow_activities
+    feeds = ['workflow', 'manuscript']
+    activities = Activity.feed_for(feeds, paper)
+    respond_with activities, each_serializer: ActivitySerializer, root: 'feeds'
+  end
 
-    activities = Activity.where(feed_name: feed_name, subject_id: paper.id).order('created_at DESC')
+  def manuscript_activities
+    activities = Activity.feed_for('manuscript', paper)
     respond_with activities, each_serializer: ActivitySerializer, root: 'feeds'
   end
 

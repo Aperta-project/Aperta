@@ -282,26 +282,26 @@ describe PapersController do
 
     context "for manuscript feed" do
       it "returns the feed" do
-        get :activity, { id: paper.to_param, name: 'manuscript', format: :json }
+        get :manuscript_activities, { id: paper.to_param, format: :json }
         expect(response.status).to eq(200)
       end
 
       it "returns the feed even to paper-view-only users" do
         sign_in weak_user
-        get :activity, { id: paper.to_param, name: 'manuscript', format: :json }
+        get :manuscript_activities, { id: paper.to_param, format: :json }
         expect(response.status).to eq(200)
       end
     end
 
     context "for workflow feed" do
       it "returns the feed if authorized for the manuscript manager" do
-        get :activity, { id: paper.to_param, name: 'workflow', format: :json }
+        get :workflow_activities, { id: paper.to_param, format: :json }
         expect(response.status).to eq(200)
       end
 
       it "blocks paper-view-only users" do
         sign_in weak_user
-        get :activity, { id: paper.to_param, name: 'workflow', format: :json }
+        get :workflow_activities, { id: paper.to_param, format: :json }
         expect(response.status).to eq(403)
       end
     end

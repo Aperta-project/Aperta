@@ -1,6 +1,5 @@
 class PapersPolicy < ApplicationPolicy
   primary_resource :paper
-  allow_params :params
 
   def show?
     can_view_paper?
@@ -46,12 +45,12 @@ class PapersPolicy < ApplicationPolicy
     can_view_paper?
   end
 
-  def activity?
-    if params[:name] == 'manuscript'
-      can_view_paper?
-    else
-      can_view_manuscript_manager?
-    end
+  def workflow_activities?
+    can_view_manuscript_manager?
+  end
+
+  def manuscript_activities?
+    can_view_paper?
   end
 
   private

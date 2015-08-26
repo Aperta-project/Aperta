@@ -69,10 +69,8 @@ export default TaskController.extend(Select2Assignees, {
     },
 
     didSelectEditor: function(select2User) {
-      return this.store.find('user', select2User.id).then(() => {
-        return function(user) {
-          return this.set('selectedUser', user);
-        };
+      return this.store.find('user', select2User.id).then((user) => {
+        return this.set('selectedUser', user);
       });
     },
 
@@ -84,10 +82,8 @@ export default TaskController.extend(Select2Assignees, {
         promises.push(this.get('model.invitation').destroyRecord());
       }
       return Ember.RSVP.all(promises).then(() => {
-        return function() {
-          var editor = this.get('model')._relationships.editor;
-          return editor.setCanonicalRecord(null);
-        };
+        var editor = this.get('model')._relationships.editor;
+        return editor.setCanonicalRecord(null);
       });
     },
     setLetterBody: function() {
@@ -102,9 +98,7 @@ export default TaskController.extend(Select2Assignees, {
         email: this.get('selectedUser.email')
       });
       invitation.save().then(() => {
-        return function() {
-          return this.get('model').set('invitation', invitation);
-        };
+        return this.get('model').set('invitation', invitation);
       });
       return this.set('composingEmail', false);
     },

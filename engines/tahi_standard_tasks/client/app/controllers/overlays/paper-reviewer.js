@@ -81,21 +81,17 @@ export default TaskController.extend({
         task: this.get('model'),
         email: this.get('selectedReviewer.email'),
         body: this.get('invitationBody')
-      }).save().then(() => {
-        return function(invitation) {
-          this.get('latestDecision.invitations').addObject(invitation);
-          this.set('composingEmail', false);
-          return this.set('selectedReviewer', null);
-        };
+      }).save().then((invitation) => {
+        this.get('latestDecision.invitations').addObject(invitation);
+        this.set('composingEmail', false);
+        return this.set('selectedReviewer', null);
       });
     },
 
     removeReviewer: function(selectedReviewer) {
-      return this.store.find('user', selectedReviewer.id).then(() => {
-        return function(user) {
-          this.get('reviewers').removeObject(user);
-          return this.send('saveModel');
-        };
+      return this.store.find('user', selectedReviewer.id).then((user) => {
+        this.get('reviewers').removeObject(user);
+        return this.send('saveModel');
       });
     },
 

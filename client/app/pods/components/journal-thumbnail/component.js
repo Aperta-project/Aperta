@@ -7,12 +7,9 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
   canEdit: null,   // passed-in,
   journal: null,   // passed-in,
   isEditing: false,
+  showForm: Ember.computed.or('isEditing', 'journal.isNew'),
   logoPreview: null,
   uploadLogoFunction: null,
-
-  modelIsDirtyDidChange: function() {
-    this.set('isEditing', this.get('journal.isDirty'));
-  }.on('init').observes('journal.isDirty'),
 
   thumbnailId: Ember.computed('journal.id', function() {
     return `journal-logo-${this.get('journal.id')}`;

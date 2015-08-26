@@ -14,7 +14,7 @@ module TahiPusher
 
       prefix = access unless access == PUBLIC
       suffix = if target.is_a?(ActiveRecord::Base)
-                 [target.class.name.downcase, target.id].join(MODEL_SEPARATOR)
+                 [target.class.name.underscore, target.id].join(MODEL_SEPARATOR)
                else
                  target
                end

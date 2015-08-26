@@ -57,7 +57,8 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
   },
 
   actions: {
-    editJournalDetails() {
+
+    editJournal() {
       this.set('isEditing', true);
     },
 

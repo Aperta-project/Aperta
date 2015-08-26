@@ -1,7 +1,13 @@
 {{#if prompt}}
-  <option disabled selected={{if selection "false" "true"}}>
-    {{prompt}}
-  </option>
+  {{#if allowDeselect}}
+    <option selected={{if selection "false" "true"}}>
+      {{prompt}}
+    </option>
+  {{else}}
+    <option disabled selected={{if selection "false" "true"}}>
+      {{prompt}}
+    </option>
+  {{/if}}
 {{/if}}
 
 {{#if optionValuePath}}
@@ -13,6 +19,6 @@
   {{/each}}
 {{else}}
   {{#each content key="@index" as |item|}}
-    <option value=item selected={{is-equal item selection}}>{{item}}</option>
+    <option value={{item}} selected={{is-equal item selection}}>{{item}}</option>
   {{/each}}
 {{/if}}

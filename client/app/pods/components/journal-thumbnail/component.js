@@ -4,13 +4,11 @@ import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
   classNames: ['journal-thumbnail'],
-
-  canEdit: false,
-  logoPreview: null,
-  journal: null,
-  uploadLogoFunction: null,
+  canEdit: null,   // passed-in,
+  journal: null,   // passed-in,
   isEditing: false,
-
+  logoPreview: null,
+  uploadLogoFunction: null,
 
   modelIsDirtyDidChange: function() {
     this.set('isEditing', this.get('journal.isDirty'));

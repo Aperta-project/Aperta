@@ -32,7 +32,7 @@ describe TahiStandardTasks::RegisterDecisionController do
       }
 
       before do
-        paper.decisions.first.update(verdict: "revise")
+        paper.decisions.first.update(verdict: "major_revision")
       end
 
       it "invoke complete_decision on task" do
@@ -42,6 +42,15 @@ describe TahiStandardTasks::RegisterDecisionController do
 
       it "invoke send_email on task" do
         expect(task).to receive(:send_email)
+        do_request
+      end
+
+      it "creates an activity" do
+        activity = {
+          subject: paper,
+          message: "Major Revision was sent to author"
+        }
+        expect(Activity).to receive(:create).with(hash_including(activity))
         do_request
       end
 

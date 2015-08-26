@@ -4,12 +4,18 @@ module TahiStandardTasks
     def decide
       task = Task.find(params[:id])
 
-      if task && task.paper.submitted?
+      if !task or !task.paper.submitted?
+        render json: { error: "Invalid Task and/or Paper" }
+
+      elsif not task.latest_decision_ready?
+        render json: { error: "You must register a verdict, first" }, status: 422
+
+      else
+        decision = task.latest_decision
         task.complete_decision
         task.send_email
+        decision.decided_activity! current_user
         render json: {}, status: :created
-      else
-        render json: { error: "Invalid Task and/or Paper" }
       end
     end
 

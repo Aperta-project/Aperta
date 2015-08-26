@@ -9,10 +9,8 @@ export default Ember.Service.extend({
   _data: [],
   data: Ember.computed({
     get() {
-      let c = this.get('_data');
-      if(Ember.isEmpty(c)) { return this.fetch(); }
-
-      return c;
+      if(Ember.isEmpty(this.get('_data'))) { return this.fetch(); }
+      return this.get('_data');
     },
 
     set(key, value) {

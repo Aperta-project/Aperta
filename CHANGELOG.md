@@ -5,6 +5,25 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
+-
+
+### Changed
+-
+
+### Deprecated
+-
+
+### Removed
+-
+
+### Fixed
+-
+
+### Security
+-
+
+## [1.3.0] - 2015-08-26
+### Added
 - Autosuggest ember component
 - Select box ember component
 - Reviewer Reports can now be submitted, and can't be edited after that
@@ -23,12 +42,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Update 'notify_editor' email styles
 - Control bar has been refactored into a component
 
-### Deprecated
--
-
-### Removed
--
-
 ### Fixed
 - No longer perform unfiltered searches in Flow Manager
 - No longer shows publishable checkbox in Figures, since it only applies to Supporting Information Files
@@ -36,9 +49,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - No longer adding trailing whitespace and persisting empty strings on Journals
 - Creating a journal with a logo no longer raise an error
 - Abstract in Reviewer invitation emails no longer show HTML tags
-
-### Security
--
 
 ## [1.2.0] - 2015-08-04
 ### Added
@@ -139,7 +149,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 _Changes too big to document, initial release_
 
-[unreleased]: https://github.com/tahi-project/tahi/compare/v1.2.0...HEAD
+[unreleased]: https://github.com/tahi-project/tahi/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/tahi-project/tahi/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/tahi-project/tahi/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/tahi-project/tahi/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/tahi-project/tahi/compare/v1.0.1...v1.1.0

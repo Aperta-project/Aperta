@@ -19,6 +19,7 @@ export default Ember.Service.extend({
   }),
 
   fetch() {
+    if(!Ember.isEmpty(this.get('_data'))) { return; }
     this._didStartLoading();
 
     RESTless.get('/api/countries').then((response)=> {

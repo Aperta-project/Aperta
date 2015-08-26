@@ -19,6 +19,14 @@ describe TahiPusher::ChannelName do
           expect(channel_name).to eq("paper@#{paper.id}")
         end
       end
+
+      context "without target" do
+        it "throws error" do
+          expect {
+            TahiPusher::ChannelName.build(target: nil, access: "public")
+          }.to raise_error(TahiPusher::ChannelResourceNotFound)
+        end
+      end
     end
 
 

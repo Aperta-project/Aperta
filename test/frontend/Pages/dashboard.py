@@ -55,7 +55,7 @@ class DashboardPage(AuthenticatedPage):
 
     self._cns_paper_type_chooser_div = (By.CLASS_NAME, 'paper-new-paper-type-select')
 
-    self._cns_chooser_chosen = (By.CLASS_NAME, 'select2-chosen')
+    self._cns_chooser_chosen = (By.CLASS_NAME, 'select-box-item')
     self._cns_chooser_dropdown_arrow = (By.CLASS_NAME, 'select2-arrow')
     self._cns_action_buttons_div = (By.CLASS_NAME, 'overlay-action-buttons')
     self._cns_cancel = (By.CLASS_NAME, 'button-link')

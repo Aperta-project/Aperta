@@ -53,12 +53,10 @@
               class="profile-affiliation-field form-control"}}
 
       {{#if countries.loaded}}
-        {{select-native class="profile-affiliation-field"
-                        prompt="Country"
-                        allowDeselect=true
-                        content=countries.data
-                        selection=newAffiliation.country
-                        action=(action (mut newAffiliation.country))}}
+        {{select-2-single class="profile-affiliation-field"
+                          placeholder="Country"
+                          source=formattedCountries
+                          selectionSelected="countrySelected"}}
       {{/if}}
       {{#if countries.loading}}
         {{progress-spinner visible=true size="mini"}}

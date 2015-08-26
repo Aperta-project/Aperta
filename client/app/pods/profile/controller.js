@@ -10,8 +10,15 @@ export default Ember.Controller.extend(FileUploadMixin, ValidationErrorsMixin, {
   affiliations: Ember.computed.alias('model.affiliationsByDate'),
 
   today: new Date(),
+
   _fetchCountries: Ember.on('init', function() {
     this.get('countries').fetch();
+  }),
+
+  formattedCountries: Ember.computed('countries.data', function() {
+    return this.get('countries.data').map(function(c) {
+      return { id: c, text: c };
+    });
   }),
 
   actions: {
@@ -55,6 +62,10 @@ export default Ember.Controller.extend(FileUploadMixin, ValidationErrorsMixin, {
     institutionSelected(institution) {
       this.set('newAffiliation.name', institution.name);
       this.set('newAffiliation.ringgoldId', institution['institution-id']);
+    },
+
+    countrySelected(country) {
+      this.set('newAffiliation.country', country.text);
     }
   }
 });

@@ -49,8 +49,8 @@ class DashboardPage(AuthenticatedPage):
     self._cns_error_div = (By.CLASS_NAME, 'flash-messages')
     self._cns_error_message = (By.CLASS_NAME, 'flash-message-content')
 
-    self._cns_short_title_label = (By.CLASS_NAME, 'inset-form-control-text')
-    self._cns_short_title_field = (By.CLASS_NAME, 'inset-form-control-input')
+    self._cns_short_title_label = (By.CLASS_NAME, 'paper-new-label')
+    self._cns_short_title_field = (By.CSS_SELECTOR, '#paper-short-title')
     self._cns_journal_chooser_div = (By.CLASS_NAME, 'paper-new-journal-select')
 
     self._cns_paper_type_chooser_div = (By.CLASS_NAME, 'paper-new-paper-type-select')

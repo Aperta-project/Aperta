@@ -1,4 +1,4 @@
-{{#if isEditing}}
+{{#if showForm}}
 
   <div class="journal-thumbnail-edit-form clearfix">
 
@@ -7,14 +7,30 @@
         {{#if logoPreview}}
           <span class="journal-thumbnail-logo-preview"></span>
         {{else}}
-          {{#if model.logoUrl}}
-            <img src={{model.logoUrl}}>
+          {{#if journal.logoUrl}}
+            <img src={{journal.logoUrl}}>
           {{else}}
             {{partial "svg/default-journal-logo"}}
           {{/if}}
         {{/if}}
       </div>
-      {{partial "admin/journal/logo-upload"}}
+
+      <span class="button-secondary fileinput-button button--blue knockout">
+        <span>Upload New</span>
+        {{file-uploader id=thumbnailId
+                        accept=".jpg,.jpeg,.tiff,.gif,.png"
+                        start="uploadStarted"
+                        done="uploadFinished"
+                        progress="uploadProgress"
+                        cancel="cancelUploads"
+                        processingDone="showPreview"
+                        uploadReady="uploadReady"
+                        filePrefix="journal/logo"
+                        uploadImmediately=false
+                        railsMethod="PUT"
+                        url=logoUploadUrl}}
+      </span>
+
       <span class="journal-thumbnail-logo-upload-note">(250px x 40px)</span>
       {{#if isUploading}}
         <div class="journal-thumbnail-logo-spinner">
@@ -29,7 +45,7 @@
         {{error-message message=validationErrors.name}}
       </div>
       {{input type="text"
-              value=model.name
+              value=journal.name
               class="form-control journal-name-edit inset-form-control-input"
               placeholder="PLOS Yeti"}}
     </div>
@@ -39,13 +55,13 @@
         <label>Journal Description</label>
         {{error-message message=validationErrors.description}}
       </div>
-      {{textarea value=model.description
+      {{textarea value=journal.description
                  class="journal-description-edit inset-form-control-textarea"
                  placeholder="Accelerating the publication of peer-reviewed science"}}
     </div>
 
     <div class="journal-edit-buttons">
-      <a href="#" class="button-link button--white" {{action "resetJournalDetails"}}>Cancel</a>
+      <a href="#" class="button-link button--white" {{action "cancel"}}>Cancel</a>
       <a href="#" class="button-secondary button--blue knockout" {{action "saveJournalDetails"}}>Save</a>
     </div>
 
@@ -53,20 +69,21 @@
 
 {{else}}
 
-  {{#link-to "admin.journal" model class="journal-thumbnail-show clearfix"}}
+  {{#link-to "admin.journal" journal class="journal-thumbnail-show clearfix"}}
     <div class="journal-thumbnail-logo">
-      {{#if model.logoUrl}}
-        <img src={{model.logoUrl}}>
+      {{#if journal.logoUrl}}
+        <img src={{journal.logoUrl}}>
       {{else}}
         {{partial "svg/default-journal-logo"}}
       {{/if}}
     </div>
-    <span class="journal-thumbnail-paper-count">{{pluralize model.paperCount "article"}}</span>
-    <h3 class="journal-thumbnail-name">{{model.name}}</h3>
-    <p>{{model.description}}</p>
+    <span class="journal-thumbnail-paper-count">{{pluralize journal.paperCount "article"}}</span>
+    <h3 class="journal-thumbnail-name">{{journal.name}}</h3>
+    <p>{{journal.description}}</p>
   {{/link-to}}
+
   {{#if canEdit}}
-    <div class="fa fa-pencil edit-icon" {{action "editJournalDetails"}}></div>
+    <div class="fa fa-pencil edit-icon" {{action "editJournal"}}></div>
   {{/if}}
 
 {{/if}}

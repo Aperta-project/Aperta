@@ -52,15 +52,21 @@
               placeholder="Title"
               class="profile-affiliation-field form-control"}}
 
-      {{#if countries}}
-        {{select-2-single class="profile-affiliation-field"
-                          placeholder="Country"
-                          selectedData=selectedData
-                          source=countries
-                          value=newAffiliation.country}}
-      {{else}}
+      {{#if countries.loaded}}
+        {{select-native class="profile-affiliation-field"
+                        prompt="Country"
+                        allowDeselect=true
+                        content=countries.data
+                        selection=newAffiliation.country
+                        action=(action (mut newAffiliation.country))}}
+      {{/if}}
+      {{#if countries.loading}}
         {{progress-spinner visible=true size="mini"}}
         Loading countries
+      {{/if}}
+      {{#if countries.error}}
+        <i class="fa fa-exclamation-triangle"></i>
+        Error loading countries
       {{/if}}
 
       <div class="form-group">

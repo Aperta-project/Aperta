@@ -72,12 +72,14 @@
             Appeal
           </a>
         </li>
-        <li>
-        <a href="#" class="withdraw-link" {{action "withdrawManuscript"}} >
-            <span class="fa fa-trash fa-lg"></span>
-            Withdraw Manuscript
-          </a>
-        </li>
+        {{#unless paperWithdrawn}}
+          <li>
+            <a href="#" class="withdraw-link" {{action "withdrawManuscript"}} >
+              <span class="fa fa-trash fa-lg"></span>
+              Withdraw Manuscript
+            </a>
+          </li>
+        {{/unless}}
       </ul>
     </li>
   </ul>

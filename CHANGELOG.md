@@ -35,6 +35,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Display comments as written, instead of escaping non-alphanumeric characters.
 - No longer adding trailing whitespace and persisting empty strings on Journals
 - Creating a journal with a logo no longer raise an error
+- Abstract in Reviewer invitation emails no longer show HTML tags
 
 ### Security
 -

@@ -8,6 +8,12 @@ PaperEditRoute = AuthorizedRoute.extend
   heartbeatService: Ember.inject.service('heartbeat')
   cardOverlayService: Ember.inject.service('card-overlay')
 
+  viewName: 'paper/edit'
+  controllerName: 'paper/edit'
+  templateName: 'paper/edit'
+  cardOverlayService: Ember.inject.service('card-overlay'),
+  fromSubmitOverlay: false
+
   fromSubmitOverlay: false
 
   model: ->
@@ -28,8 +34,6 @@ PaperEditRoute = AuthorizedRoute.extend
     if model.get('editable')
       @set('heartbeat', this.get('heartbeatService').create(model))
       @startHeartbeat()
-    else
-      @transitionTo('paper.index', model)
 
   setupController: (controller, model) ->
     # paper/edit controller is not used.
@@ -60,7 +64,7 @@ PaperEditRoute = AuthorizedRoute.extend
       @get('heartbeat').start()
 
   endHeartbeat: ->
-    @get('heartbeat').stop()
+    @get('heartbeatService')?.stop()
 
   isLockedByCurrentUser: ->
     lockedBy = @modelFor('paper').get('lockedBy')
@@ -82,7 +86,7 @@ PaperEditRoute = AuthorizedRoute.extend
       @endHeartbeat()
 
     showConfirmSubmitOverlay: ->
-      @controllerFor('overlays/paper-submit').set('model', this.modelFor('paper.edit'))
+      @controllerFor('overlays/paper-submit').set('model', this.modelFor('paper'))
 
       @send('openOverlay', {
         template: 'overlays/paper-submit'
@@ -90,11 +94,5 @@ PaperEditRoute = AuthorizedRoute.extend
       })
 
       @set 'fromSubmitOverlay', true
-
-    editableDidChange: ->
-      if !@fromSubmitOverlay
-        @transitionTo('paper.index', @modelFor('paper'))
-      else
-        @set 'fromSubmitOverlay', false
 
 `export default PaperEditRoute`

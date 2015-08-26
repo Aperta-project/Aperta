@@ -332,7 +332,7 @@ export default TaskController.extend({
       this.set("countries", data.countries.map(function(c) {
         return { id: c, text: c };
       }));
-    });
+    }, Ember.K);
   }),
 
   journalName: "PLOS One",

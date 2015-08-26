@@ -31,7 +31,6 @@ export default Ember.Controller.extend({
     closeSuccessOverlay() {
       this.send('closeOverlay');
       this.set('paperSubmitted', false);
-      this.send('editableDidChange');
     }
   }
 });

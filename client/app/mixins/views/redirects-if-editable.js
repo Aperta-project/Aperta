@@ -7,7 +7,6 @@ export default Ember.Mixin.create({
   toggleEditable() {
     if (this.get('editable') !== this.get('lastEditable')) {
       this.set('lastEditable', this.get('editable'));
-      this.get('controller').send('editableDidChange');
     }
   },
 

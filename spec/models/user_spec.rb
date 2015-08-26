@@ -80,6 +80,19 @@ describe User do
       inv3.invite!
       expect(user.reload.invitations_from_latest_revision).to match_array [inv3]
     end
+
+    context 'invitation without a decision' do
+      before do
+        task = FactoryGirl.create :invitable_task
+        invitation = FactoryGirl.create :invitation, task: task, invitee: user
+        # force-delete the decision
+        invitation.decision.destroy!
+      end
+
+      it 'returns invitations with decisions from the latest revision cycle' do
+        expect(user.invitations_from_latest_revision).to be_empty
+      end
+    end
   end
 
   describe ".new_with_session" do

@@ -3,5 +3,9 @@
   Other
 </label>
 {{#if isSelected}}
-  {{input class="form-control" placeholder="Please specify" value=textValue action="textUpdate" on="focus-out"}}
+  {{input class="form-control"
+          placeholder="Please specify"
+          value=textValue
+          enter="textUpdate"
+          focus-out="textUpdate"}}
 {{/if}}

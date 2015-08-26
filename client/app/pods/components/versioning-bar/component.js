@@ -5,21 +5,50 @@ export default Ember.Component.extend({
   oldText: null,
   currentBody: null,
 
-  showVersion() {
-    let version = this.get('selectedVersion');
+  reset() {
+    // Resets page to viewing a single version
+    this.comparisonText = null;
+    this.set('paper.comparisonText', null);
+    this.set('compareToVersion', null);
+  },
+
+  getComparisonText() {
+    // Fetches version of the text to compare with the version we're viewing
+    let version = this.get('comparisonVersion');
     if (version) {
       this.get('restless').get('/api/versioned_texts/' + version.id).then((response) => {
-        this.set('paper.currentVersionBody',
-                 response['versioned_text']['text']);
+        this.set('paper.comparisonText', response['versioned_text']['text']);
+      });
+    } else {
+      this.reset();
+    }
+  },
+
+  getViewingText() {
+    // Fetches a version of the text to view
+    let version = this.get('viewingVersion');
+
+    if (version) {
+      this.get('restless').get('/api/versioned_texts/' + version.id).then((response) => {
+        this.set('paper.viewingText', response['versioned_text']['text']);
       });
     }
   },
 
-  setupObserver: function() {
-    this.addObserver('selectedVersion', this, 'showVersion');
-  }.on('didInsertElement'),
+  resetter: Ember.on('didInsertElement', function() {
+    this.set('viewingVersion', this.get('paper.versions.firstObject'));
+    this.reset();
+  }),
 
-  setInitialVersion: function() {
-    this.set('selectedVersion', this.get('paper.versions.lastObject'));
-  }.on('init')
+  actions: {
+    changeViewingVersion(version) {
+      this.set('viewingVersion', version);
+      this.getViewingText();
+    },
+
+    changeComparisonVersion(version) {
+      this.set('comparisonVersion', version);
+      this.getComparisonText();
+    }
+  }
 });

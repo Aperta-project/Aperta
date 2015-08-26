@@ -9,7 +9,7 @@ export default {
     store.pushPayload(data);
 
     let user = store.getById('user', data.user.id);
-    instance.container.register('user:current', user, {
+    instance.registry.register('user:current', user, {
       instantiate: false
     });
 

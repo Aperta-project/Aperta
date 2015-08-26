@@ -93,6 +93,16 @@ export default AuthorizedRoute.extend({
       });
     },
 
+    showConfirmWithdrawOverlay() {
+      let controller = this.controllerFor('overlays/paper-withdraw');
+      controller.set('model', this.currentModel);
+
+      this.send('openOverlay', {
+        template: 'overlays/paper-withdraw',
+        controller: 'overlays/paper-withdraw'
+      });
+    },
+
     discussionParticipantCreated(payload) {
       let discussionParticipant = payload.discussion_participant;
       this.store.findById('discussion-topic', discussionParticipant.discussion_topic_id).then((topic) => {

@@ -30,11 +30,7 @@ export default Ember.Mixin.create({
     });
   }),
 
-  metadataTasks: computed('model.tasks.@each.role', function() {
-    return this.get('model.tasks').filter((task) => {
-      return task.get('isMetadataTask');
-    });
-  }),
+  metadataTasks: Ember.computed.filterBy('model.tasks', 'isMetadataTask', true),
 
   noTasks: computed('assignedTasks.@each', 'metadataTasks.@each', function() {
     return [this.get('assignedTasks'), this.get('metadataTasks')].every((taskGroup)=> {

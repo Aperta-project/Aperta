@@ -10,7 +10,7 @@ export default Ember.Component.extend({
   actions: {
 
     viewCard(task){
-      this.sendAction('viewCard', task)
+      this.sendAction('viewCard', task);
     },
 
     submitPaper(){

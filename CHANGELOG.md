@@ -11,6 +11,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Ability to view and diff old versions of manuscripts.
 - Reviewers can be invited that are currently not in the system
 - Lock down submission cards when MS is not editable
+- Ability to withdraw a manuscript.
 
 ### Changed
 - Upgraded to Ember 1.13 [Aperta Transition Guide](https://github.com/Tahi-project/tahi/wiki/Aperta-Ember-1.13-Transition-Guide)
@@ -20,6 +21,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Send paper admin an email when an editor accepts invitation.
 - Add edit/delete/replace functionality to Ad-Hoc attachments.
 - Update 'notify_editor' email styles
+- Control bar has been refactored into a component
 
 ### Deprecated
 -
@@ -31,6 +33,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - No longer perform unfiltered searches in Flow Manager
 - No longer shows publishable checkbox in Figures, since it only applies to Supporting Information Files
 - Display comments as written, instead of escaping non-alphanumeric characters.
+- No longer adding trailing whitespace and persisting empty strings on Journals
+- Creating a journal with a logo no longer raise an error
 
 ### Security
 -

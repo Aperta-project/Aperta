@@ -5,7 +5,7 @@ class Participation::Created::EventStream < EventStreamSubscriber
   end
 
   def payload
-    ParticipationSerializer.new(record).to_json
+    ParticipationSerializer.new(record).as_json
   end
 
 end

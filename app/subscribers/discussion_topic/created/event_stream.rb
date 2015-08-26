@@ -5,7 +5,7 @@ class DiscussionTopic::Created::EventStream < EventStreamSubscriber
   end
 
   def payload
-    DiscussionTopicSerializer.new(record).to_json
+    DiscussionTopicSerializer.new(record).as_json
   end
 
 end

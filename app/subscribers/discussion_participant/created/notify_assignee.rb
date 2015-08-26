@@ -5,7 +5,7 @@ class DiscussionParticipant::Created::NotifyAssignee < EventStreamSubscriber
   end
 
   def payload
-    DiscussionParticipantSerializer.new(record).to_json
+    DiscussionParticipantSerializer.new(record).as_json
   end
 
   # on the client side, we must listen for being added to a discussion topic. when this

@@ -36,10 +36,6 @@ export default Ember.Mixin.create({
     });
   }),
 
-  taskSorting:         ['phase.position', 'position'],
-  sortedMetadataTasks: Ember.computed.sort('metadataTasks',   'taskSorting'),
-  sortedAssignedTasks: Ember.computed.sort('assignedTasks', 'taskSorting'),
-
   noTasks: computed('assignedTasks.@each', 'metadataTasks.@each', function() {
     return [this.get('assignedTasks'), this.get('metadataTasks')].every((taskGroup)=> {
       return Ember.isEmpty(taskGroup);

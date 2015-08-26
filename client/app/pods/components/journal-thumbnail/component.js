@@ -7,7 +7,8 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
   canEdit: null,   // passed-in,
   journal: null,   // passed-in,
   isEditing: false,
-  showForm: Ember.computed.or('isEditing', 'journal.isNew'),
+  isCreating: false,
+  showForm: Ember.computed.or('isEditing', 'isCreating', 'journal.isNew'),
   logoPreview: null,
   uploadLogoFunction: null,
 
@@ -40,7 +41,10 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
 
   stopEditing() {
     this.setProperties({
-      isEditing: false, uploadLogoFunction: null, logoPreview: null
+      isEditing: false,
+      logoPreview: null,
+      isCreating: false,
+      uploadLogoFunction: null
     });
   },
 
@@ -66,6 +70,7 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
 
       if(this.get('journal.isNew')) {
 
+        this.set('isCreating', true);
         this.setJournalProperties();
 
         this.get('journal').save().then(() => {

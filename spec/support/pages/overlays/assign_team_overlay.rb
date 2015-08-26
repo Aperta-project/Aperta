@@ -7,6 +7,7 @@ class AssignTeamOverlay < CardOverlay
     new.tap do |overlay|
       if block_given?
         blk.call overlay
+        wait_for_ajax
         overlay.dismiss
       end
     end

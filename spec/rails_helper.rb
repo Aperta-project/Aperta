@@ -68,12 +68,13 @@ RSpec.configure do |config|
   config.order = "random"
 
   config.include Devise::TestHelpers, type: :controller
+  config.include Warden::Test::Helpers, type: :controller
   config.include FactoryGirl::Syntax::Methods
   config.include TahiHelperMethods
   config.extend TahiHelperClassMethods
-  config.include Warden::Test::Helpers
   config.include EmailSpec::Helpers
   config.include EmailSpec::Matchers
+  config.include TahiHelperMethods::FeatureHelpers, type: :feature
 
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation, except: ['task_types'])

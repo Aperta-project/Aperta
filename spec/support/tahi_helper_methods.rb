@@ -1,4 +1,18 @@
 module TahiHelperMethods
+  module FeatureHelpers
+    def login_as(user)
+      visit "/"
+      fill_in "user[login]", with: user.username
+      fill_in "user[password]", with: "password"
+      page.click_button "Sign in"
+      wait_for_ajax
+    end
+
+    def sign_out
+      DashboardPage.new.sign_out
+    end
+  end
+
   def res_body
     JSON.parse(response.body)
   end
@@ -37,10 +51,6 @@ module TahiHelperMethods
     end
     UserRole.create!(user: user, role: role)
     role
-  end
-
-  def sign_out
-    DashboardPage.new.sign_out
   end
 
   def with_aws_cassette(name)

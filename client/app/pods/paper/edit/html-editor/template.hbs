@@ -8,10 +8,18 @@
               supportedDownloadFormats=supportedDownloadFormats
               versionsVisible=versioningMode}}
 
-{{withdrawal-banner paper= model}}
+{{withdrawal-banner paper=model}}
+
 <div id="paper-container" class="clearfix paper-container-html {{if noTasks "sidebar-empty"}}">
 
-  {{partial "paper/sidebar"}}
+  {{side-bar paper=model
+             assignedTasks=assignedTasks
+             sortedAssignedTasks=sortedAssignedTasks
+             metadataTasks=metadataTasks
+             sortedMetadataTasks=sortedMetadataTasks
+             commentLooks=commentLooks
+             showConfirmSubmitOverlay="showConfirmSubmitOverlay"
+             viewCard="viewCard"}}
 
   <div class="manuscript-container {{if hideEditor 'not-ve'}}">
     <main>

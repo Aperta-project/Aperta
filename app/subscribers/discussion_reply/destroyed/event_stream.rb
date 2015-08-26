@@ -1,7 +1,7 @@
 class DiscussionReply::Destroyed::EventStream < EventStreamSubscriber
 
   def channel
-    record.discussion_topic
+    system_channel
   end
 
   def payload

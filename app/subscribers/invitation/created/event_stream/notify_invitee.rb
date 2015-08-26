@@ -1,7 +1,7 @@
 class Invitation::Created::EventStream::NotifyInvitee < EventStreamSubscriber
 
   def channel
-    record.invitee
+    private_channel_for(record.invitee)
   end
 
   def payload

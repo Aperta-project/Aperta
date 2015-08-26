@@ -1,7 +1,7 @@
 class Participation::Created::EventStream < EventStreamSubscriber
 
   def channel
-    record.task.paper
+    private_channel_for(record.task.paper)
   end
 
   def payload

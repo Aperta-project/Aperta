@@ -1,7 +1,7 @@
 class DiscussionParticipant::Created::NotifyAssignee < EventStreamSubscriber
 
   def channel
-    record.user
+    private_channel_for(record.user)
   end
 
   def payload

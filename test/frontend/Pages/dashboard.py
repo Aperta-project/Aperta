@@ -292,13 +292,13 @@ class DashboardPage(AuthenticatedPage):
     overlay_title = self._get(self._cns_title)
     assert overlay_title.text == 'Create a New Submission'
     short_title_field_label = self._get(self._cns_short_title_label)
-    assert short_title_field_label.text == 'Short Title'
+    assert short_title_field_label.text == 'Give your paper a short title'
     short_title_input_field = self._get(self._cns_short_title_field)
     assert short_title_input_field.get_attribute('placeholder') == 'Crystalized Magnificence in the Modern World'
     journal_chooser = self._get(self._cns_journal_chooser_div).find_element(*self._cns_chooser_chosen)
-    assert journal_chooser.text == 'Choose Journal'
+    assert journal_chooser.text == 'What journal are you submitting to?'
     paper_type_chooser = self._get(self._cns_paper_type_chooser_div).find_element(*self._cns_chooser_chosen)
-    assert paper_type_chooser.text == 'Choose Paper Type'
+    assert paper_type_chooser.text == "Choose the type of paper you're submitting"
     create_btn = self._get(self._cns_action_buttons_div).find_element(*self._cns_create)
     self.validate_green_backed_button_style(create_btn)
     create_btn.click()

@@ -22,6 +22,13 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
     return `/api/admin/journals/${this.get('journal.id')}/upload_logo`;
   }),
 
+  setJournalProperties() {
+    this.get('journal').setProperties({
+      name: this.get('journal.name').trim(),
+      description: this.get('journal.description') || null
+    });
+  },
+
   togglePreview() {
     Ember.run(() => {
       Ember.run.schedule('afterRender', ()=> {
@@ -44,10 +51,7 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
 
   saveJournal() {
 
-    this.get('journal').setProperties({
-      name: this.get('journal.name').trim('string'),
-      description: this.get('journal.description') || null
-    });
+    setJournalProperties();
 
     this.get('journal').save().then(()=> {
       this.stopEditing();
@@ -73,10 +77,7 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
 
       if(this.get('journal.isNew')) {
 
-        this.get('journal').setProperties({
-          name: this.get('journal.name').trim('string'),
-          description: this.get('journal.description') || null
-        });
+        this.setJournalProperties();
 
         this.get('journal').save().then(() => {
           return (updateLogo || this.stopEditing).call(this);

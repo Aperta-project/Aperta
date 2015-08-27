@@ -1,6 +1,4 @@
 class Decision < ActiveRecord::Base
-  extend HasFeedActivities
-
   belongs_to :paper
   has_many :invitations
   has_many :questions
@@ -13,10 +11,6 @@ class Decision < ActiveRecord::Base
   validate :verdict_valid?, if: -> { verdict }
 
   VERDICTS = ['minor_revision', 'major_revision', 'accept', 'reject']
-
-  feed_activities feed_names: ['manuscript'], subject: :paper do
-    activity(:decided) { "#{verdict.titleize} was sent to author" }
-  end
 
   def verdict_valid?
     VERDICTS.include?(verdict) || errors.add(:verdict, "must be a valid choice.")

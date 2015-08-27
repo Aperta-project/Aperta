@@ -15,7 +15,9 @@ class AssignmentsController < ApplicationController
 
     assignment = PaperRole.new(params.require(:assignment).permit(:role, :user_id, :paper_id))
     assignment.save!
-    assignment.created_activity! current_user
+
+    Activity.assignment_created!(assignment, user: current_user)
+
     render json: assignment, serializer: AssignmentSerializer
   end
 

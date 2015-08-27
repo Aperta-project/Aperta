@@ -4,10 +4,7 @@ class TasksController < ApplicationController
 
   before_action :unmunge_empty_arrays, only: [:update]
 
-  after_action :notify_task_updated!, only: [:update]
-
   respond_to :json
-
 
   def show
     respond_with(task, location: task_url(task))
@@ -27,7 +24,7 @@ class TasksController < ApplicationController
     task.assign_attributes(task_params(task.class))
     task.save!
 
-    notify_task_updated!
+    Activity.task_updated! task, user: current_user
 
     task.send_emails if task.respond_to?(:send_emails)
     task.after_update
@@ -86,13 +83,5 @@ class TasksController < ApplicationController
 
   def enforce_policy
     authorize_action!(task: task)
-  end
-
-  def notify_task_updated!
-    if task.newly_complete?
-      task.completed_activity! current_user
-    elsif task.newly_incomplete?
-      task.incompleted_activity! current_user
-    end
   end
 end

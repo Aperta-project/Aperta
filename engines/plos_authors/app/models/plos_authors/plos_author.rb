@@ -1,8 +1,7 @@
 module PlosAuthors
   class PlosAuthor < ActiveRecord::Base
-  include EventStream::Notifiable
-  include MetadataTask
-  extend HasFeedActivities
+    include EventStream::Notifiable
+    include MetadataTask
 
     acts_as :author, dependent: :destroy
     delegate :completed?, to: :plos_authors_task, prefix: :task, allow_nil: true
@@ -19,10 +18,6 @@ module PlosAuthors
 
     def self.for_paper(paper)
       where(paper_id: paper)
-    end
-
-    feed_activities feed_names: ['manuscript'], subject: :paper do
-     activity :created, "Added Author"
     end
 
     def event_stream_serializer(user: nil)

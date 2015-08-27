@@ -128,6 +128,13 @@ describe PapersController do
         post :create, paper: { short_title: '', journal_id: journal.id }, format: :json
         expect(response.status).to eq(422)
       end
+
+      it "creates an Activity" do
+        expect(Activity).to receive(:create).with(hash_including(
+                                                    message: "Manuscript was created",
+                                                    feed_name: 'manuscript'))
+        do_request
+      end
     end
   end
 

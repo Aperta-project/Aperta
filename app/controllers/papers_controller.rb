@@ -31,7 +31,7 @@ class PapersController < ApplicationController
 
   def create
     @paper = PaperFactory.create(paper_params, current_user)
-    @paper.created_activity!(current_user) if @paper.valid?
+    Activity.paper_created!(paper, user: current_user) if @paper.valid?
     respond_with(@paper)
   end
 
@@ -45,7 +45,7 @@ class PapersController < ApplicationController
       paper.update(update_paper_params)
     end
 
-    paper.edited_activity!(current_user) if params[:paper][:locked_by_id].present?
+    Activity.paper_edited!(paper, user: current_user) if params[:paper][:locked_by_id].present?
 
     respond_with paper
   end
@@ -103,7 +103,7 @@ class PapersController < ApplicationController
 
   def submit
     paper.submit! current_user do
-      paper.submitted_activity! current_user
+      Activity.paper_submitted! paper, user: current_user
       broadcast_paper_submitted_event
     end
     respond_with paper

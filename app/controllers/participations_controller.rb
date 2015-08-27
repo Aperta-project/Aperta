@@ -12,7 +12,7 @@ class ParticipationsController < ApplicationController
       if participation.user_id != current_user.id
         participation.task.notify_new_participant(current_user, participation)
       end
-      participation.created_activity! current_user
+      Activity.participation_created! participation, user: current_user
     end
     respond_with participation
   end
@@ -23,7 +23,7 @@ class ParticipationsController < ApplicationController
 
   def destroy
     participation.destroy
-    participation.destroyed_activity! current_user
+    Activity.participation_destroyed! participation, user: current_user
     respond_with participation
   end
 

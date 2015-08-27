@@ -100,3 +100,12 @@ TahiNotifier.subscribe("discussion_reply:*") do |payload|
   # serialize the discussion_reply down the discussion_topic channel
   EventStream::Broadcaster.new(record).post(action: action, channel_scope: record.discussion_topic, excluded_socket_id: excluded_socket_id)
 end
+
+TahiNotifier.subscribe("activity:*") do |payload|
+  action = payload[:action]
+  subject = payload[:subject]
+  user = payload[:user]
+  source = payload[:source]
+
+  ActivityFactoryUgh.createActivity(action, subject, user, source)
+end

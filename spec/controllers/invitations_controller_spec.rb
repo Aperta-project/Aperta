@@ -43,15 +43,20 @@ describe InvitationsController do
       "Hard to find a black cat in a dark room, especially if there is no cat."
     }
 
-    it "creates a invited invitation" do
+    def do_request(invitation_params={})
       post(:create, {
         format: "json",
         invitation: {
           email: invitee.email,
           task_id: task.id,
           body: invitation_body
-        }
+        }.merge(invitation_params)
       })
+    end
+
+    it "creates a invited invitation" do
+      do_request
+
       expect(response.status).to eq(201)
 
       data = res_body.with_indifferent_access
@@ -65,16 +70,10 @@ describe InvitationsController do
       expect(invitation.body).to eq(invitation_body)
     end
 
-    it "create an invitation for new user" do
+    it "creates an invitation for new user" do
       new_user_email = "custom-email@example.com"
+      do_request(email: new_user_email)
 
-      post(:create, {
-        format: "json",
-        invitation: {
-          email: new_user_email,
-          task_id: task.id
-        }
-      })
       expect(response.status).to eq 201
 
       data = res_body.with_indifferent_access
@@ -85,6 +84,15 @@ describe InvitationsController do
       expect(invitation.code).to be_present
       expect(invitation.actor).to be_nil
       expect(invitation.state).to eq("invited")
+    end
+
+    it "creates an Activity" do
+      expected_activity = {
+        message: "#{invitee.full_name} was invited as #{task.invitee_role.capitalize}",
+        feed_name: "workflow"
+      }
+      expect(Activity).to receive(:create).with hash_including(expected_activity)
+      do_request
     end
   end
 
@@ -133,10 +141,7 @@ describe InvitationsController do
 
     describe "PUT /invitations/:id/accept" do
      it "gives access to the user as the editor" do
-        put(:accept, {
-          format: "json",
-          id: invitation.id
-        })
+        put(:accept, format: "json", id: invitation.id)
         expect(response.status).to eq(204)
         invitation.reload
         expect(invitation.state).to eq("accepted")
@@ -144,18 +149,33 @@ describe InvitationsController do
         expect(task.paper.assigned_users).to include(invitee)
         expect(task.paper.editor).to eq(invitee)
       end
+
+      it "creates an Activity" do
+        expected_activity = {
+          message: "#{invitee.full_name} accepted invitation as #{task.invitee_role.capitalize}",
+          feed_name: "workflow"
+        }
+        expect(Activity).to receive(:create).with hash_including(expected_activity)
+        put(:accept, format: "json", id: invitation.id)
+      end
     end
 
     describe "PUT /invitations/:id/reject" do
       it "rejects the invitation" do
-        put(:reject, {
-          format: "json",
-          id: invitation.id
-        })
+        put(:reject, format: "json", id: invitation.id)
         expect(response.status).to eq(204)
         invitation.reload
         expect(invitation.state).to eq("rejected")
         expect(invitation.actor).to eq(invitee)
+      end
+
+      it "creates an Activity" do
+        expected_activity = {
+          message: "#{invitee.full_name} declined invitation as #{task.invitee_role.capitalize}",
+          feed_name: "workflow"
+        }
+        expect(Activity).to receive(:create).with hash_including(expected_activity)
+        put(:reject, format: "json", id: invitation.id)
       end
     end
   end

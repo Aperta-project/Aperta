@@ -2,7 +2,6 @@ class Task < ActiveRecord::Base
   include EventStream::Notifiable
   include TaskTypeRegistration
   include Commentable
-  extend HasFeedActivities
 
   register_task default_title: "Ad-hoc", default_role: "user"
 
@@ -101,19 +100,6 @@ class Task < ActiveRecord::Base
     end
   end
 
-  feed_activities feed_names: :feed_names, subject: :paper do
-    activity(:completed) { "#{title} card was marked as complete." }
-    activity(:incompleted) { "#{title} card was marked as incomplete." }
-  end
-
-  def feed_names
-    if submission_task?
-      ['manuscript']
-    else
-      ['workflow']
-    end
-  end
-
   def journal_task_type
     journal.journal_task_types.find_by(kind: self.class.name)
   end
@@ -171,12 +157,15 @@ class Task < ActiveRecord::Base
     true
   end
 
+  def previously_completed?
+    previous_changes['completed'][0]
+  end
   def newly_complete?
-    completed_changed? and completed
+    not previously_completed? and completed
   end
 
   def newly_incomplete?
-    completed_changed? and not completed
+    previously_completed? and not completed
   end
 
   private

@@ -23,7 +23,7 @@ export default Ember.Component.extend(FileUploadMixin, ValidationErrorsMixin, {
   setJournalProperties() {
     this.get('journal').setProperties({
       name: this.get('journal.name').trim(),
-      description: this.get('journal.description') || null
+      description: this.get('journal.description').trim() || null
     });
   },
 

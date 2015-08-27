@@ -27,7 +27,7 @@ EVENTS = {
   'attachment:updated' => [Attachment::Updated::EventStream],
   'attachment:destroyed' => [Attachment::Destroyed::EventStream],
 
-  'invitation:created' => [Invitation::Created::EventStream::NotifyPaperMembers, Invitation::Created::EventStream::NotifyInvitee],
+  'invitation:created' => [Invitation::Created::EventStream::NotifyPaperMembers],
   'invitation:updated' => [Invitation::Updated::EventStream::NotifyPaperMembers, Invitation::Updated::EventStream::NotifyInvitee],
   'invitation:destroyed' => [Invitation::Destroyed::EventStream],
 

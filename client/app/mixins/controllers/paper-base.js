@@ -22,7 +22,8 @@ export default Ember.Mixin.create({
   // Tasks:
 
   currentUserTasks: computed.filter('model.tasks', function(task) {
-    return task.get('participations').mapBy('user').contains(this.get('currentUser'));
+    let user = this.get('currentUser');
+    return task.get('participations').mapBy('user').contains(user);
   }),
 
   metadataTasks: computed.filterBy('model.tasks', 'isMetadataTask', true),

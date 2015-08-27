@@ -5,16 +5,10 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
-- Autosuggest ember component
-- Select box ember component
-- Reviewer Reports can now be submitted, and can't be edited after that
-- Ability to view and diff old versions of manuscripts.
-- Reviewers can be invited that are currently not in the system
+-
 
 ### Changed
-- Upgraded to Ember 1.13 [Aperta Transition Guide](https://github.com/Tahi-project/tahi/wiki/Aperta-Ember-1.13-Transition-Guide)
-- Make card previews (green boxes with task name) into hyperlinks to allow for right click / ctrl click to open cards in a new tab
-- Changed Typography to use fonts that have better rendering and more glyphs
+-
 
 ### Deprecated
 -
@@ -23,11 +17,38 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Fixed
-- No longer perform unfiltered searches in Flow Manager
-- No longer shows publishable checkbox in Figures, since it only applies to Supporting Information Files
+-
 
 ### Security
 -
+
+## [1.3.0] - 2015-08-26
+### Added
+- Autosuggest ember component
+- Select box ember component
+- Reviewer Reports can now be submitted, and can't be edited after that
+- Ability to view and diff old versions of manuscripts.
+- Reviewers can be invited that are currently not in the system
+- Lock down submission cards when MS is not editable
+- Ability to withdraw a manuscript.
+
+### Changed
+- Upgraded to Ember 1.13 [Aperta Transition Guide](https://github.com/Tahi-project/tahi/wiki/Aperta-Ember-1.13-Transition-Guide)
+- Make card previews (green boxes with task name) into hyperlinks to allow for right click / ctrl click to open cards in a new tab
+- Changed Typography to use fonts that have better rendering and more glyphs
+- Allow non-image file types to be attached to feedback form and downloaded upon receipt of email.
+- Send paper admin an email when an editor accepts invitation.
+- Add edit/delete/replace functionality to Ad-Hoc attachments.
+- Update 'notify_editor' email styles
+- Control bar has been refactored into a component
+
+### Fixed
+- No longer perform unfiltered searches in Flow Manager
+- No longer shows publishable checkbox in Figures, since it only applies to Supporting Information Files
+- Display comments as written, instead of escaping non-alphanumeric characters.
+- No longer adding trailing whitespace and persisting empty strings on Journals
+- Creating a journal with a logo no longer raise an error
+- Abstract in Reviewer invitation emails no longer show HTML tags
 
 ## [1.2.0] - 2015-08-04
 ### Added
@@ -128,7 +149,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 _Changes too big to document, initial release_
 
-[unreleased]: https://github.com/tahi-project/tahi/compare/v1.2.0...HEAD
+[unreleased]: https://github.com/tahi-project/tahi/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/tahi-project/tahi/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/tahi-project/tahi/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/tahi-project/tahi/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/tahi-project/tahi/compare/v1.0.1...v1.1.0

@@ -11,4 +11,3 @@ class EventLogger
   end
 
 end
-

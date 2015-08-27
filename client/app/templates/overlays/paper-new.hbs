@@ -29,7 +29,7 @@
     {{#select-box items=journals
                   selectedItem=model.journal
                   class="paper-new-journal-select"
-                  placeholder="Please select a journal"
+                  placeholder="Select a journal"
                   class="paper-new-journal-select"
                   allowDeselect=true
                   makeSelection=(action "selectJournal")
@@ -51,7 +51,7 @@
     {{#select-box items=model.journal.paperTypes
                   selectedItem=model.paperType
                   class="paper-new-paper-type-select"
-                  placeholder="Please select a paper type"
+                  placeholder="Select a paper type"
                   class="paper-new-paper-type-select"
                   allowDeselect=true
                   disabled=journalEmpty

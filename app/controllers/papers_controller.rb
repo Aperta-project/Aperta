@@ -106,7 +106,7 @@ class PapersController < ApplicationController
 
   def withdraw
     paper.withdraw! withdrawal_params[:reason]
-    respond_with paper
+    render json: paper, status: :ok
   end
 
   private

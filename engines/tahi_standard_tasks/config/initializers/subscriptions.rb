@@ -17,6 +17,8 @@ TahiNotifier.subscribe("paper.submitted") do |payload|
   paper.admins.each do |user|
     UserMailer.delay.notify_admin_of_paper_submission(paper.id, user.id)
   end
+
+  SalesforceServices::API.delay.find_or_create_manuscript(paper_id: paper.id)
 end
 
 TahiNotifier.subscribe("paper.data_extracted") do |payload|

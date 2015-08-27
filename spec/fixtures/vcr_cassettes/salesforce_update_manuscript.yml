@@ -1,0 +1,82 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://salesforce_host/services/data/v22.0/sobjects/Manuscript__c/a06K000000Bl91VIAR
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - OAuth 00DK000000XN2av!ARcAQNtxYmqLYB9ZtkhRpNfdNl1wYtQYgU_FaEMmAtGP91YnGAbtNMwqVuZKrI1cAxO5nhUrzCd.3TY3AZT0ixvgcX2XrZV3
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sat, 22 Aug 2015 02:48:22 GMT
+      Set-Cookie:
+      - BrowserId=DBNlWhSXRq-fox14E4DwgA;Path=/;Domain=.salesforce.com;Expires=Wed,
+        21-Oct-2015 02:48:22 GMT
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Sforce-Limit-Info:
+      - api-usage=5335/5000000
+      Last-Modified:
+      - Sat, 22 Aug 2015 02:48:22 GMT
+      Content-Type:
+      - application/json;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: ASCII-8BIT
+      string: '{"attributes":{"type":"Manuscript__c","url":"/services/data/v22.0/sobjects/Manuscript__c/a06K000000Bl91VIAR"},"Id":"a06K000000Bl91VIAR","OwnerId":"005U0000002AXTZIA4","IsDeleted":false,"Name":"a06K000000Bl91V","RecordTypeId":"012U0000000E4ASIA0","CreatedDate":"2015-08-22T02:48:22.000+0000","CreatedById":"005U0000002AXTZIA4","LastModifiedDate":"2015-08-22T02:48:22.000+0000","LastModifiedById":"005U0000002AXTZIA4","SystemModstamp":"2015-08-22T02:48:22.000+0000","LastActivityDate":null,"Submission_Number__c":null,"Manuscript_Number__c":null,"DOI__c":null,"Initial_Date_Submitted__c":null,"Current_Editorial_Status__c":"No
+        Change","Editorial_Status_Date__c":"2015-08-22T02:48:21.000+0000","Short_Title__c":null,"Title__c":null,"Note__c":null,"Received_Date__c":null,"Revision__c":0.0,"Last_Update_Date__c":null,"Document_ID__c":null,"Disposition_Date__c":null,"Edit_SubStatus__c":null,"Edit_SubStatus_Date__c":null,"Tech_Comments__c":null,"Production_Notes__c":null,"Online_Publication_Date__c":null,"PreRescinded_Status__c":null,"First_to_Production_Date__c":null,"First_Receipt_Date__c":null,"Transfer_From_Status__c":"Not
+        Transferred","Transfer_To_Status__c":"Not Transferred","Transferred_From_Journal__c":null,"Transferred_To_Journal__c":null,"Production_Status__c":"Production
+        Accept","Disposition__c":null,"Abstract__c":null,"Days_to_Revise__c":null,"Editorial_Process_Close__c":false,"Final_Decision_Date__c":null,"Corresponding_Editor__c":null,"Related_Document_ID__c":null,"Staff_Editor__c":null,"Display_Technical_Notes__c":false,"Document_ID_Text__c":null,"Manuscript_Lookup__c":null,"OriginalSubmissionDate__c":null,"Category__c":null,"External_SandBox_ID__c":null,"CreatedByDeltaMigration__c":false,"Co_Authors__c":null,"Related_People__c":0.0,"Handling_Editor__c":null,"Publications_Assistant__c":null,"Corresponding_Author__c":null,"Currents_Abstract__c":null,"Currents_Section__c":null,"Currents_Manuscript_Title__c":null}'
+    http_version:
+  recorded_at: Sat, 22 Aug 2015 02:48:22 GMT
+- request:
+    method: patch
+    uri: https://salesforce_host/services/data/v22.0/sobjects/Manuscript__c/a06K000000Bl91VIAR
+    body:
+      encoding: UTF-8
+      string: '{"RecordTypeId":"012U0000000E4ASIA0","OwnerId":"005U0000002AXTZIA4","Editorial_Process_Close__c":false,"Display_Technical_Notes__c":false,"CreatedByDeltaMigration__c":false,"Editorial_Status_Date__c":"2015-08-21T19:48:22.984-0700","Revision__c":"0.0"}'
+    headers:
+      Content-Type:
+      - application/json
+      Authorization:
+      - OAuth 00DK000000XN2av!ARcAQNtxYmqLYB9ZtkhRpNfdNl1wYtQYgU_FaEMmAtGP91YnGAbtNMwqVuZKrI1cAxO5nhUrzCd.3TY3AZT0ixvgcX2XrZV3
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 204
+      message: No Content
+    headers:
+      Date:
+      - Sat, 22 Aug 2015 02:48:23 GMT
+      Set-Cookie:
+      - BrowserId=noqVcYSrTkO0We5tBc-1-A;Path=/;Domain=.salesforce.com;Expires=Wed,
+        21-Oct-2015 02:48:23 GMT
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Sforce-Limit-Info:
+      - api-usage=5336/5000000
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version:
+  recorded_at: Sat, 22 Aug 2015 02:48:23 GMT
+recorded_with: VCR 2.9.3

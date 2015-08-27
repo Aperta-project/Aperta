@@ -217,6 +217,24 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('padding-left') == '12px'
     assert button.value_of_css_property('padding-right') == '12px'
 
+  @staticmethod
+  def validate_secondary_big_green_button_style(button):
+    """
+    Ensure consistency in rendering page and overlay light green-backed, green text buttons across the application
+    :param button: button to validate
+    """
+    assert application_typeface in button.value_of_css_property('font-family')
+    assert button.value_of_css_property('font-size') == '22px'
+    assert button.value_of_css_property('font-weight') == '400'
+    assert button.value_of_css_property('line-height') == '31.4333px'
+    assert button.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    assert button.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
+    assert button.value_of_css_property('vertical-align') == 'middle'
+    assert button.value_of_css_property('text-transform') == 'uppercase'
+    assert button.value_of_css_property('padding-top') == '13px'
+    assert button.value_of_css_property('padding-bottom') == '13px'
+    assert button.value_of_css_property('padding-left') == '0px'
+    assert button.value_of_css_property('padding-right') == '0px'
 
   @staticmethod
   def validate_small_green_backed_button_style(button):

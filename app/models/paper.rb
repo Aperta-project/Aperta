@@ -139,20 +139,23 @@ class Paper < ActiveRecord::Base
   end
 
   def download_body
-    supporting_information = ""
+    "#{body}#{download_supporting_information}"
+  end
 
+  def download_supporting_information
     unless supporting_information_files.any?
-      supporting_information = "This paper has no supporting information attachments."
+      return ""
     end
 
+    supporting_information = "<h2>Supporting Information</h2>"
     supporting_information_files.each do |file|
       if file.preview_src
-        supporting_information = "<p>#{supporting_information}<a href='#{file.src}'><img src='#{file.preview_src}'></a></p>"
+        supporting_information.concat "<a href='#{file.src}'><img src='#{file.preview_src}'></a></p>"
       end
-      supporting_information = "<p>#{supporting_information}<a href='#{file.src}'>#{file.filename}</a></p>"
+      supporting_information.concat "<a href='#{file.src}'>#{file.filename}</a></p>"
     end
 
-    download_body = "#{body} <h2>Supporting Information</h2>#{supporting_information}"
+    supporting_information
   end
 
   def version_string

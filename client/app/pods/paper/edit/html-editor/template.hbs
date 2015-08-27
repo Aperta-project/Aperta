@@ -10,14 +10,13 @@
 
 {{withdrawal-banner paper=model}}
 
-<div id="paper-container" class="clearfix paper-container-html {{if noTasks "sidebar-empty"}}">
+<div id="paper-container" class="clearfix paper-container-html">
 
   {{paper-sidebar paper=model
-             assignedTasks=assignedTasks
-             metadataTasks=metadataTasks
-             commentLooks=commentLooks
-             showConfirmSubmitOverlay="showConfirmSubmitOverlay"
-             viewCard="viewCard"}}
+                  user=currentUser
+                  commentLooks=commentLooks
+                  showConfirmSubmitOverlay="showConfirmSubmitOverlay"
+                  viewCard="viewCard"}}
 
   <div class="manuscript-container {{if hideEditor 'not-ve'}}">
     <main>

@@ -19,22 +19,6 @@ export default Ember.Mixin.create({
     return 'paper-container-' + this.get('model.editorMode');
   }),
 
-  // Tasks:
-
-  currentUserTasks: computed.filter('model.tasks', function(task) {
-    let user = this.get('currentUser');
-    return task.get('participations').mapBy('user').contains(user);
-  }),
-
-  metadataTasks: computed.filterBy('model.tasks', 'isMetadataTask', true),
-  assignedTasks: computed.setDiff('currentUserTasks', 'metadataTasks'),
-
-  noTasks: computed('assignedTasks.@each', 'metadataTasks.@each', function() {
-    return [this.get('assignedTasks'), this.get('metadataTasks')].every((taskGroup)=> {
-      return Ember.isEmpty(taskGroup);
-    });
-  }),
-
   actions: {
     exportDocument(downloadType) {
       return DocumentDownload.initiate(this.get('model.id'), downloadType.format);

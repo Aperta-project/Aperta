@@ -19,7 +19,7 @@ export default TaskController.extend({
   }),
 
   applyTemplateReplacements: function(str) {
-    var reviewerName = this.get('selectedReviewer.full_name');
+    let reviewerName = this.get('selectedReviewer.full_name');
     if (reviewerName) {
       str = str.replace(/\[REVIEWER NAME\]/g, reviewerName);
     }
@@ -27,7 +27,7 @@ export default TaskController.extend({
   },
 
   setLetterTemplate: function() {
-    var body, salutation, template;
+    let body, salutation, template;
     template = this.get('model.invitationTemplate');
     if (template.salutation && this.get('selectedReviewer.full_name')) {
       salutation = this.applyTemplateReplacements(template.salutation) + "\n\n";

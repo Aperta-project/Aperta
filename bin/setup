@@ -1,16 +1,88 @@
 #!/usr/bin/env ruby
-
-require 'bundler/inline'
-gemfile(true) { gem 'rails_setup', path: 'neo/rails_setup' }
-include RailsSetup
-
-ensure_osx_or_debian_or_ubuntu
+require 'pathname'
 
 SLANGER_REPO = "git@github.com:Tahi-project/tahi-slanger.git"
 
-def setup_slanger
-  header 'Cloning tahi-slanger event server repo'
+def cmd_available? cmd
+  `which #{cmd}` != ''
+end
 
+$os = `uname`.chomp.downcase.intern
+unless $os == :darwin || ($os == :linux && cmd_available?('apt-get'))
+  fail 'This setup script is only designed for Mac OS or Debian/Ubuntu.'
+end
+
+# path to your application root.
+APP_ROOT = Pathname.new File.expand_path('../../',  __FILE__)
+
+def run_pg(cmd)
+  out = case $os
+  when :darwin
+    `#{cmd}`
+  when :linux
+    cmd = cmd.gsub("\"", "\\\"") # escape quotes
+    `sudo su postgres -c "#{cmd}"`
+  end
+
+  if $?.to_i != 0
+    "postgres command failed: #{out}"
+    exit 1
+  else
+    out
+  end
+end
+
+def header message
+  full = "== #{message} =="
+  puts
+  puts "=" * full.length
+  puts full
+  puts "=" * full.length
+  puts
+end
+
+def brew_install package, options=nil
+  if system("brew ls #{package} &>/dev/null")
+    puts "#{package} is already installed"
+  else
+    system "brew install #{package} #{options}"
+  end
+end
+
+def ensure_postgres_setup
+  if !cmd_available?('psql')
+    puts "psql isn't available."
+    puts "Would you like to install it right now? y/n"
+    if gets.match /y/i
+      case $os
+      when :darwin
+        system "brew install postgresql"
+      when :linux
+        system "apt-get install postgresql"
+      end
+    else
+      puts "Please ensure postgresql is installed and configured."
+      exit 1
+    end
+  end
+
+  puts "Checking to see if postgres is running and accessible..."
+
+  if run_pg("psql -l")
+    puts "Success!"
+  end
+end
+
+def copy_template source, dest
+  if File.exist?(dest)
+    puts "Not copying from #{source} (#{dest} already exists)."
+  else
+    puts "Copying #{source} to #{dest}."
+    system "cp #{source} #{dest}"
+  end
+end
+
+def setup_slanger
   if Dir.exist? '../tahi-slanger'
     puts "Slanger repo already cloned."
   elsif !system "cd .. && git clone #{SLANGER_REPO}"
@@ -20,22 +92,30 @@ def setup_slanger
 
   header 'Installing tahi-slanger dependencies.'
 
-  if !Bundler.with_clean_env { system "cd ../tahi-slanger && bundle install" }
-    puts 'Failed.'
+  if !system "cd ../tahi-slanger && bundle install"
     exit 1
-  else
-    puts 'Done.'
   end
 end
 
-Dir.chdir app_root do
+def create_config_file(path)
+  return if File.exists?(path)
+
+  header "Generating default #{path}"
+  File.open(path, 'w+') do |f|
+    yield f
+  end
+  puts "Wrote to #{path}"
+end
+
+
+Dir.chdir APP_ROOT do
   system "rm -f setup.log"
 
   header 'Checking database setup'
   ensure_postgres_setup
 
   header 'Installing other package dependencies'
-  case os
+  case $os
   when :darwin
     brew_install 'imagemagick', '--with-libtiff'
     %w(node watchman qt).each do |package|
@@ -46,34 +126,42 @@ Dir.chdir app_root do
   end
 
   header 'Installing gems'
-  Bundler.with_clean_env do
-    system 'gem install bundler --conservative'
-    system 'bundle install'
-  end
+  system 'gem install bundler --conservative'
+  system 'bundle install'
 
   header 'Installing javascript dependencies (output logged to setup.log)'
   system 'npm install >> setup.log'
   system 'bundle exec rake ember-cli:install_dependencies'
 
   header 'Ensuring PostgreSQL tahi role exists'
-  ensure_postgres_role 'tahi'
+  # NOTE rolname is not a typo
+  # http://stackoverflow.com/questions/8546759/how-to-check-if-a-postgres-user-exists
+  roles = run_pg %q[psql postgres -tAc "SELECT 1 FROM pg_roles WHERE rolname='tahi'"]
+  if !roles.empty?
+    puts 'PostgreSQL user already exists'
+  else
+    puts 'Creating the tahi PostgreSQL user'
+    run_pg('createuser -s -r tahi')
+  end
 
   header 'Copying sample files'
   copy_template 'config/database.yml.sample', 'config/database.yml'
   copy_template 'Procfile.template', 'Procfile.local'
 
+  # required for db setup
+  header 'Cloning tahi-slanger event server repo'
   setup_slanger
 
-  header 'Creating .env.development with secret token base.'
-  create_config_file '.env.development' do |f|
+  create_config_file('.env.development') do |f|
     f.puts "RAILS_SECRET_TOKEN=#{`bin/rake secret`}"
   end
 
-  create_config_file '.foreman' do |f|
+  create_config_file('.foreman') do |f|
     f.puts "port: 5000"
     f.puts "procfile: Procfile.local"
     f.puts "env: .env,.env.development"
   end
+
 
   header 'Preparing development database (output logged to setup.log)'
   system 'bin/rake db:setup >> setup.log'

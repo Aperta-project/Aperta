@@ -164,6 +164,7 @@ class ProfilePage(AuthenticatedPage):
     title_input = self._get(self._tile_input)
     self.validate_input_form_style(title_input)
     country = self._get(self._country)
+    # TODO: Following method is here until bug #102008802 is fixed
     self.validate_input_form_style(country, color='rgba(51, 51, 51, 1)')
     datepicker_1 = self._get(self._datepicker_1)
     self.validate_input_form_style(datepicker_1)
@@ -172,12 +173,9 @@ class ProfilePage(AuthenticatedPage):
     email = self._get(self._email)
     self.validate_input_form_style(email)
     add_done_btn = self._get(self._add_done_btn)
-    self.validate_secondary_button_style(add_done_btn, color='rgba(57, 163, 41, 1)')    
+    self.validate_secondary_green_button_style(add_done_btn)    
     add_cancel_btn = self._get(self._add_cancel_btn)
-    assert add_cancel_btn.value_of_css_property('font-size') == '14px'
-    assert add_cancel_btn.value_of_css_property('font-weight') == '400'
-    assert add_cancel_btn.value_of_css_property('line-height') == '20px'
-    assert add_cancel_btn.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    self.validate_default_link_style(add_cancel_btn)
     # Insert affiliation data
     institution_input.send_keys(affiliation['institution'])
     department_input.send_keys(affiliation['department'])

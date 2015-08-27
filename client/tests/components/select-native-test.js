@@ -3,7 +3,7 @@ import {
   test
 } from 'ember-qunit';
 
-import hbs   from 'htmlbars-inline-precompile';
+import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('select-native', 'SelectNativeComponent', {
   integration: true,
@@ -84,7 +84,7 @@ test('it fires the default action on-change', function(assert) {
 });
 
 test('it displays a prompt', function(assert) {
-  assert.expect(1);
+  assert.expect(2);
 
   this.render(hbs`
     {{select-native content=people
@@ -94,6 +94,7 @@ test('it displays a prompt', function(assert) {
   `);
 
   assert.equal(this.$('option:first').val(), 'Hello', 'prompt is rendered');
+  assert.equal(this.$('option:first').is(':disabled'), true, 'prompt is disabled');
 });
 
 test('it clears selection when prompt is selected', function(assert) {

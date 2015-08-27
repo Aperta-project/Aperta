@@ -72,6 +72,15 @@ export default Ember.Component.extend({
   **/
   allowDeselect: false,
 
+  /**
+   *  @property _promptDisabled
+   *  @requires allowDeselect
+   *  @private
+  **/
+  _promptDisabled: Ember.computed('allowDeselect', function() {
+    return this.get('allowDeselect') ? null : true;
+  }),
+
   optionValuePath: null,
   optionLabelPath: null,
   action: Ember.K, // action to fire on change

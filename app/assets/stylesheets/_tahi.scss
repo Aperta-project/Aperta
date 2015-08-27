@@ -246,3 +246,7 @@ html[screen="admin"] .navigation-toggle {
   font-size: 16px;
   color: $tahi-green;
 }
+
+.preserve-line-breaks {
+  white-space: pre-line;
+}

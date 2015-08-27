@@ -24,8 +24,7 @@
   {{#if assignedTasks}}
     <div id="paper-assigned-tasks">
       {{#each sortedAssignedTasks as |task|}}
-        {{card-preview paper=paper
-                       task=task
+        {{card-preview task=task
                        commentLooks=commentLooks
                        action="viewCard"}}
       {{/each}}
@@ -36,8 +35,7 @@
   {{#if metadataTasks}}
     <div id="paper-metadata-tasks">
       {{#each sortedMetadataTasks as |task|}}
-        {{card-preview paper=paper
-                       task=task
+        {{card-preview task=task
                        commentLooks=commentLooks
                        action="viewCard"}}
       {{/each}}

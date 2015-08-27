@@ -3,7 +3,7 @@ import OverlayView from "tahi/views/overlay";
 export default OverlayView.extend({
   templateName: "overlays/billing",
   layoutName:   "layouts/overlay",
-  cardName: "billing",
+  cardName: "financial info",
 
   didInsertElement: function() {
     let choice = $(".payment-method .select2-container").select2("val");

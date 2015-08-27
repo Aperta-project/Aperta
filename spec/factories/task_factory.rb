@@ -33,7 +33,7 @@ FactoryGirl.define do
 
   factory :figure_task, class: 'TahiStandardTasks::FigureTask' do
     phase
-    title "Upload Figures"
+    title "Figures"
     role "author"
   end
 

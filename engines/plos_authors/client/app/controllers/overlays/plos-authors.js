@@ -4,7 +4,7 @@ import TaskController from 'tahi/pods/paper/task/controller';
 let computed = Ember.computed;
 
 export default TaskController.extend({
-  title: 'Add Authors',
+  title: 'Authors',
   newAuthorFormVisible: false,
 
   authors: computed('model.plosAuthors.@each.paper', function() {

@@ -3,7 +3,7 @@ require 'rails_helper'
 feature "Add collaborating authors", js: true do
   let(:creator) { FactoryGirl.create :user }
   let!(:paper) { FactoryGirl.create :paper, creator: creator }
-  let!(:task) { FactoryGirl.create(:plos_authors_task, title: "Add Authors", paper: paper) }
+  let!(:task) { FactoryGirl.create(:plos_authors_task, title: "Authors", paper: paper) }
 
 
   before do

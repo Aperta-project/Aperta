@@ -52,12 +52,12 @@ export default TaskController.extend({
   },
 
   actions: {
-    cancelAction: function() {
+    cancelAction() {
       this.set('selectedReviewer', null);
       return this.set('composingEmail', false);
     },
 
-    composeInvite: function() {
+    composeInvite() {
       if (!this.get('selectedReviewer')) {
         return;
       }
@@ -65,15 +65,15 @@ export default TaskController.extend({
       return this.set('composingEmail', true);
     },
 
-    destroyInvitation: function(invitation) {
+    destroyInvitation(invitation) {
       return invitation.destroyRecord();
     },
 
-    didSelectReviewer: function(selectedReviewer) {
+    didSelectReviewer(selectedReviewer) {
       return this.set('selectedReviewer', selectedReviewer);
     },
 
-    inviteReviewer: function() {
+    inviteReviewer() {
       if (!this.get('selectedReviewer')) {
         return;
       }
@@ -88,14 +88,14 @@ export default TaskController.extend({
       });
     },
 
-    removeReviewer: function(selectedReviewer) {
+    removeReviewer(selectedReviewer) {
       return this.store.find('user', selectedReviewer.id).then((user) => {
         this.get('reviewers').removeObject(user);
         return this.send('saveModel');
       });
     },
 
-    inputChanged: function(val) {
+    inputChanged(val) {
       return this.set('selectedReviewer', {
         email: val
       });

@@ -55,12 +55,12 @@ export default TaskController.extend(Select2Assignees, {
   },
 
   actions: {
-    cancelAction: function() {
+    cancelAction() {
       this.set('selectedUser', null);
       return this.set('composingEmail', false);
     },
 
-    composeInvite: function() {
+    composeInvite() {
       if (!this.get('selectedUser')) {
         return;
       }
@@ -68,13 +68,13 @@ export default TaskController.extend(Select2Assignees, {
       return this.set('composingEmail', true);
     },
 
-    didSelectEditor: function(select2User) {
+    didSelectEditor(select2User) {
       return this.store.find('user', select2User.id).then((user) => {
         return this.set('selectedUser', user);
       });
     },
 
-    removeEditor: function() {
+    removeEditor() {
       let promises = [],
           deleteUrl = "/api/papers/" + (this.get('model.paper.id')) + "/editor";
       promises.push(RESTless.delete(deleteUrl));
@@ -86,12 +86,12 @@ export default TaskController.extend(Select2Assignees, {
         return editor.setCanonicalRecord(null);
       });
     },
-    setLetterBody: function() {
+    setLetterBody() {
       this.set('model.body', [this.get('updatedTemplate')]);
       this.model.save();
       return this.send('inviteEditor');
     },
-    inviteEditor: function() {
+    inviteEditor() {
       var invitation;
       invitation = this.store.createRecord('invitation', {
         task: this.get('model'),
@@ -102,7 +102,7 @@ export default TaskController.extend(Select2Assignees, {
       });
       return this.set('composingEmail', false);
     },
-    destroyInvitation: function() {
+    destroyInvitation() {
       return this.get('model.invitation').destroyRecord();
     }
   }

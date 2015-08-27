@@ -7,7 +7,7 @@ class EventStreamSubscriber
     subscriber.run
   end
 
-  def initialize(event_name, event_data)
+  def initialize(_event_name, event_data)
     @action = event_data[:action]
     @record = event_data[:record]
     @excluded_socket_id = event_data[:requester_socket_id]
@@ -24,7 +24,6 @@ class EventStreamSubscriber
   def channel
     raise NotImplementedError.new("You must define the channel name for pusher")
   end
-
 
   private
 

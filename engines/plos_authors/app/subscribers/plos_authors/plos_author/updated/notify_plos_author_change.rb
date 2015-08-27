@@ -8,7 +8,7 @@ class PlosAuthors::PlosAuthor::Updated::NotifyPlosAuthorChange < EventStreamSubs
   #
   # A `plos_author` (containing specific plos related attributes) will always have a corresponding
   # `author` record (containing generic attributes).  However, when an `author` record is
-  # changed, the `plos_author` is not event streamed and the client interface is bound to 
+  # changed, the `plos_author` is not event streamed and the client interface is bound to
   # `plos_authors`.
   #
   # This particular subscriber will event stream the `plos_author` when the `author` record is

@@ -10,6 +10,6 @@
   <br class="clear">
 
   {{#each arrangedContent as |journal|}}
-    {{journal-thumbnail model=journal canEdit=currentUser.siteAdmin}}
+    {{journal-thumbnail journal=journal canEdit=currentUser.siteAdmin}}
   {{/each}}
 </div>

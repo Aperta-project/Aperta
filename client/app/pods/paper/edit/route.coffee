@@ -64,7 +64,7 @@ PaperEditRoute = AuthorizedRoute.extend
       @get('heartbeat').start()
 
   endHeartbeat: ->
-    @get('heartbeatService')?.stop()
+    @get('heartbeat')?.stop()
 
   isLockedByCurrentUser: ->
     lockedBy = @modelFor('paper').get('lockedBy')

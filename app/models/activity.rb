@@ -2,12 +2,14 @@ class Activity < ActiveRecord::Base
   belongs_to :subject, polymorphic: true
   belongs_to :user
 
-  def self.feed_for(feed_names, subject)
-    where(feed_name: feed_names, subject_id: subject.id).order('created_at DESC')
+  scope :updated_within_the_last, -> (time){ where("updated_at >= ?", time.ago) }
+
+  scope :feed_for, -> (feed_names, subject) do
+    where(feed_name: feed_names, subject: subject).order('created_at DESC')
   end
 
   def self.assignment_created!(paper_role, user:)
-    Activity.create(
+    create(
       feed_name: "workflow",
       activity_key: "assignment.created",
       subject: paper_role.paper,
@@ -17,7 +19,7 @@ class Activity < ActiveRecord::Base
   end
 
   def self.author_added!(plos_author, user:)
-    Activity.create(
+    create(
       feed_name: "manuscript",
       activity_key: "plos_author.created",
       subject: plos_author.paper,
@@ -27,7 +29,7 @@ class Activity < ActiveRecord::Base
   end
 
   def self.comment_created!(comment, user:)
-    Activity.create(
+    create(
       feed_name: "workflow",
       activity_key: "commented.created",
       subject: comment.paper,
@@ -37,7 +39,7 @@ class Activity < ActiveRecord::Base
   end
 
   def self.decision_made!(decision, user:)
-    Activity.create(
+    create(
       feed_name: "workflow",
       activity_key: "decision.made",
       subject: decision.paper,
@@ -47,7 +49,7 @@ class Activity < ActiveRecord::Base
   end
 
   def self.invitation_created!(invitation, user:)
-    Activity.create(
+    create(
       feed_name: "workflow",
       activity_key: "invitation.created",
       subject: invitation.paper,
@@ -57,7 +59,7 @@ class Activity < ActiveRecord::Base
   end
 
   def self.invitation_accepted!(invitation, user:)
-    Activity.create(
+    create(
       feed_name: "workflow",
       activity_key: "invitation.accepted",
       subject: invitation.paper,
@@ -67,7 +69,7 @@ class Activity < ActiveRecord::Base
   end
 
   def self.invitation_rejected!(invitation, user:)
-    Activity.create(
+    create(
       feed_name: "workflow",
       activity_key: "invitation.rejected",
       subject: invitation.paper,
@@ -77,7 +79,7 @@ class Activity < ActiveRecord::Base
   end
 
   def self.paper_created!(paper, user:)
-    Activity.create(
+    create(
       feed_name: "manuscript",
       activity_key: "paper.created",
       subject: paper,
@@ -87,17 +89,24 @@ class Activity < ActiveRecord::Base
   end
 
   def self.paper_edited!(paper, user:)
-    Activity.create(
-      feed_name: "manuscript",
-      activity_key: "paper.edited",
-      subject: paper,
-      user: user,
-      message: "Manuscript was edited"
-    )
+    activities = where(activity_key: "paper.edited", user: user, subject: paper)
+    activity = activities.updated_within_the_last(10.minutes).first
+
+    if activity
+      activity.touch
+    else
+      create(
+        feed_name: "manuscript",
+        activity_key: "paper.edited",
+        subject: paper,
+        user: user,
+        message: "Manuscript was edited"
+      )
+    end
   end
 
   def self.paper_submitted!(paper, user:)
-    Activity.create(
+    create(
       feed_name: "manuscript",
       activity_key: "paper.submitted",
       subject: paper,
@@ -107,7 +116,7 @@ class Activity < ActiveRecord::Base
   end
 
   def self.participation_created!(participation, user:)
-    Activity.create(
+    create(
       feed_name: "manuscript",
       activity_key: "participation.created",
       subject: participation.paper,
@@ -117,7 +126,7 @@ class Activity < ActiveRecord::Base
   end
 
   def self.participation_destroyed!(participation, user:)
-    Activity.create(
+    create(
       feed_name: "manuscript",
       activity_key: "particpation.destroyed",
       subject: participation.paper,

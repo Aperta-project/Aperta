@@ -127,6 +127,39 @@ describe Activity do
         user: user,
         message: "Manuscript was edited"
     )}
+
+    context "and the paper has been edited within the past 10 minutes" do
+      it "updates the existing activity for the user" do
+        activity = Activity.paper_edited!(paper, user: user)
+
+        Timecop.freeze do
+          activity.update! updated_at: 10.minutes.ago
+
+          expect {
+            Activity.paper_edited!(paper, user: user)
+          }.to_not change(Activity, :count)
+
+          activity.reload
+          expect(activity.updated_at).to eq(Time.now)
+        end
+      end
+    end
+
+    context "and the paper has been edited outside of the last 10 minutes" do
+      it "creates a new activity for the user" do
+        activity = Activity.paper_edited!(paper, user: user)
+
+        Timecop.freeze do
+          activity.update! updated_at: 11.minutes.ago
+
+          expect {
+            Activity.paper_edited!(paper, user: user)
+          }.to change(Activity, :count).by(1)
+
+          expect(Activity.last).to_not eq(activity.reload)
+        end
+      end
+    end
   end
 
   describe "#paper_submitted!" do

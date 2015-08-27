@@ -139,7 +139,9 @@ class Paper < ActiveRecord::Base
   end
 
   def download_body
-    "#{body}#{download_supporting_information}"
+    unless body.nil?
+      "#{body}#{download_supporting_information}"
+    end
   end
 
   def download_supporting_information

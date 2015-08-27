@@ -49,15 +49,15 @@ class DashboardPage(AuthenticatedPage):
     self._cns_error_div = (By.CLASS_NAME, 'flash-messages')
     self._cns_error_message = (By.CLASS_NAME, 'flash-message-content')
 
-    self._cns_short_title_label = (By.CLASS_NAME, 'inset-form-control-text')
-    self._cns_short_title_field = (By.CLASS_NAME, 'inset-form-control-input')
-    self._cns_journal_chooser_div = (By.CLASS_NAME, 'paper-new-journal-select')
+    self._cns_short_title_label = (By.CLASS_NAME, 'paper-new-label')
+    self._cns_short_title_field = (By.CSS_SELECTOR, '#paper-short-title')
+    self._cns_journal_chooser = (By.XPATH, './/div[@class="inner-content"]/div[2]/label')
+    self._cns_paper_type_chooser = (By.XPATH, './/div[@class="inner-content"]/div[3]/label')
 
-    self._cns_paper_type_chooser_div = (By.CLASS_NAME, 'paper-new-paper-type-select')
-
-    self._cns_chooser_chosen = (By.CLASS_NAME, 'select2-chosen')
+    self._cns_chooser_chosen = (By.CLASS_NAME, 'select-box-item')
     self._cns_chooser_dropdown_arrow = (By.CLASS_NAME, 'select2-arrow')
-    self._cns_action_buttons_div = (By.CLASS_NAME, 'overlay-action-buttons')
+    self._create_btn = (By.CLASS_NAME, 'paper-new-create-document-button')
+
     self._cns_cancel = (By.CLASS_NAME, 'button-link')
     self._cns_create = (By.CLASS_NAME, 'button-primary')
 
@@ -292,15 +292,16 @@ class DashboardPage(AuthenticatedPage):
     overlay_title = self._get(self._cns_title)
     assert overlay_title.text == 'Create a New Submission'
     short_title_field_label = self._get(self._cns_short_title_label)
-    assert short_title_field_label.text == 'Short Title'
+    assert short_title_field_label.text == 'Give your paper a short title'
     short_title_input_field = self._get(self._cns_short_title_field)
     assert short_title_input_field.get_attribute('placeholder') == 'Crystalized Magnificence in the Modern World'
-    journal_chooser = self._get(self._cns_journal_chooser_div).find_element(*self._cns_chooser_chosen)
-    assert journal_chooser.text == 'Choose Journal'
-    paper_type_chooser = self._get(self._cns_paper_type_chooser_div).find_element(*self._cns_chooser_chosen)
-    assert paper_type_chooser.text == 'Choose Paper Type'
-    create_btn = self._get(self._cns_action_buttons_div).find_element(*self._cns_create)
-    self.validate_green_backed_button_style(create_btn)
+    journal_chooser = self._get(self._cns_journal_chooser)
+    assert journal_chooser.text == 'What journal are you submitting to?'
+    paper_type_chooser = self._get(self._cns_paper_type_chooser)    
+    assert paper_type_chooser.text == "Choose the type of paper you're submitting"
+    create_btn = self._get(self._create_btn)
+    # TODO: Check this when fixed bug #102130748
+    self.validate_secondary_big_green_button_style(create_btn)
     create_btn.click()
     self._get(self._cns_error_div)
     error_msgs = self._gets(self._cns_error_message)

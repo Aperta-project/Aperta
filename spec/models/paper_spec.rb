@@ -403,10 +403,32 @@ describe Paper do
       FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 2)
       FactoryGirl.create(:versioned_text, paper: paper, major_version: 0, minor_version: 3)
     end
-    
+
     it "returns the latest version" do
       versioned_text = FactoryGirl.create(:versioned_text, paper: paper, major_version: 1, minor_version: 0)
       expect(paper.latest_version).to eq(versioned_text)
+    end
+  end
+
+  describe "#download_body" do
+    it "does not have supporting information section without supporting information" do
+      expect(paper.download_body).to_not include("Supporting Information")
+    end
+
+    it "has image preview and link with image" do
+      with_aws_cassette 'supporting_info_files_controller' do
+        paper.supporting_information_files.create! attachment: ::File.open('spec/fixtures/yeti.tiff')
+      end
+
+      expect(paper.download_body).to include("Supporting Information", "img", "yeti.tiff")
+    end
+
+    it "has link to docx" do
+      with_aws_cassette 'supporting_info_files_controller' do
+        paper.supporting_information_files.create! attachment: ::File.open('spec/fixtures/about_turtles.docx')
+      end
+
+      expect(paper.download_body).to include("Supporting Information", "about_turtles.docx")
     end
   end
 end

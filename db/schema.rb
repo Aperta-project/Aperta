@@ -499,15 +499,15 @@ ActiveRecord::Schema.define(version: 20150821183003) do
 
   create_table "versioned_texts", force: :cascade do |t|
     t.integer  "submitting_user_id"
-    t.integer  "paper_id"
-    t.integer  "major_version",      default: 0
-    t.integer  "minor_version",      default: 0
-    t.boolean  "active",             default: true
-    t.boolean  "copy_on_edit",       default: false
+    t.integer  "paper_id",                        null: false
+    t.integer  "major_version",                   null: false
+    t.integer  "minor_version",                   null: false
     t.text     "text",               default: ""
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "versioned_texts", ["minor_version", "major_version", "paper_id"], name: "unique_version", unique: true, using: :btree
 
   add_foreign_key "decisions", "papers"
   add_foreign_key "discussion_participants", "discussion_topics"

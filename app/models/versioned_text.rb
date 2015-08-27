@@ -4,35 +4,22 @@ class VersionedText < ActiveRecord::Base
 
   belongs_to :submitting_user, class_name: "User"
 
-  before_update :minor_version!, if: :must_copy
+  scope :version_desc, -> { order('major_version DESC, minor_version DESC') }
 
-  scope :active, -> { where(active: true) }
-
-  # Called on paper sumbission and resubmission.
-  def major_version!(submitting_user)
-    update!(major_version: (major_version + 1),
-            minor_version: 0,
-            copy_on_edit: true,
-            submitting_user: submitting_user)
+  before_update do
+    fail ActiveRecord::ReadOnlyRecord unless
+      (paper.latest_version == self) && paper.editable? && submitting_user_id_was.blank?
+    # use submitting_user_id_was above because it should be writable when submitting
   end
 
-  def must_copy
-    copy_on_edit && !copy_on_edit_changed?
+  # Make a copy of the text and give it a new MAJOR version.
+  def new_major_version!
+    new_version!(major_version + 1, minor_version)
   end
 
-  # Make a copy and increment the minor version if the copy_on_edit
-  # flag is true.
-  def minor_version!
-    self.copy_on_edit = false
-    self.submitting_user = nil
-
-    old_version = dup
-    old_version.text = text_was
-    old_version.active = false
-    old_version.save!
-
-    self.submitting_user = nil
-    self.minor_version = minor_version + 1
+  # Make a copy of the text and give it a new MINOR version
+  def new_minor_version!
+    new_version!(major_version, minor_version + 1)
   end
 
   def version_string
@@ -41,9 +28,21 @@ class VersionedText < ActiveRecord::Base
     "R#{major_version}.#{minor_version} — #{date} #{creator_name}"
   end
 
+  def submitted?
+    submitting_user_id.present?
+  end
+
   private
 
   def creator_name
     submitting_user ? submitting_user.full_name : "(draft)"
+  end
+
+  def new_version!(new_major_version, new_minor_version)
+    new_version = dup
+    new_version.update(major_version: new_major_version,
+                       minor_version: new_minor_version,
+                       submitting_user: nil)
+    new_version.save!
   end
 end

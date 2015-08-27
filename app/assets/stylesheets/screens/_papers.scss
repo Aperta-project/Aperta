@@ -19,11 +19,17 @@ $paper-edit-sidebar-width: 280px;
   z-index: 1;
   h2 {
     overflow: hidden;
-    padding: 21px 0 0 5px;
+    padding: 21px 0 0 15px;
     font-family: $tahi-article-font-family;
     font-size: 18px;
     line-height: 22px;
     white-space: nowrap;
+    display: none;
+  }
+  @media(min-width: 970px) {
+    h2 {
+      display: inline-block;
+    }
   }
 }
 

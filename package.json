@@ -10,8 +10,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "//": "TOTAL HACK to use heroku cache (it is supposed to be passed into the buildpack, not hardcode), but will work without it",
-    "postinstall": "cd client; npm install; ([ -d /app/tmp/cache ] && bower install -p --config.storage.packages=/app/tmp/cache/bower) || bower install -p",
-    "clean": "cd client; rm -rf tmp node_modules bower_components; npm install && bower install; cd .."
+    "postinstall": "cd client; npm install; ([ -d /app/tmp/cache ] && bower install -p --config.storage.packages=/app/tmp/cache/bower) || bower install -p"
   },
   "repository": {
     "type": "git",

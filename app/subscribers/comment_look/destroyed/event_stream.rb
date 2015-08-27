@@ -1,7 +1,7 @@
 class CommentLook::Destroyed::EventStream < EventStreamSubscriber
 
   def channel
-    record.user
+    system_channel
   end
 
   def payload

@@ -184,7 +184,10 @@ class PapersController < ApplicationController
   end
 
   def broadcast_paper_submitted_event
-    TahiNotifier.notify(event: "paper.submitted", payload: { paper_id: paper.id })
+    Notifier.notify(event: "paper:submitted", data: { paper: paper })
+    if paper.decisions.pending.exists?
+      Notifier.notify(event: "paper:resubmitted", data: { paper: paper })
+    end
   end
 
 end

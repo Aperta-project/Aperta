@@ -1,8 +1,11 @@
 EVENTS = {
   '.*' => [EventLogger],
+
   'paper:created' => [Paper::Created::EventStream],
   'paper:updated' => [Paper::Updated::EventStream],
   'paper:destroyed' => [Paper::Destroyed::EventStream],
+  'paper:submitted' => [Paper::Submitted::EmailCreator, Paper::Submitted::EmailAdmins],
+  'paper:resubmitted' => [Paper::Resubmitted::EmailEditor],
 
   'paper_role:created' => [PaperRole::Created::EventStream::NotifyPaperMembers, PaperRole::Created::EventStream::NotifyAssignee],
   'paper_role:destroyed' => [PaperRole::Destroyed::EventStream::NotifyPaperMembers],

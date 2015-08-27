@@ -20,17 +20,13 @@ export default Ember.Mixin.create({
   }),
 
   // Tasks:
-  assignedTasks: computed('model.tasks.@each', function() {
-    let metadataTasks = this.get('metadataTasks');
 
-    return this.get('model.tasks').filter((task) => {
-      return task.get('participations').mapBy('user').contains(this.get('currentUser'));
-    }).filter(function(t) {
-      return !metadataTasks.contains(t);
-    });
+  currentUserTasks: computed.filter('model.tasks', function(task) {
+    return task.get('participations').mapBy('user').contains(this.get('currentUser'));
   }),
 
-  metadataTasks: Ember.computed.filterBy('model.tasks', 'isMetadataTask', true),
+  metadataTasks: computed.filterBy('model.tasks', 'isMetadataTask', true),
+  assignedTasks: computed.setDiff('currentUserTasks', 'metadataTasks'),
 
   noTasks: computed('assignedTasks.@each', 'metadataTasks.@each', function() {
     return [this.get('assignedTasks'), this.get('metadataTasks')].every((taskGroup)=> {

@@ -47,7 +47,7 @@ export default TaskController.extend(Select2Assignees, {
   template: computed.alias('model.invitationTemplate'),
 
   setLetterTemplate: function() {
-    var customTemplate;
+    let customTemplate;
     customTemplate = this.get('template').
       replace(/\[EDITOR NAME\]/, this.get('selectedUser.fullName')).
       replace(/\[YOUR NAME\]/, this.get('currentUser.fullName'));
@@ -75,7 +75,7 @@ export default TaskController.extend(Select2Assignees, {
     },
 
     removeEditor: function() {
-      var promises = [],
+      let promises = [],
           deleteUrl = "/api/papers/" + (this.get('model.paper.id')) + "/editor";
       promises.push(RESTless.delete(deleteUrl));
       if (this.get('model.invitation')) {

@@ -218,8 +218,8 @@ describe PapersController do
       expect(paper.editable).to eq false
     end
 
-    it "broadcasts 'paper.submitted' event" do
-      expect(TahiNotifier).to receive(:notify).with(event: "paper.submitted", payload: { paper_id: paper.id })
+    it "broadcasts 'paper:submitted' event" do
+      expect(Notifier).to receive(:notify).with(event: "paper:submitted", data: { paper: paper })
       submit
     end
 

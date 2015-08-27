@@ -79,7 +79,7 @@ class UserMailer < ActionMailer::Base
       subject: "You've been mentioned on the manuscript, #{app_name}")
   end
 
-  def paper_submission(paper_id)
+  def notify_creator_of_paper_submission(paper_id)
     @paper = Paper.find(paper_id)
     @author = @paper.creator
     @journal = @paper.journal

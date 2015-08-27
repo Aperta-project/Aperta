@@ -145,20 +145,20 @@ describe UserMailer, redis: true do
     end
   end
 
-  describe '#paper_submission' do
+  describe '#notify_creator_of_paper_submission' do
     let(:author) { FactoryGirl.create(:user) }
     let(:paper) { FactoryGirl.create :paper, :submitted, :with_tasks, creator: author }
-    let(:email) { UserMailer.paper_submission(paper.id) }
+    let(:email) { UserMailer.notify_creator_of_paper_submission(paper.id) }
 
     it 'has correct subject line' do
       expect(email.subject).to eq "Thank you for submitting your manuscript to PLOS #{app_name}"
     end
 
-    it "sends the email to the paper's author" do
+    it "sends the email to the paper's creator" do
       expect(email.to).to eq [author.email]
     end
 
-    it "emails the author user they have been mentioned" do
+    it "emails the creator user they have been mentioned" do
       expect(email.subject).to eq "Thank you for submitting your manuscript to PLOS #{app_name}"
       expect(email.body).to include "Thank you for submitting your manuscript"
       expect(email.body).to include paper.title

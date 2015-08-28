@@ -22,8 +22,7 @@ GIT
 
 GIT
   remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/tahi-assign_team
-  revision: 74e0de892efd675ec52b9e16515b524fab0267c3
-  ref: 74e0de892efd675ec52b9e16515b524fab0267c3
+  revision: 62cb7fc98c03f4f6d2cfd8f2ebc6942541cd6331
   specs:
     tahi-assign_team (0.0.1)
       rails (~> 4.2.1)

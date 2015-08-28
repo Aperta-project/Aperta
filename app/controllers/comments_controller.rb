@@ -7,7 +7,7 @@ class CommentsController < ApplicationController
 
   def create
     ParticipationFactory.create(task: comment.task, assignee: current_user, assigner: current_user)
-    CommentLookManager.sync_comment(comment) if !current_user.site_admin?
+    CommentLookManager.sync_comment(comment) unless current_user.site_admin?
     respond_with comment
   end
 

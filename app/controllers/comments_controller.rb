@@ -26,13 +26,13 @@ class CommentsController < ApplicationController
       if params[:id].present?
         Comment.find(params[:id])
       else
-        task.comments.build(comment_params)
+        task.comments.build(comment_params.merge!(commenter_id: current_user.id))
       end
     end
   end
 
   def comment_params
-    params.require(:comment).permit(:commenter_id, :body, :task_id)
+    params.require(:comment).permit(:body, :task_id)
   end
 
   def render_404

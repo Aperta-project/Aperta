@@ -13,9 +13,8 @@ describe CommentsController do
   describe 'POST create' do
     subject(:do_request) do
       xhr :post, :create, format: :json,
-        comment: {commenter_id: user.id,
-                  body: "My comment",
-                  task_id: task.id}
+        comment: { body: "My comment",
+                   task_id: task.id }
     end
 
     context "the user isn't authorized" do
@@ -35,9 +34,8 @@ describe CommentsController do
           expect {
             xhr :post, :create,
             format: :json,
-            comment: {commenter_id: user.id,
-                      body: "",
-                      task_id: task.id}
+            comment: { body: "",
+                       task_id: task.id }
           }.to_not change { Comment.count }
         end
       end
@@ -52,16 +50,11 @@ describe CommentsController do
         end
       end
 
-      context "the user is a super-admin" do
+      describe "user mentions a super-admin" do
         include ActiveJob::TestHelper
 
-        before do
-          sign_in admin
-        end
-
         it "sends 1 email" do
-          comment = { commenter_id: user.id,
-                      body: "A super-admin at-mention: @#{admin.username}",
+          comment = { body: "A super-admin at-mention: @#{admin.username}",
                       task_id: task.id }
 
           perform_enqueued_jobs do

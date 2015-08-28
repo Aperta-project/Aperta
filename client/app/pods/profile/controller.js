@@ -3,7 +3,7 @@ import FileUploadMixin from 'tahi/mixins/file-upload';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 export default Ember.Controller.extend(FileUploadMixin, ValidationErrorsMixin, {
-  restless: Ember.inject.service('restless'),
+  countries: Ember.inject.service(),
 
   showAffiliationForm: false,
   errorText: '',
@@ -11,14 +11,14 @@ export default Ember.Controller.extend(FileUploadMixin, ValidationErrorsMixin, {
 
   today: new Date(),
 
-  countries: [],
-  _getCountries: Ember.on('init', function() {
-    this.get('restless').get('/api/countries').then((data)=> {
-      if(Ember.isEmpty(data.countries)) { return; }
-      this.set('countries', data.countries.map(function(c) {
-        return { id: c, text: c };
-      }));
-    }, Ember.K);
+  _fetchCountries: Ember.on('init', function() {
+    this.get('countries').fetch();
+  }),
+
+  formattedCountries: Ember.computed('countries.data', function() {
+    return this.get('countries.data').map(function(c) {
+      return { id: c, text: c };
+    });
   }),
 
   actions: {
@@ -62,6 +62,10 @@ export default Ember.Controller.extend(FileUploadMixin, ValidationErrorsMixin, {
     institutionSelected(institution) {
       this.set('newAffiliation.name', institution.name);
       this.set('newAffiliation.ringgoldId', institution['institution-id']);
+    },
+
+    countrySelected(country) {
+      this.set('newAffiliation.country', country.text);
     }
   }
 });

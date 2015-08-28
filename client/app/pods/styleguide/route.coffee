@@ -137,7 +137,7 @@ StyleguideRoute = Ember.Route.extend
       title: "Ethics"
 
     taskComplete =
-      title: "Add Author"
+      title: "Author"
       completed: true
 
     supportedDownloadFormats = [

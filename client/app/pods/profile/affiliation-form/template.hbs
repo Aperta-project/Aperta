@@ -52,15 +52,19 @@
               placeholder="Title"
               class="profile-affiliation-field form-control"}}
 
-      {{#if countries}}
+      {{#if countries.loaded}}
         {{select-2-single class="profile-affiliation-field"
                           placeholder="Country"
-                          selectedData=selectedData
-                          source=countries
-                          value=newAffiliation.country}}
-      {{else}}
+                          source=formattedCountries
+                          selectionSelected="countrySelected"}}
+      {{/if}}
+      {{#if countries.loading}}
         {{progress-spinner visible=true size="mini"}}
         Loading countries
+      {{/if}}
+      {{#if countries.error}}
+        <i class="fa fa-exclamation-triangle"></i>
+        Error loading countries
       {{/if}}
 
       <div class="form-group">

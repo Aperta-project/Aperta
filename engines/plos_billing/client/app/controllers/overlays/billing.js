@@ -313,10 +313,10 @@ const DATA = {
   ]
 };
 
-let computed = Ember.computed;
+const { computed } = Ember;
 
 export default TaskController.extend({
-  restless: Ember.inject.service('restless'),
+  countries: Ember.inject.service(),
 
   ringgold: [],
   institutionalAccountProgramList: DATA.institutionalAccountProgramList,
@@ -326,13 +326,13 @@ export default TaskController.extend({
   responses: DATA.responses,
   groupOneAndTwoCountries: DATA.groupOneAndTwoCountries,
 
-  countries: [],
-  _getCountries: Ember.on("init", function() {
-    this.get('restless').get("/api/countries").then((data)=> {
-      this.set("countries", data.countries.map(function(c) {
-        return { id: c, text: c };
-      }));
-    }, Ember.K);
+  _fetchCountries: Ember.on('init', function() {
+    this.get('countries').fetch();
+  }),
+  formattedCountries: computed('countries.data', function() {
+    return this.get('countries.data').map(function(c) {
+      return { id: c, text: c };
+    });
   }),
 
   journalName: "PLOS One",

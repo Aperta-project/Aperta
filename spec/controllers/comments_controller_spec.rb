@@ -53,14 +53,21 @@ describe CommentsController do
       end
 
       context "the user is a super-admin" do
+        include ActiveJob::TestHelper
+
+        before do
+          sign_in admin
+        end
+
         it "sends 1 email" do
           comment = { commenter_id: user.id,
                       body: "A super-admin at-mention: @#{admin.username}",
                       task_id: task.id }
 
-          xhr :post, :create, format: :json, comment: comment
-
-          # how to that only 1 email is sent?
+          perform_enqueued_jobs do
+            xhr :post, :create, format: :json, comment: comment
+            expect(unread_emails_for(admin.email).length).to eq 1
+          end
         end
       end
 

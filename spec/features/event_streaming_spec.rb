@@ -81,9 +81,11 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
       click_link paper.title
       edit_paper_page = EditPaperPage.new
       edit_paper_page.view_card(upload_task.title) do |card|
-        card.post_message 'Hello'
-        expect(card).to have_participants(author)
-        expect(card).to have_last_comment_posted_by(author)
+        using_wait_time 30 do
+          card.post_message 'Hello'
+          expect(card).to have_participants(author)
+          expect(card).to have_last_comment_posted_by(author)
+        end
       end
     end
 

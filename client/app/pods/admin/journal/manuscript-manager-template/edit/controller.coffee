@@ -25,22 +25,7 @@ ManuscriptManagerTemplateEditController = Ember.Controller.extend ValidationErro
       dirty: true
 
   saveTemplate: (transition) ->
-    @get('model').save().then( (mmt) =>
-      taskTemplates = []
-
-      Ember.RSVP.all(mmt.get('phaseTemplates').invoke('save')).then (phaseTemplates) =>
-        promises = phaseTemplates.map (phaseTemplate) ->
-          phaseTemplate.get('taskTemplates').invoke('save')
-
-        Ember.RSVP.all(promises.compact()).then =>
-          if deletedRecords = @get('deletedRecords')
-            Ember.RSVP.all(deletedRecords.invoke('save')).then =>
-              @successfulSave(transition)
-          else
-            @successfulSave(transition)
-
-    ).catch (response) =>
-      @displayValidationErrorsFromResponse response
+    @get('model').save()
 
   successfulSave: (transition) ->
     @reset()

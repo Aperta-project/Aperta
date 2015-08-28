@@ -14,8 +14,8 @@ class ManuscriptManagerTemplatesController < ApplicationController
   end
 
   def create
-    manuscript_manager_template.save
-    respond_with manuscript_manager_template
+    mmt_form = ManuscriptManagerTemplateForm.new(new_mmt_params)
+    respond_with mmt_form.create_mmt
   end
 
   def destroy
@@ -33,6 +33,10 @@ class ManuscriptManagerTemplatesController < ApplicationController
 
   def template_params
     params.require(:manuscript_manager_template).permit(:paper_type, :journal_id)
+  end
+
+  def new_mmt_params
+    params.require(:manuscript_manager_template).permit(:paper_type, :journal_id, phase_templates: [:name, :position, task_templates: [:title, :journal_task_type_id]])
   end
 
   def enforce_policy

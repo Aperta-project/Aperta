@@ -3,7 +3,7 @@ class ManuscriptManagersPolicy < ApplicationPolicy
   require_params :paper
 
   def can_manage_manuscript?
-    super_admin? || can_manage_any_manuscript? || can_manage_this_manuscript?
+    super_admin? || can_manage_all_manuscripts? || can_manage_this_manuscript?
   end
 
   alias_method :show?, :can_manage_manuscript?
@@ -14,7 +14,7 @@ class ManuscriptManagersPolicy < ApplicationPolicy
     current_user.roles.where(journal: paper.journal)
   end
 
-  def can_manage_any_manuscript?
+  def can_manage_all_manuscripts?
     roles.merge(Role.can_view_all_manuscript_managers).exists?
   end
 

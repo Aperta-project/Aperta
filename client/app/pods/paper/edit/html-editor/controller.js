@@ -54,10 +54,8 @@ export default Ember.Controller.extend(PaperBaseMixin, PaperEditMixin, Discussio
   releaseLock() {
     let paper = this.get('model');
     paper.set('lockedBy', null);
-    paper.save().then(()=>{
-      // FIXME: don't know why but when calling this during willDestroyElement
-      // this action will not be handled.
-      this.send('stopEditing');
+    paper.save().then(() => {
+      this.disconnectEditor();
     });
   },
 

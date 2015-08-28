@@ -2,7 +2,7 @@ import FactoryGuy from "ember-data-factory-guy";
 
 FactoryGuy.define("reviewer-recommendations-task", {
   default: {
-    title: "Reviewer Recommendations",
+    title: "Reviewer Candidates",
     type: "ReviewerRecommendationsTask",
     completed: false,
   }

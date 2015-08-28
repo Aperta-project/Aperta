@@ -30,7 +30,9 @@ feature "Editing paper", selenium: true, js: true do
         p.select2(journal.name, css: '.paper-new-journal-select')
         p.select2(paper_type,  css: '.paper-new-paper-type-select')
         click_button 'Create Document'
-        wait_for_ajax
+        using_wait_time 10 do
+          wait_for_ajax
+        end
         expect(page.current_path).to match %r{/papers/\d+/edit}
         within "#paper-container" do
           expect(page).to_not have_text("DOI:")
@@ -53,7 +55,9 @@ feature "Editing paper", selenium: true, js: true do
         p.select2(journal.name, css: '.paper-new-journal-select')
         p.select2(paper_type,  css: '.paper-new-paper-type-select')
         click_button 'Create Document'
-        wait_for_ajax
+        using_wait_time 10 do
+          wait_for_ajax
+        end
 
         within ".task-list-doi" do
           expect(page).to have_content "DOI: vicious/robots.8888"

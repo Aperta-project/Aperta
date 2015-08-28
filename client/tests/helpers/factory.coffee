@@ -347,7 +347,7 @@ FactoryAttributes.ReviseTask =
 FactoryAttributes.BillingTask =
   _rootKey: 'task'
   id: null
-  title: "Billing"
+  title: "Financial Info"
   type: "BillingTask"
   completed: false
   body: []
@@ -365,7 +365,7 @@ FactoryAttributes.BillingTask =
 FactoryAttributes.FigureTask =
   _rootKey: 'task'
   id: null
-  title: "Upload Figures"
+  title: "Figures"
   type: "FigureTask"
   completed: false
   body: []

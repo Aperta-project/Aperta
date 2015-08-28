@@ -16,6 +16,9 @@ require_relative 'support/pages/page'
 require_relative 'support/pages/overlay'
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
+# Build our ember app NOW and not on demand
+EmberCLI.compile!
+
 Tahi.service_log = Logger.new "#{::Rails.root}/log/service.log"
 
 # Load support & factories for installed Tahi plugins
@@ -37,7 +40,6 @@ Capybara.register_driver :selenium do |app|
 end
 
 Capybara.javascript_driver = :selenium
-Capybara.default_wait_time = 10
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.

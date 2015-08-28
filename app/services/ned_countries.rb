@@ -24,9 +24,7 @@ class NedCountries
   def search(url)
     conn.get("#{BASE_URL}/#{url}")
   rescue Faraday::ClientError => e
-    ned_error = ConnectionError.new(e.response[:body])
-    Bugsnag.notify(ned_error)
-    raise ned_error
+    raise ConnectionError, "Error connecting to #{BASE_URL}/#{url}", e.response[:body]
   end
 
   def conn
@@ -38,5 +36,4 @@ class NedCountries
       faraday.basic_auth(APP_ID, APP_PASSWORD)
     end
   end
-
 end

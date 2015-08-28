@@ -17,7 +17,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Fixed
--
+- Fixed NED integration
 
 ### Security
 -

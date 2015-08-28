@@ -43,7 +43,26 @@ class AuthenticatedPage(PlosPage):
     self._nav_feedback_link = (By.CLASS_NAME, 'navigation-item-feedback')
     self._nav_hamburger_icon = (By.XPATH,
                                 "//div[@class='navigation-toggle']/*[local-name() = 'svg']/*[local-name() = 'path']")
+    # Icons on the top right
     self._nav_menu = (By.CLASS_NAME, 'navigation')
+    self._version_link = (By.CLASS_NAME, 'versions-link')
+    self._collaborators_link = (By.CLASS_NAME, 'contributors-link')
+    self._downloads_link = (By.CLASS_NAME, 'downloads-link')
+    self._recent_activity = (By.CLASS_NAME, 'activity-link')
+    self._discussion_link = (By.CLASS_NAME, 'discussions-link')
+    self._workflow_link = (By.CLASS_NAME, 'workflow-link')
+    self._more_link = (By.CLASS_NAME, 'more-link')
+
+    self._bar_items = (By.CLASS_NAME, 'bar-item')
+    self._add_collaborators_label = (By.CLASS_NAME, 'contributors-add')
+    self._add_collaborators_modal = (By.CLASS_NAME, 'show-collaborators-overlay')
+    self._add_collaborators_modal_header = (By.CLASS_NAME, 'overlay-title-text')
+    self._add_collaborators_modal_support_text =  (By.CLASS_NAME, 'overlay-supporting-text')
+    self._add_collaborators_modal_support_select = (By.CLASS_NAME, 'collaborator-select')
+    self._add_collaborators_modal_cancel = (By.XPATH, "//div[@class='overlay-action-buttons']/a")
+    self._add_collaborators_modal_save = (By.XPATH, "//div[@class='overlay-action-buttons']/button")
+
+        # active
 
   # POM Actions
   def click_left_nav(self):
@@ -145,7 +164,21 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('font-weight') == '500'
     assert title.value_of_css_property('line-height') == '15.4px'
     assert title.value_of_css_property('color') == 'rgba(153, 153, 153, 1)'
-    return None
+
+  @staticmethod
+  def validate_modal_title_style(title):
+    """
+    Ensure consistency in rendering page and overlay main headings across the application
+    :param title: title to validate
+    :return: None
+    TODO: Leave this method until fixed #
+    """
+    assert application_typeface in title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '14px'
+    assert title.value_of_css_property('font-weight') == '400'
+    assert title.value_of_css_property('line-height') == '20px'
+    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+
     
   @staticmethod
   def validate_application_h2_style(title):

@@ -10,11 +10,11 @@ class NedCountries
   end
 
   def countries
-    typeclass = search("/typeclasses").body.detect { |tc|
+    typeclass = search("typeclasses").body.detect { |tc|
       tc["description"] == "Country Types"
     }
 
-    search("/typeclasses/#{typeclass['id']}/typevalues").body.map { |c|
+    search("typeclasses/#{typeclass['id']}/typevalues").body.map { |c|
       c["shortdescription"]
     }
   end
@@ -22,7 +22,7 @@ class NedCountries
   private
 
   def search(url)
-    conn.get(url)
+    conn.get("#{BASE_URL}/#{url}")
   rescue Faraday::ClientError => e
     ned_error = ConnectionError.new(e.response[:body])
     Bugsnag.notify(ned_error)
@@ -30,7 +30,7 @@ class NedCountries
   end
 
   def conn
-    @conn ||= Faraday.new(url: BASE_URL) do |faraday|
+    @conn ||= Faraday.new do |faraday|
       faraday.response :json
       faraday.request :url_encoded
       faraday.use Faraday::Response::RaiseError

@@ -1,4 +1,4 @@
-class PaperRolesPolicy < ApplicationPolicy
+class PaperRoleUsersPolicy < ApplicationPolicy
   primary_resource :paper
 
   def index?

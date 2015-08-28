@@ -101,7 +101,7 @@ class PapersController < ApplicationController
       notify_paper_submitted!
       broadcast_paper_submitted_event
     end
-    respond_with paper
+    render json: paper, status: :ok
   end
 
   def withdraw

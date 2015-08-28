@@ -75,12 +75,6 @@ export default Ember.Mixin.create({
 
     updateDocumentBody(content) {
       this.set('model.body', content);
-    },
-
-    confirmSubmitPaper() {
-      if (!this.get('model.allSubmissionTasksCompleted')) { return; }
-      this.get('model').save();
-      this.send('showConfirmSubmitOverlay');
     }
   }
 });

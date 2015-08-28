@@ -218,7 +218,7 @@ class Page < PageFragment
   end
 
   def notice
-    find('p.notice').text
+    find('p.notice')
   end
 
   def navigate_to_dashboard

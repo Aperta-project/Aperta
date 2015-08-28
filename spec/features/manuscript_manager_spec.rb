@@ -31,12 +31,12 @@ feature "Manuscript Manager", js: true, selenium: true do
     let(:task_manager_page) { TaskManagerPage.new }
 
     it "display paper name" do
-      expect(task_manager_page.paper_title).to eq paper.title
+      expect(task_manager_page.paper_title).to have_content(paper.title)
     end
 
     context "a Journal without a logo" do
       it "display Journal name" do
-        expect(task_manager_page.journal_name).to eq journal.name
+        expect(task_manager_page.journal_name).to have_content(journal.name)
       end
     end
   end

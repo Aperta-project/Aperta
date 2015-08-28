@@ -38,6 +38,7 @@ class EditPaperTest(FrontEndTest):
       My Submissions Welcome Text, button, info text and manuscript display
       Modals: View Invites and Create New Submission
     """
+    # Note this is commented out until login with different users
     #user_type = random.choice(users)
     #print('Logging in as user: %s'%user_type)
     #login_page = LoginPage(self.getDriver())

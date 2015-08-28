@@ -61,7 +61,7 @@ class AuthenticatedPage(PlosPage):
     self._add_collaborators_modal_support_select = (By.CLASS_NAME, 'collaborator-select')
     self._add_collaborators_modal_cancel = (By.XPATH, "//div[@class='overlay-action-buttons']/a")
     self._add_collaborators_modal_save = (By.XPATH, "//div[@class='overlay-action-buttons']/button")
-
+    self._add_collaborators_modal_close = (By.CLASS_NAME, 'overlay-close-x')
         # active
 
   # POM Actions

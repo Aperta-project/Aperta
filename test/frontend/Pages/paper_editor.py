@@ -43,8 +43,6 @@ class PaperEditorPage(AuthenticatedPage):
     self._book_icon = (By.CLASS_NAME, 'fa-book')
     self._pi_icon = (By.XPATH, ".//div[contains(@class, 'insert')]/a[4]")
     self._cite_icon = (By.CSS_SELECTOR, 'div.dropdown-toggle')
-    self._unlock_icon = (By.CLASS_NAME, 'fa-unlock')
-    self._lock_icon = (By.CLASS_NAME, 'fa-lock')
     self._diff_div = (By.CSS_SELECTOR, 'div.html-diff')
 
 
@@ -85,7 +83,6 @@ class PaperEditorPage(AuthenticatedPage):
     self._get(self._book_icon)
     assert self._get(self._pi_icon).text == unicode('π2','utf-8')
     assert self._get(self._cite_icon).text == 'Cite'
-    self._get(self._unlock_icon)
     # Test version button
     version_btn = self._get(self._version_link)
     version_btn.click()
@@ -102,7 +99,6 @@ class PaperEditorPage(AuthenticatedPage):
     self._get(self._add_collaborators_modal)
     add_collaborator_header = self._get(self._add_collaborators_modal_header)
     assert "Who can collaborate on this manuscript?" == add_collaborator_header.text
-    #self.validate_application_h1_style(add_collaborator_header)
     self.validate_modal_title_style(add_collaborator_header)
     assert ("Select people to collaborate with on this paper. Collaborators can edit the "
             "paper, will be notified about edits on the paper, and can participate in the "
@@ -112,7 +108,10 @@ class PaperEditorPage(AuthenticatedPage):
     cancel = self._get(self._add_collaborators_modal_cancel)
     self.validate_default_link_style(cancel)
     save = self._get(self._add_collaborators_modal_save)
-    #self.validate_small_green_backed_button_style(save)
     self.validate_green_backed_button_style(save)
-    
+    close_icon_overlay = self._get(self._add_collaborators_modal_close)
+    # TODO: Change following line after bug #102078080 is solved
+    assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
+    assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
+    assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     

@@ -9,7 +9,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ### Changed
 - Update to [Rails 4.2.4](https://github.com/rails/rails/compare/v4.2.3...v4.2.4)
-- Changed pg_search threshold from .08 to .3 (default), making a more strit match
+- Changed pg_search threshold from .08 to .3 (default), making a more strict match
 
 ### Deprecated
 -

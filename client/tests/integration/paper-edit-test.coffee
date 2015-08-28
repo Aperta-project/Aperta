@@ -122,4 +122,4 @@ test 'visiting /edit-paper: Author completes all metadata cards', (assert) ->
         click '.overlay-close-button:first'
   andThen ->
     submitButton = find('button:contains("Submit")')
-    assert.ok(!submitButton.hasClass('button--disabled'), "Submit is enabled")
+    assert.notOk(submitButton.hasClass('button--disabled'), "Submit is enabled")

@@ -5,6 +5,7 @@ describe CommentsController do
   let(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: user) }
   let(:phase) { paper.phases.first }
   let(:user) { create(:user, tasks: []) }
+  let(:admin) { create(:user, site_admin: true) }
 
   let(:task) { create(:task, phase: phase, participants: [user], title: "Task", role: "admin") }
   before { sign_in user }
@@ -48,6 +49,18 @@ describe CommentsController do
           expect(user.tasks).to_not include(task)
           do_request
           expect(user.reload.tasks).to include(task)
+        end
+      end
+
+      context "the user is a super-admin" do
+        it "sends 1 email" do
+          comment = { commenter_id: user.id,
+                      body: "A super-admin at-mention: @#{admin.username}",
+                      task_id: task.id }
+
+          xhr :post, :create, format: :json, comment: comment
+
+          # how to that only 1 email is sent?
         end
       end
 

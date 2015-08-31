@@ -17,7 +17,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Fixed
-- fix bug where Site Admin receives 2 emails when being @mentioned in a Comment
+- Fixed NED integration
+- Fix bug where Site Admin receives 2 emails when being @mentioned in a Comment
 
 ### Security
 -

@@ -2,8 +2,6 @@ class CountriesController < ApplicationController
 
   include CountriesHelper
 
-  rescue_from NedCountries::ConnectionError, with: :render_ned_error
-
   def index
     render json: { countries: countries }
   end
@@ -18,9 +16,4 @@ class CountriesController < ApplicationController
       countries_list
     end
   end
-
-  def render_ned_error
-    head 500
-  end
-
 end

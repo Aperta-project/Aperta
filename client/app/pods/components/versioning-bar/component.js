@@ -14,9 +14,11 @@ export default Ember.Component.extend({
 
   getComparisonText() {
     // Fetches version of the text to compare with the version we're viewing
-    let version = this.get('comparisonVersion');
+    const version = this.get('comparisonVersion');
+
     if (version) {
-      this.get('restless').get('/api/versioned_texts/' + version.id).then((response) => {
+      const url = '/api/versioned_texts/' + version.id;
+      this.get('restless').get(url).then((response) => {
         this.set('paper.comparisonText', response['versioned_text']['text']);
       });
     } else {
@@ -26,10 +28,11 @@ export default Ember.Component.extend({
 
   getViewingText() {
     // Fetches a version of the text to view
-    let version = this.get('viewingVersion');
+    const version = this.get('viewingVersion');
 
     if (version) {
-      this.get('restless').get('/api/versioned_texts/' + version.id).then((response) => {
+      const url = '/api/versioned_texts/' + version.id;
+      this.get('restless').get(url).then((response) => {
         this.set('paper.viewingText', response['versioned_text']['text']);
       });
     }

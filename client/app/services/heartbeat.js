@@ -7,8 +7,12 @@ const heartbeat =  Ember.Object.extend({
 
   start() {
     this.heartbeat();
-    let heartbeatWrapper = ()=> { return this.heartbeat(); };
-    return this.set('intervalId', setInterval(heartbeatWrapper, this.get('interval')));
+    const heartbeatWrapper = ()=> { return this.heartbeat(); };
+
+    return this.set(
+      'intervalId',
+      setInterval(heartbeatWrapper, this.get('interval'))
+    );
   },
 
   stop() {
@@ -27,7 +31,11 @@ export default Ember.Service.extend({
   restless: Ember.inject.service('restless'),
 
   create(resource) {
-    Ember.assert('Heartbeat: need to specify resource', Ember.isEmpty(this.get('resource')));
+    Ember.assert(
+      'Heartbeat: need to specify resource',
+      Ember.isEmpty(this.get('resource'))
+    );
+
     return heartbeat.create({
       resource: resource,
       restless: this.get('restless')

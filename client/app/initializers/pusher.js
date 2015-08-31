@@ -13,14 +13,21 @@ export function initialize(registry, application) {
     }
   };
   if (window.eventStreamConfig.host) {
-    ENV.APP.PUSHER_OPTS.connection = Ember.merge(ENV.APP.PUSHER_OPTS.connection, {
+    let connection = ENV.APP.PUSHER_OPTS.connection;
+    let websocket  = {
       wsHost: window.eventStreamConfig.host,
       wsPort: window.eventStreamConfig.port,
       wssPort: window.eventStreamConfig.port
-    });
+    };
+
+    connection = Ember.merge(connection, websocket);
   }
 
-  Ember.assert('Pusher library is required', typeof window.Pusher !== 'undefined');
+  Ember.assert(
+    'Pusher library is required',
+    typeof window.Pusher !== 'undefined'
+  );
+
   application.register('pusher:main', Controller);
 }
 

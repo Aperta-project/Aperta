@@ -140,7 +140,7 @@ describe Activity do
           }.to_not change(Activity, :count)
 
           activity.reload
-          expect(activity.updated_at).to eq(Time.now)
+          expect(activity.updated_at.utc).to eq(Time.now.utc)
         end
       end
     end

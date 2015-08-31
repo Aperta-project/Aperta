@@ -13,18 +13,28 @@ describe PublishingInformationPresenter do
   end
 
   it "#title returns the title of the manuscript in an h1 tag" do
-    expect(publishing_information_presenter.title).to eq "<h1 id='paper-display-title'>#{paper.display_title}</h1>"
+    paper.title = "<Title & Here>"
+    expect(publishing_information_presenter.title).to eq "<h1 id='paper-display-title'>#{CGI.escape_html(paper.display_title)}</h1>"
   end
 
   it "#journal_name returns the journal name in a p tag" do
-    expect(publishing_information_presenter.journal_name).to eq "<p id='journal-name'><em>#{paper.journal.name}</em></p>"
+    paper.journal.name = "<Journal & Name>"
+    expect(publishing_information_presenter.journal_name).to eq "<p id='journal-name'><em>#{CGI.escape_html(paper.journal.name)}</em></p>"
   end
 
-  it "#generated_at returns the date and time the PDF was created in US long date format" do
-    expect(publishing_information_presenter.generated_at).to eq "<p id='generated-at'><em>#{Date.today.to_s :long}</em></p>"
+  describe '#generated_at' do
+    it "returns the date and time the PDF was created in US long date format" do
+      expect(publishing_information_presenter.generated_at).to eq "<p id='generated-at'><em>#{Date.today.to_s :long}</em></p>"
+    end
+
+    it "HTML escapes the date" do
+      date = "<date & here>"
+      expect(publishing_information_presenter.generated_at(date)).to eq "<p id='generated-at'><em>#{CGI.escape_html(date)}</em></p>"
+    end
   end
 
   it "#downloader_name returns the name of the user the PDF was generated for in a p tag at the end" do
-    expect(publishing_information_presenter.downloader_name).to eq "Generated for #{downloader.full_name}"
+    allow(downloader).to receive(:full_name).and_return "<Downloader & Name>"
+    expect(publishing_information_presenter.downloader_name).to eq CGI.escape_html("Generated for #{downloader.full_name}")
   end
 end

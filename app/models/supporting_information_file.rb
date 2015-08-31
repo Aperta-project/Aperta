@@ -30,15 +30,29 @@ class SupportingInformationFile < ActiveRecord::Base
   end
 
   def detail_src
-    if image?
-      attachment.url(:detail)
-    end
+    return unless image?
+
+    attachment.url(:detail)
   end
 
   def preview_src
-    if image?
-      attachment.url(:preview)
+    return unless image?
+
+    attachment.url(:preview)
+  end
+
+  def download_link(content=nil)
+    if text
+      "<a href='#{CGI.escape_html(src)}'>#{content}</a>"
+    else
+      "<a href='#{CGI.escape_html(src)}'>#{CGI.escape_html(filename)}</a>"
     end
+  end
+
+  def preview_image
+    return unless image?
+
+    "<img src='#{CGI.escape_html(preview_src)}' />"
   end
 
   def image?

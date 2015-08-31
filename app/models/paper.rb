@@ -339,11 +339,10 @@ class Paper < ActiveRecord::Base
 
     supporting_information = "<h2>Supporting Information</h2>"
     supporting_information_files.each do |file|
-
       if file.preview_src
-        supporting_information.concat "<p><a href='#{CGI.escape_html(file.src)}'><img src='#{CGI.escape_html(file.preview_src)}'></a></p>"
+        supporting_information.concat "<p>#{file.download_link file.preview_image}</p>"
       end
-      supporting_information.concat "<p><a href='#{CGI.escape_html(file.src)}'>#{CGI.escape_html(file.filename)}</a></p>"
+      supporting_information.concat "<p>#{file.download_link}</p>"
     end
 
     supporting_information

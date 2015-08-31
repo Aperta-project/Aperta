@@ -53,6 +53,8 @@ class PaperEditorPage(AuthenticatedPage):
   # POM Actions
   def validate_page_elements_styles_functions(self, username=''):
     """
+    Main method to validate styles and basic functions for all elements
+    in the page
     """
     self._get(self._workflow_link)
     # Check editor menu icons
@@ -68,6 +70,7 @@ class PaperEditorPage(AuthenticatedPage):
     
   def _check_menu_icons(self):
     """
+    Validate icons in the edit menu
     """
     self._get(self._undo_icon)
     self._get(self._repeat_icon)
@@ -97,7 +100,8 @@ class PaperEditorPage(AuthenticatedPage):
     assert self._get(self._cite_icon).text == 'Cite'
 
   def _check_version_btn(self):
-    """ Test version button
+    """ 
+    Test version button. This test checks styles but not funtion
     """
     version_btn = self._get(self._version_link)
     version_btn.click()
@@ -109,6 +113,7 @@ class PaperEditorPage(AuthenticatedPage):
 
   def _check_collaborator(self):
     """
+    Test collaborator modal.
     """
     collaborator_btn = self._get(self._collaborators_link)
     collaborator_btn.click()
@@ -137,6 +142,7 @@ class PaperEditorPage(AuthenticatedPage):
 
   def _check_download_btns(self):
     """
+    Check basic function and style of the downloads buttons.
     """
     downloads_link = self._get(self._downloads_link)
     downloads_link.click()
@@ -147,7 +153,8 @@ class PaperEditorPage(AuthenticatedPage):
     assert '#' in self._get(self._docx_link).get_attribute('href')
 
   def _check_recent_activity(self):
-    """ recent activity
+    """ 
+    Check recent activity modal styles
     """
     recent_activity = self._get(self._recent_activity)
     recent_activity.click()
@@ -163,6 +170,7 @@ class PaperEditorPage(AuthenticatedPage):
 
   def _check_discussion(self):
     """
+    Check discussion modal styles
     """
     discussion_link = self._get(self._discussion_link)
     discussion_link.click()
@@ -199,6 +207,8 @@ class PaperEditorPage(AuthenticatedPage):
 
   def _check_more_btn(self):
     """
+    Check all options inside More button (Appeal and Withdraw).
+    Note that Appeal is not implemented yet, so it is not tested.
     """
     more_btn = self._get(self._more_link)
     more_btn.click()

@@ -9,6 +9,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ### Changed
 - Update to [Rails 4.2.4](https://github.com/rails/rails/compare/v4.2.3...v4.2.4)
+- Increased the number and fidelity of Workflow Activity Feed messages
 
 ### Deprecated
 -

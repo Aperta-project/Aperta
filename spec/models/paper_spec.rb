@@ -411,7 +411,18 @@ describe Paper do
   end
 
   describe "#download_body" do
+    it "returns a supporting information section when supporting information is present" do
+      with_aws_cassette 'supporting_info_files_controller' do
+        paper.supporting_information_files.create! attachment: ::File.open('spec/fixtures/yeti.tiff')
+      end
+
+      expect(paper.download_body).to include("Supporting Information")
+    end
+
     it "does not have supporting information section without supporting information" do
+      expect(paper.supporting_information_files.count).to eq(0)
+      expect(paper.download_supporting_information).to eq(nil)
+
       expect(paper.download_body).to_not include("Supporting Information")
     end
 

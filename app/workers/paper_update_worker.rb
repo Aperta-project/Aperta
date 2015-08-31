@@ -7,7 +7,7 @@ class PaperUpdateWorker
     @paper = Paper.find(paper_id)
     @epub_stream = Faraday.get(epub_url).body
     sync!
-    Notifier.notify(event: "paper:data_extracted", payload: { paper: paper })
+    Notifier.notify(event: "paper:data_extracted", data: { paper: paper })
   end
 
   def sync!

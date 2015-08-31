@@ -213,7 +213,7 @@ describe PapersController do
 
     it "submits the paper" do
       submit
-      expect(response.status).to eq(204)
+      expect(response.status).to eq(200)
       expect(paper.reload.submitted?).to eq true
       expect(paper.editable).to eq false
     end

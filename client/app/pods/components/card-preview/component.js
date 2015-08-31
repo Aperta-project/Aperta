@@ -4,8 +4,6 @@ import ENV from 'tahi/config/environment';
 export default Ember.Component.extend({
   classNameBindings: [':card', 'task.completed:card--completed', 'classes'],
 
-  // TODO: The templates always pass an attr of paper but it is never used
-
   _propertiesCheck: Ember.on('init', function() {
     Ember.assert('You must pass a task property to the CardPreviewComponent', this.hasOwnProperty('task'));
   }),

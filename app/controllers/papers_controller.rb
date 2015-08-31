@@ -106,7 +106,7 @@ class PapersController < ApplicationController
       Activity.paper_submitted! paper, user: current_user
       broadcast_paper_submitted_event
     end
-    respond_with paper
+    render json: paper, status: :ok
   end
 
   def withdraw

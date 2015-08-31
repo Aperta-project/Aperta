@@ -5,6 +5,7 @@ describe CommentsController do
   let(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: user) }
   let(:phase) { paper.phases.first }
   let(:user) { create(:user, tasks: []) }
+  let(:admin) { create(:user, site_admin: true) }
 
   let(:task) { create(:task, phase: phase, participants: [user], title: "Task", role: "admin") }
   before { sign_in user }
@@ -12,9 +13,8 @@ describe CommentsController do
   describe 'POST create' do
     subject(:do_request) do
       xhr :post, :create, format: :json,
-        comment: {commenter_id: user.id,
-                  body: "My comment",
-                  task_id: task.id}
+        comment: { body: "My comment",
+                   task_id: task.id }
     end
 
     context "the user isn't authorized" do
@@ -34,9 +34,8 @@ describe CommentsController do
           expect {
             xhr :post, :create,
             format: :json,
-            comment: {commenter_id: user.id,
-                      body: "",
-                      task_id: task.id}
+            comment: { body: "",
+                       task_id: task.id }
           }.to_not change { Comment.count }
         end
       end
@@ -48,6 +47,20 @@ describe CommentsController do
           expect(user.tasks).to_not include(task)
           do_request
           expect(user.reload.tasks).to include(task)
+        end
+      end
+
+      describe "user mentions a super-admin" do
+        include ActiveJob::TestHelper
+
+        it "sends 1 email" do
+          comment = { body: "A super-admin at-mention: @#{admin.username}",
+                      task_id: task.id }
+
+          perform_enqueued_jobs do
+            xhr :post, :create, format: :json, comment: comment
+            expect(unread_emails_for(admin.email).length).to eq 1
+          end
         end
       end
 

@@ -61,6 +61,26 @@ export default Ember.Component.extend({
   **/
   prompt: null,
 
+  /**
+   *  Will allow the prompt to be selected to clear selection
+   *
+   *  @property allowDeselect
+   *  @type Boolean
+   *  @default false
+   *  @requires prompt
+   *  @optional
+  **/
+  allowDeselect: false,
+
+  /**
+   *  @property _promptDisabled
+   *  @requires allowDeselect
+   *  @private
+  **/
+  _promptDisabled: Ember.computed('allowDeselect', function() {
+    return this.get('allowDeselect') ? null : true;
+  }),
+
   optionValuePath: null,
   optionLabelPath: null,
   action: Ember.K, // action to fire on change
@@ -90,12 +110,17 @@ export default Ember.Component.extend({
     const selectEl = this.$()[0];
     const selectedIndex = selectEl.selectedIndex;
     const content = this.get('content');
+    const hasPrompt = !!this.get('prompt');
+    let selection;
 
     // decrement index by 1 if we have a prompt
-    const hasPrompt = !!this.get('prompt');
     const contentIndex = hasPrompt ? selectedIndex - 1 : selectedIndex;
 
-    const selection = content[contentIndex];
+    if(hasPrompt && selectedIndex === 0) {
+      // leave selection as undefined
+    } else {
+      selection = content[contentIndex];
+    }
 
     // set the local, shadowed selection to avoid leaking
     // changes to `selection` out via 2-way binding

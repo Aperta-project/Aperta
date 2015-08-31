@@ -27,12 +27,5 @@ export default Ember.Mixin.create(RedirectsIfEditable, {
 
   saveTitleChanges: on('willDestroyElement', function() {
     this.timeoutSave();
-  }),
-
-  actions: {
-    submit() {
-      this.saveEditorChanges();
-      this.get('controller').send('confirmSubmitPaper');
-    }
-  }
+  })
 });

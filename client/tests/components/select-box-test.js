@@ -107,12 +107,12 @@ test('it displays a placeholder', function(assert) {
   assert.expect(4);
 
   let name = this.get('people.lastObject').name;
-  let placeholderText = 'Please select a person';
+  let placeholderText = 'Select a person';
 
   this.render(hbs`
     {{#select-box items=people
                   selectedItem=selectedPerson
-                  placeholder="Please select a person"
+                  placeholder="Select a person"
                   allowDeselect=true
                   makeSelection=(action "selectPerson")
                   clearSelection=(action "clearPerson")

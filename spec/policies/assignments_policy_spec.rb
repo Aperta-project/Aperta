@@ -14,6 +14,7 @@ describe AssignmentsPolicy do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
 
     it "can modify everything" do
+      expect(policy.can_manage_manuscript?).to be(true)
       expect(policy.index?).to be(true)
       expect(policy.create?).to be(true)
       expect(policy.destroy?).to be(true)
@@ -24,6 +25,7 @@ describe AssignmentsPolicy do
     let(:user) { FactoryGirl.create(:user) }
 
     it "can modify everything" do
+      expect(policy.can_manage_manuscript?).to be(false)
       expect(policy.index?).to be(false)
       expect(policy.create?).to be(false)
       expect(policy.destroy?).to be(false)
@@ -38,6 +40,7 @@ describe AssignmentsPolicy do
     end
 
     it "can modify everything" do
+      expect(policy.can_manage_manuscript?).to be(true)
       expect(policy.index?).to be(true)
       expect(policy.create?).to be(true)
       expect(policy.destroy?).to be(true)

@@ -1,4 +1,4 @@
-class AddAuthorsOverlay < CardOverlay
+class AuthorsOverlay < CardOverlay
   def add_author(author)
     find(".button-primary", text: "ADD A NEW AUTHOR").click
     group = find('.add-author-form')
@@ -23,6 +23,7 @@ class AddAuthorsOverlay < CardOverlay
   end
 
   private
+
   def fill_in_author_form(author)
     page.find(".add-author-form input.author-first").set(author[:first_name])
     page.find(".add-author-form input.author-middle").set(author[:middle_initial])

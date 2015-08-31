@@ -1,4 +1,5 @@
 require 'support/sidekiq_helper_methods'
+require 'support/wait_for_ajax'
 
 class ContentNotSynchronized < StandardError; end
 #
@@ -7,6 +8,8 @@ class ContentNotSynchronized < StandardError; end
 class PageFragment
   include RSpec::Matchers
   include SidekiqHelperMethods
+  extend WaitForAjax
+  include WaitForAjax
 
   attr_reader :element
 

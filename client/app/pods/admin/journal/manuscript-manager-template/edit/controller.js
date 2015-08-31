@@ -96,7 +96,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       this.deleteRecord(taskTemplate);
     },
 
-    savePhase(phase){
+    savePhase(){
       this.set('dirty', true);
     },
 

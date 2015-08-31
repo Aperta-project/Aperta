@@ -14,8 +14,6 @@ PaperEditRoute = AuthorizedRoute.extend
   cardOverlayService: Ember.inject.service('card-overlay'),
   fromSubmitOverlay: false
 
-  fromSubmitOverlay: false
-
   model: ->
     paper = @modelFor('paper')
     editorInit = Ember.RSVP.Promise.resolve()

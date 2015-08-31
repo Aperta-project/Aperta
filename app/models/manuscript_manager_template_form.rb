@@ -29,7 +29,7 @@ class ManuscriptManagerTemplateForm
 
   def set_task_templates(params)
     return if params.nil?
-    params.map{|param| TaskTemplate.new param}
+    params.map { |param| TaskTemplate.new param }
   end
 
 end

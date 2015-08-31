@@ -26,7 +26,11 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   },
 
   saveTemplate(transition){
-    this.get('model').save()
+    this.get('model').save().then(() => {
+      this.successfulSave(transition);
+    }, (response) => {
+      this.displayValidationErrorsFromResponse(response);
+    });
   },
 
   successfulSave(transition){
@@ -70,7 +74,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       this.get('model.phaseTemplates').forEach(function(phaseTemplate) {
         if (phaseTemplate.get('position') >= position) {
           phaseTemplate.incrementProperty('position');
-        };
+        }
       });
 
       this.store.createRecord('phaseTemplate', {

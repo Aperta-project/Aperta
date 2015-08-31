@@ -18,7 +18,8 @@ export default Ember.Mixin.create({
       recordsToDelete.forEach((record) => {
         record.deleteRecord();
       });
-    });
+    }, (response) => {});
+
     return promise;
   }
 });

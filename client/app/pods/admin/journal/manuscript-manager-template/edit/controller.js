@@ -31,7 +31,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   },
 
   successfulSave(transition){
-    this.reset();
+    this.resetProperties();
     if (transition) {
       this.transitionToRoute(transition);
     }else{
@@ -39,7 +39,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     }
   },
 
-  reset(){
+  resetProperties(){
     this.setProperties({
       editMode: false,
       dirty: false,
@@ -111,13 +111,13 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     rollback(){
       if (this.get('model.isNew')){
         this.get('model').deleteRecord();
-        this.reset();
+        this.resetProperties();
       } else {
         this.store.unloadAll('taskTemplate');
         this.store.unloadAll('phaseTemplate');
         this.get('model').rollback();
         this.get('model').reload().then(() => {
-          this.reset();
+          this.resetProperties();
         });
       }
     }

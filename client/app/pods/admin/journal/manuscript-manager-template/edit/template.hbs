@@ -2,11 +2,11 @@
   <div id="manuscript-manager">
     <div class="full-height">
       <div class="paper-type-form">
-        {{#if editMode}}
+        {{#if editingMmtName}}
           {{input value=model.paperType placeholder="Paper Type" class="edit-paper-type-field"}}
           {{error-message message=validationErrors.paperType classNames="mmt-edit-error-message"}}
         {{else}}
-          <div class="paper-type-name" {{action "toggleEditMode"}}>
+          <div class="paper-type-name" {{action "editMmtName"}}>
             {{model.paperType}}
             <span class="fa fa-pencil"></span>
           </div>

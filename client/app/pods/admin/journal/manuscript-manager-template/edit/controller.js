@@ -3,12 +3,12 @@ import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 export default Ember.Controller.extend(ValidationErrorsMixin, {
   dirty: false,
-  editMode: false,
+  editingMmtName: false,
   positionSort: ["position:asc"],
   journal: Ember.computed.alias('model.journal'),
   phaseTemplates: Ember.computed.alias('model.phaseTemplates'),
   sortedPhaseTemplates: Ember.computed.sort('phaseTemplates', 'positionSort'),
-  showSaveButton: Ember.computed.or('dirty', 'editMode'),
+  showSaveButton: Ember.computed.or('dirty', 'editingMmtName'),
 
   saveTemplate(transition){
     this.get('model').save().then(() => {
@@ -29,17 +29,14 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   },
 
   resetProperties(){
-    this.setProperties({
-      editMode: false,
-      dirty: false
-    });
+    this.setProperties({ editingMmtName: false, dirty: false });
   },
 
   actions: {
 
-    toggleEditMode(){
+    editMmtName(){
       this.clearAllValidationErrors();
-      this.toggleProperty('editMode');
+      this.set('editingMmtName', true);
     },
 
     changeTaskPhase(taskTemplate, targetPhaseTemplate){
@@ -86,7 +83,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
 
     saveTemplateOnClick(transition){
 
-      if (this.get('dirty') || this.get('editMode')) {
+      if (this.get('dirty') || this.get('editingMmtName')) {
         this.saveTemplate(transition);
       } else {
         this.send('cancel');

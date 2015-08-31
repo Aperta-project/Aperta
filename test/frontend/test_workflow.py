@@ -46,7 +46,6 @@ class ApertaWorkflowTest(FrontEndTest):
     workflow_page = self._go_to_workflow()
     # GET URL
     time.sleep(2)
-    #driver = self.getDriver()
     workflow_url = self._driver.current_url
     # Count cards in first column
     start_cards = workflow_page.count_cards_first_column()

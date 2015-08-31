@@ -52,6 +52,18 @@ class EditPaperTest(FrontEndTest):
 
 
     time.sleep(1)
+    return self
+
+  def _test_paper_download_buttons(self):
+    """
+    Placeholder for a function that implement APERTA-45
+    """
+    # url = self._driver.current_url
+    # download_url = '/'.join(url.split('/')[:-1]) + '/download.pdf'
+
+    return self
+
+
 
 if __name__ == '__main__':
   FrontEndTest._run_tests_randomly()

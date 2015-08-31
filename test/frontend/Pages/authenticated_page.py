@@ -47,7 +47,7 @@ class AuthenticatedPage(PlosPage):
     self._nav_menu = (By.CLASS_NAME, 'navigation')
     self._version_link = (By.CLASS_NAME, 'versions-link')
     self._collaborators_link = (By.CLASS_NAME, 'contributors-link')
-    self._downloads_link = (By.CLASS_NAME, 'downloads-link')
+    self._downloads_link = (By.XPATH, ".//div[contains(@class, 'downloads-link')]/div")
     self._recent_activity = (By.CLASS_NAME, 'activity-link')
     self._discussion_link = (By.CLASS_NAME, 'discussions-link')
     self._workflow_link = (By.CLASS_NAME, 'workflow-link')
@@ -61,7 +61,27 @@ class AuthenticatedPage(PlosPage):
     self._add_collaborators_modal_support_select = (By.CLASS_NAME, 'collaborator-select')
     self._add_collaborators_modal_cancel = (By.XPATH, "//div[@class='overlay-action-buttons']/a")
     self._add_collaborators_modal_save = (By.XPATH, "//div[@class='overlay-action-buttons']/button")
-    self._add_collaborators_modal_close = (By.CLASS_NAME, 'overlay-close-x')
+    self._modal_close = (By.CLASS_NAME, 'overlay-close-x')
+    self._recent_activity_modal = (By.CLASS_NAME, 'activity-overlay')
+    self._recent_activity_modal_title = (By.CSS_SELECTOR, 'h1.feedback-overlay-thanks')
+    self._discussion_container = (By.CLASS_NAME, 'liquid-container')
+    self._discussion_container_title = (By.CSS_SELECTOR, 'div.discussions-index-header h1')    
+    self._discussion_create_new_btn = (By.CSS_SELECTOR, 'div.discussions-index-header a')
+    self._create_new_topic = (By.CSS_SELECTOR, 'h1.discussions-show-title')
+    self._topic_title = (By.CSS_SELECTOR, 'div.inset-form-control')
+    self._create_topic_btn = (By.CSS_SELECTOR, 'div.discussions-show-content button')
+    self._create_topic_cancel = (By.CSS_SELECTOR, 'span.sheet-toolbar-button')
+    self._sheet_close_x = (By.CLASS_NAME, 'sheet-close-x')
+    # Inside more button
+    self._appeal_link = (By.CLASS_NAME, 'appeal-link')
+    self._withdraw_link = (By.CLASS_NAME, 'withdraw-link')
+    self._withdraw_modal = (By.CLASS_NAME, 'overlay--fullscreen')
+    self._exclamation_circle = (By.CLASS_NAME, 'fa-exclamation-circle')
+    self._withdraw_modal_title = (By.CSS_SELECTOR, 'h1')    
+    self._withdraw_modal_text = (By.CSS_SELECTOR, 'div.paper-withdraw-wrapper p')
+    self._withdraw_modal_yes = (By.XPATH, '//div[@class="pull-right"]/button[1]')
+    self._withdraw_modal_no = (By.XPATH, '//div[@class="pull-right"]/button[2]')
+
         # active
 
   # POM Actions
@@ -166,18 +186,19 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('color') == 'rgba(153, 153, 153, 1)'
 
   @staticmethod
-  def validate_modal_title_style(title):
+  def validate_modal_title_style(title, font_size='14px', font_weight='400', 
+                                 line_height='20px', color='rgba(51, 51, 51, 1)'):
     """
     Ensure consistency in rendering page and overlay main headings across the application
     :param title: title to validate
     :return: None
-    TODO: Leave this method until fixed #
+    TODO: Leave this method with parameters until fixed lack of styleguide for this
     """
     assert application_typeface in title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == '14px'
-    assert title.value_of_css_property('font-weight') == '400'
-    assert title.value_of_css_property('line-height') == '20px'
-    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+    assert title.value_of_css_property('font-size') == font_size
+    assert title.value_of_css_property('font-weight') == font_weight
+    assert title.value_of_css_property('line-height') == line_height
+    assert title.value_of_css_property('color') == color
 
     
   @staticmethod
@@ -360,11 +381,31 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-size') == '14px'
     assert button.value_of_css_property('font-weight') == '400'
     assert button.value_of_css_property('line-height') == '20px'
+    print "****c", button.value_of_css_property('color')
     assert button.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
+    print "***BG", button.value_of_css_property('background-color')
     assert button.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
     assert button.value_of_css_property('text-align') == 'center'
     assert button.value_of_css_property('text-transform') == 'uppercase'
     return None
+
+
+  @staticmethod
+  def validate_secondary_grey_small_button_modal_style(button):
+    """
+    Ensure consistency in rendering page and overlay text buttons across the application
+    :param button: button to validate
+    :return: None
+    TODO: Find out why I see the commented values in the browser
+    """
+    assert application_typeface in button.value_of_css_property('font-family')
+    assert button.value_of_css_property('font-size') == '14px'
+    assert button.value_of_css_property('font-weight') == '400'
+    assert button.value_of_css_property('line-height') == '20px'
+    assert button.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
+    assert button.value_of_css_property('background-color') == 'rgba(220, 220, 220, 1)'
+    assert button.value_of_css_property('text-align') == 'center'
+    assert button.value_of_css_property('text-transform') == 'uppercase'
 
 
   # Form Styles ==============================
@@ -424,3 +465,29 @@ class AuthenticatedPage(PlosPage):
     assert link.value_of_css_property('background-color') == 'transparent'    
     assert link.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     assert link.value_of_css_property('font-weight') == '400'
+
+  @staticmethod
+  def validate_modal_link_style(link):
+    """
+    Ensure consistency in rendering links across the application
+    :param link: link to validate
+    """
+    assert application_typeface in link.value_of_css_property('font-family')
+    assert link.value_of_css_property('font-size') == '14px'
+    assert link.value_of_css_property('line-height') == '20px'
+    assert link.value_of_css_property('background-color') == 'transparent'    
+    assert link.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
+    assert link.value_of_css_property('font-weight') == '400'
+
+  @staticmethod
+  def validate_p_style(text):
+    """
+    Ensure consistency in rendering paragraph text across the application
+    :param text: text to validate
+    """
+    assert application_typeface in text.value_of_css_property('font-family')
+    assert text.value_of_css_property('font-size') == '14px'
+    assert text.value_of_css_property('line-height') == '20px'
+    assert text.value_of_css_property('background-color') == 'transparent'    
+    assert text.value_of_css_property('color') == 'rgba(0, 0, 0, 1)'
+    assert text.value_of_css_property('font-weight') == '400'

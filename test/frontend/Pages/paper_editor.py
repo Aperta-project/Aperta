@@ -44,19 +44,31 @@ class PaperEditorPage(AuthenticatedPage):
     self._pi_icon = (By.XPATH, ".//div[contains(@class, 'insert')]/a[4]")
     self._cite_icon = (By.CSS_SELECTOR, 'div.dropdown-toggle')
     self._diff_div = (By.CSS_SELECTOR, 'div.html-diff')
-
+    # Download formats
+    self._pdf_link = (By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[3]")
+    self._epub_link = ((By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[2]"))
+    self._docx_link = ((By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[1]"))
 
 
   # POM Actions
   def validate_page_elements_styles_functions(self, username=''):
-    ##title = self._get(self._paper_tracker_title)
-    self._get(self._collaborators_link)
-    self._get(self._downloads_link)
-    self._get(self._recent_activity)
-    self._get(self._discussion_link)
+    """
+    """
     self._get(self._workflow_link)
-    self._get(self._more_link) 
-    # Check menu icons
+    # Check editor menu icons
+    self._check_menu_icons()
+    # Check application icons
+    self._check_version_btn()
+    self._check_collaborator()
+    self._check_download_btns()
+    self._check_recent_activity()
+    self._check_discussion()
+    self._check_more_btn()
+
+    
+  def _check_menu_icons(self):
+    """
+    """
     self._get(self._undo_icon)
     self._get(self._repeat_icon)
     self._get(self._type_select)
@@ -83,7 +95,10 @@ class PaperEditorPage(AuthenticatedPage):
     self._get(self._book_icon)
     assert self._get(self._pi_icon).text == unicode('π2','utf-8')
     assert self._get(self._cite_icon).text == 'Cite'
-    # Test version button
+
+  def _check_version_btn(self):
+    """ Test version button
+    """
     version_btn = self._get(self._version_link)
     version_btn.click()
     self._get(self._diff_div)
@@ -91,6 +106,10 @@ class PaperEditorPage(AuthenticatedPage):
     assert 'Now viewing:' in bar_items[0].text
     assert 'Compare With:' in bar_items[1].text
     version_btn.click()
+
+  def _check_collaborator(self):
+    """
+    """
     collaborator_btn = self._get(self._collaborators_link)
     collaborator_btn.click()
     add_collaborators = self._get(self._add_collaborators_label)
@@ -109,9 +128,103 @@ class PaperEditorPage(AuthenticatedPage):
     self.validate_default_link_style(cancel)
     save = self._get(self._add_collaborators_modal_save)
     self.validate_green_backed_button_style(save)
-    close_icon_overlay = self._get(self._add_collaborators_modal_close)
+    close_icon_overlay = self._get(self._modal_close)
     # TODO: Change following line after bug #102078080 is solved
     assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
     assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
     assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-    
+    close_icon_overlay.click()
+
+  def _check_download_btns(self):
+    """
+    """
+    downloads_link = self._get(self._downloads_link)
+    downloads_link.click()
+    pdf_link = self._get(self._pdf_link)
+    assert 'download.pdf' in pdf_link.get_attribute('href')
+    epub_link = self._get(self._epub_link)
+    assert 'download.epub' in epub_link.get_attribute('href')
+    assert '#' in self._get(self._docx_link).get_attribute('href')
+
+  def _check_recent_activity(self):
+    """ recent activity
+    """
+    recent_activity = self._get(self._recent_activity)
+    recent_activity.click()
+    self._get(self._recent_activity_modal)
+    modal_title = self._get(self._recent_activity_modal_title)
+    self.validate_application_h1_style(modal_title)
+    close_icon_overlay = self._get(self._modal_close)
+    # TODO: Change following line after bug #102078080 is solved
+    assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
+    assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
+    assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    close_icon_overlay.click()
+
+  def _check_discussion(self):
+    """
+    """
+    discussion_link = self._get(self._discussion_link)
+    discussion_link.click()
+    discussion_container = self._get(self._discussion_container)
+    discussion_container_title = self._get(self._discussion_container_title)
+    # Note: The following method is parametrized since we don't have a guide for modals
+    self.validate_modal_title_style(discussion_container_title, '36px', '500', '39.6px')
+    assert 'Discussions' in discussion_container_title.text
+    discussion_create_new_btn = self._get(self._discussion_create_new_btn)
+    self.validate_secondary_green_button_style(discussion_create_new_btn)
+    discussion_create_new_btn.click()
+    create_new_topic = self._get(self._create_new_topic)
+    assert 'Create New Topic' in create_new_topic.text
+    # TODO: Styles for cancel since is not in the style guide
+    cancel = self._get(self._create_topic_cancel)
+    assert application_typeface in cancel.value_of_css_property('font-family')
+    assert cancel.value_of_css_property('font-size') == '14px'
+    assert cancel.value_of_css_property('line-height') == '60px'
+    assert cancel.value_of_css_property('background-color') == 'transparent'
+    assert cancel.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    assert cancel.value_of_css_property('font-weight') == '400'
+    # TODO: Styles for create_new_topic since is not in the style guide
+    titles = self._gets(self._topic_title)
+    assert 'Topic Title' == titles[0].text
+    assert 'Message' == titles[1].text
+    create_topic_btn = self._get(self._create_topic_btn)
+    self.validate_green_backed_button_style(create_topic_btn)
+    close_icon_overlay = self._get(self._sheet_close_x)
+    # TODO: Change following line after bug #102078080 is solved
+    assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px', '42px')
+    assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
+    assert close_icon_overlay.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    close_icon_overlay.click()
+
+  def _check_more_btn(self):
+    """
+    """
+    more_btn = self._get(self._more_link)
+    more_btn.click()
+    self._get(self._appeal_link)
+    withdraw_link = self._get(self._withdraw_link)
+    withdraw_link.click()
+    self._get(self._withdraw_modal)
+    self._get(self._exclamation_circle)
+    modal_title = self._get(self._withdraw_modal_title)
+    assert 'Are you sure?' == modal_title.text
+    # TODO: Style parametrized due to lack of styleguide for modals
+    self.validate_modal_title_style(modal_title, '48px', line_height='52.8px', 
+                                    font_weight='500', color='rgba(119, 119, 119, 1)')
+    withdraw_modal_text = self._get(self._withdraw_modal_text)
+    self.validate_p_style(withdraw_modal_text)
+    assert ('Withdrawing your manuscript will withdraw it from consideration.\n'
+            'Please provide your reason for withdrawing this manuscript.' in withdraw_modal_text.text)
+    yes_btn = self._get(self._withdraw_modal_yes)
+    assert 'YES, WITHDRAW' == yes_btn.text
+    no_btn = self._get(self._withdraw_modal_no)
+    assert "NO, I'M STILL WORKING" == no_btn.text
+    self.validate_modal_link_style(yes_btn)
+    self.validate_secondary_grey_small_button_modal_style(no_btn)
+    close_icon_overlay = self._get(self._modal_close)
+    # TODO: Change following line after bug #102078080 is solved
+    assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
+    assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
+    assert close_icon_overlay.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
+    close_icon_overlay.click()

@@ -91,11 +91,11 @@ HERE
   end
 
   def body
-    find('.paper-body .ve-ce-documentNode').text
+    find('.paper-body .ve-ce-documentNode')
   end
 
   def versioned_body
-    find('#paper-body').text
+    find('#paper-body')
   end
 
   def has_body_text?(text)
@@ -103,12 +103,11 @@ HERE
   end
 
   def journal
-    find(:css, '.paper-journal').text
+    find(:css, '.paper-journal')
   end
 
   def title
-    find('#paper-title .ve-ce-documentNode').text
-
+    find('#paper-title .ve-ce-documentNode')
   end
 
   def cards
@@ -120,13 +119,11 @@ HERE
   end
 
   def paper_type
-    select = find('#paper_paper_type')
-    select.find("option[value='#{select.value}']").text
+    find('#paper_paper_type').find("option[value='#{select.value}']")
   end
 
   def paper_type=(value)
-    select = find('#paper_paper_type')
-    select.select value
+    find('#paper_paper_type').select value
   end
 
   def start_editing

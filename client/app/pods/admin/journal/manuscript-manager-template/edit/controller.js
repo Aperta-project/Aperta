@@ -8,19 +8,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   journal: Ember.computed.alias('model.journal'),
   phaseTemplates: Ember.computed.alias('model.phaseTemplates'),
   sortedPhaseTemplates: Ember.computed.sort('phaseTemplates', 'positionSort'),
-  deletedRecords: null,
   showSaveButton: Ember.computed.or('dirty', 'editMode'),
-
-  deleteRecord(record){
-    let deleted = this.get('deletedRecords') || [];
-    deleted.addObject(record);
-    record.deleteRecord();
-
-    this.setProperties({
-      deletedRecords: deleted,
-      dirty: true
-    });
-  },
 
   saveTemplate(transition){
     this.get('model').save().then(() => {
@@ -43,8 +31,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   resetProperties(){
     this.setProperties({
       editMode: false,
-      dirty: false,
-      deletedRecords: []
+      dirty: false
     });
   },
 
@@ -84,16 +71,13 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       this.set('dirty', true);
     },
 
-    removePhase(phaseTemplate){
-      this.deleteRecord(phaseTemplate);
+    removeRecord(record){
+      record.deleteRecord();
+      this.set('dirty', true);
     },
 
     rollbackPhase(phase, oldName){
       phase.set('name', oldName);
-    },
-
-    removeTask(taskTemplate){
-      this.deleteRecord(taskTemplate);
     },
 
     savePhase(){

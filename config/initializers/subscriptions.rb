@@ -8,7 +8,7 @@ EVENTS = {
   'paper:resubmitted' => [Paper::Resubmitted::EmailEditor],
 
   'paper_role:created' => [PaperRole::Created::EventStream::NotifyPaperMembers, PaperRole::Created::EventStream::NotifyAssignee],
-  'paper_role:destroyed' => [PaperRole::Destroyed::EventStream::NotifyPaperMembers],
+  'paper_role:destroyed' => [PaperRole::Destroyed::EventStream::NotifyPaperMembers, PaperRole::Destroyed::EventStream::NotifyAssignee],
 
   'task:created' => [Task::Created::EventStream],
   'task:updated' => [Task::Updated::EventStream],

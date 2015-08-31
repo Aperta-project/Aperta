@@ -35,10 +35,10 @@ class EventStreamSubscriber
     TahiPusher::ChannelName.build(target: TahiPusher::Config::SYSTEM_CHANNEL, access: TahiPusher::ChannelName::PUBLIC)
   end
 
-  def destroyed_payload
+  def destroyed_payload(model=record)
     {
-      type: record.class.base_class.name.demodulize.tableize,
-      ids: [record.id]
+      type: model.class.base_class.name.demodulize.tableize,
+      ids: [model.id]
     }
   end
 

@@ -158,8 +158,9 @@ class Task < ActiveRecord::Base
   end
 
   def previously_completed?
-    previous_changes['completed'][0]
+    previous_changes['completed'] and previous_changes['completed'][0]
   end
+
   def newly_complete?
     not previously_completed? and completed
   end

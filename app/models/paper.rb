@@ -139,16 +139,14 @@ class Paper < ActiveRecord::Base
   end
 
   def download_body
-    unless body.nil?
+    if body
       "#{body}#{download_supporting_information}"
     end
   end
 
   def download_supporting_information
-    unless supporting_information_files.any?
-      return ""
-    end
-
+    return if supporting_information_files.empty?
+    
     supporting_information = "<h2>Supporting Information</h2>"
     supporting_information_files.each do |file|
       if file.preview_src

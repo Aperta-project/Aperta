@@ -144,20 +144,6 @@ class Paper < ActiveRecord::Base
     end
   end
 
-  def download_supporting_information
-    return if supporting_information_files.empty?
-    
-    supporting_information = "<h2>Supporting Information</h2>"
-    supporting_information_files.each do |file|
-      if file.preview_src
-        supporting_information.concat "<a href='#{file.src}'><img src='#{file.preview_src}'></a></p>"
-      end
-      supporting_information.concat "<a href='#{file.src}'>#{file.filename}</a></p>"
-    end
-
-    supporting_information
-  end
-
   def version_string
     latest_version.version_string
   end
@@ -346,5 +332,20 @@ class Paper < ActiveRecord::Base
   def set_submitting_user_and_touch!(submitting_user) # rubocop:disable Style/AccessorMethodName
     latest_version.update!(submitting_user: submitting_user)
     latest_version.touch
+  end
+
+  def download_supporting_information
+    return if supporting_information_files.empty?
+
+    supporting_information = "<h2>Supporting Information</h2>"
+    supporting_information_files.each do |file|
+
+      if file.preview_src
+        supporting_information.concat "<p><a href='#{CGI.escape_html(file.src)}'><img src='#{CGI.escape_html(file.preview_src)}'></a></p>"
+      end
+      supporting_information.concat "<p><a href='#{CGI.escape_html(file.src)}'>#{CGI.escape_html(file.filename)}</a></p>"
+    end
+
+    supporting_information
   end
 end

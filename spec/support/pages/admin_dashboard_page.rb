@@ -122,7 +122,7 @@ class EditModal < PageFragment
   end
 
   def reset_password_status
-    find('.reset-password .success').text
+    find('.reset-password .success')
   end
 end
 

@@ -35,7 +35,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     if (transition) {
       this.transitionToRoute(transition);
     }else{
-      let defaultRoute = 'admin.journal.manuscript_manager_template.edit'
+      let defaultRoute = 'admin.journal.manuscript_manager_template.edit';
       this.transitionToRoute(defaultRoute, this.get('model'));
     }
   },

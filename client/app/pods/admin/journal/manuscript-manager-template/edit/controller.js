@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import Utils from 'tahi/services/utils';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 export default Ember.Controller.extend(ValidationErrorsMixin, {
@@ -104,11 +103,11 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       if (this.get('dirty') || this.get('editMode')) {
         this.saveTemplate(transition);
       } else {
-        this.send('rollback');
+        this.send('cancel');
       }
     },
 
-    rollback(){
+    cancel(){
       if (this.get('model.isNew')){
         this.get('model').deleteRecord();
         this.resetProperties();

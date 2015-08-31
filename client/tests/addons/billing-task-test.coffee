@@ -69,9 +69,7 @@ module "Integration: Billing",
 
 test "Viewing card", (assert) ->
   visit "/papers/#{currentPaper.id}/edit"
-  click ":contains(Financial Info)"
-  .then ->
+  click(".card:contains(Financial Info)").then ->
     assert.equal find(".overlay-main-work h1").text().trim(), "Publication Fees"
-  click ".select2-choice"
-  .then ->
+  click(".select2-choice").then ->
     assert.ok Ember.$(".select2-result").length > 0

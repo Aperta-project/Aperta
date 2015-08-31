@@ -1,7 +1,8 @@
 import Ember from 'ember';
-import RESTless from 'tahi/services/rest-less';
 
 export default Ember.Service.extend({
+  restless: Ember.inject.service('restless'),
+
   loaded: false,
   loading: false,
   error: false,
@@ -22,7 +23,7 @@ export default Ember.Service.extend({
     if(!Ember.isEmpty(this.get('_data'))) { return; }
     this._didStartLoading();
 
-    RESTless.get('/api/countries').then((response)=> {
+    this.get('restless').get('/api/countries').then((response)=> {
       this.set('_data', response.countries);
       this._didLoad();
     }, ()=> {

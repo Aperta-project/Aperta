@@ -9,10 +9,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   journal: Ember.computed.alias('model.journal'),
   sortedPhaseTemplates: Ember.computed.sort('model.phaseTemplates', 'positionSort'),
   deletedRecords: null,
-
-  showSaveButton: Ember.computed('dirty', 'editMode', function(){
-    return this.get('dirty') || this.get('editMode');
-  }),
+  showSaveButton: Ember.computed.or('dirty', 'editMode'),
 
   deleteRecord(record){
     let deleted = this.get('deletedRecords') || [];

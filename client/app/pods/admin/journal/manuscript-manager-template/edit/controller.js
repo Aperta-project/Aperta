@@ -2,13 +2,13 @@ import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 export default Ember.Controller.extend(ValidationErrorsMixin, {
-  dirty: false,
+  pendingChanges: false,
   editingMmtName: false,
   positionSort: ["position:asc"],
   journal: Ember.computed.alias('model.journal'),
   phaseTemplates: Ember.computed.alias('model.phaseTemplates'),
   sortedPhaseTemplates: Ember.computed.sort('phaseTemplates', 'positionSort'),
-  showSaveButton: Ember.computed.or('dirty', 'editingMmtName'),
+  showSaveButton: Ember.computed.or('pendingChanges', 'editingMmtName'),
 
   saveTemplate(transition){
     this.get('model').save().then(() => {
@@ -29,7 +29,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   },
 
   resetProperties(){
-    this.setProperties({ editingMmtName: false, dirty: false });
+    this.setProperties({ editingMmtName: false, pendingChanges: false });
   },
 
   actions: {
@@ -48,7 +48,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       });
 
       targetPhaseTemplate.get('taskTemplates').pushObject(taskTemplate);
-      this.set('dirty', true);
+      this.set('pendingChanges', true);
     },
 
     addPhase(position){
@@ -65,12 +65,12 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
         position: position
       });
 
-      this.set('dirty', true);
+      this.set('pendingChanges', true);
     },
 
     removeRecord(record){
       record.deleteRecord();
-      this.set('dirty', true);
+      this.set('pendingChanges', true);
     },
 
     rollbackPhase(phase, oldName){
@@ -78,12 +78,12 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     },
 
     savePhase(){
-      this.set('dirty', true);
+      this.set('pendingChanges', true);
     },
 
     saveTemplateOnClick(transition){
 
-      if (this.get('dirty') || this.get('editingMmtName')) {
+      if (this.get('pendingChanges') || this.get('editingMmtName')) {
         this.saveTemplate(transition);
       } else {
         this.send('cancel');

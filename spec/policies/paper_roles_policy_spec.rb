@@ -1,22 +1,21 @@
 require 'rails_helper'
 
-describe ManuscriptManagersPolicy do
-  let(:policy) { ManuscriptManagersPolicy.new(current_user: user, paper: paper) }
+describe PaperRolesPolicy do
+  let(:policy) { PaperRolesPolicy.new(current_user: user, paper: paper) }
+  let(:user){ raise NotImplementError, "Must provide :user"}
 
-  context "admin" do
+  context "site admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
     let(:paper) { FactoryGirl.create(:paper) }
 
-    it { expect(policy.show?).to be(true) }
-    it { expect(policy.can_manage_manuscript?).to be(true) }
+    it { expect(policy.index?).to be(true) }
   end
 
   context "non admin" do
     let(:user) { FactoryGirl.create(:user) }
     let(:paper) { FactoryGirl.create(:paper) }
 
-    it { expect(policy.show?).to be(false) }
-    it { expect(policy.can_manage_manuscript?).to be(false) }
+    it { expect(policy.index?).to be(false) }
   end
 
   context "user with manuscript manager role who is assigned to a paper task" do
@@ -30,8 +29,7 @@ describe ManuscriptManagersPolicy do
       task.participants << user
     end
 
-    it { expect(policy.show?).to be(true) }
-    it { expect(policy.can_manage_manuscript?).to be(true) }
+    it { expect(policy.index?).to be(true) }
   end
 
   context "user with manuscript manager role who is assigned to the paper" do
@@ -45,8 +43,7 @@ describe ManuscriptManagersPolicy do
       assign_paper_role(paper, user, PaperRole::EDITOR)
     end
 
-    it { expect(policy.show?).to be(true) }
-    it { expect(policy.can_manage_manuscript?).to be(true) }
+    it { expect(policy.index?).to be(true) }
   end
 
   context "user with manuscript manager role who is not assigned to a paper task" do
@@ -58,8 +55,7 @@ describe ManuscriptManagersPolicy do
       assign_journal_role(paper.journal, user, role)
     end
 
-    it { expect(policy.show?).to be(false) }
-    it { expect(policy.can_manage_manuscript?).to be(false) }
+    it { expect(policy.index?).to be(false) }
   end
 
   context "user with all manuscript managers role" do
@@ -71,7 +67,6 @@ describe ManuscriptManagersPolicy do
       assign_journal_role(paper.journal, user, role.kind)
     end
 
-    it { expect(policy.show?).to be(true) }
-    it { expect(policy.can_manage_manuscript?).to be(true) }
+    it { expect(policy.index?).to be(true) }
   end
 end

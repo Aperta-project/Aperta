@@ -1,4 +1,5 @@
 require 'support/sidekiq_helper_methods'
+require 'support/wait_for_ajax'
 
 class ContentNotSynchronized < StandardError; end
 #
@@ -7,6 +8,8 @@ class ContentNotSynchronized < StandardError; end
 class PageFragment
   include RSpec::Matchers
   include SidekiqHelperMethods
+  extend WaitForAjax
+  include WaitForAjax
 
   attr_reader :element
 
@@ -162,19 +165,15 @@ class PageFragment
 
   private
 
-  def synchronize_content! content
-    unless (session.has_content?(content) ||
-            session.has_content?(content.upcase) ||
-            session.has_content?(content.downcase))
-      raise ContentNotSynchronized.new("Page has no content #{content}")
+  def synchronize_content!(content)
+    unless session.has_content?(Regexp.new(Regexp.escape(content), Regexp::IGNORECASE))
+      fail ContentNotSynchronized, "Page has no content #{content}"
     end
   end
 
-  def synchronize_no_content! content
-    unless (session.has_no_content?(content) ||
-            session.has_no_content?(content.upcase) ||
-            session.has_no_content?(content.downcase))
-      raise ContentNotSynchronized.new("Page expected to not have content \"#{content}\", but it does")
+  def synchronize_no_content!(content)
+    unless session.has_no_content?(Regexp.new(Regexp.escape(content), Regexp::IGNORECASE))
+      fail ContentNotSynchronized, "Page expected to not have content \"#{content}\", but it does"
     end
   end
 end
@@ -215,7 +214,7 @@ class Page < PageFragment
   end
 
   def notice
-    find('p.notice').text
+    find('p.notice')
   end
 
   def navigate_to_dashboard

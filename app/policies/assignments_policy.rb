@@ -1,15 +1,17 @@
 class AssignmentsPolicy < ApplicationPolicy
+  extend Forwardable
+
   require_params :paper
 
-  def index?
-    can_administer_journal? paper.journal
-  end
+  def_delegator :manuscript_managers_policy, :can_manage_manuscript?
 
-  def create?
-    can_administer_journal? paper.journal
-  end
+  alias_method :index?, :can_manage_manuscript?
+  alias_method :create?, :can_manage_manuscript?
+  alias_method :destroy?, :can_manage_manuscript?
 
-  def destroy?
-    can_administer_journal? paper.journal
+  private
+
+  def manuscript_managers_policy
+    @manuscript_managers_policy ||= ManuscriptManagersPolicy.new(current_user: current_user, paper: paper)
   end
 end

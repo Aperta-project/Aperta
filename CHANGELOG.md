@@ -8,7 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Changed
--
+- Update to [Rails 4.2.4](https://github.com/rails/rails/compare/v4.2.3...v4.2.4)
 
 ### Deprecated
 -
@@ -17,7 +17,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Fixed
--
+- Fixed NED integration
+- Fix bug where Site Admin receives 2 emails when being @mentioned in a Comment
 
 ### Security
 -
@@ -31,6 +32,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Reviewers can be invited that are currently not in the system
 - Lock down submission cards when MS is not editable
 - Ability to withdraw a manuscript.
+- Anyone with access to the "Assign Team" card can now assign and un-assign users to a manuscript
 
 ### Changed
 - Upgraded to Ember 1.13 [Aperta Transition Guide](https://github.com/Tahi-project/tahi/wiki/Aperta-Ember-1.13-Transition-Guide)

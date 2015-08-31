@@ -6,7 +6,8 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   editMode: false,
   positionSort: ["position:asc"],
   journal: Ember.computed.alias('model.journal'),
-  sortedPhaseTemplates: Ember.computed.sort('model.phaseTemplates', 'positionSort'),
+  phaseTemplates: Ember.computed.alias('model.phaseTemplates'),
+  sortedPhaseTemplates: Ember.computed.sort('phaseTemplates', 'positionSort'),
   deletedRecords: null,
   showSaveButton: Ember.computed.or('dirty', 'editMode'),
 
@@ -34,7 +35,8 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     if (transition) {
       this.transitionToRoute(transition);
     }else{
-      this.transitionToRoute('admin.journal.manuscript_manager_template.edit', this.get('model'));
+      let defaultRoute = 'admin.journal.manuscript_manager_template.edit'
+      this.transitionToRoute(defaultRoute, this.get('model'));
     }
   },
 
@@ -67,7 +69,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
 
     addPhase(position){
 
-      this.get('model.phaseTemplates').forEach(function(phaseTemplate) {
+      this.get('phaseTemplates').forEach(function(phaseTemplate) {
         if (phaseTemplate.get('position') >= position) {
           phaseTemplate.incrementProperty('position');
         }

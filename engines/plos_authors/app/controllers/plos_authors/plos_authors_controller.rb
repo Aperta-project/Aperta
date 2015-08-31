@@ -7,7 +7,7 @@ module PlosAuthors
 
     def create
       plos_author.save!
-      Activity.author_added! plos_author, user: user
+      Activity.author_added! plos_author, user: current_user
       render json: plos_authors_for(plos_author.paper)
     end
 

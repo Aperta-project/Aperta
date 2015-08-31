@@ -11,16 +11,25 @@ export default Ember.Route.extend(AnimateOverlay, {
       // subscribe to user and system channels
       let userChannelName = `private-user@${ this.currentUser.get('id') }`;
       let pusher = this.get('pusher');
-      pusher.wire(this, userChannelName, ["created", "updated", "destroyed"]);
-      pusher.wire(this, "system", ["destroyed"]);
+      pusher.wire(this, userChannelName, ['created', 'updated', 'destroyed']);
+      pusher.wire(this, 'system', ['destroyed']);
 
-      this.get('restless').authorize(controller, '/api/admin/journals/authorization', 'canViewAdminLinks');
-      this.get('restless').authorize(controller, '/api/user_flows/authorization', 'canViewFlowManagerLink');
+      this.get('restless').authorize(
+        controller,
+        '/api/admin/journals/authorization',
+        'canViewAdminLinks'
+      );
+
+      this.get('restless').authorize(
+        controller,
+        '/api/user_flows/authorization',
+        'canViewFlowManagerLink'
+      );
     }
   },
 
   applicationSerializer: Ember.computed(function() {
-    return this.get('container').lookup("serializer:application");
+    return this.get('container').lookup('serializer:application');
   }),
 
   cleanupAncillaryViews() {
@@ -33,10 +42,13 @@ export default Ember.Route.extend(AnimateOverlay, {
 
   actions: {
     willTransition(transition) {
-      let appController = this.controllerFor('application');
-      let currentRouteController = this.controllerFor(appController.get('currentRouteName'));
+      let currentRouteController = this.controllerFor(
+        this.controllerFor('application').get('currentRouteName')
+      );
+
       if (currentRouteController.get('isUploading')) {
-        if (confirm('You are uploading. Are you sure you want abort uploading?')) {
+        let q = 'You are uploading. Are you sure you want abort uploading?';
+        if (confirm(q)) {
           currentRouteController.send('cancelUploads');
         } else {
           transition.abort();
@@ -48,17 +60,21 @@ export default Ember.Route.extend(AnimateOverlay, {
     },
 
     error(response, transition) {
-      let oldState  = transition.router.oldState;
-      let lastRoute = oldState.handlerInfos.get('lastObject.name');
+      const oldState   = transition.router.oldState;
+      const lastRoute  = oldState.handlerInfos.get('lastObject.name');
+      const targetName = transition.targetName;
+      const prefix     = 'Error in transition';
       let transitionMsg;
 
       if(oldState) {
-        transitionMsg = `Error in transition from ${lastRoute} to #{transition.targetName}`;
+        transitionMsg = `${prefix} from ${lastRoute} to #{targetName}`;
       } else {
-        transitionMsg = `Error in transition into ${transition.targetName}`;
+        transitionMsg = `${prefix} into ${targetName}`;
       }
 
-      this.logError(transitionMsg + '\n' + response.message + '\n' + response.stack + '\n');
+      this.logError(
+        transitionMsg + '\n' + response.message + '\n' + response.stack + '\n'
+      );
 
       transition.abort();
     },
@@ -94,24 +110,24 @@ export default Ember.Route.extend(AnimateOverlay, {
     },
 
     created(payload) {
-      let description = "Pusher: created";
+      let description = 'Pusher: created';
       Utils.debug(description, payload);
       this.store.pushPayload(payload);
     },
 
     updated(payload) {
-      let description = "Pusher: updated";
+      let description = 'Pusher: updated';
       Utils.debug(description, payload);
       this.store.pushPayload(payload);
     },
 
     destroyed(payload) {
-      let description = "Pusher: destroyed";
+      let description = 'Pusher: destroyed';
       Utils.debug(description, payload);
       let type = this.get('applicationSerializer').modelNameFromPayloadKey(payload.type);
       payload.ids.forEach((id) => {
         let record;
-        if (type === "task") {
+        if (type === 'task') {
           record = this.store.findTask(id);
         } else {
           record = this.store.getById(type, id);

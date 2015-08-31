@@ -63,7 +63,10 @@ export default Ember.Controller.extend({
     },
 
     toggleEditable() {
-      this.get('restless').putUpdate(this.get('model'), '/toggle_editable').catch((arg) => {
+      const model = this.get('model');
+      const url   = '/toggle_editable';
+
+      this.get('restless').putUpdate(model, url).catch((arg) => {
         let model   = arg.model;
         let message = (function() {
           switch (arg.status) {

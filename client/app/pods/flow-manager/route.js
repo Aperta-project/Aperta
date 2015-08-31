@@ -35,10 +35,14 @@ export default AuthorizedRoute.extend({
 
   actions: {
     chooseNewFlowManagerColumn() {
-      let controller = this.controllerFor('overlays/chooseNewFlowManagerColumn');
+      const url = '/api/user_flows/potential_flows';
+      const controller = this.controllerFor(
+        'overlays/chooseNewFlowManagerColumn'
+      );
+
       controller.set('isLoading', true);
 
-      this.get('restless').get('/api/user_flows/potential_flows').then(function(data) {
+      this.get('restless').get(url).then(function(data) {
         controller.set('isLoading', false);
         controller.set('flows', data.flows);
       });

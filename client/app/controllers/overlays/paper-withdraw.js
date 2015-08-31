@@ -6,9 +6,11 @@ export default Ember.Controller.extend({
 
   actions: {
     withdraw() {
-      var reason = this.get('model.withdrawalReason');
-      this.get('restless').putUpdate(this.get('model'), '/withdraw', {'reason': reason})
-      .then(()=> {
+      const model = this.get('model');
+      const url   = '/withdraw';
+      const data  = {'reason': this.get('model.withdrawalReason')};
+
+      this.get('restless').putUpdate(model, url, data).then(()=> {
         this.send('closeOverlay');
       });
     }

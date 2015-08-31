@@ -8,4 +8,8 @@ class Invitation::Updated::EventStream::NotifyInvitee < EventStreamSubscriber
     InvitationIndexSerializer.new(record).as_json
   end
 
+  def run
+    super if record.invitee
+  end
+
 end

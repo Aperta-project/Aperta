@@ -90,12 +90,14 @@ feature 'Assign team', js: true do
 
     login_as journal_admin
 
-    AssignTeamOverlay.visit(assign_team_task) do |overlay|
-      overlay.unassign_user custom_reviewer
-      expect(overlay).to_not have_content(custom_reviewer.full_name)
+    using_wait_time 10 do
+      AssignTeamOverlay.visit(assign_team_task) do |overlay|
+        overlay.unassign_user custom_reviewer
+        expect(overlay).to_not have_content(custom_reviewer.full_name)
 
-      overlay.reload
-      expect(overlay).to_not have_content(custom_reviewer.full_name)
+        overlay.reload
+        expect(overlay).to_not have_content(custom_reviewer.full_name)
+      end
     end
   end
 end

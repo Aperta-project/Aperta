@@ -2,11 +2,7 @@
   "predef": [
     "document",
     "window",
-    "-Promise",
-    "Spinner",
     "moment",
-    "$",
-    "CodeMirror",
     "Bugsnag",
     "_",
     "location",
@@ -23,44 +19,75 @@
     "findWithAssert",
     "wait",
     "waitForElement",
-    "DS",
     "sinon",
     "andThen",
-    "currentURL",
-    "currentPath",
-    "currentRouteName",
     "pickFromSelect",
     "pickFromSelect2",
-    "pickFromChosenSingle",
     "MathJax",
     "JsDiff",
     "pickFromSelectBox"
   ],
-  "boss": true,
+
+  /* from airbnb style guide */
+
+  /*
+   * ENVIRONMENTS
+   * =================
+   */
+
+  // Define globals exposed by modern browsers.
   "browser": true,
-  "camelcase": false,
-  "curly": true,
-  "debug": false,
-  "devel": true,
-  "eqeqeq": true,
-  "eqnull": true,
+
+  // Define globals exposed by jQuery.
+  "jquery": true,
+
+  // Define globals exposed by Node.js.
+  "node": true,
+
+  // Allow ES6.
   "esnext": true,
-  "evil": true,
-  "forin": false,
-  "immed": false,
-  "laxbreak": false,
+
+  /*
+   * ENFORCING OPTIONS
+   * =================
+   */
+
+  // Force all variable names to use either camelCase style or UPPER_CASE
+  // with underscores.
+  "camelcase": true,
+
+  // Prohibit use of == and != in favor of === and !==.
+  "eqeqeq": true,
+
+  // Enforce tab width of 2 spaces.
+  "indent": 2,
+
+  // Prohibit use of a variable before it is defined.
+  "latedef": true,
+
+  // Enforce line length to 80 characters
+  "maxlen": 80,
+
+  // Require capitalized names for constructor functions.
   "newcap": true,
-  "noarg": true,
-  "noempty": false,
-  "nomen": false,
-  "nonew": false,
-  "onevar": false,
-  "plusplus": false,
-  "quotmark": false,
-  "regexp": false,
-  "strict": false,
-  "sub": true,
+
+  // Enforce use of single quotation marks for strings.
+  "quotmark": "single",
+
+  // Enforce placing 'use strict' at the top function scope
+  "strict": true,
+
+  // Prohibit use of explicitly undeclared variables.
   "undef": true,
+
+  // Warn when variables are defined but never used.
   "unused": true,
-  "white": false
+
+  /*
+   * RELAXING OPTIONS
+   * =================
+   */
+
+  // Suppress warnings about == null comparisons.
+  "eqnull": true
 }

@@ -20,7 +20,6 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ### Fixed
 - Fixed NED integration
-- Fix bug where Site Admin receives 2 emails when being @mentioned in a Comment
 - Show `.png`s when `.tiff` or `.eps` file types are uploaded as figures / adhoc attachments
 - Title Placeholders are now fixed in Visual Editor.
 

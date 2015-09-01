@@ -16,7 +16,7 @@ module SalesforceServices
     end
 
     def self.client
-      @@client ||= self.get_client
+      @@client ||= self.get_client # TODO: reauthenticate when 'Session Expired'?
     end
 
     def self.create_manuscript(paper_id:)

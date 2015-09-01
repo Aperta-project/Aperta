@@ -10,7 +10,8 @@ class ManuscriptManagerTemplatesController < ApplicationController
 
   def update
     mmt_form = ManuscriptManagerTemplateForm.new(new_mmt_params)
-    respond_with mmt_form.update_mmt manuscript_manager_template
+    mmt_form.update_mmt manuscript_manager_template
+    render json: manuscript_manager_template
   end
 
   def create

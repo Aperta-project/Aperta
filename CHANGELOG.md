@@ -5,12 +5,10 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
-- Anyone with access to the "Assign Team" card can now assign and un-assign users to a manuscript
+-
 
 ### Changed
-- Update to [Rails 4.2.4](https://github.com/rails/rails/compare/v4.2.3...v4.2.4)
-- Update to [Ember 1.13.9](https://github.com/emberjs/ember.js/releases/tag/v1.13.9)
-- Card names have been changed.
+-
 
 ### Deprecated
 -
@@ -19,13 +17,25 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Fixed
+-
+
+### Security
+-
+
+## [1.3.1] - 2015-09-01
+### Added
+- Anyone with access to the "Assign Team" card can now assign and un-assign users to a manuscript
+
+### Changed
+- Update to [Rails 4.2.4](https://github.com/rails/rails/compare/v4.2.3...v4.2.4)
+- Update to [Ember 1.13.9](https://github.com/emberjs/ember.js/releases/tag/v1.13.9)
+- Card names have been changed.
+
+### Fixed
 - Fixed NED integration
 - Show `.png`s when `.tiff` or `.eps` file types are uploaded as figures / adhoc attachments
 - Title Placeholders are now fixed in Visual Editor.
 - Refactored sidebar template into the paper-sidebar component
-
-### Security
--
 
 ## [1.3.0] - 2015-08-26
 ### Added
@@ -154,7 +164,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 _Changes too big to document, initial release_
 
-[unreleased]: https://github.com/tahi-project/tahi/compare/v1.3.0...HEAD
+[unreleased]: https://github.com/tahi-project/tahi/compare/v1.3.1...HEAD
+[1.3.1]: https://github.com/tahi-project/tahi/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/tahi-project/tahi/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/tahi-project/tahi/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/tahi-project/tahi/compare/v1.1.0...v1.1.1

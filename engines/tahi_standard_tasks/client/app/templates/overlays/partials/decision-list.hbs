@@ -12,13 +12,15 @@
       </div>
       <div id="collapse-{{unbound decision.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="decision-{{unbound decision.id}}">
         <div class="panel-body">
+          <h4>Request for Revision:</h4>
           <div class="letter">
-            <h4>Request for Revision:</h4>
-            <p>{{display-line-breaks decision.letter}}</p>
+            <p>{{decision.letter}}</p>
           </div>
+          <h4>
+            Revision Notes from Author:
+          </h4>
           <div class="author-response">
-            <h4>Revision Notes from Author:</h4>
-            <p>{{display-line-breaks decision.authorResponse}}</p>
+            <p>{{decision.authorResponse}}</p>
           </div>
         </div>
       </div>

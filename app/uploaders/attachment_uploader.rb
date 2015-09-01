@@ -40,7 +40,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
 
   def full_name(orig_file)
     if needs_transcoding?(orig_file)
-      "#{version_name}_#{File.basename(orig_file, ".*")}.png"
+      "#{version_name}_#{File.basename(orig_file, '.*')}.png"
     else
       "#{version_name}_#{orig_file}"
     end

@@ -4,7 +4,7 @@ import PaperIndex from 'tahi/mixins/controllers/paper-index';
 import Discussions from 'tahi/mixins/discussions/route-paths';
 
 export default Ember.Controller.extend(PaperBase, PaperIndex, Discussions, {
-  subRouteName: 'edit',
+  subRouteName: 'index',
 
   // Note: we create the editor component via name
   // so that we can override that property when running tests

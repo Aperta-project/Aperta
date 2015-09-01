@@ -5,7 +5,7 @@ import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 
 export default Ember.Controller.extend(
   PaperBaseMixin, PaperIndexMixin, DiscussionsRoutePathsMixin, {
-  subRouteName: 'edit',
+  subRouteName: 'index',
 
   startEditing() {
     this.set('model.lockedBy', this.currentUser);

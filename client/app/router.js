@@ -12,9 +12,7 @@ Router.map(function() {
   this.route('paper_tracker', function() {});
 
   this.resource('paper', { path: '/papers/:paper_id' }, function() {
-    this.route('index', { path: '/' });
-
-    this.route('edit', function() {
+    this.route('index', { path: '/' }, function() {
       this.route('discussions', function() {
         this.route('new',  { path: '/new' });
         this.route('show', { path: '/:topic_id' });

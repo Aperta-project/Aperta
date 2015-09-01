@@ -9,6 +9,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ### Changed
 - Update to [Rails 4.2.4](https://github.com/rails/rails/compare/v4.2.3...v4.2.4)
+- Update to [Ember 1.13.9](https://github.com/emberjs/ember.js/releases/tag/v1.13.9)
 
 ### Deprecated
 -

@@ -19,12 +19,12 @@ class EpubConverter
     paper_body = paper.body || 'The manuscript is currently empty.'
 
     head = <<-HEAD
-  <title>#{paper.short_title}</title>
+  <title>#{CGI.escape_html(paper.short_title)}</title>
   <link rel="stylesheet" type="text/css" href="css/default.css">
     HEAD
 
     body = <<-BODY
-  <h1>#{paper.title}</h1>
+  <h1>#{CGI.escape_html(paper.title)}</h1>
   #{paper_body.force_encoding('UTF-8')}
     BODY
 

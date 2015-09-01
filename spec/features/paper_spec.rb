@@ -17,7 +17,7 @@ feature "Editing paper", js: true do
 
     scenario "Author edits paper", selenium: true do
       # editing the paper
-      edit_paper = EditPaperPage.new
+      edit_paper = PaperPage.new
       edit_paper.start_editing
       edit_paper.title = "Lorem Ipsum Dolor Sit Amet"
       edit_paper.body = "Contrary to popular belief"

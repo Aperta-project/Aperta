@@ -22,6 +22,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Fixed NED integration
 - Show `.png`s when `.tiff` or `.eps` file types are uploaded as figures / adhoc attachments
 - Title Placeholders are now fixed in Visual Editor.
+- Refactored sidebar template into the paper-sidebar component
 
 ### Security
 -

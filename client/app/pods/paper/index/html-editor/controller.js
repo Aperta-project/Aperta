@@ -1,9 +1,9 @@
 import Ember from 'ember';
-import PaperBaseMixin from 'tahi/mixins/controllers/paper-base';
-import PaperIndexMixin from 'tahi/mixins/controllers/paper-index';
-import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
+import PaperBase from 'tahi/mixins/controllers/paper-base';
+import PaperIndex from 'tahi/mixins/controllers/paper-index';
+import Discussions from 'tahi/mixins/discussions/route-paths';
 
-export default Ember.Controller.extend(PaperBaseMixin, PaperIndexMixin, DiscussionsRoutePathsMixin, {
+export default Ember.Controller.extend(PaperBase, PaperIndex, Discussions, {
   subRouteName: 'edit',
 
   // Note: we create the editor component via name
@@ -109,10 +109,10 @@ export default Ember.Controller.extend(PaperBaseMixin, PaperIndexMixin, Discussi
   },
 
   actions: {
-    lock: function() {
+    lock() {
       this.acquireLock();
     },
-    unlock: function() {
+    unlock() {
       this.releaseLock();
     }
   },

@@ -58,8 +58,8 @@ class PaperEditorPage(AuthenticatedPage):
     """
     self._get(self._workflow_link)
     # Check editor menu icons
-    self._check_menu_icons()
-    # Check application icons
+    self._check_editor_menu_icons()
+    # Check application buttons
     self._check_version_btn()
     self._check_collaborator()
     self._check_download_btns()
@@ -68,7 +68,7 @@ class PaperEditorPage(AuthenticatedPage):
     self._check_more_btn()
 
     
-  def _check_menu_icons(self):
+  def _check_editor_menu_icons(self):
     """
     Validate icons in the edit menu
     """
@@ -238,3 +238,13 @@ class PaperEditorPage(AuthenticatedPage):
     assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
     assert close_icon_overlay.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
     close_icon_overlay.click()
+
+  def validate_roles(self, user_menus):
+    """
+    Given an amount of expected item, check if they are in the top menu.
+    This can be expanded as needed.
+    """
+    menus = self._gets(self._control_bar_right_items)
+    assert user_menus == len(menus), len(menus)
+    if user_menus == 7:
+      self._get(self._workflow_link)

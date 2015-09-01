@@ -52,6 +52,7 @@ class AuthenticatedPage(PlosPage):
     self._discussion_link = (By.CLASS_NAME, 'discussions-link')
     self._workflow_link = (By.CLASS_NAME, 'workflow-link')
     self._more_link = (By.CLASS_NAME, 'more-link')
+    self._control_bar_right_items = (By.XPATH, "//div[@class='control-bar-inner-wrapper']/ul[2]/li")
 
     self._bar_items = (By.CLASS_NAME, 'bar-item')
     self._add_collaborators_label = (By.CLASS_NAME, 'contributors-add')

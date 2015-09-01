@@ -66,14 +66,17 @@ class FrontEndTest(unittest.TestCase):
     login_page.click_sign_in_button()
     return DashboardPage(self.getDriver())
 
-  def _select_preexisting_article(self, title='Hendrik', init=True):
+  def _select_preexisting_article(self, title='Hendrik', init=True, first=False):
     """
     Select a preexisting article using a word as a partial name 
-    for the title. from_ variable is 0 when the user is not logged in
+    for the title. init is True when the user is not logged in
     and need to invoque login script to reach the homepage. 
     """
     dashboard = self._login() if init else DashboardPage(self.getDriver())
-    return dashboard.click_on_existing_manuscript_link_partial_title(title)
+    if first:
+      return dashboard.click_on_first_manuscript()
+    else:
+      return dashboard.click_on_existing_manuscript_link_partial_title(title)
 
   def _create_article(self, title='', journal='journal', type_='Research1'):
     dashboard = self._login()

@@ -61,6 +61,10 @@ class DashboardPage(AuthenticatedPage):
     self._cns_cancel = (By.CLASS_NAME, 'button-link')
     self._cns_create = (By.CLASS_NAME, 'button-primary')
 
+    # First article
+    self._first_paper = (By.CSS_SELECTOR, 'li.dashboard-paper-title > a')
+    
+
   # POM Actions
   def click_on_existing_manuscript_link(self, title):
     """Click on a link given a title"""
@@ -73,6 +77,13 @@ class DashboardPage(AuthenticatedPage):
     first_article_link = self.driver.find_element_by_partial_link_text(partial_title)
     first_article_link.click()
     return first_article_link.text
+
+  def click_on_first_manuscript(self):
+    """Click on first available manuscript link"""
+    first_article_link = self._get(self._first_paper)
+    first_article_link.click()
+    return first_article_link.text
+
 
   def validate_initial_page_elements_styles(self):
     """

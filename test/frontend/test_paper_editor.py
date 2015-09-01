@@ -18,41 +18,62 @@ from Pages.login_page import LoginPage
 from Base.Resources import login_valid_pw, au_login, rv_login, fm_login, ae_login, he_login, sa_login, oa_login
 from Pages.paper_editor import PaperEditorPage
 
+users = (au_login, rv_login, fm_login, ae_login, he_login, sa_login, oa_login)
+
+
 @MultiBrowserFixture
 class EditPaperTest(FrontEndTest):
   """
-  Self imposed AC:
-     - validate page elements and styles for:
-         - dashboard page:
-            - Optional Invitation elements
-              - title, buttons
-            - Submissions section
-              - title, button, manuscript details
-         - view invitations modal dialog elements and function
-         - create new submission modal dialog and function
+  AC from Aperta-3:
+     - validate page elements and styles
+     - Validate different role aware menu items
   """
+
   def test_validate_components_styles(self):
     """
     Validates the presence of the following elements:
-      Optional Invitation Welcome text and button,
-      My Submissions Welcome Text, button, info text and manuscript display
-      Modals: View Invites and Create New Submission
+      - icons in text area (editor menu)
+      - button for comparing versions
+      - button for adding collaborators
+      - button for paper download
+      - button for recent activity
+      - button for discussions
+      - button for worflow
+      - button for more options
     """
-    # Note this is commented out until login with different users
-    #user_type = random.choice(users)
-    #print('Logging in as user: %s'%user_type)
-    #login_page = LoginPage(self.getDriver())
-    #login_page.enter_login_field(user_type)
-    #login_page.enter_password_field(login_valid_pw)
-    #login_page.click_sign_in_button()
-    #dashboard_page = DashboardPage(self.getDriver())
     article_title = self._select_preexisting_article()
     paper_editor = PaperEditorPage(self.getDriver())
     paper_editor.validate_page_elements_styles_functions()
-
-
-    time.sleep(1)
     return self
+
+  def test_role_aware_menus(self):
+    """
+    Validates role aware menus
+    """
+    roles = {au_login: 6,
+            rv_login: 6,
+            fm_login: 6,
+            ae_login: 6,
+            he_login: 7,
+            sa_login: 7,
+            oa_login:7} 
+
+    for user in users:
+      print('Logging in as user: %s'%user)
+      login_page = LoginPage(self.getDriver())
+      login_page.enter_login_field(user)
+      login_page.enter_password_field(login_valid_pw)
+      login_page.click_sign_in_button()
+      self._select_preexisting_article(init=False, first=True)
+      paper_editor = PaperEditorPage(self.getDriver())
+      time.sleep(3) # needed to give time to retrieve new menu items
+      paper_editor.validate_roles(roles[user])
+      # Logout
+      url = self._driver.current_url
+      signout_url = url[:url.index('/papers/')] + '/users/sign_out' 
+      self._driver.get(signout_url)
+    return self
+    
 
   def _test_paper_download_buttons(self):
     """
@@ -60,7 +81,6 @@ class EditPaperTest(FrontEndTest):
     """
     # url = self._driver.current_url
     # download_url = '/'.join(url.split('/')[:-1]) + '/download.pdf'
-
     return self
 
 

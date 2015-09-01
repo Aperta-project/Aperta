@@ -13,8 +13,4 @@ class ActivitySerializer < ActiveModel::Serializer
   def user_avatar_url
     user.avatar_url
   end
-
-  def created_at
-    object.created_at.strftime('%B %e, %Y %l:%M %p')
-  end
 end

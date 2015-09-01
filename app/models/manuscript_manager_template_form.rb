@@ -11,12 +11,21 @@ class ManuscriptManagerTemplateForm
   end
 
   def create_mmt
-    phase_templates = set_phase_templates(mmt_params.delete("phase_templates"))
-    mmt_params["phase_templates"] = phase_templates if phase_templates
+    process_params
     ManuscriptManagerTemplate.create!(mmt_params)
   end
 
+  def update_mmt(mmt)
+    process_params
+    mmt.update mmt_params
+  end
+
   private
+
+  def process_params
+    phase_templates = set_phase_templates(mmt_params.delete("phase_templates"))
+    mmt_params["phase_templates"] = phase_templates if phase_templates
+  end
 
   def set_phase_templates(params)
     return if params.nil?

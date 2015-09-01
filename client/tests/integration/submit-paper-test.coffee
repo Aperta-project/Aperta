@@ -60,7 +60,7 @@ module 'Integration: Submitting Paper',
     ]
 
 test "User can submit a paper", (assert) ->
-  visit("/papers/#{currentPaper.id}/edit")
+  visit("/papers/#{currentPaper.id}")
   click(".edit-paper button:contains('Submit')")
   click("button.button-submit-paper")
 

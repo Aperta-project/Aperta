@@ -1,10 +1,10 @@
 import Ember from 'ember';
 import PaperBaseMixin from 'tahi/mixins/controllers/paper-base';
-import PaperEditMixin from 'tahi/mixins/controllers/paper-edit';
+import PaperIndexMixin from 'tahi/mixins/controllers/paper-index';
 import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 
 export default Ember.Controller.extend(
-  PaperBaseMixin, PaperEditMixin, DiscussionsRoutePathsMixin, {
+  PaperBaseMixin, PaperIndexMixin, DiscussionsRoutePathsMixin, {
   subRouteName: 'edit',
 
   startEditing() {

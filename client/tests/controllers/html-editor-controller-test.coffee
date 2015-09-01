@@ -2,7 +2,7 @@
 `import { test, moduleFor } from 'ember-qunit'`
 `import startApp from '../helpers/start-app'`
 
-moduleFor 'controller:paper/edit/html-editor', 'HTMLEditorController',
+moduleFor 'controller:paper/index/html-editor', 'HTMLEditorController',
   needs: ['controller:application', 'controller:paper', 'controller:overlays/paper-submit']
 
   beforeEach: ->

@@ -5,10 +5,10 @@
 `import AuthorizedRoute from 'tahi/routes/authorized'`
 `import loadVeEditorAssets from 'tahi-editor-ve/initializers/load-assets'`
 
-PaperEditRoute = AuthorizedRoute.extend
-  viewName: 'paper/edit'
-  controllerName: 'paper/edit'
-  templateName: 'paper/edit'
+PaperIndexRoute = AuthorizedRoute.extend
+  viewName: 'paper/index'
+  controllerName: 'paper/index'
+  templateName: 'paper/index'
   cardOverlayService: Ember.inject.service('card-overlay'),
   fromSubmitOverlay: false
 
@@ -34,11 +34,11 @@ PaperEditRoute = AuthorizedRoute.extend
       @startHeartbeat()
 
   setupController: (controller, model) ->
-    # paper/edit controller is not used.
+    # paper/index controller is not used.
     # Controller is chosen based on Paper document type
     switch model.get('editorMode')
-      when 'latex' then editorLookup = 'paper.edit.latex-editor'
-      when 'html' then editorLookup = 'paper.edit.html-editor'
+      when 'latex' then editorLookup = 'paper.index.latex-editor'
+      when 'html' then editorLookup = 'paper.index.html-editor'
     @set('editorLookup', editorLookup)
 
     editorController = @controllerFor(@get('editorLookup'))
@@ -71,7 +71,7 @@ PaperEditRoute = AuthorizedRoute.extend
   actions:
     viewCard: (task) ->
       @get('cardOverlayService').setProperties({
-        previousRouteOptions: ['paper.edit', @modelFor('paper')],
+        previousRouteOptions: ['paper.index', @modelFor('paper')],
         overlayBackground: @get('editorLookup')
       })
 
@@ -93,4 +93,4 @@ PaperEditRoute = AuthorizedRoute.extend
 
       @set 'fromSubmitOverlay', true
 
-`export default PaperEditRoute`
+`export default PaperIndexRoute`

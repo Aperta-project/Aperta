@@ -6,7 +6,7 @@ module PlosBilling
     let(:billing_task) do
       ::PlosBilling::BillingTask.create! completed: true,
                                          phase: paper.phases.first,
-                                         title: "Financial Info",
+                                         title: "Billing",
                                          role: "author"
     end
 

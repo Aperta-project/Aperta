@@ -17,7 +17,7 @@ class ManuscriptManagerTemplateForm
 
   def update_mmt(mmt)
     process_params
-    mmt.update mmt_params
+    mmt.update! mmt_params
   end
 
   private

@@ -7,7 +7,7 @@
               canViewManuscriptManager=canViewManuscriptManager
               supportedDownloadFormats=supportedDownloadFormats}}
 
-{{withdrawal-banner paper=model}}
+{{withdrawal-banner paper=model staff=currentUser.siteAdmin}}
 
 <div id="paper-container" class="clearfix {{pageContainerHTMLClass}} {{if noTasks "sidebar-empty"}}">
   {{partial "paper/sidebar"}}

@@ -9,14 +9,14 @@ describe "ManuscriptManagerTemplateForm" do
   context "Creating a ManuscriptManagerTemplate" do
 
     it "Creates a ManuscriptManagerTemplate" do
-      valid_mmt_form.create_mmt
+      valid_mmt_form.create!
       last_mmt = ManuscriptManagerTemplate.last
       expect(last_mmt.paper_type).to eql("Research 2222")
       expect(last_mmt.journal).to eql(journal)
     end
 
     it "Creates phases for the ManuscriptManagerTemplate" do
-      valid_mmt_form.create_mmt
+      valid_mmt_form.create!
       last_mmt = ManuscriptManagerTemplate.last
       expect(last_mmt.phase_templates.size).to eql(3)
       expect(last_mmt.phase_templates[0].name).to eql("Phase 1")
@@ -28,7 +28,7 @@ describe "ManuscriptManagerTemplateForm" do
     end
 
     it "Create task_templates for each phase" do
-      valid_mmt_form.create_mmt
+      valid_mmt_form.create!
       last_mmt = ManuscriptManagerTemplate.last
       task_templates = last_mmt.phase_templates.first.task_templates
       expect(task_templates.size).to eql(2)
@@ -39,7 +39,7 @@ describe "ManuscriptManagerTemplateForm" do
 
     it "Updates the ManuscriptManagerTemplate" do
       mmt_form = ManuscriptManagerTemplateForm.new({"paper_type"=>"Celeborn"})
-      mmt_form.update_mmt mmt
+      mmt_form.update! mmt
       expect(mmt.reload.paper_type).to eql("Celeborn")
     end
 
@@ -49,7 +49,7 @@ describe "ManuscriptManagerTemplateForm" do
               "phase_templates"=>[{"name"=>"Phase 1", "position"=>1}]}
 
       mmt_form = ManuscriptManagerTemplateForm.new(params)
-      mmt_form.update_mmt mmt
+      mmt_form.update! mmt
 
       expect(mmt.reload.phase_templates.size).to eql(1)
       expect(mmt.phase_templates[0].name).to eql("Phase 1")
@@ -64,7 +64,7 @@ describe "ManuscriptManagerTemplateForm" do
 
       expect {
         mmt_form = ManuscriptManagerTemplateForm.new(params)
-        mmt_form.update_mmt mmt
+        mmt_form.update! mmt
       }.to change { PhaseTemplate.count }.by(-1)
     end
   end

@@ -10,13 +10,13 @@ class ManuscriptManagerTemplatesController < ApplicationController
 
   def update
     mmt_form = ManuscriptManagerTemplateForm.new(new_mmt_params)
-    mmt_form.update_mmt manuscript_manager_template
+    mmt_form.update! manuscript_manager_template
     render json: manuscript_manager_template
   end
 
   def create
     mmt_form = ManuscriptManagerTemplateForm.new(new_mmt_params)
-    respond_with mmt_form.create_mmt
+    respond_with mmt_form.create!
   end
 
   def destroy

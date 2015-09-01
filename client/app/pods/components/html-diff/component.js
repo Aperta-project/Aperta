@@ -23,10 +23,8 @@ export default Ember.Component.extend({
   sentenceDelimiter: /([.!?,;]\s*)/g,
 
   manuscript: function() {
-    if (!this.get('viewingText')) {
-      return this.get('default');
-    } else if (!this.get('comparisonText')) {
-      return this.get('viewingText');
+    if (!this.get('comparisonText')) {
+      return this.get('viewingText') || this.get('default');
     } else {
       return this.diff();
     }
@@ -36,7 +34,7 @@ export default Ember.Component.extend({
     // Calculate the diff
     let diff = this.getDiffer().diff(
       this.get('comparisonText'),
-      this.get('viewingText'));
+      this.get('viewingText') || this.get('default'));
 
     // Style the diff
     return _.map(diff, (chunk) => {

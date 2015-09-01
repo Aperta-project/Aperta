@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import ENV from 'tahi/config/environment';
+import DragNDrop from 'tahi/services/drag-n-drop';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(DragNDrop.DraggableMixin, {
   classNameBindings: [':card', 'task.completed:card--completed', 'classes'],
 
   _propertiesCheck: Ember.on('init', function() {
@@ -11,6 +12,10 @@ export default Ember.Component.extend({
   task: null,
   classes: '',
   canRemoveCard: false,
+
+  dragStart() {
+    DragNDrop.dragItem = this.get('task');
+  },
 
   // This is hack but the way we are creating a link but
   // not actually navigating to the link is non-ember-ish

@@ -36,6 +36,8 @@ Router.map(function() {
     this.route('task', { path: '/tasks' }, function() {
       this.route('index', { path: '/:task_id' });
     });
+
+    this.route('versioned-task', { path: '/versioned_task' } );
   });
 
   this.route('profile', { path: '/profile' });

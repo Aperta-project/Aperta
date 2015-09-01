@@ -4,39 +4,25 @@ export default Ember.Route.extend({
   cardOverlayService: Ember.inject.service('card-overlay'),
 
   model(params) {
-    return this.store.find('versioned-task', params.task_id);
+    return this.store.createRecord('versioned-task');
   },
 
   setupController(controller, model) {
-    // TODO: Rename AdHocTask to Task (here, in views, and in templates)
     let redirectOptions = this.get('cardOverlayService.previousRouteOptions');
-    let currentType     = model.get('type') === 'Task' ? 'AdHocTask' : model.get('type');
-    let baseObjectName  = (currentType || 'AdHocTask').replace('Task', '');
-    let taskController  = this.controllerFor('overlays/' + baseObjectName);
+    let taskController  = this.controllerFor('overlays/versioned-task');
 
-    this.set('baseObjectName', baseObjectName);
     this.set('taskController', taskController);
 
     taskController.setProperties({
       model: model,
-      comments: this.store.filter('comment', function(part) {
-        return part.get('task') === model;
-      }),
-      participations: this.store.filter('participation', function(part) {
-        return part.get('task') === model;
-      }),
       onClose: Ember.isEmpty(redirectOptions) ? 'redirectToDashboard' : 'redirect'
     });
 
     taskController.trigger('didSetupController');
   },
 
-  resetController(controller, isExiting) {
-    if (isExiting) { controller.set('isNewTask', false); }
-  },
-
   renderTemplate() {
-    this.render('overlays/' + this.get('baseObjectName'), {
+    this.render('overlays/versioned-task', {
       into: 'application',
       outlet: 'overlay',
       controller: this.get('taskController')

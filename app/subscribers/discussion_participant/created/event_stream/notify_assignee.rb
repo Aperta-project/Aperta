@@ -1,4 +1,4 @@
-class DiscussionParticipant::Created::NotifyAssignee < EventStreamSubscriber
+class DiscussionParticipant::Created::EventStream::NotifyAssignee < EventStreamSubscriber
 
   def channel
     private_channel_for(record.user)

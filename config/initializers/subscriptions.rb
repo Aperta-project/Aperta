@@ -50,7 +50,7 @@ EVENTS = {
   'discussion_topic:updated' => [DiscussionTopic::Updated::EventStream],
   'discussion_topic:destroyed' => [DiscussionTopic::Destroyed::EventStream],
 
-  'discussion_participant:created' => [DiscussionParticipant::Created::NotifyExistingParticipants, DiscussionParticipant::Created::NotifyAssignee],
+  'discussion_participant:created' => [DiscussionParticipant::Created::EventStream::NotifyExistingParticipants, DiscussionParticipant::Created::EventStream::NotifyAssignee],
   'discussion_participant:destroyed' => [DiscussionParticipant::Destroyed::EventStream],
 
   'discussion_reply:created' => [DiscussionReply::Created::EventStream],

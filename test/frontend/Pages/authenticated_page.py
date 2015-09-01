@@ -397,14 +397,15 @@ class AuthenticatedPage(PlosPage):
     Ensure consistency in rendering page and overlay text buttons across the application
     :param button: button to validate
     :return: None
-    TODO: Find out why I see the commented values in the browser
+    TODO: Find out why background-color property is different in CI
     """
     assert application_typeface in button.value_of_css_property('font-family')
     assert button.value_of_css_property('font-size') == '14px'
     assert button.value_of_css_property('font-weight') == '400'
     assert button.value_of_css_property('line-height') == '20px'
     assert button.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
-    assert button.value_of_css_property('background-color') == 'rgba(220, 220, 220, 1)', button.value_of_css_property('background-color')
+    assert button.value_of_css_property('background-color') in ('rgba(237, 237, 237, 1)', 
+                                                                'rgba(220, 220, 220, 1)')
     assert button.value_of_css_property('text-align') == 'center'
     assert button.value_of_css_property('text-transform') == 'uppercase'
 

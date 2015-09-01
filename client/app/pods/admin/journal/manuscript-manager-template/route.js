@@ -39,7 +39,8 @@ export default Ember.Route.extend({
     },
 
     addTaskAndClose() {
-      this.controllerFor('admin.journal.manuscriptManagerTemplate/edit').set('dirty', true);
+      let defaultRoute = 'admin.journal.manuscript_manager_template.edit';
+      this.controllerFor(defaultRoute).set('pendingChanges', true);
       this.send('closeOverlay');
     },
 

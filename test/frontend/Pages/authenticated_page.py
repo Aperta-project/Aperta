@@ -404,7 +404,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-weight') == '400'
     assert button.value_of_css_property('line-height') == '20px'
     assert button.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
-    assert button.value_of_css_property('background-color') == 'rgba(220, 220, 220, 1)'
+    assert button.value_of_css_property('background-color') == 'rgba(220, 220, 220, 1)', button.value_of_css_property('background-color')
     assert button.value_of_css_property('text-align') == 'center'
     assert button.value_of_css_property('text-transform') == 'uppercase'
 

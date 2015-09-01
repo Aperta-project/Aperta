@@ -239,12 +239,12 @@ class PaperEditorPage(AuthenticatedPage):
     assert close_icon_overlay.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
     close_icon_overlay.click()
 
-  def validate_roles(self, user_menus):
+  def validate_roles(self, user_buttons):
     """
     Given an amount of expected item, check if they are in the top menu.
     This can be expanded as needed.
     """
-    menus = self._gets(self._control_bar_right_items)
-    assert user_menus == len(menus), len(menus)
-    if user_menus == 7:
+    buttons = self._gets(self._control_bar_right_items)
+    assert user_buttons == len(buttons), len(buttons)
+    if user_buttons == 7:
       self._get(self._workflow_link)

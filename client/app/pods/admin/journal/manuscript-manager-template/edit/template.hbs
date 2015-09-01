@@ -22,7 +22,7 @@
       <div class="columns manuscript-manager-template-columns">
         {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
         {{#each sortedPhaseTemplates as |phaseTemplate|}}
-          {{#manuscript-manager-column content=phaseTemplate as |nextPosition|}}
+          {{#manuscript-manager-column content=phaseTemplate changeTaskPhase="changeTaskPhase" as |nextPosition|}}
             {{add-column position=nextPosition action="addPhase"}}
 
             {{phase-header phase=phaseTemplate

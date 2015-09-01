@@ -32,8 +32,6 @@ describe "ManuscriptManagerTemplateForm" do
       last_mmt = ManuscriptManagerTemplate.last
       task_templates = last_mmt.phase_templates.first.task_templates
       expect(task_templates.size).to eql(2)
-      expect(task_templates[0].title).to eql("Add Authors")
-      expect(task_templates[1].title).to eql("Assign Team")
     end
   end
 

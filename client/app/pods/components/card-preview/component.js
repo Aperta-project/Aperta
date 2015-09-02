@@ -26,8 +26,12 @@ export default Ember.Component.extend(DragNDrop.DraggableMixin, {
   href: Ember.computed(function() {
     // Getting access to the router from tests is impossible, sorry
     if(ENV.environment === 'test' || Ember.testing) { return '#'; }
-    let router = this.getRouter();
-    let args = ['paper.task', this.get('task.paper'), this.get('task')];
+
+    const paper = this.get('task.paper');
+    if(Ember.isEmpty(paper)) { return '#'; }
+
+    const router = this.getRouter();
+    const args = ['paper.task', paper, this.get('task')];
     return router.generate.apply(router, args);
   }),
 

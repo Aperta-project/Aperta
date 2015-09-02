@@ -52,8 +52,8 @@ describe SalesforceServices::API do
       expect(SalesforceServices::API).to receive(:update_manuscript).and_return(true)
       SalesforceServices::API.find_or_create_manuscript(paper_id: paper.id)
     end
-  end
 
+  end
 end
 
 describe SalesforceServices::API do
@@ -62,19 +62,25 @@ describe SalesforceServices::API do
     let(:paper) { FactoryGirl.create(:paper) }
 
     it "creates and returns a salesforce case object" do
-      remove_vcr_file  "spec/fixtures/vcr_cassettes/salesforce_create_billing_and_pfa.yml"
+      #delete_vcr_file  "salesforce_create_billing_and_pfa"
+
+      VCR.use_cassette("salesforce_instantiate_client") do
+        @api = SalesforceServices::API
+        @api.client
+      end
 
       VCR.use_cassette("salesforce_create_billing_and_pfa") do
-        @api = SalesforceServices::API
         @kase = @api.create_billing_and_pfa_case(paper_id: paper.id)
-        #expect(@kase.class).to eq Case
+        expect(@kase.class).to eq Case
+        expect(@kase.persisted?).to eq true
       end
-    end
 
+    end
   end
 end
 
-def remove_vcr_file(file)
+def delete_vcr_file(file)
+  file = "spec/fixtures/vcr_cassettes/#{file}.yml"
   if File.exists?(file)
     ap "deleting #{file}" if File.delete(file) 
   end

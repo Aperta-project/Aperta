@@ -302,6 +302,6 @@ class Paper < ActiveRecord::Base
   end
 
   def create_billing_and_pfa_case(*)
-    SalesforceServices::API.delay.create_billing_and_pfa_case(paper_id: self.id)
+    SalesforceServices::API.delay.create_billing_and_pfa_case(paper_id: self.id) if self.billing_card
   end
 end

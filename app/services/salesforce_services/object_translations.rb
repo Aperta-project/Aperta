@@ -22,15 +22,10 @@ module SalesforceServices
 
     class BillingTranslator
       def initialize(paper:)
-        @paper = paper
-        #@billing_card = @paper.tasks.find_by_type("PlosBilling::BillingTask") # possible multiples?
-        @billing_card = @paper.billing_card
+        @paper = paper 
       end
 
       def paper_to_billing_hash # (pfa)
-
-        return {} unless @billing_card
-
         {
           #'RecordTypeId'               => nil, # default, set by SF
           'SuppliedEmail'              => @paper.creator.email, # corresponding author == creator?
@@ -40,7 +35,7 @@ module SalesforceServices
           'Description'                => "#{@paper.creator.full_name} has applied for PFA with submission #{manuscript_id}",
           'Origin'                     => "PFA Request", 
           
-          #'PFA_Funding_Statement__c'   => billing_question "", # Unknown field?
+          #'PFA_Funding_Statement__c'   => billing_question "", # Unknown field? from financial disclosure card
 
           'PFA_Question_1__c'          => answer_for("pfa_question_1"),
           'PFA_Question_1a__c'         => answer_for("pfa_question_1a"),
@@ -61,7 +56,7 @@ module SalesforceServices
       private
         
         def answer_for(ident)
-          q = @billing_card.questions.find_by_ident("plos_billing.#{ident}")
+          q = @paper.billing_card.questions.find_by_ident("plos_billing.#{ident}")
           q.present? ? q.answer : nil
         end
 

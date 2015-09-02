@@ -49,7 +49,7 @@ module SalesforceServices
       end
     end
 
-    def self.create_billing_and_pfa_case(paper_id:)
+    def self.create_billing_and_pfa_case(paper_id:) # assumes paper.billing_card
       paper    = Paper.find(paper_id)
       kase_mgr = self.client.materialize("Case")
       bt       = BillingTranslator.new(paper: paper)

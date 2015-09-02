@@ -1,10 +1,11 @@
 import Ember from 'ember';
+import TaskComparisonDiff from 'tahi/models/task-comparison-diff';
 
 export default Ember.Route.extend({
   cardOverlayService: Ember.inject.service('card-overlay'),
 
   model(params) {
-    return this.store.createRecord('versioned-task');
+    return TaskComparisonDiff.create();
   },
 
   setupController(controller, model) {

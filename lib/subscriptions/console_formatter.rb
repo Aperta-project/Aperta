@@ -2,28 +2,46 @@ module Subscriptions
 
   # Print subscription detail as a nicely formatted table
   #
+  # usage:
+  # ConsoleFormatter.new(["header 1", "header 2"], [["row 1 column 1", "row 2 column 2"]])
+  #
   class ConsoleFormatter
 
-    def initialize(registry)
-      @registry = registry
+    def initialize(headers, row_data)
+      @headers = headers
+      @row_data = row_data
+      @widths = calculate_widths
+      @out = StringIO.new
+      format!
     end
 
-    # TODO: clean this up
-    def format
-      out = StringIO.new
-      ws = widths
-      out.puts ['Event Name'.ljust(ws[0]), 'Subscribers'.ljust(ws[1])].join(' ')
-      @registry.sort.map do |event, info|
-        out.puts [event.ljust(ws[0]), info.map(&:subscribers).join(', ').ljust(ws[1])].join(' ')
+    def to_s
+      @out.string
+    end
+
+    private
+
+    def format!
+      @out.puts format_row(@headers)
+      @row_data.each do |row|
+        @out.puts format_row(row)
       end
-      out.string
     end
 
-    def widths
-      [
-        @registry.keys.map(&:length).max || 0,
-        @registry.values.map { |info| info.map(&:subscribers).join(', ').length }.max || 0,
-      ]
+    def format_row(row)
+      row.map.with_index { |data, col|
+        data.ljust(@widths[col])
+      }.join(' ')
+    end
+
+    def calculate_widths
+      @headers.map.with_index do |header, i|
+        column_max(header, i)
+      end
+    end
+
+    def column_max(column_header, col)
+      (@row_data.map { |row| row[col].length } + [column_header.length]).max
     end
   end
 

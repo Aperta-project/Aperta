@@ -26,7 +26,7 @@ export default Ember.Component.extend({
             ${this.buildHTML(element.diffs, levels+1)
           }</div>`;
       } else if(element.type === "propertyDiff"){
-        html += `<div> ${element.name}: `;
+        html += `<div class="property"> <label>${element.name}:</label> `;
 
         _.each(element.diffs, function(e){
           if(e.added) {

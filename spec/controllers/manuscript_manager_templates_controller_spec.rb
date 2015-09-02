@@ -52,9 +52,9 @@ describe ManuscriptManagerTemplatesController do
                     manuscript_manager_template: new_params}
     end
 
-    it "returns 204 with valid params" do
+    it "returns 200 with valid params" do
       do_request
-      expect(response.status).to eq(204)
+      expect(response.status).to eq(200)
     end
 
     it "updates the model" do

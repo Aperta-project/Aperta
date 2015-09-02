@@ -9,17 +9,17 @@ export default Ember.Object.extend({
       { type: "properties", name: "authors", children: [
         { type: "properties", name: "author", children: [
             {type: "text", name: "first_name", value: "John"},
-            {type: "text", name: "middle_name", value: "Paul"},
             {type: "text", name: "last_name", value: "Smith"},
-            {type: "boolean", name: "true_or_false", value: false}
+            {type: "text", name: "suffix", value: "Jr."}
           ]
         },
 
-        { type: "properties", name: "author", children: [
-            {type: "text", name: "first_name", value: "Sally"},
-            {type: "text", name: "last_name", value: "Doe"},
-          ]
-        }] // authors
+        // { type: "properties", name: "author", children: [
+        //     {type: "text", name: "first_name", value: "Sally"},
+        //     {type: "text", name: "last_name", value: "Doe"},
+        //   ]
+        // }
+      ] // authors
       }
     ]  // properties
   }, // old
@@ -31,17 +31,19 @@ export default Ember.Object.extend({
     properties: [
       { type: "properties", name: "authors", children: [
         { type: "properties", name: "author", children: [
+            {type: "text", name: "salutation", value: "Mr."},
             {type: "text", name: "first_name", value: "John"},
-            {type: "text", name: "last_name", value: "George"},
-            {type: "boolean", name: "true_or_false", value: true}
+            {type: "text", name: "last_name", value: "Doe"},
+
           ]
         },
-
-        { type: "properties", name: "author", children: [
-            {type: "text", name: "first_name", value: "Paul"},
-            {type: "text", name: "last_name", value: "John"},
-          ]
-        }] // authors
+        //
+        // { type: "properties", name: "author", children: [
+        //     {type: "text", name: "first_name", value: "Paul"},
+        //     {type: "text", name: "last_name", value: "John"},
+        //   ]
+        // }
+      ] // authors
       }
     ]  // properties
 
@@ -49,29 +51,78 @@ export default Ember.Object.extend({
 
   diffProperties: function(oldProperties, newProperties){
     let result = [];
-    let zippedProperties = _.zip(oldProperties, newProperties);
+    let leftProperties = oldProperties; //_.zip(oldProperties);
+    let rightProperties = newProperties; //_.zip(newProperties);
 
-    _.each(zippedProperties, function(element){
-      let oldProperty = element[0] || { type: "properties", children: [] };
-      let newProperty = element[1] || { type: "properties", children: [] };
+    let left = 0; let right = 0;
+    while (left < leftProperties.length || right < rightProperties.length) {
+      let leftProperty = leftProperties[left];
+      let rightProperty = rightProperties[right];
 
-      if(oldProperty && newProperty) {
-        if(oldProperty.type === "properties"){
-          result.push( this.diffProperties(oldProperty.children, newProperty.children) );
-        }
-        else {
-          result.push( this.diffProperty(oldProperty, newProperty) );
-        }
+      if (left >= leftProperties.length) {
+        result.push( this.diffProperty(null, rightProperty) );
+        right++;
       }
-    }, this);
+      else if (right >= rightProperties.length) {
+        result.push( this.diffProperty(leftProperty, null) );
+        left++;
+      }
+      else if (leftProperties[left].type === rightProperties[right].type &&
+          leftProperties[left].name === rightProperties[right].name) {
+            // diffProperty
+            result.push( this.diffProperty(leftProperty, rightProperty) );
+            left++;
+            right++;
+      } else if (this.wasRemoved(leftProperties[left], right, rightProperties)) {
+        result.push( this.diffProperty(leftProperty, null) );
+        left++;
+
+      } else if (this.wasInserted(rightProperties[right], left, leftProperties)) {
+        result.push( this.diffProperty(null, rightProperty) );
+        right++;
+
+      } else {
+        right++;
+      }
+    }
 
     return result;
   },
 
+  wasRemoved: function(ourProperty, index, fromProperties) {
+    var i = index;
 
+    for (i; i < fromProperties.length; i++) {
+      if (fromProperties[i].type === ourProperty.type &&
+          fromProperties[i].name === ourProperty.name) {
+            return false;
+          }
+    }
+
+    return true;
+  },
+
+  wasInserted: function(ourProperty, index, fromProperties) {
+    var i = index;
+    for (i; i < fromProperties.length; i++) {
+      if (fromProperties[i].type === ourProperty.type &&
+          fromProperties[i].name === ourProperty.name) {
+            return false;
+          }
+    }
+    return true;
+  },
 
   diffProperty: function(oldProperty, newProperty) {
-   if(oldProperty.type === "text"){
+    if(oldProperty && !newProperty){
+      newProperty = { type: oldProperty.type, value: "", children: [] };
+    } else if(!oldProperty && newProperty){
+      oldProperty = { type: newProperty.type, value: "", children: [] };
+    }
+
+    if(oldProperty.type === "properties"){
+      return this.diffProperties(oldProperty.children, newProperty.children);
+    } else if(oldProperty.type === "text"){
       let diff = JsDiff.diffWords(oldProperty.value.toString(), newProperty.value.toString());
       return diff;
     } else if (oldProperty.type === "boolean") {

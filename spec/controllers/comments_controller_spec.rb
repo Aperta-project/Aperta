@@ -6,6 +6,10 @@ describe CommentsController do
   let(:phase) { paper.phases.first }
   let(:user) { create(:user, tasks: []) }
 
+  let(:journal) { paper.journal }
+  let(:journal_admin) { FactoryGirl.create(:user) }
+  let!(:role) { assign_journal_role(journal, journal_admin, :admin) }
+
   let(:task) { create(:task, phase: phase, participants: [user], title: "Task", role: "admin") }
   before { sign_in user }
 
@@ -14,6 +18,13 @@ describe CommentsController do
       xhr :post, :create, format: :json,
         comment: {commenter_id: user.id,
                   body: "My comment",
+                  task_id: task.id}
+    end
+
+    subject(:do_request_as_journal_admin) do
+      xhr :post, :create, format: :json,
+        comment: {commenter_id: journal_admin.id,
+                  body: "My comment RULES",
                   task_id: task.id}
     end
 
@@ -48,6 +59,20 @@ describe CommentsController do
           expect(user.tasks).to_not include(task)
           do_request
           expect(user.reload.tasks).to include(task)
+        end
+      end
+
+      context "the user is a journal admin" do
+        let(:task) { create(:task, phase: phase, participants: [], title: "Task", role: "admin") }
+
+        it "does not add the journal admin as a participant" do
+          expect(task.participants).to_not include(journal_admin)
+          do_request_as_journal_admin
+          expect(task.participants).to_not include(journal_admin)
+        end
+
+        it "increments the comment count" do
+          expect { do_request_as_journal_admin }.to change { Comment.count }.by 1
         end
       end
 

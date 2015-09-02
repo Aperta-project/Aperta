@@ -42,7 +42,7 @@ class SupportingInformationFile < ActiveRecord::Base
   end
 
   def download_link(content=nil)
-    if text
+    if content
       "<a href='#{CGI.escape_html(src)}'>#{content}</a>"
     else
       "<a href='#{CGI.escape_html(src)}'>#{CGI.escape_html(filename)}</a>"

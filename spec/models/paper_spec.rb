@@ -440,12 +440,13 @@ describe Paper do
     end
 
     it "has link to docx" do
-      with_aws_cassette 'supporting_info_files_controller' do
-        paper.supporting_information_files.create! attachment: ::File.open('spec/fixtures/about_turtles.docx')
+      with_aws_cassette 'supporting_info_files_controller_not_supported_image' do
+        paper.supporting_information_files.create! attachment: ::File.open('spec/fixtures/cat.bmp')
       end
 
-      expect(doc.search('a:contains("about_turtles")').length).to eq(1)
-      expect(doc.search('a[href*="about_turtles.docx"]').length).to eq(1)
+      expect(doc.search('img').length).to eq(0)
+      expect(doc.search('a:contains("cat.bmp")').length).to eq(1)
+      expect(doc.search('a[href*="cat.bmp"]').length).to eq(1)
     end
   end
 end

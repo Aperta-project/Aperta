@@ -20,7 +20,7 @@ export default NestedQuestionOwner.extend(CardThumbnailObserver, {
   participations: DS.hasMany('participation', { async: false }),
   phase: DS.belongsTo('phase', {
     inverse: 'tasks',
-    async: false
+    async: true
   }),
 
   body: DS.attr(),

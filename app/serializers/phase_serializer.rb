@@ -1,5 +1,6 @@
 class PhaseSerializer < ActiveModel::Serializer
-  attributes :id, :name, :position
+  attributes :id, :name, :position, :links
   has_one :paper, embed: :ids
-  has_many :tasks, embed: :ids, include: true, polymorphic: true
+
+
 end

@@ -16,10 +16,10 @@ class PapersController < ApplicationController
 
   def show
     rel = Paper.includes([
-      :figures, :authors, :supporting_information_files, :paper_roles, :journal, :striking_image,
-      phases: { tasks: [:nested_question_answers, :attachments, :participations, :comments] }
+      :figures, :authors, :supporting_information_files, :paper_roles,
+      :journal, :locked_by, :striking_image, :phases
     ])
-    paper = rel.find(params[:id])
+    paper = Paper.find(params[:id])
     authorize_action!(paper: paper)
     respond_with(paper)
   end
@@ -42,6 +42,9 @@ class PapersController < ApplicationController
     respond_with paper
   end
 
+
+  ## SUPPLIMENTAL INFORMATION
+
   def comment_looks
     comment_looks = paper.comment_looks.includes(task: :phase).where(user: current_user)
     respond_with(comment_looks, root: :comment_looks)
@@ -57,6 +60,8 @@ class PapersController < ApplicationController
     activities = Activity.feed_for('manuscript', paper)
     respond_with activities, each_serializer: ActivitySerializer, root: 'feeds'
   end
+
+  ## CONVERSION
 
   def upload
     IhatJobRequest.new(paper: paper).queue(file_url: params[:url], callback_url: ihat_jobs_url)
@@ -79,11 +84,23 @@ class PapersController < ApplicationController
     end
   end
 
+  ## EDITING
+
+  def heartbeat
+    if paper.locked?
+      paper.heartbeat
+      PaperUnlockerWorker.perform_async(paper.id, true)
+    end
+    head :no_content
+  end
+
   def toggle_editable
     paper.toggle!(:editable)
     status = paper.valid? ? 200 : 422
     render json: paper, status: status
   end
+
+  ## STATE CHANGES
 
   def submit
     paper.submit! current_user do

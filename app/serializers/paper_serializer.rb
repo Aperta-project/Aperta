@@ -6,7 +6,7 @@ class PaperSerializer < LitePaperSerializer
              :publishing_state, :paper_type, :status, :updated_at,
              :editable, :links, :versions, :manuscript_id
 
-  %i(phases figures tables bibitems authors supporting_information_files).each do |relation|
+  %i(figures tables bibitems authors supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true
   end
 
@@ -17,7 +17,7 @@ class PaperSerializer < LitePaperSerializer
 
   has_many :collaborations, embed: :ids, include: true, serializer: CollaborationSerializer
   has_many :decisions, embed: :ids, include: true, serializer: DecisionSerializer
-  has_many :tasks, embed: :ids, polymorphic: true
+  # has_many :tasks, embed: :ids, polymorphic: true
   has_one :journal, embed: :id, include: true
   has_one :striking_image, embed: :id, include: true, root: :figures
 
@@ -39,7 +39,11 @@ class PaperSerializer < LitePaperSerializer
   end
 
   def links
-    { comment_looks: comment_looks_paper_path(object) }
+    {
+      comment_looks: comment_looks_paper_path(object),
+      tasks: paper_tasks_path(object),
+      phases: paper_phases_path(object)
+    }
   end
 
   def versions

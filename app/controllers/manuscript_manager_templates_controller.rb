@@ -9,14 +9,14 @@ class ManuscriptManagerTemplatesController < ApplicationController
   end
 
   def update
-    mmt_form = ManuscriptManagerTemplateForm.new(new_mmt_params)
-    mmt_form.update! manuscript_manager_template
+    template_form = ManuscriptManagerTemplateForm.new(new_template_params)
+    template_form.update! manuscript_manager_template
     render json: manuscript_manager_template
   end
 
   def create
-    mmt_form = ManuscriptManagerTemplateForm.new(new_mmt_params)
-    respond_with mmt_form.create!
+    template_form = ManuscriptManagerTemplateForm.new(new_template_params)
+    respond_with template_form.create!
   end
 
   def destroy
@@ -36,7 +36,7 @@ class ManuscriptManagerTemplatesController < ApplicationController
     params.require(:manuscript_manager_template).permit(:paper_type, :journal_id)
   end
 
-  def new_mmt_params
+  def new_template_params
     params.require(:manuscript_manager_template).permit(:paper_type, :journal_id, phase_templates: [:name, :position, task_templates: [:title, :journal_task_type_id]])
   end
 

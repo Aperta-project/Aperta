@@ -1,30 +1,30 @@
 class ManuscriptManagerTemplateForm
   include ActiveModel::Model
 
-  attr_accessor :mmt_params
+  attr_accessor :params
 
   validates :paper_type, presence: true
   validates :journal_id, presence: true
 
-  def initialize(mmt_params)
-    @mmt_params = mmt_params
+  def initialize(params)
+    @params = params
   end
 
   def create!
     process_params
-    ManuscriptManagerTemplate.create!(mmt_params)
+    ManuscriptManagerTemplate.create!(params)
   end
 
-  def update!(mmt)
+  def update!(template)
     process_params
-    mmt.update! mmt_params
+    template.update! params
   end
 
   private
 
   def process_params
-    phase_templates = set_phase_templates(mmt_params.delete("phase_templates"))
-    mmt_params["phase_templates"] = phase_templates if phase_templates
+    phase_templates = set_phase_templates(params.delete("phase_templates"))
+    params["phase_templates"] = phase_templates if phase_templates
   end
 
   def set_phase_templates(phase_template_params)

@@ -52,7 +52,6 @@ module SalesforceServices
     def self.create_billing_and_pfa_case(paper_id:)
       paper    = Paper.find(paper_id)
       kase_mgr = self.client.materialize("Case")
-      #TODO: find out what to send to bt so it can do its job
       bt       = BillingTranslator.new(paper: paper)
       kase     = kase_mgr.create(bt.paper_to_billing_hash)
     end

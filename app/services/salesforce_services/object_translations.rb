@@ -23,52 +23,51 @@ module SalesforceServices
     class BillingTranslator
       def initialize(paper:)
         @paper = paper
+        #@billing_card = @paper.tasks.find_by_type("PlosBilling::BillingTask") # possible multiples?
+        @billing_card = @paper.billing_card
       end
 
       def paper_to_billing_hash # (pfa)
-        #TODO: find out what to send
+
+        return {} unless @billing_card
+
         {
-          'SuppliedEmail'              => @paper.creator.email, # ?
           #'RecordTypeId'               => nil, # default, set by SF
+          'SuppliedEmail'              => @paper.creator.email, # corresponding author == creator?
           'Exclude_from_EM__c'         => true,
           'Journal_Department__c'      => @paper.journal.name,
-          'Subject'                    => manuscript_id, # subject of email
+          'Subject'                    => manuscript_id, 
           'Description'                => "#{@paper.creator.full_name} has applied for PFA with submission #{manuscript_id}",
-          'Origin'                     => "PFA Request", # dropdown in SF
-          'PFA_Funding_Statement__c'   => nil,
-          'PFA_Question_2__c'          => nil,
-          'PFA_Question_2a__c'         => nil,
-          'PFA_Question_2b__c'         => nil,
-          'PFA_Question_1__c'          => nil,
-          'PFA_Question_1a__c'         => nil,
-          'PFA_Question_1b__c'         => nil,
-          'PFA_Question_3__c'          => nil,
-          'PFA_Question_3a__c'         => nil,
-          'PFA_Question_4__c'          => nil,
-          'PFA_Question_4a__c'         => nil,
-          #no existe
-          #'PFA_Amount_to_Pay__c'       => nil,
-          'PFA_Able_to_Pay_R__c'       => nil,
-          'PFA_Supporting_Docs__c'     => nil,
-          'PFA_Additional_Comments__c' => nil,
+          'Origin'                     => "PFA Request", 
+          
+          #'PFA_Funding_Statement__c'   => billing_question "", # Unknown field?
+
+          'PFA_Question_1__c'          => answer_for("pfa_question_1"),
+          'PFA_Question_1a__c'         => answer_for("pfa_question_1a"),
+          'PFA_Question_1b__c'         => answer_for("pfa_question_1b"),
+          'PFA_Question_2__c'          => answer_for("pfa_question_2"),
+          'PFA_Question_2a__c'         => answer_for("pfa_question_2a"),
+          'PFA_Question_2b__c'         => answer_for("pfa_question_2b"),
+          'PFA_Question_3__c'          => answer_for("pfa_question_3"),
+          'PFA_Question_3a__c'         => answer_for("pfa_question_3a"),
+          'PFA_Question_4__c'          => answer_for("pfa_question_4"),
+          'PFA_Question_4a__c'         => answer_for("pfa_question_4a"),
+          'PFA_Able_to_Pay_R__c'       => answer_for("pfa_amount_to_pay"),
+          'PFA_Additional_Comments__c' => answer_for("pfa_additional_comments"),
+          'PFA_Supporting_Docs__c'     => answer_for("payment_method"), # can't be nil, unlike others
         }
       end
       
-      def manuscript_id
-        # will be the doi, and there is a story for that "DOIs should be assigned to all Papers in Aperta"
-        # manuscript ID = PONE-D-14-18244
-        "prefix-#{@paper.id}"
-        # PLOS ONE                         - PONE
-        # PLOS Yeti                        - 
-        # PLOS Pathogens                   - PPAT
-        # PLOS Genetics                    - PGEN
-        # PLOS Biology                     - PBIO
-        # PLOS Medicine                    - PMED
-        # PLOS Computational Biology       - PCBI
-        # PLOS Neglected Tropical Diseases - PNTD
-      end
+      private
+        
+        def answer_for(ident)
+          q = @billing_card.questions.find_by_ident("plos_billing.#{ident}")
+          q.present? ? q.answer : nil
+        end
+
+        def manuscript_id # replace this with doi code when done
+          "prefix-#{@paper.id}"
+        end
     end
-
   end
-
 end

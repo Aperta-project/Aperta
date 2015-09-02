@@ -2,6 +2,7 @@
 # This class represents the paper in the system.
 class Paper < ActiveRecord::Base
   include EventStream::Notifiable
+  include PaperTaskFinders
   include AASM
 
   belongs_to :creator, inverse_of: :submitted_papers, class_name: 'User', foreign_key: :user_id

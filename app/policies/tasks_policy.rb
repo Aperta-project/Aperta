@@ -3,6 +3,10 @@ class TasksPolicy < ApplicationPolicy
 
   include TaskAccessCriteria
 
+  def index?
+    true
+  end
+
   def show?
     authorized_to_modify_task?
   end

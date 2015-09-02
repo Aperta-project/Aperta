@@ -44,7 +44,7 @@ module Subscriptions
     # prints out the current list of subscriptions in a style similar to the
     # output of `rake routes`
     def pretty_print(io=$stdout)
-      io.puts Subscriptions::ConsoleFormatter.new(__registry__).format
+      __registry__.pretty_print(io)
     end
 
     # Remove all subscriptions from the registry.  Useful when testing.

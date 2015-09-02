@@ -37,6 +37,14 @@ module Subscriptions
       end.flatten
     end
 
+    def pretty_print(io=$stdout)
+      headers = ["Event Name", "Subscribers"]
+      rows = @events.sort.map do |event, info|
+        [event, info.map(&:subscribers).flatten.map(&:to_s).sort.join(', ')]
+      end
+      io.puts Subscriptions::ConsoleFormatter.new(headers, rows).to_s
+    end
+
     private
 
     def duplicated_handler_check!(new_info)

@@ -8,7 +8,7 @@ feature "Admin can edit user details and initiate password reset", js: true do
   before do
     create :user, first_name: "Bob", last_name: "Merlyn", username: 'shadow_missing2010'
 
-    login_as user
+    login_as(user, scope: :user)
     visit "/"
 
     within('.navigation') do

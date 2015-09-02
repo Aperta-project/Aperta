@@ -16,7 +16,7 @@ feature "Register Decision", js: true do
   before do
     task.participants << user
     paper.paper_roles.create!(user: user, role: PaperRole::COLLABORATOR)
-    login_as user
+    login_as(user, scope: :user)
     visit "/"
   end
 

@@ -2,7 +2,7 @@ class Activity < ActiveRecord::Base
   belongs_to :subject, polymorphic: true
   belongs_to :user
 
-  scope :updated_within_the_last, -> (time){ where("updated_at >= ?", time.ago) }
+  scope :updated_within_the_last, -> (time) { where("updated_at >= ?", time.ago) }
 
   scope :feed_for, -> (feed_names, subject) do
     where(feed_name: feed_names, subject: subject).order('created_at DESC')
@@ -151,12 +151,12 @@ class Activity < ActiveRecord::Base
     if task.newly_complete?
       activity.update!(
         activity_key: "task.completed",
-        message:  "#{task.title} card was marked as complete"
+        message: "#{task.title} card was marked as complete"
       )
     elsif task.newly_incomplete?
       activity.update!(
         activity_key: "task.incompleted",
-        message:  "#{task.title} card was marked as incomplete"
+        message: "#{task.title} card was marked as incomplete"
       )
     end
     activity

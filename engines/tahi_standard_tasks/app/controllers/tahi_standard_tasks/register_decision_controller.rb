@@ -4,7 +4,7 @@ module TahiStandardTasks
     def decide
       task = Task.find(params[:id])
 
-      if !task or !task.paper.submitted?
+      if !task || !task.paper.submitted?
         render json: { error: "Invalid Task and/or Paper" }
 
       elsif not task.latest_decision_ready?

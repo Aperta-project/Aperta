@@ -54,7 +54,7 @@ module SalesforceServices
           'PFA_Question_4a__c'         => answer_for("pfa_question_4a"),
           'PFA_Able_to_Pay_R__c'       => answer_for("pfa_amount_to_pay"),
           'PFA_Additional_Comments__c' => answer_for("pfa_additional_comments"),
-          'PFA_Supporting_Docs__c'     => answer_for("payment_method"), # can't be nil, unlike others
+          'PFA_Supporting_Docs__c'     => answer_for("pfa_supporting_docs"), # can't be nil, unlike others
         }
       end
       

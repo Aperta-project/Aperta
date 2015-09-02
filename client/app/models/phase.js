@@ -5,7 +5,7 @@ export default DS.Model.extend({
   paper: DS.belongsTo('paper', { async: false }),
   tasks: DS.hasMany('task', {
     polymorphic: true,
-    async: false
+    async: true
   }),
 
   name: DS.attr('string'),

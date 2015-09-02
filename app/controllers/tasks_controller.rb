@@ -1,10 +1,15 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy
+  before_action :enforce_policy, except: [:index]
 
   before_action :unmunge_empty_arrays, only: [:update]
 
   respond_to :json
+
+  def index
+    p paper.tasks
+    respond_with(paper.tasks)
+  end
 
   def show
     respond_with(task, location: task_url(task))

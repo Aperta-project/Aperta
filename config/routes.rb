@@ -106,7 +106,8 @@ Tahi::Application.routes.draw do
       resources :figures, only: :create
       resources :tables, only: :create
       resources :bibitems, only: :create
-      resources :tasks, only: [:update, :create, :destroy] do
+      resources :phases, only: [:index]
+      resources :tasks, only: [:index, :update, :create, :destroy] do
         resources :comments, only: :create
       end
       member do

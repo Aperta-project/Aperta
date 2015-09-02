@@ -19,7 +19,7 @@ export default DS.Model.extend(CardThumbnailObserver, {
   participations: DS.hasMany('participation', { async: false }),
   phase: DS.belongsTo('phase', {
     inverse: 'tasks',
-    async: false
+    async: true
   }),
   questions: DS.hasMany('question', {
     inverse: 'task',

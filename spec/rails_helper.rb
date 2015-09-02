@@ -9,6 +9,7 @@ require 'capybara/rspec'
 require "email_spec"
 require 'sidekiq/testing'
 require 'pusher-fake/support/rspec'
+include Warden::Test::Helpers
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -70,13 +71,13 @@ RSpec.configure do |config|
   config.order = "random"
 
   config.include Devise::TestHelpers, type: :controller
-  config.include Warden::Test::Helpers, type: :controller
   config.include FactoryGirl::Syntax::Methods
   config.include TahiHelperMethods
   config.extend TahiHelperClassMethods
   config.include EmailSpec::Helpers
   config.include EmailSpec::Matchers
-  config.include TahiHelperMethods::FeatureHelpers, type: :feature
+
+  Warden.test_mode!
 
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation, except: ['task_types'])
@@ -120,5 +121,9 @@ RSpec.configure do |config|
 
   config.before(:each) do
     ActionMailer::Base.deliveries.clear
+  end
+
+  config.after(:each) do
+    Warden.test_reset!
   end
 end

@@ -16,7 +16,7 @@ feature "Editing paper", selenium: true, js: true do
 
     before do
       assign_journal_role(journal, user, :admin)
-      login_as user
+      login_as(user, scope: :user)
       visit "/"
     end
 
@@ -30,9 +30,7 @@ feature "Editing paper", selenium: true, js: true do
         p.select2(journal.name, css: '.paper-new-journal-select')
         p.select2(paper_type,  css: '.paper-new-paper-type-select')
         click_button 'Create Document'
-        using_wait_time 10 do
-          wait_for_ajax
-        end
+        wait_for_ajax
         expect(page.current_path).to match %r{/papers/\d+}
         within "#paper-container" do
           expect(page).to_not have_text("DOI:")
@@ -55,9 +53,7 @@ feature "Editing paper", selenium: true, js: true do
         p.select2(journal.name, css: '.paper-new-journal-select')
         p.select2(paper_type,  css: '.paper-new-paper-type-select')
         click_button 'Create Document'
-        using_wait_time 10 do
-          wait_for_ajax
-        end
+        wait_for_ajax
 
         within ".task-list-doi" do
           expect(page).to have_content "DOI: vicious/robots.8888"

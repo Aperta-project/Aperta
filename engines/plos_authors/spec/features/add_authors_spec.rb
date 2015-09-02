@@ -9,7 +9,7 @@ feature "Add collaborating authors", js: true do
   before do
     task.participants << creator
     paper.paper_roles.create(user: creator, role: PaperRole::COLLABORATOR)
-    login_as creator
+    login_as(creator, scope: :user)
     visit "/"
   end
 

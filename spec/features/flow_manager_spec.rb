@@ -19,7 +19,7 @@ feature "Flow Manager", js: true, selenium: true do
 
     @old_size = page.driver.browser.manage.window.size
     page.driver.browser.manage.window.resize_to(1250,550)
-    login_as admin
+    login_as(admin, scope: :user)
     visit "/"
   end
 

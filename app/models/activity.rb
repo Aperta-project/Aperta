@@ -28,6 +28,16 @@ class Activity < ActiveRecord::Base
     )
   end
 
+  def self.task_sent_to_author!(task, user:)
+    create(
+      feed_name: "workflow",
+      activity_key: "task.sent_to_author",
+      subject: task.paper,
+      user: user,
+      message: "#{task.title} sent to author"
+    )
+  end
+
   def self.comment_created!(comment, user:)
     create(
       feed_name: "workflow",

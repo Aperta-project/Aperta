@@ -31,6 +31,20 @@ describe Activity do
     )}
   end
 
+  describe "#task_sent_to_author!" do
+    subject(:activity) { Activity.task_sent_to_author!(task, user: user) }
+    let(:task) { FactoryGirl.build(:assign_team_task) }
+
+    it {
+      is_expected.to have_attributes(
+        feed_name: "workflow",
+        activity_key: "task.sent_to_author",
+        subject: task.paper,
+        user: user,
+        message: "Assign Team sent to author"
+    )}
+  end
+
   describe "#comment_created" do
     subject(:activity) { Activity.comment_created!(comment, user: user) }
     let(:comment){ FactoryGirl.build(:comment) }

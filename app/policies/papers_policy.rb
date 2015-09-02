@@ -45,6 +45,10 @@ class PapersPolicy < ApplicationPolicy
     can_view_paper?
   end
 
+  def reactivate?
+    current_user.journal_admin?(journal: paper.journal)
+  end
+
   def workflow_activities?
     can_view_manuscript_manager?
   end

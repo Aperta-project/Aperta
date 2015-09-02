@@ -1,3 +1,15 @@
+.overlay-content .comparing-toolbar {
+  margin-top: -35px;
+  margin-bottom: 20px;
+}
+
+.overlay-content .overlay-main-work {
+  padding: 0 0 0 0;
+}
+
+.overlay-content .overlay-main-work > h1 {
+  margin-bottom: 10px;
+}
 
 #paper-container .not-ve .html-diff, .diff {
   figure.added, figure.removed {
@@ -20,6 +32,7 @@
 
   .added {
     background-color: rgba($tahi-green-light, .5);
+    color: $tahi-green;
     th {
       background: darken($tahi-green-light, 5%);
     }
@@ -28,6 +41,7 @@
   .removed {
     opacity: .8;
     background-color: rgba($tahi-red-light, .5);
+    color: $tahi-red;
     th {
       background: darken($tahi-red-light, 5%);
     }
@@ -37,10 +51,27 @@
 
   }
 
-  .diff-child {
+  .diff-child > .diff-child {
+    padding-bottom: 20px;
+  }
+
+  .diff-child > .diff-child > .diff-child {
     padding-left: 20px;
   }
 
+  .diff-child .property:first-of-type {
+    font-size: 1.2em;
+    color: #333;
+  }
+
+  label {
+    display: none;
+    font-size: 1.1em;
+  }
+
+  .diff-child h3 {
+    display: none;
+  }
   cite:after {
     font-style: normal;
     content: "[\2020]";

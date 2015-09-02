@@ -1,5 +1,67 @@
-Comparing <em>{{model.old.version}} - {{model.old.date}}</em> and <em>{{model.new.version}} - {{model.new.date}}</em>
+<header class="overlay-header">
+  <h2 class="overlay-header-title overlay-header-title--with-icon">
+<a id="ember2036" href="/papers/365/edit" class="overlay-header-link ember-view">      <svg class="manuscript-icon" width="20px" height="18px" viewBox="0 0 21 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M20.0078261,22.9331296 L0.0604347826,22.9331296 L0.0604347826,4.44517593 L20.0078261,4.44517593 L20.0078261,22.9331296 L20.0078261,22.9331296 Z M16.6632609,7.66368519 L3.40478261,7.66368519 L3.40478261,9.87935185 L16.6632609,9.87935185 L16.6632609,7.66368519 L16.6632609,7.66368519 Z M16.6632609,11.9932222 L3.40478261,11.9932222 L3.40478261,14.2086759 L16.6632609,14.2086759 L16.6632609,11.9932222 L16.6632609,11.9932222 Z M16.6632609,16.2279907 L3.40478261,16.2279907 L3.40478261,18.4434444 L16.6632609,18.4434444 L16.6632609,16.2279907 L16.6632609,16.2279907 Z"></path>
+  <path d="M17.826087,0 L17.826087,3.21212037 L20.0066593,3.21212041 L20.0066593,0 L17.826087,0 Z"></path>
+  <rect x="14.3478261" y="0" width="2.10043478" height="3.21212037"></rect>
+  <rect x="10.6521739" y="0" width="2.10043478" height="3.21212037"></rect>
+  <rect x="7.17391304" y="0" width="2.10043478" height="3.21212037"></rect>
+  <rect x="3.47826087" y="0" width="2.10043478" height="3.21212037"></rect>
+  <rect x="0" y="0" width="2.10043478" height="3.21212037"></rect>
+  <rect x="0" y="1.27777778" width="20.0078261" height="1.93434259"></rect>
+</svg>
 
-<div class="diff">
-  {{task-diff model=model}}
+    Title of My Awesome Paper
+</a>  </h2>
+  <a class="button-secondary button--green overlay-close-button" data-ember-action="2037">Close</a>
+</header>
+
+<main class="overlay-content">
+  <div class="comparing-toolbar">
+    Comparing <em>{{model.old.version}} - {{model.old.date}}</em> and <em>{{model.new.version}} - {{model.new.date}}</em>
+  </div>
+
+  <div class="overlay-main-work">
+    <h1>Authors</h1>
+    <div class="diff">
+      {{task-diff model=model}}
+    </div>
+  </div>
+  <div class="overlay-discussion-board">
+    <h2>Discussion</h2>
+    <div id="ember2082" class="ember-view comment-board"><div id="ember2091" class="ember-view comment-board-form"><textarea id="ember2100" placeholder="Type your message here" class="new-comment-field ember-view ember-text-area new-comment-field"><!----></textarea>
+
+  <div class="message-comment-buttons">
+    <button type="submit" class="button-secondary button--green" data-ember-action="2101">Post Message</button>
+    <a href="#" class="button-link cancel-link" data-ember-action="2102">Cancel</a>
+  </div>
+  </div>
+
+  <ul class="message-comments">
+  <!----></ul>
+
+  <!----></div>
+  </div>
+
+</main>
+
+<footer class="overlay-footer">
+  <div class="overlay-footer-content">
+    <div class="overlay-completed-checkbox">
+  <div>
+      <input id="task_completed" type="checkbox" name="task_completed" class="ember-view ember-checkbox">
+    <label for="task_completed">Completed</label>
+    <div id="ember2104" class="ember-view error-message error-message--hidden"><!---->
 </div>
+  </div>
+</div>
+
+    <div id="ember2121" class="ember-view participant-selector select2-multiple">  <span class="participant-selector-label">Following:</span>
+
+<div class="select2-container select2-container-multi participant-select2 ember-view ember-text-field select2" id="s2id_ember2136"><ul class="select2-choices">  <li class="select2-search-choice">    <div><img alt="Admin User" class="user-thumbnail-small" src="/images/profile-no-image.png" data-toggle="tooltip" title="" data-original-title="Admin User"></div>    <a href="#" class="select2-search-choice-close" tabindex="-1"></a></li><li class="select2-search-field">    <label for="s2id_autogen1" class="select2-offscreen"></label>    <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input select2-default" id="s2id_autogen1" placeholder="" style="width: 22px;">  </li></ul><div class="select2-drop select2-drop-multi select2-display-none participant-dropdown">   <ul class="select2-results">   <li class="select2-no-results">No matches found</li><li class="select2-no-results">No matches found</li></ul></div></div><div id="ember2136" disabled="false" placeholder="Add People" name="add_participant" type="text" value="" class="participant-select2 ember-view ember-text-field select2 select2-offscreen" tabindex="-1"><!----></div>
+
+<div class="add-participant-button" data-toggle="tooltip" title="" data-ember-action="2137" data-original-title="Add Someone">+</div>
+</div>
+    <a class="button-secondary button--green overlay-close-button" data-ember-action="2138">Close</a>
+  </div>
+</footer>

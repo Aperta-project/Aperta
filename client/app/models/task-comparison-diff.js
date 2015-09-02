@@ -8,52 +8,41 @@ export default Ember.Object.extend({
     properties: [
       { type: "properties", name: "authors", children: [
         { type: "properties", name: "author", children: [
-            {type: "text", name: "first_name", value: "John"},
-            {type: "text", name: "last_name", value: "Smith"},
-            {type: "text", name: "suffix", value: "Jr."},
-            {type: "question", name: "Hometown", value: { title: "Hometown", answer: "Grand Rapids"}}
-          ]
-        },
-
-        // { type: "properties", name: "author", children: [
-        //     {type: "text", name: "first_name", value: "Sally"},
-        //     {type: "text", name: "last_name", value: "Doe"},
-        //   ]
-        // }
-      ] // authors
-      }
-    ]  // properties
-  }, // old
+          { type: "text", name: "name", value: "Diana Smith"},
+          { type: "text", name: "email", value: "dsmith@example.com"},
+          { type: "text", name: "another.field", value: "Chupa chups pastry topping chocolate cake cholocate cake."},
+          { type: "text", name: "institution", value: "Arizona State Polytechnic Campus"}
+        ]},
+        { type: "properties", name: "author", children: [
+          { type: "text", name: "name", value: "Jane Goodall"},
+          { type: "text", name: "email", value: "jane.goodall@example.com"},
+          { type: "text", name: "another.field", value: "World's Foremost Authority on Chimpanzees - Primatology"},
+          { type: "text", name: "institution", value: "Arizona State Polytechnic Campus"}
+        ]}
+      ]}
+    ]
+  },
 
   new: {
-    version: "4.5",
-    date: "2015-09-01",
+    version: "4.4",
+    date: "2015-08-01",
 
     properties: [
       { type: "properties", name: "authors", children: [
         { type: "properties", name: "author", children: [
-            {type: "text", name: "salutation", value: "Mr."},
-            {type: "text", name: "first_name", value: "John"},
-            {type: "text", name: "last_name", value: "Doe"},
-            {type: "properties", name: "children", children: [
-              {type: "text", name: "first_name", value: "Sue"}
-            ]},
-            {type: "question", name: "Hometown", value: { title: "Where did they grow up:", answer: "Grand Rapids"},
-             children: [
-               {type: "question", name: "currently.lives.in", value: { title: "Currently residing in:", answer: "Grand Rapids"}}
-             ]}
-          ]
-        },
-        //
-        // { type: "properties", name: "author", children: [
-        //     {type: "text", name: "first_name", value: "Paul"},
-        //     {type: "text", name: "last_name", value: "John"},
-        //   ]
-        // }
-      ] // authors
-      }
-    ]  // properties
-
+          { type: "text", name: "name", value: "Diana Smith"},
+          { type: "text", name: "email", value: "dianasmith@gmail.com"},
+          { type: "text", name: "another.field", value: "Chupa chups pastry topping chocolate cake cholocate cake."},
+          { type: "text", name: "institution", value: "Arizona State Polytechnic Campus"}
+        ]},
+        { type: "properties", name: "author", children: [
+          { type: "text", name: "name", value: "Holly Something"},
+          { type: "text", name: "email", value: "hollysomething@example.come"},
+          { type: "text", name: "another.field", value: "Another description if required"},
+          { type: "text", name: "institution", value: "Washington State-Polytechnic Campus"}
+        ]}
+      ]}
+    ]
   }, // new
 
   diffProperties: function(oldProperties, newProperties){
@@ -128,8 +117,6 @@ export default Ember.Object.extend({
     }
     let returnValue = [];
 
-    let propertiesName = newProperty.name;
-
     if(oldProperty.type === "question" ) {
       let oldTitle = oldProperty.value.title || "";
       let newTitle = newProperty.value.title || "";
@@ -139,9 +126,8 @@ export default Ember.Object.extend({
       let diff = JsDiff.diffWords(oldTitle, newTitle);
       diff = diff.concat( JsDiff.diffWords(oldAnswer, newAnswer));
       returnValue.push({ type: "propertyDiff", diffs: diff, name: newProperty.name });
-      propertiesName = "";
     } else if(oldProperty.type === "text"){
-      let diff = JsDiff.diffWords(oldProperty.value.toString(), newProperty.value.toString());
+      let diff = JsDiff.diffSentences(oldProperty.value.toString(), newProperty.value.toString());
       returnValue.push({ type: "propertyDiff", diffs: diff, name: newProperty.name });
     } else if (oldProperty.type === "boolean") {
       let diff = JsDiff.diffWords(oldProperty.value.toString(), newProperty.value.toString());
@@ -150,7 +136,7 @@ export default Ember.Object.extend({
 
     if((oldProperty.children && oldProperty.children.length > 0) || (newProperty.children && newProperty.children.length > 0)){
       let diff = this.diffProperties(oldProperty.children, newProperty.children);
-      returnValue.push({ type: "propertiesDiff", diffs: diff, name: propertiesName });
+      returnValue.push({ type: "propertiesDiff", diffs: diff, name: newProperty.name });
     }
 
     return returnValue;

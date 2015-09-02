@@ -5,7 +5,7 @@ feature 'Upload default CSS on journal admin page', js: true do
   let!(:journal) { create :journal }
 
   before do
-    login_as admin
+    login_as(admin, scope: :user)
     visit "/"
   end
 

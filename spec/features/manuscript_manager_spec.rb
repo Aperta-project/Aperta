@@ -8,9 +8,7 @@ feature "Manuscript Manager", js: true, selenium: true do
   before do
     assign_journal_role(journal, admin, :admin)
 
-    page.driver.browser.manage.window.maximize
-
-    login_as admin
+    login_as(admin, scope: :user)
     visit "/papers/#{paper.id}/workflow"
   end
 

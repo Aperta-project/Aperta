@@ -6,7 +6,7 @@ feature "Journal Administration", js: true do
   let!(:another_journal) { create :journal }
 
   before do
-    login_as user
+    login_as(user, scope: :user)
     visit "/"
   end
 
@@ -120,13 +120,11 @@ feature "Journal Administration", js: true do
 
       describe do
         it "show Journal logo" do
-          using_wait_time 5 do
-            with_aws_cassette(:yeti_image) do
-              journal.update_attributes(logo: File.open("spec/fixtures/yeti.jpg"))
-              visit "/admin/journals/1/roles/1/flow_manager"
-              find(".control-bar-link-icon").click
-              expect(page.find(".column-title-wrapper")).to have_css("img")
-            end
+          with_aws_cassette(:yeti_image) do
+            journal.update_attributes(logo: File.open("spec/fixtures/yeti.jpg"))
+            visit "/admin/journals/1/roles/1/flow_manager"
+            find(".control-bar-link-icon").click
+            expect(page.find(".column-title-wrapper")).to have_css("img")
           end
         end
       end

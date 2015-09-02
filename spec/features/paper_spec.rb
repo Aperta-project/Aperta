@@ -9,7 +9,7 @@ feature "Editing paper", js: true do
     before do
       make_user_paper_admin(user, paper)
 
-      login_as user
+      login_as(user, scope: :user)
       visit "/"
 
       click_link(paper.title)

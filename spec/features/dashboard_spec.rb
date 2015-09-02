@@ -15,7 +15,7 @@ feature "Dashboard", js: true do
     context "when there are more than 15 papers" do
       let(:paper_count) { 18 }
       scenario "only 15 papers are beamed down but total paper count is present" do
-        login_as user
+        login_as(user, scope: :user)
         visit "/"
         expect(dashboard.total_paper_count).to eq paper_count
         expect(dashboard.paper_count).to eq Paper.default_per_page
@@ -41,7 +41,7 @@ feature "Dashboard", js: true do
     end
 
     scenario "only displays invitations from latest revision cycle" do
-      login_as user
+      login_as(user, scope: :user)
       visit "/"
 
       dashboard.expect_active_invitations_count(2)

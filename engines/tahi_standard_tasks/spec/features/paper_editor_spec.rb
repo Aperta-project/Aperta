@@ -10,7 +10,7 @@ feature "Invite Editor", js: true do
     assign_journal_role(paper.journal, admin, :editor)
     assign_journal_role(paper.journal, editor, :editor)
 
-    login_as admin
+    login_as(admin, scope: :user)
     visit "/"
   end
 

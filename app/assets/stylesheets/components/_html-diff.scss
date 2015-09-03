@@ -11,6 +11,77 @@
   margin-bottom: 10px;
 }
 
+ol.diff-child {
+  list-style-type: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.diffing-publishing-related-questions {
+  margin-left: 22px;
+}
+
+.diffing-publishing-related-questions ol.diff-child {
+  ol.diff-child {
+    list-style-type: none;
+  }
+
+  li {
+    list-style-type: decimal;
+    color: #878787;
+    margin: 0 0;
+  }
+
+  li ol li {
+    list-style-type:none;
+  }
+
+  // nested properties/questions
+  .diff-child .diff-child {
+    margin-top: 20px;
+    margin-left: 40px;
+
+    .diff-child {
+      margin-left: 0px;
+    }
+
+    li {
+      margin-bottom: 10px;
+    }
+  }
+
+  .diff-question {
+    .property.question-text {
+      display: block;
+      color: #999;
+      font-size: inherit;
+    }
+
+    .property.question-answer {
+      margin-top: 20px;
+      color: #333;
+
+      span:before {
+        color: #999;
+        content: "Response:";
+        margin-left: 20px;
+        margin-right: 10px;
+      }
+    }
+
+    .diff-child .property.question-answer {
+      margin-top: 0px;
+
+      span:before {
+        content: none;
+        margin-left: 0px;
+        margin-right: 0px;
+      }
+    }
+  }
+}
+
+
 #paper-container .not-ve .html-diff, .diff {
   figure.added, figure.removed {
     padding: 15px;

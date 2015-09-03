@@ -439,7 +439,7 @@ describe Paper do
       expect(doc.search('img[src*="yeti.png"]').length).to eq(1)
     end
 
-    it "has link to docx" do
+    it "has link to unsupported image attachment" do
       with_aws_cassette 'supporting_info_files_controller_not_supported_image' do
         paper.supporting_information_files.create! attachment: ::File.open('spec/fixtures/cat.bmp')
       end

@@ -22,7 +22,7 @@ feature "Viewing Versions:", js: true do
     end
 
     scenario "the user views an old version of the paper.", selenium: true do
-      page = EditPaperPage.new
+      page = PaperPage.new
       page.version_button.click
       wait_for_ajax
       select paper.versioned_texts.version_desc.first.version_string, from: "view_version"
@@ -36,7 +36,7 @@ feature "Viewing Versions:", js: true do
     end
 
     scenario "the user views an old version of the paper.", selenium: true do
-      page = EditPaperPage.new
+      page = PaperPage.new
       page.version_button.click
       wait_for_ajax
       select paper.versioned_texts.version_desc.last.version_string, from: "view_version"

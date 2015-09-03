@@ -161,11 +161,6 @@ describe Paper do
         expect(paper).to_not be_editable
       end
 
-      it "submits billing and pfa info to salesforce" do
-        expect(paper).to receive(:create_billing_and_pfa_case).and_return(true)
-        paper.submit! user
-      end
-
       it "sets the submitting_user of the latest version" do
         paper.submit! user
         expect(paper.latest_version.submitting_user).to eq(user)

@@ -5,6 +5,6 @@ class NewSubmissionPage < Page
     select2 paper_type, css: ".paper-new-paper-type-select"
     click_on 'Create'
     expect(session).to have_css('#paper-title')
-    EditPaperPage.new
+    PaperPage.new
   end
 end

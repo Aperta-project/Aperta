@@ -31,7 +31,7 @@ class PapersController < ApplicationController
 
   def create
     @paper = PaperFactory.create(paper_params, current_user)
-    notify_paper_created! if @paper.valid?
+    Activity.paper_created!(paper, user: current_user) if @paper.valid?
     respond_with(@paper)
   end
 
@@ -45,7 +45,7 @@ class PapersController < ApplicationController
       paper.update(update_paper_params)
     end
 
-    notify_paper_edited! if params[:paper][:locked_by_id].present?
+    Activity.paper_edited!(paper, user: current_user) if params[:paper][:locked_by_id].present?
 
     respond_with paper
   end
@@ -55,9 +55,14 @@ class PapersController < ApplicationController
     respond_with(comment_looks, root: :comment_looks)
   end
 
-  def activity
-    # TODO: params[:name] probably needs some securitifications
-    activities = Activity.where(feed_name: params[:name], subject_id: paper.id).order('created_at DESC')
+  def workflow_activities
+    feeds = ['workflow', 'manuscript']
+    activities = Activity.feed_for(feeds, paper)
+    respond_with activities, each_serializer: ActivitySerializer, root: 'feeds'
+  end
+
+  def manuscript_activities
+    activities = Activity.feed_for('manuscript', paper)
     respond_with activities, each_serializer: ActivitySerializer, root: 'feeds'
   end
 
@@ -98,9 +103,10 @@ class PapersController < ApplicationController
 
   def submit
     paper.submit! current_user do
-      notify_paper_submitted!
+      Activity.paper_submitted! paper, user: current_user
       broadcast_paper_submitted_event
     end
+
     render json: paper, status: :ok
   end
 
@@ -163,7 +169,7 @@ class PapersController < ApplicationController
   end
 
   def enforce_policy
-    authorize_action!(paper: paper)
+    authorize_action!(paper: paper, params: params)
   end
 
   def sanitize_title
@@ -175,36 +181,6 @@ class PapersController < ApplicationController
       paper.errors.add(:locked_by_id, "This paper is locked for editing by #{paper.locked_by.full_name}.")
       raise ActiveRecord::RecordInvalid, paper
     end
-  end
-
-  def notify_paper_created!
-    Activity.create(
-      feed_name: 'manuscript',
-      activity_key: 'paper.created',
-      subject: paper,
-      user: current_user,
-      message: 'Paper was created'
-    )
-  end
-
-  def notify_paper_edited!
-    Activity.create(
-      feed_name: 'manuscript',
-      activity_key: 'paper.edited',
-      subject: paper,
-      user: current_user,
-      message: 'Paper was edited'
-    )
-  end
-
-  def notify_paper_submitted!
-    Activity.create(
-      feed_name: 'manuscript',
-      activity_key: 'paper.submitted',
-      subject: paper,
-      user: current_user,
-      message: "Paper was submitted; latest version is #{paper.version_string}"
-    )
   end
 
   def broadcast_paper_submitted_event

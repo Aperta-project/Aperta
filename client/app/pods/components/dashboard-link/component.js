@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  unreadCommentsCount: Ember.computed('model.commentLooks.@each', function() {
+  unreadCommentsCount: Ember.computed('model.commentLooks.[]', function() {
     return this.get('model.commentLooks.length');
   }),
 

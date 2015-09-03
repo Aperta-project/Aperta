@@ -23,7 +23,7 @@ export default Ember.Controller.extend({
   initialCollaborations: null,
 
   collaborations: null,
-  collaborators: computed('collaborations.@each', function() {
+  collaborators: computed('collaborations.[]', function() {
     return this.get('collaborations').mapBy('user');
   }),
 

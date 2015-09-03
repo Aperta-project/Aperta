@@ -34,7 +34,7 @@ class TaskManagerPage < Page
     within('#control-bar') do
       click_link "Article"
     end
-    EditPaperPage.new
+    PaperPage.new
   end
 
   def journal_name

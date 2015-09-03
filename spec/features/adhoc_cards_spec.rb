@@ -15,7 +15,7 @@ feature 'Adhoc cards', js: true do
       login_as author
       visit "/papers/#{paper.id}"
 
-      edit_paper = EditPaperPage.new
+      edit_paper = PaperPage.new
       edit_paper.view_card('Ad Hoc', AdhocOverlay) do |overlay|
         overlay.upload_attachment("yeti.jpg")
         expect(page).to have_css(".download-link a[href*='#{Attachment.last.file.path}']")
@@ -31,7 +31,7 @@ feature 'Adhoc cards', js: true do
       login_as author
       visit "/papers/#{paper.id}"
 
-      edit_paper = EditPaperPage.new
+      edit_paper = PaperPage.new
       edit_paper.view_card('Ad Hoc', AdhocOverlay) do |overlay|
         overlay.upload_attachment("yeti.jpg")
         expect(page).to have_css(".download-link a[href*='#{Attachment.last.file.path}']")
@@ -46,7 +46,7 @@ feature 'Adhoc cards', js: true do
       login_as author
       visit "/papers/#{paper.id}"
 
-      edit_paper = EditPaperPage.new
+      edit_paper = PaperPage.new
       edit_paper.view_card('Ad Hoc', AdhocOverlay) do |overlay|
         overlay.upload_attachment("yeti.jpg")
         expect(page).to have_css(".download-link a[href*='#{Attachment.last.file.path}']")
@@ -66,7 +66,7 @@ feature 'Adhoc cards', js: true do
       login_as author
       visit "/papers/#{paper.id}"
 
-      edit_paper = EditPaperPage.new
+      edit_paper = PaperPage.new
       edit_paper.view_card('Ad Hoc', AdhocOverlay) do |overlay|
         overlay.upload_attachment("yeti.jpg")
         expect(page).to have_css(".download-link a[href*='#{Attachment.last.file.path}']")

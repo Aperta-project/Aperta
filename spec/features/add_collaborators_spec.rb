@@ -14,7 +14,7 @@ feature "Editing paper", js: true do
 
   scenario "Managing collaborators" do
     click_link paper.title
-    edit_paper = EditPaperPage.new
+    edit_paper = PaperPage.new
     collaborators_overlay = edit_paper.show_contributors
     collaborators_overlay.add_collaborators(user)
     collaborators_overlay.save

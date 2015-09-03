@@ -68,8 +68,8 @@ module "Integration: Billing",
     })
 
 test "Viewing card", (assert) ->
-  visit "/papers/#{currentPaper.id}/edit"
-  click ":contains(Billing)"
+  visit "/papers/#{currentPaper.id}"
+  click ".card-content:contains(Billing)"
   .then ->
     assert.equal find(".overlay-main-work h1").text().trim(), "Billing"
   click ".select2-choice"

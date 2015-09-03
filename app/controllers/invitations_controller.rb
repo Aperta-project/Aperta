@@ -11,6 +11,7 @@ class InvitationsController < ApplicationController
   def create
     invitation = task.invitations.create(invitation_params)
     invitation.invite!
+    Activity.invitation_created!(invitation, user: current_user)
     respond_with(invitation)
   end
 
@@ -22,12 +23,14 @@ class InvitationsController < ApplicationController
   def accept
     invitation.actor = current_user
     invitation.accept!
+    Activity.invitation_accepted!(invitation, user: current_user)
     respond_with(invitation)
   end
 
   def reject
     invitation.actor = current_user
     invitation.reject!
+    Activity.invitation_rejected!(invitation, user: current_user)
     respond_with(invitation)
   end
 

@@ -157,6 +157,18 @@ class Task < ActiveRecord::Base
     true
   end
 
+  def previously_completed?
+    previous_changes['completed'] && previous_changes['completed'][0]
+  end
+
+  def newly_complete?
+    !previously_completed? && completed
+  end
+
+  def newly_incomplete?
+    previously_completed? && !completed
+  end
+
   private
 
   def on_card_completion?

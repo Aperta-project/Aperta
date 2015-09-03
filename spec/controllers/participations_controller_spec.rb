@@ -2,17 +2,18 @@ require 'rails_helper'
 
 describe ParticipationsController do
   render_views
+  let(:user) { create(:user) }
+  let(:participant) { create(:user) }
   let!(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: user) }
   let(:phase) { paper.phases.first }
-  let(:user) { create(:user) }
-
   let(:task) { create(:task, phase: phase) }
+
   before { sign_in user }
 
   describe 'POST create' do
     subject(:do_request) do
       xhr :post, :create, format: :json,
-        participation: {user_id: user.id,
+        participation: {user_id: participant.id,
                         task_id: task.id}
     end
 
@@ -43,6 +44,15 @@ describe ParticipationsController do
         expect{ do_request }.to change(Participation, :count).by(1)
       end
 
+      it "creates an activity" do
+        activity = {
+          subject: paper,
+          message: "Added Contributor: #{participant.full_name}"
+        }
+        expect(Activity).to receive(:create).with(hash_including(activity))
+        do_request
+      end
+
       it "returns the new participation as json" do
         do_request
         expect(response.status).to eq(201)
@@ -66,6 +76,10 @@ describe ParticipationsController do
         expect {
           do_request
         }.to change { Participation.count }.by -1
+      end
+
+      it "creates an activity" do
+        expect{ do_request }.to change(Activity, :count).by(1)
       end
     end
 

@@ -23,8 +23,6 @@ module PlosAuthors
       end
     end
 
-    private
-
     def corresponding_plos_authors
       return true if plos_authors.where(corresponding: true).exists?
       self.errors.add(:corresponding, "You must have at least one corresponding author.")

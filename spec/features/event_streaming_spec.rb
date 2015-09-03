@@ -1,14 +1,16 @@
 require 'rails_helper'
 
 feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
-  let!(:author) { FactoryGirl.create :user, :site_admin }
+  let(:regular_user) { FactoryGirl.create :user }
+  let!(:admin) { FactoryGirl.create :user, :site_admin }
   let!(:journal) { FactoryGirl.create :journal }
-  let!(:paper) { FactoryGirl.create :paper, :with_tasks, creator: author, journal: journal }
+  let!(:paper) { FactoryGirl.create :paper, :with_tasks, creator: admin, journal: journal }
+  let(:regular_paper) { FactoryGirl.create :paper, :with_tasks, creator: regular_user, journal: journal }
   let(:upload_task) { paper.tasks_for_type(TahiUploadManuscript::UploadManuscriptTask).first }
   let(:text_body) { { type: "text", value: "Hi there!" } }
 
   before do
-    login_as author
+    login_as admin
     visit "/"
   end
 
@@ -55,15 +57,15 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
 
     scenario "access to papers" do
       # added as a collaborator
-      collaborator_paper.paper_roles.collaborators.create(user: author)
+      collaborator_paper.paper_roles.collaborators.create(user: admin)
       expect(page).to have_text(collaborator_paper.title)
 
       # removed as a collaborator
-      collaborator_paper.paper_roles.collaborators.where(user: author).destroy_all
+      collaborator_paper.paper_roles.collaborators.where(user: admin).destroy_all
       expect(page).to_not have_text(collaborator_paper.title)
 
       # added as a participant
-      participant_paper.paper_roles.participants.create(user: author)
+      participant_paper.paper_roles.participants.create(user: admin)
       expect(page).to have_text(participant_paper.title)
 
       # removed as a participant
@@ -74,17 +76,20 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
 
   context "on a task" do
     before do
+      sign_out
+      login_as regular_user
+      visit "/"
       upload_task.participants.destroy_all
     end
 
     scenario "commenter is added as a participant" do
-      click_link paper.title
+      click_link regular_paper.title
       edit_paper_page = EditPaperPage.new
       edit_paper_page.view_card(upload_task.title) do |card|
         using_wait_time 30 do
           card.post_message 'Hello'
-          expect(card).to have_participants(author)
-          expect(card).to have_last_comment_posted_by(author)
+          expect(card).to have_participants(regular_user)
+          expect(card).to have_last_comment_posted_by(regular_user)
         end
       end
     end

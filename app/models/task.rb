@@ -178,4 +178,6 @@ class Task < ActiveRecord::Base
   def on_card_completion?
     previous_changes["completed"] == [false, true]
   end
+
+
 end

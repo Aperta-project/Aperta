@@ -55,7 +55,7 @@ export default Ember.Object.extend({
 
         { type: "question", name: "question-3", value:
           {
-            title: "Please indicate whether you have had any of the following previous interactions about this manuscript. Check all that apply.",
+            title: "WE DONT HAVE THIS TEXT CURRENTLY STORED IN THE DB. WE NEED THAT THEN WE CAN SHOW IT",
             answer: ""
           },
           children: [
@@ -65,9 +65,9 @@ export default Ember.Object.extend({
                   title: "One or more authors (including myself) curently serve, or have previously served, as an Academic Editor or Guest Editor for this journal.",
                   answer: ""
                 }
-              },
-            ]
-          }]
+              },              
+            ] }
+          ]
         },
 
         { type: "question", name: "question-4", value:
@@ -151,7 +151,7 @@ export default Ember.Object.extend({
 
         { type: "question", name: "question-3", value:
           {
-            title: "Please indicate whether you have had any of the following previous interactions about this manuscript. Check all that apply.",
+            title: "WE DONT HAVE THIS TEXT CURRENTLY STORED IN THE DB. WE NEED THAT THEN WE CAN SHOW IT",
             answer: ""
           },
           children: [
@@ -159,8 +159,15 @@ export default Ember.Object.extend({
               { type: "question", name: "question-3a",
                 value:  {
                   title: "I submitted a presubmission inquiry for this manuscript",
-                  answer: "2094. Sarah Tusk"
-                }
+                  answer: "Yes"
+                }, children: [
+                  { type: "question", name: "question-3aa",
+                    value:  {
+                      title: "Please enter manuscript number and editor name, if known",
+                      answer: "2094. Sarah Tusk"
+                    }
+                  }
+                ]
               },
               { type: "question", name: "question-3b",
                 value:  {

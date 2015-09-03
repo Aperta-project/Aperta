@@ -6,8 +6,11 @@ export default Ember.Route.extend({
   },
 
   actions: {
-    saveChanges: function() {
-      return this.controller.send('saveTemplate', this.get('attemptingTransition'));
+    willTransition(transition) {
+      if (this.controller.get('pendingChanges')) {
+        alert("There are changes in this template please save first");
+        transition.abort();
+      }
     }
   }
 });

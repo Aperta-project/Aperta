@@ -20,7 +20,7 @@ export default Ember.Component.extend({
     }
 
     _.each(diffResults, function(element){
-      if(element.type === "propertiesDiff" || element.type === "question"){
+      if(element.type === "properties" || element.type === "question"){
         console.log("A: ", element);
         if(insideList){
           html += "<li>";

@@ -19,9 +19,16 @@ export default Ember.Object.extend({
                 answer: "Figure 2: Abico in singularis ut delenit sed mara volutpat os os dignissim. Illum luptatum quod capio augue ex abdo imputo probo in appellatio. Tincid-unt abbas velit quis convention. Luptatum distineo virtus feugait. Utrum neque decet. Et melior a ratis abdo cui nisl."
               }
             },
-            { type: "text", name: "attachment-file-name", value: "white-rodgers-thermostat_1F80.pdf" },
-            { type: "text", name: "attachment-title", value: "Singularis ut Delenit" },
-            { type: "text", name: "attachment-caption", value: "Illum luptatum quod capio augue ex abdo imputo probo in appellatio. Sed utrum duis vel refoveo interdico facilisi zelus. Utrum neque decet." },
+            { type: "question", name: "question-1b",
+              value:  {
+                title: "Please also upload a copy of the related work with your submission as a 'Related Manuscript' item. Note that reviewers may be asked to comment on the overlap between the related submissions.",
+                attachment: "white-rodgers-thermostat_1F80.pdf"
+              }
+            },
+            //
+            // { type: "text", name: "attachment-file-name", value: "white-rodgers-thermostat_1F80.pdf" },
+            // { type: "text", name: "attachment-title", value: "Singularis ut Delenit" },
+            // { type: "text", name: "attachment-caption", value: "Illum luptatum quod capio augue ex abdo imputo probo in appellatio. Sed utrum duis vel refoveo interdico facilisi zelus. Utrum neque decet." },
           ]
         },
 
@@ -107,9 +114,17 @@ export default Ember.Object.extend({
                 answer: "Figure 2: Abico in singularis ut delenit sed mara volutpat os os dignissim. Illum luptatum quod capio augue ex abdo imputo probo in appellatio. Tincid-unt abbas velit quis convention. Luptatum distineo virtus feugait. Utrum neque decet. Et melior a ratis abdo cui nisl."
               }
             },
-            { type: "text", name: "attachment-file-name", value: "riceCooker-man.pdf" },
-            { type: "text", name: "attachment-title", value: "Singularis ut Delenit" },
-            { type: "text", name: "attachment-caption", value: "Illum luptatum quod capio augue ex abdo imputo. Sed utrum duis vel refoveo interdico facilisi zelus. Tincidunt abbas velit quis conventio. Luptatum distineo virtus feugait. Utrum neque decet." },
+
+            { type: "question", name: "question-1b",
+              value:  {
+                title: "Please also upload a copy of the related work with your submission as a 'Related Manuscript' item. Note that reviewers may be asked to comment on the overlap between the related submissions.",
+                attachment: "riceCooker-man.pdf"
+              }
+            },
+            //
+            // { type: "text", name: "attachment-file-name", value: "riceCooker-man.pdf" },
+            // { type: "text", name: "attachment-title", value: "Singularis ut Delenit" },
+            // { type: "text", name: "attachment-caption", value: "Illum luptatum quod capio augue ex abdo imputo. Sed utrum duis vel refoveo interdico facilisi zelus. Tincidunt abbas velit quis conventio. Luptatum distineo virtus feugait. Utrum neque decet." },
           ]
         },
 
@@ -118,7 +133,20 @@ export default Ember.Object.extend({
             title: "Is this manuscript being submitted in conjunction with another submission?",
             answer: "No"
           },
-          children: []
+          children: [
+            { type: "question", name: "question-2a",
+              value:  {
+                title: "Title",
+                answer: ""
+              }
+            },
+            { type: "question", name: "question-2b",
+              value:  {
+                title: "Corresponding Author",
+                answer: ""
+              }
+            }
+          ]
         },
 
         { type: "question", name: "question-3", value:
@@ -245,26 +273,31 @@ export default Ember.Object.extend({
     if(oldProperty.type === "properties" || newProperty.type === "properties") {
       if((oldProperty.children && oldProperty.children.length > 0) || (newProperty.children && newProperty.children.length > 0)){
         let diff = this.diffProperties(oldProperty.children, newProperty.children);
-        returnValue.push({ type: "propertiesDiff", diffs: diff, name: newProperty.name });
+        returnValue.push({ type: "properties", diffs: diff, name: newProperty.name });
       }
     } else if(oldProperty.type === "question" || newProperty.type === "question") {
       let oldTitle = oldProperty.value.title || "";
       let newTitle = newProperty.value.title || "";
       let oldAnswer = oldProperty.value.answer || "";
       let newAnswer = newProperty.value.answer || "";
+      let oldAttachment = oldProperty.value.attachment || "";
+      let newAttachment = newProperty.value.attachment || "";
 
       let diffResults = [];
 
       diffResults.push(
         { type: "question-text", diffs: JsDiff.diffWords(oldTitle, newTitle), name: "title" }
       );
-      diffResults.push(
-        { type: "question-answer", diffs:  JsDiff.diffWords(oldAnswer, newAnswer), name: "value" }
-      );
+
+      if(oldAnswer.length > 0 || newAnswer.length > 0){
+        diffResults.push({ type: "question-answer", diffs:  JsDiff.diffWords(oldAnswer, newAnswer), name: "value" });
+      } else if(oldAttachment.length > 0 || newAttachment.length > 0){
+        diffResults.push({ type: "question-attachment", diffs:  JsDiff.diffSentences(oldAttachment, newAttachment), name: "value" });
+      }
 
       if((oldProperty.children && oldProperty.children.length > 0) || (newProperty.children && newProperty.children.length > 0)){
         let new_diff = this.diffProperties(oldProperty.children, newProperty.children);
-        diffResults.push({ type: "propertiesDiff", diffs: new_diff, name: newProperty.name });
+        diffResults.push({ type: "properties", diffs: new_diff, name: newProperty.name });
       }
 
       returnValue.push({ type: "question", diffs: diffResults, name: newProperty.name });

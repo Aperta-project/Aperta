@@ -121,4 +121,8 @@ RSpec.configure do |config|
   config.before(:each) do
     ActionMailer::Base.deliveries.clear
   end
+
+  config.before(:each, js: true) do
+    Capybara.page.driver.browser.manage.window.resize_to(1500, 1000)
+  end
 end

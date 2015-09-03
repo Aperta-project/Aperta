@@ -165,7 +165,7 @@ describe User do
     end
   end
 
-  describe ".journal_admin?" do
+  describe "#journal_admin?" do
     let(:paper) { FactoryGirl.create(:paper) }
     let(:journal) { paper.journal }
     let(:journal_admin) { FactoryGirl.create(:user) }

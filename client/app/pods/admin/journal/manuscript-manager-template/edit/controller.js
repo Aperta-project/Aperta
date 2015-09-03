@@ -75,12 +75,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     },
 
     saveTemplateOnClick(transition){
-
-      if (this.get('pendingChanges') || this.get('editingMmtName')) {
-        this.saveTemplate(transition);
-      } else {
-        this.send('cancel');
-      }
+      this.saveTemplate(transition);
     },
 
     cancel(){

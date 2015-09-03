@@ -6,8 +6,4 @@ ManuscriptManagerTemplateEditView = Ember.View.extend
     Ember.run.scheduleOnce('afterRender', this, Utils.resizeColumnHeaders)
   ).on('didInsertElement').observes('controller.editMode')
 
-  saveOnTransition: (->
-    @get('controller').send('saveTemplateOnClick', 'admin.journal')
-  ).on('willDestroyElement')
-
 `export default ManuscriptManagerTemplateEditView`

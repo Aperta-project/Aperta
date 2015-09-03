@@ -101,10 +101,19 @@ class PapersController < ApplicationController
       notify_paper_submitted!
       broadcast_paper_submitted_event
     end
-    respond_with paper
+    render json: paper, status: :ok
+  end
+
+  def withdraw
+    paper.withdraw! withdrawal_params[:reason]
+    render json: paper, status: :ok
   end
 
   private
+
+  def withdrawal_params
+    params.permit(:reason)
+  end
 
   def paper_params
     params.require(:paper).permit(

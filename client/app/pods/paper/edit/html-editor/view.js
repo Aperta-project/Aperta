@@ -16,13 +16,14 @@ export default Ember.View.extend(PaperEditMixin, {
     let controller = this.get('controller');
     // When the paper is not locked we take a click
     // on the paper body to acquire the lock
-    this.$('.paper-body').on('click', (e)=>{
+    this.$('.manuscript-inner').on('click', (e)=>{
       if (!controller.get('model.lockedBy')) {
         e.preventDefault();
         e.stopPropagation();
         controller.acquireLock();
       }
     });
+    controller.updateEditorLockState();
   }),
 
   destroyEditor: Ember.on('willDestroyElement', function() {

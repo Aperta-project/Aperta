@@ -10,7 +10,6 @@ module('Integration: Create new paper', {
   afterEach() {
     Ember.run(function() {
       TestHelper.teardown();
-      App.destroy();
       Ember.run(App, 'destroy');
     });
   },
@@ -19,7 +18,8 @@ module('Integration: Create new paper', {
     App = startApp();
     TestHelper.setup(App);
 
-    // NOTE: We don't care about having data on the page when testing the feedback form
+    // We don't care about having data on the page when testing the new paper form
+
     TestHelper.handleFindAll('journal', 1);
     TestHelper.handleFindAll('paper', 0);
     TestHelper.handleFindAll('invitation', 0);
@@ -37,9 +37,9 @@ test('author successfully creates a submission', function(assert) {
   visit('/');
   click('.button-primary:contains(Create New Submission)');
   fillIn('#paper-short-title', title);
-  pickFromSelect2('.paper-new-journal-select', 'PLOS Yeti 1');
-  pickFromSelect2('.paper-new-paper-type-select', 'Research');
-  click('.overlay .button-primary');
+  pickFromSelectBox('.paper-new-journal-select', 'PLOS Yeti 1');
+  pickFromSelectBox('.paper-new-paper-type-select', 'Research');
+  click('.paper-new-create-document-button');
 
   andThen(function() {
     assert.ok(find('#paper-title').length, 'on Paper Edit screen');
@@ -54,8 +54,8 @@ test('author unsuccessfully creates a submission', function(assert) {
   visit('/');
   click('.button-primary:contains(Create New Submission)');
   fillIn('#paper-short-title', title);
-  pickFromSelect2('.paper-new-journal-select', 'PLOS Yeti 1');
-  click('.overlay .button-primary');
+  pickFromSelectBox('.paper-new-journal-select', 'PLOS Yeti 1');
+  click('.paper-new-create-document-button');
 
   andThen(function() {
     assert.ok(find('.flash-message--error').length, 'error on screen');
@@ -68,12 +68,12 @@ test('feedback is displayed after submission', function(assert) {
   visit('/');
   click('.button-primary:contains(Create New Submission)').then(function() {
     Ember.run(this, function() {
-      paperNewController.set('paperSaving', true);
+      paperNewController.set('model', {});
+      paperNewController.set('model.isSaving', true);
     });
   });
 
   andThen(function() {
     assert.ok(find('.progress-spinner').length, 'spinner visible');
-    assert.ok(find('.button--disabled:contains(Create)').length, 'submit button disabled');
   });
 });

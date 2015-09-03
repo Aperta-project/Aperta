@@ -29,12 +29,8 @@ export default Ember.Mixin.create({
     }
   }),
 
-  isEditable: computed('model.lockedBy', 'model.versioningMode', function() {
-    if (this.get('model.versioningMode')){
-      return false;
-    } else {
-      return this.get('lockedByCurrentUser');
-    }
+  isEditable: computed('model.lockedBy', function() {
+    return this.get('lockedByCurrentUser');
   }),
 
   cannotEdit: computed('model.status', 'lockedByCurrentUser', function() {
@@ -79,12 +75,6 @@ export default Ember.Mixin.create({
 
     updateDocumentBody(content) {
       this.set('model.body', content);
-    },
-
-    confirmSubmitPaper() {
-      if (!this.get('model.allSubmissionTasksCompleted')) { return; }
-      this.get('model').save();
-      this.send('showConfirmSubmitOverlay');
     }
   }
 });

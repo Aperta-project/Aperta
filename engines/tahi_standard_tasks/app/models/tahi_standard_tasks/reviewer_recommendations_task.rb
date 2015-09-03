@@ -4,7 +4,7 @@ module TahiStandardTasks
     # include EventStreamNotifier
     include MetadataTask
 
-    register_task default_title: "Reviewer Recommendations", default_role: "author"
+    register_task default_title: "Reviewer Candidates", default_role: "author"
 
     has_many :reviewer_recommendations
 

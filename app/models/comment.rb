@@ -9,7 +9,6 @@ class Comment < ActiveRecord::Base
   validates :task, :body, presence: true
   validates_presence_of :commenter
 
-  before_save :escape_body
   before_save :set_mentions
 
   def created_by?(user)
@@ -23,11 +22,6 @@ class Comment < ActiveRecord::Base
   end
 
   private
-
-  # TODO Security? What do you think? Also, should we do this client side too?
-  def escape_body
-    self.body = ERB::Util.html_escape(body)
-  end
 
   # uses the same format as
   # https://dev.twitter.com/overview/api/entities-in-twitter-objects#user_mentions

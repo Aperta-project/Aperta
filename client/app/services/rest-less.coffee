@@ -8,7 +8,7 @@ RESTless = Ember.Namespace.create
     adapter.buildURL(resourceType, model.get('id'))
 
   ajaxPromise: (method, path, data) ->
-    socketId = Tahi.__container__.lookup('pusher:main').get('socketId')
+    socketId = window.Tahi.__container__.lookup('pusher:main').get('socketId')
     new Ember.RSVP.Promise (resolve, reject) ->
       Ember.$.ajax
         url: path
@@ -36,7 +36,7 @@ RESTless = Ember.Namespace.create
     @put("#{@pathFor(model)}#{path}", data)
 
   putUpdate: (model, path, data) ->
-    @putModel(model, path).then (response) ->
+    @putModel(model, path, data).then (response) ->
       model.get('store').pushPayload(response)
     , (xhr) ->
       if errors = xhr.responseJSON.errors

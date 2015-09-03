@@ -63,6 +63,7 @@ module SalesforceServices
         def manuscript_id # replace this with doi code when done
           "prefix-#{@paper.id}"
         end
+
     end
   end
 end

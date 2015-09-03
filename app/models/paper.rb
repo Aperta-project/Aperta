@@ -39,6 +39,10 @@ class Paper < ActiveRecord::Base
 
   delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
 
+  after_create do
+    versioned_texts.create!(major_version: 0, minor_version: 0, text: (@new_body || ''))
+  end
+
   aasm column: :publishing_state do
     state :unsubmitted, initial: true # currently being authored
     state :submitted
@@ -47,40 +51,55 @@ class Paper < ActiveRecord::Base
     state :accepted
     state :rejected
     state :published
+    state :withdrawn
 
     event(:submit) do
       transitions from: [:unsubmitted, :in_revision],
                   to: :submitted,
                   guards: :metadata_tasks_completed?,
+<<<<<<< HEAD
                   after: [:prevent_edits!,
                           :major_version!,
                           :set_submitted_at!,
                           :find_or_create_paper_in_salesforce,
                           :create_billing_and_pfa_case]
+=======
+                  after: [:set_submitting_user_and_touch!,
+                          :set_submitted_at!,
+                          :prevent_edits!]
+>>>>>>> master
     end
 
     event(:minor_check) do
       transitions from: :submitted,
                   to: :checking,
-                  after: :allow_edits!
+                  after: [:allow_edits!,
+                          :new_minor_version!]
     end
 
     event(:submit_minor_check) do
       transitions from: :checking,
                   to: :submitted,
-                  after: :prevent_edits!
+                  after: [:set_submitting_user_and_touch!,
+                          :prevent_edits!]
     end
 
     event(:minor_revision) do
       transitions from: :submitted,
                   to: :in_revision,
-                  after: :allow_edits!
+                  after: [:allow_edits!,
+                          # there is a terminology mismatch here: it
+                          # needs MINOR revision but we use a MAJOR
+                          # version to track all papers send back
+                          # after peer review.
+                          :new_major_version!]
     end
 
     event(:major_revision) do
       transitions from: :submitted,
                   to: :in_revision,
-                  after: :allow_edits!
+                  after: [:allow_edits!,
+                          :new_major_version!]
     end
 
     event(:accept) do
@@ -98,6 +117,14 @@ class Paper < ActiveRecord::Base
                   to: :published,
                   after: :set_published_at!
     end
+
+    event(:withdraw) do
+      transitions to: :withdrawn,
+                  after: :prevent_edits!
+      before do |withdrawal_reason|
+        withdrawal_reasons << withdrawal_reason
+      end
+    end
   end
 
   def make_decision(decision)
@@ -105,11 +132,19 @@ class Paper < ActiveRecord::Base
   end
 
   def body
-    latest_version.text
+    @new_body || latest_version.text
   end
 
   def body=(new_body)
-    latest_version.update(text: new_body)
+    # We have an issue here. the first version is created on
+    # after_create (because it needs the paper_id). But if this is
+    # called before creation, it will fail. Get around this by storing
+    # the text in @new_body if there is no latest version
+    if latest_version.nil?
+      @new_body = new_body
+    else
+      latest_version.update(text: new_body)
+    end
   end
 
   def version_string
@@ -179,6 +214,10 @@ class Paper < ActiveRecord::Base
 
   def unlocked? # :nodoc:
     !locked?
+  end
+
+  def latest_withdrawal_reason
+    withdrawal_reasons.last
   end
 
   def locked_by?(user) # :nodoc:
@@ -267,14 +306,18 @@ class Paper < ActiveRecord::Base
     }.join("\n")
   end
 
-  private
-
-  def latest_version
-    versioned_texts.active.first_or_initialize
+  def latest_version(reload=false)
+    versioned_texts(reload).version_desc.first
   end
 
-  def major_version!(submitting_user)
-    latest_version.major_version!(submitting_user)
+  private
+
+  def new_major_version!
+    latest_version.new_major_version!
+  end
+
+  def new_minor_version!
+    latest_version.new_minor_version!
   end
 
   def default_abstract
@@ -303,5 +346,9 @@ class Paper < ActiveRecord::Base
 
   def create_billing_and_pfa_case(*)
     SalesforceServices::API.delay.create_billing_and_pfa_case(paper_id: self.id) if self.billing_card
+
+  def set_submitting_user_and_touch!(submitting_user) # rubocop:disable Style/AccessorMethodName
+    latest_version.update!(submitting_user: submitting_user)
+    latest_version.touch
   end
 end

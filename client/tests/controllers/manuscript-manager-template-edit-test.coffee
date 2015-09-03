@@ -31,9 +31,3 @@ test '#addPhase adds a phase at a specified index', (assert) ->
   Ember.run =>
     @ctrl.send 'addPhase', 0
     assert.equal @ctrl.get('sortedPhaseTemplates.firstObject.name'), 'New Phase'
-
-test "#removeTask removes the given task from the template's phase", (assert) ->
-  Ember.run =>
-    @ctrl.send 'removeTask', @task1
-    tasks = @phase.get('taskTemplates')
-    assert.deepEqual tasks.mapBy('title'), ['BTask']

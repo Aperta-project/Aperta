@@ -33,7 +33,7 @@ describe AttachmentSerializer do
       end
 
       it "has :detail_src" do
-        expect(deserialized_attachment[:detail_src]).to match(/\/detail_yeti.tiff/)
+        expect(deserialized_attachment[:detail_src]).to match(/\/detail_yeti.png/)
       end
     end
 

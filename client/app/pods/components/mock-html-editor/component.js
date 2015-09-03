@@ -8,16 +8,16 @@ export default Ember.Component.extend({
     return this.get('paper.body');
   },
 
-  update() {
-    // TODO: maybe we want to detect if this got called
-  },
+  connect() {},
 
-  connect() {
-    // TODO: maybe we want to detect if this got called
-  },
+  disconnect() {},
 
-  disconnect() {
-    // TODO: maybe we want to detect if this got called
-  },
+  disable() {},
+
+  enable() {},
+
+  update() {},
+
+  writeToModel() {},
 
 });

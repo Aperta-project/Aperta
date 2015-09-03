@@ -1,13 +1,13 @@
 class PaperRolesPolicy < ApplicationPolicy
-  primary_resource :paper_role
+  primary_resource :paper
 
-  def show?
-    papers_policy.show?
+  def index?
+    manuscript_managers_policy.can_manage_manuscript?
   end
 
   private
 
-  def papers_policy
-    @papers_policy ||= PapersPolicy.new(current_user: current_user, resource: paper_role.paper)
+  def manuscript_managers_policy
+    @manuscript_managers_policy ||= ManuscriptManagersPolicy.new(current_user: current_user, paper: paper)
   end
 end

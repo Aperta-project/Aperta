@@ -13,6 +13,12 @@ FactoryGirl.define do
     end
   end
 
+  factory :assign_team_task, class: 'Tahi::AssignTeam::AssignTeamTask' do
+    phase
+    title "Assign Team"
+    role "admin"
+  end
+
   factory :competing_interests_task, class: 'TahiStandardTasks::CompetingInterestsTask' do
     phase
     title "Competing Interests"
@@ -33,7 +39,7 @@ FactoryGirl.define do
 
   factory :figure_task, class: 'TahiStandardTasks::FigureTask' do
     phase
-    title "Upload Figures"
+    title "Figures"
     role "author"
   end
 

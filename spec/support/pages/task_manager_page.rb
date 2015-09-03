@@ -38,11 +38,11 @@ class TaskManagerPage < Page
   end
 
   def journal_name
-    find("#control-bar-paper-journal-name").text
+    find("#control-bar-paper-journal-name")
   end
 
   def paper_title
-    find("h2.tasks-paper-title").text
+    find("h2.tasks-paper-title")
   end
 end
 

@@ -1,6 +1,4 @@
-class AdhocAttachmentUploader < CarrierWave::Uploader::Base
-  include CarrierWave::MiniMagick
-  include CarrierWave::MimeTypes
+class AdhocAttachmentUploader < AttachmentUploader
 
   storage Rails.application.config.carrierwave_storage
 
@@ -10,18 +8,19 @@ class AdhocAttachmentUploader < CarrierWave::Uploader::Base
 
   version :detail, if: :image? do
     process resize_to_limit: [986, -1]
+    process :convert_to_png, if: :needs_transcoding?
+
+    def full_filename(orig_file)
+      full_name(orig_file)
+    end
   end
 
   version :preview, if: :image? do
-    process :convert_to_png, if: :needs_transcoded?
     process resize_to_limit: [475, 220]
+    process :convert_to_png, if: :needs_transcoding?
 
     def full_filename(orig_file)
-      if needs_transcoded?(orig_file)
-        "#{version_name}_#{File.basename(orig_file, ".*")}.png"
-      else
-        "#{version_name}_#{orig_file}"
-      end
+      full_name(orig_file)
     end
   end
 
@@ -30,25 +29,4 @@ class AdhocAttachmentUploader < CarrierWave::Uploader::Base
   def image?(_image)
     model.image?
   end
-
-  private
-
-  def convert_to_png
-    manipulate! do |image|
-      image.format("png")
-      image
-    end
-    file.content_type = "image/png"
-  end
-
-  def needs_transcoded?(file)
-    # On direct upload, the file's content_type is application/octet-stream, so
-    # we also need to check the filename
-    if file.respond_to?('content_type')
-      ["image/tiff", "application/postscript"].include?(file.content_type)
-    else
-      !!(File.extname(file) =~ /(tif?f|eps)/i)
-    end
-  end
-
 end

@@ -1,11 +1,23 @@
 <div id="versioning-bar">
-  <div class="bar-item">
-    Now viewing:
-    {{view "select"
-      name="view_version"
-      content=paper.versions
-      optionValuePath="content.id"
-      optionLabelPath="content.name"
-      selection=selectedVersion}}
+  <div class="versioning-bar-container">
+    <div class="bar-item">
+      Now viewing:
+      {{select-native name="view_version"
+                      content=paper.versions
+                      optionValuePath="id"
+                      optionLabelPath="name"
+                      selection=viewingVersion
+                      action=(action "changeViewingVersion")}}
+    </div>
+    <div class="bar-item">
+      Compare With:
+      {{select-native name="compare_version"
+                      prompt="-"
+                      content=paper.versions
+                      optionValuePath="id"
+                      optionLabelPath="name"
+                      selection=comparisonVersion
+                      action=(action "changeComparisonVersion")}}
+    </div>
   </div>
 </div>

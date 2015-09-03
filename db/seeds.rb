@@ -62,7 +62,7 @@ when 'development'
         short_title: "The great scientific paper of 2015",
         title:       "The most scrumtrulescent scientific paper of 2015.",
         abstract:    "We've discovered the rain in Spain tends to stay in the plain",
-        body:        "The quick man bear pig jumped over the fox",
+        body:        "<p>The quick man bear pig jumped over the fox</p>",
         paper_type:  "Research"
       },
       admin

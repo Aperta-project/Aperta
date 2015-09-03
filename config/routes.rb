@@ -97,9 +97,11 @@ Tahi::Application.routes.draw do
       end
     end
     resources :manuscript_manager_templates, only: [:create, :show, :update, :destroy]
-    resources :paper_roles, only: [:show]
     resources :assignments, only: [:index, :create, :destroy]
     resources :papers, only: [:index, :create, :show, :update] do
+      resources :roles, only: :index, controller: "paper_roles" do
+        resources :users, only: :index, controller: "paper_role_users"
+      end
       resource :editor, only: :destroy
       resource :manuscript_manager, only: :show
       resources :figures, only: :create
@@ -115,6 +117,7 @@ Tahi::Application.routes.draw do
         get :export, to: "paper_conversions#export"
         put :heartbeat
         put :submit
+        put :withdraw
         put :toggle_editable
         put :upload
       end

@@ -62,8 +62,14 @@ class EditPaperPage < Page
     TaskManagerPage.new
   end
 
-  def title=(val)
-    find('#paper-title').set(val)
+  def title=(string)
+    code = <<HERE
+var editorController = Tahi.__container__.lookup("controller:paper/edit/html-editor");
+var editor = editorController.get("editor.titleEditor.editor");
+editor.selectAll();
+editor.write("#{string}");
+HERE
+    page.execute_script code
   end
 
   def abstract=(val)
@@ -77,7 +83,7 @@ class EditPaperPage < Page
   def body=(string)
     code = <<HERE
 var editorController = Tahi.__container__.lookup("controller:paper/edit/html-editor");
-var editor = editorController.get("editor.editor");
+var editor = editorController.get("editor.bodyEditor.editor");
 editor.selectAll();
 editor.write("#{string}");
 HERE
@@ -85,23 +91,23 @@ HERE
   end
 
   def body
-    find('.ve-ce-documentNode').text
+    find('.paper-body .ve-ce-documentNode')
   end
 
   def versioned_body
-    find('#paper-body').text
+    find('#paper-body')
   end
 
   def has_body_text?(text)
-    find('.ve-ce-documentNode').has_text?(text)
+    find('.paper-body .ve-ce-documentNode').has_text?(text)
   end
 
   def journal
-    find(:css, '.paper-journal').text
+    find(:css, '.paper-journal')
   end
 
   def title
-    find(:css, '#paper-title').text
+    find('#paper-title .ve-ce-documentNode')
   end
 
   def cards
@@ -113,13 +119,11 @@ HERE
   end
 
   def paper_type
-    select = find('#paper_paper_type')
-    select.find("option[value='#{select.value}']").text
+    find('#paper_paper_type').find("option[value='#{select.value}']")
   end
 
   def paper_type=(value)
-    select = find('#paper_paper_type')
-    select.select value
+    find('#paper_paper_type').select value
   end
 
   def start_editing

@@ -27,7 +27,7 @@ class ManuscriptManagerTemplatePage < Page
   end
 
   def paper_type
-    find(".paper-type-name").text
+    find(".paper-type-name")
   end
 
   def paper_type=(type)

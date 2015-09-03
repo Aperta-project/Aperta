@@ -38,7 +38,7 @@
     "ember-cli-rails-addon": "0.0.12",
     "ember-cli-release": "0.2.3",
     "ember-cli-sri": "^1.0.3",
-    "ember-cli-uglify": "^1.2.0",
+    "ember-cli-deprecation-workflow": "0.1.4",
     "ember-data": "1.0.0-beta.18",
     "ember-data-factory-guy": "1.0.7",
     "ember-disable-proxy-controllers": "^1.0.0",
@@ -47,7 +47,7 @@
     "glob": "^4.0.5",
     "liquid-fire": "0.21.2",
     "tahi-fileupload": "git+https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/Tahi-project/tahi-fileupload#a087596c01e694a163f407b41245aaa72a5e5ddb",
-    "tahi-editor-ve": "git+https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/Tahi-project/tahi-editor-ve#fa1ad640ac95c92c7c2092982248218191cfcf1a"
+    "tahi-editor-ve": "git+https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/Tahi-project/tahi-editor-ve#5c426e0d22c57b87af678919d5e150f483ae428a"
   },
   "ember-addon": {
     "paths": [

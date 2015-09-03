@@ -56,6 +56,6 @@ feature "Admin can edit user details and initiate password reset", js: true do
     edit_modal = bob.edit_user_details
     edit_modal.reset_password
 
-    expect(edit_modal.reset_password_status).to match /reset password instructions has been sent/
+    expect(edit_modal.reset_password_status).to have_content(/reset password instructions has been sent/)
   end
 end

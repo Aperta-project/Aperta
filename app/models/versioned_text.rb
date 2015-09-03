@@ -14,7 +14,7 @@ class VersionedText < ActiveRecord::Base
 
   # Make a copy of the text and give it a new MAJOR version.
   def new_major_version!
-    new_version!(major_version + 1, minor_version)
+    new_version!(major_version + 1, 0)
   end
 
   # Make a copy of the text and give it a new MINOR version

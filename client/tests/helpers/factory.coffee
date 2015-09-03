@@ -347,7 +347,7 @@ FactoryAttributes.ReviseTask =
 FactoryAttributes.BillingTask =
   _rootKey: 'task'
   id: null
-  title: "Financial Info"
+  title: "Billing"
   type: "BillingTask"
   completed: false
   body: []

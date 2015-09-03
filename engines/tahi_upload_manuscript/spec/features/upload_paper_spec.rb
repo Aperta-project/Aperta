@@ -24,7 +24,7 @@ feature "Upload paper", js: true, selenium: true, sidekiq: :inline! do
 
   scenario "Author uploads paper in Word format" do
     click_link paper.title
-    edit_paper_page = EditPaperPage.new
+    edit_paper_page = PaperPage.new
     edit_paper_page.view_card('Upload Manuscript').upload_word_doc
 
     expect(page).to have_no_css('.overlay.in')

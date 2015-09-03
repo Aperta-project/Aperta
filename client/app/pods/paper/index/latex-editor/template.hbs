@@ -1,0 +1,43 @@
+{{partial "paper/control-bar"}}
+
+<div class="paper-toolbar">
+  {{partial "paper/index/latex-editor/toolbar"}}
+</div>
+
+<div id="paper-container" class="clearfix {{pageContainerHTMLClass}} {{if noTasks "sidebar-empty"}}">
+  {{partial "paper/sidebar"}}
+
+  <div class="vertical-divider"></div>
+
+  <div class="manuscript-container">
+    {{flash-messages classNames="flash-messages-paper-editor"}}
+    <article class="manuscript {{if isEditing "editing" "read-only"}}">
+
+      <div class="manuscript-title-and-placeholder">
+        {{content-editable tagName="h2"
+                           id="paper-title"
+                           placeholder="Type your manuscript title here"
+                           value=model.title
+                           preventEnterKey="true"}}
+
+        {{#if showPlaceholder}}
+          <div id="paper-placeholder" {{action "tryHidingPlaceholder"}}>Type your manuscript here</div>
+        {{/if}}
+      </div>
+
+      <div class="code-mirror-split-view">
+        <div id="paper-body" class="code-mirror-split code-mirror-split--left">
+          {{code-mirror-editor value=model.body
+                               readOnly=cannotEdit
+                               mode="stex"}}
+        </div>
+        <div class="code-mirror-split code-mirror-split--right">
+          LaTeX Preview Here
+        </div>
+      </div>
+
+    </article>
+  </div>
+</div>
+
+{{outlet}}

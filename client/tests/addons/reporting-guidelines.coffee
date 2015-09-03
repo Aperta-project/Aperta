@@ -65,7 +65,7 @@ test 'Supporting Guideline is a meta data card, contains the right questions and
   findQuestionLi = (questionText) ->
     find('.question .item').filter (i, el) -> Ember.$(el).find('label').text().trim() is questionText
 
-  visit "/papers/#{TahiTest.paperId}/edit"
+  visit "/papers/#{TahiTest.paperId}"
   .then ->
     assert.ok exists find '.card-content:contains("Reporting Guidelines")'
     ETahi.paperEditActionStub = sinon.stub(ETahi.__container__.lookup('controller:paperEdit')._actions, "savePaper")

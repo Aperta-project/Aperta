@@ -13,7 +13,7 @@ feature "event streaming", js: true do
 
   describe "plos authors task" do
     before do
-      edit_paper_page = EditPaperPage.visit(paper)
+      edit_paper_page = PaperPage.visit(paper)
       edit_paper_page.view_card(plos_authors_task.title)
     end
 

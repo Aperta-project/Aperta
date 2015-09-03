@@ -2,11 +2,11 @@
   <div id="manuscript-manager">
     <div class="full-height">
       <div class="paper-type-form">
-        {{#if editMode}}
+        {{#if editingMmtName}}
           {{input value=model.paperType placeholder="Paper Type" class="edit-paper-type-field"}}
           {{error-message message=validationErrors.paperType classNames="mmt-edit-error-message"}}
         {{else}}
-          <div class="paper-type-name" {{action "toggleEditMode"}}>
+          <div class="paper-type-name" {{action "editMmtName"}}>
             {{model.paperType}}
             <span class="fa fa-pencil"></span>
           </div>
@@ -15,19 +15,19 @@
         {{/if}}
         {{#if showSaveButton}}
           <a class="button-secondary button--blue paper-type-save-button" {{action "saveTemplateOnClick"}}>Save Template</a>
-          <a class="button-link button--blue paper-type-cancel-button" {{action "rollback"}}>cancel</a>
+          <a class="button-link button--blue paper-type-cancel-button" {{action "cancel"}}>cancel</a>
         {{/if}}
       </div>
 
       <div class="columns manuscript-manager-template-columns">
         {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
         {{#each sortedPhaseTemplates as |phaseTemplate|}}
-          {{#manuscript-manager-column content=phaseTemplate as |nextPosition|}}
+          {{#manuscript-manager-column content=phaseTemplate changeTaskPhase="changeTaskPhase" as |nextPosition|}}
             {{add-column position=nextPosition action="addPhase"}}
 
             {{phase-header phase=phaseTemplate
                            savePhase="savePhase"
-                           removePhase="removePhase"
+                           removePhase="removeRecord"
                            rollbackPhase="rollbackPhase"}}
 
             <div class="column-content">
@@ -36,7 +36,7 @@
                                task=task
                                canRemoveCard=true
                                canDragCard=true
-                               removeTask="removeTask"
+                               removeTask="removeRecord"
                                showDeleteConfirm="showDeleteConfirm"
                                action=null}}
               {{/each}}

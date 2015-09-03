@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import DS from 'ember-data';
+import DependentRelationships from 'tahi/mixins/dependent-relationships';
 
-export default DS.Model.extend({
+export default DS.Model.extend(DependentRelationships, {
   manuscriptManagerTemplate: DS.belongsTo('manuscript-manager-template', {
     async: false
   }),

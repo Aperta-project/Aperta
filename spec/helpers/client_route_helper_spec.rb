@@ -32,11 +32,4 @@ describe ClientRouteHelper do
 
     pending "handle params"
   end
-
-  describe "#client_edit_paper_url" do
-    it "generates the url to the client paper's edit screen" do
-      url = client_edit_paper_url(paper)
-      expect(url).to eq("http://test.host/papers/1/edit")
-    end
-  end
 end

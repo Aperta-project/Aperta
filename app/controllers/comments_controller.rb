@@ -6,7 +6,7 @@ class CommentsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def create
-    if !(journal_admin_is_current_user)
+    if !current_user.journal_admin? journal: task.paper.journal
       ParticipationFactory.create(task: comment.task, assignee: current_user, assigner: current_user)
     end
     Activity.comment_created! comment, user: current_user
@@ -18,10 +18,6 @@ class CommentsController < ApplicationController
   end
 
   private
-
-  def journal_admin_is_current_user
-    current_user.administered_journals.include?(task.paper.journal)
-  end
 
   def task
     @task ||= Task.find(comment_params[:task_id])

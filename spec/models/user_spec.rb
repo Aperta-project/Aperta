@@ -164,4 +164,20 @@ describe User do
       expect(User.fuzzy_search("davïd").first.id).to eq user.id
     end
   end
+
+  describe ".journal_admin?" do
+    let(:paper) { FactoryGirl.create(:paper) }
+    let(:journal) { paper.journal }
+    let(:journal_admin) { FactoryGirl.create(:user) }
+    let!(:role) { assign_journal_role(journal, journal_admin, :admin) }
+    let(:regular_user) { FactoryGirl.create(:user) }
+
+    it "returns true if user is an admin for a given journal" do
+      expect(journal_admin.journal_admin? journal: journal).to be true
+    end
+
+    it "returns false if user is not an admin for a given journal" do
+      expect(regular_user.journal_admin? journal: journal).to be false
+    end
+  end
 end

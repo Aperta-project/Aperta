@@ -17,14 +17,8 @@ feature "Flow Manager", js: true, selenium: true do
     admin.flows << flow
     author.flows << flow
 
-    @old_size = page.driver.browser.manage.window.size
-    page.driver.browser.manage.window.resize_to(1250,550)
     login_as(admin, scope: :user)
     visit "/"
-  end
-
-  after do
-    page.driver.browser.manage.window.size = @old_size
   end
 
   let(:journal) { FactoryGirl.create(:journal) }

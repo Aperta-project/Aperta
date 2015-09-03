@@ -123,6 +123,10 @@ RSpec.configure do |config|
     ActionMailer::Base.deliveries.clear
   end
 
+  config.before(:each, js: true) do
+    Capybara.page.driver.browser.manage.window.resize_to(1500, 1000)
+  end
+
   config.after(:each) do
     Warden.test_reset!
   end

@@ -61,7 +61,7 @@ ol.diff-child {
       margin-top: 20px;
       color: #333;
 
-      span:before {
+      &:before {
         color: #999;
         content: "Response:";
         margin-left: 20px;
@@ -69,10 +69,12 @@ ol.diff-child {
       }
     }
 
+    // Stylings for nested question/answers which are usually not questions
+    // at all! 
     .diff-child .property.question-answer {
       margin-top: 0px;
 
-      span:before {
+      &:before {
         content: none;
         margin-left: 0px;
         margin-right: 0px;

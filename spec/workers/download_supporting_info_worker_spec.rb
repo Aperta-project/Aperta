@@ -18,4 +18,15 @@ describe DownloadSupportingInfoWorker, redis: true do
       expect(file.reload.title).to match(/bill_ted1\.jpg/)
     end
   end
+
+  context "with a .docx file" do
+    let(:docx_url) { "https://s3-us-west-1.amazonaws.com/aperta-test/about_turtles.docx" }
+
+    it "does not try to convert it" do
+      with_aws_cassette('supporting_info_file2') do
+        DownloadSupportingInfoWorker.new.perform(file.id, docx_url)
+        expect(file).to eq nil
+      end
+    end
+  end
 end

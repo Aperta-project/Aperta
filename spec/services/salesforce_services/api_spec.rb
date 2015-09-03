@@ -67,30 +67,30 @@ describe SalesforceServices::API do
       expect(SalesforceServices::API).to receive(:update_manuscript).and_return(true)
       SalesforceServices::API.find_or_create_manuscript(paper_id: paper.id)
     end
+  end
 
-  describe SalesforceServices::API do
-    describe "#create_billing_and_pfa_case" do
+  describe "#create_billing_and_pfa_case" do
 
-      let(:paper) { FactoryGirl.create(:paper) }
+    let(:paper) { FactoryGirl.create(:paper) }
 
-      it "creates and returns a salesforce case object" do
-        #delete_vcr_file  "salesforce_create_billing_and_pfa"
+    it "creates and returns a salesforce case object" do
+      paper = FactoryGirl.create :paper_with_task, { task_params: { title: "Billing", type: "PlosBilling::BillingTask", role: "author" } }
 
-        VCR.use_cassette("salesforce_instantiate_client") do
-          @api = SalesforceServices::API
-          @api.client
-        end
+      #delete_vcr_file  "salesforce_create_billing_and_pfa"
 
-        VCR.use_cassette("salesforce_create_billing_and_pfa") do
-          @kase = @api.create_billing_and_pfa_case(paper_id: paper.id)
-          expect(@kase.class).to eq Case
-          expect(@kase.persisted?).to eq true
-        end
-
+      VCR.use_cassette("salesforce_instantiate_client") do
+        @api = SalesforceServices::API
+        @api.client
       end
+
+      VCR.use_cassette("salesforce_create_billing_and_pfa") do
+        @kase = @api.create_billing_and_pfa_case(paper_id: paper.id)
+        expect(@kase.class).to eq Case
+        expect(@kase.persisted?).to eq true
+      end
+
     end
   end
-end
 
   describe "#has_valid_creds?" do
     it "returns true when all credentials are set to something that is not :not_set" do
@@ -99,7 +99,6 @@ end
       Rails.configuration.salesforce_client_secret = :foo
       Rails.configuration.salesforce_username      = :foo
       Rails.configuration.salesforce_password      = :foo
-      
       expect( SalesforceServices::API.has_valid_creds?).to be(true)
     end
 
@@ -108,6 +107,7 @@ end
       expect( SalesforceServices::API.has_valid_creds?).to be(false)
     end
   end
+end
 
 def delete_vcr_file(file)
   file = "spec/fixtures/vcr_cassettes/#{file}.yml"

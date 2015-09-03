@@ -22,7 +22,7 @@ module SalesforceServices
 
     class BillingTranslator
       def initialize(paper:)
-        @paper = paper 
+        @paper = paper
       end
 
       def paper_to_billing_hash # (pfa)
@@ -31,10 +31,10 @@ module SalesforceServices
           'SuppliedEmail'              => @paper.creator.email, # corresponding author == creator?
           'Exclude_from_EM__c'         => true,
           'Journal_Department__c'      => @paper.journal.name,
-          'Subject'                    => manuscript_id, 
+          'Subject'                    => manuscript_id,
           'Description'                => "#{@paper.creator.full_name} has applied for PFA with submission #{manuscript_id}",
-          'Origin'                     => "PFA Request", 
-          
+          'Origin'                     => "PFA Request",
+
           #'PFA_Funding_Statement__c'   => billing_question "", # Unknown field? from financial disclosure card
 
           'PFA_Question_1__c'          => answer_for("pfa_question_1"),
@@ -52,9 +52,9 @@ module SalesforceServices
           'PFA_Supporting_Docs__c'     => answer_for("pfa_supporting_docs"), # can't be nil, unlike others
         }
       end
-      
+
       private
-        
+
         def answer_for(ident)
           q = @paper.billing_card.questions.find_by_ident("plos_billing.#{ident}")
           q.present? ? q.answer : nil

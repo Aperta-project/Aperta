@@ -161,11 +161,6 @@ describe Paper do
         expect(paper).to_not be_editable
       end
 
-      it "submits the paper to salesforce" do
-        expect(paper).to receive(:find_or_create_paper_in_salesforce).and_return(true)
-        paper.submit! user
-      end
-
       it "submits billing and pfa info to salesforce" do
         expect(paper).to receive(:create_billing_and_pfa_case).and_return(true)
         paper.submit! user

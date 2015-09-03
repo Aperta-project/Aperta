@@ -57,17 +57,10 @@ class Paper < ActiveRecord::Base
       transitions from: [:unsubmitted, :in_revision],
                   to: :submitted,
                   guards: :metadata_tasks_completed?,
-<<<<<<< HEAD
-                  after: [:prevent_edits!,
-                          :major_version!,
-                          :set_submitted_at!,
-                          :find_or_create_paper_in_salesforce,
-                          :create_billing_and_pfa_case]
-=======
                   after: [:set_submitting_user_and_touch!,
                           :set_submitted_at!,
-                          :prevent_edits!]
->>>>>>> master
+                          :prevent_edits!,
+                          :create_billing_and_pfa_case]
     end
 
     event(:minor_check) do
@@ -332,20 +325,10 @@ class Paper < ActiveRecord::Base
     update!(submitted_at: Time.current.utc)
   end
 
-  def create_paper_in_salesforce!(*)
-    SalesforceServices::API.delay.create_manuscript(paper_id: self.id)
-  end
-
-  def update_paper_in_salesforce!(*)
-    SalesforceServices::API.delay.update_manuscript(paper_id: self.id)
-  end
-
-  def find_or_create_paper_in_salesforce(*)
-    SalesforceServices::API.delay.find_or_create_manuscript(paper_id: self.id)
-  end
 
   def create_billing_and_pfa_case(*)
     SalesforceServices::API.delay.create_billing_and_pfa_case(paper_id: self.id) if self.billing_card
+  end
 
   def set_submitting_user_and_touch!(submitting_user) # rubocop:disable Style/AccessorMethodName
     latest_version.update!(submitting_user: submitting_user)

@@ -91,7 +91,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
         this.store.unloadAll('taskTemplate');
         this.store.unloadAll('phaseTemplate');
         this.get('model').rollback();
-        this.get('model').reload().then(() => {
+        this.get('model.journal').reload().then(() => {
           this.resetProperties();
         });
       }

@@ -40,16 +40,16 @@ Router.map(function() {
 
   this.route('profile', { path: '/profile' });
 
-  this.resource('admin', function() {
-    this.resource('admin.journals', { path: '/journals' }, function() {});
+  this.route('admin', function() {
+    this.route('journals', () => {});
 
-    this.resource('admin.journal', { path: '/journals/:journal_id' }, function() {
-      this.resource('admin.journal.manuscript_manager_template', { path: '/manuscript_manager_templates' }, function() {
+    this.route('journal', { path: '/journals/:journal_id' }, function() {
+      this.route('manuscript_manager_template', { path: '/manuscript_manager_templates' }, function() {
         this.route('new');
         this.route('edit', { path: '/:manuscript_manager_template_id/edit' });
       });
-
       this.route('flow_manager', { path: '/roles/:role_id/flow_manager' });
+
     });
   });
 

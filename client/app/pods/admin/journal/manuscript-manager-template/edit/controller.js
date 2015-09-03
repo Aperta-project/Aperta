@@ -36,7 +36,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
 
     editMmtName(){
       this.clearAllValidationErrors();
-      this.set('editingMmtName', true);
+      this.setProperties({ editingMmtName: true, pendingChanges: true });
     },
 
     changeTaskPhase(taskTemplate, targetPhaseTemplate){

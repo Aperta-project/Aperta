@@ -1,6 +1,12 @@
 .overlay-content .comparing-toolbar {
   margin-top: -35px;
   margin-bottom: 20px;
+  color: #999;
+
+  .old-version, .new-version {
+    font-weight: 600;
+    color: #333;
+  }
 }
 
 .overlay-content .overlay-main-work {
@@ -24,6 +30,14 @@ ol.diff-child {
 .diffing-publishing-related-questions ol.diff-child {
   ol.diff-child {
     list-style-type: none;
+
+    &:last-of-type {
+      margin-top: 30px;
+    }
+
+    ol.diff-child {
+      margin-top: 0px;
+    }
   }
 
   li {
@@ -37,7 +51,7 @@ ol.diff-child {
   }
 
   // nested properties/questions
-  .diff-child .diff-child {
+  .diff-child .diff-child.diff-question {
     margin-top: 20px;
     margin-left: 40px;
 
@@ -51,10 +65,11 @@ ol.diff-child {
   }
 
   .diff-question {
-    .property.question-text {
+    .property.question-text, .property.question-attachment {
       display: block;
       color: #999;
       font-size: inherit;
+      min-height: auto;
     }
 
     .property.question-answer {
@@ -70,7 +85,7 @@ ol.diff-child {
     }
 
     // Stylings for nested question/answers which are usually not questions
-    // at all! 
+    // at all!
     .diff-child .property.question-answer {
       margin-top: 0px;
 
@@ -142,7 +157,7 @@ ol.diff-child {
     font-size: 1.1em;
   }
 
-  .diff-child h3 {
+  h3 {
     display: none;
   }
   cite:after {

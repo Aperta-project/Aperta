@@ -74,6 +74,10 @@ describe CommentsController do
         it "increments the comment count" do
           expect { do_request_as_journal_admin }.to change { Comment.count }.by 1
         end
+
+        it "does not adds an email to the sidekiq queue" do
+          expect { do_request_as_journal_admin }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(0)
+        end
       end
 
       it "creates a new comment" do

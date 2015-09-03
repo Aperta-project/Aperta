@@ -41,7 +41,7 @@ Router.map(function() {
   this.route('profile', { path: '/profile' });
 
   this.route('admin', function() {
-    this.route('journals', () => {});
+    this.route('journals', function() {});
 
     this.route('journal', { path: '/journals/:journal_id' }, function() {
       this.route('manuscript_manager_template', { path: '/manuscript_manager_templates' }, function() {

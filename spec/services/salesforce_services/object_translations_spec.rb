@@ -26,30 +26,30 @@ describe SalesforceServices::ObjectTranslations do
       expect(data['Journal_Department__c']).to       eq(paper.journal.name)
       expect(data['Subject']).to                     eq("prefix-#{paper.id}") # will chane when doi story is done
       expect(data['Origin']).to                      eq('PFA Request')
-      expect(data['Description']).to                 match('lou prima') 
+      expect(data['Description']).to                 match('lou prima')
       expect(data['Description']).to                 match('has applied')
-      expect(data['Description']).to                 match("prefix-#{paper.id}") 
-      expect(data['PFA_Question_1__c']).to           eq ('Yes') 
-      expect(data['PFA_Question_1a__c']).to          eq ('foo') 
-      expect(data['PFA_Question_1b__c']).to          eq ('foo') 
-      expect(data['PFA_Question_2__c']).to           eq ('Yes') 
-      expect(data['PFA_Question_2a__c']).to          eq ('foo') 
-      expect(data['PFA_Question_2b__c']).to          eq ('foo') 
-      expect(data['PFA_Question_3__c']).to           eq ('Yes') 
-      expect(data['PFA_Question_3a__c']).to          eq ('asdf') 
-      expect(data['PFA_Question_4__c']).to           eq ('Yes') 
-      expect(data['PFA_Question_4a__c']).to          eq ('foo') 
-      expect(data['PFA_Able_to_Pay_R__c']).to        eq ('1000') 
-      expect(data['PFA_Additional_Comments__c']).to  eq ('my comments') 
-      expect(data['PFA_Supporting_Docs__c']).to      eq ('Yes') 
+      expect(data['Description']).to                 match("prefix-#{paper.id}")
+      expect(data['PFA_Question_1__c']).to           eq ('Yes')
+      expect(data['PFA_Question_1a__c']).to          eq ('foo')
+      expect(data['PFA_Question_1b__c']).to          eq ('foo')
+      expect(data['PFA_Question_2__c']).to           eq ('Yes')
+      expect(data['PFA_Question_2a__c']).to          eq ('foo')
+      expect(data['PFA_Question_2b__c']).to          eq ('foo')
+      expect(data['PFA_Question_3__c']).to           eq ('Yes')
+      expect(data['PFA_Question_3a__c']).to          eq ('asdf')
+      expect(data['PFA_Question_4__c']).to           eq ('Yes')
+      expect(data['PFA_Question_4a__c']).to          eq ('foo')
+      expect(data['PFA_Able_to_Pay_R__c']).to        eq ('1000')
+      expect(data['PFA_Additional_Comments__c']).to  eq ('my comments')
+      expect(data['PFA_Supporting_Docs__c']).to      eq ('Yes')
     end
   end
 
   def make_paper
-    paper = FactoryGirl.create :paper_with_task, { 
+    paper = FactoryGirl.create :paper_with_task, {
       creator: FactoryGirl.create(:user, { first_name: 'lou', last_name: 'prima', email: 'pfa@pfa.com' }),
       journal: FactoryGirl.create(:journal, { name: 'journal name' }),
-      short_title: "my title", 
+      short_title: "my title",
       task_params: { title: "Billing", type: "PlosBilling::BillingTask", role: "author" }
     }
     make_questions paper

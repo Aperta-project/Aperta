@@ -27,7 +27,7 @@ class DashboardPage < Page
   def view_submitted_paper paper
     title = paper.title || paper.short_title
     within('.dashboard-submitted-papers') { click_link title }
-    EditPaperPage.new
+    PaperPage.new
   end
 
   def view_flow_manager

@@ -1,11 +1,11 @@
 import Ember from 'ember';
 import PaperBaseMixin from 'tahi/mixins/controllers/paper-base';
-import PaperEditMixin from 'tahi/mixins/controllers/paper-edit';
+import PaperIndexMixin from 'tahi/mixins/controllers/paper-index';
 import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 
 export default Ember.Controller.extend(
-  PaperBaseMixin, PaperEditMixin, DiscussionsRoutePathsMixin, {
-  subRouteName: 'edit',
+  PaperBaseMixin, PaperIndexMixin, DiscussionsRoutePathsMixin, {
+  subRouteName: 'index',
 
   startEditing() {
     this.set('model.lockedBy', this.currentUser);

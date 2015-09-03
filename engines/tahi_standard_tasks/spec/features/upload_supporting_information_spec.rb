@@ -25,7 +25,7 @@ feature "Upload Supporting Information", js: true, selenium: true do
   end
 
   scenario "Author uploads supporting information" do
-    edit_paper = EditPaperPage.new
+    edit_paper = PaperPage.new
 
     # upload file
     edit_paper.view_card('Supporting Info', SupportingInformationOverlay) do |overlay|

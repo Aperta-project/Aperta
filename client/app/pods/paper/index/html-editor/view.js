@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import PaperEditMixin from 'tahi/mixins/views/paper-edit';
+import PaperIndexMixin from 'tahi/mixins/views/paper-index';
 
-export default Ember.View.extend(PaperEditMixin, {
+export default Ember.View.extend(PaperIndexMixin, {
 
   editor: null,
 
@@ -35,7 +35,7 @@ export default Ember.View.extend(PaperEditMixin, {
     }
   }),
 
-  // Note: this must be here as it is used by mixins/views/paper-edit
+  // Note: this must be here as it is used by mixins/views/paper-index
   saveEditorChanges() {
     this.get('controller').savePaper();
   },

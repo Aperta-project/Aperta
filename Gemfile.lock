@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check
-  revision: 6a7fea7cb1fbeac536198e040e063a141d254f47
+  revision: 5dc5dd8acb0256e0157655b8923798e097401d90
   specs:
     plos_bio_tech_check (0.0.1)
       rails (~> 4.2.0)
@@ -390,7 +390,7 @@ GEM
     orm_adapter (0.5.0)
     pdfkit (0.8.0)
     pg (0.18.2)
-    pg_search (1.0.4)
+    pg_search (1.0.5)
       activerecord (>= 3.1)
       activesupport (>= 3.1)
       arel
@@ -559,7 +559,7 @@ GEM
     timeliness (0.3.7)
     timers (4.0.1)
       hitimes
-    twitter-text (1.12.0)
+    twitter-text (1.13.0)
       unf (~> 0.1.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)

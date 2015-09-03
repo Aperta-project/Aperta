@@ -11,7 +11,7 @@ server = null
 fakeUser = null
 currentPaper = null
 
-module 'Integration: EditPaper',
+module 'Integration: PaperIndex',
 
   afterEach: ->
     server.restore()
@@ -59,7 +59,7 @@ module 'Integration: EditPaper',
       200, {"Content-Type": "application/json"}, JSON.stringify []
     ]
 
-test 'on paper.edit as a participant on a task but not author of paper', (assert) ->
+test 'on paper.index as a participant on a task but not author of paper', (assert) ->
   expect(1)
 
   records = paperWithTask('Task'
@@ -79,10 +79,10 @@ test 'on paper.edit as a participant on a task but not author of paper', (assert
     200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
   ]
 
-  visit("/papers/#{currentPaper.id}/edit").then ->
+  visit("/papers/#{currentPaper.id}").then ->
     assert.ok !!find('#paper-assigned-tasks .card-content:contains("ReviewMe")').length
 
-test 'on paper.edit as a participant on a task and author of paper', (assert) ->
+test 'on paper.index as a participant on a task and author of paper', (assert) ->
   expect(1)
 
   records = paperWithTask('ReviseTask'
@@ -103,13 +103,13 @@ test 'on paper.edit as a participant on a task and author of paper', (assert) ->
     200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
   ]
 
-  visit("/papers/#{currentPaper.id}/edit").then ->
+  visit("/papers/#{currentPaper.id}").then ->
     assert.ok !!find('#paper-assigned-tasks .card-content:contains("Revise Task")'),
       "Participant task is displayed in '#paper-assigned-tasks' for author"
 
-test 'visiting /edit-paper: Author completes all metadata cards', (assert) ->
+test 'visiting /paper: Author completes all metadata cards', (assert) ->
   expect(3)
-  visit("/papers/#{currentPaper.id}/edit")
+  visit("/papers/#{currentPaper.id}")
     .then ->
       assert.ok(!find('#paper-container.sidebar-empty').length, "The sidebar should NOT be hidden")
     .then ->

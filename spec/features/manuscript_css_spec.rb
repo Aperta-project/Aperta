@@ -15,7 +15,7 @@ feature "Manuscript CSS", js: true do
     let(:paper) { FactoryGirl.create :paper, journal: journal, short_title: 'foo bar', creator: author }
 
     scenario "CSS is applied when editing a paper" do
-      edit_paper = EditPaperPage.new
+      edit_paper = PaperPage.new
       expect(edit_paper.css).to match /magenta/
     end
   end
@@ -24,7 +24,7 @@ feature "Manuscript CSS", js: true do
     let(:paper) { FactoryGirl.create :paper, :submitted, journal: journal, short_title: 'submitted foo bar', creator: author }
 
     scenario "CSS is applied when viewing a paper" do
-      paper_page = EditPaperPage.new
+      paper_page = PaperPage.new
       expect(paper_page.css).to match /magenta/
     end
   end

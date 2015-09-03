@@ -19,13 +19,6 @@ Router.map(function() {
       });
     });
 
-    this.route('edit', function() {
-      this.route('discussions', function() {
-        this.route('new',  { path: '/new' });
-        this.route('show', { path: '/:topic_id' });
-      });
-    });
-
     this.route('workflow', function() {
       this.route('discussions', function() {
         this.route('new',  { path: '/new' });

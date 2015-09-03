@@ -38,7 +38,7 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
 
     describe "updating completion status" do
       scenario "on the overlay" do
-        edit_paper = EditPaperPage.new
+        edit_paper = PaperPage.new
         edit_paper.view_card('Upload Manuscript')
         expect(page).to have_css("#task_completed:not(:checked)")
         upload_task.completed = true
@@ -79,7 +79,7 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
 
     scenario "commenter is added as a participant" do
       click_link paper.title
-      edit_paper_page = EditPaperPage.new
+      edit_paper_page = PaperPage.new
       edit_paper_page.view_card(upload_task.title) do |card|
         using_wait_time 30 do
           card.post_message 'Hello'

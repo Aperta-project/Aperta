@@ -23,7 +23,7 @@ export default Ember.Controller.extend(AnimateOverlay, FileUploadMixin, {
       if(this.get('model.isSaving')) { return; }
 
       this.get('model').save().then((paper)=> {
-        this.transitionToRoute('paper.edit', paper);
+        this.transitionToRoute('paper.index', paper);
       }, (response)=> {
         this.flash.displayErrorMessagesFromResponse(response);
       });
@@ -80,7 +80,7 @@ export default Ember.Controller.extend(AnimateOverlay, FileUploadMixin, {
     **/
     uploadFinished(data, filename) {
       this.uploadFinished(data, filename);
-      this.transitionToRoute('paper.edit', this.get('model'));
+      this.transitionToRoute('paper.index', this.get('model'));
     }
   }
 });

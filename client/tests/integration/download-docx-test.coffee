@@ -58,7 +58,7 @@ test 'show download links on control bar', (assert) ->
   ]
 
   mock = undefined
-  visit "/papers/#{currentPaper.id}/edit"
+  visit "/papers/#{currentPaper.id}"
 
   andThen ->
     mock = sinon.mock(Utils)

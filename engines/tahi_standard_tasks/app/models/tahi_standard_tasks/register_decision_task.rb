@@ -11,8 +11,16 @@ module TahiStandardTasks
 
     register_task default_title: "Register Decision", default_role: "editor"
 
+    def latest_decision
+      paper.decisions.latest
+    end
+
+    def latest_decision_ready?
+      latest_decision.verdict
+    end
+
     def complete_decision
-      decision = paper.decisions.latest
+      decision = latest_decision
       paper.make_decision decision
       # If it's a revise decision, prepare a new decision task.
       DecisionReviser.new(self, decision).process! if decision.revision?

@@ -45,7 +45,11 @@ class PapersPolicy < ApplicationPolicy
     can_view_paper?
   end
 
-  def activity?
+  def workflow_activities?
+    can_view_manuscript_manager?
+  end
+
+  def manuscript_activities?
     can_view_paper?
   end
 
@@ -62,7 +66,7 @@ class PapersPolicy < ApplicationPolicy
   end
 
   def can_view_manuscript_manager?
-    current_user.roles.where(journal_id: paper.journal).
+    current_user.site_admin? || current_user.roles.where(journal_id: paper.journal).
       where("can_view_assigned_manuscript_managers = ? OR can_view_all_manuscript_managers = ?", true, true).
       exists?
   end

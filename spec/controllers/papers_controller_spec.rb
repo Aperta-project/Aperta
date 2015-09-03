@@ -128,6 +128,13 @@ describe PapersController do
         post :create, paper: { short_title: '', journal_id: journal.id }, format: :json
         expect(response.status).to eq(422)
       end
+
+      it "creates an Activity" do
+        expect(Activity).to receive(:create).with(hash_including(
+                                                    message: "Manuscript was created",
+                                                    feed_name: 'manuscript'))
+        do_request
+      end
     end
   end
 
@@ -148,8 +155,16 @@ describe PapersController do
       end
 
       it "creates an Activity" do
-        expect(Activity).to receive(:create).with(hash_including({subject: paper}))
-        put :update, { id: paper.to_param, format: :json, paper: { title: new_title, short_title: 'ABC101', locked_by_id: user.id }.merge(params) }
+        expect(Activity).to receive(:create).with(hash_including(
+                                                    subject: paper,
+                                                    message: "Manuscript was edited",
+                                                    feed_name: 'manuscript'))
+        put :update, { id: paper.to_param,
+                       format: :json,
+                       paper: {
+                         title: new_title,
+                         short_title: 'ABC101',
+                         locked_by_id: user.id }.merge(params) }
       end
 
       it "will not update the body if it is nil" do
@@ -260,6 +275,43 @@ describe PapersController do
       it "does not update the timestamp" do
         do_request
         expect(paper.reload.last_heartbeat_at).to be_nil
+      end
+    end
+  end
+
+  describe "GET 'activity'" do
+    let(:weak_user) { FactoryGirl.create :user }
+
+    before do
+      PaperRole.create(
+        user: weak_user,
+        paper: paper,
+        role: PaperRole::COLLABORATOR)
+    end
+
+    context "for manuscript feed" do
+      it "returns the feed" do
+        get :manuscript_activities, { id: paper.to_param, format: :json }
+        expect(response.status).to eq(200)
+      end
+
+      it "returns the feed even to paper-view-only users" do
+        sign_in weak_user
+        get :manuscript_activities, { id: paper.to_param, format: :json }
+        expect(response.status).to eq(200)
+      end
+    end
+
+    context "for workflow feed" do
+      it "returns the feed if authorized for the manuscript manager" do
+        get :workflow_activities, { id: paper.to_param, format: :json }
+        expect(response.status).to eq(200)
+      end
+
+      it "blocks paper-view-only users" do
+        sign_in weak_user
+        get :workflow_activities, { id: paper.to_param, format: :json }
+        expect(response.status).to eq(403)
       end
     end
   end

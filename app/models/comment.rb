@@ -11,6 +11,10 @@ class Comment < ActiveRecord::Base
 
   before_save :set_mentions
 
+  def paper
+    task.paper
+  end
+
   def created_by?(user)
     commenter_id == user.id
   end

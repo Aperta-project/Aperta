@@ -8,7 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Changed
--
+- Increased the number and fidelity of Workflow Activity Feed messages
 
 ### Deprecated
 -

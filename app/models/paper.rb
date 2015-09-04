@@ -116,6 +116,16 @@ class Paper < ActiveRecord::Base
         withdrawals << { previous_publishing_state: publishing_state, previous_editable_state: editable, reason: withdrawal_reason }
       end
     end
+
+    event(:reactivate) do
+      transitions from: :withdrawn,
+                  to: :previous_withdrawal_state,
+                  after: :set_editable!
+    end
+  end
+
+  def previous_withdrawal_state
+    withdrawals.last['previous_publishing_state']
   end
 
   def make_decision(decision)
@@ -319,6 +329,10 @@ class Paper < ActiveRecord::Base
 
   def default_abstract
     Nokogiri::HTML(body).text.truncate_words 100
+  end
+
+  def set_editable!
+    update!(editable: withdrawals.last['previous_editable_state'])
   end
 
   def set_published_at!

@@ -12,8 +12,9 @@ module Snapshot
           snapshot_property("email", "text", "#{author.email}"),
           snapshot_property("title", "text", "#{author.title}"),
           snapshot_property("department", "text", "#{author.department}"),
-          snapshot_property("corresponding", "text", "#{author.corresponding}"),
-          snapshot_property("deceased", "text", "#{author.deceased}"),
+          snapshot_children("contributions", "contribution", author.contributions),
+          snapshot_property("corresponding", "boolean", "#{author.corresponding}"),
+          snapshot_property("deceased", "boolean", "#{author.deceased}"),
           snapshot_property("affiliation", "text", "#{author.affiliation}"),
           snapshot_property("secondary_affiliation", "text", "#{author.secondary_affiliation}")
         ]

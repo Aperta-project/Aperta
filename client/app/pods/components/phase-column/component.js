@@ -1,26 +1,36 @@
 import Ember from 'ember';
 
+const { computed } = Ember;
+
 export default Ember.Component.extend({
   classNames: ['column'],
 
   phase: null,
   paper: null,
 
-  nextPosition: Ember.computed('phase.position', function() {
+  nextPosition: computed('phase.position', function() {
     return this.get('phase.position') + 1;
   }),
 
   commentLooks: null,
 
-  sortedTasks: Ember.computed('phase.tasks.[]', function() {
+  sortedTasks: computed('phase.tasks.[]', function() {
     return this.get('phase.tasks').sortBy('position');
   }),
 
-  noCards: Ember.computed.empty('sortedTasks'),
+  noCards: computed.empty('sortedTasks'),
+
+  checkIfNewPhase: Ember.on('didInitAttrs', function() {
+    if(this.get('phase.isNew')) {
+      Ember.run.scheduleOnce('afterRender', this, function() {
+        this.animateIn();
+      });
+    }
+  }),
 
   setupSortable: Ember.on('didInsertElement', function() {
-    let phaseId = this.get('phase.id');
-    let self = this;
+    const phaseId = this.get('phase.id');
+    const self = this;
 
     this.$('.sortable').sortable({
       items: '.card',
@@ -29,10 +39,10 @@ export default Ember.Component.extend({
       connectWith: '.sortable',
 
       update(event, ui) {
-        let updatedOrder    = {};
-        let senderPhaseId   = phaseId;
-        let receiverPhaseId = ui.item.parent().data('phase-id') + '';
-        let task            = self.getTaskByID(ui.item.find('.card-content').data('id'));
+        let updatedOrder      = {};
+        const senderPhaseId   = phaseId;
+        const receiverPhaseId = ui.item.parent().data('phase-id') + '';
+        const task = self.getTaskByID(ui.item.find('.card-content').data('id'));
 
         if(senderPhaseId !== receiverPhaseId) {
           self.sendAction('changePhaseForTask', task, receiverPhaseId);
@@ -49,17 +59,49 @@ export default Ember.Component.extend({
       },
 
       start(event, ui) {
-        $(ui.item).addClass('card--dragging');
         // class added to set overflow: visible;
-        $(ui.item).closest('.column-content').addClass('column-content--dragging');
+        $(ui.item).addClass('card--dragging')
+                  .closest('.column-content')
+                  .addClass('column-content--dragging');
       },
 
       stop(event, ui) {
-        $(ui.item).removeClass('card--dragging');
-        $(ui.item).closest('.column-content').removeClass('column-content--dragging');
+        $(ui.item).removeClass('card--dragging')
+                  .closest('.column-content')
+                  .removeClass('column-content--dragging');
       }
     });
   }),
+
+  animateIn() {
+    const beginProps    = { overflow: 'hidden', opacity: 0, width: '0px' };
+    const completeProps = { overflow: 'visible' };
+    const el = this.$();
+    const width = el.css('width');
+
+    return $.Velocity.animate(this.$(), {
+      opacity: 1,
+      width: width
+    }, {
+      duration: 400,
+      easing: [250, 20],
+      begin:    function() { el.css(beginProps); },
+      complete: function() { el.css(completeProps); }
+    });
+  },
+
+  animateOut() {
+    const el = this.$();
+
+    return $.Velocity.animate(this.$(), {
+      opacity: 0,
+      width: '0px'
+    }, {
+      duration: 200,
+      easing: [0.00, 0.00, 1.00, 0.02],
+      begin: function() { el.css('overflow', 'hidden'); }
+    });
+  },
 
   updateSortOrder(updatedOrder) {
     this.beginPropertyChanges();
@@ -77,12 +119,23 @@ export default Ember.Component.extend({
   },
 
   actions: {
-    chooseNewCardTypeOverlay(phase) { this.sendAction('chooseNewCardTypeOverlay', phase); },
-    viewCard(task, queryParams) { this.sendAction('viewCard', task, queryParams); },
-    savePhase(phase)            { this.sendAction('savePhase', phase); },
-    addPhase(position)          { this.sendAction('addPhase', position); },
-    removePhase(phase)          { this.sendAction('removePhase', phase); },
-    rollbackPhase(phase)        { this.sendAction('rollbackPhase', phase); },
-    showDeleteConfirm(task)     { this.sendAction('showDeleteConfirm', task); }
+    chooseNewCardTypeOverlay(phase) {
+      this.sendAction('chooseNewCardTypeOverlay', phase);
+    },
+
+    viewCard(task, queryParams) {
+      this.sendAction('viewCard', task, queryParams);
+    },
+
+    savePhase(phase)        { this.sendAction('savePhase', phase); },
+    addPhase(position)      { this.sendAction('addPhase', position); },
+    rollbackPhase(phase)    { this.sendAction('rollbackPhase', phase); },
+    showDeleteConfirm(task) { this.sendAction('showDeleteConfirm', task); },
+
+    removePhase(phase) {
+      this.animateOut().then(()=> {
+        this.sendAction('removePhase', phase);
+      });
+    }
   }
 });

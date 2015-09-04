@@ -11,7 +11,11 @@
             <span class="fa fa-pencil"></span>
           </div>
           &nbsp;
-          {{#link-to "admin.journal" journal class="button-link button--blue"}}&lt; Back{{/link-to}}
+
+          {{#unless showSaveButton}}
+            {{link-to "< Back" "admin.journal" journal class="button-link button--blue"}}
+          {{/unless}}
+
         {{/if}}
         {{#if showSaveButton}}
           <a class="button-secondary button--blue paper-type-save-button" {{action "saveTemplateOnClick"}}>Save Template</a>

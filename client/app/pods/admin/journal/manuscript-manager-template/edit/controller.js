@@ -4,7 +4,7 @@ import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 export default Ember.Controller.extend(ValidationErrorsMixin, {
   pendingChanges: false,
   editingMmtName: false,
-  positionSort: ["position:asc"],
+  positionSort: ['position:asc'],
   journal: Ember.computed.alias('model.journal'),
   phaseTemplates: Ember.computed.alias('model.phaseTemplates'),
   sortedPhaseTemplates: Ember.computed.sort('phaseTemplates', 'positionSort'),
@@ -36,18 +36,11 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
 
     editMmtName(){
       this.clearAllValidationErrors();
-      this.set('editingMmtName', true);
+      this.setProperties({ editingMmtName: true, pendingChanges: true });
     },
 
     changeTaskPhase(taskTemplate, targetPhaseTemplate){
-      let newPosition = targetPhaseTemplate.get('length');
-
-      taskTemplate.setProperties({
-        phaseTemplate: targetPhaseTemplate,
-        position: newPosition
-      });
-
-      targetPhaseTemplate.get('taskTemplates').pushObject(taskTemplate);
+      taskTemplate.set('phaseTemplate', targetPhaseTemplate);
       this.set('pendingChanges', true);
     },
 
@@ -82,23 +75,19 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     },
 
     saveTemplateOnClick(transition){
-
-      if (this.get('pendingChanges') || this.get('editingMmtName')) {
-        this.saveTemplate(transition);
-      } else {
-        this.send('cancel');
-      }
+      this.saveTemplate(transition);
     },
 
     cancel(){
       if (this.get('model.isNew')){
         this.get('model').deleteRecord();
         this.resetProperties();
+        this.transitionToRoute('admin.journal', this.get('journal'));
       } else {
         this.store.unloadAll('taskTemplate');
         this.store.unloadAll('phaseTemplate');
         this.get('model').rollback();
-        this.get('model').reload().then(() => {
+        this.get('journal').reload().then(() => {
           this.resetProperties();
         });
       }

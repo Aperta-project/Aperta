@@ -72,6 +72,10 @@ class User < ActiveRecord::Base
     self.password = SecureRandom.urlsafe_base64(length-1) if password_required?
   end
 
+  def journal_admin?(journal)
+    administered_journals.include? journal
+  end
+
   def administered_journals
     if site_admin?
       Journal.all

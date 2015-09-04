@@ -25,7 +25,7 @@ module SalesforceServices
     end
 
     def self.client
-      @@client ||= get_client
+      @@client ||= self.get_client # TODO: reauthenticate when 'Session Expired'?
     end
 
     def self.create_manuscript(paper_id:)
@@ -42,9 +42,10 @@ module SalesforceServices
     def self.update_manuscript(paper_id:)
       paper = Paper.find(paper_id)
 
-      mt = ManuscriptTranslator.new(user_id: client.user_id, paper: paper)
+      mt         = ManuscriptTranslator.new(user_id: client.user_id, paper: paper)
       manuscript = client.materialize("Manuscript__c")
-      sf_paper = manuscript.find(paper.salesforce_manuscript_id)
+      sf_paper   = manuscript.find(paper.salesforce_manuscript_id)
+
       sf_paper.update_attributes mt.paper_to_manuscript_hash
       sf_paper
     end
@@ -63,6 +64,13 @@ module SalesforceServices
       end
     end
 
+    def self.create_billing_and_pfa_case(paper_id:) # assumes paper.billing_card
+      paper    = Paper.find(paper_id)
+      kase_mgr = self.client.materialize("Case")
+      bt       = BillingTranslator.new(paper: paper)
+      kase     = kase_mgr.create(bt.paper_to_billing_hash)
+    end
+
     def self.has_valid_creds?
       [ :salesforce_client_id, :salesforce_host, :salesforce_client_secret, :salesforce_username, :salesforce_password ].each do |key|
         return false if !Rails.configuration.respond_to?(key) || Rails.configuration.send(key) == :not_set
@@ -71,5 +79,4 @@ module SalesforceServices
     end
 
   end
-
 end

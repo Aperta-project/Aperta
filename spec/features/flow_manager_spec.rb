@@ -23,10 +23,6 @@ feature "Flow Manager", js: true, selenium: true do
     visit "/"
   end
 
-  after do
-    page.driver.browser.manage.window.size = @old_size
-  end
-
   let(:journal) { FactoryGirl.create(:journal) }
 
   let!(:paper1) do

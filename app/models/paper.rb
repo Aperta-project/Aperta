@@ -120,7 +120,7 @@ class Paper < ActiveRecord::Base
     event(:reactivate) do
       Paper.aasm.events.each do |event|
         event_name = event.transitions.first.to
-        transitions from: :withdrawn, to: event_name, after: :set_editable!, if: Proc.new{ previous_state_is?(event_name) }
+        transitions from: :withdrawn, to: event_name, after: :set_editable!, if: Proc.new { previous_state_is?(event_name) }
       end
     end
   end

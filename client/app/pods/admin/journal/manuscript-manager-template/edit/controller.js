@@ -3,12 +3,12 @@ import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 export default Ember.Controller.extend(ValidationErrorsMixin, {
   pendingChanges: false,
-  editingMmtName: false,
+  editingName: false,
   positionSort: ['position:asc'],
   journal: Ember.computed.alias('model.journal'),
   phaseTemplates: Ember.computed.alias('model.phaseTemplates'),
   sortedPhaseTemplates: Ember.computed.sort('phaseTemplates', 'positionSort'),
-  showSaveButton: Ember.computed.or('pendingChanges', 'editingMmtName'),
+  showSaveButton: Ember.computed.or('pendingChanges', 'editingName'),
 
   saveTemplate(transition){
     this.get('model').save().then(() => {
@@ -29,14 +29,14 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   },
 
   resetProperties(){
-    this.setProperties({ editingMmtName: false, pendingChanges: false });
+    this.setProperties({ editingName: false, pendingChanges: false });
   },
 
   actions: {
 
     editMmtName(){
       this.clearAllValidationErrors();
-      this.setProperties({ editingMmtName: true, pendingChanges: true });
+      this.setProperties({ editingName: true, pendingChanges: true });
     },
 
     changeTaskPhase(taskTemplate, targetPhaseTemplate){

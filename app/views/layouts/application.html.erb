@@ -10,8 +10,10 @@
       <%= stylesheet_link_tag "//fonts.googleapis.com/css?family=Cabin:400,700,400italic" %>
     <% end %>
     <%= csrf_meta_tags %>
-    <%= render "layouts/segment_io" %>
-    <%= render "shared/bugsnag_javascript" %>
+    <% if !(Rails.env.test? || Rails.env.development?) %>
+      <%= render "layouts/segment_io" %>
+      <%= render "shared/bugsnag_javascript" %>
+    <% end %>
   </head>
   <body class="sessions">
     <div id="tahi-container" class="<%= yield(:tahi_container_class) %>">

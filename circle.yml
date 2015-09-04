@@ -45,7 +45,7 @@ database:
 ## Customize test commands
 test:
   override:
-    - bundle exec rspec --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec.xml:
+    - "xvfb-run -a -s \"-screen 0 1500x1200x8\" bundle exec rspec --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec.xml":
         parallel: true
         files:
           - "spec/**/*_spec.rb"

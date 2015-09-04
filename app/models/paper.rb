@@ -113,7 +113,7 @@ class Paper < ActiveRecord::Base
       transitions to: :withdrawn,
                   after: :prevent_edits!
       before do |withdrawal_reason|
-        withdrawal_reasons << withdrawal_reason
+        withdrawals << { previous_publishing_state: publishing_state, previous_editable_state: editable, reason: withdrawal_reason }
       end
     end
   end

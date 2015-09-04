@@ -109,7 +109,7 @@ describe SalesforceServices::API do
   end
 end
 
-def delete_vcr_file(file)
+def delete_vcr_file(file) # useful when writing new specs that require vcr, and need the http request need to be made multiple times until correct
   file = "spec/fixtures/vcr_cassettes/#{file}.yml"
   if File.exists?(file)
     ap "deleting #{file}" if File.delete(file) 

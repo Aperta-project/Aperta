@@ -14,6 +14,12 @@ describe VersionedText do
       expect(VersionedText.where(paper: paper, major_version: 1, minor_version: 0).count).to eq(1)
     end
 
+    it "resets the minor version when a new major version is created" do
+      paper.latest_version.new_minor_version!
+      paper.latest_version.new_major_version!
+      expect([paper.latest_version.major_version, paper.latest_version.minor_version]).to eq([1, 0])
+    end
+
     it "sets the created_at timestamp" do
       paper.latest_version.update!(created_at: Time.zone.now - 10.days)
       paper.latest_version.new_major_version!

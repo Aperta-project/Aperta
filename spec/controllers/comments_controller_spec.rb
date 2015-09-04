@@ -6,6 +6,10 @@ describe CommentsController do
   let(:phase) { paper.phases.first }
   let(:user) { create(:user, tasks: []) }
 
+  let(:journal) { paper.journal }
+  let(:journal_admin) { FactoryGirl.create(:user) }
+  let!(:role) { assign_journal_role(journal, journal_admin, :admin) }
+
   let(:task) { create(:task, phase: phase, participants: [user], title: "Task", role: "admin") }
   before { sign_in user }
 
@@ -14,6 +18,13 @@ describe CommentsController do
       xhr :post, :create, format: :json,
         comment: {commenter_id: user.id,
                   body: "My comment",
+                  task_id: task.id}
+    end
+
+    subject(:do_request_as_journal_admin) do
+      xhr :post, :create, format: :json,
+        comment: {commenter_id: journal_admin.id,
+                  body: "My comment RULES",
                   task_id: task.id}
     end
 
@@ -51,6 +62,24 @@ describe CommentsController do
         end
       end
 
+      context "the user is a journal admin" do
+        let(:task) { create(:task, phase: phase, participants: [], title: "Task", role: "admin") }
+
+        it "does not add the journal admin as a participant" do
+          expect(task.participants).to_not include(journal_admin)
+          do_request_as_journal_admin
+          expect(task.participants).to_not include(journal_admin)
+        end
+
+        it "increments the comment count" do
+          expect { do_request_as_journal_admin }.to change { Comment.count }.by 1
+        end
+
+        it "does not adds an email to the sidekiq queue" do
+          expect { do_request_as_journal_admin }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(0)
+        end
+      end
+
       it "creates a new comment" do
         do_request
         expect(Comment.last.body).to eq('My comment')
@@ -61,6 +90,15 @@ describe CommentsController do
         do_request
         expect(response.status).to eq(201)
         expect(res_body["comment"]["id"]).to eq(Comment.last.id)
+      end
+
+      it "creates an activity" do
+        activity = {
+          subject: paper,
+          message: "A comment was added to #{task.title} card"
+        }
+        expect(Activity).to receive(:create).with(hash_including(activity))
+        do_request
       end
 
       it_behaves_like "an unauthenticated json request"

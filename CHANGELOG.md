@@ -8,7 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Changed
--
+- Increased the number and fidelity of Workflow Activity Feed messages
 
 ### Deprecated
 -
@@ -46,6 +46,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Reviewers can be invited that are currently not in the system
 - Lock down submission cards when MS is not editable
 - Ability to withdraw a manuscript.
+- Anyone with access to the "Assign Team" card can now assign and un-assign users to a manuscript
+- Manuscript supporting information files appear as links in download
 
 ### Changed
 - Upgraded to Ember 1.13 [Aperta Transition Guide](https://github.com/Tahi-project/tahi/wiki/Aperta-Ember-1.13-Transition-Guide)

@@ -10,7 +10,6 @@ class Participation < ActiveRecord::Base
   after_create :add_paper_role
   after_destroy :remove_paper_role
 
-
   private
 
   def add_paper_role

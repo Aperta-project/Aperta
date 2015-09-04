@@ -1,8 +1,6 @@
 class ParticipationsController < ApplicationController
   before_action :authenticate_user!
   before_action :enforce_policy
-  before_action :notify_participation_created, only: :create
-  before_action :notify_participation_destroyed, only: :destroy
 
   respond_to :json
 
@@ -14,6 +12,7 @@ class ParticipationsController < ApplicationController
       if participation.user_id != current_user.id
         participation.task.notify_new_participant(current_user, participation)
       end
+      Activity.participation_created! participation, user: current_user
     end
     respond_with participation
   end
@@ -24,6 +23,7 @@ class ParticipationsController < ApplicationController
 
   def destroy
     participation.destroy
+    Activity.participation_destroyed! participation, user: current_user
     respond_with participation
   end
 
@@ -53,27 +53,5 @@ class ParticipationsController < ApplicationController
 
   def enforce_policy
     authorize_action!(participation: participation)
-  end
-
-  def notify_participation_created
-    if participation.valid?
-      Activity.create(
-        feed_name: 'manuscript',
-        activity_key: 'participation.created',
-        subject: participation.paper,
-        user: current_user,
-        message: "Added Contributor: #{participation.user.full_name}"
-      )
-    end
-  end
-
-  def notify_participation_destroyed
-    Activity.create(
-      feed_name: 'manuscript',
-      activity_key: 'participation.destroyed',
-      subject: participation.paper,
-      user: current_user,
-      message: "Removed Contributor: #{participation.user.full_name}"
-    )
   end
 end

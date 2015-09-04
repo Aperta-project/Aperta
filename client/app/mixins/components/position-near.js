@@ -14,7 +14,7 @@ export default Ember.Mixin.create({
   // -- attrs:
 
   /**
-   *  jquery selector for target to postion next to
+   *  jquery selector for target to position next to
    *
    *  @property selector
    *  @type String
@@ -88,40 +88,69 @@ export default Ember.Mixin.create({
   },
 
   /**
+   *  Do the DOM querying all in one place
+   *
+   *  @method getPositionDataForTarget
+   *  @param {Object} jquery object of target element
+   *  @return {Object}
+   *  @public
+  **/
+
+  getPositionDataForTarget(target) {
+    const windowScrollTop  = $(window).scrollTop();
+    const windowHeight     = $(window).height();
+
+    const position         = target.position();
+    const offset           = target.offset();
+    const width            = target.outerWidth();
+    const height           = target.outerHeight();
+    const positionRelative = target.css('position') === 'relative';
+
+    const heightAbove      = offset.top - windowScrollTop;
+    const heightBelow      = windowHeight - heightAbove - height;
+    const isCloserToBottom = heightAbove > heightBelow;
+
+    // offset:   coordinates of the element relative to the document
+    // position: coordinates of the element relative to the offset parent
+
+    return {
+      element: target,
+      position: position,
+      width: width,
+      height: height,
+      positionRelative: positionRelative,
+      heightAbove: heightAbove,
+      heightBelow: heightBelow,
+      isCloserToBottom: isCloserToBottom
+    };
+  },
+
+  /**
    *  @method position
    *  @public
   **/
   position: on('didInsertElement', function() {
-    let selector = this.get('selector');
+    const selector = this.get('selector');
     Ember.assert('position-near requires a selector property', selector);
 
-    let target = Ember.$(selector);
-    Ember.assert('position-near could not find target selector', target.length);
+    Ember.assert('position-near could not find target selector', Ember.$(selector).length);
+    const target = this.getPositionDataForTarget(Ember.$(selector));
 
-    let position = target.position();
-    let windowScrollTop = $(window).scrollTop();
-    let offset   = target.offset();
-    let targetHeight = target.outerHeight();
-    let windowHeight = $(window).height();
 
-    let heightTop       = offset.top - windowScrollTop;
-    let heightBottom    = windowHeight - heightTop;
-    let closerToBottom  = heightTop > heightBottom;
-    // css left
+    // css horizontal
+
+    let height = this.$().height();
 
     let css = {
       position: 'absolute',
-      left: Math.round(position.left)
+      left: Math.round(target.position.left),
+      marginTop: null,
+      width: null
     };
 
-    if(target.css("position") === "relative"){
+    // What is this?
+    if(target.positionRelative) {
       css.left = 0;
-    }
-
-    // css vertical
-
-    if(closerToBottom) {
-      css.marginTop = -1 * this.$().height() - targetHeight;
     }
 
     // css width
@@ -129,14 +158,26 @@ export default Ember.Mixin.create({
     if(this.get('width')) {
       css.width = this.get('width');
     } else if(this.get('matchWidth')) {
-      css.width = target.outerWidth();
+      css.width = target.width;
     }
 
-    // css maxHeight
+    // If the positioned element can fit below the target, go there,
+    // otherwise, do all the logic below:
+    if(height > target.heightBelow) {
+      // css height
 
-    if(this.get('setMaxHeight')) {
-      let height = closerToBottom ? heightTop : heightBottom;
-      css.maxHeight = height - this.get('offsetFromEdge');
+      if(this.get('setMaxHeight')) {
+        const newHeight = target.isCloserToBottom ? target.heightAbove : target.heightBelow;
+        if(newHeight < height) {
+          css.maxHeight = height = newHeight - this.get('offsetFromEdge');
+        }
+      }
+
+      // css vertical
+
+      if(target.isCloserToBottom) {
+        css.marginTop = -1 * height - target.height;
+      }
     }
 
     this.$().css(css);

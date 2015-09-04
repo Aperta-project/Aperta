@@ -38,7 +38,7 @@ describe AssignmentsController, type: :controller do
 
   describe "POST 'create'" do
     expect_policy_enforcement
-
+    let(:assignee) { FactoryGirl.create(:user) }
     let(:admin) { create :user, :site_admin }
     let(:journal) { FactoryGirl.create(:journal) }
     let(:paper) { FactoryGirl.create(:paper, journal: journal) }
@@ -49,6 +49,18 @@ describe AssignmentsController, type: :controller do
       post :create, "assignment" => assignment_attributes
       expect(res_body["assignment"]).to include(assignment_attributes)
     end
+
+    it "creates an activity" do
+      assignment_attributes = {"role" => role.name, "user_id" => assignee.id, "paper_id" => paper.id }
+      activity = {
+        subject: paper,
+        message: "#{assignee.full_name} was added as #{role.name.capitalize}"
+      }
+      expect(Activity).to receive(:create).with(hash_including(activity))
+
+      post :create, "assignment" => assignment_attributes
+    end
+
   end
 
   describe "DELETE 'destroy'" do

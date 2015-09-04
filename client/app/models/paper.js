@@ -61,7 +61,7 @@ export default DS.Model.extend({
     return this.get('tasks').filterBy('isSubmissionTask');
   }),
 
-  collaborators: computed('collaborations.@each', function() {
+  collaborators: computed('collaborations.[]', function() {
     return this.get('collaborations').mapBy('user');
   }),
 
@@ -69,11 +69,11 @@ export default DS.Model.extend({
     return this.get('allSubmissionTasks').everyProperty('completed', true);
   }),
 
-  roleList: computed('roles.@each', 'roles.[]', function() {
+  roleList: computed('roles.[]', function() {
     return this.get('roles').sort().join(', ');
   }),
 
-  latestDecision: computed('decisions', 'decisions.@each', function() {
+  latestDecision: computed('decisions.[]', function() {
     return this.get('decisions').findBy('isLatest', true);
   }),
 

@@ -4,10 +4,7 @@ class TasksController < ApplicationController
 
   before_action :unmunge_empty_arrays, only: [:update]
 
-  after_action :notify_task_updated!, only: [:update]
-
   respond_to :json
-
 
   def show
     respond_with(task, location: task_url(task))
@@ -25,8 +22,10 @@ class TasksController < ApplicationController
     end
 
     task.assign_attributes(task_params(task.class))
-    @task_completion_change = task.completed_changed?
     task.save!
+
+    Activity.task_updated! task, user: current_user
+
     task.send_emails if task.respond_to?(:send_emails)
     task.after_update
     render task.update_responder.new(task, view_context).response
@@ -84,19 +83,5 @@ class TasksController < ApplicationController
 
   def enforce_policy
     authorize_action!(task: task)
-  end
-
-  def notify_task_updated!
-    if @task_completion_change
-      action = task.completed? ? 'complete' : 'incomplete'
-      feed_name = task.submission_task? ? 'manuscript' : 'workflow'
-      Activity.create(
-        feed_name: feed_name,
-        activity_key: "task.#{action}",
-        subject: task.paper,
-        user: current_user,
-        message: "#{task.title} card was marked as #{action}"
-      )
-    end
   end
 end

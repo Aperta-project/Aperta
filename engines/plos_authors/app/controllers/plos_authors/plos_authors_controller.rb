@@ -7,13 +7,7 @@ module PlosAuthors
 
     def create
       plos_author.save!
-      Activity.create(
-        feed_name: 'manuscript',
-        activity_key: 'plos_author.created',
-        subject: plos_author.paper,
-        user: current_user,
-        message: "Added Author"
-      )
+      Activity.author_added! plos_author, user: current_user
       render json: plos_authors_for(plos_author.paper)
     end
 

@@ -24,7 +24,7 @@ class PDFConverter
           </div>
           <div id='paper-body' styles='page-break-before: always;'>
             <h1>#{paper.display_title}</h1>
-            #{paper.body}
+            #{paper.download_body}
           </div>
         </body>
       </html>

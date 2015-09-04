@@ -4,8 +4,12 @@ module Snapshot
       { :name => name, :type => type, :value => value }
     end
 
-    def snapshot_children name, value
-      { :name => name, :type => "properties", :children => value }
+    def snapshot_children plural_name, singular_name, value
+      children = []
+      value.each do |child|
+        children.push snapshot_property(singular_name, "text", child)
+      end
+      { :name => plural_name, :type => "properties", :children => children }
     end
   end
 end

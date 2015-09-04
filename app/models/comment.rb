@@ -21,7 +21,7 @@ class Comment < ActiveRecord::Base
 
   def notify_mentioned_people
     people_mentioned.each do |mentionee|
-      UserMailer.delay.mention_collaborator(self.id, mentionee.id)
+      UserMailer.mention_collaborator(self.id, mentionee.id).deliver_later
     end
   end
 

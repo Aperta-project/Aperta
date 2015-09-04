@@ -66,9 +66,9 @@ describe CommentsController do
         let(:task) { create(:task, phase: phase, participants: [], title: "Task", role: "admin") }
 
         it "does not add the journal admin as a participant" do
-          expect(task.participants).to_not include(journal_admin)
+          expect(journal_admin.tasks).to_not include(task)
           do_request_as_journal_admin
-          expect(task.participants).to_not include(journal_admin)
+          expect(journal_admin.tasks).to_not include(task)
         end
 
         it "increments the comment count" do
@@ -76,7 +76,7 @@ describe CommentsController do
         end
 
         it "does not adds an email to the sidekiq queue" do
-          expect { do_request_as_journal_admin }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(0)
+          expect { do_request_as_journal_admin }.not_to change(Sidekiq::Extensions::DelayedMailer.jobs, :size)
         end
       end
 

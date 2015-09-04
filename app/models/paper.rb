@@ -118,14 +118,15 @@ class Paper < ActiveRecord::Base
     end
 
     event(:reactivate) do
-      transitions from: :withdrawn,
-                  to: :previous_withdrawal_state,
-                  after: :set_editable!
+      Paper.aasm.events.each do |event|
+        event_name = event.transitions.first.to
+        transitions from: :withdrawn, to: event_name, after: :set_editable!, if: Proc.new{ previous_state_is?(event_name) }
+      end
     end
   end
 
-  def previous_withdrawal_state
-    withdrawals.last['previous_publishing_state']
+  def previous_state_is?(event)
+    withdrawals.last['previous_publishing_state'] == event.to_s
   end
 
   def make_decision(decision)

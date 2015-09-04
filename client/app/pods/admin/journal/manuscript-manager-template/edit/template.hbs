@@ -26,27 +26,14 @@
       <div class="columns manuscript-manager-template-columns">
         {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
         {{#each sortedPhaseTemplates as |phaseTemplate|}}
-          {{#manuscript-manager-column content=phaseTemplate changeTaskPhase="changeTaskPhase" as |nextPosition|}}
-            {{add-column position=nextPosition action="addPhase"}}
-
-            {{phase-header phase=phaseTemplate
-                           savePhase="savePhase"
-                           removePhase="removeRecord"
-                           rollbackPhase="rollbackPhase"}}
-
-            <div class="column-content">
-              {{#each phaseTemplate.taskTemplates as |task|}}
-                {{card-preview paper=null
-                               task=task
-                               canRemoveCard=true
-                               canDragCard=true
-                               removeTask="removeRecord"
-                               showDeleteConfirm="showDeleteConfirm"
-                               action=null}}
-              {{/each}}
-              <a {{action "chooseNewCardTypeOverlay" phaseTemplate}} class="button-secondary button--green">Add New Card</a>
-            </div>
-          {{/manuscript-manager-column}}
+          {{phase-template-column phaseTemplate=phaseTemplate
+                                  addPhase="addPhase"
+                                  savePhase="savePhase"
+                                  removeRecord="removeRecord"
+                                  rollbackPhase="rollbackPhase"
+                                  showDeleteConfirm="showDeleteConfirm"
+                                  chooseNewCardTypeOverlay="chooseNewCardTypeOverlay"
+                                  changeTaskPhase="changeTaskPhase"}}
         {{/each}}
       </div>
     </div>

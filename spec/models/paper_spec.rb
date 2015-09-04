@@ -49,17 +49,6 @@ describe Paper do
     end
   end
 
-  describe "#latest_withdrawal_reason" do
-    let(:paper) { FactoryGirl.create(:paper, :submitted) }
-
-    it "returns the latest withdrawal_reason" do
-      paper.withdrawal_reasons << "Some excuse"
-      paper.withdrawal_reasons << "Some other excuse"
-
-      expect(paper.latest_withdrawal_reason).to eq "Some other excuse"
-    end
-  end
-
   describe "validations" do
     describe "paper_type" do
       it "is required" do
@@ -194,6 +183,25 @@ describe Paper do
       it "marks the paper not editable" do
         paper.withdraw!
         expect(paper).to_not be_editable
+      end
+    end
+
+    context "when reactivating" do
+      let(:paper) { FactoryGirl.create(:paper, :submitted) }
+
+      it "transitions to the previous state" do
+        paper.withdraw!
+        expect(paper).to be_withdrawn
+        paper.reactivate!
+        expect(paper).to be_submitted
+      end
+
+      it "marks the paper with the previous editable state" do
+        expect(paper).to be_editable
+        paper.withdraw!
+        expect(paper).to_not be_editable
+        paper.reactivate!
+        expect(paper).to be_editable
       end
     end
 

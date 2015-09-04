@@ -227,7 +227,7 @@ class Paper < ActiveRecord::Base
   end
 
   def latest_withdrawal_reason
-    withdrawal_reasons.last
+    withdrawals.last['reason'] if withdrawals.present?
   end
 
   def locked_by?(user) # :nodoc:

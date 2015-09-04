@@ -67,13 +67,7 @@
       </a>
       <ul class="dropdown-menu pull-right" aria-labelledby="more-dropdown-menu">
 
-        {{#if paperWithdrawn}}
-          <li>
-            <a href="#" class="appeal-link">
-              Request Reactivation
-            </a>
-          </li>
-        {{else}}
+        {{#unless paperWithdrawn}}
           <li>
             <a href="#" class="appeal-link">
               <span class="fa fa-image"></span>
@@ -86,7 +80,7 @@
               Withdraw Manuscript
             </a>
           </li>
-        {{/if}}
+        {{/unless}}
       </ul>
     </li>
   </ul>

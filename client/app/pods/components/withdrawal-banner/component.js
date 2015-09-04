@@ -5,8 +5,7 @@ export default Ember.Component.extend({
   withdrawn: Ember.computed.equal('paper.publishingState', 'withdrawn'),
   actions: {
     reactivate: function() {
-      RESTless.putUpdate(this.get('paper'), '/reactivate')
-      .then(()=> {
+      RESTless.putUpdate(this.get('paper'), '/reactivate').then(()=> {
       });
     }
   }

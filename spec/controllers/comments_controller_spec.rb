@@ -21,13 +21,6 @@ describe CommentsController do
                   task_id: task.id}
     end
 
-    subject(:do_request_as_journal_admin) do
-      xhr :post, :create, format: :json,
-        comment: {commenter_id: journal_admin.id,
-                  body: "My comment RULES",
-                  task_id: task.id}
-    end
-
     context "the user isn't authorized" do
       authorize_policy(CommentsPolicy, false)
 
@@ -63,12 +56,19 @@ describe CommentsController do
       end
 
       context "the user is a journal admin" do
-        let(:task) { create(:task, phase: phase, participants: [], title: "Task", role: "admin") }
+        let(:another_task) { create(:task, phase: phase, participants: [], title: "Task Test") }
+
+        subject(:do_request_as_journal_admin) do
+          xhr :post, :create, format: :json,
+            comment: {commenter_id: journal_admin.id,
+                      body: "My comment RULES",
+                      task_id: another_task.id}
+        end
 
         it "does not add the journal admin as a participant" do
-          expect(journal_admin.tasks).to_not include(task)
+          expect(journal_admin.tasks.reload).to_not include(another_task)
           do_request_as_journal_admin
-          expect(journal_admin.tasks).to_not include(task)
+          expect(journal_admin.tasks.reload).to_not include(another_task)
         end
 
         it "increments the comment count" do

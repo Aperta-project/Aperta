@@ -31,7 +31,12 @@ describe "ManuscriptManagerTemplateForm" do
       valid_form.create!
       last_template = ManuscriptManagerTemplate.last
       task_templates = last_template.phase_templates.first.task_templates
+
       expect(task_templates.size).to eql(2)
+      expect(task_templates[0].title).to eql("Authors")
+      expect(task_templates[0].position).to eql(1)
+      expect(task_templates[1].title).to eql("Team")
+      expect(task_templates[1].position).to eql(2)
     end
   end
 
@@ -73,8 +78,8 @@ describe "ManuscriptManagerTemplateForm" do
     {"paper_type"=>"Research 2222", "journal_id"=>journal.id,
       "phase_templates"=>[{"name"=>"Phase 1", "position"=>1,
         "task_templates"=>[
-          {"title"=>"Add Authors", "journal_task_type_id"=>"86"},
-          {"title"=>"Assign Team", "journal_task_type_id"=>"111"}
+          {"title"=>"Authors", "journal_task_type_id"=>"86", "position"=>"1"},
+          {"title"=>"Team", "journal_task_type_id"=>"111", "position"=>"2"}
         ]},
       {"name"=>"Phase 2", "position"=>2},
       {"name"=>"Phase 3", "position"=>3}]}

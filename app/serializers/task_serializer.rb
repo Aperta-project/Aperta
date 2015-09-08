@@ -1,4 +1,9 @@
 class TaskSerializer < ActiveModel::Serializer
+  class NestedQuestionSerializer < ActiveModel::Serializer
+    attributes :id, :value, :text, :ident
+    has_many :children
+  end
+
   attributes :id, :title, :type, :completed, :body, :paper_title, :role, :position,
              :is_metadata_task, :is_submission_task
   has_one :phase, embed: :id
@@ -8,7 +13,7 @@ class TaskSerializer < ActiveModel::Serializer
   has_many :questions, embed: :ids, include: true
   has_many :comments, embed: :ids, include: true
   has_many :participations, embed: :ids, include: true
-  has_many :nested_questions
+  has_many :nested_questions, serializer: NestedQuestionSerializer
 
   self.root = :task
 

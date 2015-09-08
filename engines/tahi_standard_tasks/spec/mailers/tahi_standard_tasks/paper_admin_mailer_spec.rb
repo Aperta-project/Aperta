@@ -29,7 +29,7 @@ describe TahiStandardTasks::PaperAdminMailer do
       end
 
       it "does not email the admin" do
-        expect(email.body).to be_empty
+        expect(email.message).to be_a(ActionMailer::Base::NullMail)
       end
     end
   end

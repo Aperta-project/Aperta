@@ -14,10 +14,10 @@ export default Ember.Component.extend({
     Ember.run.schedule("afterRender", this, "setupSortable");
   },
 
-  updateSortOrder(updatedOrder) {
+  updateTaskPositions(updatedPositions) {
     this.beginPropertyChanges();
     this.get('taskTemplates').forEach(function(task) {
-      task.set('position', updatedOrder[task.get('id')]);
+      task.set('position', updatedPositions[task.get('id')]);
     });
     this.endPropertyChanges();
   },
@@ -32,23 +32,20 @@ export default Ember.Component.extend({
       connectWith: '.sortable',
 
       update(event, ui) {
-        let updatedOrder      = {};
+        let updatedPositions  = {};
         const senderPhaseId   = self.get('phase.id');
-        const receiverPhaseId = ui.item.parent().data('phase-id') + '';
+        const receiverPhaseId = ui.item.parent().data('phase-id');
         const taskId = ui.item.find('.card-content').data('id');
 
         if(senderPhaseId !== receiverPhaseId) {
           self.sendAction('changePhaseForTask', taskId, receiverPhaseId);
-          Ember.run.scheduleOnce('afterRender', self, function() {
-            ui.item.remove();
-          });
         }
 
         $(this).find('.card-content').each(function(index) {
-          updatedOrder[$(this).data('id')] = index + 1;
+          updatedPositions[$(this).data('id')] = index + 1;
         });
 
-        self.updateSortOrder(updatedOrder);
+        self.updateTaskPositions(updatedPositions);
       },
 
       start(event, ui) {

@@ -5,6 +5,6 @@ class ManuscriptManagerTemplate < ActiveRecord::Base
                                 dependent: :destroy
 
   validates :paper_type, presence: true
-  validates :paper_type, uniqueness: { scope: :journal_id }
-
+  validates :paper_type, uniqueness: {
+            scope: :journal_id, case_sensitive: false }
 end

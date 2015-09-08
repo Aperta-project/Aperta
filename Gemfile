@@ -91,6 +91,7 @@ group :development, :test, :performance do
   gem 'quiet_assets'
   gem 'generator_spec'
   gem 'awesome_print'
+  gem 'awesome_nested_set'
 end
 
 group :development do

@@ -118,4 +118,11 @@
       <button class="button-secondary button--green knockout" {{action "saveNewAuthor"}}>done</button>
     </span>
   </div>
+
+  <div>
+    <p>Something should be here.</p>
+    {{#each nestedQuestions as |question|}}
+      <p>{{question.text}}</p>
+    {{/each}}
+  </div>
 </div>

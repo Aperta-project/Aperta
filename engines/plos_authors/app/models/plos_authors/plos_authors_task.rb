@@ -6,7 +6,7 @@ module PlosAuthors
     include MetadataTask
 
     has_many :plos_authors, inverse_of: :plos_authors_task
-
+    
     validates_with AssociationValidator, association: :plos_authors, fail: :set_completion_error, if: :completed?
     validate :corresponding_plos_authors, if: :completed?
 

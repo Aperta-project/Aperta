@@ -35,7 +35,7 @@ export default Ember.Component.extend(DragNDrop.DraggableMixin, {
     return router.generate.apply(router, args);
   }),
 
-  unreadCommentsCount: Ember.computed('task.commentLooks.@each', function() {
+  unreadCommentsCount: Ember.computed('task.commentLooks.[]', function() {
     // NOTE: this fn is also used for 'task-templates', who do
     // not have comment-looks
     return (this.get('task.commentLooks') || []).length;

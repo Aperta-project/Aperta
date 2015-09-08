@@ -39,11 +39,12 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       this.setProperties({ editingName: true, pendingChanges: true });
     },
 
-    changePhaseForTask(taskId, targetPhaseId) {
-      // taskTemplate.set('phaseTemplate', targetPhaseTemplate);
-      let task = this.store.getById('taskTemplate', taskId);
-      let phase = this.store.getById('phaseTemplate', targetPhaseId);
-      phase.get('taskTemplates').addObject(task);
+    itemUpdated(senderPhaseId, receiverPhaseId, taskId) {
+      if (senderPhaseId !== receiverPhaseId) {
+        let task = this.store.getById('taskTemplate', taskId);
+        let targetPhase = this.store.getById('phaseTemplate', receiverPhaseId);
+        targetPhase.get('taskTemplates').addObject(task);
+      }
       this.set('pendingChanges', true);
     },
 

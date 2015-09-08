@@ -6,7 +6,7 @@
                rollbackPhase="rollbackPhase"}}
 
 <div class="column-content">
-  {{#sortable-collection phase=phaseTemplate changePhaseForTask="changePhaseForTask"}}
+  {{#sortable-collection phase=phaseTemplate itemUpdated="itemUpdated"}}
     {{#each sortedTasks as |task|}}
       {{card-preview  task=task
                       canRemoveCard=true

@@ -37,9 +37,7 @@ export default Ember.Component.extend({
         const receiverPhaseId = ui.item.parent().attr('data-phase-id');
         const taskId = ui.item.find('.card-content').data('id');
 
-        if(senderPhaseId !== receiverPhaseId) {
-          self.sendAction('changePhaseForTask', taskId, receiverPhaseId);
-        }
+        self.sendAction('itemUpdated', senderPhaseId, receiverPhaseId, taskId);
 
         $(this).find('.card-content').each(function(index) {
           updatedPositions[$(this).data('id')] = index + 1;

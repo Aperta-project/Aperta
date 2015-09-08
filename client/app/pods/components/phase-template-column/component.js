@@ -18,8 +18,8 @@ export default Ember.Component.extend({
     removeRecord(phase)          { this.sendAction('removeRecord', phase); },
     rollbackPhase(phase)        { this.sendAction('rollbackPhase', phase); },
     showDeleteConfirm(task)     { this.sendAction('showDeleteConfirm', task); },
-    changePhaseForTask(task, targetPhaseId) {
-      this.sendAction('changePhaseForTask', task, targetPhaseId);
+    itemUpdated(senderPhaseId, receiverPhaseId, taskId) {
+      this.sendAction('itemUpdated', senderPhaseId, receiverPhaseId, taskId);
     }
   }
 });

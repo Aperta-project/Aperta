@@ -47,6 +47,14 @@ describe TahiStandardTasks::PaperEditorTask do
       })
     end
 
+    let!(:sample_reviewer_recommendation_task) do
+      TahiStandardTasks::ReviewerRecommendationsTask.create!({
+        phase: paper.phases.first,
+        title: "Sample Rec Task",
+        role: "author"
+      })
+    end
+
     let!(:task) do
       TahiStandardTasks::PaperEditorTask.create!({
         phase: paper.phases.first,
@@ -70,6 +78,11 @@ describe TahiStandardTasks::PaperEditorTask do
     it "follows all tasks that are reviewer reports" do
       invitation.accept!
       expect(sample_reviewer_report_task.participations.map(&:user)).to include(invitation.invitee)
+    end
+
+    it "follows reviewer reviewer recommendations task" do
+      invitation.accept!
+      expect(sample_reviewer_recommendation_task.participations.map(&:user)).to include(invitation.invitee)
     end
 
     context "when there's an existing editor" do

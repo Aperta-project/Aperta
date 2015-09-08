@@ -19,7 +19,8 @@
     {{#if newAuthorFormVisible}}
       {{add-author-form institutions=model.institutions
                         hideAuthorForm="toggleAuthorForm"
-                        saveAuthor="saveNewAuthor"}}
+                        saveAuthor="saveNewAuthor"
+                        nestedQuestions=model.nestedQuestions}}
     {{/if}}
   {{/if}}
 

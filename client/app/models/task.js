@@ -25,6 +25,7 @@ export default DS.Model.extend(CardThumbnailObserver, {
     inverse: 'task',
     async: false
   }),
+  nestedQuestions: DS.attr(),
 
   body: DS.attr(),
   completed: DS.attr('boolean'),

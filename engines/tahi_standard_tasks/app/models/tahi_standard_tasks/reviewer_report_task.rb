@@ -11,7 +11,7 @@ module TahiStandardTasks
     end
 
     def send_emails
-      return unless on_card_completion?
+      return unless previous_changes["completed"] == [false, true]
       paper.editors.each do |editor|
         ReviewerReportMailer.delay.notify_editor_email(task_id: id,
                                                        recipient_id: editor.id)

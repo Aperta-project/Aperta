@@ -34,7 +34,7 @@ export default Ember.Component.extend({
       update(event, ui) {
         let updatedPositions  = {};
         const senderPhaseId   = self.get('phase.id');
-        const receiverPhaseId = ui.item.parent().data('phase-id');
+        const receiverPhaseId = ui.item.parent().attr('data-phase-id');
         const taskId = ui.item.find('.card-content').data('id');
 
         if(senderPhaseId !== receiverPhaseId) {

@@ -11,8 +11,6 @@ export default Ember.Component.extend({
     return this.get('phaseTemplate.taskTemplates').sortBy('position');
   }),
 
-  noCards: Ember.computed.empty('sortedTasks'),
-
   actions: {
     chooseNewCardTypeOverlay(phase) { this.sendAction('chooseNewCardTypeOverlay', phase); },
     savePhase(phase)            { this.sendAction('savePhase', phase); },

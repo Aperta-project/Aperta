@@ -1,7 +1,6 @@
 import Ember from 'ember';
-import DragNDrop from 'tahi/services/drag-n-drop';
 
-export default Ember.Component.extend(DragNDrop.DroppableMixin, {
+export default Ember.Component.extend({
   classNames: ['column'],
 
   nextPosition: Ember.computed('phaseTemplate.position', function() {
@@ -12,28 +11,7 @@ export default Ember.Component.extend(DragNDrop.DroppableMixin, {
     return this.get('phaseTemplate.taskTemplates').sortBy('position');
   }),
 
-  removeDragStyles() {
-    this.$().removeClass('current-drop-target');
-  },
-
-  dragOver() {
-    this.$().addClass('current-drop-target');
-  },
-
-  dragLeave() {
-    this.removeDragStyles();
-  },
-
-  dragEnd() {
-    this.removeDragStyles();
-  },
-
-  drop(e) {
-    this.removeDragStyles();
-    this.sendAction('changeTaskPhase', DragNDrop.dragItem, this.get('phaseTemplate'));
-    DragNDrop.dragItem = null;
-    DragNDrop.cancel(e);
-  },
+  noCards: Ember.computed.empty('sortedTasks'),
 
   actions: {
     chooseNewCardTypeOverlay(phase) { this.sendAction('chooseNewCardTypeOverlay', phase); },

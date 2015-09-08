@@ -6,12 +6,14 @@
                rollbackPhase="rollbackPhase"}}
 
 <div class="column-content">
-    {{#each sortedTasks as |task|}}
-      {{card-preview  task=task
-                      canRemoveCard=true
-                      removeTask="removeRecord"
-                      showDeleteConfirm="showDeleteConfirm"
-                      action=null}}
-    {{/each}}
+    <div class="sortable {{if noCards "sortable-no-cards"}}" data-phase-id="{{phaseTemplate.id}}">
+      {{#each sortedTasks as |task|}}
+        {{card-preview  task=task
+                        canRemoveCard=true
+                        removeTask="removeRecord"
+                        showDeleteConfirm="showDeleteConfirm"
+                        action=null}}
+      {{/each}}
+    </div>
  <a {{action "chooseNewCardTypeOverlay" phaseTemplate}} class="button-secondary button--green">Add New Card</a>
 </div>

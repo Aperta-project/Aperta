@@ -6,9 +6,24 @@ module PlosAuthors
     include MetadataTask
 
     has_many :plos_authors, inverse_of: :plos_authors_task
-    
+
     validates_with AssociationValidator, association: :plos_authors, fail: :set_completion_error, if: :completed?
     validate :corresponding_plos_authors, if: :completed?
+
+    def self.add_questions(task)
+      task.nested_questions.build text: "This is a corresponding author", ident: "corresponding", value_type: "boolean"
+      task.nested_questions.build text: "This person is deceased", ident: "deceased", value_type: "boolean"
+
+      author_contributions = task.nested_questions.build text: "Author contributions", ident: "contributions", value_type: "question-set"
+      author_contributions.children.build text: "Conceived and designed the experiments", ident: "contributed_experiments", value_type: "boolean"
+      author_contributions.children.build text: "Performed the experiments", ident: "contributed_performing_experiments", value_type: "boolean"
+      author_contributions.children.build text: "Analyzed the data", ident: "analyzed_data", value_type: "boolean"
+      author_contributions.children.build text: "Contributed reagents/materials/analysis tools", ident: "contributed_tools", value_type: "boolean"
+      author_contributions.children.build text: "Contributed to the writing of the manuscript", ident: "contributed_writing", value_type: "boolean"
+      author_contributions.children.build text: "Other", ident: "contributed_other", value_type: "text"
+
+      task
+    end
 
     def active_model_serializer
       PlosAuthorsTaskSerializer

@@ -51,8 +51,8 @@ class PaperFactory
       task.role = task_template.journal_task_type.role
       task.participants << creator if task.submission_task?
 
-      if task_klass == PlosAuthors::PlosAuthorsTask
-        task.questions.build text: "Our test question"
+      if task_klass.respond_to?(:add_questions)
+        task_klass.add_questions task
       end
 
       task.save!

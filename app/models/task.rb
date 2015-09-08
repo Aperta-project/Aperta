@@ -173,9 +173,4 @@ class Task < ActiveRecord::Base
     previously_completed? && !completed
   end
 
-  private
-
-  def on_card_completion?
-    previous_changes["completed"] == [false, true]
-  end
 end

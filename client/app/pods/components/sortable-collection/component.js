@@ -20,15 +20,7 @@ export default Ember.Component.extend({
       task.set('position', updatedOrder[task.get('id')]);
     });
     this.endPropertyChanges();
-    // this.get('taskTemplates').invoke('save');
   },
-
-  getTaskByID(taskId) {
-    return this.get('taskTemplates').find(function(t) {
-      return t.get('id') === taskId.toString();
-    });
-  },
-
 
   setupSortable() {
     const self = this;
@@ -43,10 +35,10 @@ export default Ember.Component.extend({
         let updatedOrder      = {};
         const senderPhaseId   = self.get('phase.id');
         const receiverPhaseId = ui.item.parent().data('phase-id') + '';
-        const task = self.getTaskByID(ui.item.find('.card-content').data('id'));
+        const taskId = ui.item.find('.card-content').data('id');
 
         if(senderPhaseId !== receiverPhaseId) {
-          self.sendAction('changePhaseForTask', task, receiverPhaseId);
+          self.sendAction('changePhaseForTask', taskId, receiverPhaseId);
           Ember.run.scheduleOnce('afterRender', self, function() {
             ui.item.remove();
           });

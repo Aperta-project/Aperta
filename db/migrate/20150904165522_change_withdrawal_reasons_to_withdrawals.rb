@@ -1,6 +1,6 @@
 class ChangeWithdrawalReasonsToWithdrawals < ActiveRecord::Migration
   def up
-    add_column      :papers, :withdrawals, :json, array: true, default: []
+    add_column      :papers, :withdrawals, :jsonb, array: true, default: []
     remove_column   :papers, :withdrawal_reasons
   end
 

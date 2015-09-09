@@ -190,7 +190,7 @@ class PapersController < ApplicationController
 
   def broadcast_paper_submitted_event
     Notifier.notify(event: "paper:submitted", data: { paper: paper })
-    if paper.decisions.pending.exists?
+    if paper.resubmitted?
       Notifier.notify(event: "paper:resubmitted", data: { paper: paper })
     end
   end

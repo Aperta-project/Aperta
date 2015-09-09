@@ -23,6 +23,22 @@ module PlosAuthors
       PlosAuthorsSerializer.new(plos_authors_task.plos_authors, root: :plos_authors)
     end
 
+    def corresponding=(value)
+      NestedQuestion.set_answer "corresponding", self, value, self.nested_question_answers
+    end
+
+    def corresponding
+      NestedQuestion.get_answer "corresponding", self
+    end
+
+    def deceased=(value)
+      NestedQuestion.set_answer "deceased", self, value, self.nested_question_answers
+    end
+
+    def deceased
+      NestedQuestion.get_answer "deceased", self
+    end
+
     def contributions=(nested_question_ids)
       nested_question_ids ||= []
       nested_question_answers.destroy_all
@@ -41,6 +57,24 @@ module PlosAuthors
       association(:nested_questions).reader.includes(:nested_question_answers).map do |question|
         question.text
       end
+    end
+
+    def nested_questions_and_answers
+      answers = []
+      self.plos_authors_task.nested_questions.each do |question|
+        if question.parent_id == nil
+          answers.push(answer_question question)
+        end
+      end
+      answers
+    end
+
+    def answer_question question
+      children = []
+      question.children.each do |nested_question|
+        children.push answer_question(nested_question)
+      end
+      return { text: question.text, ident: question.ident, value_type: question.value_type, answer: NestedQuestion.get_answer(question.ident, self), children: children}
     end
   end
 end

@@ -91,6 +91,7 @@
 
   <div class="form-group">
     <label class="author-label">
+      {{check-box checked=model.deceased class="author-deceased"}}
       {{#nested-question ident="corresponding"
                          inQuestions=nestedQuestions
                          as |question|}}

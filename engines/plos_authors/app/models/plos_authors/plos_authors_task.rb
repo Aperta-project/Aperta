@@ -60,5 +60,13 @@ module PlosAuthors
     def set_completion_error
       self.errors.add(:completed, "Please fix validation errors above.")
     end
+
+    def plos_authors_questions_and_answers
+      authors = []
+      self.plos_authors.each do |author|
+        authors.push author.nested_questions_and_answers
+      end
+      authors
+    end
   end
 end

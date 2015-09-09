@@ -15,12 +15,12 @@ module PlosAuthors
       task.nested_questions.build text: "This person is deceased", ident: "deceased", value_type: "boolean"
 
       author_contributions = task.nested_questions.build text: "Author contributions", ident: "contributions", value_type: "question-set"
-      author_contributions.children.build text: "Conceived and designed the experiments", ident: "contributed_experiments", value_type: "boolean"
-      author_contributions.children.build text: "Performed the experiments", ident: "contributed_performing_experiments", value_type: "boolean"
-      author_contributions.children.build text: "Analyzed the data", ident: "analyzed_data", value_type: "boolean"
-      author_contributions.children.build text: "Contributed reagents/materials/analysis tools", ident: "contributed_tools", value_type: "boolean"
-      author_contributions.children.build text: "Contributed to the writing of the manuscript", ident: "contributed_writing", value_type: "boolean"
-      author_contributions.children.build text: "Other", ident: "contributed_other", value_type: "text"
+      author_contributions.children.build text: "Conceived and designed the experiments", ident: "contributed_experiments", value_type: "boolean", position: 1
+      author_contributions.children.build text: "Performed the experiments", ident: "contributed_performing_experiments", value_type: "boolean", position: 2
+      author_contributions.children.build text: "Analyzed the data", ident: "analyzed_data", value_type: "boolean", position: 3
+      author_contributions.children.build text: "Contributed reagents/materials/analysis tools", ident: "contributed_tools", value_type: "boolean", position: 4
+      author_contributions.children.build text: "Contributed to the writing of the manuscript", ident: "contributed_writing", value_type: "boolean", position: 5
+      author_contributions.children.build text: "Other", ident: "contributed_other", value_type: "text", position: 6
 
       task
     end

@@ -111,36 +111,18 @@
   <div class="form-group author-contributions form-inline">
     <h4 class="required">Author Contributions</h4>
 
-    {{#nested-question ident="contributions"
-                       inQuestions=nestedQuestions
-                       as |contributions|}}
-        {{#each contributions.children as |contribution|}}
-           {{check-box checked=contribution.value class=""}} {{contribution.text}}
-        {{/each}}
-    {{/nested-question}}
-
-    <!--
     {{error-message message=validationErrors.contributions}}
-    {{#each authorContributionOptions as |contribution|}}
-      {{author-contribution-checkbox name=contribution
+    {{#each-nested-question for="contributions" inQuestions=nestedQuestions as |question|}}
+      {{author-contribution-checkbox name=question.text
+                                     value=question.id
                                      currentContributions=newAuthor.contributions
                                      checked="addContribution"
                                      unchecked="removeContribution"}}
-    {{/each}}
-    {{author-contribution-other-checkbox availableContributions=authorContributionOptions
-                                         currentContributions=newAuthor.contributions
-                                         changed="resolveContributions"}} -->
+    {{/each-nested-question}}
 
     <span class="pull-right author-form-buttons">
       <a class="button-link button--green author-cancel" {{action "cancelEdit" bubbles=false}}>cancel</a>
       <button class="button-secondary button--green knockout" {{action "saveNewAuthor"}}>done</button>
     </span>
-  </div>
-
-  <div>
-    <p>Something should be here.</p>
-    {{#each nestedQuestions as |question|}}
-      <p>{{question.text}}</p>
-    {{/each}}
   </div>
 </div>

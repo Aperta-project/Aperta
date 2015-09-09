@@ -2,13 +2,6 @@ import Ember from "ember";
 
 export default Ember.Component.extend({
   layoutName: "components/add-author-form",
-  authorContributionOptions: [
-    "Conceived and designed the experiments",
-    "Performed the experiments",
-    "Analyzed the data",
-    "Contributed reagents/materials/analysis tools",
-    "Contributed to the writing of the manuscript"
-  ],
 
   setNewAuthor: Ember.on("init", function(){
     if (!this.get("newAuthor")) {
@@ -53,12 +46,12 @@ export default Ember.Component.extend({
       this.resetAuthor();
     },
 
-    addContribution(name) {
-      this.get("newAuthor.contributions").addObject(name);
+    addContribution(ident) {
+      this.get("newAuthor.contributions").addObject(ident);
     },
 
-    removeContribution(name) {
-      this.get("newAuthor.contributions").removeObject(name);
+    removeContribution(ident) {
+      this.get("newAuthor.contributions").removeObject(ident);
     },
 
     resolveContributions(newContributions, unmatchedContributions) {

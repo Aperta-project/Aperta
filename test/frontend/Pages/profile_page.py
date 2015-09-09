@@ -35,23 +35,23 @@ class ProfilePage(AuthenticatedPage):
     self._avatar_hover = (By.XPATH, './/div[@id="profile-avatar-hover"]/span')
     self._avatar_input = (By.CSS_SELECTOR, 'input[type="file"]')
     self._add_affiliation_title = (By.CSS_SELECTOR, 'div.profile-affiliations-form h3')
-    self._institution_input = (By.XPATH, 
+    self._institution_input = (By.XPATH,
         ".//div[contains(@class, 'profile-affiliations-form')]/div/div/div/input")
-    self._department_input = (By.XPATH, 
+    self._department_input = (By.XPATH,
         ".//div[contains(@class, 'profile-affiliations-form')]/input")
-    self._tile_input = (By.XPATH, 
+    self._tile_input = (By.XPATH,
         ".//div[contains(@class, 'profile-affiliations-form')]/input[2]")
-    self._country = (By.XPATH, 
+    self._country = (By.XPATH,
         ".//div[contains(@class, 'profile-affiliations-form')]/div[3]/input")
-    self._datepicker_1 = (By.XPATH, 
+    self._datepicker_1 = (By.XPATH,
         ".//div[contains(@class, 'profile-affiliations-form')]/div[5]/div/input")
-    self._datepicker_2 = (By.XPATH, 
+    self._datepicker_2 = (By.XPATH,
         ".//div[contains(@class, 'profile-affiliations-form')]/div[5]/div/input[2]")
-    self._email = (By.XPATH, 
+    self._email = (By.XPATH,
         ".//div[contains(@class, 'profile-affiliations-form')]/div[5]/input")
-    self._add_done_btn = (By.XPATH, 
+    self._add_done_btn = (By.XPATH,
         ".//div[contains(@class, 'profile-affiliations-form')]/button")
-    self._add_cancel_btn = (By.XPATH, 
+    self._add_cancel_btn = (By.XPATH,
         ".//div[contains(@class, 'profile-affiliations-form')]/a")
     self._profile_affiliations = (By.CSS_SELECTOR, 'div.profile-affiliation')
     self._remove_affiliation_icon = (By.CSS_SELECTOR, 'div.profile-remove-affiliation')
@@ -96,7 +96,7 @@ class ProfilePage(AuthenticatedPage):
     email = self._get(self._profile_email)
     self.validate_profile_title_style_big(email)
     profile_at = self._get(self._profile_affiliation_title)
-    assert 'Affiliations:' in profile_at.text    
+    assert 'Affiliations:' in profile_at.text
     self.validate_profile_title_style(profile_at)
     affiliation_btn = self._get(self._affiliation_btn)
     self.validate_secondary_grey_small_button_style(affiliation_btn)
@@ -104,7 +104,7 @@ class ProfilePage(AuthenticatedPage):
     self.validate_secondary_green_button_style(reset_btn)
     avatar = self._get(self._avatar)
     avatar.value_of_css_property('height') == '160px'
-    avatar.value_of_css_property('width') == '160px'    
+    avatar.value_of_css_property('width') == '160px'
     self._actions.move_to_element(self._get(self._avatar_div)).perform()
     time.sleep(1)
     avatar_hover = self._get(self._avatar_hover)
@@ -137,7 +137,7 @@ class ProfilePage(AuthenticatedPage):
     time.sleep(2)
     avatar_input.clear()
     time.sleep(2)
-    avatar_input.send_keys(os.path.join(os.getcwd(), 
+    avatar_input.send_keys(os.path.join(os.getcwd(),
                            "/frontend/assets/imgs/plos.gif" + Keys.RETURN + Keys.RETURN))
     time.sleep(1)
     return self
@@ -173,7 +173,7 @@ class ProfilePage(AuthenticatedPage):
     email = self._get(self._email)
     self.validate_input_form_style(email)
     add_done_btn = self._get(self._add_done_btn)
-    self.validate_secondary_green_button_style(add_done_btn)    
+    self.validate_secondary_green_button_style(add_done_btn)
     add_cancel_btn = self._get(self._add_cancel_btn)
     self.validate_default_link_style(add_cancel_btn)
     # Insert affiliation data
@@ -183,7 +183,9 @@ class ProfilePage(AuthenticatedPage):
     country.send_keys(affiliation['country'] + Keys.RETURN)
     time.sleep(1)
     datepicker_1.send_keys(affiliation['start'] + Keys.RETURN)
+    time.sleep(2)
     datepicker_2.send_keys(affiliation['end'] + Keys.RETURN)
+    time.sleep(2)
     email.send_keys(affiliation['email'])
     add_done_btn.click()
     # Look for data
@@ -201,6 +203,5 @@ class ProfilePage(AuthenticatedPage):
     remove_icons[-1].click()
     alert = self._driver.switch_to_alert()
     alert.accept()
-    # TODO: Validate errors after #101686744 and #101686944 are fixed 
+    # TODO: Validate errors after #101686744 and #101686944 are fixed
     return self
-

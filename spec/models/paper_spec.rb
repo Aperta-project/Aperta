@@ -454,4 +454,33 @@ describe Paper do
       expect(doc.search('a[href*="cat.bmp"]').length).to eq(1)
     end
   end
+
+  describe "#resubmitted?" do
+    let(:paper) { FactoryGirl.create(:paper) }
+
+    context "with pending decisions" do
+      before do
+        paper.decisions.first.update!(verdict: nil)
+      end
+
+      specify { expect(paper.resubmitted?).to eq(true) }
+    end
+
+    context "with non-pending decisions" do
+      before do
+        paper.decisions.first.update!(verdict: "accept")
+      end
+
+      specify { expect(paper.resubmitted?).to eq(false) }
+    end
+
+    context "with no decisions" do
+      before do
+        paper.decisions.destroy_all
+      end
+
+      specify { expect(paper.resubmitted?).to eq(false) }
+    end
+
+  end
 end

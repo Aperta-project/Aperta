@@ -17,14 +17,6 @@ moduleFor 'controller:admin/journal/index', 'JournalIndexController',
     Ember.run =>
       @controller = @subject()
 
-test '#logo returns false if a logoUrl doesnt exist', (assert) ->
-  @controller.set('model', @journal)
-  assert.equal @controller.get('logo'), false
-
-test '#logo returns model.logoUrl if it exists', (assert) ->
-  @controller.set('model', @journalWithLogo)
-  assert.equal @controller.get('logo'), @journalWithLogo.logoUrl
-
 test '#destroyMMTemplate does not delete the last MMT', (assert) ->
   Ember.run =>
     @journal.set('manuscriptManagerTemplates', [])

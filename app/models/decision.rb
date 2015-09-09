@@ -24,6 +24,10 @@ class Decision < ActiveRecord::Base
     where(verdict: nil)
   end
 
+  def self.last_round
+    where.not(verdict: nil).first
+  end
+
   def latest?
     self == paper.decisions.latest
   end

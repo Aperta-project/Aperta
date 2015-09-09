@@ -59,4 +59,36 @@ describe Task do
       expect(task.can_change? double).to eq(true)
     end
   end
+
+  describe "#notify_completion" do
+    context "when being completed" do
+      let!(:task) { FactoryGirl.create(:task, completed: false) }
+
+      it "fires event if being marked as complete" do
+        expect(Notifier).to receive(:notify).with(event: "task:completed", data: { record: task })
+        task.completed = true
+        task.save
+      end
+    end
+
+    context "when being uncompleted" do
+      let!(:task) { FactoryGirl.create(:task, completed: true) }
+
+      it "does not fire event" do
+        expect(Notifier).to_not receive(:notify)
+        task.completed = false
+        task.save
+      end
+    end
+
+    context "when completion status not changing" do
+      let!(:task) { FactoryGirl.create(:task, completed: false) }
+
+      it "does not fire event" do
+        expect(Notifier).to_not receive(:notify)
+        task.title = "completion did not change"
+        task.save
+      end
+    end
+  end
 end

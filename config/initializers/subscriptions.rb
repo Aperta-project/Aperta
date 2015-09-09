@@ -3,7 +3,7 @@ Subscriptions.configure do
 
   add 'paper:updated', Paper::Updated::EventStream
   add 'paper:destroyed', Paper::Destroyed::EventStream
-  add 'paper:submitted', Paper::Submitted::EmailCreator, Paper::Submitted::EmailAdmins
+  add 'paper:submitted', Paper::Submitted::EmailCreator, Paper::Submitted::EmailAdmins, Paper::Submitted::KeenLogger
   add 'paper:resubmitted', Paper::Resubmitted::EmailEditor
 
   add 'paper_role:created', PaperRole::Created::EventStream::NotifyPaperMembers, PaperRole::Created::EventStream::NotifyAssignee

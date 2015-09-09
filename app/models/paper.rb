@@ -120,15 +120,14 @@ class Paper < ActiveRecord::Base
     end
 
     event(:reactivate) do
-      Paper.aasm.events.each do |event|
-        event_name = event.transitions.first.to
-        transitions from: :withdrawn, to: event_name, after: :set_editable!, if: Proc.new { previous_state_is?(event_name) }
+      Paper.aasm.states.map(&:name).each do |state|
+       transitions from: :withdrawn, to: state, after: :set_editable!, if: Proc.new { previous_state_is?(state) }
       end
     end
   end
 
   def previous_state_is?(event)
-    withdrawals.last['previous_publishing_state'] == event.to_s
+    withdrawals.last[:previous_publishing_state] == event.to_s
   end
 
   def make_decision(decision)
@@ -335,7 +334,7 @@ class Paper < ActiveRecord::Base
   end
 
   def set_editable!
-    update!(editable: withdrawals.last['previous_editable_state'])
+    update!(editable: withdrawals.last[:previous_editable_state])
   end
 
   def set_published_at!

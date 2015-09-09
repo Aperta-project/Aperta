@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150908212125) do
+ActiveRecord::Schema.define(version: 20150909132701) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -240,10 +240,19 @@ ActiveRecord::Schema.define(version: 20150908212125) do
     t.string   "status",     limit: 255, default: "processing"
   end
 
+  create_table "nested_question_answers", force: :cascade do |t|
+    t.integer  "nested_question_id"
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.text     "value"
+    t.string   "value_type"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
   create_table "nested_questions", force: :cascade do |t|
     t.string   "text"
     t.text     "value_type",                 null: false
-    t.string   "value"
     t.integer  "parent_id"
     t.integer  "lft",                        null: false
     t.integer  "rgt",                        null: false
@@ -344,7 +353,6 @@ ActiveRecord::Schema.define(version: 20150908212125) do
     t.string   "secondary_affiliation", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "contributions"
     t.string   "ringgold_id"
     t.string   "secondary_ringgold_id"
   end

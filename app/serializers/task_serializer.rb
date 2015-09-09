@@ -1,6 +1,6 @@
 class TaskSerializer < ActiveModel::Serializer
   class NestedQuestionSerializer < ActiveModel::Serializer
-    attributes :id, :value, :text, :ident
+    attributes :id, :text, :ident
     has_many :children
   end
 

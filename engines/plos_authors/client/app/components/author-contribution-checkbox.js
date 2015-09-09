@@ -2,8 +2,8 @@ import Ember from "ember";
 
 export default Ember.Component.extend({
   isSelected: function() {
-    return this.get("currentContributions").contains(this.get("name"));
-  }.property("name", "contributions"),
+    return this.get("currentContributions").contains(this.get("value"));
+  }.property("value", "contributions"),
 
   actions: {
     update: function(contribution) {

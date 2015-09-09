@@ -1,4 +1,13 @@
 Subscriptions.configure do
+
+  # TODO:
+  #
+  # add to `tahi-assign_team` repo subscriptions:
+  # add 'tahi_assign_team/assign_team_task:completed', EditorAssigned::KeenLogger
+  #
+  # add to `plos_bio_tech_check` repo subscriptions:
+  # add 'plos_bio_tech_check/final_tech_check_task:completed', EditorAssigned::KeenLogger
+
   add '.*', EventLogger
 
   add 'paper:updated', Paper::Updated::EventStream

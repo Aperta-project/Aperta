@@ -78,8 +78,8 @@ describe "ManuscriptManagerTemplateForm" do
     {"paper_type"=>"Research 2222", "journal_id"=>journal.id,
       "phase_templates"=>[{"name"=>"Phase 1", "position"=>1,
         "task_templates"=>[
-          {"title"=>"Authors", "journal_task_type_id"=>"86", "position"=>"1"},
-          {"title"=>"Team", "journal_task_type_id"=>"111", "position"=>"2"}
+          {"title"=>"Authors", "journal_task_type_id"=>"86", "position"=>1},
+          {"title"=>"Team", "journal_task_type_id"=>"111", "position"=>2}
         ]},
       {"name"=>"Phase 2", "position"=>2},
       {"name"=>"Phase 3", "position"=>3}]}

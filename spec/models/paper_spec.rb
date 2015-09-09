@@ -192,14 +192,14 @@ describe Paper do
       it "transitions to the previous state" do
         paper.withdraw!
         expect(paper).to be_withdrawn
-        paper.reactivate!
+        paper.reload.reactivate!
         expect(paper).to be_submitted
       end
 
       it "marks the paper with the previous editable state for submitted papers" do
         paper.withdraw!
         expect(paper).to_not be_editable
-        paper.reactivate!
+        paper.reload.reactivate!
         expect(paper).to_not be_editable
         expect(paper.submitted?).to eq(true)
       end
@@ -209,7 +209,7 @@ describe Paper do
         expect(paper).to be_editable
         paper.withdraw!
         expect(paper).to_not be_editable
-        paper.reactivate!
+        paper.reload.reactivate!
         expect(paper).to be_editable
         expect(paper.unsubmitted?).to eq(true)
       end

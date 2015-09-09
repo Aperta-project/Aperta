@@ -131,7 +131,11 @@ class Paper < ActiveRecord::Base
   end
 
   def previous_state_is?(event)
-    withdrawals.last[:previous_publishing_state] == event.to_s
+    last_withdrawal[:previous_publishing_state] == event.to_s
+  end
+
+  def last_withdrawal
+    withdrawals.last.with_indifferent_access
   end
 
   def make_decision(decision)
@@ -338,7 +342,7 @@ class Paper < ActiveRecord::Base
   end
 
   def set_editable!
-    update!(editable: withdrawals.last[:previous_editable])
+    update!(editable: last_withdrawal[:previous_editable])
   end
 
   def set_published_at!

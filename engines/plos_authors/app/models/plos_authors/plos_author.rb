@@ -74,7 +74,7 @@ module PlosAuthors
       question.children.each do |nested_question|
         children.push answer_question(nested_question)
       end
-      return { text: question.text, ident: question.ident, value_type: question.value_type, answer: NestedQuestion.get_answer(question.ident, self), children: children}
+      return { text: question.text, id: question.id, ident: question.ident, value_type: question.value_type, answer: NestedQuestion.get_answer(question.ident, self), children: children}
     end
   end
 end

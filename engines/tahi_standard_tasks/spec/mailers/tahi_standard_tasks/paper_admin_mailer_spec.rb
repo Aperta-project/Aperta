@@ -22,5 +22,15 @@ describe TahiStandardTasks::PaperAdminMailer do
     it "contains a link to the paper" do
       expect(email.body.raw_source).to match(%r{http://www.example.com/papers/#{invitation.paper.id}})
     end
+
+    context "without a paper.admin" do
+      before do
+        admin_role.destroy
+      end
+
+      it "does not email the admin" do
+        expect(email.message).to be_a(ActionMailer::Base::NullMail)
+      end
+    end
   end
 end

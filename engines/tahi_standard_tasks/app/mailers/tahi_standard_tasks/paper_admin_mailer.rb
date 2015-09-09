@@ -8,8 +8,9 @@ module TahiStandardTasks
 
     def notify_admin_of_editor_invite_accepted(paper_id:, editor_id:)
       @paper = Paper.find paper_id
-      @journal = @paper.journal
       @admin = @paper.admin
+      return :paper_admin_does_not_exist unless @admin
+      @journal = @paper.journal
       @editor = User.find editor_id
 
       mail(

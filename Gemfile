@@ -99,6 +99,7 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'capybara-screenshot'
   gem 'email_spec'
   gem 'selenium-webdriver'
   gem 'simplecov'

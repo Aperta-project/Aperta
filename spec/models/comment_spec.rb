@@ -41,8 +41,13 @@ describe Comment, redis: true do
       expect(enqueued_jobs.size).to eq 1
     end
 
+    it "send email on mixed-case @mention" do
+      create_comment_and_notify_mentions(body: "check this out @#{author.username.upcase} and @#{author2.username.capitalize}", commenter: commenter)
+      expect(enqueued_jobs.size).to eq 2
+    end
+
     it "send email on multiple, messy @mention" do
-      create_comment_and_notify_mentions(body: "check this out @#{author.username} @#{commenter.username} @#{author2.username}, @someOtherHandle like whoa!", commenter: commenter)
+      create_comment_and_notify_mentions(body: "check this out @#{author.username.upcase} @#{commenter.username} @#{author2.username}, @someOtherHandle like whoa!", commenter: commenter)
       expect(enqueued_jobs.size).to eq 2
     end
 

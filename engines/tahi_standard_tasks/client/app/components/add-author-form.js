@@ -5,7 +5,7 @@ export default Ember.Component.extend({
 
   setNewAuthor: Ember.on("init", function(){
     if (!this.get("newAuthor")) {
-      this.set("newAuthor", {contributions: []});
+      this.set("newAuthor", {contributions: [], nestedQuestions: this.get('nestedQuestions')});
     }
   }),
 
@@ -29,7 +29,7 @@ export default Ember.Component.extend({
 
   resetAuthor() {
     if (Ember.typeOf(this.get("newAuthor")) === "object") {
-      this.set("newAuthor", {contributons: []});
+      this.set("newAuthor", {contributons: [], nestedQuestions: this.get('nestedQuestions')});
     } else {
       this.get("newAuthor").rollback();
     }
@@ -46,12 +46,12 @@ export default Ember.Component.extend({
       this.resetAuthor();
     },
 
-    addContribution(ident) {
-      this.get("newAuthor.contributions").addObject(ident);
+    addContribution(value) {
+      this.get("newAuthor.contributions").addObject(value);
     },
 
-    removeContribution(ident) {
-      this.get("newAuthor.contributions").removeObject(ident);
+    removeContribution(value) {
+      this.get("newAuthor.contributions").removeObject(value);
     },
 
     resolveContributions(newContributions, unmatchedContributions) {

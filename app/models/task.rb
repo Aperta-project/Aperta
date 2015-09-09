@@ -26,7 +26,6 @@ class Task < ActiveRecord::Base
   has_many :questions, inverse_of: :task, dependent: :destroy
   has_many :participations, inverse_of: :task, dependent: :destroy
   has_many :participants, through: :participations, source: :user
-  has_many :nested_questions, class_name: "NestedQuestion", as: :owner
 
   belongs_to :phase, inverse_of: :tasks
 
@@ -108,6 +107,10 @@ class Task < ActiveRecord::Base
   def metadata_task?
     return false if Task.metadata_types.blank?
     Task.metadata_types.include?(self.class.name)
+  end
+
+  def nested_questions
+    []
   end
 
   def submission_task?

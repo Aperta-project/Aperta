@@ -115,11 +115,15 @@ class Paper < ActiveRecord::Base
       transitions to: :withdrawn,
                   after: :prevent_edits!
       before do |withdrawal_reason|
-        withdrawals << { previous_publishing_state: publishing_state, previous_editable_state: editable, reason: withdrawal_reason }
+        withdrawals << { previous_publishing_state: publishing_state,
+                         previous_editable: editable,
+                         reason: withdrawal_reason }
       end
     end
 
     event(:reactivate) do
+      # AASM doesn't currently allow transitions to dynamic states, so this iterator
+      # explicitly defines each transition
       Paper.aasm.states.map(&:name).each do |state|
         transitions from: :withdrawn, to: state, after: :set_editable!, if: Proc.new { previous_state_is?(state) }
       end
@@ -334,7 +338,7 @@ class Paper < ActiveRecord::Base
   end
 
   def set_editable!
-    update!(editable: withdrawals.last[:previous_editable_state])
+    update!(editable: withdrawals.last[:previous_editable])
   end
 
   def set_published_at!

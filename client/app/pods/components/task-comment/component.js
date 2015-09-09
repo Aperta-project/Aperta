@@ -28,7 +28,7 @@ export default Ember.Component.extend({
   }),
 
   highlightBody(body, mentions) {
-    let first, i, j, last, len, len1, mention, mentionString, regex;
+    let first, i, j, last, len, len1, mention, mentionString;
     if (!mentions) { return body; }
 
     let mentionStrings = [];
@@ -43,8 +43,6 @@ export default Ember.Component.extend({
 
     for (j = 0, len1 = mentionStrings.length; j < len1; j++) {
       mention = mentionStrings[j];
-      regex = new RegExp('(' + mention + ')');
-      body = body.replace(regex, '<strong>$1</strong>');
     }
 
     return body;

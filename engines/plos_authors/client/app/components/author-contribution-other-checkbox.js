@@ -5,6 +5,8 @@ export default Ember.Component.extend({
 
   isSelected: Ember.computed.notEmpty("unmatchedContributions"),
 
+  value: null,
+
   textValue: function() {
     return this.get("unmatchedContributions").join(", ");
   }.property("unmatchedContributions"),
@@ -17,9 +19,8 @@ export default Ember.Component.extend({
       }
     },
 
-    textUpdate: function(contributionList) {
+    textUpdate: function(otherContributionText) {
       let contributions = contributionList.split(",");
-
       this.sendAction("changed", contributions, this.get("unmatchedContributions"));
     }
   }

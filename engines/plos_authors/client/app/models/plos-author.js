@@ -26,6 +26,16 @@ export default DS.Model.extend({
   position: a('number'),
   contributions: a(),
 
+  addContribution: function(contributionId, value){
+    let contribution = {id: contributionId, value: value};
+    this.get('contributions').addObject(contribution);
+  },
+
+  removeContribution: function(contributionId){
+    let contributions = this.get('contributions');
+    contributions.removeObject(contributions.findBy("id", contributionId));
+  },
+
   fullName: function() {
     return [this.get('firstName'), this.get('middleInitial'), this.get('lastName')].compact().join(' ');
   }.property('firstName', 'middleInitial', 'lastName')

@@ -42,7 +42,9 @@ module PlosAuthors
     def contributions=(nested_question_ids)
       nested_question_ids ||= []
       nested_question_answers.destroy_all
-      updated_questions = NestedQuestion.where(id:nested_question_ids.uniq).all
+
+      nested_question_ids = arr.map{ |hsh| hsh["id"] }.uniq
+      updated_questions = NestedQuestion.where(id:nested_question_ids).all
 
       updated_questions.each do |question|
         self.nested_question_answers << question.answer(true, owner:self)

@@ -18,6 +18,7 @@ module PlosAuthors
     end
 
     def update
+      f = plos_author_params
       plos_author.update(plos_author_params)
       render json: plos_authors_for(plos_author.paper)
     end
@@ -63,7 +64,7 @@ module PlosAuthors
         :deceased,
         :corresponding,
         :position,
-        contributions: []
+        contributions: [:id, :value]
       ).tap do |whitelisted|
         whitelisted[:contributions] ||= []
       end

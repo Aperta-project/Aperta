@@ -18,6 +18,8 @@ export default Ember.Component.extend({
     }
   }),
 
+  otherCheckboxIsSelected: null,
+
   secondaryAffiliation: Ember.computed("newAuthor", function() {
     if (this.get("newAuthor.secondaryAffiliation")) {
       return {
@@ -46,12 +48,12 @@ export default Ember.Component.extend({
       this.resetAuthor();
     },
 
-    addContribution(value) {
-      this.get("newAuthor.contributions").addObject(value);
+    addContribution(contributionId) {
+      this.get("newAuthor").addContribution(contributionId, true);
     },
 
-    removeContribution(value) {
-      this.get("newAuthor.contributions").removeObject(value);
+    removeContribution(contributionId) {
+      this.get("newAuthor").removeContribution(contributionId);
     },
 
     resolveContributions(newContributions, unmatchedContributions) {
@@ -62,6 +64,22 @@ export default Ember.Component.extend({
     institutionSelected(institution) {
       this.set("newAuthor.affiliation", institution.name);
       this.set("newAuthor.ringgoldId", institution["institution-id"]);
+    },
+
+    otherCheckboxChanged(checkbox){
+      if(checkbox.get("checked")){
+        this.set("otherInfo", {value: checkbox.get("value"), textValue:""});
+      } else {
+        this.set("otherInfo", null);
+      }
+    },
+
+    otherTextUpdated(newText){
+      let author = this.get('newAuthor');
+      let otherInfo = this.get('otherInfo');
+      author.removeContribution(otherInfo.value);
+      author.addContribution(otherInfo.value, newText);
+      otherInfo.textValue = newText;
     },
 
     unknownInstitutionSelected(institutionName) {

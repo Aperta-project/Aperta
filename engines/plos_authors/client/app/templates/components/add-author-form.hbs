@@ -113,13 +113,30 @@
     <h4 class="required">Author Contributions</h4>
 
     {{error-message message=validationErrors.contributions}}
-    {{#each-nested-question for="contributions" inQuestions=nestedQuestions as |question|}}
+    {{#each-nested-question in="contributions" inQuestions=nestedQuestions exclude="contributed_other" as |question|}}
       {{author-contribution-checkbox name=question.text
                                      value=question.id
                                      currentContributions=newAuthor.contributions
                                      checked="addContribution"
                                      unchecked="removeContribution"}}
     {{/each-nested-question}}
+
+    {{#nested-question ident="contributions.contributed_other"
+                       inQuestions=nestedQuestions
+                       as |question|}}
+      <label class="author-label">
+        {{check-box value=question.id checked=isSelected action="otherCheckboxChanged" class="author-contribution-other"}}
+        Other
+      </label>
+
+      {{#if otherInfo}}
+        {{input class="form-control"
+                placeholder="Please specify"
+                value=question.value  
+                changed="otherTextUpdated"
+                focus-out="otherTextUpdated"}}
+      {{/if}}
+    {{/nested-question}}
 
     <span class="pull-right author-form-buttons">
       <a class="button-link button--green author-cancel" {{action "cancelEdit" bubbles=false}}>cancel</a>

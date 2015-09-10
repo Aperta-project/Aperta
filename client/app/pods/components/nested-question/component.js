@@ -10,10 +10,10 @@ NestedQuestionComponent = Ember.Component.extend({
 
   model: (function() {
     let ident = this.get('ident');
-    Ember.assert('You must specify an ident, set to name attr', ident);
+    Ember.assert(`Expecting to be given an ident, but wasn't`, ident);
 
     let task = this.get('task');
-    Ember.assert('You must specify a task, set to name attr', task);
+    Ember.assert(`Expecting to be given a task, but wasn't`, task);
 
     let decision = this.get('decision');
     let question;
@@ -27,14 +27,23 @@ NestedQuestionComponent = Ember.Component.extend({
     return question;
   }).property('task', 'ident'),
 
+  answerModel: Ember.computed('model', function(){
+    return this.get('targetObject.store').createRecord('nested-question-answer', {
+      nestedQuestion: this.get('model'),
+      task: this.get('model.task'),
+      value: this.get('model.value')
+    });
+  }),
+
   additionalData: Ember.computed.alias('model.additionalData'),
 
   change: function(){
-    Ember.run.debounce(this, this._saveModel, this.get('model'), 200);
+    Ember.run.debounce(this, this._saveAnswer, this.get('answerModel'), 200);
+    return false;
   },
 
-  _saveModel: function(model){
-    model.save();
+  _saveAnswer: function(answerModel){
+    answerModel.save();
   }
 });
 

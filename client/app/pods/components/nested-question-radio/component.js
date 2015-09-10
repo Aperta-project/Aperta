@@ -10,9 +10,9 @@ export default NestedQuestionComponent.extend({
   // attrs:
   ident: null,
 
-  selectedYield: Ember.computed('model.answer', 'yesValue', 'noValue', function() {
-    let yes  = Ember.isEqual(this.get('model.answer'), this.get('yesValue'));
-    let no   = Ember.isEqual(this.get('model.answer'), this.get('noValue'));
+  selectedYield: Ember.computed('answerModel.value', 'yesValue', 'noValue', function() {
+    let yes  = Ember.isEqual(this.get('answerModel.value'), this.get('yesValue'));
+    let no   = Ember.isEqual(this.get('answerModel.value'), this.get('noValue'));
 
     return {
       yes: yes,

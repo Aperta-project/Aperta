@@ -1,7 +1,7 @@
 {{#if readonly}}
   <div class="question-text">{{model.text}}</div>
-  {{#if model.answer}}
-    <div class="answer-text">{{model.value}}</div>
+  {{#if answerModel.value}}
+    <div class="answer-text">{{answerModel.value}}</div>
   {{else}}
     <div class="answer-text no-answer">{{noResponseText}}</div>
   {{/if}}
@@ -13,5 +13,5 @@
   {{#if helpText}}
     <ul class="question-help">{{{helpText}}}</ul>
   {{/if}}
-  {{textarea name=ident value=model.value class="form-control" disabled=disabled}}
+  {{textarea name=ident value=answerModel.value class="form-control" disabled=disabled}}
 {{/if}}

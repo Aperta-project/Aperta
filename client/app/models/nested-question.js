@@ -13,5 +13,6 @@ export default DS.Model.extend({
   updatedAt: DS.attr('date'),
 
   text: DS.attr('string'),
-  children: DS.hasMany('nested-question', { async: false, type: 'nested-question' })
+  children: DS.hasMany('nested-question', { async: false, inverse: 'parent' }),
+  parent: DS.belongsTo('nested-question', { async: false })
 });

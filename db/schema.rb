@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150918192514) do
+ActiveRecord::Schema.define(version: 20150922122708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -249,6 +249,35 @@ ActiveRecord::Schema.define(version: 20150918192514) do
     t.datetime "updated_at"
     t.string   "status",     limit: 255, default: "processing"
   end
+
+  create_table "nested_question_answers", force: :cascade do |t|
+    t.integer  "nested_question_id"
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.text     "value"
+    t.string   "value_type",         null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.json     "additional_data"
+  end
+
+  create_table "nested_questions", force: :cascade do |t|
+    t.string   "text"
+    t.string   "value_type"
+    t.string   "ident",      null: false
+    t.integer  "parent_id"
+    t.integer  "lft",        null: false
+    t.integer  "rgt",        null: false
+    t.integer  "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "owner_type"
+    t.integer  "owner_id"
+  end
+
+  add_index "nested_questions", ["lft"], name: "index_nested_questions_on_lft", using: :btree
+  add_index "nested_questions", ["parent_id"], name: "index_nested_questions_on_parent_id", using: :btree
+  add_index "nested_questions", ["rgt"], name: "index_nested_questions_on_rgt", using: :btree
 
   create_table "paper_roles", force: :cascade do |t|
     t.integer  "user_id"

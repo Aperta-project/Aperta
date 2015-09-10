@@ -1,0 +1,43 @@
+<h1>
+  Production Metadata
+</h1>
+
+<div class="form-group">
+  <div class="form-group publication-date {{if validationErrors.publicationDate "error"}}">
+    <span class="text-field-title required">
+      Publication Date
+    </span>
+    {{input type="text"
+            value=publicationDate
+            class="form-control tall-text-field"
+            placeholder="Select ..."}}
+  </div>
+</div>
+<div class="form-group form-inline">
+  <div class="form-group volume-number {{if validationErrors.volumeNumber "error"}}">
+    <span class="text-field-title required">
+      Volume Number
+    </span>
+    {{input type="text"
+            value=volumeNumber
+            class="form-control tall-text-field"
+            placeholder="e.g. 12"}}
+  </div>
+  <div class="form-group issue-number {{if validationErrors.issueNumber "error"}}">
+    <span class="text-field-title required">
+      Issue Number
+    </span>
+    {{input type="text"
+            value=issueNumber
+            class="form-control tall-text-field"
+            placeholder="e.g. 3"}}
+  </div>
+</div>
+<div>
+  Publication Notes
+  {{content-editable
+    value=publicationNotes
+    class="taller-textarea"
+    placeholder="Add Publication Notes here"
+    editable=isSubmissionTaskEditable}}
+</div>

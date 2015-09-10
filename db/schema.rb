@@ -273,7 +273,7 @@ ActiveRecord::Schema.define(version: 20150904211547) do
     t.string   "publishing_state"
     t.datetime "submitted_at"
     t.string   "salesforce_manuscript_id"
-    t.text     "withdrawal_reasons",       default: [],                  array: true
+    t.jsonb    "withdrawals",              default: [],                  array: true
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree

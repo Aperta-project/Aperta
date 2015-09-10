@@ -110,6 +110,11 @@ class PapersController < ApplicationController
     render json: paper, status: :ok
   end
 
+  def reactivate
+    paper.reactivate!
+    render json: paper, status: :ok
+  end
+
   def withdraw
     paper.withdraw! withdrawal_params[:reason]
     render json: paper, status: :ok

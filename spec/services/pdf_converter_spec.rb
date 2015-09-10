@@ -23,12 +23,22 @@ describe PDFConverter do
   end
 
   describe ".pdf_html" do
+    subject(:doc){ Nokogiri::HTML(pdf_html) }
+    let(:pdf_html){ PDFConverter.pdf_html paper, presenter }
+    let(:presenter){ PublishingInformationPresenter.new paper, user }
+
+    after { expect(doc.errors.length).to be 0 }
+
     it "includes all necessary info and default journal stylesheet in the generated HTML" do
-      presenter = PublishingInformationPresenter.new paper, user
-      pdf_html = PDFConverter.pdf_html paper, presenter
       expect(pdf_html).to include journal.pdf_css
       expect(pdf_html).to include paper.display_title
       expect(pdf_html).to include paper.body
+    end
+
+    it "displays and HTML escapes the paper's title in the body" do
+      paper.title = "<This Is & The Title>"
+      element = doc.at("#paper-body h1:contains('#{paper.title}')")
+      expect(element).to be
     end
   end
 end

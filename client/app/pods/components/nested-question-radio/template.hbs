@@ -1,0 +1,39 @@
+{{#if readonly}}
+  <div class="question-text">{{{model.text}}}</div>
+  {{#if model.answer}}
+    <div class="answer-text">{{model.answer.value}}</div>
+  {{else}}
+    <div class="answer-text no-answer">{{noResponseText}}</div>
+  {{/if}}
+
+  {{#if hasBlock}}
+    <div class="additional-data">
+      {{yield}}
+    </div>
+  {{/if}}
+
+{{else}}
+  <div class="question-text">{{{model.text}}}</div>
+
+  {{#if helpText}}
+    <ul class="question-help">{{{helpText}}}</ul>
+  {{/if}}
+
+  <div class={{wrapperClass}}>
+    {{binary-radio-button name=ident
+                          selection=model.answer
+                          yesValue=yesValue
+                          noValue=noValue
+                          yesLabel=yesLabel
+                          noLabel=noLabel
+                          yesAction="yesAction"
+                          noAction="noAction"
+                          disabled=disabled}}
+
+    {{#if hasBlock}}
+      <div class="additional-data">
+        {{yield selectedYield}}
+      </div>
+    {{/if}}
+  </div>
+{{/if}}

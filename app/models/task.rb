@@ -98,6 +98,10 @@ class Task < ActiveRecord::Base
         joins(participations: :user).where("participations.user_id" => users)
       end
     end
+
+    def nested_questions
+      []
+    end
   end
 
   def journal_task_type
@@ -171,6 +175,10 @@ class Task < ActiveRecord::Base
 
   def newly_incomplete?
     previously_completed? && !completed
+  end
+
+  def nested_questions
+    self.class.nested_questions
   end
 
   private

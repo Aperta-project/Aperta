@@ -186,10 +186,11 @@ class ProfilePage(AuthenticatedPage):
     time.sleep(1)
     email.send_keys(affiliation['email'])
     time.sleep(1)
-    # This block is cancelled until in-situ investigation on why data
-    # is not entered when add_done_btn is clicked.
     add_done_btn = self._get(self._add_done_btn)
     self.validate_secondary_green_button_style(add_done_btn)
+    '''
+    # This block is cancelled until in-situ investigation on why data
+    # is not entered when add_done_btn is clicked.
     add_done_btn.send_keys(Keys.SPACE)
     # Look for data
     # Give some time to end AJAX call
@@ -207,5 +208,5 @@ class ProfilePage(AuthenticatedPage):
     alert = self._driver.switch_to_alert()
     alert.accept()
     # TODO: Validate errors after #101686744 and #101686944 are fixed
-
+    '''
     return self

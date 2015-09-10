@@ -11,6 +11,7 @@ class Doi
            to: :journal
 
   def initialize(journal:)
+    fail ArgumentError, "Journal is required" unless journal.present?
     @journal = journal
   end
 

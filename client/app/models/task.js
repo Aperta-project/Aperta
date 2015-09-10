@@ -46,12 +46,14 @@ export default DS.Model.extend(CardThumbnailObserver, {
     if(_.isEmpty(remainingPathParts)){
       return foundQuestions;
     } else {
-      return this.findQuestions(remainingPathParts, this.childrenOfQuestions(foundQuestions));
+      return this.findQuestions(remainingPathParts, this.childrenOfQuestions(foundQuestions).toArray());
     }
   },
 
   childrenOfQuestions: function(questions){
-    return _.flatten( _(questions).pluck("children") );
+    let children =  _(questions).invoke("get", "children");
+    let allTheChildren = _.invoke(children, "toArray");
+    return _.flatten( allTheChildren );
   },
 
   body: DS.attr(),

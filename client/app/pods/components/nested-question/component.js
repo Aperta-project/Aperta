@@ -5,7 +5,8 @@ NestedQuestionComponent = Ember.Component.extend({
   tagName: 'div',
   helpText: null,
   disabled: false,
-
+  questionTextClass: "question-text",
+  
   model: (function() {
     let ident = this.get('ident');
     let question = this.get('task').findQuestion(ident);

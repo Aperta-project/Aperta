@@ -23,6 +23,7 @@ class Task < ActiveRecord::Base
   has_one :paper, through: :phase
   has_one :journal, through: :paper
   has_many :attachments
+  has_many :nested_question_answers, as: :owner
   has_many :questions, inverse_of: :task, dependent: :destroy
   has_many :participations, inverse_of: :task, dependent: :destroy
   has_many :participants, through: :participations, source: :user
@@ -174,7 +175,7 @@ class Task < ActiveRecord::Base
   end
 
   def nested_questions
-    self.class.nested_questions
+    @nested_questions ||= nested_questions_with_answers
   end
 
   private
@@ -182,4 +183,30 @@ class Task < ActiveRecord::Base
   def on_card_completion?
     previous_changes["completed"] == [false, true]
   end
+
+
+  def nested_questions_with_answers(reload=false)
+    answers_by_nested_question_id = nested_question_answers.inject({}) do |hsh,answer|
+      hsh[answer.nested_question_id] = answer.value
+      hsh
+    end
+
+    fetch_nested_questions_list.each do |nested_question|
+      if nested_question.parent_id.nil?
+        answer_nested_question(nested_question, answers_by_nested_question_id)
+      end
+    end
+  end
+
+  def fetch_nested_questions_list
+    self.class.nested_questions
+  end
+
+  def answer_nested_question(nested_question, answers_by_nested_question_id)
+    nested_question.children.each do |child_question|
+      answer_nested_question child_question, answers_by_nested_question_id
+    end
+    nested_question.value = answers_by_nested_question_id[nested_question.id]
+  end
+
 end

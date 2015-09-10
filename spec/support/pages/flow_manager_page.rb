@@ -82,7 +82,7 @@ class FlowManagerPage < Page
     end
 
     def remove
-      hover
+      find(".column-header").hover
       find('.remove-column').click
     end
   end

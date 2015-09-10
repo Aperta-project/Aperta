@@ -146,7 +146,7 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('line-height') == '15.4px'
     assert title.value_of_css_property('color') == 'rgba(153, 153, 153, 1)'
     return None
-    
+
   @staticmethod
   def validate_application_h2_style(title):
     """
@@ -388,6 +388,6 @@ class AuthenticatedPage(PlosPage):
     assert application_typeface in link.value_of_css_property('font-family')
     assert link.value_of_css_property('font-size') == '14px'
     assert link.value_of_css_property('line-height') == '20px'
-    assert link.value_of_css_property('background-color') == 'transparent'    
+    assert link.value_of_css_property('background-color') == 'transparent'
     assert link.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     assert link.value_of_css_property('font-weight') == '400'

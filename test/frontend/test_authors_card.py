@@ -35,7 +35,7 @@ class AuthorsCardTest(FrontEndTest):
     article_name = self._select_preexisting_article(init=False)
     manuscript_page = ManuscriptPage(self.getDriver())
     manuscript_page.click_authors_card()
-    return AuthorsCard(self.getDriver())
+    return AuthorsCard(self.getDriver()), article_name
 
   def test_validate_components_styles(self):
     """
@@ -44,7 +44,10 @@ class AuthorsCardTest(FrontEndTest):
       My Submissions Welcome Text, button, info text and manuscript display
       Modals: View Invites and Create New Submission
     """
-    authors_card = self._go_to_authors_card()
+    authors_card, title = self._go_to_authors_card()
+    header_link = authors_card._get(authors_card._header_link)
+    assert header_link.text == title, (header_link.text, title)
+    authors_card.validate_styles()
     time.sleep(2)
 
 

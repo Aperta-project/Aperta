@@ -14,7 +14,7 @@ from teamcity.unittestpy import TeamcityTestRunner
 
 class FrontEndTest(unittest.TestCase):
   """
-  Base class to provide Front End tests with desired WebDriver instances, as defined in 
+  Base class to provide Front End tests with desired WebDriver instances, as defined in
   [[Config.py]].
   It inherits from `TestCase` in order to count as a test suite for Python's `unittest` framework.
   """
@@ -66,9 +66,9 @@ class FrontEndTest(unittest.TestCase):
 
   def _select_preexisting_article(self, title='Hendrik', init=True):
     """
-    Select a preexisting article using a word as a partial name 
-    for the title. from_ variable is 0 when the user is not logged in
-    and need to invoque login script to reach the homepage. 
+    Select a preexisting article using a word as a partial name
+    for the title. init variable is True when the user is not logged in
+    and need to invoque login script to reach the homepage.
     """
     dashboard = self._login() if init else DashboardPage(self.getDriver())
     return dashboard.click_on_existing_manuscript_link_partial_title(title)

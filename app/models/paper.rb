@@ -385,6 +385,7 @@ class Paper < ActiveRecord::Base
   end
 
   def set_doi
+    return if doi
     next_doi = Doi.new(journal: journal).assign!
     update!(doi: next_doi)
   end

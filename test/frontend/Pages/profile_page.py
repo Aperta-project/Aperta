@@ -183,11 +183,14 @@ class ProfilePage(AuthenticatedPage):
     country.send_keys(affiliation['country'] + Keys.RETURN)
     time.sleep(1)
     datepicker_1.send_keys(affiliation['start'] + Keys.RETURN)
-    time.sleep(2)
+    time.sleep(1)
     datepicker_2.send_keys(affiliation['end'] + Keys.RETURN)
-    time.sleep(2)
+    time.sleep(1)
     email.send_keys(affiliation['email'])
-    add_done_btn.click()
+    time.sleep(1)
+    # This block is cancelled until in-situ investigation on why data
+    # is not entered when add_done_btn is clicked.
+    add_done_btn.send_keys(Keys.SPACE)
     # Look for data
     # Give some time to end AJAX call
     time.sleep(2)
@@ -204,4 +207,5 @@ class ProfilePage(AuthenticatedPage):
     alert = self._driver.switch_to_alert()
     alert.accept()
     # TODO: Validate errors after #101686744 and #101686944 are fixed
+
     return self

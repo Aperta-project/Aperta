@@ -10,7 +10,11 @@ class Paper::Submitted::EventStoreLogger < EventStoreSubscriber
         paper_type: record.paper_type,
         publishing_state: record.publishing_state,
         submitted_at: record.submitted_at,
-        creator: record.creator.full_name,
+        creator: {
+          id: record.creator.id,
+          username: record.creator.username,
+          full_name: record.creator.full_name,
+        }
       }
     end
   end

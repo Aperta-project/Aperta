@@ -172,8 +172,6 @@ class ProfilePage(AuthenticatedPage):
     self.validate_input_form_style(datepicker_2)
     email = self._get(self._email)
     self.validate_input_form_style(email)
-    add_done_btn = self._get(self._add_done_btn)
-    self.validate_secondary_green_button_style(add_done_btn)
     add_cancel_btn = self._get(self._add_cancel_btn)
     self.validate_default_link_style(add_cancel_btn)
     # Insert affiliation data
@@ -190,6 +188,8 @@ class ProfilePage(AuthenticatedPage):
     time.sleep(1)
     # This block is cancelled until in-situ investigation on why data
     # is not entered when add_done_btn is clicked.
+    add_done_btn = self._get(self._add_done_btn)
+    self.validate_secondary_green_button_style(add_done_btn)
     add_done_btn.send_keys(Keys.SPACE)
     # Look for data
     # Give some time to end AJAX call

@@ -21,6 +21,7 @@ class EventStoreSubscriber
     @event ||= build_event.tap { |event|
       event.name      = formatted_event_name
       event.record    = record
+      event.kind      = record.class.name # fully namespaced class (https://github.com/rails/rails/issues/20893)
       event.timestamp = DateTime.now
     }
   end

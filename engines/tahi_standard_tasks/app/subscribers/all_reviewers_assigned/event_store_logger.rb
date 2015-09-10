@@ -14,7 +14,7 @@ class AllReviewersAssigned::EventStoreLogger < EventStoreSubscriber
             {
               id: reviewer.id,
               full_name: reviewer.full_name,
-              user_name: reviewer.username
+              username: reviewer.username
             }
         end
       }

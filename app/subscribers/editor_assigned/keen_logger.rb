@@ -17,7 +17,7 @@ class EditorAssigned::KeenLogger < KeenSubscriber
           {
             id: editor.id,
             full_name: editor.full_name,
-            user_name: editor.username
+            username: editor.username
           }
       end
     }

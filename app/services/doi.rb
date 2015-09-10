@@ -20,7 +20,7 @@ class Doi
   end
 
   def assign!
-    return unless journal_has_doi?
+    return unless journal_has_doi_prefixes?
     journal.transaction do
       journal.update! last_doi_issued: last_doi_issued.succ
     end
@@ -28,20 +28,16 @@ class Doi
   end
 
   def to_s
-    [prefix, suffix].join("/")
+    [doi_publisher_prefix, suffix].join("/")
   end
 
   private
-
-  def prefix
-    doi_publisher_prefix
-  end
 
   def suffix
     [doi_journal_prefix, last_doi_issued].join(".")
   end
 
-  def journal_has_doi?
+  def journal_has_doi_prefixes?
     doi_publisher_prefix.present? && doi_journal_prefix.present?
   end
 end

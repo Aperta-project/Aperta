@@ -94,6 +94,18 @@ feature "Journal Administration", js: true do
         # the role has been deleted from tne page
         expect { role.name }.to raise_error(Selenium::WebDriver::Error::StaleElementReferenceError)
       end
+
+      scenario "new role is available for selecting box" do
+        assign_journal_role(journal, user, :admin)
+
+        role = journal_page.add_role
+        role.name = "New Role"
+        role.save
+        wait_for_ajax
+        journal_page.find(".assign-role-button").click
+        journal_page.find(".add-role-input input").set "New"
+        expect(journal_page.find(".select2-results li").text). to eq("New Role")
+      end
     end
 
     describe "on a Journal's Flow Manager" do

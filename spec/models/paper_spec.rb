@@ -32,6 +32,7 @@ describe Paper do
         expect(unsaved_paper_from_factory_girl.doi).to eq(nil)
       end
       it "sets a doi in after_create callback" do
+        ap paper.doi
         expect(paper.doi).to be_truthy
       end
     end

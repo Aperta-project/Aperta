@@ -6,6 +6,7 @@ NestedQuestionComponent = Ember.Component.extend({
   helpText: null,
   disabled: false,
   noResponseText: "[No response]",
+  questionTextClass: "question-text",
 
   model: (function() {
     let ident = this.get('ident');

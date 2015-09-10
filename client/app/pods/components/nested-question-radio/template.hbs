@@ -13,7 +13,7 @@
   {{/if}}
 
 {{else}}
-  <div class="question-text">{{{model.text}}}</div>
+  <div class="{{questionTextClass}}">{{{model.text}}}</div>
 
   {{#if helpText}}
     <ul class="question-help">{{{helpText}}}</ul>

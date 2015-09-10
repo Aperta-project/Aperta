@@ -37,7 +37,7 @@ class ManuscriptManagerTemplatesController < ApplicationController
   end
 
   def new_template_params
-    params.require(:manuscript_manager_template).permit(:paper_type, :journal_id, phase_templates: [:name, :position, task_templates: [:title, :journal_task_type_id]])
+    params.require(:manuscript_manager_template).permit(:paper_type, :journal_id, phase_templates: [:name, :position, task_templates: [:title, :journal_task_type_id, :position]])
   end
 
   def enforce_policy

@@ -1,8 +1,7 @@
 import Ember from 'ember';
 import ENV from 'tahi/config/environment';
-import DragNDrop from 'tahi/services/drag-n-drop';
 
-export default Ember.Component.extend(DragNDrop.DraggableMixin, {
+export default Ember.Component.extend({
   classNameBindings: [':card', 'task.completed:card--completed', 'classes'],
 
   _propertiesCheck: Ember.on('init', function() {
@@ -12,10 +11,6 @@ export default Ember.Component.extend(DragNDrop.DraggableMixin, {
   task: null,
   classes: '',
   canRemoveCard: false,
-
-  dragStart() {
-    DragNDrop.dragItem = this.get('task');
-  },
 
   // This is hack but the way we are creating a link but
   // not actually navigating to the link is non-ember-ish
@@ -35,7 +30,7 @@ export default Ember.Component.extend(DragNDrop.DraggableMixin, {
     return router.generate.apply(router, args);
   }),
 
-  unreadCommentsCount: Ember.computed('task.commentLooks.@each', function() {
+  unreadCommentsCount: Ember.computed('task.commentLooks.[]', function() {
     // NOTE: this fn is also used for 'task-templates', who do
     // not have comment-looks
     return (this.get('task.commentLooks') || []).length;

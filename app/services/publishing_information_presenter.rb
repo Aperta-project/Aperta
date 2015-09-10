@@ -25,18 +25,19 @@ class PublishingInformationPresenter
   end
 
   def title
-    "<h1 id='paper-display-title'>#{paper.display_title}</h1>"
+    "<h1 id='paper-display-title'>#{CGI.escape_html(paper.display_title)}</h1>"
   end
 
   def journal_name
-    "<p id='journal-name'><em>#{paper.journal.name}</em></p>"
+    "<p id='journal-name'><em>#{CGI.escape_html(paper.journal.name)}</em></p>"
   end
 
-  def generated_at
-    "<p id='generated-at'><em>#{Date.today.to_s :long}</em></p>"
+  def generated_at(date=nil)
+    date ||= Date.today.to_s(:long)
+    "<p id='generated-at'><em>#{CGI.escape_html(date)}</em></p>"
   end
 
   def downloader_name
-    "Generated for #{downloader.full_name}"
+    "Generated for #{CGI.escape_html(downloader.full_name)}"
   end
 end

@@ -12,7 +12,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   end
 
   version :detail do
-    process resize_to_limit: [986, -1]
+    process resize_to_limit: [986, -1], if: :needs_transcoding?
     process :convert_to_png, if: :needs_transcoding?
 
     def full_filename(orig_file)
@@ -21,7 +21,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   end
 
   version :preview do
-    process resize_to_limit: [475, 220]
+    process resize_to_limit: [475, 220], if: :needs_transcoding?
     process :convert_to_png, if: :needs_transcoding?
 
     def full_filename(orig_file)

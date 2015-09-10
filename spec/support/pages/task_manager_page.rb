@@ -26,7 +26,7 @@ class TaskManagerPage < Page
   end
 
   def tasks
-    synchronize_content! "Add new card"
+    synchronize_content! "Add card"
     all('.card').map { |el| TaskCard.new(el) }
   end
 

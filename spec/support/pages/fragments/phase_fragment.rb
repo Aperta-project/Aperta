@@ -2,7 +2,7 @@ class PhaseFragment < PageFragment
   text_assertions :card, '.card'
 
   def new_card(**params)
-    find('a', text: 'ADD NEW CARD').click
+    find('a', text: 'ADD CARD').click
     new_card = params[:overlay].launch(session)
     new_card.create(params)
   end

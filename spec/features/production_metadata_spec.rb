@@ -1,0 +1,56 @@
+require 'rails_helper'
+
+feature 'Production Metadata Card', js: true do
+  let(:admin) { create :user, site_admin: true, first_name: 'Admin' }
+  let(:author) { create :user, first_name: 'Author' }
+  let!(:paper)  { create :paper, :with_tasks, creator: author }
+  let(:production_metadata_task) do
+    create :production_metadata_task, phase: paper.phases.first
+  end
+
+  before do
+    login_as admin
+    visit "/papers/#{paper.id}/tasks/#{production_metadata_task.id}"
+  end
+
+  describe 'completing a Production Metadata card' do
+    describe 'picking a publication date' do
+      it 'displays a date picker' do
+        find('.datepicker').click
+        expect(page).to have_css('.datepicker-dropdown')
+      end
+    end
+
+    describe 'adding a volumne number' do
+      it 'does not allows alphas to be entered' do
+        fill_in('production_metadata.volumeNumber', with: 'alpha characters')
+        inputs = page.all('input')
+        volume_number = inputs[1]
+        expect(volume_number.value).not_to eq 'alpha characters'
+      end
+
+      it 'allows numbers to be entered' do
+        fill_in('production_metadata.volumeNumber', with: 1234)
+        inputs = page.all('input')
+        volume_number = inputs[1]
+        expect(volume_number.value).to eq '1234'
+      end
+    end
+
+    describe 'adding an issue number' do
+      it 'does not allows alphas to be entered' do
+        fill_in('production_metadata.issueNumber', with: 'alpha characters')
+        inputs = page.all('input')
+        issue_number = inputs[2]
+        expect(issue_number.value).not_to eq 'alpha characters'
+      end
+
+      it 'allows numbers to be entered' do
+        fill_in('production_metadata.issueNumber', with: 1234)
+        inputs = page.all('input')
+        issue_number = inputs[2]
+        expect(issue_number.value).to eq '1234'
+      end
+    end
+  end
+end

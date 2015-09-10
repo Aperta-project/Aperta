@@ -139,6 +139,12 @@ FactoryGirl.define do
     title "Billing"
     role "author"
   end
+
+  factory :production_metadata_task, class: "TahiStandardTasks::ProductionMetadataTask" do
+    phase
+    title "Production Metadata"
+    role "admin"
+  end
 end
 
 class MockMetadataTask < Task

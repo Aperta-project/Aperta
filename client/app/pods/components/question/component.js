@@ -7,6 +7,7 @@ QuestionComponent = Ember.Component.extend({
   disabled: false,
   readonly: false,
   noResponseText: "[No response]",
+
   model: (function() {
     var decision, ident, question, task;
     ident = this.get('ident');
@@ -20,6 +21,7 @@ QuestionComponent = Ember.Component.extend({
     }
     return question;
   }).property('task', 'ident'),
+
   createNewQuestion: function() {
     var data, key, question, task, value;
     task = this.get('task');
@@ -40,11 +42,13 @@ QuestionComponent = Ember.Component.extend({
     task.get('questions').pushObject(question);
     return question;
   },
+
   additionalData: Ember.computed.alias('model.additionalData'),
   change: function() {
     Ember.run.debounce(this, this._saveModel, this.get('model'), 200);
     return false;
   },
+
   _saveModel: function(model) {
     return model.save();
   }

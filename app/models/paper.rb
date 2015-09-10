@@ -31,6 +31,8 @@ class Paper < ActiveRecord::Base
   has_many :decisions, -> { order 'revision_number DESC' }, dependent: :destroy
   has_many :discussion_topics, inverse_of: :paper, dependent: :destroy
 
+  serialize :withdrawals, ArrayHashSerializer
+
   validates :paper_type, presence: true
   validates :short_title, presence: true, uniqueness: true
   validates :journal, presence: true
@@ -131,11 +133,7 @@ class Paper < ActiveRecord::Base
   end
 
   def previous_state_is?(event)
-    last_withdrawal[:previous_publishing_state] == event.to_s
-  end
-
-  def last_withdrawal
-    withdrawals.last.with_indifferent_access
+    withdrawals.last[:previous_publishing_state] == event.to_s
   end
 
   def make_decision(decision)
@@ -234,7 +232,7 @@ class Paper < ActiveRecord::Base
   end
 
   def latest_withdrawal_reason
-    withdrawals.last['reason'] if withdrawals.present?
+    withdrawals.last[:reason] if withdrawals.present?
   end
 
   def locked_by?(user) # :nodoc:
@@ -342,7 +340,7 @@ class Paper < ActiveRecord::Base
   end
 
   def set_editable!
-    update!(editable: last_withdrawal[:previous_editable])
+    update!(editable: withdrawals.last[:previous_editable])
   end
 
   def set_published_at!

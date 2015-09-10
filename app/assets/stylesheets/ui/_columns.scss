@@ -87,7 +87,7 @@
   .select2-container { width: 100%; margin-bottom: 5px; }
 }
 
-.column:hover .column-header .fa {
+.column-header:hover .fa {
   display: block;
 }
 
@@ -136,17 +136,15 @@
 
 .column-icon {
   color: $tahi-green-light;
+  display: none;
   font-size: 14px;
   position: absolute;
-  display: none;
 }
-
 
 .column-header:hover .column-icon {
   display: inline;
-  top: -10px;
+  right: 0;
 }
-
 
 .column-content {
   @include position(absolute, 56px 0px 0px 0px);
@@ -202,20 +200,40 @@
 
 .add-column {
   position: absolute;
-  top: -17px;
-  right: -11px;
+  top: -18px;
+  right: -13px;
   display: inline-block;
-  width: 20px;
-  height: 15px;
+  width: 25px;
+  height: 25px;
   font-size: 10px;
   text-align: center;
-  opacity: 0;
-  background-color: $tahi-green-light;
   cursor: pointer;
 
-  &:hover { opacity: 1; }
+  i.fa-plus-square,
+  i.fa-plus-square-o {
+    background-color: $tahi-white;
+    color: $tahi-grey-light;
+    height: 15px;
+    position: relative;
+    top: 3px;
+    width: 15px;
+  }
 
-  i { color: #FFFFFF; }
+  i.fa-plus-square {
+    display: none;
+  }
+
+  &:hover {
+    i.fa-plus-square {
+      background-color: $tahi-white;
+      color: $tahi-green;
+      display: inline;
+    }
+
+    i.fa-plus-square-o {
+      display: none;
+    }
+  }
 
   &.first-add-column {
     position: relative;

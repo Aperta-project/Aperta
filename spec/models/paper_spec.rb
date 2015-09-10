@@ -25,6 +25,16 @@ describe Paper do
       paper.reload
       expect(paper_new.body).to eq('foo')
     end
+
+    describe "after_create doi callback" do
+      it "the doi is not set coming from factory girl before create" do
+        unsaved_paper_from_factory_girl = FactoryGirl.build :paper
+        expect(unsaved_paper_from_factory_girl.doi).to eq(nil)
+      end
+      it "sets a doi in after_create callback" do
+        expect(paper.doi).to be_truthy
+      end
+    end
   end
 
   describe "#destroy" do

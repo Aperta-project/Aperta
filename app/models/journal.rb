@@ -25,7 +25,7 @@ class Journal < ActiveRecord::Base
     users.merge(Role.admins)
   end
 
-  def doi
+  def doi # B.Lieb: I REALLY don't like this method name. It really refers to the last_do_issued to a paper
     Doi.new(journal: self).to_s
   end
 

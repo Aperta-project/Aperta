@@ -21,7 +21,7 @@ class KeenSubscriber
   def default_payload
     {
       keen: { timestamp: DateTime.now.utc },
-      event_name: event_name.gsub(/^.:/, '') # remove internal application prefix from event name
+      event_name: event_name.gsub(/^.+?:/, '') # remove internal application prefix from event name
     }
   end
 

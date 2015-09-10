@@ -115,6 +115,8 @@ GEM
     autoprefixer-rails (5.2.1.1)
       execjs
       json
+    awesome_nested_set (3.0.2)
+      activerecord (>= 4.0.0, < 5)
     awesome_print (1.6.1)
     bcrypt (3.1.10)
     bootstrap-sass (3.3.5.1)
@@ -587,6 +589,7 @@ DEPENDENCIES
   acts_as_list!
   american_date
   auto_screenshot
+  awesome_nested_set
   awesome_print
   bootstrap-sass
   bourbon

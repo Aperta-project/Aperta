@@ -89,15 +89,20 @@
     </div>
   </div>
 
-  <div class="form-group">
-    <label class="author-label">
-      {{check-box checked=newAuthor.corresponding class="author-corresponding"}}
-      This is a corresponding author
-    </label>
-    <label class="author-label">
-      {{check-box checked=newAuthor.deceased class="author-deceased"}}
-      This person is deceased
-    </label>
+  <div class="form-group form-inline">
+    <div class="form-group author-half {{if validationErrors.affiliation "error"}}">
+      <label class="author-label">
+        {{check-box checked=newAuthor.corresponding class="author-corresponding"}}
+        This person will be listed as the corresponding author on the published article
+      </label>
+    </div>
+
+    <div class="form-group author-half author-bump {{if validationErrors.secondaryAffiliation "error"}}">
+      <label class="author-label">
+        {{check-box checked=newAuthor.deceased class="author-deceased"}}
+        This person is deceased
+      </label>
+    </div>
   </div>
 
   <div class="form-group author-contributions form-inline">

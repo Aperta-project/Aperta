@@ -8,7 +8,6 @@ module PlosAuthors
     has_many :plos_authors, inverse_of: :plos_authors_task
 
     validates_with AssociationValidator, association: :plos_authors, fail: :set_completion_error, if: :completed?
-    validate :corresponding_plos_authors, if: :completed?
 
     def active_model_serializer
       PlosAuthorsTaskSerializer
@@ -24,11 +23,6 @@ module PlosAuthors
     end
 
     private
-
-    def corresponding_plos_authors
-      return true if plos_authors.where(corresponding: true).exists?
-      self.errors.add(:corresponding, "You must have at least one corresponding author.")
-    end
 
     def set_completion_error
       self.errors.add(:completed, "Please fix validation errors above.")

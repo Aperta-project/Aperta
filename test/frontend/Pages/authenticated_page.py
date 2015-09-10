@@ -8,6 +8,7 @@ the navigation menu also vital for ensuring style consistency across the applica
 __author__ = 'jgray@plos.org'
 
 from selenium.webdriver.common.by import By
+
 from Base.PlosPage import PlosPage
 from Base.Resources import au_login, rv_login, ae_login, he_login, fm_login, oa_login, sa_login
 
@@ -15,10 +16,9 @@ from Base.Resources import au_login, rv_login, ae_login, he_login, fm_login, oa_
 # We are in process of migrating fonts in the interface, until this is deployed to lean, we can
 #    only enforce the fallback font and have it work in both environments. Source-Sans-Pro and Lora are what we are
 #    moving to when the next push to lean happens we can correct the following entries.
-# application_typeface = 'source-sans-pro'
-application_typeface = 'helvetica'
-# manuscript_typeface = 'lora'
-manuscript_typeface = 'times'
+application_typeface = 'source-sans-pro'
+manuscript_typeface = 'lora'
+
 
 class AuthenticatedPage(PlosPage):
   """
@@ -127,12 +127,97 @@ class AuthenticatedPage(PlosPage):
     :param title: title to validate
     """
     assert application_typeface in title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == '48px'
+    assert title.value_of_css_property('font-size') == '36px'
     assert title.value_of_css_property('font-weight') == '500'
-    assert title.value_of_css_property('line-height') == '52.8px'
+    assert title.value_of_css_property('line-height') == '39.6px'
     assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
     return None
 
+  @staticmethod
+  def validate_application_h2_style(title):
+    """
+    Ensure consistency in rendering page and overlay h2 section headings across the application
+    :param title: title to validate
+    """
+    assert application_typeface in title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '30px'
+    assert title.value_of_css_property('font-weight') == '500'
+    assert title.value_of_css_property('line-height') == '33px'
+    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+
+  @staticmethod
+  def validate_application_h3_style(title):
+    """
+    Ensure consistency in rendering page and overlay h3 section headings across the application
+    :param title: title to validate
+    """
+    assert application_typeface in title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '24px'
+    assert title.value_of_css_property('font-weight') == '500'
+    assert title.value_of_css_property('line-height') == '26.4px'
+    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+
+  @staticmethod
+  def validate_application_h4_style(title):
+    """
+    Ensure consistency in rendering page and overlay h4 section headings across the application
+    :param title: title to validate
+    """
+    assert application_typeface in title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '18px'
+    assert title.value_of_css_property('font-weight') == '500'
+    assert title.value_of_css_property('line-height') == '19.8px'
+    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+
+  @staticmethod
+  def validate_manuscript_h1_style(title):
+    """
+    Ensure consistency in rendering page and overlay main headings within the manuscript
+    :param title: title to validate
+    """
+    assert manuscript_typeface in title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '36px'
+    assert title.value_of_css_property('font-weight') == '500'
+    assert title.value_of_css_property('line-height') == '39.6px'
+    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+    return None
+
+  @staticmethod
+  def validate_manuscript_h2_style(title):
+    """
+    Ensure consistency in rendering page and overlay h2 section headings within the manuscript
+    """
+    assert manuscript_typeface in title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '30px'
+    assert title.value_of_css_property('font-weight') == '500'
+    assert title.value_of_css_property('line-height') == '33px'
+    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+
+  @staticmethod
+  def validate_manuscript_h3_style(title):
+    """
+    Ensure consistency in rendering page and overlay h3 section headings within the manuscript
+    :param title: title to validate
+    """
+    assert manuscript_typeface in title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '24px'
+    assert title.value_of_css_property('font-weight') == '500'
+    assert title.value_of_css_property('line-height') == '26.4px'
+    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+
+  @staticmethod
+  def validate_manuscript_h4_style(title):
+    """
+    Ensure consistency in rendering page and overlay h4 section headings within the manuscript
+    :param title: title to validate
+    """
+    assert manuscript_typeface in title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '18px'
+    assert title.value_of_css_property('font-weight') == '500'
+    assert title.value_of_css_property('line-height') == '19.8px'
+    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+
+  # This seems out of bounds - this should conform to one of the above styles - report as a bug
   @staticmethod
   def validate_profile_title_style(title):
     """
@@ -145,18 +230,32 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('font-weight') == '500'
     assert title.value_of_css_property('line-height') == '15.4px'
     assert title.value_of_css_property('color') == 'rgba(153, 153, 153, 1)'
-    return None
-    
+
+  # Ordinary Text Styles ============================
   @staticmethod
-  def validate_application_h2_style(title):
+  def validate_application_ptext(paragraph):
     """
-    Ensure consistency in rendering page and overlay h2 section headings across the application
-    :param title: title to validate
+    Ensure consistency in rendering application ordinary text and paragraph text across the application
+    :param paragraph: paragraph to validate
+    :return: None
     """
     assert application_typeface in title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == '30px'
+    assert title.value_of_css_property('font-size') == '14px'
     assert title.value_of_css_property('font-weight') == '500'
-    assert title.value_of_css_property('line-height') == '33px'
+    assert title.value_of_css_property('line-height') == '20px'
+    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+
+  @staticmethod
+  def validate_manuscript_ptext(paragraph):
+    """
+    Ensure consistency in rendering manuscript ordinary text and paragraph text across the application
+    :param paragraph: paragraph to validate
+    :return: None
+    """
+    assert manuscript_typeface in title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '14px'
+    assert title.value_of_css_property('font-weight') == '500'
+    assert title.value_of_css_property('line-height') == '20px'
     assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
 
   # Button Styles ============================

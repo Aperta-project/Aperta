@@ -7,3 +7,4 @@ class ArrayHashSerializer
     array
   end
 end
+

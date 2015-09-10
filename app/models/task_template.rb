@@ -7,4 +7,6 @@ class TaskTemplate < ActiveRecord::Base
 
   validates :title, presence: true
   delegate :role, to: :journal_task_type
+
+  acts_as_list scope: :phase_template
 end

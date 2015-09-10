@@ -48,7 +48,7 @@ QuestionComponent = Ember.Component.extend({
     Ember.run.debounce(this, this._saveModel, this.get('model'), 200);
     return false;
   },
-  
+
   _saveModel: function(model) {
     return model.save();
   }

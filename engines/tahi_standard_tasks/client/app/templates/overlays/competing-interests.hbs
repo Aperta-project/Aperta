@@ -2,9 +2,9 @@
 
 <ol class="question-list">
   <li class="question">
-    {{#question-radio ident="competing_interests.any"
+    <p>You are responsible for recognizing and disclosing on behalf of all authors any competing interest that could be perceived to bias their work, acknowledging all financial support and any other relevant financial or non-financial competing interests.</p>
+    <p>{{#nested-question-radio ident="competing_interests"
                       task=model
-                      question="<p>You are responsible for recognizing and disclosing on behalf of all authors any competing interest that could be perceived to bias their work, acknowledging all financial support and any other relevant financial or non-financial competing interests.</p><p>Do any authors of this manuscript have competing interests (as described in the <a target='_blank' href='http://www.plosbiology.org/static/policies#competing'>PLOS Policy on Declaration and Evaluation of Competing Interests</a>)?</p>"
                       disabled=isSubmissionTaskNotEditable
                       noValue=declareNoCompeteCopy as |selected|}}
 
@@ -27,6 +27,7 @@
           </ul>
         </div>
       {{/if}}
-    {{/question-radio}}
+    {{/nested-question-radio}}
+  </p>
   </li>
 </ol>

@@ -1,0 +1,23 @@
+<div class="question-text">{{{model.text}}}</div>
+
+{{#if helpText}}
+  <ul class="question-help">{{{helpText}}}</ul>
+{{/if}}
+
+<div class={{wrapperClass}}>
+  {{binary-radio-button name=ident
+                        selection=model.answer
+                        yesValue=yesValue
+                        noValue=noValue
+                        yesLabel=yesLabel
+                        noLabel=noLabel
+                        yesAction="yesAction"
+                        noAction="noAction"
+                        disabled=disabled}}
+
+  {{#if template}}
+    <div class="additional-data">
+      {{yield selectedYield}}
+    </div>
+  {{/if}}
+</div>

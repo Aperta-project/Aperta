@@ -25,6 +25,34 @@ export default DS.Model.extend(CardThumbnailObserver, {
     inverse: 'task',
     async: false
   }),
+  nestedQuestions: DS.hasMany('nested-question', {
+    inverse: 'task',
+    async: false,
+    embedded: true
+  }),
+
+  findQuestion: function(ident){
+    let pathParts = ident.split(".");
+    let nestedQuestions = this.get('nestedQuestions').toArray();
+    let foundQuestions = this.findQuestions(pathParts, nestedQuestions);
+    return _.first(foundQuestions);
+  },
+
+  findQuestions: function(pathParts, questions){
+    let currentIdent = _.first(pathParts);
+    let remainingPathParts = _.rest(pathParts);
+    let foundQuestions = _.select(questions, (q) => { return q.get('ident') === currentIdent; });
+
+    if(_.isEmpty(remainingPathParts)){
+      return foundQuestions;
+    } else {
+      return this.findQuestions(remainingPathParts, this.childrenOfQuestions(foundQuestions));
+    }
+  },
+
+  childrenOfQuestions: function(questions){
+    return _.flatten( _(questions).pluck("children") );
+  },
 
   body: DS.attr(),
   completed: DS.attr('boolean'),
@@ -35,5 +63,5 @@ export default DS.Model.extend(CardThumbnailObserver, {
   qualifiedType: DS.attr('string'),
   role: DS.attr('string'),
   title: DS.attr('string'),
-  type: DS.attr('string')
+  type: DS.attr('string'),
 });

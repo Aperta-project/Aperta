@@ -80,7 +80,7 @@ describe TahiStandardTasks::PaperEditorTask do
       expect(sample_reviewer_report_task.participations.map(&:user)).to include(invitation.invitee)
     end
 
-    it "follows reviewer reviewer recommendations task" do
+    it "follows reviewer recommendations task" do
       invitation.accept!
       expect(sample_reviewer_recommendation_task.participations.map(&:user)).to include(invitation.invitee)
     end

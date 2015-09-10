@@ -64,6 +64,7 @@ gem 'omniauth-cas'
 gem 'databasedotcom'
 
 gem 'tahi_epub', git: "https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/tahi_epub"
+gem 'awesome_nested_set'
 
 group :staging, :performance, :production do
   gem 'heroku-deflater'

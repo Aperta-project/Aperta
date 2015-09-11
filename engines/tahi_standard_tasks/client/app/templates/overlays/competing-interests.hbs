@@ -9,7 +9,8 @@
                       task=model
                       disabled=isSubmissionTaskNotEditable
                       questionTextClass=""
-                      noValue=declareNoCompeteCopy as |selected|}}
+                      noAction="userSelectedNo"
+                      yesAction="userSelectedYes" as |selected|}}
 
         {{#if selected.yes}}
           <div class="question-dataset">

@@ -105,7 +105,7 @@ describe Doi do
   end
 
   describe "#assign!" do
-    let(:journal) { create :journal }
+    let(:journal) { create :journal, :with_doi }
     let(:doi) { Doi.new(journal: journal) }
 
     it "assigns the next available doi to the journal" do

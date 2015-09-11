@@ -4,11 +4,20 @@ class NestedQuestionAnswersController < ApplicationController
   respond_to :json
 
   def create
-    answer.update_attributes!(value: answer_params[:value])
+    create_or_update_answer
+    head 204
+  end
+
+  def update
+    create_or_update_answer
     head 204
   end
 
   private
+
+  def create_or_update_answer
+    answer.update_attributes!(value: answer_params[:value])
+  end
 
   def answer
     @answer ||= NestedQuestionAnswer.where(

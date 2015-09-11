@@ -39,19 +39,7 @@ export default Ember.View.extend(PaperIndexMixin, {
   saveEditorChanges() {
     this.get('controller').savePaper();
   },
-
-  timeoutSave() {
-    if (Ember.testing) {
-      return;
-    }
-    this.saveEditorChanges();
-    Ember.run.cancel(this.short);
-    Ember.run.cancel(this.long);
-    this.short = null;
-    this.long = null;
-    this.keyCount = 0;
-  },
-
+  
   short: null,
   long: null,
   keyCount: 0

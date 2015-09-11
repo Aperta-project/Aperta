@@ -30,6 +30,7 @@ class BaseCard(AuthenticatedPage):
     self._following_label = (By.CLASS_NAME, 'participant-selector-label')
     self._add_participant_btn = (By.CLASS_NAME, 'add-participant-button')
     self._completed_check = (By.ID, 'task_completed')
+    self._message_comment = (By.CLASS_NAME, 'message-comment')
 
   # Common actions for all cards
   def click_close_button(self):
@@ -93,7 +94,7 @@ class BaseCard(AuthenticatedPage):
   @staticmethod
   def validate_card_h2_style(title):
     """
-    Ensure consistency in rendering page and overlay h2 section headings across the all cards
+    Ensure consistency in rendering the overlay h2 section headings across the all cards
     :param title: title to validate
     # TODO: Validate with the result of #103123812
     """
@@ -103,9 +104,34 @@ class BaseCard(AuthenticatedPage):
     assert title.value_of_css_property('line-height') == '22px'
     assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
 
+  @staticmethod
+  def validate_plus_style(plus):
+    """
+    Ensure consistency in rendering the plus (+) section headings across the all cards
+    # TODO: Validate with the result of #103123812
+    """
+    assert application_typeface in plus.value_of_css_property('font-family')
+    assert plus.value_of_css_property('font-size') == '32px'
+    assert plus.value_of_css_property('height') == '25px'
+    assert plus.value_of_css_property('width') == '25px'
+    assert plus.value_of_css_property('line-height') == '20px'
+    assert plus.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    assert plus.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
+    assert plus.text == '+', plus.text
+
+  @staticmethod
+  def validate_completed_style(completed):
+    assert application_typeface in completed.value_of_css_property('font-family')
+    assert completed.value_of_css_property('font-size') == '14px'
+    assert completed.value_of_css_property('height') == '14px'
+    assert completed.value_of_css_property('width') == '14px'
+    assert completed.value_of_css_property('line-height') == '18px'
+    assert completed.value_of_css_property('color') == 'rgba(60, 60, 60, 1)'
+    assert completed.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
+
   def validate_common_elements_styles(self):
     """Validate styles from elements common to all cards"""
-    time.sleep(1)
+    #time.sleep(1)
     header_link = self._get(self._header_link)
     self.validate_card_title(header_link)
     manuscript_icon = self._get(self._manuscript_icon)
@@ -125,30 +151,27 @@ class BaseCard(AuthenticatedPage):
     # Text area before clicking on it
     discussion_text_area = discussion_div.find_element_by_tag_name('textarea')
     assert discussion_text_area.get_attribute('placeholder') == 'Type your message here'
-    # Text area after clicking on it
-    #discussion_text_area.send_keys(' x')
-    #discussion_text_area.click()
-
-    #discussion_text_area.send_keys(Keys.TAB)
-    self._driver.execute_script(
-      "$('.new-comment-field').focus().focus();"
-      )
+    # Enter into the textarea (can't use click since it is not working on CI)
+    self._driver.execute_script("$('.new-comment-field').focus().focus();")
     time.sleep(1)
-    expected_text = generate_paragraph()[2]
-    self.insert_text_discussion(expected_text)
     discussion_div = self._iget(self._discussion_div)
     post_btn = discussion_div.find_element_by_tag_name('button')
-    print "**** post_btn ", post_btn
-    print '**** text', post_btn.text
     assert post_btn.text == 'POST MESSAGE'
     self.validate_secondary_green_button_style(post_btn)
     cancel_lnk = discussion_div.find_element_by_tag_name('a')
-    #assert cancel_lnk.text == 'Cancel', cancel_lnk.text
+    assert cancel_lnk.text == 'Cancel', cancel_lnk.text
     self.validate_default_link_style(cancel_lnk)
     # Enter some text
+    expected_text = generate_paragraph()[2]
+    self.insert_text_discussion(expected_text)
     post_btn.click()
     time.sleep(1)
+    # Check that the entered text is there
+    message_comment = self._get(self._message_comment)
+    assert expected_text in message_comment.text, (expected_text, message_comment.text)
+    # Check footer
     following_label = self._get(self._following_label)
     assert following_label.text == 'Following:', following_label.text
     add_participant_btn = self._get(self._add_participant_btn)
-    assert add_participant_btn.text == '+', add_participant_btn.text
+    self.validate_plus_style(add_participant_btn)
+    self.validate_completed_style(self._get(self._completed_check))

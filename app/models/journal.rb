@@ -25,10 +25,6 @@ class Journal < ActiveRecord::Base
     users.merge(Role.admins)
   end
 
-  def doi # B.Lieb: I REALLY don't like this method name. It really refers to the last_do_issued to a paper
-    Doi.new(journal: self).to_s
-  end
-
   def editors
     users.merge(Role.editors)
   end
@@ -70,8 +66,9 @@ class Journal < ActiveRecord::Base
   private
 
   def valid_doi_format
+    doi = Doi.new(journal: self).to_s
     return true unless doi_publisher_prefix.present? || doi_journal_prefix.present? # allows blanks
-    return true if Doi.valid?(doi) # or enforces correct format
+    return true if Doi.valid?(doi) # but enforce correct format if present
     errors.add(:doi, "The DOI you specified is not valid.")
   end
 

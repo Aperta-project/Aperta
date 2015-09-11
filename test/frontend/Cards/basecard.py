@@ -122,9 +122,10 @@ class BaseCard(AuthenticatedPage):
     # Text area after clicking on it
     discussion_text_area.click()
     time.sleep(1)
-    discussion_div = self._get(self._discussion_div)
+    discussion_div = self._iget(self._discussion_div)
     post_btn = discussion_div.find_element_by_tag_name('button')
-    print post_btn.text
+    print "post_btn ", post_btn
+    print 'text', post_btn.text
     #assert post_btn.text == 'POST MESSAGE'
     self.validate_secondary_green_button_style(post_btn)
     cancel_lnk = discussion_div.find_element_by_tag_name('a')

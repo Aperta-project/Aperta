@@ -20,9 +20,5 @@ export default Ember.Mixin.create({
 
   teardownControlBarSubNav: Ember.on('willDestroyElement', function() {
     $('html').removeClass('control-bar-sub-nav-active');
-  }),
-  
-  saveTitleChanges: Ember.on('willDestroyElement', function() {
-    this.timeoutSave();
   })
 });

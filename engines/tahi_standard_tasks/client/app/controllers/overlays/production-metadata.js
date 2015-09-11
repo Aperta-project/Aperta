@@ -1,7 +1,4 @@
-import Ember from 'ember';
 import TaskController from 'tahi/pods/paper/task/controller';
-
-const { computed } = Ember;
 
 export default TaskController.extend({
   publicationDate: function() {
@@ -22,27 +19,27 @@ export default TaskController.extend({
 
   setPublicationDate: function() {
     this.send('ensureBody');
-    this.send('setAndSave', 'publicationDate')
+    this.send('setAndSave', 'publicationDate');
   }.observes('publicationDate'),
 
   setVolumeNumber: function() {
     this.send('ensureBody');
-    this.send('setAndSave', 'volumeNumber')
+    this.send('setAndSave', 'volumeNumber');
   }.observes('volumeNumber'),
 
   setIssueNumber: function() {
     this.send('ensureBody');
-    this.send('setAndSave', 'issueNumber')
+    this.send('setAndSave', 'issueNumber');
   }.observes('issueNumber'),
 
   setPublicationNotes: function() {
     this.send('ensureBody');
-    this.send('setAndSave', 'publicationNotes')
+    this.send('setAndSave', 'publicationNotes');
   }.observes('publicationNotes'),
 
   actions: {
     ensureBody(){
-      if (this.get('model.body').length === 0 && typeof(this.get('model.body') != Array)) {
+      if (this.get('model.body').length === 0 && typeof(this.get('model.body') !== Array)) {
         this.set('model.body', {});
       }
     },

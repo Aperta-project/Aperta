@@ -23,10 +23,11 @@ export default DS.Model.extend({
 
     let answer = this.get('answers').findBy('task.id', taskId);
     if(!answer){
-      answer = this.get('targetObject.store').createRecord('nested-question-answer', {
+      answer = this.store.createRecord('nested-question-answer', {
         nestedQuestion: this.get('model'),
         task: this.get('task')
       });
+      this.get('answers').addObject(answer);
     }
     return answer;
   })

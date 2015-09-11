@@ -126,8 +126,10 @@ class BaseCard(AuthenticatedPage):
     discussion_text_area = discussion_div.find_element_by_tag_name('textarea')
     assert discussion_text_area.get_attribute('placeholder') == 'Type your message here'
     # Text area after clicking on it
-    discussion_text_area.send_keys(' x')
-    discussion_text_area.click()
+    expected_text = generate_paragraph()[2]
+    self.insert_text_discussion(expected_text)
+    #discussion_text_area.send_keys(' x')
+    #discussion_text_area.click()
 
     #discussion_text_area.send_keys(Keys.TAB)
     #self._driver.execute_script(
@@ -143,8 +145,6 @@ class BaseCard(AuthenticatedPage):
     #assert cancel_lnk.text == 'Cancel', cancel_lnk.text
     self.validate_default_link_style(cancel_lnk)
     # Enter some text
-    expected_text = generate_paragraph()[2]
-    self.insert_text_discussion(expected_text)
     post_btn.click()
     time.sleep(1)
     following_label = self._get(self._following_label)

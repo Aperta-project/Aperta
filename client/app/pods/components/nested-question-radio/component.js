@@ -3,9 +3,9 @@ import NestedQuestionComponent from 'tahi/pods/components/nested-question/compon
 
 export default NestedQuestionComponent.extend({
   yesLabel: 'Yes',
-  yesValue: 'Yes',
+  yesValue: true,
   noLabel: 'No',
-  noValue: 'No',
+  noValue: false,
 
   // attrs:
   ident: null,

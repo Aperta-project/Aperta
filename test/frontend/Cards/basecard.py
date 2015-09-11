@@ -26,6 +26,7 @@ class BaseCard(AuthenticatedPage):
     self._manuscript_icon = (By.CLASS_NAME, 'manuscript-icon')
     self._discussion_div = (By.CLASS_NAME, 'overlay-discussion-board')
     self._following_label = (By.CLASS_NAME, 'participant-selector-label')
+    self._add_participant_btn = (By.CLASS_NAME, 'add-participant-button')
 
   # Common actions for all cards
   def click_close_button(self):

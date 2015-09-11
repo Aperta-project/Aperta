@@ -178,7 +178,8 @@ class WebDriverFactory(object):
     efDriver = EventFiringWebDriver(driver, WebDriverListener())
     efDriver.implicitly_wait(Config.wait_timeout)
     efDriver.set_page_load_timeout(Config.page_load_timeout)
-    efDriver.set_window_size(1280, 1024)
+    #efDriver.set_window_size(1280, 1024)
+    efDriver.maximize_window()
     return efDriver
 
   # === Appium specific section ===
@@ -245,4 +246,3 @@ class WebDriverFactory(object):
 
     """
     return self.__create_appium_driver(Config.appium_ios_node_url, capabilities)
-

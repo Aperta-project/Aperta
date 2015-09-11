@@ -30,7 +30,7 @@ NestedQuestionComponent = Ember.Component.extend({
   answerModel: Ember.computed('model', function(){
     return this.get('targetObject.store').createRecord('nested-question-answer', {
       nestedQuestion: this.get('model'),
-      task: this.get('model.task'),
+      task: this.get('task'),
       value: this.get('model.value')
     });
   }),

@@ -49,6 +49,7 @@ class AuthorsCardTest(FrontEndTest):
     assert header_link.text == title, (header_link.text, title)
     authors_card.validate_styles()
     time.sleep(2)
+    return self
 
 
 

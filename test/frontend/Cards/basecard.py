@@ -133,4 +133,4 @@ class BaseCard(AuthenticatedPage):
     expected_text = generate_paragraph()[2]
     self.insert_text_discussion(expected_text)
     post_btn.click()
-    time.sleep(10)
+    time.sleep(1)

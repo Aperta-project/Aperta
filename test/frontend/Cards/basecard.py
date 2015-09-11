@@ -126,8 +126,7 @@ class BaseCard(AuthenticatedPage):
     discussion_text_area = discussion_div.find_element_by_tag_name('textarea')
     assert discussion_text_area.get_attribute('placeholder') == 'Type your message here'
     # Text area after clicking on it
-    discussion_text_area.send_keys(Keys.NULL)
-    discussion_text_area.send_keys(Keys.NULL)
+    discussion_text_area.send_keys(' x')
     discussion_text_area.click()
 
     #discussion_text_area.send_keys(Keys.TAB)

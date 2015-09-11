@@ -38,9 +38,5 @@ export default Ember.View.extend(PaperIndexMixin, {
   // Note: this must be here as it is used by mixins/views/paper-index
   saveEditorChanges() {
     this.get('controller').savePaper();
-  },
-  
-  short: null,
-  long: null,
-  keyCount: 0
+  }
 });

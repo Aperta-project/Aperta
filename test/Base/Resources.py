@@ -58,11 +58,11 @@ psql_uname = getenv('APERTA_PSQL_USER', 'u6over81t87q49')
 psql_pw = getenv('APERTA_PSQL_PW', 'pch646pphdfqog9v38otlchvvpn')
 psql_db = getenv('APERTA_PSQL_DBNAME', 'd1kdmn5r5e9aj5')
 # Staging data
-# psql_hname = getenv('APERTA_PSQL_HOST', 'ec2-50-17-192-136.compute-1.amazonaws.com')
-# psql_port = getenv('APERTA_PSQL_PORT', '5432')
-# psql_uname = getenv('APERTA_PSQL_USER', 'egdqveertucqpn')
-# psql_pw = getenv('APERTA_PSQL_PW', 'KlqQFwD6y3t2fIAstwFQ9EvYol')
-# psql_db = getenv('APERTA_PSQL_DBNAME', 'd1pe0d7udlodof')
+psql_hname = getenv('APERTA_PSQL_HOST', 'ec2-46-137-159-123.eu-west-1.compute.amazonaws.com')
+psql_port = getenv('APERTA_PSQL_PORT', '5432')
+psql_uname = getenv('APERTA_PSQL_USER', 'vdfcjsacderhvg')
+psql_pw = getenv('APERTA_PSQL_PW', '9nRe-qddM-NdV8_h56ujh0AwN7')
+psql_db = getenv('APERTA_PSQL_DBNAME', 'ddhi6454uf6kmr')
 
 editor_name_0 = 'Hendrik W. van Veen'
 user_email_0 = 'trash87567@ariessc.com'
@@ -72,6 +72,6 @@ user_pw_editor = 'test_password'
 
 # Fake affiliations
 affiliation = {'institution':'Universidad Del Este', 'title': 'Dr.',
-               'country':'Argentina', 'start':'12/01/2014', 
+               'country':'Argentina', 'start':'12/01/2014',
                'end':'08/11/2015', 'email': 'test@test.org',
                'department':'Molecular Biology'}

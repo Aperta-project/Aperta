@@ -131,7 +131,7 @@ Tahi::Application.routes.draw do
     resources :questions, only: [:create, :update]
 
     resources :nested_questions do
-      resource :answers, only: [:create], controller: "nested_question_answers"
+      resource :answers, only: [:create, :update], controller: "nested_question_answers"
     end
 
     resources :roles, only: [:show, :create, :update, :destroy]

@@ -1,24 +1,35 @@
 require 'rails_helper'
 
 describe "Journal" do
+
   it "will be valid with default factory data" do
     journal = build(:journal)
     expect(journal).to be_valid
   end
 
-  describe "DOI" do
+  context "without DOI" do
     before do
       @journal = build(:journal)
-      @journal.doi_publisher_prefix = "PPREFIX"
-      @journal.doi_journal_prefix = "JPREFIX"
-      @journal.last_doi_issued = "100001"
+    end
+
+    it "still valid" do
+      expect(@journal.doi_publisher_prefix).to eq nil
+      expect(@journal.doi_journal_prefix).to eq nil
+      expect(@journal.last_doi_issued).to eq "0"
+      expect(@journal.save!).to eq true
+    end
+  end
+
+  describe "DOI" do
+    before do
+      @journal = build(:journal, :with_doi)
       @journal.save!
     end
 
     it "can save a DOI" do
-      expect(@journal.doi_publisher_prefix).to eq "PPREFIX"
-      expect(@journal.doi_journal_prefix).to eq "JPREFIX"
-      expect(@journal.last_doi_issued).to eq "100001"
+      expect(@journal.doi_publisher_prefix).to include "PPREFIX"
+      expect(@journal.doi_journal_prefix).to include "JPREFIX"
+      expect(@journal.last_doi_issued).to include "10000"
     end
 
     it "will not save invalid DOI publisher prefix" do
@@ -39,9 +50,11 @@ describe "Journal" do
 
     describe "additional Journals" do
       before do
+        existing_journal = Journal.last
+
         @journal = build(:journal)
-        @journal.doi_publisher_prefix = "PPREFIX"
-        @journal.doi_journal_prefix = "JPREFIX"
+        @journal.doi_publisher_prefix = existing_journal.doi_publisher_prefix
+        @journal.doi_journal_prefix = existing_journal.doi_journal_prefix
       end
 
       it "does not accept duplicate journal prefixes" do

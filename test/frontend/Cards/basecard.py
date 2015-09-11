@@ -2,8 +2,9 @@
 
 import time
 
-from selenium.webdriver.common.by import By
 from loremipsum import generate_paragraph
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 
 from frontend.Pages.authenticated_page import AuthenticatedPage, application_typeface
 
@@ -27,6 +28,7 @@ class BaseCard(AuthenticatedPage):
     self._discussion_div = (By.CLASS_NAME, 'overlay-discussion-board')
     self._following_label = (By.CLASS_NAME, 'participant-selector-label')
     self._add_participant_btn = (By.CLASS_NAME, 'add-participant-button')
+    self._completed_check = (By.ID, 'task_completed')
 
   # Common actions for all cards
   def click_close_button(self):
@@ -128,7 +130,8 @@ class BaseCard(AuthenticatedPage):
     post_btn = discussion_div.find_element_by_tag_name('button')
     print "post_btn ", post_btn
     print 'text', post_btn.text
-    #assert post_btn.text == 'POST MESSAGE'
+    post_btn.send_keys(Keys.TAB)
+    assert post_btn.text == 'POST MESSAGE'
     self.validate_secondary_green_button_style(post_btn)
     cancel_lnk = discussion_div.find_element_by_tag_name('a')
     #assert cancel_lnk.text == 'Cancel', cancel_lnk.text
@@ -140,3 +143,5 @@ class BaseCard(AuthenticatedPage):
     time.sleep(1)
     following_label = self._get(self._following_label)
     assert following_label.text == 'Following:', following_label.text
+    add_participant_btn = self._get(self._add_participant_btn)
+    assert add_participant_btn.text == '+', add_participant_btn.text

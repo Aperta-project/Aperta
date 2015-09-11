@@ -31,6 +31,7 @@ describe Paper do
         unsaved_paper_from_factory_girl = FactoryGirl.build :paper
         expect(unsaved_paper_from_factory_girl.doi).to eq(nil)
       end
+
       it "sets a doi in after_create callback" do
         journal                 = FactoryGirl.create :journal
         last_doi_initial        = journal.last_doi_issued

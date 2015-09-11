@@ -70,7 +70,11 @@ class Journal < ActiveRecord::Base
   private
 
   def valid_doi_format
-    return true unless doi_publisher_prefix.present? || doi_journal_prefix.present?
+    return true unless doi_publisher_prefix.present? || doi_journal_prefix.present? 
+    # pretty sure this ^ isn't what we want, as it makes this "valid" when these are empty
+    # if we want to create journals without prefixes I recommend we just remove this validation
+    # and if we do that we can remove the do method completely
+
     return true if Doi.valid?(doi)
     errors.add(:doi, "The DOI you specified is not valid.")
   end

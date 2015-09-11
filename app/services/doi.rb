@@ -1,7 +1,7 @@
 class Doi
   PUBLISHER_PREFIX_FORMAT = /[\w\d\-\.]+/
   SUFFIX_FORMAT = /[^\/]+/
-  FORMAT = %r{\A(#{PUBLISHER_PREFIX_FORMAT}/#{SUFFIX_FORMAT})\z}
+  DOI_FORMAT = %r{\A(#{PUBLISHER_PREFIX_FORMAT}/#{SUFFIX_FORMAT})\z}
 
   attr_reader :journal
 
@@ -16,12 +16,20 @@ class Doi
   end
 
   def self.valid?(doi_string)
-    String(doi_string).match(FORMAT)
+    String(doi_string).match(DOI_FORMAT)
     $1 == String(doi_string)
   end
 
+  def enabled?
+    doi_publisher_prefix.present? && doi_journal_prefix.present?
+  end
+
+  def valid?
+    Doi.valid?(self.to_s)
+  end
+
   def assign!
-    return unless journal_has_doi_prefixes?
+    return unless enabled?
     journal.transaction do
       journal.update! last_doi_issued: last_doi_issued.succ
     end
@@ -36,9 +44,5 @@ class Doi
 
   def suffix
     [doi_journal_prefix, last_doi_issued].join(".")
-  end
-
-  def journal_has_doi_prefixes?
-    doi_publisher_prefix.present? && doi_journal_prefix.present?
   end
 end

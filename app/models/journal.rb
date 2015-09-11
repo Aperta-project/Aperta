@@ -66,11 +66,14 @@ class Journal < ActiveRecord::Base
   private
 
   def valid_doi_format
-    doi = Doi.new(journal: self).to_s
-    if Doi.valid?(doi) || (doi_publisher_prefix.blank? && doi_journal_prefix.blank?)
-      return true
-    else
-      errors.add(:doi, "The DOI you specified is not valid.")
+    doi = Doi.new(journal: self)
+
+    if doi.enabled?
+      if doi.valid?
+        return true
+      else
+        errors.add(:doi, "The DOI you specified is not valid.")
+      end
     end
   end
 

@@ -26,6 +26,7 @@ class BaseCard(AuthenticatedPage):
     self._header_link = (By.CLASS_NAME, 'overlay-header-link')
     self._manuscript_icon = (By.CLASS_NAME, 'manuscript-icon')
     self._discussion_div = (By.CLASS_NAME, 'overlay-discussion-board')
+    self._add_comment = (By.CLASS_NAME, 'new-comment-field')
     self._following_label = (By.CLASS_NAME, 'participant-selector-label')
     self._add_participant_btn = (By.CLASS_NAME, 'add-participant-button')
     self._completed_check = (By.ID, 'task_completed')
@@ -104,7 +105,7 @@ class BaseCard(AuthenticatedPage):
 
   def validate_common_elements_styles(self):
     """Validate styles from elements common to all cards"""
-    time.sleep(10)
+    time.sleep(1)
     header_link = self._get(self._header_link)
     self.validate_card_title(header_link)
     manuscript_icon = self._get(self._manuscript_icon)
@@ -125,7 +126,10 @@ class BaseCard(AuthenticatedPage):
     discussion_text_area = discussion_div.find_element_by_tag_name('textarea')
     assert discussion_text_area.get_attribute('placeholder') == 'Type your message here'
     # Text area after clicking on it
+    discussion_text_area.send_keys(Keys.NULL)
+    discussion_text_area.send_keys(Keys.NULL)
     discussion_text_area.click()
+
     #discussion_text_area.send_keys(Keys.TAB)
     #self._driver.execute_script(
     #  "document.querySelectorAll('div.overlay-discussion-board')[0].click()")

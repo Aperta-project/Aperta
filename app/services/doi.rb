@@ -21,7 +21,7 @@ class Doi
   end
 
   def enabled?
-    doi_publisher_prefix.present? && doi_journal_prefix.present?
+    doi_publisher_prefix.present? && doi_journal_prefix.present? && last_doi_issued.present?
   end
 
   def valid?

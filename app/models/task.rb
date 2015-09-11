@@ -175,40 +175,22 @@ class Task < ActiveRecord::Base
   end
 
   def nested_questions
-    @nested_questions ||= nested_questions_with_answers
+    apply_ownership_to_nested_questions self.class.nested_questions
+  end
+
+  def apply_ownership_to_nested_questions(nested_questions)
+    nested_questions.each do |q|
+      apply_ownership_to_nested_questions q.children
+
+      q.owner = self
+      q.freeze
+    end
   end
 
   private
 
   def on_card_completion?
     previous_changes["completed"] == [false, true]
-  end
-
-  def nested_questions_with_answers(reload=false)
-    answers_by_nested_question_id = nested_question_answers.inject({}) do |hsh,answer|
-      hsh[answer.nested_question_id] = answer.value
-      hsh
-    end
-
-    fetch_nested_questions_list.each do |nested_question|
-      if nested_question.parent_id.nil?
-        answer_nested_question(nested_question, answers_by_nested_question_id)
-      end
-    end
-  end
-
-  def fetch_nested_questions_list
-    self.class.nested_questions.each do |nested_question|
-      nested_question.owner = self
-    end
-  end
-
-  def answer_nested_question(nested_question, answers_by_nested_question_id)
-    nested_question.children.each do |child_question|
-      answer_nested_question child_question, answers_by_nested_question_id
-    end
-    nested_question.owner = self
-    nested_question.value = answers_by_nested_question_id[nested_question.id]
   end
 
 end

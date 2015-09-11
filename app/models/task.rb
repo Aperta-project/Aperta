@@ -184,7 +184,6 @@ class Task < ActiveRecord::Base
     previous_changes["completed"] == [false, true]
   end
 
-
   def nested_questions_with_answers(reload=false)
     answers_by_nested_question_id = nested_question_answers.inject({}) do |hsh,answer|
       hsh[answer.nested_question_id] = answer.value
@@ -199,13 +198,16 @@ class Task < ActiveRecord::Base
   end
 
   def fetch_nested_questions_list
-    self.class.nested_questions
+    self.class.nested_questions.each do |nested_question|
+      nested_question.owner = self
+    end
   end
 
   def answer_nested_question(nested_question, answers_by_nested_question_id)
     nested_question.children.each do |child_question|
       answer_nested_question child_question, answers_by_nested_question_id
     end
+    nested_question.owner = self
     nested_question.value = answers_by_nested_question_id[nested_question.id]
   end
 

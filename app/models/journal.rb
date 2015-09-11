@@ -67,9 +67,11 @@ class Journal < ActiveRecord::Base
 
   def valid_doi_format
     doi = Doi.new(journal: self).to_s
-    return true unless doi_publisher_prefix.present? || doi_journal_prefix.present? # allows blanks
-    return true if Doi.valid?(doi) # but enforce correct format if present
-    errors.add(:doi, "The DOI you specified is not valid.")
+    if Doi.valid?(doi) || (doi_publisher_prefix.blank? && doi_journal_prefix.blank?)
+      return true
+    else
+      errors.add(:doi, "The DOI you specified is not valid.")
+    end
   end
 
   def setup_defaults

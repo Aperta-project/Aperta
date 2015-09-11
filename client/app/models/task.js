@@ -28,9 +28,11 @@ export default DS.Model.extend(CardThumbnailObserver, {
   nestedQuestions: DS.hasMany('nested-question', {
     inverse: 'task',
     async: false,
-    embedded: true
   }),
-
+  nestedQuestionAnswers: DS.hasMany('nested-question-answers', {
+    inverse: 'task',
+    async: false,
+  }),
   findQuestion: function(ident){
     let pathParts = ident.split(".");
     let nestedQuestions = this.get('nestedQuestions').toArray();

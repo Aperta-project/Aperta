@@ -25,6 +25,7 @@ class BaseCard(AuthenticatedPage):
     self._header_link = (By.CLASS_NAME, 'overlay-header-link')
     self._manuscript_icon = (By.CLASS_NAME, 'manuscript-icon')
     self._discussion_div = (By.CLASS_NAME, 'overlay-discussion-board')
+    self._following_label = (By.CLASS_NAME, 'participant-selector-label')
 
   # Common actions for all cards
   def click_close_button(self):
@@ -129,10 +130,12 @@ class BaseCard(AuthenticatedPage):
     #assert post_btn.text == 'POST MESSAGE'
     self.validate_secondary_green_button_style(post_btn)
     cancel_lnk = discussion_div.find_element_by_tag_name('a')
-    assert cancel_lnk.text == 'Cancel', cancel_lnk.text
+    #assert cancel_lnk.text == 'Cancel', cancel_lnk.text
     self.validate_default_link_style(cancel_lnk)
     # Enter some text
     expected_text = generate_paragraph()[2]
     self.insert_text_discussion(expected_text)
     post_btn.click()
     time.sleep(1)
+    following_label = self._get(self._following_label)
+    assert following_label.text == 'Following:', following_label.text

@@ -126,15 +126,16 @@ class BaseCard(AuthenticatedPage):
     discussion_text_area = discussion_div.find_element_by_tag_name('textarea')
     assert discussion_text_area.get_attribute('placeholder') == 'Type your message here'
     # Text area after clicking on it
-    expected_text = generate_paragraph()[2]
-    self.insert_text_discussion(expected_text)
     #discussion_text_area.send_keys(' x')
     #discussion_text_area.click()
 
     #discussion_text_area.send_keys(Keys.TAB)
-    #self._driver.execute_script(
-    #  "document.querySelectorAll('div.overlay-discussion-board')[0].click()")
+    self._driver.execute_script(
+      "$('.new-comment-field').focus().focus();"
+      )
     time.sleep(1)
+    expected_text = generate_paragraph()[2]
+    self.insert_text_discussion(expected_text)
     discussion_div = self._iget(self._discussion_div)
     post_btn = discussion_div.find_element_by_tag_name('button')
     print "**** post_btn ", post_btn

@@ -6,7 +6,7 @@ else
   Rake::Task['data:create_task_types'].invoke
 
   # Create Journal
-  plos_journal = Journal.first_or_create!(name: 'PLOS Yeti', logo: '')
+  plos_journal = Journal.first_or_create!(name: 'PLOS Yeti', logo: '', doi_publisher_prefix: "yetipub", doi_journal_prefix: "yetijour", last_doi_issued: "1000000")
 
   # Create Users
   # These Users should match Personas, by convention

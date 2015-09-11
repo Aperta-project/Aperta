@@ -119,6 +119,7 @@ Tahi::Application.routes.draw do
         put :heartbeat
         put :submit
         put :withdraw
+        put :reactivate
         put :toggle_editable
         put :upload
       end

@@ -31,6 +31,8 @@ class Paper < ActiveRecord::Base
   has_many :decisions, -> { order 'revision_number DESC' }, dependent: :destroy
   has_many :discussion_topics, inverse_of: :paper, dependent: :destroy
 
+  serialize :withdrawals, ArrayHashSerializer
+
   validates :paper_type, presence: true
   validates :short_title, presence: true, uniqueness: true
   validates :journal, presence: true
@@ -117,9 +119,23 @@ class Paper < ActiveRecord::Base
       transitions to: :withdrawn,
                   after: :prevent_edits!
       before do |withdrawal_reason|
-        withdrawal_reasons << withdrawal_reason
+        withdrawals << { previous_publishing_state: publishing_state,
+                         previous_editable: editable,
+                         reason: withdrawal_reason }
       end
     end
+
+    event(:reactivate) do
+      # AASM doesn't currently allow transitions to dynamic states, so this iterator
+      # explicitly defines each transition
+      Paper.aasm.states.map(&:name).each do |state|
+        transitions from: :withdrawn, to: state, after: :set_editable!, if: Proc.new { previous_state_is?(state) }
+      end
+    end
+  end
+
+  def previous_state_is?(event)
+    withdrawals.last[:previous_publishing_state] == event.to_s
   end
 
   def make_decision(decision)
@@ -218,7 +234,7 @@ class Paper < ActiveRecord::Base
   end
 
   def latest_withdrawal_reason
-    withdrawal_reasons.last
+    withdrawals.last[:reason] if withdrawals.present?
   end
 
   def locked_by?(user) # :nodoc:
@@ -323,6 +339,10 @@ class Paper < ActiveRecord::Base
 
   def default_abstract
     Nokogiri::HTML(body).text.truncate_words 100
+  end
+
+  def set_editable!
+    update!(editable: withdrawals.last[:previous_editable])
   end
 
   def set_published_at!

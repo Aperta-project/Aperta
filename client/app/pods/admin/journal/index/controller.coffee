@@ -22,18 +22,6 @@ JournalIndexController = Ember.Controller.extend ValidationErrorsMixin,
     @set 'adminJournalUsers', null
     @set 'placeholderText', null
 
-  logo: (->
-    logoUrl = @get("model.logoUrl")
-    if Ember.isEmpty(logoUrl)
-      false
-    else
-      logoUrl
-  ).property('model.logoUrl')
-
-  journalUrl: (->
-    "/admin/journals/#{@get('model.id')}"
-  ).property('model.id')
-
   formattedDOI: (->
     if @get 'doiInvalid'
       ''
@@ -73,10 +61,8 @@ JournalIndexController = Ember.Controller.extend ValidationErrorsMixin,
 
     destroyMMTemplate: (template) ->
       if @get('canDeleteManuscriptMangerTemplates')
-        # TODO: Ember-Data handles this now, right?
-        template.destroyRecord().then =>
-          @get('model.manuscriptManagerTemplates').removeObject(template)
-
+        template.destroyRecord()
+        
     searchUsers: ->
       @resetSearch()
       @store.find 'AdminJournalUser', query: @get('searchQuery'), journal_id: @get('model.id')

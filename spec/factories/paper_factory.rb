@@ -29,6 +29,11 @@ FactoryGirl.define do
       end
     end
 
+    trait(:unsubmitted) do
+      publishing_state "unsubmitted"
+      editable = true
+    end
+
     trait(:with_tasks) do
       after(:create) do |paper|
         PaperFactory.new(paper, paper.creator).apply_template

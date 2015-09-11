@@ -66,13 +66,14 @@
         More
       </a>
       <ul class="dropdown-menu pull-right" aria-labelledby="more-dropdown-menu">
-        <li>
-          <a href="#" class="appeal-link">
-            <span class="fa fa-image"></span>
-            Appeal
-          </a>
-        </li>
+
         {{#unless paperWithdrawn}}
+          <li>
+            <a href="#" class="appeal-link">
+              <span class="fa fa-image"></span>
+              Appeal
+            </a>
+          </li>
           <li>
             <a href="#" class="withdraw-link" {{action "withdrawManuscript"}} >
               <span class="fa fa-trash fa-lg"></span>

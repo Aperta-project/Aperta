@@ -121,7 +121,7 @@ class Activity < ActiveRecord::Base
       activity_key: "paper.submitted",
       subject: paper,
       user: user,
-      message: "Manuscript was sumbitted"
+      message: "Manuscript was submitted"
     )
   end
 

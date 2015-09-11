@@ -104,6 +104,7 @@ class BaseCard(AuthenticatedPage):
 
   def validate_common_elements_styles(self):
     """Validate styles from elements common to all cards"""
+    time.sleep(10)
     header_link = self._get(self._header_link)
     self.validate_card_title(header_link)
     manuscript_icon = self._get(self._manuscript_icon)
@@ -125,7 +126,6 @@ class BaseCard(AuthenticatedPage):
     assert discussion_text_area.get_attribute('placeholder') == 'Type your message here'
     # Text area after clicking on it
     discussion_text_area.click()
-    time.sleep(10)
     #discussion_text_area.send_keys(Keys.TAB)
     #self._driver.execute_script(
     #  "document.querySelectorAll('div.overlay-discussion-board')[0].click()")

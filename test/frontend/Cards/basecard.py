@@ -125,8 +125,10 @@ class BaseCard(AuthenticatedPage):
     assert discussion_text_area.get_attribute('placeholder') == 'Type your message here'
     # Text area after clicking on it
     discussion_text_area.click()
-    time.sleep(1)
-    discussion_text_area.send_keys(Keys.TAB)
+    time.sleep(10)
+    #discussion_text_area.send_keys(Keys.TAB)
+    #self._driver.execute_script(
+    #  "document.querySelectorAll('div.overlay-discussion-board')[0].click()")
     time.sleep(1)
     discussion_div = self._iget(self._discussion_div)
     post_btn = discussion_div.find_element_by_tag_name('button')

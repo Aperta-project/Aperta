@@ -1,7 +1,7 @@
 {{#if readonly}}
   <div class="question-text">{{{model.text}}}</div>
-  {{#if answerModel.value}}
-    <div class="answer-text">{{answerModel.value}}</div>
+  {{#if model.answer.value}}
+    <div class="answer-text">{{model.answer.value}}</div>
   {{else}}
     <div class="answer-text no-answer">{{noResponseText}}</div>
   {{/if}}
@@ -21,7 +21,7 @@
 
   <div class={{wrapperClass}}>
     {{binary-radio-button name=ident
-                          selection=answerModel.value
+                          selection=model.answer.value
                           yesValue=yesValue
                           noValue=noValue
                           yesLabel=yesLabel

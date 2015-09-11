@@ -9,6 +9,7 @@ class TaskSerializer < ActiveModel::Serializer
   has_many :comments, embed: :ids, include: true
   has_many :participations, embed: :ids, include: true
   has_many :nested_questions, serializer: NestedQuestionSerializer, embed: :ids, include: true
+  has_many :nested_question_answers, serializer: NestedQuestionAnswerSerializer, embed: :ids, include: true
 
   self.root = :task
 

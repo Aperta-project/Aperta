@@ -8,7 +8,7 @@ NestedQuestionComponent = Ember.Component.extend({
   noResponseText: "[No response]",
   questionTextClass: "question-text",
 
-  model: (function() {
+  model: Ember.computed('task', 'ident', function() {
     let ident = this.get('ident');
     Ember.assert(`Expecting to be given an ident, but wasn't`, ident);
 
@@ -25,25 +25,17 @@ NestedQuestionComponent = Ember.Component.extend({
     Ember.assert(`Expecting to find question matching ident '${ident}' but didn't`, question);
 
     return question;
-  }).property('task', 'ident'),
-
-  answerModel: Ember.computed('model', function(){
-    return this.get('targetObject.store').createRecord('nested-question-answer', {
-      nestedQuestion: this.get('model'),
-      task: this.get('task'),
-      value: this.get('model.value')
-    });
   }),
 
   additionalData: Ember.computed.alias('model.additionalData'),
 
   change: function(){
-    Ember.run.debounce(this, this._saveAnswer, this.get('answerModel'), 200);
+    Ember.run.debounce(this, this._saveAnswer, this.get('model.answer'), 200);
     return false;
   },
 
-  _saveAnswer: function(answerModel){
-    answerModel.save();
+  _saveAnswer: function(answer){
+    answer.save();
   }
 });
 

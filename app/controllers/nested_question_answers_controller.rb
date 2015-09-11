@@ -22,13 +22,16 @@ class NestedQuestionAnswersController < ApplicationController
   def answer
     @answer ||= NestedQuestionAnswer.where(
       owner: task,
-      nested_question_id: answer_params[:nested_question_id],
+      nested_question_id: nested_question.id,
       value_type: nested_question.value_type
     ).first_or_initialize
   end
 
   def nested_question
-    @nested_question ||= NestedQuestion.find(answer_params[:nested_question_id])
+    @nested_question ||= begin
+      nested_question_id = params.permit(:nested_question_id).fetch(:nested_question_id)
+      NestedQuestion.find(nested_question_id)
+    end
   end
 
   def task
@@ -36,7 +39,7 @@ class NestedQuestionAnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:nested_question_answer).permit(:task_id, :nested_question_id, :value)
+    params.require(:nested_question_answer).permit(:task_id, :value)
   end
 
   def enforce_policy

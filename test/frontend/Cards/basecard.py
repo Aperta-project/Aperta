@@ -126,7 +126,8 @@ class BaseCard(AuthenticatedPage):
     assert completed.value_of_css_property('height') in ('13px', '14px') # 13px locally and 14px in CI
     assert completed.value_of_css_property('width') in ('13px', '14px') # 13px locally and 14px in CI
     assert completed.value_of_css_property('line-height') == '18px', completed.value_of_css_property('line-height')
-    assert completed.value_of_css_property('color') == 'rgba(60, 60, 60, 1)', completed.value_of_css_property('color')
+    assert completed.value_of_css_property('color') in ('rgba(60, 60, 60, 1)',
+      'rgba(49, 55, 57, 1)') # rgba(60, 60, 60, 1) local and rgba(49, 55, 57, 1) in CI
     assert completed.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)', completed.value_of_css_property('background-color')
 
   def validate_common_elements_styles(self):

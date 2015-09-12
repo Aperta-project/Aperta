@@ -123,8 +123,8 @@ class BaseCard(AuthenticatedPage):
   def validate_completed_style(completed):
     assert application_typeface in completed.value_of_css_property('font-family')
     assert completed.value_of_css_property('font-size') == '14px'
-    assert completed.value_of_css_property('height') == '14px'
-    assert completed.value_of_css_property('width') == '14px'
+    assert completed.value_of_css_property('height') in ('13px', '14px') #13 in CI
+    assert completed.value_of_css_property('width') in ('13px', '14px') #13 in CI
     assert completed.value_of_css_property('line-height') == '18px', completed.value_of_css_property('line-height')
     assert completed.value_of_css_property('color') in ('rgba(60, 60, 60, 1)',
       'rgba(49, 55, 57, 1)') # rgba(60, 60, 60, 1) local and rgba(49, 55, 57, 1) in CI

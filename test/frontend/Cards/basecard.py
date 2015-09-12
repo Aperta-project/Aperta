@@ -124,7 +124,7 @@ class BaseCard(AuthenticatedPage):
     assert application_typeface in completed.value_of_css_property('font-family')
     assert completed.value_of_css_property('font-size') == '14px'
     assert completed.value_of_css_property('height') in ('13px', '14px') # 13px locally and 14px in CI
-    assert completed.value_of_css_property('width') == '14px', completed.value_of_css_property('width')
+    assert completed.value_of_css_property('width') in ('13px', '14px') # 13px locally and 14px in CI
     assert completed.value_of_css_property('line-height') == '18px', completed.value_of_css_property('line-height')
     assert completed.value_of_css_property('color') == 'rgba(60, 60, 60, 1)', completed.value_of_css_property('color')
     assert completed.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)', completed.value_of_css_property('background-color')

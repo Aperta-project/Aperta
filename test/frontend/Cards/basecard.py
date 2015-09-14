@@ -31,6 +31,7 @@ class BaseCard(AuthenticatedPage):
     self._add_participant_btn = (By.CLASS_NAME, 'add-participant-button')
     self._completed_check = (By.ID, 'task_completed')
     self._message_comment = (By.CLASS_NAME, 'message-comment')
+    self._completed_label = (By.XPATH, '//div[@class="overlay-completed-checkbox"]/div/label')
 
   # Common actions for all cards
   def click_close_button(self):
@@ -130,9 +131,21 @@ class BaseCard(AuthenticatedPage):
       'rgba(49, 55, 57, 1)') # rgba(60, 60, 60, 1) local and rgba(49, 55, 57, 1) in CI
     assert completed.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)', completed.value_of_css_property('background-color')
 
+  @staticmethod
+  def validate_completed_label(completed_lbl):
+    """Validate the style of the completed label"""
+    assert completed_lbl.text == 'COMPLETED'
+    assert application_typeface in completed_lbl.value_of_css_property('font-family')
+    assert completed_lbl.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    assert completed_lbl.value_of_css_property('font-size') == '14px'
+    assert completed_lbl.value_of_css_property('height') == '20px'
+    assert completed_lbl.value_of_css_property('width') == '73px'
+    assert completed_lbl.value_of_css_property('line-height') == '20px'
+
   def validate_common_elements_styles(self):
     """Validate styles from elements common to all cards"""
     #time.sleep(1)
+    completed_lbl = self._get(self._completed_label)
     header_link = self._get(self._header_link)
     self.validate_card_title(header_link)
     manuscript_icon = self._get(self._manuscript_icon)
@@ -175,4 +188,7 @@ class BaseCard(AuthenticatedPage):
     assert following_label.text == 'Following:', following_label.text
     add_participant_btn = self._get(self._add_participant_btn)
     self.validate_plus_style(add_participant_btn)
-    self.validate_completed_style(self._get(self._completed_check))
+    completed_check = self._get(self._completed_check)
+    self.validate_completed_style(completed_check)
+    completed_lbl = self._get(self._completed_label)
+    self.validate_completed_label(completed_lbl)

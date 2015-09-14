@@ -3,33 +3,43 @@
 <ol class="question-list">
   <li class="question">
     <div class="question-text">
-      <p>You are responsible for recognizing and disclosing on behalf of all authors any competing interest that could be perceived to bias their work, acknowledging all financial support and any other relevant financial or non-financial competing interests.</p>
       <p>
-        {{#nested-question-radio ident="competing_interests"
-                      task=model
-                      disabled=isSubmissionTaskNotEditable
-                      questionTextClass=""
-                      noAction="userSelectedNo"
-                      yesAction="userSelectedYes" as |selected|}}
+        You are responsible for recognizing and disclosing on behalf of all
+        authors any competing interest that could be perceived to bias their
+        work, acknowledging all financial support and any other relevant
+        financial or non-financial competing interests.
+      </p>
+      <p>
+        {{{anyCompetingInterestsQuestion.text}}}
+      </p>
+    </div>
+    <div>
+      {{#nested-question-radio model=anyCompetingInterestsQuestion
+          task=model
+          displayQuestionText=false
+          disabled=isSubmissionTaskNotEditable
+          noAction="userSelectedNo"
+          yesAction="userSelectedYes" as |selected|}}
 
         {{#if selected.yes}}
           <div class="question-dataset">
-            {{nested-question-textarea ident="competing_interests.statement"
-                              task=model
-                              helpText="Please note that if your manuscript is accepted, this statement will be published."
-                              disabled=isSubmissionTaskNotEditable}}
+            {{nested-question-textarea model=competingInterestsStatementQuestion
+                task=model
+                helpText="Please note that if your manuscript is accepted, this statement will be published."
+                disabled=isSubmissionTaskNotEditable}}
           </div>
         {{/if}}
+
         {{#if selected.no}}
           <div class="question-dataset">
-              Your competing interests statement will appear as: "{{declareNoCompeteCopy}}"
-            <ul class="question-help">
+            Your competing interests statement will appear as: "{{declareNoCompeteCopy}}"
+            <div class="question-help">
               Please note that if your manuscript is accepted, this statement will be published.
-            </ul>
+            </div>
           </div>
         {{/if}}
-        {{/nested-question-radio}}
-      </p>
+
+      {{/nested-question-radio}}
     </div>
   </li>
 </ol>

@@ -5,13 +5,15 @@
   {{else}}
     <div class="answer-text no-answer">{{noResponseText}}</div>
   {{/if}}
+
 {{else}}
-  {{#if model}}
+  {{#if shouldDisplayQuestionText}}
     <div class="question-text">{{{model.text}}}</div>
   {{/if}}
 
   {{#if helpText}}
     <ul class="question-help">{{{helpText}}}</ul>
   {{/if}}
+
   {{textarea name=ident value=model.answer.value class="form-control" disabled=disabled}}
 {{/if}}

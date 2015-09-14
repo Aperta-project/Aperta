@@ -1,11 +1,11 @@
 class PlosAuthors::PlosAuthor::Updated::EventStream < EventStreamSubscriber
 
   def channel
-    record.paper
+    private_channel_for(record.paper)
   end
 
   def payload
-    PlosAuthors::PlosAuthorsSerializer.new(record.plos_authors_task.plos_authors, root: :plos_authors).to_json
+    PlosAuthors::PlosAuthorsSerializer.new(record.plos_authors_task.plos_authors, root: :plos_authors).as_json
   end
 
 end

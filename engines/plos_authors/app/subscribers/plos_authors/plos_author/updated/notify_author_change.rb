@@ -14,11 +14,11 @@ class PlosAuthors::PlosAuthor::Updated::NotifyAuthorChange < EventStreamSubscrib
   # changed.
 
   def channel
-    record.paper
+    private_channel_for(record.paper)
   end
 
   def payload
-    ::AuthorsSerializer.new(record.paper.authors, root: :authors).to_json
+    ::AuthorsSerializer.new(record.paper.authors, root: :authors).as_json
   end
 
   def run

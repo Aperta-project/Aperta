@@ -4,6 +4,7 @@ class RegisterDecisionTask::Completed::ReportingEventLogger < ReportingEventSubs
     decision = record.paper.decisions.last_round
 
     ReportingEvent.new do |es|
+      es.name = :decision_registered
       es.journal_id = record.paper.journal_id
       es.paper_id = record.paper.id
       es.data = {

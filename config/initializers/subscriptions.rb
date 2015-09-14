@@ -22,6 +22,7 @@ Subscriptions.configure do
   # -1, when reordering on workflow
   add 'task:updated', Task::Updated::EventStream
   add 'task:destroyed', Task::Destroyed::EventStream
+  add '.*task:completed', Task::Completed::ReportingEventLogger
 
   add 'question_attachment:created', QuestionAttachment::Created::EventStream
   add 'question_attachment:updated', QuestionAttachment::Updated::EventStream

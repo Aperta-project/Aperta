@@ -5,6 +5,7 @@ class EditorAssigned::ReportingEventLogger < ReportingEventSubscriber
     editors = paper.editors
 
     ReportingEvent.new do |es|
+      es.name = :editor_assigned
       es.journal_id = paper.journal_id
       es.paper_id = paper.id
       es.data = {

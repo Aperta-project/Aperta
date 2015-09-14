@@ -2,6 +2,7 @@ class Paper::Submitted::ReportingEventLogger < ReportingEventSubscriber
 
   def build_event
     ReportingEvent.new do |es|
+      es.name = :paper_submitted
       es.journal_id = record.journal_id
       es.paper_id = record.id
       es.data = {

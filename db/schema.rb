@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150904211547) do
+ActiveRecord::Schema.define(version: 20150911145641) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -355,15 +355,17 @@ ActiveRecord::Schema.define(version: 20150904211547) do
   add_index "questions", ["task_id"], name: "index_questions_on_task_id", using: :btree
 
   create_table "reporting_events", force: :cascade do |t|
-    t.string   "name",        null: false
-    t.datetime "timestamp",   null: false
-    t.integer  "journal_id",  null: false
-    t.integer  "paper_id",    null: false
-    t.integer  "record_id",   null: false
-    t.string   "record_type", null: false
-    t.string   "kind",        null: false
+    t.string   "name",         null: false
+    t.datetime "timestamp",    null: false
+    t.integer  "journal_id",   null: false
+    t.integer  "paper_id",     null: false
+    t.integer  "record_id",    null: false
+    t.string   "record_type",  null: false
+    t.string   "kind",         null: false
     t.jsonb    "data"
+    t.string   "trigger_name"
   end
+
   create_table "roles", force: :cascade do |t|
     t.string   "name"
     t.integer  "journal_id"

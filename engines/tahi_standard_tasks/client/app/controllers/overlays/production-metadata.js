@@ -21,19 +21,19 @@ export default TaskController.extend({
   }.property(),
 
   setPublicationDate: function() {
-    this.callDebounce('publicationDate')
+    this.callDebounce('publicationDate');
   }.observes('publicationDate'),
 
   setVolumeNumber: function() {
-    this.callDebounce('volumeNumber')
+    this.callDebounce('volumeNumber');
   }.observes('volumeNumber'),
 
   setIssueNumber: function() {
-    this.callDebounce('issueNumber')
+    this.callDebounce('issueNumber');
   }.observes('issueNumber'),
 
   setPublicationNotes: function() {
-    this.callDebounce('publicationNotes')
+    this.callDebounce('publicationNotes');
   }.observes('publicationNotes'),
 
   callDebounce: function(key) {

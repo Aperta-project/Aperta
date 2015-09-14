@@ -32,6 +32,7 @@ class BaseCard(AuthenticatedPage):
     self._completed_check = (By.ID, 'task_completed')
     self._message_comment = (By.CLASS_NAME, 'message-comment')
     self._completed_label = (By.XPATH, '//div[@class="overlay-completed-checkbox"]/div/label')
+    self._bottom_close_button = (By.XPATH, '//div[@class="overlay-footer-content"]/a')
 
   # Common actions for all cards
   def click_close_button(self):
@@ -192,3 +193,5 @@ class BaseCard(AuthenticatedPage):
     self.validate_completed_style(completed_check)
     completed_lbl = self._get(self._completed_label)
     self.validate_completed_label(completed_lbl)
+    bottom_close_btn = self._get(self._bottom_close_button)
+    self.validate_secondary_green_button_style(bottom_close_btn)

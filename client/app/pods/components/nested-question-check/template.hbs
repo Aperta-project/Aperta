@@ -1,0 +1,27 @@
+{{#if readonly}}
+  {{#if model.text}}
+    <div class="question-text">{{model.question}}</div>
+  {{/if}}
+
+  {{#if model.answer.value}}
+    <div class="answer-text">{{model.answer.value}}</div>
+  {{else}}
+    <div class="answer-text no-answer">{{noResponseText}}</div>
+  {{/if}}
+
+{{else}}
+  <label class="question-checkbox">
+    {{check-box name=ident checked=checked disabled=disabled}}
+    {{#if model.text}}
+      <p class="model-question">{{model.text}}</p>
+    {{/if}}
+    {{#if displayQuestion}}
+      <p class="model-question">{{{displayQuestion}}}</p>
+    {{/if}}
+  </label>
+
+  {{#if template}}
+    <div class="additional-data">{{yield checked}}</div>
+  {{/if}}
+
+{{/if}}

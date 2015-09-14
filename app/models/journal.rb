@@ -68,7 +68,7 @@ class Journal < ActiveRecord::Base
   def valid_doi_format
     doi = Doi.new(journal: self)
 
-    if doi.enabled?
+    if doi.journal_doi_enabled?
       if doi.valid?
         return true
       else

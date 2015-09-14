@@ -1,6 +1,19087 @@
-ve.dm={},ve.dm.Model=function(a){this.element=a||{type:this.constructor["static"].name}},OO.initClass(ve.dm.Model),ve.dm.Model["static"].name=null,ve.dm.Model["static"].matchTagNames=null,ve.dm.Model["static"].matchRdfaTypes=null,ve.dm.Model["static"].allowedRdfaTypes=[],ve.dm.Model["static"].matchFunction=null,ve.dm.Model["static"].toDataElement=function(){return{type:this.name}},ve.dm.Model["static"].toDomElements=function(a,b){if(this.matchTagNames&&1===this.matchTagNames.length)return[b.createElement(this.matchTagNames[0])];throw new Error("ve.dm.Model subclass must match a single tag name or implement toDomElements")},ve.dm.Model["static"].enableAboutGrouping=!1,ve.dm.Model["static"].preserveHtmlAttributes=!0,ve.dm.Model["static"].getHashObject=function(a){return{type:a.type,attributes:a.attributes,originalDomElements:a.originalDomElements&&a.originalDomElements.map(function(a){return a.outerHTML}).join("")}},ve.dm.Model["static"].getMatchRdfaTypes=function(){return this.matchRdfaTypes},ve.dm.Model["static"].getAllowedRdfaTypes=function(){return this.allowedRdfaTypes},ve.dm.Model.prototype.isInspectable=function(){return!0},ve.dm.Model.prototype.getElement=function(){return this.element},ve.dm.Model.prototype.getType=function(){return this.constructor["static"].name},ve.dm.Model.prototype.getAttribute=function(a){return this.element&&this.element.attributes?this.element.attributes[a]:void 0},ve.dm.Model.prototype.getAttributes=function(a){var b,c,d=this.element&&this.element.attributes?this.element.attributes:{};if(a){c={};for(b in d)0===b.indexOf(a)&&(c[b.slice(a.length)]=d[b]);return c}return ve.extendObject({},d)},ve.dm.Model.prototype.getOriginalDomElements=function(){return this.element&&this.element.originalDomElements||[]},ve.dm.Model.prototype.hasAttributes=function(a,b){var c,d,e,f=this.getAttributes()||{};if(ve.isPlainObject(a)){for(c in a)if(!(c in f)||(b?a[c]!==f[c]:String(a[c])!==String(f[c])))return!1}else if(Array.isArray(a))for(d=0,e=a.length;e>d;d++)if(!(a[d]in f))return!1;return!0},ve.dm.Model.prototype.getClonedElement=function(){return ve.copy(this.element)},ve.dm.Model.prototype.getHashObject=function(){return this.constructor["static"].getHashObject(this.element)},ve.dm.ModelFactory=function(){ve.dm.ModelFactory["super"].call(this)},OO.inheritClass(ve.dm.ModelFactory,OO.Factory),ve.dm.ModelFactory.prototype.createFromElement=function(a){if(a&&a.type)return this.create(a.type,a);throw new Error("Element must have a .type property")},function(a){function b(a){var b,c,d=Array.prototype.slice.call(arguments,1,-1),e=arguments[arguments.length-1],f=a;for(b=0,c=d.length-1;c>b;b++)void 0===f[d[b]]&&(f[d[b]]={}),f=f[d[b]];f[d[b]]=f[d[b]]||[],f[d[b]].unshift(e)}function c(b){var c,d=Array.prototype.slice.call(arguments,1,-1),e=arguments[arguments.length-1],f=a.getProp.apply(b,[b].concat(d));f&&(c=f.indexOf(e),-1!==c&&f.splice(c,1))}a.dm.ModelRegistry=function(){OO.Registry.call(this),this.modelsByTag=[{},{}],this.modelsByTypeAndTag=[],this.modelsWithTypeRegExps=[[],[]],this.registrationOrder={},this.nextNumber=0,this.extSpecificTypes=[]},OO.inheritClass(a.dm.ModelRegistry,OO.Registry),a.dm.ModelRegistry.prototype.register=function(c){var d,e,f,g,h=c["static"]&&c["static"].name;if("string"!=typeof h||""===h)throw new Error("Model names must be strings and must not be empty");if(!(c.prototype instanceof a.dm.Model))throw new Error("Models must be subclasses of ve.dm.Model");if(c.prototype instanceof a.dm.Annotation)a.dm.annotationFactory.register(c);else if(c.prototype instanceof a.dm.Node)a.dm.nodeFactory.register(c);else{if(!(c.prototype instanceof a.dm.MetaItem))throw new Error("No factory associated with this ve.dm.Model subclass");a.dm.metaItemFactory.register(c)}for(a.dm.ModelRegistry["super"].prototype.register.call(this,h,c),f=null===c["static"].matchTagNames?[""]:c["static"].matchTagNames,g=null===c["static"].getMatchRdfaTypes()?[""]:c["static"].getMatchRdfaTypes(),d=0;d<f.length;d++)b(this.modelsByTag,+!!c["static"].matchFunction,f[d],h);for(d=0;d<g.length;d++)if(g[d]instanceof RegExp)b(this.modelsWithTypeRegExps,+!!c["static"].matchFunction,h);else for(e=0;e<f.length;e++)b(this.modelsByTypeAndTag,+!!c["static"].matchFunction,g[d],f[e],h);this.registrationOrder[h]=this.nextNumber++},a.dm.ModelRegistry.prototype.unregister=function(b){var d,e,f,g,h=b["static"]&&b["static"].name;if("string"!=typeof h||""===h)throw new Error("Model names must be strings and must not be empty");if(!(b.prototype instanceof a.dm.Model))throw new Error("Models must be subclasses of ve.dm.Model");if(b.prototype instanceof a.dm.Annotation)a.dm.annotationFactory.unregister(b);else if(b.prototype instanceof a.dm.Node)a.dm.nodeFactory.unregister(b);else{if(!(b.prototype instanceof a.dm.MetaItem))throw new Error("No factory associated with this ve.dm.Model subclass");a.dm.metaItemFactory.unregister(b)}for(a.dm.ModelRegistry["super"].prototype.unregister.call(this,h),f=null===b["static"].matchTagNames?[""]:b["static"].matchTagNames,g=null===b["static"].getMatchRdfaTypes()?[""]:b["static"].getMatchRdfaTypes(),d=0;d<f.length;d++)c(this.modelsByTag,+!!b["static"].matchFunction,f[d],h);for(d=0;d<g.length;d++)if(g[d]instanceof RegExp)c(this.modelsWithTypeRegExps,+!!b["static"].matchFunction,h);else for(e=0;e<f.length;e++)c(this.modelsByTypeAndTag,+!!b["static"].matchFunction,g[d],f[e],h);delete this.registrationOrder[h]},a.dm.ModelRegistry.prototype.matchElement=function(b,c,d){function e(a,b){return q.registrationOrder[b]-q.registrationOrder[a]}function f(a,b,c){var e,f,g,h=[],i=q.modelsWithTypeRegExps[+c];for(e=0;e<i.length;e++)if(!d||-1===d.indexOf(i[e]))for(g=q.registry[i[e]]["static"].getMatchRdfaTypes(),f=0;f<g.length;f++)g[f]instanceof RegExp&&a.match(g[f])&&(""===b&&null===q.registry[i[e]]["static"].matchTagNames||-1!==(q.registry[i[e]]["static"].matchTagNames||[]).indexOf(b))&&h.push(i[e]);return h}function g(a,b){function c(a,b){return a instanceof RegExp?!!b.match(a):a===b}var d,e,f,g=q.lookup(b),h=g["static"].getAllowedRdfaTypes(),i=g["static"].getMatchRdfaTypes();if(null===h||null===i)return!0;for(h=h.concat(i),d=0;d<a.length;d++){for(f=!1,e=0;e<h.length;e++)if(c(h[e],a[d])){f=!0;break}if(!f)return!1}return!0}function h(h,i){var j,k=[],l=[];for(j=0;j<h.length;j++)k=k.concat(a.getProp(q.modelsByTypeAndTag,1,h[j],i)||[]),d&&(k=OO.simpleArrayDifference(k,d)),l=l.concat(f(h[j],i,!0));for(k=k.filter(function(a){return g(h,a)}),l=l.filter(function(a){return g(h,a)}),c&&(k=k.filter(function(a){return q.registry[a]["static"].enableAboutGrouping}),l=l.filter(function(a){return q.registry[a]["static"].enableAboutGrouping})),k.sort(e),l.sort(e),k=k.concat(l),j=0;j<k.length;j++)if(q.registry[k[j]]["static"].matchFunction(b))return k[j];return null}function i(b,e){var h,i=[],j=[],k=null;for(h=0;h<b.length;h++)i=i.concat(a.getProp(q.modelsByTypeAndTag,0,b[h],e)||[]),d&&(i=OO.simpleArrayDifference(i,d)),j=j.concat(f(b[h],e,!1));for(i=i.filter(function(a){return g(b,a)}),j=j.filter(function(a){return g(b,a)}),c&&(i=i.filter(function(a){return q.registry[a]["static"].enableAboutGrouping}),j=j.filter(function(a){return q.registry[a]["static"].enableAboutGrouping})),i=i.length>0?i:j,h=0;h<i.length;h++)(null===k||q.registrationOrder[k]<q.registrationOrder[i[h]])&&(k=i[h]);return k}var j,k,l,m,n,o,p=b.nodeName.toLowerCase(),q=this;if(o=[],b.getAttribute&&(b.getAttribute("rel")&&(o=o.concat(b.getAttribute("rel").split(" "))),b.getAttribute("typeof")&&(o=o.concat(b.getAttribute("typeof").split(" "))),b.getAttribute("property")&&(o=o.concat(b.getAttribute("property").split(" ")))),o.length){if(n=h(o,p),null!==n)return n;if(n=h(o,""),null!==n)return n}for(m=a.getProp(this.modelsByTag,1,p)||[],j=0;j<m.length;j++)if(k=m[j],l=this.registry[k],null===l["static"].getMatchRdfaTypes()&&l["static"].matchFunction(b))return m[j];for(m=a.getProp(this.modelsByTypeAndTag,1,"","")||[],j=0;j<m.length;j++)if(this.registry[m[j]]["static"].matchFunction(b))return m[j];if(n=i(o,p),null!==n)return n;if(n=i(o,""),null!==n)return n;for(m=a.getProp(this.modelsByTag,0,p)||[],j=0;j<m.length;j++)if(k=m[j],l=this.registry[k],null===l["static"].getMatchRdfaTypes())return m[j];return m=a.getProp(this.modelsByTypeAndTag,0,"","")||[],m.length>0?m[0]:null},a.dm.ModelRegistry.prototype.isAnnotation=function(b){var c=this.lookup(this.matchElement(b));return(c&&c.prototype)instanceof a.dm.Annotation},a.dm.modelRegistry=new a.dm.ModelRegistry}(ve),ve.dm.NodeFactory=function(){ve.dm.NodeFactory["super"].call(this)},OO.inheritClass(ve.dm.NodeFactory,ve.dm.ModelFactory),ve.dm.NodeFactory.prototype.getDataElement=function(a,b){var c={type:a};if(Object.prototype.hasOwnProperty.call(this.registry,a))return b=ve.extendObject({},this.registry[a]["static"].defaultAttributes,b),ve.isEmptyObject(b)||(c.attributes=ve.copy(b)),c;throw new Error("Unknown node type: "+a)},ve.dm.NodeFactory.prototype.getChildNodeTypes=function(a){if(Object.prototype.hasOwnProperty.call(this.registry,a))return this.registry[a]["static"].childNodeTypes;throw new Error("Unknown node type: "+a)},ve.dm.NodeFactory.prototype.getParentNodeTypes=function(a){if(Object.prototype.hasOwnProperty.call(this.registry,a))return this.registry[a]["static"].parentNodeTypes;throw new Error("Unknown node type: "+a)},ve.dm.NodeFactory.prototype.getSuggestedParentNodeTypes=function(a){if(Object.prototype.hasOwnProperty.call(this.registry,a))return this.registry[a]["static"].suggestedParentNodeTypes;throw new Error("Unknown node type: "+a)},ve.dm.NodeFactory.prototype.canNodeHaveChildren=function(a){if(Object.prototype.hasOwnProperty.call(this.registry,a)){var b=this.registry[a]["static"].childNodeTypes;return null===b||Array.isArray(b)&&b.length>0}throw new Error("Unknown node type: "+a)},ve.dm.NodeFactory.prototype.canNodeHaveChildrenNotContent=function(a){if(Object.prototype.hasOwnProperty.call(this.registry,a))return this.canNodeHaveChildren(a)&&!this.registry[a]["static"].canContainContent&&!this.registry[a]["static"].isContent;throw new Error("Unknown node type: "+a)},ve.dm.NodeFactory.prototype.isNodeWrapped=function(a){if(Object.prototype.hasOwnProperty.call(this.registry,a))return this.registry[a]["static"].isWrapped;throw new Error("Unknown node type: "+a)},ve.dm.NodeFactory.prototype.canNodeContainContent=function(a){if(Object.prototype.hasOwnProperty.call(this.registry,a))return this.registry[a]["static"].canContainContent;throw new Error("Unknown node type: "+a)},ve.dm.NodeFactory.prototype.canNodeTakeAnnotationType=function(a,b){if(!Object.prototype.hasOwnProperty.call(this.registry,a))throw new Error("Unknown node type: "+a);var c,d,e=this.registry[a]["static"].blacklistedAnnotationTypes;for(c=0,d=e.length;d>c;c++)if(b instanceof ve.dm.annotationFactory.lookup(e[c]))return!1;return!0},ve.dm.NodeFactory.prototype.isNodeContent=function(a){if(Object.prototype.hasOwnProperty.call(this.registry,a))return this.registry[a]["static"].isContent;throw new Error("Unknown node type: "+a)},ve.dm.NodeFactory.prototype.isNodeFocusable=function(a){if(Object.prototype.hasOwnProperty.call(this.registry,a))return this.registry[a]["static"].isFocusable;throw new Error("Unknown node type: "+a)},ve.dm.NodeFactory.prototype.doesNodeHaveSignificantWhitespace=function(a){if(Object.prototype.hasOwnProperty.call(this.registry,a))return this.registry[a]["static"].hasSignificantWhitespace;throw new Error("Unknown node type: "+a)},ve.dm.NodeFactory.prototype.doesNodeHandleOwnChildren=function(a){if(Object.prototype.hasOwnProperty.call(this.registry,a))return this.registry[a]["static"].handlesOwnChildren;throw new Error("Unknown node type: "+a)},ve.dm.NodeFactory.prototype.shouldIgnoreChildren=function(a){if(Object.prototype.hasOwnProperty.call(this.registry,a))return this.registry[a]["static"].ignoreChildren;throw new Error("Unknown node type: "+a)},ve.dm.NodeFactory.prototype.isNodeInternal=function(a){if(Object.prototype.hasOwnProperty.call(this.registry,a))return this.registry[a]["static"].isInternal;throw new Error("Unknown node type: "+a)},ve.dm.nodeFactory=new ve.dm.NodeFactory,ve.dm.AnnotationFactory=function(){ve.dm.AnnotationFactory["super"].call(this)},OO.inheritClass(ve.dm.AnnotationFactory,ve.dm.ModelFactory),ve.dm.annotationFactory=new ve.dm.AnnotationFactory,ve.dm.AnnotationSet=function(a,b){this.store=a,this.storeIndexes=b||[]},ve.dm.AnnotationSet.prototype.getStore=function(){return this.store},ve.dm.AnnotationSet.prototype.clone=function(){return new ve.dm.AnnotationSet(this.getStore(),this.storeIndexes.slice(0))},ve.dm.AnnotationSet.prototype.getAnnotationsByName=function(a){return this.filter(function(b){return b.name===a})},ve.dm.AnnotationSet.prototype.getComparableAnnotations=function(a){return this.filter(function(b){return ve.compare(a.getComparableObject(),b.getComparableObject())})},ve.dm.AnnotationSet.prototype.getComparableAnnotationsFromSet=function(a){return this.filter(function(b){return a.containsComparable(b)})},ve.dm.AnnotationSet.prototype.hasAnnotationWithName=function(a){return this.containsMatching(function(b){return b.name===a})},ve.dm.AnnotationSet.prototype.get=function(a){return void 0!==a?this.getStore().value(this.getIndex(a)):this.getStore().values(this.getIndexes())},ve.dm.AnnotationSet.prototype.getIndex=function(a){return this.storeIndexes[a]},ve.dm.AnnotationSet.prototype.getIndexes=function(){return this.storeIndexes},ve.dm.AnnotationSet.prototype.getLength=function(){return this.storeIndexes.length},ve.dm.AnnotationSet.prototype.isEmpty=function(){return 0===this.getLength()},ve.dm.AnnotationSet.prototype.contains=function(a){return-1!==this.offsetOf(a)},ve.dm.AnnotationSet.prototype.containsIndex=function(a){return-1!==this.getIndexes().indexOf(a)},ve.dm.AnnotationSet.prototype.containsAnyOf=function(a){var b,c,d=a.getIndexes(),e=this.getIndexes();for(b=0,c=d.length;c>b;b++)if(-1!==e.indexOf(d[b]))return!0;return!1},ve.dm.AnnotationSet.prototype.containsAllOf=function(a){var b,c,d=a.getIndexes(),e=this.getIndexes();for(b=0,c=d.length;c>b;b++)if(-1===e.indexOf(d[b]))return!1;return!0},ve.dm.AnnotationSet.prototype.offsetOf=function(a){return this.offsetOfIndex(this.store.indexOfHash(OO.getHash(a)))},ve.dm.AnnotationSet.prototype.offsetOfIndex=function(a){return this.getIndexes().indexOf(a)},ve.dm.AnnotationSet.prototype.filter=function(a,b){var c,d,e,f,g;for(b||(e=this.clone(),e.removeAll()),c=0,d=this.getLength();d>c;c++)if(f=this.getIndex(c),g=this.getStore().value(f),a(g)){if(b)return!0;e.storeIndexes.push(f)}return b?!1:e},ve.dm.AnnotationSet.prototype.containsComparable=function(a){return this.filter(function(b){return a.compareTo(b)},!0)},ve.dm.AnnotationSet.prototype.containsComparableForSerialization=function(a){return this.filter(function(b){return a.compareToForSerialization(b)},!0)},ve.dm.AnnotationSet.prototype.containsMatching=function(a){return this.filter(a,!0)},ve.dm.AnnotationSet.prototype.compareTo=function(a){var b,c=this.getIndexes().length;if(c!==a.getLength())return!1;for(b=0;c>b;b++)if(!a.containsComparable(this.get(b)))return!1;return!0},ve.dm.AnnotationSet.prototype.equalsInOrder=function(a){var b,c,d=this.getIndexes(),e=a.getIndexes();if(d.length!==e.length)return!1;for(b=0,c=d.length;c>b;b++)if(d[b]!==e[b])return!1;return!0},ve.dm.AnnotationSet.prototype.add=function(a,b){var c=this.getStore().index(a);return 0>b&&(b=this.getLength()+b),b>=this.getLength()?void this.push(a):void(this.containsIndex(c)||this.storeIndexes.splice(b,0,c))},ve.dm.AnnotationSet.prototype.addSet=function(a){this.storeIndexes=OO.simpleArrayUnion(this.getIndexes(),a.getIndexes())},ve.dm.AnnotationSet.prototype.push=function(a){this.pushIndex(this.getStore().index(a))},ve.dm.AnnotationSet.prototype.pushIndex=function(a){this.storeIndexes.push(a)},ve.dm.AnnotationSet.prototype.removeAt=function(a){if(0>a&&(a=this.getLength()+a),a>=this.getLength())throw new Error("Offset out of bounds");this.storeIndexes.splice(a,1)},ve.dm.AnnotationSet.prototype.removeIndex=function(a){var b=this.offsetOfIndex(a);-1!==b&&this.storeIndexes.splice(b,1)},ve.dm.AnnotationSet.prototype.remove=function(a){var b=this.offsetOf(a);-1!==b&&this.storeIndexes.splice(b,1)},ve.dm.AnnotationSet.prototype.removeAll=function(){this.storeIndexes=[]},ve.dm.AnnotationSet.prototype.removeSet=function(a){this.storeIndexes=OO.simpleArrayDifference(this.getIndexes(),a.getIndexes())},ve.dm.AnnotationSet.prototype.removeNotInSet=function(a){this.storeIndexes=OO.simpleArrayIntersection(this.getIndexes(),a.getIndexes())},ve.dm.AnnotationSet.prototype.reversed=function(){var a=this.clone();return a.storeIndexes.reverse(),a},ve.dm.AnnotationSet.prototype.mergeWith=function(a){var b=this.clone();return b.addSet(a),b},ve.dm.AnnotationSet.prototype.diffWith=function(a){var b=this.clone();return b.removeSet(a),b},ve.dm.AnnotationSet.prototype.intersectWith=function(a){var b=this.clone();return b.removeNotInSet(a),b},ve.dm.MetaItemFactory=function(){ve.dm.MetaItemFactory["super"].call(this)},OO.inheritClass(ve.dm.MetaItemFactory,ve.dm.ModelFactory),ve.dm.MetaItemFactory.prototype.getGroup=function(a){if(Object.prototype.hasOwnProperty.call(this.registry,a))return this.registry[a]["static"].group;throw new Error("Unknown item type: "+a)},ve.dm.metaItemFactory=new ve.dm.MetaItemFactory,ve.dm.ClassAttributeNode=function(){},OO.initClass(ve.dm.ClassAttributeNode),ve.dm.ClassAttributeNode["static"].classAttributes={},ve.dm.ClassAttributeNode["static"].setClassAttributes=function(a,b){var c,d,e,f=[],g=b?b.trim().split(/\s+/):[];if(g.length){for(d=0,e=g.length;e>d;d++)c=g[d],Object.prototype.hasOwnProperty.call(this.classAttributes,c)?a=ve.extendObject(a,this.classAttributes[c]):f.push(c);a.originalClasses=b,a.unrecognizedClasses=f}},ve.dm.ClassAttributeNode["static"].getClassAttrFromAttributes=function(a){var b,c,d,e,f=[];for(b in this.classAttributes){d=this.classAttributes[b],e=!0;for(c in d)if(a[c]!==d[c]){e=!1;break}e&&f.push(b)}return a.unrecognizedClasses&&(f=OO.simpleArrayUnion(f,a.unrecognizedClasses)),a.originalClasses&&ve.compareClassLists(a.originalClasses,f)?a.originalClasses:f.length>0?f.join(" "):null},ve.dm.AlignableNode=function(){ve.dm.AlignableNode["super"].apply(this,arguments)},OO.inheritClass(ve.dm.AlignableNode,ve.dm.ClassAttributeNode),ve.dm.AlignableNode["static"].isAlignable=!0,ve.dm.AlignableNode["static"].classAttributes={"ve-align-left":{align:"left"},"ve-align-right":{align:"right"},"ve-align-center":{align:"center"}},ve.dm.FocusableNode=function(){},OO.initClass(ve.dm.FocusableNode),ve.dm.FocusableNode["static"].isFocusable=!0,ve.dm.Scalable=function(a){a=ve.extendObject({fixedRatio:!0,enforceMin:!0,enforceMax:!0},a),OO.EventEmitter.call(this),this.ratio=null,this.valid=null,this.defaultSize=!1,this.currentDimensions=null,this.defaultDimensions=null,this.originalDimensions=null,this.minDimensions=null,this.maxDimensions=null,this.fixedRatio=a.fixedRatio,a.currentDimensions&&this.setCurrentDimensions(a.currentDimensions),a.originalDimensions&&this.setOriginalDimensions(a.originalDimensions),a.defaultDimensions&&this.setDefaultDimensions(a.defaultDimensions),a.isDefault&&this.toggleDefault(!!a.isDefault),a.minDimensions&&this.setMinDimensions(a.minDimensions),a.maxDimensions&&this.setMaxDimensions(a.maxDimensions),this.setEnforcedMin(a.enforceMin),this.setEnforcedMax(a.enforceMax)},OO.mixinClass(ve.dm.Scalable,OO.EventEmitter),ve.dm.Scalable["static"].getDimensionsFromValue=function(a,b){return a=ve.copy(a),""===a.width&&(a.width=0),""===a.height&&(a.height=0),!a.height&&null!==b&&$.isNumeric(a.width)&&(a.height=Math.round(a.width/b)),!a.width&&null!==b&&$.isNumeric(a.height)&&(a.width=Math.round(a.height*b)),a},ve.dm.Scalable.prototype.clone=function(){var a=this.getCurrentDimensions(),b=this.getOriginalDimensions(),c=this.getDefaultDimensions(),d=this.getMinDimensions(),e=this.getMaxDimensions(),f={isDefault:!!this.isDefault(),enforceMin:!!this.isEnforcedMin(),enforceMax:!!this.isEnforcedMax()};return a&&(f.currentDimensions=ve.copy(a)),b&&(f.originalDimensions=ve.copy(b)),c&&(f.defaultDimensions=ve.copy(c)),d&&(f.minDimensions=ve.copy(d)),e&&(f.maxDimensions=ve.copy(e)),new this.constructor(f)},ve.dm.Scalable.prototype.setRatioFromDimensions=function(a){a&&a.width&&a.height&&(this.ratio=a.width/a.height),this.valid=null},ve.dm.Scalable.prototype.setCurrentDimensions=function(a){this.isDimensionsObjectValid(a)&&!ve.compare(a,this.getCurrentDimensions())&&(this.currentDimensions=ve.copy(a),this.fixedRatio&&!this.ratio&&this.setRatioFromDimensions(this.getCurrentDimensions()),this.valid=null,this.emit("currentSizeChange",this.getCurrentDimensions()))},ve.dm.Scalable.prototype.setOriginalDimensions=function(a){this.isDimensionsObjectValid(a)&&!ve.compare(a,this.getOriginalDimensions())&&(this.originalDimensions=ve.copy(a),this.fixedRatio&&this.setRatioFromDimensions(this.getOriginalDimensions()),this.valid=null,this.emit("originalSizeChange",this.getOriginalDimensions()))},ve.dm.Scalable.prototype.setDefaultDimensions=function(a){this.isDimensionsObjectValid(a)&&!ve.compare(a,this.getDefaultDimensions())&&(this.defaultDimensions=ve.copy(a),this.valid=null,this.emit("defaultSizeChange",this.isDefault()))},ve.dm.Scalable.prototype.clearDefaultDimensions=function(){this.defaultDimensions=null,this.valid=null,this.emit("defaultSizeChange",this.isDefault())},ve.dm.Scalable.prototype.clearOriginalDimensions=function(){this.originalDimensions=null,this.valid=null,this.emit("originalSizeChange",this.isDefault())},ve.dm.Scalable.prototype.toggleDefault=function(a){void 0===a&&(a=!this.isDefault()),this.isDefault()!==a&&(this.defaultSize=a,a&&this.setCurrentDimensions(this.getDefaultDimensions()),this.emit("defaultSizeChange",this.isDefault()))},ve.dm.Scalable.prototype.setMinDimensions=function(a){this.isDimensionsObjectValid(a)&&!ve.compare(a,this.getMinDimensions())&&(this.minDimensions=ve.copy(a),this.valid=null,this.emit("minSizeChange",a))},ve.dm.Scalable.prototype.setMaxDimensions=function(a){this.isDimensionsObjectValid(a)&&!ve.compare(a,this.getMaxDimensions())&&(this.maxDimensions=ve.copy(a),this.emit("maxSizeChange",a),this.valid=null)},ve.dm.Scalable.prototype.clearMinDimensions=function(){null!==this.minDimensions&&(this.minDimensions=null,this.valid=null,this.emit("minSizeChange",this.minDimensions))},ve.dm.Scalable.prototype.clearMaxDimensions=function(){null!==this.maxDimensions&&(this.maxDimensions=null,this.valid=null,this.emit("maxSizeChange",this.maxDimensions))},ve.dm.Scalable.prototype.getCurrentDimensions=function(){return this.currentDimensions},ve.dm.Scalable.prototype.getOriginalDimensions=function(){return this.originalDimensions},ve.dm.Scalable.prototype.getDefaultDimensions=function(){return this.defaultDimensions},ve.dm.Scalable.prototype.isDefault=function(){return this.defaultSize},ve.dm.Scalable.prototype.getMinDimensions=function(){return this.minDimensions},ve.dm.Scalable.prototype.getMaxDimensions=function(){return this.maxDimensions},ve.dm.Scalable.prototype.isEnforcedMin=function(){return this.enforceMin},ve.dm.Scalable.prototype.isEnforcedMax=function(){return this.enforceMax},ve.dm.Scalable.prototype.setEnforcedMin=function(a){this.valid=null,this.enforceMin=!!a},ve.dm.Scalable.prototype.setEnforcedMax=function(a){this.valid=null,this.enforceMax=!!a},ve.dm.Scalable.prototype.getRatio=function(){return this.ratio},ve.dm.Scalable.prototype.isFixedRatio=function(){return this.fixedRatio},ve.dm.Scalable.prototype.getCurrentScale=function(){return this.isFixedRatio()&&this.getCurrentDimensions()&&this.getOriginalDimensions()?this.getCurrentDimensions().width/this.getOriginalDimensions().width:null},ve.dm.Scalable.prototype.isTooSmall=function(){return!!(this.getCurrentDimensions()&&this.getMinDimensions()&&(this.getCurrentDimensions().width<this.getMinDimensions().width||this.getCurrentDimensions().height<this.getMinDimensions().height))},ve.dm.Scalable.prototype.isTooLarge=function(){return!!(this.getCurrentDimensions()&&this.getMaxDimensions()&&(this.getCurrentDimensions().width>this.getMaxDimensions().width||this.getCurrentDimensions().height>this.getMaxDimensions().height))},ve.dm.Scalable.prototype.getBoundedDimensions=function(a,b){var c,d,e,f,g=this.isEnforcedMin()&&this.getMinDimensions(),h=this.isEnforcedMax()&&this.getMaxDimensions();return a=ve.copy(a),g&&(a.width=Math.max(a.width,this.minDimensions.width),a.height=Math.max(a.height,this.minDimensions.height)),h&&(a.width=Math.min(a.width,this.maxDimensions.width),a.height=Math.min(a.height,this.maxDimensions.height)),this.isFixedRatio()&&(c=a.width/a.height,c<this.getRatio()?a.height=Math.round(a.width/this.getRatio()):a.width=Math.round(a.height*this.getRatio())),b&&(e=g?Math.ceil(g.width/b):-1/0,f=h?Math.floor(h.width/b):1/0,d=Math.round(a.width/b),a.width=Math.max(Math.min(d,f),e)*b,this.isFixedRatio()?a.height=Math.round(a.width/this.getRatio()):(e=g?Math.ceil(g.height/b):-1/0,f=h?Math.floor(h.height/b):1/0,d=Math.round(a.height/b),a.height=Math.max(Math.min(d,f),e)*b)),a},ve.dm.Scalable.prototype.isCurrentDimensionsValid=function(){var a=this.getCurrentDimensions(),b=this.isEnforcedMin()&&!$.isEmptyObject(this.getMinDimensions())&&this.getMinDimensions(),c=this.isEnforcedMax()&&!$.isEmptyObject(this.getMaxDimensions())&&this.getMaxDimensions();return this.valid=$.isNumeric(a.width)&&$.isNumeric(a.height)&&(!b||a.width>=b.width&&a.height>=b.height)&&(!c||a.width<=c.width&&a.height<=c.height),this.valid},ve.dm.Scalable.prototype.isDimensionsObjectValid=function(a){return!a||$.isEmptyObject(a)||void 0===a.width&&void 0===a.height?!1:!0},ve.dm.APIResultsProvider=function(a,b){b=b||{},this.setAPIurl(a),this.setDefaultFetchLimit(b.fetchLimit||30),this.setLang(b.lang),this.setOffset(b.offset||0),this.setAjaxSettings(b.ajaxSettings||{}),this.staticParams=b.staticParams||{},this.userParams=b.userParams||{},this.toggleDepleted(!1),OO.EventEmitter.call(this)},OO.mixinClass(ve.dm.APIResultsProvider,OO.EventEmitter),ve.dm.APIResultsProvider.prototype.getResults=function(){var a,b=$.Deferred(),c=$.extend({},this.getStaticParams(),this.getUserParams());return a=$.getJSON(this.getAPIurl(),c).done(function(a){"array"!==$.type(a)||"array"===$.type(a)&&0===a.length?b.resolve():b.resolve(a)}),b.promise({abort:a.abort})},ve.dm.APIResultsProvider.prototype.setAPIurl=function(a){this.apiurl=a},ve.dm.APIResultsProvider.prototype.getAPIurl=function(){return this.apiurl},ve.dm.APIResultsProvider.prototype.getStaticParams=function(){return this.staticParams},ve.dm.APIResultsProvider.prototype.getUserParams=function(){return this.userParams},ve.dm.APIResultsProvider.prototype.setUserParams=function(a){ve.compare(a,this.userParams,!0)||(this.userParams=$.extend({},this.userParams,a),this.setOffset(0),this.toggleDepleted(!1))},ve.dm.APIResultsProvider.prototype.getDefaultFetchLimit=function(){return this.limit},ve.dm.APIResultsProvider.prototype.setDefaultFetchLimit=function(a){this.limit=a},ve.dm.APIResultsProvider.prototype.getLang=function(){return this.lang},ve.dm.APIResultsProvider.prototype.setLang=function(a){this.lang=a},ve.dm.APIResultsProvider.prototype.getOffset=function(){return this.offset},ve.dm.APIResultsProvider.prototype.setOffset=function(a){this.offset=a},ve.dm.APIResultsProvider.prototype.isDepleted=function(){return this.depleted},ve.dm.APIResultsProvider.prototype.toggleDepleted=function(a){this.depleted=void 0!==a?a:!this.depleted},ve.dm.APIResultsProvider.prototype.getAjaxSettings=function(){return this.ajaxSettings},ve.dm.APIResultsProvider.prototype.setAjaxSettings=function(a){this.ajaxSettings=a},ve.dm.APIResultsQueue=function(a){a=a||{},this.fileRepoPromise=null,this.providers=[],this.providerPromises=[],this.queue=[],this.params={},this.limit=a.limit||20,this.setThreshold(a.threshold||10),OO.EventEmitter.call(this)},OO.mixinClass(ve.dm.APIResultsQueue,OO.EventEmitter),ve.dm.APIResultsQueue.prototype.setup=function(){return $.Deferred().resolve().promise({abort:$.noop})},ve.dm.APIResultsQueue.prototype.get=function(a){var b=null,c=this;return a=a||this.limit,this.queue.length<a+this.threshold&&(b=this.queryProviders(a+this.threshold).then(function(a){c.queue=c.queue.concat.apply(c.queue,a)})),$.when(b).then(function(){return c.queue.splice(0,a)})},ve.dm.APIResultsQueue.prototype.queryProviders=function(a){var b,c,d=this;return this.setup().then(function(){for(b=0,c=d.providerPromises.length;c>b;b++)d.providerPromises[b].abort();for(d.providerPromises=[],b=0,c=d.providers.length;c>b;b++)d.providers[b].isDepleted()||d.providerPromises.push(d.providers[b].getResults(a));return $.when.apply($,d.providerPromises).then(Array.prototype.concat.bind([]))})},ve.dm.APIResultsQueue.prototype.setParams=function(a){var b,c;if(!ve.compare(a,this.params,!0)){for(this.params=ve.extendObject(this.params,a),this.queue=[],b=0,c=this.providerPromises.length;c>b;b++)this.providerPromises[b].abort();for(b=0,c=this.providers.length;c>b;b++)this.providers[b].setUserParams(this.params)}},ve.dm.APIResultsQueue.prototype.getParams=function(){return this.params},ve.dm.APIResultsQueue.prototype.setProviders=function(a){this.providers=a},ve.dm.APIResultsQueue.prototype.addProvider=function(a){this.providers.push(a)},ve.dm.APIResultsQueue.prototype.getProviders=function(){return this.providers},ve.dm.APIResultsQueue.prototype.getQueueSize=function(){return this.queue.length},ve.dm.APIResultsQueue.prototype.setThreshold=function(a){this.threshold=a},ve.dm.APIResultsQueue.prototype.getThreshold=function(){return this.threshold},ve.dm.ResizableNode=function(){this.scalable=null,this.connect(this,{attributeChange:"onResizableAttributeChange"})},OO.initClass(ve.dm.ResizableNode),ve.dm.ResizableNode.prototype.getScalable=function(){return this.scalable||(this.scalable=this.createScalable()),this.scalable},ve.dm.ResizableNode.prototype.createScalable=null,ve.dm.ResizableNode.prototype.onResizableAttributeChange=function(a){("width"===a||"height"===a)&&this.getScalable().setCurrentDimensions({width:this.getAttribute("width"),height:this.getAttribute("height")})},ve.dm.Node=function(a){ve.dm.Model.call(this,a),ve.Node.call(this),OO.EventEmitter.call(this),this.length=0,this.element=a,this.doc=void 0},OO.inheritClass(ve.dm.Node,ve.dm.Model),OO.mixinClass(ve.dm.Node,ve.Node),OO.mixinClass(ve.dm.Node,OO.EventEmitter),ve.dm.Node["static"].handlesOwnChildren=!1,ve.dm.Node["static"].ignoreChildren=!1,ve.dm.Node["static"].isInternal=!1,ve.dm.Node["static"].isWrapped=!0,ve.dm.Node["static"].isContent=!1,ve.dm.Node["static"].isFocusable=!1,ve.dm.Node["static"].isAlignable=!1,ve.dm.Node["static"].canContainContent=!1,ve.dm.Node["static"].hasSignificantWhitespace=!1,ve.dm.Node["static"].childNodeTypes=null,ve.dm.Node["static"].parentNodeTypes=null,ve.dm.Node["static"].suggestedParentNodeTypes=null,ve.dm.Node["static"].blacklistedAnnotationTypes=[],ve.dm.Node["static"].defaultAttributes={},ve.dm.Node["static"].remapStoreIndexes=function(){},ve.dm.Node["static"].remapInternalListIndexes=function(){},ve.dm.Node["static"].remapInternalListKeys=function(){},ve.dm.Node["static"].isHybridInline=function(a,b){var c,d,e=!0;for(c=0,d=a.length;d>c;c++)if(ve.isBlockElement(a[c])){e=!1;break}return b.isExpectingContent()&&!b.isInWrapper()||b.isInWrapper()&&!b.canCloseWrapper()||e},ve.dm.Node["static"].cloneElement=function(a,b){var c=ve.copy(a);return!b&&c.internal&&(delete c.internal.generated,ve.isEmptyObject(c.internal)&&delete c.internal),c},ve.dm.Node.prototype.getClonedElement=function(a){return this.constructor["static"].cloneElement(this.element,a)},ve.dm.Node.prototype.getChildNodeTypes=function(){return this.constructor["static"].childNodeTypes},ve.dm.Node.prototype.getParentNodeTypes=function(){return this.constructor["static"].parentNodeTypes},ve.dm.Node.prototype.getSuggestedParentNodeTypes=function(){return this.constructor["static"].suggestedParentNodeTypes},ve.dm.Node.prototype.canHaveChildren=function(){var a=this.constructor["static"].childNodeTypes;
-return null===a||Array.isArray(a)&&a.length>0},ve.dm.Node.prototype.canHaveChildrenNotContent=function(){return this.canHaveChildren()&&!this.constructor["static"].canContainContent&&!this.constructor["static"].isContent},ve.dm.Node.prototype.isInternal=function(){return this.constructor["static"].isInternal},ve.dm.Node.prototype.isWrapped=function(){return this.constructor["static"].isWrapped},ve.dm.Node.prototype.canContainContent=function(){return this.constructor["static"].canContainContent},ve.dm.Node.prototype.isContent=function(){return this.constructor["static"].isContent},ve.dm.Node.prototype.isFocusable=function(){return this.constructor["static"].isFocusable},ve.dm.Node.prototype.isAlignable=function(){return this.constructor["static"].isAlignable},ve.dm.Node.prototype.canHaveSlugBefore=function(){return!this.canContainContent()&&null===this.getParentNodeTypes()},ve.dm.Node.prototype.canHaveSlugAfter=ve.dm.Node.prototype.canHaveSlugBefore,ve.dm.Node.prototype.hasSignificantWhitespace=function(){return this.constructor["static"].hasSignificantWhitespace},ve.dm.Node.prototype.handlesOwnChildren=function(){return this.constructor["static"].handlesOwnChildren},ve.dm.Node.prototype.shouldIgnoreChildren=function(){return this.constructor["static"].ignoreChildren},ve.dm.Node.prototype.hasMatchingAncestor=function(a,b){for(var c=this;c&&!c.matches(a,b);)if(c=c.getParent(),null===c)return!1;return!0},ve.dm.Node.prototype.matches=function(a,b){var c;if(this.getType()!==a)return!1;if(b)for(c in b)if(this.getAttribute(c)!==b[c])return!1;return!0},ve.dm.Node.prototype.getLength=function(){return this.length},ve.dm.Node.prototype.setLength=function(a){if(0>a)throw new Error("Length cannot be negative");var b=a-this.length;this.length=a,this.parent&&this.parent.adjustLength(b),this.emit("lengthChange",b),this.emit("update")},ve.dm.Node.prototype.adjustLength=function(a){this.setLength(this.length+a)},ve.dm.Node.prototype.getOffset=function(){var a,b,c,d;if(!this.parent)return 0;for(c=this.parent.children,d=this.parent.getOffset()+(this.parent===this.root?0:1),a=0,b=c.length;b>a&&c[a]!==this;a++)d+=c[a].getOuterLength();if(a===b)throw new Error("Node not found in parent's children array");return d},ve.dm.Node.prototype.canBeMergedWith=function(a){var b=this,c=a;for(b.canContainContent()&&c.isContent()?c=c.getParent():c.canContainContent()&&b.isContent()&&(b=b.getParent());b!==c;){if(null===b||null===c||b.getType()!==c.getType())return!1;b=b.getParent(),c=c.getParent()}return!0},ve.dm.Node.prototype.isResilient=function(){var a=this.getOriginalDomElements()[0];return a&&"resilient"===a.dataset.mode},ve.dm.BranchNode=function(a,b){ve.BranchNode.call(this),ve.dm.Node.call(this,a),this.slugPositions={},Array.isArray(b)&&b.length&&this.splice.apply(this,[0,0].concat(b))},OO.inheritClass(ve.dm.BranchNode,ve.dm.Node),OO.mixinClass(ve.dm.BranchNode,ve.BranchNode),ve.dm.BranchNode.prototype.push=function(a){return this.splice(this.children.length,0,a),this.children.length},ve.dm.BranchNode.prototype.pop=function(){if(this.children.length){var a=this.children[this.children.length-1];return this.splice(this.children.length-1,1),a}},ve.dm.BranchNode.prototype.unshift=function(a){return this.splice(0,0,a),this.children.length},ve.dm.BranchNode.prototype.shift=function(){if(this.children.length){var a=this.children[0];return this.splice(0,1),a}},ve.dm.BranchNode.prototype.splice=function(){var a,b,c,d=Array.prototype.slice.call(arguments),e=0;for(c=this.children.splice.apply(this.children,d),a=0,b=c.length;b>a;a++)c[a].detach(),e-=c[a].getOuterLength();if(d.length>=3)for(b=d.length,a=2;b>a;a++)d[a].attach(this),e+=d[a].getOuterLength();return this.adjustLength(e,!0),this.setupBlockSlugs(),this.emit.apply(this,["splice"].concat(d)),c},ve.dm.BranchNode.prototype.setupBlockSlugs=function(){var a,b,c=this.canHaveChildrenNotContent();if(this.slugPositions={},!c||this.isAllowedChildNodeType("paragraph"))if(0===this.getLength()||1===this.children.length&&this.children[0].isInternal())this.slugPositions[0]=!0;else for(a=0,b=this.children.length;b>a;a++)this.children[a].isInternal()||(0===a&&this.children[a].canHaveSlugBefore()&&(this.slugPositions[a]=!0),this.children[a].canHaveSlugAfter()&&(a===this.children.length-1||this.children[a+1]&&this.children[a+1].canHaveSlugBefore())&&(this.slugPositions[a+1]=!0))},ve.dm.BranchNode.prototype.hasSlugAtOffset=function(a){var b,c=this.getOffset()+(this.isWrapped()?1:0);if(a===c)return!!this.slugPositions[0];for(b=0;b<this.children.length;b++)if(c+=this.children[b].getOuterLength(),a===c)return!!this.slugPositions[b+1];return!1},ve.dm.ContentBranchNode=function(){ve.dm.ContentBranchNode["super"].apply(this,arguments)},OO.inheritClass(ve.dm.ContentBranchNode,ve.dm.BranchNode),ve.dm.ContentBranchNode["static"].canContainContent=!0,ve.dm.LeafNode=function(a){ve.LeafNode.call(this),ve.dm.Node.call(this,a)},OO.inheritClass(ve.dm.LeafNode,ve.dm.Node),OO.mixinClass(ve.dm.LeafNode,ve.LeafNode),ve.dm.LeafNode["static"].childNodeTypes=[],ve.dm.LeafNode.prototype.getAnnotations=function(){return this.element.annotations||[]},ve.dm.Annotation=function(a){ve.dm.Model.call(this,a),this.name=this.constructor["static"].name},OO.inheritClass(ve.dm.Annotation,ve.dm.Model),ve.dm.Annotation["static"].enableAboutGrouping=!1,ve.dm.Annotation["static"].applyToAppendedContent=!0,ve.dm.Annotation["static"].splitOnWordbreak=!1,ve.dm.Annotation["static"].removes=[],ve.dm.Annotation["static"].toDomElements=null,ve.dm.Annotation["static"].getHashObject=function(a){return{type:a.type,attributes:a.attributes,originalDomElements:a.originalDomElements&&a.originalDomElements[0].cloneNode(!1).outerHTML}},ve.dm.Annotation.prototype.getDomElements=function(a){return this.constructor["static"].toDomElements(this.element,a||document)},ve.dm.Annotation.prototype.getComparableObject=function(){var a=this.getHashObject();return delete a.originalDomElements,a},ve.dm.Annotation.prototype.getComparableHtmlAttributes=function(){var a,b=this.getOriginalDomElements();return b[0]?(a=ve.getDomAttributes(b[0]),delete a["data-parsoid"],a):{}},ve.dm.Annotation.prototype.getComparableObjectForSerialization=function(){var a=this.getComparableObject(),b=this.getComparableHtmlAttributes();return ve.isEmptyObject(b)||(a.htmlAttributes=b),a},ve.dm.Annotation.prototype.isGenerated=function(){return this.getOriginalDomElements().length>0},ve.dm.Annotation.prototype.compareTo=function(a){return ve.compare(this.getComparableObject(),a.getComparableObject())},ve.dm.Annotation.prototype.compareToForSerialization=function(a){return this.isGenerated()&&a.isGenerated()?ve.compare(this.getHashObject(),a.getHashObject()):ve.compare(this.getComparableObjectForSerialization(),a.getComparableObjectForSerialization())},ve.dm.InternalList=function(a){OO.EventEmitter.call(this),this.document=a,this.itemHtmlQueue=[],this.listNode=null,this.nodes={},this.groupsChanged=[],this.keyIndexes={},this.keys=[],this.nextUniqueNumber=0,a&&a.connect(this,{transact:"onTransact"})},OO.mixinClass(ve.dm.InternalList,OO.EventEmitter),ve.dm.InternalList.prototype.queueItemHtml=function(a,b,c){var d=!1,e=this.getKeyIndex(a,b);return void 0===e?(e=this.itemHtmlQueue.length,this.keyIndexes[a+"/"+b]=e,this.itemHtmlQueue.push(c),d=!0):""===this.itemHtmlQueue[e]&&(this.itemHtmlQueue[e]=c,d=!0),{index:e,isNew:d}},ve.dm.InternalList.prototype.getItemHtmlQueue=function(){return this.itemHtmlQueue},ve.dm.InternalList.prototype.getDocument=function(){return this.document},ve.dm.InternalList.prototype.getListNode=function(){var a,b;if(!this.listNode||!this.listNode.doc)for(b=this.getDocument().getDocumentNode().children,a=b.length;a>=0;a--)if(b[a]instanceof ve.dm.InternalListNode){this.listNode=b[a];break}return this.listNode},ve.dm.InternalList.prototype.getItemNodeCount=function(){return this.getListNode().children.length},ve.dm.InternalList.prototype.getItemNode=function(a){return this.getListNode().children[a]},ve.dm.InternalList.prototype.getNodeGroups=function(){return this.nodes},ve.dm.InternalList.prototype.getNodeGroup=function(a){return this.nodes[a]},ve.dm.InternalList.prototype.getUniqueListKey=function(a,b,c){var d=this.getNodeGroup(a),e=0;if(void 0!==d.uniqueListKeys[b])return d.uniqueListKeys[b];for(;d.keyedNodes[c+e]||d.uniqueListKeysInUse[c+e];)e++;return d.uniqueListKeys[b]=c+e,d.uniqueListKeysInUse[c+e]=!0,c+e},ve.dm.InternalList.prototype.getNextUniqueNumber=function(){return this.nextUniqueNumber++},ve.dm.InternalList.prototype.convertToData=function(a,b){var c,d,e,f,g=this.getItemHtmlQueue(),h=[];for(h.push({type:"internalList"}),c=0,d=g.length;d>c;c++)""!==g[c]?(f=b.createElement("div"),f.innerHTML=g[c],e=a.getDataFromDomSubtree(f),h=h.concat([{type:"internalItem",attributes:{originalHtml:g[c]}}],e,[{type:"/internalItem"}])):h=h.concat([{type:"internalItem"},{type:"/internalItem"}]);return h.push({type:"/internalList"}),this.itemHtmlQueue=[],h},ve.dm.InternalList.prototype.getItemInsertion=function(a,b,c){var d,e,f=this.getKeyIndex(a,b);return void 0===f?(f=this.getItemNodeCount(),this.keyIndexes[a+"/"+b]=f,e=[{type:"internalItem"}].concat(c,[{type:"/internalItem"}]),d=ve.dm.Transaction.newFromInsertion(this.getDocument(),this.getListNode().getRange().end,e)):d=null,{transaction:d,index:f}},ve.dm.InternalList.prototype.getIndexPosition=function(a,b){return this.nodes[a].indexOrder.indexOf(b)},ve.dm.InternalList.prototype.getKeyIndex=function(a,b){return this.keyIndexes[a+"/"+b]},ve.dm.InternalList.prototype.addNode=function(a,b,c,d){var e,f,g,h,i=this.nodes[a];if(void 0===i&&(i=this.nodes[a]={keyedNodes:{},firstNodes:[],indexOrder:[],uniqueListKeys:{},uniqueListKeysInUse:{}}),h=i.keyedNodes[b],this.keys[c]=b,void 0===h&&(h=i.keyedNodes[b]=[]),d.getDocument().buildingNodeTree)h.push(d),1===h.length&&(i.firstNodes[c]=d);else{for(g=d.getRange().start,e=0,f=h.length;f>e&&!(g<h[e].getRange().start);e++);h.splice(e,0,d),0===e&&(i.firstNodes[c]=d)}-1===i.indexOrder.indexOf(c)&&i.indexOrder.push(c),this.markGroupAsChanged(a)},ve.dm.InternalList.prototype.markGroupAsChanged=function(a){-1===this.groupsChanged.indexOf(a)&&this.groupsChanged.push(a)},ve.dm.InternalList.prototype.onTransact=function(){var a;if(this.groupsChanged.length>0){for(a=0;a<this.groupsChanged.length;a++)this.sortGroupIndexes(this.nodes[this.groupsChanged[a]]);this.emit("update",this.groupsChanged),this.groupsChanged=[]}},ve.dm.InternalList.prototype.removeNode=function(a,b,c,d){var e,f,g,h,i=this.nodes[a];for(h=i.keyedNodes[b],e=0,f=h.length;f>e;e++)if(h[e]===d){h.splice(e,1),0===e&&(i.firstNodes[c]=h[0]);break}0===h.length&&(delete i.keyedNodes[b],delete i.firstNodes[c],g=i.indexOrder.indexOf(c),i.indexOrder.splice(g,1)),this.markGroupAsChanged(a)},ve.dm.InternalList.prototype.sortGroupIndexes=function(a){a.indexOrder.sort(function(b,c){return a.firstNodes[b].getRange().start-a.firstNodes[c].getRange().start})},ve.dm.InternalList.prototype.clone=function(a){var b=new this.constructor(a||this.getDocument());return b.nextUniqueNumber=this.nextUniqueNumber,b.itemHtmlQueue=ve.copy(this.itemHtmlQueue),b},ve.dm.InternalList.prototype.merge=function(a,b){var c,d,e,f=a.getItemNodeCount(),g=this.getItemNodeCount(),h=[],i={};for(c=0;b>c;c++)i[c]=c;for(c=b;f>c;c++){e=void 0;for(d in a.keyIndexes)if(a.keyIndexes[d]===c){e=d;break}void 0!==this.keyIndexes[e]?i[c]=this.keyIndexes[e]:(i[c]=g,void 0!==e&&(this.keyIndexes[e]=g),g++,h.push(a.getItemNode(c).getOuterRange()))}return{mapping:i,newItemRanges:h}},ve.dm.MetaItem=function(a){ve.dm.Model.call(this,a),OO.EventEmitter.call(this),this.list=null,this.offset=null,this.index=null,this.move=null},OO.inheritClass(ve.dm.MetaItem,ve.dm.Model),OO.mixinClass(ve.dm.MetaItem,OO.EventEmitter),ve.dm.MetaItem["static"].group="misc",ve.dm.MetaItem.prototype.remove=function(){if(!this.list)throw new Error("Cannot remove detached item");this.list.removeMeta(this)},ve.dm.MetaItem.prototype.replaceWith=function(a){var b=this.getOffset(),c=this.getIndex(),d=this.list;d.removeMeta(this),d.insertMeta(a,b,c)},ve.dm.MetaItem.prototype.getGroup=function(){return this.constructor["static"].group},ve.dm.MetaItem.prototype.getParentList=function(){return this.list},ve.dm.MetaItem.prototype.getOffset=function(){return this.offset},ve.dm.MetaItem.prototype.getIndex=function(){return this.index},ve.dm.MetaItem.prototype.setOffset=function(a){this.offset=a},ve.dm.MetaItem.prototype.setIndex=function(a){this.index=a},ve.dm.MetaItem.prototype.attach=function(a,b,c){this.list=a,this.offset=b,this.index=c},ve.dm.MetaItem.prototype.detach=function(a){this.list===a&&(this.list=null,this.offset=null,this.index=null)},ve.dm.MetaItem.prototype.isAttached=function(){return null!==this.list},ve.dm.MetaList=function(a){var b,c,d,e,f,g;OO.EventEmitter.call(this),this.surface=a,this.document=a.getDocument(),this.groups={},this.items=[],this.document.connect(this,{transact:"onTransact"}),e=this.document.getMetadata();for(b in e)if(Object.prototype.hasOwnProperty.call(e,b)&&Array.isArray(e[b]))for(c=0,d=e[b].length;d>c;c++)f=ve.dm.metaItemFactory.createFromElement(e[b][c]),g=this.groups[f.getGroup()],g||(g=this.groups[f.getGroup()]=[]),f.attach(this,Number(b),c),g.push(f),this.items.push(f)},OO.mixinClass(ve.dm.MetaList,OO.EventEmitter),ve.dm.MetaList.prototype.onTransact=function(a){var b,c,d,e,f,g,h,i,j,k,l,m=this.items.length,n=0,o=0,p=0,q=0,r=0,s=[],t=[],u=[],v=a.getOperations();for(b=0,c=v.length;c>b;b++)switch(v[b].type){case"retain":for(;m>n&&this.items[n].offset<o+v[b].length;n++)s.push({item:this.items[n],offset:this.items[n].offset+p-o,index:this.items[n].offset===o?r-q+this.items[n].index:this.items[n].index});o+=v[b].length,p+=v[b].length,q=0,r=0;break;case"retainMetadata":for(;m>n&&this.items[n].offset===o&&this.items[n].index<q+v[b].length;n++)s.push({item:this.items[n],offset:p,index:this.items[n].index+r-q});q+=v[b].length,r+=v[b].length;break;case"replace":if(i=v[b].insert,j=v[b].remove,void 0!==v[b].removeMetadata){for(k=v[b].insertMetadata,l=v[b].removeMetadata;m>n&&this.items[n].offset<o+l.length;n++)t.push(this.items[n]);for(d=0,e=k.length;e>d;d++)if(k[d])for(f=0,g=k[d].length;g>f;f++)h=ve.dm.metaItemFactory.createFromElement(k[d][f]),s.push({item:h,offset:p+d,index:f})}else for(;m>n&&this.items[n].offset<o+j.length;n++)s.push({item:this.items[n],offset:this.items[n].offset+p-o,index:this.items[n].index});o+=j.length,p+=i.length;break;case"replaceMetadata":for(k=v[b].insert,l=v[b].remove;m>n&&this.items[n].offset===o&&this.items[n].index<q+l.length;n++)t.push(this.items[n]);for(d=0,e=k.length;e>d;d++)h=ve.dm.metaItemFactory.createFromElement(k[d]),s.push({item:h,offset:p,index:r+d});q+=l.length,r+=k.length}for(;m>n;n++)s.push({item:this.items[n],offset:this.items[n].offset+p-o,index:this.items[n].offset===o?r-q+this.items[n].index:this.items[n].index});for(b=0,c=t.length;c>b;b++)this.deleteRemovedItem(t[b].offset,t[b].index),u.push(["remove",t[b],t[b].offset,t[b].index]);for(b=0,c=s.length;c>b;b++)s[b].item.isAttached()&&(s[b].offset!==s[b].item.offset||s[b].index!==s[b].item.index)&&(this.deleteRemovedItem(s[b].item.offset,s[b].item.index),s[b].preExisting=!0);for(b=0,c=s.length;c>b;b++)s[b].item.isAttached()||(this.addInsertedItem(s[b].offset,s[b].index,s[b].item),s[b].preExisting||u.push(["insert",s[b].item]));for(b=0,c=u.length;c>b;b++)this.emit.apply(this,u[b])},ve.dm.MetaList.prototype.findItem=function(a,b,c,d){var e="string"==typeof c?this.groups[c]||[]:this.items;return ve.binarySearch(e,function(c){return ve.compareTuples([a,b],[c.getOffset(),c.getIndex()])},d)},ve.dm.MetaList.prototype.getItemAt=function(a,b){var c=this.findItem(a,b);return null===c?null:this.items[c]},ve.dm.MetaList.prototype.getItemsInGroup=function(a){return(this.groups[a]||[]).slice(0)},ve.dm.MetaList.prototype.getAllItems=function(){return this.items.slice(0)},ve.dm.MetaList.prototype.insertMeta=function(a,b,c){var d;a instanceof ve.dm.MetaItem&&(a=a.getElement()),void 0===b&&(b=this.document.data.getLength()),void 0===c&&(c=(this.document.metadata.getData(b)||[]).length),d=ve.dm.Transaction.newFromMetadataInsertion(this.document,b,c,[a]),this.surface.change(d)},ve.dm.MetaList.prototype.removeMeta=function(a){var b;b=ve.dm.Transaction.newFromMetadataRemoval(this.document,a.getOffset(),new ve.Range(a.getIndex(),a.getIndex()+1)),this.surface.change(b)},ve.dm.MetaList.prototype.addInsertedItem=function(a,b,c){var d=c.getGroup(),e=this.findItem(a,b,null,!0);this.items.splice(e,0,c),this.groups[d]?(e=this.findItem(a,b,d,!0),this.groups[d].splice(e,0,c)):this.groups[d]=[c],c.attach(this,a,b)},ve.dm.MetaList.prototype.deleteRemovedItem=function(a,b){var c,d,e=this.findItem(a,b);if(null!==e)return c=this.items[e],d=c.getGroup(),this.items.splice(e,1),e=this.findItem(a,b,d),null!==e&&this.groups[d].splice(e,1),c.detach(this),c},ve.dm.TableMatrix=function(a){this.tableNode=a,this.matrix=null,this.rowNodes=null},ve.dm.TableMatrix.prototype.invalidate=function(){this.matrix=null,this.rowNodes=null},ve.dm.TableMatrix.prototype.update=function(){var a,b,c,d,e,f,g,h,i=[],j=[],k=this.tableNode.getIterator(),l=-1,m=-1;for(k.on("newRow",function(a){l++,m=-1,i[l]=i[l]||[],j.push(a)});void 0!==(a=k.next());){for(m++;i[l][m];)m++;if(a){if(b=new ve.dm.TableMatrixCell(a,l,m),i[l][m]=b,c=a.getRowspan(),d=a.getColspan(),1!==c||1!==d)for(e=0;c>e;e++)for(f=0;d>f;f++)(0!==e||0!==f)&&(g=l+e,h=m+f,i[g]=i[g]||[],i[g][h]=new ve.dm.TableMatrixCell(a,g,h,b))}else i[l][m]=null}this.matrix=i,this.rowNodes=j},ve.dm.TableMatrix.prototype.getCell=function(a,b){var c=this.getMatrix();return c[a]?c[a][b]:void 0},ve.dm.TableMatrix.prototype.getColumn=function(a){var b,c,d=this.getMatrix();for(b=[],c=0;c<d.length;c++)b.push(d[c][a]);return b},ve.dm.TableMatrix.prototype.getRow=function(a){var b=this.getMatrix();return b[a]},ve.dm.TableMatrix.prototype.getRowNode=function(a){var b=this.getRowNodes();return b[a]},ve.dm.TableMatrix.prototype.getMatrix=function(){return this.matrix||this.update(),this.matrix},ve.dm.TableMatrix.prototype.getRowNodes=function(){return this.rowNodes||this.update(),this.rowNodes},ve.dm.TableMatrix.prototype.getRowCount=function(){return this.getMatrix().length},ve.dm.TableMatrix.prototype.getColCount=function(a){var b=this.getMatrix();return b.length?b[a||0].length:0},ve.dm.TableMatrix.prototype.lookupCell=function(a){var b,c,d,e,f=this.getMatrix(),g=this.getRowNodes();if(b=g.indexOf(a.getParent()),0>b)return null;for(e=f[b],c=0,d=e.length;d>c;c++)if(e[c]&&e[c].node===a)return e[c];return null},ve.dm.TableMatrix.prototype.findClosestCell=function(a){var b,c,d,e=this.getMatrix();for(d=e[a.row],b=a.col;b>=0;b--)if(!d[b].isPlaceholder())return d[b];for(b=a.col+1,c=d.length;c>b;b++)if(!d[b].isPlaceholder())return d[b];return null},ve.dm.TableMatrixCell=function(a,b,c,d){this.node=a,this.row=b,this.col=c,this.key=b+"_"+c,this.owner=d||this},OO.initClass(ve.dm.TableMatrixCell),ve.dm.TableMatrixCell["static"].sortDescending=function(a,b){return a.row!==b.row?b.row-a.row:b.col-a.col},ve.dm.TableMatrixCell.prototype.isPlaceholder=function(){return this.owner!==this},ve.dm.TableMatrixCell.prototype.getOwner=function(){return this.owner},ve.dm.TableMatrixCell.prototype.equals=function(a){return this.getOwner().key===a.getOwner().key},ve.dm.TransactionProcessor=function(a,b){this.document=a,this.transaction=b,this.operations=b.getOperations(),this.modificationQueue=[],this.rollbackQueue=[],this.synchronizer=new ve.dm.DocumentSynchronizer(a,b),this.cursor=0,this.metadataCursor=0,this.adjustment=0,this.set=new ve.dm.AnnotationSet(this.document.getStore()),this.clear=new ve.dm.AnnotationSet(this.document.getStore())},ve.dm.TransactionProcessor.modifiers={},ve.dm.TransactionProcessor.processors={},ve.dm.TransactionProcessor.prototype.nextOperation=function(){return this.operations[this.operationIndex++]||!1},ve.dm.TransactionProcessor.prototype.executeOperation=function(a){if(!Object.prototype.hasOwnProperty.call(ve.dm.TransactionProcessor.processors,a.type))throw new Error("Invalid operation error. Operation type is not supported: "+a.type);ve.dm.TransactionProcessor.processors[a.type].call(this,a)},ve.dm.TransactionProcessor.prototype.process=function(a){var b;for(this.operationIndex=0;b=this.nextOperation();)this.executeOperation(b);try{this.applyModifications()}catch(c){throw this.rollbackModifications(),c}this.transaction.markAsApplied();try{a&&a(),this.synchronizer.synchronize(this.transaction)}catch(c){throw this.rollbackModifications(),this.document.rebuildTree(),c}},ve.dm.TransactionProcessor.prototype.queueModification=function(a){if("function"!=typeof ve.dm.TransactionProcessor.modifiers[a.type])throw new Error("Unrecognized modification type "+a.type);this.modificationQueue.push(a)},ve.dm.TransactionProcessor.prototype.applyModifications=function(){var a,b,c,d=this.modificationQueue;for(this.modificationQueue=[],a=0,b=d.length;b>a;a++)c=ve.dm.TransactionProcessor.modifiers[d[a].type],this.rollbackQueue.unshift(c.apply(this,d[a].args||[]))},ve.dm.TransactionProcessor.prototype.rollbackModifications=function(){var a,b,c=this.rollbackQueue;for(this.rollbackQueue=[],a=0,b=c.length;b>a;a++)c[a]()},ve.dm.TransactionProcessor.prototype.advanceCursor=function(a){this.cursor+=a,this.metadataCursor=0},ve.dm.TransactionProcessor.prototype.applyAnnotations=function(a){function b(a,b,c){if(a.containsAnyOf(b))throw new Error("Invalid transaction, annotation to be set is already set");if(a.addSet(b),!a.containsAllOf(c))throw new Error("Invalid transaction, annotation to be cleared is not set");a.removeSet(c)}var c,d,e,f,g,h=this.document.getNodeFactory();if(!this.set.isEmpty()||!this.clear.isEmpty()){for(e=this.cursor;a>e;e++){if(c=this.document.data.isElementData(e)){if(!h.isNodeContent(this.document.data.getType(e)))throw new Error("Invalid transaction, cannot annotate a non-content element");if(this.document.data.isCloseElementData(e))continue}d=this.document.data.getAnnotationsFromOffset(e),b(d,this.set,this.clear),this.queueModification({type:"annotateData",args:[e+this.adjustment,d]})}for(e=this.cursor+1;a>e;e++)for(f=0,g=this.document.metadata.getDataLength(e);g>f;f++)d=this.document.metadata.getAnnotationsFromOffsetAndIndex(e,f),b(d,this.set,this.clear),this.queueModification({type:"annotateMetadata",args:[e+this.adjustment,f,d]});this.cursor<a&&this.synchronizer.pushAnnotation(new ve.Range(this.cursor+this.adjustment,a+this.adjustment))}},ve.dm.TransactionProcessor.modifiers.splice=function(a,b,c,d){d=d||[];var e="metadata"===a?this.document.metadata:this.document.data,f=e.batchSplice(b,c,d);return function(){e.batchSplice(b,d.length,f)}},ve.dm.TransactionProcessor.modifiers.spliceMetadataAtOffset=function(a,b,c,d){d=d||[];var e=this.document.metadata,f=e.spliceMetadataAtOffset(a,b,c,d);return function(){e.spliceMetadataAtOffset(a,b,d.length,f)}},ve.dm.TransactionProcessor.modifiers.annotateData=function(a,b){var c=this.document.data,d=c.getAnnotationsFromOffset(a);return c.setAnnotationsAtOffset(a,b),function(){c.setAnnotationsAtOffset(a,d)}},ve.dm.TransactionProcessor.modifiers.annotateMetadata=function(a,b,c){var d=this.document.metadata,e=d.getAnnotationsFromOffsetAndIndex(a,b);return d.setAnnotationsAtOffsetAndIndex(a,b,c),function(){d.setAnnotationsAtOffsetAndIndex(a,b,e)}},ve.dm.TransactionProcessor.modifiers.setAttribute=function(a,b,c){var d=this.document.data,e=d.getData(a),f=e.attributes&&e.attributes[b];return d.setAttributeAtOffset(a,b,c),function(){d.setAttributeAtOffset(a,b,f)}},ve.dm.TransactionProcessor.processors.retain=function(a){this.applyAnnotations(this.cursor+a.length),this.advanceCursor(a.length)},ve.dm.TransactionProcessor.processors.retainMetadata=function(a){this.metadataCursor+=a.length},ve.dm.TransactionProcessor.processors.annotate=function(a){var b,c;if("set"===a.method)b=this.set;else{if("clear"!==a.method)throw new Error("Invalid annotation method "+a.method);b=this.clear}c=this.document.getStore().value(a.index),"start"===a.bias?b.push(c):b.remove(c)},ve.dm.TransactionProcessor.processors.attribute=function(a){if(!this.document.data.isElementData(this.cursor))throw new Error("Invalid element error, cannot set attributes on non-element data");this.queueModification({type:"setAttribute",args:[this.cursor+this.adjustment,a.key,a.to]}),this.synchronizer.pushAttributeChange(this.document.getDocumentNode().getNodeFromOffset(this.cursor+1),a.key,a.from,a.to)},ve.dm.TransactionProcessor.processors.replace=function(a){var b,c,d,e,f,g,h,i,j,k,l,m,n,o,p=a.remove,q=a.insert,r=a.removeMetadata,s=a.insertMetadata,t=new ve.dm.ElementLinearData(this.document.getStore(),p,this.document.getNodeFactory()),u=new ve.dm.ElementLinearData(this.document.getStore(),q,this.document.getNodeFactory()),v=t.isContentData(),w=u.isContentData(),x=t.containsElementData(),y=u.containsElementData(),z=a,A=0,B=0,C=[],D=0,E=0;if(v&&w)this.queueModification({type:"splice",args:["data",this.cursor+this.adjustment,p.length,q]}),this.queueModification(void 0!==r?{type:"splice",args:["metadata",this.cursor+this.adjustment,r.length,s]}:{type:"splice",args:["metadata",this.cursor+this.adjustment,p.length,new Array(q.length)]}),c=this.document.selectNodes(new ve.Range(this.cursor,this.cursor+p.length),"leaves"),b=c[0].node,x||y||1!==c.length||!b||"text"!==b.getType()?!x&&!y&&0===p.length&&q.length>0&&1===c.length&&b&&b.canContainContent()&&(void 0!==c[0].indexInNode||0===b.getLength())?this.synchronizer.pushInsertTextNode(b,c[0].indexInNode||0,q.length-p.length):(d=new ve.Range(c[0].nodeOuterRange.start,c[c.length-1].nodeOuterRange.end),this.synchronizer.pushRebuild(d,new ve.Range(d.start+this.adjustment,d.end+this.adjustment+q.length-p.length))):this.synchronizer.pushResize(b,q.length-p.length),this.advanceCursor(p.length),this.adjustment+=q.length-p.length;else{for(;;){if("replace"===z.type){if(l=z.remove,m=z.insert,n=z.removeMetadata,o=z.insertMetadata,this.queueModification({type:"splice",args:["data",this.cursor+this.adjustment,l.length,m]}),this.queueModification(void 0!==n?{type:"splice",args:["metadata",this.cursor+this.adjustment,n.length,o]}:{type:"splice",args:["metadata",this.cursor+this.adjustment,l.length,new Array(m.length)]}),C.push(new ve.Range(this.cursor,this.cursor+l.length)),g=this.cursor,this.advanceCursor(l.length),l.length>0)for(c=this.document.selectNodes(new ve.Range(g,g+l.length),"siblings"),e=0;e<c.length;e++)C.push(c[e].nodeOuterRange);for(e=0;e<l.length;e++)f=l[e].type,void 0!==f&&("/"===f.charAt(0)?A--:A++);for(e=0;e<m.length;e++)f=m[e].type,void 0!==f&&("/"===f.charAt(0)?(B--,D>B&&(h=h||this.document.getBranchNodeFromOffset(g),j=h.getOffset(),k=j+h.getOuterLength(),C.push(new ve.Range(j,k)),h=h.getParent()||h,D--)):B++);this.adjustment+=m.length-l.length,E+=m.length-l.length}else this.executeOperation(z);if(0===A&&0===B)break;if(z=this.nextOperation(),!z)throw new Error("Unbalanced set of replace operations found")}i=ve.Range["static"].newCoveringRange(C),this.synchronizer.pushRebuild(i,new ve.Range(i.start+this.adjustment-E,i.end+this.adjustment))}},ve.dm.TransactionProcessor.processors.replaceMetadata=function(a){this.queueModification({type:"spliceMetadataAtOffset",args:[this.cursor+this.adjustment,this.metadataCursor,a.remove.length,a.insert]}),this.metadataCursor+=a.insert.length},ve.dm.Transaction=function(a){this.operations=[],this.applied=!1,this.doc=a},ve.dm.Transaction.newFromReplacement=function(a,b,c,d){var e,f=new ve.dm.Transaction(a);return e=f.pushRemoval(a,0,b,d),e=f.pushInsertion(a,e,e,c),f.pushFinalRetain(a,e),f},ve.dm.Transaction.newFromInsertion=function(a,b,c){var d=new ve.dm.Transaction(a),e=d.pushInsertion(a,0,b,c);return d.pushFinalRetain(a,e),d},ve.dm.Transaction.newFromRemoval=function(a,b,c){var d=new ve.dm.Transaction(a),e=d.pushRemoval(a,0,b,c);return d.pushFinalRetain(a,e),d},ve.dm.Transaction.newFromDocumentInsertion=function(a,b,c,d){var e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t=a.internalList.getListNode(),u=t.getRange(),v=c.internalList.getListNode(),w=v.getRange(),x=v.getOuterRange();for(d?(i=new ve.dm.ElementLinearData(a.getStore(),c.getData(d,!0),a.getNodeFactory()),j=new ve.dm.MetaLinearData(a.getStore(),c.getMetadata(d,!0))):(i=new ve.dm.ElementLinearData(a.getStore(),c.getData(new ve.Range(0,x.start),!0).concat(c.getData(new ve.Range(x.end,c.data.getLength()),!0)),a.getNodeFactory()),j=new ve.dm.MetaLinearData(a.getStore(),c.getMetadata(new ve.Range(0,x.start),!0).concat(x.end<c.data.getLength()?c.getMetadata(new ve.Range(x.end+1,c.data.getLength()),!0):[]))),g=a.getStore().merge(c.getStore()),i.remapStoreIndexes(g),h=a.internalList.merge(c.internalList,c.origInternalListLength||0),i.remapInternalListIndexes(h.mapping,a.internalList),c.origDoc===a?(c.origInternalListLength>0?(n=a.internalList.getItemNode(c.origInternalListLength-1).getOuterRange().end,o=c.internalList.getItemNode(c.origInternalListLength-1).getOuterRange().end):(n=u.start,o=w.start),m=new ve.dm.ElementLinearData(a.getStore(),c.getData(new ve.Range(w.start,o),!0),a.getNodeFactory()),m.remapStoreIndexes(g),k=m.data.concat(a.getData(new ve.Range(n,u.end),!0)),l=c.getMetadata(new ve.Range(w.start,o),!0).concat(a.getMetadata(new ve.Range(n,u.end),!0))):(k=a.getData(u,!0),l=a.getMetadata(u,!0)),e=0,f=h.newItemRanges.length;f>e;e++)m=new ve.dm.ElementLinearData(a.getStore(),c.getData(h.newItemRanges[e],!0),a.getNodeFactory()),m.remapStoreIndexes(g),k=k.concat(m.data),l=l.concat(c.getMetadata(h.newItemRanges[e],!0));if(p=new ve.dm.Transaction(a),b<=u.start)q=a.fixupInsertion(i.data,b),p.pushRetain(q.offset),p.pushReplace(a,q.offset,q.remove,q.data,j.data),p.pushRetain(u.start-(q.offset+q.remove)),p.pushReplace(a,u.start,u.end-u.start,k,l),p.pushFinalRetain(a,u.end);else if(b>=u.end)q=a.fixupInsertion(i.data,b),p.pushRetain(u.start),p.pushReplace(a,u.start,u.end-u.start,k,l),p.pushRetain(q.offset-u.end),p.pushReplace(a,q.offset,q.remove,q.data,j.data),p.pushFinalRetain(a,q.offset+q.remove);else if(b>=u.start&&b<=u.end){for(e=0;(r=a.internalList.getItemNode(e).getRange())&&b>r.end;)e++;c.origDoc===a?(r=c.internalList.getItemNode(e).getRange(),s=w):s=u,ve.batchSplice(k,r.start-s.start,r.end-r.start,i.data),ve.batchSplice(l,r.start-s.start,r.end-r.start,j.data),p.pushRetain(u.start),p.pushReplace(a,u.start,u.end-u.start,k,l),p.pushFinalRetain(a,u.end)}return p},ve.dm.Transaction.newFromAttributeChanges=function(a,b,c){var d=new ve.dm.Transaction(a),e=a.getData();if(void 0===e[b].type)throw new Error("Cannot set attributes to non-element data");if("/"===e[b].type.charAt(0))throw new Error("Cannot set attributes on closing element");return d.pushRetain(b),d.pushAttributeChanges(c,e[b].attributes||{}),d.pushFinalRetain(a,b),d},ve.dm.Transaction.newFromAnnotation=function(a,b,c,d){for(var e,f,g,h=new ve.dm.Transaction(a),i=a.data,j=a.getStore().index(d),k=b.start,l=k,m=!1,n=!1,o=0,p=a.getNodeFactory();k<b.end;)i.isElementData(k)?(f=i.getType(k),p.shouldIgnoreChildren(f)&&(o+=i.isOpenElementData(k)?1:-1),g=p.isNodeContent(f)&&("set"!==c||p.canNodeTakeAnnotationType(f,d))?!0:!1):g=!0,g=g&&!o,!g||n&&!i.isCloseElementData(k)?m&&(h.pushRetain(l),h.pushStopAnnotating(c,j),l=0,m=!1):i.isElementData(k)&&i.isCloseElementData(k)||n?i.isCloseElementData(k)&&(n=!1):(i.isElementData(k)&&(n=!0),e="set"===c?i.getAnnotationsFromOffset(k).containsComparable(d):i.getAnnotationsFromOffset(k).contains(d),e&&"set"===c||!e&&"clear"===c?m&&(h.pushRetain(l),h.pushStopAnnotating(c,j),l=0,m=!1):m||(h.pushRetain(l),h.pushStartAnnotating(c,j),l=0,m=!0)),l++,k++;return h.pushRetain(l),m&&h.pushStopAnnotating(c,j),h.pushFinalRetain(a,b.end),h},ve.dm.Transaction.newFromMetadataInsertion=function(a,b,c,d){var e=new ve.dm.Transaction(a),f=a.metadata,g=f.getData(b)||[];return 0===d.length?e:(e.pushRetain(b),e.pushRetainMetadata(c),e.pushReplaceMetadata([],d),e.pushRetainMetadata(g.length-c),e.pushFinalRetain(a,b,g.length),e)},ve.dm.Transaction.newFromMetadataRemoval=function(a,b,c){var d,e=new ve.dm.Transaction(a),f=a.metadata,g=f.getData(b)||[];if(!g.length)throw new Error("Cannot remove metadata from empty list");
-if(c.start<0||c.end>g.length)throw new Error("Range out of bounds");return d=g.slice(c.start,c.end),0===d.length?e:(e.pushRetain(b),e.pushRetainMetadata(c.start),e.pushReplaceMetadata(d,[]),e.pushRetainMetadata(g.length-c.end),e.pushFinalRetain(a,b,g.length),e)},ve.dm.Transaction.newFromMetadataElementReplacement=function(a,b,c,d){var e,f=new ve.dm.Transaction(a),g=a.getMetadata(),h=g[b]||[];if(c>=h.length)throw new Error("Metadata index out of bounds");return e=h[c],f.pushRetain(b),f.pushRetainMetadata(c),f.pushReplaceMetadata([e],[d]),f.pushRetainMetadata(h.length-c-1),f.pushFinalRetain(a,b,h.length),f},ve.dm.Transaction.newFromContentBranchConversion=function(a,b,c,d){var e,f,g,h,i,j,k=new ve.dm.Transaction(a),l=a.selectNodes(b,"leaves"),m={type:c},n={type:"/"+c};for(ve.isPlainObject(d)?m.attributes=d:d={},e=0;e<l.length;e++)if(f=l[e],g=f.node.isContent()?f.node.getParent():f.node,g.canContainContent()){if(g.getType()===c&&ve.compare(d,g.getAttributes(),!0))continue;if(h=g.getOuterRange(),g===i)continue;k.pushRetain(h.start-(i?j.end:0)),g.getType()===c?(k.pushAttributeChanges(d,g.getAttributes()),k.pushRetain(g.getOuterLength())):(k.pushReplace(a,h.start,1,[ve.copy(m)]),k.pushRetain(g.getLength()),k.pushReplace(a,h.end-1,1,[ve.copy(n)])),i=g,j=h}return k.pushFinalRetain(a,i?j.end:0),k},ve.dm.Transaction.newFromWrap=function(a,b,c,d,e,f){function g(a){var b,c=[],d=a.length;for(b=0;d>b;b++)c[c.length]={type:"/"+a[d-b-1].type};return c}var h,i,j,k,l,m,n,o=new ve.dm.Transaction(a),p=0;if(m=g(e),n=g(f),b.start>c.length)o.pushRetain(b.start-c.length);else if(b.start<c.length)throw new Error("unwrapOuter is longer than the data preceding the range");if(d.length>0||c.length>0){for(j=a.data.slice(b.start-c.length,b.start),h=0;h<j.length;h++)if(j[h].type!==c[h].type)throw new Error("Element in unwrapOuter does not match: expected "+c[h].type+" but found "+j[h].type);o.pushReplace(a,b.start-c.length,c.length,ve.copy(d))}if(f.length>0||e.length>0){for(h=b.start;h<b.end;h++)if(a.data.isElementData(h))if(a.data.isCloseElementData(h))p--,0===p&&(i=h+1-e.length,o.pushRetain(i-k),o.pushReplace(a,i,e.length,ve.copy(n)));else{if(0===p){for(l=a.data.slice(h,h+e.length),i=0;i<l.length;i++)if(l[i].type!==e[i].type)throw new Error("Element in unwrapEach does not match: expected "+e[i].type+" but found "+l[i].type);o.pushReplace(a,h,e.length,ve.copy(f)),k=h+e.length}p++}}else o.pushRetain(b.end-b.start);return o.pushReplace(a,b.end,c.length,g(d)),o.pushFinalRetain(a,b.end+c.length),o},ve.dm.Transaction.reversers={annotate:{method:{set:"clear",clear:"set"}},attribute:{from:"to",to:"from"},replace:{insert:"remove",remove:"insert",insertMetadata:"removeMetadata",removeMetadata:"insertMetadata"},replaceMetadata:{insert:"remove",remove:"insert"}},ve.dm.Transaction.prototype.clone=function(){var a=new this.constructor;return a.operations=ve.copy(this.operations),a},ve.dm.Transaction.prototype.reversed=function(){var a,b,c,d,e,f,g=new this.constructor;for(a=0,b=this.operations.length;b>a;a++){c=this.operations[a],d=ve.copy(c),e=this.constructor.reversers[c.type]||{};for(f in e)d[f]="string"==typeof e[f]?c[e[f]]:e[f][c[f]];g.operations.push(d)}return g},ve.dm.Transaction.prototype.isNoOp=function(){return 0===this.operations.length?!0:1===this.operations.length?"retain"===this.operations[0].type:2===this.operations.length?"retain"===this.operations[0].type&&"retainMetadata"===this.operations[1].type:!1},ve.dm.Transaction.prototype.getOperations=function(){return this.operations},ve.dm.Transaction.prototype.getDocument=function(){return this.doc},ve.dm.Transaction.prototype.hasOperationWithType=function(a){var b,c;for(b=0,c=this.operations.length;c>b;b++)if(this.operations[b].type===a)return!0;return!1},ve.dm.Transaction.prototype.hasContentDataOperations=function(){return this.hasOperationWithType("replace")},ve.dm.Transaction.prototype.hasElementAttributeOperations=function(){return this.hasOperationWithType("attribute")},ve.dm.Transaction.prototype.hasAnnotationOperations=function(){return this.hasOperationWithType("annotate")},ve.dm.Transaction.prototype.hasBeenApplied=function(){return this.applied},ve.dm.Transaction.prototype.markAsApplied=function(){this.applied=!0},ve.dm.Transaction.prototype.translateOffset=function(a,b){var c,d,e,f,g,h=0,i=0;for(c=0;c<this.operations.length;c++)if(d=this.operations[c],"replace"===d.type){if(e=d.insert.length,f=d.remove.length,g=i,i+=e-f,a===h+f)return b&&e>f?a+i-e+f:a+i;if(a===h)return 0===e?h+f+i:h+g;if(a>h&&h+f>a)return h+f+i;h+=f}else if("retain"===d.type){if(a>=h&&a<h+d.length)return a+i;h+=d.length}return a+i},ve.dm.Transaction.prototype.translateRange=function(a,b){var c=this.translateOffset(a.start,!b),d=this.translateOffset(a.end,b);return a.isBackwards()?new ve.Range(d,c):new ve.Range(c,d)},ve.dm.Transaction.prototype.getModifiedRange=function(){var a,b,c,d,e,f=0;for(a=0,b=this.operations.length;b>a;a++)switch(c=this.operations[a],c.type){case"retainMetadata":continue;case"retain":f+=c.length;break;default:void 0===d&&(d=f+(c.insertedDataOffset||0)),"replace"===c.type&&(f+=c.insert.length),e=c.insertedDataLength?d+c.insertedDataLength:f}return void 0===d||void 0===e?null:new ve.Range(d,e)},ve.dm.Transaction.prototype.pushFinalRetain=function(a,b,c){var d=a.data,e=a.metadata,f=e.getData(d.getLength());b<a.data.getLength()&&(this.pushRetain(a.data.getLength()-b),c=0),void 0!==f&&f.length>0&&this.pushRetainMetadata(f.length-(c||0))},ve.dm.Transaction.prototype.pushRetain=function(a){if(0>a)throw new Error("Invalid retain length, cannot retain backwards:"+a);if(a){var b=this.operations.length-1;this.operations.length&&"retain"===this.operations[b].type?this.operations[b].length+=a:this.operations.push({type:"retain",length:a})}},ve.dm.Transaction.prototype.pushRetainMetadata=function(a){if(0>a)throw new Error("Invalid retain length, cannot retain backwards:"+a);if(a){var b=this.operations.length-1;this.operations.length&&"retainMetadata"===this.operations[b].type?this.operations[b].length+=a:this.operations.push({type:"retainMetadata",length:a})}},ve.dm.Transaction.prototype.addSafeRemoveOps=function(a,b,c,d){var e,f,g=0,h=a.getNodeFactory();for(e=b;c>e;e++)a.data.isElementData(e)&&h.isNodeInternal(a.data.getType(e))&&(a.data.isCloseElementData(e)?(g--,0===g&&(this.pushRetain(e+1-f),b=e+1)):(0===g&&(this.pushReplace(a,b,e-b,[],d?[]:void 0),f=e),g++));this.pushReplace(a,b,c-b,[],d?[]:void 0)},ve.dm.Transaction.prototype.pushReplaceInternal=function(a,b,c,d,e,f){if(0!==a.length||0!==b.length){var g={type:"replace",remove:a,insert:b};void 0!==c&&void 0!==d&&(g.removeMetadata=c,g.insertMetadata=d),void 0!==e&&void 0!==f&&(g.insertedDataOffset=e,g.insertedDataLength=f),this.operations.push(g)}},ve.dm.Transaction.prototype.pushReplace=function(a,b,c,d,e,f,g){if(0!==c||0!==d.length){var h,i=this.operations.length-1,j=i>=0?this.operations[i]:null,k=i>=1?this.operations[i-1]:null,l=new ve.Range(b,b+c),m=a.getData(l),n=a.getMetadata(l),o=ve.compare(n,[]),p=e&&ve.compare(e,[]),q=[];if(e||o?p&&o&&(e=void 0):(e=ve.dm.MetaLinearData["static"].merge(n),0===d.length?(h=e[0],e=[]):ve.batchSplice(e,1,0,new Array(d.length-1)),p=ve.compare(e,new Array(e.length))),j&&"replaceMetadata"===j.type&&j.insert.length>0&&0===j.remove.length&&k&&"replace"===k.type&&0===k.insert.length&&(q=[j.insert],this.operations.pop(),j=k),!(!j||"replace"!==j.type||j.insert.length>0&&void 0!==e||void 0!==j.insertedDataOffset||h||q.length>0&&void 0!==e&&!p))return j=this.operations.pop(),void this.pushReplace(a,b-j.remove.length,j.remove.length+c,j.insert.concat(d),(j.insertMetadata||new Array(j.insert.length)).concat(q).concat(void 0===e||p?new Array(d.length-q.length):e),f,g);if(j&&"replace"===j.type&&0===j.insert.length&&0===d.length&&(void 0===j.removeMetadata||q.length>0)&&(void 0===e||h))return j=this.operations.pop(),void this.pushReplace(a,b-j.remove.length,j.remove.length+c,[]);if(j&&"replaceMetadata"===j.type)throw new Error("replace after replaceMetadata not allowed");this.pushReplaceInternal(m,d,n,e,f,g),void 0!==h&&this.pushReplaceMetadata([],h)}},ve.dm.Transaction.prototype.pushReplaceMetadata=function(a,b){(0!==a.length||0!==b.length)&&this.operations.push({type:"replaceMetadata",remove:a,insert:b})},ve.dm.Transaction.prototype.pushReplaceElementAttribute=function(a,b,c){this.operations.push({type:"attribute",key:a,from:b,to:c})},ve.dm.Transaction.prototype.pushAttributeChanges=function(a,b){var c;for(c in a)b[c]!==a[c]&&this.pushReplaceElementAttribute(c,b[c],a[c])},ve.dm.Transaction.prototype.pushStartAnnotating=function(a,b){this.operations.push({type:"annotate",method:a,bias:"start",index:b})},ve.dm.Transaction.prototype.pushStopAnnotating=function(a,b){this.operations.push({type:"annotate",method:a,bias:"stop",index:b})},ve.dm.Transaction.prototype.pushInsertion=function(a,b,c,d){var e=a.fixupInsertion(d,c);return this.pushRetain(e.offset-b),this.pushReplace(a,e.offset,e.remove,e.data,void 0,e.insertedDataOffset,e.insertedDataLength),e.offset+e.remove},ve.dm.Transaction.prototype.pushRemoval=function(a,b,c,d){var e,f,g,h,i,j,k=b,l=null,m=null;if(c.isCollapsed())return this.pushRetain(c.start-b),c.start;if(f=a.selectNodes(c,"covered"),0===f.length)throw new Error("Invalid range, cannot remove from "+c.start+" to "+c.end);if(g=f[0],h=f[f.length-1],g.node.canBeMergedWith(h.node))return g.range||h.range?(l=(g.range||(g.node.isContent()?g.nodeOuterRange:g.nodeRange)).start,m=(h.range||(h.node.isContent()?h.nodeOuterRange:h.nodeRange)).end):(l=g.nodeOuterRange.start,m=h.nodeOuterRange.end),this.pushRetain(l-b),this.addSafeRemoveOps(a,l,m,d),m;for(e=0;e<f.length;e++)f[e].range?(i=f[e].range.start,j=f[e].range.end):(i=f[e].nodeOuterRange.start,j=f[e].nodeOuterRange.end),null===m?(l=i,m=j):m===i?m=j:(this.pushRetain(l-k),this.addSafeRemoveOps(a,l,m,d),k=m,l=i,m=j);return null!==m&&(this.pushRetain(l-k),this.addSafeRemoveOps(a,l,m,d),k=m),k},ve.dm.Selection=function(a){this.documentModel=a},OO.initClass(ve.dm.Selection),ve.dm.Selection["static"].type=null,ve.dm.Selection["static"].newFromJSON=function(a,b){var c="string"==typeof b?JSON.parse(b):b,d=ve.dm.selectionFactory.lookup(c.type);if(!d)throw new Error("Unknown selection type "+c.name);return d["static"].newFromHash(a,c)},ve.dm.Selection["static"].newFromHash=null,ve.dm.Selection.prototype.toJSON=null,ve.dm.Selection.prototype.getDescription=null,ve.dm.Selection.prototype.clone=null,ve.dm.Selection.prototype.collapseToStart=null,ve.dm.Selection.prototype.collapseToEnd=null,ve.dm.Selection.prototype.collapseToFrom=null,ve.dm.Selection.prototype.collapseToTo=null,ve.dm.Selection.prototype.isCollapsed=null,ve.dm.Selection.prototype.translateByTransaction=null,ve.dm.Selection.prototype.translateByTransactions=function(a,b){var c,d,e=this;for(c=0,d=a.length;d>c;c++)e=e.translateByTransaction(a[c],b);return e},ve.dm.Selection.prototype.isNull=function(){return!1},ve.dm.Selection.prototype.getRanges=null,ve.dm.Selection.prototype.getDocument=function(){return this.documentModel},ve.dm.Selection.prototype.equals=null,ve.dm.selectionFactory=new OO.Factory,ve.dm.Surface=function(a){OO.EventEmitter.call(this),this.documentModel=a,this.metaList=new ve.dm.MetaList(this),this.selection=new ve.dm.NullSelection(this.getDocument()),this.selectionBefore=new ve.dm.NullSelection(this.getDocument()),this.translatedSelection=null,this.branchNodes={},this.selectedNode=null,this.newTransactions=[],this.stagingStack=[],this.undoStack=[],this.undoIndex=0,this.historyTrackingInterval=null,this.insertionAnnotations=new ve.dm.AnnotationSet(this.getDocument().getStore()),this.coveredAnnotations=new ve.dm.AnnotationSet(this.getDocument().getStore()),this.enabled=!0,this.transacting=!1,this.queueingContextChanges=!1,this.contextChangeQueued=!1,this.getDocument().connect(this,{transact:"onDocumentTransact",precommit:"onDocumentPreCommit",presynchronize:"onDocumentPreSynchronize"})},OO.mixinClass(ve.dm.Surface,OO.EventEmitter),ve.dm.Surface.prototype.disable=function(){this.stopHistoryTracking(),this.enabled=!1,this.emit("history")},ve.dm.Surface.prototype.enable=function(){this.enabled=!0,this.startHistoryTracking(),this.emit("history")},ve.dm.Surface.prototype.initialize=function(){this.startHistoryTracking(),this.emit("contextChange")},ve.dm.Surface.prototype.startHistoryTracking=function(){this.enabled&&null===this.historyTrackingInterval&&(this.historyTrackingInterval=setInterval(this.breakpoint.bind(this),750))},ve.dm.Surface.prototype.stopHistoryTracking=function(){this.enabled&&null!==this.historyTrackingInterval&&(clearInterval(this.historyTrackingInterval),this.historyTrackingInterval=null)},ve.dm.Surface.prototype.getHistory=function(){return this.newTransactions.length>0?this.undoStack.slice(0).concat([{transactions:this.newTransactions.slice(0)}]):this.undoStack.slice(0)},ve.dm.Surface.prototype.isStaging=function(){return this.stagingStack.length>0},ve.dm.Surface.prototype.getStaging=function(){return this.stagingStack[this.stagingStack.length-1]},ve.dm.Surface.prototype.doesStagingAllowUndo=function(){var a=this.getStaging();return a&&a.allowUndo},ve.dm.Surface.prototype.getStagingTransactions=function(){var a=this.getStaging();return a&&a.transactions},ve.dm.Surface.prototype.pushStaging=function(a){this.isStaging()||(this.breakpoint(),this.stopHistoryTracking(),this.emit("history")),this.stagingStack.push({transactions:[],selectionBefore:new ve.dm.NullSelection(this.getDocument()),allowUndo:!!a})},ve.dm.Surface.prototype.popStaging=function(){if(this.isStaging()){var a,b,c=[],d=this.stagingStack.pop(),e=d.transactions;for(a=e.length-1;a>=0;a--)b=e[a].reversed(),c.push(b);return this.changeInternal(c,void 0,!0),this.isStaging()||(this.startHistoryTracking(),this.emit("history")),e}},ve.dm.Surface.prototype.applyStaging=function(){if(this.isStaging()){var a=this.stagingStack.pop();this.isStaging()?(ve.batchPush(this.getStagingTransactions(),a.transactions),this.getStaging().selectionBefore.isNull()&&(this.getStaging().selectionBefore=a.selectionBefore)):(this.truncateUndoStack(),this.newTransactions=a.transactions,this.selectionBefore=a.selectionBefore,this.breakpoint()),this.isStaging()||(this.startHistoryTracking(),this.emit("history"))}},ve.dm.Surface.prototype.popAllStaging=function(){if(this.isStaging()){for(var a=[];this.isStaging();)ve.batchSplice(a,0,0,this.popStaging());return a}},ve.dm.Surface.prototype.applyAllStaging=function(){for(;this.isStaging();)this.applyStaging()},ve.dm.Surface.prototype.getInsertionAnnotations=function(){return this.insertionAnnotations.clone()},ve.dm.Surface.prototype.setInsertionAnnotations=function(a){this.enabled&&(this.insertionAnnotations=null!==a?a.clone():new ve.dm.AnnotationSet(this.getDocument().getStore()),this.emit("insertionAnnotationsChange",this.insertionAnnotations),this.emit("contextChange"))},ve.dm.Surface.prototype.addInsertionAnnotations=function(a){if(this.enabled){if(a instanceof ve.dm.Annotation)this.insertionAnnotations.push(a);else{if(!(a instanceof ve.dm.AnnotationSet))throw new Error("Invalid annotations");this.insertionAnnotations.addSet(a)}this.emit("insertionAnnotationsChange",this.insertionAnnotations),this.emit("contextChange")}},ve.dm.Surface.prototype.removeInsertionAnnotations=function(a){if(this.enabled){if(a instanceof ve.dm.Annotation)this.insertionAnnotations.remove(a);else{if(!(a instanceof ve.dm.AnnotationSet))throw new Error("Invalid annotations");this.insertionAnnotations.removeSet(a)}this.emit("insertionAnnotationsChange",this.insertionAnnotations),this.emit("contextChange")}},ve.dm.Surface.prototype.canRedo=function(){return this.undoIndex>0&&this.enabled},ve.dm.Surface.prototype.canUndo=function(){return this.hasBeenModified()&&this.enabled&&(!this.isStaging()||this.doesStagingAllowUndo())},ve.dm.Surface.prototype.hasBeenModified=function(){return this.undoStack.length-this.undoIndex>0||!!this.newTransactions.length},ve.dm.Surface.prototype.getDocument=function(){return this.documentModel},ve.dm.Surface.prototype.getMetaList=function(){return this.metaList},ve.dm.Surface.prototype.getSelection=function(){return this.selection},ve.dm.Surface.prototype.getTranslatedSelection=function(){return this.translatedSelection||this.selection},ve.dm.Surface.prototype.getFragment=function(a,b,c){return new ve.dm.SurfaceFragment(this,a||this.selection,b,c)},ve.dm.Surface.prototype.getLinearFragment=function(a,b,c){return new ve.dm.SurfaceFragment(this,new ve.dm.LinearSelection(this.getDocument(),a),b,c)},ve.dm.Surface.prototype.truncateUndoStack=function(){this.undoIndex&&(this.undoStack=this.undoStack.slice(0,this.undoStack.length-this.undoIndex),this.undoIndex=0,this.emit("history"))},ve.dm.Surface.prototype.startQueueingContextChanges=function(){this.queueingContextChanges||(this.queueingContextChanges=!0,this.contextChangeQueued=!1)},ve.dm.Surface.prototype.emitContextChange=function(){this.queueingContextChanges?this.contextChangeQueued=!0:this.emit("contextChange")},ve.dm.Surface.prototype.stopQueueingContextChanges=function(){this.queueingContextChanges&&(this.queueingContextChanges=!1,this.contextChangeQueued&&(this.contextChangeQueued=!1,this.emit("contextChange")))},ve.dm.Surface.prototype.setLinearSelection=function(a){this.setSelection(new ve.dm.LinearSelection(this.getDocument(),a))},ve.dm.Surface.prototype.setNullSelection=function(){this.setSelection(new ve.dm.NullSelection(this.getDocument()))},ve.dm.Surface.prototype.setSelection=function(a){var b,c,d,e,f,g,h,i,j,k={},l=!1,m=!1,n=this.getDocument().data;if(this.enabled){if(this.translatedSelection=null,this.transacting)return void(this.selection=a);this.selection.equals(a)||(l=!0,this.selection=a),a instanceof ve.dm.LinearSelection&&(i=a.getRange(),k.start=this.getDocument().getBranchNodeFromOffset(i.start),k.end=i.isCollapsed()?k.start:this.getDocument().getBranchNodeFromOffset(i.end),i.isCollapsed()||(g=this.getDocument().documentNode.getNodeFromOffset(i.start+1),g&&g.getOuterRange().equalsSelection(i)&&(h=g)),i.isCollapsed()?(b=Math.max(0,i.start-1),n.isContentOffset(b)||(b=-1),c=Math.max(0,i.start),n.isContentOffset(c)||(c=-1),j=n.getAnnotationsFromOffset(i.start)):(b=n.getNearestContentOffset(i.start),c=n.getNearestContentOffset(i.end),j=n.getAnnotationsFromRange(i)),-1===b?f=new ve.dm.AnnotationSet(this.getDocument().getStore()):(d=n.getAnnotationsFromOffset(b),-1!==c?(e=n.getAnnotationsFromOffset(c),f=d.filter(function(a){return a.constructor["static"].applyToAppendedContent||e.containsComparable(a)})):f=d),f.equalsInOrder(this.insertionAnnotations)||this.setInsertionAnnotations(f)),(a instanceof ve.dm.TableSelection||a instanceof ve.dm.NullSelection)&&(m=!0),j&&!j.compareTo(this.coveredAnnotations)&&(this.coveredAnnotations=j,m=!0),(h!==this.selectedNode||k.start!==this.branchNodes.start||k.end!==this.branchNodes.end)&&(this.branchNodes=k,this.selectedNode=h,m=!0),l&&this.emit("select",this.selection.clone()),m&&this.emitContextChange()}},ve.dm.Surface.prototype.selectFirstContentOffset=function(){var a=this.getDocument().data.getNearestContentOffset(0,1);-1!==a?this.setLinearSelection(new ve.Range(a)):this.setNullSelection()},ve.dm.Surface.prototype.change=function(a,b){this.changeInternal(a,b,!1)},ve.dm.Surface.prototype.changeInternal=function(a,b,c){var d,e,f,g=this.selection.clone(),h=!1;if(this.enabled){if(this.startQueueingContextChanges(),a){for(a instanceof ve.dm.Transaction&&(a=[a]),this.transacting=!0,d=0,e=a.length;e>d;d++)a[d].isNoOp()||(c||(this.isStaging()?(this.getStagingTransactions().length||(this.getStaging().selectionBefore=g),this.getStagingTransactions().push(a[d])):(this.truncateUndoStack(),this.newTransactions.length||(this.selectionBefore=g),this.newTransactions.push(a[d]))),this.getDocument().commit(a[d]),a[d].hasElementAttributeOperations()&&(h=!0));this.transacting=!1}f=this.selection,b?this.setSelection(b):a&&this.setSelection(this.selection),!g.equals(f)&&f.equals(this.selection)&&this.emit("select",this.selection.clone()),h&&this.emitContextChange(),this.stopQueueingContextChanges()}},ve.dm.Surface.prototype.breakpoint=function(){return this.enabled?this.newTransactions.length>0?(this.undoStack.push({transactions:this.newTransactions,selection:this.selection.clone(),selectionBefore:this.selectionBefore.clone()}),this.newTransactions=[],this.emit("history"),!0):(this.selectionBefore.isNull()&&!this.selection.isNull()&&(this.selectionBefore=this.selection.clone()),!1):!1},ve.dm.Surface.prototype.undo=function(){var a,b,c,d=[];if(this.canUndo()&&(this.isStaging()&&this.popAllStaging(),this.breakpoint(),this.undoIndex++,b=this.undoStack[this.undoStack.length-this.undoIndex])){for(a=b.transactions.length-1;a>=0;a--)c=b.transactions[a].reversed(),d.push(c);this.changeInternal(d,b.selectionBefore,!0),this.emit("history")}},ve.dm.Surface.prototype.redo=function(){var a;this.canRedo()&&(this.breakpoint(),a=this.undoStack[this.undoStack.length-this.undoIndex],a&&(this.changeInternal(ve.copy(a.transactions),a.selection,!0),this.undoIndex--,this.emit("history")))},ve.dm.Surface.prototype.onDocumentTransact=function(a){this.setSelection(this.getSelection().translateByTransaction(a)),this.emit("documentUpdate",a)},ve.dm.Surface.prototype.getSelectedNode=function(){return this.selectedNode},ve.dm.Surface.prototype.onDocumentPreCommit=function(){this.translatedSelection=this.selection.clone()},ve.dm.Surface.prototype.onDocumentPreSynchronize=function(a){this.translatedSelection&&(this.translatedSelection=this.translatedSelection.translateByTransaction(a))},ve.dm.SurfaceFragment=function(a,b,c,d){return a?(this.document=a.getDocument(),this.noAutoSelect=!!c,this.excludeInsertions=!!d,this.surface=a,this.selection=b||a.getSelection(),this.leafNodes=null,void(this.historyPointer=this.document.getCompleteHistoryLength())):this},OO.initClass(ve.dm.SurfaceFragment),ve.dm.SurfaceFragment.prototype.getSelectedModels=function(a){if(this.isNull())return[];var b,c,d,e,f=this.getAnnotations(a);if(a)for(d=this.getCoveredNodes(),b=0,c=d.length;c>b;b++)d[b].range&&d[b].range.isCollapsed()?(d.splice(b,1),c--,b--):d[b]=d[b].node;else d=[],e=this.getSelectedNode(),e&&d.push(e);return d.concat(f.isEmpty()?[]:f.get())},ve.dm.SurfaceFragment.prototype.update=function(a){if(!this.isNull()){var b;a?(this.selection=a,this.historyPointer=this.document.getCompleteHistoryLength()):this.historyPointer<this.document.getCompleteHistoryLength()&&(b=this.document.getCompleteHistorySince(this.historyPointer),this.selection=this.selection.translateByTransactions(b,this.excludeInsertions),this.historyPointer+=b.length),this.leafNodes=null}},ve.dm.SurfaceFragment.prototype.change=function(a,b){if(!b&&this.isNull())throw new Error("Cannot change null fragment without selection");Array.isArray(a)||(a=[a]),this.surface.change(a,!this.noAutoSelect&&(b||this.getSelection(!0).translateByTransactions(a,this.excludeInsertions))),b&&this.update(b)},ve.dm.SurfaceFragment.prototype.getSurface=function(){return this.surface},ve.dm.SurfaceFragment.prototype.getDocument=function(){return this.document},ve.dm.SurfaceFragment.prototype.getSelection=function(a){return this.update(),a?this.selection:this.selection.clone()},ve.dm.SurfaceFragment.prototype.isNull=function(){return this.selection.isNull()},ve.dm.SurfaceFragment.prototype.willAutoSelect=function(){return!this.noAutoSelect},ve.dm.SurfaceFragment.prototype.setAutoSelect=function(a){return this.noAutoSelect=!a,this},ve.dm.SurfaceFragment.prototype.clone=function(a){return new this.constructor(this.surface,a||this.getSelection(),this.noAutoSelect,this.excludeInsertions)},ve.dm.SurfaceFragment.prototype.willExcludeInsertions=function(){return this.excludeInsertions},ve.dm.SurfaceFragment.prototype.setExcludeInsertions=function(a){a=!!a,this.excludeInsertions!==a&&(this.update(),this.excludeInsertions=a)},ve.dm.SurfaceFragment.prototype.adjustLinearSelection=function(a,b){if(!(this.selection instanceof ve.dm.LinearSelection))return this.clone();var c,d=this.getSelection(!0).getRange();return c=d&&new ve.Range(d.start+(a||0),d.end+(b||0)),this.clone(new ve.dm.LinearSelection(this.getDocument(),c))},ve.dm.SurfaceFragment.prototype.truncateLinearSelection=function(a){if(!(this.selection instanceof ve.dm.LinearSelection))return this.clone();var b=this.getSelection(!0).getRange();return this.clone(new ve.dm.LinearSelection(this.getDocument(),b.truncate(a)))},ve.dm.SurfaceFragment.prototype.collapseToStart=function(){return this.clone(this.getSelection(!0).collapseToStart())},ve.dm.SurfaceFragment.prototype.collapseToEnd=function(){return this.clone(this.getSelection(!0).collapseToEnd())},ve.dm.SurfaceFragment.prototype.trimLinearSelection=function(){if(!(this.selection instanceof ve.dm.LinearSelection))return this.clone();var a=this.getSelection(!0).getRange(),b=a;return b=0===this.getText().trim().length?new ve.Range(a.start):this.document.data.trimOuterSpaceFromRange(a),this.clone(new ve.dm.LinearSelection(this.getDocument(),b))},ve.dm.SurfaceFragment.prototype.expandLinearSelection=function(a,b){if(!(this.selection instanceof ve.dm.LinearSelection))return this.clone();var c,d,e,f,g=this.getSelection(!0).getRange();switch(a||"parent"){case"word":f=g.isCollapsed()?this.document.data.getWordRange(g.start):ve.Range["static"].newCoveringRange([this.document.data.getWordRange(g.start),this.document.data.getWordRange(g.end)],g.isBackwards());break;case"annotation":f=this.document.data.getAnnotatedRangeFromSelection(g,b),g.start>f.start||g.end<f.end?g.from>g.to&&(f=f.flip()):f=g;break;case"root":f=new ve.Range(0,this.getDocument().getInternalList().getListNode().getOuterRange().start);break;case"siblings":d=this.document.selectNodes(g,"siblings"),f=1===d.length?d[0].node.getOuterRange():new ve.Range(d[0].node.getOuterRange().start,d[d.length-1].node.getOuterRange().end);break;case"closest":if(d=this.document.selectNodes(g,"siblings"),d[0].nodeRange.equalsSelection(g)&&d[0].node instanceof b){f=d[0].nodeOuterRange;break}for(e=d[0].node.getParent();e&&!(e instanceof b);)c=e,e=e.getParent();e&&(f=e.getOuterRange());break;case"parent":c=this.document.selectNodes(g,"siblings")[0].node,e=c.getParent(),e&&(f=e.getOuterRange());break;default:throw new Error("Invalid scope argument: "+a)}return this.clone(f?new ve.dm.LinearSelection(this.getDocument(),f):new ve.dm.NullSelection(this.getDocument()))},ve.dm.SurfaceFragment.prototype.getData=function(a){return this.selection instanceof ve.dm.LinearSelection?this.document.getData(this.getSelection(!0).getRange(),a):[]},ve.dm.SurfaceFragment.prototype.getText=function(){return this.selection instanceof ve.dm.LinearSelection?this.document.data.getText(!1,this.getSelection(!0).getRange()):""},ve.dm.SurfaceFragment.prototype.getAnnotations=function(a){var b,c,d,e,f=this.getSelection(!0),g=new ve.dm.AnnotationSet(this.getDocument().getStore());if(f.isCollapsed())return this.surface.getInsertionAnnotations();for(d=f.getRanges(),b=0,c=d.length;c>b;b++)e=this.getDocument().data.getAnnotationsFromRange(d[b],a),a?g.addSet(e):g=b?g.intersectWith(e):e;return g},ve.dm.SurfaceFragment.prototype.hasAnnotations=function(){var a,b,c=this.getSelection().getRanges();for(a=0,b=c.length;b>a;a++)if(this.getDocument().data.hasAnnotationsInRange(c[a]))return!0;return!1},ve.dm.SurfaceFragment.prototype.getLeafNodes=function(){return this.selection instanceof ve.dm.LinearSelection?(this.update(),this.leafNodes||(this.leafNodes=this.document.selectNodes(this.getSelection().getRange(),"leaves")),this.leafNodes):[]},ve.dm.SurfaceFragment.prototype.getSelectedLeafNodes=function(){var a,b,c=[],d=this.getLeafNodes();for(a=0,b=d.length;b>a;a++)(1===b||!d[a].range||d[a].range.getLength())&&c.push(d[a].node);return c},ve.dm.SurfaceFragment.prototype.getSelectedNode=function(){if(!(this.selection instanceof ve.dm.LinearSelection))return null;var a,b,c=this.getSelection().getRange(),d=this.document.selectNodes(c,"covered");for(a=0,b=d.length;b>a;a++)if(d[a].nodeOuterRange.equalsSelection(c))return d[a].node;return null},ve.dm.SurfaceFragment.prototype.getCoveredNodes=function(){return this.selection instanceof ve.dm.LinearSelection?this.document.selectNodes(this.getSelection().getRange(),"covered"):[]},ve.dm.SurfaceFragment.prototype.getSiblingNodes=function(){return this.selection instanceof ve.dm.LinearSelection?this.document.selectNodes(this.getSelection().getRange(),"siblings"):[]},ve.dm.SurfaceFragment.prototype.select=function(){return this.surface.setSelection(this.getSelection()),this},ve.dm.SurfaceFragment.prototype.changeAttributes=function(a,b){var c,d,e,f=[],g=this.getCoveredNodes();for(c=0,d=g.length;d>c;c++)e=g[c],!e.node.isWrapped()||b&&e.node.getType()!==b||e.range&&e.range.isCollapsed()||f.push(ve.dm.Transaction.newFromAttributeChanges(this.document,e.nodeOuterRange.start,a));return f.length&&this.change(f),this},ve.dm.SurfaceFragment.prototype.annotateContent=function(a,b,c){var d,e,f,g,h,i,j,k,l=this.getSelection(!0).getRanges(),m=[];if(b instanceof ve.dm.Annotation)e=[b];else if(d=ve.dm.annotationFactory.create(b,c),"set"===a)e=[d];else for(e=[],f=0,g=l.length;g>f&&(e=this.document.data.getAnnotationsFromRange(l[f],!0).getAnnotationsByName(d.name).get(),!e.length);f++);for(f=0,g=l.length;g>f;f++)if(k=l[f],k.isCollapsed()){if("set"===a)for(f=0,g=e.length;g>f;f++)this.surface.addInsertionAnnotations(e[f]);else if("clear"===a)for(f=0,g=e.length;g>f;f++)this.surface.removeInsertionAnnotations(e[f])}else for(h=0,i=e.length;i>h;h++)j=ve.dm.Transaction.newFromAnnotation(this.document,k,a,e[h]),m.push(j);return this.change(m),this},ve.dm.SurfaceFragment.prototype.insertContent=function(a,b){if(!(this.selection instanceof ve.dm.LinearSelection))return this;var c,d,e,f,g,h,i;if(this.getSelection(!0).isCollapsed()||(f=this.getAnnotations(),this.removeContent()),h=this.getSelection(!0).getRange().start,"string"==typeof a)if(e=a.split(/[\r\n]+/),e.length>1)for(a=[],c=0,d=e.length;d>c;c++)e[c].length&&(a.push({type:"paragraph"}),a=a.concat(e[c].split("")),a.push({type:"/paragraph"}));else a=a.split("");return a.length&&(b&&!f&&(f=this.document.data.getAnnotationsFromOffset(0===h?0:h-1)),f&&f.getLength()>0&&ve.dm.Document["static"].addAnnotationsToData(a,f),g=ve.dm.Transaction.newFromInsertion(this.document,h,a),i=g.getModifiedRange(),this.change(g,new ve.dm.LinearSelection(this.getDocument(),i))),this},ve.dm.SurfaceFragment.prototype.insertHtml=function(a,b){return this.insertDocument(this.getDocument().newFromHtml(a,b)),this},ve.dm.SurfaceFragment.prototype.insertDocument=function(a){return this.selection instanceof ve.dm.LinearSelection?(this.getSelection(!0).isCollapsed()||this.removeContent(),this.change(new ve.dm.Transaction.newFromDocumentInsertion(this.getDocument(),this.getSelection().getRange().start,a)),this):this},ve.dm.SurfaceFragment.prototype.removeContent=function(){return this.selection instanceof ve.dm.LinearSelection?(this.getSelection(!0).isCollapsed()||this.change(ve.dm.Transaction.newFromRemoval(this.document,this.getSelection(!0).getRange())),this):this},ve.dm.SurfaceFragment.prototype["delete"]=function(a){if(!(this.selection instanceof ve.dm.LinearSelection))return this;var b,c,d,e,f,g,h,i,j=this.getSelection(!0).getRange();if(j.isCollapsed())return this;if(i=this.getDocument().getDocumentNode().getNodeFromOffset(j.start),i.getRange().containsRange(j))c=ve.dm.Transaction.newFromRemoval(this.document,j),this.change(c),b=c.translateRange(j);else{for(;!i.getOuterRange().containsRange(j);)i=i.getParent();b=this.deleteResilient(i,j,j)}return b.isCollapsed()||(e=this.document.getBranchNodeFromOffset(b.end,!1),e.getRange().start>=b.end&&(d=this.document.getBranchNodeFromOffset(b.start,!1),d.getRange().isCollapsed()&&!d.isResilient()?this.change([ve.dm.Transaction.newFromRemoval(this.document,d.getOuterRange())]):(f=this.document.getData(e.getRange()),g=e,g.traverseUpstream(function(a){var b=a.getParent();return 1===b.children.length?(g=b,!0):!1}),h=!1,g.traverseUpstream(function(a){return a===i?!1:(h=a.isResilient(),!h)
-}),h||this.change([ve.dm.Transaction.newFromRemoval(this.document,g.getOuterRange()),ve.dm.Transaction.newFromInsertion(this.document,b.start,f)])))),this.document.getDocumentNode().getLength()<=2&&(c=ve.dm.Transaction.newFromInsertion(this.document,0,[{type:"paragraph"},{type:"/paragraph"}]),this.change(c),b=new ve.Range(1)),b=new ve.Range(this.document.data.getNearestContentOffset(b.start,a||-1)),this.change([],new ve.dm.LinearSelection(this.getDocument(),b)),this},ve.dm.SurfaceFragment.prototype.deleteResilient=function(a,b,c){var d,e,f,g,h,i=[],j=[];if(b.isCollapsed())return c;if(!a.canHaveChildren())return h=ve.dm.Transaction.newFromRemoval(this.document,b),this.change(h),c=h.translateRange(c);for(e=0;e<a.children.length;e++)d=a.children[e],d.getOuterRange().intersects(b)&&(j.push(d),i.push(d.isResilient()));for(e=j.length-1;e>=0;e--)d=j[e],d.isResilient()?(f=Math.max(Math.min(this.document.data.getNearestContentOffset(d.getRange().start,1),d.getRange().end),b.start),g=Math.min(Math.max(this.document.data.getNearestContentOffset(d.getRange().end,-1),d.getRange().start),b.end),c=this.deleteResilient(d,new ve.Range(f,g),c)):b.containsRange(d.getOuterRange())?(h=ve.dm.Transaction.newFromRemoval(this.document,d.getOuterRange()),this.change(h),c=h.translateRange(c)):(f=i[e-1]?Math.max(Math.min(this.document.data.getNearestContentOffset(d.getOuterRange().start,1),d.getOuterRange().end),b.start):Math.max(d.getOuterRange().start,b.start),g=i[e+1]?Math.min(Math.max(this.document.data.getNearestContentOffset(d.getOuterRange().end,-1),d.getOuterRange().start),b.end):Math.min(d.getOuterRange().end,b.end),c=this.deleteResilient(d,new ve.Range(f,g),c));return c},ve.dm.SurfaceFragment.prototype.convertNodes=function(a,b){return this.selection instanceof ve.dm.LinearSelection?(this.change(ve.dm.Transaction.newFromContentBranchConversion(this.document,this.getSelection().getRange(),a,b)),this):this},ve.dm.SurfaceFragment.prototype.wrapNodes=function(a){return this.selection instanceof ve.dm.LinearSelection?(Array.isArray(a)||(a=[a]),this.change(ve.dm.Transaction.newFromWrap(this.document,this.getSelection().getRange(),[],[],[],a)),this):this},ve.dm.SurfaceFragment.prototype.unwrapNodes=function(a,b){if(!(this.selection instanceof ve.dm.LinearSelection))return this;var c,d=this.getSelection().getRange(),e=[],f=[];if(d.getLength()<2*b)throw new Error("cannot unwrap by greater depth than maximum theoretical depth of selection");for(c=0;b>c;c++)e.push(this.surface.getDocument().data.getData(d.start+c));for(c=a;c>0;c--)f.push(this.surface.getDocument().data.getData(d.start-c));return this.change(ve.dm.Transaction.newFromWrap(this.document,d,f,[],e,[])),this},ve.dm.SurfaceFragment.prototype.rewrapNodes=function(a,b){if(!(this.selection instanceof ve.dm.LinearSelection))return this;var c,d=this.getSelection().getRange(),e=[];if(Array.isArray(b)||(b=[b]),d.getLength()<2*a)throw new Error("cannot unwrap by greater depth than maximum theoretical depth of selection");for(c=0;a>c;c++)e.push(this.surface.getDocument().data.getData(d.start+c));return this.change(ve.dm.Transaction.newFromWrap(this.document,d,[],[],e,b)),this},ve.dm.SurfaceFragment.prototype.wrapAllNodes=function(a){return this.selection instanceof ve.dm.LinearSelection?(Array.isArray(a)||(a=[a]),this.change(ve.dm.Transaction.newFromWrap(this.document,this.getSelection().getRange(),[],a,[],[])),this):this},ve.dm.SurfaceFragment.prototype.rewrapAllNodes=function(a,b){if(!(this.selection instanceof ve.dm.LinearSelection))return this;var c,d=[],e=this.getSelection().getRange(),f=new ve.Range(e.start+a,e.end-a);if(Array.isArray(b)||(b=[b]),e.getLength()<2*a)throw new Error("cannot unwrap by greater depth than maximum theoretical depth of selection");for(c=0;a>c;c++)d.push(this.surface.getDocument().data.getData(e.start+c));return this.change(ve.dm.Transaction.newFromWrap(this.document,f,d,b,[],[])),this},ve.dm.SurfaceFragment.prototype.isolateAndUnwrap=function(a){function b(a,b){var c,d,e,h=0,i=[];for(c=0,d=a.length;d>c;c++)i.unshift({type:"/"+a[c].type}),i.push(a[c].getClonedElement()),b&&(h+=2);e=ve.dm.Transaction.newFromInsertion(p.getDocument(),b?f:g,i),p.change(e),f+=h,g+=h}if(!(this.selection instanceof ve.dm.LinearSelection))return this;var c,d,e,f,g,h,i=0,j=this.document.getNodeFactory(),k=j.getSuggestedParentNodeTypes(a),l=!1,m=!1,n=[],o=[],p=this;for(c=this.getSiblingNodes(),d=c[0].node,f=d.getOuterRange().start;null!==k&&-1===k.indexOf(d.getParent().type);)d.getParent().indexOf(d)>0&&(l=!0),d=d.getParent(),l?n.unshift(d):f=d.getOuterRange().start,i++;for(e=c[c.length-1].node,g=e.getOuterRange().end;null!==k&&-1===k.indexOf(e.getParent().type);)e.getParent().indexOf(e)<e.getParent().getChildren().length-1&&(m=!0),e=e.getParent(),m?o.unshift(e):g=e.getOuterRange().end;return h=this.willExcludeInsertions(),this.setExcludeInsertions(!0),l&&b(n,!0),m&&b(o,!1),this.setExcludeInsertions(h),this.unwrapNodes(i,0),this},ve.dm.DataString=function(a){this.data=a},OO.inheritClass(ve.dm.DataString,unicodeJS.TextString),ve.dm.DataString.prototype.read=function(a){var b=this.data[a];return void 0!==b&&void 0===b.type?"string"==typeof b?b:b[0]:null},ve.dm.Document=function(a,b,c,d,e,f,g,h){if(ve.Document.call(this,new ve.dm.DocumentNode),b=b||ve.dm.nodeFactory,!(b instanceof ve.dm.NodeFactory))throw new Error("API changed: 2nd argument must be of type ve.dm.NodeFactory");var i,j,k=!0,l=d||this,m=this.documentNode;this.nodeFactory=b,this.lang=g||"en",this.dir=h||"ltr",this.documentNode.setRoot(m),this.documentNode.setDocument(l),this.internalList=e?e.clone(this):new ve.dm.InternalList(this),this.innerWhitespace=f?ve.copy(f):new Array(2),this.parentDocument=d,this.completeHistory=[],a instanceof ve.dm.ElementLinearData?(k=!1,i=a):i=a instanceof ve.dm.FlatLinearData?a:new ve.dm.FlatLinearData(new ve.dm.IndexValueStore,Array.isArray(a)?a:[]),this.store=i.getStore(),this.htmlDocument=c||ve.createDocumentFromHtml(""),k?(j=this.constructor["static"].splitData(i,b),this.data=j.elementData,this.metadata=j.metaData):(this.data=i,this.metadata=new ve.dm.MetaLinearData(this.data.getStore(),new Array(1+this.data.getLength())))},OO.inheritClass(ve.dm.Document,ve.Document),ve.dm.Document["static"].splitData=function(a,b){var c,d,e,f,g,h;for(g=new ve.dm.ElementLinearData(a.getStore(),[],b),h=new ve.dm.MetaLinearData(a.getStore()),c=0,d=a.getLength();d>c;c++)if(a.isElementData(c)){if(a.isOpenElementData(c)&&ve.dm.metaItemFactory.lookup(a.getType(c))){f=a.getData(c),e=g.getLength(),h.getData(e)||h.setData(e,[]),h.getData(e).push(f),c++;continue}g.push(a.getData(c))}else g.push(a.getData(c));return h.getLength()<g.getLength()+1&&(h.data=h.data.concat(new Array(1+g.getLength()-h.getLength()))),{elementData:g,metaData:h}},ve.dm.Document["static"].addAnnotationsToData=function(a,b){var c,d,e,f=b.getStore();if(!b.isEmpty())for(c=0,d=a.length;d>c;c++)a[c].type||(Array.isArray(a[c])?(e=new ve.dm.AnnotationSet(f,a[c][1]),e.addSet(b.clone())):(a[c]=[a[c]],e=b.clone()),a[c][1]=e.getIndexes())},ve.dm.Document.prototype.getDocumentNode=function(){return this.documentNode.length||this.documentNode.getDocument().buildingNodeTree||this.buildNodeTree(),this.documentNode},ve.dm.Document.prototype.buildNodeTree=function(){var a,b,c,d,e,f,g,h,i,j=0,k=!1,l=this.nodeFactory;for(e=[],f=[this.documentNode],g=[f,e],h=this.documentNode,i=this.documentNode.getDocument(),a=0,b=this.data.getLength();b>a;a++)if(this.data.isElementData(a))if(k&&(h.setLength(j),h=f[f.length-1],k=!1,j=0),this.data.isOpenElementData(a))if(c=l.createFromElement(this.data.getData(a)),c.setDocument(i),e.push(c),l.canNodeHaveChildren(c.getType()))f=e,e=[],g.push(e),h=c;else{if(!this.data.isCloseElementData(a+1)||this.data.getType(a+1)!==this.data.getType(a))throw new Error("Opening element for node that cannot have children must be followed by closing element");a++}else{if(d=g.pop(),e=f,f=g[g.length-2],!f)throw new Error("Unbalanced input passed to document");ve.batchSplice(h,0,0,d),h=f[f.length-1]}else k||(c=new ve.dm.TextNode,c.setDocument(i),e.push(c),h=c,k=!0),j++;k&&h.setLength(j),i.buildingNodeTree=!0,ve.batchSplice(this.documentNode,0,0,e),i.buildingNodeTree=!1},ve.dm.Document.prototype.getLength=function(){return this.data.getLength()},ve.dm.Document.prototype.commit=function(a){var b=this;if(a.hasBeenApplied())throw new Error("Cannot commit a transaction that has already been committed");this.emit("precommit"),new ve.dm.TransactionProcessor(this,a).process(function(){b.emit("presynchronize",a)}),this.completeHistory.push(a),this.emit("transact",a)},ve.dm.Document.prototype.getData=function(a,b){return this.data.getDataSlice(a,b)},ve.dm.Document.prototype.getMetadata=function(a,b){return this.metadata.getDataSlice(a,b)},ve.dm.Document.prototype.getHtmlDocument=function(){return this.htmlDocument},ve.dm.Document.prototype.getStore=function(){return this.store},ve.dm.Document.prototype.getInternalList=function(){return this.internalList},ve.dm.Document.prototype.getInnerWhitespace=function(){return this.innerWhitespace},ve.dm.Document.prototype.cloneSliceFromRange=function(a){for(var b,c,d,e,f,g,h,i,j,k,l,m=this.getBranchNodeFromOffset(a.start),n=this.getBranchNodeFromOffset(a.end),o=this.selectNodes(a,"siblings"),p=[],q=[],r=[],s=[];o[0]&&o[0].range&&o[0].range.isCollapsed()&&!o[0].node.isWrapped();)o.shift();for(b=o.length-1;o[b]&&o[b].range&&o[b].range.isCollapsed()&&!o[b].node.isWrapped();)o.pop(),b--;if(0===o.length)g=new ve.dm.ElementLinearData(this.getStore(),[],this.getNodeFactory()),i=j=new ve.Range(0);else if(m===n)k=o;else{for(c=o[0],d=o[o.length-1],e=c.node,f=d.node;!e.isWrapped();)e=e.getParent();for(;!f.isWrapped();)f=f.getParent();if(c.range)for(;;){for(;!m.isWrapped();)m=m.getParent();if(p.push(m.getClonedElement()),m===e)break;m=m.getParent()}if(d!==c&&d.range)for(;;){for(;!n.isWrapped();)n=n.getParent();if(q.push({type:"/"+n.getType()}),n===f)break;n=n.getParent()}k=this.selectNodes(new ve.Range(e.getOuterRange().start,f.getOuterRange().end),"covered")}if(!j){for(l=!1,b=k.length-1;b>=0;b--)if(null!==k[b].node.getParentNodeTypes()){l=!0;break}if(l)for(m=k[0].node;m.getParent()&&null!==m.getParentNodeTypes();)m=m.getParent(),r.push(m.getClonedElement()),s.push({type:"/"+m.getType()});g=new ve.dm.ElementLinearData(this.getStore(),r.reverse().concat(p.reverse()).concat(this.data.slice(a.start,a.end)).concat(q).concat(s),this.getNodeFactory()),i=new ve.Range(r.length+p.length,r.length+p.length+a.getLength()),j=new ve.Range(r.length,r.length+p.length+a.getLength()+q.length)}return ve.batchSplice(g.data,g.getLength(),0,this.getData(this.getInternalList().getListNode().getOuterRange(),!0)),h=new ve.dm.DocumentSlice(g,void 0,void 0,this.getInternalList().clone(),i,j)},ve.dm.Document.prototype.cloneFromRange=function(a){var b,c,d=this.getStore().clone(),e=this.getInternalList().getListNode().getOuterRange();return b=ve.copy(this.getFullData(a,!0)),(a.start>e.start||a.end<e.end)&&(b=b.concat(this.getFullData(e))),c=this.createDocument(new ve.dm.FlatLinearData(d,b),this.nodeFactory,this.getHtmlDocument(),void 0,this.getInternalList(),void 0,this.getLang(),this.getDir()),c.origDoc=this,c.origInternalListLength=this.internalList.getItemNodeCount(),c},ve.dm.Document.prototype.getFullData=function(a,b){var c,d,e=a?a.start:0,f=a?a.end:this.data.getLength(),g=[];for(void 0===b&&(b=!a);f>=e;){if(this.metadata.getData(e)&&(b||e!==a.start&&e!==a.end))for(c=0,d=this.metadata.getData(e).length;d>c;c++)g.push(this.metadata.getData(e)[c]),g.push({type:"/"+this.metadata.getData(e)[c].type});f>e&&g.push(this.data.getData(e)),e++}return g},ve.dm.Document.prototype.getSiblingWordBoundary=function(a,b){var c=new ve.dm.DataString(this.getData());return unicodeJS.wordbreak.moveBreakOffset(b,c,a,!0)},ve.dm.Document.prototype.getRelativeOffset=function(a,b,c){var d,e,f,g,h,i=this.data,j=this.nodeFactory;return"word"===c?(f=this.getSiblingWordBoundary(a,b),a===f&&(f=this.getRelativeOffset(a,b,"character")),f):(g=a+(b>0?0:-1),i.isElementData(g)&&j.isNodeFocusable(i.getType(g))?a+b:(d=i.getRelativeContentOffset(a,b),e=i.getRelativeStructuralOffset(a,b,!0),(0>e-a?-1:1)!==b?e=a:h=(0>e-a?-1:1)===b&&i.isElementData(e+b)&&j.isNodeFocusable(i.getType(e+b)),h||this.hasSlugAtOffset(e)?(h&&(e+=b),d===a||(0>d-a?-1:1)!==b?e:b>0?Math.min(d,e):Math.max(d,e)):b>0?Math.max(d,a):Math.min(d,a)))},ve.dm.Document.prototype.getRelativeRange=function(a,b,c,d,e){var f,g,h,i,j=a.to;if(!a.isCollapsed()&&!d){if(h=b>0?a.end:a.start,this.data.isContentOffset(h)||this.hasSlugAtOffset(h))return new ve.Range(h);j=h}return f=this.getRelativeOffset(j,b,c),g=this.getNearestFocusableNode(j,b,f),i=g?g.getOuterRange(-1===b):new ve.Range(f),e&&!e.containsRange(i)?a:d?new ve.Range(a.from,i.to):i},ve.dm.Document.prototype.getNearestFocusableNode=function(a,b,c){var d,e=this.nodeFactory;return this.data.getRelativeOffset(a,1===b?0:-1,function(b,c){return b>=Math.max(a,c)||b<Math.min(a,c)?!0:this.isOpenElementData(b)&&e.isNodeFocusable(this.getType(b))?(d=b+1,!0):this.isCloseElementData(b)&&e.isNodeFocusable(this.getType(b))?(d=b,!0):void 0},c),d?this.getDocumentNode().getNodeFromOffset(d):null},ve.dm.Document.prototype.getBranchNodeFromOffset=function(a){if(0>a||a>this.data.getLength())throw new Error("ve.dm.Document.getBranchNodeFromOffset(): offset "+a+" is out of bounds");return ve.Document.prototype.getBranchNodeFromOffset.call(this,a)},ve.dm.Document.prototype.hasSlugAtOffset=function(a){var b=this.getBranchNodeFromOffset(a);return b?b.hasSlugAtOffset(a):!1},ve.dm.Document.prototype.getDataFromNode=function(a){var b=a.getLength(),c=a.getOffset();return c>=0?(a.isWrapped()&&c++,this.data.slice(c,c+b)):null},ve.dm.Document.prototype.rebuildNodes=function(a,b,c,d,e){var f=this.data.sliceObject(d,d+e),g=this.createDocument(f,this.nodeFactory,this.htmlDocument,this),h=g.getDocumentNode().getChildren();return ve.batchSplice(a,b,c,h),h},ve.dm.Document.prototype.rebuildTree=function(){var a=this.getDocumentNode();this.rebuildNodes(a,0,a.getChildren().length,0,this.data.getLength())},ve.dm.Document.prototype.fixupInsertion=function(a,b){function c(a,b){var c;if(void 0!==a.type)if("/"!==a.type.charAt(0))0===x.length&&y.length>0&&y[y.length-1].getType()===a.type?f=y.pop():x.push(a),g=a.type;else if(x.length>0)c=x.pop().type;else{if(c=f.getType(),y.push(f),f=f.getParent(),!f)throw new Error("Inserted data is trying to close the root node (at index "+b+")");if(g=c,!(a.type==="/"+c||v.canNodeContainContent(a.type.slice(1))&&v.canNodeContainContent(c)))throw new Error("Cannot adopt content from "+a.type+" nodes into "+c+" nodes (at index "+b+")")}u.push(a)}var d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u=[],v=this.nodeFactory,w=0,x=[],y=[],z=0,A=a.length,B=this;for(f=this.getBranchNodeFromOffset(b),g=f.getType(),h=!1,i=B.data.isOpenElementData(b-1),s=0;s<a.length;s++)if(h&&void 0!==a[s].type&&(g=x.length>0?x[x.length-1].type:f.getType()),void 0===a[s].type||"/"!==a[s].type.charAt(0)){j=a[s].type||"text",o=[],p=[],q=[],v.isNodeContent(j)&&!v.canNodeContainContent(g)&&(j="paragraph",o.unshift(v.getDataElement(j)));do if(k=v.getParentNodeTypes(j),m=null===k||-1!==k.indexOf(g),!m){if(0===k.length)throw new Error("Cannot insert "+j+" because it  cannot have a parent (at index "+s+")");j=k[0],o.unshift(v.getDataElement(j))}while(!m);do if(l=v.getChildNodeTypes(g),n=null===l||-1!==l.indexOf(j),n=n&&!(!v.isNodeContent(j)&&v.canNodeContainContent(g)),!n){if(i)return this.fixupInsertion(a,b-1);if(p.push({type:"/"+g}),x.length>0)r=x.pop(),g=r.type,q.push(ve.copy(r));else{if(!f.getParent())throw new Error("Cannot insert "+j+" even  after closing all containing nodes (at index "+s+")");y.push(f),q.push(f.getClonedElement()),f=f.getParent(),g=f.getType()}}while(!n);if(0===s&&"text"===j&&ve.isUnattachedCombiningMark(a[s])){if(B.data.isElementData(b-1))continue;b--,w++,d=B.data.getCharacterData(b)+a[s],e=B.data.getAnnotationIndexesFromOffset(b),e.length&&(d=[d,e]),a[s]=d}for(t=0;t<p.length;t++)0===s?z++:A++,u.push(p[t]);for(t=0;t<o.length;t++)0===s?z++:A++,c(o[t],s);c(a[s],s),void 0===a[s].type?(h=!0,o.length>0&&(g=j)):g=a[s].type}else c(a[s],s),g=x.length>0?x[x.length-1].type:f.getType();if(y.length>0&&B.data.isCloseElementData(b))return this.fixupInsertion(a,b+1);for(h&&(g=x.length>0?x[x.length-1].type:f.getType());x.length>0;)r=x[x.length-1],c({type:"/"+r.type},s);for(;y.length>0;)r=y[y.length-1],c(r.getClonedElement(),s);return{offset:b,data:u,remove:w,insertedDataOffset:z,insertedDataLength:A}},ve.dm.Document.prototype.newFromHtml=function(a,b){var c=ve.createDocumentFromHtml(a),d=ve.dm.converter.getModelFromDom(c,{targetDoc:this.getHtmlDocument(),fromClipboard:!!b},this),e=d.data;return d.metadata=new ve.dm.MetaLinearData(d.getStore(),new Array(1+e.getLength())),b&&(e.sanitize(b.external),b.all&&e.sanitize(b.all)),e.remapInternalListKeys(this.getInternalList()),d.buildNodeTree(),d},ve.dm.Document.prototype.findText=function(a,b,c){var d,e,f,g,h,i,j=[],k=this.data.getText(!0,new ve.Range(0,this.getInternalList().getListNode().getOuterRange().start));if(a instanceof RegExp)for(a=new RegExp(a.source,b?"g":"gi"),h=0,i=k.split("\n"),d=0,e=i.length;e>d;d++){for(;i[d]&&null!==(g=a.exec(i[d]));)0!==g[0].length?(j.push(new ve.Range(h+g.index,h+g.index+g[0].length)),c||(a.lastIndex=g.index+1)):a.lastIndex=g.index+1;h+=i[d].length+1,a.lastIndex=0}else for(b||(k=k.toLowerCase(),a=a.toLowerCase()),f=a.length,h=-1;-1!==(h=k.indexOf(a,h));)j.push(new ve.Range(h,h+f)),h+=c?f:1;return j},ve.dm.Document.prototype.getCompleteHistoryLength=function(){return this.completeHistory.length},ve.dm.Document.prototype.getCompleteHistorySince=function(a){return this.completeHistory.slice(a)},ve.dm.Document.prototype.getLang=function(){return this.lang},ve.dm.Document.prototype.getDir=function(){return this.dir},ve.dm.Document.prototype.getNodeFactory=function(){return this.nodeFactory},ve.dm.Document.prototype.createDocument=function(a,b,c,d,e,f,g,h){return new ve.dm.Document(a,b,c,d,e,f,g,h)},ve.dm.DocumentSlice=function(a,b,c,d,e,f){ve.dm.Document.call(this,a,b,c,d),this.originalRange=e,this.balancedRange=f},OO.inheritClass(ve.dm.DocumentSlice,ve.dm.Document),ve.dm.DocumentSlice.prototype.getOriginalData=function(){return this.getData(this.originalRange)},ve.dm.DocumentSlice.prototype.getBalancedData=function(){return this.getData(this.balancedRange)},ve.dm.LinearData=function(a,b){this.store=a,this.data=b||[]},OO.initClass(ve.dm.LinearData),ve.dm.LinearData["static"].getType=function(a){return this.isCloseElementData(a)?a.type.slice(1):a.type},ve.dm.LinearData["static"].isElementData=function(a){return void 0!==a&&"string"==typeof a.type},ve.dm.LinearData["static"].isOpenElementData=function(a){return this.isElementData(a)&&"/"!==a.type.charAt(0)},ve.dm.LinearData["static"].isCloseElementData=function(a){return this.isElementData(a)&&"/"===a.type.charAt(0)},ve.dm.LinearData.prototype.getData=function(a){return void 0===a?this.data:this.data[a]},ve.dm.LinearData.prototype.setData=function(a,b){this.data[a]=b},ve.dm.LinearData.prototype.push=function(){return Array.prototype.push.apply(this.data,arguments)},ve.dm.LinearData.prototype.getLength=function(){return this.getData().length},ve.dm.LinearData.prototype.getStore=function(){return this.store},ve.dm.LinearData.prototype.slice=function(){return Array.prototype.slice.apply(this.data,arguments)},ve.dm.LinearData.prototype.sliceObject=function(){return new this.constructor(this.getStore(),this.slice.apply(this,arguments))},ve.dm.LinearData.prototype.splice=function(){return Array.prototype.splice.apply(this.data,arguments)},ve.dm.LinearData.prototype.spliceObject=function(){return new this.constructor(this.getStore(),this.splice.apply(this,arguments))},ve.dm.LinearData.prototype.batchSplice=function(a,b,c){return ve.batchSplice(this.getData(),a,b,c)},ve.dm.LinearData.prototype.batchSpliceObject=function(a,b,c){return new this.constructor(this.getStore(),this.batchSplice.call(this,a,b,c))},ve.dm.LinearData.prototype.getDataSlice=function(a,b){var c,d,e=0,f=this.getLength();return void 0!==a&&(e=Math.max(0,Math.min(f,a.start)),c=Math.max(0,Math.min(f,a.end))),d=void 0===c?this.slice(e):this.slice(e,c),b?ve.copy(d):d},ve.dm.LinearData.prototype.clone=function(){return new this.constructor(this.getStore(),ve.copy(this.data))},ve.dm.DocumentSynchronizer=function(a,b){this.document=a,this.actionQueue=[],this.eventQueue=[],this.adjustment=0,this.transaction=b},ve.dm.DocumentSynchronizer.synchronizers={},ve.dm.DocumentSynchronizer.synchronizers.annotation=function(a){var b,c=a.range.translate(this.adjustment),d=this.document.selectNodes(c,"leaves");for(b=0;b<d.length;b++)this.queueEvent(d[b].node,"annotation"),this.queueEvent(d[b].node,"update")},ve.dm.DocumentSynchronizer.synchronizers.attributeChange=function(a){this.queueEvent(a.node,"attributeChange",a.key,a.from,a.to),this.queueEvent(a.node,"update")},ve.dm.DocumentSynchronizer.synchronizers.resize=function(a){var b=a.node,c=b.getParent();c&&"text"===b.getType()&&b.getLength()+a.adjustment===0?c.splice(c.indexOf(b),1):b.adjustLength(a.adjustment),this.adjustment+=a.adjustment},ve.dm.DocumentSynchronizer.synchronizers.insertTextNode=function(a){var b=new ve.dm.TextNode;b.setLength(a.length),a.parentNode.splice(a.index,0,b),this.adjustment+=a.length},ve.dm.DocumentSynchronizer.synchronizers.rebuild=function(a){var b,c,d,e,f=a.oldRange.translate(this.adjustment),g=this.document.selectNodes(f,"siblings");"indexInNode"in g[0]||!g[0].node.getParent()?(c=g[0].node,d=g[0].indexInNode||0,e=0):(b=g[0].node,c=b.getParent(),d=g[0].index,e=g.length),this.document.rebuildNodes(c,d,e,f.from,a.newRange.getLength()),this.adjustment+=a.newRange.getLength()-f.getLength()},ve.dm.DocumentSynchronizer.prototype.getDocument=function(){return this.document},ve.dm.DocumentSynchronizer.prototype.pushAnnotation=function(a){this.actionQueue.push({type:"annotation",range:a})},ve.dm.DocumentSynchronizer.prototype.pushAttributeChange=function(a,b,c,d){this.actionQueue.push({type:"attributeChange",node:a,key:b,from:c,to:d})},ve.dm.DocumentSynchronizer.prototype.pushResize=function(a,b){this.actionQueue.push({type:"resize",node:a,adjustment:b})},ve.dm.DocumentSynchronizer.prototype.pushInsertTextNode=function(a,b,c){this.actionQueue.push({type:"insertTextNode",parentNode:a,index:b,length:c})},ve.dm.DocumentSynchronizer.prototype.pushRebuild=function(a,b){this.actionQueue.push({type:"rebuild",oldRange:a,newRange:b})},ve.dm.DocumentSynchronizer.prototype.queueEvent=function(a){var b=Array.prototype.slice.call(arguments,1),c=OO.getHash(b);a.queuedEventHashes||(a.queuedEventHashes={}),a.queuedEventHashes[c]||(a.queuedEventHashes[c]=!0,this.eventQueue.push({node:a,args:b.concat(this.transaction)}))},ve.dm.DocumentSynchronizer.prototype.synchronize=function(){var a,b,c;for(c=0;c<this.actionQueue.length;c++){if(a=this.actionQueue[c],!Object.prototype.hasOwnProperty.call(ve.dm.DocumentSynchronizer.synchronizers,a.type))throw new Error("Invalid action type "+a.type);ve.dm.DocumentSynchronizer.synchronizers[a.type].call(this,a)}for(c=0;c<this.eventQueue.length;c++)b=this.eventQueue[c],b.node.emit.apply(b.node,b.args),delete b.node.queuedEventHashes;this.actionQueue=[],this.eventQueue=[]},ve.dm.IndexValueStore=function(){this.hashStore={},this.valueStore=[]},ve.dm.IndexValueStore.prototype.index=function(a,b,c){var d;return"string"!=typeof b&&(b=OO.getHash(a)),d=this.indexOfHash(b),(null===d||c)&&(null===d&&(d=this.valueStore.length),this.valueStore[d]=Array.isArray(a)?ve.copy(a):"object"==typeof a?ve.cloneObject(a):a,this.hashStore[b]=d),d},ve.dm.IndexValueStore.prototype.indexOfHash=function(a){return a in this.hashStore?this.hashStore[a]:null},ve.dm.IndexValueStore.prototype.indexes=function(a){var b,c,d=[];for(b=0,c=a.length;c>b;b++)d.push(this.index(a[b]));return d},ve.dm.IndexValueStore.prototype.value=function(a){return this.valueStore[a]},ve.dm.IndexValueStore.prototype.values=function(a){var b,c,d=[];for(b=0,c=a.length;c>b;b++)d.push(this.value(a[b]));return d},ve.dm.IndexValueStore.prototype.clone=function(){var a,b=new this.constructor;b.valueStore=this.valueStore.slice();for(a in this.hashStore)b.hashStore[a]=this.hashStore[a];return b},ve.dm.IndexValueStore.prototype.merge=function(a){var b,c,d={};for(b in a.hashStore)Object.prototype.hasOwnProperty.call(this.hashStore,b)||(c=this.valueStore.push(a.valueStore[a.hashStore[b]])-1,this.hashStore[b]=c),d[a.hashStore[b]]=this.hashStore[b];return d},ve.dm.Converter=function(a,b,c,d){this.modelRegistry=a,this.nodeFactory=b,this.annotationFactory=c,this.metaItemFactory=d,this.doc=null,this.documentData=null,this.store=null,this.internalList=null,this.forClipboard=null,this.fromClipboard=null,this.contextStack=null},ve.dm.Converter.computedAttributes=["href","src"],ve.dm.Converter.getDataContentFromText=function(a,b){var c,d,e=a.split("");if(!b||b.isEmpty())return e;for(c=0,d=e.length;d>c;c++)e[c]=[e[c],b.getIndexes().slice()];return e},ve.dm.Converter.openAndCloseAnnotations=function(a,b,c,d){var e,f,g,h,i,j;for(j=b.clone(),e=0,f=a.getLength();f>e;e++){if(g=a.getIndex(e),!j.containsIndex(g)&&!j.containsComparableForSerialization(a.get(e))){h=e;break}j.removeIndex(g)}if(void 0!==h)for(e=a.getLength()-1;e>=h;e--)d(a.get(e)),a.removeAt(e);for(i=a.clone(),e=0,f=b.getLength();f>e;e++)g=b.getIndex(e),i.containsIndex(g)||i.containsComparableForSerialization(b.get(e))?i.removeIndex(g):(c(b.get(e)),a.pushIndex(g))},ve.dm.Converter.renderHtmlAttributeList=function(a,b,c,d,e){var f,g,h,i,j,k;if(void 0===c&&(c=!0),c!==!1)for(f=0,g=a.length;g>f;f++)if(b[f]&&(j=a[f].attributes)){for(h=0,i=j.length;i>h;h++)b[f].hasAttribute(j[h].name)||c!==!0&&!c(j[h].name)||(k=d&&-1!==ve.dm.Converter.computedAttributes.indexOf(j[h].name)?a[f][j[h].name]:j[h].value,b[f].setAttribute(j[h].name,k)),(c===!0||c(j[h].name))&&(k=d&&-1!==ve.dm.Converter.computedAttributes.indexOf(j[h].name)?a[f][j[h].name]:j[h].value);e&&a[f].children.length>0&&ve.dm.Converter.renderHtmlAttributeList(a[f].children,b[f].children,c,d,!0)}},ve.dm.Converter.prototype.isConverting=function(){return null!==this.contextStack},ve.dm.Converter.prototype.getStore=function(){return this.store},ve.dm.Converter.prototype.getHtmlDocument=function(){return this.doc},ve.dm.Converter.prototype.getTargetHtmlDocument=function(){return this.targetDoc},ve.dm.Converter.prototype.isForClipboard=function(){return this.forClipboard},ve.dm.Converter.prototype.isFromClipboard=function(){return this.fromClipboard},ve.dm.Converter.prototype.getCurrentContext=function(){return null===this.contextStack?null:this.contextStack[this.contextStack.length-1]},ve.dm.Converter.prototype.getActiveAnnotations=function(){var a=this.getCurrentContext();return a?a.annotations:null},ve.dm.Converter.prototype.isExpectingContent=function(){var a=this.getCurrentContext();return a?a.expectingContent:null},ve.dm.Converter.prototype.isValidChildNodeType=function(a){var b,c=this.getCurrentContext();return c?(b=this.nodeFactory.getChildNodeTypes(c.branchType),null===b||-1!==b.indexOf(a)):null},ve.dm.Converter.prototype.isInWrapper=function(){var a=this.getCurrentContext();return a?a.inWrapper:null},ve.dm.Converter.prototype.canCloseWrapper=function(){var a=this.getCurrentContext();return a?a.canCloseWrapper:null},ve.dm.Converter.prototype.getDomElementsFromDataElement=function(a,b,c){var d,e=Array.isArray(a)?a[0]:a,f=this.modelRegistry.lookup(e.type);if(!f)throw new Error("Attempting to convert unknown data element type "+e.type);if(f["static"].isInternal)return!1;if(d=f["static"].toDomElements(a,b,this,c),!(Array.isArray(d)||f.prototype instanceof ve.dm.Annotation))throw new Error("toDomElements() failed to return an array when converting element of type "+e.type);return e.originalDomElements&&!ve.isEqualDomElements(d,e.originalDomElements)&&ve.dm.Converter.renderHtmlAttributeList(e.originalDomElements,d,f["static"].preserveHtmlAttributes,!1,!(f instanceof ve.dm.Node)||!this.nodeFactory.canNodeHaveChildren(e.type)||this.nodeFactory.doesNodeHandleOwnChildren(e.type)),d},ve.dm.Converter.prototype.createDataElements=function(a,b){var c=a["static"].toDataElement(b,this);return c?(Array.isArray(c)||(c=[c]),c[0].originalDomElements=b,c):null},ve.dm.Converter.prototype.getDomElementFromDataAnnotation=function(a,b){var c=a.toHtml(),d=b.createElement(c.tag);return ve.setDomAttributes(d,c.attributes),d},ve.dm.Converter.prototype.getModelFromDom=function(a,b,c){var d,e,f,g=new ve.dm.IndexValueStore,h=new ve.dm.InternalList;return b=b||{},this.doc=a,this.targetDoc=b.targetDoc||a,this.fromClipboard=b.fromClipboard,this.store=g,this.internalList=h,this.contextStack=[],d=new ve.dm.FlatLinearData(g,this.getDataFromDomSubtree(a.body)),e=this.internalList.convertToData(this,a),d.batchSplice(d.getLength(),0,e),f=this.getInnerWhitespace(d),this.doc=null,this.targetDoc=null,this.fromClipboard=null,this.store=null,this.internalList=null,this.contextStack=null,c?c.createDocument(d,this.nodeFactory,a,void 0,h,f,b.lang,b.dir):new ve.dm.Document(d,this.nodeFactory,a,void 0,h,f,b.lang,b.dir)},ve.dm.Converter.prototype.getDataFromDomClean=function(a,b,c){var d,e=this.contextStack;return this.contextStack=[],d=this.getDataFromDomSubtree(a,b,c),this.contextStack=e,d},ve.dm.Converter.prototype.getDataFromDomSubtree=function(a,b,c){function d(a,b,c){c&&(a.internal||(a.internal={}),a.internal.whitespace||(a.internal.whitespace=[]),a.internal.whitespace[b]=c)}function e(a){""!==C&&(d(a,0,C),C="")}function f(a){var b,c,e=[],f=q;for(b=0,c=E.length;c>b;b++)E[b].type&&"/"!==E[b].type.charAt(0)&&(E[b].internal&&E[b].internal.whitespace&&("restore"===a?(e=e.concat(ve.dm.Converter.getDataContentFromText(E[b].internal.whitespace[0],F.annotations)),delete E[b].internal):"fixup"===a&&d(f,3,E[b].internal.whitespace[0])),f=E[b]),e.push(E[b]);""!==D&&"restore"===a?ve.batchSplice(B,z,0,e):B=B.concat(e),E=[]}function g(){q={type:"paragraph",internal:{generated:"wrapper"}},B.push(q),F.inWrapper=!0,F.canCloseWrapper=!0,F.expectingContent=!0,e(q)}function h(){""!==D&&(B.splice(z,D.length),d(E.length>0?E[E.length-2]:q,3,D),C=D),B.push({type:"/paragraph"}),f("fixup"),q=void 0,F.inWrapper=!1,F.canCloseWrapper=!1,F.expectingContent=F.originallyExpectingContent}function i(a){var b,c,d=[],e=[a];if(!a.getAttribute||null===a.getAttribute("about"))return e;for(b=a.getAttribute("about"),c=a.nextSibling;c;c=c.nextSibling)if(c.getAttribute){if(c.getAttribute("about")!==b)break;e=e.concat(d),d=[],e.push(c)}else d.push(c);return e}function j(a,b){var c,d,e;for(c=a.length-1;c>=0;c--){if(d=ve.dm.LinearData["static"].getType(a[c]),!d)return!1;if(e=A.lookup(d)||ve.dm.AlienNode,!(e.prototype===b.prototype||e.prototype instanceof b))return!1}return!0}var k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,A=this.modelRegistry,B=[],C="",D="",E=[],F={},G=this.contextStack.length?this.contextStack[this.contextStack.length-1]:null;for(F.annotations=c||(G?G.annotations.clone():new ve.dm.AnnotationSet(this.store)),F.branchType=b?b.type:G?G.branchType:"document",F.branchHasContent=this.nodeFactory.canNodeContainContent(F.branchType),F.originallyExpectingContent=F.branchHasContent||!F.annotations.isEmpty(),F.expectingContent=F.originallyExpectingContent,F.inWrapper=G?G.inWrapper:!1,F.canCloseWrapper=!1,this.contextStack.push(F),b&&B.push(b),k=0;k<a.childNodes.length;k++)switch(l=a.childNodes[k],l.nodeType){case Node.ELEMENT_NODE:case Node.COMMENT_NODE:if(l.getAttribute&&l.getAttribute("data-ve-ignore"))continue;if(x=i(l),t=this.modelRegistry.matchElement(l,x.length>1),u=this.modelRegistry.lookup(t)||ve.dm.AlienNode,m=u.prototype instanceof ve.dm.Annotation?[l]:u["static"].enableAboutGrouping?x:[l],n=this.createDataElements(u,m),n?u=this.modelRegistry.lookup(n[0].type):(u=ve.dm.AlienNode,m=u["static"].enableAboutGrouping?x:[l],n=this.createDataElements(u,m)),u.prototype instanceof ve.dm.Annotation)v=this.annotationFactory.createFromElement(n[0]),F.inWrapper||F.expectingContent||(g(),r=q),s=F.annotations.clone(),s.push(v),n=this.getDataFromDomSubtree(l,void 0,s),(!n.length||j(n,ve.dm.AlienMetaItem))&&(n=this.createDataElements(ve.dm.AlienMetaItem,m),n.push({type:"/"+n[0].type}),F.annotations.isEmpty()||(n[0].annotations=F.annotations.getIndexes().slice())),f("restore"),B=B.concat(n),D="";
-else{if(u.prototype instanceof ve.dm.MetaItem){1===n.length&&n.push({type:"/"+n[0].type}),F.annotations.isEmpty()||(n[0].annotations=F.annotations.getIndexes().slice()),F.inWrapper&&F.canCloseWrapper?(E=E.concat(n),""!==D&&(B.splice(z,D.length),d(n[0],0,D),C=D,D="")):(f("restore"),B=B.concat(n),e(n[0]),r=n[0]),k+=m.length-1;break}w=this.nodeFactory.isNodeContent(n[0].type),!F.expectingContent&&w?(g(),r=q):F.expectingContent&&!w&&(F.inWrapper&&F.canCloseWrapper?h():(u=ve.dm.AlienNode,m=u["static"].enableAboutGrouping?x:[l],n=this.createDataElements(u,m),w=this.nodeFactory.isNodeContent(n[0].type))),F.inWrapper&&w&&(f("restore"),D="",C=""),w&&!F.annotations.isEmpty()&&(n[0].annotations=F.annotations.getIndexes().slice()),1===n.length&&1===m.length&&this.nodeFactory.canNodeHaveChildren(n[0].type)&&!this.nodeFactory.doesNodeHandleOwnChildren(n[0].type)?(f("restore"),B=B.concat(this.getDataFromDomSubtree(l,n[0],new ve.dm.AnnotationSet(this.store)))):(1===n.length&&n.push({type:"/"+n[0].type}),f("restore"),B=B.concat(n)),e(n[0]),r=n[0],k+=m.length-1}break;case Node.TEXT_NODE:if(o=l.data,""===o)break;if(!F.originallyExpectingContent){if(o.match(/^\s+$/)){F.inWrapper?(D=o,z=B.length,B=B.concat(ve.dm.Converter.getDataContentFromText(D,F.annotations))):(r?d(r,3,o):b&&d(b,1,o),C=o,D="",f("restore"));break}p=o.match(/^(\s*)([\s\S]*?)(\s*)$/),F.inWrapper?(f("restore"),B=B.concat(ve.dm.Converter.getDataContentFromText(p[1],F.annotations))):(g(),""!==p[1]&&(r?d(r,3,p[1]):b&&d(b,1,p[1]),d(q,0,p[1]))),B=B.concat(ve.dm.Converter.getDataContentFromText(p[2],F.annotations)),D=p[3],z=B.length,B=B.concat(ve.dm.Converter.getDataContentFromText(D,F.annotations)),r=q;break}F.annotations.isEmpty()&&0===k&&b&&!this.nodeFactory.doesNodeHaveSignificantWhitespace(b.type)&&(p=o.match(/^\s+/),p&&""!==p[0]&&(d(b,1,p[0]),o=o.slice(p[0].length))),F.annotations.isEmpty()&&k===a.childNodes.length-1&&b&&!this.nodeFactory.doesNodeHaveSignificantWhitespace(b.type)&&(p=o.match(/\s+$/),p&&""!==p[0]&&(d(b,2,p[0]),o=o.slice(0,o.length-p[0].length))),B=B.concat(ve.dm.Converter.getDataContentFromText(o,F.annotations))}return F.inWrapper&&F.canCloseWrapper&&(h(),F.inWrapper=!0),"paragraph"===F.branchType||!b||B[B.length-1]!==b||F.inWrapper||this.nodeFactory.canNodeContainContent(F.branchType)||this.nodeFactory.isNodeContent(F.branchType)||!this.isValidChildNodeType("paragraph")||(y={type:"paragraph",internal:{generated:"empty"}},e(y),B.push(y),B.push({type:"/paragraph"})),b&&(""!==C&&B[B.length-1]!==b&&(d(b,2,C),C=""),B.push({type:"/"+b.type})),"document"===F.branchType&&j(B,ve.dm.MetaItem)&&!c&&(y={type:"paragraph",internal:{generated:"empty"}},e(y),B.push(y),B.push({type:"/paragraph"})),this.contextStack.pop(),B},ve.dm.Converter.prototype.getInnerWhitespace=function(a){var b,c=new Array(2),d=0,e=a.getLength()-1;if(a.isOpenElementData(0)&&(b=ve.getProp(a.getData(0),"internal","whitespace"),c[0]=b?b[0]:void 0),a.isCloseElementData(e)){for(d++;--e;)if(a.isCloseElementData(e))d++;else if(a.isOpenElementData(e)&&(d--,0===d&&"internalList"!==a.getType(e)))break;b=ve.getProp(a.getData(e),"internal","whitespace"),c[1]=b?b[3]:void 0}return c},ve.dm.Converter.prototype.getDomFromModel=function(a,b){var c=ve.createDocumentFromHtml("");return this.getDomSubtreeFromModel(a,c.body,b),c},ve.dm.Converter.prototype.getDomSubtreeFromModel=function(a,b,c){this.documentData=a.getFullData(),this.store=a.getStore(),this.internalList=a.getInternalList(),this.forClipboard=!!c,this.getDomSubtreeFromData(this.documentData,b,a.getInnerWhitespace()),this.documentData=null,this.store=null,this.internalList=null,this.forClipboard=null},ve.dm.Converter.prototype.getDomSubtreeFromData=function(a,b,c){function d(){i.length>0&&(D.push(H.createTextNode(i)),i=""),D=[],C.push(D)}function e(a){var b,c,d,e,f,g,h,j="",k="",l=a.getOriginalDomElements()[0]&&a.getOriginalDomElements()[0].textContent||"";for(i.length>0&&(D.push(H.createTextNode(i)),i=""),e=C.pop(),D=C[C.length-1],g=e[0];g&&g.nodeType===Node.TEXT_NODE&&(f=g.data.match(/^\s+/))&&!l.match(/^\s/)&&(j+=f[0],g.deleteData(0,f[0].length),0===g.data.length);)e.shift(),g=e[0];for(h=e[e.length-1];h&&h.nodeType===Node.TEXT_NODE&&(f=h.data.match(/\s+$/))&&!l.match(/\s$/)&&(k=f[0]+k,h.deleteData(h.data.length-f[0].length,f[0].length),0===h.data.length);)e.pop(),h=e[e.length-1];if(e.length&&(d=G.getDomElementsFromDataElement(a.getElement(),H,e)[0]),j&&D.push(H.createTextNode(j)),d){for(b=0,c=e.length;c>b;b++)d.appendChild(e[b]);D.push(d)}else for(b=0,c=e.length;c>b;b++)D.push(e[b]);k&&D.push(H.createTextNode(k))}function f(b){var c,d;for(c=b+1,d=1;E>c&&d>0;c++)a[c].type&&(d+="/"===a[c].type.charAt(0)?-1:1);if(0!==d)throw new Error("Unbalanced data: "+d+" element(s) left open.");return c}function g(){var b;return b=K.lookup(a[j].type)&&K.doesNodeHandleOwnChildren(a[j].type)?a.slice(j,f(j)):a[j]}function h(){var b,c;for(j=0;E>j;j++)a[j].type&&"/"!==a[j].type.charAt(0)&&K.lookup(a[j].type)&&K.isNodeInternal(a[j].type)&&(b||(b=a.slice()),c=f(j),b.splice(j-(E-b.length),c-j),j=c-1);b&&(a=b,E=a.length)}var i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E=a.length,F=[],G=this,H=b.ownerDocument,I=b,J=new ve.dm.AnnotationSet(this.store),K=this.nodeFactory;for(h(),j=0;E>j;j++)if("string"==typeof a[j]){for(i="",l=j>0&&ve.dm.LinearData["static"].isOpenElementData(a[j-1])&&!K.doesNodeHaveSignificantWhitespace(ve.dm.LinearData["static"].getType(a[j-1]));"string"==typeof a[j];)l&&a[j].match(/\s/)||(i+=a[j],l=!1),j++;j--,i.length>0&&I.appendChild(H.createTextNode(i))}else if(Array.isArray(a[j])||void 0!==a[j].annotations&&(this.metaItemFactory.lookup(a[j].type)||this.nodeFactory.isNodeContent(a[j].type))){for(i="",D=[],C=[D];void 0!==a[j]&&(Array.isArray(a[j])||void 0!==a[j].annotations&&(this.metaItemFactory.lookup(a[j].type)||this.nodeFactory.isNodeContent(a[j].type)));){if(m=new ve.dm.AnnotationSet(this.store,a[j].annotations||a[j][1]),ve.dm.Converter.openAndCloseAnnotations(J,m,d,e),void 0===a[j].annotations)i+=a[j][0];else{for(i.length>0&&(D.push(H.createTextNode(i)),i=""),o=g(),q=this.getDomElementsFromDataElement(o,H),k=0;k<q.length;k++)D.push(q[k]);Array.isArray(o)?j+=o.length-1:j++}j++}for(j--,i.length>0&&(D.push(H.createTextNode(i)),i=""),ve.dm.Converter.openAndCloseAnnotations(J,new ve.dm.AnnotationSet(this.store),d,e),k=0;k<D.length;k++)I.appendChild(D[k])}else if(void 0!==a[j].type)if(n=a[j],"/"===n.type.charAt(0)){if(u=I.parentNode,B=a[j].type.slice(1),this.metaItemFactory.lookup(B)?w=F[F.length-1]:(w=this.nodeFactory.isNodeContent(B),F.pop()),p=u.lastOuterPost,!w&&I.veInternal&&I.veInternal.whitespace?(r=I.veInternal.whitespace[1],r&&(I.firstChild&&I.firstChild.nodeType===Node.TEXT_NODE?I.firstChild.insertData(0,r):(A=H.createTextNode(r),A.veIsWhitespace=!0,I.insertBefore(A,I.firstChild))),v=I.veInternal.childDomElements?I.veInternal.childDomElements[I.veInternal.childDomElements.length-1].lastChild:I.lastChild,s=I.veInternal.whitespace[2],t=void 0===I.lastOuterPost?s:I.lastOuterPost,s&&s===t&&(v&&v.nodeType===Node.TEXT_NODE?I.lastChild.appendData(s):(A=H.createTextNode(s),A.veIsWhitespace=!0,I.appendChild(A))),u.lastOuterPost=I.veInternal.whitespace[3]||""):w||(u.lastOuterPost=""),z=!1,I.veInternal)switch(I.veInternal.generated){case"slug":0===I.childNodes.length&&(z=!0);break;case"empty":0!==I.childNodes.length||j!==a.length-1&&"/"!==a[j+1].type.charAt(0)||(z=!0);break;case"wrapper":for(z=!0,y=I.parentElement.childNodes,k=y.length-2;k>=0;k--){if(x=y[k],x.nodeType===Node.TEXT_NODE&&!x.veIsWhitespace){z=!1;break}if(ve.isBlockElement(x))break}}if(z){if(I.childNodes.length)for(;I.firstChild;)u.insertBefore(I.firstChild,I);else u.lastOuterPost=p||"";u.removeChild(I)}delete I.veInternal,delete I.lastOuterPost,K.lookup(B)&&K.isNodeInternal(B)||(I=u)}else{if(this.metaItemFactory.lookup(a[j].type)?w=F[F.length-1]:(F.push(F[F.length-1]||this.nodeFactory.canNodeContainContent(a[j].type)),w=this.nodeFactory.isNodeContent(a[j].type)),o=g(),q=this.getDomElementsFromDataElement(o,H),q&&!q.length){j=f(j)-1;continue}if(q){for(q[0].veInternal=ve.extendObject({childDomElements:q},n.internal?ve.copy(n.internal):{}),k=0;k<q.length;k++)I.appendChild(q[k]);u=I,I=q[0],I.veInternal&&I.veInternal.whitespace?(s=I.veInternal.whitespace[0],t=void 0,I.previousSibling?t=u.lastOuterPost:u===b?t=c?c[0]:s:u.veInternal&&u.veInternal.whitespace&&(t=u.veInternal.whitespace[1],u.veInternal.whitespace[1]=void 0),s&&s===t&&(A=H.createTextNode(s),A.veIsWhitespace=!0,u.insertBefore(A,I))):!w&&!I.previousSibling&&u.veInternal&&u.veInternal.whitespace&&(u.veInternal.whitespace[1]=void 0)}Array.isArray(o)&&(j+=o.length-2)}void 0===b.lastOuterPost||c&&b.lastOuterPost!==c[1]||(b.lastChild&&b.lastChild.nodeType===Node.TEXT_NODE?b.lastChild.appendData(b.lastOuterPost):b.lastOuterPost.length>0&&b.appendChild(H.createTextNode(b.lastOuterPost)),delete b.lastOuterPost),ve.normalizeNode(b)},ve.dm.converter=new ve.dm.Converter(ve.dm.modelRegistry,ve.dm.nodeFactory,ve.dm.annotationFactory,ve.dm.metaItemFactory),ve.dm.LinearSelection=function(a,b){ve.dm.LinearSelection["super"].call(this,a),this.range=b},OO.inheritClass(ve.dm.LinearSelection,ve.dm.Selection),ve.dm.LinearSelection["static"].name="linear",ve.dm.LinearSelection["static"].newFromHash=function(a,b){return new ve.dm.LinearSelection(a,ve.Range["static"].newFromHash(b.range))},ve.dm.LinearSelection.prototype.toJSON=function(){return{type:this.constructor["static"].name,range:this.range}},ve.dm.LinearSelection.prototype.getDescription=function(){return"Linear: "+this.range.from+" - "+this.range.to},ve.dm.LinearSelection.prototype.clone=function(){return new this.constructor(this.getDocument(),this.getRange())},ve.dm.LinearSelection.prototype.collapseToStart=function(){return new this.constructor(this.getDocument(),new ve.Range(this.getRange().start))},ve.dm.LinearSelection.prototype.collapseToEnd=function(){return new this.constructor(this.getDocument(),new ve.Range(this.getRange().end))},ve.dm.LinearSelection.prototype.collapseToFrom=function(){return new this.constructor(this.getDocument(),new ve.Range(this.getRange().from))},ve.dm.LinearSelection.prototype.collapseToTo=function(){return new this.constructor(this.getDocument(),new ve.Range(this.getRange().to))},ve.dm.LinearSelection.prototype.isCollapsed=function(){return this.getRange().isCollapsed()},ve.dm.Selection.prototype.translateByTransaction=function(a,b){return new this.constructor(this.getDocument(),a.translateRange(this.getRange(),b))},ve.dm.LinearSelection.prototype.getRanges=function(){return[this.range]},ve.dm.LinearSelection.prototype.getRange=function(){return this.range},ve.dm.LinearSelection.prototype.equals=function(a){return a instanceof ve.dm.LinearSelection&&this.getDocument()===a.getDocument()&&this.getRange().equals(a.getRange())},ve.dm.selectionFactory.register(ve.dm.LinearSelection),ve.dm.NullSelection=function(a){ve.dm.NullSelection["super"].call(this,a)},OO.inheritClass(ve.dm.NullSelection,ve.dm.Selection),ve.dm.NullSelection["static"].name="null",ve.dm.NullSelection["static"].newFromHash=function(a){return new ve.dm.NullSelection(a)},ve.dm.NullSelection.prototype.toJSON=function(){return{type:this.constructor["static"].name}},ve.dm.NullSelection.prototype.getDescription=function(){return"Null"},ve.dm.NullSelection.prototype.clone=function(){return new this.constructor(this.getDocument())},ve.dm.NullSelection.prototype.collapseToStart=ve.dm.NullSelection.prototype.clone,ve.dm.NullSelection.prototype.collapseToEnd=ve.dm.NullSelection.prototype.clone,ve.dm.NullSelection.prototype.collapseToFrom=ve.dm.NullSelection.prototype.clone,ve.dm.NullSelection.prototype.collapseToTo=ve.dm.NullSelection.prototype.clone,ve.dm.NullSelection.prototype.isCollapsed=function(){return!0},ve.dm.NullSelection.prototype.translateByTransaction=ve.dm.NullSelection.prototype.clone,ve.dm.NullSelection.prototype.getRanges=function(){return[]},ve.dm.NullSelection.prototype.equals=function(a){return a instanceof ve.dm.NullSelection&&this.getDocument()===a.getDocument()},ve.dm.NullSelection.prototype.isNull=function(){return!0},ve.dm.selectionFactory.register(ve.dm.NullSelection),ve.dm.TableSelection=function(a,b,c,d,e,f,g){ve.dm.TableSelection["super"].call(this,a),this.tableRange=b,this.tableNode=null,e=void 0===e?c:e,f=void 0===f?d:f,this.fromCol=c,this.fromRow=d,this.toCol=e,this.toRow=f,this.startCol=e>c?c:e,this.startRow=f>d?d:f,this.endCol=e>c?e:c,this.endRow=f>d?f:d,this.intendedFromCol=this.fromCol,this.intendedFromRow=this.fromRow,this.intendedToCol=this.toCol,this.intendedToRow=this.toRow,g&&this.expand()},OO.inheritClass(ve.dm.TableSelection,ve.dm.Selection),ve.dm.TableSelection["static"].name="table",ve.dm.TableSelection["static"].newFromHash=function(a,b){return new ve.dm.TableSelection(a,ve.Range["static"].newFromHash(b.tableRange),b.fromCol,b.fromRow,b.toCol,b.toRow)},ve.dm.TableSelection.prototype.expand=function(){for(var a,b,c=0,d=1/0,e=1/0,f=-1/0,g=-1/0,h=this.fromCol>this.toCol,i=this.fromRow>this.toRow,j=this.getMatrixCells();j.length>c;){for(b=0;b<j.length;b++)a=j[b],d=Math.min(d,a.col),e=Math.min(e,a.row),f=Math.max(f,a.col+a.node.getColspan()-1),g=Math.max(g,a.row+a.node.getRowspan()-1);this.startCol=d,this.startRow=e,this.endCol=f,this.endRow=g,this.fromCol=h?f:d,this.fromRow=i?g:e,this.toCol=h?d:f,this.toRow=i?e:g,c=j.length,j=this.getMatrixCells()}},ve.dm.TableSelection.prototype.clone=function(){return new this.constructor(this.getDocument(),this.tableRange,this.fromCol,this.fromRow,this.toCol,this.toRow)},ve.dm.TableSelection.prototype.toJSON=function(){return{type:this.constructor["static"].name,tableRange:this.tableRange,fromCol:this.fromCol,fromRow:this.fromRow,toCol:this.toCol,toRow:this.toRow}},ve.dm.TableSelection.prototype.getDescription=function(){return"Table: "+this.tableRange.from+" - "+this.tableRange.to+", c"+this.fromCol+" r"+this.fromRow+" - c"+this.toCol+" r"+this.toRow},ve.dm.TableSelection.prototype.collapseToStart=function(){return new this.constructor(this.getDocument(),this.tableRange,this.startCol,this.startRow,this.startCol,this.startRow)},ve.dm.TableSelection.prototype.collapseToEnd=function(){return new this.constructor(this.getDocument(),this.tableRange,this.endCol,this.endRow,this.endCol,this.endRow)},ve.dm.TableSelection.prototype.collapseToFrom=function(){return new this.constructor(this.getDocument(),this.tableRange,this.fromCol,this.fromRow,this.fromCol,this.fromRow)},ve.dm.TableSelection.prototype.collapseToTo=function(){return new this.constructor(this.getDocument(),this.tableRange,this.toCol,this.toRow,this.toCol,this.toRow)},ve.dm.TableSelection.prototype.getRanges=function(){var a,b,c=[],d=this.getMatrixCells();for(a=0,b=d.length;b>a;a++)c.push(d[a].node.getRange());return c},ve.dm.TableSelection.prototype.getOuterRanges=function(){var a,b,c=[],d=this.getMatrixCells();for(a=0,b=d.length;b>a;a++)c.push(d[a].node.getOuterRange());return c},ve.dm.TableSelection.prototype.getMatrixCells=function(a){var b,c,d,e=this.getTableNode().getMatrix(),f=[],g={};for(b=this.startRow;b<=this.endRow;b++)for(c=this.startCol;c<=this.endCol;c++)d=e.getCell(b,c),d&&(!a&&d.isPlaceholder()&&(d=d.owner),g[d.key]||(f.push(d),g[d.key]=!0));return f},ve.dm.TableSelection.prototype.isCollapsed=function(){return!1},ve.dm.TableSelection.prototype.translateByTransaction=function(a,b){var c=a.translateRange(this.tableRange,b);return c.isCollapsed()?new ve.dm.NullSelection(this.getDocument()):new this.constructor(this.getDocument(),c,this.fromCol,this.fromRow,this.toCol,this.toRow)},ve.dm.TableSelection.prototype.isSingleCell=function(){return this.fromRow===this.toRow&&this.fromCol===this.toCol||1===this.getMatrixCells().length},ve.dm.TableSelection.prototype.getTableNode=function(){return this.tableNode||(this.tableNode=this.getDocument().getBranchNodeFromOffset(this.tableRange.start+1)),this.tableNode},ve.dm.TableSelection.prototype.newFromAdjustment=function(a,b,c,d){function e(a,b,c){for(var d,e=b.col,f=b.row,g=c>0?1:-1;0!==c;){if("col"===a){if(e+=g,e>=h.getColCount(f)||0>e)break}else if(f+=g,f>=h.getRowCount()||0>f)break;d=h.getCell(f,e),d&&!d.equals(b)&&(c-=g,b=d)}return b}var f,g,h=this.getTableNode().getMatrix();return void 0===c&&(c=a),void 0===d&&(d=b),f=h.getCell(this.intendedFromRow,this.intendedFromCol),a&&(f=e("col",f,a)),b&&(f=e("row",f,b)),g=h.getCell(this.intendedToRow,this.intendedToCol),c&&(g=e("col",g,c)),d&&(g=e("row",g,d)),new this.constructor(this.getDocument(),this.tableRange,f.col,f.row,g.col,g.row,!0)},ve.dm.TableSelection.prototype.equals=function(a){return a instanceof ve.dm.TableSelection&&this.getDocument()===a.getDocument()&&this.tableRange.equals(a.tableRange)&&this.fromCol===a.fromCol&&this.fromRow===a.fromRow&&this.toCol===a.toCol&&this.toRow===a.toRow},ve.dm.TableSelection.prototype.getRowCount=function(){return this.endRow-this.startRow+1},ve.dm.TableSelection.prototype.getColCount=function(){return this.endCol-this.startCol+1},ve.dm.TableSelection.prototype.isFullRow=function(){var a=this.getTableNode().getMatrix();return this.getColCount()===a.getColCount()},ve.dm.TableSelection.prototype.isFullCol=function(){var a=this.getTableNode().getMatrix();return this.getRowCount()===a.getRowCount()},ve.dm.TableSelection.prototype.isFullTable=function(){var a=this.getTableNode().getMatrix();return 0===this.startCol&&this.endCol===a.getColCount()-1&&0===this.startRow&&this.endRow===a.getRowCount()-1},ve.dm.selectionFactory.register(ve.dm.TableSelection),ve.dm.FlatLinearData=function(){ve.dm.FlatLinearData["super"].apply(this,arguments)},OO.inheritClass(ve.dm.FlatLinearData,ve.dm.LinearData),ve.dm.FlatLinearData.prototype.getType=function(a){return ve.dm.LinearData["static"].getType(this.getData(a))},ve.dm.FlatLinearData.prototype.isElementData=function(a){return ve.dm.LinearData["static"].isElementData(this.getData(a))},ve.dm.FlatLinearData.prototype.containsElementData=function(){for(var a=this.getLength();a--;)if(this.isElementData(a))return!0;return!1},ve.dm.FlatLinearData.prototype.isOpenElementData=function(a){return ve.dm.LinearData["static"].isOpenElementData(this.getData(a))},ve.dm.FlatLinearData.prototype.isCloseElementData=function(a){return ve.dm.LinearData["static"].isCloseElementData(this.getData(a))},ve.dm.ElementLinearData=function(a,b,c){ve.dm.ElementLinearData["super"].apply(this,arguments),this.nodeFactory=c||ve.dm.nodeFactory},OO.inheritClass(ve.dm.ElementLinearData,ve.dm.FlatLinearData),ve.dm.ElementLinearData["static"].startWordRegExp=new RegExp("^("+unicodeJS.characterclass.patterns.word+")"),ve.dm.ElementLinearData["static"].endWordRegExp=new RegExp("("+unicodeJS.characterclass.patterns.word+")$"),ve.dm.ElementLinearData["static"].compareElements=function(a,b){if(void 0===a||void 0===b)return!1;var c=a,d=b;return Array.isArray(a)&&(c=a[0]),Array.isArray(b)&&(d=b[0]),a&&a.type&&(c={type:a.type,attributes:a.attributes}),b&&b.type&&(d={type:b.type,attributes:b.attributes}),ve.compare(c,d)},ve.dm.ElementLinearData.prototype.isContentOffset=function(a){if(0===a||a===this.getLength())return!1;var b=this.getData(a-1),c=this.getData(a),d=this.nodeFactory;return void 0!==b&&void 0!==c&&("string"==typeof b||"string"==typeof c||Array.isArray(b)||Array.isArray(c)||"string"==typeof b.type&&"/"===b.type.charAt(0)&&d.isNodeContent(b.type.slice(1))||"string"==typeof c.type&&"/"!==c.type.charAt(0)&&d.isNodeContent(c.type)||"/"+b.type===c.type&&d.canNodeContainContent(b.type))},ve.dm.ElementLinearData.prototype.isStructuralOffset=function(a,b){if(0===a||a===this.getLength())return!0;var c=this.getData(a-1),d=this.getData(a),e=this.nodeFactory;return!(void 0===c||void 0===d||"string"!=typeof c.type||"string"!=typeof d.type||("/"!==c.type.charAt(0)||!e.canNodeHaveChildren(c.type.slice(1))&&e.isNodeContent(c.type.slice(1))||b&&null!==e.getParentNodeTypes(c.type.slice(1)))&&("/"===d.type.charAt(0)||!e.canNodeHaveChildren(d.type)&&e.isNodeContent(d.type)||b&&null!==e.getParentNodeTypes(d.type))&&("/"+c.type!==d.type||!e.canNodeHaveChildrenNotContent(c.type)||b&&null!==e.getChildNodeTypes(c.type)))},ve.dm.ElementLinearData.prototype.isContentData=function(){for(var a,b=this.getLength();b--;)if(a=this.getData(b),void 0!==a.type&&"/"!==a.type.charAt(0)&&!this.nodeFactory.isNodeContent(a.type))return!1;return!0},ve.dm.ElementLinearData.prototype.getAnnotationIndexesFromOffset=function(a,b){if(0>a||a>this.getLength())throw new Error("offset "+a+" out of bounds");b||!this.isCloseElementData(a)||this.nodeFactory.canNodeHaveChildren(this.getType(a))||(a=this.getRelativeContentOffset(a,-1));var c=this.getData(a);return void 0===c||"string"==typeof c?[]:c.annotations?c.annotations.slice():c[1]?c[1].slice():[]},ve.dm.ElementLinearData.prototype.getAnnotationsFromOffset=function(a,b){return new ve.dm.AnnotationSet(this.getStore(),this.getAnnotationIndexesFromOffset(a,b))},ve.dm.ElementLinearData.prototype.setAnnotationsAtOffset=function(a,b){this.setAnnotationIndexesAtOffset(a,this.getStore().indexes(b.get()))},ve.dm.ElementLinearData.prototype.setAnnotationIndexesAtOffset=function(a,b){var c,d=this.getData(a),e=this.isElementData(a);b.length>0?e?d.annotations=b:(c=this.getCharacterData(a),this.setData(a,[c,b])):e?delete d.annotations:(c=this.getCharacterData(a),this.setData(a,c))},ve.dm.ElementLinearData.prototype.setAttributeAtOffset=function(a,b,c){var d=this.getData(a);this.isElementData(a)&&(void 0===c?d.attributes&&delete d.attributes[b]:(d.attributes||(d.attributes={}),d.attributes[b]=c))},ve.dm.ElementLinearData.prototype.getCharacterData=function(a){var b=this.getData(a),c=Array.isArray(b)?b[0]:b;return"string"==typeof c?c:""},ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromOffset=function(a,b){var c=a,d=a;if(this.getAnnotationsFromOffset(a).contains(b)===!1)return null;for(;c>0;)if(c--,this.getAnnotationsFromOffset(c).contains(b)===!1){c++;break}for(;d<this.getLength()&&this.getAnnotationsFromOffset(d).contains(b)!==!1;)d++;return new ve.Range(c,d)},ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromSelection=function(a,b){for(var c=a.start,d=a.end;c>0;)if(c--,this.getAnnotationsFromOffset(c).contains(b)===!1){c++;break}for(;d<this.getLength()&&this.getAnnotationsFromOffset(d).contains(b)!==!1;)d++;return new ve.Range(c,d)},ve.dm.ElementLinearData.prototype.getAnnotationsFromRange=function(a,b){var c,d,e,f=0;for(c=a.start;c<a.end;c++)if(!(this.isElementData(c)&&(this.nodeFactory.shouldIgnoreChildren(this.getType(c))&&(f+=this.isOpenElementData(c)?1:-1),!this.nodeFactory.isNodeContent(this.getType(c)))||f>0))if(d){if(e=this.getAnnotationsFromOffset(c),b&&!e.isEmpty())d.addSet(e);else if(!b){if(e.isEmpty())return new ve.dm.AnnotationSet(this.getStore());if(d=d.getComparableAnnotationsFromSet(e),d.isEmpty())break}}else if(d=this.getAnnotationsFromOffset(c),0===a.getLength()||1===a.getLength())return d;return d||new ve.dm.AnnotationSet(this.getStore())},ve.dm.ElementLinearData.prototype.hasAnnotationsInRange=function(a){var b;for(b=a.start;b<a.end;b++)if(this.getAnnotationIndexesFromOffset(b,!0).length)return!0;return!1},ve.dm.ElementLinearData.prototype.trimOuterSpaceFromRange=function(a){for(var b=a.start,c=a.end;this.getCharacterData(c-1).match(/\s/);)c--;for(;c>b&&this.getCharacterData(b).match(/\s/);)b++;return a.to<a.end?new ve.Range(c,b):new ve.Range(b,c)},ve.dm.ElementLinearData.prototype.getText=function(a,b){var c,d="";for(b=b||new ve.Range(0,this.getLength()),c=b.start;c<b.end;c++)this.isElementData(c)?a&&(d+="\n"):d+=this.getCharacterData(c);return d},ve.dm.ElementLinearData.prototype.getRelativeOffset=function(a,b,c){var d,e,f,g,h=Array.prototype.slice.call(arguments,3),i=a,j=0,k=!1,l=0;if(0===b){if(c.apply(this,[a].concat(h)))return a;b=1}for(e=0>=a?1:a>=this.getLength()?-1:b>0?1:-1,b=Math.abs(b),d=i+e,a=-1;d>=0&&d<=this.getLength();){if(f=d+(e>0?-1:0),this.isElementData(f)&&this.nodeFactory.shouldIgnoreChildren(this.getType(f)))if(g=this.isOpenElementData(f),e>0&&g||0>e&&!g)l++;else if(l--,0>l)throw new Error("offset was inside an ignoreChildren node");if(c.apply(this,[d].concat(h))){if(!l&&(j++,a=d,b===j))return a}else if(!k&&0===j&&(0>e&&0===d||e>0&&d===this.getLength())){if(c.apply(this,[i].concat(h)))return i;e*=-1,d=i,b=1,k=!0,l=0}d+=e}return a},ve.dm.ElementLinearData.prototype.getRelativeContentOffset=function(a,b){return this.getRelativeOffset(a,b,this.constructor.prototype.isContentOffset)},ve.dm.ElementLinearData.prototype.getNearestContentOffset=function(a,b){if(this.isContentOffset(a))return a;if(void 0===b){var c=this.getRelativeContentOffset(a,-1),d=this.getRelativeContentOffset(a,1);return d-a>a-c?c:d}return this.getRelativeContentOffset(a,b>0?1:-1)},ve.dm.ElementLinearData.prototype.getRelativeStructuralOffset=function(a,b,c){return 0!==b||0!==a&&a!==this.getLength()?this.getRelativeOffset(a,b,this.constructor.prototype.isStructuralOffset,c):a},ve.dm.ElementLinearData.prototype.getNearestStructuralOffset=function(a,b,c){if(this.isStructuralOffset(a,c))return a;if(b)return this.getRelativeStructuralOffset(a,b>0?1:-1,c);var d=this.getRelativeStructuralOffset(a,-1,c),e=this.getRelativeStructuralOffset(a,1,c);return e-a>a-d?d:e},ve.dm.ElementLinearData.prototype.getWordRange=function(a){var b=new ve.dm.DataString(this.getData());return a=this.getNearestContentOffset(a),unicodeJS.wordbreak.isBreak(b,a)?this.constructor["static"].endWordRegExp.exec((b.read(a-2)||" ")+(b.read(a-1)||" "))?new ve.Range(unicodeJS.wordbreak.prevBreakOffset(b,a),a):this.constructor["static"].startWordRegExp.exec((b.read(a)||" ")+(b.read(a+1)||" "))?new ve.Range(a,unicodeJS.wordbreak.nextBreakOffset(b,a)):new ve.Range(a):new ve.Range(unicodeJS.wordbreak.prevBreakOffset(b,a),unicodeJS.wordbreak.nextBreakOffset(b,a))},ve.dm.ElementLinearData.prototype.getUsedStoreValues=function(a){var b,c,d,e,f={};for(a=a||new ve.Range(0,this.data.length),b=a.start;b<a.end;b++)for(d=this.getAnnotationIndexesFromOffset(b,!0),e=d.length;e--;)c=d[e],Object.prototype.hasOwnProperty.call(f,c)||(f[c]=this.getStore().value(c));return f},ve.dm.ElementLinearData.prototype.remapStoreIndexes=function(a){var b,c,d,e,f,g;for(b=0,c=this.data.length;c>b;b++){for(f=this.getAnnotationIndexesFromOffset(b,!0),d=0,e=f.length;e>d;d++)f[d]=a[f[d]];this.setAnnotationIndexesAtOffset(b,f),this.isOpenElementData(b)&&(g=this.nodeFactory.lookup(this.getType(b)),g["static"].remapStoreIndexes(this.data[b],a))}},ve.dm.ElementLinearData.prototype.remapInternalListIndexes=function(a,b){var c,d,e;for(c=0,d=this.data.length;d>c;c++)this.isOpenElementData(c)&&(e=this.nodeFactory.lookup(this.getType(c)),e["static"].remapInternalListIndexes(this.data[c],a,b))},ve.dm.ElementLinearData.prototype.remapInternalListKeys=function(a){var b,c,d;for(b=0,c=this.data.length;c>b;b++)this.isOpenElementData(b)&&(d=this.nodeFactory.lookup(this.getType(b)),d["static"].remapInternalListKeys(this.data[b],a))},ve.dm.ElementLinearData.prototype.sanitize=function(a,b,c){var d,e,f,g,h,i,j=this.getAnnotationsFromRange(new ve.Range(0,this.getLength()),!0);if(b)g=new ve.dm.AnnotationSet(this.getStore());else{if(a.removeOriginalDomElements)for(d=0,e=j.getLength();e>d;d++)delete j.get(d).element.originalDomElements;h=j.filter(function(b){return a.blacklist&&-1!==a.blacklist.indexOf(b.name)||"textStyle/span"===b.name&&a.removeOriginalDomElements})}for(d=0,e=this.getLength();e>d;d++){if(this.isElementData(d)){if(i=this.getType(d),a.conversions&&a.conversions[i]&&(i=a.conversions[i],this.getData(d).type=(this.isCloseElementData(d)?"/":"")+i),b&&"paragraph"!==i&&this.nodeFactory.canNodeContainContent(i)&&(i="paragraph",this.setData(d,{type:(this.isCloseElementData(d)?"/":"")+i})),a.blacklist&&-1!==a.blacklist.indexOf(i)||b&&"paragraph"!==i&&"internalList"!==i){this.splice(d,1),ve.getProp(this.getData(d),"internal","generated")&&(delete this.getData(d).internal.generated,ve.isEmptyObject(this.getData(d).internal)&&delete this.getData(d).internal),d--,e--;continue}if(!c&&d>0&&this.isCloseElementData(d)&&this.isOpenElementData(d-1)&&this.nodeFactory.canNodeContainContent(i)){this.splice(d-1,2),d-=2,e-=2;continue}}f=this.getAnnotationsFromOffset(d,!0),f.isEmpty()||(b?this.setAnnotationsAtOffset(d,g):h.getLength()&&(f.removeSet(h),this.setAnnotationsAtOffset(d,f))),this.isOpenElementData(d)&&a.removeOriginalDomElements&&delete this.getData(d).originalDomElements}},ve.dm.ElementLinearData.prototype.cloneElements=function(a){var b,c;for(b=0,c=this.getLength();c>b;b++)this.isOpenElementData(b)&&this.setData(b,ve.dm.Node["static"].cloneElement(this.getData(b),a))},ve.dm.ElementLinearData.prototype.countNonInternalElements=function(){var a,b,c,d=0,e=0;for(a=0,b=this.getLength();b>a;a++)c=this.getType(a),c&&this.nodeFactory.isNodeInternal(c)?this.isOpenElementData(a)?d++:d--:d||e++;return e},ve.dm.MetaLinearData=function(){ve.dm.MetaLinearData["super"].apply(this,arguments)},OO.inheritClass(ve.dm.MetaLinearData,ve.dm.LinearData),ve.dm.MetaLinearData["static"].merge=function(a){var b,c=[],d=!0;for(b=0;b<a.length;b++)void 0!==a[b]&&(d=!1,c=c.concat(a[b]));return d?[void 0]:[c]},ve.dm.MetaLinearData.prototype.getData=function(a,b){return void 0===a?this.data:void 0===b?this.data[a]:void 0===this.data[a]?void 0:this.data[a][b]},ve.dm.MetaLinearData.prototype.getDataLength=function(a){return void 0===this.data[a]?0:this.data[a].length},ve.dm.MetaLinearData.prototype.getTotalDataLength=function(){for(var a=0,b=this.getLength();b--;)a+=this.getDataLength(b);return a},ve.dm.MetaLinearData.prototype.spliceMetadataAtOffset=function(a,b,c,d){var e=this.getData(a);return e||(e=[],this.setData(a,e)),d=d||[],ve.batchSplice(e,b,c,d)},ve.dm.MetaLinearData.prototype.getAnnotationIndexesFromOffsetAndIndex=function(a,b){var c=this.getData(a,b);return c&&c.annotations||[]},ve.dm.MetaLinearData.prototype.getAnnotationsFromOffsetAndIndex=function(a,b){return new ve.dm.AnnotationSet(this.getStore(),this.getAnnotationIndexesFromOffsetAndIndex(a,b))},ve.dm.MetaLinearData.prototype.setAnnotationsAtOffsetAndIndex=function(a,b,c){var d=this.getData(a,b);c.isEmpty()?delete d.annotations:d.annotations=this.getStore().indexes(c.get())},ve.dm.GeneratedContentNode=function(){},OO.initClass(ve.dm.GeneratedContentNode),ve.dm.GeneratedContentNode["static"].storeGeneratedContents=function(a,b,c){var d=OO.getHash([this.getHashObject(a),void 0]);return c.index(b,d)},ve.dm.AlienNode=function(){ve.dm.AlienNode["super"].apply(this,arguments),ve.dm.FocusableNode.call(this)},OO.inheritClass(ve.dm.AlienNode,ve.dm.LeafNode),OO.mixinClass(ve.dm.AlienNode,ve.dm.FocusableNode),ve.dm.AlienNode["static"].name="alien",ve.dm.AlienNode["static"].preserveHtmlAttributes=!1,ve.dm.AlienNode["static"].enableAboutGrouping=!0,ve.dm.AlienNode["static"].matchRdfaTypes=["ve:Alien"],ve.dm.AlienNode["static"].toDataElement=function(a,b){var c=this.isHybridInline(a,b),d=c?"alienInline":"alienBlock";return{type:d}},ve.dm.AlienNode["static"].toDomElements=function(a,b){return ve.copyDomElements(a.originalDomElements,b)},ve.dm.AlienBlockNode=function(){ve.dm.AlienBlockNode["super"].apply(this,arguments)},OO.inheritClass(ve.dm.AlienBlockNode,ve.dm.AlienNode),ve.dm.AlienBlockNode["static"].name="alienBlock",ve.dm.AlienInlineNode=function(){ve.dm.AlienInlineNode["super"].apply(this,arguments)},OO.inheritClass(ve.dm.AlienInlineNode,ve.dm.AlienNode),ve.dm.AlienInlineNode["static"].name="alienInline",ve.dm.AlienInlineNode["static"].isContent=!0,ve.dm.modelRegistry.register(ve.dm.AlienBlockNode),ve.dm.modelRegistry.register(ve.dm.AlienInlineNode),ve.dm.BlockquoteNode=function(a,b){ve.dm.BranchNode.call(this,a,b)},OO.inheritClass(ve.dm.BlockquoteNode,ve.dm.BranchNode),ve.dm.BlockquoteNode["static"].name="blockquote",ve.dm.BlockquoteNode["static"].canContainContent=!0,ve.dm.BlockquoteNode["static"].matchTagNames=["blockquote"],ve.dm.modelRegistry.register(ve.dm.BlockquoteNode),ve.dm.BreakNode=function(){ve.dm.BreakNode["super"].apply(this,arguments)},OO.inheritClass(ve.dm.BreakNode,ve.dm.LeafNode),ve.dm.BreakNode["static"].name="break",ve.dm.BreakNode["static"].isContent=!0,ve.dm.BreakNode["static"].matchTagNames=["br"],ve.dm.modelRegistry.register(ve.dm.BreakNode),ve.dm.CenterNode=function(){ve.dm.CenterNode["super"].apply(this,arguments)
-},OO.inheritClass(ve.dm.CenterNode,ve.dm.BranchNode),ve.dm.CenterNode["static"].name="center",ve.dm.CenterNode["static"].matchTagNames=["center"],ve.dm.modelRegistry.register(ve.dm.CenterNode),ve.dm.DefinitionListItemNode=function(){ve.dm.DefinitionListItemNode["super"].apply(this,arguments)},OO.inheritClass(ve.dm.DefinitionListItemNode,ve.dm.BranchNode),ve.dm.DefinitionListItemNode["static"].name="definitionListItem",ve.dm.DefinitionListItemNode["static"].parentNodeTypes=["definitionList"],ve.dm.DefinitionListItemNode["static"].defaultAttributes={style:"term"},ve.dm.DefinitionListItemNode["static"].matchTagNames=["dt","dd"],ve.dm.DefinitionListItemNode["static"].toDataElement=function(a){var b="dt"===a[0].nodeName.toLowerCase()?"term":"definition";return{type:this.name,attributes:{style:b}}},ve.dm.DefinitionListItemNode["static"].toDomElements=function(a,b){var c=a.attributes&&"term"===a.attributes.style?"dt":"dd";return[b.createElement(c)]},ve.dm.modelRegistry.register(ve.dm.DefinitionListItemNode),ve.dm.DefinitionListNode=function(){ve.dm.DefinitionListNode["super"].apply(this,arguments)},OO.inheritClass(ve.dm.DefinitionListNode,ve.dm.BranchNode),ve.dm.DefinitionListNode["static"].name="definitionList",ve.dm.DefinitionListNode["static"].childNodeTypes=["definitionListItem"],ve.dm.DefinitionListNode["static"].matchTagNames=["dl"],ve.dm.modelRegistry.register(ve.dm.DefinitionListNode),ve.dm.DivNode=function(){ve.dm.DivNode["super"].apply(this,arguments)},OO.inheritClass(ve.dm.DivNode,ve.dm.BranchNode),ve.dm.DivNode["static"].name="div",ve.dm.DivNode["static"].matchTagNames=["div"],ve.dm.modelRegistry.register(ve.dm.DivNode),ve.dm.DocumentNode=function(a){ve.dm.DocumentNode["super"].call(this,null,a),this.root=this},OO.inheritClass(ve.dm.DocumentNode,ve.dm.BranchNode),ve.dm.DocumentNode["static"].name="document",ve.dm.DocumentNode["static"].isWrapped=!1,ve.dm.DocumentNode["static"].parentNodeTypes=[],ve.dm.DocumentNode["static"].matchTagNames=[],ve.dm.modelRegistry.register(ve.dm.DocumentNode),ve.dm.HeadingNode=function(){ve.dm.HeadingNode["super"].apply(this,arguments)},OO.inheritClass(ve.dm.HeadingNode,ve.dm.ContentBranchNode),ve.dm.HeadingNode["static"].name="heading",ve.dm.HeadingNode["static"].canContainContent=!0,ve.dm.HeadingNode["static"].defaultAttributes={level:1},ve.dm.HeadingNode["static"].matchTagNames=["h1","h2","h3","h4","h5","h6"],ve.dm.HeadingNode["static"].toDataElement=function(a){var b={h1:1,h2:2,h3:3,h4:4,h5:5,h6:6},c=b[a[0].nodeName.toLowerCase()];return{type:this.name,attributes:{level:c}}},ve.dm.HeadingNode["static"].toDomElements=function(a,b){var c=a.attributes&&a.attributes.level||1;return[b.createElement("h"+c)]},ve.dm.modelRegistry.register(ve.dm.HeadingNode),ve.dm.InternalItemNode=function(){ve.dm.InternalItemNode["super"].apply(this,arguments)},OO.inheritClass(ve.dm.InternalItemNode,ve.dm.BranchNode),ve.dm.InternalItemNode["static"].name="internalItem",ve.dm.InternalItemNode["static"].matchTagNames=[],ve.dm.InternalItemNode["static"].ignoreChildren=!0,ve.dm.InternalItemNode["static"].isInternal=!0,ve.dm.modelRegistry.register(ve.dm.InternalItemNode),ve.dm.InternalListNode=function(){ve.dm.InternalListNode["super"].apply(this,arguments)},OO.inheritClass(ve.dm.InternalListNode,ve.dm.BranchNode),ve.dm.InternalListNode["static"].name="internalList",ve.dm.InternalListNode["static"].childNodeTypes=["internalItem"],ve.dm.InternalListNode["static"].matchTagNames=[],ve.dm.InternalListNode["static"].isInternal=!0,ve.dm.modelRegistry.register(ve.dm.InternalListNode),ve.dm.ListItemNode=function(){ve.dm.ListItemNode["super"].apply(this,arguments)},OO.inheritClass(ve.dm.ListItemNode,ve.dm.BranchNode),ve.dm.ListItemNode["static"].name="listItem",ve.dm.ListItemNode["static"].parentNodeTypes=["list"],ve.dm.ListItemNode["static"].matchTagNames=["li"],ve.dm.modelRegistry.register(ve.dm.ListItemNode),ve.dm.ListNode=function(){ve.dm.ListNode["super"].apply(this,arguments)},OO.inheritClass(ve.dm.ListNode,ve.dm.BranchNode),ve.dm.ListNode["static"].name="list",ve.dm.ListNode["static"].childNodeTypes=["listItem"],ve.dm.ListNode["static"].defaultAttributes={style:"bullet"},ve.dm.ListNode["static"].matchTagNames=["ul","ol"],ve.dm.ListNode["static"].toDataElement=function(a){var b="ol"===a[0].nodeName.toLowerCase()?"number":"bullet";return{type:this.name,attributes:{style:b}}},ve.dm.ListNode["static"].toDomElements=function(a,b){var c=a.attributes&&"number"===a.attributes.style?"ol":"ul";return[b.createElement(c)]},ve.dm.ListNode.prototype.canHaveSlugAfter=function(){return!1},ve.dm.modelRegistry.register(ve.dm.ListNode),ve.dm.ParagraphNode=function(){ve.dm.ParagraphNode["super"].apply(this,arguments)},OO.inheritClass(ve.dm.ParagraphNode,ve.dm.ContentBranchNode),ve.dm.ParagraphNode["static"].name="paragraph",ve.dm.ParagraphNode["static"].canContainContent=!0,ve.dm.ParagraphNode["static"].matchTagNames=["p"],ve.dm.modelRegistry.register(ve.dm.ParagraphNode),ve.dm.PreformattedNode=function(){ve.dm.PreformattedNode["super"].apply(this,arguments)},OO.inheritClass(ve.dm.PreformattedNode,ve.dm.ContentBranchNode),ve.dm.PreformattedNode["static"].name="preformatted",ve.dm.PreformattedNode["static"].canContainContent=!0,ve.dm.PreformattedNode["static"].hasSignificantWhitespace=!0,ve.dm.PreformattedNode["static"].matchTagNames=["pre"],ve.dm.modelRegistry.register(ve.dm.PreformattedNode),ve.dm.TableCaptionNode=function(){ve.dm.TableCaptionNode["super"].apply(this,arguments)},OO.inheritClass(ve.dm.TableCaptionNode,ve.dm.BranchNode),ve.dm.TableCaptionNode["static"].name="tableCaption",ve.dm.TableCaptionNode["static"].parentNodeTypes=["table"],ve.dm.TableCaptionNode["static"].matchTagNames=["caption"],ve.dm.modelRegistry.register(ve.dm.TableCaptionNode),ve.dm.TableCellNode=function(){ve.dm.TableCellNode["super"].apply(this,arguments),this.connect(this,{attributeChange:"onAttributeChange"})},OO.inheritClass(ve.dm.TableCellNode,ve.dm.BranchNode),ve.dm.TableCellNode["static"].name="tableCell",ve.dm.TableCellNode["static"].parentNodeTypes=["tableRow"],ve.dm.TableCellNode["static"].defaultAttributes={style:"data"},ve.dm.TableCellNode["static"].matchTagNames=["td","th"],ve.dm.TableCellNode["static"].preserveHtmlAttributes=function(a){return"colspan"!==a&&"rowspan"!==a},ve.dm.TableCellNode["static"].toDataElement=function(a){var b={style:"th"===a[0].nodeName.toLowerCase()?"header":"data"},c=a[0].getAttribute("colspan"),d=a[0].getAttribute("rowspan");return null!==c&&(b.originalColspan=c,""===c||isNaN(Number(c))||(b.colspan=Number(c))),null!==d&&(b.originalRowspan=d,""===d||isNaN(Number(d))||(b.rowspan=Number(d))),{type:this.name,attributes:b}},ve.dm.TableCellNode["static"].toDomElements=function(a,b){var c=a.attributes&&"header"===a.attributes.style?"th":"td",d=b.createElement(c),e=a.attributes,f={colspan:e.colspan,rowspan:e.rowspan};return 1===e.colspan&&1!==Number(e.originalColspan)&&(f.colspan=null),1===e.rowspan&&1!==Number(e.originalRowspan)&&(f.rowspan=null),(void 0===e.colspan||e.colspan===Number(e.originalColspan))&&(f.colspan=e.originalColspan),(void 0===e.rowspan||e.rowspan===Number(e.originalRowspan))&&(f.rowspan=e.originalRowspan),ve.setDomAttributes(d,f),[d]},ve.dm.TableCellNode["static"].createData=function(a){var b,c;return a=a||{},b={type:"tableCell",attributes:{style:a.style||"data",rowspan:a.rowspan||1,colspan:a.colspan||1}},c=a.content||[{type:"paragraph",internal:{generated:"wrapper"}},{type:"/paragraph"}],[b].concat(c).concat([{type:"/tableCell"}])},ve.dm.TableCellNode.prototype.getRowspan=function(){return this.element.attributes.rowspan||1},ve.dm.TableCellNode.prototype.getColspan=function(){return this.element.attributes.colspan||1},ve.dm.TableCellNode.prototype.getSpans=function(){return{col:this.getColspan(),row:this.getRowspan()}},ve.dm.TableCellNode.prototype.getStyle=function(){return this.element.attributes.style||"data"},ve.dm.TableCellNode.prototype.onAttributeChange=function(a){!this.getParent()||"colspan"!==a&&"rowspan"!==a||this.getParent().getParent().getParent().getMatrix().invalidate()},ve.dm.modelRegistry.register(ve.dm.TableCellNode),ve.dm.TableNode=function(){ve.dm.TableNode["super"].apply(this,arguments),this.matrix=new ve.dm.TableMatrix(this),this.connect(this,{splice:"onSplice"})},OO.inheritClass(ve.dm.TableNode,ve.dm.BranchNode),ve.dm.TableNode["static"].name="table",ve.dm.TableNode["static"].childNodeTypes=["tableSection","tableCaption"],ve.dm.TableNode["static"].matchTagNames=["table"],ve.dm.TableNode.prototype.onSplice=function(){this.getMatrix().invalidate()},ve.dm.TableNode.prototype.getMatrix=function(){return this.matrix},ve.dm.TableNode.prototype.getCaptionNode=function(){var a,b;for(a=0,b=this.children.length;b>a;a++)if(this.children[a]instanceof ve.dm.TableCaptionNode)return this.children[a];return null},ve.dm.TableNode.prototype.getIterator=function(){return new ve.dm.TableNodeCellIterator(this)},ve.dm.modelRegistry.register(ve.dm.TableNode),ve.dm.TableNodeCellIterator=function(a){OO.EventEmitter.call(this),this.table=a,this.sectionIndex=0,this.rowIndex=0,this.cellIndex=0,this.sectionCount=this.table.children.length,this.rowCount=0,this.cellCount=0,this.sectionNode=null,this.rowNode=null,this.cellNode=null,this.finished=!1},OO.mixinClass(ve.dm.TableNodeCellIterator,OO.EventEmitter),ve.dm.TableNodeCellIterator.prototype.isFinished=function(){return this.finished},ve.dm.TableNodeCellIterator.prototype.next=function(){if(this.isFinished())throw new Error("TableNodeCellIterator has no more cells left.");return this.nextCell(this),this.cellNode},ve.dm.TableNodeCellIterator.prototype.nextSection=function(){if(this.sectionIndex>=this.sectionCount)return this.finished=!0,void(this.sectionNode=void 0);var a=this.table.children[this.sectionIndex];return this.sectionIndex++,this.rowIndex=0,a instanceof ve.dm.TableSectionNode?(this.sectionNode=a,this.rowCount=this.sectionNode.children.length,this.emit("newSection",this.sectionNode),void 0):void this.nextSection()},ve.dm.TableNodeCellIterator.prototype.nextRow=function(){if(this.rowIndex>=this.rowCount&&(this.nextSection(),this.isFinished()))return void(this.rowNode=void 0);var a=this.sectionNode.children[this.rowIndex];return this.rowIndex++,this.cellIndex=0,a instanceof ve.dm.TableRowNode?(this.rowNode=a,this.cellCount=this.rowNode.children.length,this.emit("newRow",this.rowNode),void 0):void this.nextRow()},ve.dm.TableNodeCellIterator.prototype.nextCell=function(){if(this.sectionNode||this.nextSection(),this.rowNode||this.nextRow(),this.cellIndex>=this.cellCount&&(this.nextRow(),this.isFinished()))return void(this.cellNode=void 0);var a=this.rowNode.children[this.cellIndex];this.cellNode=a instanceof ve.dm.TableCellNode?a:null,this.cellIndex++},ve.dm.TableRowNode=function(){ve.dm.TableRowNode["super"].apply(this,arguments),this.connect(this,{splice:"onSplice"})},OO.inheritClass(ve.dm.TableRowNode,ve.dm.BranchNode),ve.dm.TableRowNode["static"].name="tableRow",ve.dm.TableRowNode["static"].childNodeTypes=["tableCell"],ve.dm.TableRowNode["static"].parentNodeTypes=["tableSection"],ve.dm.TableRowNode["static"].matchTagNames=["tr"],ve.dm.TableRowNode["static"].createData=function(a){a=a||{};var b,c=[],d=a.cellCount||1;for(c.push({type:"tableRow"}),b=0;d>b;b++)c=c.concat(ve.dm.TableCellNode["static"].createData(a));return c.push({type:"/tableRow"}),c},ve.dm.TableRowNode.prototype.onSplice=function(){this.getRoot()&&this.getParent().getParent().getMatrix().invalidate()},ve.dm.modelRegistry.register(ve.dm.TableRowNode),ve.dm.TableSectionNode=function(){ve.dm.TableSectionNode["super"].apply(this,arguments),this.connect(this,{splice:"onSplice"})},OO.inheritClass(ve.dm.TableSectionNode,ve.dm.BranchNode),ve.dm.TableSectionNode["static"].name="tableSection",ve.dm.TableSectionNode["static"].childNodeTypes=["tableRow"],ve.dm.TableSectionNode["static"].parentNodeTypes=["table"],ve.dm.TableSectionNode["static"].defaultAttributes={style:"body"},ve.dm.TableSectionNode["static"].matchTagNames=["thead","tbody","tfoot"],ve.dm.TableSectionNode["static"].toDataElement=function(a){var b={thead:"header",tbody:"body",tfoot:"footer"},c=b[a[0].nodeName.toLowerCase()]||"body";return{type:this.name,attributes:{style:c}}},ve.dm.TableSectionNode["static"].toDomElements=function(a,b){var c={header:"thead",body:"tbody",footer:"tfoot"},d=c[a.attributes&&a.attributes.style||"body"];return[b.createElement(d)]},ve.dm.TableSectionNode.prototype.onSplice=function(){this.getRoot()&&this.getParent().getMatrix().invalidate()},ve.dm.modelRegistry.register(ve.dm.TableSectionNode),ve.dm.TextNode=function(a){ve.dm.TextNode["super"].call(this),this.length=a||0},OO.inheritClass(ve.dm.TextNode,ve.dm.LeafNode),ve.dm.TextNode["static"].name="text",ve.dm.TextNode["static"].isWrapped=!1,ve.dm.TextNode["static"].isContent=!0,ve.dm.TextNode["static"].matchTagNames=[],ve.dm.TextNode.prototype.canHaveSlugBefore=function(){return!1},ve.dm.TextNode.prototype.canHaveSlugAfter=function(){return!1},ve.dm.modelRegistry.register(ve.dm.TextNode),ve.dm.ImageNode=function(){ve.dm.FocusableNode.call(this),ve.dm.ResizableNode.call(this)},OO.mixinClass(ve.dm.ImageNode,ve.dm.FocusableNode),OO.mixinClass(ve.dm.ImageNode,ve.dm.ResizableNode),ve.dm.ImageNode.prototype.createScalable=function(){return new ve.dm.Scalable({currentDimensions:{width:this.getAttribute("width"),height:this.getAttribute("height")},minDimensions:{width:1,height:1}})},ve.dm.BlockImageNode=function(){ve.dm.BlockImageNode["super"].apply(this,arguments),ve.dm.ImageNode.call(this),ve.dm.AlignableNode.call(this)},OO.inheritClass(ve.dm.BlockImageNode,ve.dm.BranchNode),OO.mixinClass(ve.dm.BlockImageNode,ve.dm.ImageNode),OO.mixinClass(ve.dm.BlockImageNode,ve.dm.ClassAttributeNode),OO.mixinClass(ve.dm.BlockImageNode,ve.dm.AlignableNode),ve.dm.BlockImageNode["static"].name="blockImage",ve.dm.BlockImageNode["static"].preserveHtmlAttributes=function(a){var b=["src","width","height","href"];return-1===b.indexOf(a)},ve.dm.BlockImageNode["static"].handlesOwnChildren=!0,ve.dm.BlockImageNode["static"].ignoreChildren=!0,ve.dm.BlockImageNode["static"].childNodeTypes=["imageCaption"],ve.dm.BlockImageNode["static"].matchTagNames=["figure"],ve.dm.BlockImageNode["static"].toDataElement=function(a,b){function c(a,b){return Array.prototype.filter.call(a.childNodes,function(a){return-1!==b.indexOf(a.nodeName.toLowerCase())})}var d,e=a[0],f=e.getAttribute("class"),g=c(e,"img")[0]||null,h=c(e,"figcaption")[0]||null,i={src:g&&g.getAttribute("src")},j=g&&g.getAttribute("width"),k=g&&g.getAttribute("height"),l=g&&g.getAttribute("alt");return void 0!==l&&(i.alt=l),this.setClassAttributes(i,f),i.width=void 0!==j&&""!==j?Number(j):null,i.height=void 0!==k&&""!==k?Number(k):null,d={type:this.name,attributes:i},h?[d].concat(b.getDataFromDomClean(h,{type:"imageCaption"})).concat([{type:"/"+this.name}]):[d,{type:"imageCaption"},{type:"/imageCaption"},{type:"/"+this.name}]},ve.dm.BlockImageNode["static"].toDomElements=function(a,b,c){var d=a[0],e=d.attributes.width,f=d.attributes.height,g=this.getClassAttrFromAttributes(d.attributes),h=b.createElement("figure"),i=b.createElement("img"),j=b.createElement("div"),k=a.slice(1,-1);if(i.setAttribute("src",d.attributes.src),i.setAttribute("width",e),i.setAttribute("height",f),void 0!==d.attributes.alt&&i.setAttribute("alt",d.attributes.alt),h.appendChild(i),g&&(h.className=g),k.length>2)for(c.getDomSubtreeFromData(a.slice(1,-1),j);j.firstChild;)h.appendChild(j.firstChild);return[h]},ve.dm.BlockImageNode.prototype.getCaptionNode=function(){var a=this.children[0];return a instanceof ve.dm.BlockImageCaptionNode?a:null},ve.dm.modelRegistry.register(ve.dm.BlockImageNode),ve.dm.BlockImageCaptionNode=function(){ve.dm.BlockImageCaptionNode["super"].apply(this,arguments)},OO.inheritClass(ve.dm.BlockImageCaptionNode,ve.dm.BranchNode),ve.dm.BlockImageCaptionNode["static"].name="imageCaption",ve.dm.BlockImageCaptionNode["static"].matchTagNames=[],ve.dm.BlockImageCaptionNode["static"].parentNodeTypes=["blockImage"],ve.dm.BlockImageCaptionNode["static"].toDomElements=function(a,b){return[b.createElement("figcaption")]},ve.dm.modelRegistry.register(ve.dm.BlockImageCaptionNode),ve.dm.InlineImageNode=function(){ve.dm.InlineImageNode["super"].apply(this,arguments),ve.dm.ImageNode.call(this)},OO.inheritClass(ve.dm.InlineImageNode,ve.dm.LeafNode),OO.mixinClass(ve.dm.InlineImageNode,ve.dm.ImageNode),ve.dm.InlineImageNode["static"].name="inlineImage",ve.dm.InlineImageNode["static"].isContent=!0,ve.dm.InlineImageNode["static"].matchTagNames=["img"],ve.dm.InlineImageNode["static"].toDataElement=function(a){var b=$(a[0]),c=b.attr("alt"),d=b.attr("width"),e=b.attr("height");return{type:this.name,attributes:{src:b.attr("src"),alt:void 0!==c?c:null,width:void 0!==d&&""!==d?Number(d):null,height:void 0!==e&&""!==e?Number(e):null}}},ve.dm.InlineImageNode["static"].toDomElements=function(a,b){var c=b.createElement("img");return ve.setDomAttributes(c,a.attributes,["alt","src","width","height"]),[c]},ve.dm.modelRegistry.register(ve.dm.InlineImageNode),ve.dm.LanguageAnnotation=function(){ve.dm.LanguageAnnotation["super"].apply(this,arguments)},OO.inheritClass(ve.dm.LanguageAnnotation,ve.dm.Annotation),ve.dm.LanguageAnnotation["static"].name="meta/language",ve.dm.LanguageAnnotation["static"].matchTagNames=["span"],ve.dm.LanguageAnnotation["static"].matchFunction=function(a){var b=a.getAttribute("lang"),c=(a.getAttribute("dir")||"").toLowerCase();return b||"ltr"===c||"rtl"===c},ve.dm.LanguageAnnotation["static"].applyToAppendedContent=!0,ve.dm.LanguageAnnotation["static"].toDataElement=function(a){return{type:this.name,attributes:{lang:a[0].getAttribute("lang"),dir:a[0].getAttribute("dir")}}},ve.dm.LanguageAnnotation["static"].toDomElements=function(a,b){var c=b.createElement("span");return a.attributes.lang&&c.setAttribute("lang",a.attributes.lang),a.attributes.dir&&c.setAttribute("dir",a.attributes.dir),[c]},ve.dm.LanguageAnnotation.prototype.getComparableObject=function(){return{type:"meta/language",lang:this.getAttribute("lang"),dir:this.getAttribute("dir")}},ve.dm.modelRegistry.register(ve.dm.LanguageAnnotation),ve.dm.LinkAnnotation=function(){ve.dm.LinkAnnotation["super"].apply(this,arguments)},OO.inheritClass(ve.dm.LinkAnnotation,ve.dm.Annotation),ve.dm.LinkAnnotation["static"].name="link",ve.dm.LinkAnnotation["static"].matchTagNames=["a"],ve.dm.LinkAnnotation["static"].splitOnWordbreak=!0,ve.dm.LinkAnnotation["static"].toDataElement=function(a){return{type:this.name,attributes:{href:a[0].getAttribute("href")}}},ve.dm.LinkAnnotation["static"].toDomElements=function(a,b){var c=b.createElement("a");return c.setAttribute("href",this.getHref(a)),[c]},ve.dm.LinkAnnotation["static"].getHref=function(a){return a.attributes.href},ve.dm.LinkAnnotation.prototype.getHref=function(){return this.constructor["static"].getHref(this.element)},ve.dm.LinkAnnotation.prototype.getComparableObject=function(){return{type:this.getType(),href:this.getAttribute("href")}},ve.dm.LinkAnnotation.prototype.getComparableHtmlAttributes=function(){var a=ve.dm.LinkAnnotation["super"].prototype.getComparableHtmlAttributes.call(this);return delete a.href,a},ve.dm.modelRegistry.register(ve.dm.LinkAnnotation),ve.dm.TextStyleAnnotation=function(){ve.dm.TextStyleAnnotation["super"].apply(this,arguments)},OO.inheritClass(ve.dm.TextStyleAnnotation,ve.dm.Annotation),ve.dm.TextStyleAnnotation["static"].name="textStyle",ve.dm.TextStyleAnnotation["static"].matchTagNames=[],ve.dm.TextStyleAnnotation["static"].toDataElement=function(a,b){var c=b.isFromClipboard()?this.matchTagNames[0]:a[0].nodeName.toLowerCase();return{type:this.name,attributes:{nodeName:c}}},ve.dm.TextStyleAnnotation["static"].toDomElements=function(a,b){var c=ve.getProp(a,"attributes","nodeName");return[b.createElement(c||this.matchTagNames[0])]},ve.dm.TextStyleAnnotation.prototype.getComparableObject=function(){return{type:this.getType()}},ve.dm.modelRegistry.register(ve.dm.TextStyleAnnotation),ve.dm.AbbreviationAnnotation=function(){ve.dm.AbbreviationAnnotation["super"].apply(this,arguments)},OO.inheritClass(ve.dm.AbbreviationAnnotation,ve.dm.TextStyleAnnotation),ve.dm.AbbreviationAnnotation["static"].name="textStyle/abbreviation",ve.dm.AbbreviationAnnotation["static"].matchTagNames=["abbr"],ve.dm.modelRegistry.register(ve.dm.AbbreviationAnnotation),ve.dm.BigAnnotation=function(){ve.dm.BigAnnotation["super"].apply(this,arguments)},OO.inheritClass(ve.dm.BigAnnotation,ve.dm.TextStyleAnnotation),ve.dm.BigAnnotation["static"].name="textStyle/big",ve.dm.BigAnnotation["static"].matchTagNames=["big"],ve.dm.modelRegistry.register(ve.dm.BigAnnotation),ve.dm.BoldAnnotation=function(){ve.dm.BoldAnnotation["super"].apply(this,arguments)},OO.inheritClass(ve.dm.BoldAnnotation,ve.dm.TextStyleAnnotation),ve.dm.BoldAnnotation["static"].name="textStyle/bold",ve.dm.BoldAnnotation["static"].matchTagNames=["b","strong"],ve.dm.modelRegistry.register(ve.dm.BoldAnnotation),ve.dm.CodeSampleAnnotation=function(){ve.dm.CodeSampleAnnotation["super"].apply(this,arguments)},OO.inheritClass(ve.dm.CodeSampleAnnotation,ve.dm.TextStyleAnnotation),ve.dm.CodeSampleAnnotation["static"].name="textStyle/codeSample",ve.dm.CodeSampleAnnotation["static"].matchTagNames=["samp"],ve.dm.modelRegistry.register(ve.dm.CodeSampleAnnotation),ve.dm.CodeAnnotation=function(){ve.dm.CodeAnnotation["super"].apply(this,arguments)},OO.inheritClass(ve.dm.CodeAnnotation,ve.dm.TextStyleAnnotation),ve.dm.CodeAnnotation["static"].name="textStyle/code",ve.dm.CodeAnnotation["static"].matchTagNames=["code","tt"],ve.dm.modelRegistry.register(ve.dm.CodeAnnotation),ve.dm.DatetimeAnnotation=function(){ve.dm.DatetimeAnnotation["super"].apply(this,arguments)},OO.inheritClass(ve.dm.DatetimeAnnotation,ve.dm.TextStyleAnnotation),ve.dm.DatetimeAnnotation["static"].name="textStyle/datetime",ve.dm.DatetimeAnnotation["static"].matchTagNames=["time"],ve.dm.modelRegistry.register(ve.dm.DatetimeAnnotation),ve.dm.DefinitionAnnotation=function(){ve.dm.DefinitionAnnotation["super"].apply(this,arguments)},OO.inheritClass(ve.dm.DefinitionAnnotation,ve.dm.TextStyleAnnotation),ve.dm.DefinitionAnnotation["static"].name="textStyle/definition",ve.dm.DefinitionAnnotation["static"].matchTagNames=["dfn"],ve.dm.modelRegistry.register(ve.dm.DefinitionAnnotation),ve.dm.FontAnnotation=function(){ve.dm.FontAnnotation["super"].apply(this,arguments)},OO.inheritClass(ve.dm.FontAnnotation,ve.dm.TextStyleAnnotation),ve.dm.FontAnnotation["static"].name="textStyle/font",ve.dm.FontAnnotation["static"].matchTagNames=["font"],ve.dm.modelRegistry.register(ve.dm.FontAnnotation),ve.dm.HighlightAnnotation=function(){ve.dm.HighlightAnnotation["super"].apply(this,arguments)},OO.inheritClass(ve.dm.HighlightAnnotation,ve.dm.TextStyleAnnotation),ve.dm.HighlightAnnotation["static"].name="textStyle/highlight",ve.dm.HighlightAnnotation["static"].matchTagNames=["mark"],ve.dm.modelRegistry.register(ve.dm.HighlightAnnotation),ve.dm.ItalicAnnotation=function(){ve.dm.ItalicAnnotation["super"].apply(this,arguments)},OO.inheritClass(ve.dm.ItalicAnnotation,ve.dm.TextStyleAnnotation),ve.dm.ItalicAnnotation["static"].name="textStyle/italic",ve.dm.ItalicAnnotation["static"].matchTagNames=["i","em"],ve.dm.modelRegistry.register(ve.dm.ItalicAnnotation),ve.dm.QuotationAnnotation=function(){ve.dm.QuotationAnnotation["super"].apply(this,arguments)},OO.inheritClass(ve.dm.QuotationAnnotation,ve.dm.TextStyleAnnotation),ve.dm.QuotationAnnotation["static"].name="textStyle/quotation",ve.dm.QuotationAnnotation["static"].matchTagNames=["q"],ve.dm.modelRegistry.register(ve.dm.QuotationAnnotation),ve.dm.SmallAnnotation=function(){ve.dm.SmallAnnotation["super"].apply(this,arguments)},OO.inheritClass(ve.dm.SmallAnnotation,ve.dm.TextStyleAnnotation),ve.dm.SmallAnnotation["static"].name="textStyle/small",ve.dm.SmallAnnotation["static"].matchTagNames=["small"],ve.dm.modelRegistry.register(ve.dm.SmallAnnotation),ve.dm.SpanAnnotation=function(){ve.dm.SpanAnnotation["super"].apply(this,arguments)},OO.inheritClass(ve.dm.SpanAnnotation,ve.dm.TextStyleAnnotation),ve.dm.SpanAnnotation["static"].name="textStyle/span",ve.dm.SpanAnnotation["static"].matchTagNames=["span"],ve.dm.modelRegistry.register(ve.dm.SpanAnnotation),ve.dm.StrikethroughAnnotation=function(){ve.dm.StrikethroughAnnotation["super"].apply(this,arguments)},OO.inheritClass(ve.dm.StrikethroughAnnotation,ve.dm.TextStyleAnnotation),ve.dm.StrikethroughAnnotation["static"].name="textStyle/strikethrough",ve.dm.StrikethroughAnnotation["static"].matchTagNames=["s"],ve.dm.modelRegistry.register(ve.dm.StrikethroughAnnotation),ve.dm.SubscriptAnnotation=function(){ve.dm.SubscriptAnnotation["super"].apply(this,arguments)},OO.inheritClass(ve.dm.SubscriptAnnotation,ve.dm.TextStyleAnnotation),ve.dm.SubscriptAnnotation["static"].name="textStyle/subscript",ve.dm.SubscriptAnnotation["static"].matchTagNames=["sub"],ve.dm.SubscriptAnnotation["static"].removes=["textStyle/superscript"],ve.dm.modelRegistry.register(ve.dm.SubscriptAnnotation),ve.dm.SuperscriptAnnotation=function(){ve.dm.SuperscriptAnnotation["super"].apply(this,arguments)},OO.inheritClass(ve.dm.SuperscriptAnnotation,ve.dm.TextStyleAnnotation),ve.dm.SuperscriptAnnotation["static"].name="textStyle/superscript",ve.dm.SuperscriptAnnotation["static"].matchTagNames=["sup"],ve.dm.SuperscriptAnnotation["static"].removes=["textStyle/subscript"],ve.dm.modelRegistry.register(ve.dm.SuperscriptAnnotation),ve.dm.UnderlineAnnotation=function(){ve.dm.UnderlineAnnotation["super"].apply(this,arguments)},OO.inheritClass(ve.dm.UnderlineAnnotation,ve.dm.TextStyleAnnotation),ve.dm.UnderlineAnnotation["static"].name="textStyle/underline",ve.dm.UnderlineAnnotation["static"].matchTagNames=["u"],ve.dm.modelRegistry.register(ve.dm.UnderlineAnnotation),ve.dm.UserInputAnnotation=function(){ve.dm.UserInputAnnotation["super"].apply(this,arguments)},OO.inheritClass(ve.dm.UserInputAnnotation,ve.dm.TextStyleAnnotation),ve.dm.UserInputAnnotation["static"].name="textStyle/userInput",ve.dm.UserInputAnnotation["static"].matchTagNames=["kbd"],ve.dm.modelRegistry.register(ve.dm.UserInputAnnotation),ve.dm.VariableAnnotation=function(){ve.dm.VariableAnnotation["super"].apply(this,arguments)},OO.inheritClass(ve.dm.VariableAnnotation,ve.dm.TextStyleAnnotation),ve.dm.VariableAnnotation["static"].name="textStyle/variable",ve.dm.VariableAnnotation["static"].matchTagNames=["var"],ve.dm.modelRegistry.register(ve.dm.VariableAnnotation),ve.dm.AlienMetaItem=function(){ve.dm.AlienMetaItem["super"].apply(this,arguments)},OO.inheritClass(ve.dm.AlienMetaItem,ve.dm.MetaItem),ve.dm.AlienMetaItem["static"].name="alienMeta",ve.dm.AlienMetaItem["static"].matchTagNames=["meta","link"],ve.dm.AlienMetaItem["static"].preserveHtmlAttributes=!1,ve.dm.AlienMetaItem["static"].toDomElements=function(a,b){return ve.copyDomElements(a.originalDomElements,b)},ve.dm.modelRegistry.register(ve.dm.AlienMetaItem),ve.dm.CommentMetaItem=function(){ve.dm.CommentMetaItem["super"].apply(this,arguments)},OO.inheritClass(ve.dm.CommentMetaItem,ve.dm.MetaItem),ve.dm.CommentMetaItem["static"].name="commentMeta",ve.dm.CommentMetaItem["static"].matchTagNames=[],ve.dm.CommentMetaItem["static"].preserveHtmlAttributes=!1,ve.dm.CommentMetaItem["static"].toDomElements=function(a,b){return[b.createComment(a.attributes.text)]},ve.dm.modelRegistry.register(ve.dm.CommentMetaItem),ve.dm.CommentNode=function(a){ve.dm.CommentNode["super"].call(this,a),ve.dm.FocusableNode.call(this)},OO.inheritClass(ve.dm.CommentNode,ve.dm.LeafNode),OO.mixinClass(ve.dm.CommentNode,ve.dm.FocusableNode),ve.dm.CommentNode["static"].isContent=!0,ve.dm.CommentNode["static"].preserveHtmlAttributes=!1,ve.dm.CommentNode["static"].toDataElement=function(a,b){var c;return c=a[0].nodeType===Node.COMMENT_NODE?$("<textarea/>").html(a[0].data).text():a[0].getAttribute("data-ve-comment"),{type:b.isValidChildNodeType("comment")&&""!==c?"comment":"commentMeta",attributes:{text:c}}},ve.dm.CommentNode["static"].toDomElements=function(a,b,c){var d,e;return c.isForClipboard()?(d=b.createElement("span"),d.setAttribute("rel","ve:Comment"),d.setAttribute("data-ve-comment",a.attributes.text),[d]):(e=a.attributes.text.replace(/^[->]|--|-$|&/g,function(a){return a.slice(0,a.length-1)+"&#"+a.charCodeAt(a.length-1)+";"}),[b.createComment(e)])},ve.dm.RealCommentNode=function(){ve.dm.RealCommentNode["super"].apply(this,arguments)},OO.inheritClass(ve.dm.RealCommentNode,ve.dm.CommentNode),ve.dm.RealCommentNode["static"].name="comment",ve.dm.RealCommentNode["static"].matchTagNames=["#comment"],ve.dm.FakeCommentNode=function(){ve.dm.FakeCommentNode["super"].apply(this,arguments)},OO.inheritClass(ve.dm.FakeCommentNode,ve.dm.CommentNode),ve.dm.FakeCommentNode["static"].name="fakeComment",ve.dm.FakeCommentNode["static"].matchRdfaTypes=["ve:Comment"],ve.dm.modelRegistry.register(ve.dm.RealCommentNode),ve.dm.modelRegistry.register(ve.dm.FakeCommentNode);
+/*!
+ * VisualEditor DataModel namespace.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * Namespace for all VisualEditor DataModel classes, static methods and static properties.
+ * @class
+ * @singleton
+ */
+ve.dm = {
+	// modelRegistry: Initialized in ve.dm.ModelRegistry.js
+	// nodeFactory: Initialized in ve.dm.NodeFactory.js
+	// annotationFactory: Initialized in ve.dm.AnnotationFactory.js
+	// converter: Initialized in ve.dm.Converter.js
+};
+
+/*!
+ * VisualEditor DataModel Model class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * Base class for DM models.
+ *
+ * @class
+ * @abstract
+ *
+ * @constructor
+ * @param {Object} element Reference to plain object in linear model
+ */
+ve.dm.Model = function VeDmModel( element ) {
+	// Properties
+	this.element = element || { type: this.constructor.static.name };
+};
+
+/* Inheritance */
+
+OO.initClass( ve.dm.Model );
+
+/* Static Properties */
+
+/**
+ * Symbolic name for this model class. Must be set to a unique string by every subclass.
+ * @static
+ * @property {string}
+ * @inheritable
+ */
+ve.dm.Model.static.name = null;
+
+/**
+ * Array of HTML tag names that this model should be a match candidate for.
+ * Empty array means none, null means any.
+ * For more information about element matching, see ve.dm.ModelRegistry.
+ * @static
+ * @property {string[]}
+ * @inheritable
+ */
+ve.dm.Model.static.matchTagNames = null;
+
+/**
+ * Array of RDFa types that this model should be a match candidate for.
+ * Any other types the element might have must be specified in allowedRdfaTypes.
+ * Empty array means none, null means any.
+ * For more information about element matching, see ve.dm.ModelRegistry.
+ * @static
+ * @property {Array}
+ * @inheritable
+ */
+ve.dm.Model.static.matchRdfaTypes = null;
+
+/**
+ * Extra RDFa types that the element is allowed to have (but don't by
+ * themselves trigger a match).
+ * Empty array means none, null means any.
+ * For more information about element matching, see ve.dm.ModelRegistry.
+ * @static
+ * @property {Array}
+ * @inheritable
+ */
+ve.dm.Model.static.allowedRdfaTypes = [];
+
+/**
+ * Optional function to determine whether this model should match a given element.
+ * Takes a Node and returns true or false.
+ * This function is only called if this model has a chance of "winning"; see
+ * ve.dm.ModelRegistry for more information about element matching.
+ * If set to null, this property is ignored. Setting this to null is not the same as unconditionally
+ * returning true, because the presence or absence of a matchFunction affects the model's
+ * specificity.
+ *
+ * NOTE: This function is NOT a method, within this function "this" will not refer to an instance
+ * of this class (or to anything reasonable, for that matter).
+ * @static
+ * @property {Function}
+ * @inheritable
+ */
+ve.dm.Model.static.matchFunction = null;
+
+/**
+ * Static function to convert a DOM element or set of sibling DOM elements to a linear model element
+ * for this model type.
+ *
+ * This function is only called if this model "won" the matching for the first DOM element, so
+ * domElements[0] will match this model's matching rule. There is usually only one DOM node in
+ * domElements[]. Multiple elements will only be passed if this model supports about groups.
+ * If there are multiple nodes, the nodes are all adjacent siblings in the same about group
+ * (i.e. they are grouped together because they have the same value for the about attribute).
+ *
+ * The converter has some state variables that can be obtained by this function:
+ * - if converter.isExpectingContent() returns true, the converter expects a content element
+ * - if converter.isInWrapper() returns true, the returned element will be put in a wrapper
+ *   paragraph generated by the converter (this is only relevant if isExpectingContent() is true)
+ * - converter.canCloseWrapper() returns true if the current wrapper paragraph can be closed,
+ *   and false if it can't be closed or if there is no active wrapper
+ *
+ * This function is allowed to return a content element when context indicates that a non-content
+ * element is expected or vice versa. If that happens, the converter deals with it in the following way:
+ *
+ * - if a non-content element is expected but a content element is returned:
+ *     - open a wrapper paragraph
+ *     - put the returned element in the wrapper
+ * - if a content element is expected but a non-content element is returned:
+ *     - if we are in a wrapper paragraph:
+ *         - if we can close the wrapper:
+ *             - close the wrapper
+ *             - insert the returned element right after the end of the wrapper
+ *         - if we can't close the wrapper:
+ *             - alienate the element
+ *     - if we aren't in a wrapper paragraph:
+ *         - alienate the element
+ *
+ * For these purposes, annotations are considered content. Meta-items can occur anywhere, so if
+ * a meta-element is returned no special action is taken. Note that "alienate" always means an alien
+ * *node* (ve.dm.AlienNode) will be generated, never an alien meta-item (ve.dm.AlienMetaItem),
+ * regardless of whether the subclass attempting the conversion is a node or a meta-item.
+ *
+ * The returned linear model element must have a type property set to a registered model name
+ * (usually the model's own .static.name, but that's not required). It may optionally have an attributes
+ * property set to an object with key-value pairs. Any other properties are not allowed.
+ *
+ * This function may return a single linear model element, or an array of balanced linear model
+ * data. If this function needs to recursively convert a DOM node (e.g. a child of one of the
+ * DOM elements passed in), it can call converter.getDataFromDomSubtree( domElement ). Note that
+ * if an array is returned, the converter will not descend into the DOM node's children; the model
+ * will be assumed to have handled those children.
+ *
+ * @static
+ * @inheritable
+ * @method
+ * @param {Node[]} domElements DOM elements to convert. Usually only one element
+ * @param {ve.dm.Converter} converter Converter object
+ * @return {Object|Array|null} Linear model element, or array with linear model data, or null to alienate
+ */
+ve.dm.Model.static.toDataElement = function () {
+	return { type: this.name };
+};
+
+/**
+ * Static function to convert a linear model data element for this model type back to one or more
+ * DOM elements.
+ *
+ * If this model is a node with handlesOwnChildren set to true, dataElement will be an array of
+ * the linear model data of this node and all of its children, rather than a single element.
+ * In this case, this function way want to recursively convert linear model data to DOM, which can
+ * be done with ve.dm.Converter#getDomSubtreeFromData.
+ *
+ * NOTE: If this function returns multiple DOM elements, the DOM elements produced by the children
+ * of this model (if it's a node and has children) will be attached to the first DOM element in the array.
+ * For annotations, only the first element is used, and any additional elements are ignored.
+ *
+ * @static
+ * @inheritable
+ * @method
+ * @param {Object|Array} dataElement Linear model element or array of linear model data
+ * @param {HTMLDocument} doc HTML document for creating elements
+ * @param {ve.dm.Converter} converter Converter object to optionally call `getDomSubtreeFromData` on
+ * @return {Node[]} DOM elements
+ */
+ve.dm.Model.static.toDomElements = function ( dataElement, doc ) {
+	if ( this.matchTagNames && this.matchTagNames.length === 1 ) {
+		return [ doc.createElement( this.matchTagNames[ 0 ] ) ];
+	}
+	throw new Error( 've.dm.Model subclass must match a single tag name or implement toDomElements' );
+};
+
+/**
+ * Whether this model supports about grouping. When a DOM element matches a model type that has
+ * about grouping enabled, the converter will look for adjacent siblings with the same value for
+ * the about attribute, and ask #toDataElement to produce a single data element for all of those
+ * DOM nodes combined.
+ *
+ * The converter doesn't descend into about groups, i.e. it doesn't convert the children of the
+ * DOM elements that make up the about group. This means the resulting linear model element will
+ * be childless.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.dm.Model.static.enableAboutGrouping = false;
+
+/**
+ * Which HTML attributes should be preserved for this model type. When converting back to DOM,
+ * these HTML attributes will be restored except for attributes that were already set by #toDomElements.
+ *
+ * The value of this property can be one of the following:
+ *
+ * - true, to preserve all attributes (default)
+ * - false, to preserve none
+ * - a function that takes an attribute name and returns true or false
+ *
+ * @static
+ * @property {boolean|Function}
+ * @inheritable
+ */
+ve.dm.Model.static.preserveHtmlAttributes = true;
+
+/* Static methods */
+
+/**
+ * Get hash object of a linear model data element.
+ *
+ * @static
+ * @param {Object} dataElement Data element
+ * @return {Object} Hash object
+ */
+ve.dm.Model.static.getHashObject = function ( dataElement ) {
+	return {
+		type: dataElement.type,
+		attributes: dataElement.attributes,
+		// For uniqueness we are only concerned with the first node
+		originalDomElements: dataElement.originalDomElements &&
+			dataElement.originalDomElements[ 0 ].cloneNode( false ).outerHTML
+	};
+};
+
+/**
+ * Array of RDFa types that this model should be a match candidate for.
+ *
+ * @static
+ * @return {Array} Array of strings or regular expressions
+ */
+ve.dm.Model.static.getMatchRdfaTypes = function () {
+	return this.matchRdfaTypes;
+};
+
+/**
+ * Extra RDFa types that the element is allowed to have.
+ *
+ * @static
+ * @return {Array} Array of strings or regular expressions
+ */
+ve.dm.Model.static.getAllowedRdfaTypes = function () {
+	return this.allowedRdfaTypes;
+};
+
+/* Methods */
+
+/**
+ * Check whether this node can be inspected by a context item.
+ *
+ * The default implementation always returns true. If your node type is uninspectable in certain
+ * cases, you should override this function.
+ *
+ * @return {boolean} Whether this node is inspectable
+ */
+ve.dm.Model.prototype.isInspectable = function () {
+	return true;
+};
+
+/**
+ * Check whether this node can be edited by a context item
+ *
+ * The default implementation always returns true. If your node type is uneditable in certain
+ * cases, you should override this function.
+ *
+ * @return {boolean} Whether this node is editable
+ */
+ve.dm.Model.prototype.isEditable = function () {
+	return true;
+};
+
+/**
+ * Get a reference to the linear model element.
+ *
+ * @method
+ * @return {Object} Linear model element passed to the constructor, by reference
+ */
+ve.dm.Model.prototype.getElement = function () {
+	return this.element;
+};
+
+/**
+ * Get the symbolic name of this model's type.
+ *
+ * @method
+ * @return {string} Type name
+ */
+ve.dm.Model.prototype.getType = function () {
+	return this.constructor.static.name;
+};
+
+/**
+ * Get the value of an attribute.
+ *
+ * Return value is by reference if array or object.
+ *
+ * @method
+ * @param {string} key Name of attribute to get
+ * @return {Mixed} Value of attribute, or undefined if no such attribute exists
+ */
+ve.dm.Model.prototype.getAttribute = function ( key ) {
+	return this.element && this.element.attributes ? this.element.attributes[ key ] : undefined;
+};
+
+/**
+ * Get a copy of all attributes.
+ *
+ * Values are by reference if array or object, similar to using the getAttribute method.
+ *
+ * @method
+ * @param {string} [prefix] Only return attributes with this prefix, and remove the prefix from them
+ * @return {Object} Attributes
+ */
+ve.dm.Model.prototype.getAttributes = function ( prefix ) {
+	var key, filtered,
+		attributes = this.element && this.element.attributes ? this.element.attributes : {};
+	if ( prefix ) {
+		filtered = {};
+		for ( key in attributes ) {
+			if ( key.indexOf( prefix ) === 0 ) {
+				filtered[ key.slice( prefix.length ) ] = attributes[ key ];
+			}
+		}
+		return filtered;
+	}
+	return ve.extendObject( {}, attributes );
+};
+
+/**
+ * Get the DOM element(s) this model was originally converted from, if any.
+ *
+ * @return {HTMLElement[]} DOM elements this model was converted from, empty if not applicable
+ */
+ve.dm.Model.prototype.getOriginalDomElements = function () {
+	return ( this.element && this.element.originalDomElements ) || [];
+};
+
+/**
+ * Check if the model has certain attributes.
+ *
+ * If an array of keys is provided only the presence of the attributes will be checked. If an object
+ * with keys and values is provided both the presence of the attributes and their values will be
+ * checked. Comparison of values is done by casting to strings unless the strict argument is used.
+ *
+ * @method
+ * @param {string[]|Object} attributes Array of keys or object of keys and values
+ * @param {boolean} strict Use strict comparison when checking if values match
+ * @return {boolean} Model has attributes
+ */
+ve.dm.Model.prototype.hasAttributes = function ( attributes, strict ) {
+	var key, i, len,
+		ourAttributes = this.getAttributes() || {};
+	if ( ve.isPlainObject( attributes ) ) {
+		// Node must have all the required attributes
+		for ( key in attributes ) {
+			if (
+				!( key in ourAttributes ) ||
+				( strict ?
+					attributes[ key ] !== ourAttributes[ key ] :
+					String( attributes[ key ] ) !== String( ourAttributes[ key ] )
+				)
+			) {
+				return false;
+			}
+		}
+	} else if ( Array.isArray( attributes ) ) {
+		for ( i = 0, len = attributes.length; i < len; i++ ) {
+			if ( !( attributes[ i ] in ourAttributes ) ) {
+				return false;
+			}
+		}
+	}
+	return true;
+};
+
+/**
+ * Get a clone of the model's linear model element.
+ *
+ * The attributes object will be deep-copied.
+ *
+ * @return {Object} Cloned element object
+ */
+ve.dm.Model.prototype.getClonedElement = function () {
+	return ve.copy( this.element );
+};
+
+/**
+ * Get the hash object of the linear model element.
+ *
+ * The actual logic is in a static function as this needs
+ * to be accessible from ve.dm.Converter
+ *
+ * This is a custom hash function for OO#getHash.
+ *
+ * @method
+ * @return {Object} Hash object
+ */
+ve.dm.Model.prototype.getHashObject = function () {
+	return this.constructor.static.getHashObject( this.element );
+};
+
+/*!
+ * VisualEditor DataModel ModelFactory class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel meta item factory.
+ *
+ * @class
+ * @abstract
+ * @extends OO.Factory
+ * @constructor
+ */
+ve.dm.ModelFactory = function VeDmModelFactory() {
+	// Parent constructor
+	ve.dm.ModelFactory.super.call( this );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.ModelFactory, OO.Factory );
+
+/* Methods */
+
+/**
+ * Create a new item from a model element
+ *
+ * @param {Object} element Model element
+ * @return {ve.dm.Model} Model constructed from element
+ * @throws {Error} Element must have a .type property
+ */
+ve.dm.ModelFactory.prototype.createFromElement = function ( element ) {
+	if ( element && element.type ) {
+		return this.create( element.type, element );
+	}
+	throw new Error( 'Element must have a .type property' );
+};
+
+/*!
+ * VisualEditor ModelRegistry class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+( function ( ve ) {
+
+	/**
+	 * Registry for models.
+	 *
+	 * To register a new model type, call #register.
+	 *
+	 * @extends OO.Registry
+	 * @constructor
+	 */
+	ve.dm.ModelRegistry = function VeDmModelRegistry() {
+		// Parent constructor
+		OO.Registry.call( this );
+		// Map of func presence and tag names to model names
+		// [ { tagName: [modelNamesWithoutFunc] }, { tagName: [modelNamesWithFunc] } ]
+		this.modelsByTag = [ {}, {} ];
+		// Map of func presence and rdfaTypes to model names; only rdfaTypes specified as strings are in here
+		// { matchFunctionPresence: { rdfaType: { tagName: [modelNames] } } }
+		// [ { rdfaType: { tagName: [modelNamesWithoutFunc] } }, { rdfaType: { tagName: [modelNamesWithFunc] } ]
+		this.modelsByTypeAndTag = [];
+		// Map of func presence to array of model names with rdfaType regexps
+		// [ [modelNamesWithoutFunc], [modelNamesWithFunc] ]
+		this.modelsWithTypeRegExps = [ [], [] ];
+		// Map tracking registration order
+		// { nameA: 0, nameB: 1, ... }
+		this.registrationOrder = {};
+		this.nextNumber = 0;
+		this.extSpecificTypes = [];
+	};
+
+	/* Inheritance */
+
+	OO.inheritClass( ve.dm.ModelRegistry, OO.Registry );
+
+	/* Private helper functions */
+
+	/**
+	 * Helper function for register(). Adds a value to the front of an array in a nested object.
+	 * Objects and arrays are created if needed. You can specify one or more keys and a value.
+	 *
+	 * Specifically:
+	 *
+	 * - `addType( obj, keyA, value )` does `obj[keyA].unshift( value );`
+	 * - `addType( obj, keyA, keyB, value )` does `obj[keyA][keyB].unshift( value )`;
+	 * - etc.
+	 *
+	 * @private
+	 * @param {Object} obj Object the array resides in
+	 * @param {...string} keys
+	 * @param {Mixed} value
+	 */
+	function addType( obj ) {
+		var i, len,
+			keys = Array.prototype.slice.call( arguments, 1, -1 ),
+			value = arguments[ arguments.length - 1 ],
+			o = obj;
+
+		for ( i = 0, len = keys.length - 1; i < len; i++ ) {
+			if ( o[ keys[ i ] ] === undefined ) {
+				o[ keys[ i ] ] = {};
+			}
+			o = o[ keys[ i ] ];
+		}
+		o[ keys[ i ] ] = o[ keys[ i ] ] || [];
+		o[ keys[ i ] ].unshift( value );
+	}
+
+	/**
+	 * Helper function for unregister().
+	 *
+	 * Same arguments as addType, except removes the type from the list.
+	 *
+	 * @private
+	 * @param {Object} obj Object the array resides in
+	 * @param {...string} keys
+	 * @param {Mixed} value to remove
+	 */
+	function removeType( obj ) {
+		var index,
+			keys = Array.prototype.slice.call( arguments, 1, -1 ),
+			value = arguments[ arguments.length - 1 ],
+			arr = ve.getProp.apply( obj, [ obj ].concat( keys ) );
+
+		if ( arr ) {
+			index = arr.indexOf( value );
+			if ( index !== -1 ) {
+				arr.splice( index, 1 );
+			}
+			// TODO: Prune empty array and empty containing objects
+		}
+	}
+
+	/* Public methods */
+
+	/**
+	 * Register a model type.
+	 *
+	 * @param {ve.dm.Model} constructor Subclass of ve.dm.Model
+	 * @throws Model names must be strings and must not be empty
+	 * @throws Models must be subclasses of ve.dm.Model
+	 * @throws No factory associated with this ve.dm.Model subclass
+	 */
+	ve.dm.ModelRegistry.prototype.register = function ( constructor ) {
+		var i, j, tags, types,
+			name = constructor.static && constructor.static.name;
+
+		if ( typeof name !== 'string' || name === '' ) {
+			throw new Error( 'Model names must be strings and must not be empty' );
+		}
+		if ( !( constructor.prototype instanceof ve.dm.Model ) ) {
+			throw new Error( 'Models must be subclasses of ve.dm.Model' );
+		}
+
+		// Register the model with the right factory
+		if ( constructor.prototype instanceof ve.dm.Annotation ) {
+			ve.dm.annotationFactory.register( constructor );
+		} else if ( constructor.prototype instanceof ve.dm.Node ) {
+			ve.dm.nodeFactory.register( constructor );
+		} else if ( constructor.prototype instanceof ve.dm.MetaItem ) {
+			ve.dm.metaItemFactory.register( constructor );
+		} else {
+			throw new Error( 'No factory associated with this ve.dm.Model subclass' );
+		}
+
+		// Parent method
+		ve.dm.ModelRegistry.super.prototype.register.call( this, name, constructor );
+
+		tags = constructor.static.matchTagNames === null ?
+			[ '' ] :
+			constructor.static.matchTagNames;
+		types = constructor.static.getMatchRdfaTypes() === null ?
+			[ '' ] :
+			constructor.static.getMatchRdfaTypes();
+
+		for ( i = 0; i < tags.length; i++ ) {
+			// +!!foo is a shorter equivalent of Number( Boolean( foo ) ) or foo ? 1 : 0
+			addType( this.modelsByTag, +!!constructor.static.matchFunction,
+				tags[ i ], name
+			);
+		}
+		for ( i = 0; i < types.length; i++ ) {
+			if ( types[ i ] instanceof RegExp ) {
+				// TODO: Guard against running this again during subsequent
+				// iterations of the for loop
+				addType( this.modelsWithTypeRegExps, +!!constructor.static.matchFunction, name );
+			} else {
+				for ( j = 0; j < tags.length; j++ ) {
+					addType( this.modelsByTypeAndTag,
+						+!!constructor.static.matchFunction, types[ i ], tags[ j ], name
+					);
+				}
+			}
+		}
+
+		this.registrationOrder[ name ] = this.nextNumber++;
+	};
+
+	/**
+	 * Unregister a model type.
+	 *
+	 * @param {ve.dm.Model} constructor Subclass of ve.dm.Model
+	 * @throws Model names must be strings and must not be empty
+	 * @throws Models must be subclasses of ve.dm.Model
+	 * @throws No factory associated with this ve.dm.Model subclass
+	 */
+	ve.dm.ModelRegistry.prototype.unregister = function ( constructor ) {
+		var i, j, tags, types,
+			name = constructor.static && constructor.static.name;
+
+		if ( typeof name !== 'string' || name === '' ) {
+			throw new Error( 'Model names must be strings and must not be empty' );
+		}
+		if ( !( constructor.prototype instanceof ve.dm.Model ) ) {
+			throw new Error( 'Models must be subclasses of ve.dm.Model' );
+		}
+
+		// Unregister the model from the right factory
+		if ( constructor.prototype instanceof ve.dm.Annotation ) {
+			ve.dm.annotationFactory.unregister( constructor );
+		} else if ( constructor.prototype instanceof ve.dm.Node ) {
+			ve.dm.nodeFactory.unregister( constructor );
+		} else if ( constructor.prototype instanceof ve.dm.MetaItem ) {
+			ve.dm.metaItemFactory.unregister( constructor );
+		} else {
+			throw new Error( 'No factory associated with this ve.dm.Model subclass' );
+		}
+
+		// Parent method
+		ve.dm.ModelRegistry.super.prototype.unregister.call( this, name );
+
+		tags = constructor.static.matchTagNames === null ?
+			[ '' ] :
+			constructor.static.matchTagNames;
+		types = constructor.static.getMatchRdfaTypes() === null ?
+			[ '' ] :
+			constructor.static.getMatchRdfaTypes();
+
+		for ( i = 0; i < tags.length; i++ ) {
+			// +!!foo is a shorter equivalent of Number( Boolean( foo ) ) or foo ? 1 : 0
+			removeType( this.modelsByTag, +!!constructor.static.matchFunction,
+				tags[ i ], name
+			);
+		}
+		for ( i = 0; i < types.length; i++ ) {
+			if ( types[ i ] instanceof RegExp ) {
+				// TODO: Guard against running this again during subsequent
+				// iterations of the for loop
+				removeType( this.modelsWithTypeRegExps, +!!constructor.static.matchFunction, name );
+			} else {
+				for ( j = 0; j < tags.length; j++ ) {
+					removeType( this.modelsByTypeAndTag,
+						+!!constructor.static.matchFunction, types[ i ], tags[ j ], name
+					);
+				}
+			}
+		}
+
+		delete this.registrationOrder[ name ];
+	};
+
+	/**
+	 * Determine which model best matches the given node
+	 *
+	 * Model matching works as follows:
+	 *
+	 * Get all models whose tag and rdfaType rules match
+	 *
+	 * Rank them in order of specificity:
+	 *
+	 * - tag, rdfaType and func specified
+	 * - rdfaType and func specified
+	 * - tag and func specified
+	 * - func specified
+	 * - tag and rdfaType specified
+	 * - rdfaType specified
+	 * - tag specified
+	 * - nothing specified
+	 *
+	 * If there are multiple candidates with the same specificity, they are ranked in reverse order of
+	 * registration (i.e. if A was registered before B, B will rank above A).
+	 * The highest-ranking model whose test function does not return false, wins.
+	 *
+	 * @param {Node} node Node to match (usually an HTMLElement but can also be a Comment node)
+	 * @param {boolean} [forceAboutGrouping] If true, only match models with about grouping enabled
+	 * @param {string[]} [excludeTypes] Model names to exclude when matching
+	 * @return {string|null} Model type, or null if none found
+	 */
+	ve.dm.ModelRegistry.prototype.matchElement = function ( node, forceAboutGrouping, excludeTypes ) {
+		var i, name, model, matches, winner, types,
+			tag = node.nodeName.toLowerCase(),
+			reg = this;
+
+		function byRegistrationOrderDesc( a, b ) {
+			return reg.registrationOrder[ b ] - reg.registrationOrder[ a ];
+		}
+
+		function matchTypeRegExps( type, tag, withFunc ) {
+			var i, j, types,
+				matches = [],
+				models = reg.modelsWithTypeRegExps[ +withFunc ];
+			for ( i = 0; i < models.length; i++ ) {
+				if ( excludeTypes && excludeTypes.indexOf( models[ i ] ) !== -1 ) {
+					continue;
+				}
+				types = reg.registry[ models[ i ] ].static.getMatchRdfaTypes();
+				for ( j = 0; j < types.length; j++ ) {
+					if (
+						types[ j ] instanceof RegExp &&
+						type.match( types[ j ] ) &&
+						(
+							( tag === '' && reg.registry[ models[ i ] ].static.matchTagNames === null ) ||
+							( reg.registry[ models[ i ] ].static.matchTagNames || [] ).indexOf( tag ) !== -1
+						)
+					) {
+						matches.push( models[ i ] );
+					}
+				}
+			}
+			return matches;
+		}
+
+		function allTypesAllowed( types, name ) {
+			var i, j, typeAllowed,
+				model = reg.lookup( name ),
+				allowedTypes = model.static.getAllowedRdfaTypes(),
+				matchTypes = model.static.getMatchRdfaTypes();
+
+			// All types allowed
+			if ( allowedTypes === null || matchTypes === null ) {
+				return true;
+			}
+
+			allowedTypes = allowedTypes.concat( matchTypes );
+
+			function checkType( rule, type ) {
+				return rule instanceof RegExp ? !!type.match( rule ) : rule === type;
+			}
+
+			for ( i = 0; i < types.length; i++ ) {
+				typeAllowed = false;
+				for ( j = 0; j < allowedTypes.length; j++ ) {
+					if ( checkType( allowedTypes[ j ], types[ i ] ) ) {
+						typeAllowed = true;
+						break;
+					}
+				}
+				if ( !typeAllowed ) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		function matchWithFunc( types, tag ) {
+			var i,
+				queue = [],
+				queue2 = [];
+			for ( i = 0; i < types.length; i++ ) {
+				// Queue string matches and regexp matches separately
+				queue = queue.concat( ve.getProp( reg.modelsByTypeAndTag, 1, types[ i ], tag ) || [] );
+				if ( excludeTypes ) {
+					queue = OO.simpleArrayDifference( queue, excludeTypes );
+				}
+				queue2 = queue2.concat( matchTypeRegExps( types[ i ], tag, true ) );
+			}
+			// Filter out matches which contain types which aren't allowed
+			queue = queue.filter( function ( name ) {
+				return allTypesAllowed( types, name );
+			} );
+			queue2 = queue2.filter( function ( name ) {
+				return allTypesAllowed( types, name );
+			} );
+			if ( forceAboutGrouping ) {
+				// Filter out matches that don't support about grouping
+				queue = queue.filter( function ( name ) {
+					return reg.registry[ name ].static.enableAboutGrouping;
+				} );
+				queue2 = queue2.filter( function ( name ) {
+					return reg.registry[ name ].static.enableAboutGrouping;
+				} );
+			}
+			// Try string matches first, then regexp matches
+			queue.sort( byRegistrationOrderDesc );
+			queue2.sort( byRegistrationOrderDesc );
+			queue = queue.concat( queue2 );
+			for ( i = 0; i < queue.length; i++ ) {
+				if ( reg.registry[ queue[ i ] ].static.matchFunction( node ) ) {
+					return queue[ i ];
+				}
+			}
+			return null;
+		}
+
+		function matchWithoutFunc( types, tag ) {
+			var i,
+				queue = [],
+				queue2 = [],
+				winningName = null;
+			for ( i = 0; i < types.length; i++ ) {
+				// Queue string and regexp matches separately
+				queue = queue.concat( ve.getProp( reg.modelsByTypeAndTag, 0, types[ i ], tag ) || [] );
+				if ( excludeTypes ) {
+					queue = OO.simpleArrayDifference( queue, excludeTypes );
+				}
+				queue2 = queue2.concat( matchTypeRegExps( types[ i ], tag, false ) );
+			}
+			// Filter out matches which contain types which aren't allowed
+			queue = queue.filter( function ( name ) {
+				return allTypesAllowed( types, name );
+			} );
+			queue2 = queue2.filter( function ( name ) {
+				return allTypesAllowed( types, name );
+			} );
+			if ( forceAboutGrouping ) {
+				// Filter out matches that don't support about grouping
+				queue = queue.filter( function ( name ) {
+					return reg.registry[ name ].static.enableAboutGrouping;
+				} );
+				queue2 = queue2.filter( function ( name ) {
+					return reg.registry[ name ].static.enableAboutGrouping;
+				} );
+			}
+			// Only try regexp matches if there are no string matches
+			queue = queue.length > 0 ? queue : queue2;
+			// Find most recently registered
+			for ( i = 0; i < queue.length; i++ ) {
+				if (
+					winningName === null ||
+					reg.registrationOrder[ winningName ] < reg.registrationOrder[ queue[ i ] ]
+				) {
+					winningName = queue[ i ];
+				}
+			}
+			return winningName;
+		}
+
+		types = [];
+		if ( node.getAttribute ) {
+			if ( node.getAttribute( 'rel' ) ) {
+				types = types.concat( node.getAttribute( 'rel' ).split( ' ' ) );
+			}
+			if ( node.getAttribute( 'typeof' ) ) {
+				types = types.concat( node.getAttribute( 'typeof' ).split( ' ' ) );
+			}
+			if ( node.getAttribute( 'property' ) ) {
+				types = types.concat( node.getAttribute( 'property' ).split( ' ' ) );
+			}
+		}
+
+		if ( types.length ) {
+			// func+tag+type match
+			winner = matchWithFunc( types, tag );
+			if ( winner !== null ) {
+				return winner;
+			}
+
+			// func+type match
+			// Only look at rules with no tag specified; if a rule does specify a tag, we've
+			// either already processed it above, or the tag doesn't match
+			winner = matchWithFunc( types, '' );
+			if ( winner !== null ) {
+				return winner;
+			}
+		}
+
+		// func+tag match
+		matches = ve.getProp( this.modelsByTag, 1, tag ) || [];
+		// No need to sort because individual arrays in modelsByTag are already sorted
+		// correctly
+		for ( i = 0; i < matches.length; i++ ) {
+			name = matches[ i ];
+			model = this.registry[ name ];
+			// Only process this one if it doesn't specify types
+			// If it does specify types, then we've either already processed it in the
+			// func+tag+type step above, or its type rule doesn't match
+			if ( model.static.getMatchRdfaTypes() === null && model.static.matchFunction( node ) ) {
+				return matches[ i ];
+			}
+		}
+
+		// func only
+		// We only need to get the [''][''] array because the other arrays were either
+		// already processed during the steps above, or have a type or tag rule that doesn't
+		// match this node.
+		// No need to sort because individual arrays in modelsByTypeAndTag are already sorted
+		// correctly
+		matches = ve.getProp( this.modelsByTypeAndTag, 1, '', '' ) || [];
+		for ( i = 0; i < matches.length; i++ ) {
+			if ( this.registry[ matches[ i ] ].static.matchFunction( node ) ) {
+				return matches[ i ];
+			}
+		}
+
+		// tag+type
+		winner = matchWithoutFunc( types, tag );
+		if ( winner !== null ) {
+			return winner;
+		}
+
+		// type only
+		// Only look at rules with no tag specified; if a rule does specify a tag, we've
+		// either already processed it above, or the tag doesn't match
+		winner = matchWithoutFunc( types, '' );
+		if ( winner !== null ) {
+			return winner;
+		}
+
+		// tag only
+		matches = ve.getProp( this.modelsByTag, 0, tag ) || [];
+		// No need to track winningName because the individual arrays in modelsByTag are
+		// already sorted correctly
+		for ( i = 0; i < matches.length; i++ ) {
+			name = matches[ i ];
+			model = this.registry[ name ];
+			// Only process this one if it doesn't specify types
+			// If it does specify types, then we've either already processed it in the
+			// tag+type step above, or its type rule doesn't match
+			if ( model.static.getMatchRdfaTypes() === null ) {
+				return matches[ i ];
+			}
+		}
+
+		// Rules with no type or tag specified
+		// These are the only rules that can still qualify at this point, the others we've either
+		// already processed or have a type or tag rule that disqualifies them
+		matches = ve.getProp( this.modelsByTypeAndTag, 0, '', '' ) || [];
+		if ( matches.length > 0 ) {
+			return matches[ 0 ];
+		}
+
+		// We didn't find anything, give up
+		return null;
+	};
+
+	/**
+	 * Tests whether a node will be modelled as an annotation
+	 *
+	 * @param {Node} node The node
+	 * @return {boolean} Whether the element will be modelled as an annotation
+	 */
+	ve.dm.ModelRegistry.prototype.isAnnotation = function ( node ) {
+		var modelClass = this.lookup( this.matchElement( node ) );
+		return ( modelClass && modelClass.prototype ) instanceof ve.dm.Annotation;
+	};
+
+	/* Initialization */
+
+	ve.dm.modelRegistry = new ve.dm.ModelRegistry();
+
+} )( ve );
+
+/*!
+ * VisualEditor DataModel NodeFactory class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel node factory.
+ *
+ * @class
+ * @extends ve.dm.ModelFactory
+ * @constructor
+ */
+ve.dm.NodeFactory = function VeDmNodeFactory() {
+	// Parent constructor
+	ve.dm.NodeFactory.super.call( this );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.NodeFactory, ve.dm.ModelFactory );
+
+/* Methods */
+
+/**
+ * Get a document data element.
+ *
+ * @method
+ * @param {string} type Node type
+ * @param {Object} attributes Node attributes, defaults will be used where needed
+ * @return {Object} Data element
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.getDataElement = function ( type, attributes ) {
+	var element = { type: type };
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		attributes = ve.extendObject( {}, this.registry[ type ].static.defaultAttributes, attributes );
+		if ( !ve.isEmptyObject( attributes ) ) {
+			element.attributes = ve.copy( attributes );
+		}
+		return element;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
+ * Get allowed child node types for a node.
+ *
+ * @method
+ * @param {string} type Node type
+ * @return {string[]|null} List of node types allowed as children or null if any type is allowed
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.getChildNodeTypes = function ( type ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		return this.registry[ type ].static.childNodeTypes;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
+ * Get allowed parent node types for a node.
+ *
+ * @method
+ * @param {string} type Node type
+ * @return {string[]|null} List of node types allowed as parents or null if any type is allowed
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.getParentNodeTypes = function ( type ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		return this.registry[ type ].static.parentNodeTypes;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
+ * Get suggested parent node types for a node.
+ *
+ * @method
+ * @param {string} type Node type
+ * @return {string[]|null} List of node types suggested as parents or null if any type is suggested
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.getSuggestedParentNodeTypes = function ( type ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		return this.registry[ type ].static.suggestedParentNodeTypes;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
+ * Check if a node can have children.
+ *
+ * @method
+ * @param {string} type Node type
+ * @return {boolean} The node can have children
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.canNodeHaveChildren = function ( type ) {
+	var types;
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		// If childNodeTypes is null any child is allowed, if it's an array of at least one element
+		// than at least one kind of node is allowed
+		types = this.registry[ type ].static.childNodeTypes;
+		return types === null || ( Array.isArray( types ) && types.length > 0 );
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
+ * Check if a node can have children but not content nor be content.
+ *
+ * @method
+ * @param {string} type Node type
+ * @return {boolean} The node can have children but not content nor be content
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.canNodeHaveChildrenNotContent = function ( type ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		return this.canNodeHaveChildren( type ) &&
+			!this.registry[ type ].static.canContainContent &&
+			!this.registry[ type ].static.isContent;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
+ * Check if a node has a wrapped element in the document data.
+ *
+ * @method
+ * @param {string} type Node type
+ * @return {boolean} Whether the node has a wrapping element
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.isNodeWrapped = function ( type ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		return this.registry[ type ].static.isWrapped;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
+ * Check if a node can contain content.
+ *
+ * @method
+ * @param {string} type Node type
+ * @return {boolean} The node contains content
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.canNodeContainContent = function ( type ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		return this.registry[ type ].static.canContainContent;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
+ * Check if node can take annotations of a specific type.
+ *
+ * @method
+ * @param {string} type Node type
+ * @param {ve.dm.Annotation} annotation Annotation to test
+ * @return {boolean} Node can take annotations of this type
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.canNodeTakeAnnotationType = function ( type, annotation ) {
+	var i, len, blacklist;
+	if ( !Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		throw new Error( 'Unknown node type: ' + type );
+	}
+	blacklist = this.registry[ type ].static.blacklistedAnnotationTypes;
+
+	for ( i = 0, len = blacklist.length; i < len; i++ ) {
+		if ( annotation instanceof ve.dm.annotationFactory.lookup( blacklist[ i ] ) ) {
+			return false;
+		}
+	}
+	return true;
+};
+
+/**
+ * Check if a node is content.
+ *
+ * @method
+ * @param {string} type Node type
+ * @return {boolean} The node is content
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.isNodeContent = function ( type ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		return this.registry[ type ].static.isContent;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
+ * Check if the node is focusable.
+ *
+ * @method
+ * @param {string} type Node type
+ * @return {boolean} Whether the node is focusable
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.isNodeFocusable = function ( type ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		return this.registry[ type ].static.isFocusable;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
+ * Check if the node has significant whitespace.
+ *
+ * Can only be true if canContainContent is also true.
+ *
+ * @method
+ * @param {string} type Node type
+ * @return {boolean} The node has significant whitespace
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.doesNodeHaveSignificantWhitespace = function ( type ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		return this.registry[ type ].static.hasSignificantWhitespace;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
+ * Check if the node handles its own children.
+ *
+ * @method
+ * @param {string} type Node type
+ * @return {boolean} Whether the node handles its own children
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.doesNodeHandleOwnChildren = function ( type ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		return this.registry[ type ].static.handlesOwnChildren;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
+ * Check if the node's children should be ignored.
+ *
+ * @method
+ * @param {string} type Node type
+ * @return {boolean} Whether the node's children should be ignored
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.shouldIgnoreChildren = function ( type ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		return this.registry[ type ].static.ignoreChildren;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/**
+ * Check if the node is internal.
+ *
+ * @method
+ * @param {string} type Node type
+ * @return {boolean} Whether the node is internal
+ * @throws {Error} Unknown node type
+ */
+ve.dm.NodeFactory.prototype.isNodeInternal = function ( type ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		return this.registry[ type ].static.isInternal;
+	}
+	throw new Error( 'Unknown node type: ' + type );
+};
+
+/* Initialization */
+
+ve.dm.nodeFactory = new ve.dm.NodeFactory();
+
+/*!
+ * VisualEditor DataModel AnnotationFactory class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel annotation factory.
+ *
+ * @class
+ * @extends ve.dm.ModelFactory
+ * @constructor
+ */
+ve.dm.AnnotationFactory = function VeDmAnnotationFactory() {
+	// Parent constructor
+	ve.dm.AnnotationFactory.super.call( this );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.AnnotationFactory, ve.dm.ModelFactory );
+
+/* Initialization */
+
+ve.dm.annotationFactory = new ve.dm.AnnotationFactory();
+
+/*!
+ * VisualEditor DataModel AnnotationSet class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * Annotation set.
+ *
+ * @constructor
+ * @param {ve.dm.IndexValueStore} store Index-value store
+ * @param {number[]} [storeIndexes] Array of store indexes
+ */
+ve.dm.AnnotationSet = function VeDmAnnotationSet( store, storeIndexes ) {
+	// Parent constructor
+	this.store = store;
+	this.storeIndexes = storeIndexes || [];
+};
+
+/* Methods */
+
+/**
+ * Get the index-value store.
+ *
+ * @method
+ * @return {ve.dm.IndexValueStore} Index-value store
+ */
+ve.dm.AnnotationSet.prototype.getStore = function () {
+	return this.store;
+};
+
+/**
+ * Get a clone.
+ *
+ * @method
+ * @return {ve.dm.AnnotationSet} Copy of annotation set
+ */
+ve.dm.AnnotationSet.prototype.clone = function () {
+	return new ve.dm.AnnotationSet( this.getStore(), this.storeIndexes.slice( 0 ) );
+};
+
+/**
+ * Get an annotation set containing only annotations within the set with a specific name.
+ *
+ * @method
+ * @param {string} name Type name
+ * @return {ve.dm.AnnotationSet} Copy of annotation set
+ */
+ve.dm.AnnotationSet.prototype.getAnnotationsByName = function ( name ) {
+	return this.filter( function ( annotation ) { return annotation.name === name; } );
+};
+
+/**
+ * Get an annotation set containing only annotations within the set which are comparable
+ * to a specific annotation.
+ *
+ * @method
+ * @param {ve.dm.Annotation} annotation Annotation to compare to
+ * @return {ve.dm.AnnotationSet} Copy of annotation set
+ */
+ve.dm.AnnotationSet.prototype.getComparableAnnotations = function ( annotation ) {
+	return this.filter( function ( a ) {
+		return ve.compare(
+			annotation.getComparableObject(),
+			a.getComparableObject()
+		);
+	} );
+};
+
+/**
+ * Get an annotation set containing only annotations within the set which are comparable
+ * to an annotation from another set.
+ *
+ * @method
+ * @param {ve.dm.AnnotationSet} annotations Annotation set to compare to
+ * @return {ve.dm.AnnotationSet} Copy of annotation set
+ */
+ve.dm.AnnotationSet.prototype.getComparableAnnotationsFromSet = function ( annotations ) {
+	return this.filter( function ( a ) {
+		return annotations.containsComparable( a );
+	} );
+};
+
+/**
+ * Check if any annotations in the set have a specific name.
+ *
+ * @method
+ * @param {string} name Type name
+ * @return {boolean} Annotation of given type exists in the set
+ */
+ve.dm.AnnotationSet.prototype.hasAnnotationWithName = function ( name ) {
+	return this.containsMatching( function ( annotation ) { return annotation.name === name; } );
+};
+
+/**
+ * Get an annotation or all annotations from the set.
+ *
+ * set.get( 5 ) returns the annotation at offset 5, set.get() returns an array with all annotations
+ * in the entire set.
+ *
+ * @method
+ * @param {number} [offset] If set, only get the annotation at the offset
+ * @return {ve.dm.Annotation[]|ve.dm.Annotation|undefined} The annotation at offset, or an array of all
+ *  annotations in the set
+ */
+ve.dm.AnnotationSet.prototype.get = function ( offset ) {
+	if ( offset !== undefined ) {
+		return this.getStore().value( this.getIndex( offset ) );
+	} else {
+		return this.getStore().values( this.getIndexes() );
+	}
+};
+
+/**
+ * Get store index from offset within annotation set.
+ *
+ * @param {number} offset Offset within annotation set
+ * @return {number} Store index at specified offset
+ */
+ve.dm.AnnotationSet.prototype.getIndex = function ( offset ) {
+	return this.storeIndexes[ offset ];
+};
+
+/**
+ * Get all store indexes.
+ *
+ * @return {Array} Store indexes
+ */
+ve.dm.AnnotationSet.prototype.getIndexes = function () {
+	return this.storeIndexes;
+};
+
+/**
+ * Get the length of the set.
+ *
+ * @method
+ * @return {number} The number of annotations in the set
+ */
+ve.dm.AnnotationSet.prototype.getLength = function () {
+	return this.storeIndexes.length;
+};
+
+/**
+ * Check if the set is empty.
+ *
+ * @method
+ * @return {boolean} The set is empty
+ */
+ve.dm.AnnotationSet.prototype.isEmpty = function () {
+	return this.getLength() === 0;
+};
+
+/**
+ * Check whether a given annotation occurs in the set.
+ *
+ * Annotations are compared by store index.
+ *
+ * @method
+ * @param {ve.dm.Annotation} annotation Annotation
+ * @return {boolean} There is an annotation in the set with the same hash as annotation
+ */
+ve.dm.AnnotationSet.prototype.contains = function ( annotation ) {
+	return this.offsetOf( annotation ) !== -1;
+};
+
+/**
+ * Check whether a given store index occurs in the set.
+ *
+ * @method
+ * @param {number} storeIndex Store index of annotation
+ * @return {boolean} There is an annotation in the set with this store index
+ */
+ve.dm.AnnotationSet.prototype.containsIndex = function ( storeIndex ) {
+	return this.getIndexes().indexOf( storeIndex ) !== -1;
+};
+
+/**
+ * Check whether the set contains any of the annotations in another set.
+ *
+ * @method
+ * @param {ve.dm.AnnotationSet} set Set to compare the set with
+ * @return {boolean} There is at least one annotation in set that is also in the set
+ */
+ve.dm.AnnotationSet.prototype.containsAnyOf = function ( set ) {
+	var i, length,
+		setIndexes = set.getIndexes(),
+		thisIndexes = this.getIndexes();
+	for ( i = 0, length = setIndexes.length; i < length; i++ ) {
+		if ( thisIndexes.indexOf( setIndexes[ i ] ) !== -1 ) {
+			return true;
+		}
+	}
+	return false;
+};
+
+/**
+ * Check whether the set contains all of the annotations in another set.
+ *
+ * @method
+ * @param {ve.dm.AnnotationSet} set Set to compare the set with
+ * @return {boolean} All annotations in set are also in the set
+ */
+ve.dm.AnnotationSet.prototype.containsAllOf = function ( set ) {
+	var i, length,
+		setIndexes = set.getIndexes(),
+		thisIndexes = this.getIndexes();
+	for ( i = 0, length = setIndexes.length; i < length; i++ ) {
+		if ( thisIndexes.indexOf( setIndexes[ i ] ) === -1 ) {
+			return false;
+		}
+	}
+	return true;
+};
+
+/**
+ * Get the offset of a given annotation in the set.
+ *
+ * @method
+ * @param {ve.dm.Annotation} annotation Annotation to search for
+ * @return {number} Offset of annotation in the set, or -1 if annotation is not in the set.
+ */
+ve.dm.AnnotationSet.prototype.offsetOf = function ( annotation ) {
+	return this.offsetOfIndex( this.store.indexOfHash( OO.getHash( annotation ) ) );
+};
+
+/**
+ * Get the offset of a given annotation in the set by store index.
+ *
+ * @method
+ * @param {number} storeIndex Store index of annotation to search for
+ * @return {number} Offset of annotation in the set, or -1 if annotation is not in the set.
+ */
+ve.dm.AnnotationSet.prototype.offsetOfIndex = function ( storeIndex ) {
+	return this.getIndexes().indexOf( storeIndex );
+};
+
+/**
+ * Filter the set by an item property.
+ *
+ * This returns a new set with all annotations in the set for which the callback returned true for.
+ *
+ * @method
+ * @param {Function} callback Function that takes an annotation and returns boolean true to include
+ * @param {boolean} [returnBool] For internal use only
+ * @return {ve.dm.AnnotationSet|boolean} New set containing only the matching annotations
+ */
+ve.dm.AnnotationSet.prototype.filter = function ( callback, returnBool ) {
+	var i, length, result, storeIndex, annotation;
+
+	if ( !returnBool ) {
+		result = this.clone();
+		// TODO: Should we be returning this on all methods that modify the original? Might help
+		// with chainability, but perhaps it's also confusing because most chainable methods return
+		// a new hash set.
+		result.removeAll();
+	}
+	for ( i = 0, length = this.getLength(); i < length; i++ ) {
+		storeIndex = this.getIndex( i );
+		annotation = this.getStore().value( storeIndex );
+		if ( callback( annotation ) ) {
+			if ( returnBool ) {
+				return true;
+			} else {
+				result.storeIndexes.push( storeIndex );
+			}
+		}
+	}
+	return returnBool ? false : result;
+};
+
+/**
+ * Check if the set contains an annotation comparable to the specified one.
+ *
+ * getComparableObject is used to compare the annotations, and should return
+ * true if an annotation is found which is mergeable with the specified one.
+ *
+ * @param {ve.dm.Annotation} annotation Annotation to compare to
+ * @return {boolean} At least one comparable annotation found
+ */
+ve.dm.AnnotationSet.prototype.containsComparable = function ( annotation ) {
+	return this.filter( function ( a ) {
+		return annotation.compareTo( a );
+	}, true );
+};
+
+/**
+ * HACK: Check if the set contains an annotation comparable to the specified one
+ * for the purposes of serialization.
+ *
+ * This method uses getComparableObjectForSerialization which also includes
+ * HTML attributes.
+ *
+ * @param {ve.dm.Annotation} annotation Annotation to compare to
+ * @return {boolean} At least one comparable annotation found
+ */
+ve.dm.AnnotationSet.prototype.containsComparableForSerialization = function ( annotation ) {
+	return this.filter( function ( a ) {
+		return annotation.compareToForSerialization( a );
+	}, true );
+};
+
+/**
+ * Check if the set contains at least one annotation where a given property matches a given filter.
+ *
+ * This is equivalent to (but more efficient than) `!this.filter( .. ).isEmpty()`.
+ *
+ * @see ve.dm.AnnotationSet#filter
+ *
+ * @method
+ * @param {Function} callback Function that takes an annotation and returns boolean true to include
+ * @return {boolean} At least one matching annotation found
+ */
+ve.dm.AnnotationSet.prototype.containsMatching = function ( callback ) {
+	return this.filter( callback, true );
+};
+
+/**
+ * Check if the set contains the same annotations as another set.
+ *
+ * Compares annotations by their comparable object value.
+ *
+ * @method
+ * @param {ve.dm.AnnotationSet} annotationSet The annotationSet to compare this one to
+ * @return {boolean} The annotations are the same
+ */
+ve.dm.AnnotationSet.prototype.compareTo = function ( annotationSet ) {
+	var i, length = this.getIndexes().length;
+
+	if ( length === annotationSet.getLength() ) {
+		for ( i = 0; i < length; i++ ) {
+			if ( !annotationSet.containsComparable( this.get( i ) ) ) {
+				return false;
+			}
+		}
+	} else {
+		return false;
+	}
+	return true;
+};
+
+/**
+ * Strictly compare two annotation sets for equality.
+ *
+ * This method only considers two annotation sets to be equal if they contain exactly the same
+ * annotations (not just comparable, but with the same index in the IndexValueStore)
+ * in exactly the same order.
+ *
+ * @param {ve.dm.AnnotationSet} set The annotation set to compare this one to
+ * @return {boolean} The annotation sets are equal
+ */
+ve.dm.AnnotationSet.prototype.equalsInOrder = function ( set ) {
+	var i, len,
+		ourIndexes = this.getIndexes(),
+		theirIndexes = set.getIndexes();
+	if ( ourIndexes.length !== theirIndexes.length ) {
+		return false;
+	}
+	for ( i = 0, len = ourIndexes.length; i < len; i++ ) {
+		if ( ourIndexes[ i ] !== theirIndexes[ i ] ) {
+			return false;
+		}
+	}
+	return true;
+};
+
+/**
+ * Add an annotation to the set.
+ *
+ * If the annotation is already present in the set, nothing happens.
+ *
+ * The annotation will be inserted before the annotation that is currently at the given offset. If offset is
+ * negative, it will be counted from the end (i.e. offset -1 is the last item, -2 the second-to-last,
+ * etc.). If offset is out of bounds, the annotation will be added to the end of the set.
+ *
+ * @method
+ * @param {ve.dm.Annotation} annotation Annotation to add
+ * @param {number} offset Offset to add the annotation at
+ */
+ve.dm.AnnotationSet.prototype.add = function ( annotation, offset ) {
+	var storeIndex = this.getStore().index( annotation );
+	// negative offset
+	if ( offset < 0 ) {
+		offset = this.getLength() + offset;
+	}
+	// greater than length, add to end
+	if ( offset >= this.getLength() ) {
+		this.push( annotation );
+		return;
+	}
+	// if not in set already, splice in place
+	if ( !this.containsIndex( storeIndex ) ) {
+		this.storeIndexes.splice( offset, 0, storeIndex );
+	}
+};
+
+/**
+ * Add all annotations in the given set to the end of the set.
+ *
+ * Annotations from the other set that are already in the set will not be added again.
+ *
+ * @method
+ * @param {ve.dm.AnnotationSet} set Set to add to the set
+ */
+ve.dm.AnnotationSet.prototype.addSet = function ( set ) {
+	this.storeIndexes = OO.simpleArrayUnion( this.getIndexes(), set.getIndexes() );
+};
+
+/**
+ * Add an annotation at the end of the set.
+ *
+ * @method
+ * @param {ve.dm.Annotation} annotation Annotation to add
+ */
+ve.dm.AnnotationSet.prototype.push = function ( annotation ) {
+	this.pushIndex( this.getStore().index( annotation ) );
+};
+
+/**
+ * Add an annotation at the end of the set by store index.
+ *
+ * @method
+ * @param {number} storeIndex Store index of annotation to add
+ */
+ve.dm.AnnotationSet.prototype.pushIndex = function ( storeIndex ) {
+	this.storeIndexes.push( storeIndex );
+};
+
+/**
+ * Remove the annotation at a given offset.
+ *
+ * @method
+ * @param {number} offset Offset to remove item at. If negative, the counts from the end, see add()
+ * @throws {Error} Offset out of bounds.
+ */
+ve.dm.AnnotationSet.prototype.removeAt = function ( offset ) {
+	if ( offset < 0 ) {
+		offset = this.getLength() + offset;
+	}
+	if ( offset >= this.getLength() ) {
+		throw new Error( 'Offset out of bounds' );
+	}
+	this.storeIndexes.splice( offset, 1 );
+};
+
+/**
+ * Remove a given annotation from the set by store index.
+ *
+ * If the annotation isn't in the set, nothing happens.
+ *
+ * @method
+ * @param {number} storeIndex Store index of annotation to remove
+ */
+ve.dm.AnnotationSet.prototype.removeIndex = function ( storeIndex ) {
+	var offset = this.offsetOfIndex( storeIndex );
+	if ( offset !== -1 ) {
+		this.storeIndexes.splice( offset, 1 );
+	}
+};
+
+/**
+ * Remove a given annotation from the set.
+ *
+ * If the annotation isn't in the set, nothing happens.
+ *
+ * @method
+ * @param {ve.dm.Annotation} annotation Annotation to remove
+ */
+ve.dm.AnnotationSet.prototype.remove = function ( annotation ) {
+	var offset = this.offsetOf( annotation );
+	if ( offset !== -1 ) {
+		this.storeIndexes.splice( offset, 1 );
+	}
+};
+
+/**
+ * Remove all annotations.
+ *
+ * @method
+ */
+ve.dm.AnnotationSet.prototype.removeAll = function () {
+	this.storeIndexes = [];
+};
+
+/**
+ * Remove all annotations in a given set from the set.
+ *
+ * Annotations that aren't in the set are ignored.
+ *
+ * @method
+ * @param {ve.dm.AnnotationSet} set Set to remove from the set
+ */
+ve.dm.AnnotationSet.prototype.removeSet = function ( set ) {
+	this.storeIndexes = OO.simpleArrayDifference( this.getIndexes(), set.getIndexes() );
+};
+
+/**
+ * Remove all annotations that are not also in a given other set from the set.
+ *
+ * @method
+ * @param {ve.dm.AnnotationSet} set Set to intersect with the set
+ */
+ve.dm.AnnotationSet.prototype.removeNotInSet = function ( set ) {
+	this.storeIndexes = OO.simpleArrayIntersection( this.getIndexes(), set.getIndexes() );
+};
+
+/**
+ * Reverse the set.
+ *
+ * This returns a copy, the original set is not modified.
+ *
+ * @method
+ * @return {ve.dm.AnnotationSet} Copy of the set with the order reversed.
+ */
+ve.dm.AnnotationSet.prototype.reversed = function () {
+	var newSet = this.clone();
+	newSet.storeIndexes.reverse();
+	return newSet;
+};
+
+/**
+ * Merge another set into the set.
+ *
+ * This returns a copy, the original set is not modified.
+ *
+ * @method
+ * @param {ve.dm.AnnotationSet} set Other set
+ * @return {ve.dm.AnnotationSet} Set containing all annotations in the set as well as all annotations in set
+ */
+ve.dm.AnnotationSet.prototype.mergeWith = function ( set ) {
+	var newSet = this.clone();
+	newSet.addSet( set );
+	return newSet;
+};
+
+/**
+ * Get the difference between the set and another set.
+ *
+ * @method
+ * @param {ve.dm.AnnotationSet} set Other set
+ * @return {ve.dm.AnnotationSet} New set containing all annotations that are in the set but not in set
+ */
+ve.dm.AnnotationSet.prototype.diffWith = function ( set ) {
+	var newSet = this.clone();
+	newSet.removeSet( set );
+	return newSet;
+};
+
+/**
+ * Get the intersection of the set with another set.
+ *
+ * @method
+ * @param {ve.dm.AnnotationSet} set Other set
+ * @return {ve.dm.AnnotationSet} New set containing all annotations that are both in the set and in set
+ */
+ve.dm.AnnotationSet.prototype.intersectWith = function ( set ) {
+	var newSet = this.clone();
+	newSet.removeNotInSet( set );
+	return newSet;
+};
+
+/*!
+ * VisualEditor DataModel MetaItemFactory class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel meta item factory.
+ *
+ * @class
+ * @extends ve.dm.ModelFactory
+ * @constructor
+ */
+ve.dm.MetaItemFactory = function VeDmMetaItemFactory() {
+	// Parent constructor
+	ve.dm.MetaItemFactory.super.call( this );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.MetaItemFactory, ve.dm.ModelFactory );
+
+/* Methods */
+
+/**
+ * Get the group a given item type belongs to.
+ *
+ * @method
+ * @param {string} type Meta item type
+ * @return {string} Group
+ * @throws {Error} Unknown item type
+ */
+ve.dm.MetaItemFactory.prototype.getGroup = function ( type ) {
+	if ( Object.prototype.hasOwnProperty.call( this.registry, type ) ) {
+		return this.registry[ type ].static.group;
+	}
+	throw new Error( 'Unknown item type: ' + type );
+};
+
+/* Initialization */
+
+ve.dm.metaItemFactory = new ve.dm.MetaItemFactory();
+
+/*!
+ * VisualEditor DataModel ClassAttribute class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel class-attribute node.
+ *
+ * Used for nodes which use classes to store attributes.
+ *
+ * @class
+ * @abstract
+ *
+ * @constructor
+ */
+ve.dm.ClassAttributeNode = function VeDmClassAttributeNode() {};
+
+/* Inheritance */
+
+OO.initClass( ve.dm.ClassAttributeNode );
+
+/* Static methods */
+
+/**
+ * Mapping from class names to attributes
+ *
+ * e.g. { alignLeft: { align: 'left' } } sets the align attribute to 'left'
+ * if the element has the class 'alignLeft'
+ *
+ * @type {Object}
+ */
+ve.dm.ClassAttributeNode.static.classAttributes = {};
+
+/**
+ * Set attributes from a class attribute
+ *
+ * Unrecognized classes are also preserved.
+ *
+ * @param {Object} attributes Attributes object to modify
+ * @param {string|null} classAttr Class attribute from an element
+ */
+ve.dm.ClassAttributeNode.static.setClassAttributes = function ( attributes, classAttr ) {
+	var className, i, l,
+		unrecognizedClasses = [],
+		classNames = classAttr ? classAttr.trim().split( /\s+/ ) : [];
+
+	if ( !classNames.length ) {
+		return;
+	}
+
+	for ( i = 0, l = classNames.length; i < l; i++ ) {
+		className = classNames[ i ];
+		if ( Object.prototype.hasOwnProperty.call( this.classAttributes, className ) ) {
+			attributes = ve.extendObject( attributes, this.classAttributes[ className ] );
+		} else {
+			unrecognizedClasses.push( className );
+		}
+	}
+
+	attributes.originalClasses = classAttr;
+	attributes.unrecognizedClasses = unrecognizedClasses;
+};
+
+/**
+ * Get class attribute from element attributes
+ *
+ * @param {Object} attributes Element attributes
+ * @return {string|null} Class name, or null if no classes to set
+ */
+ve.dm.ClassAttributeNode.static.getClassAttrFromAttributes = function ( attributes ) {
+	var className, key, classAttributeSet, hasClass,
+		classNames = [];
+
+	for ( className in this.classAttributes ) {
+		classAttributeSet = this.classAttributes[ className ];
+		hasClass = true;
+		for ( key in classAttributeSet ) {
+			if ( attributes[ key ] !== classAttributeSet[ key ] ) {
+				hasClass = false;
+				break;
+			}
+		}
+		if ( hasClass ) {
+			classNames.push( className );
+		}
+	}
+
+	if ( attributes.unrecognizedClasses ) {
+		classNames = OO.simpleArrayUnion( classNames, attributes.unrecognizedClasses );
+	}
+
+	// If no meaningful change in classes, preserve order
+	if (
+		attributes.originalClasses &&
+		ve.compareClassLists( attributes.originalClasses, classNames )
+	) {
+		return attributes.originalClasses;
+	} else if ( classNames.length > 0 ) {
+		return classNames.join( ' ' );
+	}
+
+	return null;
+};
+
+/*!
+ * VisualEditor DataModel AlignableNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * A mixin class for Alignable nodes.
+ *
+ * @class
+ * @abstract
+ * @extends ve.dm.ClassAttributeNode
+ *
+ * @constructor
+ */
+ve.dm.AlignableNode = function VeDmAlignableNode() {
+	// Parent constructor
+	ve.dm.AlignableNode.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.AlignableNode, ve.dm.ClassAttributeNode );
+
+/* Static properties */
+
+ve.dm.AlignableNode.static.isAlignable = true;
+
+ve.dm.AlignableNode.static.classAttributes = {
+	've-align-left': { align: 'left' },
+	've-align-right': { align: 'right' },
+	've-align-center': { align: 'center' }
+};
+
+/*!
+ * VisualEditor DataModel Focusable node.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * A mixin class for focusable nodes.
+ *
+ * @class
+ * @abstract
+ * @constructor
+ */
+ve.dm.FocusableNode = function VeDmFocusableNode() {};
+
+/* Inheritance */
+
+OO.initClass( ve.dm.FocusableNode );
+
+/* Static Properties */
+
+ve.dm.FocusableNode.static.isFocusable = true;
+
+/*!
+ * VisualEditor DataModel Resizable node.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * A mixin class for resizable nodes. This class is mostly a base
+ * interface for resizable nodes to be able to produce scalable
+ * objects for further calculation.
+ *
+ * @class
+ * @abstract
+ * @constructor
+ */
+ve.dm.ResizableNode = function VeDmResizableNode() {
+	this.scalable = null;
+
+	this.connect( this, { attributeChange: 'onResizableAttributeChange' } );
+};
+
+/* Inheritance */
+
+OO.initClass( ve.dm.ResizableNode );
+
+/**
+ * Get a scalable object for this node.
+ *
+ * #createScalable is called if one doesn't already exist.
+ *
+ * @return {ve.dm.Scalable} Scalable object
+ */
+ve.dm.ResizableNode.prototype.getScalable = function () {
+	if ( !this.scalable ) {
+		this.scalable = this.createScalable();
+	}
+	return this.scalable;
+};
+
+/**
+ * Create a scalable object based on the current object's width and height.
+ *
+ * @abstract
+ * @method
+ * @return {ve.dm.Scalable} Scalable object
+ */
+ve.dm.ResizableNode.prototype.createScalable = null;
+
+/**
+ * Handle attribute change events from the model.
+ *
+ * @method
+ * @param {string} key Attribute key
+ * @param {string} from Old value
+ * @param {string} to New value
+ */
+ve.dm.ResizableNode.prototype.onResizableAttributeChange = function ( key ) {
+	if ( key === 'width' || key === 'height' ) {
+		this.getScalable().setCurrentDimensions( {
+			width: this.getAttribute( 'width' ),
+			height: this.getAttribute( 'height' )
+		} );
+	}
+};
+
+/*!
+ * VisualEditor DataModel TableCellableNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel node which can behave as a table cell
+ *
+ * @class
+ *
+ * @abstract
+ * @constructor
+ */
+ve.dm.TableCellableNode = function VeDmTableCellableNode() {
+};
+
+/* Inheritance */
+
+OO.initClass( ve.dm.TableCellableNode );
+
+/* Static Properties */
+
+ve.dm.TableCellableNode.static.isCellable = true;
+
+/* Static Methods */
+
+ve.dm.TableCellableNode.static.setAttributes = function ( attributes, domElements ) {
+	var style = domElements[ 0 ].nodeName.toLowerCase() === 'th' ? 'header' : 'data',
+		colspan = domElements[ 0 ].getAttribute( 'colspan' ),
+		rowspan = domElements[ 0 ].getAttribute( 'rowspan' );
+
+	attributes.style = style;
+
+	if ( colspan !== null ) {
+		attributes.originalColspan = colspan;
+		if ( colspan !== '' && !isNaN( Number( colspan ) ) ) {
+			attributes.colspan = Number( colspan );
+		}
+	}
+
+	if ( rowspan !== null ) {
+		attributes.originalRowspan = rowspan;
+		if ( rowspan !== '' && !isNaN( Number( rowspan ) ) ) {
+			attributes.rowspan = Number( rowspan );
+		}
+	}
+};
+
+ve.dm.TableCellableNode.static.applyAttributes = function ( attributes, domElement ) {
+	var spans = {
+			colspan: attributes.colspan,
+			rowspan: attributes.rowspan
+		};
+
+	// Ignore spans of 1 unless they were in the original HTML
+	if ( attributes.colspan === 1 && Number( attributes.originalColspan ) !== 1 ) {
+		spans.colspan = null;
+	}
+
+	if ( attributes.rowspan === 1 && Number( attributes.originalRowspan ) !== 1 ) {
+		spans.rowspan = null;
+	}
+
+	// Use original value if the numerical value didn't change, or if we didn't set one
+	if ( attributes.colspan === undefined || attributes.colspan === Number( attributes.originalColspan ) ) {
+		spans.colspan = attributes.originalColspan;
+	}
+
+	if ( attributes.rowspan === undefined || attributes.rowspan === Number( attributes.originalRowspan ) ) {
+		spans.rowspan = attributes.originalRowspan;
+	}
+
+	ve.setDomAttributes( domElement, spans );
+};
+
+/* Methods */
+
+/**
+ * Get the number of rows the cell spans
+ *
+ * @return {number} Rows spanned
+ */
+ve.dm.TableCellableNode.prototype.getRowspan = function () {
+	return this.element.attributes.rowspan || 1;
+};
+
+/**
+ * Get the number of columns the cell spans
+ *
+ * @return {number} Columns spanned
+ */
+ve.dm.TableCellableNode.prototype.getColspan = function () {
+	return this.element.attributes.colspan || 1;
+};
+
+/**
+ * Get number of columns and rows the cell spans
+ *
+ * @return {Object} Object containing 'col' and 'row'
+ */
+ve.dm.TableCellableNode.prototype.getSpans = function () {
+	return {
+		col: this.getColspan(),
+		row: this.getRowspan()
+	};
+};
+
+/**
+ * Get the style of the cell
+ *
+ * @return {string} Style, 'header' or 'data'
+ */
+ve.dm.TableCellableNode.prototype.getStyle = function () {
+	return this.element.attributes.style || 'data';
+};
+
+/**
+ * Handle attributes changes
+ *
+ * @param {string} key Attribute key
+ * @param {string} from Old value
+ * @param {string} to New value
+ */
+ve.dm.TableCellableNode.prototype.onAttributeChange = function ( key ) {
+	if ( this.getParent() && ( key === 'colspan' || key === 'rowspan' ) ) {
+		// In practice the matrix should already be invalidated as you
+		// shouldn't change a span without adding/removing other cells,
+		// but it is possible to just change spans if you don't mind a
+		// non-rectangular table.
+		this.getParent().getParent().getParent().getMatrix().invalidate();
+	}
+};
+
+/*!
+ * VisualEditor DataModel Scalable class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * Scalable object.
+ *
+ * @class
+ * @mixins OO.EventEmitter
+ *
+ * @constructor
+ * @param {Object} [config] Configuration options
+ * @cfg {boolean} [fixedRatio=true] Object has a fixed aspect ratio
+ * @cfg {Object} [currentDimensions] Current dimensions, width & height
+ * @cfg {Object} [originalDimensions] Original dimensions, width & height
+ * @cfg {Object} [defaultDimensions] Default dimensions, width & height
+ * @cfg {boolean} [isDefault] Object is using its default dimensions
+ * @cfg {Object} [minDimensions] Minimum dimensions, width & height
+ * @cfg {Object} [maxDimensions] Maximum dimensions, width & height
+ * @cfg {boolean} [enforceMin=true] Enforce the minimum dimensions
+ * @cfg {boolean} [enforceMax=true] Enforce the maximum dimensions
+ */
+ve.dm.Scalable = function VeDmScalable( config ) {
+	config = ve.extendObject( {
+		fixedRatio: true,
+		enforceMin: true,
+		enforceMax: true
+	}, config );
+
+	// Mixin constructors
+	OO.EventEmitter.call( this );
+
+	// Computed properties
+	this.ratio = null;
+	this.valid = null;
+	this.defaultSize = false;
+
+	// Initialize
+	this.currentDimensions = null;
+	this.defaultDimensions = null;
+	this.originalDimensions = null;
+	this.minDimensions = null;
+	this.maxDimensions = null;
+
+	// Properties
+	this.fixedRatio = config.fixedRatio;
+	if ( config.currentDimensions ) {
+		this.setCurrentDimensions( config.currentDimensions );
+	}
+	if ( config.originalDimensions ) {
+		this.setOriginalDimensions( config.originalDimensions );
+	}
+	if ( config.defaultDimensions ) {
+		this.setDefaultDimensions( config.defaultDimensions );
+	}
+	if ( !!config.isDefault ) {
+		this.toggleDefault( !!config.isDefault );
+	}
+	if ( config.minDimensions ) {
+		this.setMinDimensions( config.minDimensions );
+	}
+	if ( config.maxDimensions ) {
+		this.setMaxDimensions( config.maxDimensions );
+	}
+
+	this.setEnforcedMin( config.enforceMin );
+	this.setEnforcedMax( config.enforceMax );
+};
+
+/* Inheritance */
+
+OO.mixinClass( ve.dm.Scalable, OO.EventEmitter );
+
+/* Events */
+
+/**
+ * Current changed
+ *
+ * @event currentSizeChange
+ * @param {Object} currentDimensions Current dimensions width and height
+ */
+
+/**
+ * Default size or state changed
+ *
+ * @event defaultSizeChange
+ * @param {boolean} isDefault The size is default
+ */
+
+/**
+ * Original size changed
+ *
+ * @event originalSizeChange
+ * @param {Object} originalDimensions Original dimensions width and height
+ */
+
+/**
+ * Min size changed
+ *
+ * @event minSizeChange
+ * @param {Object} minDimensions Min dimensions width and height
+ */
+
+/**
+ * Max size changed
+ *
+ * @event maxSizeChange
+ * @param {Object} maxDimensions Max dimensions width and height
+ */
+
+/**
+ * Calculate the dimensions from a given value of either width or height.
+ * This method doesn't take into account any restrictions of minimum or maximum,
+ * it simply calculates the new dimensions according to the aspect ratio in case
+ * it exists.
+ *
+ * If aspect ratio does not exist, or if the original object is empty, or if the
+ * original object is fully specified, the object is returned as-is without
+ * calculations.
+ *
+ * @param {Object} dimensions Dimensions object with either width or height
+ * if both are given, the object will be returned as-is.
+ * @param {number} [dimensions.width] The width of the image
+ * @param {number} [dimensions.height] The height of the image
+ * @param {number} [ratio] The image width/height ratio, if it exists
+ * @return {Object} Dimensions object with width and height
+ */
+ve.dm.Scalable.static.getDimensionsFromValue = function ( dimensions, ratio ) {
+	dimensions = ve.copy( dimensions );
+
+	// Normalize for 'empty' values that are specifically given
+	// so if '' is explicitly given, it should be translated to 0
+	if ( dimensions.width === '' ) {
+		dimensions.width = 0;
+	}
+	if ( dimensions.height === '' ) {
+		dimensions.height = 0;
+	}
+
+	// Calculate the opposite size if needed
+	if ( !dimensions.height && ratio !== null && $.isNumeric( dimensions.width ) ) {
+		dimensions.height = Math.round( dimensions.width / ratio );
+	}
+	if ( !dimensions.width && ratio !== null && $.isNumeric( dimensions.height ) ) {
+		dimensions.width = Math.round( dimensions.height * ratio );
+	}
+
+	return dimensions;
+};
+
+/* Methods */
+
+/**
+ * Clone the current scalable object
+ *
+ * @return {ve.dm.Scalable} Cloned scalable object
+ */
+ve.dm.Scalable.prototype.clone = function () {
+	var currentDimensions = this.getCurrentDimensions(),
+		originalDimensions = this.getOriginalDimensions(),
+		defaultDimensions = this.getDefaultDimensions(),
+		minDimensions = this.getMinDimensions(),
+		maxDimensions = this.getMaxDimensions(),
+		config = {
+			isDefault: !!this.isDefault(),
+			enforceMin: !!this.isEnforcedMin(),
+			enforceMax: !!this.isEnforcedMax()
+		};
+	if ( currentDimensions ) {
+		config.currentDimensions = ve.copy( currentDimensions );
+	}
+	if ( originalDimensions ) {
+		config.originalDimensions = ve.copy( originalDimensions );
+	}
+	if ( defaultDimensions ) {
+		config.defaultDimensions = ve.copy( defaultDimensions );
+	}
+	if ( minDimensions ) {
+		config.minDimensions = ve.copy( minDimensions );
+	}
+	if ( maxDimensions ) {
+		config.maxDimensions = ve.copy( maxDimensions );
+	}
+	return new this.constructor( config );
+};
+
+/**
+ * Set the fixed aspect ratio from specified dimensions.
+ *
+ * @param {Object} dimensions Dimensions object with width & height
+ */
+ve.dm.Scalable.prototype.setRatioFromDimensions = function ( dimensions ) {
+	if ( dimensions && dimensions.width && dimensions.height ) {
+		this.ratio = dimensions.width / dimensions.height;
+	}
+	this.valid = null;
+};
+
+/**
+ * Set the current dimensions
+ *
+ * Also sets the aspect ratio if not set and in fixed ratio mode.
+ *
+ * @param {Object} dimensions Dimensions object with width & height
+ * @fires currentSizeChange
+ */
+ve.dm.Scalable.prototype.setCurrentDimensions = function ( dimensions ) {
+	if (
+		this.isDimensionsObjectValid( dimensions ) &&
+		!ve.compare( dimensions, this.getCurrentDimensions() )
+	) {
+		this.currentDimensions = ve.copy( dimensions );
+		// Only use current dimensions for ratio if it isn't set
+		if ( this.fixedRatio && !this.ratio ) {
+			this.setRatioFromDimensions( this.getCurrentDimensions() );
+		}
+		this.valid = null;
+		this.emit( 'currentSizeChange', this.getCurrentDimensions() );
+	}
+};
+
+/**
+ * Set the original dimensions
+ *
+ * Also resets the aspect ratio if in fixed ratio mode.
+ *
+ * @param {Object} dimensions Dimensions object with width & height
+ * @fires originalSizeChange
+ */
+ve.dm.Scalable.prototype.setOriginalDimensions = function ( dimensions ) {
+	if (
+		this.isDimensionsObjectValid( dimensions ) &&
+		!ve.compare( dimensions, this.getOriginalDimensions() )
+	) {
+		this.originalDimensions = ve.copy( dimensions );
+		// Always overwrite ratio
+		if ( this.fixedRatio ) {
+			this.setRatioFromDimensions( this.getOriginalDimensions() );
+		}
+		this.valid = null;
+		this.emit( 'originalSizeChange', this.getOriginalDimensions() );
+	}
+};
+
+/**
+ * Set the default dimensions
+ *
+ * @param {Object} dimensions Dimensions object with width & height
+ * @fires defaultSizeChange
+ */
+ve.dm.Scalable.prototype.setDefaultDimensions = function ( dimensions ) {
+	if (
+		this.isDimensionsObjectValid( dimensions ) &&
+		!ve.compare( dimensions, this.getDefaultDimensions() )
+	) {
+		this.defaultDimensions = ve.copy( dimensions );
+		this.valid = null;
+		this.emit( 'defaultSizeChange', this.isDefault() );
+	}
+};
+
+/**
+ * Reset and remove the default dimensions
+ *
+ * @fires defaultSizeChange
+ */
+ve.dm.Scalable.prototype.clearDefaultDimensions = function () {
+	this.defaultDimensions = null;
+	this.valid = null;
+	this.emit( 'defaultSizeChange', this.isDefault() );
+};
+
+/**
+ * Reset and remove the default dimensions
+ *
+ * @fires originalSizeChange
+ */
+ve.dm.Scalable.prototype.clearOriginalDimensions = function () {
+	this.originalDimensions = null;
+	this.valid = null;
+	this.emit( 'originalSizeChange', this.isDefault() );
+};
+
+/**
+ * Toggle the default size setting, or set it to particular value
+ *
+ * @param {boolean} [isDefault] Default or not, toggles if unset
+ * @fires defaultSizeChange
+ */
+ve.dm.Scalable.prototype.toggleDefault = function ( isDefault ) {
+	if ( isDefault === undefined ) {
+		isDefault = !this.isDefault();
+	}
+	if ( this.isDefault() !== isDefault ) {
+		this.defaultSize = isDefault;
+		if ( isDefault ) {
+			this.setCurrentDimensions(
+				this.getDefaultDimensions()
+			);
+		}
+		this.emit( 'defaultSizeChange', this.isDefault() );
+	}
+};
+
+/**
+ * Set the minimum dimensions
+ *
+ * @param {Object} dimensions Dimensions object with width & height
+ * @fires minSizeChange
+ */
+ve.dm.Scalable.prototype.setMinDimensions = function ( dimensions ) {
+	if (
+		this.isDimensionsObjectValid( dimensions ) &&
+		!ve.compare( dimensions, this.getMinDimensions() )
+	) {
+		this.minDimensions = ve.copy( dimensions );
+		this.valid = null;
+		this.emit( 'minSizeChange', dimensions );
+	}
+};
+
+/**
+ * Set the maximum dimensions
+ *
+ * @param {Object} dimensions Dimensions object with width & height
+ * @fires maxSizeChange
+ */
+ve.dm.Scalable.prototype.setMaxDimensions = function ( dimensions ) {
+	if (
+		this.isDimensionsObjectValid( dimensions ) &&
+		!ve.compare( dimensions, this.getMaxDimensions() )
+	) {
+		this.maxDimensions = ve.copy( dimensions );
+		this.emit( 'maxSizeChange', dimensions );
+		this.valid = null;
+	}
+};
+
+/**
+ * Clear the minimum dimensions
+ *
+ * @fires minSizeChange
+ */
+ve.dm.Scalable.prototype.clearMinDimensions = function () {
+	if ( this.minDimensions !== null ) {
+		this.minDimensions = null;
+		this.valid = null;
+		this.emit( 'minSizeChange', this.minDimensions );
+	}
+};
+
+/**
+ * Clear the maximum dimensions
+ *
+ * @fires maxSizeChange
+ */
+ve.dm.Scalable.prototype.clearMaxDimensions = function () {
+	if ( this.maxDimensions !== null ) {
+		this.maxDimensions = null;
+		this.valid = null;
+		this.emit( 'maxSizeChange', this.maxDimensions );
+	}
+};
+
+/**
+ * Get the original dimensions
+ *
+ * @return {Object} Dimensions object with width & height
+ */
+ve.dm.Scalable.prototype.getCurrentDimensions = function () {
+	return this.currentDimensions;
+};
+
+/**
+ * Get the original dimensions
+ *
+ * @return {Object} Dimensions object with width & height
+ */
+ve.dm.Scalable.prototype.getOriginalDimensions = function () {
+	return this.originalDimensions;
+};
+
+/**
+ * Get the default dimensions
+ *
+ * @return {Object} Dimensions object with width & height
+ */
+ve.dm.Scalable.prototype.getDefaultDimensions = function () {
+	return this.defaultDimensions;
+};
+
+/**
+ * Get the default state of the scalable object
+ *
+ * @return {boolean} Default size or custom
+ */
+ve.dm.Scalable.prototype.isDefault = function () {
+	return this.defaultSize;
+};
+
+/**
+ * Get the minimum dimensions
+ *
+ * @return {Object} Dimensions object with width & height
+ */
+ve.dm.Scalable.prototype.getMinDimensions = function () {
+	return this.minDimensions;
+};
+
+/**
+ * Get the maximum dimensions
+ *
+ * @return {Object} Dimensions object with width & height
+ */
+ve.dm.Scalable.prototype.getMaxDimensions = function () {
+	return this.maxDimensions;
+};
+
+/**
+ * The object enforces the minimum dimensions when scaling
+ *
+ * @return {boolean} Enforces the minimum dimensions
+ */
+ve.dm.Scalable.prototype.isEnforcedMin = function () {
+	return this.enforceMin;
+};
+
+/**
+ * The object enforces the maximum dimensions when scaling
+ *
+ * @return {boolean} Enforces the maximum dimensions
+ */
+ve.dm.Scalable.prototype.isEnforcedMax = function () {
+	return this.enforceMax;
+};
+
+/**
+ * Set enforcement of minimum dimensions
+ *
+ * @param {boolean} enforceMin Enforces the minimum dimensions
+ */
+ve.dm.Scalable.prototype.setEnforcedMin = function ( enforceMin ) {
+	this.valid = null;
+	this.enforceMin = !!enforceMin;
+};
+
+/**
+ * Set enforcement of maximum dimensions
+ *
+ * @param {boolean} enforceMax Enforces the maximum dimensions
+ */
+ve.dm.Scalable.prototype.setEnforcedMax = function ( enforceMax ) {
+	this.valid = null;
+	this.enforceMax = !!enforceMax;
+};
+
+/**
+ * Get the fixed aspect ratio (width/height)
+ *
+ * @return {number} Aspect ratio
+ */
+ve.dm.Scalable.prototype.getRatio = function () {
+	return this.ratio;
+};
+
+/**
+ * Check if the object has a fixed ratio
+ *
+ * @return {boolean} The object has a fixed ratio
+ */
+ve.dm.Scalable.prototype.isFixedRatio = function () {
+	return this.fixedRatio;
+};
+
+/**
+ * Get the current scale of the object
+ *
+ * @return {number|null} A scale (1=100%), or null if not applicable
+ */
+ve.dm.Scalable.prototype.getCurrentScale = function () {
+	if ( !this.isFixedRatio() || !this.getCurrentDimensions() || !this.getOriginalDimensions() ) {
+		return null;
+	}
+	return this.getCurrentDimensions().width / this.getOriginalDimensions().width;
+};
+
+/**
+ * Check if current dimensions are smaller than minimum dimensions in either direction
+ *
+ * Only possible if enforceMin is false.
+ *
+ * @return {boolean} Current dimensions are greater than maximum dimensions
+ */
+ve.dm.Scalable.prototype.isTooSmall = function () {
+	return !!( this.getCurrentDimensions() && this.getMinDimensions() && (
+			this.getCurrentDimensions().width < this.getMinDimensions().width ||
+			this.getCurrentDimensions().height < this.getMinDimensions().height
+		) );
+};
+
+/**
+ * Check if current dimensions are greater than maximum dimensions in either direction
+ *
+ * Only possible if enforceMax is false.
+ *
+ * @return {boolean} Current dimensions are greater than maximum dimensions
+ */
+ve.dm.Scalable.prototype.isTooLarge = function () {
+	return !!( this.getCurrentDimensions() && this.getMaxDimensions() && (
+			this.getCurrentDimensions().width > this.getMaxDimensions().width ||
+			this.getCurrentDimensions().height > this.getMaxDimensions().height
+		) );
+};
+
+/**
+ * Get a set of dimensions bounded by current restrictions, from specified dimensions
+ *
+ * @param {Object} dimensions Dimensions object with width & height
+ * @param {number} [grid] Optional grid size to snap to
+ * @return {Object} Dimensions object with width & height
+ */
+ve.dm.Scalable.prototype.getBoundedDimensions = function ( dimensions, grid ) {
+	var ratio, snap, snapMin, snapMax,
+		minDimensions = this.isEnforcedMin() && this.getMinDimensions(),
+		maxDimensions = this.isEnforcedMax() && this.getMaxDimensions();
+
+	dimensions = ve.copy( dimensions );
+
+	// Bound to min/max
+	if ( minDimensions ) {
+		dimensions.width = Math.max( dimensions.width, this.minDimensions.width );
+		dimensions.height = Math.max( dimensions.height, this.minDimensions.height );
+	}
+	if ( maxDimensions ) {
+		dimensions.width = Math.min( dimensions.width, this.maxDimensions.width );
+		dimensions.height = Math.min( dimensions.height, this.maxDimensions.height );
+	}
+
+	// Bound to ratio
+	if ( this.isFixedRatio() ) {
+		ratio = dimensions.width / dimensions.height;
+		if ( ratio < this.getRatio() ) {
+			dimensions.height = Math.round( dimensions.width / this.getRatio() );
+		} else {
+			dimensions.width = Math.round( dimensions.height * this.getRatio() );
+		}
+	}
+
+	// Snap to grid
+	if ( grid ) {
+		snapMin = minDimensions ? Math.ceil( minDimensions.width / grid ) : -Infinity;
+		snapMax = maxDimensions ? Math.floor( maxDimensions.width / grid ) : Infinity;
+		snap = Math.round( dimensions.width / grid );
+		dimensions.width = Math.max( Math.min( snap, snapMax ), snapMin ) * grid;
+		if ( this.isFixedRatio() ) {
+			// If the ratio is fixed we can't snap both to the grid, so just snap the width
+			dimensions.height = Math.round( dimensions.width / this.getRatio() );
+		} else {
+			snapMin = minDimensions ? Math.ceil( minDimensions.height / grid ) : -Infinity;
+			snapMax = maxDimensions ? Math.floor( maxDimensions.height / grid ) : Infinity;
+			snap = Math.round( dimensions.height / grid );
+			dimensions.height = Math.max( Math.min( snap, snapMax ), snapMin ) * grid;
+		}
+	}
+
+	return dimensions;
+};
+
+/**
+ * Checks whether the current dimensions are numeric and within range
+ *
+ * @return {boolean} Current dimensions are valid
+ */
+ve.dm.Scalable.prototype.isCurrentDimensionsValid = function () {
+	var dimensions = this.getCurrentDimensions(),
+		minDimensions = this.isEnforcedMin() && !$.isEmptyObject( this.getMinDimensions() ) && this.getMinDimensions(),
+		maxDimensions = this.isEnforcedMax() && !$.isEmptyObject( this.getMaxDimensions() ) && this.getMaxDimensions();
+
+	this.valid = (
+		$.isNumeric( dimensions.width ) &&
+		$.isNumeric( dimensions.height ) &&
+		(
+			!minDimensions || (
+				dimensions.width >= minDimensions.width &&
+				dimensions.height >= minDimensions.height
+			)
+		) &&
+		(
+			!maxDimensions || (
+				dimensions.width <= maxDimensions.width &&
+				dimensions.height <= maxDimensions.height
+			)
+		)
+	);
+	return this.valid;
+};
+
+/**
+ * Check if an object is a dimensions object.
+ * Make sure that if width or height are set, they are not 'undefined'.
+ *
+ * @param {Object} dimensions A dimensions object to test
+ * @return {boolean} Valid or invalid dimensions object
+ */
+ve.dm.Scalable.prototype.isDimensionsObjectValid = function ( dimensions ) {
+	if (
+		dimensions &&
+		!$.isEmptyObject( dimensions ) &&
+		(
+			dimensions.width !== undefined ||
+			dimensions.height !== undefined
+		)
+	) {
+		return true;
+	}
+	return false;
+};
+
+/*!
+ * VisualEditor DataModel APIResultsProvider class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * API Results Provider object.
+ *
+ * @class
+ * @mixins OO.EventEmitter
+ *
+ * @constructor
+ * @param {string} apiurl The URL to the api
+ * @param {Object} [config] Configuration options
+ * @cfg {number} fetchLimit The default number of results to fetch
+ * @cfg {string} lang The language of the API
+ * @cfg {number} offset Initial offset, if relevant, to call results from
+ * @cfg {Object} ajaxSettings The settings for the ajax call
+ * @cfg {Object} staticParams The data parameters that are static and should
+ *  always be sent to the API request, as opposed to user parameters.
+ * @cfg {Object} userParams Initial user parameters to be sent as data to
+ *  the API request. These can change per request, like the search query term
+ *  or sizing parameters for images, etc.
+ */
+ve.dm.APIResultsProvider = function VeDmAPIResultsProvider( apiurl, config ) {
+	config = config || {};
+
+	this.setAPIurl( apiurl );
+	this.setDefaultFetchLimit( config.fetchLimit || 30 );
+	this.setLang( config.lang );
+	this.setOffset( config.offset || 0 );
+	this.setAjaxSettings( config.ajaxSettings || {} );
+
+	this.staticParams = config.staticParams || {};
+	this.userParams = config.userParams || {};
+
+	this.toggleDepleted( false );
+
+	// Mixin constructors
+	OO.EventEmitter.call( this );
+};
+
+/* Setup */
+OO.mixinClass( ve.dm.APIResultsProvider, OO.EventEmitter );
+
+/* Methods */
+
+/**
+ * Get results from the source
+ *
+ * @param {number} howMany Number of results to ask for
+ * @return {jQuery.Promise} Promise that is resolved into an array
+ * of available results, or is rejected if no results are available.
+ */
+ve.dm.APIResultsProvider.prototype.getResults = function () {
+	var xhr,
+		deferred = $.Deferred(),
+		allParams = $.extend( {}, this.getStaticParams(), this.getUserParams() );
+
+	xhr = $.getJSON( this.getAPIurl(), allParams )
+		.done( function ( data ) {
+			if (
+				$.type( data ) !== 'array' ||
+				(
+					$.type( data ) === 'array' &&
+					data.length === 0
+				)
+			) {
+				deferred.resolve();
+			} else {
+				deferred.resolve( data );
+			}
+		} );
+	return deferred.promise( { abort: xhr.abort } );
+};
+
+/**
+ * Set API url
+ *
+ * @param {string} apiurl API url
+ */
+ve.dm.APIResultsProvider.prototype.setAPIurl = function ( apiurl ) {
+	this.apiurl = apiurl;
+};
+
+/**
+ * Set api url
+ *
+ * @return {string} API url
+ */
+ve.dm.APIResultsProvider.prototype.getAPIurl = function () {
+	return this.apiurl;
+};
+
+/**
+ * Get the static, non-changing data parameters sent to the API
+ *
+ * @return {Object} Data parameters
+ */
+ve.dm.APIResultsProvider.prototype.getStaticParams = function () {
+	return this.staticParams;
+};
+
+/**
+ * Get the user-inputted dynamic data parameters sent to the API
+ *
+ * @return {Object} Data parameters
+ */
+ve.dm.APIResultsProvider.prototype.getUserParams = function () {
+	return this.userParams;
+};
+
+/**
+ * Set the data parameters sent to the API
+ *
+ * @param {Object} params User defined data parameters
+ */
+ve.dm.APIResultsProvider.prototype.setUserParams = function ( params ) {
+	// Assymetrically compare (params is subset of this.userParams)
+	if ( !ve.compare( params, this.userParams, true ) ) {
+		this.userParams = $.extend( {}, this.userParams, params );
+		// Reset offset
+		this.setOffset( 0 );
+		// Reset depleted status
+		this.toggleDepleted( false );
+	}
+};
+
+/**
+ * Get fetch limit or 'page' size. This is the number
+ * of results per request.
+ *
+ * @return {number} limit
+ */
+ve.dm.APIResultsProvider.prototype.getDefaultFetchLimit = function () {
+	return this.limit;
+};
+
+/**
+ * Set limit
+ *
+ * @param {number} limit Default number of results to fetch from the API
+ */
+ve.dm.APIResultsProvider.prototype.setDefaultFetchLimit = function ( limit ) {
+	this.limit = limit;
+};
+
+/**
+ * Get provider API language
+ *
+ * @return {string} Provider API language
+ */
+ve.dm.APIResultsProvider.prototype.getLang = function () {
+	return this.lang;
+};
+
+/**
+ * Set provider API language
+ *
+ * @param {string} lang Provider API language
+ */
+ve.dm.APIResultsProvider.prototype.setLang = function ( lang ) {
+	this.lang = lang;
+};
+
+/**
+ * Get result offset
+ *
+ * @return {number} Offset Results offset for the upcoming request
+ */
+ve.dm.APIResultsProvider.prototype.getOffset = function () {
+	return this.offset;
+};
+
+/**
+ * Set result offset
+ *
+ * @param {number} offset Results offset for the upcoming request
+ */
+ve.dm.APIResultsProvider.prototype.setOffset = function ( offset ) {
+	this.offset = offset;
+};
+
+/**
+ * Check whether the provider is depleted and has no more results
+ * to hand off.
+ *
+ * @return {boolean} The provider is depleted
+ */
+ve.dm.APIResultsProvider.prototype.isDepleted = function () {
+	return this.depleted;
+};
+
+/**
+ * Toggle depleted state
+ *
+ * @param {boolean} isDepleted The provider is depleted
+ */
+ve.dm.APIResultsProvider.prototype.toggleDepleted = function ( isDepleted ) {
+	this.depleted = isDepleted !== undefined ? isDepleted : !this.depleted;
+};
+
+/**
+ * Get the default ajax settings
+ *
+ * @return {Object} Ajax settings
+ */
+ve.dm.APIResultsProvider.prototype.getAjaxSettings = function () {
+	return this.ajaxSettings;
+};
+
+/**
+ * Get the default ajax settings
+ *
+ * @param {Object} settings Ajax settings
+ */
+ve.dm.APIResultsProvider.prototype.setAjaxSettings = function ( settings ) {
+	this.ajaxSettings = settings;
+};
+
+/*!
+ * VisualEditor DataModel APIResultsQueue class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * API Results Queue object.
+ *
+ * @class
+ * @mixins OO.EventEmitter
+ *
+ * @constructor
+ * @param {Object} [config] Configuration options
+ * @cfg {number} limit The default number of results to fetch
+ * @cfg {number} threshold The default number of extra results
+ *  that the queue should always strive to have on top of the
+ *  individual requests for items.
+ */
+ve.dm.APIResultsQueue = function VeDmAPIResultsQueue( config ) {
+	config = config || {};
+
+	this.fileRepoPromise = null;
+	this.providers = [];
+	this.providerPromises = [];
+	this.queue = [];
+
+	this.params = {};
+
+	this.limit = config.limit || 20;
+	this.setThreshold( config.threshold || 10 );
+
+	// Mixin constructors
+	OO.EventEmitter.call( this );
+};
+
+/* Setup */
+OO.mixinClass( ve.dm.APIResultsQueue, OO.EventEmitter );
+
+/* Methods */
+
+/**
+ * Set up the queue and its resources.
+ * This should be overrided if there are any setup steps to perform.
+ *
+ * @return {jQuery.Promise} Promise that resolves when the resources
+ *  are set up. Note: The promise must have an .abort() functionality.
+ */
+ve.dm.APIResultsQueue.prototype.setup = function () {
+	return $.Deferred().resolve().promise( { abort: $.noop } );
+};
+
+/**
+ * Get items from the queue
+ *
+ * @param {number} [howMany] How many items to retrieve. Defaults to the
+ *  default limit supplied on initialization.
+ * @return {jQuery.Promise} Promise that resolves into an array of items.
+ */
+ve.dm.APIResultsQueue.prototype.get = function ( howMany ) {
+	var fetchingPromise = null,
+		me = this;
+
+	howMany = howMany || this.limit;
+
+	// Check if the queue has enough items
+	if ( this.queue.length < howMany + this.threshold ) {
+		// Call for more results
+		fetchingPromise = this.queryProviders( howMany + this.threshold )
+			.then( function ( items ) {
+				// Add to the queue
+				me.queue = me.queue.concat.apply( me.queue, items );
+			} );
+	}
+
+	return $.when( fetchingPromise )
+		.then( function () {
+			return me.queue.splice( 0, howMany );
+		} );
+
+};
+
+/**
+ * Get results from all providers
+ *
+ * @param {number} [howMany] How many items to retrieve. Defaults to the
+ *  default limit supplied on initialization.
+ * @return {jQuery.Promise} Promise that is resolved into an array
+ *  of fetched items. Note: The promise must have an .abort() functionality.
+ */
+ve.dm.APIResultsQueue.prototype.queryProviders = function ( howMany ) {
+	var i, len,
+		queue = this;
+
+	// Make sure there are resources set up
+	return this.setup()
+		.then( function () {
+			// Abort previous requests
+			for ( i = 0, len = queue.providerPromises.length; i < len; i++ ) {
+				queue.providerPromises[ i ].abort();
+			}
+			queue.providerPromises = [];
+			// Set up the query to all providers
+			for ( i = 0, len = queue.providers.length; i < len; i++ ) {
+				if ( !queue.providers[ i ].isDepleted() ) {
+					queue.providerPromises.push(
+						queue.providers[ i ].getResults( howMany )
+					);
+				}
+			}
+
+			return $.when.apply( $, queue.providerPromises )
+				.then( Array.prototype.concat.bind( [] ) );
+		} );
+};
+
+/**
+ * Set the search query for all the providers.
+ *
+ * This also makes sure to abort any previous promises.
+ *
+ * @param {Object} params API search parameters
+ */
+ve.dm.APIResultsQueue.prototype.setParams = function ( params ) {
+	var i, len;
+	if ( !ve.compare( params, this.params, true ) ) {
+		this.params = ve.extendObject( this.params, params );
+		// Reset queue
+		this.queue = [];
+		// Reset promises
+		for ( i = 0, len = this.providerPromises.length; i < len; i++ ) {
+			this.providerPromises[ i ].abort();
+		}
+		// Change queries
+		for ( i = 0, len = this.providers.length; i < len; i++ ) {
+			this.providers[ i ].setUserParams( this.params );
+		}
+	}
+};
+
+/**
+ * Get the data parameters sent to the API
+ *
+ * @return {Object} params API search parameters
+ */
+ve.dm.APIResultsQueue.prototype.getParams = function () {
+	return this.params;
+};
+
+/**
+ * Set the providers
+ *
+ * @param {ve.dm.APIResultsProvider[]} providers An array of providers
+ */
+ve.dm.APIResultsQueue.prototype.setProviders = function ( providers ) {
+	this.providers = providers;
+};
+
+/**
+ * Add a provbider to the group
+ *
+ * @param {ve.dm.APIResultsProvider} provider A provider object
+ */
+ve.dm.APIResultsQueue.prototype.addProvider = function ( provider ) {
+	this.providers.push( provider );
+};
+
+/**
+ * Set the providers
+ *
+ * @return {ve.dm.APIResultsProvider[]} providers An array of providers
+ */
+ve.dm.APIResultsQueue.prototype.getProviders = function () {
+	return this.providers;
+};
+
+/**
+ * Get the queue size
+ *
+ * @return {number} Queue size
+ */
+ve.dm.APIResultsQueue.prototype.getQueueSize = function () {
+	return this.queue.length;
+};
+
+/**
+ * Set queue threshold
+ *
+ * @param {number} threshold Queue threshold, below which we will
+ *  request more items
+ */
+ve.dm.APIResultsQueue.prototype.setThreshold = function ( threshold ) {
+	this.threshold = threshold;
+};
+
+/**
+ * Get queue threshold
+ *
+ * @return {number} threshold Queue threshold, below which we will
+ *  request more items
+ */
+ve.dm.APIResultsQueue.prototype.getThreshold = function () {
+	return this.threshold;
+};
+
+/*!
+ * VisualEditor DataModel Node class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * Generic DataModel node.
+ *
+ * @abstract
+ * @extends ve.dm.Model
+ * @mixins ve.Node
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ */
+ve.dm.Node = function VeDmNode( element ) {
+	// Parent constructor
+	ve.dm.Model.call( this, element );
+
+	// Mixin constructors
+	ve.Node.call( this );
+	OO.EventEmitter.call( this );
+
+	// Properties
+	this.length = 0;
+	this.element = element;
+	this.doc = undefined;
+};
+
+/**
+ * @event lengthChange
+ * @param diff
+ */
+
+/**
+ * @event update
+ */
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.Node, ve.dm.Model );
+
+OO.mixinClass( ve.dm.Node, ve.Node );
+
+OO.mixinClass( ve.dm.Node, OO.EventEmitter );
+
+/* Static Properties */
+
+/**
+ * Whether this node handles its own children. After converting a DOM node to a linear model
+ * node of this type, the converter checks this property. If it's false, the converter will descend
+ * into the DOM node's children, recursively convert them, and attach the resulting nodes as
+ * children of the linear model node. If it's true, the converter will not descend, and will
+ * expect the node's toDataElement() to have handled the entire DOM subtree.
+ *
+ * The same is true when converting from linear model data to DOM: if this property is true,
+ * toDomElements() will be passed the node's data element and all of its children and will be
+ * expected to convert the entire subtree. If it's false, the converter will descend into the
+ * child nodes and convert each one individually.
+ *
+ * If .static.childNodeTypes is set to [], this property is ignored and will be assumed to be true.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.dm.Node.static.handlesOwnChildren = false;
+
+/**
+ * Whether this node's children should be ignored. If true, this node will be treated as a leaf
+ * node even if it has children. Often used in combination with handlesOwnChildren.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.dm.Node.static.ignoreChildren = false;
+
+/**
+ * Whether this node type is internal. Internal node types are ignored by the converter.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.dm.Node.static.isInternal = false;
+
+/**
+ * Whether this node type has a wrapping element in the linear model. Most node types are wrapped,
+ * only special node types are not wrapped.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.dm.Node.static.isWrapped = true;
+
+/**
+ * Whether this node type is a content node type. This means the node represents content, cannot
+ * have children, and can only appear as children of a content container node. Content nodes are
+ * also known as inline nodes.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.dm.Node.static.isContent = false;
+
+/**
+ * Whether this node type can be focused. Focusable nodes react to selections differently.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.dm.Node.static.isFocusable = false;
+
+/**
+ * Whether this node type is alignable.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.dm.Node.static.isAlignable = false;
+
+/**
+ * Whether this node type can behave as a table cell.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.dm.Node.static.isCellable = false;
+
+/**
+ * Whether this node type can contain content. The children of content container nodes must be
+ * content nodes.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.dm.Node.static.canContainContent = false;
+
+/**
+ * Whether this node type has significant whitespace. Only applies to content container nodes
+ * (i.e. can only be true if canContainContent is also true).
+ *
+ * If a content node has significant whitespace, the text inside it is not subject to whitespace
+ * stripping and preservation.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.dm.Node.static.hasSignificantWhitespace = false;
+
+/**
+ * Array of allowed child node types for this node type.
+ *
+ * An empty array means no children are allowed. null means any node type is allowed as a child.
+ *
+ * @static
+ * @property {string[]|null}
+ * @inheritable
+ */
+ve.dm.Node.static.childNodeTypes = null;
+
+/**
+ * Array of allowed parent node types for this node type.
+ *
+ * An empty array means this node type cannot be the child of any node. null means this node type
+ * can be the child of any node type.
+ *
+ * @static
+ * @property {string[]|null}
+ * @inheritable
+ */
+ve.dm.Node.static.parentNodeTypes = null;
+
+/**
+ * Array of suggested parent node types for this node type.
+ *
+ * These parent node types are allowed but the editor will avoid creating them.
+ *
+ * An empty array means this node type should not be the child of any node. null means this node type
+ * can be the child of any node type.
+ *
+ * @static
+ * @property {string[]|null}
+ * @inheritable
+ */
+ve.dm.Node.static.suggestedParentNodeTypes = null;
+
+/**
+ * Array of annotation types which can't be applied to this node
+ *
+ * @static
+ * @property {string[]}
+ * @inheritable
+ */
+ve.dm.Node.static.blacklistedAnnotationTypes = [];
+
+/**
+ * Default attributes to set for newly created linear model elements. These defaults will be used
+ * when creating a new element in ve.dm.NodeFactory#getDataElement when there is no DOM node or
+ * existing linear model element to base the attributes on.
+ *
+ * This property is an object with attribute names as keys and attribute values as values.
+ * Attributes may be omitted, in which case they'll simply be undefined.
+ *
+ * @static
+ * @property {Object}
+ * @inheritable
+ */
+ve.dm.Node.static.defaultAttributes = {};
+
+/**
+ * Remap the store indexes stored in a linear model data element.
+ *
+ * The default implementation is empty. Nodes should override this if they store store indexes in
+ * attributes. To remap, do something like
+ * dataElement.attributes.foo = mapping[dataElement.attributes.foo];
+ *
+ * @static
+ * @inheritable
+ * @param {Object} dataElement Data element (opening) to remap. Will be modified.
+ * @param {Object} mapping Object mapping old store indexes to new store indexes
+ */
+ve.dm.Node.static.remapStoreIndexes = function () {
+};
+
+/**
+ * Remap the internal list indexes stored in a linear model data element.
+ *
+ * The default implementation is empty. Nodes should override this if they store internal list
+ * indexes in attributes. To remap, do something like
+ * dataElement.attributes.foo = mapping[dataElement.attributes.foo];
+ *
+ * @static
+ * @inheritable
+ * @param {Object} dataElement Data element (opening) to remap. Will be modified.
+ * @param {Object} mapping Object mapping old internal list indexes to new internal list indexes
+ * @param {ve.dm.InternalList} internalList Internal list the indexes are being mapped into.
+ *  Used for refreshing attribute values that were computed with getNextUniqueNumber().
+ */
+ve.dm.Node.static.remapInternalListIndexes = function () {
+};
+
+/**
+ * Remap the internal list keys stored in a linear model data element.
+ *
+ * The default implementation is empty. Nodes should override this if they store internal list
+ * keys in attributes.
+ *
+ * @static
+ * @inheritable
+ * @param {Object} dataElement Data element (opening) to remap. Will be modified.
+ * @param {ve.dm.InternalList} internalList Internal list the keys are being mapped into.
+ */
+ve.dm.Node.static.remapInternalListKeys = function () {
+};
+
+/**
+ * Determine if a hybrid element is inline and allowed to be inline in this context
+ *
+ * We generate block elements for block tags and inline elements for inline
+ * tags; unless we're in a content location, in which case we have no choice
+ * but to generate an inline element.
+ *
+ * @static
+ * @param {HTMLElement[]} domElements DOM elements being converted
+ * @param {ve.dm.Converter} converter Converter object
+ * @return {boolean} The element is inline
+ */
+ve.dm.Node.static.isHybridInline = function ( domElements, converter ) {
+	var i, length, allTagsInline = true;
+
+	for ( i = 0, length = domElements.length; i < length; i++ ) {
+		if ( ve.isBlockElement( domElements[ i ] ) ) {
+			allTagsInline = false;
+			break;
+		}
+	}
+
+	// Force inline in content locations (but not wrappers)
+	return ( converter.isExpectingContent() && !converter.isInWrapper() ) ||
+		// ..also force inline in wrappers that we can't close
+		( converter.isInWrapper() && !converter.canCloseWrapper() ) ||
+		// ..otherwise just look at the tag names
+		allTagsInline;
+};
+
+/**
+ * Get a clone of the node's document data element.
+ *
+ * The attributes object will be deep-copied and the .internal.generated
+ * property will be removed if present.
+ *
+ * @static
+ * @param {Object} element Element object
+ * @param {boolean} preserveGenerated Preserve internal.generated property of element
+ * @return {Object} Cloned element object
+ */
+ve.dm.Node.static.cloneElement = function ( element, preserveGenerated ) {
+	var clone = ve.copy( element );
+	if ( !preserveGenerated && clone.internal ) {
+		delete clone.internal.generated;
+		if ( ve.isEmptyObject( clone.internal ) ) {
+			delete clone.internal;
+		}
+	}
+	return clone;
+};
+
+/* Methods */
+
+/**
+ * @see #static-cloneElement
+ * @param {boolean} preserveGenerated Preserve internal.generated property of element
+ * @return {Object} Cloned element object
+ */
+ve.dm.Node.prototype.getClonedElement = function ( preserveGenerated ) {
+	return this.constructor.static.cloneElement( this.element, preserveGenerated );
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.getChildNodeTypes = function () {
+	return this.constructor.static.childNodeTypes;
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.getParentNodeTypes = function () {
+	return this.constructor.static.parentNodeTypes;
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.getSuggestedParentNodeTypes = function () {
+	return this.constructor.static.suggestedParentNodeTypes;
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.canHaveChildren = function () {
+	// If childNodeTypes is null any child is allowed, if it's an array of at least one element
+	// than at least one kind of node is allowed
+	var types = this.constructor.static.childNodeTypes;
+	return types === null || ( Array.isArray( types ) && types.length > 0 );
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.canHaveChildrenNotContent = function () {
+	return this.canHaveChildren() &&
+		!this.constructor.static.canContainContent &&
+		!this.constructor.static.isContent;
+};
+
+/**
+ * Check if the node is an internal node
+ *
+ * @method
+ * @return {boolean} Node is an internal node
+ */
+ve.dm.Node.prototype.isInternal = function () {
+	return this.constructor.static.isInternal;
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.isWrapped = function () {
+	return this.constructor.static.isWrapped;
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.canContainContent = function () {
+	return this.constructor.static.canContainContent;
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.isContent = function () {
+	return this.constructor.static.isContent;
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.isFocusable = function () {
+	return this.constructor.static.isFocusable;
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.isAlignable = function () {
+	return this.constructor.static.isAlignable;
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.isCellable = function () {
+	return this.constructor.static.isCellable;
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.isCellEditable = function () {
+	return this.constructor.static.isCellEditable;
+};
+
+/**
+ * Check if the node can have a slug before it.
+ *
+ * @method
+ * @return {boolean} Whether the node can have a slug before it
+ */
+ve.dm.Node.prototype.canHaveSlugBefore = function () {
+	return !this.canContainContent() && this.getParentNodeTypes() === null;
+};
+
+/**
+ * Check if the node can have a slug after it.
+ *
+ * @method
+ * @return {boolean} Whether the node can have a slug after it
+ */
+ve.dm.Node.prototype.canHaveSlugAfter = ve.dm.Node.prototype.canHaveSlugBefore;
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.hasSignificantWhitespace = function () {
+	return this.constructor.static.hasSignificantWhitespace;
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.handlesOwnChildren = function () {
+	return this.constructor.static.handlesOwnChildren;
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.shouldIgnoreChildren = function () {
+	return this.constructor.static.ignoreChildren;
+};
+
+/**
+ * Check if the node has an ancestor with matching type and attribute values.
+ *
+ * @method
+ * @return {boolean} Node has an ancestor with matching type and attribute values
+ */
+ve.dm.Node.prototype.hasMatchingAncestor = function ( type, attributes ) {
+	var node = this;
+	// Traverse up to matching node
+	while ( node && !node.matches( type, attributes ) ) {
+		node = node.getParent();
+		// Return false if we reach the root without finding anything
+		if ( node === null ) {
+			return false;
+		}
+	}
+	return true;
+};
+
+/**
+ * Check if the node matches type and attribute values.
+ *
+ * @method
+ * @return {boolean} Node matches type and attribute values
+ */
+ve.dm.Node.prototype.matches = function ( type, attributes ) {
+	var key;
+
+	if ( this.getType() !== type ) {
+		return false;
+	}
+
+	// Check attributes
+	if ( attributes ) {
+		for ( key in attributes ) {
+			if ( this.getAttribute( key ) !== attributes[ key ] ) {
+				return false;
+			}
+		}
+	}
+	return true;
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.getLength = function () {
+	return this.length;
+};
+
+/**
+ * Set the inner length of the node.
+ *
+ * This should only be called after a relevant change to the document data. Calling this method will
+ * not change the document data.
+ *
+ * @method
+ * @param {number} length Length of content
+ * @fires lengthChange
+ * @fires update
+ * @throws {Error} Invalid content length error if length is less than 0
+ */
+ve.dm.Node.prototype.setLength = function ( length ) {
+	var diff;
+	if ( length < 0 ) {
+		throw new Error( 'Length cannot be negative' );
+	}
+	// Compute length adjustment from old length
+	diff = length - this.length;
+	// Set new length
+	this.length = length;
+	// Adjust the parent's length
+	if ( this.parent ) {
+		this.parent.adjustLength( diff );
+	}
+	// Emit events
+	this.emit( 'lengthChange', diff );
+	this.emit( 'update' );
+};
+
+/**
+ * Adjust the length.
+ *
+ * This should only be called after a relevant change to the document data. Calling this method will
+ * not change the document data.
+ *
+ * @method
+ * @param {number} adjustment Amount to adjust length by
+ * @fires lengthChange
+ * @fires update
+ * @throws {Error} Invalid adjustment error if resulting length is less than 0
+ */
+ve.dm.Node.prototype.adjustLength = function ( adjustment ) {
+	this.setLength( this.length + adjustment );
+};
+
+/**
+ * @inheritdoc ve.Node
+ */
+ve.dm.Node.prototype.getOffset = function () {
+	var i, len, siblings, offset;
+
+	if ( !this.parent ) {
+		return 0;
+	}
+
+	// Find our index in the parent and add up lengths while we do so
+	siblings = this.parent.children;
+	offset = this.parent.getOffset() + ( this.parent === this.root ? 0 : 1 );
+	for ( i = 0, len = siblings.length; i < len; i++ ) {
+		if ( siblings[ i ] === this ) {
+			break;
+		}
+		offset += siblings[ i ].getOuterLength();
+	}
+	if ( i === len ) {
+		throw new Error( 'Node not found in parent\'s children array' );
+	}
+	return offset;
+};
+
+/**
+ * Check if the node can be merged with another.
+ *
+ * For two nodes to be mergeable, the two nodes must either be the same node or:
+ *  - Have the same type
+ *  - Have the same depth
+ *  - Have similar ancestry (each node upstream must have the same type)
+ *
+ * @method
+ * @param {ve.dm.Node} node Node to consider merging with
+ * @return {boolean} Nodes can be merged
+ */
+ve.dm.Node.prototype.canBeMergedWith = function ( node ) {
+	var n1 = this,
+		n2 = node;
+
+	// Content node can be merged with node that can contain content, for instance: TextNode
+	// and ParagraphNode. When this method is called for such case (one node is a content node and
+	// the other one can contain content) make sure to start traversal from node that can contain
+	// content (instead of content node itself).
+	if ( n1.canContainContent() && n2.isContent() ) {
+		n2 = n2.getParent();
+	} else if ( n2.canContainContent() && n1.isContent() ) {
+		n1 = n1.getParent();
+	}
+	// Move up from n1 and n2 simultaneously until we find a common ancestor
+	while ( n1 !== n2 ) {
+		if (
+			// Check if we have reached a root (means there's no common ancestor or unequal depth)
+			( n1 === null || n2 === null ) ||
+			// Ensure that types match
+			n1.getType() !== n2.getType()
+		) {
+			return false;
+		}
+		// Move up
+		n1 = n1.getParent();
+		n2 = n2.getParent();
+	}
+	return true;
+};
+
+/*!
+ * VisualEditor DataModel BranchNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel branch node.
+ *
+ * Branch nodes can have branch or leaf nodes as children.
+ *
+ * @abstract
+ * @extends ve.dm.Node
+ * @mixins ve.BranchNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children] Child nodes to attach
+ */
+ve.dm.BranchNode = function VeDmBranchNode( element, children ) {
+	// Mixin constructor
+	ve.BranchNode.call( this );
+
+	// Parent constructor
+	ve.dm.Node.call( this, element );
+
+	// Properties
+	this.slugPositions = {};
+
+	// TODO: children is only ever used in tests
+	if ( Array.isArray( children ) && children.length ) {
+		this.splice.apply( this, [ 0, 0 ].concat( children ) );
+	}
+};
+
+/**
+ * @event splice
+ * @see #method-splice
+ * @param {number} index
+ * @param {number} howmany
+ * @param {ve.dm.BranchNode} [childModel]
+ */
+
+/**
+ * @event update
+ */
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.BranchNode, ve.dm.Node );
+
+OO.mixinClass( ve.dm.BranchNode, ve.BranchNode );
+
+/* Methods */
+
+/**
+ * Add a child node to the end of the list.
+ *
+ * @method
+ * @param {ve.dm.BranchNode} childModel Item to add
+ * @return {number} New number of children
+ * @fires splice
+ * @fires update
+ */
+ve.dm.BranchNode.prototype.push = function ( childModel ) {
+	this.splice( this.children.length, 0, childModel );
+	return this.children.length;
+};
+
+/**
+ * Remove a child node from the end of the list.
+ *
+ * @method
+ * @return {ve.dm.BranchNode} Removed childModel
+ * @fires splice
+ * @fires update
+ */
+ve.dm.BranchNode.prototype.pop = function () {
+	var childModel;
+	if ( this.children.length ) {
+		childModel = this.children[ this.children.length - 1 ];
+		this.splice( this.children.length - 1, 1 );
+		return childModel;
+	}
+};
+
+/**
+ * Add a child node to the beginning of the list.
+ *
+ * @method
+ * @param {ve.dm.BranchNode} childModel Item to add
+ * @return {number} New number of children
+ * @fires splice
+ * @fires update
+ */
+ve.dm.BranchNode.prototype.unshift = function ( childModel ) {
+	this.splice( 0, 0, childModel );
+	return this.children.length;
+};
+
+/**
+ * Remove a child node from the beginning of the list.
+ *
+ * @method
+ * @return {ve.dm.BranchNode} Removed childModel
+ * @fires splice
+ * @fires update
+ */
+ve.dm.BranchNode.prototype.shift = function () {
+	var childModel;
+	if ( this.children.length ) {
+		childModel = this.children[ 0 ];
+		this.splice( 0, 1 );
+		return childModel;
+	}
+};
+
+/**
+ * Add and/or remove child nodes at an offset.
+ *
+ * @method
+ * @param {number} index Index to remove and or insert nodes at
+ * @param {number} howmany Number of nodes to remove
+ * @param {...ve.dm.BranchNode} [nodes] Variadic list of nodes to insert
+ * @fires splice
+ * @return {ve.dm.BranchNode[]} Removed nodes
+ */
+ve.dm.BranchNode.prototype.splice = function () {
+	var i,
+		length,
+		removals,
+		args = Array.prototype.slice.call( arguments ),
+		diff = 0;
+
+	removals = this.children.splice.apply( this.children, args );
+	for ( i = 0, length = removals.length; i < length; i++ ) {
+		removals[ i ].detach();
+		diff -= removals[ i ].getOuterLength();
+	}
+
+	if ( args.length >= 3 ) {
+		length = args.length;
+		for ( i = 2; i < length; i++ ) {
+			args[ i ].attach( this );
+			diff += args[ i ].getOuterLength();
+		}
+	}
+
+	this.adjustLength( diff, true );
+	this.setupBlockSlugs();
+	this.emit.apply( this, [ 'splice' ].concat( args ) );
+
+	return removals;
+};
+
+/**
+ * Setup a sparse array of booleans indicating where to place slugs
+ */
+ve.dm.BranchNode.prototype.setupBlockSlugs = function () {
+	var i, len,
+		isBlock = this.canHaveChildrenNotContent();
+
+	this.slugPositions = {};
+
+	if ( isBlock && !this.isAllowedChildNodeType( 'paragraph' ) ) {
+		// Don't put slugs in nodes which can't contain paragraphs
+		return;
+	}
+
+	// If this content branch no longer has any non-internal items, insert a slug to keep the node
+	// from becoming invisible/unfocusable. In Firefox, backspace after Ctrl+A leaves the document
+	// completely empty, so this ensures DocumentNode gets a slug.
+	if (
+		this.getLength() === 0 ||
+		( this.children.length === 1 && this.children[ 0 ].isInternal() )
+	) {
+		this.slugPositions[ 0 ] = true;
+	} else {
+		// Iterate over all children of this branch and add slugs in appropriate places
+		for ( i = 0, len = this.children.length; i < len; i++ ) {
+			// Don't put slugs after internal nodes
+			if ( this.children[ i ].isInternal() ) {
+				continue;
+			}
+			// First sluggable child (left side)
+			if ( i === 0 && this.children[ i ].canHaveSlugBefore() ) {
+				this.slugPositions[ i ] = true;
+			}
+			if ( this.children[ i ].canHaveSlugAfter() ) {
+				if (
+					// Last sluggable child (right side)
+					i === this.children.length - 1 ||
+					// Sluggable child followed by another sluggable child (in between)
+					( this.children[ i + 1 ] && this.children[ i + 1 ].canHaveSlugBefore() )
+				) {
+					this.slugPositions[ i + 1 ] = true;
+				}
+			}
+		}
+	}
+};
+
+/**
+ * Check in the branch node has a slug at a particular offset
+ *
+ * @method
+ * @param {number} offset Offset to check for a slug at
+ * @return {boolean} There is a slug at the offset
+ */
+ve.dm.BranchNode.prototype.hasSlugAtOffset = function ( offset ) {
+	var i,
+		startOffset = this.getOffset() + ( this.isWrapped() ? 1 : 0 );
+
+	if ( offset === startOffset ) {
+		return !!this.slugPositions[ 0 ];
+	}
+	for ( i = 0; i < this.children.length; i++ ) {
+		startOffset += this.children[ i ].getOuterLength();
+		if ( offset === startOffset ) {
+			return !!this.slugPositions[ i + 1 ];
+		}
+	}
+	return false;
+};
+
+/*!
+ * VisualEditor DataModel ContentBranchNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel content branch node.
+ *
+ * @class
+ * @abstract
+ * @extends ve.dm.BranchNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children]
+ */
+ve.dm.ContentBranchNode = function VeDmContentBranchNode() {
+	// Parent constructor
+	ve.dm.ContentBranchNode.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.ContentBranchNode, ve.dm.BranchNode );
+
+/* Static Properties */
+
+ve.dm.ContentBranchNode.static.canContainContent = true;
+
+/*!
+ * VisualEditor DataModel LeafNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel leaf node.
+ *
+ * Leaf nodes can not have any children.
+ *
+ * @abstract
+ * @extends ve.dm.Node
+ * @mixins ve.LeafNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ */
+ve.dm.LeafNode = function VeDmLeafNode( element ) {
+	// Mixin constructor
+	ve.LeafNode.call( this );
+
+	// Parent constructor
+	ve.dm.Node.call( this, element );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.LeafNode, ve.dm.Node );
+
+OO.mixinClass( ve.dm.LeafNode, ve.LeafNode );
+
+/* Static properties */
+
+ve.dm.LeafNode.static.childNodeTypes = [];
+
+/* Methods */
+
+/**
+ * Get the annotations that apply to the node.
+ *
+ * Annotations are grabbed directly from the linear model, so they are updated live. If the linear
+ * model element doesn't have a .annotations property, an empty array is returned.
+ *
+ * @method
+ * @return {number[]} Annotation set indexes in the index-value store
+ */
+ve.dm.LeafNode.prototype.getAnnotations = function () {
+	return this.element.annotations || [];
+};
+
+/*!
+ * VisualEditor DataModel Annotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * Generic DataModel annotation.
+ *
+ * This is an abstract class, annotations should extend this and call this constructor from their
+ * constructor. You should not instantiate this class directly.
+ *
+ * Annotations in the linear model are instances of subclasses of this class. Subclasses should
+ * only override static properties and functions.
+ *
+ * @class
+ * @extends ve.dm.Model
+ * @constructor
+ * @param {Object} element Linear model annotation
+ */
+ve.dm.Annotation = function VeDmAnnotation( element ) {
+	// Parent constructor
+	ve.dm.Model.call( this, element );
+	// Properties
+	this.name = this.constructor.static.name; // For ease of filtering
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.Annotation, ve.dm.Model );
+
+/* Static properties */
+
+/**
+ * About grouping is not supported for annotations; setting this to true has no effect.
+ *
+ * @static
+ * @property {boolean}
+ * @inheritable
+ */
+ve.dm.Annotation.static.enableAboutGrouping = false;
+
+/**
+ * Automatically apply annotation to content inserted after it.
+ *
+ * @property {boolean}
+ */
+ve.dm.Annotation.static.applyToAppendedContent = true;
+
+/**
+ * Abandon continuation when a wordbreak is generated
+ *
+ * @type {boolean}
+ */
+ve.dm.Annotation.static.splitOnWordbreak = false;
+
+/**
+ * Annotations which are removed when this one is applied
+ *
+ * @type {string[]}
+ */
+ve.dm.Annotation.static.removes = [];
+
+/**
+ * Static function to convert a linear model data element for this annotation type back to
+ * a DOM element.
+ *
+ * As special facilities for annotations, the annotated content that the returned element will
+ * wrap around is passed in as childDomElements, and this function may return an empty array to
+ * indicate that the annotation should produce no output. In that case, the child DOM elements will
+ * not be wrapped in anything and will be inserted directly into this annotation's parent.
+ *
+ * @abstract
+ * @static
+ * @inheritable
+ * @method
+ * @param {Object|Array} dataElement Linear model element or array of linear model data
+ * @param {HTMLDocument} doc HTML document for creating elements
+ * @param {ve.dm.Converter} converter Converter object to optionally call .getDomSubtreeFromData() on
+ * @param {Node[]} childDomElements Children that will be appended to the returned element
+ * @return {HTMLElement[]} Array of DOM elements; only the first element is used; may be empty
+ */
+ve.dm.Annotation.static.toDomElements = null;
+
+/* Methods */
+
+/**
+ * Convenience wrapper for .toDomElements() on the current annotation
+ *
+ * @method
+ * @param {HTMLDocument} [doc] HTML document to use to create elements
+ * @see ve.dm.Model#toDomElements
+ */
+ve.dm.Annotation.prototype.getDomElements = function ( doc ) {
+	return this.constructor.static.toDomElements( this.element, doc || document );
+};
+
+/**
+ * Get an object containing comparable annotation properties.
+ *
+ * This is used by the converter to merge adjacent annotations.
+ *
+ * @return {Object} An object containing a subset of the annotation's properties
+ */
+ve.dm.Annotation.prototype.getComparableObject = function () {
+	var hashObject = this.getHashObject();
+	delete hashObject.originalDomElements;
+	return hashObject;
+};
+
+/**
+ * HACK: This method strips data-parsoid from HTML attributes for comparisons.
+ *
+ * This should be removed once similar annotation merging is handled correctly
+ * by Parsoid.
+ *
+ * @return {Object} An object all HTML attributes except data-parsoid
+ */
+ve.dm.Annotation.prototype.getComparableHtmlAttributes = function () {
+	var comparableAttributes, domElements = this.getOriginalDomElements();
+	if ( domElements[ 0 ] ) {
+		comparableAttributes = ve.getDomAttributes( domElements[ 0 ] );
+		delete comparableAttributes[ 'data-parsoid' ];
+		return comparableAttributes;
+	}
+	return {};
+};
+
+/**
+ * HACK: This method adds in HTML attributes so comparable objects aren't serialized
+ * together if they have different HTML attributes.
+ *
+ * This method needs to be different from #getComparableObject which is
+ * still used for editing annotations.
+ *
+ * @return {Object} An object containing a subset of the annotation's properties and HTML attributes
+ */
+ve.dm.Annotation.prototype.getComparableObjectForSerialization = function () {
+	var object = this.getComparableObject(),
+		htmlAttributes = this.getComparableHtmlAttributes();
+
+	if ( !ve.isEmptyObject( htmlAttributes ) ) {
+		object.htmlAttributes = htmlAttributes;
+	}
+	return object;
+};
+
+/**
+ * Check if the annotation was generated by the converter
+ *
+ * Used by compareToForSerialization to avoid merging generated annotations.
+ *
+ * @return {boolean} The annotation was generated
+ */
+ve.dm.Annotation.prototype.isGenerated = function () {
+	// Only annotations and nodes generated by the converter have originalDomElements set.
+	// If this annotation was not generated by the converter, this.getOriginalDomElements()
+	// will return an empty array.
+	return this.getOriginalDomElements().length > 0;
+};
+
+/**
+ * Compare two annotations using #getComparableObject
+ */
+ve.dm.Annotation.prototype.compareTo = function ( annotation ) {
+	return ve.compare(
+		this.getComparableObject(),
+		annotation.getComparableObject()
+	);
+};
+
+/**
+ * HACK: Compare to another annotation for serialization
+ *
+ * Compares two annotations using #getComparableObjectForSerialization, unless
+ * they are both generated annotations, in which case they must be identical.
+ *
+ * @param {ve.dm.Annotation} annotation Annotation to compare to
+ * @return {boolean} The other annotation is similar to this one
+ */
+ve.dm.Annotation.prototype.compareToForSerialization = function ( annotation ) {
+	// If both annotations were generated
+	if ( this.isGenerated() && annotation.isGenerated() ) {
+		return ve.compare( this.getHashObject(), annotation.getHashObject() );
+	}
+
+	return ve.compare(
+		this.getComparableObjectForSerialization(),
+		annotation.getComparableObjectForSerialization()
+	);
+};
+
+/*!
+ * VisualEditor DataModel InternalList class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel meta item.
+ *
+ * @class
+ * @mixins OO.EventEmitter
+ *
+ * @constructor
+ * @param {ve.dm.Document} doc Document model
+ */
+ve.dm.InternalList = function VeDmInternalList( doc ) {
+	// Mixin constructors
+	OO.EventEmitter.call( this );
+
+	// Properties
+	this.document = doc;
+	this.itemHtmlQueue = [];
+	this.listNode = null;
+	this.nodes = {};
+	this.groupsChanged = [];
+	this.keyIndexes = {};
+	this.keys = [];
+	this.nextUniqueNumber = 0;
+
+	// Event handlers
+	if ( doc ) {
+		doc.connect( this, { transact: 'onTransact' } );
+	}
+};
+
+/* Inheritance */
+
+OO.mixinClass( ve.dm.InternalList, OO.EventEmitter );
+
+/* Events */
+
+/**
+ * @event update
+ * @param {string[]} groupsChanged List of groups changed since the last transaction
+ */
+
+/* Methods */
+
+/**
+ * Queues up an item's html for parsing later.
+ *
+ * If an item with the specified group and key already exists it will be ignored, unless
+ * the data already stored is an empty string.
+ *
+ * @method
+ * @param {string} groupName Item group
+ * @param {string} key Item key
+ * @param {string} html Item contents
+ * @return {Object} Object containing index of the item in the index-value store
+ * (and also its index in the internal list node), and a flag indicating if it is a new item.
+ */
+ve.dm.InternalList.prototype.queueItemHtml = function ( groupName, key, html ) {
+	var isNew = false,
+		index = this.getKeyIndex( groupName, key );
+
+	if ( index === undefined ) {
+		index = this.itemHtmlQueue.length;
+		this.keyIndexes[ groupName + '/' + key ] = index;
+		this.itemHtmlQueue.push( html );
+		isNew = true;
+	} else if ( this.itemHtmlQueue[ index ] === '' ) {
+		// Previous value with this key was empty, overwrite value in queue
+		this.itemHtmlQueue[ index ] = html;
+		isNew = true;
+	}
+	return {
+		index: index,
+		isNew: isNew
+	};
+};
+
+/**
+ * Gets all the item's HTML strings
+ *
+ * @method
+ * @return {Object} Name-indexed object containing HTMLElements
+ */
+ve.dm.InternalList.prototype.getItemHtmlQueue = function () {
+	return this.itemHtmlQueue;
+};
+
+/**
+ * Gets the internal list's document model
+ *
+ * @method
+ * @return {ve.dm.Document} Document model
+ */
+ve.dm.InternalList.prototype.getDocument = function () {
+	return this.document;
+};
+
+/**
+ * Get the list node
+ *
+ * @method
+ * @return {ve.dm.InternalListNode} List node
+ */
+ve.dm.InternalList.prototype.getListNode = function () {
+	var i, nodes;
+	// find listNode if not set, or unattached
+	if ( !this.listNode || !this.listNode.doc ) {
+		nodes = this.getDocument().getDocumentNode().children;
+		for ( i = nodes.length; i >= 0; i-- ) {
+			if ( nodes[ i ] instanceof ve.dm.InternalListNode ) {
+				this.listNode = nodes[ i ];
+				break;
+			}
+		}
+	}
+	return this.listNode;
+};
+
+/**
+ * Get the number it internal items in the internal list.
+ *
+ * @method
+ * @return {number}
+ */
+ve.dm.InternalList.prototype.getItemNodeCount = function () {
+	return this.getListNode().children.length;
+};
+
+/**
+ * Get the item node from a specific index.
+ *
+ * @method
+ * @param {number} index Item index
+ * @return {ve.dm.InternalItemNode} Item node
+ */
+ve.dm.InternalList.prototype.getItemNode = function ( index ) {
+	return this.getListNode().children[ index ];
+};
+
+/**
+ * Get all node groups.
+ *
+ * @method
+ * @return {Object} Node groups, keyed by group name
+ */
+ve.dm.InternalList.prototype.getNodeGroups = function () {
+	return this.nodes;
+};
+
+/**
+ * Get the node group object for a specified group name.
+ *
+ * @method
+ * @param {string} groupName Name of the group
+ * @return {Object} Node group object, containing nodes and key order array
+ */
+ve.dm.InternalList.prototype.getNodeGroup = function ( groupName ) {
+	return this.nodes[ groupName ];
+};
+
+/**
+ * Get a unique list key for a given group.
+ *
+ * The returned list key is added to the list of unique list keys used in this group so that it
+ * won't be allocated again. It will also be associated to oldListKey so that if the same oldListKey
+ * is passed in again later, the previously allocated name will be returned.
+ *
+ * @method
+ * @param {string} groupName Name of the group
+ * @param {string} oldListKey Current list key to associate the generated list key with
+ * @param {string} prefix Prefix to distinguish generated keys from non-generated ones
+ * @return {string} Generated unique list key, or existing unique key associated with oldListKey
+ */
+ve.dm.InternalList.prototype.getUniqueListKey = function ( groupName, oldListKey, prefix ) {
+	var group = this.getNodeGroup( groupName ),
+		num = 0;
+
+	if ( group.uniqueListKeys[ oldListKey ] !== undefined ) {
+		return group.uniqueListKeys[ oldListKey ];
+	}
+
+	while ( group.keyedNodes[ prefix + num ] || group.uniqueListKeysInUse[ prefix + num ] ) {
+		num++;
+	}
+
+	group.uniqueListKeys[ oldListKey ] = prefix + num;
+	group.uniqueListKeysInUse[ prefix + num ] = true;
+	return prefix + num;
+};
+
+/**
+ * Get the next number in a monotonically increasing series.
+ *
+ * @return {number} One higher than the return value of the previous call, or 0 on the first call
+ */
+ve.dm.InternalList.prototype.getNextUniqueNumber = function () {
+	return this.nextUniqueNumber++;
+};
+
+/**
+ * Converts stored item HTML into linear data.
+ *
+ * Each item is an InternalItem, and they are wrapped in an InternalList.
+ * If there are no items an empty array is returned.
+ *
+ * Stored HTML is deleted after conversion.
+ *
+ * @method
+ * @param {ve.dm.Converter} converter Converter object
+ * @param {HTMLDocument} doc Document to create nodes in
+ * @return {Array} Linear model data
+ */
+ve.dm.InternalList.prototype.convertToData = function ( converter, doc ) {
+	var i, length, itemData, div,
+		itemHtmlQueue = this.getItemHtmlQueue(),
+		list = [];
+
+	list.push( { type: 'internalList' } );
+	for ( i = 0, length = itemHtmlQueue.length; i < length; i++ ) {
+		if ( itemHtmlQueue[ i ] !== '' ) {
+			div = doc.createElement( 'div' );
+			div.innerHTML = itemHtmlQueue[ i ];
+			itemData = converter.getDataFromDomSubtree( div );
+			list = list.concat(
+				[ { type: 'internalItem', attributes: { originalHtml: itemHtmlQueue[ i ] } } ],
+				itemData,
+				[ { type: '/internalItem' } ]
+			);
+		} else {
+			list = list.concat( [ { type: 'internalItem' }, { type: '/internalItem' } ] );
+		}
+	}
+	list.push( { type: '/internalList' } );
+	// After conversion we no longer need the HTML
+	this.itemHtmlQueue = [];
+	return list;
+};
+
+/**
+ * Generate a transaction for inserting a new internal item node
+ *
+ * @param {string} groupName Item group
+ * @param {string} key Item key
+ * @param {Array} data Linear model data
+ * @return {Object} Object containing the transaction (or null if none required)
+ * and the new item's index within the list
+ */
+ve.dm.InternalList.prototype.getItemInsertion = function ( groupName, key, data ) {
+	var tx, itemData,
+		index = this.getKeyIndex( groupName, key );
+
+	if ( index === undefined ) {
+		index = this.getItemNodeCount();
+		this.keyIndexes[ groupName + '/' + key ] = index;
+
+		itemData = [ { type: 'internalItem' } ].concat( data,  [ { type: '/internalItem' } ] );
+		tx = ve.dm.Transaction.newFromInsertion(
+			this.getDocument(),
+			this.getListNode().getRange().end,
+			itemData
+		);
+	} else {
+		tx = null;
+	}
+
+	return {
+		transaction: tx,
+		index: index
+	};
+};
+
+/**
+ * Get position of a key within a group
+ *
+ * @param {string} groupName Name of the group
+ * @param {string} key Name of the key
+ * @return {number} Position within the key ordering for that group
+ */
+ve.dm.InternalList.prototype.getIndexPosition = function ( groupName, key ) {
+	return this.nodes[ groupName ].indexOrder.indexOf( key );
+};
+
+/**
+ * Get the internal item index of a group key if it already exists
+ *
+ * @param {string} groupName Item group
+ * @param {string} key Item name
+ * @return {number|undefined} The index of the group key, or undefined if it doesn't exist yet
+ */
+ve.dm.InternalList.prototype.getKeyIndex = function ( groupName, key ) {
+	return this.keyIndexes[ groupName + '/' + key ];
+};
+
+/**
+ * Add a node.
+ *
+ * @method
+ * @param {string} groupName Item group
+ * @param {string} key Item name
+ * @param {number} index Item index
+ * @param {ve.dm.Node} node Item node
+ */
+ve.dm.InternalList.prototype.addNode = function ( groupName, key, index, node ) {
+	var i, len, start, keyedNodes, group = this.nodes[ groupName ];
+	// The group may not exist yet
+	if ( group === undefined ) {
+		group = this.nodes[ groupName ] = {
+			keyedNodes: {},
+			firstNodes: [],
+			indexOrder: [],
+			uniqueListKeys: {},
+			uniqueListKeysInUse: {}
+		};
+	}
+	keyedNodes = group.keyedNodes[ key ];
+	this.keys[ index ] = key;
+	// The key may not exist yet
+	if ( keyedNodes === undefined ) {
+		keyedNodes = group.keyedNodes[ key ] = [];
+	}
+	if ( node.getDocument().buildingNodeTree ) {
+		// If the document is building the original node tree
+		// then every item is being added in order, so we don't
+		// need to worry about sorting.
+		keyedNodes.push( node );
+		if ( keyedNodes.length === 1 ) {
+			group.firstNodes[ index ] = node;
+		}
+	} else {
+		// TODO: We could use binary search insertion sort
+		start = node.getRange().start;
+		for ( i = 0, len = keyedNodes.length; i < len; i++ ) {
+			if ( start < keyedNodes[ i ].getRange().start ) {
+				break;
+			}
+		}
+		// 'i' is now the insertion point, so add the node here
+		keyedNodes.splice( i, 0, node );
+		if ( i === 0 ) {
+			group.firstNodes[ index ] = node;
+		}
+	}
+	if ( group.indexOrder.indexOf( index ) === -1 ) {
+		group.indexOrder.push( index );
+	}
+	this.markGroupAsChanged( groupName );
+};
+
+/**
+ * Mark a node group as having been changed since the last transaction.
+ *
+ * @param {string} groupName Name of group which has changed
+ */
+ve.dm.InternalList.prototype.markGroupAsChanged = function ( groupName ) {
+	if ( this.groupsChanged.indexOf( groupName ) === -1 ) {
+		this.groupsChanged.push( groupName );
+	}
+};
+
+/**
+ * Handle document transaction events
+ *
+ * @fires update
+ */
+ve.dm.InternalList.prototype.onTransact = function () {
+	var i;
+	if ( this.groupsChanged.length > 0 ) {
+		// length will almost always be 1, so probably better to not cache it
+		for ( i = 0; i < this.groupsChanged.length; i++ ) {
+			this.sortGroupIndexes( this.nodes[ this.groupsChanged[ i ] ] );
+		}
+		this.emit( 'update', this.groupsChanged );
+		this.groupsChanged = [];
+	}
+};
+
+/**
+ * Remove a node.
+ *
+ * @method
+ * @param {string} groupName Item group
+ * @param {string} key Item name
+ * @param {number} index Item index
+ * @param {ve.dm.Node} node Item node
+ */
+ve.dm.InternalList.prototype.removeNode = function ( groupName, key, index, node ) {
+	var i, len, j, keyedNodes,
+		group = this.nodes[ groupName ];
+
+	keyedNodes = group.keyedNodes[ key ];
+	for ( i = 0, len = keyedNodes.length; i < len; i++ ) {
+		if ( keyedNodes[ i ] === node ) {
+			keyedNodes.splice( i, 1 );
+			if ( i === 0 ) {
+				group.firstNodes[ index ] = keyedNodes[ 0 ];
+			}
+			break;
+		}
+	}
+	// If the all the items in this key have been removed
+	// then remove this index from indexOrder and firstNodes
+	if ( keyedNodes.length === 0 ) {
+		delete group.keyedNodes[ key ];
+		delete group.firstNodes[ index ];
+		j = group.indexOrder.indexOf( index );
+		group.indexOrder.splice( j, 1 );
+	}
+	this.markGroupAsChanged( groupName );
+};
+
+/**
+ * Sort the indexOrder array within a group object.
+ *
+ * @param {Object} group Group object
+ */
+ve.dm.InternalList.prototype.sortGroupIndexes = function ( group ) {
+	// Sort indexOrder
+	group.indexOrder.sort( function ( index1, index2 ) {
+		return group.firstNodes[ index1 ].getRange().start - group.firstNodes[ index2 ].getRange().start;
+	} );
+};
+
+/**
+ * Clone this internal list.
+ *
+ * @param {ve.dm.Document} [doc] The new list's document. Defaults to this list's document.
+ * @return {ve.dm.InternalList} Clone of this internal
+ */
+ve.dm.InternalList.prototype.clone = function ( doc ) {
+	var clone = new this.constructor( doc || this.getDocument() );
+	// Most properties don't need to be copied, because addNode() will be invoked when the new
+	// document tree is built. But some do need copying:
+	clone.nextUniqueNumber = this.nextUniqueNumber;
+	clone.itemHtmlQueue = ve.copy( this.itemHtmlQueue );
+	return clone;
+};
+
+/**
+ * Merge another internal list into this one.
+ *
+ * This function updates the state of this list, and returns a mapping from indexes in list to
+ * indexes in this, as well as a set of ranges that should be copied from list's linear model
+ * into this list's linear model by the caller.
+ *
+ * @param {ve.dm.InternalList} list Internal list to merge into this list
+ * @param {number} commonLength The number of elements, counted from the beginning, that the lists have in common
+ * @return {Object} 'mapping' is an object mapping indexes in list to indexes in this; newItemRanges is an array
+ *  of ranges of internal nodes in list's document that should be copied into our document
+ */
+ve.dm.InternalList.prototype.merge = function ( list, commonLength ) {
+	var i, k, key,
+		listLen = list.getItemNodeCount(),
+		nextIndex = this.getItemNodeCount(),
+		newItemRanges = [],
+		mapping = {};
+	for ( i = 0; i < commonLength; i++ ) {
+		mapping[ i ] = i;
+	}
+	for ( i = commonLength; i < listLen; i++ ) {
+		// Try to find i in list.keyIndexes
+		key = undefined;
+		for ( k in list.keyIndexes ) {
+			if ( list.keyIndexes[ k ] === i ) {
+				key = k;
+				break;
+			}
+		}
+
+		if ( this.keyIndexes[ key ] !== undefined ) {
+			// We already have this key in this internal list. Ignore the duplicate that the other
+			// list is trying to merge in.
+			// NOTE: This case cannot occur in VE currently, but may be possible in the future with
+			// collaborative editing, which is why this code needs to be rewritten before we do
+			// collaborative editing.
+			mapping[ i ] = this.keyIndexes[ key ];
+		} else {
+			mapping[ i ] = nextIndex;
+			if ( key !== undefined ) {
+				this.keyIndexes[ key ] = nextIndex;
+			}
+			nextIndex++;
+			newItemRanges.push( list.getItemNode( i ).getOuterRange() );
+		}
+	}
+	return {
+		mapping: mapping,
+		newItemRanges: newItemRanges
+	};
+};
+
+/*!
+ * VisualEditor DataModel MetaItem class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel meta item.
+ *
+ * @class
+ * @abstract
+ * @extends ve.dm.Model
+ * @mixins OO.EventEmitter
+ *
+ * @constructor
+ * @param {Object} element Reference to element in meta-linmod
+ */
+ve.dm.MetaItem = function VeDmMetaItem( element ) {
+	// Parent constructor
+	ve.dm.Model.call( this, element );
+	// Mixin
+	OO.EventEmitter.call( this );
+
+	// Properties
+	this.list = null;
+	this.offset = null;
+	this.index = null;
+	this.move = null;
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.MetaItem, ve.dm.Model );
+
+OO.mixinClass( ve.dm.MetaItem, OO.EventEmitter );
+
+/* Static members */
+
+/**
+ * Symbolic name for the group this meta item type will be grouped in in ve.dm.MetaList.
+ *
+ * @static
+ * @property
+ * @inheritable
+ */
+ve.dm.MetaItem.static.group = 'misc';
+
+/* Methods */
+
+/**
+ * Remove this item from the document. Only works if the item is attached to a MetaList.
+ *
+ * @throws {Error} Cannot remove detached item
+ */
+ve.dm.MetaItem.prototype.remove = function () {
+	if ( !this.list ) {
+		throw new Error( 'Cannot remove detached item' );
+	}
+	this.list.removeMeta( this );
+};
+
+/**
+ * Replace item with another in-place.
+ *
+ * Pass a plain object rather than a MetaItem into this function unless you know what you're doing.
+ *
+ * @param {Object|ve.dm.MetaItem} item Item to replace this item with
+ */
+ve.dm.MetaItem.prototype.replaceWith = function ( item ) {
+	var offset = this.getOffset(),
+		index = this.getIndex(),
+		list = this.list;
+
+	list.removeMeta( this );
+	list.insertMeta( item, offset, index );
+};
+
+/**
+ * Get the group this meta item belongs to.
+ *
+ * @see #static-group
+ * @return {string} Group
+ */
+ve.dm.MetaItem.prototype.getGroup = function () {
+	return this.constructor.static.group;
+};
+
+/**
+ * Get the MetaList this item is attached to.
+ *
+ * @return {ve.dm.MetaList|null} Reference to the parent list, or null if not attached
+ */
+ve.dm.MetaItem.prototype.getParentList = function () {
+	return this.list;
+};
+
+/**
+ * Get this item's offset in the linear model.
+ *
+ * This is only known if the item is attached to a MetaList.
+ *
+ * @return {number|null} Offset, or null if not attached
+ */
+ve.dm.MetaItem.prototype.getOffset = function () {
+	return this.offset;
+};
+
+/**
+ * Get this item's index in the metadata array at the offset.
+ *
+ * This is only known if the item is attached to a MetaList.
+ *
+ * @return {number|null} Index, or null if not attached
+ */
+ve.dm.MetaItem.prototype.getIndex = function () {
+	return this.index;
+};
+
+/**
+ * Set the offset. This is used by the parent list to synchronize the item with the document state.
+ *
+ * @param {number} offset New offset
+ */
+ve.dm.MetaItem.prototype.setOffset = function ( offset ) {
+	this.offset = offset;
+};
+
+/**
+ * Set the index. This is used by the parent list to synchronize the item with the document state.
+ *
+ * @param {number} index New index
+ */
+ve.dm.MetaItem.prototype.setIndex = function ( index ) {
+	this.index = index;
+};
+
+/**
+ * Attach this item to a MetaList.
+ *
+ * @param {ve.dm.MetaList} list Parent list to attach to
+ * @param {number} offset Offset of this item in the parent list's document
+ * @param {number} index Index of this item in the metadata array at the offset
+ */
+ve.dm.MetaItem.prototype.attach = function ( list, offset, index ) {
+	this.list = list;
+	this.offset = offset;
+	this.index = index;
+};
+
+/**
+ * Detach this item from its parent list.
+ *
+ * This clears the stored offset and index, unless the item has already been attached to another list.
+ *
+ * @param {ve.dm.MetaList} list List to detach from
+ */
+ve.dm.MetaItem.prototype.detach = function ( list ) {
+	if ( this.list === list ) {
+		this.list = null;
+		this.offset = null;
+		this.index = null;
+	}
+};
+
+/**
+ * Check whether this item is attached to a MetaList.
+ *
+ * @return {boolean} Whether item is attached
+ */
+ve.dm.MetaItem.prototype.isAttached = function () {
+	return this.list !== null;
+};
+
+/*!
+ * VisualEditor DataModel MetaList class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel meta item.
+ *
+ * @class
+ * @mixins OO.EventEmitter
+ *
+ * @constructor
+ * @param {ve.dm.Surface} surface Surface model
+ */
+ve.dm.MetaList = function VeDmMetaList( surface ) {
+	var i, j, jlen, metadata, item, group;
+
+	// Mixin constructors
+	OO.EventEmitter.call( this );
+
+	// Properties
+	this.surface = surface;
+	this.document = surface.getDocument();
+	this.groups = {};
+	this.items = [];
+
+	// Event handlers
+	this.document.connect( this, { transact: 'onTransact' } );
+
+	// Populate from document
+	metadata = this.document.getMetadata();
+	for ( i in metadata ) {
+		if ( Object.prototype.hasOwnProperty.call( metadata, i ) && Array.isArray( metadata[ i ] ) ) {
+			for ( j = 0, jlen = metadata[ i ].length; j < jlen; j++ ) {
+				item = ve.dm.metaItemFactory.createFromElement( metadata[ i ][ j ] );
+				group = this.groups[ item.getGroup() ];
+				if ( !group ) {
+					group = this.groups[ item.getGroup() ] = [];
+				}
+				item.attach( this, Number( i ), j );
+				group.push( item );
+				this.items.push( item );
+			}
+		}
+	}
+};
+
+/* Inheritance */
+
+OO.mixinClass( ve.dm.MetaList, OO.EventEmitter );
+
+/* Events */
+
+/**
+ * @event insert
+ * @param {ve.dm.MetaItem} item Item that was inserted
+ */
+
+/**
+ * @event remove
+ * @param {ve.dm.MetaItem} item Item that was removed
+ * @param {number} offset Linear model offset that the item was at
+ * @param {number} index Index within that offset the item was at
+ */
+
+/* Methods */
+
+/**
+ * Event handler for transactions on the document.
+ *
+ * When a transaction occurs, update this list to account for it:
+ * - insert items for new metadata that was inserted
+ * - remove items for metadata that was removed
+ * - translate offsets and recompute indices for metadata that has shifted
+ *
+ * @param {ve.dm.Transaction} tx Transaction that was applied to the document
+ * @fires insert
+ * @fires remove
+ */
+ve.dm.MetaList.prototype.onTransact = function ( tx ) {
+	var i, ilen, j, jlen, k, klen, item, ins, rm, insMeta, rmMeta,
+		numItems = this.items.length,
+		itemIndex = 0, // Current index into this.items
+		offset = 0, // Current pre-transaction offset
+		newOffset = 0, // Current post-transaction offset
+		index = 0, // Current pre-transaction index
+		newIndex = 0, // Current post-transaction index
+		// Array of items that should appear in this.items after we're done. This includes newly
+		// inserted items as well as existing items that aren't being removed.
+		// [ { item: ve.dm.MetaItem, offset: offset to move to, index: index to move to } ]
+		newItems = [],
+		removedItems = [], // Array of items that should be removed from this.items
+		events = [], // Array of events that we should emit when we're done
+		ops = tx.getOperations();
+
+	// Go through the transaction operations and plan out where to add, remove and move items. We
+	// don't actually touch this.items yet, otherwise we 1) get it out of order which breaks
+	// findItem() and 2) lose information about what the pre-transaction state of this.items was.
+	for ( i = 0, ilen = ops.length; i < ilen; i++ ) {
+		switch ( ops[ i ].type ) {
+			case 'retain':
+				// Advance itemIndex through the retain and update items we encounter along the way
+				for ( ;
+					itemIndex < numItems && this.items[ itemIndex ].offset < offset + ops[ i ].length;
+					itemIndex++
+				) {
+					// Plan to move this item to the post-transaction offset and index
+					newItems.push( {
+						item: this.items[ itemIndex ],
+						offset: this.items[ itemIndex ].offset + newOffset - offset,
+						index: this.items[ itemIndex ].offset === offset ?
+							// Adjust index for insertions or removals that happened at this offset
+							newIndex - index + this.items[ itemIndex ].index :
+							// Offset is retained over completely, don't adjust index
+							this.items[ itemIndex ].index
+					} );
+				}
+
+				offset += ops[ i ].length;
+				newOffset += ops[ i ].length;
+				index = 0;
+				newIndex = 0;
+				break;
+
+			case 'retainMetadata':
+				// Advance itemIndex through the retain and update items we encounter along the way
+				for ( ;
+					itemIndex < numItems && this.items[ itemIndex ].offset === offset &&
+						this.items[ itemIndex ].index < index + ops[ i ].length;
+					itemIndex++
+				) {
+					newItems.push( {
+						item: this.items[ itemIndex ],
+						offset: newOffset,
+						index: this.items[ itemIndex ].index + newIndex - index
+					} );
+				}
+
+				index += ops[ i ].length;
+				newIndex += ops[ i ].length;
+				break;
+
+			case 'replace':
+				ins = ops[ i ].insert;
+				rm = ops[ i ].remove;
+				if ( ops[ i ].removeMetadata !== undefined ) {
+					insMeta = ops[ i ].insertMetadata;
+					rmMeta = ops[ i ].removeMetadata;
+
+					// Process removed metadata
+					for ( ;
+						itemIndex < numItems &&
+							this.items[ itemIndex ].offset < offset + rmMeta.length;
+						itemIndex++
+					) {
+						removedItems.push( this.items[ itemIndex ] );
+					}
+
+					// Process inserted metadata
+					for ( j = 0, jlen = insMeta.length; j < jlen; j++ ) {
+						if ( insMeta[ j ] ) {
+							for ( k = 0, klen = insMeta[ j ].length; k < klen; k++ ) {
+								item = ve.dm.metaItemFactory.createFromElement( insMeta[ j ][ k ] );
+								newItems.push( {
+									item: item,
+									offset: newOffset + j,
+									index: k
+								} );
+							}
+						}
+					}
+				} else {
+					// No metadata handling specified, which means we just have to deal with offset
+					// adjustments, same as a retain
+					for ( ;
+							itemIndex < numItems &&
+								this.items[ itemIndex ].offset < offset + rm.length;
+							itemIndex++
+					) {
+						newItems.push( {
+							item: this.items[ itemIndex ],
+							offset: this.items[ itemIndex ].offset + newOffset - offset,
+							index: this.items[ itemIndex ].index
+						} );
+					}
+				}
+
+				offset += rm.length;
+				newOffset += ins.length;
+				break;
+
+			case 'replaceMetadata':
+				insMeta = ops[ i ].insert;
+				rmMeta = ops[ i ].remove;
+
+				// Process removed items
+				for ( ;
+					itemIndex < numItems && this.items[ itemIndex ].offset === offset &&
+						this.items[ itemIndex ].index < index + rmMeta.length;
+					itemIndex++
+				) {
+					removedItems.push( this.items[ itemIndex ] );
+				}
+
+				// Process inserted items
+				for ( j = 0, jlen = insMeta.length; j < jlen; j++ ) {
+					item = ve.dm.metaItemFactory.createFromElement( insMeta[ j ] );
+					newItems.push( { item: item, offset: newOffset, index: newIndex + j } );
+				}
+
+				index += rmMeta.length;
+				newIndex += insMeta.length;
+				break;
+		}
+	}
+	// Update the remaining items that the transaction didn't touch or retain over
+	for ( ; itemIndex < numItems; itemIndex++ ) {
+		newItems.push( {
+			item: this.items[ itemIndex ],
+			offset: this.items[ itemIndex ].offset + newOffset - offset,
+			index: this.items[ itemIndex ].offset === offset ?
+				newIndex - index + this.items[ itemIndex ].index :
+				this.items[ itemIndex ].index
+		} );
+	}
+
+	// Process the changes, and queue up events. We emit the events at the end when the MetaList
+	// is back in a consistent state
+
+	// Remove removed items
+	for ( i = 0, ilen = removedItems.length; i < ilen; i++ ) {
+		this.deleteRemovedItem( removedItems[ i ].offset, removedItems[ i ].index );
+		events.push( [
+			'remove', removedItems[ i ], removedItems[ i ].offset, removedItems[ i ].index
+		] );
+	}
+
+	// Move moved items (these appear as inserted items that are already attached)
+	for ( i = 0, ilen = newItems.length; i < ilen; i++ ) {
+		if ( newItems[ i ].item.isAttached() ) {
+			if ( newItems[ i ].offset !== newItems[ i ].item.offset || newItems[ i ].index !== newItems[ i ].item.index ) {
+				this.deleteRemovedItem( newItems[ i ].item.offset, newItems[ i ].item.index );
+				newItems[ i ].preExisting = true;
+			}
+		}
+	}
+
+	// Insert new items
+	for ( i = 0, ilen = newItems.length; i < ilen; i++ ) {
+		if ( !newItems[ i ].item.isAttached() ) {
+			this.addInsertedItem( newItems[ i ].offset, newItems[ i ].index, newItems[ i ].item );
+			if ( !newItems[ i ].preExisting ) {
+				events.push( [ 'insert', newItems[ i ].item ] );
+			}
+		}
+	}
+
+	// Emit events
+	for ( i = 0, ilen = events.length; i < ilen; i++ ) {
+		this.emit.apply( this, events[ i ] );
+	}
+};
+
+/**
+ * Find an item by its offset, index and group.
+ *
+ * This function is mostly for internal usage.
+ *
+ * @param {number} offset Offset in the linear model
+ * @param {number} index Index in the metadata array associated with that offset
+ * @param {string} [group] Group to search in. If not set, search in all groups
+ * @param {boolean} [forInsertion] If the item is not found, return the index where it should have
+ *  been rather than null
+ * @return {number|null} Index into this.items or this.groups[group] where the item was found, or
+ *  null if not found
+ */
+ve.dm.MetaList.prototype.findItem = function ( offset, index, group, forInsertion ) {
+	var items = typeof group === 'string' ? ( this.groups[ group ] || [] ) : this.items;
+	return ve.binarySearch( items, function ( item ) {
+		return ve.compareTuples(
+			[ offset, index ],
+			[ item.getOffset(), item.getIndex() ]
+		);
+	}, forInsertion );
+};
+
+/**
+ * Get the item at a given offset and index, if there is one.
+ *
+ * @param {number} offset Offset in the linear model
+ * @param {number} index Index in the metadata array
+ * @return {ve.dm.MetaItem|null} The item at (offset,index), or null if not found
+ */
+ve.dm.MetaList.prototype.getItemAt = function ( offset, index ) {
+	var at = this.findItem( offset, index );
+	return at === null ? null : this.items[ at ];
+};
+
+/**
+ * Get all items in a group.
+ *
+ * This function returns a shallow copy, so the array isn't returned by reference but the items
+ * themselves are.
+ *
+ * @param {string} group Group
+ * @return {ve.dm.MetaItem[]} Array of items in the group (shallow copy)
+ */
+ve.dm.MetaList.prototype.getItemsInGroup = function ( group ) {
+	return ( this.groups[ group ] || [] ).slice( 0 );
+};
+
+/**
+ * Get all items in the list.
+ *
+ * This function returns a shallow copy, so the array isn't returned by reference but the items
+ * themselves are.
+ *
+ * @return {ve.dm.MetaItem[]} Array of items in the list
+ */
+ve.dm.MetaList.prototype.getAllItems = function () {
+	return this.items.slice( 0 );
+};
+
+/**
+ * Insert new metadata into the document. This builds and processes a transaction that inserts
+ * metadata into the document.
+ *
+ * Pass a plain object rather than a MetaItem into this function unless you know what you're doing.
+ *
+ * @param {Object|ve.dm.MetaItem} meta Metadata element (or MetaItem) to insert
+ * @param {number} [offset] Offset to insert the new metadata, or undefined to add to the end
+ * @param {number} [index] Index to insert the new metadata, or undefined to add to the end
+ */
+ve.dm.MetaList.prototype.insertMeta = function ( meta, offset, index ) {
+	var tx;
+	if ( meta instanceof ve.dm.MetaItem ) {
+		meta = meta.getElement();
+	}
+	if ( offset === undefined ) {
+		offset = this.document.data.getLength();
+	}
+	if ( index === undefined ) {
+		index = ( this.document.metadata.getData( offset ) || [] ).length;
+	}
+	tx = ve.dm.Transaction.newFromMetadataInsertion( this.document, offset, index, [ meta ] );
+	this.surface.change( tx );
+};
+
+/**
+ * Remove a meta item from the document. This builds and processes a transaction that removes the
+ * associated metadata from the document.
+ *
+ * @param {ve.dm.MetaItem} item Item to remove
+ */
+ve.dm.MetaList.prototype.removeMeta = function ( item ) {
+	var tx;
+	tx = ve.dm.Transaction.newFromMetadataRemoval(
+		this.document,
+		item.getOffset(),
+		new ve.Range( item.getIndex(), item.getIndex() + 1 )
+	);
+	this.surface.change( tx );
+};
+
+/**
+ * Insert an item at a given offset and index in response to a transaction.
+ *
+ * This function is for internal usage by onTransact(). To actually insert an item, use
+ * insertMeta().
+ *
+ * @param {number} offset Offset in the linear model of the new item
+ * @param {number} index Index of the new item in the metadata array at offset
+ * @param {ve.dm.MetaItem} item Item object
+ * @fires insert
+ */
+ve.dm.MetaList.prototype.addInsertedItem = function ( offset, index, item ) {
+	var group = item.getGroup(),
+		at = this.findItem( offset, index, null, true );
+	this.items.splice( at, 0, item );
+	if ( this.groups[ group ] ) {
+		at = this.findItem( offset, index, group, true );
+		this.groups[ group ].splice( at, 0, item );
+	} else {
+		this.groups[ group ] = [ item ];
+	}
+	item.attach( this, offset, index );
+};
+
+/**
+ * Remove an item in response to a transaction.
+ *
+ * This function is for internal usage by onTransact(). To actually remove an item, use
+ * removeItem().
+ *
+ * @param {number} offset Offset in the linear model of the item
+ * @param {number} index Index of the item in the metadata array at offset
+ * @fires remove
+ */
+ve.dm.MetaList.prototype.deleteRemovedItem = function ( offset, index ) {
+	var item, group, at = this.findItem( offset, index );
+	if ( at === null ) {
+		return;
+	}
+	item = this.items[ at ];
+	group = item.getGroup();
+	this.items.splice( at, 1 );
+	at = this.findItem( offset, index, group );
+	if ( at !== null ) {
+		this.groups[ group ].splice( at, 1 );
+	}
+	item.detach( this );
+	return item;
+};
+
+/**
+ * A helper class that allows random access to the table cells
+ * and introduces place-holders for fields occupied by spanning cells,
+ * making it a non-sparse representation of the sparse HTML model.
+ * This is essential for the implementation of table manipulations, such as row insertions or deletions.
+ *
+ * Example:
+ *
+ * <table>
+ *   <tr><td rowspan=2>1</td><td colspan=2>2</td><td rowspan=2 colspan=2>3</td></tr>
+ *   <tr><td>4</td><td>5</td></tr>
+ * </table>
+ *
+ * Visually this table would look like:
+ *
+ *  -------------------
+ * | 1 | 2     | 3     |
+ * |   |-------|       |
+ * |   | 4 | 5 |       |
+ *  -------------------
+ *
+ * The HTML model is sparse which makes it hard to read but also difficult to work with programmatically.
+ * The corresponding TableCellMatrix would look like:
+ *
+ * | C[1] | C[2] | P[2] | C[3] | P[3] |
+ * | P[1] | C[4] | C[5] | P[3] | P[3] |
+ *
+ * Where C[1] represents a Cell instance wrapping cell 1,
+ * and P[1] a PlaceHolder instance owned by that cell.
+ *
+ * @class
+ * @constructor
+ * @param {ve.dm.TableNode} tableNode Reference to a table instance
+ */
+ve.dm.TableMatrix = function VeDmTableMatrix( tableNode ) {
+	this.tableNode = tableNode;
+	// Do not access these directly as they get invalidated on structural changes
+	// Use the accessor methods instead.
+	this.matrix = null;
+	this.rowNodes = null;
+};
+
+/**
+ * Invalidates the matrix structure.
+ *
+ * This is called by ve.dm.TableNode on structural changes.
+ */
+ve.dm.TableMatrix.prototype.invalidate = function () {
+	this.matrix = null;
+	this.rowNodes = null;
+};
+
+/**
+ * Recreates the matrix structure.
+ */
+ve.dm.TableMatrix.prototype.update = function () {
+	var cellNode, cell,
+		rowSpan, colSpan, i, j, r, c,
+		matrix = [],
+		rowNodes = [],
+		iterator = this.tableNode.getIterator(),
+		row = -1,
+		col = -1;
+
+	// Handle row transitions
+	iterator.on( 'newRow', function ( rowNode ) {
+		row++;
+		col = -1;
+		// initialize a matrix row
+		matrix[ row ] = matrix[ row ] || [];
+		// store the row node
+		rowNodes.push( rowNode );
+	} );
+
+	// Iterates through all cells and stores the cells as well as
+	// so called placeholders into the matrix.
+	while ( ( cellNode = iterator.next() ) !== undefined ) {
+		col++;
+		// skip placeholders
+		while ( matrix[ row ][ col ] ) {
+			col++;
+		}
+		if ( !cellNode ) {
+			matrix[ row ][ col ] = null;
+			continue;
+		}
+		cell = new ve.dm.TableMatrixCell( cellNode, row, col );
+		// store the cell in the matrix
+		matrix[ row ][ col ] = cell;
+		// add place holders for spanned cells
+		rowSpan = cellNode.getRowspan();
+		colSpan = cellNode.getColspan();
+
+		if ( rowSpan === 1 && colSpan === 1 ) {
+			continue;
+		}
+
+		for ( i = 0; i < rowSpan; i++ ) {
+			for ( j = 0; j < colSpan; j++ ) {
+				if ( i === 0 && j === 0 ) {
+					continue;
+				}
+				r = row + i;
+				c = col + j;
+				// initialize the cell matrix row if not yet present
+				matrix[ r ] = matrix[ r ] || [];
+				matrix[ r ][ c ] = new ve.dm.TableMatrixCell( cellNode, r, c, cell );
+			}
+		}
+	}
+	this.matrix = matrix;
+	this.rowNodes = rowNodes;
+};
+
+/**
+ * Retrieves a single cell.
+ *
+ * @param {number} row Row index
+ * @param {number} col Column index
+ * @return {ve.dm.TableMatrixCell|undefined} Cell, or undefined if out of bounds
+ */
+ve.dm.TableMatrix.prototype.getCell = function ( row, col ) {
+	var matrix = this.getMatrix();
+	return matrix[ row ] ? matrix[ row ][ col ] : undefined;
+};
+
+/**
+ * Retrieves all cells of a column with given index.
+ *
+ * @param {number} col Column index
+ * @return {ve.dm.TableMatrixCell[]} The cells of a column
+ */
+ve.dm.TableMatrix.prototype.getColumn = function ( col ) {
+	var cells, row,
+		matrix = this.getMatrix();
+	cells = [];
+	for ( row = 0; row < matrix.length; row++ ) {
+		cells.push( matrix[ row ][ col ] );
+	}
+	return cells;
+};
+
+/**
+ * Retrieves all cells of a row with given index.
+ *
+ * @param {number} row Row index
+ * @return {ve.dm.TableMatrixCell[]} The cells of a row
+ */
+ve.dm.TableMatrix.prototype.getRow = function ( row ) {
+	var matrix = this.getMatrix();
+	return matrix[ row ];
+};
+
+/**
+ * Retrieves the row node of a row with given index.
+ *
+ * @param {number} row Row index
+ * @return {ve.dm.TableRowNode} Node at give index
+ */
+ve.dm.TableMatrix.prototype.getRowNode = function ( row ) {
+	var rowNodes = this.getRowNodes();
+	return rowNodes[ row ];
+};
+
+/**
+ * Provides a reference to the internal cell matrix.
+ *
+ * Note: this is primarily for internal use. Do not change the delivered matrix
+ * and do not store as it may be invalidated.
+ *
+ * @return {ve.dm.TableMatrixCell[][]} Table matrix
+ */
+ve.dm.TableMatrix.prototype.getMatrix = function () {
+	if ( !this.matrix ) {
+		this.update();
+	}
+	return this.matrix;
+};
+
+/**
+ * Provides a reference to the internal array of row nodes.
+ *
+ * Note: this is primarily for internal use. Do not change the delivered array
+ * and do not store it as it may be invalidated.
+ *
+ * @return {ve.dm.TableRowNode[]} Table row nodes
+ */
+ve.dm.TableMatrix.prototype.getRowNodes = function () {
+	if ( !this.rowNodes ) {
+		this.update();
+	}
+	return this.rowNodes;
+};
+
+/**
+ * Get number of rows in the table
+ *
+ * @return {number} Number of rows
+ */
+ve.dm.TableMatrix.prototype.getRowCount = function () {
+	return this.getMatrix().length;
+};
+
+/**
+ * Get number of columns in the table
+ *
+ * @param {number} [row] Row to count columns in (for when the table is sparse and this is variable)
+ * @return {number} Number of columns
+ */
+ve.dm.TableMatrix.prototype.getColCount = function ( row ) {
+	var matrix = this.getMatrix();
+	return matrix.length ? matrix[ row || 0 ].length : 0;
+};
+
+/**
+ * Look up the matrix cell for a given cell node.
+ *
+ * @param {ve.dm.TableCellNode} cellNode Cell node
+ * @return {ve.dm.TableMatrixCell|null} The cell or null if not found
+ */
+ve.dm.TableMatrix.prototype.lookupCell = function ( cellNode ) {
+	var row, col, cols, rowCells,
+		matrix = this.getMatrix(),
+		rowNodes = this.getRowNodes();
+
+	row = rowNodes.indexOf( cellNode.getParent() );
+	if ( row < 0 ) {
+		return null;
+	}
+	rowCells = matrix[ row ];
+	for ( col = 0, cols = rowCells.length; col < cols; col++ ) {
+		if ( rowCells[ col ] && rowCells[ col ].node === cellNode ) {
+			return rowCells[ col ];
+		}
+	}
+	return null;
+};
+
+/**
+ * Finds the closest cell not being a placeholder for a given cell.
+ *
+ * @param {ve.dm.TableMatrixCell} cell Table cell
+ * @return {ve.dm.TableMatrixCell|null} Closest cell
+ */
+ve.dm.TableMatrix.prototype.findClosestCell = function ( cell ) {
+	var col, cols, rowCells,
+		matrix = this.getMatrix();
+
+	rowCells = matrix[ cell.row ];
+	for ( col = cell.col; col >= 0; col-- ) {
+		if ( !rowCells[ col ].isPlaceholder() ) {
+			return rowCells[ col ];
+		}
+	}
+	for ( col = cell.col + 1, cols = rowCells.length; col < cols; col++ ) {
+		if ( !rowCells[ col ].isPlaceholder() ) {
+			return rowCells[ col ];
+		}
+	}
+	return null;
+};
+
+/**
+ * An object wrapping a table cell node, augmenting it with row and column indexes.
+ *
+ * Cells which are occupied by another cell's with 'rowspan' or 'colspan' attributes are
+ * placeholders and have an owner property other than themselves.
+ * Placeholders are used to create a dense representation of the sparse HTML table model.
+ *
+ * @class
+ * @constructor
+ * @param {ve.dm.TableCellNode} node DM Node
+ * @param {number} row Row index
+ * @param {number} col Column index
+ * @param {ve.dm.TableMatrixCell} [owner] Owner cell if this is a placeholder
+ */
+ve.dm.TableMatrixCell = function VeDmTableMatrixCell( node, row, col, owner ) {
+	this.node = node;
+	this.row = row;
+	this.col = col;
+	this.key = row + '_' + col;
+	this.owner = owner || this;
+};
+
+/* Inheritance */
+
+OO.initClass( ve.dm.TableMatrixCell );
+
+/* Static Methods */
+
+/**
+ * Comparison function for sorting cells in text flow order
+ *
+ * @param {ve.dm.TableMatrixCell} a First cell
+ * @param {ve.dm.TableMatrixCell} b Second cell
+ * @return {number} Positive, negative or zero, depending on relative position
+ */
+ve.dm.TableMatrixCell.static.sortDescending = function ( a, b ) {
+	if ( a.row !== b.row ) {
+		return b.row - a.row;
+	}
+	return b.col - a.col;
+};
+
+/* Methods */
+
+/**
+ * Check if this cell is a placeholder
+ *
+ * @return {boolean} This cell is a placeholder
+ */
+ve.dm.TableMatrixCell.prototype.isPlaceholder = function () {
+	return this.owner !== this;
+};
+
+/**
+ * Get owner matrix cell
+ *
+ * @return {ve.dm.TableMatrixCell} Owner cell
+ */
+ve.dm.TableMatrixCell.prototype.getOwner = function () {
+	return this.owner;
+};
+
+/**
+ * Compare to another cell
+ *
+ * Cells are considered equal to their placeholders
+ *
+ * @param {ve.dm.TableMatrixCell} other Cell to compare
+ * @return {boolean} Cells are equal
+ */
+ve.dm.TableMatrixCell.prototype.equals = function ( other ) {
+	return this.getOwner().key === other.getOwner().key;
+};
+
+/*!
+ * VisualEditor DataModel TransactionProcessor class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel transaction processor.
+ *
+ * This class reads operations from a transaction and applies them one by one. It's not intended
+ * to be used directly; use {ve.dm.Document#commit} instead.
+ *
+ * NOTE: Instances of this class are not recyclable: you can only call .process() on them once.
+ *
+ * @class
+ * @param {ve.dm.Document} doc Document
+ * @param {ve.dm.Transaction} transaction Transaction
+ * @constructor
+ */
+ve.dm.TransactionProcessor = function VeDmTransactionProcessor( doc, transaction ) {
+	// Properties
+	this.document = doc;
+	this.transaction = transaction;
+	this.operations = transaction.getOperations();
+	this.modificationQueue = [];
+	this.rollbackQueue = [];
+	this.synchronizer = new ve.dm.DocumentSynchronizer( doc, transaction );
+	// Linear model offset that we're currently at. Operations in the transaction are ordered, so
+	// the cursor only ever moves forward.
+	this.cursor = 0;
+	this.metadataCursor = 0;
+	// Adjustment that needs to be added to linear model offsets in the original linear model
+	// to get offsets in the half-updated linear model. This is needed when queueing modifications
+	// after other modifications that will cause offsets to shift.
+	this.adjustment = 0;
+	// Set and clear are sets of annotations which should be added or removed to content being
+	// inserted or retained.
+	this.set = new ve.dm.AnnotationSet( this.document.getStore() );
+	this.clear = new ve.dm.AnnotationSet( this.document.getStore() );
+};
+
+/* Static members */
+
+/* See ve.dm.TransactionProcessor.modifiers */
+ve.dm.TransactionProcessor.modifiers = {};
+
+/* See ve.dm.TransactionProcessor.processors */
+ve.dm.TransactionProcessor.processors = {};
+
+/* Methods */
+
+/**
+ * Get the next operation.
+ *
+ * @method
+ */
+ve.dm.TransactionProcessor.prototype.nextOperation = function () {
+	return this.operations[ this.operationIndex++ ] || false;
+};
+
+/**
+ * Execute an operation.
+ *
+ * @method
+ * @param {Object} op Operation object to execute
+ * @throws {Error} Operation type is not supported
+ */
+ve.dm.TransactionProcessor.prototype.executeOperation = function ( op ) {
+	if ( Object.prototype.hasOwnProperty.call( ve.dm.TransactionProcessor.processors, op.type ) ) {
+		ve.dm.TransactionProcessor.processors[ op.type ].call( this, op );
+	} else {
+		throw new Error( 'Invalid operation error. Operation type is not supported: ' + op.type );
+	}
+};
+
+/**
+ * Process all operations.
+ *
+ * When all operations are done being processed, the document will be synchronized.
+ *
+ * @method
+ * @param {Function} [presynchronizeHandler] Callback to emit before synchronizing
+ */
+ve.dm.TransactionProcessor.prototype.process = function ( presynchronizeHandler ) {
+	var op;
+
+	// First process each operation to gather modifications in the modification queue.
+	// If an exception occurs during this stage, we don't need to do anything to recover,
+	// because no modifications were made yet.
+	this.operationIndex = 0;
+	// This loop is factored this way to allow operations to be skipped over or executed
+	// from within other operations
+	while ( ( op = this.nextOperation() ) ) {
+		this.executeOperation( op );
+	}
+
+	// Apply the queued modifications
+	try {
+		this.applyModifications();
+	} catch ( e ) {
+		// Restore the linear model to its original state
+		this.rollbackModifications();
+		// Rethrow the exception
+		throw e;
+	}
+	// Mark the transaction as committed
+	this.transaction.markAsApplied();
+
+	// Synchronize the node tree for the modifications we just made
+	try {
+		if ( presynchronizeHandler ) {
+			presynchronizeHandler();
+		}
+		this.synchronizer.synchronize( this.transaction );
+	} catch ( e ) {
+		// Restore the linear model to its original state
+		this.rollbackModifications();
+		// The synchronizer may have left the tree in some sort of weird half-baked state,
+		// so rebuild it from scratch
+		this.document.rebuildTree();
+		// Rethrow the exception
+		throw e;
+	}
+
+};
+
+/**
+ * Queue a modification.
+ *
+ * For available method names, see ve.dm.ElementLinearData and ve.dm.MetaLinearData.
+ *
+ * @param {Object} modification Object describing the modification
+ * @param {string} modification.type Name of a method in ve.dm.TransactionProcessor.modifiers
+ * @param {Array} [modification.args] Arguments to pass to this method
+ * @throws {Error} Unrecognized modification type
+ */
+ve.dm.TransactionProcessor.prototype.queueModification = function ( modification ) {
+	if ( typeof ve.dm.TransactionProcessor.modifiers[ modification.type ] !== 'function' ) {
+		throw new Error( 'Unrecognized modification type ' + modification.type );
+	}
+	this.modificationQueue.push( modification );
+};
+
+/**
+ * Apply all modifications queued through #queueModification, and add their rollback functions
+ * to this.rollbackQueue.
+ */
+ve.dm.TransactionProcessor.prototype.applyModifications = function () {
+	var i, len, modifier, modifications = this.modificationQueue;
+	this.modificationQueue = [];
+	for ( i = 0, len = modifications.length; i < len; i++ ) {
+		modifier = ve.dm.TransactionProcessor.modifiers[ modifications[ i ].type ];
+		// Add to the beginning of rollbackQueue, because the most recent change needs to
+		// be undone first
+		this.rollbackQueue.unshift( modifier.apply( this, modifications[ i ].args || [] ) );
+	}
+};
+
+/**
+ * Roll back all modifications that have been applied so far. This invokes the callbacks returned
+ * by the modifier functions.
+ */
+ve.dm.TransactionProcessor.prototype.rollbackModifications = function () {
+	var i, len, rollbacks = this.rollbackQueue;
+	this.rollbackQueue = [];
+	for ( i = 0, len = rollbacks.length; i < len; i++ ) {
+		rollbacks[ i ]();
+	}
+};
+
+/**
+ * Advance the main data cursor.
+ *
+ * @method
+ * @param {number} increment Number of positions to increment the cursor by
+ */
+ve.dm.TransactionProcessor.prototype.advanceCursor = function ( increment ) {
+	this.cursor += increment;
+	this.metadataCursor = 0;
+};
+
+/**
+ * Apply the current annotation stacks.
+ *
+ * This will set all annotations in this.set and clear all annotations in `this.clear` on the data
+ * between the offsets `this.cursor` and `this.cursor + to`.
+ *
+ * @method
+ * @param {number} to Offset to stop annotating at, annotating starts at this.cursor
+ * @throws {Error} Cannot annotate a branch element
+ * @throws {Error} Annotation to be set is already set
+ * @throws {Error} Annotation to be cleared is not set
+ */
+ve.dm.TransactionProcessor.prototype.applyAnnotations = function ( to ) {
+	var isElement, annotations, i, j, jlen,
+			nodeFactory = this.document.getNodeFactory();
+
+	function setAndClear( anns, set, clear ) {
+		if ( anns.containsAnyOf( set ) ) {
+			throw new Error( 'Invalid transaction, annotation to be set is already set' );
+		} else {
+			anns.addSet( set );
+		}
+		if ( !anns.containsAllOf( clear ) ) {
+			throw new Error( 'Invalid transaction, annotation to be cleared is not set' );
+		} else {
+			anns.removeSet( clear );
+		}
+	}
+
+	if ( this.set.isEmpty() && this.clear.isEmpty() ) {
+		return;
+	}
+	// Set/clear annotations on data
+	for ( i = this.cursor; i < to; i++ ) {
+		isElement = this.document.data.isElementData( i );
+		if ( isElement ) {
+			if ( !nodeFactory.isNodeContent( this.document.data.getType( i ) ) ) {
+				throw new Error( 'Invalid transaction, cannot annotate a non-content element' );
+			}
+			if ( this.document.data.isCloseElementData( i ) ) {
+				// Closing content element, ignore
+				continue;
+			}
+		}
+		annotations = this.document.data.getAnnotationsFromOffset( i );
+		setAndClear( annotations, this.set, this.clear );
+		// Store annotation indexes in linear model
+		this.queueModification( {
+			type: 'annotateData',
+			args: [ i + this.adjustment, annotations ]
+		} );
+	}
+	// Set/clear annotations on metadata, but not on the edges of the range
+	for ( i = this.cursor + 1; i < to; i++ ) {
+		for ( j = 0, jlen = this.document.metadata.getDataLength( i ); j < jlen; j++ ) {
+			annotations = this.document.metadata.getAnnotationsFromOffsetAndIndex( i, j );
+			setAndClear( annotations, this.set, this.clear );
+			this.queueModification( {
+				type: 'annotateMetadata',
+				args: [ i + this.adjustment, j, annotations ]
+			} );
+		}
+	}
+	// Notify the synchronizer
+	if ( this.cursor < to ) {
+		this.synchronizer.pushAnnotation( new ve.Range( this.cursor + this.adjustment, to + this.adjustment ) );
+	}
+};
+
+/**
+ * Modifier methods.
+ *
+ * Each method executes a specific type of linear model modification and returns a function that
+ * undoes the modification, in case we need to recover the previous linear model state.
+ * Methods are called in the context of a transaction processor, so they work similar to normal
+ * methods on the object.
+ *
+ * @class ve.dm.TransactionProcessor.modifiers
+ * @singleton
+ */
+
+/**
+ * Splice data into / out of the data or metadata array.
+ *
+ * @param {string} type 'data' or 'metadata'
+ * @param {number} offset Offset to remove/insert at
+ * @param {number} remove Number of elements to remove
+ * @param {Array} [insert] Elements to insert
+ * @return {Function} Function that undoes the modification
+ */
+ve.dm.TransactionProcessor.modifiers.splice = function ( type, offset, remove, insert ) {
+	var removed, data;
+	insert = insert || [];
+	data = type === 'metadata' ? this.document.metadata : this.document.data;
+	removed = data.batchSplice( offset, remove, insert );
+	return function () {
+		data.batchSplice( offset, insert.length, removed );
+	};
+};
+
+/**
+ * Splice metadata into / out of the metadata array at a given offset.
+ *
+ * @param {number} offset Offset whose metadata array to modify
+ * @param {number} index Index in that offset's metadata array to remove/insert at
+ * @param {number} remove Number of elements to remove
+ * @param {Array} [insert] Elements to insert
+ * @return {Function} Function that undoes the modification
+ */
+ve.dm.TransactionProcessor.modifiers.spliceMetadataAtOffset = function ( offset, index, remove, insert ) {
+	var removed, metadata;
+	insert = insert || [];
+	metadata = this.document.metadata;
+	removed = metadata.spliceMetadataAtOffset( offset, index, remove, insert );
+	return function () {
+		metadata.spliceMetadataAtOffset( offset, index, insert.length, removed );
+	};
+};
+
+/**
+ * Set annotations at a given data offset.
+ *
+ * @param {number} offset Offset in data array
+ * @param {ve.dm.AnnotationSet} annotations New set of annotations; overwrites old set
+ * @return {Function} Function that undoes the modification
+ */
+ve.dm.TransactionProcessor.modifiers.annotateData = function ( offset, annotations ) {
+	var data = this.document.data,
+		oldAnnotations = data.getAnnotationsFromOffset( offset );
+	data.setAnnotationsAtOffset( offset, annotations );
+	return function () {
+		data.setAnnotationsAtOffset( offset, oldAnnotations );
+	};
+};
+
+/**
+ * Set annotations at a given metadata offset and index.
+ *
+ * @param {number} offset Offset to annotate at
+ * @param {number} index Index in that offset's metadata array
+ * @param {ve.dm.AnnotationSet} annotations New set of annotations; overwrites old set
+ * @return {Function} Function that undoes the modification
+ */
+ve.dm.TransactionProcessor.modifiers.annotateMetadata = function ( offset, index, annotations ) {
+	var metadata = this.document.metadata,
+		oldAnnotations = metadata.getAnnotationsFromOffsetAndIndex( offset, index );
+	metadata.setAnnotationsAtOffsetAndIndex( offset, index, annotations );
+	return function () {
+		metadata.setAnnotationsAtOffsetAndIndex( offset, index, oldAnnotations );
+	};
+};
+
+/**
+ * Set an attribute at a given offset.
+ *
+ * @param {number} offset Offset in data array
+ * @param {string} key Attribute name
+ * @param {Mixed} value New attribute value
+ * @return {Function} Function that undoes the modification
+ */
+ve.dm.TransactionProcessor.modifiers.setAttribute = function ( offset, key, value ) {
+	var data = this.document.data,
+		item = data.getData( offset ),
+		oldValue = item.attributes && item.attributes[ key ];
+	data.setAttributeAtOffset( offset, key, value );
+	return function () {
+		data.setAttributeAtOffset( offset, key, oldValue );
+	};
+};
+
+/**
+ * Processing methods.
+ *
+ * Each method is specific to a type of action. Methods are called in the context of a transaction
+ * processor, so they work similar to normal methods on the object.
+ *
+ * @class ve.dm.TransactionProcessor.processors
+ * @singleton
+ */
+
+/**
+ * Execute a retain operation.
+ *
+ * This method is called within the context of a transaction processor instance.
+ *
+ * This moves the cursor by op.length and applies annotations to the characters that the cursor
+ * moved over.
+ *
+ * @method
+ * @param {Object} op Operation object:
+ * @param {number} op.length Number of elements to retain
+ */
+ve.dm.TransactionProcessor.processors.retain = function ( op ) {
+	this.applyAnnotations( this.cursor + op.length );
+	this.advanceCursor( op.length );
+};
+
+/**
+ * Execute a metadata retain operation.
+ *
+ * This method is called within the context of a transaction processor instance.
+ *
+ * This moves the metadata cursor by op.length.
+ *
+ * @method
+ * @param {Object} op Operation object:
+ * @param {number} op.length Number of elements to retain
+ */
+ve.dm.TransactionProcessor.processors.retainMetadata = function ( op ) {
+	this.metadataCursor += op.length;
+};
+
+/**
+ * Execute an annotate operation.
+ *
+ * This method is called within the context of a transaction processor instance.
+ *
+ * This will add an annotation to or remove an annotation from `this.set` or `this.clear`.
+ *
+ * @method
+ * @param {Object} op Operation object
+ * @param {string} op.method Annotation method, either 'set' to add or 'clear' to remove
+ * @param {string} op.bias End point of marker, either 'start' to begin or 'stop' to end
+ * @param {string} op.annotation Annotation object to set or clear from content
+ * @throws {Error} Invalid annotation method
+ */
+ve.dm.TransactionProcessor.processors.annotate = function ( op ) {
+	var target, annotation;
+	if ( op.method === 'set' ) {
+		target = this.set;
+	} else if ( op.method === 'clear' ) {
+		target = this.clear;
+	} else {
+		throw new Error( 'Invalid annotation method ' + op.method );
+	}
+	annotation = this.document.getStore().value( op.index );
+	if ( op.bias === 'start' ) {
+		target.push( annotation );
+	} else {
+		target.remove( annotation );
+	}
+	// Tree sync is done by applyAnnotations()
+};
+
+/**
+ * Execute an attribute operation.
+ *
+ * This method is called within the context of a transaction processor instance.
+ *
+ * This sets the attribute named `op.key` on the element at `this.cursor` to `op.to`, or unsets it if
+ * `op.to === undefined`. `op.from `is not checked against the old value, but is used instead of `op.to`
+ * in reverse mode. So if `op.from` is incorrect, the transaction will commit fine, but won't roll
+ * back correctly.
+ *
+ * @method
+ * @param {Object} op Operation object
+ * @param {string} op.key Attribute name
+ * @param {Mixed} op.from Old attribute value, or undefined if not previously set
+ * @param {Mixed} op.to New attribute value, or undefined to unset
+ */
+ve.dm.TransactionProcessor.processors.attribute = function ( op ) {
+	if ( !this.document.data.isElementData( this.cursor ) ) {
+		throw new Error( 'Invalid element error, cannot set attributes on non-element data' );
+	}
+	this.queueModification( {
+		type: 'setAttribute',
+		args: [ this.cursor + this.adjustment, op.key, op.to ]
+	} );
+
+	this.synchronizer.pushAttributeChange(
+		this.document.getDocumentNode().getNodeFromOffset( this.cursor + 1 ),
+		op.key,
+		op.from,
+		op.to
+	);
+};
+
+/**
+ * Execute a replace operation.
+ *
+ * This method is called within the context of a transaction processor instance.
+ *
+ * This replaces a range of linear model data with another at this.cursor, figures out how the model
+ * tree needs to be synchronized, and queues this in the DocumentSynchronizer.
+ *
+ * op.remove isn't checked against the actual data (instead op.remove.length things are removed
+ * starting at this.cursor), but it's used instead of op.insert in reverse mode. So if
+ * op.remove is incorrect but of the right length, the transaction will commit fine, but won't roll
+ * back correctly.
+ *
+ * @method
+ * @param {Object} op Operation object
+ * @param {Array} op.remove Linear model data to remove
+ * @param {Array} op.insert Linear model data to insert
+ */
+ve.dm.TransactionProcessor.processors.replace = function ( op ) {
+	var node, selection, range,
+		remove = op.remove,
+		insert = op.insert,
+		removeMetadata = op.removeMetadata,
+		insertMetadata = op.insertMetadata,
+		removeLinearData = new ve.dm.ElementLinearData( this.document.getStore(), remove, this.document.getNodeFactory() ),
+		insertLinearData = new ve.dm.ElementLinearData( this.document.getStore(), insert, this.document.getNodeFactory() ),
+		removeIsContent = removeLinearData.isContentData(),
+		insertIsContent = insertLinearData.isContentData(),
+		removeHasStructure = removeLinearData.containsElementData(),
+		insertHasStructure = insertLinearData.containsElementData(),
+		operation = op,
+		removeLevel = 0,
+		insertLevel = 0,
+		i,
+		type,
+		prevCursor,
+		affectedRanges = [],
+		scope,
+		minInsertLevel = 0,
+		coveringRange,
+		scopeStart,
+		scopeEnd,
+		opAdjustment = 0,
+		opRemove, opInsert, opRemoveMetadata, opInsertMetadata;
+	if ( removeIsContent && insertIsContent ) {
+		// Content replacement
+		// Update the linear model
+		this.queueModification( {
+			type: 'splice',
+			args: [ 'data', this.cursor + this.adjustment, remove.length, insert ]
+		} );
+		// Keep the meta linear model in sync
+		if ( removeMetadata !== undefined ) {
+			this.queueModification( {
+				type: 'splice',
+				args: [
+					'metadata',
+					this.cursor + this.adjustment,
+					removeMetadata.length,
+					insertMetadata
+				]
+			} );
+		} else {
+			this.queueModification( {
+				type: 'splice',
+				args: [
+					'metadata',
+					this.cursor + this.adjustment,
+					remove.length, new Array( insert.length )
+				]
+			} );
+		}
+		// Get the node containing the replaced content
+		selection = this.document.selectNodes(
+			new ve.Range(
+				this.cursor,
+				this.cursor + remove.length
+			),
+			'leaves'
+		);
+		node = selection[ 0 ].node;
+		if (
+			!removeHasStructure && !insertHasStructure &&
+			selection.length === 1 &&
+			node && node.getType() === 'text'
+		) {
+			// Text-only replacement
+			// Queue a resize for the text node
+			this.synchronizer.pushResize( node, insert.length - remove.length );
+		} else if (
+			!removeHasStructure && !insertHasStructure && remove.length === 0 && insert.length > 0 &&
+			selection.length === 1 && node && node.canContainContent() &&
+			( selection[ 0 ].indexInNode !== undefined || node.getLength() === 0 )
+		) {
+			// Text-only addition where a text node didn't exist before. Create one
+			this.synchronizer.pushInsertTextNode( node, selection[ 0 ].indexInNode || 0, insert.length - remove.length );
+		} else {
+			// Replacement is not exclusively text
+			// Rebuild all covered nodes
+			range = new ve.Range(
+				selection[ 0 ].nodeOuterRange.start,
+				selection[ selection.length - 1 ].nodeOuterRange.end
+			);
+			this.synchronizer.pushRebuild( range,
+				new ve.Range( range.start + this.adjustment,
+					range.end + this.adjustment + insert.length - remove.length )
+			);
+		}
+
+		// Advance the cursor
+		this.advanceCursor( remove.length );
+		this.adjustment += insert.length - remove.length;
+	} else {
+		// Structural replacement
+		// It's possible that multiple replace operations are needed before the
+		// model is back in a consistent state. This loop applies the current
+		// replace operation to the linear model, then keeps applying subsequent
+		// operations until the model is consistent. We keep track of the changes
+		// and queue a single rebuild after the loop finishes.
+		while ( true ) {
+			if ( operation.type === 'replace' ) {
+				opRemove = operation.remove;
+				opInsert = operation.insert;
+				opRemoveMetadata = operation.removeMetadata;
+				opInsertMetadata = operation.insertMetadata;
+				// Update the linear model
+				this.queueModification( {
+					type: 'splice',
+					args: [ 'data', this.cursor + this.adjustment, opRemove.length, opInsert ]
+				} );
+				// Keep the meta linear model in sync
+				if ( opRemoveMetadata !== undefined ) {
+					this.queueModification( {
+						type: 'splice',
+						args: [
+							'metadata',
+							this.cursor + this.adjustment,
+							opRemoveMetadata.length,
+							opInsertMetadata
+						]
+					} );
+				} else {
+					this.queueModification( {
+						type: 'splice',
+						args: [
+							'metadata',
+							this.cursor + this.adjustment,
+							opRemove.length,
+							new Array( opInsert.length )
+						]
+					} );
+				}
+				affectedRanges.push( new ve.Range(
+					this.cursor,
+					this.cursor + opRemove.length
+				) );
+				prevCursor = this.cursor;
+				this.advanceCursor( opRemove.length );
+
+				// Paint the removed selection, figure out which nodes were
+				// covered, and add their ranges to the affected ranges list
+				if ( opRemove.length > 0 ) {
+					selection = this.document.selectNodes( new ve.Range(
+						prevCursor,
+						prevCursor + opRemove.length
+					), 'siblings' );
+					for ( i = 0; i < selection.length; i++ ) {
+						affectedRanges.push( selection[ i ].nodeOuterRange );
+					}
+				}
+				// Walk through the remove and insert data
+				// and keep track of the element depth change (level)
+				// for each of these two separately. The model is
+				// only consistent if both levels are zero.
+				for ( i = 0; i < opRemove.length; i++ ) {
+					type = opRemove[ i ].type;
+					if ( type !== undefined ) {
+						if ( type.charAt( 0 ) === '/' ) {
+							// Closing element
+							removeLevel--;
+						} else {
+							// Opening element
+							removeLevel++;
+						}
+					}
+				}
+				// Keep track of the scope of the insertion
+				// Normally this is the node we're inserting into, except if the
+				// insertion closes elements it doesn't open (i.e. splits elements),
+				// in which case it's the affected ancestor
+				for ( i = 0; i < opInsert.length; i++ ) {
+					type = opInsert[ i ].type;
+					if ( type !== undefined ) {
+						if ( type.charAt( 0 ) === '/' ) {
+							// Closing element
+							insertLevel--;
+							if ( insertLevel < minInsertLevel ) {
+								// Closing an unopened element at a higher
+								// (more negative) level than before
+								// Lazy-initialize scope
+								scope = scope || this.document.getBranchNodeFromOffset( prevCursor );
+								// Push the full range of the old scope as an affected range
+								scopeStart = scope.getOffset();
+								scopeEnd = scopeStart + scope.getOuterLength();
+								affectedRanges.push( new ve.Range( scopeStart, scopeEnd ) );
+								// Update scope
+								scope = scope.getParent() || scope;
+								minInsertLevel--;
+							}
+						} else {
+							// Opening element
+							insertLevel++;
+						}
+					}
+				}
+				// Update adjustment
+				this.adjustment += opInsert.length - opRemove.length;
+				opAdjustment += opInsert.length - opRemove.length;
+			} else {
+				// We know that other operations won't cause adjustments, so we
+				// don't have to update adjustment
+				this.executeOperation( operation );
+			}
+			if ( removeLevel === 0 && insertLevel === 0 ) {
+				// The model is back in a consistent state, so we're done
+				break;
+			}
+			// Get the next operation
+			operation = this.nextOperation();
+			if ( !operation ) {
+				throw new Error( 'Unbalanced set of replace operations found' );
+			}
+		}
+
+		// From all the affected ranges we have gathered, compute a range that covers all
+		// of them, and rebuild that
+		coveringRange = ve.Range.static.newCoveringRange( affectedRanges );
+		this.synchronizer.pushRebuild(
+			coveringRange,
+			new ve.Range(
+				coveringRange.start + this.adjustment - opAdjustment,
+				coveringRange.end + this.adjustment
+			)
+		);
+	}
+};
+
+/**
+ * Execute a metadata replace operation.
+ *
+ * This method is called within the context of a transaction processor instance.
+ *
+ * @method
+ * @param {Object} op Operation object
+ * @param {Array} op.remove Metadata to remove
+ * @param {Array} op.insert Metadata to insert
+ */
+ve.dm.TransactionProcessor.processors.replaceMetadata = function ( op ) {
+	this.queueModification( {
+		type: 'spliceMetadataAtOffset',
+		args: [ this.cursor + this.adjustment, this.metadataCursor, op.remove.length, op.insert ]
+	} );
+	this.metadataCursor += op.insert.length;
+};
+
+/*!
+ * VisualEditor DataModel Transaction class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel transaction.
+ *
+ * @class
+ * @constructor
+ */
+ve.dm.Transaction = function VeDmTransaction( doc ) {
+	this.operations = [];
+	this.applied = false;
+	this.doc = doc;
+};
+
+/* Static Methods */
+
+/**
+ * Generate a transaction that replaces data in a range.
+ *
+ * @method
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {ve.Range} range Range of data to remove
+ * @param {Array} data Data to insert
+ * @param {boolean} [removeMetadata=false] Remove metadata instead of collapsing it
+ * @return {ve.dm.Transaction} Transaction that replaces data
+ * @throws {Error} Invalid range
+ */
+ve.dm.Transaction.newFromReplacement = function ( doc, range, data, removeMetadata ) {
+	var endOffset,
+		tx = new ve.dm.Transaction( doc );
+	endOffset = tx.pushRemoval( doc, 0, range, removeMetadata );
+	endOffset = tx.pushInsertion( doc, endOffset, endOffset, data );
+	tx.pushFinalRetain( doc, endOffset );
+	return tx;
+};
+
+/**
+ * Generate a transaction that inserts data at an offset.
+ *
+ * @static
+ * @method
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {number} offset Offset to insert at
+ * @param {Array} data Data to insert
+ * @return {ve.dm.Transaction} Transaction that inserts data
+ */
+ve.dm.Transaction.newFromInsertion = function ( doc, offset, data ) {
+	var tx = new ve.dm.Transaction( doc ),
+		endOffset = tx.pushInsertion( doc, 0, offset, data );
+	// Retain to end of document, if needed (for completeness)
+	tx.pushFinalRetain( doc, endOffset );
+	return tx;
+};
+
+/**
+ * Generate a transaction that removes data from a range.
+ *
+ * There are three possible results from a removal:
+ *
+ * - Remove content only
+ *    - Occurs when the range starts and ends on elements of different type, depth or ancestry
+ * - Remove entire elements and their content
+ *    - Occurs when the range spans across an entire element
+ * - Merge two elements by removing the end of one and the beginning of another
+ *    - Occurs when the range starts and ends on elements of similar type, depth and ancestry
+ *
+ * This function uses the following logic to decide what to actually remove:
+ *
+ * 1. Elements are only removed if range being removed covers the entire element
+ * 2. Elements can only be merged if {@link ve.dm.Node#canBeMergedWith} returns true
+ * 3. Merges take place at the highest common ancestor
+ *
+ * @method
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {ve.Range} range Range of data to remove
+ * @param {boolean} [removeMetadata=false] Remove metadata instead of collapsing it
+ * @return {ve.dm.Transaction} Transaction that removes data
+ * @throws {Error} Invalid range
+ */
+ve.dm.Transaction.newFromRemoval = function ( doc, range, removeMetadata ) {
+	var tx = new ve.dm.Transaction( doc ),
+		endOffset = tx.pushRemoval( doc, 0, range, removeMetadata );
+	// Retain to end of document, if needed (for completeness)
+	tx.pushFinalRetain( doc, endOffset );
+	return tx;
+};
+
+/**
+ * Build a transaction that inserts the contents of a document at a given offset.
+ *
+ * This is typically used to merge changes to a document slice back into the main document. If newDoc
+ * is a document slice of doc, it's assumed that there were no changes to doc's internal list since
+ * the slice, so any differences between internal items that doc and newDoc have in common will
+ * be resolved in newDoc's favor.
+ *
+ * @param {ve.dm.Document} doc Main document
+ * @param {number} offset Offset to insert at
+ * @param {ve.dm.Document} newDoc Document to insert
+ * @param {ve.Range} [newDocRange] Range from the new document to insert (defaults to entire document)
+ * @return {ve.dm.Transaction} Transaction that inserts the nodes and updates the internal list
+ */
+ve.dm.Transaction.newFromDocumentInsertion = function ( doc, offset, newDoc, newDocRange ) {
+	var i, len, storeMerge, listMerge, data, metadata, listData, listMetadata, linearData,
+		oldEndOffset, newEndOffset, tx, insertion, spliceItemRange, spliceListNodeRange,
+		listNode = doc.internalList.getListNode(),
+		listNodeRange = listNode.getRange(),
+		newListNode = newDoc.internalList.getListNode(),
+		newListNodeRange = newListNode.getRange(),
+		newListNodeOuterRange = newListNode.getOuterRange();
+
+	if ( newDocRange ) {
+		data = new ve.dm.ElementLinearData( doc.getStore(), newDoc.getData( newDocRange, true ), doc.getNodeFactory() );
+		metadata = new ve.dm.MetaLinearData( doc.getStore(), newDoc.getMetadata( newDocRange, true ) );
+	} else {
+		// Get the data and the metadata, but skip over the internal list
+		data = new ve.dm.ElementLinearData( doc.getStore(),
+			newDoc.getData( new ve.Range( 0, newListNodeOuterRange.start ), true ).concat(
+				newDoc.getData( new ve.Range( newListNodeOuterRange.end, newDoc.data.getLength() ), true )
+			),
+			doc.getNodeFactory()
+		);
+		metadata = new ve.dm.MetaLinearData( doc.getStore(),
+			newDoc.getMetadata( new ve.Range( 0, newListNodeOuterRange.start ), true ).concat(
+				newListNodeOuterRange.end < newDoc.data.getLength() ? newDoc.getMetadata(
+					new ve.Range( newListNodeOuterRange.end + 1, newDoc.data.getLength() ), true
+				) : []
+			)
+		);
+		// TODO deal with metadata right before and right after the internal list
+	}
+
+	// Merge the stores
+	storeMerge = doc.getStore().merge( newDoc.getStore() );
+	// Remap the store indexes in the data
+	data.remapStoreIndexes( storeMerge );
+
+	listMerge = doc.internalList.merge( newDoc.internalList, newDoc.origInternalListLength || 0 );
+	// Remap the indexes in the data
+	data.remapInternalListIndexes( listMerge.mapping, doc.internalList );
+	// Get data for the new internal list
+	if ( newDoc.origDoc === doc ) {
+		// newDoc is a document slice based on doc, so all the internal list items present in doc
+		// when it was cloned are also in newDoc. We need to get the newDoc version of these items
+		// so that changes made in newDoc are reflected.
+		if ( newDoc.origInternalListLength > 0 ) {
+			oldEndOffset = doc.internalList.getItemNode( newDoc.origInternalListLength - 1 ).getOuterRange().end;
+			newEndOffset = newDoc.internalList.getItemNode( newDoc.origInternalListLength - 1 ).getOuterRange().end;
+		} else {
+			oldEndOffset = listNodeRange.start;
+			newEndOffset = newListNodeRange.start;
+		}
+		linearData = new ve.dm.ElementLinearData(
+			doc.getStore(),
+			newDoc.getData( new ve.Range( newListNodeRange.start, newEndOffset ), true ),
+			doc.getNodeFactory()
+		);
+		// Remap indexes in data coming from newDoc
+		linearData.remapStoreIndexes( storeMerge );
+		listData = linearData.data
+			.concat( doc.getData( new ve.Range( oldEndOffset, listNodeRange.end ), true ) );
+		listMetadata = newDoc.getMetadata( new ve.Range( newListNodeRange.start, newEndOffset ), true )
+			.concat( doc.getMetadata( new ve.Range( oldEndOffset, listNodeRange.end ), true ) );
+	} else {
+		// newDoc is brand new, so use doc's internal list as a base
+		listData = doc.getData( listNodeRange, true );
+		listMetadata = doc.getMetadata( listNodeRange, true );
+	}
+	for ( i = 0, len = listMerge.newItemRanges.length; i < len; i++ ) {
+		linearData = new ve.dm.ElementLinearData(
+			doc.getStore(),
+			newDoc.getData( listMerge.newItemRanges[ i ], true ),
+			doc.getNodeFactory()
+		);
+		// Remap indexes in data coming from newDoc
+		linearData.remapStoreIndexes( storeMerge );
+		listData = listData.concat( linearData.data );
+		// We don't have to worry about merging metadata at the edges, because there can't be
+		// metadata between internal list items
+		listMetadata = listMetadata.concat( newDoc.getMetadata( listMerge.newItemRanges[ i ], true ) );
+	}
+
+	tx = new ve.dm.Transaction( doc );
+
+	if ( offset <= listNodeRange.start ) {
+		// offset is before listNodeRange
+		// First replace the node, then the internal list
+
+		// Fix up the node insertion
+		insertion = doc.fixupInsertion( data.data, offset );
+		tx.pushRetain( insertion.offset );
+		tx.pushReplace( doc, insertion.offset, insertion.remove, insertion.data, metadata.data );
+		tx.pushRetain( listNodeRange.start - ( insertion.offset + insertion.remove ) );
+		tx.pushReplace( doc, listNodeRange.start, listNodeRange.end - listNodeRange.start,
+			listData, listMetadata
+		);
+		tx.pushFinalRetain( doc, listNodeRange.end );
+	} else if ( offset >= listNodeRange.end ) {
+		// offset is after listNodeRange
+		// First replace the internal list, then the node
+
+		// Fix up the node insertion
+		insertion = doc.fixupInsertion( data.data, offset );
+		tx.pushRetain( listNodeRange.start );
+		tx.pushReplace( doc, listNodeRange.start, listNodeRange.end - listNodeRange.start,
+			listData, listMetadata
+		);
+		tx.pushRetain( insertion.offset - listNodeRange.end );
+		tx.pushReplace( doc, insertion.offset, insertion.remove, insertion.data, metadata.data );
+		tx.pushFinalRetain( doc, insertion.offset + insertion.remove );
+	} else if ( offset >= listNodeRange.start && offset <= listNodeRange.end ) {
+		// offset is within listNodeRange
+		// Merge data into listData, then only replace the internal list
+		// Find the internalItem we are inserting into
+		i = 0;
+		// Find item node in doc
+		while (
+			( spliceItemRange = doc.internalList.getItemNode( i ).getRange() ) &&
+			offset > spliceItemRange.end
+		) {
+			i++;
+		}
+
+		if ( newDoc.origDoc === doc ) {
+			// Get spliceItemRange from newDoc
+			spliceItemRange = newDoc.internalList.getItemNode( i ).getRange();
+			spliceListNodeRange = newListNodeRange;
+		} else {
+			// Get spliceItemRange from doc; the while loop has already set it
+			spliceListNodeRange = listNodeRange;
+		}
+		ve.batchSplice( listData, spliceItemRange.start - spliceListNodeRange.start,
+			spliceItemRange.end - spliceItemRange.start, data.data );
+		ve.batchSplice( listMetadata, spliceItemRange.start - spliceListNodeRange.start,
+			spliceItemRange.end - spliceItemRange.start, metadata.data );
+
+		tx.pushRetain( listNodeRange.start );
+		tx.pushReplace( doc, listNodeRange.start, listNodeRange.end - listNodeRange.start,
+			listData, listMetadata
+		);
+		tx.pushFinalRetain( doc, listNodeRange.end );
+	}
+	return tx;
+};
+
+/**
+ * Generate a transaction that changes one or more attributes.
+ *
+ * @static
+ * @method
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {number} offset Offset of element
+ * @param {Object.<string,Mixed>} attr List of attribute key and value pairs, use undefined value
+ *  to remove an attribute
+ * @return {ve.dm.Transaction} Transaction that changes an element
+ * @throws {Error} Cannot set attributes to non-element data
+ * @throws {Error} Cannot set attributes on closing element
+ */
+ve.dm.Transaction.newFromAttributeChanges = function ( doc, offset, attr ) {
+	var tx = new ve.dm.Transaction( doc ),
+		data = doc.getData();
+	// Verify element exists at offset
+	if ( data[ offset ].type === undefined ) {
+		throw new Error( 'Cannot set attributes to non-element data' );
+	}
+	// Verify element is not a closing
+	if ( data[ offset ].type.charAt( 0 ) === '/' ) {
+		throw new Error( 'Cannot set attributes on closing element' );
+	}
+	// Retain up to element
+	tx.pushRetain( offset );
+	// Change attributes
+	tx.pushAttributeChanges( attr, data[ offset ].attributes || {} );
+	// Retain to end of document
+	tx.pushFinalRetain( doc, offset );
+	return tx;
+};
+
+/**
+ * Generate a transaction that annotates content.
+ *
+ * @static
+ * @method
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {ve.Range} range Range to annotate
+ * @param {string} method Annotation mode
+ *  - `set`: Adds annotation to all content in range
+ *  - `clear`: Removes instances of annotation from content in range
+ * @param {ve.dm.Annotation} annotation Annotation to set or clear
+ * @return {ve.dm.Transaction} Transaction that annotates content
+ */
+ve.dm.Transaction.newFromAnnotation = function ( doc, range, method, annotation ) {
+	var covered, type, annotatable,
+		tx = new ve.dm.Transaction( doc ),
+		data = doc.data,
+		index = doc.getStore().index( annotation ),
+		i = range.start,
+		span = i,
+		on = false,
+		insideContentNode = false,
+		ignoreChildrenDepth = 0,
+		nodeFactory = doc.getNodeFactory();
+
+	// Iterate over all data in range, annotating where appropriate
+	while ( i < range.end ) {
+		if ( data.isElementData( i ) ) {
+			type = data.getType( i );
+			if ( nodeFactory.shouldIgnoreChildren( type ) ) {
+				ignoreChildrenDepth += data.isOpenElementData( i ) ? 1 : -1;
+			}
+			if ( nodeFactory.isNodeContent( type ) ) {
+				if ( method === 'set' && !nodeFactory.canNodeTakeAnnotationType( type, annotation ) ) {
+					// Blacklisted annotations can't be set
+					annotatable = false;
+				} else {
+					annotatable = true;
+				}
+			} else {
+				// Structural nodes are never annotatable
+				annotatable = false;
+			}
+		} else {
+			// Text is always annotatable
+			annotatable = true;
+		}
+		// No annotations if we're inside an ignoreChildren node
+		annotatable = annotatable && !ignoreChildrenDepth;
+		if (
+			!annotatable ||
+			( insideContentNode && !data.isCloseElementData( i ) )
+		) {
+			// Structural element opening or closing, or entering a content node
+			if ( on ) {
+				tx.pushRetain( span );
+				tx.pushStopAnnotating( method, index );
+				span = 0;
+				on = false;
+			}
+		} else if (
+			( !data.isElementData( i ) || !data.isCloseElementData( i ) ) &&
+			!insideContentNode
+		) {
+			// Character or content element opening
+			if ( data.isElementData( i ) ) {
+				insideContentNode = true;
+			}
+			if ( method === 'set' ) {
+				// Don't re-apply matching annotation
+				covered = data.getAnnotationsFromOffset( i ).containsComparable( annotation );
+			} else {
+				// Expect comparable annotations to be removed individually otherwise
+				// we might try to remove more than one annotation per character, which
+				// a single transaction can't do.
+				covered = data.getAnnotationsFromOffset( i ).contains( annotation );
+			}
+			if ( ( covered && method === 'set' ) || ( !covered && method === 'clear' ) ) {
+				// Skip annotated content
+				if ( on ) {
+					tx.pushRetain( span );
+					tx.pushStopAnnotating( method, index );
+					span = 0;
+					on = false;
+				}
+			} else {
+				// Cover non-annotated content
+				if ( !on ) {
+					tx.pushRetain( span );
+					tx.pushStartAnnotating( method, index );
+					span = 0;
+					on = true;
+				}
+			}
+		} else if ( data.isCloseElementData( i ) ) {
+			// Content closing, skip
+			insideContentNode = false;
+		}
+		span++;
+		i++;
+	}
+	tx.pushRetain( span );
+	if ( on ) {
+		tx.pushStopAnnotating( method, index );
+	}
+	tx.pushFinalRetain( doc, range.end );
+	return tx;
+};
+
+/**
+ * Generate a transaction that inserts metadata elements.
+ *
+ * @static
+ * @method
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {number} offset Offset of element
+ * @param {number} index Index of metadata cursor within element
+ * @param {Array} newElements New elements to insert
+ * @return {ve.dm.Transaction} Transaction that inserts the metadata elements
+ */
+ve.dm.Transaction.newFromMetadataInsertion = function ( doc, offset, index, newElements ) {
+	var tx = new ve.dm.Transaction( doc ),
+		data = doc.metadata,
+		elements = data.getData( offset ) || [];
+
+	if ( newElements.length === 0 ) {
+		return tx; // no-op
+	}
+
+	// Retain up to element
+	tx.pushRetain( offset );
+	// Retain up to metadata element (second dimension)
+	tx.pushRetainMetadata( index );
+	// Insert metadata elements
+	tx.pushReplaceMetadata(
+		[], newElements
+	);
+	// Retain up to end of metadata elements (second dimension)
+	tx.pushRetainMetadata( elements.length - index );
+	// Retain to end of document
+	tx.pushFinalRetain( doc, offset, elements.length );
+	return tx;
+};
+
+/**
+ * Generate a transaction that removes metadata elements.
+ *
+ * @static
+ * @method
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {number} offset Offset of element
+ * @param {ve.Range} range Range of metadata to remove
+ * @return {ve.dm.Transaction} Transaction that removes metadata elements
+ * @throws {Error} Cannot remove metadata from empty list
+ * @throws {Error} Range out of bounds
+ */
+ve.dm.Transaction.newFromMetadataRemoval = function ( doc, offset, range ) {
+	var selection,
+		tx = new ve.dm.Transaction( doc ),
+		data = doc.metadata,
+		elements = data.getData( offset ) || [];
+
+	if ( !elements.length ) {
+		throw new Error( 'Cannot remove metadata from empty list' );
+	}
+
+	if ( range.start < 0 || range.end > elements.length ) {
+		throw new Error( 'Range out of bounds' );
+	}
+
+	selection = elements.slice( range.start, range.end );
+
+	if ( selection.length === 0 ) {
+		return tx; // no-op.
+	}
+
+	// Retain up to element
+	tx.pushRetain( offset );
+	// Retain up to metadata element (second dimension)
+	tx.pushRetainMetadata( range.start );
+	// Remove metadata elements
+	tx.pushReplaceMetadata(
+		selection, []
+	);
+	// Retain up to end of metadata elements (second dimension)
+	tx.pushRetainMetadata( elements.length - range.end );
+	// Retain to end of document (unless we're already off the end )
+	tx.pushFinalRetain( doc, offset, elements.length );
+	return tx;
+};
+
+/**
+ * Generate a transaction that replaces a single metadata element.
+ *
+ * @static
+ * @method
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {number} offset Offset of element
+ * @param {number} index Index of metadata cursor within element
+ * @param {Object} newElement New element to insert
+ * @return {ve.dm.Transaction} Transaction that replaces a metadata element
+ * @throws {Error} Metadata index out of bounds
+ */
+ve.dm.Transaction.newFromMetadataElementReplacement = function ( doc, offset, index, newElement ) {
+	var oldElement,
+		tx = new ve.dm.Transaction( doc ),
+		data = doc.getMetadata(),
+		elements = data[ offset ] || [];
+
+	if ( index >= elements.length ) {
+		throw new Error( 'Metadata index out of bounds' );
+	}
+
+	oldElement = elements[ index ];
+
+	// Retain up to element
+	tx.pushRetain( offset );
+	// Retain up to metadata element (second dimension)
+	tx.pushRetainMetadata( index );
+	// Remove metadata elements
+	tx.pushReplaceMetadata(
+		[ oldElement ], [ newElement ]
+	);
+	// Retain up to end of metadata elements (second dimension)
+	tx.pushRetainMetadata( elements.length - index - 1 );
+	// Retain to end of document (unless we're already off the end )
+	tx.pushFinalRetain( doc, offset, elements.length );
+	return tx;
+};
+
+/**
+ * Generate a transaction that converts elements that can contain content.
+ *
+ * @static
+ * @method
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {ve.Range} range Range to convert
+ * @param {string} type Symbolic name of element type to convert to
+ * @param {Object} attr Attributes to initialize element with
+ * @return {ve.dm.Transaction} Transaction that converts content branches
+ */
+ve.dm.Transaction.newFromContentBranchConversion = function ( doc, range, type, attr ) {
+	var i, selected, branch, branchOuterRange,
+		tx = new ve.dm.Transaction( doc ),
+		selection = doc.selectNodes( range, 'leaves' ),
+		opening = { type: type },
+		closing = { type: '/' + type },
+		previousBranch,
+		previousBranchOuterRange;
+	// Add attributes to opening if needed
+	if ( ve.isPlainObject( attr ) ) {
+		opening.attributes = attr;
+	} else {
+		attr = {};
+	}
+	// Replace the wrappings of each content branch in the range
+	for ( i = 0; i < selection.length; i++ ) {
+		selected = selection[ i ];
+		branch = selected.node.isContent() ? selected.node.getParent() : selected.node;
+		if ( branch.canContainContent() ) {
+			// Skip branches that are already of the target type and have all attributes in attr
+			// set already.
+			if ( branch.getType() === type && ve.compare( attr, branch.getAttributes(), true ) ) {
+				continue;
+			}
+			branchOuterRange = branch.getOuterRange();
+			// Don't convert the same branch twice
+			if ( branch === previousBranch ) {
+				continue;
+			}
+
+			// Retain up to this branch, considering where the previous one left off
+			tx.pushRetain(
+				branchOuterRange.start - ( previousBranch ? previousBranchOuterRange.end : 0 )
+			);
+			if ( branch.getType() === type ) {
+				// Same type, different attributes, so we only need an attribute change
+				tx.pushAttributeChanges( attr, branch.getAttributes() );
+				// Retain the branch, including its opening and closing
+				tx.pushRetain( branch.getOuterLength() );
+			} else {
+				// Types differ, so we need to replace the opening and closing
+				// Replace the opening
+				tx.pushReplace( doc, branchOuterRange.start, 1, [ ve.copy( opening ) ] );
+				// Retain the contents
+				tx.pushRetain( branch.getLength() );
+				// Replace the closing
+				tx.pushReplace( doc, branchOuterRange.end - 1, 1, [ ve.copy( closing ) ] );
+			}
+			// Remember this branch and its range for next time
+			previousBranch = branch;
+			previousBranchOuterRange = branchOuterRange;
+		}
+	}
+	// Retain until the end
+	tx.pushFinalRetain( doc, previousBranch ? previousBranchOuterRange.end : 0 );
+	return tx;
+};
+
+/**
+ * Generate a transaction that wraps, unwraps or replaces structure.
+ *
+ * The unwrap parameters are checked against the actual model data, and
+ * an exception is thrown if the type fields don't match. This means you
+ * can omit attributes from the unwrap parameters, those are automatically
+ * picked up from the model data instead.
+ *
+ * NOTE: This function currently does not fix invalid parent/child relationships, so it will
+ * happily convert paragraphs to listItems without wrapping them in a list if that's what you
+ * ask it to do. We'll probably fix this later but for now the caller is responsible for giving
+ * valid instructions.
+ *
+ * Changing a paragraph to a header:
+ *     Before: [ {type: 'paragraph'}, 'a', 'b', 'c', {type: '/paragraph'} ]
+ *     newFromWrap( new ve.Range( 1, 4 ), [ {type: 'paragraph'} ], [ {type: 'heading', level: 1 } ] );
+ *     After: [ {type: 'heading', level: 1 }, 'a', 'b', 'c', {type: '/heading'} ]
+ *
+ * Changing a set of paragraphs to a list:
+ *     Before: [ {type: 'paragraph'}, 'a', {type: '/paragraph'}, {'type':'paragraph'}, 'b', {'type':'/paragraph'} ]
+ *     newFromWrap( new ve.Range( 0, 6 ), [], [ {type: 'list' } ], [], [ {type: 'listItem', attributes: {styles: ['bullet']}} ] );
+ *     After: [ {type: 'list'}, {type: 'listItem', attributes: {styles: ['bullet']}}, {'type':'paragraph'} 'a',
+ *              {type: '/paragraph'}, {type: '/listItem'}, {type: 'listItem', attributes: {styles: ['bullet']}},
+ *              {type: 'paragraph'}, 'b', {type: '/paragraph'}, {type: '/listItem'}, {type: '/list'} ]
+ *
+ * @param {ve.dm.Document} doc Document to generate a transaction for
+ * @param {ve.Range} range Range to wrap/unwrap/replace around
+ * @param {Array} unwrapOuter Opening elements to unwrap. These must be immediately *outside* the range
+ * @param {Array} wrapOuter Opening elements to wrap around the range
+ * @param {Array} unwrapEach Opening elements to unwrap from each top-level element in the range
+ * @param {Array} wrapEach Opening elements to wrap around each top-level element in the range
+ * @return {ve.dm.Transaction}
+ */
+ve.dm.Transaction.newFromWrap = function ( doc, range, unwrapOuter, wrapOuter, unwrapEach, wrapEach ) {
+	var i, j, unwrapOuterData, startOffset, unwrapEachData, closingUnwrapEach, closingWrapEach,
+		tx = new ve.dm.Transaction( doc ),
+		depth = 0;
+
+	// Function to generate arrays of closing elements in reverse order
+	function closingArray( openings ) {
+		var i,
+			closings = [],
+			len = openings.length;
+		for ( i = 0; i < len; i++ ) {
+			closings[ closings.length ] = { type: '/' + openings[ len - i - 1 ].type };
+		}
+		return closings;
+	}
+	closingUnwrapEach = closingArray( unwrapEach );
+	closingWrapEach = closingArray( wrapEach );
+
+	// TODO: check for and fix nesting validity like fixupInsertion does
+	if ( range.start > unwrapOuter.length ) {
+		// Retain up to the first thing we're unwrapping
+		// The outer unwrapping takes place *outside*
+		// the range, so compensate for that
+		tx.pushRetain( range.start - unwrapOuter.length );
+	} else if ( range.start < unwrapOuter.length ) {
+		throw new Error( 'unwrapOuter is longer than the data preceding the range' );
+	}
+
+	// Replace the opening elements for the outer unwrap&wrap
+	if ( wrapOuter.length > 0 || unwrapOuter.length > 0 ) {
+		// Verify that wrapOuter matches the data at this position
+		unwrapOuterData = doc.data.slice( range.start - unwrapOuter.length, range.start );
+		for ( i = 0; i < unwrapOuterData.length; i++ ) {
+			if ( unwrapOuterData[ i ].type !== unwrapOuter[ i ].type ) {
+				throw new Error( 'Element in unwrapOuter does not match: expected ' +
+					unwrapOuter[ i ].type + ' but found ' + unwrapOuterData[ i ].type );
+			}
+		}
+		// Instead of putting in unwrapOuter as given, put it in the
+		// way it appears in the model so we pick up any attributes
+		tx.pushReplace( doc, range.start - unwrapOuter.length, unwrapOuter.length, ve.copy( wrapOuter ) );
+	}
+
+	if ( wrapEach.length > 0 || unwrapEach.length > 0 ) {
+		// Visit each top-level child and wrap/unwrap it
+		// TODO figure out if we should use the tree/node functions here
+		// rather than iterating over offsets, it may or may not be faster
+		for ( i = range.start; i < range.end; i++ ) {
+			if ( doc.data.isElementData( i ) ) {
+				// This is a structural offset
+				if ( !doc.data.isCloseElementData( i ) ) {
+					// This is an opening element
+					if ( depth === 0 ) {
+						// We are at the start of a top-level element
+						// Replace the opening elements
+
+						// Verify that unwrapEach matches the data at this position
+						unwrapEachData = doc.data.slice( i, i + unwrapEach.length );
+						for ( j = 0; j < unwrapEachData.length; j++ ) {
+							if ( unwrapEachData[ j ].type !== unwrapEach[ j ].type ) {
+								throw new Error( 'Element in unwrapEach does not match: expected ' +
+									unwrapEach[ j ].type + ' but found ' +
+									unwrapEachData[ j ].type );
+							}
+						}
+						// Instead of putting in unwrapEach as given, put it in the
+						// way it appears in the model, so we pick up any attributes
+						tx.pushReplace( doc, i, unwrapEach.length, ve.copy( wrapEach ) );
+
+						// Store this offset for later
+						startOffset = i + unwrapEach.length;
+					}
+					depth++;
+				} else {
+					// This is a closing element
+					depth--;
+					if ( depth === 0 ) {
+						// We are at the end of a top-level element
+						// Advance past the element, then back up past the unwrapEach
+						j = ( i + 1 ) - unwrapEach.length;
+						// Retain the contents of what we're wrapping
+						tx.pushRetain( j - startOffset );
+						// Replace the closing elements
+						tx.pushReplace( doc, j, unwrapEach.length, ve.copy( closingWrapEach ) );
+					}
+				}
+			}
+		}
+	} else {
+		// There is no wrapEach/unwrapEach to be done, just retain
+		// up to the end of the range
+		tx.pushRetain( range.end - range.start );
+	}
+
+	// this is a no-op if unwrapOuter.length===0 and wrapOuter.length===0
+	tx.pushReplace( doc, range.end, unwrapOuter.length, closingArray( wrapOuter ) );
+
+	// Retain up to the end of the document
+	tx.pushFinalRetain( doc, range.end + unwrapOuter.length );
+
+	return tx;
+};
+
+/**
+ * Specification for how each type of operation should be reversed.
+ *
+ * This object maps operation types to objects, which map property names to reversal instructions.
+ * A reversal instruction is either a string (which means the value of that property should be used)
+ * or an object (which maps old values to new values). For instance, { from: 'to' }
+ * means that the .from property of the reversed operation should be set to the .to property of the
+ * original operation, and { method: { set: 'clear' } } means that if the .method property of
+ * the original operation was 'set', the reversed operation's .method property should be 'clear'.
+ *
+ * If a property's treatment isn't specified, its value is simply copied without modification.
+ * If an operation type's treatment isn't specified, all properties are copied without modification.
+ *
+ * @type {Object.<string,Object.<string,string|Object.<string, string>>>}
+ */
+ve.dm.Transaction.reversers = {
+	annotate: { method: { set: 'clear', clear: 'set' } }, // swap 'set' with 'clear'
+	attribute: { from: 'to', to: 'from' }, // swap .from with .to
+	replace: { // swap .insert with .remove and .insertMetadata with .removeMetadata
+		insert: 'remove',
+		remove: 'insert',
+		insertMetadata: 'removeMetadata',
+		removeMetadata: 'insertMetadata'
+	},
+	replaceMetadata: { insert: 'remove', remove: 'insert' } // swap .insert with .remove
+};
+
+/* Methods */
+
+/**
+ * Create a clone of this transaction.
+ *
+ * The returned transaction will be exactly the same as this one, except that its 'applied' flag
+ * will be cleared. This means that if a transaction has already been committed, it will still
+ * be possible to commit the clone. This is used for redoing transactions that were undone.
+ *
+ * @return {ve.dm.Transaction} Clone of this transaction
+ */
+ve.dm.Transaction.prototype.clone = function () {
+	var tx = new this.constructor();
+	tx.operations = ve.copy( this.operations );
+	return tx;
+};
+
+/**
+ * Create a reversed version of this transaction.
+ *
+ * The returned transaction will be the same as this one but with all operations reversed. This
+ * means that applying the original transaction and then applying the reversed transaction will
+ * result in no net changes. This is used to undo transactions.
+ *
+ * @return {ve.dm.Transaction} Reverse of this transaction
+ */
+ve.dm.Transaction.prototype.reversed = function () {
+	var i, len, op, newOp, reverse, prop, tx = new this.constructor();
+	for ( i = 0, len = this.operations.length; i < len; i++ ) {
+		op = this.operations[ i ];
+		newOp = ve.copy( op );
+		reverse = this.constructor.reversers[ op.type ] || {};
+		for ( prop in reverse ) {
+			if ( typeof reverse[ prop ] === 'string' ) {
+				newOp[ prop ] = op[ reverse[ prop ] ];
+			} else {
+				newOp[ prop ] = reverse[ prop ][ op[ prop ] ];
+			}
+		}
+		tx.operations.push( newOp );
+	}
+	return tx;
+};
+
+/**
+ * Check if the transaction would make any actual changes if processed.
+ *
+ * There may be more sophisticated checks that can be done, like looking for things being replaced
+ * with identical content, but such transactions probably should not be created in the first place.
+ *
+ * @method
+ * @return {boolean} Transaction is no-op
+ */
+ve.dm.Transaction.prototype.isNoOp = function () {
+	if ( this.operations.length === 0 ) {
+		return true;
+	} else if ( this.operations.length === 1 ) {
+		return this.operations[ 0 ].type === 'retain';
+	} else if ( this.operations.length === 2 ) {
+		return this.operations[ 0 ].type === 'retain' &&
+			this.operations[ 1 ].type === 'retainMetadata';
+	} else {
+		return false;
+	}
+};
+
+/**
+ * Get all operations.
+ *
+ * @method
+ * @return {Object[]} List of operations
+ */
+ve.dm.Transaction.prototype.getOperations = function () {
+	return this.operations;
+};
+
+/**
+ * Get the document the transaction was created for.
+ *
+ * @method
+ * @return {ve.dm.Document} Document
+ */
+ve.dm.Transaction.prototype.getDocument = function () {
+	return this.doc;
+};
+
+/**
+ * Check if the transaction has any operations with a certain type.
+ *
+ * @method
+ * @return {boolean} Has operations of a given type
+ */
+ve.dm.Transaction.prototype.hasOperationWithType = function ( type ) {
+	var i, len;
+	for ( i = 0, len = this.operations.length; i < len; i++ ) {
+		if ( this.operations[ i ].type === type ) {
+			return true;
+		}
+	}
+	return false;
+};
+
+/**
+ * Check if the transaction has any content data operations, such as insertion or deletion.
+ *
+ * @method
+ * @return {boolean} Has content data operations
+ */
+ve.dm.Transaction.prototype.hasContentDataOperations = function () {
+	return this.hasOperationWithType( 'replace' );
+};
+
+/**
+ * Check if the transaction has any element attribute operations.
+ *
+ * @method
+ * @return {boolean} Has element attribute operations
+ */
+ve.dm.Transaction.prototype.hasElementAttributeOperations = function () {
+	return this.hasOperationWithType( 'attribute' );
+};
+
+/**
+ * Check if the transaction has any annotation operations.
+ *
+ * @method
+ * @return {boolean} Has annotation operations
+ */
+ve.dm.Transaction.prototype.hasAnnotationOperations = function () {
+	return this.hasOperationWithType( 'annotate' );
+};
+
+/**
+ * Check whether the transaction has already been applied.
+ *
+ * @method
+ * @return {boolean}
+ */
+ve.dm.Transaction.prototype.hasBeenApplied = function () {
+	return this.applied;
+};
+
+/**
+ * Mark the transaction as having been applied.
+ *
+ * Should only be called after committing the transaction.
+ *
+ * @see ve.dm.Transaction#hasBeenApplied
+ */
+ve.dm.Transaction.prototype.markAsApplied = function () {
+	this.applied = true;
+};
+
+/**
+ * Translate an offset based on a transaction.
+ *
+ * This is useful when you want to anticipate what an offset will be after a transaction is
+ * processed.
+ *
+ * @method
+ * @param {number} offset Offset in the linear model before the transaction has been processed
+ * @param {boolean} [excludeInsertion] Map the offset immediately before an insertion to
+ *  right before the insertion rather than right after
+ * @return {number} Translated offset, as it will be after processing transaction
+ */
+ve.dm.Transaction.prototype.translateOffset = function ( offset, excludeInsertion ) {
+	var i, op, insertLength, removeLength, prevAdjustment,
+		cursor = 0,
+		adjustment = 0;
+
+	for ( i = 0; i < this.operations.length; i++ ) {
+		op = this.operations[ i ];
+		if ( op.type === 'replace' ) {
+			insertLength = op.insert.length;
+			removeLength = op.remove.length;
+			prevAdjustment = adjustment;
+			adjustment += insertLength - removeLength;
+			if ( offset === cursor + removeLength ) {
+				// Offset points to right after the removal or right before the insertion
+				if ( excludeInsertion && insertLength > removeLength ) {
+					// Translate it to before the insertion
+					return offset + adjustment - insertLength + removeLength;
+				} else {
+					// Translate it to after the removal/insertion
+					return offset + adjustment;
+				}
+			} else if ( offset === cursor ) {
+				// The offset points to right before the removal or replacement
+				if ( insertLength === 0 ) {
+					// Translate it to after the removal
+					return cursor + removeLength + adjustment;
+				} else {
+					// Translate it to before the replacement
+					// To translate this correctly, we have to use adjustment as it was before
+					// we adjusted it for this replacement
+					return cursor + prevAdjustment;
+				}
+			} else if ( offset > cursor && offset < cursor + removeLength ) {
+				// The offset points inside of the removal
+				// Translate it to after the removal
+				return cursor + removeLength + adjustment;
+			}
+			cursor += removeLength;
+		} else if ( op.type === 'retain' ) {
+			if ( offset >= cursor && offset < cursor + op.length ) {
+				return offset + adjustment;
+			}
+			cursor += op.length;
+		}
+	}
+	return offset + adjustment;
+};
+
+/**
+ * Translate a range based on a transaction.
+ *
+ * This is useful when you want to anticipate what a selection will be after a transaction is
+ * processed.
+ *
+ * @method
+ * @see #translateOffset
+ * @param {ve.Range} range Range in the linear model before the transaction has been processed
+ * @param {boolean} [excludeInsertion] Do not grow the range to cover insertions
+ *  on the boundaries of the range.
+ * @return {ve.Range} Translated range, as it will be after processing transaction
+ */
+ve.dm.Transaction.prototype.translateRange = function ( range, excludeInsertion ) {
+	var start = this.translateOffset( range.start, !excludeInsertion ),
+		end = this.translateOffset( range.end, excludeInsertion );
+	return range.isBackwards() ? new ve.Range( end, start ) : new ve.Range( start, end );
+};
+
+/**
+ * Get the range that covers modifications made by this transaction.
+ *
+ * In the case of insertions, the range covers content the user intended to insert.
+ * It ignores wrappers added by ve.dm.Document#fixUpInsertion.
+ *
+ * The returned range is relative to the new state, after the transaction is applied. So for a
+ * simple insertion transaction, the range will cover the newly inserted data, and for a simple
+ * removal transaction it will be a zero-length range.
+ *
+ * @return {ve.Range|null} Range covering modifications, or null for a no-op transaction
+ */
+ve.dm.Transaction.prototype.getModifiedRange = function () {
+	var i, len, op, start, end, offset = 0;
+	for ( i = 0, len = this.operations.length; i < len; i++ ) {
+		op = this.operations[ i ];
+		switch ( op.type ) {
+			case 'retainMetadata':
+				continue;
+
+			case 'retain':
+				offset += op.length;
+				break;
+
+			default:
+				if ( start === undefined ) {
+					// This is the first non-retain operation, set start to right before it
+					start = offset + ( op.insertedDataOffset || 0 );
+				}
+				if ( op.type === 'replace' ) {
+					offset += op.insert.length;
+				}
+				// Set end, so it'll end up being right after the last non-retain operation
+				if ( op.insertedDataLength ) {
+					end = start + op.insertedDataLength;
+				} else {
+					end = offset;
+				}
+				break;
+		}
+	}
+	if ( start === undefined || end === undefined ) {
+		// No-op transaction
+		return null;
+	}
+	return new ve.Range( start, end );
+};
+
+/**
+ * Add a final retain operation to finish off a transaction (internal helper).
+ *
+ * @private
+ * @method
+ * @param {ve.dm.Document} doc Document to finish off.
+ * @param {number} offset Final offset edited by the transaction up to this point.
+ * @param {number} [metaOffset=0] Final metadata offset edited, if non-zero.
+ */
+ve.dm.Transaction.prototype.pushFinalRetain = function ( doc, offset, metaOffset ) {
+	var data = doc.data,
+		metadata = doc.metadata,
+		finalMetadata = metadata.getData( data.getLength() );
+	if ( offset < doc.data.getLength() ) {
+		this.pushRetain( doc.data.getLength() - offset );
+		metaOffset = 0;
+	}
+	// if there is trailing metadata, push a final retainMetadata
+	if ( finalMetadata !== undefined && finalMetadata.length > 0 ) {
+		this.pushRetainMetadata( finalMetadata.length - ( metaOffset || 0 ) );
+	}
+};
+
+/**
+ * Add a retain operation.
+ *
+ * @method
+ * @param {number} length Length of content data to retain
+ * @throws {Error} Cannot retain backwards
+ */
+ve.dm.Transaction.prototype.pushRetain = function ( length ) {
+	var end;
+	if ( length < 0 ) {
+		throw new Error( 'Invalid retain length, cannot retain backwards:' + length );
+	}
+	if ( length ) {
+		end = this.operations.length - 1;
+		if ( this.operations.length && this.operations[ end ].type === 'retain' ) {
+			this.operations[ end ].length += length;
+		} else {
+			this.operations.push( {
+				type: 'retain',
+				length: length
+			} );
+		}
+	}
+};
+
+/**
+ * Add a retain metadata operation.
+ * // TODO: this is a copy/paste of pushRetain (at the moment). Consider a refactor.
+ *
+ * @method
+ * @param {number} length Length of content data to retain
+ * @throws {Error} Cannot retain backwards
+ */
+ve.dm.Transaction.prototype.pushRetainMetadata = function ( length ) {
+	var end;
+	if ( length < 0 ) {
+		throw new Error( 'Invalid retain length, cannot retain backwards:' + length );
+	}
+	if ( length ) {
+		end = this.operations.length - 1;
+		if ( this.operations.length && this.operations[ end ].type === 'retainMetadata' ) {
+			this.operations[ end ].length += length;
+		} else {
+			this.operations.push( {
+				type: 'retainMetadata',
+				length: length
+			} );
+		}
+	}
+};
+
+/**
+ * Adds a replace op to remove the desired range and, where required, splices in retain ops
+ * to prevent the deletion of internal data.
+ *
+ * An extra `replaceMetadata` operation might be pushed at the end if the
+ * affected region contains metadata; see
+ * {@link ve.dm.Transaction#pushReplace} for details.
+ *
+ * @param {ve.dm.Document} doc Document
+ * @param {number} removeStart Offset to start removing from
+ * @param {number} removeEnd Offset to remove to
+ * @param {boolean} [removeMetadata=false] Remove metadata instead of collapsing it
+ */
+ve.dm.Transaction.prototype.addSafeRemoveOps = function ( doc, removeStart, removeEnd, removeMetadata ) {
+	var i, retainStart, internalStackDepth = 0,
+		nodeFactory = doc.getNodeFactory();
+	// Iterate over removal range and use a stack counter to determine if
+	// we are inside an internal node
+	for ( i = removeStart; i < removeEnd; i++ ) {
+		if ( doc.data.isElementData( i ) && nodeFactory.isNodeInternal( doc.data.getType( i ) ) ) {
+			if ( !doc.data.isCloseElementData( i ) ) {
+				if ( internalStackDepth === 0 ) {
+					this.pushReplace( doc, removeStart, i - removeStart, [], removeMetadata ? [] : undefined );
+					retainStart = i;
+				}
+				internalStackDepth++;
+			} else {
+				internalStackDepth--;
+				if ( internalStackDepth === 0 ) {
+					this.pushRetain( i + 1 - retainStart );
+					removeStart = i + 1;
+				}
+			}
+		}
+	}
+	this.pushReplace( doc, removeStart, removeEnd - removeStart, [], removeMetadata ? [] : undefined );
+};
+
+/**
+ * Add a replace operation (internal helper).
+ *
+ * @private
+ * @method
+ * @param {Array} remove Data removed.
+ * @param {Array} insert Data to insert.
+ * @param {Array|undefined} removeMetadata Metadata removed.
+ * @param {Array} insertMetadata Metadata to insert.
+ */
+ve.dm.Transaction.prototype.pushReplaceInternal = function ( remove, insert, removeMetadata, insertMetadata, insertedDataOffset, insertedDataLength ) {
+	var op = {
+		type: 'replace',
+		remove: remove,
+		insert: insert
+	};
+	if ( remove.length === 0 && insert.length === 0 ) {
+		return; // no-op
+	}
+	if ( removeMetadata !== undefined && insertMetadata !== undefined ) {
+		op.removeMetadata = removeMetadata;
+		op.insertMetadata = insertMetadata;
+	}
+	if ( insertedDataOffset !== undefined && insertedDataLength !== undefined ) {
+		op.insertedDataOffset = insertedDataOffset;
+		op.insertedDataLength = insertedDataLength;
+	}
+	this.operations.push( op );
+};
+
+/**
+ * Add a replace operation, keeping metadata in sync if required.
+ *
+ * Note that metadata attached to removed content is moved so that it
+ * attaches just before the inserted content.  If there is
+ * metadata attached to the removed content but there is no inserted
+ * content, then an extra `replaceMetadata` operation is pushed in order
+ * to properly insert the merged metadata before the character immediately
+ * after the removed content. (Note that there is an extra metadata element
+ * after the final data element; if the removed region is at the very end of
+ * the document, the inserted `replaceMetadata` operation targets this
+ * final metadata element.)
+ *
+ * @method
+ * @param {ve.dm.Document} doc Document model
+ * @param {number} offset Offset to start at
+ * @param {number} removeLength Number of data items to remove
+ * @param {Array} insert Data to insert
+ * @param {Array} [insertMetadata] Overwrite the metadata with this data, rather than collapsing it
+ * @param {number} [insertedDataOffset] Offset of the originally inserted data in the resulting operation data
+ * @param {number} [insertedDataLength] Length of the originally inserted data in the resulting operation data
+ */
+ve.dm.Transaction.prototype.pushReplace = function ( doc, offset, removeLength, insert, insertMetadata, insertedDataOffset, insertedDataLength ) {
+	var extraMetadata, end, lastOp, penultOp, range, remove, removeMetadata,
+		isRemoveEmpty, isInsertEmpty, mergedMetadata;
+
+	if ( removeLength === 0 && insert.length === 0 ) {
+		// Don't push no-ops
+		return;
+	}
+
+	end = this.operations.length - 1;
+	lastOp = end >= 0 ? this.operations[ end ] : null;
+	penultOp = end >= 1 ? this.operations[ end - 1 ] : null;
+	range = new ve.Range( offset, offset + removeLength );
+	remove = doc.getData( range );
+	removeMetadata = doc.getMetadata( range );
+	// ve.compare compares arrays as objects, so no need to check against
+	// an array of the same length for emptiness.
+	isRemoveEmpty = ve.compare( removeMetadata, [] );
+	isInsertEmpty = insertMetadata && ve.compare( insertMetadata, [] );
+	mergedMetadata = [];
+
+	if ( !insertMetadata && !isRemoveEmpty ) {
+		// if we are removing a range which includes metadata, we need to
+		// collapse it.  If there's nothing to insert, we also need to add
+		// an extra `replaceMetadata` operation later in order to insert the
+		// collapsed metadata.
+		insertMetadata = ve.dm.MetaLinearData.static.merge( removeMetadata );
+		if ( insert.length === 0 ) {
+			extraMetadata = insertMetadata[ 0 ];
+			insertMetadata = [];
+		} else {
+			// pad out at end so insert metadata is the same length as insert data
+			ve.batchSplice( insertMetadata, 1, 0, new Array( insert.length - 1 ) );
+		}
+		isInsertEmpty = ve.compare( insertMetadata, new Array( insertMetadata.length ) );
+	} else if ( isInsertEmpty && isRemoveEmpty ) {
+		// No metadata changes, don't pollute the transaction with [undefined, undefined, ...]
+		insertMetadata = undefined;
+	}
+
+	// simple replaces can be combined
+	// (but don't do this if there is metadata to be removed and the previous
+	// replace had a non-zero insertion, because that would shift the metadata
+	// location.  also skip this if the last replace deliberately removed
+	// metadata instead of merging it.)
+	if (
+		lastOp && lastOp.type === 'replaceMetadata' &&
+		lastOp.insert.length > 0 && lastOp.remove.length === 0 &&
+		penultOp && penultOp.type === 'replace' &&
+		penultOp.insert.length === 0 /* this is always true */
+	) {
+		mergedMetadata = [ lastOp.insert ];
+		this.operations.pop();
+		lastOp = penultOp;
+		/* fall through */
+	}
+	// merge, where extraMetadata will not be required
+	if (
+		lastOp && lastOp.type === 'replace' &&
+		!( lastOp.insert.length > 0 && insertMetadata !== undefined ) &&
+		lastOp.insertedDataOffset === undefined && !extraMetadata &&
+		// don't merge if we mergedMetadata and had to insert non-empty
+		// metadata as a result
+		!( mergedMetadata.length > 0 && insertMetadata !== undefined && !isInsertEmpty )
+	) {
+		lastOp = this.operations.pop();
+		this.pushReplace(
+			doc,
+			offset - lastOp.remove.length,
+			lastOp.remove.length + removeLength,
+			lastOp.insert.concat( insert ),
+			(
+				lastOp.insertMetadata || new Array( lastOp.insert.length )
+			).concat(
+				mergedMetadata
+			).concat(
+				( insertMetadata === undefined || isInsertEmpty ) ?
+				new Array( insert.length - mergedMetadata.length ) :
+				insertMetadata
+			),
+			insertedDataOffset,
+			insertedDataLength
+		);
+		return;
+	}
+	// merge a "remove after remove" (where extraMetadata will be required)
+	if (
+		lastOp && lastOp.type === 'replace' &&
+		lastOp.insert.length === 0 && insert.length === 0 &&
+		( lastOp.removeMetadata === undefined || mergedMetadata.length > 0 ) &&
+		( insertMetadata === undefined || extraMetadata )
+	) {
+		lastOp = this.operations.pop();
+		this.pushReplace(
+			doc,
+			offset - lastOp.remove.length,
+			lastOp.remove.length + removeLength,
+			[]
+		);
+		return;
+	}
+
+	if ( lastOp && lastOp.type === 'replaceMetadata' ) {
+		// `replace` operates on the metadata at the given offset; the transaction
+		// touches the same region twice if `replace` follows a `replaceMetadata`
+		// without a `retain` in between.
+		throw new Error( 'replace after replaceMetadata not allowed' );
+	}
+
+	this.pushReplaceInternal( remove, insert, removeMetadata, insertMetadata, insertedDataOffset, insertedDataLength );
+
+	if ( extraMetadata !== undefined ) {
+		this.pushReplaceMetadata( [], extraMetadata );
+	}
+};
+
+/**
+ * Add a replace metadata operation
+ *
+ * @method
+ * @param {Array} remove Metadata to remove
+ * @param {Array} insert Metadata to replace 'remove' with
+ */
+ve.dm.Transaction.prototype.pushReplaceMetadata = function ( remove, insert ) {
+	if ( remove.length === 0 && insert.length === 0 ) {
+		// Don't push no-ops
+		return;
+	}
+	this.operations.push( {
+		type: 'replaceMetadata',
+		remove: remove,
+		insert: insert
+	} );
+};
+
+/**
+ * Add an element attribute change operation.
+ *
+ * @method
+ * @param {string} key Name of attribute to change
+ * @param {Mixed} from Value change attribute from, or undefined if not previously set
+ * @param {Mixed} to Value to change attribute to, or undefined to remove
+ */
+ve.dm.Transaction.prototype.pushReplaceElementAttribute = function ( key, from, to ) {
+	this.operations.push( {
+		type: 'attribute',
+		key: key,
+		from: from,
+		to: to
+	} );
+};
+
+/**
+ * Add a series of element attribute change operations.
+ *
+ * @param {Object} changes Object mapping attribute names to new values
+ * @param {Object} oldAttrs Object mapping attribute names to old values
+ */
+ve.dm.Transaction.prototype.pushAttributeChanges = function ( changes, oldAttrs ) {
+	var key;
+	for ( key in changes ) {
+		if ( oldAttrs[ key ] !== changes[ key ] ) {
+			this.pushReplaceElementAttribute( key, oldAttrs[ key ], changes[ key ] );
+		}
+	}
+};
+
+/**
+ * Add a start annotating operation.
+ *
+ * @method
+ * @param {string} method Method to use, either "set" or "clear"
+ * @param {Object} index Store index of annotation object to start setting or clearing from content data
+ */
+ve.dm.Transaction.prototype.pushStartAnnotating = function ( method, index ) {
+	this.operations.push( {
+		type: 'annotate',
+		method: method,
+		bias: 'start',
+		index: index
+	} );
+};
+
+/**
+ * Add a stop annotating operation.
+ *
+ * @method
+ * @param {string} method Method to use, either "set" or "clear"
+ * @param {Object} index Store index of annotation object to stop setting or clearing from content data
+ */
+ve.dm.Transaction.prototype.pushStopAnnotating = function ( method, index ) {
+	this.operations.push( {
+		type: 'annotate',
+		method: method,
+		bias: 'stop',
+		index: index
+	} );
+};
+
+/**
+ * Internal helper method for newFromInsertion and newFromReplacement.
+ * Adds an insertion to an existing transaction object.
+ *
+ * @private
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {number} currentOffset Offset up to which the transaction has gone already
+ * @param {number} insertOffset Offset to insert at
+ * @param {Array} data Linear model data to insert
+ * @return {number} End offset of the insertion
+ */
+ve.dm.Transaction.prototype.pushInsertion = function ( doc, currentOffset, insertOffset, data ) {
+	// Fix up the insertion
+	var insertion = doc.fixupInsertion( data, insertOffset );
+	// Retain up to insertion point, if needed
+	this.pushRetain( insertion.offset - currentOffset );
+	// Insert data
+	this.pushReplace(
+		doc, insertion.offset, insertion.remove, insertion.data, undefined,
+		insertion.insertedDataOffset, insertion.insertedDataLength
+	);
+	return insertion.offset + insertion.remove;
+};
+
+/**
+ * Internal helper method for newFromRemoval and newFromReplacement.
+ * Adds a removal to an existing transaction object.
+ *
+ * @private
+ * @param {ve.dm.Document} doc Document to create transaction for
+ * @param {number} currentOffset Offset up to which the transaction has gone already
+ * @param {ve.Range} range Range to remove
+ * @param {boolean} [removeMetadata=false] Remove metadata instead of collapsing it
+ * @return {number} End offset of the removal
+ */
+ve.dm.Transaction.prototype.pushRemoval = function ( doc, currentOffset, range, removeMetadata ) {
+	var i, selection, first, last, nodeStart, nodeEnd,
+		offset = currentOffset,
+		removeStart = null,
+		removeEnd = null;
+	// Validate range
+	if ( range.isCollapsed() ) {
+		// Empty range, nothing to remove
+		this.pushRetain( range.start - currentOffset );
+		return range.start;
+	}
+	// Select nodes and validate selection
+	selection = doc.selectNodes( range, 'covered' );
+	if ( selection.length === 0 ) {
+		// Empty selection? Something is wrong!
+		throw new Error( 'Invalid range, cannot remove from ' + range.start + ' to ' + range.end );
+	}
+	first = selection[ 0 ];
+	last = selection[ selection.length - 1 ];
+	// If the first and last node are mergeable, merge them
+	if ( first.node.canBeMergedWith( last.node ) ) {
+		if ( !first.range && !last.range ) {
+			// First and last node are both completely covered, remove them
+			removeStart = first.nodeOuterRange.start;
+			removeEnd = last.nodeOuterRange.end;
+		} else {
+			// Either the first node or the last node is partially covered, so remove
+			// the selected content. The other node might be fully covered, in which case
+			// we remove its contents (nodeRange). For fully covered content nodes, we must
+			// remove the entire node (nodeOuterRange).
+			removeStart = (
+				first.range ||
+				( first.node.isContent() ? first.nodeOuterRange : first.nodeRange )
+			).start;
+			removeEnd = (
+				last.range ||
+				( last.node.isContent() ? last.nodeOuterRange : last.nodeRange )
+			).end;
+		}
+		this.pushRetain( removeStart - currentOffset );
+		this.addSafeRemoveOps( doc, removeStart, removeEnd, removeMetadata );
+		// All done
+		return removeEnd;
+	}
+
+	// The selection wasn't mergeable, so remove nodes that are completely covered, and strip
+	// nodes that aren't
+	for ( i = 0; i < selection.length; i++ ) {
+		if ( !selection[ i ].range ) {
+			// Entire node is covered, remove it
+			nodeStart = selection[ i ].nodeOuterRange.start;
+			nodeEnd = selection[ i ].nodeOuterRange.end;
+		} else {
+			// Part of the node is covered, remove that range
+			nodeStart = selection[ i ].range.start;
+			nodeEnd = selection[ i ].range.end;
+		}
+
+		// Merge contiguous removals. Only apply a removal when a gap appears, or at the
+		// end of the loop
+		if ( removeEnd === null ) {
+			// First removal
+			removeStart = nodeStart;
+			removeEnd = nodeEnd;
+		} else if ( removeEnd === nodeStart ) {
+			// Merge this removal into the previous one
+			removeEnd = nodeEnd;
+		} else {
+			// There is a gap between the previous removal and this one
+
+			// Push the previous removal first
+			this.pushRetain( removeStart - offset );
+			this.addSafeRemoveOps( doc, removeStart, removeEnd, removeMetadata );
+			offset = removeEnd;
+
+			// Now start this removal
+			removeStart = nodeStart;
+			removeEnd = nodeEnd;
+		}
+	}
+	// Apply the last removal, if any
+	if ( removeEnd !== null ) {
+		this.pushRetain( removeStart - offset );
+		this.addSafeRemoveOps( doc, removeStart, removeEnd, removeMetadata );
+		offset = removeEnd;
+	}
+	return offset;
+};
+
+/*!
+ * VisualEditor Selection class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * @class
+ * @abstract
+ * @constructor
+ * @param {ve.dm.Document} doc Document
+ */
+ve.dm.Selection = function VeDmSelection( doc ) {
+	this.documentModel = doc;
+};
+
+/* Inheritance */
+
+OO.initClass( ve.dm.Selection );
+
+/* Static Properties */
+
+ve.dm.Selection.static.type = null;
+
+/* Static Methods */
+
+/**
+ * Create a new selection from a JSON serialization
+ *
+ * @param {ve.dm.Document} doc Document to create the selection on
+ * @param {string|Object} json JSON serialization or hash object
+ * @return {ve.dm.Selection} New selection
+ * @throws {Error} Unknown selection type
+ */
+ve.dm.Selection.static.newFromJSON = function ( doc, json ) {
+	var hash = typeof json === 'string' ? JSON.parse( json ) : json,
+		constructor = ve.dm.selectionFactory.lookup( hash.type );
+
+	if ( !constructor ) {
+		throw new Error( 'Unknown selection type ' + hash.name );
+	}
+
+	return constructor.static.newFromHash( doc, hash );
+};
+
+/**
+ * Create a new selection from a hash object
+ *
+ * @abstract
+ * @method
+ * @param {ve.dm.Document} doc Document to create the selection on
+ * @param {Object} hash Hash object
+ * @return {ve.dm.Selection} New selection
+ */
+ve.dm.Selection.static.newFromHash = null;
+
+/* Methods */
+
+/**
+ * Get a JSON serialization of this selection
+ *
+ * @abstract
+ * @method
+ * @return {Object} Object for JSON serialization
+ */
+ve.dm.Selection.prototype.toJSON = null;
+
+/**
+ * Get a textual description of this selection, for debugging purposes
+ *
+ * @abstract
+ * @method
+ * @return {string} Textual description
+ */
+ve.dm.Selection.prototype.getDescription = null;
+
+/**
+ * Create a copy of this selection
+ *
+ * @abstract
+ * @method
+ * @return {ve.dm.Selection} Cloned selection
+ */
+ve.dm.Selection.prototype.clone = null;
+
+/**
+ * Get a new selection at the start point of this one
+ *
+ * @abstract
+ * @method
+ * @return {ve.dm.Selection} Collapsed selection
+ */
+ve.dm.Selection.prototype.collapseToStart = null;
+
+/**
+ * Get a new selection at the end point of this one
+ *
+ * @abstract
+ * @method
+ * @return {ve.dm.Selection} Collapsed selection
+ */
+ve.dm.Selection.prototype.collapseToEnd = null;
+
+/**
+ * Get a new selection at the 'from' point of this one
+ *
+ * @abstract
+ * @method
+ * @return {ve.dm.Selection} Collapsed selection
+ */
+ve.dm.Selection.prototype.collapseToFrom = null;
+
+/**
+ * Get a new selection at the 'to' point of this one
+ *
+ * @abstract
+ * @method
+ * @return {ve.dm.Selection} Collapsed selection
+ */
+ve.dm.Selection.prototype.collapseToTo = null;
+
+/**
+ * Check if a selection is collapsed
+ *
+ * @abstract
+ * @method
+ * @return {boolean} Selection is collapsed
+ */
+ve.dm.Selection.prototype.isCollapsed = null;
+
+/**
+ * Apply translations from a transaction
+ *
+ * @abstract
+ * @method
+ * @param {ve.dm.Transaction} tx Transaction
+ * @param {boolean} [excludeInsertion] Do not grow to cover insertions at boundaries
+ * @return {ve.dm.Selection} A new translated selection
+ */
+ve.dm.Selection.prototype.translateByTransaction = null;
+
+/**
+ * Apply translations from a set of transactions
+ *
+ * @param {ve.dm.Transaction[]} txs Transactions
+ * @param {boolean} [excludeInsertion] Do not grow to cover insertions at boundaries
+ * @return {ve.dm.Selection} A new translated selection
+ */
+ve.dm.Selection.prototype.translateByTransactions = function ( txs, excludeInsertion ) {
+	var i, l, selection = this;
+	for ( i = 0, l = txs.length; i < l; i++ ) {
+		selection = selection.translateByTransaction( txs[ i ], excludeInsertion );
+	}
+	return selection;
+};
+
+/**
+ * Check if this selection is null
+ *
+ * @return {boolean} The selection is null
+ */
+ve.dm.Selection.prototype.isNull = function () {
+	return false;
+};
+
+/**
+ * Get the content ranges for this selection
+ *
+ * @abstract
+ * @method
+ * @return {ve.Range[]} Ranges
+ */
+ve.dm.Selection.prototype.getRanges = null;
+
+/**
+ * Get the document model this selection applies to
+ *
+ * @return {ve.dm.Document} Document model
+ */
+ve.dm.Selection.prototype.getDocument = function () {
+	return this.documentModel;
+};
+
+/**
+ * Check if two selections are equal
+ *
+ * @abstract
+ * @method
+ * @param {ve.dm.Selection} other Other selection
+ * @return {boolean} Selections are equal
+ */
+ve.dm.Selection.prototype.equals = null;
+
+/* Factory */
+
+ve.dm.selectionFactory = new OO.Factory();
+
+/*!
+ * VisualEditor DataModel Surface class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel surface.
+ *
+ * @class
+ * @mixins OO.EventEmitter
+ *
+ * @constructor
+ * @param {ve.dm.Document} doc Document model to create surface for
+ */
+ve.dm.Surface = function VeDmSurface( doc ) {
+	// Mixin constructors
+	OO.EventEmitter.call( this );
+
+	// Properties
+	this.documentModel = doc;
+	this.metaList = new ve.dm.MetaList( this );
+	this.selection = new ve.dm.NullSelection( this.getDocument() );
+	this.selectionBefore = new ve.dm.NullSelection( this.getDocument() );
+	this.translatedSelection = null;
+	this.branchNodes = {};
+	this.selectedNode = null;
+	this.newTransactions = [];
+	this.stagingStack = [];
+	this.undoStack = [];
+	this.undoIndex = 0;
+	this.historyTrackingInterval = null;
+	this.insertionAnnotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
+	this.selectedAnnotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
+	this.isCollapsed = null;
+	this.enabled = true;
+	this.transacting = false;
+	this.queueingContextChanges = false;
+	this.contextChangeQueued = false;
+
+	// Events
+	this.getDocument().connect( this, {
+		transact: 'onDocumentTransact',
+		precommit: 'onDocumentPreCommit',
+		presynchronize: 'onDocumentPreSynchronize'
+	} );
+};
+
+/* Inheritance */
+
+OO.mixinClass( ve.dm.Surface, OO.EventEmitter );
+
+/* Events */
+
+/**
+ * @event select
+ * @param {ve.dm.Selection} selection
+ */
+
+/**
+ * @event focus
+ *
+ * The selection was just set to a non-null selection
+ */
+
+/**
+ * @event blur
+ *
+ * The selection was just set to a null selection
+ */
+
+/**
+ * @event documentUpdate
+ *
+ * Emitted when a transaction has been processed on the document and the selection has been
+ * translated to account for that transaction. You should only use this event if you need
+ * to access the selection; in most cases, you should use {ve.dm.Document#event-transact}.
+ *
+ * @param {ve.dm.Transaction} tx Transaction that was processed on the document
+ */
+
+/**
+ * @event contextChange
+ */
+
+/**
+ * @event insertionAnnotationsChange
+ * @param {ve.dm.AnnotationSet} insertionAnnotations AnnotationSet being inserted
+ */
+
+/**
+ * @event history
+ */
+
+/* Methods */
+
+/**
+ * Disable changes.
+ *
+ * @fires history
+ */
+ve.dm.Surface.prototype.disable = function () {
+	this.stopHistoryTracking();
+	this.enabled = false;
+	this.emit( 'history' );
+};
+
+/**
+ * Enable changes.
+ *
+ * @fires history
+ */
+ve.dm.Surface.prototype.enable = function () {
+	this.enabled = true;
+	this.startHistoryTracking();
+	this.emit( 'history' );
+};
+
+/**
+ * Initialize the surface model
+ *
+ * @fires contextChange
+ */
+ve.dm.Surface.prototype.initialize = function () {
+	this.startHistoryTracking();
+	this.emit( 'contextChange' );
+};
+
+/**
+ * Start tracking state changes in history.
+ */
+ve.dm.Surface.prototype.startHistoryTracking = function () {
+	if ( !this.enabled ) {
+		return;
+	}
+	if ( this.historyTrackingInterval === null ) {
+		this.historyTrackingInterval = setInterval( this.breakpoint.bind( this ), 750 );
+	}
+};
+
+/**
+ * Stop tracking state changes in history.
+ */
+ve.dm.Surface.prototype.stopHistoryTracking = function () {
+	if ( !this.enabled ) {
+		return;
+	}
+	if ( this.historyTrackingInterval !== null ) {
+		clearInterval( this.historyTrackingInterval );
+		this.historyTrackingInterval = null;
+	}
+};
+
+/**
+ * Get a list of all history states.
+ *
+ * @return {Object[]} List of transaction stacks
+ */
+ve.dm.Surface.prototype.getHistory = function () {
+	if ( this.newTransactions.length > 0 ) {
+		return this.undoStack.slice( 0 ).concat( [ { transactions: this.newTransactions.slice( 0 ) } ] );
+	} else {
+		return this.undoStack.slice( 0 );
+	}
+};
+
+/**
+ * If the surface in staging mode.
+ *
+ * @return {boolean} The surface in staging mode
+ */
+ve.dm.Surface.prototype.isStaging = function () {
+	return this.stagingStack.length > 0;
+};
+
+/**
+ * Get the staging state at the current staging stack depth
+ *
+ * @return {Object|undefined} staging Staging state object, or undefined if not staging
+ * @return {ve.dm.Transaction[]} staging.transactions Staging transactions
+ * @return {ve.dm.Selection} staging.selectionBefore Selection before transactions were applied
+ * @return {boolean} staging.allowUndo Allow undo while staging
+ */
+ve.dm.Surface.prototype.getStaging = function () {
+	return this.stagingStack[ this.stagingStack.length - 1 ];
+};
+
+/**
+ * Undo is allowed at the current staging stack depth
+ *
+ * @return {boolean|undefined} Undo is allowed, or undefined if not staging
+ */
+ve.dm.Surface.prototype.doesStagingAllowUndo = function () {
+	var staging = this.getStaging();
+	return staging && staging.allowUndo;
+};
+
+/**
+ * Get the staging transactions at the current staging stack depth
+ *
+ * The array is returned by reference so it can be pushed to.
+ *
+ * @return {ve.dm.Transaction[]|undefined} Staging transactions, or undefined if not staging
+ */
+ve.dm.Surface.prototype.getStagingTransactions = function () {
+	var staging = this.getStaging();
+	return staging && staging.transactions;
+};
+
+/**
+ * Push another level of staging to the staging stack
+ *
+ * @param {boolean} [allowUndo=false] Allow undo while staging
+ * @fires history
+ */
+ve.dm.Surface.prototype.pushStaging = function ( allowUndo ) {
+	// If we're starting staging stop history tracking
+	if ( !this.isStaging() ) {
+		// Set a breakpoint to make sure newTransactions is clear
+		this.breakpoint();
+		this.stopHistoryTracking();
+		this.emit( 'history' );
+	}
+	this.stagingStack.push( {
+		transactions: [],
+		selectionBefore: new ve.dm.NullSelection( this.getDocument() ),
+		allowUndo: !!allowUndo
+	} );
+};
+
+/**
+ * Pop a level of staging from the staging stack
+ *
+ * @fires history
+ * @return {ve.dm.Transaction[]|undefined} Staging transactions, or undefined if not staging
+ */
+ve.dm.Surface.prototype.popStaging = function () {
+	var i, transaction, staging, transactions,
+		reverseTransactions = [];
+
+	if ( !this.isStaging() ) {
+		return;
+	}
+
+	staging = this.stagingStack.pop();
+	transactions = staging.transactions;
+
+	// Not applying, so rollback transactions
+	for ( i = transactions.length - 1; i >= 0; i-- ) {
+		transaction = transactions[ i ].reversed();
+		reverseTransactions.push( transaction );
+	}
+	this.changeInternal( reverseTransactions, undefined, true );
+
+	if ( !this.isStaging() ) {
+		this.startHistoryTracking();
+		this.emit( 'history' );
+	}
+
+	return transactions;
+};
+
+/**
+ * Apply a level of staging from the staging stack
+ *
+ * @fires history
+ */
+ve.dm.Surface.prototype.applyStaging = function () {
+	var staging;
+	if ( !this.isStaging() ) {
+		return;
+	}
+
+	staging = this.stagingStack.pop();
+
+	if ( this.isStaging() ) {
+		// Merge popped transactions into the current item in the staging stack
+		ve.batchPush( this.getStagingTransactions(), staging.transactions );
+		// If the current level has a null selectionBefore, copy that over too
+		if ( this.getStaging().selectionBefore.isNull() ) {
+			this.getStaging().selectionBefore = staging.selectionBefore;
+		}
+	} else {
+		this.truncateUndoStack();
+		// Move transactions to the undo stack
+		this.newTransactions = staging.transactions;
+		this.selectionBefore = staging.selectionBefore;
+		this.breakpoint();
+	}
+
+	if ( !this.isStaging() ) {
+		this.startHistoryTracking();
+		this.emit( 'history' );
+	}
+};
+
+/**
+ * Pop the staging stack until empty
+ *
+ * @return {ve.dm.Transaction[]|undefined} Staging transactions, or undefined if not staging
+ */
+ve.dm.Surface.prototype.popAllStaging = function () {
+	var transactions = [];
+
+	if ( !this.isStaging() ) {
+		return;
+	}
+
+	while ( this.isStaging() ) {
+		ve.batchSplice( transactions, 0, 0, this.popStaging() );
+	}
+	return transactions;
+};
+
+/**
+ * Apply the staging stack until empty
+ */
+ve.dm.Surface.prototype.applyAllStaging = function () {
+	while ( this.isStaging() ) {
+		this.applyStaging();
+	}
+};
+
+/**
+ * Get annotations that will be used upon insertion.
+ *
+ * @return {ve.dm.AnnotationSet} Insertion annotations
+ */
+ve.dm.Surface.prototype.getInsertionAnnotations = function () {
+	return this.insertionAnnotations.clone();
+};
+
+/**
+ * Set annotations that will be used upon insertion.
+ *
+ * @param {ve.dm.AnnotationSet|null} annotations Insertion annotations to use or null to disable them
+ * @fires insertionAnnotationsChange
+ * @fires contextChange
+ */
+ve.dm.Surface.prototype.setInsertionAnnotations = function ( annotations ) {
+	if ( !this.enabled ) {
+		return;
+	}
+	this.insertionAnnotations = annotations !== null ?
+		annotations.clone() :
+		new ve.dm.AnnotationSet( this.getDocument().getStore() );
+
+	this.emit( 'insertionAnnotationsChange', this.insertionAnnotations );
+	this.emit( 'contextChange' );
+};
+
+/**
+ * Add an annotation to be used upon insertion.
+ *
+ * @param {ve.dm.Annotation|ve.dm.AnnotationSet} annotations Insertion annotation to add
+ * @fires insertionAnnotationsChange
+ * @fires contextChange
+ */
+ve.dm.Surface.prototype.addInsertionAnnotations = function ( annotations ) {
+	if ( !this.enabled ) {
+		return;
+	}
+	if ( annotations instanceof ve.dm.Annotation ) {
+		this.insertionAnnotations.push( annotations );
+	} else if ( annotations instanceof ve.dm.AnnotationSet ) {
+		this.insertionAnnotations.addSet( annotations );
+	} else {
+		throw new Error( 'Invalid annotations' );
+	}
+
+	this.emit( 'insertionAnnotationsChange', this.insertionAnnotations );
+	this.emit( 'contextChange' );
+};
+
+/**
+ * Remove an annotation from those that will be used upon insertion.
+ *
+ * @param {ve.dm.Annotation|ve.dm.AnnotationSet} annotations Insertion annotation to remove
+ * @fires insertionAnnotationsChange
+ * @fires contextChange
+ */
+ve.dm.Surface.prototype.removeInsertionAnnotations = function ( annotations ) {
+	if ( !this.enabled ) {
+		return;
+	}
+	if ( annotations instanceof ve.dm.Annotation ) {
+		this.insertionAnnotations.remove( annotations );
+	} else if ( annotations instanceof ve.dm.AnnotationSet ) {
+		this.insertionAnnotations.removeSet( annotations );
+	} else {
+		throw new Error( 'Invalid annotations' );
+	}
+
+	this.emit( 'insertionAnnotationsChange', this.insertionAnnotations );
+	this.emit( 'contextChange' );
+};
+
+/**
+ * Check if redo is allowed in the current state.
+ *
+ * @return {boolean} Redo is allowed
+ */
+ve.dm.Surface.prototype.canRedo = function () {
+	return this.undoIndex > 0 && this.enabled;
+};
+
+/**
+ * Check if undo is allowed in the current state.
+ *
+ * @return {boolean} Undo is allowed
+ */
+ve.dm.Surface.prototype.canUndo = function () {
+	return this.hasBeenModified() && this.enabled && ( !this.isStaging() || this.doesStagingAllowUndo() );
+};
+
+/**
+ * Check if the surface has been modified.
+ *
+ * This only checks if there are transactions which haven't been undone.
+ *
+ * @return {boolean} The surface has been modified
+ */
+ve.dm.Surface.prototype.hasBeenModified = function () {
+	return this.undoStack.length - this.undoIndex > 0 || !!this.newTransactions.length;
+};
+
+/**
+ * Get the document model.
+ *
+ * @return {ve.dm.Document} Document model of the surface
+ */
+ve.dm.Surface.prototype.getDocument = function () {
+	return this.documentModel;
+};
+
+/**
+ * Get the meta list.
+ *
+ * @return {ve.dm.MetaList} Meta list of the surface
+ */
+ve.dm.Surface.prototype.getMetaList = function () {
+	return this.metaList;
+};
+
+/**
+ * Get the selection.
+ *
+ * @return {ve.dm.Selection} Current selection
+ */
+ve.dm.Surface.prototype.getSelection = function () {
+	return this.selection;
+};
+
+/**
+ * Get the selection translated for the transaction that's being committed, if any.
+ *
+ * @return {ve.dm.Selection} Current selection translated for new transaction
+ */
+ve.dm.Surface.prototype.getTranslatedSelection = function () {
+	return this.translatedSelection || this.selection;
+};
+
+/**
+ * Get a fragment for a selection.
+ *
+ * @param {ve.dm.Selection} [selection] Selection within target document, current selection used by default
+ * @param {boolean} [noAutoSelect] Don't update the surface's selection when making changes
+ * @param {boolean} [excludeInsertions] Exclude inserted content at the boundaries when updating range
+ * @return {ve.dm.SurfaceFragment} Surface fragment
+ */
+ve.dm.Surface.prototype.getFragment = function ( selection, noAutoSelect, excludeInsertions ) {
+	return new ve.dm.SurfaceFragment( this, selection || this.selection, noAutoSelect, excludeInsertions );
+};
+
+/**
+ * Get a fragment for a linear selection's range.
+ *
+ * @param {ve.Range} range Selection's range
+ * @param {boolean} [noAutoSelect] Don't update the surface's selection when making changes
+ * @param {boolean} [excludeInsertions] Exclude inserted content at the boundaries when updating range
+ * @return {ve.dm.SurfaceFragment} Surface fragment
+ */
+ve.dm.Surface.prototype.getLinearFragment = function ( range, noAutoSelect, excludeInsertions ) {
+	return this.getFragment( new ve.dm.LinearSelection( this.getDocument(), range ), noAutoSelect, excludeInsertions );
+};
+
+/**
+ * Prevent future states from being redone.
+ *
+ * @fires history
+ */
+ve.dm.Surface.prototype.truncateUndoStack = function () {
+	if ( this.undoIndex ) {
+		this.undoStack = this.undoStack.slice( 0, this.undoStack.length - this.undoIndex );
+		this.undoIndex = 0;
+		this.emit( 'history' );
+	}
+};
+
+/**
+ * Start queueing up calls to #emitContextChange until #stopQueueingContextChanges is called.
+ * While queueing is active, contextChanges are also collapsed, so if #emitContextChange is called
+ * multiple times, only one contextChange event will be emitted by #stopQueueingContextChanges.
+ *
+ *     this.emitContextChange(); // emits immediately
+ *     this.startQueueingContextChanges();
+ *     this.emitContextChange(); // doesn't emit
+ *     this.emitContextChange(); // doesn't emit
+ *     this.stopQueueingContextChanges(); // emits one contextChange event
+ *
+ * @private
+ */
+ve.dm.Surface.prototype.startQueueingContextChanges = function () {
+	if ( !this.queueingContextChanges ) {
+		this.queueingContextChanges = true;
+		this.contextChangeQueued = false;
+	}
+};
+
+/**
+ * Emit a contextChange event. If #startQueueingContextChanges has been called, then the event
+ * is deferred until #stopQueueingContextChanges is called.
+ *
+ * @private
+ * @fires contextChange
+ */
+ve.dm.Surface.prototype.emitContextChange = function () {
+	if ( this.queueingContextChanges ) {
+		this.contextChangeQueued = true;
+	} else {
+		this.emit( 'contextChange' );
+	}
+};
+
+/**
+ * Stop queueing contextChange events. If #emitContextChange was called previously, a contextChange
+ * event will now be emitted. Any future calls to #emitContextChange will once again emit the
+ * event immediately.
+ *
+ * @private
+ * @fires contextChange
+ */
+ve.dm.Surface.prototype.stopQueueingContextChanges = function () {
+	if ( this.queueingContextChanges ) {
+		this.queueingContextChanges = false;
+		if ( this.contextChangeQueued ) {
+			this.contextChangeQueued = false;
+			this.emit( 'contextChange' );
+		}
+	}
+};
+
+/**
+ * Set a linear selection at a specified range on the model
+ *
+ * @param {ve.Range} range Range to create linear selection at
+ */
+ve.dm.Surface.prototype.setLinearSelection = function ( range ) {
+	this.setSelection( new ve.dm.LinearSelection( this.getDocument(), range ) );
+};
+
+/**
+ * Set a null selection on the model
+ */
+ve.dm.Surface.prototype.setNullSelection = function () {
+	this.setSelection( new ve.dm.NullSelection( this.getDocument() ) );
+};
+
+/**
+ * Change the selection
+ *
+ * @param {ve.dm.Selection} selection New selection
+ *
+ * @fires select
+ * @fires contextChange
+ */
+ve.dm.Surface.prototype.setSelection = function ( selection ) {
+	var left, right, leftAnnotations, rightAnnotations, insertionAnnotations,
+		startNode, selectedNode, range, selectedAnnotations, isCollapsed,
+		oldSelection = this.selection,
+		branchNodes = {},
+		selectionChange = false,
+		contextChange = false,
+		linearData = this.getDocument().data;
+
+	if ( !this.enabled ) {
+		return;
+	}
+	this.translatedSelection = null;
+
+	if ( this.transacting ) {
+		// Update the selection but don't do any processing
+		this.selection = selection;
+		return;
+	}
+
+	// this.selection needs to be updated before we call setInsertionAnnotations
+	if ( !oldSelection.equals( selection ) ) {
+		selectionChange = true;
+		this.selection = selection;
+	}
+
+	if ( selection instanceof ve.dm.LinearSelection ) {
+		range = selection.getRange();
+
+		// Update branch nodes
+		branchNodes.start = this.getDocument().getBranchNodeFromOffset( range.start );
+		if ( !range.isCollapsed() ) {
+			branchNodes.end = this.getDocument().getBranchNodeFromOffset( range.end );
+		} else {
+			branchNodes.end = branchNodes.start;
+		}
+		// Update selected node
+		if ( !range.isCollapsed() ) {
+			startNode = this.getDocument().documentNode.getNodeFromOffset( range.start + 1 );
+			if ( startNode && startNode.getOuterRange().equalsSelection( range ) ) {
+				selectedNode = startNode;
+			}
+		}
+
+		// Figure out which annotations to use for insertions
+		if ( range.isCollapsed() ) {
+			// Get annotations from either side of the cursor
+			left = Math.max( 0, range.start - 1 );
+			if ( !linearData.isContentOffset( left ) ) {
+				left = -1;
+			}
+			right = Math.max( 0, range.start );
+			if ( !linearData.isContentOffset( right ) ) {
+				right = -1;
+			}
+			selectedAnnotations = linearData.getAnnotationsFromOffset( range.start );
+			isCollapsed = true;
+		} else {
+			// Get annotations from the first character of the range
+			left = linearData.getNearestContentOffset( range.start );
+			right = linearData.getNearestContentOffset( range.end );
+			selectedAnnotations = linearData.getAnnotationsFromRange( range, true );
+			isCollapsed = false;
+		}
+		if ( left === -1 ) {
+			// No content offset to our left, use empty set
+			insertionAnnotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
+		} else {
+			// Include annotations on the left that should be added to appended content, or ones that
+			// are on both the left and the right that should not
+			leftAnnotations = linearData.getAnnotationsFromOffset( left );
+			if ( right !== -1 ) {
+				rightAnnotations = linearData.getAnnotationsFromOffset( right );
+				insertionAnnotations = leftAnnotations.filter( function ( annotation ) {
+					return annotation.constructor.static.applyToAppendedContent ||
+						rightAnnotations.containsComparable( annotation );
+				} );
+			} else {
+				insertionAnnotations = leftAnnotations;
+			}
+		}
+
+		// Only emit an annotations change event if there's a difference
+		// Note that ANY difference matters here, even order
+		if ( !insertionAnnotations.equalsInOrder( this.insertionAnnotations ) ) {
+			this.setInsertionAnnotations( insertionAnnotations );
+		}
+	} else if ( selection instanceof ve.dm.TableSelection ) {
+		if ( selection.isSingleCell() ) {
+			selectedNode = selection.getMatrixCells()[ 0 ].node;
+		}
+		contextChange = true;
+	} else if ( selection instanceof ve.dm.NullSelection ) {
+		contextChange = true;
+	}
+
+	if ( selectedAnnotations && !selectedAnnotations.compareTo( this.selectedAnnotations ) ) {
+		this.selectedAnnotations = selectedAnnotations;
+		contextChange = true;
+	}
+
+	if ( isCollapsed !== this.isCollapsed ) {
+		// selectedAnnotations won't have changed if going from insertion annotations to
+		// selection of the same annotations, but some tools will consider that a context change
+		// (e.g. ClearAnnotationTool).
+		this.isCollapsed = isCollapsed;
+		contextChange = true;
+	}
+
+	// If branchNodes or selectedNode changed emit a contextChange
+	if (
+		selectedNode !== this.selectedNode ||
+		branchNodes.start !== this.branchNodes.start ||
+		branchNodes.end !== this.branchNodes.end
+	) {
+		this.branchNodes = branchNodes;
+		this.selectedNode = selectedNode;
+		contextChange = true;
+	}
+
+	// If selection changed emit a select
+	if ( selectionChange ) {
+		this.emit( 'select', this.selection.clone() );
+		if ( oldSelection.isNull() ) {
+			this.emit( 'focus' );
+		}
+		if ( selection.isNull() ) {
+			this.emit( 'blur' );
+		}
+	}
+
+	if ( contextChange ) {
+		this.emitContextChange();
+	}
+
+};
+
+/**
+ * Place the selection at the first content offset in the document.
+ */
+ve.dm.Surface.prototype.selectFirstContentOffset = function () {
+	var firstOffset = this.getDocument().data.getNearestContentOffset( 0, 1 );
+	if ( firstOffset !== -1 ) {
+		// Found a content offset
+		this.setLinearSelection( new ve.Range( firstOffset ) );
+	} else {
+		// Document is full of structural nodes, just give up
+		this.setNullSelection();
+	}
+};
+
+/**
+ * Apply a transactions and selection changes to the document.
+ *
+ * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions One or more transactions to
+ *  process, or null to process none
+ * @param {ve.dm.Selection} [selection] Selection to apply
+ * @fires contextChange
+ */
+ve.dm.Surface.prototype.change = function ( transactions, selection ) {
+	this.changeInternal( transactions, selection, false );
+};
+
+/**
+ * Internal implementation of change(). Do not use this, use change() instead.
+ *
+ * @private
+ * @param {ve.dm.Transaction|ve.dm.Transaction[]|null} transactions
+ * @param {ve.dm.Selection} [selection] [selection]
+ * @param {boolean} [skipUndoStack=false] If true, do not modify the undo stack. Used by undo/redo
+ * @fires select
+ * @fires contextChange
+ */
+ve.dm.Surface.prototype.changeInternal = function ( transactions, selection, skipUndoStack ) {
+	var i, len, selectionAfter,
+		selectionBefore = this.selection.clone(),
+		contextChange = false;
+
+	if ( !this.enabled ) {
+		return;
+	}
+
+	this.startQueueingContextChanges();
+
+	// Process transactions
+	if ( transactions ) {
+		if ( transactions instanceof ve.dm.Transaction ) {
+			transactions = [ transactions ];
+		}
+		this.transacting = true;
+		for ( i = 0, len = transactions.length; i < len; i++ ) {
+			if ( !transactions[ i ].isNoOp() ) {
+				if ( !skipUndoStack ) {
+					if ( this.isStaging() ) {
+						if ( !this.getStagingTransactions().length ) {
+							this.getStaging().selectionBefore = selectionBefore;
+						}
+						this.getStagingTransactions().push( transactions[ i ] );
+					} else {
+						this.truncateUndoStack();
+						if ( !this.newTransactions.length ) {
+							this.selectionBefore = selectionBefore;
+						}
+						this.newTransactions.push( transactions[ i ] );
+					}
+				}
+				// The .commit() call below indirectly invokes setSelection()
+				this.getDocument().commit( transactions[ i ] );
+				if ( transactions[ i ].hasElementAttributeOperations() ) {
+					contextChange = true;
+				}
+			}
+		}
+		this.transacting = false;
+	}
+	selectionAfter = this.selection;
+
+	// Apply selection change
+	if ( selection ) {
+		this.setSelection( selection );
+	} else if ( transactions ) {
+		// Call setSelection() to trigger selection processing that was bypassed earlier
+		this.setSelection( this.selection );
+	}
+
+	// If the selection changed while applying the transactions but not while applying the
+	// selection change, setSelection() won't have emitted a 'select' event. We don't want that
+	// to happen, so emit one anyway.
+	if (
+		!selectionBefore.equals( selectionAfter ) &&
+		selectionAfter.equals( this.selection )
+	) {
+		this.emit( 'select', this.selection.clone() );
+	}
+
+	if ( contextChange ) {
+		this.emitContextChange();
+	}
+
+	this.stopQueueingContextChanges();
+};
+
+/**
+ * Set a history state breakpoint.
+ *
+ * @fires history
+ * @return {boolean} A breakpoint was added
+ */
+ve.dm.Surface.prototype.breakpoint = function () {
+	if ( !this.enabled ) {
+		return false;
+	}
+	if ( this.newTransactions.length > 0 ) {
+		this.undoStack.push( {
+			transactions: this.newTransactions,
+			selection: this.selection.clone(),
+			selectionBefore: this.selectionBefore.clone()
+		} );
+		this.newTransactions = [];
+		this.emit( 'history' );
+		return true;
+	} else if ( this.selectionBefore.isNull() && !this.selection.isNull() ) {
+		this.selectionBefore = this.selection.clone();
+	}
+	return false;
+};
+
+/**
+ * Step backwards in history.
+ *
+ * @fires history
+ */
+ve.dm.Surface.prototype.undo = function () {
+	var i, item, transaction, transactions = [];
+	if ( !this.canUndo() ) {
+		return;
+	}
+
+	if ( this.isStaging() ) {
+		this.popAllStaging();
+	}
+
+	this.breakpoint();
+	this.undoIndex++;
+
+	item = this.undoStack[ this.undoStack.length - this.undoIndex ];
+	if ( item ) {
+		// Apply reversed transactions in reversed order
+		for ( i = item.transactions.length - 1; i >= 0; i-- ) {
+			transaction = item.transactions[ i ].reversed();
+			transactions.push( transaction );
+		}
+		this.changeInternal( transactions, item.selectionBefore, true );
+		this.emit( 'history' );
+	}
+};
+
+/**
+ * Step forwards in history.
+ *
+ * @fires history
+ */
+ve.dm.Surface.prototype.redo = function () {
+	var item;
+	if ( !this.canRedo() ) {
+		return;
+	}
+
+	this.breakpoint();
+
+	item = this.undoStack[ this.undoStack.length - this.undoIndex ];
+	if ( item ) {
+		// ve.copy( item.transactions ) invokes .clone() on each transaction in item.transactions
+		this.changeInternal( ve.copy( item.transactions ), item.selection, true );
+		this.undoIndex--;
+		this.emit( 'history' );
+	}
+};
+
+/**
+ * Respond to transactions processed on the document by translating the selection and updating
+ * other state.
+ *
+ * @param {ve.dm.Transaction} tx Transaction that was processed
+ * @fires documentUpdate
+ */
+ve.dm.Surface.prototype.onDocumentTransact = function ( tx ) {
+	this.setSelection( this.getSelection().translateByTransaction( tx ) );
+	this.emit( 'documentUpdate', tx );
+};
+
+/**
+ * Get the selected node covering the current range, or null
+ *
+ * @return {ve.dm.Node|null} Selected node
+ */
+ve.dm.Surface.prototype.getSelectedNode = function () {
+	return this.selectedNode;
+};
+
+/**
+ * Clone the selection ready for early translation (before synchronization).
+ *
+ * This is so #ve.ce.ContentBranchNode.getRenderedContents can consider the translated
+ * selection for unicorn rendering.
+ */
+ve.dm.Surface.prototype.onDocumentPreCommit = function () {
+	this.translatedSelection = this.selection.clone();
+};
+
+/**
+ * Update translatedSelection early (before synchronization)
+ *
+ * @param {ve.dm.Transaction} tx Transaction that was processed
+ * @fires documentUpdate
+ */
+ve.dm.Surface.prototype.onDocumentPreSynchronize = function ( tx ) {
+	if ( this.translatedSelection ) {
+		this.translatedSelection = this.translatedSelection.translateByTransaction( tx );
+	}
+};
+
+/*!
+ * VisualEditor DataModel Fragment class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel surface fragment.
+ *
+ * @class
+ *
+ * @constructor
+ * @param {ve.dm.Surface} surface Target surface
+ * @param {ve.dm.Selection} [selection] Selection within target document, current selection used by default
+ * @param {boolean} [noAutoSelect] Update the surface's selection when making changes
+ * @param {boolean} [excludeInsertions] Exclude inserted content at the boundaries when updating range
+ */
+ve.dm.SurfaceFragment = function VeDmSurfaceFragment( surface, selection, noAutoSelect, excludeInsertions ) {
+	// Short-circuit for missing-surface null fragment
+	if ( !surface ) {
+		return this;
+	}
+
+	// Properties
+	this.document = surface.getDocument();
+	this.noAutoSelect = !!noAutoSelect;
+	this.excludeInsertions = !!excludeInsertions;
+	this.surface = surface;
+	this.selection = selection || surface.getSelection();
+	this.leafNodes = null;
+
+	// Initialization
+	this.historyPointer = this.document.getCompleteHistoryLength();
+};
+
+/* Inheritance */
+
+OO.initClass( ve.dm.SurfaceFragment );
+
+/* Methods */
+
+/**
+ * Get list of selected nodes and annotations.
+ *
+ * @param {boolean} [all] Include nodes and annotations which only cover some of the fragment
+ * @return {ve.dm.Model[]} Selected models
+ */
+ve.dm.SurfaceFragment.prototype.getSelectedModels = function ( all ) {
+	var i, len, nodes, selectedNode, annotations;
+	// Handle null selection
+	if ( this.isNull() ) {
+		return [];
+	}
+
+	annotations = this.getAnnotations( all );
+
+	// Filter out nodes with collapsed ranges
+	if ( all ) {
+		nodes = this.getCoveredNodes();
+		for ( i = 0, len = nodes.length; i < len; i++ ) {
+			if ( nodes[ i ].range && nodes[ i ].range.isCollapsed() ) {
+				nodes.splice( i, 1 );
+				len--;
+				i--;
+			} else {
+				nodes[ i ] = nodes[ i ].node;
+			}
+		}
+	} else {
+		nodes = [];
+		selectedNode = this.getSelectedNode();
+		if ( selectedNode ) {
+			nodes.push( selectedNode );
+		}
+	}
+
+	return nodes.concat( !annotations.isEmpty() ? annotations.get() : [] );
+};
+
+/**
+ * Update selection based on un-applied transactions in the surface, or specified selection.
+ *
+ * @method
+ * @param {ve.dm.Selection} [selection] Optional selection to set
+ */
+ve.dm.SurfaceFragment.prototype.update = function ( selection ) {
+	var txs;
+	// Handle null selection
+	if ( this.isNull() ) {
+		return;
+	}
+
+	if ( selection ) {
+		this.selection = selection;
+		this.historyPointer = this.document.getCompleteHistoryLength();
+	} else if ( this.historyPointer < this.document.getCompleteHistoryLength() ) {
+		// Small optimisation: check history pointer is in the past
+		txs = this.document.getCompleteHistorySince( this.historyPointer );
+		this.selection = this.selection.translateByTransactions( txs, this.excludeInsertions );
+		this.historyPointer += txs.length;
+	}
+	this.leafNodes = null;
+};
+
+/**
+ * Process a set of transactions on the surface, and update the selection if the fragment
+ * is auto-selecting.
+ *
+ * @param {ve.dm.Transaction|ve.dm.Transaction[]} txs Transaction(s) to process
+ * @param {ve.dm.Selection} [selection] Selection to set, if different from translated selection, required if the
+ *   fragment is null
+ * @throws {Error} If fragment is null and selection is omitted
+ */
+ve.dm.SurfaceFragment.prototype.change = function ( txs, selection ) {
+	if ( !selection && this.isNull() ) {
+		throw new Error( 'Cannot change null fragment without selection' );
+	}
+
+	if ( !Array.isArray( txs ) ) {
+		txs = [ txs ];
+	}
+	this.surface.change(
+		txs,
+		!this.noAutoSelect && ( selection || this.getSelection( true ).translateByTransactions( txs, this.excludeInsertions ) )
+	);
+	if ( selection ) {
+		// Overwrite the selection
+		this.update( selection );
+	}
+};
+
+/**
+ * Get the surface the fragment is a part of.
+ *
+ * @method
+ * @return {ve.dm.Surface|null} Surface of fragment
+ */
+ve.dm.SurfaceFragment.prototype.getSurface = function () {
+	return this.surface;
+};
+
+/**
+ * Get the document of the surface the fragment is a part of.
+ *
+ * @method
+ * @return {ve.dm.Document|null} Document of surface of fragment
+ */
+ve.dm.SurfaceFragment.prototype.getDocument = function () {
+	return this.document;
+};
+
+/**
+ * Get the selection of the fragment within the surface.
+ *
+ * This method also calls update to make sure the selection returned is current.
+ *
+ * @method
+ * @param {boolean} noCopy Return the selection by reference, not a copy
+ * @return {ve.dm.Selection} Surface selection
+ */
+ve.dm.SurfaceFragment.prototype.getSelection = function ( noCopy ) {
+	this.update();
+	return !noCopy ? this.selection.clone() : this.selection;
+};
+
+/**
+ * Check if the fragment is null.
+ *
+ * @method
+ * @return {boolean} Fragment is a null fragment
+ */
+ve.dm.SurfaceFragment.prototype.isNull = function () {
+	return this.selection.isNull();
+};
+
+/**
+ * Check if the surface's selection will be updated automatically when changes are made.
+ *
+ * @method
+ * @return {boolean} Will automatically update surface selection
+ */
+ve.dm.SurfaceFragment.prototype.willAutoSelect = function () {
+	return !this.noAutoSelect;
+};
+
+/**
+ * Change whether to automatically update the surface selection when making changes.
+ *
+ * @method
+ * @param {boolean} [autoSelect=true] Automatically update surface selection
+ * @chainable
+ */
+ve.dm.SurfaceFragment.prototype.setAutoSelect = function ( autoSelect ) {
+	this.noAutoSelect = !autoSelect;
+	return this;
+};
+
+/**
+ * Get a clone of this SurfaceFragment, optionally with a different selection.
+ *
+ * @param {ve.dm.Selection} [selection] If set, use this selection rather than the old fragment's selection
+ * @return {ve.dm.SurfaceFragment} Clone of this fragment
+ */
+ve.dm.SurfaceFragment.prototype.clone = function ( selection ) {
+	return new this.constructor(
+		this.surface,
+		selection || this.getSelection(),
+		this.noAutoSelect,
+		this.excludeInsertions
+	);
+};
+
+/**
+ * Check whether updates to this fragment's selection will exclude content inserted at the boundaries.
+ *
+ * @return {boolean} Selection updates will exclude insertions
+ */
+ve.dm.SurfaceFragment.prototype.willExcludeInsertions = function () {
+	return this.excludeInsertions;
+};
+
+/**
+ * Tell this fragment whether it should exclude insertions. If this option is enabled, updates to
+ * this fragment's selection in response to transactions will not include content inserted at the
+ * boundaries of the selection; if it is disabled, insertions will be included.
+ *
+ * @param {boolean} excludeInsertions Whether to exclude insertions
+ * @chainable
+ */
+ve.dm.SurfaceFragment.prototype.setExcludeInsertions = function ( excludeInsertions ) {
+	excludeInsertions = !!excludeInsertions;
+	if ( this.excludeInsertions !== excludeInsertions ) {
+		// Process any deferred updates with the old value
+		this.update();
+		// Set the new value
+		this.excludeInsertions = excludeInsertions;
+	}
+	return this;
+};
+
+/**
+ * Get a new fragment with an adjusted position
+ *
+ * @method
+ * @param {number} [start] Adjustment for start position
+ * @param {number} [end] Adjustment for end position
+ * @return {ve.dm.SurfaceFragment} Adjusted fragment
+ */
+ve.dm.SurfaceFragment.prototype.adjustLinearSelection = function ( start, end ) {
+	var newRange, oldRange;
+	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
+		return this.clone();
+	}
+	oldRange = this.getSelection( true ).getRange();
+	newRange = oldRange && new ve.Range( oldRange.start + ( start || 0 ), oldRange.end + ( end || 0 ) );
+	return this.clone( new ve.dm.LinearSelection( this.getDocument(), newRange ) );
+};
+
+/**
+ * Get a new fragment with a truncated length.
+ *
+ * @method
+ * @param {number} limit Maximum length of range (negative for left-side truncation)
+ * @return {ve.dm.SurfaceFragment} Truncated fragment
+ */
+ve.dm.SurfaceFragment.prototype.truncateLinearSelection = function ( limit ) {
+	var range;
+	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
+		return this.clone();
+	}
+	range = this.getSelection( true ).getRange();
+	return this.clone( new ve.dm.LinearSelection( this.getDocument(), range.truncate( limit ) ) );
+};
+
+/**
+ * Get a new fragment with a zero-length selection at the start offset.
+ *
+ * @method
+ * @return {ve.dm.SurfaceFragment} Collapsed fragment
+ */
+ve.dm.SurfaceFragment.prototype.collapseToStart = function () {
+	return this.clone( this.getSelection( true ).collapseToStart() );
+};
+
+/**
+ * Get a new fragment with a zero-length selection at the end offset.
+ *
+ * @method
+ * @return {ve.dm.SurfaceFragment} Collapsed fragment
+ */
+ve.dm.SurfaceFragment.prototype.collapseToEnd = function () {
+	return this.clone( this.getSelection( true ).collapseToEnd() );
+};
+
+/**
+ * Get a new fragment with a range that no longer includes leading and trailing whitespace.
+ *
+ * @method
+ * @return {ve.dm.SurfaceFragment} Trimmed fragment
+ */
+ve.dm.SurfaceFragment.prototype.trimLinearSelection = function () {
+	var oldRange, newRange;
+	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
+		return this.clone();
+	}
+	oldRange = this.getSelection( true ).getRange();
+	newRange = oldRange;
+
+	if ( this.getText().trim().length === 0 ) {
+		// oldRange is only whitespace
+		newRange = new ve.Range( oldRange.start );
+	} else {
+		newRange = this.document.data.trimOuterSpaceFromRange( oldRange );
+	}
+
+	return this.clone( new ve.dm.LinearSelection( this.getDocument(), newRange ) );
+};
+
+/**
+ * Get a new fragment that covers an expanded range of the document.
+ *
+ * @method
+ * @param {string} [scope='parent'] Method of expansion:
+ *  - `word`: Expands to cover the nearest word by looking for word breaks (see UnicodeJS.wordbreak)
+ *  - `annotation`: Expands to cover a given annotation (argument) within the current range
+ *  - `root`: Expands to cover the entire document
+ *  - `siblings`: Expands to cover all sibling nodes
+ *  - `closest`: Expands to cover the closest common ancestor node of a give type (ve.dm.Node)
+ *  - `parent`: Expands to cover the closest common parent node
+ * @param {Mixed} [type] Parameter to use with scope method if needed
+ * @return {ve.dm.SurfaceFragment} Expanded fragment
+ */
+ve.dm.SurfaceFragment.prototype.expandLinearSelection = function ( scope, type ) {
+	var node, nodes, parent, newRange, oldRange;
+	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
+		return this.clone();
+	}
+
+	oldRange = this.getSelection( true ).getRange();
+
+	switch ( scope || 'parent' ) {
+		case 'word':
+			if ( !oldRange.isCollapsed() ) {
+				newRange = ve.Range.static.newCoveringRange( [
+					this.document.data.getWordRange( oldRange.start ),
+					this.document.data.getWordRange( oldRange.end )
+				], oldRange.isBackwards() );
+			} else {
+				// optimisation for zero-length ranges
+				newRange = this.document.data.getWordRange( oldRange.start );
+			}
+			break;
+		case 'annotation':
+			newRange = this.document.data.getAnnotatedRangeFromSelection( oldRange, type );
+			// Adjust selection if it does not contain the annotated range
+			if ( oldRange.start > newRange.start || oldRange.end < newRange.end ) {
+				// Maintain range direction
+				if ( oldRange.from > oldRange.to ) {
+					newRange = newRange.flip();
+				}
+			} else {
+				// Otherwise just keep the range as is
+				newRange = oldRange;
+			}
+			break;
+		case 'root':
+			newRange = new ve.Range( 0, this.getDocument().getInternalList().getListNode().getOuterRange().start );
+			break;
+		case 'siblings':
+			// Grow range to cover all siblings
+			nodes = this.document.selectNodes( oldRange, 'siblings' );
+			if ( nodes.length === 1 ) {
+				newRange = nodes[ 0 ].node.getOuterRange();
+			} else {
+				newRange = new ve.Range(
+					nodes[ 0 ].node.getOuterRange().start,
+					nodes[ nodes.length - 1 ].node.getOuterRange().end
+				);
+			}
+			break;
+		case 'closest':
+			// Grow range to cover closest common ancestor node of given type
+			nodes = this.document.selectNodes( oldRange, 'siblings' );
+			// If the range covered the entire node check that node
+			if ( nodes[ 0 ].nodeRange.equalsSelection( oldRange ) && nodes[ 0 ].node instanceof type ) {
+				newRange = nodes[ 0 ].nodeOuterRange;
+				break;
+			}
+			parent = nodes[ 0 ].node.getParent();
+			while ( parent && !( parent instanceof type ) ) {
+				node = parent;
+				parent = parent.getParent();
+			}
+			if ( parent ) {
+				newRange = parent.getOuterRange();
+			}
+			break;
+		case 'parent':
+			// Grow range to cover the closest common parent node
+			node = this.document.selectNodes( oldRange, 'siblings' )[ 0 ].node;
+			parent = node.getParent();
+			if ( parent ) {
+				newRange = parent.getOuterRange();
+			}
+			break;
+		default:
+			throw new Error( 'Invalid scope argument: ' + scope );
+	}
+	return this.clone(
+		newRange ?
+			new ve.dm.LinearSelection( this.getDocument(), newRange ) :
+			new ve.dm.NullSelection( this.getDocument() )
+	);
+};
+
+/**
+ * Get data for the fragment.
+ *
+ * @method
+ * @param {boolean} [deep] Get a deep copy of the data
+ * @return {Array} Fragment data
+ */
+ve.dm.SurfaceFragment.prototype.getData = function ( deep ) {
+	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
+		return [];
+	}
+	return this.document.getData( this.getSelection( true ).getRange(), deep );
+};
+
+/**
+ * Get plain text for the fragment.
+ *
+ * @method
+ * @return {string} Fragment text
+ */
+ve.dm.SurfaceFragment.prototype.getText = function () {
+	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
+		return '';
+	}
+	return this.document.data.getText( false, this.getSelection( true ).getRange() );
+};
+
+/**
+ * Get annotations in fragment.
+ *
+ * By default, this will only get annotations that completely cover the fragment. Use the {all}
+ * argument to get all annotations that occur within the fragment.
+ *
+ * @method
+ * @param {boolean} [all] Get annotations which only cover some of the fragment
+ * @return {ve.dm.AnnotationSet} All annotation objects range is covered by
+ */
+ve.dm.SurfaceFragment.prototype.getAnnotations = function ( all ) {
+	var i, l, ranges, rangeAnnotations,
+		selection = this.getSelection( true ),
+		annotations = new ve.dm.AnnotationSet( this.getDocument().getStore() );
+
+	if ( selection.isCollapsed() ) {
+		return this.surface.getInsertionAnnotations();
+	} else {
+		ranges = selection.getRanges();
+		for ( i = 0, l = ranges.length; i < l; i++ ) {
+			rangeAnnotations = this.getDocument().data.getAnnotationsFromRange( ranges[ i ], all );
+			if ( all ) {
+				annotations.addSet( rangeAnnotations );
+			} else {
+				annotations = i ? annotations.intersectWith( rangeAnnotations ) : rangeAnnotations;
+			}
+		}
+		return annotations;
+	}
+};
+
+/**
+ * Check if the fragment has any annotations
+ *
+ * Quicker than doing !fragment.getAnnotations( true ).isEmpty() as
+ * it stops at the first sight of an annotation.
+ *
+ * @method
+ * @return {boolean} The fragment contains at least one annotation
+ */
+ve.dm.SurfaceFragment.prototype.hasAnnotations = function () {
+	var i, l, ranges = this.getSelection().getRanges();
+
+	for ( i = 0, l = ranges.length; i < l; i++ ) {
+		if ( this.getDocument().data.hasAnnotationsInRange( ranges[ i ] ) ) {
+			return true;
+		}
+	}
+	return false;
+};
+
+/**
+ * Get all leaf nodes covered by the fragment.
+ *
+ * @see ve.Document#selectNodes Used to get the return value
+ *
+ * @method
+ * @return {Array} List of nodes and related information
+ */
+ve.dm.SurfaceFragment.prototype.getLeafNodes = function () {
+	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
+		return [];
+	}
+
+	// Update in case the cache needs invalidating
+	this.update();
+	// Cache leafNodes because it's expensive to compute
+	if ( !this.leafNodes ) {
+		this.leafNodes = this.document.selectNodes( this.getSelection().getRange(), 'leaves' );
+	}
+	return this.leafNodes;
+};
+
+/**
+ * Get all leaf nodes excluding nodes where the selection is empty.
+ *
+ * @method
+ * @return {Array} List of nodes and related information
+ */
+ve.dm.SurfaceFragment.prototype.getSelectedLeafNodes = function () {
+	var i, len,
+		selectedLeafNodes = [],
+		leafNodes = this.getLeafNodes();
+	for ( i = 0, len = leafNodes.length; i < len; i++ ) {
+		if ( len === 1 || !leafNodes[ i ].range || leafNodes[ i ].range.getLength() ) {
+			selectedLeafNodes.push( leafNodes[ i ].node );
+		}
+	}
+	return selectedLeafNodes;
+};
+
+/**
+ * Get the node selected by a range, i.e. the range matches the node's range exactly.
+ *
+ * Note that this method operates on the fragment's range, not the document's current selection.
+ * This fragment does not need to be selected for this method to work.
+ *
+ * @return {ve.dm.Node|null} The node selected by the range, or null if a node is not selected
+ */
+ve.dm.SurfaceFragment.prototype.getSelectedNode = function () {
+	var i, len, range, nodes;
+	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
+		return null;
+	}
+
+	range = this.getSelection().getRange();
+	nodes = this.document.selectNodes( range, 'covered' );
+
+	for ( i = 0, len = nodes.length; i < len; i++ ) {
+		if ( nodes[ i ].nodeOuterRange.equalsSelection( range ) ) {
+			return nodes[ i ].node;
+		}
+	}
+	return null;
+};
+
+/**
+ * Get nodes covered by the fragment.
+ *
+ * Does not descend into nodes that are entirely covered by the range. The result is
+ * similar to that of {ve.dm.SurfaceFragment.prototype.getLeafNodes} except that if a node is
+ * entirely covered, its children aren't returned separately.
+ *
+ * @see ve.Document#selectNodes for more information about the return value
+ *
+ * @method
+ * @return {Array} List of nodes and related information
+ */
+ve.dm.SurfaceFragment.prototype.getCoveredNodes = function () {
+	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
+		return [];
+	}
+	return this.document.selectNodes( this.getSelection().getRange(), 'covered' );
+};
+
+/**
+ * Get nodes covered by the fragment.
+ *
+ * Includes adjacent siblings covered by the range, descending if the range is in a single node.
+ *
+ * @see ve.Document#selectNodes for more information about the return value.
+ *
+ * @method
+ * @return {Array} List of nodes and related information
+ */
+ve.dm.SurfaceFragment.prototype.getSiblingNodes = function () {
+	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
+		return [];
+	}
+	return this.document.selectNodes( this.getSelection().getRange(), 'siblings' );
+};
+
+/**
+ * Apply the fragment's range to the surface as a selection.
+ *
+ * @method
+ * @chainable
+ */
+ve.dm.SurfaceFragment.prototype.select = function () {
+	this.surface.setSelection( this.getSelection() );
+	return this;
+};
+
+/**
+ * Change one or more attributes on covered nodes.
+ *
+ * @method
+ * @param {Object} attr List of attributes to change, use undefined to remove an attribute
+ * @param {string} [type] Node type to restrict changes to
+ * @chainable
+ */
+ve.dm.SurfaceFragment.prototype.changeAttributes = function ( attr, type ) {
+	var i, len, result,
+		txs = [],
+		covered = this.getCoveredNodes();
+
+	for ( i = 0, len = covered.length; i < len; i++ ) {
+		result = covered[ i ];
+		if (
+			// Non-wrapped nodes have no attributes
+			!result.node.isWrapped() ||
+			// Filtering by node type
+			( type && result.node.getType() !== type ) ||
+			// Ignore zero-length results
+			( result.range && result.range.isCollapsed() )
+		) {
+			continue;
+		}
+		txs.push(
+			ve.dm.Transaction.newFromAttributeChanges(
+				this.document, result.nodeOuterRange.start, attr
+			)
+		);
+	}
+	if ( txs.length ) {
+		this.change( txs );
+	}
+	return this;
+};
+
+/**
+ * Apply an annotation to content in the fragment.
+ *
+ * To avoid problems identified in bug 33108, use the {ve.dm.SurfaceFragment.trimLinearSelection} method.
+ *
+ * TODO: Optionally take an annotation set instead of name and data arguments and set/clear multiple
+ * annotations in a single transaction.
+ *
+ * @method
+ * @param {string} method Mode of annotation, either 'set' or 'clear'
+ * @param {string|ve.dm.Annotation} nameOrAnnotation Annotation name, for example: 'textStyle/bold' or
+ * Annotation object
+ * @param {Object} [data] Additional annotation data (not used if annotation object is given)
+ * @chainable
+ */
+ve.dm.SurfaceFragment.prototype.annotateContent = function ( method, nameOrAnnotation, data ) {
+	var annotation, annotations, i, ilen, j, jlen, tx, range,
+		ranges = this.getSelection( true ).getRanges(),
+		txs = [];
+
+	if ( nameOrAnnotation instanceof ve.dm.Annotation ) {
+		annotations = [ nameOrAnnotation ];
+	} else {
+		annotation = ve.dm.annotationFactory.create( nameOrAnnotation, data );
+		if ( method === 'set' ) {
+			annotations = [ annotation ];
+		} else {
+			annotations = [];
+			for ( i = 0, ilen = ranges.length; i < ilen; i++ ) {
+				annotations = this.document.data.getAnnotationsFromRange( ranges[ i ], true )
+					.getAnnotationsByName( annotation.name ).get();
+				if ( annotations.length ) {
+					break;
+				}
+			}
+		}
+	}
+	for ( i = 0, ilen = ranges.length; i < ilen; i++ ) {
+		range = ranges[ i ];
+		if ( !range.isCollapsed() ) {
+			// Apply to selection
+			for ( j = 0, jlen = annotations.length; j < jlen; j++ ) {
+				tx = ve.dm.Transaction.newFromAnnotation( this.document, range, method, annotations[ j ] );
+				txs.push( tx );
+			}
+		} else {
+			// Apply annotation to stack
+			if ( method === 'set' ) {
+				for ( i = 0, ilen = annotations.length; i < ilen; i++ ) {
+					this.surface.addInsertionAnnotations( annotations[ i ] );
+				}
+			} else if ( method === 'clear' ) {
+				for ( i = 0, ilen = annotations.length; i < ilen; i++ ) {
+					this.surface.removeInsertionAnnotations( annotations[ i ] );
+				}
+			}
+		}
+	}
+	this.change( txs );
+
+	return this;
+};
+
+/**
+ * Remove content in the fragment and insert content before it.
+ *
+ * This will move the fragment's range to cover the inserted content. Note that this may be
+ * different from what a normal range translation would do: the insertion might occur
+ * at a different offset if that is needed to make the document balanced.
+ *
+ * If the content is a plain text string containing linebreaks, each line will be wrapped
+ * in a paragraph.
+ *
+ * @method
+ * @param {string|Array} content Content to insert, can be either a string or array of data
+ * @param {boolean} annotate Content should be automatically annotated to match surrounding content
+ * @chainable
+ */
+ve.dm.SurfaceFragment.prototype.insertContent = function ( content, annotate ) {
+	var i, l, lines, annotations, tx, offset, newRange;
+
+	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
+		return this;
+	}
+
+	if ( !this.getSelection( true ).isCollapsed() ) {
+		// If we're replacing content, use the annotations selected
+		// instead of continuing from the left
+		annotations = this.getAnnotations();
+		this.removeContent();
+	}
+
+	offset = this.getSelection( true ).getRange().start;
+	// Auto-convert content to array of plain text characters
+	if ( typeof content === 'string' ) {
+		lines = content.split( /[\r\n]+/ );
+
+		if ( lines.length > 1 ) {
+			content = [];
+			for ( i = 0, l = lines.length; i < l; i++ ) {
+				if ( lines[ i ].length ) {
+					content.push( { type: 'paragraph' } );
+					content = content.concat( lines[ i ].split( '' ) );
+					content.push( { type: '/paragraph' } );
+				}
+			}
+		} else {
+			content = content.split( '' );
+		}
+	}
+	if ( content.length ) {
+		if ( annotate && !annotations ) {
+			// TODO: Don't reach into properties of document
+			// FIXME: the logic we actually need for annotating inserted content correctly
+			// is MUCH more complicated
+			annotations = this.document.data
+				.getAnnotationsFromOffset( offset === 0 ? 0 : offset - 1 );
+		}
+		if ( annotations && annotations.getLength() > 0 ) {
+			ve.dm.Document.static.addAnnotationsToData( content, annotations );
+		}
+		tx = ve.dm.Transaction.newFromInsertion(
+			this.document,
+			offset,
+			content
+		);
+		// Set the range to cover the inserted content; the offset translation will be wrong
+		// if newFromInsertion() decided to move the insertion point
+		newRange = tx.getModifiedRange();
+		this.change( tx, new ve.dm.LinearSelection( this.getDocument(), newRange ) );
+	}
+
+	return this;
+};
+
+/**
+ * Insert HTML in the fragment.
+ *
+ * This will move the fragment's range to cover the inserted content. Note that this may be
+ * different from what a normal range translation would do: the insertion might occur
+ * at a different offset if that is needed to make the document balanced.
+ *
+ * @method
+ * @param {string} html HTML to insert
+ * @param {Object} [importRules] The import rules for the target surface, if importing
+ * @chainable
+ */
+ve.dm.SurfaceFragment.prototype.insertHtml = function ( html, importRules ) {
+	this.insertDocument( this.getDocument().newFromHtml( html, importRules ) );
+	return this;
+};
+
+/**
+ * Insert a ve.dm.Document in the fragment.
+ *
+ * This will move the fragment's range to cover the inserted content. Note that this may be
+ * different from what a normal range translation would do: the insertion might occur
+ * at a different offset if that is needed to make the document balanced.
+ *
+ * @method
+ * @param {ve.dm.Document} doc Document to insert
+ * @chainable
+ */
+ve.dm.SurfaceFragment.prototype.insertDocument = function ( doc ) {
+	var tx, newRange;
+
+	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
+		return this;
+	}
+
+	if ( !this.getSelection( true ).isCollapsed() ) {
+		this.removeContent();
+	}
+
+	tx = new ve.dm.Transaction.newFromDocumentInsertion(
+		this.getDocument(),
+		this.getSelection().getRange().start,
+		doc
+	);
+	// Set the range to cover the inserted content; the offset translation will be wrong
+	// if newFromInsertion() decided to move the insertion point
+	newRange = tx.getModifiedRange();
+	this.change( tx, new ve.dm.LinearSelection( this.getDocument(), newRange ) );
+
+	return this;
+};
+
+/**
+ * Remove content in the fragment.
+ *
+ * @method
+ * @chainable
+ */
+ve.dm.SurfaceFragment.prototype.removeContent = function () {
+	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
+		return this;
+	}
+
+	if ( !this.getSelection( true ).isCollapsed() ) {
+		this.change( ve.dm.Transaction.newFromRemoval( this.document, this.getSelection( true ).getRange() ) );
+	}
+
+	return this;
+};
+
+/**
+ * Delete content and correct selection
+ *
+ * @method
+ * @param {number} [directionAfterDelete=-1] Direction to move after delete: 1 or -1 or 0
+ * @chainable
+ */
+ve.dm.SurfaceFragment.prototype.delete = function ( directionAfterDelete ) {
+	var rangeAfterRemove, internalListRange, parentNode,
+		tx, startNode, endNode, endNodeData, nodeToDelete,
+		rangeToRemove;
+
+	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
+		return this;
+	}
+
+	rangeToRemove = this.getSelection( true ).getRange();
+
+	if ( rangeToRemove.isCollapsed() ) {
+		return this;
+	}
+
+	// If selection spans entire document (selectAll) then
+	// replace with an empty paragraph
+	internalListRange = this.document.getInternalList().getListNode().getOuterRange();
+	if ( rangeToRemove.start === 0 && rangeToRemove.end >= internalListRange.start ) {
+		tx = ve.dm.Transaction.newFromReplacement( this.document, new ve.Range( 0, internalListRange.start ), [
+			{ type: 'paragraph' },
+			{ type: '/paragraph' }
+		] );
+		this.change( tx );
+		rangeAfterRemove = new ve.Range( 1 );
+	} else {
+		tx = ve.dm.Transaction.newFromRemoval( this.document, rangeToRemove );
+		this.change( tx );
+		rangeAfterRemove = tx.translateRange( rangeToRemove );
+	}
+	if ( !rangeAfterRemove.isCollapsed() ) {
+		// If after processing removal transaction range is not collapsed it means that not
+		// everything got merged nicely (at this moment transaction processor is capable of merging
+		// nodes of the same type and at the same depth level only), so we process with another
+		// merging that takes remaining data from endNode and inserts it at the end of startNode,
+		// endNode or recursively its parent (if have only one child) gets removed.
+		//
+		// If startNode has no content then we just delete that node instead of merging.
+		// This prevents content being inserted into empty structure which, e.g. and empty heading
+		// will be deleted, rather than "converting" the paragraph beneath to a heading.
+
+		endNode = this.document.getBranchNodeFromOffset( rangeAfterRemove.end, false );
+
+		// If endNode is within our rangeAfterRemove, then we shouldn't delete it
+		if ( endNode.getRange().start >= rangeAfterRemove.end ) {
+			startNode = this.document.getBranchNodeFromOffset( rangeAfterRemove.start, false );
+
+			if ( startNode.getRange().isCollapsed() ) {
+				parentNode = startNode.getParent();
+
+				do {
+					// Remove startNode
+					tx = ve.dm.Transaction.newFromRemoval( this.document, startNode.getOuterRange() );
+					this.change( tx );
+					rangeAfterRemove = tx.translateRange( rangeAfterRemove );
+
+					startNode = parentNode;
+					parentNode = startNode.getParent();
+
+					// If the removal resulted in a block slug appearing in an empty node (e.g. when startNode
+					// was a paragraph or heading inside a list item), delete the empty node too.
+				} while (
+					startNode &&
+					startNode.children.length === 0 &&
+					(
+						startNode.hasSlugAtOffset( startNode.getRange().start ) ||
+						// These may not have slugs, but also must not be left empty (and thus uneditable) :(
+						startNode instanceof ve.dm.DefinitionListNode || startNode instanceof ve.dm.ListNode
+					) &&
+					startNode.canHaveChildrenNotContent()
+				);
+
+			} else {
+				endNodeData = this.document.getData( endNode.getRange() );
+				nodeToDelete = endNode;
+				nodeToDelete.traverseUpstream( function ( node ) {
+					var parent = node.getParent();
+					if ( parent.children.length === 1 ) {
+						nodeToDelete = parent;
+						return true;
+					} else {
+						return false;
+					}
+				} );
+				// Move contents of endNode into startNode, and delete nodeToDelete
+				this.change( [
+					ve.dm.Transaction.newFromRemoval(
+						this.document, nodeToDelete.getOuterRange()
+					),
+					ve.dm.Transaction.newFromInsertion(
+						this.document, rangeAfterRemove.start, endNodeData
+					)
+				] );
+			}
+		}
+	}
+
+	// rangeAfterRemove is now guaranteed to be collapsed so make sure that it is a content offset
+	rangeAfterRemove = new ve.Range(
+		this.document.data.getNearestContentOffset(
+			rangeAfterRemove.start,
+			// If undefined (e.g. cut), default to backwards movement
+			directionAfterDelete || -1
+		)
+	);
+
+	this.change( [], new ve.dm.LinearSelection( this.getDocument(), rangeAfterRemove ) );
+
+	return this;
+};
+
+/**
+ * Convert each content branch in the fragment from one type to another.
+ *
+ * @method
+ * @param {string} type Element type to convert to
+ * @param {Object} [attr] Initial attributes for new element
+ * @chainable
+ */
+ve.dm.SurfaceFragment.prototype.convertNodes = function ( type, attr ) {
+	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
+		return this;
+	}
+
+	this.change( ve.dm.Transaction.newFromContentBranchConversion(
+		this.document, this.getSelection().getRange(), type, attr
+	) );
+
+	return this;
+};
+
+/**
+ * Wrap each node in the fragment with one or more elements.
+ *
+ * A wrapper object is a linear model element; a plain object containing a type property and an
+ * optional attributes property.
+ *
+ * Example:
+ *     // fragment is a selection of: <p>a</p><p>b</p>
+ *     fragment.wrapNodes(
+ *         [{ type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' }]
+ *     )
+ *     // fragment is now a selection of: <ul><li><p>a</p></li></ul><ul><li><p>b</p></li></ul>
+ *
+ * @method
+ * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
+ * @param {string} wrapper.type Node type of wrapper
+ * @param {Object} [wrapper.attributes] Attributes of wrapper
+ * @chainable
+ */
+ve.dm.SurfaceFragment.prototype.wrapNodes = function ( wrapper ) {
+	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
+		return this;
+	}
+
+	if ( !Array.isArray( wrapper ) ) {
+		wrapper = [ wrapper ];
+	}
+	this.change(
+		ve.dm.Transaction.newFromWrap( this.document, this.getSelection().getRange(), [], [], [], wrapper )
+	);
+
+	return this;
+};
+
+/**
+ * Unwrap nodes in the fragment out of one or more elements.
+ *
+ * Example:
+ *     // fragment is a selection of: <ul>「<li><p>a</p></li><li><p>b</p></li>」</ul>
+ *     fragment.unwrapNodes( 1, 1 )
+ *     // fragment is now a selection of: 「<p>a</p><p>b</p>」
+ *
+ * @method
+ * @param {number} outerDepth Number of nodes outside the selection to unwrap
+ * @param {number} innerDepth Number of nodes inside the selection to unwrap
+ * @chainable
+ */
+ve.dm.SurfaceFragment.prototype.unwrapNodes = function ( outerDepth, innerDepth ) {
+	var i, range,
+		innerUnwrapper = [],
+		outerUnwrapper = [];
+
+	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
+		return this;
+	}
+
+	range = this.getSelection().getRange();
+
+	if ( range.getLength() < innerDepth * 2 ) {
+		throw new Error( 'cannot unwrap by greater depth than maximum theoretical depth of selection' );
+	}
+
+	for ( i = 0; i < innerDepth; i++ ) {
+		innerUnwrapper.push( this.surface.getDocument().data.getData( range.start + i ) );
+	}
+	for ( i = outerDepth; i > 0; i-- ) {
+		outerUnwrapper.push( this.surface.getDocument().data.getData( range.start - i ) );
+	}
+
+	this.change( ve.dm.Transaction.newFromWrap(
+		this.document, range, outerUnwrapper, [], innerUnwrapper, []
+	) );
+
+	return this;
+};
+
+/**
+ * Change the wrapping of each node in the fragment from one type to another.
+ *
+ * A wrapper object is a linear model element; a plain object containing a type property and an
+ * optional attributes property.
+ *
+ * Example:
+ *     // fragment is a selection of: <dl><dt><p>a</p></dt></dl><dl><dt><p>b</p></dt></dl>
+ *     fragment.rewrapNodes(
+ *         2,
+ *         [{ type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' }]
+ *     )
+ *     // fragment is now a selection of: <ul><li><p>a</p></li></ul><ul><li><p>b</p></li></ul>
+ *
+ * @method
+ * @param {number} depth Number of nodes to unwrap
+ * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
+ * @param {string} wrapper.type Node type of wrapper
+ * @param {Object} [wrapper.attributes] Attributes of wrapper
+ * @chainable
+ */
+ve.dm.SurfaceFragment.prototype.rewrapNodes = function ( depth, wrapper ) {
+	var i, range,
+		unwrapper = [];
+
+	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
+		return this;
+	}
+
+	range = this.getSelection().getRange();
+
+	if ( !Array.isArray( wrapper ) ) {
+		wrapper = [ wrapper ];
+	}
+
+	if ( range.getLength() < depth * 2 ) {
+		throw new Error( 'cannot unwrap by greater depth than maximum theoretical depth of selection' );
+	}
+
+	for ( i = 0; i < depth; i++ ) {
+		unwrapper.push( this.surface.getDocument().data.getData( range.start + i ) );
+	}
+
+	this.change(
+		ve.dm.Transaction.newFromWrap( this.document, range, [], [], unwrapper, wrapper )
+	);
+
+	return this;
+};
+
+/**
+ * Wrap nodes in the fragment with one or more elements.
+ *
+ * A wrapper object is a linear model element; a plain object containing a type property and an
+ * optional attributes property.
+ *
+ * Example:
+ *     // fragment is a selection of: <p>a</p><p>b</p>
+ *     fragment.wrapAllNodes(
+ *         [{ type: 'list', attributes: { style: 'bullet' } }, { type: 'listItem' }]
+ *     )
+ *     // fragment is now a selection of: <ul><li><p>a</p><p>b</p></li></ul>
+ *
+ * @method
+ * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
+ * @param {string} wrapper.type Node type of wrapper
+ * @param {Object} [wrapper.attributes] Attributes of wrapper
+ * @chainable
+ */
+ve.dm.SurfaceFragment.prototype.wrapAllNodes = function ( wrapper ) {
+	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
+		return this;
+	}
+
+	if ( !Array.isArray( wrapper ) ) {
+		wrapper = [ wrapper ];
+	}
+
+	this.change(
+		ve.dm.Transaction.newFromWrap( this.document, this.getSelection().getRange(), [], wrapper, [], [] )
+	);
+
+	return this;
+};
+
+/**
+ * Change the wrapping of nodes in the fragment from one type to another.
+ *
+ * A wrapper object is a linear model element; a plain object containing a type property and an
+ * optional attributes property.
+ *
+ * Example:
+ *     // fragment is a selection of: <h1><p>a</p><p>b</p></h1>
+ *     fragment.rewrapAllNodes( 1, { type: 'heading', attributes: { level: 2 } } );
+ *     // fragment is now a selection of: <h2><p>a</p><p>b</p></h2>
+ *
+ * @method
+ * @param {number} depth Number of nodes to unwrap
+ * @param {Object|Object[]} wrapper Wrapper object, or array of wrapper objects (see above)
+ * @param {string} wrapper.type Node type of wrapper
+ * @param {Object} [wrapper.attributes] Attributes of wrapper
+ * @chainable
+ */
+ve.dm.SurfaceFragment.prototype.rewrapAllNodes = function ( depth, wrapper ) {
+	var i, range, innerRange,
+		unwrapper = [];
+
+	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
+		return this;
+	}
+
+	range = this.getSelection().getRange();
+	// TODO: preserve direction
+	innerRange = new ve.Range(
+		range.start + depth,
+		range.end - depth
+	);
+
+	if ( !Array.isArray( wrapper ) ) {
+		wrapper = [ wrapper ];
+	}
+
+	if ( range.getLength() < depth * 2 ) {
+		throw new Error( 'cannot unwrap by greater depth than maximum theoretical depth of selection' );
+	}
+
+	for ( i = 0; i < depth; i++ ) {
+		unwrapper.push( this.surface.getDocument().data.getData( range.start + i ) );
+	}
+
+	this.change(
+		ve.dm.Transaction.newFromWrap( this.document, innerRange, unwrapper, wrapper, [], [] )
+	);
+
+	return this;
+};
+
+/**
+ * Isolates the nodes in a fragment then unwraps them.
+ *
+ * The node selection is expanded to siblings. These are isolated such that they are the
+ * sole children of the nearest parent element which can 'type' can exist in.
+ *
+ * The new isolated selection is then safely unwrapped.
+ *
+ * @method
+ * @param {string} isolateForType Node type to isolate for
+ * @chainable
+ */
+ve.dm.SurfaceFragment.prototype.isolateAndUnwrap = function ( isolateForType ) {
+	var nodes, startSplitNode, endSplitNode, startOffset, endOffset, oldExclude,
+		allowedParents,
+		outerDepth = 0,
+		factory = this.document.getNodeFactory(),
+		startSplitRequired = false,
+		endSplitRequired = false,
+		startSplitNodes = [],
+		endSplitNodes = [],
+		fragment = this;
+
+	function createSplits( splitNodes, insertBefore ) {
+		var i, length, tx,
+			adjustment = 0,
+			data = [];
+		for ( i = 0, length = splitNodes.length; i < length; i++ ) {
+			data.unshift( { type: '/' + splitNodes[ i ].type } );
+			data.push( splitNodes[ i ].getClonedElement() );
+
+			if ( insertBefore ) {
+				adjustment += 2;
+			}
+		}
+
+		tx = ve.dm.Transaction.newFromInsertion( fragment.getDocument(), insertBefore ? startOffset : endOffset, data );
+		fragment.change( tx );
+
+		startOffset += adjustment;
+		endOffset += adjustment;
+	}
+
+	if ( !( this.selection instanceof ve.dm.LinearSelection ) ) {
+		return this;
+	}
+
+	allowedParents = factory.getSuggestedParentNodeTypes( isolateForType );
+	nodes = this.getSiblingNodes();
+
+	// Find start split point, if required
+	startSplitNode = nodes[ 0 ].node;
+	startOffset = startSplitNode.getOuterRange().start;
+	while ( allowedParents !== null && allowedParents.indexOf( startSplitNode.getParent().type ) === -1 ) {
+		if ( startSplitNode.getParent().indexOf( startSplitNode ) > 0 ) {
+			startSplitRequired = true;
+		}
+		startSplitNode = startSplitNode.getParent();
+		if ( startSplitRequired ) {
+			startSplitNodes.unshift( startSplitNode );
+		} else {
+			startOffset = startSplitNode.getOuterRange().start;
+		}
+		outerDepth++;
+	}
+
+	// Find end split point, if required
+	endSplitNode = nodes[ nodes.length - 1 ].node;
+	endOffset = endSplitNode.getOuterRange().end;
+	while ( allowedParents !== null && allowedParents.indexOf( endSplitNode.getParent().type ) === -1 ) {
+		if ( endSplitNode.getParent().indexOf( endSplitNode ) < endSplitNode.getParent().getChildren().length - 1 ) {
+			endSplitRequired = true;
+		}
+		endSplitNode = endSplitNode.getParent();
+		if ( endSplitRequired ) {
+			endSplitNodes.unshift( endSplitNode );
+		} else {
+			endOffset = endSplitNode.getOuterRange().end;
+		}
+	}
+
+	// We have to exclude insertions while doing splits, because we want the range to be
+	// exactly what we're isolating, we don't want it to grow to include the separators
+	// we're inserting (which would happen if one of them is immediately adjacent to the range)
+	oldExclude = this.willExcludeInsertions();
+	this.setExcludeInsertions( true );
+
+	if ( startSplitRequired ) {
+		createSplits( startSplitNodes, true );
+	}
+
+	if ( endSplitRequired ) {
+		createSplits( endSplitNodes, false );
+	}
+
+	this.setExcludeInsertions( oldExclude );
+
+	this.unwrapNodes( outerDepth, 0 );
+
+	return this;
+};
+
+/*!
+ * VisualEditor DataString class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * Wrapper class to read document data as a plain text string.
+ *
+ * @class
+ * @extends unicodeJS.TextString
+ * @constructor
+ * @param {Array} data Document data
+ */
+ve.dm.DataString = function VeDmDataString( data ) {
+	this.data = data;
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.DataString, unicodeJS.TextString );
+
+/**
+ * Reads the character from the specified position in the data.
+ *
+ * @param {number} position Position in data to read from
+ * @return {string|null} Character at position, or null if not text
+ */
+ve.dm.DataString.prototype.read = function ( position ) {
+	var dataAt = this.data[ position ];
+	// check data is present at position and is not an element
+	if ( dataAt !== undefined && dataAt.type === undefined ) {
+		return typeof dataAt === 'string' ? dataAt : dataAt[ 0 ];
+	} else {
+		return null;
+	}
+};
+
+/*!
+ * VisualEditor DataModel Document class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel document.
+ *
+ * WARNING: The data parameter is passed by reference. Do not modify a data array after passing
+ * it to this constructor, and do not construct multiple Documents with the same data array. If you
+ * need to do these things, make a deep copy (ve#copy) of the data array and operate on the
+ * copy.
+ *
+ * @class
+ * @extends ve.Document
+ * @constructor
+ * @param {Array|ve.dm.ElementLinearData|ve.dm.FlatLinearData} data Raw linear model data,
+ *  ElementLinearData or FlatLinearData to be split
+ * @param {ve.dm.NodeFactory} nodeFactory Factory for creating ve.dm.Node instances
+ * @param {HTMLDocument} [htmlDocument] HTML document the data was converted from, if any.
+ *  If omitted, a new document will be created. If data is an HTMLDocument, this parameter is
+ *  ignored.
+ * @param {ve.dm.Document} [parentDocument] Document to use as root for created nodes
+ * @param {ve.dm.InternalList} [internalList] Internal list to clone; passed when creating a document slice
+ * @param {Array} [innerWhitespace] Inner whitespace to clone; passed when creating a document slice
+ * @param {string} [lang] Language code
+ * @param {string} [dir='ltr'] Directionality (ltr/rtl)
+ */
+ve.dm.Document = function VeDmDocument( data, nodeFactory, htmlDocument, parentDocument, internalList, innerWhitespace, lang, dir ) {
+	var fullData, result, split, doc, root;
+
+	// Parent constructor
+	ve.Document.call( this, new ve.dm.DocumentNode() );
+
+	// use ve.dm.nodeFactory for legacy
+	nodeFactory = nodeFactory || ve.dm.nodeFactory;
+
+	if ( !( nodeFactory instanceof ve.dm.NodeFactory ) ) {
+		throw new Error( 'API changed: 2nd argument must be of type ve.dm.NodeFactory' );
+	}
+
+	// Initialization
+	split = true;
+	doc = parentDocument || this;
+	root = this.documentNode;
+
+	this.nodeFactory = nodeFactory;
+
+	this.lang = lang || 'en';
+	this.dir = dir || 'ltr';
+
+	this.documentNode.setRoot( root );
+	// ve.Document already called setDocument(), but it could be that doc !== this
+	// so call it again
+	this.documentNode.setDocument( doc );
+	this.internalList = internalList ? internalList.clone( this ) : new ve.dm.InternalList( this );
+	this.innerWhitespace = innerWhitespace ? ve.copy( innerWhitespace ) : new Array( 2 );
+
+	// Properties
+	this.parentDocument = parentDocument;
+	this.completeHistory = [];
+
+	if ( data instanceof ve.dm.ElementLinearData ) {
+		// Pre-split ElementLinearData
+		split = false;
+		fullData = data;
+	} else if ( data instanceof ve.dm.FlatLinearData ) {
+		// Element + Meta linear data
+		fullData = data;
+	} else {
+		// Raw linear model data
+		fullData = new ve.dm.FlatLinearData(
+			new ve.dm.IndexValueStore(),
+			Array.isArray( data ) ? data : []
+		);
+	}
+	this.store = fullData.getStore();
+	this.htmlDocument = htmlDocument || ve.createDocumentFromHtml( '' );
+
+	if ( split ) {
+		result = this.constructor.static.splitData( fullData, nodeFactory );
+		this.data = result.elementData;
+		this.metadata = result.metaData;
+	} else {
+		this.data = fullData;
+		this.metadata = new ve.dm.MetaLinearData( this.data.getStore(), new Array( 1 + this.data.getLength() ) );
+	}
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.Document, ve.Document );
+
+/* Events */
+
+/**
+ * @event precommit
+ * Emitted when a transaction is about to be committed.
+ */
+
+/**
+ * @event presynchronize
+ * Emitted when a transaction has been applied to the linear model
+ * but the model tree has not yet been synchronized.
+ * @param {ve.dm.Transaction} tx Transaction that is about to be synchronized
+ */
+
+/**
+ * @event transact
+ * Emitted when a transaction has been committed.
+ * @param {ve.dm.Transaction} tx Transaction that was just processed
+ */
+
+/* Static methods */
+
+/**
+ * Split data into element data and meta data.
+ *
+ * @static
+ * @param {ve.dm.FlatLinearData} fullData Full data from converter
+ * @return {Object} Object containing element linear data and meta linear data (if processed)
+ */
+ve.dm.Document.static.splitData = function ( fullData, nodeFactory ) {
+	var i, len, offset, meta, elementData, metaData;
+
+	elementData = new ve.dm.ElementLinearData( fullData.getStore(), [], nodeFactory );
+	// Sparse array containing the metadata for each offset
+	// Each element is either undefined, or an array of metadata elements
+	// Because the indexes in the metadata array represent offsets in the data array, the
+	// metadata array has one element more than the data array.
+	metaData = new ve.dm.MetaLinearData( fullData.getStore() );
+
+	// Separate element data and metadata and build node tree
+	for ( i = 0, len = fullData.getLength(); i < len; i++ ) {
+		if ( !fullData.isElementData( i ) ) {
+			// Add to element linear data
+			elementData.push( fullData.getData( i ) );
+		} else {
+			// Element data
+			if ( fullData.isOpenElementData( i ) &&
+				ve.dm.metaItemFactory.lookup( fullData.getType( i ) )
+			) {
+				// Metadata
+				meta = fullData.getData( i );
+				offset = elementData.getLength();
+				// Put the meta data in the meta-linmod
+				if ( !metaData.getData( offset ) ) {
+					metaData.setData( offset, [] );
+				}
+				metaData.getData( offset ).push( meta );
+				// Skip close element
+				i++;
+				continue;
+			}
+			// Add to element linear data
+			elementData.push( fullData.getData( i ) );
+		}
+	}
+	// Pad out the metadata length to element data length + 1
+	if ( metaData.getLength() < elementData.getLength() + 1 ) {
+		metaData.data = metaData.data.concat(
+			new Array( 1 + elementData.getLength() - metaData.getLength() )
+		);
+	}
+
+	return {
+		elementData: elementData,
+		metaData: metaData
+	};
+};
+
+/**
+ * Apply annotations to content data.
+ *
+ * This method modifies data in place.
+ *
+ * @static
+ * @param {Array} data Data to apply annotations to
+ * @param {ve.dm.AnnotationSet} annotationSet Annotations to apply
+ */
+ve.dm.Document.static.addAnnotationsToData = function ( data, annotationSet ) {
+	var i, length, newAnnotationSet, store = annotationSet.getStore();
+	if ( annotationSet.isEmpty() ) {
+		// Nothing to do
+		return;
+	}
+	// Apply annotations to data
+	for ( i = 0, length = data.length; i < length; i++ ) {
+		if ( data[ i ].type ) {
+			// Element
+			continue;
+		} else if ( !Array.isArray( data[ i ] ) ) {
+			// Wrap in array
+			data[ i ] = [ data[ i ] ];
+			newAnnotationSet = annotationSet.clone();
+		} else {
+			// Add to existing array
+			newAnnotationSet = new ve.dm.AnnotationSet( store, data[ i ][ 1 ] );
+			newAnnotationSet.addSet( annotationSet.clone() );
+		}
+		data[ i ][ 1 ] = newAnnotationSet.getIndexes();
+	}
+};
+
+/* Methods */
+
+/**
+ * @inheritdoc
+ */
+ve.dm.Document.prototype.getDocumentNode = function () {
+	if ( !this.documentNode.length && !this.documentNode.getDocument().buildingNodeTree ) {
+		this.buildNodeTree();
+	}
+	return this.documentNode;
+};
+
+/**
+ * Build the node tree.
+ */
+ve.dm.Document.prototype.buildNodeTree = function () {
+	var i, len, node, children,
+		currentStack, parentStack, nodeStack, currentNode, doc,
+		textLength = 0,
+		inTextNode = false,
+		nodeFactory = this.nodeFactory;
+
+	// Build a tree of nodes and nodes that will be added to them after a full scan is complete,
+	// then from the bottom up add nodes to their potential parents. This avoids massive length
+	// updates being broadcast upstream constantly while building is underway.
+	currentStack = [];
+	parentStack = [ this.documentNode ];
+	// Stack of stacks
+	nodeStack = [ parentStack, currentStack ];
+	currentNode = this.documentNode;
+	doc = this.documentNode.getDocument();
+
+	// Separate element data and metadata and build node tree
+	for ( i = 0, len = this.data.getLength(); i < len; i++ ) {
+		if ( !this.data.isElementData( i ) ) {
+			// Text node opening
+			if ( !inTextNode ) {
+				// Create a lengthless text node
+				node = new ve.dm.TextNode();
+				node.setDocument( doc );
+				// Put the node on the current inner stack
+				currentStack.push( node );
+				currentNode = node;
+				// Set a flag saying we're inside a text node
+				inTextNode = true;
+			}
+			// Track the length
+			textLength++;
+		} else {
+			// Text node closing
+			if ( inTextNode ) {
+				// Finish the text node by setting the length
+				currentNode.setLength( textLength );
+				// Put the state variables back as they were
+				currentNode = parentStack[ parentStack.length - 1 ];
+				inTextNode = false;
+				textLength = 0;
+			}
+			// Element open/close
+			if ( this.data.isOpenElementData( i ) ) {
+				// Branch or leaf node opening
+				// Create a childless node
+				node = nodeFactory.createFromElement( this.data.getData( i ) );
+				node.setDocument( doc );
+				// Put the childless node on the current inner stack
+				currentStack.push( node );
+				if ( nodeFactory.canNodeHaveChildren( node.getType() ) ) {
+					// Create a new inner stack for this node
+					parentStack = currentStack;
+					currentStack = [];
+					nodeStack.push( currentStack );
+					currentNode = node;
+				} else {
+					// Assert that the next element is a closing element for this node,
+					// and skip over it.
+					if (
+						!this.data.isCloseElementData( i + 1 ) ||
+						this.data.getType( i + 1 ) !== this.data.getType( i )
+					) {
+						throw new Error( 'Opening element for node that cannot have children must be followed by closing element' );
+					}
+					i++;
+				}
+			} else {
+				// Branch or leaf node closing
+				// Pop this node's inner stack from the outer stack. It'll have all of the
+				// node's child nodes fully constructed
+				children = nodeStack.pop();
+				currentStack = parentStack;
+				parentStack = nodeStack[ nodeStack.length - 2 ];
+				if ( !parentStack ) {
+					// This can only happen if we got unbalanced data
+					throw new Error( 'Unbalanced input passed to document' );
+				}
+				// Attach the children to the node
+				ve.batchSplice( currentNode, 0, 0, children );
+				currentNode = parentStack[ parentStack.length - 1 ];
+			}
+		}
+	}
+
+	if ( inTextNode ) {
+		// Text node ended by end-of-input rather than by an element
+		currentNode.setLength( textLength );
+		// Don't bother updating currentNode et al, we don't use them below
+	}
+
+	// State variable that allows nodes to know that they are being
+	// appended in order. Used by ve.dm.InternalList.
+	doc.buildingNodeTree = true;
+
+	// The end state is stack = [ [this.documentNode] [ array, of, its, children ] ]
+	// so attach all nodes in stack[1] to the root node
+	ve.batchSplice( this.documentNode, 0, 0, currentStack );
+
+	doc.buildingNodeTree = false;
+};
+
+/**
+ * Get the length of the document. This is also the highest valid offset in the document.
+ *
+ * @return {number} Length of the document
+ */
+ve.dm.Document.prototype.getLength = function () {
+	return this.data.getLength();
+};
+
+/**
+ * Apply a transaction's effects on the content data.
+ *
+ * @method
+ * @param {ve.dm.Transaction} transaction Transaction to apply
+ * @fires transact
+ * @throws {Error} Cannot commit a transaction that has already been committed
+ */
+ve.dm.Document.prototype.commit = function ( transaction ) {
+	var doc = this;
+	if ( transaction.hasBeenApplied() ) {
+		throw new Error( 'Cannot commit a transaction that has already been committed' );
+	}
+	this.emit( 'precommit' );
+	new ve.dm.TransactionProcessor( this, transaction ).process( function () {
+		doc.emit( 'presynchronize', transaction );
+	} );
+	this.completeHistory.push( transaction );
+	this.emit( 'transact', transaction );
+};
+
+/**
+ * Get a slice or copy of the document data.
+ *
+ * @method
+ * @param {ve.Range} [range] Range of data to get, all data will be given by default
+ * @param {boolean} [deep=false] Whether to return a deep copy (WARNING! This may be very slow)
+ * @return {Array} Slice or copy of document data
+ */
+ve.dm.Document.prototype.getData = function ( range, deep ) {
+	return this.data.getDataSlice( range, deep );
+};
+
+/**
+ * Get a slice or copy of the document metadata.
+ *
+ * @method
+ * @param {ve.Range} [range] Range of metadata to get, all metadata will be given by default
+ * @param {boolean} [deep=false] Whether to return a deep copy (WARNING! This may be very slow)
+ * @return {Array} Slice or copy of document metadata
+ */
+ve.dm.Document.prototype.getMetadata = function ( range, deep ) {
+	return this.metadata.getDataSlice( range, deep );
+};
+
+/**
+ * Get the HTMLDocument associated with this document.
+ *
+ * @method
+ * @return {HTMLDocument} Associated document
+ */
+ve.dm.Document.prototype.getHtmlDocument = function () {
+	return this.htmlDocument;
+};
+
+/**
+ * Get the document's index-value store
+ *
+ * @method
+ * @return {ve.dm.IndexValueStore} The document's index-value store
+ */
+ve.dm.Document.prototype.getStore = function () {
+	return this.store;
+};
+
+/**
+ * Get the document's internal list
+ *
+ * @return {ve.dm.InternalList} The document's internal list
+ */
+ve.dm.Document.prototype.getInternalList = function () {
+	return this.internalList;
+};
+
+/**
+ * Get the document's inner whitespace
+ *
+ * @return {Array} The document's inner whitespace
+ */
+ve.dm.Document.prototype.getInnerWhitespace = function () {
+	return this.innerWhitespace;
+};
+
+/**
+ * Clone a sub-document from a data slice of this document.
+ *
+ * The new document's internal list will be only contain references to data within the slice.
+ *
+ * @param {ve.Range} range Range of data to slice
+ * @return {ve.dm.DocumentSlice} New document
+ */
+ve.dm.Document.prototype.cloneSliceFromRange = function ( range ) {
+	var i, first, last, firstNode, lastNode,
+		data, slice, originalRange, balancedRange,
+		balancedNodes, needsContext,
+		startNode = this.getBranchNodeFromOffset( range.start ),
+		endNode = this.getBranchNodeFromOffset( range.end ),
+		selection = this.selectNodes( range, 'siblings' ),
+		balanceOpenings = [],
+		balanceClosings = [],
+		contextOpenings = [],
+		contextClosings = [];
+
+	// Fix up selection to remove empty items in unwrapped nodes
+	// TODO: fix this is selectNodes
+	while ( selection[ 0 ] && selection[ 0 ].range && selection[ 0 ].range.isCollapsed() && !selection[ 0 ].node.isWrapped() ) {
+		selection.shift();
+	}
+
+	i = selection.length - 1;
+	while ( selection[ i ] && selection[ i ].range && selection[ i ].range.isCollapsed() && !selection[ i ].node.isWrapped() ) {
+		selection.pop();
+		i--;
+	}
+
+	if ( selection.length === 0 ) {
+		// Nothing selected
+		data = new ve.dm.ElementLinearData( this.getStore(), [], this.getNodeFactory() );
+		originalRange = balancedRange = new ve.Range( 0 );
+	} else if ( startNode === endNode ) {
+		// Nothing to balance
+		balancedNodes = selection;
+	} else {
+		// Selection is not balanced
+		first = selection[ 0 ];
+		last = selection[ selection.length - 1 ];
+		firstNode = first.node;
+		lastNode = last.node;
+		while ( !firstNode.isWrapped() ) {
+			firstNode = firstNode.getParent();
+		}
+		while ( !lastNode.isWrapped() ) {
+			lastNode = lastNode.getParent();
+		}
+
+		if ( first.range ) {
+			while ( true ) {
+				while ( !startNode.isWrapped() ) {
+					startNode = startNode.getParent();
+				}
+				balanceOpenings.push( startNode.getClonedElement() );
+				if ( startNode === firstNode ) {
+					break;
+				}
+				startNode = startNode.getParent();
+			}
+		}
+
+		if ( last !== first && last.range ) {
+			while ( true ) {
+				while ( !endNode.isWrapped() ) {
+					endNode = endNode.getParent();
+				}
+				balanceClosings.push( { type: '/' + endNode.getType() } );
+				if ( endNode === lastNode ) {
+					break;
+				}
+				endNode = endNode.getParent();
+			}
+		}
+
+		balancedNodes = this.selectNodes(
+			new ve.Range( firstNode.getOuterRange().start, lastNode.getOuterRange().end ),
+			'covered'
+		);
+	}
+
+	if ( !balancedRange ) {
+		// Check if any of the balanced siblings need more context for insertion anywhere
+		needsContext = false;
+		for ( i = balancedNodes.length - 1; i >= 0; i-- ) {
+			if ( balancedNodes[ i ].node.getParentNodeTypes() !== null ) {
+				needsContext = true;
+				break;
+			}
+		}
+
+		if ( needsContext ) {
+			startNode = balancedNodes[ 0 ].node;
+			// Keep wrapping until the outer node can be inserted anywhere
+			while ( startNode.getParent() && startNode.getParentNodeTypes() !== null ) {
+				startNode = startNode.getParent();
+				contextOpenings.push( startNode.getClonedElement() );
+				contextClosings.push( { type: '/' + startNode.getType() } );
+			}
+		}
+
+		// Final data:
+		//  contextOpenings + balanceOpenings + data slice + balanceClosings + contextClosings
+		data = new ve.dm.ElementLinearData(
+			this.getStore(),
+			contextOpenings.reverse()
+				.concat( balanceOpenings.reverse() )
+				.concat( this.data.slice( range.start, range.end ) )
+				.concat( balanceClosings )
+				.concat( contextClosings ),
+			this.getNodeFactory()
+		);
+		originalRange = new ve.Range(
+			contextOpenings.length + balanceOpenings.length,
+			contextOpenings.length + balanceOpenings.length + range.getLength()
+		);
+		balancedRange = new ve.Range(
+			contextOpenings.length,
+			contextOpenings.length + balanceOpenings.length + range.getLength() + balanceClosings.length
+		);
+	}
+
+	// Copy over the internal list
+	ve.batchSplice(
+		data.data, data.getLength(), 0,
+		this.getData( this.getInternalList().getListNode().getOuterRange(), true )
+	);
+
+	// The internalList is rebuilt by the document constructor
+	slice = new ve.dm.DocumentSlice(
+		data, undefined, undefined, this.getInternalList().clone(), originalRange, balancedRange
+	);
+	return slice;
+};
+
+/**
+ * Clone a sub-document from a range in this document. The new document's store and internal list will be
+ * clones of the ones in this document.
+ *
+ * @param {ve.Range} range Range of data to clone
+ * @return {ve.dm.Document} New document
+ */
+ve.dm.Document.prototype.cloneFromRange = function ( range ) {
+	var data, newDoc,
+		store = this.getStore().clone(),
+		listRange = this.getInternalList().getListNode().getOuterRange();
+
+	data = ve.copy( this.getFullData( range, true ) );
+	if ( range.start > listRange.start || range.end < listRange.end ) {
+		// The range does not include the entire internal list, so add it
+		data = data.concat( this.getFullData( listRange ) );
+	}
+	newDoc = this.createDocument(
+		new ve.dm.FlatLinearData( store, data ),
+		this.nodeFactory,
+		this.getHtmlDocument(), undefined, this.getInternalList(), undefined,
+		this.getLang(), this.getDir()
+	);
+	// Record the length of the internal list at the time the slice was created so we can
+	// reconcile additions properly
+	newDoc.origDoc = this;
+	newDoc.origInternalListLength = this.internalList.getItemNodeCount();
+	return newDoc;
+};
+
+/**
+ * Get the full document data including metadata.
+ *
+ * Metadata will be into the document data to produce the "full data" result. If a range is passed,
+ * metadata at the edges of the range won't be included unless edgeMetadata is set to true. If
+ * no range is passed, the entire document's data is returned and metadata at the edges is
+ * included.
+ *
+ * @param {ve.Range} [range] Range to get full data for. If omitted, all data will be returned
+ * @param {boolean} [edgeMetadata=false] Include metadata at the edges of the range
+ * @return {Array} Data with metadata interleaved
+ */
+ve.dm.Document.prototype.getFullData = function ( range, edgeMetadata ) {
+	var j, jLen,
+		i = range ? range.start : 0,
+		iLen = range ? range.end : this.data.getLength(),
+		result = [];
+	if ( edgeMetadata === undefined ) {
+		edgeMetadata = !range;
+	}
+	while ( i <= iLen ) {
+		if ( this.metadata.getData( i ) && ( edgeMetadata || ( i !== range.start && i !== range.end ) ) ) {
+			for ( j = 0, jLen = this.metadata.getData( i ).length; j < jLen; j++ ) {
+				result.push( this.metadata.getData( i )[ j ] );
+				result.push( { type: '/' + this.metadata.getData( i )[ j ].type } );
+			}
+		}
+		if ( i < iLen ) {
+			result.push( this.data.getData( i ) );
+		}
+		i++;
+	}
+	return result;
+};
+
+/**
+ * Get the nearest word boundary.
+ *
+ * @method
+ * @param {number} offset Offset to start from
+ * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
+ * @return {number} Nearest word boundary
+ */
+ve.dm.Document.prototype.getSiblingWordBoundary = function ( offset, direction ) {
+	var dataString = new ve.dm.DataString( this.getData() );
+	return unicodeJS.wordbreak.moveBreakOffset( direction, dataString, offset, true );
+};
+
+/**
+ * Get the relative word or character boundary.
+ *
+ * @method
+ * @param {number} offset Offset to start from
+ * @param {number} direction Direction to prefer matching offset in, -1 for left and 1 for right
+ * @param {string} [unit] Unit [word|character]
+ * @return {number} Relative offset
+ */
+ve.dm.Document.prototype.getRelativeOffset = function ( offset, direction, unit ) {
+	var relativeContentOffset, relativeStructuralOffset, newOffset, adjacentDataOffset, isFocusable,
+		data = this.data,
+		nodeFactory = this.nodeFactory;
+	if ( unit === 'word' ) { // word
+		// Method getSiblingWordBoundary does not "move/jump" over element data. If passed offset is
+		// an element data offset then the same offset is returned - and in such case this method
+		// fallback to the other path (character) which does "move/jump" over element data.
+		newOffset = this.getSiblingWordBoundary( offset, direction );
+		if ( offset === newOffset ) {
+			newOffset = this.getRelativeOffset( offset, direction, 'character' );
+		}
+		return newOffset;
+	} else { // character
+		// Check if we are adjacent to a focusable node
+		adjacentDataOffset = offset + ( direction > 0 ? 0 : -1 );
+		if (
+			data.isElementData( adjacentDataOffset ) &&
+			nodeFactory.isNodeFocusable( data.getType( adjacentDataOffset ) )
+		) {
+			// We are adjacent to a focusableNode, move inside it
+			return offset + direction;
+		}
+		relativeContentOffset = data.getRelativeContentOffset( offset, direction );
+		relativeStructuralOffset = data.getRelativeStructuralOffset( offset, direction, true );
+		// Check the structural offset is not in the wrong direction
+		if ( ( relativeStructuralOffset - offset < 0 ? -1 : 1 ) !== direction ) {
+			relativeStructuralOffset = offset;
+		} else {
+			isFocusable = ( relativeStructuralOffset - offset < 0 ? -1 : 1 ) === direction &&
+				data.isElementData( relativeStructuralOffset + direction ) &&
+				nodeFactory.isNodeFocusable( data.getType( relativeStructuralOffset + direction ) );
+		}
+		// Check if we've moved into a slug or a focusableNode
+		if ( isFocusable || this.hasSlugAtOffset( relativeStructuralOffset ) ) {
+			if ( isFocusable ) {
+				relativeStructuralOffset += direction;
+			}
+			// Check if the relative content offset is in the opposite direction we are trying to go
+			if (
+				relativeContentOffset === offset ||
+				( relativeContentOffset - offset < 0 ? -1 : 1 ) !== direction
+			) {
+				return relativeStructuralOffset;
+			}
+			// There's a slug nearby, go into it if it's closer
+			return direction > 0 ?
+				Math.min( relativeContentOffset, relativeStructuralOffset ) :
+				Math.max( relativeContentOffset, relativeStructuralOffset );
+		} else {
+			// Don't allow the offset to move in the wrong direction
+			return direction > 0 ?
+				Math.max( relativeContentOffset, offset ) :
+				Math.min( relativeContentOffset, offset );
+		}
+	}
+};
+
+/**
+ * Get the relative range.
+ *
+ * @method
+ * @param {ve.Range} range Input range
+ * @param {number} direction Direction to look in, +1 or -1
+ * @param {string} unit Unit [word|character]
+ * @param {boolean} expand Expanding range
+ * @param {ve.Range} [limit] Optional limiting range. If the relative range is not in this range
+ *                           the input range is returned instead.
+ * @return {ve.Range} Relative range
+ */
+ve.dm.Document.prototype.getRelativeRange = function ( range, direction, unit, expand, limit ) {
+	var contentOrSlugOffset,
+		focusableNode,
+		newOffset,
+		newRange,
+		to = range.to;
+
+	// If you have a non-collapsed range and you move, collapse to the end
+	// in the direction you moved, provided you end up at a content or slug offset
+	if ( !range.isCollapsed() && !expand ) {
+		newOffset = direction > 0 ? range.end : range.start;
+		if ( this.data.isContentOffset( newOffset ) || this.hasSlugAtOffset( newOffset ) ) {
+			return new ve.Range( newOffset );
+		} else {
+			to = newOffset;
+		}
+	}
+
+	contentOrSlugOffset = this.getRelativeOffset( to, direction, unit );
+
+	focusableNode = this.getNearestFocusableNode( to, direction, contentOrSlugOffset );
+	if ( focusableNode ) {
+		newRange = focusableNode.getOuterRange( direction === -1 );
+	} else {
+		newRange = new ve.Range( contentOrSlugOffset );
+	}
+	if ( limit && !limit.containsRange( newRange ) ) {
+		return range;
+	}
+	if ( expand ) {
+		return new ve.Range( range.from, newRange.to );
+	} else {
+		return newRange;
+	}
+};
+
+/**
+ * Get the nearest focusable node.
+ *
+ * @method
+ * @param {number} offset Offset to start looking at
+ * @param {number} direction Direction to look in, +1 or -1
+ * @param {number} limit Stop looking after reaching certain offset
+ */
+ve.dm.Document.prototype.getNearestFocusableNode = function ( offset, direction, limit ) {
+	// It is never an offset of the node, but just an offset for which getNodeFromOffset should
+	// return that node. Usually it would be node offset + 1 or offset of node closing tag.
+	var coveredOffset,
+		nodeFactory = this.nodeFactory;
+	this.data.getRelativeOffset(
+		offset,
+		direction === 1 ? 0 : -1,
+		function ( index, limit ) {
+			// Our result must be between offset and limit
+			if ( index >= Math.max( offset, limit ) || index < Math.min( offset, limit ) ) {
+				return true;
+			}
+			if (
+				this.isOpenElementData( index ) &&
+				nodeFactory.isNodeFocusable( this.getType( index ) )
+			) {
+				coveredOffset = index + 1;
+				return true;
+			}
+			if (
+				this.isCloseElementData( index ) &&
+				nodeFactory.isNodeFocusable( this.getType( index ) )
+			) {
+				coveredOffset = index;
+				return true;
+			}
+		},
+		limit
+	);
+	if ( coveredOffset ) {
+		return this.getDocumentNode().getNodeFromOffset( coveredOffset );
+	} else {
+		return null;
+	}
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.Document.prototype.getBranchNodeFromOffset = function ( offset ) {
+	if ( offset < 0 || offset > this.data.getLength() ) {
+		throw new Error( 've.dm.Document.getBranchNodeFromOffset(): offset ' + offset + ' is out of bounds' );
+	}
+	return ve.Document.prototype.getBranchNodeFromOffset.call( this, offset );
+};
+
+/**
+ * Check if there is a slug at an offset.
+ *
+ * @method
+ * @param {number} offset Offset to check for a slug at
+ * @return {boolean} There is a slug at the offset
+ */
+ve.dm.Document.prototype.hasSlugAtOffset = function ( offset ) {
+	var node = this.getBranchNodeFromOffset( offset );
+	return node ? node.hasSlugAtOffset( offset ) : false;
+};
+
+/**
+ * Get the content data of a node.
+ *
+ * @method
+ * @param {ve.dm.Node} node Node to get content data for
+ * @return {Array|null} List of content and elements inside node or null if node is not found
+ */
+ve.dm.Document.prototype.getDataFromNode = function ( node ) {
+	var length = node.getLength(),
+		offset = node.getOffset();
+	if ( offset >= 0 ) {
+		// XXX: If the node is wrapped in an element than we should increment the offset by one so
+		// we only return the content inside the element.
+		if ( node.isWrapped() ) {
+			offset++;
+		}
+		return this.data.slice( offset, offset + length );
+	}
+	return null;
+};
+
+/**
+ * Rebuild one or more nodes following a change in document data.
+ *
+ * The data provided to this method may contain either one node or multiple sibling nodes, but it
+ * must be balanced and valid. Data provided to this method also may not contain any content at the
+ * top level. The tree is updated during this operation.
+ *
+ * Process:
+ *
+ *  1. Nodes between {index} and {index} + {numNodes} in {parent} will be removed
+ *  2. Data will be retrieved from this.data using {offset} and {newLength}
+ *  3. A document fragment will be generated from the retrieved data
+ *  4. The document fragment's nodes will be inserted into {parent} at {index}
+ *
+ * Use cases:
+ *
+ *  1. Rebuild old nodes and offset data after a change to the linear model.
+ *  2. Insert new nodes and offset data after a insertion in the linear model.
+ *
+ * @param {ve.dm.Node} parent Parent of the node(s) being rebuilt
+ * @param {number} index Index within parent to rebuild or insert nodes
+ *
+ *  - If {numNodes} == 0: Index to insert nodes at
+ *  - If {numNodes} >= 1: Index of first node to rebuild
+ * @param {number} numNodes Total number of nodes to rebuild
+ *
+ *  - If {numNodes} == 0: Nothing will be rebuilt, but the node(s) built from data will be
+ *    inserted before {index}. To insert nodes at the end, use number of children in 'parent'
+ *  - If {numNodes} == 1: Only the node at {index} will be rebuilt
+ *  - If {numNodes} > 1: The node at {index} and the next {numNodes-1} nodes will be rebuilt
+ * @param {number} offset Linear model offset to rebuild from
+ * @param {number} newLength Length of data in linear model to rebuild or insert nodes for
+ * @return {ve.dm.Node[]} Array containing the rebuilt/inserted nodes
+ */
+ve.dm.Document.prototype.rebuildNodes = function ( parent, index, numNodes, offset, newLength ) {
+	var // Get a slice of the document where it's been changed
+		data = this.data.sliceObject( offset, offset + newLength ),
+		// Build document fragment from data
+		fragment = this.createDocument( data, this.nodeFactory, this.htmlDocument, this ),
+		// Get generated child nodes from the document fragment
+		nodes = fragment.getDocumentNode().getChildren();
+	// Replace nodes in the model tree
+	ve.batchSplice( parent, index, numNodes, nodes );
+	// Return inserted nodes
+	return nodes;
+};
+
+/**
+ * Rebuild the entire node tree from linear model data.
+ */
+ve.dm.Document.prototype.rebuildTree = function () {
+	var documentNode = this.getDocumentNode();
+	this.rebuildNodes(
+		documentNode,
+		0,
+		documentNode.getChildren().length,
+		0,
+		this.data.getLength()
+	);
+};
+
+/**
+ * Fix up data so it can safely be inserted into the document data at an offset.
+ *
+ * TODO: this function needs more work but it seems to work, mostly
+ *
+ * @method
+ * @param {Array} data Snippet of linear model data to insert
+ * @param {number} offset Offset in the linear model where the caller wants to insert data
+ * @return {Object} A (possibly modified) copy of data, a (possibly modified) offset,
+ * and a number of elements to remove and the position of the original data in the new data
+ */
+ve.dm.Document.prototype.fixupInsertion = function ( data, offset ) {
+	var
+		// Array where we build the return value
+		newData = [],
+
+		nodeFactory = this.nodeFactory,
+
+		// Temporary variables for handling combining marks
+		insert, annotations,
+		// An unattached combining mark may require the insertion to remove a character,
+		// so we send this counter back in the result
+		remove = 0,
+
+		// *** Stacks ***
+		// Array of element openings (object). Openings in data are pushed onto this stack
+		// when they are encountered and popped off when they are closed
+		openingStack = [],
+		// Array of node objects. Closings in data that close nodes that were
+		// not opened in data (i.e. were already in the document) are pushed onto this stack
+		// and popped off when balanced out by an opening in data
+		closingStack = [],
+
+		// Track the position of the original data in the fixed up data for range adjustments
+		insertedDataOffset = 0,
+		insertedDataLength = data.length,
+
+		// Pointer to this document for private methods
+		doc = this,
+
+		// *** State persisting across iterations of the outer loop ***
+		// The node (from the document) we're currently in. When in a node that was opened
+		// in data, this is set to its first ancestor that is already in the document
+		parentNode,
+		// The type of the node we're currently in, even if that node was opened within data
+		parentType,
+		// Whether we are currently in a text node
+		inTextNode,
+		// Whether this is the first child of its parent
+		// The test for last child isn't a loop so we don't need to cache it
+		isFirstChild,
+
+		// *** Temporary variables that do not persist across iterations ***
+		// The type of the node we're currently inserting. When the to-be-inserted node
+		// is wrapped, this is set to the type of the outer wrapper.
+		childType,
+		// Stores the return value of getParentNodeTypes( childType )
+		allowedParents,
+		// Stores the return value of getChildNodeTypes( parentType )
+		allowedChildren,
+		// Whether parentType matches allowedParents
+		parentsOK,
+		// Whether childType matches allowedChildren
+		childrenOK,
+		// Array of opening elements to insert (for wrapping the to-be-inserted element)
+		openings,
+		// Array of closing elements to insert (for splitting nodes)
+		closings,
+		// Array of opening elements matching the elements in closings (in the same order)
+		reopenElements,
+
+		// *** Other variables ***
+		// Used to store values popped from various stacks
+		popped,
+		// Loop variables
+		i, j;
+
+	/**
+	 * Append a linear model element to newData and update the state.
+	 *
+	 * This function updates parentNode, parentType, openingStack and closingStack.
+	 *
+	 * @private
+	 * @method
+	 * @param {Object|Array|string} element Linear model element
+	 * @param {number} index Index in data that the element came from (for error reporting only)
+	 */
+	function writeElement( element, index ) {
+		var expectedType;
+
+		if ( element.type !== undefined ) {
+			// Content, do nothing
+			if ( element.type.charAt( 0 ) !== '/' ) {
+				// Opening
+				// Check if this opening balances an earlier closing of a node that was already in
+				// the document. This is only the case if openingStack is empty (otherwise we still
+				// have unclosed nodes from within data) and if this opening matches the top of
+				// closingStack
+				if ( openingStack.length === 0 && closingStack.length > 0 &&
+					closingStack[ closingStack.length - 1 ].getType() === element.type
+				) {
+					// The top of closingStack is now balanced out, so remove it
+					// Also restore parentNode from closingStack. While this is technically not
+					// entirely accurate (the current node is a new node that's a sibling of this
+					// node), it's good enough for the purposes of this algorithm
+					parentNode = closingStack.pop();
+				} else {
+					// This opens something new, put it on openingStack
+					openingStack.push( element );
+				}
+				parentType = element.type;
+			} else {
+				// Closing
+				// Make sure that this closing matches the currently opened node
+				if ( openingStack.length > 0 ) {
+					// The opening was on openingStack, so we're closing a node that was opened
+					// within data. Don't track that on closingStack
+					expectedType = openingStack.pop().type;
+				} else {
+					// openingStack is empty, so we're closing a node that was already in the
+					// document. This means we have to reopen it later, so track this on
+					// closingStack
+					expectedType = parentNode.getType();
+					closingStack.push( parentNode );
+					parentNode = parentNode.getParent();
+					if ( !parentNode ) {
+						throw new Error( 'Inserted data is trying to close the root node ' +
+							'(at index ' + index + ')' );
+					}
+					parentType = expectedType;
+
+					// Validate
+					// FIXME this breaks certain input, should fix it up, not scream and die
+					// For now we fall back to inserting balanced data, but then we miss out on
+					// a lot of the nice content adoption abilities of just fixing up the data in
+					// the context of the insertion point - an example of how this will fail is if
+					// you try to insert "b</p></li></ul><p>c" into "<p>a[cursor]d</p>"
+					if (
+						element.type !== '/' + expectedType &&
+						(
+							// Only throw an error if the content can't be adopted from one content
+							// branch to another
+							!nodeFactory.canNodeContainContent( element.type.slice( 1 ) ) ||
+							!nodeFactory.canNodeContainContent( expectedType )
+						)
+					) {
+						throw new Error( 'Cannot adopt content from ' + element.type +
+							' nodes into ' + expectedType + ' nodes (at index ' + index + ')' );
+					}
+				}
+			}
+		}
+		newData.push( element );
+	}
+
+	parentNode = this.getBranchNodeFromOffset( offset );
+	parentType = parentNode.getType();
+	inTextNode = false;
+	isFirstChild = doc.data.isOpenElementData( offset - 1 );
+
+	for ( i = 0; i < data.length; i++ ) {
+		if ( inTextNode && data[ i ].type !== undefined ) {
+			parentType = openingStack.length > 0 ?
+				openingStack[ openingStack.length - 1 ].type : parentNode.getType();
+		}
+		if ( data[ i ].type === undefined || data[ i ].type.charAt( 0 ) !== '/' ) {
+			childType = data[ i ].type || 'text';
+			openings = [];
+			closings = [];
+			reopenElements = [];
+			// Opening or content
+			// Make sure that opening this element here does not violate the parent/children/content
+			// rules. If it does, insert stuff to fix it
+
+			// If this node is content, check that the containing node can contain content. If not,
+			// wrap in a paragraph
+			if ( nodeFactory.isNodeContent( childType ) &&
+				!nodeFactory.canNodeContainContent( parentType )
+			) {
+				childType = 'paragraph';
+				openings.unshift( nodeFactory.getDataElement( childType ) );
+			}
+
+			// Check that this node is allowed to have the containing node as its parent. If not,
+			// wrap it until it's fixed
+			do {
+				allowedParents = nodeFactory.getParentNodeTypes( childType );
+				parentsOK = allowedParents === null ||
+					allowedParents.indexOf( parentType ) !== -1;
+				if ( !parentsOK ) {
+					// We can't have this as the parent
+					if ( allowedParents.length === 0 ) {
+						throw new Error( 'Cannot insert ' + childType + ' because it ' +
+							' cannot have a parent (at index ' + i + ')' );
+					}
+					// Open an allowed node around this node
+					childType = allowedParents[ 0 ];
+					openings.unshift( nodeFactory.getDataElement( childType ) );
+				}
+			} while ( !parentsOK );
+
+			// Check that the containing node can have this node as its child. If not, close nodes
+			// until it's fixed
+			do {
+				allowedChildren = nodeFactory.getChildNodeTypes( parentType );
+				childrenOK = allowedChildren === null ||
+					allowedChildren.indexOf( childType ) !== -1;
+				// Also check if we're trying to insert structure into a node that has to contain
+				// content
+				childrenOK = childrenOK && !(
+					!nodeFactory.isNodeContent( childType ) &&
+					nodeFactory.canNodeContainContent( parentType )
+				);
+				if ( !childrenOK ) {
+					// We can't insert this into this parent
+					if ( isFirstChild ) {
+						// This element is the first child of its parent, so
+						// abandon this fix up and try again one offset to the left
+						return this.fixupInsertion( data, offset - 1 );
+					}
+
+					// Close the parent and try one level up
+					closings.push( { type: '/' + parentType } );
+					if ( openingStack.length > 0 ) {
+						popped = openingStack.pop();
+						parentType = popped.type;
+						reopenElements.push( ve.copy( popped ) );
+						// The opening was on openingStack, so we're closing a node that was opened
+						// within data. Don't track that on closingStack
+					} else {
+						if ( !parentNode.getParent() ) {
+							throw new Error( 'Cannot insert ' + childType + ' even ' +
+								' after closing all containing nodes ' +
+								'(at index ' + i + ')' );
+						}
+						// openingStack is empty, so we're closing a node that was already in the
+						// document. This means we have to reopen it later, so track this on
+						// closingStack
+						closingStack.push( parentNode );
+						reopenElements.push( parentNode.getClonedElement() );
+						parentNode = parentNode.getParent();
+						parentType = parentNode.getType();
+					}
+				}
+			} while ( !childrenOK );
+
+			if (
+				i === 0 &&
+				childType === 'text' &&
+				ve.isUnattachedCombiningMark( data[ i ] )
+			) {
+				// Note we only need to check data[0] as combining marks further
+				// along should already have been merged
+				if ( doc.data.isElementData( offset - 1 ) ) {
+					// Inserting a unattached combining mark is generally pretty badly
+					// supported (browser rendering bugs), so we'll just prevent it.
+					continue;
+				} else {
+					offset--;
+					remove++;
+					insert = doc.data.getCharacterData( offset ) + data[ i ];
+					annotations = doc.data.getAnnotationIndexesFromOffset( offset );
+					if ( annotations.length ) {
+						insert = [ insert, annotations ];
+					}
+					data[ i ] = insert;
+				}
+			}
+
+			for ( j = 0; j < closings.length; j++ ) {
+				// writeElement() would update openingStack/closingStack, but we've already done
+				// that for closings
+				if ( i === 0 ) {
+					insertedDataOffset++;
+				} else {
+					insertedDataLength++;
+				}
+				newData.push( closings[ j ] );
+			}
+			for ( j = 0; j < openings.length; j++ ) {
+				if ( i === 0 ) {
+					insertedDataOffset++;
+				} else {
+					insertedDataLength++;
+				}
+				writeElement( openings[ j ], i );
+			}
+			writeElement( data[ i ], i );
+			if ( data[ i ].type === undefined ) {
+				// Special treatment for text nodes
+				inTextNode = true;
+				if ( openings.length > 0 ) {
+					// We wrapped the text node, update parentType
+					parentType = childType;
+				}
+				// If we didn't wrap the text node, then the node we're inserting into can have
+				// content, so we couldn't have closed anything
+			} else {
+				parentType = data[ i ].type;
+			}
+		} else {
+			// Closing
+			writeElement( data[ i ], i );
+			parentType = openingStack.length > 0 ?
+				openingStack[ openingStack.length - 1 ].type : parentNode.getType();
+		}
+	}
+
+	if ( closingStack.length > 0 && doc.data.isCloseElementData( offset ) ) {
+		// This element is the last child of its parent, so
+		// abandon this fix up and try again one offset to the right
+		return this.fixupInsertion( data, offset + 1 );
+	}
+
+	if ( inTextNode ) {
+		parentType = openingStack.length > 0 ?
+			openingStack[ openingStack.length - 1 ].type : parentNode.getType();
+	}
+
+	// Close unclosed openings
+	while ( openingStack.length > 0 ) {
+		popped = openingStack[ openingStack.length - 1 ];
+		// writeElement() will perform the actual pop() that removes
+		// popped from openingStack
+		writeElement( { type: '/' + popped.type }, i );
+	}
+	// Re-open closed nodes
+	while ( closingStack.length > 0 ) {
+		popped = closingStack[ closingStack.length - 1 ];
+		// writeElement() will perform the actual pop() that removes
+		// popped from closingStack
+		writeElement( popped.getClonedElement(), i );
+	}
+
+	return {
+		offset: offset,
+		data: newData,
+		remove: remove,
+		insertedDataOffset: insertedDataOffset,
+		insertedDataLength: insertedDataLength
+	};
+};
+
+/**
+ * Create a document given an HTML string.
+ *
+ * @method
+ * @param {string} html HTML to insert
+ * @param {Object} [importRules] The import rules with which to sanitize the HTML, if importing
+ * @return {ve.dm.Document} New document
+ */
+ve.dm.Document.prototype.newFromHtml = function ( html, importRules ) {
+	var htmlDoc = ve.createDocumentFromHtml( html ),
+		doc = ve.dm.converter.getModelFromDom( htmlDoc, {
+			targetDoc: this.getHtmlDocument(),
+			fromClipboard: !!importRules
+		}, this ),
+		data = doc.data;
+
+	// FIXME: This is a paste-specific thing and possibly should not be in the generic newFromHtml()
+	// function. Maybe make this be triggered by a pasteRules property?
+	// Clear metadata
+	doc.metadata = new ve.dm.MetaLinearData( doc.getStore(), new Array( 1 + data.getLength() ) );
+
+	if ( importRules ) {
+		data.sanitize( importRules.external || {} );
+		if ( importRules.all ) {
+			data.sanitize( importRules.all );
+		}
+	}
+
+	data.remapInternalListKeys( this.getInternalList() );
+	// Initialize node tree
+	// BUG T75569: This shouldn't be needed
+	doc.buildNodeTree();
+
+	return doc;
+};
+
+/**
+ * Find a text string within the document
+ *
+ * @param {string|RegExp} query Text to find, string or regex with no flags
+ * @param {boolean} [caseSensitive] Case sensitive search
+ * @param {boolean} [noOverlaps] Avoid overlapping matches
+ * @return {ve.Range[]} List of ranges where the string was found
+ */
+ve.dm.Document.prototype.findText = function ( query, caseSensitive, noOverlaps ) {
+	var i, l, len, match, offset, lines,
+		ranges = [],
+		text = this.data.getText(
+			true,
+			new ve.Range( 0, this.getInternalList().getListNode().getOuterRange().start )
+		);
+
+	if ( query instanceof RegExp ) {
+		query = new RegExp( query.source, caseSensitive ? 'g' : 'gi' );
+		offset = 0;
+		// Avoid multi-line matching by only matching within newlines
+		lines = text.split( '\n' );
+		for ( i = 0, l = lines.length; i < l; i++ ) {
+			while ( lines[ i ] && ( match = query.exec( lines[ i ] ) ) !== null ) {
+				// Skip empty string matches (e.g. with .*)
+				if ( match[ 0 ].length === 0 ) {
+					// Set lastIndex to the next character to avoid an infinite
+					// loop. Browsers differ in whether they do this for you
+					// for empty matches; see
+					// http://blog.stevenlevithan.com/archives/exec-bugs
+					query.lastIndex = match.index + 1;
+					continue;
+				}
+				ranges.push( new ve.Range(
+					offset + match.index,
+					offset + match.index + match[ 0 ].length
+				) );
+				if ( !noOverlaps ) {
+					query.lastIndex = match.index + 1;
+				}
+			}
+			offset += lines[ i ].length + 1;
+			query.lastIndex = 0;
+		}
+	} else {
+		if ( !caseSensitive ) {
+			text = text.toLowerCase();
+			query = query.toLowerCase();
+		}
+		len = query.length;
+		offset = -1;
+		while ( ( offset = text.indexOf( query, offset ) ) !== -1 ) {
+			ranges.push( new ve.Range( offset, offset + len ) );
+			offset += noOverlaps ? len : 1;
+		}
+	}
+
+	return ranges;
+};
+
+/**
+ * Get the length of the complete history stack. This is also the current pointer.
+ *
+ * @return {number} Length of the complete history stack
+ */
+ve.dm.Document.prototype.getCompleteHistoryLength = function () {
+	return this.completeHistory.length;
+};
+
+/**
+ * Get all the items in the complete history stack since a specified pointer.
+ *
+ * @param {number} pointer Pointer from where to start the slice
+ * @return {Array} Array of transaction objects with undo flag
+ */
+ve.dm.Document.prototype.getCompleteHistorySince = function ( pointer ) {
+	return this.completeHistory.slice( pointer );
+};
+
+/**
+ * Get the content language
+ *
+ * @return {string} Language code
+ */
+ve.dm.Document.prototype.getLang = function () {
+	return this.lang;
+};
+
+/**
+ * Get the content directionality
+ *
+ * @return {string} Directionality (ltr/rtl)
+ */
+ve.dm.Document.prototype.getDir = function () {
+	return this.dir;
+};
+
+/**
+ * Get the nodeFactory for this document
+ *
+ * @return {ve.dm.NodeFactory} Factory for ve.dm.Node instances
+ */
+ve.dm.Document.prototype.getNodeFactory = function () {
+	return this.nodeFactory;
+};
+
+/**
+ * Named constructor which allows to better control the creation of documents,
+ * such as subclassing or post-processing.
+ */
+ve.dm.Document.prototype.createDocument = function ( data, nodeFactory, htmlDocument, parentDocument, internalList, innerWhitespace, lang, dir ) {
+	return new ve.dm.Document( data, nodeFactory, htmlDocument, parentDocument, internalList, innerWhitespace, lang, dir );
+};
+
+/*!
+ * VisualEditor DataModel DocumentSlice class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel document slice
+ *
+ * @class
+ * @extends ve.dm.Document
+ * @constructor
+ * @param {HTMLDocument|Array|ve.dm.ElementLinearData|ve.dm.FlatLinearData} data
+ * @param {HTMLDocument} [htmlDocument]
+ * @param {ve.dm.Document} [parentDocument]
+ * @param {ve.dm.InternalList} [internalList]
+ * @param {ve.Range} [originalRange] Range of original data
+ * @param {ve.Range} [balancedRange] Range of balanced data
+ */
+ve.dm.DocumentSlice = function VeDmDocumentSlice( data, htmlDocument, parentDocument, internalList, originalRange, balancedRange ) {
+	// Parent constructor
+	ve.dm.Document.call( this, data, htmlDocument, parentDocument, internalList );
+
+	this.originalRange = originalRange;
+	this.balancedRange = balancedRange;
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.DocumentSlice, ve.dm.Document );
+
+/* Methods */
+
+ve.dm.DocumentSlice.prototype.getOriginalData = function () {
+	return this.getData( this.originalRange );
+};
+
+ve.dm.DocumentSlice.prototype.getBalancedData = function () {
+	return this.getData( this.balancedRange );
+};
+
+/*!
+ * VisualEditor LinearData class.
+ *
+ * Class containing linear data and an index-value store.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * Generic linear data storage
+ *
+ * @class
+ * @constructor
+ * @param {ve.dm.IndexValueStore} store Index-value store
+ * @param {Array} [data] Linear data
+ */
+ve.dm.LinearData = function VeDmLinearData( store, data ) {
+	this.store = store;
+	this.data = data || [];
+};
+
+/* Inheritance */
+
+OO.initClass( ve.dm.LinearData );
+
+/* Static Methods */
+
+/**
+ * Get the type of an element
+ *
+ * This will return the same string for close and open elements.
+ *
+ * @method
+ * @param {Object} item Element item
+ * @return {string} Type of the element
+ */
+ve.dm.LinearData.static.getType = function ( item ) {
+	return this.isCloseElementData( item ) ? item.type.slice( 1 ) : item.type;
+};
+
+/**
+ * Check if data item is an element.
+ *
+ * This method assumes that any value that has a type property that's a string is an element object.
+ *
+ * Element data:
+ *
+ *      <heading> a </heading> <paragraph> b c <img></img> </paragraph>
+ *     ^         . ^          ^           . . ^     ^     ^            .
+ *
+ * @method
+ * @param {Object|Array|string} item Linear data item
+ * @return {boolean} Item is an element
+ */
+ve.dm.LinearData.static.isElementData = function ( item ) {
+	// Data exists and appears to be an element
+	return item !== undefined && typeof item.type === 'string';
+};
+
+/**
+ * Checks if data item is an open element.
+ *
+ * @method
+ * @param {Object} item Element item
+ * @return {boolean} Item is an open element
+ */
+ve.dm.LinearData.static.isOpenElementData = function ( item ) {
+	return this.isElementData( item ) && item.type.charAt( 0 ) !== '/';
+};
+
+/**
+ * Checks if data item is a close element.
+ *
+ * @method
+ * @param {Object} item Element item
+ * @return {boolean} Item is a close element
+ */
+ve.dm.LinearData.static.isCloseElementData = function ( item ) {
+	return this.isElementData( item ) && item.type.charAt( 0 ) === '/';
+};
+
+/* Methods */
+
+/**
+ * Gets linear data from a specified index, or all data if no index specified
+ *
+ * @method
+ * @param {number} [offset] Offset to get data from
+ * @return {Object|Array} Data from index, or all data (by reference)
+ */
+ve.dm.LinearData.prototype.getData = function ( offset ) {
+	return offset === undefined ? this.data : this.data[ offset ];
+};
+
+/**
+ * Sets linear data at a specified index
+ *
+ * @method
+ * @param {number} offset Offset to set data at
+ * @param {Object|string} value Value to store
+ */
+ve.dm.LinearData.prototype.setData = function ( offset, value ) {
+	this.data[ offset ] = value;
+};
+
+/**
+ * Push data to the end of the array
+ *
+ * @method
+ * @param {...Object} [value] Values to store
+ * @return {number} The new length of the linear data
+ */
+ve.dm.LinearData.prototype.push = function () {
+	return Array.prototype.push.apply( this.data, arguments );
+};
+
+/**
+ * Gets length of the linear data
+ *
+ * @method
+ * @return {number} Length of the linear data
+ */
+ve.dm.LinearData.prototype.getLength = function () {
+	return this.getData().length;
+};
+
+/**
+ * Gets the index-value store
+ *
+ * @method
+ * @return {ve.dm.IndexValueStore} The index-value store
+ */
+ve.dm.LinearData.prototype.getStore = function () {
+	return this.store;
+};
+
+/**
+ * Slice linear data
+ *
+ * @method
+ * @param {number} begin Index to begin at
+ * @param {number} [end] Index to end at
+ * @return {Array} One-level deep copy of sliced range
+ */
+ve.dm.LinearData.prototype.slice = function () {
+	return Array.prototype.slice.apply( this.data, arguments );
+};
+
+/**
+ * Slice linear data and return new LinearData object containing result
+ *
+ * @method
+ * @param {number} begin Index to begin at
+ * @param {number} [end] Index to end at
+ * @return {ve.dm.LinearData} LinearData object containing one-level deep copy of sliced range
+ */
+ve.dm.LinearData.prototype.sliceObject = function () {
+	return new this.constructor( this.getStore(), this.slice.apply( this, arguments ) );
+};
+
+/**
+ * Splice linear data
+ *
+ * @method
+ * @param {number} index Splice from
+ * @param {number} howmany Items to be removed
+ * @param {...Object} [element] Items to be inserted
+ * @return {Array} Elements removed
+ */
+ve.dm.LinearData.prototype.splice = function () {
+	return Array.prototype.splice.apply( this.data, arguments );
+};
+
+/**
+ * Splice linear data and return new LinearData object containing result
+ *
+ * @method
+ * @param {number} index Splice from
+ * @param {number} howmany Items to be removed
+ * @param {...Object} [element] Items to be inserted
+ * @return {ve.dm.LinearData} LinearData object containing elements removed
+ */
+ve.dm.LinearData.prototype.spliceObject = function () {
+	return new this.constructor( this.getStore(), this.splice.apply( this, arguments ) );
+};
+
+/**
+ * Returns ve.batchSplice of linear data
+ *
+ * @method
+ * @see ve#batchSplice
+ * @param {number} offset
+ * @param {number} remove
+ * @param {Array} data
+ * @return {Array}
+ */
+ve.dm.LinearData.prototype.batchSplice = function ( offset, remove, data ) {
+	return ve.batchSplice( this.getData(), offset, remove, data );
+};
+
+/**
+ * Returns ve.batchSplice of linear data, wrapped in a LinearData object
+ *
+ * @method
+ * @see ve#batchSplice
+ * @param {number} offset
+ * @param {number} remove
+ * @param {Array} data
+ * @return {ve.dm.LinearData}
+ */
+ve.dm.LinearData.prototype.batchSpliceObject = function ( offset, remove, data ) {
+	return new this.constructor(
+		this.getStore(),
+		this.batchSplice.call( this, offset, remove, data )
+	);
+};
+
+/**
+ * Get a slice or copy of the provided data.
+ *
+ * @method
+ * @param {ve.Range} [range] Range of data to get, all data will be given by default
+ * @param {boolean} [deep=false] Whether to return a deep copy (WARNING! This may be very slow)
+ * @return {Array} Slice or copy of data
+ */
+ve.dm.LinearData.prototype.getDataSlice = function ( range, deep ) {
+	var end, data,
+		start = 0,
+		length = this.getLength();
+	if ( range !== undefined ) {
+		start = Math.max( 0, Math.min( length, range.start ) );
+		end = Math.max( 0, Math.min( length, range.end ) );
+	}
+	// IE work-around: arr.slice( 0, undefined ) returns [] while arr.slice( 0 ) behaves correctly
+	data = end === undefined ? this.slice( start ) : this.slice( start, end );
+	// Return either the slice or a deep copy of the slice
+	return deep ? ve.copy( data ) : data;
+};
+
+/*
+ * Clone the data, with a deep copy of the data.
+ *
+ * @return {ve.dm.LinearData} Clone of this object
+ */
+ve.dm.LinearData.prototype.clone = function () {
+	return new this.constructor(
+		this.getStore(),
+		ve.copy( this.data )
+	);
+};
+
+/*!
+ * VisualEditor DataModel DocumentSynchronizer class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel document synchronizer.
+ *
+ * This object is a utility for collecting actions to be performed on the model tree in multiple
+ * steps as the linear model is modified by a transaction processor and then processing those queued
+ * actions when the transaction is done being processed.
+ *
+ * IMPORTANT NOTE: It is assumed that:
+ *
+ *   - The linear model has already been updated for the pushed actions
+ *   - Actions are pushed in increasing offset order
+ *   - Actions are non-overlapping
+ *
+ * @class
+ * @constructor
+ * @param {ve.dm.Document} doc Document to synchronize
+ * @param {ve.dm.Transaction} transaction The transaction being synchronized for
+ */
+ve.dm.DocumentSynchronizer = function VeDmDocumentSynchronizer( doc, transaction ) {
+	// Properties
+	this.document = doc;
+	this.actionQueue = [];
+	this.eventQueue = [];
+	this.adjustment = 0;
+	this.transaction = transaction;
+};
+
+/* Static Properties */
+
+/**
+ * Synchronization methods.
+ *
+ * Each method is specific to a type of action. Methods are called in the context of a document
+ * synchronizer, so they work similar to normal methods on the object.
+ *
+ * @static
+ * @property
+ */
+ve.dm.DocumentSynchronizer.synchronizers = {};
+
+/* Static Methods */
+
+/**
+ * Synchronize an annotation action.
+ *
+ * This method is called within the context of a document synchronizer instance.
+ *
+ * @static
+ * @method
+ * @param {Object} action
+ */
+ve.dm.DocumentSynchronizer.synchronizers.annotation = function ( action ) {
+	// Queue events for all leaf nodes covered by the range
+	var i,
+		adjustedRange = action.range.translate( this.adjustment ),
+		selection = this.document.selectNodes( adjustedRange, 'leaves' );
+	for ( i = 0; i < selection.length; i++ ) {
+		// No tree synchronization needed
+		// Queue events
+		this.queueEvent( selection[ i ].node, 'annotation' );
+		this.queueEvent( selection[ i ].node, 'update' );
+	}
+};
+
+/**
+ * Synchronize an attribute change action.
+ *
+ * This method is called within the context of a document synchronizer instance.
+ *
+ * @static
+ * @method
+ * @param {Object} action
+ */
+ve.dm.DocumentSynchronizer.synchronizers.attributeChange = function ( action ) {
+	// No tree synchronization needed
+	// Queue events
+	this.queueEvent( action.node, 'attributeChange', action.key, action.from, action.to );
+	this.queueEvent( action.node, 'update' );
+};
+
+/**
+ * Synchronize a resize action.
+ *
+ * This method is called within the context of a document synchronizer instance.
+ *
+ * @static
+ * @method
+ * @param {Object} action
+ */
+ve.dm.DocumentSynchronizer.synchronizers.resize = function ( action ) {
+	var node = action.node,
+		parent = node.getParent();
+
+	if ( parent && node.getType() === 'text' && node.getLength() + action.adjustment === 0 ) {
+		// Auto-prune empty text nodes
+		parent.splice( parent.indexOf( node ), 1 );
+	} else {
+		// Apply length change to tree
+		// No update event needed, adjustLength causes an update event on its own
+		// FIXME however, any queued update event will still be emitted, resulting in a duplicate
+		node.adjustLength( action.adjustment );
+	}
+	// Update adjustment
+	this.adjustment += action.adjustment;
+};
+
+/**
+ * Synchronize a text node insertion.
+ *
+ * This method is called within the context of a document synchronizer instance.
+ *
+ * @static
+ * @method
+ * @param {Object} action
+ */
+ve.dm.DocumentSynchronizer.synchronizers.insertTextNode = function ( action ) {
+	var textNode = new ve.dm.TextNode();
+	textNode.setLength( action.length );
+	action.parentNode.splice( action.index, 0, textNode );
+	this.adjustment += action.length;
+};
+
+/**
+ * Synchronize a rebuild action.
+ *
+ * This method is called within the context of a document synchronizer instance.
+ *
+ * @static
+ * @method
+ * @param {Object} action
+ */
+ve.dm.DocumentSynchronizer.synchronizers.rebuild = function ( action ) {
+	var firstNode, parent, index, numNodes,
+		// Find the nodes contained by oldRange
+		adjustedOldRange = action.oldRange.translate( this.adjustment ),
+		selection = this.document.selectNodes( adjustedOldRange, 'siblings' );
+
+	// If the document is empty, selection[0].node will be the document (so no parent)
+	// but we won't get indexInNode either. Detect this and use index=0 in that case.
+	if ( 'indexInNode' in selection[ 0 ] || !selection[ 0 ].node.getParent() ) {
+		// Insertion
+		parent = selection[ 0 ].node;
+		index = selection[ 0 ].indexInNode || 0;
+		numNodes = 0;
+	} else {
+		// Rebuild
+		firstNode = selection[ 0 ].node;
+		parent = firstNode.getParent();
+		index = selection[ 0 ].index;
+		numNodes = selection.length;
+	}
+	// Perform rebuild in tree
+	this.document.rebuildNodes( parent, index, numNodes, adjustedOldRange.from,
+		action.newRange.getLength()
+	);
+	// Update adjustment
+	this.adjustment += action.newRange.getLength() - adjustedOldRange.getLength();
+};
+
+/* Methods */
+
+/**
+ * Get the document being synchronized.
+ *
+ * @method
+ * @return {ve.dm.Document} Document being synchronized
+ */
+ve.dm.DocumentSynchronizer.prototype.getDocument = function () {
+	return this.document;
+};
+
+/**
+ * Add an annotation action to the queue.
+ *
+ * This finds all leaf nodes covered wholly or partially by the given range, and emits annotation
+ * events for all of them.
+ *
+ * @method
+ * @param {ve.Range} range Range that was annotated
+ */
+ve.dm.DocumentSynchronizer.prototype.pushAnnotation = function ( range ) {
+	this.actionQueue.push( {
+		type: 'annotation',
+		range: range
+	} );
+};
+
+/**
+ * Add an attribute change to the queue.
+ *
+ * This emits an attributeChange event for the given node with the provided metadata.
+ *
+ * @method
+ * @param {ve.dm.Node} node Node whose attribute changed
+ * @param {string} key Key of the attribute that changed
+ * @param {Mixed} from Old value of the attribute
+ * @param {Mixed} to New value of the attribute
+ */
+ve.dm.DocumentSynchronizer.prototype.pushAttributeChange = function ( node, key, from, to ) {
+	this.actionQueue.push( {
+		type: 'attributeChange',
+		node: node,
+		key: key,
+		from: from,
+		to: to
+	} );
+};
+
+/**
+ * Add a resize action to the queue.
+ *
+ * This changes the length of a text node.
+ *
+ * @method
+ * @param {ve.dm.TextNode} node Node to resize
+ * @param {number} adjustment Length adjustment to apply to the node
+ */
+ve.dm.DocumentSynchronizer.prototype.pushResize = function ( node, adjustment ) {
+	this.actionQueue.push( {
+		type: 'resize',
+		node: node,
+		adjustment: adjustment
+	} );
+};
+
+/**
+ * Add a text node insertion action to the queue.
+ *
+ * This inserts a new text node.
+ *
+ * @param {ve.dm.Node} parentNode Node to insert text node into
+ * @param {number} index Index in parentNode to insert text node at
+ * @param {number} length Length of new text node
+ */
+ve.dm.DocumentSynchronizer.prototype.pushInsertTextNode = function ( parentNode, index, length ) {
+	this.actionQueue.push( {
+		type: 'insertTextNode',
+		parentNode: parentNode,
+		index: index,
+		length: length
+	} );
+};
+
+/**
+ * Add a rebuild action to the queue.
+ *
+ * When a range of data has been changed arbitrarily this can be used to drop the nodes that
+ * represented the original range and replace them with new nodes that represent the new range.
+ *
+ * @method
+ * @param {ve.Range} oldRange Range of old nodes to be dropped
+ * @param {ve.Range} newRange Range for new nodes to be built from
+ */
+ve.dm.DocumentSynchronizer.prototype.pushRebuild = function ( oldRange, newRange ) {
+	this.actionQueue.push( {
+		type: 'rebuild',
+		oldRange: oldRange,
+		newRange: newRange
+	} );
+};
+
+/**
+ * Queue an event to be emitted on a node.
+ *
+ * This method is called by methods defined in {ve.dm.DocumentSynchronizer.synchronizers}.
+ *
+ * Duplicate events will be ignored only if all arguments match exactly. Hashes of each event that
+ * has been queued are stored in the nodes they will eventually be fired on.
+ *
+ * @method
+ * @param {ve.dm.Node} node
+ * @param {string} event Event name
+ * @param {...Mixed} [args] Additional arguments to be passed to the event when fired
+ */
+ve.dm.DocumentSynchronizer.prototype.queueEvent = function ( node ) {
+	// Check if this is already queued
+	var
+		args = Array.prototype.slice.call( arguments, 1 ),
+		hash = OO.getHash( args );
+
+	if ( !node.queuedEventHashes ) {
+		node.queuedEventHashes = {};
+	}
+	if ( !node.queuedEventHashes[ hash ] ) {
+		node.queuedEventHashes[ hash ] = true;
+		this.eventQueue.push( {
+			node: node,
+			args: args.concat( this.transaction )
+		} );
+	}
+};
+
+/**
+ * Synchronize node tree using queued actions.
+ *
+ * This method uses the static methods defined in {ve.dm.DocumentSynchronizer.synchronizers} and
+ * calls them in the context of {this}.
+ *
+ * After synchronization is complete all queued events will be emitted. Hashes of queued events that
+ * have been stored on nodes are removed from the nodes after the events have all been emitted.
+ *
+ * This method also clears both action and event queues.
+ *
+ * @method
+ */
+ve.dm.DocumentSynchronizer.prototype.synchronize = function () {
+	var action,
+		event,
+		i;
+	// Execute the actions in the queue
+	for ( i = 0; i < this.actionQueue.length; i++ ) {
+		action = this.actionQueue[ i ];
+		if ( Object.prototype.hasOwnProperty.call( ve.dm.DocumentSynchronizer.synchronizers, action.type ) ) {
+			ve.dm.DocumentSynchronizer.synchronizers[ action.type ].call( this, action );
+		} else {
+			throw new Error( 'Invalid action type ' + action.type );
+		}
+	}
+	// Emit events in the event queue
+	for ( i = 0; i < this.eventQueue.length; i++ ) {
+		event = this.eventQueue[ i ];
+		event.node.emit.apply( event.node, event.args );
+		delete event.node.queuedEventHashes;
+	}
+	// Clear queues
+	this.actionQueue = [];
+	this.eventQueue = [];
+};
+
+/*!
+ * VisualEditor IndexValueStore class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * Index-value store
+ *
+ * @class
+ * @constructor
+ */
+ve.dm.IndexValueStore = function VeDmIndexValueStore() {
+	// maps hashes to indexes
+	this.hashStore = {};
+	// maps indexes to values
+	this.valueStore = [];
+};
+
+/* Methods */
+
+/**
+ * Get the index of a value in the store.
+ *
+ * If the hash is not found the value is added to the store.
+ *
+ * @method
+ * @param {Object|string|Array} value Value to lookup or store
+ * @param {string} [hash] Value hash. Uses OO.getHash( value ) if not provided.
+ * @param {boolean} [overwrite=false] Overwrite the value in the store if the hash is already in use
+ * @return {number} The index of the value in the store
+ */
+ve.dm.IndexValueStore.prototype.index = function ( value, hash, overwrite ) {
+	var index;
+	if ( typeof hash !== 'string' ) {
+		hash = OO.getHash( value );
+	}
+	index = this.indexOfHash( hash );
+	if ( index === null || overwrite ) {
+		if ( index === null ) {
+			index = this.valueStore.length;
+		}
+		if ( Array.isArray( value ) ) {
+			this.valueStore[ index ] = ve.copy( value );
+		} else if ( typeof value === 'object' ) {
+			this.valueStore[ index ] = ve.cloneObject( value );
+		} else {
+			this.valueStore[ index ] = value;
+		}
+		this.hashStore[ hash ] = index;
+	}
+	return index;
+};
+
+/**
+ * Get the index of a hash in the store.
+ *
+ * Returns null if the hash is not found.
+ *
+ * @method
+ * @param {Object|string|Array} hash Value hash.
+ * @return {number|null} The index of the value in the store, or undefined if it is not found
+ */
+ve.dm.IndexValueStore.prototype.indexOfHash = function ( hash ) {
+	return hash in this.hashStore ? this.hashStore[ hash ] : null;
+};
+
+/**
+ * Get the indexes of values in the store
+ *
+ * Same as index but with arrays.
+ *
+ * @method
+ * @param {Object[]} values Values to lookup or store
+ * @return {Array} The indexes of the values in the store
+ */
+ve.dm.IndexValueStore.prototype.indexes = function ( values ) {
+	var i, length, indexes = [];
+	for ( i = 0, length = values.length; i < length; i++ ) {
+		indexes.push( this.index( values[ i ] ) );
+	}
+	return indexes;
+};
+
+/**
+ * Get the value at a particular index
+ *
+ * @method
+ * @param {number} index Index to lookup
+ * @return {Object|undefined} Value at this index, or undefined if out of bounds
+ */
+ve.dm.IndexValueStore.prototype.value = function ( index ) {
+	return this.valueStore[ index ];
+};
+
+/**
+ * Get the values at a set of indexes
+ *
+ * Same as value but with arrays.
+ *
+ * @method
+ * @param {number[]} indexes Indices to lookup
+ * @return {Array} Values at these indexes, or undefined if out of bounds
+ */
+ve.dm.IndexValueStore.prototype.values = function ( indexes ) {
+	var i, length, values = [];
+	for ( i = 0, length = indexes.length; i < length; i++ ) {
+		values.push( this.value( indexes[ i ] ) );
+	}
+	return values;
+};
+
+/**
+ * Clone a store.
+ *
+ * The returned clone is shallow: the valueStore array and the hashStore array are cloned, but
+ * the values inside them are copied by reference. These values are supposed to be immutable,
+ * though.
+ *
+ * @return {ve.dm.IndexValueStore} New store with the same contents as this one
+ */
+ve.dm.IndexValueStore.prototype.clone = function () {
+	var key, clone = new this.constructor();
+	clone.valueStore = this.valueStore.slice();
+	for ( key in this.hashStore ) {
+		clone.hashStore[ key ] = this.hashStore[ key ];
+	}
+	return clone;
+};
+
+/**
+ * Merge another store into this store.
+ *
+ * Objects that are in other but not in this are added to this, possibly with a different index.
+ * Objects present in both stores may have different indexes in each store. An object is returned
+ * mapping each index in other to the corresponding index in this.
+ *
+ * Objects added to the store are added by reference, not cloned like in .index()
+ *
+ * @param {ve.dm.IndexValueStore} other Store to merge into this one
+ * @return {Object} Object in which the keys are indexes in other and the values are the corresponding keys in this
+ */
+ve.dm.IndexValueStore.prototype.merge = function ( other ) {
+	var key, index, mapping = {};
+	for ( key in other.hashStore ) {
+		if ( !Object.prototype.hasOwnProperty.call( this.hashStore, key ) ) {
+			index = this.valueStore.push( other.valueStore[ other.hashStore[ key ] ] ) - 1;
+			this.hashStore[ key ] = index;
+		}
+		mapping[ other.hashStore[ key ] ] = this.hashStore[ key ];
+	}
+	return mapping;
+};
+
+/*!
+ * VisualEditor DataModel Converter class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel converter.
+ *
+ * Converts between HTML DOM and VisualEditor linear data.
+ *
+ * @class
+ * @constructor
+ * @param {ve.dm.ModelRegistry} modelRegistry
+ * @param {ve.dm.NodeFactory} nodeFactory
+ * @param {ve.dm.AnnotationFactory} annotationFactory
+ */
+ve.dm.Converter = function VeDmConverter( modelRegistry, nodeFactory, annotationFactory, metaItemFactory ) {
+	// Properties
+	this.modelRegistry = modelRegistry;
+	this.nodeFactory = nodeFactory;
+	this.annotationFactory = annotationFactory;
+	this.metaItemFactory = metaItemFactory;
+	this.doc = null;
+	this.documentData = null;
+	this.store = null;
+	this.internalList = null;
+	this.forClipboard = null;
+	this.fromClipboard = null;
+	this.contextStack = null;
+};
+
+/* Static Properties */
+
+/**
+ * List of HTML attribute names that {#renderHtmlAttributeList} should use computed values for.
+ * @type {string[]}
+ */
+ve.dm.Converter.computedAttributes = [ 'href', 'src' ];
+
+/* Static Methods */
+
+/**
+ * Get linear model data from a string optionally applying annotations
+ *
+ * @static
+ * @param {string} text Plain text to convert
+ * @param {ve.dm.AnnotationSet} [annotations] Annotations to apply
+ * @return {Array} Linear model data, one element per character
+ */
+ve.dm.Converter.getDataContentFromText = function ( text, annotations ) {
+	var i, len,
+		characters = text.split( '' );
+
+	if ( !annotations || annotations.isEmpty() ) {
+		return characters;
+	}
+	// Apply annotations to characters
+	for ( i = 0, len = characters.length; i < len; i++ ) {
+		// Just store the annotations' indexes from the index-value store
+		characters[ i ] = [ characters[ i ], annotations.getIndexes().slice() ];
+	}
+	return characters;
+};
+
+/**
+ * Utility function for annotation rendering. Transforms one set of annotations into another
+ * by opening and closing annotations. Each time an annotation is opened or closed, the associated
+ * callback is called with the annotation passed as a parameter.
+ *
+ * Note that currentSet will be modified, and will be equal to targetSet once this function returns.
+ *
+ * @static
+ * @param {ve.dm.AnnotationSet} currentSet The set of annotations currently opened. Will be modified.
+ * @param {ve.dm.AnnotationSet} targetSet The set of annotations we want to have.
+ * @param {Function} open Callback called when an annotation is opened. Passed a ve.dm.Annotation.
+ * @param {Function} close Callback called when an annotation is closed. Passed a ve.dm.Annotation.
+ */
+ve.dm.Converter.openAndCloseAnnotations = function ( currentSet, targetSet, open, close ) {
+	var i, len, index, startClosingAt, currentSetOpen, targetSetOpen;
+
+	// Close annotations as needed
+	// Go through annotationStack from bottom to top (low to high),
+	// and find the first annotation that's not in annotations.
+	targetSetOpen = targetSet.clone();
+	for ( i = 0, len = currentSet.getLength(); i < len; i++ ) {
+		index = currentSet.getIndex( i );
+		// containsComparableForSerialization is expensive,
+		// so do a simple contains check first
+		if (
+			targetSetOpen.containsIndex( index ) ||
+			targetSetOpen.containsComparableForSerialization( currentSet.get( i ) )
+		) {
+			targetSetOpen.removeIndex( index );
+		} else {
+			startClosingAt = i;
+			break;
+		}
+	}
+	if ( startClosingAt !== undefined ) {
+		// Close all annotations from top to bottom (high to low)
+		// until we reach startClosingAt
+		for ( i = currentSet.getLength() - 1; i >= startClosingAt; i-- ) {
+			close( currentSet.get( i ) );
+			// Remove from currentClone
+			currentSet.removeAt( i );
+		}
+	}
+
+	currentSetOpen = currentSet.clone();
+	// Open annotations as needed
+	for ( i = 0, len = targetSet.getLength(); i < len; i++ ) {
+		index = targetSet.getIndex( i );
+		// containsComparableForSerialization is expensive,
+		// so do a simple contains check first
+		if (
+			currentSetOpen.containsIndex( index ) ||
+			currentSetOpen.containsComparableForSerialization( targetSet.get( i ) )
+		) {
+			// If an annotation is already open remove it from the currentSetOpen list
+			// as it may exist multiple times in the targetSet, and so may need to be
+			// opened again
+			currentSetOpen.removeIndex( index );
+		} else {
+			open( targetSet.get( i ) );
+			// Add to currentClone
+			currentSet.pushIndex( index );
+		}
+	}
+};
+
+/**
+ * Copy attributes from one set of DOM elements to another.
+ *
+ * @static
+ * @param {HTMLElement[]} originalDomElements Array of DOM elements to render from
+ * @param {HTMLElement[]} targetDomElements Array of DOM elements to render onto
+ * @param {boolean|Function} [filter=true] Attribute filter
+ * @param {boolean} [computed=false] If true, use the computed values of attributes where available
+ * @param {boolean} [deep=false] Recurse into child nodes
+ */
+ve.dm.Converter.renderHtmlAttributeList = function ( originalDomElements, targetDomElements, filter, computed, deep ) {
+	var i, ilen, j, jlen, attrs, value;
+	if ( filter === undefined ) {
+		filter = true;
+	}
+	if ( filter === false ) {
+		return;
+	}
+
+	for ( i = 0, ilen = originalDomElements.length; i < ilen; i++ ) {
+		if ( !targetDomElements[ i ] ) {
+			continue;
+		}
+		attrs = originalDomElements[ i ].attributes;
+		if ( !attrs ) {
+			continue;
+		}
+		for ( j = 0, jlen = attrs.length; j < jlen; j++ ) {
+			if (
+				!targetDomElements[ i ].hasAttribute( attrs[ j ].name ) &&
+				( filter === true || filter( attrs[ j ].name ) )
+			) {
+				if ( computed && ve.dm.Converter.computedAttributes.indexOf( attrs[ j ].name ) !== -1 ) {
+					value = originalDomElements[ i ][ attrs[ j ].name ];
+				} else {
+					value = attrs[ j ].value;
+				}
+				targetDomElements[ i ].setAttribute( attrs[ j ].name, value );
+			}
+
+			if ( filter === true || filter( attrs[ j ].name ) ) {
+				value = computed && ve.dm.Converter.computedAttributes.indexOf( attrs[ j ].name ) !== -1 ?
+					originalDomElements[ i ][ attrs[ j ].name ] :
+					attrs[ j ].value;
+			}
+		}
+
+		// Descend into element children only (skipping text nodes and comment nodes)
+		if ( deep && originalDomElements[ i ].children.length > 0 ) {
+			ve.dm.Converter.renderHtmlAttributeList(
+				originalDomElements[ i ].children,
+				targetDomElements[ i ].children,
+				filter,
+				computed,
+				true
+			);
+		}
+	}
+};
+
+/* Methods */
+
+/**
+ * Check whether this converter instance is currently inside a getModelFromDom() conversion.
+ *
+ * @method
+ * @return {boolean} Whether we're converting
+ */
+ve.dm.Converter.prototype.isConverting = function () {
+	return this.contextStack !== null;
+};
+
+/**
+ * Get the IndexValueStore used for the current conversion.
+ *
+ * @method
+ * @return {ve.dm.IndexValueStore|null} Current store, or null if not converting
+ */
+ve.dm.Converter.prototype.getStore = function () {
+	return this.store;
+};
+
+/**
+ * Get the HTML document currently being converted
+ *
+ * @method
+ * @return {HTMLDocument|null} HTML document being converted, or null if not converting
+ */
+ve.dm.Converter.prototype.getHtmlDocument = function () {
+	return this.doc;
+};
+
+/**
+ * Get the HTML document we are converting data for
+ *
+ * @method
+ * @return {HTMLDocument|null} HTML document being converted for, or null if not converting
+ */
+ve.dm.Converter.prototype.getTargetHtmlDocument = function () {
+	return this.targetDoc;
+};
+
+/**
+ * Is the current conversion for the clipboard
+ *
+ * @method
+ * @return {boolean|null} The conversion is for the clipboard, or null if not converting
+ */
+ve.dm.Converter.prototype.isForClipboard = function () {
+	return this.forClipboard;
+};
+
+/**
+ * Is the current conversion from the clipboard
+ *
+ * @method
+ * @return {boolean|null} The conversion is from the clipboard, or null if not converting
+ */
+ve.dm.Converter.prototype.isFromClipboard = function () {
+	return this.fromClipboard;
+};
+
+/**
+ * Get the current conversion context. This is the recursion state of getDataFromDomSubtree().
+ *
+ * @method
+ * @return {Object|null} Context object, or null if not converting
+ */
+ve.dm.Converter.prototype.getCurrentContext = function () {
+	return this.contextStack === null ? null : this.contextStack[ this.contextStack.length - 1 ];
+};
+
+/**
+ * Get the annotations currently being applied by the converter. Note that this is specific to
+ * the current recursion level.
+ *
+ * @method
+ * @return {ve.dm.AnnotationSet|null} Annotation set, or null if not converting
+ */
+ve.dm.Converter.prototype.getActiveAnnotations = function () {
+	var context = this.getCurrentContext();
+	return context ? context.annotations : null;
+};
+
+/**
+ * Whether the converter is currently expecting content. Note that this is specific to the current
+ * recursion level.
+ *
+ * @method
+ * @return {boolean|null} Boolean indicating whether content is expected, or null if not converting
+ */
+ve.dm.Converter.prototype.isExpectingContent = function () {
+	var context = this.getCurrentContext();
+	return context ? context.expectingContent : null;
+};
+
+/**
+ * Whether the converter can currently accept a child node with the given type.
+ *
+ * @method
+ * @param {string} nodeType
+ * @return {boolean|null} Whether the node type is valid, or null if not converting
+ */
+ve.dm.Converter.prototype.isValidChildNodeType = function ( nodeType ) {
+	var childTypes,
+		context = this.getCurrentContext();
+	if ( !context ) {
+		return null;
+	}
+	childTypes = this.nodeFactory.getChildNodeTypes( context.branchType );
+	return ( childTypes === null || childTypes.indexOf( nodeType ) !== -1 );
+};
+
+/**
+ * Whether the conversion is currently inside a wrapper paragraph generated by the converter.
+ * Note that this is specific to the current recursion level.
+ *
+ * @method
+ * @return {boolean|null} Boolean indicating whether we're wrapping, or null if not converting
+ */
+ve.dm.Converter.prototype.isInWrapper = function () {
+	var context = this.getCurrentContext();
+	return context ? context.inWrapper : null;
+};
+
+/**
+ * Whether the active wrapper can be closed. Note that this is specific to the current recursion
+ * level. If there is no active wrapper, this returns false.
+ *
+ * @method
+ * @return {boolean|null} Boolean indicating whether the wrapper can be closed, or null if not converting
+ */
+ve.dm.Converter.prototype.canCloseWrapper = function () {
+	var context = this.getCurrentContext();
+	return context ? context.canCloseWrapper : null;
+};
+
+/**
+ * Get the DOM element for a given linear model element.
+ *
+ * This invokes the toDomElements function registered for the element type.
+ *
+ * @method
+ * @param {Object|Array} dataElements Linear model element or data slice
+ * @param {HTMLDocument} doc Document to create DOM elements in
+ * @param {Node[]} [childDomElements] Array of child DOM elements to pass in (annotations only)
+ * @return {Node|boolean} DOM element, or false if the element cannot be converted
+ */
+ve.dm.Converter.prototype.getDomElementsFromDataElement = function ( dataElements, doc, childDomElements ) {
+	var domElements,
+		dataElement = Array.isArray( dataElements ) ? dataElements[ 0 ] : dataElements,
+		nodeClass = this.modelRegistry.lookup( dataElement.type );
+
+	if ( !nodeClass ) {
+		throw new Error( 'Attempting to convert unknown data element type ' + dataElement.type );
+	}
+	if ( nodeClass.static.isInternal ) {
+		return false;
+	}
+	domElements = nodeClass.static.toDomElements( dataElements, doc, this, childDomElements );
+	if ( !Array.isArray( domElements ) && !( nodeClass.prototype instanceof ve.dm.Annotation ) ) {
+		throw new Error( 'toDomElements() failed to return an array when converting element of type ' + dataElement.type );
+	}
+	// Optimization: don't call renderHtmlAttributeList if returned domElements are equal to the originals
+	if ( dataElement.originalDomElements && !ve.isEqualDomElements( domElements, dataElement.originalDomElements ) ) {
+		ve.dm.Converter.renderHtmlAttributeList(
+			dataElement.originalDomElements,
+			domElements,
+			nodeClass.static.preserveHtmlAttributes,
+			// computed
+			false,
+			// deep
+			!( nodeClass instanceof ve.dm.Node ) ||
+				!this.nodeFactory.canNodeHaveChildren( dataElement.type ) ||
+				this.nodeFactory.doesNodeHandleOwnChildren( dataElement.type )
+		);
+	}
+	return domElements;
+};
+
+/**
+ * Create a data element from a DOM element.
+ *
+ * @param {ve.dm.Model} modelClass Model class to use for conversion
+ * @param {Node[]} domElements DOM elements to convert
+ * @return {Object|Array|null} Data element or array of linear model data, or null to alienate
+ */
+ve.dm.Converter.prototype.createDataElements = function ( modelClass, domElements ) {
+	var dataElements = modelClass.static.toDataElement( domElements, this );
+
+	if ( !dataElements ) {
+		return null;
+	}
+	if ( !Array.isArray( dataElements ) ) {
+		dataElements = [ dataElements ];
+	}
+	dataElements[ 0 ].originalDomElements = domElements;
+	return dataElements;
+};
+
+/**
+ * Build an HTML DOM node for a linear model annotation.
+ *
+ * @method
+ * @param {Object} dataAnnotation Annotation object
+ * @return {HTMLElement} HTML DOM node
+ */
+ve.dm.Converter.prototype.getDomElementFromDataAnnotation = function ( dataAnnotation, doc ) {
+	var htmlData = dataAnnotation.toHtml(),
+		domElement = doc.createElement( htmlData.tag );
+
+	ve.setDomAttributes( domElement, htmlData.attributes );
+	return domElement;
+};
+
+/**
+ * Convert an HTML document to a document model.
+ *
+ * @param {HTMLDocument} doc HTML document to convert
+ * @param {Object} options Conversion options
+ * @param {HTMLDocument} [options.targetDoc=doc] Target HTML document we are converting for, if different from doc
+ * @param {boolean} [options.fromClipboard=false] Conversion is from clipboard
+ * @param {string} [options.lang] Document language code
+ * @param {string} [options.dir] Document directionality (ltr/rtl)
+ * @return {ve.dm.Document} Document model
+ */
+ve.dm.Converter.prototype.getModelFromDom = function ( doc, options, documentFactory ) {
+	var linearData, refData, innerWhitespace,
+		store = new ve.dm.IndexValueStore(),
+		internalList = new ve.dm.InternalList();
+
+	options = options || {};
+
+	// Set up the converter state
+	this.doc = doc;
+	this.targetDoc = options.targetDoc || doc;
+	this.fromClipboard = options.fromClipboard;
+	this.store = store;
+	this.internalList = internalList;
+	this.contextStack = [];
+	// Possibly do things with doc and the head in the future
+
+	// Generate data
+	linearData = new ve.dm.FlatLinearData(
+		store,
+		this.getDataFromDomSubtree( doc.body )
+	);
+	refData = this.internalList.convertToData( this, doc );
+	linearData.batchSplice( linearData.getLength(), 0, refData );
+	innerWhitespace = this.getInnerWhitespace( linearData );
+
+	// Clear the state
+	this.doc = null;
+	this.targetDoc = null;
+	this.fromClipboard = null;
+	this.store = null;
+	this.internalList = null;
+	this.contextStack = null;
+
+	if ( documentFactory ) {
+		return documentFactory.createDocument( linearData, this.nodeFactory, doc, undefined, internalList, innerWhitespace, options.lang, options.dir );
+	} else {
+		return new ve.dm.Document( linearData, this.nodeFactory, doc, undefined, internalList, innerWhitespace, options.lang, options.dir );
+	}
+};
+
+/**
+ * Wrapper for getDataFromDom which resets contextStack before the call
+ * and then set it back after the call.
+ *
+ * TODO: This is kind of a hack, better implementation would be more appropriate in near future.
+ *
+ * @method
+ * @param {HTMLElement} domElement HTML element to convert
+ * @param {Object} [wrapperElement] Data element to wrap the returned data in
+ * @param {ve.dm.AnnotationSet} [annotationSet] Override the set of annotations to use
+ * @return {Array} Linear model data
+ */
+ve.dm.Converter.prototype.getDataFromDomClean = function ( domElement, wrapperElement, annotationSet ) {
+	var result, contextStack = this.contextStack;
+	this.contextStack = [];
+	result = this.getDataFromDomSubtree( domElement, wrapperElement, annotationSet );
+	this.contextStack = contextStack;
+	return result;
+};
+
+/**
+ * Get linear model data from a DOM node. Called recursively. For internal use
+ * and ve.dm.Model.static.toDataElement() implementations.
+ *
+ * @method
+ * @param {HTMLElement} domElement HTML element to convert
+ * @param {Object} [wrapperElement] Data element to wrap the returned data in
+ * @param {ve.dm.AnnotationSet} [annotationSet] Override the set of annotations to use
+ * @return {Array} Linear model data
+ */
+ve.dm.Converter.prototype.getDataFromDomSubtree = function ( domElement, wrapperElement, annotationSet ) {
+	var i, childNode, childNodes, childDataElements, text, matches,
+		wrappingParagraph, prevElement, childAnnotations, modelName, modelClass,
+		annotation, childIsContent, aboutGroup, emptyParagraph,
+		modelRegistry = this.modelRegistry,
+		data = [],
+		nextWhitespace = '',
+		wrappedWhitespace = '',
+		wrappedWhitespaceIndex,
+		wrappedMetaItems = [],
+		context = {},
+		prevContext = this.contextStack.length ?
+			this.contextStack[ this.contextStack.length - 1 ] : null;
+
+	/**
+	 * Add whitespace to an element at a specific offset.
+	 *
+	 * @private
+	 * @param {Array} element Data element
+	 * @param {number} index Whitespace index, 0-3
+	 * @param {string} whitespace Whitespace content
+	 */
+	function addWhitespace( element, index, whitespace ) {
+		if ( !whitespace ) {
+			return;
+		}
+		if ( !element.internal ) {
+			element.internal = {};
+		}
+		// whitespace = [ outerPre, innerPre, innerPost, outerPost ]
+		//         <tag>        text         </tag>         <nextTag>
+		// ^^^^^^^^     ^^^^^^^^    ^^^^^^^^^      ^^^^^^^^^
+		// outerPre     innerPre    innerPost      outerPost
+		if ( !element.internal.whitespace ) {
+			element.internal.whitespace = [];
+		}
+		element.internal.whitespace[ index ] = whitespace;
+	}
+	function processNextWhitespace( element ) {
+		// This function uses and changes nextWhitespace in the outer function's scope,
+		// which means it's not really a function but more of a shortcut.
+		if ( nextWhitespace !== '' ) {
+			addWhitespace( element, 0, nextWhitespace );
+			nextWhitespace = '';
+		}
+	}
+	// FIXME rewrite this horrible meta item / whitespace queueing/wrapping business
+	function outputWrappedMetaItems( whitespaceTreatment ) {
+		var i, len,
+			toInsert = [],
+			prev = wrappingParagraph;
+
+		for ( i = 0, len = wrappedMetaItems.length; i < len; i++ ) {
+			if ( wrappedMetaItems[ i ].type && wrappedMetaItems[ i ].type.charAt( 0 ) !== '/' ) {
+				if ( wrappedMetaItems[ i ].internal && wrappedMetaItems[ i ].internal.whitespace ) {
+					if ( whitespaceTreatment === 'restore' ) {
+						toInsert = toInsert.concat( ve.dm.Converter.getDataContentFromText(
+								wrappedMetaItems[ i ].internal.whitespace[ 0 ], context.annotations
+						) );
+						delete wrappedMetaItems[ i ].internal;
+					} else if ( whitespaceTreatment === 'fixup' ) {
+						addWhitespace( prev, 3, wrappedMetaItems[ i ].internal.whitespace[ 0 ] );
+					}
+				}
+				prev = wrappedMetaItems[ i ];
+			}
+			toInsert.push( wrappedMetaItems[ i ] );
+		}
+		if ( wrappedWhitespace !== '' && whitespaceTreatment === 'restore' ) {
+			// If we have wrapped whitespace, insert the wrapped meta items before it
+			// This is horrible and this whole system desperately needs to be rewritten
+			ve.batchSplice( data, wrappedWhitespaceIndex, 0, toInsert );
+		} else {
+			data = data.concat( toInsert );
+		}
+		wrappedMetaItems = [];
+	}
+	function startWrapping() {
+		// Mark this paragraph as having been generated by
+		// us, so we can strip it on the way out
+		wrappingParagraph = {
+			type: 'paragraph',
+			internal: { generated: 'wrapper' }
+		};
+		data.push( wrappingParagraph );
+		context.inWrapper = true;
+		context.canCloseWrapper = true;
+		context.expectingContent = true;
+		processNextWhitespace( wrappingParagraph );
+	}
+	function stopWrapping() {
+		if ( wrappedWhitespace !== '' ) {
+			// Remove wrappedWhitespace from data
+			data.splice( wrappedWhitespaceIndex, wrappedWhitespace.length );
+			// Add whitespace to the last sibling: either the last meta item or the wrapper paragraph
+			addWhitespace( wrappedMetaItems.length > 0 ? wrappedMetaItems[ wrappedMetaItems.length - 2 ] : wrappingParagraph, 3, wrappedWhitespace );
+			nextWhitespace = wrappedWhitespace;
+		}
+		data.push( { type: '/paragraph' } );
+		outputWrappedMetaItems( 'fixup' );
+		wrappingParagraph = undefined;
+		context.inWrapper = false;
+		context.canCloseWrapper = false;
+		context.expectingContent = context.originallyExpectingContent;
+	}
+	function getAboutGroup( el ) {
+		var elAbout, node,
+			textNodes = [],
+			aboutGroup = [ el ];
+
+		if ( !el.getAttribute || el.getAttribute( 'about' ) === null ) {
+			return aboutGroup;
+		}
+		elAbout = el.getAttribute( 'about' );
+		for ( node = el.nextSibling; node; node = node.nextSibling ) {
+			if ( !node.getAttribute ) {
+				// Text nodes don't have a getAttribute() method. Thanks HTML DOM,
+				// that's really helpful ^^
+				textNodes.push( node );
+				continue;
+			}
+			if ( node.getAttribute( 'about' ) === elAbout ) {
+				aboutGroup = aboutGroup.concat( textNodes );
+				textNodes = [];
+				aboutGroup.push( node );
+			} else {
+				break;
+			}
+		}
+		return aboutGroup;
+	}
+	function isAllInstanceOf( data, targetClass ) {
+		var i, type, itemClass;
+		for ( i = data.length - 1; i >= 0; i-- ) {
+			type = ve.dm.LinearData.static.getType( data[ i ] );
+			if ( type ) {
+				itemClass = modelRegistry.lookup( type ) || ve.dm.AlienNode;
+				if ( !( itemClass.prototype === targetClass.prototype || itemClass.prototype instanceof targetClass ) ) {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	context.annotations = annotationSet || (
+		prevContext ? prevContext.annotations.clone() : new ve.dm.AnnotationSet( this.store )
+	);
+	context.branchType = wrapperElement ? wrapperElement.type : (
+		prevContext ? prevContext.branchType : 'document'
+	);
+	context.branchHasContent = this.nodeFactory.canNodeContainContent( context.branchType );
+	context.originallyExpectingContent = context.branchHasContent || !context.annotations.isEmpty();
+	context.expectingContent = context.originallyExpectingContent;
+	context.inWrapper = prevContext ? prevContext.inWrapper : false;
+	context.canCloseWrapper = false;
+	this.contextStack.push( context );
+
+	// Open element
+	if ( wrapperElement ) {
+		data.push( wrapperElement );
+	}
+	// Add contents
+	for ( i = 0; i < domElement.childNodes.length; i++ ) {
+		childNode = domElement.childNodes[ i ];
+		switch ( childNode.nodeType ) {
+			case Node.ELEMENT_NODE:
+			case Node.COMMENT_NODE:
+				if (
+					childNode.getAttribute &&
+					childNode.getAttribute( 'data-ve-ignore' )
+				) {
+					continue;
+				}
+				aboutGroup = getAboutGroup( childNode );
+				modelName = this.modelRegistry.matchElement( childNode, aboutGroup.length > 1 );
+				modelClass = this.modelRegistry.lookup( modelName ) || ve.dm.AlienNode;
+				if ( modelClass.prototype instanceof ve.dm.Annotation ) {
+					childNodes = [ childNode ];
+				} else {
+					// Node or meta item
+					childNodes = modelClass.static.enableAboutGrouping ?
+						aboutGroup : [ childNode ];
+				}
+				childDataElements = this.createDataElements( modelClass, childNodes );
+
+				if ( !childDataElements ) {
+					// Alienate
+					modelClass = ve.dm.AlienNode;
+					childNodes = modelClass.static.enableAboutGrouping ?
+						aboutGroup : [ childNode ];
+					childDataElements = this.createDataElements( modelClass, childNodes );
+				} else {
+					// Update modelClass to reflect the type we got back
+					modelClass = this.modelRegistry.lookup( childDataElements[ 0 ].type );
+				}
+
+				// Now take the appropriate action based on that
+				if ( modelClass.prototype instanceof ve.dm.Annotation ) {
+					annotation = this.annotationFactory.createFromElement( childDataElements[ 0 ] );
+					// Start wrapping if needed
+					if ( !context.inWrapper && !context.expectingContent ) {
+						startWrapping();
+						prevElement = wrappingParagraph;
+					}
+					// Append child element data
+					childAnnotations = context.annotations.clone();
+					childAnnotations.push( annotation );
+
+					childDataElements = this.getDataFromDomSubtree( childNode, undefined, childAnnotations );
+					if ( !childDataElements.length || isAllInstanceOf( childDataElements, ve.dm.AlienMetaItem ) ) {
+						// Empty annotation, create a meta item
+						childDataElements = this.createDataElements( ve.dm.AlienMetaItem, childNodes );
+						childDataElements.push( { type: '/' + childDataElements[ 0 ].type } );
+						// Annotate meta item
+						if ( !context.annotations.isEmpty() ) {
+							childDataElements[ 0 ].annotations = context.annotations.getIndexes().slice();
+						}
+					}
+					outputWrappedMetaItems( 'restore' );
+					data = data.concat( childDataElements );
+					// Clear wrapped whitespace
+					wrappedWhitespace = '';
+				} else {
+					// Node or meta item
+					if ( modelClass.prototype instanceof ve.dm.MetaItem ) {
+						// No additional processing needed
+						// Write to data and continue
+						if ( childDataElements.length === 1 ) {
+							childDataElements.push( { type: '/' + childDataElements[ 0 ].type } );
+						}
+						// Annotate meta item
+						if ( !context.annotations.isEmpty() ) {
+							childDataElements[ 0 ].annotations = context.annotations.getIndexes().slice();
+						}
+						// Queue wrapped meta items only if it's actually possible for us to move them out
+						// of the wrapper
+						if ( context.inWrapper && context.canCloseWrapper ) {
+							wrappedMetaItems = wrappedMetaItems.concat( childDataElements );
+							if ( wrappedWhitespace !== '' ) {
+								data.splice( wrappedWhitespaceIndex, wrappedWhitespace.length );
+								addWhitespace( childDataElements[ 0 ], 0, wrappedWhitespace );
+								nextWhitespace = wrappedWhitespace;
+								wrappedWhitespace = '';
+							}
+						} else {
+							outputWrappedMetaItems( 'restore' );
+							data = data.concat( childDataElements );
+							processNextWhitespace( childDataElements[ 0 ] );
+							prevElement = childDataElements[ 0 ];
+						}
+						// In case we consumed multiple childNodes, adjust i accordingly
+						i += childNodes.length - 1;
+						break;
+					}
+
+					childIsContent = this.nodeFactory.isNodeContent( childDataElements[ 0 ].type );
+
+					// If childIsContent isn't what we expect, adjust
+					if ( !context.expectingContent && childIsContent ) {
+						startWrapping();
+						prevElement = wrappingParagraph;
+					} else if ( context.expectingContent && !childIsContent ) {
+						if ( context.inWrapper && context.canCloseWrapper ) {
+							stopWrapping();
+						} else {
+							// Alienate
+							modelClass = ve.dm.AlienNode;
+							childNodes = modelClass.static.enableAboutGrouping ?
+								aboutGroup : [ childNode ];
+							childDataElements = this.createDataElements( modelClass, childNodes );
+							childIsContent = this.nodeFactory.isNodeContent( childDataElements[ 0 ].type );
+						}
+					}
+
+					// If we're inserting content into a wrapper, any wrapped whitespace and meta
+					// items up until this point are here to stay
+					if ( context.inWrapper && childIsContent ) {
+						outputWrappedMetaItems( 'restore' );
+						wrappedWhitespace = '';
+						// Don't record the wrapped whitespace as the child node's outer whitespace
+						nextWhitespace = '';
+					}
+
+					// Annotate child
+					if ( childIsContent && !context.annotations.isEmpty() ) {
+						childDataElements[ 0 ].annotations = context.annotations.getIndexes().slice();
+					}
+
+					// Output child and process children if needed
+					if (
+						childDataElements.length === 1 &&
+						childNodes.length === 1 &&
+						this.nodeFactory.canNodeHaveChildren( childDataElements[ 0 ].type ) &&
+						!this.nodeFactory.doesNodeHandleOwnChildren( childDataElements[ 0 ].type )
+					) {
+						// Recursion
+						// Opening and closing elements are added by the recursion too
+						outputWrappedMetaItems( 'restore' );
+						data = data.concat(
+							this.getDataFromDomSubtree( childNode, childDataElements[ 0 ],
+								new ve.dm.AnnotationSet( this.store )
+							)
+						);
+					} else {
+						if ( childDataElements.length === 1 ) {
+							childDataElements.push( { type: '/' + childDataElements[ 0 ].type } );
+						}
+						// Write childDataElements directly
+						outputWrappedMetaItems( 'restore' );
+						data = data.concat( childDataElements );
+					}
+					processNextWhitespace( childDataElements[ 0 ] );
+					prevElement = childDataElements[ 0 ];
+
+					// In case we consumed multiple childNodes, adjust i accordingly
+					i += childNodes.length - 1;
+				}
+				break;
+			case Node.TEXT_NODE:
+				text = childNode.data;
+				if ( text === '' ) {
+					// Empty text node?!?
+					break;
+				}
+				if ( !context.originallyExpectingContent ) {
+					// Strip and store outer whitespace
+					if ( text.match( /^\s+$/ ) ) {
+						// This text node is whitespace only
+						if ( context.inWrapper ) {
+							// We're already wrapping, so output this whitespace
+							// and store it in wrappedWhitespace (see
+							// comment about wrappedWhitespace below)
+							wrappedWhitespace = text;
+							wrappedWhitespaceIndex = data.length;
+							data = data.concat(
+								ve.dm.Converter.getDataContentFromText( wrappedWhitespace, context.annotations )
+							);
+						} else {
+							// We're not in wrapping mode, store this whitespace
+							if ( !prevElement ) {
+								if ( wrapperElement ) {
+									// First child, store as inner
+									// whitespace in the parent
+									addWhitespace( wrapperElement, 1, text );
+								}
+								// Else, WTF?!? This is not supposed to
+								// happen, but it's not worth
+								// throwing an exception over.
+							} else {
+								addWhitespace( prevElement, 3, text );
+							}
+							nextWhitespace = text;
+							wrappedWhitespace = '';
+							outputWrappedMetaItems( 'restore' );
+						}
+						// We're done, no actual text left to process
+						break;
+					} else {
+						// This text node contains actual text
+						// Separate the real text from the whitespace
+						// HACK: . doesn't match newlines in JS, so use
+						// [\s\S] to match any character
+						matches = text.match( /^(\s*)([\s\S]*?)(\s*)$/ );
+						if ( !context.inWrapper ) {
+							// Wrap the text in a paragraph and output it
+							startWrapping();
+
+							// Only store leading whitespace if we just
+							// started wrapping
+							if ( matches[ 1 ] !== '' ) {
+								if ( !prevElement ) {
+									if ( wrapperElement ) {
+										// First child, store as inner
+										// whitespace in the parent
+										addWhitespace( wrapperElement, 1, matches[ 1 ] );
+									}
+									// Else, WTF?!? This is not supposed to
+									// happen, but it's not worth
+									// throwing an exception over.
+								} else {
+									addWhitespace( prevElement, 3, matches[ 1 ] );
+								}
+								addWhitespace( wrappingParagraph, 0, matches[ 1 ] );
+							}
+						} else {
+							outputWrappedMetaItems( 'restore' );
+							// We were already wrapping in a paragraph,
+							// so the leading whitespace must be output
+							data = data.concat(
+								ve.dm.Converter.getDataContentFromText( matches[ 1 ], context.annotations )
+							);
+						}
+						// Output the text sans whitespace
+						data = data.concat(
+							ve.dm.Converter.getDataContentFromText( matches[ 2 ], context.annotations )
+						);
+
+						// Don't store this in wrappingParagraph.internal.whitespace[3]
+						// and nextWhitespace just yet. Instead, store it
+						// in wrappedWhitespace. There might be more text
+						// nodes after this one, so we output wrappedWhitespace
+						// for now and undo that if it turns out this was
+						// the last text node. We can't output it later
+						// because we have to apply the correct annotations.
+						wrappedWhitespace = matches[ 3 ];
+						wrappedWhitespaceIndex = data.length;
+						data = data.concat(
+							ve.dm.Converter.getDataContentFromText( wrappedWhitespace, context.annotations )
+						);
+						prevElement = wrappingParagraph;
+						break;
+					}
+				}
+
+				// Strip leading and trailing inner whitespace
+				// (but only in non-annotation nodes)
+				// and store it so it can be restored later.
+				if (
+					context.annotations.isEmpty() && i === 0 && wrapperElement &&
+					!this.nodeFactory.doesNodeHaveSignificantWhitespace( wrapperElement.type )
+				) {
+					// Strip leading whitespace from the first child
+					matches = text.match( /^\s+/ );
+					if ( matches && matches[ 0 ] !== '' ) {
+						addWhitespace( wrapperElement, 1, matches[ 0 ] );
+						text = text.slice( matches[ 0 ].length );
+					}
+				}
+				if (
+					context.annotations.isEmpty() &&
+					i === domElement.childNodes.length - 1 &&
+					wrapperElement &&
+					!this.nodeFactory.doesNodeHaveSignificantWhitespace( wrapperElement.type )
+				) {
+					// Strip trailing whitespace from the last child
+					matches = text.match( /\s+$/ );
+					if ( matches && matches[ 0 ] !== '' ) {
+						addWhitespace( wrapperElement, 2, matches[ 0 ] );
+						text = text.slice( 0, text.length - matches[ 0 ].length );
+					}
+				}
+
+				// Annotate the text and output it
+				data = data.concat(
+					ve.dm.Converter.getDataContentFromText( text, context.annotations )
+				);
+				break;
+		}
+	}
+	// End auto-wrapping of bare content
+	if ( context.inWrapper && context.canCloseWrapper ) {
+		stopWrapping();
+		// HACK: don't set context.inWrapper = false here because it's checked below
+		context.inWrapper = true;
+	}
+
+	// If we're closing a node that doesn't have any children, but could contain a paragraph,
+	// add a paragraph. This prevents things like empty list items
+	if ( context.branchType !== 'paragraph' && wrapperElement && data[ data.length - 1 ] === wrapperElement &&
+		!context.inWrapper && !this.nodeFactory.canNodeContainContent( context.branchType ) &&
+		!this.nodeFactory.isNodeContent( context.branchType ) &&
+		this.isValidChildNodeType( 'paragraph' )
+	) {
+		emptyParagraph = { type: 'paragraph', internal: { generated: 'empty' } };
+		processNextWhitespace( emptyParagraph );
+		data.push( emptyParagraph );
+		data.push( { type: '/paragraph' } );
+	}
+
+	// Close element
+	if ( wrapperElement ) {
+		// Add the whitespace after the last child to the parent as innerPost
+		// But don't do this if the parent is empty, because in that case we've already put that
+		// whitespace in innerPre
+		if ( nextWhitespace !== '' && data[ data.length - 1 ] !== wrapperElement ) {
+			addWhitespace( wrapperElement, 2, nextWhitespace );
+			nextWhitespace = '';
+		}
+		data.push( { type: '/' + wrapperElement.type } );
+	}
+	// Don't return an empty document
+	if ( context.branchType === 'document' && isAllInstanceOf( data, ve.dm.MetaItem ) && !annotationSet ) {
+		emptyParagraph = { type: 'paragraph', internal: { generated: 'empty' } };
+		processNextWhitespace( emptyParagraph );
+		data.push( emptyParagraph );
+		data.push( { type: '/paragraph' } );
+	}
+
+	this.contextStack.pop();
+	return data;
+};
+
+/**
+ * Get inner whitespace from linear data
+ *
+ * @param {ve.dm.FlatLinearData} data Linear model data
+ * @return {Array} innerWhitespace Inner whitespace
+ */
+ve.dm.Converter.prototype.getInnerWhitespace = function ( data ) {
+	var whitespace,
+		innerWhitespace = new Array( 2 ),
+		stack = 0,
+		last = data.getLength() - 1;
+
+	if ( data.isOpenElementData( 0 ) ) {
+		whitespace = ve.getProp( data.getData( 0 ), 'internal', 'whitespace' );
+		innerWhitespace[ 0 ] = whitespace ? whitespace[ 0 ] : undefined;
+	}
+	if ( data.isCloseElementData( last ) ) {
+		// Find matching opening tag of the last close tag
+		stack++;
+		while ( --last ) {
+			if ( data.isCloseElementData( last ) ) {
+				stack++;
+			} else if ( data.isOpenElementData( last ) ) {
+				stack--;
+				if ( stack === 0 && data.getType( last ) !== 'internalList' ) {
+					break;
+				}
+			}
+		}
+		whitespace = ve.getProp( data.getData( last ), 'internal', 'whitespace' );
+		innerWhitespace[ 1 ] = whitespace ? whitespace[ 3 ] : undefined;
+	}
+	return innerWhitespace;
+};
+
+/**
+ * Convert document model to an HTML DOM
+ *
+ * @method
+ * @param {ve.dm.Document} model Document model
+ * @param {boolean} [forClipboard=false] Conversion is for clipboard
+ * @return {HTMLDocument} Document containing the resulting HTML
+ */
+ve.dm.Converter.prototype.getDomFromModel = function ( model, forClipboard ) {
+	var doc = ve.createDocumentFromHtml( '' );
+
+	this.getDomSubtreeFromModel( model, doc.body, forClipboard );
+
+	return doc;
+};
+
+/**
+ * Convert document model to an HTML DOM subtree and add it to a container element.
+ *
+ * @method
+ * @param {ve.dm.Document} model Document model
+ * @param {HTMLElement} container DOM element to add the generated elements to. Should be empty.
+ * @param {boolean} [forClipboard=false] Conversion is for clipboard
+ */
+ve.dm.Converter.prototype.getDomSubtreeFromModel = function ( model, container, forClipboard ) {
+	// Set up the converter state
+	this.documentData = model.getFullData();
+	this.store = model.getStore();
+	this.internalList = model.getInternalList();
+	this.forClipboard = !!forClipboard;
+
+	this.getDomSubtreeFromData( this.documentData, container, model.getInnerWhitespace() );
+
+	// Clear the state
+	this.documentData = null;
+	this.store = null;
+	this.internalList = null;
+	this.forClipboard = null;
+};
+
+/**
+ * Convert linear model data to an HTML DOM subtree and add it to a container element.
+ *
+ * @param {Array} data Linear model data
+ * @param {HTMLElement} container DOM element to add the generated elements to. Should be empty.
+ * @param {Array} [innerWhitespace] Inner whitespace if the container is the body
+ * @throws Unbalanced data: looking for closing /type
+ */
+ve.dm.Converter.prototype.getDomSubtreeFromData = function ( data, container, innerWhitespace ) {
+	var text, i, j, isStart, annotations, dataElement, dataElementOrSlice, oldLastOuterPost,
+		childDomElements, pre, ours, theirs, parentDomElement, lastChild, isContentNode, sibling,
+		previousSiblings, doUnwrap, textNode, type, annotatedDomElementStack, annotatedDomElements,
+		dataLen = data.length,
+		canContainContentStack = [],
+		conv = this,
+		doc = container.ownerDocument,
+		domElement = container,
+		annotationStack = new ve.dm.AnnotationSet( this.store ),
+		nodeFactory = this.nodeFactory;
+
+	// TODO this whole function should be rewritten with a domElementStack and ascend() and
+	// descend() functions, to build the whole DOM bottom-up rather than top-down. That would make
+	// unwrapping easier and will hopefully result in fewer DOM operations.
+
+	function openAnnotation() {
+		// Add text if needed
+		if ( text.length > 0 ) {
+			annotatedDomElements.push( doc.createTextNode( text ) );
+			text = '';
+		}
+		annotatedDomElements = [];
+		annotatedDomElementStack.push( annotatedDomElements );
+	}
+
+	function closeAnnotation( annotation ) {
+		var i, len, annotationElement, annotatedChildDomElements,
+			matches, first, last,
+			leading = '',
+			trailing = '',
+			origElementText = annotation.getOriginalDomElements()[ 0 ] &&
+				annotation.getOriginalDomElements()[ 0 ].textContent ||
+				'';
+
+		// Add text if needed
+		if ( text.length > 0 ) {
+			annotatedDomElements.push( doc.createTextNode( text ) );
+			text = '';
+		}
+
+		annotatedChildDomElements = annotatedDomElementStack.pop();
+		annotatedDomElements = annotatedDomElementStack[ annotatedDomElementStack.length - 1 ];
+
+		// HACK: Move any leading and trailing whitespace out of the annotation, but only if the
+		// annotation didn't originally have leading/trailing whitespace
+		first = annotatedChildDomElements[ 0 ];
+		while (
+			first &&
+			first.nodeType === Node.TEXT_NODE &&
+			( matches = first.data.match( /^\s+/ ) ) &&
+			!origElementText.match( /^\s/ )
+		) {
+			leading += matches[ 0 ];
+			first.deleteData( 0, matches[ 0 ].length );
+			if ( first.data.length !== 0 ) {
+				break;
+			}
+			// Remove empty text node
+			annotatedChildDomElements.shift();
+			// Process next text node to see if it also has whitespace
+			first = annotatedChildDomElements[ 0 ];
+		}
+		last = annotatedChildDomElements[ annotatedChildDomElements.length - 1 ];
+		while (
+			last &&
+			last.nodeType === Node.TEXT_NODE &&
+			( matches = last.data.match( /\s+$/ ) ) &&
+			!origElementText.match( /\s$/ )
+		) {
+			trailing = matches[ 0 ] + trailing;
+			last.deleteData( last.data.length - matches[ 0 ].length, matches[ 0 ].length );
+			if ( last.data.length !== 0 ) {
+				break;
+			}
+			// Remove empty text node
+			annotatedChildDomElements.pop();
+			// Process next text node to see if it also has whitespace
+			last = annotatedChildDomElements[ annotatedChildDomElements.length - 1 ];
+		}
+
+		if ( annotatedChildDomElements.length ) {
+			annotationElement = conv.getDomElementsFromDataElement(
+				annotation.getElement(), doc, annotatedChildDomElements
+			)[ 0 ];
+		}
+
+		if ( leading ) {
+			annotatedDomElements.push( doc.createTextNode( leading ) );
+		}
+		if ( annotationElement ) {
+			for ( i = 0, len = annotatedChildDomElements.length; i < len; i++ ) {
+				annotationElement.appendChild( annotatedChildDomElements[ i ] );
+			}
+			annotatedDomElements.push( annotationElement );
+		} else {
+			for ( i = 0, len = annotatedChildDomElements.length; i < len; i++ ) {
+				annotatedDomElements.push( annotatedChildDomElements[ i ] );
+			}
+		}
+		if ( trailing ) {
+			annotatedDomElements.push( doc.createTextNode( trailing ) );
+		}
+	}
+
+	function findEndOfNode( i ) {
+		var j, depth;
+		for ( j = i + 1, depth = 1; j < dataLen && depth > 0; j++ ) {
+			if ( data[ j ].type ) {
+				depth += data[ j ].type.charAt( 0 ) === '/' ? -1 : 1;
+			}
+		}
+		if ( depth !== 0 ) {
+			throw new Error( 'Unbalanced data: ' + depth + ' element(s) left open.' );
+		}
+		return j;
+	}
+
+	function getDataElementOrSlice() {
+		var dataSlice;
+		if (
+			nodeFactory.lookup( data[ i ].type ) &&
+			nodeFactory.doesNodeHandleOwnChildren( data[ i ].type )
+		) {
+			dataSlice = data.slice( i, findEndOfNode( i ) );
+		} else {
+			dataSlice = data[ i ];
+		}
+		return dataSlice;
+	}
+
+	function removeInternalNodes() {
+		var dataCopy, endOffset;
+		// See if there is an internalList in the data, and if there is one, remove it
+		// Removing it here prevents unwanted interactions with whitespace preservation
+		for ( i = 0; i < dataLen; i++ ) {
+			if (
+				data[ i ].type && data[ i ].type.charAt( 0 ) !== '/' &&
+				nodeFactory.lookup( data[ i ].type ) &&
+				nodeFactory.isNodeInternal( data[ i ].type )
+			) {
+				// Copy data if we haven't already done so
+				if ( !dataCopy ) {
+					dataCopy = data.slice();
+				}
+				endOffset = findEndOfNode( i );
+				// Remove this node's data from dataCopy
+				dataCopy.splice( i - ( dataLen - dataCopy.length ),  endOffset - i );
+				// Move i such that it will be at endOffset in the next iteration
+				i = endOffset - 1;
+			}
+		}
+		if ( dataCopy ) {
+			data = dataCopy;
+			dataLen = data.length;
+		}
+	}
+
+	removeInternalNodes();
+
+	for ( i = 0; i < dataLen; i++ ) {
+		if ( typeof data[ i ] === 'string' ) {
+			// Text
+			text = '';
+			isStart = i > 0 &&
+				ve.dm.LinearData.static.isOpenElementData( data[ i - 1 ] ) &&
+				!nodeFactory.doesNodeHaveSignificantWhitespace(
+					ve.dm.LinearData.static.getType( data[ i - 1 ] )
+				);
+			// Continue forward as far as the plain text goes
+			while ( typeof data[ i ] === 'string' ) {
+				// HACK: Skip over leading whitespace (bug 51462) in non-whitespace-preserving tags
+				if ( !( isStart && data[ i ].match( /\s/ ) ) ) {
+					text += data[ i ];
+					isStart = false;
+				}
+				i++;
+			}
+			// i points to the first non-text thing, go back one so we don't skip this later
+			i--;
+			// Add text
+			if ( text.length > 0 ) {
+				domElement.appendChild( doc.createTextNode( text ) );
+			}
+		} else if (
+			Array.isArray( data[ i ] ) ||
+			(
+				data[ i ].annotations !== undefined && (
+					this.metaItemFactory.lookup( data[ i ].type ) ||
+					this.nodeFactory.isNodeContent( data[ i ].type )
+				)
+			)
+		) {
+			// Annotated text, nodes or meta
+			text = '';
+			annotatedDomElements = [];
+			annotatedDomElementStack = [ annotatedDomElements ];
+			while (
+				data[ i ] !== undefined && (
+					Array.isArray( data[ i ] ) ||
+					(
+						data[ i ].annotations !== undefined && (
+							this.metaItemFactory.lookup( data[ i ].type ) ||
+							this.nodeFactory.isNodeContent( data[ i ].type )
+						)
+					)
+				)
+			) {
+				annotations = new ve.dm.AnnotationSet(
+					this.store, data[ i ].annotations || data[ i ][ 1 ]
+				);
+				ve.dm.Converter.openAndCloseAnnotations( annotationStack, annotations,
+					openAnnotation, closeAnnotation
+				);
+
+				if ( data[ i ].annotations === undefined ) {
+					// Annotated text
+					text += data[ i ][ 0 ];
+				} else {
+					// Annotated node
+					// Add text if needed
+					if ( text.length > 0 ) {
+						annotatedDomElements.push( doc.createTextNode( text ) );
+						text = '';
+					}
+					// Insert the elements
+					dataElementOrSlice = getDataElementOrSlice();
+					childDomElements = this.getDomElementsFromDataElement( dataElementOrSlice, doc );
+					for ( j = 0; j < childDomElements.length; j++ ) {
+						annotatedDomElements.push( childDomElements[ j ] );
+					}
+					if ( Array.isArray( dataElementOrSlice ) ) {
+						i += dataElementOrSlice.length - 1;
+					} else {
+						i++; // Skip the closing
+					}
+				}
+				i++;
+			}
+			// We're now at the first non-annotated thing, go back one so we don't skip this later
+			i--;
+
+			// Add any gathered text
+			if ( text.length > 0 ) {
+				annotatedDomElements.push( doc.createTextNode( text ) );
+				text = '';
+			}
+			// Close any remaining annotations
+			ve.dm.Converter.openAndCloseAnnotations( annotationStack, new ve.dm.AnnotationSet( this.store ),
+				openAnnotation, closeAnnotation
+			);
+			// Put the annotated nodes in the DOM
+			for ( j = 0; j < annotatedDomElements.length; j++ ) {
+				domElement.appendChild( annotatedDomElements[ j ] );
+			}
+		} else if ( data[ i ].type !== undefined ) {
+			dataElement = data[ i ];
+			// Element
+			if ( dataElement.type.charAt( 0 ) === '/' ) {
+				// Close element
+				parentDomElement = domElement.parentNode;
+				type = data[ i ].type.slice( 1 );
+				if ( this.metaItemFactory.lookup( type ) ) {
+					isContentNode = canContainContentStack[ canContainContentStack.length - 1 ];
+				} else {
+					isContentNode = this.nodeFactory.isNodeContent( type );
+					canContainContentStack.pop();
+				}
+				// Process whitespace
+				// whitespace = [ outerPre, innerPre, innerPost, outerPost ]
+				oldLastOuterPost = parentDomElement.lastOuterPost;
+				if (
+					!isContentNode &&
+					domElement.veInternal &&
+					domElement.veInternal.whitespace
+				) {
+					// Process inner whitespace. innerPre is for sure legitimate
+					// whitespace that should be inserted; if it was a duplicate
+					// of our child's outerPre, we would have cleared it.
+					pre = domElement.veInternal.whitespace[ 1 ];
+					if ( pre ) {
+						if (
+							domElement.firstChild &&
+							domElement.firstChild.nodeType === Node.TEXT_NODE
+						) {
+							// First child is a TextNode, prepend to it
+							domElement.firstChild.insertData( 0, pre );
+						} else {
+							// Prepend a TextNode
+							textNode = doc.createTextNode( pre );
+							textNode.veIsWhitespace = true;
+							domElement.insertBefore(
+								textNode,
+								domElement.firstChild
+							);
+						}
+					}
+					lastChild = domElement.veInternal.childDomElements ?
+						domElement.veInternal
+							.childDomElements[ domElement.veInternal.childDomElements.length - 1 ]
+							.lastChild :
+						domElement.lastChild;
+					ours = domElement.veInternal.whitespace[ 2 ];
+					if ( domElement.lastOuterPost === undefined ) {
+						// This node didn't have any structural children
+						// (i.e. it's a content-containing node), so there's
+						// nothing to check innerPost against
+						theirs = ours;
+					} else {
+						theirs = domElement.lastOuterPost;
+					}
+					if ( ours && ours === theirs ) {
+						if ( lastChild && lastChild.nodeType === Node.TEXT_NODE ) {
+							// Last child is a TextNode, append to it
+							domElement.lastChild.appendData( ours );
+						} else {
+							// Append a TextNode
+							textNode = doc.createTextNode( ours );
+							textNode.veIsWhitespace = true;
+							domElement.appendChild(
+								textNode
+							);
+						}
+					}
+					// Tell the parent about our outerPost
+					parentDomElement.lastOuterPost = domElement.veInternal.whitespace[ 3 ] || '';
+				} else if ( !isContentNode ) {
+					// Use empty string, because undefined means there were no
+					// structural children
+					parentDomElement.lastOuterPost = '';
+				}
+				// else don't touch lastOuterPost
+
+				// Logic to unwrap empty & wrapper nodes.
+				// It would be nicer if we could avoid generating in the first
+				// place, but then remembering where we have to skip ascending
+				// to the parent would be tricky.
+				doUnwrap = false;
+				if ( domElement.veInternal ) {
+					switch ( domElement.veInternal.generated ) {
+						case 'slug':
+							// 'slug' elements - remove if they are still empty
+							if ( domElement.childNodes.length === 0 ) {
+								doUnwrap = true;
+							}
+							break;
+						case 'empty':
+							// 'empty' elements - first ensure they are actually empty
+							if ( domElement.childNodes.length === 0 && (
+									// then check that we are the last child
+									// before unwrapping (and therefore destroying)
+									i === data.length - 1 ||
+									data[ i + 1 ].type.charAt( 0 ) === '/'
+								)
+							) {
+								doUnwrap = true;
+							}
+							break;
+						case 'wrapper':
+							// 'wrapper' elements - ensure there is a block level
+							// element between this element and the previous sibling
+							// wrapper or parent node
+							doUnwrap = true;
+							previousSiblings = domElement.parentElement.childNodes;
+							// Note: previousSiblings includes the current element
+							// so we only go up to length - 2
+							for ( j = previousSiblings.length - 2; j >= 0; j-- ) {
+								sibling = previousSiblings[ j ];
+								if ( sibling.nodeType === Node.TEXT_NODE && !sibling.veIsWhitespace ) {
+									// we've found an unwrapped paragraph so don't unwrap
+									doUnwrap = false;
+									break;
+								}
+								if ( ve.isBlockElement( sibling ) ) {
+									// there is a block element before the next unwrapped node
+									// so it's safe to unwrap
+									break;
+								}
+							}
+							break;
+					}
+				}
+				if ( doUnwrap ) {
+					if ( domElement.childNodes.length ) {
+						// If domElement has children, append them to parentDomElement
+						while ( domElement.firstChild ) {
+							parentDomElement.insertBefore(
+								domElement.firstChild,
+								domElement
+							);
+						}
+					} else {
+						// If domElement has no children, it's as if it was never there at all,
+						// so set lastOuterPost back to what it was, except that we need to
+						// change undefined to '' , since undefined means there were no children.
+						parentDomElement.lastOuterPost = oldLastOuterPost || '';
+					}
+					parentDomElement.removeChild( domElement );
+				}
+
+				delete domElement.veInternal;
+				delete domElement.lastOuterPost;
+				// Ascend to parent node, except if this is an internal node
+				// TODO: It's not covered with unit tests.
+				if ( !nodeFactory.lookup( type ) || !nodeFactory.isNodeInternal( type ) ) {
+					domElement = parentDomElement;
+				}
+			} else {
+				// Create node from data
+				if ( this.metaItemFactory.lookup( data[ i ].type ) ) {
+					isContentNode = canContainContentStack[ canContainContentStack.length - 1 ];
+				} else {
+					canContainContentStack.push(
+						// if the last item was true then this item must inherit it
+						canContainContentStack[ canContainContentStack.length - 1 ] ||
+						this.nodeFactory.canNodeContainContent( data[ i ].type )
+					);
+					isContentNode = this.nodeFactory.isNodeContent( data[ i ].type );
+				}
+
+				dataElementOrSlice = getDataElementOrSlice();
+				childDomElements = this.getDomElementsFromDataElement( dataElementOrSlice, doc );
+				if ( childDomElements && !childDomElements.length ) {
+					// Support toDomElements returning an empty array
+					i = findEndOfNode( i ) - 1;
+					continue;
+				} else if ( childDomElements ) {
+					// Add clone of internal data; we use a clone rather than a reference because
+					// we modify .veInternal.whitespace[1] in some cases
+					childDomElements[ 0 ].veInternal = ve.extendObject(
+						{ childDomElements: childDomElements },
+						dataElement.internal ? ve.copy( dataElement.internal ) : {}
+					);
+					// Add elements
+					for ( j = 0; j < childDomElements.length; j++ ) {
+						domElement.appendChild( childDomElements[ j ] );
+					}
+					// Descend into the first child node
+					parentDomElement = domElement;
+					domElement = childDomElements[ 0 ];
+
+					// Process outer whitespace
+					// Every piece of outer whitespace is duplicated somewhere:
+					// each node's outerPost is duplicated as the next node's
+					// outerPre, the first node's outerPre is the parent's
+					// innerPre, and the last node's outerPost is the parent's
+					// innerPost. For each piece of whitespace, we verify that
+					// the duplicate matches. If it doesn't, we take that to
+					// mean the user has messed with it and don't output any
+					// whitespace.
+					if ( domElement.veInternal && domElement.veInternal.whitespace ) {
+						// Process this node's outerPre
+						ours = domElement.veInternal.whitespace[ 0 ];
+						theirs = undefined;
+						if ( domElement.previousSibling ) {
+							// Get previous sibling's outerPost
+							theirs = parentDomElement.lastOuterPost;
+						} else if ( parentDomElement === container ) {
+							// outerPre of the very first node in the document, check against body innerWhitespace
+							theirs = innerWhitespace ? innerWhitespace[ 0 ] : ours;
+						} else {
+							// First child, get parent's innerPre
+							if (
+								parentDomElement.veInternal &&
+								parentDomElement.veInternal.whitespace
+							) {
+								theirs = parentDomElement.veInternal.whitespace[ 1 ];
+								// Clear parent's innerPre so it's not used again
+								parentDomElement.veInternal.whitespace[ 1 ] = undefined;
+							}
+							// else theirs=undefined
+						}
+						if ( ours && ours === theirs ) {
+							// Matches the duplicate, insert a TextNode
+							textNode = doc.createTextNode( ours );
+							textNode.veIsWhitespace = true;
+							parentDomElement.insertBefore(
+								textNode,
+								domElement
+							);
+						}
+					} else if (
+						!isContentNode &&
+						!domElement.previousSibling &&
+						parentDomElement.veInternal &&
+						parentDomElement.veInternal.whitespace
+					) {
+						// The parent's innerPre should not be used, because it doesn't match
+						// outerPre (since we didn't have any whitespace set at all).
+						// Except if this is a content node, because content nodes
+						// don't have whitespace annotated on them *sigh*
+						parentDomElement.veInternal.whitespace[ 1 ] = undefined;
+					}
+				}
+
+				if ( Array.isArray( dataElementOrSlice ) ) {
+					i += dataElementOrSlice.length - 2;
+				}
+			}
+		}
+	}
+	// Check outerPost whitespace of the very last node against body innerWhitespace
+	if (
+		container.lastOuterPost !== undefined &&
+		( !innerWhitespace || container.lastOuterPost === innerWhitespace[ 1 ] )
+	) {
+		if ( container.lastChild && container.lastChild.nodeType === Node.TEXT_NODE ) {
+			// Last child is a TextNode, append to it
+			container.lastChild.appendData( container.lastOuterPost );
+		} else if ( container.lastOuterPost.length > 0 ) {
+			// Append a TextNode
+			container.appendChild( doc.createTextNode( container.lastOuterPost ) );
+		}
+		delete container.lastOuterPost;
+	}
+	// Get rid of excess text nodes
+	ve.normalizeNode( container );
+};
+
+/* Initialization */
+
+ve.dm.converter = new ve.dm.Converter( ve.dm.modelRegistry, ve.dm.nodeFactory, ve.dm.annotationFactory, ve.dm.metaItemFactory );
+
+/*!
+ * VisualEditor Linear Selection class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * @class
+ * @extends ve.dm.Selection
+ * @constructor
+ * @param {ve.dm.Document} doc Document
+ * @param {ve.Range} range Range
+ */
+ve.dm.LinearSelection = function VeDmLinearSelection( doc, range ) {
+	// Parent constructor
+	ve.dm.LinearSelection.super.call( this, doc );
+
+	this.range = range;
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.LinearSelection, ve.dm.Selection );
+
+/* Static Properties */
+
+ve.dm.LinearSelection.static.name = 'linear';
+
+/* Static Methods */
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.static.newFromHash = function ( doc, hash ) {
+	return new ve.dm.LinearSelection( doc, ve.Range.static.newFromHash( hash.range ) );
+};
+
+/* Methods */
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.prototype.toJSON = function () {
+	return {
+		type: this.constructor.static.name,
+		range: this.range
+	};
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.prototype.getDescription = function () {
+	return 'Linear: ' + this.range.from + ' - ' + this.range.to;
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.prototype.clone = function () {
+	return new this.constructor( this.getDocument(), this.getRange() );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.prototype.collapseToStart = function () {
+	return new this.constructor( this.getDocument(), new ve.Range( this.getRange().start ) );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.prototype.collapseToEnd = function () {
+	return new this.constructor( this.getDocument(), new ve.Range( this.getRange().end ) );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.prototype.collapseToFrom = function () {
+	return new this.constructor( this.getDocument(), new ve.Range( this.getRange().from ) );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.prototype.collapseToTo = function () {
+	return new this.constructor( this.getDocument(), new ve.Range( this.getRange().to ) );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.prototype.isCollapsed = function () {
+	return this.getRange().isCollapsed();
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.Selection.prototype.translateByTransaction = function ( tx, excludeInsertion ) {
+	return new this.constructor( this.getDocument(), tx.translateRange( this.getRange(), excludeInsertion ) );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.prototype.getRanges = function () {
+	return [ this.range ];
+};
+
+/**
+ * Get the range for this selection
+ *
+ * @return {ve.Range} Range
+ */
+ve.dm.LinearSelection.prototype.getRange = function () {
+	return this.range;
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinearSelection.prototype.equals = function ( other ) {
+	return other instanceof ve.dm.LinearSelection &&
+		this.getDocument() === other.getDocument() &&
+		this.getRange().equals( other.getRange() );
+};
+
+/* Registration */
+
+ve.dm.selectionFactory.register( ve.dm.LinearSelection );
+
+/*!
+ * VisualEditor Null Selection class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * @class
+ * @extends ve.dm.Selection
+ * @constructor
+ */
+ve.dm.NullSelection = function VeDmNullSelection( doc ) {
+	// Parent constructor
+	ve.dm.NullSelection.super.call( this, doc );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.NullSelection, ve.dm.Selection );
+
+/* Static Properties */
+
+ve.dm.NullSelection.static.name = 'null';
+
+/* Static Methods */
+
+/**
+ * @inheritdoc
+ */
+ve.dm.NullSelection.static.newFromHash = function ( doc ) {
+	return new ve.dm.NullSelection( doc );
+};
+
+/* Methods */
+
+/**
+ * @inheritdoc
+ */
+ve.dm.NullSelection.prototype.toJSON = function () {
+	return {
+		type: this.constructor.static.name
+	};
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.NullSelection.prototype.getDescription = function () {
+	return 'Null';
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.NullSelection.prototype.clone = function () {
+	return new this.constructor( this.getDocument() );
+};
+
+ve.dm.NullSelection.prototype.collapseToStart = ve.dm.NullSelection.prototype.clone;
+
+ve.dm.NullSelection.prototype.collapseToEnd = ve.dm.NullSelection.prototype.clone;
+
+ve.dm.NullSelection.prototype.collapseToFrom = ve.dm.NullSelection.prototype.clone;
+
+ve.dm.NullSelection.prototype.collapseToTo = ve.dm.NullSelection.prototype.clone;
+
+/**
+ * @inheritdoc
+ */
+ve.dm.NullSelection.prototype.isCollapsed = function () {
+	return true;
+};
+
+ve.dm.NullSelection.prototype.translateByTransaction = ve.dm.NullSelection.prototype.clone;
+
+/**
+ * @inheritdoc
+ */
+ve.dm.NullSelection.prototype.getRanges = function () {
+	return [];
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.NullSelection.prototype.equals = function ( other ) {
+	return other instanceof ve.dm.NullSelection &&
+		this.getDocument() === other.getDocument();
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.NullSelection.prototype.isNull = function () {
+	return true;
+};
+
+/* Registration */
+
+ve.dm.selectionFactory.register( ve.dm.NullSelection );
+
+/*!
+ * VisualEditor Table Selection class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * @class
+ * @extends ve.dm.Selection
+ * @constructor
+ * @param {ve.dm.Document} doc Document model
+ * @param {ve.Range} tableRange Table range
+ * @param {number} fromCol Starting column
+ * @param {number} fromRow Starting row
+ * @param {number} [toCol] End column
+ * @param {number} [toRow] End row
+ * @param {boolean} [expand] Expand the selection to include merged cells
+ */
+ve.dm.TableSelection = function VeDmTableSelection( doc, tableRange, fromCol, fromRow, toCol, toRow, expand ) {
+	// Parent constructor
+	ve.dm.TableSelection.super.call( this, doc );
+
+	this.tableRange = tableRange;
+	this.tableNode = null;
+
+	toCol = toCol === undefined ? fromCol : toCol;
+	toRow = toRow === undefined ? fromRow : toRow;
+
+	this.fromCol = fromCol;
+	this.fromRow = fromRow;
+	this.toCol = toCol;
+	this.toRow = toRow;
+	this.startCol = fromCol < toCol ? fromCol : toCol;
+	this.startRow = fromRow < toRow ? fromRow : toRow;
+	this.endCol = fromCol < toCol ? toCol : fromCol;
+	this.endRow = fromRow < toRow ? toRow : fromRow;
+	this.intendedFromCol = this.fromCol;
+	this.intendedFromRow = this.fromRow;
+	this.intendedToCol = this.toCol;
+	this.intendedToRow = this.toRow;
+
+	if ( expand ) {
+		this.expand();
+	}
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.TableSelection, ve.dm.Selection );
+
+/* Static Properties */
+
+ve.dm.TableSelection.static.name = 'table';
+
+/* Static Methods */
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.static.newFromHash = function ( doc, hash ) {
+	return new ve.dm.TableSelection(
+		doc,
+		ve.Range.static.newFromHash( hash.tableRange ),
+		hash.fromCol,
+		hash.fromRow,
+		hash.toCol,
+		hash.toRow
+	);
+};
+
+/* Methods */
+
+/**
+ * Expand the selection to cover all merged cells
+ *
+ * @private
+ */
+ve.dm.TableSelection.prototype.expand = function () {
+	var cell, i,
+		lastCellCount = 0,
+		startCol = Infinity,
+		startRow = Infinity,
+		endCol = -Infinity,
+		endRow = -Infinity,
+		colBackwards = this.fromCol > this.toCol,
+		rowBackwards = this.fromRow > this.toRow,
+		cells = this.getMatrixCells();
+
+	while ( cells.length > lastCellCount ) {
+		for ( i = 0; i < cells.length; i++ ) {
+			cell = cells[ i ];
+			startCol = Math.min( startCol, cell.col );
+			startRow = Math.min( startRow, cell.row );
+			endCol = Math.max( endCol, cell.col + cell.node.getColspan() - 1 );
+			endRow = Math.max( endRow, cell.row + cell.node.getRowspan() - 1 );
+		}
+		this.startCol = startCol;
+		this.startRow = startRow;
+		this.endCol = endCol;
+		this.endRow = endRow;
+		this.fromCol = colBackwards ? endCol : startCol;
+		this.fromRow = rowBackwards ? endRow : startRow;
+		this.toCol = colBackwards ? startCol : endCol;
+		this.toRow = rowBackwards ? startRow : endRow;
+
+		lastCellCount = cells.length;
+		cells = this.getMatrixCells();
+	}
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.prototype.clone = function () {
+	return new this.constructor( this.getDocument(), this.tableRange, this.fromCol, this.fromRow, this.toCol, this.toRow );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.prototype.toJSON = function () {
+	return {
+		type: this.constructor.static.name,
+		tableRange: this.tableRange,
+		fromCol: this.fromCol,
+		fromRow: this.fromRow,
+		toCol: this.toCol,
+		toRow: this.toRow
+	};
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.prototype.getDescription = function () {
+	return (
+		'Table: ' +
+		this.tableRange.from + ' - ' + this.tableRange.to +
+		', ' +
+		'c' + this.fromCol + ' r' + this.fromRow +
+		' - ' +
+		'c' + this.toCol + ' r' + this.toRow
+	);
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.prototype.collapseToStart = function () {
+	return new this.constructor( this.getDocument(), this.tableRange, this.startCol, this.startRow, this.startCol, this.startRow );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.prototype.collapseToEnd = function () {
+	return new this.constructor( this.getDocument(), this.tableRange, this.endCol, this.endRow, this.endCol, this.endRow );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.prototype.collapseToFrom = function () {
+	return new this.constructor( this.getDocument(), this.tableRange, this.fromCol, this.fromRow, this.fromCol, this.fromRow );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.prototype.collapseToTo = function () {
+	return new this.constructor( this.getDocument(), this.tableRange, this.toCol, this.toRow, this.toCol, this.toRow );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.prototype.getRanges = function () {
+	var i, l, ranges = [],
+		cells = this.getMatrixCells();
+	for ( i = 0, l = cells.length; i < l; i++ ) {
+		ranges.push( cells[ i ].node.getRange() );
+	}
+	return ranges;
+};
+
+/**
+ * Get outer ranges of the selected cells
+ *
+ * @return {ve.Range[]} Outer ranges
+ */
+ve.dm.TableSelection.prototype.getOuterRanges = function () {
+	var i, l, ranges = [],
+		cells = this.getMatrixCells();
+	for ( i = 0, l = cells.length; i < l; i++ ) {
+		ranges.push( cells[ i ].node.getOuterRange() );
+	}
+	return ranges;
+};
+
+/**
+ * Retrieves all cells (no placeholders) within a given selection.
+ *
+ * @param {boolean} [includePlaceholders] Include placeholders in result
+ * @return {ve.dm.TableMatrixCell[]} List of table cells
+ */
+ve.dm.TableSelection.prototype.getMatrixCells = function ( includePlaceholders ) {
+	var row, col, cell,
+		matrix = this.getTableNode().getMatrix(),
+		cells = [],
+		visited = {};
+
+	for ( row = this.startRow; row <= this.endRow; row++ ) {
+		for ( col = this.startCol; col <= this.endCol; col++ ) {
+			cell = matrix.getCell( row, col );
+			if ( !cell ) {
+				continue;
+			}
+			if ( !includePlaceholders && cell.isPlaceholder() ) {
+				cell = cell.owner;
+			}
+			if ( !visited[ cell.key ] ) {
+				cells.push( cell );
+				visited[ cell.key ] = true;
+			}
+		}
+	}
+	return cells;
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.prototype.isCollapsed = function () {
+	return false;
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.prototype.translateByTransaction = function ( tx, excludeInsertion ) {
+	var newRange = tx.translateRange( this.tableRange, excludeInsertion );
+
+	if ( newRange.isCollapsed() ) {
+		return new ve.dm.NullSelection( this.getDocument() );
+	}
+	return new this.constructor(
+		this.getDocument(), newRange,
+		this.fromCol, this.fromRow, this.toCol, this.toRow
+	);
+};
+
+/**
+ * Check if the selection spans a single cell
+ *
+ * @return {boolean} The selection spans a single cell
+ */
+ve.dm.TableSelection.prototype.isSingleCell = function () {
+	// Quick check for single non-merged cell
+	return ( this.fromRow === this.toRow && this.fromCol === this.toCol ) ||
+		// Check for a merged single cell by ignoring placeholders
+		this.getMatrixCells().length === 1;
+};
+
+/**
+ * Get the selection's table node
+ *
+ * @return {ve.dm.TableNode} Table node
+ */
+ve.dm.TableSelection.prototype.getTableNode = function () {
+	if ( !this.tableNode ) {
+		this.tableNode = this.getDocument().getBranchNodeFromOffset( this.tableRange.start + 1 );
+	}
+	return this.tableNode;
+};
+
+/**
+ * Clone this selection with adjusted row and column positions
+ *
+ * Placeholder cells are skipped over so this method can be used for cursoring.
+ *
+ * @param {number} fromColOffset Starting column offset
+ * @param {number} fromRowOffset Starting row offset
+ * @param {number} [toColOffset] End column offset
+ * @param {number} [toRowOffset] End row offset
+ * @return {ve.dm.TableSelection} Adjusted selection
+ */
+ve.dm.TableSelection.prototype.newFromAdjustment = function ( fromColOffset, fromRowOffset, toColOffset, toRowOffset ) {
+	var fromCell, toCell,
+		matrix = this.getTableNode().getMatrix();
+
+	if ( toColOffset === undefined ) {
+		toColOffset = fromColOffset;
+	}
+
+	if ( toRowOffset === undefined ) {
+		toRowOffset = fromRowOffset;
+	}
+
+	function adjust( mode, cell, offset ) {
+		var nextCell,
+			col = cell.col,
+			row = cell.row,
+			dir = offset > 0 ? 1 : -1;
+
+		while ( offset !== 0 ) {
+			if ( mode === 'col' ) {
+				col += dir;
+				if ( col >= matrix.getColCount( row ) || col < 0 ) {
+					// Out of bounds
+					break;
+				}
+			} else {
+				row += dir;
+				if ( row >= matrix.getRowCount() || row < 0 ) {
+					// Out of bounds
+					break;
+				}
+			}
+			nextCell = matrix.getCell( row, col );
+			// Skip if same as current cell (i.e. merged cells), or null
+			if ( !nextCell || nextCell.equals( cell ) ) {
+				continue;
+			}
+			offset -= dir;
+			cell = nextCell;
+		}
+		return cell;
+	}
+
+	fromCell = matrix.getCell( this.intendedFromRow, this.intendedFromCol );
+	if ( fromColOffset ) {
+		fromCell = adjust( 'col', fromCell, fromColOffset );
+	}
+	if ( fromRowOffset ) {
+		fromCell = adjust( 'row', fromCell, fromRowOffset );
+	}
+
+	toCell = matrix.getCell( this.intendedToRow, this.intendedToCol );
+	if ( toColOffset ) {
+		toCell = adjust( 'col', toCell, toColOffset );
+	}
+	if ( toRowOffset ) {
+		toCell = adjust( 'row', toCell, toRowOffset );
+	}
+
+	return new this.constructor(
+		this.getDocument(),
+		this.tableRange,
+		fromCell.col,
+		fromCell.row,
+		toCell.col,
+		toCell.row,
+		true
+	);
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.TableSelection.prototype.equals = function ( other ) {
+	return other instanceof ve.dm.TableSelection &&
+		this.getDocument() === other.getDocument() &&
+		this.tableRange.equals( other.tableRange ) &&
+		this.fromCol === other.fromCol &&
+		this.fromRow === other.fromRow &&
+		this.toCol === other.toCol &&
+		this.toRow === other.toRow;
+};
+
+/**
+ * Get the number of rows covered by the selection
+ *
+ * @return {number} Number of rows covered
+ */
+ve.dm.TableSelection.prototype.getRowCount = function () {
+	return this.endRow - this.startRow + 1;
+};
+
+/**
+ * Get the number of columns covered by the selection
+ *
+ * @return {number} Number of columns covered
+ */
+ve.dm.TableSelection.prototype.getColCount = function () {
+	return this.endCol - this.startCol + 1;
+};
+
+/**
+ * Check if the table selection covers one or more full rows
+ *
+ * @return {boolean} The table selection covers one or more full rows
+ */
+ve.dm.TableSelection.prototype.isFullRow = function () {
+	var matrix = this.getTableNode().getMatrix();
+	return this.getColCount() === matrix.getColCount();
+};
+
+/**
+ * Check if the table selection covers one or more full columns
+ *
+ * @return {boolean} The table selection covers one or more full columns
+ */
+ve.dm.TableSelection.prototype.isFullCol = function () {
+	var matrix = this.getTableNode().getMatrix();
+	return this.getRowCount() === matrix.getRowCount();
+};
+
+ve.dm.TableSelection.prototype.isFullTable = function () {
+	var matrix = this.getTableNode().getMatrix();
+	return ( this.startCol === 0 && this.endCol === matrix.getColCount() - 1 &&
+		this.startRow === 0 && this.endRow === matrix.getRowCount() - 1 );
+};
+
+/* Registration */
+
+ve.dm.selectionFactory.register( ve.dm.TableSelection );
+
+/*!
+ * VisualEditor FlatLinearData classes.
+ *
+ * Class containing Flat linear data and an index-value store.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * Flat linear data storage
+ *
+ * @class
+ * @extends ve.dm.LinearData
+ * @constructor
+ * @param {ve.dm.IndexValueStore} store Index-value store
+ * @param {Array} [data] Linear data
+ */
+ve.dm.FlatLinearData = function VeDmFlatLinearData() {
+	// Parent constructor
+	ve.dm.FlatLinearData.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.FlatLinearData, ve.dm.LinearData );
+
+/* Methods */
+
+/**
+ * Get the type of the element at a specified offset.
+ *
+ * @method
+ * @param {number} offset Data offset
+ * @return {string} Type of the element
+ */
+ve.dm.FlatLinearData.prototype.getType = function ( offset ) {
+	return ve.dm.LinearData.static.getType( this.getData( offset ) );
+};
+
+/**
+ * Check if data at a given offset is an element.
+ *
+ * @method
+ * @param {number} offset Data offset
+ * @return {boolean} Data at offset is an element
+ */
+ve.dm.FlatLinearData.prototype.isElementData = function ( offset ) {
+	return ve.dm.LinearData.static.isElementData( this.getData( offset ) );
+};
+
+/**
+ * Check for elements in data.
+ *
+ * This method assumes that any value that has a type property that's a string is an element object.
+ * Elements are discovered by iterating through the entire data array (backwards).
+ *
+ * @method
+ * @return {boolean} At least one elements exists in data
+ */
+ve.dm.FlatLinearData.prototype.containsElementData = function () {
+	var i = this.getLength();
+	while ( i-- ) {
+		if ( this.isElementData( i ) ) {
+			return true;
+		}
+	}
+	return false;
+};
+
+/**
+ * Checks if data at a given offset is an open element.
+ *
+ * @method
+ * @param {number} offset Data offset
+ * @return {boolean} Data at offset is an open element
+ */
+ve.dm.FlatLinearData.prototype.isOpenElementData = function ( offset ) {
+	return ve.dm.LinearData.static.isOpenElementData( this.getData( offset ) );
+};
+
+/**
+ * Checks if data at a given offset is a close element.
+ *
+ * @method
+ * @param {number} offset Data offset
+ * @return {boolean} Data at offset is a close element
+ */
+ve.dm.FlatLinearData.prototype.isCloseElementData = function ( offset ) {
+	return ve.dm.LinearData.static.isCloseElementData( this.getData( offset ) );
+};
+
+/*!
+ * VisualEditor ElementLinearData classes.
+ *
+ * Class containing element linear data and an index-value store.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * Element linear data storage
+ *
+ * @class
+ * @extends ve.dm.FlatLinearData
+ * @constructor
+ * @param {ve.dm.IndexValueStore} store Index-value store
+ * @param {Array} [data] Linear data
+ */
+ve.dm.ElementLinearData = function VeDmElementLinearData( store, data, nodeFactory ) {
+	// Parent constructor
+	ve.dm.ElementLinearData.super.apply( this, arguments );
+
+	this.nodeFactory = nodeFactory || ve.dm.nodeFactory;
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.ElementLinearData, ve.dm.FlatLinearData );
+
+/* Static Members */
+
+ve.dm.ElementLinearData.static.startWordRegExp = new RegExp(
+	'^(' + unicodeJS.characterclass.patterns.word + ')'
+);
+
+ve.dm.ElementLinearData.static.endWordRegExp = new RegExp(
+	'(' + unicodeJS.characterclass.patterns.word + ')$'
+);
+
+/* Static Methods */
+
+/**
+ * Compare two elements' basic properties
+ *
+ * Elements are comparable if they have the same type and attributes, or
+ * have the same text data.
+ *
+ * @param {Object|Array|string} a First element
+ * @param {Object|Array|string} b Second element
+ * @return {boolean} Elements are comparable
+ */
+ve.dm.ElementLinearData.static.compareElements = function ( a, b ) {
+	var aPlain = a,
+		bPlain = b;
+
+	if ( a === undefined || b === undefined ) {
+		return false;
+	}
+
+	if ( Array.isArray( a ) ) {
+		aPlain = a[ 0 ];
+	}
+	if ( Array.isArray( b ) ) {
+		bPlain = b[ 0 ];
+	}
+	if ( a && a.type ) {
+		aPlain = {
+			type: a.type,
+			attributes: a.attributes
+		};
+	}
+	if ( b && b.type ) {
+		bPlain = {
+			type: b.type,
+			attributes: b.attributes
+		};
+	}
+	return ve.compare( aPlain, bPlain );
+};
+
+/* Methods */
+
+/**
+ * Check if content can be inserted at an offset in document data.
+ *
+ * This method assumes that any value that has a type property that's a string is an element object.
+ *
+ * Content offsets:
+ *
+ *      <heading> a </heading> <paragraph> b c <img> </img> </paragraph>
+ *     .         ^ ^          .           ^ ^ ^     .      ^            .
+ *
+ * Content offsets:
+ *
+ *      <list> <listItem> </listItem> <list>
+ *     .      .          .           .      .
+ *
+ * @method
+ * @param {number} offset Document offset
+ * @return {boolean} Content can be inserted at offset
+ */
+ve.dm.ElementLinearData.prototype.isContentOffset = function ( offset ) {
+	var left, right, factory;
+	// Edges are never content
+	if ( offset === 0 || offset === this.getLength() ) {
+		return false;
+	}
+	left = this.getData( offset - 1 );
+	right = this.getData( offset );
+	factory = this.nodeFactory;
+	return (
+		// Data exists at offsets
+		( left !== undefined && right !== undefined ) &&
+		(
+			// If there's content on the left or the right of the offset than we are good
+			// <paragraph>|a|</paragraph>
+			( typeof left === 'string' || typeof right === 'string' ) ||
+			// Same checks but for annotated characters - isArray is slower, try it next
+			( Array.isArray( left ) || Array.isArray( right ) ) ||
+			// The most expensive test are last, these deal with elements
+			(
+				// Right of a leaf
+				// <paragraph><image></image>|</paragraph>
+				(
+					// Is an element
+					typeof left.type === 'string' &&
+					// Is a closing
+					left.type.charAt( 0 ) === '/' &&
+					// Is a leaf
+					factory.isNodeContent( left.type.slice( 1 ) )
+				) ||
+				// Left of a leaf
+				// <paragraph>|<image></image></paragraph>
+				(
+					// Is an element
+					typeof right.type === 'string' &&
+					// Is not a closing
+					right.type.charAt( 0 ) !== '/' &&
+					// Is a leaf
+					factory.isNodeContent( right.type )
+				) ||
+				// Inside empty content branch
+				// <paragraph>|</paragraph>
+				(
+					// Inside empty element
+					'/' + left.type === right.type &&
+					// Both are content branches (right is the same type)
+					factory.canNodeContainContent( left.type )
+				)
+			)
+		)
+	);
+};
+
+/**
+ * Check if structure can be inserted at an offset in document data.
+ *
+ * If the {unrestricted} param is true than only offsets where any kind of element can be inserted
+ * will return true. This can be used to detect the difference between a location that a paragraph
+ * can be inserted, such as between two tables but not directly inside a table.
+ *
+ * This method assumes that any value that has a type property that's a string is an element object.
+ *
+ * Structural offsets (unrestricted = false):
+ *
+ *      <heading> a </heading> <paragraph> b c <img> </img> </paragraph>
+ *     ^         . .          ^           . . .     .      .            ^
+ *
+ * Structural offsets (unrestricted = true):
+ *
+ *      <heading> a </heading> <paragraph> b c <img> </img> </paragraph>
+ *     ^         . .          ^           . . .     .      .            ^
+ *
+ * Structural offsets (unrestricted = false):
+ *
+ *      <list> <listItem> </listItem> <list>
+ *     ^      ^          ^           ^      ^
+ *
+ * Content branch offsets (unrestricted = true):
+ *
+ *      <list> <listItem> </listItem> <list>
+ *     ^      .          ^           .      ^
+ *
+ * @method
+ * @param {number} offset Document offset
+ * @param {boolean} [unrestricted] Only return true if any kind of element can be inserted at offset
+ * @return {boolean} Structure can be inserted at offset
+ */
+ve.dm.ElementLinearData.prototype.isStructuralOffset = function ( offset, unrestricted ) {
+	var left, right, factory;
+	// Edges are always structural
+	if ( offset === 0 || offset === this.getLength() ) {
+		return true;
+	}
+	// Offsets must be within range and both sides must be elements
+	left = this.getData( offset - 1 );
+	right = this.getData( offset );
+	factory = this.nodeFactory;
+	return (
+		(
+			left !== undefined &&
+			right !== undefined &&
+			typeof left.type === 'string' &&
+			typeof right.type === 'string'
+		) &&
+		(
+			// Right of a branch
+			// <list><listItem><paragraph>a</paragraph>|</listItem>|</list>|
+			(
+				// Is a closing
+				left.type.charAt( 0 ) === '/' &&
+				// Is a branch or non-content leaf
+				(
+					factory.canNodeHaveChildren( left.type.slice( 1 ) ) ||
+					!factory.isNodeContent( left.type.slice( 1 ) )
+				) &&
+				(
+					// Only apply this rule in unrestricted mode
+					!unrestricted ||
+					// Right of an unrestricted branch
+					// <list><listItem><paragraph>a</paragraph>|</listItem></list>|
+					// Both are non-content branches that can have any kind of child
+					factory.getParentNodeTypes( left.type.slice( 1 ) ) === null
+				)
+			) ||
+			// Left of a branch
+			// |<list>|<listItem>|<paragraph>a</paragraph></listItem></list>
+			(
+				// Is not a closing
+				right.type.charAt( 0 ) !== '/' &&
+				// Is a branch or non-content leaf
+				(
+					factory.canNodeHaveChildren( right.type ) ||
+					!factory.isNodeContent( right.type )
+				) &&
+				(
+					// Only apply this rule in unrestricted mode
+					!unrestricted ||
+					// Left of an unrestricted branch
+					// |<list><listItem>|<paragraph>a</paragraph></listItem></list>
+					// Both are non-content branches that can have any kind of child
+					factory.getParentNodeTypes( right.type ) === null
+				)
+			) ||
+			// Inside empty non-content branch
+			// <list>|</list> or <list><listItem>|</listItem></list>
+			(
+				// Inside empty element
+				'/' + left.type === right.type &&
+				// Both are non-content branches (right is the same type)
+				factory.canNodeHaveChildrenNotContent( left.type ) &&
+				(
+					// Only apply this rule in unrestricted mode
+					!unrestricted ||
+					// Both are non-content branches that can have any kind of child
+					factory.getChildNodeTypes( left.type ) === null
+				)
+			)
+		)
+	);
+};
+
+/**
+ * Check for non-content elements in data.
+ *
+ * This method assumes that any value that has a type property that's a string is an element object.
+ * Elements are discovered by iterating through the entire data array.
+ *
+ * @method
+ * @return {boolean} True if all elements in data are content elements
+ */
+ve.dm.ElementLinearData.prototype.isContentData = function () {
+	var item, i = this.getLength();
+	while ( i-- ) {
+		item = this.getData( i );
+		if ( item.type !== undefined &&
+			item.type.charAt( 0 ) !== '/' &&
+			!this.nodeFactory.isNodeContent( item.type )
+		) {
+			return false;
+		}
+	}
+	return true;
+};
+
+/**
+ * Get annotations' store indexes covered by an offset.
+ *
+ * @method
+ * @param {number} offset Offset to get annotations for
+ * @param {boolean} [ignoreClose] Ignore annotations on close elements
+ * @return {number[]} An array of annotation store indexes the offset is covered by
+ * @throws {Error} offset out of bounds
+ */
+ve.dm.ElementLinearData.prototype.getAnnotationIndexesFromOffset = function ( offset, ignoreClose ) {
+	var element;
+	if ( offset < 0 || offset > this.getLength() ) {
+		throw new Error( 'offset ' + offset + ' out of bounds' );
+	}
+
+	// Since annotations are not stored on a closing leaf node,
+	// rewind offset by 1 to return annotations for that structure
+	if (
+		!ignoreClose &&
+		this.isCloseElementData( offset ) &&
+		!this.nodeFactory.canNodeHaveChildren( this.getType( offset ) ) // leaf node
+	) {
+		offset = this.getRelativeContentOffset( offset, -1 );
+	}
+
+	element = this.getData( offset );
+
+	if ( element === undefined || typeof element === 'string' ) {
+		return [];
+	} else if ( element.annotations ) {
+		return element.annotations.slice();
+	} else if ( element[ 1 ] ) {
+		return element[ 1 ].slice();
+	} else {
+		return [];
+	}
+};
+
+/**
+ * Get annotations covered by an offset.
+ *
+ * The returned AnnotationSet is a clone of the one in the data.
+ *
+ * @method
+ * @param {number} offset Offset to get annotations for
+ * @param {boolean} [ignoreClose] Ignore annotations on close elements
+ * @return {ve.dm.AnnotationSet} A set of all annotation objects offset is covered by
+ * @throws {Error} offset out of bounds
+ */
+ve.dm.ElementLinearData.prototype.getAnnotationsFromOffset = function ( offset, ignoreClose ) {
+	return new ve.dm.AnnotationSet( this.getStore(), this.getAnnotationIndexesFromOffset( offset, ignoreClose ) );
+};
+
+/**
+ * Set annotations of data at a specified offset.
+ *
+ * Cleans up data structure if annotation set is empty.
+ *
+ * @method
+ * @param {number} offset Offset to set annotations at
+ * @param {ve.dm.AnnotationSet} annotations Annotations to set
+ */
+ve.dm.ElementLinearData.prototype.setAnnotationsAtOffset = function ( offset, annotations ) {
+	this.setAnnotationIndexesAtOffset( offset, this.getStore().indexes( annotations.get() ) );
+};
+
+/**
+ * Set annotations' store indexes at a specified offset.
+ *
+ * Cleans up data structure if indexes array is empty.
+ *
+ * @method
+ * @param {number} offset Offset to set annotation indexes at
+ * @param {number[]} indexes Annotations' store indexes
+ */
+ve.dm.ElementLinearData.prototype.setAnnotationIndexesAtOffset = function ( offset, indexes ) {
+	var character,
+		item = this.getData( offset ),
+		isElement = this.isElementData( offset );
+	if ( indexes.length > 0 ) {
+		if ( isElement ) {
+			// New element annotation
+			item.annotations = indexes;
+		} else {
+			// New character annotation
+			character = this.getCharacterData( offset );
+			this.setData( offset, [ character, indexes ] );
+		}
+	} else {
+		if ( isElement ) {
+			// Cleanup empty element annotation
+			delete item.annotations;
+		} else {
+			// Cleanup empty character annotation
+			character = this.getCharacterData( offset );
+			this.setData( offset, character );
+		}
+	}
+};
+
+/**
+ * Set or unset an attribute at a specified offset.
+ *
+ * @param {number} offset Offset to set/unset attribute at
+ * @param {string} key Attribute name
+ * @param {Mixed} value Value to set, or undefined to unset
+ */
+ve.dm.ElementLinearData.prototype.setAttributeAtOffset = function ( offset, key, value ) {
+	var item = this.getData( offset );
+	if ( !this.isElementData( offset ) ) {
+		return;
+	}
+	if ( value === undefined ) {
+		// Clear
+		if ( item.attributes ) {
+			delete item.attributes[ key ];
+		}
+	} else {
+		// Automatically initialize attributes object
+		if ( !item.attributes ) {
+			item.attributes = {};
+		}
+		// Set
+		item.attributes[ key ] = value;
+	}
+};
+
+/**
+ * Get character data at a specified offset
+ *
+ * @param {number} offset Offset to get character data from
+ * @return {string} Character data
+ */
+ve.dm.ElementLinearData.prototype.getCharacterData = function ( offset ) {
+	var item = this.getData( offset ),
+		data = Array.isArray( item ) ? item[ 0 ] : item;
+	return typeof data === 'string' ? data : '';
+};
+
+/**
+ * Gets the range of content surrounding a given offset that's covered by a given annotation.
+ *
+ * @method
+ * @param {number} offset Offset to begin looking forward and backward from
+ * @param {Object} annotation Annotation to test for coverage with
+ * @return {ve.Range|null} Range of content covered by annotation, or null if offset is not covered
+ */
+ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromOffset = function ( offset, annotation ) {
+	var start = offset,
+		end = offset;
+	if ( this.getAnnotationsFromOffset( offset ).contains( annotation ) === false ) {
+		return null;
+	}
+	while ( start > 0 ) {
+		start--;
+		if ( this.getAnnotationsFromOffset( start ).contains( annotation ) === false ) {
+			start++;
+			break;
+		}
+	}
+	while ( end < this.getLength() ) {
+		if ( this.getAnnotationsFromOffset( end ).contains( annotation ) === false ) {
+			break;
+		}
+		end++;
+	}
+	return new ve.Range( start, end );
+};
+
+/**
+ * Get the range of an annotation found within a range.
+ *
+ * @method
+ * @param {ve.Range} range Range to begin looking forward and backward from
+ * @param {ve.dm.Annotation} annotation Annotation to test for coverage with
+ * @return {ve.Range|null} Range of content covered by annotation, or a copy of the range
+ */
+ve.dm.ElementLinearData.prototype.getAnnotatedRangeFromSelection = function ( range, annotation ) {
+	var start = range.start,
+		end = range.end;
+	while ( start > 0 ) {
+		start--;
+		if ( this.getAnnotationsFromOffset( start ).contains( annotation ) === false ) {
+			start++;
+			break;
+		}
+	}
+	while ( end < this.getLength() ) {
+		if ( this.getAnnotationsFromOffset( end ).contains( annotation ) === false ) {
+			break;
+		}
+		end++;
+	}
+	return new ve.Range( start, end );
+};
+
+/**
+ * Get annotations common to all content in a range.
+ *
+ * @method
+ * @param {ve.Range} range Range to get annotations for
+ * @param {boolean} [all=false] Get all annotations found within the range, not just those that cover it
+ * @return {ve.dm.AnnotationSet} All annotation objects range is covered by
+ */
+ve.dm.ElementLinearData.prototype.getAnnotationsFromRange = function ( range, all ) {
+	var i, left, right, ignoreChildrenDepth = 0;
+	// Iterator over the range, looking for annotations, starting at the 2nd character
+	for ( i = range.start; i < range.end; i++ ) {
+		if ( this.isElementData( i ) ) {
+			if ( this.nodeFactory.shouldIgnoreChildren( this.getType( i ) ) ) {
+				ignoreChildrenDepth += this.isOpenElementData( i ) ? 1 : -1;
+			}
+			// Skip non-content data
+			if ( !this.nodeFactory.isNodeContent( this.getType( i ) ) ) {
+				continue;
+			}
+		}
+		// Ignore things inside ignoreChildren nodes
+		if ( ignoreChildrenDepth > 0 ) {
+			continue;
+		}
+		if ( !left ) {
+			// Look at left side of range for annotations
+			left = this.getAnnotationsFromOffset( i );
+			// Shortcut for single character and zero-length ranges
+			if ( range.getLength() === 0 || range.getLength() === 1 ) {
+				return left;
+			}
+			continue;
+		}
+		// Current character annotations
+		right = this.getAnnotationsFromOffset( i );
+		if ( all && !right.isEmpty() ) {
+			left.addSet( right );
+		} else if ( !all ) {
+			// A non annotated character indicates there's no full coverage
+			if ( right.isEmpty() ) {
+				return new ve.dm.AnnotationSet( this.getStore() );
+			}
+			// Exclude comparable annotations that are in left but not right
+			left = left.getComparableAnnotationsFromSet( right );
+			// If we've reduced left down to nothing, just stop looking
+			if ( left.isEmpty() ) {
+				break;
+			}
+		}
+	}
+	return left || new ve.dm.AnnotationSet( this.getStore() );
+};
+
+/**
+ * Check if the range has any annotations
+ *
+ * @method
+ * @param {ve.Range} range Range to check for annotations
+ * @return {boolean} The range contains at least one annotation
+ */
+ve.dm.ElementLinearData.prototype.hasAnnotationsInRange = function ( range ) {
+	var i;
+	for ( i = range.start; i < range.end; i++ ) {
+		if ( this.getAnnotationIndexesFromOffset( i, true ).length ) {
+			return true;
+		}
+	}
+	return false;
+};
+
+/**
+ * Get a range without any whitespace content at the beginning and end.
+ *
+ * @method
+ * @param {ve.Range} range Range to trim
+ * @return {Object} Trimmed range
+ */
+ve.dm.ElementLinearData.prototype.trimOuterSpaceFromRange = function ( range ) {
+	var start = range.start,
+		end = range.end;
+	while ( this.getCharacterData( end - 1 ).match( /\s/ ) ) {
+		end--;
+	}
+	while ( start < end && this.getCharacterData( start ).match( /\s/ ) ) {
+		start++;
+	}
+	return range.to < range.end ? new ve.Range( end, start ) : new ve.Range( start, end );
+};
+
+/**
+ * Get the data as plain text
+ *
+ * @param {boolean} maintainIndices Maintain data offset to string index alignment by replacing elements with line breaks
+ * @param {ve.Range} [range] Range to get the data for. The whole data set if not specified.
+ * @return {string} Data as plain text
+ */
+ve.dm.ElementLinearData.prototype.getText = function ( maintainIndices, range ) {
+	var i, text = '';
+	range = range || new ve.Range( 0, this.getLength() );
+
+	for ( i = range.start; i < range.end; i++ ) {
+		if ( !this.isElementData( i ) ) {
+			text += this.getCharacterData( i );
+		} else if ( maintainIndices ) {
+			text += '\n';
+		}
+	}
+	return text;
+};
+
+/**
+ * Get an offset at a distance to an offset that passes a validity test.
+ *
+ * - If {offset} is not already valid, one step will be used to move it to a valid one.
+ * - If {offset} is already valid and cannot be moved in the direction of {distance} and still be
+ *   valid, it will be left where it is
+ * - If {distance} is zero the result will either be {offset} if it's already valid or the
+ *   nearest valid offset to the right if possible and to the left otherwise.
+ * - If {offset} is after the last valid offset and {distance} is >= 1, or if {offset} if
+ *   before the first valid offset and {distance} <= 1 than the result will be the nearest
+ *   valid offset in the opposite direction.
+ * - If the data does not contain a single valid offset the result will be -1
+ *
+ * Nodes that want their children to be ignored (see ve.dm.Node#static-ignoreChildren) are not
+ * descended into. Giving a starting offset inside an ignoreChildren node will give unpredictable
+ * results.
+ *
+ * @method
+ * @param {number} offset Offset to start from
+ * @param {number} distance Number of valid offsets to move
+ * @param {Function} callback Function to call to check if an offset is valid which will be
+ * given initial argument of offset
+ * @param {...Mixed} [args] Additional arguments to pass to the callback
+ * @return {number} Relative valid offset or -1 if there are no valid offsets in data
+ * @throws {Error} offset was inside an ignoreChildren node
+ */
+ve.dm.ElementLinearData.prototype.getRelativeOffset = function ( offset, distance, callback ) {
+	var i, direction,
+		dataOffset, isOpen,
+		args = Array.prototype.slice.call( arguments, 3 ),
+		start = offset,
+		steps = 0,
+		turnedAround = false,
+		ignoreChildrenDepth = 0;
+	// If offset is already a structural offset and distance is zero than no further work is needed,
+	// otherwise distance should be 1 so that we can get out of the invalid starting offset
+	if ( distance === 0 ) {
+		if ( callback.apply( this, [ offset ].concat( args ) ) ) {
+			return offset;
+		} else {
+			distance = 1;
+		}
+	}
+	// Initial values
+	direction = (
+		offset <= 0 ? 1 : (
+			offset >= this.getLength() ? -1 : (
+				distance > 0 ? 1 : -1
+			)
+		)
+	);
+	distance = Math.abs( distance );
+	i = start + direction;
+	offset = -1;
+	// Iteration
+	while ( i >= 0 && i <= this.getLength() ) {
+		// Detect when the search for a valid offset enters a node whose children should be
+		// ignored, and don't return an offset inside such a node. This clearly won't work
+		// if you start inside such a node, but you shouldn't be doing that to being with
+		dataOffset = i + ( direction > 0 ? -1 : 0 );
+		if (
+			this.isElementData( dataOffset ) &&
+			this.nodeFactory.shouldIgnoreChildren( this.getType( dataOffset ) )
+		) {
+			isOpen = this.isOpenElementData( dataOffset );
+			// We have entered a node if we step right over an open, or left over a close.
+			// Otherwise we have left a node
+			if ( ( direction > 0 && isOpen ) || ( direction < 0 && !isOpen ) ) {
+				ignoreChildrenDepth++;
+			} else {
+				ignoreChildrenDepth--;
+				if ( ignoreChildrenDepth < 0 ) {
+					throw new Error( 'offset was inside an ignoreChildren node' );
+				}
+			}
+		}
+		if ( callback.apply( this, [ i ].concat( args ) ) ) {
+			if ( !ignoreChildrenDepth ) {
+				steps++;
+				offset = i;
+				if ( distance === steps ) {
+					return offset;
+				}
+			}
+		} else if (
+			// Don't keep turning around over and over
+			!turnedAround &&
+			// Only turn around if not a single step could be taken
+			steps === 0 &&
+			// Only turn around if we're about to reach the edge
+			( ( direction < 0 && i === 0 ) || ( direction > 0 && i === this.getLength() ) )
+		) {
+			// Before we turn around, let's see if we are at a valid position
+			if ( callback.apply( this, [ start ].concat( args ) ) ) {
+				// Stay where we are
+				return start;
+			}
+			// Start over going in the opposite direction
+			direction *= -1;
+			i = start;
+			distance = 1;
+			turnedAround = true;
+			ignoreChildrenDepth = 0;
+		}
+		i += direction;
+	}
+	return offset;
+};
+
+/**
+ * Get a content offset at a distance from an offset.
+ *
+ * This method is a wrapper around {getRelativeOffset}, using {isContentOffset} as
+ * the offset validation callback.
+ *
+ * @method
+ * @param {number} offset Offset to start from
+ * @param {number} distance Number of content offsets to move
+ * @return {number} Relative content offset or -1 if there are no valid offsets in data
+ */
+ve.dm.ElementLinearData.prototype.getRelativeContentOffset = function ( offset, distance ) {
+	return this.getRelativeOffset( offset, distance, this.constructor.prototype.isContentOffset );
+};
+
+/**
+ * Get the nearest content offset to an offset.
+ *
+ * If the offset is already a valid offset, it will be returned unchanged. This method differs from
+ * calling {getRelativeContentOffset} with a zero length difference because the direction can be
+ * controlled without necessarily moving the offset if it's already valid. Also, if the direction
+ * is 0 or undefined than nearest offsets will be found to the left and right and the one with the
+ * shortest distance will be used.
+ *
+ * @method
+ * @param {number} offset Offset to start from
+ * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
+ * @return {number} Nearest content offset or -1 if there are no valid offsets in data
+ */
+ve.dm.ElementLinearData.prototype.getNearestContentOffset = function ( offset, direction ) {
+	var left, right;
+
+	if ( this.isContentOffset( offset ) ) {
+		return offset;
+	}
+	if ( direction === undefined ) {
+		left = this.getRelativeContentOffset( offset, -1 );
+		right = this.getRelativeContentOffset( offset, 1 );
+		return offset - left < right - offset ? left : right;
+	} else {
+		return this.getRelativeContentOffset( offset, direction > 0 ? 1 : -1 );
+	}
+};
+
+/**
+ * Get a structural offset at a distance from an offset.
+ *
+ * This method is a wrapper around {getRelativeOffset}, using {this.isStructuralOffset} as
+ * the offset validation callback.
+ *
+ * @method
+ * @param {number} offset Offset to start from
+ * @param {number} distance Number of structural offsets to move
+ * @param {boolean} [unrestricted] Only consider offsets where any kind of element can be inserted
+ * @return {number} Relative structural offset
+ */
+ve.dm.ElementLinearData.prototype.getRelativeStructuralOffset = function ( offset, distance, unrestricted ) {
+	// Optimization: start and end are always unrestricted structural offsets
+	if ( distance === 0 && ( offset === 0 || offset === this.getLength() ) ) {
+		return offset;
+	}
+	return this.getRelativeOffset(
+		offset, distance, this.constructor.prototype.isStructuralOffset, unrestricted
+	);
+};
+
+/**
+ * Get the nearest structural offset to an offset.
+ *
+ * If the offset is already a valid offset, it will be returned unchanged. This method differs from
+ * calling {getRelativeStructuralOffset} with a zero length difference because the direction can be
+ * controlled without necessarily moving the offset if it's already valid. Also, if the direction
+ * is 0 or undefined than nearest offsets will be found to the left and right and the one with the
+ * shortest distance will be used.
+ *
+ * @method
+ * @param {number} offset Offset to start from
+ * @param {number} [direction] Direction to prefer matching offset in, -1 for left and 1 for right
+ * @param {boolean} [unrestricted] Only consider offsets where any kind of element can be inserted
+ * @return {number} Nearest structural offset
+ */
+ve.dm.ElementLinearData.prototype.getNearestStructuralOffset = function ( offset, direction, unrestricted ) {
+	var left, right;
+	if ( this.isStructuralOffset( offset, unrestricted ) ) {
+		return offset;
+	}
+	if ( !direction ) {
+		left = this.getRelativeStructuralOffset( offset, -1, unrestricted );
+		right = this.getRelativeStructuralOffset( offset, 1, unrestricted );
+		return offset - left < right - offset ? left : right;
+	} else {
+		return this.getRelativeStructuralOffset( offset, direction > 0 ? 1 : -1, unrestricted );
+	}
+};
+
+/**
+ * Get the range of the word at offset (else a collapsed range)
+ *
+ * First, if the offset is not a content offset then it will be moved to the nearest one.
+ * Then, if the offset is inside a word, it will be expanded to that word;
+ * else if the offset is at the end of a word, it will be expanded to that word;
+ * else if the offset is at the start of a word, it will be expanded to that word;
+ * else the offset is not adjacent to any word and is returned as a collapsed range.
+ *
+ * @method
+ * @param {number} offset Offset to start from; must not be inside a surrogate pair
+ * @return {ve.Range} Boundaries of the adjacent word (else offset as collapsed range)
+ */
+ve.dm.ElementLinearData.prototype.getWordRange = function ( offset ) {
+	var dataString = new ve.dm.DataString( this.getData() );
+
+	offset = this.getNearestContentOffset( offset );
+
+	if ( unicodeJS.wordbreak.isBreak( dataString, offset ) ) {
+		// The cursor offset is not inside a word. See if there is an adjacent word
+		// codepoint (checking two chars to allow surrogate pairs). If so, expand in that
+		// direction only (preferring backwards if there are word codepoints on both
+		// sides).
+
+		if ( this.constructor.static.endWordRegExp.exec(
+			( dataString.read( offset - 2 ) || ' ' ) +
+			( dataString.read( offset - 1 ) || ' ' )
+		) ) {
+			// Cursor is immediately after a word codepoint: expand backwards
+			return new ve.Range(
+				unicodeJS.wordbreak.prevBreakOffset( dataString, offset ),
+				offset
+			);
+		} else if ( this.constructor.static.startWordRegExp.exec(
+			( dataString.read( offset ) || ' ' ) +
+			( dataString.read( offset + 1 ) || ' ' )
+		) ) {
+			// Cursor is immediately before a word codepoint: expand forwards
+			return new ve.Range(
+				offset,
+				unicodeJS.wordbreak.nextBreakOffset( dataString, offset )
+			);
+		} else {
+			// Cursor is not adjacent to a word codepoint: do not expand
+			return new ve.Range( offset );
+		}
+	} else {
+		// Cursor is inside a word: expand both backwards and forwards
+		return new ve.Range(
+			unicodeJS.wordbreak.prevBreakOffset( dataString, offset ),
+			unicodeJS.wordbreak.nextBreakOffset( dataString, offset )
+		);
+	}
+};
+
+/**
+ * Finds all instances of items being stored in the index-value store for this data store
+ *
+ * Currently this is just all annotations still in use.
+ *
+ * @method
+ * @param {ve.Range} [range] Optional range to get store values for
+ * @return {Object} Object containing all store values, indexed by store index
+ */
+ve.dm.ElementLinearData.prototype.getUsedStoreValues = function ( range ) {
+	var i, index, indexes, j,
+		valueStore = {};
+
+	range = range || new ve.Range( 0, this.data.length );
+
+	for ( i = range.start; i < range.end; i++ ) {
+		// Annotations
+		// Use ignoreClose to save time; no need to count every element annotation twice
+		indexes = this.getAnnotationIndexesFromOffset( i, true );
+		j = indexes.length;
+		while ( j-- ) {
+			index = indexes[ j ];
+			if ( !Object.prototype.hasOwnProperty.call( valueStore, index ) ) {
+				valueStore[ index ] = this.getStore().value( index );
+			}
+		}
+	}
+	return valueStore;
+};
+
+/**
+ * Remap the store indexes used in this linear data.
+ *
+ * Remaps annotations and calls remapStoreIndexes() on each node.
+ *
+ * @method
+ * @param {Object} mapping Mapping from store indexes to store indexes
+ */
+ve.dm.ElementLinearData.prototype.remapStoreIndexes = function ( mapping ) {
+	var i, ilen, j, jlen, indexes, nodeClass;
+	for ( i = 0, ilen = this.data.length; i < ilen; i++ ) {
+		indexes = this.getAnnotationIndexesFromOffset( i, true );
+		for ( j = 0, jlen = indexes.length; j < jlen; j++ ) {
+			indexes[ j ] = mapping[ indexes[ j ] ];
+		}
+		this.setAnnotationIndexesAtOffset( i, indexes );
+		if ( this.isOpenElementData( i ) ) {
+			nodeClass = this.nodeFactory.lookup( this.getType( i ) );
+			nodeClass.static.remapStoreIndexes( this.data[ i ], mapping );
+		}
+	}
+};
+
+/**
+ * Remap the internal list indexes used in this linear data.
+ *
+ * Calls remapInternalListIndexes() for each node.
+ *
+ * @method
+ * @param {Object} mapping Mapping from internal list indexes to internal list indexes
+ * @param {ve.dm.InternalList} internalList Internal list the indexes are being mapped into.
+ *  Used for refreshing attribute values that were computed with getNextUniqueNumber().
+ */
+ve.dm.ElementLinearData.prototype.remapInternalListIndexes = function ( mapping, internalList ) {
+	var i, ilen, nodeClass;
+	for ( i = 0, ilen = this.data.length; i < ilen; i++ ) {
+		if ( this.isOpenElementData( i ) ) {
+			nodeClass = this.nodeFactory.lookup( this.getType( i ) );
+			nodeClass.static.remapInternalListIndexes( this.data[ i ], mapping, internalList );
+		}
+	}
+};
+
+/**
+ * Remap the internal list keys used in this linear data.
+ *
+ * Calls remapInternalListKeys() for each node.
+ *
+ * @method
+ * @param {ve.dm.InternalList} internalList Internal list the keys are being mapped into.
+ */
+ve.dm.ElementLinearData.prototype.remapInternalListKeys = function ( internalList ) {
+	var i, ilen, nodeClass;
+	for ( i = 0, ilen = this.data.length; i < ilen; i++ ) {
+		if ( this.isOpenElementData( i ) ) {
+			nodeClass = this.nodeFactory.lookup( this.getType( i ) );
+			nodeClass.static.remapInternalListKeys( this.data[ i ], internalList );
+		}
+	}
+};
+
+/**
+ * Sanitize data according to a set of rules.
+ *
+ * @param {Object} rules Sanitization rules
+ * @param {string[]} [rules.blacklist] Blacklist of model types which aren't allowed
+ * @param {Object} [rules.conversions] Model type conversions to apply, e.g. { heading: 'paragraph' }
+ * @param {boolean} [rules.removeOriginalDomElements] Remove references to DOM elements data was converted from
+ * @param {boolean} [rules.plainText] Remove all formatting for plain text import
+ * @param {boolean} [keepEmptyContentBranches=false] Preserve empty content branch nodes
+ */
+ve.dm.ElementLinearData.prototype.sanitize = function ( rules, keepEmptyContentBranches ) {
+	var i, len, annotations, emptySet, setToRemove, type,
+		allAnnotations = this.getAnnotationsFromRange( new ve.Range( 0, this.getLength() ), true );
+
+	if ( rules.plainText ) {
+		emptySet = new ve.dm.AnnotationSet( this.getStore() );
+	} else {
+		if ( rules.removeOriginalDomElements ) {
+			// Remove originalDomElements from annotations
+			for ( i = 0, len = allAnnotations.getLength(); i < len; i++ ) {
+				delete allAnnotations.get( i ).element.originalDomElements;
+			}
+		}
+
+		// Create annotation set to remove from blacklist
+		setToRemove = allAnnotations.filter( function ( annotation ) {
+			return ( rules.blacklist && rules.blacklist.indexOf( annotation.name ) !== -1 ) || (
+					// If original DOM element references are being removed, remove spans
+					annotation.name === 'textStyle/span' && rules.removeOriginalDomElements
+				);
+		} );
+	}
+
+	for ( i = 0, len = this.getLength(); i < len; i++ ) {
+		if ( this.isElementData( i ) ) {
+			type = this.getType( i );
+			// Apply type conversions
+			if ( rules.conversions && rules.conversions[ type ] ) {
+				type = rules.conversions[ type ];
+				this.getData( i ).type = ( this.isCloseElementData( i ) ? '/' : '' ) + type;
+			}
+			// Convert content-containing non-paragraph nodes to paragraphs in plainText mode
+			if ( rules.plainText && type !== 'paragraph' && this.nodeFactory.canNodeContainContent( type ) ) {
+				type = 'paragraph';
+				this.setData( i, {
+					type: ( this.isCloseElementData( i ) ? '/' : '' ) + type
+				} );
+			}
+			// Remove blacklisted nodes
+			if (
+				( rules.blacklist && rules.blacklist.indexOf( type ) !== -1 ) ||
+				( rules.plainText && type !== 'paragraph' && type !== 'internalList' )
+			) {
+				this.splice( i, 1 );
+				// Make sure you haven't just unwrapped a wrapper paragraph
+				if ( ve.getProp( this.getData( i ), 'internal', 'generated' ) ) {
+					delete this.getData( i ).internal.generated;
+					if ( ve.isEmptyObject( this.getData( i ).internal ) ) {
+						delete this.getData( i ).internal;
+					}
+				}
+				i--;
+				len--;
+				continue;
+			}
+			// If a node is empty but can contain content, then just remove it
+			if (
+				!keepEmptyContentBranches &&
+				i > 0 && this.isCloseElementData( i ) && this.isOpenElementData( i - 1 ) &&
+				this.nodeFactory.canNodeContainContent( type )
+			) {
+				this.splice( i - 1, 2 );
+				i -= 2;
+				len -= 2;
+				continue;
+			}
+		}
+		annotations = this.getAnnotationsFromOffset( i, true );
+		if ( !annotations.isEmpty() ) {
+			if ( rules.plainText ) {
+				this.setAnnotationsAtOffset( i, emptySet );
+			} else if ( setToRemove.getLength() ) {
+				// Remove blacklisted annotations
+				annotations.removeSet( setToRemove );
+				this.setAnnotationsAtOffset( i, annotations );
+			}
+		}
+		if ( this.isOpenElementData( i ) && rules.removeOriginalDomElements ) {
+			// Remove originalDomElements from nodes
+			delete this.getData( i ).originalDomElements;
+		}
+	}
+};
+
+/**
+ * Run all elements through getClonedElement(). This should be done if
+ * you intend to insert the sliced data back into the document as a copy
+ * of the original data (e.g. for copy and paste).
+ *
+ * @param {boolean} preserveGenerated Preserve internal.generated properties of elements
+ */
+ve.dm.ElementLinearData.prototype.cloneElements = function ( preserveGenerated ) {
+	var i, len;
+	for ( i = 0, len = this.getLength(); i < len; i++ ) {
+		if ( this.isOpenElementData( i ) ) {
+			this.setData( i, ve.dm.Node.static.cloneElement( this.getData( i ), preserveGenerated ) );
+		}
+	}
+};
+
+/**
+ * Counts all elements that aren't between internalList and /internalList
+ *
+ * @param {number} [limit] Number of elements after which to stop counting
+ * @return {number} Number of elements that aren't in an internalList
+ */
+ve.dm.ElementLinearData.prototype.countNonInternalElements = function ( limit ) {
+	var i, l, type,
+		internalDepth = 0,
+		count = 0;
+	for ( i = 0, l = this.getLength(); i < l; i++ ) {
+		type = this.getType( i );
+		if ( type && this.nodeFactory.isNodeInternal( type ) ) {
+			if ( this.isOpenElementData( i ) ) {
+				internalDepth++;
+			} else {
+				internalDepth--;
+			}
+		} else if ( !internalDepth ) {
+			count++;
+			if ( limit && count >= limit ) {
+				return count;
+			}
+		}
+	}
+	return count;
+};
+
+/**
+ * Returns true if the document has content that's not part of an
+ * internalList.
+ *
+ * @return {boolean}
+ *   True iff there are at least 3 elements that aren't in an internalList.
+ */
+ve.dm.ElementLinearData.prototype.hasContent = function () {
+	// Two or less elements (<p>, </p>) is considered an empty document
+	// For performance, abort the count when we reach 3.
+	return this.countNonInternalElements( 3 ) > 2;
+};
+
+/*!
+ * VisualEditor MetaLinearData class.
+ *
+ * Class containing meta linear data and an index-value store.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * Meta linear data storage
+ *
+ * @class
+ * @extends ve.dm.LinearData
+ * @constructor
+ * @param {ve.dm.IndexValueStore} store Index-value store
+ * @param {Array} [data] Linear data
+ */
+ve.dm.MetaLinearData = function VeDmMetaLinearData() {
+	// Parent constructor
+	ve.dm.MetaLinearData.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.MetaLinearData, ve.dm.LinearData );
+
+/* Static Methods */
+
+/**
+ * Takes an array of meta linear data arrays and collapses them into a single array
+ * wrapped in an array.
+ *
+ * Undefined values will be discarded e.g.
+ * [ [ metaItem1, metaItem2 ], undefined, [ metaItem3 ], undefined ]
+ * =>
+ * [ [ metaItem1, metaItem2, metaItem3 ] ]
+ *
+ * If all values are undefined, the result is undefined wrapped in an array:
+ * [ undefined, undefined, ... ]
+ * =>
+ * [ undefined ]
+ *
+ * But if some of the values are empty arrays, the result is an empty array wrapped in an array:
+ * [ undefined, [], undefined, undefined, [] ]
+ * =>
+ * [ [] ]
+ *
+ * @static
+ * @param {Array} data Meta linear data arrays
+ * @return {Array} Merged data
+ */
+ve.dm.MetaLinearData.static.merge = function ( data ) {
+	var i,
+		merged = [],
+		allUndefined = true;
+	for ( i = 0; i < data.length; i++ ) {
+		if ( data[ i ] !== undefined ) {
+			allUndefined = false;
+			merged = merged.concat( data[ i ] );
+		}
+	}
+	return allUndefined ? [ undefined ] : [ merged ];
+};
+
+/* Methods */
+
+/**
+ * Gets linear data from specified index(es).
+ *
+ * If either index is omitted the array at that point is returned
+ *
+ * @method
+ * @param {number} [offset] Offset to get data from
+ * @param {number} [metadataOffset] Index to get data from
+ * @return {Object|Array} Data from index(es), or all data (by reference)
+ */
+ve.dm.MetaLinearData.prototype.getData = function ( offset, metadataOffset ) {
+	if ( offset === undefined ) {
+		return this.data;
+	} else if ( metadataOffset === undefined ) {
+		return this.data[ offset ];
+	} else {
+		return this.data[ offset ] === undefined ? undefined : this.data[ offset ][ metadataOffset ];
+	}
+};
+
+/**
+ * Gets number of metadata elements at specified offset.
+ *
+ * @method
+ * @param {number} offset Offset to count metadata at
+ * @return {number} Number of metadata elements at specified offset
+ */
+ve.dm.MetaLinearData.prototype.getDataLength = function ( offset ) {
+	return this.data[ offset ] === undefined ? 0 : this.data[ offset ].length;
+};
+
+/**
+ * Gets number of metadata elements in the entire object.
+ *
+ * @method
+ * @return {number} Number of metadata elements in the entire object
+ */
+ve.dm.MetaLinearData.prototype.getTotalDataLength = function () {
+	var n = 0,
+		i = this.getLength();
+	while ( i-- ) {
+		n += this.getDataLength( i );
+	}
+	return n;
+};
+
+/**
+ * Splice into the metadata array at a specific offset.
+ *
+ * @method
+ * @see ve#batchSplice
+ * @param {number} offset Splice into the metadata array for this offset
+ * @param {number} index Index in the metadata array to insert/remove at
+ * @param {number} remove Number of items to remove
+ * @param {Array} insert Items to insert
+ * @return {Array} Removed items
+ */
+ve.dm.MetaLinearData.prototype.spliceMetadataAtOffset = function ( offset, index, remove, insert ) {
+	var items = this.getData( offset );
+	if ( !items ) {
+		items = [];
+		this.setData( offset, items );
+	}
+	insert = insert || [];
+	return ve.batchSplice( items, index, remove, insert );
+};
+
+/**
+ * Get annotations' store indexes covered by an offset and index.
+ *
+ * @method
+ * @param {number} offset Offset to get annotations for
+ * @param {number} index Index to get annotations for
+ * @return {number[]} An array of annotation store indexes the offset is covered by
+ */
+ve.dm.MetaLinearData.prototype.getAnnotationIndexesFromOffsetAndIndex = function ( offset, index ) {
+	var item = this.getData( offset, index );
+	return item && item.annotations || [];
+};
+
+/**
+ * Get annotations covered by an offset.
+ *
+ * The returned AnnotationSet is a clone of the one in the data.
+ *
+ * @method
+ * @param {number} offset Offset to get annotations for
+ * @param {number} index Index to get annotations for
+ * @return {ve.dm.AnnotationSet} A set of all annotation objects offset is covered by
+ */
+ve.dm.MetaLinearData.prototype.getAnnotationsFromOffsetAndIndex = function ( offset, index ) {
+	return new ve.dm.AnnotationSet( this.getStore(), this.getAnnotationIndexesFromOffsetAndIndex( offset, index ) );
+};
+
+/**
+ * Set annotations of data at a specified offset.
+ *
+ * Cleans up data structure if annotation set is empty.
+ *
+ * @method
+ * @param {number} offset Offset to set annotations at
+ * @param {number} metadataIndex Index to set annotations at
+ * @param {ve.dm.AnnotationSet} annotations Annotations to set
+ */
+ve.dm.MetaLinearData.prototype.setAnnotationsAtOffsetAndIndex = function ( offset, metadataIndex, annotations ) {
+	var item = this.getData( offset, metadataIndex );
+	if ( annotations.isEmpty() ) {
+		// Clean up
+		delete item.annotations;
+	} else {
+		item.annotations = this.getStore().indexes( annotations.get() );
+	}
+};
+
+/*!
+ * VisualEditor DataModel GeneratedContentNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel generated content node.
+ *
+ * @class
+ * @abstract
+ *
+ * @constructor
+ */
+ve.dm.GeneratedContentNode = function VeDmGeneratedContentNode() {
+};
+
+/* Inheritance */
+
+OO.initClass( ve.dm.GeneratedContentNode );
+
+/* Static methods */
+
+/**
+ * Store HTML of DOM elements, hashed on data element
+ *
+ * @static
+ * @param {Object} dataElement Data element
+ * @param {Object|string|Array} generatedContents Generated contents
+ * @param {ve.dm.IndexValueStore} store Index-value store
+ * @return {number} Index of stored data
+ */
+ve.dm.GeneratedContentNode.static.storeGeneratedContents = function ( dataElement, generatedContents, store ) {
+	var hash = OO.getHash( [ this.getHashObject( dataElement ), undefined ] );
+	return store.index( generatedContents, hash );
+};
+
+/*!
+ * VisualEditor DataModel AlienNode, AlienBlockNode and AlienInlineNode classes.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel alien node.
+ *
+ * @class
+ * @abstract
+ * @extends ve.dm.LeafNode
+ * @mixins ve.dm.FocusableNode
+ * @mixins ve.dm.TableCellableNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ */
+ve.dm.AlienNode = function VeDmAlienNode() {
+	// Parent constructor
+	ve.dm.AlienNode.super.apply( this, arguments );
+
+	// Mixin constructors
+	ve.dm.FocusableNode.call( this );
+	ve.dm.TableCellableNode.call( this );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.AlienNode, ve.dm.LeafNode );
+
+OO.mixinClass( ve.dm.AlienNode, ve.dm.FocusableNode );
+
+OO.mixinClass( ve.dm.AlienNode, ve.dm.TableCellableNode );
+
+/* Static members */
+
+ve.dm.AlienNode.static.name = 'alien';
+
+ve.dm.AlienNode.static.preserveHtmlAttributes = false;
+
+ve.dm.AlienNode.static.enableAboutGrouping = true;
+
+ve.dm.AlienNode.static.matchRdfaTypes = [ 've:Alien' ];
+
+ve.dm.AlienNode.static.toDataElement = function ( domElements, converter ) {
+	var element,
+		isInline = this.isHybridInline( domElements, converter ),
+		type = isInline ? 'alienInline' : 'alienBlock';
+
+	element = { type: type };
+
+	if ( domElements.length === 1 && [ 'td', 'th' ].indexOf( domElements[ 0 ].nodeName.toLowerCase() ) !== -1 ) {
+		element.attributes = { cellable: true };
+		ve.dm.TableCellableNode.static.setAttributes( element.attributes, domElements );
+	}
+	return element;
+};
+
+ve.dm.AlienNode.static.toDomElements = function ( dataElement, doc ) {
+	return ve.copyDomElements( dataElement.originalDomElements, doc );
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.AlienNode.static.getHashObject = function ( dataElement ) {
+	return {
+		type: dataElement.type,
+		attributes: dataElement.attributes,
+		originalDomElements: dataElement.originalDomElements &&
+			dataElement.originalDomElements.map( function ( el ) {
+				return el.outerHTML;
+			} ).join( '' )
+	};
+};
+
+/* Methods */
+
+ve.dm.AlienNode.prototype.isCellable = function () {
+	return !!this.getAttribute( 'cellable' );
+};
+
+/* Concrete subclasses */
+
+/**
+ * DataModel alienBlock node.
+ *
+ * @class
+ * @extends ve.dm.AlienNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ */
+ve.dm.AlienBlockNode = function VeDmAlienBlockNode() {
+	// Parent constructor
+	ve.dm.AlienBlockNode.super.apply( this, arguments );
+};
+
+OO.inheritClass( ve.dm.AlienBlockNode, ve.dm.AlienNode );
+
+ve.dm.AlienBlockNode.static.name = 'alienBlock';
+
+/**
+ * DataModel alienInline node.
+ *
+ * @class
+ * @extends ve.dm.AlienNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ */
+ve.dm.AlienInlineNode = function VeDmAlienInlineNode() {
+	// Parent constructor
+	ve.dm.AlienInlineNode.super.apply( this, arguments );
+};
+
+OO.inheritClass( ve.dm.AlienInlineNode, ve.dm.AlienNode );
+
+ve.dm.AlienInlineNode.static.name = 'alienInline';
+
+ve.dm.AlienInlineNode.static.isContent = true;
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.AlienBlockNode );
+ve.dm.modelRegistry.register( ve.dm.AlienInlineNode );
+
+/*!
+ * VisualEditor DataModel BlockquoteNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see AUTHORS.txt
+ * @license The MIT License (MIT); see LICENSE.txt
+ */
+
+/**
+ * DataModel Blockquote node.
+ *
+ * @class
+ * @extends ve.dm.BranchNode
+ * @constructor
+ * @param {ve.dm.LeafNode[]} [children] Child nodes to attach
+ * @param {Object} [element] Reference to element in linear model
+ */
+ve.dm.BlockquoteNode = function VeDmBlockquoteNode( children, element ) {
+	// Parent constructor
+	ve.dm.BranchNode.call( this, children, element );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.BlockquoteNode, ve.dm.BranchNode );
+
+/* Static Properties */
+
+ve.dm.BlockquoteNode.static.name = 'blockquote';
+
+ve.dm.BlockquoteNode.static.canContainContent = true;
+
+ve.dm.BlockquoteNode.static.matchTagNames = [ 'blockquote' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.BlockquoteNode );
+
+/*!
+ * VisualEditor DataModel BreakNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel break node.
+ *
+ * @class
+ * @extends ve.dm.LeafNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ */
+ve.dm.BreakNode = function VeDmBreakNode() {
+	// Parent constructor
+	ve.dm.BreakNode.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.BreakNode, ve.dm.LeafNode );
+
+/* Static Properties */
+
+ve.dm.BreakNode.static.name = 'break';
+
+ve.dm.BreakNode.static.isContent = true;
+
+ve.dm.BreakNode.static.matchTagNames = [ 'br' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.BreakNode );
+
+/*!
+ * VisualEditor DataModel CenterNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel center node.
+ *
+ * @class
+ * @extends ve.dm.BranchNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children]
+ */
+ve.dm.CenterNode = function VeDmCenterNode() {
+	// Parent constructor
+	ve.dm.CenterNode.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.CenterNode, ve.dm.BranchNode );
+
+/* Static Properties */
+
+ve.dm.CenterNode.static.name = 'center';
+
+ve.dm.CenterNode.static.matchTagNames = [ 'center' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.CenterNode );
+
+/*!
+ * VisualEditor DataModel DefinitionListItemNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel definition list item node.
+ *
+ * @class
+ * @extends ve.dm.BranchNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children]
+ */
+ve.dm.DefinitionListItemNode = function VeDmDefinitionListItemNode() {
+	// Parent constructor
+	ve.dm.DefinitionListItemNode.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.DefinitionListItemNode, ve.dm.BranchNode );
+
+/* Static Properties */
+
+ve.dm.DefinitionListItemNode.static.name = 'definitionListItem';
+
+ve.dm.DefinitionListItemNode.static.parentNodeTypes = [ 'definitionList' ];
+
+ve.dm.DefinitionListItemNode.static.defaultAttributes = {
+	style: 'term'
+};
+
+ve.dm.DefinitionListItemNode.static.matchTagNames = [ 'dt', 'dd' ];
+
+ve.dm.DefinitionListItemNode.static.toDataElement = function ( domElements ) {
+	var style = domElements[ 0 ].nodeName.toLowerCase() === 'dt' ? 'term' : 'definition';
+	return { type: this.name, attributes: { style: style } };
+};
+
+ve.dm.DefinitionListItemNode.static.toDomElements = function ( dataElement, doc ) {
+	var tag = dataElement.attributes && dataElement.attributes.style === 'term' ? 'dt' : 'dd';
+	return [ doc.createElement( tag ) ];
+};
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.DefinitionListItemNode );
+
+/*!
+ * VisualEditor DataModel DefinitionListNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel definition list node.
+ *
+ * @class
+ * @extends ve.dm.BranchNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children]
+ */
+ve.dm.DefinitionListNode = function VeDmDefinitionListNode() {
+	// Parent constructor
+	ve.dm.DefinitionListNode.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.DefinitionListNode, ve.dm.BranchNode );
+
+/* Static Properties */
+
+ve.dm.DefinitionListNode.static.name = 'definitionList';
+
+ve.dm.DefinitionListNode.static.childNodeTypes = [ 'definitionListItem' ];
+
+ve.dm.DefinitionListNode.static.matchTagNames = [ 'dl' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.DefinitionListNode );
+
+/*!
+ * VisualEditor DataModel DivNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel div node.
+ *
+ * @class
+ * @extends ve.dm.BranchNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children]
+ */
+ve.dm.DivNode = function VeDmDivNode() {
+	// Parent constructor
+	ve.dm.DivNode.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.DivNode, ve.dm.BranchNode );
+
+/* Static Properties */
+
+ve.dm.DivNode.static.name = 'div';
+
+ve.dm.DivNode.static.matchTagNames = [ 'div' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.DivNode );
+
+/*!
+ * VisualEditor DataModel DocumentNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel document node.
+ *
+ * @class
+ * @extends ve.dm.BranchNode
+ *
+ * @constructor
+ * @param {ve.dm.BranchNode[]} [children] Child nodes to attach
+ */
+ve.dm.DocumentNode = function VeDmDocumentNode( children ) {
+	// Parent constructor
+	ve.dm.DocumentNode.super.call( this, null, children );
+
+	// Properties
+	this.root = this;
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.DocumentNode, ve.dm.BranchNode );
+
+/* Static Properties */
+
+ve.dm.DocumentNode.static.name = 'document';
+
+ve.dm.DocumentNode.static.isWrapped = false;
+
+ve.dm.DocumentNode.static.parentNodeTypes = [];
+
+ve.dm.DocumentNode.static.matchTagNames = [];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.DocumentNode );
+
+/*!
+ * VisualEditor DataModel HeadingNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel heading node.
+ *
+ * @class
+ * @extends ve.dm.ContentBranchNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children]
+ */
+ve.dm.HeadingNode = function VeDmHeadingNode() {
+	// Parent constructor
+	ve.dm.HeadingNode.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.HeadingNode, ve.dm.ContentBranchNode );
+
+/* Static Properties */
+
+ve.dm.HeadingNode.static.name = 'heading';
+
+ve.dm.HeadingNode.static.canContainContent = true;
+
+ve.dm.HeadingNode.static.defaultAttributes = {
+	level: 1
+};
+
+ve.dm.HeadingNode.static.matchTagNames = [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ];
+
+ve.dm.HeadingNode.static.toDataElement = function ( domElements ) {
+	var levels = {
+			h1: 1,
+			h2: 2,
+			h3: 3,
+			h4: 4,
+			h5: 5,
+			h6: 6
+		},
+		level = levels[ domElements[ 0 ].nodeName.toLowerCase() ];
+	return { type: this.name, attributes: { level: level } };
+};
+
+ve.dm.HeadingNode.static.toDomElements = function ( dataElement, doc ) {
+	var level = dataElement.attributes && dataElement.attributes.level || 1;
+	return [ doc.createElement( 'h' + level ) ];
+};
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.HeadingNode );
+
+/*!
+ * VisualEditor DataModel InternalItemNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel internal item node.
+ *
+ * @class
+ * @extends ve.dm.BranchNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children]
+ */
+ve.dm.InternalItemNode = function VeDmInternalItemNode() {
+	// Parent constructor
+	ve.dm.InternalItemNode.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.InternalItemNode, ve.dm.BranchNode );
+
+/* Static members */
+
+ve.dm.InternalItemNode.static.name = 'internalItem';
+
+ve.dm.InternalItemNode.static.matchTagNames = [];
+
+ve.dm.InternalItemNode.static.ignoreChildren = true;
+
+ve.dm.InternalItemNode.static.isInternal = true;
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.InternalItemNode );
+
+/*!
+ * VisualEditor DataModel InternalListNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel internal list node.
+ *
+ * @class
+ * @extends ve.dm.BranchNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children]
+ */
+ve.dm.InternalListNode = function VeDmInternalListNode() {
+	// Parent constructor
+	ve.dm.InternalListNode.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.InternalListNode, ve.dm.BranchNode );
+
+/* Static members */
+
+ve.dm.InternalListNode.static.name = 'internalList';
+
+ve.dm.InternalListNode.static.childNodeTypes = [ 'internalItem' ];
+
+ve.dm.InternalListNode.static.matchTagNames = [];
+
+ve.dm.InternalListNode.static.isInternal = true;
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.InternalListNode );
+
+/*!
+ * VisualEditor DataModel ListItemNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel list item node.
+ *
+ * @class
+ * @extends ve.dm.BranchNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children]
+ */
+ve.dm.ListItemNode = function VeDmListItemNode() {
+	// Parent constructor
+	ve.dm.ListItemNode.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.ListItemNode, ve.dm.BranchNode );
+
+/* Static Properties */
+
+ve.dm.ListItemNode.static.name = 'listItem';
+
+ve.dm.ListItemNode.static.parentNodeTypes = [ 'list' ];
+
+ve.dm.ListItemNode.static.matchTagNames = [ 'li' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.ListItemNode );
+
+/*!
+ * VisualEditor DataModel ListNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel list node.
+ *
+ * @class
+ * @extends ve.dm.BranchNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children]
+ */
+ve.dm.ListNode = function VeDmListNode() {
+	// Parent constructor
+	ve.dm.ListNode.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.ListNode, ve.dm.BranchNode );
+
+/* Static Properties */
+
+ve.dm.ListNode.static.name = 'list';
+
+ve.dm.ListNode.static.childNodeTypes = [ 'listItem' ];
+
+ve.dm.ListNode.static.defaultAttributes = {
+	style: 'bullet'
+};
+
+ve.dm.ListNode.static.matchTagNames = [ 'ul', 'ol' ];
+
+ve.dm.ListNode.static.toDataElement = function ( domElements ) {
+	var style = domElements[ 0 ].nodeName.toLowerCase() === 'ol' ? 'number' : 'bullet';
+	return { type: this.name, attributes: { style: style } };
+};
+
+ve.dm.ListNode.static.toDomElements = function ( dataElement, doc ) {
+	var tag = dataElement.attributes && dataElement.attributes.style === 'number' ? 'ol' : 'ul';
+	return [ doc.createElement( tag ) ];
+};
+
+/* Methods */
+
+ve.dm.ListNode.prototype.canHaveSlugAfter = function () {
+	return false;
+};
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.ListNode );
+
+/*!
+ * VisualEditor DataModel ParagraphNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel paragraph node.
+ *
+ * @class
+ * @extends ve.dm.ContentBranchNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children]
+ */
+ve.dm.ParagraphNode = function VeDmParagraphNode() {
+	// Parent constructor
+	ve.dm.ParagraphNode.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.ParagraphNode, ve.dm.ContentBranchNode );
+
+/* Static Properties */
+
+ve.dm.ParagraphNode.static.name = 'paragraph';
+
+ve.dm.ParagraphNode.static.canContainContent = true;
+
+ve.dm.ParagraphNode.static.matchTagNames = [ 'p' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.ParagraphNode );
+
+/*!
+ * VisualEditor DataModel PreformattedNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel preformatted node.
+ *
+ * @class
+ * @extends ve.dm.ContentBranchNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children]
+ */
+ve.dm.PreformattedNode = function VeDmPreformattedNode() {
+	// Parent constructor
+	ve.dm.PreformattedNode.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.PreformattedNode, ve.dm.ContentBranchNode );
+
+/* Static Properties */
+
+ve.dm.PreformattedNode.static.name = 'preformatted';
+
+ve.dm.PreformattedNode.static.canContainContent = true;
+
+ve.dm.PreformattedNode.static.hasSignificantWhitespace = true;
+
+ve.dm.PreformattedNode.static.matchTagNames = [ 'pre' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.PreformattedNode );
+
+/*!
+ * VisualEditor DataModel TableCaptionNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel table caption node.
+ *
+ * @class
+ * @extends ve.dm.BranchNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children]
+ */
+ve.dm.TableCaptionNode = function VeDmTableCaptionNode() {
+	// Parent constructor
+	ve.dm.TableCaptionNode.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.TableCaptionNode, ve.dm.BranchNode );
+
+/* Static Properties */
+
+ve.dm.TableCaptionNode.static.name = 'tableCaption';
+
+ve.dm.TableCaptionNode.static.parentNodeTypes = [ 'table' ];
+
+ve.dm.TableCaptionNode.static.matchTagNames = [ 'caption' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.TableCaptionNode );
+
+/*!
+ * VisualEditor DataModel TableCellNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel table cell node.
+ *
+ * @class
+ * @extends ve.dm.BranchNode
+ * @mixins ve.dm.TableCellableNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children]
+ */
+ve.dm.TableCellNode = function VeDmTableCellNode() {
+	// Parent constructor
+	ve.dm.TableCellNode.super.apply( this, arguments );
+
+	// Mixin constructor
+	ve.dm.TableCellableNode.call( this );
+
+	// Events
+	this.connect( this, {
+		attributeChange: 'onAttributeChange'
+	} );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.TableCellNode, ve.dm.BranchNode );
+
+OO.mixinClass( ve.dm.TableCellNode, ve.dm.TableCellableNode );
+
+/* Static Properties */
+
+ve.dm.TableCellNode.static.name = 'tableCell';
+
+ve.dm.TableCellNode.static.parentNodeTypes = [ 'tableRow' ];
+
+ve.dm.TableCellNode.static.defaultAttributes = { style: 'data' };
+
+ve.dm.TableCellNode.static.matchTagNames = [ 'td', 'th' ];
+
+ve.dm.TableCellNode.static.isCellEditable = true;
+
+// Blacklisting 'colspan' and 'rowspan' as they are managed explicitly
+ve.dm.TableCellNode.static.preserveHtmlAttributes = function ( attribute ) {
+	return attribute !== 'colspan' && attribute !== 'rowspan';
+};
+
+/* Static Methods */
+
+ve.dm.TableCellNode.static.toDataElement = function ( domElements ) {
+	var attributes = {};
+
+	ve.dm.TableCellableNode.static.setAttributes( attributes, domElements );
+
+	return {
+		type: this.name,
+		attributes: attributes
+	};
+};
+
+ve.dm.TableCellNode.static.toDomElements = function ( dataElement, doc ) {
+	var tag = dataElement.attributes && dataElement.attributes.style === 'header' ? 'th' : 'td',
+		domElement = doc.createElement( tag ),
+		attributes = dataElement.attributes;
+
+	ve.dm.TableCellableNode.static.applyAttributes( attributes, domElement );
+
+	return [ domElement ];
+};
+
+/**
+ * Creates data that can be inserted into the model to create a new table cell.
+ *
+ * @param {Object} [options]
+ * @param {string} [options.style='data'] Either 'header' or 'data'
+ * @param {number} [options.rowspan=1] Number of rows the cell spans
+ * @param {number} [options.colspan=1] Number of columns the cell spans
+ * @param {Array} [options.content] Linear model data, defaults to empty wrapper paragraph
+ * @return {Array} Model data for a new table cell
+ */
+ve.dm.TableCellNode.static.createData = function ( options ) {
+	var opening, content;
+	options = options || {};
+	opening = {
+		type: 'tableCell',
+		attributes: {
+			style: options.style || 'data',
+			rowspan: options.rowspan || 1,
+			colspan: options.colspan || 1
+		}
+	};
+	content = options.content || [
+		{ type: 'paragraph', internal: { generated: 'wrapper' } },
+		{ type: '/paragraph' }
+	];
+	return [ opening ].concat( content ).concat( [ { type: '/tableCell' } ] );
+};
+
+/* Methods */
+
+/**
+ * Handle attributes changes
+ *
+ * @param {string} key Attribute key
+ * @param {string} from Old value
+ * @param {string} to New value
+ */
+ve.dm.TableCellNode.prototype.onAttributeChange = function ( key ) {
+	if ( this.getParent() && ( key === 'colspan' || key === 'rowspan' ) ) {
+		// In practice the matrix should already be invalidated as you
+		// shouldn't change a span without adding/removing other cells,
+		// but it is possible to just change spans if you don't mind a
+		// non-rectangular table.
+		this.getParent().getParent().getParent().getMatrix().invalidate();
+	}
+};
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.TableCellNode );
+
+/*!
+ * VisualEditor DataModel TableNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel table node.
+ *
+ * @class
+ * @extends ve.dm.BranchNode
+ *
+ * @constructor
+ * @param {ve.dm.Node[]} [children]
+ */
+ve.dm.TableNode = function VeDmTableNode() {
+	// Parent constructor
+	ve.dm.TableNode.super.apply( this, arguments );
+
+	// A dense representation of the sparse model to make manipulations
+	// in presence of spanning cells feasible.
+	this.matrix = new ve.dm.TableMatrix( this );
+
+	// Events
+	this.connect( this, { splice: 'onSplice' } );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.TableNode, ve.dm.BranchNode );
+
+/* Static Properties */
+
+ve.dm.TableNode.static.name = 'table';
+
+ve.dm.TableNode.static.childNodeTypes = [ 'tableSection', 'tableCaption' ];
+
+ve.dm.TableNode.static.matchTagNames = [ 'table' ];
+
+/* Methods */
+
+/**
+ * Handle splicing of child nodes
+ */
+ve.dm.TableNode.prototype.onSplice = function () {
+	this.getMatrix().invalidate();
+};
+
+/**
+ * Get table matrix for this table node
+ *
+ * @return {ve.dm.TableMatrix} Table matrix
+ */
+ve.dm.TableNode.prototype.getMatrix = function () {
+	return this.matrix;
+};
+
+/**
+ * Get the table's caption node, if it exists
+ *
+ * @return {ve.dm.TableCaptionNode|null} The table's caption node, or null if not found
+ */
+ve.dm.TableNode.prototype.getCaptionNode = function () {
+	var i, l;
+	for ( i = 0, l = this.children.length; i < l; i++ ) {
+		if ( this.children[ i ] instanceof ve.dm.TableCaptionNode ) {
+			return this.children[ i ];
+		}
+	}
+	return null;
+};
+
+/**
+ * Provides a cell iterator that allows convenient traversal regardless of
+ * the structure with respect to sections.
+ *
+ * @return {ve.dm.TableNodeCellIterator}
+ */
+ve.dm.TableNode.prototype.getIterator = function () {
+	return new ve.dm.TableNodeCellIterator( this );
+};
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.TableNode );
+
+/**
+ * A helper class to iterate over the cells of a table node.
+ *
+ * It provides a unified interface to iterate cells in presence of table sections,
+ * e.g., providing consecutive row indexes.
+ *
+ * @class
+ * @mixins OO.EventEmitter
+ *
+ * @constructor
+ * @param {ve.dm.TableNode} tableNode Table node to iterate through
+ */
+ve.dm.TableNodeCellIterator = function VeDmTableNodeCellIterator( tableNode ) {
+	// Mixin constructors
+	OO.EventEmitter.call( this );
+
+	this.table = tableNode;
+
+	this.sectionIndex = 0;
+	this.rowIndex = 0;
+	this.cellIndex = 0;
+
+	this.sectionCount = this.table.children.length;
+	this.rowCount = 0;
+	this.cellCount = 0;
+
+	this.sectionNode = null;
+	this.rowNode = null;
+	this.cellNode = null;
+
+	this.finished = false;
+};
+
+/* Inheritance */
+
+OO.mixinClass( ve.dm.TableNodeCellIterator, OO.EventEmitter );
+
+/* Events */
+
+/**
+ * @event newSection
+ * @param {ve.dm.TableSectionNode} node Table section node
+ */
+
+/**
+ * @event newRow
+ * @param {ve.dm.TableRowNode} node Table row node
+ */
+
+/* Methods */
+
+/**
+ * Check if the iterator has finished iterating over the cells of a table node.
+ *
+ * @return {boolean} Iterator is finished
+ */
+ve.dm.TableNodeCellIterator.prototype.isFinished = function () {
+	return this.finished;
+};
+
+/**
+ * Get the next cell node
+ *
+ * @return {ve.dm.TableCellNode|null|undefined} Next cell node, null if a not a table cell, or undefined if at the end
+ * @throws {Error} TableNodeCellIterator has no more cells left.
+ */
+ve.dm.TableNodeCellIterator.prototype.next = function () {
+	if ( this.isFinished() ) {
+		throw new Error( 'TableNodeCellIterator has no more cells left.' );
+	}
+	this.nextCell( this );
+	return this.cellNode;
+};
+
+/**
+ * Move to the next table section
+ *
+ * @fires newSection
+ */
+ve.dm.TableNodeCellIterator.prototype.nextSection = function () {
+	var sectionNode;
+	// If there are no sections left, finish
+	if ( this.sectionIndex >= this.sectionCount ) {
+		this.finished = true;
+		this.sectionNode = undefined;
+		return;
+	}
+	// Get the next node and make sure it's a section node (and not an alien node)
+	sectionNode = this.table.children[ this.sectionIndex ];
+	this.sectionIndex++;
+	this.rowIndex = 0;
+	if ( sectionNode instanceof ve.dm.TableSectionNode ) {
+		this.sectionNode = sectionNode;
+		this.rowCount = this.sectionNode.children.length;
+		this.emit( 'newSection', this.sectionNode );
+	} else {
+		this.nextSection();
+		return;
+	}
+};
+
+/**
+ * Move to the next table row
+ *
+ * @fires newRow
+ */
+ve.dm.TableNodeCellIterator.prototype.nextRow = function () {
+	var rowNode;
+	// If there are no rows left, go to the next section
+	if ( this.rowIndex >= this.rowCount ) {
+		this.nextSection();
+		if ( this.isFinished() ) {
+			this.rowNode = undefined;
+			return;
+		}
+	}
+	// Get the next node and make sure it's a row node (and not an alien node)
+	rowNode = this.sectionNode.children[ this.rowIndex ];
+	this.rowIndex++;
+	this.cellIndex = 0;
+	if ( rowNode instanceof ve.dm.TableRowNode ) {
+		this.rowNode = rowNode;
+		this.cellCount = this.rowNode.children.length;
+		this.emit( 'newRow', this.rowNode );
+	} else {
+		this.nextRow();
+		return;
+	}
+};
+
+/**
+ * Move to the next table cell
+ */
+ve.dm.TableNodeCellIterator.prototype.nextCell = function () {
+	var cellNode;
+	// For the first read, sectionNode and rowNode will be empty
+	if ( !this.sectionNode ) {
+		this.nextSection();
+	}
+	if ( !this.rowNode ) {
+		this.nextRow();
+	}
+	// If there are no cells left, go to the next row
+	if ( this.cellIndex >= this.cellCount ) {
+		this.nextRow();
+		// If calling next row finished the iterator, clear and return
+		if ( this.isFinished() ) {
+			this.cellNode = undefined;
+			return;
+		}
+	}
+	// Get the next node and make sure it's a cell node (and not an alien node)
+	cellNode = this.rowNode.children[ this.cellIndex ];
+	this.cellNode = cellNode && cellNode.isCellable() ? cellNode : null;
+	this.cellIndex++;
+};
+
+/*!
+ * VisualEditor DataModel TableRowNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel table row node.
+ *
+ * @class
+ * @extends ve.dm.BranchNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children]
+ */
+ve.dm.TableRowNode = function VeDmTableRowNode() {
+	// Parent constructor
+	ve.dm.TableRowNode.super.apply( this, arguments );
+
+	// Events
+	this.connect( this, { splice: 'onSplice' } );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.TableRowNode, ve.dm.BranchNode );
+
+/* Static Properties */
+
+ve.dm.TableRowNode.static.name = 'tableRow';
+
+ve.dm.TableRowNode.static.childNodeTypes = [ 'tableCell' ];
+
+ve.dm.TableRowNode.static.parentNodeTypes = [ 'tableSection' ];
+
+ve.dm.TableRowNode.static.matchTagNames = [ 'tr' ];
+
+/* Static Methods */
+
+/**
+ * Creates data that can be inserted into the model to create a new table row.
+ *
+ * @param {Object} [options] Creation options
+ * @param {string} [options.style='data'] Cell style; 'data' or 'header'
+ * @param {number} [options.cellCount=1] Number of cells to create
+ * @return {Array} Model data for a new table row
+ */
+ve.dm.TableRowNode.static.createData = function ( options ) {
+	var i, cellCount,
+		data = [];
+
+	options = options || {};
+
+	cellCount = options.cellCount || 1;
+
+	data.push( { type: 'tableRow' } );
+	for ( i = 0; i < cellCount; i++ ) {
+		data = data.concat( ve.dm.TableCellNode.static.createData( options ) );
+	}
+	data.push( { type: '/tableRow' } );
+	return data;
+};
+
+/* Methods */
+
+/**
+ * Handle splicing of child nodes
+ */
+ve.dm.TableRowNode.prototype.onSplice = function () {
+	if ( this.getRoot() ) {
+		this.getParent().getParent().getMatrix().invalidate();
+	}
+};
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.TableRowNode );
+
+/*!
+ * VisualEditor DataModel TableSelectionNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel table section node.
+ *
+ * @class
+ * @extends ve.dm.BranchNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children]
+ */
+ve.dm.TableSectionNode = function VeDmTableSectionNode() {
+	// Parent constructor
+	ve.dm.TableSectionNode.super.apply( this, arguments );
+
+	// Events
+	this.connect( this, { splice: 'onSplice' } );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.TableSectionNode, ve.dm.BranchNode );
+
+/* Static Properties */
+
+ve.dm.TableSectionNode.static.name = 'tableSection';
+
+ve.dm.TableSectionNode.static.childNodeTypes = [ 'tableRow' ];
+
+ve.dm.TableSectionNode.static.parentNodeTypes = [ 'table' ];
+
+ve.dm.TableSectionNode.static.defaultAttributes = { style: 'body' };
+
+ve.dm.TableSectionNode.static.matchTagNames = [ 'thead', 'tbody', 'tfoot' ];
+
+/* Static Methods */
+
+ve.dm.TableSectionNode.static.toDataElement = function ( domElements ) {
+	var styles = {
+			thead: 'header',
+			tbody: 'body',
+			tfoot: 'footer'
+		},
+		style = styles[ domElements[ 0 ].nodeName.toLowerCase() ] || 'body';
+	return { type: this.name, attributes: { style: style } };
+};
+
+ve.dm.TableSectionNode.static.toDomElements = function ( dataElement, doc ) {
+	var tags = {
+			header: 'thead',
+			body: 'tbody',
+			footer: 'tfoot'
+		},
+		tag = tags[ dataElement.attributes && dataElement.attributes.style || 'body' ];
+	return [ doc.createElement( tag ) ];
+};
+
+/* Methods */
+
+/**
+ * Handle splicing of child nodes
+ */
+ve.dm.TableSectionNode.prototype.onSplice = function () {
+	if ( this.getRoot() ) {
+		this.getParent().getMatrix().invalidate();
+	}
+};
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.TableSectionNode );
+
+/*!
+ * VisualEditor DataModel TextNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel text node.
+ *
+ * @class
+ * @extends ve.dm.LeafNode
+ *
+ * @constructor
+ * @param {number} [length] Length of content data in document
+ */
+ve.dm.TextNode = function VeDmTextNode( length ) {
+	// Parent constructor
+	ve.dm.TextNode.super.call( this );
+
+	// TODO: length is only set on construction in tests
+	this.length = length || 0;
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.TextNode, ve.dm.LeafNode );
+
+/* Static Properties */
+
+ve.dm.TextNode.static.name = 'text';
+
+ve.dm.TextNode.static.isWrapped = false;
+
+ve.dm.TextNode.static.isContent = true;
+
+ve.dm.TextNode.static.matchTagNames = [];
+
+/* Methods */
+
+ve.dm.TextNode.prototype.canHaveSlugBefore = function () {
+	return false;
+};
+
+ve.dm.TextNode.prototype.canHaveSlugAfter = function () {
+	return false;
+};
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.TextNode );
+
+/*!
+ * VisualEditor DataModel ImageNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel image node.
+ *
+ * @class
+ * @abstract
+ * @mixins ve.dm.FocusableNode
+ * @mixins ve.dm.ResizableNode
+ *
+ * @constructor
+ */
+ve.dm.ImageNode = function VeDmImageNode() {
+	// Mixin constructors
+	ve.dm.FocusableNode.call( this );
+	ve.dm.ResizableNode.call( this );
+};
+
+/* Inheritance */
+
+OO.mixinClass( ve.dm.ImageNode, ve.dm.FocusableNode );
+
+OO.mixinClass( ve.dm.ImageNode, ve.dm.ResizableNode );
+
+/* Methods */
+
+/**
+ * @inheritdoc
+ */
+ve.dm.ImageNode.prototype.createScalable = function () {
+	return new ve.dm.Scalable( {
+		currentDimensions: {
+			width: this.getAttribute( 'width' ),
+			height: this.getAttribute( 'height' )
+		},
+		minDimensions: {
+			width: 1,
+			height: 1
+		}
+	} );
+};
+
+/*!
+ * VisualEditor DataModel BlockImageNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel block image node.
+ *
+ * @class
+ * @extends ve.dm.BranchNode
+ * @mixins ve.dm.ImageNode
+ * @mixins ve.dm.AlignableNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children]
+ */
+ve.dm.BlockImageNode = function VeDmBlockImageNode() {
+	// Parent constructor
+	ve.dm.BlockImageNode.super.apply( this, arguments );
+
+	// Mixin constructors
+	ve.dm.ImageNode.call( this );
+	ve.dm.AlignableNode.call( this );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.BlockImageNode, ve.dm.BranchNode );
+
+OO.mixinClass( ve.dm.BlockImageNode, ve.dm.ImageNode );
+
+// Mixin Alignable's parent class
+OO.mixinClass( ve.dm.BlockImageNode, ve.dm.ClassAttributeNode );
+
+OO.mixinClass( ve.dm.BlockImageNode, ve.dm.AlignableNode );
+
+/* Static Properties */
+
+ve.dm.BlockImageNode.static.name = 'blockImage';
+
+ve.dm.BlockImageNode.static.preserveHtmlAttributes = function ( attribute ) {
+	var attributes = [ 'src', 'width', 'height', 'href' ];
+	return attributes.indexOf( attribute ) === -1;
+};
+
+ve.dm.BlockImageNode.static.handlesOwnChildren = true;
+
+ve.dm.BlockImageNode.static.ignoreChildren = true;
+
+ve.dm.BlockImageNode.static.childNodeTypes = [ 'imageCaption' ];
+
+ve.dm.BlockImageNode.static.matchTagNames = [ 'figure' ];
+
+// FIXME: This commented code has been here since the file was created. Explain or remove.
+// ve.dm.BlockImageNode.static.blacklistedAnnotationTypes = [ 'link' ];
+
+ve.dm.BlockImageNode.static.toDataElement = function ( domElements, converter ) {
+	var dataElement, figure, classAttr, img, caption, attributes, width, height, altText;
+
+	// Workaround for jQuery's .children() being expensive due to
+	// https://github.com/jquery/sizzle/issues/311
+	function findChildren( parent, nodeNames ) {
+		return Array.prototype.filter.call( parent.childNodes, function ( element ) {
+			return nodeNames.indexOf( element.nodeName.toLowerCase() ) !== -1;
+		} );
+	}
+
+	figure = domElements[ 0 ];
+	classAttr = figure.getAttribute( 'class' );
+	img = findChildren( figure, 'img' )[ 0 ] || null;
+	caption = findChildren( figure, 'figcaption' )[ 0 ] || null;
+	attributes = {
+		src: img && img.getAttribute( 'src' )
+	};
+	width = img && img.getAttribute( 'width' );
+	height = img && img.getAttribute( 'height' );
+	altText = img && img.getAttribute( 'alt' );
+
+	if ( altText !== undefined ) {
+		attributes.alt = altText;
+	}
+
+	this.setClassAttributes( attributes, classAttr );
+
+	attributes.width = width !== undefined && width !== '' ? Number( width ) : null;
+	attributes.height = height !== undefined && height !== '' ? Number( height ) : null;
+
+	dataElement = {
+		type: this.name,
+		attributes: attributes
+	};
+
+	if ( !caption ) {
+		return [
+			dataElement,
+			{ type: 'imageCaption' },
+			{ type: '/imageCaption' },
+			{ type: '/' + this.name }
+		];
+	} else {
+		return [ dataElement ]
+			.concat( converter.getDataFromDomClean( caption, { type: 'imageCaption' } ) )
+			.concat( [ { type: '/' + this.name } ] );
+	}
+};
+
+// TODO: Consider using jQuery instead of pure JS.
+// TODO: At this moment node is not resizable but when it will be then adding defaultSize class
+// should be more conditional.
+ve.dm.BlockImageNode.static.toDomElements = function ( data, doc, converter ) {
+	var dataElement = data[ 0 ],
+		width = dataElement.attributes.width,
+		height = dataElement.attributes.height,
+		classAttr = this.getClassAttrFromAttributes( dataElement.attributes ),
+		figure = doc.createElement( 'figure' ),
+		img = doc.createElement( 'img' ),
+		wrapper = doc.createElement( 'div' ),
+		captionData = data.slice( 1, -1 );
+
+	img.setAttribute( 'src', dataElement.attributes.src );
+	img.setAttribute( 'width', width );
+	img.setAttribute( 'height', height );
+	if ( dataElement.attributes.alt !== undefined ) {
+		img.setAttribute( 'alt', dataElement.attributes.alt );
+	}
+	figure.appendChild( img );
+
+	if ( classAttr ) {
+		figure.className = classAttr;
+	}
+
+	// If length of captionData is smaller or equal to 2 it means that there is no caption or that
+	// it is empty - in both cases we are going to skip appending <figcaption>.
+	if ( captionData.length > 2 ) {
+		converter.getDomSubtreeFromData( data.slice( 1, -1 ), wrapper );
+		while ( wrapper.firstChild ) {
+			figure.appendChild( wrapper.firstChild );
+		}
+	}
+
+	return [ figure ];
+};
+
+/* Methods */
+
+/**
+ * Get the caption node of the image.
+ *
+ * @method
+ * @return {ve.dm.BlockImageCaptionNode|null} Caption node, if present
+ */
+ve.dm.BlockImageNode.prototype.getCaptionNode = function () {
+	var node = this.children[ 0 ];
+	return node instanceof ve.dm.BlockImageCaptionNode ? node : null;
+};
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.BlockImageNode );
+
+/*!
+ * VisualEditor DataModel block image caption node class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel block image caption node.
+ *
+ * @class
+ * @extends ve.dm.BranchNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ * @param {ve.dm.Node[]} [children]
+ */
+ve.dm.BlockImageCaptionNode = function VeDmBlockImageCaptionNode() {
+	// Parent constructor
+	ve.dm.BlockImageCaptionNode.super.apply( this, arguments );
+};
+
+OO.inheritClass( ve.dm.BlockImageCaptionNode, ve.dm.BranchNode );
+
+ve.dm.BlockImageCaptionNode.static.name = 'imageCaption';
+
+ve.dm.BlockImageCaptionNode.static.matchTagNames = [];
+
+ve.dm.BlockImageCaptionNode.static.parentNodeTypes = [ 'blockImage' ];
+
+ve.dm.BlockImageCaptionNode.static.toDomElements = function ( dataElement, doc ) {
+	return [ doc.createElement( 'figcaption' ) ];
+};
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.BlockImageCaptionNode );
+
+/*!
+ * VisualEditor DataModel InlineImageNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel inline image node.
+ *
+ * @class
+ * @extends ve.dm.LeafNode
+ * @mixins ve.dm.ImageNode
+ *
+ * @constructor
+ * @param {Object} [element] Reference to element in linear model
+ */
+ve.dm.InlineImageNode = function VeDmInlineImageNode() {
+	// Parent constructor
+	ve.dm.InlineImageNode.super.apply( this, arguments );
+
+	// Mixin constructor
+	ve.dm.ImageNode.call( this );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.InlineImageNode, ve.dm.LeafNode );
+
+OO.mixinClass( ve.dm.InlineImageNode, ve.dm.ImageNode );
+
+/* Static Properties */
+
+ve.dm.InlineImageNode.static.name = 'inlineImage';
+
+ve.dm.InlineImageNode.static.isContent = true;
+
+ve.dm.InlineImageNode.static.matchTagNames = [ 'img' ];
+
+ve.dm.InlineImageNode.static.toDataElement = function ( domElements ) {
+	var $node = $( domElements[ 0 ] ),
+		alt = $node.attr( 'alt' ),
+		width = $node.attr( 'width' ),
+		height = $node.attr( 'height' );
+
+	return {
+		type: this.name,
+		attributes: {
+			src: $node.attr( 'src' ),
+			alt: alt !== undefined ? alt : null,
+			width: width !== undefined && width !== '' ? Number( width ) : null,
+			height: height !== undefined && height !== '' ? Number( height ) : null
+		}
+	};
+};
+
+ve.dm.InlineImageNode.static.toDomElements = function ( dataElement, doc ) {
+	var domElement = doc.createElement( 'img' );
+	ve.setDomAttributes( domElement, dataElement.attributes, [ 'alt', 'src', 'width', 'height' ] );
+	return [ domElement ];
+};
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.InlineImageNode );
+
+/*!
+ * VisualEditor DataModel LanguageAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel language annotation.
+ *
+ * Represents `<span>` tags with 'lang' and 'dir' properties.
+ *
+ * @class
+ * @extends ve.dm.Annotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.LanguageAnnotation = function VeDmLanguageAnnotation() {
+	// Parent constructor
+	ve.dm.LanguageAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.LanguageAnnotation, ve.dm.Annotation );
+
+/* Static Properties */
+
+ve.dm.LanguageAnnotation.static.name = 'meta/language';
+
+ve.dm.LanguageAnnotation.static.matchTagNames = [ 'span' ];
+
+ve.dm.LanguageAnnotation.static.matchFunction = function ( domElement ) {
+	var lang = domElement.getAttribute( 'lang' ),
+		dir = ( domElement.getAttribute( 'dir' ) || '' ).toLowerCase();
+	return lang || dir === 'ltr' || dir === 'rtl';
+};
+
+ve.dm.LanguageAnnotation.static.applyToAppendedContent = true;
+
+ve.dm.LanguageAnnotation.static.toDataElement = function ( domElements ) {
+	return {
+		type: this.name,
+		attributes: {
+			lang: domElements[ 0 ].getAttribute( 'lang' ),
+			dir: domElements[ 0 ].getAttribute( 'dir' )
+		}
+	};
+};
+
+ve.dm.LanguageAnnotation.static.toDomElements = function ( dataElement, doc ) {
+	var domElement = doc.createElement( 'span' );
+	if ( dataElement.attributes.lang ) {
+		domElement.setAttribute( 'lang', dataElement.attributes.lang );
+	}
+	if ( dataElement.attributes.dir ) {
+		domElement.setAttribute( 'dir', dataElement.attributes.dir );
+	}
+
+	return [ domElement ];
+};
+
+/* Methods */
+
+/**
+ * @return {Object}
+ */
+ve.dm.LanguageAnnotation.prototype.getComparableObject = function () {
+	return {
+		type: 'meta/language',
+		lang: this.getAttribute( 'lang' ),
+		dir: this.getAttribute( 'dir' )
+	};
+};
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.LanguageAnnotation );
+
+/*!
+ * VisualEditor DataModel LinkAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel link annotation.
+ *
+ * Represents `<a>` tags that don't have a specific type.
+ *
+ * @class
+ * @extends ve.dm.Annotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.LinkAnnotation = function VeDmLinkAnnotation() {
+	// Parent constructor
+	ve.dm.LinkAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.LinkAnnotation, ve.dm.Annotation );
+
+/* Static Properties */
+
+ve.dm.LinkAnnotation.static.name = 'link';
+
+ve.dm.LinkAnnotation.static.matchTagNames = [ 'a' ];
+
+ve.dm.LinkAnnotation.static.splitOnWordbreak = true;
+
+ve.dm.LinkAnnotation.static.toDataElement = function ( domElements ) {
+	return {
+		type: this.name,
+		attributes: {
+			href: domElements[ 0 ].getAttribute( 'href' )
+		}
+	};
+};
+
+ve.dm.LinkAnnotation.static.toDomElements = function ( dataElement, doc ) {
+	var domElement = doc.createElement( 'a' );
+	domElement.setAttribute( 'href', this.getHref( dataElement ) );
+	return [ domElement ];
+};
+
+/**
+ * Get the link href from linear data. Helper function for toDomElements.
+ *
+ * Subclasses can override this if they provide complex href computation.
+ *
+ * @static
+ * @method
+ * @inheritable
+ * @param {Object} dataElement Linear model element
+ * @return {string} Link href
+ */
+ve.dm.LinkAnnotation.static.getHref = function ( dataElement ) {
+	return dataElement.attributes.href;
+};
+
+/* Methods */
+
+/**
+ * Convenience wrapper for .getHref() on the current element.
+ *
+ * @see #static-getHref
+ * @return {string} Link href
+ */
+ve.dm.LinkAnnotation.prototype.getHref = function () {
+	return this.constructor.static.getHref( this.element );
+};
+
+/**
+ * Get the display title for this link
+ *
+ * Can be overriden by special link types.
+ *
+ * @return {string} Display title
+ */
+ve.dm.LinkAnnotation.prototype.getDisplayTitle = function () {
+	return this.getHref();
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinkAnnotation.prototype.getComparableObject = function () {
+	return {
+		type: this.getType(),
+		href: this.getAttribute( 'href' )
+	};
+};
+
+/**
+ * @inheritdoc
+ */
+ve.dm.LinkAnnotation.prototype.getComparableHtmlAttributes = function () {
+	var comparableAttributes = ve.dm.LinkAnnotation.super.prototype.getComparableHtmlAttributes.call( this );
+	delete comparableAttributes.href;
+	return comparableAttributes;
+};
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.LinkAnnotation );
+
+/*!
+ * VisualEditor DataModel TextStyleAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel text style annotation.
+ *
+ * @class
+ * @abstract
+ * @extends ve.dm.Annotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.TextStyleAnnotation = function VeDmTextStyleAnnotation() {
+	// Parent constructor
+	ve.dm.TextStyleAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.TextStyleAnnotation, ve.dm.Annotation );
+
+/* Static Properties */
+
+ve.dm.TextStyleAnnotation.static.name = 'textStyle';
+
+ve.dm.TextStyleAnnotation.static.matchTagNames = [];
+
+ve.dm.TextStyleAnnotation.static.toDataElement = function ( domElements, converter ) {
+	var nodeName = converter.isFromClipboard() ? this.matchTagNames[ 0 ] : domElements[ 0 ].nodeName.toLowerCase();
+	return {
+		type: this.name,
+		attributes: {
+			nodeName: nodeName
+		}
+	};
+};
+
+ve.dm.TextStyleAnnotation.static.toDomElements = function ( dataElement, doc ) {
+	var nodeName = ve.getProp( dataElement, 'attributes', 'nodeName' );
+
+	return [ doc.createElement( nodeName || this.matchTagNames[ 0 ] ) ];
+};
+
+/* Methods */
+
+/**
+ * @return {Object}
+ */
+ve.dm.TextStyleAnnotation.prototype.getComparableObject = function () {
+	return { type: this.getType() };
+};
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.TextStyleAnnotation );
+
+/*!
+ * VisualEditor DataModel AbbreviationAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel abbreviation annotation.
+ *
+ * Represents `<abbr>` tags.
+ *
+ * @class
+ * @extends ve.dm.TextStyleAnnotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.AbbreviationAnnotation = function VeDmAbbreviationAnnotation() {
+	// Parent constructor
+	ve.dm.AbbreviationAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.AbbreviationAnnotation, ve.dm.TextStyleAnnotation );
+
+/* Static Properties */
+
+ve.dm.AbbreviationAnnotation.static.name = 'textStyle/abbreviation';
+
+ve.dm.AbbreviationAnnotation.static.matchTagNames = [ 'abbr' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.AbbreviationAnnotation );
+
+/*!
+ * VisualEditor DataModel BigAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel big annotation.
+ *
+ * Represents `<big>` tags.
+ *
+ * @class
+ * @extends ve.dm.TextStyleAnnotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.BigAnnotation = function VeDmBigAnnotation() {
+	// Parent constructor
+	ve.dm.BigAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.BigAnnotation, ve.dm.TextStyleAnnotation );
+
+/* Static Properties */
+
+ve.dm.BigAnnotation.static.name = 'textStyle/big';
+
+ve.dm.BigAnnotation.static.matchTagNames = [ 'big' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.BigAnnotation );
+
+/*!
+ * VisualEditor DataModel BoldAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel bold annotation.
+ *
+ * Represents `<b>` and `<strong>` tags.
+ *
+ * @class
+ * @extends ve.dm.TextStyleAnnotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.BoldAnnotation = function VeDmBoldAnnotation() {
+	// Parent constructor
+	ve.dm.BoldAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.BoldAnnotation, ve.dm.TextStyleAnnotation );
+
+/* Static Properties */
+
+ve.dm.BoldAnnotation.static.name = 'textStyle/bold';
+
+ve.dm.BoldAnnotation.static.matchTagNames = [ 'b', 'strong' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.BoldAnnotation );
+
+/*!
+ * VisualEditor DataModel CodeSampleAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel code sample annotation.
+ *
+ * Represents `<samp>` tags.
+ *
+ * @class
+ * @extends ve.dm.TextStyleAnnotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.CodeSampleAnnotation = function VeDmCodeSampleAnnotation() {
+	// Parent constructor
+	ve.dm.CodeSampleAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.CodeSampleAnnotation, ve.dm.TextStyleAnnotation );
+
+/* Static Properties */
+
+ve.dm.CodeSampleAnnotation.static.name = 'textStyle/codeSample';
+
+ve.dm.CodeSampleAnnotation.static.matchTagNames = [ 'samp' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.CodeSampleAnnotation );
+
+/*!
+ * VisualEditor DataModel CodeAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel code annotation.
+ *
+ * Represents `<code>` and `<tt>` tags.
+ *
+ * @class
+ * @extends ve.dm.TextStyleAnnotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.CodeAnnotation = function VeDmCodeAnnotation() {
+	// Parent constructor
+	ve.dm.CodeAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.CodeAnnotation, ve.dm.TextStyleAnnotation );
+
+/* Static Properties */
+
+ve.dm.CodeAnnotation.static.name = 'textStyle/code';
+
+ve.dm.CodeAnnotation.static.matchTagNames = [ 'code', 'tt' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.CodeAnnotation );
+
+/*!
+ * VisualEditor DataModel DatetimeAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel datetime annotation.
+ *
+ * Represents `<time>` tags.
+ *
+ * @class
+ * @extends ve.dm.TextStyleAnnotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.DatetimeAnnotation = function VeDmDatetimeAnnotation() {
+	// Parent constructor
+	ve.dm.DatetimeAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.DatetimeAnnotation, ve.dm.TextStyleAnnotation );
+
+/* Static Properties */
+
+ve.dm.DatetimeAnnotation.static.name = 'textStyle/datetime';
+
+ve.dm.DatetimeAnnotation.static.matchTagNames = [ 'time' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.DatetimeAnnotation );
+
+/*!
+ * VisualEditor DataModel DefinitionAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel definition annotation.
+ *
+ * Represents `<dfn>` tags.
+ *
+ * @class
+ * @extends ve.dm.TextStyleAnnotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.DefinitionAnnotation = function VeDmDefinitionAnnotation() {
+	// Parent constructor
+	ve.dm.DefinitionAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.DefinitionAnnotation, ve.dm.TextStyleAnnotation );
+
+/* Static Properties */
+
+ve.dm.DefinitionAnnotation.static.name = 'textStyle/definition';
+
+ve.dm.DefinitionAnnotation.static.matchTagNames = [ 'dfn' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.DefinitionAnnotation );
+
+/*!
+ * VisualEditor DataModel FontAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel font annotation.
+ *
+ * Represents `<font>` tags.
+ *
+ * @class
+ * @extends ve.dm.TextStyleAnnotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.FontAnnotation = function VeDmFontAnnotation() {
+	// Parent constructor
+	ve.dm.FontAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.FontAnnotation, ve.dm.TextStyleAnnotation );
+
+/* Static Properties */
+
+ve.dm.FontAnnotation.static.name = 'textStyle/font';
+
+ve.dm.FontAnnotation.static.matchTagNames = [ 'font' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.FontAnnotation );
+
+/*!
+ * VisualEditor DataModel HighlightAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel highlight annotation.
+ *
+ * Represents `<mark>` tags.
+ *
+ * @class
+ * @extends ve.dm.TextStyleAnnotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.HighlightAnnotation = function VeDmHighlightAnnotation() {
+	// Parent constructor
+	ve.dm.HighlightAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.HighlightAnnotation, ve.dm.TextStyleAnnotation );
+
+/* Static Properties */
+
+ve.dm.HighlightAnnotation.static.name = 'textStyle/highlight';
+
+ve.dm.HighlightAnnotation.static.matchTagNames = [ 'mark' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.HighlightAnnotation );
+
+/*!
+ * VisualEditor DataModel ItalicAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel italic annotation.
+ *
+ * Represents `<i>` and `<em>` tags.
+ *
+ * @class
+ * @extends ve.dm.TextStyleAnnotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.ItalicAnnotation = function VeDmItalicAnnotation() {
+	// Parent constructor
+	ve.dm.ItalicAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.ItalicAnnotation, ve.dm.TextStyleAnnotation );
+
+/* Static Properties */
+
+ve.dm.ItalicAnnotation.static.name = 'textStyle/italic';
+
+ve.dm.ItalicAnnotation.static.matchTagNames = [ 'i', 'em' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.ItalicAnnotation );
+
+/*!
+ * VisualEditor DataModel QuotationAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel quotation annotation.
+ *
+ * Represents `<q>` tags.
+ *
+ * @class
+ * @extends ve.dm.TextStyleAnnotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.QuotationAnnotation = function VeDmQuotationAnnotation() {
+	// Parent constructor
+	ve.dm.QuotationAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.QuotationAnnotation, ve.dm.TextStyleAnnotation );
+
+/* Static Properties */
+
+ve.dm.QuotationAnnotation.static.name = 'textStyle/quotation';
+
+ve.dm.QuotationAnnotation.static.matchTagNames = [ 'q' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.QuotationAnnotation );
+
+/*!
+ * VisualEditor DataModel SmallAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel small annotation.
+ *
+ * Represents `<small>` tags.
+ *
+ * @class
+ * @extends ve.dm.TextStyleAnnotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.SmallAnnotation = function VeDmSmallAnnotation() {
+	// Parent constructor
+	ve.dm.SmallAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.SmallAnnotation, ve.dm.TextStyleAnnotation );
+
+/* Static Properties */
+
+ve.dm.SmallAnnotation.static.name = 'textStyle/small';
+
+ve.dm.SmallAnnotation.static.matchTagNames = [ 'small' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.SmallAnnotation );
+
+/*!
+ * VisualEditor DataModel SpanAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel span annotation.
+ *
+ * Represents `<span>` tags.
+ *
+ * @class
+ * @extends ve.dm.TextStyleAnnotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.SpanAnnotation = function VeDmSpanAnnotation() {
+	// Parent constructor
+	ve.dm.SpanAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.SpanAnnotation, ve.dm.TextStyleAnnotation );
+
+/* Static Properties */
+
+ve.dm.SpanAnnotation.static.name = 'textStyle/span';
+
+ve.dm.SpanAnnotation.static.matchTagNames = [ 'span' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.SpanAnnotation );
+
+/*!
+ * VisualEditor DataModel StrikethroughAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel strikethrough annotation.
+ *
+ * Represents `<s>` tags.
+ *
+ * @class
+ * @extends ve.dm.TextStyleAnnotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.StrikethroughAnnotation = function VeDmStrikethroughAnnotation() {
+	// Parent constructor
+	ve.dm.StrikethroughAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.StrikethroughAnnotation, ve.dm.TextStyleAnnotation );
+
+/* Static Properties */
+
+ve.dm.StrikethroughAnnotation.static.name = 'textStyle/strikethrough';
+
+ve.dm.StrikethroughAnnotation.static.matchTagNames = [ 's' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.StrikethroughAnnotation );
+
+/*!
+ * VisualEditor DataModel SubscriptAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel subscript annotation.
+ *
+ * Represents `<sub>` tags.
+ *
+ * @class
+ * @extends ve.dm.TextStyleAnnotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.SubscriptAnnotation = function VeDmSubscriptAnnotation() {
+	// Parent constructor
+	ve.dm.SubscriptAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.SubscriptAnnotation, ve.dm.TextStyleAnnotation );
+
+/* Static Properties */
+
+ve.dm.SubscriptAnnotation.static.name = 'textStyle/subscript';
+
+ve.dm.SubscriptAnnotation.static.matchTagNames = [ 'sub' ];
+
+ve.dm.SubscriptAnnotation.static.removes = [ 'textStyle/superscript' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.SubscriptAnnotation );
+
+/*!
+ * VisualEditor DataModel SuperscriptAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel superscript annotation.
+ *
+ * Represents `<sup>` tags.
+ *
+ * @class
+ * @extends ve.dm.TextStyleAnnotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.SuperscriptAnnotation = function VeDmSuperscriptAnnotation() {
+	// Parent constructor
+	ve.dm.SuperscriptAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.SuperscriptAnnotation, ve.dm.TextStyleAnnotation );
+
+/* Static Properties */
+
+ve.dm.SuperscriptAnnotation.static.name = 'textStyle/superscript';
+
+ve.dm.SuperscriptAnnotation.static.matchTagNames = [ 'sup' ];
+
+ve.dm.SuperscriptAnnotation.static.removes = [ 'textStyle/subscript' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.SuperscriptAnnotation );
+
+/*!
+ * VisualEditor DataModel UnderlineAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel underline annotation.
+ *
+ * Represents `<u>` tags.
+ *
+ * @class
+ * @extends ve.dm.TextStyleAnnotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.UnderlineAnnotation = function VeDmUnderlineAnnotation() {
+	// Parent constructor
+	ve.dm.UnderlineAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.UnderlineAnnotation, ve.dm.TextStyleAnnotation );
+
+/* Static Properties */
+
+ve.dm.UnderlineAnnotation.static.name = 'textStyle/underline';
+
+ve.dm.UnderlineAnnotation.static.matchTagNames = [ 'u' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.UnderlineAnnotation );
+
+/*!
+ * VisualEditor DataModel UserInputAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel user input annotation.
+ *
+ * Represents `<kbd>` tags.
+ *
+ * @class
+ * @extends ve.dm.TextStyleAnnotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.UserInputAnnotation = function VeDmUserInputAnnotation() {
+	// Parent constructor
+	ve.dm.UserInputAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.UserInputAnnotation, ve.dm.TextStyleAnnotation );
+
+/* Static Properties */
+
+ve.dm.UserInputAnnotation.static.name = 'textStyle/userInput';
+
+ve.dm.UserInputAnnotation.static.matchTagNames = [ 'kbd' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.UserInputAnnotation );
+
+/*!
+ * VisualEditor DataModel VariableAnnotation class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel variable annotation.
+ *
+ * Represents `<var>` tags.
+ *
+ * @class
+ * @extends ve.dm.TextStyleAnnotation
+ * @constructor
+ * @param {Object} element
+ */
+ve.dm.VariableAnnotation = function VeDmVariableAnnotation() {
+	// Parent constructor
+	ve.dm.VariableAnnotation.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.VariableAnnotation, ve.dm.TextStyleAnnotation );
+
+/* Static Properties */
+
+ve.dm.VariableAnnotation.static.name = 'textStyle/variable';
+
+ve.dm.VariableAnnotation.static.matchTagNames = [ 'var' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.VariableAnnotation );
+
+/*!
+ * VisualEditor DataModel AlienMetaItem class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * DataModel alien meta item.
+ *
+ * @class
+ * @extends ve.dm.MetaItem
+ * @constructor
+ * @param {Object} element Reference to element in meta-linmod
+ */
+ve.dm.AlienMetaItem = function VeDmAlienMetaItem() {
+	// Parent constructor
+	ve.dm.AlienMetaItem.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.AlienMetaItem, ve.dm.MetaItem );
+
+/* Static Properties */
+
+ve.dm.AlienMetaItem.static.name = 'alienMeta';
+
+ve.dm.AlienMetaItem.static.matchTagNames = [ 'meta', 'link' ];
+
+ve.dm.AlienMetaItem.static.preserveHtmlAttributes = false;
+
+ve.dm.AlienMetaItem.static.toDomElements = function ( dataElement, doc ) {
+	return ve.copyDomElements( dataElement.originalDomElements, doc );
+};
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.AlienMetaItem );
+
+/*!
+ * VisualEditor DataModel CommentMetaItem class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * @class
+ * @extends ve.dm.MetaItem
+ *
+ * @constructor
+ * @param {Object} element Reference to element in meta-linmod
+ */
+ve.dm.CommentMetaItem = function VeDmCommentMetaItem() {
+	// Parent constructor
+	ve.dm.CommentMetaItem.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.CommentMetaItem, ve.dm.MetaItem );
+
+/* Static Properties */
+
+ve.dm.CommentMetaItem.static.name = 'commentMeta';
+
+ve.dm.CommentMetaItem.static.matchTagNames = [];
+
+ve.dm.CommentMetaItem.static.preserveHtmlAttributes = false;
+
+ve.dm.CommentMetaItem.static.toDomElements = function ( dataElement, doc ) {
+	return [ doc.createComment( dataElement.attributes.text ) ];
+};
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.CommentMetaItem );
+
+/*!
+ * VisualEditor DataModel CommentNode class.
+ *
+ * @copyright 2011-2015 VisualEditor Team and others; see http://ve.mit-license.org
+ */
+
+/**
+ * @class
+ * @abstract
+ * @extends ve.dm.LeafNode
+ * @mixins ve.dm.FocusableNode
+ *
+ * @constructor
+ * @param {Object} element Reference to element in meta-linmod
+ */
+ve.dm.CommentNode = function VeDmCommentNode( element ) {
+	// Parent constructor
+	ve.dm.CommentNode.super.call( this, element );
+
+	// Mixin constructors
+	ve.dm.FocusableNode.call( this );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.CommentNode, ve.dm.LeafNode );
+
+OO.mixinClass( ve.dm.CommentNode, ve.dm.FocusableNode );
+
+/* Static Properties */
+
+ve.dm.CommentNode.static.isContent = true;
+
+ve.dm.CommentNode.static.preserveHtmlAttributes = false;
+
+ve.dm.CommentNode.static.toDataElement = function ( domElements, converter ) {
+	var text;
+	if ( domElements[ 0 ].nodeType === Node.COMMENT_NODE ) {
+		// Decode HTML entities, safely (no elements permitted inside textarea)
+		text = $( '<textarea/>' ).html( domElements[ 0 ].data ).text();
+	} else {
+		text = domElements[ 0 ].getAttribute( 'data-ve-comment' );
+	}
+	return {
+		// Disallows comment nodes between table rows and such
+		type: converter.isValidChildNodeType( 'comment' ) && text !== '' ? 'comment' : 'commentMeta',
+		attributes: {
+			text: text
+		}
+	};
+};
+
+ve.dm.CommentNode.static.toDomElements = function ( dataElement, doc, converter ) {
+	var span, data;
+	if ( converter.isForClipboard() ) {
+		// Fake comment node
+		span = doc.createElement( 'span' );
+		span.setAttribute( 'rel', 've:Comment' );
+		span.setAttribute( 'data-ve-comment', dataElement.attributes.text );
+		span.appendChild( doc.createTextNode( '\u00a0' ) );
+		return [ span ];
+	} else {
+		// Real comment node
+		// Encode '&', and certain '-' and '>' characters (see T95040)
+		data = dataElement.attributes.text.replace( /^[->]|--|-$|&/g, function ( m ) {
+			return m.slice( 0, m.length - 1 ) +
+				'&#' + m.charCodeAt( m.length - 1 ) + ';';
+		} );
+		return [ doc.createComment( data ) ];
+	}
+};
+
+/**
+ * @class
+ * @extends ve.dm.CommentNode
+ *
+ * @constructor
+ * @param {Object} element Reference to element in meta-linmod
+ */
+ve.dm.RealCommentNode = function VeDmRealCommentNode() {
+	ve.dm.RealCommentNode.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.RealCommentNode, ve.dm.CommentNode );
+
+/* Static Properties */
+
+ve.dm.RealCommentNode.static.name = 'comment';
+
+ve.dm.RealCommentNode.static.matchTagNames = [ '#comment' ];
+
+/**
+ * Fake comments generated by the converter for the clipboard
+ *
+ * `<span rel="ve:Comment">` is used to to preserve
+ * comments in the clipboard
+ *
+ * @class
+ * @extends ve.dm.CommentNode
+ *
+ * @constructor
+ * @param {Object} element Reference to element in meta-linmod
+ */
+ve.dm.FakeCommentNode = function VeDmFakeCommentNode() {
+	ve.dm.FakeCommentNode.super.apply( this, arguments );
+};
+
+/* Inheritance */
+
+OO.inheritClass( ve.dm.FakeCommentNode, ve.dm.CommentNode );
+
+/* Static Properties */
+
+ve.dm.FakeCommentNode.static.name = 'fakeComment';
+
+ve.dm.FakeCommentNode.static.matchRdfaTypes = [ 've:Comment' ];
+
+/* Registration */
+
+ve.dm.modelRegistry.register( ve.dm.RealCommentNode );
+ve.dm.modelRegistry.register( ve.dm.FakeCommentNode );

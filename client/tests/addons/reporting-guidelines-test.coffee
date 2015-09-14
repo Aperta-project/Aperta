@@ -1,16 +1,30 @@
-`import Ember from 'ember'`
-`import { module, test } from 'ember-qunit'`
-`import startApp from '../helpers/start-app'`
+`import Ember from "ember"`
+`import { module, test } from "qunit"`
+`import startApp from "../helpers/start-app"`
+`import { paperWithTask, addUserAsParticipant } from "../helpers/setups"`
+`import setupMockServer from "../helpers/mock-server"`
+`import Factory from "../helpers/factory"`
+`import TestHelper from "ember-data-factory-guy/factory-guy-test-helper";`
 
 app = null
-questionId = 553
+server = null
+fakeUser = null
+currentPaper = null
 
 module 'Integration: Reporting Guidelines Card',
   afterEach: ->
+    server.restore()
+    Ember.run(-> TestHelper.teardown() )
     Ember.run(app, app.destroy)
 
   beforeEach: ->
     app = startApp()
+    server = setupMockServer()
+    fakeUser = window.currentUserData.user
+    TestHelper.handleFindAll("discussion-topic", 1)
+
+    questionId = 553
+    taskId = 94139
 
     questionResponse =
       question:
@@ -20,7 +34,7 @@ module 'Integration: Reporting Guidelines Card',
         question: "Systematic Reviews"
         answer: "false"
         additional_data: [{}]
-        task_id: TahiTest.reportingGuidelinesId
+        task_id: taskId
         question_attachment_id: null
       question_attachments: []
 
@@ -32,56 +46,57 @@ module 'Integration: Reporting Guidelines Card',
         question: "Systematic Reviews"
         answer: "true"
         additional_data: [{}]
-        task_id: TahiTest.reportingGuidelinesId
+        task_id: taskId
         question_attachment_id: null
       question_attachments: []
 
-    ef = ETahi.Factory
-    records = ETahi.Setups.paperWithTask "ReportingGuidelinesTask",
-      id: TahiTest.reportingGuidelinesId
+    records = paperWithTask("ReportingGuidelinesTask",
+      id: taskId
+      role: "author"
       question_ids: [questionId]
-    [paper, task, _] = records
+    )
 
-    paperPayload = ef.createPayload('paper')
-    paperPayload.addRecords(records.concat(fakeUser, questionResponse.question))
+    [currentPaper, task, _] = records
 
-    taskPayload = ef.createPayload('task')
-    taskPayload.addRecords([task])
+    paperPayload = Factory.createPayload('paper')
+    paperPayload.addRecords(records.concat([fakeUser, questionResponse.question]))
+    paperResponse = paperPayload.toJSON()
+    paperResponse.participations = [addUserAsParticipant(task, fakeUser)]
 
-    server.respondWith 'GET', "/papers/#{TahiTest.paperId}", [
-      200, {"Content-Type": "application/json"}, JSON.stringify paperPayload.toJSON()
+    taskPayload = Factory.createPayload('task')
+    taskPayload.addRecords([task, fakeUser])
+    taskResponse = taskPayload.toJSON()
+
+    server.respondWith 'GET', "/api/papers/#{currentPaper.id}", [
+      200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
     ]
-
-    server.respondWith 'GET', "/tasks/#{TahiTest.reportingGuidelinesId}", [
-      200, {"Content-Type": "application/json"}, JSON.stringify taskPayload.toJSON()
+    server.respondWith 'GET', "/api/tasks/#{taskId}", [
+      200, {"Content-Type": "application/json"}, JSON.stringify taskResponse
     ]
-
-    server.respondWith 'PUT', /\/questions\/\d+/, [
-      200, {"Content-Type": "application/json"}, JSON.stringify questionModifiedResponse
+    server.respondWith 'PUT', /\/api\/questions\/\d+/, [
+     200, {"Content-Type": "application/json"}, JSON.stringify questionModifiedResponse
     ]
 
 test 'Supporting Guideline is a meta data card, contains the right questions and sub-questions', (assert) ->
-  assert.ok false
   findQuestionLi = (questionText) ->
     find('.question .item').filter (i, el) -> Ember.$(el).find('label').text().trim() is questionText
 
-  visit "/papers/#{TahiTest.paperId}"
+  visit "/papers/#{currentPaper.id}"
   .then ->
-    assert.ok exists find '.card-content:contains("Reporting Guidelines")'
-    ETahi.paperEditActionStub = sinon.stub(ETahi.__container__.lookup('controller:paperEdit')._actions, "savePaper")
+    assert.ok find('#paper-metadata-tasks .card-content:contains("Reporting Guidelines")')
 
   click '.card-content:contains("Reporting Guidelines")'
   .then ->
     assert.equal find('.question .item').length, 6
     assert.equal find('h1').text(), 'Reporting Guidelines'
     questionLi = findQuestionLi 'Systematic Reviews'
-    assert.ok exists questionLi.find('.additional-data.hidden')
+    assert.ok questionLi.find('.additional-data.hidden')
 
   click 'input[name="reporting_guidelines.systematic_reviews"]'
   .then ->
     questionLi = findQuestionLi 'Systematic Reviews'
-    assert.ok !(exists questionLi.find('.additional-data.hidden'))
-    assert.ok exists questionLi.find('.additional-data')
+    assert.equal(0, questionLi.find('.additional-data.hidden').length)
+    assert.ok questionLi.find('.additional-data')
     additionalDataText = questionLi.find('.additional-data').first().text().trim()
     assert.ok additionalDataText.indexOf('Select & upload') > -1
     assert.ok additionalDataText.indexOf('Provide a completed PRISMA checklist as supporting information.') > -1

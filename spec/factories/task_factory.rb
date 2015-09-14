@@ -139,6 +139,12 @@ FactoryGirl.define do
     title "Billing"
     role "author"
   end
+
+  factory :authors_task, class: 'AuthorsTask' do
+    phase
+    title "Authors"
+    role "author"
+  end
 end
 
 class MockMetadataTask < Task

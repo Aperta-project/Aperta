@@ -40,12 +40,12 @@ FactoryGirl.define do
       end
     end
 
-    trait(:with_valid_plos_author) do
+    trait(:with_valid_author) do
       after(:create) do |paper|
         FactoryGirl.create(
-          :plos_author,
+          :author,
           paper: paper,
-          plos_authors_task: paper.tasks.find_by(type: "PlosAuthors::PlosAuthorsTask")
+          authors_task: paper.tasks.find_by(type: "AuthorsTask")
         )
       end
     end

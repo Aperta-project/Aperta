@@ -4,6 +4,7 @@ class NestedQuestion < ActiveRecord::Base
   has_many :nested_question_answers
 
   validates :ident, presence: true
+  validates :owner_type, presence: true
   validates :value_type, presence: true
 
   # A question itself doesn't have a single answer so we don't save answers

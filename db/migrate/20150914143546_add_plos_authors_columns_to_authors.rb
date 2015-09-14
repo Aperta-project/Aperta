@@ -1,6 +1,7 @@
 class AddPlosAuthorsColumnsToAuthors < ActiveRecord::Migration
   def change
     change_table :authors do |t|
+      t.integer :authors_task_id, index: true
       t.string :middle_initial
       t.string :email
       t.string :department

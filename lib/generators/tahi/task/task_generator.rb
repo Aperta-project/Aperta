@@ -5,7 +5,7 @@ module Tahi
   LEGACY_PLUGINS = [
     'tahi_standard_tasks',
     'tahi_upload_manuscript',
-    'plos_authors',
+    'authors',
     'plos_billing',
     'plos_bio_tech_check'
   ]

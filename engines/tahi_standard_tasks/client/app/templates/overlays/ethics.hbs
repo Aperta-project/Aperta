@@ -3,18 +3,17 @@
 <p>You must provide an ethics statement if your study involved human participants, specimens or tissue samples, or vertebrate animals, embryos or tissues. All information entered here should also be included in the Methods section of your manuscript.</p>
 <ol class="question-list">
   <li class="question">
-    {{#question-radio ident="ethics.human_subjects"
-                      task=model
-                      question="Does your study involve Human Subject Research (human participants and/or tissue)?"
-                      disabled=isSubmissionTaskNotEditable
-                      as |selected|}}
+    {{#nested-question-radio model=humanSubjectsQuestion
+        task=model
+        disabled=isSubmissionTaskNotEditable
+        noAction="userSelectedNoOnHumanSubjects"
+        as |selected|}}
 
       {{#if selected.yes}}
         <div class="question-dataset">
-          {{question-textarea ident="ethics.human_subjects.participants"
-                              task=model
-                              disabled=isSubmissionTaskNotEditable
-                              question="Please enter the name of the IRB or Ethics Committee that approved this study in the space below. Include the approval number and/or a statement indicating approval of this research."}}
+          {{nested-question-textarea model=participantsQuestion
+              task=model
+              disabled=isSubmissionTaskNotEditable}}
 
           <div class="question-info">
             <div class="question-info-header">Human Subject Research (involved human participants and/or tissue)</div>
@@ -23,15 +22,15 @@
           </div>
         </div>
       {{/if}}
-    {{/question-radio}}
+    {{/nested-question-radio}}
   </li>
 
   <li class="question">
-    {{#question-radio ident="ethics.animal_subjects"
-                      task=model
-                      question="Does your study involve Animal Research (vertebrate animals, embryos or tissues)?"
-                      disabled=isSubmissionTaskNotEditable
-                      as |selected|}}
+    {{#nested-question-radio model=animalSubjectsQuestion
+        task=model
+        disabled=isSubmissionTaskNotEditable
+        noAction="userSelectedNoOnAnimalSubjects"
+        as |selected|}}
 
       {{#if selected.yes}}
         <div class="question-info">
@@ -45,12 +44,11 @@
         </div>
 
         <div class="question-dataset">
-          {{question-textarea ident="ethics.animal_subjects.field_permit"
-                              task=model
-                              disabled=isSubmissionTaskNotEditable
-                              question="Please enter your statement below:"}}
+          {{nested-question-textarea model=fieldPermitQuestion
+              task=model
+              disabled=isSubmissionTaskNotEditable}}
         </div>
       {{/if}}
-    {{/question-radio}}
+    {{/nested-question-radio}}
   </li>
 </ol>

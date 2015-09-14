@@ -11,6 +11,10 @@ export default TaskController.extend(FileUploadMixin, {
               .sortBy('createdAt').reverse();
   }.property('model.paper.figures.[]', 'model.paper.figures.@each.createdAt'),
 
+  figureCompliesQuestion: Ember.computed('model', function(){
+    return this.get('model').findQuestion('figure_complies');
+  }),
+
   actions: {
     uploadFinished(data, filename) {
       this.uploadFinished(data, filename);

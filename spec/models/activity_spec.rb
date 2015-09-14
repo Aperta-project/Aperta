@@ -18,14 +18,14 @@ describe Activity do
   end
 
   describe "#author_added!" do
-    subject(:activity) { Activity.author_added!(plos_author, user: user) }
-    let(:plos_author) { FactoryGirl.build(:plos_author) }
+    subject(:activity) { Activity.author_added!(author, user: user) }
+    let(:author) { FactoryGirl.build(:author) }
 
     it {
       is_expected.to have_attributes(
         feed_name: "manuscript",
-        activity_key: "plos_author.created",
-        subject: plos_author.paper,
+        activity_key: "author.created",
+        subject: author.paper,
         user: user,
         message: "Added Author"
     )}

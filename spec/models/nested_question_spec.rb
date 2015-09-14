@@ -13,6 +13,16 @@ describe NestedQuestion do
       expect(nested_question.valid?).to be false
     end
 
+    it "doesn't require an owner_id" do
+      nested_question.owner_id = nil
+      expect(nested_question.valid?).to be true
+    end
+
+    it "requires an owner_type" do
+      nested_question.owner_type = nil
+      expect(nested_question.valid?).to be false
+    end
+
     it "requires value_type" do
       nested_question.value_type = nil
       expect(nested_question.valid?).to be false

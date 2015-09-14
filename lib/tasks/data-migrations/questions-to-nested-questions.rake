@@ -1,5 +1,7 @@
 namespace 'data:migrate:questions-to-nested-questions' do
-  DATA_MIGRATION_QUESTION_RAKE_TASKS = %w( competing-interests data-availability ethics)
+  DATA_MIGRATION_QUESTION_RAKE_TASKS = %w(
+    competing-interests data-availability ethics figures
+  )
 
   desc "Calls :reset task for all question-to-nested-question(s)"
   task :reset_all => :environment do
@@ -68,6 +70,23 @@ namespace 'data:migrate:questions-to-nested-questions' do
   desc "Migrate the ethics task data to the NestedQuestion data model."
   task :'ethics' => 'data:migrate:questions-to-nested-questions:ethics:reset' do
     DataMigrator::EthicsQuestionsMigrator.migrate!
+  end
+
+  namespace :'figures' do
+    desc "Resets the NestedQuestionAnswer(s) for figures by destroying them."
+    task :reset => :environment do
+      DataMigrator::FigureQuestionsMigrator.reset
+    end
+
+    desc "Destroy old questions for figures once you're satisfied w/migrating to NestedQuestion data model."
+    task :cleanup => :environment do
+      DataMigrator::FigureQuestionsMigrator.cleanup
+    end
+  end
+
+  desc "Migrate the figures task data to the NestedQuestion data model."
+  task :'figures' => 'data:migrate:questions-to-nested-questions:figures:reset' do
+    DataMigrator::FigureQuestionsMigrator.migrate!
   end
 
 end

@@ -3,10 +3,10 @@ var NestedQuestionComponent;
 
 NestedQuestionComponent = Ember.Component.extend({
   tagName: 'div',
+  displayQuestionText: true,
   helpText: null,
   disabled: false,
   noResponseText: "[No response]",
-  questionTextClass: "question-text",
 
   model: Ember.computed('task', 'ident', function() {
     let ident = this.get('ident');
@@ -25,6 +25,10 @@ NestedQuestionComponent = Ember.Component.extend({
     Ember.assert(`Expecting to find question matching ident '${ident}' but didn't`, question);
 
     return question;
+  }),
+
+  shouldDisplayQuestionText: Ember.computed('model', 'displayQuestionText', function(){
+    return this.get('model') && this.get('displayQuestionText');
   }),
 
   additionalData: Ember.computed.alias('model.additionalData'),

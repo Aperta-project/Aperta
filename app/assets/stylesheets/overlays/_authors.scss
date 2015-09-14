@@ -1,0 +1,172 @@
+.authors-overlay-header {
+  h1 {
+    margin-bottom: 10px;
+  }
+
+  p {
+    margin: 0 0 15px 0;
+  }
+}
+
+.authors-overlay-item {
+  position: relative;
+  margin-bottom: 15px;
+  min-height: 135px;
+}
+
+.authors-overlay-item--text {
+  padding: 15px 20px;
+  font-size: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  > div {
+    margin-bottom: 6px;
+  }
+
+  .author-name {
+    font-size: 24px;
+  }
+}
+
+
+.authors-overlay-item--actions {
+  @include position(absolute, 0px 0px 0px 0px);
+  display: none;
+  color: #fff;
+  font-size: 40px;
+  text-align: center;
+
+  .drag {
+    @include position(absolute, 4px 4px auto 4px);
+    border-top: 1px solid rgba(0,0,0, 0.35);
+    height: 20px;
+    cursor: move;
+    cursor: -webkit-grab;
+
+    &:before {
+      content: ' ';
+      @include position(absolute, 2px 0px auto 0px);
+      height: 1px;
+      background: rgba(0,0,0, 0.35);
+    }
+
+    &:after {
+      content: ' ';
+      @include position(absolute, 5px 0px auto 0px);
+      height: 1px;
+      background: rgba(0,0,0, 0.35);
+    }
+  }
+
+  // vertical align icons
+  // TODO: break out?
+  .actions {
+    @include position(absolute, 50% 0px 0px 0px);
+    margin-top: -23px;
+
+    .action {
+      @include position(absolute, 0px auto 0px auto);
+      cursor: pointer;
+      opacity: 0.85;
+
+      &:hover { opacity: 1.0; }
+    }
+
+    .action:first-of-type {
+      left: 0;
+      right: 52%;
+      text-align: right;
+    }
+
+    .action:last-of-type {
+      left: 52%;
+      right: 0;
+      text-align: left;
+    }
+  }
+}
+
+.__hover.__editable .authors-overlay-item--actions {
+  display: block;
+  background: rgba(68, 175, 54, 0.7);
+}
+
+
+.authors-overlay-item--delete {
+  @include position(absolute, 0px 0px 0px 0px);
+  padding: 20px 30px 0 30px;
+  color: #fff;
+  background-color: $tahi-green;
+  z-index: 1;
+
+  p { margin-left: 0; }
+}
+
+.author-drop-target {
+  height: 5px;
+  margin-bottom: 5px;
+
+  &.current-drop-target {
+    height: 90px;
+    border: 4px dashed $tahi-green-light;
+  }
+}
+
+.add-author-form {
+  margin: 15px 0;
+  padding: 30px;
+  background: rgba(213, 213, 213, 0.8);
+  width: 915px;
+
+  .affiliation-field, .secondary-affiliation-field {
+    border-radius: 4px;
+    width: 418px;
+  }
+
+  .author-contributions {
+    margin-bottom: 40px;
+  }
+
+  .text-field-title {
+    background: none;
+    width: initial;
+  }
+
+  .form-inline .form-group {
+    vertical-align: top;
+  }
+}
+
+.authors-overlay-item .add-author-form { margin: 0; }
+
+.author-half {
+  width: 418px;
+}
+
+.author-name {
+  width: 176px;
+}
+
+.author-form-buttons {
+  margin-right: 2px;
+  padding-top: 10px;
+}
+
+.author-bump {
+  margin-left: 14px;
+}
+
+.author-top {
+  border-bottom: 1px solid $tahi-grey-dark;
+  padding-bottom: 15px;
+}
+
+.author-middle {
+  width: 42px;
+  margin: 0 9px;
+}
+
+.author-label {
+  font-weight: normal;
+}

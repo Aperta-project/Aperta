@@ -1,4 +1,7 @@
+import Ember from 'ember';
 import TaskController from 'tahi/pods/paper/task/controller';
+
+const { computed } = Ember;
 
 export default TaskController.extend({
   publicationDate: function() {
@@ -18,36 +21,34 @@ export default TaskController.extend({
   }.property(),
 
   setPublicationDate: function() {
-    this.send('ensureBody');
-    this.send('setAndSave', 'publicationDate');
+    this.callDebounce('publicationDate')
   }.observes('publicationDate'),
 
   setVolumeNumber: function() {
-    this.send('ensureBody');
-    this.send('setAndSave', 'volumeNumber');
+    this.callDebounce('volumeNumber')
   }.observes('volumeNumber'),
 
   setIssueNumber: function() {
-    this.send('ensureBody');
-    this.send('setAndSave', 'issueNumber');
+    this.callDebounce('issueNumber')
   }.observes('issueNumber'),
 
   setPublicationNotes: function() {
-    this.send('ensureBody');
-    this.send('setAndSave', 'publicationNotes');
+    this.callDebounce('publicationNotes')
   }.observes('publicationNotes'),
 
-  actions: {
-    ensureBody(){
-      if (this.get('model.body').length === 0 && typeof(this.get('model.body') !== Array)) {
-        this.set('model.body', {});
-      }
-    },
+  callDebounce: function(key) {
+    return Ember.run.debounce(this, this.setAndSave, [key], 1000);
+  },
 
-    setAndSave(key){
-      this.set(`model.body.${key}`, this.get(`${key}`));
-      this.get('model').save();
+  setAndSave(key){
+    this.ensureBody();
+    this.set(`model.body.${key}`, this.get(`${key}`));
+    this.get('model').save();
+  },
+
+  ensureBody: function() {
+    if (this.get('model.body').length === 0 && typeof(this.get('model.body') !== Array)) {
+      this.set('model.body', {});
     }
   }
-
 });

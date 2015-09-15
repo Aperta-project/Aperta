@@ -23,11 +23,6 @@ moduleFor 'controller:overlays/cover-letter', 'CoverLetterController',
 test '#letterBody: returns the content of the cover letter', (assert) ->
   assert.equal @ctrl.get('letterBody'), ''
 
-test '#formatCoverLetter: replaces newline with p tag', (assert) ->
-  @ctrl.set('letterBody', "foo\nbar")
-  result = @ctrl.get('formatCoverLetter')
-  assert.equal result, '<p>foo</p><p>bar</p>'
-
 test "#editingLetter: returns false when the paper has cover letter", (assert) ->
   assert.ok !@ctrl.get('editingLetter')
 

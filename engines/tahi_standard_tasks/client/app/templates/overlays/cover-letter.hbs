@@ -25,7 +25,7 @@
 {{else}}
 <div class="preview-cover-letter">
   <h4>Here is your cover letter:</h4>
-    <div class="cover-letter">{{formatCoverLetter}}</div>
+    <div class="cover-letter">{{{letterBody}}}</div>
     <button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "editCoverLetter"}}>Make Changes</button>
 </div>
 {{/if}}

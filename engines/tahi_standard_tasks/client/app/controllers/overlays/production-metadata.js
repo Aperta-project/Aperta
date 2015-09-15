@@ -1,40 +1,46 @@
 import Ember from 'ember';
 import TaskController from 'tahi/pods/paper/task/controller';
 
-const { computed } = Ember;
-
 export default TaskController.extend({
-  publicationDate: function() {
-    return this.get("model.body.publicationDate");
-  }.property(),
+  // publicationDate: function() {
+  //   return this.get("model.body.publicationDate");
+  // }.property(),
 
-  volumeNumber: function() {
-    return this.get("model.body.volumeNumber");
-  }.property(),
+  publicationDate: Ember.computed("model.body.publicationDate", function () {
+    return this.get('model.body.publicationDate');
+  }),
 
-  issueNumber: function() {
-    return this.get("model.body.issueNumber");
-  }.property(),
+  volumeNumber: Ember.computed("model.body.volumeNumber", function () {
+    return this.get('model.body.volumeNumber');
+  }),
 
-  publicationNotes: function() {
-    return this.get("model.body.publicationNotes");
-  }.property(),
+  issueNumber: Ember.computed("model.body.issueNumber", function () {
+    return this.get('model.body.issueNumber');
+  }),
 
-  setPublicationDate: function() {
+  publicationNotes: Ember.computed("model.body.publicationNotes", function () {
+    return this.get('model.body.publicationNotes');
+  }),
+
+  setPublicationDate: Ember.observer('publicationDate', function() {
+    debugger
     this.callDebounce('publicationDate');
-  }.observes('publicationDate'),
+  }),
 
-  setVolumeNumber: function() {
+  setVolumeNumber: Ember.observer('volumeNumber', function() {
+    debugger
     this.callDebounce('volumeNumber');
-  }.observes('volumeNumber'),
+  }),
 
-  setIssueNumber: function() {
+  setIssueNumber: Ember.observer('issueNumber', function() {
+    debugger
     this.callDebounce('issueNumber');
-  }.observes('issueNumber'),
+  }),
 
-  setPublicationNotes: function() {
+  setPublicationNotes: Ember.observer('publicationNotes', function() {
+    debugger
     this.callDebounce('publicationNotes');
-  }.observes('publicationNotes'),
+  }),
 
   callDebounce: function(key) {
     return Ember.run.debounce(this, this.setAndSave, [key], 1000);

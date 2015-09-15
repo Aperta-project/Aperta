@@ -2,10 +2,6 @@ import Ember from 'ember';
 import TaskController from 'tahi/pods/paper/task/controller';
 
 export default TaskController.extend({
-  // publicationDate: function() {
-  //   return this.get("model.body.publicationDate");
-  // }.property(),
-
   publicationDate: Ember.computed("model.body.publicationDate", function () {
     return this.get('model.body.publicationDate');
   }),
@@ -18,27 +14,23 @@ export default TaskController.extend({
     return this.get('model.body.issueNumber');
   }),
 
-  publicationNotes: Ember.computed("model.body.publicationNotes", function () {
+  publicationNotes: git Ember.computed("model.body.publicationNotes", function () {
     return this.get('model.body.publicationNotes');
   }),
 
   setPublicationDate: Ember.observer('publicationDate', function() {
-    debugger
     this.callDebounce('publicationDate');
   }),
 
   setVolumeNumber: Ember.observer('volumeNumber', function() {
-    debugger
     this.callDebounce('volumeNumber');
   }),
 
   setIssueNumber: Ember.observer('issueNumber', function() {
-    debugger
     this.callDebounce('issueNumber');
   }),
 
   setPublicationNotes: Ember.observer('publicationNotes', function() {
-    debugger
     this.callDebounce('publicationNotes');
   }),
 

@@ -10,7 +10,7 @@ module JournalServices
         make_tasks phase, task_types,
           TahiStandardTasks::FigureTask,
           TahiStandardTasks::SupportingInformationTask,
-          AuthorsTask,
+          TahiStandardTasks::AuthorsTask,
           TahiUploadManuscript::UploadManuscriptTask,
           TahiStandardTasks::CoverLetterTask
 

@@ -25,7 +25,7 @@ describe TahiStandardTasks::PaperEditorTask do
 
     it "adds author information to Invitation#information=" do
       task.invitation_invited(invitation)
-      expect(invitation.information).to eq("Here are the authors on the paper:\n\n1. #{author.last_name}, #{author.first_name} from #{author.specific.affiliation}")
+      expect(invitation.information).to eq("Here are the authors on the paper:\n\n1. #{author.last_name}, #{author.first_name} from #{author.affiliation}")
     end
   end
 

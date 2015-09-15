@@ -67,6 +67,7 @@ class ProfilePage(AuthenticatedPage):
     :return: None
     """
     assert application_typeface in title.value_of_css_property('font-family')
+    #https://www.pivotaltracker.com/story/show/103368442
     assert title.value_of_css_property('font-size') == '27px'
     assert title.value_of_css_property('font-weight') == '500'
     assert title.value_of_css_property('line-height') == '29.7px'
@@ -84,7 +85,9 @@ class ProfilePage(AuthenticatedPage):
     assert 'First and last name:' in name_title.text
     self.validate_profile_title_style(name_title)
     name = self._get(self._profile_name)
-    self.validate_application_h1_style(name)
+    # This is actually an h2 tag in the document, so we should not be trying to validate it via the h1 style
+    # https://www.pivotaltracker.com/story/show/103368442
+    # self.validate_application_h1_style(name)
     username_title = self._get(self._profile_username_title)
     assert 'Username:' in username_title.text
     self.validate_profile_title_style(username_title)
@@ -99,9 +102,9 @@ class ProfilePage(AuthenticatedPage):
     assert 'Affiliations:' in profile_at.text    
     self.validate_profile_title_style(profile_at)
     affiliation_btn = self._get(self._affiliation_btn)
-    self.validate_secondary_grey_small_button_style(affiliation_btn)
+    self.validate_secondary_small_grey_button_style(affiliation_btn)
     reset_btn = self._get(self._reset_btn)
-    self.validate_secondary_green_button_style(reset_btn)
+    self.validate_secondary_big_green_button_style(reset_btn)
     avatar = self._get(self._avatar)
     avatar.value_of_css_property('height') == '160px'
     avatar.value_of_css_property('width') == '160px'    
@@ -155,8 +158,7 @@ class ProfilePage(AuthenticatedPage):
     add_aff_title = self._get(self._add_affiliation_title)
     assert 'helvetica' in add_aff_title.value_of_css_property('font-family')
     assert add_aff_title.text == 'New Affiliation'
-    assert add_aff_title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
-    assert add_aff_title.value_of_css_property('font-size') == '24px'
+    self.validate_application_h3_style(add_aff_title)
     institution_input = self._get(self._institution_input)
     self.validate_input_form_style(institution_input)
     department_input = self._get(self._department_input)
@@ -173,7 +175,7 @@ class ProfilePage(AuthenticatedPage):
     email = self._get(self._email)
     self.validate_input_form_style(email)
     add_done_btn = self._get(self._add_done_btn)
-    self.validate_secondary_green_button_style(add_done_btn)    
+    self.validate_secondary_big_green_button_style(add_done_btn)
     add_cancel_btn = self._get(self._add_cancel_btn)
     self.validate_default_link_style(add_cancel_btn)
     # Insert affiliation data

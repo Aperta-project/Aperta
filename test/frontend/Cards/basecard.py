@@ -107,6 +107,18 @@ class BaseCard(AuthenticatedPage):
     assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
 
   @staticmethod
+  def validate_card_h4_style(title):
+    """
+    Ensure consistency in rendering the overlay h4 section headings across the all cards
+    :param title: title to validate
+    """
+    assert application_typeface in title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '18px'
+    assert title.value_of_css_property('font-weight') == '500'
+    assert title.value_of_css_property('line-height') == '19.8px'
+    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+
+  @staticmethod
   def validate_card_input_style(input_):
     """
     Ensure consistency in rendering the input forms across the all cards

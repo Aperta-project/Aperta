@@ -10,7 +10,7 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
   let(:text_body) { { type: "text", value: "Hi there!" } }
 
   before do
-    login_as admin
+    login_as(admin, scope: :user)
     visit "/"
   end
 
@@ -76,8 +76,8 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
 
   context "on a task" do
     before do
-      sign_out
-      login_as regular_user
+      Page.new.sign_out
+      login_as(regular_user, scope: :user)
       visit "/"
       upload_task.participants.destroy_all
     end
@@ -86,11 +86,9 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
       click_link regular_paper.title
       edit_paper_page = PaperPage.new
       edit_paper_page.view_card(upload_task.title) do |card|
-        using_wait_time 30 do
-          card.post_message 'Hello'
-          expect(card).to have_participants(regular_user)
-          expect(card).to have_last_comment_posted_by(regular_user)
-        end
+        card.post_message 'Hello'
+        expect(card).to have_participants(regular_user)
+        expect(card).to have_last_comment_posted_by(regular_user)
       end
     end
 

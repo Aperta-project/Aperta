@@ -12,7 +12,7 @@ feature 'Adhoc cards', js: true do
 
   context 'As a participant' do
     scenario "uploads an image to ad-hoc card", selenium: true do
-      login_as author
+      login_as(author, scope: :user)
       visit "/papers/#{paper.id}"
 
       edit_paper = PaperPage.new
@@ -28,7 +28,7 @@ feature 'Adhoc cards', js: true do
     end
 
     scenario "replaces an attachment on ad-hoc card", selenium: true do
-      login_as author
+      login_as(author, scope: :user)
       visit "/papers/#{paper.id}"
 
       edit_paper = PaperPage.new
@@ -43,7 +43,7 @@ feature 'Adhoc cards', js: true do
     end
 
     scenario "edits attachment info on ad-hoc card", selenium: true do
-      login_as author
+      login_as(author, scope: :user)
       visit "/papers/#{paper.id}"
 
       edit_paper = PaperPage.new
@@ -63,7 +63,7 @@ feature 'Adhoc cards', js: true do
     end
 
     scenario "deletes attachment from an ad-hoc card", selenium: true do
-      login_as author
+      login_as(author, scope: :user)
       visit "/papers/#{paper.id}"
 
       edit_paper = PaperPage.new

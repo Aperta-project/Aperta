@@ -15,7 +15,7 @@ feature "Viewing Versions:", js: true do
     before do
       paper.reload
       paper.allow_edits!
-      login_as user
+      login_as(user, scope: :user)
       visit "/"
 
       click_link(paper.title)

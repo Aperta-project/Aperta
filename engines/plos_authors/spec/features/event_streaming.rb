@@ -7,7 +7,7 @@ feature "event streaming", js: true do
   let!(:plos_authors_task) { FactoryGirl.create(:plos_authors_task, phase: phase) }
 
   before do
-    login_as user
+    login_as(user, scope: :user)
     visit "/"
   end
 

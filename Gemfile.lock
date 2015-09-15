@@ -45,12 +45,6 @@ GIT
       activesupport (>= 4.1.0)
 
 PATH
-  remote: engines/plos_authors
-  specs:
-    plos_authors (0.0.3)
-      rails (~> 4.2.0)
-
-PATH
   remote: engines/plos_billing
   specs:
     plos_billing (0.0.1)
@@ -629,7 +623,6 @@ DEPENDENCIES
   pdfkit
   pg
   pg_search
-  plos_authors!
   plos_billing!
   plos_bio_internal_review!
   plos_bio_tech_check!

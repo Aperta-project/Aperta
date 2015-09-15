@@ -41,7 +41,7 @@ describe SalesforceServices::ObjectTranslations do
       expect(data['PFA_Question_4a__c']).to          eq ('foo')
       expect(data['PFA_Able_to_Pay_R__c']).to        eq ('1000')
       expect(data['PFA_Additional_Comments__c']).to  eq ('my comments')
-      expect(data['PFA_Supporting_Docs__c']).to      eq ('Yes')
+      expect(data['PFA_Supporting_Docs__c']).to      eq (true) #indirectly tests private method boolean_from_text_answer_for
     end
   end
 

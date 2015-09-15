@@ -52,7 +52,7 @@ test "extractSingle puts sideloaded things into the store via their 'type' attri
 
   store = getStore()
   container.register('model:initial-tech-check-task', InitialTechCheckTask)
-  container.register('model:plos-authors-task', PlosAuthorsTask)
+  container.register('model:authors-task', AuthorsTask)
 
   jsonHash =
     tasks:
@@ -68,7 +68,7 @@ test "extractSingle puts sideloaded things into the store via their 'type' attri
     assert.equal store.getById('task', 1), null, 'no Task gets pushed into the store'
     store.find('initial-tech-check-task', 1).then (task) ->
       assert.equal task.get('title'), 'Initial Tech Check', 'the message task is in the store'
-    store.find('plos-authors-task', 2).then (task) ->
+    store.find('authors-task', 2).then (task) ->
       assert.equal task.get('title'), 'Check Authors', 'the namespaced authors task is in the store'
 
 test "extractMany puts normalizes things via their 'type' attribute", (assert) ->

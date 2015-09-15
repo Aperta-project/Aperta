@@ -17,7 +17,7 @@ describe EmberAddonsInstaller do
 
         after_file_contents = JSON.load File.open(package_file_path)
 
-        expect(after_file_contents['ember-addon']['paths'].to_s).to match("engines/plos_authors/client")
+        expect(after_file_contents['ember-addon']['paths'].to_s).to match("engines/plos_billing/client")
         expect(after_file_contents['ember-addon']['paths'].to_s).to match("plos_bio_tech_check-[a-z0-9\-]+/client")
       end
 
@@ -50,7 +50,7 @@ describe EmberAddonsInstaller do
 
         expect(after_file_contents['ember-addon']['paths']).to include '../regular-ember-addon'
         expect(after_file_contents['ember-addon']['paths']).to_not include '../legacy-delete-me/tahi-plos-billing/client'
-        expect(after_file_contents['ember-addon']['paths']).to_not include '../legacy-delete-me/plos_authors/client'
+        expect(after_file_contents['ember-addon']['paths']).to_not include '../legacy-delete-me/tahi_upload_manuscript/client'
       end
 
       after(:each) do

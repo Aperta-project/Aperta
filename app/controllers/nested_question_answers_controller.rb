@@ -21,7 +21,7 @@ class NestedQuestionAnswersController < ApplicationController
 
   def answer
     @answer ||= NestedQuestionAnswer.where(
-      owner: task,
+      owner: owner,
       nested_question_id: nested_question.id,
       value_type: nested_question.value_type
     ).first_or_initialize
@@ -34,12 +34,19 @@ class NestedQuestionAnswersController < ApplicationController
     end
   end
 
-  def task
-    @task ||= Task.find(answer_params[:task_id])
+  def owner
+    @owner ||= begin
+      case answer_params[:owner_type]
+      when /Task$/
+        Task.find(answer_params[:owner_id])
+      else
+        raise "Don't know how to assign to #{answer_params[:owner_type]}"
+      end
+    end
   end
 
   def answer_params
-    params.require(:nested_question_answer).permit(:task_id, :value)
+    params.require(:nested_question_answer).permit(:owner_id, :owner_type, :value)
   end
 
   def enforce_policy

@@ -14,7 +14,7 @@ export default TaskController.extend({
     return this.get('model.body.issueNumber');
   }),
 
-  publicationNotes: git Ember.computed("model.body.publicationNotes", function () {
+  publicationNotes: Ember.computed("model.body.publicationNotes", function () {
     return this.get('model.body.publicationNotes');
   }),
 

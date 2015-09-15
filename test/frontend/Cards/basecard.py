@@ -107,6 +107,21 @@ class BaseCard(AuthenticatedPage):
     assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
 
   @staticmethod
+  def validate_card_input_style(input_):
+    """
+    Ensure consistency in rendering the input forms across the all cards
+    :param title: title to validate
+    # TODO: Validate with the result of #103123812
+    """
+    assert application_typeface in title.value_of_css_property('font-family')
+    assert input_.value_of_css_property('font-size') == '20px'
+    assert input_.value_of_css_property('font-weight') == '500'
+    assert input_.value_of_css_property('line-height') == '22px'
+    assert input_.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+    assert input_.value_of_css_property('border-bottom-color') == 'rgba(51, 51, 51, 1)'
+
+
+  @staticmethod
   def validate_plus_style(plus):
     """
     Ensure consistency in rendering the plus (+) section headings across the all cards
@@ -131,6 +146,15 @@ class BaseCard(AuthenticatedPage):
     assert completed.value_of_css_property('color') in ('rgba(60, 60, 60, 1)',
       'rgba(49, 55, 57, 1)') # rgba(60, 60, 60, 1) local and rgba(49, 55, 57, 1) in CI
     assert completed.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)', completed.value_of_css_property('background-color')
+
+  @staticmethod
+  def validate_card_h1_style(h1):
+    assert application_typeface in h1.value_of_css_property('font-family')
+    assert h1.value_of_css_property('font-size') == '36px', h1.value_of_css_property('font-size')
+    assert h1.value_of_css_property('height') == '39.6px'
+    assert h1.value_of_css_property('width') == '1140px'
+    assert h1.value_of_css_property('line-height') == '39.6px'
+    assert h1.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
 
   @staticmethod
   def validate_completed_label(completed_lbl):
@@ -158,7 +182,6 @@ class BaseCard(AuthenticatedPage):
     # Close btn
     close_btn = self._get(self._close_button)
     self.validate_secondary_green_button_style(close_btn)
-    #h2
     discussion_div = self._get(self._discussion_div)
     discussion_title = discussion_div.find_element_by_tag_name('h2')
     assert discussion_title.text == 'Discussion', discussion_title.text
@@ -195,3 +218,8 @@ class BaseCard(AuthenticatedPage):
     self.validate_completed_label(completed_lbl)
     bottom_close_btn = self._get(self._bottom_close_button)
     self.validate_secondary_green_button_style(bottom_close_btn)
+    # test close function
+    #bottom_close_btn.click()
+    #time.sleep(1)
+    #current_url = self._driver.current_url
+    #assert 'tasks/' not in current_url

@@ -78,6 +78,13 @@ class AuthenticatedPage(PlosPage):
       self._get(self._nav_admin_link)
     return None
 
+  def validate_p_style(self, p):
+    """Validate paragraph text. This work both in body and cards"""
+    assert p.value_of_css_property('font-size') == '14px'
+    assert p.value_of_css_property('font-weight') == '400'
+    assert p.value_of_css_property('line-height') == '20px'
+    assert p.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
+
   def click_nav_close(self):
     """Click sign out link"""
     self._get(self._nav_close).click()

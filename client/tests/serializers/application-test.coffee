@@ -46,30 +46,22 @@ test "extractSingle puts sideloaded things into the store via their 'type' attri
   InitialTechCheckTask = DS.Model.extend
     title: DS.attr('string')
     type: DS.attr('string')
-  PlosAuthorsTask = DS.Model.extend
-    title: DS.attr('string')
-    type: DS.attr('string')
 
   store = getStore()
   container.register('model:initial-tech-check-task', InitialTechCheckTask)
-  container.register('model:authors-task', AuthorsTask)
 
   jsonHash =
     tasks:
-      [ {id: '1', type: 'InitialTechCheckTask', title: 'Initial Tech Check'}
-        {id: '2', type: 'Foo::PlosAuthorsTask', title: 'Check Authors'}
-      ]
+      [ {id: '1', type: 'InitialTechCheckTask', title: 'Initial Tech Check'} ]
     phase:
       id: '1'
-      tasks: [{id: '1', type: 'InitialTechCheckTask'}, {id: '2', type: 'PlosAuthorsTask'}]
+      tasks: [{id: '1', type: 'InitialTechCheckTask'}]
 
   Ember.run ->
     result = subject.extractSingle(store, store.modelFor('phase'), jsonHash)
     assert.equal store.getById('task', 1), null, 'no Task gets pushed into the store'
     store.find('initial-tech-check-task', 1).then (task) ->
       assert.equal task.get('title'), 'Initial Tech Check', 'the message task is in the store'
-    store.find('authors-task', 2).then (task) ->
-      assert.equal task.get('title'), 'Check Authors', 'the namespaced authors task is in the store'
 
 test "extractMany puts normalizes things via their 'type' attribute", (assert) ->
   PaperEditorTask = DS.Model.extend

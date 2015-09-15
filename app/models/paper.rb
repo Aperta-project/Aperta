@@ -45,6 +45,8 @@ class Paper < ActiveRecord::Base
     versioned_texts.create!(major_version: 0, minor_version: 0, text: (@new_body || ''))
   end
 
+  after_create :set_doi
+
   aasm column: :publishing_state do
     state :unsubmitted, initial: true # currently being authored
     state :submitted
@@ -373,5 +375,11 @@ class Paper < ActiveRecord::Base
     end
 
     supporting_information
+  end
+
+  def set_doi
+    return if doi
+    next_doi = Doi.new(journal: journal).assign!
+    update!(doi: next_doi)
   end
 end

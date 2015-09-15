@@ -32,7 +32,6 @@ gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
 gem 'sidekiq'
 gem 'sidetiq'
 gem 'sinatra'
-gem 'active_record-acts_as'
 gem 'request_store'
 
 gem "premailer-rails"

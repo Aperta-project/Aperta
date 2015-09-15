@@ -86,7 +86,7 @@ feature "Register Decision", js: true do
   context "With previous decision history" do
     before do
       paper.decisions.first.update! verdict: "major_revision",
-                                    letter: "Please revise the manuscript"
+                                    letter: "Please revise the manuscript.\nAfter line break"
       paper.decisions.create!
       paper.reload
     end
@@ -96,7 +96,8 @@ feature "Register Decision", js: true do
         expect(overlay.previous_decisions).to_not be_empty
         expect(overlay.previous_decisions.first.revision_number).to eq("0")
         overlay.find("#accordion h4.panel-title a").click # open Accordion
-        expect(overlay.previous_decisions.first.letter).to eq("Request for Revision: Please revise the manuscript")
+        expect(overlay.previous_decisions.first.letter).to eq("Please revise the manuscript. After line break")
+        expect(overlay.previous_decisions.first.letter).to_not include "<br>"
       end
     end
   end

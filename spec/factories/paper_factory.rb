@@ -45,7 +45,7 @@ FactoryGirl.define do
         FactoryGirl.create(
           :author,
           paper: paper,
-          authors_task: paper.tasks.find_by(type: "AuthorsTask")
+          authors_task: paper.tasks.find_by(type: "TahiStandardTasks::AuthorsTask")
         )
       end
     end

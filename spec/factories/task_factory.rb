@@ -128,7 +128,7 @@ FactoryGirl.define do
     role "author"
   end
 
-  factory :authors_task, class: 'AuthorsTask' do
+  factory :authors_task, class: 'TahiStandardTasks::AuthorsTask' do
     phase
     title "Authors"
     role "author"

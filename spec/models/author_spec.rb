@@ -8,8 +8,9 @@ describe Author do
     end
   end
 
+  # TODO: move these tests to the TahiStandardTasks engines
   describe "#task_completed?" do
-    let(:authors_task) { AuthorsTask.new }
+    let(:authors_task) { TahiStandardTasks::AuthorsTask.new }
 
     it "is true when task is complete" do
       authors_task.completed = true

@@ -1,9 +1,9 @@
 import FactoryGuy from "ember-data-factory-guy";
 
-FactoryGuy.define('plos-authors-task', {
+FactoryGuy.define('authors-task', {
   default: {
-    title: 'Invite Editor',
-    type: 'PlosAuthorsTask',
+    title: 'Authors',
+    type: 'AuthorsTask',
     completed: false,
   }
 });

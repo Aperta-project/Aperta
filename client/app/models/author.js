@@ -18,12 +18,10 @@ export default DS.Model.extend({
   secondaryAffiliation: DS.attr('string'),
   secondaryRinggoldId: DS.attr('string'),
 
+  position: DS.attr('number'),
   corresponding: DS.attr('boolean'),
   deceased: DS.attr('boolean'),
-  position: DS.attr('number'),
   contributions: DS.attr(),
-
-  position: DS.attr('number'),
 
   fullName: Ember.computed('firstName', 'middleInitial', 'lastName', function() {
     return [this.get('firstName'), this.get('middleInitial'), this.get('lastName')].compact().join(' ');

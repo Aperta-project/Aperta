@@ -23,7 +23,7 @@ class Task < ActiveRecord::Base
   has_one :paper, through: :phase
   has_one :journal, through: :paper
   has_many :attachments
-  has_many :nested_question_answers, as: :owner
+  has_many :nested_question_answers, as: :owner, dependent: :destroy
   has_many :questions, inverse_of: :task, dependent: :destroy
   has_many :participations, inverse_of: :task, dependent: :destroy
   has_many :participants, through: :participations, source: :user

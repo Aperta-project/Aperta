@@ -88,7 +88,7 @@ test 'Supporting Guideline is a meta data card, contains the right questions and
   click '.card-content:contains("Reporting Guidelines")'
   .then ->
     assert.equal find('.question .item').length, 6
-    assert.equal find('h1').text(), 'Reporting Guidelines'
+    assert.equal find(".overlay-main-work h1").text().trim(), "Reporting Guidelines"
     questionLi = findQuestionLi 'Systematic Reviews'
     assert.ok questionLi.find('.additional-data.hidden')
 

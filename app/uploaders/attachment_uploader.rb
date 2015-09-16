@@ -11,6 +11,10 @@ class AttachmentUploader < CarrierWave::Uploader::Base
     "uploads/paper/#{model.paper.id}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
+  def fog_public
+    true
+  end
+
   version :detail do
     process resize_to_limit: [986, -1]
     process :convert_to_png, if: :needs_transcoding?

@@ -76,6 +76,7 @@ class DashboardPage < Page
     if count == 0
       expect(page).not_to have_selector('.invitation-count')
     else
+      expect(page).to have_selector('.invitation-count')
       expect(page.find('.invitation-count')).to have_content("#{count}")
     end
   end

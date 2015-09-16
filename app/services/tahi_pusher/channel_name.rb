@@ -10,9 +10,11 @@ module TahiPusher
 
     # <#Paper:1234 @id=4> --> "private-paper@4"
     def self.build(target:, access:)
+      raise ChannelResourceNotFound.new("Channel target cannot be nil") if target.nil?
+
       prefix = access unless access == PUBLIC
       suffix = if target.is_a?(ActiveRecord::Base)
-                 [target.class.name.downcase, target.id].join(MODEL_SEPARATOR)
+                 [target.class.name.underscore, target.id].join(MODEL_SEPARATOR)
                else
                  target
                end

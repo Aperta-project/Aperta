@@ -19,6 +19,14 @@ describe TahiPusher::ChannelName do
           expect(channel_name).to eq("paper@#{paper.id}")
         end
       end
+
+      context "without target" do
+        it "throws error" do
+          expect {
+            TahiPusher::ChannelName.build(target: nil, access: "public")
+          }.to raise_error(TahiPusher::ChannelResourceNotFound)
+        end
+      end
     end
 
 
@@ -31,11 +39,11 @@ describe TahiPusher::ChannelName do
       end
 
       context "with model" do
-        let(:paper) { FactoryGirl.create(:paper) }
+        let(:discussion_topic) { FactoryGirl.create(:discussion_topic) }
 
         it "builds channel name with access" do
-          channel_name = TahiPusher::ChannelName.build(target: paper, access: "private")
-          expect(channel_name).to eq("private-paper@#{paper.id}")
+          channel_name = TahiPusher::ChannelName.build(target: discussion_topic, access: "private")
+          expect(channel_name).to eq("private-discussion_topic@#{discussion_topic.id}")
         end
       end
     end

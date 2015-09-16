@@ -1,14 +1,14 @@
 module EventStream::Notifiable
   extend ActiveSupport::Concern
   included do
-    after_commit :notify
+    after_commit :notify, if: :changes_committed?
 
     # if false (default), do not send event stream message to original requester
     # if true, send event stream message to the original requester
     attr_accessor :notify_requester
 
     def notify
-      TahiNotifier.notify(event: event_name, payload: event_payload)
+      Notifier.notify(event: event_name, data: event_payload)
     end
 
     def event_payload
@@ -19,23 +19,6 @@ module EventStream::Notifiable
       }
     end
 
-    def payload(user: nil)
-      # user can be optionally passed into serializer
-      event_stream_serializer(user: user).to_json
-    end
-
-    def event_stream_serializer(user: nil)
-      # user can be optionally passed into serializer
-      active_model_serializer.new(self, user: user)
-    end
-
-    def destroyed_payload
-      {
-        type: self.class.base_class.name.demodulize.tableize,
-        ids: [self.id]
-      }.to_json
-    end
-
     private
 
     def event_name
@@ -44,6 +27,10 @@ module EventStream::Notifiable
 
     def klass_name
       self.class.base_class.name.underscore
+    end
+
+    def changes_committed?
+      destroyed? || previous_changes.present?
     end
 
     def action

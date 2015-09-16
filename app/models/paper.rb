@@ -239,6 +239,10 @@ class Paper < ActiveRecord::Base
     locked_by_id == user.id
   end
 
+  def resubmitted?
+    decisions.pending.exists?
+  end
+
   def lock_by(user) # :nodoc:
     update_attribute(:locked_by, user)
   end

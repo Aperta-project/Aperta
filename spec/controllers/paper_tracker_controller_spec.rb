@@ -1,15 +1,15 @@
 require 'rails_helper'
 
 describe PaperTrackerController do
-  let(:user) { FactoryGirl.create :user }
+  let(:user) { FactoryGirl.create :user, site_admin: true }
 
   before { sign_in user }
 
   describe "on GET #index" do
 
-    it "list the paper where user have a role" do
+    it "list the paper in journal that user belongs to" do
       paper = FactoryGirl.create(:paper, :submitted)
-      assign_paper_role(paper, user, PaperRole::ADMIN)
+      assign_journal_role(paper.journal, user, :admin)
       get :index, format: :json
       json = JSON.parse(response.body)
       expect(json["papers"].size).to eq 1
@@ -18,13 +18,14 @@ describe PaperTrackerController do
 
     it "do not list the paper if is not submitted" do
       paper = FactoryGirl.create(:paper)
-      assign_paper_role(paper, user, PaperRole::ADMIN)
+      assign_journal_role(paper.journal, user, :admin)
       get :index, format: :json
       json = JSON.parse(response.body)
       expect(json["papers"].size).to eq 0
     end
 
     it "do not list the paper where user do not have a role" do
+      paper = FactoryGirl.create(:paper, :submitted)
       get :index, format: :json
       json = JSON.parse(response.body)
       expect(json["papers"].size).to eq 0

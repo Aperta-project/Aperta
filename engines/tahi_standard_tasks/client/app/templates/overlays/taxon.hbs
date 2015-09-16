@@ -2,42 +2,40 @@
 
 <div class="question-list">
   <div class="question">
-    {{#question-check ident="taxon.zoological"
-                      task=model
-                      question="Does this manuscript describe a new zoological taxon name?"
-                      disabled=isSubmissionTaskNotEditable
-                      as |checked|}}
+    {{nested-question-check model=taxonQuestionForZoological
+        task=model
+        disabled=isSubmissionTaskNotEditable}}
 
-      {{#if checked}}
-        <div class="question-text">
-          <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
-        </div>
-        {{question-check ident="taxon.zoological.complies"
-                         task=model
-                         question="All authors comply with the Policies Regarding Submission of a new Taxon Name"
-                         disabled=isSubmissionTaskNotEditable}}
-      {{/if}}
-    {{/question-check}}
+    {{#if taxonQuestionForZoological.answer.value}}
+      <div class="question-text">
+        <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
+      </div>
+      {{#nested-question-check
+        model=compliesQuestionForZoological
+        task=model
+        disabled=isSubmissionTaskNotEditable}}
+      {{/nested-question-check}}
+    {{/if}}
   </div>
 
   <br>
 
   <div class="question">
-    {{#question-check ident="taxon.botanical"
-                      task=model
-                      question="Does this manuscript describe a new botantical taxon name?"
-                      disabled=isSubmissionTaskNotEditable
-                      as |checked|}}
+    {{nested-question-check
+      model=taxonQuestionForBotanical
+      task=model
+      disabled=isSubmissionTaskNotEditable}}
 
-      {{#if checked}}
-        <div class="question-text">
-          <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
-        </div>
-        {{question-check ident="taxon.botanical.complies"
-                         task=model
-                         question="All authors comply with the Policies Regarding Submission of a new Taxon Name"
-                         disabled=isSubmissionTaskNotEditable}}
-      {{/if}}
-    {{/question-check}}
+    {{#if taxonQuestionForBotanical.answer.value}}
+      <div class="question-text">
+        <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
+      </div>
+
+      {{#nested-question-check
+        model=compliesQuestionForBotanical
+        task=model
+        disabled=isSubmissionTaskNotEditable}}
+      {{/nested-question-check}}
+    {{/if}}
   </div>
 </div>

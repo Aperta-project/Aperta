@@ -3,10 +3,6 @@ class AuthorsPolicy < ApplicationPolicy
   include TaskAccessCriteria
 
   def show?
-    papers_policy.show?
-  end
-
-  def show?
     authorized_to_modify_task?
   end
 

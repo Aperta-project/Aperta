@@ -4,7 +4,7 @@ describe Author::Updated::EventStream do
   include EventStreamMatchers
 
   let(:pusher_channel) { mock_delayed_class(TahiPusher::Channel) }
-  let(:author) { FactoryGirl.build(:author, :with_paper) }
+  let(:author) { FactoryGirl.build(:author) }
 
   it "serializes author down the paper channel on update" do
     expect(pusher_channel).to receive_push(serialize: :authors, down: 'paper', on: 'updated')

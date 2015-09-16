@@ -12,11 +12,11 @@ class AllReviewersAssigned::ReportingEventLogger < ReportingEventSubscriber
         completed: record.completed,
         reviewer_count: reviewers.count,
         reviewers: reviewers.map do |reviewer|
-            {
-              id: reviewer.id,
-              full_name: reviewer.full_name,
-              username: reviewer.username
-            }
+          {
+            id: reviewer.id,
+            full_name: reviewer.full_name,
+            username: reviewer.username
+          }
         end
       }
     end

@@ -6,7 +6,7 @@ class ReportingEventSubscriber
     subscriber.save!
   end
 
-  def initialize(trigger_name, event_data, whatever)
+  def initialize(trigger_name, event_data)
     @trigger_name = trigger_name
     @record = event_data[:record]
   end

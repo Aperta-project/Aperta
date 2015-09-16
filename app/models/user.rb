@@ -64,10 +64,6 @@ class User < ActiveRecord::Base
     roles.can_view_flow_manager.present?
   end
 
-  def flow_managable_journals
-    journals.merge(Role.can_view_flow_manager)
-  end
-
   def auto_generate_password(length=50)
     self.password = SecureRandom.urlsafe_base64(length-1) if password_required?
   end

@@ -1,6 +1,8 @@
 class RemovePlosAuthors < ActiveRecord::Migration
   def up
-    sql = %Q{
+
+    # migrate `plos_authors` data to `authors`
+    attribute_sql = %Q{
       UPDATE authors
       SET
         middle_initial        = plos_authors.middle_initial,
@@ -17,7 +19,15 @@ class RemovePlosAuthors < ActiveRecord::Migration
       FROM plos_authors_plos_authors as plos_authors
       WHERE plos_authors.id = authors.actable_id;
     }
-    ActiveRecord::Base.connection.execute(sql)
+    ActiveRecord::Base.connection.execute(attribute_sql)
+
+    # update existing tasks to new model name
+    task_sql = %Q{
+      UPDATE tasks
+      SET type = 'TahiStandardTasks::AuthorsTask'
+      WHERE type = 'PlosAuthors::PlosAuthorsTask'
+    }
+    ActiveRecord::Base.connection.execute(task_sql)
   end
 
   def down

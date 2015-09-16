@@ -182,6 +182,8 @@ class Task < ActiveRecord::Base
     apply_ownership_to_nested_questions self.class.nested_questions
   end
 
+  private
+
   def apply_ownership_to_nested_questions(nested_questions)
     nested_questions.each do |q|
       apply_ownership_to_nested_questions q.children
@@ -190,8 +192,6 @@ class Task < ActiveRecord::Base
       q.freeze
     end
   end
-
-  private
 
   def on_card_completion?
     previous_changes["completed"] == [false, true]

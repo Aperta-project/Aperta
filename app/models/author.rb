@@ -5,7 +5,6 @@ class Author < ActiveRecord::Base
 
   belongs_to :paper
 
-  # TODO: can we change the foreign key relationship direction?
   belongs_to :authors_task, class_name: "TahiStandardTasks::AuthorsTask", inverse_of: :authors
   delegate :completed?, to: :authors_task, prefix: :task, allow_nil: true
 

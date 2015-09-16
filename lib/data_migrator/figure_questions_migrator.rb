@@ -2,6 +2,7 @@ class DataMigrator::FigureQuestionsMigrator < DataMigrator::Base
   OWNER_TYPE = "TahiStandardTasks::FigureTask"
 
   OLD_FIGURES_COMPLIES_IDENT = "figures.complies"
+  NEW_FIGURES_COMPLIES_IDENT = "figure_complies"
 
   def initialize
     @subtract_from_expected_count = 0
@@ -44,7 +45,7 @@ class DataMigrator::FigureQuestionsMigrator < DataMigrator::Base
       owner_id: nil,
       owner_type: OWNER_TYPE,
       text: "Yes - I confirm our figures comply with the guidelines.",
-      ident: OLD_FIGURES_COMPLIES_IDENT,
+      ident: NEW_FIGURES_COMPLIES_IDENT,
       value_type: "boolean"
     ).first_or_create!
   end

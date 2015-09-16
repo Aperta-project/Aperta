@@ -39,6 +39,8 @@ class NestedQuestionAnswersController < ApplicationController
       case answer_params[:owner_type]
       when /Task$/
         Task.find(answer_params[:owner_id])
+      when "Funder"
+        TahiStandardTasks::Funder.find(answer_params[:owner_id])
       else
         raise "Don't know how to assign to #{answer_params[:owner_type]}"
       end

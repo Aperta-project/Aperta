@@ -28,9 +28,9 @@ describe NestedQuestionAnswersController do
       expect(answer.value).to eq("Hello")
     end
 
-    it "responds with 204 No Content" do
+    it "responds with 200 OK" do
       do_request
-      expect(response.status).to eq(204)
+      expect(response.status).to eq(200)
     end
   end
 
@@ -52,9 +52,9 @@ describe NestedQuestionAnswersController do
       expect(answer.value).to eq("Bye")
     end
 
-    it "responds with 204 No Content" do
+    it "responds with 200 OK" do
       do_request
-      expect(response.status).to eq(204)
+      expect(response.status).to eq(200)
     end
   end
 end

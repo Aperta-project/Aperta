@@ -4,34 +4,33 @@ class NestedQuestionAnswersController < ApplicationController
   respond_to :json
 
   def create
+    answer = fetch_answer
     answer.save!
-    head 204
+    render json: answer, serializer: NestedQuestionAnswerSerializer
   end
 
   def update
+    answer = fetch_answer
     value = existing_answer_params[:nested_question_answer][:value]
     answer.update_attributes!(value: value)
-    head 204
-  end
-
-  def destroy
-    NestedQuestionAnswer.find(existing_answer_params[:id]).destroy
-    head 204
+    render json: answer, serializer: NestedQuestionAnswerSerializer
   end
 
   private
 
-  def answer
-    unless params["id"]
-      NestedQuestionAnswer.new(
-        nested_question_id: nested_question.id,
-        value_type: nested_question.value_type,
-        value: new_answer_params[:value],
-        owner_id: new_answer_params[:owner_id],
-        owner_type: lookup_owner_type(new_answer_params[:owner_type]),
-      )
-    else
-      NestedQuestionAnswer.where(id: existing_answer_params[:id]).first!
+  def fetch_answer
+    @fetch_answer ||= begin
+      if params[:id]
+        NestedQuestionAnswer.where(id: existing_answer_params[:id]).first!
+      else
+        NestedQuestionAnswer.new(
+          nested_question_id: nested_question.id,
+          value_type: nested_question.value_type,
+          value: new_answer_params[:value],
+          owner_id: new_answer_params[:owner_id],
+          owner_type: lookup_owner_type(new_answer_params[:owner_type])
+        )
+      end
     end
   end
 
@@ -62,6 +61,6 @@ class NestedQuestionAnswersController < ApplicationController
   end
 
   def enforce_policy
-    authorize_action!(nested_question_answer: answer)
+    authorize_action!(nested_question_answer: fetch_answer)
   end
 end

@@ -4,21 +4,21 @@ class AuthorsController < ApplicationController
   respond_to :json
 
   def create
-    author.save
+    author.save!
 
     # render all authors, since position is controlled by acts_as_list
     render json: author.paper.authors, each_serializer: AuthorSerializer
   end
 
   def update
-    author.update(author_params)
+    author.update!(author_params)
 
     # render all authors, since position is controlled by acts_as_list
     render json: author.paper.authors, each_serializer: AuthorSerializer
   end
 
   def destroy
-    author.destroy
+    author.destroy!
 
     # render all authors, since position is controlled by acts_as_list
     render json: author.paper.authors, each_serializer: AuthorSerializer

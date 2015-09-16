@@ -4,7 +4,6 @@ module TahiStandardTasks
 
     include MetadataTask
 
-    # TODO: reverse this relationship - authors_task belongs_to author?
     has_many :authors, inverse_of: :authors_task
 
     validates_with AssociationValidator, association: :authors, fail: :set_completion_error, if: :completed?

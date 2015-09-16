@@ -2,22 +2,20 @@ import Ember from 'ember';
 import ApplicationAdapter from 'tahi/adapters/application';
 
 export default ApplicationAdapter.extend({
-  buildURL: function(modelName, id, snapshot){
+  buildURL: function(modelName, id, snapshot, actionType){
     let nestedQuestionId = snapshot.get('nestedQuestion.id');
     Ember.assert(`Expected a nestedQuestion.id but didn't find one`, nestedQuestionId);
 
     let namespace = this.get('namespace');
     if(namespace){
-      namespace = `${namespace}`;
+      namespace = `/${namespace}`;
     } else {
       namespace = "";
     }
 
-    let url = '';
+    let url = `${namespace}/nested_questions/${nestedQuestionId}/answers`;
     if (id) {
-     url = `/${namespace}/nested_questions/${nestedQuestionId}/answers/${id}`;
-    } else {
-      url = `/${namespace}/nested_questions/${nestedQuestionId}/answers`;
+     url = `${url}/${id}`;
     }
     return url;
   }

@@ -8,6 +8,10 @@ export default  Ember.Component.extend({
     return this.get("model").findQuestion("funder_had_influence");
   }),
 
+  funderRoleDescriptionQuestion: Ember.computed("model", "model.nestedQuestions.@each", function(){
+    return this.get("model").findQuestion("funder_role_description");
+  }),
+
   uniqueName: (function() {
     return "funder-had-influence-" + (Utils.generateUUID());
   }).property(),
@@ -21,6 +25,18 @@ export default  Ember.Component.extend({
   },
 
   actions: {
+    userSelectedYesForFunderInfluence: function(){
+      // let answer = this.get('funderHadInfluenceQuestion.answer');
+      // answer.set('value', '');
+      // answer.save();
+    },
+
+    userSelectedNoForFunderInfluence: function(){
+      let answer = this.get('funderHadInfluenceQuestion.answer');
+      answer.destroyRecord();
+      // this.get("model.getNestedQuestion")
+    },
+
     removeFunder: function(disabled) {
       if (this.get('disabled')) {
         return;

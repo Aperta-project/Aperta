@@ -1,9 +1,10 @@
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  task: DS.belongsTo('task', {
+  owner: DS.belongsTo('nested-question-owner', {
     polymorphic: true,
-    async: false
+    async: false,
+    inverse: 'nestedQuestionAnswers'
   }),
   nestedQuestion: DS.belongsTo('nested-question', { async: false, inverse: 'answers' }),
   value: DS.attr(),

@@ -1,7 +1,8 @@
 import Ember from 'ember';
+import NestedQuestionOwner from 'tahi/models/nested-question-owner';
 import DS from 'ember-data';
 
-export default DS.Model.extend({
+export default NestedQuestionOwner.extend({
   task: DS.belongsTo('financialDisclosureTask'),
   authors: DS.hasMany('author'),
   funderHadInfluence: DS.attr('boolean'),
@@ -21,5 +22,6 @@ export default DS.Model.extend({
       return website;
     }
     return "http://" + website;
-  }).property('website')
+  }).property('website'),
+
 });

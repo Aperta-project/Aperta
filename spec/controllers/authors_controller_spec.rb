@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 describe AuthorsController do
-  let(:user) { FactoryGirl.create(:user) }
-  let(:paper) { FactoryGirl.create(:paper) }
+  let(:user) { paper.creator }
+  let(:paper) { FactoryGirl.create(:paper_with_phases) }
+  let(:task) { FactoryGirl.create(:authors_task, phase: paper.phases.last) }
+
   before do
     sign_in user
   end
@@ -13,10 +15,10 @@ describe AuthorsController do
         first_name: "enrico",
         last_name: "fermi",
         paper_id: paper.id,
+        authors_task_id: task.id,
         position: 1
       }
     end
-    let(:author) { Author.last }
 
     it "creates a new author" do
       expect { do_request }.to change { Author.count }.by 1
@@ -28,7 +30,7 @@ describe AuthorsController do
       delete :destroy, format: :json, id: author.id
     end
 
-    let!(:author) { FactoryGirl.create(:author, paper: paper) }
+    let!(:author) { FactoryGirl.create(:author, paper: paper, authors_task_id: task.id) }
 
     it "destroys the associated author" do
       expect {
@@ -39,10 +41,10 @@ describe AuthorsController do
 
   describe "PUT #update" do
     let(:do_request) do
-      put :update, format: :json, id: author.id, author: { last_name: "Blabby"}
+      put :update, format: :json, id: author.id, author: { last_name: "Blabby", author_task_id: task.id }
     end
 
-    let!(:author) { FactoryGirl.create(:author, paper: paper) }
+    let!(:author) { FactoryGirl.create(:author, paper: paper, authors_task_id: task.id) }
 
     it "updates the author" do
       do_request

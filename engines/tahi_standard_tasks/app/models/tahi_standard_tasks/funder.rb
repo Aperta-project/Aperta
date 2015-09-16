@@ -3,7 +3,7 @@ module TahiStandardTasks
     belongs_to :task, foreign_key: :task_id
     has_many :funded_authors, inverse_of: :funder
     has_many :authors, through: :funded_authors
-    has_many :nested_question_answers, as: :owner
+    has_many :nested_question_answers, as: :owner, dependent: :destroy
 
     def self.nested_questions
       questions = []

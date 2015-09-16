@@ -3,6 +3,11 @@ import Utils from "tahi/services/utils";
 
 export default  Ember.Component.extend({
   classNames: ["dataset"],
+
+  funderHadInfluenceQuestion: Ember.computed("model", "model.nestedQuestions.@each", function(){
+    return this.get("model").findQuestion("funder_had_influence");
+  }),
+
   uniqueName: (function() {
     return "funder-had-influence-" + (Utils.generateUUID());
   }).property(),

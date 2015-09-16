@@ -4,7 +4,8 @@ class PaperTrackerController < ApplicationController
   respond_to :json
 
   def index
-    papers = current_user.assigned_papers.submitted
+    journal_ids = current_user.roles.pluck(:journal_id)
+    papers = Paper.submitted.where(journal_id: journal_ids)
     respond_with papers, each_serializer: PaperTrackerSerializer, root: 'papers'
   end
 end

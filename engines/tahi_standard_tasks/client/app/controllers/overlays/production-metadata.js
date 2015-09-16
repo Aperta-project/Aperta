@@ -14,8 +14,8 @@ export default TaskController.extend({
     return this.get('model.body.issueNumber');
   }),
 
-  publicationNotes: Ember.computed("model.body.publicationNotes", function () {
-    return this.get('model.body.publicationNotes');
+  productionNotes: Ember.computed("model.body.productionNotes", function () {
+    return this.get('model.body.productionNotes');
   }),
 
   setPublicationDate: Ember.observer('publicationDate', function() {
@@ -30,8 +30,8 @@ export default TaskController.extend({
     this.callDebounce('issueNumber');
   }),
 
-  setPublicationNotes: Ember.observer('publicationNotes', function() {
-    this.callDebounce('publicationNotes');
+  setPublicationNotes: Ember.observer('productionNotes', function() {
+    this.callDebounce('productionNotes');
   }),
 
   callDebounce: function(key) {

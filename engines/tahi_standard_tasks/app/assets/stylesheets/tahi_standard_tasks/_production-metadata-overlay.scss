@@ -1,0 +1,26 @@
+.publication-date {
+  margin-bottom: 20px;
+
+  input {
+    width: 160px;
+  }
+}
+
+.volume-number,
+.issue-number {
+  display: inline-block;
+
+  .inset-form-control-input {
+    width: 415px;
+    margin-right: 20px;
+  }
+}
+
+.production-notes {
+  width: 853px;
+  font-size: 18px;
+
+  .inset-form-control-textarea {
+    height: 65px;
+  }
+}

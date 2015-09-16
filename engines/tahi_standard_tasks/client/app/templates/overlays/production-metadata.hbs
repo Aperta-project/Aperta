@@ -3,41 +3,37 @@
 </h1>
 
 <div class="form-group">
-  <div class="form-group publication-date {{if validationErrors.publicationDate "error"}}">
-    <span class="text-field-title required">
-      Publication Date
-    </span>
-    {{input type="text"
-            value=publicationDate
-            class="form-control tall-text-field"
-            placeholder="Select ..."}}
+  <div class="inset-form-control required publication-date">
+    <label class="inset-form-control-text">Publication Date</label>
+    {{date-picker group=group
+                  type="text"
+                  role="startPicker"
+                  class="inset-form-control-input"
+                  date=publicationDate
+                  placeholder="Select Date..."}}
   </div>
 </div>
-<div class="form-group form-inline">
-  <div class="form-group volume-number {{if validationErrors.volumeNumber "error"}}">
-    <span class="text-field-title required">
-      Volume Number
-    </span>
+<div class="form-group">
+  <div class="inset-form-control required volume-number">
+    <label class="inset-form-control-text">Volume Number</label>
     {{input type="text"
             value=volumeNumber
-            class="form-control tall-text-field"
+            class="inset-form-control-input"
             placeholder="e.g. 12"}}
   </div>
-  <div class="form-group issue-number {{if validationErrors.issueNumber "error"}}">
-    <span class="text-field-title required">
-      Issue Number
-    </span>
+
+  <div class="inset-form-control required issue-number">
+    <label class="inset-form-control-text">Issue Number</label>
     {{input type="text"
             value=issueNumber
-            class="form-control tall-text-field"
+            class="inset-form-control-input"
             placeholder="e.g. 3"}}
   </div>
 </div>
-<div>
-  Publication Notes
-  {{content-editable
-    value=publicationNotes
-    class="taller-textarea"
-    placeholder="Add Publication Notes here"
-    editable=isSubmissionTaskEditable}}
+
+<div class="production-notes">
+  <label>Production Notes</label>
+  {{content-editable value=productionNotes
+                     class="inset-form-control-textarea"
+                     placeholder="Add production notes here"}}
 </div>

@@ -7,6 +7,10 @@ export default TaskController.extend({
   paper: Ember.computed.alias("task.paper"),
   receivedFunding: null,
 
+  authorReceivedFundingQuestion: Ember.computed("model", function(){
+    return this.get("model").findQuestion("author_received_funding");
+  }),
+
   numFundersObserver: (function() {
     if (this.get("receivedFunding") === false) {
       return;

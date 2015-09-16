@@ -13,7 +13,12 @@ export default ApplicationAdapter.extend({
       namespace = "";
     }
 
-    let url = `/${namespace}/nested_questions/${nestedQuestionId}/answers`;
+    let url = '';
+    if (id) {
+     url = `/${namespace}/nested_questions/${nestedQuestionId}/answers/${id}`;
+    } else {
+      url = `/${namespace}/nested_questions/${nestedQuestionId}/answers`;
+    }
     return url;
   }
 });

@@ -4,27 +4,35 @@ class NestedQuestionAnswersController < ApplicationController
   respond_to :json
 
   def create
-    create_or_update_answer
+    answer.save!
     head 204
   end
 
   def update
-    create_or_update_answer
+    value = existing_answer_params[:nested_question_answer][:value]
+    answer.update_attributes!(value: value)
+    head 204
+  end
+
+  def destroy
+    NestedQuestionAnswer.find(existing_answer_params[:id]).destroy
     head 204
   end
 
   private
 
-  def create_or_update_answer
-    answer.update_attributes!(value: answer_params[:value])
-  end
-
   def answer
-    @answer ||= NestedQuestionAnswer.where(
-      owner: owner,
-      nested_question_id: nested_question.id,
-      value_type: nested_question.value_type
-    ).first_or_initialize
+    unless params["id"]
+      NestedQuestionAnswer.new(
+        nested_question_id: nested_question.id,
+        value_type: nested_question.value_type,
+        value: new_answer_params[:value],
+        owner_id: new_answer_params[:owner_id],
+        owner_type: lookup_owner_type(new_answer_params[:owner_type]),
+      )
+    else
+      NestedQuestionAnswer.where(id: existing_answer_params[:id]).first!
+    end
   end
 
   def nested_question
@@ -34,21 +42,23 @@ class NestedQuestionAnswersController < ApplicationController
     end
   end
 
-  def owner
-    @owner ||= begin
-      case answer_params[:owner_type]
-      when /Task$/
-        Task.find(answer_params[:owner_id])
-      when "Funder"
-        TahiStandardTasks::Funder.find(answer_params[:owner_id])
-      else
-        raise "Don't know how to assign to #{answer_params[:owner_type]}"
-      end
-    end
+  def new_answer_params
+    @new_answer_params ||= params.require(:nested_question_answer).permit(:owner_id, :owner_type, :value )
   end
 
-  def answer_params
-    params.require(:nested_question_answer).permit(:owner_id, :owner_type, :value)
+  def existing_answer_params
+    @answer_params ||= params.permit(:id, nested_question_answer: [:value])
+  end
+
+  def lookup_owner_type(owner_type)
+    case owner_type
+    when /Task$/
+      "Task"
+    when "Funder"
+      TahiStandardTasks::Funder.name
+    else
+      raise "Don't know how to assign to #{new_answer_params[:owner_type]}"
+    end
   end
 
   def enforce_policy

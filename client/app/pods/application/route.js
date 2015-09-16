@@ -10,7 +10,7 @@ export default Ember.Route.extend(AnimateOverlay, {
       // subscribe to user and system channels
       let userChannelName = `private-user@${ this.currentUser.get('id') }`;
       let pusher = this.get('pusher');
-      pusher.wire(this, userChannelName, ["created", "updated"]);
+      pusher.wire(this, userChannelName, ["created", "updated", "destroyed"]);
       pusher.wire(this, "system", ["destroyed"]);
 
       RESTless.authorize(controller, '/api/admin/journals/authorization', 'canViewAdminLinks');

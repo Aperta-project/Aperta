@@ -3,14 +3,13 @@ require 'rails_helper'
 feature "Inviting a new reviewer", js: true do
   include InvitationFeatureHelpers
 
-  let(:journal) { FactoryGirl.create :journal }
-  let(:paper) { FactoryGirl.create :paper, journal: journal }
+  let(:paper) { FactoryGirl.create :paper }
   let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
 
   let(:editor) { create :user }
 
   before do
-    assign_journal_role journal, editor, :editor
+    assign_journal_role paper.journal, editor, :editor
     paper.paper_roles.create user: editor, role: PaperRole::COLLABORATOR
     task.participants << editor
 

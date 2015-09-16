@@ -61,22 +61,10 @@ FactoryGirl.define do
     role "admin"
   end
 
-  factory :paper_reviewer_task, class: 'TahiStandardTasks::PaperReviewerTask' do
-    phase
-    title "Invite Reviewers"
-    role "reviewer"
-  end
-
   factory :publishing_related_questions_task, class: 'TahiStandardTasks::PublishingRelatedQuestionsTask' do
     phase
     title "Publishing Related Questions"
     role "author"
-  end
-
-  factory :register_decision_task, class: 'TahiStandardTasks::RegisterDecisionTask' do
-    phase
-    title "Register Decision"
-    role "editor"
   end
 
   factory :reporting_guidelines_task, class: 'TahiStandardTasks::ReportingGuidelinesTask' do

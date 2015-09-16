@@ -1,7 +1,8 @@
 import DS from 'ember-data';
+import NestedQuestionOwner from 'tahi/models/nested-question-owner';
 import CardThumbnailObserver from 'tahi/mixins/models/card-thumbnail-observer';
 
-export default DS.Model.extend(CardThumbnailObserver, {
+export default NestedQuestionOwner.extend(CardThumbnailObserver, {
   attachments: DS.hasMany('attachment', { async: false }),
   cardThumbnail: DS.belongsTo('card-thumbnail', {
     inverse: 'task',
@@ -25,14 +26,6 @@ export default DS.Model.extend(CardThumbnailObserver, {
     inverse: 'task',
     async: false
   }),
-  nestedQuestions: DS.hasMany('nested-question', {
-    inverse: 'task',
-    async: false,
-  }),
-  nestedQuestionAnswers: DS.hasMany('nested-question-answers', {
-    inverse: 'task',
-    async: false,
-  }),
 
   body: DS.attr(),
   completed: DS.attr('boolean'),
@@ -43,30 +36,5 @@ export default DS.Model.extend(CardThumbnailObserver, {
   qualifiedType: DS.attr('string'),
   role: DS.attr('string'),
   title: DS.attr('string'),
-  type: DS.attr('string'),
-
-  findQuestion: function(ident){
-    let pathParts = ident.split(".");
-    let nestedQuestions = this.get('nestedQuestions').toArray();
-    let foundQuestions = this._findQuestions(pathParts, nestedQuestions);
-    return _.first(foundQuestions);
-  },
-
-  _findQuestions: function(pathParts, questions){
-    let currentIdent = _.first(pathParts);
-    let remainingPathParts = _.rest(pathParts);
-    let foundQuestions = _.select(questions, (q) => { return q.get('ident') === currentIdent; });
-
-    if(_.isEmpty(remainingPathParts)){
-      return foundQuestions;
-    } else {
-      return this._findQuestions(remainingPathParts, this._childrenOfQuestions(foundQuestions).toArray());
-    }
-  },
-
-  _childrenOfQuestions: function(questions){
-    let children =  _(questions).invoke("get", "children");
-    let allTheChildren = _.invoke(children, "toArray");
-    return _.flatten( allTheChildren );
-  }
+  type: DS.attr('string')
 });

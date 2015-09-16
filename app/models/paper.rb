@@ -317,7 +317,7 @@ class Paper < ActiveRecord::Base
 
   def authors_list
     authors.map.with_index { |author, index|
-      "#{index + 1}. #{author.last_name}, #{author.first_name} from #{author.specific.affiliation}"
+      "#{index + 1}. #{author.last_name}, #{author.first_name} from #{author.affiliation}"
     }.join("\n")
   end
 

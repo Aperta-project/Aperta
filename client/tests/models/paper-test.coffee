@@ -1,8 +1,15 @@
 `import Ember from 'ember'`
 `import { test, moduleForModel } from 'ember-qunit'`
+`import startApp from 'tahi/tests/helpers/start-app'`
+`import FactoryGuy from 'ember-data-factory-guy'`
+`import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper'`
+
+App = undefined
+paper = undefined
+phase = undefined
 
 moduleForModel 'paper', 'Unit: Paper Model',
-  needs: ['model:author', 'model:user', 'model:figure', 'model:table', 'model:bibitem',
+  needs: ['model:user', 'model:figure', 'model:table', 'model:bibitem',
     'model:journal',
     'model:decision', 'model:invitation', 'model:affiliation', 'model:attachment',
     'model:question-attachment', 'model:comment-look',
@@ -10,55 +17,29 @@ moduleForModel 'paper', 'Unit: Paper Model',
     'model:card-thumbnail', 'model:question', 'model:collaboration',
     'model:supporting-information-file']
 
+  afterEach: ->
+    Ember.run ->
+      TestHelper.teardown()
+    Ember.run(App, "destroy")
+
+  beforeEach: ->
+    App = startApp()
+    TestHelper.setup(App)
+
+
 test 'displayTitle displays short title if title is missing', (assert) ->
   shortTitle = 'test short title'
-
-  paper = Ember.run =>
-    paper = @store().createRecord 'paper',
-      title: ''
-      shortTitle: shortTitle
-
+  paper = FactoryGuy.make("paper", title: "", shortTitle: shortTitle)
   assert.equal paper.get('displayTitle'), shortTitle
 
 test 'displayTitle displays title if present', (assert) ->
   title = 'Test Title'
-
-  paper = Ember.run =>
-    @store().createRecord 'paper',
-      title: title
-      shortTitle: 'test short title'
-
+  paper = FactoryGuy.make("paper", title: title, shortTitle: "")
   assert.equal paper.get('displayTitle'), title
 
-test 'Paper hasMany tasks (async)', (assert) ->
-  stop()
-  paperPromise = Ember.run =>
-    task1 = @store().createRecord 'task', type: 'Task', title: 'A message', isMetadataTask: false
-    task2 = @store().createRecord 'task', type: 'InitialTechCheckTask', title: 'some task',isMetadataTask: true
-    paper = @store().createRecord 'paper',
-      title: 'some really long title'
-      shortTitle: 'test short title'
-    paper.get('tasks').then (tasks) ->
-      tasks.pushObjects [task1, task2]
-      paper
-
-  paperPromise.then((paper) ->
-    assert.deepEqual paper.get('tasks').mapBy('type'), ['Task', 'InitialTechCheckTask']
-  ).then(start, start)
-
-
 test 'allSubmissionTasks filters tasks by isSubmissionTask', (assert) ->
-  stop()
-  paperPromise = Ember.run =>
-    task1 = @store().createRecord 'task', type: 'Task', title: 'A message', isSubmissionTask: false
-    task2 = @store().createRecord 'task', type: 'InitialTechCheckTask', title: 'some task',isSubmissionTask: true
-    paper = @store().createRecord 'paper',
-      title: 'some really long title'
-      shortTitle: 'test short title'
-    paper.get('tasks').then (tasks) ->
-      tasks.pushObjects [task1, task2]
-      paper
-
-  paperPromise.then((paper) ->
-    assert.deepEqual paper.get('allSubmissionTasks').mapBy('type'), ['InitialTechCheckTask']
-  ).then(start, start)
+  phase = FactoryGuy.make("phase")
+  notSubmissionTask = FactoryGuy.make("task", { phase: phase, title: "Not submission", isSubmissionTask: false })
+  submissionTask = FactoryGuy.make("task", { phase: phase, title: "Submission", isSubmissionTask: true })
+  paper = FactoryGuy.make("paper", phases: [phase], tasks: [notSubmissionTask, submissionTask])
+  assert.deepEqual paper.get('allSubmissionTasks').mapBy("title"), [submissionTask.get('title')]

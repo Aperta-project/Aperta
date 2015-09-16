@@ -23,10 +23,23 @@ class AuthorsController < ApplicationController
 
   def author_params
     params.require(:author).permit(
+      :authors_task_id,
       :first_name,
       :last_name,
       :position,
-      :paper_id
+      :paper_id,
+      :position,
+      :first_name,
+      :middle_initial,
+      :last_name,
+      :email,
+      :affiliation,
+      :secondary_affiliation,
+      :title,
+      :corresponding,
+      :deceased,
+      :department,
+      contributions: []
     )
   end
 end

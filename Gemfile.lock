@@ -45,12 +45,6 @@ GIT
       activesupport (>= 4.1.0)
 
 PATH
-  remote: engines/plos_authors
-  specs:
-    plos_authors (0.0.3)
-      rails (~> 4.2.0)
-
-PATH
   remote: engines/plos_billing
   specs:
     plos_billing (0.0.1)
@@ -94,9 +88,6 @@ GEM
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
     active_model_serializers (0.8.3)
       activemodel (>= 3.0)
-    active_record-acts_as (1.0.7)
-      activerecord (~> 4, >= 4.1.2)
-      activesupport (~> 4)
     activejob (4.2.4)
       activesupport (= 4.2.4)
       globalid (>= 0.3.0)
@@ -589,7 +580,6 @@ PLATFORMS
 DEPENDENCIES
   aasm (~> 4.1.0)
   active_model_serializers (= 0.8.3)
-  active_record-acts_as
   activemodel-globalid!
   acts_as_list!
   american_date
@@ -629,7 +619,6 @@ DEPENDENCIES
   pdfkit
   pg
   pg_search
-  plos_authors!
   plos_billing!
   plos_bio_internal_review!
   plos_bio_tech_check!

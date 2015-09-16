@@ -5,8 +5,6 @@ import DS from 'ember-data';
 export default NestedQuestionOwner.extend({
   task: DS.belongsTo('financialDisclosureTask'),
   authors: DS.hasMany('author'),
-  funderHadInfluence: DS.attr('boolean'),
-  funderInfluenceDescription: DS.attr('string'),
   grantNumber: DS.attr('string'),
   name: DS.attr('string'),
   relationshipsToSerialize: ['authors'],

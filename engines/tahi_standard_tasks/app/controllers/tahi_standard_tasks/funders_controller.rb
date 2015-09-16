@@ -34,8 +34,6 @@ module TahiStandardTasks
       .permit(:name,
               :grant_number,
               :website,
-              :funder_had_influence,
-              :funder_influence_description,
               :task_id,
               author_ids: [])
     end

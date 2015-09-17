@@ -22,7 +22,7 @@ Factory =
       recordAttrs = attrs
 
     baseAttrs = FactoryAttributes[type]
-    throw "No factory exists for type: #{type}" unless baseAttrs
+    throw "No factory exists in FactoryAttributes for type: #{type}. You may need to define this." unless baseAttrs
     _.defaults(recordAttrs, baseAttrs)
 
   createList: (numberOfRecords, type) ->

@@ -95,6 +95,126 @@ module PlosBilling
         text: "ZIP or Postal Code"
       )
 
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "pfa_question_1",
+        value_type: "boolean",
+        text: "Have you investigated if funding is available from your co-authors' institutions to pay the publication fee?"
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "pfa_question_1a",
+        value_type: "text",
+        text: "If your co-authors' institutions will not provide any funding to publish the article, indicate why."
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "pfa_question_1b",
+        value_type: "text",
+        text: "If your coauthors' institutions will provide partial funding to publish the article, indicate the amount they will pay towards your publication fee (in USD)."
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "pfa_question_2",
+        value_type: "boolean",
+        text: "Have you investigated if funding is available from your institution to pay the publication fee?"
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "pfa_question_2a",
+        value_type: "text",
+        text: "If your institution cannot provide any funding to publish the article, indicate why."
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "pfa_question_2b",
+        value_type: "text",
+        text: "If your institution will provide partial funding to publish the article, indicate the amount it will pay toward your publication fee (in USD)."
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "pfa_question_3",
+        value_type: "boolean",
+        text: "Do your co-authors have any other sources of funding that can be used towards the publication fee?"
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "pfa_question_3a",
+        value_type: "text",
+        text: "Indicate the amount that they can pay (in USD)."
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "pfa_question_4",
+        value_type: "text",
+        text: "Do you have any other sources of funding that can be used towards the publication fee?"
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "pfa_question_4a",
+        value_type: "text",
+        text: "Indicate the amount that they can pay (in USD)."
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "pfa_amount_to_pay",
+        value_type: "text",
+        text: "Given your answers to the above questions on your funding availability, what is the amount that you and your co-authors can jointly pay for publication? (Specify in USD.)"
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "pfa_supporting_docs",
+        value_type: "text",
+        text: "If you would like to provide documents to assist in demonstrating your request, you will have the opportunity to do so. After PLOS has received the completed application, the confirmation email will provide direction on where to send supplemental documents. Do you intend to supply supplemental documents?"
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "pfa_amount_to_pay",
+        value_type: "text",
+        text: "Given your answers to the above questions on your funding availability, what is the amount that you and your co-authors can jointly pay for publication? (Specify in USD.)"
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "pfa_additional_comments",
+        value_type: "text",
+        text: "If you wish to make additional comments to support your request, provide them below. If you have no additional comments, enter \"None\" in the box."
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "affirm_true_and_complete",
+        value_type: "boolean",
+        text: "You are acknowledging that you have read and agree to the following statement: I affirm that the information provided in this application is true and complete."
+      )
+
       questions.each do |q|
         unless NestedQuestion.where(owner_id:nil, owner_type:name, ident:q.ident).exists?
           q.save!

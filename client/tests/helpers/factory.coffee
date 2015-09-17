@@ -392,6 +392,7 @@ FactoryAttributes.FinancialDisclosureTask =
   paper_title: "Test"
   participation_ids: []
   phase_id: null
+  nested_question_ids: []
   question_ids: []
   role: "author"
   title: "Financial Disclosure"
@@ -495,5 +496,13 @@ FactoryAttributes.Collaboration =
   id: null
   paper_id: null
   user_id: null
+
+FactoryAttributes.NestedQuestion =
+  _rootKey: 'nested_question'
+  id: null
+  owner: { owner_id: null, owner_type: null }
+  ident: 'some_ident'
+  parent_id: null
+  value_type: 'text'
 
 `export default Factory`

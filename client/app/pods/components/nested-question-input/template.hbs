@@ -4,6 +4,11 @@
   </span>
 {{/if}}
 
+{{#if hasBlock}}
+  {{yield textYieldValue}}
+{{/if}}
+
+
 {{input name=ident
         value=model.answer.value
         class=inputClassNames

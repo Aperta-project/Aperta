@@ -1,7 +1,12 @@
 <label class="question-checkbox">
   {{check-box name=ident checked=checked disabled=disabled}}
+
   {{#if shouldDisplayQuestionText}}
     <p class="{{textClassNames}}">{{{questionText}}}</p>
+  {{/if}}
+
+  {{#if hasBlock}}
+    {{yield textYieldValue}}
   {{/if}}
 </label>
 

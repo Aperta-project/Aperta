@@ -11,20 +11,20 @@ export default TaskController.extend({
     return this.get("model").findQuestion("author_received_funding");
   }),
 
-  numFundersObserver: (function() {
+  numFundersObserver: Ember.observer("funders.[]", function() {
     if (this.get("receivedFunding") === false) {
       return;
     }
     if (this.get("funders.length") > 0) {
       this.set("receivedFunding", true);
-      return this.set("task.questions.firstObject.answer", "Yes");
+      return this.set("authorReceivedFundingQuestion.answer.value", true);
     } else {
       this.set("receivedFunding", null);
-      if (this.get("task.questions.firstObject.answer")) {
-        return this.set("task.questions.firstObject.answer", null);
+      if (this.get("authorReceivedFundingQuestion.answer.value")) {
+        return this.set("authorReceivedFundingQuestion.answer.value", null);
       }
     }
-  }).observes("funders.@each"),
+  }),
 
   actions: {
     choseFundingReceived: function() {

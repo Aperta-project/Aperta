@@ -1,6 +1,6 @@
 namespace 'data:migrate:questions-to-nested-questions' do
   DATA_MIGRATION_QUESTION_RAKE_TASKS = %w(
-    competing-interests data-availability ethics figures financial-disclosure
+    competing-interests data-availability ethics figures financial-disclosure taxon
   )
 
   desc "Calls :reset task for all question-to-nested-question(s)"
@@ -104,6 +104,23 @@ namespace 'data:migrate:questions-to-nested-questions' do
   desc "Migrate the financial-disclosure task data to the NestedQuestion data model."
   task :'financial-disclosure' => 'data:migrate:questions-to-nested-questions:figures:reset' do
     DataMigrator::FinancialDisclosureQuestionsMigrator.migrate!
+  end
+
+  namespace :'taxon' do
+    desc "Resets the NestedQuestionAnswer(s) for figures by destroying them."
+    task :reset => :environment do
+      DataMigrator::TaxonQuestionsMigrator.reset
+    end
+
+    desc "Destroy old questions for figures once you're satisfied w/migrating to NestedQuestion data model."
+    task :cleanup => :environment do
+      DataMigrator::TaxonQuestionsMigrator.cleanup
+    end
+  end
+
+  desc "Migrate the taxon task data to the NestedQuestion data model."
+  task :'taxon' => 'data:migrate:questions-to-nested-questions:taxon:reset' do
+    DataMigrator::TaxonQuestionsMigrator.migrate!
   end
 
 end

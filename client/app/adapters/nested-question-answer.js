@@ -2,7 +2,7 @@ import Ember from 'ember';
 import ApplicationAdapter from 'tahi/adapters/application';
 
 export default ApplicationAdapter.extend({
-  buildURL: function(modelName, id, snapshot, actionType){
+  buildURL: function(modelName, id, snapshot){
     let nestedQuestionId = snapshot.get('nestedQuestion.id');
     Ember.assert(`Expected a nestedQuestion.id but didn't find one`, nestedQuestionId);
 

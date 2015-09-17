@@ -215,6 +215,14 @@ module PlosBilling
         text: "You are acknowledging that you have read and agree to the following statement: I affirm that the information provided in this application is true and complete."
       )
 
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "agree_to_collections",
+        value_type: "boolean",
+        text: "I have read and agree to the Terms of Submission to PLOS Collections"
+      )
+
       questions.each do |q|
         unless NestedQuestion.where(owner_id:nil, owner_type:name, ident:q.ident).exists?
           q.save!

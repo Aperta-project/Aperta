@@ -35,8 +35,8 @@ describe NestedQuestionAnswersController do
   end
 
   describe "#update" do
-    let!(:nested_question_answer) { FactoryGirl.create(:nested_question_answer, value: "Hi") }
-    let(:nested_question){ nested_question_answer.nested_question }
+    let!(:nested_question_answer) { FactoryGirl.create(:nested_question_answer, value: "Hi", owner: nested_question.owner) }
+    let(:nested_question){ FactoryGirl.create(:nested_question) }
     let(:owner){ nested_question.owner }
 
     def do_request

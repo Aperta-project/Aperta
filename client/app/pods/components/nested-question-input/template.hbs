@@ -1,0 +1,26 @@
+{{#if readonly}}
+  {{#if shouldDisplayQuestionText}}
+    <span class="text-field-title">
+      {{model.text}}
+    </span>
+  {{/if}}
+
+  {{#if model.answer.value}}
+    <div class="answer-text">{{model.answer.value}}</div>
+  {{else}}
+    <div class="answer-text no-answer">{{noResponseText}}</div>
+  {{/if}}
+
+{{else}}
+  {{#if shouldDisplayQuestionText}}
+    <span class="text-field-title">
+      {{model.text}}
+    </span>
+  {{/if}}
+
+  {{input name=ident
+          value=model.answer.value
+          class="form-control tall-text-field"
+          placeholder=placeholderText
+          disabled=disabled}}
+{{/if}}

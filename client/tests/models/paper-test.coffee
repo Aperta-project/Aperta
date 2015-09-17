@@ -7,8 +7,8 @@ moduleForModel 'paper', 'Unit: Paper Model',
     'model:decision', 'model:invitation', 'model:affiliation', 'model:attachment',
     'model:question-attachment', 'model:comment-look',
     'model:phase', 'model:task', 'model:comment', 'model:participation',
-    'model:card-thumbnail', 'model:question', 'model:nested-question',
-    'model:nested-question-answer', 'model:collaboration',
+    'model:card-thumbnail', 'model:question', 'model:nested-question-owner',
+    'model:nested-question', 'model:nested-question-answer', 'model:collaboration',
     'model:supporting-information-file']
 
 test 'displayTitle displays short title if title is missing', (assert) ->

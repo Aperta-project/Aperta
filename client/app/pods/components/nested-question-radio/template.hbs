@@ -1,6 +1,6 @@
 {{#if readonly}}
   {{#if shouldDisplayQuestionText}}
-    <div class="question-text">{{{model.text}}}</div>
+    <div class="{{textClassNames}}">{{{questionText}}}</div>
   {{/if}}
 
   {{#if model.answer.value}}
@@ -17,7 +17,7 @@
 
 {{else}}
   {{#if shouldDisplayQuestionText}}
-    <div class="question-text">{{{model.text}}}</div>
+    <div class="{{textClassNames}}">{{{questionText}}}</div>
   {{/if}}
 
   {{#if helpText}}

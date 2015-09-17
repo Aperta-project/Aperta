@@ -1,7 +1,7 @@
 {{#if readonly}}
   {{#if shouldDisplayQuestionText}}
-    <span class="text-field-title">
-      {{model.text}}
+    <span class="{{textClassNames}}">
+      {{{questionText}}}
     </span>
   {{/if}}
 
@@ -13,14 +13,14 @@
 
 {{else}}
   {{#if shouldDisplayQuestionText}}
-    <span class="text-field-title">
-      {{model.text}}
+    <span class="{{textClassNames}}">
+      {{{questionText}}}
     </span>
   {{/if}}
 
   {{input name=ident
           value=model.answer.value
-          class="form-control tall-text-field"
+          class=inputClassNames
           placeholder=placeholderText
           disabled=disabled}}
 {{/if}}

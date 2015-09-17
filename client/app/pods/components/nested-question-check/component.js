@@ -4,6 +4,8 @@ import NestedQuestionComponent from 'tahi/pods/components/nested-question/compon
 export default NestedQuestionComponent.extend({
   displayQuestion: null,
 
+  textClassNames: ["model-question"],
+
   checked: Ember.computed('model.answer.value', {
     get() {
       let answer = this.get('model.answer.value');

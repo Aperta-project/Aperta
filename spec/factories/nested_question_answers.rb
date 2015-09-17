@@ -5,7 +5,9 @@ FactoryGirl.define do
     value_type "text"
 
     after(:build) do |nested_question_answer, evaluator|
-      nested_question_answer.owner = evaluator.nested_question.owner
+      unless evaluator.nested_question.owner
+        nested_question_answer.owner = evaluator.nested_question.owner
+      end
     end
   end
 end

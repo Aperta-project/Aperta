@@ -1,5 +1,5 @@
 class NestedQuestionAnswersPolicy < ApplicationPolicy
-  require_params :nested_question_answer
+  primary_resource :nested_question_answer
   include TaskAccessCriteria
 
   def create?
@@ -17,6 +17,12 @@ class NestedQuestionAnswersPolicy < ApplicationPolicy
   private
 
   def task
-    nested_question_answer.owner
+    if nested_question_answer.owner.respond_to?(:task)
+      nested_question_answer.owner.task
+    elsif nested_question_answer.owner.is_a?(Task)
+      nested_question_answer.owner
+    else
+      raise NotImplementedError, "Don't know how to check authoriziation to NestedQuestionAnswer for #{nested_question_answer.owner.inspect}. You may need to implement this."
+    end
   end
 end

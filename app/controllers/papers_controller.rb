@@ -189,9 +189,9 @@ class PapersController < ApplicationController
   end
 
   def broadcast_paper_submitted_event
-    Notifier.notify(event: "paper:submitted", data: { paper: paper })
+    Notifier.notify(event: "paper:submitted", data: { record: paper })
     if paper.resubmitted?
-      Notifier.notify(event: "paper:resubmitted", data: { paper: paper })
+      Notifier.notify(event: "paper:resubmitted", data: { record: paper })
     end
   end
 

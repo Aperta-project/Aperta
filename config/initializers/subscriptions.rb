@@ -1,9 +1,18 @@
 Subscriptions.configure do
+
+  # TODO:
+  #
+  # add to `tahi-assign_team` repo subscriptions:
+  # add 'tahi_assign_team/assign_team_task:completed'
+  #
+  # add to `plos_bio_tech_check` repo subscriptions:
+  # add 'plos_bio_tech_check/final_tech_check_task:completed'
+
   add '.*', EventLogger
 
   add 'paper:updated', Paper::Updated::EventStream
   add 'paper:destroyed', Paper::Destroyed::EventStream
-  add 'paper:submitted', Paper::Submitted::EmailCreator, Paper::Submitted::EmailAdmins
+  add 'paper:submitted', Paper::Submitted::EmailCreator, Paper::Submitted::EmailAdmins, Paper::Submitted::ReportingEventLogger
   add 'paper:resubmitted', Paper::Resubmitted::EmailEditor
 
   add 'paper_role:created', PaperRole::Created::EventStream::NotifyPaperMembers, PaperRole::Created::EventStream::NotifyAssignee
@@ -13,6 +22,7 @@ Subscriptions.configure do
   # -1, when reordering on workflow
   add 'task:updated', Task::Updated::EventStream
   add 'task:destroyed', Task::Destroyed::EventStream
+  add '.*task:completed', Task::Completed::ReportingEventLogger
 
   add 'question_attachment:created', QuestionAttachment::Created::EventStream
   add 'question_attachment:updated', QuestionAttachment::Updated::EventStream

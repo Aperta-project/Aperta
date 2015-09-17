@@ -149,7 +149,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
     end
   end
 
-  describe "#after_update" do
+  describe "side effects" do
     before do
       allow_any_instance_of(Decision).to receive(:revision?).and_return(true)
       task.paper.decisions.latest.update_attribute(:verdict, 'major_revision')
@@ -173,7 +173,6 @@ describe TahiStandardTasks::RegisterDecisionTask do
       before do
         task.save!
         task.update_attributes completed: true
-        task.after_update
       end
 
       it "task has no participants" do

@@ -27,7 +27,6 @@ class TasksController < ApplicationController
     Activity.task_updated! task, user: current_user
 
     task.send_emails if task.respond_to?(:send_emails)
-    task.after_update
     render task.update_responder.new(task, view_context).response
   end
 

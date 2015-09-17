@@ -29,6 +29,8 @@ class Task < ActiveRecord::Base
 
   belongs_to :phase, inverse_of: :tasks
 
+  after_save :notify_completion
+
   acts_as_list scope: :phase
 
   validates :title, :role, presence: true
@@ -134,8 +136,10 @@ class Task < ActiveRecord::Base
     true
   end
 
-  # Implement this method for Cards that inherit from Task
-  def after_update
+  def notify_completion
+    if completed_changed?(from: false, to: true)
+      Notifier.notify(event: "#{self.class.name.underscore}:completed", data: { record: self })
+    end
   end
 
   def notify_new_participant(current_user, participation)
@@ -173,9 +177,4 @@ class Task < ActiveRecord::Base
     previously_completed? && !completed
   end
 
-  private
-
-  def on_card_completion?
-    previous_changes["completed"] == [false, true]
-  end
 end

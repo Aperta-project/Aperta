@@ -1,11 +1,18 @@
 FactoryGirl.define do
   factory :author do
-    first_name "Luke"
-    last_name "Skywalker"
     position 1
+    paper
+    authors_task
 
-    trait :with_paper do
-      association :paper
-    end
+    first_name "Luke"
+    middle_initial "J"
+    last_name "Skywalker"
+    email
+    department "Jedis"
+    deceased false
+    corresponding true
+    title "Head Jedi"
+    affiliation 'university of dagobah'
+    contributions ["brought cookies"]
   end
 end

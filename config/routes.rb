@@ -3,7 +3,6 @@ require 'sidetiq/web'
 
 Tahi::Application.routes.draw do
   mount TahiStandardTasks::Engine => "/api", as: "standard_tasks"
-  mount PlosAuthors::Engine => "/api", as: "plos_custom_authors"
   ### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###
   mount PlosBioInternalReview::Engine => '/api'
   mount PlosBioTechCheck::Engine => "/api"

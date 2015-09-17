@@ -36,10 +36,6 @@ namespace :data do
     end
   end
 
-  task :convert_author_tasks => :environment do
-    Task.where(type: "StandardTasks::AuthorsTask").update_all(type: "PlosAuthors::PlosAuthorsTask", completed: false)
-  end
-
   task :initialize_initial_tech_check_round => :environment do
     PlosBioTechCheck::InitialTechCheckTask.update_all body: { round: 1 }
     puts 'All PlosBioTechCheck::InitialTechCheckTask body attributes have been initialized to {round: 1}'

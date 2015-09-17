@@ -4,7 +4,7 @@ feature "Editing paper", js: true do
   let(:user) { FactoryGirl.create :user }
 
   context "As an author" do
-    let(:paper) { FactoryGirl.create :paper, :with_tasks, :with_valid_plos_author, creator: user }
+    let(:paper) { FactoryGirl.create :paper, :with_tasks, :with_valid_author, creator: user }
 
     before do
       make_user_paper_admin(user, paper)

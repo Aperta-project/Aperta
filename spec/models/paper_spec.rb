@@ -411,11 +411,11 @@ describe Paper do
   end
 
   describe "#authors_list" do
-    let!(:plos_author1) { FactoryGirl.create :plos_author, paper: paper }
-    let!(:plos_author2) { FactoryGirl.create :plos_author, paper: paper }
+    let!(:author1) { FactoryGirl.create :author, paper: paper }
+    let!(:author2) { FactoryGirl.create :author, paper: paper }
 
     it "returns authors' last name, first name and affiliation name in an ordered list" do
-      expect(paper.authors_list).to eq "1. #{plos_author1.last_name}, #{plos_author1.first_name} from #{plos_author1.specific.affiliation}\n2. #{plos_author2.last_name}, #{plos_author2.first_name} from #{plos_author2.specific.affiliation}"
+      expect(paper.authors_list).to eq "1. #{author1.last_name}, #{author1.first_name} from #{author1.affiliation}\n2. #{author2.last_name}, #{author2.first_name} from #{author2.affiliation}"
     end
   end
 

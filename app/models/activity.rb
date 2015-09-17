@@ -18,11 +18,11 @@ class Activity < ActiveRecord::Base
     )
   end
 
-  def self.author_added!(plos_author, user:)
+  def self.author_added!(author, user:)
     create(
       feed_name: "manuscript",
-      activity_key: "plos_author.created",
-      subject: plos_author.paper,
+      activity_key: "author.created",
+      subject: author.paper,
       user: user,
       message: "Added Author"
     )

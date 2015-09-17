@@ -8,6 +8,10 @@ NestedQuestionComponent = Ember.Component.extend({
   disabled: false,
   noResponseText: "[No response]",
 
+  ident: Ember.computed('model', function(){
+    return this.get('model.ident');
+  }),
+
   model: Ember.computed('task', 'ident', function() {
     let ident = this.get('ident');
     Ember.assert(`Expecting to be given an ident, but wasn't`, ident);

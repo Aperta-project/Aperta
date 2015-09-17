@@ -4,22 +4,30 @@ export default Ember.Component.extend({
   phase: null, // passed-in
   classNames: ['sortable'],
   classNameBindings: ['sortableNoCards'],
-  attributeBindings: ['dataPhaseId:data-phase-id'],
-  dataPhaseId: Ember.computed.alias('phase.id'),
   taskTemplates: Ember.computed.alias('phase.taskTemplates'),
   sortableNoCards: Ember.computed.empty('taskTemplates'),
+  phaseUnchanged: false,
 
   didInsertElement() {
     this._super();
     Ember.run.schedule("afterRender", this, "setupSortable");
   },
 
-  updateTaskPositions(updatedPositions) {
-    this.beginPropertyChanges();
-    this.get('taskTemplates').forEach(function(task) {
-      task.set('position', updatedPositions[task.get('id')]);
+  willDestroyElement() {
+    this.$().sortable('destroy');
+  },
+
+  sortTaskTemplate(oldIndex, newIndex) {
+    let taskTemplate = this.get('taskTemplates').objectAt(oldIndex);
+    this.get('taskTemplates').removeAt(oldIndex);
+    this.get('taskTemplates').insertAt(newIndex, taskTemplate);
+    this.updateTaskPositions();
+  },
+
+  updateTaskPositions() {
+    this.get('taskTemplates').forEach((task, index) => {
+      task.set('position', index + 1);
     });
-    this.endPropertyChanges();
   },
 
   setupSortable() {
@@ -31,34 +39,46 @@ export default Ember.Component.extend({
       containment: '.columns',
       connectWith: '.sortable',
 
-      update(event, ui) {
-        let updatedPositions  = {};
-        const senderPhaseId   = self.get('phase.id');
-        const receiverPhaseId = ui.item.parent().attr('data-phase-id');
-        const taskId = ui.item.find('.card-content').data('id');
-
-        self.sendAction('itemUpdated', senderPhaseId, receiverPhaseId, taskId);
-
-        $(this).find('.card-content').each(function(index) {
-          updatedPositions[$(this).data('id')] = index + 1;
-        });
-
-        self.updateTaskPositions(updatedPositions);
-      },
-
       start(event, ui) {
-        // class added to set overflow: visible;
+
+        self.set("phaseUnchanged", true);
+        ui.item.__source__ = self;
+        ui.item.data('old-index', ui.item.index());
+
         $(ui.item).addClass('card--dragging')
                   .closest('.column-content')
                   .addClass('column-content--dragging');
       },
 
+      receive: function (event, ui) {
+
+        ui.item.__source__.set("phaseUnchanged", false);
+        let sourcePhase = ui.item.__source__.get("phase");
+        let newPhase = self.get("phase");
+        let oldIndex = ui.item.data('old-index');
+        let newIndex = ui.item.index();
+        let taskTemplate = sourcePhase.get("taskTemplates").objectAt(oldIndex);
+        sourcePhase.get("taskTemplates").removeAt(oldIndex);
+        newPhase.get("taskTemplates").insertAt(newIndex, taskTemplate);
+
+        self.updateTaskPositions();
+
+        self.sendAction('itemUpdated');
+      },
+
       stop(event, ui) {
+
+        if (self.get("phaseUnchanged")) {
+          self.sortTaskTemplate(ui.item.data('old-index'), ui.item.index());
+          self.sendAction('itemUpdated');
+        }
+
+        ui.item.removeData('old-index');
+
         $(ui.item).removeClass('card--dragging')
                   .closest('.column-content')
                   .removeClass('column-content--dragging');
       }
     });
   }
-
 });

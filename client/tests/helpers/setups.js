@@ -80,3 +80,11 @@ export function paperWithRoles(id, roles) {
 
   return [paper, journal, litePaper];
 }
+
+export function addNestedQuestionToTask(task, nestedQuestion){
+  Factory.mergeArrays(task, 'nested_question_ids', [nestedQuestion.id]);
+  nestedQuestion.owner = { owner_id: task.id, owner_type: "Task" };
+
+  return nestedQuestion;
+
+}

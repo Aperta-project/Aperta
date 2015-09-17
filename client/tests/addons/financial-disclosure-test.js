@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { module, test } from "qunit";
 import startApp from '../helpers/start-app';
-import { paperWithTask, addUserAsParticipant } from '../helpers/setups';
+import { paperWithTask, addUserAsParticipant, addNestedQuestionToTask } from '../helpers/setups';
 import setupMockServer from '../helpers/mock-server';
 import Factory from '../helpers/factory';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
@@ -44,7 +44,13 @@ module('Integration: FinancialDisclosure', {
     paperResponse = paperPayload.toJSON();
     paperResponse.participations = [addUserAsParticipant(financialDisclosureTask, fakeUser)];
     taskPayload = Factory.createPayload('task');
-    taskPayload.addRecords([financialDisclosureTask, fakeUser]);
+
+    var nestedQuestion;
+    nestedQuestion = Factory.createRecord('NestedQuestion', { ident: 'author_received_funding' });
+    addNestedQuestionToTask(financialDisclosureTask, nestedQuestion);
+
+    taskPayload.addRecords([financialDisclosureTask, nestedQuestion, fakeUser]);
+
     financialDisclosureTask = taskPayload.toJSON();
     collaborators = [
       {
@@ -63,17 +69,13 @@ module('Integration: FinancialDisclosure', {
         "Content-Type": "application/json"
       }, JSON.stringify(financialDisclosureTask)
     ]);
-    server.respondWith('PUT', /\/api\/tasks\/\d+/, [
-      204, {
-        "Content-Type": "application/json"
-      }, JSON.stringify({})
-    ]);
+    server.respondWith('PUT', /\/api\/tasks\/\d+/, JSON.stringify({}));
     server.respondWith('GET', /\/api\/filtered_users\/users\/\d+/, [
       200, {
         "Content-Type": "application/json"
       }, JSON.stringify([])
     ]);
-    server.respondWith('POST', '/api/questions', [
+    server.respondWith('POST', `/api/nested_questions/${nestedQuestion.id}/answers`, [
       204, {
         "Content-Type": "application/json"
       }, JSON.stringify([])

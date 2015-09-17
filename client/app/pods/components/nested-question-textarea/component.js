@@ -2,5 +2,5 @@ import NestedQuestionComponent from 'tahi/pods/components/nested-question/compon
 export default NestedQuestionComponent.extend({
   placeholder: null,
 
-  textAreaClassNames: ["form-control"]
+  inputClassNames: ["form-control"]
 });

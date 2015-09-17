@@ -6,6 +6,8 @@ export default NestedQuestionComponent.extend({
 
   textClassNames: ["model-question"],
 
+  textYieldValue: { yieldingForText: true },
+
   checked: Ember.computed('model.answer.value', {
     get() {
       let answer = this.get('model.answer.value');

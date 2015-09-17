@@ -2,6 +2,10 @@
   <div class="{{textClassNames}}">{{{questionText}}}</div>
 {{/if}}
 
+{{#if hasBlock}}
+  {{yield textYieldValue}}
+{{/if}}
+
 {{#if helpText}}
   <ul class="question-help">{{{helpText}}}</ul>
 {{/if}}

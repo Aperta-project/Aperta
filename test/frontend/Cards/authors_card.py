@@ -1,7 +1,10 @@
 #!/usr/bin/env python2
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
 from frontend.Cards.basecard import BaseCard
+from Base.Resources import author
 
 __author__ = 'sbassi@plos.org'
 
@@ -126,7 +129,7 @@ class AuthorsCard(BaseCard):
     corresponding_lbl, deceased_lbl, chck_1_lbl, chck_2_lbl, chck_3_lbl, chck_4_lbl, \
       chck_5_lbl, chck_6_lbl = self._gets(self._author_lbls)
     assert corresponding_lbl.text == ('This person will be listed as the corresponding author'
-      ' on the published article')
+      ' on the published article'), corresponding_lbl.text
     assert deceased_lbl.text == 'This person is deceased'
     assert chck_1_lbl.text == 'Conceived and designed the experiments'
     assert chck_2_lbl.text == 'Performed the experiments'
@@ -141,15 +144,25 @@ class AuthorsCard(BaseCard):
     add_author_add_btn = self._get(self._add_author_add_btn)
     self.validate_green_on_green_button_style(add_author_add_btn)
     self.validate_default_link_style(add_author_cancel_lnk)
-
+    # fill the data
+    first_input.send_keys(author['first'] + Keys.ENTER)
+    middle_input.send_keys(author['middle'] + Keys.ENTER)
+    last_input.send_keys(author['last'] + Keys.ENTER)
+    email_input.send_keys(author['email'] + Keys.ENTER)
+    title_input.send_keys('Dr' + Keys.ENTER)
+    department_input.send_keys(author['department'] + Keys.ENTER)
+    institution_input.send_keys(author['1_institution'] + Keys.ENTER)
+    sec_institution_input.send_keys(author['2_institution'] + Keys.ENTER)
+    import time; time.sleep(10)
+    add_author_add_btn.click()
 
   def validate_styles(self):
     """Validate all styles for Authors Card"""
     ##self.get_stylegiude()
     # validate elements that are common to all cards
-    self.validate_author_card_styles()
+    ##self.validate_author_card_styles()
     self.validate_author_card_action()
-    self.validate_common_elements_styles()
+    ##self.validate_common_elements_styles()
 
 
 

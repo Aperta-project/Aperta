@@ -1,5 +1,7 @@
 #!/usr/bin/env python2
 
+import time
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
@@ -40,9 +42,9 @@ class AuthorsCard(BaseCard):
     self._author_contrib_lbl = (By.TAG_NAME, 'h4')
     self._add_author_cancel_lnk = (By.CSS_SELECTOR, 'span.author-form-buttons a')
     self._add_author_add_btn = (By.CSS_SELECTOR, 'span.author-form-buttons button')
+    self._author_items = (By.CSS_SELECTOR, 'div.authors-overlay-item')
+    self._delete_author_div = (By.CLASS_NAME, 'authors-overlay-item--delete')
 
-
-    #Author Contributions
 
    #POM Actions
   def click_task_completed_checkbox(self):
@@ -66,7 +68,7 @@ class AuthorsCard(BaseCard):
     #h4 = self._get(self._author_contrib_lbl)
     h4 = self._get(i)
     print h4.text, h4.value_of_css_property('font-size'), h4.value_of_css_property('font-weight'), h4.value_of_css_property('line-height'), h4.value_of_css_property('color')
-    kk
+
 
 
   def validate_author_card_styles(self):
@@ -149,20 +151,59 @@ class AuthorsCard(BaseCard):
     middle_input.send_keys(author['middle'] + Keys.ENTER)
     last_input.send_keys(author['last'] + Keys.ENTER)
     email_input.send_keys(author['email'] + Keys.ENTER)
-    title_input.send_keys('Dr' + Keys.ENTER)
+    title_input.send_keys(author['title'] + Keys.ENTER)
     department_input.send_keys(author['department'] + Keys.ENTER)
     institution_input.send_keys(author['1_institution'] + Keys.ENTER)
     sec_institution_input.send_keys(author['2_institution'] + Keys.ENTER)
-    import time; time.sleep(10)
+    time.sleep(1)
     add_author_add_btn.click()
+    # Check if data is there
+    time.sleep(1)
+    authors = self._gets(self._author_items)
+    all_auth_data = [x.text for x in authors]
+    assert [x for x in all_auth_data if author['1_institution'] in x]
+    assert [x for x in all_auth_data if author['2_institution'] in x]
+    assert [x for x in all_auth_data if author['department'] in x]
+    assert [x for x in all_auth_data if author['first'] in x]
+    assert [x for x in all_auth_data if author['middle'] in x]
+    assert [x for x in all_auth_data if author['title'][-4:] in x]
+    assert [x for x in all_auth_data if author['email'] in x]
+    # Delete the data
+    # Check where is the new data
+    n = 0
+    for auth_data in all_auth_data:
+      n += 1
+      if author['email'] in auth_data:
+        break
+    # Get author to delete
+    self._actions.move_to_element(authors[n-1]).perform()
+    time.sleep(2)
+    authors = self._gets(self._author_items)
+    trash = authors[n-1].find_element_by_css_selector('span.fa-trash')
+    trash.click()
+    # get buttons
+    time.sleep(1)
+    delete_div = self._get(self._delete_author_div)
+    del_message = delete_div.find_element_by_tag_name('p')
+    assert del_message.text == 'This will permanently delete the author. Are you sure?'
+    # TODO: Check p style, resume this when styles are set.
+    cancel_btn = delete_div.find_elements_by_tag_name('button')[0]
+    delete_btn = delete_div.find_elements_by_tag_name('button')[1]
+    assert cancel_btn.text == 'CANCEL', cancel_btn.text
+    assert delete_btn.text == 'DELETE FOREVER', delete_btn.text
+    # TODO: check styles, resume this when styles are set.
+    delete_btn.click()
+    time.sleep(.5)
+
+
 
   def validate_styles(self):
     """Validate all styles for Authors Card"""
     ##self.get_stylegiude()
     # validate elements that are common to all cards
-    ##self.validate_author_card_styles()
+    self.validate_author_card_styles()
     self.validate_author_card_action()
-    ##self.validate_common_elements_styles()
+    self.validate_common_elements_styles()
 
 
 

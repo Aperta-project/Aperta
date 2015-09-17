@@ -1,8 +1,8 @@
 {{#if shouldDisplayQuestionText}}
-  <div class="question-text">{{{model.text}}}</div>
+  <div class="{{textClassNames}}">{{{questionText}}}</div>
 {{/if}}
 
 {{#if helpText}}
   <ul class="question-help">{{{helpText}}}</ul>
 {{/if}}
-{{textarea name=ident value=model.answer.value class=textAreaClassNames placeholder=placeholder disabled=disabled}}
+{{textarea name=ident value=model.answer.value class=inputClassNames placeholder=placeholder disabled=disabled}}

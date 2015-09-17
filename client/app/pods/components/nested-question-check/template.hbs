@@ -1,10 +1,7 @@
 <label class="question-checkbox">
   {{check-box name=ident checked=checked disabled=disabled}}
-  {{#if model.text}}
-    <p class="model-question">{{model.text}}</p>
-  {{/if}}
-  {{#if displayQuestion}}
-    <p class="model-question">{{{displayQuestion}}}</p>
+  {{#if shouldDisplayQuestionText}}
+    <p class="{{textClassNames}}">{{{questionText}}}</p>
   {{/if}}
 </label>
 

@@ -9,6 +9,10 @@
     <div class="answer-text no-answer">{{noResponseText}}</div>
   {{/if}}
 
+  {{#if hasBlock}}
+    <div class="additional-data">{{yield textYieldValue}}</div>
+  {{/if}}
+
 {{else}}
   <label class="question-checkbox">
     {{check-box name=ident checked=checked disabled=disabled}}
@@ -18,7 +22,7 @@
   </label>
 
   {{#if hasBlock}}
-    <div class="additional-data">{{yield checked}}</div>
+    <div class="additional-data">{{yield textYieldValue}}</div>
   {{/if}}
 
 {{/if}}

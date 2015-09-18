@@ -9,7 +9,6 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-#from Base.FrontEndTest import FrontEndTest
 from frontend.Cards.authors_card import AuthorsCard
 from Pages.login_page import LoginPage
 from Pages.dashboard import DashboardPage

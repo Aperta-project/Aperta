@@ -5,7 +5,6 @@ Page Object Model for the Paper Editor Page. Validates global and dynamic elemen
 """
 
 import time
-import pdb
 
 from selenium.webdriver.common.by import By
 from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface
@@ -39,7 +38,7 @@ class PaperEditorPage(AuthenticatedPage):
     self._subscript_icon = (By.CLASS_NAME, 'fa-subscript')
     self._sc_icon = (By.CLASS_NAME, 'smallCaps')
     ## ".//div[contains(@class, 'annotations')]/a[6]/span")
-    self._image_icon = (By.CLASS_NAME, "fa-image")
+    self._image_icon = (By.CSS_SELECTOR, "i.fa-image")
     self._table_icon = (By.CLASS_NAME, 'fa-table')
     self._book_icon = (By.CLASS_NAME, 'fa-book')
     self._pi_icon = (By.CLASS_NAME, 'createFormula')
@@ -245,7 +244,9 @@ class PaperEditorPage(AuthenticatedPage):
     Given an amount of expected item, check if they are in the top menu.
     This can be expanded as needed.
     """
+    # Time needed to update page and get correct amount of items
+    time.sleep(1)
     buttons = self._gets(self._control_bar_right_items)
-    assert user_buttons == len(buttons), len(buttons)
+    assert user_buttons == len(buttons), (user_buttons, len(buttons))
     if user_buttons == 7:
       self._get(self._workflow_link)

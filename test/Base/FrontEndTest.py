@@ -10,7 +10,6 @@ from teamcity import is_running_under_teamcity
 from teamcity.unittestpy import TeamcityTestRunner
 
 from WebDriverFactory import WebDriverFactory
-from Base.Resources import login_valid_email, login_valid_pw
 from frontend.Pages.login_page import LoginPage
 from frontend.Pages.dashboard import DashboardPage
 

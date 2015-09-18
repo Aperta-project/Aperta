@@ -5,7 +5,9 @@ Page Object Model for the Login page and the Forgot Your Password page.
 """
 
 from selenium.webdriver.common.by import By
+
 from Base.PlosPage import PlosPage
+from Base.Resources import login_valid_email, login_valid_pw
 
 __author__ = 'jgray@plos.org'
 

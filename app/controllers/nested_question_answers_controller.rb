@@ -11,8 +11,10 @@ class NestedQuestionAnswersController < ApplicationController
 
   def update
     answer = fetch_answer
-    value = existing_answer_params[:nested_question_answer][:value]
-    answer.update_attributes!(value: value)
+    answer.update_attributes!(
+      value: existing_answer_params[:nested_question_answer][:value],
+      additional_data: existing_answer_params[:additional_data]
+    )
     render json: answer, serializer: NestedQuestionAnswerSerializer
   end
 
@@ -28,7 +30,8 @@ class NestedQuestionAnswersController < ApplicationController
           value_type: nested_question.value_type,
           value: new_answer_params[:value],
           owner_id: new_answer_params[:owner_id],
-          owner_type: lookup_owner_type(new_answer_params[:owner_type])
+          owner_type: lookup_owner_type(new_answer_params[:owner_type]),
+          additional_data: new_answer_params[:additional_data]
         )
       end
     end
@@ -42,11 +45,15 @@ class NestedQuestionAnswersController < ApplicationController
   end
 
   def new_answer_params
-    @new_answer_params ||= params.require(:nested_question_answer).permit(:owner_id, :owner_type, :value )
+    @new_answer_params ||= params.require(:nested_question_answer).permit(:owner_id, :owner_type, :value).tap do |whitelisted|
+      whitelisted[:additional_data] = params[:nested_question_answer][:additional_data]
+    end
   end
 
   def existing_answer_params
-    @answer_params ||= params.permit(:id, nested_question_answer: [:value])
+    @existing_answer_params ||= params.permit(:id, nested_question_answer: [:value]).tap do |whitelisted|
+      whitelisted[:additional_data] = params[:nested_question_answer][:additional_data]
+    end
   end
 
   def lookup_owner_type(owner_type)

@@ -106,6 +106,22 @@ module PlosBilling
       questions << NestedQuestion.new(
         owner_id:nil,
         owner_type: name,
+        ident: "affiliation1",
+        value_type: "text",
+        text: "Affiliation #1"
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "affiliation2",
+        value_type: "text",
+        text: "Affiliation #2"
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
         ident: "payment_method",
         value_type: "text",
         text: "How would you like to pay?"

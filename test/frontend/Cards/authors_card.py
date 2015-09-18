@@ -58,6 +58,10 @@ class AuthorsCard(BaseCard):
     return self
 
   def get_stylegiude(self):
+    """
+    Helper function to retrieve actual styles in Styleguide.
+    This is for test developing only, not used when running test.
+    """
     self._driver.get('https://staging.tahi-project.org/styleguide')
     import time; time.sleep(2)
     self._cardtabs = (By.XPATH, '//ul[@id="tabs"]/li[2]/a')
@@ -67,7 +71,9 @@ class AuthorsCard(BaseCard):
     i = (By.CSS_SELECTOR, 'div.constrain h4')
     #h4 = self._get(self._author_contrib_lbl)
     h4 = self._get(i)
-    print h4.text, h4.value_of_css_property('font-size'), h4.value_of_css_property('font-weight'), h4.value_of_css_property('line-height'), h4.value_of_css_property('color')
+    print(h4.text, h4.value_of_css_property('font-size'),
+      h4.value_of_css_property('font-weight'), h4.value_of_css_property('line-height'),
+      h4.value_of_css_property('color'))
 
 
 
@@ -91,7 +97,7 @@ class AuthorsCard(BaseCard):
     self.validate_green_backed_button_style(add_new_author_btn)
 
   def validate_author_card_action(self):
-    """ """
+    """Validate working of Author Card. Adds and delete a new author"""
     # Add a new author
     self._get(self._add_new_author_btn).click()
     # Check form elements
@@ -199,13 +205,8 @@ class AuthorsCard(BaseCard):
 
   def validate_styles(self):
     """Validate all styles for Authors Card"""
-    ##self.get_stylegiude()
-    # validate elements that are common to all cards
+    ##self.get_stylegiude() # Only for development use
     self.validate_author_card_styles()
     self.validate_author_card_action()
     self.validate_common_elements_styles()
-
-
-
-
     return self

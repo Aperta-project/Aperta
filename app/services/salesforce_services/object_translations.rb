@@ -19,6 +19,7 @@ module SalesforceServices
           "Title__c" => @paper.title,
           "Initial_Date_Submitted__c" => @paper.submitted_at,
           "Manuscript_Number__c" => @paper.doi,
+          "OriginalSubmissionDate__c" => @paper.submitted_at,
           "DOI__c" => @paper.doi
         }
       end
@@ -31,7 +32,7 @@ module SalesforceServices
 
       def paper_to_billing_hash # (pfa)
         {
-          #'RecordTypeId'               => nil, # default, set by SF
+          'RecordTypeId'               => "012U0000000DqUyIAK",
           'SuppliedEmail'              => @paper.creator.email, # corresponding author == creator?
           'Exclude_from_EM__c'         => true,
           'Journal_Department__c'      => @paper.journal.name,

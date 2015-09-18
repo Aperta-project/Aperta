@@ -66,7 +66,7 @@ class AuthenticatedPage(PlosPage):
     self._recent_activity_modal = (By.CLASS_NAME, 'activity-overlay')
     self._recent_activity_modal_title = (By.CSS_SELECTOR, 'h1.feedback-overlay-thanks')
     self._discussion_container = (By.CLASS_NAME, 'liquid-container')
-    self._discussion_container_title = (By.CSS_SELECTOR, 'div.discussions-index-header h1')    
+    self._discussion_container_title = (By.CSS_SELECTOR, 'div.discussions-index-header h1')
     self._discussion_create_new_btn = (By.CSS_SELECTOR, 'div.discussions-index-header a')
     self._create_new_topic = (By.CSS_SELECTOR, 'h1.discussions-show-title')
     self._topic_title = (By.CSS_SELECTOR, 'div.inset-form-control')
@@ -78,7 +78,7 @@ class AuthenticatedPage(PlosPage):
     self._withdraw_link = (By.CLASS_NAME, 'withdraw-link')
     self._withdraw_modal = (By.CLASS_NAME, 'overlay--fullscreen')
     self._exclamation_circle = (By.CLASS_NAME, 'fa-exclamation-circle')
-    self._withdraw_modal_title = (By.CSS_SELECTOR, 'h1')    
+    self._withdraw_modal_title = (By.CSS_SELECTOR, 'h1')
     self._withdraw_modal_text = (By.CSS_SELECTOR, 'div.paper-withdraw-wrapper p')
     self._withdraw_modal_yes = (By.XPATH, '//div[@class="pull-right"]/button[1]')
     self._withdraw_modal_no = (By.XPATH, '//div[@class="pull-right"]/button[2]')
@@ -187,7 +187,7 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('color') == 'rgba(153, 153, 153, 1)'
 
   @staticmethod
-  def validate_modal_title_style(title, font_size='14px', font_weight='400', 
+  def validate_modal_title_style(title, font_size='14px', font_weight='400',
                                  line_height='20px', color='rgba(51, 51, 51, 1)'):
     """
     Ensure consistency in rendering page and overlay main headings across the application
@@ -201,7 +201,7 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('line-height') == line_height
     assert title.value_of_css_property('color') == color
 
-    
+
   @staticmethod
   def validate_application_h2_style(title):
     """
@@ -382,9 +382,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-size') == '14px'
     assert button.value_of_css_property('font-weight') == '400'
     assert button.value_of_css_property('line-height') == '20px'
-    print "****c", button.value_of_css_property('color')
     assert button.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
-    print "***BG", button.value_of_css_property('background-color')
     assert button.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
     assert button.value_of_css_property('text-align') == 'center'
     assert button.value_of_css_property('text-transform') == 'uppercase'
@@ -404,7 +402,7 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('font-weight') == '400'
     assert button.value_of_css_property('line-height') == '20px'
     assert button.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
-    assert button.value_of_css_property('background-color') in ('rgba(237, 237, 237, 1)', 
+    assert button.value_of_css_property('background-color') in ('rgba(237, 237, 237, 1)',
                                                                 'rgba(220, 220, 220, 1)')
     assert button.value_of_css_property('text-align') == 'center'
     assert button.value_of_css_property('text-transform') == 'uppercase'
@@ -464,7 +462,7 @@ class AuthenticatedPage(PlosPage):
     assert application_typeface in link.value_of_css_property('font-family')
     assert link.value_of_css_property('font-size') == '14px'
     assert link.value_of_css_property('line-height') == '20px'
-    assert link.value_of_css_property('background-color') == 'transparent'    
+    assert link.value_of_css_property('background-color') == 'transparent'
     assert link.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     assert link.value_of_css_property('font-weight') == '400'
 
@@ -477,7 +475,7 @@ class AuthenticatedPage(PlosPage):
     assert application_typeface in link.value_of_css_property('font-family')
     assert link.value_of_css_property('font-size') == '14px'
     assert link.value_of_css_property('line-height') == '20px'
-    assert link.value_of_css_property('background-color') == 'transparent'    
+    assert link.value_of_css_property('background-color') == 'transparent'
     assert link.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
     assert link.value_of_css_property('font-weight') == '400'
 
@@ -490,6 +488,6 @@ class AuthenticatedPage(PlosPage):
     assert application_typeface in text.value_of_css_property('font-family')
     assert text.value_of_css_property('font-size') == '14px'
     assert text.value_of_css_property('line-height') == '20px'
-    assert text.value_of_css_property('background-color') == 'transparent'    
+    assert text.value_of_css_property('background-color') == 'transparent'
     assert text.value_of_css_property('color') == 'rgba(0, 0, 0, 1)'
     assert text.value_of_css_property('font-weight') == '400'

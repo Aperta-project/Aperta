@@ -8,12 +8,13 @@ __author__ = 'jgray@plos.org'
 import random
 
 from Base.Decorators import MultiBrowserFixture
-from Base.FrontEndTest import FrontEndTest
 from Base.Resources import login_valid_pw, sa_login, oa_login, au_login, rv_login, ae_login, he_login, fm_login
 from Pages.admin import AdminPage
 from Pages.dashboard import DashboardPage
 from Pages.journal_admin import JournalAdminPage
 from Pages.login_page import LoginPage
+from frontend.common_test import CommonTest
+
 
 users = [oa_login,
          sa_login,
@@ -32,7 +33,7 @@ user_search = ['OA', 'FM', 'MM', 'RV']
 
 
 @MultiBrowserFixture
-class ApertaAdminTest(FrontEndTest):
+class ApertaAdminTest(CommonTest):
   """
   Self imposed AC:
      - validate page elements and styles for:
@@ -75,4 +76,4 @@ class ApertaAdminTest(FrontEndTest):
     ja_page.validate_nav_elements(user_type)
 
 if __name__ == '__main__':
-  FrontEndTest._run_tests_randomly()
+  CommonTest._run_tests_randomly()

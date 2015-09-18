@@ -9,16 +9,17 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.FrontEndTest import FrontEndTest
+#from Base.FrontEndTest import FrontEndTest
 from frontend.Cards.authors_card import AuthorsCard
 from Pages.login_page import LoginPage
 from Pages.dashboard import DashboardPage
 from Pages.manuscript_page import ManuscriptPage
 from Base.Resources import login_valid_pw, au_login
+from frontend.common_test import CommonTest
 
 
 @MultiBrowserFixture
-class AuthorsCardTest(FrontEndTest):
+class AuthorsCardTest(CommonTest):
   """
   Self imposed AC:
      - validate page elements and styles for:
@@ -47,6 +48,5 @@ class AuthorsCardTest(FrontEndTest):
     return self
 
 
-
 if __name__ == '__main__':
-  FrontEndTest._run_tests_randomly()
+  CommonTest._run_tests_randomly()

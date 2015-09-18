@@ -13,16 +13,17 @@ import time
 import random
 
 from Base.Decorators import MultiBrowserFixture
-from Base.FrontEndTest import FrontEndTest
 from Pages.login_page import LoginPage
 from Base.Resources import login_valid_pw, au_login, rv_login, fm_login, ae_login, he_login, sa_login, oa_login
 from Pages.paper_editor import PaperEditorPage
+from Pages.dashboard import DashboardPage
+from frontend.common_test import CommonTest
 
 users = (au_login, rv_login, fm_login, ae_login, he_login, sa_login, oa_login)
 
 
 @MultiBrowserFixture
-class EditPaperTest(FrontEndTest):
+class EditPaperTest(CommonTest):
   """
   AC from Aperta-3:
      - validate page elements and styles
@@ -84,6 +85,5 @@ class EditPaperTest(FrontEndTest):
     return self
 
 
-
 if __name__ == '__main__':
-  FrontEndTest._run_tests_randomly()
+  CommonTest._run_tests_randomly()

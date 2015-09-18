@@ -8,15 +8,15 @@ __author__ = 'sbassi@plos.org'
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.FrontEndTest import FrontEndTest
 from Base.Resources import login_valid_email, login_valid_pw
 from frontend.Pages.manuscript_page import ManuscriptPage
 from frontend.Pages.workflow_page import WorkflowPage
 from Pages.login_page import LoginPage
+from frontend.common_test import CommonTest
 
 
 @MultiBrowserFixture
-class ApertaWorkflowTest(FrontEndTest):
+class ApertaWorkflowTest(CommonTest):
   """
   Self imposed AC:
      - validate page elements and styles for:
@@ -27,8 +27,8 @@ class ApertaWorkflowTest(FrontEndTest):
 
   def _go_to_workflow(self):
     """Internal method to reach workflow page"""
-    LoginPage.select_preexisting_article()
-    #LoginPage.create_article()
+    self.select_preexisting_article()
+    #self.create_article()
     create_manuscript_page = ManuscriptPage(self.getDriver())
     create_manuscript_page.click_workflow_button()
     return WorkflowPage(self.getDriver())
@@ -65,4 +65,4 @@ class ApertaWorkflowTest(FrontEndTest):
 
 
 if __name__ == '__main__':
-  FrontEndTest._run_tests_randomly()
+  CommonTest._run_tests_randomly()

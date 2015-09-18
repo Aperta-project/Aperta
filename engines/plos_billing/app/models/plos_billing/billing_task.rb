@@ -98,6 +98,22 @@ module PlosBilling
       questions << NestedQuestion.new(
         owner_id:nil,
         owner_type: name,
+        ident: "country",
+        value_type: "text",
+        text: "Country"
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "payment_method",
+        value_type: "text",
+        text: "How would you like to pay?"
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
         ident: "pfa_question_1",
         value_type: "boolean",
         text: "Have you investigated if funding is available from your co-authors' institutions to pay the publication fee?"
@@ -163,7 +179,7 @@ module PlosBilling
         owner_id:nil,
         owner_type: name,
         ident: "pfa_question_4",
-        value_type: "text",
+        value_type: "boolean",
         text: "Do you have any other sources of funding that can be used towards the publication fee?"
       )
 
@@ -221,6 +237,22 @@ module PlosBilling
         ident: "agree_to_collections",
         value_type: "boolean",
         text: "I have read and agree to the Terms of Submission to PLOS Collections"
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "gpi_country",
+        value_type: "text",
+        text: "Global Participation Initiative Country"
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "ringgold_institution",
+        value_type: "text",
+        text: "Ringgold Institution"
       )
 
       questions.each do |q|

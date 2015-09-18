@@ -41,7 +41,7 @@ class EditPaperTest(FrontEndTest):
       - button for worflow
       - button for more options
     """
-    article_title = self._select_preexisting_article()
+    article_title = self.select_preexisting_article()
     paper_editor = PaperEditorPage(self.getDriver())
     paper_editor.validate_page_elements_styles_functions()
     return self
@@ -56,7 +56,7 @@ class EditPaperTest(FrontEndTest):
             ae_login: 6,
             he_login: 7,
             sa_login: 7,
-            oa_login:7} 
+            oa_login:7}
 
     for user in users:
       print('Logging in as user: %s'%user)
@@ -64,16 +64,16 @@ class EditPaperTest(FrontEndTest):
       login_page.enter_login_field(user)
       login_page.enter_password_field(login_valid_pw)
       login_page.click_sign_in_button()
-      self._select_preexisting_article(init=False, first=True)
+      self.select_preexisting_article(init=False, first=True)
       paper_editor = PaperEditorPage(self.getDriver())
       time.sleep(3) # needed to give time to retrieve new menu items
       paper_editor.validate_roles(roles[user])
       # Logout
       url = self._driver.current_url
-      signout_url = url[:url.index('/papers/')] + '/users/sign_out' 
+      signout_url = url[:url.index('/papers/')] + '/users/sign_out'
       self._driver.get(signout_url)
     return self
-    
+
 
   def _test_paper_download_buttons(self):
     """

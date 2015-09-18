@@ -16,7 +16,7 @@ from frontend.Pages.dashboard import DashboardPage
 
 class FrontEndTest(unittest.TestCase):
   """
-  Base class to provide Front End tests with desired WebDriver instances, as defined in 
+  Base class to provide Front End tests with desired WebDriver instances, as defined in
   [[Config.py]].
   It inherits from `TestCase` in order to count as a test suite for Python's `unittest` framework.
   """
@@ -66,11 +66,11 @@ class FrontEndTest(unittest.TestCase):
     login_page.click_sign_in_button()
     return DashboardPage(self.getDriver())
 
-  def _select_preexisting_article(self, title='Hendrik', init=True, first=False):
+  def select_preexisting_article(self, title='Hendrik', init=True, first=False):
     """
-    Select a preexisting article using a word as a partial name 
+    Select a preexisting article using a word as a partial name
     for the title. init is True when the user is not logged in
-    and need to invoque login script to reach the homepage. 
+    and need to invoque login script to reach the homepage.
     """
     dashboard = self._login() if init else DashboardPage(self.getDriver())
     if first:
@@ -78,7 +78,8 @@ class FrontEndTest(unittest.TestCase):
     else:
       return dashboard.click_on_existing_manuscript_link_partial_title(title)
 
-  def _create_article(self, title='', journal='journal', type_='Research1'):
+  def create_article(self, title='', journal='journal', type_='Research1'):
+    """Create a new article"""
     dashboard = self._login()
     dashboard.click_create_new_submision_button()
     # Create new submission

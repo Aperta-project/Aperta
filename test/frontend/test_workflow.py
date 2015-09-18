@@ -24,18 +24,18 @@ class ApertaWorkflowTest(FrontEndTest):
          - Adding cards
          - TODO: Removing cards (NOT READY)
   """
-  
+
   def _go_to_workflow(self):
     """Internal method to reach workflow page"""
-    self._select_preexisting_article()
-    #self._create_article()
+    self.select_preexisting_article()
+    #self.create_article()
     create_manuscript_page = ManuscriptPage(self.getDriver())
     create_manuscript_page.click_workflow_button()
     return WorkflowPage(self.getDriver())
 
   def test_validate_components_styles(self):
     """
-    Validates the presence of the initial page elements      
+    Validates the presence of the initial page elements
     """
     workflow_page = self._go_to_workflow()
     workflow_page.validate_initial_page_elements_styles()

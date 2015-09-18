@@ -26,28 +26,29 @@ class PaperEditorPage(AuthenticatedPage):
     self._undo_icon = (By.CLASS_NAME, 'fa-undo')
     self._repeat_icon = (By.CLASS_NAME, 'fa-repeat')
     self._type_select = (By.CLASS_NAME, 'switch-type')
-    self._type_paragraph = (By.XPATH, './/select/option[1]')
-    self._type_heading1 = (By.XPATH, './/select/option[2]')
-    self._type_heading2 = (By.XPATH, './/select/option[3]')
-    self._type_heading3 = (By.XPATH, './/select/option[4]')
-    self._type_preformatted = (By.XPATH, './/select/option[5]')
-    self._type_blockquote = (By.XPATH, './/select/option[6]')
+    self._type_paragraph = (By.CLASS_NAME, 'paragraph')
+    self._type_heading1 = (By.CLASS_NAME, 'heading1')
+    self._type_heading2 = (By.CLASS_NAME, 'heading2')
+    self._type_heading3 = (By.CLASS_NAME, 'heading3')
+    self._type_preformatted = (By.CLASS_NAME, 'preformatted')
+    self._type_blockquote = (By.CLASS_NAME, 'blockquote')
     self._bold_icon = (By.CLASS_NAME, 'fa-bold')
     self._italic_icon = (By.CLASS_NAME, 'fa-italic')
     self._link_icon = (By.CLASS_NAME, 'fa-link')
     self._superscript_icon = (By.CLASS_NAME, 'fa-superscript')
     self._subscript_icon = (By.CLASS_NAME, 'fa-subscript')
-    self._sc_icon = (By.XPATH, ".//div[contains(@class, 'annotations')]/a[6]/span")
-    self._image_icon = (By.XPATH, ".//div[contains(@class, 'insert')]/a/i")
+    self._sc_icon = (By.CLASS_NAME, 'smallCaps')
+    ## ".//div[contains(@class, 'annotations')]/a[6]/span")
+    self._image_icon = (By.CLASS_NAME, "fa-image")
     self._table_icon = (By.CLASS_NAME, 'fa-table')
     self._book_icon = (By.CLASS_NAME, 'fa-book')
-    self._pi_icon = (By.XPATH, ".//div[contains(@class, 'insert')]/a[4]")
+    self._pi_icon = (By.CLASS_NAME, 'createFormula')
     self._cite_icon = (By.CSS_SELECTOR, 'div.dropdown-toggle')
     self._diff_div = (By.CSS_SELECTOR, 'div.html-diff')
     # Download formats
     self._pdf_link = (By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[3]")
     self._epub_link = ((By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[2]"))
-    self._docx_link = ((By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[1]"))
+    self._docx_link = (By.CLASS_NAME, 'docx')
 
 
   # POM Actions
@@ -60,14 +61,14 @@ class PaperEditorPage(AuthenticatedPage):
     # Check editor menu icons
     self._check_editor_menu_icons()
     # Check application buttons
-    self._check_version_btn()
+    self._check_version_btn_style()
     self._check_collaborator()
     self._check_download_btns()
     self._check_recent_activity()
     self._check_discussion()
     self._check_more_btn()
 
-    
+
   def _check_editor_menu_icons(self):
     """
     Validate icons in the edit menu
@@ -99,8 +100,8 @@ class PaperEditorPage(AuthenticatedPage):
     assert self._get(self._pi_icon).text == unicode('π2','utf-8')
     assert self._get(self._cite_icon).text == 'Cite'
 
-  def _check_version_btn(self):
-    """ 
+  def _check_version_btn_style(self):
+    """
     Test version button. This test checks styles but not funtion
     """
     version_btn = self._get(self._version_link)
@@ -153,7 +154,7 @@ class PaperEditorPage(AuthenticatedPage):
     assert '#' in self._get(self._docx_link).get_attribute('href')
 
   def _check_recent_activity(self):
-    """ 
+    """
     Check recent activity modal styles
     """
     recent_activity = self._get(self._recent_activity)
@@ -220,7 +221,7 @@ class PaperEditorPage(AuthenticatedPage):
     modal_title = self._get(self._withdraw_modal_title)
     assert 'Are you sure?' == modal_title.text
     # TODO: Style parametrized due to lack of styleguide for modals
-    self.validate_modal_title_style(modal_title, '48px', line_height='52.8px', 
+    self.validate_modal_title_style(modal_title, '48px', line_height='52.8px',
                                     font_weight='500', color='rgba(119, 119, 119, 1)')
     withdraw_modal_text = self._get(self._withdraw_modal_text)
     self.validate_p_style(withdraw_modal_text)

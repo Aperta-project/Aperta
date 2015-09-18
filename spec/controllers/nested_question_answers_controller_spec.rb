@@ -14,7 +14,16 @@ describe NestedQuestionAnswersController do
     let(:owner) { nested_question.owner }
 
     def do_request
-      post :create, nested_question_id: nested_question.to_param, nested_question_answer: { value: "Hello", owner_id: owner.id, owner_type: owner.type }, format: :json
+      post(:create,
+        nested_question_id: nested_question.to_param,
+        nested_question_answer: {
+          value: "Hello",
+          owner_id: owner.id,
+          owner_type: owner.type,
+          additional_data: { "insitution-id" => "123" }
+        },
+        format: :json
+      )
     end
 
     it "creates an answer for the question" do
@@ -26,6 +35,7 @@ describe NestedQuestionAnswersController do
       expect(answer.nested_question).to eq(nested_question)
       expect(answer.owner).to eq(owner)
       expect(answer.value).to eq("Hello")
+      expect(answer.additional_data).to eq("insitution-id" => "123")
     end
 
     it "responds with 200 OK" do
@@ -40,7 +50,17 @@ describe NestedQuestionAnswersController do
     let(:owner){ nested_question.owner }
 
     def do_request
-      put :update, id: nested_question_answer.to_param, nested_question_id: nested_question.to_param, nested_question_answer: { value: "Bye", owner_id: owner.id, owner_type: owner.type }, format: :json
+      put(:update,
+        id: nested_question_answer.to_param,
+        nested_question_id: nested_question.to_param,
+        nested_question_answer: {
+          value: "Bye",
+          owner_id: owner.id,
+          owner_type: owner.type,
+          additional_data: { "insitution-id" => "234" }
+        },
+        format: :json
+      )
     end
 
     it "updates the answer for the question" do
@@ -50,6 +70,7 @@ describe NestedQuestionAnswersController do
 
       answer = nested_question_answer.reload
       expect(answer.value).to eq("Bye")
+      expect(answer.additional_data).to eq("insitution-id" => "234")
     end
 
     it "responds with 200 OK" do

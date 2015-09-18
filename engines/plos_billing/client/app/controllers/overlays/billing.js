@@ -332,7 +332,7 @@ export default TaskController.extend({
     pfa partial is inserted
   */
   buildPfaValidator: function(){
-    const numericalityConfig = { numericality: { 
+    const numericalityConfig = { numericality: {
       allowBlank: true,
       messages: {
         numericality: "Must be a number and contain no symbols, or letters"
@@ -443,36 +443,18 @@ export default TaskController.extend({
 
   agreeCollections: false,
 
-  affiliation1Question: computed("model.questions.[]", function() {
-    let q = this.get("model.questions")
-                .findProperty("ident", "plos_billing.affiliation1");
-
-    if(Ember.isEmpty(q)) {
-      q = this.createNewAffiliationQuestion(
-        "plos_billing.affiliation1", "Secondary Affiliation"
-      );
-    }
-
-    return q;
+  affiliation1Question: computed("model.nestedQuestions.[]", function() {
+    return this.get("model").findQuestion("affiliation1");
   }),
 
-  affiliation2Question: computed("model.questions.[]", function() {
-    let q = this.get("model.questions")
-                .findProperty("ident", "plos_billing.affiliation2");
-
-    if(Ember.isEmpty(q)) {
-      q = this.createNewAffiliationQuestion(
-        "plos_billing.affiliation2", "Secondary Affiliation"
-      );
-    }
-
-    return q;
+  affiliation2Question: computed("model.nestedQuestions.[]", function() {
+    return this.get("model").findQuestion("affiliation2");
   }),
 
   // institution-search component expects data to be hash
   // with name property
   affiliation1Proxy: computed("affiliation1Question", function(){
-    let answer = this.get("affiliation1Question.answer");
+    let answer = this.get("affiliation1Question.answer.value");
     if(!Ember.isEmpty(answer)) {
       return { name: answer };
     }
@@ -481,37 +463,26 @@ export default TaskController.extend({
   // institution-search component expects data to be hash
   // with name property
   affiliation2Proxy: computed("affiliation2Question", function(){
-    let answer = this.get("affiliation2Question.answer");
+    let answer = this.get("affiliation2Question.answer.value");
     if(!Ember.isEmpty(answer)) {
       return { name: answer };
     }
   }),
 
-  createNewAffiliationQuestion(ident) {
-    let task = this.get("model");
-    return task.get("store").createRecord("question", {
-      question: "Affiliation",
-      ident: ident,
-      task: task,
-      additionalData: {}
-    });
-  },
+  setAffiliationAnswer(index, answerValue) {
+    let answer = this.get("affiliation" + index + "Question.answer");
 
-  setAffiliationAnswer(index, answer) {
-    let question = this.get("affiliation" + index + "Question");
-
-    if(typeof answer === "string") {
-      question.setProperties({
-        answer: answer
-      });
-    } else if(typeof answer === "object") {
-      question.setProperties({
-        answer: answer.name,
-        additionalData: answer
+    if(typeof answerValue === "string") {
+      answer.set("value", answerValue);
+    } else if(typeof answerValue === "object") {
+      answer.set("value", answerValue.name);
+      answer.set("additionalData", {
+        answer: answerValue.name,
+        additionalData: answerValue
       });
     }
 
-    question.save();
+    answer.save();
   },
 
   actions: {

@@ -1,12 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-This test case validates the Aperta dashboard page and its associated View Invitations and Create New Submission
-overlays.
-
-Note that this case does NOT test actually creating a new manuscript, or accepting or declining an invitation
-Those acts are expected to be defined in
-
+This test case validates the Authors Card.
 """
 __author__ = 'sbassi@plos.org'
 

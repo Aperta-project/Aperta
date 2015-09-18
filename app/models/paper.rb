@@ -62,6 +62,7 @@ class Paper < ActiveRecord::Base
                   after: [:set_submitting_user_and_touch!,
                           :set_submitted_at!,
                           :prevent_edits!,
+                          :update_or_create_salesforce_manuscript,
                           :create_billing_and_pfa_case]
     end
 
@@ -355,6 +356,9 @@ class Paper < ActiveRecord::Base
     update!(submitted_at: Time.current.utc)
   end
 
+  def update_or_create_salesforce_manuscript(*)
+    SalesforceServices::API.delay.find_or_create_manuscript(paper_id: self.id)
+  end
 
   def create_billing_and_pfa_case(*)
     SalesforceServices::API.delay.create_billing_and_pfa_case(paper_id: self.id) if self.billing_card

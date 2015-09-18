@@ -106,6 +106,23 @@ namespace 'data:migrate:questions-to-nested-questions' do
     DataMigrator::FinancialDisclosureQuestionsMigrator.migrate!
   end
 
+  namespace :'plos-billing' do
+    desc "Resets the NestedQuestionAnswer(s) for plos-billing by destroying them."
+    task :reset => :environment do
+      DataMigrator::PlosBillingQuestionsMigrator.reset
+    end
+
+    desc "Destroy old questions for plos-billing once you're satisfied w/migrating to NestedQuestion data model."
+    task :cleanup => :environment do
+      DataMigrator::PlosBillingQuestionsMigrator.cleanup
+    end
+  end
+
+  desc "Migrate the plos-billing task data to the NestedQuestion data model."
+  task :'plos-billing' => 'data:migrate:questions-to-nested-questions:plos-billing:reset' do
+    DataMigrator::PlosBillingQuestionsMigrator.migrate!
+  end
+
   namespace :'taxon' do
     desc "Resets the NestedQuestionAnswer(s) for figures by destroying them."
     task :reset => :environment do

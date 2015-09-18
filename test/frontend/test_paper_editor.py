@@ -41,7 +41,7 @@ class EditPaperTest(FrontEndTest):
       - button for worflow
       - button for more options
     """
-    article_title = self.select_preexisting_article()
+    article_title = LoginPage.select_preexisting_article()
     paper_editor = PaperEditorPage(self.getDriver())
     paper_editor.validate_page_elements_styles_functions()
     return self
@@ -64,7 +64,7 @@ class EditPaperTest(FrontEndTest):
       login_page.enter_login_field(user)
       login_page.enter_password_field(login_valid_pw)
       login_page.click_sign_in_button()
-      self.select_preexisting_article(init=False, first=True)
+      LoginPage.select_preexisting_article(init=False, first=True)
       paper_editor = PaperEditorPage(self.getDriver())
       time.sleep(3) # needed to give time to retrieve new menu items
       paper_editor.validate_roles(roles[user])

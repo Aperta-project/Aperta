@@ -26,8 +26,8 @@ class AuthorsCardTest(FrontEndTest):
 
   def _go_to_authors_card(self, init=True):
     """Go to the authors card"""
-    dashboard = self._login() if init else DashboardPage(self.getDriver())
-    article_name = self.select_preexisting_article(init=False)
+    dashboard = LoginPage.login() if init else DashboardPage(self.getDriver())
+    article_name = LoginPage.select_preexisting_article(init=False)
     manuscript_page = ManuscriptPage(self.getDriver())
     manuscript_page.click_authors_card()
     return AuthorsCard(self.getDriver()), article_name

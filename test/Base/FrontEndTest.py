@@ -58,38 +58,6 @@ class FrontEndTest(unittest.TestCase):
         self._driver = self.factory.setup_webdriver()
     return self._driver
 
-  def _login(self):
-    """Login into Aperta"""
-    login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(login_valid_email)
-    login_page.enter_password_field(login_valid_pw)
-    login_page.click_sign_in_button()
-    return DashboardPage(self.getDriver())
-
-  def select_preexisting_article(self, title='Hendrik', init=True, first=False):
-    """
-    Select a preexisting article using a word as a partial name
-    for the title. init is True when the user is not logged in
-    and need to invoque login script to reach the homepage.
-    """
-    dashboard = self._login() if init else DashboardPage(self.getDriver())
-    if first:
-      return dashboard.click_on_first_manuscript()
-    else:
-      return dashboard.click_on_existing_manuscript_link_partial_title(title)
-
-  def create_article(self, title='', journal='journal', type_='Research1'):
-    """Create a new article"""
-    dashboard = self._login()
-    dashboard.click_create_new_submision_button()
-    # Create new submission
-    if not title:
-      title = dashboard.title_generator()
-    dashboard.enter_title_field(title)
-    dashboard.select_journal(journal, type_)
-    dashboard.click_create_button()
-    return title
-
   @staticmethod
   def _run_tests_randomly():
     """

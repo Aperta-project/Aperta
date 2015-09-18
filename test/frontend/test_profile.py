@@ -25,10 +25,10 @@ class ApertaProfileTest(FrontEndTest):
      - upload image
      - reset password
   """
-  
+
   def _go_to_profile(self, init=True):
     """Go to the profile page"""
-    dashboard = self._login() if init else DashboardPage(self.getDriver())
+    dashboard = LoginPage.login() if init else DashboardPage(self.getDriver())
     dashboard.click_left_nav()
     dashboard.click_profile_link()
     return ProfilePage(self.getDriver())

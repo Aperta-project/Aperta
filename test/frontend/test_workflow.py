@@ -27,8 +27,8 @@ class ApertaWorkflowTest(FrontEndTest):
 
   def _go_to_workflow(self):
     """Internal method to reach workflow page"""
-    self.select_preexisting_article()
-    #self.create_article()
+    LoginPage.select_preexisting_article()
+    #LoginPage.create_article()
     create_manuscript_page = ManuscriptPage(self.getDriver())
     create_manuscript_page.click_workflow_button()
     return WorkflowPage(self.getDriver())

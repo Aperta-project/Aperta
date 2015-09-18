@@ -3,6 +3,7 @@
 
   input {
     width: 160px;
+    height: 55px;
   }
 }
 
@@ -10,9 +11,15 @@
 .issue-number {
   display: inline-block;
 
-  .inset-form-control-input {
+  .tall-text-field {
     width: 415px;
     margin-right: 20px;
+    height: 55px;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    display: none;
   }
 }
 

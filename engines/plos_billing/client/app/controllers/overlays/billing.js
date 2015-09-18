@@ -316,6 +316,29 @@ const DATA = {
 let computed = Ember.computed;
 
 export default TaskController.extend({
+  setSFValidationObjects: function() {
+    var h = {
+      'pfaSupportingDocs': this.findQuestion('pfa_supporting_docs')
+    }
+    this.set('needsValidationForSalesforce', h);
+  },
+  needsValidationForSalesforce: {},
+  findQuestion: function(ident){
+    return this.get("model.questions").findProperty("ident", "plos_billing." + ident)
+  },
+  validatePfaData: Ember.observer("needsValidationForSalesforce.pfaSupportingDocs", function() {
+    console.log('hi');
+  }),
+  //disable_complete: function(){
+    //$('#task_completed').attr('disabled', true);
+  //},
+  //enable_complete: function(){
+    //$('#task_completed').attr('disabled', false);
+  //},
+
+
+
+
   countries: Ember.inject.service(),
 
   ringgold: [],

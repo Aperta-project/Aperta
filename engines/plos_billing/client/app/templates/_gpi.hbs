@@ -22,9 +22,10 @@
   <div class="form-group form-inline">
     <div class="required form-group author-half {{if validationErrors.department "error"}}">
       {{error-message message=null}}
-      {{question-select ident="plos_billing.gpi_country"
+      {{nested-question-select ident="gpi_country"
                         task=model
-                        question="Select your Country"
+                        displayQuestionText=false
+                        placeholder="Select your Country"
                         source=groupOneAndTwoCountries
                         width="300"}}
     </div>

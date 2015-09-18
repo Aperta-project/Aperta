@@ -14,22 +14,26 @@ Select2Component = Ember.TextField.extend
   setupSelectedListener: ->
     @.$().off 'select2-selecting'
     @.$().on 'select2-selecting', (e) =>
-      @sendAction 'selectionSelected', e.choice
+      Ember.run.schedule 'actions', this, ->
+        @sendAction 'selectionSelected', e.choice
 
   setupRemovedListener: ->
     @.$().off 'select2-removing'
     @.$().on 'select2-removing', (e) =>
-      @sendAction 'selectionRemoved', e.choice
+      Ember.run.schedule 'actions', this, ->
+        @sendAction 'selectionRemoved', e.choice
 
   setupClearingListener: ->
     @.$().off 'select2-clearing'
     @.$().on 'select2-clearing', (e) =>
-      @sendAction 'selectionCleared', e.choice
+      Ember.run.schedule 'actions', this, ->
+        @sendAction 'selectionCleared', e.choice
 
   setupClosedListener: ->
     @.$().off 'select2-close'
     @.$().on 'select2-close', =>
-      @sendAction 'dropdownClosed'
+      Ember.run.schedule 'actions', this, ->
+        @sendAction 'dropdownClosed'
 
   setSelectedData: (->
     @.$().select2('val', @get('selectedData').mapProperty('id'))

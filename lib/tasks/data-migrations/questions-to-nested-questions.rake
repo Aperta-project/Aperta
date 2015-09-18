@@ -102,7 +102,7 @@ namespace 'data:migrate:questions-to-nested-questions' do
   end
 
   desc "Migrate the financial-disclosure task data to the NestedQuestion data model."
-  task :'financial-disclosure' => 'data:migrate:questions-to-nested-questions:figures:reset' do
+  task :'financial-disclosure' => 'data:migrate:questions-to-nested-questions:financial-disclosure:reset' do
     DataMigrator::FinancialDisclosureQuestionsMigrator.migrate!
   end
 

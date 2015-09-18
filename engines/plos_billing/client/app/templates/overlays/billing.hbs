@@ -151,7 +151,7 @@
 <ol class="question-list">
   <li class="question">
     <h3>
-      How would you like to pay?
+      {{nested-question-display ident="payment_method" task=model}}
     </h3>
 
     <div class="form-group author-half author-bump payment-method {{if validationErrors.affiliation "error"}}">

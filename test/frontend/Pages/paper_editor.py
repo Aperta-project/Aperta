@@ -49,7 +49,6 @@ class PaperEditorPage(AuthenticatedPage):
     self._epub_link = ((By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[2]"))
     self._docx_link = (By.CLASS_NAME, 'docx')
 
-
   # POM Actions
   def validate_page_elements_styles_functions(self, username=''):
     """
@@ -247,6 +246,4 @@ class PaperEditorPage(AuthenticatedPage):
     # Time needed to update page and get correct amount of items
     time.sleep(1)
     buttons = self._gets(self._control_bar_right_items)
-    assert user_buttons == len(buttons), (user_buttons, len(buttons))
-    if user_buttons == 7:
-      self._get(self._workflow_link)
+    assert self._get(self._workflow_link) if user_buttons == 7 else (len(buttons) == 6)

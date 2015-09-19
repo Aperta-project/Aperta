@@ -1,16 +1,11 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-This test case validates the article editor page and its associated ...XXXoverlays.
-
-Note that this case does NOT test actually creating a new manuscript, or accepting or declining an invitation
-Those acts are expected to be defined in
-
+This test case validates the article editor page and its associated overlays.
 """
 __author__ = 'sbassi@plos.org'
 
 import time
-import random
 
 from Base.Decorators import MultiBrowserFixture
 from Pages.login_page import LoginPage

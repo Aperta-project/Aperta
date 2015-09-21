@@ -5,6 +5,8 @@ NestedQuestionComponent = Ember.Component.extend({
   tagName: 'div',
   displayQuestionText: true,
   helpText: null,
+  label: null,
+  placeholderText: null,
   inputClassNames: null,
   disabled: false,
   textClassNames: ["question-text"],

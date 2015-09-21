@@ -20,7 +20,13 @@ module TahiStandardTasks
             ident: "taken_from_manuscripts",
             value_type: "text",
             text: "Please identify which results, data, or figures have been taken from other published or pending manuscripts, and explain why inclusion in this submission does not constitute dual publication.",
-            children: []
+          ),
+          NestedQuestion.new(
+            owner_id:nil,
+            owner_type: name,
+            ident: "upload_related_work",
+            value_type: "attachment",
+            text: "Please also upload a copy of the related work with your submission as a 'Related Manuscript' item. Note that reviewers may be asked to comment on the overlap between the related submissions.",
           )
         ]
       )

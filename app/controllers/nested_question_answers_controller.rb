@@ -22,7 +22,7 @@ class NestedQuestionAnswersController < ApplicationController
 
   def fetch_answer
     @fetch_answer ||= begin
-      if params[:id]
+      if params[:id]        
         NestedQuestionAnswer.where(id: existing_answer_params[:id]).first!
       else
         NestedQuestionAnswer.new(
@@ -46,12 +46,14 @@ class NestedQuestionAnswersController < ApplicationController
 
   def new_answer_params
     @new_answer_params ||= params.require(:nested_question_answer).permit(:owner_id, :owner_type, :value).tap do |whitelisted|
+      whitelisted[:value] = params[:nested_question_answer][:value]
       whitelisted[:additional_data] = params[:nested_question_answer][:additional_data]
     end
   end
 
   def existing_answer_params
     @existing_answer_params ||= params.permit(:id, nested_question_answer: [:value]).tap do |whitelisted|
+      whitelisted[:nested_question_answer][:value] = params[:nested_question_answer][:value]
       whitelisted[:additional_data] = params[:nested_question_answer][:additional_data]
     end
   end

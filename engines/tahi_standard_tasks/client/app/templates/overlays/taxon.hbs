@@ -10,11 +10,10 @@
       <div class="question-text">
         <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
       </div>
-      {{#nested-question-check
+      {{nested-question-check
         model=compliesQuestionForZoological
         task=model
         disabled=isSubmissionTaskNotEditable}}
-      {{/nested-question-check}}
     {{/if}}
   </div>
 
@@ -31,11 +30,10 @@
         <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
       </div>
 
-      {{#nested-question-check
+      {{nested-question-check
         model=compliesQuestionForBotanical
         task=model
         disabled=isSubmissionTaskNotEditable}}
-      {{/nested-question-check}}
     {{/if}}
   </div>
 </div>

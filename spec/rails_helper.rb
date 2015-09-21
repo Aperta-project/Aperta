@@ -6,6 +6,7 @@ require 'spec_helper'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'capybara/rspec'
+require 'capybara-screenshot/rspec'
 require "email_spec"
 require 'sidekiq/testing'
 require 'pusher-fake/support/rspec'
@@ -40,6 +41,11 @@ Capybara.register_driver :selenium do |app|
 end
 
 Capybara.javascript_driver = :selenium
+
+# Store screenshots in artifacts dir on circle
+if ENV['CIRCLE_TEST_REPORTS']
+  Capybara.save_and_open_page_path = "#{ENV['CIRCLE_TEST_REPORTS']}/screenshots/"
+end
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
@@ -120,5 +126,9 @@ RSpec.configure do |config|
 
   config.before(:each) do
     ActionMailer::Base.deliveries.clear
+  end
+
+  config.before(:each, js: true) do
+    Capybara.page.driver.browser.manage.window.resize_to(1500, 1000)
   end
 end

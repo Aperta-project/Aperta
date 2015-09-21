@@ -2,6 +2,7 @@
 # This class represents the paper in the system.
 class Paper < ActiveRecord::Base
   include EventStream::Notifiable
+  include PaperTaskFinders
   include AASM
 
   belongs_to :creator, inverse_of: :submitted_papers, class_name: 'User', foreign_key: :user_id
@@ -29,6 +30,8 @@ class Paper < ActiveRecord::Base
   has_many :activities
   has_many :decisions, -> { order 'revision_number DESC' }, dependent: :destroy
   has_many :discussion_topics, inverse_of: :paper, dependent: :destroy
+
+  serialize :withdrawals, ArrayHashSerializer
 
   validates :paper_type, presence: true
   validates :short_title, presence: true, uniqueness: true
@@ -58,7 +61,8 @@ class Paper < ActiveRecord::Base
                   guards: :metadata_tasks_completed?,
                   after: [:set_submitting_user_and_touch!,
                           :set_submitted_at!,
-                          :prevent_edits!]
+                          :prevent_edits!,
+                          :create_billing_and_pfa_case]
     end
 
     event(:minor_check) do
@@ -113,9 +117,23 @@ class Paper < ActiveRecord::Base
       transitions to: :withdrawn,
                   after: :prevent_edits!
       before do |withdrawal_reason|
-        withdrawal_reasons << withdrawal_reason
+        withdrawals << { previous_publishing_state: publishing_state,
+                         previous_editable: editable,
+                         reason: withdrawal_reason }
       end
     end
+
+    event(:reactivate) do
+      # AASM doesn't currently allow transitions to dynamic states, so this iterator
+      # explicitly defines each transition
+      Paper.aasm.states.map(&:name).each do |state|
+        transitions from: :withdrawn, to: state, after: :set_editable!, if: Proc.new { previous_state_is?(state) }
+      end
+    end
+  end
+
+  def previous_state_is?(event)
+    withdrawals.last[:previous_publishing_state] == event.to_s
   end
 
   def make_decision(decision)
@@ -214,7 +232,7 @@ class Paper < ActiveRecord::Base
   end
 
   def latest_withdrawal_reason
-    withdrawal_reasons.last
+    withdrawals.last[:reason] if withdrawals.present?
   end
 
   def locked_by?(user) # :nodoc:
@@ -321,12 +339,21 @@ class Paper < ActiveRecord::Base
     Nokogiri::HTML(body).text.truncate_words 100
   end
 
+  def set_editable!
+    update!(editable: withdrawals.last[:previous_editable])
+  end
+
   def set_published_at!
     update!(published_at: Time.current.utc)
   end
 
   def set_submitted_at!
     update!(submitted_at: Time.current.utc)
+  end
+
+
+  def create_billing_and_pfa_case(*)
+    SalesforceServices::API.delay.create_billing_and_pfa_case(paper_id: self.id) if self.billing_card
   end
 
   def set_submitting_user_and_touch!(submitting_user) # rubocop:disable Style/AccessorMethodName

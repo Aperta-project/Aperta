@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150821183003) do
+ActiveRecord::Schema.define(version: 20150904211547) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -273,7 +273,7 @@ ActiveRecord::Schema.define(version: 20150821183003) do
     t.string   "publishing_state"
     t.datetime "submitted_at"
     t.string   "salesforce_manuscript_id"
-    t.text     "withdrawal_reasons",       default: [],                  array: true
+    t.jsonb    "withdrawals",              default: [],                  array: true
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree
@@ -435,6 +435,7 @@ ActiveRecord::Schema.define(version: 20150821183003) do
     t.integer "phase_template_id"
     t.json    "template",             default: [], null: false
     t.string  "title"
+    t.integer "position"
   end
 
   add_index "task_templates", ["journal_task_type_id"], name: "index_task_templates_on_journal_task_type_id", using: :btree

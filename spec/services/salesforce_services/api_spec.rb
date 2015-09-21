@@ -5,7 +5,6 @@ describe SalesforceServices::API do
 
   before do
     @api = SalesforceServices::API
-    #expect(@api).to receive(:has_valid_creds?).and_return(true)
 
     VCR.use_cassette("salesforce_instantiate_client") do
       @client = @api.client
@@ -70,6 +69,29 @@ describe SalesforceServices::API do
     end
   end
 
+  describe "#create_billing_and_pfa_case" do
+
+    let(:paper) { FactoryGirl.create(:paper) }
+
+    it "creates and returns a salesforce case object" do
+      paper = FactoryGirl.create :paper_with_task, { task_params: { title: "Billing", type: "PlosBilling::BillingTask", role: "author" } }
+
+      #delete_vcr_file  "salesforce_create_billing_and_pfa"
+
+      VCR.use_cassette("salesforce_instantiate_client") do
+        @api = SalesforceServices::API
+        @api.client
+      end
+
+      VCR.use_cassette("salesforce_create_billing_and_pfa") do
+        @kase = @api.create_billing_and_pfa_case(paper_id: paper.id)
+        expect(@kase.class).to eq Case
+        expect(@kase.persisted?).to eq true
+      end
+
+    end
+  end
+
   describe "#has_valid_creds?" do
     it "returns true when all credentials are set to something that is not :not_set" do
       Rails.configuration.salesforce_host          = :foo
@@ -77,7 +99,6 @@ describe SalesforceServices::API do
       Rails.configuration.salesforce_client_secret = :foo
       Rails.configuration.salesforce_username      = :foo
       Rails.configuration.salesforce_password      = :foo
-      
       expect( SalesforceServices::API.has_valid_creds?).to be(true)
     end
 
@@ -86,5 +107,11 @@ describe SalesforceServices::API do
       expect( SalesforceServices::API.has_valid_creds?).to be(false)
     end
   end
+end
 
+def delete_vcr_file(file) # useful when writing new specs that require vcr, and need the http request need to be made multiple times until correct
+  file = "spec/fixtures/vcr_cassettes/#{file}.yml"
+  if File.exists?(file)
+    ap "deleting #{file}" if File.delete(file) 
+  end
 end

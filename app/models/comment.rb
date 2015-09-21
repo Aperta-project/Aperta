@@ -38,6 +38,6 @@ class Comment < ActiveRecord::Base
   end
 
   def mentions_extracted_from_body
-    Twitter::Extractor.extract_mentioned_screen_names(body).uniq - [commenter.username]
+    Twitter::Extractor.extract_mentioned_screen_names(body).uniq.map(&:downcase) - [commenter.username.downcase]
   end
 end

@@ -8,7 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Changed
-- Increased the number and fidelity of Workflow Activity Feed messages
+-
 
 ### Deprecated
 -
@@ -21,6 +21,15 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ### Security
 -
+
+## [1.3.2] - 2015-09-17
+
+### Changed
+- Increased the number and fidelity of Workflow Activity Feed messages
+- Editor: started an integration test-suite in the editor repository which is run with CircleCI: https://circleci.com/gh/Tahi-project/tahi-editor-ve
+
+### Fixed
+- Editor: (regression) collection overlays can be opened again
 
 ## [1.3.1] - 2015-09-01
 ### Added

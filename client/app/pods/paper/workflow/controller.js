@@ -43,9 +43,7 @@ export default Ember.Controller.extend({
 
       this.updatePositions(phase);
 
-      phase.save().then(function() {
-        paper.reload();
-      });
+      phase.save();
     },
 
     changeTaskPhase(task, targetPhase) {
@@ -53,11 +51,7 @@ export default Ember.Controller.extend({
     },
 
     removePhase(phase) {
-      let paper = phase.get('paper');
-
-      phase.destroyRecord().then(function() {
-        paper.reload();
-      });
+      phase.destroyRecord();
     },
 
     savePhase(phase) {

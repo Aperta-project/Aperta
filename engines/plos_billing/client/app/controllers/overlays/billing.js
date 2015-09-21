@@ -317,19 +317,29 @@ let computed = Ember.computed;
 
 export default TaskController.extend({
   validatePfaData: Ember.observer("model.questions.@each.answer", function() {
-    //validate individual items
-    //update complete func
+    this.supplementalDocsIsValid();
     this.syncCompletedCheckbox();
   }),
+
   pfaErrors: new DS.Errors,
-  hasPfaErrors: computed('pfaErrors', function(){
-    return !_.isEmpty(this.get('pfaErrors'));
+  hasPfaErrors: computed('pfaErrors.length', function(){
+    //console.log('running');
+    return !this.get('pfaErrors.isEmpty');
   }),
+  supplementalDocsIsValid: function(){
+    this.pfaErrors.add('supplementalDocs', "Must be good");
+    //.match(/^\d*$/)
+    console.log(this.get('pfaErrors.messages'));
+  },
   syncCompletedCheckbox: function(){
+    var c = $('#task_completed');
     if (this.get('hasPfaErrors')) {
-      $('#task_completed').attr('disabled', true );
+      c.prop('checked', true)
+      c.trigger( "click" ) //triggers bound events
+      c.prop('checked', false) //update ui
+      c.attr('disabled', true );
     } else {
-      $('#task_completed').attr('disabled', false);
+      c.attr('disabled', false);
     }
   },
 

@@ -59,26 +59,26 @@ module SalesforceServices
 
       private
 
-        def answer_for(ident)
-          q = @paper.billing_card.questions.find_by_ident("plos_billing.#{ident}")
-          q.present? ? q.answer : nil
-        end
+      def answer_for(ident)
+        q = @paper.billing_card.questions.find_by_ident("plos_billing.#{ident}")
+        q.present? ? q.answer : nil
+      end
 
-        def boolean_from_text_answer_for(ident)
-          a = answer_for(ident)
-          a.is_a?(String) ? text_to_boolean_map[a.downcase] : false
-        end
+      def boolean_from_text_answer_for(ident)
+        a = answer_for(ident)
+        a.is_a?(String) ? text_to_boolean_map[a.downcase] : false
+      end
 
-        def text_to_boolean_map
-          {
-            'yes' => true,
-            'no'  => false,
-          }
-        end
+      def text_to_boolean_map
+        {
+          'yes' => true,
+          'no'  => false,
+        }
+      end
 
-        def manuscript_id # replace this with doi code when done
-          "prefix-#{@paper.id}"
-        end
+      def manuscript_id
+        @paper.doi
+      end
     end
   end
 end

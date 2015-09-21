@@ -1,5 +1,5 @@
 <label class="question-checkbox">
-  {{check-box name=ident checked=checked disabled=disabled}}
+  {{check-box name=ident checked=checked disabled=disabled action="checkboxToggled"}}
 
   {{#if shouldDisplayQuestionText}}
     <p class="{{textClassNames}}">{{{questionText}}}</p>
@@ -11,5 +11,5 @@
 </label>
 
 {{#if template}}
-  <div class="additional-data">{{yield checked}}</div>
+  <div class="additional-data">{{yield additionalDataYieldValue}}</div>
 {{/if}}

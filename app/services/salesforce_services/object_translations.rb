@@ -43,15 +43,15 @@ module SalesforceServices
 
           'PFA_Question_1__c'          => answer_for("pfa_question_1"),
           'PFA_Question_1a__c'         => answer_for("pfa_question_1a"),
-          'PFA_Question_1b__c'         => answer_for("pfa_question_1b"), #must be numeric? Cannot deserialize instance of currency from VALUE_STRING value PFA_Question_1b__c
+          'PFA_Question_1b__c'         => float_answer_for("pfa_question_1b"),
           'PFA_Question_2__c'          => answer_for("pfa_question_2"),
           'PFA_Question_2a__c'         => answer_for("pfa_question_2a"),
-          'PFA_Question_2b__c'         => answer_for("pfa_question_2b"), #must be numeric? Cannot deserialize instance of currency from VALUE_STRING value PFA_Question_1b__c
+          'PFA_Question_2b__c'         => float_answer_for("pfa_question_2b"),
           'PFA_Question_3__c'          => answer_for("pfa_question_3"),
-          'PFA_Question_3a__c'         => answer_for("pfa_question_3a"),
+          'PFA_Question_3a__c'         => float_answer_for("pfa_question_3a"),
           'PFA_Question_4__c'          => answer_for("pfa_question_4"),
-          'PFA_Question_4a__c'         => answer_for("pfa_question_4a"),
-          'PFA_Able_to_Pay_R__c'       => answer_for("pfa_amount_to_pay"), #naming inconsistent
+          'PFA_Question_4a__c'         => float_answer_for("pfa_question_4a"),
+          'PFA_Able_to_Pay_R__c'       => float_answer_for("pfa_amount_to_pay"),
           'PFA_Additional_Comments__c' => answer_for("pfa_additional_comments"),
           'PFA_Supporting_Docs__c'     => boolean_from_text_answer_for("pfa_supporting_docs"), # bool required, non-nil, unlike others
         }
@@ -62,6 +62,10 @@ module SalesforceServices
       def answer_for(ident)
         q = @paper.billing_card.questions.find_by_ident("plos_billing.#{ident}")
         q.present? ? q.answer : nil
+      end
+
+      def float_answer_for(ident) # for data that must be castable to float
+          answer_for(ident).to_f
       end
 
       def boolean_from_text_answer_for(ident)
@@ -77,7 +81,7 @@ module SalesforceServices
       end
 
       def manuscript_id
-        @paper.doi
+        @paper.doi || "doi_missing_for_id_#{@paper.id}"
       end
     end
   end

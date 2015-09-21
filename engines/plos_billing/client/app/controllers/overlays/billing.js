@@ -1,6 +1,5 @@
 import Ember from "ember";
 import TaskController from "tahi/pods/paper/task/controller";
-import RESTless from "tahi/services/rest-less";
 
 const DATA = {
   institutionalAccountProgramList: [
@@ -314,7 +313,7 @@ const DATA = {
   ]
 };
 
-let computed = Ember.computed;
+const { computed } = Ember;
 
 export default TaskController.extend({
   countries: Ember.inject.service(),

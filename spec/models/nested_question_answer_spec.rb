@@ -14,10 +14,24 @@ describe NestedQuestionAnswer do
     end
 
     context "and the value_type is boolean" do
-      before { nested_question_answer.value_type = "boolean "}
+      before { nested_question_answer.value_type = "boolean" }
 
-      it "is not valid with an unsupported truth value" do
-        nested_question_answer.value = "not-supported-truth-value"
+      it "is valid when the value not a truthy value" do
+        nested_question_answer.value = false
+        expect(nested_question_answer.valid?).to be true
+      end
+    end
+
+    context "and the value_type is attachment" do
+      before { nested_question_answer.value_type = "attachment" }
+
+      it "is valid with an attachment" do
+        nested_question_answer.attachment = FactoryGirl.build(:question_attachment, :with_fake_attachment)
+        expect(nested_question_answer.valid?).to be true
+      end
+
+      it "is not valid without an attachment" do
+        nested_question_answer.attachment = nil
         expect(nested_question_answer.valid?).to be false
       end
     end
@@ -25,6 +39,11 @@ describe NestedQuestionAnswer do
 
   describe "#value_type" do
     context "valid values" do
+      it "can set to attachment" do
+        nested_question_answer.value_type = "attachment"
+        expect(nested_question_answer.value_type).to eq "attachment"
+      end
+
       it "can set to text" do
         nested_question_answer.value_type = "text"
         expect(nested_question_answer.value_type).to eq "text"
@@ -43,6 +62,17 @@ describe NestedQuestionAnswer do
   end
 
   describe "#value" do
+    context "and the value_type is attachment" do
+      before { nested_question_answer.value_type = "attachment" }
+
+      it "returns the stored value as an attachment" do
+        attachment = FactoryGirl.build(:question_attachment)
+        attachment[:attachment] = "MyFile.png"
+        nested_question_answer.attachment = attachment
+        expect(nested_question_answer.value).to eq "MyFile.png"
+      end
+    end
+
     context "and the value_type is text" do
       before { nested_question_answer.value_type = "text" }
 

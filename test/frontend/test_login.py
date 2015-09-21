@@ -7,13 +7,14 @@ This test case validates the Aperta login page and associated forgot password pa
 __author__ = 'jgray@plos.org'
 
 from Base.Decorators import MultiBrowserFixture
-from Base.FrontEndTest import FrontEndTest
+#from Base.FrontEndTest import FrontEndTest
+from frontend.common_test import CommonTest
 from Pages.login_page import LoginPage
 from Base.Resources import login_valid_email, login_invalid_email, login_valid_uid, login_valid_pw, login_invalid_pw
-
+from Pages.dashboard import DashboardPage
 
 @MultiBrowserFixture
-class ApertaLoginTest(FrontEndTest):
+class ApertaLoginTest(CommonTest):
   """
   Self imposed AC:
      - validate page elements and styles for:
@@ -75,4 +76,4 @@ class ApertaLoginTest(FrontEndTest):
     login_page.validate_remember_me(login_valid_email, login_valid_pw)
 
 if __name__ == '__main__':
-  FrontEndTest._run_tests_randomly()
+  CommonTest._run_tests_randomly()

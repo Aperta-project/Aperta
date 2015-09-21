@@ -9,14 +9,14 @@ __author__ = 'sbassi@plos.org'
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.FrontEndTest import FrontEndTest
 from Base.Resources import login_valid_uid, affiliation
-from Pages.login_page import LoginPage
+from frontend.common_test import CommonTest
 from frontend.Pages.profile_page import ProfilePage
+from Pages.dashboard import DashboardPage
 
 
 @MultiBrowserFixture
-class ApertaProfileTest(FrontEndTest):
+class ApertaProfileTest(CommonTest):
   """
   Self imposed AC:
      - validate page elements and styles for:
@@ -25,10 +25,10 @@ class ApertaProfileTest(FrontEndTest):
      - upload image
      - reset password
   """
-  
+
   def _go_to_profile(self, init=True):
     """Go to the profile page"""
-    dashboard = self._login() if init else DashboardPage(self.getDriver())
+    dashboard = self.login() if init else DashboardPage(self.getDriver())
     dashboard.click_left_nav()
     dashboard.click_profile_link()
     return ProfilePage(self.getDriver())
@@ -54,4 +54,4 @@ class ApertaProfileTest(FrontEndTest):
 
 
 if __name__ == '__main__':
-  FrontEndTest._run_tests_randomly()
+  CommonTest._run_tests_randomly()

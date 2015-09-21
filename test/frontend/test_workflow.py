@@ -8,15 +8,15 @@ __author__ = 'sbassi@plos.org'
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.FrontEndTest import FrontEndTest
 from Base.Resources import login_valid_email, login_valid_pw
 from frontend.Pages.manuscript_page import ManuscriptPage
 from frontend.Pages.workflow_page import WorkflowPage
 from Pages.login_page import LoginPage
+from frontend.common_test import CommonTest
 
 
 @MultiBrowserFixture
-class ApertaWorkflowTest(FrontEndTest):
+class ApertaWorkflowTest(CommonTest):
   """
   Self imposed AC:
      - validate page elements and styles for:
@@ -24,18 +24,18 @@ class ApertaWorkflowTest(FrontEndTest):
          - Adding cards
          - TODO: Removing cards (NOT READY)
   """
-  
+
   def _go_to_workflow(self):
     """Internal method to reach workflow page"""
-    self._select_preexisting_article()
-    #self._create_article()
+    self.select_preexisting_article()
+    #self.create_article()
     create_manuscript_page = ManuscriptPage(self.getDriver())
     create_manuscript_page.click_workflow_button()
     return WorkflowPage(self.getDriver())
 
   def test_validate_components_styles(self):
     """
-    Validates the presence of the initial page elements      
+    Validates the presence of the initial page elements
     """
     workflow_page = self._go_to_workflow()
     workflow_page.validate_initial_page_elements_styles()
@@ -46,7 +46,6 @@ class ApertaWorkflowTest(FrontEndTest):
     workflow_page = self._go_to_workflow()
     # GET URL
     time.sleep(2)
-    #driver = self.getDriver()
     workflow_url = self._driver.current_url
     # Count cards in first column
     start_cards = workflow_page.count_cards_first_column()
@@ -66,4 +65,4 @@ class ApertaWorkflowTest(FrontEndTest):
 
 
 if __name__ == '__main__':
-  FrontEndTest._run_tests_randomly()
+  CommonTest._run_tests_randomly()

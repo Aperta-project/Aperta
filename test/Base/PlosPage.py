@@ -3,14 +3,19 @@
 __author__ = 'jkrzemien@plos.org'
 
 import platform
+import os
+import tempfile
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.common.keys import Keys
-from CustomException import ElementDoesNotExistAssertionError
 from bs4 import BeautifulSoup, NavigableString
+import requests
+
+from CustomException import ElementDoesNotExistAssertionError
 from LinkVerifier import LinkVerifier
 import CustomExpectedConditions as CEC
 import Config as Config
@@ -147,3 +152,21 @@ class PlosPage(object):
     """refreshes current page"""
     self._driver.refresh()
     return self
+
+  def download_file(self, url, file_name=''):
+    """
+    Downloads a file from an URL. Is file_name is provided, will use this file name, is not,
+    a unique unused file name will be generated and retorned from the function.
+    """
+    r = requests.get(url, stream=True)
+    if file_name:
+      fh = open(os.path.join('/tmp/', file_name), 'wb')
+    else:
+      fh = tempfile.NamedTemporaryFile(mode='w+b', dir='/tmp', delete=False)
+      file_name = fh.name
+    for chunk in r.iter_content(chunk_size=1024): 
+      if chunk:
+        fh.write(chunk)
+        fh.flush()
+    fh.close()
+    return file_name

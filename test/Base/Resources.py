@@ -70,7 +70,6 @@ psql_db = getenv('APERTA_PSQL_DBNAME', 'ddhi6454uf6kmr')
 # psql_pw = getenv('APERTA_PSQL_PW', 'bS0R1f6NY3-BrB70A49jOAzuTJ')
 # psql_db = getenv('APERTA_PSQL_DBNAME', 'd1n1umf877c2e3')
 
-
 editor_name_0 = 'Hendrik W. van Veen'
 user_email_0 = 'trash87567@ariessc.com'
 editor_name_1 = 'Anthony George'
@@ -79,6 +78,12 @@ user_pw_editor = 'test_password'
 
 # Fake affiliations
 affiliation = {'institution':'Universidad Del Este', 'title': 'Dr.',
-               'country':'Argentina', 'start':'12/01/2014', 
+               'country':'Argentina', 'start':'12/01/2014',
                'end':'08/11/2015', 'email': 'test@test.org',
-               'department':'Molecular Biology'}
+               'department':'Molecular Biology',}
+
+# Author for Author card
+author = {'first': 'Jane', 'middle': 'M', 'last': 'Doe',
+          'title': 'Dr.', 'email': 'test@test.org',
+          'department':'Molecular Biology', '1_institution':'Universidad Del Este',
+          '2_institution': 'Universidad Nacional del Sur',}

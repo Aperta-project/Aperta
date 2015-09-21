@@ -5,6 +5,7 @@ Page Object Model for the Login page and the Forgot Your Password page.
 """
 
 from selenium.webdriver.common.by import By
+
 from authenticated_page import AuthenticatedPage, application_typeface, tahi_green, white
 
 __author__ = 'jgray@plos.org'

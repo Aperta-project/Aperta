@@ -8,9 +8,11 @@
   {{yield textYieldValue}}
 {{/if}}
 
-
-{{input name=ident
-        value=model.answer.value
-        class=inputClassNames
-        placeholder=placeholderText
-        disabled=disabled}}
+<div>
+  {{#if label}}<span class="text-field-title">{{label}}</span>{{/if}}
+  {{input name=ident
+          value=model.answer.value
+          class=inputClassNames
+          placeholder=placeholderText
+          disabled=disabled}}
+</div>

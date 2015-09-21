@@ -9,6 +9,7 @@ QuestionComponent = Ember.Component.extend({
     var ident, question;
     ident = this.get('ident');
     Ember.assert('You must specify an ident, set to name attr', ident);
+    //this is auto-generated from a coffeescript to js conversion, and should be cleaned up at some point
     question = this.get('versioned') ? this.get('task.paper.latestDecision.questions').find((function(_this) {
       return function(item) {
         return item.get('task') === _this.get('task') && item.get('ident') === ident;

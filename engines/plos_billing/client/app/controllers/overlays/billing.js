@@ -317,26 +317,22 @@ const DATA = {
 let computed = Ember.computed;
 
 export default TaskController.extend({
-  setSFValidationObjects: function() {
-    var h = {
-      'pfaSupportingDocs': this.findQuestion('pfa_supporting_docs')
-    }
-    this.set('needsValidationForSalesforce', h);
-  },
-  needsValidationForSalesforce: {},
-  findQuestion: function(ident){
-    return this.get("model.questions").findProperty("ident", "plos_billing." + ident)
-  },
-  validatePfaData: Ember.observer("needsValidationForSalesforce.pfaSupportingDocs", function() {
-    console.log('hi');
+  validatePfaData: Ember.observer("model.questions.@each.answer", function() {
+    //validate individual items
+    //update complete func
+    this.syncCompletedCheckbox();
   }),
-  //disable_complete: function(){
-    //$('#task_completed').attr('disabled', true);
-  //},
-  //enable_complete: function(){
-    //$('#task_completed').attr('disabled', false);
-  //},
-
+  pfaErrors: new DS.Errors,
+  hasPfaErrors: computed('pfaErrors', function(){
+    return !_.isEmpty(this.get('pfaErrors'));
+  }),
+  syncCompletedCheckbox: function(){
+    if (this.get('hasPfaErrors')) {
+      $('#task_completed').attr('disabled', true );
+    } else {
+      $('#task_completed').attr('disabled', false);
+    }
+  },
 
 
 

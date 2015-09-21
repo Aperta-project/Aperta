@@ -10,19 +10,19 @@
   {{/if}}
 
   {{#if hasBlock}}
-    <div class="additional-data">{{yield textYieldValue}}</div>
+    <div class="additional-data">{{yield additionalDataYieldValue}}</div>
   {{/if}}
 
 {{else}}
   <label class="question-checkbox">
-    {{check-box name=ident checked=checked disabled=disabled}}
+    {{check-box name=ident checked=checked disabled=disabled action="checkboxToggled"}}
     {{#if shouldDisplayQuestionText}}
       <p class="{{textClassNames}}">{{{questionText}}}</p>
     {{/if}}
   </label>
 
   {{#if hasBlock}}
-    <div class="additional-data">{{yield textYieldValue}}</div>
+    <div class="additional-data">{{yield additionalDataYieldValue}}</div>
   {{/if}}
 
 {{/if}}

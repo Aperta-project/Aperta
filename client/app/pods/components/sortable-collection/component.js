@@ -50,7 +50,7 @@ export default Ember.Component.extend({
                   .addClass('column-content--dragging');
       },
 
-      receive: function (event, ui) {
+      receive(event, ui) {
 
         ui.item.__source__.set("phaseUnchanged", false);
         let sourcePhase = ui.item.__source__.get("phase");

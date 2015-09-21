@@ -6,19 +6,24 @@ export default NestedQuestionComponent.extend({
 
   textClassNames: ["model-question"],
 
-  textYieldValue: { yieldingForText: true },
-
-  checked: Ember.computed('model.answer.value', {
-    get() {
-      let answer = this.get('model.answer.value');
-      return answer === 'true' || answer === true;
-    },
-    set(key, newValue) {
-      return this.set('model.answer.value', newValue);
-    }
+  additionalDataYieldValue: Ember.computed('checked', 'model.answer.value', function(){
+    return { checked: this.get('checked'), yieldingForAdditionalData: true };
   }),
 
+  textYieldValue: Ember.computed('checked', 'model.answer.value', function(){
+    return { checked: this.get('checked'), yieldingForText: true };
+  }),
+
+  setCheckedValue: function(bool){
+    this.set('checked', bool);
+    this.set('model.answer.value', bool);
+  },
+
   actions: {
+    checkboxToggled: function(checkbox){
+      this.setCheckedValue(checkbox.get('checked'));
+    },
+
     additionalDataAction() {
       this.get('additionalData').pushObject({});
     }

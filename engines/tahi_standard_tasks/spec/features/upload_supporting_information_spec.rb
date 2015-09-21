@@ -13,7 +13,7 @@ feature "Upload Supporting Information", js: true, selenium: true do
   end
 
   before do
-    login_as author
+    login_as(author, scope: :user)
     visit "/"
 
     allow(DownloadSupportingInfoWorker).to receive(:perform_async) do |supporting_info_id, url|

@@ -6,7 +6,7 @@ feature 'Comments on cards', js: true do
   let!(:paper) { FactoryGirl.create(:paper_with_phases, :submitted, creator: admin) }
 
   before do
-    login_as admin
+    login_as(admin, scope: :user)
     visit "/"
   end
 

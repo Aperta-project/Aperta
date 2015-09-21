@@ -6,7 +6,7 @@ feature "Journal Administration", js: true do
   let!(:another_journal) { create :journal }
 
   before do
-    login_as user
+    login_as(user, scope: :user)
     visit "/"
   end
 

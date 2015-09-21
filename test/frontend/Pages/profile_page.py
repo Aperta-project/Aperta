@@ -66,8 +66,9 @@ class ProfilePage(AuthenticatedPage):
     :param title: title to validate
     :return: None
     """
+    # This needs to be reverted to use a formal style - the profile page is a style mess
     assert application_typeface in title.value_of_css_property('font-family')
-    #https://www.pivotaltracker.com/story/show/103368442
+    # https://www.pivotaltracker.com/story/show/103368442
     assert title.value_of_css_property('font-size') == '27px'
     assert title.value_of_css_property('font-weight') == '500'
     assert title.value_of_css_property('line-height') == '29.7px'
@@ -106,14 +107,12 @@ class ProfilePage(AuthenticatedPage):
     reset_btn = self._get(self._reset_btn)
     self.validate_secondary_big_green_button_style(reset_btn)
     avatar = self._get(self._avatar)
-    avatar.value_of_css_property('height') == '160px'
-    avatar.value_of_css_property('width') == '160px'    
+    self.validate_large_avatar_style(avatar)
     self._actions.move_to_element(self._get(self._avatar_div)).perform()
     time.sleep(1)
     avatar_hover = self._get(self._avatar_hover)
     assert avatar_hover.text == 'UPLOAD NEW'
-    assert avatar_hover.value_of_css_property('font-size') == '14px'
-    assert 'helvetica' in avatar_hover.value_of_css_property('font-family')
+    self.validate_large_avatar_hover_style(avatar_hover)
     return self
 
   def click_reviewer_recommendation_button(self):
@@ -150,8 +149,9 @@ class ProfilePage(AuthenticatedPage):
     reset_btn = self._get(self._reset_btn)
     reset_btn.click()
     time.sleep(3)
-    message = self._get(self._success_message).text
-    assert "Reset password instructions have been sent to the your email address." in message
+    message = self._get(self._success_message)
+    assert "Reset password instructions have been sent to the your email address." in message.text
+    self.validate_flash_success_style(message)
 
   def validate_affiliation_form_css(self):
     """Validate css from add affiliation form"""
@@ -160,20 +160,27 @@ class ProfilePage(AuthenticatedPage):
     assert add_aff_title.text == 'New Affiliation'
     self.validate_application_h3_style(add_aff_title)
     institution_input = self._get(self._institution_input)
-    self.validate_input_form_style(institution_input)
+    # https://www.pivotaltracker.com/story/show/103683668
+    # self.validate_input_field_style(institution_input)
     department_input = self._get(self._department_input)
-    self.validate_input_form_style(department_input)
+    # https://www.pivotaltracker.com/story/show/103683668
+    # self.validate_input_field_style(department_input)
     title_input = self._get(self._tile_input)
-    self.validate_input_form_style(title_input)
+    # https://www.pivotaltracker.com/story/show/103683668
+    # self.validate_input_field_style(title_input)
     country = self._get(self._country)
     # TODO: Following method is here until bug #102008802 is fixed
-    self.validate_input_form_style(country, color='rgba(51, 51, 51, 1)')
+    # https://www.pivotaltracker.com/story/show/103683668
+    # self.validate_input_field_style(country)
     datepicker_1 = self._get(self._datepicker_1)
-    self.validate_input_form_style(datepicker_1)
+    # https://www.pivotaltracker.com/story/show/103683668
+    # self.validate_input_field_style(datepicker_1)
     datepicker_2 = self._get(self._datepicker_2)
-    self.validate_input_form_style(datepicker_2)
+    # https://www.pivotaltracker.com/story/show/103683668
+    # self.validate_input_field_style(datepicker_2)
     email = self._get(self._email)
-    self.validate_input_form_style(email)
+    # https://www.pivotaltracker.com/story/show/103683668
+    # self.validate_input_field_style(email)
     add_done_btn = self._get(self._add_done_btn)
     self.validate_secondary_big_green_button_style(add_done_btn)
     add_cancel_btn = self._get(self._add_cancel_btn)

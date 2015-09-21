@@ -1176,13 +1176,11 @@ class AuthenticatedPage(PlosPage):
         avatar.value_of_css_property('font-family')
     assert avatar.value_of_css_property('font-size') == '14px', avatar.value_of_css_property('font-size')
     # This color is not represented in the style guide
-    assert avatar.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', avatar.value_of_css_property('color')
-    assert avatar.value_of_css_property('background-color') == 'rgba(0, 145, 0, 0.8)', \
+    assert avatar.value_of_css_property('color') == 'rgba(15, 116, 0, 1)', avatar.value_of_css_property('color')
+    assert avatar.value_of_css_property('background-color') == 'rgba(142, 203, 135, 1)', \
         avatar.value_of_css_property('background-color')
     assert avatar.value_of_css_property('line-height') == '20px', avatar.value_of_css_property('line-height')
     assert avatar.value_of_css_property('vertical-align') == 'middle', avatar.value_of_css_property('vertical-align')
-    assert avatar.value_of_css_property('width') == '160px', avatar.value_of_css_property('width')
-    assert avatar.value_of_css_property('height') == '160px', avatar.value_of_css_property('height')
 
   @staticmethod
   def validate_thumbnail_avatar_style(avatar):

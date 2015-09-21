@@ -1,8 +1,8 @@
 import DS from 'ember-data';
+import QuestionAttachmentOwner from 'tahi/models/question-attachment-owner';
 
-export default DS.Model.extend({
+export default QuestionAttachmentOwner.extend({
   decision: DS.belongsTo('decision', { async: false }),
-  questionAttachment: DS.belongsTo('question-attachment', { async: false }),
   task: DS.belongsTo('task', {
     polymorphic: true,
     inverse: 'questions',

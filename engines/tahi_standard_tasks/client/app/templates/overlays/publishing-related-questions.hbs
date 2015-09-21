@@ -16,11 +16,11 @@
                          textClassNames=""
                          disabled=isSubmissionTaskNotEditable}}
         <br>
-        {{question-uploader ident="publishing_related_questions.published_elsewhere.upload_related_work" task=model
-                            question="Please also upload a copy of the related work with your submission as a 'Related Manuscript' item. Note that reviewers may be asked to comment on the overlap between the related submissions."
-                            updateStore="updateStore"
-                            accept=".docx,.pdf"
-                            disabled=isSubmissionTaskNotEditable}}
+        {{nested-question-uploader ident="published_elsewhere.upload_related_work"
+                         task=model
+                         updateStore="updateStore"
+                         accept=".docx,.pdf"
+                         disabled=isSubmissionTaskNotEditable}}
       </div>
     {{/if}}
   {{/nested-question-radio}}

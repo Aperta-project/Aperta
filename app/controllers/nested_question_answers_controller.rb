@@ -5,16 +5,21 @@ class NestedQuestionAnswersController < ApplicationController
 
   def create
     answer = fetch_answer
-    answer.save!
+    if answer.save
+      process_attachment(answer)
+    end
     render json: answer, serializer: NestedQuestionAnswerSerializer
   end
 
   def update
     answer = fetch_answer
-    answer.update_attributes!(
-      value: existing_answer_params[:nested_question_answer][:value],
-      additional_data: existing_answer_params[:additional_data]
-    )
+    updated_attrs = {
+      value: answer_params[:value],
+      additional_data: answer_params[:additional_data]
+    }
+    if answer.update_attributes(updated_attrs)
+      process_attachment(answer)
+    end
     render json: answer, serializer: NestedQuestionAnswerSerializer
   end
 
@@ -23,15 +28,15 @@ class NestedQuestionAnswersController < ApplicationController
   def fetch_answer
     @fetch_answer ||= begin
       if params[:id]
-        NestedQuestionAnswer.where(id: existing_answer_params[:id]).first!
+        NestedQuestionAnswer.where(id: params[:id]).first!
       else
         NestedQuestionAnswer.new(
           nested_question_id: nested_question.id,
           value_type: nested_question.value_type,
-          value: new_answer_params[:value],
-          owner_id: new_answer_params[:owner_id],
-          owner_type: lookup_owner_type(new_answer_params[:owner_type]),
-          additional_data: new_answer_params[:additional_data]
+          value: answer_params[:value],
+          owner_id: answer_params[:owner_id],
+          owner_type: lookup_owner_type(answer_params[:owner_type]),
+          additional_data: answer_params[:additional_data]
         )
       end
     end
@@ -44,14 +49,8 @@ class NestedQuestionAnswersController < ApplicationController
     end
   end
 
-  def new_answer_params
-    @new_answer_params ||= params.require(:nested_question_answer).permit(:owner_id, :owner_type, :value).tap do |whitelisted|
-      whitelisted[:additional_data] = params[:nested_question_answer][:additional_data]
-    end
-  end
-
-  def existing_answer_params
-    @existing_answer_params ||= params.permit(:id, nested_question_answer: [:value]).tap do |whitelisted|
+  def answer_params
+    @answer_params ||= params.require(:nested_question_answer).permit(:owner_id, :owner_type, :value, :url).tap do |whitelisted|
       whitelisted[:additional_data] = params[:nested_question_answer][:additional_data]
     end
   end
@@ -63,11 +62,24 @@ class NestedQuestionAnswersController < ApplicationController
     when "Funder"
       TahiStandardTasks::Funder.name
     else
-      raise "Don't know how to assign to #{new_answer_params[:owner_type]}"
+      raise "Don't know how to assign to #{answer_params[:owner_type]}"
     end
   end
 
   def enforce_policy
     authorize_action!(nested_question_answer: fetch_answer)
   end
+
+  def has_attachment?
+    answer_params[:url].present?
+  end
+
+  def process_attachment(answer)
+    if has_attachment?
+      attachment = answer.attachment || answer.build_attachment
+      attachment.update_attribute :status, "processing"
+      DownloadQuestionAttachmentWorker.perform_async attachment.id, answer_params[:url]
+    end
+  end
+
 end

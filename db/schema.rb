@@ -358,6 +358,7 @@ ActiveRecord::Schema.define(version: 20151016173854) do
     t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "question_type"
   end
 
   add_index "question_attachments", ["question_id"], name: "index_question_attachments_on_question_id", using: :btree

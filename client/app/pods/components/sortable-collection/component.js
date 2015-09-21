@@ -6,7 +6,8 @@ export default Ember.Component.extend({
   classNameBindings: ['sortableNoCards'],
   taskTemplates: Ember.computed.alias('phase.taskTemplates'),
   sortableNoCards: Ember.computed.empty('taskTemplates'),
-  phaseUnchanged: false,
+  phaseChanged: false,
+  domChanged: false,
 
   didInsertElement() {
     this._super();
@@ -16,6 +17,14 @@ export default Ember.Component.extend({
   willDestroyElement() {
     this.$().sortable('destroy');
   },
+
+  changedWithinPhase: Ember.computed('phaseChanged', 'domChanged', function() {
+    if (this.get('domChanged') === true && this.get('phaseChanged') === false) {
+      return true;
+    } else {
+      return false;
+    }
+  }),
 
   sortTaskTemplate(oldIndex, newIndex) {
     let taskTemplate = this.get('taskTemplates').objectAt(oldIndex);
@@ -41,7 +50,6 @@ export default Ember.Component.extend({
 
       start(event, ui) {
 
-        self.set("phaseUnchanged", true);
         ui.item.__source__ = self;
         ui.item.data('old-index', ui.item.index());
 
@@ -50,9 +58,12 @@ export default Ember.Component.extend({
                   .addClass('column-content--dragging');
       },
 
-      receive(event, ui) {
+      update() {
+        self.set("domChanged", true);
+      },
 
-        ui.item.__source__.set("phaseUnchanged", false);
+      receive(event, ui) {
+        ui.item.__source__.set("phaseChanged", true);
         let sourcePhase = ui.item.__source__.get("phase");
         let newPhase = self.get("phase");
         let oldIndex = ui.item.data('old-index');
@@ -68,12 +79,13 @@ export default Ember.Component.extend({
 
       stop(event, ui) {
 
-        if (self.get("phaseUnchanged")) {
+        if (self.get("changedWithinPhase")) {
           self.sortTaskTemplate(ui.item.data('old-index'), ui.item.index());
           self.sendAction('itemUpdated');
         }
 
         ui.item.removeData('old-index');
+        self.setProperties({phaseChanged: false, domChanged: false});
 
         $(ui.item).removeClass('card--dragging')
                   .closest('.column-content')

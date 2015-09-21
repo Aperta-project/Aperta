@@ -8,6 +8,5 @@ export default OverlayView.extend({
   didInsertElement: function() {
     let choice = $(".payment-method .select2-container").select2("val");
     this.get("controller").set("selectedPaymentMethod", choice);
-    this.get("controller").setSFValidationObjects();
   }
 });

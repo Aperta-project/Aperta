@@ -39,15 +39,15 @@ module SalesforceServices
 
           'PFA_Question_1__c'          => answer_for("pfa_question_1"),
           'PFA_Question_1a__c'         => answer_for("pfa_question_1a"),
-          'PFA_Question_1b__c'         => answer_for("pfa_question_1b"),
+          'PFA_Question_1b__c'         => answer_for("pfa_question_1b"), #must be numeric? Cannot deserialize instance of currency from VALUE_STRING value PFA_Question_1b__c
           'PFA_Question_2__c'          => answer_for("pfa_question_2"),
           'PFA_Question_2a__c'         => answer_for("pfa_question_2a"),
-          'PFA_Question_2b__c'         => answer_for("pfa_question_2b"),
+          'PFA_Question_2b__c'         => answer_for("pfa_question_2b"), #must be numeric? Cannot deserialize instance of currency from VALUE_STRING value PFA_Question_1b__c
           'PFA_Question_3__c'          => answer_for("pfa_question_3"),
           'PFA_Question_3a__c'         => answer_for("pfa_question_3a"),
           'PFA_Question_4__c'          => answer_for("pfa_question_4"),
           'PFA_Question_4a__c'         => answer_for("pfa_question_4a"),
-          'PFA_Able_to_Pay_R__c'       => answer_for("pfa_amount_to_pay"),
+          'PFA_Able_to_Pay_R__c'       => answer_for("pfa_amount_to_pay"), #naming inconsistent
           'PFA_Additional_Comments__c' => answer_for("pfa_additional_comments"),
           'PFA_Supporting_Docs__c'     => answer_for("pfa_supporting_docs"), # can't be nil, unlike others
         }

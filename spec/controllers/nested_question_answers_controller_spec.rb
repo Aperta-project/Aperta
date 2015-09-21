@@ -9,11 +9,24 @@ describe NestedQuestionAnswersController do
     sign_in user
   end
 
+  shared_examples_for "processing attachments for NestedQuestionAnswersController" do
+    let(:attachment_params){ { url: "http://example.com/image.png" } }
+
+    it "creates an question attachment" do
+      expect { do_request(params: attachment_params) }.to change { QuestionAttachment.count }.by(1)
+    end
+
+    it "queues a download worker" do
+      do_request(params: attachment_params)
+      expect(DownloadQuestionAttachmentWorker).to have_queued_job(NestedQuestionAnswer.last.attachment.id, attachment_params[:url])
+    end
+  end
+
   describe "#create" do
     let(:nested_question) { FactoryGirl.create(:nested_question) }
     let(:owner) { nested_question.owner }
 
-    def do_request
+    def do_request(params: {})
       post(:create,
         nested_question_id: nested_question.to_param,
         nested_question_answer: {
@@ -21,7 +34,7 @@ describe NestedQuestionAnswersController do
           owner_id: owner.id,
           owner_type: owner.type,
           additional_data: { "insitution-id" => "123" }
-        },
+        }.merge(params),
         format: :json
       )
     end
@@ -42,6 +55,8 @@ describe NestedQuestionAnswersController do
       do_request
       expect(response.status).to eq(200)
     end
+
+    include_examples "processing attachments for NestedQuestionAnswersController"
   end
 
   describe "#update" do
@@ -49,7 +64,7 @@ describe NestedQuestionAnswersController do
     let(:nested_question){ FactoryGirl.create(:nested_question) }
     let(:owner){ nested_question.owner }
 
-    def do_request
+    def do_request(params:{})
       put(:update,
         id: nested_question_answer.to_param,
         nested_question_id: nested_question.to_param,
@@ -58,7 +73,7 @@ describe NestedQuestionAnswersController do
           owner_id: owner.id,
           owner_type: owner.type,
           additional_data: { "insitution-id" => "234" }
-        },
+        }.merge(params),
         format: :json
       )
     end
@@ -77,5 +92,7 @@ describe NestedQuestionAnswersController do
       do_request
       expect(response.status).to eq(200)
     end
+
+    include_examples "processing attachments for NestedQuestionAnswersController"
   end
 end

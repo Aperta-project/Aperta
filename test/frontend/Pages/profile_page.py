@@ -151,7 +151,8 @@ class ProfilePage(AuthenticatedPage):
     time.sleep(3)
     message = self._get(self._success_message)
     assert "Reset password instructions have been sent to the your email address." in message.text
-    self.validate_flash_success_style(message)
+    # https://www.pivotaltracker.com/story/show/103710924
+    # self.validate_flash_success_style(message)
 
   def validate_affiliation_form_css(self):
     """Validate css from add affiliation form"""
@@ -198,7 +199,7 @@ class ProfilePage(AuthenticatedPage):
     email.send_keys(affiliation['email'])
     time.sleep(1)
     add_done_btn = self._get(self._add_done_btn)
-    self.validate_secondary_green_button_style(add_done_btn)
+    self.validate_secondary_big_green_button_style(add_done_btn)
     '''
     # This block is cancelled until in-situ investigation on why data
     # is not entered when add_done_btn is clicked.

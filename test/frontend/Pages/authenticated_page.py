@@ -352,7 +352,7 @@ class AuthenticatedPage(PlosPage):
     assert application_typeface in paragraph.value_of_css_property('font-family'), \
         paragraph.value_of_css_property('font-family')
     assert paragraph.value_of_css_property('font-size') == '14px', paragraph.value_of_css_property('font-size')
-    assert paragraph.value_of_css_property('font-weight') == '500', paragraph.value_of_css_property('font-weight')
+    assert paragraph.value_of_css_property('font-weight') == '400', paragraph.value_of_css_property('font-weight')
     assert paragraph.value_of_css_property('line-height') == '20px', paragraph.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
     assert paragraph.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', paragraph.value_of_css_property('color')
@@ -367,7 +367,7 @@ class AuthenticatedPage(PlosPage):
     assert manuscript_typeface in paragraph.value_of_css_property('font-family'), \
         paragraph.value_of_css_property('font-family')
     assert paragraph.value_of_css_property('font-size') == '14px', paragraph.value_of_css_property('font-size')
-    assert paragraph.value_of_css_property('font-weight') == '500', paragraph.value_of_css_property('font-weight')
+    assert paragraph.value_of_css_property('font-weight') == '400', paragraph.value_of_css_property('font-weight')
     assert paragraph.value_of_css_property('line-height') == '20px', paragraph.value_of_css_property('line-height')
     # This color is not represented in the tahi palette
     assert paragraph.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', paragraph.value_of_css_property('color')
@@ -992,25 +992,6 @@ class AuthenticatedPage(PlosPage):
     assert button.value_of_css_property('padding-left') == '12px', button.value_of_css_property('padding-left')
     assert button.value_of_css_property('padding-right') == '12px', button.value_of_css_property('padding-right')
 
-  @staticmethod
-  def validate_secondary_grey_small_button_modal_style(button):
-    """
-    Ensure consistency in rendering page and overlay text buttons across the application
-    :param button: button to validate
-    :return: None
-    TODO: Find out why background-color property is different in CI
-    """
-    assert application_typeface in button.value_of_css_property('font-family')
-    assert button.value_of_css_property('font-size') == '14px'
-    assert button.value_of_css_property('font-weight') == '400'
-    assert button.value_of_css_property('line-height') == '20px'
-    assert button.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
-    assert button.value_of_css_property('background-color') in ('rgba(237, 237, 237, 1)',
-                                                                'rgba(220, 220, 220, 1)')
-    assert button.value_of_css_property('text-align') == 'center'
-    assert button.value_of_css_property('text-transform') == 'uppercase'
-
-
   # Form Styles ==============================
   @staticmethod
   def validate_input_field_label_style(label):
@@ -1358,32 +1339,3 @@ class AuthenticatedPage(PlosPage):
     assert th.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', th.value_of_css_property('color')
     assert th.value_of_css_property('text-align') == 'left', th.value_of_css_property('text-align')
     assert th.value_of_css_property('vertical-align') == 'top', th.value_of_css_property('vertical-align')
-
-  """
-  calls to these methods need to be remapped to canonical methods
-  @staticmethod
-  def validate_modal_link_style(link):
-    """
-    # Ensure consistency in rendering links across the application
-    # :param link: link to validate
-    """
-    assert application_typeface in link.value_of_css_property('font-family')
-    assert link.value_of_css_property('font-size') == '14px'
-    assert link.value_of_css_property('line-height') == '20px'
-    assert link.value_of_css_property('background-color') == 'transparent'
-    assert link.value_of_css_property('color') == 'rgba(119, 119, 119, 1)'
-    assert link.value_of_css_property('font-weight') == '400'
-
-  @staticmethod
-  def validate_p_style(text):
-    """
-    # Ensure consistency in rendering paragraph text across the application
-    # :param text: text to validate
-    """
-    assert application_typeface in text.value_of_css_property('font-family')
-    assert text.value_of_css_property('font-size') == '14px'
-    assert text.value_of_css_property('line-height') == '20px'
-    assert text.value_of_css_property('background-color') == 'transparent'
-    assert text.value_of_css_property('color') == 'rgba(0, 0, 0, 1)'
-    assert text.value_of_css_property('font-weight') == '400'
-  """

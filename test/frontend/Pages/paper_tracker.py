@@ -75,7 +75,7 @@ class PaperTrackerPage(AuthenticatedPage):
     members_th = self._get(self._paper_tracker_table_members_th)
     self.validate_table_heading_style(members_th)
     papers = []
-    if paper_count > 0:
+    if total_count > 0:
       for journal in journal_ids:
         journal_papers = PgSQL().query('SELECT title, id, submitted_at, paper_type, short_title '
                                'FROM papers '
@@ -83,7 +83,7 @@ class PaperTrackerPage(AuthenticatedPage):
                                'ORDER BY submitted_at ASC;', (journal, 'submitted'))
         papers.append(journal_papers)
 
-    if paper_count > 0:
+    if total_count > 0:
       table_rows = self._gets(self._paper_tracker_table_tbody_row)
       count = 0
       for row in table_rows:

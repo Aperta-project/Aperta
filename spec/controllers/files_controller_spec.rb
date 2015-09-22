@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe SupportingInformationFilesController, redis: true do
+describe SupportingInformationFilesController do
   let(:user) { create :user }
   let(:paper) do
     FactoryGirl.create(:paper, creator: user)

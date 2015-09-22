@@ -96,7 +96,7 @@ describe InvitationsController do
     end
   end
 
-  describe "DELETE /invitations/:id", redis: true do
+  describe "DELETE /invitations/:id" do
     let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task) }
 
     it "initiates the task callback" do
@@ -110,7 +110,7 @@ describe InvitationsController do
     context "Invitation with invitee" do
       let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task) }
 
-      it "deletes the invitation queues up email job", redis: true do
+      it "deletes the invitation queues up email job" do
         delete(:destroy, {
           format: "json",
           id: invitation.id
@@ -123,7 +123,7 @@ describe InvitationsController do
     context "Invitation witout invitee" do
       let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: nil, email: "test@example.com", task: task) }
 
-      it "deletes the invitation queues up email job", redis: true do
+      it "deletes the invitation queues up email job" do
         expect(invitation.invitee).to be nil
         delete(:destroy, {
           format: "json",

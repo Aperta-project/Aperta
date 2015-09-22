@@ -5,6 +5,6 @@ class QuestionAttachmentUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "uploads/question/#{model.question.id}/#{model.class.to_s.underscore}/#{model.id}"
+    "uploads/question/#{model.question_id}/#{model.class.to_s.underscore}/#{model.id}"
   end
 end

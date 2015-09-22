@@ -263,7 +263,7 @@ ActiveRecord::Schema.define(version: 20151016173854) do
 
   create_table "nested_questions", force: :cascade do |t|
     t.string   "text"
-    t.string   "value_type"
+    t.string   "value_type", null: false
     t.string   "ident",      null: false
     t.integer  "parent_id"
     t.integer  "lft",        null: false

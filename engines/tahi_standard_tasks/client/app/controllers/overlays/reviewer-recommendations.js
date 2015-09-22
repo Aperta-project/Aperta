@@ -14,7 +14,6 @@ export default TaskController.extend(ValidationErrorsMixin, {
   }),
 
   actions: {
-
     addNewReviewer() {
       let recommendation = this.store.createRecord('reviewerRecommendation', {
         reviewerRecommendationsTask: this.get('model')
@@ -25,6 +24,7 @@ export default TaskController.extend(ValidationErrorsMixin, {
 
     cancelRecommendation() {
       this.set('showNewReviewerForm', false);
+      this.get('newRecommendation').destroyRecord();
       this.set('newRecommendation', null);
       this.clearAllValidationErrors();
     },

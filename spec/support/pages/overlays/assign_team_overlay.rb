@@ -14,6 +14,8 @@ class AssignTeamOverlay < CardOverlay
   end
 
   def assign_role_for_user(role_name, user)
+    find(".invite-reviewers")
+
     select2 role_name, from: "Role"
     wait_for_ajax
 

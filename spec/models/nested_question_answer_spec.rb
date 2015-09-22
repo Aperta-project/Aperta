@@ -25,13 +25,13 @@ describe NestedQuestionAnswer do
     context "and the value_type is attachment" do
       before { nested_question_answer.value_type = "attachment" }
 
-      it "is valid with an attachment" do
-        nested_question_answer.attachment = FactoryGirl.build(:question_attachment, :with_fake_attachment)
+      it "is valid with a value" do
+        nested_question_answer.value = "http://someimagepath.png"
         expect(nested_question_answer.valid?).to be true
       end
 
-      it "is not valid without an attachment" do
-        nested_question_answer.attachment = nil
+      it "is not valid without a value" do
+        nested_question_answer.value = nil
         expect(nested_question_answer.valid?).to be false
       end
     end
@@ -65,10 +65,8 @@ describe NestedQuestionAnswer do
     context "and the value_type is attachment" do
       before { nested_question_answer.value_type = "attachment" }
 
-      it "returns the stored value as an attachment" do
-        attachment = FactoryGirl.build(:question_attachment)
-        attachment[:attachment] = "MyFile.png"
-        nested_question_answer.attachment = attachment
+      it "returns the stored value" do
+        nested_question_answer.value = "MyFile.png"
         expect(nested_question_answer.value).to eq "MyFile.png"
       end
     end

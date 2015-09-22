@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import RESTless from 'tahi/services/rest-less';
 
 /* Template:
  * {{#auto-suggest endpoint="/api/users"
@@ -27,6 +26,7 @@ import RESTless from 'tahi/services/rest-less';
 */
 
 export default Ember.Component.extend({
+  restless: Ember.inject.service('restless'),
   classNames: ['form-control', 'auto-suggest-border'],
 
   // -- attrs:
@@ -134,7 +134,7 @@ export default Ember.Component.extend({
     let data = {};
     data[this.get('queryParameter')] = this.get('resultText');
 
-    RESTless.get(url, data).then((response) => {
+    this.get('restless').get(url, data).then((response) => {
       let results = this.get('parseResponseFunction')(response);
       this.set('searchResults',  results);
       this.decrementProperty('searching');

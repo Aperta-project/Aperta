@@ -5,7 +5,7 @@ class NestedQuestionAnswersController < ApplicationController
 
   def create
     answer = fetch_answer
-    if answer.save
+    if answer.save!
       process_attachment(answer)
     end
     render json: answer, serializer: NestedQuestionAnswerSerializer
@@ -17,7 +17,7 @@ class NestedQuestionAnswersController < ApplicationController
       value: answer_params[:value],
       additional_data: answer_params[:additional_data]
     }
-    if answer.update_attributes(updated_attrs)
+    if answer.update_attributes!(updated_attrs)
       process_attachment(answer)
     end
     render json: answer, serializer: NestedQuestionAnswerSerializer
@@ -50,7 +50,7 @@ class NestedQuestionAnswersController < ApplicationController
   end
 
   def answer_params
-    @answer_params ||= params.require(:nested_question_answer).permit(:owner_id, :owner_type, :value, :url).tap do |whitelisted|
+    @answer_params ||= params.require(:nested_question_answer).permit(:owner_id, :owner_type, :value).tap do |whitelisted|
       whitelisted[:additional_data] = params[:nested_question_answer][:additional_data]
     end
   end
@@ -71,14 +71,14 @@ class NestedQuestionAnswersController < ApplicationController
   end
 
   def has_attachment?
-    answer_params[:url].present?
+    nested_question.value_type == "attachment" && answer_params[:value].present?
   end
 
   def process_attachment(answer)
     if has_attachment?
       attachment = answer.attachment || answer.build_attachment
       attachment.update_attribute :status, "processing"
-      DownloadQuestionAttachmentWorker.perform_async attachment.id, answer_params[:url]
+      DownloadQuestionAttachmentWorker.perform_async attachment.id, answer_params[:value]
     end
   end
 

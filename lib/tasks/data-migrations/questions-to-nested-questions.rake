@@ -123,6 +123,24 @@ namespace 'data:migrate:questions-to-nested-questions' do
     DataMigrator::PlosBillingQuestionsMigrator.migrate!
   end
 
+  namespace :'publishing-related-questions' do
+    desc "Resets the NestedQuestionAnswer(s) for publishing-related-questions by destroying them."
+    task :reset => :environment do
+      DataMigrator::PublishingRelatedQuestionsMigrator.reset
+    end
+
+    desc "Destroy old questions for publishing-related-questions once you're satisfied w/migrating to NestedQuestion data model."
+    task :cleanup => :environment do
+      DataMigrator::PublishingRelatedQuestionsMigrator.cleanup
+    end
+  end
+
+  desc "Migrate the publishing-related-questions task data to the NestedQuestion data model."
+  task :'publishing-related-questions' => 'data:migrate:questions-to-nested-questions:publishing-related-questions:reset' do
+    DataMigrator::PublishingRelatedQuestionsMigrator.migrate!
+  end
+
+
   namespace :'taxon' do
     desc "Resets the NestedQuestionAnswer(s) for figures by destroying them."
     task :reset => :environment do

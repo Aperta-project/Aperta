@@ -10,7 +10,8 @@ describe NestedQuestionAnswersController do
   end
 
   shared_examples_for "processing attachments for NestedQuestionAnswersController" do
-    let(:attachment_params){ { url: "http://example.com/image.png" } }
+    let(:nested_question) { FactoryGirl.create(:nested_question, value_type: "attachment") }
+    let(:attachment_params){ { value: "http://example.com/image.png" } }
 
     it "creates an question attachment" do
       expect { do_request(params: attachment_params) }.to change { QuestionAttachment.count }.by(1)
@@ -18,12 +19,11 @@ describe NestedQuestionAnswersController do
 
     it "queues a download worker" do
       do_request(params: attachment_params)
-      expect(DownloadQuestionAttachmentWorker).to have_queued_job(NestedQuestionAnswer.last.attachment.id, attachment_params[:url])
+      expect(DownloadQuestionAttachmentWorker).to have_queued_job(NestedQuestionAnswer.last.attachment.id, attachment_params[:value])
     end
   end
 
   describe "#create" do
-    let(:nested_question) { FactoryGirl.create(:nested_question) }
     let(:owner) { nested_question.owner }
 
     def do_request(params: {})

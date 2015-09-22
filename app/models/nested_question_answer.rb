@@ -25,7 +25,7 @@ class NestedQuestionAnswer < ActiveRecord::Base
   private
 
   def attachment_value_type
-    attachment[:attachment] if attachment
+    read_attribute(:value)
   end
 
   def boolean_value_type

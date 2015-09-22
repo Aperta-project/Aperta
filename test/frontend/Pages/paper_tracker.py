@@ -59,9 +59,9 @@ class PaperTrackerPage(AuthenticatedPage):
     else:
       total_count = 0
     if total_count == 1:
-      assert subhead.text == 'You have ' + str(total_count) + ' paper in your tracker.', str(total_count)
+      assert subhead.text == 'You have %s paper in your tracker.'%total_count, (subhead.text, str(total_count))
     else:
-      assert subhead.text == 'You have ' + str(total_count) + ' papers in your tracker.', str(total_count)
+      assert subhead.text == 'You have %s papers in your tracker.'%total_count, (subhead.text, str(total_count))
 
     # Validate the contents of the table: papers, links, sorting, roles
     title_th = self._get(self._paper_tracker_table_title_th)

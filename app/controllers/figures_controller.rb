@@ -1,7 +1,16 @@
 class FiguresController < ApplicationController
   respond_to :json
   before_action :authenticate_user!
-  before_action :enforce_policy
+  before_action :enforce_policy, except: [:index, :show]
+
+  ## papers/:paper_id/figures
+  def index
+    respond_with Figure.where(paper_id: params[:paper_id])
+  end
+
+  def show
+    respond_with figure
+  end
 
   def create
     figure.update_attributes(status: "processing")

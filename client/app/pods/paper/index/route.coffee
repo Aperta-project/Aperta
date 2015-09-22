@@ -30,6 +30,7 @@ PaperIndexRoute = AuthorizedRoute.extend
     if model.get('editable')
       @set('heartbeat', this.get('heartbeatService').create(model))
       @startHeartbeat()
+    return model.get('tasks')
 
   setupController: (controller, model) ->
     # paper/index controller is not used.

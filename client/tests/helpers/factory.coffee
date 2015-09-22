@@ -325,6 +325,7 @@ FactoryAttributes.Task =
   paper_id: null
   lite_paper_id: null
   assignee_ids: []
+  assigned_to_me: true
   participant_ids: []
   comment_ids: []
 
@@ -359,6 +360,7 @@ FactoryAttributes.BillingTask =
   assignee_ids: []
   participant_ids: []
   comment_ids: []
+  assigned_to_me: true
   is_metadata_task: false
   is_submission_task: true
 

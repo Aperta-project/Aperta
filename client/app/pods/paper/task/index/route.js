@@ -19,12 +19,8 @@ export default Ember.Route.extend({
 
     taskController.setProperties({
       model: model,
-      comments: this.store.filter('comment', function(part) {
-        return part.get('task') === model;
-      }),
-      participations: this.store.filter('participation', function(part) {
-        return part.get('task') === model;
-      }),
+      comments: model.get('comments'),
+      participations: model.get('participations'),
       onClose: Ember.isEmpty(redirectOptions) ? 'redirectToDashboard' : 'redirect'
     });
 

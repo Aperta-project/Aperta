@@ -31,14 +31,18 @@ module 'Integration: PaperIndex',
       role: "author"
     )
 
-    [currentPaper, figureTask, journal, litePaper, phase] = records
+    [currentPaper, figureTask, journal, phase] = records
 
     paperPayload = Factory.createPayload('paper')
     paperPayload.addRecords(records.concat([fakeUser]))
     paperResponse = paperPayload.toJSON()
 
+    tasksPayload = Factory.createPayload('tasks')
+    tasksPayload.addRecords([figureTask])
+    console.log tasksPayload.toJSON()
+
     taskPayload = Factory.createPayload('task')
-    taskPayload.addRecords([figureTask, litePaper, fakeUser])
+    taskPayload.addRecords([figureTask, currentPaper, fakeUser])
     figureTaskResponse = taskPayload.toJSON()
     collaborators = [
       id: "35"
@@ -48,6 +52,9 @@ module 'Integration: PaperIndex',
 
     server.respondWith 'GET', "/api/papers/#{currentPaper.id}", [
       200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
+    ]
+    server.respondWith 'GET', "/api/papers/#{currentPaper.id}/tasks", [
+      200, {"Content-Type": "application/json"}, JSON.stringify tasksPayload.toJSON()
     ]
     server.respondWith 'GET', "/api/tasks/#{figureTaskId}", [
       200, {"Content-Type": "application/json"}, JSON.stringify figureTaskResponse

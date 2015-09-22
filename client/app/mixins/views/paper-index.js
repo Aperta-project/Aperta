@@ -17,7 +17,7 @@ export default Ember.Mixin.create(RedirectsIfEditable, {
     $('html').removeClass('matte');
   }),
 
-  applyManuscriptCss: on('didInsertElement', function() {
+  applyManuscriptCss: Ember.observer('controller.model.journal.manuscriptCss', function() {
     $('#paper-body').attr('style', this.get('controller.model.journal.manuscriptCss'));
   }),
 

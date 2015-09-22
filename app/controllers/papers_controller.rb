@@ -59,6 +59,11 @@ class PapersController < ApplicationController
     respond_with(comment_looks, root: :comment_looks)
   end
 
+  def versioned_texts
+    versions = paper.versioned_texts.includes(:submitting_user).order(updated_at: :desc)
+    respond_with versions, each_serializer: VersionedTextSerializer, root: 'versioned_texts'
+  end
+
   def workflow_activities
     feeds = ['workflow', 'manuscript']
     activities = Activity.includes(:user).feed_for(feeds, paper)

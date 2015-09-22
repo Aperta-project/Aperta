@@ -2,7 +2,7 @@ module TahiStandardTasks
   class ReviewerRecommendation < ActiveRecord::Base
     belongs_to :reviewer_recommendations_task
     has_many :nested_question_answers, as: :owner, dependent: :destroy
-    
+
     def self.nested_questions
       questions = []
       questions << NestedQuestion.new(
@@ -30,18 +30,11 @@ module TahiStandardTasks
     end
 
     def nested_questions
-      apply_ownership_to_nested_questions self.class.nested_questions
-    end
-
-    private
-
-    def apply_ownership_to_nested_questions(nested_questions)
-      nested_questions.each do |q|
-        apply_ownership_to_nested_questions q.children
-
-        q.owner = self
-        q.freeze
+      nested_questions = TahiStandardTasks::ReviewerRecommendation.nested_questions
+      nested_questions.each do |nested_question|
+        nested_question.owner = self
       end
+      nested_questions
     end
   end
 end

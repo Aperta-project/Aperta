@@ -1,8 +1,10 @@
+import Ember from 'ember';
+import NestedQuestionOwner from 'tahi/models/nested-question-owner';
 import DS from 'ember-data';
 
 let a = DS.attr;
 
-export default DS.Model.extend({
+export default NestedQuestionOwner.extend({
   // qualifiedType: 'TahiStandardTask::ReviewerRecommendation',
 
   firstName: a('string'),
@@ -19,5 +21,6 @@ export default DS.Model.extend({
 
   fullName: function() {
     return [this.get('firstName'), this.get('middleInitial'), this.get('lastName')].compact().join(' ');
-  }.property('firstName', 'middleInitial', 'lastName')
+  }.property('firstName', 'middleInitial', 'lastName'),
+
 });

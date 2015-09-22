@@ -1,43 +1,21 @@
 import Ember from 'ember';
-import TaskController from 'tahi/pods/paper/task/controller';
-import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
+import TaskController from "tahi/pods/paper/task/controller";
 
-export default TaskController.extend(ValidationErrorsMixin, {
+export default TaskController.extend({
   showNewReviewerForm: false,
-  newRecommendation: {},
-
-  // Doing this to prevent short period of time where `newRecommendation` is in the DOM
-  // while save is happening. If it becomes invalid after save it is removed. This creates
-  // a glitchy look to the list.
-  validReviewerRecommendations: Ember.computed('model.reviewerRecommendations.@each.isNew', function() {
-    return this.get('model.reviewerRecommendations').filterBy('isNew', false);
-  }),
-
-  resetForm: function() {
-    this.setProperties({
-      showNewReviewerForm: false,
-      newRecommendation: {}
-    });
-
-    this.clearAllValidationErrors();
-  },
+  task: Ember.computed.alias("model"),
+  reviewerRecommendations: Ember.computed.alias("task.reviewerRecommendations"),
+  newRecommendation: Ember.computed.alias("reviewerRecommendation"),
 
   actions: {
     toggleReviewerForm: function() {
-      this.toggleProperty('showNewReviewerForm');
+      this.send("addReviewerRecommendation");
     },
 
     saveNewRecommendation: function() {
-      let newRecommendation = this.store.createRecord('reviewerRecommendation', this.get('newRecommendation'));
-
-      newRecommendation
-        .set('reviewerRecommendationsTask', this.get('model'))
-        .save().then(() => {
-          this.resetForm();
-        }).catch((response) => {
-          newRecommendation.deleteRecord();
-          this.displayValidationErrorsFromResponse(response);
-        });
+      //TODO: Validate form
+      this.get("newRecommendation").save();
+      this.toggleProperty('showNewReviewerForm');
     },
 
     institutionSelected: function(institution) {
@@ -46,7 +24,23 @@ export default TaskController.extend(ValidationErrorsMixin, {
     },
 
     cancelEdit: function() {
-      this.resetForm();
+      let newRecommendation = this.get("newRecommendation");
+      this.store.find('reviewerRecommendation', newRecommendation.id)
+        .then((newRecommendation) => {
+          newRecommendation.deleteRecord();
+          newRecommendation.save();
+          this.toggleProperty('showNewReviewerForm');
+        });
+    },
+
+    addReviewerRecommendation: function() {
+      let newRecommendation = this.store.createRecord("reviewerRecommendation", {
+        reviewerRecommendationsTask: this.get("task")
+      }).save()
+        .then((newRecommendation) => {
+          this.set("newRecommendation", newRecommendation);
+          this.toggleProperty('showNewReviewerForm');
+        });
     }
   }
 });

@@ -1,7 +1,7 @@
 require 'rails_helper'
 include ClientRouteHelper
 
-describe FeedbackMailer, redis: true do
+describe FeedbackMailer do
   let(:app_name) { 'TEST-APP-NAME' }
   let(:user) { FactoryGirl.create(:user) }
   let(:feedback) {

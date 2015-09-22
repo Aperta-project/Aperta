@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DownloadFigureWorker, redis: true do
+describe DownloadFigureWorker do
   let(:paper) { FactoryGirl.create(:paper) }
   let(:figure) { paper.figures.create }
   let(:url) { "http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg" }

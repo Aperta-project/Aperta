@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe PaperUnlockerWorker do
+describe PaperUnlockerWorker, redis: true do
   let(:paper) { FactoryGirl.create(:paper, locked_by_id: 99) }
 
   describe "#perform" do

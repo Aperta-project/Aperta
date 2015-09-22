@@ -1,7 +1,7 @@
 require 'rails_helper'
 include ClientRouteHelper
 
-describe UserMailer, redis: true do
+describe UserMailer do
   let(:app_name) { 'TEST-APP-NAME' }
 
   before do

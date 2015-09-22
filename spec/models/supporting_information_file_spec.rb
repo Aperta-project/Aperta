@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe SupportingInformationFile, redis: true do
+describe SupportingInformationFile do
   let(:paper) { FactoryGirl.create :paper }
   let(:file) do
     with_aws_cassette 'supporting_info_files_controller' do

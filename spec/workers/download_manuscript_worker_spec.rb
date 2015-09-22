@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DownloadManuscriptWorker, redis: true do
+describe DownloadManuscriptWorker do
   let(:paper) { FactoryGirl.create(:paper) }
   let(:url) { "https://tahi-test.s3.amazonaws.com/temp/about_equations.docx" }
 

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DownloadAdhocTaskAttachmentWorker, redis: true do
+describe DownloadAdhocTaskAttachmentWorker do
   let(:attachment) { FactoryGirl.create(:attachment, :with_task) }
   let(:url) { "http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg" }
   let(:worker) { DownloadAdhocTaskAttachmentWorker.new }

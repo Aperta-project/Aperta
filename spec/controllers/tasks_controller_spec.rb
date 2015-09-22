@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TasksController, redis: true do
+describe TasksController do
   let(:user) { create :user, :site_admin }
 
   let!(:paper) do

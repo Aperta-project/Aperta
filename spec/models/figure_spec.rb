@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Figure, redis: true do
+describe Figure do
   let(:paper) { FactoryGirl.create :paper }
   let(:figure) {
     with_aws_cassette('figure') do
@@ -27,15 +27,6 @@ describe Figure, redis: true do
       %w{doc docx pdf epub raw bmp}.each do |type|
         expect(Figure.acceptable_content_type? "image/#{type}").to eq false
       end
-    end
-  end
-
-  describe "removing the attachment" do
-    it "destroys the attachment on destroy" do
-      # remove_attachment! is a built-in callback.
-      # this spec exists so that we don't duplicate that behavior
-      expect(figure).to receive(:remove_attachment!)
-      figure.destroy
     end
   end
 end

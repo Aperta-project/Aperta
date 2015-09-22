@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Comment, redis: true do
+describe Comment do
 
   let(:author) { FactoryGirl.create(:user) }
   let(:author2) { FactoryGirl.create(:user) }

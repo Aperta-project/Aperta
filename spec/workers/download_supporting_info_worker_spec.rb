@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DownloadSupportingInfoWorker, redis: true do
+describe DownloadSupportingInfoWorker do
   let(:paper) { FactoryGirl.create(:paper) }
   let(:file) { paper.supporting_information_files.create }
   let(:url) { "http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg" }

@@ -2,9 +2,9 @@ import Ember from 'ember';
 import TaskController from 'tahi/pods/paper/task/controller';
 import BuildsTaskTemplate from 'tahi/mixins/controllers/builds-task-template';
 import FileUploadMixin from 'tahi/mixins/file-upload';
-import RESTless from 'tahi/services/rest-less';
 
 export default TaskController.extend(BuildsTaskTemplate, FileUploadMixin, {
+  restless: Ember.inject.service('restless'),
   blocks: Ember.computed.alias('model.body'),
 
   imageUploadUrl: Ember.computed('model.id', function() {
@@ -37,7 +37,7 @@ export default TaskController.extend(BuildsTaskTemplate, FileUploadMixin, {
     },
 
     sendEmail(data) {
-      RESTless.putModel(this.get('model'), '/send_message', {
+      this.get('restless').putModel(this.get('model'), '/send_message', {
         task: data
       });
 

@@ -1,9 +1,10 @@
 import Ember from 'ember';
-import RESTless from 'tahi/services/rest-less';
 
 export default Ember.Route.extend({
+  restless: Ember.inject.service('restless'),
+
   model() {
-    return RESTless.get('/api/paper_tracker').then((data)=> {
+    return this.get('restless').get('/api/paper_tracker').then((data)=> {
       this.store.pushPayload('paper', data);
       let paperIds = data.papers.mapBy('id');
 

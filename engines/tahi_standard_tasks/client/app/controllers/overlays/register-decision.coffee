@@ -1,7 +1,8 @@
 `import TaskController from 'tahi/pods/paper/task/controller'`
-`import RESTless from 'tahi/services/rest-less'`
 
 RegisterDecisionOverlayController = TaskController.extend
+  restless: Ember.inject.service('restless')
+
   latestDecision: (->
     @get('model.paper.decisions.firstObject')
   ).property("previousDecisions")
@@ -40,7 +41,7 @@ RegisterDecisionOverlayController = TaskController.extend
     registerDecision: ->
       taskId = @get("model.id")
 
-      RESTless.post('/api/register_decision/' + taskId + '/decide').then =>
+      this.get('restless').post('/api/register_decision/' + taskId + '/decide').then =>
         @set('model.completed', true)
         @send('saveModel')
         @flash.displayMessage('success', @successText())

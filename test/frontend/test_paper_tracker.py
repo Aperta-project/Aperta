@@ -9,13 +9,14 @@ Those acts are expected to be defined in
 """
 __author__ = 'jgray@plos.org'
 
+import random
+
 from Base.Decorators import MultiBrowserFixture
-from Base.FrontEndTest import FrontEndTest
 from Pages.login_page import LoginPage
 from Pages.dashboard import DashboardPage
 from Pages.paper_tracker import PaperTrackerPage
 from Base.Resources import login_valid_pw, fm_login, he_login, sa_login, oa_login
-import random
+from frontend.common_test import CommonTest
 
 users = [fm_login,
          he_login,
@@ -25,7 +26,7 @@ users = [fm_login,
 
 
 @MultiBrowserFixture
-class ApertaPaperTrackerTest(FrontEndTest):
+class ApertaPaperTrackerTest(CommonTest):
   """
   Self imposed AC:
      - validate page elements and styles for:
@@ -61,4 +62,4 @@ class ApertaPaperTrackerTest(FrontEndTest):
     pt_page.validate_nav_elements(user_type)
 
 if __name__ == '__main__':
-  FrontEndTest._run_tests_randomly()
+  CommonTest._run_tests_randomly()

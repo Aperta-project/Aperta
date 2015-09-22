@@ -94,7 +94,7 @@ class AuthorsCard(BaseCard):
     self.validate_p_style(authors_text)
     add_new_author_btn = self._get(self._add_new_author_btn)
     assert 'ADD A NEW AUTHOR' == add_new_author_btn.text, add_new_author_btn.text
-    self.validate_green_backed_button_style(add_new_author_btn)
+    self.validate_primary_big_green_button_style(add_new_author_btn)
 
   def validate_author_card_action(self):
     """Validate working of Author Card. Adds and delete a new author"""
@@ -164,7 +164,7 @@ class AuthorsCard(BaseCard):
     time.sleep(1)
     add_author_add_btn.click()
     # Check if data is there
-    time.sleep(1)
+    time.sleep(2)
     authors = self._gets(self._author_items)
     all_auth_data = [x.text for x in authors]
     assert [x for x in all_auth_data if author['1_institution'] in x]
@@ -201,12 +201,9 @@ class AuthorsCard(BaseCard):
     delete_btn.click()
     time.sleep(.5)
 
-
-
   def validate_styles(self):
     """Validate all styles for Authors Card"""
     ##self.get_stylegiude() # Only for development use
     self.validate_author_card_styles()
-    self.validate_author_card_action()
     self.validate_common_elements_styles()
     return self

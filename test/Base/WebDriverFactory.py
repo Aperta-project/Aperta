@@ -97,6 +97,13 @@ class WebDriverFactory(object):
     # Set up a default Firefox profile, if not specified
     if not profile:
       profile = webdriver.FirefoxProfile()
+      profile.set_preference('browser.download.folderList', 2)
+      profile.set_preference('browser.download.manager.showWhenStarting', False)
+      profile.set_preference('browser.download.dir', '/tmp')
+      profile.set_preference("browser.download.manager.useWindow", False)
+      profile.set_preference('browser.helperApps.neverAsk.saveToDisk',"application/pdf")
+      #profile.set_preference("browser.helperApps.alwaysAsk.force", False)
+
 
     # Set up BrowserMob proxy, if enabled
     if Config.browsermob_proxy_enabled:

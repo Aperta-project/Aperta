@@ -181,7 +181,6 @@ class BaseCard(AuthenticatedPage):
 
   def validate_common_elements_styles(self):
     """Validate styles from elements common to all cards"""
-    #time.sleep(1)
     completed_lbl = self._get(self._completed_label)
     header_link = self._get(self._header_link)
     self.validate_card_title(header_link)
@@ -193,7 +192,7 @@ class BaseCard(AuthenticatedPage):
       ',14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,22,28,22z')
     # Close btn
     close_btn = self._get(self._close_button)
-    self.validate_secondary_green_button_style(close_btn)
+    self.validate_secondary_big_green_button_style(close_btn)
     discussion_div = self._get(self._discussion_div)
     discussion_title = discussion_div.find_element_by_tag_name('h2')
     assert discussion_title.text == 'Discussion', discussion_title.text
@@ -207,7 +206,7 @@ class BaseCard(AuthenticatedPage):
     discussion_div = self._iget(self._discussion_div)
     post_btn = discussion_div.find_element_by_tag_name('button')
     assert post_btn.text == 'POST MESSAGE'
-    self.validate_secondary_green_button_style(post_btn)
+    self.validate_secondary_big_green_button_style(post_btn)
     cancel_lnk = discussion_div.find_element_by_tag_name('a')
     assert cancel_lnk.text == 'Cancel', cancel_lnk.text
     self.validate_default_link_style(cancel_lnk)
@@ -229,9 +228,5 @@ class BaseCard(AuthenticatedPage):
     completed_lbl = self._get(self._completed_label)
     self.validate_completed_label(completed_lbl)
     bottom_close_btn = self._get(self._bottom_close_button)
-    self.validate_secondary_green_button_style(bottom_close_btn)
-    # test close function
-    #bottom_close_btn.click()
-    #time.sleep(1)
-    #current_url = self._driver.current_url
-    #assert 'tasks/' not in current_url
+    self.validate_secondary_big_green_button_style(bottom_close_btn)
+    ##self.validate_secondary_green_button_style(bottom_close_btn)

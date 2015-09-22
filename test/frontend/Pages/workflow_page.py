@@ -83,6 +83,8 @@ class WorkflowPage(AuthenticatedPage):
   def validate_initial_page_elements_styles(self):
     """ """
     # Validate menu elements (title and icon)
+    # This left nav validation should use the validation defined in authenticated_page
+    # https://www.pivotaltracker.com/story/show/103343910
     left_nav = self._get(self._nav_toggle)
     assert left_nav.text == 'PLOS'
     assert left_nav.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
@@ -92,6 +94,7 @@ class WorkflowPage(AuthenticatedPage):
     assert left_nav.value_of_css_property('text-transform') == 'uppercase'
     assert self._get(self._nav_menu)
     # Right menu items
+    # https://www.pivotaltracker.com/story/show/103343910
     editable = self._get(self._editable_label)
     assert editable.text == 'EDITABLE'
     assert editable.value_of_css_property('font-size') == '10px'
@@ -221,7 +224,7 @@ class WorkflowPage(AuthenticatedPage):
     """Check CSS properties of the overlay that appears when the user click on add new card"""
     card_overlay = self._get(self._add_card_overlay)
     assert card_overlay.text == 'Pick the type of card to add'
-    self.validate_application_h1_style(card_overlay)
+    #self.validate_application_h1_style(card_overlay)
     assert card_overlay.value_of_css_property('text-align') == 'center'
     close_icon_overlay = self._get(self._close_icon_overlay)
     # TODO: Change following line after bug #102078080 is solved
@@ -233,7 +236,7 @@ class WorkflowPage(AuthenticatedPage):
     assert select_task.value_of_css_property('font-size') == '14px'
     assert select_task.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
     add_button_overlay = self._get(self._add_button_overlay)
-    self.validate_green_backed_button_style(add_button_overlay)
+    self.validate_primary_big_green_button_style(add_button_overlay)
     assert add_button_overlay.text == 'ADD'
     cancel_button_overlay = self._get(self._cancel_button_overlay)
     assert application_typeface in cancel_button_overlay.value_of_css_property('font-family')

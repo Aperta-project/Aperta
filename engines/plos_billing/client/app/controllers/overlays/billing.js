@@ -317,20 +317,38 @@ const DATA = {
 let computed = Ember.computed;
 
 export default TaskController.extend({
-  validatePfaData: Ember.observer("model.questions.@each.answer", function() {
-    this.supplementalDocsIsValid();
-    this.syncCompletedCheckbox();
-  }),
-
+  init: function(){
+    var controller = this;
+    Ember.run.scheduleOnce('afterRender', this, 'setPfaValidators');
+  },
   pfaErrors: new DS.Errors,
+  setPfaValidators: function(){
+    _.each(['pfa_question_1b', 'pfa_question_2b', 'pfa_question_3a', 'pfa_question_4a', 'pfa_amount_to_pay'], function(ident){
+      this.pfaInput(ident).keyup(this, this.enforceNumeric)
+    }.bind(this));
+  },
+  pfaInput: function(ident){
+    return $("[name='plos_billing."+ ident + "']");
+  },
   hasPfaErrors: computed('pfaErrors.length', function(){
-    //console.log('running');
     return !this.get('pfaErrors.isEmpty');
   }),
-  supplementalDocsIsValid: function(){
-    this.pfaErrors.add('supplementalDocs', "Must be good");
-    //.match(/^\d*$/)
+  displayErrors: function(){
     console.log(this.get('pfaErrors.messages'));
+  },
+  enforceNumeric: function(event){
+    var controller = event.data
+    var name       = event.target.name;
+    var val        = $(event.target).val();
+
+    if (val && !val.match(/^\d*$/)) {
+      controller.pfaErrors.add(name, "Must be a number and contain no symobls, or letters");
+    } else {
+      controller.pfaErrors.remove(name);
+    }
+
+    controller.displayErrors();
+    controller.syncCompletedCheckbox();
   },
   syncCompletedCheckbox: function(){
     var c = $('#task_completed');

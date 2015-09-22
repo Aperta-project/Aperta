@@ -39,8 +39,11 @@ TahiNotifier.subscribe("question_attachment:*") do |payload|
   record = payload[:record]
   excluded_socket_id = payload[:requester_socket_id]
 
-  # serialize the question_attachment down the paper channel
-  EventStream::Broadcaster.new(record).post(action: action, channel_scope: record.question.task.paper, excluded_socket_id: excluded_socket_id)
+  # When attachments are destroyed, they have no question and no task.
+  if record.question
+    # serialize the question_attachment down the paper channel
+    EventStream::Broadcaster.new(record).post(action: action, channel_scope: record.question.task.paper, excluded_socket_id: excluded_socket_id)
+  end
 end
 
 TahiNotifier.subscribe("paper_role:*") do |payload|

@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const heartbeat =  Ember.Object.extend({
+const heartbeat = Ember.Object.extend({
   interval: 90 * 1000,
   intervalId: null,
   resource: null,
@@ -33,7 +33,7 @@ export default Ember.Service.extend({
   create(resource) {
     Ember.assert(
       'Heartbeat: need to specify resource',
-      Ember.isEmpty(this.get('resource'))
+      !Ember.isEmpty(resource)
     );
 
     return heartbeat.create({

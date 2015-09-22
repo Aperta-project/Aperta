@@ -20,7 +20,7 @@ export default NestedQuestionComponent.extend({
 
     uploadFinished: function(uploadUrl) {
       let answer = this.get('model.answer');
-      answer.set('url', uploadUrl);
+      answer.set('value', uploadUrl);
       return answer.save().then( () => {
         this.set('fileUpload', null);
       });

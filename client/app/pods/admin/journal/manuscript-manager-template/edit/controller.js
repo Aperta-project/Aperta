@@ -41,8 +41,8 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
 
     itemUpdated(senderPhaseId, receiverPhaseId, taskId) {
       if (senderPhaseId !== receiverPhaseId) {
-        let task = this.store.getById('taskTemplate', taskId);
-        let targetPhase = this.store.getById('phaseTemplate', receiverPhaseId);
+        let task = this.store.peekRecord('task-template', taskId);
+        let targetPhase = this.store.peekRecord('phase-template', receiverPhaseId);
         targetPhase.get('taskTemplates').addObject(task);
       }
       this.set('pendingChanges', true);
@@ -56,7 +56,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
         }
       });
 
-      this.store.createRecord('phaseTemplate', {
+      this.store.createRecord('phase-template', {
         name: 'New Phase',
         manuscriptManagerTemplate: this.get('model'),
         position: position
@@ -88,8 +88,8 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
         this.resetProperties();
         this.transitionToRoute('admin.journal', this.get('journal'));
       } else {
-        this.store.unloadAll('taskTemplate');
-        this.store.unloadAll('phaseTemplate');
+        this.store.unloadAll('task-template');
+        this.store.unloadAll('phase-template');
         this.get('model').rollback();
         this.get('journal').reload().then(() => {
           this.resetProperties();

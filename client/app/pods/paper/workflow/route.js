@@ -26,7 +26,7 @@ export default AuthorizedRoute.extend({
       let chooseNewCardTypeOverlay = this.controllerFor('overlays/chooseNewCardType');
       chooseNewCardTypeOverlay.set('phase', phase);
 
-      this.store.find('adminJournal', phase.get('paper.journal.id')).then(function(adminJournal) {
+      this.store.findRecord('admin-journal', phase.get('paper.journal.id')).then(function(adminJournal) {
         chooseNewCardTypeOverlay.set('journalTaskTypes', adminJournal.get('journalTaskTypes'));
       });
 

@@ -4,8 +4,14 @@ class PaperTrackerController < ApplicationController
   respond_to :json
 
   def index
-    journals = current_user.flow_managable_journals
-    papers = Paper.where(journal: journals).submitted
+    # show all papers that user is connected to across all journals
+    papers = Paper.submitted.where(journal_id: journal_ids)
     respond_with papers, each_serializer: PaperTrackerSerializer, root: 'papers'
+  end
+
+  private
+
+  def journal_ids
+    current_user.roles.pluck(:journal_id).uniq
   end
 end

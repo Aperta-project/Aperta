@@ -1,13 +1,13 @@
 import Ember from 'ember';
-import RESTless from 'tahi/services/rest-less';
 
 export default Ember.Controller.extend({
+  restless: Ember.inject.service('restless'),
   overlayClass: 'overlay--fullscreen overlay--green paper-submit-overlay',
   paperSubmitted: false,
 
   actions: {
     submit() {
-      RESTless.putUpdate(this.get('model'), '/submit').then(()=> {
+      this.get('restless').putUpdate(this.get('model'), '/submit').then(()=> {
         this.set('paperSubmitted', true);
       }, (arg)=> {
         let status = arg.status;

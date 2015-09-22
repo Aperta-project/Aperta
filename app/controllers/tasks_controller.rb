@@ -6,9 +6,9 @@ class TasksController < ApplicationController
 
   respond_to :json
 
+  ## /paper/tasks/
   def index
-    p paper.tasks
-    respond_with(paper.tasks)
+    respond_with(Task.joins(:paper).includes([{paper: [:journal, :creator]}, :participations]).where('papers.id = ?', params[:paper_id]))
   end
 
   def show

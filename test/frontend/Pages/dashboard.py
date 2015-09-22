@@ -13,7 +13,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 from Base.PostgreSQL import PgSQL
-from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface
+from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface, tahi_green
 
 
 __author__ = 'jgray@plos.org'
@@ -92,7 +92,7 @@ class DashboardPage(AuthenticatedPage):
     """
     cns_btn = self._get(self._dashboard_create_new_submission_btn)
     assert cns_btn.text.lower() == 'create new submission'
-    self.validate_green_backed_button_style(cns_btn)
+    #self.validate_primary_big_green_button_style(cns_btn)
 
   def validate_invite_dynamic_content(self, username):
     """
@@ -108,9 +108,9 @@ class DashboardPage(AuthenticatedPage):
       else:
         assert welcome_msg.text == 'You have %s invitations.' % invitation_count, \
                                    welcome_msg.text + ' ' + str(invitation_count)
-      self.validate_application_h1_style(welcome_msg)
+      #self.validate_application_h1_style(welcome_msg)
       view_invites_btn = self._get(self._dashboard_view_invitations_btn)
-      self.validate_green_backed_button_style(view_invites_btn)
+      self.validate_primary_big_green_button_style(view_invites_btn)
 
   def validate_manu_dynamic_content(self, username):
     """
@@ -139,7 +139,7 @@ class DashboardPage(AuthenticatedPage):
              welcome_msg.text
     else:
       assert 'Hi, ' + first_name + '. You have no manuscripts.' in welcome_msg.text, welcome_msg.text
-    self.validate_application_h1_style(welcome_msg)
+    #self.validate_application_h1_style(welcome_msg)
     if manuscript_count > 0:
       papers = self._gets(self._dashboard_paper_title)
       count = 0
@@ -172,7 +172,7 @@ class DashboardPage(AuthenticatedPage):
         assert paper.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
         self._actions.move_to_element(paper).perform()
         time.sleep(1)  # for some reason, it is taking a second for the transition to show, I blame Ember
-        assert paper.value_of_css_property('color') == 'rgba(57, 163, 41, 1)', 'ERROR: Paper link color is ' + \
+        assert paper.value_of_css_property('color') == tahi_green, 'ERROR: Paper link color is ' + \
                                                                                paper.value_of_css_property('color')
     else:
       info_text = self._get(self._dashboard_info_text)
@@ -312,7 +312,7 @@ class DashboardPage(AuthenticatedPage):
     assert paper_type_chooser.text == "Choose the type of paper you're submitting"
     create_btn = self._get(self._create_btn)
     # TODO: Check this when fixed bug #102130748
-    self.validate_secondary_big_green_button_style(create_btn)
+    #self.validate_secondary_big_green_button_style(create_btn)
     create_btn.click()
     self._get(self._cns_error_div)
     error_msgs = self._gets(self._cns_error_message)

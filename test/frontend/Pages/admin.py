@@ -11,7 +11,7 @@ from selenium.webdriver.common.by import By
 
 from Base.PostgreSQL import PgSQL
 from Base.Resources import sa_login
-from authenticated_page import AuthenticatedPage, application_typeface
+from authenticated_page import AuthenticatedPage, application_typeface, tahi_blue, white
 
 __author__ = 'jgray@plos.org'
 
@@ -129,7 +129,7 @@ class AdminPage(AuthenticatedPage):
       page_initial_journal_count = self._gets(self._base_admin_journals_section_journal_block)
       anj_button = self._get(self._base_admin_journals_su_add_new_journal_btn)
       assert anj_button.text == 'ADD NEW JOURNAL'
-      self.validate_blue_backed_button_style(anj_button)
+      self.validate_primary_big_blue_button_style(anj_button)
       self._actions.move_to_element(anj_button).perform()
       anj_button.click()
       page_secondary_journal_count = self._gets(self._base_admin_journals_section_journal_block)
@@ -141,9 +141,9 @@ class AdminPage(AuthenticatedPage):
       assert upload_button.text == 'UPLOAD NEW'
       self.validate_blue_on_blue_button_style(upload_button)
       self._actions.move_to_element(upload_button).perform()
-      time.sleep(1)
-      assert upload_button.value_of_css_property('color') == 'rgba(45, 133, 222, 1)'
-      assert upload_button.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
+      time.sleep(2)
+      assert upload_button.value_of_css_property('color') == tahi_blue
+      assert upload_button.value_of_css_property('background-color') == white
       upload_note = self._get(self._base_admin_journals_edit_logo_upload_note)
       assert upload_note.text == '(250px x 40px)'
       assert application_typeface in upload_note.value_of_css_property('font-family')
@@ -182,8 +182,9 @@ class AdminPage(AuthenticatedPage):
       self._actions.move_to_element(anj_button).perform()
       self._actions.move_to_element(save_button).perform()
       time.sleep(2)
-      assert save_button.value_of_css_property('color') == 'rgba(45, 133, 222, 1)'
-      assert save_button.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
+      assert save_button.value_of_css_property('color') == tahi_blue, save_button.value_of_css_property('color')
+      assert save_button.value_of_css_property('background-color') == white, \
+          save_button.value_of_css_property('background-color')
       cancel_link = self._get(self._base_admin_journals_edit_cancel_link)
       assert cancel_link.text == 'Cancel'
       assert application_typeface in cancel_link.value_of_css_property('font-family')

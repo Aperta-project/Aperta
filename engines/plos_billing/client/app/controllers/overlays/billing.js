@@ -322,8 +322,9 @@ export default TaskController.extend({
     Ember.run.scheduleOnce('afterRender', this, 'setPfaValidators');
   },
   pfaErrors: new DS.Errors,
+  identsValidated: ['pfa_question_1b', 'pfa_question_2b', 'pfa_question_3a', 'pfa_question_4a', 'pfa_amount_to_pay'],
   setPfaValidators: function(){
-    _.each(['pfa_question_1b', 'pfa_question_2b', 'pfa_question_3a', 'pfa_question_4a', 'pfa_amount_to_pay'], function(ident){
+    _.each(this.identsValidated, function(ident){
       this.pfaInput(ident).keyup(this, this.enforceNumeric)
     }.bind(this));
   },
@@ -333,32 +334,44 @@ export default TaskController.extend({
   hasPfaErrors: computed('pfaErrors.length', function(){
     return !this.get('pfaErrors.isEmpty');
   }),
-  displayErrors: function(){
-    console.log(this.get('pfaErrors.messages'));
+  displayError: function(input, name){
+    input.parent().addClass('error');
+    var e = this.pfaErrors.errorsFor(name)[0].message;
+    if (input.siblings('.error_message').length > 0){ return } //just one please
+    input.after("<div class='error_message'>"+ e +"</div>");
+  },
+  removeError: function(input, name){
+    input.parent().removeClass('error');
+    input.siblings('.error_message').remove();
   },
   enforceNumeric: function(event){
-    var controller = event.data
+    var controller = event.data;
+    var input      = $(event.target);
+    var val        = input.val();
     var name       = event.target.name;
-    var val        = $(event.target).val();
 
     if (val && !val.match(/^\d*$/)) {
       controller.pfaErrors.add(name, "Must be a number and contain no symobls, or letters");
+      controller.displayError(input, name);
     } else {
       controller.pfaErrors.remove(name);
+      controller.removeError(input, name);
     }
 
-    controller.displayErrors();
     controller.syncCompletedCheckbox();
   },
   syncCompletedCheckbox: function(){
-    var c = $('#task_completed');
-    if (this.get('hasPfaErrors')) {
-      c.prop('checked', true)
-      c.trigger( "click" ) //triggers bound events
-      c.prop('checked', false) //update ui
-      c.attr('disabled', true );
+    var checkbox = $('#task_completed');
+    if (
+      this.get('hasPfaErrors') &&
+      !checkbox.attr('disabled')
+    ) {
+      checkbox.prop('checked', true)
+      checkbox.trigger( "click" ) //triggers bound events
+      checkbox.prop('checked', false) //update ui
+      checkbox.attr('disabled', true );
     } else {
-      c.attr('disabled', false);
+      checkbox.attr('disabled', false);
     }
   },
 

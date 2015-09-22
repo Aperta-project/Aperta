@@ -24,31 +24,32 @@ describe SalesforceServices::ObjectTranslations do
       expect(data['SuppliedEmail']).to               eq('pfa@pfa.com' )
       expect(data['Exclude_from_EM__c']).to          eq(true)
       expect(data['Journal_Department__c']).to       eq(paper.journal.name)
-      expect(data['Subject']).to                     eq("prefix-#{paper.id}") # will chane when doi story is done
+      expect(data['Subject']).to                     eq("doi_missing_for_id_#{paper.id}") # will prob change when doi is in RC?
       expect(data['Origin']).to                      eq('PFA Request')
       expect(data['Description']).to                 match('lou prima')
       expect(data['Description']).to                 match('has applied')
-      expect(data['Description']).to                 match("prefix-#{paper.id}")
+      expect(data['Description']).to                 match("doi_missing_for_id_#{paper.id}") # will prob change when doi is in RC?
       expect(data['PFA_Question_1__c']).to           eq ('Yes')
       expect(data['PFA_Question_1a__c']).to          eq ('foo')
-      expect(data['PFA_Question_1b__c']).to          eq ('foo')
+      expect(data['PFA_Question_1b__c']).to          eq (100.00)
       expect(data['PFA_Question_2__c']).to           eq ('Yes')
       expect(data['PFA_Question_2a__c']).to          eq ('foo')
-      expect(data['PFA_Question_2b__c']).to          eq ('foo')
+      expect(data['PFA_Question_2b__c']).to          eq (100.00)
       expect(data['PFA_Question_3__c']).to           eq ('Yes')
-      expect(data['PFA_Question_3a__c']).to          eq ('asdf')
+      expect(data['PFA_Question_3a__c']).to          eq (100.00)
       expect(data['PFA_Question_4__c']).to           eq ('Yes')
-      expect(data['PFA_Question_4a__c']).to          eq ('foo')
-      expect(data['PFA_Able_to_Pay_R__c']).to        eq ('1000')
+      expect(data['PFA_Question_4a__c']).to          eq (100.00)
+      expect(data['PFA_Able_to_Pay_R__c']).to        eq (100.00)
       expect(data['PFA_Additional_Comments__c']).to  eq ('my comments')
       expect(data['PFA_Supporting_Docs__c']).to      eq (true) #indirectly tests private method boolean_from_text_answer_for
     end
   end
 
   def make_paper
+    journal = FactoryGirl.create(:journal, { name: 'journal name' })
     paper = FactoryGirl.create :paper_with_task, {
       creator: FactoryGirl.create(:user, { first_name: 'lou', last_name: 'prima', email: 'pfa@pfa.com' }),
-      journal: FactoryGirl.create(:journal, { name: 'journal name' }),
+      journal: journal,
       short_title: "my title",
       task_params: { title: "Billing", type: "PlosBilling::BillingTask", role: "author" }
     }
@@ -59,15 +60,15 @@ describe SalesforceServices::ObjectTranslations do
   def make_questions(paper)
       add_question(paper, 'pfa_question_1',          'Yes')
       add_question(paper, 'pfa_question_1a',         'foo')
-      add_question(paper, 'pfa_question_1b',         'foo')
+      add_question(paper, 'pfa_question_1b',         '100')
       add_question(paper, 'pfa_question_2',          'Yes')
       add_question(paper, 'pfa_question_2a',         'foo')
-      add_question(paper, 'pfa_question_2b',         'foo')
+      add_question(paper, 'pfa_question_2b',         '100')
       add_question(paper, 'pfa_question_3',          'Yes')
-      add_question(paper, 'pfa_question_3a',         'asdf')
+      add_question(paper, 'pfa_question_3a',         '100')
       add_question(paper, 'pfa_question_4',          'Yes')
-      add_question(paper, 'pfa_question_4a',         'foo')
-      add_question(paper, 'pfa_amount_to_pay',       '1000')
+      add_question(paper, 'pfa_question_4a',         '100')
+      add_question(paper, 'pfa_amount_to_pay',       '100')
       add_question(paper, 'pfa_additional_comments', 'my comments')
       add_question(paper, 'pfa_supporting_docs',     'Yes')
   end

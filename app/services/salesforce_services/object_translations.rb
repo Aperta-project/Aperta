@@ -65,8 +65,10 @@ module SalesforceServices
       end
 
       def boolean_from_text_answer_for(ident)
+        a = answer_for(ident)
+        return false if a.nil?
         text_to_boolean_map[
-          answer_for(ident).downcase
+          a.downcase
         ]
       end
 

@@ -4,8 +4,22 @@ module TahiStandardTasks
     respond_to :json
 
     def create
-      reviewer_recommendation = ReviewerRecommendation.create! reviewer_recommendation_params
+      task = Task.find(reviewer_recommendation_params[:reviewer_recommendations_task_id])
+      reviewer_recommendation = task.reviewer_recommendations.new(reviewer_recommendation_params)
+      reviewer_recommendation.save
       render json: reviewer_recommendation, status: :created
+    end
+
+    def update
+      reviewer_recommendation = ReviewerRecommendation.find(params[:id])
+      reviewer_recommendation.update_attributes(reviewer_recommendation_params)
+      render json: reviewer_recommendation
+    end
+
+    def destroy
+      reviewer_recommendation = ReviewerRecommendation.find(params[:id])
+      reviewer_recommendation.destroy
+      render json: reviewer_recommendation
     end
 
     private

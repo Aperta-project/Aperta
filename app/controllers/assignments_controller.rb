@@ -5,7 +5,7 @@ class AssignmentsController < ApplicationController
     paper = Paper.find(params[:paper_id])
     authorize_action! paper: paper
 
-    assignments = PaperRole.where(paper: paper)
+    assignments = PaperRole.includes(:user).where(paper: paper)
     render json: assignments, each_serializer: AssignmentSerializer
   end
 

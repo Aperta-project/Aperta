@@ -18,7 +18,7 @@ module SalesforceServices
           "Revision__c" => @paper.decisions.latest.revision_number,
           "Title__c" => @paper.title,
           "OriginalSubmissionDate__c" => @paper.submitted_at,
-          "DOI__c" => @paper.doi
+          "Manuscript_Number__c" => @paper.doi
         }
       end
     end

@@ -21,5 +21,21 @@ export default NestedQuestionOwner.extend({
 
   fullName: function() {
     return [this.get('firstName'), this.get('middleInitial'), this.get('lastName')].compact().join(' ');
-  }.property('firstName', 'middleInitial', 'lastName')
+  }.property('firstName', 'middleInitial', 'lastName'),
+
+  reasonAnswer: Ember.computed("model", function() {
+    let question = this.findQuestion("reason");
+    if (question) {
+      return this.findQuestion("reason").get("answer").get("value");
+    }
+    return "";
+  }),
+
+  recommendOrOpposeAnswer: Ember.computed("model", function() {
+    let question = this.findQuestion("recommend_or_oppose");
+    if (question) {
+      return this.findQuestion("recommend_or_oppose").get("answer").get("value");
+    }
+    return "";
+  })
 });

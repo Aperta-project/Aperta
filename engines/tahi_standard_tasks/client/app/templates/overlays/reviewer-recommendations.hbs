@@ -10,7 +10,7 @@
 <button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "toggleReviewerForm"}}>New Reviewer Candidates</button>
 {{/if}}
 
-{{#each validReviewerRecommendations as |reviewerRecommendation|}}
+{{#each reviewerRecommendations as |reviewerRecommendation|}}
   <div class="authors-overlay-item--text">
     <div class="author-name">{{reviewerRecommendation.fullName}}</div>
     {{reviewerRecommendation.email}}<br>
@@ -18,8 +18,8 @@
     <br>
     {{reviewerRecommendation.affiliation}}
     <div class="reviewer-recommendation-decision">
-      {{reviewerRecommendation.recommendOrOppose}}
+      {{reviewerRecommendation.recommendOrOpposeAnswer}}
     </div>
-    {{reviewerRecommendation.reason}}
+    {{reviewerRecommendation.reasonAnswer}}
   </div>
 {{/each}}

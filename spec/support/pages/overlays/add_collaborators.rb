@@ -26,7 +26,6 @@ class AddCollaboratorsOverlay < PageFragment
 
   def save
     find('.button-primary', text: 'SAVE').click
-    expect(session).to have_no_css('.show-collaborators-overlay')
+    expect(element).to have_no_css('.show-collaborators-overlay')
   end
 end
-

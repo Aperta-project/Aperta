@@ -129,10 +129,13 @@ class JournalPage < Page
   end
 
   def add_flow
-    first(".admin-role-action-button.fa.fa-pencil").click
-    find("input[name='role[canViewFlowManager]']").set(true)
-    click_link("Edit Flows")
-    first(".control-bar-link-icon").click
+    within ".admin-roles" do
+      first(".admin-role-action-button.fa.fa-pencil").click
+      find("input[name='role[canViewFlowManager]']").set(true)
+      click_link("Edit Flows")
+    end
+
+    find(".control-bar-link-icon").click
   end
 
   private

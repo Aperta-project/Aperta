@@ -10,7 +10,6 @@ export default QuestionAttachmentOwner.extend({
   nestedQuestion: DS.belongsTo('nested-question', { async: false, inverse: 'answers' }),
   value: DS.attr(),
   additionalData: DS.attr(),
-  url: DS.attr('string'),
   createdAt: DS.attr('date'),
   updatedAt: DS.attr('date')
 });

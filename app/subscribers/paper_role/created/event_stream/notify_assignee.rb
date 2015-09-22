@@ -8,8 +8,7 @@ class PaperRole::Created::EventStream::NotifyAssignee < EventStreamSubscriber
   end
 
   def payload
-    assignee = record.user
-    PaperSerializer.new(record.paper, user: assignee).as_json
+    payload_for_record record.paper
   end
 
 end

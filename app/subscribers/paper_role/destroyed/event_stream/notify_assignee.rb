@@ -5,7 +5,10 @@ class PaperRole::Destroyed::EventStream::NotifyAssignee < EventStreamSubscriber
   end
 
   def payload
-    destroyed_payload(record.paper)
+    payload_for_record record.paper
   end
 
+  def run
+    super if record.paper.paper_roles.where(user: record.user).count == 0
+  end
 end

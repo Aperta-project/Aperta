@@ -91,7 +91,7 @@ class AuthorsCard(BaseCard):
     "Acknowledgments. If the article has been submitted on behalf of a consortium, all "
     "author names and affiliations should be listed at the end of the article."
     )
-    self.validate_p_style(authors_text)
+    self.validate_application_ptext(authors_text)
     add_new_author_btn = self._get(self._add_new_author_btn)
     assert 'ADD A NEW AUTHOR' == add_new_author_btn.text, add_new_author_btn.text
     self.validate_primary_big_green_button_style(add_new_author_btn)

@@ -17,19 +17,19 @@ export default AuthorizedRoute.extend({
       this.get('cardOverlayService').set('cachedModel', null);
       return cachedModel;
     } else {
-      return this.store.find('user-flow');
+      return this.store.findAll('user-flow');
     }
   },
 
   afterModel() {
-    return this.store.find('comment-look');
+    return this.store.findAll('comment-look');
   },
 
   setupController(controller, model) {
     controller.setProperties({
       model: model,
-      commentLooks: this.store.all('comment-look'),
-      journalTaskType: this.store.all('journal-task-type')
+      commentLooks: this.store.peekAll('comment-look'),
+      journalTaskType: this.store.peekAll('journal-task-type')
     });
   },
 

@@ -113,9 +113,9 @@ export default Ember.Component.extend({
    *  @default "#{{elementId}}"
    *  @private
    **/
-  positionNearSelector: function(){
-    return "#" + this.get('elementId');
-  }.property("elementId"),
+  positionNearSelector: Ember.computed('elementId', function(){
+    return '#' + this.get('elementId');
+  }),
 
   // -- props:
   debounce: 300,

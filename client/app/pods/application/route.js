@@ -113,7 +113,7 @@ export default Ember.Route.extend(AnimateOverlay, {
         if (type === "task") {
           record = this.store.findTask(id);
         } else {
-          record = this.store.getById(type, id);
+          record = this.store.peekRecord(type, id);
         }
         if (record) {
           record.unloadRecord();

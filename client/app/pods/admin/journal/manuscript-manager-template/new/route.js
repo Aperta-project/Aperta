@@ -7,21 +7,21 @@ export default Ember.Route.extend({
 
     let journal = this.modelFor('admin.journal');
 
-    let newTemplate = this.store.createRecord('manuscriptManagerTemplate', {
+    let newTemplate = this.store.createRecord('manuscript-manager-template', {
       journal: journal,
       paperType: "Research"
     });
 
     newTemplate.get('phaseTemplates').pushObject(
-      this.store.createRecord('phaseTemplate', {name: "Phase 1", position: 1})
+      this.store.createRecord('phase-template', {name: "Phase 1", position: 1})
     );
 
     newTemplate.get('phaseTemplates').pushObject(
-      this.store.createRecord('phaseTemplate', {name: "Phase 2", position: 2})
+      this.store.createRecord('phase-template', {name: "Phase 2", position: 2})
     );
 
     newTemplate.get('phaseTemplates').pushObject(
-      this.store.createRecord('phaseTemplate', {name: "Phase 3", position: 3})
+      this.store.createRecord('phase-template', {name: "Phase 3", position: 3})
     );
 
     this.set('journal', journal);

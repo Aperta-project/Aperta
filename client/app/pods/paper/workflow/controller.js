@@ -6,11 +6,11 @@ export default Ember.Controller.extend({
   sortedPhases: Ember.computed.sort('model.phases', 'positionSort'),
 
   commentLooks: Ember.computed(function() {
-    return this.store.all('comment-look');
+    return this.store.peekAll('comment-look');
   }),
 
   allTaskIds() {
-    return this.store.all('phase').reduce(function(taskIds, phase) {
+    return this.store.peekAll('phase').reduce(function(taskIds, phase) {
       return taskIds.concat(phase.get('tasks').map(function(task) {
         return task.get('id');
       }));
@@ -28,7 +28,7 @@ export default Ember.Controller.extend({
   actions: {
     changePhaseForTask(task, targetPhaseId) {
       this.beginPropertyChanges();
-      this.store.getById('phase', targetPhaseId).get('tasks').addObject(task);
+      this.store.peekRecord('phase', targetPhaseId).get('tasks').addObject(task);
       this.endPropertyChanges();
     },
 
@@ -58,7 +58,7 @@ export default Ember.Controller.extend({
     },
 
     rollbackPhase(phase) {
-      phase.rollback();
+      phase.rollbackAttributes();
     },
 
     toggleEditable() {

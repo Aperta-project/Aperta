@@ -22,13 +22,13 @@ export default Ember.Component.extend({
 
   sentenceDelimiter: /([.!?,;]\s*)/g,
 
-  manuscript: function() {
+  manuscript: Ember.computed('comparisonText', 'viewingText', function() {
     if (!this.get('comparisonText')) {
       return this.get('viewingText') || this.get('default');
     } else {
       return this.diff();
     }
-  }.property('comparisonText', 'viewingText'),
+  }),
 
   diff() {
     // Calculate the diff

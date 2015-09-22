@@ -1,8 +1,8 @@
-`import Ember from 'ember'`
-`import DS from 'ember-data'`
-`import Utils from 'tahi/services/utils'`
+`import Ember from 'ember';`
+`import {ActiveModelSerializer} from 'active-model-adapter';`
+`import Utils from 'tahi/services/utils';`
 
-ApplicationSerializer = DS.ActiveModelSerializer.extend
+ApplicationSerializer = ActiveModelSerializer.extend
   # handles outgoing namespaced models
   serialize: (record, options) ->
     json = this._super(record, options)
@@ -40,7 +40,7 @@ ApplicationSerializer = DS.ActiveModelSerializer.extend
 
   # This is overridden from the RESTSerializer because finding a 'task' and getting back a root key of 'author_task' will
   # break the isPrimary check.
-  extractSingle: (store, primaryType, payload, recordId) ->
+  normalizeSingleResponse: (store, primaryType, payload, recordId) ->
     payload = @normalizePayload(payload)
     primaryTypeName = @primaryTypeName(primaryType)
     primaryRecord = undefined
@@ -64,7 +64,7 @@ ApplicationSerializer = DS.ActiveModelSerializer.extend
         typeName = @extractTypeName(prop, hash)
         # <=========== custom code for namespacing and sti ends here
         type = store.modelFor(typeName)
-        typeSerializer = store.serializerFor(type)
+        typeSerializer = store.serializerFor(typeName)
         hash = typeSerializer.normalize(type, hash, prop)
         isFirstCreatedRecord = isPrimary and not recordId and not primaryRecord
         isUpdatedRecord = isPrimary and @coerceId(hash.id) is recordId
@@ -82,7 +82,7 @@ ApplicationSerializer = DS.ActiveModelSerializer.extend
 
     primaryRecord
 
-  extractArray: (store, primaryType, payload) ->
+  normalizeArrayResponse: (store, primaryType, payload) ->
     payload = @normalizePayload(payload)
     primaryTypeName = @primaryTypeName(primaryType)
     primaryArray = undefined
@@ -94,7 +94,7 @@ ApplicationSerializer = DS.ActiveModelSerializer.extend
         typeKey = prop.substr(1)
       typeName = @modelNameFromPayloadKey(typeKey)
       type = store.modelFor(typeName)
-      arrayTypeSerializer = store.serializerFor(type) # cache the serializer based on the array's type key
+      arrayTypeSerializer = store.serializerFor(typeName) # cache the serializer based on the array's type key
       isPrimary = (not forcedSecondary and (type.modelName is primaryTypeName))
 
       #jshint loopfunc:true

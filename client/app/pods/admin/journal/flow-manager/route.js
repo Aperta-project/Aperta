@@ -4,7 +4,7 @@ export default Ember.Route.extend({
   cardOverlayService: Ember.inject.service('card-overlay'),
 
   model(params) {
-    return this.store.find('role', params.role_id);
+    return this.store.findRecord('role', params.role_id);
   },
 
   afterModel(role) {
@@ -14,9 +14,9 @@ export default Ember.Route.extend({
   setupController(controller, model) {
     controller.setProperties({
       model: model,
-      commentLooks: this.store.all('comment-look'),
+      commentLooks: this.store.peekAll('comment-look'),
       journal: this.modelFor('admin.journal'),
-      journalTaskTypes: this.store.all('journal-task-type')
+      journalTaskTypes: this.store.peekAll('journal-task-type')
     });
   },
 

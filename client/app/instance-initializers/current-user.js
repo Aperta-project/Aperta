@@ -1,5 +1,6 @@
 export default {
   name: 'current-user',
+  after: 'ember-data',
 
   initialize(instance) {
     let data = window.currentUserData;

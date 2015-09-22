@@ -46,7 +46,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     },
 
     cancel() {
-      this.get('model')[this.get('model.isNew') ? 'deleteRecord' : 'rollback']();
+      this.get('model')[this.get('model.isNew') ? 'deleteRecord' : 'rollbackAttributes']();
       this.set('isEditing', false);
     },
 

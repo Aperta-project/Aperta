@@ -4,7 +4,7 @@ export default Ember.Route.extend({
   cardOverlayService: Ember.inject.service('card-overlay'),
 
   model(params) {
-    return this.store.find('task', params.task_id);
+    return this.store.findRecord('task', params.task_id);
   },
 
   setupController(controller, model) {

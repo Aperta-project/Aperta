@@ -9,14 +9,14 @@ export default Ember.Mixin.create({
   }),
 
   updateThumbnail: Ember.on('didUpdate', function() {
-    let thumbnail = this.store.getById('card-thumbnail', this.get('id'));
+    let thumbnail = this.store.peekRecord('card-thumbnail', this.get('id'));
     if (thumbnail) {
       thumbnail.set('completed', this.get('completed'));
     }
   }),
 
   deleteThumbnail: Ember.on('didDelete', function() {
-    let thumbnail = this.store.getById('card-thumbnail', this.get('id'));
+    let thumbnail = this.store.peekRecord('card-thumbnail', this.get('id'));
     if (thumbnail) {
       thumbnail.deleteRecord();
     }
@@ -33,7 +33,7 @@ export default Ember.Mixin.create({
   }),
 
   setThumbnailRelationship() {
-    let thumbnail = this.store.getById('card-thumbnail', this.get('id'));
+    let thumbnail = this.store.peekRecord('card-thumbnail', this.get('id'));
     this.set('cardThumbnail', thumbnail);
   }
 });

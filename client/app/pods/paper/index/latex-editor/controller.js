@@ -26,7 +26,7 @@ export default Ember.Controller.extend(
   savePaper() {
     if(!this.get('model.editable')) { return; }
 
-    if(!this.get('model').get('isDirty')) {
+    if(!this.get('model').get('hasDirtyAttributes')) {
       this.set('isSaving', false);
       return;
     }

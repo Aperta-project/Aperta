@@ -33,7 +33,7 @@ export default Ember.Controller.extend({
       let newCollaborator = this.get('availableCollaborators').findBy('id', formattedOption.id);
 
       // if this collaborator's record was previously removed from the paper make sure we use THAT one and not a new record.
-      let existingRecord = this.store.all('collaboration').find(function(c) {
+      let existingRecord = this.store.peekAll('collaboration').find(function(c) {
         return c.get('oldPaper') === paper && c.get('user') === newCollaborator;
       });
 

@@ -9,31 +9,33 @@ export default DS.Store.extend({
 
     if (dataType && (this.modelFor(oldType) !== this.modelFor(dataType))) {
       modelType = dataType;
-      if (oldRecord = this.getById(oldType, data.id)) {
+      if (oldRecord = this.peekRecord(oldType, data.id)) {
         this.dematerializeRecord(oldRecord);
       }
     }
-    return this._super(this.modelFor(modelType), data, _partial);
+
+    return this._super(modelType, data, _partial);
   },
 
   findTask(id) {
     let matchingTask = this.allTaskClasses().find(function(tm) {
       return tm.idToRecord[id];
     });
+
     if (matchingTask) {
       return matchingTask.idToRecord[id];
     }
   },
 
   allTaskClasses() {
-    return Object.keys(this.typeMaps).reduce((function(_this) {
-      return function(memo, key) {
-        let typeMap = _this.typeMaps[key];
-        if (typeMap.type.toString().match(/:.*task:/)) {
-          memo.addObject(typeMap);
-        }
-        return memo;
-      };
-    })(this), []);
+    return Object.keys(this.typeMaps).reduce((memo, key) => {
+      let typeMap = this.typeMaps[key];
+
+      if (typeMap.type.toString().match(/:.*task:/)) {
+        memo.addObject(typeMap);
+      }
+
+      return memo;
+    }, []);
   }
 });

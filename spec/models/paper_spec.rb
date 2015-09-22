@@ -411,11 +411,11 @@ describe Paper do
   end
 
   describe "#authors_list" do
-    let!(:plos_author1) { FactoryGirl.create :plos_author, paper: paper }
-    let!(:plos_author2) { FactoryGirl.create :plos_author, paper: paper }
+    let!(:author1) { FactoryGirl.create :author, paper: paper }
+    let!(:author2) { FactoryGirl.create :author, paper: paper }
 
     it "returns authors' last name, first name and affiliation name in an ordered list" do
-      expect(paper.authors_list).to eq "1. #{plos_author1.last_name}, #{plos_author1.first_name} from #{plos_author1.specific.affiliation}\n2. #{plos_author2.last_name}, #{plos_author2.first_name} from #{plos_author2.specific.affiliation}"
+      expect(paper.authors_list).to eq "1. #{author1.last_name}, #{author1.first_name} from #{author1.affiliation}\n2. #{author2.last_name}, #{author2.first_name} from #{author2.affiliation}"
     end
   end
 
@@ -471,5 +471,34 @@ describe Paper do
       expect(doc.search('a:contains("cat.bmp")').length).to eq(1)
       expect(doc.search('a[href*="cat.bmp"]').length).to eq(1)
     end
+  end
+
+  describe "#resubmitted?" do
+    let(:paper) { FactoryGirl.create(:paper) }
+
+    context "with pending decisions" do
+      before do
+        paper.decisions.first.update!(verdict: nil)
+      end
+
+      specify { expect(paper.resubmitted?).to eq(true) }
+    end
+
+    context "with non-pending decisions" do
+      before do
+        paper.decisions.first.update!(verdict: "accept")
+      end
+
+      specify { expect(paper.resubmitted?).to eq(false) }
+    end
+
+    context "with no decisions" do
+      before do
+        paper.decisions.destroy_all
+      end
+
+      specify { expect(paper.resubmitted?).to eq(false) }
+    end
+
   end
 end

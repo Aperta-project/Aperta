@@ -37,7 +37,6 @@
     "ember-export-application-global": "^1.0.2",
     "express": "^4.8.5",
     "glob": "^4.0.5",
-    "tahi-plos-authors-card": "git+https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/Tahi-project/tahi-plos-authors-card.git#93b0149021637b3a916c846659ccb3b1e9036d36",
     "tahi-standard-cards": "git+https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/Tahi-project/tahi-standard-cards.git#22f819a84d9c66f54cfa534599e2871410d7135c",
     "tahi-supporting-information-card": "git+https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/Tahi-project/tahi-supporting-information-card.git",
     "tahi-upload-manuscript-card": "git+https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/Tahi-project/tahi-upload-manuscript-card.git"

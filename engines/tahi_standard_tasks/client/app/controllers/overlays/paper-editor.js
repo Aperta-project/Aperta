@@ -97,9 +97,7 @@ export default TaskController.extend(Select2Assignees, {
         task: this.get('model'),
         email: this.get('selectedUser.email')
       });
-      invitation.save().then(() => {
-        return this.get('model').set('invitation', invitation);
-      });
+      invitation.save();
       return this.set('composingEmail', false);
     },
     destroyInvitation() {

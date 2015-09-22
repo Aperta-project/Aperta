@@ -3,7 +3,7 @@ require 'rails_helper'
 describe TahiStandardTasks::PaperEditorTask do
   let(:paper) { FactoryGirl.create :paper, :with_tasks }
 
-  let!(:plos_author) { FactoryGirl.create :plos_author, paper: paper }
+  let!(:author) { FactoryGirl.create :author, paper: paper }
 
   describe "#invitation_invited" do
     let!(:task) do
@@ -25,7 +25,7 @@ describe TahiStandardTasks::PaperEditorTask do
 
     it "adds author information to Invitation#information=" do
       task.invitation_invited(invitation)
-      expect(invitation.information).to eq("Here are the authors on the paper:\n\n1. #{plos_author.last_name}, #{plos_author.first_name} from #{plos_author.specific.affiliation}")
+      expect(invitation.information).to eq("Here are the authors on the paper:\n\n1. #{author.last_name}, #{author.first_name} from #{author.affiliation}")
     end
   end
 

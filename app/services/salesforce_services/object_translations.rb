@@ -49,7 +49,7 @@ module SalesforceServices
           'PFA_Question_4a__c'         => answer_for("pfa_question_4a"),
           'PFA_Able_to_Pay_R__c'       => answer_for("pfa_amount_to_pay"),
           'PFA_Additional_Comments__c' => answer_for("pfa_additional_comments"),
-          'PFA_Supporting_Docs__c'     => answer_for("pfa_supporting_docs"), # can't be nil, unlike others
+          'PFA_Supporting_Docs__c'     => boolean_from_text_answer_for("pfa_supporting_docs"), # bool required, non-nil, unlike others
         }
       end
 
@@ -60,10 +60,21 @@ module SalesforceServices
           q.present? ? q.answer : nil
         end
 
+        def boolean_from_text_answer_for(ident)
+          a = answer_for(ident)
+          a.is_a?(String) ? text_to_boolean_map[a.downcase] : false
+        end
+
+        def text_to_boolean_map
+          {
+            'yes' => true,
+            'no'  => false,
+          }
+        end
+
         def manuscript_id # replace this with doi code when done
           "prefix-#{@paper.id}"
         end
-
     end
   end
 end

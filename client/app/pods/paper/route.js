@@ -4,6 +4,7 @@ import AuthorizedRoute from 'tahi/routes/authorized';
 
 export default AuthorizedRoute.extend({
   restless: Ember.inject.service('restless'),
+  channelName: null,
 
   model(params) {
     return this.store.fetchById('paper', params.paper_id);
@@ -14,49 +15,16 @@ export default AuthorizedRoute.extend({
     this._super(controller, model);
   },
 
-  channelName(id) {
-    return 'private-paper@' + id;
-  },
-
-  topicChannelName(topic) {
-    return 'private-discussiontopic@' + topic.get('id');
-  },
-
   afterModel(model) {
-    const pusher = this.get('pusher');
-    const userChannelName = `private-user@${ this.currentUser.get('id') }`;
-    const events = ['created', 'updated'];
+    let pusher = this.get('pusher');
+    this.channelName = 'private-paper@' + model.get('id');
 
-    pusher.wire(this, this.channelName(model.get('id')), events);
-
-    this.store.find('discussion-topic', {
-      paper_id: model.get('id')
-    }).then((topics) => {
-      topics.forEach(this.subscribeToDiscussionTopic.bind(this));
-      pusher.wire(this, userChannelName, ['discussion-participant-created']);
-    });
+    // This will bubble up to created and updated actions in the root application route
+    pusher.wire(this, this.channelName, ['created', 'updated', 'destroyed']);
   },
 
   deactivate() {
-    const paperId = this.modelFor('paper').get('id');
-    const channelName = this.channelName(paperId);
-
-    this.get('pusher').unwire(this, channelName);
-    const topics = this.controller.get('subscribedTopics');
-    topics.forEach(this.unsubscribeFromDiscussionTopic.bind(this));
-  },
-
-  subscribeToDiscussionTopic(topic) {
-    const events = ['created', 'updated'];
-    const channelname = this.topicChannelName(topic);
-
-    this.get('pusher').wire(this, channelname, events);
-    this.controller.get('subscribedTopics').pushObject(topic);
-  },
-
-  unsubscribeFromDiscussionTopic(topic) {
-    this.get('pusher').unwire(this, this.topicChannelName(topic));
-    this.controller.get('subscribedTopics').removeObject(topic);
+    this.get('pusher').unwire(this, this.channelName);
   },
 
   _pusherEventsId() {
@@ -110,25 +78,6 @@ export default AuthorizedRoute.extend({
         template: 'overlays/paper-withdraw',
         controller: 'overlays/paper-withdraw'
       });
-    },
-
-    discussionParticipantCreated(payload) {
-      const discussionParticipant = payload.discussion_participant;
-      const id = discussionParticipant.discussion_topic_id;
-
-      this.store.findById('discussion-topic', id).then((topic) => {
-        if(topic.get('paperId') === this.modelFor('paper').get('id')) {
-          this.subscribeToDiscussionTopic(topic);
-        }
-      });
-    },
-
-    discussionTopicCreated(topic) {
-      this.subscribeToDiscussionTopic(topic);
-    },
-
-    discussionTopicDestroyed(topic) {
-      this.unsubscribeFromDiscussionTopic(topic);
     }
   }
 });

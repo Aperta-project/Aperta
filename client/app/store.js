@@ -16,12 +16,21 @@ export default DS.Store.extend({
     return this._super(this.modelFor(modelType), data, _partial);
   },
 
+  getPolymorphic(modelName, id) {
+    var task = null;
+    if (modelName === "task" && (task = this.findTask(id))) {
+      return task;
+    } else {
+      return this.getById(modelName, id);
+    }
+  },
+
   findTask(id) {
     let matchingTask = this.allTaskClasses().find(function(tm) {
       return tm.idToRecord[id];
     });
     if (matchingTask) {
-      return matchingTask.idToRecord[id];
+      return this.getById(matchingTask.type.modelName, id);
     }
   },
 
@@ -29,7 +38,7 @@ export default DS.Store.extend({
     return Object.keys(this.typeMaps).reduce((function(_this) {
       return function(memo, key) {
         let typeMap = _this.typeMaps[key];
-        if (typeMap.type.toString().match(/:.*task:/)) {
+        if (typeMap.type.toString().match(/:.+task:/)) {
           memo.addObject(typeMap);
         }
         return memo;

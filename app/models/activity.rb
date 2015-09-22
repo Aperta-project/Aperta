@@ -28,6 +28,26 @@ class Activity < ActiveRecord::Base
     )
   end
 
+  def self.collaborator_added!(collaborator_paper_role, user:)
+    create(
+      feed_name: "manuscript",
+      activity_key: "collaborator.added",
+      subject: collaborator_paper_role.paper,
+      user: user,
+      message: "#{collaborator_paper_role.user.full_name} has been assigned as collaborator"
+    )
+  end
+
+  def self.collaborator_removed!(collaborator_paper_role, user:)
+    create(
+      feed_name: "manuscript",
+      activity_key: "collaborator.removed",
+      subject: collaborator_paper_role.paper,
+      user: user,
+      message: "#{collaborator_paper_role.user.full_name} has been removed as collaborator"
+    )
+  end
+
   def self.task_sent_to_author!(task, user:)
     create(
       feed_name: "workflow",

@@ -176,6 +176,36 @@ describe Activity do
     end
   end
 
+  describe "#collaborator_added!" do
+    subject(:activity) { Activity.collaborator_added!(paper_role, user: user) }
+    let!(:paper_role) { FactoryGirl.create(:paper_role, :collaborator) }
+
+    it {
+      is_expected.to have_attributes(
+        feed_name: "manuscript",
+        activity_key: "collaborator.added",
+        subject: paper_role.paper,
+        user: user,
+        message: "#{paper_role.user.full_name} has been assigned as collaborator"
+      )
+    }
+  end
+
+  describe "#collaborator_added!" do
+    subject(:activity) { Activity.collaborator_removed!(paper_role, user: user) }
+    let!(:paper_role) { FactoryGirl.create(:paper_role, :collaborator) }
+
+    it {
+      is_expected.to have_attributes(
+        feed_name: "manuscript",
+        activity_key: "collaborator.removed",
+        subject: paper_role.paper,
+        user: user,
+        message: "#{paper_role.user.full_name} has been removed as collaborator"
+      )
+    }
+  end
+
   describe "#paper_submitted!" do
     subject(:activity) { Activity.paper_submitted!(paper, user: user) }
     let(:paper) { FactoryGirl.build(:paper) }

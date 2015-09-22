@@ -1,11 +1,11 @@
 import TaskController from 'tahi/pods/paper/task/controller';
 import Select2Assignees from 'tahi/mixins/controllers/select-2-assignees';
-import RESTless from 'tahi/services/rest-less';
 import Ember from 'ember';
 
 const { computed } = Ember;
 
 export default TaskController.extend(Select2Assignees, {
+  restless: Ember.inject.service('restless'),
   selectedUser: null,
   composingEmail: false,
 
@@ -77,7 +77,7 @@ export default TaskController.extend(Select2Assignees, {
     removeEditor() {
       let promises = [],
           deleteUrl = "/api/papers/" + (this.get('model.paper.id')) + "/editor";
-      promises.push(RESTless.delete(deleteUrl));
+      promises.push(this.get('restless').delete(deleteUrl));
       if (this.get('model.invitation')) {
         promises.push(this.get('model.invitation').destroyRecord());
       }

@@ -40,6 +40,8 @@ class Paper < ActiveRecord::Base
 
   validates :short_title, :title, length: { maximum: 255 }
 
+  scope :active, -> { where( active: true ) }
+
   delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
 
   after_create do
@@ -105,6 +107,9 @@ class Paper < ActiveRecord::Base
     event(:reject) do
       transitions from: :submitted,
                   to: :rejected
+      before do
+        update(active: false)
+      end
     end
 
     event(:publish) do
@@ -117,6 +122,7 @@ class Paper < ActiveRecord::Base
       transitions to: :withdrawn,
                   after: :prevent_edits!
       before do |withdrawal_reason|
+        update(active: false)
         withdrawals << { previous_publishing_state: publishing_state,
                          previous_editable: editable,
                          reason: withdrawal_reason }

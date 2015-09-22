@@ -6,6 +6,7 @@ class DiscussionRepliesPolicy < ApplicationPolicy
   end
   alias :create? :update?
   alias :destroy? :update?
+  alias :show? :update?
 
   private
 

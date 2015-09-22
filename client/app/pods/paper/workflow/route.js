@@ -7,8 +7,8 @@ export default AuthorizedRoute.extend({
 
   afterModel(paper) {
     // We need tasks for this view, but we'll access them via phases;
-    // fetching them for the paper reduces the nubmer of requests.
-    paper.get('tasks');
+    // fetching tasks *then* phases reduces the total number of requests.
+    return Ember.RSVP.all([paper.get('tasks'), paper.get('phases')]);
   },
 
   actions: {

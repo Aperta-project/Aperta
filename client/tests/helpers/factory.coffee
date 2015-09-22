@@ -182,6 +182,9 @@ Factory =
 
   createTask: (type, paper, phase, attrs={}) ->
     newTask = @createRecord(type, _.extend(attrs, {lite_paper_id: paper.id}))
+    newTask.links =
+      nested_questions: "/api/tasks/#{newTask.id}/nested_questions"
+      nested_question_answers: "/api/tasks/#{newTask.id}/nested_question_answers"
     @addHasMany(paper, [newTask], {inverse: 'paper', embed: true})
     @addHasMany(phase, [newTask], {inverse: 'phase', embed: true})
     newTask
@@ -325,6 +328,7 @@ FactoryAttributes.Task =
   paper_id: null
   lite_paper_id: null
   assignee_ids: []
+  assigned_to_me: true
   participant_ids: []
   comment_ids: []
 
@@ -359,6 +363,7 @@ FactoryAttributes.BillingTask =
   assignee_ids: []
   participant_ids: []
   comment_ids: []
+  assigned_to_me: true
   is_metadata_task: false
   is_submission_task: true
 
@@ -383,6 +388,7 @@ FactoryAttributes.FigureTask =
 FactoryAttributes.FinancialDisclosureTask =
   _rootKey: 'task'
   body: []
+  assigned_to_me: true
   comment_ids: []
   completed: false
   funder_ids: []

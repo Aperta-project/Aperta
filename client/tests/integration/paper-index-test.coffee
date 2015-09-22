@@ -31,17 +31,22 @@ module 'Integration: PaperIndex',
       role: "author"
     )
 
-    [currentPaper, figureTask, journal, litePaper, phase] = records
+    [currentPaper, figureTask, journal, phase] = records
 
     nestedQuestion = Factory.createRecord('NestedQuestion', { ident: 'figure_complies' })
     addNestedQuestionToTask(nestedQuestion, figureTask);
 
     paperPayload = Factory.createPayload('paper')
-    paperPayload.addRecords(records.concat([fakeUser, nestedQuestion]))
+    paperPayload.addRecords(records.concat([fakeUser]))
     paperResponse = paperPayload.toJSON()
+
+    tasksPayload = Factory.createPayload('tasks')
+    tasksPayload.addRecords([figureTask])
+    console.log tasksPayload.toJSON()
 
     taskPayload = Factory.createPayload('task')
     taskPayload.addRecords([figureTask, litePaper, fakeUser, nestedQuestion])
+
     figureTaskResponse = taskPayload.toJSON()
     collaborators = [
       id: "35"
@@ -52,6 +57,9 @@ module 'Integration: PaperIndex',
     server.respondWith 'GET', "/api/papers/#{currentPaper.id}", [
       200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
     ]
+    server.respondWith 'GET', "/api/papers/#{currentPaper.id}/tasks", [
+      200, {"Content-Type": "application/json"}, JSON.stringify tasksPayload.toJSON()
+    ]
     server.respondWith 'GET', "/api/tasks/#{figureTaskId}", [
       200, {"Content-Type": "application/json"}, JSON.stringify figureTaskResponse
     ]
@@ -60,6 +68,12 @@ module 'Integration: PaperIndex',
     ]
     server.respondWith 'GET', /\/api\/filtered_users\/users\/\d+/, [
       200, {"Content-Type": "application/json"}, JSON.stringify []
+    ]
+    server.respondWith 'GET', "/api/tasks/#{figureTaskId}/nested_questions", [
+      200, {"Content-Type": "application/json"} , JSON.stringify({nested_questions: [nestedQuestion]})
+    ]
+    server.respondWith 'GET', "/api/tasks/#{figureTaskId}/nested_question_answers", [
+      200, {"Content-Type": "application/json"} , JSON.stringify({nested_question_answers: []})
     ]
 
 test 'on paper.index as a participant on a task but not author of paper', (assert) ->

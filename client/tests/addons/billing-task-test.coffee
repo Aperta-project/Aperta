@@ -63,13 +63,23 @@ module "Integration: Billing",
     for nestedQuestion in nestedQuestions
       addNestedQuestionToTask(nestedQuestion, billingTask)
       taskPayload.addRecord(nestedQuestion)
-    paperResponse.nested_questions = nestedQuestions
 
     taskPayload.addRecords([billingTask, fakeUser])
     billingTaskResponse = taskPayload.toJSON()
 
+    tasksPayload = Factory.createPayload('tasks')
+    tasksPayload.addRecords([billingTask])
+    collaborators = [
+      id: "35"
+      full_name: "Aaron Baker"
+      info: "testroles2, collaborator"
+    ]
+
     server.respondWith "GET", "/api/papers/#{currentPaper.id}", [
       200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
+    ]
+    server.respondWith 'GET', "/api/papers/#{currentPaper.id}/tasks", [
+      200, {"Content-Type": "application/json"}, JSON.stringify tasksPayload.toJSON()
     ]
     server.respondWith "GET", "/api/tasks/#{billingTaskId}", [
       200, {"Content-Type": "application/json"}, JSON.stringify billingTaskResponse
@@ -79,6 +89,12 @@ module "Integration: Billing",
     ]
     server.respondWith "GET", /\/api\/filtered_users\/users\/\d+/, [
       200, {"Content-Type": "application/json"}, JSON.stringify []
+    ]
+    server.respondWith 'GET', "/api/tasks/#{billingTaskId}/nested_questions", [
+      200, {"Content-Type": "application/json"} , JSON.stringify({nested_questions: nestedQuestions})
+    ]
+    server.respondWith 'GET', "/api/tasks/#{billingTaskId}/nested_question_answers", [
+      200, {"Content-Type": "application/json"} , JSON.stringify({nested_question_answers: []})
     ]
 
     $.mockjax({

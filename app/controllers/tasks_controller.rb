@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy, except: [:index]
+  before_action :enforce_policy, except: [:index, :questions, :comments, :participations]
 
   before_action :unmunge_empty_arrays, only: [:update]
 
@@ -8,7 +8,7 @@ class TasksController < ApplicationController
 
   ## /paper/tasks/
   def index
-    respond_with(Task.joins(:paper).includes([{paper: [:journal, :creator]}, :participations]).where('papers.id = ?', params[:paper_id]))
+    respond_with(Task.joins(:paper).includes([{ paper: [:journal, :creator] }, :participations]).where('papers.id = ?', params[:paper_id]))
   end
 
   def show
@@ -48,6 +48,22 @@ class TasksController < ApplicationController
       task_email_params[:recipients]
     )
     head :ok
+  end
+
+  def attachments
+    respond_with task.attachments
+  end
+
+  def comments
+    respond_with task.comments, root: :comments
+  end
+
+  def participations
+    respond_with task.participations, root: :participations
+  end
+
+  def questions
+    respond_with task.questions, root: :questions
   end
 
   private

@@ -3,6 +3,10 @@ class AuthorsController < ApplicationController
   before_action :enforce_policy
   respond_to :json
 
+  def show
+    render json: author
+  end
+
   def create
     author.save!
 

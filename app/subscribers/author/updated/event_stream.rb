@@ -4,8 +4,13 @@ class Author::Updated::EventStream < EventStreamSubscriber
     private_channel_for(record.paper)
   end
 
-  def payload
-    AuthorsSerializer.new(record.paper.authors, root: :authors).as_json
+  def run
+    record.paper.authors.each do |author|
+      TahiPusher::Channel.delay(queue: :eventstream, retry: false).
+        push(channel_name: channel,
+             event_name: action,
+             payload: payload_for_record(author),
+             excluded_socket_id: excluded_socket_id)
+    end
   end
-
 end

@@ -5,13 +5,6 @@ class DiscussionParticipant::Created::EventStream::NotifyAssignee < EventStreamS
   end
 
   def payload
-    DiscussionParticipantSerializer.new(record).as_json
+    payload_for_record record.discussion_topic
   end
-
-  # on the client side, we must listen for being added to a discussion topic. when this
-  # event comes down, we fetch our new topic and subscribe to it's eventstream channel.
-  def action
-    'discussion-participant-created'
-  end
-
 end

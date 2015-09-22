@@ -14,11 +14,16 @@ class EventStreamSubscriber
   end
 
   def run
-    TahiPusher::Channel.delay(queue: :eventstream, retry: false).push(channel_name: channel, event_name: action, payload: payload, excluded_socket_id: excluded_socket_id)
+    TahiPusher::Channel.delay(queue: :eventstream, retry: false).
+      push(channel_name: channel,
+           event_name: action,
+           payload: payload,
+           excluded_socket_id: excluded_socket_id)
   end
 
+
   def payload
-    raise NotImplementedError.new("You must define the data that is sent to pusher")
+    payload_for_record record
   end
 
   def channel
@@ -27,19 +32,22 @@ class EventStreamSubscriber
 
   private
 
+  def payload_for_record(record)
+    classname = record.class.base_class.name.demodulize
+    ember_name = classname.singularize.underscore.dasherize.downcase # sheesh
+
+    {
+      type: ember_name,
+      id: record.id
+    }
+  end
+
   def private_channel_for(model)
     TahiPusher::ChannelName.build(target: model, access: TahiPusher::ChannelName::PRIVATE)
   end
 
   def system_channel
     TahiPusher::ChannelName.build(target: TahiPusher::Config::SYSTEM_CHANNEL, access: TahiPusher::ChannelName::PUBLIC)
-  end
-
-  def destroyed_payload(model=record)
-    {
-      type: model.class.base_class.name.demodulize.tableize,
-      ids: [model.id]
-    }
   end
 
 end

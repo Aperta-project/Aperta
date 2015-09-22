@@ -16,7 +16,11 @@
     <h2 class="welcome-message">
       Hi, {{currentUser.firstName}}.
       {{#if papers.length}}
-        You have {{pluralize totalPaperCount "manuscript"}}.
+        {{#if activePapers.length}}
+          You have {{pluralize totalActivePaperCount "active manuscript"}}.
+        {{else}}
+          You have {{pluralize totalInactivePaperCount "inactive manuscript"}}.
+        {{/if}}
       {{else}}
         You have no manuscripts.
       {{/if}}
@@ -24,16 +28,37 @@
 
     <button class="button-primary button--green" {{action "showNewPaperOverlay"}}>Create New Submission</button>
     {{#if hasPapers}}
-      <ul class="dashboard-submitted-papers">
-        {{#each sortedPapers as |paper|}}
-          {{dashboard-link model=paper}}
-        {{/each}}
-      </ul>
-      {{#if canLoadMore}}
-        <button {{action "loadMorePapers"}} href="#" class="button-secondary button--green load-more-papers">
-          Load More
-        </button>
-      {{/if }}
+      {{#if hasActivePapers}}
+        <h3>
+          Active Manuscripts
+        </h3>
+        <ul class="dashboard-submitted-papers">
+          {{#each sortedActivePapers as |paper|}}
+            {{dashboard-link model=paper}}
+          {{/each}}
+        </ul>
+        {{#if canLoadMoreActive}}
+          <button {{action "loadMoreActivePapers"}} href="#" class="button-secondary button--green load-more-papers">
+            Load More
+          </button>
+        {{/if }}
+      {{/if}}
+
+      {{#if hasInactivePapers}}
+        <h3>
+          Inactive Manuscripts
+        </h3>
+        <ul class="dashboard-submitted-papers">
+          {{#each sortedInactivePapers as |paper|}}
+            {{dashboard-link model=paper}}
+          {{/each}}
+        </ul>
+        {{#if canLoadMoreInactive}}
+          <button {{action "loadMoreActivePapers"}} href="#" class="button-secondary button--green load-more-papers">
+            Load More
+          </button>
+        {{/if}}
+      {{/if}}
     {{else}}
       <p class="dashboard-info-text">Your scientific paper submissions will<br> appear here.</p>
     {{/if}}

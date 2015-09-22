@@ -7,26 +7,41 @@ export default Ember.Controller.extend({
     return this.get('currentUser.invitedInvitations');
   }),
 
-  hasPapers: Ember.computed.notEmpty('papers'),
-  pageNumber: 1,
+  hasPapers:         Ember.computed.notEmpty('papers'),
+  hasActivePapers:   Ember.computed.notEmpty('activePapers'),
+  hasInactivePapers: Ember.computed.notEmpty('inactivePapers'),
+  activePageNumber:   1,
+  inactivePageNumber: 1,
   relatedAtSort: ['relatedAtDate:desc'],
-  sortedPapers: Ember.computed.sort('papers', 'relatedAtSort'),
+  sortedActivePapers:     Ember.computed.sort('activePapers', 'relatedAtSort'),
+  sortedInactivePapers:   Ember.computed.sort('inactivePapers', 'relatedAtSort'),
+  activePapers:           Ember.computed.filterBy('papers', 'active', true),
+  inactivePapers:         Ember.computed.filterBy('papers', 'active', false),
 
-  totalPaperCount: Ember.computed('papers.length', function() {
-    let numPapersFromServer       = this.store.metadataFor('paper').total_papers;
-    let numDashboardPapersInStore = this.get('papers.length');
+  totalActivePaperCount: Ember.computed('papers.length', function() {
+    let numPapersFromServer       = this.store.metadataFor('paper').total_active_papers;
+    let numDashboardPapersInStore = this.get('activePapers.length');
 
     return numDashboardPapersInStore > numPapersFromServer ? numDashboardPapersInStore : numPapersFromServer;
   }),
 
-  canLoadMore: Ember.computed('pageNumber', function() {
-    return this.get('pageNumber') !== this.store.metadataFor('paper').total_pages;
+  canLoadMoreActive: Ember.computed('activePageNumber', function() {
+    return this.get('activePageNumber') !== this.store.metadataFor('paper').total_active_pages;
+  }),
+
+  canLoadMoreInactive: Ember.computed('inactivePageNumber', function() {
+    return this.get('inactivePageNumber') !== this.store.metadataFor('paper').total_inactive_pages;
   }),
 
   actions: {
-    loadMorePapers() {
-      this.store.find('paper', { page_number: this.get('pageNumber') + 1 }).then(()=> {
-        this.incrementProperty('pageNumber');
+    loadMoreActivePapers() {
+      this.store.find('paper', { page_number: this.get('activePageNumber') + 1 }).then(()=> {
+        this.incrementProperty('activePageNumber');
+      });
+    },
+    loadMoreInactivePapers() {
+      this.store.find('paper', { page_number: this.get('inactivePageNumber') + 1 }).then(()=> {
+        this.incrementProperty('inactivePageNumber');
       });
     }
   }

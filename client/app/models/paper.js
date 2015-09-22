@@ -31,6 +31,7 @@ export default DS.Model.extend({
   }),
   tasks: hasMany('task', { async: true, polymorphic: true }),
 
+  active: attr('boolean'),
   body: attr('string'),
   doi: attr('string'),
   editable: attr('boolean'),

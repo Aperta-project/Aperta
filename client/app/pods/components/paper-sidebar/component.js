@@ -10,7 +10,7 @@ export default Ember.Component.extend({
   assignedTasks: Ember.computed.setDiff('currentUserTasks', 'metadataTasks'),
 
   currentUserTasks: Ember.computed.filter('paper.tasks', function(task) {
-    return task.get('participations').mapBy('user').contains(this.get('user'));
+    return task.get('assignedToMe');
   }),
 
   actions: {

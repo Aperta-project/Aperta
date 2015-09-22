@@ -21,7 +21,7 @@ class PapersController < ApplicationController
   def show
     rel = Paper.includes([
       :supporting_information_files,
-      {paper_roles: [:user]},
+      { paper_roles: [:user] },
       :manuscript
     ])
     paper = rel.find(params[:id])
@@ -50,12 +50,16 @@ class PapersController < ApplicationController
     respond_with paper
   end
 
-
   ## SUPPLIMENTAL INFORMATION
 
   def comment_looks
     comment_looks = paper.comment_looks.where(user: current_user).includes(:task)
     respond_with(comment_looks, root: :comment_looks)
+  end
+
+  def versioned_texts
+    versions = paper.versioned_texts.includes(:submitting_user).order(updated_at: :desc)
+    respond_with versions, each_serializer: VersionedTextSerializer, root: 'versioned_texts'
   end
 
   def workflow_activities

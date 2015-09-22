@@ -3,6 +3,10 @@ class DiscussionRepliesController < ApplicationController
   before_action :enforce_policy
   respond_to :json
 
+  def show
+    respond_with(discussion_reply)
+  end
+
   def create
     discussion_reply.save
     respond_with(discussion_reply)

@@ -8,12 +8,9 @@ export default DS.Model.extend({
   authors: hasMany('author', { async: false }),
   collaborations: hasMany('collaboration', { async: false }),
   commentLooks: hasMany('comment-look', { inverse: 'paper', async: true }),
-  decisions: hasMany('decision', { async: false }),
-  editors: hasMany('user', { async: false }),
-  figures: hasMany('figure', {
-    inverse: 'paper',
-    async: false
-  }),
+  decisions: hasMany('decision', { async: true }),
+  discussionTopics: hasMany('discussion-topic', { async: true }),
+  figures: hasMany('figure', { inverse: 'paper', async: true }),
   tables: hasMany('table', {
     inverse: 'paper',
     async: false
@@ -22,16 +19,17 @@ export default DS.Model.extend({
     inverse: 'paper',
     async: false
   }),
-  journal: belongsTo('journal', { async: false }),
-  lockedBy: belongsTo('user', { async: false }),
+  journal: belongsTo('journal', { async: true }),
+  lockedBy: belongsTo('user', { async: true }),
   phases: hasMany('phase', { async: true }),
-  reviewers: hasMany('user', { async: false }),
   supportingInformationFiles: hasMany('supporting-information-file', {
     async: false
   }),
+  versionedTexts: hasMany('versioned-text', { async: true }),
   tasks: hasMany('task', { async: true, polymorphic: true }),
-
   active: attr('boolean'),
+  manuscriptPageTasks: hasMany('task', { async: true, polymorphic: true }),
+
   body: attr('string'),
   doi: attr('string'),
   editable: attr('boolean'),
@@ -50,7 +48,6 @@ export default DS.Model.extend({
   submittedAt: attr('date'),
   publishingState: attr('string'),
   title: attr('string'),
-  versions: attr(),
   withdrawalReason: attr('string'),
 
   // For diffing:

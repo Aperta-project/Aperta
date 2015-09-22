@@ -4,7 +4,7 @@ import Ember from 'ember';
  *  select-native is a component for the html select element.
  *  - It will iterate over the content attr and yield each item,
  *    as an option element
- *  - The action attr should be an action that mutates 
+ *  - The action attr should be an action that mutates
  *    the selection (see examples below)
  *
  *  The example below mutates the selectedPerson on-change
@@ -119,7 +119,7 @@ export default Ember.Component.extend({
     if(hasPrompt && selectedIndex === 0) {
       // leave selection as undefined
     } else {
-      selection = content[contentIndex];
+      selection = content.objectAt(contentIndex);
     }
 
     // set the local, shadowed selection to avoid leaking

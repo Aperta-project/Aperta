@@ -2,6 +2,7 @@ class DecisionsController < ApplicationController
   def index
     decisions = Decision.includes(questions: [:question_attachment, :task]).
       where(paper_id: params[:paper_id])
+
     render json: decisions, each_serializer: DecisionSerializer, root: 'decisions'
   end
 

@@ -3,9 +3,9 @@
     <div class="bar-item">
       Now viewing:
       {{select-native name="view_version"
-                      content=paper.versions
+                      content=paper.versionedTexts
                       optionValuePath="id"
-                      optionLabelPath="name"
+                      optionLabelPath="version_string"
                       selection=viewingVersion
                       action=(action "changeViewingVersion")}}
     </div>
@@ -13,9 +13,9 @@
       Compare With:
       {{select-native name="compare_version"
                       prompt="-"
-                      content=paper.versions
+                      content=paper.versionedTexts
                       optionValuePath="id"
-                      optionLabelPath="name"
+                      optionLabelPath="version_string"
                       selection=comparisonVersion
                       action=(action "changeComparisonVersion")}}
     </div>

@@ -19,7 +19,8 @@ export default AuthorizedRoute.extend({
     let pusher = this.get('pusher');
     this.channelName = 'private-paper@' + model.get('id');
 
-    // This will bubble up to created and updated actions in the root application route
+    // This will bubble up to created and updated actions in the root
+    // application route
     pusher.wire(this, this.channelName, ['created', 'updated', 'destroyed']);
   },
 

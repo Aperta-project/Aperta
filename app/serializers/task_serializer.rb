@@ -1,19 +1,11 @@
 class TaskSerializer < ActiveModel::Serializer
-  attributes :id, :title, :type, :completed, :body, :paper_title, :role, :position,
-             :is_metadata_task, :is_submission_task
-  has_one :phase, embed: :id
+  attributes :id, :title, :type, :completed, :body, :role, :position,
+             :is_metadata_task, :is_submission_task, :links,
+             :phase_id, :assigned_to_me
+
   has_one :paper, embed: :id
 
-  has_many :attachments, embed: :ids, include: true
-  has_many :questions, embed: :ids, include: true
-  has_many :comments, embed: :ids, include: true
-  has_many :participations, embed: :ids, include: true
-
   self.root = :task
-
-  def paper_title
-    object.paper.display_title
-  end
 
   def is_metadata_task
     object.metadata_task?
@@ -21,5 +13,23 @@ class TaskSerializer < ActiveModel::Serializer
 
   def is_submission_task
     object.submission_task?
+  end
+
+  def assigned_to_me
+    user = scope.presence
+    if user
+      object.participations.map(&:user_id).include? user.id
+    else
+      false
+    end
+  end
+
+  def links
+    {
+      attachments: task_attachments_path(object),
+      comments: comments_task_path(object),
+      participations: participations_task_path(object),
+      questions: questions_task_path(object)
+    }
   end
 end

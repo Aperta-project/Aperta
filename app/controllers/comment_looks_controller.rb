@@ -4,6 +4,9 @@ class CommentLooksController < ApplicationController
   def index
     respond_with current_user.comment_looks.includes(:comment)
   end
+
+  def show
+    respond_with current_user.comment_looks.find(params[:id])
   end
 
   def destroy

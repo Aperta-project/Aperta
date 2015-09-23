@@ -62,7 +62,7 @@ class NestedQuestionAnswersController < ApplicationController
     when "Funder"
       TahiStandardTasks::Funder.name
     when "ReviewerRecommendation"
-      TahiStandardTasks::ReviewerRecommendation.ReviewerRecommendation.name
+      TahiStandardTasks::ReviewerRecommendation.name
     else
       raise "Don't know how to assign to #{answer_params[:owner_type]}"
     end

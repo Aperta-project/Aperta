@@ -4,11 +4,11 @@ class ImageProxyController < ActionController::Base
   def show
     attachment = Figure.find(params[:figure_id]).attachment
 
-    s3_url = if params[:version].present?
-              attachment.url(params[:version])
-            else
-              attachment.url
-            end
+    if params[:version].present?
+      s3_url = attachment.url(params[:version])
+    else
+      s3_url = attachment.url
+    end
 
     redirect_to s3_url
   end

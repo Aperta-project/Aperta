@@ -24,11 +24,11 @@ class Figure < ActiveRecord::Base
   end
 
   def detail_src
-    done? ? "attachments/figures/#{self.id}?detail" : nil
+    done? ? "attachments/figures/#{self.id}?version=detail" : nil
   end
 
   def preview_src
-    done? ? "attachments/figures/#{self.id}?preview" : nil
+    done? ? "attachments/figures/#{self.id}?version=preview" : nil
   end
 
   def access_details

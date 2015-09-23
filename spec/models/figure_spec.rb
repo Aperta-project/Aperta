@@ -35,7 +35,7 @@ describe Figure, redis: true do
     end
 
     it "returns a path with figure id for the proxy image endpoint" do
-      expect(figure.preview_src).to eq "attachments/figures/#{figure.id}?preview"
+      expect(figure.preview_src).to eq "attachments/figures/#{figure.id}?version=preview"
     end
   end
 
@@ -46,7 +46,7 @@ describe Figure, redis: true do
     end
 
     it "returns a path with figure id for the proxy image endpoint" do
-      expect(figure.detail_src).to eq "attachments/figures/#{figure.id}?detail"
+      expect(figure.detail_src).to eq "attachments/figures/#{figure.id}?version=detail"
     end
   end
 

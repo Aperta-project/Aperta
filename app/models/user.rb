@@ -87,7 +87,7 @@ class User < ActiveRecord::Base
   def invitations_from_latest_revision
     # Includes, here, to enable selecting from the latest revision w/o
     # further db queries.
-    invitations.includes([{decision: [:paper]}, :paper]).select do |invitation|
+    invitations.includes([{ decision: [:paper] }, :paper]).select do |invitation|
       invitation.decision && invitation.decision.latest?
     end
   end

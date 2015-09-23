@@ -24,7 +24,8 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
   },
 
   _pusherEventsId() {
-    // needed for the `wire` and `unwire` method to think we have `ember-pusher/bindings` mixed in
+    // needed for the `wire` and `unwire` method to think we have
+    // `ember-pusher/bindings` mixed in
     return this.toString();
   }
 });

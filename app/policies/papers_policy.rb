@@ -61,7 +61,6 @@ class PapersPolicy < ApplicationPolicy
     can_view_paper?
   end
 
-
   private
 
   def can_view_paper?

@@ -22,7 +22,7 @@ class PapersController < ApplicationController
   def show
     rel = Paper.includes([
       :supporting_information_files,
-      {paper_roles: [:user]},
+      { paper_roles: [:user] },
       :manuscript
     ])
     paper = rel.find(params[:id])
@@ -50,7 +50,6 @@ class PapersController < ApplicationController
 
     respond_with paper
   end
-
 
   ## SUPPLIMENTAL INFORMATION
 

@@ -5,7 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
-- Super Admin: run `rake utils:retry_salesforce_case_for_paper[:paper_id]` to resend Salesforce Case data for 1 Paper
+- Super Admin: run `rake plos_billing:retry_salesforce_case_for_paper[:paper_id]` to resend Salesforce Case data for 1 Paper
 
 ### Changed
 -

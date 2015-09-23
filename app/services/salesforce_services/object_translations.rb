@@ -9,7 +9,7 @@ module SalesforceServices
 
       def paper_to_manuscript_hash
         {
-          "RecordTypeId" => "012U0000000E4ASIA0",
+          "RecordTypeId" => "012U0000000E4ASIA0", # TODO: make this dynamic
           "OwnerId" => @user_id,
           "Editorial_Process_Close__c" => false,
           "Display_Technical_Notes__c" => false,

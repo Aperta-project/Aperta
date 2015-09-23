@@ -98,6 +98,8 @@ GEM
       activemodel (= 4.2.4)
       activesupport (= 4.2.4)
       arel (~> 6.0)
+    activerecord-sqlserver-adapter (4.2.4)
+      activerecord (~> 4.2.1)
     activesupport (4.2.4)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
@@ -555,6 +557,8 @@ GEM
     timeliness (0.3.7)
     timers (4.0.1)
       hitimes
+    tiny_tds (0.7.0)
+      mini_portile (= 0.6.2)
     twitter-text (1.13.0)
       unf (~> 0.1.0)
     tzinfo (1.2.2)
@@ -584,6 +588,7 @@ DEPENDENCIES
   aasm (~> 4.1.0)
   active_model_serializers (= 0.8.3)
   activemodel-globalid!
+  activerecord-sqlserver-adapter
   acts_as_list!
   american_date
   auto_screenshot
@@ -660,6 +665,7 @@ DEPENDENCIES
   thin
   timecop
   timeliness
+  tiny_tds
   twitter-text
   uglifier
   unf

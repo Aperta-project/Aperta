@@ -321,6 +321,10 @@ export default TaskController.extend({
     var controller = this;
     Ember.run.scheduleOnce('afterRender', this, 'setPfaValidators');
   },
+  
+  paymentTypeObserver: Ember.observer("pfa", function(){ 
+    this.setPfaValidators(); 
+  }),
   pfaErrors: new DS.Errors,
   identsValidated: ['pfa_question_1b', 'pfa_question_2b', 'pfa_question_3a', 'pfa_question_4a', 'pfa_amount_to_pay'],
   setPfaValidators: function(){
@@ -345,6 +349,7 @@ export default TaskController.extend({
     input.siblings('.error_message').remove();
   },
   enforceNumeric: function(event){
+    console.log('---------validating----------');
     var controller = event.data;
     var input      = $(event.target);
     var val        = input.val();
@@ -357,7 +362,6 @@ export default TaskController.extend({
       controller.pfaErrors.remove(name);
       controller.removeError(input, name);
     }
-
     controller.syncCompletedCheckbox();
   },
   syncCompletedCheckbox: function(){

@@ -83,18 +83,15 @@ class WorkflowPage(AuthenticatedPage):
   def validate_initial_page_elements_styles(self):
     """ """
     # Validate menu elements (title and icon)
-    # This left nav validation should use the validation defined in authenticated_page
     # https://www.pivotaltracker.com/story/show/103343910
+    # https://www.pivotaltracker.com/story/show/104018188
     self.validate_closed_lef_nav()
     assert self._get(self._nav_menu)
     # Right menu items
     # https://www.pivotaltracker.com/story/show/103343910
+    # https://www.pivotaltracker.com/story/show/104018188
     self.validate_wf_top_elements()
     assert self._get(self._column_header)
-
-  #def is_navigation_menu_visible(self):
-  #  """ """
-  #  self._get(self._click_editor_assignment_button)
 
   def click_editor_assignment_button(self):
     """Click editor assignment button"""
@@ -138,10 +135,6 @@ class WorkflowPage(AuthenticatedPage):
     """Click on the close icon to close left navigation bar"""
     self._get(self._nav_close).click()
     return self
-
-  #def get_column_header_(self):
-  #  """ """
-  #  return self._get(self._column_header).text
 
   def click_column_header(self):
     """Click on the first column header and returns the text"""

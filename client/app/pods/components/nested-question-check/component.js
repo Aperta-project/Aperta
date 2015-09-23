@@ -16,6 +16,10 @@ export default NestedQuestionComponent.extend({
     this.setCheckedValue(this.get('model.answer.value'));
   }),
 
+  isChecked: Ember.computed('model.answer.value', function() {
+    return this.get('model.answer.value');
+  }),
+
   setCheckedValue: function(bool){
     this.set('checked', bool);
     this.set('model.answer.value', bool);

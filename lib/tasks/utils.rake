@@ -7,10 +7,4 @@ namespace :utils do
       Net::HTTP.get_response(uri)
     end
   end
-
-  task :retry_salesforce_case_for_paper, [:paper_id] => :environment do |task, args|
-    paper = Paper.find(args[:paper_id])
-    paper.create_billing_and_pfa_case
-    puts "#create_billing_and_pfa_case"
-  end
 end

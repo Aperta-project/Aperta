@@ -23,31 +23,32 @@ describe EpubConverter do
   let(:include_source) { false }
   let(:converter) { EpubConverter.new paper, downloader, include_source }
 
-  describe '#file_name' do
-
-  end
-
   describe '#epub_html' do
-    context 'empty paper body' do
-      subject(:doc){ Nokogiri::HTML(converter.epub_html) }
-      let(:paper) { create :paper, body: "<div>paper body here</div>" }
+    context 'a paper' do
+      let(:doc) { Nokogiri::HTML(converter.epub_html) }
 
       after { expect(doc.errors.length).to be 0 }
 
       it "displays and HTML escapes the paper's short_title" do
         paper.short_title = "<This Is & The Short Title>"
-        element = doc.at("title:contains('#{paper.short_title}')")
-        expect(element).to be
+        expect(doc).to have_path("title:contains('#{paper.short_title}')")
       end
 
       it "displays and HTML escapes the paper's title" do
         paper.title = "<This Is & The Title>"
-        element = doc.at("h1:contains('#{paper.title}')")
-        expect(element).to be
+        expect(doc).to have_path("h1:contains('#{paper.title}')")
       end
 
       it "includes the paper body as-is, unescaped" do
         expect(converter.epub_html).to include(paper.body)
+      end
+    end
+
+    context 'paper with empty title' do
+      let(:paper) { create :paper, title: nil, body: "<div>paper body here</div>" }
+
+      it 'should use the short title' do
+        expect(converter.epub_html).to have_path("h1:contains('#{paper.short_title}')")
       end
     end
   end

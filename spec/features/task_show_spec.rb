@@ -13,7 +13,7 @@ feature "Displaying task", js: true do
   end
 
   before do
-    login_as admin
+    login_as(admin, scope: :user)
     visit "/"
     click_link paper.title
     click_link "Workflow"

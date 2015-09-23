@@ -6,7 +6,7 @@ feature 'Adding cover letter', js: true do
   let(:letter_body)  { "Foo Bar, Hello World" }
 
   before do
-    login_as author
+    login_as(author, scope: :user)
     visit "/"
   end
 

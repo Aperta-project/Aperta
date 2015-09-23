@@ -13,8 +13,9 @@ export default Ember.Controller.extend({
   activePageNumber:   1,
   inactivePageNumber: 1,
   relatedAtSort: ['relatedAtDate:desc'],
+  updatedAtSort: ['updatedAt:desc'],
   sortedActivePapers:     Ember.computed.sort('activePapers', 'relatedAtSort'),
-  sortedInactivePapers:   Ember.computed.sort('inactivePapers', 'relatedAtSort'),
+  sortedInactivePapers:   Ember.computed.sort('inactivePapers', 'updatedAtSort'),
   activePapers:           Ember.computed.filterBy('papers', 'active', true),
   inactivePapers:         Ember.computed.filterBy('papers', 'active', false),
 

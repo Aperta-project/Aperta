@@ -38,6 +38,8 @@ export default DS.Model.extend({
   editorMode: attr('string', { defaultValue: 'html' }),
   eventName: attr('string'),
   paperType: attr('string'),
+  createdAt: attr('date'),
+  updatedAt: attr('date'),
   relatedAtDate: attr('date'),
   relatedUsers: attr(),
   roles: attr(),

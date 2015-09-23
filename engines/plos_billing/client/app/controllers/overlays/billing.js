@@ -316,76 +316,77 @@ const DATA = {
 
 let computed = Ember.computed;
 
-var billingData = Ember.Object.extend(EmberValidations.Mixin, {
-  validations: {
-    'pfa.pfa_question_1b.answer': {
-      presence: true,
-      length: { minimum: 5 }
-    }
-  }
-}).create();
 
-export default TaskController.extend(EmberValidations.Mixin, {
-  billingData: billingData,
-  setPfaDataObjects: function(){
-    //this.pfaData.set('pfa_question_1b', this.findPfaQuestion('pfa_question_1b'));
-  },
-  findPfaQuestion: function(ident){
-    return this.get("model.questions").findProperty("ident", "plos_billing." + ident);
-  },
-  
-  
-  pfaErrors: new DS.Errors,
-  identsValidated: ['pfa_question_1b', 'pfa_question_2b', 'pfa_question_3a', 'pfa_question_4a', 'pfa_amount_to_pay'],
-  setPfaValidators: function(){
-    _.each(this.identsValidated, function(ident){
-      this.pfaInput(ident).keyup(this, this.enforceNumeric)
-    }.bind(this));
-  },
-  pfaInput: function(ident){
-    return $("[name='plos_billing."+ ident + "']");
-  },
-  hasPfaErrors: computed('pfaErrors.length', function(){
-    return !this.get('pfaErrors.isEmpty');
-  }),
-  displayError: function(input, name){
-    input.parent().addClass('error');
-    var e = this.pfaErrors.errorsFor(name)[0].message;
-    if (input.siblings('.error_message').length > 0){ return } //just one please
-    input.after("<div class='error_message'>"+ e +"</div>");
-  },
-  removeError: function(input, name){
-    input.parent().removeClass('error');
-    input.siblings('.error_message').remove();
-  },
-  enforceNumeric: function(event){
-    var controller = event.data;
-    var input      = $(event.target);
-    var val        = input.val();
-    var name       = event.target.name;
+export default TaskController.extend({
+  buildBillingValidator: function(){
+    var numericalityConfig = { numericality: { messages: { numericality: "Must be a number and contain no symobls, or letters"}}}
 
-    if (val && !val.match(/^\d*$/)) {
-      controller.pfaErrors.add(name, "Must be a number and contain no symobls, or letters");
-      controller.displayError(input, name);
-    } else {
-      controller.pfaErrors.remove(name);
-      controller.removeError(input, name);
-    }
-    controller.syncCompletedCheckbox();
-  },
-  syncCompletedCheckbox: function(){
-    var checkbox = $('#task_completed');
-    if (
-      this.get('hasPfaErrors') &&
-      !checkbox.attr('disabled')
-    ) {
-      checkbox.prop('checked', true)
-      checkbox.trigger( "click" ) //triggers bound events
-      checkbox.prop('checked', false) //update ui
-      checkbox.attr('disabled', true );
-    } else {
-      checkbox.attr('disabled', false);
-    }
+    this.set('billingData', Ember.Object.extend(EmberValidations.Mixin, {
+      init: function(){
+        this.set('validations', {
+        });
+
+        _.each(
+          ['pfa_question_1b', 'pfa_question_2b', 'pfa_question_3a', 'pfa_question_4a', 'pfa_amount_to_pay'],
+          function(ident){
+            this.set(ident, this.findPfaQuestion(ident)); //add prop
+            this.validations[ident + ".answer"] = numericalityConfig; //add to validations
+        }.bind(this));
+
+        this._super.apply(this, arguments);
+      },
+      container: this.get('container'), //https://github.com/kurko/ember-sync/issues/29
+      model: this.get('model'),
+      findPfaQuestion: function(ident){
+        return this.get("model.questions").findProperty("ident", "plos_billing." + ident);
+      },
+      fieldsValidated: function(){
+        var fields = _.collect(this.validations, function(val, key){
+        });
+        return fields;
+      },
+      pfaInput: function(ident){
+        return $("[name='plos_billing."+ ident + "']");
+      },
+      displayAllErrors: Ember.observer("model.questions.@each.answer", function(){
+        _.each(this.validations, function(val, key){
+          var errors = this.errors.get(key);
+          var ident  = key.split('.')[0];
+          var input  = this.pfaInput(ident);
+
+          if (errors && errors.length) {
+            this.displayError(input, errors);
+          } else {
+            this.removeError(input);
+          }
+          //controller.syncCompletedCheckbox();
+        }.bind(this));
+      }),
+      displayError: function(input, errors){
+        if (!_.any(input)) { return } //not visible
+        if (input.siblings('.error_message').length > 0){ return } //just one please
+        input.parent().addClass('error');
+        input.after("<div class='error_message'>"+ errors.join(', ') +"</div>");
+      },
+      removeError: function(input){
+        input.parent().removeClass('error');
+        input.siblings('.error_message').remove();
+      },
+      syncCompletedCheckbox: function(){
+        var checkbox = $('#task_completed');
+        if (
+          this.get('hasPfaErrors') &&
+          !checkbox.attr('disabled')
+        ) {
+          checkbox.prop('checked', true)
+          checkbox.trigger( "click" ) //triggers bound events
+          checkbox.prop('checked', false) //update ui
+          checkbox.attr('disabled', true );
+        } else {
+          checkbox.attr('disabled', false);
+        }
+      },
+    }).create());
   },
 
 

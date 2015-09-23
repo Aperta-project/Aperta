@@ -20,15 +20,15 @@ class Figure < ActiveRecord::Base
   end
 
   def src
-    done? ? "/attachments/figures/#{id}" : nil
+    "/attachments/figures/#{id}" if done?
   end
 
   def detail_src
-    done? ? "/attachments/figures/#{id}?version=detail" : nil
+    "/attachments/figures/#{id}?version=detail" if done?
   end
 
   def preview_src
-    done? ? "/attachments/figures/#{id}?version=preview" : nil
+    "/attachments/figures/#{id}?version=preview" if done?
   end
 
   def access_details

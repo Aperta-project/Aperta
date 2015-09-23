@@ -1,3 +1,3 @@
 Subscriptions.configure do
-  add 'paper:resubmitted', PlosBilling::Paper::Submitted::Salesforce
+  add 'paper:submitted', PlosBilling::Paper::Submitted::Salesforce
 end

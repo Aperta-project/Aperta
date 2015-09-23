@@ -20,18 +20,24 @@ class Figure < ActiveRecord::Base
   end
 
   def src
-    attachment.url
+    done? ? "attachments/figures/#{self.id}" : nil
   end
 
   def detail_src
-    attachment.url(:detail)
+    done? ? "attachments/figures/#{self.id}?detail" : nil
   end
 
   def preview_src
-    attachment.url(:preview)
+    done? ? "attachments/figures/#{self.id}?preview" : nil
   end
 
   def access_details
     { filename: filename, alt: alt, id: id, src: src }
+  end
+
+  private
+
+  def done?
+    status == 'done'
   end
 end

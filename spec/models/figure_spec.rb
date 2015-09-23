@@ -12,7 +12,7 @@ describe Figure, redis: true do
     it "returns a hash with attachment src, filename, alt" do
       expect(figure.access_details).to eq(filename: 'yeti.tiff',
                                           alt: 'Yeti',
-                                          src: "attachments/figures/#{figure.id}",
+                                          src: "/attachments/figures/#{figure.id}",
                                           id: figure.id)
     end
   end
@@ -24,7 +24,7 @@ describe Figure, redis: true do
     end
 
     it "returns a path with figure id for the proxy image endpoint" do
-      expect(figure.src).to eq("attachments/figures/#{figure.id}")
+      expect(figure.src).to eq("/attachments/figures/#{figure.id}")
     end
   end
 
@@ -35,7 +35,7 @@ describe Figure, redis: true do
     end
 
     it "returns a path with figure id for the proxy image endpoint" do
-      expect(figure.preview_src).to eq "attachments/figures/#{figure.id}?version=preview"
+      expect(figure.preview_src).to eq "/attachments/figures/#{figure.id}?version=preview"
     end
   end
 
@@ -46,7 +46,7 @@ describe Figure, redis: true do
     end
 
     it "returns a path with figure id for the proxy image endpoint" do
-      expect(figure.detail_src).to eq "attachments/figures/#{figure.id}?version=detail"
+      expect(figure.detail_src).to eq "/attachments/figures/#{figure.id}?version=detail"
     end
   end
 

@@ -61,6 +61,7 @@ module "Integration: Billing",
     for nestedQuestion in nestedQuestions
       addNestedQuestionToTask(billingTask, nestedQuestion)
       taskPayload.addRecord(nestedQuestion)
+    paperResponse.nested_questions = nestedQuestions
 
     taskPayload.addRecords([billingTask, fakeUser])
     billingTaskResponse = taskPayload.toJSON()

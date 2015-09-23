@@ -135,7 +135,7 @@ class PageFragment
       select2_container = first(:css, options[:css])
     else
       select_name = options[:from]
-      select2_container = first("label", text: select_name).find(:xpath, '..').find(".select2-container")
+      select2_container = find("label", text: select_name).find(:xpath, '..').find(".select2-container")
     end
 
     drop_container = ".select2-drop"

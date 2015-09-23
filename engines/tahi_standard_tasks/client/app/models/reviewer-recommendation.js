@@ -26,16 +26,16 @@ export default NestedQuestionOwner.extend({
   reasonAnswer: Ember.computed("model", function() {
     let question = this.findQuestion("reason");
     if (question) {
-      return this.findQuestion("reason").get("answer").get("value");
+      return question.answerForOwner(this);
     }
-    return "";
+    return null;
   }),
 
-  recommendOrOpposeAnswer: Ember.computed("model", function() {
+  recommendOrOpposeAnswer: Ember.computed("answer.value", function() {
     let question = this.findQuestion("recommend_or_oppose");
     if (question) {
-      return this.findQuestion("recommend_or_oppose").get("answer").get("value");
+      return question.answerForOwner(this);
     }
-    return "";
+    return null;
   })
 });

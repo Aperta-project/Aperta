@@ -87,7 +87,8 @@
 
   <div class="form-group">
     {{nested-question-radio
-      model=recommendOrOpposeQuestion
+      ident="recommend_or_oppose"
+      task=newRecommendation
       yesLabel="Recommend"
       yesValue="recommend"
       noLabel="Oppose"
@@ -99,7 +100,8 @@
 
   <div class="form-group">
     {{nested-question-textarea
-      model=reasonQuestion
+      ident="reason"
+      task=newRecommendation
       disabled=isSubmissionTaskNotEditable
     }}
   </div>

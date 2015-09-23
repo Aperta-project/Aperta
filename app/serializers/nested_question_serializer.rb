@@ -3,10 +3,7 @@ class NestedQuestionSerializer < ActiveModel::Serializer
   has_many :nested_questions, serializer: NestedQuestionSerializer, embed: :ids, include: true
 
   def owners
-    [{id: 96, type: "TahiStandardTasks::ReviewerRecommendation"},
-     {id: 103, type: "TahiStandardTasks::ReviewerRecommendation"},
-     {id: 104, type: "TahiStandardTasks::ReviewerRecommendation"}]
-    #{ id: object.owner_id, type: object.owner_type }
+    { id: object.owner_id, type: object.owner_type }
   end
 
   def nested_questions

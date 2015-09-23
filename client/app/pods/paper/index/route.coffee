@@ -75,7 +75,7 @@ PaperIndexRoute = AuthorizedRoute.extend
         overlayBackground: @get('editorLookup')
       })
 
-      @transitionTo('paper.task', @modelFor('paper'), task)
+      @transitionTo('paper.task', @modelFor('paper'), task.id)
 
     startEditing: ->
       @startHeartbeat()

@@ -1,4 +1,3 @@
-# coding: utf-8
 module CountriesHelper
   def countries_list
     [

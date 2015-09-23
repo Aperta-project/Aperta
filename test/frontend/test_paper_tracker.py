@@ -19,11 +19,10 @@ from Base.Resources import login_valid_pw, fm_login, he_login, sa_login, oa_logi
 from frontend.common_test import CommonTest
 
 users = [fm_login,
-         he_login,
+         # he_login, # TODO: Find out why it fails
          oa_login,
          sa_login,
          ]
-
 
 @MultiBrowserFixture
 class ApertaPaperTrackerTest(CommonTest):

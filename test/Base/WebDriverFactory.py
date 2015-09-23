@@ -252,4 +252,3 @@ class WebDriverFactory(object):
 
     """
     return self.__create_appium_driver(Config.appium_ios_node_url, capabilities)
-

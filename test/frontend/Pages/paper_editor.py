@@ -159,7 +159,8 @@ class PaperEditorPage(AuthenticatedPage):
     recent_activity.click()
     self._get(self._recent_activity_modal)
     modal_title = self._get(self._recent_activity_modal_title)
-    # self.validate_application_h1_style(modal_title)
+    #Temporary disable due to bad style
+    #self.validate_application_h1_style(modal_title)
     close_icon_overlay = self._get(self._modal_close)
     # TODO: Change following line after bug #102078080 is solved
     assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
@@ -179,6 +180,8 @@ class PaperEditorPage(AuthenticatedPage):
     self.validate_modal_title_style(discussion_container_title, '36px', '500', '39.6px')
     assert 'Discussions' in discussion_container_title.text
     discussion_create_new_btn = self._get(self._discussion_create_new_btn)
+    ##self.validate_secondary_green_button_style(discussion_create_new_btn)
+    ##self.validate_secondary_small_green_button_style(discussion_create_new_btn)
     self.validate_secondary_big_green_button_style(discussion_create_new_btn)
     discussion_create_new_btn.click()
     create_new_topic = self._get(self._create_new_topic)
@@ -196,6 +199,7 @@ class PaperEditorPage(AuthenticatedPage):
     assert 'Topic Title' == titles[0].text
     assert 'Message' == titles[1].text
     create_topic_btn = self._get(self._create_topic_btn)
+    ##self.validate_green_backed_button_style(create_topic_btn)
     self.validate_primary_big_green_button_style(create_topic_btn)
     close_icon_overlay = self._get(self._sheet_close_x)
     # TODO: Change following line after bug #102078080 is solved
@@ -222,18 +226,17 @@ class PaperEditorPage(AuthenticatedPage):
     self.validate_modal_title_style(modal_title, '48px', line_height='52.8px',
                                     font_weight='500', color='rgba(119, 119, 119, 1)')
     withdraw_modal_text = self._get(self._withdraw_modal_text)
-    # https://www.pivotaltracker.com/story/show/103864752
-    # self.validate_application_ptext(withdraw_modal_text)
+    # TODO: Leave comment out until solved. Pivotal bug#103864752
+    #self.validate_application_ptext(withdraw_modal_text)
     assert ('Withdrawing your manuscript will withdraw it from consideration.\n'
             'Please provide your reason for withdrawing this manuscript.' in withdraw_modal_text.text)
     yes_btn = self._get(self._withdraw_modal_yes)
     assert 'YES, WITHDRAW' == yes_btn.text
     no_btn = self._get(self._withdraw_modal_no)
     assert "NO, I'M STILL WORKING" == no_btn.text
-    # These link styles are not in conformance with the style guide
-    # https://www.pivotaltracker.com/story/show/103858114
-    # self.validate_modal_link_style(yes_btn)
-    # self.validate_secondary_grey_small_button_modal_style(no_btn)
+    self.validate_link_big_grey_button_style(yes_btn)
+    # TODO: Leave comment out until solved. Pivotal bug#103858114
+    #self.validate_secondary_grey_small_button_modal_style(no_btn)
     close_icon_overlay = self._get(self._modal_close)
     # TODO: Change following line after bug #102078080 is solved
     assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')

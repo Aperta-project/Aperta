@@ -14,8 +14,6 @@ class CommonTest(FrontEndTest):
   """
   Model an aperta paper editor page
   """
-  #def __init__():
-    #super(CommonTest).__init__()
 
   def login(self, email=login_valid_email, password=login_valid_pw):
     """Login into Aperta"""

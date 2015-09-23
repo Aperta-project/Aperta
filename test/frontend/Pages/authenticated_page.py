@@ -1196,9 +1196,9 @@ class AuthenticatedPage(PlosPage):
     assert application_typeface in msg.value_of_css_property('font-family'), msg.value_of_css_property('font-family')
     assert msg.value_of_css_property('font-size') == '14px', msg.value_of_css_property('font-size')
     # This color is not represented in the style guide
-    assert msg.value_of_css_property('color') == 'rgba(146,​ 139,​ 113, 1)', msg.value_of_css_property('color')
+    assert msg.value_of_css_property('color') == 'rgba(146, 139, 113, 1)', msg.value_of_css_property('color')
     # This color is not represented in the style guide
-    assert msg.value_of_css_property('background-color') == 'rgba(242,​ 242,​ 213, 1)', \
+    assert msg.value_of_css_property('background-color') == 'rgba(242, 242, 213, 1)', \
         msg.value_of_css_property('background-color')
     assert msg.value_of_css_property('line-height') == '20px', msg.value_of_css_property('line-height')
     assert msg.value_of_css_property('text-align') == 'center', msg.value_of_css_property('text-align')

@@ -1,22 +1,56 @@
 require 'rails_helper'
 
 describe Figure, redis: true do
-  let(:paper) { FactoryGirl.create :paper }
   let(:figure) {
     with_aws_cassette('figure') do
-      paper.figures.create! attachment: File.open('spec/fixtures/yeti.tiff')
+      FactoryGirl.create :figure,
+                          attachment: File.open('spec/fixtures/yeti.tiff'),
+                          status: 'done'
     end
   }
   describe "#access_details" do
-    it "returns a hash with attachment src, filename, alt, and S3 URL" do
+    it "returns a hash with attachment src, filename, alt" do
       expect(figure.access_details).to eq(filename: 'yeti.tiff',
                                           alt: 'Yeti',
-                                          src: figure.attachment.url,
+                                          src: "/attachments/figures/#{figure.id}",
                                           id: figure.id)
     end
   end
 
-  describe "acceptable content types" do
+  describe '#src' do
+    it "returns nil if status is not done" do
+      figure.status = "processing"
+      expect(figure.src).to be_nil
+    end
+
+    it "returns a path with figure id for the proxy image endpoint" do
+      expect(figure.src).to eq("/attachments/figures/#{figure.id}")
+    end
+  end
+
+  describe '#preview_src' do
+    it "returns nil if status is not done" do
+      figure.status = "processing"
+      expect(figure.preview_src).to be_nil
+    end
+
+    it "returns a path with figure id for the proxy image endpoint" do
+      expect(figure.preview_src).to eq "/attachments/figures/#{figure.id}?version=preview"
+    end
+  end
+
+  describe '#detail_src' do
+    it "returns nil if status is not done" do
+      figure.status = "processing"
+      expect(figure.detail_src).to be_nil
+    end
+
+    it "returns a path with figure id for the proxy image endpoint" do
+      expect(figure.detail_src).to eq "/attachments/figures/#{figure.id}?version=detail"
+    end
+  end
+
+  describe ".acceptable_content_type?" do
     it "accepts standard image types" do
       %w{gif jpg jpeg png tiff}.each do |type|
         expect(Figure.acceptable_content_type? "image/#{type}").to eq true

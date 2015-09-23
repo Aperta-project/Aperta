@@ -1,6 +1,7 @@
 import Ember from "ember";
 import TaskController from "tahi/pods/paper/task/controller";
 import RESTless from "tahi/services/rest-less";
+import EmberValidations from 'ember-validations';
 
 const DATA = {
   institutionalAccountProgramList: [
@@ -316,10 +317,25 @@ const DATA = {
 
 let computed = Ember.computed;
 
-export default TaskController.extend({
-  init: function(){
-    var controller = this;
+var billingData = Ember.Object.extend(EmberValidations.Mixin, {
+  validations: {
+    'pfa.pfa_question_1b.answer': {
+      presence: true,
+      length: { minimum: 5 }
+    }
+  }
+}).create();
+
+export default TaskController.extend(EmberValidations.Mixin, {
+  billingData: billingData,
+  setPfaDataObjects: function(){
+    //this.pfaData.set('pfa_question_1b', this.findPfaQuestion('pfa_question_1b'));
   },
+  findPfaQuestion: function(ident){
+    return this.get("model.questions").findProperty("ident", "plos_billing." + ident);
+  },
+  
+  
   pfaErrors: new DS.Errors,
   identsValidated: ['pfa_question_1b', 'pfa_question_2b', 'pfa_question_3a', 'pfa_question_4a', 'pfa_amount_to_pay'],
   setPfaValidators: function(){

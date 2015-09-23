@@ -229,4 +229,3 @@ class BaseCard(AuthenticatedPage):
     self.validate_completed_label(completed_lbl)
     bottom_close_btn = self._get(self._bottom_close_button)
     self.validate_secondary_big_green_button_style(bottom_close_btn)
-    ##self.validate_secondary_green_button_style(bottom_close_btn)

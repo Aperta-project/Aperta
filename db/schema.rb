@@ -519,6 +519,7 @@ ActiveRecord::Schema.define(version: 20151016173854) do
     t.string   "username"
     t.boolean  "site_admin",             default: false, null: false
     t.string   "avatar"
+    t.string   "em_guid"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

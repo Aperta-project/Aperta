@@ -53,7 +53,7 @@ module.exports = function(defaults) {
   });
 
   // JsDiff
-  app.import('bower_components/jsdiff/diff.js');
+  app.import(b + 'jsdiff/diff.js');
 
   // Bootstrap
   app.import(b + 'bootstrap/js/collapse.js');

@@ -1,7 +1,12 @@
 class ParticipationsPolicy < ApplicationPolicy
   primary_resource :participation
+  allow_params :for_task
 
   include TaskAccessCriteria
+
+  def index?
+    authorized_to_modify_task?
+  end
 
   def show?
     authorized_to_modify_task?
@@ -18,7 +23,7 @@ class ParticipationsPolicy < ApplicationPolicy
   private
 
   def task
-    participation.task
+    for_task || participation.task
   end
 
   def tasks_policy

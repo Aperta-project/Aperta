@@ -129,7 +129,7 @@ Tahi::Application.routes.draw do
     resources :question_attachments, only: [:destroy]
     resources :questions, only: [:create, :update]
 
-    resources :nested_questions do
+    resources :nested_questions, only: [:index] do
       resources :answers, only: [:create, :update, :destroy], controller: "nested_question_answers"
     end
 

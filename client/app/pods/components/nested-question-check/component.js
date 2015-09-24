@@ -28,7 +28,11 @@ export default NestedQuestionComponent.extend({
 
   actions: {
     checkboxToggled: function(checkbox){
-      this.setCheckedValue(checkbox.get('checked'));
+      let checked = checkbox.get('checked')
+      this.setCheckedValue(checked);
+      if(!checked){
+        this.get('model.answer').destroyRecord();
+      }
     },
 
     additionalDataAction() {

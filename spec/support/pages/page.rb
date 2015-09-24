@@ -226,5 +226,9 @@ class Page < PageFragment
   def sign_out
     find('.navigation-toggle').click
     find('a.navigation-item', text: 'SIGN OUT').click
+
+    within ".auth-container" do
+      find(".auth-flash", text: "Signed out successfully.")
+    end
   end
 end

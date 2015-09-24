@@ -30,6 +30,11 @@ export default DS.Model.extend({
     }
 
     return answer;
+  },
+
+  clearAnswerForOwner: function(owner){
+    let answer = this.answerForOwner(owner);
+    if(answer) answer.rollback();
   }
 
 });

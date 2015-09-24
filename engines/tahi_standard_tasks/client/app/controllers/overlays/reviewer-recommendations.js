@@ -4,13 +4,24 @@ import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 export default TaskController.extend(ValidationErrorsMixin, {
   showNewReviewerForm: false,
-  newRecommendation: null,
 
   // Doing this to prevent short period of time where `newRecommendation` is in the DOM
   // while save is happening. If it becomes invalid after save it is removed. This creates
   // a glitchy look to the list.
   validReviewerRecommendations: Ember.computed('model.reviewerRecommendations.@each.isNew', function() {
     return this.get('model.reviewerRecommendations').filterBy('isNew', false);
+  }),
+
+  newRecommendationQuestions: Ember.on('init', function(){
+    this.store.findQuery('nested-question', { type: "ReviewerRecommendation" }).then( (nestedQuestions) => {
+      this.set('nestedQuestionsForNewRecommendation', nestedQuestions);
+    });
+  }),
+
+  newRecommendation: Ember.computed('showNewReviewerForm', function(){
+    return this.store.createRecord('reviewer-recommendation', {
+      nestedQuestions: this.get('nestedQuestionsForNewRecommendation')
+    });
   }),
 
   actions: {

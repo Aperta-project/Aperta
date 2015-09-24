@@ -22,7 +22,7 @@ class PapersPolicy < ApplicationPolicy
   end
 
   def manage?
-    current_user.site_admin? || can_view_manuscript_manager?
+    current_user.site_admin? || can_view_manuscript_manager?(paper)
   end
 
   def download?
@@ -34,7 +34,7 @@ class PapersPolicy < ApplicationPolicy
   end
 
   def toggle_editable?
-    current_user.site_admin? || can_view_manuscript_manager?
+    current_user.site_admin? || can_view_manuscript_manager?(paper)
   end
 
   def submit?
@@ -50,7 +50,7 @@ class PapersPolicy < ApplicationPolicy
   end
 
   def workflow_activities?
-    can_view_manuscript_manager?
+    can_view_manuscript_manager? paper
   end
 
   def manuscript_activities?

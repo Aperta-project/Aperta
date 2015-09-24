@@ -13,6 +13,26 @@ describe CommentsController do
   let(:task) { create(:task, phase: phase, participants: [user], title: "Task", role: "admin") }
   before { sign_in user }
 
+  describe "#index" do
+    let!(:comment1) { FactoryGirl.create(:comment, task: task) }
+    let!(:comment2) { FactoryGirl.create(:comment, task: task) }
+
+    subject(:do_request) do
+      get :index, {
+            format: 'json',
+            task_id: task.to_param,
+          }
+    end
+
+    it_behaves_like "an unauthenticated json request"
+
+    it "returns the tasks comments" do
+      do_request
+      expect(res_body['comments'].count).to eq(2)
+      expect(res_body['comments'][0]['id']).to eq(comment1.id)
+    end
+  end
+
   describe 'POST create' do
     subject(:do_request) do
       xhr :post, :create, format: :json,

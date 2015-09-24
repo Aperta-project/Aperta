@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import NestedQuestionProxy from 'tahi/models/nested-question-proxy';
 var NestedQuestionComponent;
 
 NestedQuestionComponent = Ember.Component.extend({
@@ -30,7 +31,7 @@ NestedQuestionComponent = Ember.Component.extend({
     }
     Ember.assert(`Expecting to find question matching ident '${ident}' but didn't`, question);
 
-    return question;
+    return NestedQuestionProxy.create({nestedQuestion: question, owner: task, decision: decision});
   }),
 
   questionText: Ember.computed("model", function(){

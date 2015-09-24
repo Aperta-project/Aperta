@@ -135,7 +135,7 @@
     {{/each}}
 
     <label class="author-label">
-      {{check-box checked=isOtherContributionSelected action="update" class="author-contribution-other"}}
+      {{check-box checked=isOtherContributionSelected action="toggleOtherContribution" class="author-contribution-other"}}
       Other
     </label>
     {{#if isOtherContributionSelected}}

@@ -23,20 +23,19 @@ export default DS.Model.extend({
   parent: DS.belongsTo('nested-question', { async: false }),
   answers: DS.hasMany('nested-question-answer', { async: false , inverse: 'nestedQuestion'}),
 
-  answer: Ember.computed("owner", "answers.[]", function(){
-    let ownerId = this.get('owner.id');
-    if(!ownerId){ return; }
-
+  answerForOwner: function(owner){
+    let ownerId = owner.get("id");
     let answer = this.get('answers').findBy('owner.id', ownerId);
 
     if(!answer){
       answer = this.store.createRecord('nested-question-answer', {
         nestedQuestion: this,
-        owner: this.get('owner')
+        owner: owner
       });
       this.get('answers').addObject(answer);
     }
+
     return answer;
-  })
+  }
 
 });

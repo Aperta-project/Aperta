@@ -7,14 +7,6 @@ export default TaskController.extend({
   reviewerRecommendations: Ember.computed.alias("task.reviewerRecommendations"),
   newRecommendation: Ember.computed.alias("reviewerRecommendation"),
 
-  recommendOrOpposeQuestion: Ember.computed("model", "model.newRecommendation", function(){
-    return this.get("newRecommendation").findQuestion("recommend_or_oppose");
-  }),
-
-  reasonQuestion: Ember.computed("model", "model.newRecommendation", function(){
-    return this.get("newRecommendation").findQuestion("reason");
-  }),
-
   actions: {
     toggleReviewerForm: function() {
       this.send("addReviewerRecommendation");

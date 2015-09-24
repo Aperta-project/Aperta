@@ -18,6 +18,21 @@ export default TaskController.extend({
     });
   }),
 
+  newAuthorQuestions: Ember.on('init', function(){
+    this.store.findQuery('nested-question', { type: "Author" }).then( (nestedQuestions) => {
+      this.set('nestedQuestionsForNewAuthor', nestedQuestions);
+    });
+  }),
+
+  newAuthor: Ember.computed('newAuthorFormVisible', function(){
+    return this.store.createRecord('author', {
+        paper: this.get('model.paper'),
+        authorsTask: this.get('model'),
+        position: 0,
+        nestedQuestions: this.get('nestedQuestionsForNewAuthor')
+    });
+  }),
+
   sortedAuthorsWithErrors: computed(
     'sortedAuthors.[]', 'validationErrors', function() {
     return this.createModelProxyObjectWithErrors(this.get('sortedAuthors'));
@@ -38,14 +53,17 @@ export default TaskController.extend({
     },
 
     saveNewAuthor(newAuthorHash) {
-      Ember.merge(newAuthorHash, {
-        paper: this.get('model.paper'),
-        authorsTask: this.get('model'),
-        position: 0
+      let author = this.get("newAuthor");
+      author.save().then( (savedAuthor) => {
+        author.get('nestedQuestionAnswers').toArray().forEach(function(answer){
+          let value = answer.get("value");
+          if(value || value === false){
+            answer.set("owner", savedAuthor);
+            answer.save();
+          }
+        });
+        this.toggleProperty('newAuthorFormVisible');
       });
-
-      this.store.createRecord('author', newAuthorHash).save();
-      this.toggleProperty('newAuthorFormVisible');
     },
 
     saveAuthor(author) {

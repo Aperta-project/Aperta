@@ -2,6 +2,7 @@ import Ember from 'ember';
 import NestedQuestionComponent from 'tahi/pods/components/nested-question/component';
 
 export default NestedQuestionComponent.extend({
+  labelClassNames: ["question-checkbox"],
   textClassNames: ["model-question"],
 
   additionalDataYieldValue: Ember.computed('checked', 'model.answer.value', function(){

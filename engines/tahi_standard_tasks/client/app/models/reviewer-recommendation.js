@@ -5,8 +5,6 @@ import DS from 'ember-data';
 let a = DS.attr;
 
 export default NestedQuestionOwner.extend({
-  // qualifiedType: 'TahiStandardTask::ReviewerRecommendation',
-
   firstName: a('string'),
   middleInitial: a('string'),
   lastName: a('string'),

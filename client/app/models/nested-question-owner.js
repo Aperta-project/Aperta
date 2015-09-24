@@ -9,6 +9,15 @@ export default DS.Model.extend({
     async: false,
   }),
 
+  answerForQuestion(ident){
+    let question = this.findQuestion(ident);
+    if(question){
+      return question.answerForOwner(this);
+    } else {
+      return null;
+    }
+  },
+
   findQuestion: function(ident){
     let pathParts = ident.split(".");
     let nestedQuestions = this.get('nestedQuestions').toArray();

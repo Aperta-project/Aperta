@@ -14,7 +14,7 @@
   {{/if}}
 
 {{else}}
-  <label class="question-checkbox">
+  <label class="{{labelClassNames}}">
     {{check-box name=ident checked=isChecked disabled=disabled action="checkboxToggled"}}
     {{#if shouldDisplayQuestionText}}
       <p class="{{textClassNames}}">{{{questionText}}}</p>

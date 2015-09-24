@@ -7,7 +7,7 @@
         {{error-message message=validationErrors.firstName}}
       </span>
       {{input type="text"
-              value=newAuthor.firstName
+              value=author.firstName
               class="author-first form-control tall-text-field"
               placeholder="Jane"}}
     </div>
@@ -18,7 +18,7 @@
         {{error-message message=validationErrors.middleInitial}}
       </span>
       {{input type="text"
-              value=newAuthor.middleInitial
+              value=author.middleInitial
               class="author-middle form-control tall-text-field"
               placeholder="M"}}
     </div>
@@ -29,7 +29,7 @@
         {{error-message message=validationErrors.lastName}}
       </span>
       {{input type="text"
-              value=newAuthor.lastName
+              value=author.lastName
               class="author-last form-control tall-text-field"
               placeholder="Goodall"}}
     </div>
@@ -40,7 +40,7 @@
         {{error-message message=validationErrors.email}}
       </span>
       {{input type="text"
-              value=newAuthor.email
+              value=author.email
               class="author-email form-control tall-text-field"
               placeholder="jane.goodall@science.com"}}
 
@@ -54,7 +54,7 @@
         {{error-message message=validationErrors.title}}
       </span>
       {{input type="text"
-              value=newAuthor.title
+              value=author.title
               class="author-title form-control tall-text-field"
               placeholder="World's Foremost Expert on Chimpanzees"}}
     </div>
@@ -65,7 +65,7 @@
         {{error-message message=validationErrors.department}}
       </span>
       {{input type="text"
-              value=newAuthor.department
+              value=author.department
               class="author-department form-control tall-text-field"
               placeholder="Primatology"}}
     </div>
@@ -92,15 +92,29 @@
   <div class="form-group form-inline">
     <div class="form-group author-half {{if validationErrors.affiliation "error"}}">
       <label class="author-label">
-        {{check-box checked=newAuthor.corresponding class="author-corresponding"}}
-        This person will be listed as the corresponding author on the published article
+        {{#nested-question-check ident="published_as_corresponding_author"
+            task=author
+            labelClassNames=""
+            displayQuestionText=false
+            inputClassNames="author-corresponding" as |check|}}
+          {{#if check.yieldingForText}}
+            {{nested-question-display ident="published_as_corresponding_author" task=author}}
+          {{/if}}
+        {{/nested-question-check}}
       </label>
     </div>
 
     <div class="form-group author-half author-bump {{if validationErrors.secondaryAffiliation "error"}}">
       <label class="author-label">
-        {{check-box checked=newAuthor.deceased class="author-deceased"}}
-        This person is deceased
+        {{#nested-question-check ident="deceased"
+            task=author
+            labelClassNames=""
+            displayQuestionText=false
+            inputClassNames="author-deceased" as |check|}}
+          {{#if check.yieldingForText}}
+            {{nested-question-display ident="deceased" task=author}}
+          {{/if}}
+        {{/nested-question-check}}
       </label>
     </div>
   </div>
@@ -108,15 +122,19 @@
   <div class="form-group author-contributions form-inline">
     <h4 class="required">Author Contributions</h4>
     {{error-message message=validationErrors.contributions}}
-    {{#each authorContributionOptions as |contribution|}}
-      {{author-contribution-checkbox name=contribution
-                                     currentContributions=newAuthor.contributions
-                                     checked="addContribution"
-                                     unchecked="removeContribution"}}
+    {{#each authorContributionIdents as |contributionIdent|}}
+        {{#nested-question-check ident=contributionIdent
+            task=author
+            labelClassNames=""
+            displayQuestionText=false
+            inputClassNames="author-contribution" as |check|}}
+          {{#if check.yieldingForText}}
+            {{nested-question-display ident=contributionIdent task=author}}
+          {{/if}}
+        {{/nested-question-check}}
     {{/each}}
-    {{author-contribution-other-checkbox availableContributions=authorContributionOptions
-                                         currentContributions=newAuthor.contributions
-                                         changed="resolveContributions"}}
+
+    {{author-contribution-other-checkbox author=author}}
 
     <span class="pull-right author-form-buttons">
       <a class="button-link button--green author-cancel" {{action "cancelEdit" bubbles=false}}>cancel</a>

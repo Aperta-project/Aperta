@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import DS from 'ember-data';
+import NestedQuestionOwner from 'tahi/models/nested-question-owner';
 
-export default DS.Model.extend({
+export default NestedQuestionOwner.extend({
   paper: DS.belongsTo('paper', { async: false }),
   authorsTask: DS.belongsTo('authorsTask'),
 
@@ -21,7 +22,6 @@ export default DS.Model.extend({
   position: DS.attr('number'),
   corresponding: DS.attr('boolean'),
   deceased: DS.attr('boolean'),
-  contributions: DS.attr(),
 
   fullName: Ember.computed('firstName', 'middleInitial', 'lastName', function() {
     return [this.get('firstName'), this.get('middleInitial'), this.get('lastName')].compact().join(' ');

@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import RESTless from 'tahi/services/rest-less';
 
 export default Ember.Component.extend({
+  restless: Ember.inject.service('restless'),
   classNames: ['did-you-mean'],
   // attrs:
   endpoint: null,
@@ -69,7 +69,7 @@ export default Ember.Component.extend({
       let data = {};
       data[this.get('queryParameter')] = search;
 
-      RESTless.get(url, data).then((response) => {
+      this.get('restless').get(url, data).then((response) => {
         this.decrementProperty('searching');
         let results = this.get('parseResponseFunction')(response);
         if (results.length === 0) {

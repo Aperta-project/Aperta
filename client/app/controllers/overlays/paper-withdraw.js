@@ -1,14 +1,16 @@
 import Ember from 'ember';
-import RESTless from 'tahi/services/rest-less';
 
 export default Ember.Controller.extend({
+  restless: Ember.inject.service('restless'),
   overlayClass: 'overlay--fullscreen overlay--grey',
 
   actions: {
     withdraw() {
-      var reason = this.get('model.withdrawalReason');
-      RESTless.putUpdate(this.get('model'), '/withdraw', {'reason': reason})
-      .then(()=> {
+      const model = this.get('model');
+      const url   = '/withdraw';
+      const data  = {'reason': this.get('model.withdrawalReason')};
+
+      this.get('restless').putUpdate(model, url, data).then(()=> {
         this.send('closeOverlay');
       });
     }

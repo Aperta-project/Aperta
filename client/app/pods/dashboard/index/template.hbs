@@ -25,12 +25,12 @@
         You have no manuscripts.
       {{/if}}
     </h2>
-{{activeNonDrafts}}
+
     <button class="button-primary button--green" {{action "showNewPaperOverlay"}}>Create New Submission</button>
     {{#if hasPapers}}
       {{#if hasActivePapers}}
-        <h3>
-          Active Manuscripts
+        <h3 class='manuscript-list-heading'>
+          Active Manuscripts ({{totalActivePaperCount}})
         </h3>
         <ul class="dashboard-submitted-papers">
           Sorted draft
@@ -50,8 +50,8 @@
       {{/if}}
 
       {{#if hasInactivePapers}}
-        <h3>
-          Inactive Manuscripts
+        <h3 class='manuscript-list-heading'>
+          Inactive Manuscripts ({{totalInactivePaperCount}})
         </h3>
         <ul class="dashboard-submitted-papers">
           {{#each sortedInactivePapers as |paper|}}

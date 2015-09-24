@@ -30,11 +30,7 @@ module TahiStandardTasks
     end
 
     def nested_questions
-      nested_questions = TahiStandardTasks::ReviewerRecommendation.nested_questions
-      nested_questions.each do |nested_question|
-        nested_question.owner = self
-      end
-      nested_questions
+      self.class.nested_questions
     end
   end
 end

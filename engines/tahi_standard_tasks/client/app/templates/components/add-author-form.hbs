@@ -134,7 +134,19 @@
         {{/nested-question-check}}
     {{/each}}
 
-    {{author-contribution-other-checkbox author=author}}
+    <label class="author-label">
+      {{check-box checked=isOtherContributionSelected action="update" class="author-contribution-other"}}
+      Other
+    </label>
+    {{#if isOtherContributionSelected}}
+      {{nested-question-input ident="contributions.other"
+          task=author
+          displayQuestionText=false
+          inputClassNames="form-control"
+          placeholderText="Please specify"
+          wrapInput=false
+          tagName="span"}}
+    {{/if}}
 
     <span class="pull-right author-form-buttons">
       <a class="button-link button--green author-cancel" {{action "cancelEdit" bubbles=false}}>cancel</a>

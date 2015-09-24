@@ -5,7 +5,7 @@ export default {
   name: 'errorHandler',
 
   initialize(instance) {
-    let flash    = instance.container.lookup('flashMessages:main');
+    let flash    = instance.container.lookup('service:flash');
     let logError = instance.container.lookup('logError:main');
 
     // The global error handler for internal ember errors

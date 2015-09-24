@@ -4,7 +4,14 @@ export default Ember.Component.extend({
   layoutName: "components/add-author-form",
 
   author: null,
-  isOtherContributionSelected: false,
+
+  isOtherContributionSelected: Ember.computed("author.nestedQuestions", function(){
+    let answer = this.get("author").answerForQuestion("contributions.other");
+    if(answer){
+      return answer.get("value");
+    }
+    return false;
+  }),
 
   authorContributionIdents: [
     "contributions.conceived_and_designed_experiments",

@@ -18,6 +18,12 @@ export default TaskController.extend({
     });
   }),
 
+  clearNewRecommendationAnswers: function(){
+    this.get('nestedQuestionsForNewRecommendation').forEach( (nestedQuestion) => {
+      nestedQuestion.clearAnswerForOwner(this.get("newRecommendation"));
+    });
+  },
+
   actions: {
     toggleReviewerForm: function() {
       this.toggleProperty('showNewReviewerForm');
@@ -37,6 +43,7 @@ export default TaskController.extend({
     },
 
     cancelEdit: function() {
+      this.clearNewRecommendationAnswers();
       this.toggleProperty('showNewReviewerForm');
     }
   }

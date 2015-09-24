@@ -4,6 +4,7 @@ export default Ember.Component.extend({
   layoutName: "components/add-author-form",
 
   author: null,
+  isOtherContributionSelected: false,
 
   authorContributionIdents: [
     "contributions.conceived_and_designed_experiments",

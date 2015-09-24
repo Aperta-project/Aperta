@@ -1,14 +1,12 @@
 import Ember from 'ember';
-import Flash from 'tahi/services/flash';
 
 export default {
   name: 'flashMessages',
 
   initialize(registry, application) {
-    application.register('flashMessages:main', Flash);
-    application.inject('route', 'flash', 'flashMessages:main');
-    application.inject('controller', 'flash', 'flashMessages:main');
-    application.inject('component:flashMessages', 'flash', 'flashMessages:main');
+    application.inject('route', 'flash', 'service:flash');
+    application.inject('controller', 'flash', 'service:flash');
+    application.inject('component:flashMessages', 'flash', 'service:flash');
 
     Ember.Route.reopen({
       _teardownFlashMessages: Ember.on('deactivate', function() {

@@ -5,17 +5,30 @@ export default TaskController.extend({
   showNewReviewerForm: false,
   task: Ember.computed.alias("model"),
   reviewerRecommendations: Ember.computed.alias("task.reviewerRecommendations"),
-  newRecommendation: Ember.computed.alias("reviewerRecommendation"),
+
+  newRecommendationQuestions: Ember.on('init', function(){
+    this.store.findQuery('nested-question', { type: "ReviewerRecommendation" }).then( (nestedQuestions) => {
+      this.set('nestedQuestionsForNewRecommendation', nestedQuestions);
+    });
+  }),
+
+  newRecommendation: Ember.computed('showNewReviewerForm', function(){
+    return this.store.createRecord('reviewer-recommendation', {
+      nestedQuestions: this.get('nestedQuestionsForNewRecommendation')
+    });
+  }),
 
   actions: {
     toggleReviewerForm: function() {
-      this.send("addReviewerRecommendation");
+      this.toggleProperty('showNewReviewerForm');
     },
 
     saveNewRecommendation: function() {
-      //TODO: Validate form
-      this.get("newRecommendation").save();
-      this.toggleProperty('showNewReviewerForm');
+      let recommendation = this.get("newRecommendation");
+      recommendation.set("reviewerRecommendationsTask", this.get("model"));
+      recommendation.save().then( () => {
+        this.toggleProperty('showNewReviewerForm');
+      });
     },
 
     institutionSelected: function(institution) {
@@ -24,23 +37,7 @@ export default TaskController.extend({
     },
 
     cancelEdit: function() {
-      let newRecommendation = this.get("newRecommendation");
-      this.store.find('reviewerRecommendation', newRecommendation.id)
-        .then((newRecommendation) => {
-          newRecommendation.deleteRecord();
-          newRecommendation.save();
-          this.toggleProperty('showNewReviewerForm');
-        });
-    },
-
-    addReviewerRecommendation: function() {
-      let newRecommendation = this.store.createRecord("reviewerRecommendation", {
-        reviewerRecommendationsTask: this.get("task")
-      }).save()
-        .then((newRecommendation) => {
-          this.set("newRecommendation", newRecommendation);
-          this.toggleProperty('showNewReviewerForm');
-        });
+      this.toggleProperty('showNewReviewerForm');
     }
   }
 });

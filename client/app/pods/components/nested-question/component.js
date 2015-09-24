@@ -50,7 +50,11 @@ NestedQuestionComponent = Ember.Component.extend({
   },
 
   _saveAnswer: function(answer){
-    answer.save();
+    if(answer.get("owner.isNew")){
+      // no-op
+    } else {
+      answer.save();
+    }
   }
 });
 

@@ -2,21 +2,7 @@ class DataMigrator::ReviewerRecommendationsQuestionsMigrator < DataMigrator::Bas
   REVIEWER_RECOMMENDATION = "TahiStandardTasks::ReviewerRecommendation"
 
   def cleanup
-    idents = []
-    puts
-    puts yellow("Removing all Question(s) with idents: #{idents.join(', ')}")
-    answer = ask "Are you sure you want to delete these Question(s)? [y/N]"
-    loop do
-      if answer =~ /n/i
-        return
-      elsif answer =~ /y/i
-        break
-      else
-        answer = ask "Please answer y, n, or Ctrl-C to cancel."
-      end
-    end
-
-    Question.where(ident: idents).destroy_all
+    puts yellow("Cleanup must be done in a database migration to drop the recommend_or_oppose and reason columns.")
   end
 
   def migrate!

@@ -35,7 +35,7 @@ class NestedQuestionAnswersController < ApplicationController
           value_type: nested_question.value_type,
           value: answer_params[:value],
           owner_id: answer_params[:owner_id],
-          owner_type: lookup_owner_type(answer_params[:owner_type]),
+          owner_type: NestedQuestion.lookup_owner_type(answer_params[:owner_type]),
           additional_data: answer_params[:additional_data]
         )
       end
@@ -52,19 +52,6 @@ class NestedQuestionAnswersController < ApplicationController
   def answer_params
     @answer_params ||= params.require(:nested_question_answer).permit(:owner_id, :owner_type, :value).tap do |whitelisted|
       whitelisted[:additional_data] = params[:nested_question_answer][:additional_data]
-    end
-  end
-
-  def lookup_owner_type(owner_type)
-    case owner_type
-    when /Task$/
-      "Task"
-    when "Funder"
-      TahiStandardTasks::Funder.name
-    when "ReviewerRecommendation"
-      TahiStandardTasks::ReviewerRecommendation.name
-    else
-      raise "Don't know how to assign to #{answer_params[:owner_type]}"
     end
   end
 

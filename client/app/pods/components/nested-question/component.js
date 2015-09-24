@@ -19,8 +19,11 @@ NestedQuestionComponent = Ember.Component.extend({
     Ember.assert(`Expecting to be given an ident, but wasn't`, ident);
 
     let question = this.get('task').findQuestion(ident);
-
-    return NestedQuestionProxy.create({nestedQuestion: question, owner: this.get('task')});
+    if(question){
+      return NestedQuestionProxy.create({nestedQuestion: question, owner: this.get('task')});
+    } else {
+      return null;
+    }
   }),
 
   questionText: Ember.computed("model", function(){

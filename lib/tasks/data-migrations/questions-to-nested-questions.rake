@@ -225,4 +225,22 @@ namespace 'data:migrate:questions-to-nested-questions' do
   task :'reviewer-report' => 'data:migrate:questions-to-nested-questions:reviewer-report:reset' do
     DataMigrator::ReviewerReportQuestionsMigrator.migrate!
   end
+
+  namespace :'reviewer-recommendations' do
+    desc "Resets the NestedQuestionAnswer(s) for reviewer recommendations by destroying them."
+    task :reset => :environment do
+      DataMigrator::ReviewerRecommendationsQuestionsMigrator.reset
+    end
+
+    desc "Destroy old questions for reviewer recommendations once you're satisfied w/migrating to NestedQuestion data model."
+    task :cleanup => :environment do
+      DataMigrator::ReviewerRecommendationsQuestionsMigrator.cleanup
+    end
+  end
+
+  desc "Migrate the reviewer recommendations task data to the NestedQuestion data model."
+  task :'reviewer-recommendations' => 'data:migrate:questions-to-nested-questions:reviewer-recommendations:reset' do
+    DataMigrator::ReviewerRecommendationsQuestionsMigrator.migrate!
+  end
+
 end

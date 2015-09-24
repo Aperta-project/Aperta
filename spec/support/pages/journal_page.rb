@@ -40,7 +40,7 @@ class JournalPage < Page
     thumb.hover
     thumb.find('.fa-trash').click
     find('.mmt-thumbnail-overlay-confirm-destroy .mmt-thumbnail-delete-button').click
-    synchronize_no_content! mmt.paper_type
+    has_no_css?(".mmt-thumbnail-title", text: mmt.paper_type)
     self
   end
 

@@ -34,6 +34,7 @@ class PaperFactory
           paper.save!
           paper.decisions.create!
           apply_template
+          add_creator_as_author
         else
           paper.errors.add(:paper_type, "is not valid")
         end
@@ -59,6 +60,10 @@ class PaperFactory
   end
 
   private
+
+  def add_creator_as_author
+    DefaultAuthorCreator.new(paper, creator).create!
+  end
 
   def add_collaborator(paper, user)
     paper.paper_roles.build(user: user, role: PaperRole::COLLABORATOR)

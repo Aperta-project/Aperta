@@ -19,7 +19,7 @@ class DefaultAuthorCreator
   def build_author
     @author = paper.authors.new(first_name: creator.first_name,
                                 last_name: creator.last_name,
-                                email: creator.email )
+                                email: creator.email)
   end
 
   def add_affiliation_information

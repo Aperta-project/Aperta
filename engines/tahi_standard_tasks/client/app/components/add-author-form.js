@@ -84,6 +84,13 @@ export default Ember.Component.extend({
     unknownSecondaryInstitutionSelected(institutionName) {
       this.set("author.secondaryAffiliation", institutionName);
       this.set("author.secondaryRinggoldId", "");
+    },
+
+    toggleOtherContribution(checkbox){
+      if(!checkbox.get('checked')){
+        let answer = this.get("author").answerForQuestion("contributions.other");
+        answer.destroyRecord();
+      }
     }
   }
 });

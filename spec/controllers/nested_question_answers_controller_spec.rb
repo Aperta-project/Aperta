@@ -95,4 +95,39 @@ describe NestedQuestionAnswersController do
 
     include_examples "processing attachments for NestedQuestionAnswersController"
   end
+
+  describe "#destroy" do
+    let!(:nested_question_answer) { FactoryGirl.create(:nested_question_answer, value: "Hi", owner: nested_question.owner) }
+    let(:nested_question){ FactoryGirl.create(:nested_question) }
+    let(:owner){ nested_question.owner }
+
+    def do_request(params:{})
+      delete(:destroy,
+        id: nested_question_answer.to_param,
+        nested_question_id: nested_question.to_param,
+        nested_question_answer: {
+          value: "Bye",
+          owner_id: owner.id,
+          owner_type: owner.type,
+          additional_data: { "insitution-id" => "234" }
+        }.merge(params),
+        format: :json
+      )
+    end
+
+    it "deletes the answer for the question" do
+      expect {
+        do_request
+      }.to change(NestedQuestionAnswer, :count).by(-1)
+
+      expect {
+        nested_question_answer.reload
+      }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it "responds with 200 OK" do
+      do_request
+      expect(response.status).to eq(200)
+    end
+  end
 end

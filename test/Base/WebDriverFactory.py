@@ -67,14 +67,14 @@ class WebDriverFactory(object):
     is_appium = is_android or is_ios
 
     # If framework is set to run on **Selenium Grid**
-    if Config.run_against_grid == True:
+    if Config.run_against_grid == 'True':
       print '\nRunning on Selenium Grid'
       kwargs = {'desired_capabilities': capabilities}
       kwargs['command_executor'] = Config.selenium_grid_url
       driver = EventFiringWebDriver(webdriver.Remote(**kwargs), WebDriverListener())
     else:
       # If `browser` is an **Appium** device *and* framework is set to run Appium **ONLY**
-      if is_appium and Config.run_against_appium == True:
+      if is_appium and Config.run_against_appium == 'True':
         print '\nRunning on Appium stand-alone mode (not through Selenium Grid)'
         driver = self.__android(capabilities) if is_android else self.__ios(capabilities)
 

@@ -23,20 +23,28 @@ export default DS.Model.extend({
   parent: DS.belongsTo('nested-question', { async: false }),
   answers: DS.hasMany('nested-question-answer', { async: false , inverse: 'nestedQuestion'}),
 
-  answer: Ember.computed("owner", "answers.[]", function(){
-    let ownerId = this.get('owner.id');
-    if(!ownerId){ return; }
-
-    let answer = this.get('answers').findBy('owner.id', ownerId);
+  answerForOwner: function(owner, decision){
+    let ownerId = owner.get("id");
+    let answer = this.get("answers").toArray().find(function(answer){
+      let matched = Ember.isEqual(parseInt(answer.get("owner.id")), parseInt(ownerId));
+      if(decision){
+        matched = matched && Ember.isEqual(parseInt(answer.get("decisionId")), parseInt(decision.get("id")));
+      }
+      return matched;
+    });
 
     if(!answer){
       answer = this.store.createRecord('nested-question-answer', {
         nestedQuestion: this,
-        owner: this.get('owner')
+        owner: owner,
       });
+      if(decision){
+        answer.set("decisionId", decision.get("id"));
+      }
       this.get('answers').addObject(answer);
     }
+
     return answer;
-  })
+  }
 
 });

@@ -21,18 +21,21 @@ export default NestedQuestionComponent.extend({
     return this.get('model.answer.value');
   }),
 
-  setCheckedValue: function(bool){
-    this.set('checked', bool);
-    this.set('model.answer.value', bool);
+  setCheckedValue: function(checked){
+    let answer = this.get("model.answer");
+    this.set("checked", checked);
+
+    if(!checked){
+      answer.destroyRecord();
+    } else {
+      answer.set("value", checked);
+    }
   },
 
   actions: {
     checkboxToggled: function(checkbox){
-      let checked = checkbox.get('checked')
+      let checked = checkbox.get('checked');
       this.setCheckedValue(checked);
-      if(!checked){
-        this.get('model.answer').destroyRecord();
-      }
     },
 
     additionalDataAction() {

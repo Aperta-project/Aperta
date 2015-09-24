@@ -2,7 +2,15 @@ class DataMigrator::ReportingGuidelinesQuestionsMigrator < DataMigrator::Base
   REPORTING_GUIDELINES_TASK = "TahiStandardTasks::ReportingGuidelinesTask"
 
   def cleanup
-    idents = []
+    idents = ["reporting_guidelines.clinical_trial",
+      "reporting_guidelines.systematic_reviews",
+      "reporting_guidelines.systematic_reviews.prisma_checklist",
+      "reporting_guidelines.diagnostic_studies",
+      "reporting_guidelines.meta_analyses",
+      "reporting_guidelines.meta_analyses.prisma_checklist",
+      "reporting_guidelines.diagnostic_studies",
+      "reporting_guidelines.epidemiological_studies",
+      "microarray_studies"]
     puts
     puts yellow("Removing all Question(s) with idents: #{idents.join(', ')}")
     answer = ask "Are you sure you want to delete these Question(s)? [y/N]"

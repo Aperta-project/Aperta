@@ -1,6 +1,6 @@
 namespace 'data:migrate:questions-to-nested-questions' do
   DATA_MIGRATION_QUESTION_RAKE_TASKS = %w(
-    competing-interests data-availability ethics figures financial-disclosure taxon reporting-guidelines
+    competing-interests data-availability ethics figures financial-disclosure taxon reporting-guidelines reviewer-recommendations
   )
 
   desc "Calls :reset task for all question-to-nested-question(s)"
@@ -173,6 +173,23 @@ namespace 'data:migrate:questions-to-nested-questions' do
   desc "Migrate the reporting guidelines task data to the NestedQuestion data model."
   task :'reporting-guidelines' => 'data:migrate:questions-to-nested-questions:reporting-guidelines:reset' do
     DataMigrator::ReportingGuidelinesQuestionsMigrator.migrate!
+  end
+
+  namespace :'reviewer-recommendations' do
+    desc "Resets the NestedQuestionAnswer(s) for reviewer recommendations by destroying them."
+    task :reset => :environment do
+      DataMigrator::ReviewerRecommendationsQuestionsMigrator.reset
+    end
+
+    desc "Destroy old questions for reviewer recommendations once you're satisfied w/migrating to NestedQuestion data model."
+    task :cleanup => :environment do
+      DataMigrator::ReviewerRecommendationsQuestionsMigrator.cleanup
+    end
+  end
+
+  desc "Migrate the reviewer recommendations task data to the NestedQuestion data model."
+  task :'reviewer-recommendations' => 'data:migrate:questions-to-nested-questions:reviewer-recommendations:reset' do
+    DataMigrator::ReviewerRecommendationsQuestionsMigrator.migrate!
   end
 
 end

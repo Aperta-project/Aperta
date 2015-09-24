@@ -18,6 +18,7 @@ export default TaskController.extend({
     });
   }),
 
+  nestedQuestionsForNewAuthor: Ember.A(),
   newAuthorQuestions: Ember.on('init', function(){
     this.store.findQuery('nested-question', { type: "Author" }).then( (nestedQuestions) => {
       this.set('nestedQuestionsForNewAuthor', nestedQuestions);
@@ -32,6 +33,12 @@ export default TaskController.extend({
     });
   }),
 
+  clearNewAuthorAnswers: function(){
+    this.get('nestedQuestionsForNewAuthor').forEach( (nestedQuestion) => {
+      nestedQuestion.clearAnswerForOwner(this.get("newAuthor"));
+    });
+  },
+
   sortedAuthorsWithErrors: computed(
     'sortedAuthors.[]', 'validationErrors', function() {
     return this.createModelProxyObjectWithErrors(this.get('sortedAuthors'));
@@ -43,8 +50,8 @@ export default TaskController.extend({
 
   actions: {
     toggleAuthorForm() {
+      this.clearNewAuthorAnswers();
       this.toggleProperty('newAuthorFormVisible');
-      return false;
     },
 
     changeAuthorPosition(author, newPosition) {

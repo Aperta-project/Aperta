@@ -24,6 +24,12 @@ export default TaskController.extend(ValidationErrorsMixin, {
     });
   }),
 
+  clearNewRecommendationAnswers: function(){
+    this.get('nestedQuestionsForNewRecommendation').forEach( (nestedQuestion) => {
+      nestedQuestion.clearAnswerForOwner(this.get("newRecommendation"));
+    });
+  },
+
   actions: {
     addNewReviewer() {
       let recommendation = this.store.createRecord('reviewerRecommendation', {
@@ -35,6 +41,7 @@ export default TaskController.extend(ValidationErrorsMixin, {
 
     cancelRecommendation() {
       this.set('showNewReviewerForm', false);
+      this.clearNewRecommendationAnswers();
       this.get('newRecommendation').destroyRecord();
       this.set('newRecommendation', null);
       this.clearAllValidationErrors();
@@ -47,6 +54,11 @@ export default TaskController.extend(ValidationErrorsMixin, {
       }).catch((response) => {
         this.displayValidationErrorsFromResponse(response);
       });
+    },
+
+    cancelEdit: function() {
+      this.clearNewRecommendationAnswers();
+      this.set('showNewReviewerForm', false);
     }
   }
 });

@@ -138,11 +138,9 @@ Tahi::Application.routes.draw do
       resources :attachments, only: [:index, :create, :update, :destroy] do
         put :update_attachment, on: :member
       end
-      member do
-        get :comments
-        get :participations
-        get :questions
-      end
+      resources :comments, only: [:index]
+      resources :participations, only: [:index]
+      resources :questions, only: [:index]
       put :send_message, on: :member
     end
     resources :task_templates

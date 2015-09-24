@@ -6,6 +6,10 @@ class ParticipationsController < ApplicationController
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
+  def index
+    respond_with Participation.where(task_id: params[:task_id]), root: :participations
+  end
+
   def create
     if participation.save
       CommentLookManager.sync_task(task)

@@ -27,9 +27,9 @@ class TaskSerializer < ActiveModel::Serializer
   def links
     {
       attachments: task_attachments_path(object),
-      comments: comments_task_path(object),
-      participations: participations_task_path(object),
-      questions: questions_task_path(object)
+      comments: task_comments_path(object),
+      participations: task_participations_path(object),
+      questions: task_questions_path(object)
     }
   end
 end

@@ -1,10 +1,23 @@
 class TasksPolicy < ApplicationPolicy
   primary_resource :task
+  allow_params :for_paper
 
   include TaskAccessCriteria
 
   def index?
-    true
+    can_view_paper? for_paper
+  end
+
+  def questions?
+    authorized_to_modify_task?
+  end
+
+  def comments?
+    authorized_to_modify_task?
+  end
+
+  def participations?
+    authorized_to_modify_task?
   end
 
   def show?

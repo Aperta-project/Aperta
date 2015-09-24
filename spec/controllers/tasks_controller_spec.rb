@@ -11,6 +11,22 @@ describe TasksController, redis: true do
     sign_in user
   end
 
+  describe "#index" do
+    subject(:do_request) do
+      get :index, {
+             format: 'json',
+             paper_id: paper.to_param,
+           }
+    end
+
+    it_behaves_like "an unauthenticated json request"
+
+    it "returns the paper's tasks" do
+      do_request
+      expect(res_body['tasks'].count).to eq(paper.tasks.count)
+    end
+  end
+
   describe "POST 'create'" do
     subject(:do_request) do
       post :create, {

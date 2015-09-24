@@ -3,6 +3,10 @@ class QuestionsController < ApplicationController
   before_action :enforce_policy, except: [:index]
   respond_to :json
 
+  def index
+    respond_with Question.where(task_id: params[:task_id]), root: :questions
+  end
+
   def create
     if question.save
       process_attachment(question)

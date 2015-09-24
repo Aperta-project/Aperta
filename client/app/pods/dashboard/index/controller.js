@@ -14,8 +14,13 @@ export default Ember.Controller.extend({
   inactivePageNumber: 1,
   relatedAtSort: ['relatedAtDate:desc'],
   updatedAtSort: ['updatedAt:desc'],
-  sortedActivePapers:     Ember.computed.sort('activePapers', 'relatedAtSort'),
+  sortedNonDraftPapers:   Ember.computed.sort('activeNonDrafts', 'relatedAtSort'),
+  sortedDraftPapers:      Ember.computed.sort('activeDrafts', 'updatedAtSort'),
   sortedInactivePapers:   Ember.computed.sort('inactivePapers', 'updatedAtSort'),
+  activeDrafts:           Ember.computed.filterBy('activePapers', 'publishingState', 'unsubmitted'),
+  activeNonDrafts:        Ember.computed.filter('activePapers', function(paper) {
+                            return paper.get('publishingState') !== 'unsubmitted';
+                          }),
   activePapers:           Ember.computed.filterBy('papers', 'active', true),
   inactivePapers:         Ember.computed.filterBy('papers', 'active', false),
 

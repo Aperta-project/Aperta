@@ -2,12 +2,6 @@ import Ember from 'ember';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  owners: DS.hasMany('nested-question-owner', {
-    polymorphic: true,
-    async: false,
-    inverse: 'nestedQuestions'
-  }),
-
   task: Ember.computed("owner", function(){
     return this.get("owner");
   }),

@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy, except: [:index, :questions, :comments, :participations]
+  before_action :enforce_policy, except: [:index]
+  before_action :enforce_index_policy, only: [:index]
 
   before_action :unmunge_empty_arrays, only: [:update]
 
@@ -8,7 +9,7 @@ class TasksController < ApplicationController
 
   ## /paper/tasks/
   def index
-    respond_with(Task.joins(:paper).includes([{ paper: [:journal, :creator] }, :participations]).where('papers.id = ?', params[:paper_id]))
+    respond_with paper.tasks.includes(:participations, :paper)
   end
 
   def show
@@ -50,22 +51,6 @@ class TasksController < ApplicationController
     head :ok
   end
 
-  def attachments
-    respond_with task.attachments
-  end
-
-  def comments
-    respond_with task.comments, root: :comments
-  end
-
-  def participations
-    respond_with task.participations, root: :participations
-  end
-
-  def questions
-    respond_with task.questions, root: :questions
-  end
-
   private
 
   def paper
@@ -100,6 +85,10 @@ class TasksController < ApplicationController
       whitelisted[:body] ||= "Nothing to see here."
       whitelisted[:recipients] ||= []
     end
+  end
+
+  def enforce_index_policy
+    authorize_action!(task: nil, for_paper: paper)
   end
 
   def enforce_policy

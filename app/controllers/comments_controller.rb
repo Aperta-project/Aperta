@@ -5,6 +5,10 @@ class CommentsController < ApplicationController
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
+  def index
+    respond_with Comment.where(task_id: params[:task_id]), root: :comments
+  end
+
   def create
     if !current_user.journal_admin? task.paper.journal
       ParticipationFactory.create(task: comment.task, assignee: current_user, assigner: current_user)

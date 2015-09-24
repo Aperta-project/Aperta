@@ -21,7 +21,6 @@ class EventStreamSubscriber
            excluded_socket_id: excluded_socket_id)
   end
 
-
   def payload
     payload_for_record record
   end

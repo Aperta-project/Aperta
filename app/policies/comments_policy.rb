@@ -1,7 +1,12 @@
 class CommentsPolicy < ApplicationPolicy
   primary_resource :comment
+  allow_params :for_task
 
   include TaskAccessCriteria
+
+  def index?
+    authorized_to_modify_task?
+  end
 
   def show?
     authorized_to_modify_task?
@@ -14,7 +19,7 @@ class CommentsPolicy < ApplicationPolicy
   private
 
   def task
-    comment.task
+    for_task || comment.task
   end
 
   def tasks_policy

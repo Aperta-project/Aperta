@@ -2,8 +2,7 @@ import DS from 'ember-data';
 
 export default DS.Model.extend({
   nestedQuestions: DS.hasMany('nested-question', {
-    inverse: 'owner',
-    async: false,
+    async: false
   }),
   nestedQuestionAnswers: DS.hasMany('nested-question-answers', {
     inverse: 'owner',
@@ -34,5 +33,5 @@ export default DS.Model.extend({
     let allTheChildren = _.invoke(children, "toArray");
     return _.flatten( allTheChildren );
   }
-  
+
 });

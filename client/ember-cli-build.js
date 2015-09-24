@@ -1,6 +1,5 @@
 /* global require, module */
 var EmberApp   = require('ember-cli/lib/broccoli/ember-app');
-var mergeTrees = require('broccoli-merge-trees');
 var Funnel     = require('broccoli-funnel');
 
 module.exports = function(defaults) {
@@ -33,7 +32,7 @@ module.exports = function(defaults) {
   app.import('bower_components/select2/select2.css');
   var select2Assets = new Funnel('bower_components/select2', {
     srcDir: '/',
-    files: ['*.gif', '*.png'],
+    include: ['*.gif', '*.png'],
     destDir: '/assets'
   });
 
@@ -53,5 +52,5 @@ module.exports = function(defaults) {
     app.import('vendor/pusher-test-stub.js', { type: 'test' });
   }
 
-  return mergeTrees([app.toTree(), select2Assets], {overwrite: true});
+  return app.toTree(select2Assets);
 };

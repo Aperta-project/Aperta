@@ -17,7 +17,7 @@ export default AuthorizedRoute.extend({
   },
 
   topicChannelName(topic) {
-    return 'private-discussiontopic@' + topic.get('id');
+    return 'private-discussion_topic@' + topic.get('id');
   },
 
   afterModel(model) {

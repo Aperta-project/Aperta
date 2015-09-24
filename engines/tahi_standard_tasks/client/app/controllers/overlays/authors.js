@@ -28,7 +28,6 @@ export default TaskController.extend({
   newAuthor: Ember.computed('newAuthorFormVisible', function(){
     return this.store.createRecord('author', {
         paper: this.get('model.paper'),
-        authorsTask: this.get('model'),
         position: 0,
         nestedQuestions: this.get('nestedQuestionsForNewAuthor')
     });
@@ -53,8 +52,13 @@ export default TaskController.extend({
       this.shiftAuthorPositions(author, newPosition);
     },
 
-    saveNewAuthor(newAuthorHash) {
+    saveNewAuthor() {
       let author = this.get("newAuthor");
+
+      // set this here, not when initially built so it doesn't show up in
+      // the list of existing authors as the user fills out the form
+      author.set("authorsTask", this.get("model"));
+
       author.save().then( (savedAuthor) => {
         author.get('nestedQuestionAnswers').toArray().forEach(function(answer){
           let value = answer.get("value");

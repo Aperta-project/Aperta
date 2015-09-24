@@ -320,7 +320,7 @@ let computed = Ember.computed;
 
 export default TaskController.extend({
   buildBillingValidator: function(){
-    var numericalityConfig = { numericality: { messages: { numericality: "Must be a number and contain no symobls, or letters"}}}
+    var numericalityConfig = { numericality: { allowBlank: true, messages: { numericality: "Must be a number and contain no symobls, or letters"}}}
 
     this.set('billingData', Ember.Object.extend(EmberValidations.Mixin, {
       init: function(){
@@ -360,8 +360,8 @@ export default TaskController.extend({
           } else {
             this.removeError(input);
           }
-          //controller.syncCompletedCheckbox();
         }.bind(this));
+        this.syncCompletedCheckbox();
       }),
       displayError: function(input, errors){
         if (!_.any(input)) { return } //not visible
@@ -376,15 +376,19 @@ export default TaskController.extend({
       syncCompletedCheckbox: function(){
         var checkbox = $('#task_completed');
         if (
-          this.get('hasPfaErrors') &&
+          !this.get('isValid') &&
           !checkbox.attr('disabled')
         ) {
           checkbox.prop('checked', true)
           checkbox.trigger( "click" ) //triggers bound events
           checkbox.prop('checked', false) //update ui
           checkbox.attr('disabled', true );
+          checkbox.siblings('.error-message').html('Errors in form');
+          checkbox.siblings('.error-message').removeClass('error-message--hidden');
         } else {
           checkbox.attr('disabled', false);
+          checkbox.siblings('.error-message').html('');
+          //checkbox.siblings('.error-message').addClass('error-message--hidden');
         }
       },
     }).create());

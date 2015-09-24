@@ -23,6 +23,12 @@ class NestedQuestionAnswersController < ApplicationController
     render json: answer, serializer: NestedQuestionAnswerSerializer
   end
 
+  def destroy
+    answer = fetch_answer
+    answer.destroy
+    render json: answer, serializer: NestedQuestionAnswerSerializer
+  end
+
   private
 
   def fetch_answer

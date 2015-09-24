@@ -3,9 +3,13 @@
   Other
 </label>
 {{#if isSelected}}
-  {{input class="form-control"
-          placeholder="Please specify"
-          value=textValue
-          enter="textUpdate"
-          focus-out="textUpdate"}}
+  {{nested-question-input ident="contributions.other"
+      task=author
+      displayQuestionText=false
+      inputClassNames="form-control"
+      placeholderText="Please specify"
+      wrapInput=false
+      tagName="span"
+      enter="textUpdate"
+      focus-out="textUpdate"}}
 {{/if}}

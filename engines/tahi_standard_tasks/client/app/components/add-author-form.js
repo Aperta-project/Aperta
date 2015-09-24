@@ -2,44 +2,37 @@ import Ember from "ember";
 
 export default Ember.Component.extend({
   layoutName: "components/add-author-form",
-  authorContributionOptions: [
-    "Conceived and designed the experiments",
-    "Performed the experiments",
-    "Analyzed the data",
-    "Contributed reagents/materials/analysis tools",
-    "Contributed to the writing of the manuscript"
+
+  author: null,
+
+  authorContributionIdents: [
+    "contributions.conceived_and_designed_experiments",
+    "contributions.performed_the_experiments",
+    "contributions.analyzed_data",
+    "contributions.contributed_tools",
+    "contributions.contributed_writing"
   ],
 
-  setNewAuthor: Ember.on("init", function(){
-    if (!this.get("newAuthor")) {
-      this.set("newAuthor", {contributions: []});
-    }
-  }),
-
-  affiliation: Ember.computed("newAuthor", function() {
-    if (this.get("newAuthor.affiliation")) {
+  affiliation: Ember.computed("author", function() {
+    if (this.get("author.affiliation")) {
       return {
-        id: this.get("newAuthor.ringgoldId"),
-        name: this.get("newAuthor.affiliation")
+        id: this.get("author.ringgoldId"),
+        name: this.get("author.affiliation")
       };
     }
   }),
 
-  secondaryAffiliation: Ember.computed("newAuthor", function() {
-    if (this.get("newAuthor.secondaryAffiliation")) {
+  secondaryAffiliation: Ember.computed("author", function() {
+    if (this.get("author.secondaryAffiliation")) {
       return {
-        id: this.get("newAuthor.secondaryRinggoldId"),
-        name: this.get("newAuthor.secondaryAffiliation")
+        id: this.get("author.secondaryRinggoldId"),
+        name: this.get("author.secondaryAffiliation")
       };
     }
   }),
 
   resetAuthor() {
-    if (Ember.typeOf(this.get("newAuthor")) === "object") {
-      this.set("newAuthor", {contributons: []});
-    } else {
-      this.get("newAuthor").rollback();
-    }
+    this.get("author").rollback();
   },
 
   actions: {
@@ -49,41 +42,40 @@ export default Ember.Component.extend({
     },
 
     saveNewAuthor() {
-      this.sendAction("saveAuthor", this.get("newAuthor"));
-      this.resetAuthor();
+      this.sendAction("saveAuthor", this.get("author"));
     },
 
     addContribution(name) {
-      this.get("newAuthor.contributions").addObject(name);
+      this.get("author.contributions").addObject(name);
     },
 
     removeContribution(name) {
-      this.get("newAuthor.contributions").removeObject(name);
+      this.get("author.contributions").removeObject(name);
     },
 
     resolveContributions(newContributions, unmatchedContributions) {
-      this.get("newAuthor.contributions").removeObjects(unmatchedContributions);
-      this.get("newAuthor.contributions").addObjects(newContributions);
+      this.get("author.contributions").removeObjects(unmatchedContributions);
+      this.get("author.contributions").addObjects(newContributions);
     },
 
     institutionSelected(institution) {
-      this.set("newAuthor.affiliation", institution.name);
-      this.set("newAuthor.ringgoldId", institution["institution-id"]);
+      this.set("author.affiliation", institution.name);
+      this.set("author.ringgoldId", institution["institution-id"]);
     },
 
     unknownInstitutionSelected(institutionName) {
-      this.set("newAuthor.affiliation", institutionName);
-      this.set("newAuthor.ringgoldId", "");
+      this.set("author.affiliation", institutionName);
+      this.set("author.ringgoldId", "");
     },
 
     secondaryInstitutionSelected(institution) {
-      this.set("newAuthor.secondaryAffiliation", institution.name);
-      this.set("newAuthor.secondaryRinggoldId", institution["institution-id"]);
+      this.set("author.secondaryAffiliation", institution.name);
+      this.set("author.secondaryRinggoldId", institution["institution-id"]);
     },
 
     unknownSecondaryInstitutionSelected(institutionName) {
-      this.set("newAuthor.secondaryAffiliation", institutionName);
-      this.set("newAuthor.secondaryRinggoldId", "");
+      this.set("author.secondaryAffiliation", institutionName);
+      this.set("author.secondaryRinggoldId", "");
     }
   }
 });

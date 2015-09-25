@@ -19,7 +19,16 @@ module("Integration: adding an author", {
     TestHelper.setup(App);
 
     server.respondWith('GET', "/api/nested_questions?type=Author", [200, { 'Content-Type': 'application/json' }, JSON.stringify(
-      { nested_questions: [] }
+      { nested_questions: [
+        {id: 120, text: "A question to be checked", value_type: "boolean", ident: "published_as_corresponding_author" },
+        {id: 121, text: "A question to be checked", value_type: "boolean", ident: "deceased" },
+        {id: 122, text: "Contributions", value_type: "question-set", ident: "contributions" },
+        {id: 123, text: "A question to be checked", value_type: "boolean", parent_id: 122, ident: "conceived_and_designed_experiments" },
+        {id: 124, text: "A question to be checked", value_type: "boolean", parent_id: 122, ident: "performed_the_experiments" },
+        {id: 125, text: "A question to be checked", value_type: "boolean", parent_id: 122, ident: "analyzed_data" },
+        {id: 126, text: "A question to be checked", value_type: "boolean", parent_id: 122, ident: "contributed_tools" },
+        {id: 127, text: "A question to be checked", value_type: "boolean", parent_id: 122, ident: "contributed_writing" },
+      ] }
     ) ]);
     server.respondWith('GET', "/api/admin/journals/authorization", [204, { 'Content-Type': 'application/json' }, "" ]);
     server.respondWith('GET', "/api/user_flows/authorization", [204, { 'Content-Type': 'application/json' }, "" ]);

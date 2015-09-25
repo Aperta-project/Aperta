@@ -21,6 +21,23 @@ namespace 'data:migrate:questions-to-nested-questions' do
     end
   end
 
+  namespace :'authors' do
+    desc "Resets the NestedQuestionAnswer(s) for authors by destroying them."
+    task :reset => :environment do
+      DataMigrator::AuthorsQuestionsMigrator.reset
+    end
+
+    desc "Destroy old questions for authors once you're satisfied w/migrating to NestedQuestion data model."
+    task :cleanup => :environment do
+      DataMigrator::AuthorsQuestionsMigrator.cleanup
+    end
+  end
+
+  desc "Migrate the authors task data to the NestedQuestion data model."
+  task :'authors' => 'data:migrate:questions-to-nested-questions:authors:reset' do
+    DataMigrator::AuthorsQuestionsMigrator.migrate!
+  end
+
   namespace :'competing-interests' do
     desc "Resets the NestedQuestionAnswer(s) for competing interests by destroying them."
     task :reset => :environment do

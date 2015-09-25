@@ -38,5 +38,4 @@ export default DS.Model.extend({
       answer.rollback();
     }
   }
-
 });

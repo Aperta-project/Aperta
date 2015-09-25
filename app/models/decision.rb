@@ -3,6 +3,7 @@ class Decision < ActiveRecord::Base
   has_many :invitations
   has_many :questions
   has_many :nested_question_answers
+  has_many :nested_questions, through: :nested_question_answers
 
   before_validation :increment_revision_number
 

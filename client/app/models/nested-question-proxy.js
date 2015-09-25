@@ -11,12 +11,16 @@ export default Ember.ObjectProxy.extend({
 
     Ember.assert("Must have provided nestedQuestion when creating this object", nestedQuestion);
     Ember.assert("Must have provided owner when creating this object", this.get('owner'));
-    this.set('content', this.get('nestedQuestion'));
+    this.set('content', nestedQuestion);
   },
 
   answer: Ember.computed('nestedQuestion', 'owner', function(){
     let nestedQuestion = this.get("nestedQuestion");
     let owner = this.get("owner");
-    return nestedQuestion.answerForOwner(owner);
+    let decision = this.get("decision");
+
+    if(nestedQuestion){
+      return nestedQuestion.answerForOwner(owner, decision);
+    }
   })
 });

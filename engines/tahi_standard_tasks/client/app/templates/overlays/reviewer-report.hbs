@@ -2,75 +2,7 @@
 
 <div class="reviewer-report-wrapper">
   {{#if model.body.submitted}}
-    <ol class="question-list reviewer-report-questions">
-      {{#nested-question ident="competing_interests" task=model as |nestedQuestion|}}
-        {{#if nestedQuestion.answer.wasAnswered}}
-          <li class="question">
-            <div class="question-text">{{nestedQuestion.text}}</div>
-            <div class="answer-text">{{nested-question-answer model=nestedQuestion task=model}}</div>
-          </li>
-        {{/if}}
-      {{/nested-question}}
-
-      {{#nested-question ident="support_conclusions" task=model as |nestedQuestion|}}
-        {{#if nestedQuestion.answer.wasAnswered}}
-          <li class="question">
-            <div class="question-text">{{nestedQuestion.text}}</div>
-            <div class="answer-text">{{nested-question-answer model=nestedQuestion task=model}}</div>
-            <div class="answer-text">{{nested-question-answer ident="support_conclusions.explanation" task=model}}</div>
-          </li>
-        {{/if}}
-      {{/nested-question}}
-
-      {{#nested-question ident="statistical_analysis" task=model as |nestedQuestion|}}
-        {{#if nestedQuestion.answer.wasAnswered}}
-          <li class="question">
-            <div class="question-text">{{nestedQuestion.text}}</div>
-            <div class="answer-text">{{nested-question-answer model=nestedQuestion task=model}}</div>
-            <div class="answer-text">{{nested-question-answer ident="statistical_analysis.explanation" task=model}}</div>
-          </li>
-        {{/if}}
-      {{/nested-question}}
-
-      {{#nested-question ident="standards" task=model as |nestedQuestion|}}
-        {{#if nestedQuestion.answer.wasAnswered}}
-          <li class="question">
-            <div class="question-text">{{nestedQuestion.text}}</div>
-            <div class="answer-text">{{nested-question-answer model=nestedQuestion task=model}}</div>
-            <div class="answer-text">{{nested-question-answer ident="standards.explanation" task=model}}</div>
-          </li>
-        {{/if}}
-      {{/nested-question}}
-
-      {{#nested-question ident="intelligible" task=model as |nestedQuestion|}}
-        {{#if nestedQuestion.answer.wasAnswered}}
-          <li class="question">
-            <div class="question-text">{{nestedQuestion.text}}</div>
-            <div class="answer-text">{{nested-question-answer model=nestedQuestion task=model}}</div>
-            <div class="answer-text">{{nested-question-answer ident="intelligible.explanation" task=model}}</div>
-          </li>
-        {{/if}}
-      {{/nested-question}}
-
-      {{#nested-question ident="additional_comments" task=model as |nestedQuestion|}}
-        {{#if nestedQuestion.answer.wasAnswered}}
-          <li class="question">
-            <div class="question-text">{{nestedQuestion.text}}</div>
-            <div class="answer-text">{{nested-question-answer model=nestedQuestion task=model}}</div>
-          </li>
-        {{/if}}
-      {{/nested-question}}
-
-      {{#nested-question ident="identity" task=model as |nestedQuestion|}}
-        {{#if nestedQuestion.answer.wasAnswered}}
-          <li class="question">
-            <div class="question-text">{{nestedQuestion.text}}</div>
-            <div class="answer-text">{{nested-question-answer model=nestedQuestion task=model}}</div>
-          </li>
-        {{/if}}
-      {{/nested-question}}
-
-    </ol>
+    {{reviewer-report-questions model=model decision=model.latestDecision}}
 
     <div class="feedback reviewer-report-feedback">
       <i class="fa fa-check-circle"></i>
@@ -193,14 +125,7 @@
           </div>
           <div id="collapse-{{unbound decision.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="decision-{{unbound decision.id}}">
             <div class="panel-body">
-              <ol>
-              {{#each decision.questions as |question|}}
-                <li>
-                  <div class="question-text">{{question.question}}</div>
-                  <div class="answer-text">{{question.answer}}</div>
-                </li>
-              {{/each}}
-              </ol>
+              {{reviewer-report-questions model=model decision=decision}}
             </div>
           </div>
         </div>

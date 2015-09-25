@@ -5,12 +5,17 @@ class CollaborationsController < ApplicationController
 
   def create
     paper_role = PaperRole.create(collaborator_params.merge(role: PaperRole::COLLABORATOR))
-    UserMailer.delay.add_collaborator(current_user.id, collaborator_params[:user_id], paper.id) if paper_role.valid?
+    if paper_role.valid?
+      Activity.collaborator_added!(paper_role, user: current_user)
+      UserMailer.delay.add_collaborator(current_user.id, collaborator_params[:user_id], paper.id)
+    end
     respond_with paper_role, serializer: CollaborationSerializer, location: nil
   end
 
   def destroy
-    respond_with PaperRole.find(params[:id]).destroy, serializer: CollaborationSerializer
+    paper_role = PaperRole.find(params[:id])
+    Activity.collaborator_removed!(paper_role, user: current_user)
+    respond_with paper_role.destroy, serializer: CollaborationSerializer
   end
 
   private

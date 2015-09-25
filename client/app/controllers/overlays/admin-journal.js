@@ -1,13 +1,13 @@
-import TaskController from 'tahi/pods/paper/task/controller';
+import Ember from 'ember';
 
-export default TaskController.extend({
-  needs: ['admin/journal/index'],
+export default Ember.Controller.extend({
+  journalController: Ember.inject.controller('admin/journal/index'),
   overlayClass: 'overlay--fullscreen journal-edit-overlay',
   propertyName: '',
 
   actions: {
     save() {
-      this.get('controllers.admin/journal/index')
+      this.get('journalController')
           .set(`${this.get('propertyName')}SaveStatus`, 'Saved')
           .get('model').save();
 

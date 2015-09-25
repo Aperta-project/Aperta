@@ -192,4 +192,20 @@ namespace 'data:migrate:questions-to-nested-questions' do
     DataMigrator::ReportingGuidelinesQuestionsMigrator.migrate!
   end
 
+  namespace :'reviewer-report' do
+    desc "Resets the NestedQuestionAnswer(s) for figures by destroying them."
+    task :reset => :environment do
+      DataMigrator::ReviewerReportQuestionsMigrator.reset
+    end
+
+    desc "Destroy old questions for revieewer report once you're satisfied w/migrating to NestedQuestion data model."
+    task :cleanup => :environment do
+      DataMigrator::ReviewerReportQuestionsMigrator.cleanup
+    end
+  end
+
+  desc "Migrate the reviewer-report task data to the NestedQuestion data model."
+  task :'reviewer-report' => 'data:migrate:questions-to-nested-questions:reviewer-report:reset' do
+    DataMigrator::ReviewerReportQuestionsMigrator.migrate!
+  end
 end

@@ -10,11 +10,11 @@ export default Ember.Component.extend({
   noLabel: 'No',
 
   idYes: computed('name', function() {
-    return this.get('name') + '-yes';
+    return `${this.elementId}-${this.get('name')}-yes`;
   }),
 
   idNo: computed('name', function() {
-    return this.get('name') + '-no';
+    return `${this.elementId}-${this.get('name')}-no`;
   }),
 
   yesChecked: computed('selection', 'yesValue', function() {

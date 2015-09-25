@@ -68,7 +68,12 @@ module SalesforceServices
       paper    = Paper.find(paper_id)
       kase_mgr = self.client.materialize("Case")
       bt       = BillingTranslator.new(paper: paper)
-      kase     = kase_mgr.create(bt.paper_to_billing_hash)
+      Rails.logger.info "==================== SF WRITE ====================="
+      begin
+        kase     = kase_mgr.create(bt.paper_to_billing_hash)
+      rescue StandardError => e
+        Rails.logger.info "Failed writing to SF: #{e}"
+      end
     end
 
     def self.has_valid_creds?
@@ -77,8 +82,5 @@ module SalesforceServices
       end
       true
     end
-
   end
 end
-
-

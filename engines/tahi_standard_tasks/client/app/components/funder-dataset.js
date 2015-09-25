@@ -4,14 +4,6 @@ import Utils from "tahi/services/utils";
 export default  Ember.Component.extend({
   classNames: ["dataset"],
 
-  funderHadInfluenceQuestion: Ember.computed("model", "model.nestedQuestions.[]", "model.nestedQuestionAnswers.[]", function(){
-    return this.get("model").findQuestion("funder_had_influence");
-  }),
-
-  funderRoleDescriptionQuestion: Ember.computed("model", "model.nestedQuestions.[]", "model.nestedQuestionAnswers.[]", function(){
-    return this.get("model").findQuestion("funder_role_description");
-  }),
-
   uniqueName: (function() {
     return "funder-had-influence-" + (Utils.generateUUID());
   }).property(),
@@ -25,8 +17,9 @@ export default  Ember.Component.extend({
   },
 
   setFunderRoleDescriptionAnswer: function(value){
-    let answer = this.get('funderRoleDescriptionQuestion.answer');
-    answer.set('value', '');
+    let model = this.get('model');
+    let answer = model.answerForQuestion('funder_role_description');
+    answer.set('value', value);
     answer.save();
   },
 

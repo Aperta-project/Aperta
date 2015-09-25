@@ -10,20 +10,33 @@ NestedQuestionComponent = Ember.Component.extend({
   disabled: false,
   textClassNames: ["question-text"],
 
+  init: function(){
+    this._super.apply(this, arguments);
+
+    let ident = this.get('ident');
+    let model = this.get('model');
+    let task = this.get('task');
+
+    Ember.assert("Must supply a task", task);
+
+    if(!model){
+      model = this.get('task').findQuestion(ident);
+      Ember.assert(`Wasn't given a model. Expected to find one through
+        findQuestion(${ident}), but didn't. Are you sure questions are loaded?`,
+        model
+      );
+    }
+
+    // Ensure that every model is a proxy for the owner so it cannot
+    // lookup answers for the current owner.
+    this.set('model', NestedQuestionProxy.create({
+      nestedQuestion: model,
+      owner: task
+    }));
+  },
+
   ident: Ember.computed('model', function(){
     return this.get('model.ident');
-  }),
-
-  model: Ember.computed('task', 'ident', function() {
-    let ident = this.get('ident');
-    Ember.assert(`Expecting to be given an ident, but wasn't`, ident);
-
-    let question = this.get('task').findQuestion(ident);
-    if(question){
-      return NestedQuestionProxy.create({nestedQuestion: question, owner: this.get('task')});
-    } else {
-      return null;
-    }
   }),
 
   questionText: Ember.computed("model", function(){

@@ -23,14 +23,11 @@ NestedQuestionComponent = Ember.Component.extend({
 
     let decision = this.get('decision');
 
-    let question;
-    if(decision){
-      question = task.questionForIdentAndDecision(ident, decision);
-      Ember.assert(`Expecting to find question matching ident '${ident}' and decision ${decision.get('id')} but didn't`, question);
-    } else {
-      question = task.findQuestion(ident);
-      Ember.assert(`Expecting to find question matching ident '${ident}' but didn't`, question);
-    }
+    let question = task.findQuestion(ident);
+    Ember.assert(`Expecting to find question matching ident '${ident}' but
+      didn't. Make sure questions are in the DB and are being loaded.`,
+      question
+    );
 
     this.set('model', NestedQuestionProxy.create({
        nestedQuestion: question,

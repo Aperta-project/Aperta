@@ -7,6 +7,14 @@ export default TaskController.extend({
   paper: Ember.computed.alias("task.paper"),
   receivedFunding: null,
 
+  nestedQuestionsForNewFunder: Ember.A(),
+
+  newFunderQuestions: Ember.on('init', function(){
+    this.store.findQuery('nested-question', { type: "Funder" }).then( (nestedQuestions) => {
+      this.set('nestedQuestionsForNewFunder', nestedQuestions);
+    });
+  }),
+
   authorReceivedFundingQuestion: Ember.computed("model", function(){
     return this.get("model").findQuestion("author_received_funding");
   }),
@@ -17,12 +25,8 @@ export default TaskController.extend({
     }
     if (this.get("funders.length") > 0) {
       this.set("receivedFunding", true);
-      return this.set("authorReceivedFundingQuestion.answer.value", true);
     } else {
       this.set("receivedFunding", null);
-      if (this.get("authorReceivedFundingQuestion.answer.value")) {
-        return this.set("authorReceivedFundingQuestion.answer.value", null);
-      }
     }
   }),
 
@@ -46,7 +50,8 @@ export default TaskController.extend({
     },
 
     addFunder: function() {
-      return this.store.createRecord("funder", {
+      return this.store.createRecord('funder', {
+        nestedQuestions: this.get('nestedQuestionsForNewFunder'),
         task: this.get("task")
       }).save();
     }

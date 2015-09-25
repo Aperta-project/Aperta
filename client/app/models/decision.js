@@ -1,6 +1,7 @@
 import DS from 'ember-data';
+import NestedQuestionOwner from 'tahi/models/nested-question-owner';
 
-export default DS.Model.extend({
+export default NestedQuestionOwner.extend({
   invitations: DS.hasMany('invitation', { async: false }),
   paper: DS.belongsTo('paper', { async: false }),
   questions: DS.hasMany('question', { async: false }),

@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import DS from 'ember-data';
 import NestedQuestionOwner from 'tahi/models/nested-question-owner';
 import CardThumbnailObserver from 'tahi/mixins/models/card-thumbnail-observer';
@@ -13,6 +14,17 @@ export default NestedQuestionOwner.extend(CardThumbnailObserver, {
     async: false
   }),
   comments: DS.hasMany('comment', { async: false }),
+  decisions: Ember.computed("paper", function(){
+    let paper = this.get("paper");
+    if(!paper){
+      return Ember.A();
+    } else {
+      return paper.get("decisions");
+    }
+  }),
+  latestDecision: Ember.computed("decisions", function(){
+    return this.get("decisions").findBy("isLatest", true);
+  }),
   paper: DS.belongsTo('paper', {
     inverse: 'tasks',
     async: false

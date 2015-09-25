@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import nestedQuestionsWithAnswers from 'tahi/models/nested-question-proxy';
+import NestedQuestionProxy from 'tahi/models/nested-question-proxy';
 var NestedQuestionComponent;
 
 NestedQuestionComponent = Ember.Component.extend({
@@ -13,6 +13,7 @@ NestedQuestionComponent = Ember.Component.extend({
   init: function(){
     this._super.apply(this, arguments);
 
+    let decision = this.get('decision');
     let ident = this.get('ident');
     let model = this.get('model');
     let task = this.get('task');
@@ -35,9 +36,11 @@ NestedQuestionComponent = Ember.Component.extend({
 
     // Ensure that every model is a proxy for the owner so it cannot
     // lookup answers for the current owner.
-    this.set('model', nestedQuestionsWithAnswers.create({
+
+    this.set('model', NestedQuestionProxy.create({
       nestedQuestion: model,
-      owner: task
+      owner: task,
+      decision: decision
     }));
   },
 

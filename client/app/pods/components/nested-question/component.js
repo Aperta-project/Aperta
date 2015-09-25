@@ -11,27 +11,36 @@ NestedQuestionComponent = Ember.Component.extend({
   noResponseText: "[No response]",
   textClassNames: ["question-text"],
 
-  ident: Ember.computed('model', function(){
-    return this.get('model.ident');
-  }),
+  init: function(){
+    this._super.apply(this, arguments);
 
-  model: Ember.computed('task', 'ident', function() {
     let ident = this.get('ident');
-    Ember.assert(`Expecting to be given an ident, but wasn't`, ident);
+    let model = this.get('model');
+    Ember.assert(`Expecting to be given an ident or a model, but wasn't given either`, (ident || model));
 
     let task = this.get('task');
     Ember.assert(`Expecting to be given a task, but wasn't`, task);
 
     let decision = this.get('decision');
+
     let question;
     if(decision){
       question = task.questionForIdentAndDecision(ident, decision);
+      Ember.assert(`Expecting to find question matching ident '${ident}' and decision ${decision.get('id')} but didn't`, question);
     } else {
       question = task.findQuestion(ident);
+      Ember.assert(`Expecting to find question matching ident '${ident}' but didn't`, question);
     }
-    Ember.assert(`Expecting to find question matching ident '${ident}' but didn't`, question);
 
-    return NestedQuestionProxy.create({nestedQuestion: question, owner: task, decision: decision});
+    this.set('model', NestedQuestionProxy.create({
+       nestedQuestion: question,
+       owner: task,
+       decision: decision
+    }));
+  },
+
+  ident: Ember.computed('model', function(){
+    return this.get('model.ident');
   }),
 
   questionText: Ember.computed("model", function(){

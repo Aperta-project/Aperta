@@ -20,6 +20,12 @@ NestedQuestionComponent = Ember.Component.extend({
     Ember.assert("Must supply a task", task);
 
     if(!model){
+      if (!ident){
+        Ember.assert(`Wasn't given a model or an ident. Need to supply one or the other.`,
+          ident
+        );
+      }
+
       model = this.get('task').findQuestion(ident);
       Ember.assert(`Wasn't given a model. Expected to find one through
         findQuestion(${ident}), but didn't. Are you sure questions are loaded?`,

@@ -319,80 +319,71 @@ let computed = Ember.computed;
 
 
 export default TaskController.extend({
-  buildBillingValidator: function(){
+
+  /*
+    will hold pfa data validator
+  */
+  pfaData: null,
+
+  /*
+    Makes a self-contained Pdf Data validator, temporarily to avoid conflict with
+    ValidationErrorsMixin 'tahi/mixins/validation-errors'
+    This is called in billing-pfa component via onDidInsertElement
+    Call is async because these question don't exist until pfa partial is inserted
+  */
+  buildPfaValidator: function(){
     var numericalityConfig = { numericality: { allowBlank: true, messages: { numericality: "Must be a number and contain no symobls, or letters"}}}
 
-    this.set('billingData', Ember.Object.extend(EmberValidations.Mixin, {
+    var x = Ember.Object.extend(EmberValidations.Mixin, {
       init: function(){
-        this.set('validations', {
-        });
+        this.set('validations', { });
 
-        _.each(
-          ['pfa_question_1b', 'pfa_question_2b', 'pfa_question_3a', 'pfa_question_4a', 'pfa_amount_to_pay'],
-          function(ident){
-            this.set(ident, this.findPfaQuestion(ident)); //add prop
-            this.validations[ident + ".answer"] = numericalityConfig; //add to validations
-        }.bind(this));
+        ['pfa_question_1b',
+         'pfa_question_2b',
+         'pfa_question_3a',
+         'pfa_question_4a',
+         'pfa_amount_to_pay'].forEach(function(ident)
+          {
+            this.set(ident, this.findPfaQuestion(ident)); //add named prop to obj
+            this.validations[ident + ".answer"] = numericalityConfig; //add prop name to validations
+          }.bind(this)
+        );
 
         this._super.apply(this, arguments);
       },
+
       container: this.get('container'), //https://github.com/kurko/ember-sync/issues/29
       model: this.get('model'),
       findPfaQuestion: function(ident){
         return this.get("model.questions").findProperty("ident", "plos_billing." + ident);
       },
-      fieldsValidated: function(){
-        var fields = _.collect(this.validations, function(val, key){
-        });
-        return fields;
-      },
-      pfaInput: function(ident){
-        return $("[name='plos_billing."+ ident + "']");
-      },
-      displayAllErrors: Ember.observer("model.questions.@each.answer", function(){
-        _.each(this.validations, function(val, key){
-          var errors = this.errors.get(key);
-          var ident  = key.split('.')[0];
-          var input  = this.pfaInput(ident);
+    })
 
-          if (errors && errors.length) {
-            this.displayError(input, errors);
-          } else {
-            this.removeError(input);
-          }
-        }.bind(this));
-        this.syncCompletedCheckbox();
-      }),
-      displayError: function(input, errors){
-        if (!_.any(input)) { return } //not visible
-        if (input.siblings('.error_message').length > 0){ return } //just one please
-        input.parent().addClass('error');
-        input.after("<div class='error_message'>"+ errors.join(', ') +"</div>");
-      },
-      removeError: function(input){
-        input.parent().removeClass('error');
-        input.siblings('.error_message').remove();
-      },
-      syncCompletedCheckbox: function(){
-        var checkbox = $('#task_completed');
-        if (
-          !this.get('isValid') &&
-          !checkbox.attr('disabled')
-        ) {
-          checkbox.prop('checked', true)
-          checkbox.trigger( "click" ) //triggers bound events
-          checkbox.prop('checked', false) //update ui
-          checkbox.attr('disabled', true );
-          checkbox.siblings('.error-message').html('Errors in form');
-          checkbox.siblings('.error-message').removeClass('error-message--hidden');
-        } else {
-          checkbox.attr('disabled', false);
-          checkbox.siblings('.error-message').html('');
-          //checkbox.siblings('.error-message').addClass('error-message--hidden');
-        }
-      },
-    }).create());
+    this.set('pfaData', x.create());
   },
+
+  /*
+    Sets error message bound to validationErrors.completed in -overlay-completed-checkbox when data invalid
+  */
+  _disableCompletedWhenInvalid: Ember.observer('pfaData.isValid', function(){
+    var msg = this.get('pfaData.isValid') ? null : 'Errors in form';
+    this.set('validationErrors.completed', msg)
+  }),
+
+  /*
+    Overloads inherited isEditable in TaskController
+    When false, makes complete box uncheckable
+    Strongly feel we should discuss new strategy for disabling of complete
+    that would allow something more flexible and more robust
+  */
+  isEditable: computed('pfaData.isValid', 'isUserEditable', 'currentUser.siteAdmin', function() {
+    return (
+      this.get('pfaData.isValid') &&
+      (this.get('isUserEditable') || this.get('currentUser.siteAdmin'))
+    );
+  }),
+
+
 
 
 

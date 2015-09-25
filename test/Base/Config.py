@@ -129,8 +129,8 @@ grid_enabled_browsers = [DesiredCapabilities.FIREFOX,
                          DesiredCapabilities.INTERNETEXPLORER,
                          DesiredCapabilities.CHROME,
                          DesiredCapabilities.SAFARI,
-                         IOS,
-                         ANDROID
+#                         IOS,
+#                         ANDROID
                          ]
 
 

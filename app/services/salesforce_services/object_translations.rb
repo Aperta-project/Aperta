@@ -15,7 +15,11 @@ module SalesforceServices
           "Display_Technical_Notes__c" => false,
           "CreatedByDeltaMigration__c" => false,
           "Editorial_Status_Date__c" => Time.now,
-          "Revision__c" => "0.0" # TODO: pull from paper
+          "Revision__c" => @paper.decisions.latest.revision_number,
+          "Title__c" => @paper.title,
+          "Initial_Date_Submitted__c" => @paper.submitted_at,
+          "Manuscript_Number__c" => @paper.doi,
+          "DOI__c" => @paper.doi
         }
       end
     end

@@ -8,8 +8,7 @@ export default DS.Model.extend({
     inverse: 'owner',
     async: false,
   }),
-
-  answerForQuestion(ident){
+  answerForQuestion: function(ident){
     let question = this.findQuestion(ident);
     if(question){
       return question.answerForOwner(this);

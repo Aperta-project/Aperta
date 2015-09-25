@@ -3,16 +3,73 @@
 <div class="reviewer-report-wrapper">
   {{#if model.body.submitted}}
     <ol class="question-list reviewer-report-questions">
-      {{#each model.questions as |question|}}
-      {{#if question.question}}
-        <li class="question">
-          <div class="question-text">{{question.question}}</div>
-          <div class="answer-text">{{question.answer}}</div>
-        </li>
-      {{else}}
-        <div class="answer-text">{{question.answer}}</div>
-      {{/if}}
-      {{/each}}
+      {{#nested-question ident="competing_interests" task=model as |nestedQuestion|}}
+        {{#if nestedQuestion.answer.wasAnswered}}
+          <li class="question">
+            <div class="question-text">{{nestedQuestion.text}}</div>
+            <div class="answer-text">{{nested-question-answer model=nestedQuestion task=model}}</div>
+          </li>
+        {{/if}}
+      {{/nested-question}}
+
+      {{#nested-question ident="support_conclusions" task=model as |nestedQuestion|}}
+        {{#if nestedQuestion.answer.wasAnswered}}
+          <li class="question">
+            <div class="question-text">{{nestedQuestion.text}}</div>
+            <div class="answer-text">{{nested-question-answer model=nestedQuestion task=model}}</div>
+            <div class="answer-text">{{nested-question-answer ident="support_conclusions.explanation" task=model}}</div>
+          </li>
+        {{/if}}
+      {{/nested-question}}
+
+      {{#nested-question ident="statistical_analysis" task=model as |nestedQuestion|}}
+        {{#if nestedQuestion.answer.wasAnswered}}
+          <li class="question">
+            <div class="question-text">{{nestedQuestion.text}}</div>
+            <div class="answer-text">{{nested-question-answer model=nestedQuestion task=model}}</div>
+            <div class="answer-text">{{nested-question-answer ident="statistical_analysis.explanation" task=model}}</div>
+          </li>
+        {{/if}}
+      {{/nested-question}}
+
+      {{#nested-question ident="standards" task=model as |nestedQuestion|}}
+        {{#if nestedQuestion.answer.wasAnswered}}
+          <li class="question">
+            <div class="question-text">{{nestedQuestion.text}}</div>
+            <div class="answer-text">{{nested-question-answer model=nestedQuestion task=model}}</div>
+            <div class="answer-text">{{nested-question-answer ident="standards.explanation" task=model}}</div>
+          </li>
+        {{/if}}
+      {{/nested-question}}
+
+      {{#nested-question ident="intelligible" task=model as |nestedQuestion|}}
+        {{#if nestedQuestion.answer.wasAnswered}}
+          <li class="question">
+            <div class="question-text">{{nestedQuestion.text}}</div>
+            <div class="answer-text">{{nested-question-answer model=nestedQuestion task=model}}</div>
+            <div class="answer-text">{{nested-question-answer ident="intelligible.explanation" task=model}}</div>
+          </li>
+        {{/if}}
+      {{/nested-question}}
+
+      {{#nested-question ident="additional_comments" task=model as |nestedQuestion|}}
+        {{#if nestedQuestion.answer.wasAnswered}}
+          <li class="question">
+            <div class="question-text">{{nestedQuestion.text}}</div>
+            <div class="answer-text">{{nested-question-answer model=nestedQuestion task=model}}</div>
+          </li>
+        {{/if}}
+      {{/nested-question}}
+
+      {{#nested-question ident="identity" task=model as |nestedQuestion|}}
+        {{#if nestedQuestion.answer.wasAnswered}}
+          <li class="question">
+            <div class="question-text">{{nestedQuestion.text}}</div>
+            <div class="answer-text">{{nested-question-answer model=nestedQuestion task=model}}</div>
+          </li>
+        {{/if}}
+      {{/nested-question}}
+
     </ol>
 
     <div class="feedback reviewer-report-feedback">
@@ -30,18 +87,18 @@
     </li>
 
     <li class="question">
-        {{#nested-question-radio ident="support_conclusions"
-                          task=model
-                          versioned=true
-                          helpText="<li>The manuscript must describe a technically sound piece of scientific research with data that supports the conclusions.</li><li>Experiments must have been conducted rigorously, with appropriate controls, replication, and sample sizes.</li><li>The conclusions must be drawn appropriately based on the data presented.</li>"
-                          wrapperClass="yes-no-with-comments" as |radio|}}
-          {{#if radio.yieldingForAdditionalData}}
-            {{nested-question-textarea ident="support_conclusions.explanation"
-                task=model
-                versioned=true
-                displayQuestionText=false}}
-          {{/if}}
-        {{/nested-question-radio}}
+      {{#nested-question-radio ident="support_conclusions"
+                        task=model
+                        versioned=true
+                        helpText="<li>The manuscript must describe a technically sound piece of scientific research with data that supports the conclusions.</li><li>Experiments must have been conducted rigorously, with appropriate controls, replication, and sample sizes.</li><li>The conclusions must be drawn appropriately based on the data presented.</li>"
+                        wrapperClass="yes-no-with-comments" as |radio|}}
+        {{#if radio.yieldingForAdditionalData}}
+          {{nested-question-textarea ident="support_conclusions.explanation"
+              task=model
+              versioned=true
+              displayQuestionText=false}}
+        {{/if}}
+      {{/nested-question-radio}}
     </li>
 
     <li class="question">

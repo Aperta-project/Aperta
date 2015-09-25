@@ -2,7 +2,7 @@ class IhatJobResponse
   attr_reader :outputs, :state, :raw_metadata
 
   def initialize(params={})
-    @state = params[:state]
+    @state = params[:state].to_sym
     @outputs = params[:outputs]
     @raw_metadata = params[:metadata] || {}
   end
@@ -20,7 +20,9 @@ class IhatJobResponse
     @metadata ||= Verifier.new(raw_metadata).decrypt
   end
 
-  def completed?
-    state == "completed"
+  [:pending, :processing, :completed, :errored, :archived, :skipped].each do |check_state|
+    define_method("#{check_state}?") do
+      state == check_state
+    end
   end
 end

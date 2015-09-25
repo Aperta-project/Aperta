@@ -43,7 +43,9 @@ export default DS.Model.extend({
 
   clearAnswerForOwner: function(owner){
     let answer = this.answerForOwner(owner);
-    if(answer) answer.rollback();
+    if(answer){
+      answer.rollback();
+    }
   }
 
 });

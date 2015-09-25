@@ -259,7 +259,10 @@ ActiveRecord::Schema.define(version: 20151016173854) do
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
     t.json     "additional_data"
+    t.integer  "decision_id"
   end
+
+  add_index "nested_question_answers", ["decision_id"], name: "index_nested_question_answers_on_decision_id", using: :btree
 
   create_table "nested_questions", force: :cascade do |t|
     t.string   "text"

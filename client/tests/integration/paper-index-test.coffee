@@ -1,7 +1,7 @@
 `import Ember from 'ember'`
 `import { test } from 'ember-qunit'`
 `import startApp from '../helpers/start-app'`
-`import { paperWithTask, addUserAsParticipant, addUserAsCollaborator } from '../helpers/setups'`
+`import { paperWithTask, addUserAsParticipant, addUserAsCollaborator, addNestedQuestionToTask } from '../helpers/setups'`
 `import setupMockServer from '../helpers/mock-server'`
 `import Factory from '../helpers/factory'`
 `import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';`
@@ -33,12 +33,15 @@ module 'Integration: PaperIndex',
 
     [currentPaper, figureTask, journal, litePaper, phase] = records
 
+    nestedQuestion = Factory.createRecord('NestedQuestion', { ident: 'figure_complies' })
+    addNestedQuestionToTask(figureTask, nestedQuestion);
+
     paperPayload = Factory.createPayload('paper')
-    paperPayload.addRecords(records.concat([fakeUser]))
+    paperPayload.addRecords(records.concat([fakeUser, nestedQuestion]))
     paperResponse = paperPayload.toJSON()
 
     taskPayload = Factory.createPayload('task')
-    taskPayload.addRecords([figureTask, litePaper, fakeUser])
+    taskPayload.addRecords([figureTask, litePaper, fakeUser, nestedQuestion])
     figureTaskResponse = taskPayload.toJSON()
     collaborators = [
       id: "35"

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150922122708) do
+ActiveRecord::Schema.define(version: 20150925132328) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -259,7 +259,10 @@ ActiveRecord::Schema.define(version: 20150922122708) do
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
     t.json     "additional_data"
+    t.integer  "decision_id"
   end
+
+  add_index "nested_question_answers", ["decision_id"], name: "index_nested_question_answers_on_decision_id", using: :btree
 
   create_table "nested_questions", force: :cascade do |t|
     t.string   "text"

@@ -12,6 +12,8 @@ export default Ember.Controller.extend({
   hasInactivePapers: Ember.computed.notEmpty('inactivePapers'),
   activePageNumber:   1,
   inactivePageNumber: 1,
+  activePapersVisible: true,
+  inactivePapersVisible: true,
   relatedAtSort: ['relatedAtDate:desc'],
   updatedAtSort: ['updatedAt:desc'],
   sortedNonDraftPapers: Ember.computed.sort('activeNonDrafts', 'relatedAtSort'),
@@ -51,6 +53,12 @@ export default Ember.Controller.extend({
       this.store.find('paper', { page_number: this.get('activePageNumber') + 1 }).then(()=> {
         this.incrementProperty('activePageNumber');
       });
+    },
+    toggleActiveContainer() {
+      this.toggleProperty('activePapersVisible');
+    },
+    toggleInactiveContainer() {
+      this.toggleProperty('inactivePapersVisible');
     }
   }
 });

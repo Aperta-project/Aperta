@@ -29,30 +29,32 @@
     <button class="button-primary button--green" {{action "showNewPaperOverlay"}}>Create New Submission</button>
     {{#if hasPapers}}
       {{#if hasActivePapers}}
-        <h5 class='manuscript-list-heading'>
+        <h5 class='manuscript-list-heading' {{action 'toggleActiveContainer'}}>
           Active Manuscripts ({{totalActivePaperCount}})
         </h5>
-        <ul class="dashboard-submitted-papers">
-          Sorted draft
-          {{#each sortedDraftPapers as |paper|}}
-            {{dashboard-link model=paper}}
-          {{/each}}
-          Sorted nondraft
-          {{#each sortedNonDraftPapers as |paper|}}
-            {{dashboard-link model=paper}}
-          {{/each}}
-        </ul>
+        {{#if activePapersVisible}}
+          <ul class="dashboard-submitted-papers">
+            {{#each sortedDraftPapers as |paper|}}
+              {{dashboard-link model=paper}}
+            {{/each}}
+            {{#each sortedNonDraftPapers as |paper|}}
+              {{dashboard-link model=paper}}
+            {{/each}}
+          </ul>
+        {{/if}}
       {{/if}}
 
       {{#if hasInactivePapers}}
-        <h5 class='manuscript-list-heading'>
+        <h5 class='manuscript-list-heading' {{action 'toggleInactiveContainer'}}>
           Inactive Manuscripts ({{totalInactivePaperCount}})
         </h5>
-        <ul class="dashboard-submitted-papers">
-          {{#each sortedInactivePapers as |paper|}}
-            {{dashboard-link model=paper}}
-          {{/each}}
-        </ul>
+        {{#if inactivePapersVisible}}
+          <ul class="dashboard-submitted-papers">
+            {{#each sortedInactivePapers as |paper|}}
+              {{dashboard-link model=paper}}
+            {{/each}}
+          </ul>
+        {{/if}}
       {{/if}}
     {{else}}
       <p class="dashboard-info-text">Your scientific paper submissions will<br> appear here.</p>

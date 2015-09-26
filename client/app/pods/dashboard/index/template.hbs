@@ -42,11 +42,6 @@
             {{dashboard-link model=paper}}
           {{/each}}
         </ul>
-        {{#if canLoadMoreActive}}
-          <button {{action "loadMoreActivePapers"}} href="#" class="button-secondary button--green load-more-papers">
-            Load More
-          </button>
-        {{/if }}
       {{/if}}
 
       {{#if hasInactivePapers}}
@@ -58,11 +53,6 @@
             {{dashboard-link model=paper}}
           {{/each}}
         </ul>
-        {{#if canLoadMoreInactive}}
-          <button {{action "loadMoreActivePapers"}} href="#" class="button-secondary button--green load-more-papers">
-            Load More
-          </button>
-        {{/if}}
       {{/if}}
     {{else}}
       <p class="dashboard-info-text">Your scientific paper submissions will<br> appear here.</p>

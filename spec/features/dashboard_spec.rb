@@ -10,24 +10,7 @@ feature "Dashboard", js: true do
     end
   end
   let(:dashboard) { DashboardPage.new }
-
-  feature "pagination" do
-    context "when there are more than 15 papers" do
-      let(:paper_count) { 18 }
-      scenario "only 15 papers are beamed down but total paper count is present" do
-        login_as(user, scope: :user)
-        visit "/"
-        expect(dashboard.total_paper_count).to eq paper_count
-        expect(dashboard.paper_count).to eq Paper.default_per_page
-        load_more_button = dashboard.load_more_papers_button
-        expect(load_more_button).to be_present
-        dashboard.load_more_papers
-        expect(dashboard).to have_no_css('.load-more-papers')
-        expect(dashboard.paper_count).to eq paper_count
-      end
-    end
-  end
-
+            
   feature "displaying invitations" do
     let(:paper_count) { 1 }
     let(:paper) { papers.first }

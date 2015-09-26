@@ -40,8 +40,8 @@ class Paper < ActiveRecord::Base
 
   validates :short_title, :title, length: { maximum: 255 }
 
-  scope :active,   -> { where( active: true ) }
-  scope :inactive, -> { where( active: false ) }
+  scope :active,   -> { where(active: true) }
+  scope :inactive, -> { where(active: false) }
 
   delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
 

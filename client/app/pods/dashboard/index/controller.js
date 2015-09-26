@@ -14,15 +14,15 @@ export default Ember.Controller.extend({
   inactivePageNumber: 1,
   relatedAtSort: ['relatedAtDate:desc'],
   updatedAtSort: ['updatedAt:desc'],
-  sortedNonDraftPapers:   Ember.computed.sort('activeNonDrafts', 'relatedAtSort'),
-  sortedDraftPapers:      Ember.computed.sort('activeDrafts', 'updatedAtSort'),
-  sortedInactivePapers:   Ember.computed.sort('inactivePapers', 'updatedAtSort'),
-  activeDrafts:           Ember.computed.filterBy('activePapers', 'publishingState', 'unsubmitted'),
-  activeNonDrafts:        Ember.computed.filter('activePapers', function(paper) {
-                            return paper.get('publishingState') !== 'unsubmitted';
-                          }),
-  activePapers:           Ember.computed.filterBy('papers', 'active', true),
-  inactivePapers:         Ember.computed.filterBy('papers', 'active', false),
+  sortedNonDraftPapers: Ember.computed.sort('activeNonDrafts', 'relatedAtSort'),
+  sortedDraftPapers:    Ember.computed.sort('activeDrafts', 'updatedAtSort'),
+  sortedInactivePapers: Ember.computed.sort('inactivePapers', 'updatedAtSort'),
+  activeDrafts:         Ember.computed.filterBy('activePapers', 'publishingState', 'unsubmitted'),
+  activeNonDrafts:      Ember.computed.filter('activePapers', function(paper) {
+                          return paper.get('publishingState') !== 'unsubmitted';
+                        }),
+  activePapers:         Ember.computed.filterBy('papers', 'active', true),
+  inactivePapers:       Ember.computed.filterBy('papers', 'active', false),
 
   totalActivePaperCount: Ember.computed('papers.length', function() {
     let numPapersFromServer       = this.store.metadataFor('paper').total_active_papers;
@@ -50,11 +50,6 @@ export default Ember.Controller.extend({
     loadMoreActivePapers() {
       this.store.find('paper', { page_number: this.get('activePageNumber') + 1 }).then(()=> {
         this.incrementProperty('activePageNumber');
-      });
-    },
-    loadMoreInactivePapers() {
-      this.store.find('paper', { page_number: this.get('inactivePageNumber') + 1 }).then(()=> {
-        this.incrementProperty('inactivePageNumber');
       });
     }
   }

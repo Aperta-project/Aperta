@@ -13,8 +13,8 @@ class PapersController < ApplicationController
     papers = current_user.papers.page(page)
     respond_with(papers, {
       each_serializer: LitePaperSerializer,
-      meta: { total_active_pages: papers.active.total_pages, 
-              total_inactive_pages: papers.inactive.total_pages, 
+      meta: { total_active_pages: papers.active.total_pages,
+              total_inactive_pages: papers.inactive.total_pages,
               total_active_papers: papers.active.total_count,
               total_inactive_papers: papers.active.total_count }
     })

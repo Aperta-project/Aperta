@@ -26,6 +26,6 @@ export default DS.Model.extend({
   },
 
   toHtml() {
-    return "<figure itemscope data-id=\"" + (this.get('id')) + "\">\n  <h1 itemprop=\"title\">" + (this.get('title')) + "</h1>\n  <img src=\"" + (this.get('src')) + "\">\n  <figcaption>" + (this.get('caption')) + "</figcaption>\n</figure>";
+    return "<figure itemscope data-id=\"" + (this.get('id')) + "\">\n  <h1 itemprop=\"title\">" + (this.get('title')) + "</h1>\n  <img src=\"" + (this.get('detailSrc')) + "\">\n  <figcaption>" + (this.get('caption')) + "</figcaption>\n</figure>";
   }
 });

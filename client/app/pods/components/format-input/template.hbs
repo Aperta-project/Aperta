@@ -1,0 +1,25 @@
+{{content-editable value=value
+                   class="format-input-field"
+                   placeholder=attrs.placeholder
+                   focus-in=(action "focus-in")
+                   focus-out=(action "focus-out")}}
+
+{{#if displayBold}}
+  <a title="Bold" href="#" class="format-input-button" {{action "format" "bold" bubbles="false"}}><i class="fa fa-bold"></i></a>
+{{/if}}
+
+{{#if displayItalic}}
+  <a title="Italic" href="#" class="format-input-button" {{action "format" "italic" bubbles="false"}}><i class="fa fa-italic"></i></a>
+{{/if}}
+
+{{#if displaySuperscript}}
+  <a title="Superscript" href="#" class="format-input-button" {{action "format" "superscript" bubbles="false"}}><i class="fa fa-superscript"></i></a>
+{{/if}}
+
+{{#if displaySubscript}}
+  <a title="Subscript" href="#" class="format-input-button" {{action "format" "subscript" bubbles="false"}}><i class="fa fa-subscript"></i></a>
+{{/if}}
+
+{{#if displayRemove}}
+  <a title="Remove all formatting" href="#" class="format-input-button" {{action "format" "remove" bubbles="false"}}><i class="fa fa-times"></i></a>
+{{/if}}

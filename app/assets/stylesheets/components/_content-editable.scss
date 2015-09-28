@@ -7,9 +7,13 @@ h2[contenteditable=true] {
   min-height: 37px;
 }
 
-label[contenteditable=true], div[contenteditable=true] {
+label[contenteditable=true] {
   background-color: $tahi-white;
   padding: 5px;
+}
+
+div[contenteditable=true] {
+  background-color: $tahi-white;
 }
 
 .two-element-form {
@@ -25,11 +29,6 @@ label[contenteditable=true], div[contenteditable=true] {
   input[type=checkbox] {
     margin-top: 10px;
   }
-}
-
-div[contenteditable=true] {
-  min-height: 100px;
-  margin-bottom: 10px;
 }
 
 .content-editable-muted {

@@ -44,11 +44,19 @@ export default Ember.Component.extend({
     this.setValueFromHTML();
   },
 
+  focusIn() {
+    const action = this.attrs['focus-in'];
+    if(action) { action(); }
+  },
+
   focusOut() {
     this.set('_userIsTyping', false);
     if (this.elementIsEmpty()) {
       this.setPlaceholder();
     }
+
+    const action = this.attrs['focus-out'];
+    if(action) { action(); }
   },
 
   elementIsEmpty() {

@@ -343,6 +343,8 @@ export default TaskController.extend({
          'pfa_question_4a',
          'pfa_amount_to_pay'].forEach(function(ident)
           {
+            console.log(ident); 
+            console.log(this.findPfaQuestion(ident)); 
             this.set(ident, this.findPfaQuestion(ident)); //add named prop to obj
             this.validations[ident + ".answer"] = numericalityConfig; //add prop name to validations
           }.bind(this)
@@ -360,6 +362,10 @@ export default TaskController.extend({
 
     this.set('pfaData', x.create());
   },
+
+  /*
+  */
+  //_catchMissedOnDidInsert: computed("model.questions.@each", function() { }),
 
   /*
     Sets error message bound to validationErrors.completed in -overlay-completed-checkbox when data invalid

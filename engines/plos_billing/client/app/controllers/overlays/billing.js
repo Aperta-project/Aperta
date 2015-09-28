@@ -341,14 +341,13 @@ export default TaskController.extend({
          'pfa_question_2b',
          'pfa_question_3a',
          'pfa_question_4a',
-         'pfa_amount_to_pay'].forEach(function(ident)
-          {
-            this.set(ident, Ember.computed("model.questions.@each", function() {
+         'pfa_amount_to_pay'].forEach((ident) => {
+            this.set(ident, Ember.computed("model.questions.[]", () => {
                 return this.findPfaQuestion(ident);
-              }.bind(this))
+              })
             ); //add named prop to obj
             this.validations[ident + ".answer"] = numericalityConfig; //add prop name to validations
-          }.bind(this)
+          }
         );
 
         this._super.apply(this, arguments);

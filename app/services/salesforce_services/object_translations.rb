@@ -53,7 +53,7 @@ module SalesforceServices
           'PFA_Question_4a__c'         => float_answer_for("pfa_question_4a"),
           'PFA_Able_to_Pay_R__c'       => float_answer_for("pfa_amount_to_pay"),
           'PFA_Additional_Comments__c' => answer_for("pfa_additional_comments"),
-          'PFA_Supporting_Docs__c'     => boolean_from_text_answer_for("pfa_supporting_docs"), # bool required, non-nil, unlike others
+          'PFA_Supporting_Docs__c'     => boolean_from_yes_no("pfa_supporting_docs"),
         }
       end
 
@@ -65,10 +65,10 @@ module SalesforceServices
       end
 
       def float_answer_for(ident) # for data that must be castable to float
-          answer_for(ident).to_f
+        answer_for(ident).to_f
       end
 
-      def boolean_from_text_answer_for(ident)
+      def boolean_from_yes_no(ident) # for data that must be castable to float
         a = answer_for(ident)
         a.is_a?(String) ? text_to_boolean_map[a.downcase] : false
       end

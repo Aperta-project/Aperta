@@ -26,19 +26,9 @@ export default Ember.Controller.extend({
   activePapers:         Ember.computed.filterBy('papers', 'active', true),
   inactivePapers:       Ember.computed.filterBy('papers', 'active', false),
 
-  totalActivePaperCount: Ember.computed('papers.length', function() {
-    let numPapersFromServer       = this.store.metadataFor('paper').total_active_papers;
-    let numDashboardPapersInStore = this.get('activePapers.length');
+  totalActivePaperCount: Ember.computed.alias('activePapers.length'),
 
-    return numDashboardPapersInStore > numPapersFromServer ? numDashboardPapersInStore : numPapersFromServer;
-  }),
-
-  totalInactivePaperCount: Ember.computed('papers.length', function() {
-    let numPapersFromServer       = this.store.metadataFor('paper').total_inactive_papers;
-    let numDashboardPapersInStore = this.get('inactivePapers.length');
-
-    return numDashboardPapersInStore > numPapersFromServer ? numDashboardPapersInStore : numPapersFromServer;
-  }),
+  totalInactivePaperCount: Ember.computed.alias('inactivePapers.length'),
 
   canLoadMoreActive: Ember.computed('activePageNumber', function() {
     return this.get('activePageNumber') !== this.store.metadataFor('paper').total_active_pages;

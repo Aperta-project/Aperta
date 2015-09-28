@@ -10,13 +10,11 @@ class PapersController < ApplicationController
 
   def index
     page = (params[:page_number] || 1).to_i
-    papers = current_user.papers.page(page)
+    papers = current_user.papers
     respond_with(papers, {
       each_serializer: LitePaperSerializer,
-      meta: { total_active_pages: papers.active.total_pages,
-              total_inactive_pages: papers.inactive.total_pages,
-              total_active_papers: papers.active.total_count,
-              total_inactive_papers: papers.active.total_count }
+      meta: { total_active_papers: papers.active.count,
+              total_inactive_papers: papers.active.count }
     })
   end
 

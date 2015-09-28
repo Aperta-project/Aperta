@@ -1,0 +1,76 @@
+  <ol class="question-list">
+    <li class="question">
+      {{question-textarea ident="reviewer_report.competing_interests"
+        task=model
+        decision=decision
+        question="Do you have any potential or perceived competing interests that may influence your review?"
+        helpText="<li>Please review our Competing Interests policy and declare any potential interests that you feel the Editor should be aware of when considering your review. If you have no competing interests, please write: <strong>&quot;I have no competing interests.&quot;</strong></li>"
+        readonly=readonly}}
+    </li>
+
+    <li class="question">
+        {{#question-radio ident="reviewer_report.support_conclusions"
+                          task=model
+                          decision=decision
+                          question="Is the manuscript technically sound, and do the data support the conclusions?"
+                          helpText="<li>The manuscript must describe a technically sound piece of scientific research with data that supports the conclusions.</li><li>Experiments must have been conducted rigorously, with appropriate controls, replication, and sample sizes.</li><li>The conclusions must be drawn appropriately based on the data presented.</li>"
+                          wrapperClass="yes-no-with-comments"
+                          readonly=readonly}}
+          {{question-textarea ident="reviewer_report.support_conclusions.explanation" task=model decision=decision readonly=readonly}}
+        {{/question-radio}}
+    </li>
+
+    <li class="question">
+      {{#question-radio ident="reviewer_report.statistical_analysis"
+                        task=model
+                        decision=decision
+                        question="Has the statistical analysis been performed appropriately and rigorously?"
+                        helpText="<li>Authors must follow field-specific standards for data deposition in publicly available resources and should include accession numbers in the manuscript when relevant. The manuscript should explain what steps have been taken to make data available, particularly in cases where the data cannot be publicly deposited.</li>"
+                        wrapperClass="yes-no-with-comments"
+                        readonly=readonly}}
+        {{question-textarea ident="reviewer_report.statistical_analysis.explanation" task=model decision=decision readonly=readonly}}
+      {{/question-radio}}
+    </li>
+
+    <li class="question">
+      {{#question-radio ident="reviewer_report.standards"
+                        task=model
+                        decision=decision
+                        question="Does the manuscript adhere to standards in this field for data availability?"
+                        helpText="<li>The manuscript should explain what steps have been taken to make data available, particularly in cases where the data cannot be publicly deposited.</li>"
+                        wrapperClass="yes-no-with-comments"
+                        readonly=readonly}}
+        {{question-textarea ident="reviewer_report.standards.explanation" task=model decision=decision readonly=readonly}}
+      {{/question-radio}}
+    </li>
+
+    <li class="question">
+      {{#question-radio ident="reviewer_report.intelligible"
+                        task=model
+                        decision=decision
+                        question="Is the manuscript presented in an intelligible fashion and written in standard English?"
+                        helpText="<li>PLOS ONE does not copyedit accepted manuscripts, so the language in submitted articles must be clear, correct, and unambiguous. Any typographical or grammatical errors should be corrected at revision, so please note any specific errors below.</li>"
+                        wrapperClass="yes-no-with-comments"
+                        readonly=readonly}}
+        {{question-textarea ident="reviewer_report.intelligible.explanation" task=model decision=decision readonly=readonly}}
+      {{/question-radio}}
+    </li>
+
+    <li class="question">
+      {{question-textarea ident="reviewer_report.additional_comments"
+                          question="(Optional) Please offer any additional comments to the author."
+                          task=model
+                          decision=decision
+                          helpText="<li>Additional comments may include concerns about dual publication, research or publication ethics.</li>"
+                          readonly=readonly}}
+    </li>
+
+    <li class="question">
+      {{question-textarea ident="reviewer_report.identity"
+                          question="(Optional) If you'd like your identity to be revealed to the authors, please include your name here."
+                          task=model
+                          decision=decision
+                          helpText="<li>Your name and review will not be published with the manuscript.</li>"
+                          readonly=readonly}}
+    </li>
+  </ol>

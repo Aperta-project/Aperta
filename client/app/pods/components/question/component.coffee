@@ -4,17 +4,22 @@ QuestionComponent = Ember.Component.extend
   tagName: 'div'
   helpText: null
   disabled: false,
+  readonly: false,
 
   model: (->
     ident = @get('ident')
     Ember.assert('You must specify an ident, set to name attr', ident)
 
+    task = @get('task')
+    Ember.assert('You must specify a task', task)
+
+    decision = @get('decision')
+
     question =
-      if @get('versioned')
-        @get('task.paper.latestDecision.questions').find (item)=>
-          item.get('task') == @get('task') && item.get('ident') == ident
+      if decision
+        task.questionForIdentAndDecision ident, decision
       else
-        @get('task.questions').findProperty('ident', ident)
+        task.get('questions').findProperty('ident', ident)
 
     unless question
       question = @createNewQuestion()

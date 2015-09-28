@@ -30,6 +30,17 @@ textarea.form-control {
   height: 70px;
 }
 
+// override bootstrap
+sub {
+  vertical-align: sub;
+  bottom: auto;
+}
+
+sup {
+  vertical-align: super;
+  top: auto;
+}
+
 // remove chrome outline on form fields
 input:focus, textarea:focus, *[contenteditable] {
   outline: none;

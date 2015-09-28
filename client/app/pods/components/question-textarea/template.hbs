@@ -1,8 +1,17 @@
-{{#if model.question}}
-  <div class="question-text">{{{model.question}}}</div>
-{{/if}}
+{{#if readonly}}
+  <div class="question-text">{{model.question}}</div>
+  {{#if model.answer}}
+    <div class="answer-text">{{model.answer}}</div>
+  {{else}}
+    <div class="answer-text no-answer">[No response]</div>
+  {{/if}}
+{{else}}
+  {{#if model.question}}
+    <div class="question-text">{{{model.question}}}</div>
+  {{/if}}
 
-{{#if helpText}}
-  <ul class="question-help">{{{helpText}}}</ul>
+  {{#if helpText}}
+    <ul class="question-help">{{{helpText}}}</ul>
+  {{/if}}
+  {{textarea name=ident value=model.answer class="form-control" disabled=disabled}}
 {{/if}}
-{{textarea name=ident value=model.answer class="form-control" disabled=disabled}}

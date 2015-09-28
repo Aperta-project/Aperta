@@ -10,7 +10,7 @@ module Snapshot
     def snapshot
       children = []
       @nested_question.children.all.each do |child|
-        child_snapshotter = Snapshot::NestedQuestionSerializer.new nested_question: child, owner: @nested_question
+        child_snapshotter = Snapshot::NestedQuestionSerializer.new child, @nested_question
         children << child_snapshotter.snapshot
       end
 
@@ -20,9 +20,6 @@ module Snapshot
         owner_id: @owner.id,
         owner_type: @owner.class.sti_name).order('id')
 
-      # TODOMPM - this might be overkill.  The structure supports multiple
-      # answers to a given question in a given owner, but we don't use that at The
-      # moment
       if answers
         answers.each do |answer|
           answer_snapshotter = Snapshot::NestedQuestionAnswerSerializer.new answer

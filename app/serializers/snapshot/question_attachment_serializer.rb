@@ -10,7 +10,8 @@ module Snapshot
         return nil
       end
 
-      { file: @question_attachment.file,
+      {
+        file: @question_attachment.file,
         title: @question_attachment.title,
         caption: @question_attachment.caption,
         kind: @question_attachment.kind,

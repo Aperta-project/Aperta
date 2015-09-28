@@ -406,16 +406,23 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
             value = old_question.answer
           end
 
-          NestedQuestionAnswer.create!(
-            nested_question_id: nested_question.id,
-            value_type: nested_question.value_type,
-            owner_id: old_question.task.id,
-            owner_type: old_question.task.class.base_class.sti_name,
-            value: value,
-            decision_id: old_question.decision_id,
-            created_at: old_question.created_at,
-            updated_at: old_question.updated_at
-          )
+          # +nil+ indicates they didn't answer the question. We don't care about
+          # unanswered questions, so move on.
+          if value.nil?
+            @subtract_from_expected_count += 1
+            next
+          else
+            NestedQuestionAnswer.create!(
+              nested_question_id: nested_question.id,
+              value_type: nested_question.value_type,
+              owner_id: old_question.task.id,
+              owner_type: old_question.task.class.base_class.sti_name,
+              value: value,
+              decision_id: old_question.decision_id,
+              created_at: old_question.created_at,
+              updated_at: old_question.updated_at
+            )
+          end
         end
       end
     end

@@ -50,18 +50,14 @@ feature "Editing paper", js: true do
       find(".affiliation-field b[role='presentation']").click #slect PFA from dropdown
       find("li.select2-result div", :text => /PLOS Publication Fee Assistance Program \(PFA\)/).click #slect PFA from dropdown
 
+      expect(find("input#task_completed")[:disabled]).to be(nil)
       within(".question-dataset") do 
         find("input[id='plos_billing.pfa_question_1-yes']").click  #doens't work: find("#plos_billing.pfa_question_1-yes").click
-        find("input[name='plos_billing.pfa_question_1b']").set "foo"
-
-        binding.pry
+        find("input[name='plos_billing.pfa_amount_to_pay']").set "foo"
+        expect(find("#error-for-pfa_amount_to_pay")).to have_content("Must be a number and contain no symobls, or letters")
 
       end
-
-      #fill in crap
-      #
-      #check for errors
-      #check for disabled
+      expect(find("input#task_completed")[:disabled]).to be_truthy
     end
   end
 end

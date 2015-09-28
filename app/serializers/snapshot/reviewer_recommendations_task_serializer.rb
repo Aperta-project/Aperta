@@ -1,5 +1,5 @@
 module Snapshot
-  class ReviewerRecommendationTaskSerializer < BaseSerializer
+  class ReviewerRecommendationsTaskSerializer < BaseSerializer
 
     def initialize(task)
       @task = task

@@ -16,6 +16,7 @@ module Snapshot
     end
 
     def snapshot_nested_questions
+      return [] unless @task.nested_questions.any?
       nested_questions_snapshot = []
       @task.nested_questions.where(parent_id: nil).each do |nested_question|
         nested_question_serializer = Snapshot::NestedQuestionSerializer.new nested_question, @task

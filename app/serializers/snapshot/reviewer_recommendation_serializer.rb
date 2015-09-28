@@ -7,8 +7,8 @@ module Snapshot
 
     def snapshot
       recommendation = []
-      recommendation << snapshot_properties
-      recommendation << snapshot_nested_questions
+      recommendation << ["properties", snapshot_properties]
+      recommendation << ["questions", snapshot_nested_questions]
     end
 
     def snapshot_properties

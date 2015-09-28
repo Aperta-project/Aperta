@@ -56,6 +56,7 @@ class DataMigrator::ReportingGuidelinesQuestionsMigrator < DataMigrator::Base
           owner_id: old_question.task.id,
           owner_type: old_question.task.class.base_class.sti_name,
           value: (old_question.answer =="true"),
+          decision_id: old_question.decision_id,
           created_at: old_question.created_at,
           updated_at: old_question.updated_at
         )
@@ -80,6 +81,7 @@ class DataMigrator::ReportingGuidelinesQuestionsMigrator < DataMigrator::Base
           owner_id: old_question.task.id,
           owner_type: old_question.task.class.base_class.sti_name,
           value: (old_question.answer =="true"),
+          decision_id: old_question.decision_id,
           created_at: old_question.created_at,
           updated_at: old_question.updated_at
         )
@@ -104,6 +106,7 @@ class DataMigrator::ReportingGuidelinesQuestionsMigrator < DataMigrator::Base
           owner_id: old_question.task.id,
           owner_type: old_question.task.class.base_class.sti_name,
           value: old_question.question_attachment[:attachment],
+          decision_id: old_question.decision_id,
           created_at: old_question.created_at,
           updated_at: old_question.updated_at
         )
@@ -129,6 +132,7 @@ class DataMigrator::ReportingGuidelinesQuestionsMigrator < DataMigrator::Base
           owner_id: old_question.task.id,
           owner_type: old_question.task.class.base_class.sti_name,
           value: (old_question.answer =="true"),
+          decision_id: old_question.decision_id,
           created_at: old_question.created_at,
           updated_at: old_question.updated_at
         )
@@ -153,6 +157,7 @@ class DataMigrator::ReportingGuidelinesQuestionsMigrator < DataMigrator::Base
           owner_id: old_question.task.id,
           owner_type: old_question.task.class.base_class.sti_name,
           value: old_question.question_attachment[:attachment],
+          decision_id: old_question.decision_id,
           created_at: old_question.created_at,
           updated_at: old_question.updated_at
         )
@@ -178,6 +183,7 @@ class DataMigrator::ReportingGuidelinesQuestionsMigrator < DataMigrator::Base
           owner_id: old_question.task.id,
           owner_type: old_question.task.class.base_class.sti_name,
           value: (old_question.answer =="true"),
+          decision_id: old_question.decision_id,
           created_at: old_question.created_at,
           updated_at: old_question.updated_at
         )
@@ -202,6 +208,7 @@ class DataMigrator::ReportingGuidelinesQuestionsMigrator < DataMigrator::Base
           owner_id: old_question.task.id,
           owner_type: old_question.task.class.base_class.sti_name,
           value: (old_question.answer =="true"),
+          decision_id: old_question.decision_id,
           created_at: old_question.created_at,
           updated_at: old_question.updated_at
         )
@@ -226,6 +233,7 @@ class DataMigrator::ReportingGuidelinesQuestionsMigrator < DataMigrator::Base
           owner_id: old_question.task.id,
           owner_type: old_question.task.class.base_class.sti_name,
           value: (old_question.answer =="true"),
+          decision_id: old_question.decision_id,
           created_at: old_question.created_at,
           updated_at: old_question.updated_at
         )

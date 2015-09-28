@@ -85,6 +85,7 @@ class DataMigrator::EthicsQuestionsMigrator < DataMigrator::Base
           owner_id: old_question.task.id,
           owner_type: old_question.task.class.base_class.sti_name,
           value: (old_question.answer == "Yes"),
+          decision_id: old_question.decision_id,
           created_at: old_question.created_at,
           updated_at: old_question.updated_at
         )
@@ -105,6 +106,7 @@ class DataMigrator::EthicsQuestionsMigrator < DataMigrator::Base
           owner_id: old_question.task.id,
           owner_type: old_question.task.class.base_class.sti_name,
           value: old_question.answer,
+          decision_id: old_question.decision_id,
           created_at: old_question.created_at,
           updated_at: old_question.updated_at
         )
@@ -125,6 +127,7 @@ class DataMigrator::EthicsQuestionsMigrator < DataMigrator::Base
           owner_id: old_question.task.id,
           owner_type: old_question.task.class.base_class.sti_name,
           value: (old_question.answer == "Yes"),
+          decision_id: old_question.decision_id,
           created_at: old_question.created_at,
           updated_at: old_question.updated_at
         )
@@ -145,6 +148,7 @@ class DataMigrator::EthicsQuestionsMigrator < DataMigrator::Base
           owner_id: old_question.task.id,
           owner_type: old_question.task.class.base_class.sti_name,
           value: old_question.answer,
+          decision_id: old_question.decision_id,
           created_at: old_question.created_at,
           updated_at: old_question.updated_at
         )

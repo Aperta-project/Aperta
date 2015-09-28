@@ -64,7 +64,10 @@ class DataMigrator::DataAvailabilityQuestionsMigrator < DataMigrator::Base
           value_type: @nested_data_fully_available_question.value_type,
           owner_id: old_question.task.id,
           owner_type: old_question.task.class.base_class.sti_name,
-          value: (old_question.answer == "Yes")
+          value: (old_question.answer == "Yes"),
+          decision_id: old_question.decision_id,
+          created_at: old_question.created_at,
+          updated_at: old_question.updated_at
         )
       end
     end
@@ -82,7 +85,10 @@ class DataMigrator::DataAvailabilityQuestionsMigrator < DataMigrator::Base
           value_type: "text",
           owner_id: old_question.task.id,
           owner_type: old_question.task.class.base_class.sti_name,
-          value: (old_question ? old_question.answer : nil)
+          value: (old_question ? old_question.answer : nil),
+          decision_id: old_question.decision_id,
+          created_at: old_question.created_at,
+          updated_at: old_question.updated_at
         )
       end
     end

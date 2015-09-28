@@ -11,7 +11,7 @@ module Snapshot
       @task.reviewer_recommendations.each do |recommendation|
         puts recommendation
         serializer = Snapshot::ReviewerRecommendationSerializer.new recommendation
-        recommendations << serializer.snapshot
+        recommendations << ["recommendation", serializer.snapshot]
       end
       recommendations
     end

@@ -5,7 +5,7 @@ module Snapshot
       authors = []
       @task.authors.order(:position).each do |author|
         author_serializer = Snapshot::AuthorSerializer.new author
-        authors << author_serializer.snapshot
+        authors << ["author", author_serializer.snapshot]
       end
       authors
     end

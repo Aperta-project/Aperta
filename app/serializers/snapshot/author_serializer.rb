@@ -7,8 +7,8 @@ module Snapshot
 
     def snapshot
       author = []
-      author << snapshot_properties
-      author << snapshot_nested_questions
+      author << ["properties", snapshot_properties]
+      author << ["questions", snapshot_nested_questions]
     end
 
     def snapshot_properties

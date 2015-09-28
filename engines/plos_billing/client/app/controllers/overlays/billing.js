@@ -365,10 +365,6 @@ export default TaskController.extend({
   },
 
   /*
-  */
-  //_catchMissedOnDidInsert: computed("model.questions.@each", function() { }),
-
-  /*
     Sets error message bound to validationErrors.completed in -overlay-completed-checkbox when data invalid
   */
   _disableCompletedWhenInvalid: Ember.observer('pfaData.isValid', function(){
@@ -380,7 +376,7 @@ export default TaskController.extend({
     Overloads inherited isEditable in TaskController
     When false, makes complete box uncheckable
     Strongly feel we should discuss new strategy for disabling of complete
-    that would allow something more flexible and more robust
+    that would allow for something more flexible and more robust
   */
   isEditable: computed('pfaData.isValid', 'isUserEditable', 'currentUser.siteAdmin', function() {
     return (
@@ -389,12 +385,7 @@ export default TaskController.extend({
     );
   }),
 
-
-
-
-
   countries: Ember.inject.service(),
-
   ringgold: [],
   institutionalAccountProgramList: DATA.institutionalAccountProgramList,
   states:    DATA.states,

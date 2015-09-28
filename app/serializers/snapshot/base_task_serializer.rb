@@ -8,8 +8,8 @@ module Snapshot
 
     def snapshot
       task_snapshot = []
-      task_snapshot << snapshot_properties
-      task_snapshot << snapshot_nested_questions
+      task_snapshot << ["properties", snapshot_properties]
+      task_snapshot << ["questions", snapshot_nested_questions]
     end
 
     def snapshot_properties

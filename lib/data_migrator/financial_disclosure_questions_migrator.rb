@@ -118,7 +118,7 @@ class DataMigrator::FinancialDisclosureQuestionsMigrator < DataMigrator::Base
           value_type: @nested_funder_had_influence_question.value_type,
           owner_id: funder.id,
           owner_type: funder.class.base_class.sti_name,
-          value: funder.funder_had_influence,
+          value: (funder.funder_had_influence ? true : false),
           created_at: funder.created_at,
           updated_at: funder.updated_at
         )

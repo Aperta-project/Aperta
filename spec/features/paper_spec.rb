@@ -46,17 +46,25 @@ feature "Editing paper", js: true do
       find('.workflow-link').click
       click_link('Billing')
 
-
       find(".affiliation-field b[role='presentation']").click #slect PFA from dropdown
-      find("li.select2-result div", :text => /PLOS Publication Fee Assistance Program \(PFA\)/).click #slect PFA from dropdown
+      find("li.select2-result div", :text => /PLOS Publication Fee Assistance Program \(PFA\)/).click #select PFA from dropdown
 
       expect(find("input#task_completed")[:disabled]).to be(nil)
-      within(".question-dataset") do 
-        find("input[id='plos_billing.pfa_question_1-yes']").click  #doens't work: find("#plos_billing.pfa_question_1-yes").click
-        find("input[name='plos_billing.pfa_amount_to_pay']").set "foo"
-        expect(find("#error-for-pfa_amount_to_pay")).to have_content("Must be a number and contain no symobls, or letters")
 
+
+      within(".question-dataset") do
+        find("input[id='plos_billing.pfa_question_1-yes']").click  #doesn't work: find("#plos_billing.pfa_question_1-yes").click
+        find("input[id='plos_billing.pfa_question_2-yes']").click
+        find("input[id='plos_billing.pfa_question_3-yes']").click
+        find("input[id='plos_billing.pfa_question_4-yes']").click
+
+        #numeric fields
+        ['pfa_question_1b', 'pfa_question_2b', 'pfa_question_3a', 'pfa_question_4a', 'pfa_amount_to_pay'].each do |ident|
+          find("input[name='plos_billing.#{ident}']").set "foo"
+          expect(find("#error-for-#{ident}")).to have_content("Must be a number and contain no symobls, or letters")
+        end
       end
+
       expect(find("input#task_completed")[:disabled]).to be_truthy
     end
   end

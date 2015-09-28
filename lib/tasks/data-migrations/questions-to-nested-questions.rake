@@ -1,6 +1,16 @@
 namespace 'data:migrate:questions-to-nested-questions' do
   DATA_MIGRATION_QUESTION_RAKE_TASKS = %w(
-    competing-interests data-availability ethics figures financial-disclosure taxon reporting-guidelines
+    authors
+    competing-interests
+    data-availability
+    ethics
+    figures
+    financial-disclosure
+    plos-billing
+    publishing-related-questions
+    reporting-guidelines
+    reviewer-report
+    taxon
   )
 
   desc "Calls :reset task for all question-to-nested-question(s)"

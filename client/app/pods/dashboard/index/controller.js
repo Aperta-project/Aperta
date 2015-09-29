@@ -30,20 +30,7 @@ export default Ember.Controller.extend({
 
   totalInactivePaperCount: Ember.computed.alias('inactivePapers.length'),
 
-  canLoadMoreActive: Ember.computed('activePageNumber', function() {
-    return this.get('activePageNumber') !== this.store.metadataFor('paper').total_active_pages;
-  }),
-
-  canLoadMoreInactive: Ember.computed('inactivePageNumber', function() {
-    return this.get('inactivePageNumber') !== this.store.metadataFor('paper').total_inactive_pages;
-  }),
-
   actions: {
-    loadMoreActivePapers() {
-      this.store.find('paper', { page_number: this.get('activePageNumber') + 1 }).then(()=> {
-        this.incrementProperty('activePageNumber');
-      });
-    },
     toggleActiveContainer() {
       this.toggleProperty('activePapersVisible');
     },

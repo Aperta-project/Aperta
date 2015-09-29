@@ -5,7 +5,7 @@ describe TahiStandardTasks::ReviewerReportTask do
   let(:paper) { task.paper }
 
   describe "#send_emails" do
-    let(:editors){ [ FactoryGirl.create(:user) ]}
+    let(:editors) { [FactoryGirl.create(:user)] }
 
     before do
       # make sure we have editors for sending emails to
@@ -48,17 +48,18 @@ describe TahiStandardTasks::ReviewerReportTask do
 
   describe "#decision" do
     let(:paper) { FactoryGirl.create :paper, :with_tasks }
-    let(:task) {
-      TahiStandardTasks::ReviewerReportTask.create!(title: "Reviewer Report",
-                                                role: "reviewer",
-                                                phase: paper.phases.first,
-                                                completed: false)
-    }
+    let(:task) do
+      FactoryGirl.create(
+        :reviewer_report_task,
+        title: "Reviewer Report",
+        phase: paper.phases.first
+      )
+    end
     let(:previous_decision) { paper.decisions[1] }
     let(:latest_decision) { paper.decisions[0] }
 
     before do
-      paper.decisions <<  FactoryGirl.create(:decision, paper_id: task.paper.id)
+      paper.decisions << FactoryGirl.create(:decision, paper_id: task.paper.id)
 
       # make sure we are starting off with at least two decisions
       expect(paper.decisions.length).to be(2)
@@ -110,7 +111,7 @@ describe TahiStandardTasks::ReviewerReportTask do
     context "when both the paper and the task are submitted" do
       before do
         paper.update! publishing_state: "submitted"
-        task.update! body: {"submitted" => true}
+        task.update! body: { "submitted" => true }
         task.paper.reload
 
         expect(paper.submitted?).to be(true)
@@ -135,19 +136,15 @@ describe TahiStandardTasks::ReviewerReportTask do
 
   describe "#incomplete!" do
     before do
-      task.update! body: {"submitted" => true}, completed: true
+      task.update! body: { "submitted" => true }, completed: true
     end
 
     it "makes the task incomplete" do
-      expect{
-        task.incomplete!
-      }.to change(task, :completed).to false
+      expect { task.incomplete! }.to change(task, :completed).to false
     end
 
     it "makes the task unsubmitted" do
-      expect{
-        task.incomplete!
-      }.to change(task, :submitted?).to false
+      expect { task.incomplete! }.to change(task, :submitted?).to false
     end
   end
 

@@ -10,10 +10,10 @@ class CountriesController < ApplicationController
 
   def countries
     if NedCountries.enabled?
-      NedCountries.new.countries
+      NedCountries.new.countries.sort_alphabetical
     else
       # default country list if NED is not configured
-      countries_list
+      countries_list.sort_alphabetical
     end
   end
 end

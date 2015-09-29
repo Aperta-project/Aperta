@@ -9,6 +9,7 @@ class RegisterDecisionOverlay < CardOverlay
 
   def register_decision=(decision)
     choose decision
+    wait_for_ajax
   end
 
   def decision_letter=(body)

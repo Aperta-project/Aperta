@@ -14,7 +14,11 @@
     </button>
 
     {{#if showNewReviewerForm}}
-      {{partial "overlays/partials/new-reviewer-recommendation-form"}}
+      {{reviewer-form validationErrors=validationErrors
+                      newRecommendation=newRecommendation
+                      toggleReviewerForm="toggleReviewerForm"
+                      saveNewRecommendation="saveNewRecommendation"
+                      isSubmissionTaskNotEditable=isSubmissionTaskNotEditable}}
     {{/if}}
   {{/if}}
 

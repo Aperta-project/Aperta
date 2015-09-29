@@ -6,9 +6,10 @@ module Snapshot
     end
 
     def snapshot
-      funder = []
-      funder << ["properties", snapshot_properties]
-      funder << ["questions", snapshot_nested_questions]
+      {
+        properties: snapshot_properties,
+        questions: snapshot_nested_questions
+      }
     end
 
     def snapshot_properties

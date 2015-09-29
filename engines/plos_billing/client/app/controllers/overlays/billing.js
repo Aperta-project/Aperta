@@ -1,6 +1,5 @@
 import Ember from "ember";
 import TaskController from "tahi/pods/paper/task/controller";
-import RESTless from "tahi/services/rest-less";
 import EmberValidations from 'ember-validations';
 
 const DATA = {
@@ -425,7 +424,7 @@ export default TaskController.extend({
 
   agreeCollections: false,
 
-  affiliation1Question: computed("model.questions.@each", function() {
+  affiliation1Question: computed("model.questions.[]", function() {
     let q = this.get("model.questions")
                 .findProperty("ident", "plos_billing.affiliation1");
 
@@ -438,7 +437,7 @@ export default TaskController.extend({
     return q;
   }),
 
-  affiliation2Question: computed("model.questions.@each", function() {
+  affiliation2Question: computed("model.questions.[]", function() {
     let q = this.get("model.questions")
                 .findProperty("ident", "plos_billing.affiliation2");
 

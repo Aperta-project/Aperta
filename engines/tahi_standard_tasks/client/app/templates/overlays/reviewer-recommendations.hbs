@@ -7,22 +7,28 @@
   and may speed up the selection of appropriate reviewers.
 </p>
 
-{{#if showNewReviewerForm}}
-  {{partial "overlays/partials/new-reviewer-recommendation-form"}}
-{{else}}
-<button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "toggleReviewerForm"}}>New Reviewer Candidates</button>
-{{/if}}
+<div>
+  {{#if isEditable}}
+    <button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "toggleReviewerForm"}}>
+      New Reviewer Candidates
+    </button>
 
-{{#each validReviewerRecommendations as |reviewerRecommendation|}}
-  <div class="authors-overlay-item--text">
-    <div class="author-name">{{reviewerRecommendation.fullName}}</div>
-    {{reviewerRecommendation.email}}<br>
-    {{reviewerRecommendation.title}} &nbsp; &nbsp; {{reviewerRecommendation.department}}
-    <br>
-    {{reviewerRecommendation.affiliation}}
-    <div class="reviewer-recommendation-decision">
-      {{reviewerRecommendation.recommendOrOppose}}
+    {{#if showNewReviewerForm}}
+      {{partial "overlays/partials/new-reviewer-recommendation-form"}}
+    {{/if}}
+  {{/if}}
+
+  {{#each validReviewerRecommendations as |reviewerRecommendation|}}
+    <div class="authors-overlay-item--text">
+      <div class="author-name">{{reviewerRecommendation.fullName}}</div>
+      {{reviewerRecommendation.email}}<br>
+      {{reviewerRecommendation.title}} &nbsp; &nbsp; {{reviewerRecommendation.department}}
+      <br>
+      {{reviewerRecommendation.affiliation}}
+      <div class="reviewer-recommendation-decision">
+        {{reviewerRecommendation.recommendOrOppose}}
+      </div>
+      {{reviewerRecommendation.reason}}
     </div>
-    {{reviewerRecommendation.reason}}
-  </div>
-{{/each}}
+  {{/each}}
+</div>

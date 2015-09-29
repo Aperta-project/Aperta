@@ -10,7 +10,7 @@ module Snapshot
     def snapshot
       children = []
       @nested_question.children.all.each do |child|
-        child_snapshotter = Snapshot::NestedQuestionSerializer.new child, @nested_question
+        child_snapshotter = Snapshot::NestedQuestionSerializer.new child, @owner
         children << child_snapshotter.snapshot
       end
 
@@ -18,7 +18,7 @@ module Snapshot
       answers = NestedQuestionAnswer.where(
         nested_question_id: @nested_question_id,
         owner_id: @owner.id,
-        owner_type: @owner.class.sti_name).order('id')
+        owner_type: @owner.class.base_class.sti_name).order('id')
 
       if answers
         answers.each do |answer|

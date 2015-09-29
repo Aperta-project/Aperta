@@ -110,32 +110,29 @@ export default Ember.Route.extend(AnimateOverlay, {
     },
 
     created(payload) {
-      let description = 'Pusher: created';
-      Utils.debug(description, payload);
-      this.store.pushPayload(payload);
+      let description = `Pusher: created ${payload.type} ${payload.id}`;
+      Utils.debug(description);
+      this.store.fetchById(payload.type, payload.id);
     },
 
     updated(payload) {
-      let description = 'Pusher: updated';
-      Utils.debug(description, payload);
-      this.store.pushPayload(payload);
+      let record = this.store.getPolymorphic(payload.type, payload.id);
+      if (record) {
+        record.reload();
+
+        let description = `Pusher: updated ${payload.type} ${payload.id}`;
+        Utils.debug(description);
+      }
     },
 
     destroyed(payload) {
-      let description = 'Pusher: destroyed';
-      Utils.debug(description, payload);
-      let type = this.get('applicationSerializer').modelNameFromPayloadKey(payload.type);
-      payload.ids.forEach((id) => {
-        let record;
-        if (type === 'task') {
-          record = this.store.findTask(id);
-        } else {
-          record = this.store.getById(type, id);
-        }
-        if (record) {
-          record.unloadRecord();
-        }
-      });
+      let record = this.store.getPolymorphic(payload.type, payload.id);
+      if(record) {
+        record.unloadRecord();
+
+        let description = `Pusher: destroyed ${payload.type} ${payload.id}`;
+        Utils.debug(description, payload);
+      }
     }
   },
 

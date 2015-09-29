@@ -2,6 +2,6 @@
 `import Task from 'tahi/models/task'`
 
 PaperAdminTask = Task.extend
-  admin: DS.belongsTo('user')
+  admin: DS.belongsTo('user', { async: true })
 
 `export default PaperAdminTask`

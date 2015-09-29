@@ -1,9 +1,15 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy
+  before_action :enforce_policy, except: [:index]
+  before_action :enforce_index_policy, only: [:index]
+
   respond_to :json
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
+
+  def index
+    respond_with task.comments, root: :comments
+  end
 
   def create
     if !current_user.journal_admin? task.paper.journal
@@ -39,6 +45,11 @@ class CommentsController < ApplicationController
 
   def render_404
     head 404
+  end
+
+  def enforce_index_policy
+    @task = Task.find(params[:task_id])
+    authorize_action!(comment: nil, for_task: @task)
   end
 
   def enforce_policy

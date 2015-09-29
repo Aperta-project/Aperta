@@ -1,6 +1,11 @@
 class QuestionsPolicy < ApplicationPolicy
   require_params :question
+  allow_params :for_task
   include TaskAccessCriteria
+
+  def index?
+    authorized_to_modify_task?
+  end
 
   def create?
     authorized_to_modify_task?
@@ -17,6 +22,6 @@ class QuestionsPolicy < ApplicationPolicy
   private
 
   def task
-    question.task
+    for_task || question.task
   end
 end

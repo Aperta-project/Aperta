@@ -1,7 +1,10 @@
 require 'rails_helper'
 
 describe DownloadQuestionAttachmentWorker, redis: true do
-  let(:question_attachment) { FactoryGirl.create(:question_attachment) }
+  let(:paper) { FactoryGirl.create(:paper) }
+  let(:decision) { FactoryGirl.create(:decision, paper: paper) }
+  let(:question) { FactoryGirl.create(:question, decision: decision) }
+  let(:question_attachment) { FactoryGirl.create(:question_attachment, question: question) }
   let(:url) { "http://tahi-test.s3.amazonaws.com/temp/bill_ted1.jpg" }
 
   it "downloads the attachment" do

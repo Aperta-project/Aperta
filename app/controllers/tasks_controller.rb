@@ -1,10 +1,16 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy
+  before_action :enforce_policy, except: [:index]
+  before_action :enforce_index_policy, only: [:index]
 
   before_action :unmunge_empty_arrays, only: [:update]
 
   respond_to :json
+
+  ## /paper/tasks/
+  def index
+    respond_with paper.tasks.includes(:participations, :paper)
+  end
 
   def show
     respond_with(task, location: task_url(task))
@@ -79,6 +85,10 @@ class TasksController < ApplicationController
       whitelisted[:body] ||= "Nothing to see here."
       whitelisted[:recipients] ||= []
     end
+  end
+
+  def enforce_index_policy
+    authorize_action!(task: nil, for_paper: paper)
   end
 
   def enforce_policy

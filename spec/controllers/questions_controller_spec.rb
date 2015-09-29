@@ -24,6 +24,24 @@ describe QuestionsController do
     end
   end
 
+  describe "#index" do
+    let!(:question1) { FactoryGirl.create(:question, task: task) }
+    let!(:question2) { FactoryGirl.create(:question, task: task) }
+
+    subject(:do_request) do
+      get :index, {
+            format: 'json',
+            task_id: task.to_param,
+          }
+    end
+
+    it "returns the tasks questions" do
+      do_request
+      expect(res_body['questions'].count).to eq(2)
+      expect(res_body['questions'][0]['id']).to eq(question1.id)
+    end
+  end
+
   describe "#create" do
     let(:request_with_attachment) do
       post :create, format: :json, question: { task_id: task.id, ident: 'foo.bar', url: "http://something" }

@@ -1,7 +1,12 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy
+  before_action :enforce_policy, except: [:index]
+  before_action :enforce_index_policy, only: [:index]
   respond_to :json
+
+  def index
+    respond_with Question.where(task_id: params[:task_id]), root: :questions
+  end
 
   def create
     if question.save
@@ -48,5 +53,9 @@ class QuestionsController < ApplicationController
 
   def enforce_policy
     authorize_action!(question: question)
+  end
+
+  def enforce_index_policy
+    authorize_action!(question: nil, for_task: Task.find(params[:task_id]))
   end
 end

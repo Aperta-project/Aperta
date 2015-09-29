@@ -21,8 +21,9 @@ class PapersController < ApplicationController
 
   def show
     rel = Paper.includes([
-      :figures, :authors, :supporting_information_files, :paper_roles, :journal, :locked_by, :striking_image,
-      phases: { tasks: [:questions, :attachments, :participations, :comments] }
+      :supporting_information_files,
+      { paper_roles: [:user] },
+      :manuscript
     ])
     paper = rel.find(params[:id])
     authorize_action!(paper: paper)
@@ -50,33 +51,34 @@ class PapersController < ApplicationController
     respond_with paper
   end
 
+  ## SUPPLIMENTAL INFORMATION
+
   def comment_looks
-    comment_looks = paper.comment_looks.includes(task: :phase).where(user: current_user)
+    comment_looks = paper.comment_looks.where(user: current_user).includes(:task)
     respond_with(comment_looks, root: :comment_looks)
+  end
+
+  def versioned_texts
+    versions = paper.versioned_texts.includes(:submitting_user).order(updated_at: :desc)
+    respond_with versions, each_serializer: VersionedTextSerializer, root: 'versioned_texts'
   end
 
   def workflow_activities
     feeds = ['workflow', 'manuscript']
-    activities = Activity.feed_for(feeds, paper)
+    activities = Activity.includes(:user).feed_for(feeds, paper)
     respond_with activities, each_serializer: ActivitySerializer, root: 'feeds'
   end
 
   def manuscript_activities
-    activities = Activity.feed_for('manuscript', paper)
+    activities = Activity.includes(:user).feed_for('manuscript', paper)
     respond_with activities, each_serializer: ActivitySerializer, root: 'feeds'
   end
+
+  ## CONVERSION
 
   def upload
     IhatJobRequest.new(paper: paper).queue(file_url: params[:url], callback_url: ihat_jobs_url)
     respond_with paper
-  end
-
-  def heartbeat
-    if paper.locked?
-      paper.heartbeat
-      PaperUnlockerWorker.perform_async(paper.id, true)
-    end
-    head :no_content
   end
 
   def download
@@ -95,11 +97,23 @@ class PapersController < ApplicationController
     end
   end
 
+  ## EDITING
+
+  def heartbeat
+    if paper.locked?
+      paper.heartbeat
+      PaperUnlockerWorker.perform_async(paper.id, true)
+    end
+    head :no_content
+  end
+
   def toggle_editable
     paper.toggle!(:editable)
     status = paper.valid? ? 200 : 422
     render json: paper, status: status
   end
+
+  ## STATE CHANGES
 
   def submit
     paper.submit! current_user do

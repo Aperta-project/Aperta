@@ -1,6 +1,14 @@
 class AttachmentsController < ApplicationController
   respond_to :json
 
+  def index
+    respond_with task.attachments
+  end
+
+  def show
+    respond_with Attachment.find(params[:id])
+  end
+
   def create
     attachment = task.attachments.create
     DownloadAdhocTaskAttachmentWorker.perform_async(attachment.id, params[:url])

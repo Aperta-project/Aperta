@@ -42,6 +42,8 @@ module "Integration: Billing",
     taskPayload.addRecords([billingTask, fakeUser])
     billingTaskResponse = taskPayload.toJSON()
 
+    tasksPayload = Factory.createPayload('tasks')
+    tasksPayload.addRecords([billingTask])
     collaborators = [
       id: "35"
       full_name: "Aaron Baker"
@@ -50,6 +52,9 @@ module "Integration: Billing",
 
     server.respondWith "GET", "/api/papers/#{currentPaper.id}", [
       200, {"Content-Type": "application/json"}, JSON.stringify paperResponse
+    ]
+    server.respondWith 'GET', "/api/papers/#{currentPaper.id}/tasks", [
+      200, {"Content-Type": "application/json"}, JSON.stringify tasksPayload.toJSON()
     ]
     server.respondWith "GET", "/api/tasks/#{billingTaskId}", [
       200, {"Content-Type": "application/json"}, JSON.stringify billingTaskResponse

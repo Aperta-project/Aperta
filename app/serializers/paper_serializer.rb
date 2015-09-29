@@ -4,34 +4,20 @@ class PaperSerializer < LitePaperSerializer
   # stream triggers
   attributes :id, :short_title, :title, :doi, :body,
              :publishing_state, :paper_type, :status, :updated_at,
-             :editable, :links, :versions
+             :editable, :links
 
-  %i(phases figures tables bibitems authors supporting_information_files).each do |relation|
+  %i(tables bibitems supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true
   end
 
-  # these are the people that have actually been assigned to roles on the paper.
-  %i(editors reviewers).each do |relation|
-    has_many relation, embed: :ids, include: true, root: :users
-  end
-
   has_many :collaborations, embed: :ids, include: true, serializer: CollaborationSerializer
-  has_many :decisions, embed: :ids, include: true, serializer: DecisionSerializer
-  has_many :tasks, embed: :ids, polymorphic: true
-  has_one :journal, embed: :id, include: true
-  has_one :locked_by, embed: :id, include: true, root: :users
-  has_one :striking_image, embed: :id, include: true, root: :figures
+  # has_many :decisions, embed: :ids, include: true, serializer: DecisionSerializer
+  has_one :journal, embed: :id
+  has_one :locked_by, embed: :id
+  has_one :striking_image, embed: :id
 
   def status
     object.manuscript.try(:status)
-  end
-
-  def editors
-    object.editors.includes(:affiliations)
-  end
-
-  def reviewers
-    object.reviewers.includes(:affiliations)
   end
 
   def collaborations
@@ -40,13 +26,14 @@ class PaperSerializer < LitePaperSerializer
   end
 
   def links
-    { comment_looks: comment_looks_paper_path(object) }
-  end
-
-  def versions
-    object.versioned_texts.version_desc.map do |v|
-      { name: v.version_string,
-        id: v.id }
-    end
+    {
+      comment_looks: comment_looks_paper_path(object),
+      tasks: paper_tasks_path(object),
+      phases: paper_phases_path(object),
+      figures: paper_figures_path(object),
+      versioned_texts: versioned_texts_paper_path(object),
+      discussion_topics: paper_discussion_topics_path(object),
+      decisions: paper_decisions_path(object)
+    }
   end
 end

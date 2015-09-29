@@ -12,9 +12,13 @@ export default Ember.Mixin.create({
     $('html').removeClass('matte');
   }),
 
-  applyManuscriptCss: Ember.on('didInsertElement', function() {
-    $('#paper-body').attr('style', this.get('controller.model.journal.manuscriptCss'));
-  }),
+  applyManuscriptCss: Ember.observer(
+    'controller.model.journal.manuscriptCss',
+    function() {
+      let style = this.get('controller.model.journal.manuscriptCss');
+      $('#paper-body').attr('style', style);
+    }
+  ),
 
   teardownControlBarSubNav: Ember.on('willDestroyElement', function() {
     $('html').removeClass('control-bar-sub-nav-active');

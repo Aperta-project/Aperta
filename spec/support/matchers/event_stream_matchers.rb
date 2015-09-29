@@ -2,7 +2,7 @@ module EventStreamMatchers
 
   RSpec::Matchers.define :receive_push do |expected|
     # the payload should contain this key at the root of the json object
-    payload_roots = *expected[:serialize]
+    payload = expected[:serialize]
     # the payload will be sent _down_ this channel
     channel = expected[:down]
     # the crud action that corresponds to the event (used by Ember)
@@ -13,7 +13,7 @@ module EventStreamMatchers
       expect(pusher_channel).to receive(:push) do |args|
         expect(args[:channel_name]).to match(channel_name(channel))
         expect(args[:event_name]).to eq(action)
-        expect(args[:payload].keys).to include(*payload_roots)
+        expect(args[:payload][:id]).to be(payload.id)
       end
     end
 

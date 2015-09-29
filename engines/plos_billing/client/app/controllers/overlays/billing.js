@@ -331,7 +331,10 @@ export default TaskController.extend({
     Call is async because these question don't exist until pfa partial is inserted
   */
   buildPfaValidator: function(){
-    var numericalityConfig = { numericality: { allowBlank: true, messages: { numericality: "Must be a number and contain no symobls, or letters"}}}
+    var numericalityConfig = { numericality: { 
+      allowBlank: true,
+      messages: { numericality: "Must be a number and contain no symobls, or letters"}
+    }};
 
     var pfaDataClass = Ember.Object.extend(EmberValidations.Mixin, {
       init: function(){
@@ -358,7 +361,7 @@ export default TaskController.extend({
       findPfaQuestion: function(ident){
         return this.get("model.questions").findProperty("ident", "plos_billing." + ident);
       },
-    })
+    });
 
     this.set('pfaData', pfaDataClass.create());
   },

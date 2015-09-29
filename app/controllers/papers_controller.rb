@@ -14,7 +14,7 @@ class PapersController < ApplicationController
     respond_with(papers, {
       each_serializer: LitePaperSerializer,
       meta: { total_active_papers: papers.active.count,
-              total_inactive_papers: papers.active.count }
+              total_inactive_papers: papers.inactive.count }
     })
   end
 

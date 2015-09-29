@@ -29,7 +29,7 @@
     <button class="button-primary button--green" {{action "showNewPaperOverlay"}}>Create New Submission</button>
     {{#if hasPapers}}
       {{#if hasActivePapers}}
-        <h5 class='manuscript-list-heading' {{action 'toggleActiveContainer'}}>
+        <h5 class='manuscript-list-heading active-papers' {{action 'toggleActiveContainer'}}>
           Active Manuscripts ({{totalActivePaperCount}})
         </h5>
         {{#if activePapersVisible}}
@@ -45,7 +45,7 @@
       {{/if}}
 
       {{#if hasInactivePapers}}
-        <h5 class='manuscript-list-heading' {{action 'toggleInactiveContainer'}}>
+        <h5 class='manuscript-list-heading inactive-papers' {{action 'toggleInactiveContainer'}}>
           Inactive Manuscripts ({{totalInactivePaperCount}})
         </h5>
         {{#if inactivePapersVisible}}

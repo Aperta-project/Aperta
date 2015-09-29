@@ -3,16 +3,44 @@ require 'rails_helper'
 feature "Dashboard", js: true do
   let!(:user) { FactoryGirl.create :user, :site_admin }
   let!(:journal) { FactoryGirl.create :journal }
-  let(:paper_count) { 1 }
+  let(:inactive_paper_count) { 0 }
+  let(:active_paper_count) { 1 }
   let!(:papers) do
-    paper_count.times.map do
-      FactoryGirl.create :paper, :with_tasks, journal: journal, creator: user
+    inactive_paper_count.times.map do
+      FactoryGirl.create :paper, :inactive, :with_tasks, journal: journal, creator: user
+    end
+    active_paper_count.times.map do
+      FactoryGirl.create :paper, :active, :with_tasks, journal: journal, creator: user
     end
   end
   let(:dashboard) { DashboardPage.new }
-            
+
+  feature "papers" do
+    let(:active_paper_count) { 2 }
+    let(:inactive_paper_count) { 1 }
+    let(:paper) { papers.first }
+
+    scenario "active and inactive papers show" do
+      login_as(user, scope: :user)
+      visit "/"
+
+      expect(Paper.count).to eq(3)
+      expect(dashboard.total_active_paper_count).to eq(active_paper_count)
+    end
+
+    scenario "active and inactive papers hide" do
+      login_as(user, scope: :user)
+      visit "/"
+      expect(dashboard.total_active_paper_count).to eq active_paper_count
+
+      dashboard.toggle_active_papers_heading
+      dashboard.toggle_inactive_papers_heading
+      expect(dashboard.manuscript_list_visible?).to eq false
+    end
+  end
+
   feature "displaying invitations" do
-    let(:paper_count) { 1 }
+    let(:active_paper_count) { 1 }
     let(:paper) { papers.first }
     let(:task) { FactoryGirl.create(:paper_editor_task, phase: paper.phases.first) }
 
@@ -44,4 +72,5 @@ feature "Dashboard", js: true do
       expect(dashboard.pending_invitations.count).to eq 0
     end
   end
+
 end

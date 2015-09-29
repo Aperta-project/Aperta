@@ -60,8 +60,20 @@ class DashboardPage < Page
     all('.dashboard-paper-title').count
   end
 
-  def total_paper_count
+  def total_active_paper_count
     find('.welcome-message').text.match(/You have (\d+)/)[1].to_i
+  end
+
+  def toggle_active_papers_heading
+    find('.active-papers').click
+  end
+
+  def toggle_inactive_papers_heading
+    find('.inactive-papers').click
+  end
+
+  def manuscript_list_visible?
+    first('.dashboard-submitted-papers').present?
   end
 
   def load_more_papers

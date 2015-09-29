@@ -47,6 +47,10 @@ export default TaskController.extend(ValidationErrorsMixin, {
 
     cancelEdit: function() {
       this.resetForm();
+    },
+
+    removeReviewer(reviewer) {
+      reviewer.destroyRecord();
     }
   }
 });

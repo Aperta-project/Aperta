@@ -19,16 +19,9 @@
   {{/if}}
 
   {{#each validReviewerRecommendations as |reviewerRecommendation|}}
-    <div class="authors-overlay-item--text">
-      <div class="author-name">{{reviewerRecommendation.fullName}}</div>
-      {{reviewerRecommendation.email}}<br>
-      {{reviewerRecommendation.title}} &nbsp; &nbsp; {{reviewerRecommendation.department}}
-      <br>
-      {{reviewerRecommendation.affiliation}}
-      <div class="reviewer-recommendation-decision">
-        {{reviewerRecommendation.recommendOrOppose}}
-      </div>
-      {{reviewerRecommendation.reason}}
-    </div>
+    {{reviewer-row reviewer=reviewerRecommendation
+                   isEditable=isEditable
+                   delete="removeReviewer"
+                  disabled=isSubmissionTaskNotEditable}}
   {{/each}}
 </div>

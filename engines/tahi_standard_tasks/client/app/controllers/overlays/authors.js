@@ -20,7 +20,7 @@ export default TaskController.extend({
   }),
 
   sortedAuthorsWithErrors: computed(
-    'sortedAuthors.@each', 'validationErrors', function() {
+    'sortedAuthors.[]', 'validationErrors', function() {
     return this.createModelProxyObjectWithErrors(this.get('sortedAuthors'));
   }),
 

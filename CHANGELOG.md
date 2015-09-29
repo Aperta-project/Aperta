@@ -8,7 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Changed
--
+- New Manuscript Overlay edits Paper title in place of short title
 
 ### Deprecated
 -

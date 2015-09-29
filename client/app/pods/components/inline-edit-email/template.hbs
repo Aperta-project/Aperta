@@ -15,7 +15,7 @@
 
 <div class="inline-edit-form {{if editing "editing"}} {{if showChooseReceivers "hidden"}}">
   {{input value=bodyPart.subject placeholder="Enter a subject"}}
-  {{content-editable value=bodyPart.value class="editable"}}
+  {{content-editable value=bodyPart.value class="editable email-body"}}
 </div>
 
 {{#if showChooseReceivers}}

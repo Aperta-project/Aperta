@@ -3,7 +3,6 @@ class PapersController < ApplicationController
 
   before_action :authenticate_user!
   before_action :enforce_policy, except: [:index, :show, :comment_looks]
-  before_action :sanitize_title, only: [:create, :update]
   before_action :prevent_update_on_locked!, only: [:update, :toggle_editable, :submit, :upload]
 
   respond_to :json
@@ -174,10 +173,6 @@ class PapersController < ApplicationController
 
   def enforce_policy
     authorize_action!(paper: paper, params: params)
-  end
-
-  def sanitize_title
-    strip_tags!(params[:paper], :title)
   end
 
   def prevent_update_on_locked!

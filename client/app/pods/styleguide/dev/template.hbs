@@ -6,7 +6,7 @@
   <input id="auto-suggest-input" style="width:300px;">
   <br><br><br>
 
-  {{#if view.showAutoSuggest}}
+  {{#if showAutoSuggest}}
     {{#auto-suggest-list positionNearSelector="#auto-suggest-input"
                          class="animation-fade-in"
                          selectItem="selectAutoSuggestItem"
@@ -108,6 +108,16 @@
   </h3>
 
   {{content-editable value="Awesome Text" class="editable" tagName='label'}}
+</section>
+
+<hr>
+
+<section id="format-input">
+  <h3>
+    Format Input (content-editable)
+  </h3>
+
+  {{format-input placeholder="Enter text here" value=formatInputValue}}
 </section>
 
 <hr>

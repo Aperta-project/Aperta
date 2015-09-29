@@ -104,6 +104,11 @@
     @include position(absolute, 0px 70px auto auto);
   }
 
+  .email-body {
+    min-height: 100px;
+    margin-bottom: 10px;
+  }
+
   .item-text {
     padding: 47px 0 13px 0;
   }

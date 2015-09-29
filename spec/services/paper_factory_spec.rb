@@ -68,6 +68,19 @@ describe PaperFactory do
       expect(PaperRole.collaborators.for_user(user).where(paper: new_paper).first).to be_present
     end
 
+    it "makes the creator an author on the paper" do
+      # TODO: Replace this test mocking the call to DefaultAuthorCreator
+
+      expect {
+        PaperFactory.create(paper_attrs, user)
+      }.to change(Author, :count).by(1)
+
+      author = Author.last
+      expect(author.first_name).to eq(user.first_name)
+      expect(author.last_name).to eq(user.last_name)
+      expect(author.email).to eq(user.email)
+    end
+
     it "sets the creator" do
       expect(subject.creator).to eq(user)
     end

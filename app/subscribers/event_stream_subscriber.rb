@@ -21,7 +21,6 @@ class EventStreamSubscriber
                              excluded_socket_id: excluded_socket_id)
   end
 
-
   def payload
     payload_for_record record
   end
@@ -32,7 +31,7 @@ class EventStreamSubscriber
 
   private
 
-  def payload_for_record record
+  def payload_for_record(record)
     classname = record.class.base_class.name
     ember_name = classname.demodulize.singularize.downcase.dasherize # sheesh
     {

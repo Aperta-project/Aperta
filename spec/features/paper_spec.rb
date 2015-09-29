@@ -15,7 +15,7 @@ feature "Editing paper", js: true do
       click_link(paper.title)
     end
 
-    scenario "Author edits paper", selenium: true do
+    scenario "Author edits paper" do
       # editing the paper
       edit_paper = PaperPage.new
       edit_paper.start_editing
@@ -41,12 +41,12 @@ feature "Editing paper", js: true do
       visit "/"
     end
 
-    it "shows validations", selenium: true do
+    it "shows validations" do
       click_link(@paper.title)
       find('.workflow-link').click
       click_link('Billing')
 
-      find(".affiliation-field b[role='presentation']").click #slect PFA from dropdown
+      find(".affiliation-field b[role='presentation']").click #select PFA from dropdown
       find("li.select2-result div", :text => /PLOS Publication Fee Assistance Program \(PFA\)/).click #select PFA from dropdown
 
       expect(find("input#task_completed")[:disabled]).to be(nil)

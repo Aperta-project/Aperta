@@ -7,7 +7,7 @@ ParticipantSelectorComponent = Ember.Component.extend
     Ember.run.schedule 'afterRender', @, ->
       @$('.select2-search-choice img').tooltip(placement: "bottom")
       @$('.add-participant-button').tooltip(placement: "bottom")
-  ).on('didInsertElement').observes('currentParticipants.@each')
+  ).on('didInsertElement').observes('currentParticipants.[]')
 
   resultsTemplate: (user) ->
     userInfo =

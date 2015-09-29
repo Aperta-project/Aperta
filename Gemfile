@@ -19,7 +19,11 @@ gem 'tahi-assign_team', git: 'https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x
 gem 'rails', '4.2.4'
 gem 'puma'
 gem 'rack-timeout'
+
 gem 'pg'
+gem 'activerecord-sqlserver-adapter'
+gem 'tiny_tds'
+
 gem 'ember-cli-rails'
 gem 'sass-rails'
 gem 'uglifier'

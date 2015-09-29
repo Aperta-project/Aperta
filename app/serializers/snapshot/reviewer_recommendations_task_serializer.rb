@@ -6,12 +6,16 @@ module Snapshot
     end
 
     def snapshot
-      recommendations = []
+      {
+        recommendations: snapshot_recommendations
+      }
+    end
 
+    def snapshot_recommendations
+      recommendations = []
       @task.reviewer_recommendations.each do |recommendation|
-        puts recommendation
         serializer = Snapshot::ReviewerRecommendationSerializer.new recommendation
-        recommendations << ["recommendation", serializer.snapshot]
+        recommendations << { recommendation: serializer.snapshot }
       end
       recommendations
     end

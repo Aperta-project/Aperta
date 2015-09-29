@@ -5,7 +5,7 @@ module Snapshot
       paper = Paper.find(@task.paper)
       properties = []
       paper.supporting_information_files.order(:id).each do |file|
-        properties << ["file", snapshot_file(file)]
+        properties << { file: snapshot_file(file)}
       end
       properties
     end

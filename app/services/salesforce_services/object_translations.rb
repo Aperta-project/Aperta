@@ -68,7 +68,7 @@ module SalesforceServices
         answer_for(ident).to_f
       end
 
-      def boolean_from_yes_no(ident) # for data that must be castable to float
+      def boolean_from_yes_no(ident) # when must bool in SF, but stored as y/n in Aperta
         a = answer_for(ident)
         a.is_a?(String) ? text_to_boolean_map[a.downcase] : false
       end
@@ -80,7 +80,7 @@ module SalesforceServices
         }
       end
 
-      def manuscript_id
+      def manuscript_id # TODO ask product what to do in case of no DOI
         @paper.doi || "doi_missing_for_id_#{@paper.id}"
       end
     end

@@ -85,5 +85,3 @@ module SalesforceServices
 
   end
 end
-
-

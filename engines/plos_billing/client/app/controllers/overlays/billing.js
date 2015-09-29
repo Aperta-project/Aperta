@@ -325,7 +325,7 @@ export default TaskController.extend({
   pfaData: null,
 
   /*
-    Makes a self-contained Pdf Data validator, temporarily to avoid conflict with
+    Makes a self-contained Pfa Data validator, temporarily to avoid conflict with
     ValidationErrorsMixin 'tahi/mixins/validation-errors'
     This is called in billing-pfa component via onDidInsertElement
     Call is async because these question don't exist until pfa partial is inserted

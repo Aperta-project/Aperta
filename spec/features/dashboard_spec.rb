@@ -15,12 +15,12 @@ feature "Dashboard", js: true do
   end
   let(:dashboard) { DashboardPage.new }
 
-  feature "papers" do
+  feature "displaying papers list" do
     let(:active_paper_count) { 2 }
     let(:inactive_paper_count) { 1 }
     let(:paper) { papers.first }
 
-    scenario "active and inactive papers show" do
+    scenario "shows how many active and inactive papers" do
       login_as(user, scope: :user)
       visit "/"
 
@@ -28,7 +28,7 @@ feature "Dashboard", js: true do
       expect(dashboard.total_active_paper_count).to eq(active_paper_count)
     end
 
-    scenario "active and inactive papers hide" do
+    scenario "can hide active and inactive papers" do
       login_as(user, scope: :user)
       visit "/"
       expect(dashboard.total_active_paper_count).to eq active_paper_count

@@ -20,6 +20,7 @@ describe PapersController do
     let(:active_paper_count) { 3 }
     let(:inactive_paper_count) { 2 }
     let(:response_papers) { res_body['papers'] }
+    let(:response_meta) { res_body['meta'] }
 
     before do
       active_paper_count.times { FactoryGirl.create :paper, :active, creator: user }
@@ -32,6 +33,12 @@ describe PapersController do
         get :index, format: :json
         expect(response.status).to eq(200)
         expect(response_papers.count).to eq(active_paper_count + inactive_paper_count)
+      end
+
+      it "returns the correct meta response" do
+        get :index, format: :json
+        expect(response_meta['total_active_papers']).to eq(3)        
+        expect(response_meta['total_inactive_papers']).to eq(2)        
       end
     end
 

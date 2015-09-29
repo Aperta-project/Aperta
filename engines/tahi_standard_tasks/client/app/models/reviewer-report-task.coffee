@@ -8,7 +8,7 @@ ReviewerReportTask = Task.extend
   isSubmitted: DS.attr('boolean')
 
   questionForIdentAndDecision: (ident, decision) ->
-    @get('questions').find (question) =>
+    @get('questions').find (question) ->
       question.get('ident') == ident && question.get('decision.id') == decision.get('id')
 
 `export default ReviewerReportTask`

@@ -4,7 +4,6 @@ import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 export default TaskController.extend(ValidationErrorsMixin, {
   showNewReviewerForm: false,
-  newRecommendation: {},
 
   // Doing this to prevent short period of time where `newRecommendation` is in the DOM
   // while save is happening. If it becomes invalid after save it is removed. This creates
@@ -13,40 +12,23 @@ export default TaskController.extend(ValidationErrorsMixin, {
     return this.get('model.reviewerRecommendations').filterBy('isNew', false);
   }),
 
-  resetForm: function() {
-    this.setProperties({
-      showNewReviewerForm: false,
-      newRecommendation: {}
-    });
-
-    this.clearAllValidationErrors();
-  },
-
   actions: {
-    toggleReviewerForm: function() {
+
+    toggleReviewerForm() {
       this.toggleProperty('showNewReviewerForm');
     },
 
-    saveNewRecommendation: function() {
-      let newRecommendation = this.store.createRecord('reviewerRecommendation', this.get('newRecommendation'));
+    saveNewRecommendation(recommendation) {
+      let newRecommendation = this.store.createRecord('reviewerRecommendation', recommendation);
 
       newRecommendation
         .set('reviewerRecommendationsTask', this.get('model'))
         .save().then(() => {
-          this.resetForm();
+          console.log("todo OK");
         }).catch((response) => {
           newRecommendation.deleteRecord();
           this.displayValidationErrorsFromResponse(response);
         });
-    },
-
-    institutionSelected: function(institution) {
-      this.set('newRecommendation.affiliation', institution.name);
-      this.set('newRecommendation.ringgoldId', institution['institution-id']);
-    },
-
-    cancelEdit: function() {
-      this.resetForm();
     },
 
     removeReviewer(reviewer) {

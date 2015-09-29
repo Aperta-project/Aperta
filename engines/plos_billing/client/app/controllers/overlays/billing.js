@@ -424,7 +424,7 @@ export default TaskController.extend({
 
   agreeCollections: false,
 
-  affiliation1Question: computed("model.questions.@each", function() {
+  affiliation1Question: computed("model.questions.[]", function() {
     let q = this.get("model.questions")
                 .findProperty("ident", "plos_billing.affiliation1");
 
@@ -437,7 +437,7 @@ export default TaskController.extend({
     return q;
   }),
 
-  affiliation2Question: computed("model.questions.@each", function() {
+  affiliation2Question: computed("model.questions.[]", function() {
     let q = this.get("model.questions")
                 .findProperty("ident", "plos_billing.affiliation2");
 

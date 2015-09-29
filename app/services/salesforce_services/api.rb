@@ -17,6 +17,7 @@ module SalesforceServices
 
         client.authenticate username: Rails.configuration.salesforce_username,
                             password: Rails.configuration.salesforce_password
+        Rails.logger.info("established Salesforce client connection")
       rescue
         Rails.logger.warn("Failed authentication to SalesForce API")
         return
@@ -34,6 +35,7 @@ module SalesforceServices
       mt = ManuscriptTranslator.new(user_id: client.user_id, paper: paper)
       manuscript = client.materialize("Manuscript__c")
       sf_paper = manuscript.create(mt.paper_to_manuscript_hash)
+      Rails.logger.info("Salesforce Manuscript created: #{sf_paper.Id}")
 
       paper.update_attribute(:salesforce_manuscript_id, sf_paper.Id)
       sf_paper
@@ -45,6 +47,7 @@ module SalesforceServices
       mt         = ManuscriptTranslator.new(user_id: client.user_id, paper: paper)
       manuscript = client.materialize("Manuscript__c")
       sf_paper   = manuscript.find(paper.salesforce_manuscript_id)
+      Rails.logger.info("Salesforce Manuscript updated: #{sf_paper.Id}")
 
       sf_paper.update_attributes mt.paper_to_manuscript_hash
       sf_paper
@@ -69,6 +72,8 @@ module SalesforceServices
       kase_mgr = self.client.materialize("Case")
       bt       = BillingTranslator.new(paper: paper)
       kase     = kase_mgr.create(bt.paper_to_billing_hash)
+      Rails.logger.info("Salesforce Case created: #{kase.Id}")
+      kase
     end
 
     def self.has_valid_creds?

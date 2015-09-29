@@ -2,11 +2,11 @@ require 'rails_helper'
 
 feature 'Adding cover letter', js: true do
   let(:author) { create :user, first_name: 'Author' }
-  let!(:paper)  { create :paper, :with_tasks, :with_valid_plos_author, creator: author }
+  let!(:paper)  { create :paper, :with_tasks, :with_valid_author, creator: author }
   let(:letter_body)  { "Foo Bar, Hello World" }
 
   before do
-    login_as author
+    login_as(author, scope: :user)
     visit "/"
   end
 

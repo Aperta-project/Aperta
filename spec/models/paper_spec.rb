@@ -150,11 +150,6 @@ describe Paper do
         expect(paper).to_not be_editable
       end
 
-      it "submits billing and pfa info to salesforce" do
-        expect(paper).to receive(:create_billing_and_pfa_case).and_return(true)
-        paper.submit! user
-      end
-
       it "sets the submitting_user of the latest version" do
         paper.submit! user
         expect(paper.latest_version.submitting_user).to eq(user)
@@ -411,11 +406,11 @@ describe Paper do
   end
 
   describe "#authors_list" do
-    let!(:plos_author1) { FactoryGirl.create :plos_author, paper: paper }
-    let!(:plos_author2) { FactoryGirl.create :plos_author, paper: paper }
+    let!(:author1) { FactoryGirl.create :author, paper: paper }
+    let!(:author2) { FactoryGirl.create :author, paper: paper }
 
     it "returns authors' last name, first name and affiliation name in an ordered list" do
-      expect(paper.authors_list).to eq "1. #{plos_author1.last_name}, #{plos_author1.first_name} from #{plos_author1.specific.affiliation}\n2. #{plos_author2.last_name}, #{plos_author2.first_name} from #{plos_author2.specific.affiliation}"
+      expect(paper.authors_list).to eq "1. #{author1.last_name}, #{author1.first_name} from #{author1.affiliation}\n2. #{author2.last_name}, #{author2.first_name} from #{author2.affiliation}"
     end
   end
 
@@ -444,13 +439,13 @@ describe Paper do
         paper.supporting_information_files.create! attachment: ::File.open('spec/fixtures/yeti.tiff')
       end
 
-      expect(doc.search('h2:contains("Supporting Information")').length).to eq(1)
+      expect(doc).to have_path('h2:contains("Supporting Information")')
     end
 
     it "does not have supporting information section without supporting information" do
       expect(paper.supporting_information_files.count).to eq(0)
 
-      expect(doc.search('h2:contains("Supporting Information")').length).to eq(0)
+      expect(doc).to_not have_path('h2:contains("Supporting Information")')
     end
 
     it "has image preview and link with image" do
@@ -458,8 +453,8 @@ describe Paper do
         paper.supporting_information_files.create! attachment: ::File.open('spec/fixtures/yeti.tiff')
       end
 
-      expect(doc.search('a:contains("yeti.tiff")').length).to eq(1)
-      expect(doc.search('img[src*="yeti.png"]').length).to eq(1)
+      expect(doc).to have_path('a:contains("yeti.tiff")')
+      expect(doc).to have_path('img[src*="yeti.png"]')
     end
 
     it "has link to unsupported image attachment" do
@@ -467,9 +462,38 @@ describe Paper do
         paper.supporting_information_files.create! attachment: ::File.open('spec/fixtures/cat.bmp')
       end
 
-      expect(doc.search('img').length).to eq(0)
-      expect(doc.search('a:contains("cat.bmp")').length).to eq(1)
-      expect(doc.search('a[href*="cat.bmp"]').length).to eq(1)
+      expect(doc).to_not have_path('img')
+      expect(doc).to have_path('a:contains("cat.bmp")')
+      expect(doc).to have_path('a[href*="cat.bmp"]')
     end
+  end
+
+  describe "#resubmitted?" do
+    let(:paper) { FactoryGirl.create(:paper) }
+
+    context "with pending decisions" do
+      before do
+        paper.decisions.first.update!(verdict: nil)
+      end
+
+      specify { expect(paper.resubmitted?).to eq(true) }
+    end
+
+    context "with non-pending decisions" do
+      before do
+        paper.decisions.first.update!(verdict: "accept")
+      end
+
+      specify { expect(paper.resubmitted?).to eq(false) }
+    end
+
+    context "with no decisions" do
+      before do
+        paper.decisions.destroy_all
+      end
+
+      specify { expect(paper.resubmitted?).to eq(false) }
+    end
+
   end
 end

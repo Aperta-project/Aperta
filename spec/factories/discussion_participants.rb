@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :discussion_participant do
-    discussion_topic nil
-user nil
+    discussion_topic
+    user
   end
 
 end

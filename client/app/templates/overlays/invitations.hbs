@@ -13,7 +13,7 @@
           <p>{{{invitation.abstract}}}</p>
         {{/if}}
         {{#if invitation.information}}
-          <p>{{{display-line-breaks invitation.information}}}</p>
+          <p class="preserve-line-breaks">{{{invitation.information}}}</p>
         {{/if}}
         <button class="button-secondary button--green" {{action "acceptInvitation" invitation}}> yes </button>
         <button class="button-secondary button--green" {{action "rejectInvitation" invitation}}> no </button>

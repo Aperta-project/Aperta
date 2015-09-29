@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :paper_role do
     user
+    paper
 
     trait(:admin) do
       role 'admin'

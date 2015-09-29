@@ -118,8 +118,12 @@ class Task < ActiveRecord::Base
     [:body]
   end
 
+  def complete!
+    update!(completed: true)
+  end
+
   def incomplete!
-    update(completed: false)
+    update!(completed: false)
   end
 
   def update_responder

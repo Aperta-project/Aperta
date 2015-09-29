@@ -21,7 +21,7 @@ describe AttachmentSerializer do
     it { is_expected.to include(src: attachment.file.url) }
     it { is_expected.to include(status: attachment.status) }
 
-    it { is_expected.to include(task_id: attachment.task_id)}
+    it { is_expected.to include(task: { id: attachment.task.id, type: "Task" })}
 
     context "and the attachment is an image" do
       before do

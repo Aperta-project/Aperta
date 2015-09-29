@@ -12,8 +12,6 @@ module TahiStandardTasks
       task.transaction do
         setup_paper!
         setup_revise_task!
-
-        broadcast_revision
       end
     end
 
@@ -44,10 +42,6 @@ module TahiStandardTasks
                         participants: participants,
                         completed: false
                        ).save!
-    end
-
-    def broadcast_revision
-      TahiNotifier.notify(event: "paper.revised", payload: { paper_id: paper.id })
     end
   end
 end

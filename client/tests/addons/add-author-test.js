@@ -21,7 +21,7 @@ module("Integration: adding an author", {
     $.mockjax({url: "/api/affiliations", status: 200, responseText: []});
 
     phase = FactoryGuy.make("phase");
-    task = FactoryGuy.make("plos-authors-task", { phase: phase });
+    task = FactoryGuy.make("authors-task", { phase: phase });
     paper = FactoryGuy.make("paper", { phases: [phase], tasks: [task], editable: true });
     TestHelper.handleFind(paper);
     TestHelper.handleFindAll("discussion-topic", 1);
@@ -33,7 +33,7 @@ test("can add a new author", function(assert) {
     let name = "James";
 
     TestHelper.handleFind(task);
-    TestHelper.handleCreate("plos-author");
+    TestHelper.handleCreate("author");
 
     visit(`/papers/${paper.id}/tasks/${task.id}`);
     click(".button-primary:contains('Add a New Author')");

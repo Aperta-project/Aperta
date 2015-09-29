@@ -5,7 +5,7 @@ feature "Upload default ePub cover for journal", js: true do
   let!(:journal) { create :journal }
 
   before do
-    login_as admin
+    login_as(admin, scope: :user)
   end
 
   let(:admin_page) { AdminDashboardPage.visit }

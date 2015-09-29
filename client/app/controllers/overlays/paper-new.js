@@ -9,9 +9,10 @@ export default Ember.Controller.extend(AnimateOverlay, FileUploadMixin, {
   journals: null, // set on controller before rendering overlay
   journalEmpty: computed.empty('model.journal'),
 
-  shortTitleCount: computed('model.shortTitle', function() {
-    let title = this.get('model.shortTitle');
-    return title ? title.length : 0;
+  titleCharCount: computed('model.title', function() {
+    return Ember.$('<div></div>')
+                .append(this.get('model.title'))
+                .text().length;
   }),
 
   manuscriptUploadUrl: computed('model.id', function() {

@@ -3,7 +3,6 @@ import {
   test
 } from 'ember-qunit';
 
-import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 
 function selectElementText(el) {
@@ -51,10 +50,18 @@ test('value is formatted with bold', function(assert) {
     {{format-input value=title}}
   `);
 
-  assert.equal(this.$('.format-input-field').html().trim(), 'Title', 'Value is unformatted');
+  assert.equal(
+    this.$('.format-input-field').html().trim(),
+    'Title',
+    'Value is unformatted'
+  );
 
   selectElementText(this.$('.format-input-field').get(0));
   this.$('.format-input-button:first').click();
 
-  assert.equal(this.$('.format-input-field').html().trim(), '<b>Title</b>', 'Value is formatted');
+  assert.equal(
+    this.$('.format-input-field').html().trim(),
+    '<b>Title</b>',
+    'Value is formatted'
+  );
 });

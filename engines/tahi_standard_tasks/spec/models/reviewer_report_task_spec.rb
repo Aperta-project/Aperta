@@ -65,6 +65,14 @@ describe TahiStandardTasks::ReviewerReportTask do
       expect(paper.decisions.length).to be(2)
     end
 
+    context "when there is no decision" do
+      before { task.paper.decisions.clear }
+
+      it "returns nil" do
+        expect(task.decision).to be(nil)
+      end
+    end
+
     context "when both the paper and the task are not submitted" do
       before do
         task.paper.update! publishing_state: "unsubmitted"

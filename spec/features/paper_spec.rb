@@ -15,7 +15,7 @@ feature "Editing paper", js: true do
       click_link(paper.title)
     end
 
-    scenario "Author edits paper", selenium: true do
+    scenario "Author edits paper" do
       # editing the paper
       edit_paper = PaperPage.new
       edit_paper.start_editing
@@ -29,6 +29,43 @@ feature "Editing paper", js: true do
       # check if changes are persisted
       expect(edit_paper).to have_paper_title("Lorem Ipsum Dolor Sit Amet")
       expect(edit_paper.has_body_text?("Contrary to popular belief")).to be(true)
+    end
+  end
+
+  context "with a billing task" do
+
+    before do
+      @user  = FactoryGirl.create :user, :site_admin
+      @paper = FactoryGirl.create :paper_with_task, creator: @user, task_params: { title: "Billing", type: "PlosBilling::BillingTask", role: "author" }
+      login_as @user
+      visit "/"
+    end
+
+    it "shows validations" do
+      click_link(@paper.title)
+      find('.workflow-link').click
+      click_link('Billing')
+
+      find(".affiliation-field b[role='presentation']").click #select PFA from dropdown
+      find("li.select2-result div", :text => /PLOS Publication Fee Assistance Program \(PFA\)/).click #select PFA from dropdown
+
+      expect(find("input#task_completed")[:disabled]).to be(nil)
+
+
+      within(".question-dataset") do
+        find("input[id='plos_billing.pfa_question_1-yes']").click  #doesn't work: find("#plos_billing.pfa_question_1-yes").click
+        find("input[id='plos_billing.pfa_question_2-yes']").click
+        find("input[id='plos_billing.pfa_question_3-yes']").click
+        find("input[id='plos_billing.pfa_question_4-yes']").click
+
+        #numeric fields
+        ['pfa_question_1b', 'pfa_question_2b', 'pfa_question_3a', 'pfa_question_4a', 'pfa_amount_to_pay'].each do |ident|
+          find("input[name='plos_billing.#{ident}']").set "foo"
+          expect(find("#error-for-#{ident}")).to have_content("Must be a number and contain no symobls, or letters")
+        end
+      end
+
+      expect(find("input#task_completed")[:disabled]).to be_truthy
     end
   end
 end

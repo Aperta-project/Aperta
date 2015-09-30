@@ -6,19 +6,21 @@ feature "Dashboard", js: true do
   let(:inactive_paper_count) { 0 }
   let(:active_paper_count) { 1 }
   let!(:papers) do
-    inactive_paper_count.times.map do
-      FactoryGirl.create :paper, :inactive, :with_tasks, journal: journal, creator: user
+    inactive_paper_count.times.map do |number|
+      FactoryGirl.create :paper, :inactive, :with_tasks, journal: journal, creator: user,
+                         title: "Inactive Paper (#{number + 1})"
     end
-    active_paper_count.times.map do
-      FactoryGirl.create :paper, :active, :with_tasks, journal: journal, creator: user
+    active_paper_count.times.map do |number|
+      FactoryGirl.create :paper, :active, :with_tasks, journal: journal, creator: user,
+                         title: "Active Paper (#{number + 1})"
+      end
     end
-  end
-  let(:dashboard) { DashboardPage.new }
+    let(:dashboard) { DashboardPage.new }
 
-  feature "displaying papers list" do
-    let(:active_paper_count) { 2 }
-    let(:inactive_paper_count) { 1 }
-    let(:paper) { papers.first }
+    feature "displaying papers list" do
+      let(:active_paper_count) { 2 }
+      let(:inactive_paper_count) { 1 }
+      let(:paper) { papers.first }
 
     scenario "shows how many active and inactive papers" do
       login_as(user, scope: :user)
@@ -33,8 +35,12 @@ feature "Dashboard", js: true do
       visit "/"
       expect(dashboard.total_active_paper_count).to eq active_paper_count
 
+      expect(page).to have_content("Active Paper (1)")
+      expect(page).to have_content("Inactive Paper (1)")
       dashboard.toggle_active_papers_heading
+      expect(page).to_not have_content("Active Paper (1)")
       dashboard.toggle_inactive_papers_heading
+      expect(page).to_not have_content("Inactive Paper (1)")
       expect(dashboard.manuscript_list_visible?).to eq false
     end
   end

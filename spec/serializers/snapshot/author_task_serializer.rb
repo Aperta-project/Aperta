@@ -8,7 +8,7 @@ describe Snapshot::AuthorTaskSerializer do
       properties.select { |p| p[:name] == name }.first[:value]
     end
 
-    it "serializes an author" do
+    it "serializes an author properties" do
       author = FactoryGirl.create(:author)
       task.authors = [author]
 
@@ -26,6 +26,22 @@ describe Snapshot::AuthorTaskSerializer do
       expect(find_property(properties, "secondary_affiliation")).to eq(author.secondary_affiliation)
       expect(find_property(properties, "ringgold_id")).to eq(author.ringgold_id)
       expect(find_property(properties, "secondary_ringgold_id")).to eq(author.secondary_ringgold_id)
+    end
+
+    it "serializes an authors nested questions" do
+      author = FactoryGirl.create(:author)
+      corresponding_answer = FactoryGirl.create(:nested_question_answer)
+      corresponding_answer.nested_question_id = author.nested_questions.first.id
+      corresponding_answer.owner_id = author.id
+      corresponding_answer.owner_type = "Author"
+      corresponding_answer.value = "t"
+      allow_any_instance_of(Author).to receive(:nested_question_answers).and_return([corresponding_answer])
+      task.authors = [author]
+
+      snapshot = Snapshot::AuthorTaskSerializer.new(task).snapshot
+
+      expect(snapshot[:authors][0][:author][:questions][0][:answers][0][:value]).to eq("t")
+      expect(snapshot[:authors][0][:author][:questions][1][:answers][0]).to be_nil
 
     end
 

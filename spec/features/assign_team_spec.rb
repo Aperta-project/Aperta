@@ -66,7 +66,6 @@ feature 'Assign team', js: true do
     # assign user
     #
     login_as(journal_admin, scope: :user)
-    visit('/')
 
     AssignTeamOverlay.visit(assign_team_task) do |overlay|
       overlay.assign_role_for_user "Editor", journal_editor

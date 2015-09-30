@@ -5,6 +5,7 @@ QuestionComponent = Ember.Component.extend
   helpText: null
   disabled: false,
   readonly: false,
+  noResponseText: "[No response]",
 
   model: (->
     ident = @get('ident')

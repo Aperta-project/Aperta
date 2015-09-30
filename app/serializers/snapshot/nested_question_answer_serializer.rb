@@ -6,7 +6,8 @@ module Snapshot
     end
 
     def snapshot
-      attachment_snapshotter = Snapshot::QuestionAttachmentSerializer.new @nested_question_answer.attachment
+      attachment = QuestionAttachment.select { |qa| qa.question_id == @nested_question_answer.id }.first
+      attachment_snapshotter = Snapshot::QuestionAttachmentSerializer.new attachment
 
       {
         value: @nested_question_answer.value,

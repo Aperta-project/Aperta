@@ -1,14 +1,16 @@
 class PDFConverter
-  def self.convert(paper, downloader)
-    publishing_info_presenter = PublishingInformationPresenter.new paper, downloader
 
-    PDFKit.new(pdf_html(paper, publishing_info_presenter),
-               footer_right: publishing_info_presenter.downloader_name,
+  def self.convert(paper, downloader)
+    publishing_info = PublishingInformationPresenter.new paper, downloader
+    paper_body = PaperDownloader.new(paper).body
+
+    PDFKit.new(pdf_html(paper, publishing_info, paper_body),
+               footer_right: publishing_info.downloader_name,
                footer_font_name: 'Times New Roman',
                footer_font_size: '10').to_pdf
   end
 
-  def self.pdf_html(paper, publishing_info_presenter)
+  def self.pdf_html(paper, publishing_info_presenter, paper_body)
     <<-HTML
       <html>
         <head>
@@ -24,7 +26,7 @@ class PDFConverter
           </div>
           <div id='paper-body' styles='page-break-before: always;'>
             <h1>#{CGI.escape_html(paper.display_title)}</h1>
-            #{paper.download_body}
+            #{paper_body}
           </div>
         </body>
       </html>

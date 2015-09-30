@@ -39,89 +39,38 @@ describe TahiStandardTasks::ReviewerReportTask do
       end
     end
 
-    context "when it is not set" do
+    context "when it is set to a blank value" do
       it "returns an empty hash" do
+        task.body = nil
         expect(task.body).to eq({})
       end
     end
   end
 
+  describe '#create' do
+    let(:task) { FactoryGirl.build(:reviewer_report_task) }
+
+    it "belongs to the paper's latest decision" do
+      task.save!
+      expect(task.decision).to eq(task.paper.decisions.latest)
+      expect(task.reload.decision).to eq(task.paper.decisions.latest)
+    end
+  end
+
   describe "#decision" do
-    let(:paper) { FactoryGirl.create :paper_with_task, task_params: { type: TahiStandardTasks::ReviewerReportTask.name } }
-    let(:task) { paper.tasks.last }
-    let(:previous_decision) { paper.decisions[1] }
-    let(:latest_decision) { paper.decisions[0] }
+    let(:decision){ FactoryGirl.create(:decision, paper: paper) }
 
-    before do
-      paper.decisions << FactoryGirl.create(:decision, paper_id: task.paper.id)
-
-      # make sure we are starting off with at least two decisions
-      expect(paper.decisions.length).to be(2)
+    it "returns the current decision" do
+      task.decision = decision
+      task.save!
+      expect(task.decision).to eq(decision)
     end
 
-    context "when there is no decision" do
-      before { task.paper.decisions.clear }
-
+    context "when there is no decision set" do
       it "returns nil" do
+        task.decision = nil
+        task.save!
         expect(task.decision).to be(nil)
-      end
-    end
-
-    context "when both the paper and the task are not submitted" do
-      before do
-        task.paper.update! publishing_state: "unsubmitted"
-        task.incomplete!
-
-        expect(paper.submitted?).to be(false)
-        expect(task.submitted?).to be(false)
-      end
-
-      it "returns the latest decision" do
-        expect(task.decision).to eq(latest_decision)
-      end
-    end
-
-    context "when the paper is not submitted, but the task is" do
-      before do
-        paper.update! publishing_state: "in_revision"
-        task.update! body: task.body.merge("submitted" => true)
-
-        expect(paper.submitted?).to be(false)
-        expect(task.submitted?).to be(true)
-      end
-
-      it "returns the penultimate decision" do
-        expect(task.decision).to eq(previous_decision)
-      end
-    end
-
-    context "when the paper is submitted, but the task isn't" do
-      before do
-        paper.update! publishing_state: "submitted"
-        task.update! body: task.body.except("submitted")
-        task.reload
-
-        expect(paper.submitted?).to be(true)
-        expect(task.submitted?).to be(false)
-      end
-
-      it "returns the latest decision" do
-        expect(task.decision).to eq(latest_decision)
-      end
-    end
-
-    context "when both the paper and the task are submitted" do
-      before do
-        paper.update! publishing_state: "submitted"
-        task.update! body: { "submitted" => true }
-        task.paper.reload
-
-        expect(paper.submitted?).to be(true)
-        expect(task.submitted?).to be(true)
-      end
-
-      it "returns the latest decision" do
-        expect(task.decision).to eq(latest_decision)
       end
     end
   end

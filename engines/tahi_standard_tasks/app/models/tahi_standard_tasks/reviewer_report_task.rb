@@ -27,7 +27,7 @@ module TahiStandardTasks
     end
 
     def incomplete!
-      self.decision = paper.decisions.latest
+      assign_to_latest_decision
       update!(
         completed: false,
         body: body.except("submitted")

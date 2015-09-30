@@ -422,7 +422,7 @@ FactoryAttributes.ReportingGuidelinesTask =
   question_ids: []
   role: "author"
   title: "Reporting Guidelines"
-  type: "TahiStandardTasks::ReportingGuidelinesTask"
+  type: "ReportingGuidelinesTask"
 
 FactoryAttributes.Comment =
   _rootKey: 'comment'

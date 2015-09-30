@@ -5,16 +5,16 @@ QuestionComponent = Ember.Component.extend({
   tagName: 'div',
   helpText: null,
   disabled: false,
+  readonly: false,
+  noResponseText: "[No response]",
   model: (function() {
-    var ident, question;
+    var decision, ident, question, task;
     ident = this.get('ident');
     Ember.assert('You must specify an ident, set to name attr', ident);
-    //this is auto-generated from a coffeescript to js conversion, and should be cleaned up at some point
-    question = this.get('versioned') ? this.get('task.paper.latestDecision.questions').find((function(_this) {
-      return function(item) {
-        return item.get('task') === _this.get('task') && item.get('ident') === ident;
-      };
-    })(this)) : this.get('task.questions').findProperty('ident', ident);
+    task = this.get('task');
+    Ember.assert('You must specify a task', task);
+    decision = this.get('decision');
+    question = decision ? task.questionForIdentAndDecision(ident, decision) : task.get('questions').findProperty('ident', ident);
     if (!question) {
       question = this.createNewQuestion();
     }

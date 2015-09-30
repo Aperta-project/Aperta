@@ -10,7 +10,6 @@ moduleForComponent 'question', 'Component: question-component',
     @q1 = Ember.Object.create(ident: "foo")
     @q2 = Ember.Object.create(ident: "bar")
 
-
 test '#model: gets tasks questions by ident', (assert) ->
   q3 = Ember.Object.create(ident: 'foo')
   otherTask = Ember.Object.create(questions: [q3])
@@ -20,18 +19,26 @@ test '#model: gets tasks questions by ident', (assert) ->
   assert.equal component.get('model'), @q1, 'Finds its model by ident'
   assert.notEqual component.get('model'), q3, 'Does not find a question with the same ident attached to another task'
 
-test '#model: gets tasks questions by ident for versioned questions', (assert) ->
+test '#model: gets tasks questions by ident tied to a particular decision', (assert) ->
   q3 = Ember.Object.create(ident: 'foo')
   q4 = Ember.Object.create(ident: 'foo')
-  otherTask = Ember.Object.create(questions: [q3])
-  paper = Ember.Object.create(latestDecision: Ember.Object.create(questions: [q4]))
-  task = Ember.Object.create(questions: [@q1, @q2], paper: paper)
+  decision = Ember.Object.create(questions: [q4])
+
+  task = Ember.Object.create
+    questions: [@q1, @q2]
+    decision: decision
+    questionForIdentAndDecision: (ident, decision) ->
+      q4
   q4.set('task', task)
 
-  component = @subject(task: task, ident: "foo", versioned: true)
+  sinon.spy(task, "questionForIdentAndDecision")
+
+  component = @subject(task: task, ident: "foo", decision: decision)
+
   assert.equal component.get('model'), q4, 'Finds its model by ident'
   assert.notEqual component.get('model'), q3, 'Does not find a question with the same ident attached to another task'
   assert.notEqual component.get('model'), @q2, 'Does not find a old version of a question with the same ident'
+  assert.ok task.questionForIdentAndDecision.calledWith('foo', decision), "Expected the question to be looked up with the appropriate ident and decision, but it wasn't"
 
 test '#createNewQuestion: creates a new question and adds it to the task if it cant find one', (assert) ->
   task = Ember.Object.create(questions: [@q1], store: @fakeStore)

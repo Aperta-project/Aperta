@@ -1,44 +1,27 @@
 require 'rails_helper'
 
 describe TahiStandardTasks::ReviewerReportTask do
-  let(:paper) do
-    FactoryGirl.create :paper, :with_tasks, title: "Crazy stubbing tests on rats"
-  end
-
-  let(:task) {
-    TahiStandardTasks::ReviewerReportTask.create!(title: "Reviewer Report",
-                                              role: "reviewer",
-                                              phase: paper.phases.first,
-                                              completed: false)
-  }
-
-  let(:editor) {
-    double(:editor,
-           full_name: 'Andi Plantenberg',
-           email: "andi+example@example.com",
-           id: 1)
-  }
-
-  before do
-    user = double(:user, last_name: 'Mazur')
-    journal = double(:journal, name: 'PLOS Yeti')
-    allow(paper).to receive(:creator).and_return(user)
-    allow(paper).to receive(:editors).and_return([editor])
-    allow(paper).to receive(:journal).and_return(journal)
-    allow(task).to receive(:paper).and_return(paper)
-  end
+  let(:task) { FactoryGirl.create(:reviewer_report_task) }
+  let(:paper) { task.paper }
 
   describe "#send_emails" do
-    context "if the task transitions to completed" do
+    let(:editors) { [FactoryGirl.create(:user)] }
+
+    before do
+      # make sure we have editors for sending emails to
+      allow(paper).to receive(:editors).and_return editors
+    end
+
+    context "when the task transitions to completed" do
       it "sends emails to the paper's editors" do
         allow(TahiStandardTasks::ReviewerReportMailer).to receive_message_chain("delay.notify_editor_email") { true }
         task.completed = true
         task.save!
-        expect(task.send_emails).to eq([editor])
+        expect(task.send_emails).to eq(paper.editors)
       end
     end
 
-    context "if the task is updated but not completed" do
+    context "when the task is updated but not completed" do
       it "does not send emails" do
         TahiStandardTasks::ReviewerReportMailer = double(:reviewer_report_mailer)
         task.completed = false # or any other update
@@ -56,9 +39,38 @@ describe TahiStandardTasks::ReviewerReportTask do
       end
     end
 
-    context "when it is not set" do
+    context "when it is set to a blank value" do
       it "returns an empty hash" do
+        task.body = nil
         expect(task.body).to eq({})
+      end
+    end
+  end
+
+  describe '#create' do
+    let(:task) { FactoryGirl.build(:reviewer_report_task) }
+
+    it "belongs to the paper's latest decision" do
+      task.save!
+      expect(task.decision).to eq(task.paper.decisions.latest)
+      expect(task.reload.decision).to eq(task.paper.decisions.latest)
+    end
+  end
+
+  describe "#decision" do
+    let(:decision) { FactoryGirl.create(:decision, paper: paper) }
+
+    it "returns the current decision" do
+      task.decision = decision
+      task.save!
+      expect(task.decision).to eq(decision)
+    end
+
+    context "when there is no decision set" do
+      it "returns nil" do
+        task.decision = nil
+        task.save!
+        expect(task.decision).to be(nil)
       end
     end
   end
@@ -70,6 +82,32 @@ describe TahiStandardTasks::ReviewerReportTask do
       task.update! body: { submitted: true }
       question.update answer: "Changed"
       expect(question.reload.answer).to eq("I shouldn't change")
+    end
+  end
+
+  describe "#incomplete!" do
+    before do
+      task.update! body: { "submitted" => true }, completed: true
+    end
+
+    it "makes the task incomplete" do
+      expect { task.incomplete! }.to change(task, :completed).to false
+    end
+
+    it "makes the task unsubmitted" do
+      expect { task.incomplete! }.to change(task, :submitted?).to false
+    end
+  end
+
+  describe "#submitted?" do
+    it "returns true when it's submitted" do
+      task.body = { "submitted" => true }
+      expect(task.submitted?).to be(true)
+    end
+
+    it "returns false otherwise" do
+      task.body = {}
+      expect(task.submitted?).to be(false)
     end
   end
 end

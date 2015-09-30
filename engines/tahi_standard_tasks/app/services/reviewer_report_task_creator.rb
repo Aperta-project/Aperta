@@ -25,7 +25,7 @@ class ReviewerReportTaskCreator
       ParticipationFactory.create(task: task, assignee: assignee)
       ParticipationFactory.create(task: task, assignee: paper.editor) if paper.editor.present?
     else
-      existing_reviewer_report_task.first.update!(completed: false)
+      existing_reviewer_report_task.first.incomplete!
     end
   end
 

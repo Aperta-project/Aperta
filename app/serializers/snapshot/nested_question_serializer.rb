@@ -2,8 +2,7 @@ module Snapshot
   class NestedQuestionSerializer < BaseSerializer
 
     def initialize(nested_question, owner)
-      @nested_question_id = nested_question.id
-      @nested_question = NestedQuestion.find(nested_question.id)
+      @nested_question = nested_question
       @owner = owner
     end
 
@@ -15,10 +14,9 @@ module Snapshot
       end
 
       answers_snapshot = []
-      answers = NestedQuestionAnswer.where(
-        nested_question_id: @nested_question_id,
-        owner_id: @owner.id,
-        owner_type: @owner.class.base_class.sti_name).order('id')
+      answers = @owner.nested_question_answers
+                      .select { |q| q.nested_question_id = @nested_question.id }
+                      .sort { |a,b| a.id <=> b.id }
 
       if answers
         answers.each do |answer|

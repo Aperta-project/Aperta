@@ -29,7 +29,7 @@ feature "Reviewer filling out their reviewer report", js: true do
   scenario "A reviewer can fill out their own Reviewer Report, submit it, and see a readonly view of their responses" do
     login_as(reviewer1, scope: :user)
     visit "/"
-    
+
     dashboard_page = DashboardPage.new
     dashboard_page.accept_invitation_for_paper(paper)
     visit "/papers/#{paper.id}"

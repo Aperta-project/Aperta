@@ -34,7 +34,7 @@ describe ReviewerReportTaskCreator do
         expect(paper.role_for(user: assignee, role: PaperRole::REVIEWER)).to exist
       end
 
-      it "creates a ReviewerReportTask tied to the latest decision" do
+      it "creates a ReviewerReportTask" do
         expect {
           subject.process
         }.to change { TahiStandardTasks::ReviewerReportTask.count }.by(1)

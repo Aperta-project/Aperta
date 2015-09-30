@@ -156,12 +156,6 @@ class Paper < ActiveRecord::Base
     end
   end
 
-  def download_body
-    if body
-      "#{body}#{download_supporting_information}"
-    end
-  end
-
   def version_string
     latest_version.version_string
   end
@@ -355,7 +349,6 @@ class Paper < ActiveRecord::Base
     update!(submitted_at: Time.current.utc)
   end
 
-
   def create_billing_and_pfa_case(*)
     SalesforceServices::API.delay.create_billing_and_pfa_case(paper_id: self.id) if self.billing_card
   end
@@ -365,17 +358,4 @@ class Paper < ActiveRecord::Base
     latest_version.touch
   end
 
-  def download_supporting_information
-    return if supporting_information_files.empty?
-
-    supporting_information = "<h2>Supporting Information</h2>"
-    supporting_information_files.each do |file|
-      if file.preview_src
-        supporting_information.concat "<p>#{file.download_link file.preview_image}</p>"
-      end
-      supporting_information.concat "<p>#{file.download_link}</p>"
-    end
-
-    supporting_information
-  end
 end

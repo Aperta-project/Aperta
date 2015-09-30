@@ -433,46 +433,6 @@ describe Paper do
     end
   end
 
-  describe "#download_body" do
-    let(:doc) { Nokogiri::HTML(paper.download_body) }
-    after do
-      expect(doc.errors).to be_empty
-    end
-
-    it "returns paper body in HTML for export" do
-      with_aws_cassette 'supporting_info_files_controller' do
-        paper.supporting_information_files.create! attachment: ::File.open('spec/fixtures/yeti.tiff')
-      end
-
-      expect(doc.search('h2:contains("Supporting Information")').length).to eq(1)
-    end
-
-    it "does not have supporting information section without supporting information" do
-      expect(paper.supporting_information_files.count).to eq(0)
-
-      expect(doc.search('h2:contains("Supporting Information")').length).to eq(0)
-    end
-
-    it "has image preview and link with image" do
-      with_aws_cassette 'supporting_info_files_controller' do
-        paper.supporting_information_files.create! attachment: ::File.open('spec/fixtures/yeti.tiff')
-      end
-
-      expect(doc.search('a:contains("yeti.tiff")').length).to eq(1)
-      expect(doc.search('img[src*="yeti.png"]').length).to eq(1)
-    end
-
-    it "has link to unsupported image attachment" do
-      with_aws_cassette 'supporting_info_files_controller_not_supported_image' do
-        paper.supporting_information_files.create! attachment: ::File.open('spec/fixtures/cat.bmp')
-      end
-
-      expect(doc.search('img').length).to eq(0)
-      expect(doc.search('a:contains("cat.bmp")').length).to eq(1)
-      expect(doc.search('a[href*="cat.bmp"]').length).to eq(1)
-    end
-  end
-
   describe "#resubmitted?" do
     let(:paper) { FactoryGirl.create(:paper) }
 

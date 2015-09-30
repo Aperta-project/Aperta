@@ -3,7 +3,7 @@
   {{#if model.answer}}
     <div class="answer-text">{{model.answer}}</div>
   {{else}}
-    <div class="answer-text no-answer">[No response]</div>
+    <div class="answer-text no-answer">{{noResponseText}}</div>
   {{/if}}
 {{else}}
   <label class="question-checkbox">

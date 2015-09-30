@@ -16,7 +16,11 @@
                           helpText="<li>The manuscript must describe a technically sound piece of scientific research with data that supports the conclusions.</li><li>Experiments must have been conducted rigorously, with appropriate controls, replication, and sample sizes.</li><li>The conclusions must be drawn appropriately based on the data presented.</li>"
                           wrapperClass="yes-no-with-comments"
                           readonly=readonly}}
-          {{question-textarea ident="reviewer_report.support_conclusions.explanation" task=model decision=decision readonly=readonly}}
+          {{question-textarea ident="reviewer_report.support_conclusions.explanation"
+            task=model
+            decision=decision
+            noResponseText=""
+            readonly=readonly}}
         {{/question-radio}}
     </li>
 
@@ -28,7 +32,11 @@
                         helpText="<li>Authors must follow field-specific standards for data deposition in publicly available resources and should include accession numbers in the manuscript when relevant. The manuscript should explain what steps have been taken to make data available, particularly in cases where the data cannot be publicly deposited.</li>"
                         wrapperClass="yes-no-with-comments"
                         readonly=readonly}}
-        {{question-textarea ident="reviewer_report.statistical_analysis.explanation" task=model decision=decision readonly=readonly}}
+        {{question-textarea ident="reviewer_report.statistical_analysis.explanation"
+          task=model
+          decision=decision
+          noResponseText=""
+          readonly=readonly}}
       {{/question-radio}}
     </li>
 
@@ -40,7 +48,11 @@
                         helpText="<li>The manuscript should explain what steps have been taken to make data available, particularly in cases where the data cannot be publicly deposited.</li>"
                         wrapperClass="yes-no-with-comments"
                         readonly=readonly}}
-        {{question-textarea ident="reviewer_report.standards.explanation" task=model decision=decision readonly=readonly}}
+        {{question-textarea ident="reviewer_report.standards.explanation"
+          task=model
+          decision=decision
+          noResponseText=""
+          readonly=readonly}}
       {{/question-radio}}
     </li>
 
@@ -52,7 +64,11 @@
                         helpText="<li>PLOS ONE does not copyedit accepted manuscripts, so the language in submitted articles must be clear, correct, and unambiguous. Any typographical or grammatical errors should be corrected at revision, so please note any specific errors below.</li>"
                         wrapperClass="yes-no-with-comments"
                         readonly=readonly}}
-        {{question-textarea ident="reviewer_report.intelligible.explanation" task=model decision=decision readonly=readonly}}
+        {{question-textarea ident="reviewer_report.intelligible.explanation"
+          task=model
+          decision=decision
+          noResponseText=""
+          readonly=readonly}}
       {{/question-radio}}
     </li>
 

@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :author do
-    position 1
+    sequence(:position){ |n| n }
     paper
     authors_task
 

@@ -19,7 +19,7 @@ public/assets
 .sass-cache
 
 # Local configuration
-# config/database.yml
+config/database.yml
 config/secrets.yml
 Procfile.local
 .env.local

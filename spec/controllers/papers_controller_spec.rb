@@ -37,8 +37,8 @@ describe PapersController do
 
       it "returns the correct meta response" do
         get :index, format: :json
-        expect(response_meta['total_active_papers']).to eq(3)        
-        expect(response_meta['total_inactive_papers']).to eq(2)        
+        expect(response_meta['total_active_papers']).to eq(3)
+        expect(response_meta['total_inactive_papers']).to eq(2)
       end
     end
 

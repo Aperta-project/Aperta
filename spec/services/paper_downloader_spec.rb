@@ -43,17 +43,17 @@ describe PaperDownloader do
         with_aws_cassette 'supporting_info_files_controller' do
           paper.supporting_information_files.create! attachment: tiff_file
         end
-        expect(doc.search('a:contains("yeti.tiff")').length).to eq(1)
-        expect(doc.search('img[src*="yeti.png"]').length).to eq(1)
+        expect(doc).to have_path('a:contains("yeti.tiff")')
+        expect(doc).to have_path('img[src*="yeti.png"]')
       end
 
       it "has link to unsupported image attachment" do
         with_aws_cassette 'supporting_info_files_controller_not_supported_image' do
           paper.supporting_information_files.create! attachment: bmp_file
         end
-        expect(doc.search('img').length).to eq(0)
-        expect(doc.search('a:contains("cat.bmp")').length).to eq(1)
-        expect(doc.search('a[href*="cat.bmp"]').length).to eq(1)
+        expect(doc).to_not have_path('img')
+        expect(doc).to have_path('a:contains("cat.bmp")')
+        expect(doc).to have_path('a[href*="cat.bmp"]')
       end
     end
   end

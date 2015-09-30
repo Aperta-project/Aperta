@@ -32,7 +32,6 @@ describe Snapshot::BaseTaskSerializer do
     it "has questions without answers" do
       snapshot = Snapshot::BaseTaskSerializer.new(task).snapshot
 
-
       expect(snapshot[:properties]).to be_nil
       expect(snapshot[:questions].count).to eq(3)
     end
@@ -43,9 +42,7 @@ describe Snapshot::BaseTaskSerializer do
       task.nested_questions[1].children << nested_child
       nested_child.parent_id = task.nested_questions[1].id
 
-
       snapshot = Snapshot::BaseTaskSerializer.new(task).snapshot
-
 
       expect(snapshot[:questions].count).to eq(3)
       expect(snapshot[:questions][1][:children].count).to eq(1)
@@ -57,9 +54,7 @@ describe Snapshot::BaseTaskSerializer do
       nested_question_answers << nested_question_answer
       allow_any_instance_of(Task).to receive(:nested_question_answers).and_return(nested_question_answers)
 
-
       snapshot = Snapshot::BaseTaskSerializer.new(task).snapshot
-
 
       expect(snapshot[:questions][0][:answers].count).to eq(1)
       expect(snapshot[:questions][0][:answers][0][:value]).to eq("Answer Value")
@@ -75,9 +70,7 @@ describe Snapshot::BaseTaskSerializer do
       nested_question_answers << nested_question_answer
       allow_any_instance_of(Task).to receive(:nested_question_answers).and_return(nested_question_answers)
 
-
       snapshot = Snapshot::BaseTaskSerializer.new(task).snapshot
-
 
       expect(snapshot[:questions][0][:answers].count).to eq(1)
       expect(snapshot[:questions][0][:answers][0][:value]).to eq("First Value")
@@ -99,9 +92,7 @@ describe Snapshot::BaseTaskSerializer do
       nested_question_answers << nested_question_answer
       allow_any_instance_of(Task).to receive(:nested_question_answers).and_return(nested_question_answers)
 
-
       snapshot = Snapshot::BaseTaskSerializer.new(task).snapshot
-
 
       expect(snapshot[:questions][0][:answers][0][:attachment][:file]).to eq(attachment[:attachment])
       expect(snapshot[:questions][0][:answers][0][:value]).to eq("text that is different")

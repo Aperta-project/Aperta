@@ -47,14 +47,8 @@ describe TahiStandardTasks::ReviewerReportTask do
   end
 
   describe "#decision" do
-    let(:paper) { FactoryGirl.create :paper, :with_tasks }
-    let(:task) do
-      FactoryGirl.create(
-        :reviewer_report_task,
-        title: "Reviewer Report",
-        phase: paper.phases.first
-      )
-    end
+    let(:paper) { FactoryGirl.create :paper_with_task, task_params: { type: TahiStandardTasks::ReviewerReportTask.name } }
+    let(:task) { paper.tasks.last }
     let(:previous_decision) { paper.decisions[1] }
     let(:latest_decision) { paper.decisions[0] }
 

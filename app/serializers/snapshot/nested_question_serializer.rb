@@ -15,7 +15,7 @@ module Snapshot
 
       answers_snapshot = []
       answers = @owner.nested_question_answers
-                      .select { |q| q.nested_question_id = @nested_question.id }
+                      .select { |q| q.nested_question_id == @nested_question.id }
                       .sort { |a,b| a.id <=> b.id }
 
       if answers

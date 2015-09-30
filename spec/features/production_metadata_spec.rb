@@ -59,11 +59,25 @@ feature 'Production Metadata Card', js: true do
         wait_for_ajax
 
         visit "/papers/#{paper.id}/tasks/#{production_metadata_task.id}"
-        find('label', text: 'Volume Number')
-        expect(find("input[name='production_metadata.publicationDate']").value).to eq '08/31/2015'
-        expect(find("input[name='production_metadata.volumeNumber']").value).to eq '1234'
-        expect(find("input[name='production_metadata.issueNumber']").value).to eq '5678'
-        expect(find("textarea[name='production_metadata.productionNotes']").value).to eq 'Too cool for school.'
+
+        find('h1', text: 'Production Metadata')
+        within '.overlay-main-work' do
+          expect(page).to have_field('production_metadata.volumeNumber', with: "1234")
+          expect(page).to have_field('production_metadata.issueNumber', with: "5678")
+          expect(page).to have_field('production_metadata.productionNotes', with: "Too cool for school.")
+          expect(page).to have_field('production_metadata.publicationDate', with: "08/31/2015")
+        end
+      end
+    end
+
+    context 'clicking complete' do
+       describe 'with invalid input in required fields' do
+        it 'shows an error'do
+          find('#task_completed').click
+          wait_for_ajax
+          expect(page).to have_content "Can't be blank"
+          expect(page).to have_content "Invalid Volume Number"
+        end
       end
     end
   end

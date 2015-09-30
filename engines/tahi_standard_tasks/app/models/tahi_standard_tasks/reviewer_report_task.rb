@@ -5,6 +5,12 @@ module TahiStandardTasks
     before_create :assign_to_latest_decision
 
     def body
+      # body is a json column by default which returns an Array. We don't want
+      # an array, we want to store properties. So if we get a blank
+      # object from the DB then return a Hash instead of the default json Array.
+      # Additionally, cache the body so we can set individual properties via
+      # calls like "body['foo'] = 'bar'" and have them persist when this
+      # task is saved.
       @body ||= begin
         result = super
         result.blank? ? {} : result

@@ -39,9 +39,9 @@ module TahiStandardTasks
 
     def decision=(new_decision)
       if new_decision
-        self.body["decision_id"] = new_decision.id
+        body["decision_id"] = new_decision.id
       else
-        self.body["decision_id"] = nil
+        body["decision_id"] = nil
       end
     end
 

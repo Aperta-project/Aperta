@@ -73,12 +73,6 @@ FactoryGirl.define do
     role "author"
   end
 
-  factory :reviewer_report_task, class: 'TahiStandardTasks::ReviewerReportTask' do
-    phase
-    title "Reviewer Report"
-    role "reviewer"
-  end
-
   factory :taxon_task, class: 'TahiStandardTasks::TaxonTask' do
     phase
     title "Taxon"
@@ -132,6 +126,12 @@ FactoryGirl.define do
     phase
     title "Authors"
     role "author"
+  end
+
+  factory :production_metadata_task, class: "TahiStandardTasks::ProductionMetadataTask" do
+    phase
+    title "Production Metadata"
+    role "admin"
   end
 end
 

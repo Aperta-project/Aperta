@@ -29,7 +29,7 @@ feature 'Assign team', js: true do
   scenario "Journal admin can assign a user with a journal role to a paper" do
     custom_reviewer_role_name = custom_reviewer.roles.first.name
 
-    login_as journal_admin
+    login_as(journal_admin, scope: :user)
 
     AssignTeamOverlay.visit(assign_team_task) do |overlay|
       overlay.assign_role_for_user custom_reviewer_role_name, custom_reviewer
@@ -40,7 +40,7 @@ feature 'Assign team', js: true do
   scenario "A user who can view all manuscript managers can assign members to a paper" do
     custom_reviewer_role_name = custom_reviewer.roles.first.name
 
-    login_as journal_editor
+    login_as(journal_editor, scope: :user)
 
     AssignTeamOverlay.visit(assign_team_task)
     expect(page).to have_content("You don't have access to that content")
@@ -56,28 +56,28 @@ feature 'Assign team', js: true do
     custom_reviewer_role_name = custom_reviewer.roles.first.name
     journal_editor.roles.first.update_attribute :can_view_assigned_manuscript_managers, true
 
-    login_as journal_editor
+    login_as(journal_editor, scope: :user)
 
     AssignTeamOverlay.visit(assign_team_task)
     expect(page).to have_content("You don't have access to that content")
-    sign_out
+    Page.new.sign_out
 
     #
     # assign user
     #
-    login_as journal_admin
+    login_as(journal_admin, scope: :user)
 
     AssignTeamOverlay.visit(assign_team_task) do |overlay|
       overlay.assign_role_for_user "Editor", journal_editor
       expect(overlay).to have_content("#{journal_editor.full_name} has been assigned as Editor")
     end
 
-    sign_out
+    Page.new.sign_out
 
     #
     # Log in and verify
     #
-    login_as journal_editor
+    login_as(journal_editor, scope: :user)
 
     AssignTeamOverlay.visit(assign_team_task) do |overlay|
       overlay.assign_role_for_user custom_reviewer_role_name, custom_reviewer
@@ -88,7 +88,7 @@ feature 'Assign team', js: true do
   scenario "A user who can manage the manuscript can remove members on a paper they are assigned to" do
     assign_paper_role(paper, custom_reviewer, "editor")
 
-    login_as journal_admin
+    login_as(journal_admin, scope: :user)
 
     AssignTeamOverlay.visit(assign_team_task) do |overlay|
       overlay.unassign_user custom_reviewer

@@ -5,7 +5,7 @@ feature "Profile Page", js: true, vcr: {cassette_name: "ned_countries", record: 
   let(:profile_page) { ProfilePage.new }
 
   before do
-    login_as admin
+    login_as(admin, scope: :user)
     visit "/"
 
     within ".navigation" do
@@ -17,8 +17,6 @@ feature "Profile Page", js: true, vcr: {cassette_name: "ned_countries", record: 
     expect(profile_page).to have_full_name(admin.full_name)
     expect(profile_page).to have_username(admin.username)
     expect(profile_page).to have_email(admin.email)
-    profile_page.sign_out
-    expect(current_path).to eq new_user_session_path
   end
 
   scenario "affiliation errors are handled" do

@@ -10,7 +10,7 @@ feature "Search Users on Admin Dashboard", js: true do
     create :user, first_name: "Sam", last_name: "Smith", username: 'bobby'
     create :user, first_name: "Jane", last_name: "Doe", username: 'janny'
 
-    login_as user
+    login_as(user, scope: :user)
     visit "/"
   end
 

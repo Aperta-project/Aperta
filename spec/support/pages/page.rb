@@ -135,7 +135,7 @@ class PageFragment
       select2_container = first(:css, options[:css])
     else
       select_name = options[:from]
-      select2_container = first("label", text: select_name).find(:xpath, '..').find(".select2-container")
+      select2_container = find("label", text: select_name).find(:xpath, '..').find(".select2-container")
     end
 
     drop_container = ".select2-drop"
@@ -226,5 +226,9 @@ class Page < PageFragment
   def sign_out
     find('.navigation-toggle').click
     find('a.navigation-item', text: 'SIGN OUT').click
+
+    within ".auth-container" do
+      find(".auth-flash", text: "Signed out successfully.")
+    end
   end
 end

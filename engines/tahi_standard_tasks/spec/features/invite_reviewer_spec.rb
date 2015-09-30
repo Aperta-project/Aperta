@@ -15,7 +15,7 @@ feature "Invite Reviewer", js: true do
     paper.paper_roles.create user: editor, role: PaperRole::COLLABORATOR
     task.participants << editor
 
-    login_as editor
+    login_as(editor, scope: :user)
     visit "/"
   end
 

@@ -9,13 +9,17 @@ module SalesforceServices
 
       def paper_to_manuscript_hash
         {
-          "RecordTypeId" => "012U0000000DqUyIAK",
+          "RecordTypeId" => "012U0000000E4ASIA0",
           "OwnerId" => @user_id,
           "Editorial_Process_Close__c" => false,
           "Display_Technical_Notes__c" => false,
           "CreatedByDeltaMigration__c" => false,
           "Editorial_Status_Date__c" => Time.now,
-          "Revision__c" => "0.0" # TODO: pull from paper
+          "Revision__c" => @paper.decisions.latest.revision_number,
+          "Title__c" => @paper.title,
+          "Initial_Date_Submitted__c" => @paper.submitted_at,
+          "Manuscript_Number__c" => @paper.doi,
+          "DOI__c" => @paper.doi
         }
       end
     end
@@ -27,7 +31,7 @@ module SalesforceServices
 
       def paper_to_billing_hash # (pfa)
         {
-          #'RecordTypeId'               => nil, # default, set by SF
+          'RecordTypeId'               => "012U0000000DqUyIAK",
           'SuppliedEmail'              => @paper.creator.email, # corresponding author == creator?
           'Exclude_from_EM__c'         => true,
           'Journal_Department__c'      => @paper.journal.name,

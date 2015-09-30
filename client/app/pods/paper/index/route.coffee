@@ -1,6 +1,4 @@
 `import Ember from 'ember'`
-`import RESTless from 'tahi/services/rest-less'`
-`import Heartbeat from 'tahi/services/heartbeat'`
 `import ENV from 'tahi/config/environment'`
 `import AuthorizedRoute from 'tahi/routes/authorized'`
 `import loadVeEditorAssets from 'tahi-editor-ve/initializers/load-assets'`
@@ -10,9 +8,9 @@ PaperIndexRoute = AuthorizedRoute.extend
   controllerName: 'paper/index'
   templateName: 'paper/index'
   cardOverlayService: Ember.inject.service('card-overlay'),
+  heartbeatService: Ember.inject.service('heartbeat'),
+  restless: Ember.inject.service('restless')
   fromSubmitOverlay: false
-
-  heartbeatService: null
 
   model: ->
     paper = @modelFor('paper')
@@ -30,7 +28,7 @@ PaperIndexRoute = AuthorizedRoute.extend
 
   afterModel: (model) ->
     if model.get('editable')
-      @set('heartbeatService', Heartbeat.create(resource: model))
+      @set('heartbeat', this.get('heartbeatService').create(model))
       @startHeartbeat()
 
   setupController: (controller, model) ->
@@ -46,7 +44,7 @@ PaperIndexRoute = AuthorizedRoute.extend
     editorController.set('commentLooks', @store.all('commentLook'))
 
     if @currentUser
-      RESTless.authorize(editorController, "/api/papers/#{model.get('id')}/manuscript_manager", 'canViewManuscriptManager')
+      this.get('restless').authorize(editorController, "/api/papers/#{model.get('id')}/manuscript_manager", 'canViewManuscriptManager')
 
   renderTemplate: (paperEditController, model) ->
     @render @get('editorLookup'),
@@ -59,10 +57,10 @@ PaperIndexRoute = AuthorizedRoute.extend
 
   startHeartbeat: ->
     if @isLockedByCurrentUser()
-      @get('heartbeatService').start()
+      @get('heartbeat').start()
 
   endHeartbeat: ->
-    @get('heartbeatService')?.stop()
+    @get('heartbeat')?.stop()
 
   isLockedByCurrentUser: ->
     lockedBy = @modelFor('paper').get('lockedBy')
@@ -92,5 +90,18 @@ PaperIndexRoute = AuthorizedRoute.extend
       })
 
       @set 'fromSubmitOverlay', true
+
+    # ask for confirmation while autosaving has not finished yet
+    willTransition: (transition) ->
+      editorController = @controllerFor(@get('editorLookup'))
+      if editorController.get('isSaving') and not confirm("Are you sure you want to discard changes?")
+        transition.abort()
+        # In fact, when this is get's called, the URL has already been updated
+        # so we do a history forward to actually preserve the URL.
+        if window.history
+          window.history.forward()
+        false
+      else
+        true
 
 `export default PaperIndexRoute`

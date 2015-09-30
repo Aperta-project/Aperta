@@ -1,7 +1,7 @@
 class EpubConverter
   attr_reader :paper, :include_source, :downloader
 
-  def initialize(paper, downloader, include_source = false)
+  def initialize(paper, downloader, include_source=false)
     @paper = paper
     @downloader = downloader
     @include_source = include_source
@@ -24,7 +24,7 @@ class EpubConverter
     HEAD
 
     body = <<-BODY
-  <h1>#{CGI.escape_html(paper.title)}</h1>
+  <h1>#{CGI.escape_html(paper.display_title)}</h1>
   #{paper_body.force_encoding('UTF-8')}
     BODY
 
@@ -109,10 +109,10 @@ class EpubConverter
     workdir = File.dirname temp_paper_path
     this = self
 
-    epub = GEPUB::Builder.new do
+    GEPUB::Builder.new do
       language 'en'
       unique_identifier 'http://tahi.org/hello-world', 'B, falseookID', 'URL'
-      title this.paper.title || this.paper.short_title
+      title this.paper.display_title
       creator this.paper.creator.full_name
       date Date.today.to_s
       if this.include_source && this.paper.manuscript.present?

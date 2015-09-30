@@ -25,7 +25,7 @@ class ReviewerReportTaskCreator
       ParticipationFactory.create(task: task, assignee: assignee)
       ParticipationFactory.create(task: task, assignee: paper.editor) if paper.editor.present?
     else
-      existing_reviewer_report_task.first.update!(completed: false)
+      existing_reviewer_report_task.first.incomplete!
     end
   end
 
@@ -35,7 +35,7 @@ class ReviewerReportTaskCreator
 
   # multiple `assignee` can exist on `paper` as a reviewer
   def assign_paper_role!
-    paper.paper_roles.for_role(PaperRole::REVIEWER).first_or_create!(user: assignee)
+    paper.paper_roles.for_role(PaperRole::REVIEWER).where(user: assignee).first_or_create!
   end
 
   def default_phase

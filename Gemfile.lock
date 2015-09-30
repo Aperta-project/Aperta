@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check
-  revision: 1612e8bc0a18274a6651a6a3bee6b95bf7c1e811
+  revision: 17ba4462979e4e3e8782fab111ad0cbc34d0dae5
   specs:
     plos_bio_tech_check (0.0.1)
       rails (~> 4.2.0)
@@ -349,7 +349,7 @@ GEM
     method_source (0.8.2)
     migration_data (0.0.4)
       rails (>= 4.0.0.rc1)
-    mime-types (2.6.1)
+    mime-types (2.6.2)
     mini_magick (4.3.3)
     mini_portile (0.6.2)
     minitest (5.8.0)

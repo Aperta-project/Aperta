@@ -1,5 +1,5 @@
 `import Ember from "ember"`
-`import { test } from "ember-qunit"`
+`import { module, test } from "qunit"`
 `import startApp from "../helpers/start-app"`
 `import { paperWithTask, addUserAsParticipant } from "../helpers/setups"`
 `import setupMockServer from "../helpers/mock-server"`
@@ -33,7 +33,6 @@ module "Integration: Billing",
     [currentPaper, billingTask, journal, phase] = records
 
     paperPayload = Factory.createPayload("paper")
-
     paperPayload.addRecords(records.concat([fakeUser]))
     paperResponse = paperPayload.toJSON()
     paperResponse.participations = [addUserAsParticipant(billingTask, fakeUser)]
@@ -41,12 +40,6 @@ module "Integration: Billing",
     taskPayload = Factory.createPayload("task")
     taskPayload.addRecords([billingTask, fakeUser])
     billingTaskResponse = taskPayload.toJSON()
-
-    collaborators = [
-      id: "35"
-      full_name: "Aaron Baker"
-      info: "testroles2, collaborator"
-    ]
 
     server.respondWith "GET", "/api/papers/#{currentPaper.id}", [
       200, {"Content-Type": "application/json"}, JSON.stringify paperResponse

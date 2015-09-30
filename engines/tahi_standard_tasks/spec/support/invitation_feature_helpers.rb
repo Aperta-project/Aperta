@@ -17,11 +17,8 @@ module InvitationFeatureHelpers
     expect(find_email(email)).to_not be_nil
   end
 
-  def sign_out
-    DashboardPage.new.sign_out
-  end
-
   def sign_up_as(email)
+    SignInPage.visit
     click_on "Sign up"
     SignUpPage.new.sign_up_as(email: email)
   end

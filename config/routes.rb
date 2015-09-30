@@ -183,6 +183,7 @@ Tahi::Application.routes.draw do
     get :download, on: :member
   end
 
+  get '/attachments/figures/:figure_id', to: 'image_proxy#show'
 
   # Fall through to ember app
   #

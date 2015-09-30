@@ -9,7 +9,7 @@ module SalesforceServices
 
       def paper_to_manuscript_hash
         {
-          "RecordTypeId" => "012U0000000E4ASIA0", # TODO: make this dynamic
+          "RecordTypeId" => "012U0000000E4ASIA0",
           "OwnerId" => @user_id,
           "Editorial_Process_Close__c" => false,
           "Display_Technical_Notes__c" => false,
@@ -31,7 +31,7 @@ module SalesforceServices
 
       def paper_to_billing_hash # (pfa)
         {
-          #'RecordTypeId'               => nil, # default, set by SF
+          'RecordTypeId'               => "012U0000000DqUyIAK",
           'SuppliedEmail'              => @paper.creator.email, # corresponding author == creator?
           'Exclude_from_EM__c'         => true,
           'Journal_Department__c'      => @paper.journal.name,

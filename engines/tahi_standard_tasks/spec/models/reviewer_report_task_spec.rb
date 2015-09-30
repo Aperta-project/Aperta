@@ -58,7 +58,7 @@ describe TahiStandardTasks::ReviewerReportTask do
   end
 
   describe "#decision" do
-    let(:decision){ FactoryGirl.create(:decision, paper: paper) }
+    let(:decision) { FactoryGirl.create(:decision, paper: paper) }
 
     it "returns the current decision" do
       task.decision = decision

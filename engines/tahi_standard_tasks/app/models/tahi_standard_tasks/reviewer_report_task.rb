@@ -2,8 +2,18 @@ module TahiStandardTasks
   class ReviewerReportTask < Task
     register_task default_title: 'Reviewer Report', default_role: 'reviewer'
 
+    before_create :assign_to_latest_decision
+
     def body
-      super.blank? ? {} : super
+      @body ||= begin
+        result = super
+        result.blank? ? {} : result
+      end
+    end
+
+    def body=(new_body)
+      @body = nil
+      super(new_body)
     end
 
     def can_change?(question)
@@ -11,6 +21,7 @@ module TahiStandardTasks
     end
 
     def incomplete!
+      self.decision = paper.decisions.latest
       update!(
         completed: false,
         body: body.except("submitted")
@@ -23,10 +34,14 @@ module TahiStandardTasks
     # This is impacted by the concept of "latest decision" in the app as it's
     # not always the latest rendered decision by an Academic Editor.
     def decision
-      if !paper.submitted? && submitted?
-        paper.decisions[1]
+      paper.decisions.find(body["decision_id"]) if body["decision_id"]
+    end
+
+    def decision=(new_decision)
+      if new_decision
+        self.body["decision_id"] = new_decision.id
       else
-        paper.decisions[0]
+        self.body["decision_id"] = nil
       end
     end
 
@@ -40,6 +55,12 @@ module TahiStandardTasks
 
     def submitted?
       !!body["submitted"]
+    end
+
+    private
+
+    def assign_to_latest_decision
+      self.decision = paper.decisions.latest
     end
   end
 end

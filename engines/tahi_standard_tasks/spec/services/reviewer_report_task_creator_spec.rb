@@ -54,10 +54,11 @@ describe ReviewerReportTaskCreator do
       }.to change { TahiStandardTasks::ReviewerReportTask.count }.by(0)
     end
 
-    it "uncompletes ReviewerReportTask" do
+    it "uncompletes and unsubmits ReviewerReportTask" do
       ReviewerReportTaskCreator.new(originating_task: paper_reviewer_task, assignee_id: assignee.id).process
       expect(TahiStandardTasks::ReviewerReportTask.count).to eq 1
       expect(TahiStandardTasks::ReviewerReportTask.first.completed).to eq false
+      expect(TahiStandardTasks::ReviewerReportTask.first.submitted?).to eq false
     end
   end
 

@@ -5,7 +5,6 @@ class Paper::Resubmitted::ReopenRevisionTasks
   def self.call(event_name, event_data)
     paper = event_data[:paper]
 
-    TahiStandardTasks::ReviewerReportTask.for_paper(paper).all.map(&:incomplete!)
     TahiStandardTasks::PaperReviewerTask.for_paper(paper).first.try(:incomplete!)
     TahiStandardTasks::RegisterDecisionTask.for_paper(paper).first.try(:incomplete!)
   end

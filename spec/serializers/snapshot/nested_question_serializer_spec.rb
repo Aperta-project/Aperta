@@ -1,7 +1,14 @@
 require "rails_helper"
 
 describe Snapshot::BaseTaskSerializer do
+  let(:task) { FactoryGirl.create(:task) }
+
   describe "serializing nested questions" do
+    before do
+      nested_questions = make_nested_questions(task)
+      allow_any_instance_of(Task).to receive(:nested_questions).and_return(nested_questions)
+    end
+
     def make_nested_questions(task)
       nested_questions = FactoryGirl.create_list(:nested_question, 3)
       nested_questions.each do |nested_question|
@@ -13,12 +20,16 @@ describe Snapshot::BaseTaskSerializer do
       nested_questions
     end
 
+    def make_nested_question_answer(nested_question_id, value)
+      nested_question_answer = FactoryGirl.create(:nested_question_answer)
+      nested_question_answer.owner_id = task.id
+      nested_question_answer.owner_type = "task"
+      nested_question_answer.value = value
+      nested_question_answer.nested_question_id = nested_question_id
+      nested_question_answer
+    end
+
     it "has questions without answers" do
-      task = FactoryGirl.create(:task)
-      nested_questions = make_nested_questions(task)
-      allow_any_instance_of(Task).to receive(:nested_questions).and_return(nested_questions)
-
-
       snapshot = Snapshot::BaseTaskSerializer.new(task).snapshot
 
 
@@ -27,40 +38,53 @@ describe Snapshot::BaseTaskSerializer do
     end
 
     it "serializes children" do
-      task = FactoryGirl.create(:task)
-      nested_questions = make_nested_questions(task)
       nested_child = FactoryGirl.create(:nested_question)
       nested_child.owner_id = task.id
-      nested_questions[1].children << nested_child
-      nested_child.parent_id = nested_questions[1].id
+      task.nested_questions[1].children << nested_child
+      nested_child.parent_id = task.nested_questions[1].id
 
-      allow_any_instance_of(Task).to receive(:nested_questions).and_return(nested_questions)
+
       snapshot = Snapshot::BaseTaskSerializer.new(task).snapshot
-      binding.pry
+
 
       expect(snapshot[:questions].count).to eq(3)
       expect(snapshot[:questions][1][:children].count).to eq(1)
     end
 
     it "has questions with answers" do
-      task = FactoryGirl.create(:task)
-      nested_questions = make_nested_questions(task)
       nested_question_answers = []
-      nested_question_answer = FactoryGirl.create(:nested_question_answer)
-      nested_question_answer.owner_id = task.id
-      nested_question_answer.owner_type = "task"
-      nested_question_answer.nested_question_id = nested_questions.first.id
+      nested_question_answer = make_nested_question_answer(task.nested_questions.first.id, "Answer Value")
       nested_question_answers << nested_question_answer
-
-      allow_any_instance_of(Task).to receive(:nested_questions).and_return(nested_questions)
       allow_any_instance_of(Task).to receive(:nested_question_answers).and_return(nested_question_answers)
+
+
       snapshot = Snapshot::BaseTaskSerializer.new(task).snapshot
 
-      binding.pry
+
+      expect(snapshot[:questions][0][:answers].count).to eq(1)
+      expect(snapshot[:questions][0][:answers][0][:value]).to eq("Answer value")
+      expect(snapshot[:questions][1][:answers].count).to eq(0)
+      expect(snapshot[:questions][2][:answers].count).to eq(0)
     end
 
 
-    it "doesn't matter what order questions are answered in"
+    it "doesn't matter what order questions are answered in" do
+      nested_question_answers = []
+      nested_question_answer = make_nested_question_answer(task.nested_questions[1].id, "Last Value")
+      nested_question_answers << nested_question_answer
+      nested_question_answer = make_nested_question_answer(task.nested_questions[0].id, "First Value")
+      nested_question_answers << nested_question_answer
+      allow_any_instance_of(Task).to receive(:nested_question_answers).and_return(nested_question_answers)
 
+
+      snapshot = Snapshot::BaseTaskSerializer.new(task).snapshot
+
+
+      expect(snapshot[:questions][0][:answers].count).to eq(1)
+      expect(snapshot[:questions][0][:answers][0][:value]).to eq("First Value")
+      expect(snapshot[:questions][1][:answers].count).to eq(0)
+      expect(snapshot[:questions][2][:answers].count).to eq(1)
+      expect(snapshot[:questions][2][:answers][0][:value]).to eq("Second Value")
+    end
   end
 end

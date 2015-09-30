@@ -23,9 +23,9 @@ describe PDFConverter do
   end
 
   describe ".pdf_html" do
-    subject(:doc){ Nokogiri::HTML(pdf_html) }
-    let(:pdf_html){ PDFConverter.pdf_html paper, presenter }
-    let(:presenter){ PublishingInformationPresenter.new paper, user }
+    let(:doc) { Nokogiri::HTML(pdf_html) }
+    let(:pdf_html) { PDFConverter.pdf_html paper, presenter }
+    let(:presenter) { PublishingInformationPresenter.new paper, user }
 
     after { expect(doc.errors.length).to be 0 }
 
@@ -37,8 +37,7 @@ describe PDFConverter do
 
     it "displays and HTML escapes the paper's title in the body" do
       paper.title = "<This Is & The Title>"
-      element = doc.at("#paper-body h1:contains('#{paper.title}')")
-      expect(element).to be
+      expect(doc).to have_path("#paper-body h1:contains('#{paper.title}')")
     end
   end
 end

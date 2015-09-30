@@ -439,13 +439,13 @@ describe Paper do
         paper.supporting_information_files.create! attachment: ::File.open('spec/fixtures/yeti.tiff')
       end
 
-      expect(doc.search('h2:contains("Supporting Information")').length).to eq(1)
+      expect(doc).to have_path('h2:contains("Supporting Information")')
     end
 
     it "does not have supporting information section without supporting information" do
       expect(paper.supporting_information_files.count).to eq(0)
 
-      expect(doc.search('h2:contains("Supporting Information")').length).to eq(0)
+      expect(doc).to_not have_path('h2:contains("Supporting Information")')
     end
 
     it "has image preview and link with image" do
@@ -453,8 +453,8 @@ describe Paper do
         paper.supporting_information_files.create! attachment: ::File.open('spec/fixtures/yeti.tiff')
       end
 
-      expect(doc.search('a:contains("yeti.tiff")').length).to eq(1)
-      expect(doc.search('img[src*="yeti.png"]').length).to eq(1)
+      expect(doc).to have_path('a:contains("yeti.tiff")')
+      expect(doc).to have_path('img[src*="yeti.png"]')
     end
 
     it "has link to unsupported image attachment" do
@@ -462,9 +462,9 @@ describe Paper do
         paper.supporting_information_files.create! attachment: ::File.open('spec/fixtures/cat.bmp')
       end
 
-      expect(doc.search('img').length).to eq(0)
-      expect(doc.search('a:contains("cat.bmp")').length).to eq(1)
-      expect(doc.search('a[href*="cat.bmp"]').length).to eq(1)
+      expect(doc).to_not have_path('img')
+      expect(doc).to have_path('a:contains("cat.bmp")')
+      expect(doc).to have_path('a[href*="cat.bmp"]')
     end
   end
 

@@ -1,12 +1,21 @@
-<label class="question-checkbox">
-  {{check-box name=ident checked=checked disabled=disabled}}
-  {{#if model.question}}
-    <p class="model-question">{{model.question}}</p>
+{{#if readonly}}
+  <div class="question-text">{{model.question}}</div>
+  {{#if model.answer}}
+    <div class="answer-text">{{model.answer}}</div>
+  {{else}}
+    <div class="answer-text no-answer">{{noResponseText}}</div>
   {{/if}}
-  {{#if displayQuestion}}
-    <p class="model-question">{{{displayQuestion}}}</p>
-  {{/if}}
-</label>
+{{else}}
+  <label class="question-checkbox">
+    {{check-box name=ident checked=checked disabled=disabled}}
+    {{#if model.question}}
+      <p class="model-question">{{model.question}}</p>
+    {{/if}}
+    {{#if displayQuestion}}
+      <p class="model-question">{{{displayQuestion}}}</p>
+    {{/if}}
+  </label>
+{{/if}}
 
 {{#if template}}
   <div class="additional-data">{{yield checked}}</div>

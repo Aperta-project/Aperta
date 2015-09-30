@@ -44,11 +44,7 @@ module TahiStandardTasks
     end
 
     def decision=(new_decision)
-      if new_decision
-        body["decision_id"] = new_decision.id
-      else
-        body["decision_id"] = nil
-      end
+      body["decision_id"] = new_decision.try(:id)
     end
 
     def send_emails

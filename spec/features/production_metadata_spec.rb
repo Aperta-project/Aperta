@@ -55,12 +55,16 @@ feature 'Production Metadata Card', js: true do
 
     describe 'filling in the entire card' do
       it 'persists information' do
-        find("input[name='production_metadata.volumeNumber']").set '1234'
-        find("input[name='production_metadata.issueNumber']").set '5678'
-        find("textarea[name='production_metadata.productionNotes']").set 'Too cool for school.'
-        find("input[name='production_metadata.publicationDate']").set '08/31/2015'
-        first('.overlay-close-button').click
+        page.fill_in 'production_metadata.publicationDate', with: '08/31/2015'
+        page.execute_script "$(\"input[name='production_metadata.publicationDate']\").trigger('change')"
+        page.fill_in 'production_metadata.volumeNumber', with: '1234'
+        page.execute_script "$(\"input[name='production_metadata.volumeNumber']\").trigger('change')"
+        page.fill_in 'production_metadata.issueNumber', with: '5678'
+        page.execute_script "$(\"input[name='production_metadata.issueNumber']\").trigger('change')"
+        page.fill_in 'production_metadata.productionNotes', with: 'Too cool for school.'
+        page.execute_script "$(\"textarea[name='production_metadata.productionNotes']\").trigger('change')"
         wait_for_ajax
+
         visit "/papers/#{paper.id}/tasks/#{production_metadata_task.id}"
 
         find('h1', text: 'Production Metadata')

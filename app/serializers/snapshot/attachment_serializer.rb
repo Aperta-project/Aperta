@@ -2,7 +2,7 @@ module Snapshot
   class AttachmentSerializer < BaseSerializer
 
     def initialize(attachment)
-      @ttachment = attachment
+      @attachment = attachment
     end
 
     def snapshot
@@ -11,12 +11,10 @@ module Snapshot
       end
 
       {
-        file: @question_attachment.file,
-        title: @question_attachment.title,
-        caption: @question_attachment.caption,
-        kind: @question_attachment.kind,
-        created_at: @question_attachment.created_at,
-        updated_at: @question_attachment.updated_at
+        file: @attachment.model[:attachment],
+        title: @attachment.model[:title],
+        caption: @attachment.model[:caption],
+        status: @attachment.model[:status]
       }
     end
   end

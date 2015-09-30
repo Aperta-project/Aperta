@@ -93,7 +93,18 @@
     <hr>
 
     <p>
-      {{question-check ident="plos_billing.agree_collections" task=model displayQuestion='I have read and agree to the <a href="https://www.plos.org/wp-content/uploads/2015/02/PLOS-Collections-Terms.pdf" target="_blank">Terms of Submission to PLOS Collections</a>'}}
+      {{#nested-question-check ident="agree_to_collections" task=model
+          displayQuestionText=false
+          as |check| }}
+            {{#if check.yieldingForText}}
+              <p class="model-question">
+                I have read and agree to the
+                <a href="https://www.plos.org/wp-content/uploads/2015/02/PLOS-Collections-Terms.pdf" target="_blank">
+                  Terms of Submission to PLOS Collections
+                </a>
+              </p>
+            {{/if}}
+      {{/nested-question-check}}
     </p>
   </div>
 {{/if}}

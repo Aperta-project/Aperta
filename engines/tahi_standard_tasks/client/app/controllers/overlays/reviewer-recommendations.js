@@ -1,25 +1,27 @@
 import Ember from 'ember';
-import TaskController from 'tahi/pods/paper/task/controller';
-import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
+import TaskController from "tahi/pods/paper/task/controller";
 
-export default TaskController.extend(ValidationErrorsMixin, {
+export default TaskController.extend({
   showNewReviewerForm: false,
-  newRecommendation: {},
+  task: Ember.computed.alias("model"),
+  reviewerRecommendations: Ember.computed.alias("task.reviewerRecommendations"),
 
-  // Doing this to prevent short period of time where `newRecommendation` is in the DOM
-  // while save is happening. If it becomes invalid after save it is removed. This creates
-  // a glitchy look to the list.
-  validReviewerRecommendations: Ember.computed('model.reviewerRecommendations.@each.isNew', function() {
-    return this.get('model.reviewerRecommendations').filterBy('isNew', false);
+  newRecommendationQuestions: Ember.on('init', function(){
+    this.store.findQuery('nested-question', { type: "ReviewerRecommendation" }).then( (nestedQuestions) => {
+      this.set('nestedQuestionsForNewRecommendation', nestedQuestions);
+    });
   }),
 
-  resetForm: function() {
-    this.setProperties({
-      showNewReviewerForm: false,
-      newRecommendation: {}
+  newRecommendation: Ember.computed('showNewReviewerForm', function(){
+    return this.store.createRecord('reviewer-recommendation', {
+      nestedQuestions: this.get('nestedQuestionsForNewRecommendation')
     });
+  }),
 
-    this.clearAllValidationErrors();
+  clearNewRecommendationAnswers: function(){
+    this.get('nestedQuestionsForNewRecommendation').forEach( (nestedQuestion) => {
+      nestedQuestion.clearAnswerForOwner(this.get("newRecommendation"));
+    });
   },
 
   actions: {
@@ -28,16 +30,11 @@ export default TaskController.extend(ValidationErrorsMixin, {
     },
 
     saveNewRecommendation: function() {
-      let newRecommendation = this.store.createRecord('reviewerRecommendation', this.get('newRecommendation'));
-
-      newRecommendation
-        .set('reviewerRecommendationsTask', this.get('model'))
-        .save().then(() => {
-          this.resetForm();
-        }).catch((response) => {
-          newRecommendation.deleteRecord();
-          this.displayValidationErrorsFromResponse(response);
-        });
+      let recommendation = this.get("newRecommendation");
+      recommendation.set("reviewerRecommendationsTask", this.get("model"));
+      recommendation.save().then( () => {
+        this.toggleProperty('showNewReviewerForm');
+      });
     },
 
     institutionSelected: function(institution) {
@@ -46,7 +43,8 @@ export default TaskController.extend(ValidationErrorsMixin, {
     },
 
     cancelEdit: function() {
-      this.resetForm();
+      this.clearNewRecommendationAnswers();
+      this.toggleProperty('showNewReviewerForm');
     }
   }
 });

@@ -33,26 +33,25 @@
     disabled=disabled}}
 </div>
 
-<div class="question-text">
-  Did the funder have a role in study design, data collection and analysis, decision to publish, or preparation of the manuscript?
-</div>
+{{#nested-question-radio ident="funder_had_influence"
+    task=model
+    yesAction="userSelectedYesForFunderInfluence"
+    noAction="userSelectedNoForFunderInfluence" as |selected|}}
 
-{{binary-radio-button
-  name=uniqueName
-  selection=model.funderHadInfluence
-  disabled=disabled}}
+  {{#if selected.yes}}
+    <p class="question-text">
+      {{funderRoleDescriptionQuestion.text}}
+    </p>
 
-{{#if model.funderHadInfluence}}
-  <p class="question-text">
-    Describe the role of any sponsors or funders in the study design, data collection and analysis,
-    decision to publish, or preparation of the manuscript.
-  </p>
-  <div class="form-group">
-    <span class="text-field-title">Role of sponsors or funders</span>
-    {{textarea
-      value=model.funderInfluenceDescription
-      class="form-control tall-textarea"
-      placeholder="Description"
-      disabled=disabled}}
-  </div>
-{{/if}}
+    <div class="form-group">
+      <span class="text-field-title">Role of sponsors or funders</span>
+      {{nested-question-textarea ident="funder_role_description"
+          task=model
+          displayQuestionText=false
+          placeholder="Description"
+          inputClassNames="form-control tall-textarea"
+          disabled=disabled}}
+    </div>
+  {{/if}}
+
+{{/nested-question-radio}}

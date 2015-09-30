@@ -1,0 +1,12 @@
+{{#if shouldDisplayQuestionText}}
+  <div class="{{textClassNames}}">{{{questionText}}}</div>
+{{/if}}
+
+{{#if hasBlock}}
+  {{yield textYieldValue}}
+{{/if}}
+
+{{#if helpText}}
+  <ul class="question-help">{{{helpText}}}</ul>
+{{/if}}
+{{textarea name=ident value=model.answer.value class=inputClassNames placeholder=placeholder disabled=disabled}}

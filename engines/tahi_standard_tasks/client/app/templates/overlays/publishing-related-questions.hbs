@@ -2,129 +2,122 @@
 
 <ol class="question-list">
   <li class="question">
-  {{#question-radio ident="publishing_related_questions.published_elsewhere"
+  {{#nested-question-radio ident="published_elsewhere"
                     task=model
-                    question="Have the results, data, or figures in this manuscript been published elsewhere? Are they under consideration for publication elsewhere?"
                     disabled=isSubmissionTaskNotEditable
                     as |selected|}}
 
     {{#if selected.yes}}
       <div class="question-dataset">
-        Please identify which results, data, or figures have been taken from other published or pending manuscripts, and explain why inclusion in this submission does not constitute dual publication.
-        {{question-input ident="publishing_related_questions.published_elsewhere.taken_from_manuscripts"
-                         question="Please identify which results, data, or figures have been taken from other published or pending manuscripts, and explain why inclusion in this submission does not constitute dual publication."
+        {{nested-question-input ident="published_elsewhere.taken_from_manuscripts"
                          task=model
                          label="Results, data or figures"
                          placeholderText="Figure 1.2 - contains new data points"
+                         textClassNames=""
                          disabled=isSubmissionTaskNotEditable}}
         <br>
-        {{question-uploader ident="publishing_related_questions.published_elsewhere.upload_related_work" task=model
-                            question="Please also upload a copy of the related work with your submission as a 'Related Manuscript' item. Note that reviewers may be asked to comment on the overlap between the related submissions."
-                            updateStore="updateStore"
-                            accept=".docx,.pdf"
-                            disabled=isSubmissionTaskNotEditable}}
+        {{nested-question-uploader ident="published_elsewhere.upload_related_work"
+                         task=model
+                         updateStore="updateStore"
+                         accept=".docx,.pdf"
+                         disabled=isSubmissionTaskNotEditable}}
       </div>
     {{/if}}
-  {{/question-radio}}
+  {{/nested-question-radio}}
   </li>
   <li class="question">
-  {{#question-radio ident="publishing_related_questions.submitted_in_conjunction"
+  {{#nested-question-radio ident="submitted_in_conjunction"
                     task=model
-                    question="Is this manuscript being submitted in conjunction with another submission?"
                     disabled=isSubmissionTaskNotEditable
                     as |selected|}}
 
     {{#if selected.yes}}
       <div class="question-dataset">
         <div class="question-dataset-header">Please provide the title of that submission and the corresponding author.</div>
-        {{question-input ident="publishing_related_questions.submitted_in_conjunction.corresponding_title"
+        {{nested-question-input ident="submitted_in_conjunction.corresponding_title"
                          class="sub-question"
+                         displayQuestionText=false
                          task=model
-                         question="Title"
                          label="Title"
                          placeholderText="Submission Title"
                          disabled=isSubmissionTaskNotEditable}}
 
         <br>
-        {{question-input ident="publishing_related_questions.submitted_in_conjunction.corresponding_author"
+        {{nested-question-input ident="submitted_in_conjunction.corresponding_author"
                          class="sub-question"
+                         displayQuestionText=false
                          task=model
-                         question="Corresponding author"
                          label="Corresponding Author"
                          placeholderText="Corresponding Author Name"
                          disabled=isSubmissionTaskNotEditable}}
       </div>
     {{/if}}
-  {{/question-radio}}
+  {{/nested-question-radio}}
   </li>
   <li class="question">
       <div class="question-text">Please indicate whether you have had any of the following previous interactions about this manuscript.</div>
       <div class="question-text">Check all that apply.</div>
-      {{#question-check ident="publishing_related_questions.previous_interactions.this_manuscript"
+      {{#nested-question-check ident="previous_interactions_with_this_manuscript"
                         task=model
-                        question="I have had previous interactions about this manuscript with a staff editor or Academic Editor of this journal."
                         disabled=isSubmissionTaskNotEditable
-                        as |checked|}}
-        {{#if checked}}
-          <div class="question-dataset">
-            {{question-textarea ident="publishing_related_questions.previous_interactions.this_manuscript.submission_details"
-                                task=model
-                                question="Please enter manuscript number and editor name, if known"
-                                disabled=isSubmissionTaskNotEditable}}
-          </div>
+                        as |selection|}}
+        {{#if selection.yieldingForAdditionalData }}
+          {{#if selection.checked}}
+            <div class="question-dataset">
+              {{nested-question-textarea ident="submission_details"
+                                  task=model
+                                  disabled=isSubmissionTaskNotEditable}}
+            </div>
+          {{/if}}
         {{/if}}
-      {{/question-check}}
+      {{/nested-question-check}}
 
-      {{#question-check ident="publishing_related_questions.previous_interactions.presubmission_inquiry"
+      {{#nested-question-check ident="presubmission_inquiry"
                         task=model
-                        question="I submitted a presubmission inquiry for this manuscript."
                         disabled=isSubmissionTaskNotEditable
-                        as |checked|}}
-        {{#if checked}}
-          <div class="question-dataset">
-            {{question-textarea ident="publishing_related_questions.previous_interactions.presubmission_inquiry.submission_details"
-                                task=model
-                                question="Please enter manuscript number and editor name, if known"
-                                disabled=isSubmissionTaskNotEditable}}
-          </div>
+                        as |selection|}}
+        {{#if selection.yieldingForAdditionalData }}
+          {{#if selection.checked}}
+            <div class="question-dataset">
+              {{nested-question-textarea ident="presubmission_inquiry.submission_details"
+                                  task=model
+                                  disabled=isSubmissionTaskNotEditable}}
+            </div>
+          {{/if}}
         {{/if}}
-      {{/question-check}}
+      {{/nested-question-check}}
 
-      {{#question-check ident="publishing_related_questions.previous_interactions.other_journal_submission"
+      {{#nested-question-check ident="other_journal_submission"
                         task=model
-                        question="This manuscript was previously submitted to a different PLOS journal as either a presubmission inquiry or a full submission."
                         disabled=isSubmissionTaskNotEditable
-                        as |checked|}}
-
-        {{#if checked}}
-          <div class="question-dataset">
-            {{question-textarea ident="publishing_related_questions.previous_interactions.other_journal_submission.submission_details"
-                                task=model
-                                question="Please enter manuscript number and editor name, if known"
-                                disabled=isSubmissionTaskNotEditable}}
-          </div>
+                        as |selection|}}
+        {{#if selection.yieldingForAdditionalData }}
+          {{#if selection.checked}}
+            <div class="question-dataset">
+              {{nested-question-textarea ident="other_journal_submission.submission_details"
+                                  task=model
+                                  disabled=isSubmissionTaskNotEditable}}
+            </div>
+          {{/if}}
         {{/if}}
-      {{/question-check}}
+      {{/nested-question-check}}
 
-      {{question-check ident="publishing_related_questions.previous_interactions.journal_editor"
+      {{nested-question-check ident="author_was_previous_journal_editor"
                        task=model
-                       question="One or more of the authors (including myself) currently serve, or have previously served, as an Academic Editor or Guest Editor for this journal."
                        disabled=isSubmissionTaskNotEditable}}
   </li>
   <li class="question">
     If your submission is intended for a PLOS Collection, enter the name of the collection in the box below. Please also ensure the name of the collection is included in your cover letter.
-    {{question-input ident="publishing_related_questions.intended_collection"
+    {{nested-question-input ident="intended_collection"
                       task=model
-                      question="If your submission is intended for a PLOS Collection, enter the name of the collection in the box below. Please also ensure the name of the collection is included in your cover letter."
                       label="Name of PLOS Collection"
                       placeholderText="Collection Name"
                       disabled=isSubmissionTaskNotEditable}}
 
   </li>
   <li class="question">
-    {{question-radio ident="publishing_related_questions.us_government_employees"
+    {{nested-question-radio ident="us_government_employees"
                      task=model
-                     question="Are you or any of the contributing authors an employee of the United States Government?"
                      helpText="Papers authored by one or more U.S. government employees are not copyrighted, but are licensed under a <a target='_blank' href='http://creativecommons.org/about/cc0'>CC0 Public Domain Dedication</a>, which allows unlimited distribution and reuse of the article for any lawful purpose. This is a legal requirement for U.S. government employees."
                      disabled=isSubmissionTaskNotEditable}}
   </li>

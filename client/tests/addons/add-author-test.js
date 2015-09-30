@@ -1,10 +1,11 @@
 import Ember from "ember";
 import { module, test } from "qunit";
 import startApp from "tahi/tests/helpers/start-app";
+import setupMockServer from '../helpers/mock-server';
 import FactoryGuy from "ember-data-factory-guy";
 import TestHelper from "ember-data-factory-guy/factory-guy-test-helper";
 
-let App, paper, phase, task;
+let App, paper, phase, task, server;
 
 module("Integration: adding an author", {
   afterEach() {
@@ -14,11 +15,24 @@ module("Integration: adding an author", {
 
   beforeEach() {
     App = startApp();
+    server = setupMockServer();
     TestHelper.setup(App);
 
-    $.mockjax({url: "/api/admin/journals/authorization", status: 204});
-    $.mockjax({url: "/api/user_flows/authorization", status: 204});
-    $.mockjax({url: "/api/affiliations", status: 200, responseText: []});
+    server.respondWith('GET', "/api/nested_questions?type=Author", [200, { 'Content-Type': 'application/json' }, JSON.stringify(
+      { nested_questions: [
+        {id: 120, text: "A question to be checked", value_type: "boolean", ident: "published_as_corresponding_author" },
+        {id: 121, text: "A question to be checked", value_type: "boolean", ident: "deceased" },
+        {id: 122, text: "Contributions", value_type: "question-set", ident: "contributions" },
+        {id: 123, text: "A question to be checked", value_type: "boolean", parent_id: 122, ident: "conceived_and_designed_experiments" },
+        {id: 124, text: "A question to be checked", value_type: "boolean", parent_id: 122, ident: "performed_the_experiments" },
+        {id: 125, text: "A question to be checked", value_type: "boolean", parent_id: 122, ident: "analyzed_data" },
+        {id: 126, text: "A question to be checked", value_type: "boolean", parent_id: 122, ident: "contributed_tools" },
+        {id: 127, text: "A question to be checked", value_type: "boolean", parent_id: 122, ident: "contributed_writing" },
+      ] }
+    ) ]);
+    server.respondWith('GET', "/api/admin/journals/authorization", [204, { 'Content-Type': 'application/json' }, "" ]);
+    server.respondWith('GET', "/api/user_flows/authorization", [204, { 'Content-Type': 'application/json' }, "" ]);
+    server.respondWith('GET', "/api/affiliations", [200, { 'Content-Type': 'application/json' }, JSON.stringify([]) ]);
 
     phase = FactoryGuy.make("phase");
     task = FactoryGuy.make("authors-task", { phase: phase });
@@ -38,7 +52,6 @@ test("can add a new author", function(assert) {
     visit(`/papers/${paper.id}/tasks/${task.id}`);
     click(".button-primary:contains('Add a New Author')");
     fillIn(".author-name input:first", name);
-    click(".author-contributions input:first");
     click(".author-form-buttons .button-secondary:contains('done')");
 
     andThen(function() {

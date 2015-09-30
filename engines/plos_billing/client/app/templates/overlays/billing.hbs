@@ -9,48 +9,36 @@
 <div class="add-author-form">
   <div class="form-group form-inline author-top">
     <div class="form-group author-half {{if validationErrors.firstName "error"}}">
-      <span class="text-field-title">
-        First Name
-      </span>
-      {{question-input ident="plos_billing.first_name"
+      {{nested-question-input ident="first_name"
                        task=model
-                       question="First Name"
                        placeholderText="Jane"
-                       disabled=isSubmissionTaskNotEditable}}
+                       disabled=isSubmissionTaskNotEditable
+                       textClassNames="text-field-title"}}
     </div>
 
     <div class="form-group author-half author-bump {{if validationErrors.lastName "error"}}">
-      <span class="text-field-title">
-        Last Name
-      </span>
-      {{question-input ident="plos_billing.last_name"
+      {{nested-question-input ident="last_name"
                        task=model
-                       question="Last Name"
                        placeholderText="Goodall"
-                       disabled=isSubmissionTaskNotEditable}}
+                       disabled=isSubmissionTaskNotEditable
+                       textClassNames="text-field-title"}}
     </div>
   </div>
   <div class="form-group form-inline">
     <div class="form-group author-half {{if validationErrors.title "error"}}">
-      <span class="text-field-title">
-        Title
-      </span>
-      {{question-input ident="plos_billing.title"
+      {{nested-question-input ident="title"
                        task=model
-                       question="Title"
                        placeholderText="World's Foremost Expert on Chimpanzees"
-                       disabled=isSubmissionTaskNotEditable}}
+                       disabled=isSubmissionTaskNotEditable
+                       textClassNames="text-field-title"}}
     </div>
 
     <div class="form-group author-half author-bump {{if validationErrors.department "error"}}">
-      <span class="text-field-title">
-        Department
-      </span>
-      {{question-input ident="plos_billing.department"
+      {{nested-question-input ident="department"
                        task=model
-                       question="Department"
                        placeholderText="Primatology"
-                       disabled=isSubmissionTaskNotEditable}}
+                       disabled=isSubmissionTaskNotEditable
+                       textClassNames="text-field-title"}}
     </div>
   </div>
   <div class="form-group form-inline">
@@ -70,93 +58,72 @@
   </div>
   <div class="form-group form-inline">
     <div class="form-group author-half {{if validationErrors.phone "error"}}">
-      <span class="text-field-title">
-        Phone
-      </span>
-      {{question-input ident="plos_billing.phone_number"
+      {{nested-question-input ident="phone_number"
                        task=model
-                       question="Phone"
                        placeholderText="415-555-5555"
-                       disabled=isSubmissionTaskNotEditable}}
+                       disabled=isSubmissionTaskNotEditable
+                       textClassNames="text-field-title"}}
 
     </div>
     <div class="form-group author-half author-bump {{if validationErrors.email "error"}}">
-      <span class="text-field-title">
-        Email
-      </span>
-      {{question-input ident="plos_billing.email_address"
+      {{nested-question-input ident="email"
                        task=model
-                       question="Email"
                        placeholderText="jane.goodll@science.com"
-                       disabled=isSubmissionTaskNotEditable}}
+                       disabled=isSubmissionTaskNotEditable
+                       textClassNames="text-field-title"}}
 
     </div>
   </div>
   <div class="form-group form-inline">
     <div class={{if validationErrors.address1 "error"}}>
-      <span class="text-field-title">
-        Address Line 1 (optional)
-      </span>
-      {{question-input ident="plos_billing.address1"
+      {{nested-question-input ident="address1"
                        task=model
-                       question="Address line one"
                        placeholderText="1581 Le Roy Ave"
-                       disabled=isSubmissionTaskNotEditable}}
+                       disabled=isSubmissionTaskNotEditable
+                       textClassNames="text-field-title"}}
     </div>
   </div>
   <div class="form-group form-inline">
     <div class={{if validationErrors.address2 "error"}}>
-      <span class="text-field-title">
-        Address Line 2 (optional)
-      </span>
-      {{question-input ident="plos_billing.address2"
+      {{nested-question-input ident="address2"
                        task=model
-                       question="Address line two"
                        placeholderText="Suite 3"
-                       disabled=isSubmissionTaskNotEditable}}
+                       disabled=isSubmissionTaskNotEditable
+                       textClassNames="text-field-title"}}
     </div>
   </div>
   <div class="form-group form-inline">
     <div class="form-group author-half {{if validationErrors.city "error"}}">
-      <span class="text-field-title">
-        City
-      </span>
-      {{question-input ident="plos_billing.city"
+      {{nested-question-input ident="city"
                        task=model
-                       question="City"
                        placeholderText="Berkeley"
-                       disabled=isSubmissionTaskNotEditable}}
+                       disabled=isSubmissionTaskNotEditable
+                       textClassNames="text-field-title"}}
     </div>
 
     <div class="form-group author-name author-bump {{if validationErrors.state "error"}}">
-      <span class="text-field-title">
-        State or Province
-      </span>
-
-      {{question-input ident="plos_billing.state"
+      {{nested-question-input ident="state"
                        task=model
-                       question="Enter State or Province"
                        placeholderText="State or Province"
-                       disabled=isSubmissionTaskNotEditable}}
+                       disabled=isSubmissionTaskNotEditable
+                       textClassNames="text-field-title"}}
     </div>
     <div class="form-group author-name author-bump {{if validationErrors.postal_code "error"}}">
-      <span class="text-field-title">
-        ZIP or Postal Code
-      </span>
-      {{question-input ident="plos_billing.postal_code"
+      {{nested-question-input ident="postal_code"
                        task=model
-                       question="Postal Code"
                        placeholderText="94708"
-                       disabled=isSubmissionTaskNotEditable}}
+                       disabled=isSubmissionTaskNotEditable
+                       textClassNames="text-field-title"}}
     </div>
   </div>
 
   <div class="form-group form-inline">
     <div class="form-group author-half {{if validationErrors.country "error"}}">
       {{#if countries.loaded}}
-        {{question-select ident="plos_billing.country"
+        {{nested-question-select ident="country"
                           task=model
-                          question="Select your Country"
+                          placeholder="Select Your Country"
+                          displayQuestionText=false
                           source=formattedCountries
                           width="100%"
                           enable=isSubmissionTaskEditable}}
@@ -184,13 +151,13 @@
 <ol class="question-list">
   <li class="question">
     <h3>
-      How would you like to pay?
+      {{nested-question-display ident="payment_method" task=model}}
     </h3>
 
     <div class="form-group author-half author-bump payment-method {{if validationErrors.affiliation "error"}}">
-      {{question-select ident="plos_billing.payment_method"
+      {{nested-question-select ident="payment_method"
                         task=model
-                        question="Select One"
+                        displayQuestionText=false
                         class="affiliation-field"
                         selectionSelected="paymentMethodSelected"
                         source=responses

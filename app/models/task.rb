@@ -23,6 +23,7 @@ class Task < ActiveRecord::Base
   has_one :paper, through: :phase
   has_one :journal, through: :paper
   has_many :attachments
+  has_many :nested_question_answers, as: :owner, dependent: :destroy
   has_many :questions, inverse_of: :task, dependent: :destroy
   has_many :participations, inverse_of: :task, dependent: :destroy
   has_many :participants, through: :participations, source: :user
@@ -97,6 +98,10 @@ class Task < ActiveRecord::Base
       else
         joins(participations: :user).where("participations.user_id" => users)
       end
+    end
+
+    def nested_questions
+      []
     end
   end
 
@@ -173,9 +178,14 @@ class Task < ActiveRecord::Base
     previously_completed? && !completed
   end
 
+  def nested_questions
+    self.class.nested_questions
+  end
+
   private
 
   def on_card_completion?
     previous_changes["completed"] == [false, true]
   end
+
 end

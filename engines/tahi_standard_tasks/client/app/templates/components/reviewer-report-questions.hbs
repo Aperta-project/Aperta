@@ -1,0 +1,96 @@
+<ol class="question-list reviewer-report-questions">
+  {{#nested-question ident="competing_interests" task=model decision=decision decision=decision as |nestedQuestion|}}
+    <li class="question">
+      <div class="question-text">{{nestedQuestion.text}}</div>
+      <div class="answer-text">
+        {{#if nestedQuestion.answer.wasAnswered}}
+          {{nested-question-answer model=nestedQuestion task=model decision=decision}}
+        {{else}}
+          <span class="not-answered">[No response]</span>
+        {{/if}}
+      </div>
+    </li>
+  {{/nested-question}}
+
+  {{#nested-question ident="support_conclusions" task=model decision=decision as |nestedQuestion|}}
+    <li class="question">
+      <div class="question-text">{{nestedQuestion.text}}</div>
+      <div class="answer-text">{{nested-question-answer model=nestedQuestion task=model decision=decision}}</div>
+      <div class="answer-text">
+        {{#if nestedQuestion.answer.wasAnswered}}
+          {{nested-question-answer model=nestedQuestion task=model decision=decision}}
+        {{else}}
+          <span class="not-answered">[No response]</span>
+        {{/if}}
+      </div>
+    </li>
+  {{/nested-question}}
+
+  {{#nested-question ident="statistical_analysis" task=model decision=decision as |nestedQuestion|}}
+    <li class="question">
+      <div class="question-text">{{nestedQuestion.text}}</div>
+      <div class="answer-text">{{nested-question-answer model=nestedQuestion task=model decision=decision}}</div>
+      <div class="answer-text">
+        {{#if nestedQuestion.answer.wasAnswered}}
+          {{nested-question-answer model=nestedQuestion task=model decision=decision}}
+        {{else}}
+          <span class="not-answered">[No response]</span>
+        {{/if}}
+      </div>
+    </li>
+  {{/nested-question}}
+
+  {{#nested-question ident="standards" task=model decision=decision as |nestedQuestion|}}
+    <li class="question">
+      <div class="question-text">{{nestedQuestion.text}}</div>
+      <div class="answer-text">{{nested-question-answer model=nestedQuestion task=model decision=decision}}</div>
+      <div class="answer-text">
+        {{#if nestedQuestion.answer.wasAnswered}}
+          {{nested-question-answer model=nestedQuestion task=model decision=decision}}
+        {{else}}
+          <span class="not-answered">[No response]</span>
+        {{/if}}
+      </div>
+    </li>
+  {{/nested-question}}
+
+  {{#nested-question ident="intelligible" task=model decision=decision as |nestedQuestion|}}
+    <li class="question">
+      <div class="question-text">{{nestedQuestion.text}}</div>
+      <div class="answer-text">{{nested-question-answer model=nestedQuestion task=model decision=decision}}</div>
+      <div class="answer-text">
+        {{#if nestedQuestion.answer.wasAnswered}}
+          {{nested-question-answer model=nestedQuestion task=model decision=decision}}
+        {{else}}
+          <span class="not-answered">[No response]</span>
+        {{/if}}
+      </div>
+    </li>
+  {{/nested-question}}
+
+  {{#nested-question ident="additional_comments" task=model decision=decision as |nestedQuestion|}}
+    <li class="question">
+      <div class="question-text">{{nestedQuestion.text}}</div>
+      <div class="answer-text">
+        {{#if nestedQuestion.answer.wasAnswered}}
+          {{nested-question-answer model=nestedQuestion task=model decision=decision}}
+        {{else}}
+          <span class="not-answered">[No response]</span>
+        {{/if}}
+      </div>
+    </li>
+  {{/nested-question}}
+
+  {{#nested-question ident="identity" task=model decision=decision as |nestedQuestion|}}
+    <li class="question">
+      <div class="question-text">{{nestedQuestion.text}}</div>
+      <div class="answer-text">
+        {{#if nestedQuestion.answer.wasAnswered}}
+          {{nested-question-answer model=nestedQuestion task=model decision=decision}}
+        {{else}}
+          <span class="not-answered">[No response]</span>
+        {{/if}}
+      </div>
+    </li>
+  {{/nested-question}}
+</ol>

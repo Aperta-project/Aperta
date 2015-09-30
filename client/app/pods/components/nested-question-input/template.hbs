@@ -1,0 +1,27 @@
+{{#if shouldDisplayQuestionText}}
+  <span class="{{textClassNames}}">
+    {{{questionText}}}
+  </span>
+{{/if}}
+
+{{#if hasBlock}}
+  {{yield textYieldValue}}
+{{/if}}
+
+{{#if wrapInput}}
+  <div>
+    {{#if label}}<span class="text-field-title">{{label}}</span>{{/if}}
+    {{input name=ident
+            value=model.answer.value
+            class=inputClassNames
+            placeholder=placeholderText
+            disabled=disabled}}
+  </div>
+{{else}}
+  {{#if label}}<span class="text-field-title">{{label}}</span>{{/if}}
+  {{input name=ident
+          value=model.answer.value
+          class=inputClassNames
+          placeholder=placeholderText
+            disabled=disabled}}
+{{/if}}

@@ -14,7 +14,7 @@ ApplicationSerializer = DS.ActiveModelSerializer.extend
   # handles incoming namespaced models
   # eg. StandardTasks::FigureTask and SupportingInformation::Task
   normalizeType: (hash) ->
-    if hash.type
+    if hash and hash.type
       hash.qualified_type = hash.type
       taskTypeNames = hash.qualified_type.split '::'
       return hash if taskTypeNames.length is 1

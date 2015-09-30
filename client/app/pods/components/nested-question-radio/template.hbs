@@ -1,0 +1,29 @@
+{{#if shouldDisplayQuestionText}}
+  <div class="{{textClassNames}}">{{{questionText}}}</div>
+{{/if}}
+
+{{#if hasBlock}}
+  {{yield textYieldValue}}
+{{/if}}
+
+{{#if helpText}}
+  <ul class="question-help">{{{helpText}}}</ul>
+{{/if}}
+
+<div class={{wrapperClass}}>
+  {{binary-radio-button name=namePrefix
+                        selection=model.answer.value
+                        yesValue=yesValue
+                        noValue=noValue
+                        yesLabel=yesLabel
+                        noLabel=noLabel
+                        yesAction="yesAction"
+                        noAction="noAction"
+                        disabled=disabled}}
+
+  {{#if hasBlock}}
+    <div class="additional-data">
+      {{yield yieldingForAdditionalData}}
+    </div>
+  {{/if}}
+</div>

@@ -128,6 +128,11 @@ Tahi::Application.routes.draw do
     resources :phases, only: [:create, :update, :show, :destroy]
     resources :question_attachments, only: [:destroy]
     resources :questions, only: [:create, :update]
+
+    resources :nested_questions, only: [:index] do
+      resources :answers, only: [:create, :update, :destroy], controller: "nested_question_answers"
+    end
+
     resources :roles, only: [:show, :create, :update, :destroy]
     resources :tasks, only: [:update, :create, :show, :destroy] do
       resources :attachments, only: [:create, :update, :destroy] do

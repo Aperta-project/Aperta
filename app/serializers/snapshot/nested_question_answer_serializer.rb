@@ -2,7 +2,7 @@ module Snapshot
   class NestedQuestionAnswerSerializer < BaseSerializer
 
     def initialize(nested_question_answer)
-      @nested_question_answer = NestedQuestionAnswer.includes(:attachment).find(nested_question_answer.id)
+      @nested_question_answer = nested_question_answer
     end
 
     def snapshot

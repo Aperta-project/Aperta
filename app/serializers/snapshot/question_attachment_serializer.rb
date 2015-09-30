@@ -11,12 +11,10 @@ module Snapshot
       end
 
       {
-        file: @question_attachment.file,
-        title: @question_attachment.title,
-        caption: @question_attachment.caption,
-        kind: @question_attachment.kind,
-        created_at: @question_attachment.created_at,
-        updated_at: @question_attachment.updated_at
+        file: @question_attachment[:attachment],
+        title: @question_attachment[:title],
+        caption: @question_attachment[:caption],
+        status: @question_attachment[:status]
       }
     end
   end

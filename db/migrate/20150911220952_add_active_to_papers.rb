@@ -1,8 +1,8 @@
 class AddActiveToPapers < ActiveRecord::Migration
   def up
     add_column :papers, :active, :boolean, default: true
-    Paper.where(publishing_state: 'withdrawn').update_all(active: false)
-    Paper.where(publishing_state: 'rejected').update_all(active: false)
+    execute "UPDATE papers SET active=false WHERE publishing_state='withdrawn';"
+    execute "UPDATE papers SET active=false WHERE publishing_state='rejected';"
   end
 
   def down

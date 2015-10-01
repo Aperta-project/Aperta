@@ -77,9 +77,9 @@ feature 'Production Metadata Card', js: true do
        describe 'with invalid input in required fields' do
         it 'shows an error'do
           find('#task_completed').click
-          wait_for_ajax
-          expect(page).to have_content "Can't be blank"
-          expect(page).to have_content "Invalid Volume Number"
+          expect(find(".publication-date")).to have_text("Can't be blank")
+          expect(find(".volume-number")).to have_text("Invalid Volume Number")
+          expect(find(".issue-number")).to have_text("Invalid Issue Number")
         end
       end
     end

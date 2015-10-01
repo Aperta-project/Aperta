@@ -3,7 +3,7 @@ module TahiStandardTasks
 
     register_task default_title: 'Production Metadata', default_role: 'admin'
 
-    validate :publication_date, :volume_number, :issue_number, if: :task_completed?
+    validate :publication_date, :volume_number, :issue_number, if: :newly_complete?
 
     def active_model_serializer
       ProductionMetadataTaskSerializer
@@ -25,10 +25,6 @@ module TahiStandardTasks
     end
 
     private
-
-    def task_completed?
-      self.completed?
-    end
 
     def a_question(type)
       questions.detect { |q| q.ident == "production_metadata.#{type}" }

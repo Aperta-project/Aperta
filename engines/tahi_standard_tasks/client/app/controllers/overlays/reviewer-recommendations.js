@@ -24,7 +24,7 @@ export default TaskController.extend(ValidationErrorsMixin, {
       newRecommendation
         .set('reviewerRecommendationsTask', this.get('model'))
         .save().then(() => {
-          console.log("todo OK");
+          this.set('showNewReviewerForm', false);
         }).catch((response) => {
           newRecommendation.deleteRecord();
           this.displayValidationErrorsFromResponse(response);

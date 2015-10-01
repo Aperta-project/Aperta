@@ -1,6 +1,7 @@
 import Ember from "ember";
+import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(ValidationErrorsMixin, {
 
   setNewRecommendation: Ember.on("init", function(){
     if (!this.get("newRecommendation")) {
@@ -10,7 +11,7 @@ export default Ember.Component.extend({
 
   resetForm() {
     this.set('newRecommendation', {});
-    // this.clearAllValidationErrors();
+    this.clearAllValidationErrors();
   },
 
   actions: {
@@ -28,7 +29,7 @@ export default Ember.Component.extend({
 
     save() {
       this.sendAction('saveNewRecommendation', this.get('newRecommendation'));
-      // this.resetForm();
+      this.resetForm();
     }
   }
 });

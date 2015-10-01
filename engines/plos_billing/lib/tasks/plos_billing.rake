@@ -5,9 +5,7 @@ namespace :plos_billing do
   end
 
   task :sync_em_guids => :environment do
-    users = User.where(em_guid: nil)
-
-    users.each do |user|
+    users = User.where(em_guid: nil).find_each do |user|
       em_match = PlosEditorialManager.find_person_by_email(email: user.email)
 
       if em_match.present? && em_match.size == 1

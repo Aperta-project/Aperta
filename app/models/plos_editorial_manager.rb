@@ -7,8 +7,11 @@ class PlosEditorialManager < ActiveRecord::Base
 
   def self.find_person_by_email(email:)
     email = email.strip
-    query = "SELECT TOP (1) * FROM PEOPLE JOIN ADDRESS ON (PEOPLE.PEOPLEID = ADDRESS.PEOPLEID) WHERE ADDRESS.EMAIL = '#{email}';"
-    connection.exec_query(query).to_hash
+    sql = "SELECT TOP (1) * FROM PEOPLE JOIN ADDRESS ON (PEOPLE.PEOPLEID = ADDRESS.PEOPLEID) WHERE ADDRESS.EMAIL LIKE '%#{email}%'"
+    query(sql)
   end
 
+  def self.query(sql)
+    connection.exec_query(sql).to_hash
+  end
 end

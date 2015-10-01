@@ -15,7 +15,7 @@ class PaperDownloader
   private
 
   def paper_body_with_figures
-    paper.body.gsub(/\/attachments\/figures\/(\d+)\?version=detail/) do
+    paper.body.gsub(/\/attachments\/figures\/(\d+)/) do
       Figure.find($1).attachment.detail.url
     end
   end

@@ -79,6 +79,7 @@
     <div class="form-group author-half {{if validationErrors.affiliation "error"}}">
       {{error-message message=validationErrors.affiliation}}
       {{institution-search
+        value=affiliation
         institutionSelected="institutionSelected"
         placeholder="Institution"
         disabled=isSubmissionTaskNotEditable}}

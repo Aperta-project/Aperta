@@ -9,6 +9,15 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     }
   }),
 
+  affiliation: Ember.computed("newRecommendation", function() {
+    if (this.get("newRecommendation.affiliation")) {
+      return {
+        id: this.get("newRecommendation.ringgoldId"),
+        name: this.get("newRecommendation.affiliation")
+      };
+    }
+  }),
+
   resetForm() {
     this.set('newRecommendation', {});
     this.clearAllValidationErrors();

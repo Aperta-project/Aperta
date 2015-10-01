@@ -5,7 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
-- Super Admin: run `rake plos_billing:retry_salesforce_case_for_paper[:paper_id]` to resend Salesforce Case data for 1 Paper
+-
 
 ### Changed
 -
@@ -21,6 +21,23 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ### Security
 -
+
+## [1.3.3] - 2015-10-01
+### Added
+- Super Admin: run `rake plos_billing:retry_salesforce_case_for_paper[:paper_id]` to resend Salesforce Case data for 1 Paper
+- Preliminary Salesforce integration
+- General improvements to real-time updating
+- Auto-population of submitting author on add author card
+
+### Changed
+- Improvements to workflow drag & drop ordering
+- Improvement to invite reviewer process when more than one reviewer
+
+### Removed
+- Removed PLOS authors model, task column moved to user table
+
+### Fixed
+- Numerous bug fixes
 
 ## [1.3.2] - 2015-09-17
 

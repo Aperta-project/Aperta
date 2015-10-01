@@ -61,7 +61,7 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
 
   def reset
     NestedQuestionAnswer.where(
-      nested_questions: { owner_type: [TASK_OWNER_TYPE], owner_id: nil },
+      nested_questions: { owner_type: [TASK_OWNER_TYPE], owner_id: nil }
     ).joins(:nested_question).destroy_all
   end
 
@@ -70,7 +70,7 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
   def create_nested_questions
     questions = []
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: TASK_OWNER_TYPE,
       ident: "competing_interests",
       value_type: "text",
@@ -78,14 +78,14 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: TASK_OWNER_TYPE,
       ident: "support_conclusions",
       value_type: "boolean",
       text: "Is the manuscript technically sound, and do the data support the conclusions?",
       children: [
         NestedQuestion.new(
-          owner_id:nil,
+          owner_id: nil,
           owner_type: TASK_OWNER_TYPE,
           ident: "explanation",
           value_type: "text",
@@ -95,14 +95,14 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: TASK_OWNER_TYPE,
       ident: "statistical_analysis",
       value_type: "boolean",
       text: "Has the statistical analysis been performed appropriately and rigorously?",
       children: [
         NestedQuestion.new(
-          owner_id:nil,
+          owner_id: nil,
           owner_type: TASK_OWNER_TYPE,
           ident: "explanation",
           value_type: "text",
@@ -112,14 +112,14 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: TASK_OWNER_TYPE,
       ident: "standards",
       value_type: "boolean",
       text: "Does the manuscript adhere to standards in this field for data availability?",
       children: [
         NestedQuestion.new(
-          owner_id:nil,
+          owner_id: nil,
           owner_type: TASK_OWNER_TYPE,
           ident: "explanation",
           value_type: "text",
@@ -129,14 +129,14 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: TASK_OWNER_TYPE,
       ident: "intelligible",
       value_type: "boolean",
       text: "Is the manuscript presented in an intelligible fashion and written in standard English?",
       children: [
         NestedQuestion.new(
-          owner_id:nil,
+          owner_id: nil,
           owner_type: TASK_OWNER_TYPE,
           ident: "explanation",
           value_type: "text",
@@ -146,7 +146,7 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: TASK_OWNER_TYPE,
       ident: "additional_comments",
       value_type: "text",
@@ -154,7 +154,7 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: TASK_OWNER_TYPE,
       ident: "identity",
       value_type: "text",
@@ -162,7 +162,7 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
     )
 
     questions.each do |q|
-      unless NestedQuestion.where(owner_id:nil, owner_type: TASK_OWNER_TYPE, ident:q.ident).exists?
+      unless NestedQuestion.where(owner_id: nil, owner_type: TASK_OWNER_TYPE, ident: q.ident).exists?
         q.save!
       end
     end

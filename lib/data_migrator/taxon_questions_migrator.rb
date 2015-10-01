@@ -30,7 +30,7 @@ class DataMigrator::TaxonQuestionsMigrator < DataMigrator::Base
 
   def reset
     NestedQuestionAnswer.where(
-      nested_questions: { owner_type: TAXON_TASK, owner_id:nil },
+      nested_questions: { owner_type: TAXON_TASK, owner_id: nil }
     ).joins(:nested_question).destroy_all
   end
 
@@ -48,7 +48,7 @@ class DataMigrator::TaxonQuestionsMigrator < DataMigrator::Base
           value_type: "boolean",
           owner_id: old_question.task.id,
           owner_type: old_question.task.class.base_class.sti_name,
-          value: (old_question.answer =="true"),
+          value: (old_question.answer == "true"),
           decision_id: old_question.decision_id,
           created_at: old_question.created_at,
           updated_at: old_question.updated_at
@@ -69,7 +69,7 @@ class DataMigrator::TaxonQuestionsMigrator < DataMigrator::Base
           value_type: "boolean",
           owner_id: old_question.task.id,
           owner_type: old_question.task.class.base_class.sti_name,
-          value: (old_question.answer =="true"),
+          value: (old_question.answer == "true"),
           decision_id: old_question.decision_id,
           created_at: old_question.created_at,
           updated_at: old_question.updated_at
@@ -90,7 +90,7 @@ class DataMigrator::TaxonQuestionsMigrator < DataMigrator::Base
           value_type: "boolean",
           owner_id: old_question.task.id,
           owner_type: old_question.task.class.base_class.sti_name,
-          value: (old_question.answer =="true"),
+          value: (old_question.answer == "true"),
           decision_id: old_question.decision_id,
           created_at: old_question.created_at,
           updated_at: old_question.updated_at
@@ -111,7 +111,7 @@ class DataMigrator::TaxonQuestionsMigrator < DataMigrator::Base
           value_type: "boolean",
           owner_id: old_question.task.id,
           owner_type: old_question.task.class.base_class.sti_name,
-          value: (old_question.answer =="true"),
+          value: (old_question.answer == "true"),
           decision_id: old_question.decision_id,
           created_at: old_question.created_at,
           updated_at: old_question.updated_at

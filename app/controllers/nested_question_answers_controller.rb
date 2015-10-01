@@ -42,7 +42,8 @@ class NestedQuestionAnswersController < ApplicationController
           value: answer_params[:value],
           owner_id: answer_params[:owner_id],
           owner_type: NestedQuestion.lookup_owner_type(answer_params[:owner_type]),
-          additional_data: answer_params[:additional_data]
+          additional_data: answer_params[:additional_data],
+          decision_id: answer_params[:decision_id]
         )
       end
     end
@@ -56,7 +57,7 @@ class NestedQuestionAnswersController < ApplicationController
   end
 
   def answer_params
-    @answer_params ||= params.require(:nested_question_answer).permit(:owner_id, :owner_type, :value).tap do |whitelisted|
+    @answer_params ||= params.require(:nested_question_answer).permit(:owner_id, :owner_type, :value, :decision_id).tap do |whitelisted|
       whitelisted[:additional_data] = params[:nested_question_answer][:additional_data]
     end
   end

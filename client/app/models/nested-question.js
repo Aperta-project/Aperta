@@ -20,9 +20,9 @@ export default DS.Model.extend({
   answerForOwner: function(owner, decision){
     let ownerId = owner.get("id");
     let answer = this.get("answers").toArray().find(function(answer){
-      let matched = Ember.isEqual(parseInt(answer.get("owner.id")), parseInt(ownerId));
+      let matched = Ember.isEqual(parseInt(answer.get("data.owner.id")), parseInt(ownerId));
       if(decision){
-        matched = matched && Ember.isEqual(parseInt(answer.get("decisionId")), parseInt(decision.get("id")));
+        matched = matched && Ember.isEqual(parseInt(answer.get("decision.id")), parseInt(decision.get("id")));
       }
       return matched;
     });
@@ -31,10 +31,8 @@ export default DS.Model.extend({
       answer = this.store.createRecord('nested-question-answer', {
         nestedQuestion: this,
         owner: owner,
+        decision: decision
       });
-      if(decision){
-        answer.set("decisionId", decision.get("id"));
-      }
       this.get('answers').addObject(answer);
     }
 

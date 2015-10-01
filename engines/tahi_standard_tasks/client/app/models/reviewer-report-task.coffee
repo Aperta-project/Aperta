@@ -5,6 +5,7 @@
 ReviewerReportTask = Task.extend
   paperReview: DS.belongsTo('paperReview')
   decision: DS.belongsTo('decision')
+  previousDecisions: DS.hasMany('previousDecision')
   isSubmitted: DS.attr('boolean')
 
   questionForIdentAndDecision: (ident, decision) ->

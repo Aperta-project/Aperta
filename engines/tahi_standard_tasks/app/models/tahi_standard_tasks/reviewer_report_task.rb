@@ -3,6 +3,7 @@ module TahiStandardTasks
     register_task default_title: 'Reviewer Report', default_role: 'reviewer'
 
     before_create :assign_to_latest_decision
+    has_many :decisions, -> { uniq }, through: :nested_question_answers
 
     def self.nested_questions
       questions = []
@@ -151,6 +152,10 @@ module TahiStandardTasks
 
     def decision=(new_decision)
       body["decision_id"] = new_decision.try(:id)
+    end
+
+    def previous_decisions
+      decisions - [decision].compact
     end
 
     def send_emails

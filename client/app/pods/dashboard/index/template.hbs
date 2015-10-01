@@ -23,6 +23,56 @@
     </h2>
 
     <button class="button-primary button--green" {{action "showNewPaperOverlay"}}>Create New Submission</button>
+
+
+<br>
+<br>
+<br>
+    <div class="row">
+      <div class="table-responsive">
+        <table summary="This table displays manuscript data and roles" class="table-borderless table-hover">
+          <thead>
+            <tr>
+              <th class="col-xs-9">Active Manuscripts (9)</th>
+              <th class="col-xs-1 text-center">Role</th>
+              <th class="col-xs-2 text-center">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-xs-9">The most scrumtrulescent scientific paper of 2015.</td>
+              <td class="col-xs-1 text-right">Author</td>
+              <td class="col-xs-2"><div class='status-tag'>DRAFT</div></td>
+            </tr>
+            <tr>
+              <td class="col-xs-9">The most scrumtrulescent scientific paper of 2015.</td>
+              <td class="col-xs-1 text-right">Collaborator</td>
+              <td class="col-xs-2">Checking</td>
+            </tr>
+            <tr>
+              <td class="col-xs-9">The most scrumtrulescent scientific paper of 2015.</td>
+              <td class="col-xs-1 text-right">Collaborator</td>
+              <td class="col-xs-2">In Revision</td>
+            </tr>
+            <tr>
+              <td class="col-xs-9">The most scrumtrulescent scientific paper of 2015.</td>
+              <td class="col-xs-1 text-right">Collaborator</td>
+              <td class="col-xs-2">Accepted</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5" class="text-center">.</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div><!--end of .table-responsive-->
+    </div>
+<br>
+<br>
+<br>
+
+
     {{#if hasPapers}}
       <ul class="dashboard-submitted-papers">
         {{#each sortedPapers as |paper|}}

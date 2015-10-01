@@ -3,8 +3,10 @@
 ReviewerReportOverlayController = TaskController.extend
   overlayClass: 'reviewer-form'
   latestDecision: Em.computed.alias 'model.paper.latestDecision'
+
   previousDecisions: Em.computed 'model.paper.decisions', ->
-    @get('model.paper.decisions').without @get('latestDecision')
+    @get('model.previousDecisions')
+
 
   actions:
     confirmSubmission: ->

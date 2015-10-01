@@ -28,7 +28,7 @@ class DataMigrator::CompetingInterestsQuestionsMigrator < DataMigrator::Base
 
   def reset
     NestedQuestionAnswer.where(
-      nested_questions: { owner_type: COMPETING_INTERESTS_TASK, owner_id:nil },
+      nested_questions: { owner_type: COMPETING_INTERESTS_TASK, owner_id: nil }
     ).joins(:nested_question).destroy_all
   end
 

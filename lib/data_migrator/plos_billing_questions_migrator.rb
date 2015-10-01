@@ -34,7 +34,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
       PFA_SUPPORTING_DOCS_IDENT: "plos_billing.pfa_supporting_docs",
       ADDITIONAL_COMMENTS_IDENT: "plos_billing.pfa_additional_comments",
       AFFIRM_TRUE_AND_COMPLETE_IDENT: "plos_billing.affirm_true_and_complete",
-      AGREE_TO_COLLECTIONS_IDENT: "plos_billing.agree_collections",
+      AGREE_TO_COLLECTIONS_IDENT: "plos_billing.agree_collections"
     },
 
     new: {
@@ -103,7 +103,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
 
   def reset
     NestedQuestionAnswer.where(
-      nested_questions: { owner_type: [BILLING_TASK_OWNER_TYPE], owner_id: nil },
+      nested_questions: { owner_type: [BILLING_TASK_OWNER_TYPE], owner_id: nil }
     ).joins(:nested_question).destroy_all
   end
 
@@ -113,7 +113,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     questions = []
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "first_name",
       value_type: "text",
@@ -121,7 +121,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "last_name",
       value_type: "text",
@@ -129,7 +129,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "title",
       value_type: "text",
@@ -137,7 +137,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "department",
       value_type: "text",
@@ -145,7 +145,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "phone_number",
       value_type: "text",
@@ -153,7 +153,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "email",
       value_type: "text",
@@ -161,7 +161,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "address1",
       value_type: "text",
@@ -169,7 +169,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "address2",
       value_type: "text",
@@ -177,7 +177,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "city",
       value_type: "text",
@@ -185,7 +185,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "state",
       value_type: "text",
@@ -193,7 +193,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "postal_code",
       value_type: "text",
@@ -201,7 +201,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "country",
       value_type: "text",
@@ -209,7 +209,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "affiliation1",
       value_type: "text",
@@ -217,7 +217,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "affiliation2",
       value_type: "text",
@@ -225,7 +225,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "payment_method",
       value_type: "text",
@@ -233,7 +233,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "pfa_question_1",
       value_type: "boolean",
@@ -241,7 +241,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "pfa_question_1a",
       value_type: "text",
@@ -249,7 +249,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "pfa_question_1b",
       value_type: "text",
@@ -257,7 +257,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "pfa_question_2",
       value_type: "boolean",
@@ -265,7 +265,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "pfa_question_2a",
       value_type: "text",
@@ -273,7 +273,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "pfa_question_2b",
       value_type: "text",
@@ -281,7 +281,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "pfa_question_3",
       value_type: "boolean",
@@ -289,7 +289,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "pfa_question_3a",
       value_type: "text",
@@ -297,7 +297,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "pfa_question_4",
       value_type: "boolean",
@@ -305,7 +305,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "pfa_question_4a",
       value_type: "text",
@@ -313,7 +313,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "pfa_amount_to_pay",
       value_type: "text",
@@ -321,7 +321,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "pfa_supporting_docs",
       value_type: "text",
@@ -329,7 +329,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "pfa_amount_to_pay",
       value_type: "text",
@@ -337,7 +337,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "pfa_additional_comments",
       value_type: "text",
@@ -345,7 +345,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "affirm_true_and_complete",
       value_type: "boolean",
@@ -353,7 +353,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "agree_to_collections",
       value_type: "boolean",
@@ -361,7 +361,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "gpi_country",
       value_type: "text",
@@ -369,7 +369,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: BILLING_TASK_OWNER_TYPE,
       ident: "ringgold_institution",
       value_type: "text",
@@ -431,7 +431,7 @@ class DataMigrator::PlosBillingQuestionsMigrator < DataMigrator::Base
   def verify_counts
     verify_count(
       expected: Question.where("ident LIKE 'plos_billing%'").count - @subtract_from_expected_count,
-      actual: NestedQuestionAnswer.includes(:nested_question).where(nested_questions: {owner_type: BILLING_TASK_OWNER_TYPE, owner_id: nil}).count
+      actual: NestedQuestionAnswer.includes(:nested_question).where(nested_questions: { owner_type: BILLING_TASK_OWNER_TYPE, owner_id: nil }).count
     )
   end
 

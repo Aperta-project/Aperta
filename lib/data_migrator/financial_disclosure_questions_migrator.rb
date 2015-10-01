@@ -42,7 +42,7 @@ class DataMigrator::FinancialDisclosureQuestionsMigrator < DataMigrator::Base
 
   def reset
     NestedQuestionAnswer.where(
-      nested_questions: { owner_type: [FINANCIAL_DISCLOSURE_OWNER_TYPE, FUNDER_OWNER_TYPE], owner_id: nil },
+      nested_questions: { owner_type: [FINANCIAL_DISCLOSURE_OWNER_TYPE, FUNDER_OWNER_TYPE], owner_id: nil }
     ).joins(:nested_question).destroy_all
   end
 

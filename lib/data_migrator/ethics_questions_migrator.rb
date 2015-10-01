@@ -30,7 +30,7 @@ class DataMigrator::EthicsQuestionsMigrator < DataMigrator::Base
 
   def reset
     NestedQuestionAnswer.where(
-      nested_questions: { owner_type: OWNER_TYPE, owner_id: nil },
+      nested_questions: { owner_type: OWNER_TYPE, owner_id: nil }
     ).joins(:nested_question).destroy_all
   end
 

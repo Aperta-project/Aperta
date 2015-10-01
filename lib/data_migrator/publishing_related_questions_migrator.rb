@@ -69,7 +69,7 @@ class DataMigrator::PublishingRelatedQuestionsMigrator < DataMigrator::Base
 
   def reset
     NestedQuestionAnswer.where(
-      nested_questions: { owner_type: [TASK_OWNER_TYPE], owner_id: nil },
+      nested_questions: { owner_type: [TASK_OWNER_TYPE], owner_id: nil }
     ).joins(:nested_question).destroy_all
   end
 
@@ -79,38 +79,38 @@ class DataMigrator::PublishingRelatedQuestionsMigrator < DataMigrator::Base
     questions = []
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: TASK_OWNER_TYPE,
       ident: "published_elsewhere",
       value_type: "boolean",
       text: "Have the results, data, or figures in this manuscript been published elsewhere? Are they under consideration for publication elsewhere?",
       children: [
         NestedQuestion.new(
-          owner_id:nil,
+          owner_id: nil,
           owner_type: TASK_OWNER_TYPE,
           ident: "taken_from_manuscripts",
           value_type: "text",
-          text: "Please identify which results, data, or figures have been taken from other published or pending manuscripts, and explain why inclusion in this submission does not constitute dual publication.",
+          text: "Please identify which results, data, or figures have been taken from other published or pending manuscripts, and explain why inclusion in this submission does not constitute dual publication."
         ),
         NestedQuestion.new(
-          owner_id:nil,
+          owner_id: nil,
           owner_type: TASK_OWNER_TYPE,
           ident: "upload_related_work",
           value_type: "attachment",
-          text: "Please also upload a copy of the related work with your submission as a 'Related Manuscript' item. Note that reviewers may be asked to comment on the overlap between the related submissions.",
+          text: "Please also upload a copy of the related work with your submission as a 'Related Manuscript' item. Note that reviewers may be asked to comment on the overlap between the related submissions."
         )
       ]
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: TASK_OWNER_TYPE,
       ident: "submitted_in_conjunction",
       value_type: "boolean",
       text: "Is this manuscript being submitted in conjunction with another submission?",
       children: [
         NestedQuestion.new(
-          owner_id:nil,
+          owner_id: nil,
           owner_type: TASK_OWNER_TYPE,
           ident: "corresponding_title",
           value_type: "text",
@@ -118,7 +118,7 @@ class DataMigrator::PublishingRelatedQuestionsMigrator < DataMigrator::Base
           children: []
         ),
         NestedQuestion.new(
-          owner_id:nil,
+          owner_id: nil,
           owner_type: TASK_OWNER_TYPE,
           ident: "corresponding_author",
           value_type: "text",
@@ -129,14 +129,14 @@ class DataMigrator::PublishingRelatedQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: TASK_OWNER_TYPE,
       ident: "previous_interactions_with_this_manuscript",
       value_type: "boolean",
       text: "I have had previous interactions about this manuscript with a staff editor or Academic Editor of this journal.",
       children: [
         NestedQuestion.new(
-          owner_id:nil,
+          owner_id: nil,
           owner_type: TASK_OWNER_TYPE,
           ident: "submission_details",
           value_type: "text",
@@ -147,14 +147,14 @@ class DataMigrator::PublishingRelatedQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: TASK_OWNER_TYPE,
       ident: "presubmission_inquiry",
       value_type: "boolean",
       text: "I submitted a presubmission inquiry for this manuscript.",
       children: [
         NestedQuestion.new(
-          owner_id:nil,
+          owner_id: nil,
           owner_type: TASK_OWNER_TYPE,
           ident: "submission_details",
           value_type: "text",
@@ -165,14 +165,14 @@ class DataMigrator::PublishingRelatedQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: TASK_OWNER_TYPE,
       ident: "other_journal_submission",
       value_type: "boolean",
       text: "This manuscript was previously submitted to a different PLOS journal as either a presubmission inquiry or a full submission.",
       children: [
         NestedQuestion.new(
-          owner_id:nil,
+          owner_id: nil,
           owner_type: TASK_OWNER_TYPE,
           ident: "submission_details",
           value_type: "text",
@@ -183,7 +183,7 @@ class DataMigrator::PublishingRelatedQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: TASK_OWNER_TYPE,
       ident: "author_was_previous_journal_editor",
       value_type: "boolean",
@@ -191,19 +191,19 @@ class DataMigrator::PublishingRelatedQuestionsMigrator < DataMigrator::Base
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: TASK_OWNER_TYPE,
       ident: "intended_collection",
       value_type: "text",
-      text: "If your submission is intended for a PLOS Collection, enter the name of the collection in the box below. Please also ensure the name of the collection is included in your cover letter.",
+      text: "If your submission is intended for a PLOS Collection, enter the name of the collection in the box below. Please also ensure the name of the collection is included in your cover letter."
     )
 
     questions << NestedQuestion.new(
-      owner_id:nil,
+      owner_id: nil,
       owner_type: TASK_OWNER_TYPE,
       ident: "us_government_employees",
       value_type: "boolean",
-      text: "Are you or any of the contributing authors an employee of the United States Government?",
+      text: "Are you or any of the contributing authors an employee of the United States Government?"
     )
 
     questions.each do |q|

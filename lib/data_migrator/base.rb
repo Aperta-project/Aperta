@@ -50,6 +50,5 @@ module DataMigrator
       "\e[33m#{text}\e[0m"
     end
 
-
   end
 end

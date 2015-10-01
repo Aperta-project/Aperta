@@ -3,8 +3,12 @@
     <div class="{{textClassNames}}">{{{questionText}}}</div>
   {{/if}}
 
-  {{#if model.answer.value}}
-    <div class="answer-text">{{model.answer.value}}</div>
+  {{#if model.answer.wasAnswered}}
+    {{#if model.answer.value}}
+      <div class="answer-text">{{yesLabel}}</div>
+    {{else}}
+      <div class="answer-text">{{noLabel}}</div>
+    {{/if}}
   {{else}}
     <div class="answer-text no-answer">{{noResponseText}}</div>
   {{/if}}

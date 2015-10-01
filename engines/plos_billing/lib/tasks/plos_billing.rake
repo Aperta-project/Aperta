@@ -5,7 +5,7 @@ namespace :plos_billing do
   end
 
   task :sync_em_guids => :environment do
-    users = User.where(em_guid: nil).find_each do |user|
+    User.where(em_guid: nil).find_each do |user|
       em_match = PlosEditorialManager.find_person_by_email(email: user.email)
 
       if em_match.present? && em_match.size == 1
@@ -13,8 +13,6 @@ namespace :plos_billing do
 
         puts "match for #{user.email} - #{guid}"
         user.update_attribute(:em_guid, guid)
-      elsif em_match.size > 1
-        puts "more than 1 match for #{user.email}"
       else
         puts "no match for #{user.email}"
       end

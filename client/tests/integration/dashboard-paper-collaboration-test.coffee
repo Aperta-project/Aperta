@@ -36,31 +36,3 @@ test 'The dashboard shows papers for a user if they have any role on the paper',
 
     andThen ->
       assert.equal find('.dashboard-submitted-papers .dashboard-paper-title').length, 6, 'All papers with roles should be visible'
-
-test 'The dashboard shows paginated papers', (assert) ->
-  perPage =  15
-  extra = 2
-  Ember.run ->
-    TestHelper.handleFindAll("comment-look", 0)
-    TestHelper.handleFindAll("invitation", 0)
-    TestHelper.handleFindAll("paper", perPage, "withRoles")
-
-    getStore().metadataFor("paper")["total_pages"] = 2
-    getStore().metadataFor("paper")["total_papers"] = 17
-
-    visit '/'
-
-    andThen ->
-      assert.ok(find('.load-more-papers').length, "sees load more button")
-      assert.ok(Ember.isPresent(find('.welcome-message').text().match("You have #{perPage + extra} manuscripts")), "sees welcome message")
-      assert.equal(find('.dashboard-submitted-papers .dashboard-paper-title').length, perPage, "num papers per page")
-
-    andThen ->
-      morePapers = FactoryGuy.makeList("paper", extra, "withRoles")
-      TestHelper.handleFindQuery("paper", ["page_number"], morePapers)
-
-      click '.load-more-papers'
-
-    andThen ->
-      equal(find('.dashboard-submitted-papers .dashboard-paper-title').length, perPage + extra, "paginated result count")
-      assert.ok(!find('.load-more-papers').length, "no longer sees load more button")

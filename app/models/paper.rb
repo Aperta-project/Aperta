@@ -18,7 +18,8 @@ class Paper < ActiveRecord::Base
   has_many :tables, dependent: :destroy
   has_many :bibitems, dependent: :destroy
   has_many :supporting_information_files, dependent: :destroy
-  has_many :paper_roles, inverse_of: :paper, dependent: :destroy
+  has_many :paper_roles, dependent: :destroy
+  has_many :users, -> { uniq }, through: :paper_roles
   has_many :assigned_users, -> { uniq }, through: :paper_roles, source: :user
   has_many :phases, -> { order 'phases.position ASC' }, dependent: :destroy, inverse_of: :paper
   has_many :tasks, through: :phases
@@ -38,6 +39,9 @@ class Paper < ActiveRecord::Base
   validates :journal, presence: true
 
   validates :short_title, :title, length: { maximum: 255 }
+
+  scope :active,   -> { where(active: true) }
+  scope :inactive, -> { where(active: false) }
 
   delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
 
@@ -104,6 +108,9 @@ class Paper < ActiveRecord::Base
     event(:reject) do
       transitions from: :submitted,
                   to: :rejected
+      before do
+        update(active: false)
+      end
     end
 
     event(:publish) do
@@ -116,6 +123,7 @@ class Paper < ActiveRecord::Base
       transitions to: :withdrawn,
                   after: :prevent_edits!
       before do |withdrawal_reason|
+        update(active: false)
         withdrawals << { previous_publishing_state: publishing_state,
                          previous_editable: editable,
                          reason: withdrawal_reason }

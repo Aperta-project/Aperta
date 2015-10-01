@@ -2,6 +2,7 @@ import DS from 'ember-data';
 import QuestionAttachmentOwner from 'tahi/models/question-attachment-owner';
 
 export default QuestionAttachmentOwner.extend({
+  decisionId: DS.attr('number'),
   owner: DS.belongsTo('nested-question-owner', {
     polymorphic: true,
     async: false,

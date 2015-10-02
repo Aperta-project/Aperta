@@ -2,43 +2,30 @@ import Ember from "ember";
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
+  reviewerRecommendation: null,
 
-  setNewRecommendation: Ember.on("init", function(){
-    if (!this.get("newRecommendation")) {
-      this.set("newRecommendation", {});
-    }
-  }),
-
-  affiliation: Ember.computed("newRecommendation", function() {
-    if (this.get("newRecommendation.affiliation")) {
+  affiliation: Ember.computed("reviewerRecommendation", function() {
+    if (this.get("reviewerRecommendation.affiliation")) {
       return {
-        id: this.get("newRecommendation.ringgoldId"),
-        name: this.get("newRecommendation.affiliation")
+        id: this.get("reviewerRecommendation.ringgoldId"),
+        name: this.get("reviewerRecommendation.affiliation")
       };
     }
   }),
 
-  resetForm() {
-    this.set('newRecommendation', {});
-    this.clearAllValidationErrors();
-  },
-
   actions: {
 
     institutionSelected(institution) {
-      console.log(institution);
-      this.set('newRecommendation.affiliation', institution.name);
-      this.set('newRecommendation.ringgoldId', institution['institution-id']);
+      this.set('reviewerRecommendation.affiliation', institution.name);
+      this.set('reviewerRecommendation.ringgoldId', institution['institution-id']);
     },
 
-    cancel() {
-      this.resetForm();
-      this.sendAction('toggleReviewerForm')
+    cancelRecommendation() {
+      this.sendAction('cancelRecommendation');
     },
 
-    save() {
-      this.sendAction('saveNewRecommendation', this.get('newRecommendation'));
-      this.resetForm();
+    saveRecommendation() {
+      this.sendAction('saveRecommendation', this.get('reviewerRecommendation'));
     }
   }
 });

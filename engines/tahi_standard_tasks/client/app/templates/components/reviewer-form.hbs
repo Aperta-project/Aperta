@@ -6,7 +6,7 @@
         {{error-message message=validationErrors.firstName}}
       </span>
       {{input type="text"
-              value=newRecommendation.firstName
+              value=reviewerRecommendation.firstName
               class="form-control tall-text-field"
               placeholder="Jane"
               disabled=isSubmissionTaskNotEditable}}
@@ -18,7 +18,7 @@
         {{error-message message=validationErrors.middleInitial}}
       </span>
       {{input type="text"
-              value=newRecommendation.middleInitial
+              value=reviewerRecommendation.middleInitial
               class="form-control tall-text-field"
               placeholder="M"
               disabled=isSubmissionTaskNotEditable}}
@@ -30,7 +30,7 @@
         {{error-message message=validationErrors.lastName}}
       </span>
       {{input type="text"
-              value=newRecommendation.lastName
+              value=reviewerRecommendation.lastName
               class="form-control tall-text-field"
               placeholder="Goodall"
               disabled=isSubmissionTaskNotEditable}}
@@ -42,7 +42,7 @@
         {{error-message message=validationErrors.email}}
       </span>
       {{input type="text"
-              value=newRecommendation.email
+              value=reviewerRecommendation.email
               class="form-control tall-text-field"
               placeholder="jane.goodall@science.com"
               disabled=isSubmissionTaskNotEditable}}
@@ -56,7 +56,7 @@
         {{error-message message=validationErrors.title}}
       </span>
       {{input type="text"
-              value=newRecommendation.title
+              value=reviewerRecommendation.title
               class="form-control tall-text-field"
               placeholder="World's Foremost Expert on Chimpanzees"
               disabled=isSubmissionTaskNotEditable}}
@@ -68,7 +68,7 @@
         {{error-message message=validationErrors.department}}
       </span>
       {{input type="text"
-              value=newRecommendation.department
+              value=reviewerRecommendation.department
               class="form-control tall-text-field"
               placeholder="Primatology"
               disabled=isSubmissionTaskNotEditable}}
@@ -89,7 +89,7 @@
   <div class="form-group">
     <div class="question-text">Are you recommending or opposing this reviewer? (required)</div>
     {{binary-radio-button name="recommend-or-oppose"
-                          selection=newRecommendation.recommendOrOppose
+                          selection=reviewerRecommendation.recommendOrOppose
                           yesLabel="Recommend"
                           yesValue="recommend"
                           noLabel="Oppose"
@@ -100,7 +100,7 @@
 
   <div class="form-group">
     {{textarea type="text"
-               value=newRecommendation.reason
+               value=reviewerRecommendation.reason
                class="form-control"
                placeholder="Optional: reason for your recommending or opposing this reviewer"
                disabled=isSubmissionTaskNotEditable}}
@@ -108,8 +108,8 @@
 
   <div class="form-group control-buttons">
     <span class="pull-right author-form-buttons">
-      <a class="button-link button--green author-cancel" disabled={{isSubmissionTaskNotEditable}} {{action "cancel"}}>cancel</a>
-      <button class="button-secondary button--green knockout" disabled={{isSubmissionTaskNotEditable}} {{action "save"}}>done</button>
+      <a class="button-link button--green author-cancel" disabled={{isSubmissionTaskNotEditable}} {{action "cancelRecommendation"}}>cancel</a>
+      <button class="button-secondary button--green knockout" disabled={{isSubmissionTaskNotEditable}} {{action "saveRecommendation"}}>done</button>
     </span>
   </div>
 </div>

@@ -9,14 +9,15 @@
 
 <div>
   {{#if isEditable}}
-    <button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "toggleReviewerForm"}}>
+    <button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "addNewReviewer"}}>
       New Reviewer Candidates
     </button>
 
     {{#if showNewReviewerForm}}
-      {{reviewer-form validationErrors=validationErrors
-                      toggleReviewerForm="toggleReviewerForm"
-                      saveNewRecommendation="saveNewRecommendation"
+      {{reviewer-form reviewerRecommendation=newRecommendation
+                      validationErrors=validationErrors
+                      saveRecommendation="saveRecommendation"
+                      cancelRecommendation="cancelRecommendation"
                       isSubmissionTaskNotEditable=isSubmissionTaskNotEditable}}
     {{/if}}
   {{/if}}

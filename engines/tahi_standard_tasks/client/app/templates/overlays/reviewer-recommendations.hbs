@@ -25,6 +25,9 @@
     {{reviewer-row reviewer=reviewerRecommendation
                    isEditable=isEditable
                    delete="removeReviewer"
-                  disabled=isSubmissionTaskNotEditable}}
+                   validationErrors=validationErrors
+                   toggleReviewerForm="toggleReviewerForm"
+                   saveNewRecommendation="saveRecommendation"
+                   isSubmissionTaskNotEditable=isSubmissionTaskNotEditable}}
   {{/each}}
 </div>

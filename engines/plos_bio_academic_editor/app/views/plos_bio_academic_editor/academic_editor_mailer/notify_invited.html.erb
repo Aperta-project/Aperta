@@ -1,0 +1,54 @@
+<div class='container'>
+  <div class='greeting'>
+    <p class='message'>
+      You've been invited as an academic editor on a manuscript
+    </p>
+  </div>
+  <hr>
+  <div class='paper-info'>
+    <div class='paper-abstract'>
+      <%= simple_format @invitation.task.body[0] %>
+    </div>
+
+    <div>
+      <p>
+        ***************** CONFIDENTIAL *****************
+      </p>
+      <p>
+        <div class='paper-name'>
+          Manuscript Title: <%= @paper.display_title %>
+        </div>
+
+      </p>
+
+      <% if @invitation.information.present? %>
+        <div class='invitation-information'>
+          <%= simple_format @invitation.information %>
+        </div>
+      <% end %>
+
+      <div class='paper-abstract'>
+      Abstract:
+      <p> <%= @paper.abstract %> </p>
+      </div>
+
+      <div>
+        Clicking the button to accept this assignment will allow you to access the full submission from the Dashboard
+        link in your main menu. Clicking on the title will take you to the Manuscript page, where you can view and/or
+        download the manuscript along with associated figures and any SI files. You can view this information from
+        your Dashboard at any time by logging into your account.
+
+
+        Please submit your initial comments on the manuscript by clicking the ‘External Review” card at the right
+        hand side of the Manuscript page, and filling in discussion comment section.
+      </div>
+
+    </div>
+    <p>
+      <a class='button' href='<%= client_dashboard_url %>' target='_blank'>
+        View Invitation
+      </a>
+    </p>
+  </div>
+  <hr>
+</div>

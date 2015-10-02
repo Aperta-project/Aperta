@@ -77,6 +77,7 @@ Tahi::Application.routes.draw do
       collection do
         get "admins/:paper_id", to: "filtered_users#admins"
         get "editors/:paper_id", to: "filtered_users#editors"
+        get "academic_editors/:paper_id", to: "filtered_users#academic_editors"
         get "users/:paper_id", to: "filtered_users#users"
         get "uninvited_users/:paper_id", to: "filtered_users#uninvited_users"
       end
@@ -102,6 +103,7 @@ Tahi::Application.routes.draw do
         resources :users, only: :index, controller: "paper_role_users"
       end
       resource :editor, only: :destroy
+      resource :academic_editor, only: :destroy
       resource :manuscript_manager, only: :show
       resources :figures, only: :create
       resources :tables, only: :create

@@ -20,4 +20,8 @@ class UserRole < ActiveRecord::Base
   def self.reviewers
     joins(:role).merge(Role.reviewers)
   end
+
+  def self.academic_editors
+    joins(:role).merge(Role.academic_editors)
+  end
 end

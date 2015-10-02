@@ -1,13 +1,14 @@
 class PaperRole < ActiveRecord::Base
   include EventStream::Notifiable
 
+  ACADEMIC_EDITOR = 'academic_editor'
   REVIEWER = 'reviewer'
   EDITOR = 'editor'
   COLLABORATOR = 'collaborator'
   ADMIN = 'admin'
   PARTICIPANT = 'participant'
 
-  ALL_ROLES = [REVIEWER, EDITOR, COLLABORATOR, ADMIN, PARTICIPANT]
+  ALL_ROLES = [ACADEMIC_EDITOR, REVIEWER, EDITOR, COLLABORATOR, ADMIN, PARTICIPANT]
 
   belongs_to :user,  inverse_of: :paper_roles
   belongs_to :paper, inverse_of: :paper_roles
@@ -21,6 +22,10 @@ class PaperRole < ActiveRecord::Base
   }
 
   validate :role_exists
+
+  def self.academic_editors
+    where(role: ACADEMIC_EDITOR)
+  end
 
   def self.admins
     where(role: ADMIN)

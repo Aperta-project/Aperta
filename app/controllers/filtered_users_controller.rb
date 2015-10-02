@@ -12,6 +12,10 @@ class FilteredUsersController < ApplicationController
     render_selectable_users(:editors)
   end
 
+  def academic_editors
+    render_selectable_users(:academic_editors)
+  end
+
   def admins
     render_selectable_users(:admins)
   end

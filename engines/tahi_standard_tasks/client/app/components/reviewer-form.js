@@ -21,7 +21,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     },
 
     cancelRecommendation() {
-      this.sendAction('cancelRecommendation');
+      this.attrs.cancelRecommendation();
     },
 
     saveRecommendation() {

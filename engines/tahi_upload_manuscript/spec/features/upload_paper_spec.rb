@@ -18,7 +18,7 @@ feature "Upload paper", js: true, selenium: true, sidekiq: :inline! do
       paper.update(title: "This is a Title About Turtles", body: "And this is my subtitle")
     end
 
-    login_as author
+    login_as(author, scope: :user)
     visit "/"
   end
 

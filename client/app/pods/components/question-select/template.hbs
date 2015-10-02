@@ -1,9 +1,18 @@
-{{select-2-single class=class
-                  minimumResultsForSearch=minimumResultsForSearch
-                  placeholder=question
-                  selectedData=selectedData
-                  selectionSelected="selectionSelected"
-                  source=source
-                  value=model.answer
-                  width=width
-                  enable=enable}}
+{{#if readonly}}
+  <div class="question-text">{{model.question}}</div>
+  {{#if model.answer}}
+    <div class="answer-text">{{model.answer}}</div>
+  {{else}}
+    <div class="answer-text no-answer">{{noResponseText}}</div>
+  {{/if}}
+{{else}}
+  {{select-2-single class=class
+                    minimumResultsForSearch=minimumResultsForSearch
+                    placeholder=question
+                    selectedData=selectedData
+                    selectionSelected="selectionSelected"
+                    source=source
+                    value=model.answer
+                    width=width
+                    enable=enable}}
+{{/if}}

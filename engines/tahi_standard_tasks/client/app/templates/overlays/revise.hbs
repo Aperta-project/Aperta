@@ -14,7 +14,9 @@
     </span>
   </p>
 
-  <p>{{display-line-breaks latestDecision.letter}}</p>
+  <p class="preserve-line-breaks">
+    {{{latestDecision.letter}}}
+  </p>
 </div>
 
 <div>
@@ -32,7 +34,7 @@
       Save
     </button>
   {{else}}
-    <div>{{display-line-breaks latestDecision.authorResponse}}</div>
+    <div class="preserve-line-breaks">{{{latestDecision.authorResponse}}}</div>
     <button class="button-primary button--green" {{action "editAuthorResponse"}}>Edit Response</button>
   {{/if}}
 </div>

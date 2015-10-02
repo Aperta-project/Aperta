@@ -13,7 +13,7 @@ export default Ember.Mixin.create({
     return Ember.isBlank($(this.get('model.body')).text());
   }),
 
-  statusMessage: computed.any('processingMessage', 'userEditingMessage', 'saveStateMessage'),
+  statusMessage: computed.or('processingMessage', 'userEditingMessage', 'saveStateMessage'),
 
   processingMessage: computed('model.status', function() {
     return this.get('model.status') === 'processing' ? 'Processing Manuscript' : null;

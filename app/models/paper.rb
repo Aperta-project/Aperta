@@ -61,8 +61,7 @@ class Paper < ActiveRecord::Base
                   guards: :metadata_tasks_completed?,
                   after: [:set_submitting_user_and_touch!,
                           :set_submitted_at!,
-                          :prevent_edits!,
-                          :create_billing_and_pfa_case]
+                          :prevent_edits!]
     end
 
     event(:minor_check) do
@@ -239,6 +238,10 @@ class Paper < ActiveRecord::Base
     locked_by_id == user.id
   end
 
+  def resubmitted?
+    decisions.pending.exists?
+  end
+
   def lock_by(user) # :nodoc:
     update_attribute(:locked_by, user)
   end
@@ -317,13 +320,14 @@ class Paper < ActiveRecord::Base
 
   def authors_list
     authors.map.with_index { |author, index|
-      "#{index + 1}. #{author.last_name}, #{author.first_name} from #{author.specific.affiliation}"
+      "#{index + 1}. #{author.last_name}, #{author.first_name} from #{author.affiliation}"
     }.join("\n")
   end
 
   def latest_version(reload=false)
     versioned_texts(reload).version_desc.first
   end
+
 
   private
 
@@ -349,11 +353,6 @@ class Paper < ActiveRecord::Base
 
   def set_submitted_at!
     update!(submitted_at: Time.current.utc)
-  end
-
-
-  def create_billing_and_pfa_case(*)
-    SalesforceServices::API.delay.create_billing_and_pfa_case(paper_id: self.id) if self.billing_card
   end
 
   def set_submitting_user_and_touch!(submitting_user) # rubocop:disable Style/AccessorMethodName

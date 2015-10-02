@@ -6,7 +6,7 @@ feature "Manuscript CSS", js: true do
 
   before do
     paper
-    login_as author
+    login_as(author, scope: :user)
     visit "/"
     click_link(paper.title)
   end

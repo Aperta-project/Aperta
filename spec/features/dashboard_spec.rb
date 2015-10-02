@@ -15,7 +15,7 @@ feature "Dashboard", js: true do
     context "when there are more than 15 papers" do
       let(:paper_count) { 18 }
       scenario "only 15 papers are beamed down but total paper count is present" do
-        login_as user
+        login_as(user, scope: :user)
         visit "/"
         expect(dashboard.total_paper_count).to eq paper_count
         expect(dashboard.paper_count).to eq Paper.default_per_page
@@ -29,19 +29,17 @@ feature "Dashboard", js: true do
   end
 
   feature "displaying invitations" do
+    let(:paper_count) { 1 }
     let(:paper) { papers.first }
-    let!(:phase) { FactoryGirl.create :phase, paper: paper }
-    let!(:task) { FactoryGirl.create :invitable_task, phase: phase }
-    let(:paper_count) { 3 }
+    let(:task) { FactoryGirl.create(:paper_editor_task, phase: paper.phases.first) }
 
     before do
       decision = paper.decisions.create!
-      (FactoryGirl.create :invitation, task: task, invitee: user, decision: decision).invite!
-      (FactoryGirl.create :invitation, task: task, invitee: user, decision: decision).invite!
+      FactoryGirl.create_pair(:invitation, :invited, task: task, invitee: user)
     end
 
     scenario "only displays invitations from latest revision cycle" do
-      login_as user
+      login_as(user, scope: :user)
       visit "/"
 
       dashboard.expect_active_invitations_count(2)
@@ -49,7 +47,7 @@ feature "Dashboard", js: true do
       dashboard.reload
 
       dashboard.expect_active_invitations_count(0)
-      (FactoryGirl.create :invitation, task: task, invitee: user, decision: decision).invite!
+      FactoryGirl.create(:invitation, :invited, task: task, invitee: user)
       dashboard.reload
 
       dashboard.expect_active_invitations_count(1)

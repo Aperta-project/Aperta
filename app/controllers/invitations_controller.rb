@@ -9,7 +9,7 @@ class InvitationsController < ApplicationController
   end
 
   def create
-    invitation = task.invitations.create(invitation_params)
+    invitation = task.invitations.build(invitation_params)
     invitation.invite!
     Activity.invitation_created!(invitation, user: current_user)
     respond_with(invitation)

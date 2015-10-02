@@ -1,6 +1,15 @@
-{{#if label}}<span class="text-field-title">{{label}}</span>{{/if}}
-{{input name=ident
-        value=model.answer
-        class="form-control tall-text-field"
-        placeholder=placeholderText
-        disabled=disabled}}
+{{#if readonly}}
+  <div class="question-text">{{model.question}}</div>
+  {{#if model.answer}}
+    <div class="answer-text">{{model.answer}}</div>
+  {{else}}
+    <div class="answer-text no-answer">{{noResponseText}}</div>
+  {{/if}}
+{{else}}
+  {{#if label}}<span class="text-field-title">{{label}}</span>{{/if}}
+  {{input name=ident
+          value=model.answer
+          class="form-control tall-text-field"
+          placeholder=placeholderText
+          disabled=disabled}}
+{{/if}}

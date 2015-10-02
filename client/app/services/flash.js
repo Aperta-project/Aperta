@@ -45,14 +45,14 @@ import Ember from 'ember';
 
   ## How it Works
 
-  A singleton object is created and injected into all Routes and Controllers
+  A service is created and injected into all Routes and Controllers
   from an Ember Initializer as the property `flash`.
   When `displayMessage` or `displayErrorMessagesFromResponse` is called, all
   we're doing is pushing to an array of messages that are displayed in the templates.
   The `flash` object is also injected into the `flash-messages` component.
 */
 
-export default Ember.Object.extend({
+export default Ember.Service.extend({
   /**
     @property messages
     @type Array
@@ -96,6 +96,7 @@ export default Ember.Object.extend({
   */
 
   displayErrorMessagesFromResponse(response) {
+    this.clearAllMessages();
     for (var key in response.errors) {
       if(!response.errors.hasOwnProperty(key)) { continue; }
       if(Ember.isEmpty(response.errors[key]))  { continue; }

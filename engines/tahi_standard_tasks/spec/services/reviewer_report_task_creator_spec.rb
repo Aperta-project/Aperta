@@ -9,15 +9,37 @@ describe ReviewerReportTaskCreator do
     ReviewerReportTaskCreator.new(originating_task: paper_reviewer_task, assignee_id: assignee.id)
   end
 
-  it "assigns the specified role to the assignee" do
-    subject.process
-    expect(paper.role_for(user: assignee, role: PaperRole::REVIEWER)).to exist
-  end
+  context "assigning reviewer role" do
+    context "with no existing reviewer" do
+      it "assigns reviewer role to the assignee" do
+        subject.process
+        expect(paper.role_for(user: assignee, role: PaperRole::REVIEWER)).to exist
+      end
 
-  it "creates a ReviewerReportTask" do
-    expect {
-      subject.process
-    }.to change { TahiStandardTasks::ReviewerReportTask.count }.by(1)
+      it "creates a ReviewerReportTask" do
+        expect {
+          subject.process
+        }.to change { TahiStandardTasks::ReviewerReportTask.count }.by(1)
+      end
+    end
+
+    context "with an existing reviewer" do
+      before do
+        existing_reviewer = FactoryGirl.create(:user)
+        make_user_paper_reviewer(existing_reviewer, paper)
+      end
+
+      it "assigns reviewer role to the assignee" do
+        subject.process
+        expect(paper.role_for(user: assignee, role: PaperRole::REVIEWER)).to exist
+      end
+
+      it "creates a ReviewerReportTask" do
+        expect {
+          subject.process
+        }.to change { TahiStandardTasks::ReviewerReportTask.count }.by(1)
+      end
+    end
   end
 
   context "with existing ReviewerReportTask for User" do
@@ -32,10 +54,11 @@ describe ReviewerReportTaskCreator do
       }.to change { TahiStandardTasks::ReviewerReportTask.count }.by(0)
     end
 
-    it "uncompletes ReviewerReportTask" do
+    it "uncompletes and unsubmits ReviewerReportTask" do
       ReviewerReportTaskCreator.new(originating_task: paper_reviewer_task, assignee_id: assignee.id).process
       expect(TahiStandardTasks::ReviewerReportTask.count).to eq 1
       expect(TahiStandardTasks::ReviewerReportTask.first.completed).to eq false
+      expect(TahiStandardTasks::ReviewerReportTask.first.submitted?).to eq false
     end
   end
 

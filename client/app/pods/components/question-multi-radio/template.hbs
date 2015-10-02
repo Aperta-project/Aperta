@@ -1,20 +1,36 @@
-<div class="question-text">{{{model.question}}}</div>
+{{#if readonly}}
+  <div class="question-text">{{model.question}}</div>
+  {{#if model.answer}}
+    <div class="answer-text">{{model.answer}}</div>
+  {{else}}
+    <div class="answer-text no-answer">{{noResponseText}}</div>
+  {{/if}}
 
-{{#if helpText}}
-  <ul class="question-help">{{{helpText}}}</ul>
-{{/if}}
-
-<div>
-  {{#each options as |option|}}
-    <label>
-      {{radio-button-action selection=model.answer name=option.id value=option.id action="select"}}
-      {{option.text}}
-    </label>
-  {{/each}}
-
-  {{#if template}}
+  {{#if hasBlock}}
     <div class="additional-data">
       {{yield}}
     </div>
   {{/if}}
-</div>
+
+{{else}}
+  <div class="question-text">{{{model.question}}}</div>
+
+  {{#if helpText}}
+    <ul class="question-help">{{{helpText}}}</ul>
+  {{/if}}
+
+  <div>
+    {{#each options as |option|}}
+      <label>
+        {{radio-button-action selection=model.answer name=option.id value=option.id action="select"}}
+        {{option.text}}
+      </label>
+    {{/each}}
+
+    {{#if hasBlock}}
+      <div class="additional-data">
+        {{yield}}
+      </div>
+    {{/if}}
+  </div>
+{{/if}}

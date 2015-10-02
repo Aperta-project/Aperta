@@ -16,7 +16,7 @@ feature "Editing paper", selenium: true, js: true do
 
     before do
       assign_journal_role(journal, user, :admin)
-      login_as user
+      login_as(user, scope: :user)
       visit "/"
     end
 

@@ -15,7 +15,11 @@ module SalesforceServices
           "Display_Technical_Notes__c" => false,
           "CreatedByDeltaMigration__c" => false,
           "Editorial_Status_Date__c" => Time.now,
-          "Revision__c" => "0.0" # TODO: pull from paper
+          "Revision__c" => @paper.decisions.latest.revision_number,
+          "Title__c" => @paper.title,
+          "Initial_Date_Submitted__c" => @paper.submitted_at,
+          "Manuscript_Number__c" => @paper.doi,
+          "DOI__c" => @paper.doi
         }
       end
     end
@@ -49,7 +53,7 @@ module SalesforceServices
           'PFA_Question_4a__c'         => answer_for("pfa_question_4a"),
           'PFA_Able_to_Pay_R__c'       => answer_for("pfa_amount_to_pay"),
           'PFA_Additional_Comments__c' => answer_for("pfa_additional_comments"),
-          'PFA_Supporting_Docs__c'     => answer_for("pfa_supporting_docs"), # can't be nil, unlike others
+          'PFA_Supporting_Docs__c'     => boolean_from_text_answer_for("pfa_supporting_docs"), # bool required, non-nil, unlike others
         }
       end
 
@@ -60,10 +64,21 @@ module SalesforceServices
           q.present? ? q.answer : nil
         end
 
+        def boolean_from_text_answer_for(ident)
+          a = answer_for(ident)
+          a.is_a?(String) ? text_to_boolean_map[a.downcase] : false
+        end
+
+        def text_to_boolean_map
+          {
+            'yes' => true,
+            'no'  => false,
+          }
+        end
+
         def manuscript_id # replace this with doi code when done
           "prefix-#{@paper.id}"
         end
-
     end
   end
 end

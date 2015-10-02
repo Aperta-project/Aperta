@@ -8,7 +8,7 @@ feature "Invite Admin", js: true do
 
   before do
     assign_journal_role(paper.journal, admin, :admin)
-    login_as site_admin
+    login_as(site_admin, scope: :user)
     visit "/"
   end
 

@@ -10,7 +10,6 @@
 .volume-number,
 .issue-number {
   display: inline-block;
-
   .tall-text-field {
     width: 415px;
     margin-right: 20px;
@@ -26,8 +25,19 @@
 .production-notes {
   width: 853px;
   font-size: 18px;
-
   .inset-form-control-textarea {
     height: 65px;
+  }
+}
+
+.production-metadata {
+  .error-message {
+    margin-left: 120px;
+  }
+  .publication-date {
+    .error-message {
+      margin-top: -24px;
+      margin-left: 12px
+    }
   }
 }

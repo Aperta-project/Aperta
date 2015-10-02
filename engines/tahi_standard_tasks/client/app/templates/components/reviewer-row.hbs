@@ -1,9 +1,9 @@
 {{#if isEditing}}
 
-  {{reviewer-form newRecommendation=reviewer
+  {{reviewer-form reviewerRecommendation=reviewer
                   validationErrors=validationErrors
-                  toggleReviewerForm="toggleReviewerForm"
-                  saveNewRecommendation="saveNewRecommendation"
+                  saveRecommendation=attrs.saveRecommendation
+                  cancelRecommendation=(action "cancelRecommendation")
                   isSubmissionTaskNotEditable=isSubmissionTaskNotEditable}}
 
 {{else}}

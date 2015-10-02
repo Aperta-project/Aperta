@@ -32,18 +32,15 @@ export default Ember.Component.extend({
       this.set('isDeleting', false);
     },
 
+    cancelRecommendation() {
+      this.get('reviewer').rollback();
+      this.set('isEditing', false);
+    },
+
     confirmDeletion() {
       this.$().fadeOut(250, ()=> {
         this.sendAction('delete', this.get('reviewer'));
       });
-    },
-
-    saveNewRecommendation(newRecommendation) {
-      this.sendAction('saveNewRecommendation', newRecommendation);
-    },
-
-    toggleReviewerForm() {
-      this.sendAction('toggleReviewerForm');
     }
   }
 });

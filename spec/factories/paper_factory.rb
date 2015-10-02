@@ -18,6 +18,14 @@ FactoryGirl.define do
       "Feature Recognition from 2D Hints in Extruded Solids - #{n}-#{SecureRandom.hex(3)}"
     end
 
+    trait(:active) do
+      active true
+    end
+
+    trait(:inactive) do
+      active false
+    end
+
     # TODO: find all cases where this trait is used and change to trait of 'submitted'
     trait(:completed) do
       publishing_state "submitted"

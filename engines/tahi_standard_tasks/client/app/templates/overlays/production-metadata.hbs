@@ -1,0 +1,39 @@
+<h1>
+  Production Metadata
+</h1>
+
+<div class="form-group">
+  <div class="inset-form-control required publication-date">
+    <label class="inset-form-control-text">Publication Date</label>
+    {{question-date-picker ident="production_metadata.publicationDate"
+                           task=model
+                           group=group
+                           role="startPicker"
+                           placeholder="Select Date..."}}
+  </div>
+</div>
+<div class="form-group">
+  <div class="inset-form-control required volume-number">
+    <label class="inset-form-control-text">Volume Number</label>
+    {{question-input  ident="production_metadata.volumeNumber"
+                      task=model
+                      type="number"
+                      placeholderText="e.g. 3"}}
+  </div>
+
+  <div class="inset-form-control required issue-number">
+    <label class="inset-form-control-text">Issue Number</label>
+    {{question-input  ident="production_metadata.issueNumber"
+                      task=model
+                      type="number"
+                      placeholderText="e.g. 33"}}
+  </div>
+</div>
+
+<div class="production-notes">
+  <label>Production Notes</label>
+  {{question-textarea ident="production_metadata.productionNotes"
+                      task=model
+                      label="Production Notes"
+                      placeholder="Add production notes here..."}}
+</div>

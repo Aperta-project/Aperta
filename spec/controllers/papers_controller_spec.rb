@@ -17,48 +17,41 @@ describe PapersController do
   before { sign_in user }
 
   describe "GET index" do
-    let(:paper_count) { 20 }
+    let(:active_paper_count) { 3 }
+    let(:inactive_paper_count) { 2 }
     let(:response_papers) { res_body['papers'] }
+    let(:response_meta) { res_body['meta'] }
 
     before do
-      paper_count.times { FactoryGirl.create :paper, creator: user }
+      active_paper_count.times { FactoryGirl.create :paper, :active, creator: user }
+      inactive_paper_count.times { FactoryGirl.create :paper, :inactive, creator: user }
     end
 
-    context "when there are less than 15" do
-      let(:paper_count) { 1 }
+    context "when there are active and inactive papers owned by the user" do
 
       it "returns all papers" do
-        get :index, format: :json, page_number: 1
+        get :index, format: :json
         expect(response.status).to eq(200)
-        expect(response_papers.count).to eq(paper_count)
+        expect(response_papers.count).to eq(active_paper_count + inactive_paper_count)
+      end
+
+      it "returns the correct meta response" do
+        get :index, format: :json
+        expect(response_meta['total_active_papers']).to eq(3)
+        expect(response_meta['total_inactive_papers']).to eq(2)
       end
     end
 
-    context "when there are more than 15" do
+    context "when there are other papers not owned by the user" do
       let(:paper_count) { 16 }
 
-      context "when page 1" do
-        it "returns the first page of 15 papers" do
-          get :index, page_number: 1, format: :json
-          expect(response.status).to eq(200)
-          expect(response_papers.count).to eq(15)
-        end
-      end
-
-      context "when page 2" do
-        it "returns the second page of 5 papers" do
-          get :index, page_number: 2, format: :json
-          expect(response.status).to eq(200)
-          expect(response_papers.count).to eq(paper_count - 15)
-        end
-      end
-
-      context "when page 3" do
-        it "returns 0 papers" do
-          get :index, page_number: 3, format: :json
-          expect(response.status).to eq(200)
-          expect(response_papers.count).to eq(0)
-        end
+      it "returns just the user's papers" do
+        other_user = FactoryGirl.create(:user)
+        other_paper = FactoryGirl.create :paper, creator: other_user
+        get :index, format: :json
+        expect(response.status).to eq(200)
+        expect(Paper.count).to eq(6)
+        expect(response_papers.count).to eq(5)
       end
     end
   end

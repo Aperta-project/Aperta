@@ -7,6 +7,8 @@ when 'development'
   # Create Journal
   plos_journal = Journal.first_or_create!(name: 'PLOS Yeti', logo: '')
 
+  FactoryGirl.create(:manuscript_manager_template, journal: plos_journal, paper_type: "No Flows")
+
   # Create Users
   # These Users should match Personas, by convention
   admin = User.where(email: 'admin@example.com').first_or_create! do |user|

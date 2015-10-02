@@ -5,6 +5,10 @@ class Paper < ActiveRecord::Base
   include PaperTaskFinders
   include AASM
 
+  def attributes #adds 'computed' attributes
+    super.merge 'manuscript_id' => manuscript_id
+  end
+
   belongs_to :creator, inverse_of: :submitted_papers, class_name: 'User', foreign_key: :user_id
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
@@ -40,6 +44,10 @@ class Paper < ActiveRecord::Base
   validates :short_title, :title, length: { maximum: 255 }
 
   delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
+
+  def manuscript_id
+    doi.split('/').last if doi
+  end
 
   after_create do
     versioned_texts.create!(major_version: 0, minor_version: 0, text: (@new_body || ''))

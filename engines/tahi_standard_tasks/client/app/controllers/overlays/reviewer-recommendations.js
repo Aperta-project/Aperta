@@ -26,6 +26,7 @@ export default TaskController.extend(ValidationErrorsMixin, {
     cancelRecommendation() {
       this.set('showNewReviewerForm', false);
       this.set('newRecommendation', null);
+      this.clearAllValidationErrors();
     },
 
     saveRecommendation(recommendation) {

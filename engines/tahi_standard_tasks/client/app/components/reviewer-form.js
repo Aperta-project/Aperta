@@ -1,7 +1,6 @@
 import Ember from "ember";
-import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
-export default Ember.Component.extend(ValidationErrorsMixin, {
+export default Ember.Component.extend({
   reviewerRecommendation: null,
 
   affiliation: Ember.computed("reviewerRecommendation", function() {

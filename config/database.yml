@@ -17,7 +17,6 @@
 development:
   adapter: postgresql
   encoding: unicode
-  host: localhost
   database: tahi_development
   pool: 5
   username: tahi
@@ -26,35 +25,9 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
-  host: localhost
   database: tahi_test
   pool: 5
   username: tahi
-  password:
-
-performance:
-  adapter: postgresql
-  encoding: unicode
-  host: localhost
-  database: tahi_performance
-  pool: 48
-  username: tahi
-  password:
-
-staging:
-  adapter: postgresql
-  encoding: unicode
-  host: localhost
-  database: tahi_staging
-  pool: 48
-  password:
-
-production:
-  adapter: postgresql
-  encoding: unicode
-  host: localhost
-  database: tahi_production
-  pool: 48
   password:
 
 # PLoS Editorial Manager connection

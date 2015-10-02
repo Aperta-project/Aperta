@@ -35,10 +35,6 @@ export default TaskController.extend(ValidationErrorsMixin, {
       }).catch((response) => {
         this.displayValidationErrorsFromResponse(response);
       });
-    },
-
-    removeReviewer(reviewer) {
-      reviewer.destroyRecord();
     }
   }
 });

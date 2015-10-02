@@ -8,6 +8,12 @@ module TahiStandardTasks
       render json: reviewer_recommendation, status: :created
     end
 
+    def destroy
+      reviewer_recommendation = ReviewerRecommendation.find(params[:id])
+      reviewer_recommendation.destroy!
+      head :no_content
+    end
+
     private
 
     def reviewer_recommendation_params

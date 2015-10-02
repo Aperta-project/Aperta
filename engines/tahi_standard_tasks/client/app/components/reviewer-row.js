@@ -39,7 +39,7 @@ export default Ember.Component.extend({
 
     confirmDeletion() {
       this.$().fadeOut(250, ()=> {
-        this.sendAction('delete', this.get('reviewer'));
+        this.get('reviewer').destroyRecord();
       });
     }
   }

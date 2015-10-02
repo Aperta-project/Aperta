@@ -16,7 +16,7 @@
     {{#if showNewReviewerForm}}
       {{reviewer-form reviewerRecommendation=newRecommendation
                       validationErrors=validationErrors
-                      saveRecommendation="saveRecommendation"
+                      saveRecommendation=(action "saveRecommendation")
                       cancelRecommendation=(action "cancelRecommendation")
                       isSubmissionTaskNotEditable=isSubmissionTaskNotEditable}}
     {{/if}}

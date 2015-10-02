@@ -25,7 +25,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     },
 
     saveRecommendation() {
-      this.sendAction('saveRecommendation', this.get('reviewerRecommendation'));
+      this.attrs.saveRecommendation(this.get('reviewerRecommendation'));
     }
   }
 });

@@ -54,6 +54,101 @@ when 'development'
     user.roles.new(journal_id: plos_journal.id, name: "Author")
   end
 
+  # QA Users
+  qa_admin = User.where(email: 'sealresq+7@gmail.com').first_or_create! do |user|
+    user.first_name = 'Jeffrey SA'
+    user.last_name = 'Gray'
+    user.password = 'in|fury8'
+    user.username = 'jgray_sa'
+    user.site_admin = true
+    user.affiliations.first_or_initialize(name: "PLOS")
+    user.user_roles.new(role: plos_journal.roles.where(kind: Role::ADMIN, name: Role::ADMIN.capitalize).first_or_initialize)
+  end
+
+  qa_ordinary_admin = User.where(email: 'sealresq+6@gmail.com').first_or_create! do |user|
+    user.first_name = 'Jeffrey OA'
+    user.last_name = 'Gray'
+    user.password = 'in|fury8'
+    user.username = 'jgray_oa'
+    user.site_admin = false
+    user.affiliations.first_or_initialize(name: "PLOS")
+    user.user_roles.new(role: plos_journal.roles.where(kind: Role::ADMIN, name: Role::ADMIN.capitalize).first_or_initialize)
+  end
+
+  qa_flow_manager = User.where(email: 'sealresq+5@gmail.com').first_or_create! do |user|
+    user.first_name = 'Jeffrey FM'
+    user.last_name = 'Gray'
+    user.password = 'in|fury8'
+    user.username = 'jgray_flowmgr'
+    user.site_admin = false
+    user.affiliations.first_or_initialize(name: "PLOS")
+    user.user_roles.new(role: plos_journal.roles.where(kind: Role::FLOW_MANAGER, name: Role::FLOW_MANAGER.capitalize).first_or_initialize)
+  end
+
+  qa_editor = User.where(email: 'sealresq+4@gmail.com').first_or_create! do |user|
+    user.first_name = 'Jeffrey AMM'
+    user.last_name = 'Gray'
+    user.password = 'in|fury8'
+    user.username = 'jgray_editor'
+    user.affiliations.first_or_initialize(name: "PLOS")
+    user.user_roles.new(role: plos_journal.roles.where(kind: Role::EDITOR, name: Role::EDITOR.capitalize).first_or_initialize)
+  end
+
+  qa_editor2 = User.where(email: 'sealresq+3@gmail.com').first_or_create! do |user|
+    user.first_name = 'Jeffrey MM'
+    user.last_name = 'Gray'
+    user.password = 'in|fury8'
+    user.username = 'jgray_assoceditor'
+    user.affiliations.first_or_initialize(name: "PLOS")
+    user.user_roles.new(role: plos_journal.roles.where(kind: Role::EDITOR, name: Role::EDITOR.capitalize).first_or_initialize)
+  end
+
+  qa_reviewer = User.where(email: 'sealresq+2@gmail.com').first_or_create! do |user|
+    user.first_name = 'Jeffrey RV'
+    user.last_name = 'Gray'
+    user.password = 'in|fury8'
+    user.username = 'jgray_reviewer'
+    user.affiliations.first_or_initialize(name: "PLOS")
+  end
+
+  qa_author = User.where(email: 'sealresq+1@gmail.com').first_or_create! do |user|
+    user.first_name = 'Jeffrey AU'
+    user.last_name = 'Gray'
+    user.password = 'in|fury8'
+    user.username = 'jgray_author'
+    user.affiliations.first_or_initialize(name: "PLOS")
+    user.roles << Role.where(name: "Author").first
+  end
+
+  # Create Papers for QA
+  unless Paper.where(short_title: "Hendrik a011f9d4-0119-4611-88af-9838ff154cec").present?
+    PaperFactory.create(
+      {
+        journal_id:  plos_journal.id,
+        short_title: "Hendrik a011f9d4-0119-4611-88af-9838ff154cec",
+        title:       "Hendrik a011f9d4-0119-4611-88af-9838ff154cec",
+        abstract:    "We've discovered the rain in Spain tends to stay in the plain",
+        body:        "<p>The quick man bear pig jumped over the fox</p>",
+        paper_type:  "Research"
+      },
+      qa_admin
+    ).save!
+  end
+
+  unless Paper.where(short_title: "Hendrik 12de86c5-5afc-44cb-ab06-00a3411f66d5").present?
+    PaperFactory.create(
+      {
+        journal_id:  plos_journal.id,
+        short_title: "Hendrik 12de86c5-5afc-44cb-ab06-00a3411f66d5",
+        title:       "Hendrik 12de86c5-5afc-44cb-ab06-00a3411f66d5",
+        abstract:    "We've discovered the rain in Spain tends to stay in the plain",
+        body:        "<p>The quick man bear pig jumped over the fox</p>",
+        paper_type:  "Research"
+      },
+      qa_admin
+    ).save!
+  end
+
   # Create Paper for Admin
   unless Paper.where(short_title: "The great scientific paper of 2015").present?
     PaperFactory.create(

@@ -1,6 +1,10 @@
 {{#if isEditing}}
 
-  Editing
+  {{reviewer-form newRecommendation=reviewer
+                  validationErrors=validationErrors
+                  toggleReviewerForm="toggleReviewerForm"
+                  saveNewRecommendation="saveNewRecommendation"
+                  isSubmissionTaskNotEditable=isSubmissionTaskNotEditable}}
 
 {{else}}
 

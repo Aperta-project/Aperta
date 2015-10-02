@@ -31,6 +31,11 @@ export default TaskController.extend(ValidationErrorsMixin, {
         });
     },
 
+    saveRecommendation(recommendation) {
+      this.clearAllValidationErrorsForModel(recommendation);
+      recommendation.save();
+    },
+
     removeReviewer(reviewer) {
       reviewer.destroyRecord();
     }

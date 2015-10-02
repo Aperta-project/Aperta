@@ -8,7 +8,7 @@ export default Ember.Component.extend({
   isEditing: false,
 
   didInsertElement() {
-    if (this.get('disabled')) { return; }
+    if (this.get('isSubmissionTaskNotEditable')) { return; }
     this.$().hover(() => {
       this.toggleProperty('isHovered');
     });
@@ -36,6 +36,14 @@ export default Ember.Component.extend({
       this.$().fadeOut(250, ()=> {
         this.sendAction('delete', this.get('reviewer'));
       });
+    },
+
+    saveNewRecommendation(newRecommendation) {
+      this.sendAction('saveNewRecommendation', newRecommendation);
+    },
+
+    toggleReviewerForm() {
+      this.sendAction('toggleReviewerForm');
     }
   }
 });

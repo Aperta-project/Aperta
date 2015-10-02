@@ -4,6 +4,7 @@ import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 export default TaskController.extend(ValidationErrorsMixin, {
   showNewReviewerForm: false,
+  newRecommendation: null,
 
   // Doing this to prevent short period of time where `newRecommendation` is in the DOM
   // while save is happening. If it becomes invalid after save it is removed. This creates
@@ -14,26 +15,26 @@ export default TaskController.extend(ValidationErrorsMixin, {
 
   actions: {
 
-    toggleReviewerForm() {
-      this.toggleProperty('showNewReviewerForm');
+    addNewReviewer() {
+      let recommendation = this.store.createRecord('reviewerRecommendation', {
+        reviewerRecommendationsTask: this.get('model')
+      });
+      this.set('newRecommendation', recommendation);
+      this.set('showNewReviewerForm', true);
     },
 
-    saveNewRecommendation(recommendation) {
-      let newRecommendation = this.store.createRecord('reviewerRecommendation', recommendation);
-
-      newRecommendation
-        .set('reviewerRecommendationsTask', this.get('model'))
-        .save().then(() => {
-          this.set('showNewReviewerForm', false);
-        }).catch((response) => {
-          newRecommendation.deleteRecord();
-          this.displayValidationErrorsFromResponse(response);
-        });
+    cancelRecommendation() {
+      this.set('showNewReviewerForm', false);
+      this.set('newRecommendation', null);
     },
 
     saveRecommendation(recommendation) {
-      this.clearAllValidationErrorsForModel(recommendation);
-      recommendation.save();
+      recommendation.save().then(() => {
+        this.set('showNewReviewerForm', false);
+        this.set('newRecommendation', null);
+      }).catch((response) => {
+        this.displayValidationErrorsFromResponse(response);
+      });
     },
 
     removeReviewer(reviewer) {

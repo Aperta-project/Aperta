@@ -1,13 +1,12 @@
 require 'rails_helper'
 
-describe "Journal" do
-
+describe Journal do
   it "will be valid with default factory data" do
     journal = build(:journal)
     expect(journal).to be_valid
   end
 
-  context "without DOI" do
+  context "that has DOI information" do
     before do
       @journal = build(:journal)
     end
@@ -26,10 +25,10 @@ describe "Journal" do
       @journal.save!
     end
 
-    it "can save a DOI" do
-      expect(@journal.doi_publisher_prefix).to include "PPREFIX"
-      expect(@journal.doi_journal_prefix).to include "JPREFIX"
-      expect(@journal.last_doi_issued).to include "10000"
+    it "can be created" do
+      expect(@journal.doi_publisher_prefix).to eq "PPREFIX"
+      expect(@journal.doi_journal_prefix).to eq "JPREFIX"
+      expect(@journal.last_doi_issued).to eq "100001"
     end
 
     it "will not save invalid DOI publisher prefix" do
@@ -63,17 +62,13 @@ describe "Journal" do
         }.to raise_error(ActiveRecord::RecordInvalid)
       end
     end
+  end
 
-    describe "more Journals" do
-      it "which do not have DOI set" do
-        journal = build(:journal)
-        expect(journal).to be_valid
-        journal.save!
-
-        journal = build(:journal)
-        expect(journal).to be_valid
-        journal.save!
-      end
+  context "without DOI information" do
+    it "can still be created" do
+      journal = build(:journal)
+      expect(journal).to be_valid
+      journal.save!
     end
   end
 end

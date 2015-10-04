@@ -391,7 +391,7 @@ class Paper < ActiveRecord::Base
   end
 
   def assign_doi
-    self.doi = Doi.new(journal: journal).assign! if journal
+    self.doi = DoiService.new(journal: journal).assign! if journal
   end
 
   def create_versioned_texts

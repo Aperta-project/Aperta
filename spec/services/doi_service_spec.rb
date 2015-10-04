@@ -106,14 +106,14 @@ describe DoiService do
     end
   end
 
-  describe "#assign!" do
+  describe "#next_doi!" do
     let(:journal) { create :journal }
-    let(:doi) { DoiService.new(journal: journal) }
+    let(:doi_service) { DoiService.new(journal: journal) }
 
     it "assigns the next available doi to the journal" do
       last_doi_issued = journal.last_doi_issued
       expect {
-        doi.assign!
+        doi_service.next_doi!
       }.to change(journal, :last_doi_issued)
         .from(last_doi_issued)
         .to(last_doi_issued.succ)
@@ -121,7 +121,7 @@ describe DoiService do
 
     context "when assignment is successful" do
       it "returns true" do
-        expect(doi.assign!).to eq journal_doi
+        expect(doi_service.next_doi!).to eq journal_doi
       end
     end
 
@@ -129,14 +129,14 @@ describe DoiService do
       context "when the publisher prefix is not set" do
         it "returns nil" do
           journal.update_attributes(doi_publisher_prefix: nil)
-          expect(doi.assign!).to eq nil
+          expect(doi_service.next_doi!).to eq nil
         end
       end
 
       context "when the journal prefix is not set" do
         it "returns nil" do
           journal.update_attributes(doi_journal_prefix: nil)
-          expect(doi.assign!).to eq nil
+          expect(doi_service.next_doi!).to eq nil
         end
       end
     end

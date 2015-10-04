@@ -53,7 +53,7 @@ class Paper < ActiveRecord::Base
     doi.split('/').last if doi
   end
 
-  after_create :assign_doi
+  after_create :assign_doi!
   after_create :create_versioned_texts
 
   aasm column: :publishing_state do
@@ -369,8 +369,8 @@ class Paper < ActiveRecord::Base
     latest_version.touch
   end
 
-  def assign_doi
-    self.doi = DoiService.new(journal: journal).assign! if journal
+  def assign_doi!
+    self.update!(doi: DoiService.new(journal: journal).next_doi!) if journal
   end
 
   def create_versioned_texts

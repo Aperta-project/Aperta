@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Doi do
+describe DoiService do
 
   let(:journal_doi) do
     [journal[:doi_publisher_prefix], journal[:doi_journal_prefix]].join('/') + "." + journal[:last_doi_issued]
@@ -105,8 +105,8 @@ describe Doi do
   end
 
   describe "#assign!" do
-    let(:journal) { create :journal, :with_doi }
-    let(:doi) { Doi.new(journal: journal) }
+    let(:journal) { create :journal }
+    let(:doi) { DoiService.new(journal: journal) }
 
     it "assigns the next available doi to the journal" do
       last_doi_issued = journal.last_doi_issued

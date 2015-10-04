@@ -25,6 +25,10 @@ class Journal < ActiveRecord::Base
     users.merge(Role.admins)
   end
 
+  def doi
+    DoiService.new(journal: self).to_s
+  end
+
   def editors
     users.merge(Role.editors)
   end
@@ -66,15 +70,9 @@ class Journal < ActiveRecord::Base
   private
 
   def valid_doi_format
-    doi = Doi.new(journal: self)
-
-    if doi.journal_doi_enabled?
-      if doi.valid?
-        return true
-      else
-        errors.add(:doi, "The DOI you specified is not valid.")
-      end
-    end
+    return true unless doi_publisher_prefix.present? || doi_journal_prefix.present?
+    return true if DoiService.valid?(doi)
+    errors.add(:doi, "The DOI you specified is not valid.")
   end
 
   def setup_defaults

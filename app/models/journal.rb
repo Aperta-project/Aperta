@@ -26,7 +26,7 @@ class Journal < ActiveRecord::Base
   end
 
   def doi
-    Doi.new(journal: self).to_s
+    DoiService.new(journal: self).to_s
   end
 
   def editors
@@ -71,7 +71,7 @@ class Journal < ActiveRecord::Base
 
   def valid_doi_format
     return true unless doi_publisher_prefix.present? || doi_journal_prefix.present?
-    return true if Doi.valid?(doi)
+    return true if DoiService.valid?(doi)
     errors.add(:doi, "The DOI you specified is not valid.")
   end
 

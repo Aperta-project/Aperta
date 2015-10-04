@@ -47,7 +47,7 @@ feature "Editing paper", selenium: true, js: true do
                                   last_doi_issued: '8887')
       end
 
-      scenario "shows the doi on the page" do
+      scenario "shows the manuscript id (derived from doi) on the page" do
         visit '/'
         click_button 'Create New Submission'
         fill_in 'paper-short-title', with: "A paper with doi"
@@ -60,7 +60,7 @@ feature "Editing paper", selenium: true, js: true do
         end
 
         within ".task-list-doi" do
-          expect(page).to have_content "DOI: vicious/robots.8888"
+          expect(page).to have_content "Manuscript ID: robots.8888"
         end
         expect(page.current_path).to eq("/papers/#{Paper.last.id}")
       end

@@ -53,9 +53,8 @@ class Paper < ActiveRecord::Base
     doi.split('/').last if doi
   end
 
-  after_create do
-    versioned_texts.create!(major_version: 0, minor_version: 0, text: (@new_body || ''))
-  end
+  after_create :assign_doi
+  after_create :create_versioned_texts
 
   aasm column: :publishing_state do
     state :unsubmitted, initial: true # currently being authored
@@ -370,4 +369,11 @@ class Paper < ActiveRecord::Base
     latest_version.touch
   end
 
+  def assign_doi
+    self.doi = Doi.new(journal: journal).assign! if journal
+  end
+
+  def create_versioned_texts
+    versioned_texts.create!(major_version: 0, minor_version: 0, text: (@new_body || ''))
+  end
 end

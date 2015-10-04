@@ -52,9 +52,8 @@ class Paper < ActiveRecord::Base
     doi.split('/').last if doi
   end
 
-  after_create do
-    versioned_texts.create!(major_version: 0, minor_version: 0, text: (@new_body || ''))
-  end
+  after_create :assign_doi
+  after_create :create_versioned_texts
 
   after_create :set_doi
 
@@ -389,5 +388,13 @@ class Paper < ActiveRecord::Base
     return if doi
     next_doi = Doi.new(journal: journal).assign!
     update!(doi: next_doi)
+  end
+
+  def assign_doi
+    self.doi = Doi.new(journal: journal).assign! if journal
+  end
+
+  def create_versioned_texts
+    versioned_texts.create!(major_version: 0, minor_version: 0, text: (@new_body || ''))
   end
 end

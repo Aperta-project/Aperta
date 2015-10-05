@@ -4,18 +4,18 @@
     <div class="task-list-doi"><strong>DOI:</strong> {{paper.doi}}</div>
   {{/if}}
 
-  {{#if paper.readyToSubmit}}
+  {{#if readyToSubmit}}
     <button id="sidebar-submit-paper" {{action "submitPaper"}}
       class="button-primary button-pre-submit-paper button--green">
       Submit
     </button>
   {{/if}}
 
-  {{#if paper.preSubmission}}
+  {{#if preSubmission}}
     You must complete the following tasks before submitting:
   {{/if}}
 
-  {{#if paper.postSubmission}}
+  {{#if postSubmission}}
     This paper has been submitted.
   {{/if}}
 

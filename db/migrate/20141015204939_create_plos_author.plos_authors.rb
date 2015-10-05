@@ -15,7 +15,8 @@ class CreatePlosAuthor < ActiveRecord::Migration
     end
 
     change_table :authors do |t|
-      t.actable
+      t.string :actable_type
+      t.integer :actable_id
     end
 
     remove_column :authors, :middle_initial, :string

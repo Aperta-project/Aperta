@@ -52,7 +52,7 @@ describe Paper do
   describe "validations" do
     describe "paper_type" do
       it "is required" do
-        paper = Paper.new short_title: 'Example'
+        paper = Paper.new title: 'Example'
         expect(paper).to_not be_valid
         expect(paper).to have(1).errors_on(:paper_type)
       end
@@ -81,35 +81,16 @@ describe Paper do
     end
 
     describe "title" do
-      it "is within 255 chars" do
-        paper = FactoryGirl.build(:paper, title: "a" * 256)
+      it "must be present" do
+        paper = FactoryGirl.build(:paper, title: nil)
         expect(paper).to_not be_valid
         expect(paper).to have(1).errors_on(:title)
-
-        paper.title = "a" * 254
-        expect(paper).to be_valid
-
-        paper.title = "a" * 255
-        expect(paper).to be_valid
       end
     end
 
     describe "short_title" do
-      it "must be present" do
-        paper = FactoryGirl.build(:paper, short_title: nil)
-        expect(paper).to_not be_valid
-        expect(paper).to have(1).errors_on(:short_title)
-      end
-
-      it "must be unique" do
-        FactoryGirl.create(:paper, short_title: 'Duplicate')
-        dup_paper = FactoryGirl.build(:paper, short_title: 'Duplicate')
-        expect(dup_paper).to_not be_valid
-        expect(dup_paper).to have(1).errors_on(:short_title)
-      end
-
       it "is within 255 chars" do
-        paper = FactoryGirl.build(:paper, short_title: "a" * 256)
+        paper = FactoryGirl.build(:paper, title: "Example", short_title: "a" * 256)
         expect(paper).to_not be_valid
         expect(paper).to have(1).errors_on(:short_title)
 
@@ -123,7 +104,7 @@ describe Paper do
 
     describe "journal" do
       it "must be present" do
-        paper = Paper.new(short_title: 'YOLO')
+        paper = Paper.new(title: 'YOLO')
         expect(paper).to_not be_valid
       end
     end

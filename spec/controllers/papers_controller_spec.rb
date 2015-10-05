@@ -103,14 +103,6 @@ describe PapersController do
         expect(Paper.where(short_title: 'ABC101').count).to eq(1)
       end
 
-      context "with html tags in the title" do
-        let(:new_title) { '<div>A full html title</div>' }
-        it "gets rid of the tags" do
-          do_request
-          expect(Paper.last.title).to eq('A full html title')
-        end
-      end
-
       it "returns a 201 and the paper's id in json" do
         do_request
         expect(response.status).to eq(201)
@@ -176,14 +168,6 @@ describe PapersController do
           do_request
           expect(response.status).to eq(422)
           expect(res_body["errors"]).to have_key("locked_by_id")
-        end
-      end
-
-      context "with html tags in the title" do
-        let(:new_title) { '<div>A full html title</div>' }
-        it "gets rid of the tags" do
-          do_request
-          expect(paper.reload.title).to eq('A full html title')
         end
       end
     end

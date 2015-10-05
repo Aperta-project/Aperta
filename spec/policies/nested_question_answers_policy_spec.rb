@@ -7,7 +7,7 @@ describe NestedQuestionAnswersPolicy do
   let(:phase) { FactoryGirl.create(:phase, paper: paper) }
   let(:user) { FactoryGirl.create(:user) }
   let(:task) { FactoryGirl.create(:task, phase: phase) }
-  let(:nested_question_answer) { raise NotImplementedError("Must provide :nested_question_answer in context") }
+  let(:nested_question_answer) { fail NotImplementedError("Must provide :nested_question_answer in context") }
 
   context "and the resource is owned by a task" do
     let(:nested_question_answer) { FactoryGirl.create(:nested_question_answer, owner: task) }
@@ -52,7 +52,7 @@ describe NestedQuestionAnswersPolicy do
   end
 
   context "and the resource isn't owned by a task, but it's owner is assigned to a task" do
-    let(:comment){ FactoryGirl.create(:comment, task: task) }
+    let(:comment) { FactoryGirl.create(:comment, task: task) }
     let(:nested_question_answer) { FactoryGirl.create(:nested_question_answer, owner: comment) }
 
     context "A super admin" do

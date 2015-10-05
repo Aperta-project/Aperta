@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe NestedQuestion do
   describe "validations" do
-    subject(:nested_question){ FactoryGirl.build(:nested_question) }
+    subject(:nested_question) { FactoryGirl.build(:nested_question) }
 
     it "is valid" do
       expect(nested_question.valid?).to be true

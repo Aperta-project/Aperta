@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe NestedQuestionAnswer do
-  subject(:nested_question_answer){ FactoryGirl.build(:nested_question_answer) }
+  subject(:nested_question_answer) { FactoryGirl.build(:nested_question_answer) }
 
   describe "validations" do
     it "is valid" do

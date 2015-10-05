@@ -56,6 +56,7 @@ else
   end
 
   # QA Users
+  # rubocop:disable Lint/UselessAssignment
   qa_admin = User.where(email: 'sealresq+7@gmail.com').first_or_create! do |user|
     user.first_name = 'Jeffrey SA'
     user.last_name = 'Gray'
@@ -120,6 +121,7 @@ else
     user.affiliations.first_or_initialize(name: "PLOS")
     user.roles << Role.where(name: "Author").first
   end
+  # rubocop:enable Lint/UselessAssignment
 
   # Create Papers for QA
   unless Paper.where(short_title: "Hendrik a011f9d4-0119-4611-88af-9838ff154cec").present?

@@ -1,8 +1,0 @@
-{{#each parentView.additionalData as |datum|}}
-  <div class="question-dataset">
-    {{#datum-definition datum=datum}}
-      {{yield}}
-    {{/datum-definition}}
-    <button class="button-secondary knockout button--green hidden" {{action "additionalDataAction"}}>Add Dataset</button>
-  </div>
-{{/each}}

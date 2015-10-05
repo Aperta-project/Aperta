@@ -48,8 +48,6 @@ NestedQuestionComponent = Ember.Component.extend({
     return this.get('model') && this.get('displayQuestionText');
   }),
 
-  additionalData: Ember.computed.alias('model.additionalData'),
-
   change: function(){
     Ember.run.debounce(this, this._saveAnswer, this.get('model.answer'), 200);
     return false;

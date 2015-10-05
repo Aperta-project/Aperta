@@ -5,9 +5,7 @@ class NestedQuestionAnswersController < ApplicationController
 
   def create
     answer = fetch_answer
-    if answer.save!
-      process_attachment(answer)
-    end
+    process_attachment(answer) if answer.save!
     render json: answer, serializer: NestedQuestionAnswerSerializer
   end
 
@@ -17,9 +15,7 @@ class NestedQuestionAnswersController < ApplicationController
       value: answer_params[:value],
       additional_data: answer_params[:additional_data]
     }
-    if answer.update_attributes!(updated_attrs)
-      process_attachment(answer)
-    end
+    process_attachment(answer) if answer.update_attributes!(updated_attrs)
     render json: answer, serializer: NestedQuestionAnswerSerializer
   end
 
@@ -36,17 +32,21 @@ class NestedQuestionAnswersController < ApplicationController
       if params[:id]
         NestedQuestionAnswer.where(id: params[:id]).first!
       else
-        NestedQuestionAnswer.new(
-          nested_question_id: nested_question.id,
-          value_type: nested_question.value_type,
-          value: answer_params[:value],
-          owner_id: answer_params[:owner_id],
-          owner_type: NestedQuestion.lookup_owner_type(answer_params[:owner_type]),
-          additional_data: answer_params[:additional_data],
-          decision_id: answer_params[:decision_id]
-        )
+        build_new_nested_question_answer
       end
     end
+  end
+
+  def build_new_nested_question_answer
+    NestedQuestionAnswer.new(
+      nested_question_id: nested_question.id,
+      value_type: nested_question.value_type,
+      value: answer_params[:value],
+      owner_id: answer_params[:owner_id],
+      owner_type: NestedQuestion.lookup_owner_type(answer_params[:owner_type]),
+      additional_data: answer_params[:additional_data],
+      decision_id: answer_params[:decision_id]
+    )
   end
 
   def nested_question
@@ -71,11 +71,11 @@ class NestedQuestionAnswersController < ApplicationController
   end
 
   def process_attachment(answer)
-    if has_attachment?
-      attachment = answer.attachment || answer.build_attachment
-      attachment.update_attribute :status, "processing"
-      DownloadQuestionAttachmentWorker.perform_async attachment.id, answer_params[:value]
-    end
+    return unless has_attachment?
+
+    attachment = answer.attachment || answer.build_attachment
+    attachment.update_attribute :status, "processing"
+    DownloadQuestionAttachmentWorker.perform_async attachment.id, answer_params[:value]
   end
 
 end

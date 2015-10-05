@@ -18,26 +18,26 @@ class NestedQuestionAnswer < ActiveRecord::Base
   def value
     return nil unless value_type.present?
     read_value_method = "#{value_type.underscore}_value_type".to_sym
-    if respond_to?(read_value_method, include_private_methods=true)
-      send read_value_method
-    end
+
+    return unless respond_to?(read_value_method, true)
+    send read_value_method
   end
 
   private
 
   def attachment_value_type
-    read_attribute(:value)
+    self[:value]
   end
 
   def boolean_value_type
-    read_attribute(:value).match(TRUTHY_VALUES_RGX) ? true : false
+    self[:value].match(TRUTHY_VALUES_RGX) ? true : false
   end
 
   def text_value_type
-    read_attribute(:value)
+    self[:value]
   end
 
   def question_set_value_type
-    read_attribute(:value)
+    self[:value]
   end
 end

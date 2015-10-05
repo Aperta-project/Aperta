@@ -11,7 +11,7 @@ describe NestedQuestionAnswersController do
 
   shared_examples_for "processing attachments for NestedQuestionAnswersController" do
     let(:nested_question) { FactoryGirl.create(:nested_question, value_type: "attachment") }
-    let(:attachment_params){ { value: "http://example.com/image.png" } }
+    let(:attachment_params) { { value: "http://example.com/image.png" } }
 
     it "creates an question attachment" do
       expect { do_request(params: attachment_params) }.to change { QuestionAttachment.count }.by(1)
@@ -27,22 +27,22 @@ describe NestedQuestionAnswersController do
     let(:owner) { nested_question.owner }
 
     def do_request(params: {})
-      post(:create,
+      post_params = {
         nested_question_id: nested_question.to_param,
         nested_question_answer: {
           value: "Hello",
           owner_id: owner.id,
           owner_type: owner.type,
           additional_data: { "insitution-id" => "123" }
-        }.merge(params),
-        format: :json
-      )
+        }.merge(params)
+      }
+      post(:create, post_params, format: json)
     end
 
     it "creates an answer for the question" do
-      expect {
+      expect do
         do_request
-      }.to change(NestedQuestionAnswer, :count).by(1)
+      end.to change(NestedQuestionAnswer, :count).by(1)
 
       answer = NestedQuestionAnswer.last
       expect(answer.nested_question).to eq(nested_question)
@@ -61,11 +61,11 @@ describe NestedQuestionAnswersController do
 
   describe "#update" do
     let!(:nested_question_answer) { FactoryGirl.create(:nested_question_answer, value: "Hi", owner: nested_question.owner) }
-    let(:nested_question){ FactoryGirl.create(:nested_question) }
-    let(:owner){ nested_question.owner }
+    let(:nested_question) { FactoryGirl.create(:nested_question) }
+    let(:owner) { nested_question.owner }
 
     def do_request(params:{})
-      put(:update,
+      put_params = {
         id: nested_question_answer.to_param,
         nested_question_id: nested_question.to_param,
         nested_question_answer: {
@@ -73,15 +73,15 @@ describe NestedQuestionAnswersController do
           owner_id: owner.id,
           owner_type: owner.type,
           additional_data: { "insitution-id" => "234" }
-        }.merge(params),
-        format: :json
-      )
+        }.merge(params)
+      }
+      put(:update, put_params, format: :json)
     end
 
     it "updates the answer for the question" do
-      expect {
+      expect do
         do_request
-      }.to_not change(NestedQuestionAnswer, :count)
+      end.to_not change(NestedQuestionAnswer, :count)
 
       answer = nested_question_answer.reload
       expect(answer.value).to eq("Bye")
@@ -98,11 +98,11 @@ describe NestedQuestionAnswersController do
 
   describe "#destroy" do
     let!(:nested_question_answer) { FactoryGirl.create(:nested_question_answer, value: "Hi", owner: nested_question.owner) }
-    let(:nested_question){ FactoryGirl.create(:nested_question) }
-    let(:owner){ nested_question.owner }
+    let(:nested_question) { FactoryGirl.create(:nested_question) }
+    let(:owner) { nested_question.owner }
 
     def do_request(params:{})
-      delete(:destroy,
+      delete_params = {
         id: nested_question_answer.to_param,
         nested_question_id: nested_question.to_param,
         nested_question_answer: {
@@ -110,19 +110,19 @@ describe NestedQuestionAnswersController do
           owner_id: owner.id,
           owner_type: owner.type,
           additional_data: { "insitution-id" => "234" }
-        }.merge(params),
-        format: :json
-      )
+        }.merge(params)
+      }
+      delete(:destroy, delete_params, format: :json)
     end
 
     it "deletes the answer for the question" do
-      expect {
+      expect do
         do_request
-      }.to change(NestedQuestionAnswer, :count).by(-1)
+      end.to change(NestedQuestionAnswer, :count).by(-1)
 
-      expect {
+      expect do
         nested_question_answer.reload
-      }.to raise_error(ActiveRecord::RecordNotFound)
+      end.to raise_error(ActiveRecord::RecordNotFound)
     end
 
     it "responds with 200 OK" do

@@ -38,7 +38,7 @@ class Paper < ActiveRecord::Base
   validates :title, presence: true
   validates :journal, presence: true
 
-  validates :short_title, :title, length: { maximum: 255 }
+  validates :short_title, length: { maximum: 255 }
 
   scope :active,   -> { where(active: true) }
   scope :inactive, -> { where(active: false) }

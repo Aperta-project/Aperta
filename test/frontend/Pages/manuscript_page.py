@@ -19,7 +19,7 @@ class ManuscriptPage(PlosPage):
 
   #POM Actions
   def click_workflow_button(self):
-    """ Click workflow button """
+    """Click workflow button"""
     self._get(self._workflow_button).click()
     return self
 
@@ -28,3 +28,9 @@ class ManuscriptPage(PlosPage):
     authors_card_title = self._get(self._authors_card)
     authors_card_title.find_element_by_xpath('.//ancestor::a').click()
     return self
+
+  def click_card(self, card_name):
+    """Click on a given card"""
+    card_title = self._get((By.XPATH,
+      "//div[@id='paper-metadata-tasks']//div[contains(., 'Authors')]"))
+    card_title.find_element_by_xpath('.//ancestor::a').click()

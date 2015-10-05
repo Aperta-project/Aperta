@@ -7,7 +7,13 @@ Page Object Model for the Paper Editor Page. Validates global and dynamic elemen
 import time
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
 from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface
+from Base.Resources import affiliation, billing_data
+from frontend.Cards.authors_card import AuthorsCard
+from frontend.Cards.basecard import BaseCard
+from frontend.Cards.billing_card import BillingCard
 
 __author__ = 'sbassi@plos.org'
 
@@ -48,6 +54,9 @@ class PaperEditorPage(AuthenticatedPage):
     self._pdf_link = (By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[3]")
     self._epub_link = ((By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[2]"))
     self._docx_link = (By.CLASS_NAME, 'docx')
+    self._card = (By.CLASS_NAME, 'card')
+    self._sidebar_submit = (By.ID, 'sidebar-submit-paper')
+    self._submit_confirm = (By.CLASS_NAME, 'button-submit-paper')
 
   # POM Actions
   def validate_page_elements_styles_functions(self, username=''):
@@ -253,3 +262,32 @@ class PaperEditorPage(AuthenticatedPage):
     time.sleep(1)
     buttons = self._gets(self._control_bar_right_items)
     assert self._get(self._workflow_link) if user_buttons == 7 else (len(buttons) == 6)
+
+  def _click_card(self, card_name):
+    """Click on a given card"""
+    for card in self._gets((By.CLASS_NAME, 'card-title')):
+      if card.text == card_name:
+        card.find_element_by_xpath('.//ancestor::a').click()
+        return None
+
+  def complete_card(self, card_name):
+    """On a given card, check complete and then close"""
+    self._click_card(card_name)
+    base_card = BaseCard(self._driver)
+    if card_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript'):
+      # Check completed_check status
+      completed = base_card._get(base_card._completed_check)
+      if not completed.is_selected():
+        completed.click()
+        #time.sleep(.2)
+      base_card._get(base_card._close_button).click()
+      time.sleep(1)
+    elif card_name == 'Authors':
+      # Complete authors data before mark close
+      author_card = AuthorsCard(self._driver)
+      author_card.edit_author(affiliation)
+    elif card_name == 'Billing':
+      billing = BillingCard(self._driver)
+      billing.add_billing_data(billing_data)
+
+      # Get this card

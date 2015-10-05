@@ -52,18 +52,22 @@ class DashboardPage(AuthenticatedPage):
     self._cns_short_title_label = (By.CLASS_NAME, 'paper-new-label')
     self._cns_short_title_field = (By.CSS_SELECTOR, '#paper-short-title')
     self._cns_journal_chooser = (By.XPATH, './/div[@class="inner-content"]/div[2]/label')
+    self._cns_journal_chooser_dd = (By.CLASS_NAME, 'paper-new-journal-select')
+    self._cns_papertype_chooser_dd = (By.CLASS_NAME, 'paper-new-paper-type-select')
+
+    self._cns_journal_chooser_active = (By.CLASS_NAME, 'select-box-element--active')
     self._cns_paper_type_chooser = (By.XPATH, './/div[@class="inner-content"]/div[3]/label')
 
     self._cns_chooser_chosen = (By.CLASS_NAME, 'select-box-item')
     self._cns_chooser_dropdown_arrow = (By.CLASS_NAME, 'select2-arrow')
-    self._create_btn = (By.CLASS_NAME, 'paper-new-create-document-button')
+    self._cns_create_btn = (By.CLASS_NAME, 'paper-new-create-document-button')
 
     self._cns_cancel = (By.CLASS_NAME, 'button-link')
     self._cns_create = (By.CLASS_NAME, 'button-primary')
-
+    self._submitted_papers = (By.CLASS_NAME, 'dashboard-submitted-papers')
     # First article
     self._first_paper = (By.CSS_SELECTOR, 'li.dashboard-paper-title > a')
-    
+
 
   # POM Actions
   def click_on_existing_manuscript_link(self, title):
@@ -83,7 +87,6 @@ class DashboardPage(AuthenticatedPage):
     first_article_link = self._get(self._first_paper)
     first_article_link.click()
     return first_article_link.text
-
 
   def validate_initial_page_elements_styles(self):
     """
@@ -188,10 +191,12 @@ class DashboardPage(AuthenticatedPage):
     self._get(self._dashboard_create_new_submission_btn).click()
     return self
 
+  #def click_create_document()
+
   def enter_title_field(self, title):
     """Enter title for the publication"""
-    self._get(self._title_text_field).clear()
-    self._get(self._title_text_field).send_keys(title)
+    self._get(self._cns_short_title_field).clear()
+    self._get(self._cns_short_title_field).send_keys(title)
     return self
 
   def click_create_button(self):
@@ -205,16 +210,32 @@ class DashboardPage(AuthenticatedPage):
     return self
 
   def select_journal(self, jtitle='Assess', jtype='Research'):
-    """Select a journal with its type"""
-    self._get(self._first_select).click()
-    self._get(self._select_journal_from_dropdown).send_keys(jtitle + Keys.ENTER)
-    self._get(self._second_select).click()
-    self._get(self._select_type_from_dropdown).send_keys(jtype + Keys.ENTER)
-    return self
+    """
+    Select a journal with its type
+    jtitle: Title of the journal
+    jtype: Journal type
+    """
+    self._get(self._cns_journal_chooser_dd).click()
+    for item in self._gets((By.CLASS_NAME, 'select-box-item')):
+      if item.text == jtitle:
+        item.click()
+        time.sleep(1)
+        break
+    self._get(self._cns_papertype_chooser_dd).click()
+    for item in self._gets((By.CLASS_NAME, 'select-box-item')):
+      if item.text == jtype:
+        item.click()
+        time.sleep(2)
+        break
 
-  def title_generator(self):
+  def title_generator(self, prefix='', random_bit=True):
     """Creates a new unique title"""
-    return 'Hendrik %s'%uuid.uuid4()
+    if not prefix:
+      return str(uuid.uuid4())
+    elif prefix and random_bit:
+      return '%s %s'%(prefix, uuid.uuid4())
+    elif prefix and not random_bit:
+      return '%s'%prefix
 
   def click_view_invites_button(self):
     """Click View Invitations button"""
@@ -308,9 +329,9 @@ class DashboardPage(AuthenticatedPage):
     assert short_title_input_field.get_attribute('placeholder') == 'Crystalized Magnificence in the Modern World'
     journal_chooser = self._get(self._cns_journal_chooser)
     assert journal_chooser.text == 'What journal are you submitting to?'
-    paper_type_chooser = self._get(self._cns_paper_type_chooser)    
+    paper_type_chooser = self._get(self._cns_paper_type_chooser)
     assert paper_type_chooser.text == "Choose the type of paper you're submitting"
-    create_btn = self._get(self._create_btn)
+    create_btn = self._get(self._cns_create_btn)
     # TODO: Check this when fixed bug #102130748
     #self.validate_secondary_big_green_button_style(create_btn)
     create_btn.click()

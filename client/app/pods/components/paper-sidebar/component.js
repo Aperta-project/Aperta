@@ -4,27 +4,24 @@ export default Ember.Component.extend({
   tagName:     'aside',
   classNames:  ['sidebar'],
   taskSorting: ['phase.position', 'position'],
+  tasks: Ember.computed.alias('paper.tasks'),
+  isUnsubmitted: Ember.computed.equal('paper.publishingState', 'unsubmitted'),
+  isInRevision: Ember.computed.equal('paper.publishingState', 'in_revision'),
+  tasks: Ember.computed.alias('paper.tasks'),
   sortedMetadataTasks: Ember.computed.sort('metadataTasks', 'taskSorting'),
   sortedAssignedTasks: Ember.computed.sort('assignedTasks', 'taskSorting'),
-  metadataTasks: Ember.computed.filterBy('paper.tasks', 'isMetadataTask', true),
+  metadataTasks: Ember.computed.filterBy('tasks', 'isMetadataTask', true),
   assignedTasks: Ember.computed.setDiff('currentUserTasks', 'metadataTasks'),
+  submissionTasks: Ember.computed.filterBy('tasks', 'isSubmissionTask', true),
+  submittableState: Ember.computed.or('isUnsubmitted', 'isInRevision'),
 
-  allSubmissionTasksCompleted: Ember.computed('allSubmissionTasks.@each.completed', function() {
+  allSubmissionTasksCompleted: Ember.computed('submissionTasks.@each.completed', function() {
     return this.get('allSubmissionTasks').everyProperty('completed', true);
-  }),
-
-  submittableState: Ember.computed('publishingState', function() {
-    let state = this.get('publishingState');
-    return state === 'unsubmitted' || state === 'in_revision';
   }),
 
   preSubmission: Ember.computed('submittableState', 'allSubmissionTasksCompleted', function() {
     return (this.get('submittableState') &&
             !this.get('allSubmissionTasksCompleted'));
-  }),
-
-  allSubmissionTasks: Ember.computed('tasks.content.@each.isSubmissionTask', function() {
-    return this.get('tasks').filterBy('isSubmissionTask');
   }),
 
   readyToSubmit: Ember.computed('submittableState', 'allSubmissionTasksCompleted', function() {

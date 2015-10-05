@@ -67,7 +67,7 @@ class NestedQuestionAnswersController < ApplicationController
   end
 
   def has_attachment?
-    nested_question.value_type == "attachment" && answer_params[:value].present?
+    nested_question.attachment? && answer_params[:value].present?
   end
 
   def process_attachment(answer)

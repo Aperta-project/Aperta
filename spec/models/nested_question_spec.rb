@@ -28,4 +28,11 @@ describe NestedQuestion do
       expect(nested_question.valid?).to be false
     end
   end
+
+  describe "#attachment?" do
+    it "returns true when value_type is for an attachment" do
+      question = NestedQuestion.new(value_type: "attachment")
+      expect(question.attachment?).to be true
+    end
+  end
 end

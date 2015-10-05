@@ -30,4 +30,8 @@ class NestedQuestion < ActiveRecord::Base
   # so it can pass the question around in a given context... and make life easier
   # for anyone interested in the answer.
   attr_accessor :value
+
+  def attachment?
+    value_type == "attachment"
+  end
 end

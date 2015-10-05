@@ -10,6 +10,15 @@
   }
 }
 
+h5.manuscript-list-heading {
+  color: $tahi-black;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 60px;
+  padding-bottom: .35em;
+  border-bottom: 1px solid $tahi-grey-light;
+}
+
 .dashboard-section {
   margin-bottom: 55px;
 }

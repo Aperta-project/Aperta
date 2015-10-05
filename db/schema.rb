@@ -284,6 +284,7 @@ ActiveRecord::Schema.define(version: 20150918192514) do
     t.datetime "submitted_at"
     t.string   "salesforce_manuscript_id"
     t.jsonb    "withdrawals",              default: [],                  array: true
+    t.boolean  "active",                   default: true
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree

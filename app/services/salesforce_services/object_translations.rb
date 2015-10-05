@@ -37,8 +37,8 @@ module SalesforceServices
           'SuppliedEmail'              => @paper.creator.email, # corresponding author == creator?
           'Exclude_from_EM__c'         => true,
           'Journal_Department__c'      => @paper.journal.name,
-          'Subject'                    => manuscript_id,
-          'Description'                => "#{@paper.creator.full_name} has applied for PFA with submission #{manuscript_id}",
+          'Subject'                    => @paper.manuscript_id,
+          'Description'                => "#{@paper.creator.full_name} has applied for PFA with submission #{@paper.manuscript_id}",
           'Origin'                     => "PFA Request",
 
           #'PFA_Funding_Statement__c'   => billing_question "", # Unknown field? from financial disclosure card

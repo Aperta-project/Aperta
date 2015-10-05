@@ -5,7 +5,7 @@ class Paper < ActiveRecord::Base
   include PaperTaskFinders
   include AASM
 
-  def attributes #adds 'computed' attributes
+  def attributes # adds 'computed' attributes
     super.merge 'manuscript_id' => manuscript_id
   end
 

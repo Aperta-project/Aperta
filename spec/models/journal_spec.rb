@@ -26,9 +26,9 @@ describe Journal do
     end
 
     it "can be created" do
-      expect(@journal.doi_publisher_prefix).to eq "PPREFIX"
-      expect(@journal.doi_journal_prefix).to eq "JPREFIX"
-      expect(@journal.last_doi_issued).to eq "100001"
+      expect(@journal.doi_publisher_prefix).to be_truthy
+      expect(@journal.doi_journal_prefix).to   be_truthy
+      expect(@journal.last_doi_issued).to      be_truthy
     end
 
     it "will not save invalid DOI publisher prefix" do

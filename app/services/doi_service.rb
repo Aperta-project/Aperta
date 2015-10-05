@@ -1,6 +1,6 @@
 class DoiService
   PUBLISHER_PREFIX_FORMAT = /[\w\d\-\.]+/
-  SUFFIX_FORMAT           = /[^\/]+/
+  SUFFIX_FORMAT           = %r{[^\/]+}
   DOI_FORMAT              = %r{\A(#{PUBLISHER_PREFIX_FORMAT}/#{SUFFIX_FORMAT})\z}
 
   attr_reader :journal
@@ -54,7 +54,7 @@ class DoiService
   private
 
   def filler_doi
-    #"nil_prefixes_#{Time.now.to_i.to_s}"
+    # "nil_prefixes_#{Time.now.to_i.to_s}"
     nil
   end
 
@@ -63,6 +63,7 @@ class DoiService
   end
 
   def suffix
+    [doi_journal_prefix, last_doi_issued].join(".")
   end
 
   def journal_has_doi_prefixes?

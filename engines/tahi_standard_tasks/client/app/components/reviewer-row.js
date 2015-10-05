@@ -8,16 +8,16 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   isDeleting: false,
   isEditing: false,
 
-  didInsertElement() {
+  _setupHover: Ember.on('didInsertElement', function(){
     if (this.get('isSubmissionTaskNotEditable')) { return; }
     this.$().hover(() => {
       this.toggleProperty('isHovered');
     });
-  },
+  }),
 
-  willDestroyElement() {
+  _destroyHover: Ember.on('willDestroyElement', function(){
     this.$().off('mouseenter mouseleave');
-  },
+  }),
 
   actions: {
 

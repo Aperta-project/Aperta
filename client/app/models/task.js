@@ -22,10 +22,6 @@ export default NestedQuestionOwner.extend(CardThumbnailObserver, {
     inverse: 'tasks',
     async: false
   }),
-  questions: DS.hasMany('question', {
-    inverse: 'task',
-    async: false
-  }),
 
   body: DS.attr(),
   completed: DS.attr('boolean'),

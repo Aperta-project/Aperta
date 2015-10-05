@@ -32,65 +32,66 @@
       </div>
 
       <div class="question-dataset">
-        {{#nested-question-radio ident="pfa_question_1"
-                          task=model
-                          yesLabel="Partial"
-                          noLabel="None" as |selected|}}
+        {{#nested-question-radio
+            ident="pfa_question_1"
+            owner=model
+            yesLabel="Partial"
+            noLabel="None" as |selected|}}
           {{#if selected.yes}}
-            {{nested-question-input ident="pfa_question_1b" task=model textClassNames=""}}
+            {{nested-question-input ident="pfa_question_1b" owner=model textClassNames=""}}
             {{error-message elementId="error-for-pfa_question_1b" message=pfaData.errors.pfa_question_1b.answer}}
           {{/if}}
           {{#if selected.no}}
-            {{nested-question-textarea ident="pfa_question_1a" task=model textClassNames=""}}
+            {{nested-question-textarea ident="pfa_question_1a" owner=model textClassNames=""}}
           {{/if}}
         {{/nested-question-radio}}
         <br>
 
         {{#nested-question-radio
             ident="pfa_question_2"
-            task=model
+            owner=model
             yesLabel="Partial"
             noLabel="None" as |selected|}}
           {{#if selected.yes}}
-            {{nested-question-input ident="pfa_question_2b" task=model textClassNames=""}}
+            {{nested-question-input ident="pfa_question_2b" owner=model textClassNames=""}}
             {{error-message elementId="error-for-pfa_question_2b" message=pfaData.errors.pfa_question_2b.answer}}
           {{/if}}
           {{#if selected.no}}
-            {{nested-question-textarea ident="pfa_question_2a" task=model textClassNames=""}}
+            {{nested-question-textarea ident="pfa_question_2a" owner=model textClassNames=""}}
           {{/if}}
         {{/nested-question-radio}}
         <br>
 
-        {{#nested-question-radio ident="pfa_question_3" task=model as |selected|}}
+        {{#nested-question-radio ident="pfa_question_3" owner=model as |selected|}}
           {{#if selected.yes}}
-            {{nested-question-input ident="pfa_question_3a" task=model textClassNames=""}}
+            {{nested-question-input ident="pfa_question_3a" owner=model textClassNames=""}}
             {{error-message elementId="error-for-pfa_question_3a" message=pfaData.errors.pfa_question_3a.answer}}
           {{/if}}
         {{/nested-question-radio}}
         <br>
 
-        {{#nested-question-radio ident="pfa_question_4" task=model as |selected|}}
+        {{#nested-question-radio ident="pfa_question_4" owner=model as |selected|}}
           {{#if selected.yes}}
-            {{nested-question-input ident="pfa_question_4a" task=model textClassNames=""}}
+            {{nested-question-input ident="pfa_question_4a" owner=model textClassNames=""}}
             {{error-message elementId="error-for-pfa_question_4a" message=pfaData.errors.pfa_question_4a.answer}}
           {{/if}}
         {{/nested-question-radio}}
         <br>
 
         <div>
-          {{nested-question-input ident="pfa_amount_to_pay" task=model}}
+          {{nested-question-input ident="pfa_amount_to_pay" owner=model}}
           {{error-message elementId="error-for-pfa_amount_to_pay" message=pfaData.errors.pfa_amount_to_pay.answer}}
         </div>
 
         <br>
         <div>
-          {{nested-question-radio ident="pfa_supporting_docs" task=model}}
+          {{nested-question-radio ident="pfa_supporting_docs" owner=model}}
         </div>
 
         <br>
 
         <div>
-          {{nested-question-textarea ident="pfa_additional_comments" task=model}}
+          {{nested-question-textarea ident="pfa_additional_comments" owner=model}}
         </div>
 
         <br>
@@ -99,10 +100,9 @@
         </h3>
         <p>
           {{nested-question-check ident="affirm_true_and_complete"
-              task=model
+              owner=model
               questionText="By checking this box, you are acknowledging that you have read and agree to the following statement:<br><strong>I affirm that the information provided in this application is true and complete.</strong>"}}
         </p>
-
       </div>
     </li>
   {{/billing-pfa}}

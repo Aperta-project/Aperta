@@ -93,12 +93,12 @@
     <div class="form-group author-half {{if validationErrors.affiliation "error"}}">
       <label class="author-label">
         {{#nested-question-check ident="published_as_corresponding_author"
-            task=author
+            owner=author
             labelClassNames=""
             displayQuestionText=false
             inputClassNames="author-corresponding" as |check|}}
           {{#if check.yieldingForText}}
-            {{nested-question-display ident="published_as_corresponding_author" task=author}}
+            {{nested-question-display ident="published_as_corresponding_author" owner=author}}
           {{/if}}
         {{/nested-question-check}}
       </label>
@@ -107,12 +107,12 @@
     <div class="form-group author-half author-bump {{if validationErrors.secondaryAffiliation "error"}}">
       <label class="author-label">
         {{#nested-question-check ident="deceased"
-            task=author
+            owner=author
             labelClassNames=""
             displayQuestionText=false
             inputClassNames="author-deceased" as |check|}}
           {{#if check.yieldingForText}}
-            {{nested-question-display ident="deceased" task=author}}
+            {{nested-question-display ident="deceased" owner=author}}
           {{/if}}
         {{/nested-question-check}}
       </label>
@@ -124,12 +124,12 @@
     {{error-message message=validationErrors.contributions}}
     {{#each authorContributionIdents as |contributionIdent|}}
         {{#nested-question-check ident=contributionIdent
-            task=author
+            owner=author
             labelClassNames=""
             displayQuestionText=false
             inputClassNames="author-contribution" as |check|}}
           {{#if check.yieldingForText}}
-            {{nested-question-display ident=contributionIdent task=author}}
+            {{nested-question-display ident=contributionIdent owner=author}}
           {{/if}}
         {{/nested-question-check}}
     {{/each}}
@@ -140,7 +140,7 @@
     </label>
     {{#if isOtherContributionSelected}}
       {{nested-question-input ident="contributions.other"
-          task=author
+          owner=author
           displayQuestionText=false
           inputClassNames="form-control"
           placeholderText="Please specify"

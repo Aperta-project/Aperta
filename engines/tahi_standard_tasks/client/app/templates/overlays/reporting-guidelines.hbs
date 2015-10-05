@@ -8,20 +8,20 @@
       <li class="item">
         {{nested-question-check
             model=clinicalTrialQuestion
-            task=model
+            owner=model
             disabled=isSubmissionTaskNotEditable}}
       </li>
 
       <li class="item">
         {{nested-question-check
           model=systematicReviewsQuestion
-          task=model
+          owner=model
           disabled=isSubmissionTaskNotEditable}}
 
           {{#if systematicReviewsQuestion.answer.value}}
             <div class="question-dataset">
               {{nested-question-uploader ident="systematic_reviews.checklist"
-                               task=model
+                               owner=model
                                updateStore="updateStore"
                                accept=".docx,.pdf"
                                disabled=isSubmissionTaskNotEditable}}
@@ -32,13 +32,13 @@
       <li class="item">
         {{nested-question-check
           model=metaAnalysesQuestion
-          task=model
+          owner=model
           disabled=isSubmissionTaskNotEditable}}
 
           {{#if metaAnalysesQuestion.answer.value}}
             <div class="question-dataset">
               {{nested-question-uploader ident="meta_analyses.checklist"
-                               task=model
+                               owner=model
                                updateStore="updateStore"
                                accept=".docx,.pdf"
                                disabled=isSubmissionTaskNotEditable}}
@@ -49,21 +49,21 @@
       <li class="item">
         {{nested-question-check
           model=diagnosticStudiesQuestion
-          task=model
+          owner=model
           disabled=isSubmissionTaskNotEditable}}
       </li>
 
       <li class="item">
         {{nested-question-check
           model=epidemiologicalStudiesQuestion
-          task=model
+          owner=model
           disable=isSubmissionTaskNotEditable}}
       </li>
 
       <li class="item">
         {{nested-question-check
           model=microarrayStudiesQuestion
-          task=model
+          owner=model
           disable=isSubmissionTaskNotEditable}}
       </li>
     </ul>

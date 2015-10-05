@@ -3,7 +3,7 @@
 <div class="question-list">
   <div class="question">
     {{nested-question-check model=taxonQuestionForZoological
-        task=model
+        owner=model
         disabled=isSubmissionTaskNotEditable}}
 
     {{#if taxonQuestionForZoological.answer.value}}
@@ -12,7 +12,7 @@
       </div>
       {{nested-question-check
         model=compliesQuestionForZoological
-        task=model
+        owner=model
         disabled=isSubmissionTaskNotEditable}}
     {{/if}}
   </div>
@@ -22,7 +22,7 @@
   <div class="question">
     {{nested-question-check
       model=taxonQuestionForBotanical
-      task=model
+      owner=model
       disabled=isSubmissionTaskNotEditable}}
 
     {{#if taxonQuestionForBotanical.answer.value}}
@@ -32,7 +32,7 @@
 
       {{nested-question-check
         model=compliesQuestionForBotanical
-        task=model
+        owner=model
         disabled=isSubmissionTaskNotEditable}}
     {{/if}}
   </div>

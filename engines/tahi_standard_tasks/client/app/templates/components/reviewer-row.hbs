@@ -15,10 +15,10 @@
     <br>
     {{reviewer.affiliation}}
     <div class="reviewer-recommendation-decision">
-      {{nested-question-display ident="recommend_or_oppose" task=reviewerRecommendation}}
-      {{nested-question-answer ident="recommend_or_oppose" task=reviewerRecommendation}}
+      {{nested-question-display ident="recommend_or_oppose" owner=reviewerRecommendation}}
+      {{nested-question-answer ident="recommend_or_oppose" owner=reviewerRecommendation}}
     </div>
-    {{nested-question-answer ident="reason" task=reviewerRecommendation}}    
+    {{nested-question-answer ident="reason" owner=reviewerRecommendation}}
   </div>
 
   {{#if isHovered}}

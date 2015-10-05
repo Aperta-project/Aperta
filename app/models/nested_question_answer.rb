@@ -10,11 +10,6 @@ class NestedQuestionAnswer < ActiveRecord::Base
   validates :value_type, presence: true, inclusion: { in: SUPPORTED_VALUE_TYPES }
   validates :value, presence: true, if: -> (answer) { answer.value.nil? }
 
-  # TODO: RENAME THIS? THIS IS USED FOR PUSHER SUBSRIPTION/NOTIFICATIONS AFTER UPLOADING AN ATTACHMENT
-  def task
-    owner
-  end
-
   def value
     return nil unless value_type.present?
     read_value_method = "#{value_type.underscore}_value_type".to_sym

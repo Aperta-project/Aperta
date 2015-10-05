@@ -26,7 +26,7 @@
   <div class="form-group author-half author-bump required {{if validationErrors.affiliation "error"}}">
     {{error-message message=null}}
     {{nested-question-select ident="ringgold_institution"
-                      task=model
+                      owner=model
                       placeholder="Select an Institution"
                       source=institutionalAccountProgramList
                       width="350"}}

@@ -297,12 +297,12 @@
 
   <div>
     Passing an object that has questions and an identifier for looking the question up:
-    {{nested-question-input ident="foo" task=nestedQuestionOwner}}
+    {{nested-question-input ident="foo" owner=nestedQuestionOwner}}
   </div>
 
   <div>
     Passing an question directly as the model without an identifier:
-    {{nested-question-input model=fooQuestion task=nestedQuestionOwner}}
+    {{nested-question-input model=fooQuestion owner=nestedQuestionOwner}}
   </div>
 </div>
 
@@ -311,7 +311,7 @@
     nested-question-radio
   </h5>
 
-  {{nested-question-radio ident="booleanFoo" task=nestedQuestionOwner}}
+  {{nested-question-radio ident="booleanFoo" owner=nestedQuestionOwner}}
 </div>
 
 <div>
@@ -319,7 +319,7 @@
     nested-question-textarea
   </h5>
 
-  {{nested-question-textarea ident="foo" task=nestedQuestionOwner}}
+  {{nested-question-textarea ident="foo" owner=nestedQuestionOwner}}
 </div>
 
 <div>
@@ -328,7 +328,7 @@
   </h5>
 
   {{nested-question-select ident="foo"
-    task=nestedQuestionOwner
+    owner=nestedQuestionOwner
     class=""
     selectionSelected=''
     source=arrayOfOptions}}
@@ -339,7 +339,7 @@
     nested-question-check
   </h5>
 
-  {{nested-question-check ident="booleanFoo" task=nestedQuestionOwner}}
+  {{nested-question-check ident="booleanFoo" owner=nestedQuestionOwner}}
 </div>
 
 <hr/>

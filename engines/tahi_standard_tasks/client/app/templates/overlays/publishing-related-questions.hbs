@@ -3,21 +3,21 @@
 <ol class="question-list">
   <li class="question">
   {{#nested-question-radio ident="published_elsewhere"
-                    task=model
+                    owner=model
                     disabled=isSubmissionTaskNotEditable
                     as |selected|}}
 
     {{#if selected.yes}}
       <div class="question-dataset">
         {{nested-question-input ident="published_elsewhere.taken_from_manuscripts"
-                         task=model
+                         owner=model
                          label="Results, data or figures"
                          placeholderText="Figure 1.2 - contains new data points"
                          textClassNames=""
                          disabled=isSubmissionTaskNotEditable}}
         <br>
         {{nested-question-uploader ident="published_elsewhere.upload_related_work"
-                         task=model
+                         owner=model
                          updateStore="updateStore"
                          accept=".docx,.pdf"
                          disabled=isSubmissionTaskNotEditable}}
@@ -27,7 +27,7 @@
   </li>
   <li class="question">
   {{#nested-question-radio ident="submitted_in_conjunction"
-                    task=model
+                    owner=model
                     disabled=isSubmissionTaskNotEditable
                     as |selected|}}
 
@@ -37,7 +37,7 @@
         {{nested-question-input ident="submitted_in_conjunction.corresponding_title"
                          class="sub-question"
                          displayQuestionText=false
-                         task=model
+                         owner=model
                          label="Title"
                          placeholderText="Submission Title"
                          disabled=isSubmissionTaskNotEditable}}
@@ -46,7 +46,7 @@
         {{nested-question-input ident="submitted_in_conjunction.corresponding_author"
                          class="sub-question"
                          displayQuestionText=false
-                         task=model
+                         owner=model
                          label="Corresponding Author"
                          placeholderText="Corresponding Author Name"
                          disabled=isSubmissionTaskNotEditable}}
@@ -58,14 +58,14 @@
       <div class="question-text">Please indicate whether you have had any of the following previous interactions about this manuscript.</div>
       <div class="question-text">Check all that apply.</div>
       {{#nested-question-check ident="previous_interactions_with_this_manuscript"
-                        task=model
+                        owner=model
                         disabled=isSubmissionTaskNotEditable
                         as |selection|}}
         {{#if selection.yieldingForAdditionalData }}
           {{#if selection.checked}}
             <div class="question-dataset">
               {{nested-question-textarea ident="submission_details"
-                                  task=model
+                                  owner=model
                                   disabled=isSubmissionTaskNotEditable}}
             </div>
           {{/if}}
@@ -73,14 +73,14 @@
       {{/nested-question-check}}
 
       {{#nested-question-check ident="presubmission_inquiry"
-                        task=model
+                        owner=model
                         disabled=isSubmissionTaskNotEditable
                         as |selection|}}
         {{#if selection.yieldingForAdditionalData }}
           {{#if selection.checked}}
             <div class="question-dataset">
               {{nested-question-textarea ident="presubmission_inquiry.submission_details"
-                                  task=model
+                                  owner=model
                                   disabled=isSubmissionTaskNotEditable}}
             </div>
           {{/if}}
@@ -88,14 +88,14 @@
       {{/nested-question-check}}
 
       {{#nested-question-check ident="other_journal_submission"
-                        task=model
+                        owner=model
                         disabled=isSubmissionTaskNotEditable
                         as |selection|}}
         {{#if selection.yieldingForAdditionalData }}
           {{#if selection.checked}}
             <div class="question-dataset">
               {{nested-question-textarea ident="other_journal_submission.submission_details"
-                                  task=model
+                                  owner=model
                                   disabled=isSubmissionTaskNotEditable}}
             </div>
           {{/if}}
@@ -103,13 +103,13 @@
       {{/nested-question-check}}
 
       {{nested-question-check ident="author_was_previous_journal_editor"
-                       task=model
+                       owner=model
                        disabled=isSubmissionTaskNotEditable}}
   </li>
   <li class="question">
     If your submission is intended for a PLOS Collection, enter the name of the collection in the box below. Please also ensure the name of the collection is included in your cover letter.
     {{nested-question-input ident="intended_collection"
-                      task=model
+                      owner=model
                       label="Name of PLOS Collection"
                       placeholderText="Collection Name"
                       disabled=isSubmissionTaskNotEditable}}
@@ -117,7 +117,7 @@
   </li>
   <li class="question">
     {{nested-question-radio ident="us_government_employees"
-                     task=model
+                     owner=model
                      helpText="Papers authored by one or more U.S. government employees are not copyrighted, but are licensed under a <a target='_blank' href='http://creativecommons.org/about/cc0'>CC0 Public Domain Dedication</a>, which allows unlimited distribution and reuse of the article for any lawful purpose. This is a legal requirement for U.S. government employees."
                      disabled=isSubmissionTaskNotEditable}}
   </li>

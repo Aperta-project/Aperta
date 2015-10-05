@@ -18,7 +18,7 @@ describe PaperDownloader do
       it "returns the content of inline figures redirected to s3" do
         figure = paper.figures.create! attachment: tiff_file
         # Let's assume that this is valid html content
-        html_with_url = "src='/attachments/figures/#{figure.id}'"
+        html_with_url = "src='/attachments/figures/#{figure.id}?version=detail'"
         paper.latest_version.update(text: html_with_url)
 
         expect(body).to match(/'https:\/\/tahi.+detail_yeti.png\?X-Amz-Expires/)

@@ -2,7 +2,7 @@ import Ember from 'ember';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  task: Ember.computed("owner", function(){
+  owner: Ember.computed("owner", function(){
     return this.get("owner");
   }),
 

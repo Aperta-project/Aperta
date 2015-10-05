@@ -23,7 +23,7 @@
     <div class="required form-group author-half {{if validationErrors.department "error"}}">
       {{error-message message=null}}
       {{nested-question-select ident="gpi_country"
-                        task=model
+                        owner=model
                         displayQuestionText=false
                         placeholder="Select your Country"
                         source=groupOneAndTwoCountries

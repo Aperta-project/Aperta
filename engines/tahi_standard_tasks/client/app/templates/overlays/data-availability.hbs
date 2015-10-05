@@ -4,7 +4,7 @@
   <li class="question">
     {{nested-question-radio
         model=fullyAvailableQuestion
-        task=model
+        owner=model
         helpText="<li>Please see the <a target='_blank' href='http://www.plosbiology.org/static/policies#sharing' title='PLOS Data Policy'>PLOS Data Policy</a> for details.</li>"
         disabled=isSubmissionTaskNotEditable}}
   </li>
@@ -34,7 +34,7 @@
     <div class="question-dataset">
       {{nested-question-textarea
           model=dataLocationQuestion
-          task=model
+          owner=model
           displayQuestionText=false
           disabled=isSubmissionTaskNotEditable}}
     </div>

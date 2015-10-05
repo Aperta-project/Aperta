@@ -15,7 +15,7 @@
     </div>
     <div>
       {{#nested-question-radio model=anyCompetingInterestsQuestion
-          task=model
+          owner=model
           displayQuestionText=false
           disabled=isSubmissionTaskNotEditable
           noAction="userSelectedNo"
@@ -24,7 +24,7 @@
         {{#if selected.yes}}
           <div class="question-dataset">
             {{nested-question-textarea model=competingInterestsStatementQuestion
-                task=model
+                owner=model
                 helpText="Please note that if your manuscript is accepted, this statement will be published."
                 disabled=isSubmissionTaskNotEditable}}
           </div>

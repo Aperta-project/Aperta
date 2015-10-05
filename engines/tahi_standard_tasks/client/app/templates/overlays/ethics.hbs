@@ -4,7 +4,7 @@
 <ol class="question-list">
   <li class="question">
     {{#nested-question-radio model=humanSubjectsQuestion
-        task=model
+        owner=model
         disabled=isSubmissionTaskNotEditable
         noAction="userSelectedNoOnHumanSubjects"
         as |selected|}}
@@ -12,7 +12,7 @@
       {{#if selected.yes}}
         <div class="question-dataset">
           {{nested-question-textarea model=participantsQuestion
-              task=model
+              owner=model
               disabled=isSubmissionTaskNotEditable}}
 
           <div class="question-info">
@@ -27,7 +27,7 @@
 
   <li class="question">
     {{#nested-question-radio model=animalSubjectsQuestion
-        task=model
+        owner=model
         disabled=isSubmissionTaskNotEditable
         noAction="userSelectedNoOnAnimalSubjects"
         as |selected|}}
@@ -45,7 +45,7 @@
 
         <div class="question-dataset">
           {{nested-question-textarea model=fieldPermitQuestion
-              task=model
+              owner=model
               disabled=isSubmissionTaskNotEditable}}
         </div>
       {{/if}}

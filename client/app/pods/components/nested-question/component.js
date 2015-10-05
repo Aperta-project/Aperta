@@ -18,12 +18,12 @@ NestedQuestionComponent = Ember.Component.extend({
     let model = this.get('model');
     Ember.assert(`Expecting to be given an ident or a model, but wasn't given either`, (ident || model));
 
-    let task = this.get('task');
-    Ember.assert(`Expecting to be given a task, but wasn't`, task);
+    let owner = this.get('owner');
+    Ember.assert(`Expecting to be given a owner, but wasn't`, owner);
 
     let decision = this.get('decision');
 
-    let question = task.findQuestion(ident);
+    let question = owner.findQuestion(ident);
     Ember.assert(`Expecting to find question matching ident '${ident}' but
       didn't. Make sure questions are in the DB and are being loaded.`,
       question
@@ -31,7 +31,7 @@ NestedQuestionComponent = Ember.Component.extend({
 
     this.set('model', NestedQuestionProxy.create({
        nestedQuestion: question,
-       owner: task,
+       owner: owner,
        decision: decision
     }));
   },

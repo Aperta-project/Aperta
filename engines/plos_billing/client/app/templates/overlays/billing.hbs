@@ -10,7 +10,7 @@
   <div class="form-group form-inline author-top">
     <div class="form-group author-half {{if validationErrors.firstName "error"}}">
       {{nested-question-input ident="first_name"
-                       task=model
+                       owner=model
                        placeholderText="Jane"
                        disabled=isSubmissionTaskNotEditable
                        textClassNames="text-field-title"}}
@@ -18,7 +18,7 @@
 
     <div class="form-group author-half author-bump {{if validationErrors.lastName "error"}}">
       {{nested-question-input ident="last_name"
-                       task=model
+                       owner=model
                        placeholderText="Goodall"
                        disabled=isSubmissionTaskNotEditable
                        textClassNames="text-field-title"}}
@@ -27,7 +27,7 @@
   <div class="form-group form-inline">
     <div class="form-group author-half {{if validationErrors.title "error"}}">
       {{nested-question-input ident="title"
-                       task=model
+                       owner=model
                        placeholderText="World's Foremost Expert on Chimpanzees"
                        disabled=isSubmissionTaskNotEditable
                        textClassNames="text-field-title"}}
@@ -35,7 +35,7 @@
 
     <div class="form-group author-half author-bump {{if validationErrors.department "error"}}">
       {{nested-question-input ident="department"
-                       task=model
+                       owner=model
                        placeholderText="Primatology"
                        disabled=isSubmissionTaskNotEditable
                        textClassNames="text-field-title"}}
@@ -59,7 +59,7 @@
   <div class="form-group form-inline">
     <div class="form-group author-half {{if validationErrors.phone "error"}}">
       {{nested-question-input ident="phone_number"
-                       task=model
+                       owner=model
                        placeholderText="415-555-5555"
                        disabled=isSubmissionTaskNotEditable
                        textClassNames="text-field-title"}}
@@ -67,7 +67,7 @@
     </div>
     <div class="form-group author-half author-bump {{if validationErrors.email "error"}}">
       {{nested-question-input ident="email"
-                       task=model
+                       owner=model
                        placeholderText="jane.goodll@science.com"
                        disabled=isSubmissionTaskNotEditable
                        textClassNames="text-field-title"}}
@@ -77,7 +77,7 @@
   <div class="form-group form-inline">
     <div class={{if validationErrors.address1 "error"}}>
       {{nested-question-input ident="address1"
-                       task=model
+                       owner=model
                        placeholderText="1581 Le Roy Ave"
                        disabled=isSubmissionTaskNotEditable
                        textClassNames="text-field-title"}}
@@ -86,7 +86,7 @@
   <div class="form-group form-inline">
     <div class={{if validationErrors.address2 "error"}}>
       {{nested-question-input ident="address2"
-                       task=model
+                       owner=model
                        placeholderText="Suite 3"
                        disabled=isSubmissionTaskNotEditable
                        textClassNames="text-field-title"}}
@@ -95,7 +95,7 @@
   <div class="form-group form-inline">
     <div class="form-group author-half {{if validationErrors.city "error"}}">
       {{nested-question-input ident="city"
-                       task=model
+                       owner=model
                        placeholderText="Berkeley"
                        disabled=isSubmissionTaskNotEditable
                        textClassNames="text-field-title"}}
@@ -103,14 +103,14 @@
 
     <div class="form-group author-name author-bump {{if validationErrors.state "error"}}">
       {{nested-question-input ident="state"
-                       task=model
+                       owner=model
                        placeholderText="State or Province"
                        disabled=isSubmissionTaskNotEditable
                        textClassNames="text-field-title"}}
     </div>
     <div class="form-group author-name author-bump {{if validationErrors.postal_code "error"}}">
       {{nested-question-input ident="postal_code"
-                       task=model
+                       owner=model
                        placeholderText="94708"
                        disabled=isSubmissionTaskNotEditable
                        textClassNames="text-field-title"}}
@@ -121,7 +121,7 @@
     <div class="form-group author-half {{if validationErrors.country "error"}}">
       {{#if countries.loaded}}
         {{nested-question-select ident="country"
-                          task=model
+                          owner=model
                           placeholder="Select Your Country"
                           displayQuestionText=false
                           source=formattedCountries
@@ -151,12 +151,12 @@
 <ol class="question-list">
   <li class="question">
     <h3>
-      {{nested-question-display ident="payment_method" task=model}}
+      {{nested-question-display ident="payment_method" owner=model}}
     </h3>
 
     <div class="form-group author-half author-bump payment-method {{if validationErrors.affiliation "error"}}">
       {{nested-question-select ident="payment_method"
-                        task=model
+                        owner=model
                         displayQuestionText=false
                         class="affiliation-field"
                         selectionSelected="paymentMethodSelected"

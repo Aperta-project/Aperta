@@ -8,7 +8,6 @@ export default Ember.Component.extend({
   isUnsubmitted: Ember.computed.equal('paper.publishingState', 'unsubmitted'),
   isInRevision: Ember.computed.equal('paper.publishingState', 'in_revision'),
   isSubmitted: Ember.computed.equal('paper.publishingState', 'submitted'),
-  tasks: Ember.computed.alias('paper.tasks'),
   sortedMetadataTasks: Ember.computed.sort('metadataTasks', 'taskSorting'),
   sortedAssignedTasks: Ember.computed.sort('assignedTasks', 'taskSorting'),
   metadataTasks: Ember.computed.filterBy('tasks', 'isMetadataTask', true),

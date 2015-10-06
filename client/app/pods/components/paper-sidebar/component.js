@@ -16,14 +16,11 @@ export default Ember.Component.extend({
   submissionTasks: Ember.computed.filterBy('tasks', 'isSubmissionTask', true),
   submittableState: Ember.computed.or('isUnsubmitted', 'isInRevision'),
   readyToSubmit: Ember.computed.and('submittableState', 'allSubmissionTasksCompleted'),
+  isPendingTasks: Ember.computed.not('allSubmissionTasksCompleted'),
+  preSubmission: Ember.computed.and('submittableState', 'isPendingTasks'),
 
   allSubmissionTasksCompleted: Ember.computed('submissionTasks.@each.completed', function() {
-    return this.get('allSubmissionTasks').everyProperty('completed', true);
-  }),
-
-  preSubmission: Ember.computed('submittableState', 'allSubmissionTasksCompleted', function() {
-    return (this.get('submittableState') &&
-            !this.get('allSubmissionTasksCompleted'));
+    return this.get('submissionTasks').everyProperty('completed', true);
   }),
 
   currentUserTasks: Ember.computed.filter('paper.tasks', function(task) {

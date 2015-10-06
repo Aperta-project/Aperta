@@ -263,15 +263,31 @@ class PaperEditorPage(AuthenticatedPage):
     buttons = self._gets(self._control_bar_right_items)
     assert self._get(self._workflow_link) if user_buttons == 7 else (len(buttons) == 6)
 
-  def _click_card(self, card_name):
-    """Click on a given card"""
-    for card in self._gets((By.CLASS_NAME, 'card-title')):
-      if card.text == card_name:
-        card.find_element_by_xpath('.//ancestor::a').click()
-        return None
+  def _click_card(self, card_name, click_override=False):
+    """
+    Click on a given card.
+    card_name: Name of the card to click
+    click_override: When True, will click even when the card is marked as completed
+    """
+    cards = self._gets((By.CLASS_NAME, 'card-title'))
+    if click_override:
+      for card in cards:
+        if card.text == card_name:
+          card.find_element_by_xpath('.//ancestor::a').click()
+          break
+    else:
+      for card in cards:
+        print 280
+        card_div = card.find_element_by_xpath('../..')
+        print card_div.get_attribute('class')
+        if card.text == card_name and 'card--completed' not in card_div.get_attribute('class'):
+          card.find_element_by_xpath('.//ancestor::a').click()
+          break
 
   def complete_card(self, card_name):
     """On a given card, check complete and then close"""
+    # if card is marked as complete, leave is at is.
+
     self._click_card(card_name)
     base_card = BaseCard(self._driver)
     if card_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript'):
@@ -290,4 +306,10 @@ class PaperEditorPage(AuthenticatedPage):
       billing = BillingCard(self._driver)
       billing.add_billing_data(billing_data)
 
-      # Get this card
+  def press_submit_btn(self):
+    """Press the submit button"""
+    self._get(self._sidebar_submit).click()
+
+  def confirm_submit_btn(self):
+    """Confirm paper submission"""
+    self._get(self._submit_confirm).click()

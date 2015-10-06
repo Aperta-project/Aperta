@@ -212,6 +212,10 @@ class AuthorsCard(BaseCard):
 
   def edit_author(self, author_data):
     """Edit the first author in the author card"""
+    completed = self._get(self._completed_check)
+    if completed.is_selected():
+      self._get(self._close_button).click()
+      return None
     author_card = AuthorsCard(self._driver)
     author = self._get(self._author_items)
     self._actions.move_to_element(author).perform()
@@ -240,9 +244,8 @@ class AuthorsCard(BaseCard):
     add_author_add_btn = self._get(self._add_author_add_btn)
     add_author_add_btn.click()
     completed = self._get(self._completed_check)
-    if not completed.is_selected():
-      completed.click()
-      #time.sleep(.2)
+    completed.click()
+    time.sleep(.2)
     self._get(self._close_button).click()
 
   def press_submit_btn(self):

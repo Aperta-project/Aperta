@@ -54,6 +54,10 @@ class BillingCard(BaseCard):
 
   def add_billing_data(self, billing_data):
     """Add billing data"""
+    completed = self._get(self._completed_check)
+    if completed.is_selected():
+      self._get(self._close_button).click()
+      return None
     first = self._get(self._first_name)
     first.clear()
     first.send_keys(billing_data['first'] + Keys.ENTER)
@@ -92,8 +96,6 @@ class BillingCard(BaseCard):
     country_input = country.find_element_by_tag_name('input')
     #country.clear()
     country_input.send_keys(billing_data['country'] + Keys.ENTER)
-    completed = self._get(self._completed_check)
-    if not completed.is_selected():
-      completed.click()
-      time.sleep(.5)
+    completed.click()
+    time.sleep(.5)
     self._get(self._close_button).click()

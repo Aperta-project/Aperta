@@ -1,7 +1,7 @@
 class QuestionAttachment::Updated::EventStream < EventStreamSubscriber
 
   def channel
-    private_channel_for(record.question.task.paper)
+    private_channel_for(record.question.owner.paper)
   end
 
   def payload

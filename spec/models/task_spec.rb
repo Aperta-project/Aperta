@@ -33,17 +33,17 @@ describe Task do
     end
   end
 
-  describe "#questions" do
-    it "destroys questions on destroy" do
-      task = FactoryGirl.create(:task, :with_questions)
-      question_ids = task.questions.pluck :id
-      expect(question_ids).to have_at_least(1).id
+  describe "#nested_question_answers" do
+    it "destroys nested_question_answers on destroy" do
+      task = FactoryGirl.create(:task, :with_nested_question_answers)
+      nested_question_answer_ids = task.nested_question_answers.pluck :id
+      expect(nested_question_answer_ids).to have_at_least(1).id
 
       expect {
         task.destroy
       }.to change {
-        Question.where(id: question_ids).count
-      }.from(question_ids.count).to(0)
+        NestedQuestionAnswer.where(id: nested_question_answer_ids).count
+      }.from(nested_question_answer_ids.count).to(0)
     end
   end
 

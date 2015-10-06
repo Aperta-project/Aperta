@@ -55,10 +55,6 @@ class Journal < ActiveRecord::Base
     self.manuscript_manager_templates.pluck(:paper_type)
   end
 
-  def mmt_for_paper_type(paper_type)
-    manuscript_manager_templates.where(paper_type: paper_type).first
-  end
-
   def valid_roles
     PaperRole::ALL_ROLES | roles.map(&:name)
   end

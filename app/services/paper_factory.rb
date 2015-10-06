@@ -16,21 +16,11 @@ class PaperFactory
     @creator = creator
   end
 
-  def apply_template
-    template.phase_templates.each do |phase_template|
-      phase = paper.phases.create!(name: phase_template['name'])
-
-      phase_template.task_templates.each do |task_template|
-        create_task(task_template, phase)
-      end
-    end
-  end
-
   def create
     Paper.transaction do
-      add_collaborator(paper, creator)
       if paper.valid?
         if template
+          add_creator_as_collaborator
           paper.save!
           paper.decisions.create!
           apply_template
@@ -38,6 +28,16 @@ class PaperFactory
         else
           paper.errors.add(:paper_type, "is not valid")
         end
+      end
+    end
+  end
+
+  def apply_template
+    template.phase_templates.each do |phase_template|
+      phase = paper.phases.create!(name: phase_template['name'])
+
+      phase_template.task_templates.each do |task_template|
+        create_task(task_template, phase)
       end
     end
   end
@@ -56,7 +56,7 @@ class PaperFactory
   end
 
   def template
-    @template ||= paper.journal.mmt_for_paper_type(paper.paper_type)
+    @template ||= paper.journal.manuscript_manager_templates.where(paper_type: paper.paper_type).first
   end
 
   private
@@ -65,7 +65,7 @@ class PaperFactory
     DefaultAuthorCreator.new(paper, creator).create!
   end
 
-  def add_collaborator(paper, user)
-    paper.paper_roles.build(user: user, role: PaperRole::COLLABORATOR)
+  def add_creator_as_collaborator
+    paper.paper_roles.build(user: creator, role: PaperRole::COLLABORATOR)
   end
 end

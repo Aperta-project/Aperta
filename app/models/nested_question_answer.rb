@@ -23,7 +23,7 @@ class NestedQuestionAnswer < ActiveRecord::Base
   private
 
   def verify_from_owner
-    owner.can_change?(self) if owner
+    owner.can_change?(self) if owner && owner.respond_to?(:can_change?)
   end
 
   def attachment_value_type

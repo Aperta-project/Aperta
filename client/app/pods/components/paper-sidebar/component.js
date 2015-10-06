@@ -33,7 +33,7 @@ export default Ember.Component.extend({
     },
 
     submitPaper(){
-      if (this.get('paper.allSubmissionTasksCompleted')) {
+      if (this.get('allSubmissionTasksCompleted')) {
         this.get('paper').save();
         this.sendAction('showConfirmSubmitOverlay');
       }

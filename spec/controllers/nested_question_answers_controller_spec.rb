@@ -36,7 +36,7 @@ describe NestedQuestionAnswersController do
           additional_data: { "insitution-id" => "123" }
         }.merge(params)
       }
-      post(:create, post_params, format: json)
+      post(:create, post_params, format: :json)
     end
 
     it "creates an answer for the question" do

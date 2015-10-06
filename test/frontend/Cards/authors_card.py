@@ -248,3 +248,7 @@ class AuthorsCard(BaseCard):
   def press_submit_btn(self):
     """Press sidebar submit button"""
     self._get(self._sidebar_submit).click()
+
+  def confirm_submit_btn(self):
+    """Press sidebar submit button"""
+    self._get(self._submit_confirm).click()

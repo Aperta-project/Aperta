@@ -89,8 +89,9 @@ class BillingCard(BaseCard):
     state.send_keys(billing_data['state'] + Keys.ENTER)
     country = self._get(self._country)
     country.click()
+    country_input = country.find_element_by_tag_name('input')
     #country.clear()
-    country.send_keys(billing_data['country'] + Keys.ENTER)
+    country_input.send_keys(billing_data['country'] + Keys.ENTER)
     completed = self._get(self._completed_check)
     if not completed.is_selected():
       completed.click()

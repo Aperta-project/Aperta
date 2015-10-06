@@ -8,4 +8,12 @@ FactoryGirl.define do
       end
     end
   end
+
+  factory :question_attachment_with_task_owner, class: "QuestionAttachment" do
+    association :question, factory: :nested_question_answer
+
+    after :build do |attachment|
+      attachment.question.update owner: FactoryGirl.build(:task)
+    end
+  end
 end

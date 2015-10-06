@@ -8,8 +8,8 @@ FactoryGirl.define do
       participants { [FactoryGirl.create(:user)] }
     end
 
-    trait :with_questions do
-      questions { FactoryGirl.create_list(:question, 3) }
+    trait :with_nested_question_answers do
+      nested_question_answers { FactoryGirl.create_list(:nested_question_answer, 3) }
     end
   end
 

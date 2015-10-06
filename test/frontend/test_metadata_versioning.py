@@ -42,8 +42,8 @@ class MetadataVersioningTest(CommonTest):
     paper_editor.complete_card('Supporting Info')
     paper_editor.complete_card('Upload Manuscript')
     # Click submit
-    #paper_editor.press_submit_btn()
-    #paper_editor.confirm_submit_btn()
+    paper_editor.press_submit_btn()
+    paper_editor.confirm_submit_btn()
 
     time.sleep(5)
     return self

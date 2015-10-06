@@ -24,7 +24,6 @@ class Task < ActiveRecord::Base
   has_one :journal, through: :paper
   has_many :attachments
   has_many :nested_question_answers, as: :owner, dependent: :destroy
-  has_many :questions, inverse_of: :task, dependent: :destroy
   has_many :participations, inverse_of: :task, dependent: :destroy
   has_many :participants, through: :participations, source: :user
 
@@ -148,7 +147,7 @@ class Task < ActiveRecord::Base
   end
 
   # Public: This method can be used by models associated with tasks before
-  # validation, see ReviewerReportTask and Question model for example usage.
+  # validation, see ReviewerReportTask model for example usage.
   #
   # You should override this method in inherited tasks if needed.
   #

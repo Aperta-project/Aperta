@@ -6,8 +6,8 @@ describe QuestionAttachmentsPolicy do
   let(:phase) { FactoryGirl.create(:phase, paper: paper) }
   let(:task) { FactoryGirl.create(:task, phase: phase) }
   let(:user) { FactoryGirl.create(:user) }
-  let(:question) { FactoryGirl.create(:question, task: task) }
-  let(:question_attachment) { FactoryGirl.create(:question_attachment, question: question) }
+  let(:nested_question_answer) { FactoryGirl.create(:nested_question_answer, owner: task) }
+  let(:question_attachment) { FactoryGirl.create(:question_attachment, question: nested_question_answer) }
   let(:policy) { QuestionAttachmentsPolicy.new(current_user: user, resource: question_attachment) }
 
   context "site admin" do

@@ -9,4 +9,14 @@ describe AttachmentUploader do
       expect(uploader.store_dir).to eq "uploads/paper/#{paper.id}/figure/attachment/#{figure.id}"
     end
   end
+
+  describe "#transcoding" do
+    it "won't transcode non-images" do
+      paper = FactoryGirl.create(:paper)
+      file = paper.supporting_information_files.create!
+#TODOMPM
+      uploader = AttachmentUploader.new(file, :attachment)
+      binding.pry
+    end
+  end
 end

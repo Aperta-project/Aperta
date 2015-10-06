@@ -34,4 +34,11 @@ describe Attachment do
       expect(attachment.filename).to eq "yeti.tiff"
     end
   end
+
+  describe "#docx" do
+    it "is not an image" do
+      attachment.update_attributes file: ::File.open('spec/fixtures/about_turtles.docx')
+      expect(attachment.image?).to eq(false)
+    end
+  end
 end

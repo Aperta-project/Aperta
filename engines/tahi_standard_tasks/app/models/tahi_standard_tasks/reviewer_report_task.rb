@@ -8,8 +8,6 @@ module TahiStandardTasks
     def self.nested_questions
       questions = []
 
-      # questions??
-
       questions << NestedQuestion.new(
         owner_id:nil,
         owner_type: name,
@@ -129,8 +127,8 @@ module TahiStandardTasks
       super(new_body)
     end
 
-    def can_change?(question)
-      question.errors.add :question, "can't change question" if body.has_key?("submitted")
+    def can_change?(answer)
+      answer.errors.add :answer, "can't change answer" if submitted?
     end
 
     def incomplete!

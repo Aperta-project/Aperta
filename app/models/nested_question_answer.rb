@@ -10,6 +10,8 @@ class NestedQuestionAnswer < ActiveRecord::Base
   validates :value_type, presence: true, inclusion: { in: SUPPORTED_VALUE_TYPES }
   validates :value, presence: true, if: -> (answer) { answer.value.nil? }
 
+  validate :verify_from_owner
+
   def value
     return nil unless value_type.present?
     read_value_method = "#{value_type.underscore}_value_type".to_sym
@@ -19,6 +21,10 @@ class NestedQuestionAnswer < ActiveRecord::Base
   end
 
   private
+
+  def verify_from_owner
+    owner.can_change?(self) if owner
+  end
 
   def attachment_value_type
     self[:value]

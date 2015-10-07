@@ -22,14 +22,14 @@ class MetadataVersioningTest(CommonTest):
   def test_metadata_versioning(self):
     """
     """
-    title = 'Metadata Versioning'
+    title = 'Metadata Versioning 2'
     #if True: # for debugging
     if self.check_article(title):
       init = True if 'users/sign_in' in self._driver.current_url else False
       article = self.select_preexisting_article(title=title, init=init)
     else:
       # Create new article
-      title = self.create_article(title='Metadata Versioning',
+      title = self.create_article(title=title,
                                  journal='PLOS Wombat',
                                  type_='Research',
                                  random_bit=True,

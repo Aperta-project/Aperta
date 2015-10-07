@@ -23,7 +23,7 @@ class PaperFactory
           add_creator_as_collaborator
           paper.save!
           paper.decisions.create!
-          apply_template
+          add_phases_and_tasks
           add_creator_as_author!
         else
           paper.errors.add(:paper_type, "is not valid")
@@ -32,7 +32,7 @@ class PaperFactory
     end
   end
 
-  def apply_template
+  def add_phases_and_tasks
     template.phase_templates.each do |phase_template|
       phase = paper.phases.create!(name: phase_template['name'])
 
@@ -41,6 +41,8 @@ class PaperFactory
       end
     end
   end
+
+  private
 
   def create_task(task_template, phase)
     task_klass = task_template.journal_task_type.kind.constantize
@@ -56,10 +58,8 @@ class PaperFactory
   end
 
   def template
-    @template ||= paper.journal.manuscript_manager_templates.where(paper_type: paper.paper_type).first
+    @template ||= paper.journal.manuscript_manager_templates.find_by(paper_type: paper.paper_type)
   end
-
-  private
 
   def add_creator_as_author!
     DefaultAuthorCreator.new(paper, creator).create!

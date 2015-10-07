@@ -44,7 +44,7 @@ FactoryGirl.define do
 
     trait(:with_tasks) do
       after(:create) do |paper|
-        PaperFactory.new(paper, paper.creator).apply_template
+        PaperFactory.new(paper, paper.creator).add_phases_and_tasks
       end
     end
 

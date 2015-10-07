@@ -57,6 +57,7 @@ class PaperEditorPage(AuthenticatedPage):
     self._card = (By.CLASS_NAME, 'card')
     self._sidebar_submit = (By.ID, 'sidebar-submit-paper')
     self._submit_confirm = (By.CLASS_NAME, 'button-submit-paper')
+    self._close_after_submit = (By.CLASS_NAME, 'success-close')
 
   # POM Actions
   def validate_page_elements_styles_functions(self, username=''):
@@ -308,3 +309,7 @@ class PaperEditorPage(AuthenticatedPage):
   def confirm_submit_btn(self):
     """Confirm paper submission"""
     self._get(self._submit_confirm).click()
+
+  def close_submit_overlay(self):
+    """Close the submit overlay after confirm paper submition"""
+    self._get(self._close_after_submit).click()

@@ -22,7 +22,7 @@ class MetadataVersioningTest(CommonTest):
   def test_metadata_versioning(self):
     """
     """
-    title = 'Metadata Versioning 3'
+    title = 'MV Test-3'
     #if True: # for debugging
     if self.check_article(title):
       init = True if 'users/sign_in' in self._driver.current_url else False
@@ -44,6 +44,7 @@ class MetadataVersioningTest(CommonTest):
     # Click submit
     paper_editor.press_submit_btn()
     paper_editor.confirm_submit_btn()
+    paper_editor.close_submit_overlay()
 
     time.sleep(5)
     return self

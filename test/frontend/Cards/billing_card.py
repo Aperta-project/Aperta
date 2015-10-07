@@ -31,8 +31,8 @@ class BillingCard(BaseCard):
     self._state = (By.NAME, "plos_billing.state")
     self._country = (By.CLASS_NAME, "select2-container")
     self._how_to_pay = (By.XPATH, ".//li[contains(@class, 'question')]/div/div")
+    self._question_1_dd = (By.CLASS_NAME, 'payment-method')
     #self._pfa = ()
-
 
 
    #POM Actions
@@ -98,6 +98,13 @@ class BillingCard(BaseCard):
     #country.clear()
     #import pdb; pdb.set_trace()
     #country_input.send_keys(billing_data['country'] + Keys.ENTER)
+
+    q1 = self._get(self._question_1_dd)
+    q1.click()
+    q1.send_keys('PLOS Publication Fee Assistance Program (PFA)' + Keys.ENTER)
+    time.sleep(.5)
+    # retrieve the element again because there is a change in the status
+    completed = self._get(self._completed_check)
     completed.click()
     time.sleep(.5)
     self._get(self._close_button).click()

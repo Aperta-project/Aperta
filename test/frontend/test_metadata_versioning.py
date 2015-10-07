@@ -16,13 +16,13 @@ from frontend.common_test import CommonTest
 @MultiBrowserFixture
 class MetadataVersioningTest(CommonTest):
   """
-  Self imposed AC:
-     -
+  Since metadata versioning is not developed yet, this calls create condition
+  for testing by creating an article, filling all required cards, submitting.
   """
   def test_metadata_versioning(self):
     """
     """
-    title = 'Metadata Versioning 2'
+    title = 'Metadata Versioning 3'
     #if True: # for debugging
     if self.check_article(title):
       init = True if 'users/sign_in' in self._driver.current_url else False

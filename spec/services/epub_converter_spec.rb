@@ -6,7 +6,7 @@ describe EpubConverter do
     "<h2 class=\"subtitle\">And this is my subtitle about how turtles are awesome</h2><p>Turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles.</p><p><a name=\"_GoBack\"></a>The end.</p>"
   end
   let(:paper) do
-    create :paper, body: paper_body, short_title: paper_title, creator: create(:user)
+    create :paper, body: paper_body, title: paper_title, creator: create(:user)
   end
   let(:downloader) { FactoryGirl.create :user }
 
@@ -29,11 +29,6 @@ describe EpubConverter do
 
       after { expect(doc.errors.length).to be 0 }
 
-      it "displays and HTML escapes the paper's short_title" do
-        paper.short_title = "<This Is & The Short Title>"
-        expect(doc).to have_path("title:contains('#{paper.short_title}')")
-      end
-
       it "displays and HTML escapes the paper's title" do
         paper.title = "<This Is & The Title>"
         expect(doc).to have_path("h1:contains('#{paper.title}')")
@@ -41,14 +36,6 @@ describe EpubConverter do
 
       it "includes the paper body as-is, unescaped" do
         expect(converter.epub_html).to include(paper.body)
-      end
-    end
-
-    context 'paper with empty title' do
-      let(:paper) { create :paper, title: nil, body: "<div>paper body here</div>" }
-
-      it 'should use the short title' do
-        expect(converter.epub_html).to have_path("h1:contains('#{paper.short_title}')")
       end
     end
   end

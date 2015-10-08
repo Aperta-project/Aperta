@@ -21,35 +21,35 @@ class WorkflowPage(AuthenticatedPage):
     #Locators - Instance members
     self._click_editor_assignment_button = (By.XPATH, './/div[2]/div[2]/div/div[4]/div')
     # Reviewer Report button name = Reviewer Recommendation in the card's title
-    self._reviewer_agreement_button = (By.XPATH, 
+    self._reviewer_agreement_button = (By.XPATH,
       "//div[@class='column-content']/div/div//div[contains(., '[A] Reviewer Agreement')]")
-    self._reviewer_recommendation_button = (By.XPATH, 
+    self._reviewer_recommendation_button = (By.XPATH,
       "//div[@class='column-content']/div/div//div[contains(., '[A] Reviewer Report')]")
-    self._completed_review_button = (By.XPATH, 
-      "//div[@class='column-content']/div/div//div[contains(., '[A] Completed Review')]")    
+    self._completed_review_button = (By.XPATH,
+      "//div[@class='column-content']/div/div//div[contains(., '[A] Completed Review')]")
     self._assess_button = (By.XPATH, "//div[@class='column-content']/div/div//div[contains(., '[A] Reviewer Report')]")
     self._editorial_decision_button = (By.XPATH, "//div[@class='column-content']/div/div//div[contains(., '[A] Editorial Decision')]")
     self._navigation_menu_line = (By.XPATH, ".//div[@class='navigation']/hr")
     self._editable_label = (By.XPATH, ".//div[@class='control-bar-inner-wrapper']/ul[2]/li/label")
-    self._editable_checkbox = (By.XPATH, 
+    self._editable_checkbox = (By.XPATH,
       ".//div[@class='control-bar-inner-wrapper']/ul[2]/li/label/input")
-    self._recent_activity_icon = (By.XPATH, 
+    self._recent_activity_icon = (By.XPATH,
       ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[2]/div/div/*[local-name() = 'svg']/*[local-name() = 'path']")
-    self._recent_activity_text = (By.XPATH, 
+    self._recent_activity_text = (By.XPATH,
       ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[2]/div/div[2]")
-    self._discussions_icon = (By.XPATH, 
+    self._discussions_icon = (By.XPATH,
       ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[3]/a/div/span[contains(@class, 'fa-comment')]")
-    self._discussions_text = (By.XPATH, 
+    self._discussions_text = (By.XPATH,
       ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[3]/a")
-    self._manuscript_icon = (By.XPATH, 
+    self._manuscript_icon = (By.XPATH,
       ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div/*[local-name() = 'svg']/*[local-name() = 'path']")
-    self._manuscript_text = (By.XPATH, 
+    self._manuscript_text = (By.XPATH,
       ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div[2]")
-    self._column_header = (By.XPATH, 
+    self._column_header = (By.XPATH,
       ".//div[contains(@class, 'column-header')]/div/h2")
-    self._column_header_save = (By.XPATH, 
+    self._column_header_save = (By.XPATH,
       ".//div[contains(@class, 'column-header')]/div/div/button[2]")
-    self._column_header_cancel = (By.XPATH, 
+    self._column_header_cancel = (By.XPATH,
       ".//div[contains(@class, 'column-header')]/div/div/button")
     self._add_card_button = (By.XPATH,
       ".//a[contains(@class, 'add-new-card-button')]")
@@ -67,9 +67,9 @@ class WorkflowPage(AuthenticatedPage):
       ".//div[@class='column-content']/div")
     self._first_column_cards = (By.CSS_SELECTOR, 'div.card')
     # Note: Not used due to not reaching this menu from automation
-    self._remove_confirmation_title = (By.XPATH, 
+    self._remove_confirmation_title = (By.XPATH,
         ".//div[contains(@class, 'delete-card-title')]/h1")
-    self._remove_confirmation_subtitle = (By.XPATH, 
+    self._remove_confirmation_subtitle = (By.XPATH,
         ".//div[contains(@class, 'delete-card-title')]/h2")
     self._remove_yes_button = (By.XPATH,
         ".//div[contains(@class, 'delete-card-action-buttons')]/div/button")
@@ -83,70 +83,15 @@ class WorkflowPage(AuthenticatedPage):
   def validate_initial_page_elements_styles(self):
     """ """
     # Validate menu elements (title and icon)
-    # This left nav validation should use the validation defined in authenticated_page
     # https://www.pivotaltracker.com/story/show/103343910
-    left_nav = self._get(self._nav_toggle)
-    assert left_nav.text == 'PLOS'
-    assert left_nav.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-    assert application_typeface in left_nav.value_of_css_property('font-family')
-    assert left_nav.value_of_css_property('font-size') == '24px'
-    assert left_nav.value_of_css_property('font-weight') == '700'
-    assert left_nav.value_of_css_property('text-transform') == 'uppercase'
+    # https://www.pivotaltracker.com/story/show/104018188
+    self.validate_closed_left_nav()
     assert self._get(self._nav_menu)
     # Right menu items
     # https://www.pivotaltracker.com/story/show/103343910
-    editable = self._get(self._editable_label)
-    assert editable.text == 'EDITABLE'
-    assert editable.value_of_css_property('font-size') == '10px'
-    assert editable.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-    assert editable.value_of_css_property('font-weight') == '700'
-    assert application_typeface in editable.value_of_css_property('font-family')
-    assert editable.value_of_css_property('text-transform') == 'uppercase'
-    assert editable.value_of_css_property('line-height') == '20px'
-    assert editable.value_of_css_property('text-align') == 'center'
-    ec = self._get(self._editable_checkbox)
-    assert ec.get_attribute('type') == 'checkbox'
-    #assert ec.value_of_css_property('color') in ('rgba(49, 55, 57, 1)', 'rgba(60, 60, 60, 1)')
-    assert ec.value_of_css_property('font-size') == '10px'
-    assert ec.value_of_css_property('font-weight') == '700'
-    recent_activity_icon = self._get(self._recent_activity_icon)
-    assert recent_activity_icon.get_attribute('d') == ('M-171.3,403.5c-2.4,0-4.5,1.4-5.5,3.5c0,'
-                '0-0.1,0-0.1,0h-9.9l-6.5-17.2  '
-                'c-0.5-1.2-1.7-2-3-1.9c-1.3,0.1-2.4,1-2.7,2.3l-4.3,18.9l-4-43.4c-0.1-1'
-                '.4-1.2-2.5-2.7-2.7c-1.4-0.1-2.7,0.7-3.2,2.1l-12.5,41.6  h-16.2c-1.6,0'
-                '-3,1.3-3,3c0,1.6,1.3,3,3,3h18.4c1.3,0,2.5-0.9,2.9-2.1l8.7-29l4.3,46.8'
-                'c0.1,1.5,1.3,2.6,2.8,2.7c0.1,0,0.1,0,0.2,0  c1.4,0,2.6-1,2.9-2.3l6.2-'
-                '27.6l3.7,9.8c0.4,1.2,1.5,1.9,2.8,1.9h11.9c0.2,0,0.3-0.1,0.5-0.1c1.1,1'
-                '.7,3,2.8,5.1,2.8  c3.4,0,6.1-2.7,6.1-6.1C-165.3,406.2-168,403.5-171.3,403.5z')
-    assert recent_activity_icon.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-    recent_activity_text = self._get(self._recent_activity_text)
-    assert recent_activity_text
-    assert recent_activity_text.text, 'Recent Activity'
-    assert recent_activity_text.value_of_css_property('font-size') == '10px'
-    assert recent_activity_text.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-    assert recent_activity_text.value_of_css_property('font-weight') == '700'
-    assert application_typeface in recent_activity_text.value_of_css_property('font-family')
-    assert recent_activity_text.value_of_css_property('text-transform') == 'uppercase'
-    assert recent_activity_text.value_of_css_property('line-height') == '20px'
-    assert recent_activity_text.value_of_css_property('text-align') == 'center'
-    discussions_icon = self._get(self._discussions_icon)
-    assert discussions_icon
-    assert discussions_icon.value_of_css_property('font-family') == 'FontAwesome'
-    assert discussions_icon.value_of_css_property('font-size') == '16px'
-    assert discussions_icon.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-    assert discussions_icon.value_of_css_property('font-weight') == '400'
-    assert discussions_icon.value_of_css_property('text-transform') == 'uppercase'
-    assert discussions_icon.value_of_css_property('font-style') == 'normal'
-    discussions_text = self._get(self._discussions_text)
-    assert discussions_text
-    assert discussions_text.text == 'DISCUSSIONS'
-    column_header = self._get(self._column_header)
-    assert column_header
-    return self
-
-  #def is_navigation_menu_visible(self):
-  #  """ """
-  #  self._get(self._click_editor_assignment_button)
+    # https://www.pivotaltracker.com/story/show/104018188
+    self.validate_wf_top_elements()
+    assert self._get(self._column_header)
 
   def click_editor_assignment_button(self):
     """Click editor assignment button"""
@@ -191,10 +136,6 @@ class WorkflowPage(AuthenticatedPage):
     self._get(self._nav_close).click()
     return self
 
-  #def get_column_header_(self):
-  #  """ """
-  #  return self._get(self._column_header).text
-
   def click_column_header(self):
     """Click on the first column header and returns the text"""
     column_header = self._get(self._column_header)
@@ -213,12 +154,12 @@ class WorkflowPage(AuthenticatedPage):
     column_header.send_keys(title)
     self._get(self._column_header_save).click()
     return self
-  
+
   def click_add_new_card(self):
     """Click on the add new card button"""
     self._get(self._add_card_button).click()
     return self
-  
+
 
   def check_overlay(self):
     """Check CSS properties of the overlay that appears when the user click on add new card"""

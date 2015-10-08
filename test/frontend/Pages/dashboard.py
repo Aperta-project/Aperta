@@ -140,10 +140,10 @@ class DashboardPage(AuthenticatedPage):
     manuscript_count = len(active_manuscripts)
     print('Expecting ' + str(manuscript_count) + ' active manuscripts')
     if manuscript_count > 1:
-      assert 'Hi, ' + first_name + '. You have ' + str(manuscript_count) + ' active manuscripts.' in welcome_msg.text, \
+      assert 'Hi, ' + first_name + '. You have {0} active manuscripts.'.format(manuscript_count) in welcome_msg.text, \
              welcome_msg.text + str(manuscript_count)
     elif manuscript_count == 1:
-      assert 'Hi, ' + first_name + '. You have ' + str(manuscript_count) + ' active manuscript.' in welcome_msg.text, \
+      assert 'Hi, ' + first_name + '. You have {0} active manuscript.'.format(manuscript_count) in welcome_msg.text, \
              welcome_msg.text + str(manuscript_count)
     else:
       manuscript_count = 0
@@ -191,17 +191,17 @@ class DashboardPage(AuthenticatedPage):
                                            'FROM paper_roles INNER JOIN papers ON paper_roles.paper_id = papers.id '
                                            'WHERE paper_roles.user_id=%s '
                                            'AND papers.publishing_state IN (\'withdrawn\', \'rejected\');', (uid,))
-      inactive_manuscript_count = len(inactive_manuscripts)
-      self.set_timeout(1)
-      inactive_section_title = self._get(self._dash_inactive_section_title)
-      self.restore_timeout()
-      if inactive_section_title:
-        assert inactive_section_title.text == 'Inactive Manuscripts (' + str(inactive_manuscript_count) + ')'
-        self.validate_manu_dynamic_content(username, 'inactive')
-        return inactive_manuscript_count
     except:
+      print('Could not retrieve inactive manuscripts from the database')
+      return False
+    inactive_manuscript_count = len(inactive_manuscripts)
+    if inactive_manuscript_count <= 0:
       print('No manuscripts are inactive for user.')
-      return 0
+    else:
+      inactive_section_title = self._get(self._dash_inactive_section_title)
+      assert inactive_section_title.text == 'Inactive Manuscripts (' + str(inactive_manuscript_count) + ')'
+      self.validate_manu_dynamic_content(username, 'inactive')
+    return inactive_manuscript_count
 
   def validate_no_manus_info_msg(self):
     """
@@ -228,17 +228,17 @@ class DashboardPage(AuthenticatedPage):
     uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
     # We MUST validate that manuscript_count is > 0 for list before calling this
     if list == 'inactive':
-      paper_tuples = []
+      paper_tuple_list = []
       papers = self._gets(self._dash_inactive_title)
-      paper_tuples = PgSQL().query(
-                                   'SELECT paper_roles.paper_id, paper_roles.created_at, papers.publishing_state '
-                                   'FROM paper_roles INNER JOIN papers ON paper_roles.paper_id = papers.id '
-                                   'WHERE paper_roles.user_id=%s '
-                                   'AND papers.publishing_state IN (\'withdrawn\', \'rejected\') '
-                                   'ORDER BY paper_roles.created_at DESC;', (uid,)
-                                  )
+      paper_tuple_list = PgSQL().query(
+                                       'SELECT paper_roles.paper_id, paper_roles.created_at, papers.publishing_state '
+                                       'FROM paper_roles INNER JOIN papers ON paper_roles.paper_id = papers.id '
+                                       'WHERE paper_roles.user_id=%s '
+                                       'AND papers.publishing_state IN (\'withdrawn\', \'rejected\') '
+                                       'ORDER BY paper_roles.created_at DESC;', (uid,)
+                                      )
     else:
-      paper_tuples = []
+      paper_tuple_list = []
       papers = self._gets(self._dash_active_title)
       unsubmitted_paper_tuples = PgSQL().query(
                                    'SELECT paper_roles.paper_id, paper_roles.created_at, papers.publishing_state '
@@ -248,7 +248,7 @@ class DashboardPage(AuthenticatedPage):
                                    'ORDER BY paper_roles.created_at DESC;', (uid,)
                                   )
       for paper in unsubmitted_paper_tuples:
-        paper_tuples.append(paper)
+        paper_tuple_list.append(paper)
       other_paper_tuples = PgSQL().query(
                                    'SELECT paper_roles.paper_id, paper_roles.created_at, papers.publishing_state '
                                    'FROM paper_roles INNER JOIN papers ON paper_roles.paper_id = papers.id '
@@ -258,9 +258,9 @@ class DashboardPage(AuthenticatedPage):
                                    'ORDER BY paper_roles.created_at DESC;', (uid,)
                                   )
       for paper in other_paper_tuples:
-        paper_tuples.append(paper)
+        paper_tuple_list.append(paper)
     db_papers_list = []
-    for i in paper_tuples:
+    for i in paper_tuple_list:
       current_paper = i[0]
       if current_paper not in db_papers_list:
         db_papers_list.append(current_paper)
@@ -374,7 +374,6 @@ class DashboardPage(AuthenticatedPage):
     tasks = []
     for invite in invitations:
       tasks.append(invite[0])
-    print tasks
     count = 1
     for task in tasks:
       paper_id = PgSQL().query('SELECT paper_id FROM phases '

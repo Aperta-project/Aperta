@@ -12,6 +12,7 @@ from Pages.dashboard import DashboardPage
 from Cards.basecard import BaseCard
 from Pages.paper_editor import PaperEditorPage
 from frontend.common_test import CommonTest
+from Pages.workflow_page import WorkflowPage
 
 @MultiBrowserFixture
 class MetadataVersioningTest(CommonTest):
@@ -22,7 +23,7 @@ class MetadataVersioningTest(CommonTest):
   def test_metadata_versioning(self):
     """
     """
-    title = 'MV Test-3'
+    title = 'MV Test-7'
     #if True: # for debugging
     if self.check_article(title):
       init = True if 'users/sign_in' in self._driver.current_url else False
@@ -45,8 +46,15 @@ class MetadataVersioningTest(CommonTest):
     paper_editor.press_submit_btn()
     paper_editor.confirm_submit_btn()
     paper_editor.close_submit_overlay()
+    # go to workflow
+    #paper_editor._get(self._workflow_link).click()
+    paper_editor.click_workflow_lnk()
+    workflow_page = WorkflowPage(self.getDriver())
+    # press register decision
+    workflow_page._get(workflow_page._register_decision_button).click()
+    time.sleep(20)
 
-    time.sleep(5)
+
     return self
 
 

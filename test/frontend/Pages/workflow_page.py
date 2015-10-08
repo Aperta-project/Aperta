@@ -75,6 +75,8 @@ class WorkflowPage(AuthenticatedPage):
         ".//div[contains(@class, 'delete-card-action-buttons')]/div/button")
     self._remove_cancel_button = (By.XPATH,
         ".//div[contains(@class, 'delete-card-action-buttons')]/div[2]/button")
+    self._register_decision_button = (By.XPATH, ".//div[contains(., 'Register Decision')]")
+
     # End of not used elements
 
   #POM Actions

@@ -313,3 +313,8 @@ class PaperEditorPage(AuthenticatedPage):
   def close_submit_overlay(self):
     """Close the submit overlay after confirm paper submition"""
     self._get(self._close_after_submit).click()
+
+  def click_workflow_lnk(self):
+    """Click workflow button"""
+    self._get(self._workflow_link).click()
+    return self

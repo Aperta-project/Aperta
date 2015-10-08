@@ -109,8 +109,11 @@ class AuthenticatedPage(PlosPage):
       '  S29.104,22,28,22z')
     self._get(self._nav_toggle).click()
 
-  def validate_closed_lef_nav(self):
-    """Validate left navigation element in its rest state"""
+  def validate_closed_left_nav(self):
+    """
+    Validate left navigation element in its rest state
+    No validation for this element. Bug#105161900
+    """
     left_nav = self._get(self._nav_toggle)
     assert left_nav.text == 'PLOS', left_nav.text
     assert left_nav.value_of_css_property('color') == 'rgba(57, 163, 41, 1)', \
@@ -123,7 +126,6 @@ class AuthenticatedPage(PlosPage):
       left_nav.value_of_css_property('font-weight')
     assert left_nav.value_of_css_property('text-transform') == 'uppercase', \
       left_nav.value_of_css_property('text-transform')
-
 
 
   def validate_nav_elements(self, permissions):

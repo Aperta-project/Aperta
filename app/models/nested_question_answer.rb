@@ -1,6 +1,8 @@
 class NestedQuestionAnswer < ActiveRecord::Base
   TRUTHY_VALUES_RGX = /^(t|true|y|yes|1)/i
   SUPPORTED_VALUE_TYPES = %w(attachment boolean question-set text)
+  YES = "Yes"
+  NO = "No"
 
   belongs_to :decision
   belongs_to :nested_question
@@ -20,6 +22,16 @@ class NestedQuestionAnswer < ActiveRecord::Base
     send read_value_method
   end
 
+  def float_value
+    value.to_f
+  end
+
+  def yes_no_value
+    return nil if value.nil?
+    return YES if value
+    NO
+  end
+
   private
 
   def verify_from_owner
@@ -31,6 +43,7 @@ class NestedQuestionAnswer < ActiveRecord::Base
   end
 
   def boolean_value_type
+    return nil if self[:value].nil?
     self[:value].match(TRUTHY_VALUES_RGX) ? true : false
   end
 

@@ -117,4 +117,43 @@ describe NestedQuestionAnswer do
       end
     end
   end
+
+  describe "#float_value" do
+    before { nested_question_answer.value_type = "text" }
+
+    it "returns a value as a numeric float" do
+      nested_question_answer.value = "100"
+      expect(nested_question_answer.float_value).to eq(100.0)
+    end
+
+    it "returns 0.0 when the value does not contain numeric values" do
+      nested_question_answer.value = "asdf"
+      expect(nested_question_answer.float_value).to eq(0.0)
+    end
+
+    it "returns 0.0 when the value is nil" do
+      nested_question_answer.value = nil
+      expect(nested_question_answer.float_value).to be(0.0)
+    end
+  end
+
+
+  describe "#yes_no_value" do
+    before { nested_question_answer.value_type = "boolean" }
+
+    it "returns 'Yes' when the value is truthy" do
+      nested_question_answer.value = true
+      expect(nested_question_answer.yes_no_value).to eq("Yes")
+    end
+
+    it "returns 'No' when the value is falsy" do
+      nested_question_answer.value = false
+      expect(nested_question_answer.yes_no_value).to eq("No")
+    end
+
+    it "returns nil when the value is nil" do
+      nested_question_answer.value = nil
+      expect(nested_question_answer.yes_no_value).to be(nil)
+    end
+  end
 end

@@ -181,6 +181,33 @@ class Task < ActiveRecord::Base
     self.class.nested_questions
   end
 
+  def answer_for(ident)
+    answers = nested_question_answers.includes(:nested_question)
+    answers_by_question_id = answers.reduce({}) do |h, answer|
+      h[answer.nested_question_id] = answer
+      h
+    end
+
+    questions = answers.map(&:nested_question).select{ |q| q.parent.blank? }
+    path_parts = ident.split(".")
+    found_questions = find_nested_question(path_parts, questions)
+    question = found_questions.first
+
+    answers_by_question_id[question.id] if question
+  end
+
+  def find_nested_question(path_parts, nested_questions)
+    current_ident = path_parts.first
+    remaining_path_parts = path_parts[1..-1]
+    found_questions = nested_questions.select { |question| question.ident == current_ident }
+
+    if remaining_path_parts.empty?
+      found_questions
+    else
+      find_nested_question(remaining_path_parts, found_questions.map(&:children).flatten)
+    end
+  end
+
   private
 
   def on_card_completion?

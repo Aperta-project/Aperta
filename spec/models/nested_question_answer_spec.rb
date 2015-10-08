@@ -117,4 +117,23 @@ describe NestedQuestionAnswer do
       end
     end
   end
+
+  describe "#yes_no_value" do
+    before { nested_question_answer.value_type = "boolean" }
+
+    it "returns 'Yes' when the value is truthy" do
+      nested_question_answer.value = true
+      expect(nested_question_answer.yes_no_value).to eq("Yes")
+    end
+
+    it "returns 'No' when the value is falsy" do
+      nested_question_answer.value = false
+      expect(nested_question_answer.yes_no_value).to eq("No")
+    end
+
+    it "returns nil when the value is nil" do
+      nested_question_answer.value = nil
+      expect(nested_question_answer.yes_no_value).to be(nil)
+    end
+  end
 end

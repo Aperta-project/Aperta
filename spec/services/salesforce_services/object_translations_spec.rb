@@ -57,22 +57,41 @@ describe SalesforceServices::ObjectTranslations do
   end
 
   def make_questions(paper)
-      add_question(paper, 'pfa_question_1',          'Yes')
-      add_question(paper, 'pfa_question_1a',         'foo')
-      add_question(paper, 'pfa_question_1b',         'foo')
-      add_question(paper, 'pfa_question_2',          'Yes')
-      add_question(paper, 'pfa_question_2a',         'foo')
-      add_question(paper, 'pfa_question_2b',         'foo')
-      add_question(paper, 'pfa_question_3',          'Yes')
-      add_question(paper, 'pfa_question_3a',         'asdf')
-      add_question(paper, 'pfa_question_4',          'Yes')
-      add_question(paper, 'pfa_question_4a',         'foo')
-      add_question(paper, 'pfa_amount_to_pay',       '1000')
-      add_question(paper, 'pfa_additional_comments', 'my comments')
-      add_question(paper, 'pfa_supporting_docs',     'Yes')
+    add_boolean_question_with_answer(paper, 'pfa_question_1',          'Yes')
+    add_text_question_with_answer(paper,    'pfa_question_1a',         'foo')
+    add_text_question_with_answer(paper,    'pfa_question_1b',         'foo')
+    add_boolean_question_with_answer(paper, 'pfa_question_2',          'Yes')
+    add_text_question_with_answer(paper,    'pfa_question_2a',         'foo')
+    add_text_question_with_answer(paper,    'pfa_question_2b',         'foo')
+    add_boolean_question_with_answer(paper, 'pfa_question_3',          'Yes')
+    add_text_question_with_answer(paper,    'pfa_question_3a',         'asdf')
+    add_boolean_question_with_answer(paper, 'pfa_question_4',          'Yes')
+    add_text_question_with_answer(paper,    'pfa_question_4a',         'foo')
+    add_text_question_with_answer(paper,    'pfa_amount_to_pay',       '1000')
+    add_text_question_with_answer(paper,    'pfa_additional_comments', 'my comments')
+    add_boolean_question_with_answer(paper, 'pfa_supporting_docs',     'Yes')
   end
 
-  def add_question(paper, ident, answer)
-    q = FactoryGirl.create :question, ident: "plos_billing.#{ident}", answer: answer, task: paper.billing_card
+  def add_text_question_with_answer(paper, ident, answer)
+    nested_question = FactoryGirl.create(:nested_question, ident: ident, value_type: "text")
+    nested_question_answer = FactoryGirl.create(
+      :nested_question_answer,
+      nested_question: nested_question,
+      owner: paper.billing_card,
+      value: answer,
+      value_type: "text"
+    )
   end
+
+  def add_boolean_question_with_answer(paper, ident, answer)
+    nested_question = FactoryGirl.create(:nested_question, ident: ident, value_type: "boolean")
+    nested_question_answer = FactoryGirl.create(
+      :nested_question_answer,
+      nested_question: nested_question,
+      owner: paper.billing_card,
+      value: answer,
+      value_type: "boolean"
+    )
+  end
+
 end

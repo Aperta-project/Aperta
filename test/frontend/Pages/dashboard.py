@@ -161,7 +161,7 @@ class DashboardPage(AuthenticatedPage):
     """
     try:
       int(active_manuscript_count)
-    except:
+    except ValueError:
       print('Manuscript Count passed in to function is not an integer.')
       return False
     if active_manuscript_count == 0:

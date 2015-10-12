@@ -22,15 +22,6 @@ class NestedQuestion < ActiveRecord::Base
     end
   end
 
-  # A question itself doesn't have a single answer so we don't save answers
-  # here. However, it sure is nice when working with questions in a particular
-  # context to be able to easily access its answer.
-  #
-  # By providing a virtual accessor here we allow an object to set the value
-  # so it can pass the question around in a given context... and make life easier
-  # for anyone interested in the answer.
-  attr_accessor :value
-
   def attachment?
     value_type == "attachment"
   end

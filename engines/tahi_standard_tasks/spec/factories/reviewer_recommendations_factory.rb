@@ -7,6 +7,7 @@ FactoryGirl.define do
     title "Director"
     department "Department Of Somewhere"
     affiliation "Universe"
+    recommend_or_oppose "Recommend"
     reviewer_recommendations_task
   end
 end

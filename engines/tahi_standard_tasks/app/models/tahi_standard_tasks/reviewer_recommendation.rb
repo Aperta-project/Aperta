@@ -3,6 +3,9 @@ module TahiStandardTasks
     belongs_to :reviewer_recommendations_task
     has_many :nested_question_answers, as: :owner, dependent: :destroy
 
+    validates :email, presence: true
+    validates :recommend_or_oppose, presence: true
+
     def self.nested_questions
       questions = []
       questions << NestedQuestion.new(

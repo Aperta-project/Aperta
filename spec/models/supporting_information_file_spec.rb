@@ -58,7 +58,5 @@ describe SupportingInformationFile, redis: true do
     it "does not have a preview url" do
       expect(docx.preview_src).to eq(nil)
     end
-
-
   end
 end

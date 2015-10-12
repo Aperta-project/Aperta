@@ -51,5 +51,30 @@ describe SupportingInformationFilesController, redis: true do
         expect(file.title).to eq("new title")
       end
     end
+
+    it "calls convert_to_png" do
+      with_aws_cassette 'supporting_info_files_controller' do
+        do_request
+        expect(paper.supporting_information_files.first.attachment).to receive(:convert_to_png)
+      end
+    end
   end
+
+  describe "PUT with docx" do
+    subject(:do_request) { patch :update, format: :json, id: paper.supporting_information_files.last.id, paper_id: paper.id, supporting_information_file: {title: "new title", caption: "new caption"} }
+    before(:each) do
+      with_aws_cassette 'supporting_info_files_controller_docx' do
+        paper.supporting_information_files.create! attachment: fixture_file_upload('about_turtles.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+      end
+    end
+
+    it "does not call convert_to_png" do
+      with_aws_cassette 'supporting_info_files_controller_docx' do
+        do_request
+
+        expect(paper.supporting_information_files.first.attachment).not_to receive(:convert_to_png)
+      end
+    end
+  end
+
 end

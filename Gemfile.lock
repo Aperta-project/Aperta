@@ -473,6 +473,10 @@ GEM
       rspec-core (~> 3.3.0)
       rspec-expectations (~> 3.3.0)
       rspec-mocks (~> 3.3.0)
+    rspec-activemodel-mocks (1.0.2)
+      activemodel (>= 3.0)
+      activesupport (>= 3.0)
+      rspec-mocks (>= 2.99, < 4.0)
     rspec-collection_matchers (1.1.2)
       rspec-expectations (>= 2.99.0.beta1)
     rspec-core (3.3.2)
@@ -642,6 +646,7 @@ DEPENDENCIES
   rails_12factor
   request_store
   rest-client
+  rspec-activemodel-mocks
   rspec-collection_matchers
   rspec-instafail
   rspec-its

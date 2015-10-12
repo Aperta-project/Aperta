@@ -81,6 +81,7 @@ group :development, :test, :performance do
   gem 'rspec-its'
   gem 'rspec-collection_matchers'
   gem 'rspec-instafail'
+  gem 'rspec-activemodel-mocks'
   gem 'launchy'
   gem 'database_cleaner'
   gem 'pry-rescue'

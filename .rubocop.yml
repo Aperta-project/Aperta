@@ -33,3 +33,5 @@ Style/EmptyLinesAroundClassBody:
   Enabled: false
 Style/EmptyLinesAroundModuleBody:
   Enabled: false
+Style/ExtraSpacing:
+  Enabled: false

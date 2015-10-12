@@ -12,7 +12,7 @@ module TahiStandardTasks
         owner_id: nil,
         owner_type: name,
         ident: "recommend_or_oppose",
-        value_type: "text",
+        value_type: "boolean",
         text: "Are you recommending or opposing this reviewer? (required)"
       )
       questions << NestedQuestion.new(

@@ -5,7 +5,6 @@ module TahiStandardTasks
     belongs_to :reviewer_recommendations_task
 
     validates :email, presence: true
-    validates :recommend_or_oppose, presence: true
 
     def self.nested_questions
       questions = []

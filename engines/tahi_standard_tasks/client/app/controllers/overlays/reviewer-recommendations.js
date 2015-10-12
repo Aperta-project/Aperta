@@ -32,7 +32,14 @@ export default TaskController.extend({
     saveNewRecommendation: function() {
       let recommendation = this.get("newRecommendation");
       recommendation.set("reviewerRecommendationsTask", this.get("model"));
-      recommendation.save().then( () => {
+      recommendation.save().then( (savedRecommendation) => {
+        recommendation.get('nestedQuestionAnswers').toArray().forEach(function(answer){
+          let value = answer.get("value");
+          if(value || value === false){
+            answer.set("owner", savedRecommendation);
+            answer.save();
+          }
+        });
         this.toggleProperty('showNewReviewerForm');
       });
     },

@@ -22,7 +22,7 @@ class PaperFactory
         if template
           add_creator_as_collaborator
           paper.save!
-          paper.decisions.create!
+          add_decision
           add_phases_and_tasks
           add_creator_as_author!
         else
@@ -37,25 +37,18 @@ class PaperFactory
       phase = paper.phases.create!(name: phase_template['name'])
 
       phase_template.task_templates.each do |task_template|
-        create_task(task_template, phase)
+
+        TaskFactory.new(task_template.journal_task_type.kind,
+                        phase,
+                        creator: creator,
+                        title: task_template.title,
+                        body: task_template.template,
+                        role: task_template.journal_task_type.role).create!
       end
     end
   end
 
   private
-
-  def create_task(task_template, phase)
-    task_klass = task_template.journal_task_type.kind.constantize
-
-    task_klass.new.tap do |task|
-      task.phase = phase
-      task.title = task_template.title
-      task.body = task_template.template
-      task.role = task_template.journal_task_type.role
-      task.participants << creator if task.submission_task?
-      task.save!
-    end
-  end
 
   def template
     @template ||= paper.journal.manuscript_manager_templates.find_by(paper_type: paper.paper_type)
@@ -63,6 +56,10 @@ class PaperFactory
 
   def add_creator_as_author!
     DefaultAuthorCreator.new(paper, creator).create!
+  end
+
+  def add_decision
+    paper.decisions.create!
   end
 
   def add_creator_as_collaborator

@@ -17,6 +17,8 @@ module TahiStandardTasks
         post :create, format: :json, reviewer_recommendation: {
           first_name: "enrico",
           last_name: "fermi",
+          email: "enrico@example.com",
+          recommend_or_oppose: "Recommend",
           reviewer_recommendations_task_id: task.id,
           position: 1
         }

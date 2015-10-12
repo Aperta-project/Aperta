@@ -20,7 +20,7 @@ export default DS.Model.extend({
     async: false
   }),
   journal: belongsTo('journal', { async: true }),
-  lockedBy: belongsTo('user', { async: true }),
+  lockedBy: belongsTo('user', { async: false }),
   phases: hasMany('phase', { async: true }),
   supportingInformationFiles: hasMany('supporting-information-file', {
     async: false

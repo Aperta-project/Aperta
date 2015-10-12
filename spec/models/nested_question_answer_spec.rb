@@ -137,6 +137,45 @@ describe NestedQuestionAnswer do
     end
   end
 
+  describe "setting the value" do
+    let(:owner) { fail("Implement :owner in child context.") }
+
+    before { nested_question_answer.owner = owner }
+
+    context "when the owner responds to :can_change? and returns false" do
+      let(:owner) { stub_model(Task, can_change?: false) }
+
+      it "cannot be saved" do
+        nested_question_answer.value = "new value"
+        expect do
+          nested_question_answer.save!
+        end.to raise_error(ActiveRecord::RecordInvalid)
+      end
+
+    end
+
+    context "when the owner responds to :can_change? and returns true" do
+      let(:owner) { stub_model(Task, can_change?: true) }
+
+      it "can be saved" do
+        nested_question_answer.value = "new value"
+        expect do
+          nested_question_answer.save!
+        end.to_not raise_error
+      end
+    end
+
+    context "when the owner doesn't respond to :can_change?" do
+      let(:owner) { stub_model(Author) }
+
+      it "can be saved" do
+        nested_question_answer.value = "new value"
+        expect do
+          nested_question_answer.save!
+        end.to_not raise_error
+      end
+    end
+  end
 
   describe "#yes_no_value" do
     before { nested_question_answer.value_type = "boolean" }

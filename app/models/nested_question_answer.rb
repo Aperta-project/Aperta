@@ -3,6 +3,8 @@ class NestedQuestionAnswer < ActiveRecord::Base
   YES = "Yes"
   NO = "No"
 
+  class_attribute :disable_owner_verification
+
   belongs_to :decision
   belongs_to :nested_question
   belongs_to :owner, polymorphic: true
@@ -30,6 +32,7 @@ class NestedQuestionAnswer < ActiveRecord::Base
   private
 
   def verify_from_owner
+    return if disable_owner_verification
     return unless owner
     return unless owner.respond_to?(:can_change?)
     unless owner.can_change?(self)

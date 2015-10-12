@@ -133,6 +133,15 @@ describe NestedQuestionAnswer do
         end.to raise_error(ActiveRecord::RecordInvalid)
       end
 
+      context "when .disable_owner_verification is set" do
+        it "can be saved" do
+          NestedQuestionAnswer.disable_owner_verification = true
+          nested_question_answer.value = "new value"
+          expect do
+            nested_question_answer.save!
+          end.to_not raise_error
+        end
+      end
     end
 
     context "when the owner responds to :can_change? and returns true" do

@@ -80,14 +80,6 @@ describe Paper do
       end
     end
 
-    describe "title" do
-      it "must be present" do
-        paper = FactoryGirl.build(:paper, title: nil)
-        expect(paper).to_not be_valid
-        expect(paper).to have(1).errors_on(:title)
-      end
-    end
-
     describe "short_title" do
       it "is within 255 chars" do
         paper = FactoryGirl.build(:paper, title: "Example", short_title: "a" * 256)

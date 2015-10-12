@@ -1,5 +1,5 @@
 class LitePaperSerializer < ActiveModel::Serializer
-  attributes :id, :title, :short_title, :publishing_state, :roles, :related_at_date, :editable, :active, :created_at, :updated_at
+  attributes :id, :title, :short_title, :publishing_state, :roles, :related_at_date, :editable, :active, :created_at, :updated_at, :manuscript_id
 
   def related_at_date
     return unless scoped_user.present?

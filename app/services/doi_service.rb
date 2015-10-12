@@ -1,4 +1,4 @@
-class Doi
+class DoiService
   PUBLISHER_PREFIX_FORMAT = /[\w\d\-\.]+/
   SUFFIX_FORMAT = /[^\/]+/
   FORMAT = %r{\A(#{PUBLISHER_PREFIX_FORMAT}/#{SUFFIX_FORMAT})\z}
@@ -15,17 +15,25 @@ class Doi
     @journal = journal
   end
 
+  # determines if a doi string is valid
   def self.valid?(doi_string)
     String(doi_string).match(FORMAT)
     $1 == String(doi_string)
   end
 
-  def assign!
-    return unless journal_has_doi?
-    journal.transaction do
-      journal.update! last_doi_issued: last_doi_issued.succ
+  def journal_doi_info_valid?
+    DoiService.valid?(to_s)
+  end
+
+  def next_doi!
+    if journal_has_doi_prefixes?
+      journal.transaction do
+        journal.update! last_doi_issued: last_doi_issued.succ
+      end
+      to_s
+    else
+      filler_doi
     end
-    to_s
   end
 
   def to_s
@@ -33,6 +41,11 @@ class Doi
   end
 
   private
+
+  def filler_doi
+    #"nil_prefixes_#{Time.now.to_i.to_s}"
+    nil
+  end
 
   def prefix
     doi_publisher_prefix
@@ -42,7 +55,7 @@ class Doi
     [doi_journal_prefix, last_doi_issued].join(".")
   end
 
-  def journal_has_doi?
+  def journal_has_doi_prefixes?
     doi_publisher_prefix.present? && doi_journal_prefix.present?
   end
 end

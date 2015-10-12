@@ -2,10 +2,9 @@ require 'rails_helper'
 
 describe Paper do
   let(:paper) { FactoryGirl.create :paper }
-  let(:doi) { 'pumpkin/doughnut.888888' }
   let(:user) { FactoryGirl.create :user }
 
-  describe "#create" do
+  context "#create" do
     it "also create Decision" do
       expect(paper.decisions.length).to eq 1
       expect(paper.decisions.first.class).to eq Decision
@@ -24,6 +23,13 @@ describe Paper do
       paper.save!
       paper.reload
       expect(paper_new.body).to eq('foo')
+    end
+
+    it "a doi is assigned to paper after create" do
+      paper = FactoryGirl.build :paper
+      expect(paper.doi).to eq(nil)
+      paper.save!
+      expect(paper.doi).to be_truthy
     end
   end
 

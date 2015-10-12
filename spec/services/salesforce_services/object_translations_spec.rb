@@ -24,11 +24,11 @@ describe SalesforceServices::ObjectTranslations do
       expect(data['SuppliedEmail']).to               eq('pfa@pfa.com' )
       expect(data['Exclude_from_EM__c']).to          eq(true)
       expect(data['Journal_Department__c']).to       eq(paper.journal.name)
-      expect(data['Subject']).to                     eq("doi_missing_for_id_#{paper.id}") # will prob change when doi is in RC?
+      expect(data['Subject']).to                     eq(paper.manuscript_id) # will prob change when doi is in RC?
       expect(data['Origin']).to                      eq('PFA Request')
       expect(data['Description']).to                 match('lou prima')
       expect(data['Description']).to                 match('has applied')
-      expect(data['Description']).to                 match("doi_missing_for_id_#{paper.id}") # will prob change when doi is in RC?
+      expect(data['Description']).to                 match(paper.manuscript_id) # will prob change when doi is in RC?
       expect(data['PFA_Question_1__c']).to           eq ('Yes')
       expect(data['PFA_Question_1a__c']).to          eq ('foo')
       expect(data['PFA_Question_1b__c']).to          eq (100.00)

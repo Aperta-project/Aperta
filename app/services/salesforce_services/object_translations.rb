@@ -9,17 +9,18 @@ module SalesforceServices
 
       def paper_to_manuscript_hash
         {
-          "RecordTypeId" => "012U0000000E4ASIA0",
-          "OwnerId" => @user_id,
+          "RecordTypeId"               => "012U0000000E4ASIA0", # TODO: make this dynamic
+          "OwnerId"                    => @user_id,
           "Editorial_Process_Close__c" => false,
           "Display_Technical_Notes__c" => false,
           "CreatedByDeltaMigration__c" => false,
-          "Editorial_Status_Date__c" => Time.now,
-          "Revision__c" => @paper.decisions.latest.revision_number,
-          "Title__c" => @paper.title,
-          "Initial_Date_Submitted__c" => @paper.submitted_at,
-          "Manuscript_Number__c" => @paper.doi,
-          "DOI__c" => @paper.doi
+          "Editorial_Status_Date__c"   => Time.now,
+          "Revision__c"                => @paper.decisions.latest.revision_number,
+          "Title__c"                   => @paper.title,
+          "Initial_Date_Submitted__c"  => @paper.submitted_at,
+          "DOI__c"                     => @paper.doi,
+          "Manuscript_Number__c"       => @paper.manuscript_id,
+          "Name"                       => @paper.manuscript_id # Manuscript#/Doc ID, in SF
         }
       end
     end
@@ -35,8 +36,8 @@ module SalesforceServices
           'SuppliedEmail'              => @paper.creator.email, # corresponding author == creator?
           'Exclude_from_EM__c'         => true,
           'Journal_Department__c'      => @paper.journal.name,
-          'Subject'                    => manuscript_id,
-          'Description'                => "#{@paper.creator.full_name} has applied for PFA with submission #{manuscript_id}",
+          'Subject'                    => @paper.manuscript_id,
+          'Description'                => "#{@paper.creator.full_name} has applied for PFA with submission #{@paper.manuscript_id}",
           'Origin'                     => "PFA Request",
 
           #'PFA_Funding_Statement__c'   => billing_question "", # Unknown field? from financial disclosure card
@@ -81,10 +82,6 @@ module SalesforceServices
           'yes' => true,
           'no'  => false,
         }
-      end
-
-      def manuscript_id # TODO ask product what to do in case of no DOI
-        @paper.doi || "doi_missing_for_id_#{@paper.id}"
       end
     end
   end

@@ -127,8 +127,8 @@ module TahiStandardTasks
       super(new_body)
     end
 
-    def can_change?(answer)
-      answer.errors.add :answer, "can't change answer" if submitted?
+    def can_change?(_)
+      !submitted?
     end
 
     def incomplete!

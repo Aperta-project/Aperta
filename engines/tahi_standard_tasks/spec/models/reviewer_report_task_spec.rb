@@ -76,17 +76,16 @@ describe TahiStandardTasks::ReviewerReportTask do
   end
 
   describe "#can_change?" do
-    let!(:answer) do FactoryGirl.create(
-      :nested_question_answer,
-      owner: task,
-      value: "I shouldn't change",
-      value_type: "text")
+    let!(:answer) { FactoryGirl.build(:nested_question_answer) }
+
+    it "returns true when the task is not submitted" do
+      task.update! body: { submitted: false }
+      expect(task.can_change?(answer)).to be(true)
     end
 
-    it "doesn't let answers be updated when the task is submitted" do
+    it "returns false when the task is submitted" do
       task.update! body: { submitted: true }
-      answer.update value: "Changed"
-      expect(answer.reload.value).to eq("I shouldn't change")
+      expect(task.can_change?(answer)).to be(false)
     end
   end
 

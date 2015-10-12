@@ -30,7 +30,11 @@ class NestedQuestionAnswer < ActiveRecord::Base
   private
 
   def verify_from_owner
-    owner.can_change?(self) if owner && owner.respond_to?(:can_change?)
+    return unless owner
+    return unless owner.respond_to?(:can_change?)
+    unless owner.can_change?(self)
+      errors.add :answer, "can't change answer"
+    end
   end
 
   def attachment_value_type

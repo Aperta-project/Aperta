@@ -18,6 +18,8 @@
     {{check-box name=ident checked=isChecked disabled=disabled action="checkboxToggled"}}
     {{#if shouldDisplayQuestionText}}
       <p class="{{textClassNames}}">{{{questionText}}}</p>
+    {{else}}
+      {{yield textYieldValue}}
     {{/if}}
   </label>
 

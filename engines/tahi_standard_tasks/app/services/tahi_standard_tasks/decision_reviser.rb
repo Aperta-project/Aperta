@@ -34,14 +34,13 @@ module TahiStandardTasks
 
     def create_revise_task!
       participants = [paper.creator, paper.editor].compact.uniq
-      TaskFactory.build(TahiStandardTasks::ReviseTask,
-                        title: "Revise Manuscript",
-                        role: "author",
-                        phase_id: task.phase.id,
-                        body: [[{ type: 'text', value: task.public_send("#{decision.verdict}_letter") }]],
-                        participants: participants,
-                        completed: false
-                       ).save!
+
+      TaskFactory.new("TahiStandardTasks::ReviseTask", task.phase,
+                      title: "Revise Manuscript",
+                      role: "author",
+                      body: [[{ type: 'text', value: task.public_send("#{decision.verdict}_letter") }]],
+                      participants: participants,
+                      completed: false).create!
     end
   end
 end

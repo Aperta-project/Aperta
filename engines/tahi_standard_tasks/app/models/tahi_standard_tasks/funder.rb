@@ -1,9 +1,10 @@
 module TahiStandardTasks
   class Funder < ActiveRecord::Base
+    include NestedQuestionable
+
     belongs_to :task, foreign_key: :task_id
     has_many :funded_authors, inverse_of: :funder
     has_many :authors, through: :funded_authors
-    has_many :nested_question_answers, as: :owner, dependent: :destroy
 
     def self.nested_questions
       questions = []
@@ -31,10 +32,6 @@ module TahiStandardTasks
       end
 
       NestedQuestion.where(owner_id:nil, owner_type:name).all
-    end
-
-    def nested_questions
-      self.class.nested_questions
     end
 
   end

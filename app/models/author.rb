@@ -1,5 +1,6 @@
 class Author < ActiveRecord::Base
   include EventStream::Notifiable
+  include NestedQuestionable
 
   acts_as_list
 
@@ -7,8 +8,6 @@ class Author < ActiveRecord::Base
 
   belongs_to :authors_task, class_name: "TahiStandardTasks::AuthorsTask", inverse_of: :authors
   delegate :completed?, to: :authors_task, prefix: :task, allow_nil: true
-
-  has_many :nested_question_answers, as: :owner, dependent: :destroy
 
   serialize :contributions, Array
 
@@ -101,7 +100,4 @@ class Author < ActiveRecord::Base
     NestedQuestion.where(owner_id:nil, owner_type:name).all
   end
 
-  def nested_questions
-    self.class.nested_questions
-  end
 end

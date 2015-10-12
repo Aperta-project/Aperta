@@ -1,7 +1,8 @@
 module TahiStandardTasks
   class ReviewerRecommendation < ActiveRecord::Base
+    include NestedQuestionable
+
     belongs_to :reviewer_recommendations_task
-    has_many :nested_question_answers, as: :owner, dependent: :destroy
 
     validates :email, presence: true
     validates :recommend_or_oppose, presence: true
@@ -30,10 +31,6 @@ module TahiStandardTasks
       end
 
       NestedQuestion.where(owner_id:nil, owner_type:name).all
-    end
-
-    def nested_questions
-      self.class.nested_questions
     end
   end
 end

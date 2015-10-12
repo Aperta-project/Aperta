@@ -9,6 +9,7 @@ namespace 'data:migrate:questions-to-nested-questions' do
     plos-billing
     publishing-related-questions
     reporting-guidelines
+    reviewer-recommendations
     reviewer-report
     taxon
   )
@@ -206,6 +207,24 @@ namespace 'data:migrate:questions-to-nested-questions' do
   task 'reporting-guidelines': 'data:migrate:questions-to-nested-questions:reporting-guidelines:reset' do
     DataMigrator::ReportingGuidelinesQuestionsMigrator.migrate!
   end
+
+  namespace :'reviewer-recommendations' do
+    desc "Resets the NestedQuestionAnswer(s) for figures by destroying them."
+    task reset: 'data:migrate:questions-to-nested-questions:environment' do
+      DataMigrator::ReviewerRecommendationsQuestionsMigrator.reset
+    end
+
+    desc "Destroy old questions for revieewer recommendations once you're satisfied w/migrating to NestedQuestion data model."
+    task cleanup: 'data:migrate:questions-to-nested-questions:environment' do
+      DataMigrator::ReviewerRecommendationsQuestionsMigrator.cleanup
+    end
+  end
+
+  desc "Migrate the reviewer-recommendations task data to the NestedQuestion data model."
+  task 'reviewer-recommendations': 'data:migrate:questions-to-nested-questions:reviewer-recommendations:reset' do
+    DataMigrator::ReviewerRecommendationsQuestionsMigrator.migrate!
+  end
+
 
   namespace :'reviewer-report' do
     desc "Resets the NestedQuestionAnswer(s) for figures by destroying them."

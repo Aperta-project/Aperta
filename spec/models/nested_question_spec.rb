@@ -27,6 +27,15 @@ describe NestedQuestion do
       nested_question.value_type = nil
       expect(nested_question.valid?).to be false
     end
+
+    context "value_type" do
+      %w(attachment boolean question-set text).each do |value_type|
+        it "is valid when it's #{value_type}" do
+          nested_question.value_type = value_type
+          expect(nested_question.valid?).to be true
+        end
+      end
+    end
   end
 
   describe "#attachment?" do

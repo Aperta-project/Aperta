@@ -19,9 +19,9 @@ from Base.Resources import login_valid_pw, fm_login, he_login, sa_login, oa_logi
 from frontend.common_test import CommonTest
 
 users = [fm_login,
-         # he_login, # TODO: Find out why it fails
-         # oa_login,
-         # sa_login,
+         #he_login, # TODO: Find out why it fails
+         #oa_login,
+         sa_login,
          ]
 
 @MultiBrowserFixture
@@ -34,7 +34,7 @@ class ApertaPaperTrackerTest(CommonTest):
       - presentation of the table
       - presentation of individual data points for each paper
   """
-  def test_validate_components_styles(self):
+  def test_validate_paper_tracker(self):
     """
     Validates the presence of the following elements:
       Welcome Text, subhead, table presentation
@@ -51,7 +51,8 @@ class ApertaPaperTrackerTest(CommonTest):
     dashboard_page.click_paper_tracker_link()
 
     pt_page = PaperTrackerPage(self.getDriver())
-    pt_page.validate_page_elements_styles_functions(user_type)
+    (total_count, journals_list) = pt_page.validate_heading_and_subhead(user_type)
+    pt_page.validate_table_presentation_and_function(total_count, journals_list)
     pt_page.click_left_nav()
     pt_page.validate_nav_elements(user_type)
 

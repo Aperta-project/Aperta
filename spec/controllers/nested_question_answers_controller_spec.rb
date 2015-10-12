@@ -4,6 +4,7 @@ describe NestedQuestionAnswersController do
   expect_policy_enforcement
 
   let(:user) { create :user, :site_admin }
+  let(:nested_question) { FactoryGirl.create(:nested_question) }
 
   before do
     sign_in user
@@ -57,6 +58,37 @@ describe NestedQuestionAnswersController do
     end
 
     include_examples "processing attachments for NestedQuestionAnswersController"
+  end
+
+  describe "#create with an existing answer for the owner" do
+    let(:owner) { nested_question.owner }
+
+    def do_request(params: {})
+      post_params = {
+        nested_question_id: nested_question.to_param,
+        nested_question_answer: {
+          value: "bar",
+          owner_id: owner.id,
+          owner_type: owner.type,
+          additional_data: { "insitution-id" => "123" }
+        }.merge(params)
+      }
+      post(:create, post_params, format: :json)
+    end
+
+    it "finds the existing answer and updates it instead of creating a new one" do
+      answer = FactoryGirl.create(
+        :nested_question_answer,
+        nested_question: nested_question, value: "foo",
+        owner_type: owner.type,
+        owner_id: owner.id)
+
+      expect do
+        do_request
+      end.to_not change(NestedQuestionAnswer, :count)
+
+      expect(answer.reload.value).to eq("bar")
+    end
   end
 
   describe "#update" do

@@ -32,21 +32,28 @@ class NestedQuestionAnswersController < ApplicationController
       if params[:id]
         NestedQuestionAnswer.where(id: params[:id]).first!
       else
-        build_new_nested_question_answer
+        find_or_build_new_nested_question_answer
       end
     end
   end
 
-  def build_new_nested_question_answer
-    NestedQuestionAnswer.new(
+  def find_or_build_new_nested_question_answer
+    answer = NestedQuestionAnswer.where(
       nested_question_id: nested_question.id,
-      value_type: nested_question.value_type,
-      value: answer_params[:value],
-      owner_id: answer_params[:owner_id],
-      owner_type: NestedQuestion.lookup_owner_type(answer_params[:owner_type]),
-      additional_data: answer_params[:additional_data],
-      decision_id: answer_params[:decision_id]
-    )
+      owner_id: answer_params["owner_id"],
+      owner_type: owner_type
+    ).first_or_initialize
+
+    answer.value_type = nested_question.value_type
+    answer.value = answer_params[:value]
+    answer.additional_data = answer_params[:additional_data]
+    answer.decision_id = answer_params[:decision_id]
+
+    answer
+  end
+
+  def owner_type
+    NestedQuestion.lookup_owner_type(answer_params[:owner_type])
   end
 
   def nested_question

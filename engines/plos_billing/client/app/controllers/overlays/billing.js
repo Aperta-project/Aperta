@@ -369,22 +369,26 @@ export default TaskController.extend({
   /*
     Sets error message bound to validationErrors.completed in -overlay-completed-checkbox when data invalid
   */
-  _disableCompletedWhenInvalid: Ember.observer('pfaData.isValid', function(){
-    var msg = this.get('pfaData.isValid') ? null : 'Errors in form';
+  _showErrorsInFormMsg: Ember.observer('pfa', 'pfaData.isValid', function(){
+    var msg = null;
+
+    if (this.get('pfa')) { //only if payment method is pfa
+      if (!this.get('pfaData.isValid')) msg = 'Errors in form';
+    }
+
     this.set('validationErrors.completed', msg)
   }),
 
   /*
     Overloads inherited isEditable in TaskController
     When false, makes complete box uncheckable
-    Strongly feel we should discuss new strategy for disabling of complete
-    that would allow for something more flexible and more robust
   */
-  isEditable: computed('pfaData.isValid', 'isUserEditable', 'currentUser.siteAdmin', function() {
-    return (
-      this.get('pfaData.isValid') &&
-      (this.get('isUserEditable') || this.get('currentUser.siteAdmin'))
-    );
+  isEditable: computed('pfa', 'pfaData.isValid', 'isUserEditable', 'currentUser.siteAdmin', function() {
+    if (this.get('pfa')){
+      return this.get('pfaData.isValid') && this._super();
+    } else {
+      return this._super();
+    }
   }),
 
   countries: Ember.inject.service(),

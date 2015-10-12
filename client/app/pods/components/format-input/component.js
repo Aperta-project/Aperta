@@ -98,12 +98,38 @@ export default Ember.Component.extend({
   **/
   displayRemove: true,
 
-  bold()        { document.execCommand('bold',         false, null); this.syncMarkupAndValue(); },
-  italic()      { document.execCommand('italic',       false, null); this.syncMarkupAndValue(); },
-  superscript() { document.execCommand('superscript',  false, null); this.syncMarkupAndValue(); },
-  subscript()   { document.execCommand('subscript',    false, null); this.syncMarkupAndValue(); },
-  remove()      { document.execCommand('removeFormat', false, null); this.syncMarkupAndValue(); },
+  bold() {
+    document.execCommand('bold',false, null);
+    this.syncMarkupAndValue();
+  },
 
+  italic() {
+    document.execCommand('italic', false, null);
+    this.syncMarkupAndValue();
+  },
+
+  superscript() {
+    document.execCommand('superscript', false, null);
+    this.syncMarkupAndValue();
+  },
+
+  subscript() {
+    document.execCommand('subscript', false, null);
+    this.syncMarkupAndValue();
+  },
+
+  remove() {
+    document.execCommand('removeFormat', false, null);
+    this.syncMarkupAndValue();
+  },
+
+  /**
+   *  This will pass the formatted content
+   *  down to the content-editable component
+   *
+   *  @method syncMarkupAndValue
+   *  @public
+  **/
   syncMarkupAndValue() {
     this.set('value', this.$('.format-input-field').html());
   },

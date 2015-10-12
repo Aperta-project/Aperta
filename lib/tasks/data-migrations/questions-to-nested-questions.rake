@@ -13,8 +13,12 @@ namespace 'data:migrate:questions-to-nested-questions' do
     taxon
   )
 
+  task environment: '^environment' do
+    NestedQuestionAnswer.disable_owner_verification = true
+  end
+
   desc "Calls :reset task for all question-to-nested-question(s)"
-  task reset_all: :environment do
+  task reset_all: 'data:migrate:questions-to-nested-questions:environment' do
     tasks_as_strings = DATA_MIGRATION_QUESTION_RAKE_TASKS.map do |t|
       ["data:migrate:questions-to-nested-questions:#{t}:reset"]
     end.flatten
@@ -24,7 +28,7 @@ namespace 'data:migrate:questions-to-nested-questions' do
   end
 
   desc "Runs the migrations for all question-to-nested-question(s)"
-  task migrate_all: :environment do
+  task migrate_all: 'data:migrate:questions-to-nested-questions:environment' do
     tasks_as_strings = DATA_MIGRATION_QUESTION_RAKE_TASKS.map do |t|
       ["data:migrate:questions-to-nested-questions:#{t}"]
     end.flatten
@@ -35,12 +39,12 @@ namespace 'data:migrate:questions-to-nested-questions' do
 
   namespace :authors do
     desc "Resets the NestedQuestionAnswer(s) for authors by destroying them."
-    task reset: :environment do
+    task reset: 'data:migrate:questions-to-nested-questions:environment' do
       DataMigrator::AuthorsQuestionsMigrator.reset
     end
 
     desc "Destroy old questions for authors once you're satisfied w/migrating to NestedQuestion data model."
-    task cleanup: :environment do
+    task cleanup: 'data:migrate:questions-to-nested-questions:environment' do
       DataMigrator::AuthorsQuestionsMigrator.cleanup
     end
   end
@@ -52,12 +56,12 @@ namespace 'data:migrate:questions-to-nested-questions' do
 
   namespace :'competing-interests' do
     desc "Resets the NestedQuestionAnswer(s) for competing interests by destroying them."
-    task reset: :environment do
+    task reset: 'data:migrate:questions-to-nested-questions:environment' do
       DataMigrator::CompetingInterestsQuestionsMigrator.reset
     end
 
     desc "Destroy old questions for competing interests once you're satisfied w/migrating to NestedQuestion data model."
-    task cleanup: :environment do
+    task cleanup: 'data:migrate:questions-to-nested-questions:environment' do
       DataMigrator::CompetingInterestsQuestionsMigrator.cleanup
     end
   end
@@ -69,12 +73,12 @@ namespace 'data:migrate:questions-to-nested-questions' do
 
   namespace :'data-availability' do
     desc "Resets the NestedQuestionAnswer(s) for data availability by destroying them."
-    task reset: :environment do
+    task reset: 'data:migrate:questions-to-nested-questions:environment' do
       DataMigrator::DataAvailabilityQuestionsMigrator.reset
     end
 
     desc "Destroy old questions for data availability once you're satisfied w/migrating to NestedQuestion data model."
-    task cleanup: :environment do
+    task cleanup: 'data:migrate:questions-to-nested-questions:environment' do
       DataMigrator::DataAvailabilityQuestionsMigrator.cleanup
     end
   end
@@ -86,12 +90,12 @@ namespace 'data:migrate:questions-to-nested-questions' do
 
   namespace :ethics do
     desc "Resets the NestedQuestionAnswer(s) for ethics by destroying them."
-    task reset: :environment do
+    task reset: 'data:migrate:questions-to-nested-questions:environment' do
       DataMigrator::EthicsQuestionsMigrator.reset
     end
 
     desc "Destroy old questions for ethics once you're satisfied w/migrating to NestedQuestion data model."
-    task cleanup: :environment do
+    task cleanup: 'data:migrate:questions-to-nested-questions:environment' do
       DataMigrator::EthicsQuestionsMigrator.cleanup
     end
   end
@@ -103,12 +107,12 @@ namespace 'data:migrate:questions-to-nested-questions' do
 
   namespace :figures do
     desc "Resets the NestedQuestionAnswer(s) for figures by destroying them."
-    task reset: :environment do
+    task reset: 'data:migrate:questions-to-nested-questions:environment' do
       DataMigrator::FigureQuestionsMigrator.reset
     end
 
     desc "Destroy old questions for figures once you're satisfied w/migrating to NestedQuestion data model."
-    task cleanup: :environment do
+    task cleanup: 'data:migrate:questions-to-nested-questions:environment' do
       DataMigrator::FigureQuestionsMigrator.cleanup
     end
   end
@@ -120,12 +124,12 @@ namespace 'data:migrate:questions-to-nested-questions' do
 
   namespace :'financial-disclosure' do
     desc "Resets the NestedQuestionAnswer(s) for financial-disclosure by destroying them."
-    task reset: :environment do
+    task reset: 'data:migrate:questions-to-nested-questions:environment' do
       DataMigrator::FinancialDisclosureQuestionsMigrator.reset
     end
 
     desc "Destroy old questions for financial-disclosure once you're satisfied w/migrating to NestedQuestion data model."
-    task cleanup: :environment do
+    task cleanup: 'data:migrate:questions-to-nested-questions:environment' do
       DataMigrator::FinancialDisclosureQuestionsMigrator.cleanup
     end
   end
@@ -137,12 +141,12 @@ namespace 'data:migrate:questions-to-nested-questions' do
 
   namespace :'plos-billing' do
     desc "Resets the NestedQuestionAnswer(s) for plos-billing by destroying them."
-    task reset: :environment do
+    task reset: 'data:migrate:questions-to-nested-questions:environment' do
       DataMigrator::PlosBillingQuestionsMigrator.reset
     end
 
     desc "Destroy old questions for plos-billing once you're satisfied w/migrating to NestedQuestion data model."
-    task cleanup: :environment do
+    task cleanup: 'data:migrate:questions-to-nested-questions:environment' do
       DataMigrator::PlosBillingQuestionsMigrator.cleanup
     end
   end
@@ -154,12 +158,12 @@ namespace 'data:migrate:questions-to-nested-questions' do
 
   namespace :'publishing-related-questions' do
     desc "Resets the NestedQuestionAnswer(s) for publishing-related-questions by destroying them."
-    task reset: :environment do
+    task reset: 'data:migrate:questions-to-nested-questions:environment' do
       DataMigrator::PublishingRelatedQuestionsMigrator.reset
     end
 
     desc "Destroy old questions for publishing-related-questions once you're satisfied w/migrating to NestedQuestion data model."
-    task cleanup: :environment do
+    task cleanup: 'data:migrate:questions-to-nested-questions:environment' do
       DataMigrator::PublishingRelatedQuestionsMigrator.cleanup
     end
   end
@@ -171,12 +175,12 @@ namespace 'data:migrate:questions-to-nested-questions' do
 
   namespace :taxon do
     desc "Resets the NestedQuestionAnswer(s) for figures by destroying them."
-    task reset: :environment do
+    task reset: 'data:migrate:questions-to-nested-questions:environment' do
       DataMigrator::TaxonQuestionsMigrator.reset
     end
 
     desc "Destroy old questions for figures once you're satisfied w/migrating to NestedQuestion data model."
-    task cleanup: :environment do
+    task cleanup: 'data:migrate:questions-to-nested-questions:environment' do
       DataMigrator::TaxonQuestionsMigrator.cleanup
     end
   end
@@ -188,12 +192,12 @@ namespace 'data:migrate:questions-to-nested-questions' do
 
   namespace :'reporting-guidelines' do
     desc "Resets the NestedQuestionAnswer(s) for reporting-guidelines by destroying them."
-    task reset: :environment do
+    task reset: 'data:migrate:questions-to-nested-questions:environment' do
       DataMigrator::ReportingGuidelinesQuestionsMigrator.reset
     end
 
     desc "Destroy old questions for reporting guidelines once you're satisfied w/migrating to NestedQuestion data model."
-    task cleanup: :environment do
+    task cleanup: 'data:migrate:questions-to-nested-questions:environment' do
       DataMigrator::ReportingGuidelinesQuestionsMigrator.cleanup
     end
   end
@@ -205,12 +209,12 @@ namespace 'data:migrate:questions-to-nested-questions' do
 
   namespace :'reviewer-report' do
     desc "Resets the NestedQuestionAnswer(s) for figures by destroying them."
-    task reset: :environment do
+    task reset: 'data:migrate:questions-to-nested-questions:environment' do
       DataMigrator::ReviewerReportQuestionsMigrator.reset
     end
 
     desc "Destroy old questions for revieewer report once you're satisfied w/migrating to NestedQuestion data model."
-    task cleanup: :environment do
+    task cleanup: 'data:migrate:questions-to-nested-questions:environment' do
       DataMigrator::ReviewerReportQuestionsMigrator.cleanup
     end
   end

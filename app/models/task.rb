@@ -1,5 +1,6 @@
 class Task < ActiveRecord::Base
   include EventStream::Notifiable
+  include NestedQuestionable
   include TaskTypeRegistration
   include Commentable
 
@@ -23,7 +24,6 @@ class Task < ActiveRecord::Base
   has_one :paper, through: :phase
   has_one :journal, through: :paper
   has_many :attachments
-  has_many :nested_question_answers, as: :owner, dependent: :destroy
   has_many :participations, inverse_of: :task, dependent: :destroy
   has_many :participants, through: :participations, source: :user
 
@@ -98,10 +98,6 @@ class Task < ActiveRecord::Base
         joins(participations: :user).where("participations.user_id" => users)
       end
     end
-
-    def nested_questions
-      []
-    end
   end
 
   def journal_task_type
@@ -175,37 +171,6 @@ class Task < ActiveRecord::Base
 
   def newly_incomplete?
     previously_completed? && !completed
-  end
-
-  def nested_questions
-    self.class.nested_questions
-  end
-
-  def answer_for(ident)
-    answers = nested_question_answers.includes(:nested_question)
-    answers_by_question_id = answers.reduce({}) do |h, answer|
-      h[answer.nested_question_id] = answer
-      h
-    end
-
-    questions = answers.map(&:nested_question).select{ |q| q.parent.blank? }
-    path_parts = ident.split(".")
-    found_questions = find_nested_question(path_parts, questions)
-    question = found_questions.first
-
-    answers_by_question_id[question.id] if question
-  end
-
-  def find_nested_question(path_parts, nested_questions)
-    current_ident = path_parts.first
-    remaining_path_parts = path_parts[1..-1]
-    found_questions = nested_questions.select { |question| question.ident == current_ident }
-
-    if remaining_path_parts.empty?
-      found_questions
-    else
-      find_nested_question(remaining_path_parts, found_questions.map(&:children).flatten)
-    end
   end
 
   private

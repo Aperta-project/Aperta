@@ -12,7 +12,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   end
 
   version :detail do
-    process resize_to_limit: [986, -1]
+    process resize_to_limit: [986, -1], if: :image?
     process :convert_to_png, if: :needs_transcoding?
 
     def full_filename(orig_file)
@@ -21,7 +21,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   end
 
   version :preview do
-    process resize_to_limit: [475, 220]
+    process resize_to_limit: [475, 220], if: :image?
     process :convert_to_png, if: :needs_transcoding?
 
     def full_filename(orig_file)
@@ -53,6 +53,14 @@ class AttachmentUploader < CarrierWave::Uploader::Base
       ["image/tiff", "application/postscript"].include?(file.content_type)
     else
       !!(File.extname(file) =~ /(tif?f|eps)/i)
+    end
+  end
+
+  def image?(file)
+    if file.respond_to?('content_type')
+      ["image/tiff", "application/postscript"].include?(file.content_type)
+    else
+      !!(File.extname(file) =~ /(tif?f|eps|jpg|jpeg|gif|png)/i)
     end
   end
 end

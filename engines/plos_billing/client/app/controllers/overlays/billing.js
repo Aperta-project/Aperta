@@ -470,7 +470,8 @@ export default TaskController.extend({
   }),
 
   setAffiliationAnswer(index, answerValue) {
-    let answer = this.get("affiliation" + index + "Question.answer");
+    let question = this.get("affiliation" + index + "Question");
+    let answer = question.get("answer");
 
     if(typeof answerValue === "string") {
       answer.set("value", answerValue);

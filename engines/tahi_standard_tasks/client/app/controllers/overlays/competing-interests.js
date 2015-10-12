@@ -14,7 +14,8 @@ CompetingInterestsOverlayController = TaskController.extend(SavesQuestionsOnClos
   }),
 
   setCompetingInterestStatement: function(text) {
-    let answer = this.get('competingInterestsStatementQuestion.answer');
+    let question = this.get("competingInterestsStatementQuestion");
+    let answer = question.answerForOwner(this.get("model"));
     answer.set('value', text);
     answer.save();
   },

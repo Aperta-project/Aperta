@@ -10,13 +10,13 @@ describe AttachmentUploader do
     end
   end
 
-  describe "#transcoding" do
-    it "won't transcode non-images" do
-      paper = FactoryGirl.create(:paper)
-      file = paper.supporting_information_files.create!
-#TODOMPM
-      uploader = AttachmentUploader.new(file, :attachment)
-      binding.pry
-    end
-  end
+  # describe "#transcoding" do
+  #   it "won't transcode non-images" do
+  #     paper = FactoryGirl.create(:paper)
+  #     file = paper.supporting_information_files.create!
+  #     uploader = AttachmentUploader.new(file, :attachment)
+  #     #TODOMPM
+  #     binding.pry
+  #   end
+  # end
 end

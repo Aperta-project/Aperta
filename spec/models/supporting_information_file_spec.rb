@@ -8,6 +8,12 @@ describe SupportingInformationFile, redis: true do
     end
   end
 
+  let(:docx) do
+    with_aws_cassette 'supporting_info_files_controller' do
+      paper.supporting_information_files.create! attachment: ::File.open('spec/fixtures/about_turtles.docx')
+    end
+  end
+
   describe "#filename" do
     it "returns the proper filename" do
       expect(file.filename).to eq "yeti.tiff"
@@ -41,4 +47,18 @@ describe SupportingInformationFile, redis: true do
     end
   end
 
+  describe "supports non-image supporting information" do
+    it "can be downloaded" do
+      expect(docx.access_details).to eq(filename: 'about_turtles.docx',
+                                        alt: 'About turtles',
+                                        src: docx.attachment.url,
+                                        id: docx.id)
+    end
+
+    it "does not have a preview url" do
+      expect(docx.preview_src).to eq(nil)
+    end
+
+
+  end
 end

@@ -4,7 +4,11 @@ class LitePaperSerializer < ActiveModel::Serializer
   def related_at_date
     return unless scoped_user.present?
 
-    scoped_user.paper_roles.where(paper: object).order(created_at: :desc).pluck(:created_at).first
+    roles = object.paper_roles.select do |role|
+      role.user_id == scoped_user.id
+    end
+
+    roles.map(&:created_at).sort.first
   end
 
   #TODO: this method does not include a tooltip if user is related to paper

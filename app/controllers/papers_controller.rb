@@ -10,7 +10,7 @@ class PapersController < ApplicationController
 
   def index
     page = (params[:page_number] || 1).to_i
-    papers = current_user.papers
+    papers = current_user.papers.includes(:paper_roles)
     respond_with(papers, {
       each_serializer: LitePaperSerializer,
       meta: { total_active_papers: papers.active.count,

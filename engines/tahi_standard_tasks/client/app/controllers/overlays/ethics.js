@@ -24,13 +24,15 @@ export default TaskController.extend(SavesQuestionsOnClose, {
     },
 
     userSelectedNoOnHumanSubjects: function(){
-      let answer = this.get("participantsQuestion.answer");
+      let question = this.get("participantsQuestion");
+      let answer = question.answerForOwner(this.get('model'));
       answer.set("value", "");
       answer.save();
     },
 
     userSelectedNoOnAnimalSubjects: function(){
-      let answer = this.get("fieldPermitQuestion.answer");
+      let question = this.get("fieldPermitQuestion");
+      let answer = question.answerForOwner(this.get('model'));
       answer.set("value", "");
       answer.save();
     },

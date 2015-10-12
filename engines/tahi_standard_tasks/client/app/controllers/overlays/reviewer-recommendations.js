@@ -48,7 +48,14 @@ export default TaskController.extend(ValidationErrorsMixin, {
     },
 
     saveRecommendation(recommendation) {
-      recommendation.save().then(() => {
+      recommendation.save().then((savedRecommendation) => {
+        recommendation.get('nestedQuestionAnswers').toArray().forEach(function(answer){
+          let value = answer.get("value");
+          if(value || value === false){
+            answer.set("owner", savedRecommendation);
+            answer.save();
+          }
+        });
         this.set('showNewReviewerForm', false);
         this.set('newRecommendation', null);
       }).catch((response) => {

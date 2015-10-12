@@ -41,9 +41,7 @@ module TahiStandardTasks
         :title,
         :department,
         :affiliation,
-        :ringgold_id,
-        :recommend_or_oppose,
-        :reason)
+        :ringgold_id)
     end
 
     def enforce_policy

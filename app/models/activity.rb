@@ -147,7 +147,7 @@ class Activity < ActiveRecord::Base
 
   def self.participation_created!(participation, user:)
     create(
-      feed_name: "manuscript",
+      feed_name: "workflow",
       activity_key: "participation.created",
       subject: participation.paper,
       user: user,
@@ -157,7 +157,7 @@ class Activity < ActiveRecord::Base
 
   def self.participation_destroyed!(participation, user:)
     create(
-      feed_name: "manuscript",
+      feed_name: "workflow",
       activity_key: "particpation.destroyed",
       subject: participation.paper,
       user: user,

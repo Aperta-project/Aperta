@@ -450,7 +450,7 @@ ActiveRecord::Schema.define(version: 20151016173854) do
     t.string   "department"
     t.string   "title"
     t.string   "affiliation"
-    t.string   "recommend_or_oppose",              null: false
+    t.string   "recommend_or_oppose"
     t.text     "reason"
     t.datetime "created_at"
     t.datetime "updated_at"

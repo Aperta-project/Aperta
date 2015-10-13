@@ -39,7 +39,7 @@ class PaperFactory
       phase_template.task_templates.each do |task_template|
 
         TaskFactory.new(task_template.journal_task_type.kind,
-                        phase,
+                        phase: phase,
                         creator: creator,
                         title: task_template.title,
                         body: task_template.template,

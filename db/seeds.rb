@@ -1,5 +1,6 @@
-case Rails.env
-when 'development'
+if Rails.env.production?
+  # don't run seeds in production
+else
   ENV['PUSHER_ENABLED'] = 'false'
 
   Rake::Task['data:create_task_types'].invoke

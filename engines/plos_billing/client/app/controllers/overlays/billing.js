@@ -454,24 +454,26 @@ export default TaskController.extend({
   // institution-search component expects data to be hash
   // with name property
   affiliation1Proxy: computed("affiliation1Question", function(){
-    let answer = this.get("affiliation1Question.answer.value");
-    if(!Ember.isEmpty(answer)) {
-      return { name: answer };
+    let question = this.get("affiliation1Question");
+    let answer = question.answerForOwner(this.get("model"));
+    if(answer.get("wasAnswered")) {
+      return { name: answer.get("value") };
     }
   }),
 
   // institution-search component expects data to be hash
   // with name property
   affiliation2Proxy: computed("affiliation2Question", function(){
-    let answer = this.get("affiliation2Question.answer.value");
-    if(!Ember.isEmpty(answer)) {
-      return { name: answer };
+    let question = this.get("affiliation2Question");
+    let answer = question.answerForOwner(this.get("model"));
+    if(answer.get("wasAnswered")) {
+      return { name: answer.get("value") };
     }
   }),
 
   setAffiliationAnswer(index, answerValue) {
     let question = this.get("affiliation" + index + "Question");
-    let answer = question.get("answer");
+    let answer = question.answerForOwner(this.get("model"));
 
     if(typeof answerValue === "string") {
       answer.set("value", answerValue);

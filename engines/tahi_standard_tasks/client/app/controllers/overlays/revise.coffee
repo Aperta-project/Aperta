@@ -13,7 +13,7 @@ ReviseOverlayController = TaskController.extend
   # so, start on Decision offset 2
   previousDecisions: (->
     @get('model.paper.decisions').sortBy('revisionNumber').reverse()[2..-1]
-  ).property('model.paper.decisions.@each')
+  ).property('model.paper.decisions.[]')
 
   editingAuthorResponse: false
 

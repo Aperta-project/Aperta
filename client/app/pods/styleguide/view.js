@@ -5,6 +5,7 @@ export default Ember.View.extend({
     this._super();
     return Ember.run.scheduleOnce('afterRender', this, this.afterRenderEvent);
   },
+
   afterRenderEvent() {
     $('#card-overlays > a').click(function() {
       return $(this).next().removeClass('hide');
@@ -33,16 +34,16 @@ export default Ember.View.extend({
     $(".navigation").css("position", "initial");
 
     $('#auto-suggest-input').on('keyup', (event)=> {
-      let input = $(event.target);
+      const input = $(event.target);
       if(Ember.isEmpty(input.val())) {
-        this.set('showAutoSuggest', false);
+        this.set('controller.showAutoSuggest', false);
       } else {
-        this.set('showAutoSuggest', true);
+        this.set('controller.showAutoSuggest', true);
       }
     });
 
     $(window).resize(setScrollWindow());
     $('.show-child-mmt-thumbnail .mmt-thumbnail .mmt-thumbnail-overlay--edit-options').show();
-    return $('.show-child-confirm-destroy .mmt-thumbnail-overlay--confirm-destroy').show();
+    $('.show-child-confirm-destroy .mmt-thumbnail-overlay--confirm-destroy').show();
   }
 });

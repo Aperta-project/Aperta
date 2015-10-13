@@ -35,10 +35,9 @@ class Paper < ActiveRecord::Base
   serialize :withdrawals, ArrayHashSerializer
 
   validates :paper_type, presence: true
-  validates :short_title, presence: true, uniqueness: true
   validates :journal, presence: true
 
-  validates :short_title, :title, length: { maximum: 255 }
+  validates :short_title, length: { maximum: 255 }
 
   scope :active,   -> { where(active: true) }
   scope :inactive, -> { where(active: false) }

@@ -5,10 +5,13 @@ var NestedQuestionComponent;
 NestedQuestionComponent = Ember.Component.extend({
   tagName: 'div',
   displayQuestionText: true,
+  displayQuestionAsPlaceholder: false,
   helpText: null,
   inputClassNames: null,
   disabled: false,
   noResponseText: "[No response]",
+
+  placeholder: null,
   textClassNames: ["question-text"],
 
   init: function(){
@@ -34,6 +37,11 @@ NestedQuestionComponent = Ember.Component.extend({
        owner: owner,
        decision: decision
     }));
+
+    if(this.get('displayQuestionAsPlaceholder')){
+      this.set('displayQuestionText', false);
+      this.set('placeholder', question.get('text'));
+    }
   },
 
   ident: Ember.computed('model', function(){

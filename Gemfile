@@ -11,10 +11,10 @@ end
 # Task Engines
 gem 'tahi_standard_tasks', path: 'engines/tahi_standard_tasks'
 gem 'tahi_upload_manuscript', path: 'engines/tahi_upload_manuscript'
-gem 'plos_bio_tech_check', git: "https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check"
-gem 'plos_bio_internal_review', git: 'https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_internal_review'
+gem 'plos_bio_tech_check', git: "https://ea548e3d06f18f2c5287468e46ae5fe262d3f5ac:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check"
+gem 'plos_bio_internal_review', git: 'https://ea548e3d06f18f2c5287468e46ae5fe262d3f5ac:x-oauth-basic@github.com/tahi-project/plos_bio_internal_review'
 gem 'plos_billing', path: 'engines/plos_billing'
-gem 'tahi-assign_team', git: 'https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/tahi-assign_team'
+gem 'tahi-assign_team', git: 'https://ea548e3d06f18f2c5287468e46ae5fe262d3f5ac:x-oauth-basic@github.com/tahi-project/tahi-assign_team'
 # Gems
 gem 'rails', '4.2.4'
 gem 'puma'
@@ -61,7 +61,7 @@ gem 'pusher'
 gem 'omniauth-cas'
 gem 'databasedotcom'
 gem 'sort_alphabetical'
-gem 'tahi_epub', git: "https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/tahi_epub"
+gem 'tahi_epub', git: "https://ea548e3d06f18f2c5287468e46ae5fe262d3f5ac:x-oauth-basic@github.com/tahi-project/tahi_epub"
 
 group :staging, :performance, :production do
   gem 'heroku-deflater'

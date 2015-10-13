@@ -11,9 +11,31 @@ describe AttachmentUploader do
   end
 
   describe "#needs_transcoding?" do
-    paper = FactoryGirl.create(:paper)
-    figure = paper.figures.create!
-    uploader = AttachmentUploader.new(figure, :attachment)
-    expect(uploader.needs_transcoding?).to eq(false)
+    it "transcodes tiffs" do
+      paper = FactoryGirl.create(:paper)
+      figure = paper.figures.create!
+      uploader = AttachmentUploader.new(figure, :attachment)
+      file = Rails.root.join('spec', 'fixtures', 'yeti.tiff')
+
+      expect(uploader.needs_transcoding?(file)).to eq(true)
+    end
+
+    it "does not transcode other images" do
+      paper = FactoryGirl.create(:paper)
+      figure = paper.figures.create!
+      uploader = AttachmentUploader.new(figure, :attachment)
+      file = Rails.root.join('spec', 'fixtures', 'yeti.jpg')
+
+      expect(uploader.needs_transcoding?(file)).to eq(false)
+    end
+
+    it "does not transcode documents" do
+      paper = FactoryGirl.create(:paper)
+      figure = paper.figures.create!
+      uploader = AttachmentUploader.new(figure, :attachment)
+      file = Rails.root.join('spec', 'fixtures', 'about_turtles.docx')
+
+      expect(uploader.needs_transcoding?(file)).to eq(false)
+    end
   end
 end

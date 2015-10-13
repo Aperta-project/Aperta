@@ -57,6 +57,8 @@ module "Integration: Billing",
       Factory.createRecord('NestedQuestion', { ident: 'postal_code' })
       Factory.createRecord('NestedQuestion', { ident: 'country' })
       Factory.createRecord('NestedQuestion', { ident: 'payment_method' })
+      Factory.createRecord('NestedQuestion', { ident: 'affiliation1' })
+      Factory.createRecord('NestedQuestion', { ident: 'affiliation2' })
     ]
 
     for nestedQuestion in nestedQuestions

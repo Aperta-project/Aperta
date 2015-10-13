@@ -2,12 +2,11 @@ class TaskFactory
 
   attr_reader :task, :task_klass, :creator
 
-  def initialize(task_klass, phase, options = {})
+  def initialize(task_klass, options = {})
     @task_klass = task_klass
     @creator = options.delete(:creator)
     options = options.reverse_merge(default_options)
     @task = task_klass.constantize.new(options)
-    @task.phase = phase
   end
 
   def create!

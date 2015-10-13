@@ -138,6 +138,7 @@ class PapersController < ApplicationController
       phase_ids: [],
       assignee_ids: [],
       editor_ids: [],
+      academic_editor_ids: [],
       figure_ids: [],
       table_ids: [],
       bibitem_ids: []
@@ -158,6 +159,7 @@ class PapersController < ApplicationController
       phase_ids: [],
       assignee_ids: [],
       editor_ids: [],
+      academic_editor_ids: [],
       figure_ids: [],
       table_ids: [],
       bibitem_ids: []

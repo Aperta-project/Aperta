@@ -51,6 +51,12 @@ PATH
       rails (~> 4.2.0)
 
 PATH
+  remote: engines/plos_bio_academic_editor
+  specs:
+    plos_bio_academic_editor (0.0.1)
+      rails (~> 4.2.4)
+
+PATH
   remote: engines/tahi_standard_tasks
   specs:
     tahi_standard_tasks (0.0.1)
@@ -628,6 +634,7 @@ DEPENDENCIES
   pg
   pg_search
   plos_billing!
+  plos_bio_academic_editor!
   plos_bio_internal_review!
   plos_bio_tech_check!
   premailer-rails

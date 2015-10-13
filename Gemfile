@@ -15,6 +15,7 @@ gem 'plos_bio_tech_check', git: "https://f11148f2df58b9d5966b2543f6a0d3c035985f8
 gem 'plos_bio_internal_review', git: 'https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/plos_bio_internal_review'
 gem 'plos_billing', path: 'engines/plos_billing'
 gem 'tahi-assign_team', git: 'https://f11148f2df58b9d5966b2543f6a0d3c035985f88:x-oauth-basic@github.com/tahi-project/tahi-assign_team'
+gem 'plos_bio_academic_editor', path: 'engines/plos_bio_academic_editor'
 # Gems
 gem 'rails', '4.2.4'
 gem 'puma'

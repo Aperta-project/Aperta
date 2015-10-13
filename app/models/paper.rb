@@ -43,7 +43,7 @@ class Paper < ActiveRecord::Base
   scope :active,   -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
 
-  delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
+  delegate :academic_editors, :admins, :editors, :reviewers, to: :journal, prefix: :possible
 
   after_create do
     versioned_texts.create!(major_version: 0, minor_version: 0, text: (@new_body || ''))
@@ -224,6 +224,10 @@ class Paper < ActiveRecord::Base
     editors.first
   end
 
+  def academic_editor
+    academic_editors.first
+  end
+
   def locked? # :nodoc:
     locked_by_id.present?
   end
@@ -270,7 +274,7 @@ class Paper < ActiveRecord::Base
     update!(editable: true)
   end
 
-  %w(admins editors reviewers collaborators).each do |relation|
+  %w(academic_editors admins editors reviewers collaborators).each do |relation|
     ###
     # :method: <roles>
     # Public: Return user records by role in the paper.

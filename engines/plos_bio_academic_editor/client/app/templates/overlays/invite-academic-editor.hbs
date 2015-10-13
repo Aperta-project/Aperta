@@ -1,0 +1,55 @@
+<h1>Invite Academic Editor</h1>
+
+<div class="invite-editor-text">
+  {{#if composingEmail}}
+    <div class="invite-reviewer-edit-invite">
+      <h3 class="invite-to">
+        Invitation to
+        {{#if selectedUser.fullName}}
+          {{selectedUser.full_name}}
+        {{/if}}
+        [{{selectedUser.email}}]
+      </h3>
+
+      {{textarea value=updatedTemplate
+                 class="form-control taller-textarea"}}
+
+      <div class="invite-reviewer-cta">
+        <button class="button-link button--green cancel" {{action "cancelAction"}}>cancel</button>
+        <button class="button-primary button--green invite-editor-button" {{action "setLetterBody"}}>Send Invitation</button>
+      </div>
+   </div>
+  {{else}}
+    {{#if showEditorSelect}}
+      <label for="editor">Email</label>
+      {{select-2-single
+          class="editor-select2"
+          minimumInputLength=3
+          name="invite_editor"
+          placeholder="Select editor"
+          remoteSource=select2RemoteSource
+          resultsTemplate=resultsTemplate
+          selectedData=model.academic_editor
+          selectedTemplate=resultsTemplate
+          selectionSelected="didSelectEditor"
+          value=""}}
+      <button class="button-primary button--green compose-invite-button" {{action "composeInvite"}}>Compose Invite</button>
+    {{else}}
+      {{#if model.academic_editor}}
+        {{user-thumbnail user=academic_editor}}
+        {{model.academic_editor.name}}&nbsp;is now the Academic Editor.
+        <div class="fa fa-trash invite-editor-remove" {{action "removeEditor"}}></div>
+      {{else}}
+        {{#if hasRejectedInvitation}}
+          <p>{{model.invitation.email}} has declined this invitation.</p>
+          <button {{action "destroyInvitation"}}  class="button-primary button--green">Invite new editor</button>
+        {{/if}}
+
+        {{#if hasInvitedInvitation}}
+          <p class="invited-editor">{{model.invitation.email}} has been invited to be Editor on this manuscript.</p>
+          <button {{action "destroyInvitation"}}  class="button-primary button--green">Withdraw invitation</button>
+        {{/if}}
+      {{/if}}
+    {{/if}}
+  {{/if}}
+</div>

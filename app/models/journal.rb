@@ -25,6 +25,10 @@ class Journal < ActiveRecord::Base
     users.merge(Role.admins)
   end
 
+  def academic_editors
+    users.merge(Role.academic_editors)
+  end
+
   def doi
     Doi.new(journal: self).to_s
   end

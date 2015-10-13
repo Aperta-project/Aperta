@@ -19,6 +19,10 @@ export default Ember.Mixin.create({
     return 'paper-container-' + this.get('model.editorMode');
   }),
 
+  save() {
+    this.get('model').save();
+  },
+
   actions: {
     exportDocument(downloadType) {
       return DocumentDownload.initiate(this.get('model.id'), downloadType.format);

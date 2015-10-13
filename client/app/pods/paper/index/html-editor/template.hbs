@@ -22,14 +22,29 @@
       {{flash-messages classNames="flash-messages-paper-editor"}}
       <article class="manuscript">
         <div id="paper-body">
-          <h2 id="paper-title">{{{model.title}}}</h2>
+
+          {{#if cannotEditTitle}}
+            <h2 id="paper-title">{{{model.title}}}</h2>
+          {{else}}
+            {{content-editable tagName="h2"
+                               id="paper-title"
+                               value=model.title
+                               preventEnterKey="true"
+                               placeholder="Type your manuscript title here"
+                               key-up=(action "saveManuscriptTitle")
+                               focus-out=(action "saveManuscriptTitle")}}
+          {{/if}}
+
           {{#if versioningMode}}
             {{html-diff default=model.body
                         comparisonText=model.comparisonText
                         viewingText=model.viewingText}}
           {{else}}
-            {{{model.body}}}
+            <div class="paper-body">
+              {{{model.body}}}
+            </div>
           {{/if}}
+
         </div>
       </article>
     </main>

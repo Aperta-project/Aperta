@@ -1,5 +1,6 @@
 <h1>{{model.title}}</h1>
-{{#if canUploadManuscript}}
+
+{{#if isEditable}}
   <h2>You may upload a manuscript at any time.</h2>
   <div id="upload-file-wrapper">
     <span class="button-primary button--green fileinput-button {{if isSubmissionTaskNotEditable 'button--disabled'}}">
@@ -24,12 +25,12 @@
   <span>Sorry! {{fileName}} is not of an accepted file type</span>
 {{/if}}
 
-<div id="paper-manuscript-upload" class={{if isUploading "" "hidden"}}>
-  <div class="processing {{if isProcessing "" "hidden"}}">
-    {{progress-spinner visible=true}}
-    Processing...
+{{#if isUploading}}
+  <div id="paper-manuscript-upload">
+    {{#if showProgress}}
+      <div class="progress">
+        <div class="progress-bar" style={{progressBarStyle}}></div>
+      </div>
+    {{/if}}
   </div>
-  <div class="progress {{if showProgress "" "hidden"}}">
-    <div class="progress-bar" style={{progressBarStyle}}></div>
-  </div>
-</div>
+{{/if}}

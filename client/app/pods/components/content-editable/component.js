@@ -64,6 +64,9 @@ export default Ember.Component.extend({
       return;
     }
     this.setValueFromHTML();
+
+    const action = this.attrs['key-up'];
+    if(action) { action(); }
   },
 
   focusIn() {

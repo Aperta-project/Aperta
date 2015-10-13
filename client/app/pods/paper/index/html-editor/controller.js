@@ -5,9 +5,13 @@ import Discussions from 'tahi/mixins/discussions/route-paths';
 
 export default Ember.Controller.extend(PaperBase, PaperIndex, Discussions, {
   subRouteName: 'index',
+  versioningMode: false,
 
-  // JERRY: ?
-  hasOverlay: false,
+  cannotEditTitle: Ember.computed.equal('model.publishingState', 'submitted'),
 
-  versioningMode: false
+  actions: {
+    saveManuscriptTitle() {
+      Ember.run.debounce(this, this.save, 500);
+    }
+  }
 });

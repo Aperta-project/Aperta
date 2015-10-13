@@ -226,7 +226,7 @@ describe Activity do
 
     it {
       is_expected.to have_attributes(
-        feed_name: "manuscript",
+        feed_name: "workflow",
         activity_key: "participation.created",
         subject: participation.paper,
         user: user,
@@ -240,7 +240,7 @@ describe Activity do
 
     it {
       is_expected.to have_attributes(
-        feed_name: "manuscript",
+        feed_name: "workflow",
         activity_key: "particpation.destroyed",
         subject: participation.paper,
         user: user,

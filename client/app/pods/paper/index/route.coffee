@@ -73,7 +73,7 @@ PaperIndexRoute = AuthorizedRoute.extend
         overlayBackground: @get('editorLookup')
       })
 
-      @transitionTo('paper.task', @modelFor('paper'), task.id)
+      @transitionTo('paper.task', @modelFor('paper'), task)
 
     startEditing: ->
       @startHeartbeat()
@@ -90,5 +90,18 @@ PaperIndexRoute = AuthorizedRoute.extend
       })
 
       @set 'fromSubmitOverlay', true
+
+    # ask for confirmation while autosaving has not finished yet
+    willTransition: (transition) ->
+      editorController = @controllerFor(@get('editorLookup'))
+      if editorController.get('isSaving') and not confirm("Are you sure you want to discard changes?")
+        transition.abort()
+        # In fact, when this is get's called, the URL has already been updated
+        # so we do a history forward to actually preserve the URL.
+        if window.history
+          window.history.forward()
+        false
+      else
+        true
 
 `export default PaperIndexRoute`

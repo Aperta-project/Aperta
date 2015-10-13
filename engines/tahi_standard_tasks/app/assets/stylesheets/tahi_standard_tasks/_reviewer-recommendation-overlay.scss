@@ -1,8 +1,14 @@
-.add-author-form {
+.reviewer-canditates-wrapper {
+
+  .button-primary.button--green {
+    margin-bottom: 10px;
+  }
+
   .control-buttons {
     padding-bottom: 20px;
   }
-}
-.reviewer-recommendation-decision {
-  text-transform: capitalize;
+
+  .reviewer-recommendation-decision {
+    text-transform: capitalize;
+  }
 }

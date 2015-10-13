@@ -1,4 +1,13 @@
-{{partial "overlay-header"}}
+<header class="overlay-header">
+  <h2 class="overlay-header-title overlay-header-title--with-icon">
+    {{#link-to "paper.index" model.paper.id class="overlay-header-link"}}
+      {{partial "svg/manuscript-icon"}}
+      {{{model.paperTitle}}}
+    {{/link-to}}
+  </h2>
+  <a class="button-secondary button--green overlay-close-button" {{action "closeAction"}}>Close</a>
+</header>
+
 
 <main class="overlay-content">
   <div class="overlay-main-work">{{yield}}</div>

@@ -29,16 +29,6 @@ class AttachmentUploader < CarrierWave::Uploader::Base
     end
   end
 
-  def needs_transcoding?(file)
-    # On direct upload, the file's content_type is application/octet-stream, so
-    # we also need to check the filename
-    if file.respond_to?('content_type')
-      ["image/tiff", "application/postscript"].include?(file.content_type)
-    else
-      !!(File.extname(file) =~ /(tif?f|eps)/i)
-    end
-  end
-
   private
 
   def convert_to_png
@@ -53,6 +43,16 @@ class AttachmentUploader < CarrierWave::Uploader::Base
       "#{version_name}_#{File.basename(orig_file, '.*')}.png"
     else
       "#{version_name}_#{orig_file}"
+    end
+  end
+
+  def needs_transcoding?(file)
+    # On direct upload, the file's content_type is application/octet-stream, so
+    # we also need to check the filename
+    if file.respond_to?('content_type')
+      ["image/tiff", "application/postscript"].include?(file.content_type)
+    else
+      !!(File.extname(file) =~ /(tif?f|eps)/i)
     end
   end
 

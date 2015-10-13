@@ -10,32 +10,48 @@ describe AttachmentUploader do
     end
   end
 
-  describe "#needs_transcoding?" do
-    it "transcodes tiffs" do
-      paper = FactoryGirl.create(:paper)
-      figure = paper.figures.create!
-      uploader = AttachmentUploader.new(figure, :attachment)
-      file = Rails.root.join('spec', 'fixtures', 'yeti.tiff')
+  describe "image transcoding" do
+    let(:paper) { double("paper", :id => "1") }
+    let(:model) { double("attachment_model", :paper => paper, :id => "0") }
 
-      expect(uploader.needs_transcoding?(file)).to eq(true)
+    before do
+      AttachmentUploader.storage :file
+    end
+
+    after do
+      AttachmentUploader.storage Rails.application.config.carrierwave_storage
+    end
+
+    it "transcodes tiffs" do
+      uploader = AttachmentUploader.new(model, :attachment)
+      uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'yeti.tiff')))
+      preview = MiniMagick::Image.open(uploader.preview.path)
+
+      expect(preview.type).to eq("PNG")
+    end
+
+    it "transcodes eps" do
+      uploader = AttachmentUploader.new(model, :attachment)
+      uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'cat.eps')))
+      preview = MiniMagick::Image.open(uploader.preview.path)
+
+      expect(preview.type).to eq("PNG")
     end
 
     it "does not transcode other images" do
-      paper = FactoryGirl.create(:paper)
-      figure = paper.figures.create!
-      uploader = AttachmentUploader.new(figure, :attachment)
-      file = Rails.root.join('spec', 'fixtures', 'yeti.jpg')
+      uploader = AttachmentUploader.new(model, :attachment)
+      uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'yeti.jpg')))
+      preview = MiniMagick::Image.open(uploader.preview.path)
 
-      expect(uploader.needs_transcoding?(file)).to eq(false)
+      expect(preview.type).to eq("JPEG")
     end
 
     it "does not transcode documents" do
-      paper = FactoryGirl.create(:paper)
-      figure = paper.figures.create!
-      uploader = AttachmentUploader.new(figure, :attachment)
-      file = Rails.root.join('spec', 'fixtures', 'about_turtles.docx')
+      uploader = AttachmentUploader.new(model, :attachment)
+      uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'about_turtles.docx')))
 
-      expect(uploader.needs_transcoding?(file)).to eq(false)
+      expect(uploader.content_type).to eq("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
     end
+
   end
 end

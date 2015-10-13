@@ -10,7 +10,8 @@ class User < ActiveRecord::Base
 
   has_many :affiliations, inverse_of: :user
   has_many :submitted_papers, inverse_of: :creator, class_name: 'Paper'
-  has_many :paper_roles, inverse_of: :user
+  has_many :paper_roles
+  has_many :papers, -> { uniq }, through: :paper_roles
   has_many :user_roles, inverse_of: :user
   has_many :roles, through: :user_roles
   has_many :journals, ->{ uniq }, through: :roles

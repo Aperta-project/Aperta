@@ -7,27 +7,35 @@ export default Ember.Controller.extend({
     return this.get('currentUser.invitedInvitations');
   }),
 
-  hasPapers: Ember.computed.notEmpty('papers'),
-  pageNumber: 1,
+  hasPapers:         Ember.computed.notEmpty('papers'),
+  hasActivePapers:   Ember.computed.notEmpty('activePapers'),
+  hasInactivePapers: Ember.computed.notEmpty('inactivePapers'),
+  activePageNumber:   1,
+  inactivePageNumber: 1,
+  activePapersVisible: true,
+  inactivePapersVisible: true,
   relatedAtSort: ['relatedAtDate:desc'],
-  sortedPapers: Ember.computed.sort('papers', 'relatedAtSort'),
+  updatedAtSort: ['updatedAt:desc'],
+  sortedNonDraftPapers: Ember.computed.sort('activeNonDrafts', 'relatedAtSort'),
+  sortedDraftPapers:    Ember.computed.sort('activeDrafts', 'updatedAtSort'),
+  sortedInactivePapers: Ember.computed.sort('inactivePapers', 'updatedAtSort'),
+  activeDrafts:         Ember.computed.filterBy('activePapers', 'publishingState', 'unsubmitted'),
+  activeNonDrafts:      Ember.computed.filter('activePapers', function(paper) {
+                          return paper.get('publishingState') !== 'unsubmitted';
+                        }),
+  activePapers:         Ember.computed.filterBy('papers', 'active', true),
+  inactivePapers:       Ember.computed.filterBy('papers', 'active', false),
 
-  totalPaperCount: Ember.computed('papers.length', function() {
-    let numPapersFromServer       = this.store.metadataFor('paper').total_papers;
-    let numDashboardPapersInStore = this.get('papers.length');
+  totalActivePaperCount: Ember.computed.alias('activePapers.length'),
 
-    return numDashboardPapersInStore > numPapersFromServer ? numDashboardPapersInStore : numPapersFromServer;
-  }),
-
-  canLoadMore: Ember.computed('pageNumber', function() {
-    return this.get('pageNumber') !== this.store.metadataFor('paper').total_pages;
-  }),
+  totalInactivePaperCount: Ember.computed.alias('inactivePapers.length'),
 
   actions: {
-    loadMorePapers() {
-      this.store.find('paper', { page_number: this.get('pageNumber') + 1 }).then(()=> {
-        this.incrementProperty('pageNumber');
-      });
+    toggleActiveContainer() {
+      this.toggleProperty('activePapersVisible');
+    },
+    toggleInactiveContainer() {
+      this.toggleProperty('inactivePapersVisible');
     }
   }
 });

@@ -23,7 +23,6 @@ export default DS.Model.extend({
     async: false
   }),
   journal: belongsTo('journal', { async: false }),
-  lockedBy: belongsTo('user', { async: false }),
   phases: hasMany('phase', { async: false }),
   reviewers: hasMany('user', { async: false }),
   supportingInformationFiles: hasMany('supporting-information-file', {

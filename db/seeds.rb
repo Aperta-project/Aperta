@@ -100,8 +100,6 @@ else
     end
   }
 
-  FactoryGirl.create(:flow)
-
   Rake::Task['data:create_task_types'].invoke
   Rake::Task['journal:create_default_templates'].invoke
 

@@ -1,35 +1,23 @@
 `import Ember from 'ember'`
 `import ENV from 'tahi/config/environment'`
 `import AuthorizedRoute from 'tahi/routes/authorized'`
-`import loadVeEditorAssets from 'tahi-editor-ve/initializers/load-assets'`
 
 PaperIndexRoute = AuthorizedRoute.extend
   viewName: 'paper/index'
   controllerName: 'paper/index'
   templateName: 'paper/index'
   cardOverlayService: Ember.inject.service('card-overlay'),
-  heartbeatService: Ember.inject.service('heartbeat'),
   restless: Ember.inject.service('restless')
   fromSubmitOverlay: false
 
   model: ->
     paper = @modelFor('paper')
-    editorInit = Ember.RSVP.Promise.resolve()
-
-    if paper.get('editorMode') is 'html' and not Ember.testing
-      editorInit = loadVeEditorAssets(ENV).catch((error) ->
-        Ember.Logger.error(error))
 
     taskLoad = new Ember.RSVP.Promise((resolve, reject) ->
       paper.get('tasks').then((tasks) -> resolve(paper)))
 
-    Ember.RSVP.all([editorInit, taskLoad]).then ->
+    Ember.RSVP.all([taskLoad]).then ->
       paper
-
-  afterModel: (model) ->
-    if model.get('editable')
-      @set('heartbeat', this.get('heartbeatService').create(model))
-      @startHeartbeat()
 
   setupController: (controller, model) ->
     # paper/index controller is not used.
@@ -44,27 +32,17 @@ PaperIndexRoute = AuthorizedRoute.extend
     editorController.set('commentLooks', @store.all('commentLook'))
 
     if @currentUser
-      this.get('restless').authorize(editorController, "/api/papers/#{model.get('id')}/manuscript_manager", 'canViewManuscriptManager')
+      this.get('restless').authorize(
+        editorController,
+        "/api/papers/#{model.get('id')}/manuscript_manager",
+        'canViewManuscriptManager'
+      )
 
   renderTemplate: (paperEditController, model) ->
     @render @get('editorLookup'),
       into: 'application'
       view: @get('editorLookup')
       controller: @get('editorLookup')
-
-  deactivate: ->
-    @endHeartbeat()
-
-  startHeartbeat: ->
-    if @isLockedByCurrentUser()
-      @get('heartbeat').start()
-
-  endHeartbeat: ->
-    @get('heartbeat')?.stop()
-
-  isLockedByCurrentUser: ->
-    lockedBy = @modelFor('paper').get('lockedBy')
-    lockedBy and lockedBy == @currentUser
 
   actions:
     viewCard: (task) ->
@@ -74,12 +52,6 @@ PaperIndexRoute = AuthorizedRoute.extend
       })
 
       @transitionTo('paper.task', @modelFor('paper'), task.id)
-
-    startEditing: ->
-      @startHeartbeat()
-
-    stopEditing: ->
-      @endHeartbeat()
 
     showConfirmSubmitOverlay: ->
       @controllerFor('overlays/paper-submit').set('model', this.modelFor('paper'))

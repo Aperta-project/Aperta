@@ -2,7 +2,6 @@ import Ember from 'ember';
 import LazyLoader from 'ember-cli-lazyloader/lib/lazy-loader';
 import ENV from 'tahi/config/environment';
 
-
 export default Ember.Component.extend({
   classNames: ['html-diff'],
 
@@ -142,7 +141,7 @@ export default Ember.Component.extend({
 
   loadMathJax: function() {
     if (this.renderEquations) {
-      LazyLoader.loadScripts([ENV['tahi-editor-ve']['mathJaxUrl']]).then(() => {
+        LazyLoader.loadScripts([ENV.mathjax.url]).then(() => {
         this.refreshEquations();
       });
     }
@@ -150,8 +149,8 @@ export default Ember.Component.extend({
 
   refreshEquations:  function() {
     if (!this.renderEquations) { return; }
-    else if (!MathJax) { this.loadMathJax(); }
-    else if (!MathJax.Hub) { return; }
+    else if (Ember.isNone(window.MathJax)) { this.loadMathJax(); return; }
+    else if (Ember.isNone(window.MathJax.Hub)) { return; }
 
     Ember.run.next(() => {
       MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.$()[0]]);

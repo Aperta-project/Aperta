@@ -23,9 +23,5 @@ export default Ember.Mixin.create(RedirectsIfEditable, {
 
   teardownControlBarSubNav: on('willDestroyElement', function() {
     $('html').removeClass('control-bar-sub-nav-active');
-  }),
-
-  saveTitleChanges: on('willDestroyElement', function() {
-    this.timeoutSave();
   })
 });

@@ -11,8 +11,8 @@ class TasksController < ApplicationController
   end
 
   def create
-    task.save
-    respond_with(task, location: task_url(task))
+    new_task = task_factory.create!
+    respond_with(new_task, location: task_url(new_task))
   end
 
   def update
@@ -56,10 +56,22 @@ class TasksController < ApplicationController
       if params[:id].present?
         Task.find(params[:id])
       else
-        task_klass = TaskType.constantize!(params[:task][:type])
-        TaskFactory.build(task_klass, task_params(task_klass))
+        task_factory.task
       end
     end
+  end
+
+  def task_factory
+    @task_factory ||= TaskFactory.new(task_type, new_task_params)
+  end
+
+  def task_type
+    params[:task][:type]
+  end
+
+  def new_task_params
+    task_klass = TaskType.constantize!(task_type)
+    task_params(task_klass).merge({creator: paper.creator})
   end
 
   def unmunge_empty_arrays

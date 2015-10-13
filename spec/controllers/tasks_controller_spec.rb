@@ -17,7 +17,7 @@ describe TasksController, redis: true do
         format: 'json',
         paper_id: paper.to_param,
         task: {
-          type: 'Task',
+          type: 'TahiStandardTasks::AuthorsTask',
           phase_id: paper.phases.last.id,
           title: 'Verify Signatures'
         }
@@ -28,6 +28,11 @@ describe TasksController, redis: true do
 
     it "creates a task" do
       expect { do_request }.to change(Task, :count).by 1
+    end
+
+    it "creates a task, includes the paper creator if is submission task " do
+      do_request
+      expect(Task.last.participants).to include(paper.creator)
     end
   end
 

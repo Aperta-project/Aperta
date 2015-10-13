@@ -5,7 +5,7 @@ class TaskFactory
   def initialize(task_klass, options = {})
     @task_klass = task_klass
     @creator = options.delete(:creator)
-    options = options.reverse_merge(default_options)
+    options = default_options.merge(options)
     @task = task_klass.constantize.new(options)
   end
 

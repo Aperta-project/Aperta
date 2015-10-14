@@ -1,28 +1,33 @@
 require 'rails_helper'
-
-def Faraday.get(arg); super; end
+require 'webmock/rspec'
 
 describe PaperUpdateWorker do
   subject(:worker) { PaperUpdateWorker.new }
   let(:paper) { FactoryGirl.create :paper }
 
   describe "#perform" do
-    let(:stubbed_url) { "s3_url_example" }
+    let(:stubbed_url) { "http://s3_url_example" }
     let(:turtles_fixture) { File.open(Rails.root.join('spec', 'fixtures', 'turtles.epub'), 'rb').read }
+    let(:ihat_job_params) { { state: 'completed', options: { metadata: { paper_id: paper.id } }, outputs: [{ file_type: 'epub', url: stubbed_url }] } }
 
     before do
-      epub_response = double(:epub, body: turtles_fixture)
-      expect(Faraday).to receive(:get).with(stubbed_url).and_return(epub_response)
+      VCR.turn_off!
+      stub_request(:get, stubbed_url).to_return(body: turtles_fixture)
+    end
+
+    after do
+      VCR.turn_on!
+      expect(WebMock).to have_requested(:get, stubbed_url)
     end
 
     it "requests attribute extraction" do
       expect_any_instance_of(PaperAttributesExtractor).to receive(:sync!)
-      worker.perform(paper.id, stubbed_url)
+      worker.perform(ihat_job_params)
     end
 
     it "requests figure extraction" do
       expect_any_instance_of(FiguresExtractor).to receive(:sync!)
-      worker.perform(paper.id, stubbed_url)
+      worker.perform(ihat_job_params)
     end
   end
 end

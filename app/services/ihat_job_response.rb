@@ -1,10 +1,10 @@
 class IhatJobResponse
-  attr_reader :outputs, :state, :raw_metadata
+  attr_reader :outputs, :state, :metadata
 
   def initialize(params={})
     @state = params[:state].to_sym
     @outputs = params[:outputs]
-    @raw_metadata = params[:metadata] || {}
+    @metadata = params[:options][:metadata] || {}
   end
 
   def paper_id
@@ -14,10 +14,6 @@ class IhatJobResponse
   def epub_url
     epub = outputs.detect { |o| o[:file_type] == "epub" }
     epub[:url]
-  end
-
-  def metadata
-    @metadata ||= Verifier.new(raw_metadata).decrypt
   end
 
   [:pending, :processing, :completed, :errored, :archived, :skipped].each do |check_state|

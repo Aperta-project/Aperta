@@ -71,6 +71,7 @@ class TasksController < ApplicationController
 
   def new_task_params
     task_klass = TaskType.constantize!(task_type)
+    paper = Paper.find params[:task][:paper_id]
     task_params(task_klass).merge(creator: paper.creator)
   end
 

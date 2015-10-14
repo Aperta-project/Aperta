@@ -15,9 +15,9 @@ describe TasksController, redis: true do
     subject(:do_request) do
       post :create, {
         format: 'json',
-        paper_id: paper.to_param,
         task: {
           type: 'TahiStandardTasks::AuthorsTask',
+          paper_id: paper.to_param,
           phase_id: paper.phases.last.id,
           title: 'Verify Signatures'
         }

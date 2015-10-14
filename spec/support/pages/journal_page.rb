@@ -40,7 +40,7 @@ class JournalPage < Page
     thumb.hover
     thumb.find('.fa-trash').click
     find('.mmt-thumbnail-overlay-confirm-destroy .mmt-thumbnail-delete-button').click
-    synchronize_no_content! mmt.paper_type
+    has_no_css?(".mmt-thumbnail-title", text: mmt.paper_type)
     self
   end
 
@@ -129,10 +129,13 @@ class JournalPage < Page
   end
 
   def add_flow
-    first(".admin-role-action-button.fa.fa-pencil").click
-    find("input[name='role[canViewFlowManager]']").set(true)
-    click_link("Edit Flows")
-    first(".control-bar-link-icon").click
+    within ".admin-roles" do
+      first(".admin-role-action-button.fa.fa-pencil").click
+      find("input[name='role[canViewFlowManager]']").set(true)
+      click_link("Edit Flows")
+    end
+
+    find(".control-bar-link-icon").click
   end
 
   private

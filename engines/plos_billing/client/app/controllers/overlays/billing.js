@@ -333,7 +333,7 @@ export default TaskController.extend({
   buildPfaValidator: function(){
     var numericalityConfig = { numericality: { 
       allowBlank: true,
-      messages: { numericality: "Must be a number and contain no symobls, or letters"}
+      messages: { numericality: "Must be a number and contain no symbols, or letters"}
     }};
 
     var pfaDataClass = Ember.Object.extend(EmberValidations.Mixin, {

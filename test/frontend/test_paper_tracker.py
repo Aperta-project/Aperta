@@ -19,8 +19,8 @@ from Base.Resources import login_valid_pw, fm_login, he_login, sa_login, oa_logi
 from frontend.common_test import CommonTest
 
 users = [fm_login,
-         # he_login, # TODO: Find out why it fails
-         oa_login,
+         #he_login, # TODO: Find out why it fails
+         #oa_login,
          sa_login,
          ]
 
@@ -29,20 +29,15 @@ class ApertaPaperTrackerTest(CommonTest):
   """
   Self imposed AC:
      - validate page elements and styles for:
-         - dashboard page:
-            - Optional Invitation elements
-              - title, buttons
-            - Submissions section
-              - title, button, manuscript details
-         - view invitations modal dialog elements and function
-         - create new submission modal dialog and function
+      - welcome message
+      - subhead with paper total presentation
+      - presentation of the table
+      - presentation of individual data points for each paper
   """
-  def test_validate_components_styles(self):
+  def test_validate_paper_tracker(self):
     """
     Validates the presence of the following elements:
-      Optional Invitation Welcome text and button,
-      My Submissions Welcome Text, button, info text and manuscript display
-      Modals: View Invites and Create New Submission
+      Welcome Text, subhead, table presentation
     """
     user_type = random.choice(users)
     print('Logging in as user: ' + user_type)
@@ -56,7 +51,8 @@ class ApertaPaperTrackerTest(CommonTest):
     dashboard_page.click_paper_tracker_link()
 
     pt_page = PaperTrackerPage(self.getDriver())
-    pt_page.validate_page_elements_styles_functions(user_type)
+    (total_count, journals_list) = pt_page.validate_heading_and_subhead(user_type)
+    pt_page.validate_table_presentation_and_function(total_count, journals_list)
     pt_page.click_left_nav()
     pt_page.validate_nav_elements(user_type)
 

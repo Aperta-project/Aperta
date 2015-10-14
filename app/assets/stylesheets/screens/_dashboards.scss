@@ -68,6 +68,10 @@
   }
 }
 
+.hug-left {
+  padding-left: 0px;
+}
+
 .role-tag {
   color: $tahi-grey-dark;
 }
@@ -92,4 +96,8 @@
   border-right-color: #6c6c6c;
   border-width: 10px;
   margin-top: -10px;
+}
+
+.top-margin {
+  margin-top: 60px;
 }

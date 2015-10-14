@@ -35,12 +35,21 @@
           <table summary="This table displays manuscript data and roles" class="table-borderless top-margin">
             <thead class='manuscript-list-heading'>
               <tr>
-                <th class="col-xs-9 hug-left">Active Manuscripts (9)</th>
+                <th class="col-xs-9 hug-left">Active Manuscripts ({{totalActivePaperCount}})</th>
                 <th class="col-xs-1 text-center">Role</th>
                 <th class="col-xs-2 text-center">Status</th>
               </tr>
             </thead>
             <tbody>
+              {{#if activePapersVisible}}
+                {{#each sortedDraftPapers as |paper|}}
+                  {{dashboard-link model=paper}}
+                {{/each}}
+                {{#each sortedNonDraftPapers as |paper|}}
+                  {{dashboard-link model=paper}}
+                {{/each}}
+              {{/if}}
+
               <tr>
                 <td class="col-xs-9 dashboard-paper-title hug-left"><a>The most scrumtrulescent scientific paper of 2015.</a></td>
                 <td class="col-xs-1 role-tag text-right">Author</td>

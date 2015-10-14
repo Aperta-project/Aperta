@@ -1,15 +1,16 @@
-<li class="dashboard-paper-title">
-  {{#link-to "paper.index" model.id
-             class="link-tooltip"
-             data-toggle="tooltip"
-             title=model.roleList}}
-    {{partial "svg/manuscript-icon"}}
-    {{{model.displayTitle}}}
-  {{/link-to}}
+<td class="col-xs-9 dashboard-paper-title hug-left">
+{{#link-to "paper.index" model.id
+         class="link-tooltip"
+         data-toggle="tooltip"
+         title=model.roleList}}
+  {{model.displayTitle}}
+{{/link-to}}
+{{#if unreadCommentsCount}}
+  <span class="badge badge--red link-tooltip" title={{badgeTitle}}>
+    {{unreadCommentsCount}}
+  </span>
+{{/if}}
+</td>
+<td class="col-xs-1 role-tag text-right">Author</td>
+<td class="col-xs-1"><div class='status-tag text-center'>DRAFT</div></td>
 
-  {{#if unreadCommentsCount}}
-    <span class="badge badge--red link-tooltip" title={{badgeTitle}}>
-      {{unreadCommentsCount}}
-    </span>
-  {{/if}}
-</li>

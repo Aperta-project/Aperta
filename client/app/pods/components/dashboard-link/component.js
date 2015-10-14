@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  tagName: 'tr',
+
   unreadCommentsCount: Ember.computed('model.commentLooks.[]', function() {
     return this.get('model.commentLooks.length');
   }),

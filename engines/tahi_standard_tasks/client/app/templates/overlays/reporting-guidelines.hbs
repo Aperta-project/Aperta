@@ -7,14 +7,14 @@
     <ul class="list-unstyled">
       <li class="item">
         {{nested-question-check
-            model=clinicalTrialQuestion
+            ident="clinical_trial"
             owner=model
             disabled=isSubmissionTaskNotEditable}}
       </li>
 
       <li class="item">
         {{nested-question-check
-          model=systematicReviewsQuestion
+          ident="systematic_reviews"
           owner=model
           disabled=isSubmissionTaskNotEditable}}
 
@@ -31,7 +31,7 @@
 
       <li class="item">
         {{nested-question-check
-          model=metaAnalysesQuestion
+          ident="meta_analyses"
           owner=model
           disabled=isSubmissionTaskNotEditable}}
 
@@ -48,21 +48,21 @@
 
       <li class="item">
         {{nested-question-check
-          model=diagnosticStudiesQuestion
+          ident="diagnostic_studies"
           owner=model
           disabled=isSubmissionTaskNotEditable}}
       </li>
 
       <li class="item">
         {{nested-question-check
-          model=epidemiologicalStudiesQuestion
+          ident="epidemiological_studies"
           owner=model
           disable=isSubmissionTaskNotEditable}}
       </li>
 
       <li class="item">
         {{nested-question-check
-          model=microarrayStudiesQuestion
+          ident="microarray_studies"
           owner=model
           disable=isSubmissionTaskNotEditable}}
       </li>

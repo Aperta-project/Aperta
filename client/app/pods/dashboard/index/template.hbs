@@ -27,6 +27,55 @@
     </h2>
 
     <button class="button-primary button--green" {{action "showNewPaperOverlay"}}>Create New Submission</button>
+
+
+<br>
+<br>
+<br>
+  <div class="table-responsive">
+    <table summary="This table displays manuscript data and roles" class="table-borderless">
+      <thead class='manuscript-list-heading'>
+        <tr>
+          <th class="col-xs-9">Active Manuscripts (9)</th>
+          <th class="col-xs-1 text-center">Role</th>
+          <th class="col-xs-2 text-center">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-xs-9 dashboard-paper-title"><a>The most scrumtrulescent scientific paper of 2015.</a></td>
+          <td class="col-xs-1 role-tag text-right">Author</td>
+          <td class="col-xs-1"><div class='status-tag text-center'>DRAFT</div></td>
+        </tr>
+        <tr>
+          <td class="col-xs-9 dashboard-paper-title"><a>The most scrumtrulescent scientific paper of 2015.</a></td>
+          <td class="col-xs-1 role-tag text-right">Collaborator</td>
+          <td class="col-xs-2"><div class='status-tag text-center'>Checking</div></td>
+        </tr>
+        <tr>
+          <td class="col-xs-9 dashboard-paper-title"><a>The most scrumtrulescent scientific paper of 2015.</a></td>
+          <td class="col-xs-1 role-tag text-right">Collaborator</td>
+          <td class="col-xs-2"><div class='status-tag text-center'>In Revision</div></td>
+        </tr>
+        <tr>
+          <td class="col-xs-9 dashboard-paper-title"><a>The most scrumtrulescent scientific paper of 2015.</a></td>
+          <td class="col-xs-1 role-tag text-right">Collaborator</td>
+          <td class="col-xs-2"><div class='status-tag text-center'>Accepted</div></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5" class="text-center">.</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div><!--end of .table-responsive-->
+
+<br>
+<br>
+<br>
+
+
     {{#if hasPapers}}
       {{#if hasActivePapers}}
         <h5 class='manuscript-list-heading active-papers' {{action 'toggleActiveContainer'}}>

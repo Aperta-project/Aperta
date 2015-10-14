@@ -82,7 +82,7 @@ describe PaperFactory do
     context "with non-existant template" do
       let(:paper_attrs) { FactoryGirl.attributes_for(:paper, journal_id: journal.id, paper_type: "Opinion Piece") }
       it "adds an error on paper_type" do
-        expect(subject.errors[:paper_type].length).to eq(1)
+        expect(subject.errors[:paper_type]).to eq(["is not valid"])
       end
     end
 

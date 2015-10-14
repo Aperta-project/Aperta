@@ -18,9 +18,9 @@ class PaperFactory
 
   def create
     Paper.transaction do
+      add_creator_as_collaborator
       if paper.valid?
         if template
-          add_creator_as_collaborator
           paper.save!
           add_decision
           add_phases_and_tasks

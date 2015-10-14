@@ -2,7 +2,7 @@ class TaskFactory
 
   attr_reader :task, :task_klass, :creator
 
-  def initialize(task_klass, options = {})
+  def initialize(task_klass, options={})
     @task_klass = task_klass
     @creator = options.delete(:creator)
     options = default_options.merge(options)

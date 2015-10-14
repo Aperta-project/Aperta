@@ -63,7 +63,7 @@ feature "Editing paper", js: true do
         # numeric fields
         ['pfa_question_1b', 'pfa_question_2b', 'pfa_question_3a', 'pfa_question_4a', 'pfa_amount_to_pay'].each do |ident|
           find("input[name='plos_billing.#{ident}']").set "foo"
-          expect(find("#error-for-#{ident}")).to have_content("Must be a number and contain no symobls, or letters")
+          expect(find("#error-for-#{ident}")).to have_content("Must be a number and contain no symbols, or letters")
         end
       end
 

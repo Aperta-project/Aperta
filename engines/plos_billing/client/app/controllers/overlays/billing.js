@@ -314,7 +314,7 @@ const DATA = {
   ]
 };
 
-let computed = Ember.computed;
+const computed = Ember.computed;
 
 
 export default TaskController.extend({
@@ -325,18 +325,21 @@ export default TaskController.extend({
   pfaData: null,
 
   /*
-    Makes a self-contained Pfa Data validator, temporarily to avoid conflict with
-    ValidationErrorsMixin 'tahi/mixins/validation-errors'
+    Makes a self-contained Pfa Data validator, temporarily to avoid conflict
+    with ValidationErrorsMixin 'tahi/mixins/validation-errors'
     This is called in billing-pfa component via onDidInsertElement
-    Call is async because these question don't exist until pfa partial is inserted
+    Call is async because these question don't exist until
+    pfa partial is inserted
   */
   buildPfaValidator: function(){
-    var numericalityConfig = { numericality: { 
+    const numericalityConfig = { numericality: { 
       allowBlank: true,
-      messages: { numericality: "Must be a number and contain no symbols, or letters"}
+      messages: {
+        numericality: "Must be a number and contain no symbols, or letters"
+      }
     }};
 
-    var pfaDataClass = Ember.Object.extend(EmberValidations.Mixin, {
+    const pfaDataClass = Ember.Object.extend(EmberValidations.Mixin, {
       init: function(){
         this.set('validations', { });
 
@@ -349,17 +352,25 @@ export default TaskController.extend({
                 return this.findPfaQuestion(ident);
               })
             ); //add named prop to obj
-            this.validations[ident + ".answer"] = numericalityConfig; //add prop name to validations
+
+            // add prop name to validations
+            this.validations[ident + ".answer"] = numericalityConfig;
           }
         );
 
         this._super.apply(this, arguments);
       },
 
-      container: this.get('container'), //https://github.com/kurko/ember-sync/issues/29
+      // container required because we are creating an Ember.Object.
+      // EmberValidations must need access.
+      // Ember.Object is not assigned this property unless
+      // generated through the container
+      container: this.get('container'),
+
       model: this.get('model'),
       findPfaQuestion: function(ident){
-        return this.get("model.questions").findProperty("ident", "plos_billing." + ident);
+        return this.get("model.questions")
+                   .findProperty("ident", "plos_billing." + ident);
       },
     });
 
@@ -367,16 +378,17 @@ export default TaskController.extend({
   },
 
   /*
-    Sets error message bound to validationErrors.completed in -overlay-completed-checkbox when data invalid
+    Sets error message bound to validationErrors.completed
+    in -overlay-completed-checkbox when data invalid
   */
   _showErrorsInFormMsg: Ember.observer('pfa', 'pfaData.isValid', function(){
-    var msg = null;
+    let msg = null;
 
     if (this.get('pfa')) { //only if payment method is pfa
-      if (!this.get('pfaData.isValid')) msg = 'Errors in form';
+      if (!this.get('pfaData.isValid')) { msg = 'Errors in form'; }
     }
 
-    this.set('validationErrors.completed', msg)
+    this.set('validationErrors.completed', msg);
   }),
 
   /*

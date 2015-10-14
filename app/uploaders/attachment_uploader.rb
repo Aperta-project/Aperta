@@ -58,7 +58,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
 
   def image?(file)
     if file.respond_to?('content_type')
-      ["image/tiff", "application/postscript"].include?(file.content_type)
+      ["image/tiff", "application/postscript", "image/jpeg", "image/png", "image/gif"].include?(file.content_type)
     else
       !!(File.extname(file) =~ /(tif?f|eps|jpg|jpeg|gif|png)/i)
     end

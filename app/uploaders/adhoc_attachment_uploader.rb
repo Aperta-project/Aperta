@@ -1,7 +1,5 @@
 class AdhocAttachmentUploader < AttachmentUploader
 
-  storage Rails.application.config.carrierwave_storage
-
   def store_dir
     "uploads/attachments/#{model.id}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end

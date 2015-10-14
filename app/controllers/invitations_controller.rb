@@ -8,6 +8,10 @@ class InvitationsController < ApplicationController
     respond_with(invitations, each_serializer: InvitationIndexSerializer)
   end
 
+  def show
+    respond_with invitation
+  end
+
   def create
     invitation = task.invitations.build(invitation_params)
     invitation.invite!

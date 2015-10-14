@@ -38,6 +38,23 @@ describe InvitationsController do
     end
   end
 
+  describe "GET /invitation/:id" do
+    let!(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee) }
+
+    it "returns required fields" do
+      get(:show, format: :json, id: invitation.id)
+      expect(response.status).to eq(200)
+
+      data = res_body.with_indifferent_access
+      expect(data).to have_key(:invitation)
+      invitation_json = data[:invitation]
+
+      expect(invitation_json).to have_key(:email)
+      expect(invitation_json).to have_key(:state)
+      expect(invitation_json).to have_key(:invitation_type)
+    end
+  end
+
   describe "POST /invitations" do
     let(:invitation_body){
       "Hard to find a black cat in a dark room, especially if there is no cat."

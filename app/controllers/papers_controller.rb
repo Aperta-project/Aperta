@@ -15,13 +15,14 @@ class PapersController < ApplicationController
   end
 
   def show
-    rel = Paper.includes([
+    paper = Paper.eager_load(
       :supporting_information_files,
       { paper_roles: [:user] },
-      :manuscript
-    ])
-    paper = rel.find(params[:id])
-    authorize_action!(paper: paper)
+      :manuscript,
+      :tables,
+      :bibitems,
+      :journal
+    ).find(params[:id])
     respond_with(paper)
   end
 

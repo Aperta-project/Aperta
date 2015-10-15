@@ -1,5 +1,5 @@
 module Snapshot
-  class NestedQuestionSerializer < BaseSerializer
+  class NestedQuestionSerializer < ActiveModel::Serializer
 
     def initialize(nested_question, owner)
       @nested_question = nested_question
@@ -13,22 +13,27 @@ module Snapshot
         children << child_snapshotter.snapshot
       end
 
-      answers_snapshot = []
-      answers = @owner.nested_question_answers
+      answer = @owner.nested_question_answers
                       .select { |q| q.nested_question_id == @nested_question.id }
                       .sort { |a,b| a.id <=> b.id }
+                      .first
 
-      if answers
-        answers.each do |answer|
-          answer_snapshotter = Snapshot::NestedQuestionAnswerSerializer.new answer
-          answers_snapshot << answer_snapshotter.snapshot
-        end
+      attachment = nil
+      if answer
+        attachment = QuestionAttachment.select { |qa| qa.question_id == answer.id }.first
       end
 
       {
-        text: @nested_question.text,
-        value_type: @nested_question.value_type,
-        answers: answers_snapshot,
+        name: @nested_question.ident,
+        type: "question",
+        value: {
+          title: @nested_question.text,
+          answer_type: @nested_question.value_type,
+          answer: answer ? answer.value : nil,
+          attachment: Snapshot::QuestionAttachmentSerializer.new(attachment).snapshot,
+          additional_data: answer ? answer.additional_data : nil
+        },
+
         children: children
       }
     end

@@ -2,7 +2,7 @@ module Snapshot
   class FigureTaskSerializer < BaseTaskSerializer
 
     def snapshot_properties
-      paper = Paper.find(@task.paper)
+      paper = Paper.find(@task.paper.id)
       properties = []
       paper.figures.order(:id).each do |figure|
         properties << { figure: snapshot_figure(figure) }

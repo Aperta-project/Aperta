@@ -32,8 +32,7 @@ describe Snapshot::BaseTaskSerializer do
     it "has questions without answers" do
       snapshot = Snapshot::BaseTaskSerializer.new(task).snapshot
 
-      expect(snapshot[:properties]).to be_nil
-      expect(snapshot[:questions].count).to eq(3)
+      expect(snapshot.count).to eq(3)
     end
 
     it "serializes children" do
@@ -44,8 +43,8 @@ describe Snapshot::BaseTaskSerializer do
 
       snapshot = Snapshot::BaseTaskSerializer.new(task).snapshot
 
-      expect(snapshot[:questions].count).to eq(3)
-      expect(snapshot[:questions][1][:children].count).to eq(1)
+      expect(snapshot.count).to eq(3)
+      expect(snapshot[1][:children].count).to eq(1)
     end
 
     it "has questions with answers" do
@@ -56,10 +55,12 @@ describe Snapshot::BaseTaskSerializer do
 
       snapshot = Snapshot::BaseTaskSerializer.new(task).snapshot
 
-      expect(snapshot[:questions][0][:answers].count).to eq(1)
-      expect(snapshot[:questions][0][:answers][0][:value]).to eq("Answer Value")
-      expect(snapshot[:questions][1][:answers].count).to eq(0)
-      expect(snapshot[:questions][2][:answers].count).to eq(0)
+      expect(snapshot[0][:value][:title]).to eq("First question")
+      expect(snapshot[0][:value][:answer]).to eq("Answer Value")
+      expect(snapshot[1][:value][:title]).to eq("Second question")
+      expect(snapshot[1][:value][:answer]).to eq(nil)
+      expect(snapshot[2][:value][:title]).to eq("Third question")
+      expect(snapshot[2][:value][:answer]).to eq(nil)
     end
 
     it "doesn't matter what order questions are answered in" do
@@ -72,11 +73,9 @@ describe Snapshot::BaseTaskSerializer do
 
       snapshot = Snapshot::BaseTaskSerializer.new(task).snapshot
 
-      expect(snapshot[:questions][0][:answers].count).to eq(1)
-      expect(snapshot[:questions][0][:answers][0][:value]).to eq("First Value")
-      expect(snapshot[:questions][1][:answers].count).to eq(0)
-      expect(snapshot[:questions][2][:answers].count).to eq(1)
-      expect(snapshot[:questions][2][:answers][0][:value]).to eq("Last Value")
+      expect(snapshot[0][:value][:answer]).to eq("First Value")
+      expect(snapshot[1][:value][:answer]).to eq(nil)
+      expect(snapshot[2][:value][:answer]).to eq("Last Value")
     end
 
     it "serializes attachments" do
@@ -94,8 +93,8 @@ describe Snapshot::BaseTaskSerializer do
 
       snapshot = Snapshot::BaseTaskSerializer.new(task).snapshot
 
-      expect(snapshot[:questions][0][:answers][0][:attachment][:file]).to eq(attachment[:attachment])
-      expect(snapshot[:questions][0][:answers][0][:value]).to eq("text that is different")
+      expect(snapshot[0][:value][:attachment][:file]).to eq(attachment[:attachment])
+      expect(snapshot[0][:value][:answer]).to eq("text that is different")
     end
   end
 end

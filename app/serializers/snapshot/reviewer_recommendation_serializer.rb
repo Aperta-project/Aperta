@@ -6,10 +6,7 @@ module Snapshot
     end
 
     def snapshot
-      {
-        properties: snapshot_properties,
-        questions: snapshot_nested_questions
-      }
+      snapshot_properties + snapshot_nested_questions
     end
 
     def snapshot_properties

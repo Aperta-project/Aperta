@@ -32,11 +32,6 @@
   font-size: 14px;
 }
 
-.paper-new-char-count {
-  @include position(absolute, 5px 20px auto auto);
-  text-align: right;
-}
-
 .paper-new-valid-icon {
   position: absolute;
   top: 49px;

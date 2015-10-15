@@ -1,12 +1,14 @@
 import Ember from 'ember';
 import { test, moduleForComponent } from 'ember-qunit';
-moduleForComponent('nested-question', 'Component: nested-question-component', {
+moduleForComponent('nested-question', 'Component: nested-question', {
   beforeEach: function() {
     this.q1 = Ember.Object.create({
       ident: "foo",
+      answerForOwner: function(){ }
     });
     return this.q2 = Ember.Object.create({
-      ident: "bar"
+      ident: "bar",
+      answerForOwner: function(){ }
     });
   }
 });

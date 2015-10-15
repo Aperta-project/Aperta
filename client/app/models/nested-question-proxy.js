@@ -9,9 +9,17 @@ export default Ember.ObjectProxy.extend({
     Ember.assert("Must have provided nestedQuestion when creating this object", this.get('nestedQuestion'));
     Ember.assert("Must have provided owner when creating this object", this.get('owner'));
     this.set('content', this.get('nestedQuestion'));
+    this.set("answer", this._loadAnswer());
   },
 
-  answer: Ember.computed('nestedQuestion', 'owner', function(){
+  refreshAnswer: Ember.observer("answer.isDeleted", function(){
+    let answer = this.get("answer");
+    if(answer && answer.get("isDeleted")){
+      this.set("answer", this._loadAnswer());
+    }
+  }),
+
+  _loadAnswer: function(){
     let nestedQuestion = this.get("nestedQuestion");
     let owner = this.get("owner");
 
@@ -19,5 +27,5 @@ export default Ember.ObjectProxy.extend({
     let decision = this.get("decision");
 
     return nestedQuestion.answerForOwner(owner, decision);
-  })
+  }
 });

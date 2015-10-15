@@ -24,6 +24,7 @@ export default DS.Model.extend({
       if(decision){
         matched = matched && Ember.isEqual(parseInt(answer.get("decision.id")), parseInt(decision.get("id")));
       }
+      matched = matched && !answer.get("isDeleted");
       return matched;
     });
 

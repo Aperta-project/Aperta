@@ -1,5 +1,6 @@
-case Rails.env
-when 'development'
+if Rails.env.production?
+  # don't run seeds in production
+else
   ENV['PUSHER_ENABLED'] = 'false'
 
   Rake::Task['data:create_task_types'].invoke
@@ -98,8 +99,6 @@ when 'development'
       user.affiliations.new(name: "Affiliation #{i}")
     end
   }
-
-  FactoryGirl.create(:flow)
 
   Rake::Task['data:create_task_types'].invoke
   Rake::Task['journal:create_default_templates'].invoke

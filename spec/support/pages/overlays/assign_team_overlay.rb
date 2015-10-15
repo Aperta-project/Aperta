@@ -6,6 +6,7 @@ class AssignTeamOverlay < CardOverlay
 
     new.tap do |overlay|
       if block_given?
+        page.assert_selector(".overlay-container .overlay-content")
         blk.call overlay
         wait_for_ajax
         overlay.dismiss
@@ -14,6 +15,8 @@ class AssignTeamOverlay < CardOverlay
   end
 
   def assign_role_for_user(role_name, user)
+    page.assert_selector(".invite-reviewers")
+
     select2 role_name, from: "Role"
     wait_for_ajax
 

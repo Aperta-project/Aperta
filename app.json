@@ -1,0 +1,206 @@
+{
+  "name": "tahi",
+  "description": "tahi-review-app",
+  "success_url": "/",
+  "repository": "https://github.com/Tahi-Project/tahi",
+  "scripts": {
+    "postdeploy": "rake db:setup"
+  },
+  "env": {
+    "ADMIN_EMAIL": {
+      "required": true
+    },
+    "APP_NAME": {
+      "required": true
+    },
+    "AWS_ACCESS_KEY_ID": {
+      "required": true
+    },
+    "AWS_REGION": {
+      "required": true
+    },
+    "AWS_SECRET_ACCESS_KEY": {
+      "required": true
+    },
+    "BASIC_AUTH_REQUIRED": {
+      "required": true
+    },
+    "BASIC_HTTP_PASSWORD": {
+      "required": true
+    },
+    "BASIC_HTTP_USERNAME": {
+      "required": true
+    },
+    "BUGSNAG_API_KEY": {
+      "required": true
+    },
+    "BUGSNAG_JAVASCRIPT_API_KEY": {
+      "required": true
+    },
+    "BUILDPACK_URL": {
+      "required": true
+    },
+    "BUNDLE_WITHOUT": {
+      "required": true
+    },
+    "CAS_DISABLE_SSL_VERIFICATION": {
+      "required": true
+    },
+    "CAS_ENABLED": {
+      "required": true
+    },
+    "CAS_HOST": {
+      "required": true
+    },
+    "CAS_LOGIN_URL": {
+      "required": true
+    },
+    "CAS_PORT": {
+      "required": true
+    },
+    "CAS_SERVICE_VALIDATE_URL": {
+      "required": true
+    },
+    "CAS_SSL": {
+      "required": true
+    },
+    "DATABASEDOTCOM_CLIENT_ID": {
+      "required": true
+    },
+    "DATABASEDOTCOM_CLIENT_SECRET": {
+      "required": true
+    },
+    "DATABASEDOTCOM_HOST": {
+      "required": true
+    },
+    "DATABASEDOTCOM_PASSWORD": {
+      "required": true
+    },
+    "DATABASEDOTCOM_USERNAME": {
+      "required": true
+    },
+    "DEFAULT_MAILER_URL": {
+      "required": true
+    },
+    "EVENT_STREAM_API_HOST": {
+      "required": true
+    },
+    "EVENT_STREAM_API_PORT": {
+      "required": true
+    },
+    "EVENT_STREAM_APP_ID": {
+      "required": true
+    },
+    "EVENT_STREAM_KEY": {
+      "required": true
+    },
+    "EVENT_STREAM_SECRET": {
+      "required": true
+    },
+    "EVENT_STREAM_WS_HOST": {
+      "required": true
+    },
+    "EVENT_STREAM_WS_PORT": {
+      "required": true
+    },
+    "FROM_EMAIL": {
+      "required": true
+    },
+    "HEROKU_APP_NAME": {
+      "required": true
+    },
+    "HEROKU_PARENT_APP_NAME": {
+      "required": true
+    },
+    "IHAT_URL": {
+      "required": true
+    },
+    "MAILSAFE_REPLACEMENT_ADDRESS": {
+      "required": true
+    },
+    "MAX_THREADS": {
+      "required": true
+    },
+    "NED_API_URL": {
+      "required": true
+    },
+    "NED_CAS_APP_ID": {
+      "required": true
+    },
+    "NED_CAS_APP_PASSWORD": {
+      "required": true
+    },
+    "NED_DISABLE_SSL_VERIFICATION": {
+      "required": true
+    },
+    "NEWRELIC_APP_NAME": {
+      "required": true
+    },
+    "NEWRELIC_KEY": {
+      "required": true
+    },
+    "NODE_MODULES_CACHE": {
+      "required": true
+    },
+    "ORCID_API_HOST": {
+      "required": true
+    },
+    "ORCID_ENABLED": {
+      "required": true
+    },
+    "ORCID_KEY": {
+      "required": true
+    },
+    "ORCID_SECRET": {
+      "required": true
+    },
+    "ORCID_SITE_HOST": {
+      "required": true
+    },
+    "PASSWORD_AUTH_ENABLED": {
+      "required": true
+    },
+    "PUMA_WORKERS": "1",
+    "PUSHER_ENABLED": {
+      "required": true
+    },
+    "PUSHER_VERBOSE_LOGGING": {
+      "required": true
+    },
+    "RACK_ENV": {
+      "required": true
+    },
+    "RAILS_ASSET_HOST": {
+      "required": true
+    },
+    "RAILS_ENV": {
+      "required": true
+    },
+    "RAILS_SECRET_TOKEN": {
+      "required": true
+    },
+    "REDIS_PROVIDER": {
+      "required": true
+    },
+    "S3_BUCKET": {
+      "required": true
+    },
+    "S3_URL": {
+      "required": true
+    },
+    "SEGMENT_IO_WRITE_KEY": {
+      "required": true
+    }
+  },
+  "addons": [
+    "scheduler:standard",
+    "sendgrid:starter",
+    "papertrail:choklad",
+    "heroku-postgresql:hobby-dev",
+    "rediscloud:30"
+  ],
+  "formation": [
+    { "process": "web",    "quantity": 1},
+    { "process": "worker", "quantity": 1}
+  ]
+}

@@ -5,7 +5,7 @@ machine:
 
   ruby:
     version:
-      2.2.2 # when changing ruby versions, also update the cache_directory path below
+      2.2.3 # when changing ruby versions, also update the cache_directory path below
 
   environment:
     RAILS_ENV: test
@@ -15,7 +15,7 @@ machine:
 ## Customize dependencies
 dependencies:
   cache_directories:
-    - "~/.rvm/gems/ruby-2.2.2@tahi"
+    - "~/.rvm/gems/ruby-2.2.3@tahi"
     - "client/node_modules"
     - "client/bower_components"
 

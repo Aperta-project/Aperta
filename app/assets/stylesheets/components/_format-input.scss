@@ -18,7 +18,7 @@
   padding: 15px 7px 15px 7px;
   width: 50px;
   color: #ddd;
-  font-size: 18px;
+  font-size: 16px;
   text-align: center;
   cursor: pointer;
   @include display(flex);
@@ -38,4 +38,8 @@
 
 .format-input--active .format-input-button {
   color: #666;
+}
+
+.format-input--active .format-input-button--active {
+  color: $tahi-green;
 }

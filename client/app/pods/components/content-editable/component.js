@@ -1,25 +1,49 @@
 import Ember from 'ember';
 
+const { computed, observer, on } = Ember;
+
 export default Ember.Component.extend({
   attributeBindings: ['contenteditable', 'placeholder'],
   editable: true,
   placeholder: '',
   plaintext: false,
   preventEnterKey: false,
+  _savedRange: null,
+  _savedSelection: null,
   _userIsTyping: false,
 
-  setup: Ember.on('didInsertElement', function() {
+  _valueAndPlaceholderSetup: on('didInsertElement', function() {
     this.setHTMLFromValue();
     if (this.elementIsEmpty() && this.get('placeholder')) {
       this.setPlaceholder();
     }
   }),
 
-  contenteditable: Ember.computed('editable', function() {
+  _setupSelectEvent: on('didInsertElement', function() {
+    const eventName = 'selectionchange.' + this.elementId;
+    const me = this.$();
+
+    $(document).on(eventName, (event)=> {
+      if (event.currentTarget && event.currentTarget.activeElement) {
+        if($(event.currentTarget.activeElement).is(me)) {
+          this.selectionIn();
+        } else {
+          this.selectionOut();
+        }
+      }
+    });
+  }),
+
+  _teardownSelectEvent: on('willDestroyElement', function() {
+    const eventName = 'selectionchange.' + this.elementId;
+    $(document).off(eventName);
+  }),
+
+  contenteditable: computed('editable', function() {
     return this.get('editable') ? 'true' : undefined;
   }),
 
-  valueDidChange: Ember.observer('value', function() {
+  valueDidChange: observer('value', function() {
     if (this.get('value') && !this.get('_userIsTyping')) {
       this.setHTMLFromValue();
     }
@@ -59,6 +83,16 @@ export default Ember.Component.extend({
     if(action) { action(); }
   },
 
+  selectionIn() {
+    const action = this.attrs['selection-in'];
+    if(action) { action(); }
+  },
+
+  selectionOut() {
+    const action = this.attrs['selection-out'];
+    if(action) { action(); }
+  },
+
   elementIsEmpty() {
     return Ember.isEmpty(this.$().text());
   },
@@ -77,18 +111,26 @@ export default Ember.Component.extend({
     this.unmute();
   },
 
-  setHTMLFromValue() {
-    if (!this.$()) { return; }
-    this.$().html(this.get('value'));
-    this.unmute();
-  },
-
   mute() {
     this.$().addClass('content-editable-muted');
   },
 
   unmute() {
     this.$().removeClass('content-editable-muted');
+  },
+
+  setHTMLFromValue() {
+    if (!this.$()) { return; }
+    const html = this.$().html();
+    const value = this.get('value');
+
+    // Don't force DOM changes. It's possible markup and value were
+    // changed from an outside component.
+    if(html !== value) {
+      this.$().html(value);
+    }
+
+    this.unmute();
   },
 
   setValueFromHTML() {

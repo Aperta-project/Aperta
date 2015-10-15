@@ -1,5 +1,12 @@
 import Ember from 'ember';
 
+const ELEMENT_NAME_MAP = {
+  'b': 'bold',
+  'i': 'italic',
+  'sup': 'superscript',
+  'sub': 'subscript'
+};
+
 /**
  *  format-input is an input like component for displaying an interface
  *  to content editable options.
@@ -26,7 +33,10 @@ import Ember from 'ember';
 **/
 
 export default Ember.Component.extend({
-  classNameBindings: [':format-input', 'active:format-input--active'],
+  classNameBindings: [
+    ':format-input',
+    'active:format-input--active'
+  ],
 
   /**
    *  Text displayed in content-editable component
@@ -57,6 +67,7 @@ export default Ember.Component.extend({
    *  @optional
   **/
   displayBold: true,
+  _boldActive: false,
 
   /**
    *  Show/hide italic button
@@ -67,6 +78,7 @@ export default Ember.Component.extend({
    *  @optional
   **/
   displayItalic: true,
+  _italicActive: false,
 
   /**
    *  Show/hide superscript button
@@ -77,6 +89,7 @@ export default Ember.Component.extend({
    *  @optional
   **/
   displaySuperscript: true,
+  _superscriptActive: false,
 
   /**
    *  Show/hide subscript button
@@ -87,6 +100,7 @@ export default Ember.Component.extend({
    *  @optional
   **/
   displaySubscript: true,
+  _subscriptActive: false,
 
   /**
    *  Show/hide remove formatting button
@@ -97,31 +111,6 @@ export default Ember.Component.extend({
    *  @optional
   **/
   displayRemove: true,
-
-  bold() {
-    document.execCommand('bold',false, null);
-    this.syncMarkupAndValue();
-  },
-
-  italic() {
-    document.execCommand('italic', false, null);
-    this.syncMarkupAndValue();
-  },
-
-  superscript() {
-    document.execCommand('superscript', false, null);
-    this.syncMarkupAndValue();
-  },
-
-  subscript() {
-    document.execCommand('subscript', false, null);
-    this.syncMarkupAndValue();
-  },
-
-  remove() {
-    document.execCommand('removeFormat', false, null);
-    this.syncMarkupAndValue();
-  },
 
   /**
    *  This will pass the formatted content
@@ -134,9 +123,67 @@ export default Ember.Component.extend({
     this.set('value', this.$('.format-input-field').html());
   },
 
+  // 
+  getSelectedElements() {
+    const selection = document.getSelection();
+
+    if (
+      !selection.rangeCount ||
+      selection.isCollapsed ||
+      !selection.getRangeAt(0).commonAncestorContainer
+    ) {
+      return [];
+    }
+
+    const range = selection.getRangeAt(0);
+
+    if (range.commonAncestorContainer.nodeType === 3) {
+      let toRet = [];
+      let currNode = range.commonAncestorContainer;
+
+      while (currNode.parentNode && currNode.parentNode.childNodes.length === 1) {
+        toRet.push(currNode.parentNode);
+        currNode = currNode.parentNode;
+      }
+
+      return toRet;
+    }
+
+    const containers = range.commonAncestorContainer.getElementsByTagName('*');
+    const isFunction = typeof selection.containsNode === 'function';
+
+    return _.filter(containers, function(element) {
+      return isFunction ? selection.containsNode(element, true) : true;
+    });
+  },
+
+  getActiveFormatTypes() {
+    return _.map(this.getSelectedElements(), function(element) {
+      const name = element.tagName.toLowerCase();
+
+      if(ELEMENT_NAME_MAP[name]) {
+        return ELEMENT_NAME_MAP[name];
+      }
+    });
+  },
+
+  markActiveFormatTypes() {
+    this.clearActiveFormatTypes();
+    _.each(this.getActiveFormatTypes(), (type)=> {
+      this.set(`_${type}Active`, true);
+    });
+  },
+
+  clearActiveFormatTypes() {
+    $.each(ELEMENT_NAME_MAP, (type)=> {
+      this.set(`_${ELEMENT_NAME_MAP[type]}Active`, false);
+    });
+  },
+
   actions: {
     format(type) {
-      this[type]();
+      document.execCommand(type,false, null);
+      this.syncMarkupAndValue();
     },
 
     'focus-in': function() {
@@ -145,6 +192,14 @@ export default Ember.Component.extend({
 
     'focus-out': function() {
       this.set('active', false);
+    },
+
+    'selection-in': function() {
+      this.markActiveFormatTypes();
+    },
+
+    'selection-out': function() {
+      this.clearActiveFormatTypes();
     }
   }
 });

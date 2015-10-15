@@ -182,6 +182,9 @@ export default Ember.Component.extend({
 
     'focus-out': function() {
       this.set('active', false);
+
+      const action = this.attrs['focus-out'];
+      if(action) { action(); }
     },
 
     'selection-in': function() {

@@ -134,8 +134,9 @@
       Short titles are used as the running header on published PDFs.
     </ul>
 
-    {{input value=model.paper.shortTitle
-            class="form-control"
-            focus-out="savePaperShortTitle"}}
+    {{format-input value=model.paper.shortTitle
+                   placeholder=model.paper.title
+                   displayBold=false
+                   focus-out=(action "savePaperShortTitle")}}
   </li>
 </ol>

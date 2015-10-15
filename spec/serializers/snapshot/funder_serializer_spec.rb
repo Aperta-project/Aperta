@@ -4,16 +4,15 @@ describe Snapshot::FunderSerializer do
   let(:funder) { FactoryGirl.create(:funder) }
 
   def find_property properties, name
-    properties.select { |p| p[:name] == name }.first[:value]
+    properties.select { |p| p[:name] == name }.first
   end
 
   it "snapshots a funder's properties" do
     snapshot = Snapshot::FunderSerializer.new(funder).snapshot
-    properties = snapshot[:properties]
 
-    expect(find_property(properties, "name")).to eq(funder.name)
-    expect(find_property(properties, "grant_number")).to eq(funder.grant_number)
-    expect(find_property(properties, "website")).to eq(funder.website)
+    expect(find_property(snapshot, "name")[:value]).to eq(funder.name)
+    expect(find_property(snapshot, "grant_number")[:value]).to eq(funder.grant_number)
+    expect(find_property(snapshot, "website")[:value]).to eq(funder.website)
   end
 
   it "snapshots a funder's nested questions" do
@@ -31,7 +30,10 @@ describe Snapshot::FunderSerializer do
 
     snapshot = Snapshot::FunderSerializer.new(funder).snapshot
 
-    expect(snapshot[:questions][0][:answers][0][:value]).to eq(infulence_answer.value)
-    expect(snapshot[:questions][0][:children][0][:answers][0][:value]).to eq(role_answer.value)
+    funder_had_infulence = find_property(snapshot, "funder_had_influence")
+    expect(funder_had_infulence[:value][:answer]).to eq(infulence_answer.value)
+
+    funder_had_infulence_children = funder_had_infulence[:children]
+    expect(find_property(funder_had_infulence_children, "funder_role_description")[:value][:answer]).to eq(role_answer.value)
   end
 end

@@ -7,10 +7,12 @@ module Snapshot
     end
 
     def snapshot
-      {
-        properties: snapshot_properties,
-        questions: snapshot_nested_questions
-      }
+      properties = snapshot_properties
+      if properties
+        properties + snapshot_nested_questions
+      else
+        snapshot_nested_questions
+      end
     end
 
     def snapshot_properties

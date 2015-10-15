@@ -2,10 +2,12 @@ module Snapshot
   class FinancialDisclosureTaskSerializer < BaseTaskSerializer
 
     def snapshot
-      {
-        funders: snapshot_funders,
-        questions: snapshot_nested_questions
-      }
+      funders = snapshot_funders
+      if funders
+          funders + snapshot_nested_questions
+      else
+        snapshot_nested_questions
+      end
     end
 
     def snapshot_funders

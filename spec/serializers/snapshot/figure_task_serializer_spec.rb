@@ -15,7 +15,7 @@ describe Snapshot::FigureTaskSerializer do
 
   it "snapshots a figure task" do
     snapshot = Snapshot::FigureTaskSerializer.new(task).snapshot
-    figure = snapshot[:properties][0]
+    figure = snapshot[0]
 
     expect(figure[:title]).to eq(attachment.title)
     expect(figure[:caption]).to eq(attachment.caption)

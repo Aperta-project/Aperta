@@ -103,16 +103,6 @@ export default Ember.Component.extend({
   _subscriptActive: false,
 
   /**
-   *  Show/hide remove formatting button
-   *
-   *  @property displayRemove
-   *  @type Boolean
-   *  @default true
-   *  @optional
-  **/
-  displayRemove: true,
-
-  /**
    *  This will pass the formatted content
    *  down to the content-editable component
    *

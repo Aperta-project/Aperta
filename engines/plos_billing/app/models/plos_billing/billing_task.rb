@@ -245,7 +245,7 @@ module PlosBilling
         owner_id:nil,
         owner_type: name,
         ident: "pfa_supporting_docs",
-        value_type: "text",
+        value_type: "boolean",
         text: "If you would like to provide documents to assist in demonstrating your request, you will have the opportunity to do so. After PLOS has received the completed application, the confirmation email will provide direction on where to send supplemental documents. Do you intend to supply supplemental documents?",
         position: 27
       )

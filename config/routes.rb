@@ -53,7 +53,7 @@ Tahi::Application.routes.draw do
     resources :countries, only: :index
 
     get 'paper_tracker', to: 'paper_tracker#index'
-    resources :supporting_information_files, only: [:create, :destroy, :update] do
+    resources :supporting_information_files, only: [:show, :create, :destroy, :update] do
       put :update_attachment, on: :member
     end
     resources :affiliations, only: [:index, :create, :destroy]

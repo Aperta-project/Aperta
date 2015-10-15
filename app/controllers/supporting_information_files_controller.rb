@@ -3,6 +3,10 @@ class SupportingInformationFilesController < ApplicationController
   before_action :authenticate_user!
   before_action :enforce_policy
 
+  def show
+    respond_with file
+  end
+
   def create
     file.update_attributes(status: "processing")
     DownloadSupportingInfoWorker.perform_async(file.id, params[:url])

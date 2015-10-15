@@ -125,11 +125,7 @@ class PaperTrackerPage(AuthenticatedPage):
         for paper in journal_papers:
           withdrawn_papers.append(paper)
     # finally combine the two lists, NULL submitted_at first
-    papers = []
-    for paper in withdrawn_papers:
-      papers.append(paper)
-    for paper in submitted_papers:
-      papers.append(paper)
+    papers = withdrawn_papers + submitted_papers
     # print (papers)
 
     if total_count > 0:
@@ -188,7 +184,9 @@ class PaperTrackerPage(AuthenticatedPage):
             for participant in db_participants:
               name.append(participant[0] + ' ' + participant[1])
             db_participants = name
-            assert participants.sort() == db_participants.sort()
+            participants.sort()
+            db_participants.sort()
+            assert participants == db_participants
           elif role.startswith('Collaborator'):
             role = role.split(': ')[1]
             collaborators = role.split(', ')
@@ -200,7 +198,9 @@ class PaperTrackerPage(AuthenticatedPage):
             for collaborator in db_collaborators:
               name.append(collaborator[0] + ' ' + collaborator[1])
             db_collaborators = name
-            assert collaborators.sort() == db_collaborators.sort()
+            collaborators.sort()
+            db_collaborators.sort()
+            assert collaborators == db_collaborators
           elif role.startswith('Reviewer'):
             role = role.split(': ')[1]
             reviewers = role.split(', ')
@@ -212,7 +212,9 @@ class PaperTrackerPage(AuthenticatedPage):
             for reviewer in db_reviewers:
               name.append(reviewer[0] + ' ' + reviewer[1])
             db_reviewers = name
-            assert reviewers.sort() == db_reviewers.sort()
+            reviewers.sort()
+            db_reviewers.sort()
+            assert reviewers == db_reviewers
           elif role.startswith('Editor'):
             role = role.split(': ')[1]
             editors = role.split(', ')
@@ -224,7 +226,9 @@ class PaperTrackerPage(AuthenticatedPage):
             for editor in db_editors:
               name.append(editor[0] + ' ' + editor[1])
             db_editors = name
-            assert editors.sort() == db_editors.sort()
+            editors.sort()
+            db_editors.sort()
+            assert editors == db_editors
           elif role.startswith('Admin'):
             role = role.split(': ')[1]
             admins = role.split(', ')
@@ -236,7 +240,9 @@ class PaperTrackerPage(AuthenticatedPage):
             for admin in db_admins:
               name.append(admin[0] + ' ' + admin[1])
             db_admins = name
-            assert admins.sort() == db_admins.sort()
+            admins.sort()
+            db_admins.sort()
+            assert admins == db_admins
           else:
             print(role)
             return False

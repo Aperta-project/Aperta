@@ -42,6 +42,7 @@ Capybara.register_driver :selenium do |app|
 end
 
 Capybara.javascript_driver = :selenium
+Capybara.wait_on_first_by_default = true
 
 # Store screenshots in artifacts dir on circle
 if ENV['CIRCLE_TEST_REPORTS']

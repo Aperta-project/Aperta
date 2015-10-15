@@ -43,3 +43,6 @@ bin/eventsource
 dump.rdb
 db/tahi.dump
 spring
+
+# ignore Gemfile.lock in engines/
+engines/*/Gemfile.lock

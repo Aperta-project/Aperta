@@ -251,7 +251,8 @@ class DataMigrator::ReportingGuidelinesQuestionsMigrator < DataMigrator::Base
       owner_type: REPORTING_GUIDELINES_TASK,
       text: "Clinical Trial",
       value_type: "boolean",
-      ident: "clinical_trial"
+      ident: "clinical_trial",
+      position: 1
     ).first_or_create!
 
     @nested_systematic_reviews_question = NestedQuestion.where(
@@ -259,7 +260,8 @@ class DataMigrator::ReportingGuidelinesQuestionsMigrator < DataMigrator::Base
       owner_type: REPORTING_GUIDELINES_TASK,
       text: "Systematic Reviews",
       value_type: "boolean",
-      ident: "systematic_reviews"
+      ident: "systematic_reviews",
+      position: 2
     ).first_or_create!
 
     @nested_systematic_reviews_checklist = NestedQuestion.where(
@@ -268,7 +270,8 @@ class DataMigrator::ReportingGuidelinesQuestionsMigrator < DataMigrator::Base
       text: "Provide a completed PRISMA checklist as supporting information.  You can <a href='http://www.prisma-statement.org/'>download it here</a>.",
       value_type: "attachment",
       ident: "checklist",
-      parent_id: @nested_systematic_reviews_question
+      parent_id: @nested_systematic_reviews_question,
+      position: 1
     ).first_or_create!
 
     @nested_meta_analyses_question = NestedQuestion.where(
@@ -276,7 +279,8 @@ class DataMigrator::ReportingGuidelinesQuestionsMigrator < DataMigrator::Base
       owner_type: REPORTING_GUIDELINES_TASK,
       text: "Meta-analyses",
       value_type: "boolean",
-      ident: "meta_analyses"
+      ident: "meta_analyses",
+      position: 3
     ).first_or_create!
 
     @nested_meta_analyses_checklist = NestedQuestion.where(
@@ -285,7 +289,8 @@ class DataMigrator::ReportingGuidelinesQuestionsMigrator < DataMigrator::Base
       text: "Provide a completed PRISMA checklist as supporting information.  You can <a href='http://www.prisma-statement.org/'>download it here</a>.",
       value_type: "attachment",
       ident: "checklist",
-      parent_id: @nested_meta_analyses_question
+      parent_id: @nested_meta_analyses_question,
+      position: 1
     ).first_or_create!
 
     @nested_diagnostic_studies_question = NestedQuestion.where(
@@ -293,7 +298,8 @@ class DataMigrator::ReportingGuidelinesQuestionsMigrator < DataMigrator::Base
       owner_type: REPORTING_GUIDELINES_TASK,
       text: "Diagnostic studies",
       value_type: "boolean",
-      ident: "diagnostic_studies"
+      ident: "diagnostic_studies",
+      position: 4
     ).first_or_create!
 
     @nested_epidemiological_studies_question = NestedQuestion.where(
@@ -301,7 +307,8 @@ class DataMigrator::ReportingGuidelinesQuestionsMigrator < DataMigrator::Base
       owner_type: REPORTING_GUIDELINES_TASK,
       text: "Epidemiological studies",
       value_type: "boolean",
-      ident: "epidemiological_studies"
+      ident: "epidemiological_studies",
+      position: 5
     ).first_or_create!
 
     @nested_microarray_studies_question = NestedQuestion.where(
@@ -309,7 +316,8 @@ class DataMigrator::ReportingGuidelinesQuestionsMigrator < DataMigrator::Base
       owner_type: REPORTING_GUIDELINES_TASK,
       text: "Microarray studies",
       value_type: "boolean",
-      ident: "microarray_studies"
+      ident: "microarray_studies",
+      position: 6
     ).first_or_create!
   end
 

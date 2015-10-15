@@ -54,7 +54,8 @@ class DataMigrator::FinancialDisclosureQuestionsMigrator < DataMigrator::Base
       owner_type: FINANCIAL_DISCLOSURE_OWNER_TYPE,
       text: "Did any of the authors receive specific funding for this work?",
       ident: NEW_RECEIVED_FUNDING_IDENT,
-      value_type: "boolean"
+      value_type: "boolean",
+      position: 1
     ).first_or_create!
 
     @nested_funder_had_influence_question = NestedQuestion.where(
@@ -62,7 +63,8 @@ class DataMigrator::FinancialDisclosureQuestionsMigrator < DataMigrator::Base
       owner_type: FUNDER_OWNER_TYPE,
       text: "Did the funder have a role in study design, data collection and analysis, decision to publish, or preparation of the manuscript?",
       ident: NEW_FUNDER_HAD_INFLUENCE_IDENT,
-      value_type: "boolean"
+      value_type: "boolean",
+      position: 2
     ).first_or_create!
 
     @nested_funder_role_description_question = NestedQuestion.where(
@@ -71,7 +73,8 @@ class DataMigrator::FinancialDisclosureQuestionsMigrator < DataMigrator::Base
       text: "Describe the role of any sponsors or funders in the study design, data collection and analysis, decision to publish, or preparation of the manuscript.",
       ident: NEW_FUNDER_ROLE_DESCRIPTION_IDENT,
       value_type: "text",
-      parent: @nested_funder_had_influence_question
+      parent: @nested_funder_had_influence_question,
+      position: 1
     ).first_or_create!
   end
 

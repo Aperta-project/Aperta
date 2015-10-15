@@ -40,7 +40,8 @@ class DataMigrator::CompetingInterestsQuestionsMigrator < DataMigrator::Base
       owner_type: COMPETING_INTERESTS_TASK,
       text: "Do any authors of this manuscript have competing interests (as described in the <a target='_blank' href='http://www.plosbiology.org/static/policies#competing'>PLOS Policy on Declaration and Evaluation of Competing Interests</a>)?",
       value_type: "boolean",
-      ident: "competing_interests"
+      ident: "competing_interests",
+      position: 1
     ).first_or_create!
 
     @nested_competing_interests_statement_question = NestedQuestion.where(
@@ -49,7 +50,8 @@ class DataMigrator::CompetingInterestsQuestionsMigrator < DataMigrator::Base
       text: "Please provide details about any and all competing interests in the box below. Your response should begin with this statement: \"I have read the journal's policy and the authors of this manuscript have the following competing interests.\"",
       value_type: "text",
       ident: "statement",
-      parent_id: @nested_competing_interests_question.id
+      parent_id: @nested_competing_interests_question.id,
+      position: 1
     ).first_or_create!
   end
 

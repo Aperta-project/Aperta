@@ -42,7 +42,8 @@ class DataMigrator::EthicsQuestionsMigrator < DataMigrator::Base
       owner_type: OWNER_TYPE,
       text: "Does your study involve Human Subject Research (human participants and/or tissue)?",
       ident: "human_subjects",
-      value_type: "boolean"
+      value_type: "boolean",
+      position: 1
     ).first_or_create!
 
     @nested_participants_question = NestedQuestion.where(
@@ -51,7 +52,8 @@ class DataMigrator::EthicsQuestionsMigrator < DataMigrator::Base
       text: "Please enter the name of the IRB or Ethics Committee that approved this study in the space below. Include the approval number and/or a statement indicating approval of this research.",
       value_type: "text",
       ident: "participants",
-      parent: @nested_human_subjects_question
+      parent: @nested_human_subjects_question,
+      position: 1
     ).first_or_create!
 
     @nested_animal_subjects_question = NestedQuestion.where(
@@ -59,7 +61,8 @@ class DataMigrator::EthicsQuestionsMigrator < DataMigrator::Base
       owner_type: OWNER_TYPE,
       text: "Does your study involve Animal Research (vertebrate animals, embryos or tissues)?",
       ident: "animal_subjects",
-      value_type: "boolean"
+      value_type: "boolean",
+      position: 2
     ).first_or_create!
 
     @nested_field_permit_question = NestedQuestion.where(
@@ -68,7 +71,8 @@ class DataMigrator::EthicsQuestionsMigrator < DataMigrator::Base
       text: "Please enter your statement below:",
       value_type: "text",
       ident: "field_permit",
-      parent: @nested_animal_subjects_question
+      parent: @nested_animal_subjects_question,
+      position: 1
     ).first_or_create!
   end
 

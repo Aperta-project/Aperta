@@ -13,14 +13,16 @@ module TahiStandardTasks
         owner_type: name,
         ident: "recommend_or_oppose",
         value_type: "boolean",
-        text: "Are you recommending or opposing this reviewer? (required)"
+        text: "Are you recommending or opposing this reviewer? (required)",
+        position: 1
       )
       questions << NestedQuestion.new(
         owner_id: nil,
         owner_type: name,
         ident: "reason",
         value_type: "text",
-        text: "Optional: reason for recommending or opposing this reviewer"
+        text: "Optional: reason for recommending or opposing this reviewer",
+        position: 2
       )
 
       questions.each do |q|

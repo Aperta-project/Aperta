@@ -11,7 +11,8 @@ module TahiStandardTasks
         owner_type: name,
         ident: "figure_complies",
         value_type: "boolean",
-        text: "Yes - I confirm our figures comply with the guidelines."
+        text: "Yes - I confirm our figures comply with the guidelines.",
+        position: 1
       )
 
       questions.each do |q|

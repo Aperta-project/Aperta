@@ -11,7 +11,8 @@ module TahiStandardTasks
         owner_type: name,
         ident: "author_received_funding",
         value_type: "boolean",
-        text: "Did any of the authors receive specific funding for this work?"
+        text: "Did any of the authors receive specific funding for this work?",
+        position: 1
       )
 
       questions.each do |q|

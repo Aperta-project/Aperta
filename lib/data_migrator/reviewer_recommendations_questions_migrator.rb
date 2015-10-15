@@ -36,7 +36,8 @@ class DataMigrator::ReviewerRecommendationsQuestionsMigrator < DataMigrator::Bas
       owner_type: OWNER_TYPE,
       ident: IDENTS[:RECOMMEND_OR_OPPOSE],
       value_type: "boolean",
-      text: "Recommend or oppose"
+      text: "Recommend or oppose",
+      position: 1
     )
 
     questions << NestedQuestion.new(
@@ -44,7 +45,8 @@ class DataMigrator::ReviewerRecommendationsQuestionsMigrator < DataMigrator::Bas
       owner_type: OWNER_TYPE,
       ident: IDENTS[:REASON],
       value_type: "text",
-      text: "Reason"
+      text: "Reason",
+      position: 2
     )
 
     questions.each do |q|

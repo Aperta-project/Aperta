@@ -46,7 +46,8 @@ class DataMigrator::FigureQuestionsMigrator < DataMigrator::Base
       owner_type: OWNER_TYPE,
       text: "Yes - I confirm our figures comply with the guidelines.",
       ident: NEW_FIGURES_COMPLIES_IDENT,
-      value_type: "boolean"
+      value_type: "boolean",
+      position: 1
     ).first_or_create!
   end
 

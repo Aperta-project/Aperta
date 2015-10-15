@@ -74,7 +74,8 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
       owner_type: TASK_OWNER_TYPE,
       ident: "competing_interests",
       value_type: "text",
-      text: "Do you have any potential or perceived competing interests that may influence your review?"
+      text: "Do you have any potential or perceived competing interests that may influence your review?",
+      position: 1
     )
 
     questions << NestedQuestion.new(
@@ -83,13 +84,15 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
       ident: "support_conclusions",
       value_type: "boolean",
       text: "Is the manuscript technically sound, and do the data support the conclusions?",
+      position: 2,
       children: [
         NestedQuestion.new(
           owner_id: nil,
           owner_type: TASK_OWNER_TYPE,
           ident: "explanation",
           value_type: "text",
-          text: "Explanation"
+          text: "Explanation",
+          position: 1
         )
       ]
     )
@@ -100,13 +103,15 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
       ident: "statistical_analysis",
       value_type: "boolean",
       text: "Has the statistical analysis been performed appropriately and rigorously?",
+      position: 3,
       children: [
         NestedQuestion.new(
           owner_id: nil,
           owner_type: TASK_OWNER_TYPE,
           ident: "explanation",
           value_type: "text",
-          text: "Statistical Analysis Explanation"
+          text: "Statistical Analysis Explanation",
+          position: 1
         )
       ]
     )
@@ -117,13 +122,15 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
       ident: "standards",
       value_type: "boolean",
       text: "Does the manuscript adhere to standards in this field for data availability?",
+      position: 4,
       children: [
         NestedQuestion.new(
           owner_id: nil,
           owner_type: TASK_OWNER_TYPE,
           ident: "explanation",
           value_type: "text",
-          text: "Standards Explanation"
+          text: "Standards Explanation",
+          position: 1
         )
       ]
     )
@@ -134,13 +141,15 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
       ident: "intelligible",
       value_type: "boolean",
       text: "Is the manuscript presented in an intelligible fashion and written in standard English?",
+      position: 5,
       children: [
         NestedQuestion.new(
           owner_id: nil,
           owner_type: TASK_OWNER_TYPE,
           ident: "explanation",
           value_type: "text",
-          text: "Intelligible Explanation"
+          text: "Intelligible Explanation",
+          position: 1
         )
       ]
     )
@@ -150,7 +159,8 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
       owner_type: TASK_OWNER_TYPE,
       ident: "additional_comments",
       value_type: "text",
-      text: "(Optional) Please offer any additional comments to the author."
+      text: "(Optional) Please offer any additional comments to the author.",
+      position: 6
     )
 
     questions << NestedQuestion.new(
@@ -158,7 +168,8 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
       owner_type: TASK_OWNER_TYPE,
       ident: "identity",
       value_type: "text",
-      text: "(Optional) If you'd like your identity to be revealed to the authors, please include your name here."
+      text: "(Optional) If you'd like your identity to be revealed to the authors, please include your name here.",
+      position: 7
     )
 
     questions.each do |q|

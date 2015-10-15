@@ -40,7 +40,8 @@ class DataMigrator::DataAvailabilityQuestionsMigrator < DataMigrator::Base
       owner_type: OWNER_TYPE,
       text: "Do the authors confirm that all the data underlying the findings described in their manuscript are fully available without restriction?",
       ident: "data_fully_available",
-      value_type: "boolean"
+      value_type: "boolean",
+      position: 1
     ).first_or_create!
 
     @nested_data_location_question = NestedQuestion.where(
@@ -48,7 +49,8 @@ class DataMigrator::DataAvailabilityQuestionsMigrator < DataMigrator::Base
       owner_type: OWNER_TYPE,
       text: "Please describe where your data may be found, writing in full sentences.",
       value_type: "text",
-      ident: "data_location"
+      ident: "data_location",
+      position: 2
     ).first_or_create!
   end
 

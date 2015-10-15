@@ -126,7 +126,8 @@ class DataMigrator::TaxonQuestionsMigrator < DataMigrator::Base
       owner_type: TAXON_TASK,
       text: "Does this manuscript describe a new zoological taxon name?",
       value_type: "boolean",
-      ident: "taxon_zoological"
+      ident: "taxon_zoological",
+      position: 1
     ).first_or_create!
 
     @nested_zoological_complies_question = NestedQuestion.where(
@@ -135,7 +136,8 @@ class DataMigrator::TaxonQuestionsMigrator < DataMigrator::Base
       text: "All authors comply with the Policies Regarding Submission of a new Taxon Name",
       value_type: "boolean",
       ident: "complies",
-      parent_id: @nested_zoological_question.id
+      parent_id: @nested_zoological_question.id,
+      position: 1
     ).first_or_create
 
     @nested_botanical_question = NestedQuestion.where(
@@ -143,7 +145,8 @@ class DataMigrator::TaxonQuestionsMigrator < DataMigrator::Base
       owner_type: TAXON_TASK,
       text: "Does this manuscript describe a new botanical taxon name?",
       value_type: "boolean",
-      ident: "taxon_botnical"
+      ident: "taxon_botanical",
+      position: 2
     ).first_or_create!
 
     @nested_botanical_complies_question = NestedQuestion.where(
@@ -152,7 +155,8 @@ class DataMigrator::TaxonQuestionsMigrator < DataMigrator::Base
       text: "All authors comply with the Policies Regarding Submission of a new Taxon Name",
       value_type: "boolean",
       ident: "complies",
-      parent_id: @nested_botanical_question.id
+      parent_id: @nested_botanical_question.id,
+      position: 1
     ).first_or_create
   end
 

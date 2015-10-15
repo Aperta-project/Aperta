@@ -15,16 +15,21 @@ module TahiStandardTasks
     end
 
     def volume_number
-      question = a_question('volumeNumber')
-      errors.add(:volumeNumber, "Invalid Volume Number") unless question && question.answer.to_i > 0
+      positive_integer?(:volumeNumber)
     end
 
     def issue_number
-      question = a_question('issueNumber')
-      errors.add(:issueNumber, "Invalid Issue Number") unless question && question.answer.to_i > 0
+      positive_integer?(:issueNumber)
     end
 
     private
+
+    def positive_integer?(question_name)
+      question = a_question(question_name.to_s)
+      if not (question && /^\d+$/ =~ question.answer)
+        errors.add(question_name, "Must be a whole number")
+      end
+    end
 
     def a_question(type)
       questions.detect { |q| q.ident == "production_metadata.#{type}" }

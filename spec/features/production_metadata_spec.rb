@@ -75,8 +75,8 @@ feature 'Production Metadata Card', js: true do
         it 'shows an error'do
           find('#task_completed').click
           expect(find(".publication-date")).to have_text("Can't be blank")
-          expect(find(".volume-number")).to have_text("Invalid Volume Number")
-          expect(find(".issue-number")).to have_text("Invalid Issue Number")
+          expect(find(".volume-number")).to have_text("Must be a whole number")
+          expect(find(".issue-number")).to have_text("Must be a whole number")
         end
       end
     end

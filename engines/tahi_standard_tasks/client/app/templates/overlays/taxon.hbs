@@ -2,38 +2,41 @@
 
 <div class="question-list">
   <div class="question">
-    {{nested-question-check model=taxonQuestionForZoological
+    {{#nested-question-check
+        ident="taxon_zoological"
         owner=model
-        disabled=isSubmissionTaskNotEditable}}
+        disabled=isSubmissionTaskNotEditable as |selection|}}
 
-    {{#if taxonQuestionForZoological.answer.value}}
-      <div class="question-text">
-        <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
-      </div>
-      {{nested-question-check
-        model=compliesQuestionForZoological
-        owner=model
-        disabled=isSubmissionTaskNotEditable}}
-    {{/if}}
+      {{#if selection.checked }}
+        <div class="question-text">
+          <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
+        </div>
+        {{nested-question-check
+          ident="taxon_zoological.complies"
+          owner=model
+          disabled=isSubmissionTaskNotEditable}}
+      {{/if}}
+    {{/nested-question-check}}
   </div>
 
   <br>
 
   <div class="question">
-    {{nested-question-check
-      model=taxonQuestionForBotanical
+    {{#nested-question-check
+      ident="taxon_botanical"
       owner=model
-      disabled=isSubmissionTaskNotEditable}}
+      disabled=isSubmissionTaskNotEditable as |selection|}}
 
-    {{#if taxonQuestionForBotanical.answer.value}}
-      <div class="question-text">
-        <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
-      </div>
+      {{#if selection.checked }}
+        <div class="question-text">
+          <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
+        </div>
 
-      {{nested-question-check
-        model=compliesQuestionForBotanical
-        owner=model
-        disabled=isSubmissionTaskNotEditable}}
-    {{/if}}
+        {{nested-question-check
+          ident="taxon_botanical.complies"
+          owner=model
+          disabled=isSubmissionTaskNotEditable}}
+      {{/if}}
+    {{/nested-question-check}}
   </div>
 </div>

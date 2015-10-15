@@ -13,6 +13,5 @@ FactoryGirl.define do
     corresponding true
     title "Head Jedi"
     affiliation 'university of dagobah'
-    contributions ["brought cookies"]
   end
 end

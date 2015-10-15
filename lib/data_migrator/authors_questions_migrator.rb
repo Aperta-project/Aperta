@@ -144,7 +144,13 @@ class DataMigrator::AuthorsQuestionsMigrator < DataMigrator::Base
         )
         @expected_count += 1
 
-        author.contributions.each do |contribution|
+        contributions = if author[:contributions]
+          YAML.load(author[:contributions])
+        else
+          []
+        end
+
+        contributions.each do |contribution|
           nested_question = case contribution
             when /Conceived and designed the experiments/
               @conceived_and_designed_experiments_question

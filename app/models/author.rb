@@ -2,14 +2,14 @@ class Author < ActiveRecord::Base
   include EventStream::Notifiable
   include NestedQuestionable
 
+  CONTRIBUTIONS_QUESTION_IDENT = "contributions"
+
   acts_as_list
 
   belongs_to :paper
 
   belongs_to :authors_task, class_name: "TahiStandardTasks::AuthorsTask", inverse_of: :authors
   delegate :completed?, to: :authors_task, prefix: :task, allow_nil: true
-
-  serialize :contributions, Array
 
   validates :first_name, :last_name, :affiliation, :department, :title, :email, presence: true, if: :task_completed?
   validates :email, format: { with: Devise.email_regexp, message: "needs to be a valid email address" }, if: :task_completed?
@@ -18,6 +18,10 @@ class Author < ActiveRecord::Base
 
   def self.for_paper(paper)
     where(paper_id: paper)
+  end
+
+  def self.contributions_question
+    NestedQuestion.where(owner_id: nil, owner_type: name, ident: CONTRIBUTIONS_QUESTION_IDENT).first
   end
 
   def self.nested_questions
@@ -107,6 +111,13 @@ class Author < ActiveRecord::Base
     end
 
     NestedQuestion.where(owner_id:nil, owner_type:name).all
+  end
+
+  def contributions
+    contributions_question = self.class.contributions_question
+    return [] unless contributions_question
+    question_ids = self.class.contributions_question.children.map(&:id)
+    nested_question_answers.where(nested_question_id: question_ids)
   end
 
 end

@@ -27,7 +27,7 @@ class CommonTest(FrontEndTest):
     """
     Select a preexisting article using a word as a partial name
     for the title. init is True when the user is not logged in
-    and need to invoque login script to reach the homepage.
+    and need to invoke login script to reach the homepage.
     """
     dashboard = self.login() if init else DashboardPage(self.getDriver())
     if first:

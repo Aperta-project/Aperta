@@ -74,3 +74,11 @@ production:
   database: tahi_production
   pool: 48
   password:
+
+# PLoS Editorial Manager connection
+plos_editorial_manager:
+  adapter: sqlserver
+  host: <%= ENV['EM_HOST'] %>
+  database: <%= ENV['EM_DATABASE'] %>
+  username: <%= ENV['EM_USERNAME'] %>
+  password: <%= ENV['EM_PASSWORD'] %>

@@ -1,22 +1,19 @@
-module Snapshot
-  class FinancialDisclosureTaskSerializer < BaseTaskSerializer
-
-    def snapshot
-      funders = snapshot_funders
-      if funders
-          funders + snapshot_nested_questions
-      else
-        snapshot_nested_questions
-      end
+class Snapshot::FinancialDisclosureTaskSerializer < Snapshot::BaseTaskSerializer
+  def snapshot
+    funders = snapshot_funders
+    if funders
+        funders + snapshot_nested_questions
+    else
+      snapshot_nested_questions
     end
+  end
 
-    def snapshot_funders
-      funders = []
-      @task.funders.order(:id).each do |funder|
-        funder_serializer = Snapshot::FunderSerializer.new funder
-        funders << { funder: funder_serializer.snapshot }
-      end
-      funders
+  def snapshot_funders
+    funders = []
+    @task.funders.order(:id).each do |funder|
+      funder_serializer = Snapshot::FunderSerializer.new funder
+      funders << { funder: funder_serializer.snapshot }
     end
+    funders
   end
 end

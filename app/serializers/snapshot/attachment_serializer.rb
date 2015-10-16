@@ -1,21 +1,18 @@
-module Snapshot
-  class AttachmentSerializer < BaseSerializer
+class Snapshot::AttachmentSerializer < Snapshot::BaseSerializer
+  def initialize(attachment)
+    @attachment = attachment
+  end
 
-    def initialize(attachment)
-      @attachment = attachment
+  def snapshot
+    if @attachment.nil?
+      return nil
     end
 
-    def snapshot
-      if @attachment.nil?
-        return nil
-      end
-
-      {
-        file: @attachment.model[:attachment],
-        title: @attachment.model[:title],
-        caption: @attachment.model[:caption],
-        status: @attachment.model[:status]
-      }
-    end
+    {
+      file: @attachment.model[:attachment],
+      title: @attachment.model[:title],
+      caption: @attachment.model[:caption],
+      status: @attachment.model[:status]
+    }
   end
 end

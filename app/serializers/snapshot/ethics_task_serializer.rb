@@ -1,4 +1,2 @@
-module Snapshot
-  class EthicsTaskSerializer < BaseTaskSerializer
-  end
+class Snapshot::EthicsTaskSerializer < Snapshot::BaseTaskSerializer
 end

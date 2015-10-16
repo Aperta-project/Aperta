@@ -1,4 +1,2 @@
-module Snapshot
-  class ReportingGuidelinesTaskSerializer < BaseTaskSerializer
-  end
+class Snapshot::ReportingGuidelinesTaskSerializer < Snapshot::BaseTaskSerializer
 end

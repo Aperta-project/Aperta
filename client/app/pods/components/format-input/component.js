@@ -151,7 +151,7 @@ export default Ember.Component.extend({
    */
   _clearActiveFormatTypes() {
     _.each(ELEMENT_NAME_MAP, (type)=> {
-      this.set(`_${ELEMENT_NAME_MAP[type]}Active`, false);
+      this.set(`_${type}Active`, false);
     });
   },
 

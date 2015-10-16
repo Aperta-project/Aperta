@@ -1,4 +1,2 @@
-module Snapshot
-  class PublishingRelatedQuestionsTaskSerializer < BaseTaskSerializer
-  end
+class Snapshot::PublishingRelatedQuestionsTaskSerializer < Snapshot::BaseTaskSerializer
 end

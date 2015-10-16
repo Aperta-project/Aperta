@@ -1,4 +1,2 @@
-module Snapshot
-  class DataAvailabilityTaskSerializer < BaseTaskSerializer
-  end
+class Snapshot::DataAvailabilityTaskSerializer < Snapshot::BaseTaskSerializer
 end

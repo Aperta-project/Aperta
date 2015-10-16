@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import FindSelectedElements from 'tahi/lib/find-selected-elements';
 
 const ELEMENT_NAME_MAP = {
   'b': 'bold',
@@ -113,42 +114,14 @@ export default Ember.Component.extend({
     this.set('value', this.$('.format-input-field').html());
   },
 
-  // 
-  getSelectedElements() {
-    const selection = document.getSelection();
-
-    if (
-      !selection.rangeCount ||
-      selection.isCollapsed ||
-      !selection.getRangeAt(0).commonAncestorContainer
-    ) {
-      return [];
-    }
-
-    const range = selection.getRangeAt(0);
-
-    if (range.commonAncestorContainer.nodeType === 3) {
-      let toRet = [];
-      let currNode = range.commonAncestorContainer;
-
-      while (currNode.parentNode && currNode.parentNode.childNodes.length === 1) {
-        toRet.push(currNode.parentNode);
-        currNode = currNode.parentNode;
-      }
-
-      return toRet;
-    }
-
-    const containers = range.commonAncestorContainer.getElementsByTagName('*');
-    const isFunction = typeof selection.containsNode === 'function';
-
-    return _.filter(containers, function(element) {
-      return isFunction ? selection.containsNode(element, true) : true;
-    });
-  },
-
+  /**
+   *  Find current formatting types within user selected text
+   *
+   *  @method getActiveFormatTypes
+   *  @public
+   */
   getActiveFormatTypes() {
-    return _.map(this.getSelectedElements(), function(element) {
+    return _.map(FindSelectedElements(), function(element) {
       const name = element.tagName.toLowerCase();
 
       if(ELEMENT_NAME_MAP[name]) {
@@ -157,15 +130,27 @@ export default Ember.Component.extend({
     });
   },
 
-  markActiveFormatTypes() {
-    this.clearActiveFormatTypes();
+  /**
+   *  Highlight format buttons as active within user selected text
+   *
+   *  @method _markActiveFormatTypes
+   *  @private
+   */
+  _markActiveFormatTypes() {
+    this._clearActiveFormatTypes();
     _.each(this.getActiveFormatTypes(), (type)=> {
       this.set(`_${type}Active`, true);
     });
   },
 
-  clearActiveFormatTypes() {
-    $.each(ELEMENT_NAME_MAP, (type)=> {
+  /**
+   *  Remove highlighing from formatting buttons
+   *
+   *  @method _clearActiveFormatTypes
+   *  @private
+   */
+  _clearActiveFormatTypes() {
+    _.each(ELEMENT_NAME_MAP, (type)=> {
       this.set(`_${ELEMENT_NAME_MAP[type]}Active`, false);
     });
   },
@@ -188,11 +173,11 @@ export default Ember.Component.extend({
     },
 
     'selection-in': function() {
-      this.markActiveFormatTypes();
+      this._markActiveFormatTypes();
     },
 
     'selection-out': function() {
-      this.clearActiveFormatTypes();
+      this._clearActiveFormatTypes();
     }
   }
 });

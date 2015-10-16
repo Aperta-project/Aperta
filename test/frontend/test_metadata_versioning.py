@@ -23,7 +23,7 @@ class MetadataVersioningTest(CommonTest):
   def test_metadata_versioning(self):
     """
     """
-    title = 'MV Test-7'
+    title = 'MV Test-10 '
     #if True: # for debugging
     if self.check_article(title):
       init = True if 'users/sign_in' in self._driver.current_url else False
@@ -31,13 +31,13 @@ class MetadataVersioningTest(CommonTest):
     else:
       # Create new article
       title = self.create_article(title=title,
-                                 journal='PLOS Wombat',
+                                 journal='PLOS Lemur',
                                  type_='Research',
                                  random_bit=True,
                                  init=False)
     paper_editor = PaperEditorPage(self.getDriver())
     paper_editor.complete_card('Billing')
-    paper_editor.complete_card('Authors')
+    paper_editor.complete_card('Authors') #CHECK THIS OUT!
     paper_editor.complete_card('Cover Letter')
     paper_editor.complete_card('Figures')
     paper_editor.complete_card('Supporting Info')

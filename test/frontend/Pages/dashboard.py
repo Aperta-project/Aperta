@@ -215,13 +215,15 @@ class DashboardPage(AuthenticatedPage):
     jtitle: Title of the journal
     jtype: Journal type
     """
-    self._get(self._cns_journal_chooser_dd).click()
+    div = self._get(self._cns_journal_chooser_dd)
+    div.find_element_by_class_name('select-box-element').click()
     for item in self._gets((By.CLASS_NAME, 'select-box-item')):
       if item.text == jtitle:
         item.click()
         time.sleep(1)
         break
-    self._get(self._cns_papertype_chooser_dd).click()
+    div = self._get(self._cns_papertype_chooser_dd)
+    div.find_element_by_class_name('select-box-element').click()
     for item in self._gets((By.CLASS_NAME, 'select-box-item')):
       if item.text == jtype:
         item.click()

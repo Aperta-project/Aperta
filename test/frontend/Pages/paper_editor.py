@@ -266,24 +266,26 @@ class PaperEditorPage(AuthenticatedPage):
 
   def complete_card(self, card_name, click_override=False):
     """On a given card, check complete and then close"""
+    cards = self._gets((By.CLASS_NAME, 'card-title'))
     # if card is marked as complete, leave is at is.
-
     if not click_override:
-      cards = self._gets((By.CLASS_NAME, 'card-title'))
       for card in cards:
         card_div = card.find_element_by_xpath('../..')
-        print card_div.get_attribute('class')
         if card.text == card_name and 'card--completed' not in card_div.get_attribute('class'):
           card.find_element_by_xpath('.//ancestor::a').click()
           break
         elif card.text == card_name and 'card--completed' in card_div.get_attribute('class'):
           return None
+      else:
+        return None
       #self._click_card(card_name)
     else:
       for card in cards:
         if card.text == card_name:
           card.find_element_by_xpath('.//ancestor::a').click()
           break
+      else:
+        return None
 
     base_card = BaseCard(self._driver)
     if card_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript'):

@@ -114,6 +114,13 @@ You can also run the javascript specs from the browser. To do this, visit http:/
 
 For help writing ember tests please see the [ember-cli testing section](http://www.ember-cli.com/#testing)
 
+## Other Dependencies
+
+Ghostscript is required to pass some of the tests.  Ghostscript can be installed
+by running:
+
+`brew install ghostscript`
+
 # Dev Notes
 
 ## Page Objects
@@ -128,7 +135,7 @@ EditModalFragment.new(find('tr'), context: page)
 
 ## Why does package.json change all the time?
 
-All of the cards in Tahi are external engines. While Rails Engines work great as backend extensions, there is no easy way to package add-ons within the same repository as engines and have them auto-detected by the application. Obviously, this is because these are two separate platforms. To make it easier for plugin developers to swap in different engines only from a Gemfile, we created an initializer that detects if these are Tahi plugins (all gems prefixed `tahi-`). The detected plugin's path is injected into the `ember-addon.paths` object in `package.json` on every server run. That’s why you see package.json change all the time. 
+All of the cards in Tahi are external engines. While Rails Engines work great as backend extensions, there is no easy way to package add-ons within the same repository as engines and have them auto-detected by the application. Obviously, this is because these are two separate platforms. To make it easier for plugin developers to swap in different engines only from a Gemfile, we created an initializer that detects if these are Tahi plugins (all gems prefixed `tahi-`). The detected plugin's path is injected into the `ember-addon.paths` object in `package.json` on every server run. That’s why you see package.json change all the time.
 
 There is no problem in committing and pushing `package.json`, the ember-addons object is flushed at every server run to get the fresh and correct paths from Tahi plugins.
 
@@ -235,4 +242,3 @@ sdoc -g --markup=tomdoc --title="Tahi Documentation" --main="README.md" -o doc/r
 ```
 
 We are using [Tomdoc](http://tomdoc.org/) documentation specification format. We are currently aiming to have all models documented.
-

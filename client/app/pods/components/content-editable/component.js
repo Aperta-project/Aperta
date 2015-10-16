@@ -8,8 +8,6 @@ export default Ember.Component.extend({
   placeholder: '',
   plaintext: false,
   preventEnterKey: false,
-  _savedRange: null,
-  _savedSelection: null,
   _userIsTyping: false,
 
   _valueAndPlaceholderSetup: on('didInsertElement', function() {
@@ -134,11 +132,7 @@ export default Ember.Component.extend({
   },
 
   setValueFromHTML() {
-    if (this.get('plaintext')) {
-      this.set('value', this.$().text());
-    } else {
-      this.set('value', this.$().html());
-    }
+    this.set('value', this.$()[ this.get('plaintext') ? 'text' : 'html' ]());
   },
 
   supressEnterKeyEvent(e) {

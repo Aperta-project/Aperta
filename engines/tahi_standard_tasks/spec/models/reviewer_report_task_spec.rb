@@ -50,10 +50,21 @@ describe TahiStandardTasks::ReviewerReportTask do
   describe '#create' do
     let(:task) { FactoryGirl.build(:reviewer_report_task) }
 
+    before do
+      expect(task.paper.decisions.latest).to be
+    end
+
     it "belongs to the paper's latest decision" do
       task.save!
+
       expect(task.decision).to eq(task.paper.decisions.latest)
       expect(task.reload.decision).to eq(task.paper.decisions.latest)
+
+      # find again to make sure everything is loaded from the DB without
+      # any in-memory values sticking around
+      refreshed_task = Task.find(task.id)
+      expect(refreshed_task.decision).to eq(task.paper.decisions.latest)
+      expect(refreshed_task.reload.decision).to eq(task.paper.decisions.latest)
     end
   end
 

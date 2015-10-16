@@ -160,7 +160,7 @@ module TahiStandardTasks
     end
 
     def decision=(new_decision)
-      body["decision_id"] = new_decision.try(:id)
+      update_body "decision_id" => new_decision.try(:id)
     end
 
     def previous_decisions
@@ -183,6 +183,10 @@ module TahiStandardTasks
 
     def assign_to_latest_decision
       self.decision = paper.decisions.latest
+    end
+
+    def update_body(hsh)
+      self.body = body.merge(hsh)
     end
   end
 end

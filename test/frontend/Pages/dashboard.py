@@ -275,7 +275,7 @@ class DashboardPage(AuthenticatedPage):
         title = PgSQL().query('SELECT title FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
         if not title:
           title = PgSQL().query('SELECT short_title FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
-        assert title == paper.text, 'DB: ' + str(title) + ' is not equal to ' + paper.text + ', from page.'
+        assert ' '.join(title.split()) == paper.text, 'DB: ' + str(title) + ' is not equal to ' + paper.text + ', from page.'
         # Sort out paper role display
         paper_roles = PgSQL().query('SELECT role FROM paper_roles '
                                     'INNER JOIN papers ON papers.id = paper_roles.paper_id '

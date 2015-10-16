@@ -81,8 +81,8 @@ class AuthorsCard(BaseCard):
     """Validate """
     authors_title = self._get(self._authors_title)
     assert authors_title.text == 'Authors', authors_title.text
-    # Commented out until bug #103346066 is fixed
-    #self.validate_card_h1_style(authors_title)
+    # Commented out until bug APERTA-3090 is fixed
+    #self.validate_application_h1_style(authors_title)
     authors_text = self._get(self._authors_text)
     assert authors_text.text == (
     "Our criteria for authorship are based on the 'Uniform Requirements for Manuscripts "
@@ -147,7 +147,7 @@ class AuthorsCard(BaseCard):
     assert chck_6_lbl.text == 'Other'
     author_contrib_lbl = self._get(self._author_contrib_lbl)
     assert author_contrib_lbl.text == 'Author Contributions'
-    self.validate_card_h4_style(author_contrib_lbl)
+    self.validate_application_h4_style(author_contrib_lbl)
     add_author_cancel_lnk = self._get(self._add_author_cancel_lnk)
     add_author_add_btn = self._get(self._add_author_add_btn)
     self.validate_green_on_green_button_style(add_author_add_btn)

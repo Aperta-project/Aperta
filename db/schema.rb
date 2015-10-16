@@ -395,6 +395,16 @@ ActiveRecord::Schema.define(version: 20151016173854) do
 
   add_index "roles", ["kind"], name: "index_roles_on_kind", using: :btree
 
+  create_table "snapshots", force: :cascade do |t|
+    t.string   "source_type"
+    t.integer  "source_id"
+    t.integer  "major_version"
+    t.integer  "minor_version"
+    t.json     "contents"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
   create_table "supporting_information_files", force: :cascade do |t|
     t.integer  "paper_id"
     t.string   "title"

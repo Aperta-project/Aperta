@@ -1,4 +1,2 @@
-module Snapshot
-  class TaxonTaskSerializer < BaseTaskSerializer
-  end
+class Snapshot::TaxonTaskSerializer < Snapshot::BaseTaskSerializer
 end

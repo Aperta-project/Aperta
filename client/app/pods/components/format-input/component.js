@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import FindSelectedElements from 'tahi/lib/find-selected-elements';
+import findSelectedElements from 'tahi/lib/find-selected-elements';
 
 const ELEMENT_NAME_MAP = {
   'b': 'bold',
@@ -121,7 +121,7 @@ export default Ember.Component.extend({
    *  @public
    */
   getActiveFormatTypes() {
-    return _.map(FindSelectedElements(), function(element) {
+    return _.map(findSelectedElements(), function(element) {
       const name = element.tagName.toLowerCase();
 
       if(ELEMENT_NAME_MAP[name]) {

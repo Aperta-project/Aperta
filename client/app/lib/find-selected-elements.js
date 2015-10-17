@@ -34,4 +34,4 @@ export default function () {
   return _.filter(elements, function(element) {
     return isFunction ? selection.containsNode(element, true) : true;
   });
-};
+}

@@ -11,7 +11,7 @@ class Snapshot::SupportingInformationTaskSerializer < Snapshot::BaseTaskSerializ
   def snapshot_file file
     properties = []
     attachment_serializer = Snapshot::AttachmentSerializer.new file.attachment
-    properties << ["attachment", attachment_serializer.snapshot]
+    properties << {name: "attachment", type: "properties", children: attachment_serializer.snapshot}
     properties << snapshot_property("title", "text", file.title)
     properties << snapshot_property("caption", "text", file.caption)
     properties << snapshot_property("publishable", "boolean", file.publishable)

@@ -9,10 +9,14 @@ class Snapshot::QuestionAttachmentSerializer < Snapshot::BaseSerializer
     end
 
     {
-      file: @question_attachment[:attachment],
-      title: @question_attachment[:title],
-      caption: @question_attachment[:caption],
-      status: @question_attachment[:status]
+      name: "attachment",
+      type: "properties",
+      children: {
+        file: @question_attachment[:attachment],
+        title: @question_attachment[:title],
+        caption: @question_attachment[:caption],
+        status: @question_attachment[:status]
+      }
     }
   end
 end

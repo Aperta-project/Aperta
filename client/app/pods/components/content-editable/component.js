@@ -100,8 +100,10 @@ export default Ember.Component.extend({
   },
 
   setPlaceholder() {
-    this.$().text(this.get('placeholder'));
-    this.mute();
+    if(this.get('placeholder')) {
+      this.$().text(this.get('placeholder'));
+      this.mute();
+    }
   },
 
   removePlaceholder() {

@@ -10,5 +10,4 @@ Subscriptions.configure do
   add 'paper:resubmitted', Paper::Resubmitted::EmailEditor
 
   add 'versioned_text:created', VersionedText::Created::SnapshotMetadata
-  add 'versioned_text:updated', VersionedText::Updated::SnapshotMetadata
 end

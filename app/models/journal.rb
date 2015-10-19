@@ -66,8 +66,9 @@ class Journal < ActiveRecord::Base
   private
 
   def has_valid_doi_information?
-    return true unless doi_publisher_prefix.present? || doi_journal_prefix.present?
-    return true if DoiService.new(journal: self).journal_doi_info_valid?
+    ds = DoiService.new(journal: self)
+    return unless ds.journal_has_doi_prefixes?
+    return if ds.journal_doi_info_valid?
     errors.add(:doi, "The DOI you specified is not valid.")
   end
 

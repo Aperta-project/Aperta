@@ -1,3 +1,8 @@
+# This class is somewhere between a service and a mixin
+# I (Ben) inherited it this way, but it doesn't feel quite right
+# Services should be independent actors, and in this case, DoiService is very tightly
+# coupled to a journal, to the point that many methods are delegated to it
+# I would consider making this a mixin at some point
 class DoiService
   PUBLISHER_PREFIX_FORMAT = /[\w\d\-\.]+/
   SUFFIX_FORMAT           = %r{[^\/]+}
@@ -17,12 +22,7 @@ class DoiService
 
   # determines if a doi string is valid
   def self.valid?(doi_string)
-    String(doi_string).match(DOI_FORMAT)
-    $1 == String(doi_string)
-  end
-
-  def journal_doi_info_valid?
-    DoiService.valid?(to_s)
+    !!(doi_string =~ DOI_FORMAT)
   end
 
 <<<<<<< HEAD
@@ -41,9 +41,12 @@ class DoiService
         journal.update! last_doi_issued: last_doi_issued.succ
       end
       to_s
+<<<<<<< HEAD
     else
       filler_doi
 >>>>>>> Reworked internals of DoiService so that is more contained
+=======
+>>>>>>> Revisions after code review
     end
   end
 
@@ -51,12 +54,15 @@ class DoiService
     [doi_publisher_prefix, suffix].join("/")
   end
 
-  private
-
-  def filler_doi
-    # "nil_prefixes_#{Time.now.to_i.to_s}"
-    nil
+  def journal_has_doi_prefixes?
+    doi_publisher_prefix.present? && doi_journal_prefix.present?
   end
+
+  def journal_doi_info_valid?
+    DoiService.valid?(to_s)
+  end
+
+  private
 
   def prefix
     doi_publisher_prefix
@@ -64,9 +70,5 @@ class DoiService
 
   def suffix
     [doi_journal_prefix, last_doi_issued].join(".")
-  end
-
-  def journal_has_doi_prefixes?
-    doi_publisher_prefix.present? && doi_journal_prefix.present?
   end
 end

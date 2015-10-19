@@ -318,6 +318,44 @@ describe Paper do
     end
   end
 
+  describe "#major_version" do
+    before { expect(paper.latest_version).to be }
+
+    it "returns the latest version's major_version" do
+      expect(paper.major_version).to eq(paper.latest_version.major_version)
+    end
+
+    context "when there is no latest_version" do
+      before do
+        paper.versioned_texts.destroy_all
+        expect(paper.latest_version).to be(nil)
+      end
+
+      it "returns nil" do
+        expect(paper.major_version).to be(nil)
+      end
+    end
+  end
+
+  describe "#minor_version" do
+    before { expect(paper.latest_version).to be }
+
+    it "returns the latest version's minor_version" do
+      expect(paper.major_version).to eq(paper.latest_version.minor_version)
+    end
+
+    context "when there is no latest_version" do
+      before do
+        paper.versioned_texts.destroy_all
+        expect(paper.latest_version).to be(nil)
+      end
+
+      it "returns nil" do
+        expect(paper.major_version).to be(nil)
+      end
+    end
+  end
+
   describe "callbacks" do
     let(:user) { FactoryGirl.create(:user) }
     let(:paper) { FactoryGirl.build :paper, creator: user }

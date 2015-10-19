@@ -12,7 +12,7 @@ InvitationsDisplay = Ember.Component.extend
   previousDecisions: Em.computed 'decisions', ->
     @get('decisions').without @get('latestDecision')
 
-  previousDecisionsWithFilteredInvitations: Em.computed 'previousDecisions', 'previousDecisions.@each', ->
+  previousDecisionsWithFilteredInvitations: Em.computed 'previousDecisions', 'previousDecisions.[]', ->
     @get('previousDecisions').map (decision) =>
       filteredInvitations = decision.get('invitations').filterBy('invitationType', @get 'invitationType')
       decision.set 'filteredInvitations', filteredInvitations

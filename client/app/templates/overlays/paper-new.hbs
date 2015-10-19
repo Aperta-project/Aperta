@@ -7,16 +7,15 @@
 
   <div class="form-group">
     <label class="paper-new-label" for="paper-short-title">
-      Give your paper a short title
+      Give your paper a title
     </label>
-    {{input type="text"
-            value=model.shortTitle
-            class="paper-new-input"
-            placeholder="Crystalized Magnificence in the Modern World"
-            id="paper-short-title"}}
 
-    <span class="paper-new-char-count">{{shortTitleCount}}</span>
-    {{#if shortTitleCount}}
+    {{format-input value=model.title
+                   id="paper-short-title"
+                   placeholder="Crystalized Magnificence in the Modern World"
+                   displayBold=false}}
+
+    {{#if titleCharCount}}
       <span class="paper-new-valid-icon animation-fade-in"><i class="fa fa-check"></i></span>
     {{/if}}
   </div>

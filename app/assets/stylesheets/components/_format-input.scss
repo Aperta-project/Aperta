@@ -1,0 +1,45 @@
+.format-input {
+  @include display(flex);
+  @include align-items(stretch);
+  border: 1px solid #d5d5d5;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.format-input-field {
+  @include flex-grow(1);
+  min-height: 20px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  padding: 15px 0 15px 15px;
+}
+
+.format-input-button {
+  padding: 15px 7px 15px 7px;
+  width: 50px;
+  color: #ddd;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  @include display(flex);
+  @include flex-direction(column);
+  @include justify-content(center);
+  @include flex-shrink(0);
+
+  &:last-of-type {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.format-input--active .format-input-button {
+  color: #666;
+}
+
+.format-input--active .format-input-button--active {
+  color: $tahi-green;
+}

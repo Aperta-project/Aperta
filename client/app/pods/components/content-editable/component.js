@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
+const { computed, observer, on } = Ember;
+
 export default Ember.Component.extend({
   attributeBindings: ['contenteditable', 'placeholder'],
   editable: true,
@@ -8,18 +10,38 @@ export default Ember.Component.extend({
   preventEnterKey: false,
   _userIsTyping: false,
 
-  setup: Ember.on('didInsertElement', function() {
+  _valueAndPlaceholderSetup: on('didInsertElement', function() {
     this.setHTMLFromValue();
     if (this.elementIsEmpty() && this.get('placeholder')) {
       this.setPlaceholder();
     }
   }),
 
-  contenteditable: Ember.computed('editable', function() {
+  _setupSelectEvent: on('didInsertElement', function() {
+    const eventName = 'selectionchange.' + this.elementId;
+    const me = this.$();
+
+    $(document).on(eventName, (event)=> {
+      if (event.currentTarget && event.currentTarget.activeElement) {
+        if($(event.currentTarget.activeElement).is(me)) {
+          this.selectionIn();
+        } else {
+          this.selectionOut();
+        }
+      }
+    });
+  }),
+
+  _teardownSelectEvent: on('willDestroyElement', function() {
+    const eventName = 'selectionchange.' + this.elementId;
+    $(document).off(eventName);
+  }),
+
+  contenteditable: computed('editable', function() {
     return this.get('editable') ? 'true' : undefined;
   }),
 
-  valueDidChange: Ember.observer('value', function() {
+  valueDidChange: observer('value', function() {
     if (this.get('value') && !this.get('_userIsTyping')) {
       this.setHTMLFromValue();
     }
@@ -44,11 +66,29 @@ export default Ember.Component.extend({
     this.setValueFromHTML();
   },
 
+  focusIn() {
+    const action = this.attrs['focus-in'];
+    if(action) { action(); }
+  },
+
   focusOut() {
     this.set('_userIsTyping', false);
     if (this.elementIsEmpty()) {
       this.setPlaceholder();
     }
+
+    const action = this.attrs['focus-out'];
+    if(action) { action(); }
+  },
+
+  selectionIn() {
+    const action = this.attrs['selection-in'];
+    if(action) { action(); }
+  },
+
+  selectionOut() {
+    const action = this.attrs['selection-out'];
+    if(action) { action(); }
   },
 
   elementIsEmpty() {
@@ -60,18 +100,14 @@ export default Ember.Component.extend({
   },
 
   setPlaceholder() {
-    this.$().text(this.get('placeholder'));
-    this.mute();
+    if(this.get('placeholder')) {
+      this.$().text(this.get('placeholder'));
+      this.mute();
+    }
   },
 
   removePlaceholder() {
     this.$().text('');
-    this.unmute();
-  },
-
-  setHTMLFromValue() {
-    if (!this.$()) { return; }
-    this.$().html(this.get('value'));
     this.unmute();
   },
 
@@ -83,12 +119,22 @@ export default Ember.Component.extend({
     this.$().removeClass('content-editable-muted');
   },
 
-  setValueFromHTML() {
-    if (this.get('plaintext')) {
-      this.set('value', this.$().text());
-    } else {
-      this.set('value', this.$().html());
+  setHTMLFromValue() {
+    if (!this.$()) { return; }
+    const html = this.$().html();
+    const value = this.get('value');
+
+    // Don't force DOM changes. It's possible markup and value were
+    // changed from an outside component.
+    if(html !== value) {
+      this.$().html(value);
     }
+
+    this.unmute();
+  },
+
+  setValueFromHTML() {
+    this.set('value', this.$()[ this.get('plaintext') ? 'text' : 'html' ]());
   },
 
   supressEnterKeyEvent(e) {

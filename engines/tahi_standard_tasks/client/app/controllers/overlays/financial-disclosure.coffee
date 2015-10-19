@@ -20,7 +20,7 @@ FinancialDisclosureOverlayController = TaskController.extend
       @set("receivedFunding", null)
       if @get("task.questions.firstObject.answer")
         @set("task.questions.firstObject.answer", null)
-  ).observes("funders.@each")
+  ).observes("funders.[]")
 
   actions:
     choseFundingReceived: ->

@@ -25,7 +25,8 @@ feature "Editing paper", selenium: true, js: true do
       scenario "it doesn't contain any doi artifacts" do
         visit '/'
         click_button 'Create New Submission'
-        fill_in 'paper-short-title', with: "A paper with no doi"
+        title_field = find "#paper-short-title .format-input-field"
+        title_field.send_keys "A paper with no doi"
         p = PageFragment.new(find('#overlay'))
         p.select2(journal.name, css: '.paper-new-journal-select')
         p.select2(paper_type,  css: '.paper-new-paper-type-select')
@@ -50,7 +51,8 @@ feature "Editing paper", selenium: true, js: true do
       scenario "shows the doi on the page" do
         visit '/'
         click_button 'Create New Submission'
-        fill_in 'paper-short-title', with: "A paper with doi"
+        title_field = find "#paper-short-title .format-input-field"
+        title_field.send_keys "A paper with doi"
         p = PageFragment.new(find('#overlay'))
         p.select2(journal.name, css: '.paper-new-journal-select')
         p.select2(paper_type,  css: '.paper-new-paper-type-select')

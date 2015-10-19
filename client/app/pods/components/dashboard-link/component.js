@@ -11,6 +11,14 @@ export default Ember.Component.extend({
     return this.get('unreadCommentsCount') + ' new posts';
   }),
 
+  status: Ember.computed('model.publishingState', function() {
+    if (this.get('model.publishingState') == 'unsubmitted') {
+      return 'DRAFT'
+    } else {
+      return this.get('model.publishingState').toUpperCase();
+    };
+  }),
+
   refreshTooltips() {
     Ember.run.scheduleOnce('afterRender', this, ()=> {
       if(this.$()) {

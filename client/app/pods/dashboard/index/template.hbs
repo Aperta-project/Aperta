@@ -30,7 +30,6 @@
 
     {{#if hasPapers}}
       {{#if hasActivePapers}}
-
         <div class="table-responsive">
           <table summary="This table displays manuscript data and roles" class="table-borderless top-margin">
             <thead class='manuscript-list-heading'>
@@ -57,16 +56,26 @@
       {{/if}}
 
       {{#if hasInactivePapers}}
-        <h5 class='manuscript-list-heading inactive-papers' {{action 'toggleInactiveContainer'}}>
-          Inactive Manuscripts ({{totalInactivePaperCount}})
-        </h5>
-        {{#if inactivePapersVisible}}
-          <ul class="dashboard-submitted-papers">
-            {{#each sortedInactivePapers as |paper|}}
-              {{dashboard-link model=paper}}
-            {{/each}}
-          </ul>
-        {{/if}}
+        <div class="table-responsive">
+          <table summary="This table displays manuscript data and roles" class="table-borderless top-margin">
+            <thead class='manuscript-list-heading inactive-papers'>
+              <tr>
+                <th class="col-xs-9 hug-left" {{action 'toggleInactiveContainer'}}>Inactive Manuscripts ({{totalInactivePaperCount}})</th>
+                {{#if inactivePapersVisible}}
+                  <th class="col-xs-1 text-center">Role</th>
+                  <th class="col-xs-2 text-center">Status</th>
+                {{/if}}
+              </tr>
+            </thead>
+            <tbody>
+              {{#if inactivePapersVisible}}
+                {{#each sortedInactivePapers as |paper|}}
+                  {{dashboard-link model=paper}}
+                {{/each}}
+              {{/if}}
+            </tbody>
+          </table>
+        </div>
       {{/if}}
     {{else}}
       <p class="dashboard-info-text">Your scientific paper submissions will<br> appear here.</p>

@@ -43,7 +43,7 @@ else
     user.password = 'password'
     user.username = 'flow_manager'
     user.affiliations.first_or_initialize(name: "PLOS")
-    user.user_roles.new(role: plos_journal.roles.where(kind: Role::FLOW_MANAGER, name: Role::FLOW_MANAGER.capitalize).first_or_initialize)
+    user.user_roles.new(role: plos_journal.roles.where(kind: Role::FLOW_MANAGER, name: Role::FLOW_MANAGER.titleize).first_or_initialize)
   end
 
   User.where(email: 'author@example.com').first_or_create! do |user|
@@ -84,7 +84,7 @@ else
     user.username = 'jgray_flowmgr'
     user.site_admin = false
     user.affiliations.first_or_initialize(name: "PLOS")
-    user.user_roles.new(role: plos_journal.roles.where(kind: Role::FLOW_MANAGER, name: Role::FLOW_MANAGER.capitalize).first_or_initialize)
+    user.user_roles.new(role: plos_journal.roles.where(kind: Role::FLOW_MANAGER, name: Role::FLOW_MANAGER.titleize).first_or_initialize)
   end
 
   qa_editor = User.where(email: 'sealresq+4@gmail.com').first_or_create! do |user|

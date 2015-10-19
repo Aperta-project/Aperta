@@ -59,5 +59,4 @@ Subscriptions.configure do
   add 'discussion_reply:destroyed', DiscussionReply::Destroyed::EventStream
 
   add 'versioned_text:created', VersionedText::Created::SnapshotMetadata
-  add 'versioned_text:updated', VersionedText::Updated::SnapshotMetadata
 end

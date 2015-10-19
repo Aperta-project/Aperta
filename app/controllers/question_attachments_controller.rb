@@ -3,6 +3,10 @@ class QuestionAttachmentsController < ApplicationController
   before_action :enforce_policy
   respond_to :json
 
+  def show
+    respond_with question_attachment
+  end
+
   def destroy
     question_attachment.destroy
     respond_with question_attachment

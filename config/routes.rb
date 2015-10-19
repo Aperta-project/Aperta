@@ -130,7 +130,7 @@ Tahi::Application.routes.draw do
     resources :participations, only: [:create, :show, :destroy]
     resources :phase_templates
     resources :phases, only: [:create, :update, :show, :destroy]
-    resources :question_attachments, only: [:destroy]
+    resources :question_attachments, only: [:show, :destroy]
     resources :questions, only: [:create, :update]
 
     resources :nested_questions, only: [:index] do

@@ -35,9 +35,11 @@
           <table summary="This table displays manuscript data and roles" class="table-borderless top-margin">
             <thead class='manuscript-list-heading'>
               <tr>
-                <th class="col-xs-9 hug-left">Active Manuscripts ({{totalActivePaperCount}})</th>
-                <th class="col-xs-1 text-center">Role</th>
-                <th class="col-xs-2 text-center">Status</th>
+                <th class="col-xs-9 hug-left" {{action 'toggleActiveContainer'}}>Active Manuscripts ({{totalActivePaperCount}})</th>
+                {{#if activePapersVisible}}
+                  <th class="col-xs-1 text-center">Role</th>
+                  <th class="col-xs-2 text-center">Status</th>
+                {{/if}}
               </tr>
             </thead>
             <tbody>
@@ -49,44 +51,9 @@
                   {{dashboard-link model=paper}}
                 {{/each}}
               {{/if}}
-
-              <tr>
-                <td class="col-xs-9 dashboard-paper-title hug-left"><a>The most scrumtrulescent scientific paper of 2015.</a></td>
-                <td class="col-xs-1 role-tag text-right">Author</td>
-                <td class="col-xs-1"><div class='status-tag text-center'>DRAFT</div></td>
-              </tr>
-              <tr>
-                <td class="col-xs-9 dashboard-paper-title hug-left"><a>The most scrumtrulescent scientific paper of 2015.</a></td>
-                <td class="col-xs-1 role-tag text-right">Collaborator</td>
-                <td class="col-xs-2"><div class='status-tag text-center'>Checking</div></td>
-              </tr>
-              <tr>
-                <td class="col-xs-9 dashboard-paper-title hug-left"><a>The most scrumtrulescent scientific paper of 2015.</a></td>
-                <td class="col-xs-1 role-tag text-right">Collaborator</td>
-                <td class="col-xs-2"><div class='status-tag text-center'>In Revision</div></td>
-              </tr>
-              <tr>
-                <td class="col-xs-9 dashboard-paper-title hug-left"><a>The most scrumtrulescent scientific paper of 2015.</a></td>
-                <td class="col-xs-1 role-tag text-right">Collaborator</td>
-                <td class="col-xs-2"><div class='status-tag text-center'>Accepted</div></td>
-              </tr>
             </tbody>
           </table>
         </div>
-
-        <h5 class='manuscript-list-heading active-papers' {{action 'toggleActiveContainer'}}>
-          Active Manuscripts ({{totalActivePaperCount}})
-        </h5>
-        {{#if activePapersVisible}}
-          <ul class="dashboard-submitted-papers">
-            {{#each sortedDraftPapers as |paper|}}
-              {{dashboard-link model=paper}}
-            {{/each}}
-            {{#each sortedNonDraftPapers as |paper|}}
-              {{dashboard-link model=paper}}
-            {{/each}}
-          </ul>
-        {{/if}}
       {{/if}}
 
       {{#if hasInactivePapers}}

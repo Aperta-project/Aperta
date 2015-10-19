@@ -19,6 +19,14 @@ export default Ember.Component.extend({
     };
   }),
 
+  roles: Ember.computed('model.roles', function() {
+    if (this.get('model.roles').indexOf('My Paper') > -1) {
+      return 'Author'
+    } else {
+      return this.get('model.roles')
+    }
+  }),
+
   refreshTooltips() {
     Ember.run.scheduleOnce('afterRender', this, ()=> {
       if(this.$()) {

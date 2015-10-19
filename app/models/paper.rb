@@ -44,6 +44,7 @@ class Paper < ActiveRecord::Base
   scope :inactive, -> { where(active: false) }
 
   delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
+  delegate :major_version, :minor_version, to: :latest_version, allow_nil: true
 
   def manuscript_id
     doi.split('/').last if doi

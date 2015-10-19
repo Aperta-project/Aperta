@@ -4,18 +4,14 @@ class NestedQuestionAnswersController < ApplicationController
   respond_to :json
 
   def create
-    answer = fetch_answer
+    answer = fetch_and_update_answer
     process_attachment(answer) if answer.save!
     render json: answer, serializer: NestedQuestionAnswerSerializer
   end
 
   def update
-    answer = fetch_answer
-    updated_attrs = {
-      value: answer_params[:value],
-      additional_data: answer_params[:additional_data]
-    }
-    process_attachment(answer) if answer.update_attributes!(updated_attrs)
+    answer = fetch_and_update_answer
+    process_attachment(answer) if answer.save!
     render json: answer, serializer: NestedQuestionAnswerSerializer
   end
 
@@ -27,29 +23,26 @@ class NestedQuestionAnswersController < ApplicationController
 
   private
 
-  def fetch_answer
-    @fetch_answer ||= begin
-      if params[:id]
-        NestedQuestionAnswer.where(id: params[:id]).first!
-      else
-        find_or_build_new_nested_question_answer
-      end
-    end
-  end
-
-  def find_or_build_new_nested_question_answer
-    answer = NestedQuestionAnswer.where(
-      nested_question_id: nested_question.id,
-      owner_id: answer_params["owner_id"],
-      owner_type: owner_type
-    ).first_or_initialize
-
+  def fetch_and_update_answer
+    answer = fetch_answer
     answer.value_type = nested_question.value_type
     answer.value = answer_params[:value]
     answer.additional_data = answer_params[:additional_data]
-    answer.decision_id = answer_params[:decision_id]
-
     answer
+  end
+
+  def fetch_answer
+    @answer ||= begin
+      answer = NestedQuestionAnswer.find(params[:id]) if params[:id]
+      unless answer
+        answer = owner.find_or_build_answer_for(nested_question_id: nested_question.id)
+      end
+      answer
+    end
+  end
+
+  def owner
+    @owner ||= owner_type.find(answer_params[:owner_id])
   end
 
   def owner_type

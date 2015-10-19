@@ -15,6 +15,13 @@ class NestedQuestionAnswer < ActiveRecord::Base
 
   validate :verify_from_owner
 
+  def self.find_or_build(nested_question_id:, decision_id:nil, id:nil)
+    query_params = { nested_question_id: nested_question_id }
+    query_params[:decision_id] = decision_id if decision_id
+    query_params[:id] = id if id
+    where(query_params).first_or_initialize
+  end
+
   def value
     return nil unless value_type.present?
     read_value_method = "#{value_type.underscore}_value_type".to_sym

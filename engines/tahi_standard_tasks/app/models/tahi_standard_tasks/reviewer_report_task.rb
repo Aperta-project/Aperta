@@ -120,6 +120,21 @@ module TahiStandardTasks
       NestedQuestion.where(owner_id:nil, owner_type:name).all
     end
 
+    # find_or_build_answer_for(...) will return the associated answer for this
+    # task given :nested_question_id. For ReviewerReportTask this enforces the
+    # lookup to be scoped to this task's current decision. Answers associated
+    # with previous decisions will not be returned.
+    #
+    # == Optional Parameters
+    #  * decision_id - ignored if provided, always enforces the task's decision.id
+    #
+    def find_or_build_answer_for(nested_question_id:, decision_id: nil)
+      super(
+        nested_question_id: nested_question_id,
+        decision_id: decision.try(:id),
+      )
+    end
+
     def body
       # body is a json column by default which returns an Array. We don't want
       # an array, we want to store properties. So if we get a blank
@@ -160,11 +175,29 @@ module TahiStandardTasks
     end
 
     def decision=(new_decision)
-      update_body "decision_id" => new_decision.try(:id)
+      previous_decision_ids = body["previous_decision_ids"] || []
+      current_decision_id = body["decision_id"]
+
+      if current_decision_id
+        previous_decision_ids.push current_decision_id
+      end
+
+      update_body(
+        "decision_id" => new_decision.try(:id),
+        "previous_decision_ids" => previous_decision_ids
+      )
+    end
+
+    def previous_decision_ids
+      if body["previous_decision_ids"]
+        body["previous_decision_ids"]
+      else
+        []
+      end
     end
 
     def previous_decisions
-      decisions - [decision].compact
+      paper.decisions.where(id: previous_decision_ids)
     end
 
     def send_emails

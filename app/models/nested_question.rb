@@ -12,15 +12,15 @@ class NestedQuestion < ActiveRecord::Base
   def self.lookup_owner_type(owner_type)
     case owner_type
     when /Task$/
-      "Task"
+      Task
     when "Author"
-      Author.name
+      Author
     when "Funder"
-      TahiStandardTasks::Funder.name
+      TahiStandardTasks::Funder
     when "ReviewerRecommendation"
-      TahiStandardTasks::ReviewerRecommendation.name
+      TahiStandardTasks::ReviewerRecommendation
     else
-      raise "Don't know how to assign to #{owner_type}"
+      raise "Don't know how to lookup owner_type: #{owner_type}"
     end
   end
 

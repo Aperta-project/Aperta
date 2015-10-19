@@ -4,9 +4,7 @@ class Snapshot::ReviewerRecommendationsTaskSerializer < Snapshot::BaseSerializer
   end
 
   def snapshot
-    {
-      recommendations: snapshot_recommendations
-    }
+    {name: "recommendations", type: properties, children: snapshot_recommendations}
   end
 
   def snapshot_recommendations

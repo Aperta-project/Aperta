@@ -3,9 +3,7 @@ require 'rails_helper'
 describe Doi do
 
   let(:journal_doi) do
-    [journal[:doi_publisher_prefix],
-    journal[:doi_journal_prefix]].join('/') +
-    "." + journal[:last_doi_issued]
+    [journal[:doi_publisher_prefix], journal[:doi_journal_prefix]].join('/') + "." + journal[:last_doi_issued]
   end
 
   describe ".valid?" do
@@ -107,7 +105,7 @@ describe Doi do
   end
 
   describe "#assign!" do
-    let(:journal) { create :journal }
+    let(:journal) { create :journal, :with_doi }
     let(:doi) { Doi.new(journal: journal) }
 
     it "assigns the next available doi to the journal" do

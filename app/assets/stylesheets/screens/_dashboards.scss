@@ -16,7 +16,9 @@
   cursor: pointer;
   margin-top: 60px;
   padding-bottom: .35em;
-  border-bottom: 1px solid $tahi-grey-light;
+  &.gray-line {
+    border-bottom: 1px solid $tahi-grey-light;
+  }
 }
 
 .dashboard-section {

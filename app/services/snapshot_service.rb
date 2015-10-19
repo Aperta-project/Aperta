@@ -13,17 +13,18 @@ class SnapshotService
     end
 
     def serialize(klass, with:)
-      existing_registration = @registrations[klass]
+      existing_registration = @registrations[klass.name]
       if existing_registration
-        raise "DuplicateRegistrationError #{klass} is already registered to be serialized by #{existing_registration}"
+        raise "DuplicateRegistrationError #{klass.name} is already registered to be serialized by #{existing_registration}"
       end
-      @registrations[klass] = with
+      @registrations[klass.name] = with.name
     end
 
     def serializer_for(object)
-      @registrations.fetch(object.class) do
+      serializer_klass_string = @registrations.fetch(object.class.name) do
         raise "NoSerializerRegistered for #{object.inspect}"
       end
+      serializer_klass_string.constantize
     end
   end
 

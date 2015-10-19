@@ -11,7 +11,7 @@ export default Ember.Route.extend(AnimateOverlay, {
       // subscribe to user and system channels
       let userChannelName = `private-user@${ this.currentUser.get('id') }`;
       let pusher = this.get('pusher');
-      pusher.wire(this, userChannelName, ['created', 'updated', 'destroyed']);
+      pusher.wire(this, userChannelName, ['created', 'updated', 'destroyed', 'flashMessage']);
       pusher.wire(this, 'system', ['destroyed']);
 
       this.get('restless').authorize(
@@ -136,6 +136,10 @@ export default Ember.Route.extend(AnimateOverlay, {
           record.unloadRecord();
         }
       });
+    },
+
+    flashMessage(payload) {
+      this.flash.displayMessage(payload.messageType, payload.message);
     }
   },
 

@@ -45,6 +45,7 @@ class Paper < ActiveRecord::Base
   scope :inactive, -> { where(active: false) }
 
   delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
+  delegate :major_version, :minor_version, to: :latest_version, allow_nil: true
 
   after_create do
     versioned_texts.create!(major_version: 0, minor_version: 0, text: (@new_body || ''))

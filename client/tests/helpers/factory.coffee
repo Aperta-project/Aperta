@@ -427,6 +427,7 @@ FactoryAttributes.ReportingGuidelinesTask =
   participation_ids: []
   phase_id: null
   question_ids: []
+  assigned_to_me: true
   role: "author"
   title: "Reporting Guidelines"
   type: "ReportingGuidelinesTask"

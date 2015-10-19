@@ -1,5 +1,4 @@
 module EventStreamMatchers
-
   RSpec::Matchers.define :receive_push do |expected|
     # the payload should contain this key at the root of the json object
     payload_roots = *expected[:serialize]
@@ -9,12 +8,17 @@ module EventStreamMatchers
     action = expected[:on]
 
     match do |actual|
-      pusher_channel = actual
-      expect(pusher_channel).to receive(:push) do |args|
+      expect(actual).to receive(:push) do |args|
         expect(args[:channel_name]).to match(channel_name(channel))
         expect(args[:event_name]).to eq(action)
         expect(args[:payload].keys).to include(*payload_roots)
       end
+    end
+
+    # Not sure if this is what we actually expece, but at least it generally works
+    match_when_negated do |actual|
+      expect(actual).to_not receive(:push)
+      true
     end
 
     def channel_name(channel_scope)

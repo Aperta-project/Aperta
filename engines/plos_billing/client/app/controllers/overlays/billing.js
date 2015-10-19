@@ -1,5 +1,6 @@
 import Ember from "ember";
 import TaskController from "tahi/pods/paper/task/controller";
+import EmberValidations from 'ember-validations';
 
 const DATA = {
   institutionalAccountProgramList: [
@@ -313,11 +314,96 @@ const DATA = {
   ]
 };
 
-let computed = Ember.computed;
+const computed = Ember.computed;
+
 
 export default TaskController.extend({
-  countries: Ember.inject.service(),
 
+  /*
+    will hold pfa data validator
+  */
+  pfaData: null,
+
+  /*
+    Makes a self-contained Pfa Data validator, temporarily to avoid conflict
+    with ValidationErrorsMixin 'tahi/mixins/validation-errors'
+    This is called in billing-pfa component via onDidInsertElement
+    Call is async because these question don't exist until
+    pfa partial is inserted
+  */
+  buildPfaValidator: function(){
+    const numericalityConfig = { numericality: { 
+      allowBlank: true,
+      messages: {
+        numericality: "Must be a number and contain no symbols, or letters"
+      }
+    }};
+
+    const pfaDataClass = Ember.Object.extend(EmberValidations.Mixin, {
+      init: function(){
+        this.set('validations', { });
+
+        ['pfa_question_1b',
+         'pfa_question_2b',
+         'pfa_question_3a',
+         'pfa_question_4a',
+         'pfa_amount_to_pay'].forEach((ident) => {
+            this.set(ident, Ember.computed("model.questions.[]", () => {
+                return this.findPfaQuestion(ident);
+              })
+            ); //add named prop to obj
+
+            // add prop name to validations
+            this.validations[ident + ".answer"] = numericalityConfig;
+          }
+        );
+
+        this._super.apply(this, arguments);
+      },
+
+      // container required because we are creating an Ember.Object.
+      // EmberValidations must need access.
+      // Ember.Object is not assigned this property unless
+      // generated through the container
+      container: this.get('container'),
+
+      model: this.get('model'),
+      findPfaQuestion: function(ident){
+        return this.get("model.questions")
+                   .findProperty("ident", "plos_billing." + ident);
+      },
+    });
+
+    this.set('pfaData', pfaDataClass.create());
+  },
+
+  /*
+    Sets error message bound to validationErrors.completed
+    in -overlay-completed-checkbox when data invalid
+  */
+  _showErrorsInFormMsg: Ember.observer('pfa', 'pfaData.isValid', function(){
+    let msg = null;
+
+    if (this.get('pfa')) { //only if payment method is pfa
+      if (!this.get('pfaData.isValid')) { msg = 'Errors in form'; }
+    }
+
+    this.set('validationErrors.completed', msg);
+  }),
+
+  /*
+    Overloads inherited isEditable in TaskController
+    When false, makes complete box uncheckable
+  */
+  isEditable: computed('pfa', 'pfaData.isValid', 'isUserEditable', 'currentUser.siteAdmin', function() {
+    if (this.get('pfa')){
+      return this.get('pfaData.isValid') && this._super();
+    } else {
+      return this._super();
+    }
+  }),
+
+  countries: Ember.inject.service(),
   ringgold: [],
   institutionalAccountProgramList: DATA.institutionalAccountProgramList,
   states:    DATA.states,
@@ -357,7 +443,7 @@ export default TaskController.extend({
 
   agreeCollections: false,
 
-  affiliation1Question: computed("model.questions.@each", function() {
+  affiliation1Question: computed("model.questions.[]", function() {
     let q = this.get("model.questions")
                 .findProperty("ident", "plos_billing.affiliation1");
 
@@ -370,7 +456,7 @@ export default TaskController.extend({
     return q;
   }),
 
-  affiliation2Question: computed("model.questions.@each", function() {
+  affiliation2Question: computed("model.questions.[]", function() {
     let q = this.get("model.questions")
                 .findProperty("ident", "plos_billing.affiliation2");
 

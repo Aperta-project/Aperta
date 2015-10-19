@@ -12,7 +12,7 @@ class Snapshot::FinancialDisclosureTaskSerializer < Snapshot::BaseTaskSerializer
     funders = []
     @task.funders.order(:id).each do |funder|
       funder_serializer = Snapshot::FunderSerializer.new funder
-      funders << { funder: funder_serializer.snapshot }
+      funders << {name: funder, type: "properties", children: funder_serializer.snapshot}
     end
     funders
   end

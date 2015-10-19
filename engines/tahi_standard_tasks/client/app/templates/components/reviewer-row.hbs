@@ -1,0 +1,44 @@
+{{#if isEditing}}
+
+  {{reviewer-form reviewerRecommendation=reviewer
+                  validationErrors=validationErrors
+                  saveRecommendation=(action "saveRecommendation")
+                  cancelRecommendation=(action "cancelRecommendation")
+                  isSubmissionTaskNotEditable=isSubmissionTaskNotEditable}}
+
+{{else}}
+
+  <div class="authors-overlay-item--text">
+    <div class="author-name">{{reviewer.fullName}}</div>
+    {{reviewer.email}}<br>
+    {{reviewer.title}} &nbsp; &nbsp; {{reviewer.department}}
+    <br>
+    {{reviewer.affiliation}}
+    <div class="reviewer-recommendation-decision">
+      {{reviewer.recommendOrOppose}}
+    </div>
+    {{reviewer.reason}}
+  </div>
+
+  {{#if isHovered}}
+    <div class="authors-overlay-item--actions">
+      <div class="actions">
+        <div class="action" {{action "edit"}}>
+          <span class="fa fa-pencil scaleIn"></span>
+        </div>
+        <div class="action" {{action "delete"}}>
+          <span class="fa fa-trash scaleIn"></span>
+        </div>
+      </div>
+    </div>
+  {{/if}}
+
+{{/if}}
+
+{{#if isDeleting}}
+  <div class="authors-overlay-item--delete">
+    <p>This will permanently delete the suggested reviewer. Are you sure?</p>
+    <button class="button-secondary button--green knockout" {{action "cancelDeletion"}}>Cancel</button>
+    <button class="button-secondary button--green knockout" {{action "confirmDeletion"}}>Delete Forever</button>
+  </div>
+{{/if}}

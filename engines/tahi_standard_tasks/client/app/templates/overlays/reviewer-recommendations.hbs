@@ -1,25 +1,30 @@
-<h1>
-  Reviewer Candidates
-</h1>
+<h1>Reviewer Candidates</h1>
 
-<p>Use the fields below to give us contact information for each suggested reviewer, and please provide specific reasons for your suggestion in the "Reason" box for each person. Please note that the editorial office may not use your suggestions, but your help is appreciated and may speed up the selection of appropriate reviewers.</p>
+<p>
+  Use the fields below to give us contact information for each suggested reviewer,
+  and please provide specific reasons for your suggestion in the "Reason" box for each person.
+  Please note that the editorial office may not use your suggestions, but your help is appreciated
+  and may speed up the selection of appropriate reviewers.
+</p>
 
-{{#if showNewReviewerForm}}
-  {{partial "overlays/partials/new-reviewer-recommendation-form"}}
-{{else}}
-<button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "toggleReviewerForm"}}>New Reviewer Candidates</button>
-{{/if}}
+<div class="reviewer-canditates-wrapper">
+  {{#if isEditable}}
+    <button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "addNewReviewer"}}>
+      New Reviewer Candidates
+    </button>
 
-{{#each validReviewerRecommendations as |reviewerRecommendation|}}
-  <div class="authors-overlay-item--text">
-    <div class="author-name">{{reviewerRecommendation.fullName}}</div>
-    {{reviewerRecommendation.email}}<br>
-    {{reviewerRecommendation.title}} &nbsp; &nbsp; {{reviewerRecommendation.department}}
-    <br>
-    {{reviewerRecommendation.affiliation}}
-    <div class="reviewer-recommendation-decision">
-      {{reviewerRecommendation.recommendOrOppose}}
-    </div>
-    {{reviewerRecommendation.reason}}
-  </div>
-{{/each}}
+    {{#if showNewReviewerForm}}
+      {{reviewer-form reviewerRecommendation=newRecommendation
+                      validationErrors=validationErrors
+                      saveRecommendation=(action "saveRecommendation")
+                      cancelRecommendation=(action "cancelRecommendation")
+                      isSubmissionTaskNotEditable=isSubmissionTaskNotEditable}}
+    {{/if}}
+  {{/if}}
+
+  {{#each validReviewerRecommendations as |reviewerRecommendation|}}
+    {{reviewer-row reviewer=reviewerRecommendation
+                   isEditable=isEditable
+                   isSubmissionTaskNotEditable=isSubmissionTaskNotEditable}}
+  {{/each}}
+</div>

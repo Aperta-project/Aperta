@@ -46,7 +46,6 @@ export default DS.Model.extend({
   shortTitle: attr('string'),
   status: attr('string'),
   strikingImageId: attr('string'),
-  isSubmitted: attr('boolean'),
   submittedAt: attr('date'),
   publishingState: attr('string'),
   title: attr('string'),
@@ -61,16 +60,8 @@ export default DS.Model.extend({
     return this.get('title') || this.get('shortTitle');
   }),
 
-  allSubmissionTasks: computed('tasks.content.@each.isSubmissionTask', function() {
-    return this.get('tasks').filterBy('isSubmissionTask');
-  }),
-
   collaborators: computed('collaborations.[]', function() {
     return this.get('collaborations').mapBy('user');
-  }),
-
-  allSubmissionTasksCompleted: computed('allSubmissionTasks.@each.completed', function() {
-    return this.get('allSubmissionTasks').everyProperty('completed', true);
   }),
 
   roleList: computed('roles.[]', function() {
@@ -79,22 +70,5 @@ export default DS.Model.extend({
 
   latestDecision: computed('decisions.[]', function() {
     return this.get('decisions').findBy('isLatest', true);
-  }),
-
-  submittableState: computed('publishingState', function() {
-    let state = this.get('publishingState');
-    return state === 'unsubmitted' || state === 'in_revision';
-  }),
-
-  preSubmission: computed('submittableState', 'allSubmissionTasksCompleted', function() {
-    return (this.get('submittableState') &&
-            !this.get('allSubmissionTasksCompleted'));
-  }),
-
-  readyToSubmit: computed('submittableState', 'allSubmissionTasksCompleted', function() {
-    return (this.get('submittableState') &&
-            this.get('allSubmissionTasksCompleted'));
-  }),
-
-  postSubmission: computed.not('submittableState')
+  })
 });

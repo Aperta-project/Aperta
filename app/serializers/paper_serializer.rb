@@ -4,7 +4,7 @@ class PaperSerializer < LitePaperSerializer
   # stream triggers
   attributes :id, :short_title, :title, :doi, :body,
              :publishing_state, :paper_type, :status, :updated_at,
-             :editable, :links, :versions, :is_submitted
+             :editable, :links, :versions
 
   %i(phases figures tables bibitems authors supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true
@@ -21,10 +21,6 @@ class PaperSerializer < LitePaperSerializer
   has_one :journal, embed: :id, include: true
   has_one :locked_by, embed: :id, include: true, root: :users
   has_one :striking_image, embed: :id, include: true, root: :figures
-
-  def is_submitted
-    object.submitted?
-  end
 
   def status
     object.manuscript.try(:status)

@@ -36,10 +36,3 @@ test 'displayTitle displays title if present', (assert) ->
   title = 'Test Title'
   paper = FactoryGuy.make("paper", title: title, shortTitle: "")
   assert.equal paper.get('displayTitle'), title
-
-test 'allSubmissionTasks filters tasks by isSubmissionTask', (assert) ->
-  phase = FactoryGuy.make("phase")
-  notSubmissionTask = FactoryGuy.make("task", { phase: phase, title: "Not submission", isSubmissionTask: false })
-  submissionTask = FactoryGuy.make("task", { phase: phase, title: "Submission", isSubmissionTask: true })
-  paper = FactoryGuy.make("paper", phases: [phase], tasks: [notSubmissionTask, submissionTask])
-  assert.deepEqual paper.get('allSubmissionTasks').mapBy("title"), [submissionTask.get('title')]

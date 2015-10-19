@@ -398,6 +398,7 @@ ActiveRecord::Schema.define(version: 20151015191852) do
   create_table "snapshots", force: :cascade do |t|
     t.string   "source_type"
     t.integer  "source_id"
+    t.integer  "paper_id"
     t.integer  "major_version"
     t.integer  "minor_version"
     t.json     "contents"

@@ -1,5 +1,4 @@
-class Snapshot::NestedQuestionSerializer < ActiveModel::Serializer
-
+class Snapshot::NestedQuestionSerializer < Snapshot::BaseSerializer
   def initialize(nested_question, owner)
     @nested_question = nested_question
     @owner = owner

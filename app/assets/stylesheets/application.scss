@@ -28,3 +28,9 @@
 @import 'plos_billing/application';
 @import 'tahi_upload_manuscript/application';
 @import 'tahi/assign_team/application';
+
+.ember-modal-overlay {
+  &.overlay {
+    display: block;
+  }
+}

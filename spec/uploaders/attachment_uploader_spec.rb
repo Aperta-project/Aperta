@@ -32,7 +32,7 @@ describe AttachmentUploader do
 
     it "transcodes eps" do
       uploader = AttachmentUploader.new(model, :attachment)
-      uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'cat.eps')))
+      uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'HTML5_Logo.eps')))
       preview = MiniMagick::Image.open(uploader.preview.path)
 
       expect(preview.type).to eq("PNG")
@@ -77,10 +77,10 @@ describe AttachmentUploader do
 
     it "resizes eps" do
       uploader = AttachmentUploader.new(model, :attachment)
-      uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'cat.eps')))
+      uploader.store!(File.open(Rails.root.join('spec', 'fixtures', 'HTML5_Logo.eps')))
       preview = MiniMagick::Image.open(uploader.preview.path)
 
-      expect(preview.width).to eq(110)
+      expect(preview.width).to eq(156)
       expect(preview.height).to eq(220)
     end
 

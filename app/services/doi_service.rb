@@ -37,7 +37,7 @@ class DoiService
 =======
   def next_doi!
     if journal_has_doi_prefixes?
-      journal.transaction do
+      journal.with_lock do
         journal.update! last_doi_issued: last_doi_issued.succ
       end
       to_s

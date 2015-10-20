@@ -16,7 +16,7 @@ export default Ember.Component.extend({
       return 'DRAFT';
     } else {
       return this.get('model.publishingState').toUpperCase();
-    };
+    }
   }),
 
   roles: Ember.computed('model.roles', function() {

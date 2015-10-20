@@ -32,7 +32,7 @@
       {{#if hasActivePapers}}
         <div class="table-responsive">
           <table summary="This table displays manuscript data and roles" class="table-borderless top-margin">
-            <thead class='manuscript-list-heading {{if activePapersVisible 'gray-line'}}'>
+            <thead class='manuscript-list-heading {{if activePapersVisible 'gray-line'}} active-papers'>
               <tr>
                 <th class="col-xs-9 hug-left" {{action 'toggleActiveContainer'}}>Active Manuscripts ({{totalActivePaperCount}})</th>
                 {{#if activePapersVisible}}
@@ -44,10 +44,10 @@
             <tbody>
               {{#if activePapersVisible}}
                 {{#each sortedDraftPapers as |paper|}}
-                  {{dashboard-link model=paper}}
+                  {{dashboard-link model=paper type='active'}}
                 {{/each}}
                 {{#each sortedNonDraftPapers as |paper|}}
-                  {{dashboard-link model=paper}}
+                  {{dashboard-link model=paper type='active'}}
                 {{/each}}
               {{/if}}
             </tbody>
@@ -70,7 +70,7 @@
             <tbody>
               {{#if inactivePapersVisible}}
                 {{#each sortedInactivePapers as |paper|}}
-                  {{dashboard-link model=paper}}
+                  {{dashboard-link model=paper type='inactive'}}
                 {{/each}}
               {{/if}}
             </tbody>

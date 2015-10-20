@@ -24,6 +24,7 @@ class Snapshot::BaseTaskSerializer < Snapshot::BaseSerializer
       nested_question_serializer = Snapshot::NestedQuestionSerializer.new nested_question, @task
       nested_questions_snapshot << nested_question_serializer.snapshot
     end
+
     nested_questions_snapshot
   end
 

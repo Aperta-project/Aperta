@@ -1,6 +1,10 @@
 require "rails_helper"
 
 describe Snapshot::FigureTaskSerializer do
+  def find_property properties, name
+    properties.select { |p| p[:name] == name }.first[:value]
+  end
+
   let(:task) { FactoryGirl.create(:figure_task) }
   let(:figure) { FactoryGirl.create(:figure) }
   let(:paper) { FactoryGirl.create(:paper) }
@@ -15,9 +19,9 @@ describe Snapshot::FigureTaskSerializer do
 
   it "snapshots a figure task" do
     snapshot = Snapshot::FigureTaskSerializer.new(task).snapshot
-    figure = snapshot[0]
+    figure = snapshot[0][:children][0][:children]
 
-    expect(figure[:title]).to eq(attachment.title)
-    expect(figure[:caption]).to eq(attachment.caption)
+    expect(find_property(figure, "title")).to eq("figure title")
+    expect(find_property(figure, "caption")).to eq("figure caption")
   end
 end

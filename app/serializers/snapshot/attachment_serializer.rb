@@ -7,12 +7,13 @@ class Snapshot::AttachmentSerializer < Snapshot::BaseSerializer
     if @attachment.nil?
       return nil
     end
+    properties = []
 
-    {
-      file: @attachment.model[:attachment],
-      title: @attachment.model[:title],
-      caption: @attachment.model[:caption],
-      status: @attachment.model[:status]
-    }
+    properties << snapshot_property("file", "text", @attachment.model[:attachment])
+    properties << snapshot_property("title", "text", @attachment.model[:title])
+    properties << snapshot_property("caption", "text", @attachment.model[:caption])
+    properties << snapshot_property("status", "text", @attachment.model[:status])
+
+    properties
   end
 end

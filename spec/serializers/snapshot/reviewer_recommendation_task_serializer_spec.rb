@@ -14,8 +14,8 @@ describe Snapshot::ReviewerRecommendationsTaskSerializer do
       task.reviewer_recommendations << recommendation
 
       snapshot = Snapshot::ReviewerRecommendationsTaskSerializer.new(task).snapshot
+      properties = snapshot[:children][0][:children]
 
-      properties = snapshot[:recommendations][0][:recommendation]
       expect(find_property(properties, "first_name")).to eq(recommendation.first_name)
       expect(find_property(properties, "last_name")).to eq(recommendation.last_name)
       expect(find_property(properties, "middle_initial")).to eq(recommendation.middle_initial)
@@ -34,7 +34,7 @@ describe Snapshot::ReviewerRecommendationsTaskSerializer do
 
       snapshot = Snapshot::ReviewerRecommendationsTaskSerializer.new(task).snapshot
 
-      properties = snapshot[:recommendations][0][:recommendation]
+      properties = snapshot[:children][0][:children]
       expect(find_property(properties, "first_name")).to eq(recommendation1.first_name)
       expect(find_property(properties, "last_name")).to eq(recommendation1.last_name)
       expect(find_property(properties, "middle_initial")).to eq(recommendation1.middle_initial)
@@ -43,7 +43,7 @@ describe Snapshot::ReviewerRecommendationsTaskSerializer do
       expect(find_property(properties, "title")).to eq(recommendation1.title)
       expect(find_property(properties, "affiliation")).to eq(recommendation1.affiliation)
       expect(find_property(properties, "ringgold_id")).to eq(recommendation1.ringgold_id)
-      properties = snapshot[:recommendations][1][:recommendation]
+      properties = snapshot[:children][1][:children]
       expect(find_property(properties, "first_name")).to eq(recommendation2.first_name)
       expect(find_property(properties, "last_name")).to eq(recommendation2.last_name)
       expect(find_property(properties, "middle_initial")).to eq(recommendation2.middle_initial)
@@ -66,7 +66,7 @@ describe Snapshot::ReviewerRecommendationsTaskSerializer do
       allow_any_instance_of(TahiStandardTasks::ReviewerRecommendation).to receive(:nested_question_answers).and_return([recommending_answer, reason_answer])
 
       snapshot = Snapshot::ReviewerRecommendationsTaskSerializer.new(task).snapshot
-      properties = snapshot[:recommendations][0][:recommendation]
+      properties = snapshot[:children][0][:children]
 
       expect(find_property(properties, "recommend_or_oppose")[:answer]).to eq("recommend")
       expect(find_property(properties, "reason")[:answer]).to eq("They're good people")

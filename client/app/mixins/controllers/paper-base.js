@@ -5,9 +5,10 @@ import ENV from 'tahi/config/environment';
 const { computed } = Ember;
 
 export default Ember.Mixin.create({
-  needs: ['application', 'paper'],
-  isAdmin: Ember.computed.alias('currentUser.siteAdmin'),
+  subRouteName: 'index',
+  versioningMode: false,
   canViewManuscriptManager: false,
+  cannotEditTitle: computed.equal('model.publishingState', 'submitted'),
 
   supportedDownloadFormats: computed(function() {
     return ENV.APP.iHatExportFormats.map(formatType => {
@@ -19,6 +20,11 @@ export default Ember.Mixin.create({
     return 'paper-container-' + this.get('model.editorMode');
   }),
 
+  processingMessage: computed('model.status', function() {
+    const isProcessing = this.get('model.status') === 'processing';
+    return isProcessing ? 'Processing Manuscript' : null;
+  }),
+
   save() {
     this.get('model').save();
   },
@@ -26,6 +32,10 @@ export default Ember.Mixin.create({
   actions: {
     exportDocument(downloadType) {
       return DocumentDownload.initiate(this.get('model.id'), downloadType.format);
+    },
+
+    saveManuscriptTitle() {
+      Ember.run.debounce(this, this.save, 500);
     }
   }
 });

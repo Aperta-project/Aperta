@@ -13,7 +13,7 @@ class Journal < ActiveRecord::Base
       journal.doi_journal_prefix.present? && journal.doi_publisher_prefix.present?
     }
   }
-  validate :valid_doi_format
+  validate :has_valid_doi_information?
 
   after_create :setup_defaults
   before_destroy :destroy_roles
@@ -23,10 +23,6 @@ class Journal < ActiveRecord::Base
 
   def admins
     users.merge(Role.admins)
-  end
-
-  def doi
-    DoiService.new(journal: self).to_s
   end
 
   def editors
@@ -69,9 +65,9 @@ class Journal < ActiveRecord::Base
 
   private
 
-  def valid_doi_format
+  def has_valid_doi_information?
     return true unless doi_publisher_prefix.present? || doi_journal_prefix.present?
-    return true if DoiService.valid?(doi)
+    return true if DoiService.new(journal: self).journal_doi_info_valid?
     errors.add(:doi, "The DOI you specified is not valid.")
   end
 

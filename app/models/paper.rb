@@ -52,10 +52,8 @@ class Paper < ActiveRecord::Base
     doi.split('/').last if doi
   end
 
-  after_create :assign_doi
+  after_create :assign_doi!
   after_create :create_versioned_texts
-
-  after_create :set_doi
 
   aasm column: :publishing_state do
     state :unsubmitted, initial: true # currently being authored
@@ -384,14 +382,8 @@ class Paper < ActiveRecord::Base
     supporting_information
   end
 
-  def set_doi
-    return if doi
-    next_doi = Doi.new(journal: journal).assign!
-    update!(doi: next_doi)
-  end
-
-  def assign_doi
-    self.doi = DoiService.new(journal: journal).assign! if journal
+  def assign_doi!
+    self.update!(doi: DoiService.new(journal: journal).next_doi!) if journal
   end
 
   def create_versioned_texts

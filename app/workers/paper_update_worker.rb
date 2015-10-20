@@ -9,8 +9,8 @@ class PaperUpdateWorker
     if job_response.completed?
       @epub_stream = Faraday.get(job_response.epub_url).body
       sync!
-      Notifier.notify(event: "paper:data_extracted", data: { record: job_response })
     end
+    Notifier.notify(event: "paper:data_extracted", data: { record: job_response })
   end
 
   def sync!

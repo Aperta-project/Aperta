@@ -12,7 +12,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   end
 
   version :detail do
-    process resize_to_limit: [986, -1]
+    process resize_to_limit: [986, -1], if: :image?
     process :convert_to_png, if: :needs_transcoding?
 
     def full_filename(orig_file)
@@ -21,7 +21,7 @@ class AttachmentUploader < CarrierWave::Uploader::Base
   end
 
   version :preview do
-    process resize_to_limit: [475, 220]
+    process resize_to_limit: [475, 220], if: :image?
     process :convert_to_png, if: :needs_transcoding?
 
     def full_filename(orig_file)
@@ -50,9 +50,17 @@ class AttachmentUploader < CarrierWave::Uploader::Base
     # On direct upload, the file's content_type is application/octet-stream, so
     # we also need to check the filename
     if file.respond_to?('content_type')
-      ["image/tiff", "application/postscript"].include?(file.content_type)
+      ["image/tiff", "application/postscript", "image/x-eps"].include?(file.content_type)
     else
       !!(File.extname(file) =~ /(tif?f|eps)/i)
+    end
+  end
+
+  def image?(file)
+    if file.respond_to?('content_type')
+      ["image/tiff", "application/postscript", "image/x-eps", "image/jpeg", "image/png", "image/gif"].include?(file.content_type)
+    else
+      !!(File.extname(file) =~ /(tif?f|eps|jpg|jpeg|gif|png)/i)
     end
   end
 end

@@ -13,7 +13,7 @@ class TaskSerializer < ActiveModel::Serializer
   self.root = :task
 
   def paper_title
-    object.paper.display_title
+    object.paper.display_title(sanitized: false)
   end
 
   def is_metadata_task

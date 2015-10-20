@@ -32,7 +32,7 @@ describe PDFConverter do
 
     it "includes all necessary info and default journal stylesheet in the generated HTML" do
       expect(pdf_html).to include journal.pdf_css
-      expect(pdf_html).to include paper.display_title
+      expect(pdf_html).to include paper.display_title(sanitized: false)
       expect(pdf_html).to include paper.body
     end
 

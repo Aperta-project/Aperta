@@ -4,6 +4,7 @@ class Paper < ActiveRecord::Base
   include EventStream::Notifiable
   include PaperTaskFinders
   include AASM
+  include ActionView::Helpers::SanitizeHelper
 
   belongs_to :creator, inverse_of: :submitted_papers, class_name: 'User', foreign_key: :user_id
   belongs_to :journal, inverse_of: :papers
@@ -198,8 +199,13 @@ class Paper < ActiveRecord::Base
   #   # => "some-short-title"
   #
   # Returns a String.
-  def display_title
-    title.present? ? title : short_title
+  def display_title(sanitized: true)
+    raw = title.present? ? title : short_title
+    if sanitized
+      strip_tags(raw)
+    else 
+      raw
+    end
   end
 
   # Public: Returns one of the admins from the paper.

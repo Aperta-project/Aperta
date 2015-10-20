@@ -34,7 +34,7 @@
           <table summary="This table displays manuscript data and roles" class="table-borderless top-margin">
             <thead class='manuscript-list-heading {{if activePapersVisible 'gray-line'}} active-papers'>
               <tr>
-                <th class="col-xs-9 hug-left" {{action 'toggleActiveContainer'}}>Active Manuscripts ({{totalActivePaperCount}})</th>
+                <th class="col-xs-9 hug-left" {{action 'toggleActiveContainer'}}>{{activeManuscriptsHeading}}</th>
                 {{#if activePapersVisible}}
                   <th class="col-xs-1 text-center">Role</th>
                   <th class="col-xs-2 text-center">Status</th>
@@ -60,7 +60,7 @@
           <table summary="This table displays manuscript data and roles" class="table-borderless top-margin">
             <thead class='manuscript-list-heading {{if inactivePapersVisible 'gray-line'}} inactive-papers'>
               <tr>
-                <th class="col-xs-9 hug-left" {{action 'toggleInactiveContainer'}}>Inactive Manuscripts ({{totalInactivePaperCount}})</th>
+                <th class="col-xs-9 hug-left" {{action 'toggleInactiveContainer'}}>{{inactiveManuscriptsHeading}}</th>
                 {{#if inactivePapersVisible}}
                   <th class="col-xs-1 text-center">Role</th>
                   <th class="col-xs-2 text-center">Status</th>

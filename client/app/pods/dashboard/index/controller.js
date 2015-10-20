@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import pluralizeString from 'tahi/lib/pluralize-string';
 
 export default Ember.Controller.extend({
   papers: [],
@@ -6,7 +7,6 @@ export default Ember.Controller.extend({
   pendingInvitations: Ember.computed('currentUser.invitedInvitations', function() {
     return this.get('currentUser.invitedInvitations');
   }),
-
   hasPapers:         Ember.computed.notEmpty('papers'),
   hasActivePapers:   Ember.computed.notEmpty('activePapers'),
   hasInactivePapers: Ember.computed.notEmpty('inactivePapers'),
@@ -29,6 +29,14 @@ export default Ember.Controller.extend({
   totalActivePaperCount: Ember.computed.alias('activePapers.length'),
 
   totalInactivePaperCount: Ember.computed.alias('inactivePapers.length'),
+  activeManuscriptsHeading: Ember.computed('totalActivePaperCount', function() {
+    return 'Active ' + pluralizeString('Manuscript', this.get('totalActivePaperCount'))
+            + ' (' + this.get('totalActivePaperCount') + ')';
+  }),
+  inactiveManuscriptsHeading: Ember.computed('totalInactivePaperCount', function() {
+    return 'Inactive ' + pluralizeString('Manuscript', this.get('totalInactivePaperCount'))
+            + ' (' + this.get('totalInactivePaperCount') + ')';
+  }),
 
   actions: {
     toggleActiveContainer() {

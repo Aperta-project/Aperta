@@ -5,7 +5,9 @@
     {{/if}}
   </td>
   <td class="paper-tracker-title-column">
-    {{link-to paper.displayTitle "paper.index" paper.id}}
+    {{#link-to "paper.index" paper.id}}
+      {{{paper.displayTitle}}}
+    {{/link-to}}
   </td>
   <td class="paper-tracker-paper-id-column">
     {{link-to paper.id "paper.index" paper.id}}

@@ -41,18 +41,18 @@ test('viewing papers', function(assert) {
   visit('/paper_tracker');
   andThen(function() {
     assert.equal(
-      find('.paper-tracker-title-column a').text(),
+      find('.paper-tracker-title-column a').text().trim(),
       record.short_title,
       'Title is displayed'
     );
 
     assert.ok(
-      find('.paper-tracker-members-group').text().match(roleName),
+      find('.paper-tracker-members-group').text().trim().match(roleName),
       'Role name is displayed'
     );
 
     assert.ok(
-      find('.paper-tracker-members-group').text().match(lastName),
+      find('.paper-tracker-members-group').text().trim().match(lastName),
       'User name is displayed'
     );
   });

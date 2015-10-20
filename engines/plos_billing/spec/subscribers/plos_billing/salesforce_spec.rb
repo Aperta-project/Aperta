@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe PlosBilling::Paper::Submitted::Salesforce do
-
   let(:salesforce_api) { mock_delayed_class(SalesforceServices::API) }
   let(:user) { FactoryGirl.create(:user) }
 

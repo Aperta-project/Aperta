@@ -5,7 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
--
+- Super Admin: run `rake plos_billing:retry_salesforce_case_for_paper[:paper_id]` to resend Salesforce Case data for 1 Paper
 
 ### Changed
 - New Manuscript Overlay edits Paper title in place of short title

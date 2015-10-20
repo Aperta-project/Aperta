@@ -39,7 +39,7 @@
             noLabel="None" as |selected|}}
           {{#if selected.yes}}
             {{nested-question-input ident="pfa_question_1b" owner=model textClassNames=""}}
-            {{error-message elementId="error-for-pfa_question_1b" message=pfaData.errors.pfa_question_1b.answer}}
+            {{error-message elementId="error-for-pfa_question_1b" message=pfaData.errors.pfa_question_1b.value}}
           {{/if}}
           {{#if selected.no}}
             {{nested-question-textarea ident="pfa_question_1a" owner=model textClassNames=""}}
@@ -54,7 +54,7 @@
             noLabel="None" as |selected|}}
           {{#if selected.yes}}
             {{nested-question-input ident="pfa_question_2b" owner=model textClassNames=""}}
-            {{error-message elementId="error-for-pfa_question_2b" message=pfaData.errors.pfa_question_2b.answer}}
+            {{error-message elementId="error-for-pfa_question_2b" message=pfaData.errors.pfa_question_2b.value}}
           {{/if}}
           {{#if selected.no}}
             {{nested-question-textarea ident="pfa_question_2a" owner=model textClassNames=""}}
@@ -65,7 +65,7 @@
         {{#nested-question-radio ident="pfa_question_3" owner=model as |selected|}}
           {{#if selected.yes}}
             {{nested-question-input ident="pfa_question_3a" owner=model textClassNames=""}}
-            {{error-message elementId="error-for-pfa_question_3a" message=pfaData.errors.pfa_question_3a.answer}}
+            {{error-message elementId="error-for-pfa_question_3a" message=pfaData.errors.pfa_question_3a.value}}
           {{/if}}
         {{/nested-question-radio}}
         <br>
@@ -73,14 +73,14 @@
         {{#nested-question-radio ident="pfa_question_4" owner=model as |selected|}}
           {{#if selected.yes}}
             {{nested-question-input ident="pfa_question_4a" owner=model textClassNames=""}}
-            {{error-message elementId="error-for-pfa_question_4a" message=pfaData.errors.pfa_question_4a.answer}}
+            {{error-message elementId="error-for-pfa_question_4a" message=pfaData.errors.pfa_question_4a.value}}
           {{/if}}
         {{/nested-question-radio}}
         <br>
 
         <div>
           {{nested-question-input ident="pfa_amount_to_pay" owner=model}}
-          {{error-message elementId="error-for-pfa_amount_to_pay" message=pfaData.errors.pfa_amount_to_pay.answer}}
+          {{error-message elementId="error-for-pfa_amount_to_pay" message=pfaData.errors.pfa_amount_to_pay.value}}
         </div>
 
         <br>

@@ -20,10 +20,12 @@ export default DS.Model.extend({
   answerForOwner: function(owner, decision){
     let ownerId = owner.get("id");
     let answer = this.get("answers").toArray().find(function(answer){
-      let matched = Ember.isEqual(parseInt(answer.get("data.owner.id")), parseInt(ownerId));
+      let answerOwnerId = answer.get("owner.id") || answer.get("data.owner.id");
+      let matched = Ember.isEqual(parseInt(answerOwnerId), parseInt(ownerId));
       if(decision){
         matched = matched && Ember.isEqual(parseInt(answer.get("decision.id")), parseInt(decision.get("id")));
       }
+
       matched = matched && !answer.get("isDeleted");
       return matched;
     });
@@ -34,7 +36,6 @@ export default DS.Model.extend({
         owner: owner,
         decision: decision
       });
-      this.get('answers').addObject(answer);
     }
 
     return answer;

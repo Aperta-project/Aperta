@@ -339,27 +339,38 @@ export default TaskController.extend({
       }
     }};
 
+    const identsToValidateNumerically = [
+      'pfa_question_1b',
+      'pfa_question_2b',
+      'pfa_question_3a',
+      'pfa_question_4a',
+      'pfa_amount_to_pay'
+    ];
+
     const pfaDataClass = Ember.Object.extend(EmberValidations.Mixin, {
+      validations: {},
+
       init: function(){
-        this.set('validations', { });
+        let validations = this.get("validations");
+        identsToValidateNumerically.forEach((ident) => {
+          validations[ident + ".value"] = numericalityConfig;
+        });
 
-        ['pfa_question_1b',
-         'pfa_question_2b',
-         'pfa_question_3a',
-         'pfa_question_4a',
-         'pfa_amount_to_pay'].forEach((ident) => {
-            this.set(ident, Ember.computed("model.questions.[]", () => {
-                return this.findPfaQuestion(ident);
-              })
-            ); //add named prop to obj
-
-            // add prop name to validations
-            this.validations[ident + ".answer"] = numericalityConfig;
-          }
-        );
-
+        // this must be called after we set up the validations since
+        // ember-validations builds up its validators in its constructor
         this._super.apply(this, arguments);
       },
+
+      // answersObserver makes sure validations occur on the most recent answers
+      // since answers can be create/deleted/re-created based on user interaction
+      // with the form.
+      answersObserver: Ember.observer("model.nestedQuestionAnswers.[]", function(){
+        let answers = Ember.A();
+        identsToValidateNumerically.forEach((ident) => {
+          let answer = this.get("model").answerForQuestion(ident);
+          this.set(ident, answer);
+        });
+      }),
 
       // container required because we are creating an Ember.Object.
       // EmberValidations must need access.
@@ -367,11 +378,7 @@ export default TaskController.extend({
       // generated through the container
       container: this.get('container'),
 
-      model: this.get('model'),
-      findPfaQuestion: function(ident){
-        return this.get("model.questions")
-                   .findProperty("ident", "plos_billing." + ident);
-      },
+      model: this.get('model')
     });
 
     this.set('pfaData', pfaDataClass.create());
@@ -431,7 +438,10 @@ export default TaskController.extend({
   }),
 
   selectedRinggold: null,
-  selectedPaymentMethod: null,
+  selectedPaymentMethod: computed("model.nestedQuestionAnswers.[]", function(){
+    let answer = this.get("model").answerForQuestion("payment_method");
+    return answer.get("value");
+  }),
 
   selfPayment: computed.equal("selectedPaymentMethod", "self_payment"),
   institutional: computed.equal("selectedPaymentMethod", "institutional"),

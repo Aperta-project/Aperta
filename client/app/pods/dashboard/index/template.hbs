@@ -44,10 +44,10 @@
             <tbody>
               {{#if activePapersVisible}}
                 {{#each sortedDraftPapers as |paper|}}
-                  {{dashboard-link model=paper type='active' classNames='active-paper-table-row'}}
+                  {{dashboard-link model=paper type='active' class='active-paper-table-row'}}
                 {{/each}}
                 {{#each sortedNonDraftPapers as |paper|}}
-                  {{dashboard-link model=paper type='active' classNames='active-paper-table-row'}}
+                  {{dashboard-link model=paper type='active' class='active-paper-table-row'}}
                 {{/each}}
               {{/if}}
             </tbody>
@@ -70,7 +70,7 @@
             <tbody>
               {{#if inactivePapersVisible}}
                 {{#each sortedInactivePapers as |paper|}}
-                  {{dashboard-link model=paper type='inactive' classNames='inactive-paper-table-row'}}
+                  {{dashboard-link model=paper type='inactive' class='inactive-paper-table-row'}}
                 {{/each}}
               {{/if}}
             </tbody>

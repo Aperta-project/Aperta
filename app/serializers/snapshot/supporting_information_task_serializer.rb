@@ -1,6 +1,6 @@
 class Snapshot::SupportingInformationTaskSerializer < Snapshot::BaseTaskSerializer
   def snapshot_properties
-    paper = Paper.find(@task.paper)
+    paper = Paper.find(@task.paper.id)
     properties = []
     paper.supporting_information_files.order(:id).each do |file|
       properties << { name: "file", type: "properties", children: snapshot_file(file)}

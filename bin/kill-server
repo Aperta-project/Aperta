@@ -3,9 +3,9 @@
 # You should try using bin/foreman-stop first. If that fails, you may want to use this command.
 # This will hard-terminate the processes and may result in corrupted data (PIDs may remain on disk).
 
-if [ -n "$(lsof -ti :8080)" ]
+if [ -n "$(lsof -ti :40604)" ]
   then
-    kill -9 `lsof -ti :8080`
+    kill -9 `lsof -ti :40604`
 fi
 
 if [ -n "$(lsof -ti :5000)" ]

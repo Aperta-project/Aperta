@@ -121,6 +121,12 @@ by running:
 
 `brew install ghostscript`
 
+# Documentation
+
+Technical documentation lives in the `doc/`.  The git workflow and deploy
+process are documented in [doc/git-process.txt](doc/git-process.txt). There is a
+[Pull Request Checklist template](doc/pull_request_checklist.md) as well.
+
 # Dev Notes
 
 ## Page Objects
@@ -231,6 +237,7 @@ E.G.
 heroku pgbackups:restore HEROKUPOSTGRESQL_ROSE_URL b020
 ```
 
+<<<<<<< HEAD
 # Documentation
 
 Open the generated documentation from `doc/rdoc/index.html` in your browser.
@@ -242,3 +249,5 @@ sdoc -g --markup=tomdoc --title="Tahi Documentation" --main="README.md" -o doc/r
 ```
 
 We are using [Tomdoc](http://tomdoc.org/) documentation specification format. We are currently aiming to have all models documented.
+=======
+>>>>>>> Mention the technical documentation in README

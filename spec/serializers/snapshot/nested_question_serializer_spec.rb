@@ -3,6 +3,10 @@ require "rails_helper"
 describe Snapshot::BaseTaskSerializer do
   let(:task) { FactoryGirl.create(:task) }
 
+  def find_property properties, name
+    properties.select { |p| p[:name] == name }.first[:value]
+  end
+
   describe "serializing nested questions" do
     before do
       nested_questions = make_nested_questions(task)
@@ -92,8 +96,9 @@ describe Snapshot::BaseTaskSerializer do
       allow_any_instance_of(Task).to receive(:nested_question_answers).and_return(nested_question_answers)
 
       snapshot = Snapshot::BaseTaskSerializer.new(task).snapshot
+      serialized_attachment = snapshot[0][:value][:attachment][:children]
 
-      expect(snapshot[0][:value][:attachment][:file]).to eq(attachment[:attachment])
+      expect(find_property(serialized_attachment, "file")).to eq(attachment[:attachment])
       expect(snapshot[0][:value][:answer]).to eq("text that is different")
     end
   end

@@ -13,7 +13,7 @@ describe Snapshot::AuthorTaskSerializer do
       task.authors = [author]
 
       snapshot = Snapshot::AuthorTaskSerializer.new(task).snapshot
-      properties = snapshot[:authors][0][:author]
+      properties = snapshot[:children][0][:children]
 
       expect(find_property(properties, "first_name")).to eq(author.first_name)
       expect(find_property(properties, "last_name")).to eq(author.last_name)
@@ -39,7 +39,7 @@ describe Snapshot::AuthorTaskSerializer do
       task.authors = [author]
 
       snapshot = Snapshot::AuthorTaskSerializer.new(task).snapshot
-      properties = snapshot[:authors][0][:author]
+      properties = snapshot[:children][0][:children]
 
       expect(find_property(properties, "published_as_corresponding_author")[:answer]).to eq("t")
       expect(find_property(properties, "deceased")[:answer]).to be_nil
@@ -55,9 +55,9 @@ describe Snapshot::AuthorTaskSerializer do
       task.authors = [author3, author1, author2]
 
       snapshot = Snapshot::AuthorTaskSerializer.new(task).snapshot
-      properties1 = snapshot[:authors][0][:author]
-      properties2 = snapshot[:authors][1][:author]
-      properties3 = snapshot[:authors][2][:author]
+      properties1 = snapshot[:children][0][:children]
+      properties2 = snapshot[:children][1][:children]
+      properties3 = snapshot[:children][2][:children]
 
       expect(find_property(properties1, "first_name")).to eq(author1.first_name)
       expect(find_property(properties2, "first_name")).to eq(author2.first_name)

@@ -51,3 +51,11 @@ test:
           - "spec/**/*_spec.rb"
           - "engines/*/spec/**/*_spec.rb"
     - "set -o pipefail; cd client && ./node_modules/.bin/ember test --silent -r xunit | grep -v ^Warning > $CIRCLE_TEST_REPORTS/qunit.xml"
+
+## Customize heroku deployment
+deployment:
+  staging:
+    branch: master
+    commands:
+      - git push git@heroku.com:tahi-staging.git $CIRCLE_SHA1:refs/heads/master
+      - heroku run rake db:migrate --app tahi-staging

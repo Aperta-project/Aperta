@@ -24,7 +24,8 @@ describe PDFConverter do
 
   describe ".pdf_html" do
     let(:doc) { Nokogiri::HTML(pdf_html) }
-    let(:pdf_html) { PDFConverter.pdf_html paper, presenter }
+    let(:body) { PaperDownloader.new(paper).body }
+    let(:pdf_html) { PDFConverter.pdf_html paper, presenter, body }
     let(:presenter) { PublishingInformationPresenter.new paper, user }
 
     after { expect(doc.errors.length).to be 0 }

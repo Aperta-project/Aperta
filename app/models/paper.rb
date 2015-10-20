@@ -164,12 +164,6 @@ class Paper < ActiveRecord::Base
     end
   end
 
-  def download_body
-    if body
-      "#{body}#{download_supporting_information}"
-    end
-  end
-
   def version_string
     latest_version.version_string
   end

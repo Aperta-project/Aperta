@@ -121,17 +121,17 @@ module TahiStandardTasks
     end
 
     # find_or_build_answer_for(...) will return the associated answer for this
-    # task given :nested_question_id. For ReviewerReportTask this enforces the
+    # task given :nested_question. For ReviewerReportTask this enforces the
     # lookup to be scoped to this task's current decision. Answers associated
     # with previous decisions will not be returned.
     #
     # == Optional Parameters
-    #  * decision_id - ignored if provided, always enforces the task's decision.id
+    #  * decision - ignored if provided, always enforces the task's decision.id
     #
-    def find_or_build_answer_for(nested_question_id:, decision_id: nil)
+    def find_or_build_answer_for(nested_question:, **_kwargs)
       super(
-        nested_question_id: nested_question_id,
-        decision_id: decision.try(:id),
+        nested_question: nested_question,
+        decision: decision
       )
     end
 

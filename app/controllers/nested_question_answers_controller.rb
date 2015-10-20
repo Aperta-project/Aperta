@@ -25,7 +25,6 @@ class NestedQuestionAnswersController < ApplicationController
 
   def fetch_and_update_answer
     answer = fetch_answer
-    answer.value_type = nested_question.value_type
     answer.value = answer_params[:value]
     answer.additional_data = answer_params[:additional_data]
     answer
@@ -35,7 +34,7 @@ class NestedQuestionAnswersController < ApplicationController
     @answer ||= begin
       answer = NestedQuestionAnswer.find(params[:id]) if params[:id]
       unless answer
-        answer = owner.find_or_build_answer_for(nested_question_id: nested_question.id)
+        answer = owner.find_or_build_answer_for(nested_question: nested_question)
       end
       answer
     end

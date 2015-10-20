@@ -16,15 +16,15 @@ module NestedQuestionable
   end
 
   # find_or_build_answer_for(...) will return the associated answer for this
-  # task given the :nested_question_id parameter.
+  # task given the :nested_question parameter.
   #
   # == Optional Parameters
-  #  * decision_id - if provided, will scope the answer to the given :decision_id.
+  #  * decision - if provided, will scope the answer to the given :decision.
   #
-  def find_or_build_answer_for(nested_question_id:, decision_id: nil)
+  def find_or_build_answer_for(nested_question:, decision: nil)
     nested_question_answers.find_or_build(
-      nested_question_id: nested_question_id,
-      decision_id: decision_id
+      nested_question: nested_question,
+      decision: decision
     )
   end
 

@@ -79,7 +79,7 @@ describe TahiStandardTasks::ReviewerReportTask do
     context "when there is no answer for the given question" do
       it "returns a new answer for the question and current decision" do
         answer = task.find_or_build_answer_for(
-          nested_question_id: nested_question.id
+          nested_question: nested_question
         )
         expect(answer).to be_kind_of(NestedQuestionAnswer)
         expect(answer.new_record?).to be(true)
@@ -100,7 +100,7 @@ describe TahiStandardTasks::ReviewerReportTask do
       end
 
       it "returns the existing answer" do
-        answer = task.find_or_build_answer_for(nested_question_id: nested_question.id)
+        answer = task.find_or_build_answer_for(nested_question: nested_question)
         expect(answer).to eq(existing_answer)
       end
     end

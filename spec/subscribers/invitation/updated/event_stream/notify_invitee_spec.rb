@@ -8,7 +8,7 @@ describe Invitation::Updated::EventStream::NotifyInvitee do
     let(:invitation) { FactoryGirl.build(:invitation) }
 
     it "serializes invitation down the user channel on update" do
-      expect(pusher_channel).to receive_push(serialize: :invitation, down: 'user', on: 'updated')
+      expect(pusher_channel).to receive_push(payload: hash_including(:invitation), down: 'user', on: 'updated')
       described_class.call("tahi:invitation:updated", { action: "updated", record: invitation })
     end
   end
@@ -18,7 +18,7 @@ describe Invitation::Updated::EventStream::NotifyInvitee do
     let(:invitation) { FactoryGirl.build(:invitation, invitee: nil) }
 
     it "does not serialize invitation" do
-      expect(pusher_channel).to_not receive(:push)
+      expect(pusher_channel).to_not receive_push(down: 'user', on: 'update')
       described_class.call("tahi:invitation:updated", { action: "updated", record: invitation })
     end
   end

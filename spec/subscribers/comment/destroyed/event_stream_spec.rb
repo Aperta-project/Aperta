@@ -7,7 +7,7 @@ describe Comment::Destroyed::EventStream do
   let(:comment) { FactoryGirl.build(:comment) }
 
   it "serializes comment id down the system channel on destruction" do
-    expect(pusher_channel).to receive_push(serialize: :ids, down: 'system', on: 'destroyed')
+    expect(pusher_channel).to receive_push(payload: hash_including(:ids), down: 'system', on: 'destroyed')
     described_class.call("tahi:comment:destroyed", { action: "destroyed", record: comment })
   end
 

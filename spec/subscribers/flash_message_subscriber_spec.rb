@@ -60,7 +60,7 @@ describe FlashMessageSubscriber do
         'You have an error!'
       end
     end
-    expect(pusher_channel).to_not receive_push(serialize: [:messageType, :message], down: 'user', on: 'flashMessage')
+    expect(pusher_channel).to_not receive_push(payload: hash_including(:messageType, :message), down: 'user', on: 'flashMessage')
     klass.call('message-type', user: the_user)
   end
 
@@ -79,7 +79,7 @@ describe FlashMessageSubscriber do
       end
     end
 
-    expect(pusher_channel).to receive_push(serialize: [:messageType, :message], down: 'user', on: 'flashMessage')
+    expect(pusher_channel).to receive_push(payload: hash_including(:messageType, :message), down: 'user', on: 'flashMessage')
     klass.call('message-type', user: the_user)
   end
 end

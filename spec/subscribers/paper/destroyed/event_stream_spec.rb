@@ -7,7 +7,7 @@ describe Paper::Destroyed::EventStream do
   let(:paper) { FactoryGirl.build(:paper) }
 
   it "serializes paper id down the system channel on destruction" do
-    expect(pusher_channel).to receive_push(serialize: :ids, down: 'system', on: 'destroyed')
+    expect(pusher_channel).to receive_push(payload: hash_including(:ids), down: 'system', on: 'destroyed')
     described_class.call("tahi:paper:destroyed", { action: "destroyed", record: paper })
   end
 

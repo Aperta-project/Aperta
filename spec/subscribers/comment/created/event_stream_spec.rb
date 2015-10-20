@@ -7,7 +7,7 @@ describe Comment::Created::EventStream do
   let(:comment) { FactoryGirl.build(:comment) }
 
   it "serializes comment down the paper channel on creation" do
-    expect(pusher_channel).to receive_push(serialize: :comment, down: 'paper', on: 'created')
+    expect(pusher_channel).to receive_push(payload: hash_including(:comment), down: 'paper', on: 'created')
     described_class.call("tahi:comment:created", { action: "created", record: comment })
   end
 

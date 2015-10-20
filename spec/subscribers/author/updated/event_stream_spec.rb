@@ -7,7 +7,7 @@ describe Author::Updated::EventStream do
   let(:author) { FactoryGirl.build(:author) }
 
   it "serializes author down the paper channel on update" do
-    expect(pusher_channel).to receive_push(serialize: :authors, down: 'paper', on: 'updated')
+    expect(pusher_channel).to receive_push(payload: hash_including(:authors), down: 'paper', on: 'updated')
     described_class.call("tahi:author:updated", { action: "updated", record: author })
   end
 

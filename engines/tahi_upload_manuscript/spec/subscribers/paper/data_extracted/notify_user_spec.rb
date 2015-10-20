@@ -9,12 +9,12 @@ describe Paper::DataExtracted::NotifyUser do
   let(:errored_response) { IhatJobResponse.new(state: 'errored', options: { metadata: { paper_id: upload_task.paper.id } }) }
 
   it 'sends a message on successful upload' do
-    expect(pusher_channel).to receive_push(serialize: [:messageType, :message], down: 'user', on: 'flashMessage')
+    expect(pusher_channel).to receive_push(payload: hash_including(:message, messageType: 'success'), down: 'user', on: 'flashMessage')
     described_class.call("tahi:paper:data_extracted", record: successful_response)
   end
 
   it 'sends a message on errored upload' do
-    expect(pusher_channel).to receive_push(serialize: [:messageType, :message], down: 'user', on: 'flashMessage')
+    expect(pusher_channel).to receive_push(payload: hash_including(:message, messageType: 'error'), down: 'user', on: 'flashMessage')
     described_class.call("tahi:paper:data_extracted", record: errored_response)
   end
 end

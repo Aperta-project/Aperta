@@ -1,0 +1,212 @@
+Development
+
+New features, non-critical bug fixes, and chores are developed on their own
+branches hereafter referred to as feature branches. Every feature branch should
+be tied to a JIRA ticket which allows all work to be properly tracked.
+
+Base new feature branches from the master branch.
+
+         o---o---o  feature/A
+        /         \
+    ---o-------o---o  master
+        \     /
+         o---o  bugfix/B
+
+
+New branches should follow the project branch naming convention. The category
+(feature/bugfix/chore) as a prefix, along with the JIRA ticket id, followed by a
+short, sensible name for the branch.
+
+- feature/APERTA-1000-rearrange-tasks
+- bugfix/APERTA-1001-bad-merge-resolution
+- chore/APERTA-1002-rename-manuscript-manager-template
+
+
+Review
+
+Completed features undergo several phases of automatic and manual review.
+Automated tests are run, developers perform a code review, the Product Team
+reviews from a user's perspective, and the QA team checks for regressions.
+
+                 o---o---o  feature/A
+                /         \
+               /           1) CI passes
+              /            |
+             /             2) review env launches
+            /              |
+           /               3) code review
+          /                |
+         /                 4) product review
+        /                  |
+    ---o-------------------o---  master
+                              ^
+                              |
+                              5) QA Regression Testing
+
+
+When a feature branch is ready for code review, open a pull request against the
+master branch. The automated tests will run on CI as soon as a new commit is
+pushed. Once the tests pass on CI, a Review App[1] is automatically launched as
+a separate environment for the Code Reviewer(s) and the Product Team to test out
+the branch.
+
+At this point, other developers commence Code Review[2]. If problems are found,
+they are fixed on the feature branch and code review continues.
+
+Once code review is complete, the link to the PR review environment is added
+to the JIRA ticket for the Product Team. They will use the review environment to
+verify and accept the feature. If they have concerns, they reject the ticket in
+JIRA with details on what needs to be fixed. These are fixed on the feature
+branch, before the rejected feature is ever merged into master.
+
+The feature branch is merged back into master after Product Team approval. Once
+the feature branch has been merged into master, it can be deleted on Github.
+
+
+Integration Testing
+
+staging is used as a rolling integration environment. master will autodeploy to
+the staging after each PR is merged. While the deploy does happen automatically,
+be sure to confirm the deploy finishes successfully.  All features that are
+approved by the Product Team will be tested in staging by QA for integration
+bugs and regressions. Regressions caught at this point are fixed with bugfix
+branches.  Since they are likely to be bugs caused by integrating two disparate
+branches it makes sense to use an entirely new branch.
+
+
+         o---o---o  feature/A
+        /         \
+    ---o-------o---o---o---o---o---o---o---o  master
+                                \         /
+                                 o---o---o  bugfix/correct-A-regression
+
+Protip: Avoid reusing the old feature branches for bugfixes. Reuse leads to a
+very confusing git history. Branches are cheap.
+
+
+Deploys
+
+We try to maintain a regular release cadence, deploying to production every two
+weeks. Releases are managed as separate branches created from master. This
+usually happens with a release being cut on a Tuesday and deployed to production
+on Thursday.
+
+Releases are cut on Tuesdays by creating a release/1.X branch from master. This
+branch will be deployed to the release candidate-environment, where final
+pre-release testing will be performed. This initial deploy is tagged 1.X.0 to
+keep a record of the bugfixes applied to the release. 
+
+    ---o---o---o---o---o---o---o---o---o---o---o  master
+                \                       \
+                 `---  release/1.4       `---  release/1.5
+
+Once the team is happy with the release candidate, the release/1.X branch can be
+deployed to production. The release/1.X branch will remain the "always
+deployable" branch until the 1.(X+1) release supersedes it in two weeks.
+
+
+Hotfixes
+
+If any defects are found after the release branch is cut from master, a hotfix
+branch is created from the release branch. A PR is submitted back to the release
+branch. Make sure to add the hotfix label to the PR. Once that PR is reviewed
+and merged, a new 1.X.1 tag is created, and the release/1.X branch will be
+deployed once again to the release-candidate environment. The pre-release QA
+cycle can begin again.
+
+
+    ---o---o---o---o---o---o---o  master
+                \
+                 `-------------o  release/1.4
+                   \         /
+                    o---o---o  hotfix/A
+
+
+A given release could potentially need multiple hotfixes before it is ready for
+release. In the examples below, commit N has been accepted, verified to be *bug
+free*, but that contains work not ready for the current release.
+
+    N: Not suitable for release/1.4
+
+    ---o---o---N---o---o---o  master
+            \
+             `------------o-----------------o--------------------o  release/1.4
+               \         /            \    /              \     /
+                o---o---o  hotfix/A    `--o  hotfix/B      o---o  hotfix/C
+
+
+Tags can be used to track the exact versions deployed and redeployed to the
+release-candidate and production environments. Each change to the release branch
+will increment the patch version number. This helps the team easily verify which
+revisions were deployed and when.
+
+    W: 1.4.0
+    X: 1.4.1
+    Y: 1.4.2
+    Z: 1.4.3
+
+    ---o---W---o---o---o---o  master
+            \
+             `------------X-----------------Y--------------------Z  release/1.4
+               \         /            \    /              \     /
+                o---o---o  hotfix/A    `--o  hotfix/B      o---o  hotfix/C
+
+
+As a general rule, we will want to make sure issues fixed on a release branch
+are similarly fixed in master. Each release branch will remain divergent to
+master going forward. This is advantageous to us, as we are certain the release
+branch remains a accurate reflection of the state of production. It is always
+deployable until the next release branch is deployed.
+
+This may even involve separate resolution mechanisms. A few common patterns:
+
+    1. Merge the same hotfix branch to master
+
+        N: Not suitable for release/1.4
+
+        ---o---o---o---N---o---o---o------------------o  master
+                    \                                /
+                     `-------------o  release/1.4   /
+                       \         /                 /
+                        o---o---o------------------ hotfix/A
+
+
+    2. Rename & rebase hotfix branch on master, then merge
+
+        N: Not suitable for release/1.4
+
+                                     A'---B'---C'  hotfix/A'
+                                    /           \
+        ---o---o---o---N---o---o---o-------------o  master
+                    \
+                     `-------------o  release/1.4
+                       \         /
+                        A---B---C  hotfix/A
+
+
+
+    3. Apply a new, separate logical fix to master. This might make sense if the
+    hotfix was a temporary fix. This temporary fix may disable whole features or
+    have other effects that we don't want to carry forward. Alternatively, the
+    correct, long term fix may take longer to implement. The below example shows
+    reverting a feature entirely in the release branch, while correctly fixing
+    it in master.
+
+        N: Not suitable for release/1.4
+
+        ---o---o                       B---C---D  bugfix/improve-A
+                \                     /           \
+          ---o---A---o---N---o---o---o-------------o  master
+                      \
+                       `-----o  release/1.4
+                         \  /
+                          A'  hotfix/revert-A
+
+Each of these methods should be a new PR against master. The normal review
+process should be followed, though will likely be brief since they were reviewed
+once before for the release branch.
+
+
+[1]: https://devcenter.heroku.com/articles/github-integration-review-apps
+[2]: https://developer.plos.org/confluence/display/TAHI/How+We+Pull+Request
+

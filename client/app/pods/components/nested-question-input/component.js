@@ -2,5 +2,6 @@ import NestedQuestionComponent from 'tahi/pods/components/nested-question/compon
 
 export default NestedQuestionComponent.extend({
   inputClassNames: ["form-control tall-text-field"],
-  wrapInput: true
+  wrapInput: true,
+  type: 'text'
 });

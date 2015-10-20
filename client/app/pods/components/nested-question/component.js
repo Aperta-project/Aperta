@@ -57,6 +57,10 @@ NestedQuestionComponent = Ember.Component.extend({
   }),
 
   change: function(){
+    this.save();
+  },
+
+  save: function(){
     Ember.run.debounce(this, this._saveAnswer, this.get('model.answer'), 200);
     return false;
   },

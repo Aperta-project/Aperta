@@ -5,9 +5,6 @@ let on = Ember.on;
 
 export default Ember.Mixin.create(RedirectsIfEditable, {
   classNames: ['edit-paper'],
-  editor: null,
-  locked: Ember.computed.alias('controller.locked'),
-  isEditing: Ember.computed.alias('controller.isEditing'),
 
   setBackgroundColor: on('didInsertElement', function() {
     $('html').addClass('matte');

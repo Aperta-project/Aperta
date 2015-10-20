@@ -141,7 +141,7 @@ export default Ember.Component.extend({
 
   loadMathJax: function() {
     if (this.renderEquations) {
-        LazyLoader.loadScripts([ENV.mathjax.url]).then(() => {
+      LazyLoader.loadScripts([ENV.mathjax.url]).then(() => {
         this.refreshEquations();
       });
     }
@@ -149,8 +149,8 @@ export default Ember.Component.extend({
 
   refreshEquations:  function() {
     if (!this.renderEquations) { return; }
-    else if (Ember.isNone(window.MathJax)) { this.loadMathJax(); return; }
-    else if (Ember.isNone(window.MathJax.Hub)) { return; }
+    else if (!window.MathJax) { this.loadMathJax(); return; }
+    else if (!window.MathJax.Hub) { return; }
 
     Ember.run.next(() => {
       MathJax.Hub.Queue(["Typeset", MathJax.Hub, this.$()[0]]);

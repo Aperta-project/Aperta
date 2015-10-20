@@ -13,7 +13,6 @@ import registerSelectBoxHelpers from './select-box-helpers';
 
 import Factory from './factory';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
-import HtmlEditorController from 'tahi/pods/paper/index/html-editor/controller';
 
 registerCustomAssertions();
 registerAsyncHelpers();
@@ -61,11 +60,6 @@ export default function startApp(attrs) {
       responseJson[Ember.String.pluralize(modelName)] = json;
       return responseJson;
     }
-  });
-
-  // Note: use a mock component for testing
-  HtmlEditorController.reopen({
-    editorComponent: 'mock-html-editor',
   });
 
   Ember.run(function() {

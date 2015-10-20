@@ -37,7 +37,6 @@ export default TaskController.extend(FileUploadMixin, {
     uploadFinished: function(data, filename) {
       this.uploadFinished(data, filename);
       this.store.pushPayload(data);
-      this.set('model.completed', true);
 
       this.get('model').save().then(()=> {
         this.send('closeAction');

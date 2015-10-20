@@ -17,6 +17,7 @@ module TahiStandardTasks
     def destroy
       reviewer_recommendation.destroy!
       head :no_content
+    end
 
     private
 

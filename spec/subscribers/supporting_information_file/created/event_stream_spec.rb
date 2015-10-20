@@ -7,7 +7,7 @@ describe SupportingInformationFile::Created::EventStream do
   let(:supporting_information_file) { FactoryGirl.build(:supporting_information_file) }
 
   it "serializes supporting_information_file down the paper channel on creation" do
-    expect(pusher_channel).to receive_push(serialize: :supporting_information_file, down: 'paper', on: 'created')
+    expect(pusher_channel).to receive_push(payload: hash_including(:supporting_information_file), down: 'paper', on: 'created')
     described_class.call("tahi:supporting_information:created", { action: "created", record: supporting_information_file })
   end
 

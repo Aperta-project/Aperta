@@ -7,7 +7,7 @@ describe Invitation::Updated::EventStream::NotifyPaperMembers do
   let(:invitation) { FactoryGirl.build(:invitation) }
 
   it "serializes invitation down the paper channel on update" do
-    expect(pusher_channel).to receive_push(serialize: :invitation, down: 'paper', on: 'updated')
+    expect(pusher_channel).to receive_push(payload: hash_including(:invitation), down: 'paper', on: 'updated')
     described_class.call("tahi:invitation:updated", { action: "updated", record: invitation })
   end
 

@@ -7,7 +7,7 @@ describe QuestionAttachment::Updated::EventStream do
   let(:question_attachment) { FactoryGirl.build(:question_attachment_with_task_owner) }
 
   it "serializes question_attachment down the paper channel on update" do
-    expect(pusher_channel).to receive_push(serialize: :question_attachment, down: 'paper', on: 'updated')
+    expect(pusher_channel).to receive_push(payload: hash_including(:question_attachment), down: 'paper', on: 'updated')
     described_class.call("tahi:question_attachment:updated", { action: "updated", record: question_attachment })
   end
 

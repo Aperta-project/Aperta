@@ -7,7 +7,7 @@ describe DiscussionReply::Created::EventStream do
   let(:discussion_reply) { FactoryGirl.build(:discussion_reply) }
 
   it "serialize discussion_reply down the discussion_topic channel on creation" do
-    expect(pusher_channel).to receive_push(serialize: :discussion_reply, down: 'discussion_topic', on: 'created')
+    expect(pusher_channel).to receive_push(payload: hash_including(:discussion_reply), down: 'discussion_topic', on: 'created')
     described_class.call("tahi:discussion_reply:created", { action: "created", record: discussion_reply })
   end
 

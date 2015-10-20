@@ -7,8 +7,7 @@ describe Task::Updated::EventStream do
   let(:task) { FactoryGirl.build(:task) }
 
   it "serializes supporting_information_file down the paper channel on update" do
-    expect(pusher_channel).to receive_push(serialize: :task, down: 'paper', on: 'updated')
-    described_class.call("tahi:task:updated", { action: "updated", record: task })
+    expect(pusher_channel).to receive_push(payload: hash_including(:task), down: 'paper', on: 'updated')
+    described_class.call("tahi:task:updated", action: "updated", record: task)
   end
-
 end

@@ -7,7 +7,7 @@ describe Paper::Updated::EventStream do
   let(:paper) { FactoryGirl.create(:paper) }
 
   it "serializes paper down the paper channel on update" do
-    expect(pusher_channel).to receive_push(serialize: :paper, down: 'paper', on: 'updated')
+    expect(pusher_channel).to receive_push(payload: hash_including(:paper), down: 'paper', on: 'updated')
     described_class.call("tahi:paper:updated", { action: "updated", record: paper })
   end
 

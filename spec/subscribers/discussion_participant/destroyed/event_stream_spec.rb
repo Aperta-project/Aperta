@@ -7,7 +7,7 @@ describe DiscussionParticipant::Destroyed::EventStream do
   let(:discussion_participant) { FactoryGirl.build(:discussion_participant) }
 
   it "serializes discussion_participant id down the system channel on destruction" do
-    expect(pusher_channel).to receive_push(serialize: :ids, down: 'system', on: 'destroyed')
+    expect(pusher_channel).to receive_push(payload: hash_including(:ids), down: 'system', on: 'destroyed')
     described_class.call("tahi:discussion_participant:destroyed", { action: "destroyed", record: discussion_participant })
   end
 

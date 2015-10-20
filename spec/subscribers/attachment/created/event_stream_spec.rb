@@ -7,7 +7,7 @@ describe Attachment::Created::EventStream do
   let(:attachment) { FactoryGirl.build(:attachment, :with_task) }
 
   it "serializes attachment down the paper channel on creation" do
-    expect(pusher_channel).to receive_push(serialize: :attachment, down: 'paper', on: 'created')
+    expect(pusher_channel).to receive_push(payload: hash_including(:attachment), down: 'paper', on: 'created')
     described_class.call("tahi:attachment:created", { action: "created", record: attachment })
   end
 

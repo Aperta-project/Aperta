@@ -332,10 +332,13 @@ export default TaskController.extend({
     pfa partial is inserted
   */
   buildPfaValidator: function(){
+    const numericMessage = "Must be a number and contain no symbols, or letters, e.g. $1,000.00 should be written 1000";
     const numericalityConfig = { numericality: {
       allowBlank: true,
+      onlyInteger: true,
       messages: {
-        numericality: "Must be a number and contain no symbols, or letters"
+        onlyInteger: numericMessage,
+        numericality: numericMessage
       }
     }};
 

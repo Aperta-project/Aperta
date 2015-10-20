@@ -3,7 +3,6 @@ import NestedQuestionProxy from 'tahi/models/nested-question-proxy';
 var NestedQuestionComponent;
 
 NestedQuestionComponent = Ember.Component.extend({
-  tagName: 'div',
   displayQuestionText: true,
   displayQuestionAsPlaceholder: false,
   helpText: null,

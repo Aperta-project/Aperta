@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import NestedQuestionOwner from 'tahi/models/nested-question-owner';
 import DS from 'ember-data';
 

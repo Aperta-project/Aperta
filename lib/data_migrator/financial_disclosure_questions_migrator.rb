@@ -88,7 +88,7 @@ class DataMigrator::FinancialDisclosureQuestionsMigrator < DataMigrator::Base
         if old_question.task.nil?
           puts
           puts
-          puts "    #{yellow("Skipping")} because corresponding task does not exist for #{old_question.inspect}"
+          puts "    #{yellow('Skipping')} because corresponding task does not exist for #{old_question.inspect}"
           puts
           @subtract_from_expected_disclosure_counts += 1
           next
@@ -126,7 +126,7 @@ class DataMigrator::FinancialDisclosureQuestionsMigrator < DataMigrator::Base
           updated_at: funder.updated_at
         )
 
-        if !funder.funder_influence_description.nil?
+        if funder.funder_influence_description
           NestedQuestionAnswer.create!(
             nested_question_id: @nested_funder_role_description_question.id,
             value_type: @nested_funder_role_description_question.value_type,

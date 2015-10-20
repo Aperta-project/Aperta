@@ -61,7 +61,7 @@ class DataMigrator::FigureQuestionsMigrator < DataMigrator::Base
         if old_question.task.nil?
           puts
           puts
-          puts "    #{yellow("Skipping")} because corresponding task does not exist for #{old_question.inspect}"
+          puts "    #{yellow('Skipping')} because corresponding task does not exist for #{old_question.inspect}"
           puts
           @subtract_from_expected_count += 1
           next

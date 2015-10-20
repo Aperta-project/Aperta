@@ -38,7 +38,7 @@ module DataMigrator
 
     def migrating(count:, from:, to:, &blk)
       print "Importing #{yellow(count)} #{from} questions to #{to} nested questions... "
-      yield
+      blk.call
       puts green("done")
     end
 

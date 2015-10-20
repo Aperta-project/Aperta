@@ -362,7 +362,6 @@ class DataMigrator::ReportingGuidelinesQuestionsMigrator < DataMigrator::Base
       actual: @nested_microarray_studies_question.nested_question_answers.count,
       ident: "microarray_studies"
     )
-
   end
 
   def verify_count(expected:, actual:, ident:)

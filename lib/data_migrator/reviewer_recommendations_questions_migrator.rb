@@ -70,14 +70,14 @@ class DataMigrator::ReviewerRecommendationsQuestionsMigrator < DataMigrator::Bas
       if recommendation.reviewer_recommendations_task.nil?
         puts
         puts
-        puts "    #{yellow("Skipping")} because corresponding reviewer_recommendations_task does not exist for #{recommendation.inspect}"
+        puts "    #{yellow('Skipping')} because corresponding reviewer_recommendations_task does not exist for #{recommendation.inspect}"
         puts
         @subtract_from_expected_count += 2
         next
       end
 
       recommend_or_oppose = recommendation[:recommend_or_oppose] =~ /Recommend/i ? true : false
-      reason =  recommendation[:reason]
+      reason = recommendation[:reason]
 
       NestedQuestionAnswer.create!(
         owner: recommendation,

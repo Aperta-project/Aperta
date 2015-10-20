@@ -232,7 +232,7 @@ class DataMigrator::PublishingRelatedQuestionsMigrator < DataMigrator::Base
           if old_question.task.nil?
             puts
             puts
-            puts "    #{yellow("Skipping")} because corresponding task does not exist for #{old_question.inspect}"
+            puts "    #{yellow('Skipping')} because corresponding task does not exist for #{old_question.inspect}"
             puts
             @subtract_from_expected_count += 1
             next
@@ -285,7 +285,7 @@ class DataMigrator::PublishingRelatedQuestionsMigrator < DataMigrator::Base
   def verify_counts
     verify_count(
       expected: Question.where("ident LIKE 'publishing_related_questions.%'").count - @subtract_from_expected_count,
-      actual: NestedQuestionAnswer.includes(:nested_question).where(nested_questions: {owner_type: TASK_OWNER_TYPE, owner_id: nil}).count
+      actual: NestedQuestionAnswer.includes(:nested_question).where(nested_questions: { owner_type: TASK_OWNER_TYPE, owner_id: nil }).count
     )
   end
 

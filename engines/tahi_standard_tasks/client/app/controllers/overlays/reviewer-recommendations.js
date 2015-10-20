@@ -13,7 +13,9 @@ export default TaskController.extend(ValidationErrorsMixin, {
   }),
 
   newRecommendationQuestions: Ember.on('init', function(){
-    this.store.findQuery('nested-question', { type: "ReviewerRecommendation" }).then( (nestedQuestions) => {
+    let queryParams = { type: "ReviewerRecommendation" };
+    let results = this.store.findQuery('nested-question', queryParams);
+    results.then( (nestedQuestions) => {
       this.set('nestedQuestionsForNewRecommendation', nestedQuestions);
     });
   }),
@@ -25,7 +27,8 @@ export default TaskController.extend(ValidationErrorsMixin, {
   }),
 
   clearNewRecommendationAnswers: function(){
-    this.get('nestedQuestionsForNewRecommendation').forEach( (nestedQuestion) => {
+    let questions = this.get('nestedQuestionsForNewRecommendation');
+    questions.forEach( (nestedQuestion) => {
       nestedQuestion.clearAnswerForOwner(this.get("newRecommendation"));
     });
   },
@@ -47,9 +50,12 @@ export default TaskController.extend(ValidationErrorsMixin, {
       this.clearAllValidationErrors();
     },
 
-    saveRecommendation(recommendation) {
-      recommendation.save().then((savedRecommendation) => {
-        recommendation.get('nestedQuestionAnswers').toArray().forEach(function(answer){
+    saveNewRecommendation: function() {
+      let recommendation = this.get("newRecommendation");
+      recommendation.set("reviewerRecommendationsTask", this.get("model"));
+      recommendation.save().then( (savedRecommendation) => {
+        let answers = recommendation.get('nestedQuestionAnswers').toArray();
+        answers.forEach(function(answer){
           let value = answer.get("value");
           if(value || value === false){
             answer.set("owner", savedRecommendation);

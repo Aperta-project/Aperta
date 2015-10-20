@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import TaskController from 'tahi/pods/paper/task/controller';
 import SavesQuestionsOnClose from 'tahi/mixins/saves-questions-on-close';
 

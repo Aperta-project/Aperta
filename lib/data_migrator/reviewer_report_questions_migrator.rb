@@ -188,7 +188,7 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
           if old_question.task.nil?
             puts
             puts
-            puts "    #{yellow("Skipping")} because corresponding task does not exist for #{old_question.inspect}"
+            puts "    #{yellow('Skipping')} because corresponding task does not exist for #{old_question.inspect}"
             puts
             @subtract_from_expected_count += 1
             next
@@ -229,13 +229,13 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
   def verify_counts
     verify_count(
       expected: Question.where("ident LIKE 'reviewer_report.%'").count - @subtract_from_expected_count,
-      actual: NestedQuestionAnswer.includes(:nested_question).where(nested_questions: {owner_type: TASK_OWNER_TYPE, owner_id: nil}).count
+      actual: NestedQuestionAnswer.includes(:nested_question).where(nested_questions: { owner_type: TASK_OWNER_TYPE, owner_id: nil }).count
     )
   end
 
   def verify_count(expected:, actual:)
     if actual != expected
-      raise "Count mismatch on NestedQuestionAnswer for #{TASK_OWNER_TYPE}. Expected: #{expected} Got: #{actual}"
+      fail "Count mismatch on NestedQuestionAnswer for #{TASK_OWNER_TYPE}. Expected: #{expected} Got: #{actual}"
     end
   end
 end

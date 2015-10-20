@@ -144,10 +144,9 @@ class DataMigrator::AuthorsQuestionsMigrator < DataMigrator::Base
         )
         @expected_count += 1
 
-        contributions = if author[:contributions]
-          YAML.load(author[:contributions])
-        else
-          []
+        contributions = []
+        if author[:contributions]
+          contributions = YAML.load(author[:contributions])
         end
 
         contributions.each do |contribution|

@@ -10,7 +10,9 @@ export default TaskController.extend({
   nestedQuestionsForNewFunder: Ember.A(),
 
   newFunderQuestions: Ember.on('init', function(){
-    this.store.findQuery('nested-question', { type: "Funder" }).then( (nestedQuestions) => {
+    let queryParams = { type: "Funder" };
+    let results = this.store.findQuery('nested-question', queryParams);
+    results.then( (nestedQuestions) => {
       this.set('nestedQuestionsForNewFunder', nestedQuestions);
     });
   }),

@@ -35,8 +35,8 @@ feature "Dashboard", js: true do
       visit "/"
       expect(dashboard.total_active_paper_count).to eq active_paper_count
 
-      expect(page).to have_content("Active Paper (1)")
-      expect(page).to have_content("Inactive Paper (1)")
+      expect(page).to have_content("Active Manuscripts (2)")
+      expect(page).to have_content("Inactive Manuscript (1)")
       dashboard.toggle_active_papers_heading
       expect(page).to_not have_content("Active Paper (1)")
       dashboard.toggle_inactive_papers_heading

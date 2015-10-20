@@ -65,7 +65,7 @@ module TahiStandardTasks
         THIS IS THE MINOR REVISION
         Dear Dr. %{author_last_name},
 
-        Thank you for submitting your manuscript, "%{manuscript_title}" to %{journal_name}. After careful consideration, we feel that it has merit, but is not suitable for publication as it currently stands. Therefore, my decision is "Major Revision."
+        Thank you for submitting your manuscript, "%{manuscript_title}" to %{journal_name}. After careful consideration, we feel that it has merit, but is not suitable for publication as it currently stands. Therefore, my decision is "Minor Revision."
 
         We invite you to submit a revised version of the manuscript that addresses the points below:
 

@@ -22,26 +22,42 @@ feature "Dashboard", js: true do
       let(:inactive_paper_count) { 1 }
       let(:paper) { papers.first }
 
+      scenario "shows how many active and inactive papers" do
+        login_as(user, scope: :user)
+        visit "/"
+
+        expect(Paper.count).to eq(3)
+        expect(dashboard.total_active_paper_count).to eq(active_paper_count)
+      end
+
+      scenario "can hide active and inactive papers" do
+        login_as(user, scope: :user)
+        visit "/"
+        expect(dashboard.total_active_paper_count).to eq active_paper_count
+
+        expect(page).to have_content("Active Manuscripts (2)")
+        expect(page).to have_content("Inactive Manuscript (1)")
+        dashboard.toggle_active_papers_heading
+        expect(page).to_not have_content("Active Paper (1)")
+        dashboard.toggle_inactive_papers_heading
+        expect(page).to_not have_content("Inactive Paper (1)")
+        expect(dashboard.manuscript_list_visible?).to eq false
+      end
+    end
+
+  feature "displaying roles and state" do
+    let(:active_paper_count) { 1 }
+    let(:inactive_paper_count) { 1 }
+    let(:paper) { papers.first }
+
     scenario "shows how many active and inactive papers" do
       login_as(user, scope: :user)
       visit "/"
 
-      expect(Paper.count).to eq(3)
-      expect(dashboard.total_active_paper_count).to eq(active_paper_count)
-    end
-
-    scenario "can hide active and inactive papers" do
-      login_as(user, scope: :user)
-      visit "/"
-      expect(dashboard.total_active_paper_count).to eq active_paper_count
-
-      expect(page).to have_content("Active Manuscripts (2)")
-      expect(page).to have_content("Inactive Manuscript (1)")
-      dashboard.toggle_active_papers_heading
-      expect(page).to_not have_content("Active Paper (1)")
-      dashboard.toggle_inactive_papers_heading
-      expect(page).to_not have_content("Inactive Paper (1)")
-      expect(dashboard.manuscript_list_visible?).to eq false
+      within('.active-paper-table-row') { expect(page).to have_content("Author")}
+      within('.active-paper-table-row') { expect(page).to have_content("DRAFT")}
+      within('.inactive-paper-table-row') { expect(page).to have_content("Author")}
+      within('.inactive-paper-table-row') { expect(page).to have_content("WITHDRAWN")}
     end
   end
 

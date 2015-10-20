@@ -30,12 +30,18 @@ export default Ember.Controller.extend({
 
   totalInactivePaperCount: Ember.computed.alias('inactivePapers.length'),
   activeManuscriptsHeading: Ember.computed('totalActivePaperCount', function() {
-    return 'Active ' + pluralizeString('Manuscript', this.get('totalActivePaperCount'))
-            + ' (' + this.get('totalActivePaperCount') + ')';
+    return 'Active ' + 
+            pluralizeString('Manuscript', this.get('totalActivePaperCount')) +
+            ' (' + 
+            this.get('totalActivePaperCount') +
+            ')';
   }),
   inactiveManuscriptsHeading: Ember.computed('totalInactivePaperCount', function() {
-    return 'Inactive ' + pluralizeString('Manuscript', this.get('totalInactivePaperCount'))
-            + ' (' + this.get('totalInactivePaperCount') + ')';
+    return 'Inactive ' +
+            pluralizeString('Manuscript', this.get('totalInactivePaperCount')) +
+            ' (' +
+            this.get('totalInactivePaperCount') +
+            ')';
   }),
 
   actions: {

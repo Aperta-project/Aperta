@@ -12,8 +12,8 @@ export default Ember.Component.extend({
   }),
 
   status: Ember.computed('model.publishingState', function() {
-    if (this.get('model.publishingState') == 'unsubmitted') {
-      return 'DRAFT'
+    if (this.get('model.publishingState') === 'unsubmitted') {
+      return 'DRAFT';
     } else {
       return this.get('model.publishingState').toUpperCase();
     };
@@ -21,9 +21,9 @@ export default Ember.Component.extend({
 
   roles: Ember.computed('model.roles', function() {
     if (this.get('model.roles').indexOf('My Paper') > -1) {
-      return 'Author'
+      return 'Author';
     } else {
-      return this.get('model.roles')
+      return this.get('model.roles');
     }
   }),
 

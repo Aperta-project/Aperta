@@ -19,10 +19,12 @@ FactoryGirl.define do
     end
 
     trait(:active) do
+      publishing_state "unsubmitted"
       active true
     end
 
     trait(:inactive) do
+      publishing_state "withdrawn"
       active false
     end
 

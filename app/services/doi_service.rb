@@ -25,28 +25,23 @@ class DoiService
     !!(doi_string =~ DOI_FORMAT)
   end
 
-<<<<<<< HEAD
   def valid?
     Doi.valid?(to_s)
   end
 
   def assign!
     return unless journal_doi_enabled?
-    journal.transaction do
+    journal.with_lock do
       journal.update! last_doi_issued: last_doi_issued.succ
-=======
+    end
+  end
+
   def next_doi!
     if journal_has_doi_prefixes?
       journal.with_lock do
         journal.update! last_doi_issued: last_doi_issued.succ
       end
       to_s
-<<<<<<< HEAD
-    else
-      filler_doi
->>>>>>> Reworked internals of DoiService so that is more contained
-=======
->>>>>>> Revisions after code review
     end
   end
 

@@ -22,7 +22,7 @@ class NestedQuestionAnswersPolicy < ApplicationPolicy
     elsif nested_question_answer.owner.is_a?(Task)
       nested_question_answer.owner
     else
-      raise NotImplementedError, "Don't know how to check authoriziation to NestedQuestionAnswer for #{nested_question_answer.owner.inspect}. You may need to implement this."
+      raise NotImplementedError, "Don't know how to check authorization to NestedQuestionAnswer for #{nested_question_answer.owner.inspect}. You may need to implement this."
     end
   end
 end

@@ -29,17 +29,8 @@ export default AuthorizedRoute.extend({
 
   actions: {
     chooseNewCardTypeOverlay(phase) {
-      let chooseNewCardTypeOverlay = this.controllerFor('overlays/chooseNewCardType');
-      chooseNewCardTypeOverlay.set('phase', phase);
 
-      this.store.find('adminJournal', phase.get('paper.journal.id')).then(function(adminJournal) {
-        chooseNewCardTypeOverlay.set('journalTaskTypes', adminJournal.get('journalTaskTypes'));
-      });
-
-      this.send('openOverlay', {
-        template: 'overlays/chooseNewCardType',
-        controller: chooseNewCardTypeOverlay
-      });
+      this.transitionTo('paper.workflow.tasks.new', this.modelFor('paper'), phase);
     },
 
     viewCard(task, queryParams) {

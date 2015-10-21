@@ -8,6 +8,7 @@ class NestedQuestion < ActiveRecord::Base
   validates :ident, presence: true
   validates :owner_type, presence: true
   validates :value_type, presence: true, inclusion: { in: SUPPORTED_VALUE_TYPES }
+  attr_accessor :additional_data
 
   def self.lookup_owner_type(owner_type)
     case owner_type

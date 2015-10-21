@@ -1,0 +1,40 @@
+{{#if readonly}}
+  {{#if shouldDisplayQuestionText}}
+    <span class="{{textClassNames}}">
+      {{{questionText}}}
+    </span>
+  {{/if}}
+
+  {{#if model.answer.value}}
+    <div class="answer-text">{{model.answer.value}}</div>
+  {{else}}
+    <div class="answer-text no-answer">{{noResponseText}}</div>
+  {{/if}}
+
+{{else}}
+  {{#if shouldDisplayQuestionText}}
+    <span class="{{textClassNames}}">
+      {{{questionText}}}
+    </span>
+  {{/if}}
+
+  {{#if wrapInput}}
+    <div>
+      {{#if label}}<span class="text-field-title">{{label}}</span>{{/if}}
+      {{input name=ident
+              value=model.answer.value
+              class=inputClassNames
+              placeholder=placeholder
+              type=type
+              disabled=disabled}}
+    </div>
+  {{else}}
+    {{#if label}}<span class="text-field-title">{{label}}</span>{{/if}}
+    {{input name=ident
+            value=model.answer.value
+            class=inputClassNames
+            placeholder=placeholder
+            type=type
+            disabled=disabled}}
+  {{/if}}
+{{/if}}

@@ -21,18 +21,26 @@ export default Ember.TextField.extend({
     });
 
     $picker.on('changeDate', (event)=> {
-      this.set('date', event.format());
-      if(partOfGroup) { this.get('group').dateChanged(); }
+      this.updateDate(event.format());
     });
 
     $picker.on('clearDate', ()=> {
-      this.set('date', null);
-      if(partOfGroup) { this.get('group').dateChanged(); }
+      this.updateDate(null);
     });
 
     this.set('$picker', $picker);
     this.set('ready', true);
   }),
+
+  change: function(){
+    this.updateDate(this.element.value);
+  },
+
+  updateDate: function(newDate){
+    this.set('date', newDate);
+    this.sendAction('dateChanged', newDate);
+    if(this.get("group")) { this.get('group').dateChanged(); }
+  },
 
   setStartDate(dateString) {
     this.get('$picker').datepicker('setStartDate', dateString);

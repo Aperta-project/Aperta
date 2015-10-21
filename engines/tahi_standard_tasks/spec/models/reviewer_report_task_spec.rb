@@ -50,10 +50,59 @@ describe TahiStandardTasks::ReviewerReportTask do
   describe '#create' do
     let(:task) { FactoryGirl.build(:reviewer_report_task) }
 
+    before do
+      expect(task.paper.decisions.latest).to be
+    end
+
     it "belongs to the paper's latest decision" do
       task.save!
+
       expect(task.decision).to eq(task.paper.decisions.latest)
       expect(task.reload.decision).to eq(task.paper.decisions.latest)
+
+      # find again to make sure everything is loaded from the DB without
+      # any in-memory values sticking around
+      refreshed_task = Task.find(task.id)
+      expect(refreshed_task.decision).to eq(task.paper.decisions.latest)
+      expect(refreshed_task.reload.decision).to eq(task.paper.decisions.latest)
+    end
+  end
+
+  describe "#find_or_build_answer_for" do
+    let(:decision) { FactoryGirl.create(:decision, paper: paper) }
+    let(:nested_question) { FactoryGirl.create(:nested_question) }
+
+    before do
+      task.update(decision: decision)
+    end
+
+    context "when there is no answer for the given question" do
+      it "returns a new answer for the question and current decision" do
+        answer = task.find_or_build_answer_for(
+          nested_question: nested_question
+        )
+        expect(answer).to be_kind_of(NestedQuestionAnswer)
+        expect(answer.new_record?).to be(true)
+        expect(answer.owner).to eq(task)
+        expect(answer.nested_question).to eq(nested_question)
+        expect(answer.decision).to eq(task.decision)
+      end
+    end
+
+    context "when there is an answer for the given question and current decision" do
+      let!(:existing_answer) do
+        FactoryGirl.create(
+          :nested_question_answer,
+          nested_question: nested_question,
+          owner: task,
+          decision: task.decision
+        )
+      end
+
+      it "returns the existing answer" do
+        answer = task.find_or_build_answer_for(nested_question: nested_question)
+        expect(answer).to eq(existing_answer)
+      end
     end
   end
 
@@ -75,13 +124,40 @@ describe TahiStandardTasks::ReviewerReportTask do
     end
   end
 
-  describe "#can_change?" do
-    let!(:question) { Question.create! task: task, ident: "hello", answer: "I shouldn't change" }
+  describe "#previous_decisions" do
+    let(:decision_1) { FactoryGirl.create(:decision, paper: paper) }
+    let(:decision_2) { FactoryGirl.create(:decision, paper: paper) }
+    let(:decision_3) { FactoryGirl.create(:decision, paper: paper) }
 
-    it "doesn't let update questions" do
+    before do
+      task.update(body: {})
+    end
+
+    it "returns the previous decisions that this task was assigned to" do
+      task.update!(decision: decision_1)
+      expect(task.previous_decisions).to eq([])
+      expect(task.previous_decision_ids).to eq([])
+
+      task.update!(decision: decision_2)
+      expect(task.previous_decisions).to eq([decision_1])
+      expect(task.previous_decision_ids).to eq([decision_1.id])
+
+      task.update!(decision: decision_3)
+      expect(task.previous_decision_ids.sort).to eq([decision_1, decision_2].map(&:id).sort)
+    end
+  end
+
+  describe "#can_change?" do
+    let!(:answer) { FactoryGirl.build(:nested_question_answer) }
+
+    it "returns true when the task is not submitted" do
+      task.update! body: { submitted: false }
+      expect(task.can_change?(answer)).to be(true)
+    end
+
+    it "returns false when the task is submitted" do
       task.update! body: { submitted: true }
-      question.update answer: "Changed"
-      expect(question.reload.answer).to eq("I shouldn't change")
+      expect(task.can_change?(answer)).to be(false)
     end
   end
 

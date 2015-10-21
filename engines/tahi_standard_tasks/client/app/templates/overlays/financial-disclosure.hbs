@@ -3,13 +3,13 @@
 <div class="question-list">
   <div class="question">
 
-    {{#question-radio ident="financial_disclosure.received_funding"
-                      task=model
-                      question="Did any of the authors receive specific funding for this work?"
-                      yesAction="choseFundingReceived"
-                      noAction="choseFundingNotReceived"
-                      disabled=isSubmissionTaskNotEditable
-                      as |selected|}}
+    {{#nested-question-radio model=authorReceivedFundingQuestion
+        owner=model
+        yesAction="choseFundingReceived"
+        noAction="choseFundingNotReceived"
+        disabled=isSubmissionTaskNotEditable
+        as |selected|}}
+
       {{#if selected.yes}}
         <span>Please describe all sources of funding that have supported your work.</span>
       {{/if}}
@@ -18,7 +18,7 @@
         <span>Your Financial Disclosure Statement will appear as: The author(s) received no specific funding for this work.</span>
       {{/if}}
 
-    {{/question-radio}}
+    {{/nested-question-radio}}
   </div>
 
   {{#each funders as |funder|}}

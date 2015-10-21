@@ -285,53 +285,61 @@
 
 <div>
   <h5>
-    question-input
+    nested-question-input
   </h5>
 
-  {{question-input ident="foo"
-  task=task
-  question="Placeholder Text"}}
+  <p>
+    You can used nested-question components in two ways: 1) passing in an
+    <em>ident</em> identifier for looking the question up and 2) passing in the
+    question itself as the <em>model</em>. These work on all nested-question
+    components.
+  </p>
+
+  <div>
+    Passing an object that has questions and an identifier for looking the question up:
+    {{nested-question-input ident="foo" owner=nestedQuestionOwner}}
+  </div>
+
+  <div>
+    Passing an question directly as the model without an identifier:
+    {{nested-question-input model=fooQuestion owner=nestedQuestionOwner}}
+  </div>
 </div>
 
 <div>
   <h5>
-    question-radio
+    nested-question-radio
   </h5>
 
-  {{question-radio ident="foo"
-  task=task
-  question="Placeholder Text"}}
+  {{nested-question-radio ident="booleanFoo" owner=nestedQuestionOwner}}
 </div>
 
 <div>
   <h5>
-    question-textarea
+    nested-question-textarea
   </h5>
 
-  {{question-textarea ident="foo"
-  task=task}}
+  {{nested-question-textarea ident="foo" owner=nestedQuestionOwner}}
 </div>
 
 <div>
   <h5>
-    question-select
+    nested-question-select
   </h5>
 
-  {{question-select ident="foo"
-  task=task
-  question="Placeholder Text"
-  class=""
-  selectionSelected=''
-  source=arrayOfOptions}}
+  {{nested-question-select ident="foo"
+    owner=nestedQuestionOwner
+    class=""
+    selectionSelected=''
+    source=arrayOfOptions}}
 </div>
 
 <div>
   <h5>
-    question-check
+    nested-question-check
   </h5>
 
-  {{question-check ident="foo"
-  task=task}}
+  {{nested-question-check ident="booleanFoo" owner=nestedQuestionOwner}}
 </div>
 
 <hr/>

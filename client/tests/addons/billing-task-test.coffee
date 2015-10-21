@@ -1,7 +1,7 @@
 `import Ember from "ember"`
 `import { module, test } from "qunit"`
 `import startApp from "../helpers/start-app"`
-`import { paperWithTask, addUserAsParticipant } from "../helpers/setups"`
+`import { paperWithTask, addUserAsParticipant, addNestedQuestionToTask } from "../helpers/setups"`
 `import setupMockServer from "../helpers/mock-server"`
 `import Factory from "../helpers/factory"`
 `import TestHelper from "ember-data-factory-guy/factory-guy-test-helper";`
@@ -38,6 +38,33 @@ module "Integration: Billing",
     paperResponse.participations = [addUserAsParticipant(billingTask, fakeUser)]
 
     taskPayload = Factory.createPayload("task")
+
+    nestedQuestions = [
+      Factory.createRecord('NestedQuestion', { ident: 'first_name' })
+      Factory.createRecord('NestedQuestion', { ident: 'last_name' })
+      Factory.createRecord('NestedQuestion', { ident: 'title' })
+      Factory.createRecord('NestedQuestion', { ident: 'first_name' })
+      Factory.createRecord('NestedQuestion', { ident: 'last_name' })
+      Factory.createRecord('NestedQuestion', { ident: 'title' })
+      Factory.createRecord('NestedQuestion', { ident: 'department' })
+      Factory.createRecord('NestedQuestion', { ident: 'phone_number' })
+      Factory.createRecord('NestedQuestion', { ident: 'email' })
+      Factory.createRecord('NestedQuestion', { ident: 'address1' })
+      Factory.createRecord('NestedQuestion', { ident: 'address2' })
+      Factory.createRecord('NestedQuestion', { ident: 'city' })
+      Factory.createRecord('NestedQuestion', { ident: 'state' })
+      Factory.createRecord('NestedQuestion', { ident: 'postal_code' })
+      Factory.createRecord('NestedQuestion', { ident: 'country' })
+      Factory.createRecord('NestedQuestion', { ident: 'payment_method' })
+      Factory.createRecord('NestedQuestion', { ident: 'affiliation1' })
+      Factory.createRecord('NestedQuestion', { ident: 'affiliation2' })
+    ]
+
+    for nestedQuestion in nestedQuestions
+      addNestedQuestionToTask(nestedQuestion, billingTask)
+      taskPayload.addRecord(nestedQuestion)
+    paperResponse.nested_questions = nestedQuestions
+
     taskPayload.addRecords([billingTask, fakeUser])
     billingTaskResponse = taskPayload.toJSON()
 

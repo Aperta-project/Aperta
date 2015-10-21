@@ -2,14 +2,17 @@
 
 <ol class="question-list">
   <li class="question">
-    {{question-radio ident="data_availability.fully_available" task=model
-                     question="Do the authors confirm that all the data underlying the findings described in their manuscript are fully available without restriction?"
-                     helpText="<li>Please see the <a target='_blank' href='http://www.plosbiology.org/static/policies#sharing' title='PLOS Data Policy'>PLOS Data Policy</a> for details.</li>"
-                     disabled=isSubmissionTaskNotEditable}}
+    {{nested-question-radio
+        model=fullyAvailableQuestion
+        owner=model
+        helpText="<li>Please see the <a target='_blank' href='http://www.plosbiology.org/static/policies#sharing' title='PLOS Data Policy'>PLOS Data Policy</a> for details.</li>"
+        disabled=isSubmissionTaskNotEditable}}
   </li>
 
   <li class="question">
-    <div class="question-text">Please describe where your data may be found, writing in full sentences. Your answers should be entered into the box below and will be published in the form you provide them, if your manuscript is accepted. If you are copying our sample text below, please ensure you replace any instances of XXX with the appropriate details.</div>
+    <div class="question-text">
+      {{dataLocationQuestion.text}}
+      Your answers should be entered into the box below and will be published in the form you provide them, if your manuscript is accepted. If you are copying our sample text below, please ensure you replace any instances of XXX with the appropriate details.</div>
     <ul class="question-help">
       <li class="item">
         If your data are all contained within the paper and/or Supporting Information files, please state this in your answer below. For example, "All relevant data are within the paper and its Supporting Information files."
@@ -29,9 +32,11 @@
       </li>
     </ul>
     <div class="question-dataset">
-      {{question-textarea ident="data_availability.data_location"
-                          task=model
-                          disabled=isSubmissionTaskNotEditable}}
+      {{nested-question-textarea
+          model=dataLocationQuestion
+          owner=model
+          displayQuestionText=false
+          disabled=isSubmissionTaskNotEditable}}
     </div>
   </li>
 </ol>

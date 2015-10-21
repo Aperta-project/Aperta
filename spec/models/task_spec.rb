@@ -33,17 +33,41 @@ describe Task do
     end
   end
 
-  describe "#questions" do
-    it "destroys questions on destroy" do
-      task = FactoryGirl.create(:task, :with_questions)
-      question_ids = task.questions.pluck :id
-      expect(question_ids).to have_at_least(1).id
+  describe "#nested_question_answers" do
+    it "destroys nested_question_answers on destroy" do
+      task = FactoryGirl.create(:task, :with_nested_question_answers)
+      nested_question_answer_ids = task.nested_question_answers.pluck :id
+      expect(nested_question_answer_ids).to have_at_least(1).id
 
       expect {
         task.destroy
       }.to change {
-        Question.where(id: question_ids).count
-      }.from(question_ids.count).to(0)
+        NestedQuestionAnswer.where(id: nested_question_answer_ids).count
+      }.from(nested_question_answer_ids.count).to(0)
+    end
+  end
+
+  describe "#answer_for" do
+    subject(:task) { FactoryGirl.create(:task) }
+    let!(:question_foo) { FactoryGirl.create(:nested_question, ident: "foo") }
+    let!(:answer_foo) { FactoryGirl.create(:nested_question_answer, owner: task, value: "the answer", nested_question: question_foo) }
+
+    let!(:child_question_bar) { FactoryGirl.create(:nested_question, ident: "bar", parent: question_foo) }
+    let!(:child_answer_bar) { FactoryGirl.create(:nested_question_answer, owner: task, nested_question: child_question_bar) }
+    #
+
+    it "returns the answer for the question matching the given ident" do
+      expect(task.answer_for("foo")).to eq(answer_foo)
+    end
+
+    it "can find nested questions using dot (.) path syntax" do
+      expect(task.answer_for("foo.bar")).to eq(child_answer_bar)
+    end
+
+    context "and there is no answer for the given path" do
+      it "returns nil" do
+        expect(task.answer_for("unknown-path")).to be(nil)
+      end
     end
   end
 

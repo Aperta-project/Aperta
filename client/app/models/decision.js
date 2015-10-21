@@ -3,8 +3,7 @@ import DS from 'ember-data';
 export default DS.Model.extend({
   invitations: DS.hasMany('invitation', { async: false }),
   paper: DS.belongsTo('paper', { async: false }),
-  questions: DS.hasMany('question', { async: false }),
-
+  nestedQuestionAnswers: DS.hasMany('nested-question-answer', { async: false }),
   createdAt: DS.attr('date'),
   isLatest: DS.attr('boolean'),
   letter: DS.attr('string'),

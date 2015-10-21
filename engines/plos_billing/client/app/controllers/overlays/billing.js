@@ -332,34 +332,45 @@ export default TaskController.extend({
     pfa partial is inserted
   */
   buildPfaValidator: function(){
-    const numericalityConfig = { numericality: { 
+    const numericalityConfig = { numericality: {
       allowBlank: true,
       messages: {
         numericality: "Must be a number and contain no symbols, or letters"
       }
     }};
 
+    const identsToValidateNumerically = [
+      'pfa_question_1b',
+      'pfa_question_2b',
+      'pfa_question_3a',
+      'pfa_question_4a',
+      'pfa_amount_to_pay'
+    ];
+
     const pfaDataClass = Ember.Object.extend(EmberValidations.Mixin, {
+      validations: {},
+
       init: function(){
-        this.set('validations', { });
+        let validations = this.get("validations");
+        identsToValidateNumerically.forEach((ident) => {
+          validations[ident + ".value"] = numericalityConfig;
+        });
 
-        ['pfa_question_1b',
-         'pfa_question_2b',
-         'pfa_question_3a',
-         'pfa_question_4a',
-         'pfa_amount_to_pay'].forEach((ident) => {
-            this.set(ident, Ember.computed("model.questions.[]", () => {
-                return this.findPfaQuestion(ident);
-              })
-            ); //add named prop to obj
-
-            // add prop name to validations
-            this.validations[ident + ".answer"] = numericalityConfig;
-          }
-        );
-
+        // this must be called after we set up the validations since
+        // ember-validations builds up its validators in its constructor
         this._super.apply(this, arguments);
       },
+
+      // answersObserver makes sure validations occur on the most recent answers
+      // since answers can be create/deleted/re-created based on user interaction
+      // with the form.
+      answersObserver: Ember.observer("model.nestedQuestionAnswers.[]", function(){
+        let answers = Ember.A();
+        identsToValidateNumerically.forEach((ident) => {
+          let answer = this.get("model").answerForQuestion(ident);
+          this.set(ident, answer);
+        });
+      }),
 
       // container required because we are creating an Ember.Object.
       // EmberValidations must need access.
@@ -367,11 +378,7 @@ export default TaskController.extend({
       // generated through the container
       container: this.get('container'),
 
-      model: this.get('model'),
-      findPfaQuestion: function(ident){
-        return this.get("model.questions")
-                   .findProperty("ident", "plos_billing." + ident);
-      },
+      model: this.get('model')
     });
 
     this.set('pfaData', pfaDataClass.create());
@@ -431,7 +438,10 @@ export default TaskController.extend({
   }),
 
   selectedRinggold: null,
-  selectedPaymentMethod: null,
+  selectedPaymentMethod: computed("model.nestedQuestionAnswers.[]", function(){
+    let answer = this.get("model").answerForQuestion("payment_method");
+    return answer.get("value");
+  }),
 
   selfPayment: computed.equal("selectedPaymentMethod", "self_payment"),
   institutional: computed.equal("selectedPaymentMethod", "institutional"),
@@ -443,75 +453,49 @@ export default TaskController.extend({
 
   agreeCollections: false,
 
-  affiliation1Question: computed("model.questions.[]", function() {
-    let q = this.get("model.questions")
-                .findProperty("ident", "plos_billing.affiliation1");
-
-    if(Ember.isEmpty(q)) {
-      q = this.createNewAffiliationQuestion(
-        "plos_billing.affiliation1", "Secondary Affiliation"
-      );
-    }
-
-    return q;
+  affiliation1Question: computed("model.nestedQuestions.[]", function() {
+    return this.get("model").findQuestion("affiliation1");
   }),
 
-  affiliation2Question: computed("model.questions.[]", function() {
-    let q = this.get("model.questions")
-                .findProperty("ident", "plos_billing.affiliation2");
-
-    if(Ember.isEmpty(q)) {
-      q = this.createNewAffiliationQuestion(
-        "plos_billing.affiliation2", "Secondary Affiliation"
-      );
-    }
-
-    return q;
+  affiliation2Question: computed("model.nestedQuestions.[]", function() {
+    return this.get("model").findQuestion("affiliation2");
   }),
 
   // institution-search component expects data to be hash
   // with name property
   affiliation1Proxy: computed("affiliation1Question", function(){
-    let answer = this.get("affiliation1Question.answer");
-    if(!Ember.isEmpty(answer)) {
-      return { name: answer };
+    let question = this.get("affiliation1Question");
+    let answer = question.answerForOwner(this.get("model"));
+    if(answer.get("wasAnswered")) {
+      return { name: answer.get("value") };
     }
   }),
 
   // institution-search component expects data to be hash
   // with name property
   affiliation2Proxy: computed("affiliation2Question", function(){
-    let answer = this.get("affiliation2Question.answer");
-    if(!Ember.isEmpty(answer)) {
-      return { name: answer };
+    let question = this.get("affiliation2Question");
+    let answer = question.answerForOwner(this.get("model"));
+    if(answer.get("wasAnswered")) {
+      return { name: answer.get("value") };
     }
   }),
 
-  createNewAffiliationQuestion(ident) {
-    let task = this.get("model");
-    return task.get("store").createRecord("question", {
-      question: "Affiliation",
-      ident: ident,
-      task: task,
-      additionalData: {}
-    });
-  },
-
-  setAffiliationAnswer(index, answer) {
+  setAffiliationAnswer(index, answerValue) {
     let question = this.get("affiliation" + index + "Question");
+    let answer = question.answerForOwner(this.get("model"));
 
-    if(typeof answer === "string") {
-      question.setProperties({
-        answer: answer
-      });
-    } else if(typeof answer === "object") {
-      question.setProperties({
-        answer: answer.name,
-        additionalData: answer
+    if(typeof answerValue === "string") {
+      answer.set("value", answerValue);
+    } else if(typeof answerValue === "object") {
+      answer.set("value", answerValue.name);
+      answer.set("additionalData", {
+        answer: answerValue.name,
+        additionalData: answerValue
       });
     }
 
-    question.save();
+    answer.save();
   },
 
   actions: {

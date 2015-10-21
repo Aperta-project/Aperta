@@ -87,23 +87,25 @@
   </div>
 
   <div class="form-group">
-    <div class="question-text">Are you recommending or opposing this reviewer? (required)</div>
-    {{binary-radio-button name="recommend-or-oppose"
-                          selection=reviewerRecommendation.recommendOrOppose
-                          yesLabel="Recommend"
-                          yesValue="recommend"
-                          noLabel="Oppose"
-                          noValue="oppose"
-                          disabled=isSubmissionTaskNotEditable}}
+    {{nested-question-radio
+      ident="recommend_or_oppose"
+      owner=reviewerRecommendation
+      yesLabel="Recommend"
+      yesValue="recommend"
+      noLabel="Oppose"
+      noValue="oppose"
+      disabled=isSubmissionTaskNotEditable
+    }}
     {{error-message message=validationErrors.recommendOrOppose}}
   </div>
 
   <div class="form-group">
-    {{textarea type="text"
-               value=reviewerRecommendation.reason
-               class="form-control"
-               placeholder="Optional: reason for your recommending or opposing this reviewer"
-               disabled=isSubmissionTaskNotEditable}}
+    {{nested-question-textarea
+      ident="reason"
+      owner=reviewerRecommendation
+      disabled=isSubmissionTaskNotEditable
+      displayQuestionAsPlaceholder=true
+    }}
   </div>
 
   <div class="form-group control-buttons">

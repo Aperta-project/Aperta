@@ -3,6 +3,137 @@ module TahiStandardTasks
     register_task default_title: 'Reviewer Report', default_role: 'reviewer'
 
     before_create :assign_to_latest_decision
+    has_many :decisions, -> { uniq }, through: :nested_question_answers
+
+    def self.nested_questions
+      questions = []
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "competing_interests",
+        value_type: "text",
+        text: "Do you have any potential or perceived competing interests that may influence your review?",
+        position: 1
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "support_conclusions",
+        value_type: "boolean",
+        text: "Is the manuscript technically sound, and do the data support the conclusions?",
+        position: 2,
+        children: [
+          NestedQuestion.new(
+            owner_id:nil,
+            owner_type: name,
+            ident: "explanation",
+            value_type: "text",
+            text: "Explanation",
+            position: 1
+          )
+        ]
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "statistical_analysis",
+        value_type: "boolean",
+        text: "Has the statistical analysis been performed appropriately and rigorously?",
+        position: 3,
+        children: [
+          NestedQuestion.new(
+            owner_id:nil,
+            owner_type: name,
+            ident: "explanation",
+            value_type: "text",
+            text: "Statistical Analysis Explanation",
+            position: 1
+          )
+        ]
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "standards",
+        value_type: "boolean",
+        text: "Does the manuscript adhere to standards in this field for data availability?",
+        position: 4,
+        children: [
+          NestedQuestion.new(
+            owner_id:nil,
+            owner_type: name,
+            ident: "explanation",
+            value_type: "text",
+            text: "Standards Explanation",
+            position: 1
+          )
+        ]
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "intelligible",
+        value_type: "boolean",
+        text: "Is the manuscript presented in an intelligible fashion and written in standard English?",
+        position: 5,
+        children: [
+          NestedQuestion.new(
+            owner_id:nil,
+            owner_type: name,
+            ident: "explanation",
+            value_type: "text",
+            text: "Intelligible Explanation",
+            position: 1
+          )
+        ]
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "additional_comments",
+        value_type: "text",
+        text: "(Optional) Please offer any additional comments to the author.",
+        position: 6
+      )
+
+      questions << NestedQuestion.new(
+        owner_id:nil,
+        owner_type: name,
+        ident: "identity",
+        value_type: "text",
+        text: "(Optional) If you'd like your identity to be revealed to the authors, please include your name here.",
+        position: 7
+      )
+
+      questions.each do |q|
+        unless NestedQuestion.where(owner_id:nil, owner_type:name, ident:q.ident).exists?
+          q.save!
+        end
+      end
+
+      NestedQuestion.where(owner_id:nil, owner_type:name).all
+    end
+
+    # find_or_build_answer_for(...) will return the associated answer for this
+    # task given :nested_question. For ReviewerReportTask this enforces the
+    # lookup to be scoped to this task's current decision. Answers associated
+    # with previous decisions will not be returned.
+    #
+    # == Optional Parameters
+    #  * decision - ignored if provided, always enforces the task's decision.id
+    #
+    def find_or_build_answer_for(nested_question:, **_kwargs)
+      super(
+        nested_question: nested_question,
+        decision: decision
+      )
+    end
 
     def body
       # body is a json column by default which returns an Array. We don't want
@@ -22,8 +153,8 @@ module TahiStandardTasks
       super(new_body)
     end
 
-    def can_change?(question)
-      question.errors.add :question, "can't change question" if body.has_key?("submitted")
+    def can_change?(_)
+      !submitted?
     end
 
     def incomplete!
@@ -44,7 +175,29 @@ module TahiStandardTasks
     end
 
     def decision=(new_decision)
-      body["decision_id"] = new_decision.try(:id)
+      previous_decision_ids = body["previous_decision_ids"] || []
+      current_decision_id = body["decision_id"]
+
+      if current_decision_id
+        previous_decision_ids.push current_decision_id
+      end
+
+      update_body(
+        "decision_id" => new_decision.try(:id),
+        "previous_decision_ids" => previous_decision_ids
+      )
+    end
+
+    def previous_decision_ids
+      if body["previous_decision_ids"]
+        body["previous_decision_ids"]
+      else
+        []
+      end
+    end
+
+    def previous_decisions
+      paper.decisions.where(id: previous_decision_ids)
     end
 
     def send_emails
@@ -63,6 +216,10 @@ module TahiStandardTasks
 
     def assign_to_latest_decision
       self.decision = paper.decisions.latest
+    end
+
+    def update_body(hsh)
+      self.body = body.merge(hsh)
     end
   end
 end

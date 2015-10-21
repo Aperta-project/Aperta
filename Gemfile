@@ -62,6 +62,7 @@ gem 'omniauth-cas'
 gem 'databasedotcom'
 gem 'sort_alphabetical'
 gem 'tahi_epub', git: "https://ea548e3d06f18f2c5287468e46ae5fe262d3f5ac:x-oauth-basic@github.com/tahi-project/tahi_epub"
+gem 'awesome_nested_set'
 
 group :staging, :performance, :production do
   gem 'heroku-deflater'
@@ -80,6 +81,7 @@ group :development, :test, :performance do
   gem 'rspec-its'
   gem 'rspec-collection_matchers'
   gem 'rspec-instafail'
+  gem 'rspec-activemodel-mocks'
   gem 'launchy'
   gem 'database_cleaner'
   gem 'pry-rescue'
@@ -108,6 +110,7 @@ group :test do
   gem 'timecop'
   gem 'pusher-fake'
   gem 'rspec_junit_formatter'
+  gem 'rspec-activemodel-mocks'
 end
 
 group :staging, :performance do

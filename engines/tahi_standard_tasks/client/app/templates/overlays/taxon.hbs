@@ -2,42 +2,41 @@
 
 <div class="question-list">
   <div class="question">
-    {{#question-check ident="taxon.zoological"
-                      task=model
-                      question="Does this manuscript describe a new zoological taxon name?"
-                      disabled=isSubmissionTaskNotEditable
-                      as |checked|}}
+    {{#nested-question-check
+        ident="taxon_zoological"
+        owner=model
+        disabled=isSubmissionTaskNotEditable as |selection|}}
 
-      {{#if checked}}
+      {{#if selection.checked }}
         <div class="question-text">
           <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
         </div>
-        {{question-check ident="taxon.zoological.complies"
-                         task=model
-                         question="All authors comply with the Policies Regarding Submission of a new Taxon Name"
-                         disabled=isSubmissionTaskNotEditable}}
+        {{nested-question-check
+          ident="taxon_zoological.complies"
+          owner=model
+          disabled=isSubmissionTaskNotEditable}}
       {{/if}}
-    {{/question-check}}
+    {{/nested-question-check}}
   </div>
 
   <br>
 
   <div class="question">
-    {{#question-check ident="taxon.botanical"
-                      task=model
-                      question="Does this manuscript describe a new botantical taxon name?"
-                      disabled=isSubmissionTaskNotEditable
-                      as |checked|}}
+    {{#nested-question-check
+      ident="taxon_botanical"
+      owner=model
+      disabled=isSubmissionTaskNotEditable as |selection|}}
 
-      {{#if checked}}
+      {{#if selection.checked }}
         <div class="question-text">
           <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
         </div>
-        {{question-check ident="taxon.botanical.complies"
-                         task=model
-                         question="All authors comply with the Policies Regarding Submission of a new Taxon Name"
-                         disabled=isSubmissionTaskNotEditable}}
+
+        {{nested-question-check
+          ident="taxon_botanical.complies"
+          owner=model
+          disabled=isSubmissionTaskNotEditable}}
       {{/if}}
-    {{/question-check}}
+    {{/nested-question-check}}
   </div>
 </div>

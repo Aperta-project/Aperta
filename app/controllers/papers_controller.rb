@@ -20,7 +20,7 @@ class PapersController < ApplicationController
   def show
     rel = Paper.includes([
       :figures, :authors, :supporting_information_files, :paper_roles, :journal, :locked_by, :striking_image,
-      phases: { tasks: [:questions, :attachments, :participations, :comments] }
+      phases: { tasks: [:nested_question_answers, :attachments, :participations, :comments] }
     ])
     paper = rel.find(params[:id])
     authorize_action!(paper: paper)

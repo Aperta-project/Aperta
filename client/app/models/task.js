@@ -1,7 +1,8 @@
 import DS from 'ember-data';
+import NestedQuestionOwner from 'tahi/models/nested-question-owner';
 import CardThumbnailObserver from 'tahi/mixins/models/card-thumbnail-observer';
 
-export default DS.Model.extend(CardThumbnailObserver, {
+export default NestedQuestionOwner.extend(CardThumbnailObserver, {
   attachments: DS.hasMany('attachment', { async: false }),
   cardThumbnail: DS.belongsTo('card-thumbnail', {
     inverse: 'task',
@@ -19,10 +20,6 @@ export default DS.Model.extend(CardThumbnailObserver, {
   participations: DS.hasMany('participation', { async: false }),
   phase: DS.belongsTo('phase', {
     inverse: 'tasks',
-    async: false
-  }),
-  questions: DS.hasMany('question', {
-    inverse: 'task',
     async: false
   }),
 

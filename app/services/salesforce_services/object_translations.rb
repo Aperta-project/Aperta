@@ -43,43 +43,41 @@ module SalesforceServices
 
           #'PFA_Funding_Statement__c'   => billing_question "", # Unknown field? from financial disclosure card
 
-          'PFA_Question_1__c'          => answer_for("pfa_question_1"),
+          'PFA_Question_1__c'          => yes_no_answer_for("pfa_question_1"),
           'PFA_Question_1a__c'         => answer_for("pfa_question_1a"),
           'PFA_Question_1b__c'         => float_answer_for("pfa_question_1b"),
-          'PFA_Question_2__c'          => answer_for("pfa_question_2"),
+          'PFA_Question_2__c'          => yes_no_answer_for("pfa_question_2"),
           'PFA_Question_2a__c'         => answer_for("pfa_question_2a"),
           'PFA_Question_2b__c'         => float_answer_for("pfa_question_2b"),
-          'PFA_Question_3__c'          => answer_for("pfa_question_3"),
+          'PFA_Question_3__c'          => yes_no_answer_for("pfa_question_3"),
           'PFA_Question_3a__c'         => float_answer_for("pfa_question_3a"),
-          'PFA_Question_4__c'          => answer_for("pfa_question_4"),
+          'PFA_Question_4__c'          => yes_no_answer_for("pfa_question_4"),
           'PFA_Question_4a__c'         => float_answer_for("pfa_question_4a"),
           'PFA_Able_to_Pay_R__c'       => float_answer_for("pfa_amount_to_pay"),
           'PFA_Additional_Comments__c' => answer_for("pfa_additional_comments"),
-          'PFA_Supporting_Docs__c'     => boolean_from_yes_no("pfa_supporting_docs"),
+          'PFA_Supporting_Docs__c'     => answer_for("pfa_supporting_docs")
         }
       end
 
       private
 
       def answer_for(ident)
-        q = @paper.billing_card.questions.find_by_ident("plos_billing.#{ident}")
-        q.present? ? q.answer : nil
+        answer = billing_card.answer_for(ident)
+        answer.value if answer
       end
 
-      def float_answer_for(ident) # for data that must be castable to float
-        answer_for(ident).to_f
+      def float_answer_for(ident)
+        answer = billing_card.answer_for(ident)
+        answer.float_value if answer
       end
 
-      def boolean_from_yes_no(ident) # when must bool in SF, but stored as y/n in Aperta
-        a = answer_for(ident)
-        a.is_a?(String) ? text_to_boolean_map[a.downcase] : false
+      def yes_no_answer_for(ident)
+        answer = billing_card.answer_for(ident)
+        answer.yes_no_value if answer
       end
 
-      def text_to_boolean_map
-        {
-          'yes' => true,
-          'no'  => false,
-        }
+      def billing_card
+        @paper.billing_card
       end
 
       def manuscript_id # TODO ask product what to do in case of no DOI

@@ -1,0 +1,29 @@
+{{#if shouldDisplayQuestionText}}
+  <div class="{{textClassNames}}">
+    {{{questionText}}}
+  </div>
+{{/if}}
+
+<div class="additional-data">
+  <span class="button-primary button--green fileinput-button {{if disabled 'button--disabled'}}">
+    {{if model.answer.attachment "Replace File" "Select & upload"}}
+
+    {{file-uploader accept=accept
+                    start="uploadStarted"
+                    progress="uploadProgress"
+                    done="uploadFinished"
+                    error="uploadError"
+                    filePrefix="question_attachment"
+                    disabled=disabled}}
+  </span>
+  {{#if fileUpload}}
+    <div id="paper-file-uploads">
+      {{upload-preview upload=fileUpload
+                       disabled=disabled}}
+    </div>
+  {{/if}}
+  {{#if model.answer.attachment}}
+    {{attachment-thumbnail attachment=model.answer.attachment
+                           destroyAttachment="destroyAttachment"}}
+  {{/if}}
+</div>

@@ -2,31 +2,44 @@
 
 <ol class="question-list">
   <li class="question">
-    {{#question-radio ident="competing_interests.any"
-                      task=model
-                      question="<p>You are responsible for recognizing and disclosing on behalf of all authors any competing interest that could be perceived to bias their work, acknowledging all financial support and any other relevant financial or non-financial competing interests.</p><p>Do any authors of this manuscript have competing interests (as described in the <a target='_blank' href='http://www.plosbiology.org/static/policies#competing'>PLOS Policy on Declaration and Evaluation of Competing Interests</a>)?</p>"
-                      disabled=isSubmissionTaskNotEditable
-                      noValue=declareNoCompeteCopy as |selected|}}
+    <div class="question-text">
+      <p>
+        You are responsible for recognizing and disclosing on behalf of all
+        authors any competing interest that could be perceived to bias their
+        work, acknowledging all financial support and any other relevant
+        financial or non-financial competing interests.
+      </p>
+      <p>
+        {{{anyCompetingInterestsQuestion.text}}}
+      </p>
+    </div>
+    <div>
+      {{#nested-question-radio model=anyCompetingInterestsQuestion
+          owner=model
+          displayQuestionText=false
+          disabled=isSubmissionTaskNotEditable
+          noAction="userSelectedNo"
+          yesAction="userSelectedYes" as |selected|}}
 
-      {{#if selected.yes}}
-        <div class="question-dataset">
-          {{question-textarea ident="competing_interests.competing_interests"
-                              task=model
-                              question="Please provide details about any and all competing interests in the box below. Your response should begin with this statement: &quot;I have read the journal's policy and the authors of this manuscript have the following competing interests.&quot;"
-                              helpText="Please note that if your manuscript is accepted, this statement will be published."
-                              disabled=isSubmissionTaskNotEditable}}
-        </div>
-      {{/if}}
-      {{#if selected.no}}
-        <div class="question-dataset">
-          <div class="question-text">
-            Your competing interests statement will appear as: "{{declareNoCompeteCopy}}"
+        {{#if selected.yes}}
+          <div class="question-dataset">
+            {{nested-question-textarea model=competingInterestsStatementQuestion
+                owner=model
+                helpText="Please note that if your manuscript is accepted, this statement will be published."
+                disabled=isSubmissionTaskNotEditable}}
           </div>
-          <ul class="question-help">
-            Please note that if your manuscript is accepted, this statement will be published.
-          </ul>
-        </div>
-      {{/if}}
-    {{/question-radio}}
+        {{/if}}
+
+        {{#if selected.no}}
+          <div class="question-dataset">
+            Your competing interests statement will appear as: "{{declareNoCompeteCopy}}"
+            <div class="question-help">
+              Please note that if your manuscript is accepted, this statement will be published.
+            </div>
+          </div>
+        {{/if}}
+
+      {{/nested-question-radio}}
+    </div>
   </li>
 </ol>

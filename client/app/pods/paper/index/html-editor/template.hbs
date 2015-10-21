@@ -23,7 +23,7 @@
       <article class="manuscript">
         <div id="paper-body">
 
-          {{#if cannotEditTitle}}
+          {{#unless model.editable}}
             <h2 id="paper-title">{{{model.title}}}</h2>
           {{else}}
             {{content-editable tagName="h2"
@@ -33,7 +33,7 @@
                                placeholder="Type your manuscript title here"
                                key-up=(action "saveManuscriptTitle")
                                focus-out=(action "saveManuscriptTitle")}}
-          {{/if}}
+          {{/unless}}
 
           {{#if versioningMode}}
             {{html-diff default=model.body

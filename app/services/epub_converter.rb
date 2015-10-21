@@ -19,7 +19,7 @@ class EpubConverter
     paper_body = PaperDownloader.new(paper).body || 'The manuscript is currently empty.'
 
     head = <<-HEAD
-  <title>#{CGI.escape_html(paper.short_title)}</title>
+  <title>#{CGI.escape_html(paper.short_title.to_s)}</title>
   <link rel="stylesheet" type="text/css" href="css/default.css">
     HEAD
 

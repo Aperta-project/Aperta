@@ -24,7 +24,7 @@ class EpubConverter
     HEAD
 
     body = <<-BODY
-  <h1>#{CGI.escape_html(paper.display_title(sanitized: false))}</h1>
+  <h1>#{paper.display_title(sanitized: false)}</h1>
   #{paper_body.force_encoding('UTF-8')}
     BODY
 

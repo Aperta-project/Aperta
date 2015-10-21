@@ -55,20 +55,26 @@ export default AuthorizedRoute.extend({
       this.transitionTo('paper.task', this.modelFor('paper'), task.id, queryParams);
     },
 
-    addTaskType(phase, taskType) {
-      if (!taskType) { return; }
-      let unNamespacedKind = Utils.deNamespaceTaskType(taskType.get('kind'));
+    addTaskType(phase, taskList) {
+      if (!taskList) { return; }
 
-      this.store.createRecord(unNamespacedKind, {
-        phase: phase,
-        role: taskType.get('role'),
-        type: taskType.get('kind'),
-        paper: this.modelFor('paper'),
-        title: taskType.get('title')
-      }).save().then((newTask)=> {
-        this.send('viewCard', newTask, {
-          queryParams: { isNewTask: true }
-        });
+      let promises = [];
+
+      taskList.forEach((task) => {
+        let unNamespacedKind = Utils.deNamespaceTaskType(task.get('kind'));
+        let newTaskPromise = this.store.createRecord(unNamespacedKind, {
+          phase: phase,
+          role: task.get('role'),
+          type: task.get('kind'),
+          paper: this.modelFor('paper'),
+          title: task.get('title')
+        }).save();
+
+        promises.push(newTaskPromise);
+      });
+
+      Ember.RSVP.all(promises).then(() => {
+        this.send('closeOverlay');
       });
     },
 

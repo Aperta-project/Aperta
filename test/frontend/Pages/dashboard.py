@@ -50,7 +50,7 @@ class DashboardPage(AuthenticatedPage):
     self._cns_error_message = (By.CLASS_NAME, 'flash-message-content')
 
     self._cns_short_title_label = (By.CLASS_NAME, 'paper-new-label')
-    self._cns_short_title_field = (By.CSS_SELECTOR, '#paper-short-title')
+    self._cns_short_title_field = (By.XPATH, './/div[@id="paper-short-title"]/div')
     self._cns_journal_chooser = (By.XPATH, './/div[@class="inner-content"]/div[2]/label')
     self._cns_journal_chooser_dd = (By.CLASS_NAME, 'paper-new-journal-select')
     self._cns_papertype_chooser_dd = (By.CLASS_NAME, 'paper-new-paper-type-select')
@@ -60,6 +60,7 @@ class DashboardPage(AuthenticatedPage):
 
     self._cns_chooser_chosen = (By.CLASS_NAME, 'select-box-item')
     self._cns_chooser_dropdown_arrow = (By.CLASS_NAME, 'select2-arrow')
+    self._cns_upload_document = (By.Id, 'upload-files')
     self._cns_create_btn = (By.CLASS_NAME, 'paper-new-create-document-button')
 
     self._cns_cancel = (By.CLASS_NAME, 'button-link')
@@ -195,8 +196,10 @@ class DashboardPage(AuthenticatedPage):
 
   def enter_title_field(self, title):
     """Enter title for the publication"""
-    self._get(self._cns_short_title_field).clear()
-    self._get(self._cns_short_title_field).send_keys(title)
+    #self._get(self._cns_short_title_field).clear()
+    title_field = self._get(self._cns_short_title_field)
+    title_field.click()
+    title_field.send_keys(title)
     return self
 
   def click_create_button(self):

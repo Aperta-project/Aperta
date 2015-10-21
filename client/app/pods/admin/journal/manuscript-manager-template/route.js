@@ -4,38 +4,37 @@ export default Ember.Route.extend({
   actions: {
     chooseNewCardTypeOverlay(phaseTemplate) {
       this.controllerFor('overlays/chooseNewCardType').setProperties({
-        phaseTemplate: phaseTemplate,
+        phase: phaseTemplate,
         journalTaskTypes: this.modelFor('admin.journal').get('journalTaskTypes')
       });
 
       this.send('openOverlay', {
-        template: 'overlays/add-manuscript-template-card',
+        template: 'overlays/chooseNewCardType',
         controller: 'overlays/chooseNewCardType'
       });
     },
 
-    addTaskType(phaseTemplate, taskType) {
-      let newTask = this.store.createRecord('task-template', {
-        title: taskType.get('title'),
-        journalTaskType: taskType,
-        phaseTemplate: phaseTemplate,
-        template: []
+    addTaskType(phaseTemplate, taskTemplatesList) {
+
+      if (!taskTemplatesList) { return; }
+
+      let promises = [];
+
+      taskTemplatesList.forEach((taskTemplate) => {
+
+        let newTaskTemplatePromise = this.store.createRecord('taskTemplate', {
+          title: taskTemplate.get('title'),
+          journalTaskType: taskTemplate,
+          phaseTemplate: phaseTemplate,
+          template: []
+        }).save();
+
+        promises.push(newTaskTemplatePromise);
       });
 
-      if (taskType.get('kind') === 'Task') {
-        this.controllerFor('overlays/adHocTemplate').setProperties({
-          phaseTemplate: phaseTemplate,
-          model: newTask,
-          isNewTask: true
-        });
-
-        this.send('openOverlay', {
-          template: 'overlays/adHocTemplate',
-          controller: 'overlays/adHocTemplate'
-        });
-      } else {
-        this.send('addTaskAndClose');
-      }
+      Ember.RSVP.all(promises).then(() => {
+        this.send('closeOverlay');
+      });
     },
 
     addTaskAndClose() {

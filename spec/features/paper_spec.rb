@@ -48,8 +48,8 @@ feature "Editing paper", js: true do
 
       expect(find("input#task_completed")[:disabled]).to be(nil) # not disabled at start
 
-      find(".affiliation-field b[role='presentation']").click # open payment types dropdown
-      find("div.select2-result-label", :text => /PLOS Publication Fee Assistance Program \(PFA\)/).click #select PFA from dropdown
+      p = PageFragment.new(find('#overlay'))
+      p.select2("PLOS Publication Fee Assistance Program (PFA)", css: '.payment-method')
 
       expect(find("input#task_completed")[:disabled]).to be(nil)
       expect(page).not_to have_selector(".overlay-completed-checkbox .error-message") # make sure no error msg

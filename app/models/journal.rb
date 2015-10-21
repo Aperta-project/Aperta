@@ -13,7 +13,7 @@ class Journal < ActiveRecord::Base
       journal.doi_journal_prefix.present? && journal.doi_publisher_prefix.present?
     }
   }
-  validate :valid_doi_format
+  validate :has_valid_doi_information?
 
   after_create :setup_defaults
   before_destroy :destroy_roles
@@ -65,16 +65,11 @@ class Journal < ActiveRecord::Base
 
   private
 
-  def valid_doi_format
-    doi = Doi.new(journal: self)
-
-    if doi.journal_doi_enabled?
-      if doi.valid?
-        return true
-      else
-        errors.add(:doi, "The DOI you specified is not valid.")
-      end
-    end
+  def has_valid_doi_information?
+    ds = DoiService.new(journal: self)
+    return unless ds.journal_has_doi_prefixes?
+    return if ds.journal_doi_info_valid?
+    errors.add(:doi, "The DOI you specified is not valid.")
   end
 
   def setup_defaults

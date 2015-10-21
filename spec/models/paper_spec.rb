@@ -2,10 +2,9 @@ require 'rails_helper'
 
 describe Paper do
   let(:paper) { FactoryGirl.create :paper }
-  let(:doi) { 'pumpkin/doughnut.888888' }
   let(:user) { FactoryGirl.create :user }
 
-  describe "#create" do
+  context "#create" do
     it "also create Decision" do
       expect(paper.decisions.length).to eq 1
       expect(paper.decisions.first.class).to eq Decision

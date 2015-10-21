@@ -4,7 +4,7 @@ class PaperSerializer < LitePaperSerializer
   # stream triggers
   attributes :id, :short_title, :title, :doi, :body,
              :publishing_state, :paper_type, :status, :updated_at,
-             :editable, :links, :versions
+             :editable, :links, :versions, :manuscript_id
 
   %i(phases figures tables bibitems authors supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true

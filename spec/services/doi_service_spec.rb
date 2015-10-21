@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Doi do
+describe DoiService do
 
   let(:journal_doi) do
     [journal[:doi_publisher_prefix], journal[:doi_journal_prefix]].join('/') + "." + journal[:last_doi_issued]
@@ -45,7 +45,7 @@ describe Doi do
 
   describe "initialization" do
     context "with a journal" do
-      let(:journal) { create :journal }
+      let(:journal) { create :journal, :with_doi }
       it "assigns a journal as @journal" do
         expect(described_class.new(journal: journal).journal).to eq journal
       end
@@ -104,14 +104,14 @@ describe Doi do
     end
   end
 
-  describe "#assign!" do
+  describe "#next_doi!" do
     let(:journal) { create :journal, :with_doi }
-    let(:doi) { Doi.new(journal: journal) }
+    let(:doi_service) { DoiService.new(journal: journal) }
 
     it "assigns the next available doi to the journal" do
       last_doi_issued = journal.last_doi_issued
       expect {
-        doi.assign!
+        doi_service.next_doi!
       }.to change(journal, :last_doi_issued)
         .from(last_doi_issued)
         .to(last_doi_issued.succ)
@@ -119,7 +119,7 @@ describe Doi do
 
     context "when assignment is successful" do
       it "returns true" do
-        expect(doi.assign!).to eq journal_doi
+        expect(doi_service.next_doi!).to eq journal_doi
       end
     end
 
@@ -127,14 +127,14 @@ describe Doi do
       context "when the publisher prefix is not set" do
         it "returns nil" do
           journal.update_attributes(doi_publisher_prefix: nil)
-          expect(doi.assign!).to eq nil
+          expect(doi_service.next_doi!).to eq nil
         end
       end
 
       context "when the journal prefix is not set" do
         it "returns nil" do
           journal.update_attributes(doi_journal_prefix: nil)
-          expect(doi.assign!).to eq nil
+          expect(doi_service.next_doi!).to eq nil
         end
       end
     end

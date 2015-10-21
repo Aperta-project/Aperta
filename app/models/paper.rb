@@ -44,11 +44,12 @@ class Paper < ActiveRecord::Base
 
   delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
 
-  after_create do
-    versioned_texts.create!(major_version: 0, minor_version: 0, text: (@new_body || ''))
+  def manuscript_id
+    doi.split('/').last if doi
   end
 
-  after_create :set_doi
+  after_create :assign_doi!
+  after_create :create_versioned_texts
 
   aasm column: :publishing_state do
     state :unsubmitted, initial: true # currently being authored
@@ -377,9 +378,11 @@ class Paper < ActiveRecord::Base
     supporting_information
   end
 
-  def set_doi
-    return if doi
-    next_doi = Doi.new(journal: journal).assign!
-    update!(doi: next_doi)
+  def assign_doi!
+    self.update!(doi: DoiService.new(journal: journal).next_doi!) if journal
+  end
+
+  def create_versioned_texts
+    versioned_texts.create!(major_version: 0, minor_version: 0, text: (@new_body || ''))
   end
 end

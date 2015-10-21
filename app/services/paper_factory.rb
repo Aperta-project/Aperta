@@ -4,7 +4,6 @@ class PaperFactory
   def self.create(paper_params, creator)
     paper = creator.submitted_papers.build(paper_params)
     journal = paper.journal
-    paper.doi = Doi.new(journal: journal).assign! if journal
     paper.editor_mode = 'html' if paper.editor_mode.nil?
     pf = new(paper, creator)
     pf.create

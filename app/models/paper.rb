@@ -9,7 +9,6 @@ class Paper < ActiveRecord::Base
   belongs_to :creator, inverse_of: :submitted_papers, class_name: 'User', foreign_key: :user_id
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
-  belongs_to :locked_by, class_name: 'User'
   belongs_to :striking_image, class_name: 'Figure'
 
   has_one :manuscript, dependent: :destroy
@@ -228,32 +227,12 @@ class Paper < ActiveRecord::Base
     editors.first
   end
 
-  def locked? # :nodoc:
-    locked_by_id.present?
-  end
-
-  def unlocked? # :nodoc:
-    !locked?
-  end
-
   def latest_withdrawal_reason
     withdrawals.last[:reason] if withdrawals.present?
   end
 
-  def locked_by?(user) # :nodoc:
-    locked_by_id == user.id
-  end
-
   def resubmitted?
     decisions.pending.exists?
-  end
-
-  def lock_by(user) # :nodoc:
-    update_attribute(:locked_by, user)
-  end
-
-  def unlock # :nodoc:
-    update_attribute(:locked_by, nil)
   end
 
   # Accepts any args the state transition accepts

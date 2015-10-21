@@ -1,7 +1,6 @@
 class PapersController < ApplicationController
   before_action :authenticate_user!
   before_action :enforce_policy, except: [:index, :show, :comment_looks]
-  before_action :prevent_update_on_locked!, only: [:update, :toggle_editable, :submit, :upload]
 
   respond_to :json
 
@@ -17,7 +16,7 @@ class PapersController < ApplicationController
 
   def show
     rel = Paper.includes([
-      :figures, :authors, :supporting_information_files, :paper_roles, :journal, :locked_by, :striking_image,
+      :figures, :authors, :supporting_information_files, :paper_roles, :journal, :striking_image,
       phases: { tasks: [:nested_question_answers, :attachments, :participations, :comments] }
     ])
     paper = rel.find(params[:id])
@@ -37,11 +36,8 @@ class PapersController < ApplicationController
       raise ActiveRecord::RecordInvalid, paper
     end
 
-    unless update_paper_params.has_key?(:body) && update_paper_params[:body].nil? # To prevent body-disappearing issue
-      paper.update(update_paper_params)
-    end
-
-    Activity.paper_edited!(paper, user: current_user) if params[:paper][:locked_by_id].present?
+    paper.update(update_paper_params)
+    Activity.paper_edited!(paper, user: current_user)
 
     respond_with paper
   end
@@ -119,7 +115,6 @@ class PapersController < ApplicationController
       :short_title, :title, :abstract,
       :body, :paper_type, :submitted, :editable,
       :journal_id,
-      :locked_by_id,
       :striking_image_id,
       :editor_mode,
       authors: [:first_name, :middle_initial, :last_name, :title, :affiliation, :secondary_affiliation, :department, :email, :deceased, :corresponding_author],
@@ -137,9 +132,8 @@ class PapersController < ApplicationController
     # paper params excluding :submitted and :editable
     params.require(:paper).permit(
       :short_title, :title, :abstract,
-      :body, :paper_type,
+      :paper_type,
       :journal_id,
-      :locked_by_id,
       :striking_image_id,
       :editor_mode,
       authors: [:first_name, :middle_initial, :last_name, :title, :affiliation, :secondary_affiliation, :department, :email, :deceased, :corresponding_author],
@@ -163,13 +157,6 @@ class PapersController < ApplicationController
 
   def enforce_policy
     authorize_action!(paper: paper, params: params)
-  end
-
-  def prevent_update_on_locked!
-    if paper.locked? && !paper.locked_by?(current_user)
-      paper.errors.add(:locked_by_id, "This paper is locked for editing by #{paper.locked_by.full_name}.")
-      raise ActiveRecord::RecordInvalid, paper
-    end
   end
 
   def broadcast_paper_submitted_event

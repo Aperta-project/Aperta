@@ -67,7 +67,7 @@ module TahiStandardTasks
     end
 
     def template_data
-      { manuscript_title: paper.title,
+      { manuscript_title: paper.display_title,
         journal_name: paper.journal.name }
     end
   end

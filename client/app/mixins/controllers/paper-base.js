@@ -8,7 +8,10 @@ export default Ember.Mixin.create({
   subRouteName: 'index',
   versioningMode: false,
   canViewManuscriptManager: false,
-  cannotEditTitle: computed.equal('model.publishingState', 'submitted'),
+  cannotEditTitle: computed('model.publishingState', function() {
+    const state = this.get('model.publishingState');
+    return state === 'submitted' || state === 'accepted';
+  }),
 
   supportedDownloadFormats: computed(function() {
     return ENV.APP.iHatExportFormats.map(formatType => {

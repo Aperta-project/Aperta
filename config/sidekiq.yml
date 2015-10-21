@@ -1,6 +1,5 @@
 ---
 :queues:
   - default
-  - paper_unlocker
   - mailers
   - eventstream

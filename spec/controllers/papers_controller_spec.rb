@@ -233,33 +233,6 @@ describe PapersController do
     end
   end
 
-  describe "PUT 'heartbeat'" do
-    expect_policy_enforcement
-
-    subject(:do_request) do
-      put :heartbeat, { id: paper.to_param, format: :json }
-    end
-    context "paper is locked" do
-      before do
-        paper.lock_by(user)
-      end
-
-      it "updates the paper timestamp" do
-        old_heartbeat = 1.minute.ago
-        paper.update_attribute :last_heartbeat_at, old_heartbeat
-        do_request
-        expect(paper.reload.last_heartbeat_at).to be > old_heartbeat
-      end
-    end
-
-    context "paper is unlocked" do
-      it "does not update the timestamp" do
-        do_request
-        expect(paper.reload.last_heartbeat_at).to be_nil
-      end
-    end
-  end
-
   describe "GET 'activity'" do
     let(:weak_user) { FactoryGirl.create :user }
 

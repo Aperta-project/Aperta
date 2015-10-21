@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151016173854) do
+ActiveRecord::Schema.define(version: 20151021181116) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -307,7 +307,6 @@ ActiveRecord::Schema.define(version: 20151016173854) do
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "locked_by_id"
-    t.datetime "last_heartbeat_at"
     t.integer  "striking_image_id"
     t.boolean  "editable",                 default: true
     t.text     "doi"

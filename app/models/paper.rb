@@ -256,10 +256,6 @@ class Paper < ActiveRecord::Base
     update_attribute(:locked_by, nil)
   end
 
-  def heartbeat # :nodoc:
-    update_attribute(:last_heartbeat_at, Time.now)
-  end
-
   # Accepts any args the state transition accepts
   def metadata_tasks_completed?(*)
     tasks.metadata.count == tasks.metadata.completed.count

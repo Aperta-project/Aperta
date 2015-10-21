@@ -67,14 +67,6 @@ class PapersController < ApplicationController
     respond_with paper
   end
 
-  def heartbeat
-    if paper.locked?
-      paper.heartbeat
-      PaperUnlockerWorker.perform_async(paper.id, true)
-    end
-    head :no_content
-  end
-
   def download
     respond_to do |format|
       format.epub do

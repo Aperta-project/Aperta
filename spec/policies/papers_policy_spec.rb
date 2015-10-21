@@ -61,20 +61,6 @@ describe PapersPolicy do
     include_examples "person who cannot see a paper"
   end
 
-  context "locked paper" do
-    let(:user) { FactoryGirl.build_stubbed(:user) }
-
-    context "by current user" do
-      let(:paper) { FactoryGirl.build_stubbed(:paper, locked_by_id: user.id) }
-      it { expect(policy.heartbeat?).to be(true) }
-    end
-
-    context "by another user" do
-      let(:paper) { FactoryGirl.build_stubbed(:paper, locked_by_id: 0) }
-      it { expect(policy.heartbeat?).to be(false) }
-    end
-  end
-
   context "user with can_view_all_manuscript_managers on this paper's journal" do
     let(:user) do
       FactoryGirl.create(

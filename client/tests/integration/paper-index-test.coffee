@@ -34,7 +34,7 @@ module 'Integration: PaperIndex',
     [currentPaper, figureTask, journal, litePaper, phase] = records
 
     nestedQuestion = Factory.createRecord('NestedQuestion', { ident: 'figure_complies' })
-    addNestedQuestionToTask(figureTask, nestedQuestion);
+    addNestedQuestionToTask(nestedQuestion, figureTask);
 
     paperPayload = Factory.createPayload('paper')
     paperPayload.addRecords(records.concat([fakeUser, nestedQuestion]))

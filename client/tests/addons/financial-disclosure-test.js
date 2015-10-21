@@ -47,7 +47,7 @@ module('Integration: FinancialDisclosure', {
 
     var nestedQuestion;
     nestedQuestion = Factory.createRecord('NestedQuestion', { ident: 'author_received_funding' });
-    addNestedQuestionToTask(financialDisclosureTask, nestedQuestion);
+    addNestedQuestionToTask(nestedQuestion, financialDisclosureTask);
 
     taskPayload.addRecords([financialDisclosureTask, nestedQuestion, fakeUser]);
 

@@ -13,37 +13,43 @@
       </li>
 
       <li class="item">
-        {{nested-question-check
+        {{#nested-question-check
           ident="systematic_reviews"
           owner=model
-          disabled=isSubmissionTaskNotEditable}}
+          disabled=isSubmissionTaskNotEditable as |selection|}}
 
-          {{#if systematicReviewsQuestion.answer.value}}
-            <div class="question-dataset">
-              {{nested-question-uploader ident="systematic_reviews.checklist"
-                               owner=model
-                               updateStore="updateStore"
-                               accept=".docx,.pdf"
-                               disabled=isSubmissionTaskNotEditable}}
-            </div>
+          {{#if selection.yieldingForAdditionalData}}
+            {{#if selection.checked}}
+              <div class="question-dataset">
+                {{nested-question-uploader ident="systematic_reviews.checklist"
+                                 owner=model
+                                 updateStore="updateStore"
+                                 accept=".docx,.pdf"
+                                 disabled=isSubmissionTaskNotEditable}}
+              </div>
+            {{/if}}
           {{/if}}
+        {{/nested-question-check}}
       </li>
 
       <li class="item">
-        {{nested-question-check
+        {{#nested-question-check
           ident="meta_analyses"
           owner=model
-          disabled=isSubmissionTaskNotEditable}}
+          disabled=isSubmissionTaskNotEditable as |selection|}}
 
-          {{#if metaAnalysesQuestion.answer.value}}
-            <div class="question-dataset">
-              {{nested-question-uploader ident="meta_analyses.checklist"
-                               owner=model
-                               updateStore="updateStore"
-                               accept=".docx,.pdf"
-                               disabled=isSubmissionTaskNotEditable}}
-            </div>
+          {{#if selection.yieldingForAdditionalData}}
+            {{#if selection.checked}}
+              <div class="question-dataset">
+                {{nested-question-uploader ident="meta_analyses.checklist"
+                                 owner=model
+                                 updateStore="updateStore"
+                                 accept=".docx,.pdf"
+                                 disabled=isSubmissionTaskNotEditable}}
+              </div>
+            {{/if}}
           {{/if}}
+        {{/nested-question-check}}
       </li>
 
       <li class="item">

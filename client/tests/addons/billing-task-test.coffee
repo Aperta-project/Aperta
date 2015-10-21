@@ -61,7 +61,7 @@ module "Integration: Billing",
     ]
 
     for nestedQuestion in nestedQuestions
-      addNestedQuestionToTask(billingTask, nestedQuestion)
+      addNestedQuestionToTask(nestedQuestion, billingTask)
       taskPayload.addRecord(nestedQuestion)
     paperResponse.nested_questions = nestedQuestions
 

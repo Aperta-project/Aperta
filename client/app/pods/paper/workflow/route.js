@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import AuthorizedRoute from 'tahi/routes/authorized';
-import Utils from 'tahi/services/utils';
 
 export default AuthorizedRoute.extend({
   cardOverlayService: Ember.inject.service('card-overlay'),
@@ -29,7 +28,6 @@ export default AuthorizedRoute.extend({
 
   actions: {
     chooseNewCardTypeOverlay(phase) {
-
       this.transitionTo('paper.workflow.tasks.new', this.modelFor('paper'), phase);
     },
 
@@ -44,23 +42,6 @@ export default AuthorizedRoute.extend({
       }
 
       this.transitionTo('paper.task', this.modelFor('paper'), task.id, queryParams);
-    },
-
-    addTaskType(phase, taskType) {
-      if (!taskType) { return; }
-      let unNamespacedKind = Utils.deNamespaceTaskType(taskType.get('kind'));
-
-      this.store.createRecord(unNamespacedKind, {
-        phase: phase,
-        role: taskType.get('role'),
-        type: taskType.get('kind'),
-        paper: this.modelFor('paper'),
-        title: taskType.get('title')
-      }).save().then((newTask)=> {
-        this.send('viewCard', newTask, {
-          queryParams: { isNewTask: true }
-        });
-      });
     },
 
     showDeleteConfirm(task) {

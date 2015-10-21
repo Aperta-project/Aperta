@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import Utils from 'tahi/services/utils';
 
 export default Ember.Route.extend({
 
@@ -17,6 +18,21 @@ export default Ember.Route.extend({
 
     closeModal: function() {
       this.transitionTo('paper.workflow', this.modelFor('paper'));
-    }
+    },
+
+    addTask(phase, taskType) {
+      if (!taskType) { return; }
+      let unNamespacedKind = Utils.deNamespaceTaskType(taskType.get('kind'));
+
+      this.store.createRecord(unNamespacedKind, {
+        phase: phase,
+        role: taskType.get('role'),
+        type: taskType.get('kind'),
+        paper: this.modelFor('paper'),
+        title: taskType.get('title')
+      }).save().then(() => {
+        this.send('closeModal');
+      });
+    },
   }
 });

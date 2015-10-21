@@ -15,7 +15,7 @@
 1. Clone the event server repo (`tahi-slanger`) in a sibling directory
 1. Make sure the following ports are clear:
     - 4567 (Slanger API)
-    - 8080 (Slanger websocket)
+    - 40604 (Slanger websocket)
     - 5000 (Rails server)
 1. Run with `foreman start`
 
@@ -68,7 +68,7 @@ env: .env,.env.development
 When you run `foreman start`, slanger will start up as the event stream server.
 
 By default, slanger will listen on port `4567` for API requests (requests
-coming from tahi rails server) and port `8080` for websocket requests (from
+coming from tahi rails server) and port `40604` for websocket requests (from
 tahi browser client).
 
 # Running the server

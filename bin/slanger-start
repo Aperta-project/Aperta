@@ -28,6 +28,6 @@ Bundler.with_clean_env do
   validate_event_stream_config!
   verbose = "-v" if rails_env == "development"
   Dir.chdir(SLANGER_DIR) do
-    exec("bin/slanger --app_key #{ENV.fetch("EVENT_STREAM_KEY")} --secret #{ENV.fetch("EVENT_STREAM_SECRET")} #{verbose}")
+    exec("bin/slanger --app_key #{ENV.fetch('EVENT_STREAM_KEY')} --secret #{ENV.fetch('EVENT_STREAM_SECRET')} #{verbose} -w #{ENV.fetch('EVENT_STREAM_WS_HOST')}:#{ENV.fetch('EVENT_STREAM_WS_PORT')}")
   end
 end

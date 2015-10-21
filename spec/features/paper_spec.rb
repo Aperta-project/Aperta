@@ -41,7 +41,7 @@ feature "Editing paper", js: true do
       visit "/"
     end
 
-    it "shows validations" do
+    it "shows validations", vcr: { cassette_name: "ned_countries" } do
       click_link(@paper.title)
       find('.workflow-link').click
       click_link('Billing')

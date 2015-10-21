@@ -20,6 +20,7 @@ Router.map(function() {
     });
 
     this.route('workflow', function() {
+      this.route('tasks.new', { path: '/phases/:phase_id/tasks/new' });
       this.route('discussions', function() {
         this.route('new',  { path: '/new' });
         this.route('show', { path: '/:topic_id' });

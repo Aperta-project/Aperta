@@ -36,9 +36,9 @@ describe PDFConverter do
       expect(pdf_html).to include paper.body
     end
 
-    it "displays and HTML escapes the paper's title in the body" do
-      paper.title = "<This Is & The Title>"
-      expect(doc).to have_path("#paper-body h1:contains('#{paper.title}')")
+    it "displays HTML in the paper's title" do
+      paper.title = "This <i>is</i> the Title"
+      expect(doc).to have_path("#paper-body h1:contains('#{paper.display_title}')")
     end
   end
 end

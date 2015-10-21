@@ -29,9 +29,9 @@ describe EpubConverter do
 
       after { expect(doc.errors.length).to be 0 }
 
-      it "displays and HTML escapes the paper's title" do
-        paper.title = "<This Is & The Title>"
-        expect(doc).to have_path("h1:contains('#{paper.title}')")
+      it "displays HTML in the paper's title" do
+        paper.title = "This <i>is</i> the Title"
+        expect(doc).to have_path("h1:contains('#{paper.display_title}')")
       end
 
       it "includes the paper body as-is, unescaped" do

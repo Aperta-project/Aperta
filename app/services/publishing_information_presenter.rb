@@ -25,7 +25,7 @@ class PublishingInformationPresenter
   end
 
   def title
-    "<h1 id='paper-display-title'>#{CGI.escape_html(paper.display_title)}</h1>"
+    "<h1 id='paper-display-title'>#{paper.display_title(sanitized: false)}</h1>"
   end
 
   def journal_name

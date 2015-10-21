@@ -89,7 +89,9 @@
       "required": true
     },
     "EVENT_STREAM_APP_ID": {
-      "required": true
+      "description": "A unique app id for connecting to slanger.  Prevents overlap between review apps.",
+      "required": true,
+      "generator": "secret"
     },
     "EVENT_STREAM_KEY": {
       "required": true

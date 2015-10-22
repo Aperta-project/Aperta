@@ -1,9 +1,13 @@
 .invite-reviewer-edit-invite {
   width: 700px;
+
   .taller-textarea {
-      height: 265px;
-      margin: 20px 0;
+    overflow: auto;
+    white-space: pre-line;
+    height: 265px;
+    margin: 20px 0;
   }
+
   .invite-reviewer-cta {
     float: right;
   }

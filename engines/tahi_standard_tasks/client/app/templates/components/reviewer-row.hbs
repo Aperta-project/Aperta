@@ -8,17 +8,17 @@
 
 {{else}}
 
-  <div class="authors-overlay-item--text">
-    <div class="author-name">{{reviewerRecommendation.fullName}}</div>
-    {{reviewerRecommendation.email}}<br>
-    {{reviewerRecommendation.title}} &nbsp; &nbsp; {{reviewerRecommendation.department}}
+  <div class="authors-overlay-item--text reviewer">
+    <div class="author-name full-name">{{reviewerRecommendation.fullName}}</div>
+    <span class="email">{{reviewerRecommendation.email}}</span><br>
+    <span class="title">{{reviewerRecommendation.title}}</span> &nbsp; &nbsp; <span class="department">{{reviewerRecommendation.department}}</span>
     <br>
-    {{reviewerRecommendation.affiliation}}
-    <div class="reviewerRecommendation-recommendation-decision">
+    <span class="affiliation">{{reviewerRecommendation.affiliation}}</span>
+    <div class="decision">
       {{nested-question-display ident="recommend_or_oppose" owner=reviewerRecommendation}}
       {{nested-question-answer ident="recommend_or_oppose" owner=reviewerRecommendation}}
     </div>
-    {{nested-question-answer ident="reason" owner=reviewerRecommendation}}
+    <span class="reason">{{nested-question-answer ident="reason" owner=reviewerRecommendation}}</span>
   </div>
 
   {{#if isHovered}}

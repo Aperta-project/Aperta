@@ -1,6 +1,6 @@
-<div class="add-author-form">
+<div class="add-author-form reviewer-form">
   <div class="form-group form-inline author-top">
-    <div class="form-group author-name {{if validationErrors.firstName "error"}}">
+    <div class="form-group author-name first-name {{if validationErrors.firstName "error"}}">
       <span class="text-field-title required">
         First Name
         {{error-message message=validationErrors.firstName}}
@@ -12,7 +12,7 @@
               disabled=isSubmissionTaskNotEditable}}
     </div>
 
-    <div class="form-group author-middle {{if validationErrors.middleInitial "error"}}">
+    <div class="form-group author-middle middle-name {{if validationErrors.middleInitial "error"}}">
       <span class="text-field-title">
         MI
         {{error-message message=validationErrors.middleInitial}}
@@ -24,7 +24,7 @@
               disabled=isSubmissionTaskNotEditable}}
     </div>
 
-    <div class="form-group author-name {{if validationErrors.lastName "error"}}">
+    <div class="form-group author-name last-name {{if validationErrors.lastName "error"}}">
       <span class="text-field-title required">
         Last Name
         {{error-message message=validationErrors.lastName}}
@@ -36,7 +36,7 @@
               disabled=isSubmissionTaskNotEditable}}
     </div>
 
-    <div class="form-group author-half author-bump {{if validationErrors.email "error"}}">
+    <div class="form-group author-half author-bump email {{if validationErrors.email "error"}}">
       <span class="text-field-title required">
         Email
         {{error-message message=validationErrors.email}}
@@ -50,7 +50,7 @@
   </div>
 
   <div class="form-group form-inline">
-    <div class="form-group author-half {{if validationErrors.title "error"}}">
+    <div class="form-group author-half title {{if validationErrors.title "error"}}">
       <span class="text-field-title">
         Title
         {{error-message message=validationErrors.title}}
@@ -62,7 +62,7 @@
               disabled=isSubmissionTaskNotEditable}}
     </div>
 
-    <div class="form-group author-half author-bump {{if validationErrors.department "error"}}">
+    <div class="form-group author-half author-bump department {{if validationErrors.department "error"}}">
       <span class="text-field-title">
         Department
         {{error-message message=validationErrors.department}}
@@ -76,7 +76,7 @@
   </div>
 
   <div class="form-group form-inline">
-    <div class="form-group author-half {{if validationErrors.affiliation "error"}}">
+    <div class="form-group author-half insitution {{if validationErrors.affiliation "error"}}">
       {{error-message message=validationErrors.affiliation}}
       {{institution-search
         value=affiliation

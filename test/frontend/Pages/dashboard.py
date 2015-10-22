@@ -60,7 +60,8 @@ class DashboardPage(AuthenticatedPage):
 
     self._cns_chooser_chosen = (By.CLASS_NAME, 'select-box-item')
     self._cns_chooser_dropdown_arrow = (By.CLASS_NAME, 'select2-arrow')
-    self._cns_upload_document = (By.Id, 'upload-files')
+    self._cns_upload_document = (By.CLASS_NAME, 'fileinput-button')
+    #self._cns_upload_document = (By.ID, 'upload-files')
     self._cns_create_btn = (By.CLASS_NAME, 'paper-new-create-document-button')
 
     self._cns_cancel = (By.CLASS_NAME, 'button-link')

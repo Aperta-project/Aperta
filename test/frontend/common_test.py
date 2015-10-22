@@ -56,7 +56,10 @@ class CommonTest(FrontEndTest):
     dashboard.enter_title_field(title)
     dashboard.select_journal(journal, type_)
     time.sleep(2)
-    dashboard._get(dashboard._cns_create_btn).click()
+    # upload file
+    upload_btn = dashboard._get(dashboard._cns_upload_document)
+    import pdb; pdb.set_trace()
+    ##dashboard._get(dashboard._cns_create_btn).click()
     time.sleep(10)
     return title
 

@@ -8,7 +8,7 @@ describe Paper::DataExtracted::FinishUploadManuscriptTask do
 
   it "marks the upload manuscript task as completed" do
     expect(upload_task).to_not be_completed
-    described_class.call("tahi:paper:data_extracted", { action: "created", paper: paper })
+    described_class.call("tahi:paper:data_extracted", { action: "created", record: paper })
     expect(upload_task.reload).to be_completed
   end
 

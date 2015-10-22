@@ -55,7 +55,7 @@ class Paper < ActiveRecord::Base
 
   aasm column: :publishing_state do
     state :unsubmitted, initial: true # currently being authored
-    state :submitted
+    state :submitted, after_enter: :paper_has_been_submitted
     state :checking # small change that does not require resubmission, as in a tech check
     state :in_revision # has revised decision and requires resubmission
     state :accepted
@@ -386,5 +386,12 @@ class Paper < ActiveRecord::Base
 
   def create_versioned_texts
     versioned_texts.create!(major_version: 0, minor_version: 0, text: (@new_body || ''))
+  end
+
+  def paper_has_been_submitted
+    notify action: "submitted"
+    if resubmitted?
+      notify action: "resubmitted"
+    end
   end
 end

@@ -11,7 +11,7 @@ describe Paper::Resubmitted::EmailEditor do
 
   it "sends an email to the editor" do
     expect(mailer).to receive(:notify_editor_of_paper_resubmission).with(paper.id)
-    described_class.call("tahi:paper:resubmitted", { paper: paper })
+    described_class.call("tahi:paper:resubmitted", { record: paper })
   end
 
 end

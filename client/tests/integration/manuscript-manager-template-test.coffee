@@ -16,13 +16,6 @@ createJournalWithTaskTemplate = (taskType) ->
 
 module 'Integration: Manuscript Manager Templates',
 
-  afterEach: ->
-    server.restore()
-    Ember.run(app, app.destroy)
-    app.__container__.lookup(
-      'controller:admin/journal/manuscript-manager-template/edit'
-    )._actions.saveTemplateOnClick = app.saveTemplateActionFunction
-
   beforeEach: ->
     app = startApp()
     server = setupMockServer()
@@ -104,23 +97,43 @@ module 'Integration: Manuscript Manager Templates',
       200, {"Content-Type": "application/json"}, JSON.stringify(response)
     ]
 
+  afterEach: ->
+    server.restore()
+
+    # TODO: Remove this workaround
+    # https://github.com/emberjs/data/issues/2982
+    store = app.registry.lookup('store:main')
+    Ember.run ->
+      records = store.all('journalTaskType')
+      records.forEach (record) ->
+        store.unloadRecord(record)
+
+      records = store.all('taskTemplate')
+      records.forEach (record) ->
+        store.unloadRecord(record)
+    # End TODO
+
+
+    Ember.run(app, 'destroy')
+    app.__container__.lookup(
+      'controller:admin/journal/manuscript-manager-template/edit'
+    )._actions.saveTemplateOnClick = app.saveTemplateActionFunction
+
 test 'Changing phase name', (assert) ->
   columnTitleSelect = 'h2.column-title:contains("Phase 1")'
   visit("/admin/journals/1/manuscript_manager_templates/1/edit")
-    .then ->
-      assert.ok find(columnTitleSelect).length
-  click columnTitleSelect
-    .then -> Ember.$(columnTitleSelect).html('Shazam!')
+  click(columnTitleSelect).then ->
+    Ember.$(columnTitleSelect).html('Shazam!')
   andThen ->
     assert.ok find('h2.column-title:contains("Shazam!")').length
 
 test 'Adding an Ad-Hoc card', (assert) ->
   visit("/admin/journals/1/manuscript_manager_templates/1/edit")
   click('a.button--green:contains("Add New Card")')
+  click('label:contains("Ad Hoc")')
+  click('.overlay .button--green:contains("Add")')
 
-  pickFromSelect2('.task-type-select', 'Ad Hoc')
-
-  click('.overlay .button--green:contains("Add")').then ->
+  andThen ->
     assert.ok find('h1.inline-edit:contains("Ad Hoc")').length
     assert.ok(
       find('h1.inline-edit').hasClass('editing'),
@@ -149,11 +162,11 @@ test 'Adding an Ad-Hoc card', (assert) ->
 createCard = ->
   visit("/admin/journals/1/manuscript_manager_templates/1/edit")
   click('a.button--green:contains("Add New Card")')
-  pickFromSelect2('.task-type-select', 'Ad Hoc')
-  click '.button--green:contains("Add")'
-    .then -> ok find('h1.inline-edit:contains("Ad Hoc")').length, 'It finds the ad hocs'
+  click('label:contains("Ad Hoc")')
+  click('.overlay .button--green:contains("Add")')
   andThen ->
-    click '.overlay-close-button:first'
+    ok find('h1.inline-edit:contains("Ad Hoc")').length
+  click '.overlay-close-button:first'
 
 # see also paper_workflow_test.js.coffee; tests are very similar
 test 'show delete confirmation overlay on deletion of a card', (assert) ->
@@ -162,32 +175,24 @@ test 'show delete confirmation overlay on deletion of a card', (assert) ->
     click(".card-remove")
   andThen ->
     assert.equal find('.overlay button:contains("Yes, Delete this Card")').length, 1
-    click find('.overlay button:contains("Yes, Delete this Card")')
-  andThen ->
-    assert.equal 0, find('.card-content').length
 
 test 'click delete confirmation overlay cancel button', (assert) ->
   createCard()
   andThen ->
-    equal find(".card-content").length, 1
-    $(".card .card-remove").show()
-    click(".card .card-remove")
+    click(".card-remove")
+  andThen ->
+    assert.equal find('.overlay button:contains("cancel")').length, 1
     click('.overlay button:contains("cancel")')
-    assert.equal find(".card-content").length, 1
+  andThen ->
+    assert.notEqual find('.card-content').length, 0
 
-test 'click delete confirmation overlay submit button', (assert) ->
+test 'show delete confirmation overlay on deletion of a card', (assert) ->
   createCard()
   andThen ->
-    # first POST to /task_templates
-    click('.paper-type-save-button:contains("Save Template")')
+    click(".card-remove")
   andThen ->
-    equal find(".card-content").length, 1, "It finds the card content"
-    $(".card .card-remove").show()
-    click(".card .card-remove")
-    # causes DELETE to /task_templates/1
+    assert.equal find('.overlay button:contains("Yes, Delete this Card")').length, 1
     click('.overlay button:contains("Yes, Delete this Card")')
-  andThen ->
-    assert.equal find(".card-content").length, 0, "The card is gone"
   andThen ->
     search = { method: "DELETE", url: "/api/task_templates/1" }
     assert.ok _.findWhere(server.responses, search), "It sends DELETE request to the server"

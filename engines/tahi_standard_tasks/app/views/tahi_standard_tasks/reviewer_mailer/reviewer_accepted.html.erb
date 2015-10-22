@@ -19,11 +19,11 @@
       <% end %>
     </div>
     <div class='paper-name'>
-      <%= raw @paper.display_title(sanitized: false) %>
+      <%= @paper.display_title(sanitized: false) %>
     </div>
     <div class='paper-abstract'>
       <p>
-        <%= @reviewer.full_name %> has accepted your invitation to review the Manuscript: "<%= raw @paper.display_title(sanitized: false) %>".
+        <%= @reviewer.full_name %> has accepted your invitation to review the Manuscript: "<%= @paper.display_title(sanitized: false) %>".
       </p>
 
       <p>

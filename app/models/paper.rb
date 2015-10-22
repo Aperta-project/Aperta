@@ -201,7 +201,7 @@ class Paper < ActiveRecord::Base
   # Returns a String.
   def display_title(sanitized: true)
     raw = title.present? ? title : short_title
-    sanitized ? strip_tags(raw) : raw
+    sanitized ? strip_tags(raw) : raw.html_safe
   end
 
   # Public: Returns one of the admins from the paper.

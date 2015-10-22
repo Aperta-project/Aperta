@@ -550,6 +550,8 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
+    test_after_commit (0.4.1)
+      activerecord (>= 3.2)
     thin (1.6.3)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0)
@@ -665,6 +667,7 @@ DEPENDENCIES
   tahi_epub!
   tahi_standard_tasks!
   tahi_upload_manuscript!
+  test_after_commit
   thin
   timecop
   timeliness

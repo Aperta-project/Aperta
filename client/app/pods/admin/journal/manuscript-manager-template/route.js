@@ -17,24 +17,36 @@ export default Ember.Route.extend({
     addTaskType(phaseTemplate, taskTypeList) {
 
       if (!taskTypeList) { return; }
+      let isAdhocType = false;
 
-      let promises = [];
+      taskTypeList.forEach((taskType) => {
 
-      taskTypeList.forEach((taskTemplate) => {
-
-        let newTaskTemplatePromise = this.store.createRecord('taskTemplate', {
-          title: taskTemplate.get('title'),
-          journalTaskType: taskTemplate,
+        let newTaskTemplate = this.store.createRecord('taskTemplate', {
+          title: taskType.get('title'),
+          journalTaskType: taskType,
           phaseTemplate: phaseTemplate,
           template: []
-        }).save();
+        });
 
-        promises.push(newTaskTemplatePromise);
+        if (taskType.get('kind') === 'Task') {
+          isAdhocType = true;
+
+          this.controllerFor('overlays/adHocTemplate').setProperties({
+            phaseTemplate: phaseTemplate,
+            model: newTaskTemplate,
+            isNewTask: true
+          });
+        }
       });
 
-      Ember.RSVP.all(promises).then(() => {
-        this.send('closeOverlay');
-      });
+      if (isAdhocType) {
+        this.send('openOverlay', {
+          template: 'overlays/adHocTemplate',
+          controller: 'overlays/adHocTemplate'
+        });
+      } else {
+        this.send('addTaskAndClose');
+      }
     },
 
     addTaskAndClose() {

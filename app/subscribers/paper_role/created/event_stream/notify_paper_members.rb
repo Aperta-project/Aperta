@@ -8,7 +8,7 @@ class PaperRole::Created::EventStream::NotifyPaperMembers < EventStreamSubscribe
   end
 
   def payload
-    PaperSerializer.new(record.paper)
+    PaperSerializer.new(record.paper).as_json
   end
 
 end

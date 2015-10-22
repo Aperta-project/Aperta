@@ -25,7 +25,7 @@ class PaperRole::Destroyed::EventStream::NotifyPaperMembers < EventStreamSubscri
   end
 
   def payload
-    PaperSerializer.new(record.paper)
+    PaperSerializer.new(record.paper).as_json
   end
 
   def action

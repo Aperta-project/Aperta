@@ -11,14 +11,14 @@
       <% end %>
     </div>
     <div class='paper-name'>
-      <%= @paper.display_title %>
+      <%= raw @paper.display_title(sanitized: false) %>
     </div>
     <div>
       <p>
         Hello <%= @admin.first_name %>,
       </p>
       <p class='paper-info'>
-        <%= @editor.full_name %> has accepted their editor invitation for "<%= @journal.name %>: <%= @paper.display_title %>"
+        <%= @editor.full_name %> has accepted their editor invitation for "<%= @journal.name %>: <%= raw @paper.display_title(sanitized: false) %>"
       </p>
     </div>
   </div>

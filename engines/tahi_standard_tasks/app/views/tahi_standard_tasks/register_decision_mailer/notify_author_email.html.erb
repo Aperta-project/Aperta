@@ -4,7 +4,7 @@
       Hello <%= @recipient.full_name %>,
     </h3>
     <p class='message'>
-      A Decision has been Registered on your Manuscript <%= @paper.display_title %>.
+      A Decision has been Registered on your Manuscript <%= raw @paper.display_title(sanitized: false) %>.
     </p>
   </div>
   <hr>

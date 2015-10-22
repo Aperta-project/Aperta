@@ -12,7 +12,7 @@
     <div class='paper-abstract'>
       <p>
         You've been assigned as an Editor on a Manuscript titled
-        "<%= @paper.display_title %>".
+        "<%= raw @paper.display_title(sanitized: false) %>".
       </p>
       <p>
         Visit this link to view the paper:

@@ -159,7 +159,7 @@ module TahiStandardTasks
       paper_editor = paper.editor
       editor_name = paper_editor.present? ? paper_editor.full_name : "***\nEditor not assigned\n***"
       { author_last_name: paper.creator.last_name,
-        manuscript_title: paper.display_title,
+        manuscript_title: paper.display_title(sanitized: false),
         journal_name: paper.journal.name,
         ae_full_name: editor_name }
     end

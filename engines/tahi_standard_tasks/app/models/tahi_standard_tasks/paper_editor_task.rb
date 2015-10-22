@@ -45,7 +45,7 @@ module TahiStandardTasks
     private
 
     def template_date
-      { manuscript_title: paper.display_title,
+      { manuscript_title: paper.display_title(sanitized: false),
         journal_name: paper.journal.name }
     end
 

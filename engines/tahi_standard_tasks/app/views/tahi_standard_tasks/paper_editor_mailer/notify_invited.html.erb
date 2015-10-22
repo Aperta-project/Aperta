@@ -16,7 +16,7 @@
       <% end %>
     </div>
     <div class='paper-name'>
-      <%= @paper.display_title %>
+      <%= raw @paper.display_title(sanitized: false) %>
     </div>
     <div class='paper-abstract'>
       <%= simple_format @invitation.task.body[0] %>

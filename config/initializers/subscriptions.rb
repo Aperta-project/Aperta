@@ -3,7 +3,7 @@ Subscriptions.configure do
 
   add 'paper:updated', Paper::Updated::EventStream
   add 'paper:destroyed', Paper::Destroyed::EventStream
-  add 'paper:submitted', Paper::Submitted::EmailCreator, Paper::Submitted::EmailAdmins
+  add 'paper:submitted', Paper::Submitted::EmailCreator, Paper::Submitted::EmailAdmins, Paper::Submitted::SnapshotMetadata
   add 'paper:resubmitted', Paper::Resubmitted::EmailEditor
 
   add 'paper_role:created', PaperRole::Created::EventStream::NotifyPaperMembers, PaperRole::Created::EventStream::NotifyAssignee
@@ -57,6 +57,4 @@ Subscriptions.configure do
   add 'discussion_reply:created', DiscussionReply::Created::EventStream
   add 'discussion_reply:updated', DiscussionReply::Updated::EventStream
   add 'discussion_reply:destroyed', DiscussionReply::Destroyed::EventStream
-
-  add 'versioned_text:created', VersionedText::Created::SnapshotMetadata
 end

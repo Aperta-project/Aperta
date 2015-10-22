@@ -1,4 +1,4 @@
-class VersionedText::Created::SnapshotMetadata
+class Paper::Submitted::SnapshotMetadata
 
   def self.call(_event_name, event_data)
     paper = event_data[:record]

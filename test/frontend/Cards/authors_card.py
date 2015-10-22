@@ -21,7 +21,7 @@ class AuthorsCard(BaseCard):
     self._click_task_completed = (By.CSS_SELECTOR, '#task_completed')
     self._close_button_bottom = (By.CSS_SELECTOR, 'footer > div > a.button-secondary')
     self._authors_title = (By.TAG_NAME, 'h1')
-    self._authors_text = (By.CSS_SELECTOR, 'div.authors-overlay-header > p')
+    self._authors_text = (By.CSS_SELECTOR, 'div.overlay-main-work > p')
     self._add_new_author_btn = (By.CLASS_NAME, 'button-primary')
     self._first_lbl = (By.XPATH, ".//div[contains(@class, 'author-name')]/span")
     self._first_input = (By.XPATH, ".//div[contains(@class, 'author-name')]/input")
@@ -39,6 +39,16 @@ class AuthorsCard(BaseCard):
       ".//div[contains(@class, 'add-author-form')]/div[2]/div[2]/input")
     self._institution_div = (By.CLASS_NAME, 'did-you-mean-input')
     self._author_lbls = (By.CLASS_NAME, 'author-label')
+    self._designed_chkbx = (By.XPATH,
+      ".//input[@name='contributions.conceived_and_designed_experiments']/following-sibling::span")
+    self._performed_chkbx = (By.XPATH,
+      ".//input[@name='contributions.performed_the_experiments']/following-sibling::span")
+    self._analized_chkbx = (By.XPATH,
+      ".//input[@name='contributions.analyzed_data']/following-sibling::span")
+    self._tools_chkbx = (By.XPATH,
+      ".//input[@name='contributions.contributed_tools']/following-sibling::span")
+    self._writing_chkbx = (By.XPATH,
+      ".//input[@name='contributions.contributed_writing']/following-sibling::span")
     self._author_contrib_lbl = (By.TAG_NAME, 'h4')
     self._add_author_cancel_lnk = (By.CSS_SELECTOR, 'span.author-form-buttons a')
     self._add_author_add_btn = (By.CSS_SELECTOR, 'span.author-form-buttons button')
@@ -134,17 +144,21 @@ class AuthorsCard(BaseCard):
     assert sec_institution_input.get_attribute('placeholder') == 'Secondary Institution'
     sec_institution_icon = sec_institution_div.find_element_by_css_selector('button i')
     assert set(['fa', 'fa-search']) == set(sec_institution_icon.get_attribute('class').split(' '))
-    corresponding_lbl, deceased_lbl, chck_1_lbl, chck_2_lbl, chck_3_lbl, chck_4_lbl, \
-      chck_5_lbl, chck_6_lbl = self._gets(self._author_lbls)
+    corresponding_lbl, deceased_lbl, other_lbl = self._gets(self._author_lbls)
     assert corresponding_lbl.text == ('This person will be listed as the corresponding author'
       ' on the published article'), corresponding_lbl.text
     assert deceased_lbl.text == 'This person is deceased'
-    assert chck_1_lbl.text == 'Conceived and designed the experiments'
-    assert chck_2_lbl.text == 'Performed the experiments'
-    assert chck_3_lbl.text == 'Analyzed the data'
-    assert chck_4_lbl.text == 'Contributed reagents/materials/analysis tools'
-    assert chck_5_lbl.text == 'Contributed to the writing of the manuscript'
-    assert chck_6_lbl.text == 'Other'
+    assert other_lbl.text == 'Other'
+    assert self._get(self._designed_chkbx).text == 'Conceived and designed the experiments', \
+      self._get(self._designed_chkbx).text
+    assert self._get(self._performed_chkbx).text == 'Performed the experiments', \
+      self._get(self._performed_chkbx).text
+    assert self._get(self._analized_chkbx).text == 'Analyzed the data', \
+      self._get(self._analized_chkbx).text
+    assert self._get(self._tools_chkbx).text == 'Contributed reagents/materials/analysis tools', \
+      self._get(self._tools_chkbx).text
+    assert self._get(self._writing_chkbx).text == 'Contributed to the writing of the manuscript', \
+      self._get(self._writing_chkbx).text
     author_contrib_lbl = self._get(self._author_contrib_lbl)
     assert author_contrib_lbl.text == 'Author Contributions'
     self.validate_application_h4_style(author_contrib_lbl)

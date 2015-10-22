@@ -11,8 +11,7 @@ class TasksController < ApplicationController
   end
 
   def create
-    new_task = task_factory.create!
-    respond_with(new_task, location: task_url(new_task))
+    respond_with(task, location: task_url(task))
   end
 
   def update
@@ -56,13 +55,9 @@ class TasksController < ApplicationController
       if params[:id].present?
         Task.find(params[:id])
       else
-        task_factory.task
+        TaskFactory.create(task_type, new_task_params)
       end
     end
-  end
-
-  def task_factory
-    @task_factory ||= TaskFactory.new(task_type, new_task_params)
   end
 
   def task_type

@@ -115,6 +115,7 @@ group :test do
   gem 'pusher-fake'
   gem 'rspec_junit_formatter'
   gem 'rspec-activemodel-mocks'
+  gem "test_after_commit"
 end
 
 group :staging, :performance do

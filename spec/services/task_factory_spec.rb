@@ -55,12 +55,4 @@ describe TaskFactory do
     expect(task.participants).to include(user)
     expect(task.title).to eq('Test')
   end
-
-  it "Avoid duplicate creator as participant if is already there" do
-    user = FactoryGirl.create(:user)
-    participants = [user]
-    options = {phase: phase, creator: user, participants: participants}
-    task = TaskFactory.create(klass, options)
-    expect(task.participants).to eq(participants)
-  end
 end

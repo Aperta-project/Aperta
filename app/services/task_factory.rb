@@ -1,6 +1,6 @@
 class TaskFactory
 
-  def self.create(task_klass, options = {})
+  def self.create(task_klass, options={})
     new(task_klass, options).save
   end
 
@@ -14,7 +14,7 @@ class TaskFactory
 
   attr_reader :task, :task_klass, :creator
 
-  def initialize(task_klass, options = {})
+  def initialize(task_klass, options={})
     @task_klass = task_klass
     @creator = options.delete(:creator)
     options = default_options.merge(options)
@@ -29,8 +29,7 @@ class TaskFactory
   end
 
   def add_creator_as_participant
-    if task.submission_task? && creator
-      ParticipationFactory.create(task: task, assignee: creator)
-    end
+    return unless task.submission_task? && creator
+    ParticipationFactory.create(task: task, assignee: creator)
   end
 end

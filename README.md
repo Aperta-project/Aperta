@@ -124,8 +124,9 @@ by running:
 # Documentation
 
 Technical documentation lives in the `doc/`.  The git workflow and deploy
-process are documented in [doc/git-process.txt](doc/git-process.txt). There is a
-[Pull Request Checklist template](doc/pull_request_checklist.md) as well.
+process are documented in [doc/git-process.txt](doc/git-process.txt). There is
+a [Contribution Guide](CONTRIBUTING.md) that includes a Pull Request Checklist
+template.
 
 # Dev Notes
 

@@ -3,68 +3,55 @@ require 'rails_helper'
 describe TaskFactory do
 
   let(:phase) { FactoryGirl.create(:phase) }
-  let(:task_klass) {'TahiStandardTasks::ReviseTask'}
+  let(:klass) {'TahiStandardTasks::ReviseTask'}
 
   it "Creates a task" do
-
-    tf = TaskFactory.new(task_klass, phase: phase)
-
     expect {
-      tf.create!
+      TaskFactory.create(klass, phase: phase)
     }.to change{ Task.count }.by(1)
   end
 
   it "Sets the default title and role if is not indicated" do
-    tf = TaskFactory.new(task_klass, phase: phase)
-    task = tf.create!
+    task = TaskFactory.create(klass, phase: phase)
     expect(task.title).to eq('Revise Task')
     expect(task.role).to eq('author')
   end
 
   it "Sets the title from params" do
-    tf = TaskFactory.new(task_klass, phase: phase, title: 'Test')
-    task = tf.create!
+    task = TaskFactory.create(klass, phase: phase, title: 'Test')
     expect(task.title).to eq('Test')
   end
 
   it "Sets the role from params" do
-    tf = TaskFactory.new(task_klass, phase: phase, role: 'editor')
-    task = tf.create!
+    task = TaskFactory.create(klass, phase: phase, role: 'editor')
     expect(task.role).to eq('editor')
   end
 
   it "Sets the phase to the task" do
-    tf = TaskFactory.new(task_klass, phase: phase)
-    task = tf.create!
+    task = TaskFactory.create(klass, phase: phase)
     expect(task.phase).to eq(phase)
   end
 
   it "Sets the phase to the task from params ID" do
-    tf = TaskFactory.new(task_klass, phase_id: phase.id)
-    task = tf.create!
+    task = TaskFactory.create(klass, phase_id: phase.id)
     expect(task.phase).to eq(phase)
   end
 
   it "Sets the body from params" do
-    tf = TaskFactory.new(task_klass, phase: phase, body: {key: 'value'})
-    task = tf.create!
+    task = TaskFactory.create(klass, phase: phase, body: {key: 'value'})
     expect(task.body).to eq({'key' => 'value'})
   end
 
   it "Sets the participants from params" do
-
     participants = [FactoryGirl.create(:user)]
-
-    tf = TaskFactory.new(task_klass, phase: phase, participants: participants)
-    task = tf.create!
-    expect(task.participants).to eq(participants)
+    t = TaskFactory.create(klass, phase: phase, participants: participants)
+    expect(t.participants).to eq(participants)
   end
 
   it "Add the creator as participant in task if is submission type" do
     user = FactoryGirl.create(:user)
 
-    tf = TaskFactory.new(task_klass, phase: phase, creator: user, title: 'Test')
-    task = tf.create!
+    task = TaskFactory.create(klass, phase: phase, creator: user, title: 'Test')
     expect(task.participants).to include(user)
     expect(task.title).to eq('Test')
   end
@@ -73,9 +60,7 @@ describe TaskFactory do
     user = FactoryGirl.create(:user)
     participants = [user]
     options = {phase: phase, creator: user, participants: participants}
-    tf = TaskFactory.new(task_klass, options)
-
-    task = tf.create!
+    task = TaskFactory.create(klass, options)
     expect(task.participants).to eq(participants)
   end
 end

@@ -55,12 +55,12 @@ export default AuthorizedRoute.extend({
       this.transitionTo('paper.task', this.modelFor('paper'), task.id, queryParams);
     },
 
-    addTaskType(phase, taskList) {
-      if (!taskList) { return; }
+    addTaskType(phase, taskTypeList) {
+      if (!taskTypeList) { return; }
 
       let promises = [];
 
-      taskList.forEach((task) => {
+      taskTypeList.forEach((task) => {
         let unNamespacedKind = Utils.deNamespaceTaskType(task.get('kind'));
         let newTaskPromise = this.store.createRecord(unNamespacedKind, {
           phase: phase,

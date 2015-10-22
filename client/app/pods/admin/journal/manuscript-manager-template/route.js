@@ -14,13 +14,13 @@ export default Ember.Route.extend({
       });
     },
 
-    addTaskType(phaseTemplate, taskTemplatesList) {
+    addTaskType(phaseTemplate, taskTypeList) {
 
-      if (!taskTemplatesList) { return; }
+      if (!taskTypeList) { return; }
 
       let promises = [];
 
-      taskTemplatesList.forEach((taskTemplate) => {
+      taskTypeList.forEach((taskTemplate) => {
 
         let newTaskTemplatePromise = this.store.createRecord('taskTemplate', {
           title: taskTemplate.get('title'),

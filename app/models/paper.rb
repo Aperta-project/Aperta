@@ -137,6 +137,9 @@ class Paper < ActiveRecord::Base
       Paper.aasm.states.map(&:name).each do |state|
         transitions from: :withdrawn, to: state, after: :set_editable!, if: Proc.new { previous_state_is?(state) }
       end
+      before do
+        update(active: true)
+      end
     end
   end
 

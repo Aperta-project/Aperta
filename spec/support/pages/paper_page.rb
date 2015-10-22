@@ -116,9 +116,14 @@ HERE
     page.execute_script code
   end
 
-  def submit
+  def submit(&blk)
     click_on "Submit"
-    SubmitPaperOverlay.new
+    SubmitPaperOverlay.new.tap do |overlay|
+      if blk
+        blk.call overlay
+        wait_for_ajax
+      end
+    end
   end
 
   def css

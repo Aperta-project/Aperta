@@ -5,8 +5,8 @@ class TaskFactory
   end
 
   def save
-    add_creator_as_participant
     task.save!
+    add_creator_as_participant
     task
   end
 
@@ -21,8 +21,6 @@ class TaskFactory
     @task = task_klass.constantize.new(options)
   end
 
-
-
   def default_options
     {
       title: TaskType.types[task_klass].fetch(:default_title),
@@ -31,8 +29,8 @@ class TaskFactory
   end
 
   def add_creator_as_participant
-    if task.submission_task? && creator && task.participants.exclude?(creator)
-      task.participants << creator
+    if task.submission_task? && creator
+      ParticipationFactory.create(task: task, assignee: creator)
     end
   end
 end

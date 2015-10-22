@@ -12,6 +12,9 @@ namespace 'data:migrate:questions-to-nested-questions' do
     reviewer-recommendations
     reviewer-report
     taxon
+    plos-bio-initial-tech-check
+    plos-bio-revision-tech-check
+    plos-bio-final-tech-check
   )
 
   task environment: '^environment' do
@@ -241,5 +244,56 @@ namespace 'data:migrate:questions-to-nested-questions' do
   desc "Migrate the reviewer-report task data to the NestedQuestion data model."
   task 'reviewer-report': 'data:migrate:questions-to-nested-questions:reviewer-report:reset' do
     DataMigrator::ReviewerReportQuestionsMigrator.migrate!
+  end
+
+  namespace :'plos-bio-initial-tech-check' do
+    desc "Resets the NestedQuestionAnswer(s) for plos-bio-tech-check by destroying them."
+    task reset: 'data:migrate:questions-to-nested-questions:environment' do
+      DataMigrator::PlosBioInitialTechCheckQuestionsMigrator.reset
+    end
+
+    desc "Destroy old questions for plos-bio-initial-tech-check once you're satisfied w/migrating to NestedQuestion data model."
+    task cleanup: 'data:migrate:questions-to-nested-questions:environment' do
+      DataMigrator::PlosBioInitialTechCheckQuestionsMigrator.cleanup
+    end
+  end
+
+  desc "Migrate the plos-bio-initial-tech-check task data to the NestedQuestion data model."
+  task 'plos-bio-initial-tech-check': 'data:migrate:questions-to-nested-questions:plos-bio-initial-tech-check:reset' do
+    DataMigrator::PlosBioInitialTechCheckQuestionsMigrator.migrate!
+  end
+
+  namespace :'plos-bio-revision-tech-check' do
+    desc "Resets the NestedQuestionAnswer(s) for plos-bio-revision-tech-check by destroying them."
+    task reset: 'data:migrate:questions-to-nested-questions:environment' do
+      DataMigrator::PlosBioRevisionTechCheckQuestionsMigrator.reset
+    end
+
+    desc "Destroy old questions for plos-bio-revision-tech-check once you're satisfied w/migrating to NestedQuestion data model."
+    task cleanup: 'data:migrate:questions-to-nested-questions:environment' do
+      DataMigrator::PlosBioRevisionTechCheckQuestionsMigrator.cleanup
+    end
+  end
+
+  desc "Migrate the plos-bio-revision-tech-check task data to the NestedQuestion data model."
+  task 'plos-bio-revision-tech-check': 'data:migrate:questions-to-nested-questions:plos-bio-revision-tech-check:reset' do
+    DataMigrator::PlosBioRevisionTechCheckQuestionsMigrator.migrate!
+  end
+
+  namespace :'plos-bio-final-tech-check' do
+    desc "Resets the NestedQuestionAnswer(s) for plos-bio-final-tech-check by destroying them."
+    task reset: 'data:migrate:questions-to-nested-questions:environment' do
+      DataMigrator::PlosBioFinalTechCheckQuestionsMigrator.reset
+    end
+
+    desc "Destroy old questions for plos-bio-final-tech-check once you're satisfied w/migrating to NestedQuestion data model."
+    task cleanup: 'data:migrate:questions-to-nested-questions:environment' do
+      DataMigrator::PlosBioFinalTechCheckQuestionsMigrator.cleanup
+    end
+  end
+
+  desc "Migrate the plos-bio-final-tech-check task data to the NestedQuestion data model."
+  task 'plos-bio-final-tech-check': 'data:migrate:questions-to-nested-questions:plos-bio-final-tech-check:reset' do
+    DataMigrator::PlosBioFinalTechCheckQuestionsMigrator.migrate!
   end
 end

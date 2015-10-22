@@ -11,6 +11,7 @@ export default DS.Model.extend({
   value_type: DS.attr('string'),
   createdAt: DS.attr('date'),
   updatedAt: DS.attr('date'),
+  additional_data: DS.attr('string'),
 
   text: DS.attr('string'),
   children: DS.hasMany('nested-question', { async: false, inverse: 'parent' }),

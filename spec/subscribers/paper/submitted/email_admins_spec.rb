@@ -4,8 +4,8 @@ describe Paper::Submitted::EmailAdmins do
   include EventStreamMatchers
 
   let(:mailer) { mock_delayed_class(UserMailer) }
-  let(:paper) { FactoryGirl.create(:paper) }
-  let(:user) { FactoryGirl.create(:user) }
+  let!(:paper) { FactoryGirl.create(:paper) }
+  let!(:user) { FactoryGirl.create(:user) }
 
   before { assign_paper_role(paper, user, PaperRole::ADMIN) }
 

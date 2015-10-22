@@ -103,6 +103,7 @@ group :test do
   gem 'rspec-rails'
   gem 'selenium-webdriver'
   gem 'simplecov'
+  gem 'test_after_commit'
   gem 'thin'
   gem 'timecop'
   gem 'vcr'

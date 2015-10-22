@@ -1,6 +1,6 @@
 {{#if isEditing}}
 
-  {{reviewer-form reviewerRecommendation=reviewer
+  {{reviewer-form reviewerRecommendation=reviewerRecommendation
                   validationErrors=validationErrors
                   saveRecommendation=(action "saveRecommendation")
                   cancelRecommendation=(action "cancelRecommendation")
@@ -9,12 +9,12 @@
 {{else}}
 
   <div class="authors-overlay-item--text">
-    <div class="author-name">{{reviewer.fullName}}</div>
-    {{reviewer.email}}<br>
-    {{reviewer.title}} &nbsp; &nbsp; {{reviewer.department}}
+    <div class="author-name">{{reviewerRecommendation.fullName}}</div>
+    {{reviewerRecommendation.email}}<br>
+    {{reviewerRecommendation.title}} &nbsp; &nbsp; {{reviewerRecommendation.department}}
     <br>
-    {{reviewer.affiliation}}
-    <div class="reviewer-recommendation-decision">
+    {{reviewerRecommendation.affiliation}}
+    <div class="reviewerRecommendation-recommendation-decision">
       {{nested-question-display ident="recommend_or_oppose" owner=reviewerRecommendation}}
       {{nested-question-answer ident="recommend_or_oppose" owner=reviewerRecommendation}}
     </div>
@@ -38,7 +38,7 @@
 
 {{#if isDeleting}}
   <div class="authors-overlay-item--delete">
-    <p>This will permanently delete the suggested reviewer. Are you sure?</p>
+    <p>This will permanently delete the suggested reviewerRecommendation. Are you sure?</p>
     <button class="button-secondary button--green knockout" {{action "cancelDeletion"}}>Cancel</button>
     <button class="button-secondary button--green knockout" {{action "confirmDeletion"}}>Delete Forever</button>
   </div>

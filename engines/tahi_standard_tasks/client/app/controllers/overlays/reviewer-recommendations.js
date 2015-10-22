@@ -9,26 +9,18 @@ export default TaskController.extend(ValidationErrorsMixin, {
   // while save is happening. If it becomes invalid after save it is removed. This creates
   // a glitchy look to the list.
   validReviewerRecommendations: Ember.computed('model.reviewerRecommendations.@each.isNew', function() {
-    return this.get('model.reviewerRecommendations').filterBy('isNew', false);
+    let arr = this.get('model.reviewerRecommendations').filterBy('isNew', false);
+    return arr;
   }),
 
   newRecommendationQuestions: Ember.on('init', function(){
-    let queryParams = { type: "ReviewerRecommendation" };
-    let results = this.store.findQuery('nested-question', queryParams);
-    results.then( (nestedQuestions) => {
+    this.store.findQuery('nested-question', { type: "ReviewerRecommendation" }).then( (nestedQuestions) => {
       this.set('nestedQuestionsForNewRecommendation', nestedQuestions);
     });
   }),
 
-  newRecommendation: Ember.computed('showNewReviewerForm', function(){
-    return this.store.createRecord('reviewer-recommendation', {
-      nestedQuestions: this.get('nestedQuestionsForNewRecommendation')
-    });
-  }),
-
   clearNewRecommendationAnswers: function(){
-    let questions = this.get('nestedQuestionsForNewRecommendation');
-    questions.forEach( (nestedQuestion) => {
+    this.get('nestedQuestionsForNewRecommendation').forEach( (nestedQuestion) => {
       nestedQuestion.clearAnswerForOwner(this.get("newRecommendation"));
     });
   },
@@ -36,7 +28,8 @@ export default TaskController.extend(ValidationErrorsMixin, {
   actions: {
     addNewReviewer() {
       let recommendation = this.store.createRecord('reviewerRecommendation', {
-        reviewerRecommendationsTask: this.get('model')
+        reviewerRecommendationsTask: this.get('model'),
+        nestedQuestions: this.get('nestedQuestionsForNewRecommendation')
       });
       this.set('newRecommendation', recommendation);
       this.set('showNewReviewerForm', true);
@@ -50,14 +43,10 @@ export default TaskController.extend(ValidationErrorsMixin, {
       this.clearAllValidationErrors();
     },
 
-    saveNewRecommendation: function() {
-      let recommendation = this.get("newRecommendation");
-      recommendation.set("reviewerRecommendationsTask", this.get("model"));
-      recommendation.save().then( (savedRecommendation) => {
-        let answers = recommendation.get('nestedQuestionAnswers').toArray();
-        answers.forEach(function(answer){
-          let value = answer.get("value");
-          if(value || value === false){
+    saveRecommendation(recommendation) {
+      recommendation.save().then((savedRecommendation) => {
+        recommendation.get('nestedQuestionAnswers').forEach(function(answer){
+          if(answer.get('wasAnswered')){
             answer.set("owner", savedRecommendation);
             answer.save();
           }

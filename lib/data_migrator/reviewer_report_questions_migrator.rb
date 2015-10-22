@@ -10,8 +10,6 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
       STATISTICAL_ANALYSIS_EXPLANATION_IDENT: "reviewer_report.statistical_analysis.explanation",
       STANDARDS_IDENT: "reviewer_report.standards",
       STANDARDS_EXPLANATION_IDENT: "reviewer_report.standards.explanation",
-      INTELLIGIBLE_IDENT: "reviewer_report.intelligible",
-      INTELLIGIBLE_EXPLANATION_IDENT: "reviewer_report.intelligible.explanation",
       ADDITIONAL_COMMENTS_IDENT: "reviewer_report.additional_comments",
       IDENTITY_IDENT: "reviewer_report.identity"
     },
@@ -24,8 +22,6 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
       STATISTICAL_ANALYSIS_EXPLANATION_IDENT: "explanation",
       STANDARDS_IDENT: "standards",
       STANDARDS_EXPLANATION_IDENT: "explanation",
-      INTELLIGIBLE_IDENT: "intelligible",
-      INTELLIGIBLE_EXPLANATION_IDENT: "explanation",
       ADDITIONAL_COMMENTS_IDENT: "additional_comments",
       IDENTITY_IDENT: "identity"
     }
@@ -130,25 +126,6 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
           ident: "explanation",
           value_type: "text",
           text: "Standards Explanation",
-          position: 1
-        )
-      ]
-    )
-
-    questions << NestedQuestion.new(
-      owner_id: nil,
-      owner_type: TASK_OWNER_TYPE,
-      ident: "intelligible",
-      value_type: "boolean",
-      text: "Is the manuscript presented in an intelligible fashion and written in standard English?",
-      position: 5,
-      children: [
-        NestedQuestion.new(
-          owner_id: nil,
-          owner_type: TASK_OWNER_TYPE,
-          ident: "explanation",
-          value_type: "text",
-          text: "Intelligible Explanation",
           position: 1
         )
       ]

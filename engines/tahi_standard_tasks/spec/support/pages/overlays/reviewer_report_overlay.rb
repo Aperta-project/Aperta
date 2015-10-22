@@ -36,7 +36,6 @@ class ReviewerReportOverlay < CardOverlay
       "support_conclusions.explanation" => "default support_conclusions.explanation content",
       "statistical_analysis.explanation" => "default statistical_analysis.explanation content",
       "standards.explanation" => "default standards.explanation content",
-      "intelligible.explanation" => "default intelligible.explanation content",
       "additional_comments" => "default additional_comments content",
       "identity" => "default identity content"
     )

@@ -14,7 +14,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Removed
--
+- Intelligibility Question from the ReviewerReportTask
 
 ### Fixed
 -

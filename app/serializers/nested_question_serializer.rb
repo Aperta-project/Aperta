@@ -1,5 +1,5 @@
 class NestedQuestionSerializer < ActiveModel::Serializer
-  attributes :id, :parent_id, :text, :ident, :value_type, :owner
+  attributes :id, :parent_id, :text, :ident, :value_type, :owner, :additional_data
   has_many :nested_questions, serializer: NestedQuestionSerializer, embed: :ids, include: true
 
   def owner

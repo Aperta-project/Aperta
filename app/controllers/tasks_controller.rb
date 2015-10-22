@@ -9,7 +9,7 @@ class TasksController < ApplicationController
 
   ## /paper/tasks/
   def index
-    respond_with paper.tasks.includes(:participations, :paper)
+    respond_with paper.tasks.includes(:participations, :paper), each_serializer: TaskSerializer
   end
 
   def show
@@ -51,6 +51,18 @@ class TasksController < ApplicationController
     head :ok
   end
 
+  def nested_questions
+    respond_with task.nested_questions,
+                 each_serializer: NestedQuestionSerializer,
+                 root: "nested_questions"
+  end
+
+  def nested_question_answers
+    respond_with task.nested_question_answers,
+                 each_serializer: NestedQuestionAnswerSerializer,
+                 root: "nested_question_answers"
+  end
+
   private
 
   def paper
@@ -61,6 +73,8 @@ class TasksController < ApplicationController
     @task ||= begin
       if params[:id].present?
         Task.find(params[:id])
+      elsif params[:task_id].present?
+        Task.find(params[:task_id])
       else
         task_klass = TaskType.constantize!(params[:task][:type])
         TaskFactory.build(task_klass, task_params(task_klass))

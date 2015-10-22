@@ -1,10 +1,7 @@
-class PaperSerializer < LitePaperSerializer
-  # TODO Inheriting from LitePaper since we need related_at_date and
-  # roles so that the dashboard updates correctly when the event
-  # stream triggers
+class PaperSerializer < ActiveModel::Serializer
   attributes :id, :short_title, :title, :doi, :body,
              :publishing_state, :paper_type, :status, :updated_at,
-             :editable, :links, :is_submitted, :manuscript_id
+             :editable, :links, :manuscript_id, :created_at, :editable
 
   %i(tables bibitems supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true

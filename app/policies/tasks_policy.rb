@@ -43,4 +43,12 @@ class TasksPolicy < ApplicationPolicy
   def send_message?
     authorized_to_modify_task?
   end
+
+  def nested_questions?
+    authorized_to_modify_task?
+  end
+
+  def nested_question_answers?
+    authorized_to_modify_task?
+  end
 end

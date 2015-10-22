@@ -14,6 +14,11 @@ export default Ember.Route.extend({
     return task;
   },
 
+  afterModel(model) {
+    return Ember.RSVP.all([model.get('nestedQuestions'),
+                           model.get('nestedQuestionAnswers')]);
+  },
+
   setupController(controller, model) {
     // TODO: Rename AdHocTask to Task (here, in views, and in templates)
     let redirectOptions = this.get('cardOverlayService.previousRouteOptions');

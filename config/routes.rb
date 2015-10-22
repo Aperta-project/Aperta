@@ -139,6 +139,8 @@ Tahi::Application.routes.draw do
 
     resources :roles, only: [:show, :create, :update, :destroy]
     resources :tasks, only: [:update, :create, :show, :destroy] do
+      get :nested_questions
+      get :nested_question_answers
       resources :attachments, only: [:index, :create, :update, :destroy] do
         put :update_attachment, on: :member
       end

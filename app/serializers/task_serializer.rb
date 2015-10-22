@@ -1,10 +1,8 @@
 class TaskSerializer < ActiveModel::Serializer
   attributes :id, :title, :type, :completed, :body, :role, :position,
              :is_metadata_task, :is_submission_task, :links,
-             :phase_id, :assigned_to_me, :paper_id
-
-  has_many :nested_questions, serializer: NestedQuestionSerializer, embed: :ids, include: true
-  has_many :nested_question_answers, serializer: NestedQuestionAnswerSerializer, embed: :ids, include: true
+             :phase_id, :assigned_to_me
+  has_one :paper, embed: :id
 
   self.root = :task
 
@@ -34,6 +32,8 @@ class TaskSerializer < ActiveModel::Serializer
       attachments: task_attachments_path(object),
       comments: task_comments_path(object),
       participations: task_participations_path(object),
+      nested_questions: task_nested_questions_path(object),
+      nested_question_answers: task_nested_question_answers_path(object),
     }
   end
 end

@@ -27,8 +27,9 @@ NestedQuestionComponent = Ember.Component.extend({
     let decision = this.get('decision');
 
     let question = owner.findQuestion(ident);
-    Ember.assert(`Expecting to find question matching ident '${ident}' but
-      didn't. Make sure questions are in the DB and are being loaded.`,
+    Ember.assert(`Expecting to find question matching ident '${ident}' but didn't. Make
+      sure the owner's questions are loaded before this initializer is
+      called.`,
       question
     );
 

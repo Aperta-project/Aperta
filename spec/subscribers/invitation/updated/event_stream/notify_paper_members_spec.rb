@@ -4,7 +4,7 @@ describe Invitation::Updated::EventStream::NotifyPaperMembers do
   include EventStreamMatchers
 
   let(:pusher_channel) { mock_delayed_class(TahiPusher::Channel) }
-  let(:invitation) { FactoryGirl.build(:invitation) }
+  let!(:invitation) { FactoryGirl.build(:invitation) }
 
   it "serializes invitation down the paper channel on update" do
     expect(pusher_channel).to receive_push(serialize: :invitation, down: 'paper', on: 'updated')

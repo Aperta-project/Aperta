@@ -111,7 +111,6 @@ class PapersController < ApplicationController
   def submit
     paper.submit! current_user do
       Activity.paper_submitted! paper, user: current_user
-      broadcast_paper_submitted_event
     end
 
     render json: paper, status: :ok
@@ -182,10 +181,10 @@ class PapersController < ApplicationController
     authorize_action!(paper: paper, params: params)
   end
 
-  def broadcast_paper_submitted_event
-    Notifier.notify(event: "paper:submitted", data: { paper: paper })
-    if paper.resubmitted?
-      Notifier.notify(event: "paper:resubmitted", data: { paper: paper })
+  def prevent_update_on_locked!
+    if paper.locked? && !paper.locked_by?(current_user)
+      paper.errors.add(:locked_by_id, "This paper is locked for editing by #{paper.locked_by.full_name}.")
+      raise ActiveRecord::RecordInvalid, paper
     end
   end
 

@@ -6,6 +6,35 @@ describe EventStream::Notifiable do
     RequestStore.store[:requester_pusher_socket_id] = "test_socket"
   end
 
+  describe "#notify" do
+    # a model with an event_stream_notifier included
+    let(:model) { FactoryGirl.build(:comment) }
+
+    before do
+      allow(Notifier).to receive(:notify)
+    end
+
+    it "sends a Notifier notification when the model is saved" do
+      expect(Notifier).to receive(:notify).with(
+        event: "comment:created", data: {
+          action: "created",
+          record: model,
+          requester_socket_id: "test_socket"
+        }
+      )
+      model.save!
+    end
+
+    it "can send a notification with a custom event action and payload" do
+      expect(Notifier).to receive(:notify).with(
+        event: "comment:custom-event",
+        data: { custom: "data" }
+      )
+      model.notify action: "custom-event", payload: { custom: "data"}
+    end
+
+  end
+
   describe "#event_payload without requester notification" do
     # a model with an event_stream_notifier included
     let(:model) { FactoryGirl.create(:comment) }

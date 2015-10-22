@@ -149,6 +149,14 @@ describe Paper do
         paper.submit! user
         expect(paper.latest_version.updated_at.utc).to be_within(1.second).of Time.zone.now
       end
+
+      it "broadcasts 'paper:submitted' event" do
+        allow(Notifier).to receive(:notify)
+        expect(Notifier).to receive(:notify).with(hash_including(event: "paper:submitted")) do |args|
+          expect(args[:data][:record]).to eq(paper)
+        end
+        paper.submit! user
+      end
     end
 
     context "when withdrawing" do

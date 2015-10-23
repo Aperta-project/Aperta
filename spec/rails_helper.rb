@@ -86,8 +86,12 @@ RSpec.configure do |config|
 
   Warden.test_mode!
 
-  config.before(:suite) do
+  config.before(:suite) do |*args|
     DatabaseCleaner.clean_with(:truncation, except: ['task_types'])
+
+    # Load question seeds before any tests start since we don't want them
+    # to be rolled back as part of a transaction
+    %x{rake nested-questions:seed}
   end
 
   config.before(:each) do

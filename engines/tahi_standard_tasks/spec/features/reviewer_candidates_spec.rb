@@ -20,7 +20,7 @@ feature "User adding reviewer candidates", js: true do
 
   scenario "A user can add reviewer candidates" do
     page = Page.new
-    overlay = page.view_card("Reviewer Candidates")
+    page.view_card("Reviewer Candidates")
 
     # Bringing up the new reviewer candidate form
     click_button "New Reviewer Candidate"

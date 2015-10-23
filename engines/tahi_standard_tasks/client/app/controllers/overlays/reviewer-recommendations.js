@@ -9,19 +9,19 @@ export default TaskController.extend(ValidationErrorsMixin, {
   // while save is happening. If it becomes invalid after save it is removed. This creates
   // a glitchy look to the list.
   validReviewerRecommendations: Ember.computed('model.reviewerRecommendations.@each.isNew', function() {
-    let arr = this.get('model.reviewerRecommendations').filterBy('isNew', false);
-    return arr;
+    return this.get('model.reviewerRecommendations').filterBy('isNew', false);
   }),
 
   newRecommendationQuestions: Ember.on('init', function(){
-    this.store.findQuery('nested-question', { type: "ReviewerRecommendation" }).then( (nestedQuestions) => {
-      this.set('nestedQuestionsForNewRecommendation', nestedQuestions);
+    let queryParams = { type: "ReviewerRecommendation" };
+    this.store.findQuery('nested-question', queryParams).then( (questions) => {
+      this.set('nestedQuestionsForNewRecommendation', questions);
     });
   }),
 
   clearNewRecommendationAnswers: function(){
-    this.get('nestedQuestionsForNewRecommendation').forEach( (nestedQuestion) => {
-      nestedQuestion.clearAnswerForOwner(this.get("newRecommendation"));
+    this.get('nestedQuestionsForNewRecommendation').forEach( (question) => {
+      question.clearAnswerForOwner(this.get("newRecommendation"));
     });
   },
 

@@ -200,7 +200,7 @@ class Paper < ActiveRecord::Base
   #
   # Returns a String.
   def display_title(sanitized: true)
-    raw = title.present? ? title : short_title
+    raw = (title.present? ? title : short_title).to_s # always return string
     sanitized ? strip_tags(raw) : raw.html_safe
   end
 

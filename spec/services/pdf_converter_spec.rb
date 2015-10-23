@@ -38,7 +38,8 @@ describe PDFConverter do
 
     it "displays HTML in the paper's title" do
       paper.title = "This <i>is</i> the Title"
-      expect(doc).to have_path("#paper-body h1:contains('#{paper.display_title}')")
+      pdf_doc_title = doc.css("#paper-body h1").inner_html.to_s
+      expect(pdf_doc_title).to eq(paper.display_title(sanitized: false))
     end
   end
 end

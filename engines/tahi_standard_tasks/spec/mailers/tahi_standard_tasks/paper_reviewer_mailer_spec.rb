@@ -11,7 +11,7 @@ shared_examples_for 'an invitation notification email' do |email_identifier_word
     expect(email.to.first).to eq invitation.email
   end
 
-  specify { expect(email.body).to match(/#{task.paper.display_title}/) }
+  specify { expect(email.body).to match(/#{task.paper.display_title(sanitized: false)}/) }
   specify { expect(email.body).to match(/#{email_identifier_word}/) }
 end
 

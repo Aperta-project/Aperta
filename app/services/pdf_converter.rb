@@ -25,7 +25,7 @@ class PDFConverter
             #{publishing_info_presenter.html}
           </div>
           <div id='paper-body' styles='page-break-before: always;'>
-            <h1>#{CGI.escape_html(paper.display_title)}</h1>
+            <h1>#{paper.display_title(sanitized: false)}</h1>
             #{paper_body}
           </div>
         </body>

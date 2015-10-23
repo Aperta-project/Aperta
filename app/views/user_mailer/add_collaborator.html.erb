@@ -19,7 +19,7 @@
       Hello <%= @invitee_name %>,
     </p>
     <p>
-      <%= @invitor_name %> just added you as a collaborator to a manuscript titled "<%= @paper.display_title %>."
+      <%= @invitor_name %> just added you as a collaborator to a manuscript titled "<%= @paper.display_title(sanitized: false) %>."
       Collaborator status does not denote authorship of the manuscript.
       All authors should be listed in the Authors card, and must meet PLOS Biology’s authorship criteria.
     </p>

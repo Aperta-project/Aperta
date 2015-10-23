@@ -14,7 +14,7 @@
       Hello <%= @recipient.full_name %>,
     </p>
     <p class='message'>
-      A review of "<%= @paper.display_title %>" has been completed.
+      A review of "<%= @paper.display_title(sanitized: false) %>" has been completed.
   </div>
   <div class='footer'>
     <a class='button' href='<%= client_paper_task_url(@paper, @task) %>' target='_blank'>

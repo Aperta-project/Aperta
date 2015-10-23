@@ -23,7 +23,7 @@
   <hr>
   <div class='footer'>
     <div class='paper-title'>
-      "<%= @paper.display_title %>"
+      "<%= @paper.display_title(sanitized: false) %>"
     </div>
     <div class='paper-abstract'>
       <%= raw @paper.abstract %>

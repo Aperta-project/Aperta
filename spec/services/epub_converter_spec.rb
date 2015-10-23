@@ -29,13 +29,38 @@ describe EpubConverter do
 
       after { expect(doc.errors.length).to be 0 }
 
-      it "displays and HTML escapes the paper's title" do
-        paper.title = "<This Is & The Title>"
-        expect(doc).to have_path("h1:contains('#{paper.title}')")
+      it "displays HTML in the paper's title" do
+        paper.title = "This <i>is</i> the Title"
+        epub_doc_title = doc.css("h1").inner_html.to_s
+        expect(epub_doc_title).to eq(paper.display_title(sanitized: false))
       end
 
       it "includes the paper body as-is, unescaped" do
         expect(converter.epub_html).to include(paper.body)
+      end
+    end
+  end
+
+  describe "#file_name" do
+    it "returns placeholder filename" do
+      expect(converter.file_name).to eq("paper_#{paper.id}.epub")
+    end
+  end
+
+  describe "#title" do
+    context "short_title is nil because it has not been set yet" do
+      let(:paper) { FactoryGirl.build(:paper, short_title: nil) }
+
+      it "return empty title" do
+        expect(EpubConverter.new(paper, nil).title).to eq("")
+      end
+    end
+
+    context "short_title is safely escaped" do
+      let(:paper) { FactoryGirl.build(:paper, short_title: "<b>my title</b>") }
+
+      it "return empty title" do
+        expect(EpubConverter.new(paper, nil).title).to eq("&lt;b&gt;my title&lt;/b&gt;")
       end
     end
   end

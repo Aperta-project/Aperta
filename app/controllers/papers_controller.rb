@@ -1,6 +1,4 @@
 class PapersController < ApplicationController
-  include AttrSanitize
-
   before_action :authenticate_user!
   before_action :enforce_policy, except: [:index, :show, :comment_looks]
   before_action :prevent_update_on_locked!, only: [:update, :toggle_editable, :submit, :upload]

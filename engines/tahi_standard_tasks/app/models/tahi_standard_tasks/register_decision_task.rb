@@ -42,7 +42,7 @@ module TahiStandardTasks
       template = <<-TEXT.strip_heredoc
         Dear Dr. %{author_last_name},
 
-        I am pleased to inform you that your manuscript, %{manuscript_title}, has been deemed suitable for publication in %{journal_name}. Congratulations!
+        I am pleased to inform you that your manuscript, "%{manuscript_title}", has been deemed suitable for publication in %{journal_name}. Congratulations!
 
         Your manuscript will now be passed on to our Production staff, who will check your files for correct formatting and completeness. During this process, you may be contacted to make necessary alterations to your manuscript, though not all manuscripts require this.
 
@@ -65,7 +65,7 @@ module TahiStandardTasks
         THIS IS THE MINOR REVISION
         Dear Dr. %{author_last_name},
 
-        Thank you for submitting your manuscript, %{manuscript_title} to %{journal_name}. After careful consideration, we feel that it has merit, but is not suitable for publication as it currently stands. Therefore, my decision is "Major Revision."
+        Thank you for submitting your manuscript, "%{manuscript_title}" to %{journal_name}. After careful consideration, we feel that it has merit, but is not suitable for publication as it currently stands. Therefore, my decision is "Major Revision."
 
         We invite you to submit a revised version of the manuscript that addresses the points below:
 
@@ -97,7 +97,7 @@ module TahiStandardTasks
       template = <<-TEXT.strip_heredoc
         Dear Dr. %{author_last_name},
 
-        Thank you for submitting your manuscript, %{manuscript_title} to %{journal_name}. After careful consideration, we feel that it has merit, but is not suitable for publication as it currently stands. Therefore, my decision is "Major Revision."
+        Thank you for submitting your manuscript, "%{manuscript_title}" to %{journal_name}. After careful consideration, we feel that it has merit, but is not suitable for publication as it currently stands. Therefore, my decision is "Major Revision."
 
         We invite you to submit a revised version of the manuscript that addresses the points below:
 
@@ -129,7 +129,7 @@ module TahiStandardTasks
       template = <<-TEXT.strip_heredoc
         Dear Dr. %{author_last_name},
 
-        Thank you for submitting your manuscript, %{manuscript_title}, to %{journal_name}. After careful consideration, we have decided that your manuscript does not meet our criteria for publication and must therefore be rejected.
+        Thank you for submitting your manuscript, "%{manuscript_title}", to %{journal_name}. After careful consideration, we have decided that your manuscript does not meet our criteria for publication and must therefore be rejected.
 
         Specifically:
 
@@ -159,7 +159,7 @@ module TahiStandardTasks
       paper_editor = paper.editor
       editor_name = paper_editor.present? ? paper_editor.full_name : "***\nEditor not assigned\n***"
       { author_last_name: paper.creator.last_name,
-        manuscript_title: paper.title,
+        manuscript_title: paper.display_title(sanitized: false),
         journal_name: paper.journal.name,
         ae_full_name: editor_name }
     end

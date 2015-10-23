@@ -13,8 +13,8 @@ describe PublishingInformationPresenter do
   end
 
   it "#title returns the title of the manuscript in an h1 tag" do
-    paper.title = "<Title & Here>"
-    expect(publishing_information_presenter.title).to eq "<h1 id='paper-display-title'>#{CGI.escape_html(paper.display_title)}</h1>"
+    paper.title = "Title <i>is</i> Here"
+    expect(publishing_information_presenter.title).to eq "<h1 id='paper-display-title'>#{paper.display_title(sanitized: false)}</h1>"
   end
 
   it "#journal_name returns the journal name in a p tag" do

@@ -1,5 +1,7 @@
 <div class="paper-profile">
-  {{link-to task.paper.displayTitle "paper.workflow" task.paper.id class="paper-profile-title"}}
+  {{#link-to "paper.workflow" task.paper.id class="paper-profile-title"}}
+    {{{task.paper.displayTitle}}}
+  {{/link-to}}
   {{card-preview paper=task.paper
                  task=task
                  classes="flow-card"

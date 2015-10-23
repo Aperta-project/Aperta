@@ -2,7 +2,7 @@
   <div class='greeting'>
     <p class='message'>
       Thank you for submitting your manuscript,
-      <%= @paper.display_title %>, to <%= @journal.name %>.
+      <%= @paper.display_title(sanitized: false) %>, to <%= @journal.name %>.
       Our staff will be in touch with next steps.
     </p>
   </div>
@@ -21,7 +21,7 @@
       Hello <%= @author.full_name %>,
     </p>
     <p class='message'>
-      Thank you for submitting your manuscript, "<%= @paper.display_title %>",
+      Thank you for submitting your manuscript, "<%= @paper.display_title(sanitized: false) %>",
       to <%= @journal.name %>.
       Your initial submission is complete, and our staff will be in touch with next steps.
     </p>

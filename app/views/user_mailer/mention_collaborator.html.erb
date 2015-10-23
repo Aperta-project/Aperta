@@ -13,7 +13,7 @@
       <p>
         You've been mentioned by <%= @commenter.full_name %>
         on the <%= @task.title %> for the manuscript
-        "<%= @paper.display_title %>".
+        "<%= @paper.display_title(sanitized: false) %>".
       </p>
       <p>
         <%= @comment.body %>

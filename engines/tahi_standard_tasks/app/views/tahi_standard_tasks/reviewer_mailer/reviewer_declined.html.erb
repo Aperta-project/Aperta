@@ -19,11 +19,11 @@
       <% end %>
     </div>
     <div class='paper-name'>
-      <%= @paper.display_title %>
+      <%= @paper.display_title(sanitized: false) %>
     </div>
     <div class='paper-abstract'>
       <p>
-        <%= @reviewer.full_name %> has declined your invitation to review the Manuscript: "<%= @paper.display_title %>".
+        <%= @reviewer.full_name %> has declined your invitation to review the Manuscript: "<%= @paper.display_title(sanitized: false) %>".
       </p>
       <p>
         <a href="<%= client_paper_task_url(@paper, @invite_reviewer_task) %>">View your Invitation</a>

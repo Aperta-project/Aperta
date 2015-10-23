@@ -12,7 +12,7 @@ describe TahiStandardTasks::PaperAdminMailer do
     end
 
     it "has correct body content" do
-      expect(email.body).to include "#{invitation.invitee.full_name} has accepted their editor invitation for \"#{invitation.paper.journal.name}: #{invitation.paper.display_title}\""
+      expect(email.body).to include "#{invitation.invitee.full_name} has accepted their editor invitation for \"#{invitation.paper.journal.name}: #{invitation.paper.display_title(sanitized: false)}\""
     end
 
     it "sends email to the admin of the paper" do

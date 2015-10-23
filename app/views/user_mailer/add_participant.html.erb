@@ -10,7 +10,7 @@
     </p>
     <p class='message'>
       <%= @assigner_name %> just added you to a conversation in <%= app_name %> for the manuscript,
-      "<%= @paper.display_title %>".
+      "<%= @paper.display_title(sanitized: false) %>".
     </p>
     <div class='paper-abstract'>
       Visit this link to view the conversation,

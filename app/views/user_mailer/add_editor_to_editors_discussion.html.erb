@@ -19,7 +19,7 @@
       <% end %>
     </div>
     <div class='paper-name'>
-      <%= @paper.display_title %>
+      <%= @paper.display_title(sanitized: false) %>
     </div>
     <div class='paper-abstract'>
       <h5 class='abstract-title'>Abstract</h5>

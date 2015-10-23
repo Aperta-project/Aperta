@@ -32,13 +32,14 @@ describe PDFConverter do
 
     it "includes all necessary info and default journal stylesheet in the generated HTML" do
       expect(pdf_html).to include journal.pdf_css
-      expect(pdf_html).to include paper.display_title
+      expect(pdf_html).to include paper.display_title(sanitized: false)
       expect(pdf_html).to include paper.body
     end
 
-    it "displays and HTML escapes the paper's title in the body" do
-      paper.title = "<This Is & The Title>"
-      expect(doc).to have_path("#paper-body h1:contains('#{paper.title}')")
+    it "displays HTML in the paper's title" do
+      paper.title = "This <i>is</i> the Title"
+      pdf_doc_title = doc.css("#paper-body h1").inner_html.to_s
+      expect(pdf_doc_title).to eq(paper.display_title(sanitized: false))
     end
   end
 end

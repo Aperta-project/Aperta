@@ -443,6 +443,73 @@ describe Paper do
 
       specify { expect(paper.resubmitted?).to eq(false) }
     end
+  end
 
+  describe "#display_title" do
+    context "title and short_title are nil" do
+      # user has not provided a title and is expecting ihat to extract one,
+      # but ihat could not find one
+      let(:paper) { FactoryGirl.build(:paper, title: nil, short_title: nil) }
+
+      context "with sanitization" do
+        it "is an empty string" do
+          expect(paper.display_title).to eq("")
+        end
+      end
+
+      context "without sanitization" do
+        it "is an empty string" do
+          expect(paper.display_title(sanitized: false)).to eq("")
+        end
+      end
+    end
+
+    context "title is present, short title is nil" do
+      let(:paper) { FactoryGirl.build(:paper, title: "<b>my long paper</b>", short_title: nil) }
+
+      context "with sanitization" do
+        it "it is sanitized title" do
+          expect(paper.display_title).to eq("my long paper")
+        end
+      end
+
+      context "without sanitization" do
+        it "is is unsanitized title" do
+          expect(paper.display_title(sanitized: false)).to eq("<b>my long paper</b>")
+        end
+      end
+    end
+
+    context "title is nil, short title is present" do
+      let(:paper) { FactoryGirl.build(:paper, title: nil, short_title: "<b>my paper</b>") }
+
+      context "with sanitization" do
+        it "it is sanitized title" do
+          expect(paper.display_title).to eq("my paper")
+        end
+      end
+
+      context "without sanitization" do
+        it "is is unsanitized title" do
+          expect(paper.display_title(sanitized: false)).to eq("<b>my paper</b>")
+        end
+      end
+    end
+
+    context "title is present, short title is present" do
+      let(:paper) { FactoryGirl.build(:paper, title: "<b>my long paper</b>", short_title: "<b>my paper</b>") }
+
+      context "with sanitization" do
+        it "it is sanitized title" do
+          expect(paper.display_title).to eq("my long paper")
+        end
+      end
+
+      context "without sanitization" do
+        it "is is unsanitized title" do
+          expect(paper.display_title(sanitized: false)).to eq("<b>my long paper</b>")
+        end
+      end
+    end
   end
 end

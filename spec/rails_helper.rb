@@ -86,7 +86,7 @@ RSpec.configure do |config|
 
   Warden.test_mode!
 
-  config.before(:suite) do |*args|
+  config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation, except: ['task_types'])
 
     # Load question seeds before any tests start since we don't want them

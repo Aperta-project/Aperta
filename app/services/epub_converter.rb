@@ -8,18 +8,23 @@ class EpubConverter
   end
 
   def file_name
-    @file_name ||= paper.short_title.squish.downcase.tr(" ", "_") + ".epub"
+    # keep simple - most operating systems only a max of 255 multi-byte characters, including file name
+    @file_name ||= "paper_#{paper.id}.epub"
   end
 
   def epub_stream
     @epub_stream ||= builder.generate_epub_stream
   end
 
+  def title
+    CGI.escape_html(paper.short_title.to_s)
+  end
+
   def epub_html
     paper_body = PaperDownloader.new(paper).body || 'The manuscript is currently empty.'
 
     head = <<-HEAD
-  <title>#{CGI.escape_html(paper.short_title.to_s)}</title>
+  <title>#{title}</title>
   <link rel="stylesheet" type="text/css" href="css/default.css">
     HEAD
 

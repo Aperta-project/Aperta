@@ -41,6 +41,30 @@ describe EpubConverter do
     end
   end
 
+  describe "#file_name" do
+    it "returns placeholder filename" do
+      expect(converter.file_name).to eq("paper_#{paper.id}.epub")
+    end
+  end
+
+  describe "#title" do
+    context "short_title is nil because it has not been set yet" do
+      let(:paper) { FactoryGirl.build(:paper, short_title: nil) }
+
+      it "return empty title" do
+        expect(EpubConverter.new(paper, nil).title).to eq("")
+      end
+    end
+
+    context "short_title is safely escaped" do
+      let(:paper) { FactoryGirl.build(:paper, short_title: "<b>my title</b>") }
+
+      it "return empty title" do
+        expect(EpubConverter.new(paper, nil).title).to eq("&lt;b&gt;my title&lt;/b&gt;")
+      end
+    end
+  end
+
   describe '#epub_stream' do
     it 'returns a stream of data' do
       expect(converter.epub_stream.string.length).to be > 0

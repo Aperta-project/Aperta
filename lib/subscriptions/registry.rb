@@ -14,6 +14,7 @@ module Subscriptions
 
     def initialize
       @events = {}
+      @subscribers = []
     end
 
     def add(event_name, *subscribers)
@@ -24,7 +25,7 @@ module Subscriptions
 
       @events[event_name] ||= []
       @events[event_name] << event_info
-      Subscriber.subscribe(event_name, subscribers)
+      @subscribers.concat Subscriber.subscribe(event_name, subscribers)
     end
 
     def subscribers_for(event)
@@ -43,6 +44,12 @@ module Subscriptions
         [event, info.map(&:subscribers).flatten.map(&:to_s).sort.join(', ')]
       end
       io.puts Subscriptions::ConsoleFormatter.new(headers, rows).to_s
+    end
+
+    def unsubscribe_all
+      Subscriber.unsubscribe(@subscribers)
+      @subscribers.clear
+      @events.clear
     end
 
     private

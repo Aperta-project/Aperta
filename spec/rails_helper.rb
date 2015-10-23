@@ -90,6 +90,16 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with(:truncation, except: ['task_types'])
   end
 
+  # Don't load subscriptions for unit specs
+  config.before(:each) do
+    Subscriptions.clear_all_subscriptions!
+  end
+
+  # Load subscriptions for feature specs
+  config.before(:each, type: :feature) do
+    load Rails.root.join("config/initializers/subscriptions.rb")
+  end
+
   config.before(:each) do
     DatabaseCleaner[:active_record].strategy = :transaction
     DatabaseCleaner[:redis].strategy = :truncation

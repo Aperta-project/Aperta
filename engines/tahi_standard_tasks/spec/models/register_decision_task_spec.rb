@@ -190,6 +190,7 @@ describe TahiStandardTasks::RegisterDecisionTask do
 
       before do
         allow(task).to receive(:paper).and_return(paper)
+        allow(paper).to receive(:make_decision)
         allow_any_instance_of(Decision).to receive(:revision?).and_return(true)
       end
 
@@ -198,12 +199,13 @@ describe TahiStandardTasks::RegisterDecisionTask do
         task.complete_decision
       end
 
-      it "prepares a new decision task" do
+      it "prepares a new revise task" do
         paper.update(publishing_state: "submitted")
 
+        task_type = TahiStandardTasks::ReviseTask.name
         expect {
           task.complete_decision
-        }.to change { task.paper.tasks.size }.by 1
+        }.to change { paper.tasks.where(type: task_type).count }.by(1)
       end
     end
 

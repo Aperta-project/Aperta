@@ -9,7 +9,7 @@ module Subscriptions
     # Use `Subscriptions.configure` instead of using this directly.
     #
     def self.subscribe(event, subscribers)
-      subscribers.flatten.each do |subscriber|
+      subscribers.flatten.map do |subscriber|
         # +subscriber_name+ is so we do not reference the subscriber directly.
         # If we do it breaks auto reloading in development environment by
         # keeping an old class reference around. Instead, store its name and
@@ -22,5 +22,10 @@ module Subscriptions
       end
     end
 
+    def self.unsubscribe(subscribers)
+      subscribers.each do |subscriber|
+        ActiveSupport::Notifications.unsubscribe(subscriber)
+      end
+    end
   end
 end

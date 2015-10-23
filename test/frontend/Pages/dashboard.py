@@ -54,8 +54,11 @@ class DashboardPage(AuthenticatedPage):
     self._cns_error_div = (By.CLASS_NAME, 'flash-messages')
     self._cns_error_message = (By.CLASS_NAME, 'flash-message-content')
 
-    self._cns_short_title_label = (By.CLASS_NAME, 'paper-new-label')
-    self._cns_short_title_field = (By.CSS_SELECTOR, '#paper-short-title')
+    self._cns_manuscript_title_label = (By.CLASS_NAME, 'paper-new-label')
+    self._cns_manuscript_title_field = (By.CLASS_NAME, 'content-editable-muted')
+    self._cns_manuscript_italic_icon = (By.CLASS_NAME, 'fa-italic')
+    self._cns_manuscript_superscript_icon = (By.CLASS_NAME, 'fa-superscript')
+    self._cns_manuscript_subscript_icon = (By.CLASS_NAME, 'fa-subscript')
     self._cns_journal_chooser = (By.XPATH, './/div[@class="inner-content"]/div[2]/label')
     self._cns_paper_type_chooser = (By.XPATH, './/div[@class="inner-content"]/div[3]/label')
 
@@ -265,7 +268,7 @@ class DashboardPage(AuthenticatedPage):
       if current_paper not in db_papers_list:
         db_papers_list.append(current_paper)
     # Keeping this around but commented out as it is key to debugging issues with dirty paper data
-    # print(db_papers_list)
+    #print(db_papers_list)
 
     if len(db_papers_list) > 0:
       count = 0
@@ -273,9 +276,14 @@ class DashboardPage(AuthenticatedPage):
         # Validate paper title display and ordering
         # Get title of paper from db based on db ordered list of papers, then compare to papers ordered on page.
         title = PgSQL().query('SELECT title FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
+        title = self.strip_tags(title)
         if not title:
-          title = PgSQL().query('SELECT short_title FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
-        assert ' '.join(title.split()) == paper.text, 'DB: ' + str(title) + ' is not equal to ' + paper.text + ', from page.'
+          print('Error: No title in db! Illogical, Illogical, Norman Coordinate: Invalid document')
+          return False
+        print(title)
+        print(paper.text)
+        assert ' '.join(title.split()) == paper.text.encode('utf8'), \
+            'DB: ' + ' '.join(title.split()) + ' is not equal to ' + paper.text + ', from page.'
         # Sort out paper role display
         paper_roles = PgSQL().query('SELECT role FROM paper_roles '
                                     'INNER JOIN papers ON papers.id = paper_roles.paper_id '
@@ -414,10 +422,14 @@ class DashboardPage(AuthenticatedPage):
     closer = self._get(self._cns_closer)
     overlay_title = self._get(self._cns_title)
     assert overlay_title.text == 'Create a New Submission'
-    short_title_field_label = self._get(self._cns_short_title_label)
-    assert short_title_field_label.text == 'Give your paper a short title'
-    short_title_input_field = self._get(self._cns_short_title_field)
-    assert short_title_input_field.get_attribute('placeholder') == 'Crystalized Magnificence in the Modern World'
+    manuscript_title_field_label = self._get(self._cns_manuscript_title_label)
+    assert manuscript_title_field_label.text == 'Give your paper a title'
+    manuscript = self._get(self._cns_manuscript_title_field)
+    assert manuscript.get_attribute('placeholder') == 'Crystalized Magnificence in the Modern World'
+    # For the time being only validating the presence of these as they may be removed
+    self._get(self._cns_manuscript_italic_icon)
+    self._get(self._cns_manuscript_superscript_icon)
+    self._get(self._cns_manuscript_subscript_icon)
     journal_chooser = self._get(self._cns_journal_chooser)
     assert journal_chooser.text == 'What journal are you submitting to?'
     paper_type_chooser = self._get(self._cns_paper_type_chooser)    
@@ -438,5 +450,6 @@ class DashboardPage(AuthenticatedPage):
       errors.append(error)
     assert 'Journal can\'t be blank' in errors
     assert 'Paper type can\'t be blank' in errors
-    assert 'Short title can\'t be blank' in errors
+    # Temporarily commented out per ticket APERTA-5413
+    # assert 'Title can\'t be blank' in errors
     closer.click()

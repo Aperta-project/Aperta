@@ -279,7 +279,11 @@ class DashboardPage(AuthenticatedPage):
         title = self.strip_tags(title)
         if not title:
           print('Error: No title in db! Illogical, Illogical, Norman Coordinate: Invalid document')
-        assert ' '.join(title.split()) == paper.text, 'DB: ' + str(title) + ' is not equal to ' + paper.text + ', from page.'
+          return False
+        print(title)
+        print(paper.text)
+        assert ' '.join(title.split()) == paper.text.encode('utf8'), \
+            'DB: ' + ' '.join(title.split()) + ' is not equal to ' + paper.text + ', from page.'
         # Sort out paper role display
         paper_roles = PgSQL().query('SELECT role FROM paper_roles '
                                     'INNER JOIN papers ON papers.id = paper_roles.paper_id '

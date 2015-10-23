@@ -51,6 +51,7 @@ feature "Reviewer filling out their reviewer report", js: true do
 
     # Revision 0
     visit "/papers/#{paper.id}"
+    binding.pry
     overlay = paper_page.view_card("Review by #{reviewer1.full_name}", ReviewerReportOverlay)
     overlay.fill_in_report "competing_interests" => "answer for round 0"
 

@@ -240,6 +240,13 @@ class AuthenticatedPage(PlosPage):
     self._get(self._nav_feedback_link).click()
     return self
 
+  def logout(self):
+    """Logout from any page"""
+    url = self._driver.current_url
+    signout_url = url.split('/')[0]+'//'+url.split('/')[2]+'/users/sign_out'
+    self._driver.get(signout_url)
+
+
   # Style Validations
   # Divider and Border Styles ===========================
   @staticmethod

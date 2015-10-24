@@ -178,7 +178,7 @@ class AuthorsCard(BaseCard):
     time.sleep(1)
     add_author_add_btn.click()
     # Check if data is there
-    time.sleep(2)
+    time.sleep(3)
     authors = self._gets(self._author_items)
     all_auth_data = [x.text for x in authors]
     assert [x for x in all_auth_data if author['1_institution'] in x]
@@ -188,17 +188,23 @@ class AuthorsCard(BaseCard):
     assert [x for x in all_auth_data if author['middle'] in x]
     assert [x for x in all_auth_data if author['title'][-4:] in x]
     assert [x for x in all_auth_data if author['email'] in x]
-    # Delete the data
+
+
+  def validate_delete_author(self):
+    """Check deleteing an author from author card"""
     # Check where is the new data
+    authors = self._gets(self._author_items)
+    all_auth_data = [x.text for x in authors]
     n = 0
     for auth_data in all_auth_data:
       n += 1
       if author['email'] in auth_data:
         break
     # Get author to delete
+    authors = self._gets(self._author_items)
     self._actions.move_to_element(authors[n-1]).perform()
     time.sleep(2)
-    authors = self._gets(self._author_items)
+    #authors = self._gets(self._author_items)
     trash = authors[n-1].find_element_by_css_selector('span.fa-trash')
     trash.click()
     # get buttons
@@ -207,13 +213,13 @@ class AuthorsCard(BaseCard):
     del_message = delete_div.find_element_by_tag_name('p')
     assert del_message.text == 'This will permanently delete the author. Are you sure?'
     # TODO: Check p style, resume this when styles are set.
-    cancel_btn = delete_div.find_elements_by_tag_name('button')[0]
-    delete_btn = delete_div.find_elements_by_tag_name('button')[1]
+    cancel_btn, delete_btn  = delete_div.find_elements_by_tag_name('button')
     assert cancel_btn.text == 'CANCEL', cancel_btn.text
     assert delete_btn.text == 'DELETE FOREVER', delete_btn.text
     # TODO: check styles, resume this when styles are set.
     delete_btn.click()
-    time.sleep(.5)
+    time.sleep(2)
+
 
   def validate_styles(self):
     """Validate all styles for Authors Card"""

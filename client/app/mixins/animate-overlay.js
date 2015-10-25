@@ -66,7 +66,7 @@ export default Ember.Mixin.create({
   animateOverlayIn(options={}) {
     if (!options.selector) { options.selector = '#overlay'; }
 
-    Ember.run.later(function() { $('html').addClass('overlay-open'); }, 30);
+    //Ember.run.later(function() { $('html').addClass('overlay-open'); }, 30);
 
     return this['in'](options);
   },

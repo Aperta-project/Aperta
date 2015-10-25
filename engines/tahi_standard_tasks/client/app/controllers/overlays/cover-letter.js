@@ -2,6 +2,8 @@ import TaskController from 'tahi/pods/paper/task/controller';
 import Ember from 'ember';
 
 export default TaskController.extend({
+  overlayClass: 'overlay--sheet',
+
   letterBody: Ember.computed('model.body', function() {
     return this.get('model.body')[0];
   }),

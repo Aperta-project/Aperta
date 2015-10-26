@@ -1,6 +1,7 @@
 html {
   overflow: -moz-scrollbars-vertical;
 
+  &.dragging { @include user-select(none); }
   &.matte { background-color: #f5f5f5; }
   &.navigation-visible {
     overflow: hidden;

@@ -99,21 +99,6 @@ module 'Integration: Manuscript Manager Templates',
 
   afterEach: ->
     server.restore()
-
-    # TODO: Remove this workaround
-    # https://github.com/emberjs/data/issues/2982
-    store = app.registry.lookup('store:main')
-    Ember.run ->
-      records = store.all('journalTaskType')
-      records.forEach (record) ->
-        store.unloadRecord(record)
-
-      records = store.all('taskTemplate')
-      records.forEach (record) ->
-        store.unloadRecord(record)
-    # End TODO
-
-
     Ember.run(app, 'destroy')
     app.__container__.lookup(
       'controller:admin/journal/manuscript-manager-template/edit'
@@ -158,41 +143,3 @@ test 'Adding an Ad-Hoc card', (assert) ->
   andThen ->
     assert.textNotPresent('.inline-edit', 'yahoo')
     click('.overlay-close-button:first')
-
-createCard = ->
-  visit("/admin/journals/1/manuscript_manager_templates/1/edit")
-  click('a.button--green:contains("Add New Card")')
-  click('label:contains("Ad Hoc")')
-  click('.overlay .button--green:contains("Add")')
-  andThen ->
-    ok find('h1.inline-edit:contains("Ad Hoc")').length
-  click '.overlay-close-button:first'
-
-# see also paper_workflow_test.js.coffee; tests are very similar
-test 'show delete confirmation overlay on deletion of a card', (assert) ->
-  createCard()
-  andThen ->
-    click(".card-remove")
-  andThen ->
-    assert.equal find('.overlay button:contains("Yes, Delete this Card")').length, 1
-
-test 'click delete confirmation overlay cancel button', (assert) ->
-  createCard()
-  andThen ->
-    click(".card-remove")
-  andThen ->
-    assert.equal find('.overlay button:contains("cancel")').length, 1
-    click('.overlay button:contains("cancel")')
-  andThen ->
-    assert.notEqual find('.card-content').length, 0
-
-test 'show delete confirmation overlay on deletion of a card', (assert) ->
-  createCard()
-  andThen ->
-    click(".card-remove")
-  andThen ->
-    assert.equal find('.overlay button:contains("Yes, Delete this Card")').length, 1
-    click('.overlay button:contains("Yes, Delete this Card")')
-  andThen ->
-    search = { method: "DELETE", url: "/api/task_templates/1" }
-    assert.ok _.findWhere(server.responses, search), "It sends DELETE request to the server"

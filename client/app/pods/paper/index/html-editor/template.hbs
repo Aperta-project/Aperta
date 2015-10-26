@@ -11,44 +11,41 @@
 {{withdrawal-banner paper=model staff=currentUser.siteAdmin}}
 
 <div id="paper-container" class="clearfix paper-container-html">
-
   {{paper-sidebar paper=model
                   user=currentUser
                   commentLooks=commentLooks
                   showConfirmSubmitOverlay="showConfirmSubmitOverlay"
                   viewCard="viewCard"}}
 
-  <div class="manuscript-container {{if hideEditor 'not-ve'}}">
+  <div class="manuscript-container">
     <main>
       {{flash-messages classNames="flash-messages-paper-editor"}}
-      <article class="manuscript {{if isEditable "editing" "read-only"}}">
+      <article class="manuscript">
+        <div id="paper-body">
 
-        <div id="paper-body" class="{{if hideEditor "version-visible"}}">
-          {{#if hideEditor}}
-            <h2 id="paper-title" class="uneditable">{{{model.title}}}</h2>
-            {{html-diff
-              default=model.body
-              comparisonText=model.comparisonText
-              viewingText=model.viewingText}}
+          {{#unless model.editable}}
+            <h2 id="paper-title">{{{model.title}}}</h2>
+          {{else}}
+            {{content-editable tagName="h2"
+                               id="paper-title"
+                               value=model.title
+                               preventEnterKey="true"
+                               placeholder="Type your manuscript title here"
+                               key-up=(action "saveManuscriptTitle")
+                               focus-out=(action "saveManuscriptTitle")}}
+          {{/unless}}
+
+          {{#if versioningMode}}
+            {{html-diff default=model.body
+                        comparisonText=model.comparisonText
+                        viewingText=model.viewingText}}
+          {{else}}
+            <div class="paper-body">
+              {{{model.body}}}
+            </div>
           {{/if}}
 
-          {{#if model.editable}}
-          {{component editorComponent
-              viewName="editor"
-              paper=model
-              isEditing=isEditing
-              isSaving=isSaving
-              savedAt=savedAt
-              statusMessage=statusMessage
-              currentUser=currentUser
-              savePaper="savePaper"
-              toggleEditing="toggleEditing"
-              lock="lock"
-              unlock="unlock"
-              }}
-          {{/if}}
         </div>
-
       </article>
     </main>
   </div>

@@ -148,27 +148,13 @@ describe PapersController do
                        format: :json,
                        paper: {
                          title: new_title,
-                         short_title: 'ABC101',
-                         locked_by_id: user.id }.merge(params) }
+                         short_title: 'ABC101' }.merge(params) }
       end
 
       it "will not update the body if it is nil" do
         # test to check that weird ember ghost requests can't reset the body
         put :update, { id: paper.to_param, format: :json, paper: { body: nil }.merge(params) }
         expect(paper.reload.body).not_to eq(nil)
-      end
-
-      context "when the paper is locked by another user" do
-        before do
-          other_user = create(:user)
-          paper.locked_by = other_user
-          paper.save
-        end
-        it "returns an error" do
-          do_request
-          expect(response.status).to eq(422)
-          expect(res_body["errors"]).to have_key("locked_by_id")
-        end
       end
     end
   end
@@ -230,33 +216,6 @@ describe PapersController do
       put :toggle_editable, id: paper.id, format: :json
       expect(response.status).to eq(200)
       expect(paper.reload.editable).to eq true
-    end
-  end
-
-  describe "PUT 'heartbeat'" do
-    expect_policy_enforcement
-
-    subject(:do_request) do
-      put :heartbeat, { id: paper.to_param, format: :json }
-    end
-    context "paper is locked" do
-      before do
-        paper.lock_by(user)
-      end
-
-      it "updates the paper timestamp" do
-        old_heartbeat = 1.minute.ago
-        paper.update_attribute :last_heartbeat_at, old_heartbeat
-        do_request
-        expect(paper.reload.last_heartbeat_at).to be > old_heartbeat
-      end
-    end
-
-    context "paper is unlocked" do
-      it "does not update the timestamp" do
-        do_request
-        expect(paper.reload.last_heartbeat_at).to be_nil
-      end
     end
   end
 

@@ -63,13 +63,8 @@ class PaperPage < Page
   end
 
   def title=(string)
-    code = <<HERE
-var editorController = Tahi.__container__.lookup("controller:paper/index/html-editor");
-var editor = editorController.get("editor.titleEditor.editor");
-editor.selectAll();
-editor.write("#{string}");
-HERE
-    page.execute_script code
+    element = title
+    element.send_keys = string
   end
 
   def abstract=(val)
@@ -77,21 +72,8 @@ HERE
     raise NotImplementedError, "TODO: The UI on paper#edit needs to be implemented"
   end
 
-  # Note: manipulating the document is not supported thoroughly as it depends too much on the
-  # VE internals. If we really need more, we should come up with an abstracted manipulation API
-  # implemented in ember-cli-visualeditor/models/visual-editor.js.
-  def body=(string)
-    code = <<HERE
-var editorController = Tahi.__container__.lookup("controller:paper/index/html-editor");
-var editor = editorController.get("editor.bodyEditor.editor");
-editor.selectAll();
-editor.write("#{string}");
-HERE
-    page.execute_script code
-  end
-
   def body
-    find('.paper-body .ve-ce-documentNode')
+    find('.paper-body')
   end
 
   def versioned_body
@@ -99,7 +81,7 @@ HERE
   end
 
   def has_body_text?(text)
-    find('.paper-body .ve-ce-documentNode').has_text?(text)
+    find('.paper-body').has_text?(text)
   end
 
   def journal
@@ -107,7 +89,7 @@ HERE
   end
 
   def title
-    find('#paper-title .ve-ce-documentNode')
+    find('#paper-title')
   end
 
   def cards
@@ -124,22 +106,6 @@ HERE
 
   def paper_type=(value)
     find('#paper_paper_type').select value
-  end
-
-  def start_editing
-    code = <<HERE
-var editorController = Tahi.__container__.lookup("controller:paper/index/html-editor");
-editorController.startEditing();
-HERE
-    page.execute_script code
-  end
-
-  def stop_editing
-    code = <<HERE
-var editorController = Tahi.__container__.lookup("controller:paper/index/html-editor");
-editorController.stopEditing();
-HERE
-    page.execute_script code
   end
 
   def save

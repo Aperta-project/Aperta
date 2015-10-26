@@ -77,42 +77,39 @@ html.control-bar-sub-nav-active #paper-container {
 
 #paper-container .manuscript-container {
   position: relative;
-  background: $tahi-grey-xlight;
   width: calc(100% - #{$paper-edit-sidebar-width} - 1px);
+  font-size: 0.95em;
+  background: $tahi-grey-xlight;
 
-  &.not-ve {
-    font-size: .95em;
-
-    figure {
-      h1 {
-        font: inherit;
-        font-size: 20px;
-        font-weight: bolder;
-      }
+  figure {
+    h1 {
+      font: inherit;
+      font-size: 20px;
+      font-weight: bolder;
     }
+  }
 
-    td, th {
-	    border: 1px dotted #ccc;
-	    padding: 0.25em 0.5em;
+  td, th {
+    border: 1px dotted #ccc;
+    padding: 0.25em 0.5em;
+    min-height: 1em;
+
+    p {
+      margin: 0;
       min-height: 1em;
-
-      p {
-        margin: 0;
-        min-height: 1em;
-      }
     }
+  }
 
-    th {
-      background: #e7e7e7;
-    }
+  th {
+    background: #e7e7e7;
+  }
 
-    table {
-      width: 100%;
-      table-layout: fixed;
-	    border-spacing: 0;
-	    border-collapse: collapse;
-	    cursor: default;
-    }
+  table {
+    width: 100%;
+    table-layout: fixed;
+    border-spacing: 0;
+    border-collapse: collapse;
+    cursor: default;
   }
 }
 
@@ -214,56 +211,6 @@ html.control-bar-sub-nav-active #paper-container {
 
 // start edit-paper section
 
-.edit-paper-button       { width: 150px; margin-right: 5px; }
-.edit-paper-start-icon   { padding-right: 8px; }
-.edit-paper-stop-icon    { margin: -6px 0 0 -8px; }
-.edit-paper-locked-by {
-  @include ellipsis;
-  width: initial;
-  max-width: 95px;
-}
-
-.edit-paper-lock-message {
-  position: relative;
-  top: 7px;
-  width: 200px;
-  color: $tahi-black;
-  font-family: $tahi-font-family;
-  font-size: 12px;
-  font-style: italic;
-  z-index: 1;
-
-  span { display: inline-block; }
-}
-
-.edit-paper .fa-lock,
-.edit-paper .edit-paper-lock-message span {
-  overflow: hidden;
-}
-
-.recent-activity-link {
-  position: relative;
-  height: 30px;
-  margin-top: 15px;
-  padding: 0 0 0 60px;
-  color: $tahi-green;
-  font-size: 14px;
-  line-height: 27px;
-  cursor: pointer;
-
-  svg {
-    position: absolute;
-    top: 0;
-    left: 30px;
-    width: 24px;
-    height: 24px;
-  }
-
-  path {
-    fill: $tahi-green;
-  }
-}
-
 .author-detail {
   display: inline-block;
   min-width: 100px;
@@ -306,16 +253,6 @@ html.control-bar-sub-nav-active #paper-container {
       }
     }
   }
-}
-
-.locked-overlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  font-size: 24px;
-  text-align: center;
-  background-color: transparent;
-  z-index: 1;
 }
 
 // end edit-paper section

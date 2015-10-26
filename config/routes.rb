@@ -115,7 +115,6 @@ Tahi::Application.routes.draw do
         get "activity/manuscript", to: "papers#manuscript_activities"
         get :comment_looks
         get :export, to: "paper_conversions#export"
-        put :heartbeat
         put :submit
         put :withdraw
         put :reactivate

@@ -29,10 +29,6 @@ class PapersPolicy < ApplicationPolicy
     can_view_paper?
   end
 
-  def heartbeat?
-    paper.locked_by_id == current_user.id
-  end
-
   def toggle_editable?
     current_user.site_admin? || can_view_manuscript_manager?
   end

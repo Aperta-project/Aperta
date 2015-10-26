@@ -39,7 +39,6 @@ shared_examples_for "administrator for paper" do
     expect(policy.manage?).to be(true)
     expect(policy.upload?).to be(true)
     expect(policy.download?).to be(true)
-    expect(policy.heartbeat?).to be(false)
     expect(policy.toggle_editable?).to be(true)
     expect(policy.reactivate?).to be(true)
     expect(policy.submit?).to be(true)
@@ -55,7 +54,6 @@ shared_examples_for "author for paper" do
     expect(policy.manage?).to be(false)
     expect(policy.upload?).to be(true)
     expect(policy.download?).to be(true)
-    expect(policy.heartbeat?).to be(false)
     expect(policy.toggle_editable?).to be(false)
     expect(policy.reactivate?).to be(false)
     expect(policy.submit?).to be(true)
@@ -71,7 +69,6 @@ shared_examples_for "person who cannot see a paper" do
     expect(policy.manage?).to be(false)
     expect(policy.upload?).to be(false)
     expect(policy.download?).to be(false)
-    expect(policy.heartbeat?).to be(false)
     expect(policy.toggle_editable?).to be(false)
     expect(policy.submit?).to be(false)
   end

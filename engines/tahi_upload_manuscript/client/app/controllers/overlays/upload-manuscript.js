@@ -4,37 +4,37 @@ import FileUploadMixin from 'tahi/mixins/file-upload';
 
 export default TaskController.extend(FileUploadMixin, {
   progress: 0,
-  isProcessing: false,
   showProgress: true,
 
-  canUploadManuscript: function() {
-    return (this.get('currentUser') === this.get('model.paper.lockedBy')) || this.get('isEditable');
-  }.property('model.paper.lockedBy', 'isEditable'),
-
-  progressBarStyle: function() {
+  progressBarStyle: Ember.computed('progress', function() {
     return Ember.String.htmlSafe('width:' + this.get('progress') + '%');
-  }.property('progress'),
+  }),
 
-  manuscriptUploadUrl: function() {
+  manuscriptUploadUrl: Ember.computed('model.paper.id', function() {
     return '/api/papers/' + this.get('model.paper.id') + '/upload';
-  }.property('model.paper.id'),
+  }),
 
   actions: {
-    uploadProgress: function(data) {
-      this.set('progress', Math.round((data.loaded / data.total) * 100));
-
-      if(this.get('progress') >= 100) {
-        setTimeout(()=> {
-          this.setProperties({showProgress: false, isProcessing: true});
-        }, 500);
-      }
+    uploadStarted() {
+      this.uploadStarted(...arguments);
     },
 
-    uploadError: function(message) {
+    uploadProgress(data) {
+      const progress = Math.round((data.loaded / data.total) * 100);
+      this.set('progress', progress);
+
+      if(progress < 100) { return; }
+
+      Ember.run.later(this, function() {
+        this.set('showProgress', false);
+      }, 500);
+    },
+
+    uploadError(message) {
       this.set('uploadError', message);
     },
 
-    uploadFinished: function(data, filename) {
+    uploadFinished(data, filename) {
       this.uploadFinished(data, filename);
       this.store.pushPayload(data);
 

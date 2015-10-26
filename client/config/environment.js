@@ -19,12 +19,8 @@ module.exports = function(environment) {
       iHatExportFormats: ['docx']
     },
 
-    'ember-cli-visualeditor': {
-      assetsRoot: '/'
-    },
-
-    'tahi-editor-ve': {
-      mathJaxUrl: '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+    'mathjax': {
+      url: '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
     },
 
     contentSecurityPolicy: {

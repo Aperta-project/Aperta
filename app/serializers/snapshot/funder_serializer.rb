@@ -3,7 +3,7 @@ class Snapshot::FunderSerializer < Snapshot::BaseSerializer
     @funder = funder
   end
 
-  def snapshot
+  def as_json
     snapshot_properties + snapshot_nested_questions
   end
 

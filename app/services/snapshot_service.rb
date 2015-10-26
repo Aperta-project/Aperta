@@ -15,8 +15,7 @@ class SnapshotService
   def snapshot!(*things_to_snapshot)
     things_to_snapshot.flatten.each do |thing|
       serializer_klass = @registry.serializer_for(thing)
-      # TODO - rename snapshot method to as_json
-      json = serializer_klass.new(thing).snapshot
+      json = serializer_klass.new(thing).as_json
       Snapshot.create!(
         source: thing,
         contents: json,

@@ -5,7 +5,7 @@ class Snapshot::BaseTaskSerializer < Snapshot::BaseSerializer
     @task = task
   end
 
-  def snapshot
+  def as_json
     properties = snapshot_properties
     if properties
       properties + snapshot_nested_questions

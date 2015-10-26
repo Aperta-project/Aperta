@@ -3,7 +3,7 @@ class Snapshot::ReviewerRecommendationsTaskSerializer < Snapshot::BaseSerializer
     @task = task
   end
 
-  def snapshot
+  def as_json
     {name: "recommendations", type: "properties", children: snapshot_recommendations}
   end
 

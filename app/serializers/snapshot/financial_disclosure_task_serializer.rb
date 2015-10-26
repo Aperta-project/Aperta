@@ -1,5 +1,5 @@
 class Snapshot::FinancialDisclosureTaskSerializer < Snapshot::BaseTaskSerializer
-  def snapshot
+  def as_json
     funders = snapshot_funders
     if funders
         snapshot_nested_questions + funders

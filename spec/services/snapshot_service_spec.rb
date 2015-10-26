@@ -6,7 +6,7 @@ describe SnapshotService do
       @thing_to_snapshot = thing_to_snapshot
     end
 
-    def snapshot
+    def as_json
       @thing_to_snapshot.as_json.except("created_at", "updated_at")
     end
   end

@@ -1,5 +1,5 @@
 class Snapshot::AuthorTaskSerializer < Snapshot::BaseTaskSerializer
-  def snapshot
+  def as_json
     { name: "authors", type: "properties", children: snapshot_authors }
   end
 

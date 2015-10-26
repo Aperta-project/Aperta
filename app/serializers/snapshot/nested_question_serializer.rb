@@ -4,7 +4,7 @@ class Snapshot::NestedQuestionSerializer < Snapshot::BaseSerializer
     @owner = owner
   end
 
-  def snapshot
+  def as_json
     children = []
     @nested_question.children.all.each do |child|
       child_snapshotter = Snapshot::NestedQuestionSerializer.new child, @owner

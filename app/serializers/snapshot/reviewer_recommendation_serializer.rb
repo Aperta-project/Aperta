@@ -3,7 +3,7 @@ class Snapshot::ReviewerRecommendationSerializer < Snapshot::BaseSerializer
     @reviewer_recommendation = reviewer_recommendation
   end
 
-  def snapshot
+  def as_json
     snapshot_properties + snapshot_nested_questions
   end
 

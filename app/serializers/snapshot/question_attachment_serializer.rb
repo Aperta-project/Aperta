@@ -3,7 +3,7 @@ class Snapshot::QuestionAttachmentSerializer < Snapshot::BaseSerializer
     @question_attachment = question_attachment
   end
 
-  def snapshot
+  def as_json
     if @question_attachment.nil?
       return nil
     end

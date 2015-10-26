@@ -3,7 +3,7 @@ class Snapshot::AuthorSerializer < Snapshot::BaseSerializer
     @author = author
   end
 
-  def snapshot
+  def as_json
     snapshot_properties + snapshot_nested_questions
   end
 

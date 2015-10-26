@@ -10,7 +10,7 @@ describe PlosBilling::Paper::Submitted::Salesforce do
     it "find or create Salesforce Manuscript" do
       expect(salesforce_api).to receive(:find_or_create_manuscript).with(paper_id: paper.id).once
 
-      described_class.call("tahi:paper:submitted", { record: paper })
+      described_class.call("tahi:paper:submitted", record: paper)
     end
   end
 
@@ -23,7 +23,7 @@ describe PlosBilling::Paper::Submitted::Salesforce do
       expect(salesforce_api).to receive(:find_or_create_manuscript).with(paper_id: paper_with_task.id).once
       expect(salesforce_api).to receive(:create_billing_and_pfa_case).with(paper_id: paper_with_task.id).once
 
-      described_class.call("tahi:paper:submitted", { record: paper_with_task })
+      described_class.call("tahi:paper:submitted", record: paper_with_task)
     end
   end
 end

@@ -274,7 +274,27 @@
     Dashboard Link
   </h3>
 
-  {{dashboard-link model=paper}}
+  <div class="table-responsive">
+    <table summary="This table displays manuscript data and roles" class="table-borderless top-margin">
+      <thead class="manuscript-list-heading gray-line active-papers" data-ember-action="929">
+        <tr>
+          <th class="col-xs-9 hug-left">Active Manuscript (1)</th>
+            <th class="col-xs-1 text-center">Role</th>
+            <th class="col-xs-2 text-center">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr id="ember941" class="active-paper-table-row ember-view active-paper-table-row">
+          <td class="col-xs-9 dashboard-paper-title active-paper-title hug-left">
+            <a id="ember942" href="/papers/1" title="" data-toggle="tooltip" class="link-tooltip ember-view" data-original-title="Collaborator, My Paper, Participant">  The most scrumtrulescent scientific paper of 2015.
+            </a>
+          </td>
+          <td class="col-xs-1 role-tag text-right">Author</td>
+          <td class="col-xs-1"><div class="status-tag text-center">DRAFT</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </section>
 
 <hr>

@@ -27,34 +27,55 @@
     </h2>
 
     <button class="button-primary button--green" {{action "showNewPaperOverlay"}}>Create New Submission</button>
+
     {{#if hasPapers}}
       {{#if hasActivePapers}}
-        <h5 class='manuscript-list-heading active-papers' {{action 'toggleActiveContainer'}}>
-          Active Manuscripts ({{totalActivePaperCount}})
-        </h5>
-        {{#if activePapersVisible}}
-          <ul class="dashboard-submitted-papers">
-            {{#each sortedDraftPapers as |paper|}}
-              {{dashboard-link model=paper}}
-            {{/each}}
-            {{#each sortedNonDraftPapers as |paper|}}
-              {{dashboard-link model=paper}}
-            {{/each}}
-          </ul>
-        {{/if}}
+        <div class="table-responsive">
+          <table summary="This table displays manuscript data and roles" class="table-borderless top-margin">
+            <thead class='manuscript-list-heading {{if activePapersVisible 'gray-line'}} active-papers' {{action 'toggleActiveContainer'}}>
+              <tr>
+                <th class="col-xs-9 hug-left">{{activeManuscriptsHeading}}</th>
+                {{#if activePapersVisible}}
+                  <th class="col-xs-1 text-center">Role</th>
+                  <th class="col-xs-2 text-center">Status</th>
+                {{/if}}
+              </tr>
+            </thead>
+            <tbody>
+              {{#if activePapersVisible}}
+                {{#each sortedDraftPapers as |paper|}}
+                  {{dashboard-link model=paper type='active' class='active-paper-table-row'}}
+                {{/each}}
+                {{#each sortedNonDraftPapers as |paper|}}
+                  {{dashboard-link model=paper type='active' class='active-paper-table-row'}}
+                {{/each}}
+              {{/if}}
+            </tbody>
+          </table>
+        </div>
       {{/if}}
 
       {{#if hasInactivePapers}}
-        <h5 class='manuscript-list-heading inactive-papers' {{action 'toggleInactiveContainer'}}>
-          Inactive Manuscripts ({{totalInactivePaperCount}})
-        </h5>
-        {{#if inactivePapersVisible}}
-          <ul class="dashboard-submitted-papers">
-            {{#each sortedInactivePapers as |paper|}}
-              {{dashboard-link model=paper}}
-            {{/each}}
-          </ul>
-        {{/if}}
+        <div class="table-responsive">
+          <table summary="This table displays manuscript data and roles" class="table-borderless top-margin">
+            <thead class='manuscript-list-heading {{if inactivePapersVisible 'gray-line'}} inactive-papers' {{action 'toggleInactiveContainer'}}>
+              <tr>
+                <th class="col-xs-9 hug-left">{{inactiveManuscriptsHeading}}</th>
+                {{#if inactivePapersVisible}}
+                  <th class="col-xs-1 text-center">Role</th>
+                  <th class="col-xs-2 text-center">Status</th>
+                {{/if}}
+              </tr>
+            </thead>
+            <tbody>
+              {{#if inactivePapersVisible}}
+                {{#each sortedInactivePapers as |paper|}}
+                  {{dashboard-link model=paper type='inactive' class='inactive-paper-table-row'}}
+                {{/each}}
+              {{/if}}
+            </tbody>
+          </table>
+        </div>
       {{/if}}
     {{else}}
       <p class="dashboard-info-text">Your scientific paper submissions will<br> appear here.</p>

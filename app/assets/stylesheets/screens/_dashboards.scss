@@ -10,19 +10,20 @@
   }
 }
 
-h5.manuscript-list-heading {
+.manuscript-list-heading {
   color: $tahi-black;
   font-weight: bold;
   cursor: pointer;
   margin-top: 60px;
   padding-bottom: .35em;
-  border-bottom: 1px solid $tahi-grey-light;
+  &.gray-line {
+    border-bottom: 1px solid $tahi-grey-light;
+  }
 }
 
 .dashboard-section {
   margin-bottom: 55px;
 }
-
 
 .dashboard-header {
   margin: 40px 0;
@@ -58,14 +59,8 @@ h5.manuscript-list-heading {
 .dashboard-paper-title {
   position: relative;
   margin: 15px 0px 20px 0px;
-  padding-left: 25px;
-
-  svg {
-    position: absolute;
-    top: 3px;
-    left: 0;
-    width: 13px;
-  }
+  padding-top: 10px;
+  padding-bottom: 20px;
 
   a {
     color: #333;
@@ -73,4 +68,38 @@ h5.manuscript-list-heading {
     font-size: 18px;
     line-height: 1.5;
   }
+}
+
+.hug-left {
+  padding-left: 0px;
+}
+
+.role-tag {
+  color: $tahi-grey-dark;
+}
+
+.status-tag {
+  position: relative;
+  color: white;
+  background-color: #6c6c6c;
+  margin-left: 20px
+}
+
+.status-tag:after {
+  right: 100%;
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-color: rgba(108, 108, 108, 0);
+  border-right-color: #6c6c6c;
+  border-width: 10px;
+  margin-top: -10px;
+}
+
+.top-margin {
+  margin-top: 60px;
 }

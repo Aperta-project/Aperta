@@ -40,6 +40,12 @@ class AuthorsCardTest(CommonTest):
     assert header_link.text == title, (header_link.text, title)
     authors_card.validate_styles()
     authors_card.validate_author_card_action()
+    authors_card.click_close_button()
+    manuscript_page = ManuscriptPage(self.getDriver())
+    manuscript_page.logout()
+    authors_card, title = self._go_to_authors_card()
+    authors_card.validate_delete_author()
+
     return self
 
 

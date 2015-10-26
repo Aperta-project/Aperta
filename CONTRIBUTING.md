@@ -1,57 +1,54 @@
-# Interested in making Tahi better? Awesome :)
+# Pull Request Template
 
-Please email us and say hello: TODO
+We've found that writing detailed description for Pull Requests helps to
+decrease time spent in review, decrease confusion, and generally increase code
+quality.
 
-## Contributing
+Copy the following template into your Pull Request's description. Use your
+judgement to add, update, or remove things as is appropriate for your PR. This
+is just a good place to start.
 
-When creating a new pull request, please paste in the following rubric. Please
-**delete todo list items that** you feel **do not apply** to your pull request
-/ review.
+```
+JIRA issue: link-to-jira
 
-**If you are a first-time contributor you can ignore this rubric; your reviewer
- will help you along**
+#### What this PR does:
 
-    ## Pull Request Checklist
-    - [ ] changelog has been updated
-    - [ ] ask yourself: is this PR complicated enough that you should write
-          integration tests?
-    - [ ] ask yourself: do you feel that things are well abstracted?
-    - [ ] do a self code review (read through `git diff` or the github UI)
-    - [ ] complete all relevant todos in your code
-    - [ ] self QA (make sure the app still works, along with your change)
-    - [ ] get review from a team-member with knowledge of this codebase area
-    - [ ] **team-member said ship it! (:ship: it)**
-    - [ ] self QA on staging
-    - [ ] do any changes need to be made to prod before a deploy? List them in
-          the `deployer checklist`
-    - [ ] the tests are passing for this branch on semaphore
-    - [ ] merge! Celebrate your success!
+Explain in a few sentences what functionality changed, and how. Don't be afraid
+to give a little extra detail. The Reviewer is going to read the original
+ticket, but this can point them in the right direction.
 
-    ## Reviewer Checklist
-    - [ ] is syntax consistent with rest of code-base?
-    - [ ] are database access patterns relatively efficient?
-    - [ ] are client-side access patterns
-    - [ ] ember style
+Can your changes be *seen* by a user? Then add a screenshot. Is it an
+interaction?  Perhaps a quick recording?
 
-    ## Deployer Checklist
-    Changes to Tahi are deployed automatically to staging whenever tests for
-    the `master` branch are passing. These items really only apply for deploys
-    to `currents`, and `demo` (we don't have a production yet).
-    - [ ] **>>list changes here that need to be made to prod before a deploy<<**
-    - [ ] ideally these changes can be made by running a rake task or script
-    - [ ] you are deploying in the morning
-    - [ ] you are deploying on Monday, Tuesday, Wednesday, or Thursday.
-    - [ ] you are deploying your own code
-    - [ ] did the deploy
-    - [ ] you are watching the BugSnag slack channel and/or `heroku logs --tail`
-    - [ ] you announced the deploy with a few words summary to chatrooms
-    - [ ] you have opened https://dashboard.heroku.com/apps for rollback
+#### Notes
+
+Are there any surprises? Anything that was particularly difficult, or clever, or
+made you nervous, and should get particular attention during review? Call it
+out.
+
+---
+
+#### For the Reviewer:
+
+Reviewer tasks:
+
+- [ ] I skimmed the code; it makes sense
+- [ ] I read the code; it looks good
+- [ ] I ran the code (in the review environment or locally)
+- [ ] I performed a 5 minute walkthrough of the site looking for oddities
+- [ ] I have found the tests to be sufficient
+- [ ] I like the CHANGELOG entry
+- [ ] I agree the code fulfills the Acceptance Criteria
+
+#### After the Code Review:
+
+Author tasks:
+
+- [ ] The Product Team has reviewed and approved this feature
+```
 
 
-codeofconduct
-=============
-
-####Tahi's Code of Conduct
+#### Tahi's Code of Conduct
 
 *[borrowed from Code for America][cfa]*
 [cfa]:https://github.com/codeforamerica/codeofconduct

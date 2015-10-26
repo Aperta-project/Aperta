@@ -1,7 +1,7 @@
 class SnapshotService::Registry
-  class Error < ::StandardError ; end
-  class DuplicateRegistrationError < Error ; end
-  class NoSerializerRegisteredError < Error ; end
+  class Error < ::StandardError; end
+  class DuplicateRegistrationError < Error; end
+  class NoSerializerRegisteredError < Error; end
 
   def initialize
     @registrations = {}

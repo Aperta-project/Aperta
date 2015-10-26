@@ -227,7 +227,7 @@ class DataMigrator::PlosBioFinalTechCheckQuestionsMigrator < DataMigrator::Base
               value_type: nested_question.value_type,
               owner_id: old_question.task.id,
               owner_type: old_question.task.class.base_class.sti_name,
-              value: (old_question.answer == "Yes" || old_question.answer.eql?(true) || old_quesiton.answer.downcase == "true"),
+              value: (old_question.answer == "Yes" || old_question.answer.eql?(true) || old_question.answer.downcase == "true"),
               decision_id: old_question.decision_id,
               created_at: old_question.created_at,
               updated_at: old_question.updated_at

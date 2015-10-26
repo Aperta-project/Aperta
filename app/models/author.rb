@@ -113,6 +113,12 @@ class Author < ActiveRecord::Base
     NestedQuestion.where(owner_id:nil, owner_type:name).all
   end
 
+  # this is a hook for the nested_question_answers_policy to find its related
+  # task (to know if the user is authorized to conduct a specific action).
+  def task
+    authors_task
+  end
+
   def contributions
     contributions_question = self.class.contributions_question
     return [] unless contributions_question

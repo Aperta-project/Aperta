@@ -77,29 +77,10 @@ module TahiStandardTasks
       questions << NestedQuestion.new(
         owner_id:nil,
         owner_type: name,
-        ident: "intelligible",
-        value_type: "boolean",
-        text: "Is the manuscript presented in an intelligible fashion and written in standard English?",
-        position: 5,
-        children: [
-          NestedQuestion.new(
-            owner_id:nil,
-            owner_type: name,
-            ident: "explanation",
-            value_type: "text",
-            text: "Intelligible Explanation",
-            position: 1
-          )
-        ]
-      )
-
-      questions << NestedQuestion.new(
-        owner_id:nil,
-        owner_type: name,
         ident: "additional_comments",
         value_type: "text",
         text: "(Optional) Please offer any additional comments to the author.",
-        position: 6
+        position: 5
       )
 
       questions << NestedQuestion.new(
@@ -108,7 +89,7 @@ module TahiStandardTasks
         ident: "identity",
         value_type: "text",
         text: "(Optional) If you'd like your identity to be revealed to the authors, please include your name here.",
-        position: 7
+        position: 6
       )
 
       questions.each do |q|

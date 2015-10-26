@@ -63,25 +63,6 @@
   </li>
 
   <li class="question">
-    {{#nested-question-radio ident="intelligible"
-                      owner=model
-                      decision=decision
-                      helpText="<li>PLOS ONE does not copyedit accepted manuscripts, so the language in submitted articles must be clear, correct, and unambiguous. Any typographical or grammatical errors should be corrected at revision, so please note any specific errors below.</li>"
-                      wrapperClass="yes-no-with-comments"
-                      readonly=readonly as |radio|}}
-      {{#if radio.yieldingForAdditionalData}}
-        {{nested-question-textarea
-            ident="intelligible.explanation"
-            owner=model
-            decision=decision
-            noResponseText=""
-            displayQuestionText=false
-            readonly=readonly}}
-      {{/if}}
-    {{/nested-question-radio}}
-  </li>
-
-  <li class="question">
     {{nested-question-textarea ident="additional_comments"
                         owner=model
                         decision=decision

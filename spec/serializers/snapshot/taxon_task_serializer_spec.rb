@@ -1,14 +1,19 @@
 require "rails_helper"
 
 describe Snapshot::TaxonTaskSerializer do
-  let(:taxon_task) { FactoryGirl.create(:taxon_task)}
+  subject(:serializer) { described_class.new(task) }
+  let(:task) { FactoryGirl.create(:taxon_task) }
 
-  it "serializes a taxon task" do
-    snapshot = Snapshot::TaxonTaskSerializer.new(taxon_task).as_json
+  describe "#as_json" do
+    it "serializes to JSON" do
+      expect(serializer.as_json).to include(
+        name: "taxon-task",
+        type: "properties"
+      )
+    end
 
-    expect(snapshot[0][:name]).to eq("taxon_zoological")
-    expect(snapshot[0][:children][0][:name]).to eq("complies")
-    expect(snapshot[1][:name]).to eq("taxon_botanical")
-    expect(snapshot[1][:children][0][:name]).to eq("complies")
+    context "serializing related nested questions" do
+      include_examples "snapshot serializes related nested questions", resource: :task
+    end
   end
 end

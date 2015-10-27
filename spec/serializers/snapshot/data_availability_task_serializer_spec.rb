@@ -1,12 +1,19 @@
 require "rails_helper"
 
 describe Snapshot::DataAvailabilityTaskSerializer do
-  let(:data_availability_task) { FactoryGirl.create(:data_availability_task)}
+  subject(:serializer) { described_class.new(task) }
+  let(:task) { FactoryGirl.create(:data_availability_task) }
 
-  it "serializes a data availability task" do
-    snapshot = Snapshot::DataAvailabilityTaskSerializer.new(data_availability_task).as_json
+  describe "#as_json" do
+    it "serializes to JSON" do
+      expect(serializer.as_json).to include(
+        name: "data-availability-task",
+        type: "properties"
+      )
+    end
 
-    expect(snapshot[0][:name]).to eq("data_fully_available")
-    expect(snapshot[1][:name]).to eq("data_location")
+    context "serializing related nested questions" do
+      include_examples "snapshot serializes related nested questions", resource: :task
+    end
   end
 end

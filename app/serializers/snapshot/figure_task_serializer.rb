@@ -1,22 +1,21 @@
 class Snapshot::FigureTaskSerializer < Snapshot::BaseTaskSerializer
-  def snapshot_properties
-    paper = Paper.find(@task.paper.id)
-    figures = []
-    paper.figures.order(:id).each do |figure|
-      figures << snapshot_figure(figure)
-    end
 
-    [{name: "figures", type: "properties", children: figures}]
+  private
+
+  def snapshot_properties
+    @task.paper.figures.order(:id).map do |figure|
+      snapshot_figure(figure)
+    end
   end
 
-  def snapshot_figure figure
-    properties = []
-    attachment_serializer = Snapshot::AttachmentSerializer.new figure.attachment
-    properties << {name: "attachment", type: "properties", children: attachment_serializer.as_json}
-    properties << snapshot_property("title", "text", figure.title)
-    properties << snapshot_property("caption", "text", figure.caption)
-    properties << snapshot_property("status", "text", figure.status)
+  def snapshot_figure(figure)
+    figure_children = [
+      snapshot_property("file", "text", figure[:attachment]),
+      snapshot_property("title", "text", figure.title),
+      snapshot_property("caption", "text", figure.caption),
+      snapshot_property("status", "text", figure.status)
+    ]
 
-    {name: "figure", type: "properties", children: properties}
+    { name: "figure", type: "properties", children: figure_children }
   end
 end

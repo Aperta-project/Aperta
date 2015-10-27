@@ -1,18 +1,24 @@
 class Snapshot::SupportingInformationTaskSerializer < Snapshot::BaseTaskSerializer
+
+  private
+
   def snapshot_properties
-    paper = Paper.find(@task.paper.id)
-    properties = []
-    paper.supporting_information_files.order(:id).each do |file|
-      properties << { name: "file", type: "properties", children: snapshot_file(file) }
+    @task.paper.supporting_information_files.order(:id).map do |file|
+      {
+        name: "supporting-information-file",
+        type: "properties",
+        children: snapshot_file_properties(file)
+      }
     end
-    properties
   end
 
-  def snapshot_file(file)
-    properties = []
-    attachment_serializer = Snapshot::AttachmentSerializer.new file.attachment
-    properties << { name: "attachment", type: "properties", children: attachment_serializer.as_json }
-    properties << snapshot_property("publishable", "boolean", file.publishable)
-    properties << snapshot_property("status", "text", file.status)
+  def snapshot_file_properties(file)
+    [
+      snapshot_property("file", "text", file[:attachment]),
+      snapshot_property("title", "text", file.title),
+      snapshot_property("caption", "text", file.caption),
+      snapshot_property("publishable", "boolean", file.publishable),
+      snapshot_property("status", "text", file.status)
+    ]
   end
 end

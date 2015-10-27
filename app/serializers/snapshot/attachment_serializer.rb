@@ -4,16 +4,12 @@ class Snapshot::AttachmentSerializer < Snapshot::BaseSerializer
   end
 
   def as_json
-    if @attachment.nil?
-      return nil
-    end
-    properties = []
-
-    properties << snapshot_property("file", "text", @attachment.model[:attachment])
-    properties << snapshot_property("title", "text", @attachment.model[:title])
-    properties << snapshot_property("caption", "text", @attachment.model[:caption])
-    properties << snapshot_property("status", "text", @attachment.model[:status])
-
-    properties
+    return unless @attachment
+    [
+      snapshot_property("file", "text", @attachment[:file]),
+      snapshot_property("title", "text", @attachment[:title]),
+      snapshot_property("caption", "text", @attachment[:caption]),
+      snapshot_property("status", "text", @attachment[:status])
+    ]
   end
 end

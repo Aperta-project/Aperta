@@ -3,7 +3,7 @@ module NestedQuestionable
 
   class_methods do
     def nested_questions
-      []
+      NestedQuestion.where(owner_id: nil, owner_type: name)
     end
   end
 

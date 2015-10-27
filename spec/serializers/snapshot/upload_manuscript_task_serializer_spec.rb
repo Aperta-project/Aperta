@@ -1,11 +1,19 @@
 require "rails_helper"
 
 describe Snapshot::UploadManuscriptTaskSerializer do
-  let(:upload_manuscript_task) {FactoryGirl.create(:upload_manuscript_task)}
+  subject(:serializer) { described_class.new(task) }
+  let(:task) { FactoryGirl.create(:upload_manuscript_task) }
 
-  it "serializes an upload manuscript task" do
-    snapshot = Snapshot::UploadManuscriptTaskSerializer.new(upload_manuscript_task).as_json
+  describe "#as_json" do
+    it "serializes to JSON" do
+      expect(serializer.as_json).to include(
+        name: "upload-manuscript-task",
+        type: "properties"
+      )
+    end
 
-    expect(snapshot.count).to eq(0)
+    context "serializing related nested questions" do
+      include_examples "snapshot serializes related nested questions", resource: :task
+    end
   end
 end

@@ -1,35 +1,4 @@
-# https://github.com/bbatsov/rubocop/blob/master/config/enabled.yml
-
 AllCops:
   RunRailsCops: true
   Exclude:
-    - 'spec/**/*'
-    - 'test/**/*'
-    - 'vendor/assets/**/*'
     - 'db/schema.rb'
-    - 'db/migrate/*'
-Blocks:
-  Enabled: false
-ClassAndModuleChildren:
-  Enabled: false
-Metrics/ClassLength:
-  Enabled: false
-Documentation:
-  Enabled: false
-Metrics/LineLength:
-  Enabled: false
-StringLiterals:
-  Enabled: false
-Style/SpaceAroundEqualsInParameterDefault:
-  EnforcedStyle: no_space
-Style/StringLiterals:
-  Enabled: false
-Style/DotPosition:
-  Enabled: true
-  EnforcedStyle: trailing
-Style/EmptyLinesAroundBlockBody:
-  Enabled: false
-Style/EmptyLinesAroundClassBody:
-  Enabled: false
-Style/EmptyLinesAroundModuleBody:
-  Enabled: false

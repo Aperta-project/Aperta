@@ -1,0 +1,12 @@
+PreCommit:
+  RuboCop:
+    enabled: true
+    command: ['bundle', 'exec', 'rubocop']
+    problem_on_unmodified_line: 
+  JsHint:
+    enabled: true
+    problem_on_unmodified_line: ignore
+  CoffeeLint:
+    enabled: true
+    problem_on_unmodified_line: ignore
+    

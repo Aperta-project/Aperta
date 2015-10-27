@@ -4,8 +4,10 @@
 #
 class PlosEditorialManager < ActiveRecord::Base
 
-  establish_connection(ENV['EM_DATABASE_URL'].present? ? ENV['EM_DATABASE_URL'] : "plos_editorial_manager_#{Rails.env}".to_sym)
-
+  if ENV['EM_DATABASE_URL'].present?
+    establish_connection(ENV['EM_DATABASE_URL'])
+  end
+  
   def self.find_person_by_email(email:)
     email = email.strip
     sql = "SELECT TOP (1) * FROM PEOPLE JOIN ADDRESS ON (PEOPLE.PEOPLEID = ADDRESS.PEOPLEID) WHERE ADDRESS.EMAIL LIKE '%#{email}%'"

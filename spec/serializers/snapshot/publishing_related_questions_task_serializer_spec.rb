@@ -4,7 +4,7 @@ describe Snapshot::PublishingRelatedQuestionsTaskSerializer do
   let(:publishing_related_questions_task) {FactoryGirl.create(:publishing_related_questions_task)}
 
   it "serializes a publishing related questions task" do
-    snapshot = Snapshot::PublishingRelatedQuestionsTaskSerializer.new(publishing_related_questions_task).snapshot
+    snapshot = Snapshot::PublishingRelatedQuestionsTaskSerializer.new(publishing_related_questions_task).as_json
 
     expect(snapshot[0][:name]).to eq("published_elsewhere")
     expect(snapshot[0][:children][0][:name]).to eq("taken_from_manuscripts")

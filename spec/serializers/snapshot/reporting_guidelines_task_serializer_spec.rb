@@ -4,7 +4,7 @@ describe Snapshot::ReportingGuidelinesTaskSerializer do
   let(:reporting_guidelines_task) {FactoryGirl.create(:reporting_guidelines_task)}
 
   it "serializes a reporting guidelines task" do
-    snapshot = Snapshot::ReportingGuidelinesTaskSerializer.new(reporting_guidelines_task).snapshot
+    snapshot = Snapshot::ReportingGuidelinesTaskSerializer.new(reporting_guidelines_task).as_json
 
     expect(snapshot[0][:name]).to eq("clinical_trial")
     expect(snapshot[1][:name]).to eq("systematic_reviews")

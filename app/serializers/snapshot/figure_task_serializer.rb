@@ -12,7 +12,7 @@ class Snapshot::FigureTaskSerializer < Snapshot::BaseTaskSerializer
   def snapshot_figure figure
     properties = []
     attachment_serializer = Snapshot::AttachmentSerializer.new figure.attachment
-    properties << {name: "attachment", type: "properties", children: attachment_serializer.snapshot}
+    properties << {name: "attachment", type: "properties", children: attachment_serializer.as_json}
     properties << snapshot_property("title", "text", figure.title)
     properties << snapshot_property("caption", "text", figure.caption)
     properties << snapshot_property("status", "text", figure.status)

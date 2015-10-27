@@ -79,7 +79,6 @@ class DataMigrator::PlosBioRevisionTechCheckQuestionsMigrator < DataMigrator::Ba
       ident: "open_rejects",
       value_type: "boolean",
       text: "Check Section Headings of all new submissions (including Open Rejects). Should broadly follow: Title, Authors, Affiliations, Abstract, Introduction, Results, Discussion, Materials and Methods, References, Acknowledgements, and Figure Legends.",
-      additional_data: "Please ensure that all of the following sections are present and appear in your manuscript file in the following order: Title, Authors, Affiliations, Abstract, Introduction, Results, Discussion, Materials and Methods, References, Acknowledgments, and Figure Legends. More detailed guidelines can be found on our website: http://journals.plos.org/plosbiology/s/submission-guidelines#loc-manuscript-organization.",
       position: 1
     )
 
@@ -134,7 +133,6 @@ class DataMigrator::PlosBioRevisionTechCheckQuestionsMigrator < DataMigrator::Ba
       ident: "financial_disclosure",
       value_type: "boolean",
       text: "If Financial Disclosure Statement is not complete (they've written N/A or something similar), message author.",
-      additional_data: "Please complete the Financial Disclosure Statement field of the online submission form.",
       position: 7
     )
 
@@ -144,7 +142,6 @@ class DataMigrator::PlosBioRevisionTechCheckQuestionsMigrator < DataMigrator::Ba
       ident: "tobacco",
       value_type: "boolean",
       text: "If the Financial Disclosure Statement includes any companies from the Tobacco Industry, make a note in the discussion below.",
-      additional_data: "This section should describe sources of funding that have supported the work. Please include relevant grant numbers and the URL of any funder's Web site.",
       position: 8
     )
 
@@ -154,7 +151,6 @@ class DataMigrator::PlosBioRevisionTechCheckQuestionsMigrator < DataMigrator::Ba
       ident: "figures_legible",
       value_type: "boolean",
       text: "If any figures are completely illegible, contact the author.",
-      additional_data: "Your Figure is not easily legible. Please provide a higher quality version of this Figure while ensuring the file size remains below 10MB. We recommend saving your figures as TIFF files using LZW compression. More detailed guidelines can be found on our website: http://journals.plos.org/plosbiology/s/figures.",
       position: 9
     )
 
@@ -164,7 +160,6 @@ class DataMigrator::PlosBioRevisionTechCheckQuestionsMigrator < DataMigrator::Ba
       ident: "cited",
       value_type: "boolean",
       text: "If any files or figures are cited but not included in the submission, message the author.",
-      additional_data: "Please note you have cited a file in your manuscript that has not been included with your submission. Please upload this file, or if this file was cited in error, please remove the corresponding citation from your manuscript.",
       position: 10
     )
 
@@ -183,7 +178,6 @@ class DataMigrator::PlosBioRevisionTechCheckQuestionsMigrator < DataMigrator::Ba
       ident: "billing_inquiries",
       value_type: "boolean",
       text: "Have the authors mentioned any billing information in the cover letter? If yes, contact the editor/journal team.",
-      additional_data: "Please note that our policy requires the removal of any mention of billing information from the cover letter. I have forwarded your query to our Billing Team (authorbilling@plos.org). Further infromation about Publication Fees can be found here: http://www.plos.org/publications/publication-fees/. Thank you, PLOS Biology",
       position: 12
     )
 

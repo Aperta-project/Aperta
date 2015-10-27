@@ -3,7 +3,7 @@ module TahiStandardTasks
     register_task default_title: 'Reviewer Report', default_role: 'reviewer'
 
     before_create :assign_to_latest_decision
-    has_many :decisions, -> { uniq }, through: :nested_question_answers
+    has_many :decisions, -> { uniq }, through: :paper
 
     def self.nested_questions
       NestedQuestion.where(owner_id:nil, owner_type:name).all

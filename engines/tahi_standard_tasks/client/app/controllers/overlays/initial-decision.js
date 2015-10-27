@@ -1,4 +1,27 @@
 import Ember from 'ember';
 import TaskController from 'tahi/pods/paper/task/controller';
 
-export default TaskController.extend();
+export default TaskController.extend({
+
+  initialDecision: Ember.computed.alias('model.paper.decisions.firstObject'),
+  isSavingData: Ember.computed.alias('initialDecision.isSaving'),
+  paper: Ember.computed.alias('model.paper'),
+  isPaperSubmitted: Ember.computed.equal('paper.publishingState', 'submitted'),
+  isTaskCompleted: Ember.computed.equal('model.completed', true),
+  isTaskUncompleted: Ember.computed.not('isTaskCompleted'),
+  decisionRegistered: Ember.computed.and('isTaskCompleted', 'initialDecision'),
+  publishable: Ember.computed.and('isPaperSubmitted', 'isTaskUncompleted'),
+  nonPublishable: Ember.computed.not('publishable'),
+  initialDecisionLetter: '',
+
+  actions: {
+
+    registerDecision() {
+      // this.get('initialDecision').save();
+    },
+
+    setInitialDecisionVerdict(decision) {
+      this.get("initialDecision").set("verdict", decision)
+    }
+  }
+});

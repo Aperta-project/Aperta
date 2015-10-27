@@ -43,6 +43,7 @@ module('Integration: FinancialDisclosure', {
     paperPayload.addRecords(records.concat([fakeUser]));
     paperResponse = paperPayload.toJSON();
     paperResponse.participations = [addUserAsParticipant(financialDisclosureTask, fakeUser)];
+
     taskPayload = Factory.createPayload('task');
 
     var nestedQuestion;
@@ -61,6 +62,10 @@ module('Integration: FinancialDisclosure', {
         info: "testroles2, collaborator"
       }
     ];
+
+    var tasksPayload = Factory.createPayload('tasks');
+    tasksPayload.addRecords([financialDisclosureTask]);
+
     server.respondWith('GET', "/api/papers/" + currentPaper.id, [
       200, {
         "Content-Type": "application/json"
@@ -135,11 +140,7 @@ module('Integration: FinancialDisclosure', {
 test('Viewing the card and adding new funder', function(assert) {
   return visit("/papers/" + currentPaper.id + "/tasks/" + financialDisclosureTaskId).then(function() {
     assert.equal(find('.overlay-main-work h1').text().trim(), 'Financial Disclosures');
-<<<<<<< HEAD
-    assert.ok(find("label:contains('Yes')").length);
-=======
     assert.ok(find("label:contains('Yes')").length, "User can find the 'yes' option'");
->>>>>>> cfc50ba... fixup! APERTA-3272 APERTA-3204 APERTA-3270 Pull sub-records into async endpoints.
     click("label:contains('Yes')");
     return andThen(function() {
       assert.ok(find("button:contains('Add Another Funder')").length, "User can add another funder");

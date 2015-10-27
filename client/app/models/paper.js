@@ -43,7 +43,6 @@ export default DS.Model.extend({
   shortTitle: attr('string'),
   status: attr('string'),
   strikingImageId: attr('string'),
-  isSubmitted: attr('boolean'),
   submittedAt: attr('date'),
   publishingState: attr('string'),
   title: attr('string'),

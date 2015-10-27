@@ -45,7 +45,7 @@ module 'Integration: PaperIndex',
     console.log tasksPayload.toJSON()
 
     taskPayload = Factory.createPayload('task')
-    taskPayload.addRecords([figureTask, litePaper, fakeUser, nestedQuestion])
+    taskPayload.addRecords([figureTask, currentPaper, fakeUser, nestedQuestion])
 
     figureTaskResponse = taskPayload.toJSON()
     collaborators = [

@@ -25,6 +25,7 @@ module UpdateResponders
 
     def generate_json_response(collection, root)
       json = ActiveModel::ArraySerializer.new(collection, root: root, user: current_user).as_json
+      json[:tasks] ||= []
       json[:tasks].unshift @task.active_model_serializer.new(@task, user: current_user).as_json[:task]
       json[:tasks] = json[:tasks].uniq { |task| task[:id] }
       json

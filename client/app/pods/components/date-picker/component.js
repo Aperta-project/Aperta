@@ -26,6 +26,8 @@ export default Ember.TextField.extend({
       this.updateDate(null);
     });
 
+    this.set("value", this.get("date"));
+
     this.set('$picker', $picker);
     this.set('ready', true);
   }),
@@ -65,8 +67,4 @@ export default Ember.TextField.extend({
 
     this.get('$picker').datepicker('setEndDate', dateString);
   },
-
-  setter: Ember.observer('date', function() {
-    this.set('value', this.get('date'));
-  })
 });

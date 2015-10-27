@@ -6,6 +6,6 @@ class QuestionAttachment < ActiveRecord::Base
   mount_uploader :attachment, QuestionAttachmentUploader
 
   def paper
-    question.decision.paper
+    question.owner.paper
   end
 end

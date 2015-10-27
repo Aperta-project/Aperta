@@ -7,11 +7,10 @@ export default Ember.Route.extend({
     // Force the reload of the task when visiting the tasks' route.
     let task = this.store.findTask(params.task_id);
     if (task) {
-      task.reload();
+      return task.reload();
     } else {
-      task = this.store.find('task', params.task_id);
+      return this.store.find('task', params.task_id);
     }
-    return task;
   },
 
   afterModel(model) {

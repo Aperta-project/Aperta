@@ -1,4 +1,4 @@
-class PaperSerializer < ActiveModel::Serializer
+class PaperSerializer < LitePaperSerializer
   attributes :id, :short_title, :title, :doi, :body,
              :publishing_state, :paper_type, :status, :updated_at,
              :editable, :links, :manuscript_id, :created_at, :editable
@@ -9,7 +9,6 @@ class PaperSerializer < ActiveModel::Serializer
 
   has_many :collaborations, embed: :ids, include: true, serializer: CollaborationSerializer
   has_one :journal, embed: :id
-  has_one :locked_by, embed: :id
   has_one :striking_image, embed: :id
 
   def status

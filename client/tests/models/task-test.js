@@ -2,7 +2,7 @@ import Ember from 'ember';
 import { test, moduleForModel } from 'ember-qunit';
 moduleForModel('task', 'Unit: Task Model', {
   needs: ['model:author', 'model:user', 'model:figure', 'model:table', 'model:bibitem',
-    'model:journal',
+    'model:journal', 'model:discussion-topic', 'model:versioned-text',
     'model:decision', 'model:invitation', 'model:affiliation', 'model:attachment',
     'model:question-attachment', 'model:comment-look',
     'model:phase', 'model:task', 'model:comment', 'model:participation',

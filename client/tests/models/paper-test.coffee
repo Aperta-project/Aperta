@@ -18,8 +18,7 @@ moduleForModel 'paper', 'Unit: Paper Model',
   'model:phase', 'model:task', 'model:comment', 'model:participation',
   'model:card-thumbnail', 'model:nested-question-owner',
   'model:nested-question', 'model:nested-question-answer',
-  'model:question', 'model:collaboration',
-  'model:supporting-information-file']
+  'model:collaboration', 'model:supporting-information-file']
 
   afterEach: ->
     Ember.run ->

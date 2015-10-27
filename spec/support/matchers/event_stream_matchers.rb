@@ -1,7 +1,7 @@
 module EventStreamMatchers
   RSpec::Matchers.define :receive_push do |expected|
     # the payload should contain this key at the root of the json object
-    payload = expected[:serialize]
+    object = expected[:serialize]
 
     # the payload will be sent _down_ this channel
     channel = expected[:down]
@@ -12,7 +12,12 @@ module EventStreamMatchers
       expect(actual).to receive(:push) do |args|
         expect(args[:channel_name]).to match(channel_name(channel))
         expect(args[:event_name]).to eq(action)
-        expect(args[:payload][:id]).to be(payload.id)
+
+        if object
+          expect(args[:payload][:id]).to be(object.id)
+        else
+          expect(args[:payload]).to match(expected[:payload])
+        end
       end
     end
 

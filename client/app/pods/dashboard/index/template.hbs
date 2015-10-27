@@ -1,8 +1,14 @@
 <div class="control-bar"></div>
 {{flash-messages classNames="flash-messages--below-control-bar"}}
 
-<div id="tahi-container">
+{{#overlay-base visible=showNewManuscriptOverlay
+                outAnimationComplete=(action "hideNewManuscriptOverlay")
+                as |animateOut|}}
+  {{overlays/manuscript-new class="overlay overlay--fullscreen paper-new-overlay"
+                            close=(action animateOut)}}
+{{/overlay-base}}
 
+<div id="tahi-container">
   <section class="dashboard-section">
     {{#if pendingInvitations}}
       <h2 class="welcome-message">
@@ -26,13 +32,13 @@
       {{/if}}
     </h2>
 
-    <button class="button-primary button--green" {{action "showNewPaperOverlay"}}>Create New Submission</button>
+    <button class="button-primary button--green" {{action "showNewManuscriptOverlay"}}>Create New Submission</button>
 
     {{#if hasPapers}}
       {{#if hasActivePapers}}
         <div class="table-responsive">
           <table summary="This table displays manuscript data and roles" class="table-borderless top-margin">
-            <thead class='manuscript-list-heading {{if activePapersVisible 'gray-line'}} active-papers' {{action 'toggleActiveContainer'}}>
+            <thead class="manuscript-list-heading {{if activePapersVisible "gray-line"}} active-papers" {{action "toggleActiveContainer"}}>
               <tr>
                 <th class="col-xs-9 hug-left">{{activeManuscriptsHeading}}</th>
                 {{#if activePapersVisible}}
@@ -44,10 +50,10 @@
             <tbody>
               {{#if activePapersVisible}}
                 {{#each sortedDraftPapers as |paper|}}
-                  {{dashboard-link model=paper type='active' class='active-paper-table-row'}}
+                  {{dashboard-link model=paper type="active" class="active-paper-table-row"}}
                 {{/each}}
                 {{#each sortedNonDraftPapers as |paper|}}
-                  {{dashboard-link model=paper type='active' class='active-paper-table-row'}}
+                  {{dashboard-link model=paper type="active" class="active-paper-table-row"}}
                 {{/each}}
               {{/if}}
             </tbody>
@@ -58,7 +64,7 @@
       {{#if hasInactivePapers}}
         <div class="table-responsive">
           <table summary="This table displays manuscript data and roles" class="table-borderless top-margin">
-            <thead class='manuscript-list-heading {{if inactivePapersVisible 'gray-line'}} inactive-papers' {{action 'toggleInactiveContainer'}}>
+            <thead class="manuscript-list-heading {{if inactivePapersVisible "gray-line"}} inactive-papers" {{action "toggleInactiveContainer"}}>
               <tr>
                 <th class="col-xs-9 hug-left">{{inactiveManuscriptsHeading}}</th>
                 {{#if inactivePapersVisible}}
@@ -70,7 +76,7 @@
             <tbody>
               {{#if inactivePapersVisible}}
                 {{#each sortedInactivePapers as |paper|}}
-                  {{dashboard-link model=paper type='inactive' class='inactive-paper-table-row'}}
+                  {{dashboard-link model=paper type="inactive" class="inactive-paper-table-row"}}
                 {{/each}}
               {{/if}}
             </tbody>

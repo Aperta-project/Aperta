@@ -4,14 +4,14 @@ class Snapshot::ReviewerRecommendationsTaskSerializer < Snapshot::BaseSerializer
   end
 
   def as_json
-    {name: "recommendations", type: "properties", children: snapshot_recommendations}
+    { name: "recommendations", type: "properties", children: snapshot_recommendations }
   end
 
   def snapshot_recommendations
     recommendations = []
     @task.reviewer_recommendations.each do |recommendation|
       serializer = Snapshot::ReviewerRecommendationSerializer.new recommendation
-      recommendations << { name: "recommendation", type: "properties", children: serializer.snapshot }
+      recommendations << { name: "recommendation", type: "properties", children: serializer.as_json }
     end
     recommendations
   end

@@ -7,7 +7,7 @@ class Snapshot::AuthorTaskSerializer < Snapshot::BaseTaskSerializer
     authors = []
     @task.authors.order(:position).each do |author|
       author_serializer = Snapshot::AuthorSerializer.new author
-      authors << {name: "author", type: "properties", children: author_serializer.snapshot}
+      authors << {name: "author", type: "properties", children: author_serializer.as_json}
     end
     authors
   end

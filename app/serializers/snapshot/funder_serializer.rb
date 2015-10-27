@@ -20,7 +20,7 @@ class Snapshot::FunderSerializer < Snapshot::BaseSerializer
 
     nested_questions.each do |question|
       question_serializer = Snapshot::NestedQuestionSerializer.new question, @funder
-      funder_snapshot << question_serializer.snapshot
+      funder_snapshot << question_serializer.as_json
     end
 
     funder_snapshot

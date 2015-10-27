@@ -28,7 +28,7 @@ class Snapshot::AuthorSerializer < Snapshot::BaseSerializer
 
     nested_questions.each do |question|
       question_serializer = Snapshot::NestedQuestionSerializer.new question, @author
-      author_snapshot << question_serializer.snapshot
+      author_snapshot << question_serializer.as_json
     end
 
     author_snapshot

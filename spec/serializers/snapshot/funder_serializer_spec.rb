@@ -8,7 +8,7 @@ describe Snapshot::FunderSerializer do
   end
 
   it "snapshots a funder's properties" do
-    snapshot = Snapshot::FunderSerializer.new(funder).snapshot
+    snapshot = Snapshot::FunderSerializer.new(funder).as_json
 
     expect(find_property(snapshot, "name")[:value]).to eq(funder.name)
     expect(find_property(snapshot, "grant_number")[:value]).to eq(funder.grant_number)
@@ -28,7 +28,7 @@ describe Snapshot::FunderSerializer do
     role_answer.owner_id = funder.id
     allow_any_instance_of(TahiStandardTasks::Funder).to receive(:nested_question_answers).and_return([role_answer, infulence_answer])
 
-    snapshot = Snapshot::FunderSerializer.new(funder).snapshot
+    snapshot = Snapshot::FunderSerializer.new(funder).as_json
 
     funder_had_infulence = find_property(snapshot, "funder_had_influence")
     expect(funder_had_infulence[:value][:answer]).to eq(infulence_answer.value)

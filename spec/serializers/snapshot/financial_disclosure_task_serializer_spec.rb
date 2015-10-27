@@ -4,7 +4,7 @@ describe Snapshot::FinancialDisclosureTaskSerializer do
   let(:task) {FactoryGirl.create(:financial_disclosure_task)}
 
   it "serializes a financial disclosure task" do
-    snapshot = Snapshot::FinancialDisclosureTaskSerializer.new(task).snapshot
+    snapshot = Snapshot::FinancialDisclosureTaskSerializer.new(task).as_json
 
     expect(snapshot[0][:name]).to eq("author_received_funding")
   end
@@ -15,7 +15,7 @@ describe Snapshot::FinancialDisclosureTaskSerializer do
     task.funders << funder1
     task.funders << funder2
 
-    snapshot = Snapshot::FinancialDisclosureTaskSerializer.new(task).snapshot
+    snapshot = Snapshot::FinancialDisclosureTaskSerializer.new(task).as_json
 
     expect(snapshot[0][:name]).to eq("author_received_funding")
     expect(snapshot[1][:name]).to eq("funder")

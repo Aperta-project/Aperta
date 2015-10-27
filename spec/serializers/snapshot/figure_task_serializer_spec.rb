@@ -18,7 +18,7 @@ describe Snapshot::FigureTaskSerializer do
   end
 
   it "snapshots a figure task" do
-    snapshot = Snapshot::FigureTaskSerializer.new(task).snapshot
+    snapshot = Snapshot::FigureTaskSerializer.new(task).as_json
     figure = snapshot[0][:children][0][:children]
 
     expect(find_property(figure, "title")).to eq("figure title")

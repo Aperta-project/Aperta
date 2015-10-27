@@ -13,7 +13,7 @@ describe Snapshot::ReviewerRecommendationsTaskSerializer do
       recommendation = FactoryGirl.create(:reviewer_recommendation)
       task.reviewer_recommendations << recommendation
 
-      snapshot = Snapshot::ReviewerRecommendationsTaskSerializer.new(task).snapshot
+      snapshot = Snapshot::ReviewerRecommendationsTaskSerializer.new(task).as_json
       properties = snapshot[:children][0][:children]
 
       expect(find_property(properties, "first_name")).to eq(recommendation.first_name)
@@ -32,8 +32,7 @@ describe Snapshot::ReviewerRecommendationsTaskSerializer do
       task.reviewer_recommendations << recommendation1
       task.reviewer_recommendations << recommendation2
 
-      snapshot = Snapshot::ReviewerRecommendationsTaskSerializer.new(task).snapshot
-
+      snapshot = Snapshot::ReviewerRecommendationsTaskSerializer.new(task).as_json
       properties = snapshot[:children][0][:children]
       expect(find_property(properties, "first_name")).to eq(recommendation1.first_name)
       expect(find_property(properties, "last_name")).to eq(recommendation1.last_name)
@@ -65,7 +64,7 @@ describe Snapshot::ReviewerRecommendationsTaskSerializer do
       reason_answer.value = "They're good people"
       allow_any_instance_of(TahiStandardTasks::ReviewerRecommendation).to receive(:nested_question_answers).and_return([recommending_answer, reason_answer])
 
-      snapshot = Snapshot::ReviewerRecommendationsTaskSerializer.new(task).snapshot
+      snapshot = Snapshot::ReviewerRecommendationsTaskSerializer.new(task).as_json
       properties = snapshot[:children][0][:children]
 
       expect(find_property(properties, "recommend_or_oppose")[:answer]).to eq("recommend")

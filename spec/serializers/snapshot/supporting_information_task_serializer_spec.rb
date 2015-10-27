@@ -3,7 +3,7 @@ require "rails_helper"
 describe Snapshot::SupportingInformationTaskSerializer do
   it "serializes a supporting information task" do
     task = FactoryGirl.create(:supporting_information_task)
-    snapshot = Snapshot::SupportingInformationTaskSerializer.new(task).snapshot
+    snapshot = Snapshot::SupportingInformationTaskSerializer.new(task).as_json
 
     expect(snapshot.count).to eq(0)
   end
@@ -27,7 +27,7 @@ describe Snapshot::SupportingInformationTaskSerializer do
     paper.supporting_information_files << file1
     paper.supporting_information_files << file2
 
-    snapshot = Snapshot::SupportingInformationTaskSerializer.new(supporting_information_task).snapshot
+    snapshot = Snapshot::SupportingInformationTaskSerializer.new(supporting_information_task).as_json
 
     expect(snapshot[0][:children][0][:children][1][:value]).to eq(file1.title)
     expect(snapshot[0][:children][1][:name]).to eq("publishable")

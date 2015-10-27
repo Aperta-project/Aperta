@@ -25,7 +25,7 @@ class Snapshot::ReviewerRecommendationSerializer < Snapshot::BaseSerializer
 
     nested_questions.each do |question|
       question_serializer = Snapshot::NestedQuestionSerializer.new question, @reviewer_recommendation
-      recommendation_snapshot << question_serializer.snapshot
+      recommendation_snapshot << question_serializer.as_json
     end
 
     recommendation_snapshot

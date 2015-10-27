@@ -12,7 +12,7 @@ describe Snapshot::AuthorTaskSerializer do
       author = FactoryGirl.create(:author)
       task.authors = [author]
 
-      snapshot = Snapshot::AuthorTaskSerializer.new(task).snapshot
+      snapshot = Snapshot::AuthorTaskSerializer.new(task).as_json
       properties = snapshot[:children][0][:children]
 
       expect(find_property(properties, "first_name")).to eq(author.first_name)
@@ -38,7 +38,7 @@ describe Snapshot::AuthorTaskSerializer do
       allow_any_instance_of(Author).to receive(:nested_question_answers).and_return([corresponding_answer])
       task.authors = [author]
 
-      snapshot = Snapshot::AuthorTaskSerializer.new(task).snapshot
+      snapshot = Snapshot::AuthorTaskSerializer.new(task).as_json
       properties = snapshot[:children][0][:children]
 
       expect(find_property(properties, "published_as_corresponding_author")[:answer]).to eq("t")
@@ -54,7 +54,7 @@ describe Snapshot::AuthorTaskSerializer do
       author3.first_name = "Third"
       task.authors = [author3, author1, author2]
 
-      snapshot = Snapshot::AuthorTaskSerializer.new(task).snapshot
+      snapshot = Snapshot::AuthorTaskSerializer.new(task).as_json
       properties1 = snapshot[:children][0][:children]
       properties2 = snapshot[:children][1][:children]
       properties3 = snapshot[:children][2][:children]

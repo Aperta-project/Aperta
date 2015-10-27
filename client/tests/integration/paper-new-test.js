@@ -4,7 +4,6 @@ import startApp from 'tahi/tests/helpers/start-app';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 
 let App = null;
-let title = 'Crystalized Magnificence in the Modern World';
 
 module('Integration: Create new paper', {
   afterEach() {
@@ -31,31 +30,20 @@ module('Integration: Create new paper', {
   }
 });
 
-test('author successfully creates a submission', function(assert) {
-  TestHelper.handleCreate('paper');
+test('error is displayed after failed submission', function(assert) {
+  const paperNewController = App.__container__.lookup('controller:overlays/paper-new');
 
-  visit('/');
-  click('.button-primary:contains(Create New Submission)');
-  fillIn('#paper-short-title', title);
-  pickFromSelectBox('.paper-new-journal-select', 'PLOS Yeti 1');
-  pickFromSelectBox('.paper-new-paper-type-select', 'Research');
-  click('.paper-new-create-document-button');
-
-  andThen(function() {
-    assert.ok(find('#paper-title').length, 'on Paper Edit screen');
-  });
-});
-
-test('author unsuccessfully creates a submission', function(assert) {
   TestHelper.handleCreate('paper').andFail({
     status: 422, response: {'errors':{'paper_type':['can\'t be blank']}}
   });
 
   visit('/');
-  click('.button-primary:contains(Create New Submission)');
-  fillIn('#paper-short-title', title);
-  pickFromSelectBox('.paper-new-journal-select', 'PLOS Yeti 1');
-  click('.paper-new-create-document-button');
+  click('.button-primary:contains(Create New Submission)').then(function() {
+    paperNewController.send('createPaperWithUpload');
+    // createPaperWithUpload returns a promise
+    // the wait helper will... wait
+    wait();
+  });
 
   andThen(function() {
     assert.ok(find('.flash-message--error').length, 'error on screen');
@@ -63,17 +51,20 @@ test('author unsuccessfully creates a submission', function(assert) {
 });
 
 test('feedback is displayed after submission', function(assert) {
-  let paperNewController = App.__container__.lookup('controller:overlays/paper-new');
+  const paperNewController = App.__container__.lookup('controller:overlays/paper-new');
 
   visit('/');
   click('.button-primary:contains(Create New Submission)').then(function() {
     Ember.run(this, function() {
-      paperNewController.set('model', {});
-      paperNewController.set('model.isSaving', true);
+      paperNewController.set('isSaving', true);
     });
   });
 
   andThen(function() {
-    assert.ok(find('.progress-spinner').length, 'spinner visible');
+    const spinner = find('.progress-spinner');
+    const uploadButton = find('.paper-new-upload-button');
+
+    assert.ok(spinner.length, 'spinner visible');
+    assert.ok(uploadButton.hasClass('button--disabled'), 'button is disabled');
   });
 });

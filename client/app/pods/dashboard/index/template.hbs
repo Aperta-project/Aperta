@@ -32,7 +32,7 @@
       {{#if hasActivePapers}}
         <div class="table-responsive">
           <table summary="This table displays manuscript data and roles" class="table-borderless top-margin">
-            <thead class='manuscript-list-heading {{if activePapersVisible 'gray-line'}} active-papers' {{action 'toggleActiveContainer'}}>
+            <thead class="manuscript-list-heading {{if activePapersVisible "gray-line"}} active-papers" {{action "toggleActiveContainer"}}>
               <tr>
                 <th class="col-xs-9 hug-left">{{activeManuscriptsHeading}}</th>
                 {{#if activePapersVisible}}
@@ -44,10 +44,10 @@
             <tbody>
               {{#if activePapersVisible}}
                 {{#each sortedDraftPapers as |paper|}}
-                  {{dashboard-link model=paper type='active' class='active-paper-table-row'}}
+                  {{dashboard-link model=paper type="active" class="active-paper-table-row"}}
                 {{/each}}
                 {{#each sortedNonDraftPapers as |paper|}}
-                  {{dashboard-link model=paper type='active' class='active-paper-table-row'}}
+                  {{dashboard-link model=paper type="active" class="active-paper-table-row"}}
                 {{/each}}
               {{/if}}
             </tbody>
@@ -58,7 +58,7 @@
       {{#if hasInactivePapers}}
         <div class="table-responsive">
           <table summary="This table displays manuscript data and roles" class="table-borderless top-margin">
-            <thead class='manuscript-list-heading {{if inactivePapersVisible 'gray-line'}} inactive-papers' {{action 'toggleInactiveContainer'}}>
+            <thead class="manuscript-list-heading {{if inactivePapersVisible "gray-line"}} inactive-papers" {{action "toggleInactiveContainer"}}>
               <tr>
                 <th class="col-xs-9 hug-left">{{inactiveManuscriptsHeading}}</th>
                 {{#if inactivePapersVisible}}
@@ -70,7 +70,7 @@
             <tbody>
               {{#if inactivePapersVisible}}
                 {{#each sortedInactivePapers as |paper|}}
-                  {{dashboard-link model=paper type='inactive' class='inactive-paper-table-row'}}
+                  {{dashboard-link model=paper type="inactive" class="inactive-paper-table-row"}}
                 {{/each}}
               {{/if}}
             </tbody>

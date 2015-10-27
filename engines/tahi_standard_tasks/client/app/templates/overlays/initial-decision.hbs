@@ -40,8 +40,8 @@
 {{textarea onEvent="false"
            class="decision-letter-field"
            disabled=nonPublishable
-           value=initialDecisionLetter}}
+           value=initialDecision.letter}}
 
-<button class="button-primary button--green send-email-action" disabled={{nonPublishable}} {{action "registerDecision"}}>
+<button class="button-primary button--green send-email-action" disabled={{cannotRegisterDecision}} {{action "registerDecision"}}>
   Register Decision and Email the Author
 </button>

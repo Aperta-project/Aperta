@@ -1,10 +1,10 @@
+# Retrieve GUIDs from EM database for Authors in Aperta
 #
-# This class is to establish a connection to EM
-# and retrieve GUIDs for Authors in Aperta
-#
-class PlosEditorialManager < ActiveRecord::Base
+# You MUST establish a connection manually to an EM database before
+# using this. e.g.
+# =PlosEditorialManager.establish_connection("plos_editorial_manager_#{Rails.env}".to_sym)=
 
-  establish_connection(ENV['EM_DATABASE_URL'].present? ? ENV['EM_DATABASE_URL'] : "plos_editorial_manager_#{Rails.env}".to_sym)
+class PlosEditorialManager < ActiveRecord::Base
 
   def self.find_person_by_email(email:)
     email = email.strip

@@ -50,18 +50,9 @@ staging:
   password:
 
 production:
-  adapter: postgresql
+  adapter: sqlserver
   encoding: unicode
   host: localhost
-  database: tahi_production
+  database: em
   pool: 48
-  password:
-
-# PLoS Editorial Manager connection
-plos_editorial_manager_test:
-  adapter: postgresql
-  encoding: unicode
-  host: localhost
-  database: tahi_test
-  username:
   password:

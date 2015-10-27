@@ -15,14 +15,16 @@
   {{outlet}}
 </div>
 
-<div class="overlay" id="overlay">
-  <span class="overlay-close-x animation-scale-in" {{action "closeAction"}}>&times;</span>
-  <div class="overlay-container">
-    {{#if showOverlay}}
-      {{outlet "overlay"}}
-    {{/if}}
+{{#if showOverlay}}
+  <div class="overlay" id="overlay">
+    <span class="overlay-close-x animation-scale-in" {{action "closeAction"}}>&times;</span>
+    <div class="overlay-container">
+        {{outlet "overlay"}}
+    </div>
   </div>
-</div>
+{{/if}}
+
+<div id="overlay-drop-zone"></div>
 
 {{#if showSaveStatusDiv}}
   <div id="delayedSave"></div>

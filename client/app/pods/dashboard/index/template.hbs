@@ -1,8 +1,14 @@
 <div class="control-bar"></div>
 {{flash-messages classNames="flash-messages--below-control-bar"}}
 
-<div id="tahi-container">
+{{#overlay-base visible=showNewManuscriptOverlay
+                outAnimationComplete=(action "hideNewManuscriptOverlay")
+                as |animateOut|}}
+  {{overlays/manuscript-new class="overlay overlay--fullscreen paper-new-overlay"
+                            close=(action animateOut)}}
+{{/overlay-base}}
 
+<div id="tahi-container">
   <section class="dashboard-section">
     {{#if pendingInvitations}}
       <h2 class="welcome-message">
@@ -26,7 +32,7 @@
       {{/if}}
     </h2>
 
-    <button class="button-primary button--green" {{action "showNewPaperOverlay"}}>Create New Submission</button>
+    <button class="button-primary button--green" {{action "showNewManuscriptOverlay"}}>Create New Submission</button>
 
     {{#if hasPapers}}
       {{#if hasActivePapers}}

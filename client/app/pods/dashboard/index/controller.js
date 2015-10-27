@@ -44,12 +44,23 @@ export default Ember.Controller.extend({
             ')';
   }),
 
+  showNewManuscriptOverlay: false,
+
   actions: {
     toggleActiveContainer() {
       this.toggleProperty('activePapersVisible');
     },
+
     toggleInactiveContainer() {
       this.toggleProperty('inactivePapersVisible');
+    },
+
+    showNewManuscriptOverlay() {
+      this.set('showNewManuscriptOverlay', true);
+    },
+
+    hideNewManuscriptOverlay() {
+      this.set('showNewManuscriptOverlay', false);
     }
   }
 });

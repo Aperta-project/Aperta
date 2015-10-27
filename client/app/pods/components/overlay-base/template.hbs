@@ -1,0 +1,8 @@
+{{#if visible}}
+  {{#ember-wormhole to=to}}
+    {{#animate-overlay outAnimationComplete=(action outAnimationComplete)
+                       as |animateOut|}}
+      {{yield animateOut}}
+    {{/animate-overlay}}
+  {{/ember-wormhole}}
+{{/if}}

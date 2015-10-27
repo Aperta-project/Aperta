@@ -36,6 +36,10 @@ Subscriptions.configure do
   add 'attachment:updated', StreamToPaperChannel
   add 'attachment:destroyed', StreamToEveryone
 
+  add 'decision:created', StreamToPaperChannel
+  add 'decision:updated', StreamToPaperChannel
+  add 'decision:destroyed', StreamToEveryone
+
   add 'invitation:created', StreamToPaperChannel
   add 'invitation:updated', StreamToPaperChannel, Invitation::Updated::EventStream::NotifyInvitee
   add 'invitation:destroyed', StreamToEveryone

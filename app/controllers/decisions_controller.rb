@@ -5,6 +5,11 @@ class DecisionsController < ApplicationController
     render json: decisions, each_serializer: DecisionSerializer, root: 'decisions'
   end
 
+  def show
+    render json: Decision.find(params[:id]),
+           serializer: DecisionSerializer, root: 'decision'
+  end
+
   def create
     @paper = Paper.find(params[:decision][:paper_id])
     @decision = @paper.decisions.create!(decision_params)

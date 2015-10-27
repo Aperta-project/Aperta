@@ -3,12 +3,11 @@ class Snapshot::AuthorTaskSerializer < Snapshot::BaseTaskSerializer
     { name: "authors", type: "properties", children: snapshot_authors }
   end
 
+  private
+
   def snapshot_authors
-    authors = []
-    @task.authors.order(:position).each do |author|
-      author_serializer = Snapshot::AuthorSerializer.new author
-      authors << {name: "author", type: "properties", children: author_serializer.as_json}
+    @task.authors.order(:position).map do |author|
+      Snapshot::AuthorSerializer.new(author).as_json
     end
-    authors
   end
 end

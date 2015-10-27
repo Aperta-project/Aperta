@@ -1,39 +1,63 @@
 require "rails_helper"
 
 describe Snapshot::SupportingInformationTaskSerializer do
-  it "serializes a supporting information task" do
-    task = FactoryGirl.create(:supporting_information_task)
-    snapshot = Snapshot::SupportingInformationTaskSerializer.new(task).as_json
-
-    expect(snapshot.count).to eq(0)
+  subject(:serializer) { described_class.new(task) }
+  let(:task) { FactoryGirl.create(:supporting_information_task, paper: paper) }
+  let(:supporting_info_file_1) do
+    FactoryGirl.create(
+      :supporting_information_file,
+      title: "supporting info 1 title",
+      caption: "supporting info 1 caption",
+      attachment: File.open(Rails.root.join("spec/fixtures/yeti.jpg"))
+    )
+  end
+  let(:supporting_info_file_2) do
+    FactoryGirl.create(
+      :supporting_information_file,
+      title: "supporting info 2 title",
+      caption: "supporting info 2 caption",
+      attachment: File.open(Rails.root.join("spec/fixtures/yeti.tiff"))
+    )
+  end
+  let(:paper) do
+    FactoryGirl.create(
+      :paper,
+      supporting_information_files: [
+        supporting_info_file_1,
+        supporting_info_file_2
+      ]
+    )
   end
 
-  it "serializes files if they are present" do
-    paper = FactoryGirl.create(:paper, :with_tasks)
-    supporting_information_task = ::TahiStandardTasks::SupportingInformationTask.create!(completed: true,
-      phase: paper.phases.first,
-      title: "Supporting Info",
-      role: "author")
-    allow(supporting_information_task).to receive(:paper).and_return(paper)
+  describe "#as_json" do
+    it "serializes to JSON" do
+      expect(serializer.as_json).to include(
+        name: "supporting-information-task",
+        type: "properties"
+      )
+    end
 
-    file1 = FactoryGirl.create(:supporting_information_file)
-    file2 = FactoryGirl.create(:supporting_information_file)
-    file1.attachment = "file1.eps"
-    file1.title = "file 1 title"
-    file1.caption = "file 1 caption"
-    file2.attachment = "file2.pdf"
-    file2.title = "file 2 title"
-    file2.caption = "file 2 caption"
-    paper.supporting_information_files << file1
-    paper.supporting_information_files << file2
+    it "serializes the supporting information files for the task's paper" do
+      expect(serializer.as_json[:children]).to include(
+        { name: "supporting-information-file", type: "properties", children: [
+          { name: "file", type: "text", value: "yeti.jpg" },
+          { name: "title", type: "text", value: "supporting info 1 title" },
+          { name: "caption", type: "text", value: "supporting info 1 caption" },
+          { name: "publishable", type: "boolean", value: true },
+          { name: "status", type: "text", value: "processing" }
+        ]},
+        { name: "supporting-information-file", type: "properties", children: [
+          { name: "file", type: "text", value: "yeti.tiff" },
+          { name: "title", type: "text", value: "supporting info 2 title" },
+          { name: "caption", type: "text", value: "supporting info 2 caption" },
+          { name: "publishable", type: "boolean", value: true },
+          { name: "status", type: "text", value: "processing" }
+        ]}
+      )
+    end
 
-    snapshot = Snapshot::SupportingInformationTaskSerializer.new(supporting_information_task).as_json
-
-    expect(snapshot[0][:children][0][:children][1][:value]).to eq(file1.title)
-    expect(snapshot[0][:children][1][:name]).to eq("publishable")
-    expect(snapshot[0][:children][2][:name]).to eq("status")
-    expect(snapshot[1][:children][0][:children][1][:value]).to eq(file2.title)
-    expect(snapshot[1][:children][1][:name]).to eq("publishable")
-    expect(snapshot[1][:children][2][:name]).to eq("status")
+    context "serializing related nested questions" do
+      include_examples "snapshot serializes related nested questions", resource: :task
+    end
   end
 end

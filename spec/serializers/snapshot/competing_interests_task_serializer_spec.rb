@@ -1,12 +1,19 @@
 require "rails_helper"
 
 describe Snapshot::CompetingInterestsTaskSerializer do
-  let(:competing_interest_task) { FactoryGirl.create(:competing_interests_task) }
+  subject(:serializer) { described_class.new(task) }
+  let(:task) { FactoryGirl.create(:competing_interests_task) }
 
-  it "serializes a competing interest task" do
-    snapshot = Snapshot::CompetingInterestsTaskSerializer.new(competing_interest_task).as_json
+  describe "#as_json" do
+    it "serializes to JSON" do
+      expect(serializer.as_json).to include(
+        name: "competing-interests-task",
+        type: "properties"
+      )
+    end
 
-    expect(snapshot[0][:name]).to eq("competing_interests")
-    expect(snapshot[0][:children][0][:name]).to eq("statement")
+    context "serializing related nested questions" do
+      include_examples "snapshot serializes related nested questions", resource: :task
+    end
   end
 end

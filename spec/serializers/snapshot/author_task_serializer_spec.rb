@@ -1,67 +1,48 @@
 require "rails_helper"
 
 describe Snapshot::AuthorTaskSerializer do
+  subject(:serializer) { described_class.new(task) }
   let(:task) { FactoryGirl.create(:authors_task) }
 
-  describe "serializes authors" do
-    def find_property properties, name
-      properties.select { |p| p[:name] == name }.first[:value]
+  describe "#as_json" do
+    it "serializes to JSON" do
+      expect(serializer.as_json).to eq(
+        name: "authors",
+        type: "properties",
+        children: []
+      )
     end
 
-    it "serializes an author properties" do
-      author = FactoryGirl.create(:author)
-      task.authors = [author]
+    context "and the task has authors" do
+      let!(:author_bob) { FactoryGirl.create(:author, position: 2) }
+      let!(:author_sally) { FactoryGirl.create(:author, position: 1) }
 
-      snapshot = Snapshot::AuthorTaskSerializer.new(task).as_json
-      properties = snapshot[:children][0][:children]
+      let(:bobs_author_serializer) do
+        double(
+          "Snapshot::AuthorSerializer",
+          as_json: { author: "bob's json here" }
+        )
+      end
 
-      expect(find_property(properties, "first_name")).to eq(author.first_name)
-      expect(find_property(properties, "last_name")).to eq(author.last_name)
-      expect(find_property(properties, "middle_initial")).to eq(author.middle_initial)
-      expect(find_property(properties, "position")).to eq(author.position)
-      expect(find_property(properties, "email")).to eq(author.email)
-      expect(find_property(properties, "department")).to eq(author.department)
-      expect(find_property(properties, "title")).to eq(author.title)
-      expect(find_property(properties, "affiliation")).to eq(author.affiliation)
-      expect(find_property(properties, "secondary_affiliation")).to eq(author.secondary_affiliation)
-      expect(find_property(properties, "ringgold_id")).to eq(author.ringgold_id)
-      expect(find_property(properties, "secondary_ringgold_id")).to eq(author.secondary_ringgold_id)
-    end
+      let(:sallys_author_serializer) do
+        double(
+          "Snapshot::AuthorSerializer",
+          as_json: { author: "sally's json here" }
+        )
+      end
 
-    it "serializes an authors nested questions" do
-      author = FactoryGirl.create(:author)
-      corresponding_answer = FactoryGirl.create(:nested_question_answer)
-      corresponding_answer.nested_question_id = author.nested_questions.first.id
-      corresponding_answer.owner_id = author.id
-      corresponding_answer.owner_type = "Author"
-      corresponding_answer.value = "t"
-      allow_any_instance_of(Author).to receive(:nested_question_answers).and_return([corresponding_answer])
-      task.authors = [author]
+      before do
+        task.authors = [author_bob, author_sally]
+        allow(Snapshot::AuthorSerializer).to receive(:new).with(author_bob).and_return bobs_author_serializer
+        allow(Snapshot::AuthorSerializer).to receive(:new).with(author_sally).and_return sallys_author_serializer
+      end
 
-      snapshot = Snapshot::AuthorTaskSerializer.new(task).as_json
-      properties = snapshot[:children][0][:children]
-
-      expect(find_property(properties, "published_as_corresponding_author")[:answer]).to eq("t")
-      expect(find_property(properties, "deceased")[:answer]).to be_nil
-    end
-
-    it "serializes authors according to position" do
-      author1 = FactoryGirl.create(:author)
-      author1.first_name = "First"
-      author2 = FactoryGirl.create(:author)
-      author2.first_name = "Second"
-      author3 = FactoryGirl.create(:author)
-      author3.first_name = "Third"
-      task.authors = [author3, author1, author2]
-
-      snapshot = Snapshot::AuthorTaskSerializer.new(task).as_json
-      properties1 = snapshot[:children][0][:children]
-      properties2 = snapshot[:children][1][:children]
-      properties3 = snapshot[:children][2][:children]
-
-      expect(find_property(properties1, "first_name")).to eq(author1.first_name)
-      expect(find_property(properties2, "first_name")).to eq(author2.first_name)
-      expect(find_property(properties3, "first_name")).to eq(author3.first_name)
+      it "serializes each author(s) associated with the task in order by their respective position" do
+        expect(serializer.as_json[:children]).to eq([
+          { author: "sally's json here" },
+          { author: "bob's json here" }
+        ])
+      end
     end
   end
 end

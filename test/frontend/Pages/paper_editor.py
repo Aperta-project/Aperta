@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Page Object Model for the Paper Editor Page. Validates global and dynamic elements and their styles
+NOTE: This POM will be outdated when the Paper Editor is removed.
 """
 
 import time

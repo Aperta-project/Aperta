@@ -23,7 +23,7 @@ class MetadataVersioningTest(CommonTest):
   def test_metadata_versioning(self):
     """
     """
-    title = 'MV Test-14 '
+    title = 'MV Test-16 '
     #if True: # for debugging
     if self.check_article(title):
       init = True if 'users/sign_in' in self._driver.current_url else False
@@ -35,6 +35,8 @@ class MetadataVersioningTest(CommonTest):
                                  type_='Research',
                                  random_bit=True,
                                  init=False)
+    # go to dashboard
+    article = self.select_preexisting_article(title=title, init=False)
     paper_editor = PaperEditorPage(self.getDriver())
     paper_editor.complete_card('Billing')
     paper_editor.complete_card('Authors') #CHECK THIS OUT!

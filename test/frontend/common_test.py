@@ -58,8 +58,8 @@ class CommonTest(FrontEndTest):
     time.sleep(2)
     # upload file
     upload_btn = dashboard._get(dashboard._cns_upload_document)
-    import pdb; pdb.set_trace()
-    ##dashboard._get(dashboard._cns_create_btn).click()
+    fn = '/home/sbassi/projects/plos/tahi-integration/frontend/assets/docs/sample.docx'
+    self._driver.execute_script("$('#upload-files').fileupload('add', {files:['%s']})"%fn)
     time.sleep(10)
     return title
 

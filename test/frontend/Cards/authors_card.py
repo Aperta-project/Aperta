@@ -45,7 +45,11 @@ class AuthorsCard(BaseCard):
     self._author_items = (By.CSS_SELECTOR, 'div.authors-overlay-item')
     self._delete_author_div = (By.CLASS_NAME, 'authors-overlay-item--delete')
     self._edit_author = (By.CLASS_NAME, 'fa-pencil')
-    self._corresponding = (By.CLASS_NAME, 'author-corresponding')
+    #self._corresponding = (By.CLASS_NAME, 'author-corresponding')
+    #published_as_corresponding_author
+    # CHECK IF FOLLOWING IS REACH IN TWO WAYS!
+    self._corresponding = (By.XPATH,
+      ".//input[@name='published_as_corresponding_author']")
     self._author_contribution = (By.CLASS_NAME, 'author-contribution')
 
    #POM Actions

@@ -34,7 +34,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     },
 
     cancelRecommendation() {
-      this.get('reviewer').rollback();
+      this.get('reviewerRecommendation').rollback();
       this.set('isEditing', false);
       this.clearAllValidationErrors();
     },
@@ -49,7 +49,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
 
     confirmDeletion() {
       this.$().fadeOut(250, ()=> {
-        this.get('reviewer').destroyRecord();
+        this.get('reviewerRecommendation').destroyRecord();
       });
     }
   }

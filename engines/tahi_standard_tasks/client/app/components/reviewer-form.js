@@ -20,7 +20,7 @@ export default Ember.Component.extend({
     },
 
     cancelRecommendation() {
-      this.attrs.cancelRecommendation();
+      this.attrs.cancelRecommendation(this.get('reviewerRecommendation'));
     },
 
     saveRecommendation() {

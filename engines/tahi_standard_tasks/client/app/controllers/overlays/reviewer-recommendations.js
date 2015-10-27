@@ -14,35 +14,28 @@ export default TaskController.extend(ValidationErrorsMixin, {
 
   newRecommendationQuestions: Ember.on('init', function(){
     let queryParams = { type: "ReviewerRecommendation" };
-    let results = this.store.findQuery('nested-question', queryParams);
-    results.then( (nestedQuestions) => {
-      this.set('nestedQuestionsForNewRecommendation', nestedQuestions);
-    });
-  }),
-
-  newRecommendation: Ember.computed('showNewReviewerForm', function(){
-    return this.store.createRecord('reviewer-recommendation', {
-      nestedQuestions: this.get('nestedQuestionsForNewRecommendation')
+    this.store.findQuery('nested-question', queryParams).then( (questions) => {
+      this.set('nestedQuestionsForNewRecommendation', questions);
     });
   }),
 
   clearNewRecommendationAnswers: function(){
-    let questions = this.get('nestedQuestionsForNewRecommendation');
-    questions.forEach( (nestedQuestion) => {
-      nestedQuestion.clearAnswerForOwner(this.get("newRecommendation"));
+    this.get('nestedQuestionsForNewRecommendation').forEach( (question) => {
+      question.clearAnswerForOwner(this.get("newRecommendation"));
     });
   },
 
   actions: {
     addNewReviewer() {
       let recommendation = this.store.createRecord('reviewerRecommendation', {
-        reviewerRecommendationsTask: this.get('model')
+        reviewerRecommendationsTask: this.get('model'),
+        nestedQuestions: this.get('nestedQuestionsForNewRecommendation')
       });
       this.set('newRecommendation', recommendation);
       this.set('showNewReviewerForm', true);
     },
 
-    cancelRecommendation() {
+    cancelNewRecommendation() {
       this.set('showNewReviewerForm', false);
       this.clearNewRecommendationAnswers();
       this.get('newRecommendation').destroyRecord();
@@ -50,14 +43,10 @@ export default TaskController.extend(ValidationErrorsMixin, {
       this.clearAllValidationErrors();
     },
 
-    saveNewRecommendation: function() {
-      let recommendation = this.get("newRecommendation");
-      recommendation.set("reviewerRecommendationsTask", this.get("model"));
-      recommendation.save().then( (savedRecommendation) => {
-        let answers = recommendation.get('nestedQuestionAnswers').toArray();
-        answers.forEach(function(answer){
-          let value = answer.get("value");
-          if(value || value === false){
+    saveRecommendation(recommendation) {
+      recommendation.save().then((savedRecommendation) => {
+        recommendation.get('nestedQuestionAnswers').forEach(function(answer){
+          if(answer.get('wasAnswered')){
             answer.set("owner", savedRecommendation);
             answer.save();
           }

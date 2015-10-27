@@ -5,7 +5,7 @@ module TahiStandardTasks
     respond_to :json
 
     def create
-      reviewer_recommendation.save
+      reviewer_recommendation.save!
       render json: reviewer_recommendation, status: :created
     end
 

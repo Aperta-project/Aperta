@@ -1,12 +1,47 @@
-<h1>
-  Hello World!
-</h1>
+<div class="register-decision-saving-cover {{if isSavingData "is-saving-data"}}">
+  {{progress-spinner visible=true size="large" center=true}}
+</div>
 
-<p>
-  Find my template at:
-  /client/lib/{{view.cardName}}/app/templates/overlays/{{view.cardName}}.hbs
-</p>
-<p>
-  Enter JavaScript in:
-  /client/lib/{{view.cardName}}/app/views/overlays/{{view.cardName}}.js
-</p>
+<h1>Initial Decision</h1>
+
+{{#if decisionRegistered}}
+    <div class="alert alert-info">
+      A final decision of {{initialDecision.verdict}} has been registered.
+    </div>
+{{/if}}
+
+{{#if nonPublishable}}
+  <div class="alert alert-warning">
+    A decision cannot be registered at this time.
+    The manuscript is not in a submitted state.
+  </div>
+{{/if}}
+
+<div class="decision-selections">
+  <label class="decision-label">
+    {{radio-button value="reject"
+                   selection=initialDecision.verdict
+                   disabled=nonPublishable
+                   action=(action "setInitialDecisionVerdict")}}
+    Reject
+  </label>
+
+  <label class="decision-label">
+    {{radio-button value="accept"
+                   selection=initialDecision.verdict
+                   disabled=nonPublishable
+                   action=(action "setInitialDecisionVerdict")}}
+    Invite for full submission
+  </label>
+</div>
+
+<p>Feel free to modify the standard decision letter. Your changes will be saved.</p>
+
+{{textarea onEvent="false"
+           class="decision-letter-field"
+           disabled=nonPublishable
+           value=initialDecisionLetter}}
+
+<button class="button-primary button--green send-email-action" disabled={{nonPublishable}} {{action "registerDecision"}}>
+  Register Decision and Email the Author
+</button>

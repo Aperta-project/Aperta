@@ -1,15 +1,15 @@
 <td class="col-xs-9 dashboard-paper-title {{type}}-paper-title hug-left">
-	{{#link-to "paper.index" model.id
-	         class="link-tooltip"
-	         data-toggle="tooltip"
-	         title=model.roleList}}
-	  {{model.displayTitle}}
-	{{/link-to}}
-	{{#if unreadCommentsCount}}
-	  <span class="badge badge--red link-tooltip" title={{badgeTitle}}>
-	    {{unreadCommentsCount}}
-	  </span>
-	{{/if}}
+  {{#link-to "paper.index" model.id
+             class="link-tooltip"
+             data-toggle="tooltip"
+             title=model.roleList}}
+    {{{model.displayTitle}}}
+  {{/link-to}}
+  {{#if unreadCommentsCount}}
+    <span class="badge badge--red link-tooltip" title={{badgeTitle}}>
+      {{unreadCommentsCount}}
+    </span>
+  {{/if}}
 </td>
 <td class="col-xs-1 role-tag text-right">{{roles}}</td>
 <td class="col-xs-1"><div class='status-tag text-center'>{{status}}</div></td>

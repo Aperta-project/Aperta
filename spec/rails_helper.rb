@@ -87,7 +87,11 @@ RSpec.configure do |config|
   Warden.test_mode!
 
   config.before(:suite) do
-    DatabaseCleaner.clean_with(:truncation, except: ['task_types'])
+    # Load question seeds before any tests start since we don't want them
+    # to be rolled back as part of a transaction
+    %x{rake nested-questions:seed}
+
+    DatabaseCleaner.clean_with(:truncation, except: ['task_types', 'nested_questions'])
   end
 
   config.before(:each) do
@@ -96,12 +100,12 @@ RSpec.configure do |config|
   end
 
   config.before(:each, js: true) do
-    DatabaseCleaner[:active_record].strategy = :truncation, { except: ['task_types'] }
+    DatabaseCleaner[:active_record].strategy = :truncation, { except: ['task_types', 'nested_questions'] }
     DatabaseCleaner[:redis].strategy = :truncation
   end
 
   config.before(:each, redis: true) do
-    DatabaseCleaner[:active_record].strategy = :truncation, { except: ['task_types'] }
+    DatabaseCleaner[:active_record].strategy = :truncation, { except: ['task_types', 'nested_questions'] }
     DatabaseCleaner[:redis].strategy = :truncation
     Sidekiq::Extensions::DelayedMailer.jobs.clear
   end
@@ -115,7 +119,7 @@ RSpec.configure do |config|
   end
 
   config.before(:context, redis: true) do
-    DatabaseCleaner.clean_with(:truncation, except: ['task_types'])
+    DatabaseCleaner.clean_with(:truncation, except: ['task_types', 'nested_questions'])
   end
 
   config.before(:each) do

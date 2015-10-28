@@ -174,6 +174,12 @@ about to deploy, let's open up the logs for the release-candidate environment
 *before* the deploy. This saves time and helps catch any hiccups in the deploy
 process before they spiral out of control.
 
+Each environment has its own associated Papertrail account setup through Heroku.
+You can access its Papertrail logs via the Heroku Dashboard. Papertrail uses
+Heroku's SSO to log you into their service. This is pretty handy in practice,
+since it avoids making you track down some shared credentials every time you
+want to examine the logs.
+
 #### Continuous Integration
 
 Remember when we pushed our branch a few steps back? Well our CI server runs all

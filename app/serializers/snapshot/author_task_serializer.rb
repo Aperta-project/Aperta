@@ -1,4 +1,4 @@
-class Snapshot::AuthorTaskSerializer < Snapshot::BaseTaskSerializer
+class Snapshot::AuthorTaskSerializer < Snapshot::TaskSerializer
   def as_json
     { name: "authors", type: "properties", children: snapshot_authors }
   end

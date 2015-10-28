@@ -1,2 +1,2 @@
-class Snapshot::PublishingRelatedQuestionsTaskSerializer < Snapshot::BaseTaskSerializer
+class Snapshot::PublishingRelatedQuestionsTaskSerializer < Snapshot::TaskSerializer
 end

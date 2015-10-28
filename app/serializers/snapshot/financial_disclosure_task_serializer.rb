@@ -1,4 +1,4 @@
-class Snapshot::FinancialDisclosureTaskSerializer < Snapshot::BaseTaskSerializer
+class Snapshot::FinancialDisclosureTaskSerializer < Snapshot::TaskSerializer
 
   private
 

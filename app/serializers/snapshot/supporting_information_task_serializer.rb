@@ -1,4 +1,4 @@
-class Snapshot::SupportingInformationTaskSerializer < Snapshot::BaseTaskSerializer
+class Snapshot::SupportingInformationTaskSerializer < Snapshot::TaskSerializer
 
   private
 

@@ -1,4 +1,4 @@
-class Snapshot::FigureTaskSerializer < Snapshot::BaseTaskSerializer
+class Snapshot::FigureTaskSerializer < Snapshot::TaskSerializer
 
   private
 

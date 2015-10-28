@@ -1,2 +1,2 @@
-class Snapshot::TaxonTaskSerializer < Snapshot::BaseTaskSerializer
+class Snapshot::TaxonTaskSerializer < Snapshot::TaskSerializer
 end

@@ -5,6 +5,9 @@
              title=model.roleList}}
     {{{model.displayTitle}}}
   {{/link-to}}
+  <div class='dashboard-manuscript-id'>
+    ID: {{model.manuscript_id}}
+  </div>
   {{#if unreadCommentsCount}}
     <span class="badge badge--red link-tooltip" title={{badgeTitle}}>
       {{unreadCommentsCount}}

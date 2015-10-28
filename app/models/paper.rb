@@ -14,12 +14,13 @@ class Paper < ActiveRecord::Base
   has_one :manuscript, dependent: :destroy
 
   has_many :figures, dependent: :destroy
-  has_many :versioned_texts, dependent: :destroy
+  has_many :versioned_texts, -> { version_desc }, dependent: :destroy
   has_many :tables, dependent: :destroy
   has_many :bibitems, dependent: :destroy
   has_many :supporting_information_files, dependent: :destroy
   has_many :paper_roles, dependent: :destroy
   has_many :users, -> { uniq }, through: :paper_roles
+  has_many :collaborations, -> { collaborators.uniq }, class_name: "PaperRole"
   has_many :assigned_users, -> { uniq }, through: :paper_roles, source: :user
   has_many :phases, -> { order 'phases.position ASC' }, dependent: :destroy, inverse_of: :paper
   has_many :tasks, through: :phases
@@ -309,7 +310,7 @@ class Paper < ActiveRecord::Base
   end
 
   def latest_version(reload=false)
-    versioned_texts(reload).version_desc.first
+    versioned_texts(reload).first
   end
 
 

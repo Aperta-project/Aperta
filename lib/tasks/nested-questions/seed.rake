@@ -12,6 +12,7 @@ namespace 'nested-questions' do
     'nested-questions:seed:production-metadata-task',
     'nested-questions:seed:publishing-related-questions-task',
     'nested-questions:seed:reporting-guidelines-task',
+    'nested-questions:seed:reviewer-recommendation',
     'nested-questions:seed:reviewer-report-task',
     'nested-questions:seed:taxon-task',
   ]

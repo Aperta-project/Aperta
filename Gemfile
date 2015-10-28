@@ -34,7 +34,7 @@ gem 'kaminari'
 
 gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
 gem 'sidekiq'
-gem 'sinatra'
+gem 'sinatra', require: nil
 gem 'request_store'
 
 gem "premailer-rails"
@@ -78,25 +78,17 @@ end
 
 group :development, :test, :performance do
   gem 'auto_screenshot', require: false
-  gem 'factory_girl_rails'
   gem 'progressbar'
-  gem 'rspec-rails'
-  gem 'rspec-its'
-  gem 'rspec-collection_matchers'
-  gem 'rspec-instafail'
-  gem 'rspec-activemodel-mocks'
-  gem 'launchy'
-  gem 'database_cleaner'
   gem 'pry-rescue'
   gem 'pry-rails'
   gem 'pry-remote'
   gem 'foreman'
   gem 'quiet_assets'
   gem 'generator_spec'
-  gem 'awesome_print'
 end
 
 group :development do
+  gem 'awesome_print'
   gem 'bullet'
   gem 'overcommit'
   gem 'rubocop'
@@ -116,6 +108,12 @@ group :test do
   gem 'pusher-fake'
   gem 'rspec_junit_formatter'
   gem 'rspec-activemodel-mocks'
+  gem 'rspec-rails'
+  gem 'rspec-its'
+  gem 'rspec-collection_matchers'
+  gem 'rspec-instafail'
+  gem 'factory_girl_rails'
+  gem 'database_cleaner'
 end
 
 group :staging, :performance do

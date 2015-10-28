@@ -123,8 +123,9 @@ $ git checkout --branch release/1.4
 $ git push origin release/1.4
 ```
 
-Boom! That's it. You've cut the release. That was easy! Any hotfixes be applied
-to the `release/1.4` branch from this point out.
+Boom! You've cut the release. That was easy! Any hotfixes be applied +to the
+`release/1.4` branch from this point out. Now you are ready to start deployment,
+see "Deploy the Release Candidate" below.
 
 ### Less Simple Case: Latest Master Contains Unreleaseable Commits
 

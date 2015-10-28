@@ -15,6 +15,9 @@ namespace 'nested-questions' do
     'nested-questions:seed:reviewer-recommendation',
     'nested-questions:seed:reviewer-report-task',
     'nested-questions:seed:taxon-task',
+    'nested-questions:seed:plos-bio-initial-tech-check-task',
+    'nested-questions:seed:plos-bio-revision-tech-check-task',
+    'nested-questions:seed:plos-bio-final-tech-check-task'
   ]
 
 end

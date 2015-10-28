@@ -1,5 +1,4 @@
 class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
-  TASK_OWNER_TYPE = "TahiStandardTasks::ReviewerReportTask"
 
   IDENTS = {
     ignored: %w(
@@ -34,6 +33,7 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
 
   def initialize
     @subtract_from_expected_count = 0
+    @task_owner_type = "TahiStandardTasks::ReviewerReportTask"
   end
 
   def cleanup
@@ -62,7 +62,7 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
 
   def reset
     NestedQuestionAnswer.where(
-      nested_questions: { owner_type: [TASK_OWNER_TYPE], owner_id: nil }
+      nested_questions: { owner_type: [@task_owner_type], owner_id: nil }
     ).joins(:nested_question).destroy_all
   end
 
@@ -72,7 +72,7 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
     questions = []
     questions << NestedQuestion.new(
       owner_id: nil,
-      owner_type: TASK_OWNER_TYPE,
+      owner_type: @task_owner_type,
       ident: "competing_interests",
       value_type: "text",
       text: "Do you have any potential or perceived competing interests that may influence your review?",
@@ -81,7 +81,7 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
 
     questions << NestedQuestion.new(
       owner_id: nil,
-      owner_type: TASK_OWNER_TYPE,
+      owner_type: @task_owner_type,
       ident: "support_conclusions",
       value_type: "boolean",
       text: "Is the manuscript technically sound, and do the data support the conclusions?",
@@ -89,7 +89,7 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
       children: [
         NestedQuestion.new(
           owner_id: nil,
-          owner_type: TASK_OWNER_TYPE,
+          owner_type: @task_owner_type,
           ident: "explanation",
           value_type: "text",
           text: "Explanation",
@@ -100,7 +100,7 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
 
     questions << NestedQuestion.new(
       owner_id: nil,
-      owner_type: TASK_OWNER_TYPE,
+      owner_type: @task_owner_type,
       ident: "statistical_analysis",
       value_type: "boolean",
       text: "Has the statistical analysis been performed appropriately and rigorously?",
@@ -108,7 +108,7 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
       children: [
         NestedQuestion.new(
           owner_id: nil,
-          owner_type: TASK_OWNER_TYPE,
+          owner_type: @task_owner_type,
           ident: "explanation",
           value_type: "text",
           text: "Statistical Analysis Explanation",
@@ -119,7 +119,7 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
 
     questions << NestedQuestion.new(
       owner_id: nil,
-      owner_type: TASK_OWNER_TYPE,
+      owner_type: @task_owner_type,
       ident: "standards",
       value_type: "boolean",
       text: "Does the manuscript adhere to standards in this field for data availability?",
@@ -127,7 +127,7 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
       children: [
         NestedQuestion.new(
           owner_id: nil,
-          owner_type: TASK_OWNER_TYPE,
+          owner_type: @task_owner_type,
           ident: "explanation",
           value_type: "text",
           text: "Standards Explanation",
@@ -138,7 +138,7 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
 
     questions << NestedQuestion.new(
       owner_id: nil,
-      owner_type: TASK_OWNER_TYPE,
+      owner_type: @task_owner_type,
       ident: "additional_comments",
       value_type: "text",
       text: "(Optional) Please offer any additional comments to the author.",
@@ -147,7 +147,7 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
 
     questions << NestedQuestion.new(
       owner_id: nil,
-      owner_type: TASK_OWNER_TYPE,
+      owner_type: @task_owner_type,
       ident: "identity",
       value_type: "text",
       text: "(Optional) If you'd like your identity to be revealed to the authors, please include your name here.",
@@ -155,7 +155,7 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
     )
 
     questions.each do |q|
-      unless NestedQuestion.where(owner_id: nil, owner_type: TASK_OWNER_TYPE, ident: q.ident).exists?
+      unless NestedQuestion.where(owner_id: nil, owner_type: @task_owner_type, ident: q.ident).exists?
         q.save!
       end
     end
@@ -176,7 +176,7 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
             next
           end
 
-          nested_question = NestedQuestion.where(owner_type: TASK_OWNER_TYPE, owner_id: nil, ident: new_ident).first!
+          nested_question = NestedQuestion.where(owner_type: @task_owner_type, owner_id: nil, ident: new_ident).first!
 
           case nested_question.value_type
           when "boolean"
@@ -212,13 +212,13 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
     expected_questions = Question.where("ident LIKE 'reviewer_report.%' AND ident NOT IN (?)", IDENTS[:ignored])
     verify_count(
       expected: expected_questions.count - @subtract_from_expected_count,
-      actual: NestedQuestionAnswer.includes(:nested_question).where(nested_questions: { owner_type: TASK_OWNER_TYPE, owner_id: nil }).count
+      actual: NestedQuestionAnswer.includes(:nested_question).where(nested_questions: { owner_type: @task_owner_type, owner_id: nil }).count
     )
   end
 
   def verify_count(expected:, actual:)
     if actual != expected
-      fail "Count mismatch on NestedQuestionAnswer for #{TASK_OWNER_TYPE}. Expected: #{expected} Got: #{actual}"
+      fail "Count mismatch on NestedQuestionAnswer for #{@task_owner_type}. Expected: #{expected} Got: #{actual}"
     end
   end
 end

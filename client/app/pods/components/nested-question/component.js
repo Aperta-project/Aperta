@@ -10,6 +10,7 @@ NestedQuestionComponent = Ember.Component.extend({
   inputClassNames: null,
   disabled: false,
   noResponseText: "[No response]",
+  additionalData: null,
 
   placeholder: null,
   textClassNames: ["question-text"],
@@ -32,6 +33,10 @@ NestedQuestionComponent = Ember.Component.extend({
       called.`,
       question
     );
+    
+    if (this.get("additionalData")) {
+      question.set("additionalData", this.get("additionalData"));
+    }
 
     this.set('model', NestedQuestionProxy.create({
        nestedQuestion: question,

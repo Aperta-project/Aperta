@@ -1,6 +1,5 @@
 class DataMigrator::ReviewerRecommendationsQuestionsMigrator < DataMigrator::Base
-  OWNER_TYPE = "TahiStandardTasks::ReviewerRecommendation"
-
+  
   IDENTS = {
     RECOMMEND_OR_OPPOSE: "recommend_or_oppose",
     REASON: "reason"
@@ -8,6 +7,7 @@ class DataMigrator::ReviewerRecommendationsQuestionsMigrator < DataMigrator::Bas
 
   def initialize
     @subtract_from_expected_count = 0
+    @owner_type = "TahiStandardTasks::ReviewerRecommendation"
   end
 
   def cleanup
@@ -22,7 +22,7 @@ class DataMigrator::ReviewerRecommendationsQuestionsMigrator < DataMigrator::Bas
 
   def reset
     NestedQuestionAnswer.where(
-      nested_questions: { owner_type: [OWNER_TYPE], owner_id: nil }
+      nested_questions: { owner_type: [@owner_type], owner_id: nil }
     ).joins(:nested_question).destroy_all
   end
 
@@ -33,7 +33,7 @@ class DataMigrator::ReviewerRecommendationsQuestionsMigrator < DataMigrator::Bas
 
     questions << NestedQuestion.new(
       owner_id: nil,
-      owner_type: OWNER_TYPE,
+      owner_type: @owner_type,
       ident: IDENTS[:RECOMMEND_OR_OPPOSE],
       value_type: "boolean",
       text: "Recommend or oppose",
@@ -42,7 +42,7 @@ class DataMigrator::ReviewerRecommendationsQuestionsMigrator < DataMigrator::Bas
 
     questions << NestedQuestion.new(
       owner_id: nil,
-      owner_type: OWNER_TYPE,
+      owner_type: @owner_type,
       ident: IDENTS[:REASON],
       value_type: "text",
       text: "Reason",
@@ -50,18 +50,18 @@ class DataMigrator::ReviewerRecommendationsQuestionsMigrator < DataMigrator::Bas
     )
 
     questions.each do |q|
-      unless NestedQuestion.where(owner_id: nil, owner_type: OWNER_TYPE, ident: q.ident).exists?
+      unless NestedQuestion.where(owner_id: nil, owner_type: @owner_type, ident: q.ident).exists?
         q.save!
       end
     end
   end
 
   def recommend_or_oppose_question
-    NestedQuestion.where(ident: IDENTS[:RECOMMEND_OR_OPPOSE], owner_type: OWNER_TYPE, owner_id: nil).first!
+    NestedQuestion.where(ident: IDENTS[:RECOMMEND_OR_OPPOSE], owner_type: @owner_type, owner_id: nil).first!
   end
 
   def reason_question
-    NestedQuestion.where(ident: IDENTS[:REASON], owner_type: OWNER_TYPE, owner_id: nil).first!
+    NestedQuestion.where(ident: IDENTS[:REASON], owner_type: @owner_type, owner_id: nil).first!
   end
 
   def migrate_answers
@@ -103,13 +103,13 @@ class DataMigrator::ReviewerRecommendationsQuestionsMigrator < DataMigrator::Bas
     number_of_fields_converted = IDENTS.length
     verify_count(
       expected: (TahiStandardTasks::ReviewerRecommendation.count * number_of_fields_converted) - @subtract_from_expected_count,
-      actual: NestedQuestionAnswer.includes(:nested_question).where(nested_questions: { owner_type: OWNER_TYPE, owner_id: nil }).count
+      actual: NestedQuestionAnswer.includes(:nested_question).where(nested_questions: { owner_type: @owner_type, owner_id: nil }).count
     )
   end
 
   def verify_count(expected:, actual:)
     if actual != expected
-      raise "Count mismatch on NestedQuestionAnswer for #{OWNER_TYPE}. Expected: #{expected} Got: #{actual}"
+      raise "Count mismatch on NestedQuestionAnswer for #{@owner_type}. Expected: #{expected} Got: #{actual}"
     end
   end
 end

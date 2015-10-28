@@ -11,6 +11,11 @@ export default DS.Model.extend({
   value_type: DS.attr('string'),
   createdAt: DS.attr('date'),
   updatedAt: DS.attr('date'),
+  additionalData: DS.attr('string'), //additionalData is provided so templates
+                                     //have a way to carry out actions based on
+                                     //a question's answer.  Like populate a
+                                     //textbox with boilerplate text if it is
+                                     //checked or not.
 
   text: DS.attr('string'),
   children: DS.hasMany('nested-question', { async: false, inverse: 'parent' }),

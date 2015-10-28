@@ -34,7 +34,6 @@ gem 'kaminari'
 
 gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
 gem 'sidekiq'
-gem 'sidetiq'
 gem 'sinatra'
 gem 'request_store'
 

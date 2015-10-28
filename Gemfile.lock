@@ -336,7 +336,6 @@ GEM
     httpclient (2.6.0.1)
     humanize (1.1.0)
     i18n (0.7.0)
-    ice_cube (0.11.1)
     inflecto (0.0.2)
     iniparse (1.4.1)
     interception (0.5)
@@ -547,10 +546,6 @@ GEM
       json (~> 1.0)
       redis (~> 3.2, >= 3.2.1)
       redis-namespace (~> 1.5, >= 1.5.2)
-    sidetiq (0.6.3)
-      celluloid (>= 0.14.1)
-      ice_cube (= 0.11.1)
-      sidekiq (>= 3.0.0)
     signature (0.1.8)
     simplecov (0.10.0)
       docile (~> 1.1.0)
@@ -682,7 +677,6 @@ DEPENDENCIES
   sdoc
   selenium-webdriver
   sidekiq
-  sidetiq
   simplecov
   sinatra
   sort_alphabetical

@@ -1,5 +1,4 @@
 require 'sidekiq/web'
-require 'sidetiq/web'
 
 Tahi::Application.routes.draw do
   mount TahiStandardTasks::Engine => "/api", as: "standard_tasks"

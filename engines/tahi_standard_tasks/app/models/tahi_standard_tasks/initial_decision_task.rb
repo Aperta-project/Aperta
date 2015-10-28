@@ -4,7 +4,7 @@ module TahiStandardTasks
     register_task default_title: 'Initial Decision', default_role: 'editor'
 
     def initial_decision
-      paper.decisions.first
+      paper.decisions.last
     end
 
     def active_model_serializer

@@ -2,6 +2,10 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
   TASK_OWNER_TYPE = "TahiStandardTasks::ReviewerReportTask"
 
   IDENTS = {
+    ignored: %w(
+      reviewer_report.intelligible
+      reviewer_report.intelligible.explanation
+    ),
     old: {
       COMPETING_INTERESTS_IDENT: "reviewer_report.competing_interests",
       SUPPORT_CONCLUSIONS_IDENT: "reviewer_report.support_conclusions",
@@ -26,6 +30,7 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
       IDENTITY_IDENT: "identity"
     }
   }
+
 
   def initialize
     @subtract_from_expected_count = 0
@@ -204,8 +209,9 @@ class DataMigrator::ReviewerReportQuestionsMigrator < DataMigrator::Base
   end
 
   def verify_counts
+    expected_questions = Question.where("ident LIKE 'reviewer_report.%' AND ident NOT IN (?)", IDENTS[:ignored])
     verify_count(
-      expected: Question.where("ident LIKE 'reviewer_report.%'").count - @subtract_from_expected_count,
+      expected: expected_questions.count - @subtract_from_expected_count,
       actual: NestedQuestionAnswer.includes(:nested_question).where(nested_questions: { owner_type: TASK_OWNER_TYPE, owner_id: nil }).count
     )
   end

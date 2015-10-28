@@ -4,18 +4,21 @@
 
 <h1>Initial Decision</h1>
 
-{{#if decisionRegistered}}
+{{#if isTaskCompleted}}
     <div class="alert alert-info">
-      A final decision of {{initialDecision.verdict}} has been registered.
+      An initial decision of {{initialDecision.verdict}} has been registered.
     </div>
+{{else}}
+
+  {{#if nonPublishable}}
+    <div class="alert alert-warning">
+      A decision cannot be registered at this time.
+      The manuscript is not in a submitted state.
+    </div>
+  {{/if}}
+
 {{/if}}
 
-{{#if nonPublishable}}
-  <div class="alert alert-warning">
-    A decision cannot be registered at this time.
-    The manuscript is not in a submitted state.
-  </div>
-{{/if}}
 
 <div class="decision-selections">
   <label class="decision-label">

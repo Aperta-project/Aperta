@@ -1,9 +1,9 @@
-class Snapshot::SupportingInformationTaskSerializer < Snapshot::TaskSerializer
+class Snapshot::SupportingInformationTaskSerializer < Snapshot::BaseSerializer
 
   private
 
   def snapshot_properties
-    @task.paper.supporting_information_files.order(:id).map do |file|
+    model.paper.supporting_information_files.order(:id).map do |file|
       {
         name: "supporting-information-file",
         type: "properties",

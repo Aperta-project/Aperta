@@ -18,7 +18,7 @@ describe Snapshot::ReviewerRecommendationSerializer do
   describe "#as_json" do
     it "serializes to JSON" do
       expect(serializer.as_json).to include(
-        name: "reviewer_recommendation",
+        name: "reviewer-recommendation",
         type: "properties"
       )
     end

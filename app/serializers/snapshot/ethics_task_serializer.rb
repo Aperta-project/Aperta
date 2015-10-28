@@ -1,2 +1,2 @@
-class Snapshot::EthicsTaskSerializer < Snapshot::TaskSerializer
+class Snapshot::EthicsTaskSerializer < Snapshot::BaseSerializer
 end

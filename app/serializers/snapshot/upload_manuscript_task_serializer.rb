@@ -1,2 +1,2 @@
-class Snapshot::UploadManuscriptTaskSerializer < Snapshot::TaskSerializer
+class Snapshot::UploadManuscriptTaskSerializer < Snapshot::BaseSerializer
 end

@@ -1,2 +1,2 @@
-class Snapshot::CompetingInterestsTaskSerializer < Snapshot::TaskSerializer
+class Snapshot::CompetingInterestsTaskSerializer < Snapshot::BaseSerializer
 end

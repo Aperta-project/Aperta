@@ -87,7 +87,7 @@ describe Snapshot::NestedQuestionSerializer do
       )
 
       expect(serializer.as_json[:value][:attachment]).to eq(
-        name: "attachment",
+        name: "question-attachment",
         type: "properties",
         children: [
           { name: "file", type: "text", value: "some-attachment.png" },

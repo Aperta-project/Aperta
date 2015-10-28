@@ -635,7 +635,6 @@ DEPENDENCIES
   gepub (~> 0.7.0beta1)
   heroku-deflater
   kaminari
-  launchy
   mail_safe
   migration_data
   mini_magick

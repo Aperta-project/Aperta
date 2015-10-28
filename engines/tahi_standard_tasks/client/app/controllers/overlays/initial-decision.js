@@ -13,7 +13,8 @@ export default TaskController.extend({
   nonPublishable: Ember.computed.not('publishable'),
   hasNoLetter: Ember.computed.empty('initialDecision.letter'),
   hasNoVerdict: Ember.computed.none('initialDecision.verdict'),
-  cannotRegisterDecision: Ember.computed.or('hasNoLetter', 'hasNoVerdict'),
+  cannotRegisterDecision: Ember.computed.or('hasNoLetter', 'hasNoVerdict',
+                                            'isTaskCompleted'),
 
   actions: {
 

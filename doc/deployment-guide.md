@@ -218,6 +218,71 @@ the (success) emoji for maximum celebration:
 
 # Apply a Hotfix to Release Candidate
 
+Your successful deploy to release-candidate has prompted the team to start the
+pre-release testing cycle.  Someone is bound to find something that needs to be
+fixed before the final release. Alternatively, there was a PR that didn't quite
+make the cut but was supposed to go into the release. We don't want to freeze
+development or hold up cutting the release, so we will just create a hotfix for
+that PR into the release once it is finished.
+
+Luckily fixing these issues is pretty easy.
+
+The first step here is to clearly identify what work needs to be done. Are we
+creating a new fix from scratch or porting something that missed our release
+deadline?
+
+It may be helpful to create a "tracking issue" for the Release. This is just a
+normal Github Issue that has a checklist for all the Hotfixes that need to be
+applied before the final release to production. It just helps raise awareness to
+the team and prevents hotfixes from being forgotten. You can at a look at [Issue
+1844](https://github.com/Tahi-project/tahi/issues/1844) as an example.
+
+You can find more explicit documentation of these options in the [Git
+Process Docs](./git-process.txt#L110), here's a quick summary. There are two
+major paths you might go down:
+
+#### 1. Create a New Fix
+
+So someone identified a bug in release-candidate. It may or may not be already
+fixed in `master`. It definitely needs to be fixed in `release/1.X`.
+
+You need to have someone actually create a new branch and work on a fix. It
+might be you, but is likely someone who is familiar with the source of the bug.
+Brand new work will need to be a separate `hotfix` branch created off of the
+`release/1.X` branch.
+
+#### 2. Porting an existing PR
+
+There was work that was *almost* complete, but not quite ready when we cut the
+release. It still needs to get into this release.
+
+You might need to wait for it to be merged into master. There's no sense in
+trying to have two active PRs at the same time, needing the exact same changes
+applied after each Reviewer comment. For easy of porting, try and avoid deleting
+the branch after it is merged. We can clean up dead branches a little later, but
+it makes the next step easier.
+
+Now we're just porting an existing merge commit over to the release branch. It is
+probably easiest to create a new branch from the original feature branch and
+then rebase it on top of `release/1.X`. We do this so we don't accidentally
+include any of the unwanted work from `master`. This new `hotfix` branch should
+only contain the exact work we wanted to port over. It may require a little bit
+of rework on the PR author's part, but this is unavoidable and hopefully minor.
+
+#### Create a PR
+
+Once the work has been completed it needs to go through the normal Code Review
+and Product Team Acceptance cycle. Create a PR, find a Reviewer, and shepherd
+the change through the process. At this point, QA is going to test this hotfix's
+suitability for release in the release-candidate environment. If they find
+problems after the other review, we'll need to submit another hotfix.
+
+#### After Review
+
+Once it passes review it can be merged into the `release/1.X` branch. Once that
+is done, it is time to redeploy release-candidate. Loop back up to the section
+on Deploying Release Candidate.
+
 # Deploy Production
 
 # Apply a Hotfix to Production

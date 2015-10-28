@@ -3,6 +3,7 @@ import TaskController from 'tahi/pods/paper/task/controller';
 
 export default TaskController.extend({
 
+  restless: Ember.inject.service(),
   initialDecision: Ember.computed.alias('model.paper.decisions.firstObject'),
   isSavingData: Ember.computed.alias('initialDecision.isSaving'),
   paper: Ember.computed.alias('model.paper'),
@@ -19,11 +20,17 @@ export default TaskController.extend({
   actions: {
 
     registerDecision() {
-
+      const taskId = this.get('model.id');
+      this.get('initialDecision').save().then(() => {
+        this.get('restless').post(`/api/initial_decision/${taskId}`).then(()=>{
+          this.set('model.completed', true);
+          this.get('model').save();
+        });
+      });
     },
 
     setInitialDecisionVerdict(decision) {
-      this.get("initialDecision").set("verdict", decision)
+      this.get("initialDecision").set("verdict", decision);
     }
   }
 });

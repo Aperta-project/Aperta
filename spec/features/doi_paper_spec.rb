@@ -29,7 +29,7 @@ feature "Editing paper", selenium: true, js: true do
       scenario "it doesn't contain any doi artifacts" do
         visit "/papers/#{paper.id}"
         within "#paper-container" do
-          expect(page).to_not have_text("DOI:")
+          expect(page).to_not have_text("Manuscript ID")
         end
       end
     end

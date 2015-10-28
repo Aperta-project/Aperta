@@ -1,5 +1,4 @@
 class DataMigrator::AuthorsQuestionsMigrator < DataMigrator::Base
-  OWNER_TYPE = "Author"
 
   def cleanup
     puts
@@ -15,6 +14,10 @@ class DataMigrator::AuthorsQuestionsMigrator < DataMigrator::Base
     puts
   end
 
+  def initialize
+    @owner_type = "Author"
+  end
+
   def migrate!
     @expected_count = 0
     create_nested_questions
@@ -24,7 +27,7 @@ class DataMigrator::AuthorsQuestionsMigrator < DataMigrator::Base
 
   def reset
     NestedQuestionAnswer.where(
-      nested_questions: { owner_type: OWNER_TYPE, owner_id: nil }
+      nested_questions: { owner_type: @owner_type, owner_id: nil }
     ).joins(:nested_question).destroy_all
   end
 
@@ -33,7 +36,7 @@ class DataMigrator::AuthorsQuestionsMigrator < DataMigrator::Base
   def create_nested_questions
     @published_as_corresponding_author_question = NestedQuestion.where(
       owner_id: nil,
-      owner_type: OWNER_TYPE,
+      owner_type: @owner_type,
       ident: "published_as_corresponding_author",
       value_type: "boolean",
       text: "This person will be listed as the corresponding author on the published article",
@@ -42,7 +45,7 @@ class DataMigrator::AuthorsQuestionsMigrator < DataMigrator::Base
 
     @deceased_question = NestedQuestion.where(
       owner_id: nil,
-      owner_type: OWNER_TYPE,
+      owner_type: @owner_type,
       ident: "deceased",
       value_type: "boolean",
       text: "This person is deceased",
@@ -51,7 +54,7 @@ class DataMigrator::AuthorsQuestionsMigrator < DataMigrator::Base
 
     @contributions_question = NestedQuestion.where(
       owner_id: nil,
-      owner_type: OWNER_TYPE,
+      owner_type: @owner_type,
       ident: "contributions",
       value_type: "question-set",
       text: "Author Contributions",
@@ -60,7 +63,7 @@ class DataMigrator::AuthorsQuestionsMigrator < DataMigrator::Base
 
     @conceived_and_designed_experiments_question = NestedQuestion.where(
       owner_id: nil,
-      owner_type: OWNER_TYPE,
+      owner_type: @owner_type,
       parent_id: @contributions_question.id,
       ident: "conceived_and_designed_experiments",
       value_type: "boolean",
@@ -70,7 +73,7 @@ class DataMigrator::AuthorsQuestionsMigrator < DataMigrator::Base
 
     @performed_the_experiments_question = NestedQuestion.where(
       owner_id: nil,
-      owner_type: OWNER_TYPE,
+      owner_type: @owner_type,
       parent_id: @contributions_question.id,
       ident: "performed_the_experiments",
       value_type: "boolean",
@@ -80,7 +83,7 @@ class DataMigrator::AuthorsQuestionsMigrator < DataMigrator::Base
 
     @analyzed_data_question = NestedQuestion.where(
       owner_id: nil,
-      owner_type: OWNER_TYPE,
+      owner_type: @owner_type,
       parent_id: @contributions_question.id,
       ident: "analyzed_data",
       value_type: "boolean",
@@ -90,7 +93,7 @@ class DataMigrator::AuthorsQuestionsMigrator < DataMigrator::Base
 
     @contributed_tools_question = NestedQuestion.where(
       owner_id: nil,
-      owner_type: OWNER_TYPE,
+      owner_type: @owner_type,
       parent_id: @contributions_question.id,
       ident: "contributed_tools",
       value_type: "boolean",
@@ -100,7 +103,7 @@ class DataMigrator::AuthorsQuestionsMigrator < DataMigrator::Base
 
     @contributed_writing_question = NestedQuestion.where(
       owner_id: nil,
-      owner_type: OWNER_TYPE,
+      owner_type: @owner_type,
       parent_id: @contributions_question.id,
       ident: "contributed_writing",
       value_type: "boolean",
@@ -110,7 +113,7 @@ class DataMigrator::AuthorsQuestionsMigrator < DataMigrator::Base
 
     @other_question = NestedQuestion.where(
       owner_id: nil,
-      owner_type: OWNER_TYPE,
+      owner_type: @owner_type,
       parent_id: @contributions_question.id,
       ident: "other",
       value_type: "text",
@@ -186,13 +189,13 @@ class DataMigrator::AuthorsQuestionsMigrator < DataMigrator::Base
   def verify_counts
     verify_count(
       expected: @expected_count,
-      actual: NestedQuestionAnswer.includes(:nested_question).where(nested_questions: { owner_type: OWNER_TYPE, owner_id: nil }).count
+      actual: NestedQuestionAnswer.includes(:nested_question).where(nested_questions: { owner_type: @owner_type, owner_id: nil }).count
     )
   end
 
   def verify_count(expected:, actual:)
     if actual != expected
-      raise "Count mismatch on NestedQuestionAnswer for #{OWNER_TYPE}. Expected: #{expected} Got: #{actual}"
+      raise "Count mismatch on NestedQuestionAnswer for #{@owner_type}. Expected: #{expected} Got: #{actual}"
     end
   end
 end

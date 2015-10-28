@@ -1,11 +1,11 @@
 class DataMigrator::FigureQuestionsMigrator < DataMigrator::Base
-  OWNER_TYPE = "TahiStandardTasks::FigureTask"
 
   OLD_FIGURES_COMPLIES_IDENT = "figures.complies"
   NEW_FIGURES_COMPLIES_IDENT = "figure_complies"
 
   def initialize
     @subtract_from_expected_count = 0
+    @owner_type = "TahiStandardTasks::FigureTask"
   end
 
   def cleanup
@@ -34,7 +34,7 @@ class DataMigrator::FigureQuestionsMigrator < DataMigrator::Base
 
   def reset
     NestedQuestionAnswer.where(
-      nested_questions: { owner_type: OWNER_TYPE, owner_id: nil }
+      nested_questions: { owner_type: @owner_type, owner_id: nil }
     ).joins(:nested_question).destroy_all
   end
 
@@ -43,7 +43,7 @@ class DataMigrator::FigureQuestionsMigrator < DataMigrator::Base
   def create_nested_questions
     @nested_figure_complies_question = NestedQuestion.where(
       owner_id: nil,
-      owner_type: OWNER_TYPE,
+      owner_type: @owner_type,
       text: "Yes - I confirm our figures comply with the guidelines.",
       ident: NEW_FIGURES_COMPLIES_IDENT,
       value_type: "boolean",
@@ -95,7 +95,7 @@ class DataMigrator::FigureQuestionsMigrator < DataMigrator::Base
 
   def verify_count(expected:, actual:, ident:)
     if actual != expected
-      raise "Count mismatch on #{ident} NestedQuestionAnswer for #{OWNER_TYPE}. Expected: #{expected} Got: #{actual}"
+      raise "Count mismatch on #{ident} NestedQuestionAnswer for #{@owner_type}. Expected: #{expected} Got: #{actual}"
     end
   end
 end

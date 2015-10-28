@@ -1,5 +1,4 @@
 class DataMigrator::EthicsQuestionsMigrator < DataMigrator::Base
-  OWNER_TYPE = "TahiStandardTasks::EthicsTask"
 
   def cleanup
     idents = ["ethics.human_subjects", "ethics.human_subjects.participants", "ethics.animal_subjects", "ethics.animal_subjects.field_permit"]
@@ -19,6 +18,10 @@ class DataMigrator::EthicsQuestionsMigrator < DataMigrator::Base
     Question.where(ident: idents).destroy_all
   end
 
+  def initialize
+    @owner_type = "TahiStandardTasks::EthicsTask"
+  end
+
   def migrate!
     create_nested_questions
     migrate_human_subjects_questions
@@ -30,7 +33,7 @@ class DataMigrator::EthicsQuestionsMigrator < DataMigrator::Base
 
   def reset
     NestedQuestionAnswer.where(
-      nested_questions: { owner_type: OWNER_TYPE, owner_id: nil }
+      nested_questions: { owner_type: @owner_type, owner_id: nil }
     ).joins(:nested_question).destroy_all
   end
 
@@ -39,7 +42,7 @@ class DataMigrator::EthicsQuestionsMigrator < DataMigrator::Base
   def create_nested_questions
     @nested_human_subjects_question = NestedQuestion.where(
       owner_id: nil,
-      owner_type: OWNER_TYPE,
+      owner_type: @owner_type,
       text: "Does your study involve Human Subject Research (human participants and/or tissue)?",
       ident: "human_subjects",
       value_type: "boolean",
@@ -48,7 +51,7 @@ class DataMigrator::EthicsQuestionsMigrator < DataMigrator::Base
 
     @nested_participants_question = NestedQuestion.where(
       owner_id: nil,
-      owner_type: OWNER_TYPE,
+      owner_type: @owner_type,
       text: "Please enter the name of the IRB or Ethics Committee that approved this study in the space below. Include the approval number and/or a statement indicating approval of this research.",
       value_type: "text",
       ident: "participants",
@@ -58,7 +61,7 @@ class DataMigrator::EthicsQuestionsMigrator < DataMigrator::Base
 
     @nested_animal_subjects_question = NestedQuestion.where(
       owner_id: nil,
-      owner_type: OWNER_TYPE,
+      owner_type: @owner_type,
       text: "Does your study involve Animal Research (vertebrate animals, embryos or tissues)?",
       ident: "animal_subjects",
       value_type: "boolean",
@@ -67,7 +70,7 @@ class DataMigrator::EthicsQuestionsMigrator < DataMigrator::Base
 
     @nested_field_permit_question = NestedQuestion.where(
       owner_id: nil,
-      owner_type: OWNER_TYPE,
+      owner_type: @owner_type,
       text: "Please enter your statement below:",
       value_type: "text",
       ident: "field_permit",
@@ -204,7 +207,7 @@ class DataMigrator::EthicsQuestionsMigrator < DataMigrator::Base
 
   def verify_count(expected:, actual:, ident:)
     if actual != expected
-      raise "Count mismatch on #{ident} NestedQuestionAnswer for #{OWNER_TYPE}. Expected: #{expected} Got: #{actual}"
+      raise "Count mismatch on #{ident} NestedQuestionAnswer for #{@owner_type}. Expected: #{expected} Got: #{actual}"
     end
   end
 end

@@ -4,31 +4,29 @@ class Snapshot::ReviewerRecommendationSerializer < Snapshot::BaseSerializer
   end
 
   def as_json
-    snapshot_properties + snapshot_nested_questions
+    { name: "reviewer_recommendation",
+      type: "properties",
+      children: snapshot_properties + snapshot_nested_questions }
   end
 
   def snapshot_properties
-    properties = []
-    properties << snapshot_property("first_name", "text", @reviewer_recommendation.first_name)
-    properties << snapshot_property("last_name", "text", @reviewer_recommendation.last_name)
-    properties << snapshot_property("middle_initial", "text", @reviewer_recommendation.middle_initial)
-    properties << snapshot_property("email", "text", @reviewer_recommendation.email)
-    properties << snapshot_property("department", "text", @reviewer_recommendation.department)
-    properties << snapshot_property("title", "text", @reviewer_recommendation.title)
-    properties << snapshot_property("affiliation", "text", @reviewer_recommendation.affiliation)
-    properties << snapshot_property("ringgold_id", "text", @reviewer_recommendation.ringgold_id)
+    [
+      snapshot_property("first_name", "text", @reviewer_recommendation.first_name),
+      snapshot_property("last_name", "text", @reviewer_recommendation.last_name),
+      snapshot_property("middle_initial", "text", @reviewer_recommendation.middle_initial),
+      snapshot_property("email", "text", @reviewer_recommendation.email),
+      snapshot_property("department", "text", @reviewer_recommendation.department),
+      snapshot_property("title", "text", @reviewer_recommendation.title),
+      snapshot_property("affiliation", "text", @reviewer_recommendation.affiliation),
+      snapshot_property("ringgold_id", "text", @reviewer_recommendation.ringgold_id)
+    ]
   end
 
   def snapshot_nested_questions
-    recommendation_snapshot = []
-    nested_questions = TahiStandardTasks::ReviewerRecommendation.nested_questions.where(parent_id: nil).order('id')
+    nested_questions = TahiStandardTasks::ReviewerRecommendation.nested_questions.where(parent_id: nil).order('position')
 
-    nested_questions.each do |question|
-      question_serializer = Snapshot::NestedQuestionSerializer.new question, @reviewer_recommendation
-      recommendation_snapshot << question_serializer.as_json
+    nested_questions.map do |question|
+      Snapshot::NestedQuestionSerializer.new(question, @reviewer_recommendation).as_json
     end
-
-    recommendation_snapshot
   end
-
 end

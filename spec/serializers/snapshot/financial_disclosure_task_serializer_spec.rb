@@ -1,28 +1,49 @@
 require "rails_helper"
 
 describe Snapshot::FinancialDisclosureTaskSerializer do
+  subject(:serializer) { described_class.new(task) }
   let(:task) {FactoryGirl.create(:financial_disclosure_task)}
 
-  it "serializes a financial disclosure task" do
-    snapshot = Snapshot::FinancialDisclosureTaskSerializer.new(task).as_json
+  describe "#as_json" do
+    it "serializes to JSON" do
+      expect(serializer.as_json).to include(
+        name: "financial-disclosure-task",
+        type: "properties"
+      )
+    end
 
-    expect(snapshot[0][:name]).to eq("author_received_funding")
-  end
+    context "and the task has funders" do
+      let!(:funder_bob) { FactoryGirl.create(:funder, id: 2) }
+      let!(:funder_sally) { FactoryGirl.create(:funder, id: 1) }
 
-  it "serializes with funders" do
-    funder1 = FactoryGirl.create(:funder)
-    funder2 = FactoryGirl.create(:funder)
-    task.funders << funder1
-    task.funders << funder2
+      let(:bobs_funder_serializer) do
+        double(
+          "Snapshot::FunderSerializer",
+          as_json: { funder: "bob's json here" }
+        )
+      end
 
-    snapshot = Snapshot::FinancialDisclosureTaskSerializer.new(task).as_json
+      let(:sallys_funder_serializer) do
+        double(
+          "Snapshot::FunderSerializer",
+          as_json: { funder: "sally's json here" }
+        )
+      end
 
-    expect(snapshot[0][:name]).to eq("author_received_funding")
-    expect(snapshot[1][:name]).to eq("funder")
-    expect(snapshot[1][:children][0][:value]).to eq(funder1[:name])
-    expect(snapshot[1][:children][3][:name]).to eq("funder_had_influence")
-    expect(snapshot[1][:children][3][:children][0][:name]).to eq("funder_role_description")
-    expect(snapshot[1][:children][1][:value]).to eq(funder1[:grant_number])
-    expect(snapshot[2][:children][1][:value]).to eq(funder2[:grant_number])
+      before do
+        task.funders = [funder_bob, funder_sally]
+        allow(Snapshot::FunderSerializer).to receive(:new).with(funder_bob).and_return bobs_funder_serializer
+        allow(Snapshot::FunderSerializer).to receive(:new).with(funder_sally).and_return sallys_funder_serializer
+      end
+
+      it "serializes each funders(s) associated with the task in order by their respective id" do
+        expect(serializer.as_json[:children]).to include(
+          { funder: "sally's json here" },
+          { funder: "bob's json here" }
+        )
+      end
+    end
+
+    include_examples "snapshot serializes related nested questions", resource: :task
   end
 end

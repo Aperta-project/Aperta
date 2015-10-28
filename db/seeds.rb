@@ -102,6 +102,7 @@ else
 
   Rake::Task['data:create_task_types'].invoke
   Rake::Task['journal:create_default_templates'].invoke
+  Rake::Task['nested-questions:seed'].invoke
 
   puts "Tahi Seeds have been loaded successfully"
 end

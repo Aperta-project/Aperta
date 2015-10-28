@@ -6,50 +6,6 @@ module TahiStandardTasks
     validate :publication_date, :volume_number, :issue_number, if: :newly_complete?
 
     def self.nested_questions
-      questions = []
-
-      questions << NestedQuestion.new(
-        owner_id:nil,
-        owner_type: name,
-        ident: "publication_date",
-        value_type: "text",
-        text: "Publication Date",
-        position: 1
-      )
-
-      questions << NestedQuestion.new(
-        owner_id:nil,
-        owner_type: name,
-        ident: "volume_number",
-        value_type: "text",
-        text: "Volume Number",
-        position: 2
-      )
-
-      questions << NestedQuestion.new(
-        owner_id:nil,
-        owner_type: name,
-        ident: "issue_number",
-        value_type: "text",
-        text: "Issue Number",
-        position: 3
-      )
-
-      questions << NestedQuestion.new(
-        owner_id:nil,
-        owner_type: name,
-        ident: "production_notes",
-        value_type: "text",
-        text: "Production Notes",
-        position: 4
-      )
-
-      questions.each do |q|
-        unless NestedQuestion.where(owner_id:nil, owner_type:name, ident:q.ident).exists?
-          q.save!
-        end
-      end
-
       NestedQuestion.where(owner_id:nil, owner_type:name).all
     end
 

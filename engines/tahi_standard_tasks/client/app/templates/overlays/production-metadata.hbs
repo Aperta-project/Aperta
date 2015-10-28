@@ -2,7 +2,7 @@
   Production Metadata
 </h1>
 
-<div class='production-metadata'>
+<div class="production-metadata">
   <div class="form-group">
     <div class="inset-form-control required publication-date {{if validationErrors.publicationDate "error"}}">
       {{error-message message=validationErrors.publicationDate class="inset-form-control-text"}}
@@ -18,8 +18,8 @@
         placeholder="Select Date..."}}
     </div>
   </div>
-  <div class="form-group {{if validationErrors.volumeNumber "error"}}">
-    <div class="inset-form-control required volume-number">
+  <div class="form-group">
+    <div class="inset-form-control required volume-number {{if validationErrors.volumeNumber "error"}}">
       <label class="inset-form-control-text">
         {{nested-question-display ident="volume_number" owner=model}}
       </label>

@@ -3,8 +3,7 @@
 # and retrieve GUIDs for Authors in Aperta
 #
 class PlosEditorialManager < ActiveRecord::Base
-
-  establish_connection(ENV['EM_DATABASE_URL'].present? ? ENV['EM_DATABASE_URL'] : "plos_editorial_manager_#{Rails.env}".to_sym)
+  establish_connection :plos_editorial_manager
 
   def self.find_person_by_email(email:)
     email = email.strip

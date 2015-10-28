@@ -53,22 +53,22 @@ Tahi::Application.routes.draw do
     resources :countries, only: :index
 
     get 'paper_tracker', to: 'paper_tracker#index'
-    resources :supporting_information_files, only: [:create, :destroy, :update] do
+    resources :supporting_information_files, only: [:show, :create, :destroy, :update] do
       put :update_attachment, on: :member
     end
     resources :affiliations, only: [:index, :create, :destroy]
-    resources :attachments, only: [:destroy, :update]
-    resources :authors, only: [:create, :update, :destroy]
+    resources :attachments, only: [:show, :destroy, :update]
+    resources :authors, only: [:show, :create, :update, :destroy]
     resources :collaborations, only: [:create, :destroy]
     resources :comments, only: [:create, :show]
-    resources :comment_looks, only: [:index, :destroy]
-    resources :decisions, only: [:create, :update]
+    resources :comment_looks, only: [:index, :show, :destroy]
+    resources :decisions, only: [:create, :update, :show]
     resources :discussion_topics, only: [:index, :show, :create, :update, :destroy]
     resources :discussion_participants, only: [:create, :destroy]
-    resources :discussion_replies, only: [:create, :update, :destroy]
+    resources :discussion_replies, only: [:show, :create, :update, :destroy]
     resources :errors, only: :create
     resources :feedback, only: :create
-    resources :figures, only: [:destroy, :update] do
+    resources :figures, only: [:show, :destroy, :update] do
       put :update_attachment, on: :member
     end
     resources :tables, only: [:create, :update, :destroy]
@@ -83,7 +83,7 @@ Tahi::Application.routes.draw do
     end
     resources :flows, except: [:new, :edit]
     resources :formats, only: [:index]
-    resources :invitations, only: [:index, :create, :destroy] do
+    resources :invitations, only: [:index, :show, :create, :destroy] do
       put :accept, on: :member
       put :reject, on: :member
     end
@@ -103,10 +103,14 @@ Tahi::Application.routes.draw do
       end
       resource :editor, only: :destroy
       resource :manuscript_manager, only: :show
-      resources :figures, only: :create
+      resources :figures, only: [:create, :index]
       resources :tables, only: :create
       resources :bibitems, only: :create
-      resources :tasks, only: [:update, :create, :destroy] do
+      resources :phases, only: :index
+      resources :decisions, only: :index
+      resources :discussion_topics, only: :index
+
+      resources :tasks, only: [:index, :update, :create, :destroy] do
         resources :comments, only: :create
       end
       member do
@@ -114,6 +118,7 @@ Tahi::Application.routes.draw do
         get "activity/workflow", to: "papers#workflow_activities"
         get "activity/manuscript", to: "papers#manuscript_activities"
         get :comment_looks
+        get :versioned_texts
         get :export, to: "paper_conversions#export"
         put :submit
         put :withdraw
@@ -125,7 +130,7 @@ Tahi::Application.routes.draw do
     resources :participations, only: [:create, :show, :destroy]
     resources :phase_templates
     resources :phases, only: [:create, :update, :show, :destroy]
-    resources :question_attachments, only: [:destroy]
+    resources :question_attachments, only: [:show, :destroy]
     resources :questions, only: [:create, :update]
 
     resources :nested_questions, only: [:index] do
@@ -134,9 +139,14 @@ Tahi::Application.routes.draw do
 
     resources :roles, only: [:show, :create, :update, :destroy]
     resources :tasks, only: [:update, :create, :show, :destroy] do
-      resources :attachments, only: [:create, :update, :destroy] do
+      get :nested_questions
+      get :nested_question_answers
+      resources :attachments, only: [:index, :create, :update, :destroy] do
         put :update_attachment, on: :member
       end
+      resources :comments, only: [:index]
+      resources :participations, only: [:index]
+      resources :questions, only: [:index]
       put :send_message, on: :member
     end
     resources :task_templates

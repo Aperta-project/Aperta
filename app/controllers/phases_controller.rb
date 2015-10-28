@@ -2,6 +2,11 @@ class PhasesController < ApplicationController
   before_filter :authenticate_user!
   respond_to :json
 
+  def index
+    paper = Paper.find(params[:paper_id])
+    respond_with paper.phases
+  end
+
   def create
     paper = Paper.find(params[:phase][:paper_id])
     phase = paper.phases.create!(new_phase_params)

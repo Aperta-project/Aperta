@@ -1,4 +1,6 @@
 class Decision < ActiveRecord::Base
+  include EventStream::Notifiable
+
   belongs_to :paper
   has_many :invitations
   has_many :nested_question_answers

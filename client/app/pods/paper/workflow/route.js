@@ -6,12 +6,13 @@ export default AuthorizedRoute.extend({
   cardOverlayService: Ember.inject.service('card-overlay'),
 
   afterModel(paper) {
-    // TODO: No no. We should be able to remove or move this check to somewhere
-    // that doesn't block rendering. We only do this now because all tasks are
-    // loaded for all users. This will be changing in the future.
-    // 
-    // Ping manuscript_manager url for authorization
-    return new Ember.RSVP.Promise(function(resolve, reject) {
+    // Ping manuscript_manager url for authorization.
+    //
+    // TODO: you shouldn't need to make a call to the server to decide
+    // to render this page. Fix tasks#index to only return authorized
+    // tasks, and then get this information off of user and paper
+    // locally.
+    let auth = new Ember.RSVP.Promise(function(resolve, reject) {
       return Ember.$.ajax({
         method: 'GET',
         url: '/api/papers/' + paper.get('id') + '/manuscript_manager',
@@ -19,6 +20,11 @@ export default AuthorizedRoute.extend({
         error(xhr)    { return Ember.run(null, reject, xhr); }
       });
     });
+
+    // We need tasks for this view, but we'll access them via phases;
+    // fetching tasks *then* phases reduces the total number of requests.
+
+    return Ember.RSVP.all([auth, paper.get('tasks'), paper.get('phases')]);
   },
 
   actions: {

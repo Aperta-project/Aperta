@@ -4,7 +4,18 @@ export default Ember.Route.extend({
   cardOverlayService: Ember.inject.service('card-overlay'),
 
   model(params) {
-    return this.store.find('task', params.task_id);
+    // Force the reload of the task when visiting the tasks' route.
+    let task = this.store.findTask(params.task_id);
+    if (task) {
+      return task.reload();
+    } else {
+      return this.store.find('task', params.task_id);
+    }
+  },
+
+  afterModel(model) {
+    return Ember.RSVP.all([model.get('nestedQuestions'),
+                           model.get('nestedQuestionAnswers')]);
   },
 
   setupController(controller, model) {
@@ -19,12 +30,8 @@ export default Ember.Route.extend({
 
     taskController.setProperties({
       model: model,
-      comments: this.store.filter('comment', function(part) {
-        return part.get('task') === model;
-      }),
-      participations: this.store.filter('participation', function(part) {
-        return part.get('task') === model;
-      }),
+      comments: model.get('comments'),
+      participations: model.get('participations'),
       onClose: Ember.isEmpty(redirectOptions) ? 'redirectToDashboard' : 'redirect'
     });
 

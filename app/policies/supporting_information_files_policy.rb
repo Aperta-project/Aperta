@@ -1,6 +1,10 @@
 class SupportingInformationFilesPolicy < ApplicationPolicy
   primary_resource :file
 
+  def show?
+    papers_policy.show?
+  end
+
   def create?
     papers_policy.show?
   end

@@ -1,10 +1,16 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy
+  before_action :enforce_policy, except: [:index]
+  before_action :enforce_index_policy, only: [:index]
 
   before_action :unmunge_empty_arrays, only: [:update]
 
   respond_to :json
+
+  ## /paper/tasks/
+  def index
+    respond_with paper.tasks.includes(:participations, :paper), each_serializer: TaskSerializer
+  end
 
   def show
     respond_with(task, location: task_url(task))
@@ -45,6 +51,18 @@ class TasksController < ApplicationController
     head :ok
   end
 
+  def nested_questions
+    respond_with task.nested_questions,
+                 each_serializer: NestedQuestionSerializer,
+                 root: "nested_questions"
+  end
+
+  def nested_question_answers
+    respond_with task.nested_question_answers,
+                 each_serializer: NestedQuestionAnswerSerializer,
+                 root: "nested_question_answers"
+  end
+
   private
 
   def paper
@@ -55,6 +73,8 @@ class TasksController < ApplicationController
     @task ||= begin
       if params[:id].present?
         Task.find(params[:id])
+      elsif params[:task_id].present?
+        Task.find(params[:task_id])
       else
         task_klass = TaskType.constantize!(params[:task][:type])
         TaskFactory.build(task_klass, task_params(task_klass))
@@ -79,6 +99,10 @@ class TasksController < ApplicationController
       whitelisted[:body] ||= "Nothing to see here."
       whitelisted[:recipients] ||= []
     end
+  end
+
+  def enforce_index_policy
+    authorize_action!(task: nil, for_paper: paper)
   end
 
   def enforce_policy

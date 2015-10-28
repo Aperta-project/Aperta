@@ -4,12 +4,11 @@
 
 ReviewerReportTask = Task.extend
   paperReview: DS.belongsTo('paperReview')
-  decision: DS.belongsTo('decision')
-  previousDecisions: DS.hasMany('previousDecision')
+  decisions: DS.hasMany('decision')
   isSubmitted: DS.attr('boolean')
 
-  questionForIdentAndDecision: (ident, decision) ->
-    @get('questions').find (question) ->
-      question.get('ident') == ident && question.get('decision.id') == decision.get('id')
+  previousDecisions: Ember.computed.filterBy('decisions', 'isLatest', false)
+  decision: Ember.computed 'decisions', ->
+    @get('decisions').findBy('isLatest', true)
 
 `export default ReviewerReportTask`

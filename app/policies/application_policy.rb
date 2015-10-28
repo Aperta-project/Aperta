@@ -136,4 +136,16 @@ class ApplicationPolicy
     current_user.submitted_papers.where(id: paper.id).present?
   end
 
+  def can_view_paper?(paper)
+    (current_user.site_admin? ||
+     paper.assigned_users.where(id: current_user.id).exists? ||
+     can_view_manuscript_manager?(paper))
+  end
+
+  def can_view_manuscript_manager?(paper)
+    (current_user.site_admin? ||
+     current_user.roles.where(journal_id: paper.journal).
+       where("can_view_assigned_manuscript_managers = ? OR can_view_all_manuscript_managers = ?", true, true).
+       exists?)
+  end
 end

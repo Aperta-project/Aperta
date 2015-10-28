@@ -4,4 +4,8 @@ class QuestionAttachment < ActiveRecord::Base
   belongs_to :question, polymorphic: true
 
   mount_uploader :attachment, QuestionAttachmentUploader
+
+  def paper
+    question.owner.paper
+  end
 end

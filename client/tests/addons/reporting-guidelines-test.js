@@ -42,8 +42,12 @@ module('Integration: Reporting Guidelines Card', {
     paperResponse = paperPayload.toJSON();
     paperResponse.participations = [addUserAsParticipant(task, fakeUser)];
 
-    var nestedQuestions = [];
 
+    taskPayload = Factory.createPayload('task');
+    taskPayload.addRecords([task, fakeUser]);
+    taskResponse = taskPayload.toJSON();
+
+    var nestedQuestions = [];
 
     nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 1, ident: 'clinical_trial', text: "Doesn't Matter" }));
     nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 2, ident: 'systematic_reviews', text: "Systematic Reviews" }));
@@ -53,14 +57,11 @@ module('Integration: Reporting Guidelines Card', {
     nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 4, ident: 'diagnostic_studies', text: "Doesn't Matter" }));
     nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 5, ident: 'epidemiological_studies', text: "Doesn't Matter" }));
     nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 6, ident: 'microarray_studies', text: "Doesn't Matter" }));
-
-    nestedQuestions.forEach( (nestedQuestion) => {
+    _.each(nestedQuestions, function(nestedQuestion) {
       addNestedQuestionToTask(nestedQuestion, task);
     });
+    var nestedQuestionsPayload = {nested_questions: nestedQuestions};
 
-    taskPayload = Factory.createPayload('task');
-    taskPayload.addRecords([task, fakeUser].concat(nestedQuestions));
-    taskResponse = taskPayload.toJSON();
     server.respondWith('GET', "/api/papers/" + currentPaper.id, [
       200, {
         "Content-Type": "application/json"
@@ -71,6 +72,18 @@ module('Integration: Reporting Guidelines Card', {
       200, {
         "Content-Type": "application/json"
       }, JSON.stringify(taskResponse)
+    ]);
+
+    server.respondWith('GET', "/api/tasks/" + taskId + "/nested_questions", [
+      200, {
+        "Content-Type": "application/json"
+      }, JSON.stringify(nestedQuestionsPayload)
+    ]);
+
+    server.respondWith('GET', "/api/tasks/" + taskId + "/nested_question_answers", [
+      200, {
+        "Content-Type": "application/json"
+      }, JSON.stringify({nested_question_answers: []})
     ]);
 
     return server.respondWith('POST', "/api/nested_questions/" + nestedQuestions[1].id + "/answers", [

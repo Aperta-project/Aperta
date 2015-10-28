@@ -1,73 +1,45 @@
 `import Ember from 'ember'`
 `import { test } from 'ember-qunit'`
 `import startApp from '../helpers/start-app'`
-`import Factory from '../helpers/factory'`
+
 
 app = null
 
 module 'Integration: Pusher',
   afterEach: ->
     Ember.run(app, app.destroy)
+
   beforeEach: ->
     app = startApp()
-    1+1 # hangs if we return app. odd I know...
+    return null # hangs if we return app, so return null
 
-test 'action:created for anything other than a task will put the payload in the store', (assert) ->
+test 'action:created calls fetchById', (assert) ->
   expect(1)
-  data =
-    comment:
-      id: 1
-      body: "HEY"
+  commentId = 12
+
+  store = getStore()
+  sinon.spy(store, "fetchById")
+
   Ember.run =>
     route = getContainer().lookup("route:application")
     route.router = null # this is needed for ember integration testing when calling internal methods
-    route.send("created", data)
-    comment = getStore().getById('comment', 1)
-    assert.equal comment.get('body'), "HEY", "it puts the correct payload in the store"
+    route.send("created", type: "comment", id: commentId)
 
-test 'action:created for a task will put the payload in the store', (assert) ->
-  expect(1)
-  data =
-    task:
-      id: 10
-      title: "task is here"
-      phase_id: 1
-  Ember.run =>
-    route = getContainer().lookup("route:application")
-    route.router = null # this is needed for ember integration testing when calling internal methods
-    route.send("created", data)
-    task = getStore().findTask(10)
-    assert.equal task.get('title'), "task is here", "it puts the correct payload in the store"
-
-test 'action:created will still overwrite existing models', (assert) ->
-  expect(1)
-
-  data =
-    meta: null
-    comment:
-      id: 1
-      body: "NEW"
-  Ember.run =>
-    store = getStore()
-    store.push('comment', id: 1, body: "OLD")
-    route = getContainer().lookup("route:application")
-    route.router = null # this is needed for ember integration testing when calling internal methods
-    route.send("created", data)
-    comment = store.getById('comment', 1)
-    assert.equal comment.get('body'), "NEW", "it overrides the current state"
+    assert.ok store.fetchById.called, "it fetches the changed object"
 
 test 'action:destroy will delete the task from the store', (assert) ->
   expect(2)
 
   data =
-    type: "tasks"
-    ids: [1]
+    type: "task"
+    id: 1
+
   Ember.run =>
     store = getStore()
-    store.push('task', id: 1)
-    store.push('task', id: 2)
+    store.push('billing-task', id: 1)
+    store.push('billing-task', id: 2)
     route = getContainer().lookup("route:application")
     route.router = null # this is needed for ember integration testing when calling internal methods
     route.send("destroyed", data)
-    assert.ok store.getById('task', 1) is null
-    assert.ok store.getById('task', 2) isnt null
+    assert.ok (store.getById('billing-task', 1) is null), "deletes the destroyed task"
+    assert.ok (store.getById('billing-task', 2) isnt null), "keeps other tasks"

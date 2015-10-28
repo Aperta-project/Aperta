@@ -10,6 +10,26 @@ describe ParticipationsController do
 
   before { sign_in user }
 
+  describe "#index" do
+    let!(:participation1) { FactoryGirl.create :participation, task: task, user: user }
+    let!(:participation2) { FactoryGirl.create :participation, task: task }
+
+    subject(:do_request) do
+      get :index, {
+            format: 'json',
+            task_id: task.to_param,
+          }
+    end
+
+    it_behaves_like "an unauthenticated json request"
+
+    it "returns the task' participations" do
+      do_request
+      expect(res_body['participations'].count).to eq(2)
+      expect(res_body['participations'][0]['id']).to eq(participation1.id)
+    end
+  end
+
   describe 'POST create' do
     subject(:do_request) do
       xhr :post, :create, format: :json,

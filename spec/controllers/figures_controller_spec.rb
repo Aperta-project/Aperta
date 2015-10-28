@@ -8,6 +8,26 @@ describe FiguresController do
 
   before { sign_in user }
 
+  describe "#index" do
+    let!(:figure1) { FactoryGirl.create(:figure, paper: paper) }
+    let!(:figure2) { FactoryGirl.create(:figure, paper: paper) }
+
+    subject(:do_request) do
+      get :index, {
+            format: 'json',
+            paper_id: paper.to_param,
+          }
+    end
+
+    it_behaves_like "an unauthenticated json request"
+
+    it "returns the paper's figures" do
+      do_request
+      expect(res_body['figures'].count).to eq(2)
+      expect(res_body['figures'][0]['id']).to eq(figure1.id)
+    end
+  end
+
   describe "destroying the figure" do
     subject(:do_request) { delete :destroy, id: paper.figures.last.id, paper_id: paper.id }
     before(:each) do

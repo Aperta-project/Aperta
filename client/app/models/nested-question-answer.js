@@ -3,13 +3,13 @@ import DS from 'ember-data';
 import QuestionAttachmentOwner from 'tahi/models/question-attachment-owner';
 
 export default QuestionAttachmentOwner.extend({
-  decision: DS.belongsTo('decision', { async: false }),
+  decision: DS.belongsTo('decision', { async: true }),
   owner: DS.belongsTo('nested-question-owner', {
     polymorphic: true,
-    async: false,
+    async: true,
     inverse: 'nestedQuestionAnswers'
   }),
-  nestedQuestion: DS.belongsTo('nested-question', { async: false, inverse: 'answers' }),
+  nestedQuestion: DS.belongsTo('nested-question', { async: true, inverse: 'answers' }),
   value: DS.attr(),
   additionalData: DS.attr(),
   createdAt: DS.attr('date'),

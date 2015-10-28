@@ -19,6 +19,9 @@ PaperIndexRoute = AuthorizedRoute.extend
     Ember.RSVP.all([taskLoad]).then ->
       paper
 
+  afterModel: (model) ->
+    return model.get('tasks')
+
   setupController: (controller, model) ->
     # paper/index controller is not used.
     # Controller is chosen based on Paper document type

@@ -64,6 +64,19 @@ module('Integration: Super AdHoc Card', {
       }, JSON.stringify({})
     ]);
 
+    server.respondWith('GET', "/api/tasks/1/nested_questions", [
+      200, {
+        "Content-Type": "application/json"
+      }, JSON.stringify({nested_questions: []})
+    ]);
+
+    server.respondWith('GET', "/api/tasks/1/nested_question_answers", [
+      200, {
+        "Content-Type": "application/json"
+      }, JSON.stringify({nested_question_answers: []})
+    ]);
+
+
     let collabsURL = '/api/filtered_users/collaborators/' + currentPaper.id;
     server.respondWith('GET', collabsURL , [
       200, {

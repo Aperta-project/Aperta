@@ -37,7 +37,6 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
           this.createReply(replyText, topic);
         }
 
-        this.send('discussionTopicCreated', topic);
         this.transitionTo(this.get('topicsShowPath'), topic);
       });
     }

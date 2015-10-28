@@ -1,7 +1,7 @@
 module TahiStandardTasks
   class PaperEditorTaskSerializer < TaskSerializer
     embed :ids
-    has_one :editor, serializer: UserSerializer, include: true, root: :users
+    has_one :editor
     has_one :invitation, include: true
     attributes :letter
 

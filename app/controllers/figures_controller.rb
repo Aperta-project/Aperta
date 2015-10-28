@@ -1,7 +1,17 @@
 class FiguresController < ApplicationController
   respond_to :json
   before_action :authenticate_user!
-  before_action :enforce_policy
+  before_action :enforce_policy, except: [:index]
+  before_action :enforce_index_policy, only: [:index]
+
+  ## papers/:paper_id/figures
+  def index
+    respond_with paper.figures
+  end
+
+  def show
+    respond_with figure
+  end
 
   def create
     figure.update_attributes(status: "processing")
@@ -39,6 +49,10 @@ class FiguresController < ApplicationController
         paper.figures.new
       end
     end
+  end
+
+  def enforce_index_policy
+    authorize_action!(resource: nil, for_paper: paper)
   end
 
   def enforce_policy

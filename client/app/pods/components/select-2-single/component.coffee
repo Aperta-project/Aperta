@@ -1,3 +1,4 @@
+`import Ember from 'ember'`
 `import Select2Component from 'tahi/pods/components/select-2/component'`
 
 Select2SingleComponent = Select2Component.extend
@@ -6,6 +7,8 @@ Select2SingleComponent = Select2Component.extend
   ).observes('selectedData')
 
   initSelection: (el, callback) ->
-    callback(@get('selectedData'))
+    (new Ember.RSVP.Promise (resolve) =>
+      resolve(@get('selectedData'))
+    ).then callback
 
 `export default Select2SingleComponent`

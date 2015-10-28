@@ -8,7 +8,7 @@ describe PaperRole::Created::EventStream::NotifyAssignee do
   let(:paper_role) { FactoryGirl.build(:paper_role, paper: paper) }
 
   it "serializes paper down the user channel on creation" do
-    expect(pusher_channel).to receive_push(payload: hash_including(:paper), down: 'user', on: 'created')
+    expect(pusher_channel).to receive_push(serialize: paper, down: 'user', on: 'created')
     described_class.call("tahi:paper_role:created", { action: "created", record: paper_role })
   end
 

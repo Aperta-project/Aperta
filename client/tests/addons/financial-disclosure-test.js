@@ -43,13 +43,16 @@ module('Integration: FinancialDisclosure', {
     paperPayload.addRecords(records.concat([fakeUser]));
     paperResponse = paperPayload.toJSON();
     paperResponse.participations = [addUserAsParticipant(financialDisclosureTask, fakeUser)];
+
     taskPayload = Factory.createPayload('task');
 
     var nestedQuestion;
     nestedQuestion = Factory.createRecord('NestedQuestion', { ident: 'author_received_funding' });
     addNestedQuestionToTask(nestedQuestion, financialDisclosureTask);
+    var nestedQuestionsPayload = Factory.createPayload('nested_questions');
+    nestedQuestionsPayload.addRecords([nestedQuestion]);
 
-    taskPayload.addRecords([financialDisclosureTask, nestedQuestion, fakeUser]);
+    taskPayload.addRecords([financialDisclosureTask, fakeUser]);
 
     financialDisclosureTask = taskPayload.toJSON();
     collaborators = [
@@ -59,37 +62,66 @@ module('Integration: FinancialDisclosure', {
         info: "testroles2, collaborator"
       }
     ];
+
+    var tasksPayload = Factory.createPayload('tasks');
+    tasksPayload.addRecords([financialDisclosureTask]);
+
     server.respondWith('GET', "/api/papers/" + currentPaper.id, [
       200, {
         "Content-Type": "application/json"
       }, JSON.stringify(paperResponse)
     ]);
+
+    server.respondWith('GET', "/api/papers/" + currentPaper.id + "/tasks", [
+      200, {
+        "Content-Type": "application/json"
+      }, JSON.stringify(tasksPayload.toJSON())
+    ]);
+
+    server.respondWith('GET', "/api/tasks/" + financialDisclosureTaskId + "/nested_questions", [
+      200, {
+        "Content-Type": "application/json"
+      }, JSON.stringify(nestedQuestionsPayload.toJSON())
+    ]);
+
+    server.respondWith('GET', "/api/tasks/" + financialDisclosureTaskId + "/nested_question_answers", [
+      200, {
+        "Content-Type": "application/json"
+      }, JSON.stringify({nested_question_answers: []})
+    ]);
+
     server.respondWith('GET', "/api/tasks/" + financialDisclosureTaskId, [
       200, {
         "Content-Type": "application/json"
       }, JSON.stringify(financialDisclosureTask)
     ]);
+
     server.respondWith('PUT', /\/api\/tasks\/\d+/, JSON.stringify({}));
+
     server.respondWith('GET', /\/api\/filtered_users\/users\/\d+/, [
       200, {
         "Content-Type": "application/json"
       }, JSON.stringify([])
     ]);
+
     server.respondWith('GET', "/api/nested_questions?type=Funder", [200, { 'Content-Type': 'application/json' }, JSON.stringify(
       { nested_questions: [
         {id: 120, text: "A question to be checked", value_type: "boolean", ident: "funder_had_influence" },
       ] }
     ) ]);
+
     server.respondWith('POST', `/api/nested_questions/${nestedQuestion.id}/answers`, [
       204, {
         "Content-Type": "application/json"
       }, JSON.stringify([])
     ]);
+
     server.respondWith('DELETE', /\/api\/funders\/\d+/, [
       204, {
         "Content-Type": "application/html"
       }, ""
     ]);
+
     mirrorCreateResponse = function(key, newId) {
       return function(xhr) {
         var createdItem, response;
@@ -108,7 +140,7 @@ module('Integration: FinancialDisclosure', {
 test('Viewing the card and adding new funder', function(assert) {
   return visit("/papers/" + currentPaper.id + "/tasks/" + financialDisclosureTaskId).then(function() {
     assert.equal(find('.overlay-main-work h1').text().trim(), 'Financial Disclosures');
-    assert.ok(find("label:contains('Yes')").length);
+    assert.ok(find("label:contains('Yes')").length, "User can find the 'yes' option'");
     click("label:contains('Yes')");
     return andThen(function() {
       assert.ok(find("button:contains('Add Another Funder')").length, "User can add another funder");

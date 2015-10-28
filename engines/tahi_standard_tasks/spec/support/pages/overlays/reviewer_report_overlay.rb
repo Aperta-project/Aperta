@@ -1,3 +1,4 @@
+# coding: utf-8
 class ReviewerReportOverlay < CardOverlay
 
   def ensure_no_review_history
@@ -45,7 +46,6 @@ class ReviewerReportOverlay < CardOverlay
       fill_in element_name, with: value
       page.execute_script "$('*[name=\\'#{element_name}\\']').trigger('change')"
     end
-    wait_for_ajax
   end
 
   def submit_report

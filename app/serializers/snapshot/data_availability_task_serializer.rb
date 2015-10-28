@@ -1,2 +1,2 @@
-class Snapshot::DataAvailabilityTaskSerializer < Snapshot::TaskSerializer
+class Snapshot::DataAvailabilityTaskSerializer < Snapshot::BaseSerializer
 end

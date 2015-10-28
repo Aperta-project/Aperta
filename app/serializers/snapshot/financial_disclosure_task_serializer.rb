@@ -1,13 +1,9 @@
-class Snapshot::FinancialDisclosureTaskSerializer < Snapshot::TaskSerializer
+class Snapshot::FinancialDisclosureTaskSerializer < Snapshot::BaseSerializer
 
   private
 
   def snapshot_properties
-    snapshot_funders
-  end
-
-  def snapshot_funders
-    @task.funders.order(:id).map do |funder|
+    model.funders.order(:id).map do |funder|
       Snapshot::FunderSerializer.new(funder).as_json
     end
   end

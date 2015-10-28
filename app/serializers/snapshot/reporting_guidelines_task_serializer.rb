@@ -1,2 +1,2 @@
-class Snapshot::ReportingGuidelinesTaskSerializer < Snapshot::TaskSerializer
+class Snapshot::ReportingGuidelinesTaskSerializer < Snapshot::BaseSerializer
 end

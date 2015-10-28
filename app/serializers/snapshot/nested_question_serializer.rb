@@ -1,4 +1,4 @@
-class Snapshot::NestedQuestionSerializer < Snapshot::BaseSerializer
+class Snapshot::NestedQuestionSerializer
   def initialize(nested_question, owner)
     @nested_question = nested_question
     @owner = owner
@@ -30,7 +30,9 @@ class Snapshot::NestedQuestionSerializer < Snapshot::BaseSerializer
   def serialized_attachment_json
     if @answer
       attachment = QuestionAttachment.where(question: @answer).first
-      Snapshot::QuestionAttachmentSerializer.new(attachment).as_json
+      if attachment
+        Snapshot::QuestionAttachmentSerializer.new(attachment).as_json
+      end
     end
   end
 

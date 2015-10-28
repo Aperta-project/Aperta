@@ -7,7 +7,7 @@ describe Snapshot::AuthorTaskSerializer do
   describe "#as_json" do
     it "serializes to JSON" do
       expect(serializer.as_json).to eq(
-        name: "authors",
+        name: "authors-task",
         type: "properties",
         children: []
       )

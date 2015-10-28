@@ -1,9 +1,9 @@
-class Snapshot::FigureTaskSerializer < Snapshot::TaskSerializer
+class Snapshot::FigureTaskSerializer < Snapshot::BaseSerializer
 
   private
 
   def snapshot_properties
-    @task.paper.figures.order(:id).map do |figure|
+    model.paper.figures.order(:id).map do |figure|
       snapshot_figure(figure)
     end
   end

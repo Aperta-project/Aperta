@@ -7,10 +7,6 @@ module TahiStandardTasks
       paper.decisions.first
     end
 
-    def send_email
-      # InitialDecisionMailer.delay.notify_author
-    end
-
     def active_model_serializer
       InitialDecisionTaskSerializer
     end

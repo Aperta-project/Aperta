@@ -110,6 +110,7 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
       find('.adhoc-content-toolbar .adhoc-toolbar-item--text').click
 
       # TODO: uncomment when compatible with firefox
+      # https://developer.plos.org/jira/browse/APERTA-5480
 
       # find('.inline-edit-form div[contenteditable]').html("New contenteditable, yahoo!")
       # find('.task-body .inline-edit-body-part .button--green:contains("Save")').click

@@ -5,9 +5,6 @@ namespace :plos_billing do
   end
 
   task :sync_em_guids => :environment do
-    # Connection established manually here. If =PlosEditorialManager=
-    # is used elsewhere, it must be established there as well.
-    PlosEditorialManager.establish_connection(ENV['EM_DATABASE_URL'].present? ? ENV['EM_DATABASE_URL'] : "plos_editorial_manager_#{Rails.env}".to_sym)
     User.where(em_guid: nil).find_each do |user|
       em_match = PlosEditorialManager.find_person_by_email(email: user.email)
 

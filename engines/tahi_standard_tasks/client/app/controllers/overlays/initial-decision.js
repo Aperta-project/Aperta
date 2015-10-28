@@ -9,7 +9,6 @@ export default TaskController.extend({
   isPaperSubmitted: Ember.computed.equal('paper.publishingState', 'submitted'),
   isTaskCompleted: Ember.computed.equal('model.completed', true),
   isTaskUncompleted: Ember.computed.not('isTaskCompleted'),
-  decisionRegistered: Ember.computed.and('isTaskCompleted', 'initialDecision'),
   publishable: Ember.computed.and('isPaperSubmitted', 'isTaskUncompleted'),
   nonPublishable: Ember.computed.not('publishable'),
   hasNoLetter: Ember.computed.empty('initialDecision.letter'),

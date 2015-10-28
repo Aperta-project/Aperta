@@ -107,7 +107,7 @@ module BenchmarkSuite
       time = Benchmark.realtime do
         num.times do |number|
           paper = FactoryGirl.create :paper, journal: journal, creator: site_admin
-          PaperFactory.new(paper, paper.creator).apply_template
+          PaperFactory.new(paper, paper.creator).add_phases_and_tasks
           puts "created #{number} paper"
         end
       end

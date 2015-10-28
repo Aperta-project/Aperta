@@ -3,7 +3,7 @@ module TahiStandardTasks
 
     def create
       task.paper.make_decision initial_decision
-      task.send_email
+      InitialDecisionMailer.delay.notify decision_id: initial_decision.id
       Activity.decision_made! initial_decision, user: current_user
       render json: {}, status: :created
     end

@@ -1,5 +1,4 @@
 class DataMigrator::DataAvailabilityQuestionsMigrator < DataMigrator::Base
-  OWNER_TYPE = "TahiStandardTasks::DataAvailabilityTask"
 
   def cleanup
     idents = ["data_availability.fully_available", "data_availability.data_location"]
@@ -19,6 +18,10 @@ class DataMigrator::DataAvailabilityQuestionsMigrator < DataMigrator::Base
     Question.where(ident: idents).destroy_all
   end
 
+  def initialize
+    @owner_type = "TahiStandardTasks::DataAvailabilityTask"
+  end
+
   def migrate!
     create_nested_questions
     migrate_data_fully_available_questions
@@ -28,7 +31,7 @@ class DataMigrator::DataAvailabilityQuestionsMigrator < DataMigrator::Base
 
   def reset
     NestedQuestionAnswer.where(
-      nested_questions: { owner_type: OWNER_TYPE, owner_id: nil }
+      nested_questions: { owner_type: @owner_type, owner_id: nil }
     ).joins(:nested_question).destroy_all
   end
 
@@ -37,7 +40,7 @@ class DataMigrator::DataAvailabilityQuestionsMigrator < DataMigrator::Base
   def create_nested_questions
     @nested_data_fully_available_question = NestedQuestion.where(
       owner_id: nil,
-      owner_type: OWNER_TYPE,
+      owner_type: @owner_type,
       text: "Do the authors confirm that all the data underlying the findings described in their manuscript are fully available without restriction?",
       ident: "data_fully_available",
       value_type: "boolean",
@@ -46,7 +49,7 @@ class DataMigrator::DataAvailabilityQuestionsMigrator < DataMigrator::Base
 
     @nested_data_location_question = NestedQuestion.where(
       owner_id: nil,
-      owner_type: OWNER_TYPE,
+      owner_type: @owner_type,
       text: "Please describe where your data may be found, writing in full sentences.",
       value_type: "text",
       ident: "data_location",
@@ -120,7 +123,7 @@ class DataMigrator::DataAvailabilityQuestionsMigrator < DataMigrator::Base
 
   def verify_count(expected:, actual:, ident:)
     if actual != expected
-      raise "Count mismatch on #{ident} NestedQuestionAnswer for #{OWNER_TYPE}. Expected: #{expected} Got: #{actual}"
+      raise "Count mismatch on #{ident} NestedQuestionAnswer for #{@owner_type}. Expected: #{expected} Got: #{actual}"
     end
   end
 end

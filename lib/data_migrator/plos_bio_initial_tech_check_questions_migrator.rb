@@ -1,5 +1,4 @@
 class DataMigrator::PlosBioInitialTechCheckQuestionsMigrator < DataMigrator::Base
-  TASK_OWNER_TYPE = "PlosBioTechCheck::InitialTechCheckTask"
 
   IDENTS = {
     old: {
@@ -37,6 +36,7 @@ class DataMigrator::PlosBioInitialTechCheckQuestionsMigrator < DataMigrator::Bas
 
   def initialize
     @subtract_from_expected_count = 0
+    @task_owner_type = "PlosBioTechCheck::InitialTechCheckTask"
   end
 
   def cleanup
@@ -65,7 +65,7 @@ class DataMigrator::PlosBioInitialTechCheckQuestionsMigrator < DataMigrator::Bas
 
   def reset
     NestedQuestionAnswer.where(
-      nested_questions: { owner_type: [TASK_OWNER_TYPE], owner_id: nil }
+      nested_questions: { owner_type: [@task_owner_type], owner_id: nil }
     ).joins(:nested_question).destroy_all
   end
 
@@ -75,7 +75,7 @@ class DataMigrator::PlosBioInitialTechCheckQuestionsMigrator < DataMigrator::Bas
     questions = []
     questions << NestedQuestion.new(
       owner_id: nil,
-      owner_type: TASK_OWNER_TYPE,
+      owner_type: @task_owner_type,
       ident: "open_rejects",
       value_type: "boolean",
       text: "Check Section Headings of all new submissions (including Open Rejects). Should broadly follow: Title, Authors, Affiliations, Abstract, Introduction, Results, Discussion, Materials and Methods, References, Acknowledgements, and Figure Legends.",
@@ -84,7 +84,7 @@ class DataMigrator::PlosBioInitialTechCheckQuestionsMigrator < DataMigrator::Bas
 
     questions << NestedQuestion.new(
       owner_id: nil,
-      owner_type: TASK_OWNER_TYPE,
+      owner_type: @task_owner_type,
       ident: "human_subjects",
       value_type: "boolean",
       text: "Check the ethics statement - does it mention Human Participants? If so, flag this with the editor in the discussion below.",
@@ -93,7 +93,7 @@ class DataMigrator::PlosBioInitialTechCheckQuestionsMigrator < DataMigrator::Bas
 
     questions << NestedQuestion.new(
       owner_id: nil,
-      owner_type: TASK_OWNER_TYPE,
+      owner_type: @task_owner_type,
       ident: "ethics_needed",
       value_type: "boolean",
       text: "Check if there are any obvious ethical flags (mentions of animal/human work in the title/abstract), check that there's an ethics statement. If not, ask the authors about this.",
@@ -102,7 +102,7 @@ class DataMigrator::PlosBioInitialTechCheckQuestionsMigrator < DataMigrator::Bas
 
     questions << NestedQuestion.new(
       owner_id: nil,
-      owner_type: TASK_OWNER_TYPE,
+      owner_type: @task_owner_type,
       ident: "data_available",
       value_type: "boolean",
       text: "Is the data available? If not, or it's only available by contacting an author or the institution, make a note in the discussion below.",
@@ -111,7 +111,7 @@ class DataMigrator::PlosBioInitialTechCheckQuestionsMigrator < DataMigrator::Bas
 
     questions << NestedQuestion.new(
       owner_id: nil,
-      owner_type: TASK_OWNER_TYPE,
+      owner_type: @task_owner_type,
       ident: "supporting_information",
       value_type: "boolean",
       text: "If author indicates the data is available in Supporting Information, check to make sure there are Supporting Information files in the submission (don't need to check for specifics at this stage).",
@@ -120,7 +120,7 @@ class DataMigrator::PlosBioInitialTechCheckQuestionsMigrator < DataMigrator::Bas
 
     questions << NestedQuestion.new(
       owner_id: nil,
-      owner_type: TASK_OWNER_TYPE,
+      owner_type: @task_owner_type,
       ident: "dryad_url",
       value_type: "boolean",
       text: "If the author has mentioned Dryad in their Data statement, check that they've included the Dryad reviewer URL. If not, make a note in the discussion below.",
@@ -129,7 +129,7 @@ class DataMigrator::PlosBioInitialTechCheckQuestionsMigrator < DataMigrator::Bas
 
     questions << NestedQuestion.new(
       owner_id: nil,
-      owner_type: TASK_OWNER_TYPE,
+      owner_type: @task_owner_type,
       ident: "financial_disclosure",
       value_type: "boolean",
       text: "If Financial Disclosure Statement is not complete (they've written N/A or something similar), message author.",
@@ -138,7 +138,7 @@ class DataMigrator::PlosBioInitialTechCheckQuestionsMigrator < DataMigrator::Bas
 
     questions << NestedQuestion.new(
       owner_id: nil,
-      owner_type: TASK_OWNER_TYPE,
+      owner_type: @task_owner_type,
       ident: "tobacco",
       value_type: "boolean",
       text: "If the Financial Disclosure Statement includes any companies from the Tobacco Industry, make a note in the discussion below.",
@@ -147,7 +147,7 @@ class DataMigrator::PlosBioInitialTechCheckQuestionsMigrator < DataMigrator::Bas
 
     questions << NestedQuestion.new(
       owner_id: nil,
-      owner_type: TASK_OWNER_TYPE,
+      owner_type: @task_owner_type,
       ident: "figures_legible",
       value_type: "boolean",
       text: "If any figures are completely illegible, contact the author.",
@@ -156,7 +156,7 @@ class DataMigrator::PlosBioInitialTechCheckQuestionsMigrator < DataMigrator::Bas
 
     questions << NestedQuestion.new(
       owner_id: nil,
-      owner_type: TASK_OWNER_TYPE,
+      owner_type: @task_owner_type,
       ident: "cited",
       value_type: "boolean",
       text: "If any files or figures are cited but not included in the submission, message the author.",
@@ -165,7 +165,7 @@ class DataMigrator::PlosBioInitialTechCheckQuestionsMigrator < DataMigrator::Bas
 
     questions << NestedQuestion.new(
       owner_id: nil,
-      owner_type: TASK_OWNER_TYPE,
+      owner_type: @task_owner_type,
       ident: "cover_letter",
       value_type: "boolean",
       text: "Have the authors asked any questions in the cover letter? If yes, contact the editor/journal team.",
@@ -174,7 +174,7 @@ class DataMigrator::PlosBioInitialTechCheckQuestionsMigrator < DataMigrator::Bas
 
     questions << NestedQuestion.new(
       owner_id: nil,
-      owner_type: TASK_OWNER_TYPE,
+      owner_type: @task_owner_type,
       ident: "billing_inquiries",
       value_type: "boolean",
       text: "Have the authors mentioned any billing information in the cover letter? If yes, contact the editor/journal team.",
@@ -183,7 +183,7 @@ class DataMigrator::PlosBioInitialTechCheckQuestionsMigrator < DataMigrator::Bas
 
     questions << NestedQuestion.new(
       owner_id: nil,
-      owner_type: TASK_OWNER_TYPE,
+      owner_type: @task_owner_type,
       ident: "ethics_statement",
       value_type: "boolean",
       text: "If an Ethics Statement is present, make a note in the discussion below.",
@@ -191,7 +191,7 @@ class DataMigrator::PlosBioInitialTechCheckQuestionsMigrator < DataMigrator::Bas
     )
 
     questions.each do |q|
-      unless NestedQuestion.where(owner_id: nil, owner_type: TASK_OWNER_TYPE, ident: q.ident).exists?
+      unless NestedQuestion.where(owner_id: nil, owner_type: @task_owner_type, ident: q.ident).exists?
         q.save!
       end
     end
@@ -212,48 +212,42 @@ class DataMigrator::PlosBioInitialTechCheckQuestionsMigrator < DataMigrator::Bas
             next
           end
 
-          nested_question = NestedQuestion.where(owner_type: TASK_OWNER_TYPE, owner_id: nil, ident: new_ident).first!
+          nested_question = NestedQuestion.where(owner_type: @task_owner_type, owner_id: nil, ident: new_ident).first!
 
-          case nested_question.value_type
-          when "boolean"
-            NestedQuestionAnswer.create!(
-              nested_question_id: nested_question.id,
-              value_type: nested_question.value_type,
-              owner_id: old_question.task.id,
-              owner_type: old_question.task.class.base_class.sti_name,
-              value: (old_question.answer == "Yes" || old_question.answer.eql?(true) || old_question.answer.downcase == "true"),
-              decision_id: old_question.decision_id,
-              created_at: old_question.created_at,
-              updated_at: old_question.updated_at
-            )
-          else
-            NestedQuestionAnswer.create!(
-              nested_question_id: nested_question.id,
-              value_type: nested_question.value_type,
-              owner_id: old_question.task.id,
-              owner_type: old_question.task.class.base_class.sti_name,
-              value: old_question.answer,
-              decision_id: old_question.decision_id,
-              created_at: old_question.created_at,
-              updated_at: old_question.updated_at
-            )
-          end
+          NestedQuestionAnswer.create!(
+            nested_question_id: nested_question.id,
+            value_type: nested_question.value_type,
+            owner_id: old_question.task.id,
+            owner_type: old_question.task.class.base_class.sti_name,
+            value: value_from_old_answer(old_question, nested_question.value_type),
+            decision_id: old_question.decision_id,
+            created_at: old_question.created_at,
+            updated_at: old_question.updated_at
+          )
 
         end
       end
     end
   end
 
+  def value_from_old_answer(old_question, value_type)
+    if value_type == "boolean"
+      old_question.answer == "Yes" || old_question.answer.eql?(true) || old_question.answer.downcase == "true"
+    else
+      old_question.answer
+    end
+  end
+
   def verify_counts
     verify_count(
       expected: Question.where("ident LIKE 'initial_tech_check.%'").count - @subtract_from_expected_count,
-      actual: NestedQuestionAnswer.includes(:nested_question).where(nested_questions: { owner_type: TASK_OWNER_TYPE, owner_id: nil }).count
+      actual: NestedQuestionAnswer.includes(:nested_question).where(nested_questions: { owner_type: @task_owner_type, owner_id: nil }).count
     )
   end
 
   def verify_count(expected:, actual:)
     if actual != expected
-      fail "Count mismatch on NestedQuestionAnswer for #{TASK_OWNER_TYPE}. Expected: #{expected} Got: #{actual}"
+      fail "Count mismatch on NestedQuestionAnswer for #{@task_owner_type}. Expected: #{expected} Got: #{actual}"
     end
   end
 end

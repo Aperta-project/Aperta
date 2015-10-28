@@ -118,7 +118,7 @@ Dir.chdir APP_ROOT do
   case $os
   when :darwin
     brew_install 'imagemagick', '--with-libtiff'
-    %w(node watchman qt).each do |package|
+    %w(node qt).each do |package|
       brew_install package
     end
   when :linux

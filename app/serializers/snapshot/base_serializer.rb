@@ -35,8 +35,8 @@ class Snapshot::BaseSerializer
     []
   end
 
-  def snapshot_property name, type, value
-    { :name => name, :type => type, :value => value }
+  def snapshot_property(name, type, value)
+    { name: name, type: type, value: value }
   end
 
 end

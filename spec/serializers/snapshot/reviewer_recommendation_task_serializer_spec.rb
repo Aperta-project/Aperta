@@ -1,74 +1,48 @@
 require "rails_helper"
 
 describe Snapshot::ReviewerRecommendationsTaskSerializer do
+  subject(:serializer) { described_class.new(task) }
   let(:task) { FactoryGirl.create(:reviewer_recommendation_task) }
 
-  describe "serializes reviewer recommendations" do
-
-    def find_property properties, name
-      properties.select { |p| p[:name] == name }.first[:value]
+  describe "#as_json" do
+    it "serializes to JSON" do
+      expect(serializer.as_json).to eq(
+        name: "recommendations",
+        type: "properties",
+        children: []
+      )
     end
 
-    it "serializes properties" do
-      recommendation = FactoryGirl.create(:reviewer_recommendation)
-      task.reviewer_recommendations << recommendation
+    context "and it has reviewer recommendations" do
+      let!(:reviewer_bob) { FactoryGirl.create(:reviewer_recommendation, id: 2) }
+      let!(:reviewer_sally) { FactoryGirl.create(:reviewer_recommendation, id: 1) }
 
-      snapshot = Snapshot::ReviewerRecommendationsTaskSerializer.new(task).as_json
-      properties = snapshot[:children][0][:children]
+      let(:bobs_reviewer_serializer) do
+        double(
+          "Snapshot::ReviewerRecommendationSerializer",
+          as_json: { recommendation: "bob's json here" }
+        )
+      end
 
-      expect(find_property(properties, "first_name")).to eq(recommendation.first_name)
-      expect(find_property(properties, "last_name")).to eq(recommendation.last_name)
-      expect(find_property(properties, "middle_initial")).to eq(recommendation.middle_initial)
-      expect(find_property(properties, "email")).to eq(recommendation.email)
-      expect(find_property(properties, "department")).to eq(recommendation.department)
-      expect(find_property(properties, "title")).to eq(recommendation.title)
-      expect(find_property(properties, "affiliation")).to eq(recommendation.affiliation)
-      expect(find_property(properties, "ringgold_id")).to eq(recommendation.ringgold_id)
-    end
+      let(:sallys_reviewer_serializer) do
+        double(
+          "Snapshot::ReviewerRecommendationSerializer",
+          as_json: { recommendation: "sally's json here" }
+        )
+      end
 
-    it "serializes multiple recommendations" do
-      recommendation1 = FactoryGirl.create(:reviewer_recommendation)
-      recommendation2 = FactoryGirl.create(:reviewer_recommendation)
-      task.reviewer_recommendations << recommendation1
-      task.reviewer_recommendations << recommendation2
+      before do
+        task.reviewer_recommendations = [reviewer_bob, reviewer_sally]
+        allow(Snapshot::ReviewerRecommendationSerializer).to receive(:new).with(reviewer_bob).and_return bobs_reviewer_serializer
+        allow(Snapshot::ReviewerRecommendationSerializer).to receive(:new).with(reviewer_sally).and_return sallys_reviewer_serializer
+      end
 
-      snapshot = Snapshot::ReviewerRecommendationsTaskSerializer.new(task).as_json
-      properties = snapshot[:children][0][:children]
-      expect(find_property(properties, "first_name")).to eq(recommendation1.first_name)
-      expect(find_property(properties, "last_name")).to eq(recommendation1.last_name)
-      expect(find_property(properties, "middle_initial")).to eq(recommendation1.middle_initial)
-      expect(find_property(properties, "email")).to eq(recommendation1.email)
-      expect(find_property(properties, "department")).to eq(recommendation1.department)
-      expect(find_property(properties, "title")).to eq(recommendation1.title)
-      expect(find_property(properties, "affiliation")).to eq(recommendation1.affiliation)
-      expect(find_property(properties, "ringgold_id")).to eq(recommendation1.ringgold_id)
-      properties = snapshot[:children][1][:children]
-      expect(find_property(properties, "first_name")).to eq(recommendation2.first_name)
-      expect(find_property(properties, "last_name")).to eq(recommendation2.last_name)
-      expect(find_property(properties, "middle_initial")).to eq(recommendation2.middle_initial)
-      expect(find_property(properties, "email")).to eq(recommendation2.email)
-      expect(find_property(properties, "department")).to eq(recommendation2.department)
-      expect(find_property(properties, "title")).to eq(recommendation2.title)
-      expect(find_property(properties, "affiliation")).to eq(recommendation2.affiliation)
-      expect(find_property(properties, "ringgold_id")).to eq(recommendation2.ringgold_id)
-    end
-
-    it "serializes nested questions" do
-      recommendation = FactoryGirl.create(:reviewer_recommendation)
-      task.reviewer_recommendations << recommendation
-      recommending_answer = FactoryGirl.create(:nested_question_answer)
-      recommending_answer.nested_question_id = recommendation.nested_questions.first.id
-      recommending_answer.value = "recommend"
-      reason_answer = FactoryGirl.create(:nested_question_answer)
-      reason_answer.nested_question_id = recommendation.nested_questions.last.id
-      reason_answer.value = "They're good people"
-      allow_any_instance_of(TahiStandardTasks::ReviewerRecommendation).to receive(:nested_question_answers).and_return([recommending_answer, reason_answer])
-
-      snapshot = Snapshot::ReviewerRecommendationsTaskSerializer.new(task).as_json
-      properties = snapshot[:children][0][:children]
-
-      expect(find_property(properties, "recommend_or_oppose")[:answer]).to eq("recommend")
-      expect(find_property(properties, "reason")[:answer]).to eq("They're good people")
+      it "serializes each reviewer(s) associated with the task in order by their respective id" do
+        expect(serializer.as_json[:children]).to eq([
+          { recommendation: "sally's json here" },
+          { recommendation: "bob's json here" }
+        ])
+      end
     end
   end
 end

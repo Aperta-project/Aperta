@@ -8,11 +8,9 @@ class Snapshot::ReviewerRecommendationsTaskSerializer < Snapshot::BaseSerializer
   end
 
   def snapshot_recommendations
-    recommendations = []
-    @task.reviewer_recommendations.each do |recommendation|
-      serializer = Snapshot::ReviewerRecommendationSerializer.new recommendation
-      recommendations << { name: "recommendation", type: "properties", children: serializer.as_json }
+    reviewer_recommendations = @task.reviewer_recommendations.order(:id)
+    reviewer_recommendations.map do |recommendation|
+      Snapshot::ReviewerRecommendationSerializer.new(recommendation).as_json
     end
-    recommendations
   end
 end

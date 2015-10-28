@@ -4,6 +4,10 @@ class Snapshot::FunderSerializer < Snapshot::BaseSerializer
   end
 
   def as_json
+    { name: "funder", type: "properties", children: snapshot_funder }
+  end
+
+  def snapshot_funder
     snapshot_properties + snapshot_nested_questions
   end
 
@@ -15,14 +19,9 @@ class Snapshot::FunderSerializer < Snapshot::BaseSerializer
   end
 
   def snapshot_nested_questions
-    funder_snapshot = []
-    nested_questions = TahiStandardTasks::Funder.nested_questions.where(parent_id: nil).order('id')
-
-    nested_questions.each do |question|
-      question_serializer = Snapshot::NestedQuestionSerializer.new question, @funder
-      funder_snapshot << question_serializer.as_json
+    nested_questions = TahiStandardTasks::Funder.nested_questions.where(parent_id: nil).order('position')
+    nested_questions.map do |question|
+      Snapshot::NestedQuestionSerializer.new(question, @funder).as_json
     end
-
-    funder_snapshot
   end
 end

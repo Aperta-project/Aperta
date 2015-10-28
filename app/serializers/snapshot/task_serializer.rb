@@ -1,4 +1,4 @@
-class Snapshot::BaseTaskSerializer < Snapshot::BaseSerializer
+class Snapshot::TaskSerializer < Snapshot::BaseSerializer
   attr_reader :task
 
   def initialize(task)

@@ -101,6 +101,7 @@ RSpec.configure do |config|
 
   # Load subscriptions for feature specs
   config.before(:each, type: :feature) do
+    load Rails.root.join("config/initializers/event_stream_subscriptions.rb")
     load Rails.root.join("config/initializers/subscriptions.rb")
   end
 

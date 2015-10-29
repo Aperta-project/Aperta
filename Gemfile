@@ -114,7 +114,6 @@ group :test do
   gem 'timecop'
   gem 'pusher-fake'
   gem 'rspec_junit_formatter'
-  gem 'rspec-activemodel-mocks'
 end
 
 group :staging, :performance do

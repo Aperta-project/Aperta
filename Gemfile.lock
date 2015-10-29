@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: https://ea548e3d06f18f2c5287468e46ae5fe262d3f5ac:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check
-  revision: 1ee76582384b5b759bffd725d20c7767c7bf0cc7
+  revision: 8a2601b8ee27d59025332992f302db69708a7ac1
   specs:
     plos_bio_tech_check (0.0.1)
       rails (~> 4.2.0)

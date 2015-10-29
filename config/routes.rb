@@ -63,6 +63,7 @@ Tahi::Application.routes.draw do
     resources :comments, only: [:create, :show]
     resources :comment_looks, only: [:index, :show, :destroy]
     resources :decisions, only: [:create, :update, :show]
+    resources :snapshots, only: [:show]
     resources :discussion_topics, only: [:index, :show, :create, :update, :destroy]
     resources :discussion_participants, only: [:create, :destroy]
     resources :discussion_replies, only: [:show, :create, :update, :destroy]
@@ -147,6 +148,7 @@ Tahi::Application.routes.draw do
       resources :comments, only: [:index]
       resources :participations, only: [:index]
       resources :questions, only: [:index]
+      resources :snapshots, only: [:index]
       put :send_message, on: :member
     end
     resources :task_templates

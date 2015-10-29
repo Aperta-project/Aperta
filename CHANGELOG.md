@@ -17,7 +17,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Intelligibility Question from the ReviewerReportTask
 
 ### Fixed
--
+- Fixed display of form errors on Production Metadata Card
 
 ### Security
 -

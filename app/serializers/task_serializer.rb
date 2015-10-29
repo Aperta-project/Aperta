@@ -34,6 +34,7 @@ class TaskSerializer < ActiveModel::Serializer
       participations: task_participations_path(object),
       nested_questions: task_nested_questions_path(object),
       nested_question_answers: task_nested_question_answers_path(object),
+      snapshots: task_snapshots_path(object)
     }
   end
 end

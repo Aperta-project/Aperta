@@ -2,6 +2,22 @@
   list-style-type: none;
   padding-left: 32px;
   counter-reset: questionList;
+
+  .question-list {
+    list-style-type: none;
+    margin-left: 0;
+    padding-left: 0;
+
+    .question {
+      &:before {
+        display: none;
+      }
+
+      .question-text {
+        font-size: 1.2em;
+      }
+    }
+  }
 }
 
 .question {

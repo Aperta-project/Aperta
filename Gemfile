@@ -77,6 +77,7 @@ group :development, :test, :performance do
   gem 'auto_screenshot', require: false
   gem 'factory_girl_rails'
   gem 'progressbar'
+  gem 'seed_dump'
   gem 'rspec-rails'
   gem 'rspec-its'
   gem 'rspec-collection_matchers'

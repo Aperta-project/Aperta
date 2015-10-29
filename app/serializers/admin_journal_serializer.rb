@@ -22,4 +22,14 @@ class AdminJournalSerializer < ActiveModel::Serializer
     object.papers.count
   end
 
+  def journal_task_types
+    # TODO: refactor this woraround with a more general solution in this ticket:
+    # https://developer.plos.org/jira/browse/APERTA-5490
+    exluded_types = ['PlosBioTechCheck::ChangesForAuthorTask',
+                     'TahiStandardTasks::ReviewerReportTask',
+                     'TahiStandardTasks::ReviseTask']
+
+    object.journal_task_types.where.not(kind: exluded_types)
+  end
+
 end

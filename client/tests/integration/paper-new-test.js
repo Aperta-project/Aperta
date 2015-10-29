@@ -47,7 +47,7 @@ test('error is displayed after failed submission', function(assert) {
   });
 
   andThen(function() {
-    assert.ok(find('.flash-message--error').length, 'error on screen');
+    assert.ok(find('.flash-message--error:contains(blank)').length, 'error on screen');
   });
 });
 

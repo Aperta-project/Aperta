@@ -67,10 +67,6 @@ group :staging, :production do
   gem 'rails_12factor'
 end
 
-group :doc do
-  gem 'sdoc', require: false
-end
-
 group :development, :test do
   gem 'dotenv-rails', require: 'dotenv/rails-now'
   gem 'auto_screenshot', require: false

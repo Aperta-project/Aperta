@@ -312,6 +312,61 @@ class Paper < ActiveRecord::Base
     versioned_texts(reload).version_desc.first
   end
 
+  def apex_metadata
+
+    # Desired Outcome (from JIRA)
+    # ===============
+    # Aperta needs to be able to include a JSON metadata export as part of the export package it sends to Apex, or other typesetters. This metadata is used to typeset parts of the article that cannot be derived directly from the manuscript file. The JSON metadata export should be a single file.
+    # metadata fields to include
+    #
+    # short-title
+    # doi (i.e. 10.1371/journal.pone.1234567)
+    # ms-id (i.e. pone.1234567)
+    # article-title
+    # author-contrib (author contributions - last two might just be the JSON representation of the author card)
+    # Corresponding Author - this should be the creating author, unless they've selected someone else on on the Add Authors card using the tick-box. It's okay if they've selected more than one person using as the CA using the tick-box
+    # editor-contrib (the Academic Editor)
+    # copyright-statement - keyed off of govt employee
+    # -On Publishing Related Questions Card: If they do NOT select that authors are govt employees, than the standard copyright statement is sent
+    # On Publishing Related Questions Card: If they DO select that authors are govt employees, send special copyright statement
+    # financial disclosure card json
+    # data availability statement
+    # Conflict of interest statement
+    # received-date (submission)
+    # accepted date (“Register Decision” of Accept)
+    # journal-title
+    # *pub-date (production metadata card)
+    # subj-group@subj-group-type=“ArticleType” (corresponds to workflow template)
+    # supporting info card data p(only include files marked as 'for publication')
+
+
+    doi_suffix = doi.split('/')[-1].split('.')
+    ms_id = [doi_suffix[-2], doi_suffix[-1]].join('.')
+
+    author_contrib = authors.map{|author| _author_hash(author)}
+
+    metadata_hash = {
+      short_title: short_title,
+      doi: doi,
+      ms_id: ms_id, #to be filled in below
+      article_title: title,
+      authors: author_contrib,
+      # corrisponding_author: corrisponding_author, # note: this is a bool on author
+      editor: _editor_hash(editor),
+      copyright_statement: nil,
+      financial_disclosure: _financial_disclosure_hash,
+      data_availabliity_statement: nil,
+      conflict_of_interest_statement: nil,
+      received_date: nil,
+      accepted_date: nil,
+      journal_title: nil,
+      publication_date: nil,
+      # subj-group@subj-group-type=“ArticleType” #not sure what this means
+      supporting_information_files: nil
+    }
+    return metadata_hash
+
+  end
 
   private
 
@@ -360,6 +415,73 @@ class Paper < ActiveRecord::Base
 
   def assign_doi!
     self.update!(doi: DoiService.new(journal: journal).next_doi!) if journal
+  end
+
+
+  def _financial_disclosure_hash
+    if financial_disclosure
+      f_dis = financial_disclosure.answer_for("author_received_funding").value
+      our_hash = {
+        author_received_funding: f_dis
+      }
+      if f_dis
+        our_hash[:funders] = financial_disclosure.funders.map do |funder|
+
+          influence = begin
+            if temp = funder.answer_for('funder_had_influence')
+              temp.value
+            end
+          end
+
+          influence_description = begin
+            if temp = funder.answer_for('funder_had_influence.funder_role_description')
+              temp.value
+            end
+          end
+          {
+            name: funder.name,
+            grant_number: funder.grant_number,
+            website: funder.website,
+            funder_had_influence: influence,
+            funder_influence_description: influence_description
+          }
+
+        end
+      end
+
+    end
+  end
+
+  def _editor_hash(editor)
+    return unless editor
+    affiliation = editor.affiliations.first
+    {
+      first_name: editor.first_name,
+      last_name: editor.last_name,
+      middle_initial: editor.middle_initial,
+      email: editor.email,
+      department: affiliation.department,
+      title: affiliation.title,
+      corresponding: editor.corresponding
+    }
+  end
+
+  def _author_hash(author)
+    {
+      first_name: author.first_name,
+      last_name: author.last_name,
+      middle_initial: author.middle_initial,
+      email: author.email,
+      department: author.department,
+      title: author.title,
+      corresponding: author.corresponding,
+      deceased: author.deceased,
+      affiliation: author.affiliation,
+      secondary_affiliation: author.secondary_affiliation,
+      contributions: author.contributions.map(&:nested_question).map(&:text),
+      ringgold_id: author.ringgold_id,
+      secondary_ringgold_id: author.secondary_ringgold_id
+    }
   end
 
   def create_versioned_texts

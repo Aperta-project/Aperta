@@ -39,6 +39,7 @@ test('error is displayed after failed submission', function(assert) {
 
   visit('/');
   click('.button-primary:contains(Create New Submission)').then(function() {
+    // Calling an action here to skip file uploading process
     paperNewController.send('createPaperWithUpload');
     // createPaperWithUpload returns a promise
     // the wait helper will... wait
@@ -50,7 +51,33 @@ test('error is displayed after failed submission', function(assert) {
   });
 });
 
-test('feedback is displayed after submission', function(assert) {
+test('author successfully creates a submission', function(assert) {
+  TestHelper.handleCreate('paper');
+  const paperNewController = App.__container__.lookup('controller:overlays/paper-new');
+
+  // Mocking out what the FileUploadMixin provides.
+  // This test skips selecting a file and calls the action manually/
+  paperNewController.uploadFinished = function() {};
+  paperNewController.uploadFunction = function() {
+    paperNewController.send('uploadFinished', {}, 'file.docx');
+  };
+
+  visit('/');
+  click('.button-primary:contains(Create New Submission)');
+  fillIn('#paper-short-title', 'Testing 123');
+  pickFromSelectBox('.paper-new-journal-select', 'PLOS Yeti 1');
+  pickFromSelectBox('.paper-new-paper-type-select', 'Research').then(function() {
+    // Skipping selecting a file and calling action manually
+    paperNewController.send('createPaperWithUpload');
+    wait();
+  });
+
+  andThen(function() {
+    assert.ok(find('#paper-title').length, 'on Paper Edit screen');
+  });
+});
+
+test('feedback is displayed', function(assert) {
   const paperNewController = App.__container__.lookup('controller:overlays/paper-new');
 
   visit('/');

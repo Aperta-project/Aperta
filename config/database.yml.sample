@@ -32,15 +32,6 @@ test:
   username: tahi
   password:
 
-performance:
-  adapter: postgresql
-  encoding: unicode
-  host: localhost
-  database: tahi_performance
-  pool: 48
-  username: tahi
-  password:
-
 staging:
   adapter: postgresql
   encoding: unicode

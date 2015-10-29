@@ -22,7 +22,7 @@ dependencies:
 
   pre:
     - bundle config --global jobs 7
-    - bundle config --global without staging:production:performance
+    - bundle config --global without staging:production
 
   override:
     - bundle install: # note ':' here

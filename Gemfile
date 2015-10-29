@@ -3,11 +3,6 @@ source 'https://rubygems.org'
 # Remember to also change circle.yml and .ruby-version when the ruby version changes
 ruby "2.2.3"
 
-# Configuration
-group :development, :test, :performance do
-  gem 'dotenv-rails', :require => 'dotenv/rails-now'
-end
-
 # Task Engines
 gem 'tahi_standard_tasks', path: 'engines/tahi_standard_tasks'
 gem 'tahi_upload_manuscript', path: 'engines/tahi_upload_manuscript'
@@ -67,7 +62,7 @@ gem 'sort_alphabetical'
 gem 'tahi_epub', git: "https://ea548e3d06f18f2c5287468e46ae5fe262d3f5ac:x-oauth-basic@github.com/tahi-project/tahi_epub"
 gem 'awesome_nested_set'
 
-group :staging, :performance, :production do
+group :staging, :production do
   gem 'heroku-deflater'
   gem 'rails_12factor'
 end
@@ -76,7 +71,8 @@ group :doc do
   gem 'sdoc', require: false
 end
 
-group :development, :test, :performance do
+group :development, :test do
+  gem 'dotenv-rails', require: 'dotenv/rails-now'
   gem 'auto_screenshot', require: false
   gem 'progressbar'
   gem 'pry-rescue'
@@ -116,6 +112,6 @@ group :test do
   gem 'database_cleaner'
 end
 
-group :staging, :performance do
+group :staging do
   gem 'mail_safe'
 end

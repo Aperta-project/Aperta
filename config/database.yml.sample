@@ -50,9 +50,9 @@ staging:
   password:
 
 production:
-  adapter: sqlserver
+  adapter: postgresql
   encoding: unicode
   host: localhost
-  database: em
+  database: tahi_production
   pool: 48
   password:

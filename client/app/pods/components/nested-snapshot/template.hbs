@@ -1,0 +1,56 @@
+{{#if generalCase}}
+  {{#if raw}}
+    <div class="snapshot-text">
+      {{snapshot.value}}
+    </div>
+  {{/if}}
+
+  {{#if boolean}}
+    <div class="snapshot-text">
+      <label><input type="radio" value="true" disabled>{{#if snapshot.value}}Yes{{else}}No{{/if}}.</label>
+    </div>
+  {{/if}}
+
+  {{#if question}}
+    <li class="question">
+      <div class="snapshot-question">
+        <div class="snapshot-question-question question-text">
+          {{snapshot.value.title}}
+        </div>
+
+        {{#if booleanQuestion}}
+          <div class="snapshot-question-answer">
+            <label><input type="radio" checked="checked" disabled> {{#if snapshot.value.answer}}Yes{{else}}No{{/if}}</label>
+          </div>
+        {{else}}
+          <div class="snapshot-question-answer">
+            <textarea disabled class="form-control">{{snapshot.value.answer}}</textarea>
+          </div>
+        {{/if}}
+
+        {{#if snapshot.question}}
+          <div class="snapshot-question-attachment">
+            {{snapshot.value.attachment}}
+          </div>
+        {{/if}}
+      </div>
+    </li>
+  {{/if}}
+
+  {{#if snapshot.children}}
+  <ol class="snapshot-children question-list">
+    {{#each snapshot.children as |child|}}
+      {{nested-snapshot snapshot=child}}
+    {{/each}}
+  </ol>
+  {{/if}}
+
+{{else}}
+
+  {{#if authors}}
+    {{#each snapshot.children as |author|}}
+      {{author-snapshot snapshot=author}}
+    {{/each}}
+  {{/if}}
+
+{{/if}}

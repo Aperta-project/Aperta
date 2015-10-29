@@ -27,7 +27,6 @@ export default DS.Model.extend({
   versionedTexts: hasMany('versioned-text', { async: true }),
   tasks: hasMany('task', { async: true, polymorphic: true }),
   manuscriptPageTasks: hasMany('task', { async: true, polymorphic: true }),
-
   active: attr('boolean'),
   body: attr('string'),
   doi: attr('string'),
@@ -53,6 +52,10 @@ export default DS.Model.extend({
   // For diffing:
   viewingText: attr('string'),
   comparisonText: attr('string'),
+
+  taskSorting: ['phase.position', 'position'],
+  metadataTasks: Ember.computed.filterBy('tasks', 'isMetadataTask', true),
+  sortedMetadataTasks: Ember.computed.sort('metadataTasks', 'taskSorting'),
 
   displayTitle: computed('title', 'shortTitle', function() {
     return this.get('title') || this.get('shortTitle');

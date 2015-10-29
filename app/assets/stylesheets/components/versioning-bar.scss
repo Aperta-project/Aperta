@@ -1,18 +1,15 @@
 #versioning-bar {
   width: 100%;
+  margin: 15px 50px;
+  background-color: #fff;
 
-  .versioning-bar-container {
-    width: $tahi-paper-width;
-    margin: 5px auto;
+  .bar-item {
+    float: left;
+    margin-right: 15px;
 
-    .bar-item {
-      float: left;
-      margin-right: 15px;
-
-      select {
-        margin-left: 5px;
-        width: 200px;
-      }
+    select {
+      margin-left: 5px;
+      width: 200px;
     }
   }
 }

@@ -19,6 +19,13 @@ Router.map(function() {
       });
     });
 
+    this.route('versions', { path: '/versions' }, function() {
+      this.route('discussions', function() {
+        this.route('new',  { path: '/new' });
+        this.route('show', { path: '/:topic_id' });
+      });
+    });
+
     this.route('workflow', function() {
       this.route('discussions', function() {
         this.route('new',  { path: '/new' });
@@ -28,6 +35,7 @@ Router.map(function() {
 
     this.route('task', { path: '/tasks' }, function() {
       this.route('index', { path: '/:task_id' });
+      this.route('version', { path: '/:task_id/version/:major/:minor' });
     });
   });
 

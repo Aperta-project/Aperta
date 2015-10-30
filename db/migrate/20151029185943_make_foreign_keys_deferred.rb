@@ -1,3 +1,16 @@
+#
+# These changes are necessary for the yaml_db gem which is being used to dump
+# and load seed data.
+#
+# By default, if there are foreign key constraints that are enforced at the
+# database, it will fail because the foreign record does not yet exist.  The
+# fix for this is to defer foreign key constraints so that they are not
+# enforced until the transaction is committed.
+#
+# See:
+# https://github.com/SchemaPlus/schema_plus/wiki/Making-yaml_db-work-with-foreign-key-constraints-in-PostgreSQL
+#
+#
 class MakeForeignKeysDeferred < ActiveRecord::Migration
   def up
     change_column :decisions, :paper_id, :integer, foreign_key: { references: :paper, deferrable: true }

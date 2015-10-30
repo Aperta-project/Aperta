@@ -27,7 +27,7 @@ export default Ember.Component.extend({
       this.sendAction('closeAction');
     },
 
-    addTaskType(phase, taskTypeList) {
+    addTaskType(phase) {
       this.sendAction('addTaskType', phase, this.get('taskTypeList'));
     }
   }

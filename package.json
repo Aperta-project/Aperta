@@ -6,14 +6,15 @@
   "engines": {
     "node": "4.2.1"
   },
+  "//": "We keep our ember app in client/",
+  "cacheDirectories": ["client/node_modules", "client/bower_components"],
   "directories": {
     "doc": "doc",
     "test": "test"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "//": "TOTAL HACK to use heroku cache (it is supposed to be passed into the buildpack, not hardcode), but will work without it",
-    "postinstall": "cd client; npm install; ([ -d /app/tmp/cache ] && bower install -p --config.storage.packages=/app/tmp/cache/bower) || bower install -p",
+    "postinstall": "cd client; npm install; ./node_modules/.bin/bower install -p",
     "clean": "cd client; rm -rf tmp node_modules bower_components; npm install && bower install; cd .."
   },
   "repository": {

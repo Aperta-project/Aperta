@@ -1,0 +1,117 @@
+$sheet-side-padding: 20px;
+$sheet-interior-padding: 5px;
+
+.overlay--sheet {
+  overflow: visible;
+  left: auto;
+  width: 450px;
+  box-shadow: 0 0 30px rgba(0,0,0, 0.15);
+  background-color: #fff;
+
+  .overlay-close-x {
+    top: 7px;
+    display: block;
+    font-size: 42px;
+  }
+
+  .overlay-container {
+    position: static;
+    width: auto;
+    margin: 0;
+    border-radius: 0;
+    padding: 0;
+    background: transparent;
+  }
+
+  .overlay-content {
+    border: 0;
+    padding: 0;
+    font-size: inherit;
+
+    p {
+      margin: 0 0 1rem 0;
+    }
+  }
+
+  .overlay-discussion-board {
+    width: auto;
+    margin: 0;
+  }
+
+  .overlay-footer {
+    margin: 0;
+  }
+
+  .overlay-discussion-board h2 {
+    border-top: 0;
+  }
+}
+
+.overlay h1.task-title {
+  position: relative;
+  margin: 0 0 1rem 0;
+  font-size: 24px;
+}
+
+.task-drag-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -3px;
+  width: 7px;
+  background: transparent;
+  cursor: ew-resize;
+  z-index: 1000;
+
+  &:after {
+    @include position(absolute, 0px auto 0px 50%);
+    content: '';
+    width: 1px;
+    background: rgba(0,0,0, 0.1);
+    margin-left: -1px;
+  }
+
+  &:hover {
+    &:after {
+      background: rgba(0,0,0, 0.25);
+    }
+  }
+}
+
+
+.task-container {
+  @include position(absolute, 0px 0px 0px 0px);
+  @include display(flex);
+  @include flex-flow(column);
+}
+
+.task-header {
+  @include flex(1 0 auto);
+  margin: 0 $sheet-side-padding;
+  border-bottom: 1px dotted #ccc;
+  padding: 45px $sheet-interior-padding 15px $sheet-interior-padding;
+
+  .participant-selector {
+    opacity: 0.75;
+  }
+
+  &:hover {
+    .participant-selector {
+      opacity: 1;
+    }
+  }
+}
+
+.task-body {
+  overflow: auto;
+  @include flex(1000000 1 auto);
+  padding: 20px $sheet-side-padding+5;
+}
+
+.task-footer {
+  @include flex(0 0 auto);
+  margin: 0 $sheet-side-padding;
+  border-top: 1px dotted #ccc;
+  padding: 11px $sheet-interior-padding 6px $sheet-interior-padding;
+  z-index: 1;
+}

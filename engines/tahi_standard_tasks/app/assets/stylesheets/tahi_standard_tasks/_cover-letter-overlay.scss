@@ -1,13 +1,13 @@
 .edit-cover-letter {
   .taller-textarea {
-    width: 687px;
-    height: 265px;
-    margin-bottom: 15px;
-    display: block;
-    border: 1px solid #878787;
-    border-radius: 4px;
-    font-size: 15px;
     overflow: scroll;
+    display: block;
+    height: 250px;
+    margin-bottom: 15px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 15px;
   }
 
   .taller-textarea:focus {

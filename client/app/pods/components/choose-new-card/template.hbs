@@ -1,0 +1,36 @@
+<div class="overlay-title-text">
+  <h1>Pick the types of cards to add</h1>
+</div>
+
+{{#if journalTaskTypes}}
+
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-5">
+      <h3>Author task cards</h3>
+      {{#each authorTasks as |authorTask|}}
+        <label>
+          {{check-box task=authorTask action="updateList"}} {{authorTask.title}}
+        </label>
+        <br>
+      {{/each}}
+    </div>
+    <div class="col-md-5">
+      <h3>Staff task cards</h3>
+      {{#each staffTasks as |staffTask|}}
+        <label>
+          {{check-box task=staffTask action="updateList"}} {{staffTask.title}}
+        </label>
+        <br>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="overlay-action-buttons">
+    <button class="button-primary button--green" {{action "addTaskType" phase taskTypeList}}>Add</button>
+    <button class="button-link button--green cancel" {{action "closeAction"}}>cancel</button>
+  </div>
+
+{{else}}
+  {{progress-spinner visible=true align="middle" size="large"}}
+{{/if}}

@@ -113,4 +113,5 @@ $sheet-interior-padding: 5px;
   margin: 0 $sheet-side-padding;
   border-top: 1px dotted #ccc;
   padding: 11px $sheet-interior-padding 6px $sheet-interior-padding;
+  z-index: 1;
 }

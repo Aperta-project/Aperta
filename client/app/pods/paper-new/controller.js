@@ -1,11 +1,9 @@
 import Ember from 'ember';
-import AnimateOverlay from 'tahi/mixins/animate-overlay';
 import FileUploadMixin from 'tahi/mixins/file-upload';
 
 const { computed } = Ember;
 
-export default Ember.Controller.extend(AnimateOverlay, FileUploadMixin, {
-  overlayClass: 'overlay--fullscreen paper-new-overlay',
+export default Ember.Controller.extend(FileUploadMixin, {
   journals: null, // set on controller before rendering overlay
   journalEmpty: computed.empty('model.journal'),
 

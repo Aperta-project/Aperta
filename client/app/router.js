@@ -31,6 +31,8 @@ Router.map(function() {
     });
   });
 
+  this.route('paper-new', { path: '/papers/new' });
+
   this.route('profile', { path: '/profile' });
 
   this.route('admin', function() {

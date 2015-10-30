@@ -1,9 +1,8 @@
-<div class="overlay-title-text">
-  <h1>Create a New Submission</h1>
-</div>
+<div id="tahi-container" class="paper-new-screen">
 
-{{flash-messages}}
-<div class="inner-content">
+  <h1>Create a New Submission</h1>
+
+  {{flash-messages}}
 
   <div class="form-group">
     <label class="paper-new-label" for="paper-short-title">
@@ -80,11 +79,13 @@
                       disabled=model.isSaving
                       url=manuscriptUploadUrl}}
     </span>
+
     <button type="submit"
             class="button-secondary button--green paper-new-create-document-button {{if model.isSaving "button--disabled"}}"
             {{action "createNewPaper"}}>
       <i class="fa fa-pencil"></i> Create Document
     </button>
+
     {{#if model.isSaving}}
       <div class="paper-new-paper-saving animation-fade-in">
         {{progress-spinner visible=true size="medium"}}
@@ -92,4 +93,5 @@
       </div>
     {{/if}}
   </div>
+
 </div>

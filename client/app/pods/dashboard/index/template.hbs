@@ -26,7 +26,7 @@
       {{/if}}
     </h2>
 
-    <button class="button-primary button--green" {{action "showNewPaperOverlay"}}>Create New Submission</button>
+    {{link-to "Create New Submission" "paper-new" class="button-primary button--green"}}
 
     {{#if hasPapers}}
       {{#if hasActivePapers}}

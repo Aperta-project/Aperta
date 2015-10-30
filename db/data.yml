@@ -1,218 +1,882 @@
 
 ---
-journal_task_types:
+papers:
   columns:
   - id
-  - journal_id
+  - short_title
   - title
-  - role
-  - kind
-  records: 
-  - - '1'
-    - '1'
-    - Ad-hoc
-    - user
-    - Task
-  - - '2'
-    - '1'
-    - Authors
-    - author
-    - TahiStandardTasks::AuthorsTask
-  - - '3'
-    - '1'
-    - Competing Interests
-    - author
-    - TahiStandardTasks::CompetingInterestsTask
-  - - '4'
-    - '1'
-    - Cover Letter
-    - author
-    - TahiStandardTasks::CoverLetterTask
-  - - '5'
-    - '1'
-    - Data Availability
-    - author
-    - TahiStandardTasks::DataAvailabilityTask
-  - - '6'
-    - '1'
-    - Ethics Statement
-    - author
-    - TahiStandardTasks::EthicsTask
-  - - '7'
-    - '1'
-    - Figures
-    - author
-    - TahiStandardTasks::FigureTask
-  - - '8'
-    - '1'
-    - Financial Disclosure
-    - author
-    - TahiStandardTasks::FinancialDisclosureTask
-  - - '9'
-    - '1'
-    - Assign Admin
-    - admin
-    - TahiStandardTasks::PaperAdminTask
-  - - '10'
-    - '1'
-    - Invite Editor
-    - admin
-    - TahiStandardTasks::PaperEditorTask
-  - - '11'
-    - '1'
-    - Invite Reviewers
-    - custom
-    - TahiStandardTasks::PaperReviewerTask
-  - - '12'
-    - '1'
-    - Production Metadata
-    - editor
-    - TahiStandardTasks::ProductionMetadataTask
-  - - '13'
-    - '1'
-    - Publishing Related Questions
-    - author
-    - TahiStandardTasks::PublishingRelatedQuestionsTask
-  - - '14'
-    - '1'
-    - Register Decision
-    - editor
-    - TahiStandardTasks::RegisterDecisionTask
-  - - '15'
-    - '1'
-    - Reporting Guidelines
-    - author
-    - TahiStandardTasks::ReportingGuidelinesTask
-  - - '16'
-    - '1'
-    - Reviewer Candidates
-    - author
-    - TahiStandardTasks::ReviewerRecommendationsTask
-  - - '17'
-    - '1'
-    - Reviewer Report
-    - reviewer
-    - TahiStandardTasks::ReviewerReportTask
-  - - '18'
-    - '1'
-    - Revise Task
-    - author
-    - TahiStandardTasks::ReviseTask
-  - - '19'
-    - '1'
-    - Supporting Info
-    - author
-    - TahiStandardTasks::SupportingInformationTask
-  - - '20'
-    - '1'
-    - New Taxon
-    - author
-    - TahiStandardTasks::TaxonTask
-  - - '21'
-    - '1'
-    - Upload Manuscript
-    - author
-    - TahiUploadManuscript::UploadManuscriptTask
-  - - '22'
-    - '1'
-    - Changes For Author
-    - author
-    - PlosBioTechCheck::ChangesForAuthorTask
-  - - '23'
-    - '1'
-    - Final Tech Check
-    - custom
-    - PlosBioTechCheck::FinalTechCheckTask
-  - - '24'
-    - '1'
-    - Initial Tech Check
-    - custom
-    - PlosBioTechCheck::InitialTechCheckTask
-  - - '25'
-    - '1'
-    - Revision Tech Check
-    - custom
-    - PlosBioTechCheck::RevisionTechCheckTask
-  - - '26'
-    - '1'
-    - Editor Discussion
-    - editor
-    - PlosBioInternalReview::EditorsDiscussionTask
-  - - '27'
-    - '1'
-    - Billing
-    - author
-    - PlosBilling::BillingTask
-  - - '28'
-    - '1'
-    - Assign Team
-    - admin
-    - Tahi::AssignTeam::AssignTeamTask
-  - - '29'
-    - '1'
-    - Test Task
-    - user
-    - InvitableTask
-
----
-journals:
-  columns:
-  - id
-  - name
+  - abstract
   - created_at
   - updated_at
-  - logo
-  - epub_cover
-  - epub_css
-  - pdf_css
-  - manuscript_css
-  - description
-  - doi_publisher_prefix
-  - doi_journal_prefix
-  - last_doi_issued
-  records: 
-  - - '1'
-    - PLOS Developers
-    - '2015-10-29 19:40:11.853622'
-    - '2015-10-29 19:43:15.406405'
-    - developersdevelopersdevelopers.jpg
-    - developersdevelopersdevelopers.jpg
-    - 
-    - 
-    - 
-    - If you are a developer, you are in the right place for fun, for science, and
-      for publication.
-    - 
-    - 
-    - 
-
----
-manuscript_manager_templates:
-  columns:
-  - id
+  - user_id
   - paper_type
   - journal_id
+  - decision_letter
+  - published_at
+  - striking_image_id
+  - editable
+  - doi
+  - editor_mode
+  - publishing_state
+  - submitted_at
+  - salesforce_manuscript_id
+  - withdrawals
+  - active
   records: 
   - - '1'
+    - 
+    - "<b>Unstarted</b>: <i>No tasks filled out</i>"
+    - 
+    - '2015-10-29 20:16:37.363801'
+    - '2015-10-30 21:11:48.829267'
+    - '3'
     - Classic PLOS Bio Research Article Workflow
     - '1'
+    - 
+    - 
+    - 
+    - true
+    - 
+    - html
+    - unsubmitted
+    - 
+    - 
+    - "{}"
+    - true
+  - - '2'
+    - '<h2 class="overlay-header-title overlay-header-title--with-icon" style="color:
+      rgb(51, 51, 51); width: 880.312px;"><a id="ember4696" href="http://localhost:5000/papers/2"
+      class="overlay-header-link ember-view"><i>All Tasks Filled Out</i></a></h2>'
+    - "<b>Partial:</b> &nbsp;<i>All tasks filled out, none marked complete</i>"
+    - 
+    - '2015-10-30 19:43:28.468043'
+    - '2015-10-30 21:11:39.658936'
+    - '3'
+    - Classic PLOS Bio Research Article Workflow
+    - '1'
+    - 
+    - 
+    - '2'
+    - true
+    - 
+    - html
+    - unsubmitted
+    - 
+    - 
+    - "{}"
+    - true
 
 ---
-manuscripts:
+comments:
   columns:
   - id
-  - source
+  - body
+  - created_at
+  - updated_at
+  - commenter_id
+  - task_id
+  - entities
+  records: 
+  - - '1'
+    - Manuscript has already been submitted!
+    - '2015-10-30 19:55:03.777732'
+    - '2015-10-30 19:55:03.777732'
+    - '3'
+    - '24'
+    - '{"user_mentions":[]}'
+
+---
+participations:
+  columns:
+  - id
+  - task_id
+  - user_id
+  - created_at
+  - updated_at
+  records: 
+  - - '1'
+    - '1'
+    - '3'
+    - '2015-10-29 20:16:37.452657'
+    - '2015-10-29 20:16:37.452657'
+  - - '2'
+    - '2'
+    - '3'
+    - '2015-10-29 20:16:37.484611'
+    - '2015-10-29 20:16:37.484611'
+  - - '3'
+    - '3'
+    - '3'
+    - '2015-10-29 20:16:37.503525'
+    - '2015-10-29 20:16:37.503525'
+  - - '4'
+    - '4'
+    - '3'
+    - '2015-10-29 20:16:37.522094'
+    - '2015-10-29 20:16:37.522094'
+  - - '5'
+    - '5'
+    - '3'
+    - '2015-10-29 20:16:37.542052'
+    - '2015-10-29 20:16:37.542052'
+  - - '6'
+    - '6'
+    - '3'
+    - '2015-10-29 20:16:37.561476'
+    - '2015-10-29 20:16:37.561476'
+  - - '7'
+    - '7'
+    - '3'
+    - '2015-10-29 20:16:37.579849'
+    - '2015-10-29 20:16:37.579849'
+  - - '8'
+    - '8'
+    - '3'
+    - '2015-10-29 20:16:37.598114'
+    - '2015-10-29 20:16:37.598114'
+  - - '9'
+    - '9'
+    - '3'
+    - '2015-10-29 20:16:37.615939'
+    - '2015-10-29 20:16:37.615939'
+  - - '10'
+    - '10'
+    - '3'
+    - '2015-10-29 20:16:37.63426'
+    - '2015-10-29 20:16:37.63426'
+  - - '11'
+    - '11'
+    - '3'
+    - '2015-10-29 20:16:37.652666'
+    - '2015-10-29 20:16:37.652666'
+  - - '12'
+    - '12'
+    - '3'
+    - '2015-10-29 20:16:37.670887'
+    - '2015-10-29 20:16:37.670887'
+  - - '13'
+    - '13'
+    - '3'
+    - '2015-10-29 20:16:37.689704'
+    - '2015-10-29 20:16:37.689704'
+  - - '14'
+    - '22'
+    - '3'
+    - '2015-10-30 19:43:28.517622'
+    - '2015-10-30 19:43:28.517622'
+  - - '15'
+    - '23'
+    - '3'
+    - '2015-10-30 19:43:28.54443'
+    - '2015-10-30 19:43:28.54443'
+  - - '16'
+    - '24'
+    - '3'
+    - '2015-10-30 19:43:28.560029'
+    - '2015-10-30 19:43:28.560029'
+  - - '17'
+    - '25'
+    - '3'
+    - '2015-10-30 19:43:28.57479'
+    - '2015-10-30 19:43:28.57479'
+  - - '18'
+    - '26'
+    - '3'
+    - '2015-10-30 19:43:28.589083'
+    - '2015-10-30 19:43:28.589083'
+  - - '19'
+    - '27'
+    - '3'
+    - '2015-10-30 19:43:28.60328'
+    - '2015-10-30 19:43:28.60328'
+  - - '20'
+    - '28'
+    - '3'
+    - '2015-10-30 19:43:28.617716'
+    - '2015-10-30 19:43:28.617716'
+  - - '21'
+    - '29'
+    - '3'
+    - '2015-10-30 19:43:28.631165'
+    - '2015-10-30 19:43:28.631165'
+  - - '22'
+    - '30'
+    - '3'
+    - '2015-10-30 19:43:28.644652'
+    - '2015-10-30 19:43:28.644652'
+  - - '23'
+    - '31'
+    - '3'
+    - '2015-10-30 19:43:28.658629'
+    - '2015-10-30 19:43:28.658629'
+  - - '24'
+    - '32'
+    - '3'
+    - '2015-10-30 19:43:28.672252'
+    - '2015-10-30 19:43:28.672252'
+  - - '25'
+    - '33'
+    - '3'
+    - '2015-10-30 19:43:28.685318'
+    - '2015-10-30 19:43:28.685318'
+  - - '26'
+    - '34'
+    - '3'
+    - '2015-10-30 19:43:28.699475'
+    - '2015-10-30 19:43:28.699475'
+
+---
+decisions:
+  columns:
+  - id
+  - paper_id
+  - revision_number
+  - letter
+  - verdict
+  - created_at
+  - updated_at
+  - author_response
+  records: 
+  - - '1'
+    - '2'
+    - '0'
+    - 
+    - 
+    - '2015-10-30 19:43:28.493128'
+    - '2015-10-30 19:43:28.493128'
+    - 
+
+---
+figures:
+  columns:
+  - id
+  - attachment
   - paper_id
   - created_at
   - updated_at
+  - title
+  - caption
   - status
   records: 
   - - '1'
-    - source.docx
+    - cover_image.jpg
     - '1'
-    - '2015-10-29 20:16:41.322196'
-    - '2015-10-30 18:09:40.024912'
+    - '2015-10-30 18:09:55.844755'
+    - '2015-10-30 18:09:55.844755'
+    - cover_image.jpg
+    - 
     - done
+  - - '2'
+    - cover_image.jpg
+    - '2'
+    - '2015-10-30 19:45:16.1553'
+    - '2015-10-30 19:59:23.585977'
+    - Balmer Effect
+    - He likes his coding
+    - done
+  - - '3'
+    - cat2.jpg
+    - '2'
+    - '2015-10-30 19:58:30.783132'
+    - '2015-10-30 19:59:20.991522'
+    - Kitten who loves life
+    - The only part of the experiment he was used in was making people say, "Awwwwwwww."
+    - done
+
+---
+nested_question_answers:
+  columns:
+  - id
+  - nested_question_id
+  - owner_id
+  - owner_type
+  - value
+  - value_type
+  - created_at
+  - updated_at
+  - additional_data
+  - decision_id
+  records: 
+  - - '1'
+    - '42'
+    - '25'
+    - Task
+    - Moneybags
+    - text
+    - '2015-10-30 19:47:34.479555'
+    - '2015-10-30 19:47:34.479555'
+    - 
+    - 
+  - - '2'
+    - '43'
+    - '25'
+    - Task
+    - McGee
+    - text
+    - '2015-10-30 19:47:35.880149'
+    - '2015-10-30 19:47:35.880149'
+    - 
+    - 
+  - - '3'
+    - '44'
+    - '25'
+    - Task
+    - Forestry Expert
+    - text
+    - '2015-10-30 19:47:47.32842'
+    - '2015-10-30 19:47:47.32842'
+    - 
+    - 
+  - - '4'
+    - '45'
+    - '25'
+    - Task
+    - Department of Forestry
+    - text
+    - '2015-10-30 19:47:53.978076'
+    - '2015-10-30 19:47:53.978076'
+    - 
+    - 
+  - - '5'
+    - '62'
+    - '25'
+    - Task
+    - University of Florida
+    - text
+    - '2015-10-30 19:47:58.093155'
+    - '2015-10-30 19:47:58.093155'
+    - '{"answer":"University of Florida","additionalData":{"institution-id":3463,"city":"Gainesville","country":"US","name":"University
+      of Florida","state":"FL","type":"academic"}}'
+    - 
+  - - '6'
+    - '64'
+    - '25'
+    - Task
+    - University of New Mexico
+    - text
+    - '2015-10-30 19:48:04.465141'
+    - '2015-10-30 19:48:04.465141'
+    - '{"answer":"University of New Mexico","additionalData":{"institution-id":1104,"city":"Albuquerque","country":"US","name":"University
+      of New Mexico","state":"NM","type":"academic"}}'
+    - 
+  - - '7'
+    - '46'
+    - '25'
+    - Task
+    - 555-555-5555
+    - text
+    - '2015-10-30 19:48:09.249509'
+    - '2015-10-30 19:48:09.249509'
+    - 
+    - 
+  - - '8'
+    - '48'
+    - '25'
+    - Task
+    - moneybags@example.com
+    - text
+    - '2015-10-30 19:48:14.659274'
+    - '2015-10-30 19:48:14.659274'
+    - 
+    - 
+  - - '9'
+    - '50'
+    - '25'
+    - Task
+    - 123 Main Street
+    - text
+    - '2015-10-30 19:48:17.469142'
+    - '2015-10-30 19:48:17.469142'
+    - 
+    - 
+  - - '10'
+    - '52'
+    - '25'
+    - Task
+    - Suite 200
+    - text
+    - '2015-10-30 19:48:19.690137'
+    - '2015-10-30 19:48:19.690137'
+    - 
+    - 
+  - - '11'
+    - '54'
+    - '25'
+    - Task
+    - Miami
+    - text
+    - '2015-10-30 19:48:23.161037'
+    - '2015-10-30 19:48:23.161037'
+    - 
+    - 
+  - - '12'
+    - '56'
+    - '25'
+    - Task
+    - FL
+    - text
+    - '2015-10-30 19:48:24.170518'
+    - '2015-10-30 19:48:24.170518'
+    - 
+    - 
+  - - '13'
+    - '58'
+    - '25'
+    - Task
+    - '33333'
+    - text
+    - '2015-10-30 19:48:27.179442'
+    - '2015-10-30 19:48:27.179442'
+    - 
+    - 
+  - - '14'
+    - '66'
+    - '25'
+    - Task
+    - institutional
+    - text
+    - '2015-10-30 19:48:29.783452'
+    - '2015-10-30 19:48:31.524184'
+    - 
+    - 
+  - - '15'
+    - '99'
+    - '25'
+    - Task
+    - Ryerson University
+    - text
+    - '2015-10-30 19:48:34.365176'
+    - '2015-10-30 19:48:34.365176'
+    - 
+    - 
+  - - '16'
+    - '101'
+    - '2'
+    - Author
+    - t
+    - boolean
+    - '2015-10-30 19:53:15.320617'
+    - '2015-10-30 19:53:15.320617'
+    - 
+    - 
+  - - '17'
+    - '105'
+    - '2'
+    - Author
+    - t
+    - boolean
+    - '2015-10-30 19:53:17.606606'
+    - '2015-10-30 19:53:17.606606'
+    - 
+    - 
+  - - '18'
+    - '106'
+    - '3'
+    - Author
+    - t
+    - boolean
+    - '2015-10-30 19:54:25.457224'
+    - '2015-10-30 19:54:25.457224'
+    - 
+    - 
+  - - '19'
+    - '107'
+    - '3'
+    - Author
+    - t
+    - boolean
+    - '2015-10-30 19:54:25.563501'
+    - '2015-10-30 19:54:25.563501'
+    - 
+    - 
+  - - '20'
+    - '109'
+    - '3'
+    - Author
+    - t
+    - boolean
+    - '2015-10-30 19:54:25.65219'
+    - '2015-10-30 19:54:25.65219'
+    - 
+    - 
+  - - '21'
+    - '108'
+    - '3'
+    - Author
+    - t
+    - boolean
+    - '2015-10-30 19:54:25.738713'
+    - '2015-10-30 19:54:25.738713'
+    - 
+    - 
+  - - '22'
+    - '39'
+    - '26'
+    - Task
+    - I accepted money from both Pepsi and Coca-Cola companies.
+    - text
+    - '2015-10-30 19:55:13.501798'
+    - '2015-10-30 19:55:31.391119'
+    - 
+    - 
+  - - '23'
+    - '38'
+    - '26'
+    - Task
+    - t
+    - boolean
+    - '2015-10-30 19:55:13.717978'
+    - '2015-10-30 19:55:13.717978'
+    - 
+    - 
+  - - '24'
+    - '36'
+    - '28'
+    - Task
+    - t
+    - boolean
+    - '2015-10-30 19:55:37.265702'
+    - '2015-10-30 19:55:37.265702'
+    - 
+    - 
+  - - '25'
+    - '37'
+    - '28'
+    - Task
+    - My data may be found within Encyclopedia Britannica.  Just like in Ultima V.
+    - text
+    - '2015-10-30 19:56:03.331609'
+    - '2015-10-30 19:56:03.331609'
+    - 
+    - 
+  - - '26'
+    - '30'
+    - '29'
+    - Task
+    - t
+    - boolean
+    - '2015-10-30 19:56:12.315615'
+    - '2015-10-30 19:56:12.315615'
+    - 
+    - 
+  - - '27'
+    - '34'
+    - '29'
+    - Task
+    - ''
+    - text
+    - '2015-10-30 19:56:43.101348'
+    - '2015-10-30 19:56:43.101348'
+    - 
+    - 
+  - - '28'
+    - '31'
+    - '29'
+    - Task
+    - I tested this experimental drug on myself and found that my hands now are twice
+      as large.
+    - text
+    - '2015-10-30 19:56:43.209596'
+    - '2015-10-30 19:56:43.209596'
+    - 
+    - 
+  - - '29'
+    - '33'
+    - '29'
+    - Task
+    - f
+    - boolean
+    - '2015-10-30 19:56:43.377483'
+    - '2015-10-30 19:56:43.377483'
+    - 
+    - 
+  - - '30'
+    - '28'
+    - '30'
+    - Task
+    - t
+    - boolean
+    - '2015-10-30 19:56:58.530208'
+    - '2015-10-30 19:56:58.530208'
+    - 
+    - 
+  - - '31'
+    - '27'
+    - '31'
+    - Task
+    - t
+    - boolean
+    - '2015-10-30 19:57:11.928573'
+    - '2015-10-30 19:57:11.928573'
+    - 
+    - 
+  - - '32'
+    - '119'
+    - '1'
+    - TahiStandardTasks::Funder
+    - The provide the money, we provide the research to support their hypothesis.
+    - text
+    - '2015-10-30 19:57:26.731948'
+    - '2015-10-30 19:57:45.012247'
+    - 
+    - 
+  - - '33'
+    - '118'
+    - '1'
+    - TahiStandardTasks::Funder
+    - t
+    - boolean
+    - '2015-10-30 19:57:26.932469'
+    - '2015-10-30 19:57:26.932469'
+    - 
+    - 
+  - - '34'
+    - '119'
+    - '2'
+    - TahiStandardTasks::Funder
+    - ''
+    - text
+    - '2015-10-30 19:58:03.018776'
+    - '2015-10-30 19:58:03.018776'
+    - 
+    - 
+  - - '35'
+    - '118'
+    - '2'
+    - TahiStandardTasks::Funder
+    - f
+    - boolean
+    - '2015-10-30 19:58:03.118814'
+    - '2015-10-30 19:58:03.118814'
+    - 
+    - 
+  - - '36'
+    - '9'
+    - '32'
+    - Task
+    - t
+    - boolean
+    - '2015-10-30 19:59:37.905765'
+    - '2015-10-30 19:59:37.905765'
+    - 
+    - 
+  - - '37'
+    - '10'
+    - '32'
+    - Task
+    - Check out figure 5
+    - text
+    - '2015-10-30 19:59:45.52803'
+    - '2015-10-30 19:59:45.52803'
+    - 
+    - 
+  - - '38'
+    - '12'
+    - '32'
+    - Task
+    - f
+    - boolean
+    - '2015-10-30 19:59:45.732425'
+    - '2015-10-30 19:59:45.732425'
+    - 
+    - 
+  - - '39'
+    - '15'
+    - '32'
+    - Task
+    - t
+    - boolean
+    - '2015-10-30 19:59:46.983941'
+    - '2015-10-30 19:59:46.983941'
+    - 
+    - 
+  - - '40'
+    - '16'
+    - '32'
+    - Task
+    - 333-333333, Editor was Angie Smith
+    - text
+    - '2015-10-30 19:59:59.553302'
+    - '2015-10-30 19:59:59.553302'
+    - 
+    - 
+  - - '41'
+    - '24'
+    - '32'
+    - Task
+    - Collection Basket
+    - text
+    - '2015-10-30 20:00:09.286037'
+    - '2015-10-30 20:00:09.286037'
+    - 
+    - 
+  - - '42'
+    - '25'
+    - '32'
+    - Task
+    - t
+    - boolean
+    - '2015-10-30 20:00:09.379274'
+    - '2015-10-30 20:00:09.379274'
+    - 
+    - 
+  - - '43'
+    - '1'
+    - '33'
+    - Task
+    - t
+    - boolean
+    - '2015-10-30 20:00:37.703208'
+    - '2015-10-30 20:00:37.703208'
+    - 
+    - 
+  - - '46'
+    - '8'
+    - '33'
+    - Task
+    - t
+    - boolean
+    - '2015-10-30 20:00:41.891372'
+    - '2015-10-30 20:00:41.891372'
+    - 
+    - 
+
+---
+task_templates:
+  columns:
+  - id
+  - journal_task_type_id
+  - phase_template_id
+  - template
+  - title
+  - position
+  records: 
+  - - '181'
+    - '19'
+    - '61'
+    - "[]"
+    - Supporting Info
+    - '1'
+  - - '182'
+    - '2'
+    - '61'
+    - "[]"
+    - Authors
+    - '2'
+  - - '183'
+    - '21'
+    - '61'
+    - "[]"
+    - Upload Manuscript
+    - '3'
+  - - '184'
+    - '27'
+    - '61'
+    - "[]"
+    - Billing
+    - '4'
+  - - '185'
+    - '3'
+    - '61'
+    - "[]"
+    - Competing Interests
+    - '5'
+  - - '186'
+    - '4'
+    - '61'
+    - "[]"
+    - Cover Letter
+    - '6'
+  - - '187'
+    - '5'
+    - '61'
+    - "[]"
+    - Data Availability
+    - '7'
+  - - '188'
+    - '6'
+    - '61'
+    - "[]"
+    - Ethics Statement
+    - '8'
+  - - '189'
+    - '7'
+    - '61'
+    - "[]"
+    - Figures
+    - '9'
+  - - '190'
+    - '8'
+    - '61'
+    - "[]"
+    - Financial Disclosure
+    - '10'
+  - - '191'
+    - '13'
+    - '61'
+    - "[]"
+    - Publishing Related Questions
+    - '11'
+  - - '192'
+    - '15'
+    - '61'
+    - "[]"
+    - Reporting Guidelines
+    - '12'
+  - - '193'
+    - '16'
+    - '61'
+    - "[]"
+    - Reviewer Candidates
+    - '13'
+  - - '194'
+    - '24'
+    - '62'
+    - "[]"
+    - Initial Tech Check
+    - '1'
+  - - '195'
+    - '25'
+    - '62'
+    - "[]"
+    - Revision Tech Check
+    - '2'
+  - - '196'
+    - '23'
+    - '62'
+    - "[]"
+    - Final Tech Check
+    - '3'
+  - - '197'
+    - '28'
+    - '63'
+    - "[]"
+    - Assign Team
+    - '1'
+  - - '198'
+    - '26'
+    - '63'
+    - "[]"
+    - Editor Discussion
+    - '2'
+  - - '199'
+    - '11'
+    - '64'
+    - "[]"
+    - Invite Reviewers
+    - '1'
+  - - '200'
+    - '1'
+    - '64'
+    - "[]"
+    - Academic Editor Feedback
+    - '2'
+  - - '201'
+    - '14'
+    - '65'
+    - "[]"
+    - Register Decision
+    - '1'
 
 ---
 nested_questions:
@@ -1694,104 +2358,775 @@ nested_questions:
     - '2015-10-29 20:16:38.811237'
     - Author
     - 
-
----
-paper_roles:
-  columns:
-  - id
-  - user_id
-  - paper_id
-  - created_at
-  - updated_at
-  - role
-  records: 
-  - - '1'
-    - '3'
+  - - '118'
+    - Did the funder have a role in study design, data collection and analysis, decision
+      to publish, or preparation of the manuscript?
+    - boolean
+    - funder_had_influence
+    - 
+    - '169'
+    - '172'
     - '1'
-    - '2015-10-29 20:16:37.370025'
-    - '2015-10-29 20:16:37.370025'
-    - collaborator
-  - - '2'
-    - '3'
+    - '2015-10-30 19:51:03.420015'
+    - '2015-10-30 19:51:03.428609'
+    - TahiStandardTasks::Funder
+    - 
+  - - '119'
+    - Describe the role of any sponsors or funders in the study design, data collection
+      and analysis, decision to publish, or preparation of the manuscript.
+    - text
+    - funder_role_description
+    - '118'
+    - '170'
+    - '171'
     - '1'
-    - '2015-10-29 20:16:37.467739'
-    - '2015-10-29 20:16:37.467739'
-    - participant
-
----
-participations:
-  columns:
-  - id
-  - task_id
-  - user_id
-  - created_at
-  - updated_at
-  records: 
-  - - '1'
+    - '2015-10-30 19:51:03.424486'
+    - '2015-10-30 19:51:03.428609'
+    - TahiStandardTasks::Funder
+    - 
+  - - '120'
+    - Publication Date
+    - text
+    - publication_date
+    - 
+    - '173'
+    - '174'
     - '1'
-    - '3'
-    - '2015-10-29 20:16:37.452657'
-    - '2015-10-29 20:16:37.452657'
-  - - '2'
+    - '2015-10-30 19:51:03.462062'
+    - '2015-10-30 19:51:03.462062'
+    - TahiStandardTasks::ProductionMetadataTask
+    - 
+  - - '121'
+    - Volume Number
+    - text
+    - volume_number
+    - 
+    - '175'
+    - '176'
     - '2'
+    - '2015-10-30 19:51:03.466022'
+    - '2015-10-30 19:51:03.466022'
+    - TahiStandardTasks::ProductionMetadataTask
+    - 
+  - - '122'
+    - Issue Number
+    - text
+    - issue_number
+    - 
+    - '177'
+    - '178'
     - '3'
-    - '2015-10-29 20:16:37.484611'
-    - '2015-10-29 20:16:37.484611'
-  - - '3'
-    - '3'
-    - '3'
-    - '2015-10-29 20:16:37.503525'
-    - '2015-10-29 20:16:37.503525'
-  - - '4'
+    - '2015-10-30 19:51:03.469673'
+    - '2015-10-30 19:51:03.469673'
+    - TahiStandardTasks::ProductionMetadataTask
+    - 
+  - - '123'
+    - Production Notes
+    - text
+    - production_notes
+    - 
+    - '179'
+    - '180'
     - '4'
+    - '2015-10-30 19:51:03.473215'
+    - '2015-10-30 19:51:03.473215'
+    - TahiStandardTasks::ProductionMetadataTask
+    - 
+  - - '124'
+    - Do you have any potential or perceived competing interests that may influence
+      your review?
+    - text
+    - competing_interests
+    - 
+    - '181'
+    - '182'
+    - '1'
+    - '2015-10-30 19:51:03.496382'
+    - '2015-10-30 19:51:03.496382'
+    - TahiStandardTasks::ReviewerReportTask
+    - 
+  - - '125'
+    - Is the manuscript technically sound, and do the data support the conclusions?
+    - boolean
+    - support_conclusions
+    - 
+    - '183'
+    - '186'
+    - '2'
+    - '2015-10-30 19:51:03.500418'
+    - '2015-10-30 19:51:03.506306'
+    - TahiStandardTasks::ReviewerReportTask
+    - 
+  - - '126'
+    - Explanation
+    - text
+    - explanation
+    - '125'
+    - '184'
+    - '185'
+    - '1'
+    - '2015-10-30 19:51:03.502707'
+    - '2015-10-30 19:51:03.506306'
+    - TahiStandardTasks::ReviewerReportTask
+    - 
+  - - '127'
+    - Has the statistical analysis been performed appropriately and rigorously?
+    - boolean
+    - statistical_analysis
+    - 
+    - '187'
+    - '190'
     - '3'
-    - '2015-10-29 20:16:37.522094'
-    - '2015-10-29 20:16:37.522094'
-  - - '5'
+    - '2015-10-30 19:51:03.511001'
+    - '2015-10-30 19:51:03.51673'
+    - TahiStandardTasks::ReviewerReportTask
+    - 
+  - - '128'
+    - Statistical Analysis Explanation
+    - text
+    - explanation
+    - '127'
+    - '188'
+    - '189'
+    - '1'
+    - '2015-10-30 19:51:03.513191'
+    - '2015-10-30 19:51:03.51673'
+    - TahiStandardTasks::ReviewerReportTask
+    - 
+  - - '129'
+    - Does the manuscript adhere to standards in this field for data availability?
+    - boolean
+    - standards
+    - 
+    - '191'
+    - '194'
+    - '4'
+    - '2015-10-30 19:51:03.521073'
+    - '2015-10-30 19:51:03.526967'
+    - TahiStandardTasks::ReviewerReportTask
+    - 
+  - - '130'
+    - Standards Explanation
+    - text
+    - explanation
+    - '129'
+    - '192'
+    - '193'
+    - '1'
+    - '2015-10-30 19:51:03.523338'
+    - '2015-10-30 19:51:03.526967'
+    - TahiStandardTasks::ReviewerReportTask
+    - 
+  - - '131'
+    - "(Optional) Please offer any additional comments to the author."
+    - text
+    - additional_comments
+    - 
+    - '195'
+    - '196'
     - '5'
-    - '3'
-    - '2015-10-29 20:16:37.542052'
-    - '2015-10-29 20:16:37.542052'
-  - - '6'
+    - '2015-10-30 19:51:03.531234'
+    - '2015-10-30 19:51:03.531234'
+    - TahiStandardTasks::ReviewerReportTask
+    - 
+  - - '132'
+    - "(Optional) If you'd like your identity to be revealed to the authors, please
+      include your name here."
+    - text
+    - identity
+    - 
+    - '197'
+    - '198'
     - '6'
+    - '2015-10-30 19:51:03.534949'
+    - '2015-10-30 19:51:03.534949'
+    - TahiStandardTasks::ReviewerReportTask
+    - 
+  - - '133'
+    - Does this manuscript describe a new zoological taxon name?
+    - boolean
+    - taxon_zoological
+    - 
+    - '199'
+    - '202'
+    - '1'
+    - '2015-10-30 19:51:03.541213'
+    - '2015-10-30 19:51:03.547457'
+    - TahiStandardTasks::TaxonTask
+    - 
+  - - '134'
+    - All authors comply with the Policies Regarding Submission of a new Taxon Name
+    - boolean
+    - complies
+    - '133'
+    - '200'
+    - '201'
+    - '1'
+    - '2015-10-30 19:51:03.543667'
+    - '2015-10-30 19:51:03.547457'
+    - TahiStandardTasks::TaxonTask
+    - 
+  - - '135'
+    - Does this manuscript describe a new botantical taxon name?
+    - boolean
+    - taxon_botanical
+    - 
+    - '203'
+    - '206'
+    - '2'
+    - '2015-10-30 19:51:03.55182'
+    - '2015-10-30 19:51:03.557643'
+    - TahiStandardTasks::TaxonTask
+    - 
+  - - '136'
+    - All authors comply with the Policies Regarding Submission of a new Taxon Name
+    - boolean
+    - complies
+    - '135'
+    - '204'
+    - '205'
+    - '1'
+    - '2015-10-30 19:51:03.554061'
+    - '2015-10-30 19:51:03.557643'
+    - TahiStandardTasks::TaxonTask
+    - 
+  - - '137'
+    - Are you recommending or opposing this reviewer? (required)
+    - boolean
+    - recommend_or_oppose
+    - 
+    - '207'
+    - '208'
+    - '1'
+    - '2015-11-02 13:38:26.272946'
+    - '2015-11-02 13:38:26.272946'
+    - TahiStandardTasks::ReviewerRecommendation
+    - 
+  - - '138'
+    - 'Optional: reason for recommending or opposing this reviewer'
+    - text
+    - reason
+    - 
+    - '209'
+    - '210'
+    - '2'
+    - '2015-11-02 13:38:26.280143'
+    - '2015-11-02 13:38:26.280143'
+    - TahiStandardTasks::ReviewerRecommendation
+    - 
+  - - '139'
+    - 'Check Section Headings of all new submissions (including Open Rejects). Should
+      broadly follow: Title, Authors, Affiliations, Abstract, Introduction, Results,
+      Discussion, Materials and Methods, References, Acknowledgements, and Figure
+      Legends.'
+    - boolean
+    - open_rejects
+    - 
+    - '211'
+    - '212'
+    - '1'
+    - '2015-11-02 13:38:26.296091'
+    - '2015-11-02 13:38:26.296091'
+    - PlosBioTechCheck::InitialTechCheckTask
+    - 
+  - - '140'
+    - Check the ethics statement - does it mention Human Participants? If so, flag
+      this with the editor in the discussion below.
+    - boolean
+    - human_subjects
+    - 
+    - '213'
+    - '214'
+    - '2'
+    - '2015-11-02 13:38:26.300112'
+    - '2015-11-02 13:38:26.300112'
+    - PlosBioTechCheck::InitialTechCheckTask
+    - 
+  - - '141'
+    - Check if there are any obvious ethical flags (mentions of animal/human work
+      in the title/abstract), check that there's an ethics statement. If not, ask
+      the authors about this.
+    - boolean
+    - ethics_needed
+    - 
+    - '215'
+    - '216'
     - '3'
-    - '2015-10-29 20:16:37.561476'
-    - '2015-10-29 20:16:37.561476'
-  - - '7'
+    - '2015-11-02 13:38:26.30383'
+    - '2015-11-02 13:38:26.30383'
+    - PlosBioTechCheck::InitialTechCheckTask
+    - 
+  - - '142'
+    - Is the data available? If not, or it's only available by contacting an author
+      or the institution, make a note in the discussion below.
+    - boolean
+    - data_available
+    - 
+    - '217'
+    - '218'
+    - '4'
+    - '2015-11-02 13:38:26.307755'
+    - '2015-11-02 13:38:26.307755'
+    - PlosBioTechCheck::InitialTechCheckTask
+    - 
+  - - '143'
+    - If author indicates the data is available in Supporting Information, check to
+      make sure there are Supporting Information files in the submission (don't need
+      to check for specifics at this stage).
+    - boolean
+    - supporting_information
+    - 
+    - '219'
+    - '220'
+    - '5'
+    - '2015-11-02 13:38:26.311478'
+    - '2015-11-02 13:38:26.311478'
+    - PlosBioTechCheck::InitialTechCheckTask
+    - 
+  - - '144'
+    - If the author has mentioned Dryad in their Data statement, check that they've
+      included the Dryad reviewer URL. If not, make a note in the discussion below.
+    - boolean
+    - dryad_url
+    - 
+    - '221'
+    - '222'
+    - '6'
+    - '2015-11-02 13:38:26.315087'
+    - '2015-11-02 13:38:26.315087'
+    - PlosBioTechCheck::InitialTechCheckTask
+    - 
+  - - '145'
+    - If Financial Disclosure Statement is not complete (they've written N/A or something
+      similar), message author.
+    - boolean
+    - financial_disclosure
+    - 
+    - '223'
+    - '224'
     - '7'
-    - '3'
-    - '2015-10-29 20:16:37.579849'
-    - '2015-10-29 20:16:37.579849'
-  - - '8'
+    - '2015-11-02 13:38:26.319212'
+    - '2015-11-02 13:38:26.319212'
+    - PlosBioTechCheck::InitialTechCheckTask
+    - 
+  - - '146'
+    - If the Financial Disclosure Statement includes any companies from the Tobacco
+      Industry, make a note in the discussion below.
+    - boolean
+    - tobacco
+    - 
+    - '225'
+    - '226'
     - '8'
-    - '3'
-    - '2015-10-29 20:16:37.598114'
-    - '2015-10-29 20:16:37.598114'
-  - - '9'
+    - '2015-11-02 13:38:26.322791'
+    - '2015-11-02 13:38:26.322791'
+    - PlosBioTechCheck::InitialTechCheckTask
+    - 
+  - - '147'
+    - If any figures are completely illegible, contact the author.
+    - boolean
+    - figures_legible
+    - 
+    - '227'
+    - '228'
     - '9'
-    - '3'
-    - '2015-10-29 20:16:37.615939'
-    - '2015-10-29 20:16:37.615939'
-  - - '10'
+    - '2015-11-02 13:38:26.326519'
+    - '2015-11-02 13:38:26.326519'
+    - PlosBioTechCheck::InitialTechCheckTask
+    - 
+  - - '148'
+    - If any files or figures are cited but not included in the submission, message
+      the author.
+    - boolean
+    - cited
+    - 
+    - '229'
+    - '230'
     - '10'
-    - '3'
-    - '2015-10-29 20:16:37.63426'
-    - '2015-10-29 20:16:37.63426'
-  - - '11'
+    - '2015-11-02 13:38:26.330182'
+    - '2015-11-02 13:38:26.330182'
+    - PlosBioTechCheck::InitialTechCheckTask
+    - 
+  - - '149'
+    - Have the authors asked any questions in the cover letter? If yes, contact the
+      editor/journal team.
+    - boolean
+    - cover_letter
+    - 
+    - '231'
+    - '232'
     - '11'
-    - '3'
-    - '2015-10-29 20:16:37.652666'
-    - '2015-10-29 20:16:37.652666'
-  - - '12'
+    - '2015-11-02 13:38:26.333792'
+    - '2015-11-02 13:38:26.333792'
+    - PlosBioTechCheck::InitialTechCheckTask
+    - 
+  - - '150'
+    - Have the authors mentioned any billing information in the cover letter? If yes,
+      contact the editor/journal team.
+    - boolean
+    - billing_inquiries
+    - 
+    - '233'
+    - '234'
     - '12'
-    - '3'
-    - '2015-10-29 20:16:37.670887'
-    - '2015-10-29 20:16:37.670887'
-  - - '13'
+    - '2015-11-02 13:38:26.337417'
+    - '2015-11-02 13:38:26.337417'
+    - PlosBioTechCheck::InitialTechCheckTask
+    - 
+  - - '151'
+    - If an Ethics Statement is present, make a note in the discussion below.
+    - boolean
+    - ethics_statement
+    - 
+    - '235'
+    - '236'
     - '13'
+    - '2015-11-02 13:38:26.340953'
+    - '2015-11-02 13:38:26.340953'
+    - PlosBioTechCheck::InitialTechCheckTask
+    - 
+  - - '152'
+    - 'Check Section Headings of all new submissions (including Open Rejects). Should
+      broadly follow: Title, Authors, Affiliations, Abstract, Introduction, Results,
+      Discussion, Materials and Methods, References, Acknowledgements, and Figure
+      Legends.'
+    - boolean
+    - open_rejects
+    - 
+    - '237'
+    - '238'
+    - '1'
+    - '2015-11-02 13:38:26.346485'
+    - '2015-11-02 13:38:26.346485'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '153'
+    - Check the ethics statement - does it mention Human Participants? If so, flag
+      this with the editor in the discussion below.
+    - boolean
+    - human_subjects
+    - 
+    - '239'
+    - '240'
+    - '2'
+    - '2015-11-02 13:38:26.350087'
+    - '2015-11-02 13:38:26.350087'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '154'
+    - Check if there are any obvious ethical flags (mentions of animal/human work
+      in the title/abstract), check that there's an ethics statement. If not, ask
+      the authors about this.
+    - boolean
+    - ethics_needed
+    - 
+    - '241'
+    - '242'
     - '3'
-    - '2015-10-29 20:16:37.689704'
-    - '2015-10-29 20:16:37.689704'
+    - '2015-11-02 13:38:26.355497'
+    - '2015-11-02 13:38:26.355497'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '155'
+    - Is the data available? If not, or it's only available by contacting an author
+      or the institution, make a note in the discussion below.
+    - boolean
+    - data_available
+    - 
+    - '243'
+    - '244'
+    - '4'
+    - '2015-11-02 13:38:26.359242'
+    - '2015-11-02 13:38:26.359242'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '156'
+    - If author indicates the data is available in Supporting Information, check to
+      make sure there are Supporting Information files in the submission (don't need
+      to check for specifics at this stage).
+    - boolean
+    - supporting_information
+    - 
+    - '245'
+    - '246'
+    - '5'
+    - '2015-11-02 13:38:26.3628'
+    - '2015-11-02 13:38:26.3628'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '157'
+    - If the author has mentioned Dryad in their Data statement, check that they've
+      included the Dryad reviewer URL. If not, make a note in the discussion below.
+    - boolean
+    - dryad_url
+    - 
+    - '247'
+    - '248'
+    - '6'
+    - '2015-11-02 13:38:26.366706'
+    - '2015-11-02 13:38:26.366706'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '158'
+    - If Financial Disclosure Statement is not complete (they've written N/A or something
+      similar), message author.
+    - boolean
+    - financial_disclosure
+    - 
+    - '249'
+    - '250'
+    - '7'
+    - '2015-11-02 13:38:26.370339'
+    - '2015-11-02 13:38:26.370339'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '159'
+    - If the Financial Disclosure Statement includes any companies from the Tobacco
+      Industry, make a note in the discussion below.
+    - boolean
+    - tobacco
+    - 
+    - '251'
+    - '252'
+    - '8'
+    - '2015-11-02 13:38:26.373836'
+    - '2015-11-02 13:38:26.373836'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '160'
+    - If any figures are completely illegible, contact the author.
+    - boolean
+    - figures_legible
+    - 
+    - '253'
+    - '254'
+    - '9'
+    - '2015-11-02 13:38:26.37734'
+    - '2015-11-02 13:38:26.37734'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '161'
+    - If any files or figures are cited but not included in the submission, message
+      the author.
+    - boolean
+    - cited
+    - 
+    - '255'
+    - '256'
+    - '10'
+    - '2015-11-02 13:38:26.380912'
+    - '2015-11-02 13:38:26.380912'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '162'
+    - Have the authors asked any questions in the cover letter? If yes, contact the
+      editor/journal team.
+    - boolean
+    - cover_letter
+    - 
+    - '257'
+    - '258'
+    - '11'
+    - '2015-11-02 13:38:26.384466'
+    - '2015-11-02 13:38:26.384466'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '163'
+    - Have the authors mentioned any billing information in the cover letter? If yes,
+      contact the editor/journal team.
+    - boolean
+    - billing_inquiries
+    - 
+    - '259'
+    - '260'
+    - '12'
+    - '2015-11-02 13:38:26.387949'
+    - '2015-11-02 13:38:26.387949'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '164'
+    - If an Ethics Statement is present, make a note in the discussion below.
+    - boolean
+    - ethics_statement
+    - 
+    - '261'
+    - '262'
+    - '13'
+    - '2015-11-02 13:38:26.39145'
+    - '2015-11-02 13:38:26.39145'
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+  - - '165'
+    - 'Check Section Headings of all new submissions (including Open Rejects). Should
+      broadly follow: Title, Authors, Affiliations, Abstract, Introduction, Results,
+      Discussion, Materials and Methods, References, Acknowledgements, and Figure
+      Legends.'
+    - boolean
+    - open_rejects
+    - 
+    - '263'
+    - '264'
+    - '1'
+    - '2015-11-02 13:38:26.396833'
+    - '2015-11-02 13:38:26.396833'
+    - PlosBioTechCheck::FinalTechCheckTask
+    - 
+  - - '166'
+    - Check the ethics statement - does it mention Human Participants? If so, flag
+      this with the editor in the discussion below.
+    - boolean
+    - human_subjects
+    - 
+    - '265'
+    - '266'
+    - '2'
+    - '2015-11-02 13:38:26.400512'
+    - '2015-11-02 13:38:26.400512'
+    - PlosBioTechCheck::FinalTechCheckTask
+    - 
+  - - '167'
+    - Check if there are any obvious ethical flags (mentions of animal/human work
+      in the title/abstract), check that there's an ethics statement. If not, ask
+      the authors about this.
+    - boolean
+    - ethics_needed
+    - 
+    - '267'
+    - '268'
+    - '3'
+    - '2015-11-02 13:38:26.403989'
+    - '2015-11-02 13:38:26.403989'
+    - PlosBioTechCheck::FinalTechCheckTask
+    - 
+  - - '168'
+    - Is the data available? If not, or it's only available by contacting an author
+      or the institution, make a note in the discussion below.
+    - boolean
+    - data_available
+    - 
+    - '269'
+    - '270'
+    - '4'
+    - '2015-11-02 13:38:26.407564'
+    - '2015-11-02 13:38:26.407564'
+    - PlosBioTechCheck::FinalTechCheckTask
+    - 
+  - - '169'
+    - If author indicates the data is available in Supporting Information, check to
+      make sure there are Supporting Information files in the submission (don't need
+      to check for specifics at this stage).
+    - boolean
+    - supporting_information
+    - 
+    - '271'
+    - '272'
+    - '5'
+    - '2015-11-02 13:38:26.411338'
+    - '2015-11-02 13:38:26.411338'
+    - PlosBioTechCheck::FinalTechCheckTask
+    - 
+  - - '170'
+    - If the author has mentioned Dryad in their Data statement, check that they've
+      included the Dryad reviewer URL. If not, make a note in the discussion below.
+    - boolean
+    - dryad_url
+    - 
+    - '273'
+    - '274'
+    - '6'
+    - '2015-11-02 13:38:26.415031'
+    - '2015-11-02 13:38:26.415031'
+    - PlosBioTechCheck::FinalTechCheckTask
+    - 
+  - - '171'
+    - If Financial Disclosure Statement is not complete (they've written N/A or something
+      similar), message author.
+    - boolean
+    - financial_disclosure
+    - 
+    - '275'
+    - '276'
+    - '7'
+    - '2015-11-02 13:38:26.418577'
+    - '2015-11-02 13:38:26.418577'
+    - PlosBioTechCheck::FinalTechCheckTask
+    - 
+  - - '172'
+    - If the Financial Disclosure Statement includes any companies from the Tobacco
+      Industry, make a note in the discussion below.
+    - boolean
+    - tobacco
+    - 
+    - '277'
+    - '278'
+    - '8'
+    - '2015-11-02 13:38:26.422021'
+    - '2015-11-02 13:38:26.422021'
+    - PlosBioTechCheck::FinalTechCheckTask
+    - 
+  - - '173'
+    - If any figures are completely illegible, contact the author.
+    - boolean
+    - figures_legible
+    - 
+    - '279'
+    - '280'
+    - '9'
+    - '2015-11-02 13:38:26.425661'
+    - '2015-11-02 13:38:26.425661'
+    - PlosBioTechCheck::FinalTechCheckTask
+    - 
+  - - '174'
+    - If any files or figures are cited but not included in the submission, message
+      the author.
+    - boolean
+    - cited
+    - 
+    - '281'
+    - '282'
+    - '10'
+    - '2015-11-02 13:38:26.429237'
+    - '2015-11-02 13:38:26.429237'
+    - PlosBioTechCheck::FinalTechCheckTask
+    - 
+  - - '175'
+    - Have the authors asked any questions in the cover letter? If yes, contact the
+      editor/journal team.
+    - boolean
+    - cover_letter
+    - 
+    - '283'
+    - '284'
+    - '11'
+    - '2015-11-02 13:38:26.433036'
+    - '2015-11-02 13:38:26.433036'
+    - PlosBioTechCheck::FinalTechCheckTask
+    - 
+  - - '176'
+    - Have the authors mentioned any billing information in the cover letter? If yes,
+      contact the editor/journal team.
+    - boolean
+    - billing_inquiries
+    - 
+    - '285'
+    - '286'
+    - '12'
+    - '2015-11-02 13:38:26.436669'
+    - '2015-11-02 13:38:26.436669'
+    - PlosBioTechCheck::FinalTechCheckTask
+    - 
+  - - '177'
+    - If an Ethics Statement is present, make a note in the discussion below.
+    - boolean
+    - ethics_statement
+    - 
+    - '287'
+    - '288'
+    - '13'
+    - '2015-11-02 13:38:26.440221'
+    - '2015-11-02 13:38:26.440221'
+    - PlosBioTechCheck::FinalTechCheckTask
+    - 
 
 ---
 phase_templates:
@@ -1874,6 +3209,293 @@ phases:
     - '2015-10-29 20:16:37.77308'
     - '5'
     - '1'
+  - - '6'
+    - Submission
+    - '2015-10-30 19:43:28.497968'
+    - '2015-10-30 19:43:28.497968'
+    - '1'
+    - '2'
+  - - '7'
+    - Tech Check
+    - '2015-10-30 19:43:28.705363'
+    - '2015-10-30 19:43:28.705363'
+    - '2'
+    - '2'
+  - - '8'
+    - Internal Review
+    - '2015-10-30 19:43:28.726752'
+    - '2015-10-30 19:43:28.726752'
+    - '3'
+    - '2'
+  - - '9'
+    - External Review
+    - '2015-10-30 19:43:28.741896'
+    - '2015-10-30 19:43:28.741896'
+    - '4'
+    - '2'
+  - - '10'
+    - Make Decision
+    - '2015-10-30 19:43:28.757472'
+    - '2015-10-30 19:43:28.757472'
+    - '5'
+    - '2'
+
+---
+supporting_information_files:
+  columns:
+  - id
+  - paper_id
+  - title
+  - caption
+  - attachment
+  - created_at
+  - updated_at
+  - status
+  - publishable
+  records: 
+  - - '1'
+    - '2'
+    - 'Title: sample.doc'
+    - 
+    - sample.doc
+    - '2015-10-30 19:52:32.177953'
+    - '2015-10-30 19:52:32.793467'
+    - done
+    - true
+
+---
+tahi_standard_tasks_funders:
+  columns:
+  - id
+  - name
+  - grant_number
+  - website
+  - funder_had_influence
+  - funder_influence_description
+  - task_id
+  - created_at
+  - updated_at
+  records: 
+  - - '1'
+    - Money McMunster
+    - 555-5555555
+    - www.example.com
+    - false
+    - 
+    - '31'
+    - '2015-10-30 19:57:11.699874'
+    - '2015-10-30 19:57:27.12286'
+  - - '2'
+    - Less MoneyMcMunster
+    - 333-333333333
+    - www.example.com
+    - false
+    - 
+    - '31'
+    - '2015-10-30 19:57:44.86309'
+    - '2015-10-30 19:58:03.20006'
+
+---
+tahi_standard_tasks_reviewer_recommendations:
+  columns:
+  - id
+  - reviewer_recommendations_task_id
+  - first_name
+  - last_name
+  - middle_initial
+  - email
+  - department
+  - title
+  - affiliation
+  - recommend_or_oppose
+  - reason
+  - created_at
+  - updated_at
+  - ringgold_id
+  records: 
+  - - '2'
+    - '34'
+    - Candy
+    - Canderson
+    - ''
+    - candy@example.com
+    - Department of Thinking
+    - Thinker
+    - Adelphi University
+    - 
+    - 
+    - '2015-11-02 13:41:37.871138'
+    - '2015-11-02 13:42:13.77282'
+    - '3479'
+  - - '3'
+    - '34'
+    - Dennis
+    - Anger
+    - ''
+    - dennis@example.com
+    - Department of Pessisism
+    - Pessimist
+    - Air University
+    - 
+    - 
+    - '2015-11-02 13:43:20.530731'
+    - '2015-11-02 13:43:20.530731'
+    - '53427'
+
+---
+journal_task_types:
+  columns:
+  - id
+  - journal_id
+  - title
+  - role
+  - kind
+  records: 
+  - - '1'
+    - '1'
+    - Ad-hoc
+    - user
+    - Task
+  - - '2'
+    - '1'
+    - Authors
+    - author
+    - TahiStandardTasks::AuthorsTask
+  - - '3'
+    - '1'
+    - Competing Interests
+    - author
+    - TahiStandardTasks::CompetingInterestsTask
+  - - '4'
+    - '1'
+    - Cover Letter
+    - author
+    - TahiStandardTasks::CoverLetterTask
+  - - '5'
+    - '1'
+    - Data Availability
+    - author
+    - TahiStandardTasks::DataAvailabilityTask
+  - - '6'
+    - '1'
+    - Ethics Statement
+    - author
+    - TahiStandardTasks::EthicsTask
+  - - '7'
+    - '1'
+    - Figures
+    - author
+    - TahiStandardTasks::FigureTask
+  - - '8'
+    - '1'
+    - Financial Disclosure
+    - author
+    - TahiStandardTasks::FinancialDisclosureTask
+  - - '9'
+    - '1'
+    - Assign Admin
+    - admin
+    - TahiStandardTasks::PaperAdminTask
+  - - '10'
+    - '1'
+    - Invite Editor
+    - admin
+    - TahiStandardTasks::PaperEditorTask
+  - - '11'
+    - '1'
+    - Invite Reviewers
+    - custom
+    - TahiStandardTasks::PaperReviewerTask
+  - - '12'
+    - '1'
+    - Production Metadata
+    - editor
+    - TahiStandardTasks::ProductionMetadataTask
+  - - '13'
+    - '1'
+    - Publishing Related Questions
+    - author
+    - TahiStandardTasks::PublishingRelatedQuestionsTask
+  - - '14'
+    - '1'
+    - Register Decision
+    - editor
+    - TahiStandardTasks::RegisterDecisionTask
+  - - '15'
+    - '1'
+    - Reporting Guidelines
+    - author
+    - TahiStandardTasks::ReportingGuidelinesTask
+  - - '16'
+    - '1'
+    - Reviewer Candidates
+    - author
+    - TahiStandardTasks::ReviewerRecommendationsTask
+  - - '17'
+    - '1'
+    - Reviewer Report
+    - reviewer
+    - TahiStandardTasks::ReviewerReportTask
+  - - '18'
+    - '1'
+    - Revise Task
+    - author
+    - TahiStandardTasks::ReviseTask
+  - - '19'
+    - '1'
+    - Supporting Info
+    - author
+    - TahiStandardTasks::SupportingInformationTask
+  - - '20'
+    - '1'
+    - New Taxon
+    - author
+    - TahiStandardTasks::TaxonTask
+  - - '21'
+    - '1'
+    - Upload Manuscript
+    - author
+    - TahiUploadManuscript::UploadManuscriptTask
+  - - '22'
+    - '1'
+    - Changes For Author
+    - author
+    - PlosBioTechCheck::ChangesForAuthorTask
+  - - '23'
+    - '1'
+    - Final Tech Check
+    - custom
+    - PlosBioTechCheck::FinalTechCheckTask
+  - - '24'
+    - '1'
+    - Initial Tech Check
+    - custom
+    - PlosBioTechCheck::InitialTechCheckTask
+  - - '25'
+    - '1'
+    - Revision Tech Check
+    - custom
+    - PlosBioTechCheck::RevisionTechCheckTask
+  - - '26'
+    - '1'
+    - Editor Discussion
+    - editor
+    - PlosBioInternalReview::EditorsDiscussionTask
+  - - '27'
+    - '1'
+    - Billing
+    - author
+    - PlosBilling::BillingTask
+  - - '28'
+    - '1'
+    - Assign Team
+    - admin
+    - Tahi::AssignTeam::AssignTeamTask
+  - - '29'
+    - '1'
+    - Test Task
+    - user
+    - InvitableTask
 
 ---
 roles:
@@ -1981,6 +3603,212 @@ activities:
     - '3'
     - '2015-10-30 18:12:50.561577'
     - '2015-10-30 18:17:03.509111'
+  - - '3'
+    - manuscript
+    - '1'
+    - Paper
+    - paper.edited
+    - Manuscript was edited
+    - '3'
+    - '2015-10-30 19:42:41.39281'
+    - '2015-10-30 19:42:41.39281'
+  - - '4'
+    - manuscript
+    - '2'
+    - Paper
+    - paper.created
+    - Manuscript was created
+    - '3'
+    - '2015-10-30 19:43:30.366252'
+    - '2015-10-30 19:43:30.366252'
+  - - '5'
+    - manuscript
+    - '1'
+    - Paper
+    - task.incompleted
+    - Upload Manuscript card was marked as incomplete
+    - '3'
+    - '2015-10-30 19:43:54.876321'
+    - '2015-10-30 19:43:54.876321'
+  - - '6'
+    - manuscript
+    - '1'
+    - Paper
+    - task.completed
+    - Upload Manuscript card was marked as complete
+    - '3'
+    - '2015-10-30 19:43:56.61668'
+    - '2015-10-30 19:43:56.61668'
+  - - '7'
+    - manuscript
+    - '2'
+    - Paper
+    - paper.edited
+    - Manuscript was edited
+    - '3'
+    - '2015-10-30 19:44:11.394435'
+    - '2015-10-30 20:02:00.725052'
+  - - '8'
+    - manuscript
+    - '2'
+    - Paper
+    - task.completed
+    - Billing card was marked as complete
+    - '3'
+    - '2015-10-30 19:48:39.327497'
+    - '2015-10-30 19:48:39.327497'
+  - - '9'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Billing card was marked as incomplete
+    - '3'
+    - '2015-10-30 19:48:41.168178'
+    - '2015-10-30 19:48:41.168178'
+  - - '10'
+    - manuscript
+    - '2'
+    - Paper
+    - task.completed
+    - Billing card was marked as complete
+    - '3'
+    - '2015-10-30 19:48:45.627627'
+    - '2015-10-30 19:48:45.627627'
+  - - '11'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Billing card was marked as incomplete
+    - '3'
+    - '2015-10-30 19:48:47.357383'
+    - '2015-10-30 19:48:47.357383'
+  - - '12'
+    - manuscript
+    - '2'
+    - Paper
+    - task.completed
+    - Cover Letter card was marked as complete
+    - '3'
+    - '2015-10-30 19:49:43.459338'
+    - '2015-10-30 19:49:43.459338'
+  - - '13'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Cover Letter card was marked as incomplete
+    - '3'
+    - '2015-10-30 19:49:44.758285'
+    - '2015-10-30 19:49:44.758285'
+  - - '14'
+    - manuscript
+    - '2'
+    - Paper
+    - task.completed
+    - Authors card was marked as complete
+    - '3'
+    - '2015-10-30 19:54:32.262906'
+    - '2015-10-30 19:54:32.262906'
+  - - '15'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Authors card was marked as incomplete
+    - '3'
+    - '2015-10-30 19:54:34.410303'
+    - '2015-10-30 19:54:34.410303'
+  - - '16'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Upload Manuscript card was marked as incomplete
+    - '3'
+    - '2015-10-30 19:54:39.349816'
+    - '2015-10-30 19:54:39.349816'
+  - - '17'
+    - workflow
+    - '2'
+    - Paper
+    - commented.created
+    - A comment was added to Upload Manuscript card
+    - '3'
+    - '2015-10-30 19:55:03.77059'
+    - '2015-10-30 19:55:03.77059'
+  - - '18'
+    - manuscript
+    - '1'
+    - Paper
+    - paper.edited
+    - Manuscript was edited
+    - '3'
+    - '2015-10-30 20:01:17.107527'
+    - '2015-10-30 20:02:40.133713'
+  - - '19'
+    - manuscript
+    - '2'
+    - Paper
+    - paper.edited
+    - Manuscript was edited
+    - '3'
+    - '2015-10-30 21:11:40.452878'
+    - '2015-10-30 21:11:42.7234'
+  - - '20'
+    - manuscript
+    - '1'
+    - Paper
+    - paper.edited
+    - Manuscript was edited
+    - '3'
+    - '2015-10-30 21:11:49.441374'
+    - '2015-10-30 21:11:53.752502'
+  - - '21'
+    - manuscript
+    - '1'
+    - Paper
+    - task.incompleted
+    - Upload Manuscript card was marked as incomplete
+    - '3'
+    - '2015-10-30 21:12:06.831642'
+    - '2015-10-30 21:12:06.831642'
+
+---
+paper_roles:
+  columns:
+  - id
+  - user_id
+  - paper_id
+  - created_at
+  - updated_at
+  - role
+  records: 
+  - - '1'
+    - '3'
+    - '1'
+    - '2015-10-29 20:16:37.370025'
+    - '2015-10-29 20:16:37.370025'
+    - collaborator
+  - - '2'
+    - '3'
+    - '1'
+    - '2015-10-29 20:16:37.467739'
+    - '2015-10-29 20:16:37.467739'
+    - participant
+  - - '3'
+    - '3'
+    - '2'
+    - '2015-10-30 19:43:28.47297'
+    - '2015-10-30 19:43:28.47297'
+    - collaborator
+  - - '4'
+    - '3'
+    - '2'
+    - '2015-10-30 19:43:28.53163'
+    - '2015-10-30 19:43:28.53163'
+    - participant
 
 ---
 authors:
@@ -2010,7 +3838,7 @@ authors:
     - Author
     - '2015-10-29 20:16:37.812595'
     - '2015-10-29 20:16:37.812595'
-    - '1'
+    - '2'
     - '1'
     - '2'
     - 
@@ -2024,209 +3852,110 @@ authors:
     - 
     - 
     - 
+  - - '2'
+    - Arthur
+    - Author
+    - '2015-10-30 19:43:28.777757'
+    - '2015-10-30 19:53:18.523309'
+    - '3'
+    - '2'
+    - '23'
+    - 
+    - author@example.com
+    - Department of Authoring
+    - Greatest American Author
+    - false
+    - false
+    - Michigan State University
+    - University of Michigan
+    - 
+    - 
+    - 
+  - - '3'
+    - Jane
+    - Janesford
+    - '2015-10-30 19:54:25.247759'
+    - '2015-10-30 19:54:28.89091'
+    - '4'
+    - '2'
+    - '23'
+    - ''
+    - jane@example.com
+    - Authorship Department
+    - Second Greatest Author
+    - false
+    - false
+    - Vanguard University of Southern California
+    - Northwestern Oklahoma State University
+    - 
+    - 
+    - 
 
 ---
-figures:
+journals:
   columns:
   - id
-  - attachment
+  - name
+  - created_at
+  - updated_at
+  - logo
+  - epub_cover
+  - epub_css
+  - pdf_css
+  - manuscript_css
+  - description
+  - doi_publisher_prefix
+  - doi_journal_prefix
+  - last_doi_issued
+  records: 
+  - - '1'
+    - PLOS Developers
+    - '2015-10-29 19:40:11.853622'
+    - '2015-10-29 19:43:15.406405'
+    - developersdevelopersdevelopers.jpg
+    - developersdevelopersdevelopers.jpg
+    - 
+    - 
+    - 
+    - If you are a developer, you are in the right place for fun, for science, and
+      for publication.
+    - 
+    - 
+    - 
+
+---
+manuscript_manager_templates:
+  columns:
+  - id
+  - paper_type
+  - journal_id
+  records: 
+  - - '1'
+    - Classic PLOS Bio Research Article Workflow
+    - '1'
+
+---
+manuscripts:
+  columns:
+  - id
+  - source
   - paper_id
   - created_at
   - updated_at
-  - title
-  - caption
   - status
   records: 
   - - '1'
-    - cover_image.jpg
+    - source.docx
     - '1'
-    - '2015-10-30 18:09:55.844755'
-    - '2015-10-30 18:09:55.844755'
-    - cover_image.jpg
-    - 
+    - '2015-10-29 20:16:41.322196'
+    - '2015-10-30 18:09:40.024912'
     - done
-
----
-task_templates:
-  columns:
-  - id
-  - journal_task_type_id
-  - phase_template_id
-  - template
-  - title
-  - position
-  records: 
-  - - '181'
-    - '19'
-    - '61'
-    - "[]"
-    - Supporting Info
-    - '1'
-  - - '182'
+  - - '2'
+    - source.docx
     - '2'
-    - '61'
-    - "[]"
-    - Authors
-    - '2'
-  - - '183'
-    - '21'
-    - '61'
-    - "[]"
-    - Upload Manuscript
-    - '3'
-  - - '184'
-    - '27'
-    - '61'
-    - "[]"
-    - Billing
-    - '4'
-  - - '185'
-    - '3'
-    - '61'
-    - "[]"
-    - Competing Interests
-    - '5'
-  - - '186'
-    - '4'
-    - '61'
-    - "[]"
-    - Cover Letter
-    - '6'
-  - - '187'
-    - '5'
-    - '61'
-    - "[]"
-    - Data Availability
-    - '7'
-  - - '188'
-    - '6'
-    - '61'
-    - "[]"
-    - Ethics Statement
-    - '8'
-  - - '189'
-    - '7'
-    - '61'
-    - "[]"
-    - Figures
-    - '9'
-  - - '190'
-    - '8'
-    - '61'
-    - "[]"
-    - Financial Disclosure
-    - '10'
-  - - '191'
-    - '13'
-    - '61'
-    - "[]"
-    - Publishing Related Questions
-    - '11'
-  - - '192'
-    - '15'
-    - '61'
-    - "[]"
-    - Reporting Guidelines
-    - '12'
-  - - '193'
-    - '16'
-    - '61'
-    - "[]"
-    - Reviewer Candidates
-    - '13'
-  - - '194'
-    - '24'
-    - '62'
-    - "[]"
-    - Initial Tech Check
-    - '1'
-  - - '195'
-    - '25'
-    - '62'
-    - "[]"
-    - Revision Tech Check
-    - '2'
-  - - '196'
-    - '23'
-    - '62'
-    - "[]"
-    - Final Tech Check
-    - '3'
-  - - '197'
-    - '28'
-    - '63'
-    - "[]"
-    - Assign Team
-    - '1'
-  - - '198'
-    - '26'
-    - '63'
-    - "[]"
-    - Editor Discussion
-    - '2'
-  - - '199'
-    - '11'
-    - '64'
-    - "[]"
-    - Invite Reviewers
-    - '1'
-  - - '200'
-    - '1'
-    - '64'
-    - "[]"
-    - Academic Editor Feedback
-    - '2'
-  - - '201'
-    - '14'
-    - '65'
-    - "[]"
-    - Register Decision
-    - '1'
-
----
-papers:
-  columns:
-  - id
-  - short_title
-  - title
-  - abstract
-  - created_at
-  - updated_at
-  - user_id
-  - paper_type
-  - journal_id
-  - decision_letter
-  - published_at
-  - striking_image_id
-  - editable
-  - doi
-  - editor_mode
-  - publishing_state
-  - submitted_at
-  - salesforce_manuscript_id
-  - withdrawals
-  - active
-  records: 
-  - - '1'
-    - 
-    - "<b>Eternally Unstarted</b>: <i>A freshly uploaded Paper</i>"
-    - 
-    - '2015-10-29 20:16:37.363801'
-    - '2015-10-30 18:13:53.860563'
-    - '3'
-    - Classic PLOS Bio Research Article Workflow
-    - '1'
-    - 
-    - 
-    - 
-    - true
-    - 
-    - html
-    - unsubmitted
-    - 
-    - 
-    - "{}"
-    - true
+    - '2015-10-30 19:45:06.746914'
+    - '2015-10-30 19:45:07.149652'
+    - done
 
 ---
 users:
@@ -2247,8 +3976,8 @@ users:
   - created_at
   - updated_at
   - username
-  - avatar
   - site_admin
+  - avatar
   - em_guid
   records: 
   - - '1'
@@ -2267,8 +3996,8 @@ users:
     - '2015-10-29 19:36:19.627844'
     - '2015-10-29 20:09:19.174385'
     - admin
-    - 
     - false
+    - 
     - 
   - - '2'
     - Steve
@@ -2286,8 +4015,8 @@ users:
     - '2015-10-29 20:07:28.341906'
     - '2015-10-29 20:53:17.020456'
     - site_admin
-    - 
     - true
+    - 
     - 
   - - '3'
     - Arthur
@@ -2305,8 +4034,8 @@ users:
     - '2015-10-29 20:11:22.705226'
     - '2015-10-29 20:11:22.709777'
     - author
-    - 
     - false
+    - 
     - 
 
 ---
@@ -2347,9 +4076,9 @@ tasks:
     - Upload Manuscript
     - TahiUploadManuscript::UploadManuscriptTask
     - '1'
-    - true
+    - false
     - '2015-10-29 20:16:37.500407'
-    - '2015-10-30 18:09:58.957507'
+    - '2015-10-30 21:12:06.814054'
     - author
     - "[]"
     - '3'
@@ -2533,6 +4262,229 @@ tasks:
     - editor
     - "[]"
     - '1'
+  - - '22'
+    - Supporting Info
+    - TahiStandardTasks::SupportingInformationTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.513727'
+    - '2015-10-30 19:43:28.513727'
+    - author
+    - "[]"
+    - '1'
+  - - '23'
+    - Authors
+    - TahiStandardTasks::AuthorsTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.540717'
+    - '2015-10-30 19:54:34.391249'
+    - author
+    - "[]"
+    - '2'
+  - - '24'
+    - Upload Manuscript
+    - TahiUploadManuscript::UploadManuscriptTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.556461'
+    - '2015-10-30 19:54:39.331122'
+    - author
+    - "[]"
+    - '3'
+  - - '25'
+    - Billing
+    - PlosBilling::BillingTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.571079'
+    - '2015-10-30 19:48:47.180823'
+    - author
+    - "[]"
+    - '4'
+  - - '26'
+    - Competing Interests
+    - TahiStandardTasks::CompetingInterestsTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.585311'
+    - '2015-10-30 19:43:28.585311'
+    - author
+    - "[]"
+    - '5'
+  - - '27'
+    - Cover Letter
+    - TahiStandardTasks::CoverLetterTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.600041'
+    - '2015-10-30 19:49:44.740631'
+    - author
+    - '["\u003cdiv\u003e\u003cb style=\"color: rgb(0, 0, 0); font-family: Arial, Helvetica,
+      sans; font-size: 11px; line-height: 14px; text-align: justify;\"\u003eMy Cover
+      Letter\u003c/b\u003e\u003cbr\u003e\u003c/div\u003e\u003cspan style=\"color:
+      rgb(0, 0, 0); font-family: Arial, Helvetica, sans; font-size: 11px; line-height:
+      14px; text-align: justify;\"\u003eLorem Ipsum\u003c/span\u003e\u003cspan style=\"color:
+      rgb(0, 0, 0); font-family: Arial, Helvetica, sans; font-size: 11px; line-height:
+      14px; text-align: justify;\"\u003e\u0026nbsp;is simply dummy text of the printing
+      and typesetting industry. Lorem Ipsum has been the industry''s standard dummy
+      text ever since the 1500s, when an unknown printer took a galley of type and
+      scrambled it to make a type specimen book. It has survived not only five centuries,
+      but also the leap into electronic typesetting, remaining essentially unchanged.
+      It was popularised in the 1960s with the release of Letraset sheets containing
+      Lorem Ipsum passages, and more recently with desktop publishing software like
+      Aldus PageMaker including versions of Lorem Ipsum.\u003c/span\u003e"]'
+    - '6'
+  - - '28'
+    - Data Availability
+    - TahiStandardTasks::DataAvailabilityTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.614811'
+    - '2015-10-30 19:43:28.614811'
+    - author
+    - "[]"
+    - '7'
+  - - '29'
+    - Ethics Statement
+    - TahiStandardTasks::EthicsTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.628148'
+    - '2015-10-30 19:43:28.628148'
+    - author
+    - "[]"
+    - '8'
+  - - '30'
+    - Figures
+    - TahiStandardTasks::FigureTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.641504'
+    - '2015-10-30 19:43:28.641504'
+    - author
+    - "[]"
+    - '9'
+  - - '31'
+    - Financial Disclosure
+    - TahiStandardTasks::FinancialDisclosureTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.655468'
+    - '2015-10-30 19:43:28.655468'
+    - author
+    - "[]"
+    - '10'
+  - - '32'
+    - Publishing Related Questions
+    - TahiStandardTasks::PublishingRelatedQuestionsTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.668712'
+    - '2015-10-30 19:43:28.668712'
+    - author
+    - "[]"
+    - '11'
+  - - '33'
+    - Reporting Guidelines
+    - TahiStandardTasks::ReportingGuidelinesTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.682411'
+    - '2015-10-30 19:43:28.682411'
+    - author
+    - "[]"
+    - '12'
+  - - '34'
+    - Reviewer Candidates
+    - TahiStandardTasks::ReviewerRecommendationsTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.696454'
+    - '2015-10-30 19:43:28.696454'
+    - author
+    - "[]"
+    - '13'
+  - - '35'
+    - Initial Tech Check
+    - PlosBioTechCheck::InitialTechCheckTask
+    - '7'
+    - false
+    - '2015-10-30 19:43:28.71276'
+    - '2015-10-30 19:43:28.71276'
+    - custom
+    - '{"round":1}'
+    - '1'
+  - - '36'
+    - Revision Tech Check
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - '7'
+    - false
+    - '2015-10-30 19:43:28.717952'
+    - '2015-10-30 19:43:28.717952'
+    - custom
+    - "[]"
+    - '2'
+  - - '37'
+    - Final Tech Check
+    - PlosBioTechCheck::FinalTechCheckTask
+    - '7'
+    - false
+    - '2015-10-30 19:43:28.723485'
+    - '2015-10-30 19:43:28.723485'
+    - custom
+    - "[]"
+    - '3'
+  - - '38'
+    - Assign Team
+    - Tahi::AssignTeam::AssignTeamTask
+    - '8'
+    - false
+    - '2015-10-30 19:43:28.733583'
+    - '2015-10-30 19:43:28.733583'
+    - admin
+    - "[]"
+    - '1'
+  - - '39'
+    - Editor Discussion
+    - PlosBioInternalReview::EditorsDiscussionTask
+    - '8'
+    - false
+    - '2015-10-30 19:43:28.738473'
+    - '2015-10-30 19:43:28.738473'
+    - editor
+    - "[]"
+    - '2'
+  - - '40'
+    - Invite Reviewers
+    - TahiStandardTasks::PaperReviewerTask
+    - '9'
+    - false
+    - '2015-10-30 19:43:28.74865'
+    - '2015-10-30 19:43:28.74865'
+    - custom
+    - "[]"
+    - '1'
+  - - '41'
+    - Academic Editor Feedback
+    - Task
+    - '9'
+    - false
+    - '2015-10-30 19:43:28.753676'
+    - '2015-10-30 19:43:28.753676'
+    - user
+    - "[]"
+    - '2'
+  - - '42'
+    - Register Decision
+    - TahiStandardTasks::RegisterDecisionTask
+    - '10'
+    - false
+    - '2015-10-30 19:43:28.767156'
+    - '2015-10-30 19:43:28.767156'
+    - editor
+    - "[]"
+    - '1'
 
 ---
 user_roles:
@@ -2661,3 +4613,103 @@ versioned_texts:
       </div><!--TEI back-->
     - '2015-10-29 20:16:37.381749'
     - '2015-10-30 18:09:55.679504'
+  - - '2'
+    - 
+    - '2'
+    - '0'
+    - '0'
+    - |-
+      <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
+      <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
+      <div class="teidiv1" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game-1">
+      <h3><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h3>
+      <p class="First Paragraph">Keke Huang<sup>1</sup>, Tao Wang<sup>1</sup>, Yuan Cheng<sup>2</sup>, Xiaoping Zheng<sup>1</sup>*</p>
+      <p><sup>1</sup> Department of Automation, Tsinghua University, Beijing 100084, China</p>
+      <p><sup>2</sup> School of Mechanical and Electrical Engineering, Beijing University of Chemical Technology, Beijing 100029, China</p>
+      <p>*<a class="link_ref" href="mailto:asean@mail.tsinghua.edu.cn">asean@mail.tsinghua.edu.cn(XZ)</a></p>
+      <div class="teidiv2" id="abstract">
+      <h4><span class="head">Abstract</span></h4>
+      <p class="First Paragraph">Understanding the emergence of cooperation in spatial public goods game remains a grand challenge across disciplines. In most previous studies, it is assumed that the investments of all the cooperators are identical, and often equal to 1. However, it is worth mentioning that players are diverse and heterogeneous when choosing actions in the rapidly developing modern society and researchers have shown more interest to the heterogeneity of players recently. For modeling the heterogeneous players without loss of generality, it is assumed in this work that the investment of a cooperator is a random variable with uniform distribution, the mean value of which is equal to 1. The results of extensive numerical simulations convincingly indicate that heterogeneous investments can promote cooperation. Specifically, a large value of the variance of the random variable can decrease the two critical values for the result of behavioral evolution effectively. Moreover, the larger the variance is, the better the promotion effect will be. In addition, this article has discussed the impact of heterogeneous investments when the coevolution of both strategy and investment is taken into account. Comparing the promotion effect of coevolution of strategy and investment with that of strategy imitation only, we can conclude that the coevolution of strategy and investment decreases the asymptotic fraction of cooperators by weakening the heterogeneity of investments, which further demonstrates that heterogeneous investments can promote cooperation in spatial public goods game.</p>
+      </div>
+      <div class="teidiv2" id="introduction">
+      <h4><span class="head">Introduction</span></h4>
+      <p class="First Paragraph">Cooperation and defection are two fundamental strategies for individuals confronted with every social dilemma [1-3]. According to Darwin’s theory of the origin of species, cooperation extinction is inevitable [4]. However, in the daily life, cooperation is abundantly observed in animal and human societies. One primary challenge in fields ranging from genetics and cell biology to evolutionary anthropology and behavioral economics is to explain the mechanism for these universal cooperative phenomena. Among the game theoretical approaches to investigating evolution of cooperation, one of the most popular frameworks to study the conflict between individuals is the so-called public goods game (PGG), in which several players decide whether or not to contribute to the common pool simultaneously [5-7]. In the model of PGG, cooperators contribute a fixed share to the public whereas defectors do not. Subsequently, all contributions are added up and multiplied by an enhancement factor�, then the total welfare is equally divided among all players irrespective of their strategies. Consequently, players are faced with the temptation of being free-riders and rational players invest nothing which causes the “Tragedy of the Commons” [8-10].</p>
+      <p>Aiming at solving the above tragedy and investigating the reason why cooperators can survive in reality, several mechanisms have been proposed, such as reward [11], punishment [12-15], reputation [12, 16], volunteering [9, 17, 18], social diversity [19] and so on. Besides, the enhancement factor evolving with time is identified as a useful mechanism for evolution of cooperative behavior in PGG [20]. Recently, the topology of the game has been intensively studied as a paradigm for illustrating how cooperative behavior evolves in spatial PGG [21, 22], such as scale free networks [23-25], interdependent networks [26, 27], and they have proved valuable for solving the tragedy to some extent. To summarize, in all the works above it is assumed that the investments of all the cooperators are identical, often equal to 1. However, it is worth mentioning that in the rapidly developing modern society, players are diverse and they often treat the same problem differently [28-30].</p>
+      <p>In the present work, the diversity of players is taken into consideration. With the aim of modeling the heterogeneous players in spatial PGG without loss of generality, it is assumed that the investment of a cooperator is a random variable with uniform distribution�, the mean value of which is equal to 1. Moreover, we will discuss the impact of � on evolution of cooperative behavior. In order to explore how the heterogeneous investment affects the evolution of cooperative behavior, we compare the traditional update rule with the coevolution of strategy and investment, and by statistical analysis we further reveal that heterogeneous investment can promote cooperation in spatial PGG.</p>
+      </div>
+      <div class="teidiv2" id="methods">
+      <h4><span class="head">Methods</span></h4>
+      <p class="First Paragraph">In this article, the public goods game is considered on a two dimensional square lattice of size � with periodic boundary conditions. At the first step, each player can choose a pure strategy cooperation or defection randomly. Suppose that cooperator � contributes � to the public goods while defectors contribute nothing, here � is a random variable, and�. It is apparent that the mean of � is 1 without loss of generality. Practically, when�, the model is identical with the traditional PGG. Suppose that the contribution of � is independent of that of other players.</p>
+      <p>For the sake of accelerating the simulations but without causing major modifications in the system’s dynamics, it is assumed that the score of player � is determined by a single PGG which involves the focal player and its four nearest neighbors [9]. The sum of all contributions in the group is multiplied by the factor �, and the resulting public goods are distributed among all the group members. Correspondingly, the payoff of player � is</p>
+      <p>�</p>
+      <p>where � denotes the strategy of player �, � denotes the group size, and in this article �.</p>
+      <p>The Monte Carlo (MC) simulations start from a random initial strategy distribution, and the evolution procedure is subsequently controlled by a random sequential strategy update. In detail, player � and one of its neighbors � are chosen randomly. Following the payoffs � calculated as described above, player � imitates the strategy of player � with a probability</p>
+      <p>�</p>
+      <p>where � denotes the cost of strategy change and � introduces some noise to allow for irrational decisions, and in this article � [9]. For the sake of comparison, the coevolution of strategy and investment, namely player � imitates also the investment of player � simultaneously, is considered. Furthermore, for the results presented in the next section, the square lattice used is sized �. The asymptotic fraction of cooperators is determined by averaging over 5000 generations after a transient time of 55000 MCS.</p>
+      </div>
+      <div class="teidiv2" id="results">
+      <h4><span class="head">Results</span></h4>
+      <p class="First Paragraph">Firstly, it is instructive to examine the time series of the fraction of cooperators. Results presented in figure 1 are the time series of the fraction of cooperators for different values of � when � equals to 5. The figure depicts that the fraction of cooperators decreases at the beginning of the evolution but increases to the value in the steady state later. The random distribution of the initial strategy gives rise to the decline of cooperation in the beginning, that is, the cooperators are dispersed and the defectors can invade the cooperators easily, which is corresponding to the initial phase in figure 1. As the evolution proceeds, the lived cooperators form clusters and the payoffs of them are enhanced, which restrain the invasion of the defectors. Meanwhile, the heterogeneous investments render the manifold payoff difference between cooperators and defectors, which in turn boosts the possibility for defectors to imitate cooperators.</p>
+      <p>Fig. 1. Time series of the fraction of cooperators for different values of � when � equals to 5. The value of �is equal to 0.0,0.2,0.5,0.8,1.0 respectively. While �, which is exactly the traditional case, the investment of all the cooperators is 1. With the increment of �, the asymptotic fraction of cooperators will increase.</p>
+      <p>While figure 1 shows the time series of fraction of cooperators, the relationship between asymptotic fraction of cooperators � and enhancement factor � when� is presented in figure 2. It is worth to note that, the black curve in figure 2 corresponding to � is in agreement with the results in reference [9]. The asymptotic fraction of cooperators � depending on the enhancement factor � reveals that � is enhanced with increasing of � for different values of �. Meanwhile, the larger the value of � is, the bigger the asymptotic fraction of cooperators � will be. Besides, a large value of � will guarantee that the cooperators will survive when the enhancement factor � is small. In addition, for each curve in figure 2, there exit two thresholds � and �. In other words, if � the phase of the population after behavioral evolution is pure defectors, and if � the phase of the population is pure cooperators, while in case of � the population consist of not only cooperators but also defectors. Figure 2 clearly demonstrates that larger value of � can decrease the value of � and � effectively. Therefore, to sum up, when the investment of a cooperator is a random variable with uniform distribution �, the asymptotic fraction of cooperators can be promoted. Furthermore, the larger the value of � is, the better the promotion effect will be.</p>
+      <p>Fig. 2. Relationship between asymptotic fraction of cooperators � and enhancement factor � corresponding to �respectively. The curves in the figure show that the larger the value of � is, the bigger the asymptotic fraction of cooperators � will be. In addition, larger value of � can decrease the values of � and � effectively.</p>
+      <p>In order to depict the evolutionary process vividly, the typical snapshots are represented in figure 3 when � and �. From the figure it can be clearly concluded that the fraction of cooperators decreases at the beginning of the evolution, but as the evolution proceeds, the cooperators form into clusters to restrain the invasion of the defectors and spread to the defectors reversely. At the end of the evolution all the players in the population hold the cooperation strategy.</p>
+      <p>Fig. 3. Typical snapshots of strategy distributions on the square lattice when � and �. Cooperators and defectors are colored red and blue, and the MCS of (a)-(d) is 1, 10, 100, 50000 respectively. The figure shows that the fraction of cooperators decreases at the beginning of the evolution, but as the evolution proceeds, the cooperators form into clusters to restrain the invasion of the defectors, and spread to the defectors reversely. At the end of the evolution all the players in the population hold the cooperation strategy.</p>
+      <p>Next, the relationship between fraction of cooperators and enhancement factor when the coevolution of strategy and investment is taken into consideration will be discussed. The curves in figure 4 show that if �, the thresholds � and � become smaller compared to the case of �, which is exactly the traditional situation. This implies that cooperation can be promoted through the coevolution of strategy and investment.</p>
+      <p>Fig. 4. Relationship between asymptotic fraction of cooperators � and enhancement factor � corresponding to � respectively when the coevolution of strategy and investment is taken into account. The curves show that if �, the thresholds � and � decrease compared to the case of �, which is exactly the traditional situation. This implies that cooperation can be promoted by introducing the coevolution of strategy and investment.</p>
+      <p>Comparing the curves in figures 2 and 4 leads to the interesting conclusion that the promotion effect of coevolution of strategy and investment is inferior to that of strategy imitation only. With the aim to explore the difference between them, we will discuss the investment distribution of cooperators in steady state. Figure 5 shows the investment distribution in case of coevolution of strategy and investment (Right panel) and the distribution in case of strategy imitation only (Left panel), and the parameters in the two situations are equal, namely �，�. When only strategy is updated, the distribution of the investment in steady state is still a uniform distribution�. However, when the coevolution of strategy and investment is taken into account, the previous uniform distribution is severely distorted, and the steady investment satisfies a discrete distribution valued �. Therefore, the heterogeneity of investment is weakened in this case. Consequently, the asymptotic fraction of cooperators � decreases. In the same way, through statistical analysis it can be concluded that for the same enhancement �, the smaller the value of � is, the more severe the distortion from previous uniform distribution will be. This implies that the coevolution of strategy and investment decreases the asymptotic fraction of cooperators � by weakening the heterogeneity of investment once again.</p>
+      <p>Fig. 5. The steady distribution of investment corresponding to strategy evolution only (Left panel) and that corresponding to coevolution of strategy and investment (Right panel), when �，�. From the figure, it can be found that when only strategy is updated, the distribution of the investment in steady state is still a uniform distribution�, however, when the coevolution of strategy and investment is taken into account, the previous uniform distribution is severely distorted, and the steady investment satisfies a discrete distribution valued �. In conclusion, compared to the former case, as the heterogeneity of investment is weakened, the asymptotic fraction of cooperators � decreases in the case of coevolution.</p>
+      </div>
+      <div class="teidiv2" id="conclusions">
+      <h4><span class="head">Conclusions</span></h4>
+      <p class="First Paragraph">To summarize, this article further explores the impact of heterogeneous investment on the evolution of cooperative behavior in spatial PGG. Above all, the relationship between asymptotic fraction of cooperators � and enhancement factor � when � varies has been presented, and it can be concluded that the larger value of � has the capacity to decrease the values of � and � effectively, and that the larger the value of� is, the better the promotion effect will be. In addition, this article has also discussed the influence of heterogeneous investment when the coevolution of strategy and investment is taken into consideration. Comparing the promotion effect of coevolution of strategy and investment with that of strategy imitation only, the conclusion can be naturally drawn that the coevolution of strategy and investment decreases the asymptotic fraction of cooperators � by weakening the heterogeneity of investment. Therefore, the result above further demonstrates that heterogeneous investment is capable of promoting cooperation in spatial PGG.</p>
+      </div>
+      <div class="teidiv2" id="acknowledgments">
+      <h4><span class="head">Acknowledgments</span></h4>
+      <p class="First Paragraph">We thank Mr. Zhijie Li for technique support.</p>
+      </div>
+      <div class="teidiv2" id="references">
+      <h4><span class="head">References</span></h4>
+      <p class="First Paragraph">1. Kollock P. Social dilemmas: The anatomy of cooperation. Annual review of sociology. 1998:183-214.</p>
+      <p>2. Fehr E, Fischbacher U. Social norms and human cooperation. Trends in cognitive sciences. 2004;8(4):185-90.</p>
+      <p>3. Bornstein G, Ben-Yossef M. Cooperation in intergroup and single-group social dilemmas. Journal of Experimental Social Psychology. 1994;30(1):52-67.</p>
+      <p>4. Pennisi E. How did cooperative behavior evolve? Science. 2005;309(5731):93-.</p>
+      <p>5. Szabó G, Fath G. Evolutionary games on graphs. Physics Reports. 2007;446(4):97-216.</p>
+      <p>6. Perc M, Gómez-Gardeñes J, Szolnoki A, Floría LM, Moreno Y. Evolutionary dynamics of group interactions on structured populations: a review. Journal of The Royal Society Interface. 2013;10(80):20120997.</p>
+      <p>7. Perc M, Grigolini P. Collective behavior and evolutionary games–An introduction. Chaos, Solitons &amp; Fractals. 2013;56:1-5.</p>
+      <p>8. Killingback T, Doebeli M, Hauert C. Diversity of cooperation in the tragedy of the commons. Biol Theory. 2010;5:3-6.</p>
+      <p>9. Szabó G, Hauert C. Phase transitions and volunteering in spatial public goods games. Physical Review Letters. 2002;89(11):118101.</p>
+      <p>10. Szolnoki A, Perc M, Szabó G. Topology-independent impact of noise on cooperation in spatial public goods games. Physical Review E. 2009;80(5):056109.</p>
+      <p>11. Szolnoki A, Perc M. Reward and cooperation in the spatial public goods game. EPL (Europhysics Letters). 2010;92(3):38003.</p>
+      <p>12. Brandt H, Hauert C, Sigmund K. Punishment and reputation in spatial public goods games. Proceedings of the Royal Society of London Series B: Biological Sciences. 2003;270(1519):1099-104.</p>
+      <p>13. Helbing D, Szolnoki A, Perc M, Szabó G. Punish, but not too hard: how costly punishment spreads in the spatial public goods game. New Journal of Physics. 2010;12(8):083005.</p>
+      <p>14. Brandt H, Hauert C, Sigmund K. Punishing and abstaining for public goods. Proceedings of the National Academy of Sciences. 2006;103(2):495-7.</p>
+      <p>15. Fehr E, Gächter S. Cooperation and punishment in public goods experiments. American Economic Review. 2000:980-94.</p>
+      <p>16. Milinski M, Semmann D, Krambeck H-J. Reputation helps solve the ‘tragedy of the commons’. Nature. 2002;415(6870):424-6.</p>
+      <p>17. Hauert C, De Monte S, Hofbauer J, Sigmund K. Volunteering as red queen mechanism for cooperation in public goods games. Science. 2002;296(5570):1129-32.</p>
+      <p>18. Semmann D, Krambeck H-J, Milinski M. Volunteering leads to rock–paper–scissors dynamics in a public goods game. Nature. 2003;425(6956):390-3.</p>
+      <p>19. Santos FC, Santos MD, Pacheco JM. Social diversity promotes the emergence of cooperation in public goods games. Nature. 2008;454(7201):213-6.</p>
+      <p>20. Chen X, Liu Y, Zhou Y, Wang L, Perc M. Adaptive and bounded investment returns promote cooperation in spatial public goods games. PloS one. 2012;7(5):e36895.</p>
+      <p>21. Gómez-Gardeñes J, Romance M, Criado R, Vilone D, Sánchez A. Evolutionary games defined at the network mesoscale: The public goods game. Chaos: An Interdisciplinary Journal of Nonlinear Science. 2011;21(1):016113.</p>
+      <p>22. Wang Z, Kokubo S, Tanimoto J, Fukuda E, Shigaki K. Insight into the so-called spatial reciprocity. Physical Review E. 2013;88(4):042145.</p>
+      <p>23. Rong Z, Wu Z-X. Effect of the degree correlation in public goods game on scale-free networks. EPL (Europhysics Letters). 2009;87(3):30001.</p>
+      <p>24. Guan J-Y, Wu Z-X, Wang Y-H. Effects of inhomogeneous activity of players and noise on cooperation in spatial public goods games. Physical Review E. 2007;76(5):056101.</p>
+      <p>25. Yuan W-J, Zhou J-F, Li Q, Chen D-B, Wang Z. Spontaneous scale-free structure in adaptive networks with synchronously dynamical linking. Physical Review E. 2013;88(2):022818.</p>
+      <p>26. Wang Z, Szolnoki A, Perc M. Interdependent network reciprocity in evolutionary games. Scientific reports. 2013;3.</p>
+      <p>27. Wang Z, Wang L, Perc M. Degree mixing in multilayer networks impedes the evolution of cooperation. Physical Review E. 2014;89(5):052813.</p>
+      <p>28. Burlando RM, Guala F. Heterogeneous agents in public goods experiments. Experimental Economics. 2005;8(1):35-54.</p>
+      <p>29. Shi D-M, Zhuang Y, Wang B-H. Group diversity promotes cooperation in the spatial public goods game. EPL (Europhysics Letters). 2010;90(5):58003.</p>
+      <p>30. Fischbacher U, Gächter S. Heterogeneous social preference and the dynamics of free riding in public goods. CeDEx Discussion Paper, The University of Nottingham, 2006.</p>
+      </div>
+      <div class="teidiv2" id="supporting-information-captions">
+      <h4><span class="head">Supporting Information Captions</span></h4>
+      <p class="First Paragraph">S1_Dataset.xlsx. The dataset of Figure 1.</p>
+      <p>S2_Dataset.xlsx. The dataset of Figure 2.</p>
+      <p>S3_Dataset.xlsx. The dataset of Figure 3.</p>
+      <p>S4_Dataset.xlsx. The dataset of Figure 4.</p>
+      <p>S5_Dataset.xlsx. The dataset of Figure 5.</p>
+      </div>
+      </div>
+      </div><!--TEI back-->
+    - '2015-10-30 19:43:28.478909'
+    - '2015-10-30 19:45:16.009354'

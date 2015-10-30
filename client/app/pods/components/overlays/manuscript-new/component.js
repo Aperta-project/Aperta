@@ -9,6 +9,9 @@ export default Ember.Component.extend(FileUploadMixin, EscapeListenerMixin, {
 
   journals: null,
   paper: null,
+  isSaving: false,
+
+  journalEmpty: computed.empty('paper.journal'),
 
   _getData: Ember.on('init', function() {
     // replace with store service when on Ember-Data 1.0+
@@ -33,8 +36,6 @@ export default Ember.Component.extend(FileUploadMixin, EscapeListenerMixin, {
     });
   }),
 
-  journalEmpty: computed.empty('paper.journal'),
-
   titleCharCount: computed('paper.title', function() {
     return Ember.$('<div></div>')
                 .append(this.get('paper.title'))
@@ -46,20 +47,15 @@ export default Ember.Component.extend(FileUploadMixin, EscapeListenerMixin, {
   }),
 
   actions: {
-    createNewPaper() {
-      if(this.get('paper.isSaving')) { return; }
-
-      this.get('paper').save().then((paper)=> {
-        this.transitionToRoute('paper.index', paper);
-      }, (response)=> {
-        this.flash.displayErrorMessagesFromResponse(response);
-      });
-    },
-
     createPaperWithUpload() {
-      this.get('paper').save().then(()=> {
+      if(this.get('isSaving')) { return; }
+
+      this.set('isSaving', true);
+
+      return this.get('paper').save().then(()=> {
         this.get('uploadFunction')();
       }, (response)=> {
+        this.set('isSaving', false);
         this.flash.displayErrorMessagesFromResponse(response);
       });
     },
@@ -106,8 +102,9 @@ export default Ember.Component.extend(FileUploadMixin, EscapeListenerMixin, {
      *  @public
     **/
     uploadFinished(data, filename) {
+      this.set('isSaving', false);
       this.uploadFinished(data, filename);
-      this.transitionToRoute('paper.index', this.get('paper'));
+      this.transitionToRoute('paper.index', this.get('model'));
     },
 
     closeOverlay() {

@@ -1,6 +1,9 @@
 {
   "name": "tahi",
   "version": "1.0.0",
+  "engines": {
+    "node": "4.2.1"
+  },
   "description": "## Development Notes",
   "main": "index.js",
   "directories": {

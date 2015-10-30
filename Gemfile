@@ -67,7 +67,6 @@ end
 group :development, :test do
   gem 'auto_screenshot', require: false
   gem 'dotenv-rails', require: 'dotenv/rails-now'
-  gem 'foreman'
   gem 'generator_spec'
   gem 'progressbar'
   gem 'pry-rails'
@@ -79,6 +78,7 @@ end
 group :development do
   gem 'awesome_print'
   gem 'bullet'
+  gem 'foreman', require: false
   gem 'overcommit'
   gem 'rubocop'
 end

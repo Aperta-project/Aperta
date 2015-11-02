@@ -4,13 +4,7 @@ export default Ember.Route.extend({
   cardOverlayService: Ember.inject.service('card-overlay'),
 
   model(params) {
-    // Force the reload of the task when visiting the tasks' route.
-    let task = this.store.findTask(params.task_id);
-    if (task) {
-      return task.reload();
-    } else {
-      return this.store.find('task', params.task_id);
-    }
+    return this.store.findTask(params.task_id);
   },
 
   afterModel(model) {
@@ -20,7 +14,7 @@ export default Ember.Route.extend({
 
   setupController(controller, model) {
     let redirectOptions = this.get('cardOverlayService.previousRouteOptions');
-    let taskController  = this.controllerFor('overlays/versioned_metadata');
+    let taskController = this.controllerFor('overlays/versioned_metadata');
     this.set('taskController', taskController);
     taskController.setProperties({
       model: model,
@@ -38,7 +32,6 @@ export default Ember.Route.extend({
     });
 
     this.render(this.get('cardOverlayService').get('overlayBackground'));
-    // TODO: meh:
     this.controllerFor('application').set('showOverlay', true);
   },
 

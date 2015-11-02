@@ -18,6 +18,7 @@ PaperVersionsRoute = AuthorizedRoute.extend
 
   setupController: (controller, model) ->
     controller.set('model', model);
+    controller.set('subRouteName', 'versions');
     if @currentUser
       this.get('restless').authorize(
         controller,
@@ -26,12 +27,21 @@ PaperVersionsRoute = AuthorizedRoute.extend
       )
 
   actions:
-    viewCard: (task) ->
+    viewVersionedCard: (task, major_version, minor_version) ->
       @get('cardOverlayService').setProperties({
         previousRouteOptions: ['paper.versions', @modelFor('paper')],
         overlayBackground: 'paper.versions'
       })
 
-      @transitionTo('paper.task.version', @modelFor('paper'), task.id, 0, 0)
+      @transitionTo(
+        'paper.task.version',
+        @modelFor('paper'),
+        task.id,
+        major_version,
+        minor_version)
+
+
+    exitVersions: ->
+      this.transitionTo('paper.index', this.modelFor('paper'));
 
 `export default PaperVersionsRoute`

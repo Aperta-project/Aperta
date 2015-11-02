@@ -28,7 +28,7 @@ papers:
     - "<b>Unstarted</b>: <i>No tasks filled out</i>"
     - 
     - '2015-10-29 20:16:37.363801'
-    - '2015-10-30 21:11:48.829267'
+    - '2015-11-02 14:30:18.434152'
     - '3'
     - Classic PLOS Bio Research Article Workflow
     - '1'
@@ -36,7 +36,7 @@ papers:
     - 
     - 
     - true
-    - 
+    - 10.1371/devs.100001
     - html
     - unsubmitted
     - 
@@ -50,7 +50,7 @@ papers:
     - "<b>Partial:</b> &nbsp;<i>Tasks filled out, none marked complete</i>"
     - 
     - '2015-10-30 19:43:28.468043'
-    - '2015-11-02 14:03:26.926564'
+    - '2015-11-02 14:30:18.451006'
     - '3'
     - Classic PLOS Bio Research Article Workflow
     - '1'
@@ -58,7 +58,7 @@ papers:
     - 
     - '2'
     - true
-    - 
+    - 10.1371/devs.100002
     - html
     - unsubmitted
     - 
@@ -70,7 +70,7 @@ papers:
     - "<b>Ready:</b>&nbsp;<i>ready to submit</i>"
     - 
     - '2015-11-02 14:04:02.867243'
-    - '2015-11-02 14:17:21.265239'
+    - '2015-11-02 14:30:18.459652'
     - '3'
     - Classic PLOS Bio Research Article Workflow
     - '1'
@@ -78,7 +78,7 @@ papers:
     - 
     - 
     - true
-    - 
+    - 10.1371/devs.100003
     - html
     - unsubmitted
     - 
@@ -4142,738 +4142,6 @@ journal_task_types:
     - InvitableTask
 
 ---
-roles:
-  columns:
-  - id
-  - name
-  - journal_id
-  - created_at
-  - updated_at
-  - can_administer_journal
-  - can_view_assigned_manuscript_managers
-  - can_view_all_manuscript_managers
-  - kind
-  - can_view_flow_manager
-  records: 
-  - - '1'
-    - Journal Admin
-    - '1'
-    - '2015-10-29 19:40:11.867121'
-    - '2015-10-29 20:03:34.275887'
-    - true
-    - true
-    - true
-    - admin
-    - false
-  - - '2'
-    - Editor
-    - '1'
-    - '2015-10-29 19:40:11.870526'
-    - '2015-10-29 20:03:24.922568'
-    - false
-    - true
-    - true
-    - editor
-    - false
-  - - '3'
-    - Flow Manager
-    - '1'
-    - '2015-10-29 19:40:11.873561'
-    - '2015-10-29 20:03:38.990113'
-    - false
-    - false
-    - false
-    - flow manager
-    - false
-  - - '4'
-    - Tech Checker
-    - '1'
-    - '2015-10-29 20:02:20.086841'
-    - '2015-10-29 20:03:07.481371'
-    - false
-    - false
-    - false
-    - custom
-    - false
-  - - '5'
-    - Academic Editor
-    - '1'
-    - '2015-10-29 20:02:53.93435'
-    - '2015-10-29 20:02:53.93435'
-    - false
-    - false
-    - false
-    - custom
-    - false
-  - - '6'
-    - Reviewer
-    - '1'
-    - '2015-10-29 20:03:55.422437'
-    - '2015-10-29 20:03:55.422437'
-    - false
-    - false
-    - false
-    - custom
-    - false
-
----
-activities:
-  columns:
-  - id
-  - feed_name
-  - subject_id
-  - subject_type
-  - activity_key
-  - message
-  - user_id
-  - created_at
-  - updated_at
-  records: 
-  - - '1'
-    - manuscript
-    - '1'
-    - Paper
-    - paper.created
-    - Manuscript was created
-    - '3'
-    - '2015-10-29 20:16:39.954128'
-    - '2015-10-29 20:16:39.954128'
-  - - '2'
-    - manuscript
-    - '1'
-    - Paper
-    - paper.edited
-    - Manuscript was edited
-    - '3'
-    - '2015-10-30 18:12:50.561577'
-    - '2015-10-30 18:17:03.509111'
-  - - '3'
-    - manuscript
-    - '1'
-    - Paper
-    - paper.edited
-    - Manuscript was edited
-    - '3'
-    - '2015-10-30 19:42:41.39281'
-    - '2015-10-30 19:42:41.39281'
-  - - '4'
-    - manuscript
-    - '2'
-    - Paper
-    - paper.created
-    - Manuscript was created
-    - '3'
-    - '2015-10-30 19:43:30.366252'
-    - '2015-10-30 19:43:30.366252'
-  - - '5'
-    - manuscript
-    - '1'
-    - Paper
-    - task.incompleted
-    - Upload Manuscript card was marked as incomplete
-    - '3'
-    - '2015-10-30 19:43:54.876321'
-    - '2015-10-30 19:43:54.876321'
-  - - '6'
-    - manuscript
-    - '1'
-    - Paper
-    - task.completed
-    - Upload Manuscript card was marked as complete
-    - '3'
-    - '2015-10-30 19:43:56.61668'
-    - '2015-10-30 19:43:56.61668'
-  - - '7'
-    - manuscript
-    - '2'
-    - Paper
-    - paper.edited
-    - Manuscript was edited
-    - '3'
-    - '2015-10-30 19:44:11.394435'
-    - '2015-10-30 20:02:00.725052'
-  - - '8'
-    - manuscript
-    - '2'
-    - Paper
-    - task.completed
-    - Billing card was marked as complete
-    - '3'
-    - '2015-10-30 19:48:39.327497'
-    - '2015-10-30 19:48:39.327497'
-  - - '9'
-    - manuscript
-    - '2'
-    - Paper
-    - task.incompleted
-    - Billing card was marked as incomplete
-    - '3'
-    - '2015-10-30 19:48:41.168178'
-    - '2015-10-30 19:48:41.168178'
-  - - '10'
-    - manuscript
-    - '2'
-    - Paper
-    - task.completed
-    - Billing card was marked as complete
-    - '3'
-    - '2015-10-30 19:48:45.627627'
-    - '2015-10-30 19:48:45.627627'
-  - - '11'
-    - manuscript
-    - '2'
-    - Paper
-    - task.incompleted
-    - Billing card was marked as incomplete
-    - '3'
-    - '2015-10-30 19:48:47.357383'
-    - '2015-10-30 19:48:47.357383'
-  - - '12'
-    - manuscript
-    - '2'
-    - Paper
-    - task.completed
-    - Cover Letter card was marked as complete
-    - '3'
-    - '2015-10-30 19:49:43.459338'
-    - '2015-10-30 19:49:43.459338'
-  - - '13'
-    - manuscript
-    - '2'
-    - Paper
-    - task.incompleted
-    - Cover Letter card was marked as incomplete
-    - '3'
-    - '2015-10-30 19:49:44.758285'
-    - '2015-10-30 19:49:44.758285'
-  - - '14'
-    - manuscript
-    - '2'
-    - Paper
-    - task.completed
-    - Authors card was marked as complete
-    - '3'
-    - '2015-10-30 19:54:32.262906'
-    - '2015-10-30 19:54:32.262906'
-  - - '15'
-    - manuscript
-    - '2'
-    - Paper
-    - task.incompleted
-    - Authors card was marked as incomplete
-    - '3'
-    - '2015-10-30 19:54:34.410303'
-    - '2015-10-30 19:54:34.410303'
-  - - '16'
-    - manuscript
-    - '2'
-    - Paper
-    - task.incompleted
-    - Upload Manuscript card was marked as incomplete
-    - '3'
-    - '2015-10-30 19:54:39.349816'
-    - '2015-10-30 19:54:39.349816'
-  - - '17'
-    - workflow
-    - '2'
-    - Paper
-    - commented.created
-    - A comment was added to Upload Manuscript card
-    - '3'
-    - '2015-10-30 19:55:03.77059'
-    - '2015-10-30 19:55:03.77059'
-  - - '18'
-    - manuscript
-    - '1'
-    - Paper
-    - paper.edited
-    - Manuscript was edited
-    - '3'
-    - '2015-10-30 20:01:17.107527'
-    - '2015-10-30 20:02:40.133713'
-  - - '19'
-    - manuscript
-    - '2'
-    - Paper
-    - paper.edited
-    - Manuscript was edited
-    - '3'
-    - '2015-10-30 21:11:40.452878'
-    - '2015-10-30 21:11:42.7234'
-  - - '20'
-    - manuscript
-    - '1'
-    - Paper
-    - paper.edited
-    - Manuscript was edited
-    - '3'
-    - '2015-10-30 21:11:49.441374'
-    - '2015-10-30 21:11:53.752502'
-  - - '21'
-    - manuscript
-    - '1'
-    - Paper
-    - task.incompleted
-    - Upload Manuscript card was marked as incomplete
-    - '3'
-    - '2015-10-30 21:12:06.831642'
-    - '2015-10-30 21:12:06.831642'
-  - - '22'
-    - manuscript
-    - '2'
-    - Paper
-    - paper.edited
-    - Manuscript was edited
-    - '3'
-    - '2015-11-02 14:03:26.960258'
-    - '2015-11-02 14:03:30.434561'
-  - - '23'
-    - manuscript
-    - '3'
-    - Paper
-    - paper.created
-    - Manuscript was created
-    - '3'
-    - '2015-11-02 14:04:03.38181'
-    - '2015-11-02 14:04:03.38181'
-  - - '24'
-    - manuscript
-    - '3'
-    - Paper
-    - paper.edited
-    - Manuscript was edited
-    - '3'
-    - '2015-11-02 14:08:14.360836'
-    - '2015-11-02 14:17:21.273041'
-  - - '25'
-    - manuscript
-    - '3'
-    - Paper
-    - task.completed
-    - Billing card was marked as complete
-    - '3'
-    - '2015-11-02 14:11:35.539078'
-    - '2015-11-02 14:11:35.539078'
-  - - '26'
-    - manuscript
-    - '3'
-    - Paper
-    - task.completed
-    - Cover Letter card was marked as complete
-    - '3'
-    - '2015-11-02 14:12:02.300732'
-    - '2015-11-02 14:12:02.300732'
-  - - '27'
-    - manuscript
-    - '3'
-    - Paper
-    - task.completed
-    - Reviewer Candidates card was marked as complete
-    - '3'
-    - '2015-11-02 14:12:55.14562'
-    - '2015-11-02 14:12:55.14562'
-  - - '28'
-    - manuscript
-    - '3'
-    - Paper
-    - task.completed
-    - Supporting Info card was marked as complete
-    - '3'
-    - '2015-11-02 14:13:47.240905'
-    - '2015-11-02 14:13:47.240905'
-  - - '29'
-    - manuscript
-    - '3'
-    - Paper
-    - task.completed
-    - Authors card was marked as complete
-    - '3'
-    - '2015-11-02 14:15:08.976232'
-    - '2015-11-02 14:15:08.976232'
-  - - '30'
-    - manuscript
-    - '3'
-    - Paper
-    - task.completed
-    - Competing Interests card was marked as complete
-    - '3'
-    - '2015-11-02 14:15:20.511209'
-    - '2015-11-02 14:15:20.511209'
-  - - '31'
-    - manuscript
-    - '3'
-    - Paper
-    - task.completed
-    - Data Availability card was marked as complete
-    - '3'
-    - '2015-11-02 14:15:31.466491'
-    - '2015-11-02 14:15:31.466491'
-  - - '32'
-    - manuscript
-    - '3'
-    - Paper
-    - task.completed
-    - Ethics Statement card was marked as complete
-    - '3'
-    - '2015-11-02 14:15:39.851563'
-    - '2015-11-02 14:15:39.851563'
-  - - '33'
-    - manuscript
-    - '3'
-    - Paper
-    - task.completed
-    - Figures card was marked as complete
-    - '3'
-    - '2015-11-02 14:16:07.192748'
-    - '2015-11-02 14:16:07.192748'
-  - - '34'
-    - manuscript
-    - '3'
-    - Paper
-    - task.completed
-    - Financial Disclosure card was marked as complete
-    - '3'
-    - '2015-11-02 14:16:15.478134'
-    - '2015-11-02 14:16:15.478134'
-  - - '35'
-    - manuscript
-    - '3'
-    - Paper
-    - task.completed
-    - Publishing Related Questions card was marked as complete
-    - '3'
-    - '2015-11-02 14:17:21.870751'
-    - '2015-11-02 14:17:21.870751'
-  - - '36'
-    - manuscript
-    - '3'
-    - Paper
-    - task.completed
-    - Reporting Guidelines card was marked as complete
-    - '3'
-    - '2015-11-02 14:18:10.058448'
-    - '2015-11-02 14:18:10.058448'
-
----
-paper_roles:
-  columns:
-  - id
-  - user_id
-  - paper_id
-  - created_at
-  - updated_at
-  - role
-  records: 
-  - - '1'
-    - '3'
-    - '1'
-    - '2015-10-29 20:16:37.370025'
-    - '2015-10-29 20:16:37.370025'
-    - collaborator
-  - - '2'
-    - '3'
-    - '1'
-    - '2015-10-29 20:16:37.467739'
-    - '2015-10-29 20:16:37.467739'
-    - participant
-  - - '3'
-    - '3'
-    - '2'
-    - '2015-10-30 19:43:28.47297'
-    - '2015-10-30 19:43:28.47297'
-    - collaborator
-  - - '4'
-    - '3'
-    - '2'
-    - '2015-10-30 19:43:28.53163'
-    - '2015-10-30 19:43:28.53163'
-    - participant
-  - - '5'
-    - '3'
-    - '3'
-    - '2015-11-02 14:04:02.872543'
-    - '2015-11-02 14:04:02.872543'
-    - collaborator
-  - - '6'
-    - '3'
-    - '3'
-    - '2015-11-02 14:04:02.971206'
-    - '2015-11-02 14:04:02.971206'
-    - participant
-
----
-authors:
-  columns:
-  - id
-  - first_name
-  - last_name
-  - created_at
-  - updated_at
-  - position
-  - paper_id
-  - authors_task_id
-  - middle_initial
-  - email
-  - department
-  - title
-  - corresponding
-  - deceased
-  - affiliation
-  - secondary_affiliation
-  - contributions
-  - ringgold_id
-  - secondary_ringgold_id
-  records: 
-  - - '1'
-    - Arthur
-    - Author
-    - '2015-10-29 20:16:37.812595'
-    - '2015-10-29 20:16:37.812595'
-    - '3'
-    - '1'
-    - '2'
-    - 
-    - author@example.com
-    - 
-    - 
-    - false
-    - false
-    - 
-    - 
-    - 
-    - 
-    - 
-  - - '2'
-    - Arthur
-    - Author
-    - '2015-10-30 19:43:28.777757'
-    - '2015-10-30 19:53:18.523309'
-    - '4'
-    - '2'
-    - '23'
-    - 
-    - author@example.com
-    - Department of Authoring
-    - Greatest American Author
-    - false
-    - false
-    - Michigan State University
-    - University of Michigan
-    - 
-    - 
-    - 
-  - - '3'
-    - Jane
-    - Janesford
-    - '2015-10-30 19:54:25.247759'
-    - '2015-10-30 19:54:28.89091'
-    - '5'
-    - '2'
-    - '23'
-    - ''
-    - jane@example.com
-    - Authorship Department
-    - Second Greatest Author
-    - false
-    - false
-    - Vanguard University of Southern California
-    - Northwestern Oklahoma State University
-    - 
-    - 
-    - 
-  - - '4'
-    - Arthur
-    - Author
-    - '2015-11-02 14:04:03.280645'
-    - '2015-11-02 14:14:20.64132'
-    - '6'
-    - '3'
-    - '44'
-    - 
-    - author@example.com
-    - Dept. of Authoring
-    - Authoring
-    - false
-    - false
-    - Florida State College at Jacksonville
-    - Adler Graduate School
-    - 
-    - 
-    - 
-  - - '5'
-    - Barb
-    - Jones
-    - '2015-11-02 14:15:05.820082'
-    - '2015-11-02 14:15:05.820082'
-    - '1'
-    - '3'
-    - '44'
-    - ''
-    - barb@example.com
-    - Dept. of Authorology
-    - World's Best Author
-    - false
-    - false
-    - Abraham Baldwin Agricultural College
-    - Adler Graduate School
-    - 
-    - 
-    - 
-
----
-journals:
-  columns:
-  - id
-  - name
-  - created_at
-  - updated_at
-  - logo
-  - epub_cover
-  - epub_css
-  - pdf_css
-  - manuscript_css
-  - description
-  - doi_publisher_prefix
-  - doi_journal_prefix
-  - last_doi_issued
-  records: 
-  - - '1'
-    - PLOS Developers
-    - '2015-10-29 19:40:11.853622'
-    - '2015-10-29 19:43:15.406405'
-    - developersdevelopersdevelopers.jpg
-    - developersdevelopersdevelopers.jpg
-    - 
-    - 
-    - 
-    - If you are a developer, you are in the right place for fun, for science, and
-      for publication.
-    - 
-    - 
-    - 
-
----
-manuscript_manager_templates:
-  columns:
-  - id
-  - paper_type
-  - journal_id
-  records: 
-  - - '1'
-    - Classic PLOS Bio Research Article Workflow
-    - '1'
-
----
-manuscripts:
-  columns:
-  - id
-  - source
-  - paper_id
-  - created_at
-  - updated_at
-  - status
-  records: 
-  - - '1'
-    - source.docx
-    - '1'
-    - '2015-10-29 20:16:41.322196'
-    - '2015-10-30 18:09:40.024912'
-    - done
-  - - '2'
-    - source.docx
-    - '2'
-    - '2015-10-30 19:45:06.746914'
-    - '2015-10-30 19:45:07.149652'
-    - done
-  - - '3'
-    - source.docx
-    - '3'
-    - '2015-11-02 14:04:26.697513'
-    - '2015-11-02 14:08:00.850697'
-    - done
-
----
-users:
-  columns:
-  - id
-  - first_name
-  - last_name
-  - email
-  - encrypted_password
-  - reset_password_token
-  - reset_password_sent_at
-  - remember_created_at
-  - sign_in_count
-  - current_sign_in_at
-  - last_sign_in_at
-  - current_sign_in_ip
-  - last_sign_in_ip
-  - created_at
-  - updated_at
-  - username
-  - site_admin
-  - avatar
-  - em_guid
-  records: 
-  - - '1'
-    - Adam
-    - Administrator
-    - admin@example.com
-    - "$2a$10$WN1mcbro3hjAKU3jBgG5Vuuu1ZMI7mj37EmqaUsxHaX0CHlGgvAoq"
-    - 
-    - 
-    - 
-    - '2'
-    - '2015-10-29 20:09:19.172718'
-    - '2015-10-29 19:36:19.631564'
-    - 127.0.0.1
-    - 127.0.0.1
-    - '2015-10-29 19:36:19.627844'
-    - '2015-10-29 20:09:19.174385'
-    - admin
-    - false
-    - 
-    - 
-  - - '2'
-    - Steve
-    - SiteAdmin
-    - site_admin@example.com
-    - "$2a$10$92o9T1L2mMcm/SNkkKNDSOri9Z2TvdITsybS2lhbuGbADPFFCYI8u"
-    - 
-    - 
-    - 
-    - '2'
-    - '2015-10-29 20:53:17.01872'
-    - '2015-10-29 20:07:28.345844'
-    - 127.0.0.1
-    - 127.0.0.1
-    - '2015-10-29 20:07:28.341906'
-    - '2015-10-29 20:53:17.020456'
-    - site_admin
-    - true
-    - 
-    - 
-  - - '3'
-    - Arthur
-    - Author
-    - author@example.com
-    - "$2a$10$yLuG497ZW1IrZadwuDt23O6qYu.lT2SLUyCLxuQR7/JU2X9zCyE3W"
-    - 
-    - 
-    - 
-    - '1'
-    - '2015-10-29 20:11:22.709054'
-    - '2015-10-29 20:11:22.709054'
-    - 127.0.0.1
-    - 127.0.0.1
-    - '2015-10-29 20:11:22.705226'
-    - '2015-10-29 20:11:22.709777'
-    - author
-    - false
-    - 
-    - 
-
----
 tasks:
   columns:
   - id
@@ -5537,6 +4805,738 @@ tasks:
     - editor
     - "[]"
     - '1'
+
+---
+roles:
+  columns:
+  - id
+  - name
+  - journal_id
+  - created_at
+  - updated_at
+  - can_administer_journal
+  - can_view_assigned_manuscript_managers
+  - can_view_all_manuscript_managers
+  - kind
+  - can_view_flow_manager
+  records: 
+  - - '1'
+    - Journal Admin
+    - '1'
+    - '2015-10-29 19:40:11.867121'
+    - '2015-10-29 20:03:34.275887'
+    - true
+    - true
+    - true
+    - admin
+    - false
+  - - '2'
+    - Editor
+    - '1'
+    - '2015-10-29 19:40:11.870526'
+    - '2015-10-29 20:03:24.922568'
+    - false
+    - true
+    - true
+    - editor
+    - false
+  - - '3'
+    - Flow Manager
+    - '1'
+    - '2015-10-29 19:40:11.873561'
+    - '2015-10-29 20:03:38.990113'
+    - false
+    - false
+    - false
+    - flow manager
+    - false
+  - - '4'
+    - Tech Checker
+    - '1'
+    - '2015-10-29 20:02:20.086841'
+    - '2015-10-29 20:03:07.481371'
+    - false
+    - false
+    - false
+    - custom
+    - false
+  - - '5'
+    - Academic Editor
+    - '1'
+    - '2015-10-29 20:02:53.93435'
+    - '2015-10-29 20:02:53.93435'
+    - false
+    - false
+    - false
+    - custom
+    - false
+  - - '6'
+    - Reviewer
+    - '1'
+    - '2015-10-29 20:03:55.422437'
+    - '2015-10-29 20:03:55.422437'
+    - false
+    - false
+    - false
+    - custom
+    - false
+
+---
+activities:
+  columns:
+  - id
+  - feed_name
+  - subject_id
+  - subject_type
+  - activity_key
+  - message
+  - user_id
+  - created_at
+  - updated_at
+  records: 
+  - - '1'
+    - manuscript
+    - '1'
+    - Paper
+    - paper.created
+    - Manuscript was created
+    - '3'
+    - '2015-10-29 20:16:39.954128'
+    - '2015-10-29 20:16:39.954128'
+  - - '2'
+    - manuscript
+    - '1'
+    - Paper
+    - paper.edited
+    - Manuscript was edited
+    - '3'
+    - '2015-10-30 18:12:50.561577'
+    - '2015-10-30 18:17:03.509111'
+  - - '3'
+    - manuscript
+    - '1'
+    - Paper
+    - paper.edited
+    - Manuscript was edited
+    - '3'
+    - '2015-10-30 19:42:41.39281'
+    - '2015-10-30 19:42:41.39281'
+  - - '4'
+    - manuscript
+    - '2'
+    - Paper
+    - paper.created
+    - Manuscript was created
+    - '3'
+    - '2015-10-30 19:43:30.366252'
+    - '2015-10-30 19:43:30.366252'
+  - - '5'
+    - manuscript
+    - '1'
+    - Paper
+    - task.incompleted
+    - Upload Manuscript card was marked as incomplete
+    - '3'
+    - '2015-10-30 19:43:54.876321'
+    - '2015-10-30 19:43:54.876321'
+  - - '6'
+    - manuscript
+    - '1'
+    - Paper
+    - task.completed
+    - Upload Manuscript card was marked as complete
+    - '3'
+    - '2015-10-30 19:43:56.61668'
+    - '2015-10-30 19:43:56.61668'
+  - - '7'
+    - manuscript
+    - '2'
+    - Paper
+    - paper.edited
+    - Manuscript was edited
+    - '3'
+    - '2015-10-30 19:44:11.394435'
+    - '2015-10-30 20:02:00.725052'
+  - - '8'
+    - manuscript
+    - '2'
+    - Paper
+    - task.completed
+    - Billing card was marked as complete
+    - '3'
+    - '2015-10-30 19:48:39.327497'
+    - '2015-10-30 19:48:39.327497'
+  - - '9'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Billing card was marked as incomplete
+    - '3'
+    - '2015-10-30 19:48:41.168178'
+    - '2015-10-30 19:48:41.168178'
+  - - '10'
+    - manuscript
+    - '2'
+    - Paper
+    - task.completed
+    - Billing card was marked as complete
+    - '3'
+    - '2015-10-30 19:48:45.627627'
+    - '2015-10-30 19:48:45.627627'
+  - - '11'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Billing card was marked as incomplete
+    - '3'
+    - '2015-10-30 19:48:47.357383'
+    - '2015-10-30 19:48:47.357383'
+  - - '12'
+    - manuscript
+    - '2'
+    - Paper
+    - task.completed
+    - Cover Letter card was marked as complete
+    - '3'
+    - '2015-10-30 19:49:43.459338'
+    - '2015-10-30 19:49:43.459338'
+  - - '13'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Cover Letter card was marked as incomplete
+    - '3'
+    - '2015-10-30 19:49:44.758285'
+    - '2015-10-30 19:49:44.758285'
+  - - '14'
+    - manuscript
+    - '2'
+    - Paper
+    - task.completed
+    - Authors card was marked as complete
+    - '3'
+    - '2015-10-30 19:54:32.262906'
+    - '2015-10-30 19:54:32.262906'
+  - - '15'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Authors card was marked as incomplete
+    - '3'
+    - '2015-10-30 19:54:34.410303'
+    - '2015-10-30 19:54:34.410303'
+  - - '16'
+    - manuscript
+    - '2'
+    - Paper
+    - task.incompleted
+    - Upload Manuscript card was marked as incomplete
+    - '3'
+    - '2015-10-30 19:54:39.349816'
+    - '2015-10-30 19:54:39.349816'
+  - - '17'
+    - workflow
+    - '2'
+    - Paper
+    - commented.created
+    - A comment was added to Upload Manuscript card
+    - '3'
+    - '2015-10-30 19:55:03.77059'
+    - '2015-10-30 19:55:03.77059'
+  - - '18'
+    - manuscript
+    - '1'
+    - Paper
+    - paper.edited
+    - Manuscript was edited
+    - '3'
+    - '2015-10-30 20:01:17.107527'
+    - '2015-10-30 20:02:40.133713'
+  - - '19'
+    - manuscript
+    - '2'
+    - Paper
+    - paper.edited
+    - Manuscript was edited
+    - '3'
+    - '2015-10-30 21:11:40.452878'
+    - '2015-10-30 21:11:42.7234'
+  - - '20'
+    - manuscript
+    - '1'
+    - Paper
+    - paper.edited
+    - Manuscript was edited
+    - '3'
+    - '2015-10-30 21:11:49.441374'
+    - '2015-10-30 21:11:53.752502'
+  - - '21'
+    - manuscript
+    - '1'
+    - Paper
+    - task.incompleted
+    - Upload Manuscript card was marked as incomplete
+    - '3'
+    - '2015-10-30 21:12:06.831642'
+    - '2015-10-30 21:12:06.831642'
+  - - '22'
+    - manuscript
+    - '2'
+    - Paper
+    - paper.edited
+    - Manuscript was edited
+    - '3'
+    - '2015-11-02 14:03:26.960258'
+    - '2015-11-02 14:03:30.434561'
+  - - '23'
+    - manuscript
+    - '3'
+    - Paper
+    - paper.created
+    - Manuscript was created
+    - '3'
+    - '2015-11-02 14:04:03.38181'
+    - '2015-11-02 14:04:03.38181'
+  - - '24'
+    - manuscript
+    - '3'
+    - Paper
+    - paper.edited
+    - Manuscript was edited
+    - '3'
+    - '2015-11-02 14:08:14.360836'
+    - '2015-11-02 14:17:21.273041'
+  - - '25'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Billing card was marked as complete
+    - '3'
+    - '2015-11-02 14:11:35.539078'
+    - '2015-11-02 14:11:35.539078'
+  - - '26'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Cover Letter card was marked as complete
+    - '3'
+    - '2015-11-02 14:12:02.300732'
+    - '2015-11-02 14:12:02.300732'
+  - - '27'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Reviewer Candidates card was marked as complete
+    - '3'
+    - '2015-11-02 14:12:55.14562'
+    - '2015-11-02 14:12:55.14562'
+  - - '28'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Supporting Info card was marked as complete
+    - '3'
+    - '2015-11-02 14:13:47.240905'
+    - '2015-11-02 14:13:47.240905'
+  - - '29'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Authors card was marked as complete
+    - '3'
+    - '2015-11-02 14:15:08.976232'
+    - '2015-11-02 14:15:08.976232'
+  - - '30'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Competing Interests card was marked as complete
+    - '3'
+    - '2015-11-02 14:15:20.511209'
+    - '2015-11-02 14:15:20.511209'
+  - - '31'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Data Availability card was marked as complete
+    - '3'
+    - '2015-11-02 14:15:31.466491'
+    - '2015-11-02 14:15:31.466491'
+  - - '32'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Ethics Statement card was marked as complete
+    - '3'
+    - '2015-11-02 14:15:39.851563'
+    - '2015-11-02 14:15:39.851563'
+  - - '33'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Figures card was marked as complete
+    - '3'
+    - '2015-11-02 14:16:07.192748'
+    - '2015-11-02 14:16:07.192748'
+  - - '34'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Financial Disclosure card was marked as complete
+    - '3'
+    - '2015-11-02 14:16:15.478134'
+    - '2015-11-02 14:16:15.478134'
+  - - '35'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Publishing Related Questions card was marked as complete
+    - '3'
+    - '2015-11-02 14:17:21.870751'
+    - '2015-11-02 14:17:21.870751'
+  - - '36'
+    - manuscript
+    - '3'
+    - Paper
+    - task.completed
+    - Reporting Guidelines card was marked as complete
+    - '3'
+    - '2015-11-02 14:18:10.058448'
+    - '2015-11-02 14:18:10.058448'
+
+---
+paper_roles:
+  columns:
+  - id
+  - user_id
+  - paper_id
+  - created_at
+  - updated_at
+  - role
+  records: 
+  - - '1'
+    - '3'
+    - '1'
+    - '2015-10-29 20:16:37.370025'
+    - '2015-10-29 20:16:37.370025'
+    - collaborator
+  - - '2'
+    - '3'
+    - '1'
+    - '2015-10-29 20:16:37.467739'
+    - '2015-10-29 20:16:37.467739'
+    - participant
+  - - '3'
+    - '3'
+    - '2'
+    - '2015-10-30 19:43:28.47297'
+    - '2015-10-30 19:43:28.47297'
+    - collaborator
+  - - '4'
+    - '3'
+    - '2'
+    - '2015-10-30 19:43:28.53163'
+    - '2015-10-30 19:43:28.53163'
+    - participant
+  - - '5'
+    - '3'
+    - '3'
+    - '2015-11-02 14:04:02.872543'
+    - '2015-11-02 14:04:02.872543'
+    - collaborator
+  - - '6'
+    - '3'
+    - '3'
+    - '2015-11-02 14:04:02.971206'
+    - '2015-11-02 14:04:02.971206'
+    - participant
+
+---
+authors:
+  columns:
+  - id
+  - first_name
+  - last_name
+  - created_at
+  - updated_at
+  - position
+  - paper_id
+  - authors_task_id
+  - middle_initial
+  - email
+  - department
+  - title
+  - corresponding
+  - deceased
+  - affiliation
+  - secondary_affiliation
+  - contributions
+  - ringgold_id
+  - secondary_ringgold_id
+  records: 
+  - - '1'
+    - Arthur
+    - Author
+    - '2015-10-29 20:16:37.812595'
+    - '2015-10-29 20:16:37.812595'
+    - '3'
+    - '1'
+    - '2'
+    - 
+    - author@example.com
+    - 
+    - 
+    - false
+    - false
+    - 
+    - 
+    - 
+    - 
+    - 
+  - - '2'
+    - Arthur
+    - Author
+    - '2015-10-30 19:43:28.777757'
+    - '2015-10-30 19:53:18.523309'
+    - '4'
+    - '2'
+    - '23'
+    - 
+    - author@example.com
+    - Department of Authoring
+    - Greatest American Author
+    - false
+    - false
+    - Michigan State University
+    - University of Michigan
+    - 
+    - 
+    - 
+  - - '3'
+    - Jane
+    - Janesford
+    - '2015-10-30 19:54:25.247759'
+    - '2015-10-30 19:54:28.89091'
+    - '5'
+    - '2'
+    - '23'
+    - ''
+    - jane@example.com
+    - Authorship Department
+    - Second Greatest Author
+    - false
+    - false
+    - Vanguard University of Southern California
+    - Northwestern Oklahoma State University
+    - 
+    - 
+    - 
+  - - '4'
+    - Arthur
+    - Author
+    - '2015-11-02 14:04:03.280645'
+    - '2015-11-02 14:14:20.64132'
+    - '6'
+    - '3'
+    - '44'
+    - 
+    - author@example.com
+    - Dept. of Authoring
+    - Authoring
+    - false
+    - false
+    - Florida State College at Jacksonville
+    - Adler Graduate School
+    - 
+    - 
+    - 
+  - - '5'
+    - Barb
+    - Jones
+    - '2015-11-02 14:15:05.820082'
+    - '2015-11-02 14:15:05.820082'
+    - '1'
+    - '3'
+    - '44'
+    - ''
+    - barb@example.com
+    - Dept. of Authorology
+    - World's Best Author
+    - false
+    - false
+    - Abraham Baldwin Agricultural College
+    - Adler Graduate School
+    - 
+    - 
+    - 
+
+---
+journals:
+  columns:
+  - id
+  - name
+  - created_at
+  - updated_at
+  - logo
+  - epub_cover
+  - epub_css
+  - pdf_css
+  - manuscript_css
+  - description
+  - doi_publisher_prefix
+  - doi_journal_prefix
+  - last_doi_issued
+  records: 
+  - - '1'
+    - PLOS Developers
+    - '2015-10-29 19:40:11.853622'
+    - '2015-11-02 14:30:18.457122'
+    - developersdevelopersdevelopers.jpg
+    - developersdevelopersdevelopers.jpg
+    - 
+    - 
+    - 
+    - If you are a developer, you are in the right place for fun, for science, and
+      for publication.
+    - '10.1371'
+    - devs
+    - '100003'
+
+---
+manuscript_manager_templates:
+  columns:
+  - id
+  - paper_type
+  - journal_id
+  records: 
+  - - '1'
+    - Classic PLOS Bio Research Article Workflow
+    - '1'
+
+---
+manuscripts:
+  columns:
+  - id
+  - source
+  - paper_id
+  - created_at
+  - updated_at
+  - status
+  records: 
+  - - '1'
+    - source.docx
+    - '1'
+    - '2015-10-29 20:16:41.322196'
+    - '2015-10-30 18:09:40.024912'
+    - done
+  - - '2'
+    - source.docx
+    - '2'
+    - '2015-10-30 19:45:06.746914'
+    - '2015-10-30 19:45:07.149652'
+    - done
+  - - '3'
+    - source.docx
+    - '3'
+    - '2015-11-02 14:04:26.697513'
+    - '2015-11-02 14:08:00.850697'
+    - done
+
+---
+users:
+  columns:
+  - id
+  - first_name
+  - last_name
+  - email
+  - encrypted_password
+  - reset_password_token
+  - reset_password_sent_at
+  - remember_created_at
+  - sign_in_count
+  - current_sign_in_at
+  - last_sign_in_at
+  - current_sign_in_ip
+  - last_sign_in_ip
+  - created_at
+  - updated_at
+  - username
+  - site_admin
+  - avatar
+  - em_guid
+  records: 
+  - - '1'
+    - Adam
+    - Administrator
+    - admin@example.com
+    - "$2a$10$WN1mcbro3hjAKU3jBgG5Vuuu1ZMI7mj37EmqaUsxHaX0CHlGgvAoq"
+    - 
+    - 
+    - 
+    - '2'
+    - '2015-10-29 20:09:19.172718'
+    - '2015-10-29 19:36:19.631564'
+    - 127.0.0.1
+    - 127.0.0.1
+    - '2015-10-29 19:36:19.627844'
+    - '2015-10-29 20:09:19.174385'
+    - admin
+    - false
+    - 
+    - 
+  - - '2'
+    - Steve
+    - SiteAdmin
+    - site_admin@example.com
+    - "$2a$10$92o9T1L2mMcm/SNkkKNDSOri9Z2TvdITsybS2lhbuGbADPFFCYI8u"
+    - 
+    - 
+    - 
+    - '2'
+    - '2015-10-29 20:53:17.01872'
+    - '2015-10-29 20:07:28.345844'
+    - 127.0.0.1
+    - 127.0.0.1
+    - '2015-10-29 20:07:28.341906'
+    - '2015-10-29 20:53:17.020456'
+    - site_admin
+    - true
+    - 
+    - 
+  - - '3'
+    - Arthur
+    - Author
+    - author@example.com
+    - "$2a$10$yLuG497ZW1IrZadwuDt23O6qYu.lT2SLUyCLxuQR7/JU2X9zCyE3W"
+    - 
+    - 
+    - 
+    - '1'
+    - '2015-10-29 20:11:22.709054'
+    - '2015-10-29 20:11:22.709054'
+    - 127.0.0.1
+    - 127.0.0.1
+    - '2015-10-29 20:11:22.705226'
+    - '2015-10-29 20:11:22.709777'
+    - author
+    - false
+    - 
+    - 
 
 ---
 user_roles:

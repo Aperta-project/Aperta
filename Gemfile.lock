@@ -14,13 +14,6 @@ GIT
       rails (~> 4.2.1)
 
 GIT
-  remote: https://ea548e3d06f18f2c5287468e46ae5fe262d3f5ac:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check
-  revision: 8a2601b8ee27d59025332992f302db69708a7ac1
-  specs:
-    plos_bio_tech_check (0.0.1)
-      rails (~> 4.2.0)
-
-GIT
   remote: https://ea548e3d06f18f2c5287468e46ae5fe262d3f5ac:x-oauth-basic@github.com/tahi-project/tahi-assign_team
   revision: 83c712f1221a1fb927eaee4a15ecab0ac1851d56
   specs:
@@ -48,6 +41,12 @@ PATH
   remote: engines/plos_billing
   specs:
     plos_billing (0.0.1)
+      rails (~> 4.2.0)
+
+PATH
+  remote: engines/plos_bio_tech_check
+  specs:
+    plos_bio_tech_check (0.0.1)
       rails (~> 4.2.0)
 
 PATH

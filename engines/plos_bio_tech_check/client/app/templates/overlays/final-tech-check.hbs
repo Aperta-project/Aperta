@@ -1,0 +1,114 @@
+<h1>
+  Final Tech Check
+</h1>
+
+<ul class="list-unstyled">
+  <li class="item">
+    {{nested-question-check
+            ident="open_rejects"
+            owner=model}}
+    <p class="additional-notes">
+      Note that if all of these things are present in the submission either 1) in a different order or 2) titles slightly different then this is okay to pass through. If not, ask the authors to address.
+    </p>
+  </li>
+  <li class="item">
+    {{nested-question-check
+            ident="human_subjects"
+            owner=model
+            additionalData="Please ensure that all of the following sections are present and appear in your manuscript file in the following order: Title, Authors, Affiliations, Abstract, Introduction, Results, Discussion, Materials and Methods, References, Acknowledgments, and Figure Legends. More detailed guidelines can be found on our website: http://journals.plos.org/plosbiology/s/submission-guidelines#loc-manuscript-organization."}}
+  </li>
+  <li class="item">
+    {{nested-question-check
+            ident="ethics_needed"
+            owner=model}}
+  </li>
+  <li class="item">
+    {{nested-question-check
+            ident="data_available"
+            owner=model}}
+  </li>
+  <li class="item">
+    {{nested-question-check
+            ident="supporting_information"
+            owner=model}}
+  </li>
+  <li class="item">
+    {{nested-question-check
+            ident="dryad_url"
+            owner=model}}
+  </li>
+  <li class="item">
+    {{nested-question-check
+            ident="financial_disclosure"
+            owner=model
+            additionalData="Please complete the Financial Disclosure Statement field of the online submission form."}}
+  </li>
+  <li class="item">
+    {{nested-question-check
+            ident="tobacco"
+            owner=model
+            additionalData="This section should describe sources of funding that have supported the work. Please include relevant grant numbers and the URL of any funder's Web site."}}
+  </li>
+  <li class="item">
+    {{nested-question-check
+            ident="figures_legible"
+            owner=model
+            additionalData="Your Figure is not easily legible. Please provide a higher quality version of this Figure while ensuring the file size remains below 10MB. We recommend saving your figures as TIFF files using LZW compression. More detailed guidelines can be found on our website: http://journals.plos.org/plosbiology/s/figures."}}
+  </li>
+
+  <li class="item">
+    {{nested-question-check
+            ident="cited"
+            owner=model
+            additionalData="Please note you have cited a file in your manuscript that has not been included with your submission. Please upload this file, or if this file was cited in error, please remove the corresponding citation from your manuscript."}}
+  </li>
+  <li class="item">
+    {{nested-question-check
+            ident="cover_letter"
+            owner=model}}
+  </li>
+  <li class="item">
+    {{nested-question-check
+            ident="billing_inquiries"
+            owner=model
+            additionalData="Please note that our policy requires the removal of any mention of billing information from the cover letter. I have forwarded your query to our Billing Team (authorbilling@plos.org). Further infromation about Publication Fees can be found here: http://www.plos.org/publications/publication-fees/. Thank you, PLOS Biology"}}
+  </li>
+  <li class="item">
+    {{nested-question-check
+            ident="ethics_statement"
+            owner=model}}
+  </li>
+</ul>
+
+<br>
+
+<h3 class="change-instructions">
+  If there are issues the author needs to address, click below to send changes to the author.
+</h3>
+
+{{flash-messages classNames="tech-check-tech-flash"}}
+
+{{#if authoringMode}}
+  <div class="form-group">
+    <span class="text-field-title">
+      List all changes the author needs to make:
+    </span>
+    {{textarea value=authorChangesLetter
+               name='author-changes-letter'
+               class="form-control tall-textarea extra-tall"}}
+  </div>
+
+  <button class="button button--green" {{action "setQuestionSelectedText"}}>
+    Auto-generate Text
+  </button>
+  <button class="button button--green" {{action "saveLetter"}}>
+    Save Text
+  </button>
+  <button class="button-primary button--green" {{action "sendEmail"}}>
+    {{buttonText}}
+  </button>
+{{else}}
+  <button class="button-primary button--green" {{action "activateAuthoringMode"}}>
+    {{buttonText}}
+  </button>
+{{/if}}

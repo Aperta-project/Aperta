@@ -1,0 +1,42 @@
+<div class='container'>
+  <div class='greeting'>
+    <p class='message'>
+      Changes are needed on your Manuscript
+    </p>
+  </div>
+  <hr>
+  <div class='paper-info'>
+    <p>
+      Dear <%= @author.full_name %>,
+    </p>
+    <p>
+      Thank you for submitting your manuscript, "<%= @paper.title %>", to <%= @journal.name %>.
+    </p>
+    <p>
+      The <%= @journal.name %> team has reviewed your submission and
+      identified changes that you need to make before we can proceed.
+      Use the following link to make the required changes, either within
+       the manuscript itself or within the manuscript cards:
+       <%= link_to client_paper_url(@paper), client_paper_url(@paper) %>.
+    </p>
+
+    <blockquote>
+      <%= simple_format @task.body["initialTechCheckBody"] if @task.body["initialTechCheckBody"].present? %>
+    </blockquote>
+
+    <p>
+      To resubmit your manuscript, complete the Changes for Author card:
+      <%= link_to client_paper_task_url(@task.paper, @task), client_paper_task_url(@task.paper, @task) %>
+    </p>
+
+    <p>
+      Please feel free to contact us with any questions.
+    </p>
+  </div>
+  <hr>
+  <div class='footer'>
+    Sincerely,
+    <br>
+    <%= @journal.name %> Team
+  </div>
+</div>

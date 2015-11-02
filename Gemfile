@@ -6,7 +6,7 @@ ruby '2.2.3'
 # Task Engines
 gem 'plos_billing', path: 'engines/plos_billing'
 gem 'plos_bio_internal_review', git: 'https://ea548e3d06f18f2c5287468e46ae5fe262d3f5ac:x-oauth-basic@github.com/tahi-project/plos_bio_internal_review'
-gem 'plos_bio_tech_check', git: 'https://ea548e3d06f18f2c5287468e46ae5fe262d3f5ac:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check'
+gem 'plos_bio_tech_check', path: 'engines/plos_bio_tech_check'
 gem 'tahi_standard_tasks', path: 'engines/tahi_standard_tasks'
 gem 'tahi_upload_manuscript', path: 'engines/tahi_upload_manuscript'
 gem 'tahi-assign_team', git: 'https://ea548e3d06f18f2c5287468e46ae5fe262d3f5ac:x-oauth-basic@github.com/tahi-project/tahi-assign_team'

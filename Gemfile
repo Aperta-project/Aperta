@@ -31,6 +31,7 @@ gem 'acts_as_list', github: 'swanandp/acts_as_list', ref: "84325ede9ad528acbf68a
 gem 'devise'
 gem 'bourbon'
 gem 'kaminari'
+gem 'yaml_db'
 
 gem 'activemodel-globalid', git: 'https://github.com/rails/activemodel-globalid'
 gem 'sidekiq'

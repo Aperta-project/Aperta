@@ -66,7 +66,7 @@ shared_examples_for "snapshot serializes related nested questions" do |opts|
         position: 1
       )
 
-      expect(resource.nested_questions).to eq([nested_question_1, nested_question_2])
+      expect(resource.nested_questions.sort_by(&:id)).to eq([nested_question_1, nested_question_2])
     end
 
     it "serializes each question" do

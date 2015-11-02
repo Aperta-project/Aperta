@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'fog'
+
 require_relative '../../../lib/tahi_epub/storage'
 describe TahiEpub::Storage do
 
@@ -22,7 +22,7 @@ describe TahiEpub::Storage do
   describe "#put" do
     it "uploads the file" do
       result = described_class.new('1234').put('blahblah', file)
-      expect(directory.files.get('1234/blahblah').body.size).to eq(file.size)
+      expect(directory.files.get('1234/blahblah').content_length).to eq(file.size)
     end
   end
 

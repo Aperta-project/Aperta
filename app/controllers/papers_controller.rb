@@ -181,11 +181,4 @@ class PapersController < ApplicationController
     authorize_action!(paper: paper, params: params)
   end
 
-  def prevent_update_on_locked!
-    if paper.locked? && !paper.locked_by?(current_user)
-      paper.errors.add(:locked_by_id, "This paper is locked for editing by #{paper.locked_by.full_name}.")
-      raise ActiveRecord::RecordInvalid, paper
-    end
-  end
-
 end

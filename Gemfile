@@ -52,7 +52,7 @@ gem 'sass-rails'
 gem 'sidekiq'
 gem 'sinatra', require: nil
 gem 'sort_alphabetical'
-gem 'tahi_epub', git: 'https://ea548e3d06f18f2c5287468e46ae5fe262d3f5ac:x-oauth-basic@github.com/tahi-project/tahi_epub'
+gem 'tahi_epub', path: "vendor/gems/tahi_epub"
 gem 'timeliness'
 gem 'tiny_tds'
 gem 'twitter-text'

@@ -4,8 +4,8 @@
 {{#overlay-base visible=showNewManuscriptOverlay
                 outAnimationComplete=(action "hideNewManuscriptOverlay")
                 as |animateOut|}}
-  {{overlays/manuscript-new class="overlay overlay--fullscreen paper-new-overlay"
-                            close=(action animateOut)}}
+  {{tasks/manuscript-new class="overlay overlay--fullscreen paper-new-overlay"
+                         close=(action animateOut)}}
 {{/overlay-base}}
 
 <div id="tahi-container">

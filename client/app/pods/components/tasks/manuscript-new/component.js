@@ -13,6 +13,11 @@ export default Ember.Component.extend(FileUploadMixin, EscapeListenerMixin, {
 
   journalEmpty: computed.empty('paper.journal'),
 
+  _registerWithParent: Ember.on('init', function() {
+    const register = this.attrs.register;
+    if(register) { register(this); }
+  }),
+
   _getData: Ember.on('init', function() {
     // replace with store service when on Ember-Data 1.0+
     const store = this.container.lookup('store:main');

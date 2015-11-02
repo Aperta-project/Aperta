@@ -51,6 +51,7 @@ test:
         files:
           - "spec/**/*_spec.rb"
           - "engines/*/spec/**/*_spec.rb"
+    - "cd vendor/gems/tahi_epub/ && bundle && bundle exec rspec spec --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec.xml"
     - "set -o pipefail; cd client && ./node_modules/.bin/ember test --silent -r xunit | grep -v ^Warning > $CIRCLE_TEST_REPORTS/qunit.xml"
 
 ## Customize heroku deployment

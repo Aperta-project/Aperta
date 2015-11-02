@@ -27,8 +27,5 @@
     "url": "https://github.com/Tahi-project/tahi/issues"
   },
   "homepage": "https://github.com/Tahi-project/tahi",
-  "private": true,
-  "dependencies": {
-    "bower": "^1.3.12"
-  }
+  "private": true
 }

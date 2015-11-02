@@ -7,13 +7,6 @@ GIT
       activerecord (>= 3.0)
 
 GIT
-  remote: https://ea548e3d06f18f2c5287468e46ae5fe262d3f5ac:x-oauth-basic@github.com/tahi-project/plos_bio_internal_review
-  revision: 634f9b964025bdc518f33fc02e1284b9d960a9f7
-  specs:
-    plos_bio_internal_review (0.0.1)
-      rails (~> 4.2.1)
-
-GIT
   remote: https://ea548e3d06f18f2c5287468e46ae5fe262d3f5ac:x-oauth-basic@github.com/tahi-project/tahi-assign_team
   revision: 83c712f1221a1fb927eaee4a15ecab0ac1851d56
   specs:
@@ -42,6 +35,12 @@ PATH
   specs:
     plos_billing (0.0.1)
       rails (~> 4.2.0)
+
+PATH
+  remote: engines/plos_bio_internal_review
+  specs:
+    plos_bio_internal_review (0.0.1)
+      rails (~> 4.2.1)
 
 PATH
   remote: engines/plos_bio_tech_check

@@ -67,10 +67,10 @@ papers:
     - true
   - - '3'
     - Ready to Submit
-    - "<b>Ready:</b>&nbsp;<i>ready to submit</i>"
+    - "<b>Ready:</b>&nbsp;<i>Ready to submit</i>"
     - 
     - '2015-11-02 14:04:02.867243'
-    - '2015-11-02 14:30:18.459652'
+    - '2015-11-02 15:13:36.520339'
     - '3'
     - Classic PLOS Bio Research Article Workflow
     - '1'
@@ -82,6 +82,26 @@ papers:
     - html
     - unsubmitted
     - 
+    - 
+    - "{}"
+    - true
+  - - '4'
+    - Editors Assigned
+    - "<b>With Editors:</b> <i>Paper submitted, editors assigned</i>"
+    - 
+    - '2015-11-02 14:46:23.765287'
+    - '2015-11-02 15:14:05.582372'
+    - '3'
+    - Classic PLOS Bio Research Article Workflow
+    - '1'
+    - 
+    - 
+    - 
+    - false
+    - 10.1371/devs.100004
+    - html
+    - submitted
+    - '2015-11-02 15:14:05.576249'
     - 
     - "{}"
     - true
@@ -309,6 +329,71 @@ participations:
     - '3'
     - '2015-11-02 14:04:03.17841'
     - '2015-11-02 14:04:03.17841'
+  - - '40'
+    - '64'
+    - '3'
+    - '2015-11-02 14:46:23.863869'
+    - '2015-11-02 14:46:23.863869'
+  - - '41'
+    - '65'
+    - '3'
+    - '2015-11-02 14:46:23.91148'
+    - '2015-11-02 14:46:23.91148'
+  - - '42'
+    - '66'
+    - '3'
+    - '2015-11-02 14:46:23.928715'
+    - '2015-11-02 14:46:23.928715'
+  - - '43'
+    - '67'
+    - '3'
+    - '2015-11-02 14:46:23.944011'
+    - '2015-11-02 14:46:23.944011'
+  - - '44'
+    - '68'
+    - '3'
+    - '2015-11-02 14:46:23.959547'
+    - '2015-11-02 14:46:23.959547'
+  - - '45'
+    - '69'
+    - '3'
+    - '2015-11-02 14:46:23.975563'
+    - '2015-11-02 14:46:23.975563'
+  - - '46'
+    - '70'
+    - '3'
+    - '2015-11-02 14:46:23.991484'
+    - '2015-11-02 14:46:23.991484'
+  - - '47'
+    - '71'
+    - '3'
+    - '2015-11-02 14:46:24.0083'
+    - '2015-11-02 14:46:24.0083'
+  - - '48'
+    - '72'
+    - '3'
+    - '2015-11-02 14:46:24.023778'
+    - '2015-11-02 14:46:24.023778'
+  - - '49'
+    - '73'
+    - '3'
+    - '2015-11-02 14:46:24.039497'
+    - '2015-11-02 14:46:24.039497'
+  - - '50'
+    - '74'
+    - '3'
+    - '2015-11-02 14:46:24.054796'
+    - '2015-11-02 14:46:24.054796'
+  - - '51'
+    - '75'
+    - '3'
+    - '2015-11-02 14:46:24.069923'
+    - '2015-11-02 14:46:24.069923'
+  - - '52'
+    - '76'
+    - '3'
+    - '2015-11-02 14:46:24.085216'
+    - '2015-11-02 14:46:24.085216'
 
 ---
 decisions:
@@ -337,6 +422,14 @@ decisions:
     - 
     - '2015-11-02 14:04:02.901331'
     - '2015-11-02 14:04:02.901331'
+    - 
+  - - '3'
+    - '4'
+    - '0'
+    - 
+    - 
+    - '2015-11-02 14:46:23.807024'
+    - '2015-11-02 14:46:23.807024'
     - 
 
 ---
@@ -390,6 +483,22 @@ figures:
     - '2015-11-02 14:16:03.533015'
     - Cats
     - There are four of them
+    - done
+  - - '6'
+    - cover_image.jpg
+    - '4'
+    - '2015-11-02 15:08:10.833865'
+    - '2015-11-02 15:08:10.833865'
+    - cover_image.jpg
+    - 
+    - done
+  - - '7'
+    - cat2.jpg
+    - '4'
+    - '2015-11-02 15:10:35.531229'
+    - '2015-11-02 15:10:47.603173'
+    - A waiting cat
+    - This cat is waiting
     - done
 
 ---
@@ -1300,6 +1409,386 @@ nested_question_answers:
     - boolean
     - '2015-11-02 14:18:07.968082'
     - '2015-11-02 14:18:07.968082'
+    - 
+    - 
+  - - '90'
+    - '39'
+    - '68'
+    - Task
+    - I have read the journal's policy and the authors of this manuscript have the
+      following competing interests.
+    - text
+    - '2015-11-02 14:47:12.252716'
+    - '2015-11-02 15:09:48.927499'
+    - 
+    - 
+  - - '91'
+    - '38'
+    - '68'
+    - Task
+    - t
+    - boolean
+    - '2015-11-02 14:47:12.448129'
+    - '2015-11-02 14:47:40.137944'
+    - 
+    - 
+  - - '92'
+    - '42'
+    - '67'
+    - Task
+    - Bill
+    - text
+    - '2015-11-02 14:55:36.360418'
+    - '2015-11-02 15:05:48.183796'
+    - 
+    - 
+  - - '93'
+    - '43'
+    - '67'
+    - Task
+    - McBillster
+    - text
+    - '2015-11-02 14:55:38.212314'
+    - '2015-11-02 14:55:38.212314'
+    - 
+    - 
+  - - '94'
+    - '44'
+    - '67'
+    - Task
+    - 'World''s Greatest Biller '
+    - text
+    - '2015-11-02 15:05:24.288106'
+    - '2015-11-02 15:05:24.288106'
+    - 
+    - 
+  - - '95'
+    - '45'
+    - '67'
+    - Task
+    - Billing Department
+    - text
+    - '2015-11-02 15:05:29.128488'
+    - '2015-11-02 15:05:29.128488'
+    - 
+    - 
+  - - '96'
+    - '62'
+    - '67'
+    - Task
+    - Abraham Baldwin Agricultural College
+    - text
+    - '2015-11-02 15:05:33.591289'
+    - '2015-11-02 15:05:33.591289'
+    - '{"answer":"Abraham Baldwin Agricultural College","additionalData":{"institution-id":32237,"city":"Tifton","country":"US","name":"Abraham
+      Baldwin Agricultural College","state":"GA","type":"academic/ag"}}'
+    - 
+  - - '97'
+    - '64'
+    - '67'
+    - Task
+    - Academy of Art University
+    - text
+    - '2015-11-02 15:05:36.311535'
+    - '2015-11-02 15:05:36.311535'
+    - '{"answer":"Academy of Art University","additionalData":{"institution-id":52692,"city":"San
+      Francisco","country":"US","name":"Academy of Art University","state":"CA","type":"academic"}}'
+    - 
+  - - '98'
+    - '46'
+    - '67'
+    - Task
+    - 555-555-5555
+    - text
+    - '2015-11-02 15:05:40.388416'
+    - '2015-11-02 15:05:40.388416'
+    - 
+    - 
+  - - '99'
+    - '48'
+    - '67'
+    - Task
+    - bill@example.com
+    - text
+    - '2015-11-02 15:05:45.590661'
+    - '2015-11-02 15:05:52.180143'
+    - 
+    - 
+  - - '100'
+    - '50'
+    - '67'
+    - Task
+    - 123 Main St.
+    - text
+    - '2015-11-02 15:05:56.835996'
+    - '2015-11-02 15:05:56.835996'
+    - 
+    - 
+  - - '101'
+    - '54'
+    - '67'
+    - Task
+    - Anywhere
+    - text
+    - '2015-11-02 15:06:09.293544'
+    - '2015-11-02 15:06:09.293544'
+    - 
+    - 
+  - - '102'
+    - '56'
+    - '67'
+    - Task
+    - OH
+    - text
+    - '2015-11-02 15:06:10.177738'
+    - '2015-11-02 15:06:10.177738'
+    - 
+    - 
+  - - '103'
+    - '58'
+    - '67'
+    - Task
+    - '44444'
+    - text
+    - '2015-11-02 15:06:13.964882'
+    - '2015-11-02 15:06:13.964882'
+    - 
+    - 
+  - - '104'
+    - '66'
+    - '67'
+    - Task
+    - institutional
+    - text
+    - '2015-11-02 15:06:14.828652'
+    - '2015-11-02 15:06:14.828652'
+    - 
+    - 
+  - - '105'
+    - '99'
+    - '67'
+    - Task
+    - Odense University Hospital
+    - text
+    - '2015-11-02 15:06:16.661952'
+    - '2015-11-02 15:06:16.661952'
+    - 
+    - 
+  - - '106'
+    - '101'
+    - '6'
+    - Author
+    - t
+    - boolean
+    - '2015-11-02 15:09:31.698714'
+    - '2015-11-02 15:09:31.698714'
+    - 
+    - 
+  - - '107'
+    - '105'
+    - '6'
+    - Author
+    - t
+    - boolean
+    - '2015-11-02 15:09:32.31378'
+    - '2015-11-02 15:09:32.31378'
+    - 
+    - 
+  - - '108'
+    - '36'
+    - '70'
+    - Task
+    - f
+    - boolean
+    - '2015-11-02 15:09:52.229468'
+    - '2015-11-02 15:09:52.229468'
+    - 
+    - 
+  - - '109'
+    - '37'
+    - '70'
+    - Task
+    - All relevant data are within the paper and its Supporting Information files.
+    - text
+    - '2015-11-02 15:10:01.289637'
+    - '2015-11-02 15:10:01.289637'
+    - 
+    - 
+  - - '110'
+    - '31'
+    - '71'
+    - Task
+    - ''
+    - text
+    - '2015-11-02 15:10:04.287277'
+    - '2015-11-02 15:10:04.287277'
+    - 
+    - 
+  - - '111'
+    - '30'
+    - '71'
+    - Task
+    - f
+    - boolean
+    - '2015-11-02 15:10:04.491054'
+    - '2015-11-02 15:10:04.491054'
+    - 
+    - 
+  - - '112'
+    - '33'
+    - '71'
+    - Task
+    - t
+    - boolean
+    - '2015-11-02 15:10:05.077639'
+    - '2015-11-02 15:10:05.077639'
+    - 
+    - 
+  - - '113'
+    - '34'
+    - '71'
+    - Task
+    - Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+      Ipsum has been the industry's standard dummy text ever since the 1500s, when
+      an unknown printer took a galley of type and scrambled it to make a type specimen
+      book. It has survived not only five centuries, but also the leap into electronic
+      typesetting, remaining essentially unchanged. It was popularised in the 1960s
+      with the release of Letraset sheets containing Lorem Ipsum passages, and more
+      recently with desktop publishing software like Aldus PageMaker including versions
+      of Lorem Ipsum.
+    - text
+    - '2015-11-02 15:10:11.646135'
+    - '2015-11-02 15:10:22.588951'
+    - 
+    - 
+  - - '114'
+    - '27'
+    - '73'
+    - Task
+    - f
+    - boolean
+    - '2015-11-02 15:10:54.670253'
+    - '2015-11-02 15:10:54.670253'
+    - 
+    - 
+  - - '115'
+    - '9'
+    - '74'
+    - Task
+    - f
+    - boolean
+    - '2015-11-02 15:11:01.425209'
+    - '2015-11-02 15:11:14.465149'
+    - 
+    - 
+  - - '116'
+    - '10'
+    - '74'
+    - Task
+    - Figure 1.2
+    - text
+    - '2015-11-02 15:11:05.726187'
+    - '2015-11-02 15:11:05.726187'
+    - 
+    - 
+  - - '117'
+    - '12'
+    - '74'
+    - Task
+    - t
+    - boolean
+    - '2015-11-02 15:11:15.351959'
+    - '2015-11-02 15:11:15.351959'
+    - 
+    - 
+  - - '118'
+    - '13'
+    - '74'
+    - Task
+    - Submission Title
+    - text
+    - '2015-11-02 15:11:20.542559'
+    - '2015-11-02 15:11:20.542559'
+    - 
+    - 
+  - - '119'
+    - '14'
+    - '74'
+    - Task
+    - Ronald McDonald
+    - text
+    - '2015-11-02 15:11:26.788002'
+    - '2015-11-02 15:11:26.788002'
+    - 
+    - 
+  - - '120'
+    - '15'
+    - '74'
+    - Task
+    - t
+    - boolean
+    - '2015-11-02 15:11:26.967013'
+    - '2015-11-02 15:11:26.967013'
+    - 
+    - 
+  - - '121'
+    - '16'
+    - '74'
+    - Task
+    - 111.111, Fred Jones
+    - text
+    - '2015-11-02 15:11:35.454336'
+    - '2015-11-02 15:11:35.454336'
+    - 
+    - 
+  - - '122'
+    - '24'
+    - '74'
+    - Task
+    - PLOS Collection
+    - text
+    - '2015-11-02 15:11:41.612583'
+    - '2015-11-02 15:11:41.612583'
+    - 
+    - 
+  - - '123'
+    - '25'
+    - '74'
+    - Task
+    - f
+    - boolean
+    - '2015-11-02 15:11:42.321703'
+    - '2015-11-02 15:11:42.321703'
+    - 
+    - 
+  - - '124'
+    - '1'
+    - '75'
+    - Task
+    - t
+    - boolean
+    - '2015-11-02 15:11:53.982789'
+    - '2015-11-02 15:11:53.982789'
+    - 
+    - 
+  - - '125'
+    - '4'
+    - '75'
+    - Task
+    - t
+    - boolean
+    - '2015-11-02 15:11:54.611386'
+    - '2015-11-02 15:11:54.611386'
+    - 
+    - 
+  - - '126'
+    - '5'
+    - '75'
+    - Task
+    - http://tahi-development.s3.amazonaws.com/pending/3/question_attachmentb11bbc86155033557c3a/manuscript+%281%29.docx
+    - attachment
+    - '2015-11-02 15:12:01.328026'
+    - '2015-11-02 15:12:01.328026'
     - 
     - 
 
@@ -3831,6 +4320,36 @@ phases:
     - '2015-11-02 14:04:03.239991'
     - '5'
     - '3'
+  - - '16'
+    - Submission
+    - '2015-11-02 14:46:23.824127'
+    - '2015-11-02 14:46:23.824127'
+    - '1'
+    - '4'
+  - - '17'
+    - Tech Check
+    - '2015-11-02 14:46:24.092862'
+    - '2015-11-02 14:46:24.092862'
+    - '2'
+    - '4'
+  - - '18'
+    - Internal Review
+    - '2015-11-02 14:46:24.11566'
+    - '2015-11-02 14:46:24.11566'
+    - '3'
+    - '4'
+  - - '19'
+    - External Review
+    - '2015-11-02 14:46:24.131249'
+    - '2015-11-02 14:46:24.131249'
+    - '4'
+    - '4'
+  - - '20'
+    - Make Decision
+    - '2015-11-02 14:46:24.14677'
+    - '2015-11-02 14:46:24.14677'
+    - '5'
+    - '4'
 
 ---
 question_attachments:
@@ -3859,6 +4378,14 @@ question_attachments:
     - done
     - '2015-11-02 14:18:02.598388'
     - '2015-11-02 14:18:02.849361'
+    - NestedQuestionAnswer
+  - - '3'
+    - '126'
+    - manuscript+_281_29.docx
+    - 
+    - done
+    - '2015-11-02 15:12:01.338942'
+    - '2015-11-02 15:12:01.520148'
     - NestedQuestionAnswer
 
 ---
@@ -3890,6 +4417,15 @@ supporting_information_files:
     - turtles-are-amazing.docx
     - '2015-11-02 14:13:19.427337'
     - '2015-11-02 14:13:19.701157'
+    - done
+    - true
+  - - '3'
+    - '4'
+    - 'Title: turtles-are-amazing.docx'
+    - 
+    - turtles-are-amazing.docx
+    - '2015-11-02 15:09:02.825204'
+    - '2015-11-02 15:09:03.10794'
     - done
     - true
 
@@ -3985,6 +4521,20 @@ tahi_standard_tasks_reviewer_recommendations:
     - '2015-11-02 14:12:53.204262'
     - '2015-11-02 14:12:53.204262'
     - '295612'
+  - - '5'
+    - '76'
+    - Ronald
+    - McReviewer
+    - ''
+    - ronald@example.com
+    - Department of Zoology
+    - Zoo Director
+    - Adler Graduate School
+    - 
+    - 
+    - '2015-11-02 15:07:41.253665'
+    - '2015-11-02 15:07:41.253665'
+    - '32835'
 
 ---
 journal_task_types:
@@ -4544,7 +5094,7 @@ tasks:
     - '8'
     - false
     - '2015-10-30 19:43:28.733583'
-    - '2015-10-30 19:43:28.733583'
+    - '2015-11-02 15:19:08.231937'
     - admin
     - "[]"
     - '1'
@@ -4802,6 +5352,226 @@ tasks:
     - false
     - '2015-11-02 14:04:03.24948'
     - '2015-11-02 14:04:03.24948'
+    - editor
+    - "[]"
+    - '1'
+  - - '64'
+    - Supporting Info
+    - TahiStandardTasks::SupportingInformationTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:23.8548'
+    - '2015-11-02 15:09:07.082342'
+    - author
+    - "[]"
+    - '1'
+  - - '65'
+    - Authors
+    - TahiStandardTasks::AuthorsTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:23.904316'
+    - '2015-11-02 15:09:36.277238'
+    - author
+    - "[]"
+    - '2'
+  - - '66'
+    - Upload Manuscript
+    - TahiUploadManuscript::UploadManuscriptTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:23.923178'
+    - '2015-11-02 15:08:12.18594'
+    - author
+    - "[]"
+    - '3'
+  - - '67'
+    - Billing
+    - PlosBilling::BillingTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:23.937966'
+    - '2015-11-02 15:06:25.129713'
+    - author
+    - "[]"
+    - '4'
+  - - '68'
+    - Competing Interests
+    - TahiStandardTasks::CompetingInterestsTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:23.953399'
+    - '2015-11-02 15:09:49.305375'
+    - author
+    - "[]"
+    - '5'
+  - - '69'
+    - Cover Letter
+    - TahiStandardTasks::CoverLetterTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:23.968686'
+    - '2015-11-02 15:06:40.102327'
+    - author
+    - '["\u003cstrong style=\"color: rgb(0, 0, 0); font-family: Arial, Helvetica,
+      sans; font-size: 11px; line-height: 14px; text-align: justify;\"\u003eLorem
+      Ipsum\u003c/strong\u003e\u003cspan style=\"color: rgb(0, 0, 0); font-family:
+      Arial, Helvetica, sans; font-size: 11px; line-height: 14px; text-align: justify;\"\u003e\u0026nbsp;is
+      simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+      been the industry''s standard dummy text ever since the 1500s, when an unknown
+      printer took a galley of type and scrambled it to make a type specimen book.
+      It has survived not only five centuries, but also the leap into electronic typesetting,
+      remaining essentially unchanged. It was popularised in the 1960s with the release
+      of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
+      publishing software like Aldus PageMaker including versions of Lorem Ipsum.\u003c/span\u003e"]'
+    - '6'
+  - - '70'
+    - Data Availability
+    - TahiStandardTasks::DataAvailabilityTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:23.985016'
+    - '2015-11-02 15:10:01.673227'
+    - author
+    - "[]"
+    - '7'
+  - - '71'
+    - Ethics Statement
+    - TahiStandardTasks::EthicsTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:24.001655'
+    - '2015-11-02 15:10:23.39056'
+    - author
+    - "[]"
+    - '8'
+  - - '72'
+    - Figures
+    - TahiStandardTasks::FigureTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:24.017385'
+    - '2015-11-02 15:10:50.452332'
+    - author
+    - "[]"
+    - '9'
+  - - '73'
+    - Financial Disclosure
+    - TahiStandardTasks::FinancialDisclosureTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:24.033101'
+    - '2015-11-02 15:10:56.785584'
+    - author
+    - "[]"
+    - '10'
+  - - '74'
+    - Publishing Related Questions
+    - TahiStandardTasks::PublishingRelatedQuestionsTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:24.0489'
+    - '2015-11-02 15:11:50.536703'
+    - author
+    - "[]"
+    - '11'
+  - - '75'
+    - Reporting Guidelines
+    - TahiStandardTasks::ReportingGuidelinesTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:24.064242'
+    - '2015-11-02 15:12:05.240609'
+    - author
+    - "[]"
+    - '12'
+  - - '76'
+    - Reviewer Candidates
+    - TahiStandardTasks::ReviewerRecommendationsTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:24.080175'
+    - '2015-11-02 15:07:44.439698'
+    - author
+    - "[]"
+    - '13'
+  - - '77'
+    - Initial Tech Check
+    - PlosBioTechCheck::InitialTechCheckTask
+    - '17'
+    - false
+    - '2015-11-02 14:46:24.100782'
+    - '2015-11-02 14:46:24.100782'
+    - custom
+    - '{"round":1}'
+    - '1'
+  - - '78'
+    - Revision Tech Check
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - '17'
+    - false
+    - '2015-11-02 14:46:24.107141'
+    - '2015-11-02 14:46:24.107141'
+    - custom
+    - "[]"
+    - '2'
+  - - '79'
+    - Final Tech Check
+    - PlosBioTechCheck::FinalTechCheckTask
+    - '17'
+    - false
+    - '2015-11-02 14:46:24.112501'
+    - '2015-11-02 14:46:24.112501'
+    - custom
+    - "[]"
+    - '3'
+  - - '80'
+    - Assign Team
+    - Tahi::AssignTeam::AssignTeamTask
+    - '18'
+    - true
+    - '2015-11-02 14:46:24.122907'
+    - '2015-11-02 15:18:57.481784'
+    - admin
+    - "[]"
+    - '1'
+  - - '81'
+    - Editor Discussion
+    - PlosBioInternalReview::EditorsDiscussionTask
+    - '18'
+    - false
+    - '2015-11-02 14:46:24.128177'
+    - '2015-11-02 14:46:24.128177'
+    - editor
+    - "[]"
+    - '2'
+  - - '82'
+    - Invite Reviewers
+    - TahiStandardTasks::PaperReviewerTask
+    - '19'
+    - false
+    - '2015-11-02 14:46:24.137957'
+    - '2015-11-02 14:46:24.137957'
+    - custom
+    - "[]"
+    - '1'
+  - - '83'
+    - Academic Editor Feedback
+    - Task
+    - '19'
+    - false
+    - '2015-11-02 14:46:24.143576'
+    - '2015-11-02 14:46:24.143576'
+    - user
+    - "[]"
+    - '2'
+  - - '84'
+    - Register Decision
+    - TahiStandardTasks::RegisterDecisionTask
+    - '20'
+    - false
+    - '2015-11-02 14:46:24.157807'
+    - '2015-11-02 14:46:24.157807'
     - editor
     - "[]"
     - '1'
@@ -5218,6 +5988,213 @@ activities:
     - '3'
     - '2015-11-02 14:18:10.058448'
     - '2015-11-02 14:18:10.058448'
+  - - '37'
+    - manuscript
+    - '4'
+    - Paper
+    - paper.created
+    - Manuscript was created
+    - '3'
+    - '2015-11-02 14:46:24.331279'
+    - '2015-11-02 14:46:24.331279'
+  - - '38'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Billing card was marked as complete
+    - '3'
+    - '2015-11-02 15:06:25.137716'
+    - '2015-11-02 15:06:25.137716'
+  - - '39'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Cover Letter card was marked as complete
+    - '3'
+    - '2015-11-02 15:06:40.110559'
+    - '2015-11-02 15:06:40.110559'
+  - - '40'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Reviewer Candidates card was marked as complete
+    - '3'
+    - '2015-11-02 15:07:44.448233'
+    - '2015-11-02 15:07:44.448233'
+  - - '41'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Supporting Info card was marked as complete
+    - '3'
+    - '2015-11-02 15:09:07.09117'
+    - '2015-11-02 15:09:07.09117'
+  - - '42'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Authors card was marked as complete
+    - '3'
+    - '2015-11-02 15:09:36.285174'
+    - '2015-11-02 15:09:36.285174'
+  - - '43'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Competing Interests card was marked as complete
+    - '3'
+    - '2015-11-02 15:09:49.31352'
+    - '2015-11-02 15:09:49.31352'
+  - - '44'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Data Availability card was marked as complete
+    - '3'
+    - '2015-11-02 15:10:01.681348'
+    - '2015-11-02 15:10:01.681348'
+  - - '45'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Ethics Statement card was marked as complete
+    - '3'
+    - '2015-11-02 15:10:23.398259'
+    - '2015-11-02 15:10:23.398259'
+  - - '46'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Figures card was marked as complete
+    - '3'
+    - '2015-11-02 15:10:50.459911'
+    - '2015-11-02 15:10:50.459911'
+  - - '47'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Financial Disclosure card was marked as complete
+    - '3'
+    - '2015-11-02 15:10:56.793709'
+    - '2015-11-02 15:10:56.793709'
+  - - '48'
+    - manuscript
+    - '4'
+    - Paper
+    - paper.edited
+    - Manuscript was edited
+    - '3'
+    - '2015-11-02 15:11:49.973739'
+    - '2015-11-02 15:14:04.049396'
+  - - '49'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Publishing Related Questions card was marked as complete
+    - '3'
+    - '2015-11-02 15:11:50.545588'
+    - '2015-11-02 15:11:50.545588'
+  - - '50'
+    - manuscript
+    - '4'
+    - Paper
+    - task.completed
+    - Reporting Guidelines card was marked as complete
+    - '3'
+    - '2015-11-02 15:12:05.248519'
+    - '2015-11-02 15:12:05.248519'
+  - - '51'
+    - manuscript
+    - '3'
+    - Paper
+    - paper.edited
+    - Manuscript was edited
+    - '3'
+    - '2015-11-02 15:13:09.905809'
+    - '2015-11-02 15:13:37.924511'
+  - - '52'
+    - manuscript
+    - '4'
+    - Paper
+    - paper.submitted
+    - Manuscript was submitted
+    - '3'
+    - '2015-11-02 15:14:05.58428'
+    - '2015-11-02 15:14:05.58428'
+  - - '53'
+    - workflow
+    - '2'
+    - Paper
+    - assignment.created
+    - Edith Editor was added as Academic editor
+    - '1'
+    - '2015-11-02 15:16:59.519707'
+    - '2015-11-02 15:16:59.519707'
+  - - '54'
+    - workflow
+    - '2'
+    - Paper
+    - task.completed
+    - Assign Team card was marked as complete
+    - '1'
+    - '2015-11-02 15:17:12.539583'
+    - '2015-11-02 15:17:12.539583'
+  - - '55'
+    - workflow
+    - '2'
+    - Paper
+    - task.incompleted
+    - Assign Team card was marked as incomplete
+    - '1'
+    - '2015-11-02 15:17:14.169953'
+    - '2015-11-02 15:17:14.169953'
+  - - '56'
+    - workflow
+    - '2'
+    - Paper
+    - task.completed
+    - Assign Team card was marked as complete
+    - '1'
+    - '2015-11-02 15:17:16.563727'
+    - '2015-11-02 15:17:16.563727'
+  - - '57'
+    - workflow
+    - '4'
+    - Paper
+    - assignment.created
+    - Edith Editor was added as Academic editor
+    - '1'
+    - '2015-11-02 15:18:45.559841'
+    - '2015-11-02 15:18:45.559841'
+  - - '58'
+    - workflow
+    - '4'
+    - Paper
+    - task.completed
+    - Assign Team card was marked as complete
+    - '1'
+    - '2015-11-02 15:18:57.48936'
+    - '2015-11-02 15:18:57.48936'
+  - - '59'
+    - workflow
+    - '2'
+    - Paper
+    - task.incompleted
+    - Assign Team card was marked as incomplete
+    - '1'
+    - '2015-11-02 15:19:08.239385'
+    - '2015-11-02 15:19:08.239385'
 
 ---
 paper_roles:
@@ -5265,6 +6242,24 @@ paper_roles:
     - '2015-11-02 14:04:02.971206'
     - '2015-11-02 14:04:02.971206'
     - participant
+  - - '7'
+    - '3'
+    - '4'
+    - '2015-11-02 14:46:23.770282'
+    - '2015-11-02 14:46:23.770282'
+    - collaborator
+  - - '8'
+    - '3'
+    - '4'
+    - '2015-11-02 14:46:23.878717'
+    - '2015-11-02 14:46:23.878717'
+    - participant
+  - - '10'
+    - '4'
+    - '4'
+    - '2015-11-02 15:18:45.552855'
+    - '2015-11-02 15:18:45.552855'
+    - Academic Editor
 
 ---
 authors:
@@ -5384,6 +6379,25 @@ authors:
     - 
     - 
     - 
+  - - '6'
+    - Arthur
+    - Author
+    - '2015-11-02 14:46:24.189114'
+    - '2015-11-02 15:09:33.10379'
+    - '7'
+    - '4'
+    - '65'
+    - 
+    - author@example.com
+    - Dept. of authoring
+    - My favorite author
+    - false
+    - false
+    - Academy of Art University
+    - Adelphi University
+    - 
+    - 
+    - 
 
 ---
 journals:
@@ -5405,7 +6419,7 @@ journals:
   - - '1'
     - PLOS Developers
     - '2015-10-29 19:40:11.853622'
-    - '2015-11-02 14:30:18.457122'
+    - '2015-11-02 14:46:23.779465'
     - developersdevelopersdevelopers.jpg
     - developersdevelopersdevelopers.jpg
     - 
@@ -5415,7 +6429,7 @@ journals:
       for publication.
     - '10.1371'
     - devs
-    - '100003'
+    - '100004'
 
 ---
 manuscript_manager_templates:
@@ -5456,6 +6470,12 @@ manuscripts:
     - '2015-11-02 14:04:26.697513'
     - '2015-11-02 14:08:00.850697'
     - done
+  - - '4'
+    - source.docx
+    - '4'
+    - '2015-11-02 15:08:04.612549'
+    - '2015-11-02 15:08:05.026832'
+    - done
 
 ---
 users:
@@ -5488,13 +6508,13 @@ users:
     - 
     - 
     - 
-    - '2'
-    - '2015-10-29 20:09:19.172718'
-    - '2015-10-29 19:36:19.631564'
+    - '7'
+    - '2015-11-02 15:18:22.47439'
+    - '2015-11-02 15:16:20.996132'
     - 127.0.0.1
     - 127.0.0.1
     - '2015-10-29 19:36:19.627844'
-    - '2015-10-29 20:09:19.174385'
+    - '2015-11-02 15:18:22.475728'
     - admin
     - false
     - 
@@ -5526,14 +6546,33 @@ users:
     - 
     - 
     - 
-    - '1'
-    - '2015-10-29 20:11:22.709054'
-    - '2015-10-29 20:11:22.709054'
+    - '3'
+    - '2015-11-02 15:18:00.073451'
+    - '2015-11-02 14:45:18.184959'
     - 127.0.0.1
     - 127.0.0.1
     - '2015-10-29 20:11:22.705226'
-    - '2015-10-29 20:11:22.709777'
+    - '2015-11-02 15:18:00.07487'
     - author
+    - false
+    - 
+    - 
+  - - '4'
+    - Edith
+    - Editor
+    - editor@example.com
+    - "$2a$10$96lyXKNq36ErEx732.FYpOWJkfCCUBnTJ/DbGX96PdzbsbLbqpSZa"
+    - 
+    - 
+    - 
+    - '1'
+    - '2015-11-02 15:15:33.649157'
+    - '2015-11-02 15:15:33.649157'
+    - 127.0.0.1
+    - 127.0.0.1
+    - '2015-11-02 15:15:33.644561'
+    - '2015-11-02 15:15:33.650134'
+    - editor
     - false
     - 
     - 
@@ -5552,6 +6591,11 @@ user_roles:
     - '2015-10-29 20:09:49.75711'
     - '2015-10-29 20:09:49.75711'
     - '1'
+  - - '2'
+    - '4'
+    - '2015-11-02 15:16:12.82695'
+    - '2015-11-02 15:16:12.82695'
+    - '5'
 
 ---
 versioned_texts:
@@ -5865,3 +6909,103 @@ versioned_texts:
       </div><!--TEI back-->
     - '2015-11-02 14:04:02.881043'
     - '2015-11-02 14:08:05.326102'
+  - - '4'
+    - '3'
+    - '4'
+    - '0'
+    - '0'
+    - |-
+      <!--TEI front--><!--TEI body--><div class="teidiv0" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game">
+      <h2><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h2>
+      <div class="teidiv1" id="effect-of-heterogeneous-investments-on-the-evolution-of-cooperation-in-spatial-public-goods-game-1">
+      <h3><span class="head">Effect of Heterogeneous Investments on the Evolution of Cooperation in Spatial Public Goods Game</span></h3>
+      <p class="First Paragraph">Keke Huang<sup>1</sup>, Tao Wang<sup>1</sup>, Yuan Cheng<sup>2</sup>, Xiaoping Zheng<sup>1</sup>*</p>
+      <p><sup>1</sup> Department of Automation, Tsinghua University, Beijing 100084, China</p>
+      <p><sup>2</sup> School of Mechanical and Electrical Engineering, Beijing University of Chemical Technology, Beijing 100029, China</p>
+      <p>*<a class="link_ref" href="mailto:asean@mail.tsinghua.edu.cn">asean@mail.tsinghua.edu.cn(XZ)</a></p>
+      <div class="teidiv2" id="abstract">
+      <h4><span class="head">Abstract</span></h4>
+      <p class="First Paragraph">Understanding the emergence of cooperation in spatial public goods game remains a grand challenge across disciplines. In most previous studies, it is assumed that the investments of all the cooperators are identical, and often equal to 1. However, it is worth mentioning that players are diverse and heterogeneous when choosing actions in the rapidly developing modern society and researchers have shown more interest to the heterogeneity of players recently. For modeling the heterogeneous players without loss of generality, it is assumed in this work that the investment of a cooperator is a random variable with uniform distribution, the mean value of which is equal to 1. The results of extensive numerical simulations convincingly indicate that heterogeneous investments can promote cooperation. Specifically, a large value of the variance of the random variable can decrease the two critical values for the result of behavioral evolution effectively. Moreover, the larger the variance is, the better the promotion effect will be. In addition, this article has discussed the impact of heterogeneous investments when the coevolution of both strategy and investment is taken into account. Comparing the promotion effect of coevolution of strategy and investment with that of strategy imitation only, we can conclude that the coevolution of strategy and investment decreases the asymptotic fraction of cooperators by weakening the heterogeneity of investments, which further demonstrates that heterogeneous investments can promote cooperation in spatial public goods game.</p>
+      </div>
+      <div class="teidiv2" id="introduction">
+      <h4><span class="head">Introduction</span></h4>
+      <p class="First Paragraph">Cooperation and defection are two fundamental strategies for individuals confronted with every social dilemma [1-3]. According to Darwin’s theory of the origin of species, cooperation extinction is inevitable [4]. However, in the daily life, cooperation is abundantly observed in animal and human societies. One primary challenge in fields ranging from genetics and cell biology to evolutionary anthropology and behavioral economics is to explain the mechanism for these universal cooperative phenomena. Among the game theoretical approaches to investigating evolution of cooperation, one of the most popular frameworks to study the conflict between individuals is the so-called public goods game (PGG), in which several players decide whether or not to contribute to the common pool simultaneously [5-7]. In the model of PGG, cooperators contribute a fixed share to the public whereas defectors do not. Subsequently, all contributions are added up and multiplied by an enhancement factor�, then the total welfare is equally divided among all players irrespective of their strategies. Consequently, players are faced with the temptation of being free-riders and rational players invest nothing which causes the “Tragedy of the Commons” [8-10].</p>
+      <p>Aiming at solving the above tragedy and investigating the reason why cooperators can survive in reality, several mechanisms have been proposed, such as reward [11], punishment [12-15], reputation [12, 16], volunteering [9, 17, 18], social diversity [19] and so on. Besides, the enhancement factor evolving with time is identified as a useful mechanism for evolution of cooperative behavior in PGG [20]. Recently, the topology of the game has been intensively studied as a paradigm for illustrating how cooperative behavior evolves in spatial PGG [21, 22], such as scale free networks [23-25], interdependent networks [26, 27], and they have proved valuable for solving the tragedy to some extent. To summarize, in all the works above it is assumed that the investments of all the cooperators are identical, often equal to 1. However, it is worth mentioning that in the rapidly developing modern society, players are diverse and they often treat the same problem differently [28-30].</p>
+      <p>In the present work, the diversity of players is taken into consideration. With the aim of modeling the heterogeneous players in spatial PGG without loss of generality, it is assumed that the investment of a cooperator is a random variable with uniform distribution�, the mean value of which is equal to 1. Moreover, we will discuss the impact of � on evolution of cooperative behavior. In order to explore how the heterogeneous investment affects the evolution of cooperative behavior, we compare the traditional update rule with the coevolution of strategy and investment, and by statistical analysis we further reveal that heterogeneous investment can promote cooperation in spatial PGG.</p>
+      </div>
+      <div class="teidiv2" id="methods">
+      <h4><span class="head">Methods</span></h4>
+      <p class="First Paragraph">In this article, the public goods game is considered on a two dimensional square lattice of size � with periodic boundary conditions. At the first step, each player can choose a pure strategy cooperation or defection randomly. Suppose that cooperator � contributes � to the public goods while defectors contribute nothing, here � is a random variable, and�. It is apparent that the mean of � is 1 without loss of generality. Practically, when�, the model is identical with the traditional PGG. Suppose that the contribution of � is independent of that of other players.</p>
+      <p>For the sake of accelerating the simulations but without causing major modifications in the system’s dynamics, it is assumed that the score of player � is determined by a single PGG which involves the focal player and its four nearest neighbors [9]. The sum of all contributions in the group is multiplied by the factor �, and the resulting public goods are distributed among all the group members. Correspondingly, the payoff of player � is</p>
+      <p>�</p>
+      <p>where � denotes the strategy of player �, � denotes the group size, and in this article �.</p>
+      <p>The Monte Carlo (MC) simulations start from a random initial strategy distribution, and the evolution procedure is subsequently controlled by a random sequential strategy update. In detail, player � and one of its neighbors � are chosen randomly. Following the payoffs � calculated as described above, player � imitates the strategy of player � with a probability</p>
+      <p>�</p>
+      <p>where � denotes the cost of strategy change and � introduces some noise to allow for irrational decisions, and in this article � [9]. For the sake of comparison, the coevolution of strategy and investment, namely player � imitates also the investment of player � simultaneously, is considered. Furthermore, for the results presented in the next section, the square lattice used is sized �. The asymptotic fraction of cooperators is determined by averaging over 5000 generations after a transient time of 55000 MCS.</p>
+      </div>
+      <div class="teidiv2" id="results">
+      <h4><span class="head">Results</span></h4>
+      <p class="First Paragraph">Firstly, it is instructive to examine the time series of the fraction of cooperators. Results presented in figure 1 are the time series of the fraction of cooperators for different values of � when � equals to 5. The figure depicts that the fraction of cooperators decreases at the beginning of the evolution but increases to the value in the steady state later. The random distribution of the initial strategy gives rise to the decline of cooperation in the beginning, that is, the cooperators are dispersed and the defectors can invade the cooperators easily, which is corresponding to the initial phase in figure 1. As the evolution proceeds, the lived cooperators form clusters and the payoffs of them are enhanced, which restrain the invasion of the defectors. Meanwhile, the heterogeneous investments render the manifold payoff difference between cooperators and defectors, which in turn boosts the possibility for defectors to imitate cooperators.</p>
+      <p>Fig. 1. Time series of the fraction of cooperators for different values of � when � equals to 5. The value of �is equal to 0.0,0.2,0.5,0.8,1.0 respectively. While �, which is exactly the traditional case, the investment of all the cooperators is 1. With the increment of �, the asymptotic fraction of cooperators will increase.</p>
+      <p>While figure 1 shows the time series of fraction of cooperators, the relationship between asymptotic fraction of cooperators � and enhancement factor � when� is presented in figure 2. It is worth to note that, the black curve in figure 2 corresponding to � is in agreement with the results in reference [9]. The asymptotic fraction of cooperators � depending on the enhancement factor � reveals that � is enhanced with increasing of � for different values of �. Meanwhile, the larger the value of � is, the bigger the asymptotic fraction of cooperators � will be. Besides, a large value of � will guarantee that the cooperators will survive when the enhancement factor � is small. In addition, for each curve in figure 2, there exit two thresholds � and �. In other words, if � the phase of the population after behavioral evolution is pure defectors, and if � the phase of the population is pure cooperators, while in case of � the population consist of not only cooperators but also defectors. Figure 2 clearly demonstrates that larger value of � can decrease the value of � and � effectively. Therefore, to sum up, when the investment of a cooperator is a random variable with uniform distribution �, the asymptotic fraction of cooperators can be promoted. Furthermore, the larger the value of � is, the better the promotion effect will be.</p>
+      <p>Fig. 2. Relationship between asymptotic fraction of cooperators � and enhancement factor � corresponding to �respectively. The curves in the figure show that the larger the value of � is, the bigger the asymptotic fraction of cooperators � will be. In addition, larger value of � can decrease the values of � and � effectively.</p>
+      <p>In order to depict the evolutionary process vividly, the typical snapshots are represented in figure 3 when � and �. From the figure it can be clearly concluded that the fraction of cooperators decreases at the beginning of the evolution, but as the evolution proceeds, the cooperators form into clusters to restrain the invasion of the defectors and spread to the defectors reversely. At the end of the evolution all the players in the population hold the cooperation strategy.</p>
+      <p>Fig. 3. Typical snapshots of strategy distributions on the square lattice when � and �. Cooperators and defectors are colored red and blue, and the MCS of (a)-(d) is 1, 10, 100, 50000 respectively. The figure shows that the fraction of cooperators decreases at the beginning of the evolution, but as the evolution proceeds, the cooperators form into clusters to restrain the invasion of the defectors, and spread to the defectors reversely. At the end of the evolution all the players in the population hold the cooperation strategy.</p>
+      <p>Next, the relationship between fraction of cooperators and enhancement factor when the coevolution of strategy and investment is taken into consideration will be discussed. The curves in figure 4 show that if �, the thresholds � and � become smaller compared to the case of �, which is exactly the traditional situation. This implies that cooperation can be promoted through the coevolution of strategy and investment.</p>
+      <p>Fig. 4. Relationship between asymptotic fraction of cooperators � and enhancement factor � corresponding to � respectively when the coevolution of strategy and investment is taken into account. The curves show that if �, the thresholds � and � decrease compared to the case of �, which is exactly the traditional situation. This implies that cooperation can be promoted by introducing the coevolution of strategy and investment.</p>
+      <p>Comparing the curves in figures 2 and 4 leads to the interesting conclusion that the promotion effect of coevolution of strategy and investment is inferior to that of strategy imitation only. With the aim to explore the difference between them, we will discuss the investment distribution of cooperators in steady state. Figure 5 shows the investment distribution in case of coevolution of strategy and investment (Right panel) and the distribution in case of strategy imitation only (Left panel), and the parameters in the two situations are equal, namely �，�. When only strategy is updated, the distribution of the investment in steady state is still a uniform distribution�. However, when the coevolution of strategy and investment is taken into account, the previous uniform distribution is severely distorted, and the steady investment satisfies a discrete distribution valued �. Therefore, the heterogeneity of investment is weakened in this case. Consequently, the asymptotic fraction of cooperators � decreases. In the same way, through statistical analysis it can be concluded that for the same enhancement �, the smaller the value of � is, the more severe the distortion from previous uniform distribution will be. This implies that the coevolution of strategy and investment decreases the asymptotic fraction of cooperators � by weakening the heterogeneity of investment once again.</p>
+      <p>Fig. 5. The steady distribution of investment corresponding to strategy evolution only (Left panel) and that corresponding to coevolution of strategy and investment (Right panel), when �，�. From the figure, it can be found that when only strategy is updated, the distribution of the investment in steady state is still a uniform distribution�, however, when the coevolution of strategy and investment is taken into account, the previous uniform distribution is severely distorted, and the steady investment satisfies a discrete distribution valued �. In conclusion, compared to the former case, as the heterogeneity of investment is weakened, the asymptotic fraction of cooperators � decreases in the case of coevolution.</p>
+      </div>
+      <div class="teidiv2" id="conclusions">
+      <h4><span class="head">Conclusions</span></h4>
+      <p class="First Paragraph">To summarize, this article further explores the impact of heterogeneous investment on the evolution of cooperative behavior in spatial PGG. Above all, the relationship between asymptotic fraction of cooperators � and enhancement factor � when � varies has been presented, and it can be concluded that the larger value of � has the capacity to decrease the values of � and � effectively, and that the larger the value of� is, the better the promotion effect will be. In addition, this article has also discussed the influence of heterogeneous investment when the coevolution of strategy and investment is taken into consideration. Comparing the promotion effect of coevolution of strategy and investment with that of strategy imitation only, the conclusion can be naturally drawn that the coevolution of strategy and investment decreases the asymptotic fraction of cooperators � by weakening the heterogeneity of investment. Therefore, the result above further demonstrates that heterogeneous investment is capable of promoting cooperation in spatial PGG.</p>
+      </div>
+      <div class="teidiv2" id="acknowledgments">
+      <h4><span class="head">Acknowledgments</span></h4>
+      <p class="First Paragraph">We thank Mr. Zhijie Li for technique support.</p>
+      </div>
+      <div class="teidiv2" id="references">
+      <h4><span class="head">References</span></h4>
+      <p class="First Paragraph">1. Kollock P. Social dilemmas: The anatomy of cooperation. Annual review of sociology. 1998:183-214.</p>
+      <p>2. Fehr E, Fischbacher U. Social norms and human cooperation. Trends in cognitive sciences. 2004;8(4):185-90.</p>
+      <p>3. Bornstein G, Ben-Yossef M. Cooperation in intergroup and single-group social dilemmas. Journal of Experimental Social Psychology. 1994;30(1):52-67.</p>
+      <p>4. Pennisi E. How did cooperative behavior evolve? Science. 2005;309(5731):93-.</p>
+      <p>5. Szabó G, Fath G. Evolutionary games on graphs. Physics Reports. 2007;446(4):97-216.</p>
+      <p>6. Perc M, Gómez-Gardeñes J, Szolnoki A, Floría LM, Moreno Y. Evolutionary dynamics of group interactions on structured populations: a review. Journal of The Royal Society Interface. 2013;10(80):20120997.</p>
+      <p>7. Perc M, Grigolini P. Collective behavior and evolutionary games–An introduction. Chaos, Solitons &amp; Fractals. 2013;56:1-5.</p>
+      <p>8. Killingback T, Doebeli M, Hauert C. Diversity of cooperation in the tragedy of the commons. Biol Theory. 2010;5:3-6.</p>
+      <p>9. Szabó G, Hauert C. Phase transitions and volunteering in spatial public goods games. Physical Review Letters. 2002;89(11):118101.</p>
+      <p>10. Szolnoki A, Perc M, Szabó G. Topology-independent impact of noise on cooperation in spatial public goods games. Physical Review E. 2009;80(5):056109.</p>
+      <p>11. Szolnoki A, Perc M. Reward and cooperation in the spatial public goods game. EPL (Europhysics Letters). 2010;92(3):38003.</p>
+      <p>12. Brandt H, Hauert C, Sigmund K. Punishment and reputation in spatial public goods games. Proceedings of the Royal Society of London Series B: Biological Sciences. 2003;270(1519):1099-104.</p>
+      <p>13. Helbing D, Szolnoki A, Perc M, Szabó G. Punish, but not too hard: how costly punishment spreads in the spatial public goods game. New Journal of Physics. 2010;12(8):083005.</p>
+      <p>14. Brandt H, Hauert C, Sigmund K. Punishing and abstaining for public goods. Proceedings of the National Academy of Sciences. 2006;103(2):495-7.</p>
+      <p>15. Fehr E, Gächter S. Cooperation and punishment in public goods experiments. American Economic Review. 2000:980-94.</p>
+      <p>16. Milinski M, Semmann D, Krambeck H-J. Reputation helps solve the ‘tragedy of the commons’. Nature. 2002;415(6870):424-6.</p>
+      <p>17. Hauert C, De Monte S, Hofbauer J, Sigmund K. Volunteering as red queen mechanism for cooperation in public goods games. Science. 2002;296(5570):1129-32.</p>
+      <p>18. Semmann D, Krambeck H-J, Milinski M. Volunteering leads to rock–paper–scissors dynamics in a public goods game. Nature. 2003;425(6956):390-3.</p>
+      <p>19. Santos FC, Santos MD, Pacheco JM. Social diversity promotes the emergence of cooperation in public goods games. Nature. 2008;454(7201):213-6.</p>
+      <p>20. Chen X, Liu Y, Zhou Y, Wang L, Perc M. Adaptive and bounded investment returns promote cooperation in spatial public goods games. PloS one. 2012;7(5):e36895.</p>
+      <p>21. Gómez-Gardeñes J, Romance M, Criado R, Vilone D, Sánchez A. Evolutionary games defined at the network mesoscale: The public goods game. Chaos: An Interdisciplinary Journal of Nonlinear Science. 2011;21(1):016113.</p>
+      <p>22. Wang Z, Kokubo S, Tanimoto J, Fukuda E, Shigaki K. Insight into the so-called spatial reciprocity. Physical Review E. 2013;88(4):042145.</p>
+      <p>23. Rong Z, Wu Z-X. Effect of the degree correlation in public goods game on scale-free networks. EPL (Europhysics Letters). 2009;87(3):30001.</p>
+      <p>24. Guan J-Y, Wu Z-X, Wang Y-H. Effects of inhomogeneous activity of players and noise on cooperation in spatial public goods games. Physical Review E. 2007;76(5):056101.</p>
+      <p>25. Yuan W-J, Zhou J-F, Li Q, Chen D-B, Wang Z. Spontaneous scale-free structure in adaptive networks with synchronously dynamical linking. Physical Review E. 2013;88(2):022818.</p>
+      <p>26. Wang Z, Szolnoki A, Perc M. Interdependent network reciprocity in evolutionary games. Scientific reports. 2013;3.</p>
+      <p>27. Wang Z, Wang L, Perc M. Degree mixing in multilayer networks impedes the evolution of cooperation. Physical Review E. 2014;89(5):052813.</p>
+      <p>28. Burlando RM, Guala F. Heterogeneous agents in public goods experiments. Experimental Economics. 2005;8(1):35-54.</p>
+      <p>29. Shi D-M, Zhuang Y, Wang B-H. Group diversity promotes cooperation in the spatial public goods game. EPL (Europhysics Letters). 2010;90(5):58003.</p>
+      <p>30. Fischbacher U, Gächter S. Heterogeneous social preference and the dynamics of free riding in public goods. CeDEx Discussion Paper, The University of Nottingham, 2006.</p>
+      </div>
+      <div class="teidiv2" id="supporting-information-captions">
+      <h4><span class="head">Supporting Information Captions</span></h4>
+      <p class="First Paragraph">S1_Dataset.xlsx. The dataset of Figure 1.</p>
+      <p>S2_Dataset.xlsx. The dataset of Figure 2.</p>
+      <p>S3_Dataset.xlsx. The dataset of Figure 3.</p>
+      <p>S4_Dataset.xlsx. The dataset of Figure 4.</p>
+      <p>S5_Dataset.xlsx. The dataset of Figure 5.</p>
+      </div>
+      </div>
+      </div><!--TEI back-->
+    - '2015-11-02 14:46:23.785261'
+    - '2015-11-02 15:14:05.574878'

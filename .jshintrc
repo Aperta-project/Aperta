@@ -44,7 +44,7 @@
   "quotmark": "single",
 
   // Enforce placing 'use strict' at the top function scope
-  "strict": true,
+  "strict": false,
 
   // Prohibit use of explicitly undeclared variables.
   "undef": true,

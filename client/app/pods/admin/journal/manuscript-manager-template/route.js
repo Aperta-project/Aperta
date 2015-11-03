@@ -4,31 +4,42 @@ export default Ember.Route.extend({
   actions: {
     chooseNewCardTypeOverlay(phaseTemplate) {
       this.controllerFor('overlays/chooseNewCardType').setProperties({
-        phaseTemplate: phaseTemplate,
+        phase: phaseTemplate,
         journalTaskTypes: this.modelFor('admin.journal').get('journalTaskTypes')
       });
 
       this.send('openOverlay', {
-        template: 'overlays/add-manuscript-template-card',
+        template: 'overlays/chooseNewCardType',
         controller: 'overlays/chooseNewCardType'
       });
     },
 
-    addTaskType(phaseTemplate, taskType) {
-      let newTask = this.store.createRecord('task-template', {
-        title: taskType.get('title'),
-        journalTaskType: taskType,
-        phaseTemplate: phaseTemplate,
-        template: []
-      });
+    addTaskType(phaseTemplate, taskTypeList) {
 
-      if (taskType.get('kind') === 'Task') {
-        this.controllerFor('overlays/adHocTemplate').setProperties({
+      if (!taskTypeList) { return; }
+      let isAdhocType = false;
+
+      taskTypeList.forEach((taskType) => {
+
+        let newTaskTemplate = this.store.createRecord('taskTemplate', {
+          title: taskType.get('title'),
+          journalTaskType: taskType,
           phaseTemplate: phaseTemplate,
-          model: newTask,
-          isNewTask: true
+          template: []
         });
 
+        if (taskType.get('kind') === 'Task') {
+          isAdhocType = true;
+
+          this.controllerFor('overlays/adHocTemplate').setProperties({
+            phaseTemplate: phaseTemplate,
+            model: newTaskTemplate,
+            isNewTask: true
+          });
+        }
+      });
+
+      if (isAdhocType) {
         this.send('openOverlay', {
           template: 'overlays/adHocTemplate',
           controller: 'overlays/adHocTemplate'

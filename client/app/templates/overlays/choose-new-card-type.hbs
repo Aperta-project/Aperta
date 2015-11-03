@@ -1,22 +1,4 @@
-<div class="overlay-title-text">
-  <h1>Pick the type of card to add</h1>
-</div>
-
-{{#if formattedTaskTypesReady}}
-  <div class="overlay-action-buttons">
-    <button class="button-primary button--green" {{action "addTaskType" phase taskType}}>Add</button>
-    <button class="button-link button--green cancel" {{action "closeAction"}}>cancel</button>
-  </div>
-
-  {{select-2-single placeholder="Select a task type"
-                    selectedData=selectedData
-                    selectionSelected="taskTypeSelected"
-                    source=formattedTaskTypes
-                    class="task-type-select"
-                    value=""
-                    width="200"}}
-{{else}}
-  {{progress-spinner visible=true
-                     align="middle"
-                     size="large"}}
-{{/if}}
+{{choose-new-card journalTaskTypes=journalTaskTypes
+                  phase=phase
+                  closeAction="closeAction"
+                  addTaskType="addTaskType"}}

@@ -536,6 +536,9 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    seed_dump (3.2.2)
+      activerecord (~> 4)
+      activesupport (~> 4)
     selenium-webdriver (2.47.1)
       childprocess (~> 0.5)
       multi_json (~> 1.0)
@@ -680,6 +683,7 @@ DEPENDENCIES
   rubyzip
   sass-rails
   sdoc
+  seed_dump
   selenium-webdriver
   sidekiq
   sidetiq

@@ -17,7 +17,7 @@ feature "Editor Discussion", js: true do
   scenario "journal admin can see the 'Editor Discussion' card" do
     manuscript_page = DashboardPage.new.view_submitted_paper paper
     manuscript_page.view_card task.title do |overlay|
-      expect(overlay.title).to eq "Editor Discussion"
+      expect(overlay.title).to have_content "Editor Discussion"
     end
   end
 end

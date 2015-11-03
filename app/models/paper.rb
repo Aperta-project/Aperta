@@ -72,6 +72,12 @@ class Paper < ActiveRecord::Base
                           :prevent_edits!]
     end
 
+    event(:invite_full_submission) do
+      transitions from: :submitted,
+                  to: :in_revision,
+                  after: [:allow_edits!]
+    end
+
     event(:minor_check) do
       transitions from: :submitted,
                   to: :checking,

@@ -6,7 +6,7 @@
 
 {{#if isTaskCompleted}}
     <div class="alert alert-info">
-      An initial decision of {{initialDecision.verdict}} has been registered.
+      An initial decision of '{{verdict}}' decision has been made.
     </div>
 {{else}}
 
@@ -30,7 +30,7 @@
   </label>
 
   <label class="decision-label">
-    {{radio-button value="major_revision"
+    {{radio-button value="invite_full_submission"
                    selection=initialDecision.verdict
                    disabled=nonPublishable
                    action=(action "setInitialDecisionVerdict")}}

@@ -12,10 +12,11 @@ class Decision < ActiveRecord::Base
   validates :revision_number, uniqueness: { scope: :paper_id }
   validate :verdict_valid?, if: -> { verdict }
 
-  VERDICTS = ['minor_revision', 'major_revision', 'accept', 'reject']
+  VERDICTS = %w(minor_revision major_revision accept reject
+                invite_full_submission)
 
   def verdict_valid?
-    VERDICTS.include?(verdict) || errors.add(:verdict, "must be a valid choice.")
+    VERDICTS.include?(verdict) || errors.add(:verdict, 'must be a valid choice')
   end
 
   def self.latest

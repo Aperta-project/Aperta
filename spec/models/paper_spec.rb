@@ -120,7 +120,6 @@ describe Paper do
 
   describe "states" do
     context "when submitting" do
-      let(:paper) { FactoryGirl.create(:paper) }
 
       it "does not transition when metadata tasks are incomplete" do
         expect(paper).to receive(:metadata_tasks_completed?).and_return(false)
@@ -175,6 +174,20 @@ describe Paper do
       it "marks the paper not editable" do
         paper.withdraw!
         expect(paper).to_not be_editable
+      end
+    end
+
+    context 'when inviting to full submission' do
+      let(:paper) { FactoryGirl.create(:paper, :submitted) }
+
+      it 'transitions to in_revision' do
+        paper.invite_full_submission!
+        expect(paper).to be_in_revision
+      end
+
+      it 'marks the paper editable' do
+        paper.invite_full_submission!
+        expect(paper).to be_editable
       end
     end
 

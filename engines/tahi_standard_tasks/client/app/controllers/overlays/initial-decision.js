@@ -17,6 +17,12 @@ export default TaskController.extend({
   cannotRegisterDecision: Ember.computed.or('hasNoLetter', 'hasNoVerdict',
                                             'isTaskCompleted'),
 
+  verdict: Ember.computed('initialDecision.verdict', function() {
+    if (this.get('initialDecision.verdict')) {
+      return this.get('initialDecision.verdict').replace(/_/g, ' ');
+    }
+  }),
+
   actions: {
 
     registerDecision() {

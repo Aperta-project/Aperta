@@ -1,5 +1,6 @@
 @import 'attachment-thumbnail';
 @import 'auto-suggest';
+@import 'autosave-icon';
 @import 'card';
 @import 'comment-board';
 @import 'content-editable';
@@ -8,8 +9,11 @@
 @import 'error-message';
 @import 'flash-message';
 @import 'format-input';
+@import 'html-diff';
 @import 'journal-thumbnail';
 @import 'mmt';
+@import 'paper-sidebar';
+@import 'progress-spinner';
 @import 'question';
 @import 'question-attachment-thumbnail';
 @import 'segmented-buttons';
@@ -19,9 +23,8 @@
 @import 'select2-user-role-selector';
 @import 'select2-assignee-selector';
 @import 'sheet';
-@import 'progress-spinner';
+@import 'split-pane';
+@import 'task-disclosure';
 @import 'upload-preview';
-@import 'autosave-icon';
-@import 'html-diff';
 @import 'versioning-bar';
 @import 'withdrawal-banner';

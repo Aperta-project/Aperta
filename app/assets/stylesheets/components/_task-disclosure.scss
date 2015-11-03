@@ -1,0 +1,76 @@
+$task-disclosure-padding: 0.75rem 1.5rem 0.8rem 1.5rem;
+$task-disclosure-border-radius: 5px;
+
+.task-disclosure {
+  margin-bottom: 7px;
+}
+
+.task-disclosure-heading {
+  @include display(flex);
+  border: 1px solid transparent;
+  border-radius: $task-disclosure-border-radius;
+  padding: $task-disclosure-padding;
+  color: #333;
+  font-size: 1.8rem;
+  cursor: pointer;
+  @include user-select(none);
+}
+
+.task-disclosure--open .task-disclosure-heading {
+  border-color: #D2D2D2;
+  border-bottom: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  color: #222;
+  background: #D2D2D2;
+}
+
+.task-disclosure-title {
+  @include flex-grow(2);
+}
+
+.task-disclosure-body {
+  overflow: auto;
+  border: 1px solid #D2D2D2;
+  border-top: 0;
+  border-bottom-right-radius: $task-disclosure-border-radius;
+  border-bottom-left-radius: $task-disclosure-border-radius;
+  background: #fbfbfb;
+}
+
+.task-disclosure-completed-icon {
+  @include flex-shrink(0);
+  width: 18px;
+
+  svg {
+    position: relative;
+    top: 4px;
+    width: 100%;
+
+    polygon { fill: #ABD8A4; }
+  }
+}
+
+
+// TaskComponent overrides ----------------------------------------------------
+
+.task-disclosure .task {
+  .task-completed-section {
+    display: block;
+    border-bottom: 1px dotted #ccc;
+    padding: $task-disclosure-padding;
+    opacity: 0.7;
+    color: #666;
+    cursor: pointer;
+    @include transition(opacity 0.2s);
+
+    // Bootstrap override :-\
+    margin-bottom: 0;
+
+    &:hover { opacity: 1.0; }
+  }
+
+  .task-main-content {
+    padding: 1rem 1.5rem 1.5rem 1.5rem;
+  }
+}

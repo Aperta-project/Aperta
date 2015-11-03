@@ -7,8 +7,6 @@
 <div id="paper-container" class="clearfix {{pageContainerHTMLClass}} {{if noTasks "sidebar-empty"}}">
   {{partial "paper/sidebar"}}
 
-  <div class="vertical-divider"></div>
-
   <div class="manuscript-container">
     {{flash-messages classNames="flash-messages-paper-editor"}}
     <article class="manuscript {{if isEditing "editing" "read-only"}}">
@@ -26,7 +24,7 @@
       </div>
 
       <div class="code-mirror-split-view">
-        <div id="paper-body" class="code-mirror-split code-mirror-split--left">
+        <div class="code-mirror-split code-mirror-split--left">
           {{code-mirror-editor value=model.body
                                readOnly=cannotEdit
                                mode="stex"}}

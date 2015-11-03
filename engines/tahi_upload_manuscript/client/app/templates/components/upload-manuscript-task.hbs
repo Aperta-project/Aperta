@@ -1,8 +1,8 @@
-<h1>{{model.title}}</h1>
+{{partial "task-completed-section"}}
 
-{{#if isEditable}}
-  <h2>You may upload a manuscript at any time.</h2>
-  <div id="upload-file-wrapper">
+<div class="task-main-content">
+  {{#if isEditable}}
+    <p>You may upload a manuscript at any time.</p>
     <span class="button-primary button--green fileinput-button {{if isSubmissionTaskNotEditable 'button--disabled'}}">
       Select and upload a document
       {{file-uploader id="upload-files"
@@ -16,21 +16,21 @@
                       url=manuscriptUploadUrl
                       disabled=isSubmissionTaskNotEditable}}
     </span>
-  </div>
-  {{else}}
-  <p>Currently, Uploading a Manuscript is disabled because the paper is locked by another user.</p>
-{{/if}}
+    {{else}}
+    <p>Currently, Uploading a Manuscript is disabled because the paper is locked by another user.</p>
+  {{/if}}
 
-{{#if uploadError}}
-  <span>Sorry! {{fileName}} is not of an accepted file type</span>
-{{/if}}
+  {{#if uploadError}}
+    <span>Sorry! {{fileName}} is not of an accepted file type</span>
+  {{/if}}
 
-{{#if isUploading}}
-  <div id="paper-manuscript-upload">
-    {{#if showProgress}}
-      <div class="progress">
-        <div class="progress-bar" style={{progressBarStyle}}></div>
-      </div>
-    {{/if}}
-  </div>
-{{/if}}
+  {{#if isUploading}}
+    <div id="paper-manuscript-upload">
+      {{#if showProgress}}
+        <div class="progress">
+          <div class="progress-bar" style={{progressBarStyle}}></div>
+        </div>
+      {{/if}}
+    </div>
+  {{/if}}
+</div>

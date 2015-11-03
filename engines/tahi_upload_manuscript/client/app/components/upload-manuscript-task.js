@@ -1,8 +1,8 @@
-import Ember from 'ember';
-import TaskController from 'tahi/pods/paper/task/controller';
+import TaskComponent from 'tahi/pods/components/task-base/component';
 import FileUploadMixin from 'tahi/mixins/file-upload';
+import Ember from 'ember';
 
-export default TaskController.extend(FileUploadMixin, {
+export default TaskComponent.extend(FileUploadMixin, {
   progress: 0,
   showProgress: true,
 
@@ -10,8 +10,8 @@ export default TaskController.extend(FileUploadMixin, {
     return Ember.String.htmlSafe('width:' + this.get('progress') + '%');
   }),
 
-  manuscriptUploadUrl: Ember.computed('model.paper.id', function() {
-    return '/api/papers/' + this.get('model.paper.id') + '/upload';
+  manuscriptUploadUrl: Ember.computed('task.paper.id', function() {
+    return '/api/papers/' + this.get('task.paper.id') + '/upload';
   }),
 
   actions: {
@@ -38,9 +38,10 @@ export default TaskController.extend(FileUploadMixin, {
       this.uploadFinished(data, filename);
       this.store.pushPayload(data);
 
-      this.get('model').save().then(()=> {
+      this.get('task').save().then(()=> {
         this.send('closeAction');
       });
     }
   }
 });
+

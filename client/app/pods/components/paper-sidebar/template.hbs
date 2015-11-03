@@ -1,12 +1,11 @@
-<div class="task-list">
-
+<div class="paper-sidebar">
   {{#if paper.doi}}
-    <div class="task-list-doi"><strong>Manuscript ID:</strong> {{paper.manuscript_id}}</div>
+    <div class="paper-sidebar-doi"><strong>Manuscript ID:</strong> {{paper.manuscript_id}}</div>
   {{/if}}
 
   {{#if readyToSubmit}}
     <button id="sidebar-submit-paper" {{action "submitPaper"}}
-      class="button-primary button-pre-submit-paper button--green">
+      class="button-primary button--green">
       Submit
     </button>
   {{/if}}
@@ -24,20 +23,19 @@
   {{#if assignedTasks}}
     <div id="paper-assigned-tasks">
       {{#each sortedAssignedTasks as |task|}}
-        {{card-preview task=task
-                       commentLooks=commentLooks
-                       action="viewCard"}}
+        {{#task-disclosure task=task commentLooks=commentLooks}}
+          {{component (task-component-name task.title) task=task}}
+        {{/task-disclosure}}
       {{/each}}
     </div>
-    <hr>
   {{/if}}
 
   {{#if metadataTasks}}
     <div id="paper-metadata-tasks">
       {{#each sortedMetadataTasks as |task|}}
-        {{card-preview task=task
-                       commentLooks=commentLooks
-                       action="viewCard"}}
+        {{#task-disclosure task=task commentLooks=commentLooks}}
+          {{component (task-component-name task.title) task=task}}
+        {{/task-disclosure}}
       {{/each}}
     </div>
   {{/if}}

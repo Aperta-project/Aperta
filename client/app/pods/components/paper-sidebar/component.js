@@ -1,8 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  tagName:     'aside',
-  classNames:  ['sidebar'],
   taskSorting: ['phase.position', 'position'],
   tasks: Ember.computed.alias('paper.tasks'),
   isUnsubmitted: Ember.computed.equal('paper.publishingState', 'unsubmitted'),

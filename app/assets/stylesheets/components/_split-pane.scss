@@ -1,0 +1,37 @@
+.split-pane {
+  @include display(flex);
+}
+
+.split-pane-element {
+  @include flex(0.5);
+  overflow-y: auto;
+  overflow-x: hide;
+
+  &:first-of-type {
+    @include order(1);
+  }
+
+  &:last-of-type {
+    @include order(3);
+  }
+}
+
+.split-pane-drag-handle {
+  position: relative;
+  width: 9px;
+  cursor: ew-resize;
+  @include order(2);
+  z-index: 2;
+
+  &:after {
+    content: '';
+    @include position(absolute, 0px auto 0px 50%);
+    width: 1px;
+    margin-left: -1px;
+    background: #ddd;
+  }
+
+  &:hover:after {
+    background: #bbb;
+  }
+}

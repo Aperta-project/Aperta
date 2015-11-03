@@ -36,10 +36,10 @@ test("It can diff a single paragraph of two sentences", function(assert) {
   );
 });
 
-test("It can diff a single paragraph of two sentences, one in a div", function(assert) {
+test('It can diff a paragraph of two sentences with a div', function(assert) {
   this.component.setProperties({
-    viewingText: "<p>Hello there. I am a cat.</p>",
-    comparisonText: "<div><p>Hello there. I am a dog.</p></div>"
+    viewingText: '<p>Hello there. I am a cat.</p>',
+    comparisonText: '<div><p>Hello there. I am a dog.</p></div>'
   });
 
   assert.equal(
@@ -47,7 +47,8 @@ test("It can diff a single paragraph of two sentences, one in a div", function(a
     '<div><p><span class=\"unchanged\">Hello there</span>' +
       '<span class=\"unchanged\">. </span><span class=\"removed\">' +
       'I am a dog</span><span class=\"added\">I am a cat</span>' +
-      '<span class=\"unchanged\">.</span><span class=\"unchanged\"></span></p></div>'
+      '<span class=\"unchanged\">.</span><span class=\"unchanged\"></span>' +
+      '</p></div>'
   );
 });
 
@@ -82,9 +83,9 @@ test("shouldRecurseInto is true if the node is a <p>", function(assert) {
   );
 });
 
-test("shouldRecurseInto is true if the node is a <div>", function(assert) {
+test('shouldRecurseInto is true if the node is a <div>', function(assert) {
   assert.equal(
-    this.component.shouldRecurseInto($("<div>Circumspect</div>")[0]),
+    this.component.shouldRecurseInto($('<div>Circumspect</div>')[0]),
     true
   );
 });

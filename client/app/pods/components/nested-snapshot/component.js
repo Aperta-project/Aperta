@@ -5,7 +5,7 @@ export default Ember.Component.extend({
   classNames: ['snapshot'],
 
   generalCase: Ember.computed.not("specialCase"),
-  specialCase: Ember.computed.or("authors"),
+  specialCase: Ember.computed.or("author"),
 
   raw: Ember.computed("snapshot.type", function(){
     let type = this.get("snapshot.type");
@@ -24,8 +24,8 @@ export default Ember.Component.extend({
     return this.get("snapshot.type") === "question";
   }),
 
-  authors: Ember.computed("snapshot.name", function(){
-    return this.get("snapshot.name") === "authors";
+  author: Ember.computed("snapshot.name", function(){
+    return this.get("snapshot.name") === "author";
   })
 
 });

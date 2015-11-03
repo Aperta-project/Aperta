@@ -6,7 +6,7 @@ export default Ember.Route.extend({
   model(params) {
     this.set('majorVersion', params.major_version);
     this.set('minorVersion', params.minor_version);
-    return this.store.findTask(params.task_id);
+    return this.store.find('task', params.task_id);
   },
 
   afterModel(model) {

@@ -12,33 +12,40 @@
   {{/if}}
 
   {{#if question}}
-    <li class="question">
-      <div class="snapshot-question">
-        <div class="snapshot-question-question question-text">
-          {{snapshot.value.title}}
-        </div>
-
-        {{#if booleanQuestion}}
-          <div class="snapshot-question-answer">
-            <label><input type="radio" checked="checked" disabled> {{#if snapshot.value.answer}}Yes{{else}}No{{/if}}</label>
-          </div>
-        {{else}}
-          <div class="snapshot-question-answer">
-            <textarea disabled class="form-control">{{snapshot.value.answer}}</textarea>
-          </div>
-        {{/if}}
-
-        {{#if snapshot.question}}
-          <div class="snapshot-question-attachment">
-            {{snapshot.value.attachment}}
-          </div>
-        {{/if}}
+    <li class="snapshot-question">
+        <div class="snapshot-question-question">
+        {{{snapshot.value.title}}}
       </div>
+
+      {{#if booleanQuestion}}
+        <div class="snapshot-question-answer">
+            <span class="snapshot-question-label">Response: </span>{{#if snapshot.value.answer}}Yes{{else}}No{{/if}}
+        </div>
+      {{else}}
+        <div class="snapshot-question-answer">
+            {{snapshot.value.answer}}
+        </div>
+      {{/if}}
+
+      {{#if snapshot.value.attachment}}
+        <div class="snapshot-question-attachment">
+          <span class="snapshot-question-label">Attachment: </span>
+          <a href="{{snapshot.value.attachment}}">{{snapshot.value.attachment}}</a>
+        </div>
+        <div class="snapshot-question-attachment">
+          <span class="snapshot-question-label">Attachment: </span>
+          <a href="{{snapshot.value.attachment}}">{{snapshot.value.attachment}}</a>
+        </div>
+        <div class="snapshot-question-attachment">
+          <span class="snapshot-question-label">Attachment: </span>
+          <a href="{{snapshot.value.attachment}}">{{snapshot.value.attachment}}</a>
+        </div>
+      {{/if}}
     </li>
   {{/if}}
 
   {{#if snapshot.children}}
-  <ol class="snapshot-children question-list">
+  <ol class="snapshot-children">
     {{#each snapshot.children as |child|}}
       {{nested-snapshot snapshot=child}}
     {{/each}}
@@ -47,10 +54,8 @@
 
 {{else}}
 
-  {{#if authors}}
-    {{#each snapshot.children as |author|}}
-      {{author-snapshot snapshot=author}}
-    {{/each}}
+  {{#if author}}
+    {{author-snapshot snapshot=snapshot}}
   {{/if}}
 
 {{/if}}

@@ -5,8 +5,14 @@ class SnapshotsController < ApplicationController
   respond_to :json
 
   def index
-    snapshots = Snapshot.where(source_id: params[:task_id], source_type: "Task")
-    respond_with snapshots
+    task = Task.includes(:snapshots, :paper).find(params[:task_id])
+    snapshots = task.snapshots
+    latest = SnapshotService.new(task.paper).preview(task)[0]
+    latest.id = -task.id
+    respond_with snapshots + [latest]
+  end
+
+  def hello
   end
 
   def show

@@ -20,7 +20,7 @@ export default Ember.Route.extend({
 
   setupController(controller, model) {
     // TODO: Rename AdHocTask to Task (here, in views, and in templates)
-    let redirectOptions = this.get('cardOverlayService.reviousRouteOptions');
+    let redirectOptions = this.get('cardOverlayService.previousRouteOptions');
     let currentType     = model.get('type') === 'Task' ? 'AdHocTask' : model.get('type');
     let baseObjectName  = (currentType || 'AdHocTask').replace('Task', '');
     let taskController  = this.controllerFor('overlays/' + baseObjectName);

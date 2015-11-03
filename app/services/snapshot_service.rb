@@ -25,4 +25,19 @@ class SnapshotService
       )
     end
   end
+
+  def preview(*things_to_snapshot)
+    things_to_snapshot.flatten.map do |thing|
+      serializer_klass = @registry.serializer_for(thing)
+      json = serializer_klass.new(thing).as_json
+      Snapshot.new(
+        source: thing,
+        contents: json,
+        paper: @paper,
+        major_version: @paper.major_version,
+        minor_version: @paper.minor_version
+      )
+    end
+  end
+
 end

@@ -26,6 +26,7 @@ class Task < ActiveRecord::Base
   has_many :attachments
   has_many :participations, inverse_of: :task, dependent: :destroy
   has_many :participants, through: :participations, source: :user
+  has_many :snapshots, as: :source
 
   belongs_to :phase, inverse_of: :tasks
 

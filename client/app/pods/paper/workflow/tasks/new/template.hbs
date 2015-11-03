@@ -1,0 +1,8 @@
+{{#full-screen-modal}}
+  <span class="overlay-close-x animation-scale-in" {{action "closeModal"}}>&times;</span>
+
+  {{choose-new-card journalTaskTypes=journalTaskTypes
+                    phase=model
+                    cancel="closeModal"
+                    addTaskType="addTaskType"}}
+{{/full-screen-modal}}

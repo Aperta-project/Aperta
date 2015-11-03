@@ -23,8 +23,8 @@ export default Ember.Component.extend({
       }
     },
 
-    closeAction() {
-      this.sendAction('closeAction');
+    cancel() {
+      this.sendAction('cancel');
     },
 
     addTaskType(phase) {

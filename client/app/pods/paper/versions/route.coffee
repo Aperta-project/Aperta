@@ -2,23 +2,27 @@
 `import ENV from 'tahi/config/environment'`
 `import AuthorizedRoute from 'tahi/routes/authorized'`
 
-PaperVersionsRoute = AuthorizedRoute.extend
-  viewName: 'paper/versions'
-  controllerName: 'paper/versions'
-  templateName: 'paper/versions'
+PaperVersionsRoute = AuthorizedRoute.extend({
+  viewName: 'paper/versions',
+  controllerName: 'paper/versions',
+  templateName: 'paper/versions',
   cardOverlayService: Ember.inject.service('card-overlay'),
-  restless: Ember.inject.service('restless')
-  fromSubmitOverlay: false
+  restless: Ember.inject.service('restless'),
+  fromSubmitOverlay: false,
 
   model: ->
-    paper = @modelFor('paper')
+    @modelFor('paper')
 
   afterModel: (model) ->
-    return model.get('tasks')
+    return Ember.RSVP.all([
+      model.get('tasks'),
+      model.get('versionedTexts')])
 
   setupController: (controller, model) ->
     controller.set('model', model);
     controller.set('subRouteName', 'versions');
+    console.log "ahllo", model
+    controller.set('viewingVersion', model.get('versionedTexts').objectAt(0));
     if @currentUser
       this.get('restless').authorize(
         controller,
@@ -40,8 +44,8 @@ PaperVersionsRoute = AuthorizedRoute.extend
         major_version,
         minor_version)
 
-
     exitVersions: ->
       this.transitionTo('paper.index', this.modelFor('paper'));
+})
 
 `export default PaperVersionsRoute`

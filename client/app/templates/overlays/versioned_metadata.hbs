@@ -1,15 +1,13 @@
 <div id="versioned-metadata">
-  {{#each snapshots as |version|}}
   <div class="versioned-metadata-version">Viewing
     <span class="versioned-metadata-version-string">
-      Version R{{version.majorVersion}}.{{version.minorVersion}}
+      Version R{{snapshot.majorVersion}}.{{snapshot.minorVersion}}
       &mdash;
-      {{format-date version.created_at format='MMM D, YYYY'}}
+      {{format-date snapshot.created_at format='MMM D, YYYY'}}
     </span>
   </div>
 
   <h2>{{model.title}}</h2>
 
-  {{nested-snapshot snapshot=version.contents}}
-  {{/each}}
+  {{nested-snapshot snapshot=snapshot.contents}}
 </div>

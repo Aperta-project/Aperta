@@ -39,5 +39,12 @@ export default NestedQuestionOwner.extend(CardThumbnailObserver, {
 
   paperTitle: Ember.computed('paper', function() {
     return this.get('paper.displayTitle');
-  })
+  }),
+
+  getSnapshotForVersion: function(majorVersion, minorVersion) {
+    return this.get('snapshots').find(function(snapshot) {
+      return (snapshot.get('majorVersion') === Number(majorVersion) &&
+              snapshot.get('minorVersion') === Number(minorVersion));
+    });
+  }
 });

@@ -35,7 +35,7 @@ Router.map(function() {
 
     this.route('task', { path: '/tasks' }, function() {
       this.route('index', { path: '/:task_id' });
-      this.route('version', { path: '/:task_id/version/:major/:minor' });
+      this.route('version', { path: '/:task_id/version/:major_version/:minor_version' });
     });
   });
 

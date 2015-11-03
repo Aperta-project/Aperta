@@ -18,21 +18,21 @@
     <div class="bar-item">
       Now viewing:
       {{select-native
-      name="view_version"
-      content=model.versionedTexts
-      optionValuePath="id"
-      optionLabelPath="version_string"
-      selection=viewingVersion}}
+        name="view_version"
+        content=model.versionedTexts
+        optionValuePath="id"
+        optionLabelPath="version_string"
+        action=(action "setViewingVersion")}}
     </div>
     <div class="bar-item">
       Compare With:
       {{select-native
-      name="compare_version"
-      prompt="-"
-      content=model.versionedTexts
-      optionValuePath="id"
-      optionLabelPath="version_string"
-      selection=comparisonVersion}}
+        name="compare_version"
+        prompt="-"
+        content=model.versionedTexts
+        optionValuePath="id"
+        optionLabelPath="version_string"
+        action=(action "setComparisonVersion")}}
     </div>
     <div class="bar-item exit-versions" {{action "exitVersions"}}>
       ×
@@ -63,9 +63,9 @@
 
 
         {{html-diff
-        default=model.body
-        comparisonText=model.comparisonText
-            viewingText=model.viewingText}}
+          default=model.body
+          comparisonText=comparisonVersion.text
+          viewingText=viewingVersion.text}}
         </div>
       </article>
     </main>

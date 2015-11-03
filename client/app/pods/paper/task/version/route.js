@@ -4,12 +4,13 @@ export default Ember.Route.extend({
   cardOverlayService: Ember.inject.service('card-overlay'),
 
   model(params) {
+    this.set('majorVersion', params.major_version);
+    this.set('minorVersion', params.minor_version);
     return this.store.findTask(params.task_id);
   },
 
   afterModel(model) {
-    return Ember.RSVP.all([model.get('nestedQuestions'),
-                           model.get('nestedQuestionAnswers')]);
+    return Ember.RSVP.all([model.get('snapshots')]);
   },
 
   setupController(controller, model) {
@@ -18,6 +19,10 @@ export default Ember.Route.extend({
     this.set('taskController', taskController);
     taskController.setProperties({
       model: model,
+      snapshot: model.getSnapshotForVersion(
+        this.get('majorVersion'),
+        this.get('minorVersion')
+      ),
       comments: model.get('comments'),
       participations: model.get('participations'),
       onClose: Ember.isEmpty(redirectOptions) ? 'redirectToDashboard' : 'redirect'

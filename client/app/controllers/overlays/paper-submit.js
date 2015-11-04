@@ -4,9 +4,16 @@ export default Ember.Controller.extend({
   restless: Ember.inject.service('restless'),
   overlayClass: 'overlay--fullscreen overlay--green paper-submit-overlay',
   paperSubmitted: false,
+  previousPublishingState: null,
+  isFirstFullSubmission: Ember.computed.equal('previousPublishingState', 'invited_for_full_submission'),
+
+  recordPreviousPublishingState: function(){
+    this.set('previousPublishingState', this.get('model.publishingState'));
+  },
 
   actions: {
     submit() {
+      this.recordPreviousPublishingState();
       this.get('restless').putUpdate(this.get('model'), '/submit').then(()=> {
         this.set('paperSubmitted', true);
       }, (arg)=> {

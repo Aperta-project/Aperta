@@ -199,9 +199,9 @@ describe Paper do
     describe '#invite_full_submission' do
       let(:paper) { FactoryGirl.create(:paper, :initially_submitted) }
 
-      it 'transitions to in_revision' do
+      it 'transitions to invited_for_full_submission' do
         paper.invite_full_submission!
-        expect(paper).to be_in_revision
+        expect(paper.publishing_state).to eq('invited_for_full_submission')
       end
 
       it 'marks the paper editable' do

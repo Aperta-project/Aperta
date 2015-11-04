@@ -2,7 +2,12 @@ import Ember from 'ember';
 import TaskController from 'tahi/pods/paper/task/controller';
 
 export default TaskController.extend({
-  snapshots: Ember.computed("model", function(){
-    return this.get("model.snapshots");
+  queryParams: ['majorVersion', 'minorVersion'],
+
+  snapshot: Ember.computed('model', function(){
+    return this.get('model').getSnapshotForVersion(
+      this.get('majorVersion'),
+      this.get('minorVersion')
+    );
   })
 });

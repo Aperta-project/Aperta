@@ -4,8 +4,7 @@ export default Ember.Route.extend({
   cardOverlayService: Ember.inject.service('card-overlay'),
 
   model(params) {
-    this.set('majorVersion', params.major_version);
-    this.set('minorVersion', params.minor_version);
+    this.set('params', params)
     return this.store.find('task', params.task_id);
   },
 
@@ -19,10 +18,8 @@ export default Ember.Route.extend({
     this.set('taskController', taskController);
     taskController.setProperties({
       model: model,
-      snapshot: model.getSnapshotForVersion(
-        this.get('majorVersion'),
-        this.get('minorVersion')
-      ),
+      majorVersion: this.get('params.majorVersion'),
+      minorVersion: this.get('params.minorVersion'),
       comments: model.get('comments'),
       participations: model.get('participations'),
       onClose: Ember.isEmpty(redirectOptions) ? 'redirectToDashboard' : 'redirect'

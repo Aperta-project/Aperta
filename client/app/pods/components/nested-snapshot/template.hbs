@@ -28,18 +28,7 @@
       {{/if}}
 
       {{#if snapshot.value.attachment}}
-        <div class="snapshot-question-attachment">
-          <span class="snapshot-question-label">Attachment: </span>
-          <a href="{{snapshot.value.attachment}}">{{snapshot.value.attachment}}</a>
-        </div>
-        <div class="snapshot-question-attachment">
-          <span class="snapshot-question-label">Attachment: </span>
-          <a href="{{snapshot.value.attachment}}">{{snapshot.value.attachment}}</a>
-        </div>
-        <div class="snapshot-question-attachment">
-          <span class="snapshot-question-label">Attachment: </span>
-          <a href="{{snapshot.value.attachment}}">{{snapshot.value.attachment}}</a>
-        </div>
+        {{attachment-snapshot snapshot=snapshot.value.attachment}}
       {{/if}}
     </li>
   {{/if}}
@@ -56,6 +45,18 @@
 
   {{#if author}}
     {{author-snapshot snapshot=snapshot}}
+  {{/if}}
+
+  {{#if figure}}
+    <li>
+      {{attachment-snapshot snapshot=snapshot}}
+    </li>
+  {{/if}}
+
+  {{#if supportingInfo}}
+    <li>
+      {{attachment-snapshot snapshot=snapshot}}
+    </li>
   {{/if}}
 
 {{/if}}

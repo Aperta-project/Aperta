@@ -21,7 +21,7 @@
         name="view_version"
         content=model.versionedTexts
         optionValuePath="id"
-        optionLabelPath="version_string"
+        optionLabelPath="versionString"
         action=(action "setViewingVersion")}}
     </div>
     <div class="bar-item">
@@ -31,9 +31,10 @@
         prompt="-"
         content=model.versionedTexts
         optionValuePath="id"
-        optionLabelPath="version_string"
+        optionLabelPath="versionString"
         action=(action "setComparisonVersion")}}
     </div>
+    <div class="bar-item">{{majorVersion}} {{minorVersion}}</div>
     <div class="bar-item exit-versions" {{action "exitVersions"}}>
       ×
     </div>

@@ -49,10 +49,6 @@ export default DS.Model.extend({
   isSubmitted: attr('boolean'),
   manuscript_id: attr('string'),
 
-  // For diffing:
-  viewingText: attr('string'),
-  comparisonText: attr('string'),
-
   taskSorting: ['phase.position', 'position'],
   metadataTasks: Ember.computed.filterBy('tasks', 'isMetadataTask', true),
   sortedMetadataTasks: Ember.computed.sort('metadataTasks', 'taskSorting'),

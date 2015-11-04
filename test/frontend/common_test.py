@@ -5,6 +5,7 @@
 """
 
 import time
+import os
 
 from Base.FrontEndTest import FrontEndTest
 from Base.Resources import login_valid_email, login_valid_pw
@@ -56,10 +57,9 @@ class CommonTest(FrontEndTest):
     dashboard.enter_title_field(title)
     dashboard.select_journal(journal, type_)
     time.sleep(2)
-    # upload file
-    upload_btn = dashboard._get(dashboard._cns_upload_document)
-    fn = '/home/sbassi/projects/plos/tahi-integration/frontend/assets/docs/sample.docx'
+    fn = os.path.join(os.getcwd()+'/frontend/assets/docs/sample.docx')
     self._driver.execute_script("$('#upload-files').fileupload('add', {files:['%s']})"%fn)
+    # Time needed for script execution.
     time.sleep(10)
     return title
 

@@ -91,6 +91,10 @@ class DashboardPage(AuthenticatedPage):
     first_article_link.click()
     return first_article_link.text
 
+  def get_upload_button(self):
+    """Returns the upload button in the dashboard submit manuscript modal"""
+    return self._get(self._cns_upload_document)
+
   def validate_initial_page_elements_styles(self):
     """
     Validates the static page elements existence and styles

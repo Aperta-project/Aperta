@@ -23,6 +23,11 @@ class MetadataVersioningTest(CommonTest):
   """
   def test_metadata_versioning(self):
     """
+    Test metadata versioning (APERTA-3368).
+    AC:
+     - Version information
+     - add/edit/delete functionality disabled
+    Since this task is not completed, this test is disabled until the functionality is in place.
     """
     title = 'For metadata versioning'
     #if True: # for debugging
@@ -50,7 +55,6 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer.confirm_submit_btn()
     paper_viewer.close_submit_overlay()
     # go to workflow
-    #paper_editor._get(self._workflow_link).click()
     paper_viewer.click_workflow_lnk()
     workflow_page = WorkflowPage(self.getDriver())
     # press register decision
@@ -66,12 +70,17 @@ class MetadataVersioningTest(CommonTest):
     time.sleep(1)
     # TODO: file a bug about the need for refresh this
     paper_viewer.refresh()
+    alert = self._driver.switch_to_alert()
+    try:
+      alert.accept()
+    except NoAlertPresentException:
+      # Sometimes there is no alert on this operationm in thise case, do nothing
+      pass
     time.sleep(1)
-    # click on Revise Manuscript
+    # TODO: Upload image
     paper_viewer.complete_card('Revise Manuscript')
-
-
-
+    time.sleep(1)
+    # TODO: Submit again
     return self
 
 

@@ -35,12 +35,12 @@ class DashboardPage(AuthenticatedPage):
     self._dashboard_my_subs_title = (By.CSS_SELECTOR, 'section#dashboard-my-submissions h2.welcome-message')
     self._dashboard_create_new_submission_btn = (By.CSS_SELECTOR,
                                                  'section#dashboard-my-submissions button.button-primary.button--green')
-    self._dash_active_section_title = (By.CSS_SELECTOR, 'h5.active-papers')
+    self._dash_active_section_title = (By.CSS_SELECTOR, 'thead.active-papers tr th')
     self._dash_active_title = (By.CSS_SELECTOR,
-                               'h5.active-papers + ul.dashboard-submitted-papers div li.dashboard-paper-title a')
-    self._dash_inactive_section_title = (By.CSS_SELECTOR, 'h5.inactive-papers')
+                               'td.active-paper-title a')
+    self._dash_inactive_section_title = (By.CSS_SELECTOR, 'thead.inactive-papers tr th')
     self._dash_inactive_title = (By.CSS_SELECTOR,
-                                 'h5.inactive-papers + ul.dashboard-submitted-papers div li.dashboard-paper-title a')
+                                 'td.inactive-paper-title a')
     self._dashboard_paper_icon = (By.CLASS_NAME, 'manuscript-icon')
     self._dashboard_info_text = (By.CLASS_NAME, 'dashboard-info-text')
 
@@ -64,7 +64,8 @@ class DashboardPage(AuthenticatedPage):
 
     self._cns_chooser_chosen = (By.CLASS_NAME, 'select-box-item')
     self._cns_chooser_dropdown_arrow = (By.CLASS_NAME, 'select2-arrow')
-    self._create_btn = (By.CLASS_NAME, 'paper-new-create-document-button')
+
+    self._upload_btn = (By.CLASS_NAME, 'paper-new-upload-button')
 
     self._cns_cancel = (By.CLASS_NAME, 'button-link')
     self._cns_create = (By.CLASS_NAME, 'button-primary')
@@ -280,10 +281,11 @@ class DashboardPage(AuthenticatedPage):
         if not title:
           print('Error: No title in db! Illogical, Illogical, Norman Coordinate: Invalid document')
           return False
-        print(title)
-        print(paper.text)
-        assert ' '.join(title.split()) == paper.text.encode('utf8'), \
-            'DB: ' + ' '.join(title.split()) + ' is not equal to ' + paper.text + ', from page.'
+#        print(title)
+#        print(paper.text)
+#        assert ' '.join(title.split()) == paper.text.encode('utf8'), \
+#            'DB: ' + ' '.join(title.split()) + ' is not equal to ' + paper.text + ', from page.'
+        assert title == paper.text.encode('utf8'), 'DB: ' + title + ' is not equal to ' + paper.text + ', from page.'
         # Sort out paper role display
         paper_roles = PgSQL().query('SELECT role FROM paper_roles '
                                     'INNER JOIN papers ON papers.id = paper_roles.paper_id '
@@ -335,7 +337,7 @@ class DashboardPage(AuthenticatedPage):
 
   def title_generator(self):
     """Creates a new unique title"""
-    return 'Hendrik %s'%uuid.uuid4()
+    return 'Hendrik %s' % uuid.uuid4()
 
   def click_view_invites_button(self):
     """Click View Invitations button"""
@@ -434,7 +436,7 @@ class DashboardPage(AuthenticatedPage):
     assert journal_chooser.text == 'What journal are you submitting to?'
     paper_type_chooser = self._get(self._cns_paper_type_chooser)    
     assert paper_type_chooser.text == "Choose the type of paper you're submitting"
-    create_btn = self._get(self._create_btn)
+    create_btn = self._get(self._upload_btn)
     # TODO: Check this when fixed bug #102130748
     #self.validate_secondary_big_green_button_style(create_btn)
     create_btn.click()

@@ -29,16 +29,13 @@ class Snapshot::NestedQuestionSerializer
 
   def serialized_attachment_json
     if @answer
-      attachment = QuestionAttachment.where(question: @answer).first
-      if attachment
-        Snapshot::QuestionAttachmentSerializer.new(attachment).as_json
+      if @answer.attachment
+        Snapshot::QuestionAttachmentSerializer.new(@answer.attachment).as_json
       end
     end
   end
 
   def fetch_answer
-    @owner.nested_question_answers.where(
-      nested_question_id: @nested_question.id
-    ).first
+    @owner.answer_for(@nested_question.ident)
   end
 end

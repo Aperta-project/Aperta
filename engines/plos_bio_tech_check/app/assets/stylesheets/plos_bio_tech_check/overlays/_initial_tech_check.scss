@@ -1,0 +1,25 @@
+.initial-tech-check-round-number {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.change-instructions {
+  width: 70%;
+}
+
+.form-control {
+  &.extra-tall {
+    height: 200px;
+    width: 75%;
+  }
+}
+
+.initial-check-tech-flash {
+  .flash-message {
+    width: 75%;
+
+    .flash-message-content {
+      width: 70%;
+    }
+  }
+}

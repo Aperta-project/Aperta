@@ -23,10 +23,15 @@ describe ParticipationsController do
 
     it_behaves_like "an unauthenticated json request"
 
-    it "returns the task' participations" do
+    it "returns the task's participations" do
       do_request
+
+      participation_ids = res_body['participations'].map do |participation|
+        participation['id']
+      end
+
       expect(res_body['participations'].count).to eq(2)
-      expect(res_body['participations'][0]['id']).to eq(participation1.id)
+      expect(participation_ids).to include(participation1.id, participation2.id)
     end
   end
 

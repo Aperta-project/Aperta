@@ -4,20 +4,35 @@
     <div class="task-list-doi"><strong>Manuscript ID:</strong> {{paper.manuscript_id}}</div>
   {{/if}}
 
-  {{#if readyToSubmit}}
-    <button id="sidebar-submit-paper" {{action "submitPaper"}}
-      class="button-primary button-pre-submit-paper button--green">
-      Submit
-    </button>
-  {{/if}}
+  <div id='submission-state-information'>
+    {{#if getsGradualEngagementToggle}}
+      <i id='submission-process-toggle'
+         title="Submission Process"
+         class="fa fa-question-circle" {{action 'toggleSubmissionProcess'}}>
+      </i>
+    {{/if}}
 
-  {{#if preSubmission}}
-    You must complete the following tasks before submitting:
-  {{/if}}
+    {{#if readyToSubmit}}
+      <div class='ready-to-submit {{paper.engagementState}}'>Your manuscript is ready for <span class='text-capitalize'>{{paper.engagementState}}</span> Submission.</div>
 
-  {{#if isSubmitted}}
-    This paper has been submitted.
-  {{/if}}
+      <button id="sidebar-submit-paper" {{action "submitPaper"}}
+        class="button-primary button-pre-submit-paper button--green">
+        Submit
+      </button>
+    {{/if}}
+
+    {{#if preSubmission}}
+      {{#if paper.gradualEngagement}}
+        {{partial 'submission/sidebar-gradual-engagement-presubmission'}}
+      {{else}}
+        You must complete the following tasks before submitting:
+      {{/if}}
+    {{/if}}
+
+    {{#if isSubmitted}}
+      This paper has been submitted.
+    {{/if}}
+  </div>
 
   <hr />
 

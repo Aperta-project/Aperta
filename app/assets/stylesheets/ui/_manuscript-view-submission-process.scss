@@ -1,0 +1,61 @@
+#paper-container {
+  #submission-process {
+    background-color: #F5F5F5;
+    padding-bottom: 30px;
+
+    #inner {
+      padding:20px 30px 30px 50px;
+      border: 1px solid #E1F6DD;
+      background-color: #EAFDE8;
+    }
+    #sp-close {
+      color: $tahi-green;
+      font-size: 25px;
+      float: right;
+      opacity: 0.5;
+      margin: -10px -10px 10px 10px;
+      font-family: Arial;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+    p {
+      font-size: 85%;
+    }
+    h4 {
+      margin-top: 0;
+    }
+
+    .balls-and-columns {
+      p {
+        color: #333;
+      }
+      #balls {
+        margin-bottom: 2px;
+        .ball {
+          color: white;
+          background-color:#39A329;
+        }
+      }
+      #lines {
+        margin-top: 35px;
+        .line {
+          border-top: 1px solid #39A329;
+        }
+      }
+      h5 {
+        color: #66AA4A;
+      }
+    }
+  }
+}
+
+#submission-process-toggle {
+  color: $tahi-green;
+  font-size: 17px;
+  float:right;
+  margin: 0px 5px 10px 10px;
+  cursor: pointer;
+}

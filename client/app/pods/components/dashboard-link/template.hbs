@@ -1,5 +1,6 @@
 <td class="col-xs-9 dashboard-paper-title {{type}}-paper-title hug-left">
-  {{#link-to "paper.index" model.id}}
+  {{#link-to "paper.index" model.id
+             id=paperLinkId}}
     {{{model.displayTitle}}}
   {{/link-to}}
   <div class='dashboard-manuscript-id'>

@@ -1,0 +1,12 @@
+<div class='gradual-engagement-presubmission-messaging {{paper.engagementState}}'>
+  <b>{{paper.journal.name}} Submission Process </b>
+
+  <br />
+
+  Please provide the following information to submit your
+    {{#unless paper.isInRevision}}
+      manuscript for <span class='text-capitalize'>{{paper.engagementState}}</span> Submission.
+    {{else}}
+      manuscript.
+    {{/unless}}
+</div>

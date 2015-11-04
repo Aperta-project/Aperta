@@ -11,14 +11,18 @@ test('Returns submitted message when paper is submitted', function(assert) {
   assert.expect(2);
 
   let component = this.subject();
+  let paper = Ember.Object.create();
+  component.set('paper', paper);
   this.render();
-
   // Assert initial content of the component
   let initialContent = $.trim(this.$().text());
   assert.equal(initialContent, '');
 
   Ember.run(function() {
-    component.set('paper', {publishingState: 'submitted'});
+    //note NOT gradual engagment,
+    //this is more thoroughly tested in a feature
+    //spec: spec/features/gradual_engagement.rb
+    paper.set('publishingState', 'submitted');
   });
 
   let finalContent = $.trim(this.$().text());

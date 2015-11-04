@@ -77,12 +77,20 @@ export default DS.Model.extend({
   },
 
   isUnsubmitted: computed.equal('publishingState', 'unsubmitted'),
-
   isSubmitted: computed.equal('publishingState', 'submitted'),
-
-  //gradual engagement after initial submission
+  invitedForFullSubmission: computed.equal('publishingState', 'invited_for_full_submission'),
   isInitiallySubmitted: computed.equal('publishingState', 'initially_submitted'),
-
-  //gradual engagement after invitation
   isInRevision: computed.equal('publishingState', 'in_revision'),
+
+  isInitialSubmission: computed.and('gradualEngagement', 'isUnsubmitted'),
+  isFullSubmission: computed.and('gradualEngagement', 'invitedForFullSubmission'),
+
+  engagementState: computed('isInitialSubmission', 'isFullSubmission', function(){
+    if (this.get('isInitialSubmission')) {
+      return "initial";
+    }
+    else if (this.get('isFullSubmission')) {
+      return "full";
+    }
+  }),
 });

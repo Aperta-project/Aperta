@@ -11,6 +11,9 @@
 {{withdrawal-banner paper=model staff=currentUser.siteAdmin}}
 
 <div id="paper-container" class="clearfix paper-container-html">
+
+  {{partial 'submission/submission-process'}}
+
   {{paper-sidebar paper=model
                   user=currentUser
                   commentLooks=commentLooks

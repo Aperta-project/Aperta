@@ -67,5 +67,12 @@ export default DS.Model.extend({
 
   latestDecision: computed('decisions.[]', function() {
     return this.get('decisions').findBy('isLatest', true);
-  })
+  }),
+
+  textForVersion: function(majorVersion, minorVersion) {
+    return this.get('versionedTexts').find(function(version) {
+      return (version.get('majorVersion') === Number(majorVersion) &&
+              version.get('minorVersion') === Number(minorVersion));
+    });
+  }
 });

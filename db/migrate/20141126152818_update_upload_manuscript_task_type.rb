@@ -1,4 +1,3 @@
-# This migration comes from upload_manuscript_engine (originally 20141126152622)
 class UpdateUploadManuscriptTaskType < ActiveRecord::Migration
   def up
     execute <<-SQL

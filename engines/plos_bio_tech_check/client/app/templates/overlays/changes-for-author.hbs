@@ -1,0 +1,13 @@
+<h1>{{title}}</h1>
+
+<h3>Please address the following changes so we can process your manuscript:</h3>
+<p class="preserve-line-breaks">{{model.body.initialTechCheckBody}}</p>
+
+{{flash-messages classNames="submit-tech-changes-flash"}}
+
+<button {{action "submitTechChanges"}}
+        id="submit-tech-fix"
+        class="button-primary button--green {{if isSubmissionTaskNotEditable "button--disabled"}} {{if isLoading "button--disabled"}}"
+        disabled={{isLoading}}>
+  These changes have been made
+</button>

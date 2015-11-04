@@ -36,6 +36,22 @@ test("It can diff a single paragraph of two sentences", function(assert) {
   );
 });
 
+test('It can diff a paragraph of two sentences with a div', function(assert) {
+  this.component.setProperties({
+    viewingText: '<p>Hello there. I am a cat.</p>',
+    comparisonText: '<div><p>Hello there. I am a dog.</p></div>'
+  });
+
+  assert.equal(
+    this.component.diff(),
+    '<div><p><span class=\"unchanged\">Hello there</span>' +
+      '<span class=\"unchanged\">. </span><span class=\"removed\">' +
+      'I am a dog</span><span class=\"added\">I am a cat</span>' +
+      '<span class=\"unchanged\">.</span><span class=\"unchanged\"></span>' +
+      '</p></div>'
+  );
+});
+
 test("forceValidHTML adds pairs of elements to `tokens`", function(assert) {
        var tokens =  ["a", "b", "c"];
        this.component.forceValidHTML($("<p>Grandiose</p>")[0], tokens);
@@ -63,6 +79,13 @@ test("unForceValidHTML replaces fake- elts with real ones", function(assert) {
 test("shouldRecurseInto is true if the node is a <p>", function(assert) {
   assert.equal(
     this.component.shouldRecurseInto($("<p>Circumspect</p>")[0]),
+    true
+  );
+});
+
+test('shouldRecurseInto is true if the node is a <div>', function(assert) {
+  assert.equal(
+    this.component.shouldRecurseInto($('<div>Circumspect</div>')[0]),
     true
   );
 });

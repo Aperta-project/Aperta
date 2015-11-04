@@ -15,7 +15,7 @@ export default Ember.Component.extend({
   default: null,
 
   // These are elements that contain sentences worth diffing individually.
-  tokenizeInsideElements: ['p'],
+  tokenizeInsideElements: ['p', 'div'],
 
   renderEquations: true,
 

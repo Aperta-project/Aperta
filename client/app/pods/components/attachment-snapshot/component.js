@@ -3,7 +3,7 @@ import namedComputedProperty from 'tahi/mixins/components/snapshot-named-compute
 
 export default Ember.Component.extend({
   snapshot: null,
-  url: namedComputedProperty('file'),
+  file: namedComputedProperty('file'),
   title: namedComputedProperty('title'),
   caption: namedComputedProperty('caption')
 });

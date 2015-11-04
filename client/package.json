@@ -16,9 +16,6 @@
     "test": "ember test"
   },
   "repository": "",
-  "engines": {
-    "node": ">= 0.10.0"
-  },
   "author": "",
   "license": "MIT",
   "devDependencies": {

@@ -7,6 +7,10 @@ class SnapshotService::Registry
     @registrations = {}
   end
 
+  def empty?
+    @registrations.empty?
+  end
+
   def clear
     @registrations.clear
   end

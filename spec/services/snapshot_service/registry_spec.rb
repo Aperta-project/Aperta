@@ -7,6 +7,22 @@ describe SnapshotService::Registry do
 
   subject(:registry) { described_class.new }
 
+  describe "#empty?" do
+    context "and there are no registrations" do
+      it "returns true" do
+        expect(registry.empty?).to be(true)
+      end
+    end
+
+    context "and there are registrations" do
+      before { registry.serialize(Thing, with: ExampleSerializer) }
+
+      it "returns false" do
+        expect(registry.empty?).to be(false)
+      end
+    end
+  end
+
   describe "registering serializers" do
     let(:object) { Thing.new }
 

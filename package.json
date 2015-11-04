@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "## Development Notes",
   "main": "index.js",
+  "engines": {
+    "node": "4.2.1"
+  },
   "directories": {
     "doc": "doc",
     "test": "test"

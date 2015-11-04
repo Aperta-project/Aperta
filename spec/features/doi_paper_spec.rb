@@ -2,18 +2,8 @@ require 'rails_helper'
 
 feature "Editing paper", selenium: true, js: true do
   let(:user) { FactoryGirl.create :user }
-  let(:journal) {
-    FactoryGirl.create :journal,
-    doi_publisher_prefix: nil,
-    doi_journal_prefix: nil,
-    last_doi_issued: nil
-  }
-  let(:paper_type) {
-    journal.manuscript_manager_templates.pluck(:paper_type).first
-  }
 
   context "As an author on the paper page" do
-
     before do
       assign_journal_role(journal, user, :admin)
       login_as(user, scope: :user)
@@ -21,50 +11,51 @@ feature "Editing paper", selenium: true, js: true do
     end
 
     context "on a journal without a doi prefix set" do
+      let(:journal) {
+        FactoryGirl.create :journal,
+        doi_publisher_prefix: nil,
+        doi_journal_prefix: nil,
+        last_doi_issued: nil
+      }
+
+      let(:paper_type) {
+        journal.manuscript_manager_templates.pluck(:paper_type).first
+      }
+
+      let(:paper) {
+        FactoryGirl.create(:paper, journal: journal, paper_type: paper_type)
+      }
 
       scenario "it doesn't contain any doi artifacts" do
-        visit '/'
-        click_button 'Create New Submission'
-        title_field = find "#paper-short-title .format-input-field"
-        title_field.send_keys "A paper with no doi"
-        p = PageFragment.new(find('#overlay'))
-        p.select2(journal.name, css: '.paper-new-journal-select')
-        p.select2(paper_type,  css: '.paper-new-paper-type-select')
-        click_button 'Create Document'
-        using_wait_time 10 do
-          wait_for_ajax
-        end
-        expect(page.current_path).to match %r{/papers/\d+}
+        visit "/papers/#{paper.id}"
         within "#paper-container" do
-          expect(page).to_not have_text("DOI:")
+          expect(page).to_not have_text("Manuscript ID")
         end
       end
     end
 
     context "on a journal with a doi prefix set" do
-      before do
-        journal.update_attributes(doi_publisher_prefix: 'vicious',
-                                  doi_journal_prefix: 'robots',
-                                  last_doi_issued: '8887')
-      end
+      let(:journal) {
+        FactoryGirl.create :journal,
+        doi_publisher_prefix: 'vicious',
+        doi_journal_prefix: 'robots',
+        last_doi_issued: '8887'
+      }
+
+      let(:paper_type) {
+        journal.manuscript_manager_templates.pluck(:paper_type).first
+      }
+
+      let(:paper) {
+        FactoryGirl.create(:paper, journal: journal, paper_type: paper_type)
+      }
 
       scenario "shows the manuscript id (derived from doi) on the page" do
-        visit '/'
-        click_button 'Create New Submission'
-        title_field = find "#paper-short-title .format-input-field"
-        title_field.send_keys "A paper with doi"
-        p = PageFragment.new(find('#overlay'))
-        p.select2(journal.name, css: '.paper-new-journal-select')
-        p.select2(paper_type,  css: '.paper-new-paper-type-select')
-        click_button 'Create Document'
-        using_wait_time 10 do
-          wait_for_ajax
-        end
+        visit "/papers/#{paper.id}"
 
         within ".task-list-doi" do
           expect(page).to have_content "Manuscript ID: robots.8888"
         end
-        expect(page.current_path).to eq("/papers/#{Paper.last.id}")
       end
     end
 

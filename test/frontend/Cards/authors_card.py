@@ -39,18 +39,24 @@ class AuthorsCard(BaseCard):
       ".//div[contains(@class, 'add-author-form')]/div[2]/div[2]/input")
     self._institution_div = (By.CLASS_NAME, 'did-you-mean-input')
     self._author_lbls = (By.CLASS_NAME, 'author-label')
+    self._designed_chkbx = (By.XPATH,
+      ".//input[@name='contributions.conceived_and_designed_experiments']/following-sibling::span")
+    self._performed_chkbx = (By.XPATH,
+      ".//input[@name='contributions.performed_the_experiments']/following-sibling::span")
+    self._analized_chkbx = (By.XPATH,
+      ".//input[@name='contributions.analyzed_data']/following-sibling::span")
+    self._tools_chkbx = (By.XPATH,
+      ".//input[@name='contributions.contributed_tools']/following-sibling::span")
+    self._writing_chkbx = (By.XPATH,
+      ".//input[@name='contributions.contributed_writing']/following-sibling::span")
     self._author_contrib_lbl = (By.TAG_NAME, 'h4')
     self._add_author_cancel_lnk = (By.CSS_SELECTOR, 'span.author-form-buttons a')
     self._add_author_add_btn = (By.CSS_SELECTOR, 'span.author-form-buttons button')
     self._author_items = (By.CSS_SELECTOR, 'div.authors-overlay-item')
     self._delete_author_div = (By.CLASS_NAME, 'authors-overlay-item--delete')
     self._edit_author = (By.CLASS_NAME, 'fa-pencil')
-    #self._corresponding = (By.CLASS_NAME, 'author-corresponding')
-    #published_as_corresponding_author
-    # CHECK IF FOLLOWING IS REACH IN TWO WAYS!
     self._corresponding = (By.XPATH,
       ".//input[@name='published_as_corresponding_author']")
-    self._author_contribution = (By.CLASS_NAME, 'author-contribution')
 
    #POM Actions
   def click_task_completed_checkbox(self):
@@ -242,7 +248,7 @@ class AuthorsCard(BaseCard):
     corresponding_chck = self._get(self._corresponding)
     if not corresponding_chck.is_selected():
       corresponding_chck.click()
-    author_contribution_chck = self._get(self._author_contribution)
+    author_contribution_chck = self._get(self._designed_chkbx)
     if not author_contribution_chck.is_selected():
       author_contribution_chck.click()
     add_author_add_btn = self._get(self._add_author_add_btn)

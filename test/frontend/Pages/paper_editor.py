@@ -289,7 +289,7 @@ class PaperEditorPage(AuthenticatedPage):
         return None
 
     base_card = BaseCard(self._driver)
-    if card_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript'):
+    if card_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript', 'Revise Manuscript'):
       # Check completed_check status
       completed = base_card._get(base_card._completed_check)
       if not completed.is_selected():
@@ -304,6 +304,7 @@ class PaperEditorPage(AuthenticatedPage):
     elif card_name == 'Billing':
       billing = BillingCard(self._driver)
       billing.add_billing_data(billing_data)
+
 
   def press_submit_btn(self):
     """Press the submit button"""

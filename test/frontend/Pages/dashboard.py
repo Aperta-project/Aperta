@@ -66,7 +66,7 @@ class DashboardPage(AuthenticatedPage):
 
     self._cns_cancel = (By.CLASS_NAME, 'button-link')
     self._cns_create = (By.CLASS_NAME, 'button-primary')
-    self._submitted_papers = (By.CLASS_NAME, 'dashboard-submitted-papers')
+    self._submitted_papers = (By.CLASS_NAME, 'dashboard-paper-title')
     # First article
     self._first_paper = (By.CSS_SELECTOR, 'li.dashboard-paper-title > a')
 
@@ -81,8 +81,9 @@ class DashboardPage(AuthenticatedPage):
   def click_on_existing_manuscript_link_partial_title(self, partial_title):
     """Click on existing manuscript link using partial title"""
     first_article_link = self.driver.find_element_by_partial_link_text(partial_title)
+    title = first_article_link.text
     first_article_link.click()
-    return first_article_link.text
+    return title
 
   def click_on_first_manuscript(self):
     """Click on first available manuscript link"""
@@ -241,7 +242,7 @@ class DashboardPage(AuthenticatedPage):
     elif prefix and random_bit:
       return '%s %s'%(prefix, uuid.uuid4())
     elif prefix and not random_bit:
-      return '%s'%prefix
+      return prefix
 
   def click_view_invites_button(self):
     """Click View Invitations button"""

@@ -13,6 +13,7 @@ from Cards.basecard import BaseCard
 from Pages.paper_editor import PaperEditorPage
 from frontend.common_test import CommonTest
 from Pages.workflow_page import WorkflowPage
+from Cards.register_decision_card import RegisterDecisionCard
 
 @MultiBrowserFixture
 class MetadataVersioningTest(CommonTest):
@@ -23,7 +24,7 @@ class MetadataVersioningTest(CommonTest):
   def test_metadata_versioning(self):
     """
     """
-    title = 'MV Test-16 '
+    title = 'For metadata versioning'
     #if True: # for debugging
     if self.check_article(title):
       init = True if 'users/sign_in' in self._driver.current_url else False
@@ -35,26 +36,40 @@ class MetadataVersioningTest(CommonTest):
                                  type_='Research',
                                  random_bit=True,
                                  init=False)
-    # go to dashboard
-    article = self.select_preexisting_article(title=title, init=False)
-    paper_editor = PaperEditorPage(self.getDriver())
-    paper_editor.complete_card('Billing')
-    paper_editor.complete_card('Authors') #CHECK THIS OUT!
-    paper_editor.complete_card('Cover Letter')
-    paper_editor.complete_card('Figures')
-    paper_editor.complete_card('Supporting Info')
-    paper_editor.complete_card('Upload Manuscript')
+      # go to dashboard
+      self.select_preexisting_article(title=title, init=False)
+    paper_viewer = PaperEditorPage(self.getDriver())
+    paper_viewer.complete_card('Billing')
+    paper_viewer.complete_card('Authors') #CHECK THIS OUT!
+    paper_viewer.complete_card('Cover Letter')
+    paper_viewer.complete_card('Figures')
+    paper_viewer.complete_card('Supporting Info')
+    paper_viewer.complete_card('Upload Manuscript')
     # Click submit
-    paper_editor.press_submit_btn()
-    paper_editor.confirm_submit_btn()
-    paper_editor.close_submit_overlay()
+    paper_viewer.press_submit_btn()
+    paper_viewer.confirm_submit_btn()
+    paper_viewer.close_submit_overlay()
     # go to workflow
     #paper_editor._get(self._workflow_link).click()
-    paper_editor.click_workflow_lnk()
+    paper_viewer.click_workflow_lnk()
     workflow_page = WorkflowPage(self.getDriver())
     # press register decision
     workflow_page._get(workflow_page._register_decision_button).click()
-    time.sleep(20)
+    # register decision (major)
+    register_decision_card = RegisterDecisionCard(self.getDriver())
+    register_decision_card.register_decision('Major Revision')
+    time.sleep(1)
+    # manuscript
+    workflow_page._get(workflow_page._manuscript_link).click()
+    time.sleep(1)
+    paper_viewer = PaperEditorPage(self.getDriver())
+    time.sleep(1)
+    # TODO: file a bug about the need for refresh this
+    paper_viewer.refresh()
+    time.sleep(1)
+    # click on Revise Manuscript
+    paper_viewer.complete_card('Revise Manuscript')
+
 
 
     return self

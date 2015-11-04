@@ -43,6 +43,7 @@ class WorkflowPage(AuthenticatedPage):
       ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[3]/a")
     self._manuscript_icon = (By.XPATH,
       ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div/*[local-name() = 'svg']/*[local-name() = 'path']")
+    self._manuscript_link = (By.XPATH, "//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/a")
     self._manuscript_text = (By.XPATH,
       ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div[2]")
     self._column_header = (By.XPATH,
@@ -75,7 +76,7 @@ class WorkflowPage(AuthenticatedPage):
         ".//div[contains(@class, 'delete-card-action-buttons')]/div/button")
     self._remove_cancel_button = (By.XPATH,
         ".//div[contains(@class, 'delete-card-action-buttons')]/div[2]/button")
-    self._register_decision_button = (By.XPATH, ".//div[contains(., 'Register Decision')]")
+    self._register_decision_button = (By.XPATH, ".//a/div[contains(., 'Register Decision')]")
 
     # End of not used elements
 

@@ -149,7 +149,7 @@ class PlosPage(object):
     return self
 
   def refresh(self):
-    """refreshes current page"""
+    """Refreshes current page"""
     self._driver.refresh()
     return self
 
@@ -164,7 +164,7 @@ class PlosPage(object):
     else:
       fh = tempfile.NamedTemporaryFile(mode='w+b', dir='/tmp', delete=False)
       file_name = fh.name
-    for chunk in r.iter_content(chunk_size=1024): 
+    for chunk in r.iter_content(chunk_size=1024):
       if chunk:
         fh.write(chunk)
         fh.flush()

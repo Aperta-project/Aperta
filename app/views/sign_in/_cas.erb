@@ -1,0 +1,2 @@
+<%= link_to "Sign in with CAS", omniauth_authorize_path(resource_name, provider), class: "button-primary auth-3rd-party-button auth-cas" %>
+<%= link_to "Create CAS Account", ENV.fetch("CAS_SIGNUP_URL"), class: "button-secondary auth-3rd-party-button auth-cas" %>

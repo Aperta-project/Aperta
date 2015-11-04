@@ -151,6 +151,14 @@ a {
   &:hover { color: #fff; }
 }
 
+.button-secondary.auth-3rd-party-button {
+  background: transparent;
+  border-color: $tahi-green;
+  text-transform: none;
+
+  &:hover { color: $tahi-green; }
+}
+
 
 .auth-orcid {
   background: #7ab727;

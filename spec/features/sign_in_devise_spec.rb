@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "Account creation", js: true do
+feature "Devise account creation", js: true do
   scenario "User can create an account" do
     sign_up_page = SignUpPage.visit
     dashboard_page = sign_up_page.sign_up_as username: 'albert',
@@ -14,7 +14,7 @@ feature "Account creation", js: true do
   end
 end
 
-feature "Signing in", js: true do
+feature "Devise signing in", js: true do
   let!(:user) { create :user }
   scenario "User can sign in to & out of the site using their email address" do
     sign_in_page = SignInPage.visit
@@ -33,7 +33,7 @@ feature "Signing in", js: true do
   end
 end
 
-feature "Resetting password", js: true do
+feature "Devise resetting password", js: true do
   let!(:user) { create :user }
   scenario "User can reset their password" do
     SignInPage.visit

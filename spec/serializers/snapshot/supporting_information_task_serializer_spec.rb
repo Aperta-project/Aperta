@@ -43,15 +43,13 @@ describe Snapshot::SupportingInformationTaskSerializer do
           { name: "file", type: "text", value: "yeti.jpg" },
           { name: "title", type: "text", value: "supporting info 1 title" },
           { name: "caption", type: "text", value: "supporting info 1 caption" },
-          { name: "publishable", type: "boolean", value: true },
-          { name: "status", type: "text", value: "processing" }
+          { name: "publishable", type: "boolean", value: true }
         ]},
         { name: "supporting-information-file", type: "properties", children: [
           { name: "file", type: "text", value: "yeti.tiff" },
           { name: "title", type: "text", value: "supporting info 2 title" },
           { name: "caption", type: "text", value: "supporting info 2 caption" },
-          { name: "publishable", type: "boolean", value: true },
-          { name: "status", type: "text", value: "processing" }
+          { name: "publishable", type: "boolean", value: true }
         ]}
       )
     end

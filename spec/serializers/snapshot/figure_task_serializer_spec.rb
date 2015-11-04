@@ -35,14 +35,12 @@ describe Snapshot::FigureTaskSerializer do
         { name: "figure", type: "properties", children: [
           { name: "file", type: "text", value: "yeti.jpg" },
           { name: "title", type: "text", value: "figure 1 title" },
-          { name: "caption", type: "text", value: "figure 1 caption" },
-          { name: "status", type: "text", value: "processing" }
+          { name: "caption", type: "text", value: "figure 1 caption" }
         ]},
         { name: "figure", type: "properties", children: [
           { name: "file", type: "text", value: "yeti.tiff" },
           { name: "title", type: "text", value: "figure 2 title" },
-          { name: "caption", type: "text", value: "figure 2 caption" },
-          { name: "status", type: "text", value: "processing" }
+          { name: "caption", type: "text", value: "figure 2 caption" }
         ]}
       )
     end

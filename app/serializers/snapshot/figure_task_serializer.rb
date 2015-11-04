@@ -12,8 +12,7 @@ class Snapshot::FigureTaskSerializer < Snapshot::BaseSerializer
     figure_children = [
       snapshot_property("file", "text", figure[:attachment]),
       snapshot_property("title", "text", figure.title),
-      snapshot_property("caption", "text", figure.caption),
-      snapshot_property("status", "text", figure.status)
+      snapshot_property("caption", "text", figure.caption)
     ]
 
     { name: "figure", type: "properties", children: figure_children }

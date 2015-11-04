@@ -17,8 +17,7 @@ class Snapshot::SupportingInformationTaskSerializer < Snapshot::BaseSerializer
       snapshot_property("file", "text", file[:attachment]),
       snapshot_property("title", "text", file.title),
       snapshot_property("caption", "text", file.caption),
-      snapshot_property("publishable", "boolean", file.publishable),
-      snapshot_property("status", "text", file.status)
+      snapshot_property("publishable", "boolean", file.publishable)
     ]
   end
 end

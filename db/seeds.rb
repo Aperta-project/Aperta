@@ -124,7 +124,7 @@ time = Benchmark.realtime do
   end
 
   # Create Papers for QA
-  unless Paper.where(short_title: "Hendrik a011f9d4-0119-4611-88af-9838ff154cec").present?
+  unless Paper.where(title: "Hendrik a011f9d4-0119-4611-88af-9838ff154cec").present?
     PaperFactory.create(
       {
         journal_id:  plos_journal.id,
@@ -138,7 +138,7 @@ time = Benchmark.realtime do
     ).save!
   end
 
-  unless Paper.where(short_title: "Hendrik 12de86c5-5afc-44cb-ab06-00a3411f66d5").present?
+  unless Paper.where(title: "Hendrik 12de86c5-5afc-44cb-ab06-00a3411f66d5").present?
     PaperFactory.create(
       {
         journal_id:  plos_journal.id,
@@ -153,7 +153,7 @@ time = Benchmark.realtime do
   end
 
   # Create Paper for Admin
-  unless Paper.where(short_title: "The great scientific paper of 2015").present?
+  unless Paper.where(title: "The most scrumtrulescent scientific paper of 2015.").present?
     PaperFactory.create(
       {
         journal_id:  plos_journal.id,

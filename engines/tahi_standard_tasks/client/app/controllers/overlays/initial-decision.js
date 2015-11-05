@@ -1,23 +1,26 @@
 import Ember from 'ember';
 import TaskController from 'tahi/pods/paper/task/controller';
 
+const { computed } = Ember;
+
 export default TaskController.extend({
 
   restless: Ember.inject.service(),
-  initialDecision: Ember.computed.alias('model.paper.decisions.firstObject'),
-  isSavingData: Ember.computed.alias('initialDecision.isSaving'),
-  paper: Ember.computed.alias('model.paper'),
-  isPaperSubmitted: Ember.computed.equal('paper.publishingState', 'submitted'),
-  isTaskCompleted: Ember.computed.equal('model.completed', true),
-  isTaskUncompleted: Ember.computed.not('isTaskCompleted'),
-  publishable: Ember.computed.and('isPaperSubmitted', 'isTaskUncompleted'),
-  nonPublishable: Ember.computed.not('publishable'),
-  hasNoLetter: Ember.computed.empty('initialDecision.letter'),
-  hasNoVerdict: Ember.computed.none('initialDecision.verdict'),
-  cannotRegisterDecision: Ember.computed.or('hasNoLetter', 'hasNoVerdict',
+  initialDecision: computed.alias('model.paper.decisions.firstObject'),
+  isSavingData: computed.alias('initialDecision.isSaving'),
+  paper: computed.alias('model.paper'),
+  isTaskCompleted: computed.equal('model.completed', true),
+  isTaskUncompleted: computed.not('isTaskCompleted'),
+  publishable: computed.and('isPaperInitiallySubmitted', 'isTaskUncompleted'),
+  nonPublishable: computed.not('publishable'),
+  hasNoLetter: computed.empty('initialDecision.letter'),
+  hasNoVerdict: computed.none('initialDecision.verdict'),
+  isPaperInitiallySubmitted: computed.equal('paper.publishingState',
+                                                  'initially_submitted'),
+  cannotRegisterDecision: computed.or('hasNoLetter', 'hasNoVerdict',
                                             'isTaskCompleted'),
 
-  verdict: Ember.computed('initialDecision.verdict', function() {
+  verdict: computed('initialDecision.verdict', function() {
     if (this.get('initialDecision.verdict')) {
       return this.get('initialDecision.verdict').replace(/_/g, ' ');
     }

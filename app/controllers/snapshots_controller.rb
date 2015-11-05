@@ -12,9 +12,6 @@ class SnapshotsController < ApplicationController
     respond_with snapshots + [latest]
   end
 
-  def hello
-  end
-
   def show
     respond_with snapshot
   end

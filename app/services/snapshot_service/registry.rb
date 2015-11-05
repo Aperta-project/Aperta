@@ -15,10 +15,6 @@ class SnapshotService::Registry
     @registrations.clear
   end
 
-  def empty?
-    @registrations.empty?
-  end
-
   def serialize(klass, with:)
     existing_registration = @registrations[klass.name]
     if existing_registration

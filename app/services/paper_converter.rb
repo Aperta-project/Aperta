@@ -23,10 +23,14 @@ class PaperConverter
     end
   end
 
+  # Post a job to the ihat server.
+  #
+  # @return [IhatJobResponse]
   def self.post_ihat_job(payload:, options: {})
-    connection.post('/jobs', job: {
-                      input: payload,
-                      options: options
-                    }).body
+    response = connection.post('/jobs', job: {
+                                 input: payload,
+                                 options: options
+                               })
+    IhatJobResponse.new(JSON.parse(response.body).with_indifferent_access[:job])
   end
 end

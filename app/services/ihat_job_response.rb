@@ -1,10 +1,11 @@
 class IhatJobResponse
-  attr_reader :outputs, :state, :metadata
+  attr_reader :outputs, :state, :metadata, :job_id
 
   def initialize(params={})
     @state = params[:state].to_sym
     @outputs = params[:outputs]
     @metadata = params[:options][:metadata] || {}
+    @job_id = params[:id]
   end
 
   def paper_id

@@ -114,7 +114,7 @@ http_interactions:
       - thin 1.6.2 codename Doc Brown
     body:
       encoding: UTF-8
-      string: '{"jobs":{"id":"d5ee706f-a473-46ed-9777-3b7cd2905d08"}}'
+      string: '{"job":{"id":"d5ee706f-a473-46ed-9777-3b7cd2905d08", "state": "pending", "options": {}}}'
     http_version: 
   recorded_at: Mon, 17 Nov 2014 21:55:20 GMT
 recorded_with: VCR 2.9.2

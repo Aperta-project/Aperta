@@ -15,29 +15,26 @@ describe PaperConversionsController, type: :controller do
         VCR.use_cassette('convert_to_docx') do
           get :export, id: paper.id, format: 'docx'
         end
-        expect(response.status).to eq(203)
-        expect(res_body['jobs']['id']).to eq job_id
+        expect(response.status).to eq(202)
+        expect(res_body['id']).to eq job_id
       end
     end
 
     context "as a user with no access" do
       let(:user) { create :user }
       it "returns a 403" do
-        VCR.use_cassette('not_authorized_convert_to_docx') do
-          get :export, id: paper.id, format: 'docx'
-        end
+        get :export, id: paper.id, format: 'docx'
         expect(response.status).to eq(403)
       end
     end
   end
 
   describe "GET #status" do
-
     it "returns job status" do
       VCR.use_cassette('check_docx_status') do
         get :status, id: job_id
         expect(response.status).to eq 200
-        expect(res_body['jobs']['status']).to eq "pending"
+        expect(res_body['jobs']['state']).to eq 'pending'
       end
     end
   end

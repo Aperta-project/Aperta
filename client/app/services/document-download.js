@@ -14,7 +14,7 @@ export default Ember.Namespace.create({
         format: self.downloadFormat
       },
       success(data) {
-        let jobId = data['job']['id'];
+        let jobId = data['id'];
         return self.checkJobState(jobId);
       },
       error() {

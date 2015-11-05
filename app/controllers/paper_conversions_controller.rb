@@ -5,7 +5,7 @@ class PaperConversionsController < ApplicationController
   def export
     @export_format = params[:format]
     response = PaperConverter.export(paper, @export_format, current_user)
-    render json: JSON.parse(response), status: :non_authoritative_information # 203
+    render json: { id: response.job_id }, status: :accepted # 201
   end
 
   def status

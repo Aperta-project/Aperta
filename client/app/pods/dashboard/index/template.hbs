@@ -1,5 +1,4 @@
-<div class="control-bar"></div>
-{{flash-messages classNames="flash-messages--below-control-bar"}}
+{{flash-messages}}
 
 {{#overlay-base visible=showNewManuscriptOverlay
                 outAnimationComplete=(action "hideNewManuscriptOverlay")
@@ -8,15 +7,16 @@
                             close=(action animateOut)}}
 {{/overlay-base}}
 
-<div id="tahi-container">
-  <section class="dashboard-section">
-    {{#if pendingInvitations}}
+<div class="base-screen">
+
+  {{#if pendingInvitations}}
+    <section class="dashboard-section">
       <h2 class="welcome-message">
         You have <span class="invitation-count">{{pluralize pendingInvitations.length "invitation"}}</span>.
       </h2>
       <button class="button-primary button--green" {{action "viewInvitations"}}>View invitations</button>
-    {{/if}}
-  </section>
+    </section>
+  {{/if}}
 
   <section id="dashboard-my-submissions" class="dashboard-section">
     <h2 class="welcome-message">

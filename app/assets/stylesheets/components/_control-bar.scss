@@ -4,11 +4,11 @@
 // Styleguide UI.ControlBar
 
 .control-bar {
-  @include position(fixed, 0px 0px auto 0px);
+  @include position(fixed, $main-nav-height 0px auto 0px);
   width: 100%;
   height: $tahi-control-bar-height;
-  border-bottom: 1px solid #F5F5F5;
-  background: $tahi-white;
+  border-bottom: 1px solid #eee;
+  background: rgba(255,255,255, 0.94);
   z-index: z('control-bar');
   @include transition(height 0.2s ease-in-out);
 }
@@ -27,8 +27,6 @@
 .control-bar-inner-wrapper {
   position: relative;
   height: 60px;
-  margin: 0 auto;
-  padding-left: 160px;
 }
 
 .control-bar-sub-items {

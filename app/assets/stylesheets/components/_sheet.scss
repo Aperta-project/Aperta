@@ -1,7 +1,7 @@
 $sheet-toolbar-height: 60px;
 
 .sheet {
-  @include position(fixed, 0px -450px 0px auto);
+  @include position(fixed, $main-nav-height -450px 0px auto);
   width: 450px;
   background: rgba(250,250,250, 0.94);
   z-index: z('sheet');

@@ -33,8 +33,6 @@ export default Ember.Route.extend(AnimateOverlay, {
   }),
 
   cleanupAncillaryViews() {
-    this.controllerFor('application').send('hideNavigation');
-
     this.animateOverlayOut().then(()=> {
       this.controllerFor('application').set('showOverlay', false);
     });

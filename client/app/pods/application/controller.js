@@ -24,16 +24,4 @@ export default Ember.Controller.extend({
   showSaveStatusDiv: Ember.computed.and('testing', 'delayedSave'),
 
   specifiedAppName: window.appName,
-
-  navigationVisible: false,
-
-  toggleNavigation: Ember.observer('navigationVisible', function() {
-    $('html')[this.get('navigationVisible') ? 'addClass' : 'removeClass']('navigation-visible');
-  }),
-
-  actions: {
-    showNavigation() { this.set('navigationVisible', true); },
-    hideNavigation() { this.set('navigationVisible', false); },
-    showFeedbackOverlay() { this.send('feedback'); }
-  }
 });

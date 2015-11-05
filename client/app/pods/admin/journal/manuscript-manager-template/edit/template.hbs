@@ -1,39 +1,35 @@
-<div id="tahi-container" class="full-width manuscript-manager-template">
-  <div id="manuscript-manager">
-    <div class="full-height">
-      <div class="paper-type-form">
+<div class="base-screen">
+  <div class="paper-type-form">
 
-        {{#if editingName}}
-          {{input value=model.paperType placeholder="Paper Type" class="edit-paper-type-field"}}
-          {{error-message message=validationErrors.paperType classNames="mmt-edit-error-message"}}
-        {{else}}
-          <div class="paper-type-name" {{action "editMmtName"}}>
-            {{model.paperType}}
-            <span class="fa fa-pencil"></span>
-          </div>
-        {{/if}}
-
-        {{#if showSaveButton}}
-          <a class="button-secondary button--blue paper-type-save-button" {{action "saveTemplateOnClick"}}>Save Template</a>
-          <a class="button-link button--blue paper-type-cancel-button" {{action "cancel"}}>cancel</a>
-        {{else}}
-          {{link-to "< Back" "admin.journal" journal class="button-link button--blue"}}
-        {{/if}}
+    {{#if editingName}}
+      {{input value=model.paperType placeholder="Paper Type" class="edit-paper-type-field"}}
+      {{error-message message=validationErrors.paperType classNames="mmt-edit-error-message"}}
+    {{else}}
+      <div class="paper-type-name" {{action "editMmtName"}}>
+        {{model.paperType}}
+        <span class="fa fa-pencil"></span>
       </div>
+    {{/if}}
 
-      <div class="columns manuscript-manager-template-columns">
-        {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
-        {{#each sortedPhaseTemplates as |phaseTemplate|}}
-          {{phase-template-column phaseTemplate=phaseTemplate
-                                  addPhase="addPhase"
-                                  savePhase="savePhase"
-                                  removeRecord="removeRecord"
-                                  rollbackPhase="rollbackPhase"
-                                  showDeleteConfirm="showDeleteConfirm"
-                                  chooseNewCardTypeOverlay="chooseNewCardTypeOverlay"
-                                  itemUpdated="itemUpdated"}}
-        {{/each}}
-      </div>
-    </div>
+    {{#if showSaveButton}}
+      <a class="button-secondary button--blue paper-type-save-button" {{action "saveTemplateOnClick"}}>Save Template</a>
+      <a class="button-link button--blue paper-type-cancel-button" {{action "cancel"}}>cancel</a>
+    {{else}}
+      {{link-to "< Back" "admin.journal" journal class="button-link button--blue"}}
+    {{/if}}
+  </div>
+
+  <div class="columns manuscript-manager-template-columns">
+    {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
+    {{#each sortedPhaseTemplates as |phaseTemplate|}}
+      {{phase-template-column phaseTemplate=phaseTemplate
+                              addPhase="addPhase"
+                              savePhase="savePhase"
+                              removeRecord="removeRecord"
+                              rollbackPhase="rollbackPhase"
+                              showDeleteConfirm="showDeleteConfirm"
+                              chooseNewCardTypeOverlay="chooseNewCardTypeOverlay"
+                              itemUpdated="itemUpdated"}}
+    {{/each}}
   </div>
 </div>

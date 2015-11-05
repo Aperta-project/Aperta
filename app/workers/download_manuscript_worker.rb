@@ -14,32 +14,23 @@ class DownloadManuscriptWorker
 
     epub_stream = EpubConverter.new(manuscript.paper, User.first, true).epub_stream.string
     TahiEpub::Tempfile.create epub_stream, delete: true do |file|
-      post_ihat_job(file)
+      PaperConverter.post_ihat_job(
+        payload: Faraday::UploadIO.new(file, 'application/epub+zip'),
+        options: {
+          recipe_name: 'docx_to_html',
+          callback_url: callback_url,
+          metadata: metadata
+        })
     end
   end
 
   private
-
-  def post_ihat_job(file)
-    RestClient.post(
-      "#{ENV['IHAT_URL']}/jobs",
-      multipart: true,
-      job: {
-        input: file,
-        options: {
-          recipe_name: "docx_to_html",
-          callback_url: callback_url,
-          metadata: metadata
-        }
-      }
-    )
-  end
 
   def download_manuscript_source
     manuscript.source.download!(download_url)
   end
 
   def update_manuscript
-    manuscript.update! status: "done"
+    manuscript.update! status: 'done'
   end
 end

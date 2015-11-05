@@ -3,7 +3,10 @@ class PaperConverter
     epub = EpubConverter.new(paper, current_user).epub_stream
     epub.rewind
     payload = Faraday::UploadIO.new(epub, "application/epub+zip")
-    post_ihat_job(payload)
+    post_ihat_job(payload: payload,
+                  options: {
+                    recipe_name: 'html_to_docx'
+                  })
   end
 
   def self.check_status(job_id)
@@ -20,13 +23,10 @@ class PaperConverter
     end
   end
 
-  def self.post_ihat_job(file)
-    connection.post("/jobs", job: {
-      input: file,
-      options: {
-        recipe_name: "html_to_docx"
-      }
-    }).body
+  def self.post_ihat_job(payload:, options: {})
+    connection.post('/jobs', job: {
+                      input: payload,
+                      options: options
+                    }).body
   end
-
 end

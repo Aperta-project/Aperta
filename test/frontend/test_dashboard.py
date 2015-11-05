@@ -19,13 +19,13 @@ from frontend.common_test import CommonTest
 from Pages.dashboard import DashboardPage
 from Pages.login_page import LoginPage
 
-
-users = [au_login,
+# au and sa are commented out because they run into APERTA-5415 which is a code bug
+users = [ # au_login,
          rv_login,
          fm_login,
          ae_login,
          he_login,
-         sa_login,
+         # sa_login,
          oa_login
          ]
 

@@ -1,28 +1,48 @@
 import Ember from 'ember';
 
+const { computed } = Ember;
+const { alias, equal, sort, filterBy, setDiff, or, and, not } = computed;
+
 export default Ember.Component.extend({
   taskSorting: ['phase.position', 'position'],
-  tasks: Ember.computed.alias('paper.tasks'),
-  isUnsubmitted: Ember.computed.equal('paper.publishingState', 'unsubmitted'),
-  isInRevision: Ember.computed.equal('paper.publishingState', 'in_revision'),
-  isSubmitted: Ember.computed.equal('paper.publishingState', 'submitted'),
-  sortedMetadataTasks: Ember.computed.sort('metadataTasks', 'taskSorting'),
-  sortedAssignedTasks: Ember.computed.sort('assignedTasks', 'taskSorting'),
-  metadataTasks: Ember.computed.filterBy('tasks', 'isMetadataTask', true),
-  assignedTasks: Ember.computed.setDiff('currentUserTasks', 'metadataTasks'),
-  submissionTasks: Ember.computed.filterBy('tasks', 'isSubmissionTask', true),
-  submittableState: Ember.computed.or('isUnsubmitted', 'isInRevision'),
-  readyToSubmit: Ember.computed.and('submittableState', 'allSubmissionTasksCompleted'),
-  isPendingTasks: Ember.computed.not('allSubmissionTasksCompleted'),
-  preSubmission: Ember.computed.and('submittableState', 'isPendingTasks'),
-  allSubmissionTasksCompleted: Ember.computed('submissionTasks.@each.completed', function() {
+  tasks: alias('paper.tasks'),
+  isUnsubmitted: equal('paper.publishingState', 'unsubmitted'),
+  isInRevision: equal('paper.publishingState', 'in_revision'),
+  isSubmitted: equal('paper.publishingState', 'submitted'),
+  sortedMetadataTasks: sort('metadataTasks', 'taskSorting'),
+  sortedAssignedTasks: sort('assignedTasks', 'taskSorting'),
+  metadataTasks: filterBy('tasks', 'isMetadataTask', true),
+  assignedTasks: setDiff('currentUserTasks', 'metadataTasks'),
+  submissionTasks: filterBy('tasks', 'isSubmissionTask', true),
+  submittableState: or('isUnsubmitted', 'isInRevision'),
+  readyToSubmit: and('submittableState', 'allSubmissionTasksCompleted'),
+  isPendingTasks: not('allSubmissionTasksCompleted'),
+  preSubmission: and('submittableState', 'isPendingTasks'),
+  allSubmissionTasksCompleted: computed('submissionTasks.@each.completed', function() {
     return this.get('submissionTasks').isEvery('completed', true);
   }),
 
-  currentUserTasks: Ember.computed.filterBy('paper.tasks', 'assignedToMe'),
+  currentUserTasks: filterBy('paper.tasks', 'assignedToMe'),
+
+  displayedTasks: computed('assignedTasks.[]', 'metadataTasks.[]', function() {
+    let tasks = [];
+    tasks.pushObjects(this.get('assignedTasks'));
+    tasks.pushObjects(this.get('metadataTasks'));
+
+    return tasks;
+  }),
+
+  completedTaskCount: computed('displayedTasks.@each.completed', function() {
+    return this.get('displayedTasks').filterBy('completed', true).length;
+  }),
+
+  tasksCompletedPercent: computed('completedTaskCount', function() {
+    return Math.round((
+      this.get('completedTaskCount') / this.get('displayedTasks.length')
+    ) * 100);
+  }),
 
   actions: {
-
     viewCard(task){
       this.sendAction('viewCard', task);
     },

@@ -14,20 +14,22 @@
   &:last-of-type {
     @include order(3);
   }
+
+  &::-webkit-scrollbar-thumb { background: transparent; }
+  &:hover::-webkit-scrollbar-thumb { background: #ddd; }
 }
 
 .split-pane-drag-handle {
   position: relative;
-  width: 9px;
+  width: 1px;
   cursor: ew-resize;
   @include order(2);
   z-index: 2;
 
   &:after {
     content: '';
-    @include position(absolute, 0px auto 0px 50%);
+    @include position(absolute, 0px auto 0px 0px);
     width: 1px;
-    margin-left: -1px;
     background: #ddd;
   }
 

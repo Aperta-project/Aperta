@@ -28,19 +28,13 @@ export default Ember.Component.extend({
   }),
 
   _setInitialWidths() {
-    const firstPane = this.firstPane(),
-          currentWidth = firstPane.outerWidth(),
-          minWidth     = parseInt(firstPane.attr('data-min-width'));
+    this.firstPane().css(
+      this.flexCss((0.6).toString())
+    );
 
-    if(currentWidth < minWidth) {
-      const total = this.$().outerWidth();
-      const leftPercentage  = minWidth / total;
-      const rightPercentage =
-        1 - ((minWidth + this.handle().outerWidth()) / total);
-
-      firstPane.css(this.flexCss(leftPercentage.toString()));
-      this.lastPane().css(this.flexCss(rightPercentage.toString()));
-    }
+    this.lastPane().css(
+      this.flexCss((0.4).toString())
+    );
   },
 
   _setupDragHandle() {

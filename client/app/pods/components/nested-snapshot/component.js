@@ -5,7 +5,7 @@ export default Ember.Component.extend({
   classNames: ['snapshot'],
 
   generalCase: Ember.computed.not('specialCase'),
-  specialCase: Ember.computed.or('author', 'figure', 'supportingInfo'),
+  specialCase: Ember.computed.or('author', 'figure', 'supportingInfo', 'funder'),
 
   raw: Ember.computed('snapshot.type', function(){
     let type = this.get('snapshot.type');
@@ -34,6 +34,10 @@ export default Ember.Component.extend({
 
   supportingInfo: Ember.computed('snapshot.name', function(){
     return this.get('snapshot.name') === 'supporting-information-file';
+  }),
+
+  funder: Ember.computed('snapshot.name', function(){
+    return this.get('snapshot.name') === 'funder';
   })
 
 });

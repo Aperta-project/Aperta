@@ -393,9 +393,9 @@ class DashboardPage(AuthenticatedPage):
     :param title: Title you wish to use for your paper
     :return:
     """
-    self._get(self._title_text_field).clear()
-    self._get(self._title_text_field).send_keys(title)
-    return self
+    title_field = self._get(self._cns_short_title_field)
+    title_field.click()
+    title_field.send_keys(title)
 
   def click_create_button(self):
     """Click create button"""

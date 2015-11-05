@@ -11,14 +11,14 @@
   <ul>
     {{#if versionsActive}}
       <li class="control-bar-item">
-        {{#link-to "paper.index" paper class="control-bar-link control-bar-button workflow-link"}}
+        {{#link-to "paper.index" paper class="control-bar-link control-bar-button versions-link"}}
         <div class="control-bar-link-icon"><i class="fa fa-files-o"></i></div>
         Exit Versions
         {{/link-to}}
       </li>
     {{else}}
       <li class="control-bar-item">
-        {{#link-to "paper.versions" paper class="control-bar-link control-bar-button workflow-link"}}
+        {{#link-to "paper.versions" paper class="control-bar-link control-bar-button versions-link"}}
         <div class="control-bar-link-icon"><i class="fa fa-files-o"></i></div>
         Versions
         {{/link-to}}

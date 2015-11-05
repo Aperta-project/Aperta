@@ -5,6 +5,7 @@ class SubmitPaperOverlay < CardOverlay
 
   def submit
     click_on 'Yes, Submit My Manuscript'
+    wait_for_ajax
     DashboardPage.new
   end
 end

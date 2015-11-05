@@ -6,6 +6,6 @@
 
 Subscriptions.configure do
   add '.*', EventLogger
-  add 'paper:submitted', Paper::Submitted::EmailCreator, Paper::Submitted::EmailAdmins
+  add 'paper:submitted', Paper::Submitted::EmailCreator, Paper::Submitted::EmailAdmins, Paper::Submitted::SnapshotMetadata
   add 'paper:resubmitted', Paper::Resubmitted::EmailEditor
 end

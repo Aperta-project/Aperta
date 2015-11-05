@@ -5,10 +5,6 @@ module TahiStandardTasks
     before_create :assign_to_latest_decision
     has_many :decisions, -> { uniq }, through: :paper
 
-    def self.nested_questions
-      NestedQuestion.where(owner_id:nil, owner_type:name).all
-    end
-
     # find_or_build_answer_for(...) will return the associated answer for this
     # task given :nested_question. For ReviewerReportTask this enforces the
     # lookup to be scoped to this task's current decision. Answers associated

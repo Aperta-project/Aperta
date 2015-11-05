@@ -149,6 +149,14 @@ describe Paper do
         paper.submit! user
         expect(paper.latest_version.updated_at.utc).to be_within(1.second).of Time.zone.now
       end
+
+      it "broadcasts 'paper:submitted' event" do
+        allow(Notifier).to receive(:notify)
+        expect(Notifier).to receive(:notify).with(hash_including(event: "paper:submitted")) do |args|
+          expect(args[:data][:record]).to eq(paper)
+        end
+        paper.submit! user
+      end
     end
 
     context "when withdrawing" do
@@ -314,6 +322,44 @@ describe Paper do
         expect(paper.latest_version.version_string).to match(/^R0.0/)
         paper.make_decision decision
         expect(paper.latest_version.version_string).to match(/^R1.0/)
+      end
+    end
+  end
+
+  describe "#major_version" do
+    before { expect(paper.latest_version).to be }
+
+    it "returns the latest version's major_version" do
+      expect(paper.major_version).to eq(paper.latest_version.major_version)
+    end
+
+    context "when there is no latest_version" do
+      before do
+        paper.versioned_texts.destroy_all
+        expect(paper.latest_version).to be(nil)
+      end
+
+      it "returns nil" do
+        expect(paper.major_version).to be(nil)
+      end
+    end
+  end
+
+  describe "#minor_version" do
+    before { expect(paper.latest_version).to be }
+
+    it "returns the latest version's minor_version" do
+      expect(paper.major_version).to eq(paper.latest_version.minor_version)
+    end
+
+    context "when there is no latest_version" do
+      before do
+        paper.versioned_texts.destroy_all
+        expect(paper.latest_version).to be(nil)
+      end
+
+      it "returns nil" do
+        expect(paper.major_version).to be(nil)
       end
     end
   end

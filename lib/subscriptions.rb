@@ -49,7 +49,7 @@ module Subscriptions
 
     # Remove all subscriptions from the registry.  Useful when testing.
     def clear_all_subscriptions!
-      @registry = nil
+      @registry.unsubscribe_all
     end
 
     private

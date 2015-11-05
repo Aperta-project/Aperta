@@ -133,6 +133,12 @@ FactoryGirl.define do
     title "Production Metadata"
     role "admin"
   end
+
+  factory :reviewer_recommendation_task, class: 'TahiStandardTasks::ReviewerRecommendationsTask' do
+    phase
+    title "Reviewer Candidates"
+    role "author"
+  end
 end
 
 class MockMetadataTask < Task

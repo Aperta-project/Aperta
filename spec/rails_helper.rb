@@ -42,6 +42,7 @@ Capybara.register_driver :selenium do |app|
 end
 
 Capybara.javascript_driver = :selenium
+Capybara.default_max_wait_time = 10
 Capybara.wait_on_first_by_default = true
 
 # Store screenshots in artifacts dir on circle
@@ -92,6 +93,17 @@ RSpec.configure do |config|
     %x{rake nested-questions:seed}
 
     DatabaseCleaner.clean_with(:truncation, except: ['task_types', 'nested_questions'])
+  end
+
+  # Don't load subscriptions for unit specs
+  config.before(:each) do
+    Subscriptions.clear_all_subscriptions!
+  end
+
+  # Load subscriptions for feature specs
+  config.before(:each, type: :feature) do
+    load Rails.root.join("config/initializers/event_stream_subscriptions.rb")
+    load Rails.root.join("config/initializers/subscriptions.rb")
   end
 
   config.before(:each) do

@@ -4,6 +4,11 @@ module MailerHelper
     ENV["APP_NAME"] || 'Aperta'
   end
 
+  def prefixed(subject)
+    prefix = default_url_options[:host]
+    "[#{prefix}] #{subject}"
+  end
+
   def display_name(user)
     return "Someone" unless user.present?
     user.full_name.presence || user.username

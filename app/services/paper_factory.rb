@@ -23,6 +23,7 @@ class PaperFactory
           paper.save!
           add_decision
           add_phases_and_tasks
+          set_gradual_engagement_flag
           add_creator_as_author!
         else
           paper.errors.add(:paper_type, "is not valid")
@@ -63,5 +64,13 @@ class PaperFactory
 
   def add_creator_as_collaborator
     paper.paper_roles.build(user: creator, role: PaperRole::COLLABORATOR)
+  end
+
+  def set_gradual_engagement_flag
+    paper.update_column(:gradual_engagement, true) if gradual_engagement?
+  end
+
+  def gradual_engagement?
+    paper.tasks.pluck(:type).include?('TahiStandardTasks::InitialDecisionTask')
   end
 end

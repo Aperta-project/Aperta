@@ -63,6 +63,12 @@ describe PaperFactory do
       expect(subject.creator).to eq(user)
     end
 
+    it 'sets the gradual_engagement flag' do
+      allow_any_instance_of(PaperFactory).to receive(:gradual_engagement?)
+        .and_return(true)
+      expect(subject.gradual_engagement).to be_truthy
+    end
+
     it "creates a Decision" do
       expect(subject.decisions.length).to eq 1
     end

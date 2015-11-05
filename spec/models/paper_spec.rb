@@ -118,8 +118,20 @@ describe Paper do
     end
   end
 
-  describe "states" do
-    context "when submitting" do
+  context 'states' do
+    describe '#initial_submit' do
+      it 'transitions to initial_submission' do
+        paper.initial_submit!
+        expect(paper).to be_initially_submitted
+      end
+
+      it 'marks the paper not editable' do
+        paper.initial_submit!
+        expect(paper).to_not be_editable
+      end
+    end
+
+    describe '#submit!' do
 
       it "does not transition when metadata tasks are incomplete" do
         expect(paper).to receive(:metadata_tasks_completed?).and_return(false)
@@ -158,7 +170,7 @@ describe Paper do
       end
     end
 
-    context "when withdrawing" do
+    describe '#withdraw!' do
       let(:paper) { FactoryGirl.create(:paper, :submitted) }
 
       it "transitions to withdrawn without a reason" do
@@ -177,8 +189,8 @@ describe Paper do
       end
     end
 
-    context 'when inviting to full submission' do
-      let(:paper) { FactoryGirl.create(:paper, :submitted) }
+    describe '#invite_full_submission' do
+      let(:paper) { FactoryGirl.create(:paper, :initially_submitted) }
 
       it 'transitions to in_revision' do
         paper.invite_full_submission!
@@ -191,7 +203,7 @@ describe Paper do
       end
     end
 
-    context "when reactivating" do
+    describe '#reactivate!' do
       let(:paper) { FactoryGirl.create(:paper, :submitted) }
 
       it "transitions to the previous state" do
@@ -220,7 +232,7 @@ describe Paper do
       end
     end
 
-    context "when minor-revising (as in a tech check)" do
+    describe '#minor_check!' do
       let(:paper) { FactoryGirl.create(:paper, :submitted) }
 
       it "marks the paper editable" do
@@ -235,7 +247,7 @@ describe Paper do
       end
     end
 
-    context "when submitting a minor change (as in a tech check)" do
+    describe '#submit_minor_check!' do
       let(:paper) { FactoryGirl.create(:paper, :submitted) }
 
       it "marks the paper uneditable" do
@@ -258,7 +270,7 @@ describe Paper do
       end
     end
 
-    context "when publishing" do
+    describe '#publish!' do
       let(:paper) { FactoryGirl.create(:paper, :submitted) }
 
       it "marks the paper uneditable" do

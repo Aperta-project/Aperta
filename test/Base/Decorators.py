@@ -49,8 +49,10 @@ def MultiBrowserFixture(cls):
       original_test = getattr(cls, attr_name, None)
 
       # Compile all enabled/available browsers
-      if Config.run_against_grid: browsers += Config.grid_enabled_browsers
-      if Config.run_against_appium: browsers += Config.appium_enabled_browsers
+      if Config.run_against_grid == True: browsers += Config.grid_enabled_browsers
+      if Config.run_against_appium == True: browsers += Config.appium_enabled_browsers
+      #if Config.run_against_grid: browsers += Config.grid_enabled_browsers
+      #if Config.run_against_appium: browsers += Config.appium_enabled_browsers
 
       for browser in browsers:
         # Name the new test based on original and the browser that we will run it against

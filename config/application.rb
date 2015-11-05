@@ -29,7 +29,6 @@ module Tahi
 
     config.s3_bucket = ENV.fetch('S3_BUCKET', :not_set)
     config.carrierwave_storage = :fog
-    config.action_mailer.default_url_options = { host: ENV.fetch('DEFAULT_MAILER_URL', 'tahi.example.com') }
     config.admin_email = ENV.fetch('ADMIN_EMAIL', 'admin@example.com')
     config.from_email = ENV.fetch('FROM_EMAIL', 'no-reply@example.com')
 

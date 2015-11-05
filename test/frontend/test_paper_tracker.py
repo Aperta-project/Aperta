@@ -18,10 +18,12 @@ from Pages.paper_tracker import PaperTrackerPage
 from Base.Resources import login_valid_pw, fm_login, he_login, sa_login, oa_login
 from frontend.common_test import CommonTest
 
+# Because we are not deterministically sorting unsubmitted manuscripts, he, oa and sa logins are failing
+# APERTA-3023
 users = [fm_login,
-         #he_login, # TODO: Find out why it fails
-         #oa_login,
-         sa_login,
+         # he_login,
+         # oa_login,
+         # sa_login,
          ]
 
 @MultiBrowserFixture

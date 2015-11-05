@@ -55,22 +55,17 @@ class PaperTrackerPage(AuthenticatedPage):
                                 'ON roles.id = user_roles.role_id '
                                 'WHERE user_roles.user_id = %s '
                                 'AND roles.kind IN %s;', (uid, ('flow manager', 'admin', 'editor')))
-    # print(journal_ids)
     journals_list = []
     for journal_id in journal_ids:
       current_journal = journal_id[0]
       if current_journal not in journals_list:
         journals_list.append(current_journal)
-    # print(journals_list)
     total_count = 0
     for journal in journals_list:
       paper_count = PgSQL().query('SELECT count(*) FROM papers '
                                   'WHERE journal_id IN (%s) AND publishing_state != %s;',
                                   (journal, 'unsubmitted'))[0][0]
-      # print(paper_count)
       total_count += int(paper_count)
-    # print('Total Count:')
-    # print(total_count)
 
     if total_count == 1:
       assert subhead.text == 'You have {0} paper in your tracker.'.format(total_count), \
@@ -126,7 +121,6 @@ class PaperTrackerPage(AuthenticatedPage):
           withdrawn_papers.append(paper)
     # finally combine the two lists, NULL submitted_at first
     papers = withdrawn_papers + submitted_papers
-    # print (papers)
 
     if total_count > 0:
       table_rows = self._gets(self._paper_tracker_table_tbody_row)
@@ -147,22 +141,10 @@ class PaperTrackerPage(AuthenticatedPage):
 
         title = self._get(self._paper_tracker_table_tbody_title)
         if papers[count][0]:
-          # print('If')
-          # print(type(papers[count][0]))
-          # print(papers[count][1])
           db_title = papers[count][0]
-          # print(db_title)
-          # print(title.text)
-          # Oi! Dirty data - how do tabs get into one spot and spaces in another?
-          assert ' '.join(title.text.split()) == ' '.join(db_title.split()), (title.text, db_title)
-        else:
-          # print('Else')
-          # print(papers[count][1])
-          db_short_title = papers[count][4]
-          # print(db_short_title)
-          # print(title.text)
-          # Oi! Dirty data - how do tabs get into one spot and spaces in another?
-          assert ' '.join(title.text.split()) == ' '.join(db_short_title.split()), (title.text, db_short_title)
+          db_title = db_title.strip()
+          page_title = title.text.strip()
+          assert page_title.encode('utf8') == db_title
         manid = self._get(self._paper_tracker_table_tbody_manid)
         assert '/papers/%s' % manid.text in title.get_attribute('href'), title.get_attribute('href')
         assert int(manid.text) == papers[count][1]
@@ -244,7 +226,6 @@ class PaperTrackerPage(AuthenticatedPage):
             db_admins.sort()
             assert admins == db_admins
           else:
-            print(role)
             return False
         count += 1
       # Validate sort function
@@ -263,11 +244,9 @@ class PaperTrackerPage(AuthenticatedPage):
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       manid = self._get(self._paper_tracker_table_tbody_manid)
       orig_manid = manid
-      print(manid.text)
       self._get(self._paper_tracker_table_header_sort_up).click()
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       manid = self._get(self._paper_tracker_table_tbody_manid)
-      print(manid.text)
       if total_count > 1:
         assert int(manid.text) > int(orig_manid.text)
       else:
@@ -282,11 +261,9 @@ class PaperTrackerPage(AuthenticatedPage):
       self._paper_tracker_table_tbody_title = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-title-column"]/a')
       title = self._get(self._paper_tracker_table_tbody_title)
       orig_title = title
-      print(title.text)
       self._get(self._paper_tracker_table_header_sort_up).click()
       self._paper_tracker_table_tbody_title = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-title-column"]/a')
       title = self._get(self._paper_tracker_table_tbody_title)
-      print(title.text)
       if total_count > 1:
         assert title.text > orig_manid.text
       else:
@@ -301,15 +278,11 @@ class PaperTrackerPage(AuthenticatedPage):
       self._paper_tracker_table_tbody_paptype = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-type-column"]')
       type = self._get(self._paper_tracker_table_tbody_paptype)
       orig_type = type
-      print(type.text)
       self._get(self._paper_tracker_table_header_sort_up).click()
       self._paper_tracker_table_tbody_paptype = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-type-column"]')
       type = self._get(self._paper_tracker_table_tbody_paptype)
-      print(type.text)
       assert type.text >= orig_type.text
       self._get(self._paper_tracker_table_header_sort_down).click()
       self._paper_tracker_table_tbody_paptype = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-type-column"]')
       type = self._get(self._paper_tracker_table_tbody_paptype)
       assert type.text == orig_type.text
-
-

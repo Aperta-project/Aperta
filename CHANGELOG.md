@@ -18,6 +18,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ### Fixed
 - Fixed display of form errors on Production Metadata Card
+- Updated sidekiq and newrelic gems that have known memory leaks
 
 ### Security
 -

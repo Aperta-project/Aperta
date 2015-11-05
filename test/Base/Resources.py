@@ -31,11 +31,10 @@ friendly_testhostname = 'https://plos:shrimp@tahi-assess.herokuapp.com/'
 user_email = 'admin'
 user_pw = 'yetishrimp'
 
-user_data = {'admin': {'password':'yetishrimp',
-                      'email':'shrimp@mailinator.com',
-                      'full_name':'AD Shrimp',
-                      'password':'yetishrimp'}
-                      }
+user_data = {'admin': {'email': 'shrimp@mailinator.com',
+                       'full_name': 'AD Shrimp',
+                       'password': 'yetishrimp'}
+             }
 
 login_valid_email = 'sealresq+7@gmail.com'
 login_invalid_email = 'jgrey@plos.org'
@@ -58,11 +57,11 @@ sa_login = 'jgray_sa'         # super admin login
 # psql_pw = getenv('APERTA_PSQL_PW', 'pch646pphdfqog9v38otlchvvpn')
 # psql_db = getenv('APERTA_PSQL_DBNAME', 'd1kdmn5r5e9aj5')
 # Staging data
-psql_hname = getenv('APERTA_PSQL_HOST', 'ec2-46-137-159-123.eu-west-1.compute.amazonaws.com')
-psql_port = getenv('APERTA_PSQL_PORT', '5432')
-psql_uname = getenv('APERTA_PSQL_USER', 'vdfcjsacderhvg')
-psql_pw = getenv('APERTA_PSQL_PW', '9nRe-qddM-NdV8_h56ujh0AwN7')
-psql_db = getenv('APERTA_PSQL_DBNAME', 'ddhi6454uf6kmr')
+psql_hname = getenv('APERTA_PSQL_HOST', 'ec2-54-83-5-30.compute-1.amazonaws.com')
+psql_port = getenv('APERTA_PSQL_PORT', '6262')
+psql_uname = getenv('APERTA_PSQL_USER', 'u2kgbfse1i57n')
+psql_pw = getenv('APERTA_PSQL_PW', 'p76is3gn1m2f557s4crfgb7l6qi')
+psql_db = getenv('APERTA_PSQL_DBNAME', 'dd2kjrv61vaj33')
 # Release Candidate data
 # psql_hname = getenv('APERTA_PSQL_HOST', 'ec2-54-204-30-115.compute-1.amazonaws.com')
 # psql_port = getenv('APERTA_PSQL_PORT', '5432')

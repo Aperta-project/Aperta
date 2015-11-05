@@ -9,3 +9,16 @@ namespace :db do
     end
   end
 end
+
+namespace :db do
+  namespace :seed do
+    task dump_db: :environment do
+      Rake::Task['db:seed:dump'].invoke
+    end
+  end
+end
+
+# rake db:seed:dump MODELS='Journal, Paper, PaperRole, Task, Author, Participation, 
+#                           User, Role, Affiliation, Decision, JournalTaskType,
+#                           ManuscriptManagerTemplate, NestedQuestion, Phase, PhaseTemplate,
+#                           TaskTemplate, UserRole, VersionedText' FILE='db/seeds/base.rb'

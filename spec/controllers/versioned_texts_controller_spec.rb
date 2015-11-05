@@ -27,7 +27,9 @@ describe VersionedTextsController do
         "text",
         "created_at",
         "version_string",
-        "paper_id"
+        "paper_id",
+        "major_version",
+        "minor_version"
       ]
       expect(versioned_text_data.keys).to eq(expected_keys)
     end

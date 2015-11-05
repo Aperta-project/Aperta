@@ -19,17 +19,14 @@
 // Styleguide Columns
 
 .columns {
-  position: absolute;
-  top: $tahi-navigation-height + $tahi-control-bar-height - 20;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  @include position(absolute, 70px 0px 0px 0px);
   overflow-y: hidden;
   overflow-x: auto;
-  margin-bottom: 0;
   padding-top: 20px;
   text-align: center;
   white-space: nowrap;
+  // override bootsrap:
+  margin-bottom: 0;
 }
 
 .column {
@@ -76,9 +73,10 @@
   .fa {
     display: none;
     position: absolute;
-    top: -8px;
+    top: -5px;
     cursor: pointer;
     color: $tahi-green;
+    font-size: 20px;
   }
 
   .remove-column     { right: 0; }

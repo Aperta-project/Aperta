@@ -46,22 +46,20 @@
 
 {{flash-messages classNames="flash-messages--below-control-bar"}}
 
-<div id="manuscript-manager">
-  <div class="columns">
-    {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
-    {{#each sortedPhases as |phase|}}
-      {{phase-column phase=phase
-                     paper=model
-                     savePhase="savePhase"
-                     addPhase="addPhase"
-                     showDeleteConfirm="showDeleteConfirm"
-                     removePhase="removePhase"
-                     rollbackPhase="rollbackPhase"
-                     viewCard="viewCard"
-                     chooseNewCardTypeOverlay="chooseNewCardTypeOverlay"
-                     changePhaseForTask="changePhaseForTask"}}
-    {{/each}}
-  </div>
+<div class="columns">
+  {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
+  {{#each sortedPhases as |phase|}}
+    {{phase-column phase=phase
+                   paper=model
+                   savePhase="savePhase"
+                   addPhase="addPhase"
+                   showDeleteConfirm="showDeleteConfirm"
+                   removePhase="removePhase"
+                   rollbackPhase="rollbackPhase"
+                   viewCard="viewCard"
+                   chooseNewCardTypeOverlay="chooseNewCardTypeOverlay"
+                   changePhaseForTask="changePhaseForTask"}}
+  {{/each}}
 </div>
 
 {{outlet}}

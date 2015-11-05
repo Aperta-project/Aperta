@@ -1,0 +1,69 @@
+.main-nav {
+  @include position(fixed, 0px 0px auto 0px);
+  height: $main-nav-height;
+  color: #fff;
+  font-size: 1.4rem;
+  background: #454545;
+  z-index: z(main-nav);
+  @include user-select(none);
+
+  a {
+    color: #fff;
+    text-decoration: none;
+
+    // override default anchor styles:
+    &:focus,
+    &:hover {
+      color: #fff;
+      text-decoration: none;
+    }
+  }
+}
+
+.overlay-open .main-nav {
+  @include filter(grayscale(50%) blur(3px));
+}
+
+.main-nav-items {
+  height: $main-nav-height;
+  @include display(flex);
+  @include align-content(center);
+  @include justify-content(flex-end);
+}
+
+.main-nav-item {
+  padding: 0 4px;
+  margin: 0 15px;
+  line-height: $main-nav-height - 2;
+  white-space: nowrap;
+
+  .user-thumbnail {
+    position: relative;
+    top: -1px;
+    width: 30px;
+    height: 30px;
+    margin-right: 4px;
+    border-radius: 50%;
+  }
+}
+
+.main-nav-item--first {
+  margin-left: 0;
+  padding-left: 25px;
+  font-size: 2.1rem;
+  line-height: $main-nav-height;
+  text-transform: uppercase;
+}
+
+.main-nav-item--last {
+  margin-right: 0;
+  padding-right: 25px;
+}
+
+.main-nav-item-spacer {
+  flex-grow: 1;
+}
+
+#profile-dropdown-menu {
+  
+}

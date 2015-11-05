@@ -34,9 +34,8 @@ $paper-edit-sidebar-width: 280px;
 }
 
 #paper-container {
-  @include position(relative, $tahi-control-bar-height + $ve-toolbar-height - 60px 0px null 0px);
   @include transition(top 0.2s ease-in-out);
-  margin: 80px auto;
+  margin: 90px auto 30px auto;
   background: $tahi-white;
 
   &.paper-container-html {

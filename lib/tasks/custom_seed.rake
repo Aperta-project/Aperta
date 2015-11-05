@@ -18,7 +18,7 @@ namespace :db do
   end
 end
 
-# rake db:seed:dump MODELS='Journal, Paper, PaperRole, Task, Author, Participation, 
-#                           User, Role, Affiliation, Decision, JournalTaskType,
+# rake db:seed:dump MODELS='JournalTaskType, Journal, VersionedText, Paper, PaperRole, Task, Author, Participation,
+#                           Role, Affiliation, Decision,
 #                           ManuscriptManagerTemplate, NestedQuestion, Phase, PhaseTemplate,
-#                           TaskTemplate, UserRole, VersionedText' FILE='db/seeds/base.rb'
+#                           TaskTemplate, UserRole' FILE='db/seeds/base.rb'

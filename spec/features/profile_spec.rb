@@ -6,11 +6,7 @@ feature "Profile Page", js: true, vcr: {cassette_name: "ned_countries", record: 
 
   before do
     login_as(admin, scope: :user)
-    visit "/"
-
-    within ".navigation" do
-      click_link admin.full_name
-    end
+    visit "/profile"
   end
 
   scenario "the page contains user's info if user is signed in" do

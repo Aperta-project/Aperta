@@ -46,12 +46,12 @@ class EditPaperTest(CommonTest):
     Validates role aware menus
     """
     roles = {au_login: 6,
-            rv_login: 6,
-            fm_login: 6,
-            ae_login: 6,
-            he_login: 7,
-            sa_login: 7,
-            oa_login:7}
+             rv_login: 6,
+             fm_login: 6,
+             ae_login: 6,
+             he_login: 7,
+             sa_login: 7,
+             oa_login: 7}
 
     for user in users:
       print('Logging in as user: %s'%user)
@@ -60,14 +60,20 @@ class EditPaperTest(CommonTest):
       login_page.enter_login_field(user)
       login_page.enter_password_field(login_valid_pw)
       login_page.click_sign_in_button()
-      self.select_preexisting_article(init=False, first=True)
-      paper_editor = PaperEditorPage(self.getDriver())
-      time.sleep(3) # needed to give time to retrieve new menu items
-      paper_editor.validate_roles(roles[user])
-
-      # Logout
-      url = self._driver.current_url
-      signout_url = url[:url.index('/papers/')] + '/users/sign_out'
+      # the following call should only succeed for sa_login
+      dashboard_page = DashboardPage(self.getDriver())
+      if dashboard_page.validate_manuscript_section_main_title(user) > 0:
+        self.select_preexisting_article(init=False, first=True)
+        paper_editor = PaperEditorPage(self.getDriver())
+        time.sleep(3) # needed to give time to retrieve new menu items
+        paper_editor.validate_roles(roles[user])
+        url = self._driver.current_url
+        signout_url = url[:url.index('/papers/')] + '/users/sign_out'
+      else:
+        print('No manuscripts present for user: %s' % user)
+        # Logout
+        url = self._driver.current_url
+        signout_url = url + '/users/sign_out'
       self._driver.get(signout_url)
     return self
 

@@ -16,6 +16,7 @@ from bs4 import BeautifulSoup, NavigableString
 import requests
 
 from CustomException import ElementDoesNotExistAssertionError
+from MLStripper import MLStripper
 from LinkVerifier import LinkVerifier
 import CustomExpectedConditions as CEC
 import Config as Config
@@ -170,3 +171,10 @@ class PlosPage(object):
         fh.flush()
     fh.close()
     return file_name
+
+  @staticmethod
+  def strip_tags(html):
+    """Removes html tags"""
+    s = MLStripper()
+    s.feed(html)
+    return s.get_data()

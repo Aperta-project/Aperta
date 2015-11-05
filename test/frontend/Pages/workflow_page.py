@@ -88,7 +88,7 @@ class WorkflowPage(AuthenticatedPage):
     # Validate menu elements (title and icon)
     # https://www.pivotaltracker.com/story/show/103343910
     # https://www.pivotaltracker.com/story/show/104018188
-    self.validate_closed_lef_nav()
+    self.validate_closed_left_nav()
     assert self._get(self._nav_menu)
     # Right menu items
     # https://www.pivotaltracker.com/story/show/103343910

@@ -31,7 +31,7 @@ class CommonTest(FrontEndTest):
     Select a preexisting article.
     first is true for selecting first article in list.
     init is True when the user needs to logged in
-    and need to invoque login script to reach the homepage.
+    and needs to invoque login script to reach the homepage.
     """
     dashboard = self.login() if init else DashboardPage(self.getDriver())
     if first:

@@ -1,11 +1,12 @@
 #!/usr/bin/env python2
 
 from selenium.webdriver.common.by import By
-from Base.PlosPage import PlosPage
+from authenticated_page import AuthenticatedPage
+
 
 __author__ = 'sbassi@plos.org'
 
-class ManuscriptPage(PlosPage):
+class ManuscriptPage(AuthenticatedPage):
   """
   Model manuscript page
   """

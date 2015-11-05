@@ -85,54 +85,6 @@ class BaseCard(AuthenticatedPage):
     self._get(self._notepad_toggle_icon).click()
     return self
 
-  def validate_card_title(self,title):
-    """ """
-    assert application_typeface in title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == '18px'
-    assert title.value_of_css_property('font-weight') == '500'
-    assert title.value_of_css_property('line-height') == '16.2px'
-    assert title.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-
-  @staticmethod
-  def validate_card_h2_style(title):
-    """
-    Ensure consistency in rendering the overlay h2 section headings across the all cards
-    :param title: title to validate
-    # TODO: Validate with the result of #103123812
-    """
-    assert application_typeface in title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == '20px'
-    assert title.value_of_css_property('font-weight') == '500'
-    assert title.value_of_css_property('line-height') == '22px'
-    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
-
-  @staticmethod
-  def validate_card_h4_style(title):
-    """
-    Ensure consistency in rendering the overlay h4 section headings across the all cards
-    :param title: title to validate
-    """
-    assert application_typeface in title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == '18px'
-    assert title.value_of_css_property('font-weight') == '500'
-    assert title.value_of_css_property('line-height') == '19.8px'
-    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
-
-  @staticmethod
-  def validate_card_input_style(input_):
-    """
-    Ensure consistency in rendering the input forms across the all cards
-    :param title: title to validate
-    # TODO: Validate with the result of #103123812
-    """
-    assert application_typeface in title.value_of_css_property('font-family')
-    assert input_.value_of_css_property('font-size') == '20px'
-    assert input_.value_of_css_property('font-weight') == '500'
-    assert input_.value_of_css_property('line-height') == '22px'
-    assert input_.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
-    assert input_.value_of_css_property('border-bottom-color') == 'rgba(51, 51, 51, 1)'
-
-
   @staticmethod
   def validate_plus_style(plus):
     """
@@ -148,42 +100,11 @@ class BaseCard(AuthenticatedPage):
     assert plus.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)'
     assert plus.text == '+', plus.text
 
-  @staticmethod
-  def validate_completed_style(completed):
-    assert application_typeface in completed.value_of_css_property('font-family')
-    assert completed.value_of_css_property('font-size') == '14px'
-    assert completed.value_of_css_property('height') in ('13px', '14px') #13 in CI
-    assert completed.value_of_css_property('width') in ('13px', '14px') #13 in CI
-    assert completed.value_of_css_property('line-height') == '18px', completed.value_of_css_property('line-height')
-    assert completed.value_of_css_property('color') in ('rgba(60, 60, 60, 1)',
-      'rgba(49, 55, 57, 1)') # rgba(60, 60, 60, 1) local and rgba(49, 55, 57, 1) in CI
-    assert completed.value_of_css_property('background-color') == 'rgba(255, 255, 255, 1)', completed.value_of_css_property('background-color')
-
-  @staticmethod
-  def validate_card_h1_style(h1):
-    assert application_typeface in h1.value_of_css_property('font-family')
-    assert h1.value_of_css_property('font-size') == '36px', h1.value_of_css_property('font-size')
-    assert h1.value_of_css_property('height') == '39.6px'
-    assert h1.value_of_css_property('width') == '1140px'
-    assert h1.value_of_css_property('line-height') == '39.6px'
-    assert h1.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
-
-  @staticmethod
-  def validate_completed_label(completed_lbl):
-    """Validate the style of the completed label"""
-    assert completed_lbl.text == 'COMPLETED'
-    assert application_typeface in completed_lbl.value_of_css_property('font-family')
-    assert completed_lbl.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-    assert completed_lbl.value_of_css_property('font-size') == '14px'
-    assert completed_lbl.value_of_css_property('height') == '20px'
-    assert completed_lbl.value_of_css_property('width') == '73px'
-    assert completed_lbl.value_of_css_property('line-height') == '20px'
-
   def validate_common_elements_styles(self):
     """Validate styles from elements common to all cards"""
     completed_lbl = self._get(self._completed_label)
     header_link = self._get(self._header_link)
-    self.validate_card_title(header_link)
+    #self.validate_application_h1_style(header_link)
     manuscript_icon = self._get(self._manuscript_icon)
     icon_svg = manuscript_icon.find_element_by_xpath(
       "//*[local-name() = 'path']").get_attribute('d')
@@ -196,7 +117,8 @@ class BaseCard(AuthenticatedPage):
     discussion_div = self._get(self._discussion_div)
     discussion_title = discussion_div.find_element_by_tag_name('h2')
     assert discussion_title.text == 'Discussion', discussion_title.text
-    self.validate_card_h2_style(discussion_title)
+    # https://developer.plos.org/jira/browse/APERTA-2918
+    # self.validate_application_h2_style(discussion_title)
     # Text area before clicking on it
     discussion_text_area = discussion_div.find_element_by_tag_name('textarea')
     assert discussion_text_area.get_attribute('placeholder') == 'Type your message here'
@@ -224,8 +146,12 @@ class BaseCard(AuthenticatedPage):
     add_participant_btn = self._get(self._add_participant_btn)
     self.validate_plus_style(add_participant_btn)
     completed_check = self._get(self._completed_check)
-    self.validate_completed_style(completed_check)
+    # The checkbox on the cards doesn't match the styleguide
+    # https://developer.plos.org/jira/browse/APERTA-5395
+    # self.validate_checkbox(completed_check)
     completed_lbl = self._get(self._completed_label)
-    self.validate_completed_label(completed_lbl)
+    # the vertical align property of the checkbox label doesn't match the styleguide
+    # Aperta-5396
+    # self.validate_checkbox_label(completed_lbl)
     bottom_close_btn = self._get(self._bottom_close_button)
     self.validate_secondary_big_green_button_style(bottom_close_btn)

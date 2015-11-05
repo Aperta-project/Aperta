@@ -22,7 +22,7 @@ class AuthorsCard(BaseCard):
     self._click_task_completed = (By.CSS_SELECTOR, '#task_completed')
     self._close_button_bottom = (By.CSS_SELECTOR, 'footer > div > a.button-secondary')
     self._authors_title = (By.TAG_NAME, 'h1')
-    self._authors_text = (By.CSS_SELECTOR, 'div.authors-overlay-header > p')
+    self._authors_text = (By.CSS_SELECTOR, 'div.overlay-main-work > p')
     self._add_new_author_btn = (By.CLASS_NAME, 'button-primary')
     self._first_lbl = (By.XPATH, ".//div[contains(@class, 'author-name')]/span")
     self._first_input = (By.XPATH, ".//div[contains(@class, 'author-name')]/input")
@@ -94,8 +94,8 @@ class AuthorsCard(BaseCard):
     """Validate """
     authors_title = self._get(self._authors_title)
     assert authors_title.text == 'Authors', authors_title.text
-    # Commented out until bug #103346066 is fixed
-    #self.validate_card_h1_style(authors_title)
+    # Commented out until bug APERTA-3090 is fixed
+    #self.validate_application_h1_style(authors_title)
     authors_text = self._get(self._authors_text)
     assert authors_text.text == (
     "Our criteria for authorship are based on the 'Uniform Requirements for Manuscripts "
@@ -147,20 +147,24 @@ class AuthorsCard(BaseCard):
     assert sec_institution_input.get_attribute('placeholder') == 'Secondary Institution'
     sec_institution_icon = sec_institution_div.find_element_by_css_selector('button i')
     assert set(['fa', 'fa-search']) == set(sec_institution_icon.get_attribute('class').split(' '))
-    corresponding_lbl, deceased_lbl, chck_1_lbl, chck_2_lbl, chck_3_lbl, chck_4_lbl, \
-      chck_5_lbl, chck_6_lbl = self._gets(self._author_lbls)
+    corresponding_lbl, deceased_lbl, other_lbl = self._gets(self._author_lbls)
     assert corresponding_lbl.text == ('This person will be listed as the corresponding author'
       ' on the published article'), corresponding_lbl.text
     assert deceased_lbl.text == 'This person is deceased'
-    assert chck_1_lbl.text == 'Conceived and designed the experiments'
-    assert chck_2_lbl.text == 'Performed the experiments'
-    assert chck_3_lbl.text == 'Analyzed the data'
-    assert chck_4_lbl.text == 'Contributed reagents/materials/analysis tools'
-    assert chck_5_lbl.text == 'Contributed to the writing of the manuscript'
-    assert chck_6_lbl.text == 'Other'
+    assert other_lbl.text == 'Other'
+    assert self._get(self._designed_chkbx).text == 'Conceived and designed the experiments', \
+      self._get(self._designed_chkbx).text
+    assert self._get(self._performed_chkbx).text == 'Performed the experiments', \
+      self._get(self._performed_chkbx).text
+    assert self._get(self._analized_chkbx).text == 'Analyzed the data', \
+      self._get(self._analized_chkbx).text
+    assert self._get(self._tools_chkbx).text == 'Contributed reagents/materials/analysis tools', \
+      self._get(self._tools_chkbx).text
+    assert self._get(self._writing_chkbx).text == 'Contributed to the writing of the manuscript', \
+      self._get(self._writing_chkbx).text
     author_contrib_lbl = self._get(self._author_contrib_lbl)
     assert author_contrib_lbl.text == 'Author Contributions'
-    self.validate_card_h4_style(author_contrib_lbl)
+    self.validate_application_h4_style(author_contrib_lbl)
     add_author_cancel_lnk = self._get(self._add_author_cancel_lnk)
     add_author_add_btn = self._get(self._add_author_add_btn)
     self.validate_green_on_green_button_style(add_author_add_btn)
@@ -177,7 +181,7 @@ class AuthorsCard(BaseCard):
     time.sleep(1)
     add_author_add_btn.click()
     # Check if data is there
-    time.sleep(2)
+    time.sleep(3)
     authors = self._gets(self._author_items)
     all_auth_data = [x.text for x in authors]
     assert [x for x in all_auth_data if author['1_institution'] in x]
@@ -187,17 +191,23 @@ class AuthorsCard(BaseCard):
     assert [x for x in all_auth_data if author['middle'] in x]
     assert [x for x in all_auth_data if author['title'][-4:] in x]
     assert [x for x in all_auth_data if author['email'] in x]
-    # Delete the data
+
+
+  def validate_delete_author(self):
+    """Check deleteing an author from author card"""
     # Check where is the new data
+    authors = self._gets(self._author_items)
+    all_auth_data = [x.text for x in authors]
     n = 0
     for auth_data in all_auth_data:
       n += 1
       if author['email'] in auth_data:
         break
     # Get author to delete
+    authors = self._gets(self._author_items)
     self._actions.move_to_element(authors[n-1]).perform()
     time.sleep(2)
-    authors = self._gets(self._author_items)
+    #authors = self._gets(self._author_items)
     trash = authors[n-1].find_element_by_css_selector('span.fa-trash')
     trash.click()
     # get buttons
@@ -206,13 +216,13 @@ class AuthorsCard(BaseCard):
     del_message = delete_div.find_element_by_tag_name('p')
     assert del_message.text == 'This will permanently delete the author. Are you sure?'
     # TODO: Check p style, resume this when styles are set.
-    cancel_btn = delete_div.find_elements_by_tag_name('button')[0]
-    delete_btn = delete_div.find_elements_by_tag_name('button')[1]
+    cancel_btn, delete_btn  = delete_div.find_elements_by_tag_name('button')
     assert cancel_btn.text == 'CANCEL', cancel_btn.text
     assert delete_btn.text == 'DELETE FOREVER', delete_btn.text
     # TODO: check styles, resume this when styles are set.
     delete_btn.click()
-    time.sleep(.5)
+    time.sleep(2)
+
 
   def validate_styles(self):
     """Validate all styles for Authors Card"""

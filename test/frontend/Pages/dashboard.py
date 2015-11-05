@@ -36,11 +36,24 @@ class DashboardPage(AuthenticatedPage):
     self._dashboard_create_new_submission_btn = (By.CSS_SELECTOR,
                                                  'section#dashboard-my-submissions button.button-primary.button--green')
     self._dash_active_section_title = (By.CSS_SELECTOR, 'thead.active-papers tr th')
+    self._dash_active_role_th = (By.XPATH, "//div[@class='table-responsive'][1]/table/thead/tr/th[2]")
+    self._dash_active_status_th = (By.XPATH, "//div[@class='table-responsive'][1]/table/thead/tr/th[3]")
+
     self._dash_active_title = (By.CSS_SELECTOR,
                                'td.active-paper-title a')
+    self._dash_active_manu_id = (By.CSS_SELECTOR, 'td.active-paper-title a + div')
+    self._dash_active_role = (By.CSS_SELECTOR, 'td.active-paper-title + td')
+    self._dash_active_status = (By.CSS_SELECTOR, 'td.active-paper-title + td + td div')
+
     self._dash_inactive_section_title = (By.CSS_SELECTOR, 'thead.inactive-papers tr th')
+    self._dash_inactive_role_th = (By.XPATH, "//div[@class='table-responsive'][2]/table/thead/tr/th[2]")
+    self._dash_inactive_status_th = (By.XPATH, "//div[@class='table-responsive'][2]/table/thead/tr/th[3]")
     self._dash_inactive_title = (By.CSS_SELECTOR,
                                  'td.inactive-paper-title a')
+    self._dash_inactive_manu_id = (By.CSS_SELECTOR, 'td.inactive-paper-title a + div')
+    self._dash_inactive_role = (By.CSS_SELECTOR, 'td.inactive-paper-title + td')
+    self._dash_inactive_status = (By.CSS_SELECTOR, 'td.inactive-paper-title + td + td div')
+
     self._dashboard_paper_icon = (By.CLASS_NAME, 'manuscript-icon')
     self._dashboard_info_text = (By.CLASS_NAME, 'dashboard-info-text')
 
@@ -72,12 +85,15 @@ class DashboardPage(AuthenticatedPage):
 
     # First article
     self._first_paper = (By.CSS_SELECTOR, 'li.dashboard-paper-title > a')
-    
 
   # POM Actions
   def click_on_existing_manuscript_link(self, title):
-    """Click on a link given a title"""
-    first_matching_manuscript_link = self._get((By.LINK_TEXT,title))
+    """
+    Click on a link given a title
+    :param title: title to click
+    :return: self
+    """
+    first_matching_manuscript_link = self._get((By.LINK_TEXT, title))
     first_matching_manuscript_link.click()
     return self
 
@@ -93,7 +109,6 @@ class DashboardPage(AuthenticatedPage):
     first_article_link.click()
     return first_article_link.text
 
-
   def validate_initial_page_elements_styles(self):
     """
     Validates the static page elements existence and styles
@@ -101,7 +116,7 @@ class DashboardPage(AuthenticatedPage):
     """
     cns_btn = self._get(self._dashboard_create_new_submission_btn)
     assert cns_btn.text.lower() == 'create new submission'
-    #self.validate_primary_big_green_button_style(cns_btn)
+    # self.validate_primary_big_green_button_style(cns_btn)
 
   def validate_invite_dynamic_content(self, username):
     """
@@ -117,7 +132,7 @@ class DashboardPage(AuthenticatedPage):
       else:
         assert welcome_msg.text == 'You have %s invitations.' % invitation_count, \
                                    welcome_msg.text + ' ' + str(invitation_count)
-      #self.validate_application_h1_style(welcome_msg)
+      # self.validate_application_h1_style(welcome_msg)
       view_invites_btn = self._get(self._dashboard_view_invitations_btn)
       self.validate_primary_big_green_button_style(view_invites_btn)
 
@@ -140,7 +155,9 @@ class DashboardPage(AuthenticatedPage):
                                          'FROM paper_roles INNER JOIN papers ON paper_roles.paper_id = papers.id '
                                          'WHERE paper_roles.user_id=%s '
                                          'AND papers.publishing_state NOT IN (\'withdrawn\', \'rejected\');', (uid,))
-    except: print('No manuscripts are active for user.')
+    except:
+      print('Database access error.')
+      return False
     manuscript_count = len(active_manuscripts)
     print('Expecting ' + str(manuscript_count) + ' active manuscripts')
     if manuscript_count > 1:
@@ -152,7 +169,7 @@ class DashboardPage(AuthenticatedPage):
     else:
       manuscript_count = 0
       assert 'Hi, ' + first_name + '. You have no manuscripts.' in welcome_msg.text, welcome_msg.text
-    #self.validate_application_h1_style(welcome_msg)
+    # self.validate_application_h1_style(welcome_msg)
     return manuscript_count
 
   def validate_active_manuscript_section(self, username, active_manuscript_count):
@@ -160,7 +177,7 @@ class DashboardPage(AuthenticatedPage):
     Validates the display of the active manuscripts section of the dashboard. This may or may not be present.
     It consists of a title with a parenthetical count of active manuscripts and then a listing of each active
     manuscript ordered by submitted vs unsubmitted (with unsubmitted first) and display in descending order thereafter.
-    :param active_manuscript_count: active_manuscript_count (int)
+    :param username, active_manuscript_count: username, active_manuscript_count (int)
     :return: None
     """
     try:
@@ -176,8 +193,14 @@ class DashboardPage(AuthenticatedPage):
       active_section_title = self._get(self._dash_active_section_title)
       self.restore_timeout()
     if active_section_title:
-      assert active_section_title.text == 'Active Manuscripts (' + str(active_manuscript_count) + ')'
+      if active_manuscript_count == 1:
+        number = 'Manuscript'
+      else:
+        number = 'Manuscripts'
+      assert active_section_title.text == 'Active ' + number + ' (' + str(active_manuscript_count) + ')'
       self.validate_manu_dynamic_content(username, 'active')
+      assert self._get(self._dash_active_role_th).text == 'Role'
+      assert self._get(self._dash_active_status_th).text == 'Status'
     else:
       print('No manuscripts are active for user.')
 
@@ -202,8 +225,15 @@ class DashboardPage(AuthenticatedPage):
     if inactive_manuscript_count <= 0:
       print('No manuscripts are inactive for user.')
     else:
+      if len(inactive_manuscripts) == 1:
+        number = 'Manuscript'
+      else:
+        number = 'Manuscripts'
       inactive_section_title = self._get(self._dash_inactive_section_title)
-      assert inactive_section_title.text == 'Inactive Manuscripts (' + str(inactive_manuscript_count) + ')'
+      assert inactive_section_title.text == 'Inactive ' + number + ' (' + str(inactive_manuscript_count) + ')'
+      assert self._get(self._dash_inactive_role_th).text == 'Role'
+      assert self._get(self._dash_inactive_status_th).text == 'Status'
+
       self.validate_manu_dynamic_content(username, 'inactive')
     return inactive_manuscript_count
 
@@ -225,7 +255,7 @@ class DashboardPage(AuthenticatedPage):
     """
     Validates the manuscript listings dynamic display based on assigned roles for papers. Papers should be ordered by
     paper_role.created_at DESC
-    :param username: username
+    :param username, list: username, list
     :return: None
     """
     print('Starting validation of ' + list + ' papers for ' + username)
@@ -234,18 +264,26 @@ class DashboardPage(AuthenticatedPage):
     if list == 'inactive':
       paper_tuple_list = []
       papers = self._gets(self._dash_inactive_title)
-      paper_tuple_list = PgSQL().query(
-                                       'SELECT paper_roles.paper_id, paper_roles.created_at, papers.publishing_state '
+      manu_ids = self._gets(self._dash_inactive_manu_id)
+      roles = self._gets(self._dash_inactive_role)
+      statuses = self._gets(self._dash_inactive_status)
+
+      paper_tuple_list = PgSQL().query('SELECT paper_roles.paper_id, paper_roles.created_at, papers.publishing_state, '
+                                       'papers.doi '
                                        'FROM paper_roles INNER JOIN papers ON paper_roles.paper_id = papers.id '
                                        'WHERE paper_roles.user_id=%s '
                                        'AND papers.publishing_state IN (\'withdrawn\', \'rejected\') '
                                        'ORDER BY paper_roles.created_at DESC;', (uid,)
-                                      )
+                                       )
     else:
       paper_tuple_list = []
       papers = self._gets(self._dash_active_title)
+      manu_ids = self._gets(self._dash_active_manu_id)
+      roles = self._gets(self._dash_active_role)
+      statuses = self._gets(self._dash_active_status)
       unsubmitted_paper_tuples = PgSQL().query(
-                                   'SELECT paper_roles.paper_id, paper_roles.created_at, papers.publishing_state '
+                                   'SELECT paper_roles.paper_id, paper_roles.created_at, papers.publishing_state, '
+                                   'papers.doi '
                                    'FROM paper_roles INNER JOIN papers ON paper_roles.paper_id = papers.id '
                                    'WHERE paper_roles.user_id=%s '
                                    'AND papers.publishing_state = \'unsubmitted\' '
@@ -254,13 +292,14 @@ class DashboardPage(AuthenticatedPage):
       for paper in unsubmitted_paper_tuples:
         paper_tuple_list.append(paper)
       other_paper_tuples = PgSQL().query(
-                                   'SELECT paper_roles.paper_id, paper_roles.created_at, papers.publishing_state '
+                                   'SELECT paper_roles.paper_id, paper_roles.created_at, papers.publishing_state, '
+                                   'papers.doi '
                                    'FROM paper_roles INNER JOIN papers ON paper_roles.paper_id = papers.id '
                                    'WHERE paper_roles.user_id=%s '
                                    'AND papers.publishing_state '
                                    'NOT IN (\'unsubmitted\', \'withdrawn\', \'rejected\') '
                                    'ORDER BY paper_roles.created_at DESC;', (uid,)
-                                  )
+                                        )
       for paper in other_paper_tuples:
         paper_tuple_list.append(paper)
     db_papers_list = []
@@ -269,7 +308,7 @@ class DashboardPage(AuthenticatedPage):
       if current_paper not in db_papers_list:
         db_papers_list.append(current_paper)
     # Keeping this around but commented out as it is key to debugging issues with dirty paper data
-    #print(db_papers_list)
+    # print(db_papers_list)
 
     if len(db_papers_list) > 0:
       count = 0
@@ -281,10 +320,9 @@ class DashboardPage(AuthenticatedPage):
         if not title:
           print('Error: No title in db! Illogical, Illogical, Norman Coordinate: Invalid document')
           return False
-#        print(title)
-#        print(paper.text)
-#        assert ' '.join(title.split()) == paper.text.encode('utf8'), \
-#            'DB: ' + ' '.join(title.split()) + ' is not equal to ' + paper.text + ', from page.'
+        # The following two lines are very useful for debugging ordering issues, please leave in place
+        # print(title)
+        # print(paper.text)
         assert title == paper.text.encode('utf8'), 'DB: ' + title + ' is not equal to ' + paper.text + ', from page.'
         # Sort out paper role display
         paper_roles = PgSQL().query('SELECT role FROM paper_roles '
@@ -299,11 +337,37 @@ class DashboardPage(AuthenticatedPage):
         paper_owner = PgSQL().query('SELECT user_id FROM papers where id = %s;', (db_papers_list[count],))[0][0]
         if paper_owner == uid:
           rolelist.append('my paper')
-        # print(rolelist)
 
+        # This validates the role display in the tooltip hover
         page_derived_role_list = paper.get_attribute('data-original-title').lower().split(', ')
         for role in rolelist:
           assert role in page_derived_role_list
+
+        # This validates the role display in the role column
+        # per design, if my paper in roles, only display an 'Author' role
+        if 'my paper' in rolelist:
+          rolelist = ['Author']
+
+        for role in rolelist:
+          assert role.lower() in roles[count].text.lower()
+
+        # Validate Status Display
+        page_status = statuses[count].text
+        dbstatus = PgSQL().query('SELECT publishing_state FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
+        if dbstatus == 'unsubmitted':
+          dbstatus = 'draft'
+        assert page_status.lower() == dbstatus.lower(), page_status.lower() + ' is not equal to: ' + dbstatus.lower()
+
+        # Validate Manuscript ID display
+        dbmanuid = PgSQL().query('SELECT doi FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
+        if dbmanuid:
+          dbmanuid = 'ID: ' + dbmanuid.split('/')[1]
+        else:
+          dbmanuid = 'ID:'
+        manu_id = manu_ids[count].text
+        assert dbmanuid == manu_id, dbmanuid + ' is not equal to: ' + manu_id
+
+        # Finally increment counter
         count += 1
 
   def click_create_new_submission_button(self):
@@ -312,7 +376,11 @@ class DashboardPage(AuthenticatedPage):
     return self
 
   def enter_title_field(self, title):
-    """Enter title for the publication"""
+    """
+    Enter title for the publication
+    :param title: Title you wish to use for your paper
+    :return:
+    """
     self._get(self._title_text_field).clear()
     self._get(self._title_text_field).send_keys(title)
     return self
@@ -436,11 +504,12 @@ class DashboardPage(AuthenticatedPage):
     assert journal_chooser.text == 'What journal are you submitting to?'
     paper_type_chooser = self._get(self._cns_paper_type_chooser)    
     assert paper_type_chooser.text == "Choose the type of paper you're submitting"
-    create_btn = self._get(self._upload_btn)
-    # TODO: Check this when fixed bug #102130748
-    #self.validate_secondary_big_green_button_style(create_btn)
-    create_btn.click()
+    self._get(self._upload_btn)
+    fn = '../assets/docs/sample.docx'
+    self._driver.execute_script("$('#upload-files').fileupload('add', {files:['%s']})" % fn)
     time.sleep(1)
+    # TODO: Check this when fixed bug #102130748
+    # self.validate_secondary_big_green_button_style(create_btn)
     self._get(self._cns_error_div)
     error_msgs = self._gets(self._cns_error_message)
     # I can't quite make out why the previous returns two iterations of the error messages, but, this fixes it

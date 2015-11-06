@@ -74,9 +74,11 @@
 
 .status-tag {
   position: relative;
+  margin-left: 20px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
   color: white;
   background-color: #6c6c6c;
-  margin-left: 20px
 }
 
 .status-tag:after {

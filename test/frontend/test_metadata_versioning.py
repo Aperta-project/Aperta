@@ -14,7 +14,7 @@ from Cards.basecard import BaseCard
 from Cards.register_decision_card import RegisterDecisionCard
 from frontend.common_test import CommonTest
 from Pages.dashboard import DashboardPage
-from Pages.paper_editor import PaperEditorPage
+from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
 
@@ -24,7 +24,7 @@ class MetadataVersioningTest(CommonTest):
   Since metadata versioning is not developed yet, this calls create condition
   for testing by creating an article, filling all required cards, submitting.
   """
-  def _test_metadata_versioning(self):
+  def test_metadata_versioning(self):
     """
     Test metadata versioning (APERTA-3368).
     AC:
@@ -46,7 +46,7 @@ class MetadataVersioningTest(CommonTest):
                                  init=False)
       # go to dashboard
       self.select_preexisting_article(title=title, init=False)
-    paper_viewer = PaperEditorPage(self.getDriver())
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.complete_card('Billing')
     paper_viewer.complete_card('Authors')
     paper_viewer.complete_card('Cover Letter')

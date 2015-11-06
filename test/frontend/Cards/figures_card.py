@@ -22,7 +22,7 @@ class FiguresCard(BaseCard):
 
    #POM Actions
 
-  def validate_elements(self):
+  def validate_styles(self):
     """
     Validate styles in Figures Card
     """

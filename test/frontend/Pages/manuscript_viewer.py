@@ -16,16 +16,17 @@ from frontend.Cards.authors_card import AuthorsCard
 from frontend.Cards.basecard import BaseCard
 from frontend.Cards.billing_card import BillingCard
 from frontend.Cards.figures_card import FiguresCard
+from frontend.Cards.revise_manuscript_card import ReviseManuscriptCard
 
 __author__ = 'sbassi@plos.org'
 
 
-class PaperEditorPage(AuthenticatedPage):
+class ManuscriptViewerPage(AuthenticatedPage):
   """
   Model an aperta paper editor page
   """
   def __init__(self, driver, url_suffix='/'):
-    super(PaperEditorPage, self).__init__(driver, url_suffix)
+    super(ManuscriptViewerPage, self).__init__(driver, url_suffix)
 
     # Locators - Instance members
     self._paper_tracker_title = (By.CLASS_NAME, 'paper-tracker-message')
@@ -280,7 +281,6 @@ class PaperEditorPage(AuthenticatedPage):
           return None
       else:
         return None
-      #self._click_card(card_name)
     else:
       for card in cards:
         if card.text == card_name:

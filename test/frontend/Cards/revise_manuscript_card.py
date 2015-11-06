@@ -18,8 +18,34 @@ class ReviseManuscriptCard(BaseCard):
     super(ReviseManuscriptCard, self).__init__(driver)
 
     #Locators - Instance members
-    #self._decision_labels = (By.CLASS_NAME, 'decision-label')
+    self._card_title = (By.TAG_NAME, 'h1')
+    self._intro_text = (By.TAG_NAME, 'p')
+    self._subtitle = (By.TAG_NAME, 'h3')
+    self._response_field = (By.CLASS_NAME, 'revise-overlay-response-field')
+    self._save_btn = (By.CLASS_NAME, 'button-primary')
 
+
+  def validate_styles(self):
+    """
+    Validate styles in Revise Manuscript Card
+    """
+
+    card_title = self._get(self._card_title)
+    assert card_title.text == 'Revise Manuscript'
+    subtitle_1, subtitle_2 = self._gets(self._subtitle)
+    assert subtitle_1.text == 'Current Revision'
+    assert subtitle_2.text == 'Revision Details:'
+    # Commented out until bug APERTA-3090 is fixed
+    #self.validate_application_h1_style(card_title)
+    intro_text = self._get(self._intro_text)
+    self.validate_application_ptext(intro_text)
+    response_field = self._get(self._response_field)
+    assert response_field.get_attribute('placeholder') == ("Please detail the changes "
+      "you've made to your submission here")
+
+    save_btn = self._get(self._save_btn)
+    save_btn.text == "SAVE"
+    self.validate_primary_big_green_button_style(save_btn)
 
    #POM Actions
   def dummy_function(self):

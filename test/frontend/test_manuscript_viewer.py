@@ -10,7 +10,7 @@ import time
 from Base.Decorators import MultiBrowserFixture
 from Pages.login_page import LoginPage
 from Base.Resources import login_valid_pw, au_login, rv_login, fm_login, ae_login, he_login, sa_login, oa_login
-from Pages.paper_editor import PaperEditorPage
+from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.dashboard import DashboardPage
 from frontend.common_test import CommonTest
 
@@ -37,8 +37,8 @@ class EditPaperTest(CommonTest):
       - button for more options
     """
     article_title = self.select_preexisting_article()
-    paper_editor = PaperEditorPage(self.getDriver())
-    paper_editor.validate_page_elements_styles_functions()
+    manuscript_viewer = ManuscriptViewerPage(self.getDriver())
+    manuscript_viewereditor.validate_page_elements_styles_functions()
     return self
 
   def test_role_aware_menus(self):
@@ -64,9 +64,9 @@ class EditPaperTest(CommonTest):
       dashboard_page = DashboardPage(self.getDriver())
       if dashboard_page.validate_manuscript_section_main_title(user) > 0:
         self.select_preexisting_article(init=False, first=True)
-        paper_editor = PaperEditorPage(self.getDriver())
+        manuscript_viewer = ManuscriptViewerPage(self.getDriver())
         time.sleep(3) # needed to give time to retrieve new menu items
-        paper_editor.validate_roles(roles[user])
+        manuscript_viewer.validate_roles(roles[user])
         url = self._driver.current_url
         signout_url = url[:url.index('/papers/')] + '/users/sign_out'
       else:

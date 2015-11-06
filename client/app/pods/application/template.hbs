@@ -16,9 +16,11 @@
         {{link-to "Paper Tracker" "paper_tracker" class="main-nav-item"}}
       {{/if}}
 
+      <span class="main-nav-item main-nav-item-spacer main-nav-item-space--last"></span>
+
       <span id="profile-dropdown-menu" class="main-nav-item main-nav-item--last" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
         <img src={{currentUser.avatarUrl}} class="user-thumbnail">
-        {{currentUser.fullName}}
+        <span class="profile-dropdown-menu-text">{{currentUser.fullName}}</span>
       </span>
 
       <ul class="dropdown-menu animation-fade-in pull-right" aria-labelledby="profile-dropdown-menu">

@@ -65,8 +65,7 @@
         </div>
         More
       </a>
-      <ul class="dropdown-menu pull-right" aria-labelledby="more-dropdown-menu">
-
+      <ul class="dropdown-menu animation-fade-in pull-right" aria-labelledby="more-dropdown-menu">
         {{#unless paperWithdrawn}}
           <li>
             <a href="#" class="appeal-link">
@@ -87,37 +86,38 @@
 </div>
 
 <div class="control-bar-sub-items">
+  <div class="base-layout">
+    {{#if contributorsVisible}}
+      <div class="contributors active">
+        <a class="contributors-add" {{action "addContributors"}}>Add Collaborators</a>
 
-  {{#if contributorsVisible}}
-    <div class="contributors active">
-      <a class="contributors-add" {{action "addContributors"}}>Add Collaborators</a>
+        {{#each paper.collaborators as |contributor|}}
+          <div class="contributor">{{unbound contributor.fullName}}</div>
+        {{/each}}
+      </div>
+    {{/if}}
 
-      {{#each paper.collaborators as |contributor|}}
-        <div class="contributor">{{unbound contributor.fullName}}</div>
-      {{/each}}
-    </div>
-  {{/if}}
+    {{#if downloadsVisible}}
+      <div class="manuscript-download-links active">
 
-  {{#if downloadsVisible}}
-    <div class="manuscript-download-links active">
+        {{#each supportedDownloadFormats as |downloadType|}}
+          <a href="#" {{action "exportDocument" downloadType}} class="{{unbound downloadType.format}}" title="Download {{unbound downloadType.format}}">{{partial downloadType.icon}}</a>
+        {{/each}}
 
-      {{#each supportedDownloadFormats as |downloadType|}}
-        <a href="#" {{action "exportDocument" downloadType}} class="{{unbound downloadType.format}}" title="Download {{unbound downloadType.format}}">{{partial downloadType.icon}}</a>
-      {{/each}}
+        {{#direct-download-link link=downloadLink extension=".epub"}}
+          {{partial "svg/epub-icon"}}
+        {{/direct-download-link}}
 
-      {{#direct-download-link link=downloadLink extension=".epub"}}
-        {{partial "svg/epub-icon"}}
-      {{/direct-download-link}}
+        {{#direct-download-link link=downloadLink extension=".pdf"}}
+          {{partial "svg/pdf-icon"}}
+        {{/direct-download-link}}
+      </div>
+    {{/if}}
 
-      {{#direct-download-link link=downloadLink extension=".pdf"}}
-        {{partial "svg/pdf-icon"}}
-      {{/direct-download-link}}
-    </div>
-  {{/if}}
-
-  {{#if versionsVisible}}
-    <div class="versions active">
-      {{versioning-bar paper=paper}}
-    </div>
-  {{/if}}
+    {{#if versionsVisible}}
+      <div class="versions active">
+        {{versioning-bar paper=paper}}
+      </div>
+    {{/if}}
+  </div>
 </div>

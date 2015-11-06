@@ -1,16 +1,16 @@
 $z-layers: (
   paper-placeholder:    1001,
-  ve-toolbar:           1002,
   control-bar:          1003,
   flash-positioned:     1004,
-  main-nav:             1005,
   floating-list-bg:     1007,
   floating-list-active: 1008,
+  figures-overlay:      1100,
+  sheet:                1150,
+  main-nav:             1175,
   overlay: (
     base: 1200,
     close-x: 100
   ),
-  sheet: 1300,
   progress-spinner: 1400,
   loading-container:  1500
 );

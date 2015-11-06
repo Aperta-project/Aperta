@@ -1,15 +1,15 @@
 # rubocop:disable all
-puts "Starting seed data load from 'db/data.yml' file"
 # To generate data, run `rake db:data:dump` to dump
 # the current state of the database.
-time = Benchmark.realtime do
-  Rake::Task['db:data:load'].invoke
-end
-puts "Data load complete (#{time.round(3)}s)"
 
-puts "Creating users"
-time = Benchmark.realtime do
-  plos_journal = Journal.first
+if Rails.env.production?
+  # don't run seeds in production
+else
+  ENV['PUSHER_ENABLED'] = 'false'
+  Rake::Task['data:create_task_types'].invoke
+  # Create Journal
+  plos_journal = Journal.first_or_create!(name: 'PLOS Yeti', logo: '', doi_publisher_prefix: "yetipub", doi_journal_prefix: "yetijour", last_doi_issued: "1000000")
+
   # Create Users
   # These Users should match Personas, by convention
   admin = User.where(email: 'admin@example.com').first_or_create! do |user|
@@ -166,7 +166,10 @@ time = Benchmark.realtime do
       admin
     ).save!
   end
-end
 
-puts "User creation complete (#{time.round(3)}s)"
+  Rake::Task['data:create_task_types'].invoke
+  Rake::Task['journal:create_default_templates'].invoke
+
+  puts "Tahi Seeds have been loaded successfully"
+end
 # rubocop:enable all

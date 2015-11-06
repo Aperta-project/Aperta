@@ -11,6 +11,7 @@ import uuid
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.select import Select
 
 from Base.PostgreSQL import PgSQL
 from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface, tahi_green
@@ -72,16 +73,15 @@ class DashboardPage(AuthenticatedPage):
     self._cns_manuscript_italic_icon = (By.CLASS_NAME, 'fa-italic')
     self._cns_manuscript_superscript_icon = (By.CLASS_NAME, 'fa-superscript')
     self._cns_manuscript_subscript_icon = (By.CLASS_NAME, 'fa-subscript')
-    self._cns_journal_chooser = (By.XPATH, './/div[@class="inner-content"]/div[2]/label')
-    self._cns_paper_type_chooser = (By.XPATH, './/div[@class="inner-content"]/div[3]/label')
 
-    self._cns_chooser_chosen = (By.CLASS_NAME, 'select-box-item')
-    self._cns_chooser_dropdown_arrow = (By.CLASS_NAME, 'select2-arrow')
+    self._cns_journal_chooser_label = (By.XPATH, './/div[@class="inner-content"]/div[2]/label')
+    self._cns_journal_chooser = (By.CSS_SELECTOR, 'div.paper-new-journal-select div.select-box-element')
+    self._cns_opened_option_dropdown = (By.CSS_SELECTOR, 'div.select-box-list')
+    self._cns_option_dropdown_item = (By.CSS_SELECTOR, 'div.select-box-item')
+    self._cns_paper_type_chooser_label = (By.XPATH, './/div[@class="inner-content"]/div[3]/label')
+    self._cns_paper_type_chooser = (By.CSS_SELECTOR, 'div.paper-new-paper-type-select div.select-box-element')
 
     self._upload_btn = (By.CLASS_NAME, 'paper-new-upload-button')
-
-    self._cns_cancel = (By.CLASS_NAME, 'button-link')
-    self._cns_create = (By.CLASS_NAME, 'button-primary')
 
     # First article
     self._first_paper = (By.CSS_SELECTOR, 'li.dashboard-paper-title > a')
@@ -381,26 +381,35 @@ class DashboardPage(AuthenticatedPage):
     :param title: Title you wish to use for your paper
     :return:
     """
-    self._get(self._title_text_field).clear()
-    self._get(self._title_text_field).send_keys(title)
+    self._get(self._cns_manuscript_title_field).clear()
+    self._get(self._cns_manuscript_title_field).send_keys(title)
     return self
 
-  def click_create_button(self):
+  def click_upload_button(self):
     """Click create button"""
-    self._get(self._create_button).click()
+    self._get(self._upload_button).click()
     return self
 
-  def click_cancel_button(self):
-    """Click cancel button"""
-    self._get(self._create_button).click()
-    return self
-
-  def select_journal(self, jtitle='Assess', jtype='Research'):
+  def select_journal_and_type(self, journal, manu_type):
     """Select a journal with its type"""
-    self._get(self._first_select).click()
-    self._get(self._select_journal_from_dropdown).send_keys(jtitle + Keys.ENTER)
-    self._get(self._second_select).click()
-    self._get(self._select_type_from_dropdown).send_keys(jtype + Keys.ENTER)
+    self._get(self._cns_journal_chooser).click()
+    journals = self._gets(self._cns_option_dropdown_item)
+    journal_selector = self._get(self._cns_option_dropdown_item)
+    # Open the blasted fake dropdown - Ember sux
+    self._actions.move_to_element(journal_selector).perform()
+    # Navigate to specific journal listing
+    for item in journals:
+      if journal in item.text:
+        self._actions.move_to_element(item)
+        self._actions.click(item)
+        self._actions.perform()
+        Select(item).select_by_value(journal).click()
+
+
+    time.sleep(10)
+    #Select(driver.find_element_by_css_selector("select#numReturnSelect")).select_by_value(15000).click();
+    self._get(self._cns_paper_type_chooser).click()
+    self._get(self._cns_paper_type_chooser).send_keys(manu_type + Keys.ENTER)
     return self
 
   def title_generator(self):

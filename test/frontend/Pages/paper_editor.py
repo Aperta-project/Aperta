@@ -15,6 +15,7 @@ from Base.Resources import affiliation, billing_data
 from frontend.Cards.authors_card import AuthorsCard
 from frontend.Cards.basecard import BaseCard
 from frontend.Cards.billing_card import BillingCard
+from frontend.Cards.figures_card import FiguresCard
 
 __author__ = 'sbassi@plos.org'
 

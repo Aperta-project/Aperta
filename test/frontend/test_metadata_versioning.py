@@ -7,13 +7,16 @@ __author__ = 'sbassi@plos.org'
 
 import time
 
+from selenium.common.exceptions import NoAlertPresentException
+
 from Base.Decorators import MultiBrowserFixture
-from Pages.dashboard import DashboardPage
 from Cards.basecard import BaseCard
-from Pages.paper_editor import PaperEditorPage
-from frontend.common_test import CommonTest
-from Pages.workflow_page import WorkflowPage
 from Cards.register_decision_card import RegisterDecisionCard
+from frontend.common_test import CommonTest
+from Pages.dashboard import DashboardPage
+from Pages.paper_editor import PaperEditorPage
+from Pages.workflow_page import WorkflowPage
+
 
 @MultiBrowserFixture
 class MetadataVersioningTest(CommonTest):
@@ -45,7 +48,7 @@ class MetadataVersioningTest(CommonTest):
       self.select_preexisting_article(title=title, init=False)
     paper_viewer = PaperEditorPage(self.getDriver())
     paper_viewer.complete_card('Billing')
-    paper_viewer.complete_card('Authors') #CHECK THIS OUT!
+    paper_viewer.complete_card('Authors')
     paper_viewer.complete_card('Cover Letter')
     paper_viewer.complete_card('Figures')
     paper_viewer.complete_card('Supporting Info')

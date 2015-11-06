@@ -70,7 +70,12 @@ class PapersController < ApplicationController
   ## CONVERSION
 
   def upload
-    IhatJobRequest.new(paper: paper).queue(file_url: params[:url], callback_url: ihat_jobs_url)
+    paper.create_manuscript unless paper.manuscript.presence
+    paper.manuscript.update!(status: 'processing')
+    DownloadManuscriptWorker.perform_async(paper.manuscript.id,
+                                           params[:url],
+                                           ihat_jobs_url,
+                                           paper_id: paper.id)
     respond_with paper
   end
 

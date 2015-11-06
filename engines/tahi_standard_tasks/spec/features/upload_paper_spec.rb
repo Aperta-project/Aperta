@@ -13,11 +13,10 @@ feature "Upload paper", js: true, selenium: true, sidekiq: :inline! do
   end
 
   before do
-    allow_any_instance_of(IhatJobRequest).to receive(:queue) do
-      paper.create_manuscript(status: "done")
-      paper.update(title: "This is a Title About Turtles", body: "And this is my subtitle")
+    expect(DownloadManuscriptWorker).to receive(:perform_async) do
+      paper.update(title: 'This is a Title About Turtles',
+                   body: 'And this is my subtitle')
     end
-
     login_as(author, scope: :user)
     visit "/"
   end

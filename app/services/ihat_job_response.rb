@@ -1,3 +1,4 @@
+# Models a response from ihat.
 class IhatJobResponse
   attr_reader :outputs, :state, :metadata, :job_id
 

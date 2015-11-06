@@ -50,9 +50,15 @@ describe TaskFactory do
 
   it "Add the creator as participant in task if is submission type" do
     user = FactoryGirl.create(:user)
-
-    task = TaskFactory.create(klass, phase: phase, creator: user, title: 'Test')
+    expect(UserMailer).to receive_message_chain(:delay, :add_participant)
+    task = TaskFactory.create(klass, phase: phase, creator: user)
     expect(task.participants).to include(user)
-    expect(task.title).to eq('Test')
+  end
+
+  it 'Add the creator as participant but do not send notification' do
+    user = FactoryGirl.create(:user)
+    expect(UserMailer).to_not receive(:delay)
+    task = TaskFactory.create(klass, phase: phase, creator: user, notify: false)
+    expect(task.participants).to include(user)
   end
 end

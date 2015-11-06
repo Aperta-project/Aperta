@@ -51,7 +51,8 @@ class PaperFactory
                               creator: creator,
                               title: task_template.title,
                               body: task_template.template,
-                              role: task_template.journal_task_type.role)
+                              role: task_template.journal_task_type.role,
+                              notify: false)
     task.paper_creation_hook(paper) if task.respond_to?(:paper_creation_hook)
   end
 

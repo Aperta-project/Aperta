@@ -1,13 +1,7 @@
 class TaskFactory
 
   def self.create(task_klass, options={})
-    new(task_klass, options).save
-  end
-
-  def save
-    task.save!
-    add_creator_as_participant
-    task
+    new(task_klass, options).send(:save)
   end
 
   private
@@ -21,6 +15,12 @@ class TaskFactory
     @task_klass = task_klass
     options = default_options.merge(options)
     @task = task_klass.constantize.new(options)
+  end
+
+  def save
+    task.save!
+    add_creator_as_participant
+    task
   end
 
   def default_options

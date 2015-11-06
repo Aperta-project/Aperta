@@ -1,5 +1,7 @@
 # coding: utf-8
 class VersionedText < ActiveRecord::Base
+  include EventStream::Notifiable
+
   belongs_to :paper
 
   belongs_to :submitting_user, class_name: "User"
@@ -39,10 +41,10 @@ class VersionedText < ActiveRecord::Base
   end
 
   def new_version!(new_major_version, new_minor_version)
-    new_version = dup
-    new_version.update(major_version: new_major_version,
-                       minor_version: new_minor_version,
-                       submitting_user: nil)
-    new_version.save!
+    dup.update!(
+      major_version: new_major_version,
+      minor_version: new_minor_version,
+      submitting_user: nil
+    )
   end
 end

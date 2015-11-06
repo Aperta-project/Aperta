@@ -7,36 +7,6 @@ GIT
       activerecord (>= 3.0)
 
 GIT
-  remote: https://ea548e3d06f18f2c5287468e46ae5fe262d3f5ac:x-oauth-basic@github.com/tahi-project/plos_bio_internal_review
-  revision: 634f9b964025bdc518f33fc02e1284b9d960a9f7
-  specs:
-    plos_bio_internal_review (0.0.1)
-      rails (~> 4.2.1)
-
-GIT
-  remote: https://ea548e3d06f18f2c5287468e46ae5fe262d3f5ac:x-oauth-basic@github.com/tahi-project/plos_bio_tech_check
-  revision: 8a2601b8ee27d59025332992f302db69708a7ac1
-  specs:
-    plos_bio_tech_check (0.0.1)
-      rails (~> 4.2.0)
-
-GIT
-  remote: https://ea548e3d06f18f2c5287468e46ae5fe262d3f5ac:x-oauth-basic@github.com/tahi-project/tahi-assign_team
-  revision: 83c712f1221a1fb927eaee4a15ecab0ac1851d56
-  specs:
-    tahi-assign_team (0.0.1)
-      rails (~> 4.2.1)
-
-GIT
-  remote: https://ea548e3d06f18f2c5287468e46ae5fe262d3f5ac:x-oauth-basic@github.com/tahi-project/tahi_epub
-  revision: 6df8cbc6ed8c46bc5ee9ece707216b1af40b94ea
-  specs:
-    tahi_epub (0.0.3)
-      activesupport (~> 4.1)
-      fog (~> 1.24)
-      rubyzip (~> 1.1)
-
-GIT
   remote: https://github.com/rails/activemodel-globalid
   revision: 189c69988b0208d6d4760ae823043b94a84f0814
   specs:
@@ -51,6 +21,24 @@ PATH
       rails (~> 4.2.0)
 
 PATH
+  remote: engines/plos_bio_internal_review
+  specs:
+    plos_bio_internal_review (0.0.1)
+      rails (~> 4.2.1)
+
+PATH
+  remote: engines/plos_bio_tech_check
+  specs:
+    plos_bio_tech_check (0.0.1)
+      rails (~> 4.2.0)
+
+PATH
+  remote: engines/tahi-assign_team
+  specs:
+    tahi-assign_team (0.0.1)
+      rails (~> 4.2.1)
+
+PATH
   remote: engines/tahi_standard_tasks
   specs:
     tahi_standard_tasks (0.0.1)
@@ -61,6 +49,14 @@ PATH
   specs:
     tahi_upload_manuscript (0.0.1)
       rails (~> 4.2.0)
+
+PATH
+  remote: vendor/gems/tahi_epub
+  specs:
+    tahi_epub (0.0.3)
+      activesupport (~> 4.1)
+      fog (~> 1.24)
+      rubyzip (~> 1.1)
 
 GEM
   remote: https://rubygems.org/
@@ -150,8 +146,23 @@ GEM
       activesupport (>= 3.2.0)
       json (>= 1.7)
       mime-types (>= 1.16)
-    celluloid (0.16.0)
-      timers (~> 4.0.0)
+    celluloid (0.17.2)
+      celluloid-essentials
+      celluloid-extras
+      celluloid-fsm
+      celluloid-pool
+      celluloid-supervision
+      timers (>= 4.1.1)
+    celluloid-essentials (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-extras (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-fsm (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-pool (0.20.5)
+      timers (>= 4.1.1)
+    celluloid-supervision (0.20.5)
+      timers (>= 4.1.1)
     childprocess (0.5.6)
       ffi (~> 1.0, >= 1.0.11)
     codeclimate-test-reporter (0.4.8)
@@ -198,7 +209,9 @@ GEM
     email_spec (1.6.0)
       launchy (~> 2.1)
       mail (~> 2.2)
-    ember-cli-rails (0.3.5)
+    ember-cli-rails (0.4.1)
+      railties (>= 3.2, < 5)
+      sprockets (>= 2.0)
     erubis (2.7.0)
     eventmachine (1.0.8)
     excon (0.45.4)
@@ -328,7 +341,7 @@ GEM
     hashie (3.4.2)
     heroku-deflater (0.5.3)
       rack (>= 1.4.5)
-    hitimes (1.2.2)
+    hitimes (1.2.3)
     htmlentities (4.3.4)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
@@ -336,7 +349,6 @@ GEM
     httpclient (2.6.0.1)
     humanize (1.1.0)
     i18n (0.7.0)
-    ice_cube (0.11.1)
     inflecto (0.0.2)
     iniparse (1.4.1)
     interception (0.5)
@@ -368,7 +380,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
     netrc (0.10.3)
-    newrelic_rpm (3.13.0.299)
+    newrelic_rpm (3.14.0.305)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     oauth2 (1.0.0)
@@ -470,8 +482,6 @@ GEM
       thor (>= 0.18.1, < 2.0)
     rainbow (2.0.0)
     rake (10.4.2)
-    rdoc (4.2.0)
-      json (~> 1.4)
     redis (3.2.1)
     redis-namespace (1.5.2)
       redis (~> 3.0, >= 3.0.4)
@@ -533,24 +543,17 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
-    sdoc (0.4.1)
-      json (~> 1.7, >= 1.7.7)
-      rdoc (~> 4.0)
     selenium-webdriver (2.47.1)
       childprocess (~> 0.5)
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
       websocket (~> 1.0)
-    sidekiq (3.4.2)
-      celluloid (~> 0.16.0)
+    sidekiq (3.5.3)
+      celluloid (~> 0.17.2)
       connection_pool (~> 2.2, >= 2.2.0)
       json (~> 1.0)
       redis (~> 3.2, >= 3.2.1)
       redis-namespace (~> 1.5, >= 1.5.2)
-    sidetiq (0.6.3)
-      celluloid (>= 0.14.1)
-      ice_cube (= 0.11.1)
-      sidekiq (>= 3.0.0)
     signature (0.1.8)
     simplecov (0.10.0)
       docile (~> 1.1.0)
@@ -570,6 +573,8 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
+    test_after_commit (0.4.1)
+      activerecord (>= 3.2)
     thin (1.6.3)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0)
@@ -579,7 +584,7 @@ GEM
     tilt (2.0.1)
     timecop (0.8.0)
     timeliness (0.3.7)
-    timers (4.0.1)
+    timers (4.1.1)
       hitimes
     tiny_tds (0.7.0)
       mini_portile (= 0.6.2)
@@ -643,7 +648,6 @@ DEPENDENCIES
   gepub (~> 0.7.0beta1)
   heroku-deflater
   kaminari
-  launchy
   mail_safe
   migration_data
   mini_magick
@@ -682,10 +686,8 @@ DEPENDENCIES
   rubocop
   rubyzip
   sass-rails
-  sdoc
   selenium-webdriver
   sidekiq
-  sidetiq
   simplecov
   sinatra
   sort_alphabetical
@@ -693,6 +695,7 @@ DEPENDENCIES
   tahi_epub!
   tahi_standard_tasks!
   tahi_upload_manuscript!
+  test_after_commit
   thin
   timecop
   timeliness

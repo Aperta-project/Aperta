@@ -46,7 +46,6 @@ class NestedQuestionAnswer < ActiveRecord::Base
 
   def verify_from_owner
     return if disable_owner_verification
-    return unless owner
     return unless owner.respond_to?(:can_change?)
     unless owner.can_change?(self)
       errors.add :answer, "can't change answer"

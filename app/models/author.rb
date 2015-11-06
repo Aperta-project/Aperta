@@ -24,10 +24,6 @@ class Author < ActiveRecord::Base
     NestedQuestion.where(owner_id: nil, owner_type: name, ident: CONTRIBUTIONS_QUESTION_IDENT).first
   end
 
-  def self.nested_questions
-    NestedQuestion.where(owner_id:nil, owner_type:name).all
-  end
-
   # this is a hook for the nested_question_answers_policy to find its related
   # task (to know if the user is authorized to conduct a specific action).
   def task

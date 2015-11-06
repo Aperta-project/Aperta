@@ -81,6 +81,7 @@ class PageFragment
     retry_stale_element do
       find('.card-content', text: card_name).click
     end
+    wait_for_ajax
 
     overlay_class ||= begin
                       "#{card_name.gsub ' ', ''}Overlay".constantize

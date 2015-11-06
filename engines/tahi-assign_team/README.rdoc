@@ -1,0 +1,5 @@
+= Tahi::AssignTeam
+
+This is a Tahi card that allows admins to assign Roles to Users from a journal workflow.
+
+This project rocks and uses MIT-LICENSE, not really... this is a closed-source repo.

@@ -184,6 +184,17 @@ describe NestedQuestionAnswer do
         end.to_not raise_error
       end
     end
+
+    context "when there is no owner assigned" do
+      let(:owner) { nil }
+
+      it "can be saved" do
+        nested_question_answer.value = "new value"
+        expect do
+          nested_question_answer.save!
+        end.to_not raise_error
+      end
+    end
   end
 
   describe "#yes_no_value" do

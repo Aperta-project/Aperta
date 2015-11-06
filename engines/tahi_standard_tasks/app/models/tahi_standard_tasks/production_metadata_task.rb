@@ -5,10 +5,6 @@ module TahiStandardTasks
 
     validate :publication_date, :volume_number, :issue_number, if: :newly_complete?
 
-    def self.nested_questions
-      NestedQuestion.where(owner_id:nil, owner_type:name).all
-    end
-
     def active_model_serializer
       ProductionMetadataTaskSerializer
     end

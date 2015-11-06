@@ -111,7 +111,6 @@ class PapersController < ApplicationController
   def submit
     paper.submit! current_user do
       Activity.paper_submitted! paper, user: current_user
-      broadcast_paper_submitted_event
     end
 
     render json: paper, status: :ok
@@ -180,13 +179,6 @@ class PapersController < ApplicationController
 
   def enforce_policy
     authorize_action!(paper: paper, params: params)
-  end
-
-  def broadcast_paper_submitted_event
-    Notifier.notify(event: "paper:submitted", data: { paper: paper })
-    if paper.resubmitted?
-      Notifier.notify(event: "paper:resubmitted", data: { paper: paper })
-    end
   end
 
 end

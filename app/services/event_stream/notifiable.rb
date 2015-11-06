@@ -7,11 +7,14 @@ module EventStream::Notifiable
     # if true, send event stream message to the original requester
     attr_accessor :notify_requester
 
-    def notify
-      Notifier.notify(event: event_name, data: event_payload)
+    def notify(action: nil, payload: nil)
+      name = event_name(action: action)
+      payload ||= event_payload(action: action)
+      Notifier.notify(event: name, data: payload)
     end
 
-    def event_payload
+    def event_payload(action: nil)
+      action ||= event_action
       {
         action: action,
         record: self,
@@ -21,7 +24,8 @@ module EventStream::Notifiable
 
     private
 
-    def event_name
+    def event_name(action: nil)
+      action ||= event_action
       "#{klass_name}:#{action}"
     end
 
@@ -33,7 +37,7 @@ module EventStream::Notifiable
       destroyed? || previous_changes.present?
     end
 
-    def action
+    def event_action
       if previous_changes[:created_at].present?
         "created"
       elsif self.destroyed?

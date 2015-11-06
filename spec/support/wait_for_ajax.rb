@@ -5,12 +5,12 @@ module WaitForAjax
     end
   end
 
-  def finished_all_ajax_requests?
-    page.evaluate_script('jQuery.active').zero?
+  def finished_all_ajax_requests?(session=Capybara.current_session)
+    session.evaluate_script('jQuery.active').zero?
   end
 
-  def finished_ember_requests?
-    page.evaluate_script("!Ember.run.hasScheduledTimers() && !Ember.run.currentRunLoop")
+  def finished_ember_requests?(session=Capybara.current_session)
+    session.evaluate_script("!Ember.run.hasScheduledTimers() && !Ember.run.currentRunLoop")
   end
 end
 

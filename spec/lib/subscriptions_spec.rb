@@ -7,8 +7,6 @@ describe Subscriptions do
     class NeilDegrassTyson; end
   end
 
-  before { Subscriptions.clear_all_subscriptions! }
-
   describe "configure" do
     before { stub_const('Subscriptions::APPLICATION_EVENT_NAMESPACE', 'app_namespace') }
 
@@ -76,4 +74,3 @@ describe Subscriptions do
   end
 
 end
-

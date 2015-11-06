@@ -63,12 +63,6 @@ describe PaperFactory do
       expect(subject.creator).to eq(user)
     end
 
-    it 'sets the gradual_engagement flag' do
-      allow_any_instance_of(PaperFactory).to receive(:gradual_engagement?)
-        .and_return(true)
-      expect(subject.gradual_engagement).to be_truthy
-    end
-
     it "creates a Decision" do
       expect(subject.decisions.length).to eq 1
     end
@@ -93,10 +87,14 @@ describe PaperFactory do
     end
 
     context "without a journal" do
-      let(:paper_attrs) { FactoryGirl.attributes_for(:paper, journal_id: nil, paper_type: mmt.paper_type) }
+      let(:paper_attrs) do
+        FactoryGirl.attributes_for(:paper,
+                                   journal_id: nil,
+                                   paper_type: mmt.paper_type)
+      end
 
       specify { expect(subject).to_not be_valid }
-      specify { expect(subject.errors[:journal].length).to eq(1) }
+      specify { expect(subject.errors[:journal]).to eq(["can't be blank"]) }
     end
   end
 end

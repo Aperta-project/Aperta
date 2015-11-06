@@ -3,7 +3,6 @@ class PaperFactory
 
   def self.create(paper_params, creator)
     paper = creator.submitted_papers.build(paper_params)
-    journal = paper.journal
     paper.editor_mode = 'html' if paper.editor_mode.nil?
     pf = new(paper, creator)
     pf.create
@@ -18,32 +17,23 @@ class PaperFactory
   def create
     Paper.transaction do
       add_creator_as_collaborator
-      if paper.valid?
+      return unless paper.valid?
         if template
           paper.save!
           add_decision
           add_phases_and_tasks
-          set_gradual_engagement_flag
           add_creator_as_author!
         else
-          paper.errors.add(:paper_type, "is not valid")
+          paper.errors.add(:paper_type, 'is not valid')
         end
-      end
     end
   end
 
   def add_phases_and_tasks
     template.phase_templates.each do |phase_template|
       phase = paper.phases.create!(name: phase_template['name'])
-
       phase_template.task_templates.each do |task_template|
-
-        TaskFactory.create(task_template.journal_task_type.kind,
-                           phase: phase,
-                           creator: creator,
-                           title: task_template.title,
-                           body: task_template.template,
-                           role: task_template.journal_task_type.role)
+        create_task_from_template(task_template, phase)
       end
     end
   end
@@ -51,7 +41,18 @@ class PaperFactory
   private
 
   def template
-    @template ||= paper.journal.manuscript_manager_templates.find_by(paper_type: paper.paper_type)
+    @template ||= paper.journal.manuscript_manager_templates
+                  .find_by(paper_type: paper.paper_type)
+  end
+
+  def create_task_from_template(task_template, phase)
+    task = TaskFactory.create(task_template.journal_task_type.kind,
+                              phase: phase,
+                              creator: creator,
+                              title: task_template.title,
+                              body: task_template.template,
+                              role: task_template.journal_task_type.role)
+    task.paper_creation_hook(paper) if task.respond_to?(:paper_creation_hook)
   end
 
   def add_creator_as_author!
@@ -64,13 +65,5 @@ class PaperFactory
 
   def add_creator_as_collaborator
     paper.paper_roles.build(user: creator, role: PaperRole::COLLABORATOR)
-  end
-
-  def set_gradual_engagement_flag
-    paper.update_column(:gradual_engagement, true) if gradual_engagement?
-  end
-
-  def gradual_engagement?
-    paper.tasks.pluck(:type).include?('TahiStandardTasks::InitialDecisionTask')
   end
 end

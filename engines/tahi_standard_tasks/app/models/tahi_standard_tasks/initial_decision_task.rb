@@ -11,5 +11,8 @@ module TahiStandardTasks
       InitialDecisionTaskSerializer
     end
 
+    def paper_creation_hook(paper)
+      paper.update_column(:gradual_engagement, true)
+    end
   end
 end

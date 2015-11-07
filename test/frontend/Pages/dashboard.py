@@ -10,8 +10,6 @@ import time
 import uuid
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.select import Select
 
 from Base.PostgreSQL import PgSQL
 from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface, tahi_green
@@ -80,6 +78,8 @@ class DashboardPage(AuthenticatedPage):
     self._cns_option_dropdown_item = (By.CSS_SELECTOR, 'div.select-box-item')
     self._cns_paper_type_chooser_label = (By.XPATH, './/div[@class="inner-content"]/div[3]/label')
     self._cns_paper_type_chooser = (By.CSS_SELECTOR, 'div.paper-new-paper-type-select div.select-box-element')
+    self._cns_journal_chooser_dd = (By.CLASS_NAME, 'paper-new-journal-select')
+    self._cns_papertype_chooser_dd = (By.CLASS_NAME, 'paper-new-paper-type-select')
 
     self._upload_btn = (By.CLASS_NAME, 'paper-new-upload-button')
 
@@ -387,30 +387,34 @@ class DashboardPage(AuthenticatedPage):
 
   def click_upload_button(self):
     """Click create button"""
-    self._get(self._upload_button).click()
+    self._get(self._upload_btn).click()
     return self
 
-  def select_journal_and_type(self, journal, manu_type):
-    """Select a journal with its type"""
-    self._get(self._cns_journal_chooser).click()
-    journals = self._gets(self._cns_option_dropdown_item)
-    journal_selector = self._get(self._cns_option_dropdown_item)
-    # Open the blasted fake dropdown - Ember sux
-    self._actions.move_to_element(journal_selector).perform()
-    # Navigate to specific journal listing
-    for item in journals:
-      if journal in item.text:
-        self._actions.move_to_element(item)
-        self._actions.click(item)
-        self._actions.perform()
-        Select(item).select_by_value(journal).click()
+  def close_cns_overlay(self):
+    """Click X link"""
+    self._get(self._cns_closer).click()
+    return
 
-
-    time.sleep(10)
-    #Select(driver.find_element_by_css_selector("select#numReturnSelect")).select_by_value(15000).click();
-    self._get(self._cns_paper_type_chooser).click()
-    self._get(self._cns_paper_type_chooser).send_keys(manu_type + Keys.ENTER)
-    return self
+  def select_journal_and_type(self, journal, type):
+    """
+    Select a journal with its type
+    journal: Title of the journal
+    type: Journal type
+    """
+    div = self._get(self._cns_journal_chooser_dd)
+    div.find_element_by_class_name('select-box-element').click()
+    for item in self._gets((By.CLASS_NAME, 'select-box-item')):
+      if item.text == journal:
+        item.click()
+        time.sleep(1)
+        break
+    div = self._get(self._cns_papertype_chooser_dd)
+    div.find_element_by_class_name('select-box-element').click()
+    for item in self._gets((By.CLASS_NAME, 'select-box-item')):
+      if item.text == type:
+        item.click()
+        time.sleep(2)
+        break
 
   def title_generator(self):
     """Creates a new unique title"""

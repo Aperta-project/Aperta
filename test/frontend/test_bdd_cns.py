@@ -5,17 +5,65 @@ This behavioral test case validates the Aperta Create New Submission through Sub
 """
 __author__ = 'jgray@plos.org'
 
+import os
 import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import login_valid_pw, au_login, rv_login, fm_login, ae_login, he_login, sa_login, oa_login
+from frontend.Cards.authors_card import AuthorsCard
 from frontend.common_test import CommonTest
 from Pages.dashboard import DashboardPage
 from Pages.login_page import LoginPage
+from Pages.manuscript_page import ManuscriptPage
 
 # au and sa are commented out because they run into APERTA-5415 which is a code bug
 users = [au_login]
+
+docx = ['2014_04_27 Bakowski et al main text_subm.docx',
+        '120220_PLoS_Genetics_review.docx',
+        'CRX.pone.0103411.docx',
+        'GIANT-gender-main_20130310.docx',
+        'NF-kB-Paper_manuscript.docx',
+        'NorenzayanetalPLOS.docx',
+        'pgen.1004127.docx',
+        'PGENETICS-D-13-02065R1_FTC.docx',
+        'PLosOne_Main_Body_Ravi_Bansal_Brad_REVISED.docx',
+        'PONE-D-12-25504.docx',
+        'PONE-D-12-27950.docx',
+        'PONE-D-13-02344.docx',
+        'PONE-D-13-14162.docx',
+        'PONE-D-13-19782.docx',
+        'PONE-D-13-38666.docx',
+        'PONE-D-14-12686.docx',
+        'PONE-D-14-17217.docx',
+        'pone.0100365.docx',
+        'pone.0100948.docx',
+        'ppat.1004210.docx',
+        'PPATHOGENS-D-14-01213.docx',
+        'RTN.pone.0072333.docx',
+        'Schallmo_PLOS_RevisedManuscript.docx',
+        'Spindler_2014_rerevised.docx',
+        'Thammasri_PONE_D13_12078_wo.docx',
+        ]
+
+cards = ['cover_letter',
+         'billing',
+         'figures',
+         'authors',
+         'supporting_info',
+         'upload_manuscript',
+         'prq',
+         'review_candidates',
+         'revise_task',
+         'competing_interests',
+         'data_availability',
+         'ethics_statement',
+         'financial_disclosure',
+         'new_taxon',
+         'reporting_guidelines',
+         'changes_for_author',
+         ]
 
 
 @MultiBrowserFixture
@@ -108,9 +156,29 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
     time.sleep(2)
     title = dashboard_page.title_generator()
     dashboard_page.enter_title_field(title)
-    dashboard_page.select_journal_and_type(' PLOS Wombat ', 'Research')
+    # This should be expanded to make a random choice of journal and a random choice within that journal of type
+    # NOTA BENE: Despite the options in the overlay including leading and trailing spaces, this must be called stripped
+    #    of the same
+    dashboard_page.select_journal_and_type('PLOS Wombat', 'Research')
     time.sleep(3)
+    doc2upload = random.choice(docx)
+    print('Sending document: ' + os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload))
+    fn = os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload)
+    self._driver.find_element_by_id('upload-files').send_keys(fn)
+    dashboard_page.click_upload_button()
+    # Time needed for iHat conversion.
+    time.sleep(20)
 
+    manuscript_page = ManuscriptPage(self.getDriver())
+    for i in range(5):
+      card = random.choice(cards)
+      print('Attempting to Open Card: ' + card)
+      try:
+        manuscript_page.click_card(card)
+      except:
+        print('Card: ' + card + ' not found on manuscript page.')
+        continue
+    time.sleep(3)
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

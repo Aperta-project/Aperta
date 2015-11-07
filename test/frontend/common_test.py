@@ -58,7 +58,9 @@ class CommonTest(FrontEndTest):
     dashboard.select_journal(journal, type_)
     time.sleep(2)
     fn = os.path.join(os.getcwd()+'/frontend/assets/docs/sample.docx')
-    self._driver.execute_script("$('#upload-files').fileupload('add', {files:['%s']})"%fn)
+    self._driver.find_element_by_id('upload-files').send_keys(fn)
+    dashboard.click_upload_button()
+
     # Time needed for script execution.
     time.sleep(10)
     return title

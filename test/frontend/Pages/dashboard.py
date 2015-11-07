@@ -397,6 +397,11 @@ class DashboardPage(AuthenticatedPage):
     title_field.click()
     title_field.send_keys(title)
 
+  def click_upload_button(self):
+    """Click create button"""
+    self._get(self._upload_btn).click()
+    return self
+
   def click_create_button(self):
     """Click create button"""
     self._get(self._create_button).click()

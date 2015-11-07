@@ -24,7 +24,7 @@ class MetadataVersioningTest(CommonTest):
   Since metadata versioning is not developed yet, this calls create condition
   for testing by creating an article, filling all required cards, submitting.
   """
-  def test_metadata_versioning(self):
+  def _test_metadata_versioning(self):
     """
     Test metadata versioning (APERTA-3368).
     AC:
@@ -44,8 +44,6 @@ class MetadataVersioningTest(CommonTest):
                                  type_='Research',
                                  random_bit=True,
                                  init=False)
-      # go to dashboard
-      self.select_preexisting_article(title=title, init=False)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.complete_card('Billing')
     paper_viewer.complete_card('Authors')
@@ -69,7 +67,7 @@ class MetadataVersioningTest(CommonTest):
     # manuscript
     workflow_page._get(workflow_page._manuscript_link).click()
     time.sleep(1)
-    paper_viewer = PaperEditorPage(self.getDriver())
+    paper_viewer = ManuscriptViewerPage(self.getDriver())
     time.sleep(1)
     # TODO: file a bug about the need for refresh this
     paper_viewer.refresh()

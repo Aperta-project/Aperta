@@ -66,7 +66,7 @@ class DashboardPage(AuthenticatedPage):
     self._cns_title = (By.CSS_SELECTOR, 'div.overlay-title-text h1')
     self._cns_error_div = (By.CLASS_NAME, 'flash-messages')
     self._cns_error_message = (By.CLASS_NAME, 'flash-message-content')
-    self._cns_short_title_field = (By.XPATH, './/div[@id="paper-short-title"]/div')
+    self._cns_title_field = (By.XPATH, './/div[@id="paper-short-title"]/div')
     self._cns_manuscript_title_label = (By.CLASS_NAME, 'paper-new-label')
     self._cns_manuscript_title_field = (By.CLASS_NAME, 'content-editable-muted')
     self._cns_manuscript_italic_icon = (By.CLASS_NAME, 'fa-italic')
@@ -393,7 +393,7 @@ class DashboardPage(AuthenticatedPage):
     :param title: Title you wish to use for your paper
     :return:
     """
-    title_field = self._get(self._cns_short_title_field)
+    title_field = self._get(self._cns_title_field)
     title_field.click()
     title_field.send_keys(title)
 

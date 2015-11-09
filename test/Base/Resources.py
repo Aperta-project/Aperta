@@ -80,10 +80,17 @@ user_pw_editor = 'test_password'
 affiliation = {'institution':'Universidad Del Este', 'title': 'Dr.',
                'country':'Argentina', 'start':'12/01/2014',
                'end':'08/11/2015', 'email': 'test@test.org',
-               'department':'Molecular Biology',}
+               'department':'Molecular Biology', }
 
 # Author for Author card
 author = {'first': 'Jane', 'middle': 'M', 'last': 'Doe',
           'title': 'Dr.', 'email': 'test@test.org',
           'department':'Molecular Biology', '1_institution':'Universidad Del Este',
           '2_institution': 'Universidad Nacional del Sur',}
+
+billing_data = {'first': 'Jane', 'last': 'Doe',
+          'title': 'Dr.', 'email': 'test@test.org',
+          'department':'Molecular Biology', 'affiliation':'Universidad Del Este',
+          '2_institution': 'Universidad Nacional del Sur',
+          'phone': '123-4567-8900', 'city': 'Azul',
+          'state': 'CABA', 'ZIP': '12345', 'country':'Argentina'}

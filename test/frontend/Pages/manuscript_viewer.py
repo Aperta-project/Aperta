@@ -2,22 +2,31 @@
 # -*- coding: utf-8 -*-
 """
 Page Object Model for the Paper Editor Page. Validates global and dynamic elements and their styles
+NOTE: This POM will be outdated when the Paper Editor is removed.
 """
 
 import time
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
 from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface
+from Base.Resources import affiliation, billing_data
+from frontend.Cards.authors_card import AuthorsCard
+from frontend.Cards.basecard import BaseCard
+from frontend.Cards.billing_card import BillingCard
+from frontend.Cards.figures_card import FiguresCard
+from frontend.Cards.revise_manuscript_card import ReviseManuscriptCard
 
 __author__ = 'sbassi@plos.org'
 
 
-class PaperEditorPage(AuthenticatedPage):
+class ManuscriptViewerPage(AuthenticatedPage):
   """
   Model an aperta paper editor page
   """
   def __init__(self, driver, url_suffix='/'):
-    super(PaperEditorPage, self).__init__(driver, url_suffix)
+    super(ManuscriptViewerPage, self).__init__(driver, url_suffix)
 
     # Locators - Instance members
     self._paper_tracker_title = (By.CLASS_NAME, 'paper-tracker-message')
@@ -48,6 +57,10 @@ class PaperEditorPage(AuthenticatedPage):
     self._pdf_link = (By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[3]")
     self._epub_link = ((By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[2]"))
     self._docx_link = (By.CLASS_NAME, 'docx')
+    self._card = (By.CLASS_NAME, 'card')
+    self._sidebar_submit = (By.ID, 'sidebar-submit-paper')
+    self._submit_confirm = (By.CLASS_NAME, 'button-submit-paper')
+    self._close_after_submit = (By.CLASS_NAME, 'success-close')
 
   # POM Actions
   def validate_page_elements_styles_functions(self, username=''):
@@ -253,3 +266,60 @@ class PaperEditorPage(AuthenticatedPage):
     time.sleep(1)
     buttons = self._gets(self._control_bar_right_items)
     assert self._get(self._workflow_link) if user_buttons == 7 else (len(buttons) == 6)
+
+  def complete_card(self, card_name, click_override=False):
+    """On a given card, check complete and then close"""
+    cards = self._gets((By.CLASS_NAME, 'card-title'))
+    # if card is marked as complete, leave is at is.
+    if not click_override:
+      for card in cards:
+        card_div = card.find_element_by_xpath('../..')
+        if card.text == card_name and 'card--completed' not in card_div.get_attribute('class'):
+          card.find_element_by_xpath('.//ancestor::a').click()
+          break
+        elif card.text == card_name and 'card--completed' in card_div.get_attribute('class'):
+          return None
+      else:
+        return None
+    else:
+      for card in cards:
+        if card.text == card_name:
+          card.find_element_by_xpath('.//ancestor::a').click()
+          break
+      else:
+        return None
+
+    base_card = BaseCard(self._driver)
+    if card_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript', 'Revise Manuscript'):
+      # Check completed_check status
+      completed = base_card._get(base_card._completed_check)
+      if not completed.is_selected():
+        completed.click()
+        #time.sleep(.2)
+      base_card._get(base_card._close_button).click()
+      time.sleep(1)
+    elif card_name == 'Authors':
+      # Complete authors data before mark close
+      author_card = AuthorsCard(self._driver)
+      author_card.edit_author(affiliation)
+    elif card_name == 'Billing':
+      billing = BillingCard(self._driver)
+      billing.add_billing_data(billing_data)
+
+
+  def press_submit_btn(self):
+    """Press the submit button"""
+    self._get(self._sidebar_submit).click()
+
+  def confirm_submit_btn(self):
+    """Confirm paper submission"""
+    self._get(self._submit_confirm).click()
+
+  def close_submit_overlay(self):
+    """Close the submit overlay after confirm paper submition"""
+    self._get(self._close_after_submit).click()
+
+  def click_workflow_lnk(self):
+    """Click workflow button"""
+    self._get(self._workflow_link).click()
+    return self

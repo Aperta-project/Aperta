@@ -20,7 +20,7 @@ class ManuscriptPage(AuthenticatedPage):
 
   #POM Actions
   def click_workflow_button(self):
-    """ Click workflow button """
+    """Click workflow button"""
     self._get(self._workflow_button).click()
     return self
 

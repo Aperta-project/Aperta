@@ -66,25 +66,30 @@ class DashboardPage(AuthenticatedPage):
     self._cns_title = (By.CSS_SELECTOR, 'div.overlay-title-text h1')
     self._cns_error_div = (By.CLASS_NAME, 'flash-messages')
     self._cns_error_message = (By.CLASS_NAME, 'flash-message-content')
-
+    self._cns_title_field = (By.XPATH, './/div[@id="paper-short-title"]/div')
     self._cns_manuscript_title_label = (By.CLASS_NAME, 'paper-new-label')
     self._cns_manuscript_title_field = (By.CLASS_NAME, 'content-editable-muted')
     self._cns_manuscript_italic_icon = (By.CLASS_NAME, 'fa-italic')
     self._cns_manuscript_superscript_icon = (By.CLASS_NAME, 'fa-superscript')
     self._cns_manuscript_subscript_icon = (By.CLASS_NAME, 'fa-subscript')
     self._cns_journal_chooser = (By.XPATH, './/div[@class="inner-content"]/div[2]/label')
+    self._cns_journal_chooser_dd = (By.CLASS_NAME, 'paper-new-journal-select')
+    self._cns_papertype_chooser_dd = (By.CLASS_NAME, 'paper-new-paper-type-select')
+
+    self._cns_journal_chooser_active = (By.CLASS_NAME, 'select-box-element--active')
     self._cns_paper_type_chooser = (By.XPATH, './/div[@class="inner-content"]/div[3]/label')
 
     self._cns_chooser_chosen = (By.CLASS_NAME, 'select-box-item')
     self._cns_chooser_dropdown_arrow = (By.CLASS_NAME, 'select2-arrow')
-
+    self._cns_upload_document = (By.CLASS_NAME, 'fileinput-button')
     self._upload_btn = (By.CLASS_NAME, 'paper-new-upload-button')
 
     self._cns_cancel = (By.CLASS_NAME, 'button-link')
     self._cns_create = (By.CLASS_NAME, 'button-primary')
-
+    self._submitted_papers = (By.CLASS_NAME, 'dashboard-paper-title')
     # First article
     self._first_paper = (By.CSS_SELECTOR, 'li.dashboard-paper-title > a')
+
 
   # POM Actions
   def click_on_existing_manuscript_link(self, title):
@@ -100,14 +105,19 @@ class DashboardPage(AuthenticatedPage):
   def click_on_existing_manuscript_link_partial_title(self, partial_title):
     """Click on existing manuscript link using partial title"""
     first_article_link = self.driver.find_element_by_partial_link_text(partial_title)
+    title = first_article_link.text
     first_article_link.click()
-    return first_article_link.text
+    return title
 
   def click_on_first_manuscript(self):
     """Click on first available manuscript link"""
     first_article_link = self._get(self._first_paper)
     first_article_link.click()
     return first_article_link.text
+
+  def get_upload_button(self):
+    """Returns the upload button in the dashboard submit manuscript modal"""
+    return self._get(self._cns_upload_document)
 
   def validate_initial_page_elements_styles(self):
     """
@@ -375,14 +385,21 @@ class DashboardPage(AuthenticatedPage):
     self._get(self._dashboard_create_new_submission_btn).click()
     return self
 
+  #def click_create_document()
+
   def enter_title_field(self, title):
     """
     Enter title for the publication
     :param title: Title you wish to use for your paper
     :return:
     """
-    self._get(self._title_text_field).clear()
-    self._get(self._title_text_field).send_keys(title)
+    title_field = self._get(self._cns_title_field)
+    title_field.click()
+    title_field.send_keys(title)
+
+  def click_upload_button(self):
+    """Click create button"""
+    self._get(self._upload_btn).click()
     return self
 
   def click_create_button(self):
@@ -396,16 +413,34 @@ class DashboardPage(AuthenticatedPage):
     return self
 
   def select_journal(self, jtitle='Assess', jtype='Research'):
-    """Select a journal with its type"""
-    self._get(self._first_select).click()
-    self._get(self._select_journal_from_dropdown).send_keys(jtitle + Keys.ENTER)
-    self._get(self._second_select).click()
-    self._get(self._select_type_from_dropdown).send_keys(jtype + Keys.ENTER)
-    return self
+    """
+    Select a journal with its type
+    jtitle: Title of the journal
+    jtype: Journal type
+    """
+    div = self._get(self._cns_journal_chooser_dd)
+    div.find_element_by_class_name('select-box-element').click()
+    for item in self._gets((By.CLASS_NAME, 'select-box-item')):
+      if item.text == jtitle:
+        item.click()
+        time.sleep(1)
+        break
+    div = self._get(self._cns_papertype_chooser_dd)
+    div.find_element_by_class_name('select-box-element').click()
+    for item in self._gets((By.CLASS_NAME, 'select-box-item')):
+      if item.text == jtype:
+        item.click()
+        time.sleep(2)
+        break
 
-  def title_generator(self):
+  def title_generator(self, prefix='', random_bit=True):
     """Creates a new unique title"""
-    return 'Hendrik %s' % uuid.uuid4()
+    if not prefix:
+      return str(uuid.uuid4())
+    elif prefix and random_bit:
+      return '%s %s'%(prefix, uuid.uuid4())
+    elif prefix and not random_bit:
+      return prefix
 
   def click_view_invites_button(self):
     """Click View Invitations button"""
@@ -502,7 +537,7 @@ class DashboardPage(AuthenticatedPage):
     self._get(self._cns_manuscript_subscript_icon)
     journal_chooser = self._get(self._cns_journal_chooser)
     assert journal_chooser.text == 'What journal are you submitting to?'
-    paper_type_chooser = self._get(self._cns_paper_type_chooser)    
+    paper_type_chooser = self._get(self._cns_paper_type_chooser)
     assert paper_type_chooser.text == "Choose the type of paper you're submitting"
     self._get(self._upload_btn)
     fn = '../assets/docs/sample.docx'

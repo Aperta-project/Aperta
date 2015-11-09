@@ -1,5 +1,11 @@
 .paper-sidebar {
-  padding: 15px 20px;
+  overflow: auto;
+  @include position(absolute, 0px 0px 0px 0px);
+  padding: 15px 0;
+}
+
+.paper-sidebar-info {
+  padding: 0 20px;
 }
 
 .paper-sidebar-doi {

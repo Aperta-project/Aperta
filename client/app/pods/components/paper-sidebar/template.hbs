@@ -1,25 +1,27 @@
-<div class="paper-sidebar">
-  {{#if paper.doi}}
-    <div class="paper-sidebar-doi"><strong>Manuscript ID:</strong> {{paper.manuscript_id}}</div>
-  {{/if}}
+{{#task-disclosure-group class="paper-sidebar"}}
+  <div class="paper-sidebar-info">
+    {{#if paper.doi}}
+      <div class="paper-sidebar-doi"><strong>Manuscript ID:</strong> {{paper.manuscript_id}}</div>
+    {{/if}}
 
-  {{#if readyToSubmit}}
-    <button id="sidebar-submit-paper" {{action "submitPaper"}}
-      class="button-primary button--green">
-      Submit
-    </button>
-  {{/if}}
+    {{#if readyToSubmit}}
+      <button id="sidebar-submit-paper" {{action "submitPaper"}}
+        class="button-primary button--green">
+        Submit
+      </button>
+    {{/if}}
 
-  {{#if preSubmission}}
-    You must complete the following tasks before submitting.
-    {{paper-sidebar/progress-bar percent=tasksCompletedPercent}}
-  {{/if}}
+    {{#if preSubmission}}
+      You must complete the following tasks before submitting.
+      {{paper-sidebar/progress-bar percent=tasksCompletedPercent}}
+    {{/if}}
 
-  {{#if isSubmitted}}
-    This paper has been submitted.
-  {{/if}}
+    {{#if isSubmitted}}
+      This paper has been submitted.
+    {{/if}}
 
-  <hr />
+    <hr>
+  </div>
 
   {{#if assignedTasks}}
     <div id="paper-assigned-tasks">
@@ -40,4 +42,4 @@
       {{/each}}
     </div>
   {{/if}}
-</div>
+{{/task-disclosure-group}}

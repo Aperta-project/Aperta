@@ -4,6 +4,7 @@
 
 .split-pane-element {
   @include flex(0.5);
+  position: relative;
   overflow-y: auto;
   overflow-x: hide;
 

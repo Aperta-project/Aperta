@@ -5,10 +5,10 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
-- Super Admin: run `rake plos_billing:retry_salesforce_case_for_paper[:paper_id]` to resend Salesforce Case data for 1 Paper
+-
 
 ### Changed
-- New Manuscript Overlay edits Paper title in place of short title
+-
 
 ### Deprecated
 -
@@ -22,6 +22,26 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ### Security
 -
+
+## [1.3.4] - 2015-10-29
+### Added
+- Add inline figures to downloaded PDF
+- Show HTML for paper title within email
+
+### Changed
+- New Manuscript Overlay edits Paper title in place of short title
+- Upgraded to ruby 2.2.3
+
+### Removed
+- VisualEditor
+- Followers from author activity feed
+
+### Fixed
+- Fixed display of labels on Authors card
+- Assign DOIs to all papers
+- Document conversion creates TEI comments
+- Proper handling of errors from iHat
+- Inability to mark author card as 'complete'
 
 ## [1.3.3] - 2015-10-01
 ### Added
@@ -40,8 +60,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Fixed
 - Numerous bug fixes
 
-## [1.3.2] - 2015-09-17
 
+## [1.3.2] - 2015-09-17
 ### Changed
 - Increased the number and fidelity of Workflow Activity Feed messages
 - Editor: started an integration test-suite in the editor repository which is run with CircleCI: https://circleci.com/gh/Tahi-project/tahi-editor-ve

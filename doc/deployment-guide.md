@@ -21,6 +21,10 @@ are the last to make it into the next release. This is the final call for all
 PRs to board the release train. There will normally be a meeting between the
 Product Team, QA, and any developers with PRs nearing final approval.
 
+You will want to ensure that the [change log](../CHANGELOG.md) has been properly
+updated to reflect the changes for this release and a placeholder created for the 
+next one.
+
 #### Sample Deploy Meeting:
 
 **Jeffrey (QA):** "We really would like APERTA-5432 to make it into this release. It

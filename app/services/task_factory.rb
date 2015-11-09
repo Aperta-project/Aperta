@@ -32,10 +32,6 @@ class TaskFactory
 
   def add_creator_as_participant
     return unless task.submission_task? && creator
-    # The ParticipationFactory will not sent a notification
-    # if assigner and assignee are the same
-    participation_params = { task: task, assignee: creator }
-    participation_params.merge!(assigner: creator) if notify == false
-    ParticipationFactory.create(participation_params)
+    ParticipationFactory.create(task: task, assignee: creator, notify: notify)
   end
 end

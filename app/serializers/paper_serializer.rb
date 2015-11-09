@@ -1,6 +1,6 @@
 class PaperSerializer < LitePaperSerializer
   attributes :id, :short_title, :title, :doi, :body,
-             :publishing_state, :paper_type, :status, :updated_at,
+             :publishing_state, :paper_type, :updated_at,
              :editable, :links, :manuscript_id, :created_at, :editable
 
   %i(tables bibitems supporting_information_files).each do |relation|
@@ -10,10 +10,6 @@ class PaperSerializer < LitePaperSerializer
   has_many :collaborations, embed: :ids, include: true, serializer: CollaborationSerializer
   has_one :journal, embed: :id
   has_one :striking_image, embed: :id
-
-  def status
-    object.manuscript.try(:status)
-  end
 
   def collaborations
     # we want the actual join record, not a list of users

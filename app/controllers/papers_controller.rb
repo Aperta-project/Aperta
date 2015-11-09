@@ -71,7 +71,6 @@ class PapersController < ApplicationController
 
   def upload
     paper.create_manuscript unless paper.manuscript.presence
-    paper.manuscript.update!(status: 'processing')
     DownloadManuscriptWorker.perform_async(paper.manuscript.id,
                                            params[:url],
                                            ihat_jobs_url,

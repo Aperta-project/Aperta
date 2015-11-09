@@ -263,3 +263,17 @@ E.G.
 heroku pgbackups:restore HEROKUPOSTGRESQL_ROSE_URL b020
 ```
 
+<<<<<<< HEAD
+# Documentation
+
+Open the generated documentation from `doc/rdoc/index.html` in your browser.
+
+To generate documentation, run the following command from the application root:
+
+```
+sdoc -g --markup=tomdoc --title="Tahi Documentation" --main="README.md" -o doc/rdoc -T sdoc app/models/**/*.rb
+```
+
+We are using [Tomdoc](http://tomdoc.org/) documentation specification format. We are currently aiming to have all models documented.
+=======
+>>>>>>> Mention the technical documentation in README

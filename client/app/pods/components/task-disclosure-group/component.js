@@ -13,7 +13,10 @@ export default Ember.Component.extend({
         tasks.each(function() {
           const $task = $(this);
           const amountAboveTop = $task.position().top;
-          if(amountAboveTop > 0) { return; }
+          if(amountAboveTop > 0) {
+            $task.find('.task-disclosure-heading').css('top', '');
+            return;
+          }
 
           const top = amountAboveTop * -1,
                 height = $task.outerHeight(),
@@ -22,7 +25,7 @@ export default Ember.Component.extend({
                 noRoomForHead = (height + amountAboveTop) < headHeight,
                 Y = (noRoomForHead ? top - (top-height) - headHeight : top);
 
-          head.css({ transform: 'translateY(' + Y + 'px)' });
+          head.css('top', Y);
         });
       });
     });

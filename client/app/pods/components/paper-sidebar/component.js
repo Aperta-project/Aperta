@@ -24,24 +24,6 @@ export default Ember.Component.extend({
 
   currentUserTasks: filterBy('paper.tasks', 'assignedToMe'),
 
-  displayedTasks: computed('assignedTasks.[]', 'metadataTasks.[]', function() {
-    let tasks = [];
-    tasks.pushObjects(this.get('assignedTasks'));
-    tasks.pushObjects(this.get('metadataTasks'));
-
-    return tasks;
-  }),
-
-  completedTaskCount: computed('displayedTasks.@each.completed', function() {
-    return this.get('displayedTasks').filterBy('completed', true).length;
-  }),
-
-  tasksCompletedPercent: computed('completedTaskCount', function() {
-    return Math.round((
-      this.get('completedTaskCount') / this.get('displayedTasks.length')
-    ) * 100);
-  }),
-
   actions: {
     viewCard(task){
       this.sendAction('viewCard', task);

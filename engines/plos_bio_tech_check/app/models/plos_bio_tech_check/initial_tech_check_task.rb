@@ -3,7 +3,7 @@ module PlosBioTechCheck
     # uncomment the following line if you want to enable event streaming for this model
     # include EventStreamNotifier
 
-    register_task default_title: "Initial Tech Check", default_role: "admin"
+    register_task default_title: 'Initial Tech Check', default_role: 'editor'
     before_create :initialize_round
 
     def active_model_serializer

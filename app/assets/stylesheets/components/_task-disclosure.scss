@@ -1,56 +1,61 @@
-$task-disclosure-padding: 0 2.0rem 0 2.0rem;
+$task-disclosure-radius: 4px;
 
 .task-disclosure {
   position: relative;
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.4rem;
   padding-top: 40px;
 }
 
 .task-disclosure-heading {
   @include position(absolute, 0px 0px auto 0px);
-  @include display(flex);
   height: 4.0rem;
-  padding: $task-disclosure-padding;
+  border-radius: $task-disclosure-radius;
+  padding: 0 50px 0 2rem;
+  color: #222;
+  font-size: 1.8rem;
   line-height: 4.0rem;
   cursor: pointer;
-  @include user-select(none);
+  background: rgba(230, 230, 230, 0.93);
   z-index: 1;
+  @include ellipsis;
+  @include user-select(none);
   will-change: transform;
 }
 
 .task-disclosure--open .task-disclosure-heading {
-  color: #222;
-  background: rgba(220,220,220, 0.93);
-}
-
-.task-disclosure-title {
-  @include flex-grow(2);
-  @include ellipsis;
-  color: #333;
-  font-size: 1.8rem;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .task-disclosure-body {
   overflow: auto;
-  border-bottom: 4px solid #e9e9e9;
-  background: #fff;
+  border: 1px solid #e9e9e9;
+  border-bottom-right-radius: $task-disclosure-radius;
+  border-bottom-left-radius: $task-disclosure-radius;
 }
 
 .task-disclosure-completed-icon {
-  @include flex-shrink(0);
-  width: 18px;
-  margin-right: 10px;
+  position: absolute;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  right: 1.5rem;
+  margin-top: -11px;
+  border-radius: 50%;
+  background: #F7F7F7;
 
   svg {
     position: relative;
-    top: 3px;
-    width: 100%;
+    top: -6px;
+    width: 16px;
+    left: 3px;
   }
 
-  polygon { fill: #e3e3e3; }
+  polygon { fill: transparent; }
 
   &.active {
-    polygon { fill: #68C25A; }
+    background: $tahi-green;
+    polygon { fill: #fff; }
   }
 }
 

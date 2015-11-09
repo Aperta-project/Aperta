@@ -1,15 +1,8 @@
 <div class="task-disclosure-heading" {{action "toggleVisibility"}}>
-  {{#unless taskVisible}}
-    <div class="task-disclosure-completed-icon {{if task.completed "active"}}">
-      {{partial "svg/check"}}
-    </div>
-  {{/unless}}
-
-  {{#if unreadCommentsCount}}
-    <span class="badge badge--red unread-comments-count">{{unreadCommentsCount}}</span>
-  {{/if}}
-
-  <div class="task-disclosure-title">{{task.title}}</div>
+  {{title}}
+  <div class="task-disclosure-completed-icon {{if completed "active"}}">
+    {{partial "svg/check"}}
+  </div>
 </div>
 
 {{#if taskVisible}}

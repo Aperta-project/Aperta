@@ -12,7 +12,7 @@
     {{/if}}
 
     {{#if preSubmission}}
-      You must complete the following tasks before submitting.
+      You must complete the following tasks before submitting:
     {{/if}}
 
     {{#if isSubmitted}}
@@ -25,7 +25,7 @@
   {{#if assignedTasks}}
     <div id="paper-assigned-tasks">
       {{#each sortedAssignedTasks as |task|}}
-        {{#task-disclosure task=task commentLooks=commentLooks}}
+        {{#task-disclosure title=task.title completed=task.completed}}
           {{component (task-component-name task.title) task=task}}
         {{/task-disclosure}}
       {{/each}}
@@ -35,7 +35,7 @@
   {{#if metadataTasks}}
     <div id="paper-metadata-tasks">
       {{#each sortedMetadataTasks as |task|}}
-        {{#task-disclosure task=task commentLooks=commentLooks}}
+        {{#task-disclosure title=task.title completed=task.completed}}
           {{component (task-component-name task.title) task=task}}
         {{/task-disclosure}}
       {{/each}}

@@ -201,6 +201,12 @@ describe Paper do
         paper.invite_full_submission!
         expect(paper).to be_editable
       end
+
+      it 'sets a new minor version' do
+        expect(paper.latest_version.version_string).to match(/^R0.0/)
+        paper.invite_full_submission!
+        expect(paper.latest_version.version_string).to match(/^R0.1/)
+      end
     end
 
     describe '#reactivate!' do

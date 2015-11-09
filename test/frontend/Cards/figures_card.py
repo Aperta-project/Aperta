@@ -1,0 +1,51 @@
+#!/usr/bin/env python2
+
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+
+from frontend.Cards.basecard import BaseCard
+
+__author__ = 'sbassi@plos.org'
+
+class FiguresCard(BaseCard):
+  """
+  Page Object Model for Figures Card
+  """
+  def __init__(self, driver, url_suffix='/'):
+    super(FiguresCard, self).__init__(driver)
+
+    #Locators - Instance members
+    self._card_title = (By.TAG_NAME, 'h1')
+    self._intro_text = (By.TAG_NAME, 'p')
+    self._question_label = (By.CLASS_NAME, 'question-checkbox')
+    self._add_new_figures_btn = (By.CLASS_NAME, 'button-primary')
+
+   #POM Actions
+
+  def validate_styles(self):
+    """
+    Validate styles in Figures Card
+    """
+
+    card_title = self._get(self._card_title)
+    assert card_title.text == 'Figures'
+    # Commented out until bug APERTA-3090 is fixed
+    #self.validate_application_h1_style(card_title)
+    intro_text = self._get(self._intro_text)
+    self.validate_application_ptext(intro_text)
+    assert intro_text.text == (
+      "Please confirm that your figures comply with our guidelines for preparation and "
+      "have not been inappropriately manipulated. For information on image manipulation, "
+      "please see our general guidance notes on image manipulation."
+      ), intro_text.text
+    assert self._get(self._question_label).text == "Yes - I confirm our figures comply with the guidelines."
+    self.validate_application_ptext(self._get(self._question_label))
+    add_new_figures_btn = self._get(self._add_new_figures_btn)
+    add_new_figures_btn.text == "ADD NEW FIGURES"
+    self.validate_primary_big_green_button_style(add_new_figures_btn)
+
+  def upload_figure(self, file_path):
+    """
+    Placeholder for a function to upload a tiff file in the Figures Card
+    """
+    pass

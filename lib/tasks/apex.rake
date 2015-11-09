@@ -1,4 +1,3 @@
-
 namespace :apex do
   desc 'Upload package to Apex'
   desc <<-USAGE.strip_heredoc
@@ -18,5 +17,12 @@ namespace :apex do
       filename: filename,
       filepath: filepath
     ).upload
+  end
+
+  task export: :environment do
+    $stdout.puts 'Beginning export'
+    paper = Paper.find(917)
+    download = DownloadApexZip.new(paper)
+    download.export
   end
 end

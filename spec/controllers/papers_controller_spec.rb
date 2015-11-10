@@ -174,6 +174,14 @@ describe PapersController do
 
     authorize_policy(PapersPolicy, true)
 
+    context 'Gradual Engagement' do
+      it 'makes an initial submission' do
+        paper.update(gradual_engagement: true)
+        submit
+        expect(paper.reload).to be_initially_submitted
+      end
+    end
+
     it "submits the paper" do
       submit
       expect(response.status).to eq(200)

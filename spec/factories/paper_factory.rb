@@ -33,6 +33,11 @@ FactoryGirl.define do
       publishing_state "submitted"
     end
 
+    trait(:initially_submitted) do
+      publishing_state 'initially_submitted'
+      editable = false
+    end
+
     trait(:submitted) do
       after(:create) do |paper|
         paper.submit! paper.creator

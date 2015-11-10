@@ -118,9 +118,20 @@ describe Paper do
     end
   end
 
-  describe "states" do
-    context "when submitting" do
-      let(:paper) { FactoryGirl.create(:paper) }
+  context 'states' do
+    describe '#initial_submit' do
+      it 'transitions to initial_submission' do
+        paper.initial_submit!
+        expect(paper).to be_initially_submitted
+      end
+
+      it 'marks the paper not editable' do
+        paper.initial_submit!
+        expect(paper).to_not be_editable
+      end
+    end
+
+    describe '#submit!' do
 
       it "does not transition when metadata tasks are incomplete" do
         expect(paper).to receive(:metadata_tasks_completed?).and_return(false)
@@ -159,7 +170,7 @@ describe Paper do
       end
     end
 
-    context "when withdrawing" do
+    describe '#withdraw!' do
       let(:paper) { FactoryGirl.create(:paper, :submitted) }
 
       it "transitions to withdrawn without a reason" do
@@ -178,7 +189,27 @@ describe Paper do
       end
     end
 
-    context "when reactivating" do
+    describe '#invite_full_submission' do
+      let(:paper) { FactoryGirl.create(:paper, :initially_submitted) }
+
+      it 'transitions to in_revision' do
+        paper.invite_full_submission!
+        expect(paper).to be_in_revision
+      end
+
+      it 'marks the paper editable' do
+        paper.invite_full_submission!
+        expect(paper).to be_editable
+      end
+
+      it 'sets a new minor version' do
+        expect(paper.latest_version.version_string).to match(/^R0.0/)
+        paper.invite_full_submission!
+        expect(paper.latest_version.version_string).to match(/^R0.1/)
+      end
+    end
+
+    describe '#reactivate!' do
       let(:paper) { FactoryGirl.create(:paper, :submitted) }
 
       it "transitions to the previous state" do
@@ -207,7 +238,7 @@ describe Paper do
       end
     end
 
-    context "when minor-revising (as in a tech check)" do
+    describe '#minor_check!' do
       let(:paper) { FactoryGirl.create(:paper, :submitted) }
 
       it "marks the paper editable" do
@@ -222,7 +253,7 @@ describe Paper do
       end
     end
 
-    context "when submitting a minor change (as in a tech check)" do
+    describe '#submit_minor_check!' do
       let(:paper) { FactoryGirl.create(:paper, :submitted) }
 
       it "marks the paper uneditable" do
@@ -245,7 +276,7 @@ describe Paper do
       end
     end
 
-    context "when publishing" do
+    describe '#publish!' do
       let(:paper) { FactoryGirl.create(:paper, :submitted) }
 
       it "marks the paper uneditable" do

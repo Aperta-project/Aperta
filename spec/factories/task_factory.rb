@@ -139,6 +139,12 @@ FactoryGirl.define do
     title "Reviewer Candidates"
     role "author"
   end
+
+  factory :send_to_apex_task, class: 'TahiStandardTasks::SendToApexTask' do
+    phase
+    title 'Send to Apex'
+    role 'admin'
+  end
 end
 
 class MockMetadataTask < Task

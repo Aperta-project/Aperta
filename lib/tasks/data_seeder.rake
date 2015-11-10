@@ -26,10 +26,23 @@ namespace :data do
     desc "Load a specific environment scenario from the name of the yaml file (without the extension)"
     task :scenario, [:scenario_name] => [:environment] do |t, args|
       if args[:scenario_name].present?
-        FileUtils.cp(Rails.root.join('db', 'seeds', "#{args[:scenario_name]}.yml"), Rails.root.join('db', 'data.yml'))
-        Rake::Task['db:data:load'].invoke
-        FileUtils.cp(Rails.root.join('db', 'seeds', 'data.yml'), Rails.root.join('db', 'data.yml')) # Restore base seed
-        puts "Successfully loaded #{args[:scenario_name]}"
+        file_path = Rails.root.join('db', 'seeds', "#{args[:scenario_name]}.yml")
+        if File.exist?(file_path)
+          FileUtils.cp(file_path, Rails.root.join('db', 'data.yml'))
+          Rake::Task['db:data:load'].invoke
+          FileUtils.cp(Rails.root.join('db', 'seeds', 'data.yml'), Rails.root.join('db', 'data.yml')) # Restore base seed
+          puts "Successfully loaded #{args[:scenario_name]}"
+        else
+          puts <<-eos
+            Load FAILED. ScenarioNotFound "#{args[:scenario_name]}". 
+
+            The scenario name should match a filename in db/seeds/ without the extension. Possible scenarios are:
+              - empty-paper
+              - paper-with-tasks-unsubmitted
+              - paper-with-tasks-submitted
+              - paper-on-second-round
+          eos
+        end
       else
         puts "Scenario name is required. Run rake 'data:load:scenario[SCENARIO]' where SCENARIO is the scenario name"
       end

@@ -1,4 +1,4 @@
-<span class="overlay-close-x animation-scale-in" {{action "closeOverlay"}}>&times;</span>
+<span class="overlay-close-x animation-scale-in" {{action "close"}}>&times;</span>
 <div class="overlay-container">
   <div class="overlay-title-text">
     <h1>Create a New Submission</h1>
@@ -8,12 +8,12 @@
   <div class="inner-content">
 
     <div class="form-group">
-      <label class="paper-new-label" for="paper-short-title">
+      <label class="paper-new-label">
         Give your paper a title
       </label>
 
       {{format-input value=paper.title
-                     id="paper-short-title"
+                     id="new-paper-title"
                      placeholder="Crystalized Magnificence in the Modern World"
                      displayBold=false}}
 

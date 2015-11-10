@@ -56,6 +56,22 @@ export default Ember.Controller.extend({
     },
 
     showNewManuscriptOverlay() {
+      const journals = this.store.find('journal');
+      const paper = this.store.createRecord('paper', {
+        journal: null,
+        paperType: null,
+        editable: true,
+        body: ''
+      });
+
+      this.setProperties({
+        journals: journals,
+        newPaper: paper,
+        journalsLoading: true
+      });
+
+      journals.then(()=> { this.set('journalsLoading', false); });
+
       this.set('showNewManuscriptOverlay', true);
     },
 

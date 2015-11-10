@@ -1,36 +1,15 @@
 #control-bar-paper-journal-logo {
-  height: 50px;
-  margin-top: 9px;
-  margin-right: 20px;
-
-  div { padding-top: 6px; }
   img {
     display: block;
     height: 40px;
   }
 }
 
-#control-bar-paper-short-title {
-  min-width: 5px;
-  font-size: 18px;
-  max-width: 80%;
-  z-index: 1;
-
-  h2 {
-    overflow: hidden;
-    padding: 21px 0 0 15px;
-    font-family: $tahi-article-font-family;
-    font-size: 18px;
-    line-height: 22px;
-    white-space: nowrap;
-    display: none;
-  }
-
-  @media(min-width: 970px) {
-    h2 {
-      display: inline-block;
-    }
-  }
+#control-bar-paper-title {
+  font-size: 14px;
+  line-height: 60px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 #paper-container {
@@ -162,6 +141,7 @@
 .contributors {
   display: none;
   padding-right: 25px;
+  line-height: 30px;
   text-align: right;
 
   &.active { display: block; }
@@ -221,5 +201,28 @@
     text-decoration: none;
 
     svg path { fill: $tahi-green-dark; }
+  }
+}
+
+
+.activity-link svg {
+  position: relative;
+  top: -5px;
+}
+
+.paper-navigation-link {
+  position: relative;
+  margin-right: 1.2rem;
+  padding-right: 2.5rem;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 1px;
+    height: 32px;
+    margin-top: -16px;
+    background: #ddd;
   }
 }

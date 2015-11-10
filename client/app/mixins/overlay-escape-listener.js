@@ -5,7 +5,7 @@ export default Ember.Mixin.create({
     $('body').on('keyup.' + this.get('elementId'), (e)=> {
       if (e.keyCode !== 27 || e.which !== 27) { return; }
       if ($(e.target).is('input, textarea')) { return; }
-      this.send('closeOverlay');
+      this.send('close');
     });
   }),
 

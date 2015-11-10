@@ -4,6 +4,9 @@
                 outAnimationComplete=(action "hideNewManuscriptOverlay")
                 as |animateOut|}}
   {{overlays/manuscript-new class="overlay overlay--fullscreen paper-new-overlay"
+                            paper=newPaper
+                            journals=journals
+                            journalsLoading=journalsLoading
                             close=(action animateOut)}}
 {{/overlay-base}}
 

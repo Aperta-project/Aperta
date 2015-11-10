@@ -227,3 +227,15 @@
     margin-left: 10px;
   }
 }
+
+.control-bar-journal-title {
+  color: $tahi-blue;
+  font-size: 24px;
+
+  &:focus,
+  &:hover { color: $tahi-blue; }
+}
+
+.journal-add-flow-column-button {
+  color: $tahi-blue;
+}

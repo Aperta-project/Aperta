@@ -5,7 +5,6 @@ import EscapeListenerMixin from 'tahi/mixins/overlay-escape-listener';
 const { computed } = Ember;
 
 export default Ember.Component.extend(FileUploadMixin, EscapeListenerMixin, {
-  //store: Ember.inject.service(),
 
   journals: null,
   paper: null,
@@ -16,29 +15,6 @@ export default Ember.Component.extend(FileUploadMixin, EscapeListenerMixin, {
   _registerWithParent: Ember.on('init', function() {
     const register = this.attrs.register;
     if(register) { register(this); }
-  }),
-
-  _getData: Ember.on('init', function() {
-    // replace with store service when on Ember-Data 1.0+
-    const store = this.container.lookup('store:main');
-
-    const journals = store.find('journal');
-    const paper = store.createRecord('paper', {
-      journal: null,
-      paperType: null,
-      editable: true,
-      body: ''
-    });
-
-    this.setProperties({
-      journals: journals,
-      paper: paper,
-      isLoading: true
-    });
-
-    journals.then(()=> {
-      this.set('isLoading', false);
-    });
   }),
 
   titleCharCount: computed('paper.title', function() {
@@ -112,7 +88,7 @@ export default Ember.Component.extend(FileUploadMixin, EscapeListenerMixin, {
       this.transitionToRoute('paper.index', this.get('model'));
     },
 
-    closeOverlay() {
+    close() {
       this.attrs.close();
     }
   }

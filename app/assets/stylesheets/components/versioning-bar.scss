@@ -1,9 +1,10 @@
 #versioning-bar {
   width: 100%;
+  line-height: 30px;
 
   .versioning-bar-container {
     width: $tahi-paper-width;
-    margin: 5px auto;
+    margin: 5px 0 0 25px;
 
     .bar-item {
       float: left;

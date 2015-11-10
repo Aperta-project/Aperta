@@ -39,7 +39,7 @@ class DownloadApexZip
   end
 
   def figures_comply?
-    return find_answer("TahiStandardTasks::FigureTask", "figures_comply")
+    find_answer('TahiStandardTasks::FigureTask', 'figure_complies')
   end
 
   def add_supporting_information
@@ -56,6 +56,7 @@ class DownloadApexZip
   def find_answer task_type, ident
     t = @paper.tasks.find_by_type(task_type)
     return unless t
+    return unless t.answer_for(ident)
 
     return t.answer_for(ident).value
   end

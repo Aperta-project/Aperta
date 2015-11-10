@@ -168,7 +168,7 @@ else
         title:       "The most scrumtrulescent scientific paper of 2015.",
         abstract:    "We've discovered the rain in Spain tends to stay in the plain",
         body:        Paper.first.body,
-        paper_type:  "Classic PLOS Bio Research Article Workflow"
+        paper_type:  "Research"
       },
       admin
     ).save!
@@ -176,6 +176,7 @@ else
 
   Rake::Task['data:create_task_types'].invoke
   Rake::Task['journal:create_default_templates'].invoke
+  Rake::Task['nested-questions:seed'].invoke
 
   puts "Tahi Seeds have been loaded successfully"
 end

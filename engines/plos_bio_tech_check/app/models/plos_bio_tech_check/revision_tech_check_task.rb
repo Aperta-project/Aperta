@@ -1,7 +1,7 @@
 module PlosBioTechCheck
   class RevisionTechCheckTask < Task
 
-    register_task default_title: 'Revision Tech Check', default_role: 'author'
+    register_task default_title: 'Revision Tech Check', default_role: 'editor'
 
     def active_model_serializer
       RevisionTechCheckTaskSerializer

@@ -54,3 +54,13 @@
   margin-top: 0;
   padding: 0;
 }
+
+.feedback-overlay-uploading {
+  height: 18px;
+  line-height: 18px;
+
+  .progress-spinner {
+    float: left;
+    margin-right: 6px;
+  }
+}

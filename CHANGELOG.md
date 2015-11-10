@@ -5,10 +5,10 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
--
+- Button to easily link to creating a new CAS account
 
 ### Changed
--
+- Add host prefix to feedback email
 
 ### Deprecated
 -

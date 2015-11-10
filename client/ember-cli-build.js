@@ -4,6 +4,7 @@ var Funnel     = require('broccoli-funnel');
 
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
+    hinting: false,
     storeConfigInMeta: false,
     emberCliFontAwesome: { includeFontAwesomeAssets: false },
     sourcemaps: {

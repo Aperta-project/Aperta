@@ -52,7 +52,8 @@ class ApertaWorkflowTest(CommonTest):
     # Test add new card
     workflow_page.click_add_new_card()
     # Elements in add new card
-    workflow_page.check_overlay()
+    # Following check commented out until APERTA-5414 is solved
+    #workflow_page.check_overlay()
     workflow_page.check_new_tasks_overlay()
     # Going to workflow from scrach to avoid using card elements
     self._driver.get(workflow_url)

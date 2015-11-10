@@ -88,7 +88,7 @@ class DashboardPage(AuthenticatedPage):
     self._cns_create = (By.CLASS_NAME, 'button-primary')
     self._submitted_papers = (By.CLASS_NAME, 'dashboard-paper-title')
     # First article
-    self._first_paper = (By.CSS_SELECTOR, 'li.dashboard-paper-title > a')
+    self._first_paper = (By.CSS_SELECTOR, 'div.table-responsive a')
 
 
   # POM Actions

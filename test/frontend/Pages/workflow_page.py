@@ -52,16 +52,11 @@ class WorkflowPage(AuthenticatedPage):
       ".//div[contains(@class, 'column-header')]/div/div/button[2]")
     self._column_header_cancel = (By.XPATH,
       ".//div[contains(@class, 'column-header')]/div/div/button")
-    self._add_card_button = (By.XPATH,
-      ".//a[contains(@class, 'add-new-card-button')]")
-    self._add_card_overlay = (By.XPATH,
-      ".//div[@class='overlay-container']/div/div/h1")
-    self._close_icon_overlay = (By.XPATH,
-      ".//span[contains(@class, 'overlay-close-x')]")
-    self._select_in_overlay = (By.XPATH,
-      ".//div[contains(@class, 'select2-container')]/input")
-    self._add_button_overlay = (By.XPATH,
-      ".//div[@class='overlay-action-buttons']/button[1]")
+    self._add_new_card_button = (By.CLASS_NAME, "add-new-card-button")
+    self._first_input_new_task = (By.XPATH, ".//div[@class='col-md-5'][2]/label/input")
+    self._close_icon_overlay = (By.XPATH, ".//span[contains(@class, 'overlay-close-x')]")
+    self._select_in_overlay = (By.XPATH, ".//div[contains(@class, 'select2-container')]/input")
+    self._add_button_overlay = (By.XPATH, ".//div[@class='overlay-action-buttons']/button[1]")
     self._cancel_button_overlay = (By.XPATH,
       ".//div[@class='overlay-action-buttons']/button[2]")
     self._first_column = (By.XPATH,
@@ -159,13 +154,16 @@ class WorkflowPage(AuthenticatedPage):
     return self
 
   def click_add_new_card(self):
-    """Click on the add new card button"""
-    self._get(self._add_card_button).click()
+    """Click on the add new card button on workflow"""
+    self._get(self._add_new_card_button).click()
     return self
 
 
   def check_overlay(self):
-    """Check CSS properties of the overlay that appears when the user click on add new card"""
+    """
+    Check CSS properties of the overlay that appears when the user click on add new card
+    TODO: Disabled until StyleGuide is ready: APERTA-5414
+    """
     card_overlay = self._get(self._add_card_overlay)
     assert card_overlay.text == 'Pick the type of card to add'
     #self.validate_application_h1_style(card_overlay)
@@ -192,10 +190,8 @@ class WorkflowPage(AuthenticatedPage):
 
   def check_new_tasks_overlay(self):
     """On the add new task overlay, select a card"""
-    select_task = self._get(self._select_in_overlay)
+    select_task = self._get(self._first_input_new_task)
     select_task.click()
-    # NOTE: Must have at least one fixed item
-    select_task.send_keys('Ad-hoc' + Keys.ENTER)
     self._get(self._add_button_overlay).click()
     time.sleep(2)
     return self

@@ -69,8 +69,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     in the page
     """
     self._get(self._workflow_link)
-    # Check editor menu icons
-    self._check_editor_menu_icons()
     # Check application buttons
     self._check_version_btn_style()
     self._check_collaborator()
@@ -78,38 +76,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._check_recent_activity()
     self._check_discussion()
     self._check_more_btn()
-
-
-  def _check_editor_menu_icons(self):
-    """
-    Validate icons in the edit menu
-    """
-    self._get(self._undo_icon)
-    self._get(self._repeat_icon)
-    self._get(self._type_select)
-    paragraph = self._get(self._type_paragraph)
-    assert paragraph.get_attribute('value') == 'paragraph'
-    heading1 = self._get(self._type_heading1)
-    assert heading1.get_attribute('value') == 'heading1'
-    heading2 = self._get(self._type_heading2)
-    assert heading2.get_attribute('value') == 'heading2'
-    heading3 = self._get(self._type_heading3)
-    assert heading3.get_attribute('value') == 'heading3'
-    preformatted = self._get(self._type_preformatted)
-    assert preformatted.get_attribute('value') == 'preformatted'
-    blockquote = self._get(self._type_blockquote)
-    assert blockquote.get_attribute('value') == 'blockquote'
-    self._get(self._bold_icon)
-    self._get(self._italic_icon)
-    self._get(self._link_icon)
-    self._get(self._superscript_icon)
-    self._get(self._subscript_icon)
-    assert self._get(self._sc_icon).text == 'sc'
-    self._get(self._image_icon)
-    self._get(self._table_icon)
-    self._get(self._book_icon)
-    assert self._get(self._pi_icon).text == unicode('π2','utf-8')
-    assert self._get(self._cite_icon).text == 'Cite'
 
   def _check_version_btn_style(self):
     """

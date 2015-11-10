@@ -21,8 +21,6 @@ export default Ember.Controller.extend(PaperBase, Discussions,  {
 
     setComparisonVersion(version) {
       this.set('comparisonVersion', version);
-      // this.set('majorVersion', version.majorVersion);
-      // this.set('minorVersion', version.minorVersion);
     }
   }
 });

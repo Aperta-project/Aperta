@@ -19,7 +19,7 @@ describe FeedbackMailer, redis: true do
 
   describe "#contact" do
     it "has correct subject line" do
-      expect(email.subject).to eq "#{app_name} Feedback"
+      expect(email.subject).to eq "[www.example.com] #{app_name} Feedback"
     end
 
     it "includes remarks in mailer body" do

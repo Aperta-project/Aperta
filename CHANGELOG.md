@@ -8,7 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Changed
--
+- Add host prefix to feedback email
 
 ### Deprecated
 -

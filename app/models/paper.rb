@@ -79,6 +79,7 @@ class Paper < ActiveRecord::Base
                   guards: :metadata_tasks_completed?,
                   after: [:set_submitting_user_and_touch!,
                           :set_submitted_at!,
+                          :set_first_submitted_at!,
                           :prevent_edits!]
     end
 
@@ -123,7 +124,8 @@ class Paper < ActiveRecord::Base
 
     event(:accept) do
       transitions from: :submitted,
-                  to: :accepted
+                  to: :accepted,
+                  after: [:set_accepted_at!]
     end
 
     event(:reject) do
@@ -357,6 +359,15 @@ class Paper < ActiveRecord::Base
 
   def set_submitted_at!
     update!(submitted_at: Time.current.utc)
+  end
+
+  def set_accepted_at!
+    update!(accepted_at: Time.current.utc)
+  end
+
+  def set_first_submitted_at!
+    return if first_submitted_date
+    update!(first_submitted_date: Time.current.utc)
   end
 
   def set_submitting_user_and_touch!(submitting_user) # rubocop:disable Style/AccessorMethodName

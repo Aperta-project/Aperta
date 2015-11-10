@@ -240,6 +240,14 @@ ActiveRecord::Schema.define(version: 20151120182356) do
 
   add_index "manuscript_manager_templates", ["journal_id"], name: "index_manuscript_manager_templates_on_journal_id", using: :btree
 
+  create_table "manuscripts", force: :cascade do |t|
+    t.string   "source"
+    t.integer  "paper_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "status",     default: "processing"
+  end
+
   create_table "nested_question_answers", force: :cascade do |t|
     t.integer  "nested_question_id"
     t.integer  "owner_id"
@@ -302,9 +310,11 @@ ActiveRecord::Schema.define(version: 20151120182356) do
     t.string   "publishing_state"
     t.datetime "submitted_at"
     t.string   "salesforce_manuscript_id"
-    t.jsonb    "withdrawals",                          default: [],                 array: true
-    t.boolean  "active",                               default: true
-    t.boolean  "gradual_engagement",                   default: false
+    t.jsonb    "withdrawals",              default: [],                  array: true
+    t.boolean  "active",                   default: true
+    t.datetime "first_submitted_at"
+    t.datetime "accepted_at"
+    t.boolean  "gradual_engagement",       default: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree

@@ -15,24 +15,18 @@ describe SnapshotService do
   let(:paper) { FactoryGirl.create(:paper) }
   let(:registry) { SnapshotService::Registry.new }
 
-  describe "#snapshot!" do
-    let(:things_to_snapshot) { [fake_thing_1, fake_thing_2, fake_thing_3] }
-    let(:fake_thing_1) { FactoryGirl.create(:task) }
-    let(:fake_thing_2) { FactoryGirl.create(:task) }
-    let(:fake_thing_3) { FactoryGirl.create(:task) }
+  let(:things_to_snapshot) { [fake_thing_1, fake_thing_2, fake_thing_3] }
+  let(:fake_thing_1) { FactoryGirl.create(:task) }
+  let(:fake_thing_2) { FactoryGirl.create(:task) }
+  let(:fake_thing_3) { FactoryGirl.create(:task) }
 
-    before do
-      registry.serialize fake_thing_1.class, with: ExampleSnapshotSerializer
-    end
+  before do
+    registry.serialize fake_thing_1.class, with: ExampleSnapshotSerializer
+  end
 
-    it "creates a snapshot for each thing provided" do
-      expect do
-        service.snapshot!(things_to_snapshot)
-      end.to change(Snapshot, :count).by(things_to_snapshot.length)
-    end
-
+  describe '#preview' do
     context "each snapshot" do
-      let(:snapshots) { snapshots = Snapshot.all.order("id") }
+      let(:snapshots) { Snapshot.all.order('id') }
 
       it "sets the source of each snapshot to the thing snapshotted" do
         service.snapshot!(things_to_snapshot)
@@ -74,6 +68,13 @@ describe SnapshotService do
         expect(snapshots[2].minor_version).to eq(1)
       end
     end
+  end
 
+  describe '#snapshot!' do
+    it 'creates a snapshot for each thing provided' do
+      expect do
+        service.snapshot!(things_to_snapshot)
+      end.to change(Snapshot, :count).by(things_to_snapshot.length)
+    end
   end
 end

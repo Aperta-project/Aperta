@@ -7,10 +7,17 @@ const { alias } = computed;
 
 export default Ember.Component.extend(Participants, ValidationErrorsMixin, {
   classNames: ['task'],
+  readyToRender: true,
 
   _afterModel: Ember.on('init', function() {
-    this.get('task').get('nestedQuestions');
-    this.get('task').get('nestedQuestionAnswers');
+    this.set('readyToRender', false);
+
+    Ember.RSVP.all([
+      this.get('task').get('nestedQuestions'),
+      this.get('task').get('nestedQuestionAnswers')
+    ]).then(()=> {
+      this.set('readyToRender', true);
+    });
   }),
 
   isMetadataTask: alias('task.isMetadataTask'),

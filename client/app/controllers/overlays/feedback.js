@@ -16,6 +16,8 @@ export default Ember.Controller.extend({
 
   actions: {
     submit() {
+      if(this.get('isUploading')) { return; }
+
       this.set('model.referrer', window.location);
       this.get('model').save().then(()=> {
         this.set('feedbackSubmitted', true);

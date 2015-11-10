@@ -16,17 +16,20 @@ class DownloadApexZip
     end
 
     buffer.string
-    #File.open("temp.zip", "w") {|f| f.write(buffer.string)}
   end
 
+  # File.open("temp.zip", "w") {|f| f.write(buffer.string)}
+
   def add_manuscript
-    #package.put_next_entry(filename)
+    # package.put_next_entry(filename)
   end
 
   def add_striking_image
     return unless @paper.striking_image
-    @package.put_next_entry(@paper.striking_image.filename)
-    @package.write(@paper.striking_image.file.read)
+
+    extension = @paper.striking_image.attachment.filename.split('.').last
+    @package.put_next_entry("Strikingimage.#{extension}")
+    @package.write(@paper.striking_image.attachment.read)
   end
 
   def add_figures
@@ -53,11 +56,11 @@ class DownloadApexZip
   def add_metadata
   end
 
-  def find_answer task_type, ident
+  def find_answer(task_type, ident)
     t = @paper.tasks.find_by_type(task_type)
     return unless t
     return unless t.answer_for(ident)
 
-    return t.answer_for(ident).value
+    t.answer_for(ident).value
   end
 end

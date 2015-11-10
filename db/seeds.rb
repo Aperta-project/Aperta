@@ -139,7 +139,7 @@ else
         title:       "Hendrik a011f9d4-0119-4611-88af-9838ff154cec",
         abstract:    "We've discovered the rain in Spain tends to stay in the plain",
         body:        "The quick man bear pig jumped over the fox",
-        paper_type:  "Classic PLOS Bio Research Article Workflow"
+        paper_type:  "Research"
       },
       qa_admin
     ).save!
@@ -153,7 +153,7 @@ else
         title:       "Hendrik 12de86c5-5afc-44cb-ab06-00a3411f66d5",
         abstract:    "We've discovered the rain in Spain tends to stay in the plain",
         body:        "The quick man bear pig jumped over the fox",
-        paper_type:  "Classic PLOS Bio Research Article Workflow"
+        paper_type:  "Research"
       },
       qa_admin
     ).save!

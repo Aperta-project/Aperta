@@ -35,8 +35,14 @@
 .main-nav-item {
   padding: 0 0.4rem;
   margin: 0 1.5rem;
+  border-bottom: 0px solid transparent;
   line-height: $main-nav-height - 2;
   white-space: nowrap;
+  transition: all 0.2;
+
+  &.active {
+    border-bottom: 3px solid #fff;
+  }
 
   .user-thumbnail {
     position: relative;

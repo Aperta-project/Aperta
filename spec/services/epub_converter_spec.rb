@@ -103,5 +103,15 @@ describe EpubConverter do
         end
       end
     end
+
+    describe '#publishing_information_html' do
+      context 'when downloader is not specified' do
+        let(:converter) { EpubConverter.new(paper, nil, include_source) }
+
+        it 'does not error' do
+          expect(converter.publishing_information_html).to be_a(String)
+        end
+      end
+    end
   end
 end

@@ -1,7 +1,7 @@
 class EpubConverter
   attr_reader :paper, :include_source, :downloader
 
-  def initialize(paper, downloader, include_source=false)
+  def initialize(paper, downloader = nil, include_source = false)
     @paper = paper
     @downloader = downloader
     @include_source = include_source

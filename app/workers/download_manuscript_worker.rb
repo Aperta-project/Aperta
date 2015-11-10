@@ -8,7 +8,8 @@ class DownloadManuscriptWorker
     manuscript.source.download!(download_url)
     manuscript.save!
 
-    epub_stream = EpubConverter.new(manuscript.paper, User.first, true).epub_stream.string
+    epub_stream = EpubConverter.new(manuscript.paper, nil, true)
+                  .epub_stream.string
     TahiEpub::Tempfile.create epub_stream, delete: true do |file|
       request = IhatJobRequest.new(file: file,
                                    recipe_name: 'docx_to_html',

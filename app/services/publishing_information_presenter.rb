@@ -1,7 +1,7 @@
 class PublishingInformationPresenter
   attr_reader :paper, :downloader
 
-  def initialize(paper, downloader)
+  def initialize(paper, downloader = nil)
     @paper = paper
     @downloader = downloader
   end
@@ -38,6 +38,7 @@ class PublishingInformationPresenter
   end
 
   def downloader_name
+    return '' unless downloader.present?
     "Generated for #{CGI.escape_html(downloader.full_name)}"
   end
 end

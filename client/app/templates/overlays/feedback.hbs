@@ -25,7 +25,7 @@
       <div class="overlay-footer-content feedback-overlay-footer-content">
         <div class="overlay-action-buttons">
           <button class="button-link button--green" {{action "closeAction"}}>cancel</button>
-          <button class="button-primary button--green" {{action "submit"}}>Send Feedback</button>
+          <button class="button-primary button--green {{if isUploading "button--disabled"}}" {{action "submit"}}>Send Feedback</button>
         </div>
       </div>
       <ul class="feedback-overlay-screenshots">
@@ -37,5 +37,11 @@
         {{/each}}
       </ul>
     </div>
+
+    {{#if isUploading}}
+      <div class="feedback-overlay-uploading">
+        {{progress-spinner visible=true size="mini"}} Uploading attachment
+      </div>
+    {{/if}}
   </div>
 {{/if}}

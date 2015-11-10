@@ -1,4 +1,4 @@
-#
+# rubocop:disable all
 # These changes are necessary for the yaml_db gem which is being used to dump
 # and load seed data.
 #
@@ -10,7 +10,6 @@
 #
 # See:
 # https://github.com/SchemaPlus/schema_plus/wiki/Making-yaml_db-work-with-foreign-key-constraints-in-PostgreSQL
-#
 
 module SerializationHelper
   class Base
@@ -35,3 +34,4 @@ module SerializationHelper
     end
   end
 end
+# rubocop:enable all

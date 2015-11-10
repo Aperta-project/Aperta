@@ -2,6 +2,11 @@
 require 'fileutils'
 # In zsh, this is run as `rake 'data:dump:scenario[SCENARIO]'`
 # where SCENARIO is the name of the new scenario. Note the quotes.
+# To retrieve the base seeding environment run:
+# `rake 'data:dump:scenario[data]'`
+
+load 'lib/ext/yaml_db.rb' # Only load the patch when running a data:dump or data:load rake task
+
 namespace :data do
   namespace :dump do
     task :scenario, [:scenario_name] => [:environment] do |t, args|

@@ -42,14 +42,6 @@ class AuthorsCard(BaseCard):
     self._author_lbls = (By.CLASS_NAME, 'author-label')
     self._designed_chkbx = (By.XPATH,
       ".//input[@name='contributions.conceived_and_designed_experiments']/following-sibling::span")
-    self._performed_chkbx = (By.XPATH,
-      ".//input[@name='contributions.performed_the_experiments']/following-sibling::span")
-    self._analized_chkbx = (By.XPATH,
-      ".//input[@name='contributions.analyzed_data']/following-sibling::span")
-    self._tools_chkbx = (By.XPATH,
-      ".//input[@name='contributions.contributed_tools']/following-sibling::span")
-    self._writing_chkbx = (By.XPATH,
-      ".//input[@name='contributions.contributed_writing']/following-sibling::span")
     self._author_contrib_lbl = (By.TAG_NAME, 'h4')
     self._add_author_cancel_lnk = (By.CSS_SELECTOR, 'span.author-form-buttons a')
     self._add_author_add_btn = (By.CSS_SELECTOR, 'span.author-form-buttons button')
@@ -147,21 +139,19 @@ class AuthorsCard(BaseCard):
     assert sec_institution_input.get_attribute('placeholder') == 'Secondary Institution'
     sec_institution_icon = sec_institution_div.find_element_by_css_selector('button i')
     assert set(['fa', 'fa-search']) == set(sec_institution_icon.get_attribute('class').split(' '))
-    corresponding_lbl, deceased_lbl, other_lbl = self._gets(self._author_lbls)
+    corresponding_lbl, deceased_lbl, conceived_lbl, perfomed_lbl, data_lbl, \
+      materials_lbl, writing_lbl, other_lbl = self._gets(self._author_lbls)
     assert corresponding_lbl.text == ('This person will be listed as the corresponding author'
       ' on the published article'), corresponding_lbl.text
     assert deceased_lbl.text == 'This person is deceased'
-    assert other_lbl.text == 'Other'
-    assert self._get(self._designed_chkbx).text == 'Conceived and designed the experiments', \
-      self._get(self._designed_chkbx).text
-    assert self._get(self._performed_chkbx).text == 'Performed the experiments', \
-      self._get(self._performed_chkbx).text
-    assert self._get(self._analized_chkbx).text == 'Analyzed the data', \
-      self._get(self._analized_chkbx).text
-    assert self._get(self._tools_chkbx).text == 'Contributed reagents/materials/analysis tools', \
-      self._get(self._tools_chkbx).text
-    assert self._get(self._writing_chkbx).text == 'Contributed to the writing of the manuscript', \
-      self._get(self._writing_chkbx).text
+    assert other_lbl.text == 'Other', other_lbl.text
+    assert conceived_lbl.text == 'Conceived and designed the experiments', conceived_lbl.text
+    assert perfomed_lbl.text == 'Performed the experiments', perfomed_lbl.text
+    assert data_lbl.text == 'Analyzed the data', data_lbl.text
+    assert materials_lbl.text == 'Contributed reagents/materials/analysis tools', materials_lbl.text
+    assert writing_lbl.text == 'Contributed to the writing of the manuscript', writing_lbl.text
+
+
     author_contrib_lbl = self._get(self._author_contrib_lbl)
     assert author_contrib_lbl.text == 'Author Contributions'
     self.validate_application_h4_style(author_contrib_lbl)

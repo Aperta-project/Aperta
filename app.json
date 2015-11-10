@@ -55,6 +55,9 @@
     "CAS_LOGIN_URL": {
       "required": true
     },
+    "CAS_SIGNUP_URL": {
+      "required": true
+    },
     "CAS_PORT": {
       "required": true
     },

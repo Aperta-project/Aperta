@@ -67,7 +67,8 @@ class Paper < ActiveRecord::Base
     event(:initial_submit) do
       transitions from: :unsubmitted,
                   to: :initially_submitted,
-                  after: [:prevent_edits!]
+                  after: [:set_submitted_at!,
+                          :prevent_edits!]
     end
 
     event(:submit) do

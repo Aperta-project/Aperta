@@ -35,6 +35,14 @@ class Figure < ActiveRecord::Base
     { filename: filename, alt: alt, id: id, src: src }
   end
 
+  def apex_filename(paper = nil)
+    return filename unless paper
+    return filename unless self == paper.striking_image
+
+    extension = attachment.filename.split('.').last
+    "Strikingimage.#{extension}"
+  end
+
   private
 
   def done?

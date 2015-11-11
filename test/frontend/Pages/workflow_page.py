@@ -52,16 +52,11 @@ class WorkflowPage(AuthenticatedPage):
       ".//div[contains(@class, 'column-header')]/div/div/button[2]")
     self._column_header_cancel = (By.XPATH,
       ".//div[contains(@class, 'column-header')]/div/div/button")
-    self._add_card_button = (By.XPATH,
-      ".//a[contains(@class, 'add-new-card-button')]")
-    self._add_card_overlay = (By.XPATH,
-      ".//div[@class='overlay-container']/div/div/h1")
-    self._close_icon_overlay = (By.XPATH,
-      ".//span[contains(@class, 'overlay-close-x')]")
-    self._select_in_overlay = (By.XPATH,
-      ".//div[contains(@class, 'select2-container')]/input")
-    self._add_button_overlay = (By.XPATH,
-      ".//div[@class='overlay-action-buttons']/button[1]")
+    self._add_new_card_button = (By.CLASS_NAME, "add-new-card-button")
+    self._first_input_new_task = (By.XPATH, ".//div[@class='col-md-5'][2]/label/input")
+    self._close_icon_overlay = (By.XPATH, ".//span[contains(@class, 'overlay-close-x')]")
+    self._select_in_overlay = (By.XPATH, ".//div[contains(@class, 'select2-container')]/input")
+    self._add_button_overlay = (By.XPATH, ".//div[@class='overlay-action-buttons']/button[1]")
     self._cancel_button_overlay = (By.XPATH,
       ".//div[@class='overlay-action-buttons']/button[2]")
     self._first_column = (By.XPATH,
@@ -77,6 +72,7 @@ class WorkflowPage(AuthenticatedPage):
     self._remove_cancel_button = (By.XPATH,
         ".//div[contains(@class, 'delete-card-action-buttons')]/div[2]/button")
     self._register_decision_button = (By.XPATH, ".//a/div[contains(., 'Register Decision')]")
+    self._add_card_overlay_columns = (By.CLASS_NAME, 'col-md-5')
 
     # End of not used elements
 
@@ -159,13 +155,16 @@ class WorkflowPage(AuthenticatedPage):
     return self
 
   def click_add_new_card(self):
-    """Click on the add new card button"""
-    self._get(self._add_card_button).click()
+    """Click on the add new card button on workflow"""
+    self._get(self._add_new_card_button).click()
     return self
 
 
   def check_overlay(self):
-    """Check CSS properties of the overlay that appears when the user click on add new card"""
+    """
+    Check CSS properties of the overlay that appears when the user click on add new card
+    TODO: Disabled until StyleGuide is ready: APERTA-5414
+    """
     card_overlay = self._get(self._add_card_overlay)
     assert card_overlay.text == 'Pick the type of card to add'
     #self.validate_application_h1_style(card_overlay)
@@ -191,13 +190,48 @@ class WorkflowPage(AuthenticatedPage):
     return self
 
   def check_new_tasks_overlay(self):
-    """On the add new task overlay, select a card"""
-    select_task = self._get(self._select_in_overlay)
-    select_task.click()
-    # NOTE: Must have at least one fixed item
-    select_task.send_keys('Ad-hoc' + Keys.ENTER)
+    """
+    On the add new task overlay, select a card
+    For APERTA-5513, check cards
+    """
+
+    # Get card list
+    # APERTA-5513 AC 1 and 2
+    author_col, staff_col = self._gets(self._add_card_overlay_columns)
+    author_cards = author_col.find_elements_by_tag_name('label')
+    assert author_cards[0].text == 'Authors', author_cards[0].text
+    assert author_cards[1].text == 'Billing', author_cards[1].text
+    assert author_cards[2].text == 'Competing Interests', author_cards[2].text
+    assert author_cards[3].text == 'Cover Letter', author_cards[3].text
+    assert author_cards[4].text == 'Data Availability', author_cards[4].text
+    assert author_cards[5].text == 'Ethics Statement', author_cards[5].text
+    assert author_cards[6].text == 'Figures', author_cards[6].text
+    assert author_cards[7].text == 'Financial Disclosure', author_cards[7].text
+    assert author_cards[8].text == 'New Taxon', author_cards[8].text
+    assert author_cards[9].text == 'Publishing Related Questions', author_cards[9].text
+    assert author_cards[10].text == 'Reporting Guidelines', author_cards[10].text
+    assert author_cards[11].text == 'Reviewer Candidates', author_cards[11].text
+    assert author_cards[12].text == 'Supporting Info', author_cards[12].text
+    assert author_cards[13].text == 'Upload Manuscript', author_cards[13].text
+    staff_cards = staff_col.find_elements_by_tag_name('label')
+    assert staff_cards[0].text == 'Ad-hoc', staff_cards[0].text
+    assert staff_cards[1].text == 'Assign Admin', staff_cards[1].text
+    assert staff_cards[2].text == 'Assign Team', staff_cards[2].text
+    assert staff_cards[3].text == 'Editor Discussion', staff_cards[3].text
+    assert staff_cards[4].text == 'Final Tech Check', staff_cards[4].text
+    assert staff_cards[5].text == 'Initial Decision', staff_cards[5].text
+    assert staff_cards[6].text == 'Initial Tech Check', staff_cards[6].text
+    assert staff_cards[7].text == 'Invite Editor', staff_cards[7].text
+    assert staff_cards[8].text == 'Invite Reviewers', staff_cards[8].text
+    assert staff_cards[9].text == 'Production Metadata', staff_cards[9].text
+    assert staff_cards[10].text == 'Register Decision', staff_cards[10].text
+    assert staff_cards[11].text == 'Revision Tech Check', staff_cards[11].text
+    # APERTA-5513 AC 3
+    author_cards[0].click()
+    author_cards[1].click()
     self._get(self._add_button_overlay).click()
     time.sleep(2)
+    # Check if there
     return self
 
   def count_cards_first_column(self):

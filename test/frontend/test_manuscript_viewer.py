@@ -38,7 +38,7 @@ class EditPaperTest(CommonTest):
     """
     article_title = self.select_preexisting_article()
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
-    manuscript_viewereditor.validate_page_elements_styles_functions()
+    manuscript_viewer.validate_page_elements_styles_functions()
     return self
 
   def test_role_aware_menus(self):

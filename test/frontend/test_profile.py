@@ -37,6 +37,7 @@ class ApertaProfileTest(CommonTest):
     """Validates the presence of the initial page elements"""
     profile_page = self._go_to_profile()
     profile_page.validate_initial_page_elements_styles(login_valid_uid)
+    profile_page.validate_invalid_add_new_affiliation()
     return self
 
   def test_affiliations(self):

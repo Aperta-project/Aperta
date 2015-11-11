@@ -1,6 +1,7 @@
 require 'open-uri'
 
-class DownloadApexZip
+# This class creates an in memory ZIP file for FTP to Apex
+class ApexPackager
   def initialize(paper)
     @paper = paper
   end
@@ -47,7 +48,7 @@ class DownloadApexZip
 
   def add_supporting_information
     @paper.supporting_information_files.each do |file|
-      return unless file.publishable?
+      next unless file.publishable?
       @package.put_next_entry(file.filename)
       @package.write(file.attachment.file.read)
     end

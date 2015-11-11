@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'zip'
 
-describe DownloadApexZip do
+describe ApexPackager do
   let!(:paper) { FactoryGirl.create(:paper, :with_tasks) }
 
   def zip_contains(package, filename)
@@ -25,7 +25,7 @@ describe DownloadApexZip do
     end
 
     it 'creates a zip package for a paper' do
-      download = DownloadApexZip.new(paper)
+      download = ApexPackager.new(paper)
       response = download.export
 
       expect(response).not_to be_empty
@@ -59,7 +59,7 @@ describe DownloadApexZip do
     end
 
     it 'adds a figure to a zip' do
-      download = DownloadApexZip.new(paper)
+      download = ApexPackager.new(paper)
       response = download.export
 
       expect(zip_contains(response, figure.filename)).to be_truthy
@@ -68,7 +68,7 @@ describe DownloadApexZip do
     it 'does not add figures that do not comply' do
       nested_question_answer.value = 'f'
       nested_question_answer.save!
-      download = DownloadApexZip.new(paper)
+      download = ApexPackager.new(paper)
       response = download.export
 
       expect(zip_contains(response, figure.filename)).to be_falsey
@@ -107,7 +107,7 @@ describe DownloadApexZip do
     end
 
     it 'adds supporting information to a zip' do
-      download = DownloadApexZip.new(paper)
+      download = ApexPackager.new(paper)
       response = download.export
 
       expect(zip_contains(response, supporting_information_file.filename)).to \
@@ -117,7 +117,7 @@ describe DownloadApexZip do
     it 'does not add unpublishable supporting information to the zip' do
       supporting_information_file.publishable = false
       supporting_information_file.save!
-      download = DownloadApexZip.new(paper)
+      download = ApexPackager.new(paper)
       response = download.export
 
       expect(zip_contains(response, supporting_information_file.filename)).to \
@@ -162,14 +162,14 @@ describe DownloadApexZip do
     end
 
     it 'includes the strking image with proper name' do
-      download = DownloadApexZip.new(paper)
+      download = ApexPackager.new(paper)
       response = download.export
 
       expect(zip_contains(response, 'Strikingimage.jpg')).to be_truthy
     end
 
     it 'separates figures and striking images' do
-      download = DownloadApexZip.new(paper)
+      download = ApexPackager.new(paper)
       response = download.export
 
       expect(zip_contains(response, 'Strikingimage.jpg')).to be_truthy

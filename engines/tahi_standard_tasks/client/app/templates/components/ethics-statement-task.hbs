@@ -1,60 +1,56 @@
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
-  {{#if readyToRender}}
-    <p>You must provide an ethics statement if your study involved human participants, specimens or tissue samples, or vertebrate animals, embryos or tissues. All information entered here should also be included in the Methods section of your manuscript.</p>
-    <ol class="question-list">
-      <li class="question">
-        {{#nested-question-radio model=humanSubjectsQuestion
-            owner=task
-            disabled=isSubmissionTaskNotEditable
-            noAction="userSelectedNoOnHumanSubjects"
-            as |selected|}}
+  <p>You must provide an ethics statement if your study involved human participants, specimens or tissue samples, or vertebrate animals, embryos or tissues. All information entered here should also be included in the Methods section of your manuscript.</p>
+  <ol class="question-list">
+    <li class="question">
+      {{#nested-question-radio model=humanSubjectsQuestion
+          owner=task
+          disabled=isSubmissionTaskNotEditable
+          noAction="userSelectedNoOnHumanSubjects"
+          as |selected|}}
 
-          {{#if selected.yes}}
-            <div class="question-dataset">
-              {{nested-question-textarea model=participantsQuestion
-                  owner=task
-                  disabled=isSubmissionTaskNotEditable}}
+        {{#if selected.yes}}
+          <div class="question-dataset">
+            {{nested-question-textarea model=participantsQuestion
+                owner=task
+                disabled=isSubmissionTaskNotEditable}}
 
-              <div class="question-info">
-                <div class="question-info-header">Human Subject Research (involved human participants and/or tissue)</div>
-                <p>All research involving human participants must have been approved by the authors' Institutional Review Board (IRB) or an equivalent committee, and all clinical investigation must have been conducted according to the principles expressed in the <a href="http://www.wma.net/en/30publications/10policies/b3/index.html">Declaration of Helsinki.</a></p>
-                <p>Informed consent, written or oral, should also have been obtained from the participants.  If no consent was given, the reason must be explained (e.g. the data were analyzed anonymously) and reported.  The form of consent (written/oral), or reason for lack of consent, should be indicated in the Methods section of your manuscript.</p>
-              </div>
-            </div>
-          {{/if}}
-        {{/nested-question-radio}}
-      </li>
-
-      <li class="question">
-        {{#nested-question-radio model=animalSubjectsQuestion
-            owner=task
-            disabled=isSubmissionTaskNotEditable
-            noAction="userSelectedNoOnAnimalSubjects"
-            as |selected|}}
-
-          {{#if selected.yes}}
             <div class="question-info">
-              <p>All animal work must have been conducted according to relevant national and international guidelines. If your study involved non-human primates, you must provide details regarding animal welfare and steps taken to ameliorate suffering; this is in accordance with the recommendations of the Weatherall report, "<a href="http://www.acmedsci.ac.uk/more/news/the-use-of-non-human-primates-in-research/" target="_blank">The use of non-human primates in research.</a>" The relevant guidelines followed and the committee that approved the study should be identified in the ethics statement.</p>
-              <p>If anesthesia, euthanasia or any kind of animal sacrifice is part of the study, please include briefly in your statement which substances and/or methods were applied.</p>
-              <p>Please enter the name of your Institutional Animal Care and Use Committee (IACUC) or other relevant ethics board, and indicate whether they approved this research or granted a formal waiver of ethical approval. Also include an approval number if one was obtained.</p>
-              <p>
-                <strong>Field Permit</strong>
-                <div>Please indicate the name of the institution or the relevant body that granted permission.</div>
-              </p>
+              <div class="question-info-header">Human Subject Research (involved human participants and/or tissue)</div>
+              <p>All research involving human participants must have been approved by the authors' Institutional Review Board (IRB) or an equivalent committee, and all clinical investigation must have been conducted according to the principles expressed in the <a href="http://www.wma.net/en/30publications/10policies/b3/index.html">Declaration of Helsinki.</a></p>
+              <p>Informed consent, written or oral, should also have been obtained from the participants.  If no consent was given, the reason must be explained (e.g. the data were analyzed anonymously) and reported.  The form of consent (written/oral), or reason for lack of consent, should be indicated in the Methods section of your manuscript.</p>
             </div>
+          </div>
+        {{/if}}
+      {{/nested-question-radio}}
+    </li>
 
-            <div class="question-dataset">
-              {{nested-question-textarea model=fieldPermitQuestion
-                  owner=task
-                  disabled=isSubmissionTaskNotEditable}}
-            </div>
-          {{/if}}
-        {{/nested-question-radio}}
-      </li>
-    </ol>
-  {{else}}
-    LOADING
-  {{/if}}
+    <li class="question">
+      {{#nested-question-radio model=animalSubjectsQuestion
+          owner=task
+          disabled=isSubmissionTaskNotEditable
+          noAction="userSelectedNoOnAnimalSubjects"
+          as |selected|}}
+
+        {{#if selected.yes}}
+          <div class="question-info">
+            <p>All animal work must have been conducted according to relevant national and international guidelines. If your study involved non-human primates, you must provide details regarding animal welfare and steps taken to ameliorate suffering; this is in accordance with the recommendations of the Weatherall report, "<a href="http://www.acmedsci.ac.uk/more/news/the-use-of-non-human-primates-in-research/" target="_blank">The use of non-human primates in research.</a>" The relevant guidelines followed and the committee that approved the study should be identified in the ethics statement.</p>
+            <p>If anesthesia, euthanasia or any kind of animal sacrifice is part of the study, please include briefly in your statement which substances and/or methods were applied.</p>
+            <p>Please enter the name of your Institutional Animal Care and Use Committee (IACUC) or other relevant ethics board, and indicate whether they approved this research or granted a formal waiver of ethical approval. Also include an approval number if one was obtained.</p>
+            <p>
+              <strong>Field Permit</strong>
+              <div>Please indicate the name of the institution or the relevant body that granted permission.</div>
+            </p>
+          </div>
+
+          <div class="question-dataset">
+            {{nested-question-textarea model=fieldPermitQuestion
+                owner=task
+                disabled=isSubmissionTaskNotEditable}}
+          </div>
+        {{/if}}
+      {{/nested-question-radio}}
+    </li>
+  </ol>
 </div>

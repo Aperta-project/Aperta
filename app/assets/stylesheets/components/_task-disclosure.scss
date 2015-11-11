@@ -59,6 +59,22 @@ $task-disclosure-radius: 4px;
   }
 }
 
+// TaskLoad overrides ---------------------------------------------------------
+
+.task-disclosure {
+  .task-loading {
+    height: 1.8rem;
+    margin: 3rem 2rem;
+    line-height: 1.8rem;
+    font-size: 1.6rem;
+
+    .progress-spinner {
+      float: left;
+      margin-right: 7px;
+    }
+  }
+}
+
 
 // TaskComponent overrides ----------------------------------------------------
 

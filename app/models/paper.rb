@@ -55,6 +55,7 @@ class Paper < ActiveRecord::Base
 
   aasm column: :publishing_state do
     state :unsubmitted, initial: true # currently being authored
+    state :initially_submitted
     state :submitted, after_enter: :paper_has_been_submitted
     state :checking # small change that does not require resubmission, as in a tech check
     state :in_revision # has revised decision and requires resubmission
@@ -63,13 +64,26 @@ class Paper < ActiveRecord::Base
     state :published
     state :withdrawn
 
+    event(:initial_submit) do
+      transitions from: :unsubmitted,
+                  to: :initially_submitted,
+                  after: [:prevent_edits!]
+    end
+
     event(:submit) do
-      transitions from: [:unsubmitted, :in_revision],
+      transitions from: [:unsubmitted, :initially_submitted, :in_revision],
                   to: :submitted,
                   guards: :metadata_tasks_completed?,
                   after: [:set_submitting_user_and_touch!,
                           :set_submitted_at!,
                           :prevent_edits!]
+    end
+
+    event(:invite_full_submission) do
+      transitions from: :initially_submitted,
+                  to: :in_revision,
+                  after: [:allow_edits!,
+                          :new_minor_version!]
     end
 
     event(:minor_check) do

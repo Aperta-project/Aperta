@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151021183429) do
+ActiveRecord::Schema.define(version: 20151105174939) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -315,6 +315,7 @@ ActiveRecord::Schema.define(version: 20151021183429) do
     t.string   "salesforce_manuscript_id"
     t.jsonb    "withdrawals",              default: [],                  array: true
     t.boolean  "active",                   default: true
+    t.boolean  "gradual_engagement",       default: false
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree

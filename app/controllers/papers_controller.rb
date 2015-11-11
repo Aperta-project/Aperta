@@ -109,10 +109,11 @@ class PapersController < ApplicationController
   ## STATE CHANGES
 
   def submit
-    paper.submit! current_user do
-      Activity.paper_submitted! paper, user: current_user
+    if paper.gradual_engagement? && paper.unsubmitted?
+      paper.initial_submit!
+    else
+      full_submission
     end
-
     render json: paper, status: :ok
   end
 
@@ -127,6 +128,12 @@ class PapersController < ApplicationController
   end
 
   private
+
+  def full_submission
+    paper.submit! current_user do
+      Activity.paper_submitted! paper, user: current_user
+    end
+  end
 
   def withdrawal_params
     params.permit(:reason)
@@ -180,5 +187,4 @@ class PapersController < ApplicationController
   def enforce_policy
     authorize_action!(paper: paper, params: params)
   end
-
 end

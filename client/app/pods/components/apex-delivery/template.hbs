@@ -1,0 +1,19 @@
+<div class="apex-delivery-date">
+  {{format-date delivery.createdAt }}
+</div>
+
+<div class="apex-delivery-icon">
+{{#if delivery.incomplete}}
+  {{progress-spinner visible=true size="small"}}
+{{/if}}
+{{#if delivery.failed}}
+  <i class="fa fa-times fa-2x red"></i>
+{{/if}}
+{{#if delivery.succeeded}}
+  <i class="fa fa-check fa-2x green"></i>
+{{/if}}
+</div>
+
+<div class="apex-delivery-message">
+  APEX Upload <strong>{{ delivery.humanReadableState }}</strong>.
+</div>

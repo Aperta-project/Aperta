@@ -1,0 +1,39 @@
+.apex-delivery {
+  @include clearfix;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  height: 65px;
+  margin-top: 5px;
+
+  .apex-delivery-icon {
+    float: left;
+    margin: 0 20px 0 20px;
+    line-height: 70px;
+
+    .green {
+      color: $tahi-green;
+    }
+
+    .red {
+      color: $tahi-error-red;
+      padding: 0 4px;
+    }
+
+    .progress-spinner {
+      position: relative;
+      top: 7px;
+    }
+  }
+
+  .apex-delivery-message {
+    line-height: 65px;
+    font-size: 1.2em;
+  }
+
+  .apex-delivery-date {
+    line-height: 65px;
+    float: right;
+    color: #999;
+    margin-right: 25px;
+  }
+}

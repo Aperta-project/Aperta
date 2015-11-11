@@ -23,6 +23,11 @@ class ApertaWorkflowTest(CommonTest):
          - WorkflowPage
          - Adding cards
          - TODO: Removing cards (NOT READY)
+  AC for APERTA-5513:
+    - Separation between author and staff cards
+    - Alphabetical order
+    - Add multiple cards at once
+    - After adding card, go to the workflow page
   """
 
   def _go_to_workflow(self):
@@ -55,12 +60,13 @@ class ApertaWorkflowTest(CommonTest):
     # Following check commented out until APERTA-5414 is solved
     #workflow_page.check_overlay()
     workflow_page.check_new_tasks_overlay()
-    # Going to workflow from scrach to avoid using card elements
-    self._driver.get(workflow_url)
-    time.sleep(2)
+    # Check that after adding a card returns to workflow APERTA-5513 AC 4
+    time.sleep(1)
+    assert workflow_url == self._driver.current_url, (workflow_url, self._driver.current_url)
     current_cards = workflow_page.count_cards_first_column()
-    # Check that there is one more card after adding a card
-    assert start_cards + 1 == current_cards
+    # Check that there are two more card after adding a card
+    # APERTA-5513 AC 3
+    assert start_cards + 2 == current_cards
     # NOTE: Missing deleting a new card
     return self
 

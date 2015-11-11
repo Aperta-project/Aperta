@@ -63,9 +63,6 @@ class ApertaWorkflowTest(CommonTest):
     # Check that after adding a card returns to workflow APERTA-5513 AC 4
     time.sleep(1)
     assert workflow_url == self._driver.current_url, (workflow_url, self._driver.current_url)
-    # Going to workflow from scrach to avoid using card elements
-    ##self._driver.get(workflow_url)
-    time.sleep(2)
     current_cards = workflow_page.count_cards_first_column()
     # Check that there are two more card after adding a card
     # APERTA-5513 AC 3

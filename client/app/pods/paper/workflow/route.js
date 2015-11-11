@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import AuthorizedRoute from 'tahi/routes/authorized';
-import Utils from 'tahi/services/utils';
 
 export default AuthorizedRoute.extend({
   cardOverlayService: Ember.inject.service('card-overlay'),
@@ -29,18 +28,7 @@ export default AuthorizedRoute.extend({
 
   actions: {
     chooseNewCardTypeOverlay(phase) {
-      let chooseNewCardTypeOverlay = this.controllerFor('overlays/chooseNewCardType');
-      chooseNewCardTypeOverlay.set('phase', phase);
-      chooseNewCardTypeOverlay.set('overlayClass', 'overlay--fullscreen');
-
-      this.store.find('adminJournal', phase.get('paper.journal.id')).then(function(adminJournal) {
-        chooseNewCardTypeOverlay.set('journalTaskTypes', adminJournal.get('journalTaskTypes'));
-      });
-
-      this.send('openOverlay', {
-        template: 'overlays/chooseNewCardType',
-        controller: chooseNewCardTypeOverlay
-      });
+      this.transitionTo('paper.workflow.tasks.new', this.modelFor('paper'), phase);
     },
 
     viewCard(task, queryParams) {
@@ -54,29 +42,6 @@ export default AuthorizedRoute.extend({
       }
 
       this.transitionTo('paper.task', this.modelFor('paper'), task.id, queryParams);
-    },
-
-    addTaskType(phase, taskTypeList) {
-      if (!taskTypeList) { return; }
-
-      let promises = [];
-
-      taskTypeList.forEach((task) => {
-        let unNamespacedKind = Utils.deNamespaceTaskType(task.get('kind'));
-        let newTaskPromise = this.store.createRecord(unNamespacedKind, {
-          phase: phase,
-          role: task.get('role'),
-          type: task.get('kind'),
-          paper: this.modelFor('paper'),
-          title: task.get('title')
-        }).save();
-
-        promises.push(newTaskPromise);
-      });
-
-      Ember.RSVP.all(promises).then(() => {
-        this.send('closeOverlay');
-      });
     },
 
     showDeleteConfirm(task) {

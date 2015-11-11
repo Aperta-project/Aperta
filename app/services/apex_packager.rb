@@ -2,11 +2,16 @@ require 'open-uri'
 
 # This class creates an in memory ZIP file for FTP to Apex
 class ApexPackager
+  def self.create(paper)
+    packager = ApexPackager.new(paper)
+    packager.zip
+  end
+
   def initialize(paper)
     @paper = paper
   end
 
-  def export
+  def zip
     buffer = Zip::OutputStream.write_buffer do |package|
       @package = package
       add_manuscript
@@ -21,8 +26,9 @@ class ApexPackager
 
   # File.open("temp.zip", "w") {|f| f.write(buffer.string)}
 
+  private
+
   def add_manuscript
-    # package.put_next_entry(filename)
   end
 
   def add_striking_image

@@ -25,8 +25,7 @@ describe ApexPackager do
     end
 
     it 'creates a zip package for a paper' do
-      download = ApexPackager.new(paper)
-      response = download.export
+      response = ApexPackager.create(paper)
 
       expect(response).not_to be_empty
     end
@@ -59,8 +58,7 @@ describe ApexPackager do
     end
 
     it 'adds a figure to a zip' do
-      download = ApexPackager.new(paper)
-      response = download.export
+      response = ApexPackager.create(paper)
 
       expect(zip_contains(response, figure.filename)).to be_truthy
     end
@@ -68,8 +66,7 @@ describe ApexPackager do
     it 'does not add figures that do not comply' do
       nested_question_answer.value = 'f'
       nested_question_answer.save!
-      download = ApexPackager.new(paper)
-      response = download.export
+      response = ApexPackager.create(paper)
 
       expect(zip_contains(response, figure.filename)).to be_falsey
     end
@@ -107,8 +104,7 @@ describe ApexPackager do
     end
 
     it 'adds supporting information to a zip' do
-      download = ApexPackager.new(paper)
-      response = download.export
+      response = ApexPackager.create(paper)
 
       expect(zip_contains(response, supporting_information_file.filename)).to \
         be_truthy
@@ -117,8 +113,7 @@ describe ApexPackager do
     it 'does not add unpublishable supporting information to the zip' do
       supporting_information_file.publishable = false
       supporting_information_file.save!
-      download = ApexPackager.new(paper)
-      response = download.export
+      response = ApexPackager.create(paper)
 
       expect(zip_contains(response, supporting_information_file.filename)).to \
         be_falsey
@@ -162,15 +157,13 @@ describe ApexPackager do
     end
 
     it 'includes the strking image with proper name' do
-      download = ApexPackager.new(paper)
-      response = download.export
+      response = ApexPackager.create(paper)
 
       expect(zip_contains(response, 'Strikingimage.jpg')).to be_truthy
     end
 
     it 'separates figures and striking images' do
-      download = ApexPackager.new(paper)
-      response = download.export
+      response = ApexPackager.create(paper)
 
       expect(zip_contains(response, 'Strikingimage.jpg')).to be_truthy
       expect(zip_contains(response, 'yeti2.jpg')).to be_truthy

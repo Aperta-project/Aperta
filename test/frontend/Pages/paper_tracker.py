@@ -143,6 +143,7 @@ class PaperTrackerPage(AuthenticatedPage):
         if papers[count][0]:
           db_title = papers[count][0]
           db_title = db_title.strip()
+          db_title = ' '.join(db_title.split())
           page_title = title.text.strip()
           assert page_title.encode('utf8') == db_title
         manid = self._get(self._paper_tracker_table_tbody_manid)
@@ -248,7 +249,7 @@ class PaperTrackerPage(AuthenticatedPage):
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       manid = self._get(self._paper_tracker_table_tbody_manid)
       if total_count > 1:
-        assert int(manid.text) > int(orig_manid.text)
+        assert int(manid.text) != int(orig_manid.text)
       else:
         assert int(manid.text) == int(orig_manid.text)
       self._get(self._paper_tracker_table_header_sort_down).click()

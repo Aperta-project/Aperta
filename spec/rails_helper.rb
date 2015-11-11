@@ -98,13 +98,12 @@ RSpec.configure do |config|
 
   # Don't load subscriptions for unit specs
   config.before(:each) do
-    Subscriptions.clear_all_subscriptions!
+    Subscriptions.reset
   end
 
   # Load subscriptions for feature specs
   config.before(:each, type: :feature) do
-    load Rails.root.join("config/initializers/event_stream_subscriptions.rb")
-    load Rails.root.join("config/initializers/subscriptions.rb")
+    Subscriptions.reload
   end
 
   config.before(:each) do

@@ -73,4 +73,50 @@ describe Subscriptions do
 
   end
 
+  describe 'reset' do
+    it 'unsubscribes all subscribers' do
+      Subscriptions.configure do
+        add 'big:explosion', TestSubscribers::FireRescueTeam
+      end
+      expect(Subscriptions.subscribers_for('big:explosion').length).to_not be 0
+      Subscriptions.reset
+      expect(Subscriptions.subscribers_for('big:explosion').length).to eq 0
+    end
+
+    it 'clears out previous configure blocks so they do not reload' do
+      c = 0
+      Subscriptions.configure { c += 1 }
+      expect(c).to eq 1
+
+      Subscriptions.reset
+
+      # reload sould not change c since the configure block shouldn't re-run
+      Subscriptions.reload
+      expect(c).to eq 1
+    end
+  end
+
+  describe 'unsubscribe_all' do
+    before do
+      Subscriptions.configure do
+        add 'big:explosion', TestSubscribers::FireRescueTeam
+      end
+      expect(Subscriptions.subscribers_for('big:explosion').length).to_not be 0
+    end
+
+    it 'unsubscribes all subscribers' do
+      Subscriptions.unsubscribe_all
+      expect(Subscriptions.subscribers_for('big:explosion').length).to eq 0
+    end
+  end
+
+  describe 'reload' do
+    it 'reloads any configuration blocks it received' do
+      c = 0
+      Subscriptions.configure { c += 1 }
+      expect(c).to eq(1)
+      Subscriptions.reload
+      expect(c).to eq(2)
+    end
+  end
 end

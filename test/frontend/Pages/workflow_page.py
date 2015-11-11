@@ -229,9 +229,6 @@ class WorkflowPage(AuthenticatedPage):
     # APERTA-5513 AC 3
     author_cards[0].click()
     author_cards[1].click()
-    time.sleep(5)
-    #select_task = self._get(self._first_input_new_task)
-    #select_task.click()
     self._get(self._add_button_overlay).click()
     time.sleep(2)
     # Check if there

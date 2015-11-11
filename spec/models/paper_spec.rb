@@ -287,13 +287,13 @@ describe Paper do
       it 'transitions to rejected state from submitted' do
         paper = FactoryGirl.create(:paper, :submitted)
         paper.reject!
-        expect(paper).to be_rejected
+        expect(paper.rejected?).to be true
       end
 
       it 'transitions to rejected state from initially_submitted' do
         paper = FactoryGirl.create(:paper, :initially_submitted)
         paper.reject!
-        expect(paper).to be_rejected
+        expect(paper.rejected?).to be true
       end
     end
 

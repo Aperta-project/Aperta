@@ -118,9 +118,9 @@ describe Paper do
     end
   end
 
-  context 'states' do
+  context 'State Machine' do
     describe '#initial_submit' do
-      it 'transitions to initial_submission' do
+      it 'transitions to initially_submitted' do
         paper.initial_submit!
         expect(paper).to be_initially_submitted
       end
@@ -128,6 +128,13 @@ describe Paper do
       it 'marks the paper not editable' do
         paper.initial_submit!
         expect(paper).to_not be_editable
+      end
+
+      it 'sets the updated_at of the initial version' do
+        Timecop.freeze(Time.current.utc) do
+          paper.initial_submit!
+          expect(paper.submitted_at).to eq(Time.current.utc)
+        end
       end
     end
 
@@ -276,6 +283,20 @@ describe Paper do
       end
     end
 
+    describe '#reject' do
+      it 'transitions to rejected state from submitted' do
+        paper = FactoryGirl.create(:paper, :submitted)
+        paper.reject!
+        expect(paper.rejected?).to be true
+      end
+
+      it 'transitions to rejected state from initially_submitted' do
+        paper = FactoryGirl.create(:paper, :initially_submitted)
+        paper.reject!
+        expect(paper.rejected?).to be true
+      end
+    end
+
     describe '#publish!' do
       let(:paper) { FactoryGirl.create(:paper, :submitted) }
 
@@ -312,13 +333,10 @@ describe Paper do
     end
 
     context "rejection" do
-      let(:decision) do
-        FactoryGirl.create(:decision, verdict: "reject")
-      end
-
-      it "rejects the paper" do
+      it 'rejects the paper' do
+        decision = instance_double('Decision', verdict: 'reject')
+        expect(paper).to receive(:reject!)
         paper.make_decision decision
-        expect(paper.publishing_state).to eq("rejected")
       end
     end
 

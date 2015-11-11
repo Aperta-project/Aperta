@@ -23,6 +23,11 @@ class ApertaWorkflowTest(CommonTest):
          - WorkflowPage
          - Adding cards
          - TODO: Removing cards (NOT READY)
+  AC for APERTA-5513:
+    - Separation between author and staff cards
+    - Alphabetical order
+    - Add multiple cards at once
+    - After adding card, go to the workflow page
   """
 
   def _go_to_workflow(self):
@@ -33,7 +38,7 @@ class ApertaWorkflowTest(CommonTest):
     create_manuscript_page.click_workflow_button()
     return WorkflowPage(self.getDriver())
 
-  def _test_validate_components_styles(self):
+  def test_validate_components_styles(self):
     """
     Validates the presence of the initial page elements
     """
@@ -59,7 +64,7 @@ class ApertaWorkflowTest(CommonTest):
     time.sleep(1)
     assert workflow_url == self._driver.current_url, (workflow_url, self._driver.current_url)
     # Going to workflow from scrach to avoid using card elements
-    self._driver.get(workflow_url)
+    ##self._driver.get(workflow_url)
     time.sleep(2)
     current_cards = workflow_page.count_cards_first_column()
     # Check that there are two more card after adding a card

@@ -15,28 +15,31 @@ describe ApexPackager do
 
   context 'a well formed paper' do
     let!(:task) { paper.tasks.find_by_type('TahiStandardTasks::FigureTask') }
+    let!(:figure_question) { task.find_nested_question('figure_complies') }
     let!(:nested_question_answer) do
       FactoryGirl.create(:nested_question_answer,
-                         nested_question: task.nested_questions.first,
-                         value: 't',
+                         nested_question: figure_question,
+                         value: 'true',
                          value_type: 'boolean',
                          owner: task,
                          owner_type: 'Task')
     end
 
     it 'creates a zip package for a paper' do
+      pending('Check for included DOCX once that is implemented')
       response = ApexPackager.create(paper)
 
-      expect(response).not_to be_empty
+      expect(zip_contains(response, 'doi.docx')).to be(true)
     end
   end
 
   context 'a paper with figures' do
     let!(:task) { paper.tasks.find_by_type('TahiStandardTasks::FigureTask') }
+    let!(:figure_question) { task.find_nested_question('figure_complies') }
     let!(:nested_question_answer) do
       FactoryGirl.create(:nested_question_answer,
-                         nested_question: task.nested_questions.first,
-                         value: 't',
+                         nested_question: figure_question,
+                         value: 'true',
                          value_type: 'boolean',
                          owner: task,
                          owner_type: 'Task')
@@ -60,15 +63,15 @@ describe ApexPackager do
     it 'adds a figure to a zip' do
       response = ApexPackager.create(paper)
 
-      expect(zip_contains(response, figure.filename)).to be_truthy
+      expect(zip_contains(response, figure.filename)).to be(true)
     end
 
     it 'does not add figures that do not comply' do
-      nested_question_answer.value = 'f'
+      nested_question_answer.value = 'false'
       nested_question_answer.save!
       response = ApexPackager.create(paper)
 
-      expect(zip_contains(response, figure.filename)).to be_falsey
+      expect(zip_contains(response, figure.filename)).to be(false)
     end
   end
 
@@ -76,11 +79,11 @@ describe ApexPackager do
     let!(:task) do
       paper.tasks.find_by_type('TahiStandardTasks::SupportingInformationTask')
     end
-
+    let!(:figure_question) { task.find_nested_question('figure_complies') }
     let!(:nested_question_answer) do
       FactoryGirl.create(:nested_question_answer,
-                         nested_question: task.nested_questions.first,
-                         value: 't',
+                         nested_question: figure_question,
+                         value: 'true',
                          value_type: 'boolean',
                          owner: task,
                          owner_type: 'Task')
@@ -107,7 +110,7 @@ describe ApexPackager do
       response = ApexPackager.create(paper)
 
       expect(zip_contains(response, supporting_information_file.filename)).to \
-        be_truthy
+        be(true)
     end
 
     it 'does not add unpublishable supporting information to the zip' do
@@ -116,26 +119,28 @@ describe ApexPackager do
       response = ApexPackager.create(paper)
 
       expect(zip_contains(response, supporting_information_file.filename)).to \
-        be_falsey
+        be(false)
     end
   end
 
   context 'a paper with a striking image' do
     let!(:task) { paper.tasks.find_by_type('TahiStandardTasks::FigureTask') }
+    let!(:figure_question) { task.find_nested_question('figure_complies') }
     let!(:nested_question_answer) do
       FactoryGirl.create(:nested_question_answer,
-                         nested_question: task.nested_questions.first,
-                         value: 't',
+                         nested_question: figure_question,
+                         value: 'true',
                          value_type: 'boolean',
                          owner: task,
                          owner_type: 'Task')
     end
 
-    let(:striking_image) do
+    let!(:striking_image) do
       FactoryGirl.create(
         :figure,
         title: 'a figure',
         caption: 'a caption',
+        paper: paper,
         attachment: File.open(Rails.root.join('spec/fixtures/yeti.jpg'))
       )
     end
@@ -145,6 +150,7 @@ describe ApexPackager do
         :figure,
         title: 'a figure',
         caption: 'a caption',
+        paper: paper,
         attachment: File.open(Rails.root.join('spec/fixtures/yeti2.jpg'))
       )
     end
@@ -159,15 +165,15 @@ describe ApexPackager do
     it 'includes the strking image with proper name' do
       response = ApexPackager.create(paper)
 
-      expect(zip_contains(response, 'Strikingimage.jpg')).to be_truthy
+      expect(zip_contains(response, 'Strikingimage.jpg')).to be(true)
     end
 
     it 'separates figures and striking images' do
       response = ApexPackager.create(paper)
 
-      expect(zip_contains(response, 'Strikingimage.jpg')).to be_truthy
-      expect(zip_contains(response, 'yeti2.jpg')).to be_truthy
-      expect(zip_contains(response, 'yeti.jpg')).to be_falsey
+      expect(zip_contains(response, 'Strikingimage.jpg')).to be(true)
+      expect(zip_contains(response, 'yeti2.jpg')).to be(true)
+      expect(zip_contains(response, 'yeti.jpg')).to be(false)
     end
   end
 end

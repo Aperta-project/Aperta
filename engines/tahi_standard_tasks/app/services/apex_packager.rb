@@ -1,5 +1,3 @@
-require 'open-uri'
-
 # This class creates an in memory ZIP file for FTP to Apex
 class ApexPackager
   def self.create(paper)
@@ -32,7 +30,7 @@ class ApexPackager
   def add_striking_image
     return unless @paper.striking_image
 
-    @package.put_next_entry(@paper.striking_image.apex_filename(@paper))
+    @package.put_next_entry(@paper.striking_image.apex_filename)
     @package.write(@paper.striking_image.attachment.read)
   end
 

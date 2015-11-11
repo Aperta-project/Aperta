@@ -10,16 +10,16 @@ export default NestedQuestionOwner.extend({
   relationshipsToSerialize: ['authors'],
   website: DS.attr('string'),
 
-  formattedWebsite: (function() {
-    var website;
-    website = this.get('website');
+  formattedWebsite: Ember.computed('website', function() {
+    const website = this.get('website');
+
     if (Ember.isEmpty(website)) {
       return null;
     }
     if (/https?:\/\//.test(website)) {
       return website;
     }
-    return "http://" + website;
-  }).property('website'),
+    return 'http://' + website;
+  }),
 
 });

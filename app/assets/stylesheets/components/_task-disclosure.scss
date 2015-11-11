@@ -81,4 +81,10 @@ $task-disclosure-radius: 4px;
   .task-main-content {
     padding: 1rem 1.5rem 1.5rem 1.5rem;
   }
+
+  .task-main-content .question-dataset {
+    background: #f9f9f9;
+
+    label { margin-right: 15px; }
+  }
 }

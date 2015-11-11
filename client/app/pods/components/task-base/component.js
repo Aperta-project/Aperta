@@ -9,25 +9,33 @@ export default Ember.Component.extend(Participants, ValidationErrorsMixin, {
   classNames: ['task'],
   readyToRender: true,
 
-  _afterModel: Ember.on('init', function() {
-    this.set('readyToRender', false);
+  init() {
+    this._super(...arguments);
+    this.set('store', this.container.lookup('store:main'));
+    this._model();
+  },
 
+  _model() {
+    this.set('readyToRender', false);
     Ember.RSVP.all([
       this.get('task').get('nestedQuestions'),
-      this.get('task').get('nestedQuestionAnswers')
+      this.get('task').get('nestedQuestionAnswers'),
+      this.get('task').reload()
     ]).then(()=> {
       this.set('readyToRender', true);
     });
-  }),
+  },
 
   isMetadataTask: alias('task.isMetadataTask'),
   isSubmissionTask: alias('task.isSubmissionTask'),
   isSubmissionTaskEditable: alias('task.paper.editable'),
   isSubmissionTaskNotEditable: computed.not('task.paper.editable'),
   isEditable: computed.or('isUserEditable', 'currentUser.siteAdmin'),
-  isUserEditable: computed('task.paper.editable', 'isSubmissionTask', function() {
-    return this.get('task.paper.editable') || !this.get('isSubmissionTask');
-  }),
+  isUserEditable: computed('task.paper.editable', 'isSubmissionTask',
+    function() {
+      return this.get('task.paper.editable') || !this.get('isSubmissionTask');
+    }
+  ),
 
   save() {
     return this.get('task').save().then(()=> {

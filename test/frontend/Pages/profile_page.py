@@ -56,6 +56,7 @@ class ProfilePage(AuthenticatedPage):
     self._profile_affiliations = (By.CSS_SELECTOR, 'div.profile-affiliation')
     self._remove_affiliation_icon = (By.CSS_SELECTOR, 'div.profile-remove-affiliation')
     self._success_message = (By.CSS_SELECTOR, 'div.success')
+    self._error_message = (By.CLASS_NAME, 'error-message')
 
   #POM Actions
 
@@ -113,7 +114,25 @@ class ProfilePage(AuthenticatedPage):
     avatar_hover = self._get(self._avatar_hover)
     assert avatar_hover.text == 'UPLOAD NEW'
     self.validate_large_avatar_hover_style(avatar_hover)
-    return self
+
+  def validate_invalid_add_new_affiliation(self):
+    """
+    Validate the error message for an invalid adding new affiliation.
+    :return: None
+    """
+    #self.click_left_nav()
+    self.click_add_affiliation_button()
+    add_done_btn = self._get(self._add_done_btn)
+    add_done_btn.click()
+    # Watch for error
+    error = self._get(self._error_message)
+    assert error.text == "can't be blank"
+    # NOTE: Not validating error message style because lack of styleguide
+    # Placeholder for error style validation:
+    # assert error.value_of_css_property('font-size') == '12px'
+    # assert error.value_of_css_property('font-weight') == '500'
+    # assert error.value_of_css_property('line-height') == '29.7px'
+    # assert error.value_of_css_property('color') == 'rgba(187 ,0 ,0 ,1)'
 
   def click_reviewer_recommendation_button(self):
     """Click reviewer recommendation button"""

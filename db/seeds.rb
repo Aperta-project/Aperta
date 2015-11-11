@@ -1,5 +1,3 @@
-# rubocop:disable all
-
 # To generate BASE seed data, run `rake db:data:dump` to dump
 # the current state of the database in `db/data.yml`.
 
@@ -180,4 +178,3 @@ else
 
   puts "Tahi Seeds have been loaded successfully"
 end
-# rubocop:enable all

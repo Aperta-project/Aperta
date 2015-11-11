@@ -1,4 +1,3 @@
-# rubocop:disable all
 require 'fileutils'
 # In zsh, this is run as `rake 'data:dump:scenario[SCENARIO]'`
 # where SCENARIO is the name of the new scenario. Note the quotes.
@@ -49,4 +48,3 @@ namespace :data do
     end
   end
 end
-# rubocop:enable all

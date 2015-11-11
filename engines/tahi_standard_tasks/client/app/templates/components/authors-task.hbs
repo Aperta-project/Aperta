@@ -1,0 +1,44 @@
+{{partial "task-completed-section"}}
+
+<div class="task-main-content">
+  <p>
+    Our criteria for authorship are based on the
+    <a href="http://www.icmje.org/recommendations/browse/roles-and-responsibilities/defining-the-role-of-authors-and-contributors.html" target="_blank">'Uniform Requirements for Manuscripts Submitted to Biomedical Journals: Authorship and Contributorship'</a>.
+    Individuals whose contributions fall short of authorship should instead be mentioned in the Acknowledgments.
+    If the article has been submitted on behalf of a consortium, all author names and affiliations should be listed at the end of the article.
+  </p>
+
+  <div>
+    {{#if isEditable}}
+      <button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "toggleAuthorForm" group}}>
+        Add a New Author
+      </button>
+
+      {{error-message message=validationErrors.corresponding}}
+
+      {{#if newAuthorFormVisible}}
+        {{add-author-form institutions=task.institutions
+                          author=newAuthor
+                          hideAuthorForm="toggleAuthorForm"
+                          saveAuthor="saveNewAuthor"}}
+      {{/if}}
+    {{/if}}
+
+    {{author-drop-target index=0
+                         isEditable=isEditable
+                         changePosition=(action "changeAuthorPosition")}}
+
+    {{#each sortedAuthorsWithErrors as |authorWithErrors|}}
+      {{author-view isEditable=isEditable
+                    institutions=task.institutions
+                    delete="removeAuthor"
+                    save="saveAuthor"
+                    author=authorWithErrors.model
+                    errors=authorWithErrors.errors
+                    disabled=isSubmissionTaskNotEditable}}
+      {{author-drop-target index=authorWithErrors.model.position
+                           isEditable=isEditable
+                           changePosition=(action "changeAuthorPosition")}}
+    {{/each}}
+  </div>
+</div>

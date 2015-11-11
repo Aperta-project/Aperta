@@ -124,7 +124,7 @@ class Paper < ActiveRecord::Base
     end
 
     event(:reject) do
-      transitions from: :submitted,
+      transitions from: [:initially_submitted, :submitted],
                   to: :rejected
       before do
         update(active: false)

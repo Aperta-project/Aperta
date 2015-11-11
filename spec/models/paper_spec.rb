@@ -118,7 +118,7 @@ describe Paper do
     end
   end
 
-  context 'states' do
+  context 'State Machine' do
     describe '#initial_submit' do
       it 'transitions to initial_submission' do
         paper.initial_submit!
@@ -276,6 +276,20 @@ describe Paper do
       end
     end
 
+    describe '#reject' do
+      it 'transitions to rejected state from submitted' do
+        paper = FactoryGirl.create(:paper, :submitted)
+        paper.reject!
+        expect(paper).to be_rejected
+      end
+
+      it 'transitions to rejected state from initially_submitted' do
+        paper = FactoryGirl.create(:paper, :initially_submitted)
+        paper.reject!
+        expect(paper).to be_rejected
+      end
+    end
+
     describe '#publish!' do
       let(:paper) { FactoryGirl.create(:paper, :submitted) }
 
@@ -312,13 +326,10 @@ describe Paper do
     end
 
     context "rejection" do
-      let(:decision) do
-        FactoryGirl.create(:decision, verdict: "reject")
-      end
-
-      it "rejects the paper" do
+      it 'rejects the paper' do
+        decision = instance_double('Decision', verdict: 'reject')
+        expect(paper).to receive(:reject!)
         paper.make_decision decision
-        expect(paper.publishing_state).to eq("rejected")
       end
     end
 

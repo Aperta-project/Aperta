@@ -24,8 +24,6 @@ class ApexPackager
     buffer.string
   end
 
-  # File.open("temp.zip", "w") {|f| f.write(buffer.string)}
-
   private
 
   def add_manuscript
@@ -47,10 +45,6 @@ class ApexPackager
     end
   end
 
-  def figures_comply?
-    find_answer('TahiStandardTasks::FigureTask', 'figure_complies')
-  end
-
   def add_supporting_information
     @paper.supporting_information_files.each do |file|
       next unless file.publishable?
@@ -60,6 +54,10 @@ class ApexPackager
   end
 
   def add_metadata
+  end
+
+  def figures_comply?
+    find_answer('TahiStandardTasks::FigureTask', 'figure_complies')
   end
 
   def find_answer(task_type, ident)

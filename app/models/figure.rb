@@ -39,7 +39,7 @@ class Figure < ActiveRecord::Base
     return filename unless paper
     return filename unless self == paper.striking_image
 
-    extension = attachment.filename.split('.').last
+    extension = filename.split('.').last
     "Strikingimage.#{extension}"
   end
 

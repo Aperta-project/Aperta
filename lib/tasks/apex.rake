@@ -19,10 +19,10 @@ namespace :apex do
     ).upload
   end
 
-  task export: :environment do
+  task :export, [:paper_id, :filename] => :environment do |_, args|
     $stdout.puts 'Beginning export'
-    paper = Paper.find(917)
-    download = DownloadApexZip.new(paper)
-    download.export
+    paper = Paper.find(args.paper_id)
+    package = ApexPackager.create(paper)
+    File.open(args.filename, 'w') { |f| f.write(package) }
   end
 end

@@ -5,6 +5,25 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
+-
+
+### Changed
+-
+
+### Deprecated
+-
+
+### Removed
+-
+
+### Fixed
+-
+
+### Security
+-
+
+## [1.3.5] - 2015-11-11
+### Added
 - Button to easily link to creating a new CAS account
 
 ### Changed

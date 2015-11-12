@@ -67,7 +67,8 @@ class Paper < ActiveRecord::Base
     event(:initial_submit) do
       transitions from: :unsubmitted,
                   to: :initially_submitted,
-                  after: [:prevent_edits!]
+                  after: [:set_submitted_at!,
+                          :prevent_edits!]
     end
 
     event(:submit) do
@@ -124,7 +125,7 @@ class Paper < ActiveRecord::Base
     end
 
     event(:reject) do
-      transitions from: :submitted,
+      transitions from: [:initially_submitted, :submitted],
                   to: :rejected
       before do
         update(active: false)

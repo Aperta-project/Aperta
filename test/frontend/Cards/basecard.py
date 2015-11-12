@@ -35,6 +35,10 @@ class BaseCard(AuthenticatedPage):
     self._bottom_close_button = (By.XPATH, '//div[@class="overlay-footer-content"]/a')
 
   # Common actions for all cards
+  def click_completed_checkbox(self):
+    """Click completed checkbox"""
+    self._get(self._completed_check).click()
+
   def click_close_button(self):
     """Click close button"""
     self._get(self._close_button).click()

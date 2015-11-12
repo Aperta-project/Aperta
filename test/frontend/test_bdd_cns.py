@@ -11,7 +11,9 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import login_valid_pw, au_login, rv_login, fm_login, ae_login, he_login, sa_login, oa_login
-from frontend.Cards.authors_card import AuthorsCard
+from frontend.Cards.figures_card import FiguresCard
+# from frontend.Cards.supporting_info_card import SupportingInfoCard
+# from frontend.Cards.upload_manuscript_card import UploadManuscriptCard
 from frontend.common_test import CommonTest
 from Pages.dashboard import DashboardPage
 from Pages.login_page import LoginPage
@@ -159,7 +161,8 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
     # This should be expanded to make a random choice of journal and a random choice within that journal of type
     # NOTA BENE: Despite the options in the overlay including leading and trailing spaces, this must be called stripped
     #    of the same
-    dashboard_page.select_journal_and_type('PLOS Wombat', 'Research')
+    # dashboard_page.select_journal_and_type('PLOS Wombat', 'MinimalMMTforCreatetoSubmitAT')
+    dashboard_page.select_journal_and_type('PLOS Wombat', 'KitchenSinkAllCards')
     time.sleep(3)
     doc2upload = random.choice(docx)
     print('Sending document: ' + os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload))
@@ -167,18 +170,17 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
     self._driver.find_element_by_id('upload-files').send_keys(fn)
     dashboard_page.click_upload_button()
     # Time needed for iHat conversion.
-    time.sleep(20)
-
-    manuscript_page = ManuscriptPage(self.getDriver())
-    for i in range(5):
-      card = random.choice(cards)
-      print('Attempting to Open Card: ' + card)
-      try:
-        manuscript_page.click_card(card)
-      except:
-        print('Card: ' + card + ' not found on manuscript page.')
-        continue
     time.sleep(3)
+
+    # manuscript_page = ManuscriptPage(self.getDriver())
+    #
+    # manuscript_page.click_card(figures)
+    # time.sleep(3)
+    # figures_card = FiguresCard(self.getDriver())
+    # figures_card.click_completed_checkbox()
+    # figures_card.click_close_button()
+    # time.sleep(3)
+
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

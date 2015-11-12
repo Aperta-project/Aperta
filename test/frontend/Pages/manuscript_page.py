@@ -84,6 +84,7 @@ class ManuscriptPage(AuthenticatedPage):
       self.restore_timeout()
       return False
     card_title.find_element_by_xpath('.//ancestor::a').click()
+
     self._bottom_close_button = (By.XPATH, '//div[@class="overlay-footer-content"]/a')
     self._get(self._bottom_close_button).click()
     self.restore_timeout()

@@ -1,10 +1,10 @@
 class ParticipationFactory
+  attr_reader :task, :assignee, :assigner
+  attr_accessor :notify
+
   def self.create(task:, assignee:, assigner: nil, notify: true)
     new(task: task, assignee: assignee, assigner: assigner, notify: notify).save
   end
-
-  attr_reader :task, :assignee, :assigner
-  attr_accessor :notify
 
   def initialize(task:, assignee:, assigner:, notify:)
     @task = task

@@ -1,12 +1,9 @@
 class TaskFactory
+  attr_reader :task, :task_klass, :creator, :notify
 
   def self.create(task_klass, options={})
-    new(task_klass, options).send(:save)
+    new(task_klass, options).save
   end
-
-  private
-
-  attr_reader :task, :task_klass, :creator, :notify
 
   def initialize(task_klass, options={})
     @creator = options.delete(:creator)
@@ -22,6 +19,8 @@ class TaskFactory
     add_creator_as_participant
     task
   end
+
+  private
 
   def default_options
     {

@@ -13,7 +13,7 @@ module Typesetter
             serializer: Typesetter::CompetingInterestsSerializer
     has_one :financial_disclosure,
             serializer: Typesetter::FinancialDisclosureSerializer
-    has_one :data_availabliity,
+    has_one :data_availability,
             serializer: Typesetter::DataAvailabilitySerializer
     has_many :authors, serializer: Typesetter::AuthorSerializer
     has_many :supporting_information_files,
@@ -32,7 +32,7 @@ module Typesetter
     end
 
     def supporting_information_files
-      object.supporting_information_files.where(publishable: true)
+      object.supporting_information_files.publishable
     end
 
     def competing_interests
@@ -43,7 +43,7 @@ module Typesetter
       task('TahiStandardTasks::FinancialDisclosureTask')
     end
 
-    def data_availabliity
+    def data_availability
       task('TahiStandardTasks::DataAvailabilityTask')
     end
 

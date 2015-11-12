@@ -20,7 +20,7 @@ module Typesetter
 
     def task_answer_value(task, question_ident)
       answer = task.answer_for(question_ident) if task
-      answer.value
+      answer.value if answer
     end
   end
 end

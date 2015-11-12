@@ -2,21 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   restless: Ember.inject.service('restless'),
-
   positionSort: ['position:asc'],
   sortedPhases: Ember.computed.sort('model.phases', 'positionSort'),
-
-  commentLooks: Ember.computed(function() {
-    return this.store.all('comment-look');
-  }),
-
-  allTaskIds() {
-    return this.store.all('phase').reduce(function(taskIds, phase) {
-      return taskIds.concat(phase.get('tasks').map(function(task) {
-        return task.get('id');
-      }));
-    }, []);
-  },
 
   updatePositions(phase) {
     let relevantPhases = this.get('model.phases').filter(function(p) {

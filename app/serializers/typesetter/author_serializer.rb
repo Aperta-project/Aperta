@@ -12,8 +12,8 @@ module Typesetter
       return unless object.contributions
       object.contributions.map do |contribution|
         break unless contribution
-        contribution.nested_question.text
-      end
+        contribution.nested_question.text if contribution.value
+      end.compact
     end
   end
 end

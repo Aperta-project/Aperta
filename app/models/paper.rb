@@ -11,8 +11,6 @@ class Paper < ActiveRecord::Base
   belongs_to :flow
   belongs_to :striking_image, class_name: 'Figure'
 
-  has_one :manuscript, dependent: :destroy
-
   has_many :figures, dependent: :destroy
   has_many :versioned_texts, dependent: :destroy
   has_many :tables, dependent: :destroy

@@ -120,7 +120,7 @@ class EpubConverter
       title this.paper.display_title
       creator this.paper.creator.full_name
       date Date.today.to_s
-      if this.include_source && this.paper.manuscript.present?
+      if this.include_source && this.paper.latest_version.present?
         this._embed_source(workdir)
         optional_file "input/source.docx" => this._path_to_source(workdir)
       end
@@ -155,7 +155,7 @@ class EpubConverter
   end
 
   def manuscript_source
-    paper.manuscript.source
+    paper.latest_version.source
   end
 
   def manuscript_contents

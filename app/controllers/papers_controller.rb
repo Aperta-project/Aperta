@@ -18,7 +18,6 @@ class PapersController < ApplicationController
     paper = Paper.eager_load(
       :supporting_information_files,
       { paper_roles: [:user] },
-      :manuscript,
       :tables,
       :bibitems,
       :journal
@@ -69,9 +68,9 @@ class PapersController < ApplicationController
 
   ## CONVERSION
 
+  # Upload a docx file for the latest version.
   def upload
-    paper.create_manuscript unless paper.manuscript.presence
-    DownloadManuscriptWorker.perform_async(paper.manuscript.id,
+    DownloadManuscriptWorker.perform_async(paper.id,
                                            params[:url],
                                            ihat_jobs_url,
                                            paper_id: paper.id)

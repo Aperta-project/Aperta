@@ -81,7 +81,6 @@ describe EpubConverter do
       let(:file) { File.open(Rails.root.join("spec", "fixtures", "about_turtles.docx"), 'r') }
 
       before do
-        paper.create_manuscript!
         allow(converter).to receive(:manuscript_source).and_return(file)
         allow(converter).to receive(:manuscript_contents).and_return(file.read)
       end

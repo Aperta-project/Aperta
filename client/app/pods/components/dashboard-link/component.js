@@ -2,14 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   tagName: 'tr',
-
-  unreadCommentsCount: Ember.computed('model.commentLooks.[]', function() {
-    return this.get('model.commentLooks.length');
-  }),
-
-  badgeTitle: Ember.computed('unreadCommentsCount', function() {
-    return this.get('unreadCommentsCount') + ' new posts';
-  }),
+  unreadCommentsCount: Ember.computed.alias('model.commentLooks.length'),
 
   status: Ember.computed('model.publishingState', function() {
     if (this.get('model.publishingState') === 'unsubmitted') {
@@ -28,7 +21,7 @@ export default Ember.Component.extend({
   }),
 
   refreshTooltips() {
-    Ember.run.scheduleOnce('afterRender', this, ()=> {
+    Ember.run.scheduleOnce('afterRender', this, () => {
       if(this.$()) {
         this.$('.link-tooltip')
             .tooltip('destroy')
@@ -38,15 +31,11 @@ export default Ember.Component.extend({
   },
 
   setupTooltips: Ember.on('didInsertElement', function() {
-    this.addObserver('model.unreadCommentsCount', this, this.refreshTooltips);
     this.refreshTooltips();
+    this.addObserver('unreadCommentsCount', this, this.refreshTooltips);
   }),
 
   teardownTooltips: Ember.on('willDestroyElement', function() {
-    this.removeObserver(
-      'model.unreadCommentsCount',
-      this,
-      this.refreshTooltips
-    );
+    this.removeObserver('unreadCommentsCount', this, this.refreshTooltips);
   })
 });

@@ -8,7 +8,7 @@ export default Ember.Component.extend({
     if (this.get('model.publishingState') === 'unsubmitted') {
       return 'DRAFT';
     } else {
-      return this.get('model.publishingState').toUpperCase();
+      return this.get('model.publishingState').replace(/_/g, ' ').toUpperCase();
     }
   }),
 

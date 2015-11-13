@@ -19,9 +19,11 @@ export default Ember.Controller.extend(
   isSubmissionTaskEditable: alias('model.paper.editable'),
   isSubmissionTaskNotEditable: Ember.computed.not('model.paper.editable'),
   isEditable: Ember.computed.or('isUserEditable', 'currentUser.siteAdmin'),
-  isUserEditable: Ember.computed('model.paper.editable', 'isSubmissionTask', function() {
-    return this.get('model.paper.editable') || !this.get('isSubmissionTask');
-  }),
+  isUserEditable: Ember.computed(
+    'model.paper.editable', 'isSubmissionTask', function() {
+      return this.get('model.paper.editable') || !this.get('isSubmissionTask');
+    }
+  ),
 
   comments: [],
 
@@ -45,10 +47,6 @@ export default Ember.Controller.extend(
   },
 
   actions: {
-    closeAction() {
-      this.send(this.get('onClose'));
-    },
-
     redirect() {
       this.transitionToRoute.apply(
         this, this.get('cardOverlayService.previousRouteOptions')

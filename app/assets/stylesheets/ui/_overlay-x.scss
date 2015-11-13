@@ -1,0 +1,104 @@
+/*
+  .overlay-x [.overlay-x--fullscreen | .overlay-x--card]
+    .overlay-x-container [no base styles, based on root modifier]
+      .overlay-x-close  [no base styles, based on root modifier]
+      .overlay-x-header [no base styles, based on root modifier]
+        .overlay-x-header-title [no base styles, based on root modifier]
+      .overlay-x-main   [no base styles, based on root modifier]
+*/
+
+$ov--card-side-pad: 3.0rem;
+
+.overlay-x {
+  @include position(fixed, 0px 0px 0px 0px);
+  z-index: z('overlay', 'base');
+}
+
+.overlay-x--card {
+  background-color: rgba(0,0,0, 0.68);
+}
+
+.overlay-x--fullscreen {
+  background-color: rgba(255,255,255, 0.96);
+}
+
+.overlay-x--card {
+  // Overlay Header -----------------------------------------------------------
+
+  .overlay-x-container {
+    margin: 4.0rem 7% 0 7%;
+    border-radius: 5px;
+    background: #fff;
+  }
+
+  .overlay-x-close {
+    @include position(absolute, 0px 0px auto auto);
+    width: auto !important; // bootstrap/glyphicon override
+    padding: 0 1.5rem 0 1.5rem;
+    color: $tahi-green;
+    font-size: 5.0rem;
+    line-height: 100%; // bootstrap override
+    cursor: pointer;
+    z-index: 2;
+  }
+
+  .overlay-x-header {
+    position: relative;
+    border-bottom: 1px solid #ddd;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding: 4.0rem $ov--card-side-pad 1.5rem $ov--card-side-pad;
+    background: #f3f3f3;
+  }
+
+  .overlay-x-header-title {
+    margin-bottom: 0;
+    font-size: 2.7rem;
+  }
+
+  // Overlay Body -------------------------------------------------------------
+
+  .overlay-x-body {
+    position: relative;
+    min-height: 25rem;
+    padding: 3.0rem $ov--card-side-pad 2rem $ov--card-side-pad;
+  }
+}
+
+
+.overlay-x--fullscreen {
+  // Overlay Header -----------------------------------------------------------
+
+  .overlay-x-close {
+    @include position(fixed, 0px 0px auto auto);
+    width: auto !important; // bootstrap/glyphicon override
+    padding: 0 30px 0 20px;
+    color: $tahi-green;
+    font-size: 80px;
+    line-height: 100%; // bootstrap override
+    cursor: pointer;
+    z-index: z('overlay', 'close-x');
+  }
+
+  .overlay-x-header {
+    position: relative;
+    border-bottom: 1px solid #ddd;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding: 4.0rem $ov--card-side-pad 1.5rem $ov--card-side-pad;
+    background: #f3f3f3;
+  }
+
+  .overlay-x-header-title {
+    margin-bottom: 0;
+    font-size: 2.7rem;
+  }
+
+  // Overlay Body -------------------------------------------------------------
+
+  .overlay-x-body {
+    position: relative;
+    min-height: 25rem;
+    padding: 3.0rem $ov--card-side-pad 0 $ov--card-side-pad;
+  }
+}

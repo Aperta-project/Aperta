@@ -13,6 +13,7 @@
       <button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "toggleAuthorForm" group}}>
         Add a New Author
       </button>
+      <br>
 
       {{error-message message=validationErrors.corresponding}}
 

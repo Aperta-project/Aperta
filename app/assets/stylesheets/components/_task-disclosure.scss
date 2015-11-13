@@ -51,7 +51,7 @@ $task-disclosure-radius: 4px;
     left: 3px;
   }
 
-  polygon { fill: transparent; }
+  polygon { fill: rgba(0,0,0, 0.05); }
 
   &.active {
     background: $tahi-green;

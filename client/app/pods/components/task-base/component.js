@@ -35,6 +35,9 @@ export default Ember.Component.extend(Participants, ValidationErrorsMixin, {
   },
 
   actions: {
-    save() { return this.save(); }
+    save()  { return this.save(); },
+    close() {
+      this.attrs.close();
+    }
   }
 });

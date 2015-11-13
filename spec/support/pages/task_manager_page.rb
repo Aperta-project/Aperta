@@ -36,14 +36,6 @@ class TaskManagerPage < Page
     end
     PaperPage.new
   end
-
-  def journal_name
-    find("#control-bar-paper-journal-name")
-  end
-
-  def paper_title
-    find("h2.tasks-paper-title")
-  end
 end
 
 class TaskCard < PageFragment

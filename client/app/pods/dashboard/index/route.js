@@ -41,25 +41,6 @@ export default Ember.Route.extend({
       }.bind(this));
     },
 
-    showNewPaperOverlay() {
-      return this.store.find('journal').then((journals)=> {
-        this.controllerFor('overlays/paper-new').setProperties({
-          journals: journals,
-          model: this.store.createRecord('paper', {
-            journal: null,
-            paperType: null,
-            editable: true,
-            body: ''
-          })
-        });
-
-        this.send('openOverlay', {
-          template: 'overlays/paper-new',
-          controller: 'overlays/paper-new'
-        });
-      });
-    },
-
     viewInvitations() {
       this.send('openOverlay', {
         template: 'overlays/invitations',

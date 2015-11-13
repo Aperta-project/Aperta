@@ -69,4 +69,3 @@ test "Admin can add a new column in a role's flow-manager", (assert) ->
   andThen ->
     assert.ok find('.back-link').text().match(/Flow Manager/), "one"
     assert.ok find('.control-bar-link-text:contains("Add New Column")'), "two"
-  # click '.add-flow-column-button'

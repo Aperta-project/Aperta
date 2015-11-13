@@ -1,0 +1,100 @@
+.main-nav {
+  @include position(fixed, 0px 0px auto 0px);
+  height: $main-nav-height;
+  color: #fff;
+  font-size: 1.4rem;
+  background: #454545;
+  z-index: z(main-nav);
+  @include user-select(none);
+
+  a {
+    color: #fff;
+    text-decoration: none;
+    outline: none;
+
+    // override default anchor styles:
+    &:focus,
+    &:hover {
+      color: #fff;
+      text-decoration: none;
+    }
+  }
+}
+
+.overlay-open .main-nav {
+  @include filter(grayscale(50%) blur(3px));
+}
+
+.main-nav-items {
+  height: $main-nav-height;
+  @include display(flex);
+  @include align-content(center);
+  @include justify-content(flex-end);
+}
+
+.main-nav-item {
+  padding: 0 0.4rem;
+  margin: 0 1.5rem;
+  border-bottom: 0px solid transparent;
+  line-height: $main-nav-height - 2;
+  white-space: nowrap;
+  transition: all 0.2;
+
+  &.active {
+    border-bottom: 3px solid #fff;
+  }
+
+  .user-thumbnail {
+    position: relative;
+    top: -1px;
+    width: 30px;
+    height: 30px;
+    margin-right: 4px;
+    border-radius: 50%;
+  }
+}
+
+.main-nav-item--first {
+  margin-left: 0;
+  padding-left: 2.5rem;
+  font-size: 2.1rem;
+  line-height: $main-nav-height;
+  text-transform: uppercase;
+}
+
+.main-nav-item--last {
+  margin-right: 0;
+  padding-right: 2.5rem;
+}
+
+.main-nav-item-spacer {
+  flex-grow: 1;
+}
+
+.main-nav-item-space--last {
+  display: none;
+}
+
+@media only screen and (max-width: 750px) {
+  .main-nav-items {
+    @include justify-content(flex-start);
+  }
+
+  .main-nav-item--first,
+  .main-nav-item-spacer,
+  .profile-dropdown-menu-text { display: none; }
+
+  .main-nav-item-space--last {
+    display: block;
+  }
+
+  #profile-dropdown-menu:after {
+    @include position(absolute, 48% 11px auto auto);
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #ddd; 
+  }
+}

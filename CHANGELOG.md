@@ -27,7 +27,9 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Button to easily link to creating a new CAS account
 
 ### Changed
+
 - Add host prefix to feedback email
+- Moved primary navigation to top of screen
 
 ### Deprecated
 -

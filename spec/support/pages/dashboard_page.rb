@@ -36,19 +36,16 @@ class DashboardPage < Page
   end
 
   def flow_manager_link
-    find('.navigation-toggle').click
-    find('.navigation-item', text: "FLOW MANAGER")
+    find(".main-nav a", text: "Flow Manager")
   end
 
   #doesn't wait for elements to appear.
   def has_no_admin_link?
-    find('.navigation-toggle').click
-    all('.navigation-item', text: 'ADMIN').empty?
+    all(".main-nav a", text: "Admin").empty?
   end
 
   def admin_link
-    find('.navigation-toggle').click
-    find('.navigation-item', text: "ADMIN")
+    find(".main-nav a", text: "Admin")
   end
 
   def visit_admin

@@ -64,7 +64,7 @@ test('author successfully creates a submission', function(assert) {
 
   visit('/');
   click('.button-primary:contains(Create New Submission)');
-  fillIn('#paper-short-title', 'Testing 123');
+  fillIn('#new-paper-title', 'Testing 123');
   pickFromSelectBox('.paper-new-journal-select', 'PLOS Yeti 1');
   pickFromSelectBox('.paper-new-paper-type-select', 'Research').then(function() {
     // Skipping selecting a file and calling action manually

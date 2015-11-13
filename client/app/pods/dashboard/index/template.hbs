@@ -1,16 +1,25 @@
-<div class="control-bar"></div>
-{{flash-messages classNames="flash-messages--below-control-bar"}}
+{{flash-messages}}
 
-<div id="tahi-container">
+{{#overlay-base visible=showNewManuscriptOverlay
+                outAnimationComplete=(action "hideNewManuscriptOverlay")
+                as |animateOut|}}
+  {{overlays/manuscript-new class="overlay overlay--fullscreen paper-new-overlay"
+                            paper=newPaper
+                            journals=journals
+                            journalsLoading=journalsLoading
+                            close=(action animateOut)}}
+{{/overlay-base}}
 
-  <section class="dashboard-section">
-    {{#if pendingInvitations}}
+<div class="base-screen">
+
+  {{#if pendingInvitations}}
+    <section class="dashboard-section">
       <h2 class="welcome-message">
         You have <span class="invitation-count">{{pluralize pendingInvitations.length "invitation"}}</span>.
       </h2>
       <button class="button-primary button--green" {{action "viewInvitations"}}>View invitations</button>
-    {{/if}}
-  </section>
+    </section>
+  {{/if}}
 
   <section id="dashboard-my-submissions" class="dashboard-section">
     <h2 class="welcome-message">
@@ -26,7 +35,7 @@
       {{/if}}
     </h2>
 
-    <button class="button-primary button--green" {{action "showNewPaperOverlay"}}>Create New Submission</button>
+    <button class="button-primary button--green" {{action "showNewManuscriptOverlay"}}>Create New Submission</button>
 
     {{#if hasPapers}}
       {{#if hasActivePapers}}

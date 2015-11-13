@@ -1,54 +1,52 @@
-{{control-bar paper=model
-              showActivity="showActivity"
-              addContributors="addContributors"
-              exportDocument="exportDocument"
-              showConfirmWithdrawOverlay="showConfirmWithdrawOverlay"
-              topicsIndexPath=topicsIndexPath
-              canViewManuscriptManager=canViewManuscriptManager
-              supportedDownloadFormats=supportedDownloadFormats
-              versionsVisible=versioningMode}}
+{{paper-control-bar paper=model
+                    showActivity="showActivity"
+                    addContributors="addContributors"
+                    exportDocument="exportDocument"
+                    showConfirmWithdrawOverlay="showConfirmWithdrawOverlay"
+                    topicsIndexPath=topicsIndexPath
+                    canViewManuscriptManager=canViewManuscriptManager
+                    supportedDownloadFormats=supportedDownloadFormats
+                    versionsVisible=versioningMode}}
 
 {{withdrawal-banner paper=model staff=currentUser.siteAdmin}}
 
-<div id="paper-container" class="clearfix paper-container-html">
-  {{paper-sidebar paper=model
-                  user=currentUser
-                  commentLooks=commentLooks
-                  showConfirmSubmitOverlay="showConfirmSubmitOverlay"
-                  viewCard="viewCard"}}
-
-  <div class="manuscript-container">
-    <main>
+{{#split-pane id="paper-container"
+              class="paper-container-html"
+              handleClass="manuscript-handle"}}
+  {{#split-pane-element data-min-width="880"
+                        class="manuscript-pane"}}
+    <div class="manuscript-container">
       {{flash-messages classNames="flash-messages-paper-editor"}}
-      <article class="manuscript">
-        <div id="paper-body">
+      <div class="manuscript">
+        {{#unless model.editable}}
+          <h2 id="paper-title">{{{model.title}}}</h2>
+        {{else}}
+          {{content-editable tagName="h2"
+                             id="paper-title"
+                             value=model.title
+                             preventEnterKey="true"
+                             placeholder="Type your manuscript title here"
+                             key-up=(action "saveManuscriptTitle")
+                             focus-out=(action "saveManuscriptTitle")}}
+        {{/unless}}
 
-          {{#unless model.editable}}
-            <h2 id="paper-title">{{{model.title}}}</h2>
-          {{else}}
-            {{content-editable tagName="h2"
-                               id="paper-title"
-                               value=model.title
-                               preventEnterKey="true"
-                               placeholder="Type your manuscript title here"
-                               key-up=(action "saveManuscriptTitle")
-                               focus-out=(action "saveManuscriptTitle")}}
-          {{/unless}}
-
-          {{#if versioningMode}}
-            {{html-diff default=model.body
-                        comparisonText=model.comparisonText
-                        viewingText=model.viewingText}}
-          {{else}}
-            <div class="paper-body">
-              {{{model.body}}}
-            </div>
-          {{/if}}
-
-        </div>
-      </article>
-    </main>
-  </div>
-</div>
+        {{#if versioningMode}}
+          {{html-diff default=model.body
+                      comparisonText=model.comparisonText
+                      viewingText=model.viewingText}}
+        {{else}}
+          {{{model.body}}}
+        {{/if}}
+      </div>
+    </div>
+  {{/split-pane-element}}
+  {{#split-pane-element}}
+    {{paper-sidebar paper=model
+                    user=currentUser
+                    commentLooks=commentLooks
+                    showConfirmSubmitOverlay="showConfirmSubmitOverlay"
+                    viewCard="viewCard"}}
+  {{/split-pane-element}}
+{{/split-pane}}
 
 {{outlet}}

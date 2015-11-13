@@ -1,0 +1,22 @@
+{{#overlay-base visible=true
+                outAnimationComplete=(action "close")
+                as |animateOut|}}
+  <div class="overlay-x overlay-x--card">
+    <div class="overlay-x-container">
+      <header class="overlay-x-header">
+        {{#link-to "paper.index" model.paper.id class="task-overlay-paper-title"}}
+          {{{model.paperTitle}}}
+        {{/link-to}}
+        <h1 class="overlay-x-header-title">
+          {{{model.title}}}
+        </h1>
+        <span class="overlay-x-close" {{action "close"}}>&times;</span>
+      </header>
+      <div class="overlay-x-body">
+        {{component (task-component-name model.title)
+                    task=model
+                    close=(action animateOut)}}
+      </div>
+    </div>
+  </div>
+{{/overlay-base}}

@@ -2,14 +2,12 @@ html {
   overflow: -moz-scrollbars-vertical;
 
   &.matte { background-color: #f5f5f5; }
-  &.navigation-visible {
-    overflow: hidden;
-  }
 }
 
 body { background: transparent; } // override bootstrap
 
 ::-webkit-scrollbar {
+  border-radius: 3px;
   width: 6px;
   height: 10px;
   padding-left: 10px;
@@ -20,6 +18,16 @@ body { background: transparent; } // override bootstrap
   width: 4px !important;
   min-height: 40px;
   background: #ddd;
+  border-radius: 4px;
+}
+
+.main-content {
+  @include position(absolute, $main-nav-height 0px 0px 0px);
+  overflow: auto;
+}
+
+.overlay-open .main-content {
+  @include filter(grayscale(50%) blur(3px));
 }
 
 // override bootstrap
@@ -71,50 +79,6 @@ h1, h2, h3 {
 }
 
 textarea { resize: none; }
-
-
-.matte #tahi-container {
-  padding-top: 114px;
-  @include transition(padding-top 0.2s);
-
-  main {
-    max-width: 1120px;
-    margin: 0 auto;
-  }
-}
-
-html.control-bar-sub-nav-active.matte #tahi-container { padding-top: 175px; }
-
-.matte.paper-submitted #tahi-container {
-  padding-top: 90px;
-}
-
-html.control-bar-sub-nav-active.matte.paper-submitted #tahi-container {
-  padding-top: 135px;
-}
-
-#tahi-container {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 120px 0 20px 0;
-
-  &.full-width { max-width: none; }
-
-  .paper-status {
-    position: relative;
-    line-height: 0px;
-    top: 20px;
-    left: 120px;
-    z-index: 1;
-  }
-
-  > main {
-    overflow: hidden;
-    min-width: 960px;
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
 
 .warning {
   color: red;
@@ -178,61 +142,10 @@ html.control-bar-sub-nav-active.matte.paper-submitted #tahi-container {
   }
 }
 
-.flash-messages--below-control-bar {
-  margin-top: $tahi-control-bar-height;
-}
 .flash-messages--on-paper-edit-page {
   position: absolute;
-  top: $tahi-control-bar-height + $ve-toolbar-height - 2px;
+  top: $tahi-control-bar-height - 2px;
   width: 100%;
-}
-
-// Main Content:
-
-.navigation-visible .main-content {
-  @include filter(grayscale(50%));
-}
-.overlay-open .main-content {
-  @include filter(grayscale(50%) blur(3px));
-}
-
-.main-content-cover {
-  @include position(fixed, 0px 0px 0px 0px);
-  display: none;
-  background: rgba(255,255,255, 0.4);
-  z-index: z('main-content-cover');
-}
-
-html.navigation-visible .main-content-cover { display: block; }
-
-
-.navigation-toggle {
-  @include position(fixed, 0px auto auto 0px);
-  padding: 13px 0 10px 54px;
-  color: $tahi-green;
-  font-size: 24px;
-  font-weight: 700;
-  text-transform: uppercase;
-  cursor: pointer;
-  z-index: z('navigation-toggle');
-  @include user-select(none);
-
-  svg {
-    @include position(absolute, 14px auto auto 20px);
-    width: 28px;
-  }
-
-  path { fill: $tahi-green; }
-
-  &:hover {
-    color: $tahi-green-dark;
-    path { fill: $tahi-green-dark; }
-  }
-}
-
-html[screen="admin"] .navigation-toggle {
-  color: $tahi-blue;
-  path { fill: $tahi-blue; }
 }
 
 // end Main Content

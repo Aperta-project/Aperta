@@ -31,12 +31,6 @@ feature "Paper workflow", js: true, selenium: true do
     it "display paper name" do
       expect(task_manager_page.paper_title).to have_content(paper.title)
     end
-
-    context "a Journal without a logo" do
-      it "display Journal name" do
-        expect(task_manager_page.journal_name).to have_content(journal.name)
-      end
-    end
   end
 
   describe "Adding phases" do

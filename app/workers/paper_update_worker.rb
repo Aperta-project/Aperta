@@ -7,7 +7,7 @@ class PaperUpdateWorker
     job_response = IhatJobResponse.new(ihat_job_params.with_indifferent_access)
     @paper = Paper.find(job_response.paper_id)
     if job_response.completed?
-      @epub_stream = Faraday.get(job_response.epub_url).body
+      @epub_stream = Faraday.get(job_response.format_url(:epub)).body
       sync!
     end
     Notifier.notify(event: "paper:data_extracted", data: { record: job_response })

@@ -114,7 +114,7 @@ http_interactions:
       - thin 1.6.2 codename Doc Brown
     body:
       encoding: UTF-8
-      string: '{"jobs":{"id":"98c21cba-ec4d-4570-9ae8-f2b8b6c9a2d0"}}'
+      string: '{"job":{"id":"98c21cba-ec4d-4570-9ae8-f2b8b6c9a2d0"}}'
     http_version: 
   recorded_at: Mon, 17 Nov 2014 23:03:13 GMT
 - request:
@@ -159,7 +159,7 @@ http_interactions:
       - thin 1.6.2 codename Doc Brown
     body:
       encoding: UTF-8
-      string: '{"jobs":{"state": "pending","id":"d5ee706f-a473-46ed-9777-3b7cd2905d08"}}'
+      string: '{"job":{"state": "pending","id":"d5ee706f-a473-46ed-9777-3b7cd2905d08", "options": {}}}'
     http_version: 
   recorded_at: Mon, 17 Nov 2014 23:03:13 GMT
 recorded_with: VCR 2.9.2

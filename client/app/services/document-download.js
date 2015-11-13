@@ -9,13 +9,13 @@ export default Ember.Namespace.create({
     self.downloadFormat = downloadFormat;
 
     return Ember.$.ajax({
-      url: '/api/papers/' + self.paperId + '/export',
+      url: `/api/papers/${self.paperId}/export`,
       data: {
         format: self.downloadFormat
       },
-      success(data) {
-        let jobId = data['id'];
-        return self.checkJobState(jobId);
+      success: (data)=> {
+        // Returns a url to check later.
+        self.checkJobState(data.url);
       },
       error() {
         throw new Error('Could not download ' + self.downloadFormat);
@@ -23,23 +23,25 @@ export default Ember.Namespace.create({
     });
   },
 
-  checkJobState: function(jobId) {
+  checkJobState: function(url) {
+    let self = this;
     let timeout = 2000;
-    let self    = this;
 
     return Ember.$.ajax({
-      url: '/api/papers/' + self.paperId + '/status/' + jobId,
-      success(data) {
-        let job = data['job'];
-        if (job.state === 'completed') {
-          let file = job.outputs.findBy('file_type', self.downloadFormat);
-          if (file) { Utils.windowLocation(file.url); }
-        } else if (job.state === 'errored') {
-          alert('The download failed');
-        } else {
+      url: url,
+      statusCode: {
+        200: (data)=>{
+          // Done, download the results..
+          Utils.windowLocation(data.url);
+        },
+        202: ()=>{
+          // Still working, try again later.
           setTimeout(()=> {
-            self.checkJobState(jobId);
+            self.checkJobState(url);
           }, timeout);
+        },
+        500: ()=>{
+          alert('The download failed');
         }
       }
     });

@@ -7,7 +7,7 @@ class PaperConverter
 
   def self.check_status(job_id)
     response = connection.get("/jobs/#{job_id}")
-    response.body
+    IhatJobResponse.new(JSON.parse(response.body).with_indifferent_access[:job])
   end
 
   def self.connection

@@ -149,7 +149,7 @@ class PaperTrackerPage(AuthenticatedPage):
           # Based on how the encoding is handled in the imported doc, the title can come in encoded or not
           try:
             assert page_title == db_title, page_title + '-is not equal to-' + db_title + '-'
-          except:
+          except AssertionError:
             assert page_title.encode('utf8') == db_title, page_title + ' is not equal to ' + db_title
         manid = self._get(self._paper_tracker_table_tbody_manid)
         assert '/papers/%s' % manid.text in title.get_attribute('href'), title.get_attribute('href')

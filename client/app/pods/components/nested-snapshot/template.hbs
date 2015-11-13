@@ -1,0 +1,66 @@
+{{#if generalCase}}
+  {{#if raw}}
+    <div class="snapshot-text">
+      {{snapshot.value}}
+    </div>
+  {{/if}}
+
+  {{#if boolean}}
+    <div class="snapshot-text">
+      <label><input type="radio" value="true" disabled>{{#if snapshot.value}}Yes{{else}}No{{/if}}.</label>
+    </div>
+  {{/if}}
+
+  {{#if question}}
+    <li class="snapshot-question">
+        <div class="snapshot-question-question">
+        {{{snapshot.value.title}}}
+      </div>
+
+      {{#if booleanQuestion}}
+        <div class="snapshot-question-answer">
+            <span class="snapshot-question-label">Response: </span>{{#if snapshot.value.answer}}Yes{{else}}No{{/if}}
+        </div>
+      {{else}}
+        <div class="snapshot-question-answer">
+            {{snapshot.value.answer}}
+        </div>
+      {{/if}}
+
+      {{#if snapshot.value.attachment}}
+        {{attachment-snapshot snapshot=snapshot.value.attachment}}
+      {{/if}}
+    </li>
+  {{/if}}
+
+  {{#if snapshot.children}}
+  <ol class="snapshot-children">
+    {{#each snapshot.children as |child|}}
+      {{nested-snapshot snapshot=child}}
+    {{/each}}
+  </ol>
+  {{/if}}
+
+{{else}}
+
+  {{#if author}}
+    {{author-snapshot snapshot=snapshot}}
+  {{/if}}
+
+  {{#if figure}}
+    <li>
+      {{attachment-snapshot snapshot=snapshot}}
+    </li>
+  {{/if}}
+
+  {{#if supportingInfo}}
+    <li>
+      {{attachment-snapshot snapshot=snapshot}}
+    </li>
+  {{/if}}
+
+  {{#if funder}}
+    {{funder-snapshot snapshot=snapshot}}
+  {{/if}}
+
+{{/if}}

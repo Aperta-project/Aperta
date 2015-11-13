@@ -9,15 +9,21 @@
     </li>
   </ul>
   <ul>
-    <li class="control-bar-item">
-      <div class="control-bar-link versions-link __with-icon" {{action "toggleVersioningMode" "versions"}}>
+    {{#if versionsActive}}
+      <li class="control-bar-item">
+        {{#link-to "paper.index" paper class="control-bar-link control-bar-button versions-link"}}
         <div class="control-bar-link-icon"><i class="fa fa-files-o"></i></div>
-        <div class="control-bar-link-text">
-          <span class="control-bar-toggle {{if versionsVisible "control-bar-toggle--active"}}">{{partial "svg/plus"}}</span>
-          Versions
-        </div>
-      </div>
-    </li>
+        Exit Versions
+        {{/link-to}}
+      </li>
+    {{else}}
+      <li class="control-bar-item">
+        {{#link-to "paper.versions" paper class="control-bar-link control-bar-button versions-link"}}
+        <div class="control-bar-link-icon"><i class="fa fa-files-o"></i></div>
+        Versions
+        {{/link-to}}
+      </li>
+    {{/if}}
     <li class="control-bar-item">
       <div class="control-bar-link contributors-link __with-icon" {{action "showSubNav" "contributors"}}>
         <div class="control-bar-link-icon">
@@ -112,12 +118,6 @@
       {{#direct-download-link link=downloadLink extension=".pdf"}}
         {{partial "svg/pdf-icon"}}
       {{/direct-download-link}}
-    </div>
-  {{/if}}
-
-  {{#if versionsVisible}}
-    <div class="versions active">
-      {{versioning-bar paper=paper}}
     </div>
   {{/if}}
 </div>

@@ -1,0 +1,31 @@
+.snapshot {
+  .snapshot-question {
+    color: #878787;
+    font-size: 1em;
+
+    .snapshot-question-question {
+      color: #878787;
+    }
+
+    .snapshot-question-answer {
+      color: #000;
+      margin: 16px;
+    }
+  }
+  .snapshot-question-label {
+    color: #878787;
+  }
+
+  .snapshot-children ol {
+    list-style-type: none;
+
+    .snapshot-question-answer {
+      margin-left: 0;
+      margin-top: 5px;
+    }
+  }
+
+  .snapshot-question-attachment {
+    margin-bottom: 16px;
+  }
+}

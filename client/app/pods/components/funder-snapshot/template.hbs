@@ -1,0 +1,11 @@
+<div class="snapshot-funder">
+  <div>
+    <span class="snapshot-question-label">Funder: </span>{{name}}   {{#if website}}({{website}}){{/if}}
+  </div>
+  <div>
+    <span class="snapshot-question-label">Grant #: </span>{{grantNumber}}
+  </div>
+  {{#if influence.value.answer}}
+    {{nested-snapshot snapshot=influence}}
+  {{/if}}
+</div>

@@ -27,7 +27,6 @@ export default DS.Model.extend({
   versionedTexts: hasMany('versioned-text', { async: true }),
   tasks: hasMany('task', { async: true, polymorphic: true }),
   manuscriptPageTasks: hasMany('task', { async: true, polymorphic: true }),
-
   active: attr('boolean'),
   body: attr('string'),
   doi: attr('string'),
@@ -50,9 +49,9 @@ export default DS.Model.extend({
   isSubmitted: attr('boolean'),
   manuscript_id: attr('string'),
 
-  // For diffing:
-  viewingText: attr('string'),
-  comparisonText: attr('string'),
+  taskSorting: ['phase.position', 'position'],
+  metadataTasks: Ember.computed.filterBy('tasks', 'isMetadataTask', true),
+  sortedMetadataTasks: Ember.computed.sort('metadataTasks', 'taskSorting'),
 
   displayTitle: computed('title', 'shortTitle', function() {
     return this.get('title') || this.get('shortTitle');
@@ -68,5 +67,12 @@ export default DS.Model.extend({
 
   latestDecision: computed('decisions.[]', function() {
     return this.get('decisions').findBy('isLatest', true);
-  })
+  }),
+
+  textForVersion: function(majorVersion, minorVersion) {
+    return this.get('versionedTexts').find(function(version) {
+      return (version.get('majorVersion') === Number(majorVersion) &&
+              version.get('minorVersion') === Number(minorVersion));
+    });
+  }
 });

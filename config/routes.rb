@@ -146,6 +146,7 @@ Tahi::Application.routes.draw do
       resources :comments, only: [:index]
       resources :participations, only: [:index]
       resources :questions, only: [:index]
+      resources :snapshots, only: [:index]
       put :send_message, on: :member
     end
     resources :task_templates

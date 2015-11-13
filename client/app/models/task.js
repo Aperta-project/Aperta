@@ -4,6 +4,7 @@ import NestedQuestionOwner from 'tahi/models/nested-question-owner';
 import CardThumbnailObserver from 'tahi/mixins/models/card-thumbnail-observer';
 
 export default NestedQuestionOwner.extend(CardThumbnailObserver, {
+  snapshots: DS.hasMany('snapshot', { async: true }),
   attachments: DS.hasMany('attachment', { async: true }),
 
   cardThumbnail: DS.belongsTo('card-thumbnail', {
@@ -38,5 +39,12 @@ export default NestedQuestionOwner.extend(CardThumbnailObserver, {
 
   paperTitle: Ember.computed('paper', function() {
     return this.get('paper.displayTitle');
-  })
+  }),
+
+  getSnapshotForVersion: function(majorVersion, minorVersion) {
+    return this.get('snapshots').find(function(snapshot) {
+      return (snapshot.get('majorVersion') === Number(majorVersion) &&
+              snapshot.get('minorVersion') === Number(minorVersion));
+    });
+  }
 });

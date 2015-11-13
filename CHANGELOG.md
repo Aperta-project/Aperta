@@ -5,7 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
--
+- Users can view old versions of the paper's metadata.
 
 ### Changed
 -

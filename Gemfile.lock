@@ -7,6 +7,15 @@ GIT
       activerecord (>= 3.0)
 
 GIT
+  remote: git://github.com/yamldb/yaml_db.git
+  revision: f980a67dfcfef76824676f3938b176b68c260e68
+  ref: f980a67dfcfef76824676f3938b176b68c260e68
+  specs:
+    yaml_db (0.3.0)
+      rails (>= 3.0, < 4.3)
+      rake (>= 0.8.7)
+
+GIT
   remote: https://github.com/rails/activemodel-globalid
   revision: 189c69988b0208d6d4760ae823043b94a84f0814
   specs:
@@ -702,6 +711,7 @@ DEPENDENCIES
   unf
   vcr
   webmock
+  yaml_db!
 
 BUNDLED WITH
    1.10.6

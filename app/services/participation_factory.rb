@@ -1,29 +1,40 @@
 class ParticipationFactory
-  def self.create(task:, assignee:, assigner: nil)
-    new(task: task, assignee: assignee, assigner: assigner).save
+  attr_reader :task, :assignee, :assigner
+  attr_accessor :notify
+
+  def self.create(task:, assignee:, assigner: nil, notify: true)
+    new(task: task, assignee: assignee, assigner: assigner, notify: notify).save
   end
 
-  attr_reader :task, :assignee, :assigner
-
-  def initialize(task:, assignee:, assigner:)
+  def initialize(task:, assignee:, assigner:, notify:)
     @task = task
     @assignee = assignee
     @assigner = assigner
+    @notify = notify
   end
 
   def save
     return if task.participants.include?(assignee)
+    self.notify = false if self_assigned?
+    create_participation
+  end
 
-    Participation.create!(task: task, user: assignee, notify_requester: self_assigned?).tap do |_|
-      UserMailer.delay.add_participant(assigner.try(:id), assignee.id, task.id) unless self_assigned?
+  private
+
+  def create_participation
+    Participation.create!(task: task,
+                          user: assignee,
+                          notify_requester: self_assigned?).tap do
+      send_notification if notify
       CommentLookManager.sync_task(task)
     end
   end
 
-
-  private
-
   def self_assigned?
     assigner == assignee
+  end
+
+  def send_notification
+    UserMailer.delay.add_participant(assigner.try(:id), assignee.id, task.id)
   end
 end

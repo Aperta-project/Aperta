@@ -79,6 +79,14 @@ class PapersController < ApplicationController
 
   def download
     respond_to do |format|
+      format.docx do
+        if paper.latest_version.source_url.blank?
+          render status: :not_found, nothing: true
+        else
+          redirect_to paper.latest_version.source_url
+        end
+      end
+
       format.epub do
         epub = EpubConverter.new paper, current_user
         send_data epub.epub_stream.string, filename: epub.file_name, disposition: 'attachment'

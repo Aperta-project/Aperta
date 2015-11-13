@@ -143,9 +143,14 @@ class PaperTrackerPage(AuthenticatedPage):
         if papers[count][0]:
           db_title = papers[count][0]
           db_title = db_title.strip()
+          db_title = self.get_text(db_title)
           db_title = ' '.join(db_title.split())
           page_title = title.text.strip()
-          assert page_title.encode('utf8') == db_title
+          # Based on how the encoding is handled in the imported doc, the title can come in encoded or not
+          try:
+            assert page_title == db_title, page_title + '-is not equal to-' + db_title + '-'
+          except AssertionError:
+            assert page_title.encode('utf8') == db_title, page_title + ' is not equal to ' + db_title
         manid = self._get(self._paper_tracker_table_tbody_manid)
         assert '/papers/%s' % manid.text in title.get_attribute('href'), title.get_attribute('href')
         assert int(manid.text) == papers[count][1]
@@ -204,7 +209,7 @@ class PaperTrackerPage(AuthenticatedPage):
             db_editors = PgSQL().query('SELECT users.first_name, users.last_name '
                                        'FROM paper_roles INNER JOIN users '
                                        'ON paper_roles.user_id = users.id '
-                                       'WHERE paper_id= %s AND paper_roles.role = %s;', (manid.text, 'collaborator'))
+                                       'WHERE paper_id= %s AND paper_roles.role = %s;', (manid.text, 'editor'))
             name = []
             for editor in db_editors:
               name.append(editor[0] + ' ' + editor[1])

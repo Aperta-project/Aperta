@@ -1,6 +1,9 @@
 <nav class="main-nav" role="navigation">
   <div class="main-nav-items">
-    {{link-to specifiedAppName "dashboard" class="main-nav-item main-nav-item--first"}}
+    {{#link-to "dashboard" class="main-nav-item main-nav-item--first main-nav-item-app-name"}}
+      <i class="fa fa-list-ul"></i>
+      {{specifiedAppName}}
+    {{/link-to}}
 
     <span class="main-nav-item main-nav-item-spacer"></span>
 

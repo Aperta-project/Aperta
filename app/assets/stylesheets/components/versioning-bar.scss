@@ -1,32 +1,31 @@
 #versioning-bar {
+  @include clearfix;
   width: 100%;
-  line-height: 30px;
+  padding: 25px 30px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
 
-  .versioning-bar-container {
-    width: $tahi-paper-width;
-    margin: 5px 0 0 25px;
+  .bar-item {
+    float: left;
+    margin-right: 15px;
 
-    .bar-item {
-      float: left;
-      margin-right: 15px;
+    &.exit-versions {
+      float: right;
+      margin-right: 0px;
+      font-size: 36px;
+      line-height: 17px;
+      color: $tahi-green;
+      cursor: pointer;
+    }
 
-      &.exit-versions {
-        float: right;
-        margin-right: 0px;
-        font-size: 36px;
-        line-height: 17px;
-        color: $tahi-green;
-        cursor: pointer;
-      }
+    .fa {
+      color: $tahi-green;
+    }
 
-      .fa {
-        color: $tahi-green;
-      }
-
-      select {
-        margin-left: 5px;
-        width: 200px;
-      }
+    select {
+      margin-left: 5px;
+      width: 225px;
     }
   }
 }

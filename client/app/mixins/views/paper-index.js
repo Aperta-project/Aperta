@@ -17,11 +17,11 @@ export default Ember.Mixin.create(RedirectsIfEditable, {
   applyManuscriptCss: Ember.observer(
     'controller.model.journal.manuscriptCss',
     function() {
-      let style = this.get('controller.model.journal.manuscriptCss');
+      const style = this.get('controller.model.journal.manuscriptCss');
       $('#paper-body').attr('style', style);
     }),
 
   teardownControlBarSubNav: on('willDestroyElement', function() {
-    $('html').removeClass('control-bar-sub-nav-active');
+    $('html').removeClass('control-bar--sub-item-active');
   })
 });

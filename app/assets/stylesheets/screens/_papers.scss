@@ -1,17 +1,5 @@
 $paper-edit-sidebar-width: 280px;
 
-#control-bar-paper-journal-logo {
-  height: 50px;
-  margin-top: 9px;
-  margin-right: 20px;
-
-  div { padding-top: 6px; }
-  img {
-    display: block;
-    height: 40px;
-  }
-}
-
 #control-bar-paper-short-title {
   min-width: 5px;
   font-size: 18px;
@@ -256,11 +244,13 @@ html.control-bar-sub-nav-active #paper-container {
 
 // end edit-paper section
 
-// start contributors section
+// contributors section -------------------------
+// child of .control-bar-sub-items
 
 .contributors {
   display: none;
   padding-right: 25px;
+  line-height: 30px;
   text-align: right;
 
   &.active { display: block; }
@@ -290,64 +280,58 @@ html.control-bar-sub-nav-active #paper-container {
   }
 }
 
-// end contributors section
+
+// manuscript-download-links section -------------
+// child of .control-bar-sub-items
 
 .manuscript-download-links {
-  overflow: hidden;
   display: none;
+  height: 100%;
+  @include justify-content(flex-end);
 
-  &.active { display: block; }
-
-  svg {
-    float: right;
-    display: inline;
-  }
-
-  svg path {
-    fill: $tahi-green;
-  }
+  &.active { @include display(flex); }
 
   a {
-    overflow: hidden;
-    float: right;
-    display: block;
-    height: 27px;
+    @include display(flex);
+    @include align-items(center);
     margin-right: 25px;
-    line-height: 27px;
     text-decoration: none;
 
-    &:hover {
-      color: $tahi-green-dark;
-      svg path { fill: $tahi-green-dark; }
+    svg {
+      position: relative;
+      top: -3px;
     }
+
+    svg path { fill: $tahi-green; }
+  }
+
+  a:hover {
+    color: $tahi-green-dark;
+    text-decoration: none;
+
+    svg path { fill: $tahi-green-dark; }
   }
 }
 
-.paper-container-html .toolbar {
-  @include position(fixed, $tahi-control-bar-height 0px auto 0px);
-  font-family: $tahi-font-family;
-  background-color: $tahi-white;
-  z-index: 1;
+
+.activity-link svg {
+  position: relative;
+  top: -5px;
 }
 
-.paper-container-html .navbar-inner {
-  max-width: 1120px;
-  margin: 0 auto;
-}
+.paper-navigation-link {
+  position: relative;
+  margin-right: 1.2rem;
+  padding-right: 2.5rem;
 
-.paper-edit-overlay, .editor-overlay {
-  font-family: $tahi-font-family;
-}
-
-.editor-overlay .overlay-body {
-  @include position(fixed, $tahi-control-bar-height+50px 0px auto 0px);
-}
-
-.figures-overlay .attachment-thumbnail-image {
-  float: initial;
-  width: 100%;
-}
-
-.paper-container-html .manuscript-inner {
-  min-height: 600px;
+  &:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 1px;
+    height: 32px;
+    margin-top: -16px;
+    background: #ddd;
+  }
 }

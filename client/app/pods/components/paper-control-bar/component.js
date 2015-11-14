@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   classNames: ['control-bar'],
-  classNameBindings: ['submenuVisible:control-bar-sub-nav-active'],
+  classNameBindings: ['submenuVisible:control-bar--sub-items-active'],
   hasJournalLogo: Ember.computed.notEmpty('paper.journal.logoUrl'),
   paperWithdrawn: Ember.computed.equal('paper.publishingState', 'withdrawn'),
   submenuVisible: false,
@@ -29,7 +29,6 @@ export default Ember.Component.extend({
   },
 
   actions: {
-
     showSubNav(sectionName) {
       if (this.get('submenuVisible') && this.get(`${sectionName}Visible`)) {
         this.resetSubmenuFlags();

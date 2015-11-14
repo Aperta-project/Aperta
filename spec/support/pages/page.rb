@@ -219,7 +219,7 @@ class Page < PageFragment
   end
 
   def navigate_to_dashboard
-    find('.main-nav a', text: 'Dashboard').click
+    find('.main-nav-item-app-name').click
     DashboardPage.new
   end
 

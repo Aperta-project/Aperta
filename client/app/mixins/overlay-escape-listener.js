@@ -1,15 +1,31 @@
 import Ember from 'ember';
 
+const ESC_KEY = 27;
+const notEscapeKey = function(e) {
+  return e.keyCode !== ESC_KEY || e.which !== ESC_KEY;
+};
+
+const ofType = 'input, textarea, [contenteditable=true], .select-box-element';
+const shouldNotClose = function(e) {
+  return Ember.$(e.target).is(ofType);
+};
+
 export default Ember.Mixin.create({
+  escapeKeyAction: 'close',
+
+  eventName() {
+    return 'keyup.' + this.get('elementId');
+  },
+
   setupKeyup: Ember.on('didInsertElement', function() {
-    $('body').on('keyup.' + this.get('elementId'), (e)=> {
-      if (e.keyCode !== 27 || e.which !== 27) { return; }
-      if ($(e.target).is('input, textarea')) { return; }
-      this.send('close');
+    Ember.$('body').on(this.eventName(), (e)=> {
+      if (notEscapeKey(e))   { return; }
+      if (shouldNotClose(e)) { return; }
+      this.send(this.get('escapeKeyAction'));
     });
   }),
 
   tearDownKeyup: Ember.on('willDestroyElement', function() {
-    $('body').off('keyup.' + this.get('elementId'));
+    Ember.$('body').off(this.eventName());
   })
 });

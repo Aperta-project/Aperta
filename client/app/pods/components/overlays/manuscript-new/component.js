@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import FileUploadMixin from 'tahi/mixins/file-upload';
-import EscapeListenerMixin from 'tahi/mixins/overlay-escape-listener';
+import EscapeListenerMixin from 'tahi/mixins/escape-listener';
 
 const { computed } = Ember;
 

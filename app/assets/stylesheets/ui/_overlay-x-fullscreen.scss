@@ -1,0 +1,46 @@
+$ov--fullscreen-side-pad: 4rem;
+$ov--fullscreen-breakpoint: 780px;
+
+.overlay-x--fullscreen {
+  background-color: rgba(255,255,255, 0.96);
+
+  .overlay-x-container {
+    position: relative;
+    min-height: 25rem;
+    max-width: 70rem;
+    margin: 0 auto;
+  }
+}
+
+@media only screen and (max-width: $ov--fullscreen-breakpoint) {
+  .overlay-x--fullscreen .overlay-x-container {
+    margin-right: $ov--fullscreen-side-pad;
+    margin-left:  $ov--fullscreen-side-pad;
+  }
+}
+
+// Fullscreen Overlay Header ---------------------------------------------------
+
+.overlay-x--fullscreen {
+  .overlay-x-close {
+    @include position(fixed, 0px 0px auto auto);
+    width: auto !important; // bootstrap/glyphicon override
+    padding: 0 30px 0 20px;
+    color: $tahi-green;
+    font-size: 80px;
+    line-height: 100%; // bootstrap override
+    cursor: pointer;
+    z-index: z('overlay', 'close-x');
+  }
+
+  .overlay-x-header {
+    position: relative;
+    text-align: center;
+  }
+
+  .overlay-x-header-title {
+    padding: 7.5rem 0;
+    margin-bottom: 0; // bootstrap override
+    font-size: 4.8rem;
+  }
+}

@@ -1,63 +1,92 @@
 /*
-  .overlay-x [.overlay-x--fullscreen | .overlay-x--card]
+  Overlay Structure:
+
+  .overlay-x
     .overlay-x-container [no base styles, based on root modifier]
-      .overlay-x-close  [no base styles, based on root modifier]
-      .overlay-x-header [no base styles, based on root modifier]
+      .overlay-x-close   [no base styles, based on root modifier]
+      .overlay-x-header  [no base styles, based on root modifier]
         .overlay-x-header-title [no base styles, based on root modifier]
-      .overlay-x-main   [no base styles, based on root modifier]
+      .overlay-x-main    [no base styles, based on root modifier]
+
+  .overlay-x modifiers: .overlay-x--fullscreen | .overlay-x--card
 */
 
-$ov--card-side-pad: 3.0rem;
+$ov--card-side-pad: 8.0rem;
+$ov-card-breakpoint: 900px;
 
 .overlay-x {
+  overflow: auto;
   @include position(fixed, 0px 0px 0px 0px);
   z-index: z('overlay', 'base');
 }
 
+
+// Card Overlay ---------------------------------------------------------------
+
 .overlay-x--card {
   background-color: rgba(0,0,0, 0.68);
-}
-
-.overlay-x--fullscreen {
-  background-color: rgba(255,255,255, 0.96);
-}
-
-.overlay-x--card {
-  // Overlay Header -----------------------------------------------------------
 
   .overlay-x-container {
-    margin: 4.0rem 7% 0 7%;
+    max-width: 112.0rem;
+    margin: 4.0rem auto;
     border-radius: 5px;
     background: #fff;
   }
 
   .overlay-x-close {
     @include position(absolute, 0px 0px auto auto);
+    right: -#{$ov--card-side-pad};
     width: auto !important; // bootstrap/glyphicon override
-    padding: 0 1.5rem 0 1.5rem;
+    padding: 0 2.0rem 0 1.5rem;
     color: $tahi-green;
-    font-size: 5.0rem;
-    line-height: 100%; // bootstrap override
+    font-size: 6.0rem;
+    line-height: 110%; // bootstrap override
     cursor: pointer;
     z-index: 2;
   }
+}
 
+@media only screen and (max-width: 1150px) {
+  .overlay-x--card .overlay-x-container {
+    margin-right: 1.5rem;
+    margin-left: 1.5rem;
+  }
+}
+
+@media only screen and (max-width: $ov-card-breakpoint) {
+  .overlay-x--card .overlay-x-close {
+    right: -#{$ov--card-side-pad/2};
+  }
+}
+
+// Card Overlay Header ---------------------------------------------------------
+
+.overlay-x--card {
   .overlay-x-header {
     position: relative;
-    border-bottom: 1px solid #ddd;
+    margin: 0 $ov--card-side-pad;
+    border-bottom: 1px solid #aaa;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    padding: 4.0rem $ov--card-side-pad 1.5rem $ov--card-side-pad;
-    background: #f3f3f3;
+    padding: 6.0rem 5px 1.0rem 5px;
   }
 
   .overlay-x-header-title {
-    margin-bottom: 0;
-    font-size: 2.7rem;
+    margin-bottom: 0; // bootstrap override
+    font-size: 4.2rem;
   }
+}
 
-  // Overlay Body -------------------------------------------------------------
+@media only screen and (max-width: $ov-card-breakpoint) {
+  .overlay-x--card .overlay-x-header {
+    margin-right: $ov--card-side-pad / 2;
+    margin-left:  $ov--card-side-pad / 2;
+  }
+}
 
+// Card Overlay Body -----------------------------------------------------------
+
+.overlay-x--card {
   .overlay-x-body {
     position: relative;
     min-height: 25rem;
@@ -65,10 +94,29 @@ $ov--card-side-pad: 3.0rem;
   }
 }
 
+@media only screen and (max-width: $ov-card-breakpoint) {
+  .overlay-x--card .overlay-x-body {
+    padding-right: $ov--card-side-pad / 2;
+    padding-left:  $ov--card-side-pad / 2;
+  }
+}
+
+
+// Fullscreen Overlay ----------------------------------------------------------
 
 .overlay-x--fullscreen {
-  // Overlay Header -----------------------------------------------------------
+  background-color: rgba(255,255,255, 0.96);
 
+  .overlay-x-container {
+  }
+
+  .overlay-x-close {
+  }
+}
+
+// Fullscreen Overlay Header ---------------------------------------------------
+
+.overlay-x--fullscreen {
   .overlay-x-close {
     @include position(fixed, 0px 0px auto auto);
     width: auto !important; // bootstrap/glyphicon override
@@ -93,9 +141,11 @@ $ov--card-side-pad: 3.0rem;
     margin-bottom: 0;
     font-size: 2.7rem;
   }
+}
 
-  // Overlay Body -------------------------------------------------------------
+// Fullscreen Overlay Body ----------------------------------------------------
 
+.overlay-x--fullscreen {
   .overlay-x-body {
     position: relative;
     min-height: 25rem;

@@ -24,7 +24,7 @@ export default Ember.Component.extend({
   },
 
   fadeIn() {
-    const element = this.$('.overlay');
+    const element = this.$('.overlay-x');
     const beginProps = { opacity: 0, display: 'block' };
     const animateToProps = { opacity: 1 };
 
@@ -36,7 +36,7 @@ export default Ember.Component.extend({
   },
 
   fadeOut() {
-    const element = this.$('.overlay');
+    const element = this.$('.overlay-x');
     const animateToProps = { opacity: 0 };
 
     return $.Velocity.animate(element, animateToProps, {

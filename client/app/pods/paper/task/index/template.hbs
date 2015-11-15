@@ -10,7 +10,7 @@
         <h1 class="overlay-x-header-title">
           {{{model.title}}}
         </h1>
-        <span class="overlay-x-close" {{action "close"}}>&times;</span>
+        <span class="overlay-x-close" {{action animateOut}}>&times;</span>
       </header>
       <div class="overlay-x-body">
         {{component (task-component-name model.title)

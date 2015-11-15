@@ -3,11 +3,19 @@
 {{#overlay-base visible=showNewManuscriptOverlay
                 outAnimationComplete=(action "hideNewManuscriptOverlay")
                 as |animateOut|}}
-  {{overlays/manuscript-new class="overlay overlay--fullscreen paper-new-overlay"
-                            paper=newPaper
-                            journals=journals
-                            journalsLoading=journalsLoading
-                            close=(action animateOut)}}
+  <div class="overlay-x overlay-x--fullscreen paper-new-overlay">
+    <div class="overlay-x-container">
+      <header class="overlay-x-header">
+        <h1 class="overlay-x-header-title">Create a New Submission</h1>
+        <span class="overlay-x-close" {{action animateOut}}>&times;</span>
+      </header>
+      {{overlays/manuscript-new class="overlay-x-body"
+                                paper=newPaper
+                                journals=journals
+                                journalsLoading=journalsLoading
+                                close=(action animateOut)}}
+    </div>
+  </div>
 {{/overlay-base}}
 
 <div class="base-screen">

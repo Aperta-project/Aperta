@@ -32,8 +32,8 @@ test('clicking the feedback button sends feedback', function(assert) {
   visit('/profile');
   click('#profile-dropdown-menu');
   click('a:contains(Give Feedback on)');
-  fillIn('.overlay textarea', 'My feedback');
-  click('.overlay-footer-content .button-primary');
+  fillIn('.overlay-x-body textarea', 'My feedback');
+  click('.overlay-x-body .button-primary');
 
   andThen(function() {
     assert.ok(

@@ -1,17 +1,17 @@
 import Ember from 'ember';
+import EscapeListenerMixin from 'tahi/mixins/escape-listener';
 
-export default Ember.Controller.extend({
+export default Ember.Component.extend(EscapeListenerMixin, {
   overlayClass: 'overlay--fullscreen feedback-overlay',
   feedbackSubmitted: false,
   isUploading: false,
 
-  setupModel: Ember.on('init', function() {
-    this.resetModel();
-    this.set('model.screenshots', []);
-  }),
-
-  resetModel() {
-    this.set('model', this.store.createRecord('feedback'));
+  init() {
+    this._super(...arguments);
+    this.set('store', this.container.lookup('store:main'));
+    this.set('model', this.get('store').createRecord('feedback', {
+      screenshots: []
+    }));
   },
 
   actions: {
@@ -21,7 +21,6 @@ export default Ember.Controller.extend({
       this.set('model.referrer', window.location);
       this.get('model').save().then(()=> {
         this.set('feedbackSubmitted', true);
-        this.resetModel();
       });
     },
 
@@ -39,6 +38,10 @@ export default Ember.Controller.extend({
 
     removeScreenshot(screenshot) {
       this.get('model.screenshots').removeObject(screenshot);
+    },
+
+    close() {
+      this.attrs.close();
     }
   }
 });

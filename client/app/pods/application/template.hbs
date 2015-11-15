@@ -26,13 +26,22 @@
       <ul class="dropdown-menu animation-fade-in pull-right" aria-labelledby="profile-dropdown-menu">
         <li>{{link-to "Profile" "profile"}}</li>
         <li><a href="/users/sign_out">Sign Out</a></li>
-        <li><a href="#" {{action "feedback"}}>Give Feedback on {{specifiedAppName}}</a></li>
+        <li><a href="#" {{action "showFeedbackOverlay"}}>Give Feedback on {{specifiedAppName}}</a></li>
       </ul>
     {{/if}}
   </div>
 </nav>
 
 <main class="main-content" role="main">{{outlet}}</main>
+
+{{#overlay-base visible=showFeedbackOverlay
+                outAnimationComplete=(action "hideFeedbackOverlay")
+                as |animateOut|}}
+  {{#overlay-fullscreen title="Please let us know your thoughts"
+                        close=(action animateOut)}}
+    {{feedback-x close=(action animateOut)}}
+  {{/overlay-fullscreen}}
+{{/overlay-base}}
 
 {{#if showOverlay}}
   <div class="overlay" id="overlay">

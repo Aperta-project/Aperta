@@ -5,17 +5,11 @@ import EscapeListenerMixin from 'tahi/mixins/escape-listener';
 const { computed } = Ember;
 
 export default Ember.Component.extend(FileUploadMixin, EscapeListenerMixin, {
-
   journals: null,
   paper: null,
   isSaving: false,
 
   journalEmpty: computed.empty('paper.journal'),
-
-  _registerWithParent: Ember.on('init', function() {
-    const register = this.attrs.register;
-    if(register) { register(this); }
-  }),
 
   titleCharCount: computed('paper.title', function() {
     return Ember.$('<div></div>')

@@ -1,10 +1,15 @@
 import Ember from 'ember';
+import Utils from 'tahi/services/utils';
 
 export default Ember.Controller.extend({
   restless: Ember.inject.service('restless'),
 
   positionSort: ['position:asc'],
   sortedPhases: Ember.computed.sort('model.phases', 'positionSort'),
+
+  activityIsLoading: false,
+  showActivityOverlay: false,
+  activityFeed: null,
 
   commentLooks: Ember.computed(function() {
     return this.store.all('comment-look');
@@ -27,6 +32,23 @@ export default Ember.Controller.extend({
   },
 
   actions: {
+    hideActivityOverlay() {
+      this.set('showActivityOverlay', false);
+    },
+
+    showActivity(type) {
+      this.set('activityIsLoading', true);
+      this.set('showActivityOverlay', true);
+      const url = `/api/papers/${this.get('model.id')}/activity/${type}`;
+
+      this.get('restless').get(url).then((data)=> {
+        this.setProperties({
+          activityIsLoading: false,
+          activityFeed: Utils.deepCamelizeKeys(data.feeds)
+        });
+      });
+    },
+
     changePhaseForTask(task, targetPhaseId) {
       this.beginPropertyChanges();
       this.store.getById('phase', targetPhaseId).get('tasks').addObject(task);

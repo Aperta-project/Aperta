@@ -50,3 +50,15 @@
 {{/split-pane}}
 
 {{outlet}}
+
+{{#overlay-base visible=showActivityOverlay
+                outAnimationComplete=(action "hideActivityOverlay")
+                as |animateOut|}}
+  {{#overlay-fullscreen class="activity-overlay"
+                        title="Recent Activity"
+                        close=(action animateOut)}}
+    {{paper-activity isLoading=activityIsLoading
+                     model=activityFeed
+                     close=(action animateOut)}}
+  {{/overlay-fullscreen}}
+{{/overlay-base}}

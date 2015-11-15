@@ -52,25 +52,6 @@ export default AuthorizedRoute.extend({
       });
     },
 
-    showActivity(type) {
-      const paperId = this.modelFor('paper').get('id');
-      const url = `/api/papers/${paperId}/activity/${type}`;
-      const controller = this.controllerFor('overlays/activity');
-      controller.set('isLoading', true);
-
-      this.get('restless').get(url).then(function(data) {
-        controller.setProperties({
-          isLoading: false,
-          model: Utils.deepCamelizeKeys(data.feeds)
-        });
-      });
-
-      this.send('openOverlay', {
-        template: 'overlays/activity',
-        controller: controller
-      });
-    },
-
     showConfirmWithdrawOverlay() {
       let controller = this.controllerFor('overlays/paper-withdraw');
       controller.set('model', this.currentModel);

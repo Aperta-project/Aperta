@@ -32,7 +32,8 @@
 {{#overlay-base visible=showUserDetailsOverlay
                 outAnimationComplete=(action "hideUserDetailsOverlay")
                 as |animateOut|}}
-  {{#overlay-fullscreen title="User Details"}}
+  {{#overlay-fullscreen title="User Details"
+                        close=(action animateOut)}}
     {{user-details model=detailsForUser
                    close=(action animateOut)}}
   {{/overlay-fullscreen}}

@@ -43,6 +43,93 @@ describe Typesetter::MetadataSerializer do
     expect(output[:journal_title]).to eq('Pandas')
   end
 
+  it 'has first_submitted_at' do
+    now = Time.zone.now
+    paper.update_attribute(:first_submitted_at, now)
+    expect(output[:received_date]).to eq(now)
+  end
+
+  it 'has accepted_at' do
+    now = Time.zone.now
+    paper.update_attribute(:accepted_at, now)
+    expect(output[:accepted_date]).to eq(now)
+  end
+
+  it 'has title' do
+    paper.title = 'here is the title'
+    expect(output[:article_title]).to eq('here is the title')
+  end
+
+  describe 'copyright statement' do
+    context 'government employee' do
+      # Government employees cannot claim copyright over works
+      before do
+        our_task =
+          paper
+          .tasks
+          .find_by_type('TahiStandardTasks::PublishingRelatedQuestionsTask')
+        our_question =
+          our_task.nested_questions.find_by_ident('us_government_employees')
+        FactoryGirl.create(
+          :nested_question_answer,
+          nested_question: our_question,
+          owner: our_task,
+          value: 'true',
+          value_type: 'boolean'
+        )
+      end
+
+      it 'has a copyright_statement' do
+        expect(output[:copyright_statement]).to match(/public\s?domain/i)
+      end
+    end
+
+    context 'non government employee' do
+      before do
+        our_task =
+          paper
+          .tasks
+          .find_by_type('TahiStandardTasks::PublishingRelatedQuestionsTask')
+        our_question =
+          our_task.nested_questions.find_by_ident('us_government_employees')
+        FactoryGirl.create(
+          :nested_question_answer,
+          nested_question: our_question,
+          owner: our_task,
+          value: 'false',
+          value_type: 'boolean'
+        )
+      end
+
+      it 'has a copyright_statement' do
+        expect(output[:copyright_statement]).to eq('All rights reserved.')
+      end
+    end
+  end
+
+  describe 'publication_date' do
+    before do
+      our_task =
+        paper
+        .tasks
+        .find_by_type('TahiStandardTasks::ProductionMetadataTask')
+      our_question =
+        our_task.nested_questions.find_by_ident('publication_date')
+
+      FactoryGirl.create(
+        :nested_question_answer,
+        nested_question: our_question,
+        owner: our_task,
+        value: '11/16/2015',
+        value_type: 'text'
+      )
+    end
+
+    it 'has a date' do
+      expect(output[:publication_date]).to eq(Date.new(2015, 11, 16))
+    end
+  end
+
   describe 'editor' do
     let(:editor) { FactoryGirl.build(:user) }
     let(:fake_serialized_editor) { 'Fake editor' }

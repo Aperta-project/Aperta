@@ -19,6 +19,12 @@ module Typesetter
     has_many :supporting_information_files,
              serializer: Typesetter::SupportingInformationFileSerializer
 
+    GOVERNMENT_COPYRIGHT_DECLARATION =
+      'CC0 1.0 Universal (CC0 1.0) Public Domain Dedication: ' \
+      'https://creativecommons.org/publicdomain/zero/1.0/'
+
+    PRIVATE_COPYRIGHT_DECLARATION = 'All rights reserved.'
+
     def journal_title
       object.journal.name
     end
@@ -50,10 +56,9 @@ module Typesetter
     def copyright_statement
       t = task('TahiStandardTasks::PublishingRelatedQuestionsTask')
       if task_answer_value(t, 'us_government_employees')
-        'CC0 1.0 Universal (CC0 1.0) Public Domain Dedication : ' \
-        'https://creativecommons.org/publicdomain/zero/1.0/'
+        GOVERNMENT_COPYRIGHT_DECLARATION
       else
-        'All rights reserved.'
+        PRIVATE_COPYRIGHT_DECLARATION
       end
     end
   end

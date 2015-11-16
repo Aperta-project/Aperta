@@ -1,7 +1,19 @@
 {{flash-messages}}
 
-<div class="base-screen">
+{{#overlay-base visible=showNewManuscriptOverlay
+                outAnimationComplete=(action "hideNewManuscriptOverlay")
+                as |animateOut|}}
+  {{#overlay-fullscreen title="Create a New Submission"
+                        close=(action animateOut)}}
+    {{manuscript-new paper=newPaper
+                     journals=journals
+                     journalsLoading=journalsLoading
+                     complete=(action "newManuscriptCreated")
+                     close=(action animateOut)}}
+  {{/overlay-fullscreen}}
+{{/overlay-base}}
 
+<div class="base-screen">
   {{#if pendingInvitations}}
     <section class="dashboard-section">
       <h2 class="welcome-message">
@@ -25,7 +37,7 @@
       {{/if}}
     </h2>
 
-    <button class="button-primary button--green" {{action "showNewPaperOverlay"}}>Create New Submission</button>
+    <button class="button-primary button--green" {{action "showNewManuscriptOverlay"}}>Create New Submission</button>
 
     {{#if hasPapers}}
       {{#if hasActivePapers}}

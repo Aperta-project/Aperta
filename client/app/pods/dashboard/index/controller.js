@@ -4,9 +4,11 @@ import pluralizeString from 'tahi/lib/pluralize-string';
 export default Ember.Controller.extend({
   papers: [],
   unreadComments: [],
-  pendingInvitations: Ember.computed('currentUser.invitedInvitations', function() {
-    return this.get('currentUser.invitedInvitations');
-  }),
+  pendingInvitations: Ember.computed(
+    'currentUser.invitedInvitations', function() {
+      return this.get('currentUser.invitedInvitations');
+    }
+  ),
   hasPapers:         Ember.computed.notEmpty('papers'),
   hasActivePapers:   Ember.computed.notEmpty('activePapers'),
   hasInactivePapers: Ember.computed.notEmpty('inactivePapers'),
@@ -19,7 +21,9 @@ export default Ember.Controller.extend({
   sortedNonDraftPapers: Ember.computed.sort('activeNonDrafts', 'relatedAtSort'),
   sortedDraftPapers:    Ember.computed.sort('activeDrafts', 'updatedAtSort'),
   sortedInactivePapers: Ember.computed.sort('inactivePapers', 'updatedAtSort'),
-  activeDrafts:         Ember.computed.filterBy('activePapers', 'publishingState', 'unsubmitted'),
+  activeDrafts:         Ember.computed.filterBy(
+                          'activePapers', 'publishingState', 'unsubmitted'
+                        ),
   activeNonDrafts:      Ember.computed.filter('activePapers', function(paper) {
                           return paper.get('publishingState') !== 'unsubmitted';
                         }),
@@ -30,26 +34,59 @@ export default Ember.Controller.extend({
 
   totalInactivePaperCount: Ember.computed.alias('inactivePapers.length'),
   activeManuscriptsHeading: Ember.computed('totalActivePaperCount', function() {
-    return 'Active ' + 
+    return 'Active ' +
             pluralizeString('Manuscript', this.get('totalActivePaperCount')) +
-            ' (' + 
+            ' (' +
             this.get('totalActivePaperCount') +
             ')';
   }),
-  inactiveManuscriptsHeading: Ember.computed('totalInactivePaperCount', function() {
-    return 'Inactive ' +
-            pluralizeString('Manuscript', this.get('totalInactivePaperCount')) +
-            ' (' +
-            this.get('totalInactivePaperCount') +
-            ')';
-  }),
+  inactiveManuscriptsHeading: Ember.computed('totalInactivePaperCount',
+    function() {
+      const count = this.get('totalInactivePaperCount');
+      return 'Inactive ' + pluralizeString('Manuscript', count) +
+             ' (' + this.get('totalInactivePaperCount') + ')';
+    }
+  ),
+
+  showNewManuscriptOverlay: false,
 
   actions: {
     toggleActiveContainer() {
       this.toggleProperty('activePapersVisible');
     },
+
     toggleInactiveContainer() {
       this.toggleProperty('inactivePapersVisible');
+    },
+
+    showNewManuscriptOverlay() {
+      const journals = this.store.find('journal');
+      const paper = this.store.createRecord('paper', {
+        journal: null,
+        paperType: null,
+        editable: true,
+        body: ''
+      });
+
+      this.setProperties({
+        journals: journals,
+        newPaper: paper,
+        journalsLoading: true
+      });
+
+      journals.then(()=> { this.set('journalsLoading', false); });
+
+      this.set('showNewManuscriptOverlay', true);
+    },
+
+    hideNewManuscriptOverlay() {
+      this.set('showNewManuscriptOverlay', false);
+    },
+
+    newManuscriptCreated(manuscript) {
+      this.transitionToRoute('paper.index', manuscript, {
+        queryParams: { firstView: 'true' }
+      });
     }
   }
 });

@@ -1,23 +1,25 @@
 import Ember from 'ember';
-import AnimateOverlay from 'tahi/mixins/animate-overlay';
 import FileUploadMixin from 'tahi/mixins/file-upload';
+import EscapeListenerMixin from 'tahi/mixins/escape-listener';
 
 const { computed } = Ember;
 
-export default Ember.Controller.extend(AnimateOverlay, FileUploadMixin, {
-  overlayClass: 'overlay--fullscreen paper-new-overlay',
-  journals: null, // set on controller before rendering overlay
-  journalEmpty: computed.empty('model.journal'),
+export default Ember.Component.extend(FileUploadMixin, EscapeListenerMixin, {
+  flash: Ember.inject.service(),
+  journals: null,
+  paper: null,
   isSaving: false,
 
-  titleCharCount: computed('model.title', function() {
+  journalEmpty: computed.empty('paper.journal'),
+
+  titleCharCount: computed('paper.title', function() {
     return Ember.$('<div></div>')
-                .append(this.get('model.title'))
+                .append(this.get('paper.title'))
                 .text().length;
   }),
 
-  manuscriptUploadUrl: computed('model.id', function() {
-    return '/api/papers/' + this.get('model.id') + '/upload';
+  manuscriptUploadUrl: computed('paper.id', function() {
+    return '/api/papers/' + this.get('paper.id') + '/upload';
   }),
 
   actions: {
@@ -26,30 +28,30 @@ export default Ember.Controller.extend(AnimateOverlay, FileUploadMixin, {
 
       this.set('isSaving', true);
 
-      return this.get('model').save().then(()=> {
+      return this.get('paper').save().then(()=> {
         this.get('uploadFunction')();
       }, (response)=> {
         this.set('isSaving', false);
-        this.flash.displayErrorMessagesFromResponse(response);
+        this.get('flash').displayErrorMessagesFromResponse(response);
       });
     },
 
     selectJournal(journal) {
-      this.set('model.journal', journal);
-      this.set('model.paperType', null);
+      this.set('paper.journal', journal);
+      this.set('paper.paperType', null);
     },
 
     clearJournal() {
-      this.set('model.journal', null);
-      this.set('model.paperType', null);
+      this.set('paper.journal', null);
+      this.set('paper.paperType', null);
     },
 
     selectPaperType(paperType) {
-      this.set('model.paperType', paperType);
+      this.set('paper.paperType', paperType);
     },
 
     clearPaperType() {
-      this.set('model.paperType', null);
+      this.set('paper.paperType', null);
     },
 
     /**
@@ -78,9 +80,11 @@ export default Ember.Controller.extend(AnimateOverlay, FileUploadMixin, {
     uploadFinished(data, filename) {
       this.set('isSaving', false);
       this.uploadFinished(data, filename);
-      this.transitionToRoute('paper.index', this.get('model'), {
-        queryParams: {firstView: 'true'}
-      });
+      this.attrs.complete(this.get('paper'));
+    },
+
+    close() {
+      this.attrs.close();
     }
   }
 });

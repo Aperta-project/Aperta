@@ -64,7 +64,8 @@ PATH
   specs:
     tahi_epub (0.0.3)
       activesupport (~> 4.1)
-      fog (~> 1.24)
+      fog (~> 1.34.0)
+      net-ssh
       rubyzip (~> 1.1)
 
 GEM

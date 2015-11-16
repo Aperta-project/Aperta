@@ -366,8 +366,8 @@ class Paper < ActiveRecord::Base
   end
 
   def set_first_submitted_at!
-    return if first_submitted_date
-    update!(first_submitted_date: Time.current.utc)
+    return if first_submitted_at
+    update!(first_submitted_at: Time.current.utc)
   end
 
   def set_submitting_user_and_touch!(submitting_user) # rubocop:disable Style/AccessorMethodName

@@ -49,8 +49,7 @@
     "express": "^4.8.5",
     "glob": "^4.0.5",
     "liquid-fire": "0.21.2",
-    "ember-cli-lazyloader": "git+https://ea548e3d06f18f2c5287468e46ae5fe262d3f5ac:x-oauth-basic@github.com/Tahi-project/ember-cli-lazyloader#06c55594e352c936c4ea072cbfecdeea2f5157de",
-    "tahi-fileupload": "git+https://ea548e3d06f18f2c5287468e46ae5fe262d3f5ac:x-oauth-basic@github.com/Tahi-project/tahi-fileupload#90c3d61fbf76feb33f520dea94163ada17826ab0"
+    "ember-cli-lazyloader": "git+https://ea548e3d06f18f2c5287468e46ae5fe262d3f5ac:x-oauth-basic@github.com/Tahi-project/ember-cli-lazyloader#06c55594e352c936c4ea072cbfecdeea2f5157de"
   },
   "ember-addon": {
     "paths": [

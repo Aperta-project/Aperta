@@ -1,86 +1,84 @@
 {{flash-messages}}
-<div class="inner-content">
 
-  <div class="form-group">
-    <label class="paper-new-label">
-      Give your paper a title
-    </label>
+<div class="form-group">
+  <label class="paper-new-label">
+    Give your paper a title
+  </label>
 
-    {{format-input value=paper.title
-                   id="new-paper-title"
-                   placeholder="Crystalized Magnificence in the Modern World"
-                   displayBold=false}}
+  {{format-input value=paper.title
+                 id="new-paper-title"
+                 placeholder="Crystalized Magnificence in the Modern World"
+                 displayBold=false}}
 
-    {{#if titleCharCount}}
-      <span class="paper-new-valid-icon animation-fade-in"><i class="fa fa-check"></i></span>
-    {{/if}}
-  </div>
+  {{#if titleCharCount}}
+    <span class="paper-new-valid-icon animation-fade-in"><i class="fa fa-check"></i></span>
+  {{/if}}
+</div>
 
-  <div class="form-group">
-    <label class="paper-new-label">
-      What journal are you submitting to?
-    </label>
+<div class="form-group">
+  <label class="paper-new-label">
+    What journal are you submitting to?
+  </label>
 
-    {{#select-box items=journals
-                  selectedItem=paper.journal
-                  class="paper-new-journal-select"
-                  placeholder="Select a journal"
-                  class="paper-new-journal-select"
-                  allowDeselect=true
-                  makeSelection=(action "selectJournal")
-                  clearSelection=(action "clearJournal")
-                  as |journal|}}
-      {{journal.name}}
-    {{/select-box}}
+  {{#select-box items=journals
+                selectedItem=paper.journal
+                class="paper-new-journal-select"
+                placeholder="Select a journal"
+                class="paper-new-journal-select"
+                allowDeselect=true
+                makeSelection=(action "selectJournal")
+                clearSelection=(action "clearJournal")
+                as |journal|}}
+    {{journal.name}}
+  {{/select-box}}
 
-    {{#if paper.journal}}
-      <span class="paper-new-valid-icon animation-fade-in"><i class="fa fa-check"></i></span>
-    {{/if}}
-  </div>
+  {{#if paper.journal}}
+    <span class="paper-new-valid-icon animation-fade-in"><i class="fa fa-check"></i></span>
+  {{/if}}
+</div>
 
-  <div class="form-group">
-    <label class="paper-new-label">
-      Choose the type of paper you're submitting
-    </label>
+<div class="form-group">
+  <label class="paper-new-label">
+    Choose the type of paper you're submitting
+  </label>
 
-    {{#select-box items=paper.journal.paperTypes
-                  selectedItem=paper.paperType
-                  class="paper-new-paper-type-select"
-                  placeholder="Select a paper type"
-                  class="paper-new-paper-type-select"
-                  allowDeselect=true
-                  disabled=journalEmpty
-                  makeSelection=(action "selectPaperType")
-                  clearSelection=(action "clearPaperType")
-                  as |paperType|}}
-      {{paperType}}
-    {{/select-box}}
+  {{#select-box items=paper.journal.paperTypes
+                selectedItem=paper.paperType
+                class="paper-new-paper-type-select"
+                placeholder="Select a paper type"
+                class="paper-new-paper-type-select"
+                allowDeselect=true
+                disabled=journalEmpty
+                makeSelection=(action "selectPaperType")
+                clearSelection=(action "clearPaperType")
+                as |paperType|}}
+    {{paperType}}
+  {{/select-box}}
 
-    {{#if paper.paperType}}
-      <span class="paper-new-valid-icon animation-fade-in"><i class="fa fa-check"></i></span>
-    {{/if}}
-  </div>
-  <div class="paper-new-submit-actions">
-    {{#if isSaving}}
-      <div class="paper-new-paper-saving animation-fade-in">
-        {{progress-spinner visible=true size="medium"}}
-        Creating new Submission&#8230;
-      </div>
-    {{/if}}
-    <span class="{{if isSaving "button--disabled"}} paper-new-upload-button button-secondary button--green fileinput-button">
-      <i class="fa fa-upload"></i> Upload Document
-      {{file-uploader id="upload-files"
-                      railsMethod="PUT"
-                      accept=".docx"
-                      uploadImmediately=false
-                      uploadReady="uploadReady"
-                      start="uploadStarted"
-                      progress="uploadProgress"
-                      done="uploadFinished"
-                      error="uploadError"
-                      filePrefix="paper/manuscript"
-                      disabled=isSaving
-                      url=manuscriptUploadUrl}}
-    </span>
-  </div>
+  {{#if paper.paperType}}
+    <span class="paper-new-valid-icon animation-fade-in"><i class="fa fa-check"></i></span>
+  {{/if}}
+</div>
+<div class="paper-new-submit-actions">
+  {{#if isSaving}}
+    <div class="paper-new-paper-saving animation-fade-in">
+      {{progress-spinner visible=true size="medium"}}
+      Creating new Submission&#8230;
+    </div>
+  {{/if}}
+  <span class="{{if isSaving "button--disabled"}} paper-new-upload-button button-secondary button--green fileinput-button">
+    <i class="fa fa-upload"></i> Upload Document
+    {{file-uploader id="upload-files"
+                    railsMethod="PUT"
+                    accept=".docx"
+                    uploadImmediately=false
+                    uploadReady="uploadReady"
+                    start="uploadStarted"
+                    progress="uploadProgress"
+                    done="uploadFinished"
+                    error="uploadError"
+                    filePrefix="paper/manuscript"
+                    disabled=isSaving
+                    url=manuscriptUploadUrl}}
+  </span>
 </div>

@@ -28,3 +28,12 @@
 
   {{outlet}}
 </div>
+
+{{#overlay-base visible=showUserDetailsOverlay
+                outAnimationComplete=(action "hideUserDetailsOverlay")
+                as |animateOut|}}
+  {{#overlay-fullscreen title="User Details"}}
+    {{user-details model=detailsForUser
+                   close=(action animateOut)}}
+  {{/overlay-fullscreen}}
+{{/overlay-base}}

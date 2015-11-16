@@ -174,10 +174,6 @@ class Task < ActiveRecord::Base
     previously_completed? && !completed
   end
 
-  def humanize_type
-    type.demodulize.titleize
-  end
-
   private
 
   def on_card_completion?

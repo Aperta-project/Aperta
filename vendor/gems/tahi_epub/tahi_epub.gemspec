@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rubyzip", "~> 1.1"
   spec.add_dependency "activesupport", "~> 4.1"
-  spec.add_dependency "fog", "~> 1.24"
+  spec.add_dependency "fog", "~> 1.36.0"
 
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"

@@ -1,0 +1,18 @@
+/*
+  Overlay Structure:
+
+  .overlay-x
+    .overlay-x-container [no base styles, based on root modifier]
+      .overlay-x-close   [no base styles, based on root modifier]
+      .overlay-x-header  [no base styles, based on root modifier]
+        .overlay-x-header-title [no base styles, based on root modifier]
+      .overlay-x-main    [no base styles, based on root modifier]
+
+  .overlay-x modifiers: .overlay-x--fullscreen | .overlay-x--card
+*/
+
+.overlay-x {
+  overflow: auto;
+  @include position(fixed, 0px 0px 0px 0px);
+  z-index: z('overlay', 'base');
+}

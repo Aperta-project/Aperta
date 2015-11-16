@@ -3415,7 +3415,6 @@ papers:
   - striking_image_id
   - editable
   - doi
-  - editor_mode
   - publishing_state
   - submitted_at
   - salesforce_manuscript_id
@@ -3436,7 +3435,6 @@ papers:
     - 
     - true
     - 10.1371/devs.100001
-    - html
     - unsubmitted
     - 
     - 
@@ -3458,7 +3456,6 @@ papers:
     - '2'
     - true
     - 10.1371/devs.100002
-    - html
     - unsubmitted
     - 
     - 
@@ -3478,7 +3475,6 @@ papers:
     - 
     - true
     - 10.1371/devs.100003
-    - html
     - unsubmitted
     - 
     - 
@@ -3498,7 +3494,6 @@ papers:
     - 
     - false
     - 10.1371/devs.100004
-    - html
     - submitted
     - '2015-11-02 15:14:05.576249'
     - 
@@ -3518,7 +3513,6 @@ papers:
     - 
     - true
     - 10.1371/devs.100008
-    - html
     - unsubmitted
     - 
     - 
@@ -3538,7 +3532,6 @@ papers:
     - 
     - true
     - 10.1371/devs.100009
-    - html
     - unsubmitted
     - 
     - 
@@ -3558,7 +3551,6 @@ papers:
     - 
     - true
     - 10.1371/devs.100010
-    - html
     - unsubmitted
     - 
     - 

@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151105174939) do
+ActiveRecord::Schema.define(version: 20151116215330) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
   enable_extension "unaccent"
 
@@ -309,7 +310,6 @@ ActiveRecord::Schema.define(version: 20151105174939) do
     t.integer  "striking_image_id"
     t.boolean  "editable",                 default: true
     t.text     "doi"
-    t.string   "editor_mode",              default: "html", null: false
     t.string   "publishing_state"
     t.datetime "submitted_at"
     t.string   "salesforce_manuscript_id"

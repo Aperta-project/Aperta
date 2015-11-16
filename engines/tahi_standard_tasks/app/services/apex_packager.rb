@@ -39,7 +39,7 @@ class ApexPackager
     @paper.figures.each do |figure|
       next if @paper.striking_image == figure
       @package.put_next_entry(figure.apex_filename)
-      @package.write(figure.attachment.file.read)
+      @package.write(figure.attachment.read)
     end
   end
 
@@ -47,7 +47,7 @@ class ApexPackager
     @paper.supporting_information_files.each do |file|
       next unless file.publishable?
       @package.put_next_entry(file.filename)
-      @package.write(file.attachment.file.read)
+      @package.write(file.attachment.read)
     end
   end
 

@@ -126,6 +126,14 @@ describe ApexPackager do
   context 'a paper with a striking image' do
     let!(:task) { paper.tasks.find_by_type('TahiStandardTasks::FigureTask') }
     let!(:figure_question) { task.find_nested_question('figure_complies') }
+    let!(:attachment1) do
+      double('attachment_model', filename: 'yeti.jpg',
+                                 read: 'some bytes')
+    end
+    let!(:attachment2) do
+      double('attachment_model', filename: 'yeti2.jpg',
+                                 read: 'some other bytes')
+    end
     let!(:nested_question_answer) do
       FactoryGirl.create(:nested_question_answer,
                          nested_question: figure_question,
@@ -135,31 +143,27 @@ describe ApexPackager do
                          owner_type: 'Task')
     end
 
-    let!(:striking_image) do
-      FactoryGirl.create(
-        :figure,
-        title: 'a figure',
-        caption: 'a caption',
-        paper: paper,
-        attachment: File.open(Rails.root.join('spec/fixtures/yeti.jpg'))
-      )
+    let(:striking_image) do
+      stub_model(Figure,
+                 title: 'a figure',
+                 caption: 'a caption',
+                 paper: paper,
+                 apex_filename: 'Strikingimage.jpg',
+                 attachment: attachment1)
     end
 
     let(:figure) do
-      FactoryGirl.create(
-        :figure,
-        title: 'a figure',
-        caption: 'a caption',
-        paper: paper,
-        attachment: File.open(Rails.root.join('spec/fixtures/yeti2.jpg'))
-      )
+      stub_model(Figure,
+                 title: 'a title',
+                 caption: 'a caption',
+                 paper: paper,
+                 apex_filename: 'yeti2.jpg',
+                 attachment: attachment2)
     end
 
     before do
       paper.striking_image = striking_image
-      paper.figures = [figure]
-      allow_any_instance_of(CarrierWave::Storage::Fog::File).to receive(:read)
-        .and_return('a string')
+      allow(paper).to receive(:figures).and_return([figure, striking_image])
     end
 
     it 'includes the strking image with proper name' do

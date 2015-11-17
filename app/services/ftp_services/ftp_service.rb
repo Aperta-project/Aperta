@@ -1,13 +1,15 @@
 module FtpServices
   class FtpService
     require 'net/ftp'
- def initialize(params={})
+
+    def initialize(params={})
       @host = params[:host] || ENV['FTP_HOST']
       @mode = params[:passive_mode] || true
       @user = params[:user] || ENV['FTP_USER']
       @password = params[:password] || ENV['FTP_PASSWORD']
       @port = params[:port] || 21
-      @file_path = Rails.root.join('public', 'images', 'cat-scientists-3.jpg')
+      @file_path = params[:file_path]
+      @final_filename = params[:filename]
     end
 
     def upload
@@ -15,7 +17,7 @@ module FtpServices
       enter_packages_directory
       upload_to_temporary_file
       if @ftp.last_response_code == "226"
-        @ftp.rename(temporary_name, filename)
+        @ftp.rename("temp_#{@final_filename}", @final_filename)
         puts "Transfer successful"
       else
         puts "Transfer failed. Please try again."
@@ -38,13 +40,11 @@ module FtpServices
 
     def upload_to_temporary_file
       @count = 0
-      filename = "test.jpg"
-      temporary_name = "temp_#{filename}"
+      temporary_name = "temp_#{@final_filename}"
       @ftp.putbinaryfile(File.new(@file_path), temporary_name, 100000) do |block|
         @count += 100
         puts "#{@count} kilobytes uploaded"
       end
     end
-
   end
 end

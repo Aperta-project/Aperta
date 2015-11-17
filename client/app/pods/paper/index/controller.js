@@ -33,10 +33,6 @@ export default Ember.Controller.extend(PaperBase, Discussions, {
       Ember.$('#submission-process').slideToggle(300);
     },
 
-    hideActivityOverlay() {
-      this.set('showActivityOverlay', false);
-    },
-
     showPaperSubmitOverlay() {
       this.set('showPaperSubmitOverlay', true);
     },

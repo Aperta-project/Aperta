@@ -1,7 +1,3 @@
-<header class="overlay-title-text animation-fade-in">
-  <h1 class="feedback-overlay-thanks">Recent Activity</h1>
-</header>
-
 {{progress-spinner visible=isLoading
                    align="middle"
                    size="large"}}
@@ -14,7 +10,7 @@
         <img src={{unbound feed.userAvatarUrl}} class="user-thumbnail">
         {{unbound feed.userFullName}}
       </td>
-      <td class="activity-feed-overlay-timestamp" id="timestamp">{{format-date feed.createdAt}}</td>
+      <td class="activity-feed-overlay-timestamp" id="activity-feed-timestamp">{{format-date feed.createdAt}}</td>
     </tr>
   {{/each}}
 </table>

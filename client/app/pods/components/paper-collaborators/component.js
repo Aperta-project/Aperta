@@ -1,11 +1,10 @@
 import Ember from 'ember';
-import FileUploadMixin from 'tahi/mixins/file-upload';
 import EscapeListenerMixin from 'tahi/mixins/escape-listener';
 
 const { computed } = Ember;
 const { setDiff } = computed;
 
-export default Ember.Component.extend(FileUploadMixin, EscapeListenerMixin, {
+export default Ember.Component.extend(EscapeListenerMixin, {
   init() {
     this._super(...arguments);
     this.set('store', this.container.lookup('store:main'));

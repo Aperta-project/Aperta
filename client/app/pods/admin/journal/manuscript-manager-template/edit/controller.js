@@ -10,6 +10,9 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   sortedPhaseTemplates: Ember.computed.sort('phaseTemplates', 'positionSort'),
   showSaveButton: Ember.computed.or('pendingChanges', 'editingName'),
 
+  showCardDeleteOverlay: false,
+  taskToDelete: null,
+
   saveTemplate(transition){
     this.get('model').save().then(() => {
       this.successfulSave(transition);
@@ -41,6 +44,14 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   },
 
   actions: {
+    showCardDeleteOverlay(task) {
+      this.set('taskToDelete', task);
+      this.set('showCardDeleteOverlay', true);
+    },
+
+    hideCardDeleteOverlay() {
+      this.set('showCardDeleteOverlay', false);
+    },
 
     editMmtName(){
       this.clearAllValidationErrors();

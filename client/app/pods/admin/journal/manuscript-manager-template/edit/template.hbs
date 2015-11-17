@@ -29,9 +29,21 @@
                               savePhase="savePhase"
                               removeRecord="removeRecord"
                               rollbackPhase="rollbackPhase"
-                              showDeleteConfirm="showDeleteConfirm"
+                              showDeleteConfirm="showCardDeleteOverlay"
                               chooseNewCardTypeOverlay="chooseNewCardTypeOverlay"
                               itemUpdated="itemUpdated"}}
     {{/each}}
   </div>
 </div>
+
+
+{{#overlay-base visible=showCardDeleteOverlay
+                outAnimationComplete=(action "hideCardDeleteOverlay")
+                as |animateOut|}}
+  {{#overlay-fullscreen class="card-delete-overlay"
+                        title="You're about to delete this card forever."
+                        close=(action animateOut)}}
+    {{card-delete model=taskToDelete
+                  close=(action animateOut)}}
+  {{/overlay-fullscreen}}
+{{/overlay-base}}

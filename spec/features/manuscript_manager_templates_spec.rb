@@ -126,7 +126,7 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
       phase = task_manager_page.phase 'Submission Data'
       expect {
         phase.remove_card('Upload Manuscript')
-        within '.overlay' do
+        within '.overlay-x' do
           find('.submit-action-buttons button', text: 'Yes, Delete this Card'.upcase).click
         end
       }.to change {

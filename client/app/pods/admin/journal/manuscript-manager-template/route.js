@@ -60,14 +60,6 @@ export default Ember.Route.extend({
     },
 
     // Noop. We don't want to open cards in MMT screen
-    viewCard() {},
-
-    showDeleteConfirm(task) {
-      this.send('openOverlay', {
-        template: 'overlays/cardDelete',
-        controller: 'overlays/card-delete',
-        model: task
-      });
-    }
+    viewCard() {}
   }
 });

@@ -87,8 +87,8 @@ export default Ember.Controller.extend({
     },
 
     addPhase(position) {
-      const paper = this.get('model');
-      const phase = this.store.createRecord('phase', {
+      let paper = this.get('model');
+      let phase = this.store.createRecord('phase', {
         position: position,
         name: 'New Phase',
         paper: paper

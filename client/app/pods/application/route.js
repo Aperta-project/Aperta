@@ -98,15 +98,6 @@ export default Ember.Route.extend(AnimateOverlay, {
       this.send('closeOverlay');
     },
 
-    feedback() {
-      this.controllerFor('overlays/feedback').set('feedbackSubmitted', false);
-
-      this.send('openOverlay', {
-        template: 'overlays/feedback',
-        controller: 'overlays/feedback'
-      });
-    },
-
     created(payload) {
       let description = `Pusher: created ${payload.type} ${payload.id}`;
       Utils.debug(description);

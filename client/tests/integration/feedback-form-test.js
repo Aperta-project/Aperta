@@ -32,7 +32,7 @@ test('clicking the feedback button sends feedback', function(assert) {
   visit('/profile');
   click('#profile-dropdown-menu');
   click('a:contains(Give Feedback on)');
-  fillIn('.overlay textarea', 'My feedback');
+  fillIn('.overlay-x textarea', 'My feedback');
   click('.overlay-footer-content .button-primary');
 
   andThen(function() {

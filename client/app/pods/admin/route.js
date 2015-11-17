@@ -7,14 +7,6 @@ export default AuthorizedRoute.extend({
   },
 
   actions: {
-    viewUserDetails(user) {
-      this.controllerFor('overlays/userDetail').set('model', user);
-      this.send('openOverlay', {
-        template: 'overlays/userDetail',
-        controller: 'overlays/userDetail'
-      });
-    },
-
     didTransition() {
       $('html').attr('screen', 'admin');
       return true;

@@ -14,7 +14,7 @@ feature "Editing paper", js: true do
 
     it "shows validations", vcr: { cassette_name: "ned_countries" } do
       click_link(@paper.title)
-      find('.workflow-link').click
+      find('.paper-navigation-link').click
       click_link('Billing')
 
       expect(find("input#task_completed")[:disabled]).to be(nil) # not disabled at start

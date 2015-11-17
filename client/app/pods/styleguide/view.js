@@ -29,9 +29,6 @@ export default Ember.View.extend({
       });
       return $('.col-md-10').css('overflow-y', 'scroll');
     };
-    // remove the application.hbs navigation
-    $(".navigation")[0].remove();
-    $(".navigation").css("position", "initial");
 
     $('#auto-suggest-input').on('keyup', (event)=> {
       const input = $(event.target);

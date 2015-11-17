@@ -219,14 +219,13 @@ class Page < PageFragment
   end
 
   def navigate_to_dashboard
-    find('.navigation-toggle').click
-    find('a.navigation-item', text: 'DASHBOARD').click
+    find('.main-nav-item-app-name').click
     DashboardPage.new
   end
 
   def sign_out
-    find('.navigation-toggle').click
-    find('a.navigation-item', text: 'SIGN OUT').click
+    find('#profile-dropdown-menu').click
+    find('.main-nav a', text: 'Sign Out').click
 
     within ".auth-container" do
       find(".auth-flash", text: "Signed out successfully.")

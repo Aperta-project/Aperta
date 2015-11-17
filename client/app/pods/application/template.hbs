@@ -1,19 +1,39 @@
-{{tahi-nav currentUser=currentUser
-           isLoggedIn=isLoggedIn
-           canViewFlowManagerLink=canViewFlowManagerLink
-           canViewAdminLinks=canViewAdminLinks
-           specifiedAppName=specifiedAppName
-           hideNavigation=(action "hideNavigation")
-           showNavigation=(action "showNavigation")
-           showFeedbackOverlay=(action "showFeedbackOverlay")}}
+<nav class="main-nav" role="navigation">
+  <div class="main-nav-items">
+    {{#link-to "dashboard" class="main-nav-item main-nav-item--first main-nav-item-app-name"}}
+      <i class="fa fa-list-ul"></i>
+      {{specifiedAppName}}
+    {{/link-to}}
 
-<div class="main-content">
-  <div class="main-content-cover" {{action "hideNavigation"}}></div>
-  <div class="navigation-toggle" {{action "showNavigation"}}>
-    {{partial "svg/hamburger"}} {{specifiedAppName}}
+    <span class="main-nav-item main-nav-item-spacer"></span>
+
+    {{#if isLoggedIn}}
+      {{#if canViewAdminLinks}}
+        {{link-to "Admin" "admin" class="main-nav-item"}}
+      {{/if}}
+
+      {{#if canViewFlowManagerLink}}
+        {{link-to "Flow Manager" "flow_manager" class="main-nav-item"}}
+        {{link-to "Paper Tracker" "paper_tracker" class="main-nav-item"}}
+      {{/if}}
+
+      <span class="main-nav-item main-nav-item-spacer main-nav-item-space--last"></span>
+
+      <span id="profile-dropdown-menu" class="main-nav-item main-nav-item--last" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+        <img src={{currentUser.avatarUrl}} class="user-thumbnail">
+        <span class="profile-dropdown-menu-text">{{currentUser.fullName}}</span>
+      </span>
+
+      <ul class="dropdown-menu animation-fade-in pull-right" aria-labelledby="profile-dropdown-menu">
+        <li>{{link-to "Profile" "profile"}}</li>
+        <li><a href="/users/sign_out">Sign Out</a></li>
+        <li><a href="#" {{action "feedback"}}>Give Feedback on {{specifiedAppName}}</a></li>
+      </ul>
+    {{/if}}
   </div>
-  {{outlet}}
-</div>
+</nav>
+
+<main class="main-content" role="main">{{outlet}}</main>
 
 <div class="overlay" id="overlay">
   <span class="overlay-close-x animation-scale-in" {{action "closeAction"}}>&times;</span>

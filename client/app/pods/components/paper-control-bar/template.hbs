@@ -1,0 +1,105 @@
+<div class="control-bar-inner-wrapper">
+  <div class="control-bar-item control-bar-item--first" id="control-bar-paper-title">
+    <span>{{{paper.title}}}</span>
+  </div>
+
+  <div class="control-bar-item-spacer"></div>
+
+  {{#if canViewManuscriptManager}}
+    {{#link-to "paper.workflow" paper class="control-bar-item control-bar-link paper-navigation-link"}}
+      Go to Workflow
+    {{/link-to}}
+  {{/if}}
+
+
+  {{#if versionsVisible}}
+    {{#link-to "paper.index" paper class="control-bar-item control-bar-link versions-link"}}
+      <div class="control-bar-link-icon"><i class="fa fa-files-o"></i></div>
+      Exit Versions
+    {{/link-to}}
+  {{else}}
+    {{#link-to "paper.versions" paper class="control-bar-item control-bar-link versions-link"}}
+      <div class="control-bar-link-icon"><i class="fa fa-files-o"></i></div>
+      Versions
+    {{/link-to}}
+  {{/if}}
+
+  <div class="control-bar-item control-bar-link contributors-link" {{action "showSubNav" "contributors"}}>
+    <div class="control-bar-link-icon"><span class="fa fa-user"></span></div>
+    Collaborators
+  </div>
+
+  <div class="control-bar-item control-bar-link downloads-link" {{action "showSubNav" "downloads"}}>
+    <div class="control-bar-link-icon"><span class="fa fa-download"></span></div>
+    Downloads
+  </div>
+
+  <div class="control-bar-item control-bar-link activity-link" {{action "showActivity" "manuscript"}}>
+    <div class="control-bar-link-icon">{{partial "svg/heartbeat"}}</div>
+    Recent Activity
+  </div>
+
+  {{#link-to topicsIndexPath paper class="control-bar-item control-bar-link discussions-link"}}
+    <div class="control-bar-link-icon"><span class="fa fa-comments"></span></div>
+    Discussions
+  {{/link-to}}
+
+  <div class="control-bar-item control-bar-link control-bar-item--last" id="more-dropdown-menu" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+    <div class="control-bar-link-icon">
+      <span class="fa fa-ellipsis-v"></span>
+    </div>
+    More
+  </div>
+
+  <ul class="dropdown-menu animation-fade-in pull-right" aria-labelledby="more-dropdown-menu">
+    {{#unless paperWithdrawn}}
+      <li>
+        <a href="#" class="appeal-link">
+          <span class="fa fa-image"></span>
+          Appeal
+        </a>
+      </li>
+      <li>
+        <a href="#" class="withdraw-link" {{action "withdrawManuscript"}} >
+          <span class="fa fa-trash fa-lg"></span>
+          Withdraw Manuscript
+        </a>
+      </li>
+    {{/unless}}
+  </ul>
+</div>
+
+<div class="control-bar-sub-items">
+  {{#if contributorsVisible}}
+    <div class="contributors active">
+      <a class="contributors-add" {{action "addContributors"}}>Add Collaborators</a>
+
+      {{#each paper.collaborators as |contributor|}}
+        <div class="contributor">{{unbound contributor.fullName}}</div>
+      {{/each}}
+    </div>
+  {{/if}}
+
+  {{#if downloadsVisible}}
+    <div class="manuscript-download-links active">
+
+      {{#each supportedDownloadFormats as |downloadType|}}
+        <a href="#" {{action "exportDocument" downloadType}} class="{{unbound downloadType.format}}" title="Download {{unbound downloadType.format}}">{{partial downloadType.icon}}</a>
+      {{/each}}
+
+      {{#direct-download-link link=downloadLink extension=".epub"}}
+        {{partial "svg/epub-icon"}}
+      {{/direct-download-link}}
+
+      {{#direct-download-link link=downloadLink extension=".pdf"}}
+        {{partial "svg/pdf-icon"}}
+      {{/direct-download-link}}
+    </div>
+  {{/if}}
+
+  {{#if versionsVisible}}
+    <div class="versions active">
+      {{versioning-bar paper=paper}}
+    </div>
+  {{/if}}
+</div>

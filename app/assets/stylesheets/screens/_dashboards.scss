@@ -1,15 +1,3 @@
-@media only screen and (max-width: 1199px) {
-  .dashboard-section {
-    padding: 0 15px;
-  }
-}
-
-@media only screen and (min-width: 1199px) {
-  .dashboard-section {
-    padding: 0 125px;
-  }
-}
-
 .manuscript-list-heading {
   color: $tahi-black;
   font-weight: bold;
@@ -86,9 +74,11 @@
 
 .status-tag {
   position: relative;
+  margin-left: 20px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
   color: white;
   background-color: #6c6c6c;
-  margin-left: 20px
 }
 
 .status-tag:after {

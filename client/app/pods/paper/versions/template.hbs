@@ -1,12 +1,12 @@
-{{control-bar paper=model
-              showActivity="showActivity"
-              addContributors="addContributors"
-              exportDocument="exportDocument"
-              showConfirmWithdrawOverlay="showConfirmWithdrawOverlay"
-              topicsIndexPath=topicsIndexPath
-              canViewManuscriptManager=canViewManuscriptManager
-              versionsActive=true
-              supportedDownloadFormats=supportedDownloadFormats}}
+{{paper-control-bar paper=model
+                    showActivity="showActivity"
+                    addContributors="addContributors"
+                    exportDocument="exportDocument"
+                    showConfirmWithdrawOverlay="showConfirmWithdrawOverlay"
+                    topicsIndexPath=topicsIndexPath
+                    canViewManuscriptManager=canViewManuscriptManager
+                    supportedDownloadFormats=supportedDownloadFormats
+                    versionsVisible=true}}
 
 {{withdrawal-banner paper=model staff=currentUser.siteAdmin}}
 
@@ -36,7 +36,7 @@
         action=(action "setComparisonVersion")}}
     </div>
     <div class="bar-item exit-versions" {{action "exitVersions"}}>
-      ×
+      &times;
     </div>
   </div>
 

@@ -96,7 +96,7 @@ describe Typesetter::MetadataSerializer do
           :nested_question_answer,
           nested_question: our_question,
           owner: our_task,
-          value: 'false',
+          value: false,
           value_type: 'boolean'
         )
       end

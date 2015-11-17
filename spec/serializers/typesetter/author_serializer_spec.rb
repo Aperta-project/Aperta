@@ -52,7 +52,7 @@ describe Typesetter::AuthorSerializer do
       :nested_question_answer,
       nested_question: question1,
       owner: author,
-      value: 't',
+      value: true,
       value_type: 'boolean'
     )
   end
@@ -61,7 +61,7 @@ describe Typesetter::AuthorSerializer do
       :nested_question_answer,
       nested_question: question2,
       owner: author,
-      value: 'f',
+      value: false,
       value_type: 'boolean'
     )
   end

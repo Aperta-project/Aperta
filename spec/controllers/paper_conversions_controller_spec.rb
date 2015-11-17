@@ -7,13 +7,14 @@ describe PaperConversionsController, type: :controller do
   let(:paper) { create(:paper) }
   let(:job_id) { 'd5ee706f-a473-46ed-9777-3b7cd2905d08' }
   let(:user) { create :user, :site_admin }
+
   before { sign_in user }
   describe '#export' do
     context 'as a user with access to a paper' do
       context 'with a paper that needs conversion' do
         it 'returns a url to check later' do
           VCR.use_cassette('convert_to_docx') do
-            get :export, id: paper.id, format: 'docx'
+            get :export, id: paper.id, export_format: 'docx', format: :json
           end
           expect(response.status).to eq(202)
           expect(res_body['url']).to(
@@ -33,7 +34,7 @@ describe PaperConversionsController, type: :controller do
         end
 
         it 'returns a url to check later' do
-          get :export, id: paper.id, format: :docx
+          get :export, id: paper.id, export_format: 'docx', format: :json
           expect(response.status).to eq(202)
           expect(res_body['url']).to(
             eq(url_for(controller: :paper_conversions, action: :status,
@@ -51,7 +52,7 @@ describe PaperConversionsController, type: :controller do
     context 'as a user with no access' do
       let(:user) { create :user }
       it 'returns a 403' do
-        get :export, id: paper.id, format: 'docx'
+        get :export, id: paper.id, export_format: 'docx', format: :json
         expect(response.status).to eq(403)
       end
     end
@@ -60,7 +61,8 @@ describe PaperConversionsController, type: :controller do
   describe 'GET #status' do
     it 'returns 202 when still processing' do
       VCR.use_cassette('check_docx_status') do
-        get :status, id: paper.id, job_id: job_id, export_format: 'docx'
+        get :status, id: paper.id, job_id: job_id, export_format: 'docx',
+                     format: :json
         expect(response.status).to eq 202
       end
     end

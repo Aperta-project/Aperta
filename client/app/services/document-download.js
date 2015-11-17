@@ -11,7 +11,7 @@ export default Ember.Namespace.create({
     return Ember.$.ajax({
       url: `/api/papers/${self.paperId}/export`,
       data: {
-        format: self.downloadFormat
+        export_format: self.downloadFormat
       },
       success: (data)=> {
         // Returns a url to check later.

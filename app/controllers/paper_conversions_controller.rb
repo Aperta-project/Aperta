@@ -1,8 +1,8 @@
 # Controller for conversions that might need to happen in the
 # background.
 #
-# Javascript code will call /papers/ID/export.FORMAT, which returns
-# 202 and the body { url: ... }, which is a status URL.
+# Javascript code will call /papers/ID/export?export_format=FORMAT,
+# which returns 202 and the body { url: ... }, which is a status URL.
 #
 # The status URL will return 202 while the conversion is still
 # processing, 500 if the processing failed or 200 and the body { url:
@@ -18,18 +18,18 @@ class PaperConversionsController < ApplicationController
 
   # Returns 202 and a url to check for status.
   def export
-    @export_format = params[:format]
-    job_id = if params[:format] == 'docx' &&
+    export_format = params[:export_format]
+    job_id = if export_format == 'docx' &&
                 paper.latest_version.source_url.present?
                # This is already available for download, and does not
                # need background processing.
                'source'
              else
-               PaperConverter.export(paper, @export_format, current_user).job_id
+               PaperConverter.export(paper, export_format, current_user).job_id
              end
     render json: { url: url_for(controller: :paper_conversions, action: :status,
                                 id: params[:id], job_id: job_id,
-                                export_format: 'docx') },
+                                export_format: export_format) },
            status: :accepted
   end
 

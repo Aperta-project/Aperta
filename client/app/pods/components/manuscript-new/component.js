@@ -83,6 +83,11 @@ export default Ember.Component.extend(FileUploadMixin, EscapeListenerMixin, {
       this.attrs.complete(this.get('paper'));
     },
 
+    // TODO: need to handle errors from ihat
+    uploadError() {
+      this.set('isSaving', false);
+    },
+
     close() {
       this.attrs.close();
     }

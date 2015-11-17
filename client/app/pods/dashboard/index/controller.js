@@ -2,6 +2,8 @@ import Ember from 'ember';
 import pluralizeString from 'tahi/lib/pluralize-string';
 
 export default Ember.Controller.extend({
+  restless: Ember.inject.service('restless'),
+
   papers: [],
   unreadComments: [],
   pendingInvitations: Ember.computed(
@@ -57,6 +59,29 @@ export default Ember.Controller.extend({
 
     toggleInactiveContainer() {
       this.toggleProperty('inactivePapersVisible');
+    },
+
+    showInvitationsOverlay() {
+      this.set('showInvitationsOverlay', true);
+    },
+
+    hideInvitationsOverlay() {
+      this.set('showInvitationsOverlay', false);
+    },
+
+    rejectInvitation(invitation) {
+      this.get('restless').putModel(invitation, '/reject').then(function() {
+        invitation.reject();
+      });
+    },
+
+    acceptInvitation(invitation) {
+      this.get('restless').putModel(invitation, '/accept').then(function() {
+        invitation.accept();
+
+        // Force the user's papers to load
+        this.store.find('paper');
+      }.bind(this));
     },
 
     showNewManuscriptOverlay() {

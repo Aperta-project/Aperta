@@ -13,7 +13,22 @@
   {{/overlay-fullscreen}}
 {{/overlay-base}}
 
+{{#overlay-base visible=showInvitationsOverlay
+                outAnimationComplete=(action "hideInvitationsOverlay")
+                as |animateOut|}}
+  {{#overlay-fullscreen class="invitations-overlay"
+                        invitations=pendingInvitations
+                        title="Here are your invitations."
+                        close=(action animateOut)}}
+    {{invitations-x invitations=pendingInvitations
+                    accept=(action "acceptInvitation")
+                    reject=(action "rejectInvitation")
+                    close=(action animateOut)}}
+  {{/overlay-fullscreen}}
+{{/overlay-base}}
+
 <div class="base-screen">
+
   {{#if pendingInvitations}}
     <section class="dashboard-section">
       <h2 class="welcome-message">
@@ -37,7 +52,7 @@
       {{/if}}
     </h2>
 
-    <button class="button-primary button--green" {{action "showNewManuscriptOverlay"}}>Create New Submission</button>
+    <button class="button-primary button--green" {{action "showNewPaperOverlay"}}>Create New Submission</button>
 
     {{#if hasPapers}}
       {{#if hasActivePapers}}

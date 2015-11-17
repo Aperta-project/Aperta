@@ -9,7 +9,6 @@ module Typesetter
     private
 
     def contributions
-      return unless object.contributions
       object.contributions.map do |contribution|
         break unless contribution
         contribution.nested_question.text if contribution.value

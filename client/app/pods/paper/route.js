@@ -32,17 +32,5 @@ export default AuthorizedRoute.extend({
     // needed for the `wire` and `unwire` method
     // to think we have `ember-pusher/bindings` mixed in
     return this.toString();
-  },
-
-  actions: {
-    showConfirmWithdrawOverlay() {
-      let controller = this.controllerFor('overlays/paper-withdraw');
-      controller.set('model', this.currentModel);
-
-      this.send('openOverlay', {
-        template: 'overlays/paper-withdraw',
-        controller: 'overlays/paper-withdraw'
-      });
-    }
   }
 });

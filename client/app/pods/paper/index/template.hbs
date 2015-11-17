@@ -2,7 +2,7 @@
                     showActivity="showActivity"
                     addContributors="showCollaboratorsOverlay"
                     exportDocument="exportDocument"
-                    showConfirmWithdrawOverlay="showConfirmWithdrawOverlay"
+                    showWithdrawOverlay="showWithdrawOverlay"
                     topicsIndexPath=topicsIndexPath
                     canViewManuscriptManager=canViewManuscriptManager
                     supportedDownloadFormats=supportedDownloadFormats
@@ -72,5 +72,16 @@
                         close=(action animateOut)}}
     {{paper-collaborators paper=model
                           close=(action animateOut)}}
+  {{/overlay-fullscreen}}
+{{/overlay-base}}
+
+
+{{#overlay-base visible=showWithdrawOverlay
+                outAnimationComplete=(action "hideWithdrawOverlay")
+                as |animateOut|}}
+  {{#overlay-fullscreen class="overlay--grey"
+                        close=(action animateOut)}}
+    {{paper-withdraw model=model
+                     close=(action animateOut)}}
   {{/overlay-fullscreen}}
 {{/overlay-base}}

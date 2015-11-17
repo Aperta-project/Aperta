@@ -56,7 +56,7 @@ export default Ember.Component.extend({
     },
 
     withdrawManuscript() {
-      this.sendAction('showConfirmWithdrawOverlay');
+      this.sendAction('showWithdrawOverlay');
     }
   }
 });

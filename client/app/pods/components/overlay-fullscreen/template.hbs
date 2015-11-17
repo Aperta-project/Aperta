@@ -1,6 +1,9 @@
 <div class="overlay-x-container">
   <header class="overlay-x-header">
-    <h1 class="overlay-x-header-title">{{title}}</h1>
+    {{#if title}}
+      <h1 class="overlay-x-header-title">{{title}}</h1>
+    {{/if}}
+
     <span class="overlay-x-close" {{action "close"}}>&times;</span>
   </header>
 

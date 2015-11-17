@@ -17,6 +17,7 @@ export default Ember.Mixin.create({
   activityFeed: null,
 
   showCollaboratorsOverlay: false,
+  showWithdrawOverlay: false,
 
   supportedDownloadFormats: computed(function() {
     return ENV.APP.iHatExportFormats.map(format => {
@@ -67,6 +68,14 @@ export default Ember.Mixin.create({
 
     hideCollaboratorsOverlay() {
       this.set('showCollaboratorsOverlay', false);
+    },
+
+    showWithdrawOverlay() {
+      this.set('showWithdrawOverlay', true);
+    },
+
+    hideWithdrawOverlay() {
+      this.set('showWithdrawOverlay', false);
     }
   }
 });

@@ -1,8 +1,8 @@
 import Ember from 'ember';
+import EscapeListenerMixin from 'tahi/mixins/escape-listener';
 
-export default Ember.Controller.extend({
+export default Ember.Component.extend(EscapeListenerMixin, {
   restless: Ember.inject.service('restless'),
-  overlayClass: 'overlay--fullscreen overlay--grey',
 
   actions: {
     withdraw() {
@@ -11,8 +11,12 @@ export default Ember.Controller.extend({
       const data  = {'reason': this.get('model.withdrawalReason')};
 
       this.get('restless').putUpdate(model, url, data).then(()=> {
-        this.send('closeOverlay');
+        this.attrs.close();
       });
+    },
+
+    close() {
+      this.attrs.close();
     }
   }
 });

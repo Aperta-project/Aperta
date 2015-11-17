@@ -9,7 +9,6 @@ class Paper < ActiveRecord::Base
   belongs_to :creator, inverse_of: :submitted_papers, class_name: 'User', foreign_key: :user_id
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
-  belongs_to :striking_image, class_name: 'Figure'
 
   has_many :figures, dependent: :destroy
   has_many :versioned_texts, dependent: :destroy
@@ -50,6 +49,19 @@ class Paper < ActiveRecord::Base
 
   after_create :assign_doi!
   after_create :create_versioned_texts
+
+  def striking_image
+    figures.each do |figure|
+      return figure if figure.striking_image
+    end
+    nil
+  end
+
+  def striking_image=(new_image)
+    return unless striking_image
+    striking_image.striking_image = false
+    new_image.striking_image = true
+  end
 
   aasm column: :publishing_state do
     state :unsubmitted, initial: true # currently being authored

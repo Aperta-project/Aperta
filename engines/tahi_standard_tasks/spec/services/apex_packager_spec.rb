@@ -50,7 +50,8 @@ describe ApexPackager do
         :figure,
         title: 'a figure',
         caption: 'a caption',
-        attachment: File.open(Rails.root.join('spec/fixtures/yeti.jpg'))
+        attachment: File.open(Rails.root.join('spec/fixtures/yeti.jpg')),
+        striking_image: false
       )
     end
 
@@ -149,7 +150,8 @@ describe ApexPackager do
                  caption: 'a caption',
                  paper: paper,
                  apex_filename: 'Strikingimage.jpg',
-                 attachment: attachment1)
+                 attachment: attachment1,
+                 striking_image: true)
     end
 
     let(:figure) do
@@ -158,12 +160,15 @@ describe ApexPackager do
                  caption: 'a caption',
                  paper: paper,
                  apex_filename: 'yeti2.jpg',
-                 attachment: attachment2)
+                 attachment: attachment2,
+                 striking_image: false)
     end
+
+    let(:figures) { [figure, striking_image] }
 
     before do
       paper.striking_image = striking_image
-      allow(paper).to receive(:figures).and_return([figure, striking_image])
+      allow(paper).to receive(:figures).and_return(figures)
     end
 
     it 'includes the strking image with proper name' do

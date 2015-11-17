@@ -36,8 +36,7 @@ class ApexPackager
 
   def add_figures
     return unless figures_comply?
-    @paper.figures.each do |figure|
-      next if @paper.striking_image == figure
+    @paper.figures.select { |f| f.striking_image == false }.each do |figure|
       @package.put_next_entry(figure.apex_filename)
       @package.write(figure.attachment.read)
     end

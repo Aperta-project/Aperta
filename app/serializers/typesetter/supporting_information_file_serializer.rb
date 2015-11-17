@@ -7,7 +7,7 @@ module Typesetter
     private
 
     def file_name
-      object.attachment.path.split('/')[-1]
+      File.basename object.attachment.path
     end
   end
 end

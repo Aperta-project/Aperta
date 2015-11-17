@@ -245,7 +245,7 @@ ActiveRecord::Schema.define(version: 20151120182356) do
     t.integer  "paper_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "status",     default: "processing"
+    t.string   "status",     limit: 255, default: "processing"
   end
 
   create_table "nested_question_answers", force: :cascade do |t|
@@ -437,7 +437,7 @@ ActiveRecord::Schema.define(version: 20151120182356) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "middle_initial"
-    t.string   "email"
+    t.string   "email",                            null: false
     t.string   "department"
     t.string   "title"
     t.string   "affiliation"

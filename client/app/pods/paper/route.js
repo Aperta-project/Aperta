@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import Utils from 'tahi/services/utils';
 import AuthorizedRoute from 'tahi/routes/authorized';
 
 export default AuthorizedRoute.extend({

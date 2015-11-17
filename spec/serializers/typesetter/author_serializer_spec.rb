@@ -12,7 +12,7 @@ describe Typesetter::AuthorSerializer do
   let(:corresponding) { true }
   let(:deceased) { false }
   let(:affiliation) { 'PLOS' }
-  let(:secondary_affiliation) { nil }
+  let(:secondary_affiliation) { 'SECONDARY AFFILIATION' }
 
   let!(:author) do
     FactoryGirl.create(
@@ -25,7 +25,8 @@ describe Typesetter::AuthorSerializer do
       title: title,
       corresponding: corresponding,
       deceased: deceased,
-      affiliation: affiliation
+      affiliation: affiliation,
+      secondary_affiliation: secondary_affiliation
     )
   end
 

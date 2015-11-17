@@ -54,8 +54,8 @@ module Typesetter
     end
 
     def copyright_statement
-      t = task('TahiStandardTasks::PublishingRelatedQuestionsTask')
-      if task_answer_value(t, 'us_government_employees')
+      copyright = task('TahiStandardTasks::PublishingRelatedQuestionsTask')
+      if task_answer_value(copyright, 'us_government_employees')
         GOVERNMENT_COPYRIGHT_DECLARATION
       else
         PRIVATE_COPYRIGHT_DECLARATION

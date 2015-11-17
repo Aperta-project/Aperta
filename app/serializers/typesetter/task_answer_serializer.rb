@@ -9,13 +9,13 @@ module Typesetter
     end
 
     def task(task_type)
-      t = tasks_by_type(task_type)
-      if t.length > 1
-        fail Typesetter::MetadataError.multiple_tasks(t)
-      elsif t.length == 0
+      tasks = tasks_by_type(task_type)
+      if tasks.length > 1
+        fail Typesetter::MetadataError.multiple_tasks(tasks)
+      elsif tasks.length == 0
         fail Typesetter::MetadataError.no_task(task_type)
       end
-      t.first
+      tasks.first
     end
 
     def task_answer_value(task, question_ident)

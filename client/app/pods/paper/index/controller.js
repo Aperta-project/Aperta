@@ -28,9 +28,11 @@ export default Ember.Controller.extend(PaperBase, Discussions, {
   showActivityOverlay: false,
   activityFeed: null,
 
+  showCollaboratorsOverlay: false,
+
   actions: {
     toggleSubmissionProcess(){
-      $('#submission-process').slideToggle(300)
+      Ember.$('#submission-process').slideToggle(300);
     },
 
     hideActivityOverlay() {
@@ -48,6 +50,14 @@ export default Ember.Controller.extend(PaperBase, Discussions, {
           activityFeed: Utils.deepCamelizeKeys(data.feeds)
         });
       });
+    },
+
+    showCollaboratorsOverlay() {
+      this.set('showCollaboratorsOverlay', true);
+    },
+
+    hideCollaboratorsOverlay() {
+      this.set('showCollaboratorsOverlay', false);
     }
   }
 });

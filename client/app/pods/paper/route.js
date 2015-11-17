@@ -35,42 +35,6 @@ export default AuthorizedRoute.extend({
   },
 
   actions: {
-    addContributors() {
-      let controller     = this.controllerFor('overlays/showCollaborators');
-      let collaborations = this.modelFor('paper').get('collaborations') || [];
-
-      controller.setProperties({
-        paper: this.modelFor('paper'),
-        collaborations: collaborations,
-        initialCollaborations: collaborations.slice(),
-        allUsers: this.store.find('user')
-      });
-
-      this.send('openOverlay', {
-        template: 'overlays/showCollaborators',
-        controller: controller
-      });
-    },
-
-    showActivity(type) {
-      const paperId = this.modelFor('paper').get('id');
-      const url = `/api/papers/${paperId}/activity/${type}`;
-      const controller = this.controllerFor('overlays/activity');
-      controller.set('isLoading', true);
-
-      this.get('restless').get(url).then(function(data) {
-        controller.setProperties({
-          isLoading: false,
-          model: Utils.deepCamelizeKeys(data.feeds)
-        });
-      });
-
-      this.send('openOverlay', {
-        template: 'overlays/activity',
-        controller: controller
-      });
-    },
-
     showConfirmWithdrawOverlay() {
       let controller = this.controllerFor('overlays/paper-withdraw');
       controller.set('model', this.currentModel);

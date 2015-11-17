@@ -1,6 +1,6 @@
 {{paper-control-bar paper=model
                     showActivity="showActivity"
-                    addContributors="addContributors"
+                    addContributors="showCollaboratorsOverlay"
                     exportDocument="exportDocument"
                     showConfirmWithdrawOverlay="showConfirmWithdrawOverlay"
                     topicsIndexPath=topicsIndexPath
@@ -50,6 +50,7 @@
 
 {{outlet}}
 
+
 {{#overlay-base visible=showActivityOverlay
                 outAnimationComplete=(action "hideActivityOverlay")
                 as |animateOut|}}
@@ -59,5 +60,17 @@
     {{paper-activity isLoading=activityIsLoading
                      model=activityFeed
                      close=(action animateOut)}}
+  {{/overlay-fullscreen}}
+{{/overlay-base}}
+
+
+{{#overlay-base visible=showCollaboratorsOverlay
+                outAnimationComplete=(action "hideCollaboratorsOverlay")
+                as |animateOut|}}
+  {{#overlay-fullscreen class="show-collaborators-overlay"
+                        title="Who can collaborate on this manuscript?"
+                        close=(action animateOut)}}
+    {{paper-collaborators paper=model
+                          close=(action animateOut)}}
   {{/overlay-fullscreen}}
 {{/overlay-base}}

@@ -30,13 +30,13 @@ describe Typesetter::DataAvailabilitySerializer do
   end
 
   describe 'data fully available value' do
-    it 'is the answer to the data fully available quesiton' do
+    it 'is the answer to the data fully available question' do
       expect(output[:data_fully_available]).to eq(true)
     end
   end
 
   describe 'data location statement value' do
-    it 'is the answer to the data location statement quesiton' do
+    it 'is the answer to the data location statement question' do
       expect(output[:data_location_statement]).to eq('holodeck')
     end
   end

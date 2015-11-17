@@ -85,7 +85,7 @@ describe Typesetter::AuthorSerializer do
   end
 
   describe 'contributions' do
-    it 'is the answer to the competing interests quesiton' do
+    it 'is the answer to the competing interests question' do
       expect(output[:contributions]).to eq([question1.text])
     end
   end

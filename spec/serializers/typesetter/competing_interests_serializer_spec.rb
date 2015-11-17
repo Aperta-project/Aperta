@@ -30,13 +30,13 @@ describe Typesetter::CompetingInterestsSerializer do
   end
 
   describe 'competing interests value' do
-    it 'is the answer to the competing interests quesiton' do
+    it 'is the answer to the competing interests question' do
       expect(output[:competing_interests]).to eq(true)
     end
   end
 
   describe 'competing interests statement value' do
-    it 'is the answer to the competing interests statement quesiton' do
+    it 'is the answer to the competing interests statement question' do
       expect(output[:competing_interests_statement]).to eq('entered statement')
     end
   end

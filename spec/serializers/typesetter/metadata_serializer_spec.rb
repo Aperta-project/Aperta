@@ -14,6 +14,17 @@ describe Typesetter::MetadataSerializer do
     ]
   end
 
+  let(:paper_task) do
+    ->(task_type) { paper.tasks.find_by_type(task_type) }
+  end
+
+  let(:our_question) do
+    # expects `our_task` to be defined within a `describe` block
+    lambda do |question_ident|
+      our_task.nested_questions.find_by_ident(question_ident)
+    end
+  end
+
   before do
     paper.phases.first.tasks.push(*metadata_tasks)
   end
@@ -61,18 +72,17 @@ describe Typesetter::MetadataSerializer do
   end
 
   describe 'copyright statement' do
+    let(:our_task) do
+      paper_task.call('TahiStandardTasks::PublishingRelatedQuestionsTask')
+    end
+    let(:nested_question) { our_question.call('us_government_employees') }
+
     context 'government employee' do
       # Government employees cannot claim copyright over works
       before do
-        our_task =
-          paper
-          .tasks
-          .find_by_type('TahiStandardTasks::PublishingRelatedQuestionsTask')
-        our_question =
-          our_task.nested_questions.find_by_ident('us_government_employees')
         FactoryGirl.create(
           :nested_question_answer,
-          nested_question: our_question,
+          nested_question: nested_question,
           owner: our_task,
           value: 'true',
           value_type: 'boolean'
@@ -86,15 +96,9 @@ describe Typesetter::MetadataSerializer do
 
     context 'non government employee' do
       before do
-        our_task =
-          paper
-          .tasks
-          .find_by_type('TahiStandardTasks::PublishingRelatedQuestionsTask')
-        our_question =
-          our_task.nested_questions.find_by_ident('us_government_employees')
         FactoryGirl.create(
           :nested_question_answer,
-          nested_question: our_question,
+          nested_question: nested_question,
           owner: our_task,
           value: false,
           value_type: 'boolean'
@@ -108,17 +112,13 @@ describe Typesetter::MetadataSerializer do
   end
 
   describe 'publication_date' do
+    let(:our_task) do
+      paper_task.call('TahiStandardTasks::ProductionMetadataTask')
+    end
     before do
-      our_task =
-        paper
-        .tasks
-        .find_by_type('TahiStandardTasks::ProductionMetadataTask')
-      our_question =
-        our_task.nested_questions.find_by_ident('publication_date')
-
       FactoryGirl.create(
         :nested_question_answer,
-        nested_question: our_question,
+        nested_question: our_question.call('publication_date'),
         owner: our_task,
         value: '11/16/2015',
         value_type: 'text'

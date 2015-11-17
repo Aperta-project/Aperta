@@ -44,7 +44,6 @@ $ov--fullscreen-breakpoint: 780px;
     font-size: 4.8rem;
   }
 
-
   // -- Grey Theme --------------
   &.overlay--grey {
     color: $tahi-grey;
@@ -75,4 +74,10 @@ $ov--fullscreen-breakpoint: 780px;
       }
     }
   }
+=======
+    .overlay-x-close {
+      color: $tahi-grey;
+    }
+  }
+>>>>>>> Collaborators overlay to component:app/assets/stylesheets/ui/_overlay-x-fullscreen.scss
 }

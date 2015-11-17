@@ -1,14 +1,16 @@
-<i class="fa fa-exclamation-circle"></i>
-<h1>Are you sure?</h1>
+<div class="paper-withdraw-wrapper">
+  <i class="fa fa-exclamation-circle"></i>
+  <h1>Are you sure?</h1>
 
-<p>
-  Withdrawing your manuscript will withdraw it from consideration.<br>
-  Please provide your reason for withdrawing this manuscript.
-</p>
+  <p>
+    Withdrawing your manuscript will withdraw it from consideration.<br>
+    Please provide your reason for withdrawing this manuscript.
+  </p>
 
-{{textarea rows="10" class="form-control" value=model.withdrawalReason}}
+  {{textarea rows="10" class="form-control" value=model.withdrawalReason}}
 
-<div class="pull-right">
-  <button class="button-link" {{action "withdraw"}}>YES, WITHDRAW</button>
-  <button class="button cancel-button" {{action "close"}}>NO, I'M STILL WORKING</button>
+  <div class="pull-right">
+    <button class="button-link" {{action "withdraw"}}>YES, WITHDRAW</button>
+    <button class="button cancel-button" {{action "close"}}>NO, I'M STILL WORKING</button>
+  </div>
 </div>

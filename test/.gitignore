@@ -1,5 +1,8 @@
+*~
 *.pyc
 .DS_Store
 .idea/*
 .idea/inspectionProfiles/*
 frontent/Output/*.png
+frontend/assets/docs/*
+

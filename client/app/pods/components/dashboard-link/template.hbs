@@ -6,8 +6,10 @@
     ID: {{model.manuscript_id}}
   </div>
   {{#if unreadCommentsCount}}
-    <span class="badge badge--red" title="{{unreadCommentsCount}} new posts">
-      {{unreadCommentsCount}}
+    <span class="unread-comments">
+      <span class="badge badge--red">
+        {{unreadCommentsCount}}
+      </span> new comments
     </span>
   {{/if}}
 </td>

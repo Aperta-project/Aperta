@@ -93,7 +93,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
       publishing_state: submitted
       submitted_at: neither NULL nor ''
   """
-  def test_validate_full_submit(self):
+  def rest_validate_full_submit(self):
     """
     Validates the presence of the following elements:
       Optional Invitation Welcome text and button,
@@ -237,7 +237,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay
-    time.sleep(1)
+    time.sleep(2)
     manuscript_page.validate_so_overlay_elements_styles('congratulations', paper_title_from_page)
     manuscript_page.close_submit_overlay()
     manuscript_page.validate_initial_submit_success()
@@ -303,7 +303,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay
-    time.sleep(1)
+    time.sleep(2)
     manuscript_page.validate_so_overlay_elements_styles('congratulations', paper_title_from_page)
     manuscript_page.close_submit_overlay()
     manuscript_page.validate_submit_success()

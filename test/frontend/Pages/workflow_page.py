@@ -30,16 +30,6 @@ class WorkflowPage(AuthenticatedPage):
     self._assess_button = (By.XPATH, "//div[@class='column-content']/div/div//div[contains(., '[A] Reviewer Report')]")
     self._editorial_decision_button = (By.XPATH, "//div[@class='column-content']/div/div//div[contains(., '[A] Editorial Decision')]")
     self._navigation_menu_line = (By.XPATH, ".//div[@class='navigation']/hr")
-    self._editable_label = (By.XPATH, ".//label[@class='control-bar-item']/span")
-    self._editable_checkbox = (By.XPATH, ".//label[@class='control-bar-item']/span/input")
-    self._recent_activity_icon = (By.XPATH,
-      ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[2]/div/div/*[local-name() = 'svg']/*[local-name() = 'path']")
-    self._recent_activity_text = (By.XPATH,
-      ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[2]/div/div[2]")
-    self._discussions_icon = (By.XPATH,
-      ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[3]/a/div/span[contains(@class, 'fa-comment')]")
-    self._discussions_text = (By.XPATH,
-      ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[3]/a")
     self._manuscript_icon = (By.XPATH,
       ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div/*[local-name() = 'svg']/*[local-name() = 'path']")
     self._manuscript_link = (By.XPATH, "//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/a")

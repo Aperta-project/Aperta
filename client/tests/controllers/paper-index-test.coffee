@@ -27,4 +27,4 @@ test '#exportDocument: calls the export url in Tahi', (assert) ->
     url: "http://example.com"
     format: "docx"
   basePaperController.send 'exportDocument', downloadType
-  assert.ok jQuery.ajax.calledWithMatch {url: "/api/papers/#{@paper.id}/export", data: {format: downloadType.format}}
+  assert.ok jQuery.ajax.calledWithMatch {url: "/api/papers/#{@paper.id}/export", data: {export_format: downloadType.format}}

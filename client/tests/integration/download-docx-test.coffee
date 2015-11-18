@@ -39,22 +39,18 @@ test 'show download links on control bar', (assert) ->
   paperResponse = paperPayload.toJSON()
 
   jobId = '232134-324-1234-1234'
-  exportUrl = "/api/papers/#{currentPaper.id}/export?format=docx"
+  exportUrl = "/api/papers/#{currentPaper.id}/export?export_format=docx"
 
   server.respondWith 'GET', "/api/papers/#{currentPaper.id}", [
     200, {"Content-Type": "application/json"}, JSON.stringify(paperResponse)
   ]
   server.respondWith 'GET', exportUrl, [
-    200, {"Content-Type": "application/json"}, JSON.stringify({job: { id: "#{jobId}" }})
+    202, {"Content-Type": "application/json"},
+      JSON.stringify({url: "/api/papers/#{currentPaper.id}/status/#{jobId}"})
   ]
   server.respondWith 'GET', "/api/papers/#{currentPaper.id}/status/#{jobId}", [
     200, {"Content-Type": "application/json"}, JSON.stringify({
-      "job": {
-        "state": "completed",
-        "id": "#{jobId}",
-        "outputs": []
-      }
-    })
+            url: "/api/papers/#{currentPaper.id}/download.docx" })
   ]
 
   mock = undefined
@@ -62,7 +58,7 @@ test 'show download links on control bar', (assert) ->
 
   andThen ->
     mock = sinon.mock(Utils)
-    mock.expects("windowLocation").withArgs("https://www.google.com").returns(true)
+    mock.expects("windowLocation").withArgs("/api/papers/5/download.docx").returns(true)
 
   click('.downloads-link').then ->
     click('.docx')

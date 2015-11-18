@@ -47,6 +47,10 @@ describe Typesetter::AuthorSerializer do
     author.class.contributions_question.children[1]
   end
 
+  let!(:question3) do
+    author.class.contributions_question.children.find_by_ident('other')
+  end
+
   let!(:answer1) do
     FactoryGirl.create(
       :nested_question_answer,
@@ -63,6 +67,15 @@ describe Typesetter::AuthorSerializer do
       owner: author,
       value: false,
       value_type: 'boolean'
+    )
+  end
+  let!(:answer3) do
+    FactoryGirl.create(
+      :nested_question_answer,
+      nested_question: question2,
+      owner: author,
+      value: 'Performed some other duty',
+      value_type: 'text'
     )
   end
 
@@ -85,8 +98,14 @@ describe Typesetter::AuthorSerializer do
   end
 
   describe 'contributions' do
-    it 'is the answer to the competing interests question' do
-      expect(output[:contributions]).to eq([question1.text])
+    it 'includes question text when the answer is true' do
+      expect(output[:contributions]).to include(question1.text)
+    end
+    it 'does not include question text when the answer is false' do
+      expect(output[:contributions]).to_not include(question2.text)
+    end
+    it 'includes the `other` text if answered' do
+      expect(output[:contributions]).to include(answer3.value)
     end
   end
 

@@ -11,7 +11,14 @@ module Typesetter
     def contributions
       object.contributions.map do |contribution|
         break unless contribution
-        contribution.nested_question.text if contribution.value
+        if contribution.value_type == 'boolean'
+          contribution.nested_question.text if contribution.value
+        elsif contribution.value_type == 'text'
+          contribution.value
+        else
+          fail TypeSetter::MetadataError,
+               "Unknown contribution type #{contribution.value_type}"
+        end
       end.compact
     end
   end

@@ -1,12 +1,15 @@
 import Ember from 'ember';
 
+const { computed } = Ember;
+
 export default Ember.Component.extend({
   classNames: ['individual-task-type'],
 
   roles: null,
 
-  selectedRole: Ember.computed('model.role', function() {
-    let role = this.get('availableTaskRoles').findBy('kind', this.get('model.role'));
+  selectedRole: computed('model.role', function() {
+    const role = this.get('availableTaskRoles')
+                     .findBy('kind', this.get('model.role'));
 
     if(Ember.isEmpty(role)) { return null; }
 
@@ -17,9 +20,9 @@ export default Ember.Component.extend({
   }),
 
   journalRoleSort: ['name: asc'],
-  availableTaskRoles: Ember.computed.sort('roles', 'journalRoleSort'),
+  availableTaskRoles: computed.sort('roles', 'journalRoleSort'),
 
-  formattedTaskRoles: Ember.computed('availableTaskRoles.@each', function() {
+  formattedTaskRoles: computed('availableTaskRoles.[]', function() {
     return this.get('availableTaskRoles').map(function(taskRole) {
       return {
         id: taskRole.get('id'),
@@ -35,8 +38,11 @@ export default Ember.Component.extend({
     },
 
     save(roleProxy) {
-      let role = this.get('availableTaskRoles').findBy('name', roleProxy.text);
-      this.set('model.role', role.get('kind'));
+      const kind = this.get('availableTaskRoles')
+                       .findBy('name', roleProxy.text)
+                       .get('kind');
+
+      this.set('model.role', kind);
       this.get('model').save();
     }
   }

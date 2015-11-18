@@ -34,7 +34,7 @@
       <h2 class="welcome-message">
         You have <span class="invitation-count">{{pluralize pendingInvitations.length "invitation"}}</span>.
       </h2>
-      <button class="button-primary button--green" {{action "viewInvitations"}}>View invitations</button>
+      <button class="button-primary button--green" {{action "showInvitationsOverlay"}}>View invitations</button>
     </section>
   {{/if}}
 
@@ -52,7 +52,7 @@
       {{/if}}
     </h2>
 
-    <button class="button-primary button--green" {{action "showNewPaperOverlay"}}>Create New Submission</button>
+    <button class="button-primary button--green" {{action "showNewManuscriptOverlay"}}>Create New Submission</button>
 
     {{#if hasPapers}}
       {{#if hasActivePapers}}

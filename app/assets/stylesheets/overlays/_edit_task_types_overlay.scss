@@ -1,5 +1,14 @@
-.edit-task-types-overlay.overlay--fullscreen {
-  .overlay-close-x {
+.journal-task-types {
+  width: 100%;
+  margin-bottom: 100px;
+
+  .clear-role-button {
+    margin-left: 10px;
+  }
+}
+
+.edit-task-types-overlay.overlay-x--fullscreen {
+  .overlay-x-close {
     color: $tahi-blue;
 
     &:hover {

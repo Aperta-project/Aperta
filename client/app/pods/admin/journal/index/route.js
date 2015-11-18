@@ -43,14 +43,6 @@ export default Ember.Route.extend({
 
     editManuscriptCSS() {
       this.send('openEditOverlay', 'manuscriptCss');
-    },
-
-    editTaskTypes() {
-      this.send('openOverlay', {
-        template: 'overlays/edit-task-types',
-        controller: 'overlays/edit-task-types',
-        model: this.modelFor('admin/journal/index')
-      });
     }
   }
 });

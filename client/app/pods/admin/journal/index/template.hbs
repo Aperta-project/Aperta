@@ -1,3 +1,14 @@
+{{#overlay-base visible=showEditTaskTypesOverlay
+                outAnimationComplete=(action "hideEditTaskTypesOverlay")
+                as |animateOut|}}
+  {{#overlay-fullscreen class="edit-task-types-overlay"
+                        title="Available Task Types"
+                        close=(action animateOut)}}
+    {{edit-task-types model=model
+                      close=(action animateOut)}}
+  {{/overlay-fullscreen}}
+{{/overlay-base}}
+
 <div class="base-screen admin-screen">
   <div class="admin-users-row">
     <h2 class="admin-section-title">Users</h2>
@@ -44,7 +55,9 @@
 
   <div class="admin-section">
     <h2 class="admin-section-title">Available Task Types</h2>
-    <div class="button-primary button--blue" {{action "editTaskTypes"}}>Edit Task Types</div>
+    <div class="button-primary button--blue" {{action "showEditTaskTypesOverlay"}}>
+      Edit Task Types
+    </div>
   </div>
 
   <div class="admin-section">

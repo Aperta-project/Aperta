@@ -168,6 +168,17 @@ describe Paper do
         expect(paper.latest_version.updated_at.utc).to be_within(1.second).of Time.zone.now
       end
 
+      it 'sets first_submitted_at once' do
+        paper.submit! user
+        expect(paper.first_submitted_at.utc).to(
+          be_within(1.second).of Time.zone.now)
+
+        first_submitted = paper.first_submitted_at
+        paper.minor_revision!
+        paper.submit! user
+        expect(paper.first_submitted_at).to be(first_submitted)
+      end
+
       it "broadcasts 'paper:submitted' event" do
         allow(Notifier).to receive(:notify)
         expect(Notifier).to receive(:notify).with(hash_including(event: "paper:submitted")) do |args|
@@ -319,16 +330,10 @@ describe Paper do
         paper.make_decision decision
         expect(paper.publishing_state).to eq("accepted")
       end
-    end
 
-    context "acceptance" do
-      let(:decision) do
-        FactoryGirl.create(:decision, verdict: "accept")
-      end
-
-      it "accepts the paper" do
+      it 'sets accepted_at!' do
         paper.make_decision decision
-        expect(paper.publishing_state).to eq("accepted")
+        expect(paper.accepted_at.utc).to be_within(1.second).of Time.zone.now
       end
     end
 

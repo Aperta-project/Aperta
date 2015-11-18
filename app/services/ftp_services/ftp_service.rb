@@ -2,14 +2,22 @@ module FtpServices
   class FtpService
     require 'net/ftp'
 
-    def initialize(params={})
-      @host = params[:host] || ENV['FTP_HOST']
-      @mode = params[:passive_mode] || true
-      @user = params[:user] || ENV['FTP_USER']
-      @password = params[:password] || ENV['FTP_PASSWORD']
-      @port = params[:port] || 21
-      @file_path = params[:file_path]
-      @final_filename = params[:filename]
+    def initialize(host: ENV['FTP_HOST'], passive_mode: true, user: ENV['FTP_USER'], 
+                   password: ENV['FTP_PASSWORD'], port: 21, file_path: nil, filename: nil)
+      @host = host
+      @mode = passive_mode
+      @user = user
+      @password = password
+      @port = port
+      @file_path = file_path
+      @final_filename = filename
+    end
+
+    def connect_to_server
+      @ftp = Net::FTP.new
+      @ftp.connect(@host, @port)
+      @ftp.passive = @mode
+      @ftp.login(user = @user, passwd = @password)
     end
 
     def upload
@@ -25,12 +33,11 @@ module FtpServices
       @ftp.close
     end
 
-    def connect_to_server
-      @ftp = Net::FTP.new
-      @ftp.connect(@host, @port)
-      @ftp.passive = @mode
-      @ftp.login(user = @user, passwd = @password)
+    def last_response_code
+      @ftp.last_response_code
     end
+
+    private
 
     def enter_packages_directory
       remote_directories = @ftp.nlst
@@ -45,10 +52,6 @@ module FtpServices
         @count += 100
         puts "#{@count} kilobytes uploaded"
       end
-    end
-
-    def last_response_code
-      @ftp.last_response_code
     end
   end
 end

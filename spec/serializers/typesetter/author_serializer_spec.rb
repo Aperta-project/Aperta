@@ -9,8 +9,6 @@ describe Typesetter::AuthorSerializer do
   let(:email) { 'exampleemail@example.com' }
   let(:department) { 'The Department' }
   let(:title) { 'Best ever' }
-  let(:corresponding) { true }
-  let(:deceased) { false }
   let(:affiliation) { 'PLOS' }
   let(:secondary_affiliation) { 'SECONDARY AFFILIATION' }
 
@@ -23,8 +21,6 @@ describe Typesetter::AuthorSerializer do
       email: email,
       department: department,
       title: title,
-      corresponding: corresponding,
-      deceased: deceased,
       affiliation: affiliation,
       secondary_affiliation: secondary_affiliation
     )
@@ -49,6 +45,14 @@ describe Typesetter::AuthorSerializer do
 
   let!(:question3) do
     author.class.contributions_question.children.find_by_ident('other')
+  end
+
+  let!(:deceased_question) do
+    author.nested_questions.find_by_ident('deceased')
+  end
+
+  let!(:corresponding_question) do
+    author.nested_questions.find_by_ident('published_as_corresponding_author')
   end
 
   let!(:answer1) do
@@ -76,6 +80,24 @@ describe Typesetter::AuthorSerializer do
       owner: author,
       value: 'Performed some other duty',
       value_type: 'text'
+    )
+  end
+  let!(:corresponding_answer) do
+    FactoryGirl.create(
+      :nested_question_answer,
+      nested_question: corresponding_question,
+      owner: author,
+      value: true,
+      value_type: 'boolean'
+    )
+  end
+  let!(:deceased_answer) do
+    FactoryGirl.create(
+      :nested_question_answer,
+      nested_question: deceased_question,
+      owner: author,
+      value: true,
+      value_type: 'boolean'
     )
   end
 
@@ -147,13 +169,13 @@ describe Typesetter::AuthorSerializer do
 
   describe 'corresponding' do
     it "is the author's corresponding preference" do
-      expect(output[:corresponding]).to eq(corresponding)
+      expect(output[:corresponding]).to eq(corresponding_answer.value)
     end
   end
 
   describe 'deceased' do
     it 'is the author deceased' do
-      expect(output[:deceased]).to eq(deceased)
+      expect(output[:deceased]).to eq(deceased_answer.value)
     end
   end
 

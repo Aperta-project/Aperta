@@ -1,12 +1,20 @@
 module Typesetter
   # Serializes author for the typesetter.
   # Expects an author as its object to serialize.
-  class AuthorSerializer < ActiveModel::Serializer
+  class AuthorSerializer < Typesetter::TaskAnswerSerializer
     attributes :first_name, :last_name, :middle_initial, :email, :department,
                :title, :corresponding, :deceased, :affiliation,
                :secondary_affiliation, :contributions
 
     private
+
+    def deceased
+      task_answer_value(object, 'deceased')
+    end
+
+    def corresponding
+      task_answer_value(object, 'published_as_corresponding_author')
+    end
 
     def contributions
       object.contributions.map do |contribution|

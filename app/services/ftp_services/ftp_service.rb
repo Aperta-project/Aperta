@@ -46,5 +46,9 @@ module FtpServices
         puts "#{@count} kilobytes uploaded"
       end
     end
+
+    def last_response_code
+      @ftp.last_response_code
+    end
   end
 end

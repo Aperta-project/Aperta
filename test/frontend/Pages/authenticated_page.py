@@ -85,6 +85,25 @@ class AuthenticatedPage(PlosPage):
     # Flash Messages
     self._flash_success_msg = (By.CSS_SELECTOR, 'div.flash-message--success div.flash-message-content')
     self._flash_closer = (By.CLASS_NAME, 'flash-message-remove')
+    # Cards - placeholder locators - these are over-ridden by definitions in the workflow and manuscript_viewer pages
+    self._billing_card = None
+    self._cover_letter_card = None
+    self._review_cands_card = None
+    self._revise_task_card = None
+    self._cfa_card = None
+    self._authors_card = None
+    self._competing_ints_card = None
+    self._data_avail_card = None
+    self._ethics_statement_card = None
+    self._figures_card = None
+    self._fin_disclose_card = None
+    self._new_taxon_card = None
+    self._report_guide_card = None
+    self._supporting_info_card = None
+    self._upload_manu_card = None
+    self._prq_card = None
+    self._initial_decision_card = None
+
 
   # POM Actions
   def click_profile_nav(self):
@@ -204,6 +223,10 @@ class AuthenticatedPage(PlosPage):
     return self
 
   def get_current_url(self):
+    """
+    Returns the url of the current page
+    :return: url
+    """
     url = self._driver.current_url
     return url
 
@@ -213,21 +236,86 @@ class AuthenticatedPage(PlosPage):
     signout_url = url.split('/')[0]+'//'+url.split('/')[2]+'/users/sign_out'
     self._driver.get(signout_url)
 
-  def validate_iHat_conversions_success(self):
+  def validate_ihat_conversions_success(self):
     """
-    Validate iHat conversion success
+    Validate ihat conversion success
     """
-    iHat_msg = self._get(self._flash_success_msg)
-    assert 'Finished loading Word file.' in iHat_msg.text, iHat_msg.text
+    ihat_msg = self._get(self._flash_success_msg)
+    assert 'Finished loading Word file.' in ihat_msg.text, ihat_msg.text
 
   def close_flash_message(self):
+    """
+    Close any type of flash message: error, info or success
+    :return: void function
+    """
     self._get(self._flash_closer).click()
 
-  def get_db_submission_data(self, manu_id):
+  @staticmethod
+  def get_db_submission_data(manu_id):
+    """
+    Provided a manuscript ID, queries the database for current publishing_state, gradual_engagement state, and any
+      submitted_at date/time object if present
+    :param manu_id: ID of paper to query
+    :return: a tuple
+    """
     submission_data = PgSQL().query('SELECT publishing_state, gradual_engagement, submitted_at '
                                     'FROM papers '
                                     'WHERE id = %s;', (manu_id,))
     return submission_data
+
+  def click_card(self, cardname):
+    """
+    Passed a card name, opens the relevant card
+    :param cardname: any one of: cover_letter, billing, figures, authors, supporting_info, upload_manuscript, prq,
+        review_candidates, revise_task, competing_interests, data_availability, ethics_statement, financial_disclosure,
+        new_taxon, reporting_guidelines, changes_for_author
+    NOTE: this covers only the author facing cards, with the exception of initial_decision
+    NOTE also that the locators for these are specifically defined within the scope of the manuscript_viewer or
+        workflow page
+    :return: True or False, if cardname is unknown.
+    """
+    self.set_timeout(1)
+    if cardname == 'cover_letter':
+      card_title = self._get(self._billing_card)
+    elif cardname == 'billing':
+      card_title = self._get(self._cover_letter_card)
+    elif cardname == 'figures':
+      card_title = self._get(self._figures_card)
+    elif cardname == 'authors':
+      card_title = self._get(self._authors_card)
+    elif cardname == 'supporting_info':
+      card_title = self._get(self._supporting_info_card)
+    elif cardname == 'upload_manuscript':
+      card_title = self._get(self._upload_manu_card)
+    elif cardname == 'prq':
+      card_title = self._get(self._prq_card)
+    elif cardname == 'review_candidates':
+      card_title = self._get(self._review_cands_card)
+    elif cardname == 'revise_task':
+      card_title = self._get(self._revise_task_card)
+    elif cardname == 'competing_interests':
+      card_title = self._get(self._competing_ints_card)
+    elif cardname == 'data_availability':
+      card_title = self._get(self._data_avail_card)
+    elif cardname == 'ethics_statement':
+      card_title = self._get(self._ethics_statement_card)
+    elif cardname == 'financial_disclosure':
+      card_title = self._get(self._fin_disclose_card)
+    elif cardname == 'new_taxon':
+      card_title = self._get(self._new_taxon_card)
+    elif cardname == 'reporting_guidelines':
+      card_title = self._get(self._report_guide_card)
+    elif cardname == 'changes_for_author':
+      card_title = self._get(self._cfa_card)
+    elif cardname == 'initial_decision':
+      card_title = self._get(self._initial_decision_card)
+    else:
+      print('Unknown Card')
+      self.restore_timeout()
+      return False
+    card_title.find_element_by_xpath('.//ancestor::a').click()
+    self.restore_timeout()
+    return True
 
 
   # Style Validations

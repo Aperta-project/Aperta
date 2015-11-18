@@ -77,19 +77,19 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
   """
   Self imposed AC:
   Two separate tests: First test: Normal Submit
-  1) Login as Author
-  2) Create doc for full submission mmt
-  3) Confirm db state for:
+  1. Login as Author
+  2. Create doc for full submission mmt
+  3. Confirm db state for:
      publishing_state: unsubmitted
      gradual_engagement: true
-  4) submit manuscript
-  5) validate overlay elements and styles
-  6) cancel submit
-  7) ensure overlay clears Submit button still present
-  8) submit again
-  9) confirm submit
-  10) ensure overlay clears Submitted message appears, submit button no longer shown
-  11) Confirm db state for:
+  4. submit manuscript
+  5. validate overlay elements and styles
+  6. cancel submit
+  7. ensure overlay clears Submit button still present
+  8. submit again
+  9. confirm submit
+  10. ensure overlay clears Submitted message appears, submit button no longer shown
+  11. Confirm db state for:
       publishing_state: submitted
       submitted_at: neither NULL nor ''
   """
@@ -123,7 +123,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_iHat_conversions_success()
+    manuscript_page.validate_ihat_conversions_success()
     manuscript_page.close_flash_message()
     time.sleep(2)
     paper_title_from_page = manuscript_page.get_paper_title_from_page()
@@ -153,40 +153,40 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
   """
   Self imposed AC:
   Two separate tests: Second test: Initial Submit
-  1) Login as Author
-  2) Create doc for initial submission mmt
-  3) Confirm db state for:
+  1. Login as Author
+  2. Create doc for initial submission mmt
+  3. Confirm db state for:
      publishing_state: unsubmitted
      gradual_engagement: true
-  4) submit manuscript
-  5) validate initial submit overlay elements and styles
-  6) cancel submit
-  7) ensure overlay clears Submit button still present
-  8) submit again
-  9) confirm submit
-  10) ensure overlay clears Submitted message appears, submit button no longer shown
-  11) Confirm db state for:
+  4. submit manuscript
+  5. validate initial submit overlay elements and styles
+  6. cancel submit
+  7. ensure overlay clears Submit button still present
+  8. submit again
+  9. confirm submit
+  10. ensure overlay clears Submitted message appears, submit button no longer shown
+  11. Confirm db state for:
       publishing_state: initially_submitted
       submitted_at: neither NULL nor ''
-  12) Log out as Author, Log in as Admin
-  13) Open workflow page for document created in step 2)
-  14) Open Initial Decision Card
-  15) Randomly select to either:
-      a) Reject; or
-      b) Invite for Full Submission
-  16) Enter appropriate text for email
-  17) Click send feedback
-  18) Close Card
-  19) Confirm db state for:
-      publishing state: a) rejected or b) in_revision
+  12. Log out as Author, Log in as Admin
+  13. Open workflow page for document created in step 2)
+  14. Open Initial Decision Card
+  15. Randomly select to either:
+      a. Reject; or
+      b. Invite for Full Submission
+  16. Enter appropriate text for email
+  17. Click send feedback
+  18. Close Card
+  19. Confirm db state for:
+      publishing state: a. rejected or b. in_revision
       If rejected, end test
-  20) Log out as Admin, Log in as Author
-  21) Open the relevant paper in the manuscript viewer, ensure editable and Submit (full)
-  23) validate initial submit (final) overlay elements and style
-  23) cancel submit
-  24) resubmit (full)
-  25) confirm submit
-  26) Confirm db state for:
+  20. Log out as Admin, Log in as Author
+  21. Open the relevant paper in the manuscript viewer, ensure editable and Submit (full)
+  22. validate initial submit (final) overlay elements and style
+  23. cancel submit
+  24. resubmit (full)
+  25. confirm submit
+  26. Confirm db state for:
       publishing_state: submitted
       gradual_engagement: true
   """
@@ -220,12 +220,12 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(7)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.validate_iHat_conversions_success()
+    manuscript_page.validate_ihat_conversions_success()
     manuscript_page.close_flash_message()
     time.sleep(2)
     paper_title_from_page = manuscript_page.get_paper_title_from_page()
     paper_url = manuscript_page.get_current_url()
-    print(paper_url)
+    print('The paper ID of this newly created paper is: ' + paper_url)
     paper_id = paper_url.split('papers/')[1]
     manuscript_page.click_submit_btn()
     manuscript_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
@@ -259,7 +259,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     self._driver.navigated = True
     # time.sleep(20)
     workflow_page = WorkflowPage(self.getDriver())
-    workflow_page.click_card_from_wf_page('initial_decision')
+    workflow_page.click_card('initial_decision')
     id_card = InitialDecisionCard(self.getDriver())
     id_card.validate_styles()
     decision = id_card.execute_decision()

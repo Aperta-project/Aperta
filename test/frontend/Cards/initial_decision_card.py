@@ -13,7 +13,7 @@ class InitialDecisionCard(BaseCard):
   """
   Page Object Model for the Initial Decision Card
   """
-  def __init__(self, driver, url_suffix='/'):
+  def __init__(self, driver):
     super(InitialDecisionCard, self).__init__(driver)
 
     #Locators - Instance members
@@ -44,6 +44,10 @@ class InitialDecisionCard(BaseCard):
     self.validate_primary_big_green_button_style(reg_dcn_btn)
 
   def execute_decision(self):
+    """
+    Randomly renders an initial decision of reject or invite, populates the decision letter
+    :return: selected choice
+    """
     choices = ['reject', 'invite']
     decision_letter_input = self._get(self._decision_letter_textarea)
     choice = random.choice(choices)

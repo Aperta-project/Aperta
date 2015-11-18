@@ -150,7 +150,10 @@ class PaperTrackerPage(AuthenticatedPage):
           try:
             assert page_title == db_title, page_title + '-is not equal to-' + db_title + '-'
           except AssertionError:
-            assert page_title.encode('utf8') == db_title, page_title + ' is not equal to ' + db_title
+            try:
+              assert page_title.encode('utf8') == db_title, page_title + ' is not equal to ' + db_title
+            except AssertionError:
+              assert page_title == db_title.encode('utf-8'), page_title + ' is not equal to ' + db_title
         manid = self._get(self._paper_tracker_table_tbody_manid)
         assert '/papers/%s' % manid.text in title.get_attribute('href'), title.get_attribute('href')
         assert int(manid.text) == papers[count][1]

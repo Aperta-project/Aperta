@@ -30,7 +30,7 @@ class AuthorsCardTest(CommonTest):
     dashboard = self.login() if init else DashboardPage(self.getDriver())
     article_name = self.select_preexisting_article(init=False)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.click_card_from_ms_page('authors')
+    manuscript_page.click_card('authors')
     return AuthorsCard(self.getDriver()), article_name
 
   def test_validate_components(self):

@@ -49,14 +49,12 @@ class ApertaPaperTrackerTest(CommonTest):
     login_page.click_sign_in_button()
 
     dashboard_page = DashboardPage(self.getDriver())
-    dashboard_page.click_left_nav()
     dashboard_page.click_paper_tracker_link()
 
     pt_page = PaperTrackerPage(self.getDriver())
     (total_count, journals_list) = pt_page.validate_heading_and_subhead(user_type)
     pt_page.validate_table_presentation_and_function(total_count, journals_list)
-    pt_page.click_left_nav()
-    pt_page.validate_nav_elements(user_type)
+    pt_page.validate_nav_toolbar_elements(user_type)
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

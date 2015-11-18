@@ -12,7 +12,7 @@ from Base.Decorators import MultiBrowserFixture
 from frontend.Cards.authors_card import AuthorsCard
 from Pages.login_page import LoginPage
 from Pages.dashboard import DashboardPage
-from Pages.manuscript_page import ManuscriptPage
+from Pages.manuscript_viewer import ManuscriptViewerPage
 from Base.Resources import login_valid_pw, au_login
 from frontend.common_test import CommonTest
 
@@ -29,8 +29,8 @@ class AuthorsCardTest(CommonTest):
     """Go to the authors card"""
     dashboard = self.login() if init else DashboardPage(self.getDriver())
     article_name = self.select_preexisting_article(init=False)
-    manuscript_page = ManuscriptPage(self.getDriver())
-    manuscript_page.click_authors_card()
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.click_card_from_ms_page('authors')
     return AuthorsCard(self.getDriver()), article_name
 
   def test_validate_components(self):
@@ -40,11 +40,10 @@ class AuthorsCardTest(CommonTest):
     assert header_link.text == title, (header_link.text, title)
     authors_card.validate_styles()
     authors_card.validate_author_card_action()
-    authors_card.click_close_button()
-    manuscript_page = ManuscriptPage(self.getDriver())
-    manuscript_page.logout()
-    authors_card, title = self._go_to_authors_card()
     authors_card.validate_delete_author()
+    authors_card.click_close_button()
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.logout()
 
     return self
 

@@ -30,9 +30,8 @@ class WorkflowPage(AuthenticatedPage):
     self._assess_button = (By.XPATH, "//div[@class='column-content']/div/div//div[contains(., '[A] Reviewer Report')]")
     self._editorial_decision_button = (By.XPATH, "//div[@class='column-content']/div/div//div[contains(., '[A] Editorial Decision')]")
     self._navigation_menu_line = (By.XPATH, ".//div[@class='navigation']/hr")
-    self._editable_label = (By.XPATH, ".//div[@class='control-bar-inner-wrapper']/ul[2]/li/label")
-    self._editable_checkbox = (By.XPATH,
-      ".//div[@class='control-bar-inner-wrapper']/ul[2]/li/label/input")
+    self._editable_label = (By.XPATH, ".//label[@class='control-bar-item']/span")
+    self._editable_checkbox = (By.XPATH, ".//label[@class='control-bar-item']/span/input")
     self._recent_activity_icon = (By.XPATH,
       ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[2]/div/div/*[local-name() = 'svg']/*[local-name() = 'path']")
     self._recent_activity_text = (By.XPATH,
@@ -73,6 +72,9 @@ class WorkflowPage(AuthenticatedPage):
         ".//div[contains(@class, 'delete-card-action-buttons')]/div[2]/button")
     self._register_decision_button = (By.XPATH, ".//a/div[contains(., 'Register Decision')]")
     self._add_card_overlay_columns = (By.CLASS_NAME, 'col-md-5')
+    # Card Locators
+    self._initial_decision_card = (By.XPATH,
+                                   "//div[@class='column-content']/div/div[contains(., 'Initial Decision')]/a/div[2]")
 
     # End of not used elements
 
@@ -84,8 +86,7 @@ class WorkflowPage(AuthenticatedPage):
     # Validate menu elements (title and icon)
     # https://www.pivotaltracker.com/story/show/103343910
     # https://www.pivotaltracker.com/story/show/104018188
-    self.validate_closed_left_nav()
-    assert self._get(self._nav_menu)
+    assert self._get(self._toolbar_items)
     # Right menu items
     # https://www.pivotaltracker.com/story/show/103343910
     # https://www.pivotaltracker.com/story/show/104018188
@@ -274,3 +275,46 @@ class WorkflowPage(AuthenticatedPage):
     assert application_typeface in remove_cancel.value_of_css_property('font-family')
     assert remove_cancel.value_of_css_property('font-size') == '14px'
     return self
+
+  def click_card_from_wf_page(self, cardname):
+    self.set_timeout(1)
+    if cardname == 'cover_letter':
+      card_title = self._get(self._billing_card)
+    elif cardname == 'billing':
+      card_title = self._get(self._cover_letter_card)
+    elif cardname == 'figures':
+      card_title = self._get(self._figures_card)
+    elif cardname == 'authors':
+      card_title = self._get(self._authors_card)
+    elif cardname == 'supporting_info':
+      card_title = self._get(self._supporting_info_card)
+    elif cardname == 'upload_manuscript':
+      card_title = self._get(self._upload_manu_card)
+    elif cardname == 'prq':
+      card_title = self._get(self._prq_card)
+    elif cardname == 'review_candidates':
+      card_title = self._get(self._review_cands_card)
+    elif cardname == 'revise_task':
+      card_title = self._get(self._revise_task_card)
+    elif cardname == 'competing_interests':
+      card_title = self._get(self._competing_ints_card)
+    elif cardname == 'data_availability':
+      card_title = self._get(self._data_avail_card)
+    elif cardname == 'ethics_statement':
+      card_title = self._get(self._ethics_statement_card)
+    elif cardname == 'financial_disclosure':
+      card_title = self._get(self._fin_disclose_card)
+    elif cardname == 'new_taxon':
+      card_title = self._get(self._new_taxon_card)
+    elif cardname == 'reporting_guidelines':
+      card_title = self._get(self._report_guide_card)
+    elif cardname == 'changes_for_author':
+      card_title = self._get(self._cfa_card)
+    elif cardname == 'initial_decision':
+      card_title = self._get(self._initial_decision_card)
+    else:
+      print('Unknown Card')
+      self.restore_timeout()
+      return False
+    card_title.find_element_by_xpath('.//ancestor::a').click()
+    return True

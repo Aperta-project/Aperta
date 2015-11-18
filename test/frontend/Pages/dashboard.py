@@ -65,7 +65,7 @@ class DashboardPage(AuthenticatedPage):
     self._cns_title = (By.CSS_SELECTOR, 'div.overlay-title-text h1')
     self._cns_error_div = (By.CLASS_NAME, 'flash-messages')
     self._cns_error_message = (By.CLASS_NAME, 'flash-message-content')
-    self._cns_title_field = (By.XPATH, './/div[@id="paper-short-title"]/div')
+    self._cns_title_field = (By.XPATH, './/div[@id="new-paper-title"]/div')
     self._cns_manuscript_title_label = (By.CLASS_NAME, 'paper-new-label')
     self._cns_manuscript_title_field = (By.CLASS_NAME, 'content-editable-muted')
     self._cns_manuscript_italic_icon = (By.CLASS_NAME, 'fa-italic')
@@ -326,13 +326,14 @@ class DashboardPage(AuthenticatedPage):
         # Get title of paper from db based on db ordered list of papers, then compare to papers ordered on page.
         title = PgSQL().query('SELECT title FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
         title = self.strip_tags(title)
+        title = title.strip()
         if not title:
           print('Error: No title in db! Illogical, Illogical, Norman Coordinate: Invalid document')
           return False
         # The following two lines are very useful for debugging ordering issues, please leave in place
         # print(title)
         # print(paper.text)
-        assert title == paper.text.encode('utf8'), 'DB: ' + title + ' is not equal to ' + paper.text + ', from page.'
+        assert title == paper.text.encode('utf8'), 'DB: \n' + title + ' is not equal to \n' + paper.text + ', from page.'
         # Sort out paper role display
         paper_roles = PgSQL().query('SELECT role FROM paper_roles '
                                     'INNER JOIN papers ON papers.id = paper_roles.paper_id '
@@ -383,8 +384,6 @@ class DashboardPage(AuthenticatedPage):
     """Click Create new submission button"""
     self._get(self._dashboard_create_new_submission_btn).click()
     return self
-
-  #def click_create_document()
 
   def enter_title_field(self, title):
     """

@@ -69,15 +69,13 @@ class ApertaAdminTest(CommonTest):
     login_page.click_sign_in_button()
 
     dashboard_page = DashboardPage(self.getDriver())
-    dashboard_page.click_left_nav()
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_page_elements_styles_functions(user_type)
     adm_page.validate_search_edit_user(random.choice(user_search))
     adm_page.validate_add_new_journal(user_type)
-    adm_page.click_left_nav()
-    adm_page.validate_nav_elements(user_type)
+    adm_page.validate_nav_toolbar_elements(user_type)
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

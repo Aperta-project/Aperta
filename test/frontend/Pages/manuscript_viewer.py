@@ -8,7 +8,6 @@ NOTE: This POM will be outdated when the Paper Editor is removed.
 import time
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface
 from Base.Resources import affiliation, billing_data
@@ -23,44 +22,77 @@ __author__ = 'sbassi@plos.org'
 
 class ManuscriptViewerPage(AuthenticatedPage):
   """
-  Model an aperta paper editor page
+  Model an aperta paper viewer page
   """
   def __init__(self, driver, url_suffix='/'):
     super(ManuscriptViewerPage, self).__init__(driver, url_suffix)
 
     # Locators - Instance members
+    # Main Viewer Div
+    self._paper_title = (By.ID, 'paper-title')
     self._paper_tracker_title = (By.CLASS_NAME, 'paper-tracker-message')
     self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[4]')
-    self._undo_icon = (By.CLASS_NAME, 'fa-undo')
-    self._repeat_icon = (By.CLASS_NAME, 'fa-repeat')
-    self._type_select = (By.CLASS_NAME, 'switch-type')
-    self._type_paragraph = (By.CLASS_NAME, 'paragraph')
-    self._type_heading1 = (By.CLASS_NAME, 'heading1')
-    self._type_heading2 = (By.CLASS_NAME, 'heading2')
-    self._type_heading3 = (By.CLASS_NAME, 'heading3')
-    self._type_preformatted = (By.CLASS_NAME, 'preformatted')
-    self._type_blockquote = (By.CLASS_NAME, 'blockquote')
-    self._bold_icon = (By.CLASS_NAME, 'fa-bold')
-    self._italic_icon = (By.CLASS_NAME, 'fa-italic')
-    self._link_icon = (By.CLASS_NAME, 'fa-link')
-    self._superscript_icon = (By.CLASS_NAME, 'fa-superscript')
-    self._subscript_icon = (By.CLASS_NAME, 'fa-subscript')
-    self._sc_icon = (By.CLASS_NAME, 'smallCaps')
-    ## ".//div[contains(@class, 'annotations')]/a[6]/span")
-    self._image_icon = (By.CSS_SELECTOR, "i.fa-image")
-    self._table_icon = (By.CLASS_NAME, 'fa-table')
-    self._book_icon = (By.CLASS_NAME, 'fa-book')
-    self._pi_icon = (By.CLASS_NAME, 'createFormula')
-    self._cite_icon = (By.CSS_SELECTOR, 'div.dropdown-toggle')
-    self._diff_div = (By.CSS_SELECTOR, 'div.html-diff')
-    # Download formats
-    self._pdf_link = (By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[3]")
-    self._epub_link = ((By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[2]"))
-    self._docx_link = (By.CLASS_NAME, 'docx')
     self._card = (By.CLASS_NAME, 'card')
-    self._sidebar_submit = (By.ID, 'sidebar-submit-paper')
-    self._submit_confirm = (By.CLASS_NAME, 'button-submit-paper')
-    self._close_after_submit = (By.CLASS_NAME, 'success-close')
+    self._submit_button = (By.ID, 'sidebar-submit-paper')
+    # Main Toolbar items
+    self._tb_versions_link = (By.CLASS_NAME, 'versions-link')
+    self._tb_versions_diff_div = (By.CSS_SELECTOR, 'div.html-diff')
+    self._tb_versions_closer = (By.CLASS_NAME, 'exit-versions')
+    self._tb_collaborators_link = (By.CLASS_NAME, 'contributors-link')
+    self._tb_add_collaborators_label = (By.CLASS_NAME, 'contributors-add')
+    self._tb_collaborator_list_item = (By.CLASS_NAME, 'contributor')
+    self._tb_downloads_link = (By.CSS_SELECTOR, 'div.downloads-link div.control-bar-link-icon')
+    self._tb_dl_pdf_link = (By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[3]")
+    self._tb_dl_epub_link = ((By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[2]"))
+    self._tb_dl_docx_link = (By.CLASS_NAME, 'docx')
+    self._tb_more_link = (By.CLASS_NAME, 'fa-ellipsis-v')
+    self._tb_more_appeal_link = (By.CLASS_NAME, 'appeal-link')
+    self._tb_more_withdraw_link = (By.CLASS_NAME, 'withdraw-link')
+    self._tb_workflow_link = (By.XPATH, "//div[@class='control-bar-inner-wrapper']/a[contains(., 'Go to Workflow')]")
+    # Task List Items
+    self._tl_manuscript_id = (By.CLASS_NAME, 'task-list-doi')
+    self._tl_submit_success_msg = (By.CLASS_NAME, 'task-list')
+    # Manage Collaborators Overlay
+    self._add_collaborators_modal = (By.CLASS_NAME, 'show-collaborators-overlay')
+    self._add_collaborators_modal_header = (By.CLASS_NAME, 'overlay-title-text')
+    self._add_collaborators_modal_support_text =  (By.CLASS_NAME, 'overlay-supporting-text')
+    self._add_collaborators_modal_support_select = (By.CLASS_NAME, 'collaborator-select')
+    self._add_collaborators_modal_cancel = (By.XPATH, "//div[@class='overlay-action-buttons']/a")
+    self._add_collaborators_modal_save = (By.XPATH, "//div[@class='overlay-action-buttons']/button")
+    # Withdraw Manuscript Overlay
+    self._wm_modal = (By.CLASS_NAME, 'overlay--fullscreen')
+    self._wm_exclamation_circle = (By.CLASS_NAME, 'fa-exclamation-circle')
+    self._wm_modal_title = (By.CSS_SELECTOR, 'h1')
+    self._wm_modal_text = (By.CSS_SELECTOR, 'div.paper-withdraw-wrapper p')
+    self._wm_modal_yes = (By.XPATH, '//div[@class="pull-right"]/button[1]')
+    self._wm_modal_no = (By.XPATH, '//div[@class="pull-right"]/button[2]')
+    # Submit Confirmation and Submit Congratulations Overlays (full and initial submit versions)
+    # The overlay close X is universal and defined in authenticated page (self._modal_close)
+    self._so_paper_submit_icon = (By.CLASS_NAME, 'paper-submit-icon')
+    self._so_paper_submit_title_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit h1')
+    self._so_paper_submit_subhead_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit + h5')
+    self._so_paper_title = (By.ID, 'paper-submit-title')
+    self._so_submit_confirm = (By.CLASS_NAME, 'button-submit-paper')
+    self._so_submit_cancel = (By.CSS_SELECTOR, 'div.submit-action-buttons button.button-link')
+    self._so_close_after_submit = (By.CLASS_NAME, 'success-close')
+    # Cards
+    self._billing_card = (By.XPATH, "//div[@id='paper-assigned-tasks']//div[contains(., 'Billing')]")
+    self._cover_letter_card = (By.XPATH, "//div[@id='paper-assigned-tasks']//div[contains(., 'Cover Letter')]")
+    self._review_cands_card = (By.XPATH, "//div[@id='paper-assigned-tasks']//div[contains(., 'Reviewer Candidates')]")
+    self._revise_task_card = (By.XPATH, "//div[@id='paper-assigned-tasks']//div[contains(., 'Revise Task')]")
+    self._cfa_card = (By.XPATH, "//div[@id='paper-assigned-tasks']//div[contains(., 'Changes For Author')]")
+    self._authors_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Authors')]")
+    self._competing_ints_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Competing Interests')]")
+    self._data_avail_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Data Availability')]")
+    self._ethics_statement_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Ethics Statement')]")
+    self._figures_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Figures')]")
+    self._fin_disclose_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Financial Disclosure')]")
+    self._new_taxon_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'New Taxon')]")
+    self._report_guide_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Reporting Guidelines')]")
+    self._supporting_info_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Supporting Info')]")
+    self._upload_manu_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Upload Manuscript')]")
+    self._prq_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Publishing Related Questions')]")
+
 
   # POM Actions
   def validate_page_elements_styles_functions(self, username=''):
@@ -68,7 +100,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     Main method to validate styles and basic functions for all elements
     in the page
     """
-    self._get(self._workflow_link)
+    self._get(self._tb_workflow_link)
     # Check application buttons
     self._check_version_btn_style()
     self._check_collaborator()
@@ -81,21 +113,22 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     Test version button. This test checks styles but not funtion
     """
-    version_btn = self._get(self._version_link)
+    version_btn = self._get(self._tb_versions_link)
     version_btn.click()
-    self._get(self._diff_div)
+    self._get(self._tb_versions_diff_div)
     bar_items = self._gets(self._bar_items)
-    assert 'Now viewing:' in bar_items[0].text
-    assert 'Compare With:' in bar_items[1].text
-    version_btn.click()
+    print([x.text for x in bar_items])
+    assert 'Now viewing:' in bar_items[1].text, bar_items[1].text
+    assert 'Compare With:' in bar_items[2].text, bar_items[2].text
+    self._get(self._tb_versions_closer).click()
 
   def _check_collaborator(self):
     """
     Test collaborator modal.
     """
-    collaborator_btn = self._get(self._collaborators_link)
+    collaborator_btn = self._get(self._tb_collaborators_link)
     collaborator_btn.click()
-    add_collaborators = self._get(self._add_collaborators_label)
+    add_collaborators = self._get(self._tb_add_collaborators_label)
     assert 'Add Collaborators' in add_collaborators.text
     add_collaborators.click()
     self._get(self._add_collaborators_modal)
@@ -122,13 +155,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     Check basic function and style of the downloads buttons.
     """
-    downloads_link = self._get(self._downloads_link)
+    downloads_link = self._get(self._tb_downloads_link)
     downloads_link.click()
-    pdf_link = self._get(self._pdf_link)
+    pdf_link = self._get(self._tb_dl_pdf_link)
     assert 'download.pdf' in pdf_link.get_attribute('href')
-    epub_link = self._get(self._epub_link)
+    epub_link = self._get(self._tb_dl_epub_link)
     assert 'download.epub' in epub_link.get_attribute('href')
-    assert '#' in self._get(self._docx_link).get_attribute('href')
+    assert '#' in self._get(self._tb_dl_docx_link).get_attribute('href')
 
   def _check_recent_activity(self):
     """
@@ -192,26 +225,26 @@ class ManuscriptViewerPage(AuthenticatedPage):
     Check all options inside More button (Appeal and Withdraw).
     Note that Appeal is not implemented yet, so it is not tested.
     """
-    more_btn = self._get(self._more_link)
+    more_btn = self._get(self._tb_more_link)
     more_btn.click()
-    self._get(self._appeal_link)
-    withdraw_link = self._get(self._withdraw_link)
+    self._get(self._tb_more_appeal_link)
+    withdraw_link = self._get(self._tb_more_withdraw_link)
     withdraw_link.click()
-    self._get(self._withdraw_modal)
-    self._get(self._exclamation_circle)
-    modal_title = self._get(self._withdraw_modal_title)
+    self._get(self._wm_modal)
+    self._get(self._wm_exclamation_circle)
+    modal_title = self._get(self._wm_modal_title)
     assert 'Are you sure?' == modal_title.text
     # TODO: Style parametrized due to lack of styleguide for modals
     self.validate_modal_title_style(modal_title, '48px', line_height='52.8px',
                                     font_weight='500', color='rgba(119, 119, 119, 1)')
-    withdraw_modal_text = self._get(self._withdraw_modal_text)
+    withdraw_modal_text = self._get(self._wm_modal_text)
     # TODO: Leave comment out until solved. Pivotal bug#103864752
     #self.validate_application_ptext(withdraw_modal_text)
     assert ('Withdrawing your manuscript will withdraw it from consideration.\n'
             'Please provide your reason for withdrawing this manuscript.' in withdraw_modal_text.text)
-    yes_btn = self._get(self._withdraw_modal_yes)
+    yes_btn = self._get(self._wm_modal_yes)
     assert 'YES, WITHDRAW' == yes_btn.text
-    no_btn = self._get(self._withdraw_modal_no)
+    no_btn = self._get(self._wm_modal_no)
     assert "NO, I'M STILL WORKING" == no_btn.text
     self.validate_link_big_grey_button_style(yes_btn)
     # TODO: Leave comment out until solved. Pivotal bug#103858114
@@ -231,7 +264,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # Time needed to update page and get correct amount of items
     time.sleep(1)
     buttons = self._gets(self._control_bar_right_items)
-    assert self._get(self._workflow_link) if user_buttons == 7 else (len(buttons) == 6)
+    assert self._get(self._tb_workflow_link) if user_buttons == 8 else (len(buttons) == 7), len(buttons)
 
   def complete_card(self, card_name, click_override=False):
     """On a given card, check complete and then close"""
@@ -272,20 +305,100 @@ class ManuscriptViewerPage(AuthenticatedPage):
       billing = BillingCard(self._driver)
       billing.add_billing_data(billing_data)
 
+  def get_paper_title_from_page(self):
+    paper_title = self._get(self._paper_title).text
+    print(paper_title)
+    return paper_title
 
-  def press_submit_btn(self):
+  def click_submit_btn(self):
     """Press the submit button"""
-    self._get(self._sidebar_submit).click()
+    self._get(self._submit_button).click()
 
   def confirm_submit_btn(self):
     """Confirm paper submission"""
-    self._get(self._submit_confirm).click()
+    self._get(self._so_submit_confirm).click()
+
+  def confirm_submit_cancel(self):
+    """Cancel on confirm paper submission"""
+    self._get(self._so_submit_cancel).click()
 
   def close_submit_overlay(self):
-    """Close the submit overlay after confirm paper submition"""
-    self._get(self._close_after_submit).click()
+    """Close the submit overlay after confirm paper submission"""
+    self._so_submit_cancel = (By.CSS_SELECTOR, 'div.submit-action-buttons button.button-link')
+    self._get(self._so_submit_cancel).click()
 
   def click_workflow_lnk(self):
     """Click workflow button"""
-    self._get(self._workflow_link).click()
+    self._get(self._tb_workflow_link).click()
     return self
+
+  def validate_so_overlay_elements_styles(self, type, paper_title):
+    """
+    :param type: full_submit, initial_submit, initial_submit_full, congratulations
+    :return:
+    """
+    self._get(self._modal_close)
+    self._get(self._so_paper_submit_icon)
+    main_head = self._get(self._so_paper_submit_title_text_submit)
+    subhead = self._get(self._so_paper_submit_subhead_text_submit)
+    if type == 'full_submit':
+      assert 'Are you sure?' in main_head.text, main_head.text
+      assert 'You are about to submit the paper' in subhead.text, subhead.text
+    elif type == 'congratulations':
+      assert 'Congratulations' in main_head.text, main_head.text
+      assert 'You\'ve successfully submitted your paper!' in subhead.text, subhead.text
+    if type in ('full_submit', 'initial_submit', 'initial_submit_full'):
+      manuscript_title = self._get(self._so_paper_title)
+      assert paper_title in manuscript_title.text, paper_title + ' vs ' + manuscript_title.text
+      self._get(self._so_submit_confirm)
+    self._get(self._so_submit_cancel)
+
+  def validate_submit_success(self):
+    success_msg = self._get(self._tl_submit_success_msg)
+    assert 'This paper has been submitted.' in success_msg.text, success_msg.text
+
+  def validate_initial_submit_success(self):
+    success_msg = self._get(self._tl_submit_success_msg)
+    assert 'This paper has been submitted.' not in success_msg.text, success_msg.text
+
+  def click_card_from_ms_page(self, cardname):
+    self.set_timeout(1)
+    if cardname == 'cover_letter':
+      card_title = self._get(self._billing_card)
+    elif cardname == 'billing':
+      card_title = self._get(self._cover_letter_card)
+    elif cardname == 'figures':
+      card_title = self._get(self._figures_card)
+    elif cardname == 'authors':
+      card_title = self._get(self._authors_card)
+    elif cardname == 'supporting_info':
+      card_title = self._get(self._supporting_info_card)
+    elif cardname == 'upload_manuscript':
+      card_title = self._get(self._upload_manu_card)
+    elif cardname == 'prq':
+      card_title = self._get(self._prq_card)
+    elif cardname == 'review_candidates':
+      card_title = self._get(self._review_cands_card)
+    elif cardname == 'revise_task':
+      card_title = self._get(self._revise_task_card)
+    elif cardname == 'competing_interests':
+      card_title = self._get(self._competing_ints_card)
+    elif cardname == 'data_availability':
+      card_title = self._get(self._data_avail_card)
+    elif cardname == 'ethics_statement':
+      card_title = self._get(self._ethics_statement_card)
+    elif cardname == 'financial_disclosure':
+      card_title = self._get(self._fin_disclose_card)
+    elif cardname == 'new_taxon':
+      card_title = self._get(self._new_taxon_card)
+    elif cardname == 'reporting_guidelines':
+      card_title = self._get(self._report_guide_card)
+    elif cardname == 'changes_for_author':
+      card_title = self._get(self._cfa_card)
+    else:
+      print('Unknown Card')
+      self.restore_timeout()
+      return False
+    card_title.find_element_by_xpath('.//ancestor::a').click()
+    self.restore_timeout()
+    return True

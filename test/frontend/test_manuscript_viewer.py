@@ -14,7 +14,7 @@ from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.dashboard import DashboardPage
 from frontend.common_test import CommonTest
 
-users = (au_login, rv_login, fm_login, ae_login, he_login, sa_login, oa_login)
+users = (au_login, rv_login, ae_login, he_login, sa_login, oa_login)
 
 @MultiBrowserFixture
 class EditPaperTest(CommonTest):
@@ -45,13 +45,12 @@ class EditPaperTest(CommonTest):
     """
     Validates role aware menus
     """
-    roles = {au_login: 6,
-             rv_login: 6,
-             fm_login: 6,
-             ae_login: 6,
-             he_login: 7,
-             sa_login: 7,
-             oa_login: 7}
+    roles = {au_login: 7,
+             rv_login: 7,
+             ae_login: 7,
+             he_login: 8,
+             sa_login: 8,
+             oa_login: 8}
 
     for user in users:
       print('Logging in as user: %s'%user)

@@ -162,15 +162,18 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
     # NOTA BENE: Despite the options in the overlay including leading and trailing spaces, this must be called stripped
     #    of the same
     # dashboard_page.select_journal_and_type('PLOS Wombat', 'MinimalMMTforCreatetoSubmitAT')
-    dashboard_page.select_journal_and_type('PLOS Wombat', 'KitchenSinkAllCards')
+    dashboard_page.select_journal_and_type('PLOS Wombat', 'Research')
     time.sleep(3)
     doc2upload = random.choice(docx)
     print('Sending document: ' + os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload))
     fn = os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload)
     self._driver.find_element_by_id('upload-files').send_keys(fn)
     dashboard_page.click_upload_button()
+    # Wait for progress spinner
+    # Need to figure out a locator for the spinner and text
+
     # Time needed for iHat conversion.
-    time.sleep(3)
+    time.sleep(5)
 
     # manuscript_page = ManuscriptPage(self.getDriver())
     #

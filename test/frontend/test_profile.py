@@ -29,7 +29,6 @@ class ApertaProfileTest(CommonTest):
   def _go_to_profile(self, init=True):
     """Go to the profile page"""
     dashboard = self.login() if init else DashboardPage(self.getDriver())
-    dashboard.click_left_nav()
     dashboard.click_profile_link()
     return ProfilePage(self.getDriver())
 

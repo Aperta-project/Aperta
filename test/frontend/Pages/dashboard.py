@@ -10,7 +10,6 @@ import time
 import uuid
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 from Base.PostgreSQL import PgSQL
 from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface, tahi_green
@@ -66,26 +65,26 @@ class DashboardPage(AuthenticatedPage):
     self._cns_title = (By.CSS_SELECTOR, 'div.overlay-title-text h1')
     self._cns_error_div = (By.CLASS_NAME, 'flash-messages')
     self._cns_error_message = (By.CLASS_NAME, 'flash-message-content')
-    self._cns_title_field = (By.XPATH, './/div[@id="paper-short-title"]/div')
+    self._cns_title_field = (By.XPATH, './/div[@id="new-paper-title"]/div')
     self._cns_manuscript_title_label = (By.CLASS_NAME, 'paper-new-label')
     self._cns_manuscript_title_field = (By.CLASS_NAME, 'content-editable-muted')
     self._cns_manuscript_italic_icon = (By.CLASS_NAME, 'fa-italic')
     self._cns_manuscript_superscript_icon = (By.CLASS_NAME, 'fa-superscript')
     self._cns_manuscript_subscript_icon = (By.CLASS_NAME, 'fa-subscript')
-    self._cns_journal_chooser = (By.XPATH, './/div[@class="inner-content"]/div[2]/label')
+    self._cns_journal_chooser_label = (By.XPATH, './/div[@class="inner-content"]/div[2]/label')
+    self._cns_journal_chooser = (By.CSS_SELECTOR, 'div.paper-new-journal-select div.select-box-element')
+    self._cns_opened_option_dropdown = (By.CSS_SELECTOR, 'div.select-box-list')
+    self._cns_option_dropdown_item = (By.CSS_SELECTOR, 'div.select-box-item')
+    self._cns_paper_type_chooser_label = (By.XPATH, './/div[@class="inner-content"]/div[3]/label')
+    self._cns_paper_type_chooser = (By.CSS_SELECTOR, 'div.paper-new-paper-type-select div.select-box-element')
     self._cns_journal_chooser_dd = (By.CLASS_NAME, 'paper-new-journal-select')
     self._cns_papertype_chooser_dd = (By.CLASS_NAME, 'paper-new-paper-type-select')
-
     self._cns_journal_chooser_active = (By.CLASS_NAME, 'select-box-element--active')
-    self._cns_paper_type_chooser = (By.XPATH, './/div[@class="inner-content"]/div[3]/label')
-
     self._cns_chooser_chosen = (By.CLASS_NAME, 'select-box-item')
     self._cns_chooser_dropdown_arrow = (By.CLASS_NAME, 'select2-arrow')
     self._cns_upload_document = (By.CLASS_NAME, 'fileinput-button')
     self._upload_btn = (By.CLASS_NAME, 'paper-new-upload-button')
 
-    self._cns_cancel = (By.CLASS_NAME, 'button-link')
-    self._cns_create = (By.CLASS_NAME, 'button-primary')
     self._submitted_papers = (By.CLASS_NAME, 'dashboard-paper-title')
     # First article
     self._first_paper = (By.CSS_SELECTOR, 'div.table-responsive a')
@@ -327,13 +326,14 @@ class DashboardPage(AuthenticatedPage):
         # Get title of paper from db based on db ordered list of papers, then compare to papers ordered on page.
         title = PgSQL().query('SELECT title FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
         title = self.strip_tags(title)
+        title = title.strip()
         if not title:
           print('Error: No title in db! Illogical, Illogical, Norman Coordinate: Invalid document')
           return False
         # The following two lines are very useful for debugging ordering issues, please leave in place
         # print(title)
         # print(paper.text)
-        assert title == paper.text.encode('utf8'), 'DB: ' + title + ' is not equal to ' + paper.text + ', from page.'
+        assert title == paper.text.encode('utf8'), 'DB: \n' + title + ' is not equal to \n' + paper.text + ', from page.'
         # Sort out paper role display
         paper_roles = PgSQL().query('SELECT role FROM paper_roles '
                                     'INNER JOIN papers ON papers.id = paper_roles.paper_id '
@@ -385,8 +385,6 @@ class DashboardPage(AuthenticatedPage):
     self._get(self._dashboard_create_new_submission_btn).click()
     return self
 
-  #def click_create_document()
-
   def enter_title_field(self, title):
     """
     Enter title for the publication
@@ -400,35 +398,29 @@ class DashboardPage(AuthenticatedPage):
   def click_upload_button(self):
     """Click create button"""
     self._get(self._upload_btn).click()
-    return self
 
-  def click_create_button(self):
-    """Click create button"""
-    self._get(self._create_button).click()
-    return self
+  def close_cns_overlay(self):
+    """Click X link"""
+    self._get(self._cns_closer).click()
+    return
 
-  def click_cancel_button(self):
-    """Click cancel button"""
-    self._get(self._create_button).click()
-    return self
-
-  def select_journal(self, jtitle='Assess', jtype='Research'):
+  def select_journal_and_type(self, journal, type):
     """
     Select a journal with its type
-    jtitle: Title of the journal
-    jtype: Journal type
+    journal: Title of the journal
+    type: Manuscript type
     """
     div = self._get(self._cns_journal_chooser_dd)
     div.find_element_by_class_name('select-box-element').click()
     for item in self._gets((By.CLASS_NAME, 'select-box-item')):
-      if item.text == jtitle:
+      if item.text == journal:
         item.click()
         time.sleep(1)
         break
     div = self._get(self._cns_papertype_chooser_dd)
     div.find_element_by_class_name('select-box-element').click()
     for item in self._gets((By.CLASS_NAME, 'select-box-item')):
-      if item.text == jtype:
+      if item.text == type:
         item.click()
         time.sleep(2)
         break
@@ -535,10 +527,14 @@ class DashboardPage(AuthenticatedPage):
     self._get(self._cns_manuscript_italic_icon)
     self._get(self._cns_manuscript_superscript_icon)
     self._get(self._cns_manuscript_subscript_icon)
+    journal_chooser_label = self._get(self._cns_journal_chooser_label)
     journal_chooser = self._get(self._cns_journal_chooser)
-    assert journal_chooser.text == 'What journal are you submitting to?'
+    assert 'What journal are you submitting to?' in journal_chooser_label.text, journal_chooser_label.text
+    assert 'Select a journal' in journal_chooser.text, journal_chooser.text
+    paper_type_chooser_label = self._get(self._cns_paper_type_chooser_label)
     paper_type_chooser = self._get(self._cns_paper_type_chooser)
-    assert paper_type_chooser.text == "Choose the type of paper you're submitting"
+    assert "Choose the type of paper you're submitting" in paper_type_chooser_label.text, paper_type_chooser_label.text
+    assert "Select a paper type" in paper_type_chooser.text, paper_type_chooser.text
     self._get(self._upload_btn)
     fn = '../assets/docs/sample.docx'
     self._driver.execute_script("$('#upload-files').fileupload('add', {files:['%s']})" % fn)

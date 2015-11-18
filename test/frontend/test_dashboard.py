@@ -81,8 +81,7 @@ class ApertaDashboardTest(CommonTest):
     # The dashboard navigation elements will change based on a users permissions
     # Author gets Close, Title, Profile Link with Image, Dashboard Link, Signout Link, separator, Feedback Link
     #
-    dashboard_page.click_left_nav()
-    dashboard_page.validate_nav_elements(user_type)
+    dashboard_page.validate_nav_toolbar_elements(user_type)
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

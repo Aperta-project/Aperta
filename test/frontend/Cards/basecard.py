@@ -35,6 +35,10 @@ class BaseCard(AuthenticatedPage):
     self._bottom_close_button = (By.XPATH, '//div[@class="overlay-footer-content"]/a')
 
   # Common actions for all cards
+  def click_completed_checkbox(self):
+    """Click completed checkbox"""
+    self._get(self._completed_check).click()
+
   def click_close_button(self):
     """Click close button"""
     self._get(self._close_button).click()
@@ -108,9 +112,13 @@ class BaseCard(AuthenticatedPage):
     manuscript_icon = self._get(self._manuscript_icon)
     icon_svg = manuscript_icon.find_element_by_xpath(
       "//*[local-name() = 'path']").get_attribute('d')
-    assert icon_svg == ('M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,'
-      '10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28'
-      ',14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,22,28,22z')
+    assert icon_svg == ('M-171.3,403.5c-2.4,0-4.5,1.4-5.5,3.5c0,0-0.1,0-0.1,0h-9.9l-6.5-17.2  '
+                        'c-0.5-1.2-1.7-2-3-1.9c-1.3,0.1-2.4,1-2.7,2.3l-4.3,'
+                        '18.9l-4-43.4c-0.1-1.4-1.2-2.5-2.7-2.7c-1.4-0.1-2.7,0.7-3.2,2.1l-12.5,41.6  '
+                        'h-16.2c-1.6,0-3,1.3-3,3c0,1.6,1.3,3,3,3h18.4c1.3,0,2.5-0.9,2.9-2.1l8.7-29l4.3,46.8c0.1,'
+                        '1.5,1.3,2.6,2.8,2.7c0.1,0,0.1,0,0.2,0  c1.4,0,2.6-1,2.9-2.3l6.2-27.6l3.7,9.8c0.4,1.2,1.5,'
+                        '1.9,2.8,1.9h11.9c0.2,0,0.3-0.1,0.5-0.1c1.1,1.7,3,2.8,5.1,2.8  c3.4,0,6.1-2.7,6.1-6.1C-165.3,'
+                        '406.2-168,403.5-171.3,403.5z'), icon_svg
     # Close btn
     close_btn = self._get(self._close_button)
     self.validate_secondary_big_green_button_style(close_btn)

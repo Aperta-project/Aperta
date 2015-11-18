@@ -79,10 +79,7 @@ class ProfilePage(AuthenticatedPage):
   def validate_initial_page_elements_styles(self, username):
     """Validate initial page elements styles of Profile page"""
     # Validate menu elements (title and icon)
-    self.click_left_nav()
-    self.validate_nav_elements(username)
-    # Close nav bar
-    self.click_nav_close()
+    self.validate_nav_toolbar_elements(username)
     name_title = self._get(self._profile_name_title)
     assert 'First and last name:' in name_title.text
     self.validate_profile_title_style(name_title)

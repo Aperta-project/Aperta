@@ -30,17 +30,6 @@ class WorkflowPage(AuthenticatedPage):
     self._assess_button = (By.XPATH, "//div[@class='column-content']/div/div//div[contains(., '[A] Reviewer Report')]")
     self._editorial_decision_button = (By.XPATH, "//div[@class='column-content']/div/div//div[contains(., '[A] Editorial Decision')]")
     self._navigation_menu_line = (By.XPATH, ".//div[@class='navigation']/hr")
-    self._editable_label = (By.XPATH, ".//div[@class='control-bar-inner-wrapper']/ul[2]/li/label")
-    self._editable_checkbox = (By.XPATH,
-      ".//div[@class='control-bar-inner-wrapper']/ul[2]/li/label/input")
-    self._recent_activity_icon = (By.XPATH,
-      ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[2]/div/div/*[local-name() = 'svg']/*[local-name() = 'path']")
-    self._recent_activity_text = (By.XPATH,
-      ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[2]/div/div[2]")
-    self._discussions_icon = (By.XPATH,
-      ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[3]/a/div/span[contains(@class, 'fa-comment')]")
-    self._discussions_text = (By.XPATH,
-      ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[3]/a")
     self._manuscript_icon = (By.XPATH,
       ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div/*[local-name() = 'svg']/*[local-name() = 'path']")
     self._manuscript_link = (By.XPATH, "//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/a")
@@ -73,6 +62,9 @@ class WorkflowPage(AuthenticatedPage):
         ".//div[contains(@class, 'delete-card-action-buttons')]/div[2]/button")
     self._register_decision_button = (By.XPATH, ".//a/div[contains(., 'Register Decision')]")
     self._add_card_overlay_columns = (By.CLASS_NAME, 'col-md-5')
+    # Card Locators
+    self._initial_decision_card = (By.XPATH,
+                                   "//div[@class='column-content']/div/div[contains(., 'Initial Decision')]/a/div[2]")
 
     # End of not used elements
 
@@ -84,8 +76,7 @@ class WorkflowPage(AuthenticatedPage):
     # Validate menu elements (title and icon)
     # https://www.pivotaltracker.com/story/show/103343910
     # https://www.pivotaltracker.com/story/show/104018188
-    self.validate_closed_left_nav()
-    assert self._get(self._nav_menu)
+    assert self._get(self._toolbar_items)
     # Right menu items
     # https://www.pivotaltracker.com/story/show/103343910
     # https://www.pivotaltracker.com/story/show/104018188

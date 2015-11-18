@@ -10,7 +10,9 @@ __author__ = 'jgray@plos.org'
 from selenium.webdriver.common.by import By
 
 from Base.PlosPage import PlosPage
+from Base.PostgreSQL import PgSQL
 from Base.Resources import fm_login, oa_login, sa_login
+
 
 # Variable definitions
 # We are in process of migrating fonts in the interface, until this is deployed to lean, we can
@@ -43,40 +45,32 @@ class AuthenticatedPage(PlosPage):
     super(AuthenticatedPage, self).__init__(driver, url_suffix)
 
     # Locators - Instance members
-    # Navigation Menu Locators
-    self._nav_toggle = (By.CLASS_NAME, 'navigation-toggle')
-    self._nav_close = (By.CLASS_NAME, 'navigation-close')
-    self._nav_title = (By.CLASS_NAME, 'navigation-title')
-    self._nav_profile_link = (By.CSS_SELECTOR, 'div.navigation a[href="/profile"]')
-    self._nav_profile_img = (By.CSS_SELECTOR, 'div.navigation a[href="/profile"] img')
-    self._nav_dashboard_link = (By.CSS_SELECTOR, 'div.navigation a[href="/"]')
-    self._nav_flowmgr_link = (By.CSS_SELECTOR, 'div.navigation a[href="/flow_manager"]')
-    self._nav_paper_tracker_link = (By.CSS_SELECTOR, 'div.navigation a[href="/paper_tracker"]')
-    self._nav_admin_link = (By.CSS_SELECTOR, 'div.navigation a[href="/admin"]')
-    self._nav_signout_link = (By.CSS_SELECTOR, 'div.navigation > a')
-    self._nav_feedback_link = (By.CLASS_NAME, 'navigation-item-feedback')
-    self._nav_hamburger_icon = (By.XPATH,
-                                "//div[@class='navigation-toggle']/*[local-name() = 'svg']/*[local-name() = 'path']")
-    # Icons on the top right
-    self._nav_menu = (By.CLASS_NAME, 'navigation')
-    self._version_link = (By.CLASS_NAME, 'versions-link')
-    self._collaborators_link = (By.CLASS_NAME, 'contributors-link')
-    self._downloads_link = (By.XPATH, ".//div[contains(@class, 'downloads-link')]/div")
+    # Navigation toolbar Locators
+    self._nav_toolbar = (By.CLASS_NAME, 'main-nav')
+    self._nav_title = (By.CLASS_NAME, 'main-nav-item-app-name')
+    self._nav_dashboard_link = (By.CSS_SELECTOR, 'div.main-nav-items a[href="/"]')
+    self._nav_admin_link = (By.CSS_SELECTOR, 'div.main-nav-items a[href="/admin"]')
+    self._nav_flowmgr_link = (By.CSS_SELECTOR, 'div.main-nav-items a[href="/flow_manager"]')
+    self._nav_paper_tracker_link = (By.CSS_SELECTOR, 'div.main-nav-items a[href="/paper_tracker"]')
+    self._nav_profile_menu_toggle = (By.ID, 'profile-dropdown-menu')
+    self._nav_profile_img = (By.CSS_SELECTOR, 'span.main-nav-item img')
+    self._nav_profile_text = (By.CLASS_NAME, 'profile-dropdown-menu-text')
+    self._nav_profile_link = (By.CSS_SELECTOR, "ul.dropdown-menu li a[href='/profile']")
+    self._nav_signout_link = (By.CSS_SELECTOR, "ul.dropdown-menu li a[href='/users/sign_out']")
+    self._nav_feedback_link = (By.CSS_SELECTOR, "ul.dropdown-menu li a[href='#']")
+    self._nav_hamburger_icon = (By.CLASS_NAME,'fa-list-ul')
+    # Global toolbar Icons
+    self._toolbar_items = (By.CLASS_NAME, 'control-bar-inner-wrapper')
+    self._editable_label = (By.CSS_SELECTOR, 'label.control-bar-item')
+    self._editable_checkbox = (By.CSS_SELECTOR, 'label.control-bar-item span input')
     self._recent_activity = (By.CLASS_NAME, 'activity-link')
+    self._recent_activity_label = (By.CSS_SELECTOR, 'div.control-bar-link')
     self._discussion_link = (By.CLASS_NAME, 'discussions-link')
-    self._workflow_link = (By.CLASS_NAME, 'workflow-link')
-    self._more_link = (By.CLASS_NAME, 'more-link')
+    self._discussions_icon = (By.CSS_SELECTOR, 'a.control-bar-item--last div')
+    self._discussions_label = (By.CSS_SELECTOR, 'div.control-bar-item + a.control-bar-item')
     # TODO: Change this when APERTA-5531 is completed
-    self._control_bar_right_items = (By.XPATH, "//div[@class='control-bar-inner-wrapper']/ul[2]/li")
-
-    self._bar_items = (By.CLASS_NAME, 'bar-item')
-    self._add_collaborators_label = (By.CLASS_NAME, 'contributors-add')
-    self._add_collaborators_modal = (By.CLASS_NAME, 'show-collaborators-overlay')
-    self._add_collaborators_modal_header = (By.CLASS_NAME, 'overlay-title-text')
-    self._add_collaborators_modal_support_text =  (By.CLASS_NAME, 'overlay-supporting-text')
-    self._add_collaborators_modal_support_select = (By.CLASS_NAME, 'collaborator-select')
-    self._add_collaborators_modal_cancel = (By.XPATH, "//div[@class='overlay-action-buttons']/a")
-    self._add_collaborators_modal_save = (By.XPATH, "//div[@class='overlay-action-buttons']/button")
+    self._control_bar_right_items = (By.CLASS_NAME, 'control-bar-item')
+    self._bar_items = (By.XPATH, "//div[@id='paper-container']/div[@id='versioning-bar']/div[@class='bar-item']")
     self._modal_close = (By.CLASS_NAME, 'overlay-close-x')
     self._recent_activity_modal = (By.CLASS_NAME, 'activity-overlay')
     self._recent_activity_modal_title = (By.CSS_SELECTOR, 'h1.feedback-overlay-thanks')
@@ -88,59 +82,47 @@ class AuthenticatedPage(PlosPage):
     self._create_topic_btn = (By.CSS_SELECTOR, 'div.discussions-show-content button')
     self._create_topic_cancel = (By.CSS_SELECTOR, 'span.sheet-toolbar-button')
     self._sheet_close_x = (By.CLASS_NAME, 'sheet-close-x')
-    # Inside more button
-    self._appeal_link = (By.CLASS_NAME, 'appeal-link')
-    self._withdraw_link = (By.CLASS_NAME, 'withdraw-link')
-    self._withdraw_modal = (By.CLASS_NAME, 'overlay--fullscreen')
-    self._exclamation_circle = (By.CLASS_NAME, 'fa-exclamation-circle')
-    self._withdraw_modal_title = (By.CSS_SELECTOR, 'h1')
-    self._withdraw_modal_text = (By.CSS_SELECTOR, 'div.paper-withdraw-wrapper p')
-    self._withdraw_modal_yes = (By.XPATH, '//div[@class="pull-right"]/button[1]')
-    self._withdraw_modal_no = (By.XPATH, '//div[@class="pull-right"]/button[2]')
+    # Flash Messages
+    self._flash_success_msg = (By.CSS_SELECTOR, 'div.flash-message--success div.flash-message-content')
+    self._flash_closer = (By.CLASS_NAME, 'flash-message-remove')
+    # Cards - placeholder locators - these are over-ridden by definitions in the workflow and manuscript_viewer pages
+    self._billing_card = None
+    self._cover_letter_card = None
+    self._review_cands_card = None
+    self._revise_task_card = None
+    self._cfa_card = None
+    self._authors_card = None
+    self._competing_ints_card = None
+    self._data_avail_card = None
+    self._ethics_statement_card = None
+    self._figures_card = None
+    self._fin_disclose_card = None
+    self._new_taxon_card = None
+    self._report_guide_card = None
+    self._supporting_info_card = None
+    self._upload_manu_card = None
+    self._prq_card = None
+    self._initial_decision_card = None
 
-        # active
 
   # POM Actions
-  def click_left_nav(self):
-    """Click left navigation"""
-    hamburger_icon = self._get(self._nav_hamburger_icon)
-    assert hamburger_icon.get_attribute('d') == ('M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.8'
-      '96,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0'
-      '.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2'
-      '  S29.104,22,28,22z')
-    self._get(self._nav_toggle).click()
+  def click_profile_nav(self):
+    """Click profile navigation"""
+    profile_menu_toggle = self._get(self._nav_profile_menu_toggle)
+    profile_menu_toggle.click()
 
-  def validate_closed_left_nav(self):
-    """
-    Validate left navigation element in its rest state
-    No validation for this element. Bug#105161900
-    """
-    left_nav = self._get(self._nav_toggle)
-    assert left_nav.text == 'PLOS', left_nav.text
-    assert left_nav.value_of_css_property('color') == 'rgba(57, 163, 41, 1)', \
-      left_nav.value_of_css_property('color')
-    assert application_typeface in left_nav.value_of_css_property('font-family'), \
-      application_typeface
-    assert left_nav.value_of_css_property('font-size') == '24px', \
-      left_nav.value_of_css_property('font-size')
-    assert left_nav.value_of_css_property('font-weight') == '700', \
-      left_nav.value_of_css_property('font-weight')
-    assert left_nav.value_of_css_property('text-transform') == 'uppercase', \
-      left_nav.value_of_css_property('text-transform')
-
-
-  def validate_nav_elements(self, permissions):
+  def validate_nav_toolbar_elements(self, permissions):
     """
     Validates the appearance of elements in the navigation menu for
     every logged in page
     :param permissions: username
     """
     elevated = [fm_login, sa_login]
-    self._get(self._nav_close)
     self._get(self._nav_title)
-    self._get(self._nav_profile_link)
     self._get(self._nav_profile_img)
     self._get(self._nav_dashboard_link)
+    self.click_profile_nav()
+    self._get(self._nav_profile_link)
     self._get(self._nav_signout_link)
     self._get(self._nav_feedback_link)
     # Must have flow mgr, admin or superadmin
@@ -155,97 +137,185 @@ class AuthenticatedPage(PlosPage):
   def validate_wf_top_elements(self):
     """Validate styles of elements that are in the top menu from workflow"""
     editable = self._get(self._editable_label)
-    assert editable.text == 'EDITABLE'
-    assert editable.value_of_css_property('font-size') == '10px'
-    assert editable.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-    assert editable.value_of_css_property('font-weight') == '700'
-    assert application_typeface in editable.value_of_css_property('font-family')
-    assert editable.value_of_css_property('text-transform') == 'uppercase'
-    assert editable.value_of_css_property('line-height') == '20px'
-    assert editable.value_of_css_property('text-align') == 'center'
+    assert editable.text.lower() == 'editable', editable.text
+    # The following block needs to be moved into a standardized style validation in authenticated_page.py
+    # Further a bug should be filed to note the lack of any definition of these elements in a style_guide of any kind
+    # assert editable.value_of_css_property('font-size') == '10px'
+    # assert editable.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    # assert editable.value_of_css_property('font-weight') == '700'
+    # assert application_typeface in editable.value_of_css_property('font-family')
+    # assert editable.value_of_css_property('text-transform') == 'uppercase'
+    # assert editable.value_of_css_property('line-height') == '20px'
+    # assert editable.value_of_css_property('text-align') == 'center'
     ec = self._get(self._editable_checkbox)
     assert ec.get_attribute('type') == 'checkbox'
     #assert ec.value_of_css_property('color') in ('rgba(49, 55, 57, 1)', 'rgba(60, 60, 60, 1)')
-    assert ec.value_of_css_property('font-size') == '10px'
-    assert ec.value_of_css_property('font-weight') == '700'
-    recent_activity_icon = self._get(self._recent_activity_icon)
-    assert recent_activity_icon.get_attribute('d') == ('M-171.3,403.5c-2.4,0-4.5,1.4-5.5,3.5c0,'
-                '0-0.1,0-0.1,0h-9.9l-6.5-17.2  '
-                'c-0.5-1.2-1.7-2-3-1.9c-1.3,0.1-2.4,1-2.7,2.3l-4.3,18.9l-4-43.4c-0.1-1'
-                '.4-1.2-2.5-2.7-2.7c-1.4-0.1-2.7,0.7-3.2,2.1l-12.5,41.6  h-16.2c-1.6,0'
-                '-3,1.3-3,3c0,1.6,1.3,3,3,3h18.4c1.3,0,2.5-0.9,2.9-2.1l8.7-29l4.3,46.8'
-                'c0.1,1.5,1.3,2.6,2.8,2.7c0.1,0,0.1,0,0.2,0  c1.4,0,2.6-1,2.9-2.3l6.2-'
-                '27.6l3.7,9.8c0.4,1.2,1.5,1.9,2.8,1.9h11.9c0.2,0,0.3-0.1,0.5-0.1c1.1,1'
-                '.7,3,2.8,5.1,2.8  c3.4,0,6.1-2.7,6.1-6.1C-165.3,406.2-168,403.5-171.3,403.5z')
-    assert recent_activity_icon.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-    recent_activity_text = self._get(self._recent_activity_text)
+    # assert ec.value_of_css_property('font-size') == '10px'
+    # assert ec.value_of_css_property('font-weight') == '700'
+    # recent_activity_icon = self._get(self._recent_activity_icon)
+    # assert recent_activity_icon.get_attribute('d') == ('M-171.3,403.5c-2.4,0-4.5,1.4-5.5,3.5c0,'
+    #             '0-0.1,0-0.1,0h-9.9l-6.5-17.2  '
+    #             'c-0.5-1.2-1.7-2-3-1.9c-1.3,0.1-2.4,1-2.7,2.3l-4.3,18.9l-4-43.4c-0.1-1'
+    #             '.4-1.2-2.5-2.7-2.7c-1.4-0.1-2.7,0.7-3.2,2.1l-12.5,41.6  h-16.2c-1.6,0'
+    #             '-3,1.3-3,3c0,1.6,1.3,3,3,3h18.4c1.3,0,2.5-0.9,2.9-2.1l8.7-29l4.3,46.8'
+    #             'c0.1,1.5,1.3,2.6,2.8,2.7c0.1,0,0.1,0,0.2,0  c1.4,0,2.6-1,2.9-2.3l6.2-'
+    #             '27.6l3.7,9.8c0.4,1.2,1.5,1.9,2.8,1.9h11.9c0.2,0,0.3-0.1,0.5-0.1c1.1,1'
+    #             '.7,3,2.8,5.1,2.8  c3.4,0,6.1-2.7,6.1-6.1C-165.3,406.2-168,403.5-171.3,403.5z')
+    # assert recent_activity_icon.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    recent_activity_text = self._get(self._recent_activity_label)
     assert recent_activity_text
-    assert recent_activity_text.text, 'Recent Activity'
-    assert recent_activity_text.value_of_css_property('font-size') == '10px'
-    assert recent_activity_text.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-    assert recent_activity_text.value_of_css_property('font-weight') == '700'
-    assert application_typeface in recent_activity_text.value_of_css_property('font-family')
-    assert recent_activity_text.value_of_css_property('text-transform') == 'uppercase'
-    assert recent_activity_text.value_of_css_property('line-height') == '20px'
-    assert recent_activity_text.value_of_css_property('text-align') == 'center'
+    assert 'Recent Activity' in recent_activity_text.text, recent_activity_text.text
+    # assert recent_activity_text.value_of_css_property('font-size') == '10px'
+    # assert recent_activity_text.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    # assert recent_activity_text.value_of_css_property('font-weight') == '700'
+    # assert application_typeface in recent_activity_text.value_of_css_property('font-family')
+    # assert recent_activity_text.value_of_css_property('text-transform') == 'uppercase'
+    # assert recent_activity_text.value_of_css_property('line-height') == '20px'
+    # assert recent_activity_text.value_of_css_property('text-align') == 'center'
     discussions_icon = self._get(self._discussions_icon)
     assert discussions_icon
-    assert discussions_icon.value_of_css_property('font-family') == 'FontAwesome'
-    assert discussions_icon.value_of_css_property('font-size') == '16px'
-    assert discussions_icon.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
-    assert discussions_icon.value_of_css_property('font-weight') == '400'
-    assert discussions_icon.value_of_css_property('text-transform') == 'uppercase'
-    assert discussions_icon.value_of_css_property('font-style') == 'normal'
-    discussions_text = self._get(self._discussions_text)
-    assert discussions_text
-    assert discussions_text.text == 'DISCUSSIONS'
-
-
-  def click_nav_close(self):
-    """Click sign out link"""
-    self._get(self._nav_close).click()
-    return self
+    # assert discussions_icon.value_of_css_property('font-family') == 'FontAwesome'
+    # assert discussions_icon.value_of_css_property('font-size') == '16px'
+    # assert discussions_icon.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
+    # assert discussions_icon.value_of_css_property('font-weight') == '400'
+    # assert discussions_icon.value_of_css_property('text-transform') == 'uppercase'
+    # assert discussions_icon.value_of_css_property('font-style') == 'normal'
+    discussions_label = self._get(self._discussions_label)
+    assert discussions_label
+    assert discussions_label.text.lower() == 'discussions', discussions_label.text
 
   def click_profile_link(self):
-    """Click sign out link"""
+    """Click nav toolbar profile link"""
+    self.click_profile_nav()
     self._get(self._nav_profile_link).click()
     return self
 
   def click_dashboard_link(self):
-    """Click sign out link"""
+    """Click nav toolbar dashboard link"""
     self._get(self._nav_dashboard_link).click()
     return self
 
   def click_flow_mgr_link(self):
-    """Click sign out link"""
+    """Click nav toolbar flow manager link"""
     self._get(self._nav_flowmgr_link).click()
     return self
 
   def click_paper_tracker_link(self):
-    """Click sign out link"""
+    """Click nav toolbar paper tracker link"""
     self._get(self._nav_paper_tracker_link).click()
     return self
 
   def click_admin_link(self):
-    """Click sign out link"""
+    """Click nav toolbar admin link"""
     self._get(self._nav_admin_link).click()
     return self
 
   def click_sign_out_link(self):
-    """Click sign out link"""
+    """Click nav toolbar sign out link"""
+    self.click_profile_nav()
     self._get(self._nav_signout_link).click()
     return self
 
   def click_feedback_link(self):
-    """Click sign out link"""
+    """Click nav toolbar feedback link"""
+    self.click_profile_nav()
     self._get(self._nav_feedback_link).click()
     return self
+
+  def get_current_url(self):
+    """
+    Returns the url of the current page
+    :return: url
+    """
+    url = self._driver.current_url
+    return url
 
   def logout(self):
     """Logout from any page"""
     url = self._driver.current_url
     signout_url = url.split('/')[0]+'//'+url.split('/')[2]+'/users/sign_out'
     self._driver.get(signout_url)
+
+  def validate_ihat_conversions_success(self):
+    """
+    Validate ihat conversion success
+    """
+    ihat_msg = self._get(self._flash_success_msg)
+    assert 'Finished loading Word file.' in ihat_msg.text, ihat_msg.text
+
+  def close_flash_message(self):
+    """
+    Close any type of flash message: error, info or success
+    :return: void function
+    """
+    self._get(self._flash_closer).click()
+
+  @staticmethod
+  def get_db_submission_data(manu_id):
+    """
+    Provided a manuscript ID, queries the database for current publishing_state, gradual_engagement state, and any
+      submitted_at date/time object if present
+    :param manu_id: ID of paper to query
+    :return: a tuple
+    """
+    submission_data = PgSQL().query('SELECT publishing_state, gradual_engagement, submitted_at '
+                                    'FROM papers '
+                                    'WHERE id = %s;', (manu_id,))
+    return submission_data
+
+  def click_card(self, cardname):
+    """
+    Passed a card name, opens the relevant card
+    :param cardname: any one of: cover_letter, billing, figures, authors, supporting_info, upload_manuscript, prq,
+        review_candidates, revise_task, competing_interests, data_availability, ethics_statement, financial_disclosure,
+        new_taxon, reporting_guidelines, changes_for_author
+    NOTE: this covers only the author facing cards, with the exception of initial_decision
+    NOTE also that the locators for these are specifically defined within the scope of the manuscript_viewer or
+        workflow page
+    :return: True or False, if cardname is unknown.
+    """
+    self.set_timeout(1)
+    if cardname == 'cover_letter':
+      card_title = self._get(self._billing_card)
+    elif cardname == 'billing':
+      card_title = self._get(self._cover_letter_card)
+    elif cardname == 'figures':
+      card_title = self._get(self._figures_card)
+    elif cardname == 'authors':
+      card_title = self._get(self._authors_card)
+    elif cardname == 'supporting_info':
+      card_title = self._get(self._supporting_info_card)
+    elif cardname == 'upload_manuscript':
+      card_title = self._get(self._upload_manu_card)
+    elif cardname == 'prq':
+      card_title = self._get(self._prq_card)
+    elif cardname == 'review_candidates':
+      card_title = self._get(self._review_cands_card)
+    elif cardname == 'revise_task':
+      card_title = self._get(self._revise_task_card)
+    elif cardname == 'competing_interests':
+      card_title = self._get(self._competing_ints_card)
+    elif cardname == 'data_availability':
+      card_title = self._get(self._data_avail_card)
+    elif cardname == 'ethics_statement':
+      card_title = self._get(self._ethics_statement_card)
+    elif cardname == 'financial_disclosure':
+      card_title = self._get(self._fin_disclose_card)
+    elif cardname == 'new_taxon':
+      card_title = self._get(self._new_taxon_card)
+    elif cardname == 'reporting_guidelines':
+      card_title = self._get(self._report_guide_card)
+    elif cardname == 'changes_for_author':
+      card_title = self._get(self._cfa_card)
+    elif cardname == 'initial_decision':
+      card_title = self._get(self._initial_decision_card)
+    else:
+      print('Unknown Card')
+      self.restore_timeout()
+      return False
+    card_title.find_element_by_xpath('.//ancestor::a').click()
+    self.restore_timeout()
+    return True
 
 
   # Style Validations

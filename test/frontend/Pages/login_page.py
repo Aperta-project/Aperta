@@ -32,8 +32,8 @@ class LoginPage(AuthenticatedPage):
     self._alert_text = (By.CLASS_NAME, 'auth-flash--alert')
     self._notice_text = (By.CLASS_NAME, 'auth-flash--notice')
     # dashboard page locators
-    self._loggedin_nav_toggle = (By.CLASS_NAME, 'navigation-toggle')
-    self._loggedin_signout_link = (By.CSS_SELECTOR, 'div.navigation > a')
+    self._loggedin_nav_toggle = (By.ID, 'profile-dropdown-menu')
+    self._loggedin_signout_link = (By.CSS_SELECTOR, "ul.dropdown-menu li a[href='/users/sign_out']")
     # forgot pw page locators
     self._fyp_title = (By.TAG_NAME, 'h1')
     self._fyp_email_field = (By.ID, 'user_email')

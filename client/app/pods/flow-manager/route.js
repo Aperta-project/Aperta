@@ -2,7 +2,6 @@ import AuthorizedRoute from 'tahi/routes/authorized';
 import Ember from 'ember';
 
 export default AuthorizedRoute.extend({
-  restless: Ember.inject.service('restless'),
   cardOverlayService: Ember.inject.service('card-overlay'),
 
   beforeModel(transition) {
@@ -34,25 +33,6 @@ export default AuthorizedRoute.extend({
   },
 
   actions: {
-    chooseNewFlowManagerColumn() {
-      const url = '/api/user_flows/potential_flows';
-      const controller = this.controllerFor(
-        'overlays/chooseNewFlowManagerColumn'
-      );
-
-      controller.set('isLoading', true);
-
-      this.get('restless').get(url).then(function(data) {
-        controller.set('isLoading', false);
-        controller.set('flows', data.flows);
-      });
-
-      this.send('openOverlay', {
-        template: 'overlays/chooseNewFlowManagerColumn',
-        controller: controller
-      });
-    },
-
     removeFlow(flow) { flow.destroyRecord(); },
     saveFlow(flow)   { flow.save(); },
 

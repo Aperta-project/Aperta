@@ -1,7 +1,3 @@
-<div class="overlay-title-text animation-fade-in">
-  <h1>Add New Column</h1>
-</div>
-
 {{progress-spinner visible=isLoading
                    align="middle"
                    size="large"}}
@@ -14,7 +10,9 @@
   {{/if}}
 
   {{#each group.flows as |flow|}}
-    <div class="button-secondary button--green flow-manager-button" {{action "createFlow" flow}}>{{flow.title}}</div>
+    <div class="button-secondary button--green flow-manager-button" {{action "addFlow" flow}}>
+      {{flow.title}}
+    </div>
   {{/each}}
 
   <br><br>

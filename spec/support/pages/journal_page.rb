@@ -65,7 +65,7 @@ class JournalPage < Page
 
   def view_epub_css
     synchronize_content! 'Edit ePub CSS'
-    click_on 'Edit ePub CSS'
+    find('button', text: 'EDIT EPUB CSS').click
     find('textarea').value
   end
 
@@ -79,7 +79,7 @@ class JournalPage < Page
 
   def view_pdf_css
     synchronize_content! 'Edit PDF CSS'
-    click_on 'Edit PDF CSS'
+    find('button', text: 'EDIT PDF CSS').click
     find('textarea').value
   end
 
@@ -101,7 +101,7 @@ class JournalPage < Page
 
   def view_manuscript_css
     synchronize_content! 'Edit Manuscript CSS'
-    click_on 'Edit Manuscript CSS'
+    find('button', text: 'EDIT MANUSCRIPT CSS').click
     find('textarea').value
   end
 

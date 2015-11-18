@@ -42,8 +42,12 @@
 
   <div class="admin-section">
     <h2 class="admin-section-title">Roles</h2>
-    <button class="button-primary button--blue admin-add-new-role-button" {{action "addRole"}}>Add New Role</button>
+    <button class="button-primary button--blue admin-add-new-role-button" {{action "addRole"}}>
+      Add New Role
+    </button>
+
     <br><br>
+
     <div class="admin-roles">
       <div class="admin-roles-header admin-role-name">Role Name</div>
       <div class="admin-roles-header admin-role-permissions">Permission</div>
@@ -171,18 +175,30 @@
     </div>
 
     <div class="admin-style-setting-section">
-      <button class="button-primary button--blue" {{action "editEPubCSS"}}>Edit ePub CSS</button>
+      <button class="button-primary button--blue" {{action "editCSS" "epub"}}>Edit ePub CSS</button>
       {{timed-message class="epub-css save-status" message=epubCssSaveStatus}}
     </div>
 
     <div class="admin-style-setting-section">
-      <button class="button-primary button--blue" {{action "editPDFCSS"}}>Edit PDF CSS</button>
+      <button class="button-primary button--blue" {{action "editCSS" "pdf"}}>Edit PDF CSS</button>
       {{timed-message class="pdf-css save-status" message=pdfCssSaveStatus}}
     </div>
 
     <div class="admin-style-setting-section">
-      <button class="button-primary button--blue" {{action "editManuscriptCSS"}}>Edit Manuscript CSS</button>
+      <button class="button-primary button--blue" {{action "editCSS" "manuscript"}}>Edit Manuscript CSS</button>
       {{timed-message class="manuscript-css save-status" message=manuscriptCssSaveStatus}}
     </div>
   </div>
 </div>
+
+{{#overlay-base visible=showEditCSSOverlay
+                outAnimationComplete=(action "hideEditCSSOverlay")
+                as |animateOut|}}
+  {{#overlay-fullscreen class="journal-edit-overlay"
+                        close=(action animateOut)}}
+    {{component editCssOverlayName
+                css=css
+                save=(action "saveCSS")
+                close=(action animateOut)}}
+  {{/overlay-fullscreen}}
+{{/overlay-base}}

@@ -1,0 +1,10 @@
+.journal-edit-overlay.overlay-x--fullscreen {
+  .overlay-x-close {
+    color: $tahi-blue;
+  }
+
+  textarea {
+    width: 100%;
+    height: 450px;
+  }
+}

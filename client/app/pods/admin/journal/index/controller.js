@@ -20,6 +20,9 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
 
   showEditTaskTypesOverlay: false,
 
+  showEditCSSOverlay: false,
+  editCssOverlayName: null,
+
   resetSearch() {
     this.set('adminJournalUsers', null);
     return this.set('placeholderText', null);
@@ -51,6 +54,13 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   }),
 
   actions: {
+    saveCSS(key, value) {
+      this.set('model.' + key + 'Css', value);
+      this.get('model').save().then(()=> {
+        this.set(key + 'CssSaveStatus', 'Saved');
+      });
+    },
+
     assignRoleToUser(roleID, user) {
       const role = this.store.getById('role', roleID);
 
@@ -156,6 +166,18 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
 
     hideEditTaskTypesOverlay() {
       this.set('showEditTaskTypesOverlay', false);
+    },
+
+    editCSS(type) {
+      this.setProperties({
+        showEditCSSOverlay: true,
+        css: this.get('model.' + type + 'Css'),
+        editCssOverlayName: 'edit-journal-' + type + '-css',
+      });
+    },
+
+    hideEditCSSOverlay() {
+      this.set('showEditCSSOverlay', false);
     }
   }
 });

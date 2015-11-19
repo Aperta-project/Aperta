@@ -70,7 +70,6 @@ class WorkflowPage(AuthenticatedPage):
 
   #POM Actions
 
-
   def validate_initial_page_elements_styles(self):
     """ """
     # Validate menu elements (title and icon)

@@ -355,6 +355,7 @@ class DashboardPage(AuthenticatedPage):
         title = PgSQL().query('SELECT title FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
         title = self.strip_tags(title)
         title = title.strip()
+        title = ' '.join(title.split())
         if not title:
           print('Error: No title in db! Illogical, Illogical, Norman Coordinate: Invalid document')
           return False
@@ -376,24 +377,13 @@ class DashboardPage(AuthenticatedPage):
         if paper_owner == uid:
           rolelist.append('my paper')
 
-        # This validates the role display in the tooltip hover
-        page_derived_role_list = paper.get_attribute('data-original-title').lower().split(', ')
-        for role in rolelist:
-          assert role in page_derived_role_list
-
-        # This validates the role display in the role column
-        # per design, if my paper in roles, only display an 'Author' role
-        if 'my paper' in rolelist:
-          rolelist = ['Author']
-
-        for role in rolelist:
-          assert role.lower() in roles[count].text.lower()
-
         # Validate Status Display
         page_status = statuses[count].text
         dbstatus = PgSQL().query('SELECT publishing_state FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
         if dbstatus == 'unsubmitted':
           dbstatus = 'draft'
+        elif dbstatus == 'in_revision':
+          dbstatus = 'in revision'
         assert page_status.lower() == dbstatus.lower(), page_status.lower() + ' is not equal to: ' + dbstatus.lower()
 
         # Validate Manuscript ID display

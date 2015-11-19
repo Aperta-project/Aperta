@@ -357,8 +357,7 @@ class DashboardPage(AuthenticatedPage):
         title = title.strip()
         title = ' '.join(title.split())
         if not title:
-          print('Error: No title in db! Illogical, Illogical, Norman Coordinate: Invalid document')
-          return False
+          raise ValueError('Error: No title in db! Illogical, Illogical, Norman Coordinate: Invalid document')
         # The following two lines are very useful for debugging ordering issues, please leave in place
         # print(title)
         # print(paper.text)
@@ -556,7 +555,7 @@ class DashboardPage(AuthenticatedPage):
     self._get(self._upload_btn)
     doc2upload = random.choice(docx)
     print('Sending document: ' + os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload))
-    fn = os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload)
+    fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
     if os.path.isfile(fn):
       self._driver.find_element_by_id('upload-files').send_keys(fn)
     else:

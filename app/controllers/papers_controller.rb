@@ -92,14 +92,6 @@ class PapersController < ApplicationController
 
   ## EDITING
 
-  def heartbeat
-    if paper.locked?
-      paper.heartbeat
-      PaperUnlockerWorker.perform_async(paper.id, true)
-    end
-    head :no_content
-  end
-
   def toggle_editable
     paper.toggle!(:editable)
     status = paper.valid? ? 200 : 422

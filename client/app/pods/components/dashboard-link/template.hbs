@@ -1,19 +1,17 @@
 <td class="col-xs-9 dashboard-paper-title {{type}}-paper-title hug-left">
-  {{#link-to "paper.index" model.id
-             class="link-tooltip"
-             data-toggle="tooltip"
-             title=model.roleList}}
+  {{#link-to "paper.index" model.id}}
     {{{model.displayTitle}}}
   {{/link-to}}
   <div class='dashboard-manuscript-id'>
     ID: {{model.manuscript_id}}
   </div>
   {{#if unreadCommentsCount}}
-    <span class="badge badge--red link-tooltip" title={{badgeTitle}}>
-      {{unreadCommentsCount}}
+    <span class="unread-comments">
+      <span class="badge badge--red">
+        {{unreadCommentsCount}}
+      </span> new comments
     </span>
   {{/if}}
 </td>
 <td class="col-xs-1 role-tag text-right">{{roles}}</td>
 <td class="col-xs-1"><div class='status-tag text-center'>{{status}}</div></td>
-

@@ -18,6 +18,8 @@ class PapersController < ApplicationController
     paper = Paper.eager_load(
       :supporting_information_files,
       { paper_roles: [:user] },
+      :collaborations,
+      :versioned_texts,
       :manuscript,
       :tables,
       :bibitems,

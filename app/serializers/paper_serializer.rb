@@ -15,11 +15,6 @@ class PaperSerializer < LitePaperSerializer
     object.manuscript.try(:status)
   end
 
-  def collaborations
-    # we want the actual join record, not a list of users
-    object.paper_roles.collaborators
-  end
-
   def links
     {
       comment_looks: comment_looks_paper_path(object),

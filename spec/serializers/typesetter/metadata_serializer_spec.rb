@@ -68,7 +68,7 @@ describe Typesetter::MetadataSerializer do
 
   it 'has title' do
     paper.title = 'here is the title'
-    expect(output[:article_title]).to eq('here is the title')
+    expect(output[:paper_title]).to eq('here is the title')
   end
 
   describe 'us government employee' do

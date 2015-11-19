@@ -6,7 +6,7 @@ module Typesetter
                :publication_date, :us_government_employee
     attribute :first_submitted_at, key: :received_date
     attribute :accepted_at, key: :accepted_date
-    attribute :title, key: :article_title
+    attribute :title, key: :paper_title
 
     has_one :editor, serializer: Typesetter::EditorSerializer
     has_one :competing_interests,

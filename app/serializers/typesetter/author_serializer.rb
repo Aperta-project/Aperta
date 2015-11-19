@@ -18,7 +18,6 @@ module Typesetter
 
     def contributions
       object.contributions.map do |contribution|
-        break unless contribution
         if contribution.value_type == 'boolean'
           contribution.nested_question.text if contribution.value
         elsif contribution.value_type == 'text'

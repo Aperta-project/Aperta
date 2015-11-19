@@ -21,7 +21,14 @@ describe EpubConverter do
   end
 
   let(:include_source) { false }
-  let(:converter) { EpubConverter.new paper, downloader, include_source }
+  let(:include_cover_image) { true }
+  let(:converter) do
+    EpubConverter.new(
+      paper,
+      downloader,
+      include_source: include_source,
+      include_cover_image: include_cover_image)
+  end
 
   describe '#epub_html' do
     context 'a paper' do

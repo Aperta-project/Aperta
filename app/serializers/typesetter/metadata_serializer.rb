@@ -3,7 +3,7 @@ module Typesetter
   # Expects a paper as its object to serialize.
   class MetadataSerializer < Typesetter::TaskAnswerSerializer
     attributes :short_title, :doi, :manuscript_id, :paper_type, :journal_title,
-               :publication_date, :copyright_statement
+               :publication_date, :us_government_employee
     attribute :first_submitted_at, key: :received_date
     attribute :accepted_at, key: :accepted_date
     attribute :title, key: :article_title
@@ -18,12 +18,6 @@ module Typesetter
     has_many :authors, serializer: Typesetter::AuthorSerializer
     has_many :supporting_information_files,
              serializer: Typesetter::SupportingInformationFileSerializer
-
-    GOVERNMENT_COPYRIGHT_DECLARATION =
-      'CC0 1.0 Universal (CC0 1.0) Public Domain Dedication: ' \
-      'https://creativecommons.org/publicdomain/zero/1.0/'
-
-    PRIVATE_COPYRIGHT_DECLARATION = 'All rights reserved.'
 
     def journal_title
       object.journal.name
@@ -53,13 +47,9 @@ module Typesetter
       task('TahiStandardTasks::DataAvailabilityTask')
     end
 
-    def copyright_statement
+    def us_government_employee
       copyright = task('TahiStandardTasks::PublishingRelatedQuestionsTask')
-      if task_answer_value(copyright, 'us_government_employees')
-        GOVERNMENT_COPYRIGHT_DECLARATION
-      else
-        PRIVATE_COPYRIGHT_DECLARATION
-      end
+      task_answer_value(copyright, 'us_government_employees')
     end
   end
 end

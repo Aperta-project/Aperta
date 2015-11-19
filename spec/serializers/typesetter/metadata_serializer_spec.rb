@@ -71,14 +71,13 @@ describe Typesetter::MetadataSerializer do
     expect(output[:article_title]).to eq('here is the title')
   end
 
-  describe 'copyright statement' do
+  describe 'us government employee' do
     let(:our_task) do
       paper_task.call('TahiStandardTasks::PublishingRelatedQuestionsTask')
     end
     let(:nested_question) { our_question.call('us_government_employees') }
 
-    context 'government employee' do
-      # Government employees cannot claim copyright over works
+    context 'is a us government employee' do
       before do
         FactoryGirl.create(
           :nested_question_answer,
@@ -89,12 +88,12 @@ describe Typesetter::MetadataSerializer do
         )
       end
 
-      it 'has a copyright_statement' do
-        expect(output[:copyright_statement]).to match(/public\s?domain/i)
+      it 'has a us government employee field' do
+        expect(output[:us_government_employee]).to eq(true)
       end
     end
 
-    context 'non government employee' do
+    context 'is not a us government employee' do
       before do
         FactoryGirl.create(
           :nested_question_answer,
@@ -105,8 +104,8 @@ describe Typesetter::MetadataSerializer do
         )
       end
 
-      it 'has a copyright_statement' do
-        expect(output[:copyright_statement]).to eq('All rights reserved.')
+      it 'has a us government employee field' do
+        expect(output[:us_government_employee]).to eq(false)
       end
     end
   end

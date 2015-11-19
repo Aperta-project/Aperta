@@ -26,6 +26,11 @@ Are there any surprises? Anything that was particularly difficult, or clever, or
 made you nervous, and should get particular attention during review? Call it
 out.
 
+
+#### Major UI changes
+
+Were there major UI changes? Add a screenshot here -- and please let the QA team know that changes are imminent. They would love a little extra time to prepare the QA test suite.
+
 ---
 
 #### For the Reviewer:

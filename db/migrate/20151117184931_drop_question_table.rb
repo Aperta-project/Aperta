@@ -17,6 +17,6 @@ class DropQuestionTable < ActiveRecord::Migration
   end
 
   def down
-    # Migration is not reversable
+    fail ActiveRecord::IrreversibleMigration
   end
 end

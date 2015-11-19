@@ -1,6 +1,7 @@
 class FtpUploaderWorker
   include Sidekiq::Worker
   require 'net/ftp'
+  class FtpTransferError < StandardError; end;
 
   def perform(host: ENV['FTP_HOST'], passive_mode: true, user: ENV['FTP_USER'], password: ENV['FTP_PASSWORD'], port: 21, file_path: nil, filename: nil)
     @host = host
@@ -17,9 +18,9 @@ class FtpUploaderWorker
 
     if @ftp.last_response_code == "226"
       @ftp.rename("temp_#{@final_filename}", @final_filename)
-      puts "Transfer successful"
+      Rails.logger.info 'Transfer successful'
     else
-      puts "Transfer failed. Please try again."
+      raise FtpTransferError, "FTP Transfer failed with this response: #{@ftp.last_response}"
     end
 
     @ftp.close
@@ -48,7 +49,6 @@ class FtpUploaderWorker
     temporary_name = "temp_#{@final_filename}"
     @ftp.putbinaryfile(File.new(@file_path), temporary_name, 100000) do |block|
       @count += 100
-      puts "#{@count} kilobytes uploaded"
     end
   end
 end

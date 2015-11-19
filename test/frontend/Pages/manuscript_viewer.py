@@ -306,6 +306,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
       billing.add_billing_data(billing_data)
 
   def get_paper_title_from_page(self):
+    """
+    Returns the encoded paper title as it appears on the manuscript_viewer page
+    :return: paper_title
+    """
     paper_title = self._get(self._paper_title).text
     print(paper_title)
     return paper_title

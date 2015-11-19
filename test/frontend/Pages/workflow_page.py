@@ -1,5 +1,5 @@
 #!/usr/bin/env python2
-
+# -*- coding: utf-8 -*-
 import time
 
 from selenium.webdriver.common.by import By
@@ -69,7 +69,6 @@ class WorkflowPage(AuthenticatedPage):
     # End of not used elements
 
   #POM Actions
-
 
   def validate_initial_page_elements_styles(self):
     """ """

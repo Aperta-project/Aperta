@@ -93,7 +93,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
       publishing_state: submitted
       submitted_at: neither NULL nor ''
   """
-  def rest_validate_full_submit(self):
+  def test_validate_full_submit(self):
     """
     Validates the presence of the following elements:
       Optional Invitation Welcome text and button,
@@ -117,8 +117,11 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     dashboard_page.select_journal_and_type('PLOS Wombat', 'NoCards')
     doc2upload = random.choice(docx)
     print('Sending document: ' + os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload))
-    fn = os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload)
-    self._driver.find_element_by_id('upload-files').send_keys(fn)
+    fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
+    if os.path.isfile(fn):
+      self._driver.find_element_by_id('upload-files').send_keys(fn)
+    else:
+      raise IOError('Docx file: {} not found'.format(doc2upload))
     dashboard_page.click_upload_button()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)

@@ -33,14 +33,6 @@
 }
 
 .admin-screen {
-  h1 {
-    margin-bottom: 50px;
-  }
-
-  .relative {
-    position: relative;
-  }
-
   .admin-role-action-button {
     display: inline;
     width: 30px;
@@ -234,4 +226,16 @@
   .clear-role-button {
     margin-left: 10px;
   }
+}
+
+.control-bar-journal-title {
+  color: $tahi-blue;
+  font-size: 24px;
+
+  &:focus,
+  &:hover { color: $tahi-blue; }
+}
+
+.journal-add-flow-column-button {
+  color: $tahi-blue;
 }

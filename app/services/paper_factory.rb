@@ -3,7 +3,6 @@ class PaperFactory
 
   def self.create(paper_params, creator)
     paper = creator.submitted_papers.build(paper_params)
-    paper.editor_mode = 'html' if paper.editor_mode.nil?
     pf = new(paper, creator)
     pf.create
     pf.paper

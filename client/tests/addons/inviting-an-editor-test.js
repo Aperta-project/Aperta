@@ -50,7 +50,7 @@ test("can withdraw the invitation", function(assert) {
     TestHelper.handleFind(task);
 
     visit(`/papers/${paper.id}/workflow`);
-    click("#manuscript-manager .card-content:contains('Invite Editor')");
+    click(".card-content:contains('Invite Editor')");
 
     andThen(function() {
       let msgEl = find(".invite-editor-text:contains('foo@bar.com has been invited to be Editor on this manuscript.')");

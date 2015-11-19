@@ -1,67 +1,50 @@
 <div class="control-bar">
   <div class="control-bar-inner-wrapper">
-    <ul>
-      {{#if model.journal.logoUrl}}
-        <li id="control-bar-paper-journal-logo" class="control-bar-item">
-          <img src="{{unbound model.journal.logoUrl}}">
-        </li>
-      {{else}}
-        <li id="control-bar-paper-journal-name" class="control-bar-item">
-          {{model.journal.name}}
-        </li>
-      {{/if}}
-      <li id="control-bar-paper-short-title" class="control-bar-item">
-        <h2 class="tasks-paper-title">{{{model.title}}}</h2>
-      </li>
-    </ul>
-    <ul>
-      <li class="control-bar-item">
-        <label class="control-bar-link control-bar-button">
-          <div class="control-bar-link-icon"></div>
-          {{check-box name="paper-editable" checked=model.editable action="toggleEditable"}}
-          Editable
-        </label>
-      </li>
-      <li class="control-bar-item">
-        <div class="control-bar-link contributors-link __with-icon" {{action "showActivity" "workflow"}}>
-          <div class="control-bar-link-icon">{{partial "svg/heartbeat"}}</div>
-          <div class="control-bar-link-text">Recent Activity</div>
-        </div>
-      </li>
-      <li class="control-bar-item">
-        {{#link-to "paper.workflow.discussions" model class="control-bar-link control-bar-button"}}
-          <div class="control-bar-link-icon"><span class="fa fa-comment"></span></div>
-          Discussions
-        {{/link-to}}
-      </li>
-      <li class="control-bar-item">
-        {{#link-to "paper.index" model class="control-bar-link control-bar-button"}}
-          <div class="control-bar-link-icon">{{partial "svg/manuscript-icon"}}</div>
-          Manuscript
-        {{/link-to}}
-      </li>
-    </ul>
+    <div class="control-bar-item control-bar-item--first" id="control-bar-paper-title">
+      <span>{{{model.title}}}</span>
+    </div>
+
+    <div class="control-bar-item-spacer"></div>
+
+    {{#link-to "paper.index" model class="control-bar-item control-bar-link paper-navigation-link"}}
+      Go to Manuscript
+    {{/link-to}}
+
+    <label class="control-bar-item">
+      <span>
+        {{check-box name="paper-editable" checked=model.editable action="toggleEditable"}}
+        Editable
+      </span>
+    </label>
+
+    <div class="control-bar-item control-bar-link activity-link" {{action "showActivity" "workflow"}}>
+      <div class="control-bar-link-icon">{{partial "svg/heartbeat"}}</div>
+      Recent Activity
+    </div>
+
+    {{#link-to "paper.workflow.discussions" model class="control-bar-item control-bar-link control-bar-item--last"}}
+      <div class="control-bar-link-icon"><span class="fa fa-comment"></span></div>
+      Discussions
+    {{/link-to}}
   </div>
 </div>
 
 {{flash-messages classNames="flash-messages--below-control-bar"}}
 
-<div id="manuscript-manager">
-  <div class="columns">
-    {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
-    {{#each sortedPhases as |phase|}}
-      {{phase-column phase=phase
-                     paper=model
-                     savePhase="savePhase"
-                     addPhase="addPhase"
-                     showDeleteConfirm="showDeleteConfirm"
-                     removePhase="removePhase"
-                     rollbackPhase="rollbackPhase"
-                     viewCard="viewCard"
-                     chooseNewCardTypeOverlay="chooseNewCardTypeOverlay"
-                     changePhaseForTask="changePhaseForTask"}}
-    {{/each}}
-  </div>
+<div class="columns">
+  {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
+  {{#each sortedPhases as |phase|}}
+    {{phase-column phase=phase
+                   paper=model
+                   savePhase="savePhase"
+                   addPhase="addPhase"
+                   showDeleteConfirm="showDeleteConfirm"
+                   removePhase="removePhase"
+                   rollbackPhase="rollbackPhase"
+                   viewCard="viewCard"
+                   chooseNewCardTypeOverlay="chooseNewCardTypeOverlay"
+                   changePhaseForTask="changePhaseForTask"}}
+  {{/each}}
 </div>
 
 {{outlet}}

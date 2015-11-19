@@ -30,10 +30,11 @@ module('Integration: Feedback Form', {
 
 test('clicking the feedback button sends feedback', function(assert) {
   visit('/profile');
-  click('.navigation-toggle');
-  click('.navigation-item-feedback');
+  click('#profile-dropdown-menu');
+  click('a:contains(Give Feedback on)');
   fillIn('.overlay textarea', 'My feedback');
   click('.overlay-footer-content .button-primary');
+
   andThen(function() {
     assert.ok(
       find('.feedback-overlay-thanks').length,

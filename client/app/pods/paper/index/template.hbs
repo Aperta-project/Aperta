@@ -1,12 +1,12 @@
-{{control-bar paper=model
-              showActivity="showActivity"
-              addContributors="addContributors"
-              exportDocument="exportDocument"
-              showConfirmWithdrawOverlay="showConfirmWithdrawOverlay"
-              topicsIndexPath=topicsIndexPath
-              canViewManuscriptManager=canViewManuscriptManager
-              supportedDownloadFormats=supportedDownloadFormats
-              versionsVisible=versioningMode}}
+{{paper-control-bar paper=model
+                    showActivity="showActivity"
+                    addContributors="addContributors"
+                    exportDocument="exportDocument"
+                    showConfirmWithdrawOverlay="showConfirmWithdrawOverlay"
+                    topicsIndexPath=topicsIndexPath
+                    canViewManuscriptManager=canViewManuscriptManager
+                    supportedDownloadFormats=supportedDownloadFormats
+                    versionsVisible=versioningMode}}
 
 {{withdrawal-banner paper=model staff=currentUser.siteAdmin}}
 
@@ -19,13 +19,11 @@
 
   <div class="manuscript-container">
     <main>
-      {{flash-messages classNames="flash-messages-paper-editor"}}
+      {{flash-messages}}
       <article class="manuscript">
         <div id="paper-body">
 
-          {{#unless model.editable}}
-            <h2 id="paper-title">{{{model.title}}}</h2>
-          {{else}}
+          {{#if model.editable}}
             {{content-editable tagName="h2"
                                id="paper-title"
                                value=model.title
@@ -33,17 +31,13 @@
                                placeholder="Type your manuscript title here"
                                key-up=(action "saveManuscriptTitle")
                                focus-out=(action "saveManuscriptTitle")}}
-          {{/unless}}
-
-          {{#if versioningMode}}
-            {{html-diff default=model.body
-                        comparisonText=model.comparisonText
-                        viewingText=model.viewingText}}
           {{else}}
-            <div class="paper-body">
-              {{{model.body}}}
-            </div>
+            <h2 id="paper-title">{{{model.title}}}</h2>
           {{/if}}
+
+          <div class="paper-body">
+            {{{model.body}}}
+          </div>
 
         </div>
       </article>

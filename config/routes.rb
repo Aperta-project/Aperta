@@ -44,11 +44,6 @@ Tahi::Application.routes.draw do
   # TODO: namespace to api
   #
   scope '/api', constraints: { format: :json } do
-    namespace :editor do
-      get '/crossref/:query', to: 'external_references#crossref'
-      get '/doi/:doi', to: 'external_references#doi', constraints: { doi: /.*/ }
-    end
-
     resources :countries, only: :index
 
     get 'paper_tracker', to: 'paper_tracker#index'

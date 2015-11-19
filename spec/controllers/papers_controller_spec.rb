@@ -86,7 +86,10 @@ describe PapersController do
         it 'redirects to the docx file' do
           # Force the controller to use our mocked paper
           allow(controller).to receive(:paper).and_return(paper)
-          expect(paper.latest_version).to receive(:source_url)
+          latest_version = double(paper.latest_version)
+          allow(paper).to receive(:latest_version)
+            .and_return(latest_version)
+          expect(latest_version).to receive(:source_url)
             .and_return(docx_url).twice
           get :download, id: paper.id, format: :docx
           expect(response).to redirect_to(docx_url)

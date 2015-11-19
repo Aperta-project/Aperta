@@ -29,7 +29,10 @@ describe PaperConversionsController, type: :controller do
         before do
           # Force the controller to use our mocked paper
           allow(controller).to receive(:paper).and_return(paper)
-          allow(paper.latest_version).to receive(:source_url)
+          latest_version = double(paper.latest_version)
+          allow(paper).to receive(:latest_version)
+            .and_return(latest_version)
+          allow(latest_version).to receive(:source_url)
             .and_return(docx_url)
         end
 

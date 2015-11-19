@@ -324,15 +324,9 @@ class Paper < ActiveRecord::Base
   end
 
   # Return the latest version of this paper.
-  # If the latest version has not changed, retuns a cached version.
+  # This will ALWAYS return a new instance.
   def latest_version
-    if @latest_version.present?
-      new_latest = versioned_texts(true).version_desc.first
-      return @latest_version if new_latest == @latest_version
-      @latest_version = new_latest
-    else
-      @latest_version = versioned_texts(true).version_desc.first
-    end
+    versioned_texts(true).version_desc.first
   end
 
   private

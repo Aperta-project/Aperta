@@ -935,8 +935,6 @@ tahi_standard_tasks_funders:
   - name
   - grant_number
   - website
-  - funder_had_influence
-  - funder_influence_description
   - task_id
   - created_at
   - updated_at
@@ -945,8 +943,6 @@ tahi_standard_tasks_funders:
     - Money McMunster
     - 555-5555555
     - www.example.com
-    - false
-    - 
     - '31'
     - '2015-10-30 19:57:11.699874'
     - '2015-10-30 19:57:27.12286'
@@ -954,8 +950,6 @@ tahi_standard_tasks_funders:
     - Less MoneyMcMunster
     - 333-333333333
     - www.example.com
-    - false
-    - 
     - '31'
     - '2015-10-30 19:57:44.86309'
     - '2015-10-30 19:58:03.20006'
@@ -3609,11 +3603,8 @@ authors:
   - email
   - department
   - title
-  - corresponding
-  - deceased
   - affiliation
   - secondary_affiliation
-  - contributions
   - ringgold_id
   - secondary_ringgold_id
   records: 
@@ -3628,9 +3619,6 @@ authors:
     - 
     - author@example.com
     - 
-    - 
-    - false
-    - false
     - 
     - 
     - 
@@ -3648,11 +3636,8 @@ authors:
     - author@example.com
     - Department of Authoring
     - Greatest American Author
-    - false
-    - false
     - Michigan State University
     - University of Michigan
-    - 
     - 
     - 
   - - '3'
@@ -3667,11 +3652,8 @@ authors:
     - jane@example.com
     - Authorship Department
     - Second Greatest Author
-    - false
-    - false
     - Vanguard University of Southern California
     - Northwestern Oklahoma State University
-    - 
     - 
     - 
   - - '4'
@@ -3686,11 +3668,8 @@ authors:
     - author@example.com
     - Dept. of Authoring
     - Authoring
-    - false
-    - false
     - Florida State College at Jacksonville
     - Adler Graduate School
-    - 
     - 
     - 
   - - '5'
@@ -3705,11 +3684,8 @@ authors:
     - barb@example.com
     - Dept. of Authorology
     - World's Best Author
-    - false
-    - false
     - Abraham Baldwin Agricultural College
     - Adler Graduate School
-    - 
     - 
     - 
   - - '6'
@@ -3724,11 +3700,8 @@ authors:
     - author@example.com
     - Dept. of authoring
     - My favorite author
-    - false
-    - false
     - Academy of Art University
     - Adelphi University
-    - 
     - 
     - 
   - - '7'
@@ -3743,10 +3716,7 @@ authors:
     - sealresq+7@gmail.com
     - 
     - 
-    - false
-    - false
     - Affiliation 1
-    - 
     - 
     - 
     - 
@@ -3762,10 +3732,7 @@ authors:
     - sealresq+7@gmail.com
     - 
     - 
-    - false
-    - false
     - Affiliation 1
-    - 
     - 
     - 
     - 
@@ -3781,10 +3748,7 @@ authors:
     - admin@example.com
     - 
     - 
-    - false
-    - false
     - PLOS
-    - 
     - 
     - 
     - 
@@ -5909,13 +5873,12 @@ nested_question_answers:
 question_attachments:
   columns:
   - id
-  - question_id
+  - nested_question_answer_id
   - attachment
   - title
   - status
   - created_at
   - updated_at
-  - question_type
   records: 
   - - '1'
     - '78'
@@ -5924,7 +5887,6 @@ question_attachments:
     - done
     - '2015-11-02 14:16:35.584565'
     - '2015-11-02 14:16:35.84638'
-    - NestedQuestionAnswer
   - - '2'
     - '88'
     - turtles-are-amazing.docx
@@ -5932,7 +5894,6 @@ question_attachments:
     - done
     - '2015-11-02 14:18:02.598388'
     - '2015-11-02 14:18:02.849361'
-    - NestedQuestionAnswer
   - - '3'
     - '126'
     - manuscript+_281_29.docx
@@ -5940,7 +5901,6 @@ question_attachments:
     - done
     - '2015-11-02 15:12:01.338942'
     - '2015-11-02 15:12:01.520148'
-    - NestedQuestionAnswer
 
 ---
 task_templates:

@@ -28,6 +28,9 @@ class DashboardPage(AuthenticatedPage):
     self.driver = driver
     # Locators - Instance members
     # Base Page Locators
+    # TODO: Change after APERTA-5666 is fixed
+    self._dashboard_top_menu_paper_tracker = (By.XPATH,
+      "//a[contains(@class, 'main-nav-item')][3]")
     self._dashboard_invite_title = (By.CSS_SELECTOR, 'h2.welcome-message')
     self._dashboard_view_invitations_btn = (By.CSS_SELECTOR,
                                             'section.dashboard-section button.button-primary.button--green')

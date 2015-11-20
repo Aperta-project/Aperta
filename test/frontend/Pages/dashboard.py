@@ -8,6 +8,7 @@ without executing an invitation accept or reject, and without a CNS creation.
 
 import os
 import random
+from string import maketrans
 import time
 import uuid
 
@@ -379,10 +380,11 @@ class DashboardPage(AuthenticatedPage):
         # Validate Status Display
         page_status = statuses[count].text
         dbstatus = PgSQL().query('SELECT publishing_state FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
+        # For display of status on the home page, we replace '_' with a space.
+        transtab = maketrans('_', ' ')
+        dbstatus = dbstatus.translate(transtab)
         if dbstatus == 'unsubmitted':
           dbstatus = 'draft'
-        elif dbstatus == 'in_revision':
-          dbstatus = 'in revision'
         assert page_status.lower() == dbstatus.lower(), page_status.lower() + ' is not equal to: ' + dbstatus.lower()
 
         # Validate Manuscript ID display

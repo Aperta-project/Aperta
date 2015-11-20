@@ -328,8 +328,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
   def close_submit_overlay(self):
     """Close the submit overlay after confirm paper submission"""
-    self._so_submit_cancel = (By.CSS_SELECTOR, 'div.submit-action-buttons button.button-link')
-    self._get(self._so_submit_cancel).click()
+    closer = self._get(self._modal_close)
+    closer.click()
 
   def click_workflow_lnk(self):
     """Click workflow button"""
@@ -338,11 +338,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
   def validate_so_overlay_elements_styles(self, type, paper_title):
     """
-    :param type: full_submit, initial_submit, initial_submit_full, congratulations
+    :param type: full_submit, initial_submit, initial_submit_full, congrats, congrats_is, congrats_is_full
     :return:
     """
     self._get(self._modal_close)
-    self._get(self._so_paper_submit_icon)
     self._so_paper_submit_title_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit h1')
     self._so_paper_submit_subhead_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit + h5')
     main_head = self._get(self._so_paper_submit_title_text_submit)
@@ -350,14 +349,21 @@ class ManuscriptViewerPage(AuthenticatedPage):
     if type == 'full_submit':
       assert 'Are you sure?' in main_head.text, main_head.text
       assert 'You are about to submit the paper' in subhead.text, subhead.text
-    elif type == 'congratulations':
+    elif type == 'congrats':
       #assert 'Congratulations' in main_head.text, main_head.text
+      self._get(self._so_paper_submit_icon)
       assert 'You\'ve successfully submitted your paper!' in subhead.text, subhead.text
+      self._get(self._so_submit_cancel)
+    elif type == 'congrats_is':
+      assert 'You have successfully submitted your manuscript for initial review. If the initial review is ' \
+             'favorable, we will invite you to add some information to facilitate peer review.' in subhead.text, \
+             subhead.text
+    elif type == 'congrats_full':
+      assert 'You have successfully submitted your manuscript. We will start the peer review process.'
     if type in ('full_submit', 'initial_submit', 'initial_submit_full'):
       manuscript_title = self._get(self._so_paper_title)
       assert paper_title in manuscript_title.text, paper_title + ' vs ' + manuscript_title.text
       self._get(self._so_submit_confirm)
-    self._get(self._so_submit_cancel)
 
   def validate_submit_success(self):
     """Ensure the successful submit message appears in the upper right corner of the manuscript viewer page"""

@@ -142,7 +142,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay
     time.sleep(1)
-    manuscript_page.validate_so_overlay_elements_styles('congratulations', paper_title_from_page)
+    manuscript_page.validate_so_overlay_elements_styles('congrats', paper_title_from_page)
     manuscript_page.close_submit_overlay()
     manuscript_page.validate_submit_success()
     sub_data = manuscript_page.get_db_submission_data(paper_id)
@@ -241,7 +241,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay
     time.sleep(2)
-    manuscript_page.validate_so_overlay_elements_styles('congratulations', paper_title_from_page)
+    manuscript_page.validate_so_overlay_elements_styles('congrats_is', paper_title_from_page)
     manuscript_page.close_submit_overlay()
     manuscript_page.validate_initial_submit_success()
     sub_data = manuscript_page.get_db_submission_data(paper_id)
@@ -275,7 +275,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
       assert sub_data[0][2], sub_data[0][2]
       return True
     elif decision == 'invite':
-      assert sub_data[0][0] == 'in_revision', sub_data[0][0]
+      assert sub_data[0][0] == 'invited_for_full_submission', sub_data[0][0]
       assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
       assert sub_data[0][2], sub_data[0][2]
     else:
@@ -307,7 +307,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay
     time.sleep(2)
-    manuscript_page.validate_so_overlay_elements_styles('congratulations', paper_title_from_page)
+    manuscript_page.validate_so_overlay_elements_styles('congrats_is_full', paper_title_from_page)
     manuscript_page.close_submit_overlay()
     manuscript_page.validate_submit_success()
     sub_data = manuscript_page.get_db_submission_data(paper_id)

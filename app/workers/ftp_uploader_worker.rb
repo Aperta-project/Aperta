@@ -16,11 +16,18 @@ class FtpUploaderWorker
     enter_packages_directory
     upload_to_temporary_file
 
-    if @ftp.last_response_code == "226"
-      @ftp.rename("temp_#{@final_filename}", @final_filename)
-      Rails.logger.info 'Transfer successful'
-    else
-      raise FtpTransferError, "FTP Transfer failed with this response: #{@ftp.last_response}"
+    tmp_file = "temp_#{@final_filename}"
+    begin
+      if @ftp.last_response_code == "226"
+        @ftp.rename("temp_#{@final_filename}", @final_filename)
+        Rails.logger.info 'Transfer successful'
+        return true
+      else
+        raise FtpTransferError, "FTP Transfer failed with this response: #{@ftp.last_response}"
+        return false
+      end
+    ensure
+      @ftp.delete(tmp_file) if @ftp.nlst.include?(tmp_file)
     end
 
     @ftp.close
@@ -47,8 +54,8 @@ class FtpUploaderWorker
   def upload_to_temporary_file
     @count = 0
     temporary_name = "temp_#{@final_filename}"
-    @ftp.putbinaryfile(File.new(@file_path), temporary_name, 100000) do |block|
-      @count += 100
+    @ftp.putbinaryfile(File.new(@file_path), temporary_name, 1000) do |block|
+      @count += 1000
     end
   end
 end

@@ -59,10 +59,7 @@ class AuthorsController < ApplicationController
       :affiliation,
       :secondary_affiliation,
       :title,
-      :corresponding,
-      :deceased,
-      :department,
-      contributions: []
+      :department
     )
   end
 end

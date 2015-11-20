@@ -14,7 +14,7 @@ class QuestionAttachmentsPolicy < ApplicationPolicy
   private
 
   def task
-    question_attachment.question.owner
+    question_attachment.nested_question_answer.owner
   end
 
   def tasks_policy

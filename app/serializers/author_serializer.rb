@@ -1,5 +1,5 @@
 class AuthorSerializer < ActiveModel::Serializer
-  attributes :affiliation, :corresponding, :deceased, :department,
+  attributes :affiliation, :department,
              :email, :first_name, :id, :last_name, :middle_initial, :paper_id,
              :position, :secondary_affiliation, :title
 

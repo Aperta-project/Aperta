@@ -9,8 +9,6 @@ FactoryGirl.define do
     last_name "Skywalker"
     email
     department "Jedis"
-    deceased false
-    corresponding true
     title "Head Jedi"
     affiliation 'university of dagobah'
   end

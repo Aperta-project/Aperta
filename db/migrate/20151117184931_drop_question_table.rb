@@ -1,7 +1,7 @@
 # Removes old question database table
 class DropQuestionTable < ActiveRecord::Migration
   def up
-    QuestionAttachment.where(question_type: 'Question').destroy_all
+    execute("DELETE FROM question_attachments WHERE question_type = 'Question'")
     drop_table :questions
 
     remove_column :question_attachments, :question_type

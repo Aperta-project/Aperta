@@ -1,30 +1,19 @@
 {{#if paperSubmitted}}
 
-  <img class="paper-submit-icon" src="/images/submit-image-success.png">
-  <div class="overlay-title-text-submit animation-fade-in">
-    <h1>Congratulations</h1>
-  </div>
+  {{#if model.gradualEngagement}}
 
-  <h5>You've successfully submitted your paper!</h5>
+    {{#if model.isInitiallySubmitted}}
+      {{partial 'overlays/paper-submit/initial-submit'}}
+    {{else if isFirstFullSubmission}}
+      {{partial 'overlays/paper-submit/full-submit'}}
+    {{else if model.isSubmitted}}
+      {{partial 'overlays/paper-submit/standard-submit'}}
+    {{/if}}
 
-  <div class="submit-action-buttons">
-    <button class="button-link button--white success-close" {{action "closeSuccessOverlay"}}>Close</button>
-  </div>
+  {{else}}
+    {{partial 'overlays/paper-submit/standard-submit'}}
+  {{/if}}
 
 {{else}}
-
-  <img class="paper-submit-icon" src="/images/submit-image.png">
-  <div class="overlay-title-text-submit animation-fade-in">
-    <h1>Are you sure?</h1>
-  </div>
-
-  <h5>You are about to submit the paper</h5>
-  <p id="paper-submit-title">{{{model.displayTitle}}}</p>
-
-  {{flash-messages}}
-
-  <div class="submit-action-buttons">
-    <button class="button-submit-paper button--white" {{action "submit"}}>Yes, Submit My Manuscript</button>
-    <button class="button-link button--white" {{action "closeAction"}}>Go back and make sure</button>
-  </div>
+  {{partial 'overlays/paper-submit/about-to-submit'}}
 {{/if}}

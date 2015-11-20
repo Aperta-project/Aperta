@@ -33,6 +33,9 @@ Tahi::Application.configure do
   # defaults to local storage
   # config.carrierwave_storage = :fog
 
+  # compress logging output
+  # config.lograge.enabled = true
+
   config.carrierwave_storage = :fog
 
   config.action_mailer.default_url_options = {host: "localhost", port: 5000, protocol: "http://"}

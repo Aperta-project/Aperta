@@ -30,6 +30,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # allow the remote ip address to be logged with each request
+  # https://github.com/roidrage/lograge/issues/10
+  def append_info_to_payload(payload)
+    super
+    payload[:ip] = request.remote_ip
+  end
+
   private
 
   def render_errors(e)

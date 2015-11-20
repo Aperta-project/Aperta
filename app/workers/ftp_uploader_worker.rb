@@ -3,45 +3,39 @@ class FtpUploaderWorker
   require 'net/ftp'
   class FtpTransferError < StandardError; end;
 
-  def perform(host: ENV['FTP_HOST'], passive_mode: true, user: ENV['FTP_USER'], password: ENV['FTP_PASSWORD'], port: 21, file_path: nil, filename: nil)
+  def perform(host: ENV['FTP_HOST'], passive_mode: true, user: ENV['FTP_USER'], password: ENV['FTP_PASSWORD'], port: 21, filepath: nil, filename: nil)
     @host = host
-    @mode = passive_mode
+    @passive_mode = passive_mode
     @user = user
     @password = password
     @port = port
-    @file_path = file_path
+    @filepath = filepath
     @final_filename = filename
 
     connect_to_server
     enter_packages_directory
-    upload_to_temporary_file
+    tmp_file = upload_to_temporary_file
 
-    tmp_file = "temp_#{@final_filename}"
     begin
-      if @ftp.last_response_code == "226"
-        @ftp.rename("temp_#{@final_filename}", @final_filename)
+      if @ftp.last_response_code == '226'
+        @ftp.rename(tmp_file, @final_filename)
         Rails.logger.info 'Transfer successful'
         return true
       else
-        raise FtpTransferError, "FTP Transfer failed with this response: #{@ftp.last_response}"
-        return false
+        fail FtpTransferError, "FTP Transfer failed with this response: #{@ftp.last_response}"
       end
     ensure
       @ftp.delete(tmp_file) if @ftp.nlst.include?(tmp_file)
+      @ftp.close
     end
-
-    @ftp.close
-  end
-
-  def last_response_code
-    @ftp.last_response_code
   end
 
   private
+
   def connect_to_server
     @ftp = Net::FTP.new
     @ftp.connect(@host, @port)
-    @ftp.passive = @mode
+    @ftp.passive = @passive_mode
     @ftp.login(user = @user, passwd = @password)
   end
 
@@ -52,10 +46,8 @@ class FtpUploaderWorker
   end
 
   def upload_to_temporary_file
-    @count = 0
-    temporary_name = "temp_#{@final_filename}"
-    @ftp.putbinaryfile(File.new(@file_path), temporary_name, 1000) do |block|
-      @count += 1000
+    "temp_#{@final_filename}".tap do |temp_name|
+      @ftp.putbinaryfile(File.new(@filepath), temp_name, 1000)
     end
   end
 end

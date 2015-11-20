@@ -16,7 +16,6 @@ describe FtpUploaderWorker do
     it "successfully transfers a file to a ftp server" do
       filename = 'test.jpg'
       filepath = Rails.root.join('public', 'images', 'cat-scientists-3.jpg')
-      filesize = File.size(filepath)
       FtpUploaderWorker.new.perform(
         host: '127.0.0.1',
         passive_mode: true,
@@ -24,7 +23,7 @@ describe FtpUploaderWorker do
         password: 'password',
         port: 21212,
         filename: filename,
-        file_path: Rails.root.join('public', 'images', 'cat-scientists-3.jpg')
+        filepath: filepath
       )
       expect(@server.files).to include(filename)
     end

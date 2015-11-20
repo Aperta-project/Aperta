@@ -81,7 +81,6 @@ describe EpubConverter do
       let(:file) { File.open(Rails.root.join("spec", "fixtures", "about_turtles.docx"), 'r') }
 
       before do
-        paper.create_manuscript!
         allow(converter).to receive(:manuscript_source).and_return(file)
         allow(converter).to receive(:manuscript_contents).and_return(file.read)
       end
@@ -100,6 +99,16 @@ describe EpubConverter do
         it "does not include the source doc in the epub" do
           entries = read_epub_stream(converter.epub_stream)
           expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(false)
+        end
+      end
+    end
+
+    describe '#publishing_information_html' do
+      context 'when downloader is not specified' do
+        let(:converter) { EpubConverter.new(paper, nil, include_source) }
+
+        it 'does not error' do
+          expect(converter.publishing_information_html).to be_a(String)
         end
       end
     end

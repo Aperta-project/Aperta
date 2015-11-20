@@ -19,11 +19,6 @@ export default Ember.Mixin.create({
     return 'paper-container-' + this.get('model.editorMode');
   }),
 
-  processingMessage: computed('model.status', function() {
-    const isProcessing = this.get('model.status') === 'processing';
-    return isProcessing ? 'Processing Manuscript' : null;
-  }),
-
   save() {
     this.get('model').save();
   },

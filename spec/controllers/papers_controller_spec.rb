@@ -71,6 +71,31 @@ describe PapersController do
       expect(controller).to receive(:send_data)
       get :download, format: :pdf, id: paper.id
     end
+
+    context 'when downloading docx' do
+      context 'and no docx was uploaded' do
+        it 'returns 404' do
+          get :download, id: paper.id, format: :docx
+          expect(response.status).to eq(404)
+        end
+      end
+
+      context 'and a docx file was uploaded' do
+        let(:docx_url) { 'http://example.com/source.docx' }
+
+        it 'redirects to the docx file' do
+          # Force the controller to use our mocked paper
+          allow(controller).to receive(:paper).and_return(paper)
+          latest_version = double(paper.latest_version)
+          allow(paper).to receive(:latest_version)
+            .and_return(latest_version)
+          expect(latest_version).to receive(:source_url)
+            .and_return(docx_url).twice
+          get :download, id: paper.id, format: :docx
+          expect(response).to redirect_to(docx_url)
+        end
+      end
+    end
   end
 
   describe "GET 'show'" do

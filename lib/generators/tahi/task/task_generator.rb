@@ -4,7 +4,6 @@ module Tahi
   # and will be removed from the array as they are updated.
   LEGACY_PLUGINS = [
     'tahi_standard_tasks',
-    'tahi_upload_manuscript',
     'authors',
     'plos_billing',
     'plos_bio_tech_check'

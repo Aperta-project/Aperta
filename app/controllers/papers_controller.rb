@@ -18,7 +18,6 @@ class PapersController < ApplicationController
     paper = Paper.eager_load(
       :supporting_information_files,
       { paper_roles: [:user] },
-      :manuscript,
       :tables,
       :bibitems,
       :journal
@@ -69,13 +68,25 @@ class PapersController < ApplicationController
 
   ## CONVERSION
 
+  # Upload a docx file for the latest version.
   def upload
-    IhatJobRequest.new(paper: paper).queue(file_url: params[:url], callback_url: ihat_jobs_url)
+    DownloadManuscriptWorker.perform_async(paper.id,
+                                           params[:url],
+                                           ihat_jobs_url,
+                                           paper_id: paper.id)
     respond_with paper
   end
 
   def download
     respond_to do |format|
+      format.docx do
+        if paper.latest_version.source_url.blank?
+          render status: :not_found, nothing: true
+        else
+          redirect_to paper.latest_version.source_url
+        end
+      end
+
       format.epub do
         epub = EpubConverter.new paper, current_user
         send_data epub.epub_stream.string, filename: epub.file_name, disposition: 'attachment'

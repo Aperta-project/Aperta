@@ -11,8 +11,6 @@ class Paper < ActiveRecord::Base
   belongs_to :flow
   belongs_to :striking_image, class_name: 'Figure'
 
-  has_one :manuscript, dependent: :destroy
-
   has_many :figures, dependent: :destroy
   has_many :versioned_texts, dependent: :destroy
   has_many :tables, dependent: :destroy
@@ -325,10 +323,11 @@ class Paper < ActiveRecord::Base
     }.join("\n")
   end
 
-  def latest_version(reload=false)
-    versioned_texts(reload).version_desc.first
+  # Return the latest version of this paper.
+  # This will ALWAYS return a new instance.
+  def latest_version
+    versioned_texts(true).version_desc.first
   end
-
 
   private
 

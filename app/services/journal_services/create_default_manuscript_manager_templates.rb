@@ -11,7 +11,7 @@ module JournalServices
           TahiStandardTasks::FigureTask,
           TahiStandardTasks::SupportingInformationTask,
           TahiStandardTasks::AuthorsTask,
-          TahiUploadManuscript::UploadManuscriptTask,
+          TahiStandardTasks::UploadManuscriptTask,
           TahiStandardTasks::CoverLetterTask
 
         phase = mmt.phase_templates.create! name: "Invite Editor"

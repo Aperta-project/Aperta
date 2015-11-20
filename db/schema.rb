@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151117184931) do
+ActiveRecord::Schema.define(version: 20151119174632) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -239,14 +239,6 @@ ActiveRecord::Schema.define(version: 20151117184931) do
   end
 
   add_index "manuscript_manager_templates", ["journal_id"], name: "index_manuscript_manager_templates_on_journal_id", using: :btree
-
-  create_table "manuscripts", force: :cascade do |t|
-    t.string   "source"
-    t.integer  "paper_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "status",     limit: 255, default: "processing"
-  end
 
   create_table "nested_question_answers", force: :cascade do |t|
     t.integer  "nested_question_id"
@@ -523,6 +515,7 @@ ActiveRecord::Schema.define(version: 20151117184931) do
     t.text     "text",               default: ""
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "source"
   end
 
   add_index "versioned_texts", ["minor_version", "major_version", "paper_id"], name: "unique_version", unique: true, using: :btree

@@ -8,7 +8,6 @@ gem 'plos_billing', path: 'engines/plos_billing'
 gem 'plos_bio_internal_review', path: 'engines/plos_bio_internal_review'
 gem 'plos_bio_tech_check', path: 'engines/plos_bio_tech_check'
 gem 'tahi_standard_tasks', path: 'engines/tahi_standard_tasks'
-gem 'tahi_upload_manuscript', path: 'engines/tahi_upload_manuscript'
 gem 'tahi-assign_team', path: 'engines/tahi-assign_team'
 
 # Gems

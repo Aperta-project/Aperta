@@ -1,45 +1,21 @@
-# TODO: Refactor this
+# Used to download the docx from S3 and send it to ihat for
+# transformation into HTML.
 class DownloadManuscriptWorker
   include Sidekiq::Worker
 
-  attr_reader :download_url, :callback_url, :metadata, :manuscript
-
-  def perform(manuscript_id, download_url, callback_url, metadata)
-    @download_url = download_url
-    @callback_url = callback_url
-    @metadata = metadata
-    @manuscript = Manuscript.find(manuscript_id)
-
-    download_manuscript_source && update_manuscript
-
-    epub_stream = EpubConverter.new(manuscript.paper, User.first, true).epub_stream.string
+  def perform(paper_id, download_url, callback_url, metadata)
+    paper = Paper.find(paper_id)
+    latest_version = paper.latest_version
+    latest_version.source.download!(download_url)
+    # This will upload the content to the desired location in S3
+    latest_version.save!
+    epub_stream = EpubConverter.new(paper, nil, true).epub_stream.string
     TahiEpub::Tempfile.create epub_stream, delete: true do |file|
-      post_ihat_job(file)
+      request = IhatJobRequest.new(file: file,
+                                   recipe_name: 'docx_to_html',
+                                   callback_url: callback_url,
+                                   metadata: metadata)
+      PaperConverter.post_ihat_job(request)
     end
-  end
-
-  private
-
-  def post_ihat_job(file)
-    RestClient.post(
-      "#{ENV['IHAT_URL']}/jobs",
-      multipart: true,
-      job: {
-        input: file,
-        options: {
-          recipe_name: "docx_to_html",
-          callback_url: callback_url,
-          metadata: metadata
-        }
-      }
-    )
-  end
-
-  def download_manuscript_source
-    manuscript.source.download!(download_url)
-  end
-
-  def update_manuscript
-    manuscript.update! status: "done"
   end
 end

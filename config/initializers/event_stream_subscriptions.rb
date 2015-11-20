@@ -13,6 +13,7 @@ Subscriptions.configure do
 
   add 'paper:updated', stream_to_paper_channel
   add 'paper:destroyed', stream_to_everyone
+  add 'paper:data_extracted', Paper::DataExtracted::FinishUploadManuscriptTask, Paper::DataExtracted::NotifyUser
 
   # Paper constituents:
 

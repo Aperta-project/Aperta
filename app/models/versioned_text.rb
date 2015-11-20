@@ -8,6 +8,8 @@ class VersionedText < ActiveRecord::Base
 
   scope :version_desc, -> { order('major_version DESC, minor_version DESC') }
 
+  mount_uploader :source, SourceUploader
+
   before_update do
     fail ActiveRecord::ReadOnlyRecord unless
       (paper.latest_version == self) && paper.editable? && submitting_user_id_was.blank?

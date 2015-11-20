@@ -11,11 +11,15 @@
     {{content-for 'test-head'}}
 
     <link rel="stylesheet" href="assets/vendor.css">
-    <link rel="stylesheet" href="assets/tahi.css">
     <link rel="stylesheet" href="assets/test-support.css">
 
     {{content-for 'head-footer'}}
     {{content-for 'test-head-footer'}}
+    <style>
+      #ember-testing-container {
+        z-index: -1;
+      }
+    </style>
   </head>
   <body>
     {{content-for 'body'}}
@@ -30,5 +34,11 @@
 
     {{content-for 'body-footer'}}
     {{content-for 'test-body-footer'}}
+    <script>
+      //ugly hack to get paths right in test mode. should be re-visited at a later date
+      $('head').append(
+        '<link rel="stylesheet" type="text/css" href="/' + 
+        ['assets', 'application'].join("/") + '.css">');
+    </script>
   </body>
 </html>

@@ -43,10 +43,10 @@ export default DS.Model.extend({
   status: attr('string'),
   strikingImageId: attr('string'),
   submittedAt: attr('date'),
+  gradualEngagement: attr('boolean'),
   publishingState: attr('string'),
   title: attr('string'),
   withdrawalReason: attr('string'),
-  isSubmitted: attr('boolean'),
   manuscript_id: attr('string'),
 
   taskSorting: ['phase.position', 'position'],
@@ -74,5 +74,15 @@ export default DS.Model.extend({
       return (version.get('majorVersion') === Number(majorVersion) &&
               version.get('minorVersion') === Number(minorVersion));
     });
-  }
+  },
+
+  isUnsubmitted: computed.equal('publishingState', 'unsubmitted'),
+
+  isSubmitted: computed.equal('publishingState', 'submitted'),
+
+  //gradual engagement after initial submission
+  isInitiallySubmitted: computed.equal('publishingState', 'initially_submitted'),
+
+  //gradual engagement after invitation
+  isInRevision: computed.equal('publishingState', 'in_revision'),
 });

@@ -1,13 +1,18 @@
 class PaperSerializer < LitePaperSerializer
   attributes :id, :short_title, :title, :doi, :body,
              :publishing_state, :paper_type, :updated_at,
-             :editable, :links, :manuscript_id, :created_at, :editable
+             :editable, :links, :manuscript_id, :created_at, :editable,
+             :submitted_at, :gradual_engagement
 
   %i(tables bibitems supporting_information_files).each do |relation|
     has_many relation, embed: :ids, include: true
   end
 
-  has_many :collaborations, embed: :ids, include: true, serializer: CollaborationSerializer
+  has_many :collaborations,
+           embed: :ids,
+           include: true,
+           serializer: CollaborationSerializer
+
   has_one :journal, embed: :id
   has_one :striking_image, embed: :id
 

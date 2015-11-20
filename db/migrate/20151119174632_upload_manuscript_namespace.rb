@@ -1,4 +1,5 @@
 class UploadManuscriptNamespace < ActiveRecord::Migration
+  # there are incorrect queries in this migration.  look to the next one for corrections.
   def up
     execute <<-SQL
     UPDATE tasks SET type = 'TahiStandardTasks::UploadManuscriptTask' WHERE type = 'UploadManuscript::UploadManuscriptTask';

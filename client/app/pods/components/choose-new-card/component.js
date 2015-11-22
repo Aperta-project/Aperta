@@ -1,13 +1,19 @@
 import Ember from 'ember';
+import EscapeListenerMixin from 'tahi/mixins/escape-listener';
 
-export default Ember.Component.extend({
+const { computed, on } = Ember;
+
+export default Ember.Component.extend(EscapeListenerMixin, {
+  phase: null, // passed-in
   journalTaskTypes: null, // passed-in
-  taskTypeSort: ['title:asc'],
-  sortedTaskTypes: Ember.computed.sort('journalTaskTypes', 'taskTypeSort'),
-  authorTasks: Ember.computed.filterBy('sortedTaskTypes', 'role', 'author'),
-  staffTasks: Ember.computed.setDiff('sortedTaskTypes', 'authorTasks'),
+  isLoading: false, // passed-in
 
-  setuptaskTypeList: Ember.on('init', function() {
+  taskTypeSort: ['title:asc'],
+  sortedTaskTypes: computed.sort('journalTaskTypes', 'taskTypeSort'),
+  authorTasks: computed.filterBy('sortedTaskTypes', 'role', 'author'),
+  staffTasks: computed.setDiff('sortedTaskTypes', 'authorTasks'),
+
+  setuptaskTypeList: on('init', function() {
     if (!this.get('taskTypeList')) {
       this.set('taskTypeList', []);
     }
@@ -15,20 +21,24 @@ export default Ember.Component.extend({
 
   actions: {
     updateList(checkbox) {
-
-      if (checkbox.get("checked")) {
-        this.get('taskTypeList').pushObject(checkbox.get("task"));
+      if (checkbox.get('checked')) {
+        this.get('taskTypeList').pushObject(checkbox.get('task'));
       } else {
-        this.get('taskTypeList').removeObject(checkbox.get("task"));
+        this.get('taskTypeList').removeObject(checkbox.get('task'));
       }
     },
 
-    closeAction() {
-      this.sendAction('closeAction');
+    addTaskType() {
+      this.attrs.addTaskType(
+        this.get('phase'),
+        this.get('taskTypeList')
+      );
+
+      this.attrs.close();
     },
 
-    addTaskType(phase) {
-      this.sendAction('addTaskType', phase, this.get('taskTypeList'));
+    close() {
+      this.attrs.close();
     }
   }
 });

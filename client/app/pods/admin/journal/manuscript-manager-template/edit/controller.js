@@ -13,6 +13,11 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   showCardDeleteOverlay: false,
   taskToDelete: null,
 
+  showChooseNewCardOverlay: false,
+  addToPhase: null,
+  journalTaskTypes: [],
+  journalTaskTypesIsLoading: false,
+
   saveTemplate(transition){
     this.get('model').save().then(() => {
       this.successfulSave(transition);
@@ -44,6 +49,31 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   },
 
   actions: {
+    showChooseNewCardOverlay(phase) {
+      this.setProperties({
+        addToPhase: phase,
+        journalTaskTypesIsLoading: true
+      });
+
+      const journalId = this.get('model.journal.id');
+      this.store.find('adminJournal', journalId).then(adminJournal => {
+        this.setProperties({
+          journalTaskTypes: adminJournal.get('journalTaskTypes'),
+          journalTaskTypesIsLoading: false
+        });
+      });
+
+      this.set('showChooseNewCardOverlay', true);
+    },
+
+    hideChooseNewCardOverlay() {
+      this.set('showChooseNewCardOverlay', false);
+    },
+
+    addTaskType(phase, taskTypeList) {
+      this.send('addTaskTypeToPhase', phase, taskTypeList);
+    },
+
     showCardDeleteOverlay(task) {
       this.set('taskToDelete', task);
       this.set('showCardDeleteOverlay', true);

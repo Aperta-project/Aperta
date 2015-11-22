@@ -2,20 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   actions: {
-    chooseNewCardTypeOverlay(phaseTemplate) {
-      this.controllerFor('overlays/chooseNewCardType').setProperties({
-        phase: phaseTemplate,
-        journalTaskTypes: this.modelFor('admin.journal').get('journalTaskTypes')
-      });
-
-      this.send('openOverlay', {
-        template: 'overlays/chooseNewCardType',
-        controller: 'overlays/chooseNewCardType'
-      });
-    },
-
-    addTaskType(phaseTemplate, taskTypeList) {
-
+    addTaskTypeToPhase(phaseTemplate, taskTypeList) {
       if (!taskTypeList) { return; }
       let isAdhocType = false;
 

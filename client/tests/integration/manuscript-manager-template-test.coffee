@@ -116,7 +116,7 @@ test 'Adding an Ad-Hoc card', (assert) ->
   visit("/admin/journals/1/manuscript_manager_templates/1/edit")
   click('a.button--green:contains("Add New Card")')
   click('label:contains("Ad Hoc")')
-  click('.overlay .button--green:contains("Add")')
+  click('.overlay-x .button--green:contains("Add")')
 
   andThen ->
     assert.ok find('h1.inline-edit:contains("Ad Hoc")').length

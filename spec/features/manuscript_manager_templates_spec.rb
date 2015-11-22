@@ -62,10 +62,10 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
       phase = task_manager_page.phase 'Get Reviews'
       phase.find('a', text: 'ADD NEW CARD').click
 
-      expect(task_manager_page).to have_css('.overlay', text: 'Author task cards')
-      expect(task_manager_page).to have_css('.overlay', text: 'Staff task cards')
+      expect(task_manager_page).to have_css('.overlay-x', text: 'Author task cards')
+      expect(task_manager_page).to have_css('.overlay-x', text: 'Staff task cards')
       expect {
-        within '.overlay' do
+        within '.overlay-x' do
           find('label', text: 'Invite Reviewer').click
           find('button', text: 'ADD').click
         end
@@ -79,10 +79,10 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
       phase = task_manager_page.phase 'Get Reviews'
       phase.find('a', text: 'ADD NEW CARD').click
 
-      expect(task_manager_page).to have_css('.overlay', text: 'Author task cards')
-      expect(task_manager_page).to have_css('.overlay', text: 'Staff task cards')
+      expect(task_manager_page).to have_css('.overlay-x', text: 'Author task cards')
+      expect(task_manager_page).to have_css('.overlay-x', text: 'Staff task cards')
       expect {
-        within '.overlay' do
+        within '.overlay-x' do
           find('label', text: 'Invite Reviewer').click
           find('label', text: 'Register Decision').click
           find('button', text: 'ADD').click
@@ -97,7 +97,7 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
       phase = task_manager_page.phase 'Get Reviews'
       phase.find('a', text: 'ADD NEW CARD').click
 
-      within '.overlay' do
+      within '.overlay-x' do
         find('label', text: 'Ad-hoc').click
         find('button', text: 'ADD').click
       end

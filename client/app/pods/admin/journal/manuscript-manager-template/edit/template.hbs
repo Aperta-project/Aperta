@@ -30,7 +30,7 @@
                               removeRecord="removeRecord"
                               rollbackPhase="rollbackPhase"
                               showDeleteConfirm="showCardDeleteOverlay"
-                              chooseNewCardTypeOverlay="chooseNewCardTypeOverlay"
+                              chooseNewCardTypeOverlay="showChooseNewCardOverlay"
                               itemUpdated="itemUpdated"}}
     {{/each}}
   </div>
@@ -45,5 +45,18 @@
                         close=(action animateOut)}}
     {{card-delete model=taskToDelete
                   close=(action animateOut)}}
+  {{/overlay-fullscreen}}
+{{/overlay-base}}
+
+{{#overlay-base visible=showChooseNewCardOverlay
+                outAnimationComplete=(action "hideChooseNewCardOverlay")
+                as |animateOut|}}
+  {{#overlay-fullscreen title="Pick the types of cards to add"
+                        close=(action animateOut)}}
+    {{choose-new-card journalTaskTypes=journalTaskTypes
+                      phase=addToPhase
+                      isLoading=journalTaskTypesIsLoading
+                      addTaskType=(action "addTaskType")
+                      close=(action animateOut)}}
   {{/overlay-fullscreen}}
 {{/overlay-base}}

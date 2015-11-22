@@ -12,7 +12,6 @@ export default Ember.Component.extend({
   }),
 
   actions: {
-
     chooseNewCardTypeOverlay(phase) {
       this.sendAction('chooseNewCardTypeOverlay', phase);
     },

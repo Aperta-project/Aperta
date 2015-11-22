@@ -28,27 +28,6 @@ export default AuthorizedRoute.extend({
   },
 
   actions: {
-    chooseNewCardTypeOverlay(phase) {
-      const chooseNewCardTypeOverlay =
-        this.controllerFor('overlays/chooseNewCardType');
-
-      const journalId = phase.get('paper.journal.id');
-
-      chooseNewCardTypeOverlay.set('phase', phase);
-
-      this.store.find('adminJournal', journalId).then(function(adminJournal) {
-        chooseNewCardTypeOverlay.set(
-          'journalTaskTypes',
-          adminJournal.get('journalTaskTypes')
-        );
-      });
-
-      this.send('openOverlay', {
-        template: 'overlays/chooseNewCardType',
-        controller: chooseNewCardTypeOverlay
-      });
-    },
-
     viewCard(task, queryParams) {
       this.get('cardOverlayService').setProperties({
         previousRouteOptions: ['paper.workflow', this.modelFor('paper')],
@@ -67,7 +46,7 @@ export default AuthorizedRoute.extend({
       );
     },
 
-    addTaskType(phase, taskTypeList) {
+    addTaskTypeToPhase(phase, taskTypeList) {
       if (!taskTypeList) { return; }
 
       let promises = [];

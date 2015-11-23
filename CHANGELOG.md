@@ -8,7 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Users can view old versions of the paper's metadata.
 
 ### Changed
--
+- compressed application request logging to a single line
 
 ### Deprecated
 -

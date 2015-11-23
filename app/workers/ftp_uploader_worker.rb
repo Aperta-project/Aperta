@@ -2,6 +2,7 @@ class FtpUploaderWorker
   include Sidekiq::Worker
   require 'net/ftp'
   class FtpTransferError < StandardError; end;
+  TRANSFER_COMPLETE = '226'
 
   def perform(host: ENV['FTP_HOST'], passive_mode: true, user: ENV['FTP_USER'], password: ENV['FTP_PASSWORD'], port: 21, filepath: nil, filename: nil)
     @host = host
@@ -17,11 +18,12 @@ class FtpUploaderWorker
     tmp_file = upload_to_temporary_file
 
     begin
-      if @ftp.last_response_code == '226'
+      if @ftp.last_response_code == TRANSFER_COMPLETE
         @ftp.rename(tmp_file, @final_filename)
         Rails.logger.info 'Transfer successful'
         return true
       else
+        notify_admin
         fail FtpTransferError, "FTP Transfer failed with this response: #{@ftp.last_response}"
       end
     ensure
@@ -31,6 +33,15 @@ class FtpUploaderWorker
   end
 
   private
+
+  def notify_admin
+    transfer_failed = "FTP Transfer failed for #{@final_filename}"
+    AdhocMailer.delay.send_adhoc_email( 
+      transfer_failed,
+      transfer_failed + ": #{@ftp.last_response}. The background worker will attempt to retry the transfer.",
+      User.joins(:roles).where('roles.kind' => 'admin')
+    )
+  end
 
   def connect_to_server
     @ftp = Net::FTP.new

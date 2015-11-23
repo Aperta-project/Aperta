@@ -3,7 +3,10 @@
 </div>
 
 <p>Enter or edit CSS to format the ePub output for this journal's papers.</p>
-{{textarea value=css placeholder="Type your CSS here" autofocus="autofocus"}}
+{{textarea value=css
+           placeholder="Type your CSS here"
+           class="edit-journal-textarea"
+           autofocus="autofocus"}}
 
 <div class="overlay-action-buttons">
   <a href="#" class="button-link button--grey cancel-link" {{action "close"}}>cancel</a>

@@ -17,7 +17,7 @@
   {{paper-sidebar paper=model
                   user=currentUser
                   commentLooks=commentLooks
-                  showConfirmSubmitOverlay="showConfirmSubmitOverlay"
+                  showPaperSubmitOverlay=(action "showPaperSubmitOverlay")
                   viewCard="viewCard"}}
 
   <div class="manuscript-container">
@@ -83,5 +83,16 @@
                         close=(action animateOut)}}
     {{paper-withdraw model=model
                      close=(action animateOut)}}
+  {{/overlay-fullscreen}}
+{{/overlay-base}}
+
+
+{{#overlay-base visible=showPaperSubmitOverlay
+                outAnimationComplete=(action "hidePaperSubmitOverlay")
+                as |animateOut|}}
+  {{#overlay-fullscreen class="overlay-x--green paper-submit-overlay"
+                        close=(action animateOut)}}
+    {{paper-submit model=model
+                   close=(action animateOut)}}
   {{/overlay-fullscreen}}
 {{/overlay-base}}

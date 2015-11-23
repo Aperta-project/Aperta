@@ -84,7 +84,7 @@ class JournalPage < Page
 
   def find_textarea
     retry_stale_element do
-      find('textarea')
+      find('.edit-journal-textarea')
     end
   end
 

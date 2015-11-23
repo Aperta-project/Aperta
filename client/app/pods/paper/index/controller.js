@@ -29,6 +29,8 @@ export default Ember.Controller.extend(PaperBase, Discussions, {
 
   showCollaboratorsOverlay: false,
 
+  showPaperSubmitOverlay: false,
+
   actions: {
     toggleSubmissionProcess(){
       Ember.$('#submission-process').slideToggle(300);
@@ -57,6 +59,14 @@ export default Ember.Controller.extend(PaperBase, Discussions, {
 
     hideCollaboratorsOverlay() {
       this.set('showCollaboratorsOverlay', false);
+    },
+
+    showPaperSubmitOverlay() {
+      this.set('showPaperSubmitOverlay', true);
+    },
+
+    hidePaperSubmitOverlay() {
+      this.set('showPaperSubmitOverlay', false);
     }
   }
 });

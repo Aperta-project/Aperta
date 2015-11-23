@@ -1,11 +1,14 @@
 import Ember from 'ember';
+import EscapeListenerMixin from 'tahi/mixins/escape-listener';
 
-export default Ember.Controller.extend({
-  restless: Ember.inject.service('restless'),
-  overlayClass: 'overlay--fullscreen overlay--green paper-submit-overlay',
+export default Ember.Component.extend(EscapeListenerMixin, {
+  flash: Ember.inject.service(),
+  restless: Ember.inject.service(),
   paperSubmitted: false,
   previousPublishingState: null,
-  isFirstFullSubmission: Ember.computed.equal('previousPublishingState', 'invited_for_full_submission'),
+  isFirstFullSubmission: Ember.computed.equal(
+    'previousPublishingState', 'invited_for_full_submission'
+  ),
 
   recordPreviousPublishingState: function(){
     this.set('previousPublishingState', this.get('model.publishingState'));
@@ -17,27 +20,27 @@ export default Ember.Controller.extend({
       this.get('restless').putUpdate(this.get('model'), '/submit').then(()=> {
         this.set('paperSubmitted', true);
       }, (arg)=> {
-        let status = arg.status;
-        let model  = arg.model;
+        const status = arg.status;
+        const model  = arg.model;
         let message;
         switch (status) {
           case 422:
-            message = model.get('errors.messages') + " You should probably reload.";
+            const errors = model.get('errors.messages');
+            message =  errors + ' You should probably reload.';
             break;
           case 403:
-            message = "You weren't authorized to do that";
+            message = 'You weren\'t authorized to do that';
             break;
           default:
             message = 'There was a problem saving. Please reload.';
         }
 
-        this.flash.displayMessage('error', message);
+        this.get('flash').displayMessage('error', message);
       });
     },
 
-    closeSuccessOverlay() {
-      this.send('closeOverlay');
-      this.set('paperSubmitted', false);
+    close() {
+      this.attrs.close();
     }
   }
 });

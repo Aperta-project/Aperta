@@ -44,8 +44,8 @@ describe TaskFactory do
 
   it "Sets the participants from params" do
     participants = [FactoryGirl.create(:user)]
-    t = TaskFactory.create(klass, phase: phase, participants: participants)
-    expect(t.participants).to eq(participants)
+    task = TaskFactory.create(klass, phase: phase, participants: participants)
+    expect(task.participants).to eq(participants)
   end
 
   it "Add the creator as participant in task if is submission type" do

@@ -8,14 +8,6 @@
 }
 
 .edit-task-types-overlay.overlay-x--fullscreen {
-  .overlay-x-close {
-    color: $tahi-blue;
-
-    &:hover {
-      color: $tahi-blue-dark;
-    }
-  }
-
   .task-headers h3 {
     display: inline-block;
 

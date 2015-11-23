@@ -64,4 +64,15 @@ $ov--fullscreen-breakpoint: 780px;
       color: #fff;
     }
   }
+
+  // -- Blue Theme --------------
+  &.overlay-x--blue {
+    .overlay-x-close {
+      color: $tahi-blue;
+
+      &:hover {
+        color: $tahi-blue-dark;
+      }
+    }
+  }
 }

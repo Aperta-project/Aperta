@@ -8,7 +8,7 @@ Tahi::Application.configure do
     # add additional items to single line log output
     {
       params: params,
-      time: event.time,
+      time: event.time.to_s(:w3cdtf),
       ip: event.payload[:ip],
     }
   end

@@ -5,6 +5,8 @@ class SupportingInformationFile < ActiveRecord::Base
 
   default_scope { order(:id) }
 
+  scope :publishable, -> { where(publishable: true) }
+
   mount_uploader :attachment, AdhocAttachmentUploader
 
   IMAGE_TYPES = %w{jpg jpeg tiff tif gif png eps tif}

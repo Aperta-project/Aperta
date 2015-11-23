@@ -79,7 +79,7 @@
 {{#overlay-base visible=showWithdrawOverlay
                 outAnimationComplete=(action "hideWithdrawOverlay")
                 as |animateOut|}}
-  {{#overlay-fullscreen class="overlay--grey"
+  {{#overlay-fullscreen class="overlay--grey paper-widthdraw-overlay"
                         close=(action animateOut)}}
     {{paper-withdraw model=model
                      close=(action animateOut)}}

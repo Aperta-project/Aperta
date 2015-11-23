@@ -6,7 +6,7 @@
                rollbackPhase="rollbackPhase"}}
 
 <div class="column-content">
-  <div class="sortable {{if noCards "sortable-no-cards"}}" data-phase-id="{{phase.id}}">
+  {{#sortable-list list=phase items=sortedTasks}}
     {{#each sortedTasks as |task|}}
       {{card-preview paper=paper
                      task=task
@@ -15,7 +15,7 @@
                      canDragCard=true
                      action="viewCard"}}
     {{/each}}
-  </div>
+  {{/sortable-list}}
 
   <a {{action "chooseNewCardTypeOverlay" phase}} class="button-secondary button--green add-new-card-button">Add New Card</a>
 </div>

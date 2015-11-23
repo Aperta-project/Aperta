@@ -14,12 +14,6 @@ export default Ember.Controller.extend({
   },
 
   actions: {
-    changePhaseForTask(task, targetPhaseId) {
-      this.beginPropertyChanges();
-      this.store.getById('phase', targetPhaseId).get('tasks').addObject(task);
-      this.endPropertyChanges();
-    },
-
     addPhase(position) {
       let paper = this.get('model');
       let phase = this.store.createRecord('phase', {
@@ -31,10 +25,6 @@ export default Ember.Controller.extend({
       this.updatePositions(phase);
 
       phase.save();
-    },
-
-    changeTaskPhase(task, targetPhase) {
-      task.set('phase', targetPhase);
     },
 
     removePhase(phase) {

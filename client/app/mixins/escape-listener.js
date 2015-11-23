@@ -6,7 +6,7 @@ const notEscapeKey = function(e) {
 };
 
 const ofType = 'input, textarea, [contenteditable=true], .select-box-element';
-const shouldNotClose = function(e) {
+const focusedInField = function(e) {
   return Ember.$(e.target).is(ofType);
 };
 
@@ -20,7 +20,7 @@ export default Ember.Mixin.create({
   setupKeyup: Ember.on('didInsertElement', function() {
     Ember.$('body').on(this.eventName(), (e)=> {
       if (notEscapeKey(e))   { return; }
-      if (shouldNotClose(e)) { return; }
+      if (focusedInField(e)) { return; }
       this.send(this.get('escapeKeyAction'));
     });
   }),

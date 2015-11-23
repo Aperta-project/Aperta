@@ -74,10 +74,14 @@ $ov--fullscreen-breakpoint: 780px;
       }
     }
   }
-=======
+
+  // -- Green Theme -------------
+  &.overlay-x--green {
+    color: #fff;
+    background-color: rgba(57,163,41, 0.95);
+
     .overlay-x-close {
-      color: $tahi-grey;
+      color: #fff;
     }
   }
->>>>>>> Collaborators overlay to component:app/assets/stylesheets/ui/_overlay-x-fullscreen.scss
 }

@@ -38,23 +38,37 @@ export default Ember.Component.extend({
       },
 
       update(event, ui) {
-        if (ui.item.closest('.sortable').attr('id') === self.get('elementId')) {
+        var _id = ui.item.closest('.sortable').attr('id');
+        if ((_id === self.get('elementId')) && self.get('changedWithinPhase')) {
+          const oldIndex = ui.item.data('oldIndex');
+          const newIndex = ui.item.index();
+          let itemList   = self.get('items');
 
-          if (self.get('changedWithinPhase')) {
-            self.move(ui.item.data('oldIndex'), ui.item.index());
-            console.log('update');
-          }
+          const item = itemList.objectAt(oldIndex);
+          itemList.removeAt(oldIndex);
+          itemList.insertAt(newIndex, item);
+          self.updatePositions(itemList);
+
+          self.sendAction('itemWasMoved', item, oldIndex, newIndex);
         }
       },
 
       receive(event, ui) {
         const oldIndex = ui.item.data('oldIndex');
         const newIndex = ui.item.index();
-        const originalSource = ui.item.__source__;
+        let itemList   = self.get('items');
+        let originalItemList = ui.item.__source__.get('items');
+
         self.set('changedWithinPhase', false);
-        const item = originalSource.get('items').objectAt(oldIndex);
-        originalSource.get('items').removeAt(oldIndex);
-        self.get('items').insertAt(newIndex, item);
+
+        const item = originalItemList.objectAt(oldIndex);
+        originalItemList.removeAt(oldIndex);
+        itemList.insertAt(newIndex, item);
+
+        self.updatePositions(originalItemList);
+        self.updatePositions(itemList);
+
+        self.sendAction('itemWasMoved', item, oldIndex, newIndex);
       },
 
       stop(event, ui) {
@@ -68,17 +82,11 @@ export default Ember.Component.extend({
     });
   },
 
-  move(oldIndex, newIndex) {
-    const item = this.get('items').objectAt(oldIndex);
-    this.get('items').removeAt(oldIndex);
-    this.get('items').insertAt(newIndex, item);
-    this.updatePositions();
-  },
-
-  updatePositions() {
-    this.get('items').forEach((item, index) => {
+  updatePositions(itemList) {
+    this.beginPropertyChanges();
+    itemList.forEach((item, index) => {
       item.set('position', index + 1);
     });
+    this.endPropertyChanges();
   }
-
 });

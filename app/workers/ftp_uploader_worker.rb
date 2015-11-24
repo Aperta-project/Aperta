@@ -4,7 +4,9 @@ class FtpUploaderWorker
   class FtpTransferError < StandardError; end;
   TRANSFER_COMPLETE = '226'
 
-  def perform(host: ENV['FTP_HOST'], passive_mode: true, user: ENV['FTP_USER'], password: ENV['FTP_PASSWORD'], port: 21, filepath: nil, filename: nil)
+  def perform(host: ENV['FTP_HOST'], passive_mode: true, 
+              user: ENV['FTP_USER'], password: ENV['FTP_PASSWORD'], port: 21, 
+              filepath: nil, filename: nil, directory: ENV['FTP_DIR'])
     fail FtpTransferError, "Filepath is required" if filepath.blank?
     fail FtpTransferError, "Final filename is required" if filename.blank?
     @host = host
@@ -14,20 +16,23 @@ class FtpUploaderWorker
     @port = port
     @filepath = filepath
     @final_filename = filename
-
-    connect_to_server
-    enter_packages_directory
-    tmp_file = upload_to_temporary_file
+    @directory = directory || 'packages'
 
     begin
+      @ftp = Net::FTP.new
+      connect_to_server
+      enter_packages_directory
+      tmp_file = upload_to_temporary_file
       if @ftp.last_response_code == TRANSFER_COMPLETE
         @ftp.rename(tmp_file, @final_filename)
-        Rails.logger.info 'Transfer successful'
+        Rails.logger.info "Transfer successful for #{@final_filename}"
         return true
       else
-        notify_admin
-        fail FtpTransferError, "FTP Transfer failed with this response: #{@ftp.last_response}"
+        fail FtpTransferError, "FTP Transfer failed: #{@ftp.last_response}"
       end
+    rescue IOError, SystemCallError, Net::FTPError, FtpTransferError => e
+      notify_admin
+      raise e
     ensure
       @ftp.delete(tmp_file) if @ftp.nlst.include?(tmp_file)
       @ftp.close
@@ -46,7 +51,6 @@ class FtpUploaderWorker
   end
 
   def connect_to_server
-    @ftp = Net::FTP.new
     @ftp.connect(@host, @port)
     @ftp.passive = @passive_mode
     @ftp.login(user = @user, passwd = @password)
@@ -54,8 +58,8 @@ class FtpUploaderWorker
 
   def enter_packages_directory
     remote_directories = @ftp.nlst
-    @ftp.mkdir('packages') unless remote_directories.index('packages')
-    @ftp.chdir('packages')
+    @ftp.mkdir(@directory) unless remote_directories.index(@directory)
+    @ftp.chdir(@directory)
   end
 
   def upload_to_temporary_file

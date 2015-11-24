@@ -41,7 +41,8 @@ describe ApexPackager do
     end
 
     it 'creates a zip package for a paper' do
-      zip_file_path = ApexPackager.create(paper)
+      packager = ApexPackager.create(paper)
+      zip_file_path = packager.zip_file.path
 
       expect(zip_filenames((zip_file_path))).to include(
         "#{paper.manuscript_id}.docx")
@@ -77,7 +78,8 @@ describe ApexPackager do
     end
 
     it 'adds a figure to a zip' do
-      zip_file_path = ApexPackager.create(paper)
+      packager = ApexPackager.create(paper)
+      zip_file_path = packager.zip_file.path
 
       expect(zip_filenames((zip_file_path))).to include(figure.filename)
     end
@@ -85,7 +87,8 @@ describe ApexPackager do
     it 'does not add figures that do not comply' do
       nested_question_answer.value = 'false'
       nested_question_answer.save!
-      zip_file_path = ApexPackager.create(paper)
+      packager = ApexPackager.create(paper)
+      zip_file_path = packager.zip_file.path
 
       expect(zip_filenames((zip_file_path))).to_not include(figure.filename)
     end
@@ -123,7 +126,8 @@ describe ApexPackager do
     end
 
     it 'adds supporting information to a zip' do
-      zip_file_path = ApexPackager.create(paper)
+      packager = ApexPackager.create(paper)
+      zip_file_path = packager.zip_file.path
 
       expect(zip_filenames((zip_file_path))).to include(
         supporting_information_file.filename)
@@ -132,7 +136,8 @@ describe ApexPackager do
     it 'does not add unpublishable supporting information to the zip' do
       supporting_information_file.publishable = false
       supporting_information_file.save!
-      zip_file_path = ApexPackager.create(paper)
+      packager = ApexPackager.create(paper)
+      zip_file_path = packager.zip_file.path
 
       expect(zip_filenames((zip_file_path))).to_not include(
         supporting_information_file.filename)
@@ -187,17 +192,19 @@ describe ApexPackager do
     end
 
     it 'includes the strking image with proper name' do
-      zip_file_path = ApexPackager.create(paper)
+      packager = ApexPackager.create(paper)
+      zip_file_path = packager.zip_file.path
 
-      expect(zip_filenames((zip_file_path))).to include('Strikingimage.jpg')
+      expect(zip_filenames(zip_file_path)).to include('Strikingimage.jpg')
     end
 
     it 'separates figures and striking images' do
-      zip_file_path = ApexPackager.create(paper)
+      packager = ApexPackager.create(paper)
+      zip_file_path = packager.zip_file.path
 
       expect(zip_filenames(zip_file_path)).to include('Strikingimage.jpg')
-      expect(zip_filenames((zip_file_path))).to include('yeti2.jpg')
-      expect(zip_filenames((zip_file_path))).to_not include('yeti.jpg')
+      expect(zip_filenames(zip_file_path)).to include('yeti2.jpg')
+      expect(zip_filenames(zip_file_path)).to_not include('yeti.jpg')
     end
   end
 end

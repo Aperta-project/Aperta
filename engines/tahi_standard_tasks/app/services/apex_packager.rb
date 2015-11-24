@@ -5,7 +5,7 @@ class ApexPackager
   def self.create(paper)
     packager = ApexPackager.new(paper)
     packager.zip
-    packager.zip_file.path
+    packager
   end
 
   def initialize(paper)

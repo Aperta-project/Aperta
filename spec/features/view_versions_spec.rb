@@ -16,10 +16,11 @@ feature 'Viewing Versions:', js: true do
                          paper: paper,
                          phase: paper.phases.first
     end
+    let(:version_0) { paper.versioned_texts.version_desc.last }
+    let(:version_1) { paper.versioned_texts.version_desc.first }
 
     before do
       paper.reload
-      paper.allow_edits!
       login_as(user, scope: :user)
       visit '/'
 
@@ -30,13 +31,12 @@ feature 'Viewing Versions:', js: true do
       page = PaperPage.new
       page.version_button.click
       wait_for_ajax
-      select paper.versioned_texts.version_desc.first.version_string,
-             from: 'view_version'
+
+      page.select_viewing_version(version_1)
 
       expect(page.versioned_body).to have_content('OK second body')
 
-      select paper.versioned_texts.version_desc.last.version_string,
-             from: 'view_version'
+      page.select_viewing_version(version_0)
 
       expect(page.versioned_body).to have_content('OK first body')
     end
@@ -45,11 +45,9 @@ feature 'Viewing Versions:', js: true do
       page = PaperPage.new
       page.version_button.click
       wait_for_ajax
-      select paper.versioned_texts.version_desc.last.version_string,
-             from: 'view_version'
+      page.select_viewing_version(version_0)
 
-      select paper.versioned_texts.version_desc.first.version_string,
-             from: 'compare_version'
+      page.select_comparison_version(version_1)
 
       expect(page.find('#paper-body .added')).to have_content 'OK first body'
       expect(page.find('#paper-body .removed')).to have_content 'OK second body'
@@ -60,14 +58,14 @@ feature 'Viewing Versions:', js: true do
       page = PaperPage.new
       page.version_button.click
       wait_for_ajax
-      select paper.versioned_texts.version_desc.last.version_string,
-             from: 'view_version'
+      page.select_comparison_version(version_0)
+
       page.view_card('Ethics', VersionedMetadataOverlay) do |overlay|
         overlay.expect_version('R0.0')
       end
 
-      select paper.versioned_texts.version_desc.first.version_string,
-             from: 'view_version'
+      page.select_viewing_version(version_1)
+
       page.view_card('Ethics', VersionedMetadataOverlay) do |overlay|
         overlay.expect_version('R1.0')
       end

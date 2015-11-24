@@ -189,10 +189,6 @@ class Paper < ActiveRecord::Base
     end
   end
 
-  def version_string
-    latest_version.version_string
-  end
-
   # Public: Find `PaperRole`s for the given role and user.
   #
   # role  - The role to search for.

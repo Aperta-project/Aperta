@@ -221,9 +221,11 @@ describe Paper do
       end
 
       it 'sets a new minor version' do
-        expect(paper.latest_version.version_string).to match(/^R0.0/)
+        expect(paper.latest_version.major_version).to be(0)
+        expect(paper.latest_version.minor_version).to be(0)
         paper.invite_full_submission!
-        expect(paper.latest_version.version_string).to match(/^R0.1/)
+        expect(paper.latest_version.major_version).to be(0)
+        expect(paper.latest_version.minor_version).to be(1)
       end
     end
 
@@ -265,9 +267,11 @@ describe Paper do
       end
 
       it "creates a new minor version" do
-        expect(paper.latest_version.version_string).to match(/^R0.0/)
+        expect(paper.latest_version.major_version).to be(0)
+        expect(paper.latest_version.minor_version).to be(0)
         paper.minor_check!
-        expect(paper.latest_version.version_string).to match(/^R0.1/)
+        expect(paper.latest_version.major_version).to be(0)
+        expect(paper.latest_version.minor_version).to be(1)
       end
     end
 
@@ -356,9 +360,11 @@ describe Paper do
       end
 
       it "creates a new major version" do
-        expect(paper.latest_version.version_string).to match(/^R0.0/)
+        expect(paper.latest_version.major_version).to be(0)
+        expect(paper.latest_version.minor_version).to be(0)
         paper.make_decision decision
-        expect(paper.latest_version.version_string).to match(/^R1.0/)
+        expect(paper.latest_version.major_version).to be(1)
+        expect(paper.latest_version.minor_version).to be(0)
       end
     end
 
@@ -373,9 +379,11 @@ describe Paper do
       end
 
       it "creates a new major version" do
-        expect(paper.latest_version.version_string).to match(/^R0.0/)
+        expect(paper.latest_version.major_version).to be(0)
+        expect(paper.latest_version.minor_version).to be(0)
         paper.make_decision decision
-        expect(paper.latest_version.version_string).to match(/^R1.0/)
+        expect(paper.latest_version.major_version).to be(1)
+        expect(paper.latest_version.minor_version).to be(0)
       end
     end
   end

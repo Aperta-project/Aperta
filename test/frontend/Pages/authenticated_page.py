@@ -250,6 +250,15 @@ class AuthenticatedPage(PlosPage):
     """
     self._get(self._flash_closer).click()
 
+  def close_modal(self):
+    """
+    Close any type of modal
+    :return: None
+    """
+    self._get(self._modal_close).click()
+
+
+
   @staticmethod
   def get_db_submission_data(manu_id):
     """

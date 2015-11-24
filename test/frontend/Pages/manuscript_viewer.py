@@ -332,6 +332,12 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._get(self._tb_workflow_link).click()
     return self
 
+  def get_paper_id(self):
+    """
+    """
+    doi_text = self._get(self._tl_manuscript_id).text
+    return doi_text.split(':')[1]
+
   def validate_so_overlay_elements_styles(self, type, paper_title):
     """
     :param type: full_submit, initial_submit, initial_submit_full, congratulations

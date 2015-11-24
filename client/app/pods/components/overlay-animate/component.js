@@ -68,7 +68,6 @@ export default Ember.Component.extend({
    *  Expected use case is this property to be an action
    *
    *  @method inAnimationComplete
-   *  @type Function
    *  @optional
   **/
   inAnimationComplete(){},
@@ -78,7 +77,6 @@ export default Ember.Component.extend({
    *  This property should be set to an action.
    *
    *  @method outAnimationComplete
-   *  @type Function
    *  @required
   **/
   outAnimationComplete: null,

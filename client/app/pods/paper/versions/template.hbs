@@ -74,37 +74,31 @@
 
 {{outlet}}
 
-{{#overlay-base visible=showActivityOverlay
-                outAnimationComplete=(action "hideActivityOverlay")
-                as |animateOut|}}
-  {{#overlay-fullscreen class="activity-overlay"
-                        title="Recent Activity"
-                        close=(action animateOut)}}
+{{#overlay-fullscreen visible=showActivityOverlay
+                      outAnimationComplete=(action "hideActivityOverlay")
+                      title="Recent Activity"
+                      overlayClass="activity-overlay"
+                      as |overlay|}}
     {{paper-activity isLoading=activityIsLoading
                      model=activityFeed
-                     close=(action animateOut)}}
-  {{/overlay-fullscreen}}
-{{/overlay-base}}
+                     close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
 
 
-{{#overlay-base visible=showCollaboratorsOverlay
-                outAnimationComplete=(action "hideCollaboratorsOverlay")
-                as |animateOut|}}
-  {{#overlay-fullscreen class="show-collaborators-overlay"
-                        title="Who can collaborate on this manuscript?"
-                        close=(action animateOut)}}
+{{#overlay-fullscreen visible=showCollaboratorsOverlay
+                      outAnimationComplete=(action "hideCollaboratorsOverlay")
+                      title="Who can collaborate on this manuscript?"
+                      overlayClass="show-collaborators-overlay"
+                      as |overlay|}}
     {{paper-collaborators paper=model
-                          close=(action animateOut)}}
-  {{/overlay-fullscreen}}
-{{/overlay-base}}
+                          close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
 
 
-{{#overlay-base visible=showWithdrawOverlay
-                outAnimationComplete=(action "hideWithdrawOverlay")
-                as |animateOut|}}
-  {{#overlay-fullscreen class="overlay--grey"
-                        close=(action animateOut)}}
+{{#overlay-fullscreen visible=showWithdrawOverlay
+                      outAnimationComplete=(action "hideWithdrawOverlay")
+                      overlayClass="overlay--grey paper-widthdraw-overlay"
+                      as |overlay|}}
     {{paper-withdraw model=model
-                     close=(action animateOut)}}
-  {{/overlay-fullscreen}}
-{{/overlay-base}}
+                     close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}

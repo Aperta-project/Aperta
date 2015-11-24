@@ -1,13 +1,13 @@
-<div class="overlay-x-container">
-  <header class="overlay-x-header">
-    {{#if title}}
-      <h1 class="overlay-x-header-title">{{title}}</h1>
-    {{/if}}
-
-    <span class="overlay-x-close" {{action "close"}}>&times;</span>
-  </header>
-
-  <div class="overlay-x-body">
-    {{yield}}
-  </div>
-</div>
+{{#if visible}}
+  {{#ember-wormhole to=to}}
+    {{#overlay-animate outAnimationComplete=(action outAnimationComplete)
+                       inAnimationComplete=(action inAnimationComplete)
+                       as |animateOut|}}
+      {{#overlay-fullscreen-layout class=overlayClass
+                                   title=title
+                                   close=(action animateOut)}}
+        {{yield (hash animateOut=animateOut)}}
+      {{/overlay-fullscreen-layout}}
+    {{/overlay-animate}}
+  {{/ember-wormhole}}
+{{/if}}

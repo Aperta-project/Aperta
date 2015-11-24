@@ -1,3 +1,14 @@
+{{#overlay-fullscreen visible=showNewColumnOverlay
+                      outAnimationComplete=(action "hideNewColumnOverlay")
+                      title="Add New Column"
+                      overlayClass="flow-manager-column-overlay"
+                      as |overlay|}}
+    {{flow-manager-add-column flows=potentialFlows
+                              isLoading=isLoadingPotentialFlows
+                              addFlow=(action "addFlow")
+                              close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
 <div class="control-bar">
   <div class="control-bar-inner-wrapper">
     <div class="control-bar-item control-bar-link control-bar-item--last add-flow-column-button" {{action "showNewColumnOverlay"}}>
@@ -21,16 +32,3 @@
                   viewCard="viewCard"}}
   {{/each}}
 </ul>
-
-{{#overlay-base visible=showNewColumnOverlay
-                outAnimationComplete=(action "hideNewColumnOverlay")
-                as |animateOut|}}
-  {{#overlay-fullscreen class="flow-manager-column-overlay"
-                        title="Add New Column"
-                        close=(action animateOut)}}
-    {{flow-manager-add-column flows=potentialFlows
-                              isLoading=isLoadingPotentialFlows
-                              addFlow=(action "addFlow")
-                              close=(action animateOut)}}
-  {{/overlay-fullscreen}}
-{{/overlay-base}}

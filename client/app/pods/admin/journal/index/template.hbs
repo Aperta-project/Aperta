@@ -1,13 +1,22 @@
-{{#overlay-base visible=showEditTaskTypesOverlay
-                outAnimationComplete=(action "hideEditTaskTypesOverlay")
-                as |animateOut|}}
-  {{#overlay-fullscreen class="edit-task-types-overlay overlay-x--blue"
-                        title="Available Task Types"
-                        close=(action animateOut)}}
+{{#overlay-fullscreen visible=showEditTaskTypesOverlay
+                      outAnimationComplete=(action "hideEditTaskTypesOverlay")
+                      title="Available Task Types"
+                      overlayClass="edit-task-types-overlay overlay-x--blue"
+                      as |overlay|}}
     {{edit-task-types model=model
-                      close=(action animateOut)}}
-  {{/overlay-fullscreen}}
-{{/overlay-base}}
+                      close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
+{{#overlay-fullscreen visible=showEditCSSOverlay
+                      outAnimationComplete=(action "hideEditCSSOverlay")
+                      overlayClass="journal-edit-overlay overlay-x--blue"
+                      as |overlay|}}
+    {{component editCssOverlayName
+                css=css
+                save=(action "saveCSS")
+                close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
 
 <div class="base-screen admin-screen">
   <div class="admin-users-row">
@@ -190,15 +199,3 @@
     </div>
   </div>
 </div>
-
-{{#overlay-base visible=showEditCSSOverlay
-                outAnimationComplete=(action "hideEditCSSOverlay")
-                as |animateOut|}}
-  {{#overlay-fullscreen class="journal-edit-overlay overlay-x--blue"
-                        close=(action animateOut)}}
-    {{component editCssOverlayName
-                css=css
-                save=(action "saveCSS")
-                close=(action animateOut)}}
-  {{/overlay-fullscreen}}
-{{/overlay-base}}

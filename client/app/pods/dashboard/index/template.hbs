@@ -1,31 +1,28 @@
 {{flash-messages}}
 
-{{#overlay-base visible=showNewManuscriptOverlay
-                outAnimationComplete=(action "hideNewManuscriptOverlay")
-                as |animateOut|}}
-  {{#overlay-fullscreen title="Create a New Submission"
-                        close=(action animateOut)}}
+
+{{#overlay-fullscreen visible=showNewManuscriptOverlay
+                      outAnimationComplete=(action "hideNewManuscriptOverlay")
+                      title="Create a New Submission"
+                      as |overlay|}}
     {{manuscript-new paper=newPaper
                      journals=journals
                      journalsLoading=journalsLoading
                      complete=(action "newManuscriptCreated")
-                     close=(action animateOut)}}
-  {{/overlay-fullscreen}}
-{{/overlay-base}}
+                     close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
 
-{{#overlay-base visible=showInvitationsOverlay
-                outAnimationComplete=(action "hideInvitationsOverlay")
-                as |animateOut|}}
-  {{#overlay-fullscreen class="invitations-overlay"
-                        invitations=pendingInvitations
-                        title="Here are your invitations."
-                        close=(action animateOut)}}
+{{#overlay-fullscreen visible=showInvitationsOverlay
+                      outAnimationComplete=(action "hideInvitationsOverlay")
+                      title="Here are your invitations."
+                      overlayClass="invitations-overlay"
+                      as |overlay|}}
     {{invitations-x invitations=pendingInvitations
                     accept=(action "acceptInvitation")
                     reject=(action "rejectInvitation")
-                    close=(action animateOut)}}
-  {{/overlay-fullscreen}}
-{{/overlay-base}}
+                    close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
 
 <div class="base-screen">
 

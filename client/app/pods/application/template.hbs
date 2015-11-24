@@ -37,14 +37,12 @@
 
 <main class="main-content" role="main">{{outlet}}</main>
 
-{{#overlay-base visible=showFeedbackOverlay
-                outAnimationComplete=(action "hideFeedbackOverlay")
-                as |animateOut|}}
-  {{#overlay-fullscreen title="Please let us know your thoughts"
-                        close=(action animateOut)}}
-    {{feedback-x close=(action animateOut)}}
-  {{/overlay-fullscreen}}
-{{/overlay-base}}
+{{#overlay-fullscreen visible=showFeedbackOverlay
+                      outAnimationComplete=(action "hideFeedbackOverlay")
+                      title="Please let us know your thoughts"
+                      as |overlay|}}
+    {{feedback-x close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
 
 <div class="overlay" id="overlay">
   <span class="overlay-close-x animation-scale-in" {{action "closeAction"}}>&times;</span>

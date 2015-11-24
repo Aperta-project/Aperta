@@ -27,5 +27,32 @@ describe FtpUploaderWorker do
       )
       expect(@server.files).to include(filename)
     end
+
+    it "raises an error if filepath is missing" do
+      filename = 'test.jpg'
+      expect {FtpUploaderWorker.new.perform(
+        host: '127.0.0.1',
+        passive_mode: false,
+        user: 'user',
+        password: 'password',
+        port: 21212,
+        filename: filename
+      )}.to raise_error(StandardError, "Filepath is required")
+      expect(@server.files).not_to include(filename)
+    end
+
+    it "raises an error if final filename is missing" do
+      filename = 'test.jpg'
+      filepath = Rails.root.join('public', 'images', 'cat-scientists-3.jpg')
+      expect {FtpUploaderWorker.new.perform(
+        host: '127.0.0.1',
+        passive_mode: false,
+        user: 'user',
+        password: 'password',
+        port: 21212,
+        filepath: filepath
+      )}.to raise_error(StandardError, "Final filename is required")
+      expect(@server.files).not_to include(filename)
+    end
   end
 end

@@ -5,6 +5,8 @@ class FtpUploaderWorker
   TRANSFER_COMPLETE = '226'
 
   def perform(host: ENV['FTP_HOST'], passive_mode: true, user: ENV['FTP_USER'], password: ENV['FTP_PASSWORD'], port: 21, filepath: nil, filename: nil)
+    fail FtpTransferError, "Filepath is required" if filepath.blank?
+    fail FtpTransferError, "Final filename is required" if filename.blank?
     @host = host
     @passive_mode = passive_mode
     @user = user

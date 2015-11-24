@@ -57,10 +57,8 @@ class ApplicationController < ActionController::Base
     # Make assets available for bugsnag
     return if request.path =~ %r{\A/(api|assets).*\Z}
 
-    unless session[:authenticated]
-      authenticate_or_request_with_http_basic do |name, password|
-        name == Rails.configuration.basic_auth_user && password == Rails.configuration.basic_auth_password && (session[:authenticated] = true)
-      end
+    authenticate_or_request_with_http_basic do |name, password|
+      name == Rails.configuration.basic_auth_user && password == Rails.configuration.basic_auth_password
     end
   end
 

@@ -22,4 +22,9 @@ module InvitationFeatureHelpers
     click_on "Sign up"
     SignUpPage.new.sign_up_as(email: email)
   end
+
+  def sign_in_as(email)
+    SignInPage.visit
+    SignInPage.new.sign_in(nil, email)
+  end
 end

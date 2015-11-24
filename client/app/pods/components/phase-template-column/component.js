@@ -32,13 +32,9 @@ export default Ember.Component.extend({
     rollbackPhase(phase)  {
       this.sendAction('rollbackPhase', phase);
     },
-    
+
     showDeleteConfirm(task) {
       this.sendAction('showDeleteConfirm', task);
-    },
-
-    itemUpdated(senderPhaseId, receiverPhaseId, taskId) {
-      this.sendAction('itemUpdated', senderPhaseId, receiverPhaseId, taskId);
     }
   }
 });

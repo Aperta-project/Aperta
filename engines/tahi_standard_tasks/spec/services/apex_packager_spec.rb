@@ -1,16 +1,31 @@
 require 'rails_helper'
-require 'zip'
 
 describe ApexPackager do
   let!(:paper) { FactoryGirl.create(:paper, :with_tasks) }
+  let!(:latest_version) do
+    FactoryGirl.create(:versioned_text,
+                       paper: paper,
+                       major_version: 0,
+                       minor_version: 1)
+  end
 
-  def zip_contains(package, filename)
-    Zip::File.open_buffer(package) do |zip|
-      zip.each do |entry|
-        return true if entry.name == filename
-      end
+  def zip_filenames(package)
+    filenames = []
+    Zip::File.open(package) do |zip|
+      filenames = zip.map(&:name)
     end
-    false
+    filenames
+  end
+
+  before do
+    allow(paper).to receive(:latest_version).and_return(latest_version)
+    allow(latest_version).to receive(:source_url).and_return(
+      Rails.root.join('spec/fixtures/about_turtles.docx'))
+
+    metadata_serializer = instance_double('Typesetter::MetadataSerializer')
+    allow(metadata_serializer).to receive(:to_json).and_return('json')
+    allow(Typesetter::MetadataSerializer).to \
+      receive(:new).and_return(metadata_serializer)
   end
 
   context 'a well formed paper' do
@@ -26,10 +41,10 @@ describe ApexPackager do
     end
 
     it 'creates a zip package for a paper' do
-      pending('Check for included DOCX once that is implemented')
-      response = ApexPackager.create(paper)
+      zip_file_path = ApexPackager.create(paper)
 
-      expect(zip_contains(response, 'doi.docx')).to be(true)
+      expect(zip_filenames((zip_file_path))).to include(
+        "#{paper.manuscript_id}.docx")
     end
   end
 
@@ -62,17 +77,17 @@ describe ApexPackager do
     end
 
     it 'adds a figure to a zip' do
-      response = ApexPackager.create(paper)
+      zip_file_path = ApexPackager.create(paper)
 
-      expect(zip_contains(response, figure.filename)).to be(true)
+      expect(zip_filenames((zip_file_path))).to include(figure.filename)
     end
 
     it 'does not add figures that do not comply' do
       nested_question_answer.value = 'false'
       nested_question_answer.save!
-      response = ApexPackager.create(paper)
+      zip_file_path = ApexPackager.create(paper)
 
-      expect(zip_contains(response, figure.filename)).to be(false)
+      expect(zip_filenames((zip_file_path))).to_not include(figure.filename)
     end
   end
 
@@ -108,19 +123,19 @@ describe ApexPackager do
     end
 
     it 'adds supporting information to a zip' do
-      response = ApexPackager.create(paper)
+      zip_file_path = ApexPackager.create(paper)
 
-      expect(zip_contains(response, supporting_information_file.filename)).to \
-        be(true)
+      expect(zip_filenames((zip_file_path))).to include(
+        supporting_information_file.filename)
     end
 
     it 'does not add unpublishable supporting information to the zip' do
       supporting_information_file.publishable = false
       supporting_information_file.save!
-      response = ApexPackager.create(paper)
+      zip_file_path = ApexPackager.create(paper)
 
-      expect(zip_contains(response, supporting_information_file.filename)).to \
-        be(false)
+      expect(zip_filenames((zip_file_path))).to_not include(
+        supporting_information_file.filename)
     end
   end
 
@@ -172,17 +187,17 @@ describe ApexPackager do
     end
 
     it 'includes the strking image with proper name' do
-      response = ApexPackager.create(paper)
+      zip_file_path = ApexPackager.create(paper)
 
-      expect(zip_contains(response, 'Strikingimage.jpg')).to be(true)
+      expect(zip_filenames((zip_file_path))).to include('Strikingimage.jpg')
     end
 
     it 'separates figures and striking images' do
-      response = ApexPackager.create(paper)
+      zip_file_path = ApexPackager.create(paper)
 
-      expect(zip_contains(response, 'Strikingimage.jpg')).to be(true)
-      expect(zip_contains(response, 'yeti2.jpg')).to be(true)
-      expect(zip_contains(response, 'yeti.jpg')).to be(false)
+      expect(zip_filenames(zip_file_path)).to include('Strikingimage.jpg')
+      expect(zip_filenames((zip_file_path))).to include('yeti2.jpg')
+      expect(zip_filenames((zip_file_path))).to_not include('yeti.jpg')
     end
   end
 end

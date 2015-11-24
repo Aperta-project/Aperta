@@ -1,8 +1,7 @@
 require 'rails_helper'
 require 'fake_ftp'
-require 'net/ftp'
 
-describe FtpUploaderWorker do
+describe FtpUploaderService do
   before(:each) do
     @server = FakeFtp::Server.new(21212, 21213)
     @server.start
@@ -12,11 +11,11 @@ describe FtpUploaderWorker do
     @server.stop
   end
 
-  describe "#upload" do
-    it "successfully transfers a file to a ftp server" do
+  describe '#upload' do
+    it 'successfully transfers a file to a ftp server' do
       filename = 'test.jpg'
       filepath = Rails.root.join('public', 'images', 'cat-scientists-3.jpg')
-      FtpUploaderWorker.new.perform(
+      FtpUploaderService.new(
         host: '127.0.0.1',
         passive_mode: true,
         user: 'user',
@@ -24,34 +23,34 @@ describe FtpUploaderWorker do
         port: 21212,
         filename: filename,
         filepath: filepath
-      )
+      ).upload
       expect(@server.files).to include(filename)
     end
 
-    it "raises an error if filepath is missing" do
+    it 'raises an error if filepath is missing' do
       filename = 'test.jpg'
-      expect {FtpUploaderWorker.new.perform(
+      expect {FtpUploaderService.new(
         host: '127.0.0.1',
         passive_mode: false,
         user: 'user',
         password: 'password',
         port: 21212,
         filename: filename
-      )}.to raise_error(StandardError, "Filepath is required")
+      ).upload}.to raise_error(StandardError, 'Filepath is required')
       expect(@server.files).not_to include(filename)
     end
 
-    it "raises an error if final filename is missing" do
+    it 'raises an error if final filename is missing' do
       filename = 'test.jpg'
       filepath = Rails.root.join('public', 'images', 'cat-scientists-3.jpg')
-      expect {FtpUploaderWorker.new.perform(
+      expect {FtpUploaderService.new(
         host: '127.0.0.1',
         passive_mode: false,
         user: 'user',
         password: 'password',
         port: 21212,
         filepath: filepath
-      )}.to raise_error(StandardError, "Final filename is required")
+      ).upload}.to raise_error(StandardError, 'Final filename is required')
       expect(@server.files).not_to include(filename)
     end
   end

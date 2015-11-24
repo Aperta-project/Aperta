@@ -1,6 +1,6 @@
 
 namespace :apex do
-  desc "Upload package to Apex"
+  desc 'Upload package to Apex'
   desc <<-USAGE.strip_heredoc
     This uploads a package to Apex
     Usage: rake 'apex:ftp_upload[HOST, USER, PASSWORD, FINAL_FILENAME, FILEPATH]'
@@ -9,7 +9,7 @@ namespace :apex do
     filename = args['filename'] || 'test.jpg'
     filepath = args['filepath'] || Rails.root.join('public', 'images', 'cat-scientists-3.jpg')
 
-    FtpUploaderWorker.new.perform(
+    FtpUploaderService.new(
       host: args['host'],
       passive_mode: true,
       user: args['user'],
@@ -17,6 +17,6 @@ namespace :apex do
       port: 21,
       filename: filename,
       filepath: filepath
-    )
+    ).upload
   end
 end

@@ -1,14 +1,11 @@
-class FtpUploaderWorker
-  include Sidekiq::Worker
+class FtpUploaderService
   require 'net/ftp'
   class FtpTransferError < StandardError; end;
   TRANSFER_COMPLETE = '226'
 
-  def perform(host: ENV['FTP_HOST'], passive_mode: true, 
+  def initialize(host: ENV['FTP_HOST'], passive_mode: true, 
               user: ENV['FTP_USER'], password: ENV['FTP_PASSWORD'], port: 21, 
               filepath: nil, filename: nil, directory: ENV['FTP_DIR'])
-    fail FtpTransferError, "Filepath is required" if filepath.blank?
-    fail FtpTransferError, "Final filename is required" if filename.blank?
     @host = host
     @passive_mode = passive_mode
     @user = user
@@ -17,6 +14,11 @@ class FtpUploaderWorker
     @filepath = filepath
     @final_filename = filename
     @directory = directory || 'packages'
+  end
+
+  def upload
+    fail FtpTransferError, 'Filepath is required' if @filepath.blank?
+    fail FtpTransferError, 'Final filename is required' if @final_filename.blank?
 
     begin
       @ftp = Net::FTP.new
@@ -30,9 +32,9 @@ class FtpUploaderWorker
       else
         fail FtpTransferError, "FTP Transfer failed: #{@ftp.last_response}"
       end
-    rescue IOError, SystemCallError, Net::FTPError, FtpTransferError => e
+    rescue IOError, SystemCallError, Net::FTPError, FtpTransferError
       notify_admin
-      raise e
+      raise
     ensure
       @ftp.delete(tmp_file) if @ftp.nlst.include?(tmp_file)
       @ftp.close
@@ -45,7 +47,7 @@ class FtpUploaderWorker
     transfer_failed = "FTP Transfer failed for #{@final_filename}"
     AdhocMailer.delay.send_adhoc_email( 
       transfer_failed,
-      transfer_failed + ": #{@ftp.last_response}. The background worker will attempt to retry the transfer.",
+      transfer_failed + ": #{@ftp.last_response}. Please try to upload again.",
       User.joins(:roles).where('roles.kind' => 'admin')
     )
   end
@@ -53,7 +55,7 @@ class FtpUploaderWorker
   def connect_to_server
     @ftp.connect(@host, @port)
     @ftp.passive = @passive_mode
-    @ftp.login(user = @user, passwd = @password)
+    @ftp.login(@user, @password)
   end
 
   def enter_packages_directory

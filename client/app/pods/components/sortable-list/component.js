@@ -49,7 +49,7 @@ export default Ember.Component.extend({
           itemList.insertAt(newIndex, item);
           self.updatePositions(itemList);
 
-          self.sendAction('itemWasMoved', item, oldIndex, newIndex);
+          self.attrs.itemWasMoved(item, oldIndex, newIndex);
         }
       },
 
@@ -64,11 +64,12 @@ export default Ember.Component.extend({
         const item = originalItemList.objectAt(oldIndex);
         originalItemList.removeAt(oldIndex);
         itemList.insertAt(newIndex, item);
+        item.set('phase',self.get('list'));
 
         self.updatePositions(originalItemList);
         self.updatePositions(itemList);
 
-        self.sendAction('itemWasMoved', item, oldIndex, newIndex);
+        self.attrs.itemWasMoved(item, oldIndex, newIndex);
       },
 
       stop(event, ui) {

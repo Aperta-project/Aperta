@@ -39,6 +39,10 @@ export default Ember.Controller.extend({
       phase.rollback();
     },
 
+    taskWasMoved(item, oldIndex, newIndex) {
+      item.save()
+    },
+
     toggleEditable() {
       const model = this.get('model');
       const url   = '/toggle_editable';

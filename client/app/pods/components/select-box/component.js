@@ -124,7 +124,7 @@ export default Ember.Component.extend({
    *  Used in template for positioning select-box-list
    *
    *  @property _generatedIdSelector
-   *  @type String
+   *  @return String
    *  @private
   **/
   _generatedIdSelector: computed('_generatedId', function() {

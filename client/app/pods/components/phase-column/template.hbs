@@ -6,7 +6,7 @@
                rollbackPhase="rollbackPhase"}}
 
 <div class="column-content">
-  {{#sortable-list list=phase items=sortedTasks itemWasMoved=attrs.taskWasMoved}}
+  {{#sortable-list list=phase items=sortedTasks itemMovedWithinList=attrs.taskMovedWithinList itemMovedBetweenList=attrs.taskMovedBetweenList}}
     {{#each sortedTasks as |task|}}
       {{card-preview paper=paper
                      task=task

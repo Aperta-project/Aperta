@@ -6,8 +6,7 @@ export default Ember.Component.extend({
   classNames: ['sortable'],
   classNameBindings: ['sortableNoCards'],
   sortableNoCards: Ember.computed.empty('items'),
-  tasks: Ember.computed.alias('list.tasks'),
-  changedWithinPhase: null,
+  changedWithinList: null,
 
   initSortable: Ember.on('didInsertElement', function() {
     Ember.run.schedule('afterRender', this, 'setupSortable');
@@ -30,7 +29,7 @@ export default Ember.Component.extend({
 
         ui.item.__source__ = self;
         ui.item.data('oldIndex', ui.item.index());
-        self.set('changedWithinPhase', true);
+        self.set('changedWithinList', true);
 
         $(ui.item).addClass('card--dragging')
                   .closest('.column-content')
@@ -39,55 +38,36 @@ export default Ember.Component.extend({
 
       update(event, ui) {
         var _id = ui.item.closest('.sortable').attr('id');
-        if ((_id === self.get('elementId')) && self.get('changedWithinPhase')) {
+        if ((_id === self.get('elementId')) && self.get('changedWithinList')) {
           const oldIndex = ui.item.data('oldIndex');
           const newIndex = ui.item.index();
-          let itemList   = self.get('items');
-
-          const item = itemList.objectAt(oldIndex);
-          itemList.removeAt(oldIndex);
-          itemList.insertAt(newIndex, item);
-          self.updatePositions(itemList);
-
-          self.attrs.itemWasMoved(item, oldIndex, newIndex);
+          const items    = self.get('items');
+          const item     = items.objectAt(oldIndex);
+          self.attrs.itemMovedWithinList(item, oldIndex, newIndex, items);
         }
       },
 
       receive(event, ui) {
-        const oldIndex = ui.item.data('oldIndex');
-        const newIndex = ui.item.index();
-        let itemList   = self.get('items');
-        let originalItemList = ui.item.__source__.get('items');
+        self.set('changedWithinList', false);
 
-        self.set('changedWithinPhase', false);
+        const oldIndex    = ui.item.data('oldIndex');
+        const newIndex    = ui.item.index();
+        const newList     = self.get('list');
+        const sourceItems = ui.item.__source__.get('items');
+        const newItems    = self.get('items');
+        const item        = sourceItems.objectAt(oldIndex);
 
-        const item = originalItemList.objectAt(oldIndex);
-        originalItemList.removeAt(oldIndex);
-        itemList.insertAt(newIndex, item);
-        item.set('phase',self.get('list'));
-
-        self.updatePositions(originalItemList);
-        self.updatePositions(itemList);
-
-        self.attrs.itemWasMoved(item, oldIndex, newIndex);
+        self.attrs.itemMovedBetweenList(item, oldIndex, newIndex, newList, sourceItems, newItems);
       },
 
       stop(event, ui) {
         ui.item.removeData('oldIndex');
-        self.set('changedWithinPhase', true);
+        self.set('changedWithinList', true);
 
         $(ui.item).removeClass('card--dragging')
                   .closest('.column-content')
                   .removeClass('column-content--dragging');
       }
     });
-  },
-
-  updatePositions(itemList) {
-    this.beginPropertyChanges();
-    itemList.forEach((item, index) => {
-      item.set('position', index + 1);
-    });
-    this.endPropertyChanges();
   }
 });

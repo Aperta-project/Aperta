@@ -13,6 +13,14 @@ export default Ember.Controller.extend({
     relevantPhases.invoke('incrementProperty', 'position');
   },
 
+  updateTaskPositions(itemList) {
+    this.beginPropertyChanges();
+    itemList.forEach((item, index) => {
+      item.set('position', index + 1);
+    });
+    this.endPropertyChanges();
+  },
+
   actions: {
     addPhase(position) {
       let paper = this.get('model');
@@ -39,8 +47,22 @@ export default Ember.Controller.extend({
       phase.rollback();
     },
 
-    taskWasMoved(item, oldIndex, newIndex) {
-      item.save()
+    taskMovedWithinList(item, oldIndex, newIndex, itemList) {
+      itemList.removeAt(oldIndex);
+      itemList.insertAt(newIndex, item);
+      this.updateTaskPositions(itemList);
+      item.save();
+    },
+
+    taskMovedBetweenList(item, oldIndex, newIndex, newList, sourceItems, newItems) {
+      sourceItems.removeAt(oldIndex);
+      newItems.insertAt(newIndex, item);
+      item.set('phase', newList);
+
+      this.updateTaskPositions(sourceItems);
+      this.updateTaskPositions(newItems);
+
+      item.save();
     },
 
     toggleEditable() {

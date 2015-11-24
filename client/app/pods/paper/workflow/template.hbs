@@ -36,7 +36,8 @@
   {{#each sortedPhases as |phase|}}
     {{phase-column phase=phase
                    paper=model
-                   taskWasMoved=(action "taskWasMoved")
+                   taskMovedWithinList=(action "taskMovedWithinList")
+                   taskMovedBetweenList=(action "taskMovedBetweenList")
                    savePhase="savePhase"
                    addPhase="addPhase"
                    showDeleteConfirm="showDeleteConfirm"

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  classNames: ['overlay-x', 'overlay-x--fullscreen'],
+  classNames: ['overlay', 'overlay--fullscreen'],
 
   init() {
     this._super(...arguments);

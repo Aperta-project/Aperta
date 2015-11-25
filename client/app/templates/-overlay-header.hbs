@@ -1,9 +1,9 @@
-<header class="overlay-x-header">
-  <h2 class="overlay-x-header-title overlay-header-title--with-icon">
+<header class="overlay-header">
+  <h2 class="overlay-header-title overlay-header-title--with-icon">
     {{#link-to "paper.index" model.paper.id class="overlay-header-link"}}
       {{partial "svg/manuscript-icon"}}
       {{{model.paperTitle}}}
     {{/link-to}}
   </h2>
-  <a class="button-secondary button--green overlay-x-close-button" {{action "closeAction"}}>Close</a>
+  <a class="button-secondary button--green overlay-close-button" {{action "closeAction"}}>Close</a>
 </header>

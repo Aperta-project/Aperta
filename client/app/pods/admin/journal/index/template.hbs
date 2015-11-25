@@ -1,7 +1,7 @@
 {{#overlay-fullscreen visible=showEditTaskTypesOverlay
                       outAnimationComplete=(action "hideEditTaskTypesOverlay")
                       title="Available Task Types"
-                      overlayClass="edit-task-types-overlay overlay-x--blue"
+                      overlayClass="edit-task-types-overlay overlay--blue"
                       as |overlay|}}
     {{edit-task-types model=model
                       close=(action overlay.animateOut)}}
@@ -9,7 +9,7 @@
 
 {{#overlay-fullscreen visible=showEditCSSOverlay
                       outAnimationComplete=(action "hideEditCSSOverlay")
-                      overlayClass="journal-edit-overlay overlay-x--blue"
+                      overlayClass="journal-edit-overlay overlay--blue"
                       as |overlay|}}
     {{component editCssOverlayName
                 css=css

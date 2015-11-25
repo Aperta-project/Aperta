@@ -1,13 +1,13 @@
-<div class="overlay-x-container">
-  <header class="overlay-x-header">
+<div class="overlay-container">
+  <header class="overlay-header">
     {{#if title}}
-      <h1 class="overlay-x-header-title">{{title}}</h1>
+      <h1 class="overlay-header-title">{{title}}</h1>
     {{/if}}
 
-    <span class="overlay-x-close" {{action "close"}}>&times;</span>
+    <span class="overlay-close" {{action "close"}}>&times;</span>
   </header>
 
-  <div class="overlay-x-body">
+  <div class="overlay-body">
     {{yield}}
   </div>
 </div>

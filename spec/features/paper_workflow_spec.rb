@@ -83,7 +83,7 @@ feature "Paper workflow", js: true, selenium: true do
     before = task_manager_page.card_count
     expect {
       phase.remove_card('Upload Manuscript')
-      within '.overlay-x' do
+      within '.overlay' do
         find('.submit-action-buttons button', text: 'Yes, Delete this Card'.upcase).click
       end
     }.to change {
@@ -103,8 +103,8 @@ feature "Paper workflow", js: true, selenium: true do
     within 'body' do
       find('.card-content', text: 'Invite Reviewer').click
 
-      expect(task_manager_page).to have_css('.overlay-content', text: 'Invite Reviewers')
-      expect(task_manager_page).to have_css('.overlay-content', text: 'Discussion')
+      expect(task_manager_page).to have_css('.overlay-body', text: 'Invite Reviewers')
+      expect(task_manager_page).to have_css('.overlay-body', text: 'Discussion')
       expect(task_manager_page).to have_no_application_error
     end
   end

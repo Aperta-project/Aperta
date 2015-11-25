@@ -1,18 +1,18 @@
 {{partial "overlay-header"}}
 
-<main class="overlay-x-body">
+<main class="overlay-body">
   <div class="overlay-main-work">{{yield}}</div>
   {{partial "discussion"}}
 </main>
 
-<footer class="overlay-x-footer">
-  <div class="overlay-x-footer-content">
+<footer class="overlay-footer">
+  <div class="overlay-footer-content">
     {{partial "overlay-completed-checkbox"}}
     {{participant-selector currentParticipants=participants
                            onRemove="removeParticipant"
                            label="Following:"
                            paperId=model.paper.id
                            onSelect="saveNewParticipant"}}
-    <a class="button-secondary button--green overlay-x-close-button" {{action "closeAction"}}>Close</a>
+    <a class="button-secondary button--green overlay-close-button" {{action "closeAction"}}>Close</a>
   </div>
 </footer>

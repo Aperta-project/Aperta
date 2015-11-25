@@ -6,7 +6,7 @@ class AssignTeamOverlay < CardOverlay
 
     new.tap do |overlay|
       if block_given?
-        page.assert_selector(".overlay-container .overlay-content")
+        page.assert_selector(".overlay-container .overlay-body")
         blk.call overlay
         wait_for_ajax
         overlay.dismiss

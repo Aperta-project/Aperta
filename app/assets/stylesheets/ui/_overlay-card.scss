@@ -1,7 +1,7 @@
 $ov--card-side-pad: 8.0rem;
 $ov--card-breakpoint: 900px;
 
-.overlay-x--card {
+.overlay--card {
   display: none;
   background-color: rgba(0,0,0, 0.68);
 
@@ -11,7 +11,7 @@ $ov--card-breakpoint: 900px;
     font-size: 48px;
   }
 
-  .overlay-x-container {
+  .overlay-container {
     position: relative;
     max-width: 112.0rem;
     margin: 4.0rem auto;
@@ -21,21 +21,21 @@ $ov--card-breakpoint: 900px;
 }
 
 @media only screen and (max-width: 1150px) {
-  .overlay-x--card .overlay-x-container {
+  .overlay--card .overlay-container {
     margin-right: 1.5rem;
     margin-left: 1.5rem;
   }
 }
 
 // Temporary:
-.overlay-x--visible {
+.overlay--visible {
   display: block;
 }
 
 // Card Overlay Header ---------------------------------------------------------
 
-.overlay-x--card {
-  .overlay-x-header {
+.overlay--card {
+  .overlay-header {
     overflow: hidden;
     position: relative;
     margin: 0 $ov--card-side-pad;
@@ -44,13 +44,13 @@ $ov--card-breakpoint: 900px;
     border-top-right-radius: 5px;
     padding: 6.0rem 5px 1.0rem 5px;
 
-    .overlay-x-close-button {
+    .overlay-close-button {
       right: 0;
       bottom: 10px;
     }
   }
 
-  .overlay-x-close {
+  .overlay-close {
     @include position(absolute, 0px 0px auto auto);
     right: -#{$ov--card-side-pad};
     width: auto !important; // bootstrap/glyphicon override
@@ -62,7 +62,7 @@ $ov--card-breakpoint: 900px;
     z-index: 2;
   }
 
-  .overlay-x-header-title {
+  .overlay-header-title {
     position: relative;
     float: left;
     width: 91.7%;
@@ -85,27 +85,27 @@ $ov--card-breakpoint: 900px;
     &:hover { text-decoration: none; } // override global Aperta anchor style
   }
 
-  .overlay-x-close-button {
+  .overlay-close-button {
     position: absolute;
     width: 8.333333333333332%;
   }
 }
 
 @media only screen and (max-width: $ov--card-breakpoint) {
-  .overlay-x--card .overlay-x-header {
+  .overlay--card .overlay-header {
     margin-right: $ov--card-side-pad / 2;
     margin-left:  $ov--card-side-pad / 2;
   }
 
-  .overlay-x--card .overlay-x-close {
+  .overlay--card .overlay-close {
     right: -#{$ov--card-side-pad/2};
   }
 }
 
 // Card Overlay Body -----------------------------------------------------------
 
-.overlay-x--card {
-  .overlay-x-body {
+.overlay--card {
+  .overlay-body {
     position: relative;
     min-height: 25rem;
     padding: 4.0rem $ov--card-side-pad 1rem $ov--card-side-pad;
@@ -121,7 +121,7 @@ $ov--card-breakpoint: 900px;
 }
 
 @media only screen and (max-width: $ov--card-breakpoint) {
-  .overlay-x--card .overlay-x-body {
+  .overlay--card .overlay-body {
     padding-right: $ov--card-side-pad / 2;
     padding-left:  $ov--card-side-pad / 2;
   }
@@ -129,21 +129,21 @@ $ov--card-breakpoint: 900px;
 
 // Card Overlay Footer ---------------------------------------------------------
 
-.overlay-x--card {
-  .overlay-x-footer {
+.overlay--card {
+  .overlay-footer {
     overflow: hidden;
     position: relative;
     margin: 10px 0 0 0;
     padding-bottom: 50px;
   }
 
-  .overlay-x-footer-content {
+  .overlay-footer-content {
     position: relative;
     margin: 0 $ov--card-side-pad;
     border-top: 1px solid #000;
     padding: 1.5rem 10% 1.0rem 5px;
 
-    .overlay-x-close-button {
+    .overlay-close-button {
       top: 10px;
       right: 0;
     }

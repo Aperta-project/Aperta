@@ -1,82 +1,23 @@
-.overlay-discussion-board {
-  width: 700px;
-  margin-top: 30px;
+/*
+  Overlay Structure:
 
-  h2 {
-    margin-bottom: 0;
-    border-top: 1px solid #dfdfdf;
-    padding: 10px 0 20px 9px;
-    font-size: 20px;
-  }
+  .overlay
+    .overlay-container [no base styles, based on root modifier]
+      .overlay-close   [no base styles, based on root modifier]
+      .overlay-header  [no base styles, based on root modifier]
+        .overlay-header-title [no base styles, based on root modifier]
+      .overlay-body    [no base styles, based on root modifier]
 
-  .participant-selector {
-    float: left;
-    width: 66%;
-  }
+  .overlay modifiers:
+    .overlay--fullscreen | .overlay--card | .overlay--blue | .overlay--grey
+*/
+
+.overlay {
+  overflow: auto;
+  @include position(fixed, 0px 0px 0px 0px);
+  z-index: z('overlay', 'base');
 }
 
-.overlay-completed-checkbox {
-  float: right;
-  width: 33.333333333%;
-  text-align: right;
-
-  label {
-    color: $tahi-green;
-    text-transform: uppercase;
-  }
-
-  input {
-    margin-right: 10px;
-    vertical-align: 2px;
-    @include transform(scale(2));
-  }
-}
-
-.overlay-title-text {
-  h1 {
-    text-align: center;
-    padding-top: 150px;
-    padding-bottom: 75px;
-    margin: 0 !important;
-  }
-}
-
-// TODO: Wut is dis?
-.overlay-supporting-text {
-  color: $tahi-grey-dark;
-  padding-bottom: 75px;
-  text-align: center;
-}
-
-.overlay-main-work {
-  position: relative;
-  padding: 0 10px 60px 10px;
-}
-
-.overlay-action-buttons {
-  padding-top: 0;
-  float: right;
-
-  .button-primary.button--green {
-    width: inherit;
-  }
-}
-
-// TODO: Wut?
-.call-to-action {
-  margin-top: 20px;
-
-  div {
-    display: inline-block;
-  }
-}
-
-// TODO: ¡¿Wut?!
-.apostrophe {
-  font-family: 'Times New Roman', serif;
-}
-
-// TODO: C'mon
-.constrained-form-width {
-  width: 800px;
+.overlay--loading {
+  .overlay-container { min-height: 600px; }
 }

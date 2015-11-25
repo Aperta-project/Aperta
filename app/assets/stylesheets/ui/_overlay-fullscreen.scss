@@ -1,10 +1,10 @@
 $ov--fullscreen-side-pad: 4rem;
 $ov--fullscreen-breakpoint: 780px;
 
-.overlay-x--fullscreen {
+.overlay--fullscreen {
   background-color: rgba(255,255,255, 0.96);
 
-  .overlay-x-container {
+  .overlay-container {
     position: relative;
     min-height: 25rem;
     max-width: 70rem;
@@ -13,7 +13,7 @@ $ov--fullscreen-breakpoint: 780px;
 }
 
 @media only screen and (max-width: $ov--fullscreen-breakpoint) {
-  .overlay-x--fullscreen .overlay-x-container {
+  .overlay--fullscreen .overlay-container {
     margin-right: $ov--fullscreen-side-pad;
     margin-left:  $ov--fullscreen-side-pad;
   }
@@ -21,8 +21,8 @@ $ov--fullscreen-breakpoint: 780px;
 
 // Fullscreen Overlay Header ---------------------------------------------------
 
-.overlay-x--fullscreen {
-  .overlay-x-close {
+.overlay--fullscreen {
+  .overlay-close {
     @include position(fixed, 0px 0px auto auto);
     width: auto !important; // bootstrap/glyphicon override
     padding: 0 30px 0 20px;
@@ -33,12 +33,12 @@ $ov--fullscreen-breakpoint: 780px;
     z-index: z('overlay', 'close-x');
   }
 
-  .overlay-x-header {
+  .overlay-header {
     position: relative;
     text-align: center;
   }
 
-  .overlay-x-header-title {
+  .overlay-header-title {
     padding: 7.5rem 0;
     margin-bottom: 0; // bootstrap override
     font-size: 4.8rem;
@@ -46,28 +46,28 @@ $ov--fullscreen-breakpoint: 780px;
 
 
   // -- Grey Theme --------------
-  &.overlay-x--grey {
+  &.overlay--grey {
     color: $tahi-grey;
     background-color: #f2f2f2;
 
-    .overlay-x-close {
+    .overlay-close {
       color: $tahi-grey;
     }
   }
 
   // -- Green Theme -------------
-  &.overlay-x--green {
+  &.overlay--green {
     color: #fff;
     background-color: rgba(57,163,41, 0.95);
 
-    .overlay-x-close {
+    .overlay-close {
       color: #fff;
     }
   }
 
   // -- Blue Theme --------------
-  &.overlay-x--blue {
-    .overlay-x-close {
+  &.overlay--blue {
+    .overlay-close {
       color: $tahi-blue;
 
       &:hover {

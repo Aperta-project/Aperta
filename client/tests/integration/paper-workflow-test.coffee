@@ -55,8 +55,8 @@ test 'show delete confirmation overlay on deletion of a Task', (assert) ->
   andThen ->
     assert.equal(find('h1:contains("about to delete this card forever")').length, 1)
     assert.equal(find('h2:contains("Are you sure?")').length, 1)
-    assert.equal(find('.overlay-x button:contains("cancel")').length, 1)
-    assert.equal(find('.overlay-x button:contains("Yes, Delete this Card")').length, 1)
+    assert.equal(find('.overlay button:contains("cancel")').length, 1)
+    assert.equal(find('.overlay button:contains("Yes, Delete this Card")').length, 1)
 
 test 'click delete confirmation overlay cancel button', (assert) ->
   visit '/papers/1/workflow'
@@ -64,7 +64,7 @@ test 'click delete confirmation overlay cancel button', (assert) ->
     equal find(".card-content").length, 1
     $(".card .card-remove").show()
     click(".card .card-remove")
-    click('.overlay-x button:contains("cancel")')
+    click('.overlay button:contains("cancel")')
     assert.equal find(".card-content").length, 1
 
 test 'click delete confirmation overlay submit button', (assert) ->
@@ -73,7 +73,7 @@ test 'click delete confirmation overlay submit button', (assert) ->
     assert.equal(find(".card-content").length, 1, "card exists")
     $(".card .card-remove").show()
     click(".card .card-remove")
-    click('.overlay-x button:contains("Yes, Delete this Card")')
+    click('.overlay button:contains("Yes, Delete this Card")')
   andThen ->
     assert.equal(find(".card-content").length, 0, "card deleted")
     req = _.findWhere(server.requests, {method: "DELETE", url: "/api/tasks/1"})

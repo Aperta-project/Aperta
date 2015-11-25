@@ -91,8 +91,6 @@ class DashboardPage(AuthenticatedPage):
     self._view_invites_close = (By.CLASS_NAME, 'overlay-close-x')
 
     # Create New Submission Modal
-    self._cns_closer = (By.CLASS_NAME, 'overlay-close-x')
-    self._cns_title = (By.CSS_SELECTOR, 'div.overlay-title-text h1')
     self._cns_error_div = (By.CLASS_NAME, 'flash-messages')
     self._cns_error_message = (By.CLASS_NAME, 'flash-message-content')
     self._cns_title_field = (By.XPATH, './/div[@id="new-paper-title"]/div')
@@ -101,11 +99,11 @@ class DashboardPage(AuthenticatedPage):
     self._cns_manuscript_italic_icon = (By.CLASS_NAME, 'fa-italic')
     self._cns_manuscript_superscript_icon = (By.CLASS_NAME, 'fa-superscript')
     self._cns_manuscript_subscript_icon = (By.CLASS_NAME, 'fa-subscript')
-    self._cns_journal_chooser_label = (By.XPATH, './/div[@class="inner-content"]/div[2]/label')
+    self._cns_journal_chooser_label = (By.XPATH, "//div[@class='overlay-body']/div/div[3]/label")
     self._cns_journal_chooser = (By.CSS_SELECTOR, 'div.paper-new-journal-select div.select-box-element')
     self._cns_opened_option_dropdown = (By.CSS_SELECTOR, 'div.select-box-list')
     self._cns_option_dropdown_item = (By.CSS_SELECTOR, 'div.select-box-item')
-    self._cns_paper_type_chooser_label = (By.XPATH, './/div[@class="inner-content"]/div[3]/label')
+    self._cns_paper_type_chooser_label = (By.XPATH, "//div[@class='overlay-body']/div/div[4]/label")
     self._cns_paper_type_chooser = (By.CSS_SELECTOR, 'div.paper-new-paper-type-select div.select-box-element')
     self._cns_journal_chooser_dd = (By.CLASS_NAME, 'paper-new-journal-select')
     self._cns_papertype_chooser_dd = (By.CLASS_NAME, 'paper-new-paper-type-select')
@@ -440,6 +438,8 @@ class DashboardPage(AuthenticatedPage):
         item.click()
         time.sleep(1)
         break
+    selected_journal=self._get(self._cns_journal_chooser)
+    assert journal in selected_journal.text, selected_journal.text + '!=' + journal
     div = self._get(self._cns_papertype_chooser_dd)
     div.find_element_by_class_name('select-box-element').click()
     for item in self._gets((By.CLASS_NAME, 'select-box-item')):
@@ -447,6 +447,8 @@ class DashboardPage(AuthenticatedPage):
         item.click()
         time.sleep(2)
         break
+    selected_type=self._get(self._cns_paper_type_chooser)
+    assert type in selected_type.text, selected_type.text  + '!=' + type
 
   def title_generator(self, prefix='', random_bit=True):
     """Creates a new unique title"""
@@ -530,7 +532,7 @@ class DashboardPage(AuthenticatedPage):
       self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_yes_btn)
       self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_no_btn)
       count += 1
-    self._get(self._view_invites_close).click()
+    self._get(self._overlay_header_close).click()
     time.sleep(1)
 
   def validate_create_new_submission(self):
@@ -539,8 +541,8 @@ class DashboardPage(AuthenticatedPage):
     of the overlay that the CNS button launches.
     :return: None
     """
-    closer = self._get(self._cns_closer)
-    overlay_title = self._get(self._cns_title)
+    overlay_title = self._get(self._overlay_header_title)
+    closer = self._get(self._overlay_header_close)
     assert overlay_title.text == 'Create a New Submission'
     manuscript_title_field_label = self._get(self._cns_manuscript_title_label)
     assert manuscript_title_field_label.text == 'Give your paper a title'

@@ -71,7 +71,6 @@ class AuthenticatedPage(PlosPage):
     # TODO: Change this when APERTA-5531 is completed
     self._control_bar_right_items = (By.CLASS_NAME, 'control-bar-item')
     self._bar_items = (By.XPATH, "//div[@id='paper-container']/div[@id='versioning-bar']/div[@class='bar-item']")
-    self._modal_close = (By.CLASS_NAME, 'overlay-close-x')
     self._recent_activity_modal = (By.CLASS_NAME, 'activity-overlay')
     self._recent_activity_modal_title = (By.CSS_SELECTOR, 'h1.feedback-overlay-thanks')
     self._discussion_container = (By.CLASS_NAME, 'liquid-container')
@@ -103,7 +102,11 @@ class AuthenticatedPage(PlosPage):
     self._upload_manu_card = None
     self._prq_card = None
     self._initial_decision_card = None
-
+    # Global Overlay Locators
+    self._overlay_header_title = (By.CLASS_NAME, 'overlay-header-title')
+    self._overlay_header_close = (By.CLASS_NAME, 'overlay-close')
+    self._overlay_action_button_cancel = (By.CSS_SELECTOR, 'div.overlay-action-buttons a.button-link')
+    self._overlay_action_button_save = (By.CSS_SELECTOR, 'div.overlay-action-buttons button.button-primary')
 
   # POM Actions
   def click_profile_nav(self):

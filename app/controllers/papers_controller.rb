@@ -68,7 +68,7 @@ class PapersController < ApplicationController
 
   ## CONVERSION
 
-  # Upload a docx file for the latest version.
+  # Upload a word file for the latest version.
   def upload
     DownloadManuscriptWorker.perform_async(paper.id,
                                            params[:url],

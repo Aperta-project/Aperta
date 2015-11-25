@@ -70,7 +70,7 @@ class EpubConverter
   end
 
   def _path_to_source(workdir)
-    "#{_source_dir(workdir)}/source.docx"
+    "#{_source_dir(workdir)}/#{_manuscript_source_path.basename}"
   end
 
   def _epub_cover_path
@@ -89,6 +89,11 @@ class EpubConverter
       file.path
     end
   end
+
+  def _manuscript_source_path
+    Pathname.new(manuscript_source.file.path)
+  end
+
 
   private
 
@@ -126,7 +131,9 @@ class EpubConverter
       date Date.today.to_s
       if this.include_source && this.paper.latest_version.present?
         this._embed_source(workdir)
-        optional_file "input/source.docx" => this._path_to_source(workdir)
+        # keep same file extension as original file
+        source_file_name = "source#{this._manuscript_source_path.extname}"
+        optional_file "input/#{source_file_name}" => this._path_to_source(workdir)
       end
       resources(workdir: workdir) do
         file 'css/default.css' => this._epub_css

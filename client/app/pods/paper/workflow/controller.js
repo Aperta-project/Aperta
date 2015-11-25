@@ -2,21 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   restless: Ember.inject.service('restless'),
-
   positionSort: ['position:asc'],
   sortedPhases: Ember.computed.sort('model.phases', 'positionSort'),
-
-  commentLooks: Ember.computed(function() {
-    return this.store.all('comment-look');
-  }),
-
-  allTaskIds() {
-    return this.store.all('phase').reduce(function(taskIds, phase) {
-      return taskIds.concat(phase.get('tasks').map(function(task) {
-        return task.get('id');
-      }));
-    }, []);
-  },
 
   updatePositions(phase) {
     let relevantPhases = this.get('model.phases').filter(function(p) {
@@ -26,13 +13,15 @@ export default Ember.Controller.extend({
     relevantPhases.invoke('incrementProperty', 'position');
   },
 
-  actions: {
-    changePhaseForTask(task, targetPhaseId) {
-      this.beginPropertyChanges();
-      this.store.getById('phase', targetPhaseId).get('tasks').addObject(task);
-      this.endPropertyChanges();
-    },
+  updateTaskPositions(itemList) {
+    this.beginPropertyChanges();
+    itemList.forEach((item, index) => {
+      item.set('position', index + 1);
+    });
+    this.endPropertyChanges();
+  },
 
+  actions: {
     addPhase(position) {
       let paper = this.get('model');
       let phase = this.store.createRecord('phase', {
@@ -46,10 +35,6 @@ export default Ember.Controller.extend({
       phase.save();
     },
 
-    changeTaskPhase(task, targetPhase) {
-      task.set('phase', targetPhase);
-    },
-
     removePhase(phase) {
       phase.destroyRecord();
     },
@@ -60,6 +45,24 @@ export default Ember.Controller.extend({
 
     rollbackPhase(phase) {
       phase.rollback();
+    },
+
+    taskMovedWithinList(item, oldIndex, newIndex, itemList) {
+      itemList.removeAt(oldIndex);
+      itemList.insertAt(newIndex, item);
+      this.updateTaskPositions(itemList);
+      item.save();
+    },
+
+    taskMovedBetweenList(item, oldIndex, newIndex, newList, sourceItems, newItems) {
+      sourceItems.removeAt(oldIndex);
+      newItems.insertAt(newIndex, item);
+      item.set('phase', newList);
+
+      this.updateTaskPositions(sourceItems);
+      this.updateTaskPositions(newItems);
+
+      item.save();
     },
 
     toggleEditable() {

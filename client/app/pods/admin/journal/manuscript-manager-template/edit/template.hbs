@@ -23,6 +23,8 @@
     {{add-column position=0 action="addPhase" bonusClass="first-add-column"}}
     {{#each sortedPhaseTemplates as |phaseTemplate|}}
       {{phase-template-column phaseTemplate=phaseTemplate
+                              taskMovedWithinList=(action "taskMovedWithinList")
+                              taskMovedBetweenList=(action "taskMovedBetweenList")
                               addPhase="addPhase"
                               savePhase="savePhase"
                               removeRecord="removeRecord"

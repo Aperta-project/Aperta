@@ -36,14 +36,15 @@
   {{#each sortedPhases as |phase|}}
     {{phase-column phase=phase
                    paper=model
+                   taskMovedWithinList=(action "taskMovedWithinList")
+                   taskMovedBetweenList=(action "taskMovedBetweenList")
                    savePhase="savePhase"
                    addPhase="addPhase"
                    showDeleteConfirm="showDeleteConfirm"
                    removePhase="removePhase"
                    rollbackPhase="rollbackPhase"
                    viewCard="viewCard"
-                   chooseNewCardTypeOverlay="chooseNewCardTypeOverlay"
-                   changePhaseForTask="changePhaseForTask"}}
+                   chooseNewCardTypeOverlay="chooseNewCardTypeOverlay"}}
   {{/each}}
 </div>
 

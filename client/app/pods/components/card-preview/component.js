@@ -18,7 +18,7 @@ export default Ember.Component.extend({
     return this.container.lookup('router:main');
   },
 
-  href: Ember.computed(function() {
+  href: Ember.computed('task.id', function() {
     // Getting access to the router from tests is impossible, sorry
     if(ENV.environment === 'test' || Ember.testing) { return '#'; }
 

@@ -1,23 +1,21 @@
-<div class="column-inner-wrapper">
-  {{add-column position=nextPosition action="addPhase"}}
+{{add-column position=nextPosition action="addPhase"}}
 
-  {{phase-header phase=phase
-                 savePhase="savePhase"
-                 removePhase="removePhase"
-                 rollbackPhase="rollbackPhase"}}
+{{phase-header phase=phase
+               savePhase="savePhase"
+               removePhase="removePhase"
+               rollbackPhase="rollbackPhase"}}
 
-  <div class="column-content">
-    <div class="sortable {{if noCards "sortable-no-cards"}}" data-phase-id="{{phase.id}}">
-      {{#each sortedTasks as |task|}}
-        {{card-preview paper=paper
-                       task=task
-                       canRemoveCard=true
-                       showDeleteConfirm="showDeleteConfirm"
-                       canDragCard=true
-                       action="viewCard"}}
-      {{/each}}
-    </div>
+<div class="column-content">
+  {{#sortable-list list=phase items=sortedTasks itemMovedWithinList=attrs.taskMovedWithinList itemMovedBetweenList=attrs.taskMovedBetweenList}}
+    {{#each sortedTasks as |task|}}
+      {{card-preview paper=paper
+                     task=task
+                     canRemoveCard=true
+                     showDeleteConfirm="showDeleteConfirm"
+                     canDragCard=true
+                     action="viewCard"}}
+    {{/each}}
+  {{/sortable-list}}
 
-    <a {{action "chooseNewCardTypeOverlay" phase}} class="button-secondary button--green add-new-card-button">Add New Card</a>
-  </div>
+  <a {{action "chooseNewCardTypeOverlay" phase}} class="button-secondary button--green add-new-card-button">Add New Card</a>
 </div>

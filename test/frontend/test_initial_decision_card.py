@@ -97,7 +97,7 @@ class InitialDecisionCardTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(7)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    paper_id = manuscript_page.get_paper_id().strip()
+    #paper_id = manuscript_page.get_paper_id().strip()
     paper_url = manuscript_page.get_current_url()
     print('The paper ID of this newly created paper is: ' + paper_url)
     paper_id = paper_url.split('papers/')[1]

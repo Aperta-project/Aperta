@@ -11,6 +11,7 @@ from selenium.webdriver.common.by import By
 
 from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface
 from Base.Resources import affiliation, billing_data
+from Base.PostgreSQL import PgSQL
 from frontend.Cards.authors_card import AuthorsCard
 from frontend.Cards.basecard import BaseCard
 from frontend.Cards.billing_card import BillingCard
@@ -134,6 +135,24 @@ class ManuscriptViewerPage(AuthenticatedPage):
     version_number = bar_items[1].text.split('\n')[1].split()[0]
     self._get(self._tb_versions_closer).click()
     return version_number
+
+  def get_journal_id(self):
+    """
+    Retrieves journal id
+    :return: Int with journal_id
+    """
+    paper_id = self.get_paper_db_id()
+    print paper_id
+    journal_id = PgSQL().query('SELECT papers.journal_id FROM papers where id = %s;', (paper_id,))[0][0]
+    return journal_id
+
+
+    #journal_ids = PgSQL().query('SELECT roles.journal_id FROM roles INNER JOIN user_roles '
+    #                            'ON roles.id = user_roles.role_id '
+    #                            'WHERE user_roles.user_id = %s '
+    #                            'AND roles.kind IN %s;', (uid, ('flow manager', 'admin', 'editor')))
+
+
 
 
   def _check_collaborator(self):
@@ -352,9 +371,19 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
   def get_paper_id(self):
     """
+    Returns the paper id
     """
     doi_text = self._get(self._tl_manuscript_id).text
     return doi_text.split(':')[1]
+
+  def get_paper_db_id(self):
+    """
+    Returns the DB paper ID from URL
+    """
+    paper_url = self.get_current_url()
+    print('The paper ID of this newly created paper is: ' + paper_url)
+    return int(paper_url.split('papers/')[1])
+
 
   def validate_so_overlay_elements_styles(self, type, paper_title):
     """

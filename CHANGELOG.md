@@ -6,6 +6,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ## [Unreleased][unreleased]
 ### Added
 - Users can view old versions of the paper's metadata.
+- FTP to APEX ability for QA and developers. Other features will integrate with this feature to expose this functionality to the user.
 
 ### Changed
 - compressed application request logging to a single line

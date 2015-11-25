@@ -28,6 +28,14 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     }
   },
 
+  updateTaskPositions(itemList) {
+    this.beginPropertyChanges();
+    itemList.forEach((item, index) => {
+      item.set('position', index + 1);
+    });
+    this.endPropertyChanges();
+  },
+
   resetProperties(){
     this.setProperties({ editingName: false, pendingChanges: false });
   },
@@ -39,7 +47,21 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       this.setProperties({ editingName: true, pendingChanges: true });
     },
 
-    itemUpdated() {
+    taskMovedWithinList(item, oldIndex, newIndex, itemList) {
+      itemList.removeAt(oldIndex);
+      itemList.insertAt(newIndex, item);
+      this.updateTaskPositions(itemList);
+      this.set('pendingChanges', true);
+    },
+
+    taskMovedBetweenList(item, oldIndex, newIndex, newList, sourceItems, newItems) {
+      sourceItems.removeAt(oldIndex);
+      newItems.insertAt(newIndex, item);
+      item.set('phaseTemplate', newList);
+
+      this.updateTaskPositions(sourceItems);
+      this.updateTaskPositions(newItems);
+
       this.set('pendingChanges', true);
     },
 

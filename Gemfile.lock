@@ -216,6 +216,7 @@ GEM
     factory_girl_rails (4.5.0)
       factory_girl (~> 4.5.0)
       railties (>= 3.0.0)
+    fake_ftp (0.1.1)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.9.1)
@@ -643,6 +644,7 @@ DEPENDENCIES
   email_spec
   ember-cli-rails
   factory_girl_rails
+  fake_ftp
   faraday_middleware
   fog (~> 1.36.0)
   foreman

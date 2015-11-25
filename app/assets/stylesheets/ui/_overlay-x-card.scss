@@ -2,9 +2,17 @@ $ov--card-side-pad: 8.0rem;
 $ov--card-breakpoint: 900px;
 
 .overlay-x--card {
+  display: none;
   background-color: rgba(0,0,0, 0.68);
 
+  // TODO: This needs another home:
+  h1 {
+    margin: 0 0 1em 0;
+    font-size: 48px;
+  }
+
   .overlay-x-container {
+    position: relative;
     max-width: 112.0rem;
     margin: 4.0rem auto;
     border-radius: 5px;
@@ -19,16 +27,27 @@ $ov--card-breakpoint: 900px;
   }
 }
 
+// Temporary:
+.overlay-x--visible {
+  display: block;
+}
+
 // Card Overlay Header ---------------------------------------------------------
 
 .overlay-x--card {
   .overlay-x-header {
+    overflow: hidden;
     position: relative;
     margin: 0 $ov--card-side-pad;
-    border-bottom: 1px solid #aaa;
+    border-bottom: 1px solid #000;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     padding: 6.0rem 5px 1.0rem 5px;
+
+    .overlay-x-close-button {
+      right: 0;
+      bottom: 10px;
+    }
   }
 
   .overlay-x-close {
@@ -44,8 +63,31 @@ $ov--card-breakpoint: 900px;
   }
 
   .overlay-x-header-title {
-    margin-bottom: 0; // bootstrap override
-    font-size: 4.2rem;
+    position: relative;
+    float: left;
+    width: 91.7%;
+    margin: 0 0 2px 0;
+    padding-right: 100px;
+    line-height: 0.9;
+
+    .manuscript-icon {
+      @include position(absolute, 8px auto auto 0px);
+      path, rect { fill: $tahi-green; }
+    }
+  }
+
+  .overlay-header-title--with-icon {
+    padding-left: 24px;
+  }
+
+  .overlay-header-link {
+    font-size: 18px;
+    &:hover { text-decoration: none; } // override global Aperta anchor style
+  }
+
+  .overlay-x-close-button {
+    position: absolute;
+    width: 8.333333333333332%;
   }
 }
 
@@ -66,7 +108,15 @@ $ov--card-breakpoint: 900px;
   .overlay-x-body {
     position: relative;
     min-height: 25rem;
-    padding: 3.0rem $ov--card-side-pad 2rem $ov--card-side-pad;
+    padding: 4.0rem $ov--card-side-pad 1rem $ov--card-side-pad;
+
+
+    // TODO: These need another home:
+    p { margin: 15px; }
+
+    label {
+      padding-right: 25px;
+    }
   }
 }
 
@@ -74,5 +124,28 @@ $ov--card-breakpoint: 900px;
   .overlay-x--card .overlay-x-body {
     padding-right: $ov--card-side-pad / 2;
     padding-left:  $ov--card-side-pad / 2;
+  }
+}
+
+// Card Overlay Footer ---------------------------------------------------------
+
+.overlay-x--card {
+  .overlay-x-footer {
+    overflow: hidden;
+    position: relative;
+    margin: 10px 0 0 0;
+    padding-bottom: 50px;
+  }
+
+  .overlay-x-footer-content {
+    position: relative;
+    margin: 0 $ov--card-side-pad;
+    border-top: 1px solid #000;
+    padding: 1.5rem 10% 1.0rem 5px;
+
+    .overlay-x-close-button {
+      top: 10px;
+      right: 0;
+    }
   }
 }

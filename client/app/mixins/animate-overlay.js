@@ -25,7 +25,7 @@ $.fn.redraw = function() {
 
 export default Ember.Mixin.create({
   out(options) {
-    $(options.selector).hide().attr('class', 'overlay');
+    $(options.selector).hide().attr('class', 'overlay-x');
 
     return {
       then(callback) {
@@ -39,15 +39,14 @@ export default Ember.Mixin.create({
     let overlayElement = $(options.selector).hide();
 
     // reset all classes on overlay
-    overlayElement.attr('class', 'overlay');
+    overlayElement.attr('class', 'overlay-x');
 
     if(options.extraClasses) {
       overlayElement.addClass(options.extraClasses);
     }
 
     if(options.skipAnimation || Ember.testing || !animationName) {
-      overlayElement.show().addClass('overlay--visible');
-
+      overlayElement.show().addClass('overlay-x--card overlay-x--visible');
       return {
         then(callback) {
           if(callback) { callback();}

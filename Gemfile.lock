@@ -53,14 +53,6 @@ PATH
     tahi_standard_tasks (0.0.1)
       rails (~> 4.2.0)
 
-PATH
-  remote: vendor/gems/tahi_epub
-  specs:
-    tahi_epub (0.0.3)
-      activesupport (~> 4.1)
-      fog (~> 1.36.0)
-      rubyzip (~> 1.1)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -703,7 +695,6 @@ DEPENDENCIES
   sinatra
   sort_alphabetical
   tahi-assign_team!
-  tahi_epub!
   tahi_standard_tasks!
   test_after_commit
   thin

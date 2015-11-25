@@ -1,5 +1,4 @@
-require 'spec_helper'
-require 'pry'
+require 'rails_helper'
 
 describe TahiEpub::Zip do
   describe ".zip_file?" do

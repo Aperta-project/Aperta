@@ -1,5 +1,4 @@
-require 'spec_helper'
-require_relative '../../../lib/tahi_epub/reader.rb'
+require 'rails_helper'
 
 describe TahiEpub::Reader do
   let(:epub_fixture) { File.read('./spec/fixtures/turtles.epub') }

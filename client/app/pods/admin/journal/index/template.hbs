@@ -79,7 +79,7 @@
     <br><br>
     {{#each model.manuscriptManagerTemplates as |mmt|}}
       {{manuscript-manager-template model=mmt
-                                    canDestroy=canDeleteManuscriptMangerTemplates
+                                    canDestroy=canDeleteManuscriptManagerTemplates
                                     destroyTemplate=(action "destroyMMTemplate")}}
     {{/each}}
   </div>

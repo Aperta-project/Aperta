@@ -7,7 +7,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   manuscriptCssSaveStatus: '',
   doiEditState: false,
   doiStartNumberEditable: true,
-  canDeleteManuscriptMangerTemplates:
+  canDeleteManuscriptManagerTemplates:
     Ember.computed.gt('model.manuscriptManagerTemplates.length', 1),
 
   epubCoverUploadUrl: Ember.computed('model.id', function() {
@@ -79,7 +79,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
     },
 
     destroyMMTemplate(template) {
-      if (this.get('canDeleteManuscriptMangerTemplates')) {
+      if (this.get('canDeleteManuscriptManagerTemplates')) {
         return template.destroyRecord();
       }
     },

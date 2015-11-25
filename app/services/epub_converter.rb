@@ -1,10 +1,14 @@
 class EpubConverter
-  attr_reader :paper, :include_source, :downloader
+  attr_reader :paper, :include_source, :downloader, :include_cover_image
 
-  def initialize(paper, downloader = nil, include_source = false)
+  def initialize(paper,
+                 downloader = nil,
+                 include_source: false,
+                 include_cover_image: true)
     @paper = paper
     @downloader = downloader
     @include_source = include_source
+    @include_cover_image = include_cover_image
   end
 
   def file_name
@@ -126,7 +130,9 @@ class EpubConverter
       end
       resources(workdir: workdir) do
         file 'css/default.css' => this._epub_css
-        cover_image 'images/cover_image.jpg' => this._epub_cover_path if this.paper.journal.epub_cover.file
+        if this.include_cover_image && this.paper.journal.epub_cover.file
+          cover_image 'images/cover_image.jpg' => this._epub_cover_path
+        end
         ordered do
           file "./#{File.basename publishing_info_path}"
           file "./#{File.basename temp_paper_path}"

@@ -5,8 +5,15 @@ describe EpubConverter do
   let(:paper_body) do
     "<h2 class=\"subtitle\">And this is my subtitle about how turtles are awesome</h2><p>Turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles.</p><p><a name=\"_GoBack\"></a>The end.</p>"
   end
+  let(:journal) do
+    FactoryGirl.create(:journal)
+  end
   let(:paper) do
-    create :paper, body: paper_body, title: paper_title, creator: create(:user)
+    create :paper,
+           body: paper_body,
+           title: paper_title,
+           creator: create(:user),
+           journal: journal
   end
   let(:downloader) { FactoryGirl.create :user }
 
@@ -21,7 +28,14 @@ describe EpubConverter do
   end
 
   let(:include_source) { false }
-  let(:converter) { EpubConverter.new paper, downloader, include_source }
+  let(:include_cover_image) { true }
+  let(:converter) do
+    EpubConverter.new(
+      paper,
+      downloader,
+      include_source: include_source,
+      include_cover_image: include_cover_image)
+  end
 
   describe '#epub_html' do
     context 'a paper' do
@@ -77,6 +91,19 @@ describe EpubConverter do
       end
     end
 
+    context 'when cover image is requested' do
+      let(:include_cover_image) { true }
+      it 'includes the journal cover image in the epub' do
+        VCR.use_cassette('epub cover image') do
+          allow(journal).to receive_message_chain('epub_cover.file.url')
+            .and_return('http://example.com/cover_image.jpg')
+          entries = read_epub_stream(converter.epub_stream)
+          cover = entries.any? { |f| f.name == 'OEBPS/images/cover_image.jpg' }
+          expect(cover).to be(true)
+        end
+      end
+    end
+
     context 'paper with uploaded source' do
       let(:file) { File.open(Rails.root.join("spec", "fixtures", "about_turtles.docx"), 'r') }
 
@@ -105,8 +132,6 @@ describe EpubConverter do
 
     describe '#publishing_information_html' do
       context 'when downloader is not specified' do
-        let(:converter) { EpubConverter.new(paper, nil, include_source) }
-
         it 'does not error' do
           expect(converter.publishing_information_html).to be_a(String)
         end

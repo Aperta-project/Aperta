@@ -16,7 +16,6 @@ from bs4 import BeautifulSoup, NavigableString
 import requests
 
 from CustomException import ElementDoesNotExistAssertionError
-from MLStripper import MLStripper
 from LinkVerifier import LinkVerifier
 import CustomExpectedConditions as CEC
 import Config as Config
@@ -130,9 +129,8 @@ class PlosPage(object):
     self._wait = WebDriverWait(self._driver, Config.wait_timeout)
 
   def get_text(self, s):
-    soup = BeautifulSoup(s)
+    soup = BeautifulSoup(s.decode('utf-8', 'ignore'), 'html.parser')
     clean_out = soup.get_text()
-    print(clean_out)
     return clean_out
 
   def open_new_tab(self):
@@ -171,10 +169,3 @@ class PlosPage(object):
         fh.flush()
     fh.close()
     return file_name
-
-  @staticmethod
-  def strip_tags(html):
-    """Removes html tags"""
-    s = MLStripper()
-    s.feed(html)
-    return s.get_data()

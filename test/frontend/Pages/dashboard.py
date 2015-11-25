@@ -8,7 +8,7 @@ without executing an invitation accept or reject, and without a CNS creation.
 
 import os
 import random
-from string import maketrans
+import string
 import time
 import uuid
 
@@ -354,15 +354,19 @@ class DashboardPage(AuthenticatedPage):
         # Validate paper title display and ordering
         # Get title of paper from db based on db ordered list of papers, then compare to papers ordered on page.
         title = PgSQL().query('SELECT title FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
-        title = self.strip_tags(title)
+        title = self.get_text(title)
         title = title.strip()
-        title = ' '.join(title.split())
+        # Split both to eliminate differences in whitespace
+        db_title = title.split()
+        paper_text = paper.text.split()
+        # print(db_title)
+        # print(paper_text)
         if not title:
           raise ValueError('Error: No title in db! Illogical, Illogical, Norman Coordinate: Invalid document')
-        # The following two lines are very useful for debugging ordering issues, please leave in place
-        # print(title)
-        # print(paper.text)
-        assert title == paper.text.encode('utf8'), 'DB: \n' + title + ' is not equal to \n' + paper.text + ', from page.'
+        if isinstance(title, unicode) and isinstance(paper.text, unicode):
+          assert db_title == paper_text
+        else:
+          raise TypeError('Database title or Page title are not both unicode objects')
         # Sort out paper role display
         paper_roles = PgSQL().query('SELECT role FROM paper_roles '
                                     'INNER JOIN papers ON papers.id = paper_roles.paper_id '
@@ -381,7 +385,7 @@ class DashboardPage(AuthenticatedPage):
         page_status = statuses[count].text
         dbstatus = PgSQL().query('SELECT publishing_state FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
         # For display of status on the home page, we replace '_' with a space.
-        transtab = maketrans('_', ' ')
+        transtab = string.maketrans('_', ' ')
         dbstatus = dbstatus.translate(transtab)
         if dbstatus == 'unsubmitted':
           dbstatus = 'draft'

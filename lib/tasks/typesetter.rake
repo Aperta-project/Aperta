@@ -6,17 +6,19 @@ namespace :typesetter do
       Usage: rake typesetter:json[<paper_id>]
       Example: rake typesetter:json[5] (for paper with id 5)
   USAGE
-
   task :json, [:paper_id] => :environment do |t, args|
     Rails.application.config.eager_load_namespaces.each(&:eager_load!)
     pp Typesetter::MetadataSerializer.new(Paper.find(args[:paper_id])).as_json
   end
 
-  desc 'Creates an Apex ZIP.  Usage "rake apex:export[<paper id>,<filename>]"'
-  task :export, [:paper_id, :filename] => :environment do |_, args|
-    $stdout.puts 'Beginning export'
+  desc <<-USAGE.strip_heredoc
+    Creates a typesetter ZIP file for manual inspection.
+      Usage: rake typesetter:zip[<paper_id>,<output_filename>]
+  USAGE
+  task :zip, [:paper_id, :output_filename] => :environment do |_, args|
+    Rails.application.config.eager_load_namespaces.each(&:eager_load!)
     paper = Paper.find(args.paper_id)
     package = ApexPackager.create(paper)
-    File.open(args.filename, 'w') { |f| f.write(package) }
+    FileUtils.cp(package.zip_file.path, args[:output_filename])
   end
 end

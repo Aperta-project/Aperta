@@ -359,6 +359,8 @@ class DashboardPage(AuthenticatedPage):
         # Split both to eliminate differences in whitespace
         db_title = title.split()
         paper_text = paper.text.split()
+        # print(db_title)
+        # print(paper_text)
         if not title:
           raise ValueError('Error: No title in db! Illogical, Illogical, Norman Coordinate: Invalid document')
         if isinstance(title, unicode) and isinstance(paper.text, unicode):

@@ -129,7 +129,7 @@ class PlosPage(object):
     self._wait = WebDriverWait(self._driver, Config.wait_timeout)
 
   def get_text(self, s):
-    soup = BeautifulSoup(s, 'html.parser')
+    soup = BeautifulSoup(s.decode('utf-8', 'ignore'), 'html.parser')
     clean_out = soup.get_text()
     return clean_out
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python2
-
+# -*- coding: utf-8 -*-
 import time
 
 from loremipsum import generate_paragraph
@@ -33,6 +33,9 @@ class BaseCard(AuthenticatedPage):
     self._message_comment = (By.CLASS_NAME, 'message-comment')
     self._completed_label = (By.XPATH, '//div[@class="overlay-completed-checkbox"]/div/label')
     self._bottom_close_button = (By.XPATH, '//div[@class="overlay-footer-content"]/a')
+    # Versioning locators - only applicable to metadata cards
+    self._versioned_metadata_div = (By.CLASS_NAME, 'versioned-metadata-version')
+    self._versioned_metadata_version_string = (By.CLASS_NAME, 'versioned-metadata-version-string')
 
   # Common actions for all cards
   def click_completed_checkbox(self):
@@ -163,3 +166,21 @@ class BaseCard(AuthenticatedPage):
     # self.validate_checkbox_label(completed_lbl)
     bottom_close_btn = self._get(self._bottom_close_button)
     self.validate_secondary_big_green_button_style(bottom_close_btn)
+
+  def is_versioned_view(self):
+    """
+    Evaluate whether the card view is a versioned view
+    :return: True if versioned view of card, False otherwise
+    """
+    if self.get(self._versioned_metadata_div):
+      assert self.get(self._versioned_metadata_div).text == 'Viewing', self.get(self._versioned_metadata_div).text
+      return True
+    else:
+      return False
+
+  def extract_current_view_version(self):
+    """
+    Returns the currently viewed version for a given metadata card
+    :return: Version string
+    """
+    return self.get(self._versioned_metadata_version_string).text

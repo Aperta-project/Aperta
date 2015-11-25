@@ -140,20 +140,21 @@ class PaperTrackerPage(AuthenticatedPage):
                                                    % str(count + 1))
 
         title = self._get(self._paper_tracker_table_tbody_title)
+        if not title:
+          raise ValueError('Error: No title in db! Illogical, Illogical, Norman Coordinate: Invalid document')
         if papers[count][0]:
           db_title = papers[count][0]
-          db_title = db_title.strip()
+          # strip tags
           db_title = self.get_text(db_title)
-          db_title = ' '.join(db_title.split())
+          db_title = db_title.strip()
           page_title = title.text.strip()
-          # Based on how the encoding is handled in the imported doc, the title can come in encoded or not
-          try:
-            assert page_title == db_title, page_title + '-is not equal to-' + db_title + '-'
-          except AssertionError:
-            try:
-              assert page_title.encode('utf8') == db_title, page_title + ' is not equal to ' + db_title
-            except AssertionError:
-              assert page_title == db_title.encode('utf-8'), page_title + ' is not equal to ' + db_title
+          if isinstance(db_title, unicode) and isinstance(page_title, unicode):
+            # Split both to eliminate differences in whitespace
+            db_title = db_title.split()
+            page_title = page_title.split()
+            assert db_title == page_title
+          else:
+            raise TypeError('Database title or Page title are not both unicode objects')
         manid = self._get(self._paper_tracker_table_tbody_manid)
         assert '/papers/%s' % manid.text in title.get_attribute('href'), title.get_attribute('href')
         assert int(manid.text) == papers[count][1]

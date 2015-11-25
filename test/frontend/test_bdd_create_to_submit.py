@@ -117,12 +117,11 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     dashboard_page.select_journal_and_type('PLOS Wombat', 'NoCards')
     doc2upload = random.choice(docx)
     print('Sending document: ' + os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload))
-    fn = os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload)
+    fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
     if os.path.isfile(fn):
       self._driver.find_element_by_id('upload-files').send_keys(fn)
     else:
-      raise IOError('Docx file not found')
-    self._driver.find_element_by_id('upload-files').send_keys(fn)
+      raise IOError('Docx file: {} not found'.format(doc2upload))
     dashboard_page.click_upload_button()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
@@ -143,7 +142,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay
     time.sleep(1)
-    manuscript_page.validate_so_overlay_elements_styles('congratulations', paper_title_from_page)
+    manuscript_page.validate_so_overlay_elements_styles('congrats', paper_title_from_page)
     manuscript_page.close_submit_overlay()
     manuscript_page.validate_submit_success()
     sub_data = manuscript_page.get_db_submission_data(paper_id)
@@ -245,7 +244,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay
     time.sleep(2)
-    manuscript_page.validate_so_overlay_elements_styles('congratulations', paper_title_from_page)
+    manuscript_page.validate_so_overlay_elements_styles('congrats_is', paper_title_from_page)
     manuscript_page.close_submit_overlay()
     manuscript_page.validate_initial_submit_success()
     sub_data = manuscript_page.get_db_submission_data(paper_id)
@@ -279,7 +278,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
       assert sub_data[0][2], sub_data[0][2]
       return True
     elif decision == 'invite':
-      assert sub_data[0][0] == 'in_revision', sub_data[0][0]
+      assert sub_data[0][0] == 'invited_for_full_submission', sub_data[0][0]
       assert sub_data[0][1] == True, 'Gradual Engagement: ' + sub_data[0][1]
       assert sub_data[0][2], sub_data[0][2]
     else:
@@ -311,7 +310,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay
     time.sleep(2)
-    manuscript_page.validate_so_overlay_elements_styles('congratulations', paper_title_from_page)
+    manuscript_page.validate_so_overlay_elements_styles('congrats_is_full', paper_title_from_page)
     manuscript_page.close_submit_overlay()
     manuscript_page.validate_submit_success()
     sub_data = manuscript_page.get_db_submission_data(paper_id)

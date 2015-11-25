@@ -6,16 +6,46 @@ and style and functionality of the View Invitations and Create New Submission fl
 without executing an invitation accept or reject, and without a CNS creation.
 """
 
+import os
+import random
+import string
 import time
 import uuid
 
 from selenium.webdriver.common.by import By
 
 from Base.PostgreSQL import PgSQL
-from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface, tahi_green
+from authenticated_page import AuthenticatedPage, application_typeface
 
 
 __author__ = 'jgray@plos.org'
+
+docx = ['2014_04_27 Bakowski et al main text_subm.docx',
+        '120220_PLoS_Genetics_review.docx',
+        'CRX.pone.0103411.docx',
+        'GIANT-gender-main_20130310.docx',
+        'NF-kB-Paper_manuscript.docx',
+        'NorenzayanetalPLOS.docx',
+        'pgen.1004127.docx',
+        'PGENETICS-D-13-02065R1_FTC.docx',
+        'PLosOne_Main_Body_Ravi_Bansal_Brad_REVISED.docx',
+        'PONE-D-12-25504.docx',
+        'PONE-D-12-27950.docx',
+        'PONE-D-13-02344.docx',
+        'PONE-D-13-14162.docx',
+        'PONE-D-13-19782.docx',
+        'PONE-D-13-38666.docx',
+        'PONE-D-14-12686.docx',
+        'PONE-D-14-17217.docx',
+        'pone.0100365.docx',
+        'pone.0100948.docx',
+        'ppat.1004210.docx',
+        'PPATHOGENS-D-14-01213.docx',
+        'RTN.pone.0072333.docx',
+        'Schallmo_PLOS_RevisedManuscript.docx',
+        'Spindler_2014_rerevised.docx',
+        'Thammasri_PONE_D13_12078_wo.docx',
+        ]
 
 
 class DashboardPage(AuthenticatedPage):
@@ -91,7 +121,6 @@ class DashboardPage(AuthenticatedPage):
     self._submitted_papers = (By.CLASS_NAME, 'dashboard-paper-title')
     # First article
     self._first_paper = (By.CSS_SELECTOR, 'div.table-responsive a')
-
 
   # POM Actions
   def click_on_existing_manuscript_link(self, title):
@@ -328,15 +357,19 @@ class DashboardPage(AuthenticatedPage):
         # Validate paper title display and ordering
         # Get title of paper from db based on db ordered list of papers, then compare to papers ordered on page.
         title = PgSQL().query('SELECT title FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
-        title = self.strip_tags(title)
+        title = self.get_text(title)
         title = title.strip()
+        # Split both to eliminate differences in whitespace
+        db_title = title.split()
+        paper_text = paper.text.split()
+        # print(db_title)
+        # print(paper_text)
         if not title:
-          print('Error: No title in db! Illogical, Illogical, Norman Coordinate: Invalid document')
-          return False
-        # The following two lines are very useful for debugging ordering issues, please leave in place
-        # print(title)
-        # print(paper.text)
-        assert title == paper.text.encode('utf8'), 'DB: \n' + title + ' is not equal to \n' + paper.text + ', from page.'
+          raise ValueError('Error: No title in db! Illogical, Illogical, Norman Coordinate: Invalid document')
+        if isinstance(title, unicode) and isinstance(paper.text, unicode):
+          assert db_title == paper_text
+        else:
+          raise TypeError('Database title or Page title are not both unicode objects')
         # Sort out paper role display
         paper_roles = PgSQL().query('SELECT role FROM paper_roles '
                                     'INNER JOIN papers ON papers.id = paper_roles.paper_id '
@@ -351,22 +384,12 @@ class DashboardPage(AuthenticatedPage):
         if paper_owner == uid:
           rolelist.append('my paper')
 
-        # This validates the role display in the tooltip hover
-        page_derived_role_list = paper.get_attribute('data-original-title').lower().split(', ')
-        for role in rolelist:
-          assert role in page_derived_role_list
-
-        # This validates the role display in the role column
-        # per design, if my paper in roles, only display an 'Author' role
-        if 'my paper' in rolelist:
-          rolelist = ['Author']
-
-        for role in rolelist:
-          assert role.lower() in roles[count].text.lower()
-
         # Validate Status Display
         page_status = statuses[count].text
         dbstatus = PgSQL().query('SELECT publishing_state FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
+        # For display of status on the home page, we replace '_' with a space.
+        transtab = string.maketrans('_', ' ')
+        dbstatus = dbstatus.translate(transtab)
         if dbstatus == 'unsubmitted':
           dbstatus = 'draft'
         assert page_status.lower() == dbstatus.lower(), page_status.lower() + ' is not equal to: ' + dbstatus.lower()
@@ -539,9 +562,14 @@ class DashboardPage(AuthenticatedPage):
     assert "Choose the type of paper you're submitting" in paper_type_chooser_label.text, paper_type_chooser_label.text
     assert "Select a paper type" in paper_type_chooser.text, paper_type_chooser.text
     self._get(self._upload_btn)
-    fn = '../assets/docs/sample.docx'
-    self._driver.execute_script("$('#upload-files').fileupload('add', {files:['%s']})" % fn)
-    time.sleep(1)
+    doc2upload = random.choice(docx)
+    print('Sending document: ' + os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload))
+    fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
+    if os.path.isfile(fn):
+      self._driver.find_element_by_id('upload-files').send_keys(fn)
+    else:
+      raise IOError('Docx file: %s not found' % doc2upload)
+    self.click_upload_button()
     # TODO: Check this when fixed bug #102130748
     # self.validate_secondary_big_green_button_style(create_btn)
     self._get(self._cns_error_div)

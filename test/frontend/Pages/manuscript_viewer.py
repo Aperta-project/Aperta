@@ -37,6 +37,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # Main Toolbar items
     self._tb_versions_link = (By.CLASS_NAME, 'versions-link')
     self._tb_versions_diff_div = (By.CSS_SELECTOR, 'div.html-diff')
+    #self._tb_view_version = (By.TAG_NAME, 'select')
     self._tb_versions_closer = (By.CLASS_NAME, 'exit-versions')
     self._tb_collaborators_link = (By.CLASS_NAME, 'contributors-link')
     self._tb_add_collaborators_label = (By.CLASS_NAME, 'contributors-add')
@@ -121,6 +122,19 @@ class ManuscriptViewerPage(AuthenticatedPage):
     assert 'Now viewing:' in bar_items[1].text, bar_items[1].text
     assert 'Compare With:' in bar_items[2].text, bar_items[2].text
     self._get(self._tb_versions_closer).click()
+
+  def get_manuscript_version(self):
+    """
+    Retrieves current manuscript version
+    :return: String with manuscript version number
+    """
+    version_btn = self._get(self._tb_versions_link)
+    version_btn.click()
+    bar_items = self._gets(self._bar_items)
+    version_number = bar_items[1].text.split('\n')[1].split()[0]
+    self._get(self._tb_versions_closer).click()
+    return version_number
+
 
   def _check_collaborator(self):
     """

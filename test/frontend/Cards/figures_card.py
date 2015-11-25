@@ -18,6 +18,7 @@ class FiguresCard(BaseCard):
     self._card_title = (By.TAG_NAME, 'h1')
     self._intro_text = (By.TAG_NAME, 'p')
     self._question_label = (By.CLASS_NAME, 'question-checkbox')
+    self._question_check = (By.CLASS_NAME, 'ember-checkbox')
     self._add_new_figures_btn = (By.CLASS_NAME, 'button-primary')
 
    #POM Actions
@@ -43,6 +44,25 @@ class FiguresCard(BaseCard):
     add_new_figures_btn = self._get(self._add_new_figures_btn)
     add_new_figures_btn.text == "ADD NEW FIGURES"
     self.validate_primary_big_green_button_style(add_new_figures_btn)
+
+  def check_question(self):
+    """
+    Click on the checkmark for the question:
+    "Yes - I confirm our figures comply with the guidelines."
+    :return: None
+    """
+    self._get(self._question_check).click()
+
+  def is_question_checked(self):
+    """
+    Checks if checkmark for the question on Image card is applied or not
+    :return: Bool
+    """
+    question_check= self._get(self._question_check)
+    if question_check.is_selected():
+      return True
+    else:
+      return False
 
   def upload_figure(self, file_path):
     """

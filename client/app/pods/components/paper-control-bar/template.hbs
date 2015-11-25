@@ -85,7 +85,7 @@
 
       {{#each supportedDownloadFormats as |downloadType|}}
         <a href="#" {{action "exportDocument" downloadType}} class="{{unbound downloadType.format}}" title="Download {{unbound downloadType.format}}">
-        {{downloadType.format}}
+        {{downloadType.display}}
         {{partial downloadType.icon}}
         </a>
       {{/each}}

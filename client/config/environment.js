@@ -16,7 +16,9 @@ module.exports = function(environment) {
     APP: {
       // pusher configuration is set in initializers/pusher.js
 
-      iHatExportFormats: ['docx']
+      iHatExportFormats: [
+        { type: 'docx', display: 'word' }
+      ]
     },
 
     'mathjax': {

@@ -239,14 +239,6 @@ ActiveRecord::Schema.define(version: 20151120182356) do
 
   add_index "manuscript_manager_templates", ["journal_id"], name: "index_manuscript_manager_templates_on_journal_id", using: :btree
 
-  create_table "manuscripts", force: :cascade do |t|
-    t.string   "source"
-    t.integer  "paper_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "status",     limit: 255, default: "processing"
-  end
-
   create_table "nested_question_answers", force: :cascade do |t|
     t.integer  "nested_question_id"
     t.integer  "owner_id"

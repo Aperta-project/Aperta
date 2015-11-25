@@ -23,11 +23,11 @@ describe VersionedTextsController do
 
     it 'returns a version' do
       expected_keys = %w(
-        id,
-        text,
-        updated_at,
-        paper_id,
-        major_version,
+        id
+        text
+        updated_at
+        paper_id
+        major_version
         minor_version
       )
       expect(versioned_text_data.keys).to eq(expected_keys)

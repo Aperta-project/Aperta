@@ -52,7 +52,6 @@ gem 'sass-rails'
 gem 'sidekiq'
 gem 'sinatra', require: nil
 gem 'sort_alphabetical'
-gem 'tahi_epub', path: "vendor/gems/tahi_epub"
 gem 'timeliness'
 gem 'tiny_tds'
 gem 'twitter-text'

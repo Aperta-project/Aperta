@@ -1,4 +1,3 @@
-require "tahi_epub/version"
 require "tahi_epub/errors"
 require "tahi_epub/zip"
 require "tahi_epub/tempfile"

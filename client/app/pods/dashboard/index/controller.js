@@ -109,6 +109,7 @@ export default Ember.Controller.extend({
     },
 
     newManuscriptCreated(manuscript) {
+      this.set('showNewManuscriptOverlay', false);
       this.transitionToRoute('paper.index', manuscript, {
         queryParams: { firstView: 'true' }
       });

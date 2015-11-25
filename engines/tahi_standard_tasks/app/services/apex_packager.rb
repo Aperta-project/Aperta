@@ -40,7 +40,7 @@ class ApexPackager
   def add_figures(package)
     return unless figures_comply?
     @paper.figures.each do |figure|
-      next if figure.striking_image
+      next if @paper.striking_image == figure
       package.put_next_entry(figure.apex_filename)
       package.write(figure.attachment.read)
     end

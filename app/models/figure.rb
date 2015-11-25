@@ -36,7 +36,7 @@ class Figure < ActiveRecord::Base
   end
 
   def apex_filename
-    return filename unless striking_image
+    return filename unless self == paper.striking_image
 
     extension = filename.split('.').last
     "Strikingimage.#{extension}"

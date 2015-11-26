@@ -25,7 +25,7 @@ class EditPaperTest(CommonTest):
      - Validate different role aware menu items
   """
 
-  def _test_validate_components_styles(self):
+  def test_validate_components_styles(self):
     """
     Validates the presence of the following elements:
       - icons in text area (editor menu)

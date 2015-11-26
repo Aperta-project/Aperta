@@ -6,10 +6,6 @@ class TaskSerializer < ActiveModel::Serializer
 
   self.root = :task
 
-  def paper_title
-    object.paper.display_title(sanitized: false)
-  end
-
   def is_metadata_task
     object.metadata_task?
   end
@@ -19,7 +15,7 @@ class TaskSerializer < ActiveModel::Serializer
   end
 
   def assigned_to_me
-    user = scope.presence
+    user = scoped_user
     if user
       object.participations.map(&:user_id).include? user.id
     else
@@ -36,5 +32,11 @@ class TaskSerializer < ActiveModel::Serializer
       nested_question_answers: task_nested_question_answers_path(object),
       snapshots: task_snapshots_path(object)
     }
+  end
+
+  private
+
+  def scoped_user
+    scope.presence || options[:user]
   end
 end

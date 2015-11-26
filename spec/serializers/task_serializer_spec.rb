@@ -1,31 +1,62 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe TaskSerializer do
-  describe "isMetadataTask" do
-    before do
-      PaperFactory.new(paper, user).create
 
-      allow_any_instance_of(LitePaperSerializer).to receive(:roles).and_return([])
-      allow_any_instance_of(LitePaperSerializer).to receive(:related_at_date).and_return(Time.zone.now)
+  let(:task) { create(:task) }
+  let(:serializer) { TaskSerializer.new(task) }
+
+  subject do
+    JSON.parse(serializer.to_json, symbolize_names: true)
+  end
+
+  describe '#is_metadata_task' do
+    it 'returns false if task is metadata type' do
+      expect(subject[:task][:is_metadata_task]).to eq(false)
     end
 
-    let(:user) { FactoryGirl.create :user }
-    let(:paper) { FactoryGirl.create :paper, creator: user }
-    let(:task) { FactoryGirl.create :task, paper: paper }
+    it 'returns false if task is metadata type' do
+      Task.metadata_types << 'Task'
+      expect(subject[:task][:is_metadata_task]).to eq(true)
+      Task.metadata_types.delete('Task')
+    end
+  end
 
-    context "when the task is not a metadata task" do
-      it "returns false" do
-        serialized = JSON.parse TaskSerializer.new(task).to_json, symbolize_names: true
-        expect(serialized[:task][:is_metadata_task]).to eq(false)
+  describe '#is_submission_task' do
+    it 'returns false if task is not submission type' do
+      expect(subject[:task][:is_submission_task]).to eq(false)
+    end
+
+    it 'returns false if task is submission type' do
+      Task.submission_types << 'Task'
+      expect(subject[:task][:is_submission_task]).to eq(true)
+      Task.submission_types.delete('Task')
+    end
+  end
+
+  describe '#assigned_to_me' do
+    it 'returns false if current_user does not exists in the context' do
+      expect(subject[:task][:assigned_to_me]).to eq(false)
+    end
+
+    context 'task with participations' do
+      let(:user) { create(:user) }
+
+      before do
+        task.participations << create(:participation, user: user)
       end
-    end
 
-    context "when the task is a metadata task" do
-      it "returns true" do
-        Task.metadata_types << "Task"
-        serialized = JSON.parse TaskSerializer.new(task).to_json, symbolize_names: true
-        expect(serialized[:task][:is_metadata_task]).to eq(true)
-        Task.metadata_types.delete("Task")
+      context 'setting the user option in the serializer call' do
+        let(:serializer) { TaskSerializer.new(task, scope: user) }
+        it 'returns true if current_user exists in the context' do
+          expect(subject[:task][:assigned_to_me]).to eq(true)
+        end
+      end
+
+      context 'setting the user option in the serializer call' do
+        let(:serializer) { TaskSerializer.new(task, user: user) }
+        it 'returns true if we set the user option to the serializer' do
+          expect(subject[:task][:assigned_to_me]).to eq(true)
+        end
       end
     end
   end

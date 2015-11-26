@@ -51,13 +51,6 @@ describe TaskSerializer do
           expect(subject[:task][:assigned_to_me]).to eq(true)
         end
       end
-
-      context 'setting the user option in the serializer call' do
-        let(:serializer) { TaskSerializer.new(task, user: user) }
-        it 'returns true if we set the user option to the serializer' do
-          expect(subject[:task][:assigned_to_me]).to eq(true)
-        end
-      end
     end
   end
 end

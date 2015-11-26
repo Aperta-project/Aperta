@@ -15,12 +15,7 @@ class TaskSerializer < ActiveModel::Serializer
   end
 
   def assigned_to_me
-    user = scoped_user
-    if user
-      object.participations.map(&:user_id).include? user.id
-    else
-      false
-    end
+    object.participations.map(&:user).include? scope
   end
 
   def links
@@ -32,11 +27,5 @@ class TaskSerializer < ActiveModel::Serializer
       nested_question_answers: task_nested_question_answers_path(object),
       snapshots: task_snapshots_path(object)
     }
-  end
-
-  private
-
-  def scoped_user
-    scope.presence || options[:user]
   end
 end

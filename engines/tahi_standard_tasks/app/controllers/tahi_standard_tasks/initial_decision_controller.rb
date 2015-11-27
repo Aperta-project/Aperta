@@ -16,7 +16,7 @@ module TahiStandardTasks
     end
 
     def create_blank_decision
-      task.paper.decisions.create
+      task.paper.decisions.create(notify_requester: true)
     end
 
     def task

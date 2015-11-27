@@ -5,7 +5,8 @@ export default TaskController.extend({
   restless: Ember.inject.service('restless'),
   paperState: Ember.computed.alias('model.paper.publishingState'),
   nonPublishable: Ember.computed.not('publishable'),
-  decisions: Ember.computed.alias('model.paper.decisions'),
+  revisionNumberDesc: ['revisionNumber:desc'],
+  decisions: Ember.computed.sort('model.paper.decisions', 'revisionNumberDesc'),
   latestDecision: Ember.computed.alias('decisions.firstObject'),
   previousDecisions: Ember.computed('decisions.[]', function() {
     return this.get('decisions').slice(1);

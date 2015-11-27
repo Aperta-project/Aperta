@@ -12,7 +12,7 @@ describe TahiStandardTasks::InitialDecisionController do
     sign_in admin
   end
 
-  describe "POST #create" do
+  describe 'POST #create' do
 
     before do
       allow(Task).to receive(:find).with(task.to_param).and_return(task)
@@ -22,40 +22,46 @@ describe TahiStandardTasks::InitialDecisionController do
       post :create, format: :json, id: task.to_param
     end
 
-    context "Paper in a submitted state, with a valid Decision" do
+    context 'Paper in a submitted state, with a valid Decision' do
       let(:paper) do
-        FactoryGirl.create(:paper, :submitted, :with_tasks,
-                           short_title: 'Submitted Paper',
+        FactoryGirl.create(:paper, :initially_submitted,
+                           short_title: 'Initially Submitted Paper',
                            title: 'Science - the Complete Works',
                            journal: journal,
                            creator: admin)
       end
 
       before do
-        paper.decisions.first.update(verdict: "major_revision")
+        task.initial_decision.update(verdict: 'invite_full_submission')
       end
 
-      it "invoke complete_decision on task" do
+      it 'invoke complete_decision on task' do
         expect(task.paper).to receive(:make_decision)
         do_request
       end
 
-      it "sends an email" do
-        expect {
+      it 'sends an email' do
+        expect do
           do_request
-        }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
+        end.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
       end
-      #
-      it "creates an activity" do
+
+      it 'creates a new decision record' do
+        expect do
+          do_request
+        end.to change(Decision, :count).by(1)
+      end
+
+      it 'creates an activity' do
         activity = {
           subject: paper,
-          message: "Major Revision was sent to author"
+          message: 'Invite Full Submission was sent to author'
         }
         expect(Activity).to receive(:create).with(hash_including(activity))
         do_request
       end
 
-      it "return head ok" do
+      it 'return head ok' do
         do_request
         expect(response).to be_success
       end

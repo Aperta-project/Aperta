@@ -1,11 +1,8 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-This behavioral test case validates the Aperta Create New Submission through Submit process.
+This behavioral test case validates Paper submission and initial Decision.
 This test requires the following data:
-A journal named "PLOS Wombat"
-An MMT in that journal with no cards populated in its workflow, named "NoCards"
-An MMT in that journal with only the initial decision card populated in its workflow, named "OnlyInitialDecisionCard"
 The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extracted into frontend/assets/docs/
 """
 __author__ = 'sbassi@plos.org'
@@ -95,9 +92,9 @@ class InitialDecisionCardTest(CommonTest):
       raise IOError('Docx file not found: {}'.format(fn))
     dashboard_page.click_upload_button()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
-    time.sleep(7)
+    time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    #paper_id = manuscript_page.get_paper_id().strip()
+    manuscript_page.validate_ihat_conversions_success()
     paper_url = manuscript_page.get_current_url()
     print('The paper ID of this newly created paper is: ' + paper_url)
     paper_id = paper_url.split('papers/')[1]

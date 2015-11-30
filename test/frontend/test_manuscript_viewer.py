@@ -71,8 +71,6 @@ class EditPaperTest(CommonTest):
       if dashboard_page.validate_manuscript_section_main_title(user) > 0:
         self.select_preexisting_article(init=False, first=True)
         manuscript_viewer = ManuscriptViewerPage(self.getDriver())
-        time.sleep(2)
-
         time.sleep(3) # needed to give time to retrieve new menu items
         if user == ae_login:
           paper_id = manuscript_viewer.get_paper_db_id()

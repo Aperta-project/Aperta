@@ -73,7 +73,7 @@ export default Ember.Controller.extend({
       this.set('showActivityOverlay', false);
     },
 
-    showActivity(type) {
+    showActivityOverlay(type) {
       this.set('activityIsLoading', true);
       this.set('showActivityOverlay', true);
       const url = `/api/papers/${this.get('model.id')}/activity/${type}`;

@@ -21,7 +21,11 @@ export default Ember.Mixin.create({
 
   supportedDownloadFormats: computed(function() {
     return ENV.APP.iHatExportFormats.map(format => {
-      return {format: format.type, display: format.display, icon: `svg/${format.type}-icon`};
+      return {
+        format: format.type,
+        display: format.display,
+        icon: `svg/${format.type}-icon`
+      };
     });
   }),
 
@@ -49,7 +53,7 @@ export default Ember.Mixin.create({
       this.set('showActivityOverlay', false);
     },
 
-    showActivity(type) {
+    showActivityOverlay(type) {
       this.set('activityIsLoading', true);
       this.set('showActivityOverlay', true);
       const url = `/api/papers/${this.get('model.id')}/activity/${type}`;

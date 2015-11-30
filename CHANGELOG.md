@@ -11,6 +11,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ### Changed
 - compressed application request logging to a single line
+- overlays changed to ember components (excluding tasks) https://developer.plos.org/confluence/display/TAHI/How+Overlays+Work
 
 ### Deprecated
 -

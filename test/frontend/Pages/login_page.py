@@ -48,7 +48,7 @@ class LoginPage(AuthenticatedPage):
     :return: None
     """
     welcome_msg = self._get(self._welcome_message)
-    assert welcome_msg.text == 'Welcome to Aperta'
+    assert welcome_msg.text == 'Welcome to Aperta', welcome_msg.text
     #self.validate_application_h1_style(welcome_msg)
     # inside the app, it seems we use a dark grey (51, 51, 51) Why is this different?
     assert welcome_msg.value_of_css_property('color') == 'rgba(0, 0, 0, 1)'

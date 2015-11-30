@@ -80,10 +80,8 @@ class AuthorsCard(BaseCard):
       h4.value_of_css_property('font-weight'), h4.value_of_css_property('line-height'),
       h4.value_of_css_property('color'))
 
-
-
   def validate_author_card_styles(self):
-    """Validate """
+    """Validate"""
     authors_title = self._get(self._authors_title)
     assert authors_title.text == 'Authors', authors_title.text
     # Commented out until bug APERTA-3090 is fixed

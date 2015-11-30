@@ -22,6 +22,7 @@ class InitialDecisionCard(BaseCard):
     self._invite_radio_button = (By.XPATH, '//input[@value=\'invite_full_submission\']')
     self._decision_letter_textarea = (By.TAG_NAME, 'textarea')
     self._register_decision_btn = (By.CSS_SELECTOR, 'textarea + button.button-primary')
+    self._alert_info = (By.CLASS_NAME, 'alert-info')
 
    #POM Actions
 
@@ -42,18 +43,18 @@ class InitialDecisionCard(BaseCard):
     reg_dcn_btn = self._get(self._register_decision_btn)
     self.validate_primary_big_green_button_style(reg_dcn_btn)
 
-  def execute_decision(self):
+  def execute_decision(self, choice='random'):
     """
     Randomly renders an initial decision of reject or invite, populates the decision letter
     :return: selected choice
     """
     choices = ['reject', 'invite']
     decision_letter_input = self._get(self._decision_letter_textarea)
-    choice = random.choice(choices)
+    if choice == 'random':
+      choice = random.choice(choices)
     if choice == 'reject':
       reject_input = self._get(self._reject_radio_button)
       reject_input.click()
-      decision_letter_input = self._get(self._decision_letter_textarea)
       decision_letter_input.send_keys('Rejected')
     else:
       invite_input = self._get(self._invite_radio_button)

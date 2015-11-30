@@ -1,31 +1,29 @@
 #paper-container {
-  @include transition(top 0.2s ease-in-out);
-  margin: 90px auto 30px auto;
-  background: $tahi-white;
+  @include position(absolute, 60px 0px 0px 0px);
 
-  &.paper-container-html {
-    max-width: $tahi-paper-width;
+  &.paper-container--versions {
+    top: 131px;
   }
+}
 
-  .manuscript-container {
-    position: relative;
-    width: calc(100% - #{$paper-sidebar-width} - 1px);
-    font-size: 0.95em;
+.manuscript-pane {
+  margin-right: 20px;
+  background: #fff;
+}
+
+.manuscript-handle {
+  &:before {
+    content: '';
+    @include position(absolute, 0px auto 0px -20px);
+    width: 20px;
+    background: #fff;
   }
+}
 
-  main {
-    height: 100%;
-    width: 100%;
-    position: relative;
-
-    .flash-messages {
-      position: absolute;
-      top: 5px;
-      left: 0px;
-      right: 0px;
-      z-index: 1
-    }
-  }
+.manuscript-container {
+  position: relative;
+  max-width: 880px;
+  margin: 0 auto;
 }
 
 
@@ -52,17 +50,9 @@
 }
 
 
-#paper-body {
-  padding: 30px 50px;
-
-  .manuscript {
-    background: #fff;
-    font-family: $tahi-article-font-family;
-  }
-
+.manuscript {
+  padding: 30px 20px;
   font-family: $tahi-article-font-family;
-  min-height: 600px;
-  background-color: $tahi-white;
 
   figure {
     h1 {

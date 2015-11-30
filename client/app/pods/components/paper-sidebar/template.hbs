@@ -1,44 +1,44 @@
-<div class="task-list">
-
-  {{#if paper.doi}}
-    <div class="task-list-doi"><strong>Manuscript ID:</strong> {{paper.manuscript_id}}</div>
-  {{/if}}
-
-  <div id="submission-state-information">
-    {{#if getsGradualEngagementToggle}}
-      <div id='submission-process-toggle-box'>
-        <i id="submission-process-toggle"
-           title="Submission Process"
-           class="fa fa-question-circle" {{action "toggleSubmissionProcess"}}>
-        </i>
-
-        <p><b>{{paper.journal.name}} Submission Process </b></p>
-      </div>
+{{#task-disclosure-group class="paper-sidebar"}}
+  <div class="paper-sidebar-info">
+    {{#if paper.doi}}
+      <div class="task-list-doi"><strong>Manuscript ID:</strong> {{paper.manuscript_id}}</div>
     {{/if}}
 
-    {{#if readyToSubmit}}
-      <div class="ready-to-submit {{paper.engagementState}}">Your manuscript is ready for <span class="text-capitalize">{{paper.engagementState}}</span> Submission.</div>
+    <div id="submission-state-information">
+      {{#if getsGradualEngagementToggle}}
+        <div id='submission-process-toggle-box'>
+          <i id="submission-process-toggle"
+             title="Submission Process"
+             class="fa fa-question-circle" {{action "toggleSubmissionProcess"}}>
+          </i>
 
-      <button id="sidebar-submit-paper" {{action "submitPaper"}}
-        class="button-primary button-pre-submit-paper button--green">
-        Submit
-      </button>
-    {{/if}}
-
-    {{#if preSubmission}}
-      {{#if paper.gradualEngagement}}
-        {{partial "submission/sidebar-gradual-engagement-presubmission"}}
-      {{else}}
-        You must complete the following tasks before submitting:
+          <p><b>{{paper.journal.name}} Submission Process </b></p>
+        </div>
       {{/if}}
-    {{/if}}
 
-    {{#if isSubmitted}}
-      This paper has been submitted.
-    {{/if}}
+      {{#if readyToSubmit}}
+        <div class="ready-to-submit {{paper.engagementState}}">Your manuscript is ready for <span class="text-capitalize">{{paper.engagementState}}</span> Submission.</div>
+
+        <button id="sidebar-submit-paper" {{action "submitPaper"}}
+          class="button-primary button-pre-submit-paper button--green">
+          Submit
+        </button>
+      {{/if}}
+
+      {{#if preSubmission}}
+        {{#if paper.gradualEngagement}}
+          {{partial "submission/sidebar-gradual-engagement-presubmission"}}
+        {{else}}
+          You must complete the following tasks before submitting:
+        {{/if}}
+      {{/if}}
+
+      {{#if isSubmitted}}
+        This paper has been submitted.
+      {{/if}}
+    </div>
+    <hr>
   </div>
-
-  <hr />
 
   {{#if assignedTasks}}
     <div id="paper-assigned-tasks">
@@ -63,4 +63,4 @@
       {{/each}}
     </div>
   {{/if}}
-</div>
+{{/task-disclosure-group}}

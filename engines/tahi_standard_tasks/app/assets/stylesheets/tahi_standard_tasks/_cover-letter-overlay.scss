@@ -1,29 +1,22 @@
 .edit-cover-letter {
-  .taller-textarea {
-    width: 687px;
-    height: 265px;
-    margin-bottom: 15px;
-    display: block;
-    border: 1px solid #878787;
-    border-radius: 4px;
-    font-size: 15px;
-    overflow: scroll;
+  ul {
+    padding-left: 1.75rem;
   }
+}
 
-  .taller-textarea:focus {
+.cover-letter-field {
+  height: 250px;
+  margin-bottom: 15px;
+  border: 1px solid #b1b1b1;
+  border-radius: 4px;
+  padding: 0.5rem;
+  font-size: 15px;
+
+  &:focus {
     border: 1px solid rgb(118, 179, 229);
-  }
-
-  h5 {
-    line-height: 20px;
-    margin: 30px 0;
   }
 }
 
 .cover-letter {
   margin: 15px;
-
-  p {
-    margin: 10px 0;
-  }
 }

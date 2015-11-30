@@ -6,10 +6,6 @@ class TaskSerializer < ActiveModel::Serializer
 
   self.root = :task
 
-  def paper_title
-    object.paper.display_title(sanitized: false)
-  end
-
   def is_metadata_task
     object.metadata_task?
   end
@@ -19,12 +15,7 @@ class TaskSerializer < ActiveModel::Serializer
   end
 
   def assigned_to_me
-    user = scope.presence
-    if user
-      object.participations.map(&:user_id).include? user.id
-    else
-      false
-    end
+    object.participations.map(&:user).include? scope
   end
 
   def links

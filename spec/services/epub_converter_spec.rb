@@ -87,7 +87,7 @@ describe EpubConverter do
     context 'paper with no uploaded source' do
       it "has no source in the epub" do
         entries = read_epub_stream(converter.epub_stream)
-        expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(false)
+        expect(entries.map(&:name)).to_not include(/source/)
       end
     end
 

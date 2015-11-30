@@ -5,10 +5,4 @@ class SourceUploader < CarrierWave::Uploader::Base
   def store_dir
     "uploads/versioned_text/#{model.id}"
   end
-
-  # Override the filename of the uploaded files:
-  # Avoid using model.id or version_name here, see uploader/store.rb for details.
-  def filename
-    'source.docx' if original_filename
-  end
 end

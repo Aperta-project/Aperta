@@ -10,8 +10,8 @@ export default Ember.Mixin.create({
   canViewManuscriptManager: false,
 
   supportedDownloadFormats: computed(function() {
-    return ENV.APP.iHatExportFormats.map(formatType => {
-      return {format: formatType, icon: `svg/${formatType}-icon`};
+    return ENV.APP.iHatExportFormats.map(format => {
+      return {format: format.type, display: format.display, icon: `svg/${format.type}-icon`};
     });
   }),
 

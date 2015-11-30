@@ -87,7 +87,7 @@ describe EpubConverter do
     context 'paper with no uploaded source' do
       it "has no source in the epub" do
         entries = read_epub_stream(converter.epub_stream)
-        expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(false)
+        expect(entries.map(&:name)).to_not include(/source/)
       end
     end
 
@@ -105,27 +105,29 @@ describe EpubConverter do
     end
 
     context 'paper with uploaded source' do
-      let(:file) { File.open(Rails.root.join("spec", "fixtures", "about_turtles.docx"), 'r') }
+      let(:file) { File.open(Rails.root.join("spec", "fixtures", "about_cats.doc"), 'r') }
 
       before do
         allow(converter).to receive(:manuscript_source).and_return(file)
         allow(converter).to receive(:manuscript_contents).and_return(file.read)
+        allow(converter).to receive(:_manuscript_source_path).and_return(Pathname.new(file.path))
       end
 
       context 'when source is requested' do
         let(:include_source) { true }
 
-        it "includes the source doc in the epub" do
+        it "includes the source file, calling it 'source' with same file extension" do
           entries = read_epub_stream(converter.epub_stream)
-          expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(true)
+          expect(entries.map(&:name)).to include("input/source.doc")
         end
       end
 
       context 'when source is not requested' do
         let(:include_source) { false }
-        it "does not include the source doc in the epub" do
+
+        it "does not include the source file" do
           entries = read_epub_stream(converter.epub_stream)
-          expect(entries.any? { |f| f.name =~ /source\.docx/ }).to eq(false)
+          expect(entries.map(&:name)).to_not include("input/source.doc")
         end
       end
     end

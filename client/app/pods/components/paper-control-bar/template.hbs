@@ -84,14 +84,19 @@
     <div class="manuscript-download-links active">
 
       {{#each supportedDownloadFormats as |downloadType|}}
-        <a href="#" {{action "exportDocument" downloadType}} class="{{unbound downloadType.format}}" title="Download {{unbound downloadType.format}}">{{partial downloadType.icon}}</a>
+        <a href="#" {{action "exportDocument" downloadType}} class="{{unbound downloadType.format}}" title="Download {{unbound downloadType.format}}">
+        {{downloadType.display}}
+        {{partial downloadType.icon}}
+        </a>
       {{/each}}
 
       {{#direct-download-link link=downloadLink extension=".epub"}}
+        epub
         {{partial "svg/epub-icon"}}
       {{/direct-download-link}}
 
       {{#direct-download-link link=downloadLink extension=".pdf"}}
+        pdf
         {{partial "svg/pdf-icon"}}
       {{/direct-download-link}}
     </div>

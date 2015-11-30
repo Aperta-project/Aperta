@@ -9,7 +9,7 @@ describe DownloadManuscriptWorker, redis: true do
     VCR.turn_off!
     @requests = []
     @requests << stub_request(:get, url).to_return(body: 'foo')
-    @requests << stub_request(:get, 'https://tahi-test.s3-us-west-1.amazonaws.com/uploads/versioned_text/1/source.docx')
+    @requests << stub_request(:get, 'https://tahi-test.s3-us-west-1.amazonaws.com/uploads/versioned_text/1/about_equations.docx')
       .with(query: hash_including)
       .to_return(body: 'foo')
     @requests << stub_request(:post, 'http://ihat.example.com/jobs')

@@ -194,11 +194,14 @@
     @include display(flex);
     @include align-items(center);
     margin-right: 25px;
+    font-size: 1.4rem;
     text-decoration: none;
+    text-transform: uppercase;
 
     svg {
       position: relative;
-      top: -3px;
+      top: -1px;
+      margin-left: 5px;
     }
 
     svg path { fill: $tahi-green; }

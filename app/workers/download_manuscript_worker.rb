@@ -10,12 +10,14 @@ class DownloadManuscriptWorker
 
     TahiEpub::Tempfile.create epub_stream, delete: true do |file|
       request = IhatJobRequest.new(file: file,
-                                   recipe_name: 'docx_to_html',
+                                   recipe_name: ihat_recipe_name(download_url),
                                    callback_url: callback_url,
                                    metadata: metadata)
       PaperConverter.post_ihat_job(request)
     end
   end
+
+  private
 
   def download_manuscript(paper, url)
     latest_version = paper.latest_version
@@ -31,5 +33,10 @@ class DownloadManuscriptWorker
       include_source: true,
       include_cover_image: false)
     converter.epub_stream.string
+  end
+
+  def ihat_recipe_name(url)
+    kind = Pathname.new(url).extname.delete(".")
+    IhatJobRequest.recipe_name(from_format: kind, to_format: 'html')
   end
 end

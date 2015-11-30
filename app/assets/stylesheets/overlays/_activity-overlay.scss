@@ -1,24 +1,12 @@
 .activity-overlay {
-  h1  { text-align: center; }
   td  { padding: 0 15px 25px 0; }
   img { margin-right: 6px; }
 
-  table {
-    margin: 0 auto;
-    width: 700px;
-  }
+  table { width: 100%; }
 }
 
 .activity-overlay-message {
   font-size: 17px;
-}
-
-#timestamp {
-  font-size: 14px;
-  white-space: nowrap;
-  padding-right: 0;
-  padding-top: 5px;
-  float: right;
 }
 
 .activity-overlay-user {

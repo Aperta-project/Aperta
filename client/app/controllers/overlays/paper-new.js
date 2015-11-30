@@ -78,7 +78,9 @@ export default Ember.Controller.extend(AnimateOverlay, FileUploadMixin, {
     uploadFinished(data, filename) {
       this.set('isSaving', false);
       this.uploadFinished(data, filename);
-      this.transitionToRoute('paper.index', this.get('model'));
+      this.transitionToRoute('paper.index', this.get('model'), {
+        queryParams: {firstView: 'true'}
+      });
     }
   }
 });

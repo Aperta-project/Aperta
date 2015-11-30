@@ -18,5 +18,9 @@ export default Ember.Component.extend({
     } else {
       return this.get('model.roles');
     }
-  })
+  }),
+
+  paperLinkId: Ember.computed(function(){
+    return "view-paper-" + this.get('model.id');
+  }),
 });

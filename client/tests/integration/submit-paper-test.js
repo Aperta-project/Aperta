@@ -1,17 +1,17 @@
 import Ember from 'ember';
-import { module, test } from 'qunit';
+import { test } from 'ember-qunit';
 import startApp from '../helpers/start-app';
 import setupMockServer from '../helpers/mock-server';
 import { paperWithTask } from '../helpers/setups';
 import Factory from '../helpers/factory';
-import FactoryGuy from 'ember-data-factory-guy';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 
-var app = null,
-    server = null,
-    fakeUser = null,
-    currentPaper = null,
-    submitPaperController;
+var app, currentPaper, fakeUser, server;
+
+app = null;
+server = null;
+fakeUser = null;
+currentPaper = null;
 
 module('Integration: Submitting Paper', {
   afterEach: function() {
@@ -24,7 +24,6 @@ module('Integration: Submitting Paper', {
   beforeEach: function() {
     var dashboardResponse, paperPayload, paperResponse, records;
     app = startApp();
-    submitPaperController = app.__container__.lookup('controller:overlays/paper-submit');
     server = setupMockServer();
     fakeUser = window.currentUserData.user;
     TestHelper.handleFindAll('discussion-topic', 1);
@@ -77,7 +76,6 @@ test("User can submit a paper", function(assert) {
   visit("/papers/" + currentPaper.id);
   click(".edit-paper button:contains('Submit')");
   click("button.button-submit-paper");
-
   return andThen(function() {
     return assert.ok(_.findWhere(server.requests, {
       method: "PUT",

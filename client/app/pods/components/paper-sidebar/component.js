@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
+
 export default Ember.Component.extend({
+  //paper: passed to component
   tagName:     'aside',
   classNames:  ['sidebar'],
   taskSorting: ['phase.position', 'position'],
@@ -18,16 +20,27 @@ export default Ember.Component.extend({
   readyToSubmit: Ember.computed.and('submittableState', 'allSubmissionTasksCompleted'),
   isPendingTasks: Ember.computed.not('allSubmissionTasksCompleted'),
   preSubmission: Ember.computed.and('submittableState', 'isPendingTasks'),
+  currentUserTasks: Ember.computed.filterBy('paper.tasks', 'assignedToMe'),
+
   allSubmissionTasksCompleted: Ember.computed('submissionTasks.@each.completed', function() {
     return this.get('submissionTasks').isEvery('completed', true);
   }),
 
-  currentUserTasks: Ember.computed.filterBy('paper.tasks', 'assignedToMe'),
+  getsGradualEngagementToggle: Ember.computed('paper.publishingState', function(){
+    let states = ['unsubmitted', 'initially_submitted', 'invited_for_full_submission'];
+    let p = this.get('paper');
+    let state = p.get('publishingState');
+    return (p.get('gradualEngagement') && _.contains(states, state));
+  }),
 
   actions: {
 
     viewCard(task){
       this.sendAction('viewCard', task);
+    },
+
+    toggleSubmissionProcess(){
+      $('#submission-process').slideToggle(300)
     },
 
     submitPaper(){

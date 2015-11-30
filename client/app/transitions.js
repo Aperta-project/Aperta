@@ -1,14 +1,25 @@
 export default function() {
+  const discussionsOptions = { duration: 600, easing: [300, 25] };
+  const discussionsNew = function(routeName) {
+    return (/paper\.[^.]*\.discussions\.new/).test(routeName);
+  };
+  const discussionsShow = function(routeName) {
+    return (/paper\.[^.]*\.discussions\.show/).test(routeName);
+  };
+  const discussionsIndex = function(routeName) {
+    return (/paper\.[^.]*\.discussions\.index/).test(routeName);
+  };
+
   this.transition(
-    this.fromRoute(function(routeName){ return (/paper\.[^.]*\.discussions\.index/).test(routeName);}),
-    this.toRoute(function(routeName)  { return (/paper\.[^.]*\.discussions\.show/).test(routeName); }),
-    this.use('slideToLeft',      { duration: 600, easing: [300, 25] }),
-    this.reverse('slideToRight', { duration: 600, easing: [300, 25] })
+    this.fromRoute(discussionsIndex),
+    this.toRoute(discussionsShow),
+    this.use('slideToLeft', discussionsOptions),
+    this.reverse('slideToRight', discussionsOptions)
   );
 
   this.transition(
-    this.toRoute(function(routeName){ return (/paper\.[^.]*\.discussions\.new/).test(routeName); }),
-    this.use('slideToLeft',      { duration: 600, easing: [300, 25] }),
-    this.reverse('slideToRight', { duration: 600, easing: [300, 25] })
+    this.toRoute(discussionsNew),
+    this.use('slideToLeft', discussionsOptions),
+    this.reverse('slideToRight', discussionsOptions)
   );
 }

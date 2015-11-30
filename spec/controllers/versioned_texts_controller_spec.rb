@@ -17,20 +17,19 @@ describe VersionedTextsController do
       JSON.parse(request.body)['versioned_text']
     end
 
-    it "succeeds" do
+    it 'succeeds' do
       expect(request).to be_success
     end
 
-    it "returns a version" do
-      expected_keys = [
-        "id",
-        "text",
-        "created_at",
-        "version_string",
-        "paper_id",
-        "major_version",
-        "minor_version"
-      ]
+    it 'returns a version' do
+      expected_keys = %w(
+        id
+        text
+        updated_at
+        paper_id
+        major_version
+        minor_version
+      )
       expect(versioned_text_data.keys).to eq(expected_keys)
     end
   end

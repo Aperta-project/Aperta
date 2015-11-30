@@ -1,4 +1,8 @@
-# coding: utf-8
+# VersionedText holds a snapshot of the text of the manuscript.
+# There's one VersionedText for each version of the manuscript, and
+# one version of the manuscript for each time the author gets to make
+# changes -- minor versions for small changes, like tech checks, and
+# major versions for full revisions (after a revise decision).
 class VersionedText < ActiveRecord::Base
   include EventStream::Notifiable
 
@@ -24,12 +28,6 @@ class VersionedText < ActiveRecord::Base
   # Make a copy of the text and give it a new MINOR version
   def new_minor_version!
     new_version!(major_version, minor_version + 1)
-  end
-
-  def version_string
-    date = ""
-    date = updated_at.strftime('%b %d, %Y') if updated_at
-    "R#{major_version}.#{minor_version} — #{date} #{creator_name}"
   end
 
   def submitted?

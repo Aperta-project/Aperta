@@ -129,6 +129,16 @@ export default Ember.Controller.extend({
       item.save();
     },
 
+    startDragging(item, container) {
+      item.addClass('card--dragging');
+      container.parent().addClass('column-content--dragging');
+    },
+
+    stopDragging(item, container) {
+      item.removeClass('card--dragging');
+      container.parent().removeClass('column-content--dragging');
+    },
+
     toggleEditable() {
       const model = this.get('model');
       const url   = '/toggle_editable';

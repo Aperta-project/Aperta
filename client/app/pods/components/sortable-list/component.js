@@ -26,14 +26,11 @@ export default Ember.Component.extend({
       connectWith: '.sortable',
 
       start(event, ui) {
-
         ui.item.__source__ = self;
         ui.item.data('oldIndex', ui.item.index());
         self.set('changedWithinList', true);
 
-        $(ui.item).addClass('card--dragging')
-                  .closest('.column-content')
-                  .addClass('column-content--dragging');
+        self.attrs.startDragging($(ui.item), self.$());
       },
 
       update(event, ui) {
@@ -63,10 +60,7 @@ export default Ember.Component.extend({
       stop(event, ui) {
         ui.item.removeData('oldIndex');
         self.set('changedWithinList', true);
-
-        $(ui.item).removeClass('card--dragging')
-                  .closest('.column-content')
-                  .removeClass('column-content--dragging');
+        self.attrs.stopDragging($(ui.item), ui.item.__source__.$());
       }
     });
   }

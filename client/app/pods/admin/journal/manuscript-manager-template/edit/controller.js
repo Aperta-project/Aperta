@@ -106,6 +106,16 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       this.set('pendingChanges', true);
     },
 
+    startDragging(item, container) {
+      item.addClass('card--dragging');
+      container.parent().addClass('column-content--dragging');
+    },
+
+    stopDragging(item, container) {
+      item.removeClass('card--dragging');
+      container.parent().removeClass('column-content--dragging');
+    },
+
     addPhase(position){
 
       this.get('phaseTemplates').forEach(function(phaseTemplate) {

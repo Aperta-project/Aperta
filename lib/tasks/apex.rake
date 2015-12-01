@@ -1,4 +1,3 @@
-
 namespace :apex do
   desc 'Upload package to Apex'
   desc <<-USAGE.strip_heredoc

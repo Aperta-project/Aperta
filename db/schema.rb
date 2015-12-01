@@ -12,6 +12,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 20151120182356) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_stat_statements"
@@ -62,7 +63,7 @@ ActiveRecord::Schema.define(version: 20151120182356) do
     t.datetime "updated_at"
     t.string   "title"
     t.string   "caption"
-    t.string   "status", default: "processing"
+    t.string   "status",     default: "processing"
     t.string   "kind"
   end
 
@@ -175,7 +176,7 @@ ActiveRecord::Schema.define(version: 20151120182356) do
     t.datetime "updated_at"
     t.string   "title"
     t.text     "caption"
-    t.string   "status", default: "processing"
+    t.string   "status",     default: "processing"
   end
 
   add_index "figures", ["paper_id"], name: "index_figures_on_paper_id", using: :btree
@@ -229,7 +230,7 @@ ActiveRecord::Schema.define(version: 20151120182356) do
     t.text     "description"
     t.string   "doi_publisher_prefix"
     t.string   "doi_journal_prefix"
-    t.string   "last_doi_issued", default: "0"
+    t.string   "last_doi_issued",      default: "0"
   end
 
   create_table "manuscript_manager_templates", force: :cascade do |t|
@@ -300,16 +301,16 @@ ActiveRecord::Schema.define(version: 20151120182356) do
     t.datetime "updated_at"
     t.integer  "user_id"
     t.string   "paper_type"
-    t.integer  "journal_id",                                           null: false
+    t.integer  "journal_id",                               null: false
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "striking_image_id"
-    t.boolean  "editable",                             default: true
+    t.boolean  "editable",                 default: true
     t.text     "doi"
     t.string   "publishing_state"
     t.datetime "submitted_at"
     t.string   "salesforce_manuscript_id"
-    t.jsonb    "withdrawals",              default: [],                  array: true
+    t.jsonb    "withdrawals",              default: [],                 array: true
     t.boolean  "active",                   default: true
     t.datetime "first_submitted_at"
     t.datetime "accepted_at"
@@ -346,7 +347,7 @@ ActiveRecord::Schema.define(version: 20151120182356) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "position"
-    t.integer  "paper_id",               null: false
+    t.integer  "paper_id",   null: false
   end
 
   add_index "phases", ["paper_id"], name: "index_phases_on_paper_id", using: :btree
@@ -367,11 +368,11 @@ ActiveRecord::Schema.define(version: 20151120182356) do
     t.integer  "journal_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "can_administer_journal",                            default: false,    null: false
-    t.boolean  "can_view_assigned_manuscript_managers",             default: false,    null: false
-    t.boolean  "can_view_all_manuscript_managers",                  default: false,    null: false
-    t.string   "kind",                                              default: "custom", null: false
-    t.boolean  "can_view_flow_manager",                             default: false,    null: false
+    t.boolean  "can_administer_journal",                default: false,    null: false
+    t.boolean  "can_view_assigned_manuscript_managers", default: false,    null: false
+    t.boolean  "can_view_all_manuscript_managers",      default: false,    null: false
+    t.string   "kind",                                  default: "custom", null: false
+    t.boolean  "can_view_flow_manager",                 default: false,    null: false
   end
 
   add_index "roles", ["kind"], name: "index_roles_on_kind", using: :btree
@@ -394,8 +395,8 @@ ActiveRecord::Schema.define(version: 20151120182356) do
     t.string   "attachment"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "status",          default: "processing"
-    t.boolean  "publishable",     default: true
+    t.string   "status",      default: "processing"
+    t.boolean  "publishable", default: true
   end
 
   add_index "supporting_information_files", ["paper_id"], name: "index_supporting_information_files_on_paper_id", using: :btree
@@ -450,7 +451,7 @@ ActiveRecord::Schema.define(version: 20151120182356) do
   create_table "task_templates", force: :cascade do |t|
     t.integer "journal_task_type_id"
     t.integer "phase_template_id"
-    t.json    "template",                         default: [], null: false
+    t.json    "template",             default: [], null: false
     t.string  "title"
     t.integer "position"
   end
@@ -459,15 +460,15 @@ ActiveRecord::Schema.define(version: 20151120182356) do
   add_index "task_templates", ["phase_template_id"], name: "index_task_templates_on_phase_template_id", using: :btree
 
   create_table "tasks", force: :cascade do |t|
-    t.string   "title", null: false
-    t.string   "type",  default: "Task"
-    t.integer  "phase_id",                                null: false
-    t.boolean  "completed",              default: false,  null: false
+    t.string   "title",                       null: false
+    t.string   "type",       default: "Task"
+    t.integer  "phase_id",                    null: false
+    t.boolean  "completed",  default: false,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "role",                   null: false
-    t.json     "body",                   default: [],     null: false
-    t.integer  "position",               default: 0
+    t.string   "role",                        null: false
+    t.json     "body",       default: [],     null: false
+    t.integer  "position",   default: 0
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
@@ -492,10 +493,10 @@ ActiveRecord::Schema.define(version: 20151120182356) do
   add_index "user_roles", ["user_id"], name: "index_user_roles_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "first_name", default: "",    null: false
-    t.string   "last_name",  default: "",    null: false
-    t.string   "email",      default: "",    null: false
-    t.string   "encrypted_password",  default: "",    null: false
+    t.string   "first_name",                         default: "",    null: false
+    t.string   "last_name",                          default: "",    null: false
+    t.string   "email",                              default: "",    null: false
+    t.string   "encrypted_password",                 default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"

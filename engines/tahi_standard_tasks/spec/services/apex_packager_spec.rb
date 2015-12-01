@@ -8,6 +8,7 @@ describe ApexPackager do
                        major_version: 0,
                        minor_version: 1)
   end
+  let!(:source) { double(File) }
 
   def zip_filenames(package)
     filenames = []
@@ -19,8 +20,12 @@ describe ApexPackager do
 
   before do
     allow(paper).to receive(:latest_version).and_return(latest_version)
+    allow(paper).to receive(:manuscript_id).and_return('test.0001')
     allow(latest_version).to receive(:source_url).and_return(
       Rails.root.join('spec/fixtures/about_turtles.docx'))
+    allow(latest_version).to receive(:source).and_return(
+      source)
+    allow(source).to receive(:path).and_return('about_turtles.docx')
 
     metadata_serializer = instance_double('Typesetter::MetadataSerializer')
     allow(metadata_serializer).to receive(:to_json).and_return('json')
@@ -45,7 +50,7 @@ describe ApexPackager do
       zip_file_path = packager.zip_file.path
 
       expect(zip_filenames((zip_file_path))).to include(
-        "#{paper.manuscript_id}.docx")
+        'test.0001.docx')
     end
   end
 
@@ -80,7 +85,7 @@ describe ApexPackager do
       packager = ApexPackager.create(paper)
       zip_file_path = packager.zip_file.path
 
-      expect(zip_filenames((zip_file_path))).to include(figure.filename)
+      expect(zip_filenames((zip_file_path))).to include('yeti.jpg')
     end
 
     it 'does not add figures that do not comply' do
@@ -99,6 +104,18 @@ describe ApexPackager do
     end
     let!(:figure_question) { task.find_nested_question('figure_complies') }
     let!(:nested_question_answer) do
+      FactoryGirl.create(:nested_question_answer,
+                         nested_question: figure_question,
+                         value: 'true',
+                         value_type: 'boolean',
+                         owner: task,
+                         owner_type: 'Task')
+    end
+    let!(:figure_task) do
+      paper.tasks.find_by_type('TahiStandardTasks::FigureTask')
+    end
+    let!(:figure_question) { task.find_nested_question('figure_complies') }
+    let!(:figure_nested_question_answer) do
       FactoryGirl.create(:nested_question_answer,
                          nested_question: figure_question,
                          value: 'true',
@@ -168,7 +185,7 @@ describe ApexPackager do
                  title: 'a figure',
                  caption: 'a caption',
                  paper: paper,
-                 apex_filename: 'Strikingimage.jpg',
+                 filename: 'yeti1.jpg',
                  attachment: attachment1)
     end
 
@@ -177,7 +194,7 @@ describe ApexPackager do
                  title: 'a title',
                  caption: 'a caption',
                  paper: paper,
-                 apex_filename: 'yeti2.jpg',
+                 filename: 'yeti2.jpg',
                  attachment: attachment2)
     end
 

@@ -1,9 +1,9 @@
-# This class creates an in memory ZIP file for FTP to Apex
+# This class creates a temporary ZIP file for FTP to Apex
 class ApexPackager
   attr_reader :zip_file
 
   def self.create(paper)
-    packager = ApexPackager.new(paper)
+    packager = new(paper)
     packager.zip
     packager
   end
@@ -26,14 +26,15 @@ class ApexPackager
   private
 
   def add_manuscript(package)
-    package.put_next_entry("#{@paper.manuscript_id}.docx")
-    package.write(open(@paper.latest_version.source_url).read)
+    extension = @paper.latest_version.source.path.split('.').last
+    package.put_next_entry("#{@paper.manuscript_id}.#{extension}")
+    package.write(open(@paper.latest_version.source_url, &:read))
   end
 
   def add_striking_image(package)
     return unless @paper.striking_image
 
-    package.put_next_entry(@paper.striking_image.apex_filename)
+    package.put_next_entry(figure_apex_filename(@paper.striking_image))
     package.write(@paper.striking_image.attachment.read)
   end
 
@@ -41,9 +42,16 @@ class ApexPackager
     return unless figures_comply?
     @paper.figures.each do |figure|
       next if @paper.striking_image == figure
-      package.put_next_entry(figure.apex_filename)
+      package.put_next_entry(figure_apex_filename(figure))
       package.write(figure.attachment.read)
     end
+  end
+
+  def figure_apex_filename(figure)
+    return figure.filename unless figure == @paper.striking_image
+
+    extension = figure.filename.split('.').last
+    "Strikingimage.#{extension}"
   end
 
   def add_supporting_information(package)
@@ -65,14 +73,17 @@ class ApexPackager
   end
 
   def figures_comply?
-    find_answer('TahiStandardTasks::FigureTask', 'figure_complies')
+    return unless figures_comply_answer
+    figures_comply_answer.value
   end
 
-  def find_answer(task_type, ident)
-    t = @paper.tasks.find_by_type(task_type)
-    return unless t
-    return unless t.answer_for(ident)
+  def figures_task
+    @figures_task ||= @paper.tasks.find_by_type(
+      'TahiStandardTasks::FigureTask')
+  end
 
-    t.answer_for(ident).value
+  def figures_comply_answer
+    return unless figures_task
+    @figures_comply_answer ||= figures_task.answer_for('figure_complies')
   end
 end

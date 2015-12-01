@@ -253,6 +253,15 @@ class AuthenticatedPage(PlosPage):
     """
     self._get(self._flash_closer).click()
 
+  def close_modal(self):
+    """
+    Close any type of modal
+    :return: None
+    """
+    self._get(self._modal_close).click()
+
+
+
   @staticmethod
   def get_db_submission_data(manu_id):
     """
@@ -278,39 +287,39 @@ class AuthenticatedPage(PlosPage):
     :return: True or False, if cardname is unknown.
     """
     self.set_timeout(1)
-    if cardname == 'cover_letter':
+    if cardname.lower() == 'cover_letter':
       card_title = self._get(self._billing_card)
-    elif cardname == 'billing':
+    elif cardname.lower() == 'billing':
       card_title = self._get(self._cover_letter_card)
-    elif cardname == 'figures':
+    elif cardname.lower() == 'figures':
       card_title = self._get(self._figures_card)
-    elif cardname == 'authors':
+    elif cardname.lower() == 'authors':
       card_title = self._get(self._authors_card)
-    elif cardname == 'supporting_info':
+    elif cardname.lower() == 'supporting_info':
       card_title = self._get(self._supporting_info_card)
-    elif cardname == 'upload_manuscript':
+    elif cardname.lower() == 'upload_manuscript':
       card_title = self._get(self._upload_manu_card)
-    elif cardname == 'prq':
+    elif cardname.lower() == 'prq':
       card_title = self._get(self._prq_card)
-    elif cardname == 'review_candidates':
+    elif cardname.lower() == 'review_candidates':
       card_title = self._get(self._review_cands_card)
-    elif cardname == 'revise_task':
+    elif cardname.lower() == 'revise_task':
       card_title = self._get(self._revise_task_card)
-    elif cardname == 'competing_interests':
+    elif cardname.lower() == 'competing_interests':
       card_title = self._get(self._competing_ints_card)
-    elif cardname == 'data_availability':
+    elif cardname.lower() == 'data_availability':
       card_title = self._get(self._data_avail_card)
-    elif cardname == 'ethics_statement':
+    elif cardname.lower() == 'ethics_statement':
       card_title = self._get(self._ethics_statement_card)
-    elif cardname == 'financial_disclosure':
+    elif cardname.lower() == 'financial_disclosure':
       card_title = self._get(self._fin_disclose_card)
-    elif cardname == 'new_taxon':
+    elif cardname.lower() == 'new_taxon':
       card_title = self._get(self._new_taxon_card)
-    elif cardname == 'reporting_guidelines':
+    elif cardname.lower() == 'reporting_guidelines':
       card_title = self._get(self._report_guide_card)
-    elif cardname == 'changes_for_author':
+    elif cardname.lower() == 'changes_for_author':
       card_title = self._get(self._cfa_card)
-    elif cardname == 'initial_decision':
+    elif cardname.lower() == 'initial_decision':
       card_title = self._get(self._initial_decision_card)
     else:
       print('Unknown Card')

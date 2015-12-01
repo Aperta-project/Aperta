@@ -11,6 +11,7 @@ from selenium.webdriver.common.by import By
 
 from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface
 from Base.Resources import affiliation, billing_data
+from Base.PostgreSQL import PgSQL
 from frontend.Cards.authors_card import AuthorsCard
 from frontend.Cards.basecard import BaseCard
 from frontend.Cards.billing_card import BillingCard
@@ -37,6 +38,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # Main Toolbar items
     self._tb_versions_link = (By.CLASS_NAME, 'versions-link')
     self._tb_versions_diff_div = (By.CSS_SELECTOR, 'div.html-diff')
+    #self._tb_view_version = (By.TAG_NAME, 'select')
     self._tb_versions_closer = (By.CLASS_NAME, 'exit-versions')
     self._tb_collaborators_link = (By.CLASS_NAME, 'contributors-link')
     self._tb_add_collaborators_label = (By.CLASS_NAME, 'contributors-add')
@@ -121,6 +123,37 @@ class ManuscriptViewerPage(AuthenticatedPage):
     assert 'Now viewing:' in bar_items[1].text, bar_items[1].text
     assert 'Compare With:' in bar_items[2].text, bar_items[2].text
     self._get(self._tb_versions_closer).click()
+
+  def get_manuscript_version(self):
+    """
+    Retrieves current manuscript version
+    :return: String with manuscript version number
+    """
+    version_btn = self._get(self._tb_versions_link)
+    version_btn.click()
+    bar_items = self._gets(self._bar_items)
+    version_number = bar_items[1].text.split('\n')[1].split()[0]
+    self._get(self._tb_versions_closer).click()
+    return version_number
+
+  def get_journal_id(self):
+    """
+    Retrieves journal id
+    :return: Int with journal_id
+    """
+    paper_id = self.get_paper_db_id()
+    print paper_id
+    journal_id = PgSQL().query('SELECT papers.journal_id FROM papers where id = %s;', (paper_id,))[0][0]
+    return journal_id
+
+
+    #journal_ids = PgSQL().query('SELECT roles.journal_id FROM roles INNER JOIN user_roles '
+    #                            'ON roles.id = user_roles.role_id '
+    #                            'WHERE user_roles.user_id = %s '
+    #                            'AND roles.kind IN %s;', (uid, ('flow manager', 'admin', 'editor')))
+
+
+
 
   def _check_collaborator(self):
     """
@@ -336,6 +369,22 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """Click workflow button"""
     self._get(self._tb_workflow_link).click()
     return self
+
+  def get_paper_id(self):
+    """
+    Returns the paper id
+    """
+    doi_text = self._get(self._tl_manuscript_id).text
+    return doi_text.split(':')[1]
+
+  def get_paper_db_id(self):
+    """
+    Returns the DB paper ID from URL
+    """
+    paper_url = self.get_current_url()
+    paper_id = int(paper_url.split('papers/')[1])
+    print('The paper DB ID is: {}'.format(paper_id))
+    return paper_id
 
   def validate_so_overlay_elements_styles(self, type, paper_title):
     """

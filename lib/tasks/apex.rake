@@ -18,12 +18,4 @@ namespace :apex do
       filepath: filepath
     ).upload
   end
-
-  desc 'Creates an Apex ZIP.  Usage "rake apex:export[<paper id>,<filename>]"'
-  task :export, [:paper_id, :filename] => :environment do |_, args|
-    $stdout.puts 'Beginning export'
-    paper = Paper.find(args.paper_id)
-    package = ApexPackager.create(paper)
-    File.open(args.filename, 'w') { |f| f.write(package) }
-  end
 end

@@ -18,6 +18,13 @@ describe ApexPackager do
     filenames
   end
 
+  def zip_contains(zip_path, file_in_zip, expected_path)
+    expected_contents = File.open(expected_path, 'rb', &:read)
+    zip_contents = Zip::File.open(zip_path).read(file_in_zip)
+
+    expected_contents == zip_contents
+  end
+
   before do
     allow(paper).to receive(:latest_version).and_return(latest_version)
     allow(paper).to receive(:manuscript_id).and_return('test.0001')
@@ -51,6 +58,17 @@ describe ApexPackager do
 
       expect(zip_filenames((zip_file_path))).to include(
         'test.0001.docx')
+      expect(zip_contains(zip_file_path,
+                          'test.0001.docx',
+                          Rails.root.join('spec/fixtures/about_turtles.docx')))
+    end
+
+    it 'contains the correct metadata' do
+      packager = ApexPackager.create(paper)
+      zip_file_path = packager.zip_file.path
+
+      contents = Zip::File.open(zip_file_path).read('metadata.json')
+      expect(contents).to eq('json')
     end
   end
 
@@ -86,6 +104,9 @@ describe ApexPackager do
       zip_file_path = packager.zip_file.path
 
       expect(zip_filenames((zip_file_path))).to include('yeti.jpg')
+      expect(zip_contains(zip_file_path,
+                          'yeti.jpg',
+                          Rails.root.join('spec/fixtures/yeti.jpg')))
     end
 
     it 'does not add figures that do not comply' do
@@ -95,6 +116,13 @@ describe ApexPackager do
       zip_file_path = packager.zip_file.path
 
       expect(zip_filenames((zip_file_path))).to_not include(figure.filename)
+    end
+
+    it 'does not add a striking image when none is present' do
+      packager = ApexPackager.create(paper)
+      zip_file_path = packager.zip_file.path
+
+      expect(zip_filenames((zip_file_path))).to_not include('Strikingimage.jpg')
     end
   end
 
@@ -145,8 +173,10 @@ describe ApexPackager do
       packager = ApexPackager.create(paper)
       zip_file_path = packager.zip_file.path
 
-      expect(zip_filenames((zip_file_path))).to include(
-        supporting_information_file.filename)
+      expect(zip_filenames((zip_file_path))).to include('about_turtles.docx')
+      expect(zip_contains(zip_file_path,
+                          'about_turtles.docx',
+                          Rails.root.join('spec/fixtures/about_turtles.docx')))
     end
 
     it 'does not add unpublishable supporting information to the zip' do

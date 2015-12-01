@@ -21,7 +21,7 @@ feature 'Gradual Engagement', js: true do
           expect(find('#submission-process'))
             .to have_content(paper.journal.name)
           expect(URI.parse(current_url).query).to eq(nil) # ember should remove
-          find('#link-to-dashboard').click # leave route
+          find('#nav-dashboard').click # leave route
           find("#view-paper-#{paper.id}").click # come back
           expect(page).not_to have_selector('#submission-process')
         end

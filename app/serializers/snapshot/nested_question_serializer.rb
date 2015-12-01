@@ -36,6 +36,8 @@ class Snapshot::NestedQuestionSerializer
   end
 
   def fetch_answer
-    @owner.answer_for(@nested_question.ident)
+    @owner.nested_question_answers
+      .where(nested_question: @nested_question)
+      .first
   end
 end

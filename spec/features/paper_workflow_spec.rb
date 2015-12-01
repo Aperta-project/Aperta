@@ -103,8 +103,8 @@ feature "Paper workflow", js: true, selenium: true do
     within 'body' do
       find('.card-content', text: 'Invite Reviewer').click
 
-      expect(task_manager_page).to have_css('.overlay-content', text: 'Invite Reviewers')
-      expect(task_manager_page).to have_css('.overlay-content', text: 'Discussion')
+      expect(task_manager_page).to have_css('.overlay-body', text: 'Invite Reviewers')
+      expect(task_manager_page).to have_css('.overlay-body', text: 'Discussion')
       expect(task_manager_page).to have_no_application_error
     end
   end

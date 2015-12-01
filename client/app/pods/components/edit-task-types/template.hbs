@@ -1,0 +1,11 @@
+<div class="task-headers">
+  <h3>Title</h3>
+  <h3>Role</h3>
+</div>
+
+<div class="journal-task-types">
+  {{#each sortedTaskTypes as |journalTaskType|}}
+    {{journal-task-type-edit model=journalTaskType
+                             roles=model.roles}}
+  {{/each}}
+</div>

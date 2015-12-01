@@ -1,14 +1,15 @@
 @import 'activity-overlay';
+@import 'authors';
+@import 'card-delete-overlay';
 @import 'collaborators_overlay';
 @import 'edit_task_types_overlay';
 @import 'feedback_overlay';
 @import 'invite_reviewers_overlay';
+@import 'journal-edit-overlay';
 @import 'new_card_overlay';
 @import 'paper_new_overlay';
 @import 'paper_submit_overlay';
 @import 'paper_withdraw_overlay';
-@import 'unsaved_data_overlay';
 @import 'reviewer_report_overlay';
-@import 'authors';
 @import 'versioned_metadata';
 @import 'upload_manuscript_overlay';

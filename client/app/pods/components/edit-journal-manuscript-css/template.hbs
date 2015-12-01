@@ -1,0 +1,14 @@
+<div class="overlay-header">
+  <h1 class="overlay-header-title">Manuscript CSS</h1>
+</div>
+
+<p>Enter or edit CSS to format the manuscript editor and output for this journal.</p>
+{{textarea value=css
+           placeholder="Type your CSS here"
+           class="edit-journal-textarea"
+           autofocus="autofocus"}}
+
+<div class="overlay-action-buttons">
+  <a href="#" class="button-link button--grey cancel-link" {{action "close"}}>cancel</a>
+  <button type="button" class="button-primary button--blue" {{action "save"}}>Save</button>
+</div>

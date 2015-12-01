@@ -1,0 +1,18 @@
+.overlay--card {
+  .task-completed-section {
+    position: absolute;
+    top: 1.0rem;
+    left: 8.5rem;
+  }
+
+  .task-main-content {
+    padding-top: 2rem;
+  }
+}
+
+.task-overlay-paper-title {
+  position: relative;
+  margin: 0 0 12px 0;
+  font-size: 1.6rem;
+  line-height: 0.9;
+}

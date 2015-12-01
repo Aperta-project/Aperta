@@ -1,0 +1,19 @@
+{{#if paperSubmitted}}
+
+  {{#if model.gradualEngagement}}
+
+    {{#if model.isInitiallySubmitted}}
+      {{partial 'components/paper-submit/initial-submit'}}
+    {{else if isFirstFullSubmission}}
+      {{partial 'components/paper-submit/full-submit'}}
+    {{else if model.isSubmitted}}
+      {{partial 'components/paper-submit/standard-submit'}}
+    {{/if}}
+
+  {{else}}
+    {{partial 'components/paper-submit/standard-submit'}}
+  {{/if}}
+
+{{else}}
+  {{partial 'components/paper-submit/about-to-submit'}}
+{{/if}}

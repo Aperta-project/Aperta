@@ -46,8 +46,7 @@ export default Ember.Mixin.create({
     }
 
     if(options.skipAnimation || Ember.testing || !animationName) {
-      overlayElement.show().addClass('overlay--visible');
-
+      overlayElement.show().addClass('overlay--card overlay--visible');
       return {
         then(callback) {
           if(callback) { callback();}

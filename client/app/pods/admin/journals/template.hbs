@@ -1,5 +1,15 @@
 {{flash-messages}}
 
+{{#overlay-fullscreen visible=showUserDetailsOverlay
+                      outAnimationComplete=(action "hideUserDetailsOverlay")
+                      title="User Details"
+                      overlayClass="user-detail-overlay overlay--blue"
+                      as |overlay|}}
+    {{user-details model=detailsForUser
+                   close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
+
 <div class="base-screen admin-screen">
   <div class="admin-user-search">
     {{input enter="searchUsers"

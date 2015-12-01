@@ -1,8 +1,8 @@
 {{paper-control-bar paper=model
-                    showActivity="showActivity"
-                    addContributors="addContributors"
+                    showActivity="showActivityOverlay"
+                    addContributors="showCollaboratorsOverlay"
                     exportDocument="exportDocument"
-                    showConfirmWithdrawOverlay="showConfirmWithdrawOverlay"
+                    showWithdrawOverlay="showWithdrawOverlay"
                     topicsIndexPath=topicsIndexPath
                     canViewManuscriptManager=canViewManuscriptManager
                     supportedDownloadFormats=supportedDownloadFormats
@@ -17,7 +17,7 @@
   {{paper-sidebar paper=model
                   user=currentUser
                   commentLooks=commentLooks
-                  showConfirmSubmitOverlay="showConfirmSubmitOverlay"
+                  showPaperSubmitOverlay=(action "showPaperSubmitOverlay")
                   viewCard="viewCard"}}
 
   <div class="manuscript-container">
@@ -49,3 +49,41 @@
 </div>
 
 {{outlet}}
+
+{{#overlay-fullscreen visible=showActivityOverlay
+                      outAnimationComplete=(action "hideActivityOverlay")
+                      title="Recent Activity"
+                      overlayClass="activity-overlay"
+                      as |overlay|}}
+    {{paper-activity isLoading=activityIsLoading
+                     model=activityFeed
+                     close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
+
+{{#overlay-fullscreen visible=showCollaboratorsOverlay
+                      outAnimationComplete=(action "hideCollaboratorsOverlay")
+                      title="Who can collaborate on this manuscript?"
+                      overlayClass="show-collaborators-overlay"
+                      as |overlay|}}
+    {{paper-collaborators paper=model
+                          close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
+
+{{#overlay-fullscreen visible=showWithdrawOverlay
+                      outAnimationComplete=(action "hideWithdrawOverlay")
+                      overlayClass="overlay--grey paper-withdraw-overlay"
+                      as |overlay|}}
+    {{paper-withdraw model=model
+                     close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
+
+{{#overlay-fullscreen visible=showPaperSubmitOverlay
+                      outAnimationComplete=(action "hidePaperSubmitOverlay")
+                      overlayClass="overlay--green paper-submit-overlay"
+                      as |overlay|}}
+    {{paper-submit model=model
+                   close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}

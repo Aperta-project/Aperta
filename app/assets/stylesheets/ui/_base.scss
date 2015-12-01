@@ -9,9 +9,12 @@
 @import 'inset-field';
 @import 'main-nav';
 
+@import 'overlay-extras';
+
 @import 'overlay';
-@import 'overlay-footer';
-@import 'overlay-header';
+@import 'overlay-card';
+@import 'overlay-fullscreen';
+@import 'overlay-task-styles';
 
 @import 'progress';
 @import 'token';

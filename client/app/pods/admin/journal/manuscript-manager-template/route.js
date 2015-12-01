@@ -2,20 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   actions: {
-    chooseNewCardTypeOverlay(phaseTemplate) {
-      this.controllerFor('overlays/chooseNewCardType').setProperties({
-        phase: phaseTemplate,
-        journalTaskTypes: this.modelFor('admin.journal').get('journalTaskTypes')
-      });
-
-      this.send('openOverlay', {
-        template: 'overlays/chooseNewCardType',
-        controller: 'overlays/chooseNewCardType'
-      });
-    },
-
-    addTaskType(phaseTemplate, taskTypeList) {
-
+    addTaskTypeToPhase(phaseTemplate, taskTypeList) {
       if (!taskTypeList) { return; }
       let isAdhocType = false;
 
@@ -60,14 +47,6 @@ export default Ember.Route.extend({
     },
 
     // Noop. We don't want to open cards in MMT screen
-    viewCard() {},
-
-    showDeleteConfirm(task) {
-      this.send('openOverlay', {
-        template: 'overlays/cardDelete',
-        controller: 'overlays/card-delete',
-        model: task
-      });
-    }
+    viewCard() {}
   }
 });

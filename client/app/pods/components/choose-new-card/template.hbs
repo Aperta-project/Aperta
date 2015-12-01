@@ -1,9 +1,6 @@
-<div class="overlay-title-text">
-  <h1>Pick the types of cards to add</h1>
-</div>
-
-{{#if journalTaskTypes}}
-
+{{#if isLoading}}
+  {{progress-spinner visible=true align="middle" size="large"}}
+{{else}}
   <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-5">
@@ -27,10 +24,7 @@
   </div>
 
   <div class="overlay-action-buttons">
-    <button class="button-primary button--green" {{action "addTaskType" phase}}>Add</button>
-    <button class="button-link button--green cancel" {{action "closeAction"}}>cancel</button>
+    <button class="button-primary button--green" {{action "addTaskType"}}>Add</button>
+    <button class="button-link button--green cancel" {{action "close"}}>cancel</button>
   </div>
-
-{{else}}
-  {{progress-spinner visible=true align="middle" size="large"}}
 {{/if}}

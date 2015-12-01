@@ -17,7 +17,7 @@
       </span>
     </label>
 
-    <div class="control-bar-item control-bar-link activity-link" {{action "showActivity" "workflow"}}>
+    <div class="control-bar-item control-bar-link activity-link" {{action "showActivityOverlay" "workflow"}}>
       <div class="control-bar-link-icon">{{partial "svg/heartbeat"}}</div>
       Recent Activity
     </div>
@@ -40,12 +40,45 @@
                    taskMovedBetweenList=(action "taskMovedBetweenList")
                    savePhase="savePhase"
                    addPhase="addPhase"
-                   showDeleteConfirm="showDeleteConfirm"
+                   showDeleteConfirm="showCardDeleteOverlay"
                    removePhase="removePhase"
                    rollbackPhase="rollbackPhase"
                    viewCard="viewCard"
-                   chooseNewCardTypeOverlay="chooseNewCardTypeOverlay"}}
+                   chooseNewCardTypeOverlay="showChooseNewCardOverlay"
+                   changePhaseForTask="changePhaseForTask"}}
   {{/each}}
 </div>
 
 {{outlet}}
+
+{{#overlay-fullscreen visible=showActivityOverlay
+                      outAnimationComplete=(action "hideActivityOverlay")
+                      title="Recent Activity"
+                      overlayClass="activity-overlay"
+                      as |overlay|}}
+    {{paper-activity isLoading=activityIsLoading
+                     model=activityFeed
+                     close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
+
+{{#overlay-fullscreen visible=showCardDeleteOverlay
+                      outAnimationComplete=(action "hideCardDeleteOverlay")
+                      title="You're about to delete this card forever."
+                      overlayClass="card-delete-overlay"
+                      as |overlay|}}
+    {{card-delete model=taskToDelete
+                  close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
+
+{{#overlay-fullscreen visible=showChooseNewCardOverlay
+                      outAnimationComplete=(action "hideChooseNewCardOverlay")
+                      title="Pick the types of cards to add"
+                      as |overlay|}}
+    {{choose-new-card journalTaskTypes=journalTaskTypes
+                      phase=addToPhase
+                      isLoading=journalTaskTypesIsLoading
+                      addTaskType=(action "addTaskType")
+                      close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}

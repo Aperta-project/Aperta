@@ -8,6 +8,7 @@ export default Ember.Controller.extend({
   canViewAdminLinks: false,
   canViewFlowManagerLink: false,
   showOverlay: false,
+  showFeedbackOverlay: false,
 
   clearError: Ember.observer('currentPath', function() {
     this.set('error', null);
@@ -24,4 +25,9 @@ export default Ember.Controller.extend({
   showSaveStatusDiv: Ember.computed.and('testing', 'delayedSave'),
 
   specifiedAppName: window.appName,
+
+  actions: {
+    showFeedbackOverlay() { this.set('showFeedbackOverlay', true); },
+    hideFeedbackOverlay() { this.set('showFeedbackOverlay', false); }
+  }
 });

@@ -64,8 +64,7 @@ class JournalPage < Page
   end
 
   def view_epub_css
-    synchronize_content! 'Edit ePub CSS'
-    click_on 'Edit ePub CSS'
+    find('button', text: 'EDIT EPUB CSS').click
     find('textarea').value
   end
 
@@ -77,32 +76,42 @@ class JournalPage < Page
     has_css?('.epub-css.save-status', text: "Saved")
   end
 
+  def click_edit_css_button(text)
+    retry_stale_element do
+      find('button', text: text).click
+    end
+  end
+
+  def find_textarea
+    retry_stale_element do
+      find('.edit-journal-textarea')
+    end
+  end
+
   def view_pdf_css
-    synchronize_content! 'Edit PDF CSS'
-    click_on 'Edit PDF CSS'
-    find('textarea').value
+    click_edit_css_button 'EDIT PDF CSS'
+    find_textarea.value
   end
 
   def update_pdf_css css
-    find('button', text: 'EDIT PDF CSS').click
-    find('textarea').set css
+    click_edit_css_button 'EDIT PDF CSS'
+    find_textarea.set css
     click_on 'Save'
   end
 
   def pdf_css_saved?
-    has_css?('.pdf-css.save-status', text: "Saved")
+    has_css?('.pdf-css.save-status', text: 'Saved')
   end
 
   def update_manuscript_css css
-    find('button', text: 'EDIT MANUSCRIPT CSS').click
-    find('textarea').set css
+    click_edit_css_button 'EDIT MANUSCRIPT CSS'
+    find_textarea.set css
     click_on 'Save'
   end
 
   def view_manuscript_css
-    synchronize_content! 'Edit Manuscript CSS'
-    click_on 'Edit Manuscript CSS'
-    find('textarea').value
+    click_edit_css_button 'EDIT MANUSCRIPT CSS'
+    find_textarea.value
   end
 
   def manuscript_css_saved?

@@ -1,197 +1,23 @@
-// A description goes here.
-//
-// Markup:
-// <div class="overlay">
-//   <div class="overlay-container">
-//
-//     <div class="overlay-header">
-//       <h2 class="overlay-header-title"></h2>
-//     </div>
-//
-//     <div class="overlay-content"></div>
-//
-//     <div class="overlay-footer">
-//       <div class="overlay-footer-content"></div>
-//     </div>
-//
-//   </div>
-// </div>
-//
-// Styleguide Overlay
+/*
+  Overlay Structure:
 
+  .overlay
+    .overlay-container [no base styles, based on root modifier]
+      .overlay-close   [no base styles, based on root modifier]
+      .overlay-header  [no base styles, based on root modifier]
+        .overlay-header-title [no base styles, based on root modifier]
+      .overlay-body    [no base styles, based on root modifier]
+
+  .overlay modifiers:
+    .overlay--fullscreen | .overlay--card | .overlay--blue | .overlay--grey
+*/
 
 .overlay {
   overflow: auto;
   @include position(fixed, 0px 0px 0px 0px);
-  background-color: rgba(0,0,0, 0.68);
-  display: none;
   z-index: z('overlay', 'base');
-
-  &.overlay-visible {
-    display: block;
-  }
-
-  &.overlay--loading {
-    display: block;
-    .overlay-container { min-height: 600px; }
-  }
-
-  h1 {
-    margin: 0 0 1em 0;
-    font-size: 48px;
-  }
-
-  .overlay-discussion-board {
-    width: 700px;
-    margin-top: 30px;
-
-    h2 {
-      margin-bottom: 0;
-      border-top: 1px solid #dfdfdf;
-      padding: 10px 0 20px 9px;
-      font-size: 20px;
-    }
-
-    .participant-selector {
-      float: left;
-      width: 66%;
-    }
-  }
 }
 
-.overlay--fullscreen {
-  background-color: rgba(255,255,255, 0.92);
-
-  .overlay-close-x { display: block; }
-
-  .overlay-container {
-    width: 700px;
-    margin-top: 0;
-    padding: 0;
-    background: transparent;
-  }
-}
-
-.overlay--green {
-  color: #fff;
-  background-color: rgba(57,163,41, 0.95);
-}
-
-.overlay--grey {
-  color: $tahi-grey;
-  background-color: #f2f2f2;
-
-  .overlay-close-x {
-    color: $tahi-grey;
-  }
-}
-
-.overlay-close-x {
-  @include position(fixed, 0px 0px auto auto);
-  display: none;
-  width: auto !important; //bootstrap/glyphicon override
-  padding: 0 30px 0 20px;
-  color: $tahi-green;
-  font-size: 80px;
-  line-height: 100%;
-  cursor: pointer;
-  z-index: z('overlay', 'close-x');
-}
-
-.overlay-container {
-  position: relative;
-  width: 1120px;
-  margin: 40px auto 0 auto;
-  border-radius: 5px;
-  padding: 10px 80px;
-  background: white;
-}
-
-.overlay-header,
-.overlay-footer {
-  overflow: hidden;
-  position: relative;
-  margin: 0;
-}
-
-.overlay-close-button {
-  position: absolute;
-  width: 8.333333333333332%;
-}
-
-.overlay-completed-checkbox {
-  float: right;
-  width: 33.333333333%;
-  text-align: right;
-
-  label {
-    color: $tahi-green;
-    text-transform: uppercase;
-  }
-
-  input {
-    margin-right: 10px;
-    vertical-align: 2px;
-    @include transform(scale(2));
-  }
-}
-
-.overlay-content {
-  position: relative;
-  min-height: 300px;
-  margin: 0 auto;
-  border-top: 1px solid black;
-  border-bottom: 1px solid black;
-  padding: 40px 0 10px 0;
-  font-size: 14px;
-
-  p { margin: 15px; }
-
-  label {
-    padding-right: 25px;
-  }
-}
-.overlay-title-text {
-  h1 {
-    text-align: center;
-    padding-top: 150px;
-    padding-bottom: 75px;
-    margin: 0 !important;
-  }
-}
-
-.overlay-supporting-text {
-  color: $tahi-grey-dark;
-  padding-bottom: 75px;
-  text-align: center;
-}
-
-.overlay-main-work {
-  position: relative;
-  padding: 0 10px 60px 10px;
-}
-
-.overlay-action-buttons {
-  padding-top: 0;
-  float: right;
-
-  .button-primary.button--green {
-    width: inherit;
-  }
-}
-
-.call-to-action {
-  margin-top: 20px;
-
-  div {
-    display: inline-block;
-  }
-}
-
-.apostrophe {
-  font-family: 'Times New Roman', serif;
-}
-
-.constrained-form-width {
-  width: 800px;
+.overlay--loading {
+  .overlay-container { min-height: 600px; }
 }

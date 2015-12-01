@@ -1,5 +1,29 @@
 {{flash-messages}}
 
+
+{{#overlay-fullscreen visible=showNewManuscriptOverlay
+                      outAnimationComplete=(action "hideNewManuscriptOverlay")
+                      title="Create a New Submission"
+                      as |overlay|}}
+    {{manuscript-new paper=newPaper
+                     journals=journals
+                     journalsLoading=journalsLoading
+                     complete=(action "newManuscriptCreated")
+                     close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
+{{#overlay-fullscreen visible=showInvitationsOverlay
+                      outAnimationComplete=(action "hideInvitationsOverlay")
+                      title="Here are your invitations."
+                      overlayClass="invitations-overlay"
+                      as |overlay|}}
+    {{invitations-x invitations=pendingInvitations
+                    accept=(action "acceptInvitation")
+                    reject=(action "rejectInvitation")
+                    close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
+
 <div class="base-screen">
 
   {{#if pendingInvitations}}
@@ -7,7 +31,7 @@
       <h2 class="welcome-message">
         You have <span class="invitation-count">{{pluralize pendingInvitations.length "invitation"}}</span>.
       </h2>
-      <button class="button-primary button--green" {{action "viewInvitations"}}>View invitations</button>
+      <button class="button-primary button--green" {{action "showInvitationsOverlay"}}>View invitations</button>
     </section>
   {{/if}}
 
@@ -25,7 +49,7 @@
       {{/if}}
     </h2>
 
-    <button class="button-primary button--green" {{action "showNewPaperOverlay"}}>Create New Submission</button>
+    <button class="button-primary button--green" {{action "showNewManuscriptOverlay"}}>Create New Submission</button>
 
     {{#if hasPapers}}
       {{#if hasActivePapers}}

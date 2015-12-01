@@ -102,7 +102,7 @@ feature 'Manuscript Manager Templates', js: true, selenium: true do
         find('button', text: 'ADD').click
       end
 
-      expect(page).to have_css('.overlay-content h1.inline-edit.editing',
+      expect(page).to have_css('.overlay-body h1.inline-edit.editing',
                                text: 'Ad-hoc',
                                visible: false)
 

@@ -37,8 +37,13 @@ class PaperPage < Page
   def show_contributors
     downloads_link.click
     contributors_link.click
-    add_contributors_link.click
+    click_contributors_link
     AddCollaboratorsOverlay.new(find('.show-collaborators-overlay'))
+  end
+
+  def click_contributors_link
+    add_contributors_link.click
+    add_contributors_link.click
   end
 
   def contributors_link

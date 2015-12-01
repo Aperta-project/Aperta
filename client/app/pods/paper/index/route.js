@@ -1,37 +1,26 @@
 import Ember from 'ember';
-import ENV from 'tahi/config/environment';
 import AuthorizedRoute from 'tahi/routes/authorized';
-var PaperIndexRoute;
 
-PaperIndexRoute = AuthorizedRoute.extend({
+export default AuthorizedRoute.extend({
   viewName: 'paper/index',
   controllerName: 'paper/index',
   templateName: 'paper/index',
   cardOverlayService: Ember.inject.service('card-overlay'),
   restless: Ember.inject.service('restless'),
-  fromSubmitOverlay: false,
 
-  model: function() {
-    var paper, taskLoad;
-    paper = this.modelFor('paper');
-    taskLoad = new Ember.RSVP.Promise(function(resolve, reject) {
-      return paper.get('tasks').then(function(tasks) {
-        return resolve(paper);
-      });
-    });
-    return Ember.RSVP.all([taskLoad]).then(function() {
-      return paper;
-    });
-  },
-  afterModel: function(model) {
+  afterModel(model) {
     return model.get('tasks');
   },
 
   setupController: function(controller, model) {
-    controller.set('model', model);
+    this._super(...arguments);
+
     controller.set('commentLooks', this.store.all('commentLook'));
+
     if (this.currentUser) {
-      return this.get('restless').authorize(controller, "/api/papers/" + (model.get('id')) + "/manuscript_manager", 'canViewManuscriptManager');
+      const url = '/api/papers/' + (model.get('id')) + '/manuscript_manager';
+      return this.get('restless')
+                 .authorize(controller, url, 'canViewManuscriptManager');
     }
   },
 
@@ -41,22 +30,13 @@ PaperIndexRoute = AuthorizedRoute.extend({
   }.on('deactivate'),
 
   actions: {
-    viewCard: function(task) {
+    viewCard(task) {
       this.get('cardOverlayService').setProperties({
         previousRouteOptions: ['paper.index', this.modelFor('paper')],
         overlayBackground: 'paper.index'
       });
+
       return this.transitionTo('paper.task', this.modelFor('paper'), task.id);
-    },
-    showConfirmSubmitOverlay: function() {
-      this.controllerFor('overlays/paper-submit').set('model', this.modelFor('paper'));
-      this.send('openOverlay', {
-        template: 'overlays/paper-submit',
-        controller: 'overlays/paper-submit'
-      });
-      return this.set('fromSubmitOverlay', true);
     }
   }
 });
-
-export default PaperIndexRoute;

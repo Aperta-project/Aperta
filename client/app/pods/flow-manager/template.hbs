@@ -1,6 +1,17 @@
+{{#overlay-fullscreen visible=showNewColumnOverlay
+                      outAnimationComplete=(action "hideNewColumnOverlay")
+                      title="Add New Column"
+                      overlayClass="flow-manager-column-overlay"
+                      as |overlay|}}
+    {{flow-manager-add-column flows=potentialFlows
+                              isLoading=isLoadingPotentialFlows
+                              addFlow=(action "addFlow")
+                              close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
 <div class="control-bar">
   <div class="control-bar-inner-wrapper">
-    <div class="control-bar-item control-bar-link control-bar-item--last add-flow-column-button" {{action "chooseNewFlowManagerColumn"}}>
+    <div class="control-bar-item control-bar-link control-bar-item--last add-flow-column-button" {{action "showNewColumnOverlay"}}>
       <div class="control-bar-link-icon"><span class="fa fa-plus"></span></div>
       Add New Column
     </div>

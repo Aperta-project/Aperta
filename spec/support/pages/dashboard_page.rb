@@ -3,9 +3,11 @@ class DashboardPage < Page
   text_assertions :welcome_message, '.welcome-message'
   text_assertions :submitted_paper, '.dashboard-submitted-papers li'
 
-  def new_submission
-    click_on "Create New Submission"
-    NewSubmissionPage.new
+  def fill_in_new_manuscript_fields(paper_title, journal, paper_type)
+    page.execute_script('$(".format-input-field").focus()')
+    find('.format-input-field').set paper_title
+    select2 journal, css: ".paper-new-journal-select"
+    select2 paper_type, css: ".paper-new-paper-type-select"
   end
 
   def submissions

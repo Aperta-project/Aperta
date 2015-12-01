@@ -28,20 +28,6 @@ export default AuthorizedRoute.extend({
   },
 
   actions: {
-    chooseNewCardTypeOverlay(phase) {
-      let chooseNewCardTypeOverlay = this.controllerFor('overlays/chooseNewCardType');
-      chooseNewCardTypeOverlay.set('phase', phase);
-
-      this.store.find('adminJournal', phase.get('paper.journal.id')).then(function(adminJournal) {
-        chooseNewCardTypeOverlay.set('journalTaskTypes', adminJournal.get('journalTaskTypes'));
-      });
-
-      this.send('openOverlay', {
-        template: 'overlays/chooseNewCardType',
-        controller: chooseNewCardTypeOverlay
-      });
-    },
-
     viewCard(task, queryParams) {
       this.get('cardOverlayService').setProperties({
         previousRouteOptions: ['paper.workflow', this.modelFor('paper')],
@@ -52,10 +38,15 @@ export default AuthorizedRoute.extend({
         queryParams = { queryParams: {} };
       }
 
-      this.transitionTo('paper.task', this.modelFor('paper'), task.id, queryParams);
+      this.transitionTo(
+        'paper.task',
+        this.modelFor('paper'),
+        task.id,
+        queryParams
+      );
     },
 
-    addTaskType(phase, taskTypeList) {
+    addTaskTypeToPhase(phase, taskTypeList) {
       if (!taskTypeList) { return; }
 
       let promises = [];
@@ -75,14 +66,6 @@ export default AuthorizedRoute.extend({
 
       Ember.RSVP.all(promises).then(() => {
         this.send('closeOverlay');
-      });
-    },
-
-    showDeleteConfirm(task) {
-      this.send('openOverlay', {
-        template: 'overlays/card-delete',
-        controller: 'overlays/card-delete',
-        model: task
       });
     }
   }

@@ -1,15 +1,3 @@
-.user-detail-overlay .overlay-close-x {
-  color: $tahi-blue;
-
-  &:hover {
-    color: $tahi-blue-dark;
-  }
-}
-
-.user-detail-overlay .overlay-container {
-  width: 790px;
-}
-
 .modal-field-label, .modal-field {
   margin-top: 20px;
   margin-bottom: 10px;
@@ -175,20 +163,6 @@
   z-index: z('loading-container');
   border-radius: 5px;
 }
-.journal-edit-overlay {
-  .overlay-close-x {
-    color: $tahi-blue;
-  }
-
-  .overlay-container {
-    width: 850px;
-  }
-
-  textarea {
-    width: 100%;
-    height: 450px;
-  }
-}
 
 .success {
   color: $tahi-green;
@@ -216,15 +190,6 @@
     color: $tahi-blue;
     vertical-align: -6px;
     font-style: italic;
-  }
-}
-
-.journal-task-types {
-  width: 600px;
-  margin-bottom: 100px;
-
-  .clear-role-button {
-    margin-left: 10px;
   }
 }
 

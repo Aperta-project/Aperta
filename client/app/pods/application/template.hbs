@@ -29,7 +29,7 @@
       <ul class="dropdown-menu animation-fade-in pull-right" aria-labelledby="profile-dropdown-menu">
         <li>{{link-to "Profile" "profile"}}</li>
         <li><a href="/users/sign_out">Sign Out</a></li>
-        <li><a href="#" {{action "feedback"}}>Give Feedback on {{specifiedAppName}}</a></li>
+        <li><a href="#" {{action "showFeedbackOverlay"}}>Give Feedback on {{specifiedAppName}}</a></li>
       </ul>
     {{/if}}
   </div>
@@ -37,14 +37,22 @@
 
 <main class="main-content" role="main">{{outlet}}</main>
 
-<div class="overlay" id="overlay">
-  <span class="overlay-close-x animation-scale-in" {{action "closeAction"}}>&times;</span>
+{{#overlay-fullscreen visible=showFeedbackOverlay
+                      outAnimationComplete=(action "hideFeedbackOverlay")
+                      title="Please let us know your thoughts"
+                      as |overlay|}}
+    {{feedback-x close=(action overlay.animateOut)}}
+{{/overlay-fullscreen}}
+
+<div class="overlay overlay--card" id="overlay">
   <div class="overlay-container">
     {{#if showOverlay}}
       {{outlet "overlay"}}
     {{/if}}
   </div>
 </div>
+
+<div id="overlay-drop-zone"></div>
 
 {{#if showSaveStatusDiv}}
   <div id="delayedSave"></div>

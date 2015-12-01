@@ -1,7 +1,7 @@
 <nav class="main-nav" role="navigation">
   <div class="main-nav-items">
     {{#link-to "dashboard" class="main-nav-item main-nav-item--first main-nav-item-app-name"
-      id="link-to-dashboard"
+      id="nav-dashboard"
       title="Dashboard"}}
       <i class="fa fa-list-ul"></i>
       {{specifiedAppName}}
@@ -27,9 +27,9 @@
       </span>
 
       <ul class="dropdown-menu animation-fade-in pull-right" aria-labelledby="profile-dropdown-menu">
-        <li>{{link-to "Profile" "profile"}}</li>
-        <li><a href="/users/sign_out">Sign Out</a></li>
-        <li><a href="#" {{action "showFeedbackOverlay"}}>Give Feedback on {{specifiedAppName}}</a></li>
+        <li>{{link-to "Profile" "profile" id="nav-profile"}}</li>
+        <li><a href="/users/sign_out" id="nav-signout">Sign Out</a></li>
+        <li><a href="#" {{action "showFeedbackOverlay"}} id="nav-give-feedback">Give Feedback on {{specifiedAppName}}</a></li>
       </ul>
     {{/if}}
   </div>

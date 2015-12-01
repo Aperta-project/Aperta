@@ -8,7 +8,7 @@ import time
 import os
 
 from Base.FrontEndTest import FrontEndTest
-from Base.Resources import login_valid_email, login_valid_pw
+from Base.Resources import login_valid_email, login_valid_pw, docs
 from Pages.login_page import LoginPage
 from Pages.dashboard import DashboardPage
 
@@ -47,7 +47,7 @@ class CommonTest(FrontEndTest):
     journal: Journal name of the article.
     type_: Type of article
     random_bit: If true, append some random string
-    init: Flag when need to invoque login script to reach the homepage
+    init: Flag when need to invoke login script to reach the homepage
     Return the title of the article.
     """
     dashboard = self.login() if init else DashboardPage(self.getDriver())
@@ -55,7 +55,7 @@ class CommonTest(FrontEndTest):
     # Create new submission
     title = dashboard.title_generator(prefix=title, random_bit=random_bit)
     dashboard.enter_title_field(title)
-    dashboard.select_journal(journal, type_)
+    dashboard.select_journal_and_type(journal, type_)
     time.sleep(2)
     fn = os.path.join(os.getcwd()+'/frontend/assets/docs/sample.docx')
     self._driver.find_element_by_id('upload-files').send_keys(fn)

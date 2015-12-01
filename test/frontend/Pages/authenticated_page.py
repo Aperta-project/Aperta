@@ -48,10 +48,10 @@ class AuthenticatedPage(PlosPage):
     # Navigation toolbar Locators
     self._nav_toolbar = (By.CLASS_NAME, 'main-nav')
     self._nav_title = (By.CLASS_NAME, 'main-nav-item-app-name')
-    self._nav_dashboard_link = (By.CSS_SELECTOR, 'div.main-nav-items a[href="/"]')
-    self._nav_admin_link = (By.CSS_SELECTOR, 'div.main-nav-items a[href="/admin"]')
-    self._nav_flowmgr_link = (By.CSS_SELECTOR, 'div.main-nav-items a[href="/flow_manager"]')
-    self._nav_paper_tracker_link = (By.CSS_SELECTOR, 'div.main-nav-items a[href="/paper_tracker"]')
+    self._nav_dashboard_link = (By.ID, 'link-to-dashboard')
+    self._nav_admin_link = (By.ID, 'nav-admin')
+    self._nav_flowmgr_link = (By.ID, 'nav-flow-manager')
+    self._nav_paper_tracker_link = (By.ID, 'nav-paper-tracker')
     self._nav_profile_menu_toggle = (By.ID, 'profile-dropdown-menu')
     self._nav_profile_img = (By.CSS_SELECTOR, 'span.main-nav-item img')
     self._nav_profile_text = (By.CLASS_NAME, 'profile-dropdown-menu-text')
@@ -63,9 +63,9 @@ class AuthenticatedPage(PlosPage):
     self._toolbar_items = (By.CLASS_NAME, 'control-bar-inner-wrapper')
     self._editable_label = (By.CSS_SELECTOR, 'label.control-bar-item')
     self._editable_checkbox = (By.CSS_SELECTOR, 'label.control-bar-item span input')
-    self._recent_activity = (By.CLASS_NAME, 'activity-link')
+    self._recent_activity = (By.ID, 'nav-recent-activity')
     self._recent_activity_label = (By.CSS_SELECTOR, 'div.control-bar-link')
-    self._discussion_link = (By.CLASS_NAME, 'discussions-link')
+    self._discussion_link = (By.ID, 'nav-discussions')
     self._discussions_icon = (By.CSS_SELECTOR, 'a.control-bar-item--last div')
     self._discussions_label = (By.CSS_SELECTOR, 'div.control-bar-item + a.control-bar-item')
     # TODO: Change this when APERTA-5531 is completed
@@ -243,7 +243,9 @@ class AuthenticatedPage(PlosPage):
     """
     Validate ihat conversion success
     """
+    self.set_timeout(30)
     ihat_msg = self._get(self._flash_success_msg)
+    self.restore_timeout()
     assert 'Finished loading Word file.' in ihat_msg.text, ihat_msg.text
 
   def close_flash_message(self):
@@ -258,7 +260,7 @@ class AuthenticatedPage(PlosPage):
     Close any type of modal
     :return: None
     """
-    self._get(self._modal_close).click()
+    self._get(self._overlay_header_close).click()
 
 
 

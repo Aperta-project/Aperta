@@ -42,7 +42,7 @@ class AuthorsCard(BaseCard):
     self._author_lbls = (By.CLASS_NAME, 'author-label')
     self._designed_chkbx = (By.XPATH,
       ".//input[@name='contributions.conceived_and_designed_experiments']/following-sibling::span")
-    self._author_contrib_lbl = (By.TAG_NAME, 'h4')
+    self._author_contrib_lbl = (By.CSS_SELECTOR, 'h4.required')
     self._add_author_cancel_lnk = (By.CSS_SELECTOR, 'span.author-form-buttons a')
     self._add_author_add_btn = (By.CSS_SELECTOR, 'span.author-form-buttons button')
     self._author_items = (By.CSS_SELECTOR, 'div.authors-overlay-item')
@@ -148,7 +148,6 @@ class AuthorsCard(BaseCard):
     assert data_lbl.text == 'Analyzed the data', data_lbl.text
     assert materials_lbl.text == 'Contributed reagents/materials/analysis tools', materials_lbl.text
     assert writing_lbl.text == 'Contributed to the writing of the manuscript', writing_lbl.text
-
 
     author_contrib_lbl = self._get(self._author_contrib_lbl)
     assert author_contrib_lbl.text == 'Author Contributions'

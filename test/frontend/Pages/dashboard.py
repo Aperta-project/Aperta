@@ -425,7 +425,7 @@ class DashboardPage(AuthenticatedPage):
 
   def close_cns_overlay(self):
     """Click X link"""
-    self._get(self._cns_closer).click()
+    self._get(self._overlay_header_close).click()
     return
 
   def select_journal_and_type(self, journal, type):

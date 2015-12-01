@@ -15,40 +15,13 @@ from decimal import Decimal
 from selenium.webdriver.common.by import By
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import login_valid_pw, au_login, he_login
-from frontend.common_test import CommonTest
+from frontend.common_test import CommonTest, docs
 from Cards.initial_decision_card import InitialDecisionCard
 from Cards.figures_card import FiguresCard
 from Pages.dashboard import DashboardPage
 from Pages.login_page import LoginPage
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
-
-docx = ['2014_04_27 Bakowski et al main text_subm.docx',
-        '120220_PLoS_Genetics_review.docx',
-        'CRX.pone.0103411.docx',
-        'GIANT-gender-main_20130310.docx',
-        'NF-kB-Paper_manuscript.docx',
-        'NorenzayanetalPLOS.docx',
-        'pgen.1004127.docx',
-        'PGENETICS-D-13-02065R1_FTC.docx',
-        'PLosOne_Main_Body_Ravi_Bansal_Brad_REVISED.docx',
-        'PONE-D-12-25504.docx',
-        'PONE-D-12-27950.docx',
-        'PONE-D-13-02344.docx',
-        'PONE-D-13-14162.docx',
-        'PONE-D-13-19782.docx',
-        'PONE-D-13-38666.docx',
-        'PONE-D-14-12686.docx',
-        'PONE-D-14-17217.docx',
-        'pone.0100365.docx',
-        'pone.0100948.docx',
-        'ppat.1004210.docx',
-        'PPATHOGENS-D-14-01213.docx',
-        'RTN.pone.0072333.docx',
-        'Schallmo_PLOS_RevisedManuscript.docx',
-        'Spindler_2014_rerevised.docx',
-        'Thammasri_PONE_D13_12078_wo.docx',
-        ]
 
 @MultiBrowserFixture
 class InitialDecisionCardTest(CommonTest):
@@ -84,7 +57,7 @@ class InitialDecisionCardTest(CommonTest):
     title = dashboard_page.title_generator()
     dashboard_page.enter_title_field(title)
     dashboard_page.select_journal_and_type('PLOS Wombat', 'Images+InitialDecision')
-    doc2upload = random.choice(docx)
+    doc2upload = random.choice(docs)
     fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
     if os.path.isfile(fn):
       self._driver.find_element_by_id('upload-files').send_keys(fn)

@@ -60,7 +60,8 @@ describe ApexPackager do
         'test.0001.docx')
       expect(zip_contains(zip_file_path,
                           'test.0001.docx',
-                          Rails.root.join('spec/fixtures/about_turtles.docx')))
+                          Rails.root.join(
+                            'spec/fixtures/about_turtles.docx'))).to be(true)
     end
 
     it 'contains the correct metadata' do
@@ -104,9 +105,8 @@ describe ApexPackager do
       zip_file_path = packager.zip_file.path
 
       expect(zip_filenames((zip_file_path))).to include('yeti.jpg')
-      expect(zip_contains(zip_file_path,
-                          'yeti.jpg',
-                          Rails.root.join('spec/fixtures/yeti.jpg')))
+      contents = Zip::File.open(zip_file_path).read('yeti.jpg')
+      expect(contents).to eq('a string')
     end
 
     it 'raises an error when figures are present and do not comply' do
@@ -173,9 +173,8 @@ describe ApexPackager do
       zip_file_path = packager.zip_file.path
 
       expect(zip_filenames((zip_file_path))).to include('about_turtles.docx')
-      expect(zip_contains(zip_file_path,
-                          'about_turtles.docx',
-                          Rails.root.join('spec/fixtures/about_turtles.docx')))
+      contents = Zip::File.open(zip_file_path).read('about_turtles.docx')
+      expect(contents).to eq('a string')
     end
 
     it 'does not add unpublishable supporting information to the zip' do

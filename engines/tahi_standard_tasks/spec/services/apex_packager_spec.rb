@@ -109,13 +109,12 @@ describe ApexPackager do
                           Rails.root.join('spec/fixtures/yeti.jpg')))
     end
 
-    it 'does not add figures that do not comply' do
+    it 'raises an error when figures are present and do not comply' do
       nested_question_answer.value = 'false'
       nested_question_answer.save!
-      packager = ApexPackager.create(paper)
-      zip_file_path = packager.zip_file.path
 
-      expect(zip_filenames((zip_file_path))).to_not include(figure.filename)
+      expect { ApexPackager.create(paper) }.to raise_error(
+        ApexPackager::ApexPackagerError)
     end
 
     it 'does not add a striking image when none is present' do

@@ -2,6 +2,9 @@
 class ApexPackager
   attr_reader :zip_file
 
+  class ApexPackagerError < StandardError
+  end
+
   def self.create(paper)
     packager = new(paper)
     packager.zip
@@ -39,8 +42,8 @@ class ApexPackager
   end
 
   def add_figures(package)
-    return unless figures_comply?
     @paper.figures.each do |figure|
+      fail ApexPackagerError, 'Figures do not comply' unless figures_comply?
       next if @paper.striking_image == figure
       package.put_next_entry(figure_apex_filename(figure))
       package.write(figure.attachment.read)

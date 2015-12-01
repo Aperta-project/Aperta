@@ -13,33 +13,33 @@
 
 
   {{#if versionsVisible}}
-    {{#link-to "paper.index" paper class="control-bar-item control-bar-link versions-link"}}
+    {{#link-to "paper.index" paper class="control-bar-item control-bar-link versions-link" id="nav-exit-versions"}}
       <div class="control-bar-link-icon"><i class="fa fa-files-o"></i></div>
       Exit Versions
     {{/link-to}}
   {{else}}
-    {{#link-to "paper.versions" paper class="control-bar-item control-bar-link versions-link"}}
+    {{#link-to "paper.versions" paper class="control-bar-item control-bar-link versions-link" id="nav-versions"}}
       <div class="control-bar-link-icon"><i class="fa fa-files-o"></i></div>
       Versions
     {{/link-to}}
   {{/if}}
 
-  <div class="control-bar-item control-bar-link contributors-link" {{action "showSubNav" "contributors"}}>
+  <div class="control-bar-item control-bar-link contributors-link" {{action "showSubNav" "contributors"}} id="nav-collaborators">
     <div class="control-bar-link-icon"><span class="fa fa-user"></span></div>
     Collaborators
   </div>
 
-  <div class="control-bar-item control-bar-link downloads-link" {{action "showSubNav" "downloads"}}>
+  <div class="control-bar-item control-bar-link downloads-link" {{action "showSubNav" "downloads"}} id="nav-downloads">
     <div class="control-bar-link-icon"><span class="fa fa-download"></span></div>
     Downloads
   </div>
 
-  <div class="control-bar-item control-bar-link activity-link" {{action "showActivity" "manuscript"}}>
+  <div class="control-bar-item control-bar-link activity-link" {{action "showActivity" "manuscript"}} id="nav-recent-activity">
     <div class="control-bar-link-icon">{{partial "svg/heartbeat"}}</div>
     Recent Activity
   </div>
 
-  {{#link-to topicsIndexPath paper class="control-bar-item control-bar-link discussions-link"}}
+  {{#link-to topicsIndexPath paper class="control-bar-item control-bar-link discussions-link"  id="nav-discussions"}}
     <div class="control-bar-link-icon"><span class="fa fa-comments"></span></div>
     Discussions
   {{/link-to}}
@@ -54,13 +54,13 @@
   <ul class="dropdown-menu animation-fade-in pull-right" aria-labelledby="more-dropdown-menu">
     {{#unless paperWithdrawn}}
       <li>
-        <a href="#" class="appeal-link">
+        <a href="#" class="appeal-link" id="nav-appeal">
           <span class="fa fa-image"></span>
           Appeal
         </a>
       </li>
       <li>
-        <a href="#" class="withdraw-link" {{action "withdrawManuscript"}} >
+        <a href="#" class="withdraw-link" {{action "withdrawManuscript"}}  id="nav-withdraw-manuscript">
           <span class="fa fa-trash fa-lg"></span>
           Withdraw Manuscript
         </a>
@@ -72,7 +72,7 @@
 <div class="control-bar-sub-items">
   {{#if contributorsVisible}}
     <div class="contributors active">
-      <a class="contributors-add" {{action "addContributors"}}>Add Collaborators</a>
+      <a class="contributors-add" {{action "addContributors"}} id="nav-add-collaborators">Add Collaborators</a>
 
       {{#each paper.collaborators as |contributor|}}
         <div class="contributor">{{unbound contributor.fullName}}</div>

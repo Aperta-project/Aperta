@@ -1,6 +1,8 @@
 <nav class="main-nav" role="navigation">
   <div class="main-nav-items">
-    {{#link-to "dashboard" class="main-nav-item main-nav-item--first main-nav-item-app-name" id="link-to-dashboard"}}
+    {{#link-to "dashboard" class="main-nav-item main-nav-item--first main-nav-item-app-name"
+      id="link-to-dashboard"
+      title="Dashboard"}}
       <i class="fa fa-list-ul"></i>
       {{specifiedAppName}}
     {{/link-to}}
@@ -9,12 +11,12 @@
 
     {{#if isLoggedIn}}
       {{#if canViewAdminLinks}}
-        {{link-to "Admin" "admin" class="main-nav-item"}}
+        {{link-to "Admin" "admin" class="main-nav-item" id="nav-admin"}}
       {{/if}}
 
       {{#if canViewFlowManagerLink}}
-        {{link-to "Flow Manager" "flow_manager" class="main-nav-item"}}
-        {{link-to "Paper Tracker" "paper_tracker" class="main-nav-item"}}
+        {{link-to "Flow Manager" "flow_manager" class="main-nav-item" id="nav-flow-manager"}}
+        {{link-to "Paper Tracker" "paper_tracker" class="main-nav-item" id="nav-paper-tracker"}}
       {{/if}}
 
       <span class="main-nav-item main-nav-item-spacer main-nav-item-space--last"></span>

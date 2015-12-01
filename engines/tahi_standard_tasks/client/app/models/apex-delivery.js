@@ -8,6 +8,7 @@ export default DS.Model.extend({
     inverse: 'apexDeliveries',
     async: true }),
   state: DS.attr('string'),
+  errorMessage: DS.attr('string'),
   createdAt: DS.attr('date'),
 
   failed: Ember.computed.equal('state', 'failed'),

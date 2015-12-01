@@ -19,18 +19,21 @@ module TahiStandardTasks
     end
 
     def make_delivery!
-      sleep 1
       apex_delivery.delivery_in_progress!
 
-      # Start the upload...
-      # TODO: <FILL ME IN>
-      sleep 1
+      file = ApexPackager.create(@paper).zip_file
 
-      # When things go well...
+      FtpUploaderService.new(
+        filepath: file.path,
+        filename: "#{@paper.manuscript_id}.zip"
+      )
+
       apex_delivery.delivery_succeeded!
 
-      # When things go bad...
-      # apex_delivery.delivery_failed!
+    rescue StandardError => e
+      apex_delivery.delivery_failed!(e.message)
+      apex_delivery.save!
+      raise
     end
   end
 end

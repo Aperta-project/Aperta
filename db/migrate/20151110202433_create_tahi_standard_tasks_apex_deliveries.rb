@@ -9,7 +9,7 @@ class CreateTahiStandardTasksApexDeliveries < ActiveRecord::Migration
       t.integer :task_id
       t.integer :user_id
       t.string :state
-
+      t.string :error_message
       t.timestamps
     end
   end

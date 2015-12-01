@@ -40,7 +40,7 @@ module TahiStandardTasks
       end
 
       event(:delivery_failed) do
-        transitions from: :in_progress, to: :failed
+        transitions from: :in_progress, to: :failed, after: :save_error
       end
     end
 
@@ -48,6 +48,10 @@ module TahiStandardTasks
 
     def notify_delivery_succeeded
       notify action: 'delivery_succeeded'
+    end
+
+    def save_error(message)
+      self.error_message = message
     end
   end
 end

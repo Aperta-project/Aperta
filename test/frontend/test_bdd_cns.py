@@ -14,7 +14,8 @@ from Base.Resources import login_valid_pw, au_login, rv_login, fm_login, ae_logi
 from frontend.Cards.figures_card import FiguresCard
 # from frontend.Cards.supporting_info_card import SupportingInfoCard
 # from frontend.Cards.upload_manuscript_card import UploadManuscriptCard
-from frontend.common_test import CommonTest, docs
+from frontend.common_test import CommonTest
+from Base.Resources import docs
 from Pages.dashboard import DashboardPage
 from Pages.login_page import LoginPage
 from Pages.manuscript_page import ManuscriptPage

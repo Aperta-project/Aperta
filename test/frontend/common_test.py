@@ -8,7 +8,7 @@ import time
 import os
 
 from Base.FrontEndTest import FrontEndTest
-from Base.Resources import login_valid_email, login_valid_pw, docs
+from Base.Resources import login_valid_email, login_valid_pw
 from Pages.login_page import LoginPage
 from Pages.dashboard import DashboardPage
 

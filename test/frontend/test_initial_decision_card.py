@@ -12,10 +12,9 @@ import random
 import time
 from decimal import Decimal
 
-from selenium.webdriver.common.by import By
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, au_login, he_login
-from frontend.common_test import CommonTest, docs
+from Base.Resources import login_valid_pw, au_login, he_login, docs
+from frontend.common_test import CommonTest
 from Cards.initial_decision_card import InitialDecisionCard
 from Cards.figures_card import FiguresCard
 from Pages.dashboard import DashboardPage

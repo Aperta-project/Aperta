@@ -1,0 +1,49 @@
+{{partial "task-completed-section"}}
+
+<div class="task-main-content">
+  <p>
+    Please confirm that your figures comply with our guidelines for preparation and have not been
+    inappropriately manipulated. For information on image manipulation, please see our
+    <a href="http://www.plos.org/figureguidelines/#manipulation" target="_blank">general guidance</a>
+    notes on image manipulation.
+  </p>
+
+  {{nested-question-check ident="figure_complies"
+                   owner=task
+                   disabled=isSubmissionTaskNotEditable}}
+
+  <hr>
+
+  {{#each figures as |figure|}}
+    {{attachment-thumbnail attachment=figure
+                           figure=true
+                           strikingImageAction="changeStrikingImage"
+                           saveAttachment="updateStrikingImage"
+                           destroyAttachment="destroyAttachment"
+                           uploadFinished="uploadFinished"
+                           uploadStarted="uploadStarted"
+                           uploadProgress="uploadProgress"
+                           isEditable=isSubmissionTaskEditable}}
+  {{/each}}
+
+
+  <div id="paper-attachment-uploads">
+    {{#each uploads as |upload|}}
+      {{upload-preview upload=upload}}
+    {{/each}}
+  </div>
+
+
+  <span class="button-primary button--green fileinput-button {{if isSubmissionTaskNotEditable 'button--disabled'}}">
+    <span>Add new Figures</span>
+    {{file-uploader id="figure_attachment"
+                    accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
+                    url=figureUploadUrl
+                    filePrefix="paper/figures"
+                    start="uploadStarted"
+                    done="uploadFinished"
+                    progress="uploadProgress"
+                    multiple=true
+                    disabled=isSubmissionTaskNotEditable}}
+  </span>
+</div>

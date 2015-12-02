@@ -1,0 +1,25 @@
+{{#ember-wormhole to="overlay-drop-zone"}}
+  {{#overlay-animate outAnimationComplete=(action "close")
+                     inAnimationComplete=(action inAnimationComplete)
+                     as |animateOut|}}
+    <div class="overlay overlay--card">
+      <div class="overlay-container">
+        <header class="overlay-header">
+          {{#link-to "paper.index" model.paper.id class="task-overlay-paper-title"}}
+            {{{model.paperTitle}}}
+          {{/link-to}}
+          <h1 class="overlay-header-title">
+            {{{model.title}}}
+          </h1>
+          <span class="overlay-close" {{action animateOut}}>&times;</span>
+        </header>
+        <div class="overlay-body">
+          {{component (task-component-name model.title)
+                      task=model
+                      model=model
+                      close=(action animateOut)}}
+        </div>
+      </div>
+    </div>
+  {{/overlay-animate}}
+{{/ember-wormhole}}

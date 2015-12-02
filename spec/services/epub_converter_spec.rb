@@ -17,7 +17,6 @@ describe EpubConverter do
 
   let(:doc) { Nokogiri::HTML(converter.epub_html) }
 
-
   def read_epub_stream(stream)
     entries = []
     Zip::InputStream.open(stream) do |io|
@@ -78,6 +77,28 @@ describe EpubConverter do
           expect(doc.css('.si_link').count).to be 1
           expect(doc.css('.si_link').first['href'])
             .to eq file.non_expiring_proxy_url(only_path: false)
+        end
+      end
+
+      context 'when paper has figures' do
+        before do
+          with_aws_cassette('figure') do
+            paper.figures
+              .create attachment: File.open('spec/fixtures/yeti.tiff'),
+                      status: 'done'
+          end
+        end
+
+        it 'replaces img src urls (which are normally relative proxied) with
+          full-path proxy urls' do
+
+          figure = paper.figures.first
+          allow(paper).to receive(:body)
+            .and_return("<img id='figure_#{figure.id}' src='foo'/>")
+
+          img = doc.css("img#figure_#{figure.id}").first
+          expect(img['src'])
+          .to eq(figure.non_expiring_proxy_url(only_path: false))
         end
       end
     end

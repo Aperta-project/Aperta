@@ -47,7 +47,7 @@ describe PDFConverter do
       end
 
       it 'has supporting information' do
-        expect(file)
+        expect(file).to be_truthy
         expect(paper.supporting_information_files.length).to be 1
         expect(doc.css('#si_header').count).to be 1
         expect(doc.css("img#si_preview_#{file.id}").count).to be 1
@@ -67,6 +67,29 @@ describe PDFConverter do
         expect(doc.css('.si_link').count).to be 1
         expect(doc.css('.si_link').first['href'])
           .to eq file.non_expiring_proxy_url(only_path: false)
+      end
+    end
+
+    context 'when paper has figures' do
+      before do
+        with_aws_cassette('figure') do
+          paper.figures
+            .create attachment: File.open('spec/fixtures/yeti.tiff'),
+                    status: 'done'
+        end
+      end
+
+      it 'replaces img src urls (which are normally proxied) with resolveable
+        urls' do
+        # since pdfs maker apparently cant resolve proxy url for img.src
+        # this will completed in https://developer.plos.org/jira/browse/APERTA-5741
+
+        figure = paper.figures.first
+        allow(paper).to receive(:body)
+          .and_return("<img id='figure_#{figure.id}' src='foo'/>")
+
+        img = doc.css("img#figure_#{figure.id}").first
+        expect(img['src']).to have_s3_url(figure.attachment.url)
       end
     end
   end

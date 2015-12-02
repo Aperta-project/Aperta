@@ -1,5 +1,6 @@
 #paper-container {
   @include position(absolute, 60px 0px 0px 0px);
+  z-index: z('paper-container');
 
   &.paper-container--versions {
     top: 131px;
@@ -8,7 +9,6 @@
 
 .manuscript-pane {
   margin-right: 20px;
-  background: #fff;
 }
 
 .manuscript-handle {

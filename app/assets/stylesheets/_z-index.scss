@@ -1,9 +1,11 @@
 $z-layers: (
   paper-placeholder:    1001,
-  control-bar:          1003,
-  flash-positioned:     1004,
-  floating-list-bg:     1007,
-  floating-list-active: 1008,
+  submission-process:   1002,
+  paper-container:      1003,
+  control-bar:          1004,
+  flash-positioned:     1005,
+  floating-list-bg:     1006,
+  floating-list-active: 1007,
   figures-overlay:      1100,
   sheet:                1150,
   main-nav:             1175,
@@ -11,8 +13,8 @@ $z-layers: (
     base: 1200,
     close-x: 100
   ),
-  progress-spinner: 1400,
-  loading-container:  1500
+  progress-spinner:  1400,
+  loading-container: 1500
 );
 
 @function map-has-nested-keys($map, $keys...) {

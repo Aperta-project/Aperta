@@ -10,40 +10,43 @@
 
 {{withdrawal-banner paper=model staff=currentUser.siteAdmin}}
 
-{{partial "submission/submission-process"}}
-{{#split-pane id="paper-container"
-              handleClass="manuscript-handle"}}
-  {{#split-pane-element class="manuscript-pane"}}
-    <div class="manuscript-container">
-      {{flash-messages}}
-      <div class="manuscript">
-        {{#if model.editable}}
-          {{content-editable tagName="h2"
-                             id="paper-title"
-                             value=model.title
-                             preventEnterKey="true"
-                             placeholder="Type your manuscript title here"
-                             key-up=(action "saveManuscriptTitle")
-                             focus-out=(action "saveManuscriptTitle")}}
-        {{else}}
-          <h2 id="paper-title">{{{model.title}}}</h2>
-        {{/if}}
+{{#paper-submission-process showProcess=showSubmissionProcess
+                            toggle=(action "toggleSubmissionProcess")}}
+  {{#split-pane id="paper-container"
+                handleClass="manuscript-handle"}}
+    {{#split-pane-element class="manuscript-pane"}}
+      <div class="manuscript-container">
+        {{flash-messages}}
+        <div class="manuscript">
+          {{#if model.editable}}
+            {{content-editable tagName="h2"
+                               id="paper-title"
+                               value=model.title
+                               preventEnterKey="true"
+                               placeholder="Type your manuscript title here"
+                               key-up=(action "saveManuscriptTitle")
+                               focus-out=(action "saveManuscriptTitle")}}
+          {{else}}
+            <h2 id="paper-title">{{{model.title}}}</h2>
+          {{/if}}
 
-        <div class="paper-body">
-          {{{model.body}}}
+          <div class="paper-body">
+            {{{model.body}}}
+          </div>
         </div>
       </div>
-    </div>
-  {{/split-pane-element}}
+    {{/split-pane-element}}
 
-  {{#split-pane-element}}
-    {{paper-sidebar paper=model
-                    user=currentUser
-                    commentLooks=commentLooks
-                    showPaperSubmitOverlay=(action "showPaperSubmitOverlay")
-                    viewCard="viewCard"}}
-  {{/split-pane-element}}
-{{/split-pane}}
+    {{#split-pane-element}}
+      {{paper-sidebar paper=model
+                      user=currentUser
+                      commentLooks=commentLooks
+                      showPaperSubmitOverlay=(action "showPaperSubmitOverlay")
+                      toggleSubmissionProcess=(action "toggleSubmissionProcess")
+                      viewCard="viewCard"}}
+    {{/split-pane-element}}
+  {{/split-pane}}
+{{/paper-submission-process}}
 
 {{outlet}}
 

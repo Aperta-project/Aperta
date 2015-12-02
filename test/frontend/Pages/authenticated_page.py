@@ -48,30 +48,29 @@ class AuthenticatedPage(PlosPage):
     # Navigation toolbar Locators
     self._nav_toolbar = (By.CLASS_NAME, 'main-nav')
     self._nav_title = (By.CLASS_NAME, 'main-nav-item-app-name')
-    self._nav_dashboard_link = (By.CSS_SELECTOR, 'div.main-nav-items a[href="/"]')
-    self._nav_admin_link = (By.CSS_SELECTOR, 'div.main-nav-items a[href="/admin"]')
-    self._nav_flowmgr_link = (By.CSS_SELECTOR, 'div.main-nav-items a[href="/flow_manager"]')
-    self._nav_paper_tracker_link = (By.CSS_SELECTOR, 'div.main-nav-items a[href="/paper_tracker"]')
+    self._nav_dashboard_link = (By.ID, 'nav-dashboard')
+    self._nav_admin_link = (By.ID, 'nav-admin')
+    self._nav_flowmgr_link = (By.ID, 'nav-flow-manager')
+    self._nav_paper_tracker_link = (By.ID, 'nav-paper-tracker')
     self._nav_profile_menu_toggle = (By.ID, 'profile-dropdown-menu')
     self._nav_profile_img = (By.CSS_SELECTOR, 'span.main-nav-item img')
     self._nav_profile_text = (By.CLASS_NAME, 'profile-dropdown-menu-text')
-    self._nav_profile_link = (By.CSS_SELECTOR, "ul.dropdown-menu li a[href='/profile']")
-    self._nav_signout_link = (By.CSS_SELECTOR, "ul.dropdown-menu li a[href='/users/sign_out']")
-    self._nav_feedback_link = (By.CSS_SELECTOR, "ul.dropdown-menu li a[href='#']")
+    self._nav_profile_link = (By.ID, 'nav-profile')
+    self._nav_signout_link = (By.ID, 'nav-signout')
+    self._nav_feedback_link = (By.ID, 'nav-give-feedback')
     self._nav_hamburger_icon = (By.CLASS_NAME,'fa-list-ul')
     # Global toolbar Icons
     self._toolbar_items = (By.CLASS_NAME, 'control-bar-inner-wrapper')
     self._editable_label = (By.CSS_SELECTOR, 'label.control-bar-item')
-    self._editable_checkbox = (By.CSS_SELECTOR, 'label.control-bar-item span input')
-    self._recent_activity = (By.CLASS_NAME, 'activity-link')
+    self._editable_checkbox = (By.ID, 'nav-paper-editable')
+    self._recent_activity = (By.ID, 'nav-recent-activity')
     self._recent_activity_label = (By.CSS_SELECTOR, 'div.control-bar-link')
-    self._discussion_link = (By.CLASS_NAME, 'discussions-link')
+    self._discussion_link = (By.ID, 'nav-discussions')
     self._discussions_icon = (By.CSS_SELECTOR, 'a.control-bar-item--last div')
     self._discussions_label = (By.CSS_SELECTOR, 'div.control-bar-item + a.control-bar-item')
     # TODO: Change this when APERTA-5531 is completed
     self._control_bar_right_items = (By.CLASS_NAME, 'control-bar-item')
     self._bar_items = (By.XPATH, "//div[@id='paper-container']/div[@id='versioning-bar']/div[@class='bar-item']")
-    self._modal_close = (By.CLASS_NAME, 'overlay-close-x')
     self._recent_activity_modal = (By.CLASS_NAME, 'activity-overlay')
     self._recent_activity_modal_title = (By.CSS_SELECTOR, 'h1.feedback-overlay-thanks')
     self._discussion_container = (By.CLASS_NAME, 'liquid-container')
@@ -103,7 +102,11 @@ class AuthenticatedPage(PlosPage):
     self._upload_manu_card = None
     self._prq_card = None
     self._initial_decision_card = None
-
+    # Global Overlay Locators
+    self._overlay_header_title = (By.CLASS_NAME, 'overlay-header-title')
+    self._overlay_header_close = (By.CLASS_NAME, 'overlay-close')
+    self._overlay_action_button_cancel = (By.CSS_SELECTOR, 'div.overlay-action-buttons a.button-link')
+    self._overlay_action_button_save = (By.CSS_SELECTOR, 'div.overlay-action-buttons button.button-primary')
 
   # POM Actions
   def click_profile_nav(self):
@@ -240,7 +243,9 @@ class AuthenticatedPage(PlosPage):
     """
     Validate ihat conversion success
     """
+    self.set_timeout(30)
     ihat_msg = self._get(self._flash_success_msg)
+    self.restore_timeout()
     assert 'Finished loading Word file.' in ihat_msg.text, ihat_msg.text
 
   def close_flash_message(self):
@@ -255,7 +260,7 @@ class AuthenticatedPage(PlosPage):
     Close any type of modal
     :return: None
     """
-    self._get(self._modal_close).click()
+    self._get(self._overlay_header_close).click()
 
 
 

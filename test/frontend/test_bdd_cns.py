@@ -15,39 +15,13 @@ from frontend.Cards.figures_card import FiguresCard
 # from frontend.Cards.supporting_info_card import SupportingInfoCard
 # from frontend.Cards.upload_manuscript_card import UploadManuscriptCard
 from frontend.common_test import CommonTest
+from Base.Resources import docs
 from Pages.dashboard import DashboardPage
 from Pages.login_page import LoginPage
 from Pages.manuscript_page import ManuscriptPage
 
 # au and sa are commented out because they run into APERTA-5415 which is a code bug
 users = [au_login]
-
-docx = ['2014_04_27 Bakowski et al main text_subm.docx',
-        '120220_PLoS_Genetics_review.docx',
-        'CRX.pone.0103411.docx',
-        'GIANT-gender-main_20130310.docx',
-        'NF-kB-Paper_manuscript.docx',
-        'NorenzayanetalPLOS.docx',
-        'pgen.1004127.docx',
-        'PGENETICS-D-13-02065R1_FTC.docx',
-        'PLosOne_Main_Body_Ravi_Bansal_Brad_REVISED.docx',
-        'PONE-D-12-25504.docx',
-        'PONE-D-12-27950.docx',
-        'PONE-D-13-02344.docx',
-        'PONE-D-13-14162.docx',
-        'PONE-D-13-19782.docx',
-        'PONE-D-13-38666.docx',
-        'PONE-D-14-12686.docx',
-        'PONE-D-14-17217.docx',
-        'pone.0100365.docx',
-        'pone.0100948.docx',
-        'ppat.1004210.docx',
-        'PPATHOGENS-D-14-01213.docx',
-        'RTN.pone.0072333.docx',
-        'Schallmo_PLOS_RevisedManuscript.docx',
-        'Spindler_2014_rerevised.docx',
-        'Thammasri_PONE_D13_12078_wo.docx',
-        ]
 
 cards = ['cover_letter',
          'billing',
@@ -164,7 +138,7 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
     # dashboard_page.select_journal_and_type('PLOS Wombat', 'MinimalMMTforCreatetoSubmitAT')
     dashboard_page.select_journal_and_type('PLOS Wombat', 'Research')
     time.sleep(3)
-    doc2upload = random.choice(docx)
+    doc2upload = random.choice(docs)
     print('Sending document: ' + os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload))
     fn = os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload)
     self._driver.find_element_by_id('upload-files').send_keys(fn)

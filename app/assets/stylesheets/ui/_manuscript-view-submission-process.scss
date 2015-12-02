@@ -1,53 +1,58 @@
-#paper-container {
-  #submission-process {
-    background-color: #F5F5F5;
-    padding-bottom: 30px;
+.paper-submission-process #submission-process {
+  @include position(absolute, 60px 0px auto 0px);
+  z-index: z('submission-process');
+}
 
-    #inner {
-      padding:20px 30px 30px 50px;
-      border: 1px solid #E1F6DD;
-      background-color: #EAFDE8;
-    }
-    #sp-close {
-      color: $tahi-green;
-      font-size: 25px;
-      float: right;
-      opacity: 0.5;
-      margin: -10px -10px 10px 10px;
-      font-family: Arial;
-      cursor: pointer;
+#submission-process {
+  background-color: #F5F5F5;
+  padding: 30px;
 
-      &:hover {
-        opacity: 1;
-      }
+  #inner {
+    position: relative;
+    padding:20px 30px 30px 50px;
+    border: 1px solid #E1F6DD;
+    background-color: #EAFDE8;
+  }
+
+  #sp-close {
+    color: $tahi-green;
+    font-size: 25px;
+    opacity: 0.5;
+    cursor: pointer;
+    @include position(absolute, 0px 0px auto auto);
+    padding: 3px 13px;
+
+    &:hover {
+      opacity: 1;
     }
+  }
+
+  p {
+    font-size: 85%;
+  }
+  h4 {
+    margin-top: 0;
+  }
+
+  .balls-and-columns {
     p {
-      font-size: 85%;
+      color: #333;
     }
-    h4 {
-      margin-top: 0;
+    #balls {
+      margin-bottom: 2px;
+      .ball {
+        color: white;
+        background-color:#39A329;
+      }
     }
-
-    .balls-and-columns {
-      p {
-        color: #333;
+    #lines {
+      margin-top: 35px;
+      .line {
+        border-top: 1px solid #39A329;
       }
-      #balls {
-        margin-bottom: 2px;
-        .ball {
-          color: white;
-          background-color:#39A329;
-        }
-      }
-      #lines {
-        margin-top: 35px;
-        .line {
-          border-top: 1px solid #39A329;
-        }
-      }
-      h5 {
-        color: #66AA4A;
-      }
+    }
+    h5 {
+      color: #66AA4A;
     }
   }
 }

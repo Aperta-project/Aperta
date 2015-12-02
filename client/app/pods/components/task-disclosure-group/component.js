@@ -9,6 +9,7 @@ export default Ember.Component.extend({
     Ember.run.scheduleOnce('afterRender', ()=> {
       const tasks = this.$().find('.task-disclosure');
 
+      // Note: This element needs to be scrollable!
       this.$().on('scroll.' + this.elementId, function() {
         tasks.each(function() {
           const $task = $(this);

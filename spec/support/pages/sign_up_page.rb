@@ -13,4 +13,9 @@ class SignUpPage < Page
 
     DashboardPage.new
   end
+
+  def sign_in_as user
+    fill_in "Login", with: user.username
+    fill_in "Password", with: "password"
+  end
 end

@@ -18,7 +18,7 @@ module InvitationCodes
       end
       session["invitation_code"] = invitation_code
     else
-      flash[:alert] = "We're sorry, the invitation is no longer active."
+      flash[:notice] = "We're sorry, the invitation is no longer active."
     end
   end
 

@@ -10,19 +10,21 @@ export default Ember.Controller.extend(PaperBase, Discussions, {
 
   isGradualEngagement: Ember.computed.equal('model.gradualEngagement', true),
 
-  submissionProcessDisplay: Ember.computed('showSubmissionProcess', function(){
-    return (this.get('showSubmissionProcess')) ? 'block' : 'none';
-  }),
-
   showSubmissionProcess: Ember.computed(
     'model', 'firstView', 'isGradualEngagement',
     function() {
       if (!this.get('isGradualEngagement')) return false;
 
-      if (this.get('firstView') === 'true' ) {
-        this.set('firstView', undefined); //removes from url
+      if (this.get('firstView') === 'true') {
+        // Removes from url. Generally not a good idea to
+        // modify a prop inside a CP. Esp since the CP is
+        // watching for changes on that prop
+        this.set('firstView', undefined);
+
         return true;
       }
+
+      return false;
     }
   ),
 
@@ -30,7 +32,7 @@ export default Ember.Controller.extend(PaperBase, Discussions, {
 
   actions: {
     toggleSubmissionProcess() {
-      Ember.$('#submission-process').slideToggle(300);
+      this.set('showSubmissionProcess', !this.get('showSubmissionProcess'));
     },
 
     showPaperSubmitOverlay() {

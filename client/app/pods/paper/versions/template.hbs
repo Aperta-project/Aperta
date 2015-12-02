@@ -57,16 +57,18 @@
     </div>
   {{/split-pane-element}}
 
-  {{#split-pane-element class="sidebar"}}
-    <div class="task-list">
-      {{#if model.doi}}
-      <div class="task-list-doi"><strong>Manuscript ID:</strong> {{model.manuscript_id}}</div>
-      <hr />
-      {{/if}}
-      <div id="paper-metadata-tasks">
-        {{#each model.sortedMetadataTasks as |task|}}
-          {{card-preview task=task version1=selectedVersion1 version2=selectedVersion2 action="viewCard"}}
-        {{/each}}
+  {{#split-pane-element class="paper-sidebar"}}
+    <div class="paper-sidebar-info">
+      <div class="task-list">
+        {{#if model.doi}}
+        <div class="task-list-doi"><strong>Manuscript ID:</strong> {{model.manuscript_id}}</div>
+        <hr />
+        {{/if}}
+        <div id="paper-metadata-tasks">
+          {{#each model.sortedMetadataTasks as |task|}}
+            {{card-preview task=task version1=selectedVersion1 version2=selectedVersion2 action="viewCard"}}
+          {{/each}}
+        </div>
       </div>
     </div>
   {{/split-pane-element}}

@@ -1,8 +1,8 @@
-<div id="submission-process" style="display:{{submissionProcessDisplay}}">
+<div id="submission-process">
   <div id="inner">
-    <span id='sp-close' {{action 'toggleSubmissionProcess'}}>x</span>
+    <span id='sp-close' {{action 'toggle'}}>&times;</span>
 
-    <h4> {{model.journal.name}} Submission Process</h4>
+    <h4>{{model.journal.name}} Submission Process</h4>
 
     <p>
       To facilitate submission, we have broken down the process.  Initially {{model.journal.name}}

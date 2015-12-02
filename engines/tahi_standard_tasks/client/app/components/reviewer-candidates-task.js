@@ -1,34 +1,37 @@
+import TaskComponent from 'tahi/pods/components/task-base/component';
 import Ember from 'ember';
-import TaskController from 'tahi/pods/paper/task/controller';
-import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
-export default TaskController.extend(ValidationErrorsMixin, {
+export default TaskComponent.extend({
   showNewReviewerForm: false,
 
-  // Doing this to prevent short period of time where `newRecommendation` is in the DOM
-  // while save is happening. If it becomes invalid after save it is removed. This creates
-  // a glitchy look to the list.
-  validReviewerRecommendations: Ember.computed('model.reviewerRecommendations.@each.isNew', function() {
-    return this.get('model.reviewerRecommendations').filterBy('isNew', false);
-  }),
+  // Doing this to prevent short period of time
+  // where `newRecommendation` is in the DOM while save is happening.
+  // If it becomes invalid after save it is removed.
+  // This creates a glitchy look to the list.
+  validReviewerRecommendations: Ember.computed(
+    'task.reviewerRecommendations.@each.isNew',
+    function() {
+      return this.get('task.reviewerRecommendations').filterBy('isNew', false);
+    }
+  ),
 
-  newRecommendationQuestions: Ember.on('init', function(){
-    let queryParams = { type: "ReviewerRecommendation" };
+  newRecommendationQuestions: Ember.on('init', function() {
+    const queryParams = { type: 'ReviewerRecommendation' };
     this.store.findQuery('nested-question', queryParams).then( (questions) => {
       this.set('nestedQuestionsForNewRecommendation', questions);
     });
   }),
 
-  clearNewRecommendationAnswers: function(){
+  clearNewRecommendationAnswers() {
     this.get('nestedQuestionsForNewRecommendation').forEach( (question) => {
-      question.clearAnswerForOwner(this.get("newRecommendation"));
+      question.clearAnswerForOwner(this.get('newRecommendation'));
     });
   },
 
   actions: {
     addNewReviewer() {
-      let recommendation = this.store.createRecord('reviewerRecommendation', {
-        reviewerRecommendationsTask: this.get('model'),
+      const recommendation = this.store.createRecord('reviewerRecommendation', {
+        reviewerRecommendationsTask: this.get('task'),
         nestedQuestions: this.get('nestedQuestionsForNewRecommendation')
       });
       this.set('newRecommendation', recommendation);
@@ -47,7 +50,7 @@ export default TaskController.extend(ValidationErrorsMixin, {
       recommendation.save().then((savedRecommendation) => {
         recommendation.get('nestedQuestionAnswers').forEach(function(answer){
           if(answer.get('wasAnswered')){
-            answer.set("owner", savedRecommendation);
+            answer.set('owner', savedRecommendation);
             answer.save();
           }
         });
@@ -58,7 +61,7 @@ export default TaskController.extend(ValidationErrorsMixin, {
       });
     },
 
-    cancelEdit: function() {
+    cancelEdit() {
       this.clearNewRecommendationAnswers();
       this.set('showNewReviewerForm', false);
     }

@@ -1,12 +1,4 @@
 GIT
-  remote: git://github.com/swanandp/acts_as_list.git
-  revision: 84325ede9ad528acbf68a97c5070cff113ee6a17
-  ref: 84325ede9ad528acbf68a97c5070cff113ee6a17
-  specs:
-    acts_as_list (0.6.0)
-      activerecord (>= 3.0)
-
-GIT
   remote: git://github.com/yamldb/yaml_db.git
   revision: f980a67dfcfef76824676f3938b176b68c260e68
   ref: f980a67dfcfef76824676f3938b176b68c260e68
@@ -97,6 +89,8 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    acts_as_list (0.7.2)
+      activerecord (>= 3.0)
     addressable (2.3.8)
     american_date (1.1.0)
     arel (6.0.3)
@@ -624,7 +618,7 @@ DEPENDENCIES
   active_model_serializers (= 0.8.3)
   activemodel-globalid!
   activerecord-sqlserver-adapter
-  acts_as_list!
+  acts_as_list
   american_date
   auto_screenshot
   awesome_nested_set

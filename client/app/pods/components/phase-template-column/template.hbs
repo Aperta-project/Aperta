@@ -6,7 +6,12 @@
                rollbackPhase="rollbackPhase"}}
 
 <div class="column-content">
-  {{#sortable-list list=phaseTemplate items=sortedTasks itemMovedWithinList=attrs.taskMovedWithinList itemMovedBetweenList=attrs.taskMovedBetweenList}}
+  {{#sortable-list list=phaseTemplate
+                   items=sortedTasks
+                   itemMovedWithinList=attrs.taskMovedWithinList
+                   itemMovedBetweenList=attrs.taskMovedBetweenList
+                   startDragging=attrs.startDragging
+                   stopDragging=attrs.stopDragging}}
     {{#each sortedTasks as |task|}}
       {{card-preview  task=task
                       canRemoveCard=true

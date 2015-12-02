@@ -26,7 +26,7 @@ module TahiStandardTasks
       FtpUploaderService.new(
         filepath: file.path,
         filename: "#{@paper.manuscript_id}.zip"
-      )
+      ).upload
 
       apex_delivery.delivery_succeeded!
 

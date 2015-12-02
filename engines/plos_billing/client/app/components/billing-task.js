@@ -389,7 +389,7 @@ export default TaskComponent.extend({
       // generated through the container
       container: this.get('container'),
 
-      model: this.get('model')
+      model: this.get('task')
     });
 
     this.set('pfaData', pfaDataClass.create());
@@ -453,7 +453,7 @@ export default TaskComponent.extend({
 
   selectedRinggold: null,
   selectedPaymentMethod: computed('model.nestedQuestionAnswers.[]', function(){
-    return this.get('model')
+    return this.get('task')
                .answerForQuestion('plos_billing--payment_method')
                .get('value');
   }),
@@ -469,18 +469,18 @@ export default TaskComponent.extend({
   agreeCollections: false,
 
   affiliation1Question: computed('model.nestedQuestions.[]', function() {
-    return this.get('model').findQuestion('plos_billing--affiliation1');
+    return this.get('task').findQuestion('plos_billing--affiliation1');
   }),
 
   affiliation2Question: computed('model.nestedQuestions.[]', function() {
-    return this.get('model').findQuestion('plos_billing--affiliation2');
+    return this.get('task').findQuestion('plos_billing--affiliation2');
   }),
 
   // institution-search component expects data to be hash
   // with name property
   affiliation1Proxy: computed('affiliation1Question', function(){
     let question = this.get('affiliation1Question');
-    let answer = question.answerForOwner(this.get('model'));
+    let answer = question.answerForOwner(this.get('task'));
     if(answer.get('wasAnswered')) {
       return { name: answer.get('value') };
     }
@@ -490,7 +490,7 @@ export default TaskComponent.extend({
   // with name property
   affiliation2Proxy: computed('affiliation2Question', function(){
     let question = this.get('affiliation2Question');
-    let answer = question.answerForOwner(this.get('model'));
+    let answer = question.answerForOwner(this.get('task'));
     if(answer.get('wasAnswered')) {
       return { name: answer.get('value') };
     }
@@ -498,7 +498,7 @@ export default TaskComponent.extend({
 
   setAffiliationAnswer(index, answerValue) {
     let question = this.get('affiliation' + index + 'Question');
-    let answer = question.answerForOwner(this.get('model'));
+    let answer = question.answerForOwner(this.get('task'));
 
     if(typeof answerValue === 'string') {
       answer.set('value', answerValue);

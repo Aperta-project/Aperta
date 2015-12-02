@@ -2,18 +2,13 @@
 // Styleguide UI.WithdrawalBanner
 
 .withdrawal-banner {
-  margin-top: -20px;
-  display: block;
+  position: relative;
+  top: 60px;
   height: 45px;
-  float: left;
-  width: 100%;
-  background-color: $tahi-grey-dark;
   color: white;
-
-  .banner-text {
-    padding-top: 11px;
-    text-align: center;
-  }
+  line-height: 45px;
+  text-align: center;
+  background-color: $tahi-grey-dark;
 
   .button-secondary {
     color: grey;

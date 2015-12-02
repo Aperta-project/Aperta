@@ -14,7 +14,8 @@ module TahiStandardTasks
         task: task,
         user: current_user)
 
-      ApexService.delay.make_delivery(apex_delivery_id: apex_delivery.id)
+      ApexService.delay(retry: false)
+        .make_delivery(apex_delivery_id: apex_delivery.id)
 
       render json: apex_delivery
     end

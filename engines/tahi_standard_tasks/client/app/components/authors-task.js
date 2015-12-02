@@ -1,33 +1,34 @@
+import TaskComponent from 'tahi/pods/components/task-base/component';
 import Ember from 'ember';
-import TaskController from 'tahi/pods/paper/task/controller';
 
-let computed = Ember.computed;
+const { computed, on } = Ember;
 
-export default TaskController.extend({
+export default TaskComponent.extend({
   newAuthorFormVisible: false,
 
-  authors: computed('model.authors.@each.paper', function() {
-    return this.get('model.authors').filterBy('paper', this.get('paper'));
+  authors: computed('task.authors.@each.paper', function() {
+    return this.get('task.authors').filterBy('paper', this.get('paper'));
   }),
 
   authorSort: ['position:asc'],
-  sortedAuthors: computed.sort('model.authors', 'authorSort'),
-  fetchAffiliations: Ember.on('didSetupController', function() {
+  sortedAuthors: computed.sort('task.authors', 'authorSort'),
+  fetchAffiliations: on('didSetupController', function() {
     Ember.$.getJSON('/api/affiliations', (data)=> {
-      this.set('model.institutions', data.institutions);
+      this.set('task.institutions', data.institutions);
     });
   }),
 
   nestedQuestionsForNewAuthor: Ember.A(),
-  newAuthorQuestions: Ember.on('init', function(){
-    this.store.findQuery('nested-question', { type: "Author" }).then( (nestedQuestions) => {
+  newAuthorQuestions: on('init', function(){
+    const q = { type: 'Author' };
+    this.store.findQuery('nested-question', q).then((nestedQuestions)=> {
       this.set('nestedQuestionsForNewAuthor', nestedQuestions);
     });
   }),
 
-  newAuthor: Ember.computed('newAuthorFormVisible', function(){
+  newAuthor: computed('newAuthorFormVisible', function(){
     return this.store.createRecord('author', {
-        paper: this.get('model.paper'),
+        paper: this.get('task.paper'),
         position: 0,
         nestedQuestions: this.get('nestedQuestionsForNewAuthor')
     });
@@ -35,7 +36,7 @@ export default TaskController.extend({
 
   clearNewAuthorAnswers: function(){
     this.get('nestedQuestionsForNewAuthor').forEach( (nestedQuestion) => {
-      nestedQuestion.clearAnswerForOwner(this.get("newAuthor"));
+      nestedQuestion.clearAnswerForOwner(this.get('newAuthor'));
     });
   },
 
@@ -59,17 +60,17 @@ export default TaskController.extend({
     },
 
     saveNewAuthor() {
-      let author = this.get("newAuthor");
+      let author = this.get('newAuthor');
 
       // set this here, not when initially built so it doesn't show up in
       // the list of existing authors as the user fills out the form
-      author.set("authorsTask", this.get("model"));
+      author.set('authorsTask', this.get('task'));
 
       author.save().then( (savedAuthor) => {
         author.get('nestedQuestionAnswers').toArray().forEach(function(answer){
-          let value = answer.get("value");
+          let value = answer.get('value');
           if(value || value === false){
-            answer.set("owner", savedAuthor);
+            answer.set('owner', savedAuthor);
             answer.save();
           }
         });

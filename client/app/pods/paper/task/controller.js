@@ -41,6 +41,7 @@ export default Ember.Controller.extend(
     }, (response) => {
       this.displayValidationErrorsFromResponse(response);
       this.set('model.completed', false);
+      this.get('model').get('errors').clear();
     });
   },
 

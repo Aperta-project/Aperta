@@ -1,5 +1,10 @@
 class SupportingInformationFile < ActiveRecord::Base
   include EventStream::Notifiable
+  include ProxyableResource
+
+  # writes to `token` attr on create
+  # `regenerate_token` for new token
+  has_secure_token
 
   belongs_to :paper
 
@@ -41,20 +46,6 @@ class SupportingInformationFile < ActiveRecord::Base
     return unless image?
 
     attachment.url(:preview)
-  end
-
-  def download_link(content=nil)
-    if content
-      "<a href='#{CGI.escape_html(src)}'>#{content}</a>"
-    else
-      "<a href='#{CGI.escape_html(src)}'>#{CGI.escape_html(filename)}</a>"
-    end
-  end
-
-  def preview_image
-    return unless image?
-
-    "<img src='#{CGI.escape_html(preview_src)}' />"
   end
 
   def image?

@@ -1,42 +1,42 @@
 require 'sidekiq/web'
 
 Tahi::Application.routes.draw do
-  mount TahiStandardTasks::Engine => "/api", as: "standard_tasks"
+  mount TahiStandardTasks::Engine => '/api', as: 'standard_tasks'
   ### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###
   mount PlosBioInternalReview::Engine => '/api'
-  mount PlosBioTechCheck::Engine => "/api"
-  mount PlosBilling::Engine => "/api"
+  mount PlosBioTechCheck::Engine => '/api'
+  mount PlosBilling::Engine => '/api'
 
 
   # Test specific
   #
   if Rails.env.test?
-    require_relative "../spec/support/upload_server/upload_server"
-    mount UploadServer, at: "/fake_s3/"
+    require_relative '../spec/support/upload_server/upload_server'
+    mount UploadServer, at: '/fake_s3/'
   elsif Rails.env.development?
-    get "/styleguide" => "styleguide#index"
-    mount EmberCLI::Engine => "ember-tests"
+    get '/styleguide' => 'styleguide#index'
+    mount EmberCLI::Engine => 'ember-tests'
   elsif Rails.env.staging?
-    get "/styleguide" => "styleguide#index"
+    get '/styleguide' => 'styleguide#index'
   end
 
 
   # Authentication
   #
   devise_for :users, controllers: {
-    omniauth_callbacks: "tahi_devise/omniauth_callbacks",
-    registrations: "tahi_devise/registrations"
+    omniauth_callbacks: 'tahi_devise/omniauth_callbacks',
+    registrations: 'tahi_devise/registrations'
   }
   devise_scope :user do
     if !Rails.configuration.password_auth_enabled
       # devise will not auto create this route if :database_authenticatable is not enabled
-      get "users/sign_in" => "devise/sessions#new", as: :new_user_session
+      get 'users/sign_in' => 'devise/sessions#new', as: :new_user_session
     end
-    get "users/sign_out" => "devise/sessions#destroy"
+    get 'users/sign_out' => 'devise/sessions#destroy'
   end
 
   authenticate :user, ->(u) { u.site_admin? } do
-    mount Sidekiq::Web => "/sidekiq"
+    mount Sidekiq::Web => '/sidekiq'
   end
 
 
@@ -69,10 +69,10 @@ Tahi::Application.routes.draw do
     resources :bibitems, only: [:create, :update, :destroy]
     resources :filtered_users do
       collection do
-        get "admins/:paper_id", to: "filtered_users#admins"
-        get "editors/:paper_id", to: "filtered_users#editors"
-        get "users/:paper_id", to: "filtered_users#users"
-        get "uninvited_users/:paper_id", to: "filtered_users#uninvited_users"
+        get 'admins/:paper_id', to: 'filtered_users#admins'
+        get 'editors/:paper_id', to: 'filtered_users#editors'
+        get 'users/:paper_id', to: 'filtered_users#users'
+        get 'uninvited_users/:paper_id', to: 'filtered_users#uninvited_users'
       end
     end
     resources :flows, except: [:new, :edit]
@@ -84,7 +84,7 @@ Tahi::Application.routes.draw do
     resources :journal_task_types, only: :update
     resources :journals, only: [:index, :show] do
       resources :roles, only: :index, shallow: true do
-        namespace "roles", path: '' do
+        namespace 'roles', path: '' do
           resources :users, only: :index
         end
       end
@@ -92,8 +92,8 @@ Tahi::Application.routes.draw do
     resources :manuscript_manager_templates, only: [:create, :show, :update, :destroy]
     resources :assignments, only: [:index, :create, :destroy]
     resources :papers, only: [:index, :create, :show, :update] do
-      resources :roles, only: :index, controller: "paper_roles" do
-        resources :users, only: :index, controller: "paper_role_users"
+      resources :roles, only: :index, controller: 'paper_roles' do
+        resources :users, only: :index, controller: 'paper_role_users'
       end
       resource :editor, only: :destroy
       resource :manuscript_manager, only: :show
@@ -108,12 +108,12 @@ Tahi::Application.routes.draw do
         resources :comments, only: :create
       end
       member do
-        get "/status/:id", to: "paper_conversions#status"
-        get "activity/workflow", to: "papers#workflow_activities"
-        get "activity/manuscript", to: "papers#manuscript_activities"
+        get '/status/:id', to: 'paper_conversions#status'
+        get 'activity/workflow', to: 'papers#workflow_activities'
+        get 'activity/manuscript', to: 'papers#manuscript_activities'
         get :comment_looks
         get :versioned_texts
-        get :export, to: "paper_conversions#export"
+        get :export, to: 'paper_conversions#export'
         put :submit
         put :withdraw
         put :reactivate
@@ -128,7 +128,7 @@ Tahi::Application.routes.draw do
     resources :questions, only: [:create, :update]
 
     resources :nested_questions, only: [:index] do
-      resources :answers, only: [:create, :update, :destroy], controller: "nested_question_answers"
+      resources :answers, only: [:create, :update, :destroy], controller: 'nested_question_answers'
     end
 
     resources :roles, only: [:show, :create, :update, :destroy]
@@ -177,7 +177,8 @@ Tahi::Application.routes.draw do
 
     # event stream
     #
-    post "event_stream/auth", controller: "api/event_stream", as: :auth_event_stream
+    post 'event_stream/auth', controller: 'api/event_stream',
+                              as: :auth_event_stream
 
     # s3 request policy
     #
@@ -193,10 +194,12 @@ Tahi::Application.routes.draw do
   end
 
   get '/attachments/figures/:figure_id', to: 'image_proxy#show'
+  get '/resource_proxy/:resource/:token(/:version)', to: 'resource_proxy#url',
+                                                     as: :resource_proxy
 
   # Fall through to ember app
   #
-  get "*route", to: "ember#index", constraints: { format: /html/ }
+  get '*route', to: 'ember#index', constraints: { format: /html/ }
 
-  root "ember#index"
+  root 'ember#index'
 end

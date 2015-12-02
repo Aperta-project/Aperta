@@ -1,19 +1,16 @@
 class EpubConverter
   attr_reader :paper, :include_source, :downloader, :include_cover_image
 
+  include DownloadablePaper
+
   def initialize(paper,
                  downloader = nil,
                  include_source: false,
                  include_cover_image: true)
     @paper = paper
-    @downloader = downloader
+    @downloader = downloader # a user
     @include_source = include_source
     @include_cover_image = include_cover_image
-  end
-
-  def file_name
-    # keep simple - most operating systems only a max of 255 multi-byte characters, including file name
-    @file_name ||= "paper_#{paper.id}.epub"
   end
 
   def epub_stream
@@ -25,32 +22,26 @@ class EpubConverter
   end
 
   def epub_html
-    paper_body = PaperDownloader.new(paper).body || 'The manuscript is currently empty.'
-
-    head = <<-HEAD
-  <title>#{title}</title>
-  <link rel="stylesheet" type="text/css" href="css/default.css">
-    HEAD
-
-    body = <<-BODY
-  <h1>#{paper.display_title(sanitized: false)}</h1>
-  #{paper_body.force_encoding('UTF-8')}
-    BODY
-
-    layout_html head, body
+    downloadable_templater
+      .render(file: 'epub/manuscript.erb',
+              layout: 'epub/layout',
+              locals: {
+                paper: paper,
+                paper_body: paper_body,
+                title: title,
+                needs_non_redirecting_preview_url: false
+              })
   end
 
   def publishing_information_html
-    publishing_info_presenter = PublishingInformationPresenter.new paper, downloader
-
-    head = <<-HEAD
-  <title>Publishing Information</title>
-  <style>
-    #{publishing_info_presenter.css}
-  </style>
-    HEAD
-
-    layout_html head, publishing_info_presenter.html
+    publishing_info_presenter = PublishingInformationPresenter.new(paper,
+                                                                   downloader)
+    downloadable_templater
+      .render(file: 'epub/publishing_information.erb',
+              layout: 'epub/layout',
+              locals: {
+                publishing_info_presenter: publishing_info_presenter
+              })
   end
 
   # Yeah these methods that start with _ should be private
@@ -147,24 +138,6 @@ class EpubConverter
         end
       end
     end
-  end
-
-  def layout_html(head, body)
-    # ePub is sensitive to leading white space, therefore we need the first
-    # line to start at column 0. No, `String#strip_heredoc` doesn't solve the
-    # problem.
-
-    <<-HTML
-<?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  #{head}
-</head>
-<body>
-  #{body}
-</body>
-</html>
-    HTML
   end
 
   def manuscript_source

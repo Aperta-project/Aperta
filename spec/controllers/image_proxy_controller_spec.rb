@@ -11,13 +11,13 @@ describe ImageProxyController do
   }
   before { sign_in user }
 
-  describe "GET on #show" do
-    it "redirects to S3 URL" do
+  describe 'GET on #show' do
+    it 'redirects to S3 URL' do
       get :show, figure_id: figure.id
       expect(figure).to redirect_to(figure.attachment.url)
     end
 
-    it "redirects to S3 URL with the proper version" do
+    it 'redirects to S3 URL with the proper version' do
       get :show, figure_id: figure.id, version: 'preview'
       expect(figure).to redirect_to(figure.attachment.url(:preview))
     end

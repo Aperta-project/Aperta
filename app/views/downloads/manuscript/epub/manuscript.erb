@@ -1,0 +1,13 @@
+<% content_for :head do %>
+  <title><%= title %></title>
+  <link rel="stylesheet" type="text/css" href="css/default.css">
+<% end %>
+
+
+<h1><%= paper.display_title(sanitized: false) %></h1>
+
+<%= paper_body.force_encoding('UTF-8') %>
+
+<%= render partial: 'shared/supporting_information',
+           locals: {paper: paper, needs_non_redirecting_preview_url: needs_non_redirecting_preview_url } %>
+

@@ -10,6 +10,25 @@ describe Paper do
       expect(paper.decisions.first.class).to eq Decision
     end
 
+    describe "after_create doi callback" do
+      it "the doi is not set coming from factory girl before create" do
+        unsaved_paper_from_factory_girl = FactoryGirl.build :paper
+        expect(unsaved_paper_from_factory_girl.doi).to eq(nil)
+      end
+
+      it "sets a doi in after_create callback" do
+        journal                 = FactoryGirl.create :journal, :with_doi
+        last_doi_initial        = journal.last_doi_issued
+        paper                   = FactoryGirl.create :paper, journal: journal
+
+        expect(paper.doi).to be_truthy
+        expect(last_doi_initial.succ).to eq(journal.last_doi_issued) #is incremented in journal
+        expect(journal.last_doi_issued).to eq(paper.doi.split('.')[1])
+      end
+    end
+  end
+
+  describe "#body=" do
     it "can set body on creation" do
       paper_new = FactoryGirl.create :paper, body: 'foo'
       expect(paper_new.body).to eq('foo')
@@ -25,20 +44,24 @@ describe Paper do
       expect(paper_new.body).to eq('foo')
     end
 
-    describe "after_create doi callback" do
-      it "the doi is not set coming from factory girl before create" do
-        unsaved_paper_from_factory_girl = FactoryGirl.build :paper
-        expect(unsaved_paper_from_factory_girl.doi).to eq(nil)
+    context "when a pending change already exists on paper" do
+      let(:paper) { FactoryGirl.create(:paper) }
+      before { paper.title = "something new" }
+
+      it "will call event stream once" do
+        expect(paper).to receive(:notify).once
+        paper.body = "a new body"
+        paper.save!
       end
+    end
 
-      it "sets a doi in after_create callback" do
-        journal                 = FactoryGirl.create :journal, :with_doi
-        last_doi_initial        = journal.last_doi_issued
-        paper                   = FactoryGirl.create :paper, journal: journal
+    context "when there are no pending changes on the paper" do
+      let(:paper) { FactoryGirl.create(:paper) }
 
-        expect(paper.doi).to be_truthy
-        expect(last_doi_initial.succ).to eq(journal.last_doi_issued) #is incremented in journal
-        expect(journal.last_doi_issued).to eq(paper.doi.split('.')[1])
+      it "will call event stream once" do
+        expect(paper).to receive(:notify).once
+        paper.body = "a new body"
+        paper.save!
       end
     end
   end

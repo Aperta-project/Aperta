@@ -186,6 +186,7 @@ class Paper < ActiveRecord::Base
       @new_body = new_body
     else
       latest_version.update(text: new_body)
+      notify(action: "updated") unless changed?
     end
   end
 

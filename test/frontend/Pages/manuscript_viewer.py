@@ -38,25 +38,21 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._card = (By.CLASS_NAME, 'card')
     self._submit_button = (By.ID, 'sidebar-submit-paper')
     # Main Toolbar items
-    self._tb_versions_link = (By.CLASS_NAME, 'versions-link')
+    self._tb_versions_link = (By.ID, 'nav-versions')
     self._tb_versions_diff_div = (By.CSS_SELECTOR, 'div.html-diff')
     #self._tb_view_version = (By.TAG_NAME, 'select')
     self._tb_versions_closer = (By.CLASS_NAME, 'exit-versions')
-    ##self._tb_collaborators_link = (By.CLASS_NAME, 'contributors-link')
-    self._tb_collaborators_link = (By.CLASS_NAME, 'nav-collaborators')
-    ##self._tb_add_collaborators_label = (By.CLASS_NAME, 'contributors-add')
-    self._tb_add_collaborators_label = (By.ID, 'nav-add-collaborators')
-
-
+    self._tb_collaborators_link = (By.ID, 'nav-collaborators')
+    self._tb_add_collaborators_label = (By.CLASS_NAME, 'contributors-add')
     self._tb_collaborator_list_item = (By.CLASS_NAME, 'contributor')
-    self._tb_downloads_link = (By.CSS_SELECTOR, 'div.downloads-link div.control-bar-link-icon')
+    self._tb_downloads_link = (By.ID, 'nav-downloads')
     self._tb_dl_pdf_link = (By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[3]")
     self._tb_dl_epub_link = ((By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[2]"))
     self._tb_dl_docx_link = (By.CLASS_NAME, 'docx')
-    self._tb_more_link = (By.CLASS_NAME, 'fa-ellipsis-v')
-    self._tb_more_appeal_link = (By.CLASS_NAME, 'appeal-link')
-    self._tb_more_withdraw_link = (By.CLASS_NAME, 'withdraw-link')
-    self._tb_workflow_link = (By.XPATH, "//div[@class='control-bar-inner-wrapper']/a[contains(., 'Go to Workflow')]")
+    self._tb_more_link = (By.ID, 'more-dropdown-menu')
+    self._tb_more_appeal_link = (By.ID, 'nav-appeal')
+    self._tb_more_withdraw_link = (By.ID, 'nav-withdraw-manuscript')
+    self._tb_workflow_link = (By.ID, 'go-to-workflow')
     # Task List Items
     self._tl_manuscript_id = (By.CLASS_NAME, 'task-list-doi')
     self._tl_submit_success_msg = (By.CLASS_NAME, 'task-list')
@@ -71,11 +67,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._wm_modal = (By.CLASS_NAME, 'overlay--fullscreen')
     self._wm_exclamation_circle = (By.CLASS_NAME, 'fa-exclamation-circle')
     self._wm_modal_title = (By.CSS_SELECTOR, 'h1')
-    self._wm_modal_text = (By.CSS_SELECTOR, 'div.paper-withdraw-wrapper p')
+    self._wm_modal_text = (By.CSS_SELECTOR, 'div.overlay-body div p')
     self._wm_modal_yes = (By.XPATH, '//div[@class="pull-right"]/button[1]')
     self._wm_modal_no = (By.XPATH, '//div[@class="pull-right"]/button[2]')
     # Submit Confirmation and Submit Congratulations Overlays (full and initial submit versions)
-    # The overlay close X is universal and defined in authenticated page (self._modal_close)
+    # The overlay close X is universal and defined in authenticated page (self._overlay_header_close)
     self._so_paper_submit_icon = (By.CLASS_NAME, 'paper-submit-icon')
     # self._so_paper_submit_title_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit h1')
     # self._so_paper_submit_subhead_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit + h5')
@@ -163,19 +159,19 @@ class ManuscriptViewerPage(AuthenticatedPage):
     assert 'Add Collaborators' in add_collaborators.text
     add_collaborators.click()
     self._get(self._add_collaborators_modal)
-    add_collaborator_header = self._get(self._add_collaborators_modal_header)
+    add_collaborator_header = self._get(self._overlay_header_title)
     assert "Who can collaborate on this manuscript?" == add_collaborator_header.text
-    self.validate_modal_title_style(add_collaborator_header)
+    # self.validate_modal_title_style(add_collaborator_header)
     assert ("Select people to collaborate with on this paper. Collaborators can edit the "
             "paper, will be notified about edits on the paper, and can participate in the "
             "discussion about this paper." == self._get(
               self._add_collaborators_modal_support_text).text)
     self._get(self._add_collaborators_modal_support_select)
-    cancel = self._get(self._add_collaborators_modal_cancel)
+    cancel = self._get(self._overlay_action_button_cancel)
     self.validate_default_link_style(cancel)
-    save = self._get(self._add_collaborators_modal_save)
+    save = self._get(self._overlay_action_button_save)
     self.validate_primary_big_green_button_style(save)
-    close_icon_overlay = self._get(self._modal_close)
+    close_icon_overlay = self._get(self._overlay_header_close)
     # TODO: Change following line after bug #102078080 is solved
     assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
     assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
@@ -200,11 +196,12 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     recent_activity = self._get(self._recent_activity)
     recent_activity.click()
+    time.sleep(.5)
     self._get(self._recent_activity_modal)
-    modal_title = self._get(self._recent_activity_modal_title)
+    modal_title = self._get(self._overlay_header_title)
     #Temporary disable due to bad style
     #self.validate_application_h1_style(modal_title)
-    close_icon_overlay = self._get(self._modal_close)
+    close_icon_overlay = self._get(self._overlay_header_close)
     # TODO: Change following line after bug #102078080 is solved
     assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
     assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
@@ -280,7 +277,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self.validate_link_big_grey_button_style(yes_btn)
     # TODO: Leave comment out until solved. Pivotal bug#103858114
     #self.validate_secondary_grey_small_button_modal_style(no_btn)
-    close_icon_overlay = self._get(self._modal_close)
+    close_icon_overlay = self._get(self._overlay_header_close)
     # TODO: Change following line after bug #102078080 is solved
     assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')
     assert application_typeface in close_icon_overlay.value_of_css_property('font-family')
@@ -359,7 +356,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
   def close_submit_overlay(self):
     """Close the submit overlay after confirm paper submission"""
-    closer = self._get(self._modal_close)
+    closer = self._get(self._overlay_header_close)
     closer.click()
 
   def click_workflow_lnk(self):
@@ -395,7 +392,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :param type: full_submit, initial_submit, initial_submit_full, congrats, congrats_is, congrats_is_full
     :return:
     """
-    self._get(self._modal_close)
+    self._get(self._overlay_header_close)
     self._so_paper_submit_title_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit h1')
     self._so_paper_submit_subhead_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit + h5')
     main_head = self._get(self._so_paper_submit_title_text_submit)

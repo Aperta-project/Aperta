@@ -15,7 +15,7 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, au_login, rv_login, fm_login, ae_login, he_login, sa_login, oa_login
+from Base.Resources import login_valid_pw, au_login, rv_login, fm_login, ae_login, he_login, sa_login, oa_login, docs
 from frontend.common_test import CommonTest
 from Cards.initial_decision_card import InitialDecisionCard
 from Pages.dashboard import DashboardPage
@@ -25,33 +25,6 @@ from Pages.workflow_page import WorkflowPage
 
 users = [au_login]
 admin_users = [oa_login, sa_login]
-
-docx = ['2014_04_27 Bakowski et al main text_subm.docx',
-        '120220_PLoS_Genetics_review.docx',
-        'CRX.pone.0103411.docx',
-        'GIANT-gender-main_20130310.docx',
-        'NF-kB-Paper_manuscript.docx',
-        'NorenzayanetalPLOS.docx',
-        'pgen.1004127.docx',
-        'PGENETICS-D-13-02065R1_FTC.docx',
-        'PLosOne_Main_Body_Ravi_Bansal_Brad_REVISED.docx',
-        'PONE-D-12-25504.docx',
-        'PONE-D-12-27950.docx',
-        'PONE-D-13-02344.docx',
-        'PONE-D-13-14162.docx',
-        'PONE-D-13-19782.docx',
-        'PONE-D-13-38666.docx',
-        'PONE-D-14-12686.docx',
-        'PONE-D-14-17217.docx',
-        'pone.0100365.docx',
-        'pone.0100948.docx',
-        'ppat.1004210.docx',
-        'PPATHOGENS-D-14-01213.docx',
-        'RTN.pone.0072333.docx',
-        'Schallmo_PLOS_RevisedManuscript.docx',
-        'Spindler_2014_rerevised.docx',
-        'Thammasri_PONE_D13_12078_wo.docx',
-        ]
 
 cards = ['cover_letter',
          'billing',
@@ -115,13 +88,13 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     title = dashboard_page.title_generator()
     dashboard_page.enter_title_field(title)
     dashboard_page.select_journal_and_type('PLOS Wombat', 'NoCards')
-    doc2upload = random.choice(docx)
+    doc2upload = random.choice(docs)
     print('Sending document: ' + os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload))
     fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
     if os.path.isfile(fn):
       self._driver.find_element_by_id('upload-files').send_keys(fn)
     else:
-      raise IOError('Docx file: {} not found'.format(doc2upload))
+      raise IOError('Doc file: {} not found'.format(doc2upload))
     dashboard_page.click_upload_button()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
@@ -130,7 +103,8 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     manuscript_page.close_flash_message()
     time.sleep(2)
     paper_title_from_page = manuscript_page.get_paper_title_from_page()
-    paper_id = manuscript_page.get_current_url().split('papers/')[1]
+    paper_id = manuscript_page.get_current_url().split('papers/')[1].split('?')[0]
+    print(paper_id)
     manuscript_page.click_submit_btn()
     manuscript_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
     manuscript_page.confirm_submit_cancel()
@@ -215,7 +189,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     title = dashboard_page.title_generator()
     dashboard_page.enter_title_field(title)
     dashboard_page.select_journal_and_type('PLOS Wombat', 'OnlyInitialDecisionCard')
-    doc2upload = random.choice(docx)
+    doc2upload = random.choice(docs)
     print('Sending document: ' + os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload))
     fn = os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload)
     if os.path.isfile(fn):

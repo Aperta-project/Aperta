@@ -52,18 +52,14 @@ class AdminPage(AuthenticatedPage):
     self._base_admin_journals_section_journal_block = (By.CLASS_NAME, 'journal-thumbnail')
 
     # User Details Overlay
-    self._ud_overlay_title = (By.CSS_SELECTOR, 'div.overlay-container div h1')
-    self._ud_overlay_closer = (By.CLASS_NAME, 'overlay-close-x')
-    self._ud_overlay_uname_label = (By.XPATH, '//div[@class="overlay-container"]/div/div[1]/label')
-    self._ud_overlay_uname_field = (By.XPATH, '//div[@class="overlay-container"]/div/div[1]/div/input')
-    self._ud_overlay_fname_label = (By.XPATH, '//div[@class="overlay-container"]/div/div[2]/label')
-    self._ud_overlay_fname_field = (By.XPATH, '//div[@class="overlay-container"]/div/div[2]/div/input')
-    self._ud_overlay_lname_label = (By.XPATH, '//div[@class="overlay-container"]/div/div[3]/label')
-    self._ud_overlay_lname_field = (By.XPATH, '//div[@class="overlay-container"]/div/div[3]/div/input')
+    self._ud_overlay_uname_label = (By.XPATH, "//label[@for='user-detail-username']")
+    self._ud_overlay_uname_field = (By.ID, 'user-detail-username')
+    self._ud_overlay_fname_label = (By.XPATH, "//label[@for='user-detail-first-name']")
+    self._ud_overlay_fname_field = (By.ID, 'user-detail-first-name')
+    self._ud_overlay_lname_label = (By.XPATH, "//label[@for='user-detail-last-name']")
+    self._ud_overlay_lname_field = (By.ID, 'user-detail-last-name')
     self._ud_overlay_reset_pw_btn = (By.CSS_SELECTOR, 'div.reset-password a')
     self._ud_overlay_reset_pw_success_msg = (By.CLASS_NAME, 'success')
-    self._ud_overlay_cancel_link = (By.CLASS_NAME, 'cancel-link')
-    self._ud_overlay_save_btn = (By.CSS_SELECTOR, 'div.overlay-action-buttons button')
 
   # POM Actions
   def validate_page_elements_styles_functions(self, username):
@@ -223,8 +219,8 @@ class AdminPage(AuthenticatedPage):
         success_count += 1
       result.click()
       # TODO: Validate Styles for these elements
-      user_details_title = self._get(self._ud_overlay_title)
-      user_details_closer = self._get(self._ud_overlay_closer)
+      user_details_title = self._get(self._overlay_header_title)
+      user_details_closer = self._get(self._overlay_header_close)
       user_details_fname_label = self._get(self._ud_overlay_fname_label)
       user_details_fname_field = self._get(self._ud_overlay_fname_field)
       user_details_lname_label = self._get(self._ud_overlay_lname_label)
@@ -234,8 +230,8 @@ class AdminPage(AuthenticatedPage):
       user_details_reset_pw_btn = self._get(self._ud_overlay_reset_pw_btn)
       user_details_reset_pw_btn.click()
       user_details_reset_pw_success_msg = self._get(self._ud_overlay_reset_pw_success_msg)
-      user_details_cancel_link = self._get(self._ud_overlay_cancel_link)
-      user_details_save_btn = self._get(self._ud_overlay_save_btn)
+      user_details_cancel_link = self._get(self._overlay_action_button_cancel)
+      user_details_save_btn = self._get(self._overlay_action_button_save)
       user_details_closer.click()
     assert success_count > 0
 
@@ -251,3 +247,7 @@ class AdminPage(AuthenticatedPage):
     selected_journal = random.choice(journal_blocks)
     print('Opening ' + selected_journal.find_element(*self._base_admin_journal_block_name).text + ' journal.')
     selected_journal.find_element(*self._base_admin_journal_block_name).click()
+
+  # TODO: Create method to create journal PLOS Wombat if not exist
+
+  # TODO: Create method to create NoCards and OnlyInitialDecisionCard MMT in PLOS Wombat if not exist

@@ -217,8 +217,8 @@ class WorkflowPage(AuthenticatedPage):
     assert staff_cards[10].text == 'Register Decision', staff_cards[10].text
     assert staff_cards[11].text == 'Revision Tech Check', staff_cards[11].text
     # APERTA-5513 AC 3
-    author_cards[0].click()
-    author_cards[1].click()
+    author_cards[10].click()
+    author_cards[11].click()
     self._get(self._add_button_overlay).click()
     time.sleep(2)
     # Check if there

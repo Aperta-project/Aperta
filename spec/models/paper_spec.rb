@@ -163,14 +163,20 @@ describe Paper do
       it 'sets the submitted_at' do
         Timecop.freeze(Time.current.utc) do
           paper.initial_submit!
-          expect(paper.submitted_at).to eq(paper.first_submitted_at)
+          expect(paper.submitted_at).to eq(Time.current.utc)
+        end
+      end
+
+      it 'sets the first_submitted_at' do
+        Timecop.freeze(Time.current.utc) do
+          paper.initial_submit!
+          expect(paper.first_submitted_at).to eq(Time.current.utc)
         end
       end
     end
 
     describe '#submit!' do
-
-      it "does not transition when metadata tasks are incomplete" do
+      it 'does not transition when metadata tasks are incomplete' do
         expect(paper).to receive(:metadata_tasks_completed?).and_return(false)
         expect{ paper.submit! user }.to raise_error(AASM::InvalidTransition)
       end
@@ -198,15 +204,28 @@ describe Paper do
         expect(paper.latest_version.updated_at.utc).to be_within(1.second).of Time.zone.now
       end
 
-      it 'sets first_submitted_at once' do
-        paper.submit! user
-        expect(paper.first_submitted_at.utc).to(
-          be_within(1.second).of Time.zone.now)
+      it 'sets the submitted_at' do
+        Timecop.freeze do
+          paper.submit! user
+          expect(paper.submitted_at).to eq(Time.current)
+        end
+      end
 
-        first_submitted = paper.first_submitted_at
-        paper.minor_revision!
-        paper.submit! user
-        expect(paper.first_submitted_at).to be(first_submitted)
+      it 'sets the first_submitted_at' do
+        Timecop.freeze do
+          paper.submit! user
+          expect(paper.first_submitted_at).to eq(Time.current)
+        end
+      end
+
+      it 'sets the first_submitted_at only once' do
+        original_now = Time.current
+        paper.update(publishing_state: 'in_revision',
+                     first_submitted_at: original_now)
+        Timecop.travel(1.day.from_now) do
+          paper.submit! user
+          expect(paper.first_submitted_at).to eq(original_now)
+        end
       end
 
       it 'sets submitted at to the latest time' do

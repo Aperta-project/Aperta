@@ -56,12 +56,21 @@ module Subscriptions
     end
 
     def reset
+      @configure_blocks = []
       unsubscribe_all
     end
 
     # Remove all subscriptions from the registry.  Useful when testing.
     def unsubscribe_all
       @registry.unsubscribe_all
+    end
+
+    def current_configuration
+      configure_blocks
+    end
+
+    def restore_configuration(config)
+      @configure_blocks = config
     end
 
     private

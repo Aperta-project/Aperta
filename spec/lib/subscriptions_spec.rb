@@ -7,6 +7,15 @@ describe Subscriptions do
     class NeilDegrassTyson; end
   end
 
+  before(:context) do
+    @config = Subscriptions.current_configuration
+    Subscriptions.reset
+  end
+
+  after(:context) do
+    Subscriptions.restore_configuration(@config)
+  end
+
   describe "configure" do
     before { stub_const('Subscriptions::APPLICATION_EVENT_NAMESPACE', 'app_namespace') }
 

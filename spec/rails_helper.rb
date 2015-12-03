@@ -98,7 +98,7 @@ RSpec.configure do |config|
 
   # Don't load subscriptions for unit specs
   config.before(:each) do
-    Subscriptions.reset
+    Subscriptions.unsubscribe_all
   end
 
   # Load subscriptions for feature specs

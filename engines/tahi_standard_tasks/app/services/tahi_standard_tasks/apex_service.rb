@@ -32,7 +32,6 @@ module TahiStandardTasks
 
     rescue StandardError => e
       apex_delivery.delivery_failed!(e.message)
-      apex_delivery.save!
       raise
     end
   end

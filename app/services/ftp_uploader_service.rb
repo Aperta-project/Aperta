@@ -3,14 +3,15 @@ class FtpUploaderService
   class FtpTransferError < StandardError; end;
   TRANSFER_COMPLETE = '226'
 
-  def initialize(host: ENV['FTP_HOST'], passive_mode: true, 
-              user: ENV['FTP_USER'], password: ENV['FTP_PASSWORD'], port: 21, 
-              filepath: nil, filename: nil, directory: ENV['FTP_DIR'])
+  def initialize(host: ENV['FTP_HOST'], passive_mode: true,
+        user: ENV['FTP_USER'], password: ENV['FTP_PASSWORD'],
+        port: ENV['FTP_PORT'], filepath: nil, filename: nil,
+        directory: ENV['FTP_DIR'])
     @host = host
     @passive_mode = passive_mode
     @user = user
     @password = password
-    @port = port
+    @port = port || 21
     @filepath = filepath
     @final_filename = filename
     @directory = directory || 'packages'
@@ -45,7 +46,7 @@ class FtpUploaderService
 
   def notify_admin
     transfer_failed = "FTP Transfer failed for #{@final_filename}"
-    AdhocMailer.delay.send_adhoc_email( 
+    AdhocMailer.delay.send_adhoc_email(
       transfer_failed,
       transfer_failed + ": #{@ftp.last_response}. Please try to upload again.",
       User.joins(:roles).where('roles.kind' => 'admin')

@@ -49,6 +49,7 @@ module Subscriptions
     end
 
     def reload
+      unsubscribe_all
       configure_blocks.each do |block|
         __registry__.instance_eval(&block)
       end
@@ -56,7 +57,6 @@ module Subscriptions
 
     def reset
       unsubscribe_all
-      configure_blocks.clear
     end
 
     # Remove all subscriptions from the registry.  Useful when testing.

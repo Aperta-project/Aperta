@@ -125,5 +125,130 @@ FactoryGirl.define do
         paper.reload
       end
     end
+
+    factory :paper_ready_for_export do
+      doi "blah/yetijour.123334"
+
+      after(:create) do |paper|
+        editor = FactoryGirl.build(:user)
+        FactoryGirl.create(:paper_role, :editor, paper: paper, user: editor)
+
+        phase = create(:phase, paper: paper)
+
+        # Authors
+        authors_task = FactoryGirl.create(:authors_task, phase: phase),
+        author = FactoryGirl.create(:author, paper: paper, authors_task: authors_task)
+        NestedQuestionableFactory.create(
+          author,
+          questions: [
+            {
+              ident: 'other',
+              answer: 'footstool',
+              value_type: 'text'
+            },
+            {
+              ident: 'desceased',
+              answer: false,
+              value_type: 'boolean'
+            },
+            {
+              ident: 'published_as_corresponding_author',
+              answer: true,
+              value_type: 'boolean'
+            },
+            {
+              ident: 'contributions',
+              answer: true,
+              value_type: 'boolean',
+              questions: [
+                {
+                  ident: 'made_cookie_dough',
+                  answer: true,
+                  value_type: 'boolean'
+                }
+              ]
+            }
+          ]
+        )
+
+        # Financial Disclosure
+        financial_task = create(:financial_disclosure_task, funders: [], phase: phase)
+        NestedQuestionableFactory.create(
+          financial_task,
+          questions: [
+            {
+              ident: 'author_received_funding',
+              answer: false,
+              value_type: 'boolean'
+            }
+          ]
+        )
+
+        # Competing interests
+        NestedQuestionableFactory.create(
+          FactoryGirl.create(:competing_interests_task, phase: phase),
+          questions: [
+            {
+              ident: 'competing_interests',
+              answer: 'true',
+              value_type: 'boolean',
+              questions: [
+                {
+                  ident: 'statement',
+                  answer: 'entered statement',
+                  value_type: 'text'
+                }
+              ]
+            }
+          ]
+        )
+
+        # data availability
+        NestedQuestionableFactory.create(
+          FactoryGirl.create(:data_availability_task, phase: phase),
+          questions: [
+            {
+              ident: 'data_fully_available',
+              answer: 'true',
+              value_type: 'boolean'
+            },
+            {
+              ident: 'data_location',
+              answer: 'holodeck',
+              value_type: 'text'
+            }
+          ]
+        )
+
+        NestedQuestionableFactory.create(
+          FactoryGirl.create(:production_metadata_task, phase: phase),
+          questions: [
+            {
+              ident: 'publication_date',
+              answer: '12/15/2025',
+              value_type: 'text'
+            }
+          ]
+        )
+
+        NestedQuestionableFactory.create(
+          FactoryGirl.create(:publishing_related_questions_task, phase: phase),
+          questions: [
+            {
+              ident: 'us_government_employees',
+              answer: 'true',
+              value_type: 'boolean'
+            }
+          ]
+        )
+
+        version = paper.latest_version
+        version.source = File.open(Rails.root.join('spec/fixtures/about_turtles.docx'))
+        version.save!
+        paper.save!
+
+        paper.reload
+      end
+    end
   end
 end

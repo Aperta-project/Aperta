@@ -29,5 +29,14 @@ describe FeedbackMailer, redis: true do
     it "includes link to screenshots in mailer body" do
       expect(email.body).to include feedback['screenshots']
     end
+
+    it 'Creates a log message with mail information after email sent' do
+      Timecop.freeze do
+        msg = "event=email to=admin@example.com from=#{user.email} subject="\
+              "'[www.example.com] TEST-APP-NAME Feedback' at=#{Time.current}"
+        expect(Rails.logger).to receive(:info).with(msg)
+        email.deliver_now
+      end
+    end
   end
 end

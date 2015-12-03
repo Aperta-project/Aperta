@@ -18,8 +18,8 @@ export default Ember.Route.extend({
     this.set('taskController', taskController);
     taskController.setProperties({
       model: model,
-      majorVersion: this.get('params.majorVersion'),
-      minorVersion: this.get('params.minorVersion'),
+      selectedVersion1: this.get('params.selectedVersion1'),
+      selectedVersion2: this.get('params.selectedVersion2'),
       comments: model.get('comments'),
       participations: model.get('participations'),
       onClose: Ember.isEmpty(redirectOptions) ? 'redirectToDashboard' : 'redirect'

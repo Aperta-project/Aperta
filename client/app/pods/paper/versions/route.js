@@ -37,12 +37,12 @@ var PaperVersionsRoute = AuthorizedRoute.extend({
   },
 
   actions: {
-    viewVersionedCard: function(task, majorVersion, minorVersion) {
+    viewVersionedCard: function(task, selectedVersion1, selectedVersion2) {
       this.get('cardOverlayService').setProperties({
         previousRouteOptions: ['paper.versions', this.modelFor('paper'), {
           queryParams: {
-            majorVersion: majorVersion,
-            minorVersion: minorVersion
+            selectedVersion1: selectedVersion1,
+            selectedVersion2: selectedVersion2
           }
         }],
         overlayBackground: 'paper.versions'
@@ -54,8 +54,8 @@ var PaperVersionsRoute = AuthorizedRoute.extend({
         task.id,
         {
           queryParams: {
-            majorVersion: majorVersion,
-            minorVersion: minorVersion
+            selectedVersion1: selectedVersion1,
+            selectedVersion2: selectedVersion2
           }
         });
     },

@@ -159,6 +159,13 @@ describe Paper do
           expect(paper.submitted_at).to eq(Time.current.utc)
         end
       end
+
+      it 'sets the submitted_at' do
+        Timecop.freeze(Time.current.utc) do
+          paper.initial_submit!
+          expect(paper.submitted_at).to eq(paper.first_submitted_at)
+        end
+      end
     end
 
     describe '#submit!' do
@@ -200,6 +207,20 @@ describe Paper do
         paper.minor_revision!
         paper.submit! user
         expect(paper.first_submitted_at).to be(first_submitted)
+      end
+
+      it 'sets submitted at to the latest time' do
+        first_submitted_at = Time.current.utc
+        Timecop.freeze(Time.current.utc) do
+          paper.initial_submit!
+          expect(paper.first_submitted_at).to eq(paper.submitted_at)
+          first_submitted_at = paper.first_submitted_at
+        end
+
+        paper.invite_full_submission!
+        paper.submit! user
+        expect(paper.first_submitted_at).to eq(first_submitted_at)
+        expect(paper.submitted_at).to_not eq(first_submitted_at)
       end
 
       it "broadcasts 'paper:submitted' event" do

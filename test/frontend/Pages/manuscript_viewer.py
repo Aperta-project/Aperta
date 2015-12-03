@@ -29,6 +29,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     super(ManuscriptViewerPage, self).__init__(driver, url_suffix)
 
     # Locators - Instance members
+    # dashboard Link
+    self._dashboard_link = (By.ID, 'nav-dashboard')
     # Main Viewer Div
     self._paper_title = (By.ID, 'paper-title')
     self._paper_tracker_title = (By.CLASS_NAME, 'paper-tracker-message')
@@ -40,8 +42,12 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._tb_versions_diff_div = (By.CSS_SELECTOR, 'div.html-diff')
     #self._tb_view_version = (By.TAG_NAME, 'select')
     self._tb_versions_closer = (By.CLASS_NAME, 'exit-versions')
-    self._tb_collaborators_link = (By.CLASS_NAME, 'contributors-link')
-    self._tb_add_collaborators_label = (By.CLASS_NAME, 'contributors-add')
+    ##self._tb_collaborators_link = (By.CLASS_NAME, 'contributors-link')
+    self._tb_collaborators_link = (By.CLASS_NAME, 'nav-collaborators')
+    ##self._tb_add_collaborators_label = (By.CLASS_NAME, 'contributors-add')
+    self._tb_add_collaborators_label = (By.ID, 'nav-add-collaborators')
+
+
     self._tb_collaborator_list_item = (By.CLASS_NAME, 'contributor')
     self._tb_downloads_link = (By.CSS_SELECTOR, 'div.downloads-link div.control-bar-link-icon')
     self._tb_dl_pdf_link = (By.XPATH, ".//div[contains(@class, 'manuscript-download-links')]/a[3]")
@@ -94,7 +100,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._supporting_info_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Supporting Info')]")
     self._upload_manu_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Upload Manuscript')]")
     self._prq_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Publishing Related Questions')]")
-
+    # infobox
+    self._infobox = (By.ID, 'submission-process')
 
   # POM Actions
   def validate_page_elements_styles_functions(self, username=''):
@@ -145,15 +152,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     print paper_id
     journal_id = PgSQL().query('SELECT papers.journal_id FROM papers where id = %s;', (paper_id,))[0][0]
     return journal_id
-
-
-    #journal_ids = PgSQL().query('SELECT roles.journal_id FROM roles INNER JOIN user_roles '
-    #                            'ON roles.id = user_roles.role_id '
-    #                            'WHERE user_roles.user_id = %s '
-    #                            'AND roles.kind IN %s;', (uid, ('flow manager', 'admin', 'editor')))
-
-
-
 
   def _check_collaborator(self):
     """
@@ -367,7 +365,14 @@ class ManuscriptViewerPage(AuthenticatedPage):
   def click_workflow_lnk(self):
     """Click workflow button"""
     self._get(self._tb_workflow_link).click()
-    return self
+
+  def click_dashboard_link(self):
+    """Click on dashboard link"""
+    self._get(self._dashboard_link).click()
+
+  def get_infobox(self):
+    """Get the inforbox element"""
+    return self._get(self._infobox)
 
   def get_paper_id(self):
     """

@@ -20,7 +20,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Fixed
--
+- images embedded into an uploaded word document will show correctly on the manuscript page
 
 ### Security
 -

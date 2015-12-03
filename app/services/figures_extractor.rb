@@ -1,5 +1,5 @@
 class FiguresExtractor
-  attr_reader :epub_stream, :images
+  attr_reader :epub_stream
 
   def initialize(epub_stream)
     @epub_stream = epub_stream
@@ -7,13 +7,26 @@ class FiguresExtractor
 
   def sync!(paper)
     paper.transaction do
-      images.map do |image|
-        paper.figures.create!(attachment: image, title: image.original_filename, status: "done")
+      relinked_html = paper.body
+      images.each do |image|
+        figure = paper.figures.create!(attachment: image, title: image.original_filename, status: 'done')
+        relinked_html = relinked_image_anchor(html: relinked_html, image: image, figure: figure)
       end
+      paper.update!(body: relinked_html)
     end
   end
 
   private
+
+  # replace each <a href> to point to the newly created figure url
+  def relinked_image_anchor(html:, image:, figure:)
+    Nokogiri::HTML(html).tap { |doc|
+      doc.css("img[src*='#{image.original_filename}']").each do |img|
+        img.set_attribute('src', figure.attachment.preview.url)
+      end
+    }.to_s
+  end
+
 
   def images
     return @images if @images

@@ -14,6 +14,7 @@ class PaperUpdateWorker
   end
 
   def sync!
+    # use transaction to wait until all work is done before firing commit events
     paper.transaction do
       PaperAttributesExtractor.new(epub_stream).sync!(paper)
       FiguresExtractor.new(epub_stream).sync!(paper)

@@ -5,7 +5,7 @@ module Typesetter
     attributes :competing_interests, :competing_interests_statement
 
     def competing_interests
-      task_answer_value(object, 'competing_interests')
+      task_answer_value(object, 'competing_interests.has_competing_interests')
     end
 
     def competing_interests_statement

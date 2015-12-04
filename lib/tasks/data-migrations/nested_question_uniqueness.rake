@@ -48,6 +48,15 @@ namespace :data do
                 { from: "other", to: "author.contributions.other" }
               ]
             },
+
+            {
+              type: TahiStandardTasks::CompetingInterestsTask.name,
+              from: "competing_interests",
+              to: "competing_interests.has_competing_interests",
+              children: [
+                { from: "statement", to: "competing_interests.statement" },
+              ]
+            }
         ]
 
         NestedQuestionConverter.new(conversions, dry_run: false).convert

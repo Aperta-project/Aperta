@@ -56,6 +56,50 @@ namespace :data do
               children: [
                 { from: "statement", to: "competing_interests.statement" },
               ]
+            },
+
+
+            {
+              type: TahiStandardTasks::ReviewerReportTask.name,
+              from: "competing_interests",
+              to: "reviewer_report.competing_interests",
+              children: []
+            },
+            {
+              type: TahiStandardTasks::ReviewerReportTask.name,
+              from: "support_conclusions",
+              to: "reviewer_report.support_conclusions",
+              children: [
+                { from: "explanation", to: "reviewer_report.support_conclusions.explanation" },
+              ]
+            },
+            {
+              type: TahiStandardTasks::ReviewerReportTask.name,
+              from: "statistical_analysis",
+              to: "reviewer_report.statistical_analysis",
+              children: [
+                { from: "explanation", to: "reviewer_report.statistical_analysis.explanation" },
+              ]
+            },
+            {
+              type: TahiStandardTasks::ReviewerReportTask.name,
+              from: "standards",
+              to: "reviewer_report.standards",
+              children: [
+                { from: "explanation", to: "reviewer_report.standards.explanation" },
+              ]
+            },
+            {
+              type: TahiStandardTasks::ReviewerReportTask.name,
+              from: "additional_comments",
+              to: "reviewer_report.additional_comments",
+              children: []
+            },
+            {
+              type: TahiStandardTasks::ReviewerReportTask.name,
+              from: "identity",
+              to: "reviewer_report.identity",
+              children: []
             }
         ]
 

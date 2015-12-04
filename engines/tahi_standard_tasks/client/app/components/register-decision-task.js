@@ -1,31 +1,35 @@
 import Ember from 'ember';
-import TaskController from 'tahi/pods/paper/task/controller';
+import TaskComponent from 'tahi/pods/components/task-base/component';
 
-export default TaskController.extend({
+const { computed } = Ember;
+
+export default TaskComponent.extend({
   restless: Ember.inject.service('restless'),
-  paperState: Ember.computed.alias('model.paper.publishingState'),
-  nonPublishable: Ember.computed.not('publishable'),
+  paperState: computed.alias('model.paper.publishingState'),
+  nonPublishable: computed.not('publishable'),
   revisionNumberDesc: ['revisionNumber:desc'],
-  decisions: Ember.computed.sort('model.paper.decisions', 'revisionNumberDesc'),
-  latestDecision: Ember.computed.alias('decisions.firstObject'),
-  previousDecisions: Ember.computed('decisions.[]', function() {
+  decisions: computed.sort('model.paper.decisions', 'revisionNumberDesc'),
+  latestDecision: computed.alias('decisions.firstObject'),
+  previousDecisions: computed('decisions.[]', function() {
     return this.get('decisions').slice(1);
   }),
 
-  finalDecision: Ember.computed('latestDecision.verdict', function() {
+  finalDecision: computed('latestDecision.verdict', function() {
     return this.get('latestDecision.verdict') === 'accept' ||
       this.get('latestDecision.verdict') === 'reject';
   }),
 
-  publishable: Ember.computed('paperState', 'model.completed', function() {
+  publishable: computed('paperState', 'model.completed', function() {
     return this.get('paperState') === 'submitted' &&
       this.get('model.completed') === false;
   }),
 
   actions: {
     registerDecision() {
+      const id = this.get('model.id');
       this.set('isSavingData', true);
-      let decidePath = `/api/register_decision/${this.get('model.id')}/decide`;
+      const decidePath = `/api/register_decision/${id}/decide`;
+
       this.get('restless').post(decidePath).then(() => {
         this.set('model.completed', true);
         this.get('model').save().then(() => {

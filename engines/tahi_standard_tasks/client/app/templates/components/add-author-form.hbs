@@ -91,25 +91,25 @@
 
   <div class="form-group form-inline">
     <div class="form-group author-half {{if validationErrors.affiliation "error"}}">
-      {{#nested-question-check ident="published_as_corresponding_author"
+      {{#nested-question-check ident="author.published_as_corresponding_author"
           owner=author
           labelClassNames="author-label"
           displayQuestionText=false
           inputClassNames="author-corresponding" as |check|}}
         {{#if check.yieldingForText}}
-          {{nested-question-display ident="published_as_corresponding_author" owner=author}}
+          {{nested-question-display ident="author.published_as_corresponding_author" owner=author}}
         {{/if}}
       {{/nested-question-check}}
     </div>
 
     <div class="form-group author-half author-bump {{if validationErrors.secondaryAffiliation "error"}}">
-      {{#nested-question-check ident="deceased"
+      {{#nested-question-check ident="author.deceased"
           owner=author
           labelClassNames="author-label"
           displayQuestionText=false
           inputClassNames="author-deceased" as |check|}}
         {{#if check.yieldingForText}}
-          {{nested-question-display ident="deceased" owner=author}}
+          {{nested-question-display ident="author.deceased" owner=author}}
         {{/if}}
       {{/nested-question-check}}
     </div>
@@ -135,7 +135,7 @@
       Other
     </label>
     {{#if isOtherContributionSelected}}
-      {{nested-question-input ident="contributions.other"
+      {{nested-question-input ident="author.contributions.other"
           owner=author
           displayQuestionText=false
           inputClassNames="form-control"

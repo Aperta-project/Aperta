@@ -21,7 +21,33 @@ namespace :data do
               children: [
                 { from: "complies", to: "taxon.botanical.complies" }
               ]
-            }
+            },
+
+            {
+              type: Author.name,
+              from: "published_as_corresponding_author",
+              to: "author.published_as_corresponding_author",
+              children: []
+            },
+            {
+              type: Author.name,
+              from: "deceased",
+              to: "author.deceased",
+              children: []
+            },
+            {
+              type: Author.name,
+              from: "contributions",
+              to: "author.contributions",
+              children: [
+                { from: "conceived_and_designed_experiments", to: "author.contributions.conceived_and_designed_experiments" },
+                { from: "performed_the_experiments", to: "author.contributions.performed_the_experiments" },
+                { from: "analyzed_data", to: "author.contributions.analyzed_data" },
+                { from: "contributed_tools", to: "author.contributions.contributed_tools" },
+                { from: "contributed_writing", to: "author.contributions.contributed_writing" },
+                { from: "other", to: "author.contributions.other" }
+              ]
+            },
         ]
 
         NestedQuestionConverter.new(conversions, dry_run: false).convert

@@ -6,7 +6,7 @@ export default Ember.Component.extend({
   author: null,
 
   isOtherContributionSelected: Ember.computed("author.nestedQuestions", function(){
-    let answer = this.get("author").answerForQuestion("contributions.other");
+    let answer = this.get("author").answerForQuestion("author.contributions.other");
     if(answer){
       return answer.get("value");
     }
@@ -14,11 +14,11 @@ export default Ember.Component.extend({
   }),
 
   authorContributionIdents: [
-    "contributions.conceived_and_designed_experiments",
-    "contributions.performed_the_experiments",
-    "contributions.analyzed_data",
-    "contributions.contributed_tools",
-    "contributions.contributed_writing"
+    "author.contributions.conceived_and_designed_experiments",
+    "author.contributions.performed_the_experiments",
+    "author.contributions.analyzed_data",
+    "author.contributions.contributed_tools",
+    "author.contributions.contributed_writing"
   ],
 
   affiliation: Ember.computed("author", function() {
@@ -88,7 +88,7 @@ export default Ember.Component.extend({
 
     toggleOtherContribution(checkbox){
       if(!checkbox.get('checked')){
-        let answer = this.get("author").answerForQuestion("contributions.other");
+        let answer = this.get("author").answerForQuestion("author.contributions.other");
         answer.destroyRecord();
       }
     }

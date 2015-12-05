@@ -67,13 +67,32 @@ end
 
 group :development, :test do
   gem 'auto_screenshot', require: false
+  gem 'capybara'
+  gem 'database_cleaner'
   gem 'dotenv-rails', require: 'dotenv/rails-now'
+  gem 'email_spec'
+  gem 'factory_girl_rails'
+  gem 'fake_ftp'
   gem 'generator_spec'
   gem 'progressbar'
   gem 'pry-rails'
   gem 'pry-remote'
   gem 'pry-rescue'
+  gem 'pusher-fake'
   gem 'quiet_assets'
+  gem 'rspec-activemodel-mocks'
+  gem 'rspec-collection_matchers'
+  gem 'rspec-instafail'
+  gem 'rspec-its'
+  gem 'rspec-rails'
+  gem 'rspec_junit_formatter'
+  gem 'selenium-webdriver'
+  gem 'simplecov'
+  gem 'test_after_commit'
+  gem 'thin'
+  gem 'timecop'
+  gem 'vcr'
+  gem 'webmock'
 end
 
 group :development do
@@ -90,24 +109,5 @@ end
 
 group :test do
   gem 'capybara-screenshot'
-  gem 'capybara'
   gem 'codeclimate-test-reporter', require: nil
-  gem 'database_cleaner'
-  gem 'email_spec'
-  gem 'factory_girl_rails'
-  gem 'fake_ftp'
-  gem 'pusher-fake'
-  gem 'rspec_junit_formatter'
-  gem 'rspec-activemodel-mocks'
-  gem 'rspec-collection_matchers'
-  gem 'rspec-instafail'
-  gem 'rspec-its'
-  gem 'rspec-rails'
-  gem 'selenium-webdriver'
-  gem 'simplecov'
-  gem 'test_after_commit'
-  gem 'thin'
-  gem 'timecop'
-  gem 'vcr'
-  gem 'webmock'
 end

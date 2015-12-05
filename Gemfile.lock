@@ -508,9 +508,6 @@ GEM
       rspec-support (~> 3.3.0)
     rspec-instafail (0.4.0)
       rspec
-    rspec-its (1.2.0)
-      rspec-core (>= 3.0.0)
-      rspec-expectations (>= 3.0.0)
     rspec-mocks (3.3.2)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.3.0)
@@ -679,7 +676,6 @@ DEPENDENCIES
   rspec-activemodel-mocks
   rspec-collection_matchers
   rspec-instafail
-  rspec-its
   rspec-rails
   rspec_junit_formatter
   rubocop

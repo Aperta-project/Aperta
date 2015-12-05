@@ -58,7 +58,7 @@ gem 'twitter-text'
 gem 'uglifier'
 gem 'unf'
 # We need any version of yaml_db after 0.3.0 since it will namespace SerializationHelper
-gem 'yaml_db', github: 'yamldb/yaml_db', ref: 'f980a67dfcfef76824676f3938b176b68c260e68' 
+gem 'yaml_db', github: 'yamldb/yaml_db', ref: 'f980a67dfcfef76824676f3938b176b68c260e68'
 
 group :staging, :production do
   gem 'heroku-deflater'
@@ -83,7 +83,6 @@ group :development, :test do
   gem 'rspec-activemodel-mocks'
   gem 'rspec-collection_matchers'
   gem 'rspec-instafail'
-  gem 'rspec-its'
   gem 'rspec-rails'
   gem 'rspec_junit_formatter'
   gem 'selenium-webdriver'

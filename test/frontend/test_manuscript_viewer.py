@@ -12,10 +12,13 @@ import os
 from Base.Decorators import MultiBrowserFixture
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Pages.login_page import LoginPage
-from Base.Resources import login_valid_pw, au_login, rv_login, fm_login, ae_login, he_login, sa_login, oa_login
+from Base.Resources import login_valid_pw, au_login, rv_login, fm_login, ae_login, \
+  he_login, sa_login, oa_login, co_login
 from Base.PostgreSQL import PgSQL
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.dashboard import DashboardPage
+from Pages.workflow_page import WorkflowPage
+from Cards.initial_decision_card import InitialDecisionCard
 from frontend.common_test import CommonTest, docs
 
 users = (au_login, rv_login, ae_login, he_login, sa_login, oa_login)
@@ -28,10 +31,16 @@ class EditPaperTest(CommonTest):
      - Validate different role aware menu items
 
   AC from Aperta-5515:
-     - When the page is opened for first time, check for info box.
-     - Test closing the info box
-     - Info box appears for initial manuscript view only, whether the user closes or leaves it open
-     - Info box does not appear for Collaborators
+     1. When the page is opened for first time, check for info box.
+     2. Test closing the info box
+     3. Info box appears for initial manuscript view only, whether the user closes or leaves it open
+     4. Info box does not appear for Collaborators
+     5. Message for initial submission when there are still cards to fill
+     6. Message for initial submission when is ready for submition
+     7. Message for full submission when there are still cards to fill
+     8. Message for full submission when is ready for submition
+     9. Show "[Journal Name] submission process (?)" on top of the card stack at all times.
+     10. Clicking the question mark  opens the "[Journal Name] submission process" info box
   """
 
   def _test_validate_components_styles(self):
@@ -103,12 +112,14 @@ class EditPaperTest(CommonTest):
     """
     print('Logging in as user: {}'.format(au_login))
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(au_login)
+    login_page.enter_login_field(au_login['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
     # the following call should only succeed for sa_login
     dashboard_page = DashboardPage(self.getDriver())
     # create a new manuscript
+
+
     dashboard_page.click_create_new_submission_button()
     # We recently became slow drawing this overlay (20151006)
     time.sleep(.5)
@@ -128,10 +139,14 @@ class EditPaperTest(CommonTest):
     # Note: Request title to make sure the required page is loaded
     manuscript_page.get_paper_title_from_page()
     paper_url = manuscript_page.get_current_url()
-    print('The paper ID of this newly created paper is: ' + paper_url)
+    print('The paper ID of this newly created paper is: {}'.format(paper_url))
     paper_id = paper_url.split('papers/')[1]
     # AC1 Test for info box
     infobox = manuscript_page.get_infobox()
+    # AC5 Test for Message for initial submission
+    assert "Please provide the following information to submit your manuscript for "\
+            "Initial Submission." in manuscript_page.get_submission_status_info_text(),\
+            manuscript_page.get_submission_status_info_text()
     # AC2 Test closing the infobox
     infobox.find_element_by_id('sp-close').click()
     time.sleep(.5)
@@ -158,14 +173,99 @@ class EditPaperTest(CommonTest):
     else:
       assert False, "Infobox still open. AC3 fails"
     manuscript_page.restore_timeout()
+
+    ##dashboard_page.click_on_first_manuscript()
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    # Add a collaborator (for AC4)
+    manuscript_page.add_collaborators(co_login)
+    paper_id = manuscript_page.get_current_url().split('/')[-1]
+    # Complete IMG card to force display of submission status project
+    manuscript_page.complete_card('Figures')
+    # NOTE: At this point browser renders the page with errors only on automation runs
+    # AC 6
+    assert "Your manuscript is ready for Initial Submission." in \
+            manuscript_page.get_submission_status_info_text(),\
+            manuscript_page.get_submission_status_info_text()
+    manuscript_page.logout()
+
+    print('Logging in as user: {}'.format(co_login))
+    login_page = LoginPage(self.getDriver())
+    login_page.enter_login_field(co_login['user'])
+    login_page.enter_password_field(login_valid_pw)
+    login_page.click_sign_in_button()
+    # the following call should only succeed for sa_login
+    dashboard_page = DashboardPage(self.getDriver())
+    dashboard_page.go_to_manuscript(paper_id)
+    time.sleep(1)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.set_timeout(.5)
     # AC4 Green info box does not appear for Collaborators
-    url = self._driver.current_url
-    signout_url = url + '/users/sign_out'
-    self._driver.get(signout_url)
+    try:
+      manuscript_page.get_infobox()
+    except ElementDoesNotExistAssertionError:
+      assert True
+    else:
+      assert False, "Infobox still open. AC4 fails"
+    manuscript_page.restore_timeout()
+    """
+    manuscript_page.logout()
+    print('Logging in as user: {}'.format(au_login))
+    login_page = LoginPage(self.getDriver())
+    login_page.enter_login_field(au_login['user'])
+    login_page.enter_password_field(login_valid_pw)
+    login_page.click_sign_in_button()
+    # the following call should only succeed for sa_login
+    dashboard_page = DashboardPage(self.getDriver())
+    dashboard_page.go_to_manuscript(paper_id)
+    time.sleep(1)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    """
+    # Submit
+    manuscript_page.click_submit_btn()
+    manuscript_page.confirm_submit_btn()
+    manuscript_page.close_modal()
+    # Aprove initial Decision
+    manuscript_page.logout()
+    print('Logging in as user: {}'.format(he_login))
+    login_page = LoginPage(self.getDriver())
+    login_page.enter_login_field(he_login['user'])
+    login_page.enter_password_field(login_valid_pw)
+    login_page.click_sign_in_button()
+    # the following call should only succeed for sa_login
+    dashboard_page = DashboardPage(self.getDriver())
+    dashboard_page.go_to_manuscript(paper_id)
+    time.sleep(1)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.click_workflow_lnk()
+    workflow_page = WorkflowPage(self.getDriver())
+    workflow_page.click_card('initial_decision')
+    # time.sleep(3)
+    initial_decision = InitialDecisionCard(self.getDriver())
+    initial_decision.execute_decision('invite')
+    manuscript_page.logout()
+
+
+    time.sleep(2000000)
 
 
 
-    time.sleep(15)
+
+
+
+
+    """
+    assert ("Please provide the following information to submit your manuscript for "
+            "Full Submission." in manuscript_page.get_submission_status_info_text(),
+            manuscript_page.get_submission_status_info_text())
+
+    assert  "Your manuscript is ready for Full Submission." in \
+      manuscript_page.get_submission_status_info_text(), \
+      manuscript_page.get_submission_status_info_text()
+
+
+    """
+
+
     return self
 
   def _test_paper_download_buttons(self):

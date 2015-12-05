@@ -239,6 +239,13 @@ class AuthenticatedPage(PlosPage):
     signout_url = url.split('/')[0]+'//'+url.split('/')[2]+'/users/sign_out'
     self._driver.get(signout_url)
 
+  def go_to_manuscript(self, manuscript_id):
+    """
+    """
+    url = self._driver.current_url
+    id_url = url.split('/')[0]+'//'+url.split('/')[2]+'/papers/'+str(manuscript_id)
+    self._driver.get(id_url)
+
   def validate_ihat_conversions_success(self):
     """
     Validate ihat conversion success

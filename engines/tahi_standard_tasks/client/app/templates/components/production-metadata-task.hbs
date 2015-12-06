@@ -7,11 +7,11 @@
     <div class="inset-form-control publication-date {{if validationErrors.publicationDate "error"}}">
       {{error-message message=validationErrors.publicationDate class="inset-form-control-text"}}
       <label class="inset-form-control-text">
-        {{nested-question-display ident="production_metadata--publication_date" owner=model}}
+        {{nested-question-display ident="production_metadata--publication_date" owner=task}}
       </label>
       {{nested-question-date-picker
         ident="production_metadata--publication_date"
-        owner=model
+        owner=task
         group=group
         role="startPicker"
         displayQuestionText=false
@@ -21,13 +21,13 @@
   <div class="form-group">
     <div class="inset-form-control required volume-number {{if validationErrors.volumeNumber "error"}}">
       <label class="inset-form-control-text">
-        {{nested-question-display ident="production_metadata--volume_number" owner=model}}
+        {{nested-question-display ident="production_metadata--volume_number" owner=task}}
       </label>
       {{error-message message=validationErrors.volumeNumber class="inset-form-control-text"}}
       <label class="inset-form-control-text">Volume Number</label>
       {{nested-question-input
         ident="production_metadata--volume_number"
-        owner=model
+        owner=task
         type="number"
         displayQuestionText=false
         placeholder="e.g. 3"}}
@@ -35,12 +35,12 @@
 
     <div class="inset-form-control required issue-number {{if validationErrors.issueNumber "error"}}">
       <label class="inset-form-control-text">
-        {{nested-question-display ident="production_metadata--issue_number" owner=model}}
+        {{nested-question-display ident="production_metadata--issue_number" owner=task}}
       </label>
       {{error-message message=validationErrors.issueNumber class="inset-form-control-text"}}
       {{nested-question-input
         ident="production_metadata--issue_number"
-        owner=model
+        owner=task
         type="number"
         displayQuestionText=false
         placeholder="e.g. 33"}}
@@ -49,10 +49,10 @@
 
   <div class="production-notes">
     <label>
-      {{nested-question-display ident="production_metadata--production_notes" owner=model}}
+      {{nested-question-display ident="production_metadata--production_notes" owner=task}}
     </label>
     {{nested-question-textarea ident="production_metadata--production_notes"
-      owner=model
+      owner=task
       displayQuestionText=false
       placeholder="Add production notes here..."}}
   </div>

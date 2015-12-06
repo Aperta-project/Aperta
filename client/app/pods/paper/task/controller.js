@@ -1,8 +1,6 @@
 import Ember from 'ember';
 import SavesDelayed from 'tahi/mixins/controllers/saves-delayed';
-import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
-import ControllerParticipants from
-  'tahi/mixins/controllers/controller-participants';
+import ValidationErrors from 'tahi/mixins/validation-errors';
 
 const ABORT_CONFIRM_TEXT =
   'You are uploading, are you sure you want to abort uploading?';
@@ -11,7 +9,7 @@ const { computed } = Ember;
 const { alias, not } = computed;
 
 export default Ember.Controller.extend(
-  SavesDelayed, ControllerParticipants, ValidationErrorsMixin, Ember.Evented, {
+  SavesDelayed, ValidationErrors, Ember.Evented, {
 
   cardOverlayService: Ember.inject.service('card-overlay'),
   queryParams: ['isNewTask'],

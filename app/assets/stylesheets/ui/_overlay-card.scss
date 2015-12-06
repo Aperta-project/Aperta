@@ -36,44 +36,41 @@ $ov--card-breakpoint: 900px;
 
 .overlay--card {
   .overlay-header {
-    overflow: hidden;
+    @include display(flex);
+    @include justify-content(space-between);
+    @include align-items(flex-end);
     position: relative;
     margin: 0 $ov--card-side-pad;
     border-bottom: 1px solid #000;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    padding: 6.0rem 5px 1.0rem 5px;
+    padding: 5.0rem 5px 1.0rem 5px;
 
-    .overlay-close-button {
-      right: 0;
-      bottom: 10px;
+    .manuscript-icon {
+      position: relative;
+      top: 2px;
+      path, rect { fill: $tahi-green; }
+    }
+
+    span:first-of-type {
+      flex-grow: 1;
     }
   }
 
   .overlay-close {
+    display: none;
     @include position(absolute, 0px 0px auto auto);
     right: -#{$ov--card-side-pad};
     width: auto !important; // bootstrap/glyphicon override
-    padding: 0 2.0rem 0 1.5rem;
+    padding: 0 2.25rem 0 1.5rem;
     color: $tahi-green;
-    font-size: 6.0rem;
+    font-size: 7.0rem;
     line-height: 110%; // bootstrap override
     cursor: pointer;
     z-index: 2;
   }
 
   .overlay-header-title {
-    position: relative;
-    float: left;
-    width: 91.7%;
     margin: 0 0 2px 0;
-    padding-right: 100px;
     line-height: 0.9;
-
-    .manuscript-icon {
-      @include position(absolute, 8px auto auto 0px);
-      path, rect { fill: $tahi-green; }
-    }
   }
 
   .overlay-header-title--with-icon {
@@ -86,8 +83,8 @@ $ov--card-breakpoint: 900px;
   }
 
   .overlay-close-button {
-    position: absolute;
-    width: 8.333333333333332%;
+    padding-right: 2rem;
+    padding-left: 2rem;
   }
 }
 
@@ -135,21 +132,11 @@ $ov--card-breakpoint: 900px;
 
 .overlay--card {
   .overlay-footer {
-    overflow: hidden;
-    position: relative;
-    margin: 10px 0 0 0;
-    padding-bottom: 50px;
-  }
-
-  .overlay-footer-content {
-    position: relative;
-    margin: 0 $ov--card-side-pad;
+    @include display(flex);
+    @include justify-content(flex-end);
+    @include align-items(center);
+    margin: 10px $ov--card-side-pad 0 $ov--card-side-pad;
     border-top: 1px solid #000;
-    padding: 1.5rem 10% 1.0rem 5px;
-
-    .overlay-close-button {
-      top: 10px;
-      right: 0;
-    }
+    padding: 15px 0 50px 0;
   }
 }

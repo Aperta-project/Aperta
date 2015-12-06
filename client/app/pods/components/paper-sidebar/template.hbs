@@ -1,4 +1,6 @@
-{{#task-disclosure-group class="paper-sidebar"}}
+{{#sticky-headers class="paper-sidebar"
+                  stickySelector=".task-disclosure-heading"
+                  sectionSelector=".task-disclosure"}}
   <div class="paper-sidebar-info">
     {{#if paper.doi}}
       <div class="task-list-doi"><strong>Manuscript ID:</strong> {{paper.manuscript_id}}</div>
@@ -63,4 +65,4 @@
       {{/each}}
     </div>
   {{/if}}
-{{/task-disclosure-group}}
+{{/sticky-headers}}

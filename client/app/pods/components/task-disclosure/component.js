@@ -3,17 +3,42 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   classNameBindings: [
     ':task-disclosure',
-    'taskVisible:task-disclosure--open'
+    '_taskVisible:task-disclosure--open'
   ],
 
-  taskVisible: false,
+  /**
+   *  Should task component be rendered?
+   *
+   *  @property _taskVisible
+   *  @type Boolean
+   *  @default false
+   *  @private
+  **/
+  _taskVisible: false,
 
-  title: null,
+  /**
+   *  Text to be displayed in heading
+   *
+   *  @property title
+   *  @type String
+   *  @default ''
+   *  @required
+  **/
+  title: '',
+
+  /**
+   *  Is the task completed?
+   *
+   *  @property completed
+   *  @type Boolean
+   *  @default false
+   *  @required
+  **/
   completed: false,
 
   actions: {
     toggleVisibility() {
-      this.toggleProperty('taskVisible');
+      this.toggleProperty('_taskVisible');
     }
   }
 });

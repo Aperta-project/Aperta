@@ -1,5 +1,21 @@
 import Ember from 'ember';
 
+/**
+ *  task-load ensures the task and other required data is loaded
+ *  before rendering a child content. While data is loading, a loading
+ *  partial is displayed.
+ *
+ *  @example
+ *    {{#task-load task=task}}
+ *      {{super-important-task task=task}}
+ *    {{/task-load}}
+ *
+ *  @class TaskLoadComponent
+ *  @extends Ember.Component
+ *  @since 1.3.3
+**/
+
+
 export default Ember.Component.extend({
   dataLoading: false,
 

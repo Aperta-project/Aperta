@@ -4,13 +4,16 @@
     <div class="overlay overlay--card">
       <div class="overlay-container">
         <header class="overlay-header">
-          {{#link-to "paper.index" model.paper.id class="task-overlay-paper-title"}}
-            {{{model.paperTitle}}}
-          {{/link-to}}
-          <h1 class="overlay-header-title">
-            {{{model.title}}}
-          </h1>
-          <span class="overlay-close" {{action animateOut}}>&times;</span>
+          <span>
+            {{#link-to "paper.index" model.paper.id class="task-overlay-paper-title"}}
+              {{{model.paperTitle}}}
+            {{/link-to}}
+            <h1 class="overlay-header-title">
+              {{{model.title}}}
+            </h1>
+          </span>
+          <a class="button-secondary button--green overlay-close-button" {{action animateOut}}>Close</a>
+          <!--<span class="overlay-close" {{action animateOut}}>&times;</span>-->
         </header>
         <div class="overlay-body">
           {{component (task-component-name model.title)
@@ -18,6 +21,15 @@
                       model=model
                       close=(action animateOut)}}
         </div>
+        <footer class="overlay-footer">
+          {{participant-selector currentParticipants=participants
+                       onRemove="removeParticipant"
+                       label="Following:"
+                       paperId=model.paper.id
+                       onSelect="saveNewParticipant"}}
+          {{partial "overlay-completed-checkbox"}}
+          <a class="button-secondary button--green overlay-close-button" {{action animateOut}}>Close</a>
+        </footer>
       </div>
     </div>
   {{/overlay-animate}}

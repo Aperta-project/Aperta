@@ -1,11 +1,10 @@
 import Ember from 'ember';
-import Participants from 'tahi/mixins/controllers/controller-participants';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 const { computed } = Ember;
 const { alias } = computed;
 
-export default Ember.Component.extend(Participants, ValidationErrorsMixin, {
+export default Ember.Component.extend(ValidationErrorsMixin, {
   classNames: ['task'],
   dataLoading: true,
 

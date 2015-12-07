@@ -5,7 +5,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "first_name",
+      ident: "plos_billing.first_name",
       value_type: "text",
       text: "First Name",
       position: 1
@@ -14,7 +14,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "last_name",
+      ident: "plos_billing.last_name",
       value_type: "text",
       text: "Last Name",
       position: 2
@@ -23,7 +23,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "title",
+      ident: "plos_billing.title",
       value_type: "text",
       text: "Title",
       position: 3
@@ -32,7 +32,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "department",
+      ident: "plos_billing.department",
       value_type: "text",
       text: "Department",
       position: 4
@@ -41,7 +41,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "phone_number",
+      ident: "plos_billing.phone_number",
       value_type: "text",
       text: "Phone",
       position: 5
@@ -50,7 +50,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "email",
+      ident: "plos_billing.email",
       value_type: "text",
       text: "Email",
       position: 6
@@ -59,7 +59,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "address1",
+      ident: "plos_billing.address1",
       value_type: "text",
       text: "Address Line 1 (optional)",
       position: 7
@@ -68,7 +68,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "address2",
+      ident: "plos_billing.address2",
       value_type: "text",
       text: "Address Line 2 (optional)",
       position: 8
@@ -77,7 +77,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "city",
+      ident: "plos_billing.city",
       value_type: "text",
       text: "City",
       position: 9
@@ -86,7 +86,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "state",
+      ident: "plos_billing.state",
       value_type: "text",
       text: "State or Province",
       position: 10
@@ -95,7 +95,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "postal_code",
+      ident: "plos_billing.postal_code",
       value_type: "text",
       text: "ZIP or Postal Code",
       position: 11
@@ -104,7 +104,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "country",
+      ident: "plos_billing.country",
       value_type: "text",
       text: "Country",
       position: 12
@@ -113,7 +113,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "affiliation1",
+      ident: "plos_billing.affiliation1",
       value_type: "text",
       text: "Affiliation #1",
       position: 13
@@ -122,7 +122,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "affiliation2",
+      ident: "plos_billing.affiliation2",
       value_type: "text",
       text: "Affiliation #2",
       position: 14
@@ -131,7 +131,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "payment_method",
+      ident: "plos_billing.payment_method",
       value_type: "text",
       text: "How would you like to pay?",
       position: 15
@@ -140,7 +140,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "pfa_question_1",
+      ident: "plos_billing.pfa_question_1",
       value_type: "boolean",
       text: "Have you investigated if funding is available from your co-authors' institutions to pay the publication fee?",
       position: 16
@@ -149,7 +149,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "pfa_question_1a",
+      ident: "plos_billing.pfa_question_1a",
       value_type: "text",
       text: "If your co-authors' institutions will not provide any funding to publish the article, indicate why.",
       position: 17
@@ -158,7 +158,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "pfa_question_1b",
+      ident: "plos_billing.pfa_question_1b",
       value_type: "text",
       text: "If your coauthors' institutions will provide partial funding to publish the article, indicate the amount they will pay towards your publication fee (in USD).",
       position: 18
@@ -167,7 +167,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "pfa_question_2",
+      ident: "plos_billing.pfa_question_2",
       value_type: "boolean",
       text: "Have you investigated if funding is available from your institution to pay the publication fee?",
       position: 19
@@ -176,7 +176,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "pfa_question_2a",
+      ident: "plos_billing.pfa_question_2a",
       value_type: "text",
       text: "If your institution cannot provide any funding to publish the article, indicate why.",
       position: 20
@@ -185,7 +185,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "pfa_question_2b",
+      ident: "plos_billing.pfa_question_2b",
       value_type: "text",
       text: "If your institution will provide partial funding to publish the article, indicate the amount it will pay toward your publication fee (in USD).",
       position: 21
@@ -194,7 +194,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "pfa_question_3",
+      ident: "plos_billing.pfa_question_3",
       value_type: "boolean",
       text: "Do your co-authors have any other sources of funding that can be used towards the publication fee?",
       position: 22
@@ -203,7 +203,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "pfa_question_3a",
+      ident: "plos_billing.pfa_question_3a",
       value_type: "text",
       text: "Indicate the amount that they can pay (in USD).",
       position: 23
@@ -212,7 +212,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "pfa_question_4",
+      ident: "plos_billing.pfa_question_4",
       value_type: "boolean",
       text: "Do you have any other sources of funding that can be used towards the publication fee?",
       position: 24
@@ -221,7 +221,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "pfa_question_4a",
+      ident: "plos_billing.pfa_question_4a",
       value_type: "text",
       text: "Indicate the amount that they can pay (in USD).",
       position: 25
@@ -230,7 +230,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "pfa_amount_to_pay",
+      ident: "plos_billing.pfa_amount_to_pay",
       value_type: "text",
       text: "Given your answers to the above questions on your funding availability, what is the amount that you and your co-authors can jointly pay for publication? (Specify in USD.)",
       position: 26
@@ -239,7 +239,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "pfa_supporting_docs",
+      ident: "plos_billing.pfa_supporting_docs",
       value_type: "boolean",
       text: "If you would like to provide documents to assist in demonstrating your request, you will have the opportunity to do so. After PLOS has received the completed application, the confirmation email will provide direction on where to send supplemental documents. Do you intend to supply supplemental documents?",
       position: 27
@@ -248,7 +248,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "pfa_amount_to_pay",
+      ident: "plos_billing.pfa_amount_to_pay",
       value_type: "text",
       text: "Given your answers to the above questions on your funding availability, what is the amount that you and your co-authors can jointly pay for publication? (Specify in USD.)",
       position: 28
@@ -257,7 +257,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "pfa_additional_comments",
+      ident: "plos_billing.pfa_additional_comments",
       value_type: "text",
       text: "If you wish to make additional comments to support your request, provide them below. If you have no additional comments, enter \"None\" in the box.",
       position: 29
@@ -266,7 +266,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "affirm_true_and_complete",
+      ident: "plos_billing.affirm_true_and_complete",
       value_type: "boolean",
       text: "You are acknowledging that you have read and agree to the following statement: I affirm that the information provided in this application is true and complete.",
       position: 30
@@ -275,7 +275,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "agree_to_collections",
+      ident: "plos_billing.agree_to_collections",
       value_type: "boolean",
       text: "I have read and agree to the Terms of Submission to PLOS Collections",
       position: 31
@@ -284,7 +284,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "gpi_country",
+      ident: "plos_billing.gpi_country",
       value_type: "text",
       text: "Global Participation Initiative Country",
       position: 32
@@ -293,7 +293,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: PlosBilling::BillingTask.name,
-      ident: "ringgold_institution",
+      ident: "plos_billing.ringgold_institution",
       value_type: "text",
       text: "Ringgold Institution",
       position: 33

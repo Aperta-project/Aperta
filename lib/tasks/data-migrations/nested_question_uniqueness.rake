@@ -154,6 +154,200 @@ namespace :data do
               to: "financial_disclosures.author_received_funding",
               children: []
             },
+
+
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "first_name",
+              to: "plos_billing.first_name",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "last_name",
+              to: "plos_billing.last_name",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "title",
+              to: "plos_billing.title",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "department",
+              to: "plos_billing.department",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "phone_number",
+              to: "plos_billing.phone_number",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "email",
+              to: "plos_billing.email",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "address1",
+              to: "plos_billing.address1",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "address2",
+              to: "plos_billing.address2",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "city",
+              to: "plos_billing.city",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "state",
+              to: "plos_billing.state",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "postal_code",
+              to: "plos_billing.postal_code",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "country",
+              to: "plos_billing.country",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "affiliation1",
+              to: "plos_billing.affiliation1",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "affiliation2",
+              to: "plos_billing.affiliation2",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "payment_method",
+              to: "plos_billing.payment_method",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "pfa_question_1",
+              to: "plos_billing.pfa_question_1",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "pfa_question_1a",
+              to: "plos_billing.pfa_question_1a",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "pfa_question_1b",
+              to: "plos_billing.pfa_question_1b",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "pfa_question_2",
+              to: "plos_billing.pfa_question_2",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "pfa_question_2a",
+              to: "plos_billing.pfa_question_2a",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "pfa_question_2b",
+              to: "plos_billing.pfa_question_2b",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "pfa_question_3",
+              to: "plos_billing.pfa_question_3",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "pfa_question_3a",
+              to: "plos_billing.pfa_question_3a",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "pfa_question_4",
+              to: "plos_billing.pfa_question_4",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "pfa_question_4a",
+              to: "plos_billing.pfa_question_4a",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "pfa_amount_to_pay",
+              to: "plos_billing.pfa_amount_to_pay",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "pfa_supporting_docs",
+              to: "plos_billing.supporting_docs",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "pfa_additional_comments",
+              to: "plos_billing.pfa_additional_comments",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "affirm_true_and_complete",
+              to: "plos_billing.affirm_true_and_complete",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "agree_to_collections",
+              to: "plos_billing.agree_to_collections",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "gpi_country",
+              to: "plos_billing.gpi_country",
+              children: []
+            },
+            {
+              type: PlosBilling::BillingTask.name,
+              from: "ringgold_institution",
+              to: "plos_billing.ringgold_institution",
+              children: []
+            },
         ]
 
         NestedQuestionConverter.new(conversions, dry_run: false).convert

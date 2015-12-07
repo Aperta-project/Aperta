@@ -1,4 +1,4 @@
-{{inline-edit-h1 title=model.title setTitle="setTitle"}}
+{{inline-edit-h1 title=task.title setTitle="setTitle"}}
 
 <div class="task-body">
   {{#each uploads as |upload|}}
@@ -21,7 +21,7 @@
                            overlayParticipants=participants
                            emailSentStates=emailSentStates
                            isNew=false
-                           saveModel=(action "saveModel")
+                           saveModel=(action "save")
                            deleteBlock=(action "deleteBlock")
                            deleteItem=(action "deleteItem")
                            sendEmail=(action "sendEmail")}}
@@ -45,7 +45,7 @@
                            overlayParticipants=participants
                            emailSentStates=emailSentStates
                            isNew=true
-                           saveModel=(action "saveModel")
+                           saveModel=(action "save")
                            deleteBlock=(action "deleteBlock")
                            deleteItem=(action "deleteItem")
                            sendEmail=(action "sendEmail")}}
@@ -53,10 +53,10 @@
     {{/inline-edit-body-part}}
   {{/each}}
 
-  {{#each model.attachments as |attachment|}}
+  {{#each task.attachments as |attachment|}}
     {{attachment-thumbnail attachment=attachment
                            destroyAttachment="destroyAttachment"
-                           isEditable=model.paper.editable}}
+                           isEditable=task.paper.editable}}
   {{/each}}
 </div>
 

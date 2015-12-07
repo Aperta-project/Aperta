@@ -1,38 +1,38 @@
+import TaskComponent from 'tahi/pods/components/task-base/component';
 import Ember from 'ember';
-import TaskController from 'tahi/pods/paper/task/controller';
 import BuildsTaskTemplate from 'tahi/mixins/controllers/builds-task-template';
 import FileUploadMixin from 'tahi/mixins/file-upload';
 
-export default TaskController.extend(BuildsTaskTemplate, FileUploadMixin, {
+export default TaskComponent.extend(BuildsTaskTemplate, FileUploadMixin, {
   restless: Ember.inject.service('restless'),
   blocks: Ember.computed.alias('model.body'),
 
   imageUploadUrl: Ember.computed('model.id', function() {
-    return '/api/tasks/' + (this.get('model.id')) + '/attachments';
+    return '/api/tasks/' + this.get('model.id') + '/attachments';
   }),
 
   actions: {
     setTitle(title) {
       this._super(title);
-      this.send('saveModel');
+      this.send('save');
     },
 
     saveBlock(block) {
       this._super(block);
-      this.send('saveModel');
+      this.send('save');
     },
 
     deleteBlock(block) {
       this._super(block);
       if (!this.isNew(block)) {
-        this.send('saveModel');
+        this.send('save');
       }
     },
 
     deleteItem(item, block) {
       this._super(item, block);
       if (!this.isNew(block)) {
-        this.send('saveModel');
+        this.send('save');
       }
     },
 
@@ -41,7 +41,7 @@ export default TaskController.extend(BuildsTaskTemplate, FileUploadMixin, {
         task: data
       });
 
-      this.send('saveModel');
+      this.send('save');
     },
 
     destroyAttachment(attachment) {
@@ -49,10 +49,12 @@ export default TaskController.extend(BuildsTaskTemplate, FileUploadMixin, {
     },
 
     uploadFinished(data, filename) {
-      this.uploadFinished(data, filename);
-      this.store.pushPayload('attachment', data);
+      const store = this.container.lookup('store:main');
 
-      let attachment = this.store.getById('attachment', data.attachment.id);
+      this.uploadFinished(data, filename);
+      store.pushPayload('attachment', data);
+
+      const attachment = store.getById('attachment', data.attachment.id);
       this.get('model.attachments').pushObject(attachment);
     }
   }

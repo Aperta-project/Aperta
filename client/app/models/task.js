@@ -41,10 +41,7 @@ export default NestedQuestionOwner.extend(CardThumbnailObserver, {
     return this.get('paper.displayTitle');
   }),
 
-  getSnapshotForVersion: function(majorVersion, minorVersion) {
-    return this.get('snapshots').find(function(snapshot) {
-      return (snapshot.get('majorVersion') === Number(majorVersion) &&
-              snapshot.get('minorVersion') === Number(minorVersion));
-    });
+  getSnapshotForVersion: function(fullVersion) {
+    return this.get('snapshots').findBy('fullVersion', fullVersion);
   }
 });

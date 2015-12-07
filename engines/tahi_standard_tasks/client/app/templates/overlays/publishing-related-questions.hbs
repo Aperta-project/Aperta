@@ -1,6 +1,14 @@
 <h1>Publishing Related Questions</h1>
 
 <ol class="question-list">
+
+HELLO
+  {{html-diff
+    default=model.body
+    comparisonText='<p>hello</p>'
+    viewingText='<p>helobello</p>'}}
+HELLO
+
   <li class="question">
   {{#nested-question-radio ident="published_elsewhere"
                     owner=model

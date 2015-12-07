@@ -16,6 +16,7 @@ export default Ember.Route.extend({
     let redirectOptions = this.get('cardOverlayService.previousRouteOptions');
     let taskController = this.controllerFor('overlays/versioned_metadata');
     this.set('taskController', taskController);
+
     taskController.setProperties({
       model: model,
       selectedVersion1: this.get('params.selectedVersion1'),

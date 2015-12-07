@@ -1,0 +1,13 @@
+.text-diff {
+  .added {
+    background-color: rgba($tahi-green-light, .5);
+    padding: 1px;
+  }
+
+  .removed {
+    opacity: .8;
+    background-color: rgba($tahi-red-light, .5);
+    padding: 1px;
+    text-decoration: line-through;
+  }
+}

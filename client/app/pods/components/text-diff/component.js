@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  classNames: ['html-diff'],
+  classNames: ['text-diff'],
 
   // This is the text of the version being viewed (left dropdown)
   viewingText: null,

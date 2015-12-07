@@ -100,7 +100,16 @@ namespace :data do
               from: "identity",
               to: "reviewer_report.identity",
               children: []
-            }
+            },
+
+            {
+              type: TahiStandardTasks::Funder.name,
+              from: "funder_had_influence",
+              to: "funder.had_influence",
+              children: [
+                { from: "funder_role_description", to: "funder.had_influence.role_description" },
+              ]
+            },
         ]
 
         NestedQuestionConverter.new(conversions, dry_run: false).convert

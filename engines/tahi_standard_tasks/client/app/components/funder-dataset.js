@@ -18,7 +18,7 @@ export default  Ember.Component.extend({
 
   setFunderRoleDescriptionAnswer: function(value){
     let model = this.get('model');
-    let answer = model.answerForQuestion('funder_role_description');
+    let answer = model.answerForQuestion('funder.had_influence.role_description');
     answer.set('value', value);
     answer.save();
   },

@@ -8,7 +8,7 @@ $ov--card-breakpoint: 900px;
   // TODO: This needs another home:
   h1 {
     margin: 0 0 1em 0;
-    font-size: 48px;
+    font-size: 4.8rem;
   }
 
   .overlay-container {
@@ -78,7 +78,7 @@ $ov--card-breakpoint: 900px;
   }
 
   .overlay-header-link {
-    font-size: 18px;
+    font-size: 1.8rem;
     &:hover { text-decoration: none; } // override global Aperta anchor style
   }
 
@@ -93,9 +93,17 @@ $ov--card-breakpoint: 900px;
     margin-right: $ov--card-side-pad / 2;
     margin-left:  $ov--card-side-pad / 2;
   }
+}
 
-  .overlay--card .overlay-close {
-    right: -#{$ov--card-side-pad/2};
+@media only screen and (max-width: 650px) {
+  .overlay--card .overlay-header .overlay-header-title {
+    font-size: 3.6rem;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .overlay--card .overlay-header .overlay-header-title {
+    font-size: 2.4rem;
   }
 }
 
@@ -104,8 +112,7 @@ $ov--card-breakpoint: 900px;
 .overlay--card {
   .overlay-body {
     position: relative;
-    min-height: 25rem;
-    padding: 4.0rem $ov--card-side-pad 1rem $ov--card-side-pad;
+    padding: 4rem $ov--card-side-pad;
 
 
     // TODO: These need another home:
@@ -138,5 +145,12 @@ $ov--card-breakpoint: 900px;
     margin: 10px $ov--card-side-pad 0 $ov--card-side-pad;
     border-top: 1px solid #000;
     padding: 15px 0 50px 0;
+  }
+}
+
+@media only screen and (max-width: $ov--card-breakpoint) {
+  .overlay--card .overlay-footer {
+    margin-right: $ov--card-side-pad / 2;
+    margin-left:  $ov--card-side-pad / 2;
   }
 }

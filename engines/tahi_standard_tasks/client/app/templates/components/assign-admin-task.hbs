@@ -1,12 +1,16 @@
-<label for="admin">Admin</label>
+{{partial "task-completed-section"}}
 
-{{select-2-single class="admin-select2"
-                  minimumInputLength=3
-                  placeholder="Select admin"
-                  name="assign_admin"
-                  remoteSource=select2RemoteSource
-                  resultsTemplate=resultsTemplate
-                  selectedData=task.admin
-                  selectedTemplate=resultsTemplate
-                  selectionSelected="assignAdmin"
-                  value=""}}
+<div class="task-main-content">
+  <label for="admin">Admin</label>
+
+  {{select-2-single class="admin-select2"
+                    minimumInputLength=3
+                    placeholder="Select admin"
+                    name="assign_admin"
+                    remoteSource=select2RemoteSource
+                    resultsTemplate=resultsTemplate
+                    selectedData=task.admin
+                    selectedTemplate=resultsTemplate
+                    selectionSelected="assignAdmin"
+                    value=""}}
+</div>

@@ -147,6 +147,13 @@ namespace :data do
               to: "figures.complies",
               children: []
             },
+
+            {
+              type: TahiStandardTasks::FinancialDisclosureTask.name,
+              from: "author_received_funding",
+              to: "financial_disclosures.author_received_funding",
+              children: []
+            },
         ]
 
         NestedQuestionConverter.new(conversions, dry_run: false).convert

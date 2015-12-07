@@ -4,13 +4,13 @@ import TaskComponent from 'tahi/pods/components/task-base/component';
 const { computed } = Ember;
 
 export default TaskComponent.extend({
-  autoSuggestSourceUrl: computed('model.paper.id', function() {
-    return '/api/filtered_users/uninvited_users/' + this.get('model.paper.id');
+  autoSuggestSourceUrl: computed('task.paper.id', function() {
+    return '/api/filtered_users/uninvited_users/' + this.get('task.paper.id');
   }),
 
   selectedReviewer: null,
   composingEmail: false,
-  decisions: computed.alias('model.paper.decisions'),
+  decisions: computed.alias('task.paper.decisions'),
 
   customEmail: 'test@lvh.me',
 
@@ -28,7 +28,7 @@ export default TaskComponent.extend({
 
   setLetterTemplate() {
     let body, salutation, template;
-    template = this.get('model.invitationTemplate');
+    template = this.get('task.invitationTemplate');
     if (template.salutation && this.get('selectedReviewer.full_name')) {
       salutation = this.applyTemplateReplacements(template.salutation) + '\n\n';
     } else {
@@ -78,7 +78,7 @@ export default TaskComponent.extend({
         return;
       }
       return this.store.createRecord('invitation', {
-        task: this.get('model'),
+        task: this.get('task'),
         email: this.get('selectedReviewer.email'),
         body: this.get('invitationBody')
       }).save().then((invitation) => {

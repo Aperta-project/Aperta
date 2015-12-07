@@ -1,7 +1,5 @@
-<h1>Assign Team</h1>
-
 <div class="invite-reviewer-text">
-  <div class='invite-reviewers'>
+  <div class="invite-reviewers">
     <span class="assign_team_select2_container assign_team_select2_container_first">
       <label for="role">Role</label>
       {{select-2-single minimumInputLength=0
@@ -31,16 +29,17 @@
   </div>
 
   <table class="invitees">
-    <tbody class='active-invitations'>
-      {{#each model.assignments as |assignment|}}
-        <tr class='invitation'>
-          <td><span>{{user-thumbnail user=assignment.user classNames='invitee-thumbnail'}}</span></td>
-          <td><span class='invitee-full-name'>{{assignment.user.name}}</span> has been assigned as {{assignment.role}}</td>
-          <td><span class='invitation-updated-at'>{{format-date assignment.createdAt format='LLL'}}</span></td>
-          <td><span class='invitation-state'>Assigned</span></td>
-          <td><span class='fa fa-trash invite-reviewer-remove' {{action 'destroyAssignment' assignment}}></span></td>
+    <tbody class="active-invitations">
+      {{#each task.assignments as |assignment|}}
+        <tr class="invitation">
+          <td><span>{{user-thumbnail user=assignment.user classNames="invitee-thumbnail"}}</span></td>
+          <td><span class="invitee-full-name">{{assignment.user.name}}</span> has been assigned as {{assignment.role}}</td>
+          <td><span class="invitation-updated-at">{{format-date assignment.createdAt format="LLL"}}</span></td>
+          <td><span class="invitation-state">Assigned</span></td>
+          <td><span class="fa fa-trash invite-reviewer-remove" {{action "destroyAssignment" assignment}}></span></td>
         </tr>
       {{/each}}
     </tbody>
   </table>
 </div>
+

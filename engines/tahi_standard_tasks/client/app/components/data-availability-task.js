@@ -10,5 +10,5 @@ export default TaskComponent.extend({
   fullyAvailableQuestion: Ember.computed('task', function(){
     return this.get('task')
                .findQuestion('data_availability--data_fully_available');
-  }),
+  })
 });

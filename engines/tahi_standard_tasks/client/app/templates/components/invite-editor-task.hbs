@@ -1,5 +1,3 @@
-<h1>Invite Editor</h1>
-
 <div class="invite-editor-text">
   {{#if composingEmail}}
     <div class="invite-reviewer-edit-invite">
@@ -29,27 +27,28 @@
           placeholder="Select editor"
           remoteSource=select2RemoteSource
           resultsTemplate=resultsTemplate
-          selectedData=model.editor
+          selectedData=task.editor
           selectedTemplate=resultsTemplate
           selectionSelected="didSelectEditor"
           value=""}}
       <button class="button-primary button--green compose-invite-button" {{action "composeInvite"}}>Compose Invite</button>
     {{else}}
-      {{#if model.editor}}
+      {{#if task.editor}}
         {{user-thumbnail user=editor}}
-        {{model.editor.name}}&nbsp;is now the Editor.
+        {{task.editor.name}}&nbsp;is now the Editor.
         <div class="fa fa-trash invite-editor-remove" {{action "removeEditor"}}></div>
       {{else}}
         {{#if hasRejectedInvitation}}
-          <p>{{model.invitation.email}} has declined this invitation.</p>
+          <p>{{task.invitation.email}} has declined this invitation.</p>
           <button {{action "destroyInvitation"}}  class="button-primary button--green">Invite new editor</button>
         {{/if}}
 
         {{#if hasInvitedInvitation}}
-          <p class="invited-editor">{{model.invitation.email}} has been invited to be Editor on this manuscript.</p>
+          <p class="invited-editor">{{task.invitation.email}} has been invited to be Editor on this manuscript.</p>
           <button {{action "destroyInvitation"}}  class="button-primary button--green">Withdraw invitation</button>
         {{/if}}
       {{/if}}
     {{/if}}
   {{/if}}
 </div>
+

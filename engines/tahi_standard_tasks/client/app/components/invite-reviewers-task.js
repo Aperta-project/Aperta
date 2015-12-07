@@ -1,24 +1,24 @@
 import Ember from 'ember';
-import TaskController from 'tahi/pods/paper/task/controller';
+import TaskComponent from 'tahi/pods/components/task-base/component';
 
 const { computed } = Ember;
 
-export default TaskController.extend({
+export default TaskComponent.extend({
   autoSuggestSourceUrl: computed('model.paper.id', function() {
-    return "/api/filtered_users/uninvited_users/" + this.get('model.paper.id');
+    return '/api/filtered_users/uninvited_users/' + this.get('model.paper.id');
   }),
 
   selectedReviewer: null,
   composingEmail: false,
   decisions: computed.alias('model.paper.decisions'),
 
-  customEmail: "test@lvh.me",
+  customEmail: 'test@lvh.me',
 
   latestDecision: computed('decisions', 'decisions.@each.isLatest', function() {
     return this.get('decisions').findBy('isLatest', true);
   }),
 
-  applyTemplateReplacements: function(str) {
+  applyTemplateReplacements(str) {
     let reviewerName = this.get('selectedReviewer.full_name');
     if (reviewerName) {
       str = str.replace(/\[REVIEWER NAME\]/g, reviewerName);
@@ -26,29 +26,29 @@ export default TaskController.extend({
     return str.replace(/\[YOUR NAME\]/g, this.get('currentUser.fullName'));
   },
 
-  setLetterTemplate: function() {
+  setLetterTemplate() {
     let body, salutation, template;
     template = this.get('model.invitationTemplate');
     if (template.salutation && this.get('selectedReviewer.full_name')) {
-      salutation = this.applyTemplateReplacements(template.salutation) + "\n\n";
+      salutation = this.applyTemplateReplacements(template.salutation) + '\n\n';
     } else {
-      salutation = "";
+      salutation = '';
     }
 
     if (template.body) {
       body = this.applyTemplateReplacements(template.body);
     } else {
-      body = "";
+      body = '';
     }
-    return this.set('invitationBody', "" + salutation + body);
+    return this.set('invitationBody', '' + salutation + body);
   },
 
-  parseUserSearchResponse: function(response) {
+  parseUserSearchResponse(response) {
     return response.filtered_users;
   },
 
-  displayUserSelected: function(user) {
-    return user.full_name + " [" + user.email + "]";
+  displayUserSelected(user) {
+    return user.full_name + ' [' + user.email + ']';
   },
 
   actions: {

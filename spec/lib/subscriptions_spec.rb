@@ -7,12 +7,12 @@ describe Subscriptions do
     class NeilDegrassTyson; end
   end
 
-  before(:context) do
+  before(:each) do
     @config = Subscriptions.current_configuration
     Subscriptions.reset
   end
 
-  after(:context) do
+  after(:each) do
     Subscriptions.restore_configuration(@config)
   end
 

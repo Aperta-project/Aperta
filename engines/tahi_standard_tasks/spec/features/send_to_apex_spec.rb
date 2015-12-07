@@ -4,29 +4,17 @@ feature 'Send to Apex task', js: true, selenium: true do
   include SidekiqHelperMethods
 
   let!(:user) { FactoryGirl.create(:user, :site_admin) }
-  let!(:paper) { paper = FactoryGirl.create(:paper_ready_for_export) }
+  let!(:paper) { FactoryGirl.create(:paper_ready_for_export) }
   let!(:task) { FactoryGirl.create(:send_to_apex_task, paper: paper) }
   let(:dashboard_page) { DashboardPage.new }
   let(:manuscript_page) { dashboard_page.view_submitted_paper paper }
   let!(:server) { FakeFtp::Server.new(21212, 21213) }
 
   before do
-    server.start
-
-    # Gotta ignore all those amazing expiration params
-    VCR.configure do |c|
-      c.default_cassette_options = {
-        match_requests_on: [
-          :method,
-          VCR.request_matchers.uri_without_param(
-            'X-Amz-Algorithm',
-            'X-Amz-Credential',
-            'X-Amz-Date',
-            'X-Amz-Signature',
-            'X-Amz-SignedHeaders')]
-      }
+    @start_with_matcher = lambda do |request_1, request_2|
+      request_1.uri.start_with?(request_2.uri)
     end
-
+    server.start
     task.participants << user
     paper.paper_roles.create!(user: user, role: PaperRole::COLLABORATOR)
     login_as(user, scope: :user)
@@ -45,7 +33,8 @@ feature 'Send to Apex task', js: true, selenium: true do
     overlay.click_button('Send to Apex')
     overlay.ensure_apex_upload_is_pending
 
-    VCR.use_cassette('send_to_apex') do
+    VCR.use_cassette('send_to_apex',
+                     match_requests_on: [:method, @start_with_matcher]) do
       process_sidekiq_jobs
       expect(server.files).to include(paper.manuscript_id + '.zip')
     end

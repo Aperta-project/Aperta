@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://tahi-test.s3-us-west-1.amazonaws.com/uploads/versioned_text/1/about_turtles.docx?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ur-id/20151203/us-west-1/s3/aws4_request&X-Amz-Date=20151203T150232Z&X-Amz-Expires=600&X-Amz-Signature=ed76a534f59d3013efa8199245fbe95480b9f2d6014e4bb39b895b14af849872&X-Amz-SignedHeaders=host
+    uri: https://tahi-test.s3-us-west-1.amazonaws.com/uploads/versioned_text/
     body:
       encoding: US-ASCII
       string: ''

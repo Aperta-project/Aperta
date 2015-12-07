@@ -6,16 +6,14 @@
         <header class="overlay-header">
           <span>
             {{#link-to "paper.index" model.paper.id class="task-overlay-paper-title"}}
+              {{partial "svg/manuscript-icon"}}
               {{{model.paperTitle}}}
             {{/link-to}}
-            <h1 class="overlay-header-title">
-              {{{model.title}}}
-            </h1>
           </span>
           <a class="button-secondary button--green overlay-close-button" {{action animateOut}}>Close</a>
-          <!--<span class="overlay-close" {{action animateOut}}>&times;</span>-->
         </header>
         <div class="overlay-body">
+          <h1 class="overlay-body-title">{{{model.title}}}</h1>
           {{component (task-component-name model.title)
                       task=model
                       close=(action animateOut)}}

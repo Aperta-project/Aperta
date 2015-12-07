@@ -9,9 +9,14 @@
 .task-overlay-paper-title {
   position: relative;
   display: inline-block;
-  margin: 0 0 8px 0;
+  padding-left: 27px;
   font-size: 1.6rem;
   line-height: 1.2;
+
+  .manuscript-icon {
+    @include position(absolute, 2px auto auto 0px);
+    path, rect { fill: $tahi-green; }
+  }
 }
 
 @media only screen and (max-width: 600px) {

@@ -123,6 +123,23 @@ namespace :data do
               to: "data_availability.data_location",
               children: []
             },
+
+            {
+              type: TahiStandardTasks::EthicsTask.name,
+              from: "human_subjects",
+              to: "ethics.human_subjects",
+              children: [
+                { from: "participants", to: "ethics.human_subjects.participants" },
+              ]
+            },
+            {
+              type: TahiStandardTasks::EthicsTask.name,
+              from: "animal_subjects",
+              to: "ethics.animal_subjects",
+              children: [
+                { from: "field_permit", to: "ethics.animal_subjects.field_permit" },
+              ]
+            },
         ]
 
         NestedQuestionConverter.new(conversions, dry_run: false).convert

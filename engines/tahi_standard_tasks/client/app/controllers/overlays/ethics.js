@@ -4,19 +4,19 @@ import SavesQuestionsOnClose from 'tahi/mixins/saves-questions-on-close';
 
 export default TaskController.extend(SavesQuestionsOnClose, {
   humanSubjectsQuestion: Ember.computed("model", function(){
-    return this.get("model").findQuestion("human_subjects");
+    return this.get("model").findQuestion("ethics.human_subjects");
   }),
 
   participantsQuestion: Ember.computed("model", function(){
-    return this.get("model").findQuestion("human_subjects.participants");
+    return this.get("model").findQuestion("ethics.human_subjects.participants");
   }),
 
   animalSubjectsQuestion: Ember.computed("model", function(){
-    return this.get("model").findQuestion("animal_subjects");
+    return this.get("model").findQuestion("ethics.animal_subjects");
   }),
 
   fieldPermitQuestion: Ember.computed("model", function(){
-    return this.get("model").findQuestion("animal_subjects.field_permit");
+    return this.get("model").findQuestion("ethics.animal_subjects.field_permit");
   }),
 
   actions: {

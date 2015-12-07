@@ -140,6 +140,13 @@ namespace :data do
                 { from: "field_permit", to: "ethics.animal_subjects.field_permit" },
               ]
             },
+
+            {
+              type: TahiStandardTasks::FigureTask.name,
+              from: "figure_complies",
+              to: "figures.complies",
+              children: []
+            },
         ]
 
         NestedQuestionConverter.new(conversions, dry_run: false).convert

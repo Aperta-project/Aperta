@@ -78,6 +78,9 @@ class WebDriverListener(AbstractEventListener):
     ts = time()
     timestamp = datetime.fromtimestamp(ts).strftime('%Y%m%d-%H%M%S')
     path = dirname(abspath(getfile(WebDriverListener)))
+    print(path)
+    print(exception.__class__.__name__)
+    print(timestamp)
     return '%s/../Output/%s-%s.png' % (path, exception.__class__.__name__, timestamp)
 
   def _friendly_tag_name(self, element):

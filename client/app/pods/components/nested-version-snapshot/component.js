@@ -6,11 +6,12 @@ export default Ember.Component.extend({
   classNames: ['snapshot'],
 
   generalCase: Ember.computed.not('specialCase'),
-  specialCase: Ember.computed.or('author', 'figure', 'supportingInfo', 'funder'),
+  specialCase: Ember.computed.or(
+    'author', 'figure', 'supportingInfo', 'funder'),
 
   raw: Ember.computed('snapshot1.type', function(){
     let type = this.get('snapshot1.type');
-    return type == 'text' || type === 'integer';
+    return type === 'text' || type === 'integer';
   }),
 
   boolean: Ember.computed('snapshot1.type', function(){
@@ -39,6 +40,14 @@ export default Ember.Component.extend({
 
   funder: Ember.computed('snapshot1.name', function(){
     return this.get('snapshot1.name') === 'funder';
-  })
+  }),
 
+  children: Ember.computed(
+    'snapshot1.children',
+    'snapshot2.children',
+    function(){
+      return _.zip(
+        this.get('snapshot1.children'),
+        this.get('snapshot2.children'));
+    })
 });

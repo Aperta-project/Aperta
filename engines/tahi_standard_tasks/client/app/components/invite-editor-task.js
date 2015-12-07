@@ -1,31 +1,33 @@
-import TaskController from 'tahi/pods/paper/task/controller';
-import Select2Assignees from 'tahi/mixins/controllers/select-2-assignees';
 import Ember from 'ember';
+import TaskComponent from 'tahi/pods/components/task-base/component';
+import Select2Assignees from 'tahi/mixins/controllers/select-2-assignees';
 
 const { computed } = Ember;
 
-export default TaskController.extend(Select2Assignees, {
+export default TaskComponent.extend(Select2Assignees, {
   restless: Ember.inject.service('restless'),
   selectedUser: null,
   composingEmail: false,
 
-  hasInvitedInvitation: computed.equal('model.invitation.state', 'invited'),
-  hasRejectedInvitation: computed.equal('model.invitation.state', 'rejected'),
+  hasInvitedInvitation: computed.equal('task.invitation.state', 'invited'),
+  hasRejectedInvitation: computed.equal('task.invitation.state', 'rejected'),
 
-  showEditorSelect: computed('model.editor', 'model.invitation', 'model.invitation.state', function(){
-    if (this.get('model.editor')) {
-      return false;
-    } else if (Ember.isEmpty(this.get('model.invitation'))) {
-      return true;
-    } else {
-      return this.get('model.invitation.state') === "accepted";
+  showEditorSelect: computed(
+    'task.editor', 'task.invitation', 'task.invitation.state', function() {
+      if (this.get('task.editor')) {
+        return false;
+      } else if (Ember.isEmpty(this.get('task.invitation'))) {
+        return true;
+      } else {
+        return this.get('task.invitation.state') === 'accepted';
+      }
     }
-  }),
+  ),
 
   select2RemoteSource: computed('select2RemoteUrl', function(){
     return {
       url: this.get('select2RemoteUrl'),
-      dataType: "json",
+      dataType: 'json',
       quietMillis: 500,
       data: function(term) {
         return {
@@ -40,15 +42,12 @@ export default TaskController.extend(Select2Assignees, {
     };
   }),
 
-  select2RemoteUrl: computed('model.paper', function(){
-    return "/api/filtered_users/editors/" + (this.get('model.paper.id')) + "/";
+  select2RemoteUrl: computed('task.paper', function(){
+    return '/api/filtered_users/editors/' + (this.get('task.paper.id')) + '/';
   }),
 
-  template: computed.alias('model.invitationTemplate'),
-
   setLetterTemplate: function() {
-    let customTemplate;
-    customTemplate = this.get('template').
+    const customTemplate = this.get('task.invitationTemplate').
       replace(/\[EDITOR NAME\]/, this.get('selectedUser.fullName')).
       replace(/\[YOUR NAME\]/, this.get('currentUser.fullName'));
     return this.set('updatedTemplate', customTemplate);
@@ -75,33 +74,38 @@ export default TaskController.extend(Select2Assignees, {
     },
 
     removeEditor() {
-      let promises = [],
-          deleteUrl = "/api/papers/" + (this.get('model.paper.id')) + "/editor";
+      const promises = [],
+            deleteUrl = '/api/papers/' + (this.get('task.paper.id')) + '/editor';
+
       promises.push(this.get('restless').delete(deleteUrl));
-      if (this.get('model.invitation')) {
-        promises.push(this.get('model.invitation').destroyRecord());
+
+      if (this.get('task.invitation')) {
+        promises.push(this.get('task.invitation').destroyRecord());
       }
       return Ember.RSVP.all(promises).then(() => {
-        var editor = this.get('model')._relationships.editor;
+        const editor = this.get('task')._relationships.editor;
         return editor.setCanonicalRecord(null);
       });
     },
+
     setLetterBody() {
-      this.set('model.body', [this.get('updatedTemplate')]);
-      this.model.save();
+      this.set('task.body', [this.get('updatedTemplate')]);
+      this.get('task').save();
       return this.send('inviteEditor');
     },
+
     inviteEditor() {
-      var invitation;
-      invitation = this.store.createRecord('invitation', {
-        task: this.get('model'),
+      const invitation = this.store.createRecord('invitation', {
+        task: this.get('task'),
         email: this.get('selectedUser.email')
       });
+
       invitation.save();
       return this.set('composingEmail', false);
     },
+
     destroyInvitation() {
-      return this.get('model.invitation').destroyRecord();
+      return this.get('task.invitation').destroyRecord();
     }
   }
 });

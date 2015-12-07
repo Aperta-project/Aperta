@@ -4,16 +4,11 @@ module TahiStandardTasks
   # more details.
   #
   class ApexDeliveriesController < ::ApplicationController
-    # before_action :authenticate_user!
-    # before_action :enforce_policy
+    before_action :authenticate_user!
+    before_action :enforce_policy
     respond_to :json
 
     def create
-      apex_delivery = ApexDelivery.create!(
-        paper: task.paper,
-        task: task,
-        user: current_user)
-
       ApexService.delay(retry: false)
         .make_delivery(apex_delivery_id: apex_delivery.id)
 
@@ -35,7 +30,14 @@ module TahiStandardTasks
     end
 
     def apex_delivery
-      ApexDelivery.find(params[:id])
+      if params[:id]
+        ApexDelivery.includes(:user, :paper, :task).find(params[:id])
+      else
+        ApexDelivery.create!(
+          paper: task.paper,
+          task: task,
+          user: current_user)
+      end
     end
 
     def enforce_policy

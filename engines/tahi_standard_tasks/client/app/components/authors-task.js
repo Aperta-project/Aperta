@@ -12,11 +12,6 @@ export default TaskComponent.extend({
 
   authorSort: ['position:asc'],
   sortedAuthors: computed.sort('task.authors', 'authorSort'),
-  fetchAffiliations: on('didSetupController', function() {
-    Ember.$.getJSON('/api/affiliations', (data)=> {
-      this.set('task.institutions', data.institutions);
-    });
-  }),
 
   nestedQuestionsForNewAuthor: Ember.A(),
   newAuthorQuestions: on('init', function(){

@@ -31,7 +31,6 @@
 
     {{#each sortedAuthorsWithErrors as |authorWithErrors|}}
       {{author-view isEditable=isEditable
-                    institutions=task.institutions
                     delete="removeAuthor"
                     save="saveAuthor"
                     author=authorWithErrors.model

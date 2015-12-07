@@ -110,6 +110,19 @@ namespace :data do
                 { from: "funder_role_description", to: "funder.had_influence.role_description" },
               ]
             },
+
+            {
+              type: TahiStandardTasks::DataAvailabilityTask.name,
+              from: "data_fully_available",
+              to: "data_availability.data_fully_available",
+              children: []
+            },
+            {
+              type: TahiStandardTasks::DataAvailabilityTask.name,
+              from: "data_location",
+              to: "data_availability.data_location",
+              children: []
+            },
         ]
 
         NestedQuestionConverter.new(conversions, dry_run: false).convert

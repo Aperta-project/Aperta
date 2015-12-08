@@ -122,12 +122,6 @@ RSpec.configure do |config|
     DatabaseCleaner.start
   end
 
-  config.before(:each, redis: true) do
-    DatabaseCleaner[:active_record].strategy = :truncation, { except: ['task_types', 'nested_questions'] }
-    DatabaseCleaner[:redis].strategy = :truncation
-    Sidekiq::Extensions::DelayedMailer.jobs.clear
-  end
-
   config.before(:context, redis: true) do
     DatabaseCleaner.clean_with(:truncation, except: ['task_types', 'nested_questions'])
   end

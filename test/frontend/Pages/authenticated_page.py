@@ -225,14 +225,6 @@ class AuthenticatedPage(PlosPage):
     self._get(self._nav_feedback_link).click()
     return self
 
-  def get_current_url(self):
-    """
-    Returns the url of the current page
-    :return: url
-    """
-    url = self._driver.current_url
-    return url
-
   def logout(self):
     """Logout from any page"""
     url = self._driver.current_url

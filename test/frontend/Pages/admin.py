@@ -112,7 +112,7 @@ class AdminPage(AuthenticatedPage):
       journal_paper_count = self._get(self._base_admin_journal_block_paper_count)
       journal_title = self._get(self._base_admin_journal_block_name)
       journal_desc = self._iget(self._base_admin_journal_block_desc).text
-      if len(journal_desc) == 0:
+      if not journal_desc:
         journal_desc = None
       journal_t = (journal_title.text, journal_desc, long(journal_paper_count.text.split()[0]))
       assert journal_t in db_journals, '{} not found in \n{}'.format(journal_t, db_journals)

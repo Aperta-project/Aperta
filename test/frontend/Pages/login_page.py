@@ -4,6 +4,8 @@
 Page Object Model for the Login page and the Forgot Your Password page.
 """
 
+import time
+
 from selenium.webdriver.common.by import By
 
 from authenticated_page import AuthenticatedPage, application_typeface, tahi_green, white
@@ -29,6 +31,12 @@ class LoginPage(AuthenticatedPage):
     self._remember_me_label = (By.CSS_SELECTOR, 'label.auth-remember-me')
     self._signin_button = (By.CSS_SELECTOR, '#new_user > input.button-primary.button--green.auth-signin')
     self._signup_link = (By.CLASS_NAME, 'auth-signup')
+    # CAS Related items
+    self._cas_signin = (By.CSS_SELECTOR, 'div.auth-right a.auth-cas')
+    self._cas_signup = (By.CSS_SELECTOR, 'div.auth-right a.auth-cas + a.auth-cas')
+    # ORCID Related items
+    self._orcid_signin = (By.CSS_SELECTOR, 'div.auth-right a.auth-orcid')
+    # Flash messaging
     self._alert_text = (By.CLASS_NAME, 'auth-flash--alert')
     self._notice_text = (By.CLASS_NAME, 'auth-flash--notice')
     # dashboard page locators
@@ -61,6 +69,15 @@ class LoginPage(AuthenticatedPage):
     remember_msg = self._get(self._remember_me_label).text
     assert remember_msg == 'Remember me'
     self._get(self._signup_link)
+    cas_signin = self._get(self._cas_signin)
+    # APERTA-5717
+    # self.validate_primary_big_blue_button_style(cas_signin)
+    cas_signup = self._get(self._cas_signup)
+    # APERTA-5717
+    # self.validate_secondary_big_green_button_style(cas_signup)
+    orcid_signin = self._get(self._orcid_signin)
+    # APERTA-5717
+    # self.validate_primary_big_green_button_style(orcid_signin)
 
   def enter_login_field(self, email):
     """
@@ -221,3 +238,21 @@ class LoginPage(AuthenticatedPage):
     """
     self._get(self._loggedin_nav_toggle).click()
     self._get(self._loggedin_signout_link).click()
+
+  def login_cas(self):
+    """Initiate a NED CAS Sign In request"""
+    cas_signin = self._get(self._cas_signin)
+    cas_signin.click()
+    time.sleep(3)
+
+  def signup_cas(self):
+    """Initiate a NED CAS Sign Up request"""
+    cas_signup = self._get(self._cas_signup)
+    cas_signup.click()
+    time.sleep(3)
+
+  def login_orcid(self):
+    """Initiate an ORCID Sign In request - Authorization to share login with Aperta"""
+    orcid_signin = self._get(self._orcid_signin)
+    orcid_signin.click()
+    time.sleep(3)

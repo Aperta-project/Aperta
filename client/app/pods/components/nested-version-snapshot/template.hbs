@@ -20,13 +20,11 @@
       {{#if booleanQuestion}}
         <div class="snapshot-question-answer">
           <span class="snapshot-question-label">Response: </span>
-          {{#if snapshot1.value.answer}}Yes{{else}}No{{/if}}
-          {{#if snapshot2.value.answer}}Yes{{else}}No{{/if}}
+          {{{text-diff viewingText=booleanAnswer1 comparisonText=booleanAnswer2}}}
         </div>
       {{else}}
         <div class="snapshot-question-answer">
-            {{snapshot1.value.answer}}
-            {{snapshot2.value.answer}}
+            {{{text-diff viewingText=snapshot1.value.answer comparisonText=snapshot2.value.answer}}}
         </div>
       {{/if}}
 
@@ -40,11 +38,11 @@
   {{/if}}
 
   {{#if snapshot1.children}}
-  <ol class="snapshot-children">
-    {{#each children as |child|}}
-      {{nested-version-snapshot snapshot1=child.[0] snapshot2=child.[1]}}
-    {{/each}}
-  </ol>
+    <ol class="snapshot-children">
+      {{#each children as |child|}}
+        {{nested-version-snapshot snapshot1=child.[0] snapshot2=child.[1]}}
+      {{/each}}
+    </ol>
   {{/if}}
 
 {{else}}

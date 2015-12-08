@@ -22,6 +22,22 @@ export default Ember.Component.extend({
     return this.get('snapshot1.value.answer_type') === 'boolean';
   }),
 
+  booleanAnswer1: Ember.computed('snapshot1', function() {
+    if (this.get('snapshot1.value.answer')) {
+      return 'Yes';
+    } else {
+      return 'No';
+    }
+  }),
+
+  booleanAnswer2: Ember.computed('snapshot2', function() {
+    if (this.get('snapshot2.value.answer')) {
+      return 'Yes';
+    } else {
+      return 'No';
+    }
+  }),
+
   question: Ember.computed('snapshot1.type', function(){
     return this.get('snapshot1.type') === 'question';
   }),

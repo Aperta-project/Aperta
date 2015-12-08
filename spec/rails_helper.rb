@@ -117,7 +117,6 @@ RSpec.configure do |config|
     # not using JS.
     EmberCLI.compile!
     DatabaseCleaner[:active_record].strategy = :truncation, { except: ['task_types', 'nested_questions'] }
-    DatabaseCleaner[:redis].strategy = :truncation
     Capybara.page.driver.browser.manage.window.resize_to(1500, 1000)
   end
 

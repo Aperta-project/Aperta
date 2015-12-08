@@ -109,6 +109,10 @@ RSpec.configure do |config|
   config.before(:each) do
     DatabaseCleaner[:active_record].strategy = :transaction
     DatabaseCleaner[:redis].strategy = :truncation
+    UploadServer.clear_all_uploads
+    Sidekiq::Worker.clear_all
+    DatabaseCleaner.start
+    ActionMailer::Base.deliveries.clear
   end
 
   config.before(:each, js: true) do
@@ -122,28 +126,12 @@ RSpec.configure do |config|
     Sidekiq::Extensions::DelayedMailer.jobs.clear
   end
 
-  config.before(:each) do
-    UploadServer.clear_all_uploads
-  end
-
-  config.before(:each) do
-    Sidekiq::Worker.clear_all
-  end
-
   config.before(:context, redis: true) do
     DatabaseCleaner.clean_with(:truncation, except: ['task_types', 'nested_questions'])
   end
 
-  config.before(:each) do
-    DatabaseCleaner.start
-  end
-
   config.append_after(:each) do
     DatabaseCleaner.clean
-  end
-
-  config.before(:each) do
-    ActionMailer::Base.deliveries.clear
   end
 
   config.before(:each, js: true) do

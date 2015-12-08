@@ -21,7 +21,7 @@ export default Ember.Component.extend({
   }),
 
   diff() {
-    return JsDiff.diffWords(
+    return JsDiff.diffSentences(
       this.get('comparisonText'),
       this.get('viewingText') || this.get('default'));
   }

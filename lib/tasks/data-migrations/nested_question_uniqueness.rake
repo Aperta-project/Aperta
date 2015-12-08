@@ -672,6 +672,46 @@ namespace :data do
               children: []
             },
 
+            {
+              type: TahiStandardTasks::ReportingGuidelinesTask.name,
+              from: "clinical_trial",
+              to: "reporting_guidelines.clinical_trial",
+              children: []
+            },
+            {
+              type: TahiStandardTasks::ReportingGuidelinesTask.name,
+              from: "systematic_reviews",
+              to: "reporting_guidelines.systematic_reviews",
+              children: [
+                { from: "checklist", to: "reporting_guidelines.systematic_reviews.checklist" }
+              ]
+            },
+            {
+              type: TahiStandardTasks::ReportingGuidelinesTask.name,
+              from: "meta_analyses",
+              to: "reporting_guidelines.meta_analyses",
+              children: [
+                { from: "checklist", to: "reporting_guidelines.meta_analyses.checklist" }
+              ]
+            },
+            {
+              type: TahiStandardTasks::ReportingGuidelinesTask.name,
+              from: "diagnostic_studies",
+              to: "reporting_guidelines.diagnostic_studies",
+              children: [ ]
+            },
+            {
+              type: TahiStandardTasks::ReportingGuidelinesTask.name,
+              from: "epidemiological_studies",
+              to: "reporting_guidelines.epidemiological_studies",
+              children: [ ]
+            },
+            {
+              type: TahiStandardTasks::ReportingGuidelinesTask.name,
+              from: "microarray_studies",
+              to: "reporting_guidelines.microarray_studies",
+              children: [ ]
+            },
         ]
 
         NestedQuestionConverter.new(conversions, dry_run: false).convert

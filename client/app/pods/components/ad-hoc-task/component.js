@@ -5,10 +5,10 @@ import FileUploadMixin from 'tahi/mixins/file-upload';
 
 export default TaskComponent.extend(BuildsTaskTemplate, FileUploadMixin, {
   restless: Ember.inject.service('restless'),
-  blocks: Ember.computed.alias('model.body'),
+  blocks: Ember.computed.alias('task.body'),
 
-  imageUploadUrl: Ember.computed('model.id', function() {
-    return '/api/tasks/' + this.get('model.id') + '/attachments';
+  imageUploadUrl: Ember.computed('task.id', function() {
+    return '/api/tasks/' + this.get('task.id') + '/attachments';
   }),
 
   actions: {
@@ -37,7 +37,7 @@ export default TaskComponent.extend(BuildsTaskTemplate, FileUploadMixin, {
     },
 
     sendEmail(data) {
-      this.get('restless').putModel(this.get('model'), '/send_message', {
+      this.get('restless').putModel(this.get('task'), '/send_message', {
         task: data
       });
 
@@ -55,7 +55,7 @@ export default TaskComponent.extend(BuildsTaskTemplate, FileUploadMixin, {
       store.pushPayload('attachment', data);
 
       const attachment = store.getById('attachment', data.attachment.id);
-      this.get('model.attachments').pushObject(attachment);
+      this.get('task.attachments').pushObject(attachment);
     }
   }
 });

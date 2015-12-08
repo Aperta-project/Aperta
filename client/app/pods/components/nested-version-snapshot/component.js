@@ -48,6 +48,6 @@ export default Ember.Component.extend({
     function(){
       return _.zip(
         this.get('snapshot1.children'),
-        this.get('snapshot2.children'));
+        this.get('snapshot2.children') || []);
     })
 });

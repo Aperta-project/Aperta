@@ -1,16 +1,18 @@
 <div id="versioned-metadata">
-  <div class="versioned-metadata-version"><span class="grey">Comparing</span>
+  <div class="versioned-metadata-version"><span class="grey">Viewing</span>
     <span class="versioned-metadata-version-string">
       Version {{ selectedVersion1Snapshot.versionString }}
       &mdash;
       {{format-date selectedVersion1Snapshot.createdAt format='MMM D, YYYY'}}
     </span>
-    <span class="grey">and</span>
+    {{#if selectedVersion2Snapshot}}
+    <span class="grey">comparing with</span>
     <span class="versioned-metadata-version-string">
       Version {{ selectedVersion2Snapshot.versionString }}
       &mdash;
       {{format-date selectedVersion2Snapshot.createdAt format='MMM D, YYYY'}}
     </span>
+    {{/if}}
   </div>
 
   <h2>{{model.title}}</h2>

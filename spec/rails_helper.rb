@@ -27,36 +27,6 @@ TahiPlugin.plugins.each do |gem|
   Dir[File.join(gem.full_gem_path, 'spec', 'factories', '**', '*.rb')].each { |f| require f }
 end
 
-Capybara.server_port = ENV["CAPYBARA_SERVER_PORT"]
-
-# This allows the developer to specify a path to an older, insecure firefox
-# build for use in selenium tests. The value of the environment variable should
-# be a full path to the firefox binary.
-Selenium::WebDriver::Firefox::Binary.path = ENV['SELENIUM_FIREFOX_PATH'] if
-  ENV['SELENIUM_FIREFOX_PATH']
-Capybara.register_driver :selenium do |app|
-  profile = Selenium::WebDriver::Firefox::Profile.new
-  if ENV['EMBER_DEBUG']
-    profile.add_extension("#{File.dirname(__FILE__)}/support/lib/ember_inspector-1.8.3-fx.xpi")
-  end
-  client = Selenium::WebDriver::Remote::Http::Default.new
-  client.timeout = 90
-  Capybara::Selenium::Driver.new(app, browser: :firefox, profile: profile, http_client: client)
-end
-
-Capybara.javascript_driver = :selenium
-Capybara.default_max_wait_time = 10
-Capybara.wait_on_first_by_default = true
-
-# Store screenshots in artifacts dir on circle
-if ENV['CIRCLE_TEST_REPORTS']
-  Capybara.save_and_open_page_path = "#{ENV['CIRCLE_TEST_REPORTS']}/screenshots/"
-end
-
-# Checks for pending migrations before tests are run.
-# If you are not using ActiveRecord, you can remove this line.
-ActiveRecord::Migration.maintain_test_schema! if defined?(ActiveRecord::Migration)
-
 VCR.configure do |config|
   config.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
   config.hook_into :webmock
@@ -66,6 +36,10 @@ VCR.configure do |config|
   config.ignore_hosts 'codeclimate.com'
   config.ignore_localhost = true
 end
+# Checks for pending migrations before tests are run.
+# If you are not using ActiveRecord, you can remove this line.
+ActiveRecord::Migration.maintain_test_schema! if
+  defined?(ActiveRecord::Migration)
 
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -79,7 +53,7 @@ RSpec.configure do |config|
   # The different available types are documented in the features, such as in
   # https://relishapp.com/rspec/rspec-rails/v/3-0/docs
   config.infer_spec_type_from_file_location!
-  config.order = "random"
+  config.order = 'random'
 
   config.include Devise::TestHelpers, type: :controller
   config.include FactoryGirl::Syntax::Methods
@@ -88,22 +62,10 @@ RSpec.configure do |config|
   config.include EmailSpec::Helpers
   config.include EmailSpec::Matchers
 
-  Warden.test_mode!
-
   config.before(:suite) do
     # Load question seeds before any tests start since we don't want them
     # to be rolled back as part of a transaction
-    %x{rake nested-questions:seed}
-  end
-
-  # Don't load subscriptions for unit specs
-  config.before(:each) do
-    Subscriptions.unsubscribe_all
-  end
-
-  # Load subscriptions for feature specs
-  config.before(:each, type: :feature) do
-    Subscriptions.reload
+    `rake nested-questions:seed`
     DatabaseCleaner[:active_record].strategy = :transaction
     Warden.test_mode!
   end
@@ -148,10 +110,42 @@ RSpec.configure do |config|
     # rubocop:enable Style/GlobalVars
   end
 
-  config.before(:each, js: true) do
-    # This should only be run once, but do it here so it doesn't run if we are
-    # not using JS.
+  config.before(:context, js: true) do
+    # Fix to make sure this happens only once
+    # This cannot be a :suite block, because that does not know if a js feature
+    # is being run.
+    # rubocop:disable Style/GlobalVars
+    next if $capybara_setup_done
     EmberCLI.compile!
+    Capybara.server_port = ENV['CAPYBARA_SERVER_PORT']
+
+    # This allows the developer to specify a path to an older, insecure firefox
+    # build for use in selenium tests. The value of the environment variable
+    # should be a full path to the firefox binary.
+    Selenium::WebDriver::Firefox::Binary.path = ENV['SELENIUM_FIREFOX_PATH'] if
+      ENV['SELENIUM_FIREFOX_PATH']
+    Capybara.register_driver :selenium do |app|
+      profile = Selenium::WebDriver::Firefox::Profile.new
+      client = Selenium::WebDriver::Remote::Http::Default.new
+      client.timeout = 90
+      Capybara::Selenium::Driver
+        .new(app, browser: :firefox, profile: profile, http_client: client)
+    end
+
+    Capybara.javascript_driver = :selenium
+    Capybara.default_max_wait_time = 10
+    Capybara.wait_on_first_by_default = true
+
+    # Store screenshots in artifacts dir on circle
+    if ENV['CIRCLE_TEST_REPORTS']
+      Capybara.save_and_open_page_path =
+        "#{ENV['CIRCLE_TEST_REPORTS']}/screenshots/"
+    end
+    $capybara_setup_done = true
+    # rubocop:enable Style/GlobalVars
+  end
+
+  config.before(:each, js: true) do
     # :truncation is the strategy we need to use for capybara tests, but do not
     # truncate task_types and nested_questions, we want to keep these tables
     # around.

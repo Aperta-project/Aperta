@@ -29,6 +29,11 @@ end
 
 Capybara.server_port = ENV["CAPYBARA_SERVER_PORT"]
 
+# This allows the developer to specify a path to an older, insecure firefox
+# build for use in selenium tests. The value of the environment variable should
+# be a full path to the firefox binary.
+Selenium::WebDriver::Firefox::Binary.path = ENV['SELENIUM_FIREFOX_PATH'] if
+  ENV['SELENIUM_FIREFOX_PATH']
 Capybara.register_driver :selenium do |app|
   profile = Selenium::WebDriver::Firefox::Profile.new
   if ENV['EMBER_DEBUG']

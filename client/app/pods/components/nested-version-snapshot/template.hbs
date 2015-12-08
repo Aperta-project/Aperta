@@ -1,30 +1,32 @@
 {{#if generalCase}}
   {{#if raw}}
     <div class="snapshot-text">
-      {{snapshot.value}}
+      {{text-diff viewingText=snapshot1.value viewingText=snapshot2.value}}
     </div>
   {{/if}}
 
   {{#if boolean}}
     <div class="snapshot-text">
-      <label><input type="radio" value="true" disabled>{{#if snapshot.value}}Yes{{else}}No{{/if}}.</label>
+      <label><input type="radio" value="true" disabled>
+        {{boolean-diff viewingBool=snapshot1.value comparisonBool=snapshot2.value}}
+      </label>
     </div>
   {{/if}}
 
   {{#if question}}
     <li class="snapshot-question">
         <div class="snapshot-question-question">
-        {{{text-diff viewingText=snapshot1.value.title comparisonText=snapshot2.value.title}}}
+        {{text-diff viewingText=snapshot1.value.title comparisonText=snapshot2.value.title}}
       </div>
 
       {{#if booleanQuestion}}
         <div class="snapshot-question-answer">
           <span class="snapshot-question-label">Response: </span>
-          {{{text-diff viewingText=booleanAnswer1 comparisonText=booleanAnswer2}}}
+          {{boolean-diff viewingBool=snapshot1.value.answer comparisonBool=snapshot2.value.answer}}
         </div>
       {{else}}
         <div class="snapshot-question-answer">
-            {{{text-diff viewingText=snapshot1.value.answer comparisonText=snapshot2.value.answer}}}
+            {{text-diff viewingText=snapshot1.value.answer comparisonText=snapshot2.value.answer}}
         </div>
       {{/if}}
 

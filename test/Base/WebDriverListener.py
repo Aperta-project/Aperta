@@ -2,12 +2,15 @@
 
 __author__ = 'jkrzemien@plos.org'
 
-from selenium.webdriver.support.events import AbstractEventListener
-from selenium.common.exceptions import NoSuchElementException
 from datetime import datetime
 from time import time
 from inspect import getfile
 from os.path import abspath, dirname
+
+from selenium.webdriver.support.events import AbstractEventListener
+from selenium.common.exceptions import NoSuchElementException
+
+from Base.CustomException import ElementDoesNotExistAssertionError
 
 LOG_HEADER = '\t[WebDriver %s] '
 
@@ -67,7 +70,7 @@ class WebDriverListener(AbstractEventListener):
     self._log('Navigating to %s...' % url)
 
   def on_exception(self, exception, driver):
-    if type(exception) is NoSuchElementException:
+    if type(exception) in (NoSuchElementException, ElementDoesNotExistAssertionError, AssertionError):
       self._log('The locator provided did not match any element in the page. %s' % exception.msg)
     driver.save_screenshot(self._generate_png_filename(exception))
 
@@ -78,6 +81,8 @@ class WebDriverListener(AbstractEventListener):
     ts = time()
     timestamp = datetime.fromtimestamp(ts).strftime('%Y%m%d-%H%M%S')
     path = dirname(abspath(getfile(WebDriverListener)))
+    print('Saving screenshot: ')
+    print(exception.__class__.__name__ + '-' + timestamp + '.png')
     return '%s/../Output/%s-%s.png' % (path, exception.__class__.__name__, timestamp)
 
   def _friendly_tag_name(self, element):

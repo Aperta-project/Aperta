@@ -12,7 +12,7 @@ TIMEOUT = 30         # API call timeout, in seconds
 # === WebDriver specific section ===
 
 # WebDriver's implicit timeout (in seconds)
-wait_timeout = 10
+wait_timeout = 20
 
 # WebDriver's Page Load timeout (in seconds)
 page_load_timeout = 20
@@ -128,7 +128,7 @@ Ignored when **run_against_grid** is set to **False**.
 grid_enabled_browsers = [DesiredCapabilities.FIREFOX,
                          DesiredCapabilities.INTERNETEXPLORER,
                          DesiredCapabilities.CHROME,
-                         DesiredCapabilities.SAFARI,
+#                         DesiredCapabilities.SAFARI,
 #                         IOS,
 #                         ANDROID
                          ]

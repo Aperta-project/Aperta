@@ -169,3 +169,11 @@ class PlosPage(object):
         fh.flush()
     fh.close()
     return file_name
+
+  def get_current_url(self):
+    """
+    Returns the url of the current page
+    :return: url
+    """
+    url = self._driver.current_url
+    return url

@@ -58,7 +58,7 @@ feature 'Viewing Versions:', js: true do
       page = PaperPage.new
       page.version_button.click
       wait_for_ajax
-      page.select_comparison_version(version_0)
+      page.select_viewing_version(version_0)
 
       page.view_card('Ethics', VersionedMetadataOverlay) do |overlay|
         overlay.expect_version('R0.0')
@@ -68,6 +68,19 @@ feature 'Viewing Versions:', js: true do
 
       page.view_card('Ethics', VersionedMetadataOverlay) do |overlay|
         overlay.expect_version('R1.0')
+      end
+    end
+
+    scenario 'The user compares two versions of a task', selenium: true do
+      SnapshotService.new(paper).snapshot!(task)
+      page = PaperPage.new
+      page.version_button.click
+      wait_for_ajax
+      page.select_viewing_version(version_1)
+      page.select_comparison_version(version_0)
+
+      page.view_card('Ethics', VersionedMetadataOverlay) do |overlay|
+        overlay.expect_versions('R0.0')
       end
     end
   end

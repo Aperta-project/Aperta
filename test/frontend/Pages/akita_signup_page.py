@@ -79,6 +79,14 @@ class AkitaSignupPage(PlosPage):
     assert cancel.text == 'Cancel', cancel.text
 
   def confirm_correct_url_form(self, environment_url):
+    """
+    Takes a parameter of a normative environment url from which the initial call to Akita signup page is made,
+    and ensures this is the return url present in the Akita end URL parameter.
+
+    This is currently being used in place of actually validating a NED signup as the cost of validation is very high.
+    :param environment_url: The url of the environment passed as an encoded parameter to the NED sign in URL
+    :return: void function
+    """
     signup_urlform = self.get_current_url()
     signup_urlform = signup_urlform.split('=')[1]
     signup_urlform = urllib.unquote(signup_urlform)

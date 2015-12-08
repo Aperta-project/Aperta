@@ -240,16 +240,19 @@ class LoginPage(AuthenticatedPage):
     self._get(self._loggedin_signout_link).click()
 
   def login_cas(self):
+    """Initiate a NED CAS Sign In request"""
     cas_signin = self._get(self._cas_signin)
     cas_signin.click()
     time.sleep(3)
 
   def signup_cas(self):
+    """Initiate a NED CAS Sign Up request"""
     cas_signup = self._get(self._cas_signup)
     cas_signup.click()
     time.sleep(3)
 
   def login_orcid(self):
+    """Initiate an ORCID Sign In request - Authorization to share login with Aperta"""
     orcid_signin = self._get(self._orcid_signin)
     orcid_signin.click()
     time.sleep(3)

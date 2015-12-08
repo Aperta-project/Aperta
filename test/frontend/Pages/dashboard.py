@@ -169,7 +169,7 @@ class DashboardPage(AuthenticatedPage):
       if invitation_count == 1:
         assert welcome_msg.text == 'You have 1 invitation.', welcome_msg.text
       else:
-        assert welcome_msg.text == 'You have %s invitations.' % invitation_count, \
+        assert welcome_msg.text == 'You have {0} invitations.'.format(invitation_count), \
                                    welcome_msg.text + ' ' + str(invitation_count)
       # self.validate_application_h1_style(welcome_msg)
       view_invites_btn = self._get(self._dashboard_view_invitations_btn)
@@ -349,7 +349,7 @@ class DashboardPage(AuthenticatedPage):
     # Keeping this around but commented out as it is key to debugging issues with dirty paper data
     # print(db_papers_list)
 
-    if len(db_papers_list) > 0:
+    if db_papers_list:
       count = 0
       for paper in papers:  # List of papers for section from page
         # Validate paper title display and ordering
@@ -365,7 +365,7 @@ class DashboardPage(AuthenticatedPage):
         if not title:
           raise ValueError('Error: No title in db! Illogical, Illogical, Norman Coordinate: Invalid document')
         if isinstance(title, unicode) and isinstance(paper.text, unicode):
-          assert db_title == paper_text
+          assert db_title == paper_text, unicode(title) + unicode(' is not equal to ') + unicode(paper.text)
         else:
           raise TypeError('Database title or Page title are not both unicode objects')
         # Sort out paper role display
@@ -453,12 +453,13 @@ class DashboardPage(AuthenticatedPage):
     selected_type=self._get(self._cns_paper_type_chooser)
     assert type in selected_type.text, selected_type.text  + '!=' + type
 
-  def title_generator(self, prefix='', random_bit=True):
+  @staticmethod
+  def title_generator(prefix='', random_bit=True):
     """Creates a new unique title"""
     if not prefix:
       return str(uuid.uuid4())
     elif prefix and random_bit:
-      return '%s %s'%(prefix, uuid.uuid4())
+      return '{0} {1}'.format(prefix, uuid.uuid4())
     elif prefix and not random_bit:
       return prefix
 
@@ -570,7 +571,7 @@ class DashboardPage(AuthenticatedPage):
     if os.path.isfile(fn):
       self._driver.find_element_by_id('upload-files').send_keys(fn)
     else:
-      raise IOError('Docx file: %s not found' % doc2upload)
+      raise IOError('Docx file: {0} not found'.format(doc2upload))
     self.click_upload_button()
     # TODO: Check this when fixed bug #102130748
     # self.validate_secondary_big_green_button_style(create_btn)

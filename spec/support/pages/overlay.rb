@@ -37,6 +37,11 @@ class CardOverlay < Page
     find(checkbox_selector).checked?
   end
 
+  def ensure_not_completed
+    expect(self).to have_selector(
+      'footer input[type=checkbox]:not(:checked)')
+  end
+
   def view_paper
     find('a.overlay-paper-link').click
     PaperPage.new

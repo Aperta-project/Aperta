@@ -23,9 +23,7 @@ feature 'Authors card', js: true do
         find('.author-department').send_keys('department')
         find_button('done').click
         overlay.completed_checkbox.click
-        sleep(2)
-
-        expect(overlay.completed?).to eq(false)
+        overlay.ensure_not_completed
         overlay.dismiss
 
         find_link('Authors').click

@@ -506,6 +506,85 @@ namespace :data do
               to: "plos_bio_initial_tech_check.ethics_statement",
               children: []
             },
+
+            {
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              from: "open_rejects",
+              to: "plos_bio_revision_tech_check.open_rejects",
+              children: []
+            },
+            {
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              from: "human_subjects",
+              to: "plos_bio_revision_tech_check.human_subjects",
+              children: []
+            },
+            {
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              from: "ethics_needed",
+              to: "plos_bio_revision_tech_check.ethics_needed",
+              children: []
+            },
+            {
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              from: "data_available",
+              to: "plos_bio_revision_tech_check.data_available",
+              children: []
+            },
+            {
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              from: "supporting_information",
+              to: "plos_bio_revision_tech_check.supporting_information",
+              children: []
+            },
+            {
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              from: "dryad_url",
+              to: "plos_bio_revision_tech_check.dryad_url",
+              children: []
+            },
+            {
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              from: "financial_disclosure",
+              to: "plos_bio_revision_tech_check.financial_disclosure",
+              children: []
+            },
+            {
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              from: "tobacco",
+              to: "plos_bio_revision_tech_check.tobacco",
+              children: []
+            },
+            {
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              from: "figures_legible",
+              to: "plos_bio_revision_tech_check.figures_legible",
+              children: []
+            },
+            {
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              from: "cited",
+              to: "plos_bio_revision_tech_check.cited",
+              children: []
+            },
+            {
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              from: "cover_letter",
+              to: "plos_bio_revision_tech_check.cover_letter",
+              children: []
+            },
+            {
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              from: "billing_inquiries",
+              to: "plos_bio_revision_tech_check.billing_inquiries",
+              children: []
+            },
+            {
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
+              from: "ethics_statement",
+              to: "plos_bio_revision_tech_check.ethics_statement",
+              children: []
+            },
         ]
 
         NestedQuestionConverter.new(conversions, dry_run: false).convert

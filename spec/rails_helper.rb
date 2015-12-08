@@ -94,8 +94,6 @@ RSpec.configure do |config|
     # Load question seeds before any tests start since we don't want them
     # to be rolled back as part of a transaction
     %x{rake nested-questions:seed}
-
-    DatabaseCleaner.clean_with(:truncation, except: ['task_types', 'nested_questions'])
   end
 
   # Don't load subscriptions for unit specs

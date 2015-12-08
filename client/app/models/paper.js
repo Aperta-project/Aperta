@@ -70,14 +70,6 @@ export default DS.Model.extend({
     return this.get('decisions').findBy('isLatest', true);
   }),
 
-  textForVersion: function(versionString) {
-    let versionParts = versionString.split('.');
-    return this.get('versionedTexts').find(function(version) {
-      return (version.get('majorVersion') === Number(versionParts[0]) &&
-              version.get('minorVersion') === Number(versionParts[1]));
-    });
-  },
-
   isUnsubmitted: computed.equal('publishingState', 'unsubmitted'),
   isSubmitted: computed.equal('publishingState', 'submitted'),
   invitedForFullSubmission: computed.equal('publishingState', 'invited_for_full_submission'),

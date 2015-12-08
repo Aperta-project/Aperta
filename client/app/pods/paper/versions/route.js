@@ -23,10 +23,9 @@ var PaperVersionsRoute = AuthorizedRoute.extend({
     this._super(controller, model);
 
     controller.set('subRouteName', 'versions');
+
     if (controller.get('selectedVersion1')) {
-      controller.set('viewingVersion', model.textForVersion(
-        controller.get('selectedVersion1')
-      ));
+      controller.set('viewingVersion', controller.get('selectedVersion1'));
     } else {
       let latest = model.get('versionedTexts').objectAt(0);
       let fullVersion = latest.get('majorVersion') +
@@ -34,11 +33,8 @@ var PaperVersionsRoute = AuthorizedRoute.extend({
                         latest.get('minorVersion');
       controller.set('selectedVersion1', fullVersion);
     }
-
     if (controller.get('selectedVersion2')) {
-      controller.set('comparisonVersion', model.textForVersion(
-        controller.get('selectedVersion2')
-      ));
+      controller.set('comparisonVersion', controller.get('selectedVersion2'));
     }
 
     this.setFlagViewManuscriptManager(controller, model);

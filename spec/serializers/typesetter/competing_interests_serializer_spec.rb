@@ -40,4 +40,32 @@ describe Typesetter::CompetingInterestsSerializer do
       expect(output[:competing_interests_statement]).to eq('entered statement')
     end
   end
+
+  describe 'no competing interests statement' do
+    let!(:no_competing_task) do
+      NestedQuestionableFactory.create(
+        FactoryGirl.create(:competing_interests_task),
+        questions: [
+          {
+            ident: 'competing_interests',
+            answer: 'false',
+            value_type: 'boolean',
+            questions: [{
+              ident: 'statement',
+              answer: 'entered statement',
+              value_type: 'text'
+            }]
+          }
+        ]
+      )
+    end
+
+    it 'has the stock no competing interests statement' do
+      output = Typesetter::CompetingInterestsSerializer.new(
+        no_competing_task).serializable_hash
+
+      expect(output[:competing_interests_statement]).to \
+        eq('The authors have declared that no competing interests exist.')
+    end
+  end
 end

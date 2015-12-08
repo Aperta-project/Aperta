@@ -103,6 +103,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._upload_manu_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Upload Manuscript')]")
     self._prq_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Publishing Related Questions')]")
     # infobox
+    self._question_mark_icon = (By.ID, 'submission-process-toggle')
     self._infobox = (By.ID, 'submission-process')
     self._submission_status_info = (By.ID, 'submission-state-information')
 
@@ -370,12 +371,16 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """Click workflow button"""
     self._get(self._tb_workflow_link).click()
 
+  def click_question_mark(self):
+    """Click on the question mark to open Infobox"""
+    self._get(self._question_mark_icon).click()
+
   def click_dashboard_link(self):
     """Click on dashboard link"""
     self._get(self._dashboard_link).click()
 
   def get_infobox(self):
-    """Get the inforbox element"""
+    """Get the infobox element"""
     return self._get(self._infobox)
 
   def get_paper_id(self):
@@ -410,7 +415,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     elif type == 'congrats':
       #assert 'Congratulations' in main_head.text, main_head.text
       self._get(self._so_paper_submit_icon)
-      assert 'You\'ve successfully submitted your paper!' in subhead.text, subhead.text
+      assert "You've successfully submitted your paper!" in subhead.text, subhead.text
       self._get(self._so_submit_cancel)
     elif type == 'congrats_is':
       assert 'You have successfully submitted your manuscript for initial review. If the initial review is ' \

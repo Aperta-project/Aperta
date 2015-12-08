@@ -10,7 +10,7 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, au_login, rv_login, fm_login, ae_login, he_login, sa_login, oa_login
+from Base.Resources import login_valid_pw, au_login
 from frontend.Cards.figures_card import FiguresCard
 # from frontend.Cards.supporting_info_card import SupportingInfoCard
 # from frontend.Cards.upload_manuscript_card import UploadManuscriptCard
@@ -119,9 +119,9 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
       Modals: View Invites and Create New Submission
     """
     user_type = random.choice(users)
-    print('Logging in as user: ' + user_type)
+    print('Logging in as user: {}'.format(user_type))
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type)
+    login_page.enter_login_field(user_type['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
 

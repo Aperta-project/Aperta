@@ -49,7 +49,7 @@ module Typesetter
 
     def us_government_employee
       copyright = task('TahiStandardTasks::PublishingRelatedQuestionsTask')
-      task_answer_value(copyright, 'us_government_employees')
+      task_answer_value(copyright, 'publishing_related_questions.us_government_employees')
     end
   end
 end

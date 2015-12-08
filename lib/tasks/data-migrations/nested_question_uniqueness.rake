@@ -610,6 +610,68 @@ namespace :data do
               to: "production_metadata.production_notes",
               children: []
             },
+
+            {
+              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              from: "published_elsewhere",
+              to: "publishing_related_questions.published_elsewhere",
+              children: [
+                { from: "taken_from_manuscripts", to: "publishing_related_questions.published_elsewhere.taken_from_manuscripts" },
+                { from: "upload_related_work", to: "publishing_related_questions.published_elsewhere.upload_related_work" }
+              ]
+            },
+            {
+              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              from: "submitted_in_conjunction",
+              to: "publishing_related_questions.submitted_in_conjunction",
+              children: [
+                { from: "corresponding_title", to: "publishing_related_questions.submitted_in_conjunction.corresponding_title" },
+                { from: "corresponding_author", to: "publishing_related_questions.submitted_in_conjunction.corresponding_author" }
+              ]
+            },
+            {
+              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              from: "previous_interactions_with_this_manuscript",
+              to: "publishing_related_questions.previous_interactions_with_this_manuscript",
+              children: [
+                { from: "submission_details", to: "publishing_related_questions.previous_interactions_with_this_manuscript.submission_details" }
+              ]
+            },
+            {
+              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              from: "presubmission_inquiry",
+              to: "publishing_related_questions.presubmission_inquiry",
+              children: [
+                { from: "submission_details", to: "publishing_related_questions.presubmission_inquiry.submission_details" }
+              ]
+            },
+            {
+              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              from: "other_journal_submission",
+              to: "publishing_related_questions.other_journal_submission",
+              children: [
+                { from: "submission_details", to: "publishing_related_questions.other_journal_submission.submission_details" }
+              ]
+            },
+            {
+              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              from: "author_was_previous_journal_editor",
+              to: "publishing_related_questions.author_was_previous_journal_editor",
+              children: []
+            },
+            {
+              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              from: "intended_collection",
+              to: "publishing_related_questions.intended_collection",
+              children: []
+            },
+            {
+              type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+              from: "us_government_employees",
+              to: "publishing_related_questions.us_government_employees",
+              children: []
+            },
+
         ]
 
         NestedQuestionConverter.new(conversions, dry_run: false).convert

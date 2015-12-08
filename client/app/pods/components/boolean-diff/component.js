@@ -14,5 +14,12 @@ export default Ember.Component.extend({
 
   comparisonBoolText: Ember.computed('comparisonBool', function() {
     return this.boolText(this.get('comparisonBool'));
+  }),
+
+  // Silly javascript really delights in casting things to Bool. We
+  // want an ACTUAL VALUE, not just null or undefined.
+  comparisonBoolDefined: Ember.computed('comparisonBool', function() {
+    return (this.get('comparisonBool') !== null &&
+            this.get('comparisonBool') !== undefined);
   })
 });

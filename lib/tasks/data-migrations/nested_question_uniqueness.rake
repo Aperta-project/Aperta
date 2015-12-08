@@ -712,6 +712,19 @@ namespace :data do
               to: "reporting_guidelines.microarray_studies",
               children: [ ]
             },
+
+            {
+              type: TahiStandardTasks::ReviewerRecommendation.name,
+              from: "recommend_or_oppose",
+              to: "reviewer_recommendations.recommend_or_oppose",
+              children: [ ]
+            },
+            {
+              type: TahiStandardTasks::ReviewerRecommendation.name,
+              from: "reason",
+              to: "reviewer_recommendations.reason",
+              children: [ ]
+            },
         ]
 
         NestedQuestionConverter.new(conversions, dry_run: false).convert

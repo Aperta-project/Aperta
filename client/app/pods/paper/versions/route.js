@@ -22,16 +22,17 @@ var PaperVersionsRoute = AuthorizedRoute.extend({
     this._super(controller, model);
 
     controller.set('subRouteName', 'versions');
-    // if (!(controller.get('majorVersion') && controller.get('minorVersion'))) {
-    //   let latest = model.get('versionedTexts').objectAt(0);
-    //   controller.set('majorVersion', latest.get('majorVersion'));
-    //   controller.set('minorVersion', latest.get('minorVersion'));
-    // } else {
-    //   controller.set('viewingVersion', model.textForVersion(
-    //     controller.get('majorVersion'),
-    //     controller.get('minorVersion')
-    //   ));
-    // }
+    if (!(controller.get('selectedVersion1'))) {
+      let latest = model.get('versionedTexts').objectAt(0);
+      let fullVersion = latest.get('majorVersion') +
+                        '.' +
+                        latest.get('minorVersion');
+      controller.set('selectedVersion1', fullVersion);
+    } else {
+      controller.set('viewingVersion', model.textForVersion(
+        controller.get('selectedVersion1')
+      ));
+    }
 
     this.setFlagViewManuscriptManager(controller, model);
   },

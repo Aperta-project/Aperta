@@ -585,6 +585,31 @@ namespace :data do
               to: "plos_bio_revision_tech_check.ethics_statement",
               children: []
             },
+
+            {
+              type: TahiStandardTasks::ProductionMetadataTask.name,
+              from: "publication_date",
+              to: "production_metadata.publication_date",
+              children: []
+            },
+            {
+              type: TahiStandardTasks::ProductionMetadataTask.name,
+              from: "volume_number",
+              to: "production_metadata.volume_number",
+              children: []
+            },
+            {
+              type: TahiStandardTasks::ProductionMetadataTask.name,
+              from: "issue_number",
+              to: "production_metadata.issue_number",
+              children: []
+            },
+            {
+              type: TahiStandardTasks::ProductionMetadataTask.name,
+              from: "production_notes",
+              to: "production_metadata.production_notes",
+              children: []
+            },
         ]
 
         NestedQuestionConverter.new(conversions, dry_run: false).convert

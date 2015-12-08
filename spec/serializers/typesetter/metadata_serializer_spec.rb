@@ -117,7 +117,7 @@ describe Typesetter::MetadataSerializer do
     before do
       FactoryGirl.create(
         :nested_question_answer,
-        nested_question: our_question.call('publication_date'),
+        nested_question: our_question.call('production_metadata.publication_date'),
         owner: our_task,
         value: '11/16/2015',
         value_type: 'text'

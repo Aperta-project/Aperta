@@ -1,0 +1,36 @@
+{{#ember-wormhole to="overlay-drop-zone"}}
+  {{#overlay-animate outAnimationComplete=(action "close")
+                     as |animateOut|}}
+    <div class="overlay overlay--card {{task-component-name model.title}}-overlay">
+      <div class="overlay-container">
+        <header class="overlay-header">
+          <span>
+            {{#link-to "paper.index" model.paper.id class="task-overlay-paper-title"}}
+              {{partial "svg/manuscript-icon"}}
+              {{{model.paperTitle}}}
+            {{/link-to}}
+          </span>
+          <a class="button-secondary button--green overlay-close-button" {{action animateOut}}>Close</a>
+        </header>
+        <div class="overlay-body">
+          <div id="versioned-metadata">
+            <div class="versioned-metadata-version">Viewing
+              <span class="versioned-metadata-version-string">
+                Version {{snapshot.versionString}}
+                &mdash;
+                {{format-date snapshot.createdAt format="MMM D, YYYY"}}
+              </span>
+            </div>
+
+            <h2>{{model.title}}</h2>
+
+            {{nested-snapshot snapshot=snapshot.contents}}
+          </div>
+        </div>
+        <footer class="overlay-footer">
+          <a class="button-secondary button--green overlay-close-button" {{action animateOut}}>Close</a>
+        </footer>
+      </div>
+    </div>
+  {{/overlay-animate}}
+{{/ember-wormhole}}

@@ -19,9 +19,6 @@ require_relative 'support/pages/page'
 require_relative 'support/pages/overlay'
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
-# Build our ember app NOW and not on demand
-EmberCLI.compile!
-
 Tahi.service_log = Logger.new "#{::Rails.root}/log/service.log"
 
 # Load support & factories for installed Tahi plugins
@@ -113,6 +110,9 @@ RSpec.configure do |config|
   end
 
   config.before(:each, js: true) do
+    # This should only be run once, but do it here so it doesn't run if we are
+    # not using JS.
+    EmberCLI.compile!
     DatabaseCleaner[:active_record].strategy = :truncation, { except: ['task_types', 'nested_questions'] }
     DatabaseCleaner[:redis].strategy = :truncation
   end

@@ -69,10 +69,11 @@ export default DS.Model.extend({
     return this.get('decisions').findBy('isLatest', true);
   }),
 
-  textForVersion: function(majorVersion, minorVersion) {
+  textForVersion: function(versionString) {
+    let versionParts = versionString.split('.');
     return this.get('versionedTexts').find(function(version) {
-      return (version.get('majorVersion') === Number(majorVersion) &&
-              version.get('minorVersion') === Number(minorVersion));
+      return (version.get('majorVersion') === Number(versionParts[0]) &&
+              version.get('minorVersion') === Number(versionParts[1]));
     });
   },
 

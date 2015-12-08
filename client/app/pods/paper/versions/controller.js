@@ -15,12 +15,16 @@ export default Ember.Controller.extend(PaperBase, Discussions,  {
 
     setViewingVersion(version) {
       this.set('viewingVersion', version);
-      this.set('selectedVersion1', `${version.get('majorVersion')}.${version.get('minorVersion')}`);
+      this.set(
+        'selectedVersion1',
+        `${version.get('majorVersion')}.${version.get('minorVersion')}`);
     },
 
     setComparisonVersion(version) {
       this.set('comparisonVersion', version);
-      this.set('selectedVersion2', `${version.get('majorVersion')}.${version.get('minorVersion')}`);
+      this.set(
+        'selectedVersion2',
+        `${version.get('majorVersion')}.${version.get('minorVersion')}`);
     }
   }
 });

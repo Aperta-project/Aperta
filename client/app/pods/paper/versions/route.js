@@ -32,6 +32,9 @@ var PaperVersionsRoute = AuthorizedRoute.extend({
       controller.set('viewingVersion', model.textForVersion(
         controller.get('selectedVersion1')
       ));
+      controller.set('comparisonVersion', model.textForVersion(
+        controller.get('selectedVersion2')
+      ));
     }
 
     this.setFlagViewManuscriptManager(controller, model);

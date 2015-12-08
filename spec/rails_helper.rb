@@ -104,12 +104,48 @@ RSpec.configure do |config|
   # Load subscriptions for feature specs
   config.before(:each, type: :feature) do
     Subscriptions.reload
+    DatabaseCleaner[:active_record].strategy = :transaction
+    Warden.test_mode!
   end
 
   config.before(:context) do
-    DatabaseCleaner[:active_record].strategy = :transaction
     UploadServer.clear_all_uploads
     Sidekiq::Worker.clear_all
+  end
+
+  config.before(:context, js: true) do
+    # Fix to make sure this happens only once
+    # This cannot be a :suite block, because that does not know if a js feature
+    # is being run.
+    # rubocop:disable Style/GlobalVars
+    next if $capybara_setup_done
+    EmberCLI.compile!
+    Capybara.server_port = ENV['CAPYBARA_SERVER_PORT']
+
+    # This allows the developer to specify a path to an older, insecure firefox
+    # build for use in selenium tests. The value of the environment variable
+    # should be a full path to the firefox binary.
+    Selenium::WebDriver::Firefox::Binary.path = ENV['SELENIUM_FIREFOX_PATH'] if
+      ENV['SELENIUM_FIREFOX_PATH']
+    Capybara.register_driver :selenium do |app|
+      profile = Selenium::WebDriver::Firefox::Profile.new
+      client = Selenium::WebDriver::Remote::Http::Default.new
+      client.timeout = 90
+      Capybara::Selenium::Driver
+        .new(app, browser: :firefox, profile: profile, http_client: client)
+    end
+
+    Capybara.javascript_driver = :selenium
+    Capybara.default_max_wait_time = 10
+    Capybara.wait_on_first_by_default = true
+
+    # Store screenshots in artifacts dir on circle
+    if ENV['CIRCLE_TEST_REPORTS']
+      Capybara.save_and_open_page_path =
+        "#{ENV['CIRCLE_TEST_REPORTS']}/screenshots/"
+    end
+    $capybara_setup_done = true
+    # rubocop:enable Style/GlobalVars
   end
 
   config.before(:each, js: true) do
@@ -127,6 +163,14 @@ RSpec.configure do |config|
   config.before(:each) do
     ActionMailer::Base.deliveries.clear
     DatabaseCleaner.start
+    Subscriptions.clear_all_subscriptions!
+  end
+
+  # Load subscriptions for feature specs. Make sure this comes *after*
+  # clean_all_subscriptions! We need to add these back.
+  config.before(:context, type: :feature) do
+    load Rails.root.join('config/initializers/event_stream_subscriptions.rb')
+    load Rails.root.join('config/initializers/subscriptions.rb')
   end
 
   config.append_after(:each) do

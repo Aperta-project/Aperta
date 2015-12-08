@@ -247,18 +247,12 @@ class EditPaperTest(CommonTest):
     # the following call should only succeed for sa_login
     dashboard_page = DashboardPage(self.getDriver())
     dashboard_page.go_to_manuscript(paper_id)
-    time.sleep(1)
+    time.sleep(2)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     #AC8: Message for full submission when is ready for submition
     assert  "Your manuscript is ready for Full Submission." in \
       manuscript_page.get_submission_status_info_text(), \
       manuscript_page.get_submission_status_info_text()
-    """
-    assert ("Please provide the following information to submit your manuscript for "
-            "Full Submission." in manuscript_page.get_submission_status_info_text(),
-            manuscript_page.get_submission_status_info_text())
-    """
-
     return self
 
   def _test_paper_download_buttons(self):

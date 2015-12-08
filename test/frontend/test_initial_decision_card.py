@@ -12,6 +12,7 @@ import random
 import time
 from decimal import Decimal
 
+from selenium.webdriver.common.by import By
 from Base.Decorators import MultiBrowserFixture
 from Base.Resources import login_valid_pw, au_login, he_login, docs
 from frontend.common_test import CommonTest
@@ -21,6 +22,7 @@ from Pages.dashboard import DashboardPage
 from Pages.login_page import LoginPage
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
+
 
 @MultiBrowserFixture
 class InitialDecisionCardTest(CommonTest):
@@ -44,7 +46,7 @@ class InitialDecisionCardTest(CommonTest):
     """
     # Users logs in and make a submition
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(au_login)
+    login_page.enter_login_field(au_login['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
 
@@ -85,7 +87,7 @@ class InitialDecisionCardTest(CommonTest):
     manuscript_page.logout()
     # login as editor
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(he_login)
+    login_page.enter_login_field(he_login['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
     dashboard_page = DashboardPage(self.getDriver())
@@ -113,7 +115,7 @@ class InitialDecisionCardTest(CommonTest):
     # Test that card is editable by author
     manuscript_page.logout()
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(au_login)
+    login_page.enter_login_field(au_login['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
     time.sleep(2)

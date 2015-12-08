@@ -170,7 +170,7 @@ class DashboardPage(AuthenticatedPage):
         assert welcome_msg.text == 'You have 1 invitation.', welcome_msg.text
       else:
         assert welcome_msg.text == 'You have {0} invitations.'.format(invitation_count), \
-                                   welcome_msg.text + ' ' + str(invitation_count)
+                                   '{0} {1}'.format(welcome_msg.text, str(invitation_count))
       # self.validate_application_h1_style(welcome_msg)
       view_invites_btn = self._get(self._dashboard_view_invitations_btn)
       self.validate_primary_big_green_button_style(view_invites_btn)

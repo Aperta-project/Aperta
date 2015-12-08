@@ -22,12 +22,11 @@ feature 'Authors card', js: true do
         find('.author-title').send_keys('title')
         find('.author-department').send_keys('department')
         find_button('done').click
-        overlay.completed_checkbox.click
-        overlay.ensure_not_completed
+        overlay.expect_task_to_be_incomplete
         overlay.dismiss
 
         find_link('Authors').click
-        expect(overlay.completed?).to eq(false)
+        overlay.expect_task_to_be_incomplete
       end
     end
   end

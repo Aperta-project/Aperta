@@ -6,8 +6,10 @@ describe DownloadManuscriptWorker, redis: true do
 
   before do
     VCR.turn_off!
+    s3_url = "https://tahi-test.s3-us-west-1.amazonaws.com/uploads/\
+versioned_text/#{versioned_text_id}/about_equations.docx"
     @docx_req = stub_request(:get, url).to_return(body: 'foo')
-    @s3_req = stub_request(:get, 'https://tahi-test.s3-us-west-1.amazonaws.com/uploads/versioned_text/1/about_equations.docx')
+    @s3_req = stub_request(:get, s3_url)
       .with(query: hash_including)
       .to_return(body: 'foo')
     @ihat_status_req = stub_request(:post, 'http://ihat.example.com/jobs')

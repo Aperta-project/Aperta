@@ -126,10 +126,6 @@ RSpec.configure do |config|
     DatabaseCleaner.start
   end
 
-  config.before(:context, redis: true) do
-    DatabaseCleaner.clean_with(:truncation, except: ['task_types', 'nested_questions'])
-  end
-
   config.append_after(:each) do
     DatabaseCleaner.clean
   end

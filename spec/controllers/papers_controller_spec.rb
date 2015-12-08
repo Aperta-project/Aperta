@@ -273,4 +273,33 @@ describe PapersController do
       end
     end
   end
+
+  describe "GET 'snapshots'" do
+    let(:task1) do
+      FactoryGirl.create :ethics_task,
+                         paper: paper,
+                         phase: paper.phases.first
+    end
+    let(:task2) do
+      FactoryGirl.create :publishing_related_questions_task,
+                         paper: paper,
+                         phase: paper.phases.first
+    end
+
+    before do
+      SnapshotService.new(paper).snapshot!(task1)
+      SnapshotService.new(paper).snapshot!(task2)
+    end
+
+    it 'returns all the snapshots' do
+      get :snapshots, id: paper.to_param, format: :json
+      expect(response.status).to eq(200)
+      expect(res_body['snapshots'].count).to eq(2)
+      expect(res_body['snapshots'][0].keys).to include(
+        'source_id',
+        'major_version',
+        'minor_version',
+        'contents')
+    end
+  end
 end

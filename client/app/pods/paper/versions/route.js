@@ -15,7 +15,8 @@ var PaperVersionsRoute = AuthorizedRoute.extend({
   afterModel: function(model) {
     return Ember.RSVP.all([
       model.get('tasks'),
-      model.get('versionedTexts')]);
+      model.get('versionedTexts'),
+      model.get('snapshots')]);
   },
 
   setupController: function(controller, model) {

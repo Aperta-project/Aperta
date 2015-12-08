@@ -116,7 +116,11 @@ RSpec.configure do |config|
     # This should only be run once, but do it here so it doesn't run if we are
     # not using JS.
     EmberCLI.compile!
-    DatabaseCleaner[:active_record].strategy = :truncation, { except: ['task_types', 'nested_questions'] }
+    # :truncation is the strategy we need to use for capybara tests, but do not
+    # truncate task_types and nested_questions, we want to keep these tables
+    # around.
+    DatabaseCleaner[:active_record].strategy = :truncation, {
+      except: %w(task_types nested_questions) }
     Capybara.page.driver.browser.manage.window.resize_to(1500, 1000)
   end
 

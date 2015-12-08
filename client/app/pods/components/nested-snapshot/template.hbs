@@ -1,66 +1,72 @@
 {{#if generalCase}}
   {{#if raw}}
     <div class="snapshot-text">
-      {{snapshot.value}}
+      {{text-diff viewingText=snapshot1.value viewingText=snapshot2.value}}
     </div>
   {{/if}}
 
   {{#if boolean}}
     <div class="snapshot-text">
-      <label><input type="radio" value="true" disabled>{{#if snapshot.value}}Yes{{else}}No{{/if}}.</label>
+      <label><input type="radio" value="true" disabled>
+        {{boolean-diff viewingBool=snapshot1.value comparisonBool=snapshot2.value}}
+      </label>
     </div>
   {{/if}}
 
   {{#if question}}
     <li class="snapshot-question">
         <div class="snapshot-question-question">
-        {{{snapshot.value.title}}}
+        {{text-diff viewingText=snapshot1.value.title comparisonText=snapshot2.value.title}}
       </div>
 
       {{#if booleanQuestion}}
         <div class="snapshot-question-answer">
-            <span class="snapshot-question-label">Response: </span>{{#if snapshot.value.answer}}Yes{{else}}No{{/if}}
+          <span class="snapshot-question-label">Response: </span>
+          {{boolean-diff viewingBool=snapshot1.value.answer comparisonBool=snapshot2.value.answer}}
         </div>
       {{else}}
         <div class="snapshot-question-answer">
-            {{snapshot.value.answer}}
+            {{text-diff viewingText=snapshot1.value.answer comparisonText=snapshot2.value.answer}}
         </div>
       {{/if}}
 
-      {{#if snapshot.value.attachment}}
-        {{attachment-snapshot snapshot=snapshot.value.attachment}}
+      {{#if snapshot1.value.attachment}}
+        {{attachment-snapshot snapshot=snapshot1.value.attachment}}
+      {{/if}}
+      {{#if snapshot2.value.attachment}}
+        {{attachment-snapshot snapshot=snapshot2.value.attachment}}
       {{/if}}
     </li>
   {{/if}}
 
-  {{#if snapshot.children}}
-  <ol class="snapshot-children">
-    {{#each snapshot.children as |child|}}
-      {{nested-snapshot snapshot=child}}
-    {{/each}}
-  </ol>
+  {{#if snapshot1.children}}
+    <ol class="snapshot-children">
+      {{#each children as |child|}}
+        {{nested-snapshot snapshot1=child.[0] snapshot2=child.[1]}}
+      {{/each}}
+    </ol>
   {{/if}}
 
 {{else}}
 
   {{#if author}}
-    {{author-snapshot snapshot=snapshot}}
+    {{author-snapshot snapshot=snapshot1}}
   {{/if}}
 
   {{#if figure}}
     <li>
-      {{attachment-snapshot snapshot=snapshot}}
+      {{attachment-snapshot snapshot=snapshot1}}
     </li>
   {{/if}}
 
   {{#if supportingInfo}}
     <li>
-      {{attachment-snapshot snapshot=snapshot}}
+      {{attachment-snapshot snapshot=snapshot1}}
     </li>
   {{/if}}
 
   {{#if funder}}
-    {{funder-snapshot snapshot=snapshot}}
+    {{funder-snapshot snapshot=snapshot1}}
   {{/if}}
 
 {{/if}}

@@ -1,5 +1,7 @@
 {{#if dataLoading}}
   {{partial "task-loading-section"}}
 {{else}}
-  {{yield}}
+  <div class="animation-fade-in">
+    {{yield}}
+  </div>
 {{/if}}

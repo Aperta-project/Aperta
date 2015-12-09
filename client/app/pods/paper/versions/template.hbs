@@ -75,9 +75,12 @@
 
 {{outlet}}
 
-{{overlay-task visible=showTaskOverlay
-               task=taskToDisplay
-               outAnimationComplete=(action "hideTaskOverlay")}}
+{{#if showTaskOverlay}}
+  {{overlay-task-version model=taskToDisplay
+                         majorVersion=majorVersion
+                         minorVersion=minorVersion
+                         outAnimationComplete=(action "hideTaskOverlay")}}
+{{/if}}
 
 {{#overlay-fullscreen visible=showActivityOverlay
                       outAnimationComplete=(action "hideActivityOverlay")

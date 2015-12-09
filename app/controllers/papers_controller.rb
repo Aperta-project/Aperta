@@ -1,8 +1,7 @@
 class PapersController < ApplicationController
   before_action :authenticate_user!
   before_action :enforce_policy,
-                except: [:index, :show, :comment_looks, :snapshots]
-  # TODOD AAAAHAHHAAHHA
+                except: [:index, :show, :comment_looks]
 
   respond_to :json
 

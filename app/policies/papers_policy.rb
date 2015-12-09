@@ -33,6 +33,10 @@ class PapersPolicy < ApplicationPolicy
     current_user.site_admin? || can_view_manuscript_manager?(paper)
   end
 
+  def snapshots?
+    can_view_paper? paper
+  end
+
   def submit?
     can_view_paper? paper
   end

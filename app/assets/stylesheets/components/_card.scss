@@ -40,7 +40,7 @@
   display: block;
   position: relative;
   border-radius: 5px;
-  padding: 10px 15px;
+  padding: 10px 12px;
   color: $tahi-green-dark;
   font-size: 18px;
   background-color: $tahi-green-light;
@@ -58,30 +58,28 @@
   }
   .card-completed-icon {
     color: $tahi-green;
+    margin-right: 7px;
+    margin-top: 5px;
     display: none;
-    position: absolute;
-    left: 15px;
-    top: 15px;
+    float: left;
   }
   .card-diff-icon {
     color: $tahi-green;
-    position: absolute;
-    left: 10px;
-    top: 15px;
+    margin-right: 7px;
+    margin-top: 3px;
+    float: left;
   }
 }
 
 // .card modifier:
 .card--completed {
   .card-content {
-    padding-left: 37px;
     color: $tahi-grey-light - #666;
     background: $tahi-grey-light;
   }
 
   .card-completed-icon {
-    display: inline;
-    margin-right: 5px;
+    display: block;
     color: $tahi-green;
   }
 }

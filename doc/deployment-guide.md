@@ -171,6 +171,11 @@ release-candidate Heroku App. Again, sounds basic, but it's a good thing to
 check. The Heroku Toolbelt has an inconvenient habit of logging you out when you
 least expect it.
 
+If you have never deployed before, you will need to set up the release
+candidate remote:
+
+`git remote add release-candidate https://git.heroku.com/tahi-release-candidate.git`
+
 #### Watch the Logs
 
 We use Papertrail to aggregate logs for each of the environments. Since we're

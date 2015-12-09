@@ -1,8 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  to: 'overlay-drop-zone',
-
   /**
    *  Method called after out animation is complete.
    *  This should be set to an action.

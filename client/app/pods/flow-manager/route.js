@@ -25,6 +25,17 @@ export default AuthorizedRoute.extend({
 
   actions: {
     removeFlow(flow) { flow.destroyRecord(); },
-    saveFlow(flow)   { flow.save(); }
+    saveFlow(flow)   { flow.save(); },
+
+    // Required until Ember has routable components.
+    // We need to cleanup because controllers are singletons
+    // and are not torn down:
+
+    willTransition() {
+      this.controllerFor('flow_manager').setProperties({
+        taskToDisplay: null,
+        showTaskOverlay: false
+      });
+    }
   }
 });

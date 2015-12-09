@@ -43,12 +43,19 @@ export default Ember.Component.extend({
   hasDiff: Ember.computed(
     'version1',
     'version2',
-    'task.snapshots.[]',
+    'task.paper.snapshots.@each',
     function() {
       if (this.get('version1') && this.get('version2')) {
+        let snaps =  this.get('task.paper.snapshots');
         let task = this.get('task');
-        let snap1 = task.getSnapshotForVersion(this.get('version1'));
-        let snap2 = task.getSnapshotForVersion(this.get('version2'));
+        let snap1 = snaps.find((it) =>  {
+          return (it.get('source.id') === task.get('id') &&
+                  it.get('fullVersion') === this.get('version1'));
+        });
+        let snap2 = snaps.find((it) => {
+          return (it.get('source.id') === task.get('id') &&
+                  it.get('fullVersion') === this.get('version2'));
+        });
         return snap1 && snap1.hasDiff(snap2);
       }
       return false;

@@ -3,6 +3,12 @@ import Ember from 'ember';
 
 
 export default DS.Model.extend({
+  paper: DS.belongsTo('paper', {
+    async: true
+  }),
+  source: DS.belongsTo('task', {
+    async: true
+  }),
   majorVersion: DS.attr('number'),
   minorVersion: DS.attr('number'),
   contents: DS.attr(),

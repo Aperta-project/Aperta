@@ -4,7 +4,6 @@ import NestedQuestionOwner from 'tahi/models/nested-question-owner';
 import CardThumbnailObserver from 'tahi/mixins/models/card-thumbnail-observer';
 
 export default NestedQuestionOwner.extend(CardThumbnailObserver, {
-  snapshots: DS.hasMany('snapshot', { async: true }),
   attachments: DS.hasMany('attachment', { async: true }),
 
   cardThumbnail: DS.belongsTo('card-thumbnail', {
@@ -23,6 +22,10 @@ export default NestedQuestionOwner.extend(CardThumbnailObserver, {
   participations: DS.hasMany('participation', { async: true }),
   phase: DS.belongsTo('phase', {
     inverse: 'tasks',
+    async: true
+  }),
+  snapshots: DS.hasMany('snapshot', {
+    inverse: 'source',
     async: true
   }),
 

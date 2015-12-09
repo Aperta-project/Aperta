@@ -25,7 +25,7 @@ export default DS.Model.extend({
     async: false
   }),
   versionedTexts: hasMany('versioned-text', { async: true }),
-  snapshots: hasMany('snapshot', { async: true }),
+  snapshots: hasMany('snapshot', { inverse: 'paper', async: true }),
   tasks: hasMany('task', { async: true, polymorphic: true }),
   manuscriptPageTasks: hasMany('task', { async: true, polymorphic: true }),
   active: attr('boolean'),

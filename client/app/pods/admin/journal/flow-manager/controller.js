@@ -28,6 +28,8 @@ export default Ember.Controller.extend({
         query: {},
         taskRoles: []
       }).save();
-    }
+    },
+
+    viewCard() { }
   }
 });

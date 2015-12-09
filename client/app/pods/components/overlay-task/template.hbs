@@ -1,0 +1,34 @@
+{{#if visible}}
+  {{#ember-wormhole to=to}}
+    {{#overlay-animate outAnimationComplete=(action outAnimationComplete)
+                       as |animateOut|}}
+      <div class="overlay overlay--card {{task-component-name task.title}}-overlay">
+        <div class="overlay-container">
+          <header class="overlay-header">
+            <span>
+              {{#link-to "paper.index" task.paper.id class="task-overlay-paper-title"}}
+                {{partial "svg/manuscript-icon"}}
+                {{{task.paperTitle}}}
+              {{/link-to}}
+            </span>
+            <a class="button-secondary button--green overlay-close-button" {{action animateOut}}>Close</a>
+          </header>
+          <div class="overlay-body">
+            <h1 class="overlay-body-title">{{{task.title}}}</h1>
+            {{#task-load task=task}}
+              {{component (task-component-name task.title) task=task}}
+            {{/task-load}}
+          </div>
+          <footer class="overlay-footer">
+            {{participant-selector currentParticipants=participants
+                         onRemove="removeParticipant"
+                         label="Following:"
+                         paperId=task.paper.id
+                         onSelect="saveNewParticipant"}}
+            <a class="button-secondary button--green overlay-close-button" {{action animateOut}}>Close</a>
+          </footer>
+        </div>
+      </div>
+    {{/overlay-animate}}
+  {{/ember-wormhole}}
+{{/if}}

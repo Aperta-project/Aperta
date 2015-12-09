@@ -60,10 +60,6 @@ export default Ember.Component.extend({
   ),
 
   actions: {
-    viewCard(task){
-      this.sendAction('viewCard', task);
-    },
-
     toggleSubmissionProcess(){
       this.attrs.toggleSubmissionProcess();
     },

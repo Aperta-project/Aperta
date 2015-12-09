@@ -3,6 +3,7 @@ import Utils from 'tahi/services/utils';
 
 export default Ember.Controller.extend({
   restless: Ember.inject.service('restless'),
+  routing: Ember.inject.service('-routing'),
   positionSort: ['position:asc'],
   sortedPhases: Ember.computed.sort('model.phases', 'positionSort'),
 
@@ -17,6 +18,9 @@ export default Ember.Controller.extend({
   addToPhase: null,
   journalTaskTypes: [],
   journalTaskTypesIsLoading: false,
+
+  taskToDisplay: null,
+  showTaskOverlay: false,
 
   updatePositions(phase) {
     const relevantPhases = this.get('model.phases').filter(function(p) {
@@ -35,6 +39,21 @@ export default Ember.Controller.extend({
   },
 
   actions: {
+    viewCard(task) {
+      const r = this.get('routing.router.router');
+      r.updateURL(r.generate('paper.task', task.get('id')));
+
+      this.set('taskToDisplay', task);
+      this.set('showTaskOverlay', true);
+    },
+
+    hideTaskOverlay() {
+      const r = this.get('routing.router.router');
+      const lastRoute = r.currentHandlerInfos[r.currentHandlerInfos.length - 1];
+      r.updateURL(r.generate(lastRoute.name, lastRoute.context.get('id')));
+      this.set('showTaskOverlay', false);
+    },
+
     showChooseNewCardOverlay(phase) {
       this.setProperties({
         addToPhase: phase,

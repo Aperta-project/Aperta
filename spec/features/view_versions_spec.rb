@@ -73,14 +73,21 @@ feature 'Viewing Versions:', js: true do
 
     scenario 'The user compares two versions of a task', selenium: true do
       SnapshotService.new(paper).snapshot!(task)
+      # SnapshotService only creates a snapshot
+      # for the latest version, hence this line:
+      FactoryGirl.create(:snapshot,
+                         major_version: 0,
+                         minor_version: 0,
+                         source: task)
+
       page = PaperPage.new
       page.version_button.click
       wait_for_ajax
-      page.select_viewing_version(version_1)
-      page.select_comparison_version(version_0)
+      page.select_viewing_version(version_0)
+      page.select_comparison_version(version_1)
 
       page.view_card('Ethics', VersionedMetadataOverlay) do |overlay|
-        overlay.expect_versions('R0.0')
+        overlay.expect_versions('R0.0', 'R1.0')
       end
     end
   end

@@ -166,7 +166,7 @@ RSpec.configure do |config|
 
   # Load subscriptions for feature specs. Make sure this comes *after*
   # clean_all_subscriptions! We need to add these back.
-  config.before(:context, type: :feature) do
+  config.before(:each, type: :feature) do
     load Rails.root.join('config/initializers/event_stream_subscriptions.rb')
     load Rails.root.join('config/initializers/subscriptions.rb')
   end

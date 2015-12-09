@@ -9,6 +9,9 @@ export default DS.Model.extend({
   source: DS.belongsTo('task', {
     async: true
   }),
+  // We have sourceId here to allow comparing sources without
+  // *fetching* sources. *sigh* ember data.
+  sourceId: DS.attr('string'),
   majorVersion: DS.attr('number'),
   minorVersion: DS.attr('number'),
   contents: DS.attr(),

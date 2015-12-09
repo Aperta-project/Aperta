@@ -70,12 +70,20 @@ export default DS.Model.extend({
     return this.get('decisions').findBy('isLatest', true);
   }),
 
-  textForVersion: function(versionString) {
+  textForVersion(versionString) {
     let versionParts = versionString.split('.');
     return this.get('versionedTexts').find(function(version) {
       return (version.get('majorVersion') === Number(versionParts[0]) &&
               version.get('minorVersion') === Number(versionParts[1]));
     });
+  },
+
+  snapshotForTaskAndVersion(task, version) {
+      return this.get('snapshots').find(function(snapshot) {
+          // Compare id's to prevent needless requests to the API
+          return (snapshot.get('sourceId') === task.get('id') &&
+                  snapshot.get('fullVersion') === version);
+      });
   },
 
   isUnsubmitted: computed.equal('publishingState', 'unsubmitted'),

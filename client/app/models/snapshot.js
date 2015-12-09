@@ -15,5 +15,11 @@ export default DS.Model.extend({
     'fullVersion', 'createdAt',
     function() {
       return `R${this.get('fullVersion')}`;
-    })
+    }),
+
+  hasDiff(otherSnapshot) {
+    let string1 = JSON.stringify(this.get('contents'));
+    let string2 = JSON.stringify(otherSnapshot.get('contents'));
+    return string1 !== string2;
+  }
 });

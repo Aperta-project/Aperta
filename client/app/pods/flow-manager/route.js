@@ -1,9 +1,6 @@
 import AuthorizedRoute from 'tahi/routes/authorized';
-import Ember from 'ember';
 
 export default AuthorizedRoute.extend({
-  cardOverlayService: Ember.inject.service('card-overlay'),
-
   beforeModel(transition) {
     if (!this.currentUser) {
       return this.handleUnauthorizedRequest(transition);
@@ -11,13 +8,7 @@ export default AuthorizedRoute.extend({
   },
 
   model() {
-    let cachedModel = this.get('cardOverlayService').get('cachedModel');
-    if (cachedModel) {
-      this.get('cardOverlayService').set('cachedModel', null);
-      return cachedModel;
-    } else {
-      return this.store.find('user-flow');
-    }
+    return this.store.find('user-flow');
   },
 
   afterModel() {
@@ -34,16 +25,6 @@ export default AuthorizedRoute.extend({
 
   actions: {
     removeFlow(flow) { flow.destroyRecord(); },
-    saveFlow(flow)   { flow.save(); },
-
-    viewCard(task) {
-      this.get('cardOverlayService').setProperties({
-        previousRouteOptions: ['flow_manager'],
-        cachedModel: this.modelFor('flow_manager'),
-        overlayBackground: 'flow_manager'
-      });
-
-      this.transitionTo('paper.task', task.get('paper.id'), task.get('id'));
-    }
+    saveFlow(flow)   { flow.save(); }
   }
 });

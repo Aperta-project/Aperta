@@ -11,10 +11,8 @@ const { alias, not } = computed;
 export default Ember.Controller.extend(
   SavesDelayed, ValidationErrors, Ember.Evented, {
 
-  cardOverlayService: Ember.inject.service('card-overlay'),
   queryParams: ['isNewTask'],
   isNewTask: false,
-  onClose: 'closeOverlay',
   isLoading: false,
 
   isMetadataTask: alias('model.isMetadataTask'),
@@ -30,16 +28,6 @@ export default Ember.Controller.extend(
 
   comments: [],
 
-  clearCachedModel(transition) {
-    const routeOptions = this.get('cardOverlayService.previousRouteOptions');
-
-    if(Ember.isEmpty(routeOptions)) { return; }
-
-    if (transition.targetName !== routeOptions.get('firstObject')) {
-      this.set('cardOverlayService.cachedModel', null);
-    }
-  },
-
   saveModel() {
     return this._super().then(()=> {
       this.clearAllValidationErrors();
@@ -51,16 +39,6 @@ export default Ember.Controller.extend(
   },
 
   actions: {
-    redirect() {
-      this.transitionToRoute.apply(
-        this, this.get('cardOverlayService.previousRouteOptions')
-      );
-    },
-
-    redirectToDashboard() {
-      this.transitionToRoute('dashboard');
-    },
-
     postComment(body) {
       if (!body) { return; }
 
@@ -86,7 +64,6 @@ export default Ember.Controller.extend(
         }
       }
 
-      this.clearCachedModel(transition);
       this.clearAllValidationErrors();
     }
   }

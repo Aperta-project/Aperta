@@ -42,14 +42,6 @@
     {{feedback-x close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}
 
-<div class="overlay overlay--card" id="overlay">
-  <div class="overlay-container">
-    {{#if showOverlay}}
-      {{outlet "overlay"}}
-    {{/if}}
-  </div>
-</div>
-
 <div id="overlay-drop-zone"></div>
 
 {{#if showSaveStatusDiv}}

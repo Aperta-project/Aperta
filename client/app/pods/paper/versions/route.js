@@ -1,27 +1,19 @@
 import Ember from 'ember';
-import ENV from 'tahi/config/environment';
 import AuthorizedRoute from 'tahi/routes/authorized';
 
 var PaperVersionsRoute = AuthorizedRoute.extend({
-  viewName: 'paper/versions',
-  controllerName: 'paper/versions',
-  templateName: 'paper/versions',
   cardOverlayService: Ember.inject.service('card-overlay'),
+  restless: Ember.inject.service('restless'),
 
-  model: function() {
-    return this.modelFor('paper');
-  },
-
-  afterModel: function(model) {
+  afterModel(model) {
     return Ember.RSVP.all([
       model.get('tasks'),
       model.get('versionedTexts'),
       model.get('snapshots')]);
   },
 
-  setupController: function(controller, model) {
-    this._super(controller, model);
-
+  setupController(controller, model) {
+    controller.set('model', model);
     controller.set('subRouteName', 'versions');
     if (controller.get('selectedVersion1')) {
       controller.set('viewingVersion', model.textForVersion(
@@ -45,30 +37,7 @@ var PaperVersionsRoute = AuthorizedRoute.extend({
   },
 
   actions: {
-    viewVersionedCard: function(task, selectedVersion1, selectedVersion2) {
-      this.get('cardOverlayService').setProperties({
-        previousRouteOptions: ['paper.versions', this.modelFor('paper'), {
-          queryParams: {
-            selectedVersion1: selectedVersion1,
-            selectedVersion2: selectedVersion2
-          }
-        }],
-        overlayBackground: 'paper.versions'
-      });
-
-      this.transitionTo(
-        'paper.task.version',
-        this.modelFor('paper'),
-        task.id,
-        {
-          queryParams: {
-            selectedVersion1: selectedVersion1,
-            selectedVersion2: selectedVersion2
-          }
-        });
-    },
-
-    exitVersions: function() {
+    exitVersions() {
       this.transitionTo('paper.index', this.modelFor('paper'));
     }
   }

@@ -76,6 +76,10 @@
 
 {{outlet}}
 
+{{overlay-task visible=showTaskOverlay
+               task=taskToDisplay
+               outAnimationComplete=(action "hideTaskOverlay")}}
+
 {{#overlay-fullscreen visible=showActivityOverlay
                       outAnimationComplete=(action "hideActivityOverlay")
                       title="Recent Activity"

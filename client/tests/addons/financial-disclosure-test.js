@@ -139,7 +139,7 @@ module('Integration: FinancialDisclosure', {
 
 test('Viewing the card and adding new funder', function(assert) {
   return visit("/papers/" + currentPaper.id + "/tasks/" + financialDisclosureTaskId).then(function() {
-    assert.equal(find('.overlay-main-work h1').text().trim(), 'Financial Disclosures');
+    assert.equal(find('.overlay-body-title').text().trim(), 'Financial Disclosure');
     assert.ok(find("label:contains('Yes')").length, "User can find the 'yes' option'");
     click("label:contains('Yes')");
     return andThen(function() {
@@ -147,7 +147,7 @@ test('Viewing the card and adding new funder', function(assert) {
       assert.ok(find("span.remove-funder").length, "User can add remove the funder");
       Ember.$('.funder-name').val("Hello");
       Ember.$('.grant-number').val("1234567890");
-      return click("label:contains('Completed')");
+      return click(".task-completed");
     });
   });
 });

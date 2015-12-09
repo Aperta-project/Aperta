@@ -135,7 +135,7 @@ test 'visiting /paper: Author completes all metadata cards', (assert) ->
     .then ->
       for card in find('#paper-metadata-tasks .card-content')
         click card
-        click '#task_completed'
+        click '.task-completed'
         click '.overlay-close-button:first'
   andThen ->
     submitButton = find('button:contains("Submit")')

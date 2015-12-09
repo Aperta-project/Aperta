@@ -5,12 +5,12 @@ import { paperWithTask, addUserAsParticipant, addNestedQuestionToTask } from "..
 import setupMockServer from "../helpers/mock-server";
 import Factory from "../helpers/factory";
 import TestHelper from "ember-data-factory-guy/factory-guy-test-helper";
-var app, currentPaper, fakeUser, server;
 
-app = null;
-server = null;
-fakeUser = null;
-currentPaper = null;
+let app = null;
+let server = null;
+let fakeUser = null;
+let currentPaper = null;
+let taskId = 94139;
 
 module('Integration: Reporting Guidelines Card', {
   afterEach: function() {
@@ -22,12 +22,11 @@ module('Integration: Reporting Guidelines Card', {
   },
 
   beforeEach: function() {
-    var paperPayload, paperResponse, records, task, taskId, taskPayload, taskResponse;
+    var paperPayload, paperResponse, records, task, taskPayload, taskResponse;
     app = startApp();
     server = setupMockServer();
     fakeUser = window.currentUserData.user;
     TestHelper.handleFindAll("discussion-topic", 1);
-    taskId = 94139;
 
     records = paperWithTask("ReportingGuidelinesTask", {
       id: taskId,
@@ -95,28 +94,24 @@ module('Integration: Reporting Guidelines Card', {
 });
 
 test('Supporting Guideline is a meta data card, contains the right questions and sub-questions', function(assert) {
-  var findQuestionLi;
-  findQuestionLi = function(questionText) {
+  const findQuestionLi = function(questionText) {
     return find('.question .item').filter(function(i, el) {
       return Ember.$(el).find('label').text().trim() === questionText;
     });
   };
-  visit("/papers/" + currentPaper.id).then(function() {
-    return assert.ok(find('#paper-metadata-tasks .card-content:contains("Reporting Guidelines")'));
-  });
-  click('.card-content:contains("Reporting Guidelines")').then(function() {
-    var questionLi;
+
+  visit('/papers/' + currentPaper.id + '/tasks/' + taskId).then(function() {
     assert.equal(find('.question .item').length, 6);
-    assert.equal(find(".overlay-main-work h1").text().trim(), "Reporting Guidelines");
-    questionLi = findQuestionLi('Systematic Reviews');
-    return assert.ok(!questionLi.find('.additional-data input[type=file]').length);
+    assert.equal(find(".overlay-body-title").text().trim(), "Reporting Guidelines");
+    const questionLi = findQuestionLi('Systematic Reviews');
+    assert.ok(!questionLi.find('.additional-data input[type=file]').length);
   });
+
   return click('input[name="reporting_guidelines--systematic_reviews"]').then(function() {
-    var additionalDataText, questionLi;
-    questionLi = findQuestionLi('Systematic Reviews');
+    const questionLi = findQuestionLi('Systematic Reviews');
     assert.equal(0, questionLi.find('.additional-data.hidden').length);
     assert.ok(questionLi.find('.additional-data input[type=file]').length);
-    additionalDataText = questionLi.find('.additional-data').text();
+    const additionalDataText = questionLi.find('.additional-data').text();
     assert.ok(additionalDataText.indexOf('Select & upload') > -1);
     return assert.ok(additionalDataText.indexOf('Provide a completed PRISMA checklist as supporting information.') > -1);
   });

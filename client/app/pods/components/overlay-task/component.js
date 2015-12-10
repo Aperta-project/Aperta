@@ -30,6 +30,19 @@ export default Ember.Component.extend(Participants, {
       'You must provide an outAnimationComplete action to OverlayTaskComponent',
       !Ember.isEmpty(this.get('outAnimationComplete'))
     );
+  },
+
+  actions: {
+    postComment(body) {
+      const store = this.container.lookup('store:main');
+
+      return store.createRecord('comment', {
+        commenter: this.currentUser,
+        task: this.get('task'),
+        body: body,
+        createdAt: new Date()
+      }).save();
+    }
   }
 });
 

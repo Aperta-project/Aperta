@@ -39,21 +39,6 @@ export default Ember.Controller.extend(
   },
 
   actions: {
-    postComment(body) {
-      if (!body) { return; }
-
-      const commentFields = {
-        commenter: this.currentUser,
-        task: this.get('model'),
-        body: body,
-        createdAt: new Date()
-      };
-
-      const newComment = this.store.createRecord('comment', commentFields);
-
-      newComment.save();
-    },
-
     routeWillTransition(transition) {
       if (this.get('isUploading')) {
         if (window.confirm(ABORT_CONFIRM_TEXT)) {

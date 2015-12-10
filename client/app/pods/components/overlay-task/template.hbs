@@ -17,6 +17,13 @@
             <h1 class="overlay-body-title">{{{task.title}}}</h1>
             {{#task-load task=task}}
               {{component (task-component-name task.type) task=task}}
+
+              <div class="overlay-discussion-board">
+                <h2>Discussion</h2>
+                {{comment-board comments=task.comments
+                                currentUser=currentUser
+                                postComment=(action "postComment")}}
+              </div>
             {{/task-load}}
           </div>
           <footer class="overlay-footer">

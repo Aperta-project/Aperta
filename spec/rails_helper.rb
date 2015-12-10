@@ -4,12 +4,13 @@ CodeClimate::TestReporter.start
 ENV["RAILS_ENV"] ||= 'test'
 require 'spec_helper'
 require File.expand_path("../../config/environment", __FILE__)
-require 'rspec/rails'
-require 'capybara/rspec'
 require 'capybara-screenshot/rspec'
-require "email_spec"
-require 'sidekiq/testing'
+require 'capybara/rspec'
+require 'email_spec'
 require 'pusher-fake/support/rspec'
+require 'rspec/rails'
+require 'sidekiq/testing'
+require 'webmock/rspec'
 include Warden::Test::Helpers
 
 # Requires supporting ruby files with custom matchers and macros, etc,

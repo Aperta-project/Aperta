@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'webmock/rspec'
 
 describe DownloadManuscriptWorker, redis: true do
   let(:paper) { FactoryGirl.create(:paper) }

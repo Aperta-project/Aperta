@@ -11,11 +11,6 @@ export default Ember.Route.extend({
     }
   },
 
-  afterModel(model) {
-    return Ember.RSVP.all([model.get('nestedQuestions'),
-                           model.get('nestedQuestionAnswers')]);
-  },
-
   actions: {
     willTransition(transition) {
       this.controllerFor('paper.task').send('routeWillTransition', transition);

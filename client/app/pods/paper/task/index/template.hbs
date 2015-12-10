@@ -1,32 +1,3 @@
-{{#ember-wormhole to="overlay-drop-zone"}}
-  {{#overlay-animate outAnimationComplete=(action "close")
-                     as |animateOut|}}
-    <div class="overlay overlay--card {{task-component-name model.type}}-overlay">
-      <div class="overlay-container">
-        <header class="overlay-header">
-          <span>
-            {{#link-to "paper.index" model.paper.id class="task-overlay-paper-title"}}
-              {{partial "svg/manuscript-icon"}}
-              {{{model.paperTitle}}}
-            {{/link-to}}
-          </span>
-          <a class="button-secondary button--green overlay-close-button" {{action animateOut}}>Close</a>
-        </header>
-        <div class="overlay-body">
-          <h1 class="overlay-body-title">{{{model.title}}}</h1>
-          {{component (task-component-name model.type)
-                      task=model
-                      close=(action animateOut)}}
-        </div>
-        <footer class="overlay-footer">
-          {{participant-selector currentParticipants=participants
-                       onRemove="removeParticipant"
-                       label="Following:"
-                       paperId=model.paper.id
-                       onSelect="saveNewParticipant"}}
-          <a class="button-secondary button--green overlay-close-button" {{action animateOut}}>Close</a>
-        </footer>
-      </div>
-    </div>
-  {{/overlay-animate}}
-{{/ember-wormhole}}
+{{overlay-task visible=true
+               task=model
+               outAnimationComplete=(action "close")}}

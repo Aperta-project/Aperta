@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import Participants from 'tahi/mixins/components/task-participants';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(Participants, {
   to: 'overlay-drop-zone',
 
   /**

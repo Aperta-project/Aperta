@@ -21,10 +21,10 @@
           </div>
           <footer class="overlay-footer">
             {{participant-selector currentParticipants=participants
-                         onRemove="removeParticipant"
-                         label="Following:"
-                         paperId=task.paper.id
-                         onSelect="saveNewParticipant"}}
+                                   onRemove=(action "removeParticipant")
+                                   onSelect=(action "saveNewParticipant")
+                                   label="Following:"
+                                   paperId=task.paper.id}}
             <a class="button-secondary button--green overlay-close-button" {{action animateOut}}>Close</a>
           </footer>
         </div>

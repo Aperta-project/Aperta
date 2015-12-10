@@ -22,11 +22,13 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
     this.set('dataLoading', true);
+    const task = this.get('task');
 
     Ember.RSVP.all([
-      this.get('task').get('nestedQuestions'),
-      this.get('task').get('nestedQuestionAnswers'),
-      this.get('task').reload()
+      task.get('nestedQuestions'),
+      task.get('nestedQuestionAnswers'),
+      task.get('participations'),
+      task.reload()
     ]).then(()=> {
       this.set('dataLoading', false);
     });

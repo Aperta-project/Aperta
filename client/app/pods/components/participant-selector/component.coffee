@@ -53,9 +53,9 @@ ParticipantSelectorComponent = Ember.Component.extend
 
   actions:
     addParticipant: (newParticipant) ->
-      @sendAction("onSelect", newParticipant.id)
+      @attrs.onSelect(newParticipant.id)
     removeParticipant: (participant) ->
-      @sendAction("onRemove", participant.id)
+      @attrs.onRemove(participant.id)
     dropdownClosed: ->
       @$('.select2-search-field input').removeClass('active')
       @$('.add-participant-button').removeClass('searching')

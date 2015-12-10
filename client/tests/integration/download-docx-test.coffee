@@ -58,9 +58,9 @@ test 'show download links on control bar', (assert) ->
 
   andThen ->
     mock = sinon.mock(Utils)
-    mock.expects("windowLocation").withArgs("/api/papers/5/download.docx").returns(true)
+    mock.expects("windowLocation").withArgs("/api/papers/" + currentPaper.id + "/download.docx").returns(true)
 
-  click('.downloads-link').then ->
+  click('#nav-downloads').then ->
     click('.docx')
 
   andThen ->

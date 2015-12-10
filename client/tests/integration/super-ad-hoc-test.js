@@ -13,7 +13,7 @@ let fakeUser = null;
 let currentPaper = null;
 
 const paperTaskURL = function paperTaskURL(paper, task) {
-  return '/papers/' + paper.get('id') + '/tasks/' + task.get('id')
+  return '/papers/' + paper.get('id') + '/tasks/' + task.get('id');
 };
 
 module('Integration: Super AdHoc Card', {
@@ -69,20 +69,19 @@ module('Integration: Super AdHoc Card', {
       }, JSON.stringify({})
     ]);
 
-    server.respondWith('GET', "/api/tasks/1/nested_questions", [
+    server.respondWith('GET', '/api/tasks/1/nested_questions', [
       200, {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }, JSON.stringify({nested_questions: []})
     ]);
 
-    server.respondWith('GET', "/api/tasks/1/nested_question_answers", [
+    server.respondWith('GET', '/api/tasks/1/nested_question_answers', [
       200, {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }, JSON.stringify({nested_question_answers: []})
     ]);
 
-
-    let collabsURL = '/api/filtered_users/collaborators/' + currentPaper.id;
+    const collabsURL = '/api/filtered_users/collaborators/' + currentPaper.id;
     server.respondWith('GET', collabsURL , [
       200, {
         'Content-Type': 'application/json'
@@ -123,7 +122,6 @@ test('Changing the title on an AdHoc Task', function(assert) {
     );
   });
 });
-
 
 test('AdHoc Task text block', function(assert) {
   let paper = FactoryGuy.make('paper');
@@ -171,38 +169,38 @@ test('AdHoc Task list block', function(assert) {
 
   visit(paperTaskURL(paper, task));
 
-   click('.adhoc-content-toolbar .fa-plus');
-   click('.adhoc-content-toolbar .adhoc-toolbar-item--list').then(function() {
-      assert.ok(
-        find('.inline-edit-body-part').length,
-        'New list body part is created'
-      );
-
-     Ember.$('.inline-edit-form label[contenteditable]')
-          .html('Here is a checkbox list item')
-          .trigger('keyup');
-
-     click('.inline-edit-body-part .button--green:contains("Save")');
-   });
-
-   andThen(function() {
-     assert.textPresent('.inline-edit', 'checkbox list item');
+  click('.adhoc-content-toolbar .fa-plus');
+  click('.adhoc-content-toolbar .adhoc-toolbar-item--list').then(function() {
      assert.ok(
-       find('.inline-edit input[type=checkbox]').length,
-       'checkbox item is visble'
+       find('.inline-edit-body-part').length,
+       'New list body part is created'
      );
 
-     click('.inline-edit-body-part .fa-trash');
-   });
+    Ember.$('.inline-edit-form label[contenteditable]')
+         .html('Here is a checkbox list item')
+         .trigger('keyup');
 
-   andThen(function() {
-     assert.textPresent('.inline-edit-body-part', 'Are you sure?');
-     click('.inline-edit-body-part .delete-button');
-   });
+    click('.inline-edit-body-part .button--green:contains("Save")');
+  });
 
-   andThen(function() {
-     assert.textNotPresent('.inline-edit', 'checkbox list item');
-   });
+  andThen(function() {
+    assert.textPresent('.inline-edit', 'checkbox list item');
+    assert.ok(
+      find('.inline-edit input[type=checkbox]').length,
+      'checkbox item is visble'
+    );
+
+    click('.inline-edit-body-part .fa-trash');
+  });
+
+  andThen(function() {
+    assert.textPresent('.inline-edit-body-part', 'Are you sure?');
+    click('.inline-edit-body-part .delete-button');
+  });
+
+  andThen(function() {
+    assert.textNotPresent('.inline-edit', 'checkbox list item');
+  });
 });
 
 test('AdHoc Task email block', function(assert) {
@@ -222,39 +220,40 @@ test('AdHoc Task email block', function(assert) {
   click('.adhoc-content-toolbar .fa-plus');
   click('.adhoc-content-toolbar .adhoc-toolbar-item--email');
 
-   fillIn(
-     '.inline-edit-form input[placeholder="Enter a subject"]',
-     'Deep subject'
-   ).then(function() {
-     Ember.$('.inline-edit-form div[contenteditable]')
-          .html('Awesome email body!')
-          .trigger('keyup');
+  fillIn(
+    '.inline-edit-form input[placeholder="Enter a subject"]',
+    'Deep subject'
+  ).then(function() {
+    Ember.$('.inline-edit-form div[contenteditable]')
+         .html('Awesome email body!')
+         .trigger('keyup');
 
-     click('.task-body .inline-edit-body-part .button--green:contains("Save")');
-   });
+    click('.task-body .inline-edit-body-part .button--green:contains("Save")');
+  });
 
-   andThen(function() {
-     assert.textPresent('.inline-edit .item-subject', 'Deep');
-     assert.textPresent('.inline-edit .item-text', 'Awesome');
+  andThen(function() {
+    assert.textPresent('.inline-edit .item-subject', 'Deep');
+    assert.textPresent('.inline-edit .item-text', 'Awesome');
 
-     click('.task-body .inline-edit-body-part .button--green:contains("Save")');
-     click('.task-body .email-send-participants');
-     click('.send-email-action');
-   });
+    click('.task-body .inline-edit-body-part .button--green:contains("Save")');
+    click('.task-body .email-send-participants');
+    click('.send-email-action');
+  });
 
-   andThen(function() {
-     assert.ok(
-       find('.bodypart-last-sent').length,
-       'The sent at time should appear'
-     );
+  andThen(function() {
+    assert.ok(
+      find('.bodypart-last-sent').length,
+      'The sent at time should appear'
+    );
 
-     assert.ok(
-       find('.bodypart-email-sent-overlay').length,
-       'The sent confirmation should appear'
-     );
+    assert.ok(
+      find('.bodypart-email-sent-overlay').length,
+      'The sent confirmation should appear'
+    );
 
-     assert.ok(_.findWhere(server.requests, {
-       method: 'PUT',
-       url: '/api/tasks/1/send_message'
-     }), 'It posts to the server');
+    assert.ok(_.findWhere(server.requests, {
+      method: 'PUT',
+      url: '/api/tasks/1/send_message'
+    }), 'It posts to the server');
+  });
 });

@@ -113,10 +113,10 @@ test 'Changing phase name', (assert) ->
     assert.ok find('h2.column-title:contains("Shazam!")').length
 
 test 'Adding an Ad-Hoc card', (assert) ->
-  visit("/admin/journals/1/manuscript_manager_templates/1/edit")
-  click('a.button--green:contains("Add New Card")')
-  click('label:contains("Ad Hoc")')
-  click('.overlay .button--green:contains("Add")')
+  visit("/admin/journals/1/manuscript_manager_templates/1/edit").then ->
+    click('.button--green:contains("Add New Card")')
+    click('label:contains("Ad Hoc")')
+    click('.overlay .button--green:contains("Add")')
 
   andThen ->
     assert.ok find('h1.inline-edit:contains("Ad Hoc")').length

@@ -30,14 +30,15 @@ module TahiStandardTasks
     end
 
     def apex_delivery
-      if params[:id]
-        ApexDelivery.includes(:user, :paper, :task).find(params[:id])
-      else
-        ApexDelivery.create!(
-          paper: task.paper,
-          task: task,
-          user: current_user)
-      end
+      @apex_delivery ||=
+        if params[:id]
+          ApexDelivery.includes(:user, :paper, :task).find(params[:id])
+        else
+          ApexDelivery.create!(
+            paper: task.paper,
+            task: task,
+            user: current_user)
+        end
     end
 
     def enforce_policy

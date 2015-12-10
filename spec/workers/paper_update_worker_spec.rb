@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'webmock/rspec'
 
 describe PaperUpdateWorker do
   subject(:worker) { PaperUpdateWorker.new }

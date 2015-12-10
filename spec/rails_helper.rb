@@ -42,12 +42,16 @@ end
 ActiveRecord::Migration.maintain_test_schema! if
   defined?(ActiveRecord::Migration)
 
+# Truncate the database right now
+DatabaseCleaner.clean_with(:truncation)
+
 # Necessary to run a rake task from here
 Rake::Task.clear
 Tahi::Application.load_tasks
 # Load question seeds before any tests start since we don't want them
 # to be rolled back as part of a transaction
 Rake::Task['nested-questions:seed'].invoke
+
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.use_transactional_fixtures = false
@@ -70,6 +74,7 @@ RSpec.configure do |config|
   config.include EmailSpec::Matchers
 
   config.before(:suite) do
+    # Use the transactional strategy for all tests (except js tests, see below)
     DatabaseCleaner[:active_record].strategy = :transaction
     Warden.test_mode!
   end

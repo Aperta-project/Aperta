@@ -3,7 +3,6 @@ import Utils from 'tahi/services/utils';
 import AuthorizedRoute from 'tahi/routes/authorized';
 
 export default AuthorizedRoute.extend({
-  restless: Ember.inject.service('restless'),
   channelName: null,
 
   model(params) {

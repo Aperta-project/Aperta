@@ -6,22 +6,15 @@ export default AuthorizedRoute.extend({
   controllerName: 'paper/index',
   templateName: 'paper/index',
   cardOverlayService: Ember.inject.service('card-overlay'),
-  restless: Ember.inject.service('restless'),
 
   afterModel(model) {
     return model.get('tasks');
   },
 
   setupController: function(controller, model) {
-    this._super(...arguments);
-
+    this._super(controller, model);
     controller.set('commentLooks', this.store.all('commentLook'));
-
-    if (this.currentUser) {
-      const url = '/api/papers/' + (model.get('id')) + '/manuscript_manager';
-      return this.get('restless')
-                 .authorize(controller, url, 'canViewManuscriptManager');
-    }
+    this.setFlagViewManuscriptManager(controller, model);
   },
 
   updateShowSubmissionProcess: function(){

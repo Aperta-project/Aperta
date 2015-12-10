@@ -13,6 +13,9 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   showCardDeleteOverlay: false,
   taskToDelete: null,
 
+  showAdHocTaskOverlay: false,
+  adHocTaskToDisplay: null,
+
   showChooseNewCardOverlay: false,
   addToPhase: null,
   journalTaskTypes: [],
@@ -49,6 +52,10 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
   },
 
   actions: {
+    hideAdHocTaskOverlay() {
+      this.set('showAdHocTaskOverlay', false);
+    },
+
     showChooseNewCardOverlay(phase) {
       this.setProperties({
         addToPhase: phase,
@@ -70,8 +77,29 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       this.set('showChooseNewCardOverlay', false);
     },
 
-    addTaskType(phase, taskTypeList) {
-      this.send('addTaskTypeToPhase', phase, taskTypeList);
+    addTaskType(phaseTemplate, taskTypeList) {
+      if (!taskTypeList) { return; }
+      let hasAdHocType = false;
+
+      taskTypeList.forEach((taskType) => {
+        const newTaskTemplate = this.store.createRecord('taskTemplate', {
+          title: taskType.get('title'),
+          journalTaskType: taskType,
+          phaseTemplate: phaseTemplate,
+          template: []
+        });
+
+        if (taskType.get('kind') === 'Task') {
+          hasAdHocType = true;
+          this.set('adHocTaskToDisplay', newTaskTemplate);
+        }
+      });
+
+      if (hasAdHocType) {
+        this.set('showAdHocTaskOverlay', true);
+      }
+
+      this.set('pendingChanges', true);
     },
 
     showCardDeleteOverlay(task) {
@@ -95,7 +123,8 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       this.set('pendingChanges', true);
     },
 
-    taskMovedBetweenList(item, oldIndex, newIndex, newList, sourceItems, newItems) {
+    taskMovedBetweenList(
+      item, oldIndex, newIndex, newList, sourceItems, newItems) {
       sourceItems.removeAt(oldIndex);
       newItems.insertAt(newIndex, item);
       item.set('phaseTemplate', newList);

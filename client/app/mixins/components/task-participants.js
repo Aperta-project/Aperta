@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
-  participations: Ember.computed.alias('task.participations.content.[]'),
+  participations: Ember.computed.alias('task.participations'),
   participants: Ember.computed('participations.@each.user', function() {
     return this.get('participations').mapBy('user');
   }),

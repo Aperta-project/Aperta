@@ -4,12 +4,17 @@ import startApp from 'tahi/tests/helpers/start-app';
 import setupMockServer from '../helpers/mock-server';
 import { paperWithTask } from '../helpers/setups';
 import Factory from '../helpers/factory';
+import FactoryGuy from 'ember-data-factory-guy';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 
 let App = null;
 let server = null;
 let fakeUser = null;
 let currentPaper = null;
+
+const paperTaskURL = function paperTaskURL(paper, task) {
+  return '/papers/' + paper.get('id') + '/tasks/' + task.get('id')
+};
 
 module('Integration: Super AdHoc Card', {
   afterEach() {
@@ -100,28 +105,46 @@ module('Integration: Super AdHoc Card', {
 });
 
 test('Changing the title on an AdHoc Task', function(assert) {
-  visit('/papers/' + currentPaper.id + '/tasks/1');
+  const paper = FactoryGuy.make('paper');
+  const task = FactoryGuy.make('task', { paper: paper });
+
+  TestHelper.handleFind(paper);
+  TestHelper.handleFind(task);
+
+  visit(paperTaskURL(paper, task));
   click('h1.inline-edit .fa-pencil');
   fillIn('.large-edit input[name=title]', 'Shazam!');
   click('.large-edit .button--green:contains("Save")');
 
   andThen(function() {
-    assert.equal(
-      find('h1.inline-edit:contains("Shazam!")').length, 1, 'title is changed'
+    assert.ok(
+      find('h1.inline-edit:contains("Shazam!")').length,
+      'title is changed'
     );
   });
 });
 
-test('Adding a text block to an AdHoc Task', function(assert) {
-  visit('/papers/' + currentPaper.id + '/tasks/1');
-  click('.adhoc-content-toolbar .fa-plus');
-  click('.adhoc-content-toolbar .adhoc-toolbar-item--text');
 
-  andThen(function() {
+test('AdHoc Task text block', function(assert) {
+  let paper = FactoryGuy.make('paper');
+  let task = FactoryGuy.make('task', { paper: paper, body: [] });
+
+  TestHelper.handleFind(paper);
+  TestHelper.handleFind(task);
+
+  visit(paperTaskURL(paper, task));
+  click('.adhoc-content-toolbar .fa-plus');
+  click('.adhoc-content-toolbar .adhoc-toolbar-item--text').then(function() {
+    assert.ok(
+      find('.inline-edit-body-part').length,
+      'New text body part is created'
+    );
+
     Ember.$('.inline-edit-form div[contenteditable]')
          .html('New contenteditable, yahoo!')
          .trigger('keyup');
-    click('.task-body .inline-edit-body-part .button--green:contains("Save")');
+
+    click('.inline-edit-body-part .button--green:contains("Save")');
   });
 
   andThen(function() {
@@ -139,106 +162,99 @@ test('Adding a text block to an AdHoc Task', function(assert) {
   });
 });
 
-test('Adding and removing a checkbox item to an AdHoc Task', function(assert) {
-  visit('/papers/' + currentPaper.id + '/tasks/1');
-  click('.adhoc-content-toolbar .fa-plus');
-  click('.adhoc-content-toolbar .adhoc-toolbar-item--list');
+test('AdHoc Task list block', function(assert) {
+  let paper = FactoryGuy.make('paper');
+  let task = FactoryGuy.make('task', { paper: paper, body: [] });
 
-  andThen(function() {
-    assert.equal(
-      find('.inline-edit-form .item-remove').length,
-      1,
-      'item remove button visible'
-    );
+  TestHelper.handleFind(paper);
+  TestHelper.handleFind(task);
 
-    Ember.$('.inline-edit-form label[contenteditable]')
-         .html('Here is a checkbox list item')
-         .trigger('keyup');
+  visit(paperTaskURL(paper, task));
 
-    click('.task-body .inline-edit-body-part .button--green:contains("Save")');
-  });
+   click('.adhoc-content-toolbar .fa-plus');
+   click('.adhoc-content-toolbar .adhoc-toolbar-item--list').then(function() {
+      assert.ok(
+        find('.inline-edit-body-part').length,
+        'New list body part is created'
+      );
 
-  andThen(function() {
-    assert.textPresent('.inline-edit', 'checkbox list item');
-    assert.equal(
-      find('.inline-edit input[type=checkbox]').length,
-      1,
-      'checkbox item is visble'
-    );
-    click('.inline-edit-body-part .fa-trash');
-  });
+     Ember.$('.inline-edit-form label[contenteditable]')
+          .html('Here is a checkbox list item')
+          .trigger('keyup');
 
-  andThen(function() {
-    assert.textPresent('.inline-edit-body-part', 'Are you sure?');
-    click('.inline-edit-body-part .delete-button');
-  });
+     click('.inline-edit-body-part .button--green:contains("Save")');
+   });
 
-  andThen(function() {
-    assert.textNotPresent('.inline-edit', 'checkbox list item');
-  });
+   andThen(function() {
+     assert.textPresent('.inline-edit', 'checkbox list item');
+     assert.ok(
+       find('.inline-edit input[type=checkbox]').length,
+       'checkbox item is visble'
+     );
+
+     click('.inline-edit-body-part .fa-trash');
+   });
+
+   andThen(function() {
+     assert.textPresent('.inline-edit-body-part', 'Are you sure?');
+     click('.inline-edit-body-part .delete-button');
+   });
+
+   andThen(function() {
+     assert.textNotPresent('.inline-edit', 'checkbox list item');
+   });
 });
 
-test('Adding an email block to an AdHoc Task', function(assert) {
-  visit('/papers/' + currentPaper.id + '/tasks/1');
+test('AdHoc Task email block', function(assert) {
+  let paper = FactoryGuy.make('paper');
+  let task = FactoryGuy.make('task', { paper: paper, body: [] });
+
+  TestHelper.handleFind(paper);
+  TestHelper.handleFind(task);
+   server.respondWith('PUT', /\/api\/tasks\/\d+\/send_message/, [
+     204, {
+       'Content-Type': 'application/json'
+     }, JSON.stringify({})
+   ]);
+
+  visit(paperTaskURL(paper, task));
+
   click('.adhoc-content-toolbar .fa-plus');
   click('.adhoc-content-toolbar .adhoc-toolbar-item--email');
 
-  fillIn(
-    '.inline-edit-form input[placeholder="Enter a subject"]', 'Deep subject'
-  );
+   fillIn(
+     '.inline-edit-form input[placeholder="Enter a subject"]',
+     'Deep subject'
+   ).then(function() {
+     Ember.$('.inline-edit-form div[contenteditable]')
+          .html('Awesome email body!')
+          .trigger('keyup');
 
-  andThen(function() {
-    Ember.$('.inline-edit-form div[contenteditable]')
-         .html('Awesome email body!')
-         .trigger('keyup');
-    click('.task-body .inline-edit-body-part .button--green:contains("Save")');
-  });
+     click('.task-body .inline-edit-body-part .button--green:contains("Save")');
+   });
 
-  andThen(function() {
-    assert.textPresent('.inline-edit .item-subject', 'Deep');
-    assert.textPresent('.inline-edit .item-text', 'Awesome');
-  });
-});
+   andThen(function() {
+     assert.textPresent('.inline-edit .item-subject', 'Deep');
+     assert.textPresent('.inline-edit .item-text', 'Awesome');
 
-test('User can send an email from an adhoc card', function(assert) {
-  server.respondWith('PUT', /\/api\/tasks\/\d+\/send_message/, [
-    204, {
-      'Content-Type': 'application/json'
-    }, JSON.stringify({})
-  ]);
+     click('.task-body .inline-edit-body-part .button--green:contains("Save")');
+     click('.task-body .email-send-participants');
+     click('.send-email-action');
+   });
 
-  visit('/papers/' + currentPaper.id + '/tasks/1');
-  click('.adhoc-content-toolbar .fa-plus');
-  click('.adhoc-content-toolbar .adhoc-toolbar-item--email');
+   andThen(function() {
+     assert.ok(
+       find('.bodypart-last-sent').length,
+       'The sent at time should appear'
+     );
 
-  fillIn(
-    '.inline-edit-form input[placeholder="Enter a subject"]', 'Deep subject'
-  );
+     assert.ok(
+       find('.bodypart-email-sent-overlay').length,
+       'The sent confirmation should appear'
+     );
 
-  andThen(function() {
-    Ember.$('.inline-edit-form div[contenteditable]')
-         .html('Awesome email body!')
-         .trigger('keyup');
-    click('.task-body .inline-edit-body-part .button--green:contains("Save")');
-  });
-
-  click('.task-body .email-send-participants');
-  click('.send-email-action');
-
-  andThen(function() {
-    assert.ok(
-      find('.bodypart-last-sent').length,
-      'The sent at time should appear'
-    );
-
-    assert.ok(
-      find('.bodypart-email-sent-overlay').length,
-      'The sent confirmation should appear'
-    );
-
-    assert.ok(_.findWhere(server.requests, {
-      method: 'PUT',
-      url: '/api/tasks/1/send_message'
-    }), 'It posts to the server');
-  });
+     assert.ok(_.findWhere(server.requests, {
+       method: 'PUT',
+       url: '/api/tasks/1/send_message'
+     }), 'It posts to the server');
 });

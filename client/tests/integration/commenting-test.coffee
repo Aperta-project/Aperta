@@ -27,6 +27,7 @@ test 'A card with more than 5 comments has the show all comments button', (asser
   task = FactoryGuy.make("task", paper: paper, comments: comments)
 
   TestHelper.handleFind(paper)
+  TestHelper.handleFind(task)
 
   visit("/papers/#{paper.get("id")}/tasks/#{task.get("id")}")
 
@@ -47,6 +48,7 @@ test 'A card with less than 5 comments doesnt have the show all comments button'
   task = FactoryGuy.make("task", paper: paper, comments: comments)
 
   TestHelper.handleFind(paper)
+  TestHelper.handleFind(task)
 
   visit("/papers/#{paper.get("id")}/tasks/#{task.get("id")}")
 
@@ -63,6 +65,7 @@ test 'A task with a commentLook shows up as unread and deletes its comment look'
   task = FactoryGuy.make("task", paper: paper, comments: comments)
 
   TestHelper.handleFind(paper)
+  TestHelper.handleFind(task)
 
   andThen ->
     comments.forEach (comment) ->

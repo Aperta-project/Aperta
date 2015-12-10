@@ -1,0 +1,19 @@
+{{#ember-wormhole to="overlay-drop-zone"}}
+  {{#overlay-animate outAnimationComplete=(action outAnimationComplete)
+                     as |animateOut|}}
+    <div class="overlay overlay--card ad-hoc-template-overlay">
+      <div class="overlay-container">
+        <header class="overlay-header">
+          <span></span>
+          <a class="button-secondary button--green overlay-close-button" {{action animateOut}}>Close</a>
+        </header>
+        <div class="overlay-body">
+          {{ad-hoc-template task=task}}
+        </div>
+        <footer class="overlay-footer">
+          <a class="button-secondary button--green overlay-close-button" {{action animateOut}}>Close</a>
+        </footer>
+      </div>
+    </div>
+  {{/overlay-animate}}
+{{/ember-wormhole}}

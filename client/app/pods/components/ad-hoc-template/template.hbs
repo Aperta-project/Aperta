@@ -1,7 +1,5 @@
-{{partial "task-completed-section"}}
-
 <div class="task-main-content">
-  {{inline-edit-h1 title=task.title setTitle="setTitle"}}
+  {{inline-edit-h1 title=task.title setTitle="setTitle" editOnOpen=true}}
 
   <div class="task-body">
     {{#each uploads as |upload|}}
@@ -67,3 +65,4 @@
     {{partial "components/reveal-adhoc-toolbar-buttons/buttons"}}
   {{/reveal-adhoc-toolbar-buttons}}
 </div>
+

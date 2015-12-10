@@ -72,3 +72,28 @@ feature 'Viewing Versions:', js: true do
     end
   end
 end
+
+feature 'Viewing manuscript control bar', js: true do
+  before do
+    login_as(user, scope: :user)
+    visit "/papers/#{paper.id}/versions?majorVersion=0&minorVersion=0"
+  end
+
+  context 'as an admin' do
+    let(:user) { FactoryGirl.create :user, :site_admin }
+    let(:paper) { FactoryGirl.create :paper }
+
+    scenario 'can view the Go to Workflow link' do
+      expect(page).to have_css('#go-to-workflow')
+    end
+  end
+
+  context 'as an author' do
+    let(:user) { FactoryGirl.create :user }
+    let(:paper) { FactoryGirl.create :paper, creator: user }
+
+    scenario 'can not view the Go to Workflow link' do
+      expect(page).to_not have_css('#go-to-workflow')
+    end
+  end
+end

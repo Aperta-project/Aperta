@@ -6,26 +6,24 @@ describe DownloadManuscriptWorker, redis: true do
 
   before do
     VCR.turn_off!
-    @requests = []
-    @requests << stub_request(:get, url).to_return(body: 'foo')
-    @requests << stub_request(:get, 'https://tahi-test.s3-us-west-1.amazonaws.com/uploads/versioned_text/1/about_equations.docx')
+    @docx_req = stub_request(:get, url).to_return(body: 'foo')
+    @s3_req = stub_request(:get, 'https://tahi-test.s3-us-west-1.amazonaws.com/uploads/versioned_text/1/about_equations.docx')
       .with(query: hash_including)
       .to_return(body: 'foo')
-    @requests << stub_request(:post, 'http://ihat.example.com/jobs')
+    @ihat_status_req = stub_request(:post, 'http://ihat.example.com/jobs')
       .with(body: /.*/)
       .to_return(body: { job: { state: 'processing', options: {} } }.to_json)
   end
 
   after do
     VCR.turn_on!
-    @requests.each do |req|
-      expect(req).to have_been_requested
-    end
   end
 
   it 'downloads the attachment' do
     DownloadManuscriptWorker.new.perform(paper.id, url, 'http://localhost/callback',
                                          foo: 'bar')
-    expect(WebMock).to have_requested(:get, url)
+    expect(@docx_req).to have_been_requested
+    expect(@s3_req).to have_been_requested
+    expect(@ihat_status_req).to have_been_made.at_least_once
   end
 end

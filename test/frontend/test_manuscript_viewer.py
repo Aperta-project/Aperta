@@ -237,6 +237,7 @@ class EditPaperTest(CommonTest):
     initial_decision_card = InitialDecisionCard(self.getDriver())
     initial_decision_card.execute_decision('invite')
     initial_decision_card.click_close_button()
+    time.sleep(2)
     manuscript_page.logout()
     # Test for AC8
     print('Logging in as user: {}'.format(au_login))
@@ -247,7 +248,6 @@ class EditPaperTest(CommonTest):
     # the following call should only succeed for sa_login
     dashboard_page = DashboardPage(self.getDriver())
     dashboard_page.go_to_manuscript(paper_id)
-    time.sleep(2)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     #AC8: Message for full submission when is ready for submition
     assert  "Your manuscript is ready for Full Submission." in \

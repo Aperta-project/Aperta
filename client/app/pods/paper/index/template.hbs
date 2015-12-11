@@ -11,6 +11,7 @@
 {{withdrawal-banner paper=model staff=currentUser.siteAdmin}}
 
 {{#paper-submission-process showProcess=showSubmissionProcess
+                            model=model
                             toggle=(action "toggleSubmissionProcess")}}
   {{#split-pane id="paper-container"
                 handleClass="manuscript-handle"}}
@@ -30,7 +31,7 @@
             <h2 id="paper-title">{{{model.title}}}</h2>
           {{/if}}
 
-          <div class="paper-body">
+          <div id="paper-body">
             {{{model.body}}}
           </div>
         </div>

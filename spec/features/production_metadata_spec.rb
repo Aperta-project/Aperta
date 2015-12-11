@@ -69,7 +69,8 @@ feature 'Production Metadata Card', js: true do
     context 'clicking complete' do
        describe 'with invalid input in required fields' do
         it 'shows an error'do
-          find('#task_completed').click
+          find('.task-completed').click
+          expect(find(".publication-date")).to have_text("Can't be blank")
           expect(find(".volume-number")).to have_text("Must be a whole number")
           expect(find(".issue-number")).to have_text("Must be a whole number")
         end

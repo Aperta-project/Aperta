@@ -20,7 +20,7 @@ class PaperPage < Page
   text_assertions :journal, '.paper-journal'
 
   def initialize element = nil
-    find 'article.manuscript'
+    find '.manuscript'
     super
   end
 
@@ -77,7 +77,7 @@ class PaperPage < Page
   end
 
   def body
-    find('.paper-body')
+    find('#paper-body')
   end
 
   def versioned_body
@@ -97,7 +97,7 @@ class PaperPage < Page
   end
 
   def has_body_text?(text)
-    find('.paper-body').has_text?(text)
+    find('#paper-body').has_text?(text)
   end
 
   def journal
@@ -143,7 +143,7 @@ HERE
   end
 
   def css
-    find('#paper-body')['style']
+    find('.manuscript')['style']
   end
 
   private

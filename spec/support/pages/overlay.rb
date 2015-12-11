@@ -29,8 +29,8 @@ class CardOverlay < Page
   end
 
   def mark_as_complete
-    check "Completed"
-    check "Completed" unless completed?
+    check "I am finished with this task"
+    check "I am finished with this task" unless completed?
   end
 
   def completed?
@@ -109,6 +109,6 @@ class CardOverlay < Page
   private
 
   def checkbox_selector
-    'footer input[type=checkbox]'
+    '.task-completed'
   end
 end

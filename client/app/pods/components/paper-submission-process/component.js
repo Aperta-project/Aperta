@@ -8,7 +8,7 @@ const forceRepaint = function forceRepaint() {
 };
 
 export default Ember.Component.extend({
-  classNames: ['paper-submission-process'],
+  classNameBindings: [':paper-submission-process', 'showProcess'],
   showProcess: false,
 
   _toggle: Ember.observer('showProcess', function() {

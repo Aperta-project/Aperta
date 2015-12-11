@@ -23,7 +23,7 @@ feature 'Gradual Engagement', js: true do
           expect(URI.parse(current_url).query).to eq(nil) # ember should remove
           find('#nav-dashboard').click # leave route
           find("#view-paper-#{paper.id}").click # come back
-          expect(page).not_to have_selector('#submission-process')
+          expect(page).not_to have_selector('#submission-process.show-process')
         end
 
         scenario 'the X in the submission process box closes the box' do
@@ -33,7 +33,7 @@ feature 'Gradual Engagement', js: true do
           visit "/papers/#{paper.id}?firstView=true"
           expect(find('#submission-process'))
           find('#sp-close').click
-          expect(page).not_to have_selector('#submission-process')
+          expect(page).not_to have_selector('#submission-process.show-process')
         end
       end
     end
@@ -128,11 +128,11 @@ feature 'Gradual Engagement', js: true do
                                    creator: user,
                                    gradual_engagement: true
         visit "/papers/#{paper.id}"
-        expect(page).not_to have_selector('#submission-process')
+        expect(page).not_to have_selector('#submission-process.show-process')
         find('#submission-process-toggle').click
         expect(find('#submission-process'))
         find('#submission-process-toggle').click
-        expect(page).not_to have_selector('#submission-process')
+        expect(page).not_to have_selector('#submission-process.show-process')
       end
     end
   end
@@ -169,7 +169,7 @@ feature 'Gradual Engagement', js: true do
           find('.submit-action-buttons .button-submit-paper').click
           expect(find('#full-submit-message'))
           expect(paper.reload.publishing_state).to eq('submitted')
-          expect(page).not_to have_selector('#submission-process')
+          expect(page).not_to have_selector('#submission-process.show-process')
           expect(page).not_to have_selector('#submission-process-toggle')
         end
       end

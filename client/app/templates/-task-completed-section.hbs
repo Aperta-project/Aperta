@@ -6,4 +6,8 @@
   {{/if}}
 
   I am finished with this task
+
+  {{#if validationErrors.completed}}
+    {{error-message message=validationErrors.completed}}
+  {{/if}}
 </label>

@@ -1,0 +1,9 @@
+<label class="task-completed-section">
+  {{#if isEditable}}
+    {{check-box class="task-completed" name="task_completed" checked=task.completed action="save"}}
+  {{else}}
+    {{check-box class="task-completed" name="task_completed" checked=task.completed disabled="disabled"}}
+  {{/if}}
+
+  I am finished with this task
+</label>

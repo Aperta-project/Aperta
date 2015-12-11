@@ -14,21 +14,20 @@ const {
 
 export default Ember.Component.extend({
   //paper: passed to component
-  tagName:     'aside',
-  classNames:  ['sidebar'],
-
   taskSorting: ['phase.position', 'position'],
 
-  getsGradualEngagementToggle: computed('paper.publishingState', function(){
-    const p = this.get('paper');
-    const state = p.get('publishingState');
-    const states = [
-      'unsubmitted',
-      'initially_submitted',
-      'invited_for_full_submission'
-    ];
-    return (p.get('gradualEngagement') && _.contains(states, state));
-  }),
+  getsGradualEngagementToggle: computed(
+    'paper.publishingState', 'paper.gradualEngagement', function(){
+      const p = this.get('paper');
+      const state = p.get('publishingState');
+      const states = [
+        'unsubmitted',
+        'initially_submitted',
+        'invited_for_full_submission'
+      ];
+      return (p.get('gradualEngagement') && _.contains(states, state));
+    }
+  ),
 
   tasks: alias('paper.tasks'),
   isUnsubmitted: equal('paper.publishingState', 'unsubmitted'),
@@ -61,12 +60,8 @@ export default Ember.Component.extend({
   ),
 
   actions: {
-    viewCard(task){
-      this.sendAction('viewCard', task);
-    },
-
     toggleSubmissionProcess(){
-      $('#submission-process').slideToggle(300);
+      this.attrs.toggleSubmissionProcess();
     },
 
     submitPaper(){

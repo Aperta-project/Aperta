@@ -1,0 +1,44 @@
+{{partial "task-completed-section"}}
+
+<div class="task-main-content">
+  <div class="question-list">
+    <div class="question">
+      {{#nested-question-check
+          ident="taxon_zoological"
+          owner=task
+          disabled=isSubmissionTaskNotEditable as |selection|}}
+
+        {{#if selection.checked }}
+          <div class="question-text">
+            <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
+          </div>
+          {{nested-question-check
+            ident="taxon_zoological.complies"
+            owner=task
+            disabled=isSubmissionTaskNotEditable}}
+        {{/if}}
+      {{/nested-question-check}}
+    </div>
+
+    <br>
+
+    <div class="question">
+      {{#nested-question-check
+        ident="taxon_botanical"
+        owner=task
+        disabled=isSubmissionTaskNotEditable as |selection|}}
+
+        {{#if selection.checked }}
+          <div class="question-text">
+            <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
+          </div>
+
+          {{nested-question-check
+            ident="taxon_botanical.complies"
+            owner=task
+            disabled=isSubmissionTaskNotEditable}}
+        {{/if}}
+      {{/nested-question-check}}
+    </div>
+  </div>
+</div>

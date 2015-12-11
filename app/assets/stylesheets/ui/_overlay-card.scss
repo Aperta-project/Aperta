@@ -2,13 +2,12 @@ $ov--card-side-pad: 8.0rem;
 $ov--card-breakpoint: 900px;
 
 .overlay--card {
-  display: none;
   background-color: rgba(0,0,0, 0.68);
 
   // TODO: This needs another home:
   h1 {
     margin: 0 0 1em 0;
-    font-size: 48px;
+    font-size: 4.8rem;
   }
 
   .overlay-container {
@@ -36,58 +35,36 @@ $ov--card-breakpoint: 900px;
 
 .overlay--card {
   .overlay-header {
-    overflow: hidden;
+    @include display(flex);
+    @include justify-content(space-between);
+    @include align-items(flex-end);
     position: relative;
     margin: 0 $ov--card-side-pad;
     border-bottom: 1px solid #000;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    padding: 6.0rem 5px 1.0rem 5px;
+    padding: 5.0rem 5px 1.0rem 5px;
 
-    .overlay-close-button {
-      right: 0;
-      bottom: 10px;
+    span:first-of-type {
+      flex-grow: 1;
+      margin-right: 1rem;
     }
   }
 
   .overlay-close {
+    display: none;
     @include position(absolute, 0px 0px auto auto);
     right: -#{$ov--card-side-pad};
     width: auto !important; // bootstrap/glyphicon override
-    padding: 0 2.0rem 0 1.5rem;
+    padding: 0 2.25rem 0 1.5rem;
     color: $tahi-green;
-    font-size: 6.0rem;
+    font-size: 7.0rem;
     line-height: 110%; // bootstrap override
     cursor: pointer;
     z-index: 2;
   }
 
-  .overlay-header-title {
-    position: relative;
-    float: left;
-    width: 91.7%;
-    margin: 0 0 2px 0;
-    padding-right: 100px;
-    line-height: 0.9;
-
-    .manuscript-icon {
-      @include position(absolute, 8px auto auto 0px);
-      path, rect { fill: $tahi-green; }
-    }
-  }
-
-  .overlay-header-title--with-icon {
-    padding-left: 24px;
-  }
-
-  .overlay-header-link {
-    font-size: 18px;
-    &:hover { text-decoration: none; } // override global Aperta anchor style
-  }
-
   .overlay-close-button {
-    position: absolute;
-    width: 8.333333333333332%;
+    padding-right: 2rem;
+    padding-left: 2rem;
   }
 }
 
@@ -96,10 +73,6 @@ $ov--card-breakpoint: 900px;
     margin-right: $ov--card-side-pad / 2;
     margin-left:  $ov--card-side-pad / 2;
   }
-
-  .overlay--card .overlay-close {
-    right: -#{$ov--card-side-pad/2};
-  }
 }
 
 // Card Overlay Body -----------------------------------------------------------
@@ -107,8 +80,7 @@ $ov--card-breakpoint: 900px;
 .overlay--card {
   .overlay-body {
     position: relative;
-    min-height: 25rem;
-    padding: 4.0rem $ov--card-side-pad 1rem $ov--card-side-pad;
+    padding: 4rem $ov--card-side-pad;
 
 
     // TODO: These need another home:
@@ -124,6 +96,18 @@ $ov--card-breakpoint: 900px;
   }
 }
 
+@media only screen and (max-width: 650px) {
+  .overlay--card .overlay-body-title {
+    font-size: 3.6rem;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .overlay--card .overlay-body-title {
+    font-size: 2.4rem;
+  }
+}
+
 @media only screen and (max-width: $ov--card-breakpoint) {
   .overlay--card .overlay-body {
     padding-right: $ov--card-side-pad / 2;
@@ -135,21 +119,18 @@ $ov--card-breakpoint: 900px;
 
 .overlay--card {
   .overlay-footer {
-    overflow: hidden;
-    position: relative;
-    margin: 10px 0 0 0;
-    padding-bottom: 50px;
-  }
-
-  .overlay-footer-content {
-    position: relative;
-    margin: 0 $ov--card-side-pad;
+    @include display(flex);
+    @include justify-content(flex-end);
+    @include align-items(center);
+    margin: 10px $ov--card-side-pad 0 $ov--card-side-pad;
     border-top: 1px solid #000;
-    padding: 1.5rem 10% 1.0rem 5px;
+    padding: 15px 0 50px 0;
+  }
+}
 
-    .overlay-close-button {
-      top: 10px;
-      right: 0;
-    }
+@media only screen and (max-width: $ov--card-breakpoint) {
+  .overlay--card .overlay-footer {
+    margin-right: $ov--card-side-pad / 2;
+    margin-left:  $ov--card-side-pad / 2;
   }
 }

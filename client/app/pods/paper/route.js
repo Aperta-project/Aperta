@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import Utils from 'tahi/services/utils';
 import AuthorizedRoute from 'tahi/routes/authorized';
 
 export default AuthorizedRoute.extend({
@@ -11,13 +10,14 @@ export default AuthorizedRoute.extend({
   },
 
   setupController(controller, model) {
+    this._super(...arguments);
+    this.setupPusher(model);
     model.get('commentLooks');
-    this._super(controller, model);
   },
 
-  afterModel(model) {
+  setupPusher(model) {
     let pusher = this.get('pusher');
-    this.channelName = 'private-paper@' + model.get('id');
+    this.set('channelName', 'private-paper@' + model.get('id'));
 
     // This will bubble up to created and updated actions in the root
     // application route
@@ -25,7 +25,7 @@ export default AuthorizedRoute.extend({
   },
 
   deactivate() {
-    this.get('pusher').unwire(this, this.channelName);
+    this.get('pusher').unwire(this, this.get('channelName'));
   },
 
   _pusherEventsId() {

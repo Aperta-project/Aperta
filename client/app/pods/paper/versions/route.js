@@ -1,25 +1,16 @@
 import Ember from 'ember';
-import ENV from 'tahi/config/environment';
 import AuthorizedRoute from 'tahi/routes/authorized';
 
 var PaperVersionsRoute = AuthorizedRoute.extend({
-  viewName: 'paper/versions',
-  controllerName: 'paper/versions',
-  templateName: 'paper/versions',
-  cardOverlayService: Ember.inject.service('card-overlay'),
   restless: Ember.inject.service('restless'),
 
-  model: function() {
-    return this.modelFor('paper');
-  },
-
-  afterModel: function(model) {
+  afterModel(model) {
     return Ember.RSVP.all([
       model.get('tasks'),
       model.get('versionedTexts')]);
   },
 
-  setupController: function(controller, model) {
+  setupController(controller, model) {
     controller.set('model', model);
     controller.set('subRouteName', 'versions');
     if (!(controller.get('majorVersion') && controller.get('minorVersion'))) {
@@ -36,38 +27,26 @@ var PaperVersionsRoute = AuthorizedRoute.extend({
     if (this.currentUser) {
       this.get('restless').authorize(
         controller,
-        "/api/papers/#{model.get('id')}/manuscript_manager",
+        `/api/papers/#{model.get('id')}/manuscript_manager`,
         'canViewManuscriptManager'
       );
     }
   },
 
   actions: {
-    viewVersionedCard: function(task, majorVersion, minorVersion) {
-      this.get('cardOverlayService').setProperties({
-        previousRouteOptions: ['paper.versions', this.modelFor('paper'), {
-          queryParams: {
-            majorVersion: majorVersion,
-            minorVersion: minorVersion
-          }
-        }],
-        overlayBackground: 'paper.versions'
-      });
-
-      this.transitionTo(
-        'paper.task.version',
-        this.modelFor('paper'),
-        task.id,
-        {
-          queryParams: {
-            majorVersion: majorVersion,
-            minorVersion: minorVersion
-          }
-        });
+    exitVersions() {
+      this.transitionTo('paper.index', this.modelFor('paper'));
     },
 
-    exitVersions: function() {
-      this.transitionTo('paper.index', this.modelFor('paper'));
+    // Required until Ember has routable components.
+    // We need to cleanup because controllers are singletons
+    // and are not torn down:
+
+    willTransition() {
+      this.controllerFor('paper.versions').setProperties({
+        taskToDisplay: null,
+        showTaskOverlay: false
+      });
     }
   }
 });

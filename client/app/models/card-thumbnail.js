@@ -5,7 +5,7 @@ export default DS.Model.extend({
 
   task: DS.belongsTo('task', {
     polymorphic: true,
-    async: false
+    async: true
   }),
 
   commentLooks: DS.hasMany('comment-look', {

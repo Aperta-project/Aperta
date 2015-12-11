@@ -1,0 +1,50 @@
+{{partial "task-completed-section"}}
+
+<div class="task-main-content">
+  <h3>Current Revision</h3>
+
+  <div class="decision">
+    <p>
+      Revision
+      <span class="revision-number">
+        {{latestDecision.revisionNumber}}
+      </span>
+      on
+      <span class="created-at">
+        {{format-date latestDecision.createdAt}}
+      </span>
+    </p>
+
+    <p class="preserve-line-breaks">
+      {{{latestDecision.letter}}}
+    </p>
+  </div>
+
+  <div>
+    <h3>Revision Details:</h3>
+    {{#if editingAuthorResponse}}
+      {{content-editable
+        value=latestDecision.authorResponse
+        class="revise-overlay-response-field"
+        placeholder="Please detail the changes you've made to your submission here"
+        editable=isSubmissionTaskEditable}}
+      <button
+        class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}"
+        disabled={{isSubmissionTaskNotEditable}}
+        {{action "saveAuthorResponse"}}>
+        Save
+      </button>
+    {{else}}
+      <div class="preserve-line-breaks">{{{latestDecision.authorResponse}}}</div>
+      <br>
+      <button class="button-primary button--green" {{action "editAuthorResponse"}}>Edit Response</button>
+    {{/if}}
+  </div>
+
+  {{#if previousDecisions}}
+    <hr>
+    <h3>Decision History</h3>
+  {{/if}}
+
+  {{partial "overlays/partials/decision-list"}}
+</div>

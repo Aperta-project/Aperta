@@ -1,2 +1,10 @@
 import Ember from 'ember';
-export default Ember.Controller.extend();
+import Participants from 'tahi/mixins/controllers/participants';
+
+export default Ember.Controller.extend(Participants, {
+  actions: {
+    close() {
+      this.transitionToRoute('paper', this.get('model.paper'));
+    }
+  }
+});

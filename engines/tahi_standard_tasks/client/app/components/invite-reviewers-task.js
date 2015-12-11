@@ -1,0 +1,104 @@
+import Ember from 'ember';
+import TaskComponent from 'tahi/pods/components/task-base/component';
+
+const { computed } = Ember;
+
+export default TaskComponent.extend({
+  autoSuggestSourceUrl: computed('task.paper.id', function() {
+    return '/api/filtered_users/uninvited_users/' + this.get('task.paper.id');
+  }),
+
+  selectedReviewer: null,
+  composingEmail: false,
+  decisions: computed.alias('task.paper.decisions'),
+
+  customEmail: 'test@lvh.me',
+
+  latestDecision: computed('decisions', 'decisions.@each.isLatest', function() {
+    return this.get('decisions').findBy('isLatest', true);
+  }),
+
+  applyTemplateReplacements(str) {
+    let reviewerName = this.get('selectedReviewer.full_name');
+    if (reviewerName) {
+      str = str.replace(/\[REVIEWER NAME\]/g, reviewerName);
+    }
+    return str.replace(/\[YOUR NAME\]/g, this.get('currentUser.fullName'));
+  },
+
+  setLetterTemplate() {
+    let body, salutation, template;
+    template = this.get('task.invitationTemplate');
+    if (template.salutation && this.get('selectedReviewer.full_name')) {
+      salutation = this.applyTemplateReplacements(template.salutation) + '\n\n';
+    } else {
+      salutation = '';
+    }
+
+    if (template.body) {
+      body = this.applyTemplateReplacements(template.body);
+    } else {
+      body = '';
+    }
+    return this.set('invitationBody', '' + salutation + body);
+  },
+
+  parseUserSearchResponse(response) {
+    return response.filtered_users;
+  },
+
+  displayUserSelected(user) {
+    return user.full_name + ' [' + user.email + ']';
+  },
+
+  actions: {
+    cancelAction() {
+      this.set('selectedReviewer', null);
+      return this.set('composingEmail', false);
+    },
+
+    composeInvite() {
+      if (!this.get('selectedReviewer')) {
+        return;
+      }
+      this.setLetterTemplate();
+      return this.set('composingEmail', true);
+    },
+
+    destroyInvitation(invitation) {
+      return invitation.destroyRecord();
+    },
+
+    didSelectReviewer(selectedReviewer) {
+      return this.set('selectedReviewer', selectedReviewer);
+    },
+
+    inviteReviewer() {
+      if (!this.get('selectedReviewer')) {
+        return;
+      }
+      return this.store.createRecord('invitation', {
+        task: this.get('task'),
+        email: this.get('selectedReviewer.email'),
+        body: this.get('invitationBody')
+      }).save().then((invitation) => {
+        this.get('latestDecision.invitations').addObject(invitation);
+        this.set('composingEmail', false);
+        return this.set('selectedReviewer', null);
+      });
+    },
+
+    removeReviewer(selectedReviewer) {
+      return this.store.find('user', selectedReviewer.id).then((user) => {
+        this.get('reviewers').removeObject(user);
+        return this.send('saveModel');
+      });
+    },
+
+    inputChanged(val) {
+      return this.set('selectedReviewer', {
+        email: val
+      });
+    }
+  }
+});

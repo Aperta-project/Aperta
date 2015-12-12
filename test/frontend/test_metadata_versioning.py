@@ -23,6 +23,8 @@ class MetadataVersioningTest(CommonTest):
   """
   Since metadata versioning is not developed yet, this calls create condition
   for testing by creating an article, filling all required cards, submitting.
+
+  APERTA-5747
   """
   def _test_metadata_versioning(self):
     """

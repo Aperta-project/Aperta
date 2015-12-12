@@ -7,6 +7,8 @@ the navigation menu also vital for ensuring style consistency across the applica
 
 __author__ = 'jgray@plos.org'
 
+import time
+
 from selenium.webdriver.common.by import By
 
 from Base.PlosPage import PlosPage
@@ -102,6 +104,24 @@ class AuthenticatedPage(PlosPage):
     self._upload_manu_card = None
     self._prq_card = None
     self._initial_decision_card = None
+    # Tasks - placeholder locators - these are over-ridden by definitions in the workflow and manuscript_viewer pages
+    self._billing_task = None
+    self._cover_letter_task = None
+    self._review_cands_task = None
+    self._revise_task = None
+    self._cfa_task = None
+    self._authors_task = None
+    self._competing_ints_task = None
+    self._data_avail_task = None
+    self._ethics_statement_task = None
+    self._figures_task = None
+    self._fin_disclose_task = None
+    self._new_taxon_task = None
+    self._report_guide_task = None
+    self._supporting_info_task = None
+    self._upload_manu_task = None
+    self._prq_task = None
+    self._initial_decision_task = None
     # Global Overlay Locators
     self._overlay_header_title = (By.CLASS_NAME, 'overlay-header-title')
     self._overlay_header_close = (By.CLASS_NAME, 'overlay-close')
@@ -269,6 +289,8 @@ class AuthenticatedPage(PlosPage):
                                     'WHERE id = %s;', (manu_id,))
     return submission_data
 
+  # Note this method is temporarily bifucated into click_card() and click_task() to support both
+  # the manuscript and workflow contexts while we transition.
   def click_card(self, cardname):
     """
     Passed a card name, opens the relevant card
@@ -323,6 +345,60 @@ class AuthenticatedPage(PlosPage):
     self.restore_timeout()
     return True
 
+  def click_task(self, taskname):
+    """
+    Passed a task name, opens the relevant task
+    :param taskname: any one of: cover_letter, billing, figures, authors, supporting_info, upload_manuscript, prq,
+        review_candidates, revise_task, competing_interests, data_availability, ethics_statement, financial_disclosure,
+        new_taxon, reporting_guidelines, changes_for_author
+    NOTE: this covers only the author facing tasks, with the exception of initial_decision
+    NOTE also that the locators for these are specifically defined within the scope of the manuscript_viewer or
+        workflow page
+    :return: True or False, if taskname is unknown.
+    """
+    self.set_timeout(5)
+    if taskname.lower() == 'billing':
+      task_title = self._get(self._billing_task)
+    elif taskname.lower() == 'cover_letter':
+      task_title = self._get(self._cover_letter_task)
+    elif taskname.lower() == 'figures':
+      task_title = self._get(self._figures_task)
+    elif taskname.lower() == 'authors':
+      task_title = self._get(self._authors_task)
+    elif taskname.lower() == 'supporting_info':
+      task_title = self._get(self._supporting_info_task)
+    elif taskname.lower() == 'upload_manuscript':
+      task_title = self._get(self._upload_manu_task)
+    elif taskname.lower() == 'prq':
+      task_title = self._get(self._prq_task)
+    elif taskname.lower() == 'review_candidates':
+      task_title = self._get(self._review_cands_task)
+    elif taskname.lower() == 'revise_task':
+      task_title = self._get(self._revise_task)
+    elif taskname.lower() == 'competing_interests':
+      task_title = self._get(self._competing_ints_task)
+    elif taskname.lower() == 'data_availability':
+      task_title = self._get(self._data_avail_task)
+    elif taskname.lower() == 'ethics_statement':
+      task_title = self._get(self._ethics_statement_task)
+    elif taskname.lower() == 'financial_disclosure':
+      task_title = self._get(self._fin_disclose_task)
+    elif taskname.lower() == 'new_taxon':
+      task_title = self._get(self._new_taxon_task)
+    elif taskname.lower() == 'reporting_guidelines':
+      task_title = self._get(self._report_guide_task)
+    elif taskname.lower() == 'changes_for_author':
+      task_title = self._get(self._cfa_task)
+    elif taskname.lower() == 'initial_decision':
+      task_title = self._get(self._initial_decision_card)
+    else:
+      print('Unknown Task')
+      self.restore_timeout()
+      return False
+    # For whatever reason, selenium can't grok a simple click() here
+    self._actions.click_and_hold(task_title).release().perform()
+    self.restore_timeout()
+    return True
 
   # Style Validations
   # Divider and Border Styles ===========================

@@ -38,7 +38,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # Main Toolbar items
     self._tb_versions_link = (By.ID, 'nav-versions')
     self._tb_versions_diff_div = (By.CSS_SELECTOR, 'div.html-diff')
-    #self._tb_view_version = (By.TAG_NAME, 'select')
     self._tb_versions_closer = (By.CLASS_NAME, 'exit-versions')
     self._tb_collaborators_link = (By.ID, 'nav-collaborators')
     self._tb_add_collaborators_label = (By.CLASS_NAME, 'contributors-add')
@@ -51,9 +50,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._tb_more_appeal_link = (By.ID, 'nav-appeal')
     self._tb_more_withdraw_link = (By.ID, 'nav-withdraw-manuscript')
     self._tb_workflow_link = (By.ID, 'go-to-workflow')
-    # Task List Items
-    self._tl_manuscript_id = (By.CLASS_NAME, 'task-list-doi')
-    self._tl_submit_success_msg = (By.CLASS_NAME, 'task-list')
     # Manage Collaborators Overlay
     self._add_collaborators_modal = (By.CLASS_NAME, 'show-collaborators-overlay')
     self._add_collaborators_modal_header = (By.CLASS_NAME, 'overlay-title-text')
@@ -71,29 +67,39 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # Submit Confirmation and Submit Congratulations Overlays (full and initial submit versions)
     # The overlay close X is universal and defined in authenticated page (self._overlay_header_close)
     self._so_paper_submit_icon = (By.CLASS_NAME, 'paper-submit-icon')
-    # self._so_paper_submit_title_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit h1')
-    # self._so_paper_submit_subhead_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit + h5')
+    self._so_paper_submit_title_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit h1')
+    self._so_paper_submit_subhead_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit + h5')
     self._so_paper_title = (By.ID, 'paper-submit-title')
     self._so_submit_confirm = (By.CLASS_NAME, 'button-submit-paper')
     self._so_submit_cancel = (By.CSS_SELECTOR, 'div.submit-action-buttons button.button-link')
     self._so_close_after_submit = (By.CLASS_NAME, 'success-close')
-    # Cards
-    self._billing_card = (By.XPATH, "//div[@id='paper-assigned-tasks']//div[contains(., 'Billing')]")
-    self._cover_letter_card = (By.XPATH, "//div[@id='paper-assigned-tasks']//div[contains(., 'Cover Letter')]")
-    self._review_cands_card = (By.XPATH, "//div[@id='paper-assigned-tasks']//div[contains(., 'Reviewer Candidates')]")
-    self._revise_task_card = (By.XPATH, "//div[@id='paper-assigned-tasks']//div[contains(., 'Revise Task')]")
-    self._cfa_card = (By.XPATH, "//div[@id='paper-assigned-tasks']//div[contains(., 'Changes For Author')]")
-    self._authors_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Authors')]")
-    self._competing_ints_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Competing Interests')]")
-    self._data_avail_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Data Availability')]")
-    self._ethics_statement_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Ethics Statement')]")
-    self._figures_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Figures')]")
-    self._fin_disclose_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Financial Disclosure')]")
-    self._new_taxon_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'New Taxon')]")
-    self._report_guide_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Reporting Guidelines')]")
-    self._supporting_info_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Supporting Info')]")
-    self._upload_manu_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Upload Manuscript')]")
-    self._prq_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Publishing Related Questions')]")
+    # Paper Sidebar and associated items
+    self._paper_sidebar = (By.CLASS_NAME, 'paper-sidebar')
+    self._paper_sidebar_info = (By.CLASS_NAME, 'paper-sidebar-info')
+    self._paper_sidebar_assigned_tasks = (By.ID, 'paper-assigned-tasks')
+    self._paper_sidebar_metadata_tasks = (By.ID, 'paper-metadata-tasks')
+    # Sidebar Info Items
+    self._paper_sidebar_manuscript_id = (By.CLASS_NAME, 'task-list-doi')
+    self._paper_sidebar_submit_success_msg = (By.CLASS_NAME, 'task-list')
+    self._paper_sidebar_state_information = (By.ID, 'submission-state-information')
+    # Assigned Tasks
+    self._billing_task = (By.CLASS_NAME, 'billing-task')
+    self._cover_letter_task = (By.CLASS_NAME, 'cover-letter-task')
+    self._review_cands_task = (By.CLASS_NAME, 'reviewer-candidates-task')
+    self._revise_task_task = (By.CLASS_NAME, 'revise-task')
+    self._cfa_task = (By.CLASS_NAME, 'changes-for-author-task')
+    # Metadata Tasks
+    self._authors_task = (By.CLASS_NAME, 'authors-task')
+    self._competing_ints_task = (By.CLASS_NAME, 'competing-interests-task')
+    self._data_avail_task = (By.CLASS_NAME, 'data-availability-task')
+    self._ethics_statement_task = (By.CLASS_NAME, 'ethics-statement-task')
+    self._figures_task = (By.CLASS_NAME, 'figures-task')
+    self._fin_disclose_task = (By.CLASS_NAME, 'financial-disclosure-task')
+    self._new_taxon_task = (By.CLASS_NAME, 'new-taxon-task')
+    self._prq_task = (By.CLASS_NAME, 'publishing-related-questions-task')
+    self._report_guide_task = (By.CLASS_NAME, 'reporting-guidelines-task')
+    self._supporting_info_task = (By.CLASS_NAME, 'supporting-info-task')
+    self._upload_manu_task = (By.CLASS_NAME, 'upload-manuscript-task')
 
 
   # POM Actions
@@ -374,7 +380,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     Returns the paper id
     """
-    doi_text = self._get(self._tl_manuscript_id).text
+    doi_text = self._get(self._paper_sidebar_manuscript_id).text
     return doi_text.split(':')[1]
 
   def get_paper_db_id(self):
@@ -417,10 +423,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
   def validate_submit_success(self):
     """Ensure the successful submit message appears in the upper right corner of the manuscript viewer page"""
-    success_msg = self._get(self._tl_submit_success_msg)
+    success_msg = self._get(self._paper_sidebar_state_information)
     assert 'This paper has been submitted.' in success_msg.text, success_msg.text
 
   def validate_initial_submit_success(self):
     """Ensure the final submit message does not appear on initial submit"""
-    success_msg = self._get(self._tl_submit_success_msg)
+    success_msg = self._get(self._paper_sidebar_state_information)
     assert 'This paper has been submitted.' not in success_msg.text, success_msg.text

@@ -19,9 +19,8 @@ feature 'Changes For Author', js: true do
   scenario "paper is editable but not submittable" do
     expect(manuscript_page).to have_no_css("#sidebar-submit-paper")
 
-    manuscript_page.view_card task.title do |overlay|
-      overlay.find("button#submit-tech-fix").click
-    end
+    t = manuscript_page.view_task task.title
+    t.find("button#submit-tech-fix").click
   end
 
 end

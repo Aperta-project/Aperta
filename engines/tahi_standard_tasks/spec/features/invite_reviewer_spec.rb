@@ -20,31 +20,23 @@ feature "Invite Reviewer", js: true do
   end
 
   scenario "Editor can invite any user as a reviewer to a paper" do
-    dashboard_page = DashboardPage.new
-    manuscript_page = dashboard_page.view_submitted_paper paper
-    manuscript_page.view_card task.title do |overlay|
-      overlay.paper_reviewers = [reviewer1]
-      expect(overlay).to have_reviewers reviewer1.full_name
-    end
+    overlay = Page.view_task_overlay(paper, task)
+    overlay.paper_reviewers = [reviewer1]
+    expect(overlay).to have_reviewers reviewer1.full_name
   end
 
   scenario "displays invitations from the latest round of revisions" do
-    dashboard_page = DashboardPage.new
-    manuscript_page = dashboard_page.view_submitted_paper paper
-
-    manuscript_page.view_card task.title do |overlay|
-      overlay.paper_reviewers = [reviewer1]
-      expect(overlay.active_invitations_count(1)).to be true
-    end
+    overlay = Page.view_task_overlay(paper, task)
+    overlay.paper_reviewers = [reviewer1]
+    expect(overlay.active_invitations_count(1)).to be true
 
     paper.decisions.create!
 
-    manuscript_page.reload
-    manuscript_page.view_card task.title do |overlay|
-      overlay.paper_reviewers = [reviewer3, reviewer2]
-      expect(overlay.expired_invitations_count(1)).to be true
-      expect(overlay.active_invitations_count(2)).to be true
-      expect(overlay.total_invitations_count(3)).to be true
-    end
+    overlay.reload
+    overlay = Page.view_task_overlay(paper, task)
+    overlay.paper_reviewers = [reviewer3, reviewer2]
+    expect(overlay.expired_invitations_count(1)).to be true
+    expect(overlay.active_invitations_count(2)).to be true
+    expect(overlay.total_invitations_count(3)).to be true
   end
 end

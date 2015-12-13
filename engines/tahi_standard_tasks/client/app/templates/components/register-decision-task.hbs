@@ -5,7 +5,7 @@
     {{progress-spinner visible=true size="large" center=true}}
   </div>
 
-  {{#if model.completed}}
+  {{#if task.completed}}
     {{#if finalDecision}}
       <div class="alert alert-info">
         A final decision of {{latestDecision.verdict}} has been registered.
@@ -51,7 +51,7 @@
     <label class="decision-label">
       {{radio-button value="minor_revision"
                      selection=latestDecision.verdict
-                     disabled=model.completed
+                     disabled=task.completed
                      name="decision"
                      action=(action "setDecisionTemplate")}}
       Minor Revision

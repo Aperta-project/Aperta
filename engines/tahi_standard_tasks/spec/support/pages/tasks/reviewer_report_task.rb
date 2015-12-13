@@ -1,5 +1,5 @@
 # coding: utf-8
-class ReviewerReportOverlay < CardOverlay
+class ReviewerReportTask < PaperTask
 
   def ensure_no_review_history
     expect(page).to_not have_selector(".review-history")
@@ -61,3 +61,4 @@ class ReviewerReportOverlay < CardOverlay
     visit "/papers/#{paper.id}/tasks/#{reviewer_report_task.id}"
   end
 end
+

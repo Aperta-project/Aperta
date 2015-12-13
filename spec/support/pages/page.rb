@@ -194,6 +194,10 @@ class Page < PageFragment
       page.has_content? sync_on if sync_on
       new
     end
+
+    def view_task_overlay(paper, task)
+      new.view_task_overlay(paper, task)
+    end
   end
 
   def initialize(element = nil, context: nil)
@@ -212,6 +216,17 @@ class Page < PageFragment
   def navigate_to_dashboard
     find('.main-nav-item-app-name').click
     DashboardPage.new
+  end
+
+  def view_task_overlay(paper, task)
+    visit "/papers/#{paper.id}/tasks/#{task.id}"
+    wait_for_ajax
+    overlay_class ||= begin
+                      "#{task.title.gsub ' ', ''}Overlay".constantize
+                    rescue NameError
+                      CardOverlay
+                    end
+    overlay_class.new session.find(".overlay")
   end
 
   def sign_out

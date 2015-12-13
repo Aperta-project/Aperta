@@ -24,8 +24,23 @@ class PaperPage < Page
     super
   end
 
-  def find_card(text)
-    find('.card-content', text: text)
+  def view_task(task, overlay_class=nil)
+    name = ''
+    element = nil
+
+    if task.class == String
+      element = find('.task-disclosure', text: task)
+    else
+      name = task.type.gsub(/.+::/,'').underscore.dasherize
+      element = find(".#{name}")
+    end
+
+    fragment_class = overlay_class ? overlay_class : PaperTask
+
+    fragment = fragment_class.new(element)
+
+    fragment.toggle
+    fragment
   end
 
   def visit_dashboard

@@ -14,6 +14,7 @@ label[contenteditable=true] {
 
 div[contenteditable=true] {
   background-color: $tahi-white;
+  white-space: pre-wrap;
 }
 
 .two-element-form {

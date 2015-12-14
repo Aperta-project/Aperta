@@ -2,7 +2,6 @@ import Ember from 'ember';
 import AuthorizedRoute from 'tahi/routes/authorized';
 
 export default AuthorizedRoute.extend({
-  cardOverlayService: Ember.inject.service('card-overlay'),
   restless: Ember.inject.service('restless'),
 
   afterModel(model) {

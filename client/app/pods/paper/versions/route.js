@@ -7,7 +7,6 @@ var PaperVersionsRoute = AuthorizedRoute.extend({
   controllerName: 'paper/versions',
   templateName: 'paper/versions',
   cardOverlayService: Ember.inject.service('card-overlay'),
-  restless: Ember.inject.service('restless'),
 
   model: function() {
     return this.modelFor('paper');
@@ -20,7 +19,8 @@ var PaperVersionsRoute = AuthorizedRoute.extend({
   },
 
   setupController: function(controller, model) {
-    controller.set('model', model);
+    this._super(controller, model);
+
     controller.set('subRouteName', 'versions');
     if (!(controller.get('majorVersion') && controller.get('minorVersion'))) {
       let latest = model.get('versionedTexts').objectAt(0);
@@ -33,13 +33,7 @@ var PaperVersionsRoute = AuthorizedRoute.extend({
       ));
     }
 
-    if (this.currentUser) {
-      this.get('restless').authorize(
-        controller,
-        "/api/papers/#{model.get('id')}/manuscript_manager",
-        'canViewManuscriptManager'
-      );
-    }
+    this.setFlagViewManuscriptManager(controller, model);
   },
 
   actions: {

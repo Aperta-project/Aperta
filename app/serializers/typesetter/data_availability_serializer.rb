@@ -5,11 +5,11 @@ module Typesetter
     attributes :data_fully_available, :data_location_statement
 
     def data_fully_available
-      task_answer_value(object, 'data_fully_available')
+      task_answer_value(object, 'data_availability--data_fully_available')
     end
 
     def data_location_statement
-      task_answer_value(object, 'data_location')
+      task_answer_value(object, 'data_availability--data_location')
     end
   end
 end

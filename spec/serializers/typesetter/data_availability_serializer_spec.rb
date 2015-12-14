@@ -8,12 +8,12 @@ describe Typesetter::DataAvailabilitySerializer do
       FactoryGirl.create(:data_availability_task),
       questions: [
         {
-          ident: 'data_fully_available',
+          ident: 'data_availability--data_fully_available',
           answer: 'true',
           value_type: 'boolean'
         },
         {
-          ident: 'data_location',
+          ident: 'data_availability--data_location',
           answer: 'holodeck',
           value_type: 'text'
         }

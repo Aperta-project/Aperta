@@ -4,7 +4,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: TahiStandardTasks::DataAvailabilityTask.name,
-      ident: "data_fully_available",
+      ident: "data_availability.data_fully_available",
       value_type: "boolean",
       text: "Do the authors confirm that all the data underlying the findings described in their manuscript are fully available without restriction?",
       position: 1
@@ -12,7 +12,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: TahiStandardTasks::DataAvailabilityTask.name,
-      ident: "data_location",
+      ident: "data_availablility.data_location",
       value_type: "text",
       text: "Please describe where your data may be found, writing in full sentences.",
       position: 2

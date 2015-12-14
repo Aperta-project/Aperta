@@ -10,7 +10,7 @@ module TahiStandardTasks
     end
 
     def publication_date
-      answer = answer_for("publication_date")
+      answer = answer_for("production_metadata.publication_date")
       errors.add(:publication_date, "Can't be blank") unless answer
     end
 

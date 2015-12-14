@@ -4,7 +4,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: TahiStandardTasks::FinancialDisclosureTask.name,
-      ident: "author_received_funding",
+      ident: "financial_disclosures.author_received_funding",
       value_type: "boolean",
       text: "Did any of the authors receive specific funding for this work?",
       position: 1

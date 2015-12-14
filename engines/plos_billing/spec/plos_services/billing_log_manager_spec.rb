@@ -91,7 +91,7 @@ describe PlosServices::BillingLogManager do
 
   describe "#answer_for" do
     it "returns the questions's answer" do
-      expect(bm.send(:answer_for, 'address1')).to eq 'address1'
+      expect(bm.send(:answer_for, 'plos_billing.address1')).to eq 'address1'
     end
   end
 
@@ -108,17 +108,17 @@ describe PlosServices::BillingLogManager do
   end
 
   def make_questions(paper)
-    add_text_question_with_answer(paper, 'address1',      'address1')
-    add_text_question_with_answer(paper, 'address2',      'address2')
-    add_text_question_with_answer(paper, 'city',          'city')
-    add_text_question_with_answer(paper, 'state',         'state')
-    add_text_question_with_answer(paper, 'phone_number',  'phone_number')
-    add_text_question_with_answer(paper, 'postal_code',   'postal_code')
-    add_text_question_with_answer(paper, 'title',         'title')
-    add_text_question_with_answer(paper, 'email',         'email')
-    add_text_question_with_answer(paper, 'first_name',    'bob')
-    add_text_question_with_answer(paper, 'last_name',     'barker')
-    add_text_question_with_answer(paper, 'country',       'country')
+    add_text_question_with_answer(paper, 'plos_billing.address1',      'address1')
+    add_text_question_with_answer(paper, 'plos_billing.address2',      'address2')
+    add_text_question_with_answer(paper, 'plos_billing.city',          'city')
+    add_text_question_with_answer(paper, 'plos_billing.state',         'state')
+    add_text_question_with_answer(paper, 'plos_billing.phone_number',  'phone_number')
+    add_text_question_with_answer(paper, 'plos_billing.postal_code',   'postal_code')
+    add_text_question_with_answer(paper, 'plos_billing.title',         'title')
+    add_text_question_with_answer(paper, 'plos_billing.email',         'email')
+    add_text_question_with_answer(paper, 'plos_billing.first_name',    'bob')
+    add_text_question_with_answer(paper, 'plos_billing.last_name',     'barker')
+    add_text_question_with_answer(paper, 'plos_billing.country',       'country')
   end
 
   def add_text_question_with_answer(paper, ident, answer)

@@ -7,7 +7,7 @@ module Typesetter
     has_many :funders, serializer: Typesetter::FunderSerializer
 
     def author_received_funding
-      task_answer_value(object, 'author_received_funding')
+      task_answer_value(object, 'financial_disclosures.author_received_funding')
     end
   end
 end

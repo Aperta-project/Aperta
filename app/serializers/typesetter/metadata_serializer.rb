@@ -26,7 +26,7 @@ module Typesetter
     def publication_date
       production_metadata = task('TahiStandardTasks::ProductionMetadataTask')
       return unless production_metadata
-      pub_date = task_answer_value(production_metadata, 'publication_date')
+      pub_date = task_answer_value(production_metadata, 'production_metadata.publication_date')
       return unless pub_date
       Date.strptime(pub_date, '%m/%d/%Y')
     end
@@ -49,7 +49,7 @@ module Typesetter
 
     def us_government_employee
       copyright = task('TahiStandardTasks::PublishingRelatedQuestionsTask')
-      task_answer_value(copyright, 'us_government_employees')
+      task_answer_value(copyright, 'publishing_related_questions.us_government_employees')
     end
   end
 end

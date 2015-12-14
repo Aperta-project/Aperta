@@ -3,14 +3,14 @@ namespace 'nested-questions:seed' do
     questions = []
     questions << NestedQuestion.new(owner_id:nil,
       owner_type: TahiStandardTasks::ReportingGuidelinesTask.name,
-      ident: "clinical_trial",
+      ident: "reporting_guidelines.clinical_trial",
       value_type: "boolean",
       text: "Clinical Trial", position: 1)
 
     questions <<  NestedQuestion.new(
       owner_id:nil,
       owner_type: TahiStandardTasks::ReportingGuidelinesTask.name,
-      ident: "systematic_reviews",
+      ident: "reporting_guidelines.systematic_reviews",
       value_type: "boolean",
       text: "Systematic Reviews",
       position: 2,
@@ -18,7 +18,7 @@ namespace 'nested-questions:seed' do
         NestedQuestion.new(
           owner_id:nil,
           owner_type: TahiStandardTasks::ReportingGuidelinesTask.name,
-          ident: "checklist",
+          ident: "reporting_guidelines.systematic_reviews.checklist",
           value_type: "attachment",
           text: "Provide a completed PRISMA checklist as supporting information.  You can <a href='http://www.prisma-statement.org/'>download it here</a>.",
           position: 1
@@ -29,7 +29,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: TahiStandardTasks::ReportingGuidelinesTask.name,
-      ident: "meta_analyses",
+      ident: "reporting_guidelines.meta_analyses",
       value_type: "boolean",
       text: "Meta-analyses",
       position: 3,
@@ -37,7 +37,7 @@ namespace 'nested-questions:seed' do
         NestedQuestion.new(
           owner_id:nil,
           owner_type: TahiStandardTasks::ReportingGuidelinesTask.name,
-          ident: "checklist",
+          ident: "reporting_guidelines.meta_analyses.checklist",
           value_type: "attachment",
           text: "Provide a completed PRISMA checklist as supporting information.  You can <a href='http://www.prisma-statement.org/'>download it here</a>.",
           position: 1
@@ -48,21 +48,21 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: TahiStandardTasks::ReportingGuidelinesTask.name,
-      ident: "diagnostic_studies",
+      ident: "reporting_guidelines.diagnostic_studies",
       value_type: "boolean",
       text: "Diagnostic studies",
       position: 4)
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: TahiStandardTasks::ReportingGuidelinesTask.name,
-      ident: "epidemiological_studies",
+      ident: "reporting_guidelines.epidemiological_studies",
       value_type: "boolean",
       text: "Epidemiological studies",
       position: 5)
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: TahiStandardTasks::ReportingGuidelinesTask.name,
-      ident: "microarray_studies",
+      ident: "reporting_guidelines.microarray_studies",
       value_type: "boolean",
       text: "Microarray studies",
       position: 6)

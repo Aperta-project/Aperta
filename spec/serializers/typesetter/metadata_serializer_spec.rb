@@ -75,7 +75,7 @@ describe Typesetter::MetadataSerializer do
     let(:our_task) do
       paper_task.call('TahiStandardTasks::PublishingRelatedQuestionsTask')
     end
-    let(:nested_question) { our_question.call('us_government_employees') }
+    let(:nested_question) { our_question.call('publishing_related_questions.us_government_employees') }
 
     context 'is a us government employee' do
       before do
@@ -117,7 +117,7 @@ describe Typesetter::MetadataSerializer do
     before do
       FactoryGirl.create(
         :nested_question_answer,
-        nested_question: our_question.call('publication_date'),
+        nested_question: our_question.call('production_metadata.publication_date'),
         owner: our_task,
         value: '11/16/2015',
         value_type: 'text'

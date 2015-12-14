@@ -7,10 +7,10 @@
     <div class="inset-form-control required publication-date {{if validationErrors.publicationDate "error"}}">
       {{error-message message=validationErrors.publicationDate class="inset-form-control-text"}}
       <label class="inset-form-control-text">
-        {{nested-question-display ident="publication_date" owner=model}}
+        {{nested-question-display ident="production_metadata.publication_date" owner=model}}
       </label>
       {{nested-question-date-picker
-        ident="publication_date"
+        ident="production_metadata.publication_date"
         owner=model
         group=group
         role="startPicker"
@@ -21,12 +21,12 @@
   <div class="form-group">
     <div class="inset-form-control required volume-number {{if validationErrors.volumeNumber "error"}}">
       <label class="inset-form-control-text">
-        {{nested-question-display ident="volume_number" owner=model}}
+        {{nested-question-display ident="production_metadata.volume_number" owner=model}}
       </label>
       {{error-message message=validationErrors.volumeNumber class="inset-form-control-text"}}
       <label class="inset-form-control-text">Volume Number</label>
       {{nested-question-input
-        ident="volume_number"
+        ident="production_metadata.volume_number"
         owner=model
         type="number"
         displayQuestionText=false
@@ -35,11 +35,11 @@
 
     <div class="inset-form-control required issue-number {{if validationErrors.issueNumber "error"}}">
       <label class="inset-form-control-text">
-        {{nested-question-display ident="issue_number" owner=model}}
+        {{nested-question-display ident="production_metadata.issue_number" owner=model}}
       </label>
       {{error-message message=validationErrors.issueNumber class="inset-form-control-text"}}
       {{nested-question-input
-        ident="issue_number"
+        ident="production_metadata.issue_number"
         owner=model
         type="number"
         displayQuestionText=false
@@ -49,9 +49,9 @@
 
   <div class="production-notes">
     <label>
-      {{nested-question-display ident="production_notes" owner=model}}
+      {{nested-question-display ident="production_metadata.production_notes" owner=model}}
     </label>
-    {{nested-question-textarea ident="production_notes"
+    {{nested-question-textarea ident="production_metadata.production_notes"
       owner=model
       displayQuestionText=false
       placeholder="Add production notes here..."}}

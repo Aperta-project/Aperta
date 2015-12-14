@@ -4,7 +4,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id: nil,
       owner_type: TahiStandardTasks::ReviewerRecommendation.name,
-      ident: "recommend_or_oppose",
+      ident: "reviewer_recommendations.recommend_or_oppose",
       value_type: "boolean",
       text: "Are you recommending or opposing this reviewer? (required)",
       position: 1
@@ -12,7 +12,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id: nil,
       owner_type: TahiStandardTasks::ReviewerRecommendation.name,
-      ident: "reason",
+      ident: "reviewer_recommendations.reason",
       value_type: "text",
       text: "Optional: reason for recommending or opposing this reviewer",
       position: 2

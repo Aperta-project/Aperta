@@ -42,7 +42,7 @@ describe ApexPackager do
 
   context 'a well formed paper' do
     let!(:task) { paper.tasks.find_by_type('TahiStandardTasks::FigureTask') }
-    let!(:figure_question) { task.find_nested_question('figure_complies') }
+    let!(:figure_question) { task.nested_questions.find_by(ident: 'figures.complies') }
     let!(:nested_question_answer) do
       FactoryGirl.create(:nested_question_answer,
                          nested_question: figure_question,
@@ -75,7 +75,7 @@ describe ApexPackager do
 
   context 'a paper with figures' do
     let!(:task) { paper.tasks.find_by_type('TahiStandardTasks::FigureTask') }
-    let!(:figure_question) { task.find_nested_question('figure_complies') }
+    let!(:figure_question) { task.nested_questions.find_by(ident: 'figures.complies') }
     let!(:nested_question_answer) do
       FactoryGirl.create(:nested_question_answer,
                          nested_question: figure_question,
@@ -129,7 +129,7 @@ describe ApexPackager do
     let!(:task) do
       paper.tasks.find_by_type('TahiStandardTasks::SupportingInformationTask')
     end
-    let!(:figure_question) { task.find_nested_question('figure_complies') }
+    let!(:figure_question) { task.nested_questions.find_by(ident: 'figures.complies') }
     let!(:nested_question_answer) do
       FactoryGirl.create(:nested_question_answer,
                          nested_question: figure_question,
@@ -141,7 +141,7 @@ describe ApexPackager do
     let!(:figure_task) do
       paper.tasks.find_by_type('TahiStandardTasks::FigureTask')
     end
-    let!(:figure_question) { task.find_nested_question('figure_complies') }
+    let!(:figure_question) { task.nested_questions.find_by(ident: 'figures.complies') }
     let!(:figure_nested_question_answer) do
       FactoryGirl.create(:nested_question_answer,
                          nested_question: figure_question,
@@ -190,7 +190,7 @@ describe ApexPackager do
 
   context 'a paper with a striking image' do
     let!(:task) { paper.tasks.find_by_type('TahiStandardTasks::FigureTask') }
-    let!(:figure_question) { task.find_nested_question('figure_complies') }
+    let!(:figure_question) { task.nested_questions.find_by(ident: 'figures.complies') }
     let!(:attachment1) do
       double('attachment_model', filename: 'yeti.jpg',
                                  read: 'some bytes')

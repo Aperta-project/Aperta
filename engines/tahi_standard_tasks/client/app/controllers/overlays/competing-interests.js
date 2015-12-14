@@ -6,7 +6,7 @@ CompetingInterestsOverlayController = TaskController.extend(SavesQuestionsOnClos
   declareNoCompeteCopy: "The authors have declared that no competing interests exist.",
 
   anyCompetingInterestsQuestion: Ember.computed(function(){
-    return this.get('model').findQuestion('competing_interests');
+    return this.get('model').findQuestion('competing_interests.has_competing_interests');
   }),
 
   competingInterestsStatementQuestion: Ember.computed(function(){

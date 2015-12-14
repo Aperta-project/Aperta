@@ -18,7 +18,7 @@ export default TaskController.extend({
   }),
 
   authorReceivedFundingQuestion: Ember.computed("model", function(){
-    return this.get("model").findQuestion("author_received_funding");
+    return this.get("model").findQuestion("financial_disclosures--author_received_funding");
   }),
 
   numFundersObserver: Ember.observer("funders.[]", function() {

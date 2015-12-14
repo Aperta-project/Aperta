@@ -42,10 +42,6 @@ module NestedQuestionable
     nested_question_answers.includes(:nested_question).find_by(nested_questions: { ident: ident } )
   end
 
-  def find_nested_question(ident)
-    find_nested_questions(ident.split("."), nested_questions).first
-  end
-
   protected
 
   # Recursively searches the given +nested_questions+ based on the collection

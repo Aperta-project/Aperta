@@ -415,7 +415,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     elif type == 'congrats':
       #assert 'Congratulations' in main_head.text, main_head.text
       self._get(self._so_paper_submit_icon)
-      assert "You've successfully submitted your paper!" in subhead.text, subhead.text
+      assert 'You\'ve successfully submitted your paper!' in subhead.text, subhead.text
       self._get(self._so_submit_cancel)
     elif type == 'congrats_is':
       assert 'You have successfully submitted your manuscript for initial review. If the initial review is ' \

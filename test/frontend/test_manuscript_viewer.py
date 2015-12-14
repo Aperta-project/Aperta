@@ -94,7 +94,7 @@ class EditPaperTest(CommonTest):
       self._driver.get(signout_url)
     return self
 
-  def test_infobox(self):
+  def test_initial_submission_infobox(self):
     """
     Aperta-5515
 

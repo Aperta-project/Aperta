@@ -75,7 +75,7 @@ describe Typesetter::MetadataSerializer do
     let(:our_task) do
       paper_task.call('TahiStandardTasks::PublishingRelatedQuestionsTask')
     end
-    let(:nested_question) { our_question.call('us_government_employees') }
+    let(:nested_question) { our_question.call('publishing_related_questions--us_government_employees') }
 
     context 'is a us government employee' do
       before do

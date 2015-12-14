@@ -106,7 +106,7 @@ module('Integration: FinancialDisclosure', {
 
     server.respondWith('GET', "/api/nested_questions?type=Funder", [200, { 'Content-Type': 'application/json' }, JSON.stringify(
       { nested_questions: [
-        {id: 120, text: "A question to be checked", value_type: "boolean", ident: "funder_had_influence" },
+        {id: 120, text: "A question to be checked", value_type: "boolean", ident: "funder--had_influence" },
       ] }
     ) ]);
 

@@ -92,6 +92,7 @@ class PageFragment
     if block_given?
       retry_stale_element do
         block.call overlay
+        wait_for_ajax
       end
       expect(session).to have_no_css("#delayedSave", visible: false)
       expect(overlay).to have_no_application_error

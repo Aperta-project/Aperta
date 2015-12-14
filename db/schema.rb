@@ -403,6 +403,16 @@ ActiveRecord::Schema.define(version: 20151120182356) do
 
   add_index "tables", ["paper_id"], name: "index_tables_on_paper_id", using: :btree
 
+  create_table "tahi_standard_tasks_apex_deliveries", force: :cascade do |t|
+    t.integer  "paper_id"
+    t.integer  "task_id"
+    t.integer  "user_id"
+    t.string   "state"
+    t.string   "error_message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "tahi_standard_tasks_funded_authors", force: :cascade do |t|
     t.integer "author_id"
     t.integer "funder_id"

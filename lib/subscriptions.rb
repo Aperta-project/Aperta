@@ -32,6 +32,7 @@ module Subscriptions
     # registered across several different codebases (Tahi Core and several gems).
     #
     def configure(&block)
+      configure_blocks << block
       __registry__.instance_eval(&block)
       self
     end
@@ -47,12 +48,36 @@ module Subscriptions
       __registry__.pretty_print(io)
     end
 
+    def reload
+      unsubscribe_all
+      configure_blocks.each do |block|
+        __registry__.instance_eval(&block)
+      end
+    end
+
+    def reset
+      @configure_blocks = []
+      unsubscribe_all
+    end
+
     # Remove all subscriptions from the registry.  Useful when testing.
-    def clear_all_subscriptions!
+    def unsubscribe_all
       @registry.unsubscribe_all
     end
 
+    def current_configuration
+      configure_blocks
+    end
+
+    def restore_configuration(config)
+      @configure_blocks = config
+    end
+
     private
+
+    def configure_blocks
+      @configure_blocks ||= []
+    end
 
     # One registry to rule them all.
     def __registry__

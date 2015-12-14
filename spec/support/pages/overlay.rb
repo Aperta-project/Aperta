@@ -44,7 +44,7 @@ class CardOverlay < Page
   # of the waiting and retries which helps us avoid sleep calls in our code.
   def expect_task_to_be_incomplete
     expect(self).to have_selector(
-      'footer input[type=checkbox]:not(:checked)')
+      '.task-completed:not(:checked)')
   end
 
   def view_paper

@@ -38,9 +38,7 @@ export default TaskComponent.extend(FileUploadMixin, {
       this.uploadFinished(data, filename);
       this.store.pushPayload(data);
 
-      this.get('task').save().then(()=> {
-        this.send('closeAction');
-      });
+      this.get('task').save();
     }
   }
 });

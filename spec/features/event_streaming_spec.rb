@@ -76,7 +76,8 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
   end
 
   context "on a task" do
-    let!(:regular_user_paper) { FactoryGirl.create :paper, :with_tasks, creator: regular_user, journal: journal }
+    let!(:regular_user_paper) { FactoryGirl.create(:paper_with_task, task_params: { type: "TahiStandardTasks::UploadManuscriptTask" }, creator: regular_user, journal: journal) }
+    let(:upload_task) { regular_user_paper.tasks.first }
 
     before do
       Page.new.sign_out
@@ -86,14 +87,11 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
     end
 
     scenario "commenter is added as a participant" do
-      click_link regular_user_paper.title
-      edit_paper_page = PaperPage.new
-      edit_paper_page.view_card(upload_task.title) do |card|
-        using_wait_time 30 do
-          card.post_message 'Hello'
-          expect(card).to have_participants(regular_user)
-          expect(card).to have_last_comment_posted_by(regular_user)
-        end
+      card = Page.view_task_overlay(regular_user_paper, upload_task)
+      using_wait_time 30 do
+        card.post_message 'Hello'
+        expect(card).to have_participants(regular_user)
+        expect(card).to have_last_comment_posted_by(regular_user)
       end
     end
 

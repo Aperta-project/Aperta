@@ -4,7 +4,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: TahiStandardTasks::FigureTask.name,
-      ident: "figure_complies",
+      ident: "figures--complies",
       value_type: "boolean",
       text: "Yes - I confirm our figures comply with the guidelines.",
       position: 1

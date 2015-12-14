@@ -3,7 +3,7 @@
 <div class="question-list">
   <div class="question">
     {{#nested-question-check
-        ident="taxon_zoological"
+        ident="taxon--zoological"
         owner=model
         disabled=isSubmissionTaskNotEditable as |selection|}}
 
@@ -12,7 +12,7 @@
           <p>Please read <a href="http://www.plosbiology.org/static/policies#taxon" target="_blank">Regarding Submission of a new Taxon Name</a> and indicate if you comply:</p>
         </div>
         {{nested-question-check
-          ident="taxon_zoological.complies"
+          ident="taxon--zoological--complies"
           owner=model
           disabled=isSubmissionTaskNotEditable}}
       {{/if}}
@@ -23,7 +23,7 @@
 
   <div class="question">
     {{#nested-question-check
-      ident="taxon_botanical"
+      ident="taxon--botanical"
       owner=model
       disabled=isSubmissionTaskNotEditable as |selection|}}
 
@@ -33,7 +33,7 @@
         </div>
 
         {{nested-question-check
-          ident="taxon_botanical.complies"
+          ident="taxon--botanical--complies"
           owner=model
           disabled=isSubmissionTaskNotEditable}}
       {{/if}}

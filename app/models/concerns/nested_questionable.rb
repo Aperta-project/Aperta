@@ -39,18 +39,7 @@ module NestedQuestionable
   #   answer_for("foo.bar")
   #
   def answer_for(ident)
-    answers = nested_question_answers.includes(:nested_question)
-    answers_by_question_id = answers.reduce({}) do |h, answer|
-      h[answer.nested_question_id] = answer
-      h
-    end
-
-    questions = answers.map(&:nested_question).select{ |q| q.parent.blank? }
-    path_parts = ident.split(".")
-    found_questions = find_nested_questions(path_parts, questions)
-    question = found_questions.first
-
-    answers_by_question_id[question.id] if question
+    nested_question_answers.includes(:nested_question).find_by(nested_questions: { ident: ident } )
   end
 
   def find_nested_question(ident)

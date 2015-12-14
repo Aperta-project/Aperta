@@ -52,21 +52,13 @@ describe Task do
     let!(:question_foo) { FactoryGirl.create(:nested_question, ident: "foo") }
     let!(:answer_foo) { FactoryGirl.create(:nested_question_answer, owner: task, value: "the answer", nested_question: question_foo) }
 
-    let!(:child_question_bar) { FactoryGirl.create(:nested_question, ident: "bar", parent: question_foo) }
-    let!(:child_answer_bar) { FactoryGirl.create(:nested_question_answer, owner: task, nested_question: child_question_bar) }
-    #
-
     it "returns the answer for the question matching the given ident" do
       expect(task.answer_for("foo")).to eq(answer_foo)
     end
 
-    it "can find nested questions using dot (.) path syntax" do
-      expect(task.answer_for("foo.bar")).to eq(child_answer_bar)
-    end
-
-    context "and there is no answer for the given path" do
+    context "and there is no answer for the given ident" do
       it "returns nil" do
-        expect(task.answer_for("unknown-path")).to be(nil)
+        expect(task.answer_for("unknown-ident")).to be(nil)
       end
     end
   end

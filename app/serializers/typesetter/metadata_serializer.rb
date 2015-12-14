@@ -26,7 +26,7 @@ module Typesetter
     def publication_date
       production_metadata = task('TahiStandardTasks::ProductionMetadataTask')
       return unless production_metadata
-      pub_date = task_answer_value(production_metadata, 'publication_date')
+      pub_date = task_answer_value(production_metadata, 'production_metadata--publication_date')
       return unless pub_date && pub_date.match(%r{^\d{2}\/\d{2}\/\d{4}$})
       Date.strptime(pub_date, '%m/%d/%Y')
     end

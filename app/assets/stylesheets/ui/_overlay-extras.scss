@@ -16,9 +16,7 @@
 }
 
 .overlay-completed-checkbox {
-  float: right;
-  width: 33.333333333%;
-  text-align: right;
+  margin-right: 35px;
 
   label {
     color: $tahi-green;
@@ -50,6 +48,10 @@
 .overlay-main-work {
   position: relative;
   padding: 0 10px 60px 10px;
+}
+
+.overlay-footer .participant-selector {
+  @include flex-grow(1);
 }
 
 .overlay-action-buttons {

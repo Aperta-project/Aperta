@@ -1,0 +1,57 @@
+{{partial "task-completed-section"}}
+
+<div class="task-main-content">
+  <div class="invite-editor-text">
+    {{#if composingEmail}}
+      <div class="invite-reviewer-edit-invite">
+        <h3 class="invite-to">
+          Invitation to
+          {{#if selectedUser.fullName}}
+            {{selectedUser.full_name}}
+          {{/if}}
+          [{{selectedUser.email}}]
+        </h3>
+
+        {{content-editable value=updatedTemplate
+                           class="form-control taller-textarea"}}
+
+        <div class="invite-reviewer-cta">
+          <button class="button-link button--green cancel" {{action "cancelAction"}}>cancel</button>
+          <button class="button-primary button--green invite-editor-button" {{action "setLetterBody"}}>Send Invitation</button>
+        </div>
+     </div>
+    {{else}}
+      {{#if showEditorSelect}}
+        <label for="editor">Email</label>
+        {{select-2-single
+            class="editor-select2"
+            minimumInputLength=3
+            name="invite_editor"
+            placeholder="Select editor"
+            remoteSource=select2RemoteSource
+            resultsTemplate=resultsTemplate
+            selectedData=task.editor
+            selectedTemplate=resultsTemplate
+            selectionSelected="didSelectEditor"
+            value=""}}
+        <button class="button-primary button--green compose-invite-button" {{action "composeInvite"}}>Compose Invite</button>
+      {{else}}
+        {{#if task.editor}}
+          {{user-thumbnail user=editor}}
+          {{task.editor.name}}&nbsp;is now the Editor.
+          <div class="fa fa-trash invite-editor-remove" {{action "removeEditor"}}></div>
+        {{else}}
+          {{#if hasRejectedInvitation}}
+            <p>{{task.invitation.email}} has declined this invitation.</p>
+            <button {{action "destroyInvitation"}}  class="button-primary button--green">Invite new editor</button>
+          {{/if}}
+
+          {{#if hasInvitedInvitation}}
+            <p class="invited-editor">{{task.invitation.email}} has been invited to be Editor on this manuscript.</p>
+            <button {{action "destroyInvitation"}}  class="button-primary button--green">Withdraw invitation</button>
+          {{/if}}
+        {{/if}}
+      {{/if}}
+    {{/if}}
+  </div>
+</div>

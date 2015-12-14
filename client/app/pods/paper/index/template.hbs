@@ -10,22 +10,14 @@
 
 {{withdrawal-banner paper=model staff=currentUser.siteAdmin}}
 
-<div id="paper-container" class="clearfix paper-container-html">
-
-  {{partial 'submission/submission-process'}}
-
-  {{paper-sidebar paper=model
-                  user=currentUser
-                  commentLooks=commentLooks
-                  showPaperSubmitOverlay=(action "showPaperSubmitOverlay")
-                  viewCard="viewCard"}}
-
-  <div class="manuscript-container">
-    <main>
-      {{flash-messages}}
-      <article class="manuscript">
-        <div id="paper-body">
-
+{{#paper-submission-process showProcess=showSubmissionProcess
+                            toggle=(action "toggleSubmissionProcess")}}
+  {{#split-pane id="paper-container"
+                handleClass="manuscript-handle"}}
+    {{#split-pane-element class="manuscript-pane"}}
+      <div class="manuscript-container">
+        {{flash-messages}}
+        <div class="manuscript">
           {{#if model.editable}}
             {{content-editable tagName="h2"
                                id="paper-title"
@@ -41,12 +33,20 @@
           <div class="paper-body">
             {{{model.body}}}
           </div>
-
         </div>
-      </article>
-    </main>
-  </div>
-</div>
+      </div>
+    {{/split-pane-element}}
+
+    {{#split-pane-element}}
+      {{paper-sidebar paper=model
+                      user=currentUser
+                      commentLooks=commentLooks
+                      showPaperSubmitOverlay=(action "showPaperSubmitOverlay")
+                      toggleSubmissionProcess=(action "toggleSubmissionProcess")
+                      viewCard="viewCard"}}
+    {{/split-pane-element}}
+  {{/split-pane}}
+{{/paper-submission-process}}
 
 {{outlet}}
 

@@ -1,0 +1,34 @@
+{{partial "task-completed-section"}}
+
+<div class="task-main-content">
+  <div class="paper-figures">
+    {{#each task.paper.supportingInformationFiles as |file|}}
+      {{attachment-thumbnail attachment=file
+                             togglePublishable="togglePublishable"
+                             destroyAttachment="destroyAttachment"
+                             figure=false
+                             isEditable=task.paper.editable
+                             confidentiality=true
+                             disabled=isSubmissionTaskNotEditable}}
+    {{/each}}
+  </div>
+
+  <div id="paper-file-uploads">
+    {{#each uploads as |upload|}}
+      {{upload-preview upload=upload}}
+    {{/each}}
+  </div>
+  {{#if isEditable}}
+    <span class="button-primary button--green fileinput-button {{if isSubmissionTaskNotEditable 'button--disabled'}}">
+      <span>Add New Supporting Information</span>
+      {{file-uploader id="file_attachment"
+                      filePrefix="supporting-info"
+                      url=uploadUrl
+                      start="uploadStarted"
+                      done="uploadFinished"
+                      cancel="cancelUploads"
+                      progress="uploadProgress"
+                      disabled=isSubmissionTaskNotEditable}}
+    </span>
+  {{/if}}
+</div>

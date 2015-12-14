@@ -4,7 +4,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: TahiStandardTasks::EthicsTask.name,
-      ident: "human_subjects",
+      ident: "ethics--human_subjects",
       value_type: "boolean",
       text: "Does your study involve Human Subject Research (human participants and/or tissue)?",
       position: 1,
@@ -12,7 +12,7 @@ namespace 'nested-questions:seed' do
         NestedQuestion.new(
           owner_id:nil,
           owner_type: TahiStandardTasks::EthicsTask.name,
-          ident: "participants",
+          ident: "ethics--human_subjects--participants",
           value_type: "text",
           text: "Please enter the name of the IRB or Ethics Committee that approved this study in the space below. Include the approval number and/or a statement indicating approval of this research.",
           position: 1
@@ -23,7 +23,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: TahiStandardTasks::EthicsTask.name,
-      ident: "animal_subjects",
+      ident: "ethics--animal_subjects",
       value_type: "boolean",
       text: "Does your study involve Animal Research (vertebrate animals, embryos or tissues)?",
       position: 2,
@@ -31,7 +31,7 @@ namespace 'nested-questions:seed' do
         NestedQuestion.new(
           owner_id:nil,
           owner_type: TahiStandardTasks::EthicsTask.name,
-          ident: "field_permit",
+          ident: "ethics--animal_subjects--field_permit",
           value_type: "text",
           text: "Please enter your statement below:",
           position: 1

@@ -88,9 +88,8 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
 
     scenario "commenter is added as a participant" do
       card = Page.view_task_overlay(regular_user_paper, upload_task)
+      card.post_message 'Hello'
       using_wait_time 30 do
-        card.post_message 'Hello'
-        sleep 0.2
         expect(card).to have_participants(regular_user)
         expect(card).to have_last_comment_posted_by(regular_user)
       end

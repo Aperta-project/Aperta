@@ -1,25 +1,15 @@
-#paper-container .sidebar {
-  float: right;
-  background: $tahi-white;
-  padding-top: 8px;
-  width: $paper-sidebar-width;
+.paper-sidebar {
+  overflow: auto;
+  @include position(absolute, 0px 0px 0px 0px);
+  padding: 15px 20px;
+}
 
-  h5 {
-    padding-top: 10px;
-    color: $tahi-grey-dark;
-  }
+.paper-sidebar-doi {
+  margin-bottom: 5px;
+}
 
-  .task-list-doi {
-    margin-bottom: 10px;
-  }
-
-  .button-pre-submit-paper {
-    margin-top: 8px;
-    width: 100%;
-    height: 45px;
-  }
-
-  .task-list {
-    padding: 15px 30px 30px 30px;
-  }
+#sidebar-submit-paper {
+  width: 100%;
+  height: 45px;
+  margin-top: 8px;
 }

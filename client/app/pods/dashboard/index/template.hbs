@@ -1,6 +1,5 @@
 {{flash-messages}}
 
-
 {{#overlay-fullscreen visible=showNewManuscriptOverlay
                       outAnimationComplete=(action "hideNewManuscriptOverlay")
                       title="Create a New Submission"
@@ -23,9 +22,7 @@
                     close=(action overlay.animateOut)}}
 {{/overlay-fullscreen}}
 
-
 <div class="base-screen">
-
   {{#if pendingInvitations}}
     <section class="dashboard-section">
       <h2 class="welcome-message">

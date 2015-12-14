@@ -1,6 +1,6 @@
 #versioning-bar {
   @include clearfix;
-  width: 100%;
+  @include position(relative, 60px 0 auto 0);
   padding: 25px 30px;
   margin-bottom: 10px;
   background-color: #fff;

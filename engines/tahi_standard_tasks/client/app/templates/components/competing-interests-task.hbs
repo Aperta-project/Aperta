@@ -1,0 +1,46 @@
+{{partial "task-completed-section"}}
+
+<div class="task-main-content">
+  <ol class="question-list">
+    <li class="question">
+      <div class="question-text">
+        <p>
+          You are responsible for recognizing and disclosing on behalf of all
+          authors any competing interest that could be perceived to bias their
+          work, acknowledging all financial support and any other relevant
+          financial or non-financial competing interests.
+        </p>
+        <p>
+          {{{anyCompetingInterestsQuestion.text}}}
+        </p>
+      </div>
+      <div>
+        {{#nested-question-radio model=anyCompetingInterestsQuestion
+            owner=task
+            displayQuestionText=false
+            disabled=isSubmissionTaskNotEditable
+            noAction="userSelectedNo"
+            yesAction="userSelectedYes" as |selected|}}
+
+          {{#if selected.yes}}
+            <div class="question-dataset">
+              {{nested-question-textarea model=competingInterestsStatementQuestion
+                  owner=task
+                  helpText="Please note that if your manuscript is accepted, this statement will be published."
+                  disabled=isSubmissionTaskNotEditable}}
+            </div>
+          {{/if}}
+
+          {{#if selected.no}}
+            <div class="question-dataset">
+              Your competing interests statement will appear as: "{{declareNoCompeteCopy}}"
+              <div class="question-help">
+                Please note that if your manuscript is accepted, this statement will be published.
+              </div>
+            </div>
+          {{/if}}
+        {{/nested-question-radio}}
+      </div>
+    </li>
+  </ol>
+</div>

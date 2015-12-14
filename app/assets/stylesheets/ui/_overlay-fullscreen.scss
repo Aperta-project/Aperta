@@ -44,7 +44,6 @@ $ov--fullscreen-breakpoint: 780px;
     font-size: 4.8rem;
   }
 
-
   // -- Grey Theme --------------
   &.overlay--grey {
     color: $tahi-grey;
@@ -73,6 +72,16 @@ $ov--fullscreen-breakpoint: 780px;
       &:hover {
         color: $tahi-blue-dark;
       }
+    }
+  }
+
+  // -- Green Theme -------------
+  &.overlay-x--green {
+    color: #fff;
+    background-color: rgba(57,163,41, 0.95);
+
+    .overlay-x-close {
+      color: #fff;
     }
   }
 }

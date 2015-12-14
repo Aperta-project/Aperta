@@ -1,0 +1,10 @@
+<div class="task-disclosure-heading" {{action "toggleVisibility"}}>
+  {{title}}
+  <div class="task-disclosure-completed-icon {{if completed "active"}}">
+    {{partial "svg/check"}}
+  </div>
+</div>
+
+{{#if _taskVisible}}
+  <div class="task-disclosure-body">{{yield}}</div>
+{{/if}}

@@ -296,6 +296,33 @@ on Deploying Release Candidate.
 
 # Apply a Hotfix to Production
 
+# If Something Goes Wrong
+
+Here are some fixes we have tried when we were able to deploy to some
+environments but not others.
+
+#### Clear the Plugin Cache
+
+Sometimes the node and bower packages won't install.  Just like we do
+locally sometimes, you may need to clear the plugin cache.
+
+The error may look like:
+
+`remote: bower ECONFLICT Unable to find suitable version for qunit-notifications`
+
+...
+
+`remote: npm ERR! tahi@1.0.0 postinstall: 'cd client; npm install; ./node_modules/.bin/bower install -p'`
+
+To fix this you can clear try clearing the repository build cache.
+First you'll need to install the `heroku-repo` plugin:
+
+`heroku plugins:install https://github.com/heroku/heroku-repo.git`
+
+Then you can purge the cache with the command: 
+
+`heroku repo:purge_cache -a app_name`
+
 # Summary
 
 Now that you've reached the end, here's a template for a Deploy Checklist. This

@@ -31,7 +31,7 @@ describe Typesetter::AuthorSerializer do
       :nested_question,
       owner_id: nil,
       owner_type: 'Author',
-      ident: 'contributions'
+      ident: 'author--contributions'
     )
   end
 
@@ -48,11 +48,11 @@ describe Typesetter::AuthorSerializer do
   end
 
   let!(:deceased_question) do
-    author.nested_questions.find_by_ident('deceased')
+    author.nested_questions.find_by_ident('author--deceased')
   end
 
   let!(:corresponding_question) do
-    author.nested_questions.find_by_ident('published_as_corresponding_author')
+    author.nested_questions.find_by_ident('author--published_as_corresponding_author')
   end
 
   let!(:answer1) do

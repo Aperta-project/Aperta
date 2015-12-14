@@ -9,11 +9,11 @@ module Typesetter
     private
 
     def deceased
-      task_answer_value(object, 'deceased')
+      task_answer_value(object, 'author--deceased')
     end
 
     def corresponding
-      task_answer_value(object, 'published_as_corresponding_author')
+      task_answer_value(object, 'author--published_as_corresponding_author')
     end
 
     def contributions

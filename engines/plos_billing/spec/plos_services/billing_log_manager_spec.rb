@@ -121,10 +121,13 @@ describe PlosServices::BillingLogManager do
     add_text_question_with_answer(paper, 'plos_billing--country',       'country')
   end
 
+  def nested_question(ident)
+    NestedQuestion.find_by(ident: ident) || FactoryGirl.create(:nested_question, ident: ident, value_type: "text")
+  end
+
   def add_text_question_with_answer(paper, ident, answer)
-    nested_question = FactoryGirl.create(:nested_question, ident: ident, value_type: "text")
     nested_question_answer = FactoryGirl.create(:nested_question_answer, value_type: "text",
-      nested_question: nested_question,
+      nested_question: nested_question(ident),
       owner: paper.billing_card,
       value: answer,
     )

@@ -5,7 +5,7 @@ class NestedQuestion < ActiveRecord::Base
   belongs_to :owner, polymorphic: true
   has_many :nested_question_answers, dependent: :destroy
 
-  validates :ident, presence: true
+  validates :ident, presence: true, uniqueness: true
   validates :owner_type, presence: true
   validates :value_type, presence: true, inclusion: { in: SUPPORTED_VALUE_TYPES }
 

@@ -4,7 +4,7 @@ describe Author do
   subject(:author) { FactoryGirl.build(:author) }
 
   def setup_contribution_question_for_author
-    NestedQuestion.where(owner_type:Author.name).delete_all
+    NestedQuestion.where(owner_type: Author.name).delete_all
     contributions_question = FactoryGirl.create(:nested_question,
       owner_id: nil,
       owner_type: Author.name,
@@ -58,7 +58,6 @@ describe Author do
       FactoryGirl.create(:nested_question,
         owner_id: nil,
         owner_type: Author.name,
-        ident: "this-can-be-whatever",
         parent: Author.contributions_question,
         value_type: "boolean",
         text: "Conceived and designed the experiments")
@@ -68,7 +67,6 @@ describe Author do
       FactoryGirl.create(:nested_question,
         owner_id: nil,
         owner_type: Author.name,
-        ident: "this-can-be-whatever",
         parent: nil,
         value_type: "boolean",
         text: "Conceived and designed the experiments")

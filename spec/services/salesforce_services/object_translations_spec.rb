@@ -74,7 +74,8 @@ describe SalesforceServices::ObjectTranslations do
   end
 
   def add_text_question_with_answer(paper, ident, answer)
-    nested_question = FactoryGirl.create(:nested_question, ident: ident, value_type: "text")
+    nested_question = NestedQuestion.find_by(ident: ident) ||
+      FactoryGirl.create(:nested_question, ident: ident, value_type: "text")
     nested_question_answer = FactoryGirl.create(
       :nested_question_answer,
       nested_question: nested_question,
@@ -85,7 +86,8 @@ describe SalesforceServices::ObjectTranslations do
   end
 
   def add_boolean_question_with_answer(paper, ident, answer)
-    nested_question = FactoryGirl.create(:nested_question, ident: ident, value_type: "boolean")
+    nested_question = NestedQuestion.find_by(ident: ident) ||
+      FactoryGirl.create(:nested_question, ident: ident, value_type: "boolean")
     nested_question_answer = FactoryGirl.create(
       :nested_question_answer,
       nested_question: nested_question,

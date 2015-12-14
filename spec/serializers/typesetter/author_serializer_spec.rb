@@ -27,6 +27,7 @@ describe Typesetter::AuthorSerializer do
   end
 
   let!(:contributes_question) do
+    NestedQuestion.find_by(ident: "author--contributions") ||
     FactoryGirl.create(
       :nested_question,
       owner_id: nil,

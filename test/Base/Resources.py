@@ -41,13 +41,15 @@ login_invalid_email = 'jgrey@plos.org'
 login_valid_uid = 'jgray_sa'
 login_invalid_pw = 'in|fury7'
 login_valid_pw = 'in|fury8'
-au_login = 'jgray_author'     # author login
-rv_login = 'jgray_reviewer'   # reviewer login
-ae_login = 'jgray_assocedit'  # associate editor login mm permissions
-he_login = 'jgray_editor'     # handling editor login amm permissions
-fm_login = 'jgray_flowmgr'    # flow manager permissions
-oa_login = 'jgray_oa'         # ordinary admin login
-sa_login = 'jgray_sa'         # super admin login
+au_login = {'user': 'jgray_author', 'name': ''}     # author login
+co_login = {'user': 'jgray_collab', 'name': 'Jeffrey Collaborator',
+            'password': login_invalid_pw}  # collaborator login
+rv_login = {'user': 'jgray_reviewer'}  # reviewer login
+ae_login = {'user': 'jgray_assocedit'} # associate editor login mm permissions
+he_login = {'user':'jgray_editor'}     # handling editor login amm permissions
+fm_login = {'user': 'jgray_flowmgr'}   # flow manager permissions
+oa_login = {'user': 'jgray_oa'}        # ordinary admin login
+sa_login = {'user': 'jgray_sa'}        # super admin login
 
 # Define connector information for Aperta's Tahi component postgres instance
 # Lean data

@@ -15,7 +15,7 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, au_login, rv_login, fm_login, ae_login, he_login, sa_login, oa_login, docs
+from Base.Resources import login_valid_pw, au_login, sa_login, oa_login, docs
 from frontend.common_test import CommonTest
 from Cards.initial_decision_card import InitialDecisionCard
 from Pages.dashboard import DashboardPage
@@ -74,9 +74,9 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
       Modals: View Invites and Create New Submission
     """
     user_type = random.choice(users)
-    print('Logging in as user: ' + user_type)
+    print('Logging in as user: {}'.format(user_type))
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type)
+    login_page.enter_login_field(user_type['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
 
@@ -175,9 +175,9 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
       Modals: View Invites and Create New Submission
     """
     user_type = random.choice(users)
-    print('Logging in as user: ' + user_type)
+    print('Logging in as user: {}'.format(user_type))
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type)
+    login_page.enter_login_field(user_type['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
 
@@ -229,7 +229,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     time.sleep(2)
     user_type = random.choice(admin_users)
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type)
+    login_page.enter_login_field(user_type['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
     # Need time to finish initial redirect to dashboard page
@@ -263,7 +263,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     time.sleep(2)
     user_type = random.choice(users)
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type)
+    login_page.enter_login_field(user_type['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
     # Need time to finish initial redirect to dashboard page

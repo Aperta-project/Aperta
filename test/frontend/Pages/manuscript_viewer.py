@@ -8,6 +8,7 @@ NOTE: This POM will be outdated when the Paper Editor is removed.
 import time
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 
 from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface
 from Base.Resources import affiliation, billing_data
@@ -29,6 +30,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     super(ManuscriptViewerPage, self).__init__(driver, url_suffix)
 
     # Locators - Instance members
+    # dashboard Link
+    self._dashboard_link = (By.ID, 'nav-dashboard')
     # Main Viewer Div
     self._paper_title = (By.ID, 'paper-title')
     self._paper_tracker_title = (By.CLASS_NAME, 'paper-tracker-message')
@@ -55,6 +58,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._add_collaborators_modal_header = (By.CLASS_NAME, 'overlay-title-text')
     self._add_collaborators_modal_support_text =  (By.CLASS_NAME, 'overlay-supporting-text')
     self._add_collaborators_modal_support_select = (By.CLASS_NAME, 'collaborator-select')
+    #self._add_collaborators_modal_select = (By.CLASS_NAME, 'select2-arrow')
+    #self._add_collaborators_modal_select_input = (By.TAG_NAME, 'input')
+    self._add_collaborators_modal_select = (By.CSS_SELECTOR, 'div.select2-container')
+    ###XXXX
+
     self._add_collaborators_modal_cancel = (By.XPATH, "//div[@class='overlay-action-buttons']/a")
     self._add_collaborators_modal_save = (By.XPATH, "//div[@class='overlay-action-buttons']/button")
     # Withdraw Manuscript Overlay
@@ -100,7 +108,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._report_guide_task = (By.CLASS_NAME, 'reporting-guidelines-task')
     self._supporting_info_task = (By.CLASS_NAME, 'supporting-info-task')
     self._upload_manu_task = (By.CLASS_NAME, 'upload-manuscript-task')
-
+    # infobox
+    self._question_mark_icon = (By.ID, 'submission-process-toggle')
+    self._infobox = (By.ID, 'submission-process')
+    self._submission_status_info = (By.ID, 'submission-state-information')
 
   # POM Actions
   def validate_page_elements_styles_functions(self, username=''):
@@ -151,15 +162,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     print paper_id
     journal_id = PgSQL().query('SELECT papers.journal_id FROM papers where id = %s;', (paper_id,))[0][0]
     return journal_id
-
-
-    #journal_ids = PgSQL().query('SELECT roles.journal_id FROM roles INNER JOIN user_roles '
-    #                            'ON roles.id = user_roles.role_id '
-    #                            'WHERE user_roles.user_id = %s '
-    #                            'AND roles.kind IN %s;', (uid, ('flow manager', 'admin', 'editor')))
-
-
-
 
   def _check_collaborator(self):
     """
@@ -374,7 +376,18 @@ class ManuscriptViewerPage(AuthenticatedPage):
   def click_workflow_lnk(self):
     """Click workflow button"""
     self._get(self._tb_workflow_link).click()
-    return self
+
+  def click_question_mark(self):
+    """Click on the question mark to open Infobox"""
+    self._get(self._question_mark_icon).click()
+
+  def click_dashboard_link(self):
+    """Click on dashboard link"""
+    self._get(self._dashboard_link).click()
+
+  def get_infobox(self):
+    """Get the infobox element"""
+    return self._get(self._infobox)
 
   def get_paper_id(self):
     """
@@ -430,3 +443,31 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """Ensure the final submit message does not appear on initial submit"""
     success_msg = self._get(self._paper_sidebar_state_information)
     assert 'This paper has been submitted.' not in success_msg.text, success_msg.text
+
+  def add_collaborators(self, user):
+    """
+    Add a collaborator
+    :param user: user
+    :return: None
+    """
+    self._get(self._tb_collaborators_link).click()
+    self._get(self._tb_add_collaborators_label).click()
+    time.sleep(2)
+    select_div = self._get(self._add_collaborators_modal_select)
+    select_div.find_element_by_tag_name('a').click()
+    select_items = (By.CSS_SELECTOR, 'ul.select2-results')
+    items = self._get(select_items)
+    for item in items.find_elements_by_tag_name('li'):
+      if item.text == user['name']:
+        item.click()
+        time.sleep(.5)
+        break
+    else:
+      raise Exception("User {} not found".format(user['name']))
+    time.sleep(1)
+    self._get(self._add_collaborators_modal_save).click()
+
+  def get_submission_status_info_text(self):
+    """
+    """
+    return self._get(self._submission_status_info).text

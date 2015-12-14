@@ -6,6 +6,7 @@ from loremipsum import generate_paragraph
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
+from Base.CustomException import ElementDoesNotExistAssertionError
 from frontend.Pages.authenticated_page import AuthenticatedPage, application_typeface
 
 __author__ = 'sbassi@plos.org'

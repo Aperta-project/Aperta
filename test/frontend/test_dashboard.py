@@ -14,7 +14,7 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, au_login, rv_login, fm_login, ae_login, he_login, sa_login, oa_login
+from Base.Resources import login_valid_pw, rv_login, fm_login, ae_login, he_login, oa_login
 from frontend.common_test import CommonTest
 from Pages.dashboard import DashboardPage
 from Pages.login_page import LoginPage
@@ -51,27 +51,27 @@ class ApertaDashboardTest(CommonTest):
       Modals: View Invites and Create New Submission
     """
     user_type = random.choice(users)
-    print('Logging in as user: ' + user_type)
+    print('Logging in as user: {}'.format(user_type))
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type)
+    login_page.enter_login_field(user_type['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
 
     dashboard_page = DashboardPage(self.getDriver())
     dashboard_page.validate_initial_page_elements_styles()
-    dashboard_page.validate_invite_dynamic_content(user_type)
-    active_manuscript_count = dashboard_page.validate_manuscript_section_main_title(user_type)
+    dashboard_page.validate_invite_dynamic_content(user_type['user'])
+    active_manuscript_count = dashboard_page.validate_manuscript_section_main_title(user_type['user'])
     if active_manuscript_count > 0:
-      dashboard_page.validate_active_manuscript_section(user_type, active_manuscript_count)
-    inactive_manuscript_count = dashboard_page.validate_inactive_manuscript_section(user_type)
+      dashboard_page.validate_active_manuscript_section(user_type['user'], active_manuscript_count)
+    inactive_manuscript_count = dashboard_page.validate_inactive_manuscript_section(user_type['user'])
     if active_manuscript_count == 0 and inactive_manuscript_count == 0:
       dashboard_page.validate_no_manus_info_msg()
 
     # Validate View Invites modal (optional)
-    invites = dashboard_page.is_invite_stanza_present(user_type)
+    invites = dashboard_page.is_invite_stanza_present(user_type['user'])
     if invites > 0:
       dashboard_page.click_view_invites_button()
-      dashboard_page.validate_view_invites(user_type)
+      dashboard_page.validate_view_invites(user_type['user'])
     # Validate Create New Submissions modal
     dashboard_page.click_create_new_submission_button()
     # We recently became slow drawing this overlay (20151006)
@@ -81,7 +81,7 @@ class ApertaDashboardTest(CommonTest):
     # The dashboard navigation elements will change based on a users permissions
     # Author gets Close, Title, Profile Link with Image, Dashboard Link, Signout Link, separator, Feedback Link
     #
-    dashboard_page.validate_nav_toolbar_elements(user_type)
+    dashboard_page.validate_nav_toolbar_elements(user_type['user'])
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

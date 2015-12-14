@@ -42,9 +42,9 @@ class ApertaPaperTrackerTest(CommonTest):
       Welcome Text, subhead, table presentation
     """
     user_type = random.choice(users)
-    print('Logging in as user: ' + user_type)
+    print('Logging in as user: {}'.format(user_type['user']))
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type)
+    login_page.enter_login_field(user_type['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
 
@@ -52,9 +52,9 @@ class ApertaPaperTrackerTest(CommonTest):
     dashboard_page.click_paper_tracker_link()
 
     pt_page = PaperTrackerPage(self.getDriver())
-    (total_count, journals_list) = pt_page.validate_heading_and_subhead(user_type)
+    (total_count, journals_list) = pt_page.validate_heading_and_subhead(user_type['user'])
     pt_page.validate_table_presentation_and_function(total_count, journals_list)
-    pt_page.validate_nav_toolbar_elements(user_type)
+    pt_page.validate_nav_toolbar_elements(user_type['user'])
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

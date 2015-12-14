@@ -20,15 +20,6 @@ users = [oa_login,
          sa_login,
          ]
 
-all_users = [sa_login,
-             oa_login,
-             au_login,
-             rv_login,
-             ae_login,
-             he_login,
-             fm_login,
-             ]
-
 user_search = ['OA', 'FM', 'MM', 'RV']
 
 
@@ -56,9 +47,9 @@ class ApertaAdminTest(CommonTest):
     Validates the presence of the following elements:
     """
     user_type = random.choice(users)
-    print('Logging in as user: ' + user_type)
+    print('Logging in as user: {}'.format(user_type))
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type)
+    login_page.enter_login_field(user_type['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
 
@@ -66,12 +57,12 @@ class ApertaAdminTest(CommonTest):
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
-    adm_page.validate_page_elements_styles_functions(user_type)
+    adm_page.validate_page_elements_styles_functions(user_type['user'])
     adm_page.select_random_journal()
 
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_page_elements_styles()
-    ja_page.validate_nav_toolbar_elements(user_type)
+    ja_page.validate_nav_toolbar_elements(user_type['user'])
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

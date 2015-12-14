@@ -115,7 +115,7 @@ class AdminPage(AuthenticatedPage):
       if not journal_desc:
         journal_desc = None
       journal_t = (journal_title.text, journal_desc, long(journal_paper_count.text.split()[0]))
-      assert journal_t in db_journals, str(journal_t) + ' not found in \n' + str(db_journals)
+      assert journal_t in db_journals, '{} not found in \n{}'.format(journal_t, db_journals)
       count += 1
 
   def validate_add_new_journal(self, username):
@@ -219,6 +219,7 @@ class AdminPage(AuthenticatedPage):
         success_count += 1
       result.click()
       # TODO: Validate Styles for these elements
+      time.sleep(.5)
       user_details_title = self._get(self._overlay_header_title)
       user_details_closer = self._get(self._overlay_header_close)
       user_details_fname_label = self._get(self._ud_overlay_fname_label)

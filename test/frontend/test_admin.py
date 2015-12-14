@@ -62,9 +62,9 @@ class ApertaAdminTest(CommonTest):
 
     """
     user_type = random.choice(users)
-    print('Logging in as user: ' + user_type)
+    print('Logging in as user: {}'.format(user_type))
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type)
+    login_page.enter_login_field(user_type['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
 
@@ -72,10 +72,10 @@ class ApertaAdminTest(CommonTest):
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
-    adm_page.validate_page_elements_styles_functions(user_type)
+    adm_page.validate_page_elements_styles_functions(user_type['user'])
     adm_page.validate_search_edit_user(random.choice(user_search))
-    adm_page.validate_add_new_journal(user_type)
-    adm_page.validate_nav_toolbar_elements(user_type)
+    adm_page.validate_add_new_journal(user_type['user'])
+    adm_page.validate_nav_toolbar_elements(user_type['user'])
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

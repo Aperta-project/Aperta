@@ -10,10 +10,8 @@ import time
 
 from Base.Decorators import MultiBrowserFixture
 from frontend.Cards.authors_card import AuthorsCard
-from Pages.login_page import LoginPage
 from Pages.dashboard import DashboardPage
 from Pages.manuscript_viewer import ManuscriptViewerPage
-from Base.Resources import login_valid_pw, au_login
 from frontend.common_test import CommonTest
 
 

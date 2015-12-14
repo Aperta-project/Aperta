@@ -1,6 +1,6 @@
 class PaperTask < Page
   def toggle
-    find(heading_selector).click
+    element.find(heading_selector).click
     wait_for_ajax
   end
 

@@ -1,4 +1,4 @@
-class SupportingInformationOverlay < CardOverlay
+class SupportingInfoOverlay < CardOverlay
   def has_file? file_name
     have_xpath("//a[contains(@href, \"#{file_name}\"]")
   end

@@ -29,7 +29,7 @@ feature 'Send to Apex task', js: true, selenium: true do
     apex_delivery = TahiStandardTasks::ApexDelivery.where(paper_id: paper.id)
     expect(apex_delivery.count).to be 0
 
-    overlay = manuscript_page.view_card 'Send to Apex', SendToApexOverlay
+    overlay = Page.view_task_overlay(paper, task)
     overlay.click_button('Send to Apex')
     overlay.ensure_apex_upload_is_pending
 

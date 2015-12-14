@@ -222,7 +222,10 @@ class Page < PageFragment
     visit "/papers/#{paper.id}/tasks/#{task.id}"
     wait_for_ajax
     overlay_class ||= begin
-                      "#{task.title.gsub ' ', ''}Overlay".constantize
+                      (task.title.split(' ')
+                                .map {|w| w.capitalize }
+                                .join(' ').gsub(' ', '') + "Overlay")
+                                .constantize
                     rescue NameError
                       CardOverlay
                     end

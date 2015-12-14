@@ -1,11 +1,9 @@
-<h2>Send to Apex</h2>
-
 <button class="button-primary button--green send-to-apex-button" {{action "sendToApex"}}>Send to Apex</button>
 
-{{#if model.apexDeliveries}}
-<div class="send-to-apex-history-header">APEX History</div>
+{{#if task.apexDeliveries}}
+  <div class="send-to-apex-history-header">APEX History</div>
 {{/if}}
 
-{{#each model.apexDeliveries as |delivery|}}
+{{#each task.apexDeliveries as |delivery|}}
   {{apex-delivery delivery=delivery}}
 {{/each}}

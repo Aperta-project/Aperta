@@ -49,14 +49,14 @@ module('Integration: Reporting Guidelines Card', {
 
     var nestedQuestions = [];
 
-    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 1, ident: 'clinical_trial', text: "Doesn't Matter" }));
-    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 2, ident: 'systematic_reviews', text: "Systematic Reviews" }));
-    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 22, parent_id: 2, ident: 'checklist', text: "Provide a completed PRISMA checklist as supporting information." }));
-    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 3, ident: 'meta_analyses', text: "Doesn't Matter" }));
-    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 33, parent_id: 3, ident: 'checklist', text: "Doesn't Matter" }));
-    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 4, ident: 'diagnostic_studies', text: "Doesn't Matter" }));
-    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 5, ident: 'epidemiological_studies', text: "Doesn't Matter" }));
-    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 6, ident: 'microarray_studies', text: "Doesn't Matter" }));
+    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 1, ident: 'reporting_guidelines--clinical_trial', text: "Doesn't Matter" }));
+    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 2, ident: 'reporting_guidelines--systematic_reviews', text: "Systematic Reviews" }));
+    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 22, parent_id: 2, ident: 'reporting_guidelines--systematic_reviews--checklist', text: "Provide a completed PRISMA checklist as supporting information." }));
+    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 3, ident: 'reporting_guidelines--meta_analyses', text: "Doesn't Matter" }));
+    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 33, parent_id: 3, ident: 'reporting_guidelines--meta_analyses--checklist', text: "Doesn't Matter" }));
+    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 4, ident: 'reporting_guidelines--diagnostic_studies', text: "Doesn't Matter" }));
+    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 5, ident: 'reporting_guidelines--epidemiological_studies', text: "Doesn't Matter" }));
+    nestedQuestions.push(Factory.createRecord('NestedQuestion', { id: 6, ident: 'reporting_guidelines--microarray_studies', text: "Doesn't Matter" }));
     _.each(nestedQuestions, function(nestedQuestion) {
       addNestedQuestionToTask(nestedQuestion, task);
     });
@@ -111,7 +111,7 @@ test('Supporting Guideline is a meta data card, contains the right questions and
     questionLi = findQuestionLi('Systematic Reviews');
     return assert.ok(!questionLi.find('.additional-data input[type=file]').length);
   });
-  return click('input[name="systematic_reviews"]').then(function() {
+  return click('input[name="reporting_guidelines--systematic_reviews"]').then(function() {
     var additionalDataText, questionLi;
     questionLi = findQuestionLi('Systematic Reviews');
     assert.equal(0, questionLi.find('.additional-data.hidden').length);

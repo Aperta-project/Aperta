@@ -66,7 +66,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
       publishing_state: submitted
       submitted_at: neither NULL nor ''
   """
-  def rest_validate_full_submit(self):
+  def test_validate_full_submit(self):
     """
     Validates the presence of the following elements:
       Optional Invitation Welcome text and button,

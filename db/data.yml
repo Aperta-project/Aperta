@@ -1405,7 +1405,7 @@ journal_task_types:
     - '1'
     - Upload Manuscript
     - author
-    - TahiUploadManuscript::UploadManuscriptTask
+    - TahiStandardTasks::UploadManuscriptTask
   - - '22'
     - '1'
     - Changes For Author
@@ -2049,7 +2049,7 @@ tasks:
     - '2'
   - - '3'
     - Upload Manuscript
-    - TahiUploadManuscript::UploadManuscriptTask
+    - TahiStandardTasks::UploadManuscriptTask
     - '1'
     - false
     - '2015-10-29 20:16:37.500407'
@@ -2259,7 +2259,7 @@ tasks:
     - '2'
   - - '24'
     - Upload Manuscript
-    - TahiUploadManuscript::UploadManuscriptTask
+    - TahiStandardTasks::UploadManuscriptTask
     - '6'
     - false
     - '2015-10-30 19:43:28.556461'
@@ -2482,7 +2482,7 @@ tasks:
     - '2'
   - - '45'
     - Upload Manuscript
-    - TahiUploadManuscript::UploadManuscriptTask
+    - TahiStandardTasks::UploadManuscriptTask
     - '11'
     - true
     - '2015-11-02 14:04:03.010843'
@@ -2699,7 +2699,7 @@ tasks:
     - '2'
   - - '66'
     - Upload Manuscript
-    - TahiUploadManuscript::UploadManuscriptTask
+    - TahiStandardTasks::UploadManuscriptTask
     - '16'
     - true
     - '2015-11-02 14:46:23.923178'
@@ -2919,7 +2919,7 @@ tasks:
     - '2'
   - - '87'
     - Upload Manuscript
-    - TahiUploadManuscript::UploadManuscriptTask
+    - TahiStandardTasks::UploadManuscriptTask
     - '21'
     - false
     - '2015-11-03 22:59:21.036416'
@@ -3129,7 +3129,7 @@ tasks:
     - '2'
   - - '108'
     - Upload Manuscript
-    - TahiUploadManuscript::UploadManuscriptTask
+    - TahiStandardTasks::UploadManuscriptTask
     - '26'
     - false
     - '2015-11-03 23:02:06.891704'
@@ -3339,7 +3339,7 @@ tasks:
     - '2'
   - - '129'
     - Upload Manuscript
-    - TahiUploadManuscript::UploadManuscriptTask
+    - TahiStandardTasks::UploadManuscriptTask
     - '31'
     - false
     - '2015-11-10 22:27:27.324684'

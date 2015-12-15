@@ -106,6 +106,7 @@ class PapersController < ApplicationController
   def toggle_editable
     paper.toggle!(:editable)
     status = paper.valid? ? 200 : 422
+    Activity.editable_toggled!(paper, user: current_user)
     render json: paper, status: status
   end
 

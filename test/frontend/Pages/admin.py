@@ -70,7 +70,8 @@ class AdminPage(AuthenticatedPage):
     # Validate Journals section elements
     journals_title = self._get(self._base_admin_journals_section_title)
     self.validate_application_h2_style(journals_title)
-    if username == sa_login:
+    print(username)
+    if username == 'jgray_sa':
       self._get(self._base_admin_journals_su_add_new_journal_btn)
       # Validate the presentation of journal blocks
       # Super Admin gets all journals
@@ -95,7 +96,9 @@ class AdminPage(AuthenticatedPage):
                                          'ON journals.id = papers.journal_id '
                                          'WHERE journals.id = %s '
                                          'GROUP BY journals.id;', (journal,))[0])
+    print(db_journals)
     journal_blocks = self._gets(self._base_admin_journals_section_journal_block)
+    print(journal_blocks)
     count = 0
     for journal_block in journal_blocks:
       # Once again, while less than ideal, these must be defined on the fly

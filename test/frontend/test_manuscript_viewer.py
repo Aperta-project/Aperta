@@ -21,10 +21,15 @@ from Pages.workflow_page import WorkflowPage
 from Cards.initial_decision_card import InitialDecisionCard
 from frontend.common_test import CommonTest, docs
 
-users = (au_login, rv_login, ae_login, he_login, sa_login, oa_login)
+users = (au_login,
+         rv_login,
+         ae_login,
+         he_login,
+         sa_login,
+         oa_login)
 
 @MultiBrowserFixture
-class EditPaperTest(CommonTest):
+class ViewPaperTest(CommonTest):
   """
   This class implements:
     APERTA-5515
@@ -104,9 +109,9 @@ class EditPaperTest(CommonTest):
       3. Info box appears for initial manuscript view only, whether the user closes or leaves it open
       4. Info box does not appear for Collaborators
       5. Message for initial submission when there are still cards to fill
-      6. Message for initial submission when is ready for submition
+      6. Message for initial submission when is ready for submission
       7. Message for full submission when there are still cards to fill
-      8. Message for full submission when is ready for submition
+      8. Message for full submission when is ready for submission
       9. Show "[Journal Name] submission process (?)" on top of the card stack at all times.
       10. Clicking the question mark opens the "[Journal Name] submission process" info box
 
@@ -155,8 +160,8 @@ class EditPaperTest(CommonTest):
             manuscript_page.get_submission_status_info_text()
     # AC2 Test closing the infobox
     infobox.find_element_by_id('sp-close').click()
-    time.sleep(.5)
-    manuscript_page.set_timeout(.5)
+    time.sleep(3)
+    manuscript_page.set_timeout(1)
     try:
       manuscript_page.get_infobox()
     except ElementDoesNotExistAssertionError:
@@ -185,10 +190,15 @@ class EditPaperTest(CommonTest):
     ##dashboard_page.click_on_first_manuscript()
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # Add a collaborator (for AC4)
-    manuscript_page.add_collaborators(co_login)
+    manuscript_page.add_collaborators(rv_login)
     paper_id = manuscript_page.get_current_url().split('/')[-1]
     # Complete IMG card to force display of submission status project
-    manuscript_page.complete_card('Figures')
+    time.sleep(1)
+    print('Opening the Figures task')
+    manuscript_page.click_task('Figures')
+    time.sleep(5)
+    manuscript_page.complete_task('Figures')
+    manuscript_page.click_task('Figures')
     # NOTE: At this point browser renders the page with errors only on automation runs
     # AC 6
     assert "Your manuscript is ready for Initial Submission." in \
@@ -196,9 +206,9 @@ class EditPaperTest(CommonTest):
             manuscript_page.get_submission_status_info_text()
     manuscript_page.logout()
 
-    print('Logging in as user: {}'.format(co_login))
+    print('Logging in as user: {}'.format(rv_login))
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(co_login['user'])
+    login_page.enter_login_field(rv_login['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
     # the following call should only succeed for sa_login

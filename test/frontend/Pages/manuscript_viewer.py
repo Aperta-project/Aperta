@@ -11,10 +11,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface
-from Base.Resources import affiliation, billing_data
+from Base.Resources import affiliation, billing_data, rv_login
 from Base.PostgreSQL import PgSQL
 from frontend.Cards.authors_card import AuthorsCard
 from frontend.Cards.basecard import BaseCard
+from frontend.Tasks.basetask import BaseTask
 from frontend.Cards.billing_card import BillingCard
 from frontend.Cards.figures_card import FiguresCard
 from frontend.Cards.revise_manuscript_card import ReviseManuscriptCard
@@ -38,6 +39,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[4]')
     self._card = (By.CLASS_NAME, 'card')
     self._submit_button = (By.ID, 'sidebar-submit-paper')
+    # Sidebar Items
+    self._task_headings = (By.CLASS_NAME, 'task-disclosure-heading')
+    self._task_heading_status_icon = (By.CLASS_NAME, 'task-disclosure-completed-icon')
+    self._task_heading_completed_icon = (By.CLASS_NAME, 'task-disclosure-completed-icon active')
     # Main Toolbar items
     self._tb_versions_link = (By.ID, 'nav-versions')
     self._tb_versions_diff_div = (By.CSS_SELECTOR, 'div.html-diff')
@@ -101,7 +106,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._competing_ints_task = (By.CLASS_NAME, 'competing-interests-task')
     self._data_avail_task = (By.CLASS_NAME, 'data-availability-task')
     self._ethics_statement_task = (By.CLASS_NAME, 'ethics-statement-task')
-    self._figures_task = (By.CLASS_NAME, 'figures-task')
+    self._figures_task = (By.CLASS_NAME, 'figure-task')
     self._fin_disclose_task = (By.CLASS_NAME, 'financial-disclosure-task')
     self._new_taxon_task = (By.CLASS_NAME, 'new-taxon-task')
     self._prq_task = (By.CLASS_NAME, 'publishing-related-questions-task')
@@ -110,7 +115,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._upload_manu_task = (By.CLASS_NAME, 'upload-manuscript-task')
     # infobox
     self._question_mark_icon = (By.ID, 'submission-process-toggle')
-    self._infobox = (By.ID, 'submission-process')
+    # While IDs are normally king, for this element, we don't hide the element, we just change its class to "hide" it
+    self._infobox = (By.CSS_SELECTOR, 'div.show-process')
     self._submission_status_info = (By.ID, 'submission-state-information')
 
   # POM Actions
@@ -347,6 +353,46 @@ class ManuscriptViewerPage(AuthenticatedPage):
       billing = BillingCard(self._driver)
       billing.add_billing_data(billing_data)
 
+  def complete_task(self, task_name, click_override=False):
+    """On a given task, check complete and then close"""
+    tasks = self._gets(self._task_headings)
+    # if task is marked as complete, leave is at is.
+    if not click_override:
+      for task in tasks:
+        task_div = task.find_element_by_xpath('..')
+        if task.text == task_name and 'active' \
+            not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
+          task_div.click()
+          break
+        elif task.text == task_name and 'active' \
+            in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
+          return None
+      else:
+        return None
+    else:
+      for task in tasks:
+        if task.text == task_name:
+          task_div = task.find_element_by_xpath('..')
+          task_div.click()
+        break
+      else:
+        return None
+    base_task = BaseTask(self._driver)
+    if task_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript', 'Revise Manuscript'):
+      # Check completed_check status
+      completed = base_task.completed_cb_is_selected()
+      if not completed:
+        self._get(base_task._completed_cb).click()
+      task_div.click()
+      time.sleep(1)
+    elif task_name == 'Authors':
+      # Complete authors data before mark close
+      author_task = AuthorsTask(self._driver)
+      author_task.edit_author(affiliation)
+    elif task_name == 'Billing':
+      billing = BillingTask(self._driver)
+      billing.add_billing_data(billing_data)
+
   def get_paper_title_from_page(self):
     """
     Returns the encoded paper title as it appears on the manuscript_viewer page
@@ -355,6 +401,21 @@ class ManuscriptViewerPage(AuthenticatedPage):
     paper_title = self._get(self._paper_title).text
     print(paper_title)
     return paper_title
+
+  def edit_paper_title(self):
+    """
+    Returns the encoded paper title as it appears on the manuscript_viewer page
+    :return: paper_title
+    """
+    paper_title = self._get(self._paper_title)
+    original_paper_title = paper_title.text
+    self._actions.click(paper_title).perform()
+    self._actions.send_keys(10 * u'\ue015').perform()
+    time.sleep(.5)
+    self._actions.send_keys_to_element(paper_title, ' edited' + u'\ue004').perform()
+    new_paper_title = self._get(self._paper_title)
+    assert new_paper_title.text == original_paper_title + ' edited', \
+        new_paper_title.text + ' != ' + original_paper_title + ' edited'
 
   def click_submit_btn(self):
     """Press the submit button"""
@@ -450,6 +511,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :param user: user
     :return: None
     """
+    print(user['name'])
     self._get(self._tb_collaborators_link).click()
     self._get(self._tb_add_collaborators_label).click()
     time.sleep(2)
@@ -458,6 +520,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     select_items = (By.CSS_SELECTOR, 'ul.select2-results')
     items = self._get(select_items)
     for item in items.find_elements_by_tag_name('li'):
+      print(item.text)
       if item.text == user['name']:
         item.click()
         time.sleep(.5)

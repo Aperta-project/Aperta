@@ -41,10 +41,11 @@ login_invalid_email = 'jgrey@plos.org'
 login_valid_uid = 'jgray_sa'
 login_invalid_pw = 'in|fury7'
 login_valid_pw = 'in|fury8'
+
 au_login = {'user': 'jgray_author', 'name': ''}     # author login
 co_login = {'user': 'jgray_collab', 'name': 'Jeffrey Collaborator',
             'password': login_invalid_pw}  # collaborator login
-rv_login = {'user': 'jgray_reviewer'}  # reviewer login
+rv_login = {'user': 'jgray_reviewer', 'name': 'Jeffrey RV Gray'}  # reviewer login
 ae_login = {'user': 'jgray_assocedit'} # associate editor login mm permissions
 he_login = {'user':'jgray_editor'}     # handling editor login amm permissions
 fm_login = {'user': 'jgray_flowmgr'}   # flow manager permissions
@@ -59,25 +60,17 @@ sa_login = {'user': 'jgray_sa'}        # super admin login
 # psql_pw = getenv('APERTA_PSQL_PW', 'pch646pphdfqog9v38otlchvvpn')
 # psql_db = getenv('APERTA_PSQL_DBNAME', 'd1kdmn5r5e9aj5')
 # Staging data
-# psql_hname = getenv('APERTA_PSQL_HOST', 'ec2-54-83-5-30.compute-1.amazonaws.com')
-# psql_port = getenv('APERTA_PSQL_PORT', '6262')
-# psql_uname = getenv('APERTA_PSQL_USER', 'u2kgbfse1i57n')
-# psql_pw = getenv('APERTA_PSQL_PW', 'p76is3gn1m2f557s4crfgb7l6qi')
-# psql_db = getenv('APERTA_PSQL_DBNAME', 'dd2kjrv61vaj33')
+psql_hname = getenv('APERTA_PSQL_HOST', 'ec2-54-83-5-30.compute-1.amazonaws.com')
+psql_port = getenv('APERTA_PSQL_PORT', '6262')
+psql_uname = getenv('APERTA_PSQL_USER', 'u2kgbfse1i57n')
+psql_pw = getenv('APERTA_PSQL_PW', 'p76is3gn1m2f557s4crfgb7l6qi')
+psql_db = getenv('APERTA_PSQL_DBNAME', 'dd2kjrv61vaj33')
 # Release Candidate data
 # psql_hname = getenv('APERTA_PSQL_HOST', 'ec2-54-204-30-115.compute-1.amazonaws.com')
 # psql_port = getenv('APERTA_PSQL_PORT', '5432')
 # psql_uname = getenv('APERTA_PSQL_USER', 'ytosewhffqfypg')
 # psql_pw = getenv('APERTA_PSQL_PW', 'bS0R1f6NY3-BrB70A49jOAzuTJ')
 # psql_db = getenv('APERTA_PSQL_DBNAME', 'd1n1umf877c2e3')
-# postgres://xeehzbldnhiwpz:cf-rtEC1K-D-eWaxPAVnCL8Fjy@ec2-54-204-35-207.compute-1.amazonaws.com:5432/dcb257mgfpld33
-psql_hname = getenv('APERTA_PSQL_HOST', 'ec2-54-204-35-207.compute-1.amazonaws.com')
-psql_port = getenv('APERTA_PSQL_PORT', '5432')
-psql_uname = getenv('APERTA_PSQL_USER', 'xeehzbldnhiwpz')
-psql_pw = getenv('APERTA_PSQL_PW', 'cf-rtEC1K-D-eWaxPAVnCL8Fjy')
-psql_db = getenv('APERTA_PSQL_DBNAME', 'dcb257mgfpld33')
-
-
 
 editor_name_0 = 'Hendrik W. van Veen'
 user_email_0 = 'trash87567@ariessc.com'

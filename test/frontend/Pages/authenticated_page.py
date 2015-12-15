@@ -50,6 +50,7 @@ class AuthenticatedPage(PlosPage):
     # Navigation toolbar Locators
     self._nav_toolbar = (By.CLASS_NAME, 'main-nav')
     self._nav_title = (By.CLASS_NAME, 'main-nav-item-app-name')
+    self._nav_spacer = (By.CLASS_NAME, 'control-bar-item-spacer')
     self._nav_dashboard_link = (By.ID, 'nav-dashboard')
     self._nav_admin_link = (By.ID, 'nav-admin')
     self._nav_flowmgr_link = (By.ID, 'nav-flow-manager')
@@ -72,7 +73,7 @@ class AuthenticatedPage(PlosPage):
     self._discussions_label = (By.CSS_SELECTOR, 'div.control-bar-item + a.control-bar-item')
     # TODO: Change this when APERTA-5531 is completed
     self._control_bar_right_items = (By.CLASS_NAME, 'control-bar-item')
-    self._bar_items = (By.XPATH, "//div[@id='paper-container']/div[@id='versioning-bar']/div[@class='bar-item']")
+    self._bar_items = (By.CSS_SELECTOR, 'div#versioning-bar.toot div.bar-item')
     self._recent_activity_modal = (By.CLASS_NAME, 'activity-overlay')
     self._recent_activity_modal_title = (By.CSS_SELECTOR, 'h1.feedback-overlay-thanks')
     self._discussion_container = (By.CLASS_NAME, 'liquid-container')

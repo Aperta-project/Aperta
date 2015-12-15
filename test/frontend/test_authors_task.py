@@ -31,8 +31,6 @@ class AuthorsTaskTest(CommonTest):
   def test_validate_components(self):
     """Validates styles for the author task"""
     authors_task, title = self._go_to_authors_task()
-    header_link = authors_task._get(authors_task._header_link)
-    assert header_link.text == title, (header_link.text, title)
     authors_task.validate_styles()
     authors_task.validate_author_task_action()
     authors_task.validate_delete_author()

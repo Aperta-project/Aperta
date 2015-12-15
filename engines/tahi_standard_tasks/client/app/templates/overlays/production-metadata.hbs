@@ -4,7 +4,7 @@
 
 <div class="production-metadata">
   <div class="form-group">
-    <div class="inset-form-control required publication-date {{if validationErrors.publicationDate "error"}}">
+    <div class="inset-form-control publication-date {{if validationErrors.publicationDate "error"}}">
       {{error-message message=validationErrors.publicationDate class="inset-form-control-text"}}
       <label class="inset-form-control-text">
         {{nested-question-display ident="publication_date" owner=model}}

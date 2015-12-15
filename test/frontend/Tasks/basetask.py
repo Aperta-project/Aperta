@@ -35,11 +35,16 @@ class BaseTask(AuthenticatedPage):
     self._get(self._completed_cb).click()
 
   def completed_cb_is_selected(self):
+    """Returns the selected state of the task completed checkbox as a boolean"""
     time.sleep(.5)
     completed_checkbox_state = self._get(self._completed_cb).is_selected()
     return completed_checkbox_state
 
   def validate_completion_error(self):
+    """
+    Validates that we properly put up an error in the case of attempting completion of a task with validation errors
+    :return: void function
+    """
     error_msg = self._get(self._task_error_msg).text
     assert 'Please fix validation errors above.' in error_msg
 

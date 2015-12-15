@@ -14,7 +14,7 @@ class AuthorsTask(BaseTask):
   """
   Page Object Model for Authors Task
   """
-  def __init__(self, driver, url_suffix='/'):
+  def __init__(self, driver):
     super(AuthorsTask, self).__init__(driver)
 
     #Locators - Instance members

@@ -62,9 +62,9 @@ papers:
   - salesforce_manuscript_id
   - withdrawals
   - active
-  - gradual_engagement
   - first_submitted_at
   - accepted_at
+  - gradual_engagement
   records: 
   - - '1'
     - 
@@ -85,9 +85,9 @@ papers:
     - 
     - "{}"
     - true
+    - 
+    - 
     - false
-    - 
-    - 
   - - '2'
     - '<h2 class="overlay-header-title overlay-header-title--with-icon" style="color:
       rgb(51, 51, 51); width: 880.312px;"><a id="ember4696" href="http://localhost:5000/papers/2"
@@ -109,9 +109,9 @@ papers:
     - 
     - "{}"
     - true
+    - 
+    - 
     - false
-    - 
-    - 
   - - '3'
     - Ready to Submit
     - "<b>Ready:</b>&nbsp;<i>Ready to submit</i>"
@@ -131,9 +131,9 @@ papers:
     - 
     - "{}"
     - true
+    - 
+    - 
     - false
-    - 
-    - 
   - - '4'
     - Editors Assigned
     - "<b>With Editors:</b> <i>Paper submitted, editors assigned</i>"
@@ -153,9 +153,9 @@ papers:
     - 
     - "{}"
     - true
+    - 
+    - 
     - false
-    - 
-    - 
   - - '8'
     - 
     - Hendrik a011f9d4-0119-4611-88af-9838ff154cec
@@ -175,9 +175,9 @@ papers:
     - 
     - "{}"
     - true
+    - 
+    - 
     - false
-    - 
-    - 
   - - '9'
     - 
     - Hendrik 12de86c5-5afc-44cb-ab06-00a3411f66d5
@@ -197,9 +197,9 @@ papers:
     - 
     - "{}"
     - true
+    - 
+    - 
     - false
-    - 
-    - 
   - - '10'
     - The great scientific paper of 2015
     - The most scrumtrulescent scientific paper of 2015.
@@ -219,9 +219,9 @@ papers:
     - 
     - "{}"
     - true
+    - 
+    - 
     - false
-    - 
-    - 
 
 ---
 versioned_texts:
@@ -6090,112 +6090,112 @@ nested_questions:
   - - '1'
     - Clinical Trial
     - boolean
-    - clinical_trial
+    - reporting_guidelines--clinical_trial
     - 
     - '1'
     - '2'
     - '1'
     - '2015-10-29 20:16:37.932423'
-    - '2015-10-29 20:16:37.932423'
+    - '2015-12-15 15:54:23.16653'
     - TahiStandardTasks::ReportingGuidelinesTask
     - 
   - - '2'
     - Systematic Reviews
     - boolean
-    - systematic_reviews
+    - reporting_guidelines--systematic_reviews
     - 
     - '3'
     - '6'
     - '2'
     - '2015-10-29 20:16:37.938852'
-    - '2015-10-29 20:16:37.950863'
+    - '2015-12-15 15:54:23.169471'
     - TahiStandardTasks::ReportingGuidelinesTask
     - 
   - - '3'
     - Provide a completed PRISMA checklist as supporting information.  You can <a
       href='http://www.prisma-statement.org/'>download it here</a>.
     - attachment
-    - checklist
+    - reporting_guidelines--systematic_reviews--checklist
     - '2'
     - '4'
     - '5'
     - '1'
     - '2015-10-29 20:16:37.94416'
-    - '2015-10-29 20:16:37.950863'
+    - '2015-12-15 15:54:23.172619'
     - TahiStandardTasks::ReportingGuidelinesTask
     - 
   - - '4'
     - Meta-analyses
     - boolean
-    - meta_analyses
+    - reporting_guidelines--meta_analyses
     - 
     - '7'
     - '10'
     - '3'
     - '2015-10-29 20:16:37.958963'
-    - '2015-10-29 20:16:37.969751'
+    - '2015-12-15 15:54:23.175276'
     - TahiStandardTasks::ReportingGuidelinesTask
     - 
   - - '5'
     - Provide a completed PRISMA checklist as supporting information.  You can <a
       href='http://www.prisma-statement.org/'>download it here</a>.
     - attachment
-    - checklist
+    - reporting_guidelines--meta_analyses--checklist
     - '4'
     - '8'
     - '9'
     - '1'
     - '2015-10-29 20:16:37.963314'
-    - '2015-10-29 20:16:37.969751'
+    - '2015-12-15 15:54:23.178171'
     - TahiStandardTasks::ReportingGuidelinesTask
     - 
   - - '6'
     - Diagnostic studies
     - boolean
-    - diagnostic_studies
+    - reporting_guidelines--diagnostic_studies
     - 
     - '11'
     - '12'
     - '4'
     - '2015-10-29 20:16:37.97752'
-    - '2015-10-29 20:16:37.97752'
+    - '2015-12-15 15:54:23.180888'
     - TahiStandardTasks::ReportingGuidelinesTask
     - 
   - - '7'
     - Epidemiological studies
     - boolean
-    - epidemiological_studies
+    - reporting_guidelines--epidemiological_studies
     - 
     - '13'
     - '14'
     - '5'
     - '2015-10-29 20:16:37.983692'
-    - '2015-10-29 20:16:37.983692'
+    - '2015-12-15 15:54:23.183622'
     - TahiStandardTasks::ReportingGuidelinesTask
     - 
   - - '8'
     - Microarray studies
     - boolean
-    - microarray_studies
+    - reporting_guidelines--microarray_studies
     - 
     - '15'
     - '16'
     - '6'
     - '2015-10-29 20:16:38.010316'
-    - '2015-10-29 20:16:38.010316'
+    - '2015-12-15 15:54:23.186469'
     - TahiStandardTasks::ReportingGuidelinesTask
     - 
   - - '9'
     - Have the results, data, or figures in this manuscript been published elsewhere?
       Are they under consideration for publication elsewhere?
     - boolean
-    - published_elsewhere
+    - publishing_related_questions--published_elsewhere
     - 
     - '17'
     - '22'
     - '1'
     - '2015-10-29 20:16:38.047215'
-    - '2015-10-29 20:16:38.068551'
+    - '2015-12-15 15:54:23.125043'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
   - - '10'
@@ -6203,13 +6203,13 @@ nested_questions:
       or pending manuscripts, and explain why inclusion in this submission does not
       constitute dual publication.
     - text
-    - taken_from_manuscripts
+    - publishing_related_questions--published_elsewhere--taken_from_manuscripts
     - '9'
     - '18'
     - '19'
     - '1'
     - '2015-10-29 20:16:38.051204'
-    - '2015-10-29 20:16:38.05728'
+    - '2015-12-15 15:54:23.128102'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
   - - '11'
@@ -6217,161 +6217,136 @@ nested_questions:
       Manuscript' item. Note that reviewers may be asked to comment on the overlap
       between the related submissions.
     - attachment
-    - upload_related_work
+    - publishing_related_questions--published_elsewhere--upload_related_work
     - '9'
     - '20'
     - '21'
     - '2'
     - '2015-10-29 20:16:38.062415'
-    - '2015-10-29 20:16:38.068551'
+    - '2015-12-15 15:54:23.13079'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
   - - '12'
     - Is this manuscript being submitted in conjunction with another submission?
     - boolean
-    - submitted_in_conjunction
+    - publishing_related_questions--submitted_in_conjunction
     - 
     - '23'
     - '28'
     - '2'
     - '2015-10-29 20:16:38.076166'
-    - '2015-10-29 20:16:38.096858'
+    - '2015-12-15 15:54:23.133607'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
   - - '13'
     - Title
     - text
-    - corresponding_title
+    - publishing_related_questions--submitted_in_conjunction--corresponding_title
     - '12'
     - '24'
     - '25'
     - '1'
     - '2015-10-29 20:16:38.079831'
-    - '2015-10-29 20:16:38.085836'
+    - '2015-12-15 15:54:23.136459'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
   - - '14'
     - Corresponding author
     - text
-    - corresponding_author
+    - publishing_related_questions--submitted_in_conjunction--corresponding_author
     - '12'
     - '26'
     - '27'
     - '2'
     - '2015-10-29 20:16:38.090158'
-    - '2015-10-29 20:16:38.096858'
+    - '2015-12-15 15:54:23.139157'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
   - - '15'
     - I have had previous interactions about this manuscript with a staff editor or
       Academic Editor of this journal.
     - boolean
-    - previous_interactions_with_this_manuscript
+    - publishing_related_questions--previous_interactions_with_this_manuscript
     - 
     - '29'
     - '32'
     - '3'
     - '2015-10-29 20:16:38.103461'
-    - '2015-10-29 20:16:38.138502'
+    - '2015-12-15 15:54:23.142032'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
   - - '16'
     - Please enter manuscript number and editor name, if known
     - text
-    - submission_details
+    - publishing_related_questions--previous_interactions_with_this_manuscript--submission_details
     - '15'
     - '30'
     - '31'
     - '1'
     - '2015-10-29 20:16:38.106897'
-    - '2015-10-29 20:16:38.138502'
+    - '2015-12-15 15:54:23.144907'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
   - - '17'
     - I submitted a presubmission inquiry for this manuscript.
     - boolean
-    - presubmission_inquiry
+    - publishing_related_questions--presubmission_inquiry
     - 
     - '33'
     - '38'
     - '4'
     - '2015-10-29 20:16:38.146339'
-    - '2015-10-29 20:16:38.183308'
+    - '2015-12-15 15:54:23.14745'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
   - - '18'
     - Please enter manuscript number and editor name, if known
     - text
-    - submission_details
+    - publishing_related_questions--presubmission_inquiry--submission_details
     - '17'
     - '36'
     - '37'
     - '1'
     - '2015-10-29 20:16:38.150193'
-    - '2015-10-29 20:16:38.183308'
-    - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - 
-  - - '19'
-    - I have had previous interactions about this manuscript with a staff editor or
-      Academic Editor of this journal.
-    - boolean
-    - previous_interactions_with_this_manuscript
-    - 
-    - '33'
-    - '36'
-    - '3'
-    - '2015-10-29 20:16:38.146903'
-    - '2015-10-29 20:16:38.183308'
+    - '2015-12-15 15:54:23.150146'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
   - - '20'
     - This manuscript was previously submitted to a different PLOS journal as either
       a presubmission inquiry or a full submission.
     - boolean
-    - other_journal_submission
+    - publishing_related_questions--other_journal_submission
     - 
     - '34'
     - '40'
     - '5'
     - '2015-10-29 20:16:38.163276'
-    - '2015-10-29 20:16:38.183308'
+    - '2015-12-15 15:54:23.152777'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
   - - '21'
     - Please enter manuscript number and editor name, if known
     - text
-    - submission_details
+    - publishing_related_questions--other_journal_submission--submission_details
     - '20'
     - '35'
     - '39'
     - '1'
     - '2015-10-29 20:16:38.167053'
-    - '2015-10-29 20:16:38.183308'
-    - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - 
-  - - '22'
-    - Please enter manuscript number and editor name, if known
-    - text
-    - submission_details
-    - '19'
-    - '34'
-    - '35'
-    - '1'
-    - '2015-10-29 20:16:38.163667'
-    - '2015-10-29 20:16:38.183308'
+    - '2015-12-15 15:54:23.155742'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
   - - '23'
     - One or more of the authors (including myself) currently serve, or have previously
       served, as an Academic Editor or Guest Editor for this journal.
     - boolean
-    - author_was_previous_journal_editor
+    - publishing_related_questions--author_was_previous_journal_editor
     - 
     - '41'
     - '42'
     - '6'
     - '2015-10-29 20:16:38.180646'
-    - '2015-10-29 20:16:38.180646'
+    - '2015-12-15 15:54:23.158519'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
   - - '24'
@@ -6379,87 +6354,62 @@ nested_questions:
       collection in the box below. Please also ensure the name of the collection is
       included in your cover letter.
     - text
-    - intended_collection
+    - publishing_related_questions--intended_collection
     - 
     - '43'
     - '44'
     - '7'
     - '2015-10-29 20:16:38.186747'
-    - '2015-10-29 20:16:38.186747'
+    - '2015-12-15 15:54:23.161217'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
   - - '25'
     - Are you or any of the contributing authors an employee of the United States
       Government?
     - boolean
-    - us_government_employees
+    - publishing_related_questions--us_government_employees
     - 
     - '45'
     - '46'
     - '8'
     - '2015-10-29 20:16:38.193371'
-    - '2015-10-29 20:16:38.193371'
-    - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - 
-  - - '26'
-    - Are you or any of the contributing authors an employee of the United States
-      Government?
-    - boolean
-    - us_government_employees
-    - 
-    - '45'
-    - '46'
-    - '8'
-    - '2015-10-29 20:16:38.194046'
-    - '2015-10-29 20:16:38.194046'
+    - '2015-12-15 15:54:23.163817'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - 
   - - '27'
     - Did any of the authors receive specific funding for this work?
     - boolean
-    - author_received_funding
+    - financial_disclosures--author_received_funding
     - 
     - '47'
     - '48'
     - '1'
     - '2015-10-29 20:16:38.228326'
-    - '2015-10-29 20:16:38.228326'
+    - '2015-12-15 15:54:22.921646'
     - TahiStandardTasks::FinancialDisclosureTask
     - 
   - - '28'
     - Yes - I confirm our figures comply with the guidelines.
     - boolean
-    - figure_complies
+    - figures--complies
     - 
     - '49'
     - '50'
     - '1'
     - '2015-10-29 20:16:38.248353'
-    - '2015-10-29 20:16:38.248353'
-    - TahiStandardTasks::FigureTask
-    - 
-  - - '29'
-    - Yes - I confirm our figures comply with the guidelines.
-    - boolean
-    - figure_complies
-    - 
-    - '51'
-    - '52'
-    - '1'
-    - '2015-10-29 20:16:38.251906'
-    - '2015-10-29 20:16:38.251906'
+    - '2015-12-15 15:54:22.918877'
     - TahiStandardTasks::FigureTask
     - 
   - - '30'
     - Does your study involve Human Subject Research (human participants and/or tissue)?
     - boolean
-    - human_subjects
+    - ethics--human_subjects
     - 
     - '53'
     - '58'
     - '1'
     - '2015-10-29 20:16:38.264507'
-    - '2015-10-29 20:16:38.295913'
+    - '2015-12-15 15:54:22.908398'
     - TahiStandardTasks::EthicsTask
     - 
   - - '31'
@@ -6467,88 +6417,62 @@ nested_questions:
       in the space below. Include the approval number and/or a statement indicating
       approval of this research.
     - text
-    - participants
+    - ethics--human_subjects--participants
     - '30'
     - '56'
     - '57'
     - '1'
     - '2015-10-29 20:16:38.267638'
-    - '2015-10-29 20:16:38.295913'
-    - TahiStandardTasks::EthicsTask
-    - 
-  - - '32'
-    - Does your study involve Human Subject Research (human participants and/or tissue)?
-    - boolean
-    - human_subjects
-    - 
-    - '53'
-    - '56'
-    - '1'
-    - '2015-10-29 20:16:38.274158'
-    - '2015-10-29 20:16:38.295913'
+    - '2015-12-15 15:54:22.911005'
     - TahiStandardTasks::EthicsTask
     - 
   - - '33'
     - Does your study involve Animal Research (vertebrate animals, embryos or tissues)?
     - boolean
-    - animal_subjects
+    - ethics--animal_subjects
     - 
     - '54'
     - '60'
     - '2'
     - '2015-10-29 20:16:38.278707'
-    - '2015-10-29 20:16:38.295913'
+    - '2015-12-15 15:54:22.913487'
     - TahiStandardTasks::EthicsTask
     - 
   - - '34'
     - 'Please enter your statement below:'
     - text
-    - field_permit
+    - ethics--animal_subjects--field_permit
     - '33'
     - '55'
     - '59'
     - '1'
     - '2015-10-29 20:16:38.281644'
-    - '2015-10-29 20:16:38.295913'
-    - TahiStandardTasks::EthicsTask
-    - 
-  - - '35'
-    - Please enter the name of the IRB or Ethics Committee that approved this study
-      in the space below. Include the approval number and/or a statement indicating
-      approval of this research.
-    - text
-    - participants
-    - '32'
-    - '54'
-    - '55'
-    - '1'
-    - '2015-10-29 20:16:38.279052'
-    - '2015-10-29 20:16:38.295913'
+    - '2015-12-15 15:54:22.916208'
     - TahiStandardTasks::EthicsTask
     - 
   - - '36'
     - Do the authors confirm that all the data underlying the findings described in
       their manuscript are fully available without restriction?
     - boolean
-    - data_fully_available
+    - data_availability--data_fully_available
     - 
     - '61'
     - '62'
     - '1'
     - '2015-10-29 20:16:38.306078'
-    - '2015-10-29 20:16:38.306078'
+    - '2015-12-15 15:54:22.903358'
     - TahiStandardTasks::DataAvailabilityTask
     - 
   - - '37'
     - Please describe where your data may be found, writing in full sentences.
     - text
-    - data_location
+    - data_availability--data_location
     - 
     - '63'
     - '64'
     - '2'
     - '2015-10-29 20:16:38.311531'
-    - '2015-10-29 20:16:38.311531'
+    - '2015-12-15 15:54:22.905824'
     - TahiStandardTasks::DataAvailabilityTask
     - 
   - - '38'
@@ -6556,13 +6480,13 @@ nested_questions:
       the <a target='_blank' href='http://www.plosbiology.org/static/policies#competing'>PLOS
       Policy on Declaration and Evaluation of Competing Interests</a>)?
     - boolean
-    - competing_interests
+    - competing_interests--has_competing_interests
     - 
     - '65'
     - '68'
     - '1'
     - '2015-10-29 20:16:38.334465'
-    - '2015-10-29 20:16:38.342545'
+    - '2015-12-15 15:54:22.868831'
     - TahiStandardTasks::CompetingInterestsTask
     - 
   - - '39'
@@ -6570,405 +6494,219 @@ nested_questions:
       Your response should begin with this statement: "I have read the journal''s
       policy and the authors of this manuscript have the following competing interests."'
     - text
-    - statement
+    - competing_interests--statement
     - '38'
     - '66'
     - '67'
     - '2'
     - '2015-10-29 20:16:38.337495'
-    - '2015-10-29 20:16:38.342545'
-    - TahiStandardTasks::CompetingInterestsTask
-    - 
-  - - '40'
-    - Do any authors of this manuscript have competing interests (as described in
-      the <a target='_blank' href='http://www.plosbiology.org/static/policies#competing'>PLOS
-      Policy on Declaration and Evaluation of Competing Interests</a>)?
-    - boolean
-    - competing_interests
-    - 
-    - '69'
-    - '72'
-    - '1'
-    - '2015-10-29 20:16:38.347285'
-    - '2015-10-29 20:16:38.357035'
-    - TahiStandardTasks::CompetingInterestsTask
-    - 
-  - - '41'
-    - 'Please provide details about any and all competing interests in the box below.
-      Your response should begin with this statement: "I have read the journal''s
-      policy and the authors of this manuscript have the following competing interests."'
-    - text
-    - statement
-    - '40'
-    - '70'
-    - '71'
-    - '2'
-    - '2015-10-29 20:16:38.351348'
-    - '2015-10-29 20:16:38.357035'
+    - '2015-12-15 15:54:22.871544'
     - TahiStandardTasks::CompetingInterestsTask
     - 
   - - '42'
     - First Name
     - text
-    - first_name
+    - plos_billing--first_name
     - 
     - '73'
     - '74'
     - '1'
     - '2015-10-29 20:16:38.364376'
-    - '2015-10-29 20:16:38.364376'
+    - '2015-12-15 15:54:22.924267'
     - PlosBilling::BillingTask
     - 
   - - '43'
     - Last Name
     - text
-    - last_name
+    - plos_billing--last_name
     - 
     - '75'
     - '76'
     - '2'
     - '2015-10-29 20:16:38.369577'
-    - '2015-10-29 20:16:38.369577'
+    - '2015-12-15 15:54:22.92676'
     - PlosBilling::BillingTask
     - 
   - - '44'
     - Title
     - text
-    - title
+    - plos_billing--title
     - 
     - '77'
     - '78'
     - '3'
     - '2015-10-29 20:16:38.374389'
-    - '2015-10-29 20:16:38.374389'
+    - '2015-12-15 15:54:22.929215'
     - PlosBilling::BillingTask
     - 
   - - '45'
     - Department
     - text
-    - department
+    - plos_billing--department
     - 
     - '79'
     - '80'
     - '4'
     - '2015-10-29 20:16:38.379993'
-    - '2015-10-29 20:16:38.379993'
+    - '2015-12-15 15:54:22.931727'
     - PlosBilling::BillingTask
     - 
   - - '46'
     - Phone
     - text
-    - phone_number
+    - plos_billing--phone_number
     - 
     - '81'
     - '82'
     - '5'
     - '2015-10-29 20:16:38.384534'
-    - '2015-10-29 20:16:38.384534'
-    - PlosBilling::BillingTask
-    - 
-  - - '47'
-    - Phone
-    - text
-    - phone_number
-    - 
-    - '83'
-    - '84'
-    - '5'
-    - '2015-10-29 20:16:38.388294'
-    - '2015-10-29 20:16:38.388294'
+    - '2015-12-15 15:54:22.934668'
     - PlosBilling::BillingTask
     - 
   - - '48'
     - Email
     - text
-    - email
+    - plos_billing--email
     - 
     - '83'
     - '84'
     - '6'
     - '2015-10-29 20:16:38.38892'
-    - '2015-10-29 20:16:38.38892'
-    - PlosBilling::BillingTask
-    - 
-  - - '49'
-    - Email
-    - text
-    - email
-    - 
-    - '85'
-    - '86'
-    - '6'
-    - '2015-10-29 20:16:38.395151'
-    - '2015-10-29 20:16:38.395151'
+    - '2015-12-15 15:54:22.937223'
     - PlosBilling::BillingTask
     - 
   - - '50'
     - Address Line 1 (optional)
     - text
-    - address1
+    - plos_billing--address1
     - 
     - '85'
     - '86'
     - '7'
     - '2015-10-29 20:16:38.396858'
-    - '2015-10-29 20:16:38.396858'
-    - PlosBilling::BillingTask
-    - 
-  - - '51'
-    - Address Line 1 (optional)
-    - text
-    - address1
-    - 
-    - '87'
-    - '88'
-    - '7'
-    - '2015-10-29 20:16:38.401373'
-    - '2015-10-29 20:16:38.401373'
+    - '2015-12-15 15:54:22.939707'
     - PlosBilling::BillingTask
     - 
   - - '52'
     - Address Line 2 (optional)
     - text
-    - address2
+    - plos_billing--address2
     - 
     - '87'
     - '88'
     - '8'
     - '2015-10-29 20:16:38.402836'
-    - '2015-10-29 20:16:38.402836'
-    - PlosBilling::BillingTask
-    - 
-  - - '53'
-    - Address Line 2 (optional)
-    - text
-    - address2
-    - 
-    - '89'
-    - '90'
-    - '8'
-    - '2015-10-29 20:16:38.407367'
-    - '2015-10-29 20:16:38.407367'
+    - '2015-12-15 15:54:22.942366'
     - PlosBilling::BillingTask
     - 
   - - '54'
     - City
     - text
-    - city
+    - plos_billing--city
     - 
     - '89'
     - '90'
     - '9'
     - '2015-10-29 20:16:38.409232'
-    - '2015-10-29 20:16:38.409232'
-    - PlosBilling::BillingTask
-    - 
-  - - '55'
-    - City
-    - text
-    - city
-    - 
-    - '91'
-    - '92'
-    - '9'
-    - '2015-10-29 20:16:38.41467'
-    - '2015-10-29 20:16:38.41467'
+    - '2015-12-15 15:54:22.945078'
     - PlosBilling::BillingTask
     - 
   - - '56'
     - State or Province
     - text
-    - state
+    - plos_billing--state
     - 
     - '91'
     - '92'
     - '10'
     - '2015-10-29 20:16:38.416189'
-    - '2015-10-29 20:16:38.416189'
-    - PlosBilling::BillingTask
-    - 
-  - - '57'
-    - State or Province
-    - text
-    - state
-    - 
-    - '93'
-    - '94'
-    - '10'
-    - '2015-10-29 20:16:38.420854'
-    - '2015-10-29 20:16:38.420854'
+    - '2015-12-15 15:54:22.947615'
     - PlosBilling::BillingTask
     - 
   - - '58'
     - ZIP or Postal Code
     - text
-    - postal_code
+    - plos_billing--postal_code
     - 
     - '93'
     - '94'
     - '11'
     - '2015-10-29 20:16:38.422462'
-    - '2015-10-29 20:16:38.422462'
-    - PlosBilling::BillingTask
-    - 
-  - - '59'
-    - ZIP or Postal Code
-    - text
-    - postal_code
-    - 
-    - '95'
-    - '96'
-    - '11'
-    - '2015-10-29 20:16:38.427485'
-    - '2015-10-29 20:16:38.427485'
+    - '2015-12-15 15:54:22.95008'
     - PlosBilling::BillingTask
     - 
   - - '60'
     - Country
     - text
-    - country
+    - plos_billing--country
     - 
     - '95'
     - '96'
     - '12'
     - '2015-10-29 20:16:38.428989'
-    - '2015-10-29 20:16:38.428989'
-    - PlosBilling::BillingTask
-    - 
-  - - '61'
-    - Country
-    - text
-    - country
-    - 
-    - '97'
-    - '98'
-    - '12'
-    - '2015-10-29 20:16:38.433932'
-    - '2015-10-29 20:16:38.433932'
+    - '2015-12-15 15:54:22.952555'
     - PlosBilling::BillingTask
     - 
   - - '62'
     - 'Affiliation #1'
     - text
-    - affiliation1
+    - plos_billing--affiliation1
     - 
     - '97'
     - '98'
     - '13'
     - '2015-10-29 20:16:38.435351'
-    - '2015-10-29 20:16:38.435351'
-    - PlosBilling::BillingTask
-    - 
-  - - '63'
-    - 'Affiliation #1'
-    - text
-    - affiliation1
-    - 
-    - '99'
-    - '100'
-    - '13'
-    - '2015-10-29 20:16:38.440091'
-    - '2015-10-29 20:16:38.440091'
+    - '2015-12-15 15:54:22.955116'
     - PlosBilling::BillingTask
     - 
   - - '64'
     - 'Affiliation #2'
     - text
-    - affiliation2
+    - plos_billing--affiliation2
     - 
     - '99'
     - '100'
     - '14'
     - '2015-10-29 20:16:38.442201'
-    - '2015-10-29 20:16:38.442201'
-    - PlosBilling::BillingTask
-    - 
-  - - '65'
-    - 'Affiliation #2'
-    - text
-    - affiliation2
-    - 
-    - '101'
-    - '102'
-    - '14'
-    - '2015-10-29 20:16:38.447216'
-    - '2015-10-29 20:16:38.447216'
+    - '2015-12-15 15:54:22.957753'
     - PlosBilling::BillingTask
     - 
   - - '66'
     - How would you like to pay?
     - text
-    - payment_method
+    - plos_billing--payment_method
     - 
     - '101'
     - '102'
     - '15'
     - '2015-10-29 20:16:38.448591'
-    - '2015-10-29 20:16:38.448591'
-    - PlosBilling::BillingTask
-    - 
-  - - '67'
-    - How would you like to pay?
-    - text
-    - payment_method
-    - 
-    - '103'
-    - '104'
-    - '15'
-    - '2015-10-29 20:16:38.453192'
-    - '2015-10-29 20:16:38.453192'
+    - '2015-12-15 15:54:22.960221'
     - PlosBilling::BillingTask
     - 
   - - '68'
     - Have you investigated if funding is available from your co-authors' institutions
       to pay the publication fee?
     - boolean
-    - pfa_question_1
+    - plos_billing--pfa_question_1
     - 
     - '103'
     - '104'
     - '16'
     - '2015-10-29 20:16:38.455117'
-    - '2015-10-29 20:16:38.455117'
-    - PlosBilling::BillingTask
-    - 
-  - - '69'
-    - Have you investigated if funding is available from your co-authors' institutions
-      to pay the publication fee?
-    - boolean
-    - pfa_question_1
-    - 
-    - '105'
-    - '106'
-    - '16'
-    - '2015-10-29 20:16:38.460195'
-    - '2015-10-29 20:16:38.460195'
+    - '2015-12-15 15:54:22.962748'
     - PlosBilling::BillingTask
     - 
   - - '70'
     - If your co-authors' institutions will not provide any funding to publish the
       article, indicate why.
     - text
-    - pfa_question_1a
+    - plos_billing--pfa_question_1a
     - 
     - '105'
     - '106'
     - '17'
     - '2015-10-29 20:16:38.461795'
-    - '2015-10-29 20:16:38.461795'
-    - PlosBilling::BillingTask
-    - 
-  - - '71'
-    - If your co-authors' institutions will not provide any funding to publish the
-      article, indicate why.
-    - text
-    - pfa_question_1a
-    - 
-    - '107'
-    - '108'
-    - '17'
-    - '2015-10-29 20:16:38.466343'
-    - '2015-10-29 20:16:38.466343'
+    - '2015-12-15 15:54:22.96509'
     - PlosBilling::BillingTask
     - 
   - - '72'
@@ -6976,205 +6714,102 @@ nested_questions:
       article, indicate the amount they will pay towards your publication fee (in
       USD).
     - text
-    - pfa_question_1b
+    - plos_billing--pfa_question_1b
     - 
     - '107'
     - '108'
     - '18'
     - '2015-10-29 20:16:38.467758'
-    - '2015-10-29 20:16:38.467758'
-    - PlosBilling::BillingTask
-    - 
-  - - '73'
-    - If your coauthors' institutions will provide partial funding to publish the
-      article, indicate the amount they will pay towards your publication fee (in
-      USD).
-    - text
-    - pfa_question_1b
-    - 
-    - '109'
-    - '110'
-    - '18'
-    - '2015-10-29 20:16:38.472384'
-    - '2015-10-29 20:16:38.472384'
+    - '2015-12-15 15:54:22.967472'
     - PlosBilling::BillingTask
     - 
   - - '74'
     - Have you investigated if funding is available from your institution to pay the
       publication fee?
     - boolean
-    - pfa_question_2
+    - plos_billing--pfa_question_2
     - 
     - '109'
     - '110'
     - '19'
     - '2015-10-29 20:16:38.474299'
-    - '2015-10-29 20:16:38.474299'
-    - PlosBilling::BillingTask
-    - 
-  - - '75'
-    - Have you investigated if funding is available from your institution to pay the
-      publication fee?
-    - boolean
-    - pfa_question_2
-    - 
-    - '111'
-    - '112'
-    - '19'
-    - '2015-10-29 20:16:38.479671'
-    - '2015-10-29 20:16:38.479671'
+    - '2015-12-15 15:54:22.970097'
     - PlosBilling::BillingTask
     - 
   - - '76'
     - If your institution cannot provide any funding to publish the article, indicate
       why.
     - text
-    - pfa_question_2a
+    - plos_billing--pfa_question_2a
     - 
     - '111'
     - '112'
     - '20'
     - '2015-10-29 20:16:38.481446'
-    - '2015-10-29 20:16:38.481446'
-    - PlosBilling::BillingTask
-    - 
-  - - '77'
-    - If your institution cannot provide any funding to publish the article, indicate
-      why.
-    - text
-    - pfa_question_2a
-    - 
-    - '113'
-    - '114'
-    - '20'
-    - '2015-10-29 20:16:38.486041'
-    - '2015-10-29 20:16:38.486041'
+    - '2015-12-15 15:54:22.972619'
     - PlosBilling::BillingTask
     - 
   - - '78'
     - If your institution will provide partial funding to publish the article, indicate
       the amount it will pay toward your publication fee (in USD).
     - text
-    - pfa_question_2b
+    - plos_billing--pfa_question_2b
     - 
     - '113'
     - '114'
     - '21'
     - '2015-10-29 20:16:38.487319'
-    - '2015-10-29 20:16:38.487319'
-    - PlosBilling::BillingTask
-    - 
-  - - '79'
-    - If your institution will provide partial funding to publish the article, indicate
-      the amount it will pay toward your publication fee (in USD).
-    - text
-    - pfa_question_2b
-    - 
-    - '115'
-    - '116'
-    - '21'
-    - '2015-10-29 20:16:38.492483'
-    - '2015-10-29 20:16:38.492483'
+    - '2015-12-15 15:54:22.975003'
     - PlosBilling::BillingTask
     - 
   - - '80'
     - Do your co-authors have any other sources of funding that can be used towards
       the publication fee?
     - boolean
-    - pfa_question_3
+    - plos_billing--pfa_question_3
     - 
     - '115'
     - '116'
     - '22'
     - '2015-10-29 20:16:38.493986'
-    - '2015-10-29 20:16:38.493986'
-    - PlosBilling::BillingTask
-    - 
-  - - '81'
-    - Do your co-authors have any other sources of funding that can be used towards
-      the publication fee?
-    - boolean
-    - pfa_question_3
-    - 
-    - '117'
-    - '118'
-    - '22'
-    - '2015-10-29 20:16:38.499067'
-    - '2015-10-29 20:16:38.499067'
+    - '2015-12-15 15:54:22.977463'
     - PlosBilling::BillingTask
     - 
   - - '82'
     - Indicate the amount that they can pay (in USD).
     - text
-    - pfa_question_3a
+    - plos_billing--pfa_question_3a
     - 
     - '117'
     - '118'
     - '23'
     - '2015-10-29 20:16:38.500687'
-    - '2015-10-29 20:16:38.500687'
-    - PlosBilling::BillingTask
-    - 
-  - - '83'
-    - Indicate the amount that they can pay (in USD).
-    - text
-    - pfa_question_3a
-    - 
-    - '119'
-    - '120'
-    - '23'
-    - '2015-10-29 20:16:38.505506'
-    - '2015-10-29 20:16:38.505506'
+    - '2015-12-15 15:54:22.980032'
     - PlosBilling::BillingTask
     - 
   - - '84'
     - Do you have any other sources of funding that can be used towards the publication
       fee?
     - boolean
-    - pfa_question_4
+    - plos_billing--pfa_question_4
     - 
     - '119'
     - '120'
     - '24'
     - '2015-10-29 20:16:38.50671'
-    - '2015-10-29 20:16:38.50671'
-    - PlosBilling::BillingTask
-    - 
-  - - '85'
-    - Do you have any other sources of funding that can be used towards the publication
-      fee?
-    - boolean
-    - pfa_question_4
-    - 
-    - '121'
-    - '122'
-    - '24'
-    - '2015-10-29 20:16:38.51191'
-    - '2015-10-29 20:16:38.51191'
+    - '2015-12-15 15:54:22.982899'
     - PlosBilling::BillingTask
     - 
   - - '86'
     - Indicate the amount that they can pay (in USD).
     - text
-    - pfa_question_4a
+    - plos_billing--pfa_question_4a
     - 
     - '121'
     - '122'
     - '25'
     - '2015-10-29 20:16:38.513546'
-    - '2015-10-29 20:16:38.513546'
-    - PlosBilling::BillingTask
-    - 
-  - - '87'
-    - Indicate the amount that they can pay (in USD).
-    - text
-    - pfa_question_4a
-    - 
-    - '123'
-    - '124'
-    - '25'
-    - '2015-10-29 20:16:38.518097'
-    - '2015-10-29 20:16:38.518097'
+    - '2015-12-15 15:54:22.985702'
     - PlosBilling::BillingTask
     - 
   - - '88'
@@ -7182,27 +6817,13 @@ nested_questions:
       is the amount that you and your co-authors can jointly pay for publication?
       (Specify in USD.)
     - text
-    - pfa_amount_to_pay
+    - plos_billing--pfa_amount_to_pay
     - 
     - '123'
     - '124'
     - '26'
     - '2015-10-29 20:16:38.519496'
-    - '2015-10-29 20:16:38.519496'
-    - PlosBilling::BillingTask
-    - 
-  - - '89'
-    - Given your answers to the above questions on your funding availability, what
-      is the amount that you and your co-authors can jointly pay for publication?
-      (Specify in USD.)
-    - text
-    - pfa_amount_to_pay
-    - 
-    - '125'
-    - '126'
-    - '26'
-    - '2015-10-29 20:16:38.523834'
-    - '2015-10-29 20:16:38.523834'
+    - '2015-12-15 15:54:22.98837'
     - PlosBilling::BillingTask
     - 
   - - '90'
@@ -7211,600 +6832,439 @@ nested_questions:
       application, the confirmation email will provide direction on where to send
       supplemental documents. Do you intend to supply supplemental documents?
     - boolean
-    - pfa_supporting_docs
+    - plos_billing--pfa_supporting_docs
     - 
     - '125'
     - '126'
     - '27'
     - '2015-10-29 20:16:38.525749'
-    - '2015-10-29 20:16:38.525749'
-    - PlosBilling::BillingTask
-    - 
-  - - '91'
-    - If you would like to provide documents to assist in demonstrating your request,
-      you will have the opportunity to do so. After PLOS has received the completed
-      application, the confirmation email will provide direction on where to send
-      supplemental documents. Do you intend to supply supplemental documents?
-    - boolean
-    - pfa_supporting_docs
-    - 
-    - '127'
-    - '128'
-    - '27'
-    - '2015-10-29 20:16:38.530528'
-    - '2015-10-29 20:16:38.530528'
+    - '2015-12-15 15:54:22.991078'
     - PlosBilling::BillingTask
     - 
   - - '92'
     - If you wish to make additional comments to support your request, provide them
       below. If you have no additional comments, enter "None" in the box.
     - text
-    - pfa_additional_comments
+    - plos_billing--pfa_additional_comments
     - 
     - '127'
     - '128'
     - '29'
     - '2015-10-29 20:16:38.532891'
-    - '2015-10-29 20:16:38.532891'
-    - PlosBilling::BillingTask
-    - 
-  - - '93'
-    - If you wish to make additional comments to support your request, provide them
-      below. If you have no additional comments, enter "None" in the box.
-    - text
-    - pfa_additional_comments
-    - 
-    - '129'
-    - '130'
-    - '29'
-    - '2015-10-29 20:16:38.537483'
-    - '2015-10-29 20:16:38.537483'
+    - '2015-12-15 15:54:22.993756'
     - PlosBilling::BillingTask
     - 
   - - '94'
     - 'You are acknowledging that you have read and agree to the following statement:
       I affirm that the information provided in this application is true and complete.'
     - boolean
-    - affirm_true_and_complete
+    - plos_billing--affirm_true_and_complete
     - 
     - '129'
     - '130'
     - '30'
     - '2015-10-29 20:16:38.538115'
-    - '2015-10-29 20:16:38.538115'
-    - PlosBilling::BillingTask
-    - 
-  - - '95'
-    - 'You are acknowledging that you have read and agree to the following statement:
-      I affirm that the information provided in this application is true and complete.'
-    - boolean
-    - affirm_true_and_complete
-    - 
-    - '131'
-    - '132'
-    - '30'
-    - '2015-10-29 20:16:38.543686'
-    - '2015-10-29 20:16:38.543686'
+    - '2015-12-15 15:54:22.996312'
     - PlosBilling::BillingTask
     - 
   - - '96'
     - I have read and agree to the Terms of Submission to PLOS Collections
     - boolean
-    - agree_to_collections
+    - plos_billing--agree_to_collections
     - 
     - '131'
     - '132'
     - '31'
     - '2015-10-29 20:16:38.545463'
-    - '2015-10-29 20:16:38.545463'
-    - PlosBilling::BillingTask
-    - 
-  - - '97'
-    - I have read and agree to the Terms of Submission to PLOS Collections
-    - boolean
-    - agree_to_collections
-    - 
-    - '133'
-    - '134'
-    - '31'
-    - '2015-10-29 20:16:38.54949'
-    - '2015-10-29 20:16:38.54949'
+    - '2015-12-15 15:54:22.99883'
     - PlosBilling::BillingTask
     - 
   - - '98'
     - Global Participation Initiative Country
     - text
-    - gpi_country
+    - plos_billing--gpi_country
     - 
     - '135'
     - '136'
     - '32'
     - '2015-10-29 20:16:38.555212'
-    - '2015-10-29 20:16:38.555212'
+    - '2015-12-15 15:54:23.001322'
     - PlosBilling::BillingTask
     - 
   - - '99'
     - Ringgold Institution
     - text
-    - ringgold_institution
+    - plos_billing--ringgold_institution
     - 
     - '137'
     - '138'
     - '33'
     - '2015-10-29 20:16:38.561639'
-    - '2015-10-29 20:16:38.561639'
-    - PlosBilling::BillingTask
-    - 
-  - - '100'
-    - Global Participation Initiative Country
-    - text
-    - gpi_country
-    - 
-    - '133'
-    - '134'
-    - '32'
-    - '2015-10-29 20:16:38.551234'
-    - '2015-10-29 20:16:38.551234'
+    - '2015-12-15 15:54:23.00388'
     - PlosBilling::BillingTask
     - 
   - - '101'
     - This person will be listed as the corresponding author on the published article
     - boolean
-    - published_as_corresponding_author
+    - author--published_as_corresponding_author
     - 
     - '139'
     - '140'
     - '1'
     - '2015-10-29 20:16:38.672785'
-    - '2015-10-29 20:16:38.672785'
+    - '2015-12-15 15:54:22.845194'
     - Author
     - 
   - - '102'
     - This person is deceased
     - boolean
-    - deceased
+    - author--deceased
     - 
     - '141'
     - '142'
     - '2'
     - '2015-10-29 20:16:38.681046'
-    - '2015-10-29 20:16:38.681046'
-    - Author
-    - 
-  - - '103'
-    - This person is deceased
-    - boolean
-    - deceased
-    - 
-    - '141'
-    - '142'
-    - '2'
-    - '2015-10-29 20:16:38.682567'
-    - '2015-10-29 20:16:38.682567'
+    - '2015-12-15 15:54:22.847864'
     - Author
     - 
   - - '104'
     - Author Contributions
     - question-set
-    - contributions
+    - author--contributions
     - 
     - '143'
     - '168'
     - '3'
     - '2015-10-29 20:16:38.687781'
-    - '2015-10-29 20:16:38.811237'
+    - '2015-12-15 15:54:22.85048'
     - Author
     - 
   - - '105'
     - Conceived and designed the experiments
     - boolean
-    - conceived_and_designed_experiments
+    - author--contributions--conceived_and_designed_experiments
     - '104'
     - '156'
     - '157'
     - '1'
     - '2015-10-29 20:16:38.691902'
-    - '2015-10-29 20:16:38.811237'
+    - '2015-12-15 15:54:22.853272'
     - Author
     - 
   - - '106'
     - Performed the experiments
     - boolean
-    - performed_the_experiments
+    - author--contributions--performed_the_experiments
     - '104'
     - '158'
     - '159'
     - '2'
     - '2015-10-29 20:16:38.702202'
-    - '2015-10-29 20:16:38.811237'
+    - '2015-12-15 15:54:22.855863'
     - Author
     - 
   - - '107'
     - Analyzed the data
     - boolean
-    - analyzed_data
+    - author--contributions--analyzed_data
     - '104'
     - '160'
     - '161'
     - '3'
     - '2015-10-29 20:16:38.712577'
-    - '2015-10-29 20:16:38.811237'
+    - '2015-12-15 15:54:22.858572'
     - Author
     - 
   - - '108'
     - Contributed reagents/materials/analysis tools
     - boolean
-    - contributed_tools
+    - author--contributions--contributed_tools
     - '104'
     - '162'
     - '163'
     - '4'
     - '2015-10-29 20:16:38.722145'
-    - '2015-10-29 20:16:38.811237'
+    - '2015-12-15 15:54:22.860981'
     - Author
     - 
   - - '109'
     - Contributed to the writing of the manuscript
     - boolean
-    - contributed_writing
+    - author--contributions--contributed_writing
     - '104'
     - '164'
     - '165'
     - '5'
     - '2015-10-29 20:16:38.732929'
-    - '2015-10-29 20:16:38.811237'
+    - '2015-12-15 15:54:22.863518'
     - Author
     - 
   - - '110'
     - Other
     - text
-    - other
+    - author--contributions--other
     - '104'
     - '166'
     - '167'
     - '6'
     - '2015-10-29 20:16:38.743536'
-    - '2015-10-29 20:16:38.811237'
-    - Author
-    - 
-  - - '111'
-    - Author Contributions
-    - question-set
-    - contributions
-    - 
-    - '143'
-    - '156'
-    - '3'
-    - '2015-10-29 20:16:38.689707'
-    - '2015-10-29 20:16:38.811237'
-    - Author
-    - 
-  - - '112'
-    - Conceived and designed the experiments
-    - boolean
-    - conceived_and_designed_experiments
-    - '111'
-    - '144'
-    - '145'
-    - '1'
-    - '2015-10-29 20:16:38.756838'
-    - '2015-10-29 20:16:38.763553'
-    - Author
-    - 
-  - - '113'
-    - Performed the experiments
-    - boolean
-    - performed_the_experiments
-    - '111'
-    - '146'
-    - '147'
-    - '2'
-    - '2015-10-29 20:16:38.767635'
-    - '2015-10-29 20:16:38.772997'
-    - Author
-    - 
-  - - '114'
-    - Analyzed the data
-    - boolean
-    - analyzed_data
-    - '111'
-    - '148'
-    - '149'
-    - '3'
-    - '2015-10-29 20:16:38.777495'
-    - '2015-10-29 20:16:38.782778'
-    - Author
-    - 
-  - - '115'
-    - Contributed reagents/materials/analysis tools
-    - boolean
-    - contributed_tools
-    - '111'
-    - '150'
-    - '151'
-    - '4'
-    - '2015-10-29 20:16:38.786683'
-    - '2015-10-29 20:16:38.792084'
-    - Author
-    - 
-  - - '116'
-    - Contributed to the writing of the manuscript
-    - boolean
-    - contributed_writing
-    - '111'
-    - '152'
-    - '153'
-    - '5'
-    - '2015-10-29 20:16:38.796368'
-    - '2015-10-29 20:16:38.801642'
-    - Author
-    - 
-  - - '117'
-    - Other
-    - text
-    - other
-    - '111'
-    - '154'
-    - '155'
-    - '6'
-    - '2015-10-29 20:16:38.805588'
-    - '2015-10-29 20:16:38.811237'
+    - '2015-12-15 15:54:22.866063'
     - Author
     - 
   - - '118'
     - Did the funder have a role in study design, data collection and analysis, decision
       to publish, or preparation of the manuscript?
     - boolean
-    - funder_had_influence
+    - funder--had_influence
     - 
     - '169'
     - '172'
     - '1'
     - '2015-10-30 19:51:03.420015'
-    - '2015-10-30 19:51:03.428609'
+    - '2015-12-15 15:54:22.898239'
     - TahiStandardTasks::Funder
     - 
   - - '119'
     - Describe the role of any sponsors or funders in the study design, data collection
       and analysis, decision to publish, or preparation of the manuscript.
     - text
-    - funder_role_description
+    - funder--had_influence--role_description
     - '118'
     - '170'
     - '171'
     - '1'
     - '2015-10-30 19:51:03.424486'
-    - '2015-10-30 19:51:03.428609'
+    - '2015-12-15 15:54:22.900949'
     - TahiStandardTasks::Funder
     - 
   - - '120'
     - Publication Date
     - text
-    - publication_date
+    - production_metadata--publication_date
     - 
     - '173'
     - '174'
     - '1'
     - '2015-10-30 19:51:03.462062'
-    - '2015-10-30 19:51:03.462062'
+    - '2015-12-15 15:54:23.113592'
     - TahiStandardTasks::ProductionMetadataTask
     - 
   - - '121'
     - Volume Number
     - text
-    - volume_number
+    - production_metadata--volume_number
     - 
     - '175'
     - '176'
     - '2'
     - '2015-10-30 19:51:03.466022'
-    - '2015-10-30 19:51:03.466022'
+    - '2015-12-15 15:54:23.116219'
     - TahiStandardTasks::ProductionMetadataTask
     - 
   - - '122'
     - Issue Number
     - text
-    - issue_number
+    - production_metadata--issue_number
     - 
     - '177'
     - '178'
     - '3'
     - '2015-10-30 19:51:03.469673'
-    - '2015-10-30 19:51:03.469673'
+    - '2015-12-15 15:54:23.11947'
     - TahiStandardTasks::ProductionMetadataTask
     - 
   - - '123'
     - Production Notes
     - text
-    - production_notes
+    - production_metadata--production_notes
     - 
     - '179'
     - '180'
     - '4'
     - '2015-10-30 19:51:03.473215'
-    - '2015-10-30 19:51:03.473215'
+    - '2015-12-15 15:54:23.122325'
     - TahiStandardTasks::ProductionMetadataTask
     - 
   - - '124'
     - Do you have any potential or perceived competing interests that may influence
       your review?
     - text
-    - competing_interests
+    - reviewer_report--competing_interests
     - 
     - '181'
     - '182'
     - '1'
     - '2015-10-30 19:51:03.496382'
-    - '2015-10-30 19:51:03.496382'
+    - '2015-12-15 15:54:22.874383'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '125'
     - Is the manuscript technically sound, and do the data support the conclusions?
     - boolean
-    - support_conclusions
+    - reviewer_report--support_conclusions
     - 
     - '183'
     - '186'
     - '2'
     - '2015-10-30 19:51:03.500418'
-    - '2015-10-30 19:51:03.506306'
+    - '2015-12-15 15:54:22.876937'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '126'
     - Explanation
     - text
-    - explanation
+    - reviewer_report--support_conclusions--explanation
     - '125'
     - '184'
     - '185'
     - '1'
     - '2015-10-30 19:51:03.502707'
-    - '2015-10-30 19:51:03.506306'
+    - '2015-12-15 15:54:22.879522'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '127'
     - Has the statistical analysis been performed appropriately and rigorously?
     - boolean
-    - statistical_analysis
+    - reviewer_report--statistical_analysis
     - 
     - '187'
     - '190'
     - '3'
     - '2015-10-30 19:51:03.511001'
-    - '2015-10-30 19:51:03.51673'
+    - '2015-12-15 15:54:22.881983'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '128'
     - Statistical Analysis Explanation
     - text
-    - explanation
+    - reviewer_report--statistical_analysis--explanation
     - '127'
     - '188'
     - '189'
     - '1'
     - '2015-10-30 19:51:03.513191'
-    - '2015-10-30 19:51:03.51673'
+    - '2015-12-15 15:54:22.884872'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '129'
     - Does the manuscript adhere to standards in this field for data availability?
     - boolean
-    - standards
+    - reviewer_report--standards
     - 
     - '191'
     - '194'
     - '4'
     - '2015-10-30 19:51:03.521073'
-    - '2015-10-30 19:51:03.526967'
+    - '2015-12-15 15:54:22.887762'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '130'
     - Standards Explanation
     - text
-    - explanation
+    - reviewer_report--standards--explanation
     - '129'
     - '192'
     - '193'
     - '1'
     - '2015-10-30 19:51:03.523338'
-    - '2015-10-30 19:51:03.526967'
+    - '2015-12-15 15:54:22.890418'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '131'
     - "(Optional) Please offer any additional comments to the author."
     - text
-    - additional_comments
+    - reviewer_report--additional_comments
     - 
     - '195'
     - '196'
     - '5'
     - '2015-10-30 19:51:03.531234'
-    - '2015-10-30 19:51:03.531234'
+    - '2015-12-15 15:54:22.893011'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '132'
     - "(Optional) If you'd like your identity to be revealed to the authors, please
       include your name here."
     - text
-    - identity
+    - reviewer_report--identity
     - 
     - '197'
     - '198'
     - '6'
     - '2015-10-30 19:51:03.534949'
-    - '2015-10-30 19:51:03.534949'
+    - '2015-12-15 15:54:22.895692'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '133'
     - Does this manuscript describe a new zoological taxon name?
     - boolean
-    - taxon_zoological
+    - taxon--zoological
     - 
     - '199'
     - '202'
     - '1'
     - '2015-10-30 19:51:03.541213'
-    - '2015-10-30 19:51:03.547457'
+    - '2015-12-15 15:54:22.833351'
     - TahiStandardTasks::TaxonTask
     - 
   - - '134'
     - All authors comply with the Policies Regarding Submission of a new Taxon Name
     - boolean
-    - complies
+    - taxon--zoological--complies
     - '133'
     - '200'
     - '201'
     - '1'
     - '2015-10-30 19:51:03.543667'
-    - '2015-10-30 19:51:03.547457'
+    - '2015-12-15 15:54:22.837248'
     - TahiStandardTasks::TaxonTask
     - 
   - - '135'
     - Does this manuscript describe a new botantical taxon name?
     - boolean
-    - taxon_botanical
+    - taxon--botanical
     - 
     - '203'
     - '206'
     - '2'
     - '2015-10-30 19:51:03.55182'
-    - '2015-10-30 19:51:03.557643'
+    - '2015-12-15 15:54:22.839946'
     - TahiStandardTasks::TaxonTask
     - 
   - - '136'
     - All authors comply with the Policies Regarding Submission of a new Taxon Name
     - boolean
-    - complies
+    - taxon--botanical--complies
     - '135'
     - '204'
     - '205'
     - '1'
     - '2015-10-30 19:51:03.554061'
-    - '2015-10-30 19:51:03.557643'
+    - '2015-12-15 15:54:22.842646'
     - TahiStandardTasks::TaxonTask
     - 
   - - '137'
     - Are you recommending or opposing this reviewer? (required)
     - boolean
-    - recommend_or_oppose
+    - reviewer_recommendations--recommend_or_oppose
     - 
     - '207'
     - '208'
     - '1'
     - '2015-11-02 13:38:26.272946'
-    - '2015-11-02 13:38:26.272946'
+    - '2015-12-15 15:54:23.18927'
     - TahiStandardTasks::ReviewerRecommendation
     - 
   - - '138'
     - 'Optional: reason for recommending or opposing this reviewer'
     - text
-    - reason
+    - reviewer_recommendations--reason
     - 
     - '209'
     - '210'
     - '2'
     - '2015-11-02 13:38:26.280143'
-    - '2015-11-02 13:38:26.280143'
+    - '2015-12-15 15:54:23.192324'
     - TahiStandardTasks::ReviewerRecommendation
     - 
   - - '139'
@@ -7813,26 +7273,26 @@ nested_questions:
       Discussion, Materials and Methods, References, Acknowledgements, and Figure
       Legends.'
     - boolean
-    - open_rejects
+    - plos_bio_initial_tech_check--open_rejects
     - 
     - '211'
     - '212'
     - '1'
     - '2015-11-02 13:38:26.296091'
-    - '2015-11-02 13:38:26.296091'
+    - '2015-12-15 15:54:23.04212'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '140'
     - Check the ethics statement - does it mention Human Participants? If so, flag
       this with the editor in the discussion below.
     - boolean
-    - human_subjects
+    - plos_bio_initial_tech_check--human_subjects
     - 
     - '213'
     - '214'
     - '2'
     - '2015-11-02 13:38:26.300112'
-    - '2015-11-02 13:38:26.300112'
+    - '2015-12-15 15:54:23.044726'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '141'
@@ -7840,26 +7300,26 @@ nested_questions:
       in the title/abstract), check that there's an ethics statement. If not, ask
       the authors about this.
     - boolean
-    - ethics_needed
+    - plos_bio_initial_tech_check--ethics_needed
     - 
     - '215'
     - '216'
     - '3'
     - '2015-11-02 13:38:26.30383'
-    - '2015-11-02 13:38:26.30383'
+    - '2015-12-15 15:54:23.047176'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '142'
     - Is the data available? If not, or it's only available by contacting an author
       or the institution, make a note in the discussion below.
     - boolean
-    - data_available
+    - plos_bio_initial_tech_check--data_available
     - 
     - '217'
     - '218'
     - '4'
     - '2015-11-02 13:38:26.307755'
-    - '2015-11-02 13:38:26.307755'
+    - '2015-12-15 15:54:23.049635'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '143'
@@ -7867,115 +7327,115 @@ nested_questions:
       make sure there are Supporting Information files in the submission (don't need
       to check for specifics at this stage).
     - boolean
-    - supporting_information
+    - plos_bio_initial_tech_check--supporting_information
     - 
     - '219'
     - '220'
     - '5'
     - '2015-11-02 13:38:26.311478'
-    - '2015-11-02 13:38:26.311478'
+    - '2015-12-15 15:54:23.052524'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '144'
     - If the author has mentioned Dryad in their Data statement, check that they've
       included the Dryad reviewer URL. If not, make a note in the discussion below.
     - boolean
-    - dryad_url
+    - plos_bio_initial_tech_check--dryad_url
     - 
     - '221'
     - '222'
     - '6'
     - '2015-11-02 13:38:26.315087'
-    - '2015-11-02 13:38:26.315087'
+    - '2015-12-15 15:54:23.05507'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '145'
     - If Financial Disclosure Statement is not complete (they've written N/A or something
       similar), message author.
     - boolean
-    - financial_disclosure
+    - plos_bio_initial_tech_check--financial_disclosure
     - 
     - '223'
     - '224'
     - '7'
     - '2015-11-02 13:38:26.319212'
-    - '2015-11-02 13:38:26.319212'
+    - '2015-12-15 15:54:23.057806'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '146'
     - If the Financial Disclosure Statement includes any companies from the Tobacco
       Industry, make a note in the discussion below.
     - boolean
-    - tobacco
+    - plos_bio_initial_tech_check--tobacco
     - 
     - '225'
     - '226'
     - '8'
     - '2015-11-02 13:38:26.322791'
-    - '2015-11-02 13:38:26.322791'
+    - '2015-12-15 15:54:23.060413'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '147'
     - If any figures are completely illegible, contact the author.
     - boolean
-    - figures_legible
+    - plos_bio_initial_tech_check--figures_legible
     - 
     - '227'
     - '228'
     - '9'
     - '2015-11-02 13:38:26.326519'
-    - '2015-11-02 13:38:26.326519'
+    - '2015-12-15 15:54:23.063151'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '148'
     - If any files or figures are cited but not included in the submission, message
       the author.
     - boolean
-    - cited
+    - plos_bio_initial_tech_check--cited
     - 
     - '229'
     - '230'
     - '10'
     - '2015-11-02 13:38:26.330182'
-    - '2015-11-02 13:38:26.330182'
+    - '2015-12-15 15:54:23.065848'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '149'
     - Have the authors asked any questions in the cover letter? If yes, contact the
       editor/journal team.
     - boolean
-    - cover_letter
+    - plos_bio_initial_tech_check--cover_letter
     - 
     - '231'
     - '232'
     - '11'
     - '2015-11-02 13:38:26.333792'
-    - '2015-11-02 13:38:26.333792'
+    - '2015-12-15 15:54:23.068709'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '150'
     - Have the authors mentioned any billing information in the cover letter? If yes,
       contact the editor/journal team.
     - boolean
-    - billing_inquiries
+    - plos_bio_initial_tech_check--billing_inquiries
     - 
     - '233'
     - '234'
     - '12'
     - '2015-11-02 13:38:26.337417'
-    - '2015-11-02 13:38:26.337417'
+    - '2015-12-15 15:54:23.071727'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '151'
     - If an Ethics Statement is present, make a note in the discussion below.
     - boolean
-    - ethics_statement
+    - plos_bio_initial_tech_check--ethics_statement
     - 
     - '235'
     - '236'
     - '13'
     - '2015-11-02 13:38:26.340953'
-    - '2015-11-02 13:38:26.340953'
+    - '2015-12-15 15:54:23.074387'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '152'
@@ -7984,26 +7444,26 @@ nested_questions:
       Discussion, Materials and Methods, References, Acknowledgements, and Figure
       Legends.'
     - boolean
-    - open_rejects
+    - plos_bio_revision_tech_check--open_rejects
     - 
     - '237'
     - '238'
     - '1'
     - '2015-11-02 13:38:26.346485'
-    - '2015-11-02 13:38:26.346485'
+    - '2015-12-15 15:54:23.077237'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '153'
     - Check the ethics statement - does it mention Human Participants? If so, flag
       this with the editor in the discussion below.
     - boolean
-    - human_subjects
+    - plos_bio_revision_tech_check--human_subjects
     - 
     - '239'
     - '240'
     - '2'
     - '2015-11-02 13:38:26.350087'
-    - '2015-11-02 13:38:26.350087'
+    - '2015-12-15 15:54:23.079789'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '154'
@@ -8011,26 +7471,26 @@ nested_questions:
       in the title/abstract), check that there's an ethics statement. If not, ask
       the authors about this.
     - boolean
-    - ethics_needed
+    - plos_bio_revision_tech_check--ethics_needed
     - 
     - '241'
     - '242'
     - '3'
     - '2015-11-02 13:38:26.355497'
-    - '2015-11-02 13:38:26.355497'
+    - '2015-12-15 15:54:23.082737'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '155'
     - Is the data available? If not, or it's only available by contacting an author
       or the institution, make a note in the discussion below.
     - boolean
-    - data_available
+    - plos_bio_revision_tech_check--data_available
     - 
     - '243'
     - '244'
     - '4'
     - '2015-11-02 13:38:26.359242'
-    - '2015-11-02 13:38:26.359242'
+    - '2015-12-15 15:54:23.08543'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '156'
@@ -8038,115 +7498,115 @@ nested_questions:
       make sure there are Supporting Information files in the submission (don't need
       to check for specifics at this stage).
     - boolean
-    - supporting_information
+    - plos_bio_revision_tech_check--supporting_information
     - 
     - '245'
     - '246'
     - '5'
     - '2015-11-02 13:38:26.3628'
-    - '2015-11-02 13:38:26.3628'
+    - '2015-12-15 15:54:23.088813'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '157'
     - If the author has mentioned Dryad in their Data statement, check that they've
       included the Dryad reviewer URL. If not, make a note in the discussion below.
     - boolean
-    - dryad_url
+    - plos_bio_revision_tech_check--dryad_url
     - 
     - '247'
     - '248'
     - '6'
     - '2015-11-02 13:38:26.366706'
-    - '2015-11-02 13:38:26.366706'
+    - '2015-12-15 15:54:23.091571'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '158'
     - If Financial Disclosure Statement is not complete (they've written N/A or something
       similar), message author.
     - boolean
-    - financial_disclosure
+    - plos_bio_revision_tech_check--financial_disclosure
     - 
     - '249'
     - '250'
     - '7'
     - '2015-11-02 13:38:26.370339'
-    - '2015-11-02 13:38:26.370339'
+    - '2015-12-15 15:54:23.094856'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '159'
     - If the Financial Disclosure Statement includes any companies from the Tobacco
       Industry, make a note in the discussion below.
     - boolean
-    - tobacco
+    - plos_bio_revision_tech_check--tobacco
     - 
     - '251'
     - '252'
     - '8'
     - '2015-11-02 13:38:26.373836'
-    - '2015-11-02 13:38:26.373836'
+    - '2015-12-15 15:54:23.097688'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '160'
     - If any figures are completely illegible, contact the author.
     - boolean
-    - figures_legible
+    - plos_bio_revision_tech_check--figures_legible
     - 
     - '253'
     - '254'
     - '9'
     - '2015-11-02 13:38:26.37734'
-    - '2015-11-02 13:38:26.37734'
+    - '2015-12-15 15:54:23.100441'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '161'
     - If any files or figures are cited but not included in the submission, message
       the author.
     - boolean
-    - cited
+    - plos_bio_revision_tech_check--cited
     - 
     - '255'
     - '256'
     - '10'
     - '2015-11-02 13:38:26.380912'
-    - '2015-11-02 13:38:26.380912'
+    - '2015-12-15 15:54:23.10312'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '162'
     - Have the authors asked any questions in the cover letter? If yes, contact the
       editor/journal team.
     - boolean
-    - cover_letter
+    - plos_bio_revision_tech_check--cover_letter
     - 
     - '257'
     - '258'
     - '11'
     - '2015-11-02 13:38:26.384466'
-    - '2015-11-02 13:38:26.384466'
+    - '2015-12-15 15:54:23.105907'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '163'
     - Have the authors mentioned any billing information in the cover letter? If yes,
       contact the editor/journal team.
     - boolean
-    - billing_inquiries
+    - plos_bio_revision_tech_check--billing_inquiries
     - 
     - '259'
     - '260'
     - '12'
     - '2015-11-02 13:38:26.387949'
-    - '2015-11-02 13:38:26.387949'
+    - '2015-12-15 15:54:23.108464'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '164'
     - If an Ethics Statement is present, make a note in the discussion below.
     - boolean
-    - ethics_statement
+    - plos_bio_revision_tech_check--ethics_statement
     - 
     - '261'
     - '262'
     - '13'
     - '2015-11-02 13:38:26.39145'
-    - '2015-11-02 13:38:26.39145'
+    - '2015-12-15 15:54:23.110913'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '165'
@@ -8155,26 +7615,26 @@ nested_questions:
       Discussion, Materials and Methods, References, Acknowledgements, and Figure
       Legends.'
     - boolean
-    - open_rejects
+    - plos_bio_final_tech_check--open_rejects
     - 
     - '263'
     - '264'
     - '1'
     - '2015-11-02 13:38:26.396833'
-    - '2015-11-02 13:38:26.396833'
+    - '2015-12-15 15:54:23.006474'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '166'
     - Check the ethics statement - does it mention Human Participants? If so, flag
       this with the editor in the discussion below.
     - boolean
-    - human_subjects
+    - plos_bio_final_tech_check--human_subjects
     - 
     - '265'
     - '266'
     - '2'
     - '2015-11-02 13:38:26.400512'
-    - '2015-11-02 13:38:26.400512'
+    - '2015-12-15 15:54:23.009087'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '167'
@@ -8182,26 +7642,26 @@ nested_questions:
       in the title/abstract), check that there's an ethics statement. If not, ask
       the authors about this.
     - boolean
-    - ethics_needed
+    - plos_bio_final_tech_check--ethics_needed
     - 
     - '267'
     - '268'
     - '3'
     - '2015-11-02 13:38:26.403989'
-    - '2015-11-02 13:38:26.403989'
+    - '2015-12-15 15:54:23.011612'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '168'
     - Is the data available? If not, or it's only available by contacting an author
       or the institution, make a note in the discussion below.
     - boolean
-    - data_available
+    - plos_bio_final_tech_check--data_available
     - 
     - '269'
     - '270'
     - '4'
     - '2015-11-02 13:38:26.407564'
-    - '2015-11-02 13:38:26.407564'
+    - '2015-12-15 15:54:23.014169'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '169'
@@ -8209,115 +7669,115 @@ nested_questions:
       make sure there are Supporting Information files in the submission (don't need
       to check for specifics at this stage).
     - boolean
-    - supporting_information
+    - plos_bio_final_tech_check--supporting_information
     - 
     - '271'
     - '272'
     - '5'
     - '2015-11-02 13:38:26.411338'
-    - '2015-11-02 13:38:26.411338'
+    - '2015-12-15 15:54:23.01673'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '170'
     - If the author has mentioned Dryad in their Data statement, check that they've
       included the Dryad reviewer URL. If not, make a note in the discussion below.
     - boolean
-    - dryad_url
+    - plos_bio_final_tech_check--dryad_url
     - 
     - '273'
     - '274'
     - '6'
     - '2015-11-02 13:38:26.415031'
-    - '2015-11-02 13:38:26.415031'
+    - '2015-12-15 15:54:23.019399'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '171'
     - If Financial Disclosure Statement is not complete (they've written N/A or something
       similar), message author.
     - boolean
-    - financial_disclosure
+    - plos_bio_final_tech_check--financial_disclosure
     - 
     - '275'
     - '276'
     - '7'
     - '2015-11-02 13:38:26.418577'
-    - '2015-11-02 13:38:26.418577'
+    - '2015-12-15 15:54:23.022494'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '172'
     - If the Financial Disclosure Statement includes any companies from the Tobacco
       Industry, make a note in the discussion below.
     - boolean
-    - tobacco
+    - plos_bio_final_tech_check--tobacco
     - 
     - '277'
     - '278'
     - '8'
     - '2015-11-02 13:38:26.422021'
-    - '2015-11-02 13:38:26.422021'
+    - '2015-12-15 15:54:23.025277'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '173'
     - If any figures are completely illegible, contact the author.
     - boolean
-    - figures_legible
+    - plos_bio_final_tech_check--figures_legible
     - 
     - '279'
     - '280'
     - '9'
     - '2015-11-02 13:38:26.425661'
-    - '2015-11-02 13:38:26.425661'
+    - '2015-12-15 15:54:23.028242'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '174'
     - If any files or figures are cited but not included in the submission, message
       the author.
     - boolean
-    - cited
+    - plos_bio_final_tech_check--cited
     - 
     - '281'
     - '282'
     - '10'
     - '2015-11-02 13:38:26.429237'
-    - '2015-11-02 13:38:26.429237'
+    - '2015-12-15 15:54:23.030692'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '175'
     - Have the authors asked any questions in the cover letter? If yes, contact the
       editor/journal team.
     - boolean
-    - cover_letter
+    - plos_bio_final_tech_check--cover_letter
     - 
     - '283'
     - '284'
     - '11'
     - '2015-11-02 13:38:26.433036'
-    - '2015-11-02 13:38:26.433036'
+    - '2015-12-15 15:54:23.033704'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '176'
     - Have the authors mentioned any billing information in the cover letter? If yes,
       contact the editor/journal team.
     - boolean
-    - billing_inquiries
+    - plos_bio_final_tech_check--billing_inquiries
     - 
     - '285'
     - '286'
     - '12'
     - '2015-11-02 13:38:26.436669'
-    - '2015-11-02 13:38:26.436669'
+    - '2015-12-15 15:54:23.036975'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '177'
     - If an Ethics Statement is present, make a note in the discussion below.
     - boolean
-    - ethics_statement
+    - plos_bio_final_tech_check--ethics_statement
     - 
     - '287'
     - '288'
     - '13'
     - '2015-11-02 13:38:26.440221'
-    - '2015-11-02 13:38:26.440221'
+    - '2015-12-15 15:54:23.039632'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
 
@@ -8657,8 +8117,8 @@ users:
   - created_at
   - updated_at
   - username
-  - site_admin
   - avatar
+  - site_admin
   - em_guid
   records: 
   - - '1'
@@ -8677,8 +8137,8 @@ users:
     - '2015-10-29 19:36:19.627844'
     - '2015-11-10 22:27:04.935827'
     - admin
-    - false
     - 
+    - false
     - 
   - - '2'
     - Steve
@@ -8696,8 +8156,8 @@ users:
     - '2015-10-29 20:07:28.341906'
     - '2015-10-29 20:53:17.020456'
     - site_admin
-    - true
     - 
+    - true
     - 
   - - '3'
     - Arthur
@@ -8715,8 +8175,8 @@ users:
     - '2015-10-29 20:11:22.705226'
     - '2015-12-14 20:48:03.547587'
     - author
-    - false
     - 
+    - false
     - 
   - - '4'
     - Edith
@@ -8734,8 +8194,8 @@ users:
     - '2015-11-02 15:15:33.644561'
     - '2015-11-02 15:15:33.650134'
     - editor
-    - false
     - 
+    - false
     - 
   - - '5'
     - Reviewer
@@ -8753,8 +8213,8 @@ users:
     - '2015-11-03 19:54:58.406233'
     - '2015-11-03 19:54:58.406233'
     - reviewer
-    - false
     - 
+    - false
     - 
   - - '6'
     - FlowManager
@@ -8772,8 +8232,8 @@ users:
     - '2015-11-03 19:54:58.518834'
     - '2015-11-03 19:54:58.518834'
     - flow_manager
-    - false
     - 
+    - false
     - 
   - - '7'
     - Jeffrey SA
@@ -8791,8 +8251,8 @@ users:
     - '2015-11-03 19:54:58.612514'
     - '2015-11-03 19:54:58.612514'
     - jgray_sa
-    - true
     - 
+    - true
     - 
   - - '8'
     - Jeffrey OA
@@ -8810,8 +8270,8 @@ users:
     - '2015-11-03 19:54:58.707548'
     - '2015-11-03 19:54:58.707548'
     - jgray_oa
-    - false
     - 
+    - false
     - 
   - - '9'
     - Jeffrey FM
@@ -8829,8 +8289,8 @@ users:
     - '2015-11-03 19:54:58.791185'
     - '2015-11-03 19:54:58.791185'
     - jgray_flowmgr
-    - false
     - 
+    - false
     - 
   - - '10'
     - Jeffrey AMM
@@ -8848,8 +8308,8 @@ users:
     - '2015-11-03 19:54:58.877324'
     - '2015-11-03 19:54:58.877324'
     - jgray_editor
-    - false
     - 
+    - false
     - 
   - - '11'
     - Jeffrey MM
@@ -8867,8 +8327,8 @@ users:
     - '2015-11-03 19:54:58.961825'
     - '2015-11-03 19:54:58.961825'
     - jgray_assoceditor
-    - false
     - 
+    - false
     - 
   - - '12'
     - Jeffrey RV
@@ -8886,8 +8346,8 @@ users:
     - '2015-11-03 19:54:59.052702'
     - '2015-11-03 19:54:59.052702'
     - jgray_reviewer
-    - false
     - 
+    - false
     - 
   - - '13'
     - Jeffrey AU
@@ -8905,6 +8365,6 @@ users:
     - '2015-11-03 19:54:59.135286'
     - '2015-11-03 19:54:59.135286'
     - jgray_author
-    - false
     - 
+    - false
     - 

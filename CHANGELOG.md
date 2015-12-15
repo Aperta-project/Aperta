@@ -5,13 +5,9 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
-- Users can view old versions of the paper's metadata.
-- FTP to APEX ability for QA and developers. Other features will integrate with this feature to expose this functionality to the user.
-- Authors can now upload manuscripts that were saved as .doc files
 
 ### Changed
-- compressed application request logging to a single line
-- overlays changed to ember components (excluding tasks) https://developer.plos.org/confluence/display/TAHI/How+Overlays+Work
+-
 
 ### Deprecated
 -
@@ -20,10 +16,23 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Fixed
-- images embedded into an uploaded word document will show correctly on the manuscript page
+-
 
 ### Security
 -
+
+## [1.3.6] - 2015-12-08
+### Added
+- Users can view old versions of the paper's metadata.
+- FTP to APEX ability for QA and developers. Other features will integrate with this feature to expose this functionality to the user.
+- Authors can now upload manuscripts that were saved as .doc files
+
+### Changed
+- compressed application request logging to a single line
+- overlays changed to ember components (excluding tasks) https://developer.plos.org/confluence/display/TAHI/How+Overlays+Work
+
+### Fixed
+- images embedded into an uploaded word document will show correctly on the manuscript page
 
 ## [1.3.5] - 2015-11-11
 ### Added

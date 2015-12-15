@@ -168,7 +168,7 @@ class Activity < ActiveRecord::Base
   def self.editable_toggled!(paper, user:)
     create(
       feed_name: 'workflow',
-      activity_key: 'editable.toggled',
+      activity_key: 'paper.editable_toggled',
       subject: paper,
       user: user,
       message: "Editability was set to #{paper.editable?}"

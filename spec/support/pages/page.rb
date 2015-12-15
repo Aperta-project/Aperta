@@ -77,6 +77,7 @@ class PageFragment
   end
 
   def view_card(card_name, overlay_class=nil, &block)
+    wait_for_ajax
     synchronize_content! card_name
     retry_stale_element do
       find('.card-content', text: card_name).click

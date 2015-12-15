@@ -131,14 +131,13 @@ RSpec.configure do |config|
   config.before(:each) do
     ActionMailer::Base.deliveries.clear
     DatabaseCleaner.start
-    Subscriptions.clear_all_subscriptions!
+    Subscriptions.unsubscribe_all
   end
 
   # Load subscriptions for feature specs. Make sure this comes *after*
-  # clean_all_subscriptions! We need to add these back.
+  # unsubscribe_all. We need to add these back.
   config.before(:each, type: :feature) do
-    load Rails.root.join('config/initializers/event_stream_subscriptions.rb')
-    load Rails.root.join('config/initializers/subscriptions.rb')
+    Subscriptions.reload
   end
 
   config.append_after(:each) do

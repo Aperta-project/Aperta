@@ -6,6 +6,7 @@ describe DownloadManuscriptWorker, redis: true do
 
   before do
     VCR.turn_off!
+    versioned_text_id = paper.latest_version.id
     s3_url = "https://tahi-test.s3-us-west-1.amazonaws.com/uploads/\
 versioned_text/#{versioned_text_id}/about_equations.docx"
     @docx_req = stub_request(:get, url).to_return(body: 'foo')

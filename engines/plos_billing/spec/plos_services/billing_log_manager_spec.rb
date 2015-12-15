@@ -122,7 +122,7 @@ describe PlosServices::BillingLogManager do
   end
 
   def nested_question(ident)
-    NestedQuestion.find_by(ident: ident) || FactoryGirl.create(:nested_question, ident: ident, value_type: "text")
+    NestedQuestion.find_by(ident: ident) || FactoryGirl.create(:nested_question, ident: ident, value_type: 'text')
   end
 
   def add_text_question_with_answer(paper, ident, answer)

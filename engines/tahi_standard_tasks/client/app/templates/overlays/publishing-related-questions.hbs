@@ -36,21 +36,33 @@
       <div class="question-dataset">
         <div class="question-dataset-header">Please provide the title of that submission and the corresponding author.</div>
         {{nested-question-input ident="publishing_related_questions--submitted_in_conjunction--corresponding_title"
-                         class="sub-question"
-                         displayQuestionText=false
-                         owner=model
-                         label="Title"
-                         placeholder="Submission Title"
-                         disabled=isSubmissionTaskNotEditable}}
+                          class="sub-question"
+                          displayQuestionText=false
+                          owner=model
+                          label="Title"
+                          placeholder="Submission Title"
+                          disabled=isSubmissionTaskNotEditable}}
 
         <br>
         {{nested-question-input ident="publishing_related_questions--submitted_in_conjunction--corresponding_author"
-                         class="sub-question"
-                         displayQuestionText=false
-                         owner=model
-                         label="Corresponding Author"
-                         placeholder="Corresponding Author Name"
-                         disabled=isSubmissionTaskNotEditable}}
+                          class="sub-question"
+                          displayQuestionText=false
+                          owner=model
+                          label="Corresponding Author"
+                          placeholder="Corresponding Author Name"
+                          disabled=isSubmissionTaskNotEditable}}
+        <br>
+        {{nested-question-input ident="publishing_related_questions--submitted_in_conjunction--corresponding_journal"
+                          class="sub-question"
+                          displayQuestionText=false
+                          owner=model
+                          label="Journal"
+                          placeholder="Journal Name"
+                          disabled=isSubmissionTaskNotEditable}}
+        <br>
+        {{nested-question-check ident="publishing_related_questions--submitted_in_conjunction--handled_together"
+                                owner=model
+                                disabled=isSubmissionTaskNotEditable}}
       </div>
     {{/if}}
   {{/nested-question-radio}}

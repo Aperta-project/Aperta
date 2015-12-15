@@ -1,8 +1,8 @@
 {{#if readonly}}
   {{#if shouldDisplayQuestionText}}
-    <span class="{{textClassNames}}">
+    <div class="{{textClassNames}}">
       {{{questionText}}}
-    </span>
+    </div>
   {{/if}}
 
   {{#if model.answer.value}}
@@ -13,9 +13,9 @@
 
 {{else}}
   {{#if shouldDisplayQuestionText}}
-    <span class="{{textClassNames}}">
+    <div class="{{textClassNames}}">
       {{{questionText}}}
-    </span>
+    </div>
   {{/if}}
 
   {{#if wrapInput}}

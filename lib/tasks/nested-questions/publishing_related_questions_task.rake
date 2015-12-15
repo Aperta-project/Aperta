@@ -52,6 +52,22 @@ namespace 'nested-questions:seed' do
           value_type: "text",
           text: "Corresponding author",
           position: 2
+        },
+        {
+          owner_id: nil,
+          owner_type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+          ident: 'publishing_related_questions--submitted_in_conjunction--corresponding_journal',
+          value_type: 'text',
+          text: 'Corresponding journal',
+          position: 3
+        },
+        {
+          owner_id: nil,
+          owner_type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+          ident: 'publishing_related_questions--submitted_in_conjunction--handled_together',
+          value_type: 'boolean',
+          text: "This submission and the manuscript I'm submitting should be handled together",
+          position: 4
         }
       ]
     }

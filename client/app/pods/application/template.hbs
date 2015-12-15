@@ -7,7 +7,7 @@
       {{specifiedAppName}}
     {{/link-to}}
 
-    <span class="main-nav-item main-nav-item-spacer"></span>
+    <span class="main-nav-item main-nav-item--spacer"></span>
 
     {{#if isLoggedIn}}
       {{#if canViewAdminLinks}}
@@ -18,8 +18,6 @@
         {{link-to "Flow Manager" "flow_manager" class="main-nav-item" id="nav-flow-manager"}}
         {{link-to "Paper Tracker" "paper_tracker" class="main-nav-item" id="nav-paper-tracker"}}
       {{/if}}
-
-      <span class="main-nav-item main-nav-item-spacer main-nav-item-space--last"></span>
 
       <span id="profile-dropdown-menu" class="main-nav-item main-nav-item--last" data-target="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
         <img src={{currentUser.avatarUrl}} class="user-thumbnail">

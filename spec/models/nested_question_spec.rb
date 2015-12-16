@@ -44,4 +44,69 @@ describe NestedQuestion do
       expect(question.attachment?).to be true
     end
   end
+
+  describe '#update_all_exactly!' do
+    let(:owner) { FactoryGirl.create(:task) }
+
+    let!(:nested_question_a) do
+      FactoryGirl.create(:nested_question, owner: owner)
+    end
+
+    let!(:nested_question_b) do
+      FactoryGirl.create(:nested_question, owner: owner)
+    end
+
+    let(:scope) { NestedQuestion.where(owner: owner) }
+
+    it 'deletes any idents that are missing' do
+      expect(scope.count).to be(2)
+      scope.update_all_exactly!([{ ident: nested_question_a.ident }])
+      expect(scope.count).to be(1)
+    end
+
+    it 'creates new questions for new idents' do
+      expect(scope.count).to be(2)
+      scope.update_all_exactly!(
+        [{
+          ident: nested_question_a.ident
+        }, {
+          ident: nested_question_b.ident
+        }, {
+          ident: 'a_cool_new_ident',
+          value_type: 'text'
+        }])
+      expect(scope.count).to be(3)
+    end
+
+    it 'updates idents where neccessary' do
+      expect(scope.count).to be(2)
+      scope.update_all_exactly!(
+        [{
+          ident: nested_question_a.ident,
+          text: 'Some new text'
+        }, {
+          ident: nested_question_b.ident
+        }])
+
+      expect(nested_question_a.reload.text).to eq('Some new text')
+    end
+
+    it 'creates children, too' do
+      expect(scope.count).to be(2)
+      scope.update_all_exactly!(
+        [{
+          ident: nested_question_a.ident,
+          text: 'Some new text',
+          children:
+            [{
+              ident: 'new_ident_yay',
+              value_type: 'text'
+            }]
+        }, {
+          ident: nested_question_b.ident
+        }])
+      expect(scope.count).to be(3)
+      expect(nested_question_a.reload.children.count).to be(1)
+    end
+  end
 end

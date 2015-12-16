@@ -3,15 +3,10 @@ module TahiStandardTasks
 
     register_task default_title: 'Production Metadata', default_role: 'admin'
 
-    validate :publication_date, :volume_number, :issue_number, if: :newly_complete?
+    validate :volume_number, :issue_number, if: :newly_complete?
 
     def active_model_serializer
       ProductionMetadataTaskSerializer
-    end
-
-    def publication_date
-      answer = answer_for("publication_date")
-      errors.add(:publication_date, "Can't be blank") unless answer
     end
 
     def volume_number

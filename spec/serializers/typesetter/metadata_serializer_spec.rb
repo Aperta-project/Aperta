@@ -127,6 +127,25 @@ describe Typesetter::MetadataSerializer do
     it 'has a date' do
       expect(output[:publication_date]).to eq(Date.new(2015, 11, 16))
     end
+
+    it 'accepts no publication date' do
+      nested_question = our_question.call('publication_date')
+      NestedQuestionAnswer.where(nested_question: nested_question)
+        .each(&:delete)
+
+      expect(output[:publication_date]).to be_nil
+    end
+
+    it 'accepts a blank publication date' do
+      nested_question = our_question.call('publication_date')
+      NestedQuestionAnswer.where(nested_question: nested_question)
+        .each do |nqa|
+        nqa.value = ''
+        nqa.save!
+      end
+
+      expect(output[:publication_date]).to be_nil
+    end
   end
 
   describe 'editor' do

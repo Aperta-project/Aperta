@@ -74,17 +74,24 @@ RSpec.configure do |config|
   config.include EmailSpec::Matchers
 
   config.before(:suite) do
-    # Use the transactional strategy for all tests (except js tests, see below)
-    DatabaseCleaner[:active_record].strategy = :transaction
     Warden.test_mode!
   end
 
   config.before(:context) do
+    # Use the transactional strategy for all tests (except js tests, see below)
+    DatabaseCleaner[:active_record].strategy = :transaction
     UploadServer.clear_all_uploads
     Sidekiq::Worker.clear_all
   end
 
   config.before(:context, js: true) do
+    # :truncation is the strategy we need to use for capybara tests, but do not
+    # truncate task_types and nested_questions, we want to keep these tables
+    # around.
+    # Ensure this come after the generic setup (see above)
+    DatabaseCleaner[:active_record].strategy = :truncation, {
+      except: %w(task_types nested_questions) }
+
     # Fix to make sure this happens only once
     # This cannot be a :suite block, because that does not know if a js feature
     # is being run.
@@ -120,11 +127,7 @@ RSpec.configure do |config|
   end
 
   config.before(:each, js: true) do
-    # :truncation is the strategy we need to use for capybara tests, but do not
-    # truncate task_types and nested_questions, we want to keep these tables
-    # around.
-    DatabaseCleaner[:active_record].strategy = :truncation, {
-      except: %w(task_types nested_questions) }
+    # Get a consistent window size.
     Capybara.page.driver.browser.manage.window.resize_to(1500, 1000)
   end
 

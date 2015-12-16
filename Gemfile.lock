@@ -336,6 +336,8 @@ GEM
       rubyzip (>= 1.1.1)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
+    has_secure_token (1.0.0)
+      activerecord (>= 3.0)
     hashie (3.4.2)
     heroku-deflater (0.5.3)
       rack (>= 1.4.5)
@@ -641,6 +643,7 @@ DEPENDENCIES
   foreman
   generator_spec
   gepub (~> 0.7.0beta1)
+  has_secure_token
   heroku-deflater
   kaminari
   lograge

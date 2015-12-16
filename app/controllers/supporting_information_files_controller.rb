@@ -8,7 +8,7 @@ class SupportingInformationFilesController < ApplicationController
   end
 
   def create
-    file.update_attributes(status: "processing")
+    file.update_attributes(status: 'processing')
     DownloadSupportingInfoWorker.perform_async(file.id, params[:url])
     respond_with file
   end
@@ -24,7 +24,7 @@ class SupportingInformationFilesController < ApplicationController
   end
 
   def update_attachment
-    file.update_attribute(:status, "processing")
+    file.update_attribute(:status, 'processing')
     DownloadSupportingInfoWorker.perform_async(file.id, params[:url])
     respond_with file
   end

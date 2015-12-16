@@ -1,0 +1,16 @@
+<% content_for :styles do %>
+  <%= publishing_info_presenter.css %>
+  <%= paper.journal.pdf_css %>
+<% end %>
+
+<div id='publishing-information'>
+  <%= publishing_info_presenter.html.html_safe %>
+</div>
+
+<div id='paper-body' styles='page-break-before: always;'>
+  <h1><%= paper.display_title(sanitized: false) %></h1>
+  <%= paper_body %>
+</div>
+
+<%= render partial: 'shared/supporting_information',
+           locals: {paper: paper, needs_non_redirecting_preview_url: needs_non_redirecting_preview_url } %>

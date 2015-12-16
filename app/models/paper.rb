@@ -6,10 +6,13 @@ class Paper < ActiveRecord::Base
   include AASM
   include ActionView::Helpers::SanitizeHelper
 
-  belongs_to :creator, inverse_of: :submitted_papers, class_name: 'User', foreign_key: :user_id
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
   belongs_to :striking_image, class_name: 'Figure'
+  belongs_to :creator,
+             inverse_of: :submitted_papers,
+             class_name: 'User',
+             foreign_key: :user_id
 
   has_many :figures, dependent: :destroy
   has_many :versioned_texts, dependent: :destroy
@@ -19,7 +22,9 @@ class Paper < ActiveRecord::Base
   has_many :paper_roles, dependent: :destroy
   has_many :users, -> { uniq }, through: :paper_roles
   has_many :assigned_users, -> { uniq }, through: :paper_roles, source: :user
-  has_many :phases, -> { order 'phases.position ASC' }, dependent: :destroy, inverse_of: :paper
+  has_many :phases, -> { order 'phases.position ASC' },
+           dependent: :destroy,
+           inverse_of: :paper
   has_many :tasks, through: :phases
   has_many :comments, through: :tasks
   has_many :comment_looks, through: :comments
@@ -371,20 +376,6 @@ class Paper < ActiveRecord::Base
   def set_submitting_user_and_touch!(submitting_user) # rubocop:disable Style/AccessorMethodName
     latest_version.update!(submitting_user: submitting_user)
     latest_version.touch
-  end
-
-  def download_supporting_information
-    return if supporting_information_files.empty?
-
-    supporting_information = "<h2>Supporting Information</h2>"
-    supporting_information_files.each do |file|
-      if file.preview_src
-        supporting_information.concat "<p>#{file.download_link file.preview_image}</p>"
-      end
-      supporting_information.concat "<p>#{file.download_link}</p>"
-    end
-
-    supporting_information
   end
 
   def assign_doi!

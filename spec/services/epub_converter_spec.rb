@@ -1,21 +1,22 @@
 require 'rails_helper'
 
 describe EpubConverter do
-  let(:paper_title) { 'This is a Title About Turtles' }
-  let(:paper_body) do
-    "<h2 class=\"subtitle\">And this is my subtitle about how turtles are awesome</h2><p>Turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles turtles.</p><p><a name=\"_GoBack\"></a>The end.</p>"
+  let(:user) { create :user }
+  let(:journal) { create :journal, pdf_css: 'body { background-color: red; }' }
+  let(:paper) { create :paper, creator: create(:user), journal: journal }
+  let(:include_source) { false }
+  let(:include_cover_image) { true }
+
+  let(:converter) do
+    EpubConverter.new(
+      paper,
+      user,
+      include_source: include_source,
+      include_cover_image: include_cover_image)
   end
-  let(:journal) do
-    FactoryGirl.create(:journal)
-  end
-  let(:paper) do
-    create :paper,
-           body: paper_body,
-           title: paper_title,
-           creator: create(:user),
-           journal: journal
-  end
-  let(:downloader) { FactoryGirl.create :user }
+
+  let(:doc) { Nokogiri::HTML(converter.epub_html) }
+
 
   def read_epub_stream(stream)
     entries = []
@@ -27,54 +28,76 @@ describe EpubConverter do
     entries
   end
 
-  let(:include_source) { false }
-  let(:include_cover_image) { true }
-  let(:converter) do
-    EpubConverter.new(
-      paper,
-      downloader,
-      include_source: include_source,
-      include_cover_image: include_cover_image)
-  end
-
   describe '#epub_html' do
     context 'a paper' do
-      let(:doc) { Nokogiri::HTML(converter.epub_html) }
 
       after { expect(doc.errors.length).to be 0 }
 
-      it "displays HTML in the paper's title" do
-        paper.title = "This <i>is</i> the Title"
-        epub_doc_title = doc.css("h1").inner_html.to_s
+      it 'displays HTML in the papers title' do
+        paper.title = 'This <i>is</i> the Title'
+        epub_doc_title = doc.css('h1').inner_html.to_s
         expect(epub_doc_title).to eq(paper.display_title(sanitized: false))
       end
 
-      it "includes the paper body as-is, unescaped" do
+      it 'includes the paper body as-is, unescaped' do
         expect(converter.epub_html).to include(paper.body)
       end
+
+      context 'when paper has no supporting information files' do
+        it 'doesnt have supporting information' do
+          expect(paper.supporting_information_files.empty?).to be true
+          expect(doc.css('#si_header').count).to be 0
+        end
+      end
+
+      context 'when paper has supporting information files' do
+        let(:file) do
+          with_aws_cassette 'supporting_info_files_controller' do
+            paper.supporting_information_files
+              .create! attachment: ::File.open('spec/fixtures/yeti.tiff')
+          end
+        end
+
+        it 'has have supporting information' do
+          expect(file)
+          expect(paper.supporting_information_files.length).to be 1
+          expect(doc.css('#si_header').count).to be 1
+          expect(doc.css("img#si_preview_#{file.id}").count).to be 1
+          expect(doc.css("a#si_link_#{file.id}").count).to be 1
+        end
+
+        it 'the si_preview urls are full-path non-expiring proxy urls' do
+          expect(file)
+          expect(doc.css('.si_preview').count).to be 1
+          expect(doc.css('.si_preview').first['src'])
+            .to eq file.non_expiring_proxy_url(only_path: false)
+        end
+
+        it 'the si_link urls are full-path non-expiring proxy urls' do
+          expect(file)
+          expect(doc.css('.si_link').count).to be 1
+          expect(doc.css('.si_link').first['href'])
+            .to eq file.non_expiring_proxy_url(only_path: false)
+        end
+      end
     end
   end
 
-  describe "#file_name" do
-    it "returns placeholder filename" do
-      expect(converter.file_name).to eq("paper_#{paper.id}.epub")
-    end
-  end
-
-  describe "#title" do
-    context "short_title is nil because it has not been set yet" do
+  describe '#title' do
+    context 'short_title is nil because it has not been set yet' do
       let(:paper) { FactoryGirl.build(:paper, short_title: nil) }
 
-      it "return empty title" do
-        expect(EpubConverter.new(paper, nil).title).to eq("")
+      it 'return empty title' do
+        expect(EpubConverter.new(paper, nil).title).to eq('')
       end
     end
 
-    context "short_title is safely escaped" do
-      let(:paper) { FactoryGirl.build(:paper, short_title: "<b>my title</b>") }
+    context 'short_title is safely escaped' do
+      let(:paper) { FactoryGirl.build(:paper, short_title: '<b>my title</b>') }
 
-      it "return empty title" do
-        expect(EpubConverter.new(paper, nil).title).to eq("&lt;b&gt;my title&lt;/b&gt;")
+      it 'return empty title' do
+        expect(EpubConverter.new(paper, nil).title)
+          .to eq('&lt;b&gt;my title&lt;/b&gt;')
       end
     end
   end
@@ -85,7 +108,7 @@ describe EpubConverter do
     end
 
     context 'paper with no uploaded source' do
-      it "has no source in the epub" do
+      it 'has no source in the epub' do
         entries = read_epub_stream(converter.epub_stream)
         expect(entries.map(&:name)).to_not include(/source/)
       end
@@ -105,29 +128,33 @@ describe EpubConverter do
     end
 
     context 'paper with uploaded source' do
-      let(:file) { File.open(Rails.root.join("spec", "fixtures", "about_cats.doc"), 'r') }
+      let(:file) do
+        File.open(Rails.root.join('spec', 'fixtures', 'about_cats.doc'), 'r')
+      end
 
       before do
         allow(converter).to receive(:manuscript_source).and_return(file)
         allow(converter).to receive(:manuscript_contents).and_return(file.read)
-        allow(converter).to receive(:_manuscript_source_path).and_return(Pathname.new(file.path))
+        allow(converter).to receive(:_manuscript_source_path)
+          .and_return(Pathname.new(file.path))
       end
 
       context 'when source is requested' do
         let(:include_source) { true }
 
-        it "includes the source file, calling it 'source' with same file extension" do
+        it "includes the source file, calling it 'source' with same
+          file extension" do
           entries = read_epub_stream(converter.epub_stream)
-          expect(entries.map(&:name)).to include("input/source.doc")
+          expect(entries.map(&:name)).to include('input/source.doc')
         end
       end
 
       context 'when source is not requested' do
         let(:include_source) { false }
 
-        it "does not include the source file" do
+        it 'does not include the source file' do
           entries = read_epub_stream(converter.epub_stream)
-          expect(entries.map(&:name)).to_not include("input/source.doc")
+          expect(entries.map(&:name)).to_not include('input/source.doc')
         end
       end
     end

@@ -37,5 +37,11 @@ Tahi::Application.configure do
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
+
+  # explicit default, availalbe from request.host, used by url helpers
+  Rails.application.routes.default_url_options[:host] = 'test.host'
+
+  # shouldn't we set this to 'test.host' which is the defaul setting of
+  # request.host ? (above)
   config.action_mailer.default_url_options = { host: 'www.example.com' }
 end

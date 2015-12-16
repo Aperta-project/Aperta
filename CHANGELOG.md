@@ -8,7 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Ability to diff form based cards, such as the Publishing Related Questions card, in versioning mode
 
 ### Changed
-- NestedQuestions have unique indentifiers
+- NestedQuestions have unique identifiers
 
 ### Deprecated
 -

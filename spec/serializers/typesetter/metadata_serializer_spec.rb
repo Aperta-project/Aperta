@@ -114,37 +114,27 @@ describe Typesetter::MetadataSerializer do
     let(:our_task) do
       paper_task.call('TahiStandardTasks::ProductionMetadataTask')
     end
-    before do
-      FactoryGirl.create(
-        :nested_question_answer,
-        nested_question: our_question.call('production_metadata--publication_date'),
-        owner: our_task,
-        value: '11/16/2015',
-        value_type: 'text'
-      )
-    end
 
-    it 'has a date' do
-      expect(output[:publication_date]).to eq(Date.new(2015, 11, 16))
-    end
-
-    it 'accepts no publication date' do
-      nested_question = our_question.call('publication_date')
-      NestedQuestionAnswer.where(nested_question: nested_question)
-        .each(&:delete)
-
-      expect(output[:publication_date]).to be_nil
-    end
-
-    it 'accepts a blank publication date' do
-      nested_question = our_question.call('publication_date')
-      NestedQuestionAnswer.where(nested_question: nested_question)
-        .each do |nqa|
-        nqa.value = ''
-        nqa.save!
+    context "with valid date" do
+      before do
+        allow_any_instance_of(TahiStandardTasks::ProductionMetadataTask)
+          .to receive(:publication_date).and_return("11/16/2015")
       end
 
-      expect(output[:publication_date]).to be_nil
+      it 'has a date' do
+        expect(output[:publication_date]).to eq(Date.new(2015, 11, 16))
+      end
+    end
+
+    context "with no date" do
+      before do
+        allow_any_instance_of(TahiStandardTasks::ProductionMetadataTask)
+          .to receive(:publication_date).and_return(nil)
+      end
+
+      it 'accepts no publication date' do
+        expect(output[:publication_date]).to be_nil
+      end
     end
   end
 

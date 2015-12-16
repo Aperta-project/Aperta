@@ -143,7 +143,7 @@ namespace 'nested-questions:seed' do
       owner_type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
       ident: "publishing_related_questions--intended_collection",
       value_type: "text",
-      text: "If your submission is intended for a PLOS Collection, enter the name of the collection in the box below. Please also ensure the name of the collection is included in your cover letter.",
+      text: "If your submission is intended for a <a target='_blank' href='http://collections.plos.org/'>PLOS Collection</a>, enter the name of the collection in the box below. Please also ensure the name of the collection is included in your cover letter.",
       position: 7
     }
 

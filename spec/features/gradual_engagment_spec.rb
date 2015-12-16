@@ -47,7 +47,7 @@ feature 'Gradual Engagement', js: true do
                                    creator: user,
                                    gradual_engagement: true
         visit "/papers/#{paper.id}"
-        expect(find('.gradual-engagement-presubmission-messaging.initial'))
+        expect(find('#submission-process-toggle-box'))
           .to have_content(paper.journal.name)
         expect(find('.gradual-engagement-presubmission-messaging.initial'))
           .to have_content('Please provide the following information to submit')
@@ -80,7 +80,7 @@ feature 'Gradual Engagement', js: true do
                         publishing_state: :invited_for_full_submission,
                         gradual_engagement: true
         visit "/papers/#{paper.id}"
-        expect(find('.gradual-engagement-presubmission-messaging.full'))
+        expect(find('#submission-process-toggle-box'))
           .to have_content(paper.journal.name)
         expect(find('.gradual-engagement-presubmission-messaging.full'))
           .to have_content('Please provide the following information to submit
@@ -99,8 +99,6 @@ feature 'Gradual Engagement', js: true do
                                    publishing_state: :in_revision,
                                    gradual_engagement: true
         visit "/papers/#{paper.id}"
-        expect(find('.gradual-engagement-presubmission-messaging'))
-          .to have_content(paper.journal.name)
         expect(find('.gradual-engagement-presubmission-messaging'))
           .to have_content('Please provide the following information to submit
             your manuscript.')

@@ -6,10 +6,14 @@
 
   <div id="submission-state-information">
     {{#if getsGradualEngagementToggle}}
-      <i id="submission-process-toggle"
-         title="Submission Process"
-         class="fa fa-question-circle" {{action "toggleSubmissionProcess"}}>
-      </i>
+      <div id='submission-process-toggle-box'>
+        <i id="submission-process-toggle"
+           title="Submission Process"
+           class="fa fa-question-circle" {{action "toggleSubmissionProcess"}}>
+        </i>
+
+        <p><b>{{paper.journal.name}} Submission Process </b></p>
+      </div>
     {{/if}}
 
     {{#if readyToSubmit}}

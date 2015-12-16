@@ -7,7 +7,7 @@ class InitialTechCheckOverlay < CardOverlay
     click_button 'Write Author Changes Letter'
     fill_in 'author-changes-letter', with: 'First round author changes'
     click_button 'Create Author Changes Card'
-    synchronize_content! 'Edit Author Changes Letter'
+    page.has_content? 'Edit Author Changes Letter'
   end
 
   def display_letter

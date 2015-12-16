@@ -10,7 +10,7 @@ class AdminJournalRolesPage < Page
         tr.find('.journal_field').text == journal_name
     end
     role_row.click_on 'Edit'
-    synchronize_content!("Edit Journal")
+    session.has_content? 'Edit Journal'
     AdminEditJournalRolePage.new
   end
 end

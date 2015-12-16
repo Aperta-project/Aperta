@@ -77,12 +77,7 @@ class PageFragment
   end
 
   def view_card(card_name, overlay_class=nil, &block)
-    wait_for_ajax
-    synchronize_content! card_name
-    retry_stale_element do
-      find('.card-content', text: card_name).click
-    end
-    wait_for_ajax
+    find('.card-content', text: card_name).click
 
     overlay_class ||= begin
                       "#{card_name.gsub ' ', ''}Overlay".constantize
@@ -168,12 +163,6 @@ class PageFragment
 
   private
 
-  def synchronize_content!(content)
-    unless session.has_content?(Regexp.new(Regexp.escape(content), Regexp::IGNORECASE))
-      fail ContentNotSynchronized, "Page has no content #{content}"
-    end
-  end
-
   def synchronize_no_content!(content)
     unless session.has_no_content?(Regexp.new(Regexp.escape(content), Regexp::IGNORECASE))
       fail ContentNotSynchronized, "Page expected to not have content \"#{content}\", but it does"
@@ -202,7 +191,7 @@ class Page < PageFragment
 
     def visit args = [], sync_on:nil
       page.visit Rails.application.routes.url_helpers.send @_path, *args
-      page.synchronize_content! sync_on if sync_on
+      page.has_content? sync_on if sync_on
       new
     end
   end
@@ -213,7 +202,7 @@ class Page < PageFragment
 
   def reload sync_on:nil
     visit page.current_path
-    synchronize_content! sync_on if sync_on
+    page.has_content? sync_on if sync_on
   end
 
   def notice

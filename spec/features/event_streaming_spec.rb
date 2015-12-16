@@ -46,7 +46,7 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
         expect(page).to have_css("#task_completed:not(:checked)")
         upload_task.completed = true
         upload_task.save
-        expect(page).to have_css("#task_completed:checked")
+        expect(page.find('#task_completed:checked')).to be_present
         expect(page).to have_css(".card--completed", count: 1)
       end
     end

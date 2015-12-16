@@ -220,7 +220,6 @@ class Page < PageFragment
 
   def view_task_overlay(paper, task)
     visit "/papers/#{paper.id}/tasks/#{task.id}"
-    wait_for_ajax
     overlay_class ||= begin
                       (task.title.split(' ')
                                 .map {|w| w.capitalize }

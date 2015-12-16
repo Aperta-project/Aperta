@@ -17,8 +17,8 @@ export default Ember.Controller.extend(PaperBase, Discussions,  {
       task.get('id'),
       {
         queryParams: {
-          majorVersion: this.get('majorVersion'),
-          minorVersion: this.get('minorVersion')
+          selectedVersion1: this.get('selectedVersion1'),
+          selectedVersion2: this.get('selectedVersion2')
         }
       }
     );
@@ -30,8 +30,8 @@ export default Ember.Controller.extend(PaperBase, Discussions,  {
       paper,
       {
         queryParams: {
-          majorVersion: this.get('majorVersion'),
-          minorVersion: this.get('minorVersion')
+          selectedVersion1: this.get('selectedVersion1'),
+          selectedVersion2: this.get('selectedVersion2')
         }
       }
     );

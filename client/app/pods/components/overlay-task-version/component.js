@@ -13,25 +13,26 @@ export default Ember.Component.extend({
 
   isLoading: false,
 
-  snapshot: null,
+  selectedVersion1Snapshot: null,
+  selectedVersion2Snapshot: null,
 
   init() {
     this._super(...arguments);
     this._assertions();
+    const task = this.get('model');
 
     this.set('isLoading', true);
     this.fetchSnapshots().then(()=> {
-      this.set('snapshot', this.get('model').getSnapshotForVersion(
-        this.get('majorVersion'),
-        this.get('minorVersion')
-      ));
-
+      this.setProperties({
+        selectedVersion1Snapshot: task.getSnapshotForVersion(this.get('selectedVersion1')),
+        selectedVersion2Snapshot: task.getSnapshotForVersion(this.get('selectedVersion2'))
+      });
       this.set('isLoading', false);
     });
   },
 
   fetchSnapshots() {
-    return Ember.RSVP.all([this.get('model').get('snapshots')]);
+    return this.get('model').get('snapshots');
   },
 
   _assertions() {

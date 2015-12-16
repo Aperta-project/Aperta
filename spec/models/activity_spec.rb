@@ -220,6 +220,21 @@ describe Activity do
     )}
   end
 
+  describe '#editability_toggled!' do
+    subject(:activity) { Activity.editable_toggled!(paper, user: user) }
+    let(:paper) { FactoryGirl.build(:paper) }
+
+    it 'adds a workflow activity when editability is toggled' do
+      is_expected.to have_attributes(
+        feed_name: 'workflow',
+        activity_key: 'paper.editable_toggled',
+        subject: paper,
+        user: user,
+        message: "Editability was set to #{paper.editable?}"
+      )
+    end
+  end
+
   describe "#participation_created!" do
     subject(:activity) { Activity.participation_created!(participation, user: user) }
     let(:participation) { FactoryGirl.build(:participation) }

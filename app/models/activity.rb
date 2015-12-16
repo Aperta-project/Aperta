@@ -165,6 +165,16 @@ class Activity < ActiveRecord::Base
     )
   end
 
+  def self.editable_toggled!(paper, user:)
+    create(
+      feed_name: 'workflow',
+      activity_key: 'paper.editable_toggled',
+      subject: paper,
+      user: user,
+      message: "Editability was set to #{paper.editable?}"
+    )
+  end
+
   def self.task_updated!(task, user:)
     feed_name = task.submission_task? ? 'manuscript' : 'workflow'
     activity = new(feed_name: feed_name, subject: task.paper, user: user)
@@ -181,5 +191,4 @@ class Activity < ActiveRecord::Base
     end
     activity
   end
-
 end

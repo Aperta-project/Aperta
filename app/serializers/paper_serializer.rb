@@ -29,7 +29,8 @@ class PaperSerializer < LitePaperSerializer
       figures: paper_figures_path(object),
       versioned_texts: versioned_texts_paper_path(object),
       discussion_topics: paper_discussion_topics_path(object),
-      decisions: paper_decisions_path(object)
+      decisions: paper_decisions_path(object),
+      snapshots: snapshots_paper_path(object)
     }
   end
 end

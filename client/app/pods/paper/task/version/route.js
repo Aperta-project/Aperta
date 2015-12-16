@@ -16,10 +16,11 @@ export default Ember.Route.extend({
     let redirectOptions = this.get('cardOverlayService.previousRouteOptions');
     let taskController = this.controllerFor('overlays/versioned_metadata');
     this.set('taskController', taskController);
+
     taskController.setProperties({
       model: model,
-      majorVersion: this.get('params.majorVersion'),
-      minorVersion: this.get('params.minorVersion'),
+      selectedVersion1: this.get('params.selectedVersion1'),
+      selectedVersion2: this.get('params.selectedVersion2'),
       comments: model.get('comments'),
       participations: model.get('participations'),
       onClose: Ember.isEmpty(redirectOptions) ? 'redirectToDashboard' : 'redirect'

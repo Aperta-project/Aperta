@@ -11,6 +11,8 @@ export default Ember.Component.extend({
   task: null,
   classes: '',
   canRemoveCard: false,
+  version1: null,  // Will be a string like "1.2"
+  version2: null,  // Will be a string like "1.2"
 
   // This is hack but the way we are creating a link but
   // not actually navigating to the link is non-ember-ish
@@ -35,6 +37,23 @@ export default Ember.Component.extend({
     // not have comment-looks
     return (this.get('task.commentLooks') || []).length;
   }),
+
+  versioned: Ember.computed.notEmpty('version1'),
+
+  hasDiff: Ember.computed(
+    'version1',
+    'version2',
+    'task.paper.snapshots.@each',
+    function() {
+      if (this.get('version1') && this.get('version2')) {
+        let paper =  this.get('task.paper');
+        let task = this.get('task');
+        let snap1 = paper.snapshotForTaskAndVersion(task, this.get('version1'));
+        let snap2 = paper.snapshotForTaskAndVersion(task, this.get('version2'));
+        return snap1 && snap1.hasDiff(snap2);
+      }
+      return false;
+    }),
 
   actions: {
     viewCard() {

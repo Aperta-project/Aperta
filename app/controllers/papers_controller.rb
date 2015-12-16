@@ -1,6 +1,7 @@
 class PapersController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy, except: [:index, :show, :comment_looks]
+  before_action :enforce_policy,
+                except: [:index, :show, :comment_looks]
 
   respond_to :json
 
@@ -64,6 +65,13 @@ class PapersController < ApplicationController
   def manuscript_activities
     activities = Activity.includes(:user).feed_for('manuscript', paper)
     respond_with activities, each_serializer: ActivitySerializer, root: 'feeds'
+  end
+
+  def snapshots
+    snapshots = paper.snapshots
+    respond_with snapshots,
+                 each_serializer: SnapshotSerializer,
+                 root: 'snapshots'
   end
 
   ## CONVERSION

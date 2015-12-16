@@ -5,6 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
+- Ability to diff form based cards, such as the Publishing Related Questions card, in versioning mode
 
 ### Changed
 -

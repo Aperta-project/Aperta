@@ -4,7 +4,6 @@ import NestedQuestionOwner from 'tahi/models/nested-question-owner';
 import CardThumbnailObserver from 'tahi/mixins/models/card-thumbnail-observer';
 
 export default NestedQuestionOwner.extend(CardThumbnailObserver, {
-  snapshots: DS.hasMany('snapshot', { async: true }),
   attachments: DS.hasMany('attachment', { async: true }),
 
   cardThumbnail: DS.belongsTo('card-thumbnail', {
@@ -25,6 +24,10 @@ export default NestedQuestionOwner.extend(CardThumbnailObserver, {
     inverse: 'tasks',
     async: true
   }),
+  snapshots: DS.hasMany('snapshot', {
+    inverse: 'source',
+    async: true
+  }),
 
   body: DS.attr(),
   completed: DS.attr('boolean'),
@@ -41,10 +44,7 @@ export default NestedQuestionOwner.extend(CardThumbnailObserver, {
     return this.get('paper.displayTitle');
   }),
 
-  getSnapshotForVersion: function(majorVersion, minorVersion) {
-    return this.get('snapshots').find(function(snapshot) {
-      return (snapshot.get('majorVersion') === Number(majorVersion) &&
-              snapshot.get('minorVersion') === Number(minorVersion));
-    });
+  getSnapshotForVersion: function(fullVersion) {
+    return this.get('snapshots').findBy('fullVersion', fullVersion);
   }
 });

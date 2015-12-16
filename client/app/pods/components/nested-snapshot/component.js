@@ -1,43 +1,53 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  snapshot: null,
+  snapshot1: null,
+  snapshot2: null,
   classNames: ['snapshot'],
 
   generalCase: Ember.computed.not('specialCase'),
-  specialCase: Ember.computed.or('author', 'figure', 'supportingInfo', 'funder'),
+  specialCase: Ember.computed.or(
+    'author', 'figure', 'supportingInfo', 'funder'),
 
-  raw: Ember.computed('snapshot.type', function(){
-    let type = this.get('snapshot.type');
-    return type == 'text' || type === 'integer';
+  raw: Ember.computed('snapshot1.type', function(){
+    let type = this.get('snapshot1.type');
+    return type === 'text' || type === 'integer';
   }),
 
-  boolean: Ember.computed('snapshot.type', function(){
-    return this.get('snapshot.type') === 'boolean';
+  boolean: Ember.computed('snapshot1.type', function(){
+    return this.get('snapshot1.type') === 'boolean';
   }),
 
-  booleanQuestion: Ember.computed('snapshot.value.answer_type', function(){
-    return this.get('snapshot.value.answer_type') === 'boolean';
+  booleanQuestion: Ember.computed('snapshot1.value.answer_type', function(){
+    return this.get('snapshot1.value.answer_type') === 'boolean';
   }),
 
-  question: Ember.computed('snapshot.type', function(){
-    return this.get('snapshot.type') === 'question';
+  question: Ember.computed('snapshot1.type', function(){
+    return this.get('snapshot1.type') === 'question';
   }),
 
-  author: Ember.computed('snapshot.name', function(){
-    return this.get('snapshot.name') === 'author';
+  author: Ember.computed('snapshot1.name', function(){
+    return this.get('snapshot1.name') === 'author';
   }),
 
-  figure: Ember.computed('snapshot.name', function(){
-    return this.get('snapshot.name') === 'figure';
+  figure: Ember.computed('snapshot1.name', function(){
+    return this.get('snapshot1.name') === 'figure';
   }),
 
-  supportingInfo: Ember.computed('snapshot.name', function(){
-    return this.get('snapshot.name') === 'supporting-information-file';
+  supportingInfo: Ember.computed('snapshot1.name', function(){
+    return this.get('snapshot1.name') === 'supporting-information-file';
   }),
 
-  funder: Ember.computed('snapshot.name', function(){
-    return this.get('snapshot.name') === 'funder';
-  })
+  funder: Ember.computed('snapshot1.name', function(){
+    return this.get('snapshot1.name') === 'funder';
+  }),
 
+  children: Ember.computed(
+    'snapshot1.children',
+    'snapshot2.children',
+    function(){
+      return _.zip(
+        this.get('snapshot1.children'),
+        this.get('snapshot2.children') || []);
+    })
 });

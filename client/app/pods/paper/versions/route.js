@@ -15,21 +15,29 @@ var PaperVersionsRoute = AuthorizedRoute.extend({
   afterModel: function(model) {
     return Ember.RSVP.all([
       model.get('tasks'),
-      model.get('versionedTexts')]);
+      model.get('versionedTexts'),
+      model.get('snapshots')]);
   },
 
   setupController: function(controller, model) {
     this._super(controller, model);
 
     controller.set('subRouteName', 'versions');
-    if (!(controller.get('majorVersion') && controller.get('minorVersion'))) {
-      let latest = model.get('versionedTexts').objectAt(0);
-      controller.set('majorVersion', latest.get('majorVersion'));
-      controller.set('minorVersion', latest.get('minorVersion'));
-    } else {
+    if (controller.get('selectedVersion1')) {
       controller.set('viewingVersion', model.textForVersion(
-        controller.get('majorVersion'),
-        controller.get('minorVersion')
+        controller.get('selectedVersion1')
+      ));
+    } else {
+      let latest = model.get('versionedTexts').objectAt(0);
+      let fullVersion = latest.get('majorVersion') +
+                        '.' +
+                        latest.get('minorVersion');
+      controller.set('selectedVersion1', fullVersion);
+    }
+
+    if (controller.get('selectedVersion2')) {
+      controller.set('comparisonVersion', model.textForVersion(
+        controller.get('selectedVersion2')
       ));
     }
 
@@ -37,12 +45,12 @@ var PaperVersionsRoute = AuthorizedRoute.extend({
   },
 
   actions: {
-    viewVersionedCard: function(task, majorVersion, minorVersion) {
+    viewVersionedCard: function(task, selectedVersion1, selectedVersion2) {
       this.get('cardOverlayService').setProperties({
         previousRouteOptions: ['paper.versions', this.modelFor('paper'), {
           queryParams: {
-            majorVersion: majorVersion,
-            minorVersion: minorVersion
+            selectedVersion1: selectedVersion1,
+            selectedVersion2: selectedVersion2
           }
         }],
         overlayBackground: 'paper.versions'
@@ -54,8 +62,8 @@ var PaperVersionsRoute = AuthorizedRoute.extend({
         task.id,
         {
           queryParams: {
-            majorVersion: majorVersion,
-            minorVersion: minorVersion
+            selectedVersion1: selectedVersion1,
+            selectedVersion2: selectedVersion2
           }
         });
     },

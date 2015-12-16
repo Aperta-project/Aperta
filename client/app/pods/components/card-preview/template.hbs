@@ -2,7 +2,13 @@
   {{#if unreadCommentsCount}}
     <span class="badge badge--red unread-comments-count">{{unreadCommentsCount}}</span>
   {{/if}}
-  <div class="card-completed-icon"></div>
+  {{#if versioned}}
+    {{#if hasDiff}}
+      <i class="card-diff-icon fa fa-files-o"></i>
+    {{/if}}
+  {{else}}
+    <div class="card-completed-icon"></div>
+  {{/if}}
   <div class="card-title">{{task.title}}</div>
 </a>
 

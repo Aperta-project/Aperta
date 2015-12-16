@@ -147,15 +147,6 @@ namespace 'nested-questions:seed' do
       position: 7
     }
 
-    questions << {
-      owner_id: nil,
-      owner_type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
-      ident: "publishing_related_questions--us_government_employees",
-      value_type: "boolean",
-      text: "Are you or any of the contributing authors an employee of the United States Government?",
-      position: 8
-    }
-
     NestedQuestion.where(
       owner_type: TahiStandardTasks::PublishingRelatedQuestionsTask.name
     ).update_all_exactly!(questions)

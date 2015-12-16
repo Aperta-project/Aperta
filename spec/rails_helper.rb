@@ -80,8 +80,6 @@ RSpec.configure do |config|
   config.before(:context) do
     # Use the transactional strategy for all tests (except js tests, see below)
     DatabaseCleaner[:active_record].strategy = :transaction
-    UploadServer.clear_all_uploads
-    Sidekiq::Worker.clear_all
   end
 
   config.before(:context, js: true) do
@@ -135,6 +133,8 @@ RSpec.configure do |config|
     ActionMailer::Base.deliveries.clear
     DatabaseCleaner.start
     Subscriptions.unsubscribe_all
+    Sidekiq::Worker.clear_all
+    UploadServer.clear_all_uploads
   end
 
   # Load subscriptions for feature specs. Make sure this comes *after*

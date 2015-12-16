@@ -16,7 +16,7 @@ class AdminDashboardPage < Page
 
   def initialize(*args)
     super
-    synchronize_content! self.class.admin_section
+    session.has_content? self.class.admin_section
   end
 
   def journal_names
@@ -64,14 +64,14 @@ class AdminDashboardPage < Page
   end
 
   def search_results
-    synchronize_content! "Username"
+    session.has_content? 'Username'
     all('.admin-users .user-row').map do |el|
       Hash[[:first_name, :last_name, :username].zip(UserRowInSearch.new(el).row_content.map &:text)]
     end
   end
 
   def first_search_result
-    synchronize_content! "Username"
+    session.has_content? 'Username'
     UserRowInSearch.new(all('.admin-users .user-row').first, context: page)
   end
 
@@ -89,7 +89,7 @@ class UserRowInSearch < PageFragment
 
   def edit_user_details
     click
-    synchronize_content! "User Details"
+    session.has_content? 'User Details'
     EditModal.new(context.find('.user-detail-overlay'), context: context)
   end
 end
@@ -143,7 +143,7 @@ class EditJournalFragment < PageFragment
 
   def save
     click_on "Save"
-    synchronize_content! @name
+    session.has_content? @name
   end
 
   def cancel

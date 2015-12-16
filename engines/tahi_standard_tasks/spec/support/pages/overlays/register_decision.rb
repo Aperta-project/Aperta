@@ -13,7 +13,7 @@ class RegisterDecisionOverlay < CardOverlay
   end
 
   def decision_letter=(body)
-    synchronize_content!("Accept")
+    page.has_content?('Accept')
     find('.decision-letter-field').set(body)
   end
 

@@ -9,7 +9,6 @@ class DeclarationFragment < PageFragment
     id = find('textarea')[:id]
     fill_in id, with: value
     find('label').click # blur the textarea
-    synchronize_content! "DISCLOSURE"
   end
 end
 

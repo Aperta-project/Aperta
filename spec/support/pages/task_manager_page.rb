@@ -26,7 +26,7 @@ class TaskManagerPage < Page
   end
 
   def tasks
-    synchronize_content! "Add new card"
+    session.has_content? 'Add new card'
     all('.card').map { |el| TaskCard.new(el) }
   end
 

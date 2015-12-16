@@ -13,7 +13,7 @@ class JournalPage < Page
 
   def initialize(*args)
     super
-    synchronize_content! "Manuscript Manager Templates"
+    session.has_content? 'Manuscript Manager Templates'
   end
 
   def mmt_names

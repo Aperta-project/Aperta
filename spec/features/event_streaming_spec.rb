@@ -39,15 +39,15 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
       click_link(paper.title)
     end
 
-    describe "updating completion status" do
-      scenario "on the overlay" do
+    describe 'updating completion status' do
+      scenario 'on the overlay' do
         edit_paper = PaperPage.new
         edit_paper.view_card('Upload Manuscript')
-        expect(page).to have_css("#task_completed:not(:checked)")
+        expect(page).to have_css('#task_completed:not(:checked)')
         upload_task.completed = true
         upload_task.save
-        expect(page).to have_css("#task_completed:checked")
-        expect(page).to have_css(".card--completed", count: 1)
+        expect(page).to have_css('#task_completed:checked')
+        expect(page).to have_css('.card--completed', count: 1)
       end
     end
   end

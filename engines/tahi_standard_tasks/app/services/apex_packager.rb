@@ -87,6 +87,6 @@ class ApexPackager
 
   def figures_comply_answer
     return unless figures_task
-    @figures_comply_answer ||= figures_task.answer_for('figure_complies')
+    @figures_comply_answer ||= figures_task.answer_for('figures--complies')
   end
 end

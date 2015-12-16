@@ -8,11 +8,11 @@ describe Typesetter::CompetingInterestsSerializer do
       FactoryGirl.create(:competing_interests_task),
       questions: [
         {
-          ident: 'competing_interests',
+          ident: 'competing_interests--has_competing_interests',
           answer: 'true',
           value_type: 'boolean',
           questions: [{
-            ident: 'statement',
+            ident: 'competing_interests--statement',
             answer: 'entered statement',
             value_type: 'text'
           }]

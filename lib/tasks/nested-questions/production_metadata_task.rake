@@ -5,7 +5,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: TahiStandardTasks::ProductionMetadataTask.name,
-      ident: "publication_date",
+      ident: "production_metadata--publication_date",
       value_type: "text",
       text: "Publication Date",
       position: 1
@@ -14,7 +14,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: TahiStandardTasks::ProductionMetadataTask.name,
-      ident: "volume_number",
+      ident: "production_metadata--volume_number",
       value_type: "text",
       text: "Volume Number",
       position: 2
@@ -23,7 +23,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: TahiStandardTasks::ProductionMetadataTask.name,
-      ident: "issue_number",
+      ident: "production_metadata--issue_number",
       value_type: "text",
       text: "Issue Number",
       position: 3
@@ -32,7 +32,7 @@ namespace 'nested-questions:seed' do
     questions << NestedQuestion.new(
       owner_id:nil,
       owner_type: TahiStandardTasks::ProductionMetadataTask.name,
-      ident: "production_notes",
+      ident: "production_metadata--production_notes",
       value_type: "text",
       text: "Production Notes",
       position: 4

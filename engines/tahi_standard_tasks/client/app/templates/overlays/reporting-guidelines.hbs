@@ -7,21 +7,21 @@
     <ul class="list-unstyled">
       <li class="item">
         {{nested-question-check
-            ident="clinical_trial"
+            ident="reporting_guidelines--clinical_trial"
             owner=model
             disabled=isSubmissionTaskNotEditable}}
       </li>
 
       <li class="item">
         {{#nested-question-check
-          ident="systematic_reviews"
+          ident="reporting_guidelines--systematic_reviews"
           owner=model
           disabled=isSubmissionTaskNotEditable as |selection|}}
 
           {{#if selection.yieldingForAdditionalData}}
             {{#if selection.checked}}
               <div class="question-dataset">
-                {{nested-question-uploader ident="systematic_reviews.checklist"
+                {{nested-question-uploader ident="reporting_guidelines--systematic_reviews--checklist"
                                  owner=model
                                  updateStore="updateStore"
                                  accept=".docx,.pdf"
@@ -34,14 +34,14 @@
 
       <li class="item">
         {{#nested-question-check
-          ident="meta_analyses"
+          ident="reporting_guidelines--meta_analyses"
           owner=model
           disabled=isSubmissionTaskNotEditable as |selection|}}
 
           {{#if selection.yieldingForAdditionalData}}
             {{#if selection.checked}}
               <div class="question-dataset">
-                {{nested-question-uploader ident="meta_analyses.checklist"
+                {{nested-question-uploader ident="reporting_guidelines--meta_analyses--checklist"
                                  owner=model
                                  updateStore="updateStore"
                                  accept=".docx,.pdf"
@@ -54,21 +54,21 @@
 
       <li class="item">
         {{nested-question-check
-          ident="diagnostic_studies"
+          ident="reporting_guidelines--diagnostic_studies"
           owner=model
           disabled=isSubmissionTaskNotEditable}}
       </li>
 
       <li class="item">
         {{nested-question-check
-          ident="epidemiological_studies"
+          ident="reporting_guidelines--epidemiological_studies"
           owner=model
           disable=isSubmissionTaskNotEditable}}
       </li>
 
       <li class="item">
         {{nested-question-check
-          ident="microarray_studies"
+          ident="reporting_guidelines--microarray_studies"
           owner=model
           disable=isSubmissionTaskNotEditable}}
       </li>

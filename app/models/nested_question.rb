@@ -3,9 +3,9 @@ class NestedQuestion < ActiveRecord::Base
 
   acts_as_nested_set order_column: :position
   belongs_to :owner, polymorphic: true
-  has_many :nested_question_answers, dependent: :destroy
+  has_many :nested_question_answers, dependent: :destroy, inverse_of: :nested_question
 
-  validates :ident, presence: true
+  validates :ident, presence: true, uniqueness: true
   validates :owner_type, presence: true
   validates :value_type, presence: true, inclusion: { in: SUPPORTED_VALUE_TYPES }
 

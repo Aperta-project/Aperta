@@ -2,7 +2,7 @@ class Author < ActiveRecord::Base
   include EventStream::Notifiable
   include NestedQuestionable
 
-  CONTRIBUTIONS_QUESTION_IDENT = "contributions"
+  CONTRIBUTIONS_QUESTION_IDENT = "author--contributions"
 
   acts_as_list
 

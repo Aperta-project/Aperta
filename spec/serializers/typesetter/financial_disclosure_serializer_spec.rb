@@ -15,7 +15,7 @@ describe Typesetter::FinancialDisclosureSerializer do
       task,
       questions: [
         {
-          ident: 'author_received_funding',
+          ident: 'financial_disclosures--author_received_funding',
           answer: author_received_funding,
           value_type: 'boolean'
         }

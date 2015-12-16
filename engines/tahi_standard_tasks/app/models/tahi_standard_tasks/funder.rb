@@ -5,5 +5,10 @@ module TahiStandardTasks
     belongs_to :task, foreign_key: :task_id
     has_many :funded_authors, inverse_of: :funder
     has_many :authors, through: :funded_authors
+
+    # useful for nested_questions to always have path to owner
+    def paper
+      task.paper
+    end
   end
 end

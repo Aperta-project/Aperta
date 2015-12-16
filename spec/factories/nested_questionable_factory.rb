@@ -19,15 +19,18 @@ class NestedQuestionableFactory
     end
 
     def create_question(question_hash, parent, owner)
-      FactoryGirl.create(
-        :nested_question,
-        parent: parent,
-        text: question_hash[:text],
-        ident: question_hash[:ident],
-        owner: owner,
-        owner_type: owner.class.name,
-        value_type: question_hash[:value_type]
-      )
+      nested_question = NestedQuestion.find_by(ident: question_hash[:ident]) ||
+        FactoryGirl.build(:nested_question)
+
+      nested_question.tap do |nq|
+        nq.parent = parent
+        nq.text = question_hash[:text]
+        nq.ident = question_hash[:ident]
+        nq.owner = owner
+        nq.owner_type = owner.class.name
+        nq.value_type = question_hash[:value_type]
+        nq.save!
+      end
     end
 
     def create_answer(question_hash, question, owner)

@@ -3,27 +3,30 @@ module TahiStandardTasks
 
     register_task default_title: 'Production Metadata', default_role: 'admin'
 
-    validate :volume_number, :issue_number, if: :newly_complete?
+    with_options(if: :newly_complete?) do
+      validates :volume_number, :issue_number,
+        numericality: { only_integer: true, message: 'must be a whole number' }
+
+      validates :publication_date,
+        allow_blank: true,
+        format: { with: /\A\d{2}\/\d{2}\/\d{4}\Z/,
+                  message: 'must be a date in mm/dd/yyy format' }
+    end
 
     def active_model_serializer
       ProductionMetadataTaskSerializer
     end
 
+    def publication_date
+      answer_for("production_metadata--publication_date").try(:value)
+    end
+
     def volume_number
-      positive_integer?(:volume_number)
+      answer_for("production_metadata--volume_number").try(:value)
     end
 
     def issue_number
-      positive_integer?(:issue_number)
-    end
-
-    private
-
-    def positive_integer?(ident)
-      answer = answer_for(ident.to_s)
-      if answer.blank? || answer.value !~ /^\d+$/
-        errors.add(ident, "Must be a whole number")
-      end
+      answer_for("production_metadata--issue_number").try(:value)
     end
   end
 end

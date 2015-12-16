@@ -15,15 +15,15 @@
     <br>
     <span class="affiliation">{{reviewerRecommendation.affiliation}}</span>
     <div class="decision">
-      {{nested-question-display ident="recommend_or_oppose" owner=reviewerRecommendation}}:
+      {{nested-question-display ident="reviewer_recommendations--recommend_or_oppose" owner=reviewerRecommendation}}:
       {{nested-question-answer
-        ident="recommend_or_oppose"
+        ident="reviewer_recommendations--recommend_or_oppose"
         owner=reviewerRecommendation
         yesLabel="Recommend"
         noLabel="Oppose"
       }}
     </div>
-    <span class="reason">{{nested-question-answer ident="reason" owner=reviewerRecommendation}}</span>
+    <span class="reason">{{nested-question-answer ident="reviewer_recommendations--reason" owner=reviewerRecommendation}}</span>
   </div>
 
   {{#if isHovered}}

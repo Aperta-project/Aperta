@@ -6,11 +6,11 @@ module Typesetter
                :influence_description
 
     def influence
-      task_answer_value(object, 'funder_had_influence')
+      object.answer_for('funder--had_influence').try(:value)
     end
 
     def influence_description
-      task_answer_value(object, 'funder_had_influence.funder_role_description')
+      object.answer_for('funder--had_influence--role_description').try(:value)
     end
   end
 end

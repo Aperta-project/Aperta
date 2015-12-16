@@ -9,7 +9,7 @@
 <div class="add-author-form">
   <div class="form-group form-inline author-top">
     <div class="form-group author-half {{if validationErrors.firstName "error"}}">
-      {{nested-question-input ident="first_name"
+      {{nested-question-input ident="plos_billing--first_name"
                        owner=model
                        placeholder="Jane"
                        disabled=isSubmissionTaskNotEditable
@@ -17,7 +17,7 @@
     </div>
 
     <div class="form-group author-half author-bump {{if validationErrors.lastName "error"}}">
-      {{nested-question-input ident="last_name"
+      {{nested-question-input ident="plos_billing--last_name"
                        owner=model
                        placeholder="Goodall"
                        disabled=isSubmissionTaskNotEditable
@@ -26,7 +26,7 @@
   </div>
   <div class="form-group form-inline">
     <div class="form-group author-half {{if validationErrors.title "error"}}">
-      {{nested-question-input ident="title"
+      {{nested-question-input ident="plos_billing--title"
                        owner=model
                        placeholder="World's Foremost Expert on Chimpanzees"
                        disabled=isSubmissionTaskNotEditable
@@ -34,7 +34,7 @@
     </div>
 
     <div class="form-group author-half author-bump {{if validationErrors.department "error"}}">
-      {{nested-question-input ident="department"
+      {{nested-question-input ident="plos_billing--department"
                        owner=model
                        placeholder="Primatology"
                        disabled=isSubmissionTaskNotEditable
@@ -58,7 +58,7 @@
   </div>
   <div class="form-group form-inline">
     <div class="form-group author-half {{if validationErrors.phone "error"}}">
-      {{nested-question-input ident="phone_number"
+      {{nested-question-input ident="plos_billing--phone_number"
                        owner=model
                        placeholder="415-555-5555"
                        disabled=isSubmissionTaskNotEditable
@@ -66,7 +66,7 @@
 
     </div>
     <div class="form-group author-half author-bump {{if validationErrors.email "error"}}">
-      {{nested-question-input ident="email"
+      {{nested-question-input ident="plos_billing--email"
                        owner=model
                        placeholder="jane.goodll@science.com"
                        disabled=isSubmissionTaskNotEditable
@@ -76,7 +76,7 @@
   </div>
   <div class="form-group form-inline">
     <div class={{if validationErrors.address1 "error"}}>
-      {{nested-question-input ident="address1"
+      {{nested-question-input ident="plos_billing--address1"
                        owner=model
                        placeholder="1581 Le Roy Ave"
                        disabled=isSubmissionTaskNotEditable
@@ -85,7 +85,7 @@
   </div>
   <div class="form-group form-inline">
     <div class={{if validationErrors.address2 "error"}}>
-      {{nested-question-input ident="address2"
+      {{nested-question-input ident="plos_billing--address2"
                        owner=model
                        placeholder="Suite 3"
                        disabled=isSubmissionTaskNotEditable
@@ -94,7 +94,7 @@
   </div>
   <div class="form-group form-inline">
     <div class="form-group author-half {{if validationErrors.city "error"}}">
-      {{nested-question-input ident="city"
+      {{nested-question-input ident="plos_billing--city"
                        owner=model
                        placeholder="Berkeley"
                        disabled=isSubmissionTaskNotEditable
@@ -102,14 +102,14 @@
     </div>
 
     <div class="form-group author-name author-bump {{if validationErrors.state "error"}}">
-      {{nested-question-input ident="state"
+      {{nested-question-input ident="plos_billing--state"
                        owner=model
                        placeholder="State or Province"
                        disabled=isSubmissionTaskNotEditable
                        textClassNames="text-field-title"}}
     </div>
     <div class="form-group author-name author-bump {{if validationErrors.postal_code "error"}}">
-      {{nested-question-input ident="postal_code"
+      {{nested-question-input ident="plos_billing--postal_code"
                        owner=model
                        placeholder="94708"
                        disabled=isSubmissionTaskNotEditable
@@ -120,7 +120,7 @@
   <div class="form-group form-inline">
     <div class="form-group author-half {{if validationErrors.country "error"}}">
       {{#if countries.loaded}}
-        {{nested-question-select ident="country"
+        {{nested-question-select ident="plos_billing--country"
                           owner=model
                           placeholder="Select Your Country"
                           displayQuestionText=false
@@ -151,11 +151,11 @@
 <ol class="question-list">
   <li class="question">
     <h3>
-      {{nested-question-display ident="payment_method" owner=model}}
+      {{nested-question-display ident="plos_billing--payment_method" owner=model}}
     </h3>
 
     <div class="form-group author-half author-bump payment-method {{if validationErrors.affiliation "error"}}">
-      {{nested-question-select ident="payment_method"
+      {{nested-question-select ident="plos_billing--payment_method"
                         owner=model
                         displayQuestionText=false
                         class="affiliation-field"

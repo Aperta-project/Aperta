@@ -21,11 +21,11 @@ describe Typesetter::FunderSerializer do
       funder,
       questions: [
         {
-          ident: 'funder_had_influence',
+          ident: 'funder--had_influence',
           answer: had_influence,
           value_type: 'boolean',
           questions: [{
-            ident: 'funder_role_description',
+            ident: 'funder--had_influence--role_description',
             answer: influence_description,
             value_type: 'text'
           }]

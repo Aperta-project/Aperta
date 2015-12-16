@@ -38,7 +38,7 @@ feature "Reviewer filling out their reviewer report", js: true do
     paper_page = PaperPage.new
 
     overlay = paper_page.view_card("Review by #{reviewer1.full_name}", ReviewerReportOverlay)
-    overlay.fill_in_report "competing_interests" => "I have no competing interests with this work."
+    overlay.fill_in_report "reviewer_report--competing_interests" => "I have no competing interests with this work."
     overlay.submit_report
     overlay.confirm_submit_report
 
@@ -52,7 +52,7 @@ feature "Reviewer filling out their reviewer report", js: true do
     # Revision 0
     visit "/papers/#{paper.id}"
     overlay = paper_page.view_card("Review by #{reviewer1.full_name}", ReviewerReportOverlay)
-    overlay.fill_in_report "competing_interests" => "answer for round 0"
+    overlay.fill_in_report "reviewer_report--competing_interests" => "answer for round 0"
 
     # no history yet, since we only have the current round of review
     overlay.ensure_no_review_history
@@ -62,7 +62,7 @@ feature "Reviewer filling out their reviewer report", js: true do
     reviewer_report_task.update!(decision: decision_revision_1)
     visit "/papers/#{paper.id}"
     overlay = paper_page.view_card("Review by #{reviewer1.full_name}", ReviewerReportOverlay)
-    overlay.fill_in_report "competing_interests" => "answer for round 1"
+    overlay.fill_in_report "reviewer_report--competing_interests" => "answer for round 1"
 
     overlay.ensure_review_history(
       title: "Revision 0", answers: ["answer for round 0"]
@@ -73,7 +73,7 @@ feature "Reviewer filling out their reviewer report", js: true do
     reviewer_report_task.update!(decision: decision_revision_2)
     visit "/papers/#{paper.id}"
     overlay = paper_page.view_card("Review by #{reviewer1.full_name}", ReviewerReportOverlay)
-    overlay.fill_in_report "competing_interests" => "answer for round 2"
+    overlay.fill_in_report "reviewer_report--competing_interests" => "answer for round 2"
 
     overlay.ensure_review_history(
       {title: "Revision 0", answers: ["answer for round 0"]},

@@ -343,15 +343,16 @@ export default TaskController.extend({
     }};
 
     const identsToValidateNumerically = [
-      'pfa_question_1b',
-      'pfa_question_2b',
-      'pfa_question_3a',
-      'pfa_question_4a',
-      'pfa_amount_to_pay'
+      'plos_billing--pfa_question_1b',
+      'plos_billing--pfa_question_2b',
+      'plos_billing--pfa_question_3a',
+      'plos_billing--pfa_question_4a',
+      'plos_billing--pfa_amount_to_pay'
     ];
 
     const pfaDataClass = Ember.Object.extend(EmberValidations.Mixin, {
       validations: {},
+      plos_billing: {},
 
       init: function(){
         let validations = this.get("validations");
@@ -442,7 +443,7 @@ export default TaskController.extend({
 
   selectedRinggold: null,
   selectedPaymentMethod: computed("model.nestedQuestionAnswers.[]", function(){
-    let answer = this.get("model").answerForQuestion("payment_method");
+    let answer = this.get("model").answerForQuestion("plos_billing--payment_method");
     return answer.get("value");
   }),
 
@@ -457,11 +458,11 @@ export default TaskController.extend({
   agreeCollections: false,
 
   affiliation1Question: computed("model.nestedQuestions.[]", function() {
-    return this.get("model").findQuestion("affiliation1");
+    return this.get("model").findQuestion("plos_billing--affiliation1");
   }),
 
   affiliation2Question: computed("model.nestedQuestions.[]", function() {
-    return this.get("model").findQuestion("affiliation2");
+    return this.get("model").findQuestion("plos_billing--affiliation2");
   }),
 
   // institution-search component expects data to be hash

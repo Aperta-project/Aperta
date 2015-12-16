@@ -26,13 +26,13 @@ feature "Editing paper", js: true do
       expect(page).not_to have_selector(".overlay-completed-checkbox .error-message") # make sure no error msg
 
       within(".question-dataset") do
-        find("input[id*='pfa_question_1-yes']").click  # doesn't work: find("#pfa_question_1-yes").click
-        find("input[id*='pfa_question_2-yes']").click
-        find("input[id*='pfa_question_3-yes']").click
-        find("input[id*='pfa_question_4-yes']").click
+        find("input[id*='plos_billing--pfa_question_1-yes']").click
+        find("input[id*='plos_billing--pfa_question_2-yes']").click
+        find("input[id*='plos_billing--pfa_question_3-yes']").click
+        find("input[id*='plos_billing--pfa_question_4-yes']").click
 
         # numeric fields
-        ['pfa_question_1b', 'pfa_question_2b', 'pfa_question_3a', 'pfa_question_4a', 'pfa_amount_to_pay'].each do |ident|
+        ['plos_billing--pfa_question_1b', 'plos_billing--pfa_question_2b', 'plos_billing--pfa_question_3a', 'plos_billing--pfa_question_4a', 'plos_billing--pfa_amount_to_pay'].each do |ident|
           find("input[name*='#{ident}']").set "foo"
           expect(find("#error-for-#{ident}")).to have_content("Must be a number and contain no symbols, or letters")
         end

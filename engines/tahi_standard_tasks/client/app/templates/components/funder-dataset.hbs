@@ -33,7 +33,7 @@
     disabled=disabled}}
 </div>
 
-{{#nested-question-radio ident="funder_had_influence"
+{{#nested-question-radio ident="funder--had_influence"
     owner=model
     yesAction="userSelectedYesForFunderInfluence"
     noAction="userSelectedNoForFunderInfluence" as |selected|}}
@@ -45,7 +45,7 @@
 
     <div class="form-group">
       <span class="text-field-title">Role of sponsors or funders</span>
-      {{nested-question-textarea ident="funder_role_description"
+      {{nested-question-textarea ident="funder--had_influence--role_description"
           owner=model
           displayQuestionText=false
           placeholder="Description"

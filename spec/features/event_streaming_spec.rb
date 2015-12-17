@@ -64,7 +64,6 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
     before do
       Page.new.sign_out
       login_as(regular_user, scope: :user)
-      visit "/"
       upload_task.participants.destroy_all
     end
 

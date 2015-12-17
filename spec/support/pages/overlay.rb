@@ -85,8 +85,11 @@ class CardOverlay < Page
   end
 
   def post_message(new_message)
+    expect(page).to have_css('.new-comment-field')
+    page.execute_script('$(".new-comment-field").trigger("focus")')
+    expect(page).to have_css(".new-comment-submit-button", visible: true)
     find('.new-comment-field').set(new_message)
-    find('.button-secondary', text: "POST MESSAGE").click
+    find('.new-comment-submit-button', text: "POST MESSAGE").click
     expect(page).to have_content new_message
   end
 

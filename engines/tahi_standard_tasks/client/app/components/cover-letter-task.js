@@ -6,7 +6,7 @@ export default TaskComponent.extend({
     return this.get('task.body')[0];
   }),
 
-  letterBodyIsEmpty: Ember.computed('letterBody', function() {
+  emptyLetterBody: Ember.computed('letterBody', function() {
     return Ember.isEmpty(this.get('letterBody'));
   }),
 

@@ -43,7 +43,7 @@ export default Ember.Component.extend({
   hasDiff: Ember.computed(
     'version1',
     'version2',
-    'task.paper.snapshots.@each',
+    'task.paper.snapshots.[]',
     function() {
       if (this.get('version1') && this.get('version2')) {
         let paper =  this.get('task.paper');

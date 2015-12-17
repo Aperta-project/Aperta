@@ -41,16 +41,12 @@ class NestedQuestion < ActiveRecord::Base
 
     existing_idents = all.map(&:ident)
     for_deletion = existing_idents - updated_idents
-    for_deletion.each do |ident|
-      where(ident: ident).destroy_all
-    end
+    where(ident: for_deletion).destroy_all
   end
 
   def attachment?
     value_type == "attachment"
   end
-
-  private
 
   def self.update_nested!(question_hashes, idents)
     question_hashes.map do |hash|
@@ -64,4 +60,5 @@ class NestedQuestion < ActiveRecord::Base
       question
     end
   end
+  private_class_method :update_nested!
 end

@@ -22,13 +22,18 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
     this.set('dataLoading', true);
+    const store = this.container.lookup('store:main');
     const task = this.get('task');
+
+    // Note: task find
+    // We were calling `task.reload()` but this caused issues
+    // when the task was in an invalid error state
 
     Ember.RSVP.all([
       task.get('nestedQuestions'),
       task.get('nestedQuestionAnswers'),
       task.get('participations'),
-      task.reload()
+      store.find('task', task.get('id')) // see "NOTE: task find"
     ]).then(()=> {
       this.set('dataLoading', false);
     });

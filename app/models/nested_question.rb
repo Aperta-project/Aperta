@@ -24,7 +24,41 @@ class NestedQuestion < ActiveRecord::Base
     end
   end
 
+  def self.update_all_exactly!(question_hashes)
+    # This method runs on a scope and takes and a list of nested
+    # property hashes. Each hash represents a single question, and
+    # must have at least an `ident` field.
+    #
+    # ANY QUESTIONS IN SCOPE WITHOUT HASHES IN THIS LIST WILL BE
+    # DESTROYED.
+    #
+    # Any questions with hashes but not in scope will be created.
+
+    updated_idents = []
+
+    # Refresh the living, welcome the newly born
+    update_nested!(question_hashes, updated_idents)
+
+    existing_idents = all.map(&:ident)
+    for_deletion = existing_idents - updated_idents
+    where(ident: for_deletion).destroy_all
+  end
+
   def attachment?
     value_type == "attachment"
   end
+
+  def self.update_nested!(question_hashes, idents)
+    question_hashes.map do |hash|
+      idents.append(hash[:ident])
+      child_hashes = hash.delete(:children) || []
+      children = update_nested!(child_hashes, idents)
+
+      question = NestedQuestion.find_or_initialize_by(ident: hash[:ident])
+      question.children = children
+      question.update!(hash)
+      question
+    end
+  end
+  private_class_method :update_nested!
 end

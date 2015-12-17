@@ -30,4 +30,13 @@ describe TahiStandardTasks::ReviewerRecommendation do
       expect(recommendation.paper).to eq(recommendation.reviewer_recommendations_task.paper)
     end
   end
+
+  describe '#task' do
+    let(:recommendation) { FactoryGirl.create(:reviewer_recommendation) }
+
+    it 'always proxies to reviewer_recommendations_task' do
+      expect(recommendation.task)
+        .to eq(recommendation.reviewer_recommendations_task)
+    end
+  end
 end

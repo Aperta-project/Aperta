@@ -34,24 +34,6 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
     end
   end
 
-  context "on the edit paper page" do
-    before do
-      click_link(paper.title)
-    end
-
-    describe 'updating completion status' do
-      scenario 'on the overlay' do
-        edit_paper = PaperPage.new
-        edit_paper.view_task('Upload Manuscript')
-        expect(page).to have_css(".task-completed:not(:checked)")
-        upload_task.completed = true
-        upload_task.save
-        expect(page).to have_css(".task-completed:checked")
-        expect(page).to have_css('.card--completed', count: 1)
-      end
-    end
-  end
-
   context "on the dashboard page" do
     let!(:collaborator_paper) { FactoryGirl.create(:paper, journal: journal) }
     let!(:participant_paper) { FactoryGirl.create(:paper, journal: journal) }
@@ -93,6 +75,11 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
         expect(card).to have_participants(regular_user)
         expect(card).to have_last_comment_posted_by(regular_user)
       end
+
+      expect(page).to have_css(".task-completed:not(:checked)")
+      upload_task.completed = true
+      upload_task.save
+      expect(page).to have_css(".task-completed:checked")
     end
 
     #TODO Add test to check unread status of comment

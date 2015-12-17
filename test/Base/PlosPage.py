@@ -2,6 +2,7 @@
 
 __author__ = 'jkrzemien@plos.org'
 
+import logging
 import platform
 import os
 import tempfile
@@ -26,6 +27,7 @@ class PlosPage(object):
   Model an abstract base Journal page.
   """
   PROD_URL = ''
+  logging.basicConfig(level=logging.INFO)
 
   def __init__(self, driver, urlSuffix=''):
     # Internal WebDriver-related protected members

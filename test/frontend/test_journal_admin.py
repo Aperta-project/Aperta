@@ -8,7 +8,7 @@ __author__ = 'jgray@plos.org'
 import random
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, sa_login, oa_login, au_login, rv_login, ae_login, he_login, fm_login
+from Base.Resources import login_valid_pw, sa_login, oa_login
 from Pages.admin import AdminPage
 from Pages.dashboard import DashboardPage
 from Pages.journal_admin import JournalAdminPage
@@ -24,7 +24,7 @@ user_search = ['OA', 'FM', 'MM', 'RV']
 
 
 @MultiBrowserFixture
-class ApertaAdminTest(CommonTest):
+class ApertaJournalAdminTest(CommonTest):
   """
   Self imposed AC:
      - validate page elements and styles for:
@@ -47,6 +47,7 @@ class ApertaAdminTest(CommonTest):
     Validates the presence of the following elements:
     """
     user_type = random.choice(users)
+    print(user_type['user'])
     print('Logging in as user: {}'.format(user_type))
     login_page = LoginPage(self.getDriver())
     login_page.enter_login_field(user_type['user'])
@@ -57,8 +58,77 @@ class ApertaAdminTest(CommonTest):
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
-    adm_page.validate_page_elements_styles_functions(user_type['user'])
-    adm_page.select_random_journal()
+    adm_page.validate_page_elements_styles(user_type['user'])
+    adm_page.select_named_journal('PLOS Wombat')
+
+    ja_page = JournalAdminPage(self.getDriver())
+    ja_page.validate_page_elements_styles()
+    ja_page.validate_nav_toolbar_elements(user_type['user'])
+
+  def test_validate_search_function(self):
+    """
+    Validates the presence of the following elements:
+    """
+    user_type = random.choice(users)
+    print(user_type['user'])
+    print('Logging in as user: {}'.format(user_type))
+    login_page = LoginPage(self.getDriver())
+    login_page.enter_login_field(user_type['user'])
+    login_page.enter_password_field(login_valid_pw)
+    login_page.click_sign_in_button()
+
+    dashboard_page = DashboardPage(self.getDriver())
+    dashboard_page.click_admin_link()
+
+    adm_page = AdminPage(self.getDriver())
+    adm_page.validate_page_elements_styles(user_type['user'])
+    adm_page.select_named_journal('PLOS Wombat')
+
+    ja_page = JournalAdminPage(self.getDriver())
+    ja_page.validate_page_elements_styles()
+    ja_page.validate_nav_toolbar_elements(user_type['user'])
+
+  def test_validate_add_journal(self):
+    """
+    Validates the presence of the following elements:
+    """
+    user_type = random.choice(users)
+    print(user_type['user'])
+    print('Logging in as user: {}'.format(user_type))
+    login_page = LoginPage(self.getDriver())
+    login_page.enter_login_field(user_type['user'])
+    login_page.enter_password_field(login_valid_pw)
+    login_page.click_sign_in_button()
+
+    dashboard_page = DashboardPage(self.getDriver())
+    dashboard_page.click_admin_link()
+
+    adm_page = AdminPage(self.getDriver())
+    adm_page.validate_page_elements_styles(user_type['user'])
+    adm_page.select_named_journal('PLOS Wombat')
+
+    ja_page = JournalAdminPage(self.getDriver())
+    ja_page.validate_page_elements_styles()
+    ja_page.validate_nav_toolbar_elements(user_type['user'])
+
+  def test_validate_view_journal(self):
+    """
+    Validates the presence of the following elements:
+    """
+    user_type = random.choice(users)
+    print(user_type['user'])
+    print('Logging in as user: {}'.format(user_type))
+    login_page = LoginPage(self.getDriver())
+    login_page.enter_login_field(user_type['user'])
+    login_page.enter_password_field(login_valid_pw)
+    login_page.click_sign_in_button()
+
+    dashboard_page = DashboardPage(self.getDriver())
+    dashboard_page.click_admin_link()
+
+    adm_page = AdminPage(self.getDriver())
+    adm_page.validate_page_elements_styles(user_type['user'])
+    adm_page.select_named_journal('PLOS Wombat')
 
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_page_elements_styles()

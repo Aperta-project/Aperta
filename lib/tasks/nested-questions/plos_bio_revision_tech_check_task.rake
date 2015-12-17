@@ -1,7 +1,5 @@
 namespace 'nested-questions:seed' do
   task 'plos-bio-revision-tech-check-task': :environment do
-    PLOS_BIO_REVISION_TECH_CHECK_TASK_TYPE = "PlosBioTechCheck::RevisionTechCheckTask"
-
     questions = []
     questions << {
       owner_id: nil,

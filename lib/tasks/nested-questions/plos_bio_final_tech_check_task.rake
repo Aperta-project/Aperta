@@ -1,7 +1,5 @@
 namespace 'nested-questions:seed' do
   task 'plos-bio-final-tech-check-task': :environment do
-    PlosBioTechCheck::FinalTechCheckTask.name
-
     questions = []
     questions << {
       owner_id: nil,

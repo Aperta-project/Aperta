@@ -328,9 +328,15 @@ class AdminPage(AuthenticatedPage):
     :return: void function
     """
     journal_blocks = self._gets(self._base_admin_journals_section_journal_block)
-    selected_journal = random.choice(journal_blocks)
-    logging.info('Opening ' + selected_journal.find_element(*self._base_admin_journal_block_name).text + ' journal.')
-    selected_journal.find_element(*self._base_admin_journal_block_name).click()
+    selected_journal_index = random.randint(1, len(journal_blocks))
+    self._base_admin_journal_block_name = (By.XPATH,
+         '//div[@class="ember-view journal-thumbnail"][{}]/a/h3[@class="journal-thumbnail-name"]'\
+                                           .format(selected_journal_index))
+    journal_link = self._get(self._base_admin_journal_block_name)
+    journal_name = journal_link.text
+    logging.info('Opening {} journal.'.format(journal_name))
+    self._actions.click_and_hold(journal_link).release().perform()
+    return journal_name
 
   def select_named_journal(self, journal):
     """

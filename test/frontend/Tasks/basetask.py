@@ -51,7 +51,7 @@ class BaseTask(AuthenticatedPage):
   def validate_common_elements_styles(self):
     """Validate styles from elements common to all cards"""
     completed_lbl = self._get(self._completed_label)
-    assert 'I am finished with this task' in completed_lbl.text
+    assert 'I am finished with this task' in completed_lbl.text, completed_lbl.text
     completed_check = self._get(self._completed_cb)
     # TODO: When styleguide catches up, assert this checkbox and label matches that guide
 

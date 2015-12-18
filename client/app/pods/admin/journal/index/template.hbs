@@ -184,17 +184,17 @@
     </div>
 
     <div class="admin-style-setting-section">
-      <button class="button-primary button--blue" {{action "editCSS" "epub"}}>Edit ePub CSS</button>
+      <button id="edit-epub-css" class="button-primary button--blue" {{action "editCSS" "epub"}}>Edit ePub CSS</button>
       {{timed-message class="epub-css save-status" message=epubCssSaveStatus}}
     </div>
 
     <div class="admin-style-setting-section">
-      <button class="button-primary button--blue" {{action "editCSS" "pdf"}}>Edit PDF CSS</button>
+      <button id="edit-pdf-css" class="button-primary button--blue" {{action "editCSS" "pdf"}}>Edit PDF CSS</button>
       {{timed-message class="pdf-css save-status" message=pdfCssSaveStatus}}
     </div>
 
     <div class="admin-style-setting-section">
-      <button class="button-primary button--blue" {{action "editCSS" "manuscript"}}>Edit Manuscript CSS</button>
+      <button id="edit-manuscript-css" class="button-primary button--blue" {{action "editCSS" "manuscript"}}>Edit Manuscript CSS</button>
       {{timed-message class="manuscript-css save-status" message=manuscriptCssSaveStatus}}
     </div>
   </div>

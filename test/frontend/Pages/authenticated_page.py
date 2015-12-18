@@ -297,8 +297,6 @@ class AuthenticatedPage(PlosPage):
                                     'WHERE id = %s;', (manu_id,))
     return submission_data
 
-  # Note this method is temporarily bifucated into click_card() and click_task() to support both
-  # the manuscript and workflow contexts while we transition.
   def click_card(self, cardname):
     """
     Passed a card name, opens the relevant card
@@ -308,6 +306,9 @@ class AuthenticatedPage(PlosPage):
     NOTE: this covers only the author facing cards, with the exception of initial_decision
     NOTE also that the locators for these are specifically defined within the scope of the manuscript_viewer or
         workflow page
+    NOTE: Note this method is temporarily bifurcated into click_card() and click_task() to support both the manuscript
+        and workflow contexts while we transition.
+
     :return: True or False, if cardname is unknown.
     """
     self.set_timeout(1)
@@ -362,6 +363,9 @@ class AuthenticatedPage(PlosPage):
     NOTE: this covers only the author facing tasks, with the exception of initial_decision
     NOTE also that the locators for these are specifically defined within the scope of the manuscript_viewer or
         workflow page
+    NOTE: Note this method is temporarily bifurcated into click_card() and click_task() to support both the manuscript
+        and workflow contexts while we transition.
+
     :return: True or False, if taskname is unknown.
     """
     self.set_timeout(5)

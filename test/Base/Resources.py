@@ -41,10 +41,11 @@ login_invalid_email = 'jgrey@plos.org'
 login_valid_uid = 'jgray_sa'
 login_invalid_pw = 'in|fury7'
 login_valid_pw = 'in|fury8'
+
 au_login = {'user': 'jgray_author', 'name': ''}     # author login
 co_login = {'user': 'jgray_collab', 'name': 'Jeffrey Collaborator',
             'password': login_invalid_pw}  # collaborator login
-rv_login = {'user': 'jgray_reviewer'}  # reviewer login
+rv_login = {'user': 'jgray_reviewer', 'name': 'Jeffrey RV Gray'}  # reviewer login
 ae_login = {'user': 'jgray_assocedit'} # associate editor login mm permissions
 he_login = {'user':'jgray_editor'}     # handling editor login amm permissions
 fm_login = {'user': 'jgray_flowmgr'}   # flow manager permissions
@@ -70,7 +71,6 @@ psql_db = getenv('APERTA_PSQL_DBNAME', 'dd2kjrv61vaj33')
 # psql_uname = getenv('APERTA_PSQL_USER', 'ytosewhffqfypg')
 # psql_pw = getenv('APERTA_PSQL_PW', 'bS0R1f6NY3-BrB70A49jOAzuTJ')
 # psql_db = getenv('APERTA_PSQL_DBNAME', 'd1n1umf877c2e3')
-
 
 editor_name_0 = 'Hendrik W. van Veen'
 user_email_0 = 'trash87567@ariessc.com'

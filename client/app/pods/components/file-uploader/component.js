@@ -29,7 +29,7 @@ FileUploaderComponent = Ember.TextField.extend({
       }
     }
   },
-  setupUploader: (function() {
+  setupUploader: function() {
     var params, that, uploader;
     uploader = this.$();
     params = this.getProperties('dataType', 'method', 'acceptFileTypes');
@@ -104,27 +104,19 @@ FileUploaderComponent = Ember.TextField.extend({
         });
       };
     })(this));
-    uploader.on('fileuploadprogress', (function(_this) {
-      return function(e, data) {
-        return _this.sendAction('progress', data);
-      };
-    })(this));
-    uploader.on('fileuploadprocessstart', (function(_this) {
-      return function(e, data) {
-        return _this.sendAction('process', data);
-      };
-    })(this));
-    uploader.on('fileuploadprocessalways', (function(_this) {
-      return function(e, data) {
-        return _this.sendAction('processingDone', data.files[0]);
-      };
-    })(this));
-    return uploader.on('fileuploadfail', (function(_this) {
-      return function(e, data) {
-        return _this.sendAction('error', data);
-      };
-    })(this));
-  }).on('didInsertElement')
+    uploader.on('fileuploadprogress', (e, data) => {
+      return this.sendAction('progress', data);
+    });
+    uploader.on('fileuploadprocessstart', (e, data) => {
+        return this.sendAction('process', data);
+    });
+    uploader.on('fileuploadprocessalways', (e, data) => {
+      return this.sendAction('processingDone', data.files[0]);
+    });
+    uploader.on('fileuploadfail', (e, data) => {
+      return this.sendAction('error', data);
+    });
+  }.on('didInsertElement')
 });
 
 export default FileUploaderComponent;

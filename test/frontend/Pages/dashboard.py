@@ -119,6 +119,10 @@ class DashboardPage(AuthenticatedPage):
     self._submitted_papers = (By.CLASS_NAME, 'dashboard-paper-title')
     # First article
     self._first_paper = (By.CSS_SELECTOR, 'div.table-responsive a')
+    # View invitations
+    self._view_invitations = (By.TAG_NAME, 'button')
+    self._yes_button = (By.TAG_NAME, 'button')
+
 
   # POM Actions
   def click_on_existing_manuscript_link(self, title):
@@ -130,6 +134,19 @@ class DashboardPage(AuthenticatedPage):
     first_matching_manuscript_link = self._get((By.LINK_TEXT, title))
     first_matching_manuscript_link.click()
     return self
+
+  def view_invitations(self):
+    """ """
+    self._get(self._view_invitations).click()
+
+  def accept_invitations(self):
+    """Accepts all invitations"""
+    all_buttons = self._gets(self._view_invitations)
+    count = 0
+    for button in all_buttons:
+      count += 1
+      if count % 2 == 1:
+        button.click()
 
   def click_on_existing_manuscript_link_partial_title(self, partial_title):
     """Click on existing manuscript link using partial title"""

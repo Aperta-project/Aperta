@@ -11,7 +11,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface
-from Base.Resources import affiliation, billing_data
+from Base.Resources import affiliation
 from Base.PostgreSQL import PgSQL
 from frontend.Cards.authors_card import AuthorsCard
 from frontend.Cards.basecard import BaseCard
@@ -325,21 +325,23 @@ class ManuscriptViewerPage(AuthenticatedPage):
         return None
 
     base_card = BaseCard(self._driver)
-    if card_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript', 'Revise Manuscript'):
+    #if card_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript', 'Revise Manuscript'):
       # Check completed_check status
+    if card_name == 'Authors':
+      # Complete authors data before mark close
+      author_card = AuthorsCard(self._driver)
+      author_card.edit_author(affiliation)
+    #elif card_name == 'Billing':
+    #  billing = BillingCard(self._driver)
+    #  billing.add_billing_data(billing_data)
+    else:
       completed = base_card._get(base_card._completed_check)
       if not completed.is_selected():
         completed.click()
         #time.sleep(.2)
       base_card._get(base_card._close_button).click()
       time.sleep(1)
-    elif card_name == 'Authors':
-      # Complete authors data before mark close
-      author_card = AuthorsCard(self._driver)
-      author_card.edit_author(affiliation)
-    elif card_name == 'Billing':
-      billing = BillingCard(self._driver)
-      billing.add_billing_data(billing_data)
+
 
   def get_paper_title_from_page(self):
     """

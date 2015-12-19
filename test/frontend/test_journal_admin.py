@@ -43,7 +43,7 @@ class ApertaJournalAdminTest(CommonTest):
            - Edit PDF CSS
            - Edit Manuscript CSS
   """
-  def test_validate_journal_admin_components_styles(self):
+  def rest_validate_journal_admin_components_styles(self):
     """
     Validates the presence of the following elements:
     """
@@ -64,7 +64,7 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page.validate_page_elements_styles()
     ja_page.validate_nav_toolbar_elements(user_type['user'])
 
-  def test_validate_journal_admin_user_search_display_function(self):
+  def rest_validate_journal_admin_user_search_display_function(self):
     """
     Validates the presence of the following elements:
     """

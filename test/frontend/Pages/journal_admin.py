@@ -139,18 +139,28 @@ class JournalAdminPage(AdminPage):
     self._get(self._journal_admin_roles_add_new_role_btn)
     self._get(self._journal_admin_roles_role_table)
     role_rows = self._gets(self._journal_admin_roles_role_listing_row)
+    count = 1
     for row in role_rows:
       logging.info(row.text)
-      self._role_edit_icon = (By.CSS_SELECTOR, 'div.admin-role-name i.fa-pencil')
+      self._role_edit_icon = \
+          (By.XPATH,
+           "//div[@class='ember-view admin-role not-editing'][{}]\
+           /div/i[@class='admin-role-action-button fa fa-pencil']".format(count))
       self._get(self._role_edit_icon)
-      self._role_name = (By.CLASS_NAME, 'role-name-field')
+      self._role_name = (By.XPATH, "//div[@class='ember-view admin-role not-editing'][{}]/div/span".format(count))
       role_name = self._get(self._role_name)
       if role_name.text not in ('Admin', 'Flow Manager', 'Editor'):
-        self._role_delete_icon = (By.CLASS_NAME, 'role-delete-button')
+        self._role_delete_icon = (By.XPATH,
+           "//div[@class='ember-view admin-role not-editing'][{}]\
+           /div/i[@class='admin-role-action-button role-delete-button fa fa-trash']".format(count))
         delete_role = self._get(self._role_delete_icon)
-      self._role_permissions_div = (By.CLASS_NAME, 'admin-role-permissions')
+      self._role_permissions_div = (By.XPATH, "//div[@class='ember-view admin-role not-editing'][{}]\
+           /div[@class='admin-role-permissions']".format(count))
       self._get(self._role_permissions_div)
-      self._role_assigned_permission = (By.CLASS_NAME, 'token')
+      self._role_assigned_permission = (By.XPATH, "//div[@class='ember-view admin-role not-editing'][{}]\
+          /div[@class='admin-role-permissions']/label".format(count))
+      permissions = self._gets(self._role_assigned_permission)
+      print(permissions)
       self.set_timeout(1)
       try:
         role_perms = self._get(self._role_permissions_div).find_elements(*self._role_assigned_permission)
@@ -160,3 +170,4 @@ class JournalAdminPage(AdminPage):
       except:
         print('No permissions found for role: {}'.format(role_name.text))
       self.restore_timeout()
+      count += 1

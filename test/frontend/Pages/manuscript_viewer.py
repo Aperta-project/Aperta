@@ -11,10 +11,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface
-from Base.Resources import affiliation
+from Base.Resources import affiliation, billing_data, rv_login
 from Base.PostgreSQL import PgSQL
 from frontend.Cards.authors_card import AuthorsCard
 from frontend.Cards.basecard import BaseCard
+from frontend.Tasks.basetask import BaseTask
 from frontend.Cards.billing_card import BillingCard
 from frontend.Cards.figures_card import FiguresCard
 from frontend.Cards.revise_manuscript_card import ReviseManuscriptCard
@@ -38,10 +39,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[4]')
     self._card = (By.CLASS_NAME, 'card')
     self._submit_button = (By.ID, 'sidebar-submit-paper')
+    # Sidebar Items
+    self._task_headings = (By.CLASS_NAME, 'task-disclosure-heading')
+    self._task_heading_status_icon = (By.CLASS_NAME, 'task-disclosure-completed-icon')
+    self._task_heading_completed_icon = (By.CLASS_NAME, 'task-disclosure-completed-icon active')
     # Main Toolbar items
     self._tb_versions_link = (By.ID, 'nav-versions')
     self._tb_versions_diff_div = (By.CSS_SELECTOR, 'div.html-diff')
-    #self._tb_view_version = (By.TAG_NAME, 'select')
     self._tb_versions_closer = (By.CLASS_NAME, 'exit-versions')
     self._tb_collaborators_link = (By.ID, 'nav-collaborators')
     self._tb_add_collaborators_label = (By.CLASS_NAME, 'contributors-add')
@@ -54,9 +58,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._tb_more_appeal_link = (By.ID, 'nav-appeal')
     self._tb_more_withdraw_link = (By.ID, 'nav-withdraw-manuscript')
     self._tb_workflow_link = (By.ID, 'go-to-workflow')
-    # Task List Items
-    self._tl_manuscript_id = (By.CLASS_NAME, 'task-list-doi')
-    self._tl_submit_success_msg = (By.CLASS_NAME, 'task-list')
     # Manage Collaborators Overlay
     self._add_collaborators_modal = (By.CLASS_NAME, 'show-collaborators-overlay')
     self._add_collaborators_modal_header = (By.CLASS_NAME, 'overlay-title-text')
@@ -65,7 +66,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     #self._add_collaborators_modal_select = (By.CLASS_NAME, 'select2-arrow')
     #self._add_collaborators_modal_select_input = (By.TAG_NAME, 'input')
     self._add_collaborators_modal_select = (By.CSS_SELECTOR, 'div.select2-container')
-    ###XXXX
 
     self._add_collaborators_modal_cancel = (By.XPATH, "//div[@class='overlay-action-buttons']/a")
     self._add_collaborators_modal_save = (By.XPATH, "//div[@class='overlay-action-buttons']/button")
@@ -79,32 +79,43 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # Submit Confirmation and Submit Congratulations Overlays (full and initial submit versions)
     # The overlay close X is universal and defined in authenticated page (self._overlay_header_close)
     self._so_paper_submit_icon = (By.CLASS_NAME, 'paper-submit-icon')
-    # self._so_paper_submit_title_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit h1')
-    # self._so_paper_submit_subhead_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit + h5')
+    self._so_paper_submit_title_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit h1')
+    self._so_paper_submit_subhead_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit + h5')
     self._so_paper_title = (By.ID, 'paper-submit-title')
     self._so_submit_confirm = (By.CLASS_NAME, 'button-submit-paper')
     self._so_submit_cancel = (By.CSS_SELECTOR, 'div.submit-action-buttons button.button-link')
     self._so_close_after_submit = (By.CLASS_NAME, 'success-close')
-    # Cards
-    self._billing_card = (By.XPATH, "//div[@id='paper-assigned-tasks']//div[contains(., 'Billing')]")
-    self._cover_letter_card = (By.XPATH, "//div[@id='paper-assigned-tasks']//div[contains(., 'Cover Letter')]")
-    self._review_cands_card = (By.XPATH, "//div[@id='paper-assigned-tasks']//div[contains(., 'Reviewer Candidates')]")
-    self._revise_task_card = (By.XPATH, "//div[@id='paper-assigned-tasks']//div[contains(., 'Revise Task')]")
-    self._cfa_card = (By.XPATH, "//div[@id='paper-assigned-tasks']//div[contains(., 'Changes For Author')]")
-    self._authors_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Authors')]")
-    self._competing_ints_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Competing Interests')]")
-    self._data_avail_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Data Availability')]")
-    self._ethics_statement_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Ethics Statement')]")
-    self._figures_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Figures')]")
-    self._fin_disclose_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Financial Disclosure')]")
-    self._new_taxon_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'New Taxon')]")
-    self._report_guide_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Reporting Guidelines')]")
-    self._supporting_info_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Supporting Info')]")
-    self._upload_manu_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Upload Manuscript')]")
-    self._prq_card = (By.XPATH, "//div[@id='paper-metadata-tasks']//div[contains(., 'Publishing Related Questions')]")
+    # Paper Sidebar and associated items
+    self._paper_sidebar = (By.CLASS_NAME, 'paper-sidebar')
+    self._paper_sidebar_info = (By.CLASS_NAME, 'paper-sidebar-info')
+    self._paper_sidebar_assigned_tasks = (By.ID, 'paper-assigned-tasks')
+    self._paper_sidebar_metadata_tasks = (By.ID, 'paper-metadata-tasks')
+    # Sidebar Info Items
+    self._paper_sidebar_manuscript_id = (By.CLASS_NAME, 'task-list-doi')
+    self._paper_sidebar_submit_success_msg = (By.CLASS_NAME, 'task-list')
+    self._paper_sidebar_state_information = (By.ID, 'submission-state-information')
+    # Assigned Tasks
+    self._billing_task = (By.CLASS_NAME, 'billing-task')
+    self._cover_letter_task = (By.CLASS_NAME, 'cover-letter-task')
+    self._review_cands_task = (By.CLASS_NAME, 'reviewer-candidates-task')
+    self._revise_task_task = (By.CLASS_NAME, 'revise-task')
+    self._cfa_task = (By.CLASS_NAME, 'changes-for-author-task')
+    # Metadata Tasks
+    self._authors_task = (By.CLASS_NAME, 'authors-task')
+    self._competing_ints_task = (By.CLASS_NAME, 'competing-interests-task')
+    self._data_avail_task = (By.CLASS_NAME, 'data-availability-task')
+    self._ethics_statement_task = (By.CLASS_NAME, 'ethics-statement-task')
+    self._figures_task = (By.CLASS_NAME, 'figure-task')
+    self._fin_disclose_task = (By.CLASS_NAME, 'financial-disclosure-task')
+    self._new_taxon_task = (By.CLASS_NAME, 'new-taxon-task')
+    self._prq_task = (By.CLASS_NAME, 'publishing-related-questions-task')
+    self._report_guide_task = (By.CLASS_NAME, 'reporting-guidelines-task')
+    self._supporting_info_task = (By.CLASS_NAME, 'supporting-info-task')
+    self._upload_manu_task = (By.CLASS_NAME, 'upload-manuscript-task')
     # infobox
     self._question_mark_icon = (By.ID, 'submission-process-toggle')
-    self._infobox = (By.ID, 'submission-process')
+    # While IDs are normally king, for this element, we don't hide the element, we just change its class to "hide" it
+    self._infobox = (By.CSS_SELECTOR, 'div.show-process')
     self._submission_status_info = (By.ID, 'submission-state-information')
 
   # POM Actions
@@ -343,6 +354,46 @@ class ManuscriptViewerPage(AuthenticatedPage):
       time.sleep(1)
 
 
+  def complete_task(self, task_name, click_override=False):
+    """On a given task, check complete and then close"""
+    tasks = self._gets(self._task_headings)
+    # if task is marked as complete, leave is at is.
+    if not click_override:
+      for task in tasks:
+        task_div = task.find_element_by_xpath('..')
+        if task.text == task_name and 'active' \
+            not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
+          task_div.click()
+          break
+        elif task.text == task_name and 'active' \
+            in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
+          return None
+      else:
+        return None
+    else:
+      for task in tasks:
+        if task.text == task_name:
+          task_div = task.find_element_by_xpath('..')
+          task_div.click()
+        break
+      else:
+        return None
+    base_task = BaseTask(self._driver)
+    if task_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript', 'Revise Manuscript'):
+      # Check completed_check status
+      completed = base_task.completed_cb_is_selected()
+      if not completed:
+        self._get(base_task._completed_cb).click()
+      task_div.click()
+      time.sleep(1)
+    elif task_name == 'Authors':
+      # Complete authors data before mark close
+      author_task = AuthorsTask(self._driver)
+      author_task.edit_author(affiliation)
+    elif task_name == 'Billing':
+      billing = BillingTask(self._driver)
+      billing.add_billing_data(billing_data)
+
   def get_paper_title_from_page(self):
     """
     Returns the encoded paper title as it appears on the manuscript_viewer page
@@ -351,6 +402,21 @@ class ManuscriptViewerPage(AuthenticatedPage):
     paper_title = self._get(self._paper_title).text
     print(paper_title)
     return paper_title
+
+  def edit_paper_title(self):
+    """
+    Returns the encoded paper title as it appears on the manuscript_viewer page
+    :return: paper_title
+    """
+    paper_title = self._get(self._paper_title)
+    original_paper_title = paper_title.text
+    self._actions.click(paper_title).perform()
+    self._actions.send_keys(10 * u'\ue015').perform()
+    time.sleep(.5)
+    self._actions.send_keys_to_element(paper_title, ' edited' + u'\ue004').perform()
+    new_paper_title = self._get(self._paper_title)
+    assert new_paper_title.text == original_paper_title + ' edited', \
+        new_paper_title.text + ' != ' + original_paper_title + ' edited'
 
   def click_submit_btn(self):
     """Press the submit button"""
@@ -389,7 +455,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     Returns the paper id
     """
-    doi_text = self._get(self._tl_manuscript_id).text
+    doi_text = self._get(self._paper_sidebar_manuscript_id).text
     return doi_text.split(':')[1]
 
   def get_paper_db_id(self):
@@ -417,7 +483,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     elif type == 'congrats':
       #assert 'Congratulations' in main_head.text, main_head.text
       self._get(self._so_paper_submit_icon)
-      assert "You've successfully submitted your paper!" in subhead.text, subhead.text
+      assert 'You\'ve successfully submitted your paper!' in subhead.text, subhead.text
       self._get(self._so_submit_cancel)
     elif type == 'congrats_is':
       assert 'You have successfully submitted your manuscript for initial review. If the initial review is ' \
@@ -432,12 +498,12 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
   def validate_submit_success(self):
     """Ensure the successful submit message appears in the upper right corner of the manuscript viewer page"""
-    success_msg = self._get(self._tl_submit_success_msg)
+    success_msg = self._get(self._paper_sidebar_state_information)
     assert 'This paper has been submitted.' in success_msg.text, success_msg.text
 
   def validate_initial_submit_success(self):
     """Ensure the final submit message does not appear on initial submit"""
-    success_msg = self._get(self._tl_submit_success_msg)
+    success_msg = self._get(self._paper_sidebar_state_information)
     assert 'This paper has been submitted.' not in success_msg.text, success_msg.text
 
   def add_collaborators(self, user):
@@ -446,6 +512,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :param user: user
     :return: None
     """
+    print(user['name'])
     self._get(self._tb_collaborators_link).click()
     self._get(self._tb_add_collaborators_label).click()
     time.sleep(2)
@@ -454,6 +521,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     select_items = (By.CSS_SELECTOR, 'ul.select2-results')
     items = self._get(select_items)
     for item in items.find_elements_by_tag_name('li'):
+      print(item.text)
       if item.text == user['name']:
         item.click()
         time.sleep(.5)

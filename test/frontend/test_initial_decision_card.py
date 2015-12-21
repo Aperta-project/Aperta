@@ -75,7 +75,8 @@ class InitialDecisionCardTest(CommonTest):
     # Get paper version for AC 6
     version_before = Decimal(manuscript_page.get_manuscript_version()[1:])
     # figures
-    manuscript_page.complete_card('Figures')
+    manuscript_page.click_task('Figures')
+    manuscript_page.complete_task('Figures')
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
@@ -93,7 +94,7 @@ class InitialDecisionCardTest(CommonTest):
     dashboard_page = DashboardPage(self.getDriver())
     # look for the article in paper tracker
     # go to paper tracker
-    dashboard_page._get(dashboard_page._dashboard_top_menu_paper_tracker).click()
+    dashboard_page._get(dashboard_page._nav_paper_tracker_link).click()
     # Go to workflow
     url = self._driver.current_url
     paper_url = '{}//{}/papers/{}'.format(url.split('/')[0], url.split('/')[2], paper_id)
@@ -124,7 +125,9 @@ class InitialDecisionCardTest(CommonTest):
     # open Image card
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     time.sleep(1)
-    manuscript_page.click_card('Figures')
+    manuscript_page.edit_paper_title()
+    time.sleep(1)
+    manuscript_page.click_task('Figures')
     # test if editable
     figures_card = FiguresCard(self.getDriver())
     # AC 5

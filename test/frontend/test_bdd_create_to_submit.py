@@ -195,7 +195,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     if os.path.isfile(fn):
       self._driver.find_element_by_id('upload-files').send_keys(fn)
     else:
-      raise IOError('Docx file not found')
+      raise IOError('Document file not found: ' + fn)
     dashboard_page.click_upload_button()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(7)
@@ -210,7 +210,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     manuscript_page.click_submit_btn()
     manuscript_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
     manuscript_page.confirm_submit_cancel()
-    # The overlay mush be cleared to interact with the submit button
+    # The overlay must be cleared to interact with the submit button
     # and it takes time
     time.sleep(.5)
     manuscript_page.click_submit_btn()

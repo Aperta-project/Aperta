@@ -8,6 +8,8 @@ module TahiStandardTasks
     validates :last_name, presence: true
     validates :email, presence: true
 
+    alias_method :task, :reviewer_recommendations_task
+
     # useful for nested_questions to always have path to owner
     def paper
       reviewer_recommendations_task.paper

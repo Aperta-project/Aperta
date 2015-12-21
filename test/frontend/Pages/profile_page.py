@@ -123,7 +123,7 @@ class ProfilePage(AuthenticatedPage):
     add_done_btn.click()
     # Watch for error
     error = self._get(self._error_message)
-    assert error.text == "can't be blank"
+    assert error.text.lower() == "can't be blank", error.text
     # NOTE: Not validating error message style because lack of styleguide
     # Placeholder for error style validation:
     # assert error.value_of_css_property('font-size') == '12px'

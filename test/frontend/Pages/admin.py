@@ -293,7 +293,7 @@ class AdminPage(AuthenticatedPage):
         success_count += 1
       result.click()
       # TODO: Validate Styles for these elements
-      time.sleep(.5)
+      time.sleep(1)
       user_details_title = self._get(self._overlay_header_title)
       user_details_closer = self._get(self._overlay_header_close)
       user_details_fname_label = self._get(self._ud_overlay_fname_label)

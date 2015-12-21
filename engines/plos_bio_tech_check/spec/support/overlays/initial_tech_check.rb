@@ -11,7 +11,7 @@ class InitialTechCheckOverlay < CardOverlay
   end
 
   def display_letter
-    find(".overlay-main-work .button-primary").click
+    find(".task-main-content .button-primary").click
   end
 
   def letter

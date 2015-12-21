@@ -5,5 +5,7 @@ export default DS.Model.extend({
   phaseTemplate: DS.belongsTo('phase-template', { async: false }),
   position: DS.attr('number'),
   template: DS.attr(),
-  title: DS.attr('string')
+  title: DS.attr('string'),
+
+  type: 'adHocTemplate'
 });

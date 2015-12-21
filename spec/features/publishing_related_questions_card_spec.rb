@@ -21,19 +21,17 @@ feature 'Authors card', js: true do
       login_as(author, scope: :user)
       visit "/papers/#{paper.id}"
 
-      edit_paper = PaperPage.new
-      edit_paper.view_card('Publishing Related Questions', CardOverlay) do |_|
-        content_editable = find(:xpath, short_title_selector)
-        # <br> tags are only added when the space key is hit. So we clear the
-        # field first then type in known text.
-        content_editable.set('T')
-        content_editable.send_keys('his is a short title', :tab)
-        wait_for_ajax
-        paper.reload
+      overlay = Page.view_task_overlay(paper, task)
+      content_editable = find(:xpath, short_title_selector)
+      # <br> tags are only added when the space key is hit. So we clear the
+      # field first then type in known text.
+      content_editable.set('T')
+      content_editable.send_keys('his is a short title', :tab)
+      wait_for_ajax
+      paper.reload
 
-        expect(paper.short_title).not_to include('<br')
-        expect(paper.short_title).to eq('This is a short title')
-      end
+      expect(paper.short_title).not_to include('<br')
+      expect(paper.short_title).to eq('This is a short title')
     end
   end
 end

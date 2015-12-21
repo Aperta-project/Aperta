@@ -20,12 +20,27 @@ class PaperPage < Page
   text_assertions :journal, '.paper-journal'
 
   def initialize element = nil
-    find 'article.manuscript'
+    find '.manuscript'
     super
   end
 
-  def find_card(text)
-    find('.card-content', text: text)
+  def view_task(task, overlay_class=nil)
+    name = ''
+    element = nil
+
+    if task.class == String
+      element = find('.task-disclosure', text: task)
+    else
+      name = task.type.gsub(/.+::/,'').underscore.dasherize
+      element = find(".#{name}")
+    end
+
+    fragment_class = overlay_class ? overlay_class : PaperTask
+
+    fragment = fragment_class.new(element)
+
+    fragment.toggle
+    fragment
   end
 
   def visit_dashboard
@@ -77,7 +92,7 @@ class PaperPage < Page
   end
 
   def body
-    find('.paper-body')
+    find('#paper-body')
   end
 
   def versioned_body
@@ -97,7 +112,7 @@ class PaperPage < Page
   end
 
   def has_body_text?(text)
-    find('.paper-body').has_text?(text)
+    find('#paper-body').has_text?(text)
   end
 
   def journal
@@ -143,7 +158,7 @@ HERE
   end
 
   def css
-    find('#paper-body')['style']
+    find('.manuscript')['style']
   end
 
   private

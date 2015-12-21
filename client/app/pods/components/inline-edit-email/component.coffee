@@ -17,8 +17,9 @@ InlineEditEmailComponent = Ember.Component.extend
   lastSentAt: null
 
   initRecipients: (->
-    if @get('showChooseReceivers')
-      @set('recipients', @get('overlayParticipants').copy())
+    return unless @get('showChooseReceivers')
+    @set 'recipients', @get('overlayParticipants').map (p) =>
+      p.get('user')
   ).observes('showChooseReceivers')
 
   keyForStates: Ember.computed.alias 'bodyPart.subject'

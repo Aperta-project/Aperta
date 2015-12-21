@@ -17,7 +17,7 @@ class CardOverlay < Page
   end
 
   def title
-    find('main h1')
+    find('.overlay-body-title')
   end
 
   def body
@@ -29,8 +29,8 @@ class CardOverlay < Page
   end
 
   def mark_as_complete
-    check "Completed"
-    check "Completed" unless completed?
+    check "I am finished with this task"
+    check "I am finished with this task" unless completed?
   end
 
   def completed?
@@ -44,7 +44,7 @@ class CardOverlay < Page
   # of the waiting and retries which helps us avoid sleep calls in our code.
   def expect_task_to_be_incomplete
     expect(self).to have_selector(
-      'footer input[type=checkbox]:not(:checked)')
+      '.task-completed:not(:checked)')
   end
 
   def view_paper
@@ -85,8 +85,11 @@ class CardOverlay < Page
   end
 
   def post_message(new_message)
+    expect(page).to have_css('.new-comment-field')
+    page.execute_script('$(".new-comment-field").trigger("focus")')
+    expect(page).to have_css(".new-comment-submit-button", visible: true)
     find('.new-comment-field').set(new_message)
-    find('.button-secondary', text: "POST MESSAGE").click
+    find('.new-comment-submit-button', text: "POST MESSAGE").click
     expect(page).to have_content new_message
   end
 
@@ -109,6 +112,6 @@ class CardOverlay < Page
   private
 
   def checkbox_selector
-    'footer input[type=checkbox]'
+    '.task-completed'
   end
 end

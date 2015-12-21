@@ -12,8 +12,8 @@
                            everyone=allUsers
                            paperId=model.paperId
                            label="Participants:"
-                           onRemove="removeParticipantByUserId"
-                           onSelect="addParticipantByUserId"}}
+                           onRemove=(action "removeParticipantByUserId")
+                           onSelect=(action "addParticipantByUserId")}}
   </div>
 
   <div class="discussions-show-form">

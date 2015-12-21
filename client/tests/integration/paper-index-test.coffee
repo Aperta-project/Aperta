@@ -97,7 +97,7 @@ test 'on paper.index as a participant on a task but not author of paper', (asser
   ]
 
   visit("/papers/#{currentPaper.id}").then ->
-    assert.ok !!find('#paper-assigned-tasks .card-content:contains("ReviewMe")').length
+    assert.ok !!find('#paper-assigned-tasks .task-disclosure-heading:contains("ReviewMe")').length
 
 test 'on paper.index as a participant on a task and author of paper', (assert) ->
   expect(1)
@@ -135,7 +135,7 @@ test 'visiting /paper: Author completes all metadata cards', (assert) ->
     .then ->
       for card in find('#paper-metadata-tasks .card-content')
         click card
-        click '#task_completed'
+        click '.task-completed'
         click '.overlay-close-button:first'
   andThen ->
     submitButton = find('button:contains("Submit")')

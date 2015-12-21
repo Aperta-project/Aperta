@@ -9,21 +9,17 @@ feature "Editing paper", js: true do
       @user  = FactoryGirl.create :user, :site_admin
       @paper = FactoryGirl.create :paper_with_task, creator: @user, task_params: { title: "Billing", type: "PlosBilling::BillingTask", role: "author" }
       login_as @user
-      visit "/"
+      visit "/papers/#{@paper.id}/tasks/#{@paper.tasks.first.id}"
     end
 
     it "shows validations", vcr: { cassette_name: "ned_countries" } do
-      click_link(@paper.title)
-      find('.paper-navigation-link').click
-      click_link('Billing')
+      expect(find(".task-completed")[:disabled]).to be(nil) # not disabled at start
 
-      expect(find("input#task_completed")[:disabled]).to be(nil) # not disabled at start
-
-      p = PageFragment.new(find('#overlay'))
+      p = PageFragment.new(find('.overlay'))
       p.select2("PLOS Publication Fee Assistance Program (PFA)", css: '.payment-method')
 
-      expect(find("input#task_completed")[:disabled]).to be(nil)
-      expect(page).not_to have_selector(".overlay-completed-checkbox .error-message") # make sure no error msg
+      expect(find(".task-completed")[:disabled]).to be(nil)
+      expect(page).not_to have_selector(".task-completed-section .error-message") # make sure no error msg
 
       within(".question-dataset") do
         find("input[id*='plos_billing--pfa_question_1-yes']").click
@@ -38,14 +34,14 @@ feature "Editing paper", js: true do
         end
       end
 
-      expect(find("input#task_completed")[:disabled]).to be_truthy # complete is disabled
-      expect(find(".overlay-completed-checkbox .error-message").text).to eq("Errors in form") # shows error
+      expect(find(".task-completed")[:disabled]).to be_truthy # complete is disabled
+      expect(find(".task-completed-section .error-message").text).to eq("Errors in form") # shows error
 
       # change to a different payment system
       find(".affiliation-field b[role='presentation']").click # open payment types dropdown
       find("div.select2-result-label", :text => /I will pay the full fee/).click # change back to non-pfa
-      expect(find("input#task_completed")[:disabled]).to be(nil) # not disabled after change
-      expect(page).not_to have_selector(".overlay-completed-checkbox .error-message") # make sure no error msg
+      expect(find(".task-completed")[:disabled]).to be(nil) # not disabled after change
+      expect(page).not_to have_selector(".task-completed-section .error-message") # make sure no error msg
     end
   end
 end

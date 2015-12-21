@@ -3,11 +3,10 @@ module InvitationFeatureHelpers
 
   def invite_new_reviewer_for_paper(email, paper)
     dashboard_page = DashboardPage.new
-    manuscript_page = dashboard_page.view_submitted_paper paper
-    manuscript_page.view_card task.title do |overlay|
-      overlay.invite_new_reviewer email
-      expect(overlay).to have_reviewers email
-    end
+    dashboard_page.view_submitted_paper paper
+    overlay = Page.view_task_overlay(paper, task)
+    overlay.invite_new_reviewer email
+    expect(overlay).to have_reviewers email
   end
 
   def ensure_email_got_sent_to(email)

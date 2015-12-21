@@ -32,3 +32,7 @@
                   viewCard="viewCard"}}
   {{/each}}
 </ul>
+
+{{overlay-task visible=showTaskOverlay
+               task=taskToDisplay
+               outAnimationComplete=(action "hideTaskOverlay")}}

@@ -8,8 +8,8 @@ export default Ember.Component.extend({
   commentSort: ['createdAt:desc'],
   sortedComments: computed.sort('comments', 'commentSort'),
 
-  firstComments: computed.filter('sortedComments', function(comment, index) {
-    return index < 5;
+  firstComments: computed('sortedComments', function() {
+    return this.get('sortedComments').slice(0, 5);
   }),
 
   showingAllComments: computed('comments.length', function() {
@@ -26,7 +26,8 @@ export default Ember.Component.extend({
     },
 
     postComment(text) {
-      this.sendAction('postComment', text);
+      if(Ember.isEmpty(text)) { return; }
+      this.attrs.postComment(text);
     }
   }
 });

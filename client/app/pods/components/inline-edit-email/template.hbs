@@ -23,10 +23,10 @@
     <p>Please choose who should receive this email.</p>
     {{participant-selector currentParticipants=recipients
                            everyone=allUsers
-                           onRemove="removeRecipient"
+                           onRemove=(action "removeRecipient")
+                           onSelect=(action "addRecipientById")
                            label="Following:"
-                           taskId=model.id
-                           onSelect="addRecipientById"}}
+                           taskId=model.id}}
 
     <button class="button-secondary button--green knockout" {{action "toggleChooseReceivers"}}>Cancel</button>
     <button class="button-secondary button--green knockout send-email-action" {{action "sendEmail" model}}>Send Email</button>

@@ -1,0 +1,172 @@
+{{partial "task-completed-section"}}
+
+<div class="task-main-content">
+  <h3>Enter Payee Details</h3>
+
+  <div class="add-author-form">
+    <div class="form-group form-inline author-top">
+      <div class="form-group author-half {{if validationErrors.firstName "error"}}">
+        {{nested-question-input ident="plos_billing--first_name"
+                         owner=task
+                         placeholder="Jane"
+                         disabled=isSubmissionTaskNotEditable
+                         textClassNames="text-field-title"}}
+      </div>
+
+      <div class="form-group author-half author-bump {{if validationErrors.lastName "error"}}">
+        {{nested-question-input ident="plos_billing--last_name"
+                         owner=task
+                         placeholder="Goodall"
+                         disabled=isSubmissionTaskNotEditable
+                         textClassNames="text-field-title"}}
+      </div>
+    </div>
+    <div class="form-group form-inline">
+      <div class="form-group author-half {{if validationErrors.title "error"}}">
+        {{nested-question-input ident="plos_billing--title"
+                         owner=task
+                         placeholder="World's Foremost Expert on Chimpanzees"
+                         disabled=isSubmissionTaskNotEditable
+                         textClassNames="text-field-title"}}
+      </div>
+
+      <div class="form-group author-half author-bump {{if validationErrors.department "error"}}">
+        {{nested-question-input ident="plos_billing--department"
+                         owner=task
+                         placeholder="Primatology"
+                         disabled=isSubmissionTaskNotEditable
+                         textClassNames="text-field-title"}}
+      </div>
+    </div>
+    <div class="form-group form-inline">
+      <div class="form-group author-half {{if validationErrors.affiliation "error"}}">
+        {{institution-search value=affiliation1Proxy
+                             institutionSelected="affiliation1Selected"
+                             placeholder="Affiliation"
+                             disabled=isSubmissionTaskNotEditable}}
+      </div>
+
+      <div class="form-group author-half author-bump {{if validationErrors.secondaryAffiliation "error"}}">
+        {{institution-search value=affiliation2Proxy
+                             institutionSelected="affiliation2Selected"
+                             placeholder="Secondary Affiliation (optional)"
+                             disabled=isSubmissionTaskNotEditable}}
+      </div>
+    </div>
+    <div class="form-group form-inline">
+      <div class="form-group author-half {{if validationErrors.phone "error"}}">
+        {{nested-question-input ident="plos_billing--phone_number"
+                         owner=task
+                         placeholder="415-555-5555"
+                         disabled=isSubmissionTaskNotEditable
+                         textClassNames="text-field-title"}}
+
+      </div>
+      <div class="form-group author-half author-bump {{if validationErrors.email "error"}}">
+        {{nested-question-input ident="plos_billing--email"
+                         owner=task
+                         placeholder="jane.goodll@science.com"
+                         disabled=isSubmissionTaskNotEditable
+                         textClassNames="text-field-title"}}
+
+      </div>
+    </div>
+    <div class="form-group form-inline">
+      <div class={{if validationErrors.address1 "error"}}>
+        {{nested-question-input ident="plos_billing--address1"
+                         owner=task
+                         placeholder="1581 Le Roy Ave"
+                         disabled=isSubmissionTaskNotEditable
+                         textClassNames="text-field-title"}}
+      </div>
+    </div>
+    <div class="form-group form-inline">
+      <div class={{if validationErrors.address2 "error"}}>
+        {{nested-question-input ident="plos_billing--address2"
+                         owner=task
+                         placeholder="Suite 3"
+                         disabled=isSubmissionTaskNotEditable
+                         textClassNames="text-field-title"}}
+      </div>
+    </div>
+    <div class="form-group form-inline">
+      <div class="form-group author-half {{if validationErrors.city "error"}}">
+        {{nested-question-input ident="plos_billing--city"
+                         owner=task
+                         placeholder="Berkeley"
+                         disabled=isSubmissionTaskNotEditable
+                         textClassNames="text-field-title"}}
+      </div>
+
+      <div class="form-group author-name author-bump {{if validationErrors.state "error"}}">
+        {{nested-question-input ident="plos_billing--state"
+                         owner=task
+                         placeholder="State or Province"
+                         disabled=isSubmissionTaskNotEditable
+                         textClassNames="text-field-title"}}
+      </div>
+      <div class="form-group author-name author-bump {{if validationErrors.postal_code "error"}}">
+        {{nested-question-input ident="plos_billing--postal_code"
+                         owner=task
+                         placeholder="94708"
+                         disabled=isSubmissionTaskNotEditable
+                         textClassNames="text-field-title"}}
+      </div>
+    </div>
+
+    <div class="form-group form-inline">
+      <div class="form-group author-half {{if validationErrors.country "error"}}">
+        {{#if countries.loaded}}
+          {{nested-question-select ident="plos_billing--country"
+                            owner=task
+                            placeholder="Select Your Country"
+                            displayQuestionText=false
+                            source=formattedCountries
+                            width="100%"
+                            enable=isSubmissionTaskEditable}}
+        {{/if}}
+        {{#if countries.loading}}
+          {{progress-spinner visible=true size="mini"}}
+          Loading countries
+        {{/if}}
+        {{#if countries.error}}
+          <i class="fa fa-exclamation-triangle"></i>
+          Error loading countries
+        {{/if}}
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <h2>
+    Payment Options
+  </h2>
+
+  {{partial "intro"}}
+
+  <ol class="question-list">
+    <li class="question">
+      <h3>
+        {{nested-question-display ident="plos_billing--payment_method" owner=task}}
+      </h3>
+
+      <div class="form-group author-half author-bump payment-method {{if validationErrors.affiliation "error"}}">
+        {{nested-question-select ident="plos_billing--payment_method"
+                          owner=task
+                          displayQuestionText=false
+                          class="affiliation-field"
+                          selectionSelected="paymentMethodSelected"
+                          source=responses
+                          width="350"
+                          enable=isSubmissionTaskEditable}}
+      </div>
+    </li>
+
+    {{partial "self_payment"}}
+    {{partial "institutional"}}
+    {{partial "gpi"}}
+    {{partial "pfa"}}
+    {{partial "special_collection"}}
+  </ol>
+</div>

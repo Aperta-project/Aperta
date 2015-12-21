@@ -3,8 +3,6 @@ import AuthorizedRoute from 'tahi/routes/authorized';
 import Utils from 'tahi/services/utils';
 
 export default AuthorizedRoute.extend({
-  cardOverlayService: Ember.inject.service('card-overlay'),
-
   afterModel(paper) {
     // Ping manuscript_manager url for authorization.
     //
@@ -28,24 +26,6 @@ export default AuthorizedRoute.extend({
   },
 
   actions: {
-    viewCard(task, queryParams) {
-      this.get('cardOverlayService').setProperties({
-        previousRouteOptions: ['paper.workflow', this.modelFor('paper')],
-        overlayBackground: 'paper/workflow'
-      });
-
-      if($.isEmptyObject(queryParams)) {
-        queryParams = { queryParams: {} };
-      }
-
-      this.transitionTo(
-        'paper.task',
-        this.modelFor('paper'),
-        task.id,
-        queryParams
-      );
-    },
-
     addTaskTypeToPhase(phase, taskTypeList) {
       if (!taskTypeList) { return; }
 
@@ -64,8 +44,17 @@ export default AuthorizedRoute.extend({
         promises.push(newTaskPromise);
       });
 
-      Ember.RSVP.all(promises).then(() => {
-        this.send('closeOverlay');
+      Ember.RSVP.all(promises);
+    },
+
+    // Required until Ember has routable components.
+    // We need to cleanup because controllers are singletons
+    // and are not torn down:
+
+    willTransition() {
+      this.controllerFor('paper.workflow').setProperties({
+        taskToDisplay: null,
+        showTaskOverlay: false
       });
     }
   }

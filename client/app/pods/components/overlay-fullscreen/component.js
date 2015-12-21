@@ -116,7 +116,8 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
     Ember.assert(
-      'You must provide an outAnimationComplete action to OverlayBaseComponent',
+      `You must provide an outAnimationComplete
+       action to OverlayFullscreenComponent`,
       !Ember.isEmpty(this.get('outAnimationComplete'))
     );
   }

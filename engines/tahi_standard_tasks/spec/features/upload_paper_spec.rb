@@ -22,13 +22,13 @@ feature "Upload paper", js: true, selenium: true, sidekiq: :inline! do
   end
 
   scenario "Author uploads paper in Word format" do
-    click_link paper.title
-    edit_paper_page = PaperPage.new
-    edit_paper_page.view_card('Upload Manuscript').upload_word_doc
+    overlay = Page.view_task_overlay(paper, paper.tasks.first)
+    overlay.upload_word_doc
 
     wait_for_ajax
 
-    expect(page).to have_no_css('.overlay.in')
+    visit "/papers/#{paper.id}"
+    edit_paper_page = PaperPage.new
     expect(edit_paper_page).to have_paper_title("This is a Title About Turtles")
     expect(edit_paper_page.has_body_text?("And this is my subtitle")).to eq(true)
   end

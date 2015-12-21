@@ -1,0 +1,111 @@
+$task-disclosure-radius: 4px;
+
+.task-disclosure {
+  position: relative;
+  margin-bottom: 0.4rem;
+  padding-top: 40px;
+}
+
+.task-disclosure-heading {
+  @include position(absolute, 0px 0px auto 0px);
+  height: 4.0rem;
+  border-radius: $task-disclosure-radius;
+  padding: 0 2rem 0 4.75rem;
+  color: #222;
+  font-size: 1.8rem;
+  line-height: 4.0rem;
+  cursor: pointer;
+  background: #e6e6e6;
+  z-index: 1;
+  @include ellipsis;
+  @include user-select(none);
+  will-change: transform;
+}
+
+.task-disclosure--open .task-disclosure-heading {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.task-disclosure-body {
+  overflow: auto;
+  border: 1px solid #e9e9e9;
+  border-bottom-right-radius: $task-disclosure-radius;
+  border-bottom-left-radius: $task-disclosure-radius;
+}
+
+.task-disclosure-completed-icon {
+  position: absolute;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  left: 1.25rem;
+  margin-top: -11px;
+  border-radius: 50%;
+  background: #F7F7F7;
+
+  svg {
+    position: relative;
+    top: -6px;
+    width: 16px;
+    left: 3px;
+  }
+
+  polygon { fill: rgba(0,0,0, 0.05); }
+
+  &.active {
+    background: $tahi-green;
+    polygon { fill: #fff; }
+  }
+}
+
+// TaskLoad overrides ---------------------------------------------------------
+
+.task-disclosure {
+  .task-loading {
+    height: 1.8rem;
+    margin: 3rem 2rem;
+    line-height: 1.8rem;
+    font-size: 1.6rem;
+
+    .progress-spinner {
+      float: left;
+      margin-right: 7px;
+    }
+  }
+}
+
+
+// TaskComponent overrides ----------------------------------------------------
+
+.task-disclosure .task {
+  .task-completed-section {
+    display: block;
+    padding: 10px 15px;
+    opacity: 0.7;
+    color: #666;
+    cursor: pointer;
+    @include transition(opacity 0.2s);
+    @include user-select(none);
+
+    // Bootstrap override :-\
+    margin-bottom: 0;
+
+    &:hover { opacity: 1.0; }
+  }
+
+  .task-main-content {
+    padding: 1rem 1.5rem 1.5rem 1.5rem;
+  }
+
+  .task-main-content .question label {
+    margin-right: 10px;
+  }
+
+  .task-main-content .question-dataset {
+    padding: 15px 20px;
+    background: #f9f9f9;
+
+    label { margin-right: 15px; }
+  }
+}

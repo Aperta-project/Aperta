@@ -15,5 +15,6 @@ export default {
 
     instance.registry.injection('controller', 'currentUser', 'user:current');
     instance.registry.injection('route', 'currentUser', 'user:current');
+    instance.registry.injection('component:overlay-task', 'currentUser', 'user:current');
   }
 };

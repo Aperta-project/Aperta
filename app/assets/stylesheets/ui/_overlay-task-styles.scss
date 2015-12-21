@@ -1,18 +1,30 @@
 .overlay--card {
   .task-completed-section {
     position: absolute;
-    top: 1.0rem;
-    left: 8.5rem;
-  }
+    bottom: -5.5rem;
+    right: 16.5rem;
 
-  .task-main-content {
-    padding-top: 2rem;
+    .error-message {
+      display: block;
+    }
   }
 }
 
 .task-overlay-paper-title {
   position: relative;
-  margin: 0 0 12px 0;
+  display: inline-block;
+  padding-left: 27px;
   font-size: 1.6rem;
-  line-height: 0.9;
+  line-height: 1.2;
+
+  .manuscript-icon {
+    @include position(absolute, 2px auto auto 0px);
+    path, rect { fill: $tahi-green; }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .task-overlay-paper-title {
+    font-size: 1.3rem;
+  }
 }

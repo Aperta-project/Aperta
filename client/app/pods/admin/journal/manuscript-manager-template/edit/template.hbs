@@ -58,3 +58,9 @@
     {{/each}}
   </div>
 </div>
+
+{{#if showAdHocTaskOverlay}}
+  {{overlay-ad-hoc-template
+      task=adHocTaskToDisplay
+      outAnimationComplete=(action "hideAdHocTaskOverlay")}}
+{{/if}}

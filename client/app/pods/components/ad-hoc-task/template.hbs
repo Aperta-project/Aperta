@@ -1,0 +1,69 @@
+{{partial "task-completed-section"}}
+
+<div class="task-main-content">
+  {{inline-edit-h1 title=task.title setTitle="setTitle"}}
+
+  <div class="task-body">
+    {{#each uploads as |upload|}}
+      {{upload-preview upload=upload}}
+    {{/each}}
+
+    {{#each blocks as |block|}}
+      {{#inline-edit-body-part block=block
+                               editing=false
+                               cancel="resetBlock"
+                               save="saveBlock"
+                               delete="deleteBlock"
+                               addItem="addCheckboxItem"
+                               as |editing|}}
+        {{#each block as |item|}}
+          {{inline-edit-item item=item
+                             block=block
+                             editing=editing
+                             allUsers=allUsers
+                             overlayParticipants=task.participations
+                             emailSentStates=emailSentStates
+                             isNew=false
+                             saveModel=(action "save")
+                             deleteBlock=(action "deleteBlock")
+                             deleteItem=(action "deleteItem")
+                             sendEmail=(action "sendEmail")}}
+        {{/each}}
+      {{/inline-edit-body-part}}
+    {{/each}}
+
+    {{#each newBlocks as |block|}}
+      {{#inline-edit-body-part block=block
+                               editing=true
+                               cancel="resetBlock"
+                               save="saveBlock"
+                               delete="deleteBlock"
+                               addItem="addCheckboxItem"
+                               as |editing|}}
+        {{#each block as |item|}}
+          {{inline-edit-item item=item
+                             block=block
+                             editing=editing
+                             allUsers=allUsers
+                             overlayParticipants=task.participations
+                             emailSentStates=emailSentStates
+                             isNew=true
+                             saveModel=(action "save")
+                             deleteBlock=(action "deleteBlock")
+                             deleteItem=(action "deleteItem")
+                             sendEmail=(action "sendEmail")}}
+        {{/each}}
+      {{/inline-edit-body-part}}
+    {{/each}}
+
+    {{#each task.attachments as |attachment|}}
+      {{attachment-thumbnail attachment=attachment
+                             destroyAttachment="destroyAttachment"
+                             isEditable=task.paper.editable}}
+    {{/each}}
+  </div>
+
+  {{#reveal-adhoc-toolbar-buttons}}
+    {{partial "components/reveal-adhoc-toolbar-buttons/buttons"}}
+  {{/reveal-adhoc-toolbar-buttons}}
+</div>

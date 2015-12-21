@@ -1,0 +1,53 @@
+{{#ember-wormhole to="overlay-drop-zone"}}
+  {{#overlay-animate outAnimationComplete=(action "close")
+                     as |animateOut|}}
+    <div class="overlay overlay--card {{task-component-name model.type}}-overlay">
+      <div class="overlay-container">
+        <header class="overlay-header">
+          <span>
+            {{#link-to "paper.index" model.paper.id class="task-overlay-paper-title"}}
+              {{partial "svg/manuscript-icon"}}
+              {{{model.paperTitle}}}
+            {{/link-to}}
+          </span>
+          <a class="button-secondary button--green overlay-close-button" {{action animateOut}}>Close</a>
+        </header>
+        <div class="overlay-body">
+          <div id="versioned-metadata">
+            {{#unless isLoading}}
+              <div class="versioned-metadata-version">
+                <span class="grey">Viewing</span>
+                <span class="versioned-metadata-version-string">
+                  Version {{ selectedVersion1Snapshot.versionString }}
+                  &mdash;
+                  {{format-date selectedVersion1Snapshot.createdAt format='MMM D, YYYY'}}
+                </span>
+                {{#if selectedVersion2Snapshot}}
+                  <span class="grey">comparing with</span>
+                  <span class="versioned-metadata-version-string">
+                    Version {{ selectedVersion2Snapshot.versionString }}
+                    &mdash;
+                    {{format-date selectedVersion2Snapshot.createdAt format='MMM D, YYYY'}}
+                  </span>
+                {{/if}}
+              </div>
+            {{/unless}}
+
+            <h2>{{model.title}}</h2>
+
+            {{#if isLoading}}
+              {{partial "task-loading-section"}}
+            {{else}}
+              {{nested-snapshot
+                snapshot1=selectedVersion1Snapshot.contents
+                snapshot2=selectedVersion2Snapshot.contents}}
+            {{/if}}
+          </div>
+        </div>
+        <footer class="overlay-footer">
+          <a class="button-secondary button--green overlay-close-button" {{action animateOut}}>Close</a>
+        </footer>
+      </div>
+    </div>
+  {{/overlay-animate}}
+{{/ember-wormhole}}

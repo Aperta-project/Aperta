@@ -57,7 +57,7 @@ feature 'Production Metadata Card', js: true do
         visit "/papers/#{paper.id}/tasks/#{production_metadata_task.id}"
 
         find('h1', text: 'Production Metadata')
-        within '.overlay-main-work' do
+        within '.task-main-content' do
           expect(page).to have_field('production_metadata--volume_number', with: "1234")
           expect(page).to have_field('production_metadata--issue_number', with: "5678")
           expect(page).to have_field('production_metadata--production_notes', with: "Too cool for school.")
@@ -69,7 +69,7 @@ feature 'Production Metadata Card', js: true do
     context 'clicking complete' do
        describe 'with invalid input in required fields' do
         it 'shows an error'do
-          find('#task_completed').click
+          find('.task-completed').click
           expect(find(".volume-number")).to have_text("Must be a whole number")
           expect(find(".issue-number")).to have_text("Must be a whole number")
         end

@@ -1,8 +1,7 @@
 import Ember from 'ember';
-import AnimateOverlay from 'tahi/mixins/animate-overlay';
 import Utils from 'tahi/services/utils';
 
-export default Ember.Route.extend(AnimateOverlay, {
+export default Ember.Route.extend({
   restless: Ember.inject.service('restless'),
 
   setupController(controller, model) {
@@ -32,12 +31,6 @@ export default Ember.Route.extend(AnimateOverlay, {
     return this.get('container').lookup('serializer:application');
   }),
 
-  cleanupAncillaryViews() {
-    this.animateOverlayOut().then(()=> {
-      this.controllerFor('application').set('showOverlay', false);
-    });
-  },
-
   actions: {
     willTransition(transition) {
       let currentRouteController = this.controllerFor(
@@ -53,8 +46,6 @@ export default Ember.Route.extend(AnimateOverlay, {
           return;
         }
       }
-
-      this.cleanupAncillaryViews();
     },
 
     error(response, transition) {
@@ -75,27 +66,6 @@ export default Ember.Route.extend(AnimateOverlay, {
       );
 
       transition.abort();
-    },
-
-    openOverlay(options) {
-      Ember.assert(
-        'You must pass a template name to `openOverlay`',
-        options.template
-      );
-      if(Ember.isEmpty(options.into))   { options.into   = 'application'; }
-      if(Ember.isEmpty(options.outlet)) { options.outlet = 'overlay'; }
-
-      this.controllerFor('application').set('showOverlay', true);
-      this.render(options.template, options);
-    },
-
-    closeOverlay() {
-      this.flash.clearAllMessages();
-      this.cleanupAncillaryViews();
-    },
-
-    closeAction() {
-      this.send('closeOverlay');
     },
 
     created(payload) {

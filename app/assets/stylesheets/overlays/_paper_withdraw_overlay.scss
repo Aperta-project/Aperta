@@ -1,5 +1,9 @@
 .paper-withdraw-overlay {
-  text-align: center;
+  .overlay-container {
+    width: 70%;
+    margin: auto;
+    text-align: center;
+  }
 
   h1 {
     font-size: 48px;

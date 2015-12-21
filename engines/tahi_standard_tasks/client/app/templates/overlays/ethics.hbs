@@ -51,4 +51,21 @@
       {{/if}}
     {{/nested-question-radio}}
   </li>
+
+  <li class="question">
+    {{#nested-question-radio model=fieldStudyQuestion
+        owner=model
+        disabled=isSubmissionTaskNotEditable
+        noAction="userSelectedNoOnFieldStudy"
+        as |selected|}}
+
+      {{#if selected.yes}}
+        <div class="question-dataset">
+          {{nested-question-textarea model=fieldPermitNumberQuestion
+              owner=model
+              disabled=isSubmissionTaskNotEditable}}
+        </div>
+      {{/if}}
+    {{/nested-question-radio}}
+  </li>
 </ol>

@@ -25,6 +25,16 @@ export default TaskComponent.extend(SavesQuestionsOnClose, {
                .findQuestion('ethics--animal_subjects--field_permit');
   }),
 
+  fieldStudyQuestion: Ember.computed("model", function(){
+    return this.get('task')
+              .findQuestion('ethics--field_study');
+  }),
+
+  fieldPermitNumberQuestion: Ember.computed("model", function(){
+    return this.get('task')
+               .findQuestion('ethics--field_study--field_permit_number');
+  }),
+
   actions: {
     destroyAttachment(attachment) {
       attachment.destroyRecord();
@@ -43,5 +53,12 @@ export default TaskComponent.extend(SavesQuestionsOnClose, {
       answer.set('value', '');
       answer.save();
     },
+
+    userSelectedNoOnFieldStudy: function(){
+      let question = this.get("fieldStudyQuestion");
+      let answer = question.answerForOwner(this.get('task'));
+      answer.set('value', '');
+      answer.save();
+    }
   }
 });

@@ -42,12 +42,12 @@ FlowColumnComponent = Ember.Component.extend
     @selectedQuery(@get('selectableTaskAssignments').findBy('id', @get('flow.query').assigned))
 
   selectableTaskRoles: Ember.computed ->
-    @get('flow.taskRoles').map (role) ->
-      id: role
-      text: role.capitalize()
+    @get('flow.taskRoles').map (oldRole) ->
+      id: oldRole
+      text: oldRole.capitalize()
 
   selectedTaskRole: Ember.computed ->
-    @selectedQuery(@get('selectableTaskRoles').findBy('id', @get('flow.query').role))
+    @selectedQuery(@get('selectableTaskRoles').findBy('id', @get('flow.query').old_role))
 
   selectableQueries: (options, idKey, textKey) ->
     options.map (option) ->
@@ -76,7 +76,7 @@ FlowColumnComponent = Ember.Component.extend
       @send 'save'
 
     updateRoleQuery: (query) ->
-      @get('flow.query').role = query.id
+      @get('flow.query').old_role = query.id
       @send 'save'
 
     removeTypeQuery: ->
@@ -91,8 +91,8 @@ FlowColumnComponent = Ember.Component.extend
       delete @get('flow.query').assigned
       @send 'save'
 
-    removeRoleQuery: ->
-      delete @get('flow.query').role
+    removeOldRoleQuery: ->
+      delete @get('flow.query').old_role
       @send 'save'
 
     save: ->

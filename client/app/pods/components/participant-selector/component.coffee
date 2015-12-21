@@ -11,8 +11,8 @@ ParticipantSelectorComponent = Ember.Component.extend
 
   resultsTemplate: (user) ->
     userInfo =
-      if user.roles.length
-        "#{user.username}, #{user.roles.join(', ')}"
+      if user.old_roles.length
+        "#{user.username}, #{user.old_roles.join(', ')}"
       else
         user.username
 
@@ -28,9 +28,9 @@ ParticipantSelectorComponent = Ember.Component.extend
   sortByCollaboration: (a, b) ->
     # sort first by if they are collaborators, then by name
     # works, consider enhancing
-    if a.roles.length && !b.roles.length
+    if a.old_roles.length && !b.old_roles.length
       -1
-    else if !a.roles.length && b.roles.length
+    else if !a.old_roles.length && b.old_roles.length
       1
     else
       if a.full_name < b.full_name

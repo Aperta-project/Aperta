@@ -1,10 +1,10 @@
 FactoryGirl.define do
   factory :flow do
     title 'Up for grabs'
-    role
+    old_role
 
     trait(:default) do
-      role nil
+      old_role nil
     end
   end
 end

@@ -107,7 +107,7 @@ describe TasksController, redis: true do
     context "when the task is a ReviewerReportTask" do
       let!(:reviewer_task) {
         TahiStandardTasks::ReviewerReportTask.create!(title: "Reviewer Report",
-        role: "reviewer",
+        old_role: "reviewer",
         phase: paper.phases.first,
         completed: false)
       }

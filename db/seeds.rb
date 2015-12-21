@@ -13,7 +13,7 @@ class ManualSeeds #Use this class to run seeds the old way
       user.username = 'admin'
       user.site_admin = true
       user.affiliations.first_or_initialize(name: 'PLOS')
-      user.user_roles.new(role: plos_journal.roles.where(kind: Role::ADMIN, name: Role::ADMIN.capitalize).first_or_initialize)
+      user.user_roles.new(role: plos_journal.old_roles.where(kind: OldRole::ADMIN, name: OldRole::ADMIN.capitalize).first_or_initialize)
     end
 
     User.where(email: 'editor@example.com').first_or_create! do |user|
@@ -22,7 +22,7 @@ class ManualSeeds #Use this class to run seeds the old way
       user.password = 'password'
       user.username = 'editor'
       user.affiliations.first_or_initialize(name: 'PLOS')
-      user.user_roles.new(role: plos_journal.roles.where(kind: Role::EDITOR, name: Role::EDITOR.capitalize).first_or_initialize)
+      user.user_roles.new(role: plos_journal.old_roles.where(kind: OldRole::EDITOR, name: OldRole::EDITOR.capitalize).first_or_initialize)
     end
 
     User.where(email: 'reviewer@example.com').first_or_create! do |user|
@@ -39,7 +39,7 @@ class ManualSeeds #Use this class to run seeds the old way
       user.password = 'password'
       user.username = 'flow_manager'
       user.affiliations.first_or_initialize(name: 'PLOS')
-      user.user_roles.new(role: plos_journal.roles.where(kind: Role::FLOW_MANAGER, name: Role::FLOW_MANAGER.titleize).first_or_initialize)
+      user.user_roles.new(role: plos_journal.old_roles.where(kind: OldRole::FLOW_MANAGER, name: OldRole::FLOW_MANAGER.titleize).first_or_initialize)
     end
 
     User.where(email: 'author@example.com').first_or_create! do |user|
@@ -48,7 +48,7 @@ class ManualSeeds #Use this class to run seeds the old way
       user.password = 'password'
       user.username = 'author'
       user.affiliations.first_or_initialize(name: 'PLOS')
-      user.roles.new(journal_id: plos_journal.id, name: 'Author')
+      user.old_roles.new(journal_id: plos_journal.id, name: 'Author')
     end
 
     # QA Users
@@ -59,7 +59,7 @@ class ManualSeeds #Use this class to run seeds the old way
       user.username = 'jgray_sa'
       user.site_admin = true
       user.affiliations.first_or_initialize(name: 'PLOS')
-      user.user_roles.new(role: plos_journal.roles.where(kind: Role::ADMIN, name: Role::ADMIN.capitalize).first_or_initialize)
+      user.user_roles.new(role: plos_journal.old_roles.where(kind: OldRole::ADMIN, name: OldRole::ADMIN.capitalize).first_or_initialize)
     end
 
     qa_ordinary_admin = User.where(email: 'sealresq+6@gmail.com').first_or_create! do |user|
@@ -69,7 +69,7 @@ class ManualSeeds #Use this class to run seeds the old way
       user.username = 'jgray_oa'
       user.site_admin = false
       user.affiliations.first_or_initialize(name: 'PLOS')
-      user.user_roles.new(role: plos_journal.roles.where(kind: Role::ADMIN, name: Role::ADMIN.capitalize).first_or_initialize)
+      user.user_roles.new(role: plos_journal.old_roles.where(kind: OldRole::ADMIN, name: OldRole::ADMIN.capitalize).first_or_initialize)
     end
 
     qa_flow_manager = User.where(email: 'sealresq+5@gmail.com').first_or_create! do |user|
@@ -79,7 +79,7 @@ class ManualSeeds #Use this class to run seeds the old way
       user.username = 'jgray_flowmgr'
       user.site_admin = false
       user.affiliations.first_or_initialize(name: 'PLOS')
-      user.user_roles.new(role: plos_journal.roles.where(kind: Role::FLOW_MANAGER, name: Role::FLOW_MANAGER.titleize).first_or_initialize)
+      user.user_roles.new(role: plos_journal.old_roles.where(kind: OldRole::FLOW_MANAGER, name: OldRole::FLOW_MANAGER.titleize).first_or_initialize)
     end
 
     qa_editor = User.where(email: 'sealresq+4@gmail.com').first_or_create! do |user|
@@ -88,7 +88,7 @@ class ManualSeeds #Use this class to run seeds the old way
       user.password = 'in|fury8'
       user.username = 'jgray_editor'
       user.affiliations.first_or_initialize(name: 'PLOS')
-      user.user_roles.new(role: plos_journal.roles.where(kind: Role::EDITOR, name: Role::EDITOR.capitalize).first_or_initialize)
+      user.user_roles.new(role: plos_journal.old_roles.where(kind: OldRole::EDITOR, name: OldRole::EDITOR.capitalize).first_or_initialize)
     end
 
     qa_editor2 = User.where(email: 'sealresq+3@gmail.com').first_or_create! do |user|
@@ -97,7 +97,7 @@ class ManualSeeds #Use this class to run seeds the old way
       user.password = 'in|fury8'
       user.username = 'jgray_assoceditor'
       user.affiliations.first_or_initialize(name: 'PLOS')
-      user.user_roles.new(role: plos_journal.roles.where(kind: Role::EDITOR, name: Role::EDITOR.capitalize).first_or_initialize)
+      user.user_roles.new(role: plos_journal.old_roles.where(kind: OldRole::EDITOR, name: OldRole::EDITOR.capitalize).first_or_initialize)
     end
 
     qa_reviewer = User.where(email: 'sealresq+2@gmail.com').first_or_create! do |user|
@@ -114,7 +114,7 @@ class ManualSeeds #Use this class to run seeds the old way
       user.password = 'in|fury8'
       user.username = 'jgray_author'
       user.affiliations.first_or_initialize(name: 'PLOS')
-      user.user_roles.new(role: plos_journal.roles.where(name: 'Author').first_or_initialize)
+      user.user_roles.new(role: plos_journal.old_roles.where(name: 'Author').first_or_initialize)
     end
 
     # Create Papers for QA

@@ -24,7 +24,7 @@ describe PaperTrackerController do
       expect(json["papers"].size).to eq 0
     end
 
-    it "do not list the paper where user do not have a role" do
+    it "do not list the paper where user do not have a old_role" do
       paper = FactoryGirl.create(:paper, :submitted)
       get :index, format: :json
       json = JSON.parse(response.body)

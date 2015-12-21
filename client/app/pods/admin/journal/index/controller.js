@@ -61,17 +61,17 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       });
     },
 
-    assignRoleToUser(roleID, user) {
-      const role = this.store.getById('role', roleID);
+    assignOldRoleToUser(oldRoleID, user) {
+      const oldRole = this.store.getById('oldRole', oldRoleID);
 
       return this.store.createRecord('userRole', {
         user: user,
-        role: role
+        oldRole: oldRole
       }).save();
     },
 
     addRole() {
-      this.get('model.roles').addObject(this.store.createRecord('role'));
+      this.get('model.oldRoles').addObject(this.store.createRecord('old-role'));
     },
 
     addMMTemplate() {
@@ -144,10 +144,10 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       });
     },
 
-    assignRole(roleId, user) {
+    assignOldRole(oldRoleID, user) {
       const userRole = this.store.createRecord('userRole', {
         user: user,
-        role: this.store.getById('role', roleId)
+        oldRole: this.store.getById('oldRole', oldRoleID)
       });
 
       return userRole.save()['catch'](function() {
@@ -156,7 +156,7 @@ export default Ember.Controller.extend(ValidationErrorsMixin, {
       });
     },
 
-    removeRole(userRoleId) {
+    removeOldRole(userRoleId) {
       return this.store.getById('userRole', userRoleId).destroyRecord();
     },
 

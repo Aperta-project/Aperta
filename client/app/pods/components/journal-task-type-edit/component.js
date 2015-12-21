@@ -5,22 +5,22 @@ const { computed } = Ember;
 export default Ember.Component.extend({
   classNames: ['individual-task-type'],
 
-  roles: null,
+  oldRoles: null,
 
-  selectedRole: computed('model.role', function() {
-    const role = this.get('availableTaskRoles')
-                     .findBy('kind', this.get('model.role'));
+  selectedOldRole: computed('model.oldRole', function() {
+    const oldRole = this.get('availableTaskRoles')
+                     .findBy('kind', this.get('model.oldRole'));
 
-    if(Ember.isEmpty(role)) { return null; }
+    if(Ember.isEmpty(oldRole)) { return null; }
 
     return {
-      id: role.get('id'),
-      text: role.get('name')
+      id: oldRole.get('id'),
+      text: oldRole.get('name')
     };
   }),
 
   journalRoleSort: ['name: asc'],
-  availableTaskRoles: computed.sort('roles', 'journalRoleSort'),
+  availableTaskRoles: computed.sort('oldRoles', 'journalRoleSort'),
 
   formattedTaskRoles: computed('availableTaskRoles.[]', function() {
     return this.get('availableTaskRoles').map(function(taskRole) {
@@ -33,7 +33,7 @@ export default Ember.Component.extend({
 
   actions: {
     clearRole() {
-      this.set('model.role', null);
+      this.set('model.oldRole', null);
       this.get('model').save();
     },
 
@@ -42,7 +42,7 @@ export default Ember.Component.extend({
                        .findBy('name', roleProxy.text)
                        .get('kind');
 
-      this.set('model.role', kind);
+      this.set('model.oldRole', kind);
       this.get('model').save();
     }
   }

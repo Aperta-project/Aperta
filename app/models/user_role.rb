@@ -2,22 +2,22 @@ class UserRole < ActiveRecord::Base
   include EventStream::Notifiable
 
   belongs_to :user, inverse_of: :user_roles
-  belongs_to :role, inverse_of: :user_roles
+  belongs_to :old_role, inverse_of: :user_roles
 
   validates :user, presence: true
-  validates :role, presence: true
+  validates :old_role, presence: true
 
-  validates :role_id, uniqueness: { scope: :user_id }
+  validates :old_role_id, uniqueness: { scope: :user_id }
 
   def self.admins
-    joins(:role).merge(Role.admins)
+    joins(:old_role).merge(OldRole.admins)
   end
 
   def self.editors
-    joins(:role).merge(Role.editors)
+    joins(:old_role).merge(OldRole.editors)
   end
 
   def self.reviewers
-    joins(:role).merge(Role.reviewers)
+    joins(:old_role).merge(OldRole.reviewers)
   end
 end

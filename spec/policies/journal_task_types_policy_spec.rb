@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe JournalTaskTypesPolicy do
   let(:journal) { FactoryGirl.create(:journal) }
-  let(:journal_task_type) { FactoryGirl.create(:journal_task_type, role: 'author', title: 'Awesome Card', journal: journal) }
+  let(:journal_task_type) { FactoryGirl.create(:journal_task_type, old_role: 'author', title: 'Awesome Card', journal: journal) }
   let(:policy) { JournalTaskTypesPolicy.new(current_user: user, journal_task_type: journal_task_type) }
 
   context "admin" do

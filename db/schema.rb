@@ -11,7 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151214211436) do
+ActiveRecord::Schema.define(version: 20151222165348) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_trgm"
@@ -182,7 +183,7 @@ ActiveRecord::Schema.define(version: 20151214211436) do
 
   create_table "flows", force: :cascade do |t|
     t.string  "title"
-    t.integer "role_id"
+    t.integer "old_role_id"
     t.integer "position"
     t.text    "query"
   end
@@ -211,8 +212,8 @@ ActiveRecord::Schema.define(version: 20151214211436) do
   create_table "journal_task_types", force: :cascade do |t|
     t.integer "journal_id"
     t.string  "title"
-    t.string  "role"
     t.string  "kind"
+    t.string  "old_role",   limit: 255
   end
 
   add_index "journal_task_types", ["journal_id"], name: "index_journal_task_types_on_journal_id", using: :btree
@@ -272,16 +273,30 @@ ActiveRecord::Schema.define(version: 20151214211436) do
   add_index "nested_questions", ["parent_id"], name: "index_nested_questions_on_parent_id", using: :btree
   add_index "nested_questions", ["rgt"], name: "index_nested_questions_on_rgt", using: :btree
 
+  create_table "old_roles", force: :cascade do |t|
+    t.string   "name",                                  limit: 255
+    t.integer  "journal_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "can_administer_journal",                            default: false,    null: false
+    t.boolean  "can_view_assigned_manuscript_managers",             default: false,    null: false
+    t.boolean  "can_view_all_manuscript_managers",                  default: false,    null: false
+    t.string   "kind",                                  limit: 255, default: "custom", null: false
+    t.boolean  "can_view_flow_manager",                             default: false,    null: false
+  end
+
+  add_index "old_roles", ["kind"], name: "index_old_roles_on_kind", using: :btree
+
   create_table "paper_roles", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "paper_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "role"
+    t.string   "old_role",   limit: 255
   end
 
+  add_index "paper_roles", ["old_role"], name: "index_paper_roles_on_old_role", using: :btree
   add_index "paper_roles", ["paper_id"], name: "index_paper_roles_on_paper_id", using: :btree
-  add_index "paper_roles", ["role"], name: "index_paper_roles_on_role", using: :btree
   add_index "paper_roles", ["user_id", "paper_id"], name: "index_paper_roles_on_user_id_and_paper_id", using: :btree
   add_index "paper_roles", ["user_id"], name: "index_paper_roles_on_user_id", using: :btree
 
@@ -354,20 +369,6 @@ ActiveRecord::Schema.define(version: 20151214211436) do
   end
 
   add_index "question_attachments", ["nested_question_answer_id"], name: "index_question_attachments_on_nested_question_answer_id", using: :btree
-
-  create_table "roles", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "journal_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "can_administer_journal",                default: false,    null: false
-    t.boolean  "can_view_assigned_manuscript_managers", default: false,    null: false
-    t.boolean  "can_view_all_manuscript_managers",      default: false,    null: false
-    t.string   "kind",                                  default: "custom", null: false
-    t.boolean  "can_view_flow_manager",                 default: false,    null: false
-  end
-
-  add_index "roles", ["kind"], name: "index_roles_on_kind", using: :btree
 
   create_table "snapshots", force: :cascade do |t|
     t.string   "source_type"
@@ -470,9 +471,9 @@ ActiveRecord::Schema.define(version: 20151214211436) do
     t.boolean  "completed",  default: false,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "role",                        null: false
     t.json     "body",       default: [],     null: false
     t.integer  "position",   default: 0
+    t.string   "old_role",   limit: 255,                  null: false
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
@@ -489,11 +490,11 @@ ActiveRecord::Schema.define(version: 20151214211436) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "role_id"
+    t.integer  "old_role_id"
   end
 
-  add_index "user_roles", ["role_id"], name: "index_user_roles_on_role_id", using: :btree
-  add_index "user_roles", ["user_id", "role_id"], name: "index_user_roles_on_user_id_and_role_id", using: :btree
+  add_index "user_roles", ["old_role_id"], name: "index_user_roles_on_old_role_id", using: :btree
+  add_index "user_roles", ["user_id", "old_role_id"], name: "index_user_roles_on_user_id_and_old_role_id", using: :btree
   add_index "user_roles", ["user_id"], name: "index_user_roles_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|

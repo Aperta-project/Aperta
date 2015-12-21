@@ -13,7 +13,7 @@ class AssignmentsController < ApplicationController
     paper = Paper.find(params[:assignment][:paper_id])
     authorize_action! paper: paper
 
-    assignment = PaperRole.new(params.require(:assignment).permit(:role, :user_id, :paper_id))
+    assignment = PaperRole.new(params.require(:assignment).permit(:old_role, :user_id, :paper_id))
     assignment.save!
 
     Activity.assignment_created!(assignment, user: current_user)

@@ -114,10 +114,10 @@ StyleguideRoute = Ember.Route.extend
     paper = @store.createRecord("paper", {
       title: 'Long Paper Title of Amazingness'
       shortTitle: 'Short Paper Title',
-      roles: []
+      oldRoles: []
     })
 
-    role = {
+    oldRole = {
       name: "Test Role"
       journal: journal
       canAdministerJournal: true
@@ -242,7 +242,7 @@ StyleguideRoute = Ember.Route.extend
     flow = @store.find 'flow', 1
     users = @store.find 'user'
 
-    journalRoles = @store.find("role")
+    journalRoles = @store.find("oldRole")
 
     autoSuggestData = [{
       fullName: 'Joe Bob', email: 'joe.bob@example.com'
@@ -265,8 +265,8 @@ StyleguideRoute = Ember.Route.extend
     controller.set('paper', paper)
     controller.set('paper2', paper2)
     controller.set('phase', phase1)
-    controller.set('role', role)
-    controller.set('roles', [role])
+    controller.set('oldRole', oldRole)
+    controller.set('oldRoles', [oldRole])
     controller.set('supportedDownloadFormats', supportedDownloadFormats)
     controller.set('task', task)
     controller.set('taskComplete', taskComplete)

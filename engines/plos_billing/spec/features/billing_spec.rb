@@ -7,7 +7,7 @@ feature "Editing paper", js: true do
 
     before do
       @user  = FactoryGirl.create :user, :site_admin
-      @paper = FactoryGirl.create :paper_with_task, creator: @user, task_params: { title: "Billing", type: "PlosBilling::BillingTask", role: "author" }
+      @paper = FactoryGirl.create :paper_with_task, creator: @user, task_params: { title: "Billing", type: "PlosBilling::BillingTask", old_role: "author" }
       login_as @user
       visit "/papers/#{@paper.id}/tasks/#{@paper.tasks.first.id}"
     end

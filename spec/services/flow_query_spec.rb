@@ -126,12 +126,12 @@ describe FlowQuery do
       end
     end
 
-    context "scoping tasks by role" do
-      let!(:admin_task) { FactoryGirl.create(:task, phase: phase, participants: [user], role: "Admin") }
+    context "scoping tasks by old_role" do
+      let!(:admin_task) { FactoryGirl.create(:task, phase: phase, participants: [user], old_role: "Admin") }
       let!(:generic_task) { FactoryGirl.create(:task, phase: phase, participants: [user]) }
 
-      it "it scopes tasks by role if role is given" do
-        flow = FactoryGirl.build(:flow, :default, title: 'My tasks', query: {role: "Admin"})
+      it "it scopes tasks by old_role if old_role is given" do
+        flow = FactoryGirl.build(:flow, :default, title: 'My tasks', query: {old_role: "Admin"})
         tasks = FlowQuery.new(user, flow).tasks
 
         expect(tasks).to include(admin_task)

@@ -12,7 +12,7 @@ feature "Invite Reviewer", js: true do
 
   before do
     assign_journal_role journal, editor, :editor
-    paper.paper_roles.create user: editor, role: PaperRole::COLLABORATOR
+    paper.paper_roles.create user: editor, old_role: PaperRole::COLLABORATOR
     task.participants << editor
 
     login_as(editor, scope: :user)

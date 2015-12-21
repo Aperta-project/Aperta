@@ -1,5 +1,5 @@
 class LitePaperSerializer < ActiveModel::Serializer
-  attributes :id, :title, :short_title, :publishing_state, :roles,
+  attributes :id, :title, :short_title, :publishing_state, :old_roles,
              :related_at_date, :editable, :manuscript_id, :active,
              :created_at, :updated_at
 
@@ -10,12 +10,12 @@ class LitePaperSerializer < ActiveModel::Serializer
     first_role.created_at
   end
 
-  def roles
+  def old_roles
     return unless scoped_user.present?
 
-    roles = my_roles.map(&:description)
-    roles << 'My Paper' if object.creator == scoped_user
-    roles
+    old_roles = my_roles.map(&:description)
+    old_roles << 'My Paper' if object.creator == scoped_user
+    old_roles
   end
 
   private

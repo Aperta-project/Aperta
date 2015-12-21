@@ -196,19 +196,19 @@ class Paper < ActiveRecord::Base
     end
   end
 
-  # Public: Find `PaperRole`s for the given role and user.
+  # Public: Find `PaperRole`s for the given old_role and user.
   #
-  # role  - The role to search for.
+  # old_role  - The old_role to search for.
   # user  - The user to search `PaperRole` against.
   #
   # Examples
   #
-  #   Paper.role_for(role: 'editor', user: User.first)
+  #   Paper.role_for(old_role: 'editor', user: User.first)
   #   # => [<#123: PaperRole>, <#124: PaperRole>]
   #
   # Returns an ActiveRelation with <tt>PaperRole</tt>s.
-  def role_for(role:, user:)
-    paper_roles.where(role: role, user_id: user.id)
+  def role_for(old_role:, user:)
+    paper_roles.where(old_role: old_role, user_id: user.id)
   end
 
   def tasks_for_type(klass_name)
@@ -278,8 +278,8 @@ class Paper < ActiveRecord::Base
 
   %w(admins editors reviewers collaborators).each do |relation|
     ###
-    # :method: <roles>
-    # Public: Return user records by role in the paper.
+    # :method: <old_roles>
+    # Public: Return user records by old_role in the paper.
     #
     # Examples
     #
@@ -289,16 +289,16 @@ class Paper < ActiveRecord::Base
     #
     # Signature
     #
-    #   #<roles>
+    #   #<old_roles>
     #
-    # role - A role name on the paper
+    # old_role - A old_role name on the paper
     define_method relation.to_sym do
       assigned_users.merge(PaperRole.send(relation))
     end
 
     ###
-    # :method: <role>?
-    # Public: Checks whether the given user belongs to the role.
+    # :method: <old_role>?
+    # Public: Checks whether the given user belongs to the old_role.
     #
     # user - The user record
     #
@@ -307,13 +307,13 @@ class Paper < ActiveRecord::Base
     #   editor?(user)        # => true
     #   collaborator?(user)  # => false
     #
-    # Returns true if the user has the role on the paper, false otherwise.
+    # Returns true if the user has the old_role on the paper, false otherwise.
     #
     # Signature
     #
-    #   #<role>?(arg)
+    #   #<old_role>?(arg)
     #
-    # role - A role name on the paper
+    # old_role - A old_role name on the paper
     #
     define_method("#{relation.singularize}?".to_sym) do |user|
       return false unless user.present?

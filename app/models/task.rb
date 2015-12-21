@@ -32,22 +32,22 @@ class Task < ActiveRecord::Base
 
   acts_as_list scope: :phase
 
-  validates :title, :role, presence: true
+  validates :title, :old_role, presence: true
   validates :title, length: { maximum: 255 }
 
   class << self
-    # Public: Scopes the tasks with a given role
+    # Public: Scopes the tasks with a given old_role
     #
-    # role  - The String of role name.
+    # old_role  - The String of old_role name.
     #
     # Examples
     #
-    #   for_role('editor')
+    #   for_old_role('editor')
     #   # => #<ActiveRecord::Relation [<#Task:123>]>
     #
     # Returns ActiveRecord::Relation with tasks.
-    def for_role(role)
-      where(role: role)
+    def for_old_role(old_role)
+      where(old_role: old_role)
     end
 
     # Public: Scopes the tasks for a given paper

@@ -64,43 +64,43 @@ feature "Journal Administration", js: true do
       end
     end
 
-    describe "Interacting with roles" do
-      let!(:existing_role) { FactoryGirl.create(:role, journal: journal) }
+    describe "Interacting with old_roles" do
+      let!(:existing_role) { FactoryGirl.create(:old_role, journal: journal) }
 
-      scenario "adding a role" do
-        role = journal_page.add_role
-        role.name = "whatever"
-        role.save
-        # NOTE: `expect(role).to have_name("whatever")` fails.
+      scenario "adding a old_role" do
+        old_role = journal_page.add_role
+        old_role.name = "whatever"
+        old_role.save
+        # NOTE: `expect(old_role).to have_name("whatever")` fails.
         # Re-finding it works.
         new_role = journal_page.find_role("whatever")
         expect(new_role).to have_name("whatever")
       end
 
-      scenario "modifying a role" do
-        role = journal_page.find_role(existing_role.name)
-        expect(role).to have_name(existing_role.name)
-        role.edit
-        role.name = "a different name"
-        role.save
-        expect(role).to have_name("a different name")
+      scenario "modifying a old_role" do
+        old_role = journal_page.find_role(existing_role.name)
+        expect(old_role).to have_name(existing_role.name)
+        old_role.edit
+        old_role.name = "a different name"
+        old_role.save
+        expect(old_role).to have_name("a different name")
       end
 
-      scenario "deleting a role" do
-        role = journal_page.find_role(existing_role.name)
-        role.delete
+      scenario "deleting a old_role" do
+        old_role = journal_page.find_role(existing_role.name)
+        old_role.delete
         expect(page).to have_no_content(existing_role.name)
 
-        # the role has been deleted from tne page
-        expect { role.name }.to raise_error(Selenium::WebDriver::Error::StaleElementReferenceError)
+        # the old_role has been deleted from tne page
+        expect { old_role.name }.to raise_error(Selenium::WebDriver::Error::StaleElementReferenceError)
       end
 
-      scenario "new role is available for selecting box" do
+      scenario "new old_role is available for selecting box" do
         assign_journal_role(journal, user, :admin)
 
-        role = journal_page.add_role
-        role.name = "New Role"
-        role.save
+        old_role = journal_page.add_role
+        old_role.name = "New Role"
+        old_role.save
         wait_for_ajax
         journal_page.find(".assign-role-button").click
         journal_page.find(".add-role-input input").set "New"
@@ -123,7 +123,7 @@ feature "Journal Administration", js: true do
           using_wait_time 5 do
             with_aws_cassette(:yeti_image) do
               journal.update_attributes(logo: File.open("spec/fixtures/yeti.jpg"))
-              visit "/admin/journals/1/roles/1/flow_manager"
+              visit "/admin/journals/1/old_roles/1/flow_manager"
               find(".control-bar-link-icon").click
               expect(page.find(".column-title-wrapper")).to have_css("img")
             end

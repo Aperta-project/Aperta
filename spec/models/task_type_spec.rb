@@ -8,7 +8,7 @@ describe TaskType do
     end
 
     it "will add to the list of task types" do
-      TaskType.register(SampleTask, "title", "role")
+      TaskType.register(SampleTask, "title", "old_role")
       expect(TaskType.types.keys).to include("SampleTask")
     end
   end
@@ -18,7 +18,7 @@ describe TaskType do
     context "with a registered class" do
       before do
         class SampleTask; end
-        TaskType.register(SampleTask, "title", "role")
+        TaskType.register(SampleTask, "title", "old_role")
       end
 
       it "constantizes" do

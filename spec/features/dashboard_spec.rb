@@ -45,7 +45,7 @@ feature "Dashboard", js: true do
       end
     end
 
-  feature "displaying roles and state" do
+  feature "displaying old_roles and state" do
     let(:active_paper_count) { 1 }
     let(:inactive_paper_count) { 1 }
     let(:paper) { papers.first }

@@ -19,38 +19,38 @@ describe PaperRole do
     let(:paper) { FactoryGirl.create :paper, :with_tasks }
     let(:user) { FactoryGirl.build(:user) }
 
-    context "when the role is in ALL_ROLES" do
-      it "validates if the role is included in the ALL_ROLES list" do
-        PaperRole::ALL_ROLES.each do |role|
+    context "when the old_role is in ALL_ROLES" do
+      it "validates if the old_role is included in the ALL_ROLES list" do
+        PaperRole::ALL_ROLES.each do |old_role|
           paper_role = PaperRole.new paper: paper,
             user: user,
-            role: 'reviewer'
+            old_role: 'reviewer'
           expect(paper_role).to be_valid
         end
       end
     end
 
-    context "when the role is one of the journal roles" do
+    context "when the old_role is one of the journal old_roles" do
       before do
-        Role.create! name: "clean_coder", journal: paper.journal
-        paper.journal.roles.reload
+        OldRole.create! name: "clean_coder", journal: paper.journal
+        paper.journal.old_roles.reload
       end
 
-      it "validates if the role is included in the ALL_ROLES list" do
+      it "validates if the old_role is included in the ALL_ROLES list" do
         paper_role = PaperRole.new paper: paper,
           user: user,
-          role: 'clean_coder'
+          old_role: 'clean_coder'
         expect(paper_role).to be_valid
       end
     end
 
-    context "when the role is not in ALL_ROLES" do
+    context "when the old_role is not in ALL_ROLES" do
 
-      it "validates if the role is included in the ALL_ROLES list" do
-        PaperRole::ALL_ROLES.each do |role|
+      it "validates if the old_role is included in the ALL_ROLES list" do
+        PaperRole::ALL_ROLES.each do |old_role|
           paper_role = PaperRole.new paper: paper,
             user: user,
-            role: 'not_any_role'
+            old_role: 'not_any_role'
           expect(paper_role).to_not be_valid
         end
       end

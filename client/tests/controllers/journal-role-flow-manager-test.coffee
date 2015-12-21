@@ -9,8 +9,8 @@ test 'newFlowPosition puts the new flow at the highest position', (assert) ->
     eo.create(position: 1)
     eo.create(position: 2)
   ]
-  role = eo.create(flows: flows)
+  oldRole = eo.create(flows: flows)
   controller = @subject()
-  controller.set 'model', role
+  controller.set 'model', oldRole
 
   assert.equal controller.newFlowPosition(), 3

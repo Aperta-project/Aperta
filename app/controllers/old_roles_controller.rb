@@ -1,4 +1,4 @@
-class RolesController < ApplicationController
+class OldRolesController < ApplicationController
   before_action :authenticate_user!
   before_action :enforce_policy, except: :index
   respond_to :json
@@ -7,44 +7,44 @@ class RolesController < ApplicationController
     journal = Journal.find(params[:journal_id])
     authorize_action! journal: journal
 
-    render json: journal.roles
+    render json: journal.old_roles
   end
 
   def show
-    respond_with Role.find(params[:id])
+    respond_with OldRole.find(params[:id])
   end
 
   def create
-    role.save
-    respond_with role
+    old_role.save
+    respond_with old_role
   end
 
   def update
-    role.update(role_params)
-    render json: role
+    old_role.update(role_params)
+    render json: old_role
   end
 
   def destroy
-    role.destroy
-    respond_with role
+    old_role.destroy
+    respond_with old_role
   end
 
   private
 
-  def role
-    @role ||=
+  def old_role
+    @old_role ||=
       if params[:id]
-        Role.find(params[:id])
+        OldRole.find(params[:id])
       else
-        Role.new(role_params)
+        OldRole.new(role_params)
       end
   end
 
   def journal
-    if params[:role] && role_params[:journal_id]
+    if params[:old_role] && role_params[:journal_id]
       Journal.find(role_params[:journal_id])
     else
-      role.journal
+      old_role.journal
     end
   end
 
@@ -53,7 +53,7 @@ class RolesController < ApplicationController
   end
 
   def role_params
-    params.require(:role).permit(:name, :admin, :editor, :reviewer, :journal_id,
+    params.require(:old_role).permit(:name, :admin, :editor, :reviewer, :journal_id,
       :can_administer_journal, :can_view_assigned_manuscript_managers, :can_view_all_manuscript_managers, :can_view_flow_manager)
   end
 end

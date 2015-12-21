@@ -30,7 +30,7 @@ module('Integration: Reporting Guidelines Card', {
 
     records = paperWithTask("ReportingGuidelinesTask", {
       id: taskId,
-      role: "author"
+      oldRole: "author"
     });
 
     currentPaper = records[0];

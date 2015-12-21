@@ -23,7 +23,7 @@ export default Ember.Controller.extend({
     addFlow() {
       this.store.createRecord('flow', {
         title: 'Up for grabs',
-        role: this.get('model'),
+        oldRole: this.get('model'),
         position: this.newFlowPosition(),
         query: {},
         taskRoles: []

@@ -1,18 +1,18 @@
 class FilteredUserSerializer < ActiveModel::Serializer
-  attributes :id, :full_name, :username, :avatar_url, :roles
+  attributes :id, :full_name, :username, :avatar_url, :old_roles
 
   private
 
-  def roles
-    roles = object.paper_roles.where(paper_id: options[:paper_id])
+  def old_roles
+    old_roles = object.paper_roles.where(paper_id: options[:paper_id])
     unless current_user.site_admin? || journal_admin?(current_user)
-      roles = roles.where(role: PaperRole::COLLABORATOR)
+      old_roles = old_roles.where(old_role: PaperRole::COLLABORATOR)
     end
-    roles.map(&:role)
+    old_roles.map(&:old_role)
   end
 
   def journal_admin?(user)
     paper = Paper.find_by(id: options[:paper_id])
-    user.roles.where(journal: paper.journal, kind: "admin").present?
+    user.old_roles.where(journal: paper.journal, kind: "admin").present?
   end
 end

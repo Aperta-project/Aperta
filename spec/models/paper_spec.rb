@@ -495,8 +495,8 @@ describe Paper do
 
     it "assigns all author tasks to the paper author" do
       paper.save!
-      author_tasks = Task.where(role: 'author', phase_id: paper.phases.pluck(:id))
-      other_tasks = Task.where("role != 'author'", phase_id: paper.phases.pluck(:id))
+      author_tasks = Task.where(old_role: 'author', phase_id: paper.phases.pluck(:id))
+      other_tasks = Task.where("old_role != 'author'", phase_id: paper.phases.pluck(:id))
       expect(author_tasks.all? { |t| t.assignee == user }).to eq true
       expect(other_tasks.all? { |t| t.assignee != user }).to eq true
     end
@@ -505,7 +505,7 @@ describe Paper do
       before { paper.save! }
 
       it "assigns all author tasks to the paper author" do
-        tasks = Task.where(role: 'author', phase_id: paper.phases.map(&:id))
+        tasks = Task.where(old_role: 'author', phase_id: paper.phases.map(&:id))
         not_author = FactoryGirl.create(:user)
         paper.update! creator: not_author
         expect(tasks.all? { |t| t.assignee == user }).to eq true
@@ -532,13 +532,13 @@ describe Paper do
       create(:paper_role, :editor, paper: paper, user: user)
     end
 
-    it "returns roles if the role exist for the given user and role type" do
-      expect(paper.role_for(user: user, role: 'editor')).to be_present
+    it "returns old_roles if the old_role exist for the given user and old_role type" do
+      expect(paper.role_for(user: user, old_role: 'editor')).to be_present
     end
 
-    context "when the role isn't found" do
+    context "when the old_role isn't found" do
       it "returns nothing" do
-        expect(paper.role_for(user: user, role: 'chucknorris')).to_not be_present
+        expect(paper.role_for(user: user, old_role: 'chucknorris')).to_not be_present
       end
     end
   end

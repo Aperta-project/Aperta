@@ -24,7 +24,7 @@ module TahiStandardTasks
     end
 
     def tasks_for_admin
-      paper.tasks.without(self).for_role('admin').incomplete
+      paper.tasks.without(self).for_old_role('admin').incomplete
     end
 
     def update_responder

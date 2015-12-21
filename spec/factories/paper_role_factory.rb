@@ -4,23 +4,23 @@ FactoryGirl.define do
     paper
 
     trait(:admin) do
-      role 'admin'
+      old_role 'admin'
     end
 
     trait(:editor) do
-      role 'editor'
+      old_role 'editor'
     end
 
     trait(:reviewer) do
-      role 'reviewer'
+      old_role 'reviewer'
     end
 
     trait(:collaborator) do
-      role 'collaborator'
+      old_role 'collaborator'
     end
 
     trait(:participant) do
-      role 'participant'
+      old_role 'participant'
     end
   end
 end

@@ -31,7 +31,7 @@ module('Integration: FinancialDisclosure', {
 
     records = paperWithTask('FinancialDisclosureTask', {
       id: financialDisclosureTaskId,
-      role: "author"
+      oldRole: "author"
     });
 
     currentPaper = records[0];

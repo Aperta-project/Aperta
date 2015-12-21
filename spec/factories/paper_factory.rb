@@ -94,7 +94,7 @@ FactoryGirl.define do
     end
 
     after(:create) do |paper, evaluator|
-      paper.paper_roles.create!(user: paper.creator, role: PaperRole::COLLABORATOR)
+      paper.paper_roles.create!(user: paper.creator, old_role: PaperRole::COLLABORATOR)
       paper.decisions.create!
 
       paper.body = evaluator.body
@@ -118,7 +118,7 @@ FactoryGirl.define do
       after(:create) do |paper, evaluator|
         phase = create(:phase, paper: paper)
         evaluator.task_params[:title] ||= "Ad Hoc"
-        evaluator.task_params[:role] ||= "user"
+        evaluator.task_params[:old_role] ||= "user"
         evaluator.task_params[:type] ||= "Task"
 
         phase.tasks.create(evaluator.task_params)

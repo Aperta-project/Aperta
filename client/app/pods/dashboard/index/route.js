@@ -13,7 +13,7 @@ export default Ember.Route.extend({
       return controller.set('unreadComments', commentLooks);
     });
     controller.set('papers', this.store.filter('paper', function(p) {
-      return Ember.isPresent(p.get('roles'));
+      return Ember.isPresent(p.get('oldRoles'));
     }));
     return this._super(controller, model);
   },

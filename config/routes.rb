@@ -83,8 +83,8 @@ Tahi::Application.routes.draw do
     end
     resources :journal_task_types, only: :update
     resources :journals, only: [:index, :show] do
-      resources :roles, only: :index, shallow: true do
-        namespace 'roles', path: '' do
+      resources :old_roles, only: :index, shallow: true do
+        namespace 'old_roles', path: '' do
           resources :users, only: :index
         end
       end
@@ -92,7 +92,7 @@ Tahi::Application.routes.draw do
     resources :manuscript_manager_templates, only: [:create, :show, :update, :destroy]
     resources :assignments, only: [:index, :create, :destroy]
     resources :papers, only: [:index, :create, :show, :update] do
-      resources :roles, only: :index, controller: 'paper_roles' do
+      resources :old_roles, only: :index, controller: 'paper_roles' do
         resources :users, only: :index, controller: 'paper_role_users'
       end
       resource :editor, only: :destroy
@@ -133,7 +133,7 @@ Tahi::Application.routes.draw do
       resources :answers, only: [:create, :update, :destroy], controller: 'nested_question_answers'
     end
 
-    resources :roles, only: [:show, :create, :update, :destroy]
+    resources :old_roles, only: [:show, :create, :update, :destroy]
     resources :tasks, only: [:update, :create, :show, :destroy] do
       get :nested_questions
       get :nested_question_answers

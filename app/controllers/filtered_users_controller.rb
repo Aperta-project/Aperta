@@ -24,9 +24,9 @@ class FilteredUsersController < ApplicationController
 
   private
 
-  def render_selectable_users(role)
+  def render_selectable_users(old_role)
     paper = Paper.find(params[:paper_id])
-    journal_role_ids = paper.journal.send(role).pluck(:id)
+    journal_role_ids = paper.journal.send(old_role).pluck(:id)
 
     users = User.where(id: journal_role_ids)
     users = users.fuzzy_search(params[:query]) if params[:query]

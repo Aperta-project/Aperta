@@ -65,7 +65,7 @@ describe PapersPolicy do
     let(:user) do
       FactoryGirl.create(
         :user,
-        roles: [ FactoryGirl.create(:role, :admin, journal: journal) ],
+        old_roles: [ FactoryGirl.create(:old_role, :admin, journal: journal) ],
       )
     end
     let(:journal) { FactoryGirl.create(:journal, papers: [paper]) }
@@ -81,7 +81,7 @@ describe PapersPolicy do
     let(:user) do
       FactoryGirl.create(
         :user,
-        roles: [ FactoryGirl.create(:role, :editor, journal: journal, can_view_assigned_manuscript_managers: true) ],
+        old_roles: [ FactoryGirl.create(:old_role, :editor, journal: journal, can_view_assigned_manuscript_managers: true) ],
       )
     end
     let(:journal) { FactoryGirl.create(:journal, papers: [paper]) }
@@ -94,7 +94,7 @@ describe PapersPolicy do
     let(:user) do
       FactoryGirl.create(
         :user,
-        roles: [ FactoryGirl.create(:role, :admin, journal: journal) ],
+        old_roles: [ FactoryGirl.create(:old_role, :admin, journal: journal) ],
       )
     end
 

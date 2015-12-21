@@ -7,13 +7,13 @@ describe JournalServices::CreateDefaultRoles do
     allow_any_instance_of(Journal).to receive(:setup_defaults)
   end
 
-  it "will create default roles" do
-    roles = JournalServices::CreateDefaultRoles.call(journal)
-    expect(roles.count).to eq(3)
+  it "will create default old_roles" do
+    old_roles = JournalServices::CreateDefaultRoles.call(journal)
+    expect(old_roles.count).to eq(3)
   end
 
   it "will raise a service error if it fails" do
-    allow(journal).to receive(:roles).and_raise(ActiveRecord::RecordInvalid.new(Role.new))
+    allow(journal).to receive(:old_roles).and_raise(ActiveRecord::RecordInvalid.new(OldRole.new))
     expect do
       JournalServices::CreateDefaultRoles.call(journal)
     end.to raise_error(JournalServices::ServiceError)

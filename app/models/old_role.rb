@@ -1,4 +1,4 @@
-class Role < ActiveRecord::Base
+class OldRole < ActiveRecord::Base
 
   ADMIN    = "admin"
   EDITOR   = "editor"
@@ -8,10 +8,10 @@ class Role < ActiveRecord::Base
   REQUIRED_KINDS = [ADMIN, EDITOR, FLOW_MANAGER]
   KINDS = REQUIRED_KINDS + [CUSTOM]
 
-  belongs_to :journal, inverse_of: :roles
-  has_many :user_roles, inverse_of: :role, dependent: :destroy
+  belongs_to :journal, inverse_of: :old_roles
+  has_many :user_roles, inverse_of: :old_role, dependent: :destroy
   has_many :users, through: :user_roles
-  has_many :flows, inverse_of: :role, dependent: :destroy
+  has_many :flows, inverse_of: :old_role, dependent: :destroy
 
   validates :name, presence: true
   validates :name, uniqueness: { scope: :journal_id }
@@ -66,7 +66,7 @@ class Role < ActiveRecord::Base
   def prevent_destroying_required_role
     return true if journal.blank? || journal.marked_for_destruction?
     if required?
-      errors.add(:base, "This role is required. It may not be deleted.")
+      errors.add(:base, "This old_role is required. It may not be deleted.")
       false
     end
   end

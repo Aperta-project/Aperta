@@ -66,7 +66,7 @@ export function addUserAsCollaborator(paper, user) {
   return collaboration;
 }
 
-export function paperWithRoles(id, roles) {
+export function paperWithRoles(id, oldRoles) {
   let journal = Factory.createRecord('Journal', {
     id: 1
   });
@@ -76,7 +76,7 @@ export function paperWithRoles(id, roles) {
     id: id
   });
 
-  let litePaper = Factory.createLitePaperWithRoles(paper, roles);
+  let litePaper = Factory.createLitePaperWithRoles(paper, oldRoles);
 
   return [paper, journal, litePaper];
 }

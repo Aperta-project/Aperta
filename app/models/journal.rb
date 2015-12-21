@@ -1,7 +1,7 @@
 class Journal < ActiveRecord::Base
   has_many :papers, inverse_of: :journal
-  has_many :roles, inverse_of: :journal
-  has_many :user_roles, through: :roles
+  has_many :old_roles, inverse_of: :journal
+  has_many :user_roles, through: :old_roles
   has_many :users, through: :user_roles
   has_many :manuscript_manager_templates, dependent: :destroy
   has_many :journal_task_types, inverse_of: :journal, dependent: :destroy
@@ -22,15 +22,15 @@ class Journal < ActiveRecord::Base
   mount_uploader :epub_cover, EpubCoverUploader
 
   def admins
-    users.merge(Role.admins)
+    users.merge(OldRole.admins)
   end
 
   def editors
-    users.merge(Role.editors)
+    users.merge(OldRole.editors)
   end
 
   def reviewers
-    users.merge(Role.reviewers)
+    users.merge(OldRole.reviewers)
   end
 
   def logo_url
@@ -55,8 +55,8 @@ class Journal < ActiveRecord::Base
     self.manuscript_manager_templates.pluck(:paper_type)
   end
 
-  def valid_roles
-    PaperRole::ALL_ROLES | roles.map(&:name)
+  def valid_old_roles
+    PaperRole::ALL_ROLES | old_roles.map(&:name)
   end
 
   private
@@ -76,9 +76,9 @@ class Journal < ActiveRecord::Base
   end
 
   def destroy_roles
-    # roles that are marked as 'required' are prevented from being destroyed, so you cannot use
+    # old_roles that are marked as 'required' are prevented from being destroyed, so you cannot use
     # a dependent_destroy on the AR relationship.
     self.mark_for_destruction
-    roles.destroy_all
+    old_roles.destroy_all
   end
 end

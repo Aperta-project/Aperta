@@ -1,6 +1,6 @@
-class RolesPolicy < ApplicationPolicy
+class OldRolesPolicy < ApplicationPolicy
 
-  allow_params :role
+  allow_params :old_role
   require_params :journal
 
   def index?
@@ -8,8 +8,8 @@ class RolesPolicy < ApplicationPolicy
   end
 
   def show?
-    if role
-      can_administer_journal?(journal) || role.member?(current_user)
+    if old_role
+      can_administer_journal?(journal) || old_role.member?(current_user)
     else
       can_administer_journal?(journal)
     end

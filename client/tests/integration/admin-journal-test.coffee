@@ -20,7 +20,7 @@ module 'Integration: Admin Journal Test',
     journal = Factory.createRecord('AdminJournal')
     journalId = journal.id
 
-    adminRole = Factory.createJournalRole journal,
+    adminRole = Factory.createJournalOldRole journal,
       name: "Admin"
       kind: "admin"
       can_administer_journal: true

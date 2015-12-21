@@ -4,8 +4,8 @@ class PaperRoleUsersController < ApplicationController
   respond_to :json
 
   def index
-    role = Role.where(id: params[:role_id], journal_id: paper.journal_id).first!
-    render json: role.users, each_serializer: UserSerializer, root: "users"
+    old_role = OldRole.where(id: params[:old_role_id], journal_id: paper.journal_id).first!
+    render json: old_role.users, each_serializer: UserSerializer, root: "users"
   end
 
   private

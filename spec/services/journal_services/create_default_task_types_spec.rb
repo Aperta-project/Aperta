@@ -16,7 +16,7 @@ describe JournalServices::CreateDefaultTaskTypes do
   it "doesn't change task types that exist on an existing journal" do
     jtt = journal.journal_task_types.first
     jtt.title = "dont change me"
-    jtt.role = "dictator"
+    jtt.old_role = "dictator"
     jtt.save!
     expect {
       JournalServices::CreateDefaultTaskTypes.call(journal)
@@ -25,6 +25,6 @@ describe JournalServices::CreateDefaultTaskTypes do
     }.by 0
 
     expect(jtt.reload.title).to eq("dont change me")
-    expect(jtt.role).to eq("dictator")
+    expect(jtt.old_role).to eq("dictator")
   end
 end

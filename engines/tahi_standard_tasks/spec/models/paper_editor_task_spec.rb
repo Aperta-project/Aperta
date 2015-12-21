@@ -10,7 +10,7 @@ describe TahiStandardTasks::PaperEditorTask do
       TahiStandardTasks::PaperEditorTask.create!({
         phase: paper.phases.first,
         title: "Invite Editor",
-        role: "admin"
+        old_role: "admin"
       })
     end
     let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
@@ -35,7 +35,7 @@ describe TahiStandardTasks::PaperEditorTask do
       Task.create!({
         phase: paper.phases.first,
         title: "Sample Editor Task",
-        role: "editor"
+        old_role: "editor"
       })
     end
 
@@ -43,7 +43,7 @@ describe TahiStandardTasks::PaperEditorTask do
       TahiStandardTasks::ReviewerReportTask.create!({
         phase: paper.phases.first,
         title: "Sample Report Task",
-        role: "reviewer"
+        old_role: "reviewer"
       })
     end
 
@@ -51,7 +51,7 @@ describe TahiStandardTasks::PaperEditorTask do
       TahiStandardTasks::ReviewerRecommendationsTask.create!({
         phase: paper.phases.first,
         title: "Sample Rec Task",
-        role: "author"
+        old_role: "author"
       })
     end
 
@@ -59,7 +59,7 @@ describe TahiStandardTasks::PaperEditorTask do
       TahiStandardTasks::PaperEditorTask.create!({
         phase: paper.phases.first,
         title: "Invite Editor",
-        role: "admin"
+        old_role: "admin"
       })
     end
 
@@ -70,7 +70,7 @@ describe TahiStandardTasks::PaperEditorTask do
       expect(paper.reload.editor).to eq(invitation.invitee)
     end
 
-    it "follows tasks with editor role to the new editor" do
+    it "follows tasks with editor old_role to the new editor" do
       invitation.accept!
       expect(sample_editor_task.participations.map(&:user)).to include(invitation.invitee)
     end

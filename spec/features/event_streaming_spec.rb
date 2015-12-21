@@ -23,7 +23,7 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
 
       scenario "managing tasks" do
         # create
-        submission_phase.tasks.create title: "Wicked Awesome Card", type: "Task", body: text_body, role: "admin"
+        submission_phase.tasks.create title: "Wicked Awesome Card", type: "Task", body: text_body, old_role: "admin"
         wait_for_ajax
         expect(page).to have_content "Wicked Awesome Card"
 

@@ -10,17 +10,17 @@ class ManuscriptManagersPolicy < ApplicationPolicy
 
   private
 
-  def roles
-    current_user.roles.where(journal: paper.journal)
+  def old_roles
+    current_user.old_roles.where(journal: paper.journal)
   end
 
   def can_manage_all_manuscripts?
-    roles.merge(Role.can_view_all_manuscript_managers).exists?
+    old_roles.merge(OldRole.can_view_all_manuscript_managers).exists?
   end
 
   def can_manage_this_manuscript?
     user_assigned_to_paper?(current_user, paper) &&
-      journal_roles.merge(Role.can_view_assigned_manuscript_managers).exists?
+      journal_roles.merge(OldRole.can_view_assigned_manuscript_managers).exists?
   end
 
   def user_assigned_to_paper?(user, paper)
@@ -29,6 +29,6 @@ class ManuscriptManagersPolicy < ApplicationPolicy
   end
 
   def journal_roles
-    current_user.roles.where(journal: paper.journal)
+    current_user.old_roles.where(journal: paper.journal)
   end
 end

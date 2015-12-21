@@ -23,20 +23,20 @@ module TahiHelperMethods
     assign_paper_role(paper, user, PaperRole::REVIEWER)
   end
 
-  def assign_paper_role(paper, user, role)
-    paper.paper_roles.create!(role: role, user: user)
+  def assign_paper_role(paper, user, old_role)
+    paper.paper_roles.create!(old_role: old_role, user: user)
     paper.reload
   end
 
   def assign_journal_role(journal, user, role_or_type)
-    if role_or_type.is_a?(Role)
-      role = role_or_type
+    if role_or_type.is_a?(OldRole)
+      old_role = role_or_type
     else
-      role = journal.roles.where(kind: role_or_type).first
-      role ||= FactoryGirl.create(:role, role_or_type, journal: journal)
+      old_role = journal.old_roles.where(kind: role_or_type).first
+      old_role ||= FactoryGirl.create(:old_role, role_or_type, journal: journal)
     end
-    UserRole.create!(user: user, role: role)
-    role
+    UserRole.create!(user: user, old_role: old_role)
+    old_role
   end
 
   def with_aws_cassette(name)

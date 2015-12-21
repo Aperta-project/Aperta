@@ -9,10 +9,10 @@ module JournalServices
             Tahi.service_log.info "Created #{task_klass} JournalTaskType"
           end
           if override_existing
-            jtt.role = details[:default_role]
+            jtt.old_role = details[:default_role]
             jtt.title = details[:default_title]
           else
-            jtt.role ||= details[:default_role]
+            jtt.old_role ||= details[:default_role]
             jtt.title ||= details[:default_title]
           end
           jtt.save!

@@ -38,7 +38,7 @@ describe NestedQuestionAnswersPolicy do
       let!(:paper_role) { create(:paper_role, :reviewer, user: user, paper: paper) }
 
       before do
-        task.role = 'reviewer'
+        task.old_role = 'reviewer'
       end
 
       include_examples "person who can manage questions"
@@ -81,7 +81,7 @@ describe NestedQuestionAnswersPolicy do
       let!(:paper_role) { create(:paper_role, :reviewer, user: user, paper: paper) }
 
       before do
-        task.role = 'reviewer'
+        task.old_role = 'reviewer'
       end
 
       include_examples "person who can manage questions"

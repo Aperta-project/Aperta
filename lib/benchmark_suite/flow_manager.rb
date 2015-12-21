@@ -15,15 +15,15 @@ module BenchmarkSuite
     end
 
     def assign_roles
-      big_role = big_journal.roles.create! name: "Big Admin",
+      big_role = big_journal.old_roles.create! name: "Big Admin",
         can_administer_journal: true,
         can_view_flow_manager: true
-      big_admin.user_roles.create! role_id: big_role.id
+      big_admin.user_roles.create! old_role_id: big_role.id
 
-      small_role = small_journal.roles.create! name: "Small Admin",
+      small_role = small_journal.old_roles.create! name: "Small Admin",
         can_administer_journal: true,
         can_view_flow_manager: true
-      small_admin.user_roles.create! role_id: small_role.id
+      small_admin.user_roles.create! old_role_id: small_role.id
     end
 
     def setup_flows(users:)

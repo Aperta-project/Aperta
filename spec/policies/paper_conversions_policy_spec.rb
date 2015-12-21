@@ -71,7 +71,7 @@ describe PaperConversionsPolicy do
     let(:journal) { FactoryGirl.create(:journal) }
     let(:user) do
       FactoryGirl.create(:user,
-                         roles: [ FactoryGirl.create(:role,
+                         old_roles: [ FactoryGirl.create(:old_role,
                                                      :admin,
                                                      journal: journal) ],)
     end

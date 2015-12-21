@@ -28,7 +28,7 @@ module 'Integration: PaperIndex',
 
     records = paperWithTask('FigureTask'
       id: figureTaskId
-      role: "author"
+      oldRole: "author"
     )
 
     [currentPaper, figureTask, journal, phase] = records
@@ -82,7 +82,7 @@ test 'on paper.index as a participant on a task but not author of paper', (asser
   records = paperWithTask('Task'
     id: 1
     title: 'ReviewMe'
-    role: 'reviewer'
+    oldRole: 'reviewer'
   )
 
   [currentPaper, task, journal, litePaper, phase] = records
@@ -105,7 +105,7 @@ test 'on paper.index as a participant on a task and author of paper', (assert) -
   records = paperWithTask('ReviseTask'
     id: 1
     qualifiedType: "TahiStandardTasks::ReviseTask"
-    role: 'author'
+    oldRole: 'author'
   )
 
   [currentPaper, task, journal, litePaper, phase] = records

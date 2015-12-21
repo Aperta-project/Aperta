@@ -4,10 +4,10 @@ describe AssignmentsPolicy do
   let(:journal) { FactoryGirl.create(:journal) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
   let(:policy) { AssignmentsPolicy.new(current_user: user, paper: paper) }
-  let(:role) { FactoryGirl.create(:role, journal: journal) }
+  let(:old_role) { FactoryGirl.create(:old_role, journal: journal) }
 
   before do
-    @paper_role = PaperRole.create! role: role.name, user: user, paper: paper
+    @paper_role = PaperRole.create! old_role: old_role.name, user: user, paper: paper
   end
 
   context "admin" do

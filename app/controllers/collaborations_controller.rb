@@ -4,7 +4,7 @@ class CollaborationsController < ApplicationController
   respond_to :json
 
   def create
-    paper_role = PaperRole.create(collaborator_params.merge(role: PaperRole::COLLABORATOR))
+    paper_role = PaperRole.create(collaborator_params.merge(old_role: PaperRole::COLLABORATOR))
     if paper_role.valid?
       Activity.collaborator_added!(paper_role, user: current_user)
       UserMailer.delay.add_collaborator(current_user.id, collaborator_params[:user_id], paper.id)

@@ -13,7 +13,7 @@ describe TahiStandardTasks::ReviewerReportMailer do
     let(:task) {
       FactoryGirl.create(:task,
                          title: "Reviewer Report",
-                         role: 'reviewer',
+                         old_role: 'reviewer',
                          type: "TahiStandardTasks::ReviewerReportTask",
                          completed: true)
     }

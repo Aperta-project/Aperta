@@ -4,7 +4,7 @@ class PaperRolesController < ApplicationController
   respond_to :json
 
   def index
-    render json: paper.journal.roles, each_serializer: RoleSerializer, root: "roles"
+    render json: paper.journal.old_roles, each_serializer: OldRoleSerializer, root: "old_roles"
   end
 
   private

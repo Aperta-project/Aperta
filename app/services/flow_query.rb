@@ -31,8 +31,8 @@ class FlowQuery
     scope.send(flow.query[:state])
   end
 
-  def role(scope)
-    scope.for_role(flow.query[:role])
+  def old_role(scope)
+    scope.for_old_role(flow.query[:old_role])
   end
 
   def assigned(scope)

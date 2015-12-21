@@ -24,7 +24,7 @@ module PlosBioTechCheck
       @_task = PlosBioTechCheck::ChangesForAuthorTask.create!({
         body: {},
         title: task_properties[:default_title],
-        role: task_properties[:default_role],
+        old_role: task_properties[:default_role],
         phase: phase
       })
     end

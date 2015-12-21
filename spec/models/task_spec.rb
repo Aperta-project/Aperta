@@ -8,7 +8,7 @@ describe Task do
       2.times.map do
         Task.create! title: "Paper Admin",
           completed: true,
-          role: 'admin',
+          old_role: 'admin',
           phase_id: 3
       end
     end
@@ -67,7 +67,7 @@ describe Task do
     let(:task) {
       Task.create! title: "Paper Admin",
         completed: true,
-        role: 'admin',
+        old_role: 'admin',
         phase_id: 3
     }
 

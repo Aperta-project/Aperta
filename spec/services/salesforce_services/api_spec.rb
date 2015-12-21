@@ -74,7 +74,7 @@ describe SalesforceServices::API do
     let(:paper) { FactoryGirl.create(:paper) }
 
     it "creates and returns a salesforce case object" do
-      paper = FactoryGirl.create :paper_with_task, { task_params: { title: "Billing", type: "PlosBilling::BillingTask", role: "author" } }
+      paper = FactoryGirl.create :paper_with_task, { task_params: { title: "Billing", type: "PlosBilling::BillingTask", old_role: "author" } }
 
       #delete_vcr_file  "salesforce_create_billing_and_pfa"
 

@@ -13,8 +13,8 @@ class User < ActiveRecord::Base
   has_many :paper_roles
   has_many :papers, -> { uniq }, through: :paper_roles
   has_many :user_roles, inverse_of: :user
-  has_many :roles, through: :user_roles
-  has_many :journals, ->{ uniq }, through: :roles
+  has_many :old_roles, through: :user_roles
+  has_many :journals, ->{ uniq }, through: :old_roles
   has_many :user_flows, inverse_of: :user, dependent: :destroy
   has_many :flows, through: :user_flows
   has_many :comments, inverse_of: :commenter, foreign_key: 'commenter_id'
@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
   end
 
   def possible_flows
-    Flow.where("role_id IN (?) OR role_id IS NULL", role_ids)
+    Flow.where("old_role_id IN (?) OR old_role_id IS NULL", old_role_ids)
   end
 
   def self.site_admins
@@ -62,7 +62,7 @@ class User < ActiveRecord::Base
   end
 
   def can_view_flow_manager?
-    roles.can_view_flow_manager.present?
+    old_roles.can_view_flow_manager.present?
   end
 
   def auto_generate_password(length=50)
@@ -77,7 +77,7 @@ class User < ActiveRecord::Base
     if site_admin?
       Journal.all
     else
-      journals.merge(Role.can_administer_journal)
+      journals.merge(OldRole.can_administer_journal)
     end
   end
 
@@ -98,7 +98,7 @@ class User < ActiveRecord::Base
       sanitized_query = connection.quote_string(query.to_s.downcase) + '%'
       User.fuzzy_search sanitized_query
     elsif assigned_users_in_journal_id
-      User.joins(user_roles: :role).where('roles.journal_id = ?', assigned_users_in_journal_id).uniq
+      User.joins(user_roles: :old_role).where('old_roles.journal_id = ?', assigned_users_in_journal_id).uniq
     end
   end
 end

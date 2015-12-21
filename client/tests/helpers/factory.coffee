@@ -162,12 +162,12 @@ Factory =
     paperAttrs = {short_title, title, id, publishingState, paper_id}
     Factory.createRecord('LitePaper', paperAttrs)
 
-  createLitePaperWithRoles: (paper, roles) ->
+  createLitePaperWithRoles: (paper, oldRoles) ->
     {short_title, title, id, publishingState} = paper
     paper_id = id
     paperAttrs = {short_title, title, id, publishingState, paper_id}
     lp = Factory.createRecord('LitePaper', paperAttrs)
-    lp.roles = roles
+    lp.oldRoles = oldRoles
     lp
 
   createPhase: (paper, attrs={})  ->
@@ -207,10 +207,10 @@ Factory =
   createTaskTemplate: (journal, phase_template, jtt) ->
     @createRecord('TaskTemplate', phase_template: phase_template)
 
-  createJournalRole: (journal, roleAttrs={}) ->
-    role = @createRecord('Role', roleAttrs)
-    @addHasMany(journal, [role], {inverse: 'journal'})
-    role
+  createJournalOldRole: (journal, oldRoleAttrs={}) ->
+    oldRole = @createRecord('OldRole', oldRoleAttrs)
+    @addHasMany(journal, [oldRole], {inverse: 'journal'})
+    oldRole
 
 FactoryAttributes = {}
 FactoryAttributes.User =
@@ -231,7 +231,7 @@ FactoryAttributes.Journal =
   paper_types: ["Research"]
   journal_task_type_ids: []
   manuscript_manager_template_ids: []
-  role_ids: []
+  old_role_ids: []
   manuscript_css: null
   doi_publisher_prefix: null
   doi_journal_prefix: null
@@ -245,14 +245,14 @@ FactoryAttributes.AdminJournal =
   paper_types: ["Research"]
   journal_task_type_ids: []
   manuscript_manager_template_ids: []
-  role_ids: []
+  old_role_ids: []
   manuscript_css: null
   doi_publisher_prefix: null
   doi_journal_prefix: null
   last_doi_issued: null
 
-FactoryAttributes.Role =
-  _rootKey: 'role'
+FactoryAttributes.OldRole =
+  _rootKey: 'old_role'
   id: null
   name: null
   kind: null
@@ -297,7 +297,7 @@ FactoryAttributes.LitePaper =
   paper_id: null
   short_title: "Paper"
   publishing_state: "submitted"
-  roles: [] # an array of strings
+  oldRoles: [] # an array of strings
 
 FactoryAttributes.MessageTask =
   _rootKey: 'task'
@@ -307,7 +307,7 @@ FactoryAttributes.MessageTask =
   completed: false
   body: []
   paper_title: "Foo"
-  role: "author"
+  oldRole: "author"
   phase_id: null
   paper_id: null
   lite_paper_id: null
@@ -323,7 +323,7 @@ FactoryAttributes.Task =
   completed: false
   body: []
   paper_title: "Foo"
-  role: "admin"
+  oldRole: "admin"
   phase_id: null
   paper_id: null
   lite_paper_id: null
@@ -340,7 +340,7 @@ FactoryAttributes.ReviseTask =
   completed: false
   body: []
   paper_title: "Foo"
-  role: "admin"
+  old_role: "admin"
   phase_id: null
   paper_id: null
   lite_paper_id: null
@@ -356,7 +356,7 @@ FactoryAttributes.BillingTask =
   completed: false
   body: []
   paper_title: "Foo"
-  role: "admin"
+  old_role: "admin"
   phase_id: null
   paper_id: null
   lite_paper_id: null
@@ -375,7 +375,7 @@ FactoryAttributes.FigureTask =
   completed: false
   body: []
   paper_title: "Foo"
-  role: "admin"
+  old_role: "admin"
   phase_id: null
   paper_id: null
   lite_paper_id: null
@@ -400,7 +400,7 @@ FactoryAttributes.FinancialDisclosureTask =
   phase_id: null
   nested_question_ids: []
   question_ids: []
-  role: "author"
+  old_role: "author"
   title: "Financial Disclosure"
   type: "FinancialDisclosureTask"
 
@@ -428,7 +428,7 @@ FactoryAttributes.ReportingGuidelinesTask =
   phase_id: null
   question_ids: []
   assigned_to_me: true
-  role: "author"
+  old_role: "author"
   title: "Reporting Guidelines"
   type: "ReportingGuidelinesTask"
 
@@ -477,7 +477,7 @@ FactoryAttributes.JournalTaskType =
   task_type_id: null
   title: null
   journal_id: null
-  role: null
+  old_role: null
 
 FactoryAttributes.TaskTemplate =
   _rootKey: 'task_template'

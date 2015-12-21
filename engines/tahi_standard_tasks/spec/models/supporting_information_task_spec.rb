@@ -15,7 +15,7 @@ module TahiStandardTasks
         ::TahiStandardTasks::SupportingInformationTask.create! completed: true,
           phase: paper.phases.first,
           title: "Supporting Info",
-          role: "author"
+          old_role: "author"
       end
 
       it "returns a JSON object of access details from figures" do

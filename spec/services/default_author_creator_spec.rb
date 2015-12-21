@@ -45,7 +45,7 @@ describe DefaultAuthorCreator do
 
       authors_task = TahiStandardTasks::AuthorsTask.create(
         title: "Authors",
-        role: "author",
+        old_role: "author",
         phase: phase
       )
 

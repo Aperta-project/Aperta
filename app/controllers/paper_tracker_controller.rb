@@ -12,7 +12,7 @@ class PaperTrackerController < ApplicationController
   private
 
   def journal_ids
-    current_user.roles.pluck(:journal_id).uniq
+    current_user.old_roles.pluck(:journal_id).uniq
   end
 
   def papers_submitted

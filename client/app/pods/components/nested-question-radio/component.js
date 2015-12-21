@@ -6,14 +6,17 @@ export default NestedQuestionComponent.extend({
   yesValue: true,
   noLabel: 'No',
   noValue: false,
+  displayBlockContent: false,
+  yesSelected: Ember.computed.equal('model.answer.value', true),
+  noSelected:  Ember.computed.equal('model.answer.value', false),
 
   namePrefix: Ember.computed(function(){
     return `${this.elementId}-${this.get('ident')}`;
   }),
 
-  yieldingForAdditionalData: Ember.computed('model.answer.value', 'yesValue', 'noValue', function() {
-    let yes  = Ember.isEqual(this.get('model.answer.value'), this.get('yesValue'));
-    let no   = Ember.isEqual(this.get('model.answer.value'), this.get('noValue'));
+  yieldingForAdditionalData: Ember.computed('model.answer.value', function() {
+    let yes  = this.get('yesSelected');
+    let no   = this.get('noSelected');
 
     return {
       yes: yes,

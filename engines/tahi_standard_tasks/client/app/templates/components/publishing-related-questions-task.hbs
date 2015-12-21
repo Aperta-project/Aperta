@@ -77,6 +77,7 @@
           {{#if selection.yieldingForAdditionalData }}
               <div class="question-dataset {{if selection.unchecked 'hidden'}}">
                 {{nested-question-textarea ident="publishing_related_questions--previous_interactions_with_this_manuscript--submission_details"
+                                    displayContent=selection.checked
                                     owner=task
                                     disabled=isSubmissionTaskNotEditable}}
               </div>
@@ -88,13 +89,12 @@
                           disabled=isSubmissionTaskNotEditable
                           as |selection|}}
           {{#if selection.yieldingForAdditionalData }}
-            {{#if selection.checked}}
-              <div class="question-dataset">
-                {{nested-question-textarea ident="publishing_related_questions--presubmission_inquiry--submission_details"
-                                    owner=task
-                                    disabled=isSubmissionTaskNotEditable}}
-              </div>
-            {{/if}}
+            <div class="question-dataset {{if selection.unchecked 'hidden'}}">
+              {{nested-question-textarea ident="publishing_related_questions--presubmission_inquiry--submission_details"
+                                  owner=task
+                                  displayContent=selection.checked
+                                  disabled=isSubmissionTaskNotEditable}}
+            </div>
           {{/if}}
         {{/nested-question-check}}
 
@@ -103,13 +103,12 @@
                           disabled=isSubmissionTaskNotEditable
                           as |selection|}}
           {{#if selection.yieldingForAdditionalData }}
-            {{#if selection.checked}}
-              <div class="question-dataset">
-                {{nested-question-textarea ident="publishing_related_questions--other_journal_submission--submission_details"
-                                    owner=task
-                                    disabled=isSubmissionTaskNotEditable}}
-              </div>
-            {{/if}}
+            <div class="question-dataset {{if selection.unchecked 'hidden'}}">
+              {{nested-question-textarea ident="publishing_related_questions--other_journal_submission--submission_details"
+                                  owner=task
+                                  displayContent=selection.checked
+                                  disabled=isSubmissionTaskNotEditable}}
+            </div>
           {{/if}}
         {{/nested-question-check}}
 

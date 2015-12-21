@@ -1,22 +1,24 @@
-{{#if readonly}}
-  {{#if shouldDisplayQuestionText}}
-    <div class="{{textClassNames}}">{{{questionText}}}</div>
-  {{/if}}
+{{#if displayContent}}
+  {{#if readonly}}
+    {{#if shouldDisplayQuestionText}}
+      <div class="{{textClassNames}}">{{{questionText}}}</div>
+    {{/if}}
 
-  {{#if model.answer.value}}
-    <div class="answer-text">{{model.answer.value}}</div>
+    {{#if model.answer.value}}
+      <div class="answer-text">{{model.answer.value}}</div>
+    {{else}}
+      <div class="answer-text no-answer">{{noResponseText}}</div>
+    {{/if}}
+
   {{else}}
-    <div class="answer-text no-answer">{{noResponseText}}</div>
-  {{/if}}
+    {{#if shouldDisplayQuestionText}}
+      <div class="{{textClassNames}}">{{{questionText}}}</div>
+    {{/if}}
 
-{{else}}
-  {{#if shouldDisplayQuestionText}}
-    <div class="{{textClassNames}}">{{{questionText}}}</div>
-  {{/if}}
+    {{#if helpText}}
+      <ul class="question-help">{{{helpText}}}</ul>
+    {{/if}}
 
-  {{#if helpText}}
-    <ul class="question-help">{{{helpText}}}</ul>
+    {{textarea name=ident value=model.answer.value class=inputClassNames placeholder=placeholder disabled=disabled}}
   {{/if}}
-
-  {{textarea name=ident value=model.answer.value class=inputClassNames placeholder=placeholder disabled=disabled}}
 {{/if}}

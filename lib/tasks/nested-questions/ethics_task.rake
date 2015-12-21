@@ -6,7 +6,7 @@ namespace 'nested-questions:seed' do
       owner_type: TahiStandardTasks::EthicsTask.name,
       ident: "ethics--human_subjects",
       value_type: "boolean",
-      text: "Does your study involve Human Subject Research (human participants and/or tissue)?",
+      text: "Does your study involve human participants and/or tissue?",
       position: 1,
       children: [
         {
@@ -25,7 +25,7 @@ namespace 'nested-questions:seed' do
       owner_type: TahiStandardTasks::EthicsTask.name,
       ident: "ethics--animal_subjects",
       value_type: "boolean",
-      text: "Does your study involve Animal Research (vertebrate animals, embryos or tissues)?",
+      text: "Does your study involve animal research (vertebrate animals, embryos or tissues)?",
       position: 2,
       children: [
         {

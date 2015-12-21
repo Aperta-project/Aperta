@@ -1532,7 +1532,7 @@ journal_task_types:
     - editor
   - - '13'
     - '1'
-    - Publishing Related Questions
+    - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - author
   - - '14'
@@ -2297,7 +2297,7 @@ tasks:
     - '10'
     - author
   - - '11'
-    - Publishing Related Questions
+    - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - '1'
     - false
@@ -2520,7 +2520,7 @@ tasks:
     - '10'
     - author
   - - '32'
-    - Publishing Related Questions
+    - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - '6'
     - false
@@ -2737,7 +2737,7 @@ tasks:
     - '10'
     - author
   - - '53'
-    - Publishing Related Questions
+    - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - '11'
     - true
@@ -2957,7 +2957,7 @@ tasks:
     - '10'
     - author
   - - '74'
-    - Publishing Related Questions
+    - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - '16'
     - true
@@ -3167,7 +3167,7 @@ tasks:
     - '10'
     - author
   - - '95'
-    - Publishing Related Questions
+    - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - '21'
     - false
@@ -3377,7 +3377,7 @@ tasks:
     - '10'
     - author
   - - '116'
-    - Publishing Related Questions
+    - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - '26'
     - false
@@ -3587,7 +3587,7 @@ tasks:
     - '10'
     - author
   - - '137'
-    - Publishing Related Questions
+    - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
     - '31'
     - false
@@ -4116,7 +4116,7 @@ activities:
     - '3'
     - Paper
     - task.completed
-    - Publishing Related Questions card was marked as complete
+    - Additional Information card was marked as complete
     - '3'
     - '2015-11-02 14:17:21.870751'
     - '2015-11-02 14:17:21.870751'
@@ -4242,7 +4242,7 @@ activities:
     - '4'
     - Paper
     - task.completed
-    - Publishing Related Questions card was marked as complete
+    - Additional Information card was marked as complete
     - '3'
     - '2015-11-02 15:11:50.545588'
     - '2015-11-02 15:11:50.545588'
@@ -5982,7 +5982,7 @@ task_templates:
     - '13'
     - '61'
     - "[]"
-    - Publishing Related Questions
+    - Additional Information
     - '11'
   - - '192'
     - '15'

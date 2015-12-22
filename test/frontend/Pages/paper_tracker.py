@@ -291,7 +291,7 @@ class PaperTrackerPage(AuthenticatedPage):
       self._get(self._paper_tracker_table_header_sort_up).click()
       self._paper_tracker_table_tbody_paptype = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-type-column"]')
       type = self._get(self._paper_tracker_table_tbody_paptype)
-      assert type.text >= orig_type.text, type.text + '<' + orig_type.text
+      assert type.text.lower() >= orig_type.text.lower(), type.text + '<' + orig_type.text
       self._get(self._paper_tracker_table_header_sort_down).click()
       self._paper_tracker_table_tbody_paptype = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-type-column"]')
       type = self._get(self._paper_tracker_table_tbody_paptype)

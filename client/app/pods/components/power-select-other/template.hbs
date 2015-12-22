@@ -1,0 +1,10 @@
+{{#if _otherOptionSelected}}
+  {{format-input value=value}}
+{{/if}}
+
+{{#power-select options=_optionsWithOther
+                selected=selectedValue
+                onchange=(action "select")
+                as |v|}}
+  {{v}}
+{{/power-select}}

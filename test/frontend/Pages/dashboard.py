@@ -13,6 +13,7 @@ import time
 import uuid
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 
 from Base.PostgreSQL import PgSQL
 from authenticated_page import AuthenticatedPage, application_typeface
@@ -422,6 +423,7 @@ class DashboardPage(AuthenticatedPage):
   def click_upload_button(self):
     """Click create button"""
     self._get(self._upload_btn).click()
+    self._actions.send_keys(Keys.ESCAPE)
 
   def close_cns_overlay(self):
     """Click X link"""

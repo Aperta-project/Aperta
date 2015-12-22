@@ -280,6 +280,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     # and it takes time
     time.sleep(.5)
     manuscript_page.click_submit_btn()
+    time.sleep(.5)
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay

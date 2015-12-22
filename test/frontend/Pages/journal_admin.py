@@ -13,6 +13,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 from Base.PostgreSQL import PgSQL
+from Base.CustomException import ElementDoesNotExistAssertionError
 from admin import AdminPage
 
 __author__ = 'jgray@plos.org'
@@ -144,30 +145,31 @@ class JournalAdminPage(AdminPage):
       logging.info(row.text)
       self._role_edit_icon = \
           (By.XPATH,
-           "//div[@class='ember-view admin-role not-editing'][{}]\
-           /div/i[@class='admin-role-action-button fa fa-pencil']".format(count))
+           "//div[@class='ember-view admin-role not-editing'][{}]/div/i[@class='admin-role-action-button fa fa-pencil']".format(count))
       self._get(self._role_edit_icon)
       self._role_name = (By.XPATH, "//div[@class='ember-view admin-role not-editing'][{}]/div/span".format(count))
       role_name = self._get(self._role_name)
       if role_name.text not in ('Admin', 'Flow Manager', 'Editor'):
         self._role_delete_icon = (By.XPATH,
-           "//div[@class='ember-view admin-role not-editing'][{}]\
-           /div/i[@class='admin-role-action-button role-delete-button fa fa-trash']".format(count))
+           "//div[@class='ember-view admin-role not-editing'][{}]/div/i[@class='admin-role-action-button role-delete-button fa fa-trash']".format(count))
         delete_role = self._get(self._role_delete_icon)
       self._role_permissions_div = (By.XPATH, "//div[@class='ember-view admin-role not-editing'][{}]\
            /div[@class='admin-role-permissions']".format(count))
       self._get(self._role_permissions_div)
       self._role_assigned_permission = (By.XPATH, "//div[@class='ember-view admin-role not-editing'][{}]\
           /div[@class='admin-role-permissions']/label".format(count))
-      permissions = self._gets(self._role_assigned_permission)
-      print(permissions)
       self.set_timeout(1)
       try:
+        permissions = self._gets(self._role_assigned_permission)
+        # print(permissions)
+      except ElementDoesNotExistAssertionError:
+        logging.warning('No permissions found for role {}'.format(role_name.text))
+      try:
         role_perms = self._get(self._role_permissions_div).find_elements(*self._role_assigned_permission)
-        print(role_perms.text)
-        for role in role_perms:
-          print(role.text)
-      except:
-        print('No permissions found for role: {}'.format(role_name.text))
+        # print(role_perms.text)
+        # for role in role_perms:
+          # print(role.text)
+      except ElementDoesNotExistAssertionError:
+        logging.warning('No permissions found for role: {}'.format(role_name.text))
       self.restore_timeout()
       count += 1

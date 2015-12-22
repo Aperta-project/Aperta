@@ -10,7 +10,7 @@ export default Ember.Component.extend(FileUploadMixin, EscapeListenerMixin, {
   paper: null,
   isSaving: false,
 
-  journalEmpty: computed.empty('paper.journal'),
+  journalEmpty: computed.empty('paper.journal.content'),
 
   titleCharCount: computed('paper.title', function() {
     return Ember.$('<div></div>')

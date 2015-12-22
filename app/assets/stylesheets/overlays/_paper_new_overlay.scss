@@ -59,3 +59,40 @@
     }
   }
 }
+
+.paper-new-select-trigger {
+  border: 1px solid $tahi-grey-light;
+  border-radius: 5px;
+  padding: 15px;
+  color: #222;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.paper-new-select {
+  .ember-power-select-status-icon {
+    right: 15px;
+  }
+
+  &.ember-basic-dropdown--disabled .paper-new-select-trigger {
+    border-color: #dedede;
+    cursor: not-allowed;
+    background: #fff;
+
+    .ember-power-select-placeholder {
+      color: #bbb;
+    }
+  }
+}
+
+.paper-new-select-dropdown {
+  .ember-power-select-option {
+    padding: 10px 15px;
+    font-size: 14px;
+
+    &.ember-power-select-option--highlighted {
+      color: #000;
+      background: #eee;
+    }
+  }
+}

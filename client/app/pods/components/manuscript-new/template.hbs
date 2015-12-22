@@ -20,17 +20,16 @@
     What journal are you submitting to?
   </label>
 
-  {{#select-box items=journals
-                selectedItem=paper.journal
-                class="paper-new-journal-select"
-                placeholder="Select a journal"
-                class="paper-new-journal-select"
-                allowDeselect=true
-                makeSelection=(action "selectJournal")
-                clearSelection=(action "clearJournal")
-                as |journal|}}
+  {{#power-select placeholder="Select a journal"
+                  class="paper-new-select"
+                  id="paper-new-journal-select"
+                  options=journals
+                  selected=paper.journal
+                  onchange=(action "selectJournal")
+                  searchEnabled=false
+                  as |journal|}}
     {{journal.name}}
-  {{/select-box}}
+  {{/power-select}}
 
   {{#if paper.journal}}
     <span class="paper-new-valid-icon animation-fade-in"><i class="fa fa-check"></i></span>
@@ -42,18 +41,17 @@
     Choose the type of paper you're submitting
   </label>
 
-  {{#select-box items=paper.journal.paperTypes
-                selectedItem=paper.paperType
-                class="paper-new-paper-type-select"
-                placeholder="Select a paper type"
-                class="paper-new-paper-type-select"
-                allowDeselect=true
-                disabled=journalEmpty
-                makeSelection=(action "selectPaperType")
-                clearSelection=(action "clearPaperType")
-                as |paperType|}}
+  {{#power-select placeholder="Select a paper type"
+                  class="paper-new-select"
+                  id="paper-new-paper-type-select"
+                  options=paper.journal.paperTypes
+                  selected=paper.paperType
+                  onchange=(action "selectPaperType")
+                  searchEnabled=false
+                  disabled=journalEmpty
+                  as |paperType|}}
     {{paperType}}
-  {{/select-box}}
+  {{/power-select}}
 
   {{#if paper.paperType}}
     <span class="paper-new-valid-icon animation-fade-in"><i class="fa fa-check"></i></span>

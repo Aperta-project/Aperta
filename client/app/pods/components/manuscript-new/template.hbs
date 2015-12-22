@@ -23,6 +23,7 @@
   {{#power-select placeholder="Select a journal"
                   class="paper-new-select"
                   id="paper-new-journal-select"
+                  tagName="div"
                   options=journals
                   selected=paper.journal
                   onchange=(action "selectJournal")
@@ -44,6 +45,7 @@
   {{#power-select placeholder="Select a paper type"
                   class="paper-new-select"
                   id="paper-new-paper-type-select"
+                  tagName="div"
                   options=paper.journal.paperTypes
                   selected=paper.paperType
                   onchange=(action "selectPaperType")

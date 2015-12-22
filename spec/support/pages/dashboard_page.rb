@@ -6,8 +6,8 @@ class DashboardPage < Page
   def fill_in_new_manuscript_fields(paper_title, journal, paper_type)
     page.execute_script('$(".format-input-field").focus()')
     find('.format-input-field').set paper_title
-    select2 journal, css: ".paper-new-journal-select"
-    select2 paper_type, css: ".paper-new-paper-type-select"
+    power_select "#paper-new-journal-select", journal
+    power_select "#paper-new-paper-type-select", paper_type
   end
 
   def submissions

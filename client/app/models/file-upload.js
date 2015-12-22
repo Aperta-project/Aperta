@@ -6,6 +6,7 @@ export default Ember.Object.extend({
   file: null,
   preview: null,
   xhr: null,
+  uploadFinished: null, // set in mixin/file-upload in uploadFinished()
 
   abort() {
     if(!this.get('xhr')) { return; }

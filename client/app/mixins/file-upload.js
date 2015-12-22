@@ -6,13 +6,13 @@ export default Ember.Mixin.create({
     return this.set('uploads', []);
   }),
 
-  uploads: null,
+  uploads: null, // apparently meant to track uploads currently uploading
   isUploading: Ember.computed.notEmpty('uploads'),
 
-  unloadUploads(data, filename) {
-    let uploads = this.get('uploads');
-    let newUpload = uploads.findBy('file.name', filename);
-    uploads.removeObject(newUpload);
+  removeUpload(filename) {
+    this.get('uploads').removeObject(
+     this.findUploadByFilename(filename)
+    );
   },
 
   uploadStarted(data, fileUploadXHR) {
@@ -30,7 +30,8 @@ export default Ember.Mixin.create({
   },
 
   uploadProgress(data) {
-    let currentUpload = this.get('uploads').findBy('file', data.files[0]);
+    let currentUpload = this.findUploadByFilename(data.files[0].name);
+
     if (!currentUpload) { return; }
 
     currentUpload.setProperties({
@@ -40,6 +41,7 @@ export default Ember.Mixin.create({
   },
 
   uploadFinished(data, filename) {
+    let UIWait = 2000; // ms
     $(window).off('beforeunload.cancelUploads.' + filename);
 
     let key = Object.keys(data || {})[0];
@@ -58,6 +60,13 @@ export default Ember.Mixin.create({
       this.unloadUploads(data, filename);
     }
 
+    setTimeout(() => { this.removeUpload(filename); }, UIWait);
+  },
+
+  findUploadByFilename(filename) {
+    return _.find(this.get('uploads'), function(upload){
+      return upload.get('file.name') === filename;
+    });
   },
 
   cancelUploads() {
@@ -70,6 +79,8 @@ export default Ember.Mixin.create({
     uploadProgress(data) { this.uploadProgress(data); },
     cancelUploads() { this.cancelUploads(); },
     uploadFinished(data, filename) { this.uploadFinished(data, filename); },
-    uploadStarted(data, fileUploadXHR) { this.uploadStarted(data, fileUploadXHR); }
+    uploadStarted(data, fileUploadXHR) {
+      this.uploadStarted(data, fileUploadXHR);
+    },
   }
 });

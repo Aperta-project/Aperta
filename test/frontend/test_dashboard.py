@@ -67,6 +67,11 @@ class ApertaDashboardTest(CommonTest):
     if active_manuscript_count == 0 and inactive_manuscript_count == 0:
       dashboard_page.validate_no_manus_info_msg()
 
+    # The dashboard navigation elements will change based on a users permissions
+    # Author gets Close, Title, Profile Link with Image, Dashboard Link, Signout Link, separator, Feedback Link
+    #
+    dashboard_page.validate_nav_toolbar_elements(user_type['user'])
+
     # Validate View Invites modal (optional)
     invites = dashboard_page.is_invite_stanza_present(user_type['user'])
     if invites > 0:
@@ -78,10 +83,6 @@ class ApertaDashboardTest(CommonTest):
     time.sleep(2)
     dashboard_page.validate_create_new_submission()
 
-    # The dashboard navigation elements will change based on a users permissions
-    # Author gets Close, Title, Profile Link with Image, Dashboard Link, Signout Link, separator, Feedback Link
-    #
-    dashboard_page.validate_nav_toolbar_elements(user_type['user'])
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

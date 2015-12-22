@@ -91,7 +91,8 @@
     "pickFromChosenSingle",
     "MathJax",
     "JsDiff",
-    "pickFromSelectBox"
+    "selectChoose",
+    "selectSearch"
     ],
 
   /*

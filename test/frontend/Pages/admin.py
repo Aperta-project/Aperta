@@ -138,7 +138,7 @@ class AdminPage(AuthenticatedPage):
       if username == 'jgray_sa':
         self._base_admin_journal_block_edit_icon = (By.XPATH,
                              "//div[@class='ember-view journal-thumbnail'][%s]/div[@class='fa fa-pencil edit-icon']"
-                                                    % str(count +1))
+                                                    % (count + 1))
         self._get(self._base_admin_journal_block_edit_icon)
       if not journal_desc:
         journal_desc = None

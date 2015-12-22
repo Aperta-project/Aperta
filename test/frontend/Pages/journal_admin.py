@@ -73,14 +73,11 @@ class JournalAdminPage(AdminPage):
     self.validate_application_h2_style(style_settings_title)
 
   def validate_users_section(self, journal):
-    jid = int()
-    role_list = list()
-    rcount = int()
     users_title = self._get(self._journal_admin_users_title)
     self.validate_application_h2_style(users_title)
     jid = PgSQL().query('SELECT id FROM journals WHERE name = %s;', (journal,))[0][0]
     logging.debug(jid)
-    role_list = PgSQL().query('SELECT * FROM roles WHERE journal_id = %s;', (jid,))
+    role_list = PgSQL().query('SELECT * FROM roles WHERE journal_id = %s;', (jid,)) or []
     logging.debug(role_list)
     roles_count = 0
     for role in role_list:
@@ -145,13 +142,16 @@ class JournalAdminPage(AdminPage):
       logging.info(row.text)
       self._role_edit_icon = \
           (By.XPATH,
-           "//div[@class='ember-view admin-role not-editing'][{}]/div/i[@class='admin-role-action-button fa fa-pencil']".format(count))
+           "//div[@class='ember-view admin-role not-editing'][{}]\
+              /div/i[@class='admin-role-action-button fa fa-pencil']".format(count))
       self._get(self._role_edit_icon)
-      self._role_name = (By.XPATH, "//div[@class='ember-view admin-role not-editing'][{}]/div/span".format(count))
+      self._role_name = (By.XPATH, "//div[@class='ember-view admin-role not-editing'][{}]\
+          /div/span".format(count))
       role_name = self._get(self._role_name)
       if role_name.text not in ('Admin', 'Flow Manager', 'Editor'):
         self._role_delete_icon = (By.XPATH,
-           "//div[@class='ember-view admin-role not-editing'][{}]/div/i[@class='admin-role-action-button role-delete-button fa fa-trash']".format(count))
+           "//div[@class='ember-view admin-role not-editing'][{}]\
+              /div/i[@class='admin-role-action-button role-delete-button fa fa-trash']".format(count))
         delete_role = self._get(self._role_delete_icon)
       self._role_permissions_div = (By.XPATH, "//div[@class='ember-view admin-role not-editing'][{}]\
            /div[@class='admin-role-permissions']".format(count))

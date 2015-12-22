@@ -46,6 +46,8 @@ class ApertaJournalAdminTest(CommonTest):
   def rest_validate_journal_admin_components_styles(self):
     """
     Validates the presence of the following elements:
+      toolbar elements
+      section headings save for user and roles that are validated separately
     """
     user_type = random.choice(users)
     logging.info('Logging in as user: {}'.format(user_type))
@@ -67,6 +69,8 @@ class ApertaJournalAdminTest(CommonTest):
   def rest_validate_journal_admin_user_search_display_function(self):
     """
     Validates the presence of the following elements:
+      user section heading and user search form elements, user search icon
+      result set elements
     """
     user_type = random.choice(users)
     print(user_type['user'])
@@ -88,6 +92,9 @@ class ApertaJournalAdminTest(CommonTest):
   def test_validate_journal_admin_roles_display_function(self):
     """
     Validates the presence of the following elements:
+      role section heading
+      default and non-default role display
+      permission display per role
     """
     user_type = random.choice(users)
     print(user_type['user'])

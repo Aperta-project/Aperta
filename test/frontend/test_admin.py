@@ -72,12 +72,7 @@ class ApertaAdminTest(CommonTest):
     logging.info('Validating base admin page user search function')
     user_type = random.choice(users)
     logging.info('Logging in as user: {}'.format(user_type))
-    login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type['user'])
-    login_page.enter_password_field(login_valid_pw)
-    login_page.click_sign_in_button()
-
-    dashboard_page = DashboardPage(self.getDriver())
+    dashboard_page = self.login(email=sa_login['user'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -90,12 +85,7 @@ class ApertaAdminTest(CommonTest):
     logging.info('Validating add new journal function')
     user_type = sa_login
     print('Logging in as user: {}'.format(user_type))
-    login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type['user'])
-    login_page.enter_password_field(login_valid_pw)
-    login_page.click_sign_in_button()
-
-    dashboard_page = DashboardPage(self.getDriver())
+    dashboard_page = self.login(email=sa_login['user'], password=login_valid_pw)
     dashboard_page.click_admin_link()
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_add_new_journal(user_type['user'])
@@ -107,12 +97,7 @@ class ApertaAdminTest(CommonTest):
     logging.info('Validating edit journal function')
     user_type = sa_login
     print('Logging in as user: {}'.format(user_type))
-    login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type['user'])
-    login_page.enter_password_field(login_valid_pw)
-    login_page.click_sign_in_button()
-
-    dashboard_page = DashboardPage(self.getDriver())
+    dashboard_page = self.login(email=sa_login['user'], password=login_valid_pw)
     dashboard_page.click_admin_link()
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_edit_journal(user_type['user'])

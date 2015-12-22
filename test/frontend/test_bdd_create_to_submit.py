@@ -273,14 +273,15 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     time.sleep(2)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     paper_title_from_page = manuscript_page.get_paper_title_from_page()
+    time.sleep(1)
     manuscript_page.click_submit_btn()
     manuscript_page.validate_so_overlay_elements_styles('initial_submit_full', paper_title_from_page)
     manuscript_page.confirm_submit_cancel()
     # The overlay mush be cleared to interact with the submit button
     # and it takes time
-    time.sleep(.5)
+    time.sleep(2)
     manuscript_page.click_submit_btn()
-    time.sleep(.5)
+    time.sleep(1)
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay

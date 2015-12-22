@@ -28,6 +28,11 @@ body { background: transparent; } // override bootstrap
   @include filter(grayscale(50%) blur(3px));
 }
 
+// Config for Ember-CLI addon ember-power-select
+.ember-basic-dropdown-content {
+  z-index: z('power-select-content');
+}
+
 // override bootstrap
 label { font-weight: normal; }
 

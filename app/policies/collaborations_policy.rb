@@ -11,9 +11,9 @@ class CollaborationsPolicy < ApplicationPolicy
 
   private
 
-  %w(editor reviewer admin collaborator).each do |role|
-    define_method "paper_#{role}?" do
-      paper.role_for(role: role, user: current_user).exists?
+  %w(editor reviewer admin collaborator).each do |old_role|
+    define_method "paper_#{old_role}?" do
+      paper.role_for(old_role: old_role, user: current_user).exists?
     end
   end
 

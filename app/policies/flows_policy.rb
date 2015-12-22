@@ -20,6 +20,6 @@ class FlowsPolicy < ApplicationPolicy
   private
 
   def journal
-    flow.role.journal
+    flow.old_role.journal
   end
 end

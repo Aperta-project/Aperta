@@ -11,10 +11,10 @@ describe TaskFactory do
     }.to change{ Task.count }.by(1)
   end
 
-  it "Sets the default title and role if is not indicated" do
+  it "Sets the default title and old_role if is not indicated" do
     task = TaskFactory.create(klass, phase: phase)
     expect(task.title).to eq('Revise Task')
-    expect(task.role).to eq('author')
+    expect(task.old_role).to eq('author')
   end
 
   it "Sets the title from params" do
@@ -22,9 +22,9 @@ describe TaskFactory do
     expect(task.title).to eq('Test')
   end
 
-  it "Sets the role from params" do
-    task = TaskFactory.create(klass, phase: phase, role: 'editor')
-    expect(task.role).to eq('editor')
+  it "Sets the old_role from params" do
+    task = TaskFactory.create(klass, phase: phase, old_role: 'editor')
+    expect(task.old_role).to eq('editor')
   end
 
   it "Sets the phase to the task" do

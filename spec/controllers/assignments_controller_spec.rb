@@ -4,7 +4,7 @@ describe AssignmentsController, type: :controller do
   let(:admin) { create :user, :site_admin }
   let(:journal) { FactoryGirl.create(:journal) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
-  let!(:role) { FactoryGirl.create(:role, journal: journal) }
+  let!(:old_role) { FactoryGirl.create(:old_role, journal: journal) }
 
   before do
     sign_in(admin)
@@ -12,17 +12,17 @@ describe AssignmentsController, type: :controller do
 
   describe "GET 'index'" do
     before do
-      @paper_role = PaperRole.create! role: role.name, user: admin, paper: paper
+      @paper_role = PaperRole.create! old_role: old_role.name, user: admin, paper: paper
     end
 
     context "when the paper id is provided" do
       expect_policy_enforcement
 
-      it "returns all of the paper roles for the paper" do
+      it "returns all of the paper old_roles for the paper" do
         get :index, paper_id: paper.id
         expect(res_body["assignments"]).to include({"id" => @paper_role.id,
                                                                      "created_at" => kind_of(String),
-                                                                     "role" => role.name,
+                                                                     "old_role" => old_role.name,
                                                                      "paper_id" => paper.id,
                                                                      "user_id" => admin.id})
       end
@@ -42,19 +42,19 @@ describe AssignmentsController, type: :controller do
     let(:admin) { create :user, :site_admin }
     let(:journal) { FactoryGirl.create(:journal) }
     let(:paper) { FactoryGirl.create(:paper, journal: journal) }
-    let!(:role) { FactoryGirl.create(:role, journal: journal) }
+    let!(:old_role) { FactoryGirl.create(:old_role, journal: journal) }
 
-    it "creates an assignment between a given role and the user for the paper" do
-      assignment_attributes = {"role" => role.name, "user_id" => admin.id, "paper_id" => paper.id }
+    it "creates an assignment between a given old_role and the user for the paper" do
+      assignment_attributes = {"old_role" => old_role.name, "user_id" => admin.id, "paper_id" => paper.id }
       post :create, "assignment" => assignment_attributes
       expect(res_body["assignment"]).to include(assignment_attributes)
     end
 
     it "creates an activity" do
-      assignment_attributes = {"role" => role.name, "user_id" => assignee.id, "paper_id" => paper.id }
+      assignment_attributes = {"old_role" => old_role.name, "user_id" => assignee.id, "paper_id" => paper.id }
       activity = {
         subject: paper,
-        message: "#{assignee.full_name} was added as #{role.name.capitalize}"
+        message: "#{assignee.full_name} was added as #{old_role.name.capitalize}"
       }
       expect(Activity).to receive(:create).with(hash_including(activity))
 
@@ -69,16 +69,16 @@ describe AssignmentsController, type: :controller do
     let(:admin) { create :user, :site_admin }
     let(:journal) { FactoryGirl.create(:journal) }
     let(:paper) { FactoryGirl.create(:paper, journal: journal) }
-    let!(:role) { FactoryGirl.create(:role, journal: journal) }
+    let!(:old_role) { FactoryGirl.create(:old_role, journal: journal) }
 
     before do
-      @paper_role = PaperRole.create! role: role.name, user: admin, paper: paper
+      @paper_role = PaperRole.create! old_role: old_role.name, user: admin, paper: paper
     end
 
     it "destroys an assignment" do
       delete :destroy, id: @paper_role.id
       expect(res_body["assignment"]).to include({"id" => @paper_role.id,
-                                                                   "role" => role.name,
+                                                                   "old_role" => old_role.name,
                                                                    "paper_id" => paper.id,
                                                                    "user_id" => admin.id})
     end

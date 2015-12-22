@@ -25,7 +25,7 @@ class TaskFactory
   def default_options
     {
       title: TaskType.types[task_klass].fetch(:default_title),
-      role: TaskType.types[task_klass].fetch(:default_role)
+      old_role: TaskType.types[task_klass].fetch(:default_role)
     }
   end
 

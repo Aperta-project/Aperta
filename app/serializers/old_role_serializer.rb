@@ -1,4 +1,4 @@
-class RoleSerializer < ActiveModel::Serializer
+class OldRoleSerializer < ActiveModel::Serializer
   attributes :id,
              :kind,
              :name,

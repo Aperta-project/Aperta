@@ -42,8 +42,8 @@
         </tr>
         {{#each adminJournalUsers as |user|}}
           {{admin-journal-user model=user
-                               journalRoles=model.roles
-                               assignRole="assignRoleToUser"}}
+                               journalRoles=model.oldRoles
+                               assignOldRole="assignOldRoleToUser"}}
         {{/each}}
       </table>
     {{/if}}
@@ -60,8 +60,8 @@
     <div class="admin-roles">
       <div class="admin-roles-header admin-role-name">Role Name</div>
       <div class="admin-roles-header admin-role-permissions">Permission</div>
-      {{#each model.roles as |role|}}
-        {{admin-role model=role}}
+      {{#each model.oldRoles as |oldRole|}}
+        {{admin-role model=oldRole}}
       {{/each}}
     </div>
   </div>

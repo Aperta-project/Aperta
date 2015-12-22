@@ -19,7 +19,7 @@ describe TahiStandardTasks::PaperReviewerTask do
     TahiStandardTasks::PaperReviewerTask.create!({
       phase: paper.phases.first,
       title: "Invite Reviewers",
-      role: "editor"
+      old_role: "editor"
     })
   end
 

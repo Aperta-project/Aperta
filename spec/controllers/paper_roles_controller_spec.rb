@@ -5,16 +5,16 @@ describe PaperRolesController do
 
   let(:admin) { create :user, :site_admin }
   let(:paper){ FactoryGirl.create(:paper)}
-  let!(:expected_role) { FactoryGirl.create(:role, journal: paper.journal) }
+  let!(:expected_role) { FactoryGirl.create(:old_role, journal: paper.journal) }
   let(:json_response){ JSON.parse(response.body).with_indifferent_access }
 
   before { sign_in(admin) }
 
   describe "#index" do
-    it "lists all roles available for the paper" do
+    it "lists all old_roles available for the paper" do
       get :index, paper_id: paper.id
-      serializer = RoleSerializer.new(expected_role)
-      expect(json_response[:roles]).to include(serializer.as_json[:role])
+      serializer = OldRoleSerializer.new(expected_role)
+      expect(json_response[:old_roles]).to include(serializer.as_json[:old_role])
     end
   end
 

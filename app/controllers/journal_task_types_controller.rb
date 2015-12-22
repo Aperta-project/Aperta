@@ -12,13 +12,13 @@ class JournalTaskTypesController < ApplicationController
   private
 
   def reset_empty_role
-    unless params[:journal_task_type][:role]
-      params[:journal_task_type][:role] = TaskType.types[journal_task_type.kind][:default_role]
+    unless params[:journal_task_type][:old_role]
+      params[:journal_task_type][:old_role] = TaskType.types[journal_task_type.kind][:default_role]
     end
   end
 
   def journal_task_types_params
-    params.require(:journal_task_type).permit(:role, :title)
+    params.require(:journal_task_type).permit(:old_role, :title)
   end
 
   def journal_task_type

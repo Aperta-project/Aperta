@@ -44,7 +44,7 @@ Router.map(function() {
         this.route('new');
         this.route('edit', { path: '/:manuscript_manager_template_id/edit' });
       });
-      this.route('flow_manager', { path: '/roles/:role_id/flow_manager' });
+      this.route('flow_manager', { path: '/old_roles/:old_role_id/flow_manager' });
 
     });
   });

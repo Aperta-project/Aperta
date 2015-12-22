@@ -10,7 +10,7 @@ module TaskAccessCriteria
   end
 
   def journal_roles
-    current_user.roles.where(journal: journal)
+    current_user.old_roles.where(journal: journal)
   end
 
   # authorizations used by policies
@@ -29,13 +29,13 @@ module TaskAccessCriteria
   end
 
   def can_view_all_manuscript_managers_for_journal?
-    journal_roles.merge(Role.can_view_all_manuscript_managers).exists?
+    journal_roles.merge(OldRole.can_view_all_manuscript_managers).exists?
   end
 
   def can_view_manuscript_manager_for_paper?
     (paper.tasks.assigned_to(current_user).exists? ||
     PaperRole.for_user(current_user).where(paper: paper).exists?) &&
-    journal_roles.merge(Role.can_view_assigned_manuscript_managers).exists?
+    journal_roles.merge(OldRole.can_view_assigned_manuscript_managers).exists?
   end
 
   def task_participant?
@@ -47,7 +47,7 @@ module TaskAccessCriteria
   end
 
   def allowed_reviewer_task?
-    task.role == 'reviewer' && paper.role_for(role: ['editor', 'reviewer'], user: current_user).exists?
+    task.old_role == 'reviewer' && paper.role_for(old_role: ['editor', 'reviewer'], user: current_user).exists?
   end
 
   def has_paper_role?

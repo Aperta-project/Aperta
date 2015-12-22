@@ -4,11 +4,11 @@ class FlowsController < ApplicationController
   respond_to :json
 
   def index
-    role = Role.find(params[:role_id])
-    role_policy = RolesPolicy.new(current_user: current_user, journal: role.journal, role: role)
+    old_role = OldRole.find(params[:old_role_id])
+    role_policy = OldRolesPolicy.new(current_user: current_user, journal: old_role.journal, old_role: old_role)
 
     if role_policy.show?
-      respond_with role.flows
+      respond_with old_role.flows
     else
       head 403
     end
@@ -36,8 +36,8 @@ class FlowsController < ApplicationController
 
   private
 
-  def role
-    @role ||= Role.find(flow_params[:role_id])
+  def old_role
+    @old_role ||= OldRole.find(flow_params[:old_role_id])
   end
 
   def flow
@@ -45,13 +45,13 @@ class FlowsController < ApplicationController
       if params[:id].present?
         Flow.find(params[:id])
       else
-        role.flows.new(flow_params)
+        old_role.flows.new(flow_params)
       end
     end
   end
 
   def flow_params
-    params.require(:flow).permit(:title, :role_id, query: [:type, :state, :assigned, :role])
+    params.require(:flow).permit(:title, :old_role_id, query: [:type, :state, :assigned, :old_role])
   end
 
   def formatted_title

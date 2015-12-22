@@ -5,7 +5,7 @@ FactoryGuy.define('paper', {
     title: '',
     shortTitle: '',
     publishingState: 'unsubmitted',
-    roles: [],
+    oldRoles: [],
     relatedAtDate: '2014-09-28T13:54:58.028Z',
     editable: true
   },
@@ -13,7 +13,7 @@ FactoryGuy.define('paper', {
   traits: {
 
     withRoles: {
-      roles: ['participant']
+      oldRoles: ['participant']
     }
 
   }

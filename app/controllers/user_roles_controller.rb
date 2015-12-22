@@ -6,7 +6,7 @@ class UserRolesController < ApplicationController
   # TODO: look into this
   def index
     render json: [UserRole.find_by(user_id: params[:user_id],
-                                   role_id: params[:role_id])],
+                                   old_role_id: params[:old_role_id])],
            each_serializer: UserRoleSerializer
   end
 
@@ -23,7 +23,7 @@ class UserRolesController < ApplicationController
   private
 
   def user_role_params
-    params.require(:user_role).permit :user_id, :role_id
+    params.require(:user_role).permit :user_id, :old_role_id
   end
 
   def user_role

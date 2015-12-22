@@ -4,7 +4,7 @@ describe UserFlowsPolicy do
   let(:journal) { FactoryGirl.create(:journal) }
   let(:policy) { UserFlowsPolicy.new(current_user: user, journal: journal) }
 
-  context "user has a flow manager journal role" do
+  context "user has a flow manager journal old_role" do
     let(:user) { FactoryGirl.create(:user) }
 
     before do
@@ -14,7 +14,7 @@ describe UserFlowsPolicy do
     include_examples "person who can view flow manager"
   end
 
-  context "user has an admin journal role" do
+  context "user has an admin journal old_role" do
     let(:user) { FactoryGirl.create(:user) }
 
     before do

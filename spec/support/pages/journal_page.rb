@@ -78,11 +78,11 @@ class JournalPage < Page
                          .map { |role_label| role_label.text }
   end
 
-  def remove_role user, role
-    role = user_result_row(user).all('.assigned-role')
-                                .detect { |row_label| row_label.text == role.name }
-    role.hover
-    role.find('.token-remove').click
+  def remove_role user, old_role
+    old_role = user_result_row(user).all('.assigned-role')
+                                .detect { |row_label| row_label.text == old_role.name }
+    old_role.hover
+    old_role.find('.token-remove').click
     self
   end
 

@@ -20,11 +20,11 @@ describe User do
   end
 
   describe "#possible_flows" do
-    it "returns all flows assigned to the user's roles" do
-      role = FactoryGirl.create(:role)
-      flow = FactoryGirl.create(:flow, role: role)
+    it "returns all flows assigned to the user's old_roles" do
+      old_role = FactoryGirl.create(:old_role)
+      flow = FactoryGirl.create(:flow, old_role: old_role)
       user = FactoryGirl.create(:user)
-      user.roles << role
+      user.old_roles << old_role
 
       expect(user.possible_flows).to include(flow)
     end
@@ -169,7 +169,7 @@ describe User do
     let(:paper) { FactoryGirl.create(:paper) }
     let(:journal) { paper.journal }
     let(:journal_admin) { FactoryGirl.create(:user) }
-    let!(:role) { assign_journal_role(journal, journal_admin, :admin) }
+    let!(:old_role) { assign_journal_role(journal, journal_admin, :admin) }
     let(:regular_user) { FactoryGirl.create(:user) }
 
     it "returns true if user is an admin for a given journal" do

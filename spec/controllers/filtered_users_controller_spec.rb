@@ -24,7 +24,7 @@ describe FilteredUsersController do
   let(:creator) { create :user, first_name: "Henry", last_name: "Bob" }
 
   let(:journal) { FactoryGirl.create(:journal) }
-  let(:role) { FactoryGirl.create(:role, :editor, journal: journal) }
+  let(:old_role) { FactoryGirl.create(:old_role, :editor, journal: journal) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal, creator: creator) }
 
   before do
@@ -37,7 +37,7 @@ describe FilteredUsersController do
     let(:task) do
       phase.tasks.create(type: "TestTask",
                          title: "Test",
-                         role: "editor").extend Invitable
+                         old_role: "editor").extend Invitable
     end
     let(:invitation) { create :invitation, task: task, invitee: user }
 

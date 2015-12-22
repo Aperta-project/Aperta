@@ -62,7 +62,7 @@ describe Invitation do
   end
 
   describe "#accept!" do
-    it "sends an role invitation email" do
+    it "sends an old_role invitation email" do
       invitation.invite!
       expect(task).to receive(:accept_allowed?).with(invitation).and_return(true)
       expect(task).to receive(:invitation_accepted).with(invitation)

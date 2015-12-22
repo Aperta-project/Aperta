@@ -6,9 +6,9 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
   init() {
     this._super(...arguments);
 
-    const path = '/api/papers/' + (this.get('task.paper.id')) + '/roles';
+    const path = '/api/papers/' + (this.get('task.paper.id')) + '/old_roles';
     Ember.$.getJSON(path, (data) => {
-      this.set('roles', data.roles);
+      this.set('oldRoles', data.old_roles);
     });
   },
 
@@ -16,21 +16,21 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
 
   fetchUsers: function() {
     const paperId = this.get('task.paper.id');
-    const roleId  = this.get('selectedRole.id');
-    const path    = '/api/papers/' + paperId + '/roles/' + roleId + '/users';
+    const oldRoleId  = this.get('selectedOldRole.id');
+    const path    = '/api/papers/' + paperId + '/old_roles/' + oldRoleId + '/users';
 
     Ember.$.getJSON(path, (data) => {
       this.set('users', data.users);
     });
-  }.observes('selectedRole'),
+  }.observes('selectedOldRole'),
 
-  selectableRoles: Ember.computed('roles', function() {
-    const roles = this.get('roles') || [];
+  selectableRoles: Ember.computed('oldRoles', function() {
+    const oldRoles = this.get('oldRoles') || [];
 
-    return roles.map(function(role) {
+    return oldRoles.map(function(oldRole) {
       return {
-        id: role.id,
-        text: role.name
+        id: oldRole.id,
+        text: oldRole.name
       };
     });
   }),
@@ -51,7 +51,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
       assignment.destroyRecord();
     },
 
-    assignRoleToUser() {
+    assignOldRoleToUser() {
       const store = this.container.lookup('store:main');
       const userId = this.get('selectedUser.id');
 
@@ -59,7 +59,7 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
         const assignment = this.store.createRecord('assignment', {
           user: user,
           paper: this.get('task.paper'),
-          role: this.get('selectedRole.text')
+          oldRole: this.get('selectedOldRole.text')
         });
 
         assignment.save().then(()=> {
@@ -70,8 +70,8 @@ export default TaskComponent.extend(ValidationErrorsMixin, {
       });
     },
 
-    didSelectRole(role) {
-      this.set('selectedRole', role);
+    didSelectRole(oldRole) {
+      this.set('selectedOldRole', oldRole);
     },
 
     didSelectUser(user) {

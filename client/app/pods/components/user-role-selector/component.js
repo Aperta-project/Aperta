@@ -4,11 +4,11 @@ export default Ember.Component.extend({
   classNames: ['user-role-selector', 'select2-multiple'],
 
   actions: {
-    assignRole(data) {
+    assignOldRole(data) {
       this.sendAction('selected', data);
     },
 
-    removeRole(data) {
+    removeOldRole(data) {
       this.sendAction('removed', data);
     },
 

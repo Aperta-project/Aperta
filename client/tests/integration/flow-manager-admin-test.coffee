@@ -21,7 +21,7 @@ module 'Integration: Flow Manager Administration',
     server = setupMockServer()
     journal = Factory.createRecord('AdminJournal')
 
-    adminRole = Factory.createJournalRole journal,
+    adminRole = Factory.createJournalOldRole journal,
       name: "Admin"
       kind: "admin"
       can_administer_journal: true
@@ -48,11 +48,11 @@ module 'Integration: Flow Manager Administration',
       200, "Content-Type": "application/json", JSON.stringify { admin_journal_users: [] }
     ]
 
-    server.respondWith 'GET', "/api/flows?role_id=#{adminRole.id}", [
+    server.respondWith 'GET', "/api/flows?old_role_id=#{adminRole.id}", [
       200, 'content-type': 'application/json', JSON.stringify({ flows: [] })
     ]
 
-test 'Flow manager edit link should show up on a role with permission in edit mode', (assert) ->
+test 'Flow manager edit link should show up on a oldRole with permission in edit mode', (assert) ->
   visit "/admin/journals/#{journal.id}"
   click('.admin-role-action-button.fa.fa-pencil')
   andThen ->
@@ -61,7 +61,7 @@ test 'Flow manager edit link should show up on a role with permission in edit mo
   andThen ->
     assert.ok find('a:contains("Edit Flows")').length, "three"
 
-test "Admin can add a new column in a role's flow-manager", (assert) ->
+test "Admin can add a new column in a oldRole's flow-manager", (assert) ->
   visit "/admin/journals/#{journal.id}"
   click '.admin-role-action-button.fa.fa-pencil'
   click 'input[name="role[canViewFlowManager]"]'

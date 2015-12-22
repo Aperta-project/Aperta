@@ -38,7 +38,7 @@ module TahiStandardTasks
       TaskFactory.create("TahiStandardTasks::ReviseTask",
                          phase: task.phase,
                          title: "Revise Manuscript",
-                         role: "author",
+                         old_role: "author",
                          body: [[{ type: 'text', value: task.public_send("#{decision.verdict}_letter") }]],
                          participants: participants,
                          completed: false)

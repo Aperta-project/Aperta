@@ -50,7 +50,7 @@ class PaperFactory
                               creator: creator,
                               title: task_template.title,
                               body: task_template.template,
-                              role: task_template.journal_task_type.role,
+                              old_role: task_template.journal_task_type.old_role,
                               notify: false)
     task.paper_creation_hook(paper) if task.respond_to?(:paper_creation_hook)
   end
@@ -64,6 +64,6 @@ class PaperFactory
   end
 
   def add_creator_as_collaborator
-    paper.paper_roles.build(user: creator, role: PaperRole::COLLABORATOR)
+    paper.paper_roles.build(user: creator, old_role: PaperRole::COLLABORATOR)
   end
 end

@@ -8,9 +8,9 @@ describe CommentsController do
 
   let(:journal) { paper.journal }
   let(:journal_admin) { FactoryGirl.create(:user) }
-  let!(:role) { assign_journal_role(journal, journal_admin, :admin) }
+  let!(:old_role) { assign_journal_role(journal, journal_admin, :admin) }
 
-  let(:task) { create(:task, phase: phase, participants: [user], title: "Task", role: "admin") }
+  let(:task) { create(:task, phase: phase, participants: [user], title: "Task", old_role: "admin") }
   before { sign_in user }
 
   describe "#index" do
@@ -73,7 +73,7 @@ describe CommentsController do
       end
 
       context "the user is not a participant on the card" do
-        let(:task) { create(:task, phase: phase, participants: [], title: "Task", role: "admin") }
+        let(:task) { create(:task, phase: phase, participants: [], title: "Task", old_role: "admin") }
 
         it "adds the user as a participant" do
           expect(user.tasks).to_not include(task)
@@ -83,7 +83,7 @@ describe CommentsController do
       end
 
       context "the user is a journal admin" do
-        let(:task) { create(:task, phase: phase, participants: [], title: "Task", role: "admin") }
+        let(:task) { create(:task, phase: phase, participants: [], title: "Task", old_role: "admin") }
 
         it "does not add the journal admin as a participant" do
           expect(journal_admin.tasks).to_not include(task)

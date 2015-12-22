@@ -23,7 +23,7 @@ module 'Integration: Admin Test',
     phase_templates = Factory.createPhaseTemplate(manuscript_manager_templates)
     task_templates = Factory.createJournalTaskType(journal, {})
     journal_task_types = Factory.createTaskTemplate(journal, phase_templates, task_templates)
-    roles = Factory.createJournalRole(journal)
+    oldRoles = Factory.createJournalOldRole(journal)
     admin_journals = journal
 
     adminJournalPayload = Factory.createPayload('adminJournal')
@@ -32,7 +32,7 @@ module 'Integration: Admin Test',
       phase_templates,
       task_templates,
       journal_task_types,
-      roles,
+      oldRoles,
       admin_journals
     ])
 

@@ -15,15 +15,15 @@ class PaperRole < ActiveRecord::Base
   validates :paper, presence: true
   validates :user,  presence: true
 
-  validates :role, uniqueness: {
+  validates :old_role, uniqueness: {
     scope: [:user_id, :paper_id],
     message: "already assigned to this user"
   }
 
-  validate :role_exists
+  validate :old_role_exists
 
   def self.admins
-    where(role: ADMIN)
+    where(old_role: ADMIN)
   end
 
   def self.for_user(user)
@@ -31,23 +31,23 @@ class PaperRole < ActiveRecord::Base
   end
 
   def self.editors
-    where(role: EDITOR)
+    where(old_role: EDITOR)
   end
 
   def self.reviewers
-    where(role: REVIEWER)
+    where(old_role: REVIEWER)
   end
 
   def self.collaborators
-    where(role: COLLABORATOR)
+    where(old_role: COLLABORATOR)
   end
 
   def self.participants
-    where(role: PARTICIPANT)
+    where(old_role: PARTICIPANT)
   end
 
-  def self.for_role(role)
-    where(role: role)
+  def self.for_old_role(old_role)
+    where(old_role: old_role)
   end
 
   def self.reviewers_for(paper)
@@ -59,14 +59,14 @@ class PaperRole < ActiveRecord::Base
   end
 
   def description
-    role.capitalize
+    old_role.capitalize
   end
 
   private
 
-  def role_exists
+  def old_role_exists
     return unless paper.journal
 
-    errors.add(:base, "Invalid role provided") unless role.in?(paper.journal.valid_roles)
+    errors.add(:base, "Invalid old_role provided") unless old_role.in?(paper.journal.valid_old_roles)
   end
 end

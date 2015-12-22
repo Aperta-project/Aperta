@@ -4,7 +4,7 @@ export default DS.Model.extend({
   manuscriptManagerTemplates: DS.hasMany('manuscript-manager-template', {
     async: false
   }),
-  roles: DS.hasMany('role', { async: false }),
+  oldRoles: DS.hasMany('old-role', { async: false }),
   journalTaskTypes: DS.hasMany('journal-task-type', { async: false }),
 
   createdAt: DS.attr('date'),

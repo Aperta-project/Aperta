@@ -2,11 +2,11 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model(params) {
-    return this.store.find('role', params.role_id);
+    return this.store.find('oldRole', params.old_role_id);
   },
 
-  afterModel(role) {
-    return this.store.find('flow', { role_id: role.get('id') });
+  afterModel(oldRole) {
+    return this.store.find('flow', { old_role_id: oldRole.get('id') });
   },
 
   setupController(controller, model) {

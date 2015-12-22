@@ -16,7 +16,7 @@ describe PlosBilling::Paper::Submitted::Salesforce do
 
   context "paper with a billing task" do
     let(:paper_with_task) {
-      FactoryGirl.create :paper_with_task, task_params: { title: "Billing", type: "PlosBilling::BillingTask", role: "author" }
+      FactoryGirl.create :paper_with_task, task_params: { title: "Billing", type: "PlosBilling::BillingTask", old_role: "author" }
     }
 
     it "find or create Salesforce Manuscript and create Case" do

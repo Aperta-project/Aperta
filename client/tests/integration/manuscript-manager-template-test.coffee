@@ -79,7 +79,7 @@ module 'Integration: Manuscript Manager Templates',
         {
           "id": 1,
           "title": "Ad-hoc",
-          "role": "user",
+          "old_role": "user",
           "kind": "Task",
           "journal_id": 1
         }

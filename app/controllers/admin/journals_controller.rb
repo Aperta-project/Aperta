@@ -6,13 +6,13 @@ class Admin::JournalsController < ApplicationController
 
   def index
     journals = current_user.administered_journals
-      .includes(:journal_task_types, roles: :flows, manuscript_manager_templates: { phase_templates: { task_templates: :journal_task_type } })
+      .includes(:journal_task_types, old_roles: :flows, manuscript_manager_templates: { phase_templates: { task_templates: :journal_task_type } })
 
     respond_with journals, each_serializer: AdminJournalSerializer, root: 'admin_journals'
   end
 
   def show
-    j = Journal.where(id: journal.id).includes(:journal_task_types, roles: :flows, manuscript_manager_templates: { phase_templates: { task_templates: :journal_task_type } }).first!
+    j = Journal.where(id: journal.id).includes(:journal_task_types, old_roles: :flows, manuscript_manager_templates: { phase_templates: { task_templates: :journal_task_type } }).first!
     respond_with(j, serializer: AdminJournalSerializer, root: 'admin_journal')
   end
 

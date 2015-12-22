@@ -176,8 +176,8 @@ shared_examples_for "person who cannot administer task templates" do
   end
 end
 
-# journal roles
-shared_examples_for "person who can administer journal roles" do
+# journal old_roles
+shared_examples_for "person who can administer journal old_roles" do
   it "lets them do all the things" do
     expect(policy.index?).to be(true)
     expect(policy.show?).to be(true)
@@ -187,7 +187,7 @@ shared_examples_for "person who can administer journal roles" do
   end
 end
 
-shared_examples_for "person who cannot administer journal roles" do
+shared_examples_for "person who cannot administer journal old_roles" do
   it "doesn't allow them to perform any actions" do
     expect(policy.index?).to be(false)
     expect(policy.show?).to be(false)
@@ -284,7 +284,7 @@ shared_examples_for "person who can not view flow manager" do
   end
 end
 
-shared_examples_for "person who can view role flow manager" do
+shared_examples_for "person who can view old_role flow manager" do
   it "allows them to perform any action" do
     expect(policy.show?).to be(true)
     expect(policy.create?).to be(true)
@@ -293,7 +293,7 @@ shared_examples_for "person who can view role flow manager" do
   end
 end
 
-shared_examples_for "person who can not view role flow manager" do
+shared_examples_for "person who can not view old_role flow manager" do
   it "allows them to perform any action" do
     expect(policy.show?).to be(false)
     expect(policy.create?).to be(false)

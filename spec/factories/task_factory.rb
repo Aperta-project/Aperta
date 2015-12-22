@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :task do
     title "Do something awesome"
-    role 'admin'
+    old_role 'admin'
     phase
 
     trait :with_participant do
@@ -16,134 +16,134 @@ FactoryGirl.define do
   factory :assign_team_task, class: 'Tahi::AssignTeam::AssignTeamTask' do
     phase
     title "Assign Team"
-    role "admin"
+    old_role "admin"
   end
 
   factory :competing_interests_task, class: 'TahiStandardTasks::CompetingInterestsTask' do
     phase
     title "Competing Interests"
-    role "author"
+    old_role "author"
   end
 
   factory :data_availability_task, class: 'TahiStandardTasks::DataAvailabilityTask' do
     phase
     title "Data Availability"
-    role "author"
+    old_role "author"
   end
 
   factory :ethics_task, class: 'TahiStandardTasks::EthicsTask' do
     phase
     title "Ethics"
-    role "author"
+    old_role "author"
   end
 
   factory :figure_task, class: 'TahiStandardTasks::FigureTask' do
     phase
     title "Figures"
-    role "author"
+    old_role "author"
   end
 
   factory :financial_disclosure_task, class: 'TahiStandardTasks::FinancialDisclosureTask' do
     phase
     title "Financial Disclosure"
-    role "author"
+    old_role "author"
   end
 
   factory :paper_admin_task, class: 'TahiStandardTasks::PaperAdminTask' do
     phase
     title "Assign Admin"
-    role "admin"
+    old_role "admin"
   end
 
   factory :paper_editor_task, class: 'TahiStandardTasks::PaperEditorTask' do
     phase
     title "Invite Editor"
-    role "admin"
+    old_role "admin"
   end
 
   factory :publishing_related_questions_task, class: 'TahiStandardTasks::PublishingRelatedQuestionsTask' do
     phase
     title "Publishing Related Questions"
-    role "author"
+    old_role "author"
   end
 
   factory :reporting_guidelines_task, class: 'TahiStandardTasks::ReportingGuidelinesTask' do
     phase
     title "Reporting Guidelines"
-    role "author"
+    old_role "author"
   end
 
   factory :taxon_task, class: 'TahiStandardTasks::TaxonTask' do
     phase
     title "Taxon"
-    role "author"
+    old_role "author"
   end
 
   factory :initial_tech_check_task, class: 'PlosBioTechCheck::InitialTechCheckTask' do
     phase
     title 'Initial Tech Check'
-    role 'admin'
+    old_role 'admin'
   end
 
   factory :changes_for_author_task, class: 'PlosBioTechCheck::ChangesForAuthorTask' do
     phase
     title "Changes for Author"
-    role "author"
+    old_role "author"
     body initialTechCheckBody: 'Default changes for author body'
   end
 
   factory :editors_discussion_task, class: 'PlosBioInternalReview::EditorsDiscussionTask' do
     phase
     title "Editor Discussion"
-    role "admin"
+    old_role "admin"
   end
 
   factory :invitable_task, class: 'InvitableTask' do
     phase
     title "Invitable Task"
-    role "user"
+    old_role "user"
   end
 
   factory :cover_letter_task, class: "TahiStandardTasks::CoverLetterTask" do
     phase
     title "Cover Letter"
-    role "author"
+    old_role "author"
   end
 
   factory :metadata_task, class: 'MockMetadataTask' do
     phase
     title "Metadata Task"
-    role "author"
+    old_role "author"
   end
 
   factory :billing_task, class: 'PlosBilling::BillingTask' do
     phase
     title "Billing"
-    role "author"
+    old_role "author"
   end
 
   factory :authors_task, class: 'TahiStandardTasks::AuthorsTask' do
     phase
     title "Authors"
-    role "author"
+    old_role "author"
   end
 
   factory :production_metadata_task, class: "TahiStandardTasks::ProductionMetadataTask" do
     phase
     title "Production Metadata"
-    role "admin"
+    old_role "admin"
   end
 
   factory :reviewer_recommendation_task, class: 'TahiStandardTasks::ReviewerRecommendationsTask' do
     phase
     title "Reviewer Candidates"
-    role "author"
+    old_role "author"
   end
 
   factory :send_to_apex_task, class: 'TahiStandardTasks::SendToApexTask' do
     phase
     title 'Send to Apex'
-    role 'admin'
+    old_role 'admin'
   end
 end
 
@@ -179,7 +179,7 @@ class InvitableTask < Task
   end
 
   def invitee_role
-    'test role'
+    'test old_role'
   end
 end
 

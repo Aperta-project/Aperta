@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-describe Roles::UsersPolicy do
+describe OldRoles::UsersPolicy do
   let(:journal) { FactoryGirl.create(:journal) }
-  let(:policy) { Roles::UsersPolicy.new(current_user: user, journal: journal) }
-  let(:role) { FactoryGirl.create(:role, journal: journal) }
+  let(:policy) { OldRoles::UsersPolicy.new(current_user: user, journal: journal) }
+  let(:old_role) { FactoryGirl.create(:old_role, journal: journal) }
 
   context "admin" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }

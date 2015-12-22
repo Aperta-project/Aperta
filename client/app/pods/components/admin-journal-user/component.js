@@ -5,7 +5,7 @@ export default Ember.Component.extend({
   classNames: ['user-row'],
 
   journalRoles: null,
-  userJournalRoles: Ember.computed.mapBy('model.userRoles', 'role'),
+  userJournalRoles: Ember.computed.mapBy('model.userRoles', 'oldRole'),
 
   selectableJournalRoles: Ember.computed('journalRoles.[]', function() {
     return this.get('journalRoles').map(function(jr) {
@@ -26,12 +26,12 @@ export default Ember.Component.extend({
   }),
 
   actions: {
-    removeRole(roleObj) {
-      this.get('model.userRoles').findBy('role.id', roleObj.id).destroyRecord();
+    removeOldRole(oldRoleObj) {
+      this.get('model.userRoles').findBy('oldRole.id', oldRoleObj.id).destroyRecord();
     },
 
-    assignRole(roleObj) {
-      this.sendAction('assignRole', roleObj.id, this.get('model'));
+    assignOldRole(oldRoleObj) {
+      this.sendAction('assignOldRole', oldRoleObj.id, this.get('model'));
     }
   }
 });

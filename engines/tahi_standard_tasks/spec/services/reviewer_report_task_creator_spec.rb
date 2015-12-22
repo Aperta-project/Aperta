@@ -9,11 +9,11 @@ describe ReviewerReportTaskCreator do
     ReviewerReportTaskCreator.new(originating_task: paper_reviewer_task, assignee_id: assignee.id)
   end
 
-  context "assigning reviewer role" do
+  context "assigning reviewer old_role" do
     context "with no existing reviewer" do
-      it "assigns reviewer role to the assignee" do
+      it "assigns reviewer old_role to the assignee" do
         subject.process
-        expect(paper.role_for(user: assignee, role: PaperRole::REVIEWER)).to exist
+        expect(paper.role_for(user: assignee, old_role: PaperRole::REVIEWER)).to exist
       end
 
       it "creates a ReviewerReportTask" do
@@ -29,9 +29,9 @@ describe ReviewerReportTaskCreator do
         make_user_paper_reviewer(existing_reviewer, paper)
       end
 
-      it "assigns reviewer role to the assignee" do
+      it "assigns reviewer old_role to the assignee" do
         subject.process
-        expect(paper.role_for(user: assignee, role: PaperRole::REVIEWER)).to exist
+        expect(paper.role_for(user: assignee, old_role: PaperRole::REVIEWER)).to exist
       end
 
       it "creates a ReviewerReportTask" do

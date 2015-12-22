@@ -10,7 +10,7 @@ feature "Flow Manager", js: true, selenium: true do
   end
 
   let!(:flow) do
-    create :flow, title: "Up for grabs", query: { assigned: true }, role_id: nil
+    create :flow, title: "Up for grabs", query: { assigned: true }, old_role_id: nil
   end
 
   before do
@@ -41,7 +41,7 @@ feature "Flow Manager", js: true, selenium: true do
       creator: author)
   end
 
-  let!(:role) { assign_journal_role(journal, admin, :admin) }
+  let!(:old_role) { assign_journal_role(journal, admin, :admin) }
 
   def assign_tasks_to_user(paper, user, titles)
     paper.tasks.each { |t| t.participants << user if titles.include? t.title }

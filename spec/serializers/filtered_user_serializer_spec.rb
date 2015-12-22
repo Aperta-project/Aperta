@@ -26,9 +26,9 @@ describe FilteredUserSerializer do
       paper_id: paper.id).to_json
   end
 
-  let (:roles) do
+  let (:old_roles) do
     JSON.parse(serialized_data).map do |u|
-      u["roles"].first
+      u["old_roles"].first
     end
   end
 
@@ -43,8 +43,8 @@ describe FilteredUserSerializer do
   context "user is site admin" do
     let(:user) { create :user, :site_admin }
 
-    it "serializes all roles" do
-      expect(roles).to include("editor", "reviewer", "collaborator")
+    it "serializes all old_roles" do
+      expect(old_roles).to include("editor", "reviewer", "collaborator")
     end
   end
 
@@ -52,11 +52,11 @@ describe FilteredUserSerializer do
     let(:user) { create :user }
 
     before do
-      create :role, :admin, users: [user], journal: journal
+      create :old_role, :admin, users: [user], journal: journal
     end
 
-    it "serializes all roles" do
-      expect(roles).to include("editor", "reviewer", "collaborator")
+    it "serializes all old_roles" do
+      expect(old_roles).to include("editor", "reviewer", "collaborator")
     end
 
   end
@@ -64,9 +64,9 @@ describe FilteredUserSerializer do
   context "user is neither site nor journal admin" do
     let(:user) { create :user }
 
-    it "serializes only collaborator roles" do
-      expect(roles).to include("collaborator")
-      expect(roles).to_not include("editor", "reviewer")
+    it "serializes only collaborator old_roles" do
+      expect(old_roles).to include("collaborator")
+      expect(old_roles).to_not include("editor", "reviewer")
     end
   end
 end

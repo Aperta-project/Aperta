@@ -39,7 +39,7 @@ export default DS.Model.extend({
   updatedAt: attr('date'),
   relatedAtDate: attr('date'),
   relatedUsers: attr(),
-  roles: attr(),
+  oldRoles: attr(),
   shortTitle: attr('string'),
   status: attr('string'),
   strikingImageId: attr('string'),
@@ -62,8 +62,8 @@ export default DS.Model.extend({
     return this.get('collaborations').mapBy('user');
   }),
 
-  roleList: computed('roles.[]', function() {
-    return this.get('roles').sort().join(', ');
+  roleList: computed('oldRoles.[]', function() {
+    return this.get('oldRoles').sort().join(', ');
   }),
 
   latestDecision: computed('decisions.[]', function() {

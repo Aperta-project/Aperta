@@ -244,7 +244,7 @@ describe PapersController do
       PaperRole.create(
         user: weak_user,
         paper: paper,
-        role: PaperRole::COLLABORATOR)
+        old_role: PaperRole::COLLABORATOR)
     end
 
     context "for manuscript feed" do

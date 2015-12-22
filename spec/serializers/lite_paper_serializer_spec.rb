@@ -23,13 +23,13 @@ Extruded Solids/,
 
   describe 'a paper created by a user' do
     let(:paper) { FactoryGirl.create :paper, creator: user }
-    it "includes the 'My Paper' role" do
+    it "includes the 'My Paper' old_role" do
       expect(deserialized_content[:lite_paper])
-        .to match(hash_including(roles: include('My Paper')))
+        .to match(hash_including(old_roles: include('My Paper')))
     end
   end
 
-  describe 'for a paper with multiple roles' do
+  describe 'for a paper with multiple old_roles' do
     let(:early_date) { Time.now.utc - 10 }
     let(:later_date) { Time.now.utc }
     let!(:paper_role1) do
@@ -41,7 +41,7 @@ Extruded Solids/,
                                               user: user, paper: paper)
     end
 
-    it 'should use the latest role for the related_at_date' do
+    it 'should use the latest old_role for the related_at_date' do
       expect(deserialized_content[:lite_paper])
         .to match(hash_including(related_at_date: later_date.as_json))
     end

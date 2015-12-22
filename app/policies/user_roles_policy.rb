@@ -20,6 +20,6 @@ class UserRolesPolicy < ApplicationPolicy
   private
 
   def journal
-    user_role.role.journal
+    user_role.old_role.journal
   end
 end

@@ -4,7 +4,7 @@ describe PlosBioTechCheck::InitialTechCheckTask do
   let(:author) { FactoryGirl.create :user }
   let(:paper) { FactoryGirl.create :paper, :submitted, :with_tasks, creator: author }
   let(:task) { FactoryGirl.create :initial_tech_check_task, paper: paper }
-  let(:subject) { described_class.new(paper: paper, title: "new task", role: PaperRole::COLLABORATOR) }
+  let(:subject) { described_class.new(paper: paper, title: "new task", old_role: PaperRole::COLLABORATOR) }
   describe '#round' do
     it 'initializes with the round 1' do
       expect(task.round).to eq 1

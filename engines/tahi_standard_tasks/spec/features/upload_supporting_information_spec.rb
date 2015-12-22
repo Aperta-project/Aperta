@@ -7,7 +7,7 @@ feature "Upload Supporting Information", js: true, selenium: true do
       creator: author,
       task_params: {
         title: "Supporting Info",
-        role: "author",
+        old_role: "author",
         type: "TahiStandardTasks::SupportingInformationTask"
       }
   end

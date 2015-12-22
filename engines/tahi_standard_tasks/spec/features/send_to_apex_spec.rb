@@ -16,7 +16,7 @@ feature 'Send to Apex task', js: true, selenium: true do
     end
     server.start
     task.participants << user
-    paper.paper_roles.create!(user: user, role: PaperRole::COLLABORATOR)
+    paper.paper_roles.create!(user: user, old_role: PaperRole::COLLABORATOR)
     login_as(user, scope: :user)
     visit '/'
   end

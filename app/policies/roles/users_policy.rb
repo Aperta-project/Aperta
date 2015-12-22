@@ -1,4 +1,4 @@
-module Roles
+module OldRoles
   class UsersPolicy < ApplicationPolicy
     require_params :journal
 

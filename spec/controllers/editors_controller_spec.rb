@@ -7,7 +7,7 @@ describe EditorsController do
   let(:user) { FactoryGirl.create(:user) }
   let(:paper) do
     paper = FactoryGirl.create(:paper)
-    paper.paper_roles.create!(role: PaperRole::EDITOR, user: user)
+    paper.paper_roles.create!(old_role: PaperRole::EDITOR, user: user)
     paper
   end
 

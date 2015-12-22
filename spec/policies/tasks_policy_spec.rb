@@ -37,24 +37,24 @@ describe TasksPolicy do
     let(:user) do
       FactoryGirl.create(
         :user,
-        roles: [ FactoryGirl.create(:role, :admin, journal: journal), ],
+        old_roles: [ FactoryGirl.create(:old_role, :admin, journal: journal), ],
       )
     end
 
     include_examples "administrator for task"
   end
 
-  context "user no role" do
+  context "user no old_role" do
 
     include_examples "person who cannot see a task"
   end
 
-  context "user with role on different journal" do
+  context "user with old_role on different journal" do
     let(:other_journal) { FactoryGirl.create(:journal) }
     let(:user) do
       FactoryGirl.create(
         :user,
-        roles: [ FactoryGirl.create(:role, :admin, journal: other_journal) ],
+        old_roles: [ FactoryGirl.create(:old_role, :admin, journal: other_journal) ],
       )
       end
 
@@ -62,10 +62,10 @@ describe TasksPolicy do
   end
 
   context "user with can_view_assigned_manuscript_managers on this journal and is assigned to the paper." do
-    let(:journal_role) { FactoryGirl.create(:role, journal: journal, can_view_assigned_manuscript_managers: true) }
+    let(:journal_role) { FactoryGirl.create(:old_role, journal: journal, can_view_assigned_manuscript_managers: true) }
     let(:user) do
       user = FactoryGirl.create(:user)
-      user.roles << journal_role
+      user.old_roles << journal_role
       user
     end
 
@@ -85,15 +85,15 @@ describe TasksPolicy do
   end
 
   context "allowed reviewer" do
-    %i(reviewer editor).each do |role|
+    %i(reviewer editor).each do |old_role|
       let(:user) do
         user = FactoryGirl.create(:user)
-        FactoryGirl.create(:paper_role, role, user: user, paper: paper)
+        FactoryGirl.create(:paper_role, old_role, user: user, paper: paper)
         user
       end
 
       before do
-        task.update_attribute(:role, 'reviewer')
+        task.update_attribute(:old_role, 'reviewer')
       end
 
       include_examples "person who can edit but not create a task"

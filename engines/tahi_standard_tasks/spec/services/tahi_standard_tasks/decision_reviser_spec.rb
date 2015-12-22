@@ -36,8 +36,8 @@ describe "TahiStandardTasks::DecisionReviser" do
             expect(revise_task.paper).to eq paper
           end
 
-          it "task role is `author`" do
-            expect(revise_task.role).to eq 'author'
+          it "task old_role is `author`" do
+            expect(revise_task.old_role).to eq 'author'
           end
         end
 

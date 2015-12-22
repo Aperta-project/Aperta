@@ -11,16 +11,16 @@ describe "Participation" do
     let(:task) { FactoryGirl.create(:task) }
     let(:paper) { task.paper }
 
-    context "participant paper role already exists" do
+    context "participant paper old_role already exists" do
       before { FactoryGirl.create(:paper_role, :participant, paper: paper, user: user) }
 
-      it "will not create another participant paper role" do
+      it "will not create another participant paper old_role" do
         expect { Participation.create!(task: task, user: user) }.to_not change { PaperRole.participants.count }
       end
     end
 
-    context "participant paper role does not exist" do
-      it "will create a participant paper role" do
+    context "participant paper old_role does not exist" do
+      it "will create a participant paper old_role" do
         expect { Participation.create!(task: task, user: user) }.to change { PaperRole.participants.count }.by(1)
       end
     end
@@ -39,7 +39,7 @@ describe "Participation" do
         end
       end
 
-      it "will not remove the participant paper role when destroying one of the participations" do
+      it "will not remove the participant paper old_role when destroying one of the participations" do
         expect { tasks.first.participations.first.destroy }.to_not change { PaperRole.participants.count }
       end
     end
@@ -50,7 +50,7 @@ describe "Participation" do
         FactoryGirl.create(:participation, task: tasks.first, user: user)
       end
 
-      it "will remove the participant paper role when destroying the only participation" do
+      it "will remove the participant paper old_role when destroying the only participation" do
         expect { tasks.first.participations.first.destroy }.to change { PaperRole.participants.count }.by(-1)
       end
     end

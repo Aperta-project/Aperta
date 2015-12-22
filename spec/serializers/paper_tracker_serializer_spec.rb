@@ -19,7 +19,7 @@ describe PaperTrackerSerializer do
                          user: reviewer
     end
 
-    let(:roles) do
+    let(:old_roles) do
       serialized_paper = JSON.parse(
         PaperTrackerSerializer.new(paper).to_json,
         symbolize_names: true)
@@ -27,17 +27,17 @@ describe PaperTrackerSerializer do
     end
 
     it "lists the author" do
-      authors = roles.find { |r| r[:name] == "Collaborator" }[:users]
+      authors = old_roles.find { |r| r[:name] == "Collaborator" }[:users]
       expect(authors[0][:id]).to be(creator.id)
     end
 
     it "lists the reviewer" do
-      reviewers = roles.find { |r| r[:name] == "Reviewer" }[:users]
+      reviewers = old_roles.find { |r| r[:name] == "Reviewer" }[:users]
       expect(reviewers[0][:id]).to be(reviewer.id)
     end
 
     it "lists the editor" do
-      editors = roles.find { |r| r[:name] == "Editor" }[:users]
+      editors = old_roles.find { |r| r[:name] == "Editor" }[:users]
       expect(editors[0][:id]).to be(editor.id)
     end
   end

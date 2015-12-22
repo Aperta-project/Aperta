@@ -2,6 +2,6 @@ FactoryGirl.define do
   factory :reviewer_recommendations_task, class: 'TahiStandardTasks::ReviewerRecommendationsTask' do
     phase
     title "Reviewer Candidates"
-    role "author"
+    old_role "author"
   end
 end

@@ -49,7 +49,7 @@ class FtpUploaderService
     AdhocMailer.delay.send_adhoc_email(
       transfer_failed,
       transfer_failed + ": #{@ftp.last_response}. Please try to upload again.",
-      User.joins(:roles).where('roles.kind' => 'admin')
+      User.joins(:old_roles).where('old_roles.kind' => 'admin')
     )
   end
 

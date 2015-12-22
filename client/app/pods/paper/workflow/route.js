@@ -35,7 +35,7 @@ export default AuthorizedRoute.extend({
         let unNamespacedKind = Utils.deNamespaceTaskType(task.get('kind'));
         let newTaskPromise = this.store.createRecord(unNamespacedKind, {
           phase: phase,
-          role: task.get('role'),
+          oldRole: task.get('oldRole'),
           type: task.get('kind'),
           paper: this.modelFor('paper'),
           title: task.get('title')

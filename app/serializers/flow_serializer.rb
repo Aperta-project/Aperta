@@ -1,5 +1,5 @@
 class FlowSerializer < ActiveModel::Serializer
-  attributes :id, :role_id, :journal_logo, :journal_name, :position, :query, :task_roles, :title
+  attributes :id, :old_role_id, :journal_logo, :journal_name, :position, :query, :task_roles, :title
 
   has_many :papers, embed: :ids, include: true, serializer: LitePaperSerializer
   has_many :tasks, embed: :ids, include: true, root: :card_thumbnails, serializer: CardThumbnailSerializer
@@ -12,7 +12,7 @@ class FlowSerializer < ActiveModel::Serializer
   private
 
   def task_roles
-    Task.unscoped.select(:role).distinct.pluck(:role)
+    Task.unscoped.select(:old_role).distinct.pluck(:old_role)
   end
 
   def journal

@@ -41,23 +41,23 @@ describe QuestionAttachmentsPolicy do
     let(:user) do
       FactoryGirl.create(
         :user,
-        roles: [ FactoryGirl.create(:role, :admin, journal: journal), ],
+        old_roles: [ FactoryGirl.create(:old_role, :admin, journal: journal), ],
       )
     end
 
     include_examples "person who can manage question attachments"
   end
 
-  context "user no role" do
+  context "user no old_role" do
     include_examples "person who cannot manage question attachments"
   end
 
-  context "user with role on different journal" do
+  context "user with old_role on different journal" do
     let(:other_journal) { FactoryGirl.create(:journal) }
     let(:user) do
       FactoryGirl.create(
         :user,
-        roles: [ FactoryGirl.create(:role, :admin, journal: other_journal) ],
+        old_roles: [ FactoryGirl.create(:old_role, :admin, journal: other_journal) ],
       )
       end
 

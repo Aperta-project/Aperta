@@ -11,7 +11,7 @@ describe TahiStandardTasks::RegisterDecisionMailer do
   let(:task) {
     FactoryGirl.create(:task,
                        title: "Register Decision Report",
-                       role: 'reviewer',
+                       old_role: 'reviewer',
                        type: "TahiStandardTasks::RegisterDecisionTask",
                        paper: paper,
                        completed: true)

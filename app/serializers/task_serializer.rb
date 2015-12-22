@@ -1,5 +1,5 @@
 class TaskSerializer < ActiveModel::Serializer
-  attributes :id, :title, :type, :completed, :body, :role, :position,
+  attributes :id, :title, :type, :completed, :body, :old_role, :position,
              :is_metadata_task, :is_submission_task, :links,
              :phase_id, :assigned_to_me
   has_one :paper, embed: :id

@@ -243,11 +243,11 @@ class PaperTrackerPage(AuthenticatedPage):
       self._get(self._paper_tracker_table_header_sort_up).click()
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       manid = int(self._get(self._paper_tracker_table_tbody_manid).text)
-      assert manid == papers[len(papers) - 1][1]
+      assert manid == papers[len(papers) - 1][1], str(manid) + '!=' + papers[len(papers) - 1][1]
       self._get(self._paper_tracker_table_header_sort_down).click()
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       manid = int(self._get(self._paper_tracker_table_tbody_manid).text)
-      assert manid == papers[0][1]
+      assert manid == papers[0][1], str(manid) + '!=' + papers[0][1]
 
       print('Sorting by Manuscript ID')
       manid_th.click()
@@ -258,13 +258,13 @@ class PaperTrackerPage(AuthenticatedPage):
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       manid = self._get(self._paper_tracker_table_tbody_manid)
       if total_count > 1:
-        assert int(manid.text) != int(orig_manid.text)
+        assert int(manid.text) != int(orig_manid.text), manid.text + '==' + orig_manid.text
       else:
-        assert int(manid.text) == int(orig_manid.text)
+        assert int(manid.text) == int(orig_manid.text), manid.text + '!=' + orig_manid.text
       self._get(self._paper_tracker_table_header_sort_down).click()
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       manid = self._get(self._paper_tracker_table_tbody_manid)
-      assert int(manid.text) == int(orig_manid.text)
+      assert int(manid.text) == int(orig_manid.text), manid.text + '!=' + orig_manid.text
 
       print('Sorting by Title')
       title_th.click()
@@ -275,13 +275,13 @@ class PaperTrackerPage(AuthenticatedPage):
       self._paper_tracker_table_tbody_title = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-title-column"]/a')
       title = self._get(self._paper_tracker_table_tbody_title)
       if total_count > 1:
-        assert title.text > orig_manid.text
+        assert title.text > orig_title.text, title.text + '<=' + orig_title.text
       else:
-        assert title.text == orig_title.text
+        assert title.text == orig_title.text, title.text + '!=' + orig_title.text
       self._get(self._paper_tracker_table_header_sort_down).click()
       self._paper_tracker_table_tbody_title = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-title-column"]/a')
       title = self._get(self._paper_tracker_table_tbody_title)
-      assert title.text == orig_title.text
+      assert title.text == orig_title.text, title.text + '!=' + orig_title.text
 
       print('Sorting by Paper Type')
       paptype_th.click()
@@ -291,8 +291,8 @@ class PaperTrackerPage(AuthenticatedPage):
       self._get(self._paper_tracker_table_header_sort_up).click()
       self._paper_tracker_table_tbody_paptype = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-type-column"]')
       type = self._get(self._paper_tracker_table_tbody_paptype)
-      assert type.text >= orig_type.text
+      assert type.text.lower() >= orig_type.text.lower(), type.text + '<' + orig_type.text
       self._get(self._paper_tracker_table_header_sort_down).click()
       self._paper_tracker_table_tbody_paptype = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-type-column"]')
       type = self._get(self._paper_tracker_table_tbody_paptype)
-      assert type.text == orig_type.text
+      assert type.text == orig_type.text, type.text + '!=' + orig_type.text

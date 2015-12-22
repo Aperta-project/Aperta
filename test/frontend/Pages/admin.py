@@ -4,13 +4,13 @@
 Page Object Model for the Admin Page. Validates global and dynamic elements and their styles
 """
 
+import logging
 import random
 import time
 
 from selenium.webdriver.common.by import By
 
 from Base.PostgreSQL import PgSQL
-from Base.Resources import sa_login
 from authenticated_page import AuthenticatedPage, application_typeface, tahi_blue, white
 
 __author__ = 'jgray@plos.org'
@@ -26,6 +26,7 @@ class AdminPage(AuthenticatedPage):
 
     # Locators - Instance members
     # Base Admin Page
+    # User Search Area
     self._base_admin_user_search_field = (By.CLASS_NAME, 'admin-user-search-input')
     self._base_admin_user_search_button = (By.CLASS_NAME, 'admin-user-search-button')
     self._base_admin_user_search_default_state_text = (By.CLASS_NAME, 'admin-user-search-default-state-text')
@@ -34,7 +35,8 @@ class AdminPage(AuthenticatedPage):
     self._base_admin_user_search_results_table_lname_header = (By.XPATH, '//table[@class="admin-users"]/tr/th[2]')
     self._base_admin_user_search_results_table_uname_header = (By.XPATH, '//table[@class="admin-users"]/tr/th[3]')
     self._base_admin_user_search_results_row = (By.CLASS_NAME, 'user-row')
-
+    # Journal Display Area
+    # New Journal
     self._base_admin_journals_section_title = (By.CLASS_NAME, 'admin-section-title')
 
     self._base_admin_journals_su_add_new_journal_btn = (By.CLASS_NAME, 'add-new-journal')
@@ -48,7 +50,7 @@ class AdminPage(AuthenticatedPage):
     self._base_admin_journals_edit_desc_field = (By.XPATH, '//div[@class="inset-form-control required "][2]/textarea')
     self._base_admin_journals_edit_cancel_link = (By.XPATH, '//div[@class="journal-edit-buttons"]/a[1]')
     self._base_admin_journals_edit_save_button = (By.XPATH, '//div[@class="journal-edit-buttons"]/a[2]')
-
+    # Extant Journal Display Area
     self._base_admin_journals_section_journal_block = (By.CLASS_NAME, 'journal-thumbnail')
 
     # User Details Overlay
@@ -62,7 +64,12 @@ class AdminPage(AuthenticatedPage):
     self._ud_overlay_reset_pw_success_msg = (By.CLASS_NAME, 'success')
 
   # POM Actions
-  def validate_page_elements_styles_functions(self, username):
+  def validate_page_elements_styles(self, username):
+    """
+    Provided an accessing username, validates the presented UI elements
+    :param username: a privileged username
+    :return: void function
+    """
     # Validate User section elements
     self._get(self._base_admin_user_search_field)
     self._get(self._base_admin_user_search_button)
@@ -70,9 +77,21 @@ class AdminPage(AuthenticatedPage):
     # Validate Journals section elements
     journals_title = self._get(self._base_admin_journals_section_title)
     self.validate_application_h2_style(journals_title)
-    print(username)
+    logging.info(username)
     if username == 'jgray_sa':
+      logging.info('Validating super admin specific page element')
       self._get(self._base_admin_journals_su_add_new_journal_btn)
+    self.validate_journal_block_display(username)
+
+  def validate_journal_block_display(self, username):
+    """
+    Provided a privileged username, validates the display of journal blocks and their elements
+    :param username: a privileged username for determining which journal blocks should be displayed per the db
+    :return: void function
+    """
+    logging.info(username)
+    if username == 'jgray_sa':
+      logging.info('Validating journal blocks for Super Admin user')
       # Validate the presentation of journal blocks
       # Super Admin gets all journals
       db_journals = PgSQL().query('SELECT journals.name,journals.description,count(papers.id)'
@@ -81,6 +100,7 @@ class AdminPage(AuthenticatedPage):
                                   'GROUP BY journals.id;')
     else:
       # Ordinary Admin role is assigned on a per journal basis
+      logging.info('Validating admin page elements for Ordinary Admin user')
       uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
       roles = PgSQL().query('SELECT role_id FROM user_roles WHERE user_id = %s;', (uid,))
       role_list = []
@@ -96,9 +116,9 @@ class AdminPage(AuthenticatedPage):
                                          'ON journals.id = papers.journal_id '
                                          'WHERE journals.id = %s '
                                          'GROUP BY journals.id;', (journal,))[0])
-    print(db_journals)
+    logging.debug(db_journals)
     journal_blocks = self._gets(self._base_admin_journals_section_journal_block)
-    print(journal_blocks)
+    logging.debug(journal_blocks)
     count = 0
     for journal_block in journal_blocks:
       # Once again, while less than ideal, these must be defined on the fly
@@ -115,6 +135,11 @@ class AdminPage(AuthenticatedPage):
       journal_paper_count = self._get(self._base_admin_journal_block_paper_count)
       journal_title = self._get(self._base_admin_journal_block_name)
       journal_desc = self._iget(self._base_admin_journal_block_desc).text
+      if username == 'jgray_sa':
+        self._base_admin_journal_block_edit_icon = (By.XPATH,
+                             "//div[@class='ember-view journal-thumbnail'][%s]/div[@class='fa fa-pencil edit-icon']"
+                                                    % (count + 1))
+        self._get(self._base_admin_journal_block_edit_icon)
       if not journal_desc:
         journal_desc = None
       journal_t = (journal_title.text, journal_desc, long(journal_paper_count.text.split()[0]))
@@ -122,7 +147,14 @@ class AdminPage(AuthenticatedPage):
       count += 1
 
   def validate_add_new_journal(self, username):
-    if username == sa_login:
+    """
+    Note this currently doesn't actually create the journal, it merely calls the create form up and validates the
+    components of that form. Because we don't have a means of deleting a journal, even an empty one, it is prohibitive
+    to test this in an automated fashion as we would end up with hundreds of journals over time.
+    :param username: Must be jgray_sa or this is a no-op.
+    :return: void function
+    """
+    if username == 'jgray_sa':
       self._get(self._base_admin_journals_su_add_new_journal_btn)
       db_initial_journal_count = int(PgSQL().query('SELECT count(*) from journals')[0][0])
       page_initial_journal_count = self._gets(self._base_admin_journals_section_journal_block)
@@ -202,7 +234,46 @@ class AdminPage(AuthenticatedPage):
       page_tertiary_journal_count = self._gets(self._base_admin_journals_section_journal_block)
       assert len(page_tertiary_journal_count) == db_initial_journal_count
 
+  def validate_edit_journal(self, username):
+    """
+    Validates the edit function of the statically named_journal
+    :param username: needs to be jgray_sa, otherwise a no-op
+    :return: void function
+    """
+    named_journal = 'PLOS Wombat'
+    if username == 'jgray_sa':
+      logging.info('Validating editing journal block for Super Admin user')
+      journal_count = self.select_named_journal(named_journal)
+      logging.info(journal_count)
+      self._base_admin_journal_block_edit_icon = (By.XPATH,
+                             "//div[@class='ember-view journal-thumbnail'][%s]/div[@class='fa fa-pencil edit-icon']"
+                                                    % str(journal_count))
+      edit_journal = self._get(self._base_admin_journal_block_edit_icon)
+      edit_journal.click()
+      upload_button = self._get(self._base_admin_journals_edit_logo_upload_btn)
+      assert upload_button.text == 'UPLOAD NEW'
+      self.validate_blue_on_blue_button_style(upload_button)
+      journal_title_label = self._get(self._base_admin_journals_edit_title_label)
+      assert journal_title_label.text == 'Journal Title'
+      journal_title_field = self._get(self._base_admin_journals_edit_title_field)
+      assert journal_title_field.get_attribute('value') == named_journal
+      journal_desc_label = self._get(self._base_admin_journals_edit_desc_label)
+      assert journal_desc_label.text == 'Journal Description'
+      self.validate_input_field_label_style(journal_desc_label)
+      self._get(self._base_admin_journals_edit_desc_field)
+      save_button = self._get(self._base_admin_journals_edit_save_button)
+      assert save_button.text == 'SAVE'
+      self.validate_blue_on_blue_button_style(save_button)
+      cancel_link = self._get(self._base_admin_journals_edit_cancel_link)
+      assert cancel_link.text == 'Cancel'
+      cancel_link.click()
+
   def validate_search_edit_user(self, username):
+    """
+    Validates the styling and output of the base admin user search
+    :param username: A username against which to search
+    :return: void function
+    """
     initial_user_state_text = self._get(self._base_admin_user_search_default_state_text)
     assert initial_user_state_text.text == 'Need to find a user? Search for them here.'
     self._search_user('')
@@ -222,7 +293,7 @@ class AdminPage(AuthenticatedPage):
         success_count += 1
       result.click()
       # TODO: Validate Styles for these elements
-      time.sleep(.5)
+      time.sleep(1)
       user_details_title = self._get(self._overlay_header_title)
       user_details_closer = self._get(self._overlay_header_close)
       user_details_fname_label = self._get(self._ud_overlay_fname_label)
@@ -240,6 +311,11 @@ class AdminPage(AuthenticatedPage):
     assert success_count > 0
 
   def _search_user(self, username):
+    """
+    provided a username, executes the search for that username
+    :param username: a string to search for
+    :return: void function
+    """
     user_search_field = self._get(self._base_admin_user_search_field)
     user_search_btn = self._get(self._base_admin_user_search_button)
     user_search_field.clear()
@@ -247,10 +323,40 @@ class AdminPage(AuthenticatedPage):
     user_search_btn.click()
 
   def select_random_journal(self):
+    """
+    For all the blocks presented on the page, opens the journal specific admin page for a random choice
+    :return: void function
+    """
     journal_blocks = self._gets(self._base_admin_journals_section_journal_block)
-    selected_journal = random.choice(journal_blocks)
-    print('Opening ' + selected_journal.find_element(*self._base_admin_journal_block_name).text + ' journal.')
-    selected_journal.find_element(*self._base_admin_journal_block_name).click()
+    selected_journal_index = random.randint(1, len(journal_blocks))
+    self._base_admin_journal_block_name = (By.XPATH,
+         '//div[@class="ember-view journal-thumbnail"][{}]/a/h3[@class="journal-thumbnail-name"]'\
+                                           .format(selected_journal_index))
+    journal_link = self._get(self._base_admin_journal_block_name)
+    journal_name = journal_link.text
+    logging.info('Opening {} journal.'.format(journal_name))
+    self._actions.click_and_hold(journal_link).release().perform()
+    return journal_name
+
+  def select_named_journal(self, journal):
+    """
+    Given a journal name, identifies the journal block index on the admin page for that journal
+    :param journal: The journal name
+    :return: the index of the named journal block
+    """
+    journal_blocks = self._gets(self._base_admin_journals_section_journal_block)
+    count = 0
+    for journal_block in journal_blocks:
+      self._base_admin_journal_block_name = \
+          (By.XPATH, '//div[@class="ember-view journal-thumbnail"][%s]/a/h3[@class="journal-thumbnail-name"]'
+           % str(count + 1))
+      journal_title = self._get(self._base_admin_journal_block_name)
+      logging.debug(journal_title.text)
+      logging.debug(journal)
+      if journal_title.text == journal:
+        return count + 1
+      count += 1
+    return False
 
   # TODO: Create method to create journal PLOS Wombat if not exist
 

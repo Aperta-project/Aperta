@@ -25,12 +25,12 @@ export default TaskComponent.extend(SavesQuestionsOnClose, {
                .findQuestion('ethics--animal_subjects--field_permit');
   }),
 
-  fieldStudyQuestion: Ember.computed("model", function(){
+  fieldStudyQuestion: computed(function(){
     return this.get('task')
               .findQuestion('ethics--field_study');
   }),
 
-  fieldPermitNumberQuestion: Ember.computed("model", function(){
+  fieldPermitNumberQuestion: computed(function(){
     return this.get('task')
                .findQuestion('ethics--field_study--field_permit_number');
   }),
@@ -54,9 +54,9 @@ export default TaskComponent.extend(SavesQuestionsOnClose, {
       answer.save();
     },
 
-    userSelectedNoOnFieldStudy: function(){
-      let question = this.get("fieldStudyQuestion");
-      let answer = question.answerForOwner(this.get('task'));
+    userSelectedNoOnFieldStudy(){
+      const question = this.get('fieldStudyQuestion');
+      const answer = question.answerForOwner(this.get('task'));
       answer.set('value', '');
       answer.save();
     }

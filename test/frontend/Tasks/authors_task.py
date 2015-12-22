@@ -185,7 +185,7 @@ class AuthorsTask(BaseTask):
 
   def edit_author(self, author_data):
     """Edit the first author in the author card"""
-    completed = self._get(self._completed_check)
+    completed = self._get(self._completed_cb)
     if completed.is_selected():
       self._get(self._close_button).click()
       return None
@@ -216,7 +216,7 @@ class AuthorsTask(BaseTask):
       author_contribution_chck.click()
     add_author_add_btn = self._get(self._add_author_add_btn)
     add_author_add_btn.click()
-    completed = self._get(self._completed_check)
+    completed = self._get(self._completed_cb)
     completed.click()
     time.sleep(.2)
     self._get(self._close_button).click()

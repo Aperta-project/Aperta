@@ -115,14 +115,23 @@ class MetadataVersioningTest(CommonTest):
     # Test
     #paper_viewer.logout()
 
-    paper_viewer.complete_card('Billing')
-    paper_viewer.complete_card('Authors')
-    paper_viewer.complete_card('Cover Letter')
-    paper_viewer.complete_card('Figures')
-    paper_viewer.complete_card('Supporting Info')
-    paper_viewer.complete_card('Upload Manuscript')
+    #paper_viewer.complete_card('Billing')
+
+    paper_viewer.click_task('Billing')
+    paper_viewer.complete_task('Billing')
+
+    paper_viewer.click_task('Authors')
+    paper_viewer.complete_task('Authors')
+    paper_viewer.click_task('Cover Letter')
+    paper_viewer.complete_task('Cover Letter')
+    paper_viewer.click_task('Figures')
+    paper_viewer.complete_task('Figures')
+    paper_viewer.click_task('Supporting Info')
+    paper_viewer.complete_task('Supporting Info')
+    #paper_viewer.complete_card('Upload Manuscript')
     if journal_type == 'Research':
-      paper_viewer.complete_card('Publishing Related Questions')
+      paper_viewer.click_task('Publishing Related Questions')
+      paper_viewer.complete_task('Publishing Related Questions')
     time.sleep(1)
     # Click submit
     paper_viewer.click_submit_btn()

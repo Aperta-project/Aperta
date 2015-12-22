@@ -16,6 +16,8 @@ from Base.PostgreSQL import PgSQL
 from frontend.Cards.authors_card import AuthorsCard
 from frontend.Cards.basecard import BaseCard
 from frontend.Tasks.basetask import BaseTask
+from frontend.Tasks.authors_task
+import AuthorsTask
 from frontend.Cards.billing_card import BillingCard
 from frontend.Cards.figures_card import FiguresCard
 from frontend.Cards.revise_manuscript_card import ReviseManuscriptCard
@@ -379,7 +381,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
       else:
         return None
     base_task = BaseTask(self._driver)
-    if task_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript', 'Revise Manuscript'):
+    if task_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript',
+                     'Revise Manuscript', 'Billing'):
       # Check completed_check status
       completed = base_task.completed_cb_is_selected()
       if not completed:
@@ -390,9 +393,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
       # Complete authors data before mark close
       author_task = AuthorsTask(self._driver)
       author_task.edit_author(affiliation)
-    elif task_name == 'Billing':
-      billing = BillingTask(self._driver)
-      billing.add_billing_data(billing_data)
+    #elif task_name == 'Billing':
+    #  billing = BillingTask(self._driver)
+    #  billing.add_billing_data(billing_data)
 
   def get_paper_title_from_page(self):
     """

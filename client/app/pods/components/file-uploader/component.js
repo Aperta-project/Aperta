@@ -53,17 +53,31 @@ FileUploaderComponent = Ember.TextField.extend({
     uploader = this.$();
     params = this.getProperties('dataType', 'method', 'acceptFileTypes');
     params.dataType = 'xml';
+
+    // since we're not overriding the uploader's add method, we need to prevent
+    // the form from autosubmitting before the s3 stuff has gone through first.
     params.autoUpload = false;
     params.previewMaxHeight = 90;
     params.previewMaxWidth = 300;
+
+    // No matter how dumb this looks, it is necessary.
     that = this;
+
+    // callback executes after successful upload to s3
     params.success = function(fileData) {
       var filename, location, requestMethod, resourceUrl;
       filename = this.files[0].name;
+
+      // fileData is xml returned from s3
       location = $(fileData).find('Location').text().replace(/%2F/g, "/");
       resourceUrl = that.get('url');
       requestMethod = that.get('railsMethod');
-      if (resourceUrl && requestMethod) {
+
+      // I can't really tell what 'case' this is. Clearly it's when a
+      // resourceUrl is not passed to the controller, which seems to mean
+      // that the resource will appear on s3, but not be realayed back
+      // to rails
+      if (resourceUrl) { // tell rails server that upload to s3 finished
         return $.ajax({
           url: resourceUrl,
           dataType: 'json',
@@ -75,7 +89,10 @@ FileUploaderComponent = Ember.TextField.extend({
             return that.sendAction('done', data, filename);
           }
         });
-      } else {
+      // This seems to be thea case where nothing is posted back to rails
+      // The done action is called, but it's not clear what should happen
+      // differently at that point
+      } else { // allow custom behavior when s3 upload is finished
         return that.sendAction('done', location, filename);
       }
     };
@@ -90,7 +107,7 @@ FileUploaderComponent = Ember.TextField.extend({
       Ember.run.bind(this, this.checkFileType);
       file = uploadData.files[0];
       self = this;
-      return $.ajax({
+      return $.ajax({  // make get request to setup s3 keys for actual upload
         url: '/api/s3/request_policy',
         type: 'GET',
         dataType: 'json',

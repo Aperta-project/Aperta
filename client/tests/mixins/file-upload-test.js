@@ -24,3 +24,5 @@ test('without data keys skips progress bar', function(assert) {
   let uploads = this.cntrl.uploads;
   assert.equal(uploads.length, 0);
 });
+
+// it seems like this file should have a LOOT more tests in it

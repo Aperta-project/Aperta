@@ -44,6 +44,7 @@ export default Ember.Mixin.create({
     let UIWait = 2000; // ms
     $(window).off('beforeunload.cancelUploads.' + filename);
 
+    // what?
     let key = Object.keys(data || {})[0];
     if ( (key && data[key]) || key && data[key] === [] ) {
       // TODO: DOM manipulation in mixin? This is used by controllers too

@@ -108,7 +108,7 @@ class AdminPage(AuthenticatedPage):
         role_list.append(role[0])
       journals = []
       for role in role_list:
-        journals.append(PgSQL().query('SELECT journal_id FROM roles WHERE id = %s;', (role,))[0][0])
+        journals.append(PgSQL().query('SELECT journal_id FROM old_roles WHERE id = %s;', (role,))[0][0])
       db_journals = []
       for journal in journals:
         db_journals.append(PgSQL().query('SELECT journals.name, journals.description, count(papers.id) '

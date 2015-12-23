@@ -71,45 +71,6 @@ describe Typesetter::MetadataSerializer do
     expect(output[:paper_title]).to eq('here is the title')
   end
 
-  describe 'us government employee' do
-    let(:our_task) do
-      paper_task.call('TahiStandardTasks::PublishingRelatedQuestionsTask')
-    end
-    let(:nested_question) { our_question.call('publishing_related_questions--us_government_employees') }
-
-    context 'is a us government employee' do
-      before do
-        FactoryGirl.create(
-          :nested_question_answer,
-          nested_question: nested_question,
-          owner: our_task,
-          value: 'true',
-          value_type: 'boolean'
-        )
-      end
-
-      it 'has a us government employee field' do
-        expect(output[:us_government_employee]).to eq(true)
-      end
-    end
-
-    context 'is not a us government employee' do
-      before do
-        FactoryGirl.create(
-          :nested_question_answer,
-          nested_question: nested_question,
-          owner: our_task,
-          value: false,
-          value_type: 'boolean'
-        )
-      end
-
-      it 'has a us government employee field' do
-        expect(output[:us_government_employee]).to eq(false)
-      end
-    end
-  end
-
   describe 'publication_date' do
     let(:our_task) do
       paper_task.call('TahiStandardTasks::ProductionMetadataTask')

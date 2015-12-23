@@ -3,7 +3,7 @@ module Typesetter
   # Expects a paper as its object to serialize.
   class MetadataSerializer < Typesetter::TaskAnswerSerializer
     attributes :short_title, :doi, :manuscript_id, :paper_type, :journal_title,
-               :publication_date, :us_government_employee
+               :publication_date
     attribute :first_submitted_at, key: :received_date
     attribute :accepted_at, key: :accepted_date
     attribute :title, key: :paper_title
@@ -45,11 +45,6 @@ module Typesetter
 
     def data_availability
       task('TahiStandardTasks::DataAvailabilityTask')
-    end
-
-    def us_government_employee
-      copyright = task('TahiStandardTasks::PublishingRelatedQuestionsTask')
-      copyright.answer_for('publishing_related_questions--us_government_employees').try(:value)
     end
   end
 end

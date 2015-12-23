@@ -231,17 +231,6 @@ FactoryGirl.define do
           ]
         )
 
-        NestedQuestionableFactory.create(
-          FactoryGirl.create(:publishing_related_questions_task, phase: phase),
-          questions: [
-            {
-              ident: 'us_government_employees',
-              answer: 'true',
-              value_type: 'boolean'
-            }
-          ]
-        )
-
         version = paper.latest_version
         version.source = File.open(Rails.root.join('spec/fixtures/about_turtles.docx'))
         version.save!

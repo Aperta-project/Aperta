@@ -52,6 +52,22 @@ namespace 'nested-questions:seed' do
           value_type: "text",
           text: "Corresponding author",
           position: 2
+        },
+        {
+          owner_id: nil,
+          owner_type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+          ident: 'publishing_related_questions--submitted_in_conjunction--corresponding_journal',
+          value_type: 'text',
+          text: 'Corresponding journal',
+          position: 3
+        },
+        {
+          owner_id: nil,
+          owner_type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+          ident: 'publishing_related_questions--submitted_in_conjunction--handled_together',
+          value_type: 'boolean',
+          text: "This submission and the manuscript I'm submitting should be handled together",
+          position: 4
         }
       ]
     }
@@ -127,17 +143,8 @@ namespace 'nested-questions:seed' do
       owner_type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
       ident: "publishing_related_questions--intended_collection",
       value_type: "text",
-      text: "If your submission is intended for a PLOS Collection, enter the name of the collection in the box below. Please also ensure the name of the collection is included in your cover letter.",
+      text: "If your submission is intended for a <a target='_blank' href='http://collections.plos.org/'>PLOS Collection</a>, enter the name of the collection in the box below. Please also ensure the name of the collection is included in your cover letter.",
       position: 7
-    }
-
-    questions << {
-      owner_id: nil,
-      owner_type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
-      ident: "publishing_related_questions--us_government_employees",
-      value_type: "boolean",
-      text: "Are you or any of the contributing authors an employee of the United States Government?",
-      position: 8
     }
 
     NestedQuestion.where(

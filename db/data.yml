@@ -7750,7 +7750,6 @@ nested_questions:
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '178'
-<<<<<<< 84b218fdb63115f12b9bc31e88ea49702e49f84a
     - Please provide your field permit number and indicate the institution or relevant
       body that granted permission for use of the land or materials collected.
     - text

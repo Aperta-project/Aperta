@@ -51,10 +51,10 @@ class PaperTrackerPage(AuthenticatedPage):
     assert subhead.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
     # Get total number of papers for users tracker
     uid = PgSQL().query('SELECT id FROM users where username = %s;', (username,))[0][0]
-    journal_ids = PgSQL().query('SELECT roles.journal_id FROM roles INNER JOIN user_roles '
-                                'ON roles.id = user_roles.role_id '
+    journal_ids = PgSQL().query('SELECT old_roles.journal_id FROM old_roles INNER JOIN user_roles '
+                                'ON old_roles.id = user_roles.old_role_id '
                                 'WHERE user_roles.user_id = %s '
-                                'AND roles.kind IN %s;', (uid, ('flow manager', 'admin', 'editor')))
+                                'AND old_roles.kind IN %s;', (uid, ('flow manager', 'admin', 'editor')))
     journals_list = []
     for journal_id in journal_ids:
       current_journal = journal_id[0]
@@ -171,7 +171,7 @@ class PaperTrackerPage(AuthenticatedPage):
             db_participants = PgSQL().query('SELECT users.first_name, users.last_name '
                                             'FROM paper_roles INNER JOIN users '
                                             'ON paper_roles.user_id = users.id '
-                                            'WHERE paper_id= %s AND paper_roles.role = %s;', (manid.text, 'participant'))
+                                            'WHERE paper_id= %s AND paper_roles.old_role = %s;', (manid.text, 'participant'))
             name = []
             for participant in db_participants:
               name.append(participant[0] + ' ' + participant[1])
@@ -185,7 +185,7 @@ class PaperTrackerPage(AuthenticatedPage):
             db_collaborators = PgSQL().query('SELECT users.first_name, users.last_name '
                                              'FROM paper_roles INNER JOIN users '
                                              'ON paper_roles.user_id = users.id '
-                                             'WHERE paper_id= %s AND paper_roles.role = %s;', (manid.text, 'collaborator'))
+                                             'WHERE paper_id= %s AND paper_roles.old_role = %s;', (manid.text, 'collaborator'))
             name = []
             for collaborator in db_collaborators:
               name.append(collaborator[0] + ' ' + collaborator[1])
@@ -199,7 +199,7 @@ class PaperTrackerPage(AuthenticatedPage):
             db_reviewers = PgSQL().query('SELECT users.first_name, users.last_name '
                                          'FROM paper_roles INNER JOIN users '
                                          'ON paper_roles.user_id = users.id '
-                                         'WHERE paper_id= %s AND paper_roles.role = %s;', (manid.text, 'reviewer'))
+                                         'WHERE paper_id= %s AND paper_roles.old_role = %s;', (manid.text, 'reviewer'))
             name = []
             for reviewer in db_reviewers:
               name.append(reviewer[0] + ' ' + reviewer[1])
@@ -213,7 +213,7 @@ class PaperTrackerPage(AuthenticatedPage):
             db_editors = PgSQL().query('SELECT users.first_name, users.last_name '
                                        'FROM paper_roles INNER JOIN users '
                                        'ON paper_roles.user_id = users.id '
-                                       'WHERE paper_id= %s AND paper_roles.role = %s;', (manid.text, 'editor'))
+                                       'WHERE paper_id= %s AND paper_roles.old_role = %s;', (manid.text, 'editor'))
             name = []
             for editor in db_editors:
               name.append(editor[0] + ' ' + editor[1])
@@ -227,7 +227,7 @@ class PaperTrackerPage(AuthenticatedPage):
             db_admins = PgSQL().query('SELECT users.first_name, users.last_name '
                                        'FROM paper_roles INNER JOIN users '
                                        'ON paper_roles.user_id = users.id '
-                                       'WHERE paper_id= %s AND paper_roles.role = %s;', (manid.text, 'admin'))
+                                       'WHERE paper_id= %s AND paper_roles.old_role = %s;', (manid.text, 'admin'))
             name = []
             for admin in db_admins:
               name.append(admin[0] + ' ' + admin[1])

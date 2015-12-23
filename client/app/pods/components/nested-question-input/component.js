@@ -5,11 +5,10 @@ export default NestedQuestionComponent.extend({
   inputClassNames: ["form-control tall-text-field"],
   wrapInput: true,
   type: 'text',
-  willUpdate() {
-    this._super(...arguments);
+  clearHiddenQuestions: Ember.observer('displayContent', function() {
     if (!this.get('displayContent')) {
       this.set('model.answer.value', '');
       this.get('model').save();
     }
-  }
+  })
 });

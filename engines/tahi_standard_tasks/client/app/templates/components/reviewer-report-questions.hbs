@@ -1,5 +1,11 @@
 <ol class="question-list">
   <li class="question">
+    {{nested-question-radio-decision ident="reviewer_report--decision_term"
+                                     owner=model
+                                     decision=decision
+                                     readonly=readonly}}
+  </li>
+  <li class="question">
     {{nested-question-textarea ident="reviewer_report--competing_interests"
       owner=model
       decision=decision

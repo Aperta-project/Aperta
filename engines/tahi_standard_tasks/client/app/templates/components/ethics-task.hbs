@@ -9,20 +9,18 @@
       disabled=isSubmissionTaskNotEditable
       noAction="userSelectedNoOnHumanSubjects"
       as |selected|}}
+          <div class="question-dataset {{if selected.no 'hidden'}} {{if selected.none 'hidden'}}">
+            {{nested-question-textarea model=participantsQuestion
+                displayContent=selected.yes
+                owner=task
+                disabled=isSubmissionTaskNotEditable}}
 
-      {{#if selected.yes}}
-      <div class="question-dataset">
-        {{nested-question-textarea model=participantsQuestion
-        owner=task
-        disabled=isSubmissionTaskNotEditable}}
-
-        <div class="question-info">
-          <div class="question-info-header">Human Subject Research (involved human participants and/or tissue)</div>
-          <p>All research involving human participants must have been approved by the authors' Institutional Review Board (IRB) or an equivalent committee, and all clinical investigation must have been conducted according to the principles expressed in the <a href="http://www.wma.net/en/30publications/10policies/b3/index.html" target="_blank">Declaration of Helsinki.</a></p>
-          <p>Informed consent, written or oral, should also have been obtained from the participants.  If no consent was given, the reason must be explained (e.g. the data were analyzed anonymously) and reported.  The form of consent (written/oral), or reason for lack of consent, should be indicated in the Methods section of your manuscript.</p>
-        </div>
-      </div>
-      {{/if}}
+            <div class="question-info">
+              <div class="question-info-header">Human Subject Research (involved human participants and/or tissue)</div>
+              <p>All research involving human participants must have been approved by the authors' Institutional Review Board (IRB) or an equivalent committee, and all clinical investigation must have been conducted according to the principles expressed in the <a href="http://www.wma.net/en/30publications/10policies/b3/index.html" target="_blank">Declaration of Helsinki.</a></p>
+              <p>Informed consent, written or oral, should also have been obtained from the participants.  If no consent was given, the reason must be explained (e.g. the data were analyzed anonymously) and reported.  The form of consent (written/oral), or reason for lack of consent, should be indicated in the Methods section of your manuscript.</p>
+            </div>
+          </div>
       {{/nested-question-radio}}
     </li>
 
@@ -60,13 +58,12 @@
         noAction="userSelectedNoOnFieldStudy"
         as |selected|}}
 
-        {{#if selected.yes}}
         <div class="question-dataset">
           {{nested-question-textarea model=fieldPermitNumberQuestion
+          displayContent=selected.yes
           owner=task
           disabled=isSubmissionTaskNotEditable}}
         </div>
-        {{/if}}
       {{/nested-question-radio}}
     </li>
   </ol>

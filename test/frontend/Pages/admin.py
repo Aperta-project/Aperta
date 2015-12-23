@@ -102,13 +102,13 @@ class AdminPage(AuthenticatedPage):
       # Ordinary Admin role is assigned on a per journal basis
       logging.info('Validating admin page elements for Ordinary Admin user')
       uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
-      roles = PgSQL().query('SELECT role_id FROM user_roles WHERE user_id = %s;', (uid,))
+      roles = PgSQL().query('SELECT old_role_id FROM user_roles WHERE user_id = %s;', (uid,))
       role_list = []
       for role in roles:
         role_list.append(role[0])
       journals = []
       for role in role_list:
-        journals.append(PgSQL().query('SELECT journal_id FROM roles WHERE id = %s;', (role,))[0][0])
+        journals.append(PgSQL().query('SELECT journal_id FROM old_roles WHERE id = %s;', (role,))[0][0])
       db_journals = []
       for journal in journals:
         db_journals.append(PgSQL().query('SELECT journals.name, journals.description, count(papers.id) '

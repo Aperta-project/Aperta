@@ -1,0 +1,28 @@
+{{if upload}}
+  <i class="fa fa-{{the doc type image icon}}"></i>
+  {{upload.thename}}
+
+  <i class="fa fa-thereplaceicon"></i>
+  the replace image and action here
+
+  <i class="fa fa-thertrashicon"></i>
+  delete link and action here
+
+  {{if getsDescriptionField}}
+    input field
+  {{#if}}
+
+{{else}}
+  <span>{{uploadButtonText}}
+    ... boilerplate ...
+    {{file-uploader accept     = accept
+                    start      = "uploadStarted"
+                    progress   = "uploadProgress"
+                    done       = "uploadFinished"
+                    error      = "uploadError"
+                    filePrefix = "question_attachment"
+                    ...
+                    }}
+  </span>
+{{#if}}
+

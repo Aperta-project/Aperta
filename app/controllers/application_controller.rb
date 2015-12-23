@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  include Authorizations
+  include OldAuthorizationsControllerHelper
   include TahiPusher::SocketTracker
   include InvitationCodes
 

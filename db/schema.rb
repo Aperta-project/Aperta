@@ -535,10 +535,12 @@ ActiveRecord::Schema.define(version: 20151230153746) do
     t.string   "old_role",                    null: false
     t.json     "body",       default: [],     null: false
     t.integer  "position",   default: 0
+    t.integer  "required_permission_id"
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
+  add_index "tasks", ["required_permission_id"], name: "index_tasks_on_required_permission_id", using: :btree
 
   create_table "user_flows", force: :cascade do |t|
     t.datetime "created_at"

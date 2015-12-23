@@ -74,47 +74,46 @@ describe "Authorizations: simple scenarios" do
     end
 
     context "when you have access to some tasks but not others (e.g billing staff)" do
-      pending "Billign staff"
-      # role :billing_staff do
-      #   has_permission action: 'view', applies_to: 'Task'
-      #   has_permission action: 'view_billing_info', applies_to: 'Task'
-      # end
-      #
-      # let!(:billing_task) { FactoryGirl.create(:billing_task, paper: paper_assigned_to_journal) }
-      #
-      # before do
-      #   billing_task.update required_permission: Permission.find_by_action_and_applies_to!('view_billing_info', 'Task')
-      # end
-      #
-      # context "and you're not billing staff" do
-      #   before do
-      #     assign_user user, to: journal, with_role: role_task_assignee
-      #   end
-      #
-      #   it "doesn't include the billing tasks which require a different permission" do
-      #     expect(user.enumerate_targets(:view, paper_assigned_to_journal.tasks).objects).to_not include(billing_task)
-      #     expect(user.enumerate_targets(:view_billing_info, paper_assigned_to_journal.tasks).objects).to_not include(billing_task)
-      #   end
-      #
-      #   it "doesn't allow them to access a specific billing task they don't have permission to view" do
-      #     expect(user.can?(:view, billing_task)).to eq(false)
-      #     expect(user.can?(:view_billing_info, billing_task)).to eq(false)
-      #   end
-      # end
-      #
-      # context "and you're billing staff" do
-      #   before do
-      #     assign_user user, to: journal, with_role: role_billing_staff
-      #   end
-      #
-      #   it "does include the billing tasks which require a different permission" do
-      #     expect(user.enumerate_targets(:view_billing_info, paper_assigned_to_journal.tasks).objects).to contain_exactly(some_task, billing_task)
-      #   end
-      #
-      #   it "allows them to access a specific billing task they have permission to view" do
-      #     expect(user.can?(:view_billing_info, billing_task)).to eq(true)
-      #   end
-      # end
+      role :billing_staff do
+        has_permission action: 'view', applies_to: 'Task'
+        has_permission action: 'view_billing_info', applies_to: 'Task'
+      end
+
+      let!(:billing_task) { FactoryGirl.create(:billing_task, paper: paper_assigned_to_journal) }
+
+      before do
+        billing_task.update required_permission: Permission.find_by_action_and_applies_to!('view_billing_info', 'Task')
+      end
+
+      context "and you're not billing staff" do
+        before do
+          assign_user user, to: journal, with_role: role_task_assignee
+        end
+
+        it "doesn't include the billing tasks which require a different permission" do
+          expect(user.enumerate_targets(:view, paper_assigned_to_journal.tasks).objects).to_not include(billing_task)
+          expect(user.enumerate_targets(:view_billing_info, paper_assigned_to_journal.tasks).objects).to_not include(billing_task)
+        end
+
+        it "doesn't allow them to access a specific billing task they don't have permission to view" do
+          expect(user.can?(:view, billing_task)).to eq(false)
+          expect(user.can?(:view_billing_info, billing_task)).to eq(false)
+        end
+      end
+
+      context "and you're billing staff" do
+        before do
+          assign_user user, to: journal, with_role: role_billing_staff
+        end
+
+        it "does include the billing tasks which require a different permission" do
+          expect(user.enumerate_targets(:view_billing_info, paper_assigned_to_journal.tasks).objects).to contain_exactly(some_task, billing_task)
+        end
+
+        it "allows them to access a specific billing task they have permission to view" do
+          expect(user.can?(:view_billing_info, billing_task)).to eq(true)
+        end
+      end
     end
   end
 end

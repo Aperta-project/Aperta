@@ -63,8 +63,8 @@ FactoryGirl.define do
 
   factory :publishing_related_questions_task, class: 'TahiStandardTasks::PublishingRelatedQuestionsTask' do
     phase
-    title "Publishing Related Questions"
-    old_role "author"
+    title 'Additional Information'
+    old_role 'author'
   end
 
   factory :reporting_guidelines_task, class: 'TahiStandardTasks::ReportingGuidelinesTask' do

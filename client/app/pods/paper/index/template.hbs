@@ -19,17 +19,7 @@
       <div class="manuscript-container">
         {{flash-messages}}
         <div class="manuscript">
-          {{#if model.editable}}
-            {{content-editable tagName="h2"
-                               id="paper-title"
-                               value=model.title
-                               preventEnterKey="true"
-                               placeholder="Type your manuscript title here"
-                               key-up=(action "saveManuscriptTitle")
-                               focus-out=(action "saveManuscriptTitle")}}
-          {{else}}
-            <h2 id="paper-title">{{{model.title}}}</h2>
-          {{/if}}
+          <h2 id="paper-title">{{{model.title}}}</h2>
 
           <div id="paper-body">
             {{{model.body}}}

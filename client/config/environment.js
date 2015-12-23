@@ -21,6 +21,10 @@ module.exports = function(environment) {
       ]
     },
 
+    coffeeOptions: {
+      blueprints: false
+    },
+
     'mathjax': {
       url: '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
     },

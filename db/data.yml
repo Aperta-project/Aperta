@@ -7062,7 +7062,7 @@ nested_questions:
     - 
     - '183'
     - '184'
-    - '1'
+    - '2'
     - '2015-10-30 19:51:03.496382'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::ReviewerReportTask
@@ -7074,7 +7074,7 @@ nested_questions:
     - 
     - '185'
     - '188'
-    - '2'
+    - '3'
     - '2015-10-30 19:51:03.500418'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::ReviewerReportTask
@@ -7098,7 +7098,7 @@ nested_questions:
     - 
     - '189'
     - '192'
-    - '3'
+    - '4'
     - '2015-10-30 19:51:03.511001'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::ReviewerReportTask
@@ -7122,7 +7122,7 @@ nested_questions:
     - 
     - '193'
     - '196'
-    - '4'
+    - '5'
     - '2015-10-30 19:51:03.521073'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::ReviewerReportTask
@@ -7146,7 +7146,7 @@ nested_questions:
     - 
     - '197'
     - '198'
-    - '5'
+    - '6'
     - '2015-10-30 19:51:03.531234'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::ReviewerReportTask
@@ -7159,7 +7159,7 @@ nested_questions:
     - 
     - '199'
     - '200'
-    - '6'
+    - '7'
     - '2015-10-30 19:51:03.534949'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::ReviewerReportTask
@@ -7750,6 +7750,7 @@ nested_questions:
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '178'
+<<<<<<< 84b218fdb63115f12b9bc31e88ea49702e49f84a
     - Please provide your field permit number and indicate the institution or relevant
       body that granted permission for use of the land or materials collected.
     - text
@@ -7798,6 +7799,18 @@ nested_questions:
     - '2015-12-17 21:19:25.056959'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
+    -
+  - - '182'
+    - 'Please provide your publication recommendation:'
+    - text
+    - reviewer_report--decision_term
+    - 
+    - '289'
+    - '290'
+    - '1'
+    - '2015-12-23 17:34:57.06078'
+    - '2015-12-23 17:34:57.06078'
+    - TahiStandardTasks::ReviewerReportTask
     - 
 
 ---

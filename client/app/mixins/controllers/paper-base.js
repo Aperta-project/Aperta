@@ -45,10 +45,6 @@ export default Ember.Mixin.create({
       );
     },
 
-    saveManuscriptTitle() {
-      Ember.run.debounce(this, this.save, 500);
-    },
-
     hideActivityOverlay() {
       this.set('showActivityOverlay', false);
     },

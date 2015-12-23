@@ -6,6 +6,7 @@ NOTE: This POM will be outdated when the Paper Editor is removed.
 """
 
 import time
+import pdb
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -16,8 +17,8 @@ from Base.PostgreSQL import PgSQL
 from frontend.Cards.authors_card import AuthorsCard
 from frontend.Cards.basecard import BaseCard
 from frontend.Tasks.basetask import BaseTask
-from frontend.Tasks.authors_task
-import AuthorsTask
+from frontend.Tasks.authors_task import AuthorsTask
+from frontend.Tasks.authors_task import AuthorsTask
 from frontend.Cards.billing_card import BillingCard
 from frontend.Cards.figures_card import FiguresCard
 from frontend.Cards.revise_manuscript_card import ReviseManuscriptCard
@@ -356,38 +357,55 @@ class ManuscriptViewerPage(AuthenticatedPage):
       time.sleep(1)
 
 
-  def complete_task(self, task_name, click_override=False):
-    """On a given task, check complete and then close"""
+  def complete_task(self, task_name, click_override=False, data=None):
+    """On a given task, check complete and then close
+    :task_name:
+    :click_override:
+    :data:
+    returns XXXXX
+    """
     tasks = self._gets(self._task_headings)
+    print tasks
+    #pdb.set_trace()
     # if task is marked as complete, leave is at is.
     if not click_override:
       for task in tasks:
         task_div = task.find_element_by_xpath('..')
+        print 'TASK.TEXT: {}'.format(task.text)
         if task.text == task_name and 'active' \
             not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
-          task_div.click()
+          #task_div.click()
+          task.click()
+          print "CLICK"
           break
         elif task.text == task_name and 'active' \
             in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
           return None
       else:
+        #pdb.set_trace()
         return None
     else:
       for task in tasks:
         if task.text == task_name:
-          task_div = task.find_element_by_xpath('..')
-          task_div.click()
+          task.click()
+          #task_div = task.find_element_by_xpath('..')
+          #task_div.click()
         break
       else:
         return None
+    print 391
+    #pdb.set_trace()
     base_task = BaseTask(self._driver)
-    if task_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript',
+    if 'task_name' == 'Publishing Related Questions':
+      prq_task = PRQTask(self._driver)
+      prq_task.answer_question(affiliation, data)
+    elif task_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript',
                      'Revise Manuscript', 'Billing'):
       # Check completed_check status
       completed = base_task.completed_cb_is_selected()
       if not completed:
         self._get(base_task._completed_cb).click()
-      task_div.click()
+      task.click()
       time.sleep(1)
     elif task_name == 'Authors':
       # Complete authors data before mark close

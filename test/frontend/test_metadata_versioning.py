@@ -112,26 +112,25 @@ class MetadataVersioningTest(CommonTest):
                                  user='jgray_author')
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_id = paper_viewer.get_current_url().split('/')[-1]
+    print("Assigned paper id: {}".format(paper_id))
     # Test
     #paper_viewer.logout()
 
     #paper_viewer.complete_card('Billing')
 
-    paper_viewer.click_task('Billing')
+    #paper_viewer.click_task('Billing')
     paper_viewer.complete_task('Billing')
-
-    paper_viewer.click_task('Authors')
-    paper_viewer.complete_task('Authors')
-    paper_viewer.click_task('Cover Letter')
+    #paper_viewer.click_task('Billing')
+    time.sleep(.1)
     paper_viewer.complete_task('Cover Letter')
-    paper_viewer.click_task('Figures')
     paper_viewer.complete_task('Figures')
-    paper_viewer.click_task('Supporting Info')
     paper_viewer.complete_task('Supporting Info')
-    #paper_viewer.complete_card('Upload Manuscript')
+    paper_viewer.complete_task('Authors')
+    paper_viewer.complete_task('Publishing Related Questions')
+    #import pdb; pdb.set_trace()
     if journal_type == 'Research':
-      paper_viewer.click_task('Publishing Related Questions')
-      paper_viewer.complete_task('Publishing Related Questions')
+      pass
+      #paper_viewer.complete_task('Publishing Related Questions')
     time.sleep(1)
     # Click submit
     paper_viewer.click_submit_btn()
@@ -186,7 +185,7 @@ class MetadataVersioningTest(CommonTest):
     # go to article
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    pdb.set_trace()
+    #pdb.set_trace()
 
     #button
 

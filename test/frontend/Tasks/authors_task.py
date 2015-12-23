@@ -1,11 +1,13 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import time
+import pdb
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 from frontend.Tasks.basetask import BaseTask
+
 from Base.Resources import author
 
 __author__ = 'jgray@plos.org'
@@ -39,7 +41,7 @@ class AuthorsTask(BaseTask):
     self._institution_div = (By.CLASS_NAME, 'did-you-mean-input')
     self._author_lbls = (By.CLASS_NAME, 'author-label')
     self._designed_chkbx = (By.XPATH,
-      ".//input[@name='contributions.conceived_and_designed_experiments']/following-sibling::span")
+      ".//input[@name='author--contributions--conceived_and_designed_experiments']/following-sibling::span")
     self._author_contrib_lbl = (By.CSS_SELECTOR, 'h4.required')
     self._add_author_cancel_lnk = (By.CSS_SELECTOR, 'span.author-form-buttons a')
     self._add_author_add_btn = (By.CSS_SELECTOR, 'span.author-form-buttons button')
@@ -47,7 +49,7 @@ class AuthorsTask(BaseTask):
     self._delete_author_div = (By.CLASS_NAME, 'authors-overlay-item--delete')
     self._edit_author = (By.CLASS_NAME, 'fa-pencil')
     self._corresponding = (By.XPATH,
-      ".//input[@name='published_as_corresponding_author']")
+      ".//input[@name='author--published_as_corresponding_author']")
 
    #POM Actions
   def validate_author_task_styles(self):
@@ -178,18 +180,23 @@ class AuthorsTask(BaseTask):
 
 
   def validate_styles(self):
-    """Validate all styles for Authors Card"""
+    """Validate all styles for Authors Task"""
     self.validate_author_task_styles()
     self.validate_common_elements_styles()
     return self
 
   def edit_author(self, author_data):
-    """Edit the first author in the author card"""
+    """
+    Edit the first author in the author task
+    :author_data:
+    return None
+    """
     completed = self._get(self._completed_cb)
     if completed.is_selected():
-      self._get(self._close_button).click()
+        #No need to close
+      #self._get(self._close_button).click()
       return None
-    author_card = AuthorsCard(self._driver)
+    #author_task = AuthorsTask(self._driver)
     author = self._get(self._author_items)
     self._actions.move_to_element(author).perform()
     edit_btn = self._get(self._edit_author)
@@ -208,6 +215,7 @@ class AuthorsTask(BaseTask):
     department_input.clear()
     department_input.send_keys(author_data['department'] + Keys.ENTER)
     # Author contributions
+    pdb.set_trace()
     corresponding_chck = self._get(self._corresponding)
     if not corresponding_chck.is_selected():
       corresponding_chck.click()
@@ -219,7 +227,8 @@ class AuthorsTask(BaseTask):
     completed = self._get(self._completed_cb)
     completed.click()
     time.sleep(.2)
-    self._get(self._close_button).click()
+    # No need to close
+    #self._get(self._close_button).click()
 
   def press_submit_btn(self):
     """Press sidebar submit button"""

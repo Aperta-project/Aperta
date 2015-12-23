@@ -7,7 +7,7 @@ export default NestedQuestionComponent.extend({
   clearHiddenQuestions: Ember.observer('displayContent', function() {
     if (!this.get('displayContent')) {
       this.set('model.answer.value', '');
-      this.get('model').save();
+      this.get('model.answer').save();
     }
   })
 });

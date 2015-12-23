@@ -21,13 +21,13 @@ export default NestedQuestionComponent.extend({
   isNotChecked: Ember.computed.not('isChecked'),
 
   setCheckedValue: function(checked){
-    let answer = this.get("model.answer");
-    this.set("checked", checked);
+    this.set('checked', checked);
+    let answer = this.get('model.answer');
 
-    if(!checked){
-      answer.destroyRecord();
+    if(checked){
+      answer.set('value', true);
     } else {
-      answer.set("value", checked);
+      answer.set('value', false);
     }
   },
 

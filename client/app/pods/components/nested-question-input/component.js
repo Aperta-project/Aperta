@@ -9,6 +9,7 @@ export default NestedQuestionComponent.extend({
     this._super(...arguments);
     if (!this.get('displayContent')) {
       this.set('model.answer.value', '');
+      this.get('model').save();
     }
   }
 });

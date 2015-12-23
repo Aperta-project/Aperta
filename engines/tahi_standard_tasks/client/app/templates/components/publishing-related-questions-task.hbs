@@ -7,7 +7,7 @@
                       owner=task
                       disabled=isSubmissionTaskNotEditable
                       as |selected|}}
-      <div class="question-dataset {{if selected.no 'hidden'}}">
+      <div class="question-dataset {{if selected.no 'hidden'}} {{if selected.none 'hidden'}}">
         {{nested-question-input ident="publishing_related_questions--published_elsewhere--taken_from_manuscripts"
                          owner=task
                          displayContent=selected.yes
@@ -31,7 +31,7 @@
                       disabled=isSubmissionTaskNotEditable
                       as |selected|}}
 
-      <div class="question-dataset {{if selected.no 'hidden'}}">
+      <div class="question-dataset {{if selected.no 'hidden'}} {{if selected.none 'hidden'}}">
         <div class="question-dataset-header">Please provide the title of that submission and the corresponding author.</div>
           {{nested-question-input ident="publishing_related_questions--submitted_in_conjunction--corresponding_title"
                            class="sub-question"

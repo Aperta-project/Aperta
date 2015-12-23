@@ -2,12 +2,12 @@ import NestedQuestionComponent from 'tahi/pods/components/nested-question/compon
 export default NestedQuestionComponent.extend({
   placeholder: null,
   displayContent: true,
+  inputClassNames: ['form-control'],
 
-  clearHiddenQuestions: Ember.observer('displayContent', function() {
+  willUpdate() {
+    this._super(...arguments);
     if (!this.get('displayContent')) {
       this.set('model.answer.value', '');
     }
-  }),
-
-  inputClassNames: ["form-control"]
+  }
 });

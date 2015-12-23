@@ -6,7 +6,7 @@ namespace 'nested-questions:seed' do
       owner_type: TahiStandardTasks::EthicsTask.name,
       ident: "ethics--human_subjects",
       value_type: "boolean",
-      text: "Does your study involve Human Subject Research (human participants and/or tissue)?",
+      text: "Does your study involve human participants and/or tissue?",
       position: 1,
       children: [
         {
@@ -25,7 +25,7 @@ namespace 'nested-questions:seed' do
       owner_type: TahiStandardTasks::EthicsTask.name,
       ident: "ethics--animal_subjects",
       value_type: "boolean",
-      text: "Does your study involve Animal Research (vertebrate animals, embryos or tissues)?",
+      text: "Does your study involve animal research (vertebrate animals, embryos or tissues)?",
       position: 2,
       children: [
         {
@@ -34,6 +34,25 @@ namespace 'nested-questions:seed' do
           ident: "ethics--animal_subjects--field_permit",
           value_type: "text",
           text: "Please enter your statement below:",
+          position: 1
+        }
+      ]
+    }
+
+    questions << {
+      owner_id:nil,
+      owner_type: TahiStandardTasks::EthicsTask.name,
+      ident: "ethics--field_study",
+      value_type: "boolean",
+      text: "Is this a field study, or does it involve collection of plant, animal, or other materials collected from a natural setting?",
+      position: 3,
+      children: [
+        {
+          owner_id:nil,
+          owner_type: TahiStandardTasks::EthicsTask.name,
+          ident: "ethics--field_study--field_permit_number",
+          value_type: "text",
+          text: "Please provide your field permit number and indicate the institution or relevant body that granted permission for use of the land or materials collected.",
           position: 1
         }
       ]

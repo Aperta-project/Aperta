@@ -25,6 +25,16 @@ export default TaskComponent.extend(SavesQuestionsOnClose, {
                .findQuestion('ethics--animal_subjects--field_permit');
   }),
 
+  fieldStudyQuestion: computed(function(){
+    return this.get('task')
+              .findQuestion('ethics--field_study');
+  }),
+
+  fieldPermitNumberQuestion: computed(function(){
+    return this.get('task')
+               .findQuestion('ethics--field_study--field_permit_number');
+  }),
+
   actions: {
     destroyAttachment(attachment) {
       attachment.destroyRecord();
@@ -43,5 +53,12 @@ export default TaskComponent.extend(SavesQuestionsOnClose, {
       answer.set('value', '');
       answer.save();
     },
+
+    userSelectedNoOnFieldStudy(){
+      const question = this.get('fieldStudyQuestion');
+      const answer = question.answerForOwner(this.get('task'));
+      answer.set('value', '');
+      answer.save();
+    }
   }
 });

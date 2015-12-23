@@ -6405,7 +6405,7 @@ nested_questions:
     - TahiStandardTasks::FigureTask
     - 
   - - '30'
-    - Does your study involve Human Subject Research (human participants and/or tissue)?
+    - Does your study involve human participants and/or tissue?
     - boolean
     - ethics--human_subjects
     - 
@@ -6413,7 +6413,7 @@ nested_questions:
     - '58'
     - '1'
     - '2015-10-29 20:16:38.264507'
-    - '2015-12-15 15:54:22.908398'
+    - '2015-12-21 16:53:24.211005'
     - TahiStandardTasks::EthicsTask
     - 
   - - '31'
@@ -6431,7 +6431,7 @@ nested_questions:
     - TahiStandardTasks::EthicsTask
     - 
   - - '33'
-    - Does your study involve Animal Research (vertebrate animals, embryos or tissues)?
+    - Does your study involve animal research (vertebrate animals, embryos or tissues)?
     - boolean
     - ethics--animal_subjects
     - 
@@ -6439,7 +6439,7 @@ nested_questions:
     - '60'
     - '2'
     - '2015-10-29 20:16:38.278707'
-    - '2015-12-15 15:54:22.913487'
+    - '2015-12-21 16:53:24.220262'
     - TahiStandardTasks::EthicsTask
     - 
   - - '34'
@@ -7783,6 +7783,32 @@ nested_questions:
     - '2015-11-02 13:38:26.440221'
     - '2015-12-15 15:54:23.039632'
     - PlosBioTechCheck::FinalTechCheckTask
+    - 
+  - - '178'
+    - Please provide your field permit number and indicate the institution or relevant
+      body that granted permission for use of the land or materials collected.
+    - text
+    - ethics--field_study--field_permit_number
+    - '179'
+    - '290'
+    - '291'
+    - '1'
+    - '2015-12-21 16:53:24.223742'
+    - '2015-12-21 16:53:24.236384'
+    - TahiStandardTasks::EthicsTask
+    - 
+  - - '179'
+    - Is this a field study, or does it involve collection of plant, animal, or other
+      materials collected from a natural setting?
+    - boolean
+    - ethics--field_study
+    - 
+    - '289'
+    - '292'
+    - '3'
+    - '2015-12-21 16:53:24.230439'
+    - '2015-12-21 16:53:24.236384'
+    - TahiStandardTasks::EthicsTask
     - 
 
 ---

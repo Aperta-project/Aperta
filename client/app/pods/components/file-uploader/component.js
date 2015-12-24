@@ -18,9 +18,8 @@
 //      processingDone
 
 import Ember from 'ember';
-var FileUploaderComponent;
 
-FileUploaderComponent = Ember.TextField.extend({
+export default Ember.TextField.extend({
   type: 'file',
   name: 'file',
   multiple: false,
@@ -31,11 +30,12 @@ FileUploaderComponent = Ember.TextField.extend({
   dataType: 'json',
   method: 'POST',
   railsMethod: 'POST',
-  acceptedFileTypes: (function() {
-    var types;
-    types = this.get('accept').replace(/\./g, '').replace(/,/g, '|');
+  
+  acceptedFileTypes: Ember.computed('accept', function(){
+    let types = this.get('accept').replace(/\./g, '').replace(/,/g, '|');
     return new RegExp("(" + types + ")$", 'i');
-  }).property('accept'),
+  }),
+  
   checkFileType: function(e, data) {
     var errorMessage, fileName;
     if (this.get('accept')) {
@@ -154,5 +154,3 @@ FileUploaderComponent = Ember.TextField.extend({
     });
   }).on('didInsertElement')
 });
-
-export default FileUploaderComponent;

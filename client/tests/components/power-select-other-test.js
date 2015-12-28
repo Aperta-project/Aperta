@@ -59,9 +59,9 @@ test('other option is selected', function(assert) {
   );
 
   assert.equal(
-    this.$('.format-input').length,
+    this.$('input').length,
     1,
-    'format-input is visible'
+    'input is visible'
   );
 
   Ember.run(() => {
@@ -79,4 +79,22 @@ test('other option is selected', function(assert) {
       'value property is changed'
     );
   });
+});
+
+test('other formatting is available', function(assert) {
+  assert.expect(1);
+  this.set('nameValue', 'Gena');
+
+  this.render(hbs`
+    <span id="selected-name">{{nameValue}}</span>
+    {{power-select-other options=names
+                         value=nameValue
+                         allowOtherFormatting=true}}
+  `);
+
+  assert.equal(
+    this.$('.format-input').length,
+    1,
+    'format-input is visible'
+  );
 });

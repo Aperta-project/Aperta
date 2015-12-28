@@ -17,8 +17,38 @@ import Ember from 'ember';
  *  ```
 **/
 
+const { computed } = Ember;
+
 export default Ember.Component.extend({
-  value: null, // passed in
+  /**
+   *  @property value
+   *  @type String | Number
+   *  @default null
+   *  @required
+  **/
+  value: null,
+
+  /**
+   *  Switch between plain text input or content-editable
+   *  for `other` option
+   *
+   *  @property allowOtherFormatting
+   *  @type Boolean
+   *  @default false
+   *  @optional
+  **/
+  allowOtherFormatting: false,
+
+  /**
+   *  Text to be used for other
+   *
+   *  @property otherText
+   *  @type String
+   *  @default 'other...'
+   *  @optional
+  **/
+  otherText: 'other...',
+
   selectedValue: null, // internal state
 
   didReceiveAttrs() {
@@ -34,16 +64,14 @@ export default Ember.Component.extend({
     }
   },
 
-  otherText: 'other...',
-
-  _optionsWithOther: Ember.computed('options.[]', function() {
+  _optionsWithOther: computed('options.[]', function() {
     let base = [];
     base.pushObjects(this.get('options'));
     base.pushObject(this.get('otherText'));
     return base;
   }),
 
-  _otherOptionSelected: Ember.computed('selectedValue', function() {
+  _otherOptionSelected: computed('selectedValue', function() {
     return this.get('selectedValue') === this.get('otherText');
   }),
 

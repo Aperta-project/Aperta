@@ -1,5 +1,9 @@
 {{#if _otherOptionSelected}}
-  {{format-input value=value}}
+  {{#if allowOtherFormatting}}
+    {{format-input value=value}}
+  {{else}}
+    {{input value=value}}
+  {{/if}}
 {{/if}}
 
 {{#power-select options=_optionsWithOther

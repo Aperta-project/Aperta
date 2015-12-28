@@ -78,6 +78,7 @@ group :development, :test do
   gem 'auto_screenshot', require: false
   gem 'dotenv-rails', require: 'dotenv/rails-now'
   gem 'progressbar'
+  gem 'pry-byebug'
   gem 'pry-rails'
   gem 'pry-remote'
   gem 'pry-rescue'

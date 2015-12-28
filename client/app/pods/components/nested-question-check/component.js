@@ -1,39 +1,38 @@
 import Ember from 'ember';
-import NestedQuestionComponent from 'tahi/pods/components/nested-question/component';
+import NestedQuestionComponent from
+  'tahi/pods/components/nested-question/component';
+
+const { computed } = Ember;
 
 export default NestedQuestionComponent.extend({
-  labelClassNames: ["question-checkbox"],
-  textClassNames: ["model-question"],
+  labelClassNames: ['question-checkbox'],
+  textClassNames: ['model-question'],
 
-  additionalDataYieldValue: Ember.computed('checked', 'model.answer.value', function(){
-    return { checked: this.get('isChecked'),
-             unchecked: this.get('isNotChecked'),
-             yieldingForAdditionalData: true };
-  }),
+  additionalDataYieldValue: computed('checked', 'model.answer.value',
+    function(){
+      return { checked: this.get('isChecked'),
+               unchecked: this.get('isNotChecked'),
+               yieldingForAdditionalData: true };
+    }
+  ),
 
-  textYieldValue: Ember.computed('checked', 'model.answer.value', function(){
+  textYieldValue: computed('checked', 'model.answer.value', function(){
     return { checked: this.get('isChecked'),
              unchecked: this.get('isNotChecked'),
              yieldingForText: true };
   }),
 
-  isChecked: Ember.computed.alias('model.answer.value'),
-  isNotChecked: Ember.computed.not('isChecked'),
+  isChecked: computed.alias('model.answer.value'),
+  isNotChecked: computed.not('isChecked'),
 
-  setCheckedValue: function(checked){
+  setCheckedValue(checked){
     this.set('checked', checked);
-    let answer = this.get('model.answer');
-
-    if(checked){
-      answer.set('value', true);
-    } else {
-      answer.set('value', false);
-    }
+    this.set('model.answer.value', checked);
   },
 
   actions: {
-    checkboxToggled: function(checkbox){
-      let checked = checkbox.get('checked');
+    checkboxToggled(checkbox){
+      const checked = checkbox.get('checked');
       this.setCheckedValue(checked);
     },
 

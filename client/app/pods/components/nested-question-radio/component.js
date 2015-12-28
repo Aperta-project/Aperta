@@ -1,5 +1,9 @@
 import Ember from 'ember';
-import NestedQuestionComponent from 'tahi/pods/components/nested-question/component';
+import NestedQuestionComponent from
+  'tahi/pods/components/nested-question/component';
+
+const { computed } = Ember;
+const { equal } = computed;
 
 export default NestedQuestionComponent.extend({
   yesLabel: 'Yes',
@@ -7,16 +11,16 @@ export default NestedQuestionComponent.extend({
   noLabel: 'No',
   noValue: false,
   displayBlockContent: false,
-  yesSelected: Ember.computed.equal('model.answer.value', true),
-  noSelected:  Ember.computed.equal('model.answer.value', false),
+  yesSelected: equal('model.answer.value', true),
+  noSelected:  equal('model.answer.value', false),
 
-  namePrefix: Ember.computed(function(){
+  namePrefix: computed(function(){
     return `${this.elementId}-${this.get('ident')}`;
   }),
 
-  yieldingForAdditionalData: Ember.computed('model.answer.value', function() {
-    let yes  = this.get('yesSelected');
-    let no   = this.get('noSelected');
+  yieldingForAdditionalData: computed('model.answer.value', function() {
+    const yes  = this.get('yesSelected');
+    const no   = this.get('noSelected');
 
     return {
       yes: yes,

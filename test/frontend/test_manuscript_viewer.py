@@ -81,7 +81,7 @@ class ViewPaperTest(CommonTest):
         time.sleep(3) # needed to give time to retrieve new menu items
         if user['user'] == ae_login['user']:
           paper_id = manuscript_viewer.get_paper_db_id()
-          permissions = PgSQL().query('SELECT paper_roles.role FROM paper_roles '
+          permissions = PgSQL().query('SELECT paper_roles.old_role FROM paper_roles '
                               'where user_id = %s and paper_id = %s;',
                               (uid, paper_id)
                               )

@@ -77,7 +77,7 @@ class JournalAdminPage(AdminPage):
     self.validate_application_h2_style(users_title)
     jid = PgSQL().query('SELECT id FROM journals WHERE name = %s;', (journal,))[0][0]
     logging.debug(jid)
-    role_list = PgSQL().query('SELECT * FROM roles WHERE journal_id = %s;', (jid,)) or []
+    role_list = PgSQL().query('SELECT * FROM old_roles WHERE journal_id = %s;', (jid,)) or []
     logging.debug(role_list)
     roles_count = 0
     for role in role_list:

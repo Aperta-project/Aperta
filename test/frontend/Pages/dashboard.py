@@ -370,7 +370,7 @@ class DashboardPage(AuthenticatedPage):
         else:
           raise TypeError('Database title or Page title are not both unicode objects')
         # Sort out paper role display
-        paper_roles = PgSQL().query('SELECT role FROM paper_roles '
+        paper_roles = PgSQL().query('SELECT old_role FROM paper_roles '
                                     'INNER JOIN papers ON papers.id = paper_roles.paper_id '
                                     'WHERE paper_roles.paper_id = %s AND '
                                     'paper_roles.user_id= %s '

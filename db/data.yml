@@ -7767,7 +7767,7 @@ nested_questions:
     - '2015-12-21 16:53:24.236384'
     - TahiStandardTasks::EthicsTask
     -
-- - '180'
+  - - '180'
     - Corresponding journal
     - text
     - publishing_related_questions--submitted_in_conjunction--corresponding_journal

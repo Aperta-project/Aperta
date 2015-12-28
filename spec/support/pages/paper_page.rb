@@ -16,7 +16,7 @@ class PaperPage < Page
   include ActionView::Helpers::JavaScriptHelper
 
   path :root
-  text_assertions :paper_title, '#paper-title'
+  text_assertions :paper_title, '#control-bar-paper-title'
   text_assertions :journal, '.paper-journal'
 
   def initialize element = nil

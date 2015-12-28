@@ -1,6 +1,6 @@
 .flex-group {
-  display: flex;
-  flex-wrap: wrap;
+  @include display(flex);
+  @include flex-wrap(wrap);
 
   &.flex-group--divider {
     margin-bottom: 1.5rem;
@@ -9,7 +9,7 @@
 }
 
 .flex-element {
-  flex: 10 10 auto;
+  @include flex(10 10 auto);
 
   input  { width: 100%; }
   select { width: 100%; }

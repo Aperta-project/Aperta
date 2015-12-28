@@ -22,7 +22,11 @@ class FiguresExtractor
   def relinked_image_anchor(html:, image:, figure:)
     Nokogiri::HTML(html).tap { |doc|
       doc.css("img[src*='#{image.original_filename}']").each do |img|
-        img.set_attribute('src', figure.attachment.preview.url)
+        img.set_attribute 'src', figure.non_expiring_proxy_url
+        img.set_attribute 'id', "figure_#{figure.id}"
+        img.set_attribute 'data-figure-id', figure.id
+        img.set_attribute 'alt', "Figure: #{figure.filename}"
+        img.set_attribute 'style', 'width:100%'
       end
     }.to_s
   end

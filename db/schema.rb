@@ -177,9 +177,11 @@ ActiveRecord::Schema.define(version: 20151222165348) do
     t.string   "title"
     t.text     "caption"
     t.string   "status",     default: "processing"
+    t.string   "token"
   end
 
   add_index "figures", ["paper_id"], name: "index_figures_on_paper_id", using: :btree
+  add_index "figures", ["token"], name: "index_figures_on_token", unique: true, using: :btree
 
   create_table "flows", force: :cascade do |t|
     t.string  "title"
@@ -212,8 +214,8 @@ ActiveRecord::Schema.define(version: 20151222165348) do
   create_table "journal_task_types", force: :cascade do |t|
     t.integer "journal_id"
     t.string  "title"
+    t.string  "old_role"
     t.string  "kind"
-    t.string  "old_role",   limit: 255
   end
 
   add_index "journal_task_types", ["journal_id"], name: "index_journal_task_types_on_journal_id", using: :btree
@@ -274,15 +276,15 @@ ActiveRecord::Schema.define(version: 20151222165348) do
   add_index "nested_questions", ["rgt"], name: "index_nested_questions_on_rgt", using: :btree
 
   create_table "old_roles", force: :cascade do |t|
-    t.string   "name",                                  limit: 255
+    t.string   "name"
     t.integer  "journal_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "can_administer_journal",                            default: false,    null: false
-    t.boolean  "can_view_assigned_manuscript_managers",             default: false,    null: false
-    t.boolean  "can_view_all_manuscript_managers",                  default: false,    null: false
-    t.string   "kind",                                  limit: 255, default: "custom", null: false
-    t.boolean  "can_view_flow_manager",                             default: false,    null: false
+    t.boolean  "can_administer_journal",                default: false,    null: false
+    t.boolean  "can_view_assigned_manuscript_managers", default: false,    null: false
+    t.boolean  "can_view_all_manuscript_managers",      default: false,    null: false
+    t.string   "kind",                                  default: "custom", null: false
+    t.boolean  "can_view_flow_manager",                 default: false,    null: false
   end
 
   add_index "old_roles", ["kind"], name: "index_old_roles_on_kind", using: :btree
@@ -292,7 +294,7 @@ ActiveRecord::Schema.define(version: 20151222165348) do
     t.integer  "paper_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "old_role",   limit: 255
+    t.string   "old_role"
   end
 
   add_index "paper_roles", ["old_role"], name: "index_paper_roles_on_old_role", using: :btree
@@ -471,9 +473,9 @@ ActiveRecord::Schema.define(version: 20151222165348) do
     t.boolean  "completed",  default: false,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "old_role",                    null: false
     t.json     "body",       default: [],     null: false
     t.integer  "position",   default: 0
-    t.string   "old_role",   limit: 255,                  null: false
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree

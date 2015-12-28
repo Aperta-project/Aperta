@@ -195,7 +195,6 @@ Tahi::Application.routes.draw do
     get :download, on: :member
   end
 
-  get '/attachments/figures/:figure_id', to: 'image_proxy#show'
   get '/resource_proxy/:resource/:token(/:version)', to: 'resource_proxy#url',
                                                      as: :resource_proxy
 

@@ -29,7 +29,7 @@ class EpubConverter
                 paper: paper,
                 paper_body: paper_body,
                 title: title,
-                needs_non_redirecting_preview_url: false
+                converter: self
               })
   end
 

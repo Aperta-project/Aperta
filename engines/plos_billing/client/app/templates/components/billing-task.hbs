@@ -119,26 +119,23 @@
       </div>
     </div>
 
-    <div class="flex-group">
-      <div class="flex-element {{if validationErrors.country "error"}}">
-        {{#if countries.loaded}}
-          {{nested-question-select ident="plos_billing--country"
-                            owner=task
-                            placeholder="Select Your Country"
-                            displayQuestionText=false
-                            source=formattedCountries
-                            width="100%"
-                            enable=isSubmissionTaskEditable}}
-        {{/if}}
-        {{#if countries.loading}}
-          {{progress-spinner visible=true size="mini"}}
-          Loading countries
-        {{/if}}
-        {{#if countries.error}}
-          <i class="fa fa-exclamation-triangle"></i>
-          Error loading countries
-        {{/if}}
-      </div>
+    <div class="flex-element billing-payee-country {{if validationErrors.country "error"}}">
+      {{#if countries.loaded}}
+        {{nested-question-select ident="plos_billing--country"
+                          owner=task
+                          placeholder="Select Your Country"
+                          displayQuestionText=false
+                          source=formattedCountries
+                          enable=isSubmissionTaskEditable}}
+      {{/if}}
+      {{#if countries.loading}}
+        {{progress-spinner visible=true size="mini"}}
+        Loading countries
+      {{/if}}
+      {{#if countries.error}}
+        <i class="fa fa-exclamation-triangle"></i>
+        Error loading countries
+      {{/if}}
     </div>
   </div>
 

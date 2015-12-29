@@ -100,6 +100,22 @@ describe EpubConverter do
           expect(img['src'])
           .to eq(figure.non_expiring_proxy_url(only_path: false))
         end
+
+        it 'works with orphan figures' do
+          # add another figure
+          with_aws_cassette('figure') do
+            paper.figures
+              .create attachment: File.open('spec/fixtures/yeti.tiff'),
+                      status: 'done'
+          end
+          fig1, fig2 = paper.figures
+          allow(paper).to receive(:body)
+            .and_return("<img id='figure_#{fig1.id}' src='foo'/>")
+          expect(converter.orphan_figures).to eq([fig2])
+
+          expect(doc.css("img#figure_#{fig2.id}").first['src']).to \
+            eq(fig2.non_expiring_proxy_url(only_path: false))
+        end
       end
     end
   end

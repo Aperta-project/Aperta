@@ -31,12 +31,22 @@ module DownloadablePaper
     [:pdf].include? document_type
   end
 
+  # Return figures that are not present in the document i.e., those lacking a
+  # corresponding img#figure_ID element
+  def orphan_figures
+    doc = Nokogiri::HTML.fragment(@paper.body)
+    @paper.figures.select do |figure|
+      doc.css("img#figure_#{figure.id}").first.blank?
+    end
+  end
+
   private
 
   def body_with_aws_figure_urls
     Nokogiri::HTML.fragment(@paper.body).tap do |doc|
       @paper.figures.each do |figure|
         img = doc.css("img#figure_#{figure.id}").first
+        next unless img
         img.set_attribute 'src', figure.attachment.url
       end
     end.to_s
@@ -46,6 +56,7 @@ module DownloadablePaper
     Nokogiri::HTML.fragment(@paper.body).tap do |doc|
       @paper.figures.each do |figure|
         img = doc.css("img#figure_#{figure.id}").first
+        next unless img
         img.set_attribute 'src', figure.non_expiring_proxy_url(only_path: false)
       end
     end.to_s

@@ -4,6 +4,7 @@ describe PDFConverter do
   let(:user) { create :user }
   let(:journal) { create :journal, pdf_css: 'body { background-color: red; }' }
   let(:paper) { create :paper, creator: create(:user), journal: journal }
+  let(:converter) { PDFConverter.new(paper, user) }
 
   describe '#convert' do
     it 'uses PDFKit to generate PDF' do
@@ -90,6 +91,22 @@ describe PDFConverter do
 
         img = doc.css("img#figure_#{figure.id}").first
         expect(img['src']).to have_s3_url(figure.attachment.url)
+      end
+
+      it 'works with orphan figures' do
+        # add another figure
+        with_aws_cassette('figure') do
+          paper.figures
+            .create attachment: File.open('spec/fixtures/yeti.tiff'),
+                    status: 'done'
+        end
+        fig1, fig2 = paper.figures
+        allow(paper).to receive(:body)
+          .and_return("<img id='figure_#{fig1.id}' src='foo'/>")
+        expect(converter.orphan_figures).to eq([fig2])
+
+        expect(doc.css("img#figure_#{fig2.id}").first['src']).to \
+          eq(fig2.attachment.url)
       end
     end
   end

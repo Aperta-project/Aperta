@@ -51,10 +51,8 @@ describe EpubConverter do
 
       context 'when paper has supporting information files' do
         let(:file) do
-          with_aws_cassette 'supporting_info_files_controller' do
-            paper.supporting_information_files
-              .create! attachment: ::File.open('spec/fixtures/yeti.tiff')
-          end
+          paper.supporting_information_files
+            .create! attachment: ::File.open('spec/fixtures/yeti.tiff')
         end
 
         it 'has have supporting information' do
@@ -82,16 +80,13 @@ describe EpubConverter do
 
       context 'when paper has figures' do
         before do
-          with_aws_cassette('figure') do
-            paper.figures
-              .create attachment: File.open('spec/fixtures/yeti.tiff'),
-                      status: 'done'
-          end
+          paper.figures
+            .create attachment: File.open('spec/fixtures/yeti.tiff'),
+                    status: 'done'
         end
 
         it 'replaces img src urls (which are normally relative proxied) with
           full-path proxy urls' do
-
           figure = paper.figures.first
           allow(paper).to receive(:body)
             .and_return("<img id='figure_#{figure.id}' src='foo'/>")
@@ -103,11 +98,9 @@ describe EpubConverter do
 
         it 'works with orphan figures' do
           # add another figure
-          with_aws_cassette('figure') do
-            paper.figures
-              .create attachment: File.open('spec/fixtures/yeti.tiff'),
-                      status: 'done'
-          end
+          paper.figures
+            .create attachment: File.open('spec/fixtures/yeti.tiff'),
+                    status: 'done'
           fig1, fig2 = paper.figures
           allow(paper).to receive(:body)
             .and_return("<img id='figure_#{fig1.id}' src='foo'/>")

@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Utils from 'tahi/services/utils';
+import resizeColumnHeaders from 'tahi/lib/resize-column-headers';
 
 export default Ember.Component.extend({
   classNames: ['column-header'],
@@ -28,7 +28,7 @@ export default Ember.Component.extend({
   },
 
   phaseNameDidChange: Ember.observer('phase.name', function() {
-    return Ember.run.scheduleOnce('afterRender', this, Utils.resizeColumnHeaders);
+    return Ember.run.scheduleOnce('afterRender', this, resizeColumnHeaders);
   }),
 
   actions: {
@@ -44,7 +44,7 @@ export default Ember.Component.extend({
     cancel() {
       this.set('active', false);
       this.sendAction('rollbackPhase', this.get('phase'), this.get('oldPhaseName'));
-      Ember.run.scheduleOnce('afterRender', this, Utils.resizeColumnHeaders);
+      Ember.run.scheduleOnce('afterRender', this, resizeColumnHeaders);
     }
   }
 });

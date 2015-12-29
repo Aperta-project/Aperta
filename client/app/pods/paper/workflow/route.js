@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import AuthorizedRoute from 'tahi/routes/authorized';
-import Utils from 'tahi/services/utils';
+import deNamespaceTaskType from 'tahi/lib/de-namespace-task-type';
 
 export default AuthorizedRoute.extend({
   afterModel(paper) {
@@ -32,7 +32,7 @@ export default AuthorizedRoute.extend({
       let promises = [];
 
       taskTypeList.forEach((task) => {
-        let unNamespacedKind = Utils.deNamespaceTaskType(task.get('kind'));
+        let unNamespacedKind = deNamespaceTaskType(task.get('kind'));
         let newTaskPromise = this.store.createRecord(unNamespacedKind, {
           phase: phase,
           oldRole: task.get('oldRole'),

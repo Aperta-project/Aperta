@@ -4,7 +4,7 @@
 `import { paperWithTask } from '../helpers/setups'`
 `import setupMockServer from '../helpers/mock-server'`
 `import Factory from '../helpers/factory'`
-`import Utils from 'tahi/services/utils'`
+`import win from 'tahi/lib/window-location'`
 `import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';`
 
 app = null
@@ -57,8 +57,8 @@ test 'show download links on control bar', (assert) ->
   visit "/papers/#{currentPaper.id}"
 
   andThen ->
-    mock = sinon.mock(Utils)
-    mock.expects("windowLocation").withArgs("/api/papers/" + currentPaper.id + "/download.docx").returns(true)
+    mock = sinon.mock(win)
+    mock.expects("location").withArgs("/api/papers/" + currentPaper.id + "/download.docx").returns(true)
 
   click('#nav-downloads').then ->
     click('.docx')

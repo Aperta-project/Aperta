@@ -1,6 +1,6 @@
 `import Ember from 'ember'`
 `import DS from 'ember-data'`
-`import Utils from 'tahi/services/utils'`
+`import deNamespaceTaskType from 'tahi/lib/de-namespace-task-type'`
 
 ApplicationSerializer = DS.ActiveModelSerializer.extend
   # handles outgoing namespaced models
@@ -19,7 +19,7 @@ ApplicationSerializer = DS.ActiveModelSerializer.extend
       taskTypeNames = hash.qualified_type.split '::'
       return hash if taskTypeNames.length is 1
 
-      hash.type = Utils.deNamespaceTaskType(hash.type)
+      hash.type = deNamespaceTaskType(hash.type)
 
     hash
 

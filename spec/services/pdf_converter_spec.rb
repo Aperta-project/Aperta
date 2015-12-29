@@ -4,17 +4,18 @@ describe PDFConverter do
   let(:user) { create :user }
   let(:journal) { create :journal, pdf_css: 'body { background-color: red; }' }
   let(:paper) { create :paper, creator: create(:user), journal: journal }
+  let(:converter) { PDFConverter.new(paper, user) }
 
   describe '#convert' do
     it 'uses PDFKit to generate PDF' do
       expect(PDFKit).to receive_message_chain(:new, :to_pdf)
-      PDFConverter.new(paper, user).convert
+      converter.convert
     end
   end
 
   describe '.pdf_html' do
     let(:doc) { Nokogiri::HTML(pdf_html) }
-    let(:pdf_html) { PDFConverter.new(paper, user).pdf_html }
+    let(:pdf_html) { converter.pdf_html }
 
     after { expect(doc.errors.length).to be 0 }
 
@@ -40,10 +41,8 @@ describe PDFConverter do
 
     context 'when paper has supporting information files' do
       let(:file) do
-        with_aws_cassette 'supporting_info_files_controller' do
-          paper.supporting_information_files
-            .create! attachment: ::File.open('spec/fixtures/yeti.tiff')
-        end
+        paper.supporting_information_files
+          .create! attachment: ::File.open('spec/fixtures/yeti.tiff')
       end
 
       it 'has supporting information' do
@@ -72,11 +71,9 @@ describe PDFConverter do
 
     context 'when paper has figures' do
       before do
-        with_aws_cassette('figure') do
-          paper.figures
-            .create attachment: File.open('spec/fixtures/yeti.tiff'),
-                    status: 'done'
-        end
+        paper.figures
+          .create attachment: File.open('spec/fixtures/yeti.tiff'),
+                  status: 'done'
       end
 
       it 'replaces img src urls (which are normally proxied) with resolveable
@@ -85,11 +82,23 @@ describe PDFConverter do
         # this will completed in https://developer.plos.org/jira/browse/APERTA-5741
 
         figure = paper.figures.first
-        allow(paper).to receive(:body)
-          .and_return("<img id='figure_#{figure.id}' src='foo'/>")
+        paper.body = "<img id='figure_#{figure.id}' src='foo'/>"
 
         img = doc.css("img#figure_#{figure.id}").first
         expect(img['src']).to have_s3_url(figure.attachment.url)
+      end
+
+      it 'works with orphan figures' do
+        # add another figure
+        paper.figures
+          .create attachment: File.open('spec/fixtures/yeti.tiff'),
+                  status: 'done'
+        fig1, fig2 = paper.figures
+        paper.body = "<img id='figure_#{fig1.id}' src='foo'/>"
+        expect(converter.orphan_figures).to eq([fig2])
+
+        expect(doc.css("img#figure_#{fig2.id}").first['src']).to \
+          eq(fig2.attachment.url)
       end
     end
   end

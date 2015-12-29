@@ -116,7 +116,7 @@ describe EpubConverter do
       let(:paper) { FactoryGirl.build(:paper, short_title: nil) }
 
       it 'return empty title' do
-        expect(EpubConverter.new(paper, nil).title).to eq('')
+        expect(converter.title).to eq('')
       end
     end
 
@@ -124,8 +124,7 @@ describe EpubConverter do
       let(:paper) { FactoryGirl.build(:paper, short_title: '<b>my title</b>') }
 
       it 'return empty title' do
-        expect(EpubConverter.new(paper, nil).title)
-          .to eq('&lt;b&gt;my title&lt;/b&gt;')
+        expect(converter.title).to eq('&lt;b&gt;my title&lt;/b&gt;')
       end
     end
   end

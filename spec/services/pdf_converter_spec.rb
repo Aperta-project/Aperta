@@ -9,13 +9,13 @@ describe PDFConverter do
   describe '#convert' do
     it 'uses PDFKit to generate PDF' do
       expect(PDFKit).to receive_message_chain(:new, :to_pdf)
-      PDFConverter.new(paper, user).convert
+      converter.convert
     end
   end
 
   describe '.pdf_html' do
     let(:doc) { Nokogiri::HTML(pdf_html) }
-    let(:pdf_html) { PDFConverter.new(paper, user).pdf_html }
+    let(:pdf_html) { converter.pdf_html }
 
     after { expect(doc.errors.length).to be 0 }
 

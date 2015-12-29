@@ -50,7 +50,14 @@ class SupportingInformationFilesController < ApplicationController
   end
 
   def file_params
-    params.require(:supporting_information_file).permit(:title, :caption, :publishable, :attachment, attachment: [])
+    params.require(:supporting_information_file).permit(
+      :title,
+      :caption,
+      :label,
+      :category,
+      :publishable,
+      :attachment,
+      attachment: [])
   end
 
   def render_404

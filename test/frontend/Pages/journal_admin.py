@@ -60,13 +60,20 @@ class JournalAdminPage(AdminPage):
 
 
     self._journal_admin_avail_task_types_title = (By.XPATH, '//div[@class="admin-section"][2]/h2')
+    self._journal_admin_avail_task_types_edit_btn = (By.XPATH, '//div[@class="admin-section"][2]/div')
+
+    self._journal_admin_att_overlay_task_title_heading = (By.CSS_SELECTOR, 'div.task-headers h3')
+    self._journal_admin_att_overlay_role_heading = (By.CSS_SELECTOR, 'div.task-headers h3 + h3')
+    self._journal_admin_att_overlay_row = (By.CSS_SELECTOR, '.individual-task-type')
+    self._journal_admin_att_overlay_row_taskname = (By.CSS_SELECTOR, 'p')
+    self._journal_admin_att_overlay_row_selector = (By.CSS_SELECTOR, 'div div.select2-container')
+    self._journal_admin_att_overlay_row_clear_btn = (By.CSS_SELECTOR, 'div button')
+
     self._journal_admin_manu_mgr_templates_title = (By.XPATH, '//div[@class="admin-section"][3]/h2')
     self._journal_admin_style_settings_title = (By.XPATH, '//div[@class="admin-section"][4]/h2')
 
   # POM Actions
   def validate_page_elements_styles(self):
-    att_title = self._get(self._journal_admin_avail_task_types_title)
-    self.validate_application_h2_style(att_title)
     manu_mgr_title = self._get(self._journal_admin_manu_mgr_templates_title)
     self.validate_application_h2_style(manu_mgr_title)
     style_settings_title = self._get(self._journal_admin_style_settings_title)
@@ -81,7 +88,7 @@ class JournalAdminPage(AdminPage):
     logging.debug(role_list)
     roles_count = 0
     for role in role_list:
-      rcount = PgSQL().query('SELECT count(user_id) from user_roles WHERE role_id in (%s);', (role[0],))[0][0]
+      rcount = PgSQL().query('SELECT count(user_id) from user_roles WHERE old_role_id in (%s);', (role[0],))[0][0]
       roles_count = roles_count + rcount
     logging.debug(roles_count)
     self._get(self._journal_admin_user_search_field)
@@ -173,3 +180,37 @@ class JournalAdminPage(AdminPage):
         logging.warning('No permissions found for role: {}'.format(role_name.text))
       self.restore_timeout()
       count += 1
+
+  def validate_task_types_section(self):
+    task_names = ['Ad-hoc', 'Additional Information', 'Assign Admin', 'Assign Team', 'Authors', 'Billing',
+                  'Competing Interests', 'Cover Letter', 'Data Availability', 'Editor Discussion', 'Ethics Statement',
+                  'Figures', 'Final Tech Check', 'Financial Disclosure', 'Initial Decision', 'Initial Tech Check',
+                  'Invite Editor', 'Invite Reviewers', 'New Taxon', 'Production Metadata', 'Register Decision',
+                  'Reporting Guidelines', 'Reviewer Candidates', 'Revision Tech Check', 'Send to Apex',
+                  'Supporting Info', 'Upload Manuscript']
+    att_title = self._get(self._journal_admin_avail_task_types_title)
+    self.validate_application_h2_style(att_title)
+    edit_tt_btn = self._get(self._journal_admin_avail_task_types_edit_btn)
+    edit_tt_btn.click()
+    # time for animation of overlay
+    time.sleep(.5)
+    closer = self._get(self._overlay_header_close)
+    title = self._get(self._overlay_header_title)
+    assert 'Available Task Types' in title.text, title.text
+    task_title_heading = self._get(self._journal_admin_att_overlay_task_title_heading)
+    assert 'Title' in task_title_heading.text
+    role_heading = self._get(self._journal_admin_att_overlay_role_heading)
+    assert 'Role' in role_heading.text, role_heading.text
+    tasks = self._gets(self._journal_admin_att_overlay_row)
+    for task in tasks:
+      # There is little value in validating anything other than name as role assignment is up in the air.
+      name = task.find_element(*self._journal_admin_att_overlay_row_taskname)
+      assert name.text in task_names, name.text
+      task.find_element(*self._journal_admin_att_overlay_row_selector)
+      task.find_element(*self._journal_admin_att_overlay_row_clear_btn)
+
+  def validate_mmt_section(self):
+    pass
+
+  def validate_style_settings_section(self):
+    pass

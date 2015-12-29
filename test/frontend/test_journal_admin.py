@@ -49,14 +49,10 @@ class ApertaJournalAdminTest(CommonTest):
       toolbar elements
       section headings save for user and roles that are validated separately
     """
+    logging.info('Validating journal admin component display and function')
     user_type = random.choice(users)
-    logging.info('Logging in as user: {}'.format(user_type))
-    login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type['user'])
-    login_page.enter_password_field(login_valid_pw)
-    login_page.click_sign_in_button()
-
-    dashboard_page = DashboardPage(self.getDriver())
+    print('Logging in as user: {}'.format(user_type))
+    dashboard_page = self.login(email=user_type['user'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -72,15 +68,10 @@ class ApertaJournalAdminTest(CommonTest):
       user section heading and user search form elements, user search icon
       result set elements
     """
+    logging.info('Validating journal user search display and function')
     user_type = random.choice(users)
-    print(user_type['user'])
     print('Logging in as user: {}'.format(user_type))
-    login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type['user'])
-    login_page.enter_password_field(login_valid_pw)
-    login_page.click_sign_in_button()
-
-    dashboard_page = DashboardPage(self.getDriver())
+    dashboard_page = self.login(email=user_type['user'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -89,22 +80,17 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_users_section(journal)
 
-  def test_validate_journal_admin_roles_display_function(self):
+  def rest_validate_journal_admin_roles_display_function(self):
     """
     Validates the presence of the following elements:
       role section heading
       default and non-default role display
       permission display per role
     """
+    logging.info('Validating journal role display and function')
     user_type = random.choice(users)
-    print(user_type['user'])
     print('Logging in as user: {}'.format(user_type))
-    login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type['user'])
-    login_page.enter_password_field(login_valid_pw)
-    login_page.click_sign_in_button()
-
-    dashboard_page = DashboardPage(self.getDriver())
+    dashboard_page = self.login(email=user_type['user'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -112,6 +98,58 @@ class ApertaJournalAdminTest(CommonTest):
 
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_roles_section()
+
+  def rest_validate_task_types_display_function(self):
+    """
+    Validates the presence of the following elements:
+      Section Heading
+      Edit Task Types button
+    Validates the function of the:
+      Edit task types button
+    Validates the elements of the edit task types overlay
+      Title
+      Closer
+      Table display of Title, Role type drop-down selector, clear button
+        for all task types
+    Validates the function of the edit task types overlay
+      manipulating role for task/card type.
+    :return: void function
+    """
+    logging.info('Validating journal task types display and function')
+    user_type = random.choice(users)
+    print('Logging in as user: {}'.format(user_type))
+    dashboard_page = self.login(email=user_type['user'], password=login_valid_pw)
+    dashboard_page.click_admin_link()
+
+    adm_page = AdminPage(self.getDriver())
+    adm_page.select_random_journal()
+
+    ja_page = JournalAdminPage(self.getDriver())
+    ja_page.validate_task_types_section()
+
+  def test_validate_mmt_display_function(self):
+    """
+    Validates the presence of the following elements:
+      Section Heading
+      Add new Template button
+      Extant MMT display (name and phase number display)
+    Validates the function of the:
+      Add new Template button
+    Validates Editing extant MMT
+    Validates Deleting extant MMT
+    :return: void function
+    """
+    logging.info('Validating journal mmt (paper type) display and function')
+    user_type = random.choice(users)
+    print('Logging in as user: {}'.format(user_type))
+    dashboard_page = self.login(email=user_type['user'], password=login_valid_pw)
+    dashboard_page.click_admin_link()
+
+    adm_page = AdminPage(self.getDriver())
+    adm_page.select_random_journal()
+
+    ja_page = JournalAdminPage(self.getDriver())
+    ja_page.validate_mmt_section()
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

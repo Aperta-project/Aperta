@@ -186,7 +186,7 @@ Tahi::Application.routes.draw do
     #
     namespace :s3 do
       resource :request_policy, only: [:show]
-      get :sign, to: 'request_policies#sign'
+      get :sign, to: 'forms#sign'
     end
   end
 

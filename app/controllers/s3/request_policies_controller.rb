@@ -13,20 +13,6 @@ module S3
       }
     end
 
-    # rubocop:disable Metrics/AbcSize
-    def sign
-      render json: {  url: upload_form.url,
-                      formData: {
-                        acl: upload_form.acl,
-                        awsaccesskeyid: upload_form.access_key_id,
-                        key: "#{upload_form.key}/#{params[:file_name]}",
-                        policy: upload_form.policy,
-                        signature: upload_form.signature,
-                        success_action_status: '201',
-                        'Content-Type' => params[:content_type] }
-                    }
-    end
-
     private
 
     def upload_form

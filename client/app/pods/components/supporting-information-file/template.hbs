@@ -1,0 +1,11 @@
+{{#if isEditable}}
+  <div class="si-file-control-icons">
+    <i class="fa fa-pencil si-file-edit"></i>
+    <i class="fa fa-trash si-file-delete"></i>
+  </div>
+{{/if}}
+
+<div class="si-file-filename"><i class="fa fa-file-o"></i> {{ file.filename }}</div>
+
+<div class="si-title">{{ file.label }} {{ file.category }} {{ file.title }}</div>
+<div class="si-caption">{{ file.caption }}</div>

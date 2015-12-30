@@ -3,13 +3,9 @@
 <div class="task-main-content">
   <div class="paper-figures">
     {{#each task.paper.supportingInformationFiles as |file|}}
-      {{attachment-thumbnail attachment=file
-                             togglePublishable="togglePublishable"
-                             destroyAttachment="destroyAttachment"
-                             figure=false
-                             isEditable=task.paper.editable
-                             confidentiality=true
-                             disabled=isSubmissionTaskNotEditable}}
+    {{supporting-information-file
+        file=file
+        isEditable=isEditable}}
     {{/each}}
   </div>
 

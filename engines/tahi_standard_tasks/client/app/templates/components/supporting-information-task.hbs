@@ -15,8 +15,8 @@
     {{/each}}
   </div>
   {{#if isEditable}}
-    <span class="button-primary button--green fileinput-button {{if isSubmissionTaskNotEditable 'button--disabled'}}">
-      <span>Add New Supporting Information</span>
+    <span class="button-primary button--green fileinput-button si-files-upload-button {{if isSubmissionTaskNotEditable 'button--disabled'}}">
+      <span>Add Files</span>
       {{file-uploader id="file_attachment"
                       filePrefix="supporting-info"
                       url=uploadUrl
@@ -24,7 +24,12 @@
                       done="uploadFinished"
                       cancel="cancelUploads"
                       progress="uploadProgress"
+                      multiple=true
                       disabled=isSubmissionTaskNotEditable}}
     </span>
+
+    <div>
+      Please provide files in their native file formats, e.g. Word, Excel, WAV, MPEG, JPG, etc.
+    </div>
   {{/if}}
 </div>

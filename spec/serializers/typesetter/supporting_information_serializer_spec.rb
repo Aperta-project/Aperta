@@ -5,12 +5,16 @@ describe Typesetter::SupportingInformationFileSerializer do
 
   let(:title) { 'My title' }
   let(:caption) { 'My caption' }
+  let(:label) { 'S3' }
+  let(:category) { 'Figure' }
   let(:file_name) { 'file_name.csv' }
   let(:file) do
     FactoryGirl.create(
       :supporting_information_file,
       title: title,
-      caption: caption)
+      caption: caption,
+      label: label,
+      category: category)
   end
 
   let(:output) { serializer.serializable_hash }
@@ -23,6 +27,7 @@ describe Typesetter::SupportingInformationFileSerializer do
     expect(output.keys).to contain_exactly(
       :title,
       :caption,
+      :label,
       :file_name)
   end
 
@@ -41,6 +46,12 @@ describe Typesetter::SupportingInformationFileSerializer do
   describe 'file_name' do
     it "is the file's file_name" do
       expect(output[:file_name]).to eq('file_name.csv')
+    end
+  end
+
+  describe 'label' do
+    it "is the file's label plus its category" do
+      expect(output[:label]).to eq(label + ' ' + category)
     end
   end
 end

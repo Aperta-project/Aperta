@@ -7,7 +7,7 @@
       <% if file.image? %>
         <p>
           <a href='<%= file.non_expiring_proxy_url(only_path: false) %>'>
-            <img class='si_preview' id="si_preview_<%= file.id %>" src="<%= file.proxyable_url(is_proxied: !converter.needs_non_redirecting_preview_url?, only_path: false) %>"/>
+            <img class='si_preview' id="si_preview_<%= file.id %>" src="<%= file.proxyable_url(is_proxied: !needs_non_redirecting_preview_url, only_path: false) %>"/>
           </a>
         </p>
       <% end %>

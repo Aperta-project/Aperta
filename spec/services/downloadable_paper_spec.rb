@@ -13,7 +13,7 @@ describe DownloadablePaper do
     it 'removes unwanted characters, but keeps wanted ones' do
       allow(paper).to receive(:display_title)
         .and_return '?*My* (over-kill)%#@ !=Title_&66'
-      expect(pdf_converter.fs_filename)
+      expect(pdf_converter.fs_filename(ext: :pdf))
         .to eq 'My (over-kill) Title_66.pdf'
     end
 
@@ -21,7 +21,7 @@ describe DownloadablePaper do
       title = ''
       20.times { title << '0123456789' }
       allow(paper).to receive(:display_title).and_return title
-      expect(pdf_converter.fs_filename.length == 154)
+      expect(pdf_converter.fs_filename(ext: :pdf).length == 154)
         .to be(true)
     end
   end
@@ -51,28 +51,18 @@ describe DownloadablePaper do
         expect(pdf_converter.paper_body).to eq '<b>body</b>'
       end
     end
+
+    context 'when paper has figures' do
+      it 'does the right thing, which at the moment isnt clear' do
+        # this will completed in https://developer.plos.org/jira/browse/APERTA-5741
+      end
+    end
   end
 
   describe '#downloadable_templater' do
     it 'is an instance of ActionView' do
       expect(pdf_converter.send(:downloadable_templater))
         .to be_an_instance_of(ActionView::Base)
-    end
-  end
-
-  describe '#document_type' do
-    it 'returns first word of converter type' do
-      expect(PDFConverter.new(paper, user).document_type).to eq :pdf
-      expect(EpubConverter.new(paper, user).document_type).to eq :epub
-    end
-  end
-
-  describe '#needs_non_redirecting_preview_url?' do
-    it 'returns true for pdf, false for epub' do
-      expect(PDFConverter.new(paper, user).needs_non_redirecting_preview_url?)
-        .to be true
-      expect(EpubConverter.new(paper, user).needs_non_redirecting_preview_url?)
-        .to be false
     end
   end
 end

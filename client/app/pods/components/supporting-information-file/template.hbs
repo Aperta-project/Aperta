@@ -5,7 +5,7 @@
   </div>
 {{/if}}
 
-<div class="si-file-filename"><i class="fa fa-file-o"></i> {{ file.filename }}</div>
+<a href="{{ file.url }}" class="si-file-filename"><i class="fa fa-file-o"></i>{{ file.filename }}</a>
 
-<div class="si-title">{{ file.label }} {{ file.category }} {{ file.title }}</div>
-<div class="si-caption">{{ file.caption }}</div>
+<div class="si-file-title">{{ file.label }} {{ file.category }} {{ file.title }}</div>
+<div class="si-file-caption">{{ file.caption }}</div>

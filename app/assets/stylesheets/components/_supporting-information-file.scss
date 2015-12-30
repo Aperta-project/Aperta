@@ -1,0 +1,41 @@
+.supporting-information-files {
+  margin-bottom: 15px;
+}
+
+.si-file {
+  border-top: 2px solid $tahi-grey-light;
+  padding: 10px 15px;
+
+  &:last-of-type {
+    border-bottom: 2px solid $tahi-grey-light;
+  }
+
+  .si-file-control-icons {
+    float: right;
+    >i {
+      cursor: pointer;
+      color: $tahi-grey-light;
+      padding-left: 7px;
+
+      &:hover {
+        color: $tahi-green;
+      }
+    }
+  }
+
+  .si-file-filename {
+    color: $tahi-green;
+
+    >i {
+      padding-right: 4px;
+    }
+  }
+
+  .si-file-title {
+    font-weight: bold;
+  }
+
+  .si-file-caption {
+
+  }
+}

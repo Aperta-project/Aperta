@@ -4,3 +4,16 @@
   float: left;
   margin-right: 6px;
 }
+
+.billing-payee-city,
+.billing-payee-state-postal {
+  flex-basis: 200px;
+}
+
+.billing-payee-state-postal .flex-element {
+  flex-basis: 180px;
+}
+
+.billing-payee-country .select2-container {
+  min-width: 180px;
+}

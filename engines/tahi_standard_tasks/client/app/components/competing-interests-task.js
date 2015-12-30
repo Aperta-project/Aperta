@@ -1,15 +1,15 @@
 import TaskComponent from 'tahi/pods/components/task-base/component';
-import SavesQuestionsOnClose from 'tahi/mixins/saves-questions-on-close';
 import Ember from 'ember';
 
 const { computed } = Ember;
 
-export default TaskComponent.extend(SavesQuestionsOnClose, {
+export default TaskComponent.extend({
   declareNoCompeteCopy:
     'The authors have declared that no competing interests exist.',
 
   anyCompetingInterestsQuestion: computed(function(){
-    return this.get('task').findQuestion('competing_interests--has_competing_interests');
+    return this.get('task')
+               .findQuestion('competing_interests--has_competing_interests');
   }),
 
   competingInterestsStatementQuestion: computed(function(){

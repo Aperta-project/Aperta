@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Utils from 'tahi/services/utils';
+import resizeColumnHeaders from 'tahi/lib/resize-column-headers';
 
 export default Ember.Controller.extend({
   flowSort: ['position:asc'],
@@ -12,7 +12,7 @@ export default Ember.Controller.extend({
   actions: {
     saveFlow(flow) {
       flow.save().then(function() {
-        Ember.run.schedule('afterRender', Utils.resizeColumnHeaders);
+        Ember.run.schedule('afterRender', resizeColumnHeaders);
       });
     },
 

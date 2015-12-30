@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import DocumentDownload from 'tahi/services/document-download';
 import ENV from 'tahi/config/environment';
-import Utils from 'tahi/services/utils';
+import deepCamelizeKeys from 'tahi/lib/deep-camelize-keys';
 
 const { computed } = Ember;
 
@@ -57,7 +57,7 @@ export default Ember.Mixin.create({
       this.get('restless').get(url).then((data)=> {
         this.setProperties({
           activityIsLoading: false,
-          activityFeed: Utils.deepCamelizeKeys(data.feeds)
+          activityFeed: deepCamelizeKeys(data.feeds)
         });
       });
     },

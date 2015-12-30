@@ -1,5 +1,18 @@
 import Ember from 'ember';
-import Utils from 'tahi/services/utils';
+import ENV from 'tahi/config/environment';
+
+const debug = function(description, obj) {
+  const devOrTest = ENV.environment === 'development' ||
+                    ENV.environment === 'test' ||
+                    Ember.testing;
+
+  if(devOrTest) {
+    console.groupCollapsed(description);
+    console.log(Ember.copy(obj, true));
+    console.groupEnd();
+  }
+};
+
 
 export default Ember.Route.extend({
   restless: Ember.inject.service('restless'),
@@ -70,7 +83,7 @@ export default Ember.Route.extend({
 
     created(payload) {
       let description = `Pusher: created ${payload.type} ${payload.id}`;
-      Utils.debug(description);
+      debug(description);
       this.store.fetchById(payload.type, payload.id);
     },
 
@@ -80,7 +93,7 @@ export default Ember.Route.extend({
         record.reload();
 
         let description = `Pusher: updated ${payload.type} ${payload.id}`;
-        Utils.debug(description);
+        debug(description);
       }
     },
 
@@ -90,7 +103,7 @@ export default Ember.Route.extend({
         record.unloadRecord();
 
         let description = `Pusher: destroyed ${payload.type} ${payload.id}`;
-        Utils.debug(description, payload);
+        debug(description, payload);
       }
     },
 

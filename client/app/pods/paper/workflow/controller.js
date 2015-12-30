@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Utils from 'tahi/services/utils';
+import deepCamelizeKeys from 'tahi/lib/deep-camelize-keys';
 
 export default Ember.Controller.extend({
   restless: Ember.inject.service('restless'),
@@ -100,7 +100,7 @@ export default Ember.Controller.extend({
       this.get('restless').get(url).then((data)=> {
         this.setProperties({
           activityIsLoading: false,
-          activityFeed: Utils.deepCamelizeKeys(data.feeds)
+          activityFeed: deepCamelizeKeys(data.feeds)
         });
       });
     },

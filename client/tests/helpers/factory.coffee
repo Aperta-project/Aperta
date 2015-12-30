@@ -1,4 +1,4 @@
-`import Utils from 'tahi/services/utils'`
+`import deNamespaceTaskType from 'tahi/lib/de-namespace-task-type'`
 
 Factory =
 
@@ -47,7 +47,7 @@ Factory =
   setHasMany: (model, models, options={}) ->
     keyName = options.keyName || _.first(models)._rootKey
 
-    deNamespace = Utils.deNamespaceTaskType
+    deNamespace = deNamespaceTaskType
 
     if options.embed
       key = keyName + "s"

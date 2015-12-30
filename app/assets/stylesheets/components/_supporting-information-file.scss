@@ -3,8 +3,16 @@
 }
 
 .si-file {
+  position: relative;
+  width: 100%;
+  overflow-x: hidden;
   border-top: 2px solid $tahi-grey-light;
   padding: 10px 15px;
+
+  &.si-file-grey {
+    background-color: $tahi-grey-xlight;
+    transition: background-color 0.1s;
+  }
 
   &:last-of-type {
     border-bottom: 2px solid $tahi-grey-light;
@@ -36,6 +44,53 @@
   }
 
   .si-file-caption {
+    margin-top: 3px;
+    padding-top: 3px;
+  }
 
+  .si-file-delete {
+    position: absolute;
+    top: 0;
+    right: -275px;
+    background-color: $tahi-green;
+    width: 275px;
+    height: 53px;
+    transition: right 0.1s;
+
+    &.visible {
+      right: 0;
+    }
+
+    &.si-file-full-height {
+      height: 60px;
+    }
+
+    button {
+      border-radius: 0;
+      display: block;
+      border: 0;
+      height: 100%;
+    }
+
+    .si-file-cancel-delete-button {
+      float: right;
+      width: 30%;
+      background-color: $tahi-green-light;
+      color: $tahi-white;
+      &:focus,
+      &:hover {
+        background-color: darken($tahi-green-light, 10%);
+      }
+    }
+
+    .si-file-delete-button {
+      width: 70%;
+      background-color: $tahi-green;
+      color: $tahi-white;
+      &:focus,
+      &:hover {
+        background-color: darken($tahi-green, 5%);
+      }
+    }
   }
 }

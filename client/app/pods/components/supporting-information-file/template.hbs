@@ -1,11 +1,26 @@
 {{#if isEditable}}
   <div class="si-file-control-icons">
-    <i class="fa fa-pencil si-file-edit"></i>
-    <i class="fa fa-trash si-file-delete"></i>
+    <i class="fa fa-pencil si-file-edit-icon"></i>
+    <i class="fa fa-trash si-file-delete-icon" {{action 'enterDeleteState' on='click'}}></i>
   </div>
 {{/if}}
 
 <a href="{{ file.url }}" class="si-file-filename"><i class="fa fa-file-o"></i>{{ file.filename }}</a>
 
 <div class="si-file-title">{{ file.label }} {{ file.category }} {{ file.title }}</div>
-<div class="si-file-caption">{{ file.caption }}</div>
+
+{{#if file.caption}}
+  <div class="si-file-caption">{{ file.caption }}</div>
+{{/if}}
+
+<div class="{{if deleteState 'visible'}} si-file-delete {{if file.caption '' 'si-file-full-height'}}">
+  <button class="button si-file-cancel-delete-button"
+    {{action "cancelDelete"}}>
+    Cancel
+  </button>
+
+  <button class="button si-file-delete-button"
+    {{action "delete"}}>
+    Delete Forever
+  </button>
+</div>

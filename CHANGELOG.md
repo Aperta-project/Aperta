@@ -5,10 +5,10 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
-- Ability to diff form based cards, such as the Additional Information card, in versioning mode
+-
 
 ### Changed
-- NestedQuestions have unique identifiers
+-
 
 ### Deprecated
 -
@@ -21,6 +21,13 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ### Security
 -
+
+## [1.3.7] - 2015-12-29
+### Added
+- Ability to diff form based cards, such as the Additional Information card, in versioning mode
+
+### Changed
+- NestedQuestions have unique identifiers
 
 ## [1.3.6] - 2015-12-08
 ### Added

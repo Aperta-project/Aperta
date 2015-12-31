@@ -5,9 +5,33 @@ export default Ember.Component.extend({
   classNameBindings: ['siFileState'],
   file: null,
   isEditable: false,
-  uiState: 'edit', // view, edit, delete
+  uiState: 'view', // view, edit, delete
   deleteState: false,
   editState: false,
+
+  fileLabel:null,
+  fileCategory:null,
+  fileTitle:null,
+  fileCaption:null,
+
+  loadFileAttrs: function(){
+    this.setProperties({
+      fileLabel: this.get('file.label'),
+      fileCategory: this.get('file.category'),
+      fileTitle: this.get('file.title'),
+      fileCaption: this.get('file.caption')
+    });
+  },
+
+  saveFileAttrs: function(){
+    this.setProperties({
+      'file.label': this.get('fileLabel'),
+      'file.category': this.get('fileCategory'),
+      'file.title': this.get('fileTitle'),
+      'file.caption': this.get('fileCaption')
+    });
+    this.get('file').save();
+  },
 
   siFileState: Ember.computed('uiState', function(){
     return 'si-file-' + this.get('uiState');
@@ -28,7 +52,7 @@ export default Ember.Component.extend({
     },
 
     enterEditState: function() {
-      console.log("ENTERING EDIT STATE");
+      this.loadFileAttrs()
       this.set('uiState', 'edit');
     },
 
@@ -37,8 +61,8 @@ export default Ember.Component.extend({
     },
 
     saveEdit: function(){
+      this.saveFileAttrs();
       this.set('uiState', 'view');
-      alert('NO OP');
     }
 
   }

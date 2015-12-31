@@ -8,48 +8,63 @@
     </div>
   {{/if}}
 
-  <a href="{{ file.src }}" class="si-file-filename"><i class="fa fa-file-o"></i>{{ file.filename }}</a>
+  <a href="{{ file.src }}" class="si-file-filename">
+    <i class="fa fa-file-o"></i>{{ file.filename }}
+  </a>
 
-  <div class="si-file-title">{{ file.label }} {{ file.category }}{{if file.category '.' ''}} {{ file.title }}</div>
+  <div class="si-file-title">
+    {{ file.label }} {{ file.category }}{{if file.category '.' ''}} {{{ file.title }}}
+  </div>
 
   {{#if file.caption}}
     <div class="si-file-caption">{{ file.caption }}</div>
   {{/if}}
 
-  <div class="{{if (is-equal uiState 'delete') 'visible'}} si-file-delete {{if file.caption '' 'si-file-full-height'}}">
-    <button class="button si-file-cancel-delete-button"
-      {{action "cancelDelete"}}>
+  <div class="{{if (is-equal uiState 'delete') 'visible'}}
+              si-file-delete
+              {{if file.caption '' 'si-file-full-height'}}">
+    <button class="button si-file-cancel-delete-button" {{action "cancelDelete"}}>
       Cancel
     </button>
 
-    <button class="button si-file-delete-button"
-      {{action "delete"}}>
+    <button class="button si-file-delete-button" {{action "delete"}}>
       Delete Forever
     </button>
   </div>
 </div>
-
 {{/unless}}
 
-{{#if (is-equal uiState 'edit')}}
-<div class="si-file-editor flex-form">
-  <span> Uploader here </span>
-
-  <div class="flex-group">
-    {{input class="flex-element" name="label" value=fileLabel}}
-    {{input class="flex-element" name="category" value=fileCategory}}
-    {{input class="flex-element" name="title" value=fileTitle}}
+<div class="si-file-editor flex-form {{if (is-equal uiState 'edit') 'visible' ''}}">
+  <div class="si-file-filename">
+    <a href="{{ file.src }}"><i class="fa fa-file-o"></i>{{ file.filename }}</a>
   </div>
   <div class="flex-group">
-    {{textarea placeholder="Enter a legend (optional)" name="caption" value=fileCaption rows="5" class="flex-element si-file-caption-textbox"}}
+    {{input class="form-control flex-element"
+            placeholder="E.g. S1"
+            name="label"
+            value=fileLabel}}
+    {{input class="form-control flex-element"
+            placeholder="Select category"
+            name="category"
+            value=fileCategory}}
+    {{input class="flex-element si-file-title-input"
+            placeholder="Enter a title"
+            name="title"
+            value=fileTitle}}
+    {{textarea placeholder="Enter a legend (optional)"
+            name="caption"
+            rows="5"
+            class="form-control flex-element si-file-caption-textbox"
+            value=fileCaption}}
   </div>
-  <button class="button button-secondary si-file-cancel-edit-button"
-    {{action "cancelEdit"}}>
-    Cancel
-  </button>
-  <button class="button--white button-primary si-file-save-edit-button"
-    {{action "saveEdit"}}>
-    Save
-  </button>
+  <div class="si-file-actions">
+    <button class="button--green button-link si-file-cancel-edit-button"
+      {{action "cancelEdit"}}>
+      Cancel
+    </button>
+    <button class="button-secondary button--green si-file-save-edit-button"
+      {{action "saveEdit"}}>
+      Save
+    </button>
+  </div>
 </div>
-{{/if}}

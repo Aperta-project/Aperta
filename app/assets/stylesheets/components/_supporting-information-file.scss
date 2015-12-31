@@ -12,8 +12,7 @@
   position: relative;
   width: 100%;
   overflow-x: hidden;
-  border-top: 2px solid;
-  border-color: $tahi-grey-light;
+  border-top: 2px solid $tahi-grey-light;
 
   &.si-file-delete {
     background-color: $tahi-grey-xlight;
@@ -21,7 +20,7 @@
   }
 
   &:last-of-type {
-    border-bottom: 2px solid;
+    border-bottom: 2px solid $tahi-grey-light;
   }
 
   .si-file-viewing {
@@ -29,13 +28,50 @@
   }
 
   .si-file-editor {
+    @include clearfix;
     margin: 0;
+    padding: 0 20px;
+    margin-right: -10px;
+    transition: max-height 0.1s;
+    overflow-y: hidden;
+    max-height: 0px;
+
+    &.visible {
+      max-height: 500px;
+      padding: 20px
+    }
+
+    .si-file-filename {
+      margin-bottom: 10px;
+      font-size: 1.7rem;
+    }
+
     input[type=text], textarea {
-      border-radius: 3px;
-      display: block;
-      border: 1px solid $tahi-grey-light;
-      padding: 4px;
-      color: #555;
+      margin-right: 10px;
+      width: auto;
+    }
+
+    input[name=label] {
+      max-width: 50px;
+      flex: none;
+    }
+
+    input[name=category] {
+      width: 125px;
+    }
+
+    textarea {
+      width: 100%;
+    }
+
+    .si-file-title-input {
+      width: 350px;
+      margin-right: 10px;
+    }
+
+    .si-file-actions {
+      float: right;
+      margin-right: 10px;
     }
   }
 
@@ -55,7 +91,7 @@
   .si-file-filename {
     color: $tahi-green;
 
-    >i {
+    i {
       padding-right: 4px;
     }
   }

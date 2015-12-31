@@ -10,7 +10,7 @@
 
   <a href="{{ file.src }}" class="si-file-filename"><i class="fa fa-file-o"></i>{{ file.filename }}</a>
 
-  <div class="si-file-title">{{ file.label }} {{ file.category }} {{ file.title }}</div>
+  <div class="si-file-title">{{ file.label }} {{ file.category }}{{if file.category '.' ''}} {{ file.title }}</div>
 
   {{#if file.caption}}
     <div class="si-file-caption">{{ file.caption }}</div>
@@ -36,12 +36,12 @@
   <span> Uploader here </span>
 
   <div class="flex-group">
-    {{input class="flex-element" name="label"}}
-    {{input class="flex-element" name="category"}}
-    {{input class="flex-element" name="title"}}
+    {{input class="flex-element" name="label" value=fileLabel}}
+    {{input class="flex-element" name="category" value=fileCategory}}
+    {{input class="flex-element" name="title" value=fileTitle}}
   </div>
   <div class="flex-group">
-    {{textarea placeholder="Enter a legend (optional)" name="caption" rows="5" class="flex-element si-file-caption-textbox"}}
+    {{textarea placeholder="Enter a legend (optional)" name="caption" value=fileCaption rows="5" class="flex-element si-file-caption-textbox"}}
   </div>
   <button class="button button-secondary si-file-cancel-edit-button"
     {{action "cancelEdit"}}>

@@ -46,6 +46,13 @@ export default Ember.TextField.extend({
       }
     });
 
+    this.$().on('fileuploadprogress', (e, data) => {
+      // call action uploadProgress if it's defined
+      if (this.attrs.uploadProgress) {
+        this.attrs.uploadProgress(data);
+      }
+    });
+
     this.$().on('fileuploaddone', (e, data) => {
       // call action uploadFinished if it's defined
       if (this.attrs.uploadFinished) {

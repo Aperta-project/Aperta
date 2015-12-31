@@ -7189,7 +7189,7 @@ nested_questions:
     - TahiStandardTasks::TaxonTask
     - 
   - - '135'
-    - Does this manuscript describe a new botantical taxon name?
+    - Does this manuscript describe a new botanical taxon name?
     - boolean
     - taxon--botanical
     - 

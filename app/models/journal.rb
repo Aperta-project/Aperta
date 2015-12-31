@@ -16,6 +16,7 @@ class Journal < ActiveRecord::Base
   validate :has_valid_doi_information?
 
   after_create :setup_defaults
+  before_destroy :confirm_no_papers, prepend: true
   before_destroy :destroy_roles
 
   mount_uploader :logo,       LogoUploader
@@ -80,5 +81,13 @@ class Journal < ActiveRecord::Base
     # a dependent_destroy on the AR relationship.
     self.mark_for_destruction
     old_roles.destroy_all
+  end
+
+  def confirm_no_papers
+    if papers.any?
+      message = "journal has #{papers.count} associated papers that must be destroyed first"
+      errors.add(:base, message)
+      false # prevent destruction
+    end
   end
 end

@@ -9,6 +9,12 @@ FactoryGirl.define do
       doi_publisher_prefix
       last_doi_issued "10000"
     end
+
+    trait(:with_paper) do
+      after(:create) do |journal|
+        FactoryGirl.create(:paper, journal: journal)
+      end
+    end
   end
 
   sequence :doi_journal_prefix do

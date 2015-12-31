@@ -11,7 +11,7 @@
 .flex-element {
   @include flex(10 10 auto);
 
-  input  { width: 100%; }
+  input[type=text] { width: 100%; }
   select { width: 100%; }
 }
 

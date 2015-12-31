@@ -23,7 +23,7 @@ namespace 'nested-questions:seed' do
           owner_type: TahiStandardTasks::ReportingGuidelinesTask.name,
           ident: "reporting_guidelines--systematic_reviews--checklist",
           value_type: "attachment",
-          text: "Provide a completed PRISMA checklist as supporting information.  You can <a href='http://www.prisma-statement.org/'>download it here</a>.",
+          text: "Provide a completed PRISMA checklist as supporting information.  You can <a href='http://www.prisma-statement.org/' target='_blank'>download it here</a>.",
           position: 1
         }
       ]
@@ -42,7 +42,7 @@ namespace 'nested-questions:seed' do
           owner_type: TahiStandardTasks::ReportingGuidelinesTask.name,
           ident: "reporting_guidelines--meta_analyses--checklist",
           value_type: "attachment",
-          text: "Provide a completed PRISMA checklist as supporting information.  You can <a href='http://www.prisma-statement.org/'>download it here</a>.",
+          text: "Provide a completed PRISMA checklist as supporting information.  You can <a href='http://www.prisma-statement.org/' target='_blank'>download it here</a>.",
           position: 1
         }
       ]

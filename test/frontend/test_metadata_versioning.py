@@ -133,7 +133,7 @@ class MetadataVersioningTest(CommonTest):
     if journal_type == 'Research':
       pass
       #paper_viewer.complete_task('Publishing Related Questions')
-    time.sleep(2)
+    time.sleep(3)
     # make initial submission
     paper_viewer.click_submit_btn()
     paper_viewer.confirm_submit_btn()
@@ -163,6 +163,7 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     if journal_type == 'Research w/Initial Decision Card':
       # click register initial decision on task
+      #pdb.set_trace()
       paper_viewer.complete_task('Initial Decision')
       time.sleep(1)
       paper_viewer.logout()
@@ -171,7 +172,6 @@ class MetadataVersioningTest(CommonTest):
       dashboard_page.go_to_manuscript(paper_id)
       paper_viewer = ManuscriptViewerPage(self.getDriver())
       time.sleep(2)
-      #paper_viewer.validate_page_elements_styles_functions(admin=False)
       # submit article
       ##pdb.set_trace()
       paper_viewer.click_submit_btn()
@@ -192,10 +192,13 @@ class MetadataVersioningTest(CommonTest):
       dashboard_page = self.login(email=au_login['user'], password=login_valid_pw)
       dashboard_page.go_to_manuscript(paper_id)
       paper_viewer = ManuscriptViewerPage(self.getDriver())
-      paper_viewer.complete_task('Publishing Related Questions', new_prq)
-      # check versioning
+      #pdb.set_trace()
 
-      pdb.set_trace()
+      paper_viewer.complete_task('Publishing Related Questions', click_override=True, data=new_prq, click=True)
+      # check versioning
+      XXXXXXXX
+
+      #pdb.set_trace()
 
 
 

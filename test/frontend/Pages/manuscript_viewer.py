@@ -343,15 +343,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
         return None
 
     base_card = BaseCard(self._driver)
-    #if card_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript', 'Revise Manuscript'):
-      # Check completed_check status
     if card_name == 'Authors':
       # Complete authors data before mark close
       author_card = AuthorsCard(self._driver)
       author_card.edit_author(affiliation)
-    #elif card_name == 'Billing':
-    #  billing = BillingCard(self._driver)
-    #  billing.add_billing_data(billing_data)
     else:
       completed = base_card._get(base_card._completed_check)
       if not completed.is_selected():
@@ -373,16 +368,15 @@ class ManuscriptViewerPage(AuthenticatedPage):
     return False
 
 
-  def complete_task(self, task_name, click_override=False, data=None):
+  def complete_task(self, task_name, click_override=False, data=None, click=False):
     """
     On a given task, check complete and then close
-    :task_name:
+    :task_name: The name of the task to conmplete (str)
     :click_override:
     :data:
     returns XXXXX
     """
     tasks = self._gets(self._task_headings)
-    print tasks
     # if task is marked as complete, leave is at is.
     if not click_override:
       for task in tasks:
@@ -401,7 +395,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       for task in tasks:
         if task.text == task_name:
           task.click()
-        break
+          break
       else:
         return None
     base_task = BaseTask(self._driver)
@@ -422,8 +416,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
       task.click()
       time.sleep(1)
     elif task_name == 'Publishing Related Questions':
+      print 428
+      #if click:
+      #  task.click()
       prq_task = PRQTask(self._driver)
-      prq_task.complete_prq()
+      prq_task.complete_prq(data)
       #complete_prq
       completed = base_task.completed_cb_is_selected()
       if not completed:

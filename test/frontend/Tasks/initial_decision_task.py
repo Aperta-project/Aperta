@@ -25,6 +25,7 @@ class InitialDecisionTask(BaseTask):
     self._decisions = (By.CLASS_NAME, 'decision-selections')
     self._textarea = (By.TAG_NAME, 'textarea')
     self._register_btn = (By.TAG_NAME, 'button')
+    self._alert_info = (By.CLASS_NAME, 'alert-info')
 
    #POM Actions
   def execute_decision(self, data=data):
@@ -39,9 +40,15 @@ class InitialDecisionTask(BaseTask):
     decision_labels[decision_d[data[0]]].click()
     self._get(self._textarea).send_keys(data[1])
     # press "Register Decision" btn
+    self._get(self._register_btn)
     self._get(self._register_btn).click()
     # Give time to register the decision
-    time.sleep(1)
+    # Check for the alert
+    alert = self._get(self._alert_info).text
+    if data[0] == 'Invite':
+      assert 'An initial decision of \'invite full submission\' decision has been made.' in alert
+    else:
+      assert 'An initial decision of \'reject\' decision has been made.' in alert
     ##self._get(self._completed_cb).click()
     #task.click()
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import time
+import pdb
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -35,18 +36,20 @@ class PRQTask(BaseTask):
   def complete_prq(self, data=data):
     """
     This method completes XXXXXX
-    :data: A dictionary with the answers to all five questions
+    :data: A dictionary with the answers to all questions
     """
     #import pdb
     completed = self.completed_cb_is_selected()
     if not data:
+      print 44
       # Just complete with blank
-
       if not completed:
         self._get(self._completed_cb).click()
       #task.click()
       time.sleep(1)
     else:
+      print 51
+      pdb.set_trace()
       # complete with data
       questions = self._gets(self._questions)
       # q1
@@ -55,12 +58,15 @@ class PRQTask(BaseTask):
       if data['q2'] == 'Yes':
         questions[1].find_element_by_tag_name('input').click()
       if data['q3'] != [0,0,0,0]:
+        # not implemented
         pass
       if data['q4']:
+        # Not implemented
         pass
         #questions[1].find_element_by_tag_name('input').click()
         #questions[1].find_element_by_tag_name('input').click()
       if data['q5']:
+        # Not implemented
         pass
         #questions[1].find_element_by_tag_name('input').click()
       completed = self.completed_cb_is_selected()

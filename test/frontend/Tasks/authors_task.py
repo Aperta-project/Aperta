@@ -215,7 +215,6 @@ class AuthorsTask(BaseTask):
     department_input.clear()
     department_input.send_keys(author_data['department'] + Keys.ENTER)
     # Author contributions
-    pdb.set_trace()
     corresponding_chck = self._get(self._corresponding)
     if not corresponding_chck.is_selected():
       corresponding_chck.click()

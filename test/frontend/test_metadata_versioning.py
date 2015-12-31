@@ -98,6 +98,9 @@ class MetadataVersioningTest(CommonTest):
     types = ('Research', 'Research w/Initial Decision Card')
     types = ('Research w/Initial Decision Card',)
     journal_type = random.choice(types)
+
+    new_prq = {'q1':'Yes', 'q2':'No', 'q3': [0,1,0,0], 'q4':'New Data',
+                      'q5':'More Data'}
     #if True: # for debugging
     if self.check_article(title, user='jgray_author'):
       init = True if 'users/sign_in' in self._driver.current_url else False
@@ -127,21 +130,16 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer.complete_task('Supporting Info')
     paper_viewer.complete_task('Authors')
     paper_viewer.complete_task('Publishing Related Questions')
-    #import pdb; pdb.set_trace()
     if journal_type == 'Research':
       pass
       #paper_viewer.complete_task('Publishing Related Questions')
-    time.sleep(1)
-    # Click submit
+    time.sleep(2)
+    # make initial submission
     paper_viewer.click_submit_btn()
     paper_viewer.confirm_submit_btn()
     paper_viewer.close_submit_overlay()
     # logout
-
     paper_viewer.logout()
-
-    # log as an Admin to ad jgray as editor to this paper
-
     # log as an Admin to ad jgray as editor to this paper
     dashboard_page = self.login(email=sa_login['user'], password=login_valid_pw)
     # go to article
@@ -149,34 +147,58 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_viewer.click_workflow_lnk()
     workflow_page = WorkflowPage(self.getDriver())
-    #pdb.set_trace()
     workflow_page.click_add_new_card()
     workflow_page.add_invite_editor_card()
     workflow_page.click_invite_editor_card()
     invite_editor_card = InviteEditorCard(self.getDriver())
     invite_editor_card.invite_editor(he_login)
-    # END TEST
     paper_viewer.logout()
-
-    # log as editor jgray_editor
+    # log as editor jgray_editor to accept invitation and accept initial submission
     dashboard_page = self.login(email=he_login['user'], password=login_valid_pw)
     dashboard_page.view_invitations()
-    dashboard_page.accept_invitations()
     # the Editor should accept the assignation as editor
-
+    dashboard_page.accept_invitations()
     # go to article
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     if journal_type == 'Research w/Initial Decision Card':
-      # click register initial decision
-      paper_viewer.click_workflow_lnk()
-      workflow_page = WorkflowPage(self.getDriver())
-      # press register decision
-      workflow_page._get(workflow_page._register_decision_button).click()
-      # register decision (major)
-      register_decision_card = RegisterDecisionCard(self.getDriver())
-      register_decision_card.register_initial_decision('Invite')
+      # click register initial decision on task
+      paper_viewer.complete_task('Initial Decision')
       time.sleep(1)
+      paper_viewer.logout()
+      # Log in as a author to make final submission
+      dashboard_page = self.login(email=au_login['user'], password=login_valid_pw)
+      dashboard_page.go_to_manuscript(paper_id)
+      paper_viewer = ManuscriptViewerPage(self.getDriver())
+      time.sleep(2)
+      #paper_viewer.validate_page_elements_styles_functions(admin=False)
+      # submit article
+      ##pdb.set_trace()
+      paper_viewer.click_submit_btn()
+      paper_viewer.confirm_submit_btn()
+      paper_viewer.close_submit_overlay()
+      # logout
+      paper_viewer.logout()
+      # Log as editor to approve the manuscript with modifications
+      dashboard_page = self.login(email=he_login['user'], password=login_valid_pw)
+      # go to article
+      dashboard_page.go_to_manuscript(paper_id)
+      paper_viewer = ManuscriptViewerPage(self.getDriver())
+      # register decision as accept with revisions
+      paper_viewer.complete_task('Register Decision')
+      time.sleep(1)
+      paper_viewer.logout()
+      # Log in as a author to make some changes
+      dashboard_page = self.login(email=au_login['user'], password=login_valid_pw)
+      dashboard_page.go_to_manuscript(paper_id)
+      paper_viewer = ManuscriptViewerPage(self.getDriver())
+      paper_viewer.complete_task('Publishing Related Questions', new_prq)
+      # check versioning
+
+      pdb.set_trace()
+
+
+
     else:
       pass
     paper_viewer.logout()
@@ -185,6 +207,8 @@ class MetadataVersioningTest(CommonTest):
     # go to article
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
+    # do some changes
+
     #pdb.set_trace()
 
     #button

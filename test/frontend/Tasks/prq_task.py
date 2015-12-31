@@ -10,13 +10,17 @@ from frontend.Tasks.basetask import BaseTask
 
 __author__ = 'sbassi@plos.org'
 
-class PRQTask(BaseCard):
+class PRQTask(BaseTask):
   """
   Page Object Model for Invite Editor Card
   Publishing Related Questions
   """
+
+  data = {'q1':'No', 'q2':'No', 'q3': [0,0,0,0], 'q4':'', 'q5':''}
+
   def __init__(self, driver, url_suffix='/'):
     super(PRQTask, self).__init__(driver)
+
 
     #Locators - Instance members
     self._questions = (By.CSS_SELECTOR, 'li.question')
@@ -27,49 +31,40 @@ class PRQTask(BaseCard):
     self._invite_editor_text = (By.CLASS_NAME, 'invite-editor-text')
     self._send_invitation_button = (By.CLASS_NAME, 'invite-editor-button')
 
-
    #POM Actions
-  def complete_prq(self, data=None):
+  def complete_prq(self, data=data):
     """
     This method completes XXXXXX
-    :data: A dictionary with the answers to
-
-
-
+    :data: A dictionary with the answers to all five questions
     """
     #import pdb
+    completed = self.completed_cb_is_selected()
     if not data:
       # Just complete with blank
-      completed = base_task.completed_cb_is_selected()
+
       if not completed:
-        self._get(base_task._completed_cb).click()
-      task.click()
+        self._get(self._completed_cb).click()
+      #task.click()
       time.sleep(1)
     else:
       # complete with data
       questions = self._gets(self._questions)
       # q1
-      questions[0].find_element_by_tag_name('input').click()
-      import pdb; pdb.set_trace()
+      if data['q1'] == 'Yes':
+        questions[0].find_element_by_tag_name('input').click()
+      if data['q2'] == 'Yes':
+        questions[1].find_element_by_tag_name('input').click()
+      if data['q3'] != [0,0,0,0]:
+        pass
+      if data['q4']:
+        pass
+        #questions[1].find_element_by_tag_name('input').click()
+        #questions[1].find_element_by_tag_name('input').click()
+      if data['q5']:
+        pass
+        #questions[1].find_element_by_tag_name('input').click()
+      completed = self.completed_cb_is_selected()
+      self._get(self._completed_cb).click()
+      #task.click()
 
-
-
-
-    selector = self._get(self._email_selector)
-
-    # click on the selector to open input box
-    selector.find_element_by_tag_name('a').click()
-    self._get(self._invite_input).send_keys(user['email'] + Keys.ENTER)
-    self._get(self._invite_input).send_keys(Keys.ENTER)
-    time.sleep(1)
-    self._get(self._drop_down).find_element_by_tag_name('li').click()
-    #self._get(self._drop_down).find_element_by_tag_name('li').click()
-    time.sleep(1)
-    self._get(self._invite_editor_text).find_element_by_tag_name('button').click()
-    time.sleep(1)
-    self._get(self._send_invitation_button).click()
-    #give some time to allow complete to check automatically,
-    time.sleep(.5)
-    self.click_completed_checkbox()
-    self.click_close_button()
     return self

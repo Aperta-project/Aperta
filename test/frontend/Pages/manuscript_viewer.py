@@ -19,6 +19,9 @@ from frontend.Cards.basecard import BaseCard
 from frontend.Tasks.basetask import BaseTask
 from frontend.Tasks.authors_task import AuthorsTask
 from frontend.Tasks.authors_task import AuthorsTask
+from frontend.Tasks.prq_task import PRQTask
+from frontend.Tasks.initial_decision_task import InitialDecisionTask
+from frontend.Tasks.register_decision_task import RegisterDecisionTask
 from frontend.Cards.billing_card import BillingCard
 from frontend.Cards.figures_card import FiguresCard
 from frontend.Cards.revise_manuscript_card import ReviseManuscriptCard
@@ -122,12 +125,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._submission_status_info = (By.ID, 'submission-state-information')
 
   # POM Actions
-  def validate_page_elements_styles_functions(self, username=''):
+  def validate_page_elements_styles_functions(self, username='', admin=True):
     """
     Main method to validate styles and basic functions for all elements
     in the page
     """
-    self._get(self._tb_workflow_link)
+    if admin:
+      self._get(self._tb_workflow_link)
     # Check application buttons
     self._check_version_btn_style()
     self._check_collaborator()
@@ -356,9 +360,22 @@ class ManuscriptViewerPage(AuthenticatedPage):
       base_card._get(base_card._close_button).click()
       time.sleep(1)
 
+  def is_task_present(self, task_name):
+    """
+    Check if a task is available in the task list
+    :task_name:
+    return True if task is present and False otherwise
+    """
+    tasks = self._gets(self._task_headings)
+    for task in tasks:
+      if task.text == task_name:
+        return True
+    return False
+
 
   def complete_task(self, task_name, click_override=False, data=None):
-    """On a given task, check complete and then close
+    """
+    On a given task, check complete and then close
     :task_name:
     :click_override:
     :data:
@@ -366,7 +383,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     tasks = self._gets(self._task_headings)
     print tasks
-    #pdb.set_trace()
     # if task is marked as complete, leave is at is.
     if not click_override:
       for task in tasks:
@@ -374,31 +390,46 @@ class ManuscriptViewerPage(AuthenticatedPage):
         print 'TASK.TEXT: {}'.format(task.text)
         if task.text == task_name and 'active' \
             not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
-          #task_div.click()
           task.click()
-          print "CLICK"
           break
         elif task.text == task_name and 'active' \
             in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
           return None
       else:
-        #pdb.set_trace()
         return None
     else:
       for task in tasks:
         if task.text == task_name:
           task.click()
-          #task_div = task.find_element_by_xpath('..')
-          #task_div.click()
         break
       else:
         return None
-    print 391
-    #pdb.set_trace()
     base_task = BaseTask(self._driver)
-    if 'task_name' == 'Publishing Related Questions':
+    if task_name == 'Initial Decision':
+      initial_decision_task = InitialDecisionTask(self._driver)
+      initial_decision_task.execute_decision()
+      completed = base_task.completed_cb_is_selected()
+      if not completed:
+        self._get(base_task._completed_cb).click()
+      task.click()
+      time.sleep(1)
+    elif task_name == 'Register Decision':
+      register_decision_task = RegisterDecisionTask(self._driver)
+      register_decision_task.execute_decision()
+      completed = base_task.completed_cb_is_selected()
+      if not completed:
+        self._get(base_task._completed_cb).click()
+      task.click()
+      time.sleep(1)
+    elif task_name == 'Publishing Related Questions':
       prq_task = PRQTask(self._driver)
-      prq_task.answer_question(affiliation, data)
+      prq_task.complete_prq()
+      #complete_prq
+      completed = base_task.completed_cb_is_selected()
+      if not completed:
+        self._get(base_task._completed_cb).click()
+      task.click()
+      time.sleep(1)
     elif task_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript',
                      'Revise Manuscript', 'Billing'):
       # Check completed_check status
@@ -411,6 +442,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
       # Complete authors data before mark close
       author_task = AuthorsTask(self._driver)
       author_task.edit_author(affiliation)
+      completed = base_task.completed_cb_is_selected()
+      if not completed:
+        self._get(base_task._completed_cb).click()
+      task.click()
+      time.sleep(1)
     #elif task_name == 'Billing':
     #  billing = BillingTask(self._driver)
     #  billing.add_billing_data(billing_data)

@@ -33,6 +33,8 @@ class InviteEditorCard(BaseCard):
     :decision: User to send the invitation
     """
     #import pdb
+    #pdb.set_trace()
+    time.sleep(.5)
     selector = self._get(self._email_selector)
 
     # click on the selector to open input box

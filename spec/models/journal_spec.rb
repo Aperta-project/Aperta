@@ -32,7 +32,7 @@ describe Journal do
     context "without papers" do
       let!(:journal) { FactoryGirl.create(:journal) }
 
-      it "throws error" do
+      it "destroys journal" do
         expect { journal.destroy }.to change { Journal.count }.by(-1)
       end
     end

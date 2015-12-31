@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   classNames: ['si-file'],
   classNameBindings: ['siFileState'],
+
   file: null,
   isEditable: false,
   uiState: 'view', // view, edit, delete
@@ -13,13 +14,15 @@ export default Ember.Component.extend({
   fileCategory:null,
   fileTitle:null,
   fileCaption:null,
+  filePublishable:null,
 
   loadFileAttrs: function(){
     this.setProperties({
       fileLabel: this.get('file.label'),
       fileCategory: this.get('file.category'),
       fileTitle: this.get('file.title'),
-      fileCaption: this.get('file.caption')
+      fileCaption: this.get('file.caption'),
+      filePublishable: this.get('file.publishable')
     });
   },
 
@@ -28,7 +31,8 @@ export default Ember.Component.extend({
       'file.label': this.get('fileLabel'),
       'file.category': this.get('fileCategory'),
       'file.title': this.get('fileTitle'),
-      'file.caption': this.get('fileCaption')
+      'file.caption': this.get('fileCaption'),
+      'file.publishable': this.get('filePublishable')
     });
     this.get('file').save();
   },

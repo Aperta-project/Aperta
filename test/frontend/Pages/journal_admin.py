@@ -65,17 +65,29 @@ class JournalAdminPage(AdminPage):
     self._journal_admin_att_overlay_task_title_heading = (By.CSS_SELECTOR, 'div.task-headers h3')
     self._journal_admin_att_overlay_role_heading = (By.CSS_SELECTOR, 'div.task-headers h3 + h3')
     self._journal_admin_att_overlay_row = (By.CSS_SELECTOR, '.individual-task-type')
-    self._journal_admin_att_overlay_row_taskname = (By.CSS_SELECTOR, 'p')
+    self._journal_admin_att_overlay_row_taskname = (By.TAG_NAME, 'p')
     self._journal_admin_att_overlay_row_selector = (By.CSS_SELECTOR, 'div div.select2-container')
     self._journal_admin_att_overlay_row_clear_btn = (By.CSS_SELECTOR, 'div button')
 
     self._journal_admin_manu_mgr_templates_title = (By.XPATH, '//div[@class="admin-section"][3]/h2')
+    self._journal_admin_manu_mgr_templates_button = (By.XPATH, '//div[@class="admin-section"][3]/button')
+    self._journal_admin_manu_mgr_thumbnail = (By.CLASS_NAME, 'mmt-thumbnail')
+    self._journal_admin_manu_mgr_thumb_title = (By.CSS_SELECTOR, 'h3.mmt-thumbnail-title')
+    self._journal_admin_manu_mgr_thumb_phases = (By.TAG_NAME, 'span')
+
     self._journal_admin_style_settings_title = (By.XPATH, '//div[@class="admin-section"][4]/h2')
+
+    self._mmt_template_name_field = (By.CSS_SELECTOR, 'input.edit-paper-type-field')
+    self._mmt_template_save_button = (By.CSS_SELECTOR, 'div.paper-type-form a.paper-type-save-button')
+    self._mmt_template_cancel_link = (By.CSS_SELECTOR, 'div.paper-type-form a.paper-type-cancel-button')
+    self._mmt_template_add_phase_icons = (By.CSS_SELECTOR, 'i.fa-plus-square-o')
+    self._mmt_template_columns = (By.CSS_SELECTOR, 'div.ember-view.column')
+    self._mmt_template_column_title = (By.CSS_SELECTOR, 'div.column-header div h2')
+    self._mmt_template_column_no_cards_card = (By.CSS_SELECTOR, 'div.sortable-no-cards')
+    self._mmt_template_column_add_new_card_btn = (By.CSS_SELECTOR, 'a.button-secondary')
 
   # POM Actions
   def validate_page_elements_styles(self):
-    manu_mgr_title = self._get(self._journal_admin_manu_mgr_templates_title)
-    self.validate_application_h2_style(manu_mgr_title)
     style_settings_title = self._get(self._journal_admin_style_settings_title)
     self.validate_application_h2_style(style_settings_title)
 
@@ -190,7 +202,9 @@ class JournalAdminPage(AdminPage):
                   'Supporting Info', 'Upload Manuscript']
     att_title = self._get(self._journal_admin_avail_task_types_title)
     self.validate_application_h2_style(att_title)
+    assert 'Available Task Types' in att_title.text, att_title.text
     edit_tt_btn = self._get(self._journal_admin_avail_task_types_edit_btn)
+    assert 'EDIT TASK TYPES' in edit_tt_btn.text
     edit_tt_btn.click()
     # time for animation of overlay
     time.sleep(.5)
@@ -209,8 +223,130 @@ class JournalAdminPage(AdminPage):
       task.find_element(*self._journal_admin_att_overlay_row_selector)
       task.find_element(*self._journal_admin_att_overlay_row_clear_btn)
 
-  def validate_mmt_section(self):
-    pass
+  def validate_mmt_section(self, journal):
+    dbmmts = []
+    dbids = []
+    manu_mgr_title = self._get(self._journal_admin_manu_mgr_templates_title)
+    self.validate_application_h2_style(manu_mgr_title)
+    assert 'Manuscript Manager Templates' in manu_mgr_title.text, manu_mgr_title.text
+    add_mmt_btn = self._get(self._journal_admin_manu_mgr_templates_button)
+    assert 'ADD NEW TEMPLATE' in add_mmt_btn.text, add_mmt_btn.text
+    try:
+      mmts = self._gets(self._journal_admin_manu_mgr_thumbnail)
+    except ElementDoesNotExistAssertionError:
+      logging.warning('No extant MMT found for Journal')
+    curr_journal_id = self._driver.current_url.split('/')[-1]
+    db_mmts = PgSQL().query('SELECT paper_type, id '
+                            'FROM manuscript_manager_templates '
+                            'WHERE journal_id = %s;', (curr_journal_id,))
+    for dbmmt in db_mmts:
+      dbmmts.append(dbmmt[0])
+      dbids.append(dbmmt[1])
+    if mmts:
+      count = 0
+      for mmt in mmts:
+        name = mmt.find_element(*self._journal_admin_manu_mgr_thumb_title)
+        logging.info(name.text)
+        assert name.text in dbmmts
+        phases = mmt.find_element(*self._journal_admin_manu_mgr_thumb_phases)
+        db_phase_count = PgSQL().query('SELECT count(*) '
+                                       'FROM phase_templates '
+                                       'WHERE manuscript_manager_template_id = %s;', (dbids[count],))[0][0]
+        assert phases.text == str(db_phase_count), phases.text + ' != ' + str(db_phase_count)
+        self._actions.move_to_element(mmt).perform()
+        self._journal_admin_manu_mgr_thumb_edit = (By.CSS_SELECTOR, 'a.fa-pencil')
+        mmt.find_element(*self._journal_admin_manu_mgr_thumb_edit)
+        # Journals must have at least one MMT, so if only one, no delete icon is present
+        if len(mmts) > 1:
+          self._journal_admin_manu_mgr_thumb_delete = (By.CSS_SELECTOR, 'span.fa-trash')
+          mmt.find_element(*self._journal_admin_manu_mgr_thumb_delete)
+        count += 1
+    add_mmt_btn.click()
+    time.sleep(.5)
+    assert 'manuscript_manager_templates/new' in self._driver.current_url, self._driver.current_url
+    self._validate_mmt_template_items()
+    template = self._add_new_mmt_template()
+    logging.info(template)
+    self._delete_mmt_template(template)
 
   def validate_style_settings_section(self):
     pass
+
+  def _validate_mmt_template_items(self):
+    time.sleep(.5)
+    template_field = self._get(self._mmt_template_name_field)
+    assert 'Research' in template_field.get_attribute('value'), template_field.get_attribute('value')
+    self._get(self._mmt_template_save_button)
+    template_cancel = self._get(self._mmt_template_cancel_link)
+    self._gets(self._mmt_template_add_phase_icons)
+    columns = self._gets(self._mmt_template_columns)
+    for column in columns:
+      col_title = column.find_element(*self._mmt_template_column_title)
+      time.sleep(.5)
+      col_title.click()
+      self._mmt_template_column_delete = (By.CSS_SELECTOR, 'span.remove-icon')
+      column.find_element(*self._mmt_template_column_delete)
+      self._mmt_template_column_title_edit_cancel_btn = (By.CSS_SELECTOR, 'button.column-header-update-cancel')
+      self._mmt_template_column_title_edit_save_btn = (By.CSS_SELECTOR, 'button.column-header-update-save')
+      col_cancel = column.find_element(*self._mmt_template_column_title_edit_cancel_btn)
+      column.find_element(*self._mmt_template_column_title_edit_save_btn)
+      col_cancel.click()
+      column.find_element(*self._mmt_template_column_no_cards_card)
+      column.find_element(*self._mmt_template_column_add_new_card_btn)
+    template_cancel.click()
+    time.sleep(.5)
+
+  def _add_new_mmt_template(self):
+    logging.info('Add New Template called')
+    add_mmt_btn = self._get(self._journal_admin_manu_mgr_templates_button)
+    add_mmt_btn.click()
+    time.sleep(.5)
+    template_field = self._get(self._mmt_template_name_field)
+    save_template_button = self._get(self._mmt_template_save_button)
+    template_field.click()
+    template_field.send_keys(Keys.ARROW_DOWN + '<-False')
+    time.sleep(1)
+    save_template_button.click()
+    time.sleep(1)
+    self._mmt_template_name_link = (By.CSS_SELECTOR, 'div.paper-type-name')
+    template_link = self._get(self._mmt_template_name_link)
+    template_name = template_link.text
+    self._journal_admin_manu_mgr_back_link = (By.CSS_SELECTOR, 'div.paper-type-form div + a')
+    back_btn = self._get(self._journal_admin_manu_mgr_back_link)
+    back_btn.click()
+    time.sleep(.5)
+    return template_name
+
+  def _delete_mmt_template(self, template):
+    logging.info('Called delete for ' + template)
+    mmts = self._gets(self._journal_admin_manu_mgr_thumbnail)
+    count = 1
+    for mmt in mmts:
+      name = mmt.find_element(*self._journal_admin_manu_mgr_thumb_title)
+      if name.text != template:
+        logging.info(name.text + ' != ' + template)
+        count += 1
+        continue
+      else:
+        logging.info('Found match for mmt to delete')
+        self._driver.refresh()
+        self._target_mmt = (By.XPATH, '//div[@class="ember-view mmt-thumbnail blue-box"][%s]' % count)
+        target = self._get(self._target_mmt)
+        self._actions.move_to_element(target).perform()
+        self._journal_admin_manu_mgr_thumb_delete = (By.CSS_SELECTOR, 'span.fa-trash')
+        delete_mmt = mmt.find_element(*self._journal_admin_manu_mgr_thumb_delete)
+        delete_mmt.click()
+        self._journal_admin_manu_mgr_delete_confirm_paragraph = (By.CSS_SELECTOR, 'div.mmt-thumbnail-overlay-confirm-destroy p')
+        confirm_text = self._get(self._journal_admin_manu_mgr_delete_confirm_paragraph)
+        assert 'This will permanently delete your template. Are you sure?' in confirm_text.text, confirm_text.text
+        self._journal_admin_manu_mgr_thumb_delete_cancel = (By.CSS_SELECTOR, 'div.mmt-thumbnail-overlay-confirm-destroy button')
+        cancel_delete = self._get(self._journal_admin_manu_mgr_thumb_delete_cancel)
+        cancel_delete.click()
+        delete_mmt.click()
+        self._journal_admin_manu_mgr_thumb_delete_confirm = ('div.mmt-thumbnail-overlay-confirm-destroy button + button')
+        confirm_delete = self._get(self._journal_admin_manu_mgr_thumb_delete_confirm)
+        confirm_delete.click()
+    mmts = self._gets(self._journal_admin_manu_mgr_thumbnail)
+    for mmt in mmts:
+      name = mmt.find_element(*self._journal_admin_manu_mgr_thumb_title)
+      assert template != name.text, name.text

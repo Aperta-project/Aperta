@@ -146,10 +146,10 @@ class ApertaJournalAdminTest(CommonTest):
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
-    adm_page.select_random_journal()
+    journal = adm_page.select_random_journal()
 
     ja_page = JournalAdminPage(self.getDriver())
-    ja_page.validate_mmt_section()
+    ja_page.validate_mmt_section(journal)
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

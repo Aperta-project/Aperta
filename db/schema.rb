@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151222165348) do
+ActiveRecord::Schema.define(version: 20151230153746) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -270,7 +270,7 @@ ActiveRecord::Schema.define(version: 20151222165348) do
     t.integer  "owner_id"
   end
 
-  add_index "nested_questions", ["ident"], name: "index_nested_questions_on_ident", using: :btree
+  add_index "nested_questions", ["ident"], name: "index_nested_questions_on_ident", unique: true, using: :btree
   add_index "nested_questions", ["lft"], name: "index_nested_questions_on_lft", using: :btree
   add_index "nested_questions", ["parent_id"], name: "index_nested_questions_on_parent_id", using: :btree
   add_index "nested_questions", ["rgt"], name: "index_nested_questions_on_rgt", using: :btree

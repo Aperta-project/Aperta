@@ -18,8 +18,8 @@
     <ul class="question-help">{{{helpText}}}</ul>
   {{/if}}
 
-  <div class="row {{wrapperClass}}">
-    <label class="col-md-3">
+  <div class="flex-group {{wrapperClass}}">
+    <label class="flex-element">
       {{radio-button value="accept"
                      name=namePrefix
                      selection=model.answer.value
@@ -27,7 +27,7 @@
       Accept
     </label>
 
-    <label class="col-md-3">
+    <label class="flex-element">
       {{radio-button value="reject"
                      name=namePrefix
                      selection=model.answer.value
@@ -35,7 +35,7 @@
       Reject
     </label>
 
-    <label class="col-md-3">
+    <label class="flex-element">
       {{radio-button value="major_revision"
                      name=namePrefix
                      selection=model.answer.value
@@ -43,7 +43,7 @@
       Major Revision
     </label>
 
-    <label class="col-md-3">
+    <label class="flex-element">
       {{radio-button value="minor_revision"
                      name=namePrefix
                      selection=model.answer.value

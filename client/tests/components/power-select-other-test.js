@@ -43,8 +43,8 @@ test('initial value is selected', function(assert) {
   );
 });
 
-test('other option is selected', function(assert) {
-  assert.expect(3);
+test('input displayed when other option is selected', function(assert) {
+  assert.expect(2);
   this.set('nameValue', 'Gena');
 
   this.render(hbs`
@@ -53,19 +53,13 @@ test('other option is selected', function(assert) {
   `);
 
   assert.equal(
-    this.$('.ember-power-select-trigger').text().trim(),
-    'other...',
-    'other option is selected'
-  );
-
-  assert.equal(
     this.$('input').length,
     1,
     'input is visible'
   );
 
   Ember.run(() => {
-    this.$('.ember-power-select-trigger').mousedown();
+    this.$('.ember-power-select-status-icon').click();
   });
 
   Ember.run(() => {

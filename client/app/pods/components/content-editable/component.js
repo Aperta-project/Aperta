@@ -10,6 +10,7 @@ export default Ember.Component.extend({
   preventEnterKey: false,
   _userIsTyping: false,
 
+
   _valueAndPlaceholderSetup: on('didInsertElement', function() {
     this.setHTMLFromValue();
     if (this.elementIsEmpty() && this.get('placeholder')) {
@@ -35,6 +36,13 @@ export default Ember.Component.extend({
   _teardownSelectEvent: on('willDestroyElement', function() {
     const eventName = 'selectionchange.' + this.elementId;
     $(document).off(eventName);
+  }),
+
+  autofocus: false,
+  _focus: Ember.on('didInsertElement', function() {
+    Ember.run.scheduleOnce('afterRender', ()=> {
+      if(this.get('autofocus')) { this.$().focus(); }
+    });
   }),
 
   contenteditable: computed('editable', function() {

@@ -60,6 +60,16 @@ export default Ember.Component.extend({
   placeholder: null,
 
   /**
+   *  Apply focus to field on render
+   *
+   *  @property autofocus
+   *  @type Boolean
+   *  @default true
+   *  @optional
+  **/
+  autofocus: false,
+
+  /**
    *  Show/hide bold button
    *
    *  @property displayBold

@@ -1,14 +1,19 @@
 {{#if _otherOptionSelected}}
-  {{#if allowOtherFormatting}}
-    {{format-input value=value}}
-  {{else}}
-    {{input value=value}}
-  {{/if}}
-{{/if}}
 
-{{#power-select options=_optionsWithOther
-                selected=selectedValue
-                onchange=(action "select")
-                as |v|}}
-  {{v}}
-{{/power-select}}
+  {{#if allowOtherFormatting}}
+    {{format-input value=value autofocus=true}}
+  {{else}}
+    {{input value=value autofocus=true}}
+  {{/if}}
+
+  <span class="ember-power-select-status-icon" {{action "otherTrigger"}}></span>
+{{else}}
+
+  {{#power-select options=_optionsWithOther
+                  selected=selectedValue
+                  onchange=(action "select")
+                  as |v|}}
+    {{v}}
+  {{/power-select}}
+
+{{/if}}

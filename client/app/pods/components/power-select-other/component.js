@@ -20,6 +20,8 @@ import Ember from 'ember';
 const { computed } = Ember;
 
 export default Ember.Component.extend({
+  classNameBindings: [':power-select-other', '_otherOptionSelected:power-select-other--other-selected'],
+
   /**
    *  @property value
    *  @type String | Number
@@ -79,6 +81,14 @@ export default Ember.Component.extend({
     select(value) {
       this.set('selectedValue', value);
       this.set('value', value);
+    },
+
+    otherTrigger() {
+      this.set('selectedValue', null);
+      this.set('value', null);
+      Ember.run.scheduleOnce('afterRender', ()=> {
+        this.$('.ember-power-select-trigger').mousedown();
+      });
     }
   }
 });

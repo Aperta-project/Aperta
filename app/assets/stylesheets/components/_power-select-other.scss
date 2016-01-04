@@ -1,0 +1,16 @@
+.power-select-other {
+  position: relative;
+
+  input {
+    width: 100%;
+  }
+}
+
+.power-select-other--other-selected {
+  border-color: #aaa;
+  padding-right: 20px;
+
+  .ember-power-select-status-icon {
+    cursor: pointer;
+  }
+}

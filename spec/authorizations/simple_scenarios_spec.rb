@@ -3,65 +3,6 @@ require 'rails_helper'
 describe "Authorizations: simple scenarios" do
   include AuthorizationSpecHelper
 
-  before do
-    Authorizations.configure do |config|
-      config.assignment_to(Task, authorizes: Paper, via: :paper)
-      config.assignment_to(Task, authorizes: Journal, via: :journal)
-      config.assignment_to(Paper, authorizes: DiscussionTopic, via: :discussion_topics)
-      config.assignment_to(Paper, authorizes: Task, via: :tasks)
-      config.assignment_to(Paper, authorizes: Journal, via: :journal)
-      config.assignment_to(Journal, authorizes: Task, via: :tasks)
-      config.assignment_to(Journal, authorizes: Paper, via: :papers)
-    end
-  end
-
-  after do
-    Authorizations.reset_configuration
-  end
-
-  describe "Direct assignments" do
-    let!(:user) { FactoryGirl.create(:user, first_name: "User") }
-    let!(:other_user) { FactoryGirl.create(:user, first_name: "Other User") }
-
-    let!(:paper) { FactoryGirl.create(:paper, title: "User's paper") }
-    let!(:other_paper){ FactoryGirl.create(:paper, title: "Other User's paper") }
-
-    permissions do
-      permission action: 'view', applies_to: 'Paper'
-    end
-
-    role :author do
-      has_permission action: 'view', applies_to: 'Paper'
-    end
-
-    before do
-      assign_user user, to: paper, with_role: role_author
-      assign_user other_user, to: other_paper, with_role: role_author
-    end
-
-    it "allows a user to view a paper they're directly assigned when the permission applies_to is paper" do
-      expect(user.can?(:view, paper)).to be(true)
-      expect(other_user.can?(:view, other_paper)).to be(true)
-    end
-
-    it "doesn't allow a user to view a paper they're assigned to when the only permission's applies_to is journal" do
-      role_author.permissions.where(action: 'view', applies_to: 'Paper').update_all(applies_to: 'Journal')
-      expect(user.can?(:view, paper)).to be(false)
-      expect(other_user.can?(:view, other_paper)).to be(false)
-    end
-
-    it "doesn't allow a user to view a paper they're assigned to when the only permission's applies_to is task" do
-      role_author.permissions.where(action: 'view', applies_to: 'Paper').update_all(applies_to: 'Task')
-      expect(user.can?(:view, paper)).to be(false)
-      expect(other_user.can?(:view, other_paper)).to be(false)
-    end
-
-    it "doesn't allow a user to view a paper they're not assigned to" do
-      expect(user.can?(:view, other_paper)).to be(false)
-      expect(other_user.can?(:view, paper)).to be(false)
-    end
-  end
-
   describe "Cascading permissions" do
 
     #      THE BELOW TESTS USE THIS ASSIGNMENT / PERMISSION TABLE

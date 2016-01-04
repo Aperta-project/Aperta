@@ -3,27 +3,33 @@
   @include align-items(stretch);
   border: 1px solid #d5d5d5;
   background: #fff;
-}
 
-.format-input-field {
-  @include flex-grow(1);
-  padding: 3px 5px;
-}
+  .format-input-field {
+    @include flex-grow(1);
+    min-height: 20px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
 
-.format-input-button {
-  width: 50px;
-  padding: 3px 0;
-  color: #ddd;
-  font-size: 16px;
-  text-align: center;
-  cursor: pointer;
-  @include display(flex);
-  @include flex-direction(column);
-  @include justify-content(center);
-  @include flex-shrink(0);
+  .format-input-button {
+    width: 50px;
+    color: #ddd;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+    @include display(flex);
+    @include flex-direction(column);
+    @include justify-content(center);
+    @include flex-shrink(0);
 
-  &:hover {
-    text-decoration: none;
+    &:last-of-type {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+
+    &:hover {
+      text-decoration: none;
+    }
   }
 }
 

@@ -24,7 +24,7 @@ interaction?  Perhaps a quick recording?
 
 Are there any surprises? Anything that was particularly difficult, or clever, or
 made you nervous, and should get particular attention during review? Call it
-out.
+out. Does the reviewer have to run a rake task?
 
 
 #### Major UI changes
@@ -33,7 +33,13 @@ Were there major UI changes? Add a screenshot here -- and please let the QA team
 
 ---
 
-#### For the Reviewer:
+#### Code Review Tasks:
+
+Author tasks:  
+
+- [ ] If I created a migration, I updated the base data.yml seeds file. [instructions](https://developer.plos.org/confluence/display/TAHI/Seeds+maintenance)
+- [ ] If a data-migration rake task is needed, the task is found in `lib/tasks/data-migrations` within the `data:migrate` namespace. Example task name: `aperta_9999_migration_description`
+- [ ] If I created a data-migration task, I added copy-pastable instructions to run it on heroku to [the confluence release page](https://developer.plos.org/confluence/display/TAHI/Deployment+information+for+Release)
 
 Reviewer tasks:
 
@@ -44,12 +50,14 @@ Reviewer tasks:
 - [ ] I have found the tests to be sufficient
 - [ ] I like the CHANGELOG entry
 - [ ] I agree the code fulfills the Acceptance Criteria
+- [ ] I agree the author has fulfilled their tasks
 
 #### After the Code Review:
 
 Author tasks:
 
 - [ ] The Product Team has reviewed and approved this feature
+
 ```
 
 

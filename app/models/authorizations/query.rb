@@ -118,8 +118,10 @@ class Authorizations::Query
           if assignments.map(&:assigned_to_id).include?(@target.id)
             if permissible_states.include?('*')
               authorized_objects = [@target]
-            elsif @target.class.column_names.include?('state') && permissible_states.include?(@target.state)
-              authorized_objects = [@target]
+            elsif @target.class.column_names.include?('state')
+              if permissible_states.include?(@target.state)
+                authorized_objects = [@target]
+              end
             else
               authorized_objects = [@target]
             end

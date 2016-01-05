@@ -42,28 +42,28 @@
     {{input class="form-control flex-element si-file-label-input"
             placeholder="E.g. S1"
             name="label"
-            value=fileLabel}}
+            value=file.label}}
     {{input class="form-control flex-element si-file-category-input"
             placeholder="Select category"
             name="category"
-            value=fileCategory}}
+            value=file.category}}
   </div>
   <div class="flex-group">
     {{format-input class="form-control flex-element si-file-title-input"
             placeholder="Enter a title"
             name="title"
-            value=fileTitle
+            value=file.title
             displayBold=false}}
     {{format-input placeholder="Enter a legend (optional)"
             name="caption"
             class="form-control flex-element si-file-caption-textbox"
-            value=fileCaption
+            value=file.caption
             displayBold=false}}
   </div>
-  <label>{{input type="checkbox" checked=filePublishable}} For publication</label>
+  <label>{{input type="checkbox" checked=file.publishable}} For publication</label>
 
-  {{#if (is-equal fileCategory 'Figure')}}
-  <label class="si-file-striking-image-checkbox">{{input type="checkbox" checked=fileStrikingImage}} Nominate as striking image</label>
+  {{#if (is-equal file.category 'Figure')}}
+  <label class="si-file-striking-image-checkbox">{{input type="checkbox" checked=file.strikingImage}} Nominate as striking image</label>
   {{/if}}
 
   <div class="si-file-actions">

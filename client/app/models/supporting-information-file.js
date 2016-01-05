@@ -11,5 +11,6 @@ export default DS.Model.extend({
   category: DS.attr('string'),
   label: DS.attr('string'),
   caption: DS.attr('string'),
-  publishable: DS.attr('boolean')
+  publishable: DS.attr('boolean'),
+  strikingImage: DS.attr('boolean')  
 });

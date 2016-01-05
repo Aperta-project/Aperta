@@ -1,5 +1,6 @@
 class Figure < ActiveRecord::Base
   include EventStream::Notifiable
+  include CanBeStrikingImage
 
   belongs_to :paper
 

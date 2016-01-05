@@ -10,33 +10,6 @@ export default Ember.Component.extend({
   deleteState: false,
   editState: false,
 
-  fileLabel:null,
-  fileCategory:null,
-  fileTitle:null,
-  fileCaption:null,
-  filePublishable:null,
-
-  loadFileAttrs: function(){
-    this.setProperties({
-      fileLabel: this.get('file.label'),
-      fileCategory: this.get('file.category'),
-      fileTitle: this.get('file.title'),
-      fileCaption: this.get('file.caption'),
-      filePublishable: this.get('file.publishable')
-    });
-  },
-
-  saveFileAttrs: function(){
-    this.setProperties({
-      'file.label': this.get('fileLabel'),
-      'file.category': this.get('fileCategory'),
-      'file.title': this.get('fileTitle'),
-      'file.caption': this.get('fileCaption'),
-      'file.publishable': this.get('filePublishable')
-    });
-    this.get('file').save();
-  },
-
   siFileState: Ember.computed('uiState', function(){
     return 'si-file-' + this.get('uiState');
   }),
@@ -56,16 +29,16 @@ export default Ember.Component.extend({
     },
 
     enterEditState: function() {
-      this.loadFileAttrs()
       this.set('uiState', 'edit');
     },
 
     cancelEdit: function(){
+      this.get('file').rollback();
       this.set('uiState', 'view');
     },
 
     saveEdit: function(){
-      this.saveFileAttrs();
+      this.get('file').save();
       this.set('uiState', 'view');
     }
 

@@ -20,15 +20,6 @@ export default TaskComponent.extend(FileUploadMixin, {
       this.store.pushPayload('figure', data);
     },
 
-    changeStrikingImage(newValue) {
-      this.get('task.paper').set('strikingImageId', newValue);
-      this.get('task.paper').save();
-    },
-
-    updateStrikingImage() {
-      this.get('task.paper').save();
-    },
-
     destroyAttachment(attachment) {
       attachment.destroyRecord();
     }

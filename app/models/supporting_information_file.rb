@@ -1,12 +1,16 @@
 class SupportingInformationFile < ActiveRecord::Base
   include EventStream::Notifiable
   include ProxyableResource
+  include CanBeStrikingImage
+
 
   # writes to `token` attr on create
   # `regenerate_token` for new token
   has_secure_token
 
   belongs_to :paper
+
+  before_save :ensure_striking_image_category_is_figure
 
   default_scope { order(:id) }
 
@@ -15,6 +19,11 @@ class SupportingInformationFile < ActiveRecord::Base
   mount_uploader :attachment, AdhocAttachmentUploader
 
   IMAGE_TYPES = %w{jpg jpeg tiff tif gif png eps tif}
+
+  def ensure_striking_image_category_is_figure
+    self.striking_image = false unless category == 'Figure'
+    true
+  end
 
   def filename
     self[:attachment]

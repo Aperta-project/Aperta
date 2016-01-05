@@ -1,11 +1,8 @@
 .format-input {
-  @include display(flex);
-  @include align-items(stretch);
   border: 1px solid #d5d5d5;
   background: #fff;
 
   .format-input-field {
-    @include flex-grow(1);
     min-height: 20px;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
@@ -17,10 +14,9 @@
     font-size: 16px;
     text-align: center;
     cursor: pointer;
-    @include display(flex);
-    @include flex-direction(column);
-    @include justify-content(center);
-    @include flex-shrink(0);
+    padding: 0 10px;
+    float: right;
+
 
     &:last-of-type {
       border-top-right-radius: 5px;

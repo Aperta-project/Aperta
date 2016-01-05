@@ -14,6 +14,7 @@ module AuthorizationModelsSpecHelper
 
         create_table :fake_tasks, force: true do |t|
           t.integer :fake_paper_id
+          t.integer :required_permission_id
         end
 
         create_table :fake_task_things, force: true do |t|
@@ -34,6 +35,7 @@ module Authorizations
   class FakeTask < ActiveRecord::Base
     belongs_to :fake_paper
     has_one :fake_task_thing
+    belongs_to :required_permission, class_name: ::Permission.name
   end
 
   class FakeTaskThing < ActiveRecord::Base

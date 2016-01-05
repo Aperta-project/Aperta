@@ -41,6 +41,7 @@
 
         {{nested-question-textarea model=fieldPermitQuestion
         owner=task
+        displayContent=selected.yes
         disabled=isSubmissionTaskNotEditable}}
 
         <div class="question-info">
@@ -57,13 +58,14 @@
         disabled=isSubmissionTaskNotEditable
         noAction="userSelectedNoOnFieldStudy"
         as |selected|}}
-
-        <div class="question-dataset">
-          {{nested-question-textarea model=fieldPermitNumberQuestion
-          displayContent=selected.yes
-          owner=task
-          disabled=isSubmissionTaskNotEditable}}
-        </div>
+        {{#if selected.yes}}
+          <div class="question-dataset">
+            {{nested-question-textarea model=fieldPermitNumberQuestion
+            displayContent=selected.yes
+            owner=task
+            disabled=isSubmissionTaskNotEditable}}
+          </div>
+        {{/if}}
       {{/nested-question-radio}}
     </li>
   </ol>

@@ -6,13 +6,13 @@ export default Ember.Mixin.create({
     return this.set('uploads', []);
   }),
 
-  uploads: null, // apparently meant to track uploads currently uploading
+  uploads: null,
   isUploading: Ember.computed.notEmpty('uploads'),
 
-  removeUpload(filename) {
-    this.get('uploads').removeObject(
-     this.findUploadByFilename(filename)
-    );
+  unloadUploads(data, filename) {
+    let uploads = this.get('uploads');
+    let newUpload = uploads.findBy('file.name', filename);
+    uploads.removeObject(newUpload);
   },
 
   uploadStarted(data, fileUploadXHR) {
@@ -30,8 +30,7 @@ export default Ember.Mixin.create({
   },
 
   uploadProgress(data) {
-    let currentUpload = this.findUploadByFilename(data.files[0].name);
-
+    let currentUpload = this.get('uploads').findBy('file', data.files[0]);
     if (!currentUpload) { return; }
 
     currentUpload.setProperties({
@@ -41,10 +40,8 @@ export default Ember.Mixin.create({
   },
 
   uploadFinished(data, filename) {
-    let UIWait = 2000; // ms
     $(window).off('beforeunload.cancelUploads.' + filename);
 
-    // what?
     let key = Object.keys(data || {})[0];
     if ( (key && data[key]) || key && data[key] === [] ) {
       // TODO: DOM manipulation in mixin? This is used by controllers too
@@ -61,13 +58,6 @@ export default Ember.Mixin.create({
       this.unloadUploads(data, filename);
     }
 
-    setTimeout(() => { this.removeUpload(filename); }, UIWait);
-  },
-
-  findUploadByFilename(filename) {
-    return _.find(this.get('uploads'), function(upload){
-      return upload.get('file.name') === filename;
-    });
   },
 
   cancelUploads() {
@@ -80,8 +70,6 @@ export default Ember.Mixin.create({
     uploadProgress(data) { this.uploadProgress(data); },
     cancelUploads() { this.cancelUploads(); },
     uploadFinished(data, filename) { this.uploadFinished(data, filename); },
-    uploadStarted(data, fileUploadXHR) {
-      this.uploadStarted(data, fileUploadXHR);
-    },
+    uploadStarted(data, fileUploadXHR) { this.uploadStarted(data, fileUploadXHR); }
   }
 });

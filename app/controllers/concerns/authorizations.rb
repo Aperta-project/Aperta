@@ -30,15 +30,6 @@ module Authorizations
     @policies ||= []
     policy = nil
 
-    # seems like this should be
-    # if @policies.any?
-    #    policy = @policies.detect { |p| p.applies_to?(controller_class, user,
-    #      args) }
-    # else
-    #    policy = ApplicationPolicy.find_policy(controller_class, user, args)
-    #    @policies << policy
-    # end
-
     if @policies.present?
       policy = @policies.detect { |p| p.applies_to?(controller_class, user, args) }
     end

@@ -10,6 +10,7 @@ module AuthorizationModelsSpecHelper
     @db_tables_created ||= begin
       ActiveRecord::Schema.define do
         create_table :fake_papers, force: true do |t|
+          t.integer :journal_id
         end
 
         create_table :fake_tasks, force: true do |t|
@@ -28,6 +29,7 @@ end
 
 module Authorizations
   class FakePaper < ActiveRecord::Base
+    belongs_to :journal, class_name: ::Journal.name
     has_many :fake_tasks
     has_many :fake_task_things, through: :fake_tasks
   end

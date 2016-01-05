@@ -1,17 +1,43 @@
 require 'rails_helper'
 
-describe "Authorizations: client side" do
+describe <<-DESC.strip_heredoc do
+  In order to be able to communicate permission information to the front-end
+  application the authorizations sub-system provides access to a
+  stable Hash data format.
+DESC
   include AuthorizationSpecHelper
+
+  before(:all) do
+    Authorizations.reset_configuration
+    AuthorizationModelsSpecHelper.create_db_tables
+  end
 
   before do
     Authorizations.configure do |config|
-      config.assignment_to(Task, authorizes: Paper, via: :paper)
-      config.assignment_to(Task, authorizes: Journal, via: :journal)
-      config.assignment_to(Paper, authorizes: DiscussionTopic, via: :discussion_topics)
-      config.assignment_to(Paper, authorizes: Task, via: :tasks)
-      config.assignment_to(Paper, authorizes: Journal, via: :journal)
-      config.assignment_to(Journal, authorizes: Task, via: :tasks)
-      config.assignment_to(Journal, authorizes: Paper, via: :papers)
+      config.assignment_to(
+        Authorizations::FakeTask,
+        authorizes: Authorizations::FakePaper,
+        via: :fake_paper)
+      config.assignment_to(
+        Authorizations::FakeTask,
+        authorizes: Journal,
+        via: :journal)
+      config.assignment_to(
+        Authorizations::FakePaper,
+        authorizes: Authorizations::FakeTask,
+        via: :fake_tasks)
+      config.assignment_to(
+        Authorizations::FakePaper,
+        authorizes: Journal,
+        via: :journal)
+      config.assignment_to(
+        Journal,
+        authorizes: Authorizations::FakeTask,
+        via: :fake_tasks)
+      config.assignment_to(
+        Journal,
+        authorizes: Authorizations::FakePaper,
+        via: :fake_papers)
     end
   end
 
@@ -21,65 +47,68 @@ describe "Authorizations: client side" do
 
   let!(:user) { FactoryGirl.create(:user, first_name: 'Bob Theuser') }
   let!(:journal) { FactoryGirl.create(:journal) }
-  let!(:unassigned_journal) { FactoryGirl.create(:journal) }
-  let!(:paper_assigned_to_journal) { FactoryGirl.create(:paper, journal: journal) }
-  let!(:other_paper_on_same_journal) { FactoryGirl.create(:paper, journal: journal) }
-  let!(:paper_not_assigned_to_journal) { FactoryGirl.create(:paper) }
-  let!(:some_task) { FactoryGirl.create(:task, paper: paper_assigned_to_journal) }
+
+  let!(:paper_assigned_to_journal) do
+    Authorizations::FakePaper.create(journal: journal)
+  end
+
+  let!(:other_paper_on_same_journal) do
+    Authorizations::FakePaper.create(journal: journal)
+  end
 
   permissions do
-    permission action: 'read', applies_to: 'Paper'
-    permission action: 'write', applies_to: 'Paper', states: ['in_progress']
-    permission action: 'view', applies_to: 'Paper'
-    permission action: 'talk', applies_to: 'Paper', states: ['in_progress', 'in_review']
+    permission action: 'read', applies_to: Authorizations::FakePaper.name
+    permission action: 'view', applies_to: Authorizations::FakePaper.name
+    permission(
+      action: 'write',
+      applies_to: Authorizations::FakePaper.name,
+      states: %w(in_progress))
+    permission(
+      action: 'talk',
+      applies_to: Authorizations::FakePaper.name,
+      states: %w(in_progress in_review))
   end
 
   role :editor do
-    has_permission action: 'read', applies_to: 'Paper'
-    has_permission action: 'write', applies_to: 'Paper'
-    has_permission action: 'view', applies_to: 'Paper'
-    has_permission action: 'talk', applies_to: 'Paper'
-  end
-
-  role :task_assignee do
-    has_permission action: 'write', applies_to: 'Paper'
-    has_permission action: 'view', applies_to: 'Paper'
+    has_permission action: 'read', applies_to: Authorizations::FakePaper.name
+    has_permission action: 'write', applies_to: Authorizations::FakePaper.name
+    has_permission action: 'view', applies_to: Authorizations::FakePaper.name
+    has_permission action: 'talk', applies_to: Authorizations::FakePaper.name
   end
 
   before do
-    journal.roles << role_editor << role_task_assignee
     assign_user user, to: paper_assigned_to_journal, with_role: role_editor
     assign_user user, to: other_paper_on_same_journal, with_role: role_editor
   end
 
-  describe "presenting information to the client" do
-    it "can be presented as a lookup table" do
-      results = user.enumerate_targets(:view, Paper)
+  describe '#to_h' do
+    it "returns a hash of all the user's permissions for the returned object" do
+      results = user.enumerate_targets(:view, Authorizations::FakePaper.all)
       expect(results.to_h).to eq([
-       {
-         object: {
-           id: paper_assigned_to_journal.id,
-           type: "Paper"
-         },
-         permissions: {
-          read: { states: ["*"] },
-          write: { states: ["in_progress"] },
-          view: { states: ["*"] },
-          talk: { states: ["in_progress", "in_review"] }
+        {
+          object: {
+            id: paper_assigned_to_journal.id,
+            type: Authorizations::FakePaper.name
+          },
+          permissions: {
+            read: { states: %w(*) },
+            write: { states: %w(in_progress) },
+            view: { states: %w(*) },
+            talk: { states: %w(in_progress in_review) }
+          }
+        },
+        {
+          object: {
+            id: other_paper_on_same_journal.id,
+            type: Authorizations::FakePaper.name
+          },
+          permissions: {
+            read: { states: %w(*) },
+            write: { states: %w(in_progress) },
+            view: { states: %w(*) },
+            talk: { states: %w(in_progress in_review) }
+          }
         }
-       },
-       {
-         object: {
-           id: other_paper_on_same_journal.id,
-           type: "Paper"
-         },
-         permissions: {
-          read: { states: ["*"] },
-          write: { states: ["in_progress"] },
-          view: { states: ["*"] },
-          talk: { states: ["in_progress", "in_review"] }
-        }
-       }
       ])
     end
   end

@@ -63,7 +63,7 @@ describe 'Authorizations for objects a user is directly assigned to' do
         assign_user other_user, to: other_user_paper, with_role: role_with_access_to_paper
       end
 
-      it 'authorizes access for their permissions for the object they are assigned to' do
+      it "authorizes the actions for the object they are assigned to based on their role's permissions" do
         expect(user.can?(:view, paper)).to be(true)
         expect(user.can?(:edit, paper)).to be(true)
         expect(user.can?(:whatever, paper)).to be(true)
@@ -73,19 +73,19 @@ describe 'Authorizations for objects a user is directly assigned to' do
         expect(other_user.can?(:whatever, other_user_paper)).to be(true)
       end
 
-      it 'denies them access to a different object of the same kind (e.g. Someone elses paper)' do
+      it "denies them access for the actions on a different object of the same kind (e.g. Someone else's paper)" do
         expect(user.can?(:view, other_user_paper)).to be(false)
         expect(user.can?(:edit, other_user_paper)).to be(false)
         expect(user.can?(:whatever, other_user_paper)).to be(false)
       end
     end
 
-    context 'with a role that lacks permissions for that kind of object (e.g. No permission that applies_to Paper)' do
+    context 'with a role that lacks permissions for that kind of object (e.g. the role has no permission that applies_to Paper)' do
       before do
         assign_user user, to: paper, with_role: role_with_no_access_to_paper
       end
 
-      it 'denies them access to the object they are assigned to' do
+      it 'denies them access for the actions on the object they are assigned to' do
         expect(user.can?(:view, paper)).to be(false)
         expect(user.can?(:edit, paper)).to be(false)
         expect(user.can?(:whatever, paper)).to be(false)

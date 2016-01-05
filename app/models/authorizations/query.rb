@@ -53,7 +53,7 @@ class Authorizations::Query
     # through assignments in their default list of papers (e.g. what they see on the dashboard).
     # But we don't want that for roles (e.g. Internal Editor assigned to a Journal).
     if @include_only_participations
-      role_accessibility_method = "participates_in_#{@klass.name.downcase.pluralize}"
+      role_accessibility_method = "participates_in_#{@klass.table_name}"
       if Role.column_names.include?(role_accessibility_method)
         assignments = assignments.where(:roles => { role_accessibility_method => true })
       end

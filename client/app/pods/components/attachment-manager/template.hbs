@@ -27,8 +27,8 @@
     </div>
   {{/if}}
 
-  {{s3-file-uploader accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
-                     filePath="paper/figures"
+  {{s3-file-uploader accept=accept
+                     filePath=filePath
                      class="s3-file-uploader"
                      uploadProgress=(action "uploadProgress")
                      uploadFinished=(action "uploadFinished")

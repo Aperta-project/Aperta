@@ -15,6 +15,11 @@ export default Ember.Component.extend({
     return extensionFont(this.get('fileName'));
   }),
 
+  init() {
+      this._super(...arguments);
+      Ember.assert('Please provide filePath property', this.get('filePath'));
+  },
+
   actions: {
 
     deleteFile() {

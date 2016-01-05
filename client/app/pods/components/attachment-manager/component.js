@@ -7,8 +7,10 @@ export default Ember.Component.extend({
   description: 'Please select a file.',
   buttonText: 'Upload File',
   hasFile: false,
+  hasNote: false,
   fileName: null,
   fileUpload: null,
+  note:null,
   uploadInProgress: Ember.computed.notEmpty('fileUpload'),
 
   fileTypeClass: Ember.computed('fileName', function(){
@@ -46,8 +48,7 @@ export default Ember.Component.extend({
     },
 
     uploadFinished(s3Url){
-     this.set('hasFile', true);
-     this.set('fileUpload', null);
+      this.setProperties({hasFile: true, fileUpload: null});
      if (this.attrs.uploadFinished) {
        this.attrs.uploadFinished(s3Url);
      }

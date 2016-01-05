@@ -21,6 +21,11 @@
       Delete
     </span>
 
+    {{#if hasNote}}
+      {{input class="form-control " type="type" value=note
+      placeholder="Please provide a brief description of this file"}}
+    {{/if}}
+
   {{else}}
     <div class="button-secondary button--green" {{action "triggerFileSelection"}}>
       {{buttonText}}

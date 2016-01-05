@@ -13,8 +13,11 @@ export default Ember.Component.extend({
 
   actions: {
 
-    delete() {
-      console.log('delete');
+    deleteFile() {
+      if (this.attrs.deleteFile) {
+        this.attrs.deleteFile();
+      }
+      this.set('hasFile', false);
     },
 
     fileAdded(file){

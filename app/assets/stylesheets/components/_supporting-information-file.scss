@@ -31,7 +31,6 @@
     @include clearfix;
     margin: 0;
     padding: 0 20px;
-    margin-right: -10px;
     transition: max-height 0.1s;
     overflow-y: hidden;
     max-height: 0px;
@@ -47,7 +46,6 @@
     }
 
     input[type=text], textarea {
-      margin-right: 10px;
       width: auto;
     }
 
@@ -66,7 +64,6 @@
 
     .si-file-title-input {
       width: 350px;
-      margin-right: 10px;
       height: auto;
     }
 

@@ -35,6 +35,7 @@ class Paper < ActiveRecord::Base
   has_many :decisions, -> { order 'revision_number DESC' }, dependent: :destroy
   has_many :discussion_topics, inverse_of: :paper, dependent: :destroy
   has_many :snapshots, dependent: :destroy
+  has_many :notifications, inverse_of: :paper
 
   serialize :withdrawals, ArrayHashSerializer
 

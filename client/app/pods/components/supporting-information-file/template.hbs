@@ -39,11 +39,11 @@
     <a href="{{ file.src }}"><i class="fa fa-file-o"></i>{{ file.filename }}</a>
   </div>
   <div class="flex-group">
-    {{input class="form-control flex-element"
+    {{input class="form-control flex-element si-file-label-input"
             placeholder="E.g. S1"
             name="label"
             value=fileLabel}}
-    {{input class="form-control flex-element"
+    {{input class="form-control flex-element si-file-category-input"
             placeholder="Select category"
             name="category"
             value=fileCategory}}
@@ -52,14 +52,19 @@
     {{format-input class="form-control flex-element si-file-title-input"
             placeholder="Enter a title"
             name="title"
-            value=fileTitle}}
-    {{textarea placeholder="Enter a legend (optional)"
+            value=fileTitle
+            displayBold=false}}
+    {{format-input placeholder="Enter a legend (optional)"
             name="caption"
-            rows="5"
             class="form-control flex-element si-file-caption-textbox"
-            value=fileCaption}}
+            value=fileCaption
+            displayBold=false}}
   </div>
   <label>{{input type="checkbox" checked=filePublishable}} For publication</label>
+
+  {{#if (is-equal fileCategory 'Figure')}}
+  <label class="si-file-striking-image-checkbox">{{input type="checkbox" checked=fileStrikingImage}} Nominate as striking image</label>
+  {{/if}}
 
   <div class="si-file-actions">
     <button class="button--green button-link si-file-cancel-edit-button"

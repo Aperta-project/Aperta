@@ -69,7 +69,14 @@
 
     .si-file-actions {
       float: right;
+    }
+
+    .si-file-label-input {
       margin-right: 10px;
+    }
+
+    .si-file-striking-image-checkbox {
+      margin-left: 10px;
     }
   }
 
@@ -101,6 +108,11 @@
   .si-file-caption {
     margin-top: 3px;
     padding-top: 3px;
+  }
+
+  .si-file-caption-textbox {
+    min-height: 100px;
+    height: auto;
   }
 
   .si-file-delete {

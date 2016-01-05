@@ -1,5 +1,6 @@
 module TahiStandardTasks
   class RegisterDecisionTask < Task
+    include UrlBuilder
     register_task default_title: 'Register Decision', default_role: 'editor'
 
     # TODO: move these attributes from paper to this task model (https://www.pivotaltracker.com/story/show/84690814)
@@ -78,7 +79,7 @@ module TahiStandardTasks
 
         We encourage you to submit your revision within forty-five days of the date of this decision.
 
-        When your files are ready, please submit your revision by logging on to tahi-staging.herokuapp.com and following the instructions for resubmission. Do not submit a revised manuscript as a new submission.
+        When your files are ready, please submit your revision by logging on to #{url_for(:root)} and following the instructions for resubmission. Do not submit a revised manuscript as a new submission.
 
         If you choose not to submit a revision, please notify us.
 
@@ -110,7 +111,7 @@ module TahiStandardTasks
 
         We encourage you to submit your revision within forty-five days of the date of this decision.
 
-        When your files are ready, please submit your revision by logging on to tahi-staging.herokuapp.com and following the instructions for resubmission. Do not submit a revised manuscript as a new submission.
+        When your files are ready, please submit your revision by logging on to #{url_for(:root)} and following the instructions for resubmission. Do not submit a revised manuscript as a new submission.
 
         If you choose not to submit a revision, please notify us.
 

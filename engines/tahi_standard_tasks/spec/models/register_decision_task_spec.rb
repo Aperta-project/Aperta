@@ -51,6 +51,11 @@ describe TahiStandardTasks::RegisterDecisionTask do
       it "returns the letter with paper title filled in" do
         expect(task.minor_revision_letter).to match(/Crazy stubbing tests on rats/)
       end
+
+      it "returns the letter with current environment" do
+        expect(Rails.configuration.action_mailer.default_url_options[:host]).to eq("www.example.com")
+        expect(task.minor_revision_letter).to match(/www\.example\.com/)
+      end
     end
 
     describe "#major_revision_letter" do
@@ -68,6 +73,11 @@ describe TahiStandardTasks::RegisterDecisionTask do
 
       it "returns the letter with paper title filled in" do
         expect(task.major_revision_letter).to match(/Crazy stubbing tests on rats/)
+      end
+
+      it "returns the letter with current environment" do
+        expect(Rails.configuration.action_mailer.default_url_options[:host]).to eq("www.example.com")
+        expect(task.major_revision_letter).to match(/www\.example\.com/)
       end
     end
 

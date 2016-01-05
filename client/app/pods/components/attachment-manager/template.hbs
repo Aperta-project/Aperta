@@ -11,7 +11,7 @@
       <i class="fa fa-file-word-o"></i> {{fileName}}
     </a>
 
-    <span {{action "replace"}} class="file-action">
+    <span {{action "triggerFileSelection"}} class="file-action">
       <i class="fa fa-refresh"></i>
       Replace
     </span>
@@ -22,15 +22,16 @@
     </span>
 
   {{else}}
-
-    <div class="button-secondary button--green fileinput-button">
+    <div class="button-secondary button--green" {{action "triggerFileSelection"}}>
       {{buttonText}}
-      {{s3-file-uploader accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
-                         filePath="paper/figures"
-                         uploadProgress=(action "uploadProgress")
-                         uploadFinished=(action "uploadFinished")
-                         uploadFailed=(action "uploadFailed")
-                         fileAdded=(action "fileAdded")}}
     </div>
   {{/if}}
+
+  {{s3-file-uploader accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
+                     filePath="paper/figures"
+                     class="s3-file-uploader"
+                     uploadProgress=(action "uploadProgress")
+                     uploadFinished=(action "uploadFinished")
+                     uploadFailed=(action "uploadFailed")
+                     fileAdded=(action "fileAdded")}}
 {{/if}}

@@ -7,7 +7,7 @@
 
   .file-action {
     color: $tahi-grey-dark;
-    margin-left: 5px;
+    margin-left: 10px;
     cursor: pointer;
   }
 
@@ -17,5 +17,11 @@
 
   .progress {
     margin: 0px;
+  }
+
+  .s3-file-uploader {
+    width: 0px;
+    height: 0px;
+    overflow: hidden;
   }
 }

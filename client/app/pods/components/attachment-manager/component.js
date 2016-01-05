@@ -12,9 +12,6 @@ export default Ember.Component.extend({
   uploadInProgress: Ember.computed.notEmpty('fileUpload'),
 
   actions: {
-    replace() {
-      console.log('replace');
-    },
 
     delete() {
       console.log('delete');
@@ -23,6 +20,10 @@ export default Ember.Component.extend({
     fileAdded(file){
       this.setProperties({ fileName: file.name, fileType: file.type });
       this.set('fileUpload', FileUpload.create({ file: file }));
+    },
+
+    triggerFileSelection() {
+      this.$().find('input').click();
     },
 
     uploadProgress(data) {

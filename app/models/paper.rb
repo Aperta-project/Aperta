@@ -8,7 +8,7 @@ class Paper < ActiveRecord::Base
 
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
-  belongs_to :striking_image, class_name: 'Figure'
+  belongs_to :striking_image, polymorphic: true
   belongs_to :creator,
              inverse_of: :submitted_papers,
              class_name: 'User',

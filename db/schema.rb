@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151230153746) do
+ActiveRecord::Schema.define(version: 20160105163051) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_trgm"
@@ -323,6 +323,7 @@ ActiveRecord::Schema.define(version: 20151230153746) do
     t.boolean  "gradual_engagement",       default: false
     t.datetime "first_submitted_at"
     t.datetime "accepted_at"
+    t.string   "striking_image_type"
   end
 
   add_index "papers", ["doi"], name: "index_papers_on_doi", unique: true, using: :btree

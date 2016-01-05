@@ -15,22 +15,6 @@ DESC
   before do
     Authorizations.configure do |config|
       config.assignment_to(
-        Authorizations::FakeTask,
-        authorizes: Authorizations::FakePaper,
-        via: :fake_paper)
-      config.assignment_to(
-        Authorizations::FakeTask,
-        authorizes: Journal,
-        via: :journal)
-      config.assignment_to(
-        Authorizations::FakePaper,
-        authorizes: Authorizations::FakeTask,
-        via: :fake_tasks)
-      config.assignment_to(
-        Authorizations::FakePaper,
-        authorizes: Journal,
-        via: :journal)
-      config.assignment_to(
         Journal,
         authorizes: Authorizations::FakeTask,
         via: :fake_tasks)
@@ -67,6 +51,9 @@ DESC
       action: 'talk',
       applies_to: Authorizations::FakePaper.name,
       states: %w(in_progress in_review))
+
+    permission action: 'view', applies_to: Authorizations::FakeTask.name
+    permission action: 'edit', applies_to: Authorizations::FakeTask.name
   end
 
   role :editor do
@@ -74,6 +61,14 @@ DESC
     has_permission action: 'write', applies_to: Authorizations::FakePaper.name
     has_permission action: 'view', applies_to: Authorizations::FakePaper.name
     has_permission action: 'talk', applies_to: Authorizations::FakePaper.name
+  end
+
+  role :with_view_access_to_task do
+    has_permission action: 'view', applies_to: Authorizations::FakeTask.name
+  end
+
+  role :with_edit_access_to_task do
+    has_permission action: 'edit', applies_to: Authorizations::FakeTask.name
   end
 
   before do
@@ -110,6 +105,43 @@ DESC
           }
         }
       ])
+    end
+
+    describe <<-DESC do
+      and the user has access thru multiple assignments with the SAME
+      permissions
+    DESC
+      let!(:paper) { Authorizations::FakePaper.create!(journal: journal) }
+      let!(:task) { Authorizations::FakeTask.create!(fake_paper: paper) }
+
+      before do
+        Authorizations.configure do |config|
+          config.assignment_to(
+            Authorizations::FakePaper,
+            authorizes: Authorizations::FakeTask,
+            via: :fake_tasks)
+        end
+
+        assign_user user, to: paper, with_role: role_with_view_access_to_task
+        assign_user user, to: task, with_role: role_with_view_access_to_task
+      end
+
+      it "returns a hash of the user's permissions for that object only once" do
+        results = user.enumerate_targets(:view, Authorizations::FakeTask.all)
+        expect(results.to_h).to eq([
+          {
+            object: {
+              id: task.id,
+              type: Authorizations::FakeTask.name,
+            },
+            permissions: {
+              view: {
+                states: %w(*)
+              }
+            }
+          }
+        ])
+      end
     end
   end
 end

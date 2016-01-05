@@ -2,6 +2,7 @@ class PaperFactory
   attr_reader :paper, :creator
 
   def self.create(paper_params, creator)
+    paper_params[:title] = 'Untitled' if paper_params[:title].blank?
     paper = creator.submitted_papers.build(paper_params)
     pf = new(paper, creator)
     pf.create

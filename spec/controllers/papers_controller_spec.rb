@@ -135,7 +135,9 @@ describe PapersController do
       end
 
       it "renders the errors for the paper if it can't be saved" do
-        post :create, paper: { short_title: '', journal_id: journal.id }, format: :json
+        post :create, paper: { short_title: '', journal_id: journal.id },
+                      format: :json
+
         expect(response.status).to eq(422)
       end
 
@@ -144,6 +146,14 @@ describe PapersController do
                                                     message: "Manuscript was created",
                                                     feed_name: 'manuscript'))
         do_request
+      end
+
+      it 'has a default title' do
+        post :create, paper: { journal_id: journal.id,
+                               paper_type: journal.paper_types.first },
+                      format: :json
+
+        expect(res_body['paper']['title']).to eq('Untitled')
       end
     end
   end

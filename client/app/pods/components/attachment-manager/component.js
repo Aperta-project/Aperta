@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import FileUpload from 'tahi/models/file-upload';
+import extensionFont from 'tahi/lib/extension-font';
 
 export default Ember.Component.extend({
   classNames: ['attachment-manager'],
@@ -7,9 +8,12 @@ export default Ember.Component.extend({
   buttonText: 'Upload File',
   hasFile: false,
   fileName: null,
-  fileType: null,
   fileUpload: null,
   uploadInProgress: Ember.computed.notEmpty('fileUpload'),
+
+  fileTypeClass: Ember.computed('fileName', function(){
+    return extensionFont(this.get('fileName'));
+  }),
 
   actions: {
 
@@ -21,8 +25,8 @@ export default Ember.Component.extend({
     },
 
     fileAdded(file){
-      this.setProperties({ fileName: file.name, fileType: file.type });
-      this.set('fileUpload', FileUpload.create({ file: file }));
+      this.setProperties({ fileName: file.name,
+                           fileUpload: FileUpload.create({ file: file })});
     },
 
     triggerFileSelection() {
@@ -37,9 +41,11 @@ export default Ember.Component.extend({
     },
 
     uploadFinished(s3Url){
-     console.log('uploadFinished', s3Url);
      this.set('hasFile', true);
      this.set('fileUpload', null);
+     if (this.attrs.uploadFinished) {
+       this.attrs.uploadFinished(s3Url);
+     }
     },
 
     uploadFailed(reason){

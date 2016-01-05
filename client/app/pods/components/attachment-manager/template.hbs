@@ -8,7 +8,7 @@
 
   {{#if hasFile}}
     <a href="#" class="file-link">
-      <i class="fa fa-file-word-o"></i> {{fileName}}
+      <i class="fa {{fileTypeClass}}"></i> {{fileName}}
     </a>
 
     <span {{action "triggerFileSelection"}} class="file-action">

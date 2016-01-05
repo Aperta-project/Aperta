@@ -31,6 +31,12 @@ export default Ember.Component.extend({
       this.set('hasFile', false);
     },
 
+    noteChanged() {
+      if (this.attrs.noteChanged) {
+        this.attrs.noteChanged(this.get('note'));
+      }
+    },
+
     fileAdded(file){
       this.setProperties({ fileName: file.name,
                            fileUpload: FileUpload.create({ file: file })});

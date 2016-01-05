@@ -23,7 +23,8 @@
 
     {{#if hasNote}}
       {{input class="form-control " type="type" value=note
-      placeholder="Please provide a brief description of this file"}}
+              placeholder="Please provide a brief description of this file"
+              action="noteChanged" on="focus-out"}}
     {{/if}}
 
   {{else}}

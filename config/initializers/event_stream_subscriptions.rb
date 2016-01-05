@@ -50,6 +50,9 @@ Subscriptions.configure do
   add 'comment:created', stream_to_paper_channel
   add 'comment:destroyed', stream_to_everyone
 
+  add 'notifications:created', stream_to_user
+  add 'notifications:destroyed', stream_to_user
+
   add 'participation:created', stream_to_paper_channel
   add 'participation:destroyed', stream_to_everyone
 

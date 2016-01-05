@@ -4,12 +4,18 @@ class DiscussionParticipantsController < ApplicationController
   respond_to :json
 
   def create
-    discussion_participant.save
+    if discussion_participant.save
+      topic = discussion_participant.discussion_topic
+      topic.notifications.create!(paper: topic.paper, user: discussion_participant.user)
+    end
     respond_with discussion_participant
   end
 
   def destroy
-    discussion_participant.destroy
+    if discussion_participant.destroy
+      topic = discussion_participant.discussion_topic
+      topic.notifications.where(user: discussion_participant.user).destroy_all
+    end
     respond_with discussion_participant
   end
 

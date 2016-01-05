@@ -7,10 +7,10 @@ describe <<-DESC.strip_heredoc do
 DESC
   include AuthorizationSpecHelper
 
-  let(:user) { FactoryGirl.create(:user) }
-  let(:paper) { Authorizations::FakePaper.create! }
-  let(:task) { Authorizations::FakeTask.create!(fake_paper: paper) }
-  let(:task_thing) { Authorizations::FakeTaskThing.create!(fake_task: task) }
+  let!(:user) { FactoryGirl.create(:user) }
+  let!(:paper) { Authorizations::FakePaper.create! }
+  let!(:task) { Authorizations::FakeTask.create!(fake_paper: paper) }
+  let!(:task_thing) { Authorizations::FakeTaskThing.create!(fake_task: task) }
 
   permissions do
     permission action: 'view', applies_to: Authorizations::FakeTask.name
@@ -47,9 +47,36 @@ DESC
         assign_user user, to: paper, with_role: role_for_viewing
       end
 
-      it 'denies the user access' do
+      it 'denies the user access to tasks' do
         expect(user.can?(:view, task)).to be(false)
+      end
+
+      it 'denies the user access to task_things' do
         expect(user.can?(:view, task_thing)).to be(false)
+      end
+
+      it 'does not include the tasks when filtering for authorization' do
+        expect(
+          user.enumerate_targets(:view, Authorizations::FakeTask.all).objects
+        ).to eq([])
+      end
+
+      it 'does not include the tasks when filtering on the association' do
+        expect(
+          user.enumerate_targets(:view, paper.fake_tasks).objects
+        ).to eq([])
+      end
+
+      it 'does not include the task_things when filtering for authorization' do
+        expect(
+          user.enumerate_targets(:view, Authorizations::FakeTaskThing.all).objects
+        ).to eq([])
+      end
+
+      it 'does not include the task_things when filtering on the association' do
+        expect(
+          user.enumerate_targets(:view, paper.fake_task_things).objects
+        ).to eq([])
       end
     end
 
@@ -71,6 +98,50 @@ DESC
       it 'grants them access' do
         expect(user.can?(:view, task)).to be(true)
       end
+
+      it 'includes the objects when filtering for authorization' do
+        expect(
+          user.enumerate_targets(:view, Authorizations::FakeTask.all).objects
+        ).to eq([task])
+      end
+
+      it 'includes the objects when filtering by the association' do
+        expect(
+          user.enumerate_targets(:view, paper.fake_tasks).objects
+        ).to eq([task])
+      end
+    end
+
+    context <<-DESC do
+      and authorizations ARE configured to look up objects through a
+      HAS_MANY :THROUGH association
+    DESC
+      before do
+        Authorizations.configure do |config|
+          config.assignment_to(
+            Authorizations::FakePaper,
+            authorizes: Authorizations::FakeTaskThing,
+            via: :fake_task_things
+          )
+        end
+        assign_user user, to: paper, with_role: role_for_viewing
+      end
+
+      it 'grants them access' do
+        expect(user.can?(:view, task_thing)).to be(true)
+      end
+
+      it 'includes those objects when filtering for authorization' do
+        expect(
+          user.enumerate_targets(:view, Authorizations::FakeTaskThing.all).objects
+        ).to eq([task_thing])
+      end
+
+      it 'includes those objects when filtering by the association' do
+        expect(
+          user.enumerate_targets(:view, paper.fake_task_things).objects
+        ).to eq([task_thing])
+      end
     end
 
     context <<-DESC do
@@ -90,6 +161,18 @@ DESC
 
       it 'grants them access' do
         expect(user.can?(:view, task_thing)).to be(true)
+      end
+
+      it 'includes the object when filtering for authorization' do
+        expect(
+          user.enumerate_targets(:view, Authorizations::FakeTaskThing.all).objects
+        ).to eq([task_thing])
+      end
+
+      it 'includes those objects when filtering by the association' do
+        expect(
+          user.enumerate_targets(:view, task.fake_task_thing).objects
+        ).to eq([task_thing])
       end
     end
 
@@ -111,25 +194,17 @@ DESC
       it 'grants them access' do
         expect(user.can?(:view, task)).to be(true)
       end
-    end
 
-    context <<-DESC do
-      and authorizations ARE configured to look up objects through a
-      HAS_MANY :THROUGH association
-    DESC
-      before do
-        Authorizations.configure do |config|
-          config.assignment_to(
-            Authorizations::FakePaper,
-            authorizes: Authorizations::FakeTaskThing,
-            via: :fake_task_things
-          )
-        end
-        assign_user user, to: paper, with_role: role_for_viewing
+      it 'includes the object when filtering for authorization' do
+        expect(
+          user.enumerate_targets(:view, Authorizations::FakeTask.all).objects
+        ).to eq([task])
       end
 
-      it 'grants them access' do
-        expect(user.can?(:view, task_thing)).to be(true)
+      it 'includes the object when filtering by the association' do
+        expect(
+          user.enumerate_targets(:view, task_thing.fake_task).objects
+        ).to eq([task])
       end
     end
   end

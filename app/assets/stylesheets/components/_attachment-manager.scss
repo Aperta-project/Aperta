@@ -1,0 +1,21 @@
+.attachment-manager {
+  margin-bottom: 10px;
+
+  p.description {
+    font-style: italic;
+  }
+
+  .file-action {
+    color: $tahi-grey-dark;
+    margin-left: 5px;
+    cursor: pointer;
+  }
+
+  .file-link {
+    font-size: 18px;
+  }
+
+  .progress {
+    margin: 0px;
+  }
+}

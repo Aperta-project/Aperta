@@ -2,42 +2,30 @@
   {{{description}}}
 </p>
 
+{{#each attachments as |attachment|}}
+  {{attachment-item accept=accept
+                    filePath=filePath
+                    hasNote=hasNote
+                    deleteFile=attrs.deleteFile
+                    noteChanged=attrs.noteChanged
+                    uploadFinished=attrs.uploadFinished
+                    fileName=attachment.fileName}}
+{{/each}}
+
 {{#if uploadInProgress}}
   {{upload-preview upload=fileUpload}}
 {{else}}
 
-  {{#if hasFile}}
-    <a href="#" class="file-link">
-      <i class="fa {{fileTypeClass}}"></i> {{fileName}}
-    </a>
-
-    <span {{action "triggerFileSelection"}} class="file-action">
-      <i class="fa fa-refresh"></i>
-      Replace
-    </span>
-
-    <span {{action "deleteFile"}} class="file-action">
-      <i class="fa fa-trash"></i>
-      Delete
-    </span>
-
-    {{#if hasNote}}
-      {{input class="form-control " type="type" value=note
-              placeholder="Please provide a brief description of this file"
-              action="noteChanged" on="focus-out"}}
-    {{/if}}
-
-  {{else}}
-    <div class="button-secondary button--green" {{action "triggerFileSelection"}}>
+  {{#if showAddButton}}
+    <div class="button-secondary button--green fileinput-button">
       {{buttonText}}
+      {{s3-file-uploader elementId="add-new-attachment"
+                         accept=accept
+                         filePath=filePath
+                         uploadProgress=(action "uploadProgress")
+                         uploadFinished=(action "uploadFinished")
+                         uploadFailed=(action "uploadFailed")
+                         fileAdded=(action "fileAdded")}}
     </div>
   {{/if}}
-
-  {{s3-file-uploader accept=accept
-                     filePath=filePath
-                     class="s3-file-uploader"
-                     uploadProgress=(action "uploadProgress")
-                     uploadFinished=(action "uploadFinished")
-                     uploadFailed=(action "uploadFailed")
-                     fileAdded=(action "fileAdded")}}
 {{/if}}

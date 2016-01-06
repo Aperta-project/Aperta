@@ -1,0 +1,31 @@
+{{#if uploadInProgress}}
+  {{upload-preview upload=fileUpload}}
+{{else}}
+  <a href="#" class="file-link">
+    <i class="fa {{fileTypeClass}}"></i> {{fileName}}
+  </a>
+
+  <span {{action "triggerFileSelection"}} class="file-action">
+    <i class="fa fa-refresh"></i>
+    Replace
+  </span>
+
+  <span {{action "deleteFile"}} class="file-action">
+    <i class="fa fa-trash"></i>
+    Delete
+  </span>
+
+  {{#if hasNote}}
+    {{input class="form-control " type="type" value=note
+            placeholder="Please provide a brief description of this file"
+            action="noteChanged" on="focus-out"}}
+  {{/if}}
+
+  {{s3-file-uploader accept=accept
+                     filePath=filePath
+                     class="s3-file-uploader"
+                     uploadProgress=(action "uploadProgress")
+                     uploadFinished=(action "uploadFinished")
+                     uploadFailed=(action "uploadFailed")
+                     fileAdded=(action "fileAdded")}}
+{{/if}}

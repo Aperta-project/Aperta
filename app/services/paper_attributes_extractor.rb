@@ -6,15 +6,11 @@ class PaperAttributesExtractor
   end
 
   def sync!(paper)
-    paper.update!(attributes)
-  end
-
-  def attributes
-    @attributes ||= {
-      body: extract_file("body"),
-      title: extract_file("title"),
-      abstract: extract_file("abstract")
-    }
+    paper.update!(
+      body: extract_file('body'),
+      abstract: extract_file('abstract'),
+      title: extract_file('title') || paper.title
+    )
   end
 
   private

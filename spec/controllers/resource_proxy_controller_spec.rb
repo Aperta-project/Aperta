@@ -16,9 +16,8 @@ describe ResourceProxyController do
 
     it 'redirects to S3 URL for supporting_information_files' do
       subject
-      target = assigns(:resource).attachment.url
+      target = file.attachment.url
       expect(subject).to redirect_to(target)
-      expect(assigns(:resource).id).to eq file.id
       expect(target).to include('amazonaws')
       expect(target).to include(file.filename)
     end
@@ -34,9 +33,8 @@ describe ResourceProxyController do
 
     it 'redirects to S3 URL for supporting_information_files' do
       subject
-      target = assigns(:resource).attachment.url(:preview)
+      target = file.attachment.url(:preview)
       expect(subject).to redirect_to(target)
-      expect(assigns(:resource).id).to eq file.id
       expect(target).to include('amazonaws')
       # for versions, they are converted to png: yeti.tiff => preview_yeti.png
       expect(target).to include("preview_#{file.filename.split('.').first}.png")
@@ -74,7 +72,7 @@ describe ResourceProxyController do
           resource: :supporting_information_files,
           token: file.token
 
-      target = assigns(:resource).attachment.url
+      target = file.attachment.url
       expect(response).to redirect_to(target)
     end
   end

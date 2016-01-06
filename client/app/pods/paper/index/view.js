@@ -8,10 +8,6 @@ export default Ember.View.extend(PaperIndexMixin, {
     return navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
   },
 
-  didInserElement: function() {
-    this.loadMathJax();
-  },
-
   didRender: function() {
     this.refreshEquations();
   },

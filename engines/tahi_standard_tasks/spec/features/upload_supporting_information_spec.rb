@@ -42,6 +42,7 @@ feature "Upload Supporting Information", js: true, selenium: true do
     task.file_label_input = 'F4'
     task.file_category_dropdown = 'Figure'
     task.toggle_file_striking_image
+    task.toggle_for_publication
 
     task.save_file_info
 
@@ -56,6 +57,7 @@ feature "Upload Supporting Information", js: true, selenium: true do
     expect(file.label).to eq 'F4'
     expect(file.category).to eq 'Figure'
     expect(file.striking_image).to be(true)
+    expect(file.publishable).to be(false)
 
     # delete file
     task.delete_file

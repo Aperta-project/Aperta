@@ -43,6 +43,11 @@ class SupportingInfoOverlay < CardOverlay
     checkbox.click
   end
 
+  def toggle_for_publication
+    checkbox = find('.si-file-publishable-checkbox')
+    checkbox.click
+  end
+
   def file_title
     find('.si-file-title').text
   end

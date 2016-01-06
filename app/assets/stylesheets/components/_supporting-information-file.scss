@@ -1,17 +1,7 @@
-.supporting-information-files {
-  margin-bottom: 15px;
-}
-
-.si-files-upload-button {
-  margin-right: 10px;
-  float: left;
-  margin-top: 2px;
-}
-
 .si-file {
   position: relative;
   width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
   border-top: 2px solid $tahi-grey-light;
 
   &.si-file-delete {
@@ -45,16 +35,12 @@
       font-size: 1.7rem;
     }
 
-    input[type=text], textarea {
-      width: auto;
-    }
-
-    input[name=label] {
+    .si-file-label-input {
       max-width: 50px;
       flex: none;
     }
 
-    input[name=category] {
+    .si-file-category-input {
       width: 125px;
     }
 

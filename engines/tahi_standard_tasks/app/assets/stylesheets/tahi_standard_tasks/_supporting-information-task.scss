@@ -1,0 +1,23 @@
+.supporting-information-task {
+  .si-files-upload-button {
+    margin-right: 10px;
+    float: left;
+    margin-top: 2px;
+  }
+
+  #paper-file-uploads {
+    .progress {
+      margin-top: 0;
+      border: none;
+      border-bottom: 2px solid $tahi-grey-light;
+      border-radius: 0px;
+      box-shadow: none;
+
+      &.upload-complete {
+        display: none;
+      }
+    }
+
+    margin-bottom: 15px;
+  }
+}

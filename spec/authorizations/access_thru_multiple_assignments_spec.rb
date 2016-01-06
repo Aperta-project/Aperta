@@ -44,5 +44,4 @@ DESC
       ).to eq([task])
     end
   end
-
 end

@@ -25,8 +25,12 @@ DESC
   end
 
   permissions do
-    permission action: 'view', applies_to: Authorizations::FakeTask.name
-    permission action: 'view_reserved_task', applies_to: Authorizations::FakeTask.name
+    permission(
+      action: 'view',
+      applies_to: Authorizations::FakeTask.name)
+    permission(
+      action: 'view_reserved_task',
+      applies_to: Authorizations::FakeTask.name)
   end
 
   role :with_access_to_generic_tasks do
@@ -74,7 +78,8 @@ DESC
   DESC
 
     before do
-      reserved_task.update! required_permission: Permission.find_by_action!('view_reserved_task')
+      required_permission = Permission.find_by_action!('view_reserved_task')
+      reserved_task.update! required_permission: required_permission
       assign_user user, to: paper, with_role: role_with_access_to_generic_tasks
     end
 
@@ -83,9 +88,10 @@ DESC
     end
 
     it 'does not include objects that require the specific permission' do
-      expect(
-        user.enumerate_targets(:view_reserved_task, Authorizations::FakeTask.all).objects
-      ).to_not include(reserved_task)
+      results = user.enumerate_targets(
+        :view_reserved_task,
+        Authorizations::FakeTask.all)
+      expect(results.objects).to_not include(reserved_task)
     end
   end
 
@@ -95,7 +101,8 @@ DESC
   DESC
 
     before do
-      reserved_task.update! required_permission: Permission.find_by_action!('view_reserved_task')
+      required_permission = Permission.find_by_action!('view_reserved_task')
+      reserved_task.update! required_permission: required_permission
       assign_user user, to: paper, with_role: role_with_access_to_reserved_tasks
     end
 
@@ -104,9 +111,10 @@ DESC
     end
 
     it 'includes the object that requires the specific permission' do
-      expect(
-        user.enumerate_targets(:view_reserved_task, Authorizations::FakeTask.all).objects
-      ).to include(reserved_task)
+      results = user.enumerate_targets(
+        :view_reserved_task,
+        Authorizations::FakeTask.all)
+      expect(results.objects).to include(reserved_task)
     end
   end
 end

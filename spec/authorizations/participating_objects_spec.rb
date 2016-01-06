@@ -32,7 +32,8 @@ DESC
       add_column(
         :roles,
         :participates_in_fake_papers,
-        :boolean, null: false,
+        :boolean,
+        null: false,
         default: false
       )
     end

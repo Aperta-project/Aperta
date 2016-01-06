@@ -43,9 +43,13 @@
             placeholder="E.g. S1"
             name="label"
             value=file.label}}
-    {{input class="form-control flex-element si-file-category-input"
-            placeholder="Select category"
+    {{power-select-other class="form-control flex-element si-file-category-input"
+            otherText="Other"
+            selectPlaceholder="Select category"
+            inputPlaceholder="Please specify"
             name="category"
+            options=categories
+            searchEnabled=false
             value=file.category}}
   </div>
   <div class="flex-group">

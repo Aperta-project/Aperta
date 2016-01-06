@@ -4,13 +4,30 @@
   input {
     width: 100%;
   }
-}
 
-.power-select-other--other-selected {
-  border-color: #aaa;
-  padding-right: 20px;
 
-  .ember-power-select-status-icon {
-    cursor: pointer;
+  .power-select-other--other-selected {
+    border-color: #aaa;
+    padding-right: 20px;
+
+    .ember-power-select-status-icon {
+      cursor: pointer;
+    }
+  }
+
+  &.form-control {
+    border: none;
+    background: transparent;
+    padding: 0px;
+    box-shadow: none;
+
+    .power-select-other-input,
+    .ember-power-select-trigger {
+      @extend .form-control;
+    }
+
+    .power-select-other-input {
+      margin-right: 15px;
+    }
   }
 }

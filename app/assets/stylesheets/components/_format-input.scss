@@ -27,12 +27,16 @@
       text-decoration: none;
     }
   }
-}
 
-.format-input--active .format-input-button {
-  color: #666;
-}
+  &.format-input--active .format-input-button {
+    color: #666;
+  }
 
-.format-input--active .format-input-button--active {
-  color: $tahi-green;
+  &.format-input--active .format-input-button--active {
+    color: $tahi-green;
+  }
+
+  &.form-control.format-input--active {
+    @extend .form-control:focus;
+  }
 }

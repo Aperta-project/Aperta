@@ -32,6 +32,13 @@ export default Ember.Component.extend({
     return klass || 'fa-file-o';
   }),
 
+  attachmentUrl: Ember.computed('file.id', 'figure', function() {
+    return ('/api/supporting_information_files/' +
+            this.get('file.id') +
+            '/update_attachment');
+  }),
+
+
   actions: {
     enterDeleteState: function() {
       this.set('uiState', 'delete');

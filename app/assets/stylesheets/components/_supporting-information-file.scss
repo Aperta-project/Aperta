@@ -35,6 +35,18 @@
       font-size: 1.7rem;
     }
 
+    .fileinput-button {
+      color: $tahi-grey;
+      font-size: 1.3rem;
+      display: inline;
+      margin-left: 3px;
+      background: transparent;
+      border: none;
+      i {
+        padding: 0;
+      }
+    }
+
     .si-file-label-input {
       max-width: 50px;
       flex: none;

@@ -37,6 +37,20 @@
 <div class="si-file-editor flex-form {{if (is-equal uiState 'edit') 'visible' ''}}">
   <div class="si-file-filename">
     <a href="{{ file.src }}"><i class="fa {{iconClass}}"></i>{{ file.filename }}</a>
+
+    <button class="fileinput-button">
+      <i class="fa fa-refresh"></i>
+      <span>Replace File</span>
+      {{file-uploader
+        url=attachmentUrl
+        railsMethod="PUT"
+        multiple=false
+        filePrefix="supporting-info"
+        start="uploadStarted"
+        progress="uploadProgress"
+        done="uploadFinished"
+        cancel="cancelUploads"}}
+    </button>
   </div>
   <div class="flex-group">
     {{input class="form-control flex-element si-file-label-input"

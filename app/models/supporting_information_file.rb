@@ -66,6 +66,6 @@ class SupportingInformationFile < ActiveRecord::Base
   end
 
   def insert_title
-    self.title = "Title: #{attachment.filename}" if attachment.present?
+    self.title = "#{attachment.filename}" if attachment.present?
   end
 end

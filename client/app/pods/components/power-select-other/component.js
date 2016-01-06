@@ -120,6 +120,13 @@ export default Ember.Component.extend({
   actions: {
     select(value) {
       this.set('selectedValue', value);
+
+      if(value === this.get('otherText')) {
+        this.set('value', null);
+        return;
+      }
+
+      this.set('value', value);
     },
 
     otherTrigger() {

@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import time
+import pdb
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -15,11 +16,9 @@ class RegisterDecisionTask(BaseTask):
   Page Object Model for Register Decision task
   """
 
-  data = ('Major Revision', 'placeholder text')
 
   def __init__(self, driver, url_suffix='/'):
     super(RegisterDecisionTask, self).__init__(driver)
-
 
     #Locators - Instance members
     self._decisions = (By.CLASS_NAME, 'decision-selections')
@@ -27,7 +26,7 @@ class RegisterDecisionTask(BaseTask):
     self._register_btn = (By.TAG_NAME, 'button')
 
    #POM Actions
-  def execute_decision(self, data=data):
+  def execute_decision(self, data=('Major Revision', 'Your manuscript needs major revision')):
     """
     This method completes decision card by selecting a decision and filling the
       textarea for sending an email to the author.
@@ -35,12 +34,22 @@ class RegisterDecisionTask(BaseTask):
       and the email text as the second element.
     """
 
+    #pdb.set_trace()
+    #if not data:
+    #  data = ('Major Revision', 'Your manuscript needs major revision')
     decision_d = {'Accept':0, 'Reject':1, 'Major Revision':2, 'Minor Revision':3}
     decision_labels =  self._get(self._decisions).find_elements_by_tag_name('label')
-    decision_labels[decision_d[data[0]]].click()
+    decision_labels[decision_d[data[0]]].find_element_by_tag_name('input').click()
+    # wait for the text area to load the text
+    time.sleep(.5)
     self._get(self._textarea).send_keys(data[1])
     # press "Register Decision" btn
     self._get(self._register_btn).click()
     # Give time to register the decision
+    # wait for alert
+    #pdb.set_trace()
     time.sleep(1)
     self._get(self._completed_cb).click()
+
+
+    #[u'', u'Now viewing:\nR1.0 - Jan 05, 2016\nR0.1 - Jan 05, 2016\nR0.0 - Jan 05, 2016', u'Compare With:\n-\nR1.0 - Jan 05, 2016\nR0.1 - Jan 05, 2016\nR0.0 - Jan 05, 2016', u'\xd7']

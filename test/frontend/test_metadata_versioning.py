@@ -99,7 +99,7 @@ class MetadataVersioningTest(CommonTest):
     types = ('Research w/Initial Decision Card',)
     journal_type = random.choice(types)
 
-    new_prq = {'q1':'Yes', 'q2':'No', 'q3': [0,1,0,0], 'q4':'New Data',
+    new_prq = {'q1':'Yes', 'q2':'Yes', 'q3': [0,1,0,0], 'q4':'New Data',
                       'q5':'More Data'}
     #if True: # for debugging
     if self.check_article(title, user='jgray_author'):
@@ -167,7 +167,7 @@ class MetadataVersioningTest(CommonTest):
       paper_viewer.complete_task('Initial Decision')
       time.sleep(1)
       paper_viewer.logout()
-      # Log in as a author to make final submission
+      # Log in as a author to make first final submission
       dashboard_page = self.login(email=au_login['user'], password=login_valid_pw)
       dashboard_page.go_to_manuscript(paper_id)
       paper_viewer = ManuscriptViewerPage(self.getDriver())
@@ -185,6 +185,7 @@ class MetadataVersioningTest(CommonTest):
       dashboard_page.go_to_manuscript(paper_id)
       paper_viewer = ManuscriptViewerPage(self.getDriver())
       # register decision as accept with revisions
+      #data = ('Major Revision', 'Your manuscript needs major revision')
       paper_viewer.complete_task('Register Decision')
       time.sleep(1)
       paper_viewer.logout()
@@ -192,11 +193,15 @@ class MetadataVersioningTest(CommonTest):
       dashboard_page = self.login(email=au_login['user'], password=login_valid_pw)
       dashboard_page.go_to_manuscript(paper_id)
       paper_viewer = ManuscriptViewerPage(self.getDriver())
-      #pdb.set_trace()
-
       paper_viewer.complete_task('Publishing Related Questions', click_override=True, data=new_prq, click=True)
       # check versioning
-      XXXXXXXX
+
+      version_btn = paper_viewer._get(paper_viewer._tb_versions_link)
+      version_btn.click()
+      bar_items = paper_viewer._gets(paper_viewer._bar_items)
+      print([x.text for x in bar_items])
+      pdb.set_trace()
+
 
       #pdb.set_trace()
 

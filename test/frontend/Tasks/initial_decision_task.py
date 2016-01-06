@@ -15,7 +15,7 @@ class InitialDecisionTask(BaseTask):
   Page Object Model for Initial Decision task
   """
 
-  data = ('Invite', 'placeholder text')
+  data = ('Invite', 'Invite for full submission')
 
   def __init__(self, driver, url_suffix='/'):
     super(InitialDecisionTask, self).__init__(driver)

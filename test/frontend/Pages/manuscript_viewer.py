@@ -374,7 +374,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :task_name: The name of the task to conmplete (str)
     :click_override:
     :data:
-    returns XXXXX
+    returns None
     """
     tasks = self._gets(self._task_headings)
     # if task is marked as complete, leave is at is.
@@ -409,16 +409,16 @@ class ManuscriptViewerPage(AuthenticatedPage):
       time.sleep(1)
     elif task_name == 'Register Decision':
       register_decision_task = RegisterDecisionTask(self._driver)
-      register_decision_task.execute_decision()
+      if data:
+        register_decision_task.execute_decision(data)
+      else:
+        register_decision_task.execute_decision()
       completed = base_task.completed_cb_is_selected()
       if not completed:
         self._get(base_task._completed_cb).click()
       task.click()
       time.sleep(1)
     elif task_name == 'Publishing Related Questions':
-      print 428
-      #if click:
-      #  task.click()
       prq_task = PRQTask(self._driver)
       prq_task.complete_prq(data)
       #complete_prq

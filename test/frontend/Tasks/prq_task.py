@@ -49,28 +49,42 @@ class PRQTask(BaseTask):
       time.sleep(1)
     else:
       print 51
-      pdb.set_trace()
+      #pdb.set_trace()
       # complete with data
       questions = self._gets(self._questions)
       # q1
       if data['q1'] == 'Yes':
-        questions[0].find_element_by_tag_name('input').click()
+        # wait for the element to be attached to the DOM
+        time.sleep(2)
+        questions[0].find_elements_by_tag_name('input')[0].click()
+      else:
+        time.sleep(1)
+        questions[0].find_elements_by_tag_name('input')[1].click()
       if data['q2'] == 'Yes':
+        # wait for the element to be attached to the DOM
+        time.sleep(2)
         questions[1].find_element_by_tag_name('input').click()
+      else:
+        time.sleep(2)
+        questions[1].find_elements_by_tag_name('input')[1].click()
       if data['q3'] != [0,0,0,0]:
         # not implemented
-        pass
+        # wait for the element to be attached to the DOM
+        time.sleep(2)
+        checkboxes = questions[2].find_elements_by_tag_name('input')
+        for order, cbx in enumerate(data['q3']):
+          if cbx == 1:
+            checkboxes[order].click()
       if data['q4']:
-        # Not implemented
-        pass
-        #questions[1].find_element_by_tag_name('input').click()
-        #questions[1].find_element_by_tag_name('input').click()
+        print questions
+        print questions[3]
+        questions[3].find_element_by_tag_name('input').send_keys(data['q4'])
       if data['q5']:
-        # Not implemented
-        pass
-        #questions[1].find_element_by_tag_name('input').click()
+        questions[4].find_element_by_class_name('format-input-field').send_keys(data['q5'])
       completed = self.completed_cb_is_selected()
-      self._get(self._completed_cb).click()
+      print 'Completed: {}'.format(completed)
+      if not completed:
+        self._get(self._completed_cb).click()
       #task.click()
 
     return self

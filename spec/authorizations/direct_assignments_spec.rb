@@ -7,16 +7,16 @@ describe <<-DESC.strip_heredoc do
 DESC
   include AuthorizationSpecHelper
 
-  after do
-    Authorizations.reset_configuration
-    AuthorizationModelsSpecHelper.create_db_tables
-  end
-
   let!(:user) { FactoryGirl.create(:user, first_name: 'User') }
   let!(:other_user) { FactoryGirl.create(:user, first_name: 'Other User') }
 
   let!(:paper) { Authorizations::FakePaper.create! }
   let!(:other_paper) { Authorizations::FakePaper.create! }
+
+  before(:all) do
+    Authorizations.reset_configuration
+    AuthorizationModelsSpecHelper.create_db_tables
+  end
 
   permissions do
     permission action: 'view', applies_to: Authorizations::FakePaper.name

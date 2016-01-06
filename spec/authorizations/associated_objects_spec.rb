@@ -12,6 +12,11 @@ DESC
   let!(:task) { Authorizations::FakeTask.create!(fake_paper: paper) }
   let!(:task_thing) { Authorizations::FakeTaskThing.create!(fake_task: task) }
 
+  before(:all) do
+    Authorizations.reset_configuration
+    AuthorizationModelsSpecHelper.create_db_tables
+  end
+
   permissions do
     permission action: 'view', applies_to: Authorizations::FakeTask.name
     permission action: 'view', applies_to: Authorizations::FakeTaskThing.name
@@ -22,11 +27,6 @@ DESC
     has_permission \
       action: 'view',
       applies_to: Authorizations::FakeTaskThing.name
-  end
-
-  before(:all) do
-    Authorizations.reset_configuration
-    AuthorizationModelsSpecHelper.create_db_tables
   end
 
   after do

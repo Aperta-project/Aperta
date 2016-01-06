@@ -10,8 +10,26 @@ export default Ember.Component.extend({
   deleteState: false,
   editState: false,
 
-  siFileState: Ember.computed('uiState', function(){
+  categories: [
+    'Table',
+    'Data',
+    'Text',
+    'Figure'
+  ],
+
+  siFileState: Ember.computed('uiState', function() {
     return 'si-file-' + this.get('uiState');
+  }),
+
+  iconClass: Ember.computed('file.category', function() {
+    let klass = {
+       'Figure': 'fa-file-image-o',
+       'Text': 'fa-file-text-o',
+       'Table': 'fa-file-o',
+       'Data': 'fa-file-o'
+    }[this.get('file.category')];
+
+    return klass || 'fa-file-o';
   }),
 
   actions: {

@@ -49,7 +49,7 @@ DESC
 
     it 'does not include unauthorized objects' do
       expect(
-        user.enumerate_targets(:edit, Authorizations::FakePaper.all).objects
+        user.filter_authorized(:edit, Authorizations::FakePaper.all).objects
       ).to_not include(paper)
     end
   end
@@ -69,7 +69,7 @@ DESC
 
     it 'includes authorized objects' do
       expect(
-        user.enumerate_targets(:edit, Authorizations::FakePaper.all).objects
+        user.filter_authorized(:edit, Authorizations::FakePaper.all).objects
       ).to include(paper)
     end
   end
@@ -97,7 +97,7 @@ DESC
 
     it 'includes authorized objects' do
       expect(
-        user.enumerate_targets(:edit, Authorizations::FakePaper.all).objects
+        user.filter_authorized(:edit, Authorizations::FakePaper.all).objects
       ).to include(paper)
     end
   end

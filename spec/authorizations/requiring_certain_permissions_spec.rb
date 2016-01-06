@@ -67,7 +67,7 @@ DESC
 
     it 'includes all objects when filtering for authorization' do
       expect(
-        user.enumerate_targets(:view, Authorizations::FakeTask.all).objects
+        user.filter_authorized(:view, Authorizations::FakeTask.all).objects
       ).to include(task, reserved_task)
     end
   end
@@ -88,7 +88,7 @@ DESC
     end
 
     it 'does not include objects that require the specific permission' do
-      results = user.enumerate_targets(
+      results = user.filter_authorized(
         :view_reserved_task,
         Authorizations::FakeTask.all)
       expect(results.objects).to_not include(reserved_task)
@@ -111,7 +111,7 @@ DESC
     end
 
     it 'includes the object that requires the specific permission' do
-      results = user.enumerate_targets(
+      results = user.filter_authorized(
         :view_reserved_task,
         Authorizations::FakeTask.all)
       expect(results.objects).to include(reserved_task)

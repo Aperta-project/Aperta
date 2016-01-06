@@ -81,7 +81,7 @@ DESC
 
   describe '#to_h' do
     it "returns a hash of all the user's permissions for the returned object" do
-      results = user.enumerate_targets(:view, Authorizations::FakePaper.all)
+      results = user.filter_authorized(:view, Authorizations::FakePaper.all)
       expect(results.to_h).to eq([
         {
           object: {
@@ -129,7 +129,7 @@ DESC
       end
 
       it 'returns the permissions for all permissible assignments' do
-        results = user.enumerate_targets(:view, Authorizations::FakeTask.all)
+        results = user.filter_authorized(:view, Authorizations::FakeTask.all)
         expect(results.to_h).to eq([
           {
             object: {

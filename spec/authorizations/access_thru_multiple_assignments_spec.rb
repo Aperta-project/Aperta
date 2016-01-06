@@ -40,7 +40,7 @@ DESC
 
     it 'only returns the object once (no duplicates)' do
       expect(
-        user.enumerate_targets(:view, Authorizations::FakeTask.all).objects
+        user.filter_authorized(:view, Authorizations::FakeTask.all).objects
       ).to eq([task])
     end
   end

@@ -7,10 +7,10 @@ module Authorizations::UserHelper
   end
 
   def can?(permission, target)
-    enumerate_targets(permission, target).objects.length > 0
+    filter_authorized(permission, target).objects.length > 0
   end
 
-  def enumerate_targets(permission, target)
+  def filter_authorized(permission, target)
     Authorizations::Query.new(
       permission: permission,
       target: target,

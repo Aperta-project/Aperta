@@ -57,25 +57,25 @@ DESC
 
       it 'does not include the tasks when filtering for authorization' do
         expect(
-          user.enumerate_targets(:view, Authorizations::FakeTask.all).objects
+          user.filter_authorized(:view, Authorizations::FakeTask.all).objects
         ).to eq([])
       end
 
       it 'does not include the tasks when filtering on the association' do
         expect(
-          user.enumerate_targets(:view, paper.fake_tasks).objects
+          user.filter_authorized(:view, paper.fake_tasks).objects
         ).to eq([])
       end
 
       it 'does not include the task_things when filtering for authorization' do
         expect(
-          user.enumerate_targets(:view, Authorizations::FakeTaskThing.all).objects
+          user.filter_authorized(:view, Authorizations::FakeTaskThing.all).objects
         ).to eq([])
       end
 
       it 'does not include the task_things when filtering on the association' do
         expect(
-          user.enumerate_targets(:view, paper.fake_task_things).objects
+          user.filter_authorized(:view, paper.fake_task_things).objects
         ).to eq([])
       end
     end
@@ -101,13 +101,13 @@ DESC
 
       it 'includes the objects when filtering for authorization' do
         expect(
-          user.enumerate_targets(:view, Authorizations::FakeTask.all).objects
+          user.filter_authorized(:view, Authorizations::FakeTask.all).objects
         ).to eq([task])
       end
 
       it 'includes the objects when filtering by the association' do
         expect(
-          user.enumerate_targets(:view, paper.fake_tasks).objects
+          user.filter_authorized(:view, paper.fake_tasks).objects
         ).to eq([task])
       end
     end
@@ -133,13 +133,13 @@ DESC
 
       it 'includes those objects when filtering for authorization' do
         expect(
-          user.enumerate_targets(:view, Authorizations::FakeTaskThing.all).objects
+          user.filter_authorized(:view, Authorizations::FakeTaskThing.all).objects
         ).to eq([task_thing])
       end
 
       it 'includes those objects when filtering by the association' do
         expect(
-          user.enumerate_targets(:view, paper.fake_task_things).objects
+          user.filter_authorized(:view, paper.fake_task_things).objects
         ).to eq([task_thing])
       end
     end
@@ -165,13 +165,13 @@ DESC
 
       it 'includes the object when filtering for authorization' do
         expect(
-          user.enumerate_targets(:view, Authorizations::FakeTaskThing.all).objects
+          user.filter_authorized(:view, Authorizations::FakeTaskThing.all).objects
         ).to eq([task_thing])
       end
 
       it 'includes those objects when filtering by the association' do
         expect(
-          user.enumerate_targets(:view, task.fake_task_thing).objects
+          user.filter_authorized(:view, task.fake_task_thing).objects
         ).to eq([task_thing])
       end
     end
@@ -197,13 +197,13 @@ DESC
 
       it 'includes the object when filtering for authorization' do
         expect(
-          user.enumerate_targets(:view, Authorizations::FakeTask.all).objects
+          user.filter_authorized(:view, Authorizations::FakeTask.all).objects
         ).to eq([task])
       end
 
       it 'includes the object when filtering by the association' do
         expect(
-          user.enumerate_targets(:view, task_thing.fake_task).objects
+          user.filter_authorized(:view, task_thing.fake_task).objects
         ).to eq([task])
       end
     end

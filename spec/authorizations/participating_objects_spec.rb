@@ -88,7 +88,7 @@ DESC
 
     it 'includes the paper when filtering for authorization' do
       expect(
-        user.enumerate_targets(:view, Authorizations::FakeTask.all).objects
+        user.filter_authorized(:view, Authorizations::FakeTask.all).objects
       ).to include(task)
     end
   end
@@ -112,7 +112,7 @@ DESC
 
     it 'does not includes the paper when filtering for authorization' do
       expect(
-        user.enumerate_targets(:view, Authorizations::FakePaper.all).objects
+        user.filter_authorized(:view, Authorizations::FakePaper.all).objects
       ).to_not include(paper)
     end
   end
@@ -136,7 +136,7 @@ DESC
 
     it 'does not includes the paper when filtering for authorization' do
       expect(
-        user.enumerate_targets(:view, Authorizations::FakePaper.all).objects
+        user.filter_authorized(:view, Authorizations::FakePaper.all).objects
       ).to include(paper)
     end
   end

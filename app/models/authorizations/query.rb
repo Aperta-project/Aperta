@@ -1,3 +1,4 @@
+# rubocop:disable all
 module Authorizations
   class Query
     WILDCARD_STATE = '*'
@@ -233,3 +234,4 @@ module Authorizations
     end
   end
 end
+# rubocop:enable all

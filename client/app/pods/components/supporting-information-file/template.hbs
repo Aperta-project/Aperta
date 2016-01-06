@@ -1,5 +1,5 @@
 {{#unless (is-equal uiState 'edit')}}
-<div class="si-file-viewing">
+<div class="si-file-viewing" {{action 'enterEditState' on='doubleClick'}}>
 
   {{#if isEditable}}
     <div class="si-file-control-icons">

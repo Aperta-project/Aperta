@@ -15,6 +15,7 @@ export function initialize(instance) {
 
   instance.registry.injection('controller', 'pusher', 'pusher:main');
   instance.registry.injection('route',      'pusher', 'pusher:main');
+  instance.registry.injection('service:notifications', 'pusher', 'pusher:main');
 }
 
 export default {

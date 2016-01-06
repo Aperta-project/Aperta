@@ -2,10 +2,10 @@ export default {
   name: 'current-user',
 
   initialize(instance) {
-    let data = window.currentUserData;
+    const data = window.currentUserData;
     if($.isEmptyObject(data)) { return; }
 
-    let store = instance.container.lookup('service:store');
+    const store = instance.container.lookup('service:store');
     store.pushPayload(data);
 
     let user = store.getById('user', data.user.id);
@@ -14,7 +14,8 @@ export default {
     });
 
     instance.registry.injection('controller', 'currentUser', 'user:current');
-    instance.registry.injection('route', 'currentUser', 'user:current');
+    instance.registry.injection('route',      'currentUser', 'user:current');
     instance.registry.injection('component:overlay-task', 'currentUser', 'user:current');
+    instance.registry.injection('service:notifications', 'currentUser',  'user:current');
   }
 };

@@ -1,9 +1,15 @@
 {{#if _otherOptionSelected}}
 
   {{#if allowOtherFormatting}}
-    {{format-input value=value autofocus=true}}
+    {{format-input placeholder=inputPlaceholder
+                   value=value
+                   class="power-select-other-input"
+                   autofocus=true}}
   {{else}}
-    {{input value=value autofocus=true}}
+    {{input placeholder=inputPlaceholder
+            value=value
+            class="power-select-other-input"
+            autofocus=true}}
   {{/if}}
 
   <span class="ember-power-select-status-icon" {{action "otherTrigger"}}></span>
@@ -11,6 +17,8 @@
 
   {{#power-select options=_optionsWithOther
                   selected=selectedValue
+                  searchEnabled=searchEnabled
+                  placeholder=selectPlaceholder
                   onchange=(action "select")
                   as |v|}}
     {{v}}

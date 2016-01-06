@@ -17,10 +17,13 @@ import Ember from 'ember';
  *  ```
 **/
 
-const { computed } = Ember;
+const { computed, observer } = Ember;
 
 export default Ember.Component.extend({
-  classNameBindings: [':power-select-other', '_otherOptionSelected:power-select-other--other-selected'],
+  classNameBindings: [
+    ':power-select-other',
+    '_otherOptionSelected:power-select-other--other-selected'
+  ],
 
   /**
    *  @property value
@@ -51,6 +54,36 @@ export default Ember.Component.extend({
   **/
   otherText: 'other...',
 
+  /**
+   *  Enable/disable power-select component search
+   *
+   *  @property searchEnabled
+   *  @type Boolean
+   *  @default false
+   *  @optional
+  **/
+  searchEnabled: false,
+
+  /**
+   *  Placeholder for power-select component
+   *
+   *  @property selectPlaceholder
+   *  @type String
+   *  @default ''
+   *  @optional
+  **/
+  selectPlaceholder: '',
+
+  /**
+   *  Placeholder for input
+   *
+   *  @property inputPlaceholder
+   *  @type String
+   *  @default ''
+   *  @optional
+  **/
+  inputPlaceholder: '',
+
   selectedValue: null, // internal state
 
   didReceiveAttrs() {
@@ -77,10 +110,16 @@ export default Ember.Component.extend({
     return this.get('selectedValue') === this.get('otherText');
   }),
 
+
+  _otherWasSelected: observer('_otherOptionSelected', function() {
+    Ember.run.scheduleOnce('afterRender', ()=> {
+      this.$('.power-select-other-input').focus();
+    });
+  }),
+
   actions: {
     select(value) {
       this.set('selectedValue', value);
-      this.set('value', value);
     },
 
     otherTrigger() {

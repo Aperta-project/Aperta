@@ -54,6 +54,7 @@ DESC
 
     permission action: 'view', applies_to: Authorizations::FakeTask.name
     permission action: 'edit', applies_to: Authorizations::FakeTask.name
+    permission action: 'discuss', applies_to: Authorizations::FakeTask.name
   end
 
   role :editor do
@@ -65,9 +66,11 @@ DESC
 
   role :with_view_access_to_task do
     has_permission action: 'view', applies_to: Authorizations::FakeTask.name
+    has_permission action: 'discuss', applies_to: Authorizations::FakeTask.name
   end
 
   role :with_edit_access_to_task do
+    has_permission action: 'view', applies_to: Authorizations::FakeTask.name
     has_permission action: 'edit', applies_to: Authorizations::FakeTask.name
   end
 
@@ -108,8 +111,7 @@ DESC
     end
 
     describe <<-DESC do
-      and the user has access thru multiple assignments with the SAME
-      permissions
+      and the user has access thru multiple assignments
     DESC
       let!(:paper) { Authorizations::FakePaper.create!(journal: journal) }
       let!(:task) { Authorizations::FakeTask.create!(fake_paper: paper) }
@@ -123,19 +125,25 @@ DESC
         end
 
         assign_user user, to: paper, with_role: role_with_view_access_to_task
-        assign_user user, to: task, with_role: role_with_view_access_to_task
+        assign_user user, to: task, with_role: role_with_edit_access_to_task
       end
 
-      it "returns a hash of the user's permissions for that object only once" do
+      it 'returns the permissions for all permissible assignments' do
         results = user.enumerate_targets(:view, Authorizations::FakeTask.all)
         expect(results.to_h).to eq([
           {
             object: {
               id: task.id,
-              type: Authorizations::FakeTask.name,
+              type: Authorizations::FakeTask.name
             },
             permissions: {
+              discuss: {
+                states: %w(*)
+              },
               view: {
+                states: %w(*)
+              },
+              edit: {
                 states: %w(*)
               }
             }

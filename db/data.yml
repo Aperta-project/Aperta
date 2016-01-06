@@ -6095,7 +6095,7 @@ nested_questions:
     - 
   - - '3'
     - Provide a completed PRISMA checklist as supporting information.  You can <a
-      href='http://www.prisma-statement.org/'>download it here</a>.
+      href='http://www.prisma-statement.org/' target='_blank'>download it here</a>.
     - attachment
     - reporting_guidelines--systematic_reviews--checklist
     - '2'
@@ -6120,7 +6120,7 @@ nested_questions:
     - 
   - - '5'
     - Provide a completed PRISMA checklist as supporting information.  You can <a
-      href='http://www.prisma-statement.org/'>download it here</a>.
+      href='http://www.prisma-statement.org/' target='_blank'>download it here</a>.
     - attachment
     - reporting_guidelines--meta_analyses--checklist
     - '4'
@@ -7062,7 +7062,7 @@ nested_questions:
     - 
     - '183'
     - '184'
-    - '1'
+    - '2'
     - '2015-10-30 19:51:03.496382'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::ReviewerReportTask
@@ -7074,7 +7074,7 @@ nested_questions:
     - 
     - '185'
     - '188'
-    - '2'
+    - '3'
     - '2015-10-30 19:51:03.500418'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::ReviewerReportTask
@@ -7098,7 +7098,7 @@ nested_questions:
     - 
     - '189'
     - '192'
-    - '3'
+    - '4'
     - '2015-10-30 19:51:03.511001'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::ReviewerReportTask
@@ -7122,7 +7122,7 @@ nested_questions:
     - 
     - '193'
     - '196'
-    - '4'
+    - '5'
     - '2015-10-30 19:51:03.521073'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::ReviewerReportTask
@@ -7146,7 +7146,7 @@ nested_questions:
     - 
     - '197'
     - '198'
-    - '5'
+    - '6'
     - '2015-10-30 19:51:03.531234'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::ReviewerReportTask
@@ -7159,7 +7159,7 @@ nested_questions:
     - 
     - '199'
     - '200'
-    - '6'
+    - '7'
     - '2015-10-30 19:51:03.534949'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::ReviewerReportTask
@@ -7189,7 +7189,7 @@ nested_questions:
     - TahiStandardTasks::TaxonTask
     - 
   - - '135'
-    - Does this manuscript describe a new botantical taxon name?
+    - Does this manuscript describe a new botanical taxon name?
     - boolean
     - taxon--botanical
     - 
@@ -7798,6 +7798,18 @@ nested_questions:
     - '2015-12-17 21:19:25.056959'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
+    -
+  - - '182'
+    - 'Please provide your publication recommendation:'
+    - text
+    - reviewer_report--decision_term
+    - 
+    - '289'
+    - '290'
+    - '1'
+    - '2015-12-23 17:34:57.06078'
+    - '2015-12-23 17:34:57.06078'
+    - TahiStandardTasks::ReviewerReportTask
     - 
 
 ---

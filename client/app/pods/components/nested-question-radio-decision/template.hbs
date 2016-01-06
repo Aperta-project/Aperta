@@ -1,0 +1,54 @@
+{{#if readonly}}
+  {{#if shouldDisplayQuestionText}}
+    <div class="{{textClassNames}}">{{{questionText}}}</div>
+  {{/if}}
+
+  {{#if model.answer.value}}
+    <div class="answer-text">{{humanize model.answer.value}}</div>
+  {{else}}
+    <div class="answer-text no-answer">{{noResponseText}}</div>
+  {{/if}}
+
+{{else}}
+  {{#if shouldDisplayQuestionText}}
+    <div class="{{textClassNames}}">{{{questionText}}}</div>
+  {{/if}}
+
+  {{#if helpText}}
+    <ul class="question-help">{{{helpText}}}</ul>
+  {{/if}}
+
+  <div class="flex-group {{wrapperClass}}">
+    <label class="flex-element">
+      {{radio-button value="accept"
+                     name=namePrefix
+                     selection=model.answer.value
+                     action=(action "setAnswer")}}
+      Accept
+    </label>
+
+    <label class="flex-element">
+      {{radio-button value="reject"
+                     name=namePrefix
+                     selection=model.answer.value
+                     action=(action "setAnswer")}}
+      Reject
+    </label>
+
+    <label class="flex-element">
+      {{radio-button value="major_revision"
+                     name=namePrefix
+                     selection=model.answer.value
+                     action=(action "setAnswer")}}
+      Major Revision
+    </label>
+
+    <label class="flex-element">
+      {{radio-button value="minor_revision"
+                     name=namePrefix
+                     selection=model.answer.value
+                     action=(action "setAnswer")}}
+      Minor Revision
+    </label>
+  </div>
+{{/if}}

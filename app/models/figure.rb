@@ -1,10 +1,5 @@
 class Figure < ActiveRecord::Base
   include EventStream::Notifiable
-  include ProxyableResource
-
-  # writes to `token` attr on create
-  # `regenerate_token` for new token
-  has_secure_token
 
   belongs_to :paper
 
@@ -25,15 +20,15 @@ class Figure < ActiveRecord::Base
   end
 
   def src
-    non_expiring_proxy_url if done?
+    "/attachments/figures/#{id}" if done?
   end
 
   def detail_src
-    non_expiring_proxy_url(version: :detail) if done?
+    "/attachments/figures/#{id}?version=detail" if done?
   end
 
   def preview_src
-    non_expiring_proxy_url(version: :preview) if done?
+    "/attachments/figures/#{id}?version=preview" if done?
   end
 
   def access_details

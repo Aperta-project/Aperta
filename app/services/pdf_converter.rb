@@ -22,7 +22,7 @@ class PDFConverter
                 paper: @paper,
                 paper_body: paper_body,
                 publishing_info_presenter: @publishing_info,
-                converter: self
+                needs_non_redirecting_preview_url: true
               })
   end
 end

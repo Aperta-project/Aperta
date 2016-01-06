@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Utils from 'tahi/services/utils';
+import win from 'tahi/lib/window-location';
 
 export default Ember.Namespace.create({
   initiate: function(paperId, downloadFormat) {
@@ -32,7 +32,7 @@ export default Ember.Namespace.create({
       statusCode: {
         200: (data)=>{
           // Done, download the results..
-          Utils.windowLocation(data.url);
+          win.location(data.url);
         },
         202: ()=>{
           // Still working, try again later.

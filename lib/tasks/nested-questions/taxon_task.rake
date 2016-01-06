@@ -25,7 +25,7 @@ namespace 'nested-questions:seed' do
       owner_type: TahiStandardTasks::TaxonTask.name,
       ident: "taxon--botanical",
       value_type: "boolean",
-      text: "Does this manuscript describe a new botantical taxon name?",
+      text: "Does this manuscript describe a new botanical taxon name?",
       position: 2,
       children: [
         {

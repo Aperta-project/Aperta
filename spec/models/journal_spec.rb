@@ -19,6 +19,25 @@ describe Journal do
     end
   end
 
+  describe "#destroy" do
+    context "with papers" do
+      let!(:journal) { FactoryGirl.create(:journal, :with_paper) }
+
+      it "throws error" do
+        expect { journal.destroy }.to_not change { Journal.count }
+        expect(journal.errors[:base].to_s).to match(/must be destroyed/)
+      end
+    end
+
+    context "without papers" do
+      let!(:journal) { FactoryGirl.create(:journal) }
+
+      it "destroys journal" do
+        expect { journal.destroy }.to change { Journal.count }.by(-1)
+      end
+    end
+  end
+
   describe "DOI" do
     before do
       @journal = build(:journal, :with_doi)

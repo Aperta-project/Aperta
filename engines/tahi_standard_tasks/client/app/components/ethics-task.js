@@ -1,10 +1,9 @@
 import TaskComponent from 'tahi/pods/components/task-base/component';
-import SavesQuestionsOnClose from 'tahi/mixins/saves-questions-on-close';
 import Ember from 'ember';
 
 const { computed } = Ember;
 
-export default TaskComponent.extend(SavesQuestionsOnClose, {
+export default TaskComponent.extend({
   humanSubjectsQuestion: computed('task', function(){
     return this.get('task')
                .findQuestion('ethics--human_subjects');

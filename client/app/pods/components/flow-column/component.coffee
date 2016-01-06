@@ -1,5 +1,5 @@
 `import Ember from 'ember'`
-`import Utils from 'tahi/services/utils'`
+`import resizeColumnHeaders from 'tahi/lib/resize-column-headers'`
 
 FlowColumnComponent = Ember.Component.extend
   tagName: 'li'
@@ -18,7 +18,7 @@ FlowColumnComponent = Ember.Component.extend
   tasks: Ember.computed.sort('flow.tasks', 'tasksSortBy')
 
   flowTitleDidChange: (->
-    Ember.run.schedule('afterRender', this, Utils.resizeColumnHeaders)
+    Ember.run.schedule('afterRender', this, resizeColumnHeaders)
   ).observes('flow.title', 'editing')
 
   # data for select2-compliant queries
@@ -98,12 +98,12 @@ FlowColumnComponent = Ember.Component.extend
     save: ->
       @sendAction 'saveFlow', @get('flow')
       @send 'toggleEdit'
-      Ember.run.schedule('afterRender', this, Utils.resizeColumnHeaders)
+      Ember.run.schedule('afterRender', this, resizeColumnHeaders)
 
     cancel: ->
       @get('flow').rollback()
       @send 'toggleEdit'
-      Ember.run.schedule('afterRender', this, Utils.resizeColumnHeaders)
+      Ember.run.schedule('afterRender', this, resizeColumnHeaders)
 
     toggleEdit: ->
       return unless @get('editable')

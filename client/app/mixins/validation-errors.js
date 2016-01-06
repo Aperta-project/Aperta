@@ -1,5 +1,6 @@
 import Ember from 'ember';
-import Utils from 'tahi/services/utils';
+import deepJoinArrays from 'tahi/lib/deep-join-arrays';
+import deepCamelizeKeys from 'tahi/lib/deep-camelize-keys';
 
 /**
   ## How to Use
@@ -59,7 +60,7 @@ export default Ember.Mixin.create({
   */
 
   _prepareResponseErrors(errors, options) {
-    let errorsObject = Utils.deepJoinArrays(Utils.deepCamelizeKeys(errors));
+    let errorsObject = deepJoinArrays(deepCamelizeKeys(errors));
 
     if (options && options.includeNames) {
       for(var key in errorsObject) {
@@ -135,7 +136,9 @@ export default Ember.Mixin.create({
   },
 
   /**
-    Remove all validation errors. Should be called on a successful save, for example.
+    Remove all validation errors.
+    Should be called on a successful save, for example.
+
     ```
     this.get('model').save().then(() => {
       // success
@@ -145,6 +148,7 @@ export default Ember.Mixin.create({
     ```
 
     Response expected to be in Rails format:
+
     ```
     { errors: { someProperty: ["is invalid", "another error"] } }
     ```

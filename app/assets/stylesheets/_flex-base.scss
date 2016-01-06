@@ -1,0 +1,35 @@
+.flex-group {
+  @include display(flex);
+  @include flex-wrap(wrap);
+
+  &.flex-group--divider {
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #878787;
+  }
+}
+
+.flex-element {
+  @include flex(10 10 auto);
+
+  input[type=text] { width: 100%; }
+  select { width: 100%; }
+}
+
+
+.flex-form {
+  margin: 15px 0;
+  padding: 20px;
+  background: $tahi-grey-light;
+
+  .flex-element {
+    margin-bottom: 1.5rem;
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+
+  .flex-group.flex-element {
+    margin-bottom: 0;
+    padding-right: 0;
+    padding-left: 0;
+  }
+}

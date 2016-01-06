@@ -1,7 +1,7 @@
 /* jshint unused: false */
 
 import Ember from 'ember';
-import Utils from 'tahi/services/utils';
+import camelizeKeys from 'tahi/lib/camelize-keys';
 
 export default Ember.Service.extend({
   pathFor(model) {
@@ -55,7 +55,7 @@ export default Ember.Service.extend({
       let errors, modelErrors;
 
       if (errors = xhr.responseJSON.errors) {
-        errors = Utils.camelizeKeys(errors);
+        errors = camelizeKeys(errors);
         modelErrors = model.get('errors');
         Object.keys(errors).forEach(function(key) {
           return modelErrors.add(key, errors[key]);

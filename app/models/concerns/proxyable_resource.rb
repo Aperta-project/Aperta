@@ -10,19 +10,14 @@
 #
 module ProxyableResource
   extend ActiveSupport::Concern
-
-  included do
-    delegate :url_helpers, to: 'Rails.application.routes'
-  end
+  include UrlBuilder
 
   def non_expiring_proxy_url(version: nil, only_path: true)
-    url_helpers
-      .resource_proxy_url resource: self.class.to_s.underscore.pluralize,
-                          token: token,
-                          version: version,
-                          only_path: only_path,
-                          host: host,
-                          port: port
+    options = { resource: self.class.to_s.underscore.pluralize,
+                token: token,
+                version: version,
+                only_path: only_path }
+    url_for(:resource_proxy, options)
   end
 
   def proxyable_url(version: nil, is_proxied: false, only_path: true)
@@ -36,14 +31,6 @@ module ProxyableResource
   end
 
   private
-
-  def host
-    Rails.configuration.action_mailer.default_url_options[:host] || 'nohost'
-  end
-
-  def port
-    Rails.configuration.action_mailer.default_url_options[:port]
-  end
 
   def expiring_s3_url(version)
     # unfortunately attachment.ur(nil) fails, so can't be 'defaulted'

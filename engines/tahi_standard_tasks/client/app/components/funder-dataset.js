@@ -1,18 +1,13 @@
-import Ember from "ember";
-import Utils from "tahi/services/utils";
+import Ember from 'ember';
 
 export default  Ember.Component.extend({
-  classNames: ["dataset"],
+  classNames: ['dataset'],
 
-  uniqueName: (function() {
-    return "funder-had-influence-" + (Utils.generateUUID());
-  }).property(),
-
-  _saveModel: function() {
-    return this.get("model").save();
+  _saveModel() {
+    return this.get('model').save();
   },
 
-  change: function(e) {
+  change() {
     return Ember.run.debounce(this, this._saveModel, 400);
   },
 
@@ -24,19 +19,19 @@ export default  Ember.Component.extend({
   },
 
   actions: {
-    userSelectedYesForFunderInfluence: function(){
+    userSelectedYesForFunderInfluence(){
       this.setFunderRoleDescriptionAnswer('');
     },
 
-    userSelectedNoForFunderInfluence: function(){
+    userSelectedNoForFunderInfluence(){
       this.setFunderRoleDescriptionAnswer('');
     },
 
-    removeFunder: function(disabled) {
+    removeFunder(disabled) {
       if (this.get('disabled')) {
         return;
       }
-      return this.get("model").destroyRecord();
+      return this.get('model').destroyRecord();
     }
   }
 });

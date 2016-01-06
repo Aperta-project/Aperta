@@ -17,11 +17,10 @@ import Ember from 'ember';
 
 
 export default Ember.Component.extend({
-  dataLoading: false,
+  taskLoad: null,
 
   init() {
     this._super(...arguments);
-    this.set('dataLoading', true);
     const store = this.container.lookup('store:main');
     const task = this.get('task');
 
@@ -29,16 +28,11 @@ export default Ember.Component.extend({
     // We were calling `task.reload()` but this caused issues
     // when the task was in an invalid error state
 
-    Ember.RSVP.all([
+    this.set('taskLoad', Ember.RSVP.all([
       task.get('nestedQuestions'),
       task.get('nestedQuestionAnswers'),
       task.get('participations'),
       store.find('task', task.get('id')) // see "NOTE: task find"
-    ]).then(()=> {
-      // Note: the line below prevents a race condition when double clicking
-      if ( !(this.get('isDestroyed') || this.get('isDestroying')) ) {
-        this.set('dataLoading', false);
-      }
-    });
+    ]));
   }
 });

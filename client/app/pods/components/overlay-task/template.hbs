@@ -24,6 +24,8 @@
                                 currentUser=currentUser
                                 postComment=(action "postComment")}}
               </div>
+            {{else}}
+              {{progress-spinner visible=true size="large" center=true}}
             {{/task-load}}
           </div>
           <footer class="overlay-footer">

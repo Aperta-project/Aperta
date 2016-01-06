@@ -45,14 +45,17 @@ feature "Upload Supporting Information", js: true, selenium: true do
 
     task.save_file_info
 
-    expect(task.file_title).to eq 'F4 new_file_title'
+    expect(task.file_title).to eq 'F4 Figure. new_file_title'
     expect(task.file_caption).to eq 'New file caption'
 
+    paper.reload
     file = paper.supporting_information_files.last
+
     expect(file.title).to eq 'new_file_title'
     expect(file.caption).to eq 'New file caption'
     expect(file.label).to eq 'F4'
     expect(file.category).to eq 'Figure'
+    expect(file.striking_image).to be(true)
 
     # delete file
     task.delete_file

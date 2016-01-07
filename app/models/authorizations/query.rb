@@ -100,6 +100,7 @@ module Authorizations
       # Create a place to store the authorized objects
       result_set = ResultSet.new
 
+
       # Loop over the things we're assigned to and load them all up
       permissible_assignments_grouped.each_pair do |hsh, assignments|
         assigned_to_type = hsh[:type]
@@ -130,6 +131,11 @@ module Authorizations
             end
           else
             query = @klass.where(id: assignments.map(&:assigned_to_id))
+
+            if @target.is_a?(ActiveRecord::Relation)
+              query = query.where(@target.where_values) if @target.where_values.present?
+              query = query.where(@target.where_values_hash) if @target.where_values_hash.present?
+            end
             if !permissible_states.include?('*') && @klass.column_names.include?("state")
               query = query.where(state: permissible_states)
             end
@@ -149,7 +155,9 @@ module Authorizations
             .each do |auth|
 
             name = auth.via
-            query = assigned_to_klass.joins(name).includes(name).where(id: assignments.map(&:assigned_to_id))
+            query = assigned_to_klass
+              .joins(name).includes(name)
+              .where(id: assignments.map(&:assigned_to_id))
 
             if @target.is_a?(ActiveRecord::Base)
               query = query.where(@klass.table_name => { id: @target.id } )
@@ -160,19 +168,20 @@ module Authorizations
               end
 
             elsif @target.is_a?(ActiveRecord::Relation)
-
               # This section here is to handle situations where there's a
               # has_many :through relationship. The where-clause is embedded
               # in a JOIN and we have to pull it out by the name of the
               # relationship being joined on.
-              @target.joins_values.each do |arel_node|
-                join_table_name = arel_node.left.name
-                where_values_hash_for_join = @target.where_values_hash(join_table_name)
+              if @target.joins_values.present?
+                @target.joins_values.each do |arel_node|
+                  join_table_name = arel_node.left.name
+                  where_values_hash_for_join = @target.where_values_hash(join_table_name)
 
-                # Don't add if blank otherwise ActiveRecord generates a 1=0
-                # condition which guarantees failures
-                if !where_values_hash_for_join.blank?
-                  query = query.where(join_table_name => where_values_hash_for_join)
+                  # Don't add if blank otherwise ActiveRecord generates a 1=0
+                  # condition which guarantees failures
+                  if !where_values_hash_for_join.blank?
+                    query = query.where(join_table_name => where_values_hash_for_join)
+                  end
                 end
               end
 
@@ -193,7 +202,12 @@ module Authorizations
               query = query.where(@klass.table_name => { publishing_state: permissible_states } )
             end
 
-            authorized_objects = query.flat_map(&name).uniq
+            authorized_objects = if auth.via != :self
+              query.flat_map(&name).uniq
+            else
+              query.uniq
+            end
+
             result_set.add_objects(authorized_objects, with_permissions: all_permissions)
           end
         end

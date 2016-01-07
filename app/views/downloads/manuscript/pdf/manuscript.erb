@@ -13,14 +13,7 @@
 </div>
 
 <%= render partial: 'shared/supporting_information',
-  locals: {paper: paper, converter: converter} %>
+           locals: {paper: paper, converter: converter} %>
 
-<% if orphan_figures.any? %>
-  <h2 id='orphan-figures'>Extra Figures</h2>
-
-  <% orphan_figures.each do |figure| %>
-    <div class="figure">
-      <img id="figure_<%= figure.id %>" src="<%= figure.attachment.url %>">
-    </div>
-  <% end %>
-<% end %>
+<%= render partial: 'shared/orphan_figures',
+           locals: {orphan_figures: orphan_figures, converter: converter} %>

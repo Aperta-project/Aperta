@@ -9,8 +9,12 @@ class FiguresExtractor
     paper.transaction do
       relinked_html = paper.body
       images.each do |image|
-        figure = paper.figures.create!(attachment: image, title: image.original_filename, status: 'done')
-        relinked_html = relinked_image_anchor(html: relinked_html, image: image, figure: figure)
+        figure = paper.figures.create!(attachment: image,
+                                       title: image.original_filename,
+                                       status: 'done')
+        relinked_html = relinked_image_anchor(html: relinked_html,
+                                              image: image,
+                                              figure: figure)
       end
       paper.update!(body: relinked_html)
     end
@@ -19,10 +23,15 @@ class FiguresExtractor
   private
 
   # replace each <a href> to point to the newly created figure url
+  # in the near future we will move to a system where authors simply use a
+  # "placeholder" # for figures, and upload them manually via the figures card.
+  # This step with then become a place to "strip" paper body of actual figures,
+  # or maybe replace them with placeholders
   def relinked_image_anchor(html:, image:, figure:)
     Nokogiri::HTML(html).tap { |doc|
       doc.css("img[src*='#{image.original_filename}']").each do |img|
-        img.set_attribute 'src', figure.non_expiring_proxy_url
+        # hardcodes these attributes in db paper.body
+        img.set_attribute 'src', figure.non_expiring_proxy_url(version: :preview)
         img.set_attribute 'id', "figure_#{figure.id}"
         img.set_attribute 'data-figure-id', figure.id
         img.set_attribute 'alt', "Figure: #{figure.filename}"

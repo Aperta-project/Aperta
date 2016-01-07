@@ -20,6 +20,11 @@ describe ProxyableResource, redis: true do
       expect(file.non_expiring_proxy_url(only_path: false)).to eq(url)
     end
 
+    it 'returns full path when requested' do
+      url = "http://www.example.com/resource_proxy/supporting_information_files/#{file.token}"
+      expect(file.non_expiring_proxy_url(only_path: false)).to eq(url)
+    end
+
     it 'returns relative path by default to the proper route without a version' do
       url = "/resource_proxy/supporting_information_files/#{file.token}"
       expect(file.non_expiring_proxy_url).to eq(url)

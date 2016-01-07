@@ -2,6 +2,7 @@ import Ember from 'ember';
 import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 
 export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
+  notifications: Ember.inject.service(),
   channelName: null,
 
   model(params) {
@@ -9,12 +10,20 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
   },
 
   afterModel(model) {
-    this.channelName = 'private-discussion_topic@' + model.get('id');
-    this.get('pusher').wire(this, this.channelName, ['created', 'updated']);
+    this.set('modelId', model.get('id'));
+    const name = 'private-discussion_topic@' + model.get('id');
+
+    this.set('channelName', name);
+    this.get('pusher').wire(this, name, ['created', 'updated']);
   },
 
   deactivate() {
     this.get('pusher').unwire(this, this.channelName);
+
+    this.get('notifications').remove({
+      type: 'DiscussionTopic',
+      id: this.get('modelId')
+    });
   },
 
   setupController(controller, model) {

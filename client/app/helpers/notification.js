@@ -8,18 +8,8 @@ export default Ember.Helper.extend({
   }),
 
   compute(params, hash) {
-    const type = hash.type;
-    const id   = parseInt(hash.id);
-
-    const count = this.get('notifications').get('data').filter(n => {
-      if(id && type && type === 'paper') {
-        return n.paper_id === id;
-      }
-
-      if(type && id) {
-        return n.target_id === id && n.target_type === type;
-      }
-    }).get('length');
+    const count = this.get('notifications')
+                      .getCount(hash.type, parseInt(hash.id));
 
     if(count) {
       return Ember.String.htmlSafe(

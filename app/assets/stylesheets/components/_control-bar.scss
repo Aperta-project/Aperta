@@ -116,7 +116,7 @@
   &:focus, &:hover { text-decoration: none; }
 
   .badge {
-    @include position(absolute, 2px 7px auto auto);
+    @include position(absolute, 4px 7px auto auto);
   }
 }
 

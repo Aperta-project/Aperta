@@ -11,26 +11,13 @@ export default Ember.Service.extend(Ember.Evented, EmberPusher.Bindings, {
 
     this.pusherSetup();
 
-    const data = this.fetchData();
-
-    this.set('data', data.notifications);
-    // this.fetchData().then(data => {
-    //   this.set('data', data.notifications);
+    this.fetchData().then(response => {
+      this.set('data', response.notifications);
+    });
   },
 
   fetchData() {
-    return {
-      'notifications': [
-        {
-          id: 1,
-          paper_id: 11,
-          target_type: 'DiscussionTopic',
-          target_id: 2
-        }
-      ]
-    };
-    // return this.get('restless')
-    //            .get('/api/notifications/');
+    return this.get('restless').get('/api/notifications/');
   },
 
   pusherSetup() {
@@ -42,6 +29,35 @@ export default Ember.Service.extend(Ember.Evented, EmberPusher.Bindings, {
 
   filterBy(key, id) {
     return this.get('data').filterBy(key, parseInt(id));
+  },
+
+  remove(options) {
+    const { type, id } = options;
+    const remove = this.getData(type, parseInt(id));
+    this.get('data').removeObjects(remove);
+
+    // const ids = remove.map(function(n) {
+    //   return n.id;
+    // });
+
+    // this.get('restless')
+    //     .get('/api/notifications/destroy?ids=[' + ids.toString() + ']');
+  },
+
+  getData(type, id) {
+    return this.get('data').filter(n => {
+      if(id && type && type === 'paper') {
+        return n.paper_id === id;
+      }
+
+      if(type && id) {
+        return n.target_id === id && n.target_type === type;
+      }
+    });
+  },
+
+  getCount(type, id) {
+    return this.getData(type, id).get('length');
   },
 
   actions: {

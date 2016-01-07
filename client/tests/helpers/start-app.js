@@ -3,24 +3,25 @@ import Application from '../../app';
 import Router from '../../router';
 import config from '../../config/environment';
 
+import registerPowerSelectHelpers from '../../tests/helpers/ember-power-select';
+
 import registerCustomAssertions from './custom-assertions';
 import registerAsyncHelpers     from './async-helpers';
 import regsiterStoreHelpers     from './store-helpers';
 import registerContainerHelpers from './container-helpers';
 import registerSelectHelpers    from './select-native-helper';
 import registerSelect2Helpers   from './select2-helpers';
-import registerSelectBoxHelpers from './select-box-helpers';
 
 import Factory from './factory';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 
+registerPowerSelectHelpers();
 registerCustomAssertions();
 registerAsyncHelpers();
 regsiterStoreHelpers();
 registerContainerHelpers();
 registerSelectHelpers();
 registerSelect2Helpers();
-registerSelectBoxHelpers();
 
 
 export default function startApp(attrs) {

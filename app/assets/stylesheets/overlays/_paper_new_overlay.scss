@@ -59,3 +59,69 @@
     }
   }
 }
+
+
+// -- Text Input
+
+.paper-new-overlay {
+  .format-input {
+    border-radius: 5px;
+  }
+
+  .format-input-field {
+    min-height: 20px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    padding: 15px 0 15px 15px;
+  }
+
+  .format-input-button {
+    padding: 15px 0;
+    width: 50px;
+
+    &:last-of-type {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+  }
+}
+
+
+// -- Select Fields
+
+.paper-new-select {
+  .ember-power-select-status-icon {
+    right: 15px;
+  }
+
+  .paper-new-select-trigger {
+    border: 1px solid $tahi-grey-light;
+    border-radius: 5px;
+    padding: 15px;
+    color: #222;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  &.ember-basic-dropdown--disabled .paper-new-select-trigger {
+    border-color: #dedede;
+    cursor: not-allowed;
+    background: #fff;
+
+    .ember-power-select-placeholder {
+      color: #bbb;
+    }
+  }
+}
+
+.paper-new-select-dropdown {
+  .ember-power-select-option {
+    padding: 10px 15px;
+    font-size: 14px;
+
+    &.ember-power-select-option--highlighted {
+      color: #000;
+      background: #eee;
+    }
+  }
+}

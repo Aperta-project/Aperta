@@ -1,36 +1,38 @@
 import Ember from 'ember';
-import NestedQuestionComponent from 'tahi/pods/components/nested-question/component';
+import NestedQuestionComponent from
+  'tahi/pods/components/nested-question/component';
+
+const { computed } = Ember;
 
 export default NestedQuestionComponent.extend({
-  labelClassNames: ["question-checkbox"],
-  textClassNames: ["model-question"],
+  labelClassNames: ['question-checkbox'],
+  textClassNames: ['model-question'],
 
-  additionalDataYieldValue: Ember.computed('checked', 'model.answer.value', function(){
-    return { checked: this.get('isChecked'), yieldingForAdditionalData: true };
-  }),
-
-  textYieldValue: Ember.computed('checked', 'model.answer.value', function(){
-    return { checked: this.get('isChecked'), yieldingForText: true };
-  }),
-
-  isChecked: Ember.computed('model.answer.value', function() {
-    return this.get('model.answer.value');
-  }),
-
-  setCheckedValue: function(checked){
-    let answer = this.get("model.answer");
-    this.set("checked", checked);
-
-    if(!checked){
-      answer.destroyRecord();
-    } else {
-      answer.set("value", checked);
+  additionalDataYieldValue: computed('checked', 'model.answer.value',
+    function(){
+      return { checked: this.get('isChecked'),
+               unchecked: this.get('isNotChecked'),
+               yieldingForAdditionalData: true };
     }
+  ),
+
+  textYieldValue: computed('checked', 'model.answer.value', function(){
+    return { checked: this.get('isChecked'),
+             unchecked: this.get('isNotChecked'),
+             yieldingForText: true };
+  }),
+
+  isChecked: computed.alias('model.answer.value'),
+  isNotChecked: computed.not('isChecked'),
+
+  setCheckedValue(checked){
+    this.set('checked', checked);
+    this.set('model.answer.value', checked);
   },
 
   actions: {
-    checkboxToggled: function(checkbox){
-      let checked = checkbox.get('checked');
+    checkboxToggled(checkbox){
+      const checked = checkbox.get('checked');
       this.setCheckedValue(checked);
     },
 

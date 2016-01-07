@@ -9,6 +9,7 @@
     {{nested-question-textarea ident="reviewer_report--competing_interests"
       owner=model
       decision=decision
+      displayContent=true
       helpText="<li>Please review our Competing Interests policy and declare any potential interests that you feel the Editor should be aware of when considering your review. If you have no competing interests, please write: <strong>&quot;I have no competing interests.&quot;</strong></li>"
       readonly=readonly}}
   </li>
@@ -20,11 +21,13 @@
                         helpText="<li>The manuscript must describe a technically sound piece of scientific research with data that supports the conclusions.</li><li>Experiments must have been conducted rigorously, with appropriate controls, replication, and sample sizes.</li><li>The conclusions must be drawn appropriately based on the data presented.</li>"
                         wrapperClass="yes-no-with-comments"
                         readonly=readonly as |radio|}}
+
         {{#if radio.yieldingForAdditionalData}}
           {{nested-question-textarea ident="reviewer_report--support_conclusions--explanation"
               owner=model
               decision=decision
               displayQuestionText=false
+              displayContent=true
               noResponseText=""
               readonly=readonly}}
         {{/if}}
@@ -44,6 +47,7 @@
             decision=decision
             noResponseText=""
             displayQuestionText=false
+            displayContent=true
             readonly=readonly}}
       {{/if}}
     {{/nested-question-radio}}
@@ -63,6 +67,7 @@
             decision=decision
             noResponseText=""
             displayQuestionText=false
+            displayContent=true
             readonly=readonly}}
       {{/if}}
     {{/nested-question-radio}}
@@ -72,6 +77,7 @@
     {{nested-question-textarea ident="reviewer_report--additional_comments"
                         owner=model
                         decision=decision
+                        displayContent=true
                         helpText="<li>Additional comments may include concerns about dual publication, research or publication ethics.</li>"
                         readonly=readonly}}
   </li>
@@ -80,6 +86,7 @@
     {{nested-question-textarea ident="reviewer_report--identity"
                         owner=model
                         decision=decision
+                        displayContent=true
                         helpText="<li>Your name and review will not be published with the manuscript.</li>"
                         readonly=readonly}}
   </li>

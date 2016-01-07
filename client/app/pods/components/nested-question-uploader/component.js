@@ -3,6 +3,7 @@ import FileUpload from 'tahi/models/file-upload';
 
 export default NestedQuestionComponent.extend({
   fileUpload: null,
+  displayContent: true,
 
   actions: {
     uploadStarted: function(data) {

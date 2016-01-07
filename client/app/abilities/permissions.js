@@ -58,13 +58,8 @@ export default Ability.extend({
       return false;
     }
 
-    // Hard-code state for now, but this should likely come back with the
-    // permission data from the server, as the field may be named something
-    // else.
     let permissibleStates = permissibleAction.states || [];
 
-    // the model can provide a property that tells us which property should
-    // be used to match against the permission state. By default it's
     let statePropertyForPermission = model.get('statePropertyForPermissions');
     let actualState;
     if(statePropertyForPermission){

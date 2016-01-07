@@ -148,7 +148,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     version_btn.click()
     self._get(self._tb_versions_diff_div)
     bar_items = self._gets(self._bar_items)
-    print([x.text for x in bar_items])
     assert 'Now viewing:' in bar_items[1].text, bar_items[1].text
     assert 'Compare With:' in bar_items[2].text, bar_items[2].text
     self._get(self._tb_versions_closer).click()
@@ -381,7 +380,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     if not click_override:
       for task in tasks:
         task_div = task.find_element_by_xpath('..')
-        print 'TASK.TEXT: {}'.format(task.text)
         if task.text == task_name and 'active' \
             not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
           task.click()
@@ -413,8 +411,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         register_decision_task.execute_decision(data)
       else:
         register_decision_task.execute_decision()
-      completed = base_task.completed_cb_is_selected()
-      if not completed:
+      if not base_task.completed_cb_is_selected():
         self._get(base_task._completed_cb).click()
       task.click()
       time.sleep(1)
@@ -422,16 +419,14 @@ class ManuscriptViewerPage(AuthenticatedPage):
       prq_task = PRQTask(self._driver)
       prq_task.complete_prq(data)
       #complete_prq
-      completed = base_task.completed_cb_is_selected()
-      if not completed:
+      if not base_task.completed_cb_is_selected():
         self._get(base_task._completed_cb).click()
       task.click()
       time.sleep(1)
     elif task_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript',
                      'Revise Manuscript', 'Billing'):
       # Check completed_check status
-      completed = base_task.completed_cb_is_selected()
-      if not completed:
+      if not base_task.completed_cb_is_selected():
         self._get(base_task._completed_cb).click()
       task.click()
       time.sleep(1)
@@ -439,8 +434,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       # Complete authors data before mark close
       author_task = AuthorsTask(self._driver)
       author_task.edit_author(affiliation)
-      completed = base_task.completed_cb_is_selected()
-      if not completed:
+      if not base_task.completed_cb_is_selected():
         self._get(base_task._completed_cb).click()
       task.click()
       time.sleep(1)
@@ -547,7 +541,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
       assert 'You have successfully submitted your manuscript. We will start the peer review process.'
     if type in ('full_submit', 'initial_submit', 'initial_submit_full'):
       manuscript_title = self._get(self._so_paper_title)
-      assert paper_title in manuscript_title.text, paper_title + ' vs ' + manuscript_title.text
+      assert paper_title in manuscript_title.text, '{} vs {}'.format(paper_title,
+                                                                     manuscript_title.text)
       self._get(self._so_submit_confirm)
 
   def validate_submit_success(self):

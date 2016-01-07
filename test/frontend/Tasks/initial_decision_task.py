@@ -19,8 +19,6 @@ class InitialDecisionTask(BaseTask):
 
   def __init__(self, driver, url_suffix='/'):
     super(InitialDecisionTask, self).__init__(driver)
-
-
     #Locators - Instance members
     self._decisions = (By.CLASS_NAME, 'decision-selections')
     self._textarea = (By.TAG_NAME, 'textarea')
@@ -30,17 +28,16 @@ class InitialDecisionTask(BaseTask):
    #POM Actions
   def execute_decision(self, data=data):
     """
-    This method completes XXXXXX
+    This method completes the initial decision task
     :data: A tuple with the decision and the text to include in the decision
     """
-
     decision_d = {'Reject':0, 'Invite':1,}
     decision_labels =  self._get(self._decisions).find_elements_by_tag_name('label')
-    ##import pdb; pdb.set_trace()
     decision_labels[decision_d[data[0]]].click()
+    time.sleep(1)
     self._get(self._textarea).send_keys(data[1])
-    # press "Register Decision" btn
-    self._get(self._register_btn)
+    # press "Register Decision" btn, needs to be done twice!
+    self._get(self._register_btn).click()
     self._get(self._register_btn).click()
     # Give time to register the decision
     # Check for the alert
@@ -49,7 +46,3 @@ class InitialDecisionTask(BaseTask):
       assert 'An initial decision of \'invite full submission\' decision has been made.' in alert
     else:
       assert 'An initial decision of \'reject\' decision has been made.' in alert
-    ##self._get(self._completed_cb).click()
-    #task.click()
-
-    return self

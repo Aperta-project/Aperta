@@ -41,15 +41,12 @@ class PRQTask(BaseTask):
     #import pdb
     completed = self.completed_cb_is_selected()
     if not data:
-      print 44
       # Just complete with blank
       if not completed:
         self._get(self._completed_cb).click()
       #task.click()
       time.sleep(1)
     else:
-      print 51
-      #pdb.set_trace()
       # complete with data
       questions = self._gets(self._questions)
       # q1
@@ -76,14 +73,12 @@ class PRQTask(BaseTask):
           if cbx == 1:
             checkboxes[order].click()
       if data['q4']:
-        print questions
-        print questions[3]
+        time.sleep(1)
         questions[3].find_element_by_tag_name('input').send_keys(data['q4'])
       if data['q5']:
+        time.sleep(1)
         questions[4].find_element_by_class_name('format-input-field').send_keys(data['q5'])
-      completed = self.completed_cb_is_selected()
-      print 'Completed: {}'.format(completed)
-      if not completed:
+      if not self.completed_cb_is_selected():
         self._get(self._completed_cb).click()
       #task.click()
 

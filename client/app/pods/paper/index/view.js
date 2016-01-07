@@ -13,7 +13,7 @@ export default Ember.View.extend(PaperIndexMixin, {
   },
 
   loadMathJax: function() {
-    if (this.renderEquations) {
+    if (this.renderEquations()) {
       LazyLoader.loadScripts([ENV.mathjax.url]).then(() => {
         this.refreshEquations();
       });
@@ -21,7 +21,7 @@ export default Ember.View.extend(PaperIndexMixin, {
   },
 
   refreshEquations:  function() {
-    if (!this.renderEquations) { return; }
+    if (!this.renderEquations()) { return; }
     else if (!window.MathJax) { this.loadMathJax(); return; }
     else if (!window.MathJax.Hub) { return; }
 

@@ -35,7 +35,10 @@ export default Ember.Component.extend({
       task.get('participations'),
       store.find('task', task.get('id')) // see "NOTE: task find"
     ]).then(()=> {
-      this.set('dataLoading', false);
+      // Note: the line below prevents a race condition when double clicking
+      if ( !(this.get('isDestroyed') || this.get('isDestroying')) ) {
+        this.set('dataLoading', false);
+      }
     });
   }
 });

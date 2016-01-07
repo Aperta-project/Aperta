@@ -1,41 +1,41 @@
 {{#if displaySubscript}}
-<a title="Subscript"
-href="#"
-class="format-input-button {{if _subscriptActive "format-input-button--active"}}"
-tabindex="-1"
-{{action "format" "subscript" bubbles="false"}}>
-<i class="fa fa-subscript"></i>
-</a>
+  <a title="Subscript"
+    href="#"
+    class="format-input-button {{if _subscriptActive "format-input-button--active"}}"
+    tabindex="-1"
+    {{action "format" "subscript" bubbles="false"}}>
+    <i class="fa fa-subscript"></i>
+  </a>
 {{/if}}
 
 {{#if displaySuperscript}}
-<a title="Superscript"
-href="#"
-class="format-input-button {{if _superscriptActive "format-input-button--active"}}"
-tabindex="-1"
-{{action "format" "superscript" bubbles="false"}}>
-<i class="fa fa-superscript"></i>
-</a>
+  <a title="Superscript"
+    href="#"
+    class="format-input-button {{if _superscriptActive "format-input-button--active"}}"
+    tabindex="-1"
+    {{action "format" "superscript" bubbles="false"}}>
+    <i class="fa fa-superscript"></i>
+  </a>
 {{/if}}
 
 {{#if displayItalic}}
-<a title="Italic"
-href="#"
-class="format-input-button {{if _italicActive "format-input-button--active"}}"
-tabindex="-1"
-{{action "format" "italic" bubbles="false"}}>
-<i class="fa fa-italic"></i>
-</a>
+  <a title="Italic"
+    href="#"
+    class="format-input-button {{if _italicActive "format-input-button--active"}}"
+    tabindex="-1"
+    {{action "format" "italic" bubbles="false"}}>
+    <i class="fa fa-italic"></i>
+  </a>
 {{/if}}
 
 {{#if displayBold}}
-<a title="Bold"
-href="#"
-class="format-input-button {{if _boldActive "format-input-button--active"}}"
-tabindex="-1"
-{{action "format" "bold" bubbles="false"}}>
-<i class="fa fa-bold"></i>
-</a>
+  <a title="Bold"
+    href="#"
+    class="format-input-button {{if _boldActive "format-input-button--active"}}"
+    tabindex="-1"
+    {{action "format" "bold" bubbles="false"}}>
+    <i class="fa fa-bold"></i>
+  </a>
 {{/if}}
 
 {{content-editable value=value

@@ -17,7 +17,7 @@
   </div>
 
   {{#if file.caption}}
-    <div class="si-file-caption">{{ file.caption }}</div>
+    <div class="si-file-caption">{{{ file.caption }}}</div>
   {{/if}}
 
   <div class="{{if (is-equal uiState 'delete') 'visible'}}

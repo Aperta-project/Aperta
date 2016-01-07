@@ -9,11 +9,13 @@ class DiscussionRepliesController < ApplicationController
 
   def create
     discussion_reply.save
+    notify_mentioned_people
     respond_with(discussion_reply)
   end
 
   def update
     discussion_reply.update(update_params)
+    notify_mentioned_people
     respond_with(discussion_reply)
   end
 
@@ -25,7 +27,8 @@ class DiscussionRepliesController < ApplicationController
   private
 
   def creation_params
-    params.require(:discussion_reply).permit(:body, :discussion_topic_id).merge(replier: current_user)
+    params.require(:discussion_reply).permit(:body, :discussion_topic_id)
+      .merge(replier: current_user)
   end
 
   def update_params
@@ -44,5 +47,15 @@ class DiscussionRepliesController < ApplicationController
 
   def enforce_policy
     authorize_action!(discussion_reply: discussion_reply)
+  end
+
+  def notify_mentioned_people
+    people_mentioned = UserMentions.new(discussion_reply.body,
+                                        discussion_reply.replier)
+                       .people_mentioned
+    people_mentioned.each do |mentionee|
+      UserMailer.notify_mention_in_discussion(mentionee.id, discussion_reply.id)
+        .deliver_now
+    end
   end
 end

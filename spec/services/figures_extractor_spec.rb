@@ -62,7 +62,8 @@ describe FiguresExtractor do
         paper.figures.each do |figure|
           img = img_tag_by_id figure.id
           expect(img['src']).not_to include('http')
-          expect(img['src']).to eq(figure.non_expiring_proxy_url)
+          expect(img['src'])
+            .to eq(figure.non_expiring_proxy_url(version: :preview))
         end
       end
 

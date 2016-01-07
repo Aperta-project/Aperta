@@ -67,7 +67,8 @@ describe EpubConverter do
           expect(file)
           expect(doc.css('.si_preview').count).to be 1
           expect(doc.css('.si_preview').first['src'])
-            .to eq file.non_expiring_proxy_url(only_path: false)
+            .to eq(file.non_expiring_proxy_url(
+                     version: :preview, only_path: false))
         end
 
         it 'the si_link urls are full-path non-expiring proxy urls' do
@@ -104,8 +105,10 @@ describe EpubConverter do
           paper.body = "<img id='figure_#{fig1.id}' src='foo'/>"
           expect(converter.orphan_figures).to eq([fig2])
 
-          expect(doc.css("img#figure_#{fig2.id}").first['src']).to \
-            eq(fig2.non_expiring_proxy_url(only_path: false))
+          expect(doc.css("img#figure_#{fig2.id}").first['src'])
+            .to eq(fig2.non_expiring_proxy_url(
+                     version: :preview,
+                     only_path: false))
         end
       end
     end

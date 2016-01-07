@@ -58,7 +58,7 @@ describe PDFConverter do
         expect(file)
         expect(doc.css('.si_preview').count).to be 1
         expect(doc.css('.si_preview').first['src'])
-          .to have_s3_url(file.attachment.url)
+          .to have_s3_url(file.attachment.url(:preview))
       end
 
       it 'the si_link urls are non-expiring proxy urls' do
@@ -79,7 +79,8 @@ describe PDFConverter do
       it 'replaces img src urls (which are normally proxied) with resolveable
         urls' do
         # since pdfs maker apparently cant resolve proxy url for img.src
-        # this will completed in https://developer.plos.org/jira/browse/APERTA-5741
+        # this will completed in
+        # https://developer.plos.org/jira/browse/APERTA-5741
 
         figure = paper.figures.first
         paper.body = "<img id='figure_#{figure.id}' src='foo'/>"
@@ -98,7 +99,7 @@ describe PDFConverter do
         expect(converter.orphan_figures).to eq([fig2])
 
         expect(doc.css("img#figure_#{fig2.id}").first['src']).to \
-          eq(fig2.attachment.url)
+          eq(fig2.attachment.url(:preview))
       end
     end
   end

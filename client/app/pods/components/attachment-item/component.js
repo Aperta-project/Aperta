@@ -4,14 +4,14 @@ import extensionFont from 'tahi/lib/extension-font';
 
 export default Ember.Component.extend({
   classNames: ['attachment-item'],
+  attachment: null, // passed-in
   hasNote: false,
-  fileName: null,
   fileUpload: null,
   note:null,
   uploadInProgress: Ember.computed.notEmpty('fileUpload'),
 
-  fileTypeClass: Ember.computed('fileName', function(){
-    return extensionFont(this.get('fileName'));
+  fileTypeClass: Ember.computed('attachment.filename', function(){
+    return extensionFont(this.get('attachment.filename'));
   }),
 
   init() {
@@ -23,7 +23,7 @@ export default Ember.Component.extend({
 
     deleteFile() {
       if (this.attrs.deleteFile) {
-        this.attrs.deleteFile();
+        this.attrs.deleteFile(this.get('attachment'));
       }
     },
 
@@ -34,8 +34,7 @@ export default Ember.Component.extend({
     },
 
     fileAdded(file){
-      this.setProperties({ fileName: file.name,
-                           fileUpload: FileUpload.create({ file: file })});
+      this.set('fileUpload', FileUpload.create({ file: file }));
     },
 
     triggerFileSelection() {
@@ -50,7 +49,7 @@ export default Ember.Component.extend({
     },
 
     uploadFinished(s3Url){
-      this.setProperties({fileUpload: null});
+      this.set('fileUpload', null)
       if (this.attrs.uploadFinished) {
         this.attrs.uploadFinished(s3Url);
       }

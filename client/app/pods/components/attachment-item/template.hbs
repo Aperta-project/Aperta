@@ -2,7 +2,7 @@
   {{upload-preview upload=fileUpload}}
 {{else}}
   <a href="#" class="file-link">
-    <i class="fa {{fileTypeClass}}"></i> {{fileName}}
+    <i class="fa {{fileTypeClass}}"></i> {{attachment.filename}}
   </a>
 
   <span {{action "triggerFileSelection"}} class="file-action">

@@ -4,12 +4,12 @@
 
 {{#each attachments as |attachment|}}
   {{attachment-item accept=accept
+                    attachment=attachment
                     filePath=filePath
                     hasNote=hasNote
                     deleteFile=attrs.deleteFile
                     noteChanged=attrs.noteChanged
-                    uploadFinished=attrs.uploadFinished
-                    fileName=attachment.fileName}}
+                    uploadFinished=attrs.uploadFinished}}
 {{/each}}
 
 {{#if uploadInProgress}}

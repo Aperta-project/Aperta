@@ -2,10 +2,10 @@
   <h2 id='orphan-figures'>Extra Figures</h2>
 
   <% orphan_figures.each do |figure| %>
-    <div class="figure">
+    <p class="figure">
       <img id="figure_<%= figure.id %>" 
            src="<%= figure.proxyable_url(version: :preview, is_proxied: !converter.needs_non_redirecting_preview_url?, only_path: false) %>"
        >
-    </div>
+    </p>
   <% end %>
 <% end %>

@@ -100,7 +100,6 @@ module Authorizations
       # Create a place to store the authorized objects
       result_set = ResultSet.new
 
-
       # Loop over the things we're assigned to and load them all up
       permissible_assignments_grouped.each_pair do |hsh, assignments|
         assigned_to_type = hsh[:type]
@@ -133,8 +132,11 @@ module Authorizations
             query = @klass.where(id: assignments.map(&:assigned_to_id))
 
             if @target.is_a?(ActiveRecord::Relation)
-              query = query.where(@target.where_values) if @target.where_values.present?
-              query = query.where(@target.where_values_hash) if @target.where_values_hash.present?
+              if @target.where_values_hash.present?
+                query = query.where(@target.where_values_hash)
+              elsif @target.where_values.present?
+                query = query.where(@target.where_values)
+              end
             end
             if !permissible_states.include?('*') && @klass.column_names.include?("state")
               query = query.where(state: permissible_states)
@@ -168,6 +170,7 @@ module Authorizations
               end
 
             elsif @target.is_a?(ActiveRecord::Relation)
+
               # This section here is to handle situations where there's a
               # has_many :through relationship. The where-clause is embedded
               # in a JOIN and we have to pull it out by the name of the

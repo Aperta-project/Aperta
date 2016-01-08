@@ -115,35 +115,12 @@ module Authorizations
 
         # determine how this kind of thing relates to what we're interested in
         if assigned_to_klass <= @klass
-          if @target.is_a?(ActiveRecord::Base)
-            # short-circuit if we're looking for a particular object
-            if assignments.map(&:assigned_to_id).include?(@target.id)
-              if permissible_states.include?('*')
-                authorized_objects = [@target]
-              elsif @target.class.column_names.include?('state')
-                if permissible_states.include?(@target.state)
-                  authorized_objects = [@target]
-                end
-              else
-                authorized_objects = [@target]
-              end
-            end
-          else
-            query = @klass.where(id: assignments.map(&:assigned_to_id))
-
-            if @target.is_a?(ActiveRecord::Relation)
-              if @target.where_values_hash.present?
-                query = query.where(@target.where_values_hash)
-              elsif @target.where_values.present?
-                query = query.where(@target.where_values)
-              end
-            end
-            if !permissible_states.include?('*') && @klass.column_names.include?("state")
-              query = query.where(state: permissible_states)
-            end
-            authorized_objects = query
-          end
-
+          authorized_objects = QueryAgainstAssignedObject.new(
+            klass: @klass,
+            target: @target,
+            assignments: assignments,
+            permissible_states: permissible_states
+          ).query
           result_set.add_objects(authorized_objects, with_permissions: all_permissions)
         else
           # Determine how the Assignment#thing relates to object we're checking
@@ -249,6 +226,55 @@ module Authorizations
         results
       end
     end
+  end
+
+  class QueryAgainstAssignedObject
+    attr_reader :assignments, :permissible_states
+
+    def initialize(klass:, target:, assignments:, permissible_states:)
+      @klass = klass
+      @target = target
+      @assignments = assignments
+      @permissible_states = permissible_states
+    end
+
+    def query
+      if @target.is_a?(ActiveRecord::Base)
+        query_for_specific_model
+      else
+        query = @klass.where(id: assignments.map(&:assigned_to_id))
+
+        if @target.is_a?(ActiveRecord::Relation)
+          if @target.where_values_hash.present?
+            query = query.where(@target.where_values_hash)
+          elsif @target.where_values.present?
+            query = query.where(@target.where_values)
+          end
+        end
+        if !permissible_states.include?('*') && @klass.column_names.include?("state")
+          query = query.where(state: permissible_states)
+        end
+        authorized_objects = query
+      end
+      authorized_objects
+    end
+
+    private
+
+    def query_for_specific_model
+      if assignments.map(&:assigned_to_id).include?(@target.id)
+        if permissible_states.include?('*')
+          authorized_objects = [@target]
+        elsif @target.class.column_names.include?('state')
+          if permissible_states.include?(@target.state)
+            authorized_objects = [@target]
+          end
+        else
+          authorized_objects = [@target]
+        end
+      end
+    end
+
   end
 end
 # rubocop:enable all

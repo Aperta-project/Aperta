@@ -27,6 +27,12 @@
           placeholder="Please type or paste your cover letter into this text field"
           editable=isSubmissionTaskEditable}}
 
+          {{attachment-manager filePath="tasks/attachment"
+                               attachments=task.attachments
+                               noteChanged=(action "noteChanged")
+                               deleteFile=(action "deleteAttachment")
+                               uploadFinished=(action "uploadFinished")}}
+
           <button class="button-primary button--green"
                   disabled={{isSubmissionTaskNotEditable}}
                   {{action stopEditing}}>

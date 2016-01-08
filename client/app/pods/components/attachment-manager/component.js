@@ -8,7 +8,6 @@ export default Ember.Component.extend({
   buttonText: 'Upload File',
   fileUpload: null,
   uploadInProgress: Ember.computed.notEmpty('fileUpload'),
-  currentUpload: null,
   multiple: false,
   hasUploads: Ember.computed.notEmpty('attachments'),
   showAddButton: Ember.computed('multiple', 'hasUploads', function() {
@@ -25,10 +24,7 @@ export default Ember.Component.extend({
   actions: {
 
     fileAdded(file){
-      this.setProperties({
-        fileUpload: FileUpload.create({ file: file }),
-        currentUpload: Ember.Object.create({fileName: file.name})
-      });
+      this.set('fileUpload', FileUpload.create({ file: file }));
     },
 
     uploadProgress(data) {
@@ -39,11 +35,10 @@ export default Ember.Component.extend({
     },
 
     uploadFinished(s3Url){
-      this.get('attachments').addObject(this.get('currentUpload'));
-      this.setProperties({fileUpload: null, currentUpload: null});
       if (this.attrs.uploadFinished) {
-        this.attrs.uploadFinished(s3Url);
+        this.attrs.uploadFinished(s3Url, this.get('fileUpload.file'));
       }
+      this.set('fileUpload', null)
     },
 
     uploadFailed(reason){

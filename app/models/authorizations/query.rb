@@ -235,35 +235,30 @@ module Authorizations
       @klass = klass
       @target = target
       @assignments = assignments
+      @assigned_to_ids = assignments.map(&:assigned_to_id)
       @permissible_states = permissible_states.dup
     end
 
     def query
-      if @target.is_a?(ActiveRecord::Base)
-        authorized_objects = query_for_specific_model
+      binding.pry if $z
+      if @target.is_a?(ActiveRecord::Base) # e.g. <Foo#ab3ad3 id: 1>
+        short_circuit_query_for_specific_model
+      elsif @target.is_a?(ActiveRecord::Relation) # e.g. Foo.all, Foo.where(...)
+        query_against_active_record_relation
+      elsif @target <= ActiveRecord::Base # e.g. Foo
+        query_against_assigned_klass
       else
-        query = @klass.where(id: assignments.map(&:assigned_to_id))
-
-        if @target.is_a?(ActiveRecord::Relation)
-          if @target.where_values_hash.present?
-            query = query.where(@target.where_values_hash)
-          elsif @target.where_values.present?
-            query = query.where(@target.where_values)
-          end
-        end
-
-        if !permissible_states.include?('*') && @klass.column_names.include?("state")
-          query = query.where(state: permissible_states)
-        end
-        authorized_objects = query
+        raise(
+          NotImplementedError,
+          "Not sure how to query against #{@target.inspect}"
+        )
       end
-      authorized_objects
     end
 
     private
 
-    def query_for_specific_model
-      return [] unless assignments.map(&:assigned_to_id).include?(@target.id)
+    def short_circuit_query_for_specific_model
+      return [] unless @assigned_to_ids.include?(@target.id)
 
       has_state_column = @target.class.column_names.include?('state')
       has_state = has_state_column && permissible_states.include?(@target.state)
@@ -277,6 +272,26 @@ module Authorizations
       end
     end
 
+    def query_against_assigned_klass
+      query = @klass.where(id: @assigned_to_ids)
+      query = add_permissible_state_conditions_to_query(query)
+      query
+    end
+
+    def query_against_active_record_relation
+      query = @klass.where(id: @assigned_to_ids)
+      query = query.merge(@target)
+      query = add_permissible_state_conditions_to_query(query)
+      query
+    end
+
+    def add_permissible_state_conditions_to_query(query)
+      if !permissible_states.include?('*') && @klass.column_names.include?('state')
+        query.where(state: permissible_states)
+      else
+        query
+      end
+    end
   end
 end
 # rubocop:enable all

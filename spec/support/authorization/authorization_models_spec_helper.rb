@@ -11,6 +11,7 @@ module AuthorizationModelsSpecHelper
       ActiveRecord::Schema.define do
         create_table :fake_papers, force: true do |t|
           t.integer :journal_id
+          t.string :name
           t.string :state
         end
 

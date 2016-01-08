@@ -10,7 +10,7 @@ from frontend.Cards.basecard import BaseCard
 
 __author__ = 'sbassi@plos.org'
 
-class PublishingRelatedQuestionsCard(BaseCard):
+class _PublishingRelatedQuestionsCard(BaseCard):
   """
   Page Object Model for Invite Editor Card
   Publishing Related Questions
@@ -20,20 +20,15 @@ class PublishingRelatedQuestionsCard(BaseCard):
 
     #Locators - Instance members
     self._questions = (By.CSS_SELECTOR, 'li.question')
-
-
-
-    #self._invite_input = (By.ID, 's2id_autogen1_search')
     self._invite_input = (By.CLASS_NAME, 'select2-focused')
     self._drop_down = (By.CLASS_NAME, 'select2-drop-active')
     self._invite_editor_text = (By.CLASS_NAME, 'invite-editor-text')
     self._send_invitation_button = (By.CLASS_NAME, 'invite-editor-button')
 
-
    #POM Actions
-  def complete_prq(self, data):
+  def __complete_prq(self, data):
     """
-    This method completes XXXXXX
+    This method completes the Publishing Related Question card
     :data: A dictionary with the answers to
 
 

@@ -11,6 +11,7 @@ import random
 import string
 import time
 import uuid
+import pdb
 
 from selenium.webdriver.common.by import By
 
@@ -103,13 +104,16 @@ class DashboardPage(AuthenticatedPage):
     self._cns_manuscript_superscript_icon = (By.CLASS_NAME, 'fa-superscript')
     self._cns_manuscript_subscript_icon = (By.CLASS_NAME, 'fa-subscript')
     self._cns_journal_chooser_label = (By.XPATH, "//div[@class='overlay-body']/div/div[3]/label")
-    self._cns_journal_chooser = (By.CSS_SELECTOR, 'div.paper-new-journal-select div.select-box-element')
+    #self._cns_journal_chooser = (By.CSS_SELECTOR, 'div#paper-new-journal-select div.select-box-element')
+    self._cns_journal_chooser = (By.CSS_SELECTOR, 'div.paper-new-select-trigger')
     self._cns_opened_option_dropdown = (By.CSS_SELECTOR, 'div.select-box-list')
     self._cns_option_dropdown_item = (By.CSS_SELECTOR, 'div.select-box-item')
     self._cns_paper_type_chooser_label = (By.XPATH, "//div[@class='overlay-body']/div/div[4]/label")
-    self._cns_paper_type_chooser = (By.CSS_SELECTOR, 'div.paper-new-paper-type-select div.select-box-element')
-    self._cns_journal_chooser_dd = (By.CLASS_NAME, 'paper-new-journal-select')
-    self._cns_papertype_chooser_dd = (By.CLASS_NAME, 'paper-new-paper-type-select')
+    #self._cns_paper_type_chooser = (By.CSS_SELECTOR, 'div.paper-new-paper-type-select div.select-box-element')
+    #self._cns_paper_type_chooser = (By.CSS_SELECTOR, 'div.paper-new-select-trigger')
+    self._cns_paper_type_chooser = (By.XPATH, "//div[contains(@class, 'paper-new-select-trigger')]")
+    self._cns_journal_chooser_dd = (By.ID, 'paper-new-journal-select')
+    self._cns_papertype_chooser_dd = (By.ID, 'paper-new-paper-type-select')
     self._cns_journal_chooser_active = (By.CLASS_NAME, 'select-box-element--active')
     self._cns_chooser_chosen = (By.CLASS_NAME, 'select-box-item')
     self._cns_chooser_dropdown_arrow = (By.CLASS_NAME, 'select2-arrow')
@@ -411,13 +415,9 @@ class DashboardPage(AuthenticatedPage):
 
         # Validate Manuscript ID display
         dbmanuid = PgSQL().query('SELECT doi FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
-        if dbmanuid:
-          dbmanuid = 'ID: ' + dbmanuid.split('/')[1]
-        else:
-          dbmanuid = 'ID:'
+        dbmanuid = 'ID: {}'.format(dbmanuid.split('/')[1]) if dbmanuid else 'ID:'
         manu_id = manu_ids[count].text
         assert dbmanuid == manu_id, dbmanuid + ' is not equal to: ' + manu_id
-
         # Finally increment counter
         count += 1
 
@@ -430,7 +430,7 @@ class DashboardPage(AuthenticatedPage):
     """
     Enter title for the publication
     :param title: Title you wish to use for your paper
-    :return:
+    :return: None
     """
     title_field = self._get(self._cns_title_field)
     title_field.click()
@@ -443,32 +443,42 @@ class DashboardPage(AuthenticatedPage):
   def close_cns_overlay(self):
     """Click X link"""
     self._get(self._overlay_header_close).click()
-    return
 
-  def select_journal_and_type(self, journal, type):
+  def select_journal_and_type(self, journal, type_):
     """
     Select a journal with its type
     journal: Title of the journal
-    type: Manuscript type
+    type_: Manuscript type
     """
-    div = self._get(self._cns_journal_chooser_dd)
-    div.find_element_by_class_name('select-box-element').click()
-    for item in self._gets((By.CLASS_NAME, 'select-box-item')):
+    #div = self._get(self._cns_journal_chooser_dd)
+    journal_dd, type_dd = self._gets((By.CLASS_NAME, 'ember-basic-dropdown-trigger'))
+    journal_dd.click()
+    time.sleep(.5)
+    #div.find_element_by_class_name('select-box-element').click()
+    #parent_div.find_element_by_class_name('ember-power-select-optionss')
+    parent_div = self._get((By.ID, 'ember-basic-dropdown-wormhole'))
+
+    #for item in self._gets((By.CLASS_NAME, 'select-box-item')):
+    for item in parent_div.find_elements_by_tag_name('li'):
       if item.text == journal:
         item.click()
         time.sleep(1)
         break
-    selected_journal=self._get(self._cns_journal_chooser)
-    assert journal in selected_journal.text, selected_journal.text + '!=' + journal
-    div = self._get(self._cns_papertype_chooser_dd)
-    div.find_element_by_class_name('select-box-element').click()
-    for item in self._gets((By.CLASS_NAME, 'select-box-item')):
-      if item.text == type:
+    selected_journal = self._get(self._cns_journal_chooser)
+    assert journal in selected_journal.text, '{} != {}'.format(selected_journal.text, journal)
+    # Time to change select contents
+    time.sleep(.1)
+    type_dd.click()
+    # Note have to recall this element here because is not the same as last call
+    parent_div = self._get((By.ID, 'ember-basic-dropdown-wormhole'))
+    #div.find_element_by_class_name('ember-power-select-options').click()
+    for item in self._gets((By.CLASS_NAME, 'ember-power-select-option')):
+      if item.text == type_:
         item.click()
-        time.sleep(2)
+        time.sleep(1)
         break
-    selected_type=self._get(self._cns_paper_type_chooser)
-    assert type in selected_type.text, selected_type.text  + '!=' + type
+    selected_type = self._gets(self._cns_paper_type_chooser)[1]
+    assert type_ in selected_type.text, '{} != {}'.format(selected_type.text, type_)
 
   @staticmethod
   def title_generator(prefix='', random_bit=True):

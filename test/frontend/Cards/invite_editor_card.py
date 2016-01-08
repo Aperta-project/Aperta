@@ -19,7 +19,6 @@ class InviteEditorCard(BaseCard):
 
     #Locators - Instance members
     self._email_selector = (By.CLASS_NAME, 'select2-container')
-    #self._invite_input = (By.ID, 's2id_autogen1_search')
     self._invite_input = (By.CLASS_NAME, 'select2-focused')
     self._drop_down = (By.CLASS_NAME, 'select2-drop-active')
     self._invite_editor_text = (By.CLASS_NAME, 'invite-editor-text')
@@ -32,18 +31,14 @@ class InviteEditorCard(BaseCard):
     This method invites the user that is passed as parameter
     :decision: User to send the invitation
     """
-    #import pdb
-    #pdb.set_trace()
     time.sleep(.5)
     selector = self._get(self._email_selector)
-
     # click on the selector to open input box
     selector.find_element_by_tag_name('a').click()
     self._get(self._invite_input).send_keys(user['email'] + Keys.ENTER)
     self._get(self._invite_input).send_keys(Keys.ENTER)
     time.sleep(1)
     self._get(self._drop_down).find_element_by_tag_name('li').click()
-    #self._get(self._drop_down).find_element_by_tag_name('li').click()
     time.sleep(1)
     self._get(self._invite_editor_text).find_element_by_tag_name('button').click()
     time.sleep(1)
@@ -52,4 +47,3 @@ class InviteEditorCard(BaseCard):
     time.sleep(.5)
     self.click_completed_checkbox()
     self.click_close_button()
-    return self

@@ -1,7 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import time
-import pdb
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -34,9 +33,6 @@ class RegisterDecisionTask(BaseTask):
       and the email text as the second element.
     """
 
-    #pdb.set_trace()
-    #if not data:
-    #  data = ('Major Revision', 'Your manuscript needs major revision')
     decision_d = {'Accept':0, 'Reject':1, 'Major Revision':2, 'Minor Revision':3}
     decision_labels =  self._get(self._decisions).find_elements_by_tag_name('label')
     decision_labels[decision_d[data[0]]].find_element_by_tag_name('input').click()
@@ -45,11 +41,7 @@ class RegisterDecisionTask(BaseTask):
     self._get(self._textarea).send_keys(data[1])
     # press "Register Decision" btn
     self._get(self._register_btn).click()
-    # Give time to register the decision
-    # wait for alert
-    #pdb.set_trace()
+    # Since there is no feedback on this action and some time it fails, will repeat it
+    self._get(self._register_btn).click()
     time.sleep(1)
     self._get(self._completed_cb).click()
-
-
-    #[u'', u'Now viewing:\nR1.0 - Jan 05, 2016\nR0.1 - Jan 05, 2016\nR0.0 - Jan 05, 2016', u'Compare With:\n-\nR1.0 - Jan 05, 2016\nR0.1 - Jan 05, 2016\nR0.0 - Jan 05, 2016', u'\xd7']

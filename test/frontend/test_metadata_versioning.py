@@ -35,19 +35,18 @@ class MetadataVersioningTest(CommonTest):
     Test metadata versioning (APERTA-5747).
     AC being tested:
 
-    - XXXXXXXXXXXXX
-    - XXXXXXXXXXXXX
+    - can see diff comparing submitted versions of metadata, including minor versions
+    - Diff Icon in closed card
+    - Version Stamp in cards
+    - Changed text
+    - Added text
 
-
-    Note: Due to bugs # XXXXXXXXXXXXX
-
+    Note: Due to bugs APERTA-5794, APERTA-5810, APERTA-5808 and PERTA-5849, assertions
+    are not implemented in this method
     """
     title = 'For metadata versioning'
     types = ('Research', 'Research w/Initial Decision Card')
-    types = ('Research w/Initial Decision Card',)
-    #types = ('Research',)
     journal_type = random.choice(types)
-
     new_prq = {'q1':'Yes', 'q2':'Yes', 'q3': [0,1,0,0], 'q4':'New Data',
                'q5':'More Data'}
     if self.check_article(title, user='jgray_author'):
@@ -134,13 +133,10 @@ class MetadataVersioningTest(CommonTest):
     bar_items = paper_viewer._gets(paper_viewer._bar_items)
     # click on
     bar_items[2].find_elements_by_tag_name('option')[2].click()
-    time.sleep(1)
+    pdb.set_trace()
     # Following command disabled due to bug APERTA-5849
     #paper_viewer.click_task('prq')
-    paper_viewer.logout()
     return self
-
-
 
 
 if __name__ == '__main__':

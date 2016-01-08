@@ -235,12 +235,12 @@ module Authorizations
       @klass = klass
       @target = target
       @assignments = assignments
-      @permissible_states = permissible_states
+      @permissible_states = permissible_states.dup
     end
 
     def query
       if @target.is_a?(ActiveRecord::Base)
-        query_for_specific_model
+        authorized_objects = query_for_specific_model
       else
         query = @klass.where(id: assignments.map(&:assigned_to_id))
 
@@ -251,6 +251,7 @@ module Authorizations
             query = query.where(@target.where_values)
           end
         end
+
         if !permissible_states.include?('*') && @klass.column_names.include?("state")
           query = query.where(state: permissible_states)
         end
@@ -262,16 +263,17 @@ module Authorizations
     private
 
     def query_for_specific_model
-      if assignments.map(&:assigned_to_id).include?(@target.id)
-        if permissible_states.include?('*')
-          authorized_objects = [@target]
-        elsif @target.class.column_names.include?('state')
-          if permissible_states.include?(@target.state)
-            authorized_objects = [@target]
-          end
-        else
-          authorized_objects = [@target]
-        end
+      return [] unless assignments.map(&:assigned_to_id).include?(@target.id)
+
+      has_state_column = @target.class.column_names.include?('state')
+      has_state = has_state_column && permissible_states.include?(@target.state)
+
+      if permissible_states.include?('*')
+        [@target]
+      elsif has_state_column
+        has_state ? [@target] : []
+      else
+        [@target]
       end
     end
 

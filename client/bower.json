@@ -1,7 +1,7 @@
 {
   "name": "tahi",
   "dependencies": {
-    "jquery": "^1.11.3",
+    "jquery": "1.11.3",
     "ember": "1.13.10",
     "ember-data": "1.0.0-beta.18",
     "ember-resolver": "~0.1.20",

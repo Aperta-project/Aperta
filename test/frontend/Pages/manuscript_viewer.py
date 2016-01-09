@@ -6,7 +6,6 @@ NOTE: This POM will be outdated when the Paper Editor is removed.
 """
 
 import time
-import pdb
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -129,6 +128,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     Main method to validate styles and basic functions for all elements
     in the page
+    :username: String with the username whom the page is rendered to
+    :admin: Boolean to indicate if the page is rendered for an admin user
     """
     if admin:
       self._get(self._tb_workflow_link)
@@ -540,9 +541,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     elif type == 'congrats_full':
       assert 'You have successfully submitted your manuscript. We will start the peer review process.'
     if type in ('full_submit', 'initial_submit', 'initial_submit_full'):
-      manuscript_title = self._get(self._so_paper_title)
-      assert paper_title in manuscript_title.text, '{} vs {}'.format(paper_title,
-                                                                     manuscript_title.text)
+      title = self._get(self._so_paper_title)
+      assert paper_title in title.text, '{} vs {}'.format(paper_title, title.text)
       self._get(self._so_submit_confirm)
 
   def validate_submit_success(self):

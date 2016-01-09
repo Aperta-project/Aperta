@@ -92,7 +92,7 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer.logout()
     # log as editor jgray_editor to accept invitation and accept initial submission
     dashboard_page = self.login(email=he_login['user'], password=login_valid_pw)
-    dashboard_page.view_invitations()
+    dashboard_page.click_view_invitations()
     # the Editor should accept the assignation as editor
     dashboard_page.accept_invitations()
     # go to article
@@ -133,7 +133,6 @@ class MetadataVersioningTest(CommonTest):
     bar_items = paper_viewer._gets(paper_viewer._bar_items)
     # click on
     bar_items[2].find_elements_by_tag_name('option')[2].click()
-    pdb.set_trace()
     # Following command disabled due to bug APERTA-5849
     #paper_viewer.click_task('prq')
     return self

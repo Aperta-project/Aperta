@@ -1,7 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import time
-import pdb
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -193,10 +192,7 @@ class AuthorsTask(BaseTask):
     """
     completed = self._get(self._completed_cb)
     if completed.is_selected():
-        #No need to close
-      #self._get(self._close_button).click()
       return None
-    #author_task = AuthorsTask(self._driver)
     author = self._get(self._author_items)
     self._actions.move_to_element(author).perform()
     edit_btn = self._get(self._edit_author)
@@ -209,7 +205,6 @@ class AuthorsTask(BaseTask):
       institution_input = institution_div.find_element_by_tag_name('input')
       institution_input.clear()
       institution_input.send_keys(author_data['institution'] + Keys.ENTER)
-    #'did-you-mean-what-you-meant'
     title_input.clear()
     title_input.send_keys(author_data['title'] + Keys.ENTER)
     department_input.clear()
@@ -226,8 +221,6 @@ class AuthorsTask(BaseTask):
     completed = self._get(self._completed_cb)
     completed.click()
     time.sleep(.2)
-    # No need to close
-    #self._get(self._close_button).click()
 
   def press_submit_btn(self):
     """Press sidebar submit button"""

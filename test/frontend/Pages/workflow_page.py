@@ -20,18 +20,6 @@ class WorkflowPage(AuthenticatedPage):
 
     #Locators - Instance members
     self._click_editor_assignment_button = (By.XPATH, './/div[2]/div[2]/div/div[4]/div')
-    # Reviewer Report button name = Reviewer Recommendation in the card's title
-    """
-    Outdated block??
-    self._reviewer_agreement_button = (By.XPATH,
-      "//div[@class='column-content']/div/div//div[contains(., '[A] Reviewer Agreement')]")
-    self._reviewer_recommendation_button = (By.XPATH,
-      "//div[@class='column-content']/div/div//div[contains(., '[A] Reviewer Report')]")
-    self._completed_review_button = (By.XPATH,
-      "//div[@class='column-content']/div/div//div[contains(., '[A] Completed Review')]")
-    self._assess_button = (By.XPATH, "//div[@class='column-content']/div/div//div[contains(., '[A] Reviewer Report')]")
-    self._editorial_decision_button = (By.XPATH, "//div[@class='column-content']/div/div//div[contains(., '[A] Editorial Decision')]")
-    """
     self._navigation_menu_line = (By.XPATH, ".//div[@class='navigation']/hr")
     self._manuscript_icon = (By.XPATH,
       ".//div[@class='control-bar-inner-wrapper']/ul[2]/li[4]/div/div/*[local-name() = 'svg']/*[local-name() = 'path']")
@@ -45,7 +33,6 @@ class WorkflowPage(AuthenticatedPage):
     self._column_header_cancel = (By.XPATH,
       ".//div[contains(@class, 'column-header')]/div/div/button")
     self._add_new_card_button = (By.CLASS_NAME, "add-new-card-button")
-    #self._first_input_new_task = (By.XPATH, ".//div[@class='col-md-5'][2]/label/input")
     self._close_icon_overlay = (By.XPATH, ".//span[contains(@class, 'overlay-close-x')]")
     self._select_in_overlay = (By.XPATH, ".//div[contains(@class, 'select2-container')]/input")
     self._add_button_overlay = (By.XPATH, ".//div[@class='overlay-action-buttons']/button[1]")
@@ -94,8 +81,6 @@ class WorkflowPage(AuthenticatedPage):
   def click_invite_editor_card(self):
     """Click Invite Editor Card"""
     self._get(self._invite_editor_card).click()
-
-
 
   def get_assess_button(self):
     return self._get(self._assess_button)
@@ -234,10 +219,6 @@ class WorkflowPage(AuthenticatedPage):
     # Check if there
     return self
 
-  def invite_editor(self, user):
-    """ """
-
-
   def count_cards_first_column(self):
     """Count the cards in the first column"""
     return len(self._gets(self._first_column_cards))
@@ -277,8 +258,6 @@ class WorkflowPage(AuthenticatedPage):
     assert remove_cancel.value_of_css_property('color') == 'rgba(57, 163, 41, 1)'
     assert application_typeface in remove_cancel.value_of_css_property('font-family')
     assert remove_cancel.value_of_css_property('font-size') == '14px'
-    return self
-
 
   def add_invite_editor_card(self):
     """Add invite editor card"""

@@ -13,8 +13,8 @@ __author__ = 'sbassi@plos.org'
 
 class PRQTask(BaseTask):
   """
-  Page Object Model for Invite Editor Card
-  Publishing Related Questions
+  Page Object Model for Published Related Questions
+  Note: This will be replaced by the Additional Information
   """
 
   data = {'q1':'No', 'q2':'No', 'q3': [0,0,0,0], 'q4':'', 'q5':''}
@@ -35,7 +35,7 @@ class PRQTask(BaseTask):
    #POM Actions
   def complete_prq(self, data=data):
     """
-    This method completes XXXXXX
+    This method completes the task Publishing Related Data
     :data: A dictionary with the answers to all questions
     """
     #import pdb
@@ -65,7 +65,6 @@ class PRQTask(BaseTask):
         time.sleep(2)
         questions[1].find_elements_by_tag_name('input')[1].click()
       if data['q3'] != [0,0,0,0]:
-        # not implemented
         # wait for the element to be attached to the DOM
         time.sleep(2)
         checkboxes = questions[2].find_elements_by_tag_name('input')
@@ -80,6 +79,4 @@ class PRQTask(BaseTask):
         questions[4].find_element_by_class_name('format-input-field').send_keys(data['q5'])
       if not self.completed_cb_is_selected():
         self._get(self._completed_cb).click()
-      #task.click()
-
     return self

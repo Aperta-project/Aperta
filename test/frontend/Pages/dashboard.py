@@ -104,13 +104,10 @@ class DashboardPage(AuthenticatedPage):
     self._cns_manuscript_superscript_icon = (By.CLASS_NAME, 'fa-superscript')
     self._cns_manuscript_subscript_icon = (By.CLASS_NAME, 'fa-subscript')
     self._cns_journal_chooser_label = (By.XPATH, "//div[@class='overlay-body']/div/div[3]/label")
-    #self._cns_journal_chooser = (By.CSS_SELECTOR, 'div#paper-new-journal-select div.select-box-element')
     self._cns_journal_chooser = (By.CSS_SELECTOR, 'div.paper-new-select-trigger')
     self._cns_opened_option_dropdown = (By.CSS_SELECTOR, 'div.select-box-list')
     self._cns_option_dropdown_item = (By.CSS_SELECTOR, 'div.select-box-item')
     self._cns_paper_type_chooser_label = (By.XPATH, "//div[@class='overlay-body']/div/div[4]/label")
-    #self._cns_paper_type_chooser = (By.CSS_SELECTOR, 'div.paper-new-paper-type-select div.select-box-element')
-    #self._cns_paper_type_chooser = (By.CSS_SELECTOR, 'div.paper-new-select-trigger')
     self._cns_paper_type_chooser = (By.XPATH, "//div[contains(@class, 'paper-new-select-trigger')]")
     self._cns_journal_chooser_dd = (By.ID, 'paper-new-journal-select')
     self._cns_papertype_chooser_dd = (By.ID, 'paper-new-paper-type-select')
@@ -139,8 +136,8 @@ class DashboardPage(AuthenticatedPage):
     first_matching_manuscript_link.click()
     return self
 
-  def view_invitations(self):
-    """ """
+  def click_view_invitations(self):
+    """Click on view invitations"""
     self._get(self._view_invitations).click()
 
   def accept_invitations(self):

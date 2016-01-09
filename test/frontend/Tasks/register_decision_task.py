@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import time
+import logging
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -41,7 +42,9 @@ class RegisterDecisionTask(BaseTask):
     self._get(self._textarea).send_keys(data[1])
     # press "Register Decision" btn
     self._get(self._register_btn).click()
-    # Since there is no feedback on this action and some time it fails, will repeat it
-    self._get(self._register_btn).click()
-    time.sleep(1)
-    self._get(self._completed_cb).click()
+    # Since there is no feedback on this action and sometimes it fails, will check
+    # for checkbox that is completed after successful register.
+    time.sleep(2)
+    if not self._get(self._completed_cb).get_attribute('checked'):
+      self._get(self._register_btn).click()
+    logging.info(self._get(self._completed_cb).get_attribute('checked'))

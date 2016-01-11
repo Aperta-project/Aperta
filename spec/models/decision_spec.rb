@@ -55,25 +55,43 @@ describe Decision do
     end
   end
 
+  describe ".completed" do
+    context "with a verdict" do
+      let(:decision) { FactoryGirl.create(:decision, :rejected) }
+
+      it "is returned" do
+        Decision.completed.should eq([decision])
+      end
+    end
+
+    context "without a verdict" do
+      let(:decision) { FactoryGirl.create(:decision, :pending) }
+
+      it "is not returned" do
+        Decision.completed.should be_empty
+      end
+    end
+  end
+
   describe '#verdict_valid?' do
     context 'when the verdict is valid' do
       it 'validates for major_revision' do
-        decision.update_attribute(:verdict, 'major_revision')   
+        decision.update_attribute(:verdict, 'major_revision')
         expect(decision.valid?).to be true
       end
 
       it 'validates for minor_revision' do
-        decision.update_attribute(:verdict, 'minor_revision') 
+        decision.update_attribute(:verdict, 'minor_revision')
         expect(decision.valid?).to be true
       end
 
       it 'validates for accept' do
-        decision.update_attribute(:verdict, 'accept') 
+        decision.update_attribute(:verdict, 'accept')
         expect(decision.valid?).to be true
       end
 
       it 'validates for reject' do
-        decision.update_attribute(:verdict, 'reject') 
+        decision.update_attribute(:verdict, 'reject')
         expect(decision.valid?).to be true
       end
     end

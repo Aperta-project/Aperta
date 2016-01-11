@@ -28,11 +28,7 @@ module TahiStandardTasks
 
     def send_email
       RegisterDecisionMailer.delay.notify_author_email(
-        decision_id: decision_content.id)
-    end
-
-    def decision_content
-      paper.decisions.select(&:verdict_valid?).first
+        decision_id: paper.decisions.completed.latest)
     end
 
     def send_emails

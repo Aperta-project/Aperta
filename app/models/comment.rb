@@ -9,7 +9,7 @@ class Comment < ActiveRecord::Base
   validates :task, :body, presence: true
   validates_presence_of :commenter
 
-  before_save :set_mentions
+  after_save :notify_mentioned_people
 
   def paper
     task.paper
@@ -20,7 +20,7 @@ class Comment < ActiveRecord::Base
   end
 
   def notify_mentioned_people
-    people_mentioned = UserMentions.new(comment.body, commenter.id)
+    people_mentioned = UserMentions.new(body, commenter).people_mentioned
     people_mentioned.each do |mentionee|
       UserMailer.mention_collaborator(self.id, mentionee.id).deliver_later
     end

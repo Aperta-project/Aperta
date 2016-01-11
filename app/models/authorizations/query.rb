@@ -166,7 +166,7 @@ module Authorizations
 
       delegate :each, :map, :length, to: :@object_permission_map
 
-      def to_h
+      def as_json
         results = []
         each do |object, permissions|
           item = {

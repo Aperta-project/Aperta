@@ -79,10 +79,10 @@ DESC
     assign_user user, to: other_paper_on_same_journal, with_role: role_editor
   end
 
-  describe '#to_h' do
+  describe '#as_json' do
     it "returns a hash of all the user's permissions for the returned object" do
       results = user.filter_authorized(:view, Authorizations::FakePaper.all)
-      expect(results.to_h).to eq([
+      expect(results.as_json).to eq([
         {
           object: {
             id: paper_assigned_to_journal.id,
@@ -130,7 +130,7 @@ DESC
 
       it 'returns the permissions for all permissible assignments' do
         results = user.filter_authorized(:view, Authorizations::FakeTask.all)
-        expect(results.to_h).to eq([
+        expect(results.as_json).to eq([
           {
             object: {
               id: task.id,

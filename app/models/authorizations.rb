@@ -9,14 +9,14 @@ module Authorizations
 
     # Returns the current Authorizations::Configuration instance
     def configuration
-      @configuration ||= Configuration.new
+      @configuration ||= Authorizations::Configuration.new
     end
 
     # Replaces the current Authorizations::Configuration instance with pristine
     # one. Note: This is primarily used so we can run a variety of tests
     # against the authorization sub-system.
     def reset_configuration
-      @configuration = Configuration.new
+      @configuration = Authorizations::Configuration.new
     end
   end
 end

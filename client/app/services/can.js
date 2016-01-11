@@ -5,6 +5,7 @@ export default CanService.extend({
   build(abilityString, resource, properties) {
     const abilityName = 'ability:permissions';
     const ability = this.container.lookup(abilityName);
+    this.store = this.container.lookup('store:main');
 
     Ember.assert('No ability type found for ' + abilityName, ability);
 
@@ -25,6 +26,8 @@ export default CanService.extend({
     }
 
     ability.set('action', abilityString);
+    var permission = this.store.all('permission').objectAt(0);
+    ability.set('data', permission.get('table'));
 
     return ability;
   },

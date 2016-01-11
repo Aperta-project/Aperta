@@ -1,6 +1,6 @@
 class CurrentUserSerializer < ActiveModel::Serializer
   has_many :affiliations, include: true, embed: :ids
-  has_many :permissions, include: true, embed: :ids
+  has_one :permissions, include: true, embed: :ids
   attributes :id,
     :full_name,
     :first_name,
@@ -10,12 +10,9 @@ class CurrentUserSerializer < ActiveModel::Serializer
     :site_admin
 
   def permissions
-    [
-      PermissionSerializer.new(
-        id: 1,
-        table: [{ object: { id: 3, type: 'User' },
-                  permissions: { view_profile: { states: ['*'] } } }]
-      )
-    ]
+    PermissionsSerializer.new(
+      id: 1,
+      table: object.filter_authorized(:view_profile, object).as_json
+    )
   end
 end

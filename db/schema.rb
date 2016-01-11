@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 20160113151023) do
   end
 
   add_index "assignments", ["role_id"], name: "index_assignments_on_role_id", using: :btree
+  add_index "assignments", ["user_id", "role_id", "assigned_to_type", "assigned_to_id"], name: "uniq_assigment_idx", unique: true, using: :btree
   add_index "assignments", ["user_id"], name: "index_assignments_on_user_id", using: :btree
 
   create_table "attachments", force: :cascade do |t|
@@ -387,7 +388,18 @@ ActiveRecord::Schema.define(version: 20160113151023) do
   end
 
   add_index "permissions_roles", ["permission_id"], name: "index_permissions_roles_on_permission_id", using: :btree
+  add_index "permissions_roles", ["role_id", "permission_id"], name: "index_permissions_roles_on_role_id_and_permission_id", unique: true, using: :btree
   add_index "permissions_roles", ["role_id"], name: "index_permissions_roles_on_role_id", using: :btree
+
+  create_table "permissions_states", force: :cascade do |t|
+    t.integer  "permission_id"
+    t.integer  "state_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "permissions_states", ["permission_id"], name: "index_permissions_states_on_permission_id", using: :btree
+  add_index "permissions_states", ["state_id", "permission_id"], name: "index_permissions_states_on_state_id_and_permission_id", unique: true, using: :btree
 
   create_table "phase_templates", force: :cascade do |t|
     t.string   "name"

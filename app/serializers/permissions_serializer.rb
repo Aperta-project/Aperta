@@ -1,5 +1,5 @@
 # Serializer for Roles and Permissions
-class PermissionSerializer < ActiveModel::Serializer
+class PermissionsSerializer < ActiveModel::Serializer
   def serializable_hash
     object.to_h
   end

@@ -31,11 +31,11 @@ class FiguresExtractor
     Nokogiri::HTML(html).tap { |doc|
       doc.css("img[src*='#{image.original_filename}']").each do |img|
         # hardcodes these attributes in db paper.body
-        img.set_attribute 'src', figure.non_expiring_proxy_url(version: :preview)
+        img.set_attribute 'src', figure.non_expiring_proxy_url(version: :detail)
         img.set_attribute 'id', "figure_#{figure.id}"
         img.set_attribute 'data-figure-id', figure.id
         img.set_attribute 'alt', "Figure: #{figure.filename}"
-        img.set_attribute 'style', 'width:100%'
+        img.set_attribute 'class', 'paper-body-figure'
       end
     }.to_s
   end

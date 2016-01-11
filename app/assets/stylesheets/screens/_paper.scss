@@ -1,3 +1,4 @@
+// CSS here meant to style paper view page, and paper body
 #paper-container {
   @include position(absolute, 60px 0px 0px 0px);
   z-index: z('paper-container');
@@ -83,5 +84,11 @@
     border-spacing: 0;
     border-collapse: collapse;
     cursor: default;
+  }
+
+  img.paper-body-figure {
+    display: block;
+    margin: 20px auto;
+    width: 100%;
   }
 }

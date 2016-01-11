@@ -16,6 +16,7 @@ module AuthorizationModelsSpecHelper
         end
 
         create_table :fake_tasks, force: true do |t|
+          t.string :name
           t.integer :fake_paper_id
           t.integer :required_permission_id
         end

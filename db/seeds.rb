@@ -164,6 +164,7 @@ class ManualSeeds #Use this class to run seeds the old way
     Rake::Task['data:create_task_types'].invoke
     Rake::Task['journal:create_default_templates'].invoke
     Rake::Task['nested-questions:seed'].invoke
+    Rake::Task['roles-and-permissions:seed'].invoke
 
     puts 'Tahi Seeds have been loaded successfully'
   end

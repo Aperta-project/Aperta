@@ -9,7 +9,8 @@ class DiscussionReply < ActiveRecord::Base
   def notify_mentioned_people
     people_mentioned = UserMentions.new(body, replier).people_mentioned
     people_mentioned.each do |mentionee|
-      UserMailer.notify_mention_in_discussion(mentionee.id, id)
+      UserMailer.notify_mention_in_discussion(mentionee.id, discussion_topic.id,
+                                              id)
         .deliver_later
     end
   end

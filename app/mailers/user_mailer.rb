@@ -99,10 +99,11 @@ class UserMailer < ActionMailer::Base
       subject: "New manuscript submitted to PLOS #{@journal.name}: \"#{@paper.display_title}\"")
   end
 
-  def notify_mention_in_discussion(user_id, reply_id)
+  def notify_mention_in_discussion(user_id, topic_id, reply_id = nil)
+    binding.pry
     @user = User.find(user_id)
     @reply = DiscussionReply.find(reply_id)
-    @topic = DiscussionTopic.find(@reply.discussion_topic.id)
+    @topic = DiscussionTopic.find(topic_id)
     @paper = Paper.find(@topic.paper.id)
 
     mail(

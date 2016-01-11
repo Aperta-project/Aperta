@@ -12,7 +12,9 @@
       "<%= @paper.title %>"
     </p>
     <p>
-      <%= @reply.body %>
+    <%= if @reply
+          @reply.body
+        end %>
     </p>
     <p>
     View the message here: <a href="<%= client_discussion_url(@topic, @paper) %>">

@@ -5,6 +5,9 @@ class DiscussionParticipantsController < ApplicationController
 
   def create
     discussion_participant.save
+    topic_id = creation_params[:discussion_topic_id]
+    UserMailer.notify_mention_in_discussion(discussion_participant.id, topic_id)
+      .deliver_later
     respond_with discussion_participant
   end
 
@@ -32,5 +35,4 @@ class DiscussionParticipantsController < ApplicationController
   def enforce_policy
     authorize_action!(discussion_participant: discussion_participant)
   end
-
 end

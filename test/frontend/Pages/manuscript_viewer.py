@@ -17,7 +17,6 @@ from frontend.Cards.authors_card import AuthorsCard
 from frontend.Cards.basecard import BaseCard
 from frontend.Tasks.basetask import BaseTask
 from frontend.Tasks.authors_task import AuthorsTask
-from frontend.Tasks.authors_task import AuthorsTask
 from frontend.Tasks.prq_task import PRQTask
 from frontend.Tasks.initial_decision_task import InitialDecisionTask
 from frontend.Tasks.register_decision_task import RegisterDecisionTask
@@ -122,6 +121,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # While IDs are normally king, for this element, we don't hide the element, we just change its class to "hide" it
     self._infobox = (By.CSS_SELECTOR, 'div.show-process')
     self._submission_status_info = (By.ID, 'submission-state-information')
+    self._title = (By.ID, 'control-bar-paper-title')
 
   # POM Actions
   def validate_page_elements_styles_functions(self, username='', admin=True):
@@ -507,6 +507,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
     doi_text = self._get(self._paper_sidebar_manuscript_id).text
     return doi_text.split(':')[1]
 
+  def get_title(self):
+    """
+    Returns the title
+    """
+    return self._get(self._title).text
+
+
   def get_paper_db_id(self):
     """
     Returns the DB paper ID from URL
@@ -542,7 +549,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       assert 'You have successfully submitted your manuscript. We will start the peer review process.'
     if type in ('full_submit', 'initial_submit', 'initial_submit_full'):
       title = self._get(self._so_paper_title)
-      assert paper_title in title.text, '{} vs {}'.format(paper_title, title.text)
+      assert paper_title in title.text, '{0} vs {1}'.format(paper_title, title.text)
       self._get(self._so_submit_confirm)
 
   def validate_submit_success(self):

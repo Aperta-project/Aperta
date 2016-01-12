@@ -71,6 +71,9 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer.complete_task('Authors')
     paper_viewer.complete_task('Publishing Related Questions')
     time.sleep(3)
+    # get title
+    # check after manuscript is uploaded
+    title = paper_viewer.get_title()
     # make initial submission
     paper_viewer.click_submit_btn()
     paper_viewer.confirm_submit_btn()
@@ -94,7 +97,7 @@ class MetadataVersioningTest(CommonTest):
     dashboard_page = self.login(email=he_login['user'], password=login_valid_pw)
     dashboard_page.click_view_invitations()
     # the Editor should accept the assignation as editor
-    dashboard_page.accept_invitations()
+    dashboard_page.accept_invitation(title)
     # go to article
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())

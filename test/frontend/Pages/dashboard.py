@@ -121,6 +121,7 @@ class DashboardPage(AuthenticatedPage):
     # First article
     self._first_paper = (By.CSS_SELECTOR, 'div.table-responsive a')
     # View invitations
+    self._invitations = (By.CSS_SELECTOR, 'div.pending-invitation')
     self._view_invitations = (By.TAG_NAME, 'button')
     self._yes_button = (By.TAG_NAME, 'button')
 
@@ -140,7 +141,7 @@ class DashboardPage(AuthenticatedPage):
     """Click on view invitations"""
     self._get(self._view_invitations).click()
 
-  def accept_invitations(self):
+  def accept_all_invitations(self):
     """Accepts all invitations"""
     all_buttons = self._gets(self._view_invitations)
     count = 0
@@ -148,6 +149,15 @@ class DashboardPage(AuthenticatedPage):
       count += 1
       if count % 2 == 1:
         button.click()
+
+  def accept_invitation(self, title):
+    """
+    Accepts a given invitation
+    :title: Title of the publication to accept the invitation
+    """
+    h3 = self._driver.find_element_by_xpath("//*[contains(text(), '{}')]".format(title))
+    btn = h3.find_element_by_xpath("./following-sibling::button")
+    btn.click()
 
   def click_on_existing_manuscript_link_partial_title(self, partial_title):
     """Click on existing manuscript link using partial title"""
@@ -412,7 +422,7 @@ class DashboardPage(AuthenticatedPage):
 
         # Validate Manuscript ID display
         dbmanuid = PgSQL().query('SELECT doi FROM papers WHERE id = %s ;', (db_papers_list[count],))[0][0]
-        dbmanuid = 'ID: {}'.format(dbmanuid.split('/')[1]) if dbmanuid else 'ID:'
+        dbmanuid = 'ID: {0}'.format(dbmanuid.split('/')[1]) if dbmanuid else 'ID:'
         manu_id = manu_ids[count].text
         assert dbmanuid == manu_id, dbmanuid + ' is not equal to: ' + manu_id
         # Finally increment counter
@@ -462,7 +472,7 @@ class DashboardPage(AuthenticatedPage):
         time.sleep(1)
         break
     selected_journal = self._get(self._cns_journal_chooser)
-    assert journal in selected_journal.text, '{} != {}'.format(selected_journal.text, journal)
+    assert journal in selected_journal.text, '{0} != {1}'.format(selected_journal.text, journal)
     # Time to change select contents
     time.sleep(.1)
     type_dd.click()
@@ -475,7 +485,7 @@ class DashboardPage(AuthenticatedPage):
         time.sleep(1)
         break
     selected_type = self._gets(self._cns_paper_type_chooser)[1]
-    assert type_ in selected_type.text, '{} != {}'.format(selected_type.text, type_)
+    assert type_ in selected_type.text, '{0} != {1}'.format(selected_type.text, type_)
 
   @staticmethod
   def title_generator(prefix='', random_bit=True):
@@ -509,7 +519,6 @@ class DashboardPage(AuthenticatedPage):
     Validates the display of the View Invites overlay and the dynamic presentation of the
     current pending invitations for username.
     :param username: username
-    :return: None
     """
     # global elements
     modal_title = self._get(self._view_invites_title)

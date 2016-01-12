@@ -173,6 +173,12 @@ describe Paper do
           expect(paper.first_submitted_at).to eq(Time.current.utc)
         end
       end
+
+      it 'snapshots metadata' do
+        Subscriptions.reload
+        expect(Paper::Submitted::SnapshotMetadata).to receive(:call)
+        paper.initial_submit!
+      end
     end
 
     describe '#submit!' do
@@ -248,6 +254,12 @@ describe Paper do
           expect(args[:data][:record]).to eq(paper)
         end
         paper.submit! user
+      end
+
+      it 'snapshots metadata' do
+        Subscriptions.reload
+        expect(Paper::Submitted::SnapshotMetadata).to receive(:call)
+        paper.initial_submit!
       end
     end
 

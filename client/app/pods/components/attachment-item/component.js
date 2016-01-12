@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import FileUpload from 'tahi/models/file-upload';
-import extensionFont from 'tahi/lib/extension-font';
+import fontAwesomeFiletypeClass from 'tahi/lib/font-awesome-fyletype-class';
 
 export default Ember.Component.extend({
   classNames: ['attachment-item'],
@@ -11,7 +11,7 @@ export default Ember.Component.extend({
   uploadInProgress: Ember.computed.notEmpty('fileUpload'),
 
   fileTypeClass: Ember.computed('attachment.filename', function(){
-    return extensionFont(this.get('attachment.filename'));
+    return fontAwesomeFiletypeClass(this.get('attachment.filename'));
   }),
 
   init() {

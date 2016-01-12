@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import FileUpload from 'tahi/models/file-upload';
-import extensionFont from 'tahi/lib/extension-font';
 
 export default Ember.Component.extend({
   classNames: ['attachment-manager'],

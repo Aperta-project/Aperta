@@ -51,12 +51,6 @@ export default Ember.Service.extend(Ember.Evented, {
     const { type, id } = options;
     const isParent = isEmpty(options.isParent) ? false : options.isParent;
 
-    // TEMPORARY:
-    this.get('_data').removeObjects(this.peekNotifications(type, id));
-    if(isParent) {
-      this.get('_data').removeObjects(this.peekParentNotifications(type, id));
-    }
-
     let parentIds = [];
 
     const ids = this.peekNotifications(type, id).map(function(n) {
@@ -82,7 +76,9 @@ export default Ember.Service.extend(Ember.Evented, {
 
   _persistRemoval(ids) {
     this.get('restless')
-        .get('/api/notifications/destroy?ids=[' + ids.toString() + ']');
+        .delete('/api/notifications/destroy?ids=' + ids.toString()).then(()=> {
+          this.removeNotificationsById(ids);
+        });
   },
 
   /**
@@ -147,7 +143,15 @@ export default Ember.Service.extend(Ember.Evented, {
   },
 
   destroyed(payload) {
+    this.removeNotificationsById([payload.id]);
+  },
+
+  removeNotificationsById(ids) {
     this.get('_data')
-        .removeObject( this.get('_data').findBy('id', payload.id) );
+        .removeObjects(this.get('_data').map(function(n) {
+          if(ids.contains(n.id)) {
+            return n;
+          }
+        }));
   }
 });

@@ -11,8 +11,8 @@ class CurrentUserSerializer < ActiveModel::Serializer
 
   def permissions
     PermissionsSerializer.new(
-      id: 1,
-      table: object.filter_authorized(:view_profile, object).as_json
+      'id' => 1,
+      'table' => object.filter_authorized(:view_profile, object).as_json
     )
   end
 end

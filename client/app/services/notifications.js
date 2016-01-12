@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import EmberPusher from 'ember-pusher';
 
+const { isEmpty } = Ember;
+
 export default Ember.Service.extend(Ember.Evented, EmberPusher.Bindings, {
   restless: Ember.inject.service(),
 
@@ -45,19 +47,25 @@ export default Ember.Service.extend(Ember.Evented, EmberPusher.Bindings, {
   },
 
   getData(type, id) {
-    return this.get('data').filter(n => {
-      if(id && type && type === 'paper') {
-        return n.paper_id === id;
-      }
+    if(isEmpty(type) || isEmpty(id)) { return []; }
+    const data = this.get('data');
 
-      if(type && id) {
-        return n.target_id === id && n.target_type === type;
-      }
+    if(type === 'paper') {
+      return data.filterBy('paper_id', id);
+    }
+
+    return data.filter(n => {
+      return n.target_id === id && n.target_type === type;
     });
   },
 
   getCount(type, id) {
-    return this.getData(type, id).get('length');
+    if(type === 'DiscussionTopic') {
+      const topicCount = this.getData(type, parseInt(id));
+      return topicCount.get('length');
+    }
+
+    return this.getData(type, parseInt(id)).get('length');
   },
 
   actions: {

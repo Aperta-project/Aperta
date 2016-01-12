@@ -9,7 +9,7 @@ export default Ember.Helper.extend({
 
   compute(params, hash) {
     const count = this.get('notifications')
-                      .getCount(hash.type, parseInt(hash.id));
+                      .getCount(hash.type, hash.id);
 
     if(count) {
       return Ember.String.htmlSafe(

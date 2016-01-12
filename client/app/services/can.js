@@ -27,6 +27,9 @@ export default CanService.extend({
 
     ability.set('action', abilityString);
     var permission = this.store.all('permission').objectAt(0);
+
+    Ember.assert('No Permission provided. Permission must be set', permission);
+
     ability.set('data', permission.get('table'));
 
     return ability;

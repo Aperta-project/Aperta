@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
-export default Ember.TextField.extend({
+export default Ember.Component.extend({
+  attributeBindings: ['type', 'accept', 'multiple', 'name'],
+  tagName: 'input',
   type: 'file',
   name: 'file',
   multiple: false,

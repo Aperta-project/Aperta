@@ -1,6 +1,25 @@
 import Ember from 'ember';
 import FileUpload from 'tahi/models/file-upload';
 
+/**
+ *  This component displays a UI where you can upload one or multiple files,
+ *  Accepts multiple attributes like: attachments, filePath and actions.
+ *
+ *  ## How to Use
+ *
+ *  In your template:
+ *
+ *  ```
+ *  {{attachment-manager accept=".jpg,.jpeg,.tiff,.tif,.gif,.png"
+ *                       filePath="tasks/attachment"
+ *                       hasCaption=true
+ *                       attachments=task.attachments
+ *                       noteChanged=(action "noteChanged")
+ *                       deleteFile=(action "deleteAttachment")
+ *                       uploadFinished=(action "uploadFinished")}}
+ *  ```
+**/
+
 export default Ember.Component.extend({
   classNames: ['attachment-manager'],
   description: 'Please select a file.',

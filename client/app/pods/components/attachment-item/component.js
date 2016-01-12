@@ -2,6 +2,26 @@ import Ember from 'ember';
 import FileUpload from 'tahi/models/file-upload';
 import fontAwesomeFiletypeClass from 'tahi/lib/font-awesome-fyletype-class';
 
+/**
+ *  This component wraps the s3-file-uploader with a UI that handle actions like
+ *  Delete and Replace, also displays an icon based on the filetype extension.
+ *  This component is meant to be used within the attachment-manager component.
+
+ *  ## How to Use
+ *
+ *  In your template:
+ *
+ *  ```
+ *  {{attachment-item accept=accept
+ *                    attachment=attachment
+ *                    filePath=filePath
+ *                    hasCaption=hasCaption
+ *                    deleteFile=attrs.deleteFile
+ *                    noteChanged=attrs.noteChanged
+ *                    uploadFinished=attrs.uploadFinished}}
+ *  ```
+**/
+
 export default Ember.Component.extend({
   classNames: ['attachment-item'],
   attachment: null, // passed-in

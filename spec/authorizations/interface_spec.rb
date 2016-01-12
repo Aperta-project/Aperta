@@ -7,8 +7,11 @@ DESC
 
   let!(:user) { FactoryGirl.create(:user) }
   let!(:paper) { Authorizations::FakePaper.create!(name: 'Bar Paper') }
+  let!(:other_paper) { Authorizations::FakePaper.create!(name: 'Other Paper') }
   let!(:task) { Authorizations::FakeTask.create!(fake_paper: paper, name: 'Foo Task') }
+  let!(:other_task) { Authorizations::FakeTask.create!(fake_paper: other_paper, name: 'Other Task') }
   let!(:task_thing) { Authorizations::FakeTaskThing.create!(fake_task: task) }
+  let!(:other_task_thing) { Authorizations::FakeTaskThing.create!(fake_task: task) }
 
   before(:all) do
     Authorizations.reset_configuration
@@ -53,6 +56,12 @@ DESC
         user.filter_authorized(:view, Authorizations::FakePaper).objects
       ).to eq([paper])
     end
+
+    it 'does not include unauthorized items' do
+      expect(
+        user.filter_authorized(:view, Authorizations::FakePaper).objects
+      ).to_not include(other_paper)
+    end
   end
 
   context <<-DESC do
@@ -64,58 +73,95 @@ DESC
       assign_user user, to: paper, with_role: role_for_viewing
     end
 
-    it 'can filter authorized models when given a simple ActiveRecord::Relation' do
-      expect(
-        user.filter_authorized(:view, Authorizations::FakeTask.all).objects
-      ).to eq(paper.fake_tasks)
+    context 'when given a simple ActiveRecord::Relation' do
+      it 'can filter authorized models' do
+        expect(
+          user.filter_authorized(:view, Authorizations::FakeTask.all).objects
+        ).to eq(paper.fake_tasks)
+      end
+
+      it 'does not include unauthorized items' do
+        expect(
+          user.filter_authorized(:view, Authorizations::FakeTask.all).objects
+        ).to_not include(other_task)
+      end
     end
 
-    it 'can filter authorized models given an ActiveRecord::Relation with conditions' do
-      query = Authorizations::FakeTask
+    context 'when given an ActiveRecord::Relation with conditions' do
+      it 'can filter authorized models given an ActiveRecord::Relation with conditions' do
+        query = Authorizations::FakeTask
 
-      inclusion_query = query.where(id: task.id)
-      expect(
-        user.filter_authorized(:view, Authorizations::FakeTask.where(id: task.id)).objects
-      ).to eq([task])
+        inclusion_query = query.where(id: task.id)
+        expect(
+          user.filter_authorized(:view, Authorizations::FakeTask.where(id: task.id)).objects
+        ).to eq([task])
+      end
 
-      exclusion_query = query.where('id != ?', task.id)
-      expect(
-        user.filter_authorized(:view, exclusion_query).objects
-      ).to_not include(task)
+      it 'does not include unauthorized items' do
+        query = Authorizations::FakeTask
 
-      exclusion_query = query.where.not('id = ?', task.id)
-      expect(
-        user.filter_authorized(:view, exclusion_query).objects
-      ).to_not include(task)
+        exclusion_query = query.where('id != ?', task.id)
+        expect(
+          user.filter_authorized(:view, exclusion_query).objects
+        ).to_not include(task)
+
+        exclusion_query = query.where.not('id = ?', task.id)
+        expect(
+          user.filter_authorized(:view, exclusion_query).objects
+        ).to_not include(task)
+      end
     end
 
-    it 'can filter authorized models given where-chained ActiveRecord::Relation(s)' do
-      query = Authorizations::FakeTask
+    context 'when given where-chained ActiveRecord::Relation(s)' do
+      it 'can filter authorized models' do
+        query = Authorizations::FakeTask
 
-      chained_inclusion_query = query.where(id: task.id).where(name: task.name)
-      expect(
-        user.filter_authorized(:view, chained_inclusion_query).objects
-      ).to include(task)
+        chained_inclusion_query = query.where(id: task.id).where(name: task.name)
+        expect(
+          user.filter_authorized(:view, chained_inclusion_query).objects
+        ).to include(task)
 
-      chained_exclusion_query = query.where(id: paper.id).where('name != ?', task.name)
-      expect(
-        user.filter_authorized(:view, chained_exclusion_query).objects
-      ).to_not include(task)
+        chained_exclusion_query = query.where(id: paper.id).where('name != ?', task.name)
+        expect(
+          user.filter_authorized(:view, chained_exclusion_query).objects
+        ).to_not include(task)
+      end
+
+      it 'does not include unauthorized items' do
+        query = Authorizations::FakeTask
+
+        chained_query = query.where(id: other_paper.id).where(name: other_task.name)
+        expect(
+          user.filter_authorized(:view, chained_query).objects
+        ).to_not include(other_task)
+      end
     end
 
-    it 'can filter authorized models given joined-chained ActiveRecord::Relation(s)' do
-      query = Authorizations::FakeTask
+    context 'when given join-chained ActiveRecord::Relation(s)' do
+      it 'can filter authorized models' do
+        query = Authorizations::FakeTask
 
-      inclusion_query = query.joins(:fake_task_thing).where(fake_task_things: { id: task_thing.id })
-      expect(
-        user.filter_authorized(:view, inclusion_query).objects
-      ).to include(task)
+        inclusion_query = query.joins(:fake_task_thing).where(fake_task_things: { id: task_thing.id })
+        expect(
+          user.filter_authorized(:view, inclusion_query).objects
+        ).to include(task)
 
-      exclusion_query = query.joins(:fake_task_thing)
-        .where(fake_task_things: { id: task_thing.id + 1000 })
-      expect(
-        user.filter_authorized(:view, exclusion_query).objects
-      ).to_not include(task)
+        exclusion_query = query.joins(:fake_task_thing)
+          .where(fake_task_things: { id: task_thing.id + 1000 })
+        expect(
+          user.filter_authorized(:view, exclusion_query).objects
+        ).to_not include(task)
+      end
+
+      it 'does not include unauthorized models' do
+        query = Authorizations::FakeTask
+
+        unauthorized_query = query.joins(:fake_task_thing)
+          .where(fake_task_things: { id: other_task_thing.id })
+        expect(
+          user.filter_authorized(:view, unauthorized_query).objects
+        ).to_not include(other_task)
+      end
     end
   end
 
@@ -128,53 +174,94 @@ DESC
       assign_user user, to: paper, with_role: role_for_viewing
     end
 
-    it 'can filter authorized models when given a simple ActiveRecord::Relation' do
-      expect(
-        user.filter_authorized(:view, Authorizations::FakePaper.all).objects
-      ).to eq([paper])
+    context 'when given a simple ActiveRecord::Relation' do
+      it 'can filter authorized models' do
+        expect(
+          user.filter_authorized(:view, Authorizations::FakePaper.all).objects
+        ).to eq([paper])
+      end
+
+      it 'does not include unauthorized models' do
+        expect(
+          user.filter_authorized(:view, Authorizations::FakePaper.all).objects
+        ).to_not include(other_paper)
+      end
     end
 
-    it 'can filter authorized models given an ActiveRecord::Relation with conditions' do
-      query = Authorizations::FakePaper
+    context 'when given an ActiveRecord::Relation with conditions' do
+      it 'can filter authorized models' do
+        query = Authorizations::FakePaper
 
-      inclusion_query = query.where(id: paper.id)
-      expect(
-        user.filter_authorized(:view, inclusion_query).objects
-      ).to eq([paper])
+        inclusion_query = query.where(id: paper.id)
+        expect(
+          user.filter_authorized(:view, inclusion_query).objects
+        ).to eq([paper])
 
-      exclusion_query = query.where('id != ?', paper.id)
-      expect(
-        user.filter_authorized(:view, exclusion_query).objects
-      ).to_not include(paper)
+        exclusion_query = query.where('id != ?', paper.id)
+        expect(
+          user.filter_authorized(:view, exclusion_query).objects
+        ).to_not include(paper)
+      end
+
+      it 'does not include unauthorized models' do
+        query = Authorizations::FakePaper
+
+        unauthorized_query = query.where('id = ?', other_paper.id)
+        expect(
+          user.filter_authorized(:view, unauthorized_query).objects
+        ).to_not include(other_paper)
+      end
     end
 
-    it 'can filter authorized models given where-chained ActiveRecord::Relation(s)' do
-      query = Authorizations::FakePaper
+    context 'when given where-chained ActiveRecord::Relation(s)' do
+      it 'can filter authorized models ' do
+        query = Authorizations::FakePaper
 
-      chained_inclusion_query = query.where(id: paper.id).where(name: paper.name)
-      expect(
-        user.filter_authorized(:view, chained_inclusion_query).objects
-      ).to include(paper)
+        chained_inclusion_query = query.where(id: paper.id).where(name: paper.name)
+        expect(
+          user.filter_authorized(:view, chained_inclusion_query).objects
+        ).to include(paper)
 
-      chained_exclusion_query = query.where(id: paper.id).where('name != ?', paper.name)
-      expect(
-        user.filter_authorized(:view, chained_exclusion_query).objects
-      ).to_not include(paper)
+        chained_exclusion_query = query.where(id: paper.id).where('name != ?', paper.name)
+        expect(
+          user.filter_authorized(:view, chained_exclusion_query).objects
+        ).to_not include(paper)
+      end
+
+      it 'does not include unauthorized models' do
+        query = Authorizations::FakePaper
+
+        unauthorized_query = query.where(id: other_paper.id).where(name: other_paper.name)
+        expect(
+          user.filter_authorized(:view, unauthorized_query).objects
+        ).to_not include(other_paper)
+      end
     end
 
-    it 'can filter authorized models given joined-chained ActiveRecord::Relation(s)' do
-      query = Authorizations::FakePaper
+    context 'when given join-chained ActiveRecord::Relation(s)' do
+      it 'can filter authorized models given joined-chained ActiveRecord::Relation(s)' do
+        query = Authorizations::FakePaper
 
-      inclusion_query = query.joins(:fake_tasks).where(fake_tasks: { id: task.id })
-      expect(
-        user.filter_authorized(:view, inclusion_query).objects
-      ).to include(paper)
+        inclusion_query = query.joins(:fake_tasks).where(fake_tasks: { id: task.id })
+        expect(
+          user.filter_authorized(:view, inclusion_query).objects
+        ).to include(paper)
 
-      exclusion_query = query.joins(:fake_tasks)
-        .where(fake_tasks: { id: task.id + 1000 })
-      expect(
-        user.filter_authorized(:view, exclusion_query).objects
-      ).to_not include(paper)
+        exclusion_query = query.joins(:fake_tasks)
+          .where(fake_tasks: { id: task.id + 1000 })
+        expect(
+          user.filter_authorized(:view, exclusion_query).objects
+        ).to_not include(paper)
+      end
+
+      it 'does not include unauthorized models' do
+        query = Authorizations::FakePaper
+
+        unauthorized_query = query.joins(:fake_tasks).where(fake_tasks: { id: other_task.id })
+        expect(
+          user.filter_authorized(:view, unauthorized_query).objects
+        ).to_not include(other_paper)
+      end
     end
   end
 end

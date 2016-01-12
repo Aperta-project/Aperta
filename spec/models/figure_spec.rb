@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'models/concerns/striking_image_shared_examples'
 
 describe Figure, redis: true do
   let(:figure) {
@@ -8,8 +9,11 @@ describe Figure, redis: true do
                           status: 'done'
     end
   }
-  describe "#access_details" do
-    it "returns a hash with attachment src, filename, alt" do
+
+  it_behaves_like 'a striking image'
+
+  describe '#access_details' do
+    it 'returns a hash with attachment src, filename, alt' do
       expect(figure.access_details).to eq(filename: 'yeti.tiff',
                                           alt: 'Yeti',
                                           src: "/attachments/figures/#{figure.id}",

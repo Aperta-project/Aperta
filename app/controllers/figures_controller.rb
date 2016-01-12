@@ -60,7 +60,12 @@ class FiguresController < ApplicationController
   end
 
   def figure_params
-    params.require(:figure).permit(:title, :caption, :attachment, attachment: [])
+    params.require(:figure).permit(
+      :title,
+      :caption,
+      :striking_image,
+      :attachment,
+      attachment: [])
   end
 
   def render_404

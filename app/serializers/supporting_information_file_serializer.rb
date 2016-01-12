@@ -5,11 +5,12 @@ class SupportingInformationFileSerializer < ActiveModel::Serializer
              :alt,
              :src,
              :status,
+             :label,
+             :category,
              :title,
              :caption,
-             :detail_src,
              :publishable,
-             :preview_src,
-             :created_at
+             :created_at,
+             :striking_image
   has_one :paper, embed: :id, include: false
 end

@@ -1,0 +1,161 @@
+.si-file {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-top: 2px solid $tahi-grey-light;
+
+  &.si-file-delete {
+    background-color: $tahi-grey-xlight;
+    transition: background-color 0.1s;
+  }
+
+  &:last-of-type {
+    border-bottom: 2px solid $tahi-grey-light;
+  }
+
+  .si-file-viewing {
+    padding: 10px 15px;
+  }
+
+  .si-file-editor {
+    @include clearfix;
+    margin: 0;
+    padding: 0 20px;
+    transition: max-height 0.1s;
+    overflow-y: hidden;
+    max-height: 0px;
+
+    &.visible {
+      max-height: 500px;
+      padding: 20px
+    }
+
+    .si-file-filename {
+      margin-bottom: 10px;
+      font-size: 1.7rem;
+    }
+
+    .fileinput-button {
+      color: $tahi-grey;
+      font-size: 1.3rem;
+      display: inline;
+      margin-left: 3px;
+      background: transparent;
+      border: none;
+      i {
+        padding: 0;
+      }
+    }
+
+    .si-file-label-input {
+      max-width: 50px;
+      flex: none;
+    }
+
+    .si-file-category-input {
+      width: 125px;
+    }
+
+    textarea {
+      width: 100%;
+    }
+
+    .si-file-title-input {
+      width: 350px;
+      height: auto;
+    }
+
+    .si-file-actions {
+      float: right;
+    }
+
+    .si-file-label-input {
+      margin-right: 10px;
+    }
+
+    .si-file-striking-image-checkbox {
+      margin-left: 10px;
+    }
+  }
+
+  .si-file-control-icons {
+    float: right;
+    >i {
+      cursor: pointer;
+      color: $tahi-grey-light;
+      padding-left: 7px;
+
+      &:hover {
+        color: $tahi-green;
+      }
+    }
+  }
+
+  .si-file-filename {
+    color: $tahi-green;
+
+    i {
+      padding-right: 4px;
+    }
+  }
+
+  .si-file-title {
+    font-weight: bold;
+  }
+
+  .si-file-caption {
+    margin-top: 3px;
+    padding-top: 3px;
+  }
+
+  .si-file-caption-textbox {
+    min-height: 100px;
+    height: auto;
+  }
+
+  .si-file-delete {
+    position: absolute;
+    top: 0;
+    right: -275px;
+    background-color: $tahi-green;
+    width: 275px;
+    height: 53px;
+    transition: right 0.1s;
+
+    &.visible {
+      right: 0;
+    }
+
+    &.si-file-full-height {
+      height: 60px;
+    }
+
+    button {
+      border-radius: 0;
+      display: block;
+      border: 0;
+      height: 100%;
+    }
+
+    .si-file-cancel-delete-button {
+      float: right;
+      width: 30%;
+      background-color: $tahi-green-light;
+      color: $tahi-white;
+      &:focus,
+      &:hover {
+        background-color: darken($tahi-green-light, 10%);
+      }
+    }
+
+    .si-file-delete-button {
+      width: 70%;
+      background-color: $tahi-green;
+      color: $tahi-white;
+      &:focus,
+      &:hover {
+        background-color: darken($tahi-green, 5%);
+      }
+    }
+  }
+}

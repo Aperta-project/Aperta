@@ -47,6 +47,9 @@ export default Ember.Mixin.create({
       // TODO: DOM manipulation in mixin? This is used by controllers too
       $('.upload-preview-filename').text('Upload Complete!');
       Ember.run.later(this, ()=> {
+         $('.progress').addClass('upload-complete');
+      });
+      Ember.run.later(this, ()=> {
         $('.progress').fadeOut(()=>{
           this.unloadUploads(data, filename);
         });

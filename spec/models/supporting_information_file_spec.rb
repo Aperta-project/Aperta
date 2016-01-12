@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'models/concerns/striking_image_shared_examples'
 
 describe SupportingInformationFile, redis: true do
   let(:paper) { FactoryGirl.create :paper }
@@ -7,6 +8,8 @@ describe SupportingInformationFile, redis: true do
       paper.supporting_information_files.create! attachment: ::File.open('spec/fixtures/yeti.tiff')
     end
   end
+
+  it_behaves_like 'a striking image'
 
   describe '#filename' do
     it 'returns the proper filename' do

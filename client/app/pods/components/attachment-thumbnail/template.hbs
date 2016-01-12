@@ -74,7 +74,7 @@
           {{#if figure}}
           <div class="field striking">
             <label>
-              {{check-box checked=attachment.isStrikingImage action="toggleStrikingImageFromCheckbox" attachment=attachment}}
+              {{check-box checked=attachment.strikingImage}}
               This is the striking image
             </label>
           </div>
@@ -103,7 +103,7 @@
           </label>
           {{/if}}
 
-          {{#if attachment.isStrikingImage}}
+          {{#if attachment.strikingImage}}
             <div class="striking">
               <span class="fa fa-check"></span> This is the striking image
             </div>

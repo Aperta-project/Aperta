@@ -15,10 +15,10 @@
     Delete
   </span>
 
-  {{#if hasNote}}
-    {{input class="form-control " type="type" value=note
+  {{#if hasCaption}}
+    {{input class="form-control " type="type" value=caption
             placeholder="Please provide a brief description of this file"
-            action="noteChanged" on="focus-out"}}
+            action="captionChanged" on="focus-out"}}
   {{/if}}
 
   {{s3-file-uploader accept=accept

@@ -5,9 +5,9 @@ import fontAwesomeFiletypeClass from 'tahi/lib/font-awesome-fyletype-class';
 export default Ember.Component.extend({
   classNames: ['attachment-item'],
   attachment: null, // passed-in
-  hasNote: false,
+  hasCaption: false,
   fileUpload: null,
-  note:null,
+  caption: null,
   uploadInProgress: Ember.computed.notEmpty('fileUpload'),
 
   fileTypeClass: Ember.computed('attachment.filename', function(){
@@ -27,9 +27,9 @@ export default Ember.Component.extend({
       }
     },
 
-    noteChanged() {
-      if (this.attrs.noteChanged) {
-        this.attrs.noteChanged(this.get('note'));
+    captionChanged() {
+      if (this.attrs.captionChanged) {
+        this.attrs.captionChanged(this.get('caption'));
       }
     },
 

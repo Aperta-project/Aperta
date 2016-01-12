@@ -205,14 +205,8 @@ class ViewPaperTest(CommonTest):
             manuscript_page.get_submission_status_info_text(),\
             manuscript_page.get_submission_status_info_text()
     manuscript_page.logout()
-
-    print('Logging in as user: {}'.format(rv_login))
-    login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(rv_login['user'])
-    login_page.enter_password_field(login_valid_pw)
-    login_page.click_sign_in_button()
-    # the following call should only succeed for sa_login
-    dashboard_page = DashboardPage(self.getDriver())
+    # Loging as collaborator
+    dashboard_page = self.login(email=rv_login['user'], password=login_valid_pw)
     dashboard_page.go_to_manuscript(paper_id)
     time.sleep(1)
     manuscript_page = ManuscriptViewerPage(self.getDriver())

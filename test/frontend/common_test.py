@@ -6,6 +6,7 @@
 
 import time
 import os
+import random
 
 from Base.FrontEndTest import FrontEndTest
 from Base.Resources import login_valid_email, login_valid_pw, docs
@@ -20,6 +21,7 @@ class CommonTest(FrontEndTest):
 
   def login(self, email=login_valid_email, password=login_valid_pw):
     """Login into Aperta"""
+    print('Logging in as user: {}'.format(email))
     login_page = LoginPage(self.getDriver())
     login_page.enter_login_field(email)
     login_page.enter_password_field(password)
@@ -40,7 +42,7 @@ class CommonTest(FrontEndTest):
       return dashboard.click_on_existing_manuscript_link_partial_title(title)
 
   def create_article(self, title='', journal='journal', type_='Research1',
-      random_bit=False, init=True):
+      random_bit=False, init=True, doc='random', user='jgray_author'):
     """
     Create a new article.
     title: Title of the article.
@@ -48,16 +50,30 @@ class CommonTest(FrontEndTest):
     type_: Type of article
     random_bit: If true, append some random string
     init: Flag when need to invoke login script to reach the homepage
+    doc: Name of the document to upload. If blank will default to 'random', this will choose
+    on of available papers
+    user: Username
     Return the title of the article.
     """
     dashboard = self.login() if init else DashboardPage(self.getDriver())
     dashboard.click_create_new_submission_button()
     # Create new submission
     title = dashboard.title_generator(prefix=title, random_bit=random_bit)
+    print('Creating paper in {} journal, in {} type with {} as title'.format(journal,
+          type_, title))
     dashboard.enter_title_field(title)
     dashboard.select_journal_and_type(journal, type_)
     time.sleep(2)
-    fn = os.path.join(os.getcwd()+'/frontend/assets/docs/sample.docx')
+
+    #fn = os.path.join(os.getcwd()+'/frontend/assets/docs/sample.docx')
+    #self._driver.find_element_by_id('upload-files').send_keys(fn)
+    #dashboard.click_upload_button()
+    if doc == 'random':
+      doc2upload = random.choice(docs)
+      print('Sending document: ' + os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload))
+      fn = os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload)
+    else:
+      fn = os.path.join(os.getcwd(),'/frontend/assets/docs/{}'.format(doc))
     self._driver.find_element_by_id('upload-files').send_keys(fn)
     dashboard.click_upload_button()
 
@@ -65,8 +81,8 @@ class CommonTest(FrontEndTest):
     time.sleep(10)
     return title
 
-  def check_article(self, title):
+  def check_article(self, title, user='jgray_author'):
     """Check if article is in the dashboard"""
-    dashboard = self.login()
+    dashboard = self.login(email=user)
     submitted_papers = dashboard._get(dashboard._submitted_papers)
     return True if title in submitted_papers.text else False

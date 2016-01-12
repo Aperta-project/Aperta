@@ -30,7 +30,7 @@ class BaseCard(AuthenticatedPage):
     self._add_comment = (By.CLASS_NAME, 'new-comment-field')
     self._following_label = (By.CLASS_NAME, 'participant-selector-label')
     self._add_participant_btn = (By.CLASS_NAME, 'add-participant-button')
-    self._completed_check = (By.ID, 'task_completed')
+    self._completed_check = (By.CSS_SELECTOR, 'label.task-completed-section')
     self._message_comment = (By.CLASS_NAME, 'message-comment')
     self._completed_label = (By.XPATH, '//div[@class="overlay-completed-checkbox"]/div/label')
     self._bottom_close_button = (By.XPATH, '//div[@class="overlay-footer-content"]/a')

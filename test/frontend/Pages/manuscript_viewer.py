@@ -16,6 +16,10 @@ from Base.PostgreSQL import PgSQL
 from frontend.Cards.authors_card import AuthorsCard
 from frontend.Cards.basecard import BaseCard
 from frontend.Tasks.basetask import BaseTask
+from frontend.Tasks.authors_task import AuthorsTask
+from frontend.Tasks.prq_task import PRQTask
+from frontend.Tasks.initial_decision_task import InitialDecisionTask
+from frontend.Tasks.register_decision_task import RegisterDecisionTask
 from frontend.Cards.billing_card import BillingCard
 from frontend.Cards.figures_card import FiguresCard
 from frontend.Cards.revise_manuscript_card import ReviseManuscriptCard
@@ -66,7 +70,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     #self._add_collaborators_modal_select = (By.CLASS_NAME, 'select2-arrow')
     #self._add_collaborators_modal_select_input = (By.TAG_NAME, 'input')
     self._add_collaborators_modal_select = (By.CSS_SELECTOR, 'div.select2-container')
-    ###XXXX
 
     self._add_collaborators_modal_cancel = (By.XPATH, "//div[@class='overlay-action-buttons']/a")
     self._add_collaborators_modal_save = (By.XPATH, "//div[@class='overlay-action-buttons']/button")
@@ -118,14 +121,18 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # While IDs are normally king, for this element, we don't hide the element, we just change its class to "hide" it
     self._infobox = (By.CSS_SELECTOR, 'div.show-process')
     self._submission_status_info = (By.ID, 'submission-state-information')
+    self._title = (By.ID, 'control-bar-paper-title')
 
   # POM Actions
-  def validate_page_elements_styles_functions(self, username=''):
+  def validate_page_elements_styles_functions(self, username='', admin=True):
     """
     Main method to validate styles and basic functions for all elements
     in the page
+    :username: String with the username whom the page is rendered to
+    :admin: Boolean to indicate if the page is rendered for an admin user
     """
-    self._get(self._tb_workflow_link)
+    if admin:
+      self._get(self._tb_workflow_link)
     # Check application buttons
     self._check_version_btn_style()
     self._check_collaborator()
@@ -142,7 +149,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     version_btn.click()
     self._get(self._tb_versions_diff_div)
     bar_items = self._gets(self._bar_items)
-    print([x.text for x in bar_items])
     assert 'Now viewing:' in bar_items[1].text, bar_items[1].text
     assert 'Compare With:' in bar_items[2].text, bar_items[2].text
     self._get(self._tb_versions_closer).click()
@@ -337,24 +343,39 @@ class ManuscriptViewerPage(AuthenticatedPage):
         return None
 
     base_card = BaseCard(self._driver)
-    if card_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript', 'Revise Manuscript'):
-      # Check completed_check status
+    if card_name == 'Authors':
+      # Complete authors data before mark close
+      author_card = AuthorsCard(self._driver)
+      author_card.edit_author(affiliation)
+    else:
       completed = base_card._get(base_card._completed_check)
       if not completed.is_selected():
         completed.click()
         #time.sleep(.2)
       base_card._get(base_card._close_button).click()
       time.sleep(1)
-    elif card_name == 'Authors':
-      # Complete authors data before mark close
-      author_card = AuthorsCard(self._driver)
-      author_card.edit_author(affiliation)
-    elif card_name == 'Billing':
-      billing = BillingCard(self._driver)
-      billing.add_billing_data(billing_data)
 
-  def complete_task(self, task_name, click_override=False):
-    """On a given task, check complete and then close"""
+  def is_task_present(self, task_name):
+    """
+    Check if a task is available in the task list
+    :task_name:
+    return True if task is present and False otherwise
+    """
+    tasks = self._gets(self._task_headings)
+    for task in tasks:
+      if task.text == task_name:
+        return True
+    return False
+
+
+  def complete_task(self, task_name, click_override=False, data=None, click=False):
+    """
+    On a given task, check complete and then close
+    :task_name: The name of the task to conmplete (str)
+    :click_override:
+    :data:
+    returns None
+    """
     tasks = self._gets(self._task_headings)
     # if task is marked as complete, leave is at is.
     if not click_override:
@@ -362,7 +383,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         task_div = task.find_element_by_xpath('..')
         if task.text == task_name and 'active' \
             not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
-          task_div.click()
+          task.click()
           break
         elif task.text == task_name and 'active' \
             in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
@@ -372,26 +393,55 @@ class ManuscriptViewerPage(AuthenticatedPage):
     else:
       for task in tasks:
         if task.text == task_name:
-          task_div = task.find_element_by_xpath('..')
-          task_div.click()
-        break
+          task.click()
+          break
       else:
         return None
     base_task = BaseTask(self._driver)
-    if task_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript', 'Revise Manuscript'):
-      # Check completed_check status
+    if task_name == 'Initial Decision':
+      initial_decision_task = InitialDecisionTask(self._driver)
+      initial_decision_task.execute_decision()
       completed = base_task.completed_cb_is_selected()
       if not completed:
         self._get(base_task._completed_cb).click()
-      task_div.click()
+      task.click()
+      time.sleep(1)
+    elif task_name == 'Register Decision':
+      register_decision_task = RegisterDecisionTask(self._driver)
+      if data:
+        register_decision_task.execute_decision(data)
+      else:
+        register_decision_task.execute_decision()
+      if not base_task.completed_cb_is_selected():
+        self._get(base_task._completed_cb).click()
+      task.click()
+      time.sleep(1)
+    elif task_name == 'Publishing Related Questions':
+      prq_task = PRQTask(self._driver)
+      prq_task.complete_prq(data)
+      #complete_prq
+      if not base_task.completed_cb_is_selected():
+        self._get(base_task._completed_cb).click()
+      task.click()
+      time.sleep(1)
+    elif task_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript',
+                     'Revise Manuscript', 'Billing'):
+      # Check completed_check status
+      if not base_task.completed_cb_is_selected():
+        self._get(base_task._completed_cb).click()
+      task.click()
       time.sleep(1)
     elif task_name == 'Authors':
       # Complete authors data before mark close
       author_task = AuthorsTask(self._driver)
       author_task.edit_author(affiliation)
-    elif task_name == 'Billing':
-      billing = BillingTask(self._driver)
-      billing.add_billing_data(billing_data)
+      if not base_task.completed_cb_is_selected():
+        self._get(base_task._completed_cb).click()
+      task.click()
+      time.sleep(1)
+    #elif task_name == 'Billing':
+    #  billing = BillingTask(self._driver)
+    #  billing.add_billing_data(billing_data)
 
   def get_paper_title_from_page(self):
     """
@@ -457,6 +507,13 @@ class ManuscriptViewerPage(AuthenticatedPage):
     doi_text = self._get(self._paper_sidebar_manuscript_id).text
     return doi_text.split(':')[1]
 
+  def get_title(self):
+    """
+    Returns the title
+    """
+    return self._get(self._title).text
+
+
   def get_paper_db_id(self):
     """
     Returns the DB paper ID from URL
@@ -491,8 +548,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     elif type == 'congrats_full':
       assert 'You have successfully submitted your manuscript. We will start the peer review process.'
     if type in ('full_submit', 'initial_submit', 'initial_submit_full'):
-      manuscript_title = self._get(self._so_paper_title)
-      assert paper_title in manuscript_title.text, paper_title + ' vs ' + manuscript_title.text
+      title = self._get(self._so_paper_title)
+      assert paper_title in title.text, '{0} vs {1}'.format(paper_title, title.text)
       self._get(self._so_submit_confirm)
 
   def validate_submit_success(self):

@@ -13,12 +13,12 @@ describe UserMentions do
     expect(people_mentioned).to include(user_a)
   end
 
-  it 'does not find the poster' do
+  it 'does not include the poster' do
     body = "A mention of @#{user_a.username} by @#{poster.username}"
     people_mentioned = UserMentions.new(body, poster).people_mentioned
 
-    expect(people_mentioned.count).to eq(1)
     expect(people_mentioned).to include(user_a)
+    expect(people_mentioned).to_not include(poster)
   end
 
   it 'finds more than one mention' do

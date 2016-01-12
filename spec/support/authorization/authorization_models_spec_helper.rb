@@ -9,8 +9,12 @@ module AuthorizationModelsSpecHelper
   def self.create_db_tables
     @db_tables_created ||= begin
       ActiveRecord::Schema.define do
+        create_table :fake_journals, force: true do |t|
+          t.string :name
+        end
+
         create_table :fake_papers, force: true do |t|
-          t.integer :journal_id
+          t.integer :fake_journal_id
           t.string :name
           t.string :state
         end
@@ -31,14 +35,19 @@ module AuthorizationModelsSpecHelper
 end
 
 module Authorizations
+  class FakeJournal < ActiveRecord::Base
+    has_many :fake_papers
+  end
+
   class FakePaper < ActiveRecord::Base
-    belongs_to :journal, class_name: ::Journal.name
+    belongs_to :fake_journal
     has_many :fake_tasks
     has_many :fake_task_things, through: :fake_tasks
   end
 
   class FakeTask < ActiveRecord::Base
     belongs_to :fake_paper
+    has_one :fake_journal, through: :fake_paper
     has_one :fake_task_thing
     belongs_to :required_permission, class_name: ::Permission.name
   end

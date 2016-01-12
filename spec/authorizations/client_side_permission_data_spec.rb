@@ -15,11 +15,11 @@ DESC
   before do
     Authorizations.configure do |config|
       config.assignment_to(
-        Journal,
+        Authorizations::FakeJournal,
         authorizes: Authorizations::FakeTask,
         via: :fake_tasks)
       config.assignment_to(
-        Journal,
+        Authorizations::FakeJournal,
         authorizes: Authorizations::FakePaper,
         via: :fake_papers)
     end
@@ -30,14 +30,14 @@ DESC
   end
 
   let!(:user) { FactoryGirl.create(:user, first_name: 'Bob Theuser') }
-  let!(:journal) { FactoryGirl.create(:journal) }
+  let!(:journal) { Authorizations::FakeJournal.create }
 
   let!(:paper_assigned_to_journal) do
-    Authorizations::FakePaper.create(journal: journal)
+    Authorizations::FakePaper.create(fake_journal: journal)
   end
 
   let!(:other_paper_on_same_journal) do
-    Authorizations::FakePaper.create(journal: journal)
+    Authorizations::FakePaper.create(fake_journal: journal)
   end
 
   permissions do
@@ -113,7 +113,7 @@ DESC
     describe <<-DESC do
       and the user has access thru multiple assignments
     DESC
-      let!(:paper) { Authorizations::FakePaper.create!(journal: journal) }
+      let!(:paper) { Authorizations::FakePaper.create!(fake_journal: journal) }
       let!(:task) { Authorizations::FakeTask.create!(fake_paper: paper) }
 
       before do

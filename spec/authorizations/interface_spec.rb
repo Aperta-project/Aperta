@@ -6,7 +6,8 @@ DESC
   include AuthorizationSpecHelper
 
   let!(:user) { FactoryGirl.create(:user) }
-  let!(:paper) { Authorizations::FakePaper.create!(name: 'Bar Paper') }
+  let!(:journal){ Authorizations::FakeJournal.create!(name: 'The Journal') }
+  let!(:paper) { Authorizations::FakePaper.create!(name: 'Bar Paper', fake_journal: journal) }
   let!(:other_paper) { Authorizations::FakePaper.create!(name: 'Other Paper') }
   let!(:task) { Authorizations::FakeTask.create!(fake_paper: paper, name: 'Foo Task') }
   let!(:other_task) { Authorizations::FakeTask.create!(fake_paper: other_paper, name: 'Other Task') }
@@ -100,12 +101,7 @@ DESC
       it 'does not include unauthorized items' do
         query = Authorizations::FakeTask
 
-        exclusion_query = query.where('id != ?', task.id)
-        expect(
-          user.filter_authorized(:view, exclusion_query).objects
-        ).to_not include(task)
-
-        exclusion_query = query.where.not('id = ?', task.id)
+        exclusion_query = query.where.not(id: task.id)
         expect(
           user.filter_authorized(:view, exclusion_query).objects
         ).to_not include(task)
@@ -120,11 +116,6 @@ DESC
         expect(
           user.filter_authorized(:view, chained_inclusion_query).objects
         ).to include(task)
-
-        chained_exclusion_query = query.where(id: paper.id).where('name != ?', task.name)
-        expect(
-          user.filter_authorized(:view, chained_exclusion_query).objects
-        ).to_not include(task)
       end
 
       it 'does not include unauthorized items' do
@@ -134,6 +125,15 @@ DESC
         expect(
           user.filter_authorized(:view, chained_query).objects
         ).to_not include(other_task)
+      end
+
+      it 'raises when the column name is ambiguous' do
+        query = Authorizations::FakeTask
+
+        chained_exclusion_query = query.where(id: paper.id).where('name = ?', paper.name)
+        expect do
+          user.filter_authorized(:view, chained_exclusion_query).objects
+        end.to raise_error(/column reference "name" is ambiguous/)
       end
     end
 
@@ -151,6 +151,24 @@ DESC
         expect(
           user.filter_authorized(:view, exclusion_query).objects
         ).to_not include(task)
+      end
+
+      it 'can filter authorized models with joins thru has_one :through' do
+        query = Authorizations::FakeTask
+
+        inclusion_query = query.joins(:fake_journal).where('fake_journals.id' => journal.id)
+        expect(
+          user.filter_authorized(:view, inclusion_query).objects
+        ).to include(task)
+      end
+
+      it 'can filter authorized models with complex joins' do
+        query = Authorizations::FakeTask
+
+        inclusion_query = query.joins(fake_paper: :fake_journal).where('fake_journals.id' => journal.id)
+        expect(
+          user.filter_authorized(:view, inclusion_query).objects
+        ).to include(task)
       end
 
       it 'does not include unauthorized models' do
@@ -197,7 +215,7 @@ DESC
           user.filter_authorized(:view, inclusion_query).objects
         ).to eq([paper])
 
-        exclusion_query = query.where('id != ?', paper.id)
+        exclusion_query = query.where.not(id: paper.id)
         expect(
           user.filter_authorized(:view, exclusion_query).objects
         ).to_not include(paper)
@@ -206,7 +224,7 @@ DESC
       it 'does not include unauthorized models' do
         query = Authorizations::FakePaper
 
-        unauthorized_query = query.where('id = ?', other_paper.id)
+        unauthorized_query = query.where(id: other_paper.id)
         expect(
           user.filter_authorized(:view, unauthorized_query).objects
         ).to_not include(other_paper)
@@ -222,7 +240,7 @@ DESC
           user.filter_authorized(:view, chained_inclusion_query).objects
         ).to include(paper)
 
-        chained_exclusion_query = query.where(id: paper.id).where('name != ?', paper.name)
+        chained_exclusion_query = query.where(id: paper.id).where.not(name: paper.name)
         expect(
           user.filter_authorized(:view, chained_exclusion_query).objects
         ).to_not include(paper)

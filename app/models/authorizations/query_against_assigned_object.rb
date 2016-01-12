@@ -50,9 +50,11 @@ module Authorizations
     end
 
     def query_against_active_record_relation
-      query = @klass.all
-        .merge(@target)
-        .where(id: @assigned_to_ids)
+      query = ActiveRecord::Relation.create(
+        @klass,
+        @klass.arel_table,
+        @target.values
+      ).where(id: @assigned_to_ids)
       query = add_permissible_state_conditions_to_query(query)
       query
     end

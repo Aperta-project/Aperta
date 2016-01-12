@@ -58,27 +58,35 @@ module Authorizations
 
       reflection = authorization.assignment_to.reflections[authorization.via.to_s]
 
-      updated_where_values = @target.where_values.map do |value|
-        if value.is_a?(Arel::Nodes::Node) && value.respond_to?(:right) && value.right.is_a?(Arel::Nodes::BindParam)
-          # no-op
-        else
-          value = value.to_sql if value.respond_to?(:to_sql)
-          value.gsub(/\b([^\s]+)\s*(\=|\!\=|<>)/) do |field_name|
-            field_name_includes_table_reference = field_name.include?('.')
-            unless field_name_includes_table_reference
-              "#{reflection.table_name}.#{field_name}"
+      # construct a new set of values based on the
+      nvalues = query.values.dup
+      @target.values.each_pair do |key, values|
+        next unless values
+        if key == :joins
+          nvalues[:joins] ||= []
+          values.each do |join_value|
+            if nvalues[:joins].include?(join_value)
+              # skip it we already have it
+            elsif base_query.model.reflections.keys.include?(join_value.to_s)
+              nvalues[:joins] << join_value.to_sym
+            elsif join_value.is_a?(Arel::Node)
+              nvalues[:joins] << join_value.left.name.to_sym
             else
-              field_name
+              join_thru_model = base_query.model.reflections[@authorization.via.to_s]
+              join_thru = join_thru_model.name
+              nvalues[:joins] << { join_thru_model.name => join_value }
             end
           end
+        else
+          if nvalues[key]
+            nvalues[key] += values
+          else
+            nvalues[key] = values
+          end
         end
-      end.compact
-
-      if updated_where_values.any?
-        query = query.where(updated_where_values)
-      else
-        query = query.merge @target
       end
+
+      query = ActiveRecord::Relation.new(query.model, query.model.arel_table, nvalues)
 
       if @target.model.column_names.include?('required_permission_id')
         field = "#{@target.table.name}.required_permission_id"

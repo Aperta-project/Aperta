@@ -55,38 +55,13 @@ module Authorizations
 
     def query_against_active_record_relation
       query = base_query
-
       reflection = authorization.assignment_to.reflections[authorization.via.to_s]
-
-      # construct a new set of values based on the
-      nvalues = query.values.dup
-      @target.values.each_pair do |key, values|
-        next unless values
-        if key == :joins
-          nvalues[:joins] ||= []
-          values.each do |join_value|
-            if nvalues[:joins].include?(join_value)
-              # skip it we already have it
-            elsif base_query.model.reflections.keys.include?(join_value.to_s)
-              nvalues[:joins] << join_value.to_sym
-            elsif join_value.is_a?(Arel::Node)
-              nvalues[:joins] << join_value.left.name.to_sym
-            else
-              join_thru_model = base_query.model.reflections[@authorization.via.to_s]
-              join_thru = join_thru_model.name
-              nvalues[:joins] << { join_thru_model.name => join_value }
-            end
-          end
-        else
-          if nvalues[key]
-            nvalues[key] += values
-          else
-            nvalues[key] = values
-          end
-        end
-      end
-
-      query = ActiveRecord::Relation.new(query.model, query.model.arel_table, nvalues)
+      new_arel_values = update_arel_values(query.values)
+      query = ActiveRecord::Relation.new(
+        query.model,
+        query.model.arel_table,
+        new_arel_values
+      )
 
       if @target.model.column_names.include?('required_permission_id')
         field = "#{@target.table.name}.required_permission_id"
@@ -97,6 +72,43 @@ module Authorizations
       end
       query
     end
+
+    def update_arel_values(arel_values)
+      new_arel_values = arel_values.dup
+      @target.values.each_pair do |key, values|
+        next unless values
+
+        if key == :joins
+          update_arel_joins_values(new_arel_values, values)
+        elsif new_arel_values[key]
+          new_arel_values[key] += values
+        else
+          new_arel_values[key] = values
+        end
+      end
+      new_arel_values
+    end
+
+    def update_arel_joins_values(arel_values, joins_values)
+      arel_values[:joins] ||= []
+      joins_values.each do |join_value|
+        if arel_values[:joins].include?(join_value)
+          # skip it we already have it
+        elsif base_query.model.reflections.keys.include?(join_value.to_s)
+          arel_values[:joins] << join_value.to_sym
+        elsif join_value.is_a?(Arel::Node)
+          arel_values[:joins] << join_value.left.name.to_sym
+        else
+          join_thru_model = base_query.model.reflections[@authorization.via.to_s]
+          join_thru = join_thru_model.name
+          arel_values[:joins] << { join_thru_model.name => join_value }
+        end
+      end
+      arel_values
+    end
+
   end
+
+
 end
 # rubocop:enable all

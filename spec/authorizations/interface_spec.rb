@@ -153,7 +153,7 @@ DESC
         ).to_not include(task)
       end
 
-      it 'can filter authorized models with joins thru has_one :through' do
+      it 'can filter authorized models with joins thru a :through join' do
         query = Authorizations::FakeTask
 
         inclusion_query = query.joins(:fake_journal).where('fake_journals.id' => journal.id)

@@ -89,7 +89,7 @@ describe FiguresExtractor do
       it 'replaces style attribute with a flexible alternative' do
         paper.figures.each do |figure|
           img = img_tag_by_id figure.id
-          expect(img['style']).to eq('width:100%')
+          expect(img['style']).to eq(nil)
         end
       end
     end

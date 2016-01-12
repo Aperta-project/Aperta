@@ -36,6 +36,8 @@ class FiguresExtractor
         img.set_attribute 'data-figure-id', figure.id
         img.set_attribute 'alt', "Figure: #{figure.filename}"
         img.set_attribute 'class', 'paper-body-figure'
+
+        img.attributes['style'].remove # removes width set in tahi
       end
     }.to_s
   end

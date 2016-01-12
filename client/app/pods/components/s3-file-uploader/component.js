@@ -1,12 +1,36 @@
 import Ember from 'ember';
 
+/**
+ *  An input file that wraps jquery-file-upload plugin.
+ *  This component calls the API requesting the parameters required
+ *  for making a direct request to Amazon S3, it requires the filePath.
+ *  You can sent functions as closure actions, that will hook the callbacks from
+ *  jquery-file-upload
+ *
+ *  ## How to Use
+ *
+ *  In your template:
+ *
+ *  ```
+ *  {{s3-file-uploader accept=accept
+ *                  filePath=filePath
+ *                  uploadProgress=(action "uploadProgress")
+ *                  uploadFinished=(action "uploadFinished")
+ *                  uploadFailed=(action "uploadFailed")
+ *                  fileAdded=(action "fileAdded")}}
+ *  ```
+**/
 export default Ember.Component.extend({
   attributeBindings: ['type', 'accept', 'multiple', 'name'],
   tagName: 'input',
   type: 'file',
   name: 'file',
   multiple: false,
-  filePath: null, // passed-in
+
+  init() {
+    this._super(...arguments);
+    Ember.assert('Please provide filePath property', this.get('filePath'));
+  },
 
   didInsertElement() {
     Ember.run.scheduleOnce('afterRender', this, this._setupFileUpload);

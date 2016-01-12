@@ -1,7 +1,16 @@
 # Adds necessary field for include ProxyableResource, namely token and
 # then updating previous figures
 class AddTokenToFigures < ActiveRecord::Migration
+  # A Mock
+  class Figure < ActiveRecord::Base
+    def regenerate_token
+      update_attributes! token: SecureRandom.hex(24)
+    end
+  end
+
   def change
+    Figure.reset_column_information
+
     add_column :figures, :token, :string
     add_index :figures, :token, unique: true
 

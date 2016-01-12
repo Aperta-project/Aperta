@@ -22,7 +22,8 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
 
     this.get('notifications').remove({
       type: 'DiscussionTopic',
-      id: this.get('modelId')
+      id: this.get('modelId'),
+      isParent: true
     });
   },
 

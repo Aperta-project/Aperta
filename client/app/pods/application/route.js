@@ -15,7 +15,8 @@ const debug = function(description, obj) {
 
 
 export default Ember.Route.extend({
-  restless: Ember.inject.service('restless'),
+  restless: Ember.inject.service(),
+  notifications: Ember.inject.service(),
 
   setupController(controller, model) {
     controller.set('model', model);
@@ -84,7 +85,12 @@ export default Ember.Route.extend({
     created(payload) {
       let description = `Pusher: created ${payload.type} ${payload.id}`;
       debug(description);
-      this.store.fetchById(payload.type, payload.id);
+
+      if(payload.type === 'notification') {
+        this.get('notifications').created(payload);
+      } else {
+        this.store.fetchById(payload.type, payload.id);
+      }
     },
 
     updated(payload) {
@@ -98,12 +104,16 @@ export default Ember.Route.extend({
     },
 
     destroyed(payload) {
-      let record = this.store.getPolymorphic(payload.type, payload.id);
-      if(record) {
-        record.unloadRecord();
+      let description = `Pusher: destroyed ${payload.type} ${payload.id}`;
+      debug(description, payload);
 
-        let description = `Pusher: destroyed ${payload.type} ${payload.id}`;
-        debug(description, payload);
+      if(payload.type === 'notification') {
+        this.get('notifications').destroyed(payload);
+      } else {
+        let record = this.store.getPolymorphic(payload.type, payload.id);
+        if(record) {
+          record.unloadRecord();
+        }
       }
     },
 

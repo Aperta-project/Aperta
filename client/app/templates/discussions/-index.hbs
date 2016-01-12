@@ -7,7 +7,7 @@
 
   {{#each paperTopics as |topic|}}
     {{#link-to topicsShowPath topic.id class="discussions-index-topic"}}
-      {{notification type="DiscussionTopic" id=topic.id}}
+      {{notification type="DiscussionTopic" id=topic.id is-parent=true}}
       {{topic.title}}
     {{/link-to}}
   {{else}}

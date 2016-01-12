@@ -1,18 +1,15 @@
 import Ember from 'ember';
-import EmberPusher from 'ember-pusher';
 
 const { isEmpty } = Ember;
 const notEmpty = function(prop) {
   return !isEmpty(prop);
 };
 
-export default Ember.Service.extend(Ember.Evented, EmberPusher.Bindings, {
+export default Ember.Service.extend(Ember.Evented, {
   restless: Ember.inject.service(),
 
   init() {
     this._super(...arguments);
-
-    this._pusherSetup();
 
     this._fetchData().then(response => {
       this.set('_data', response.notifications);
@@ -42,38 +39,37 @@ export default Ember.Service.extend(Ember.Evented, EmberPusher.Bindings, {
   },
 
   /**
-   *  Wire up pusher to listen for new notifications
-   *
-   *  @method _pusherSetup
-   *  @private
-  **/
-
-  _pusherSetup() {
-    this.get('pusher').wire(this,
-      'private-user@' + this.get('currentUser.id'),
-      ['created', 'destroyed']
-    );
-  },
-
-  /**
-   *  Remove one or more notifcations
+   *  Remove one or more notifcations. Sending `isParent` as true will also
+   *  include Notifications that have the same parent object
    *
    *  @method remove
-   *  @param {Object} options with type and id keys
+   *  @param {Object} options with type, id and isParent keys
    *  @public
   **/
 
   remove(options) {
     const { type, id } = options;
+    const isParent = isEmpty(options.isParent) ? false : options.isParent;
 
     // TEMPORARY:
     this.get('_data').removeObjects(this.peekNotifications(type, id));
+    if(isParent) {
+      this.get('_data').removeObjects(this.peekParentNotifications(type, id));
+    }
 
-    // const ids = this.peekNotifications(type, id).map(function(n) {
-    //   return n.id;
-    // });
+    let parentIds = [];
 
-    // this._persistRemoval(ids);
+    const ids = this.peekNotifications(type, id).map(function(n) {
+      return n.id;
+    });
+
+    if(isParent) {
+      parentIds = this.peekParentNotifications(type, id).map(function(n) {
+        return n.id;
+      });
+    }
+
+    this._persistRemoval(_.union(ids, parentIds));
   },
 
   /**
@@ -118,30 +114,40 @@ export default Ember.Service.extend(Ember.Evented, EmberPusher.Bindings, {
     });
   },
 
+  peekParentNotifications(type, id) {
+    return this.get('_data').filter(n => {
+      return parseInt(n.parent_id) === parseInt(id) && n.parent_type === type;
+    });
+  },
+
   /**
-   *  Get count of notifications
+   *  Get count of notifications. Sending `isParent` as true will also
+   *  include Notifications that have the same parent object
    *
    *  @method count
-   *  @param {Object} options with type and id keys
+   *  @param {Object} options with type, id and isParent keys
    *  @public
   **/
 
-  count(type, id) {
-    if(type === 'DiscussionTopic') {
-      const topicCount = this.peekNotifications(type, id);
-      return topicCount.get('length');
+  count(type, id, isParent=false) {
+    if(type === 'DiscussionTopic' && isParent) {
+      const topics = this.peekNotifications(type, id).get('length');
+      const children = this.peekParentNotifications(type, id).get('length');
+
+      return topics + children;
     }
 
     return this.peekNotifications(type, id).get('length');
   },
 
-  actions: {
-    created(payload) {
-      console.log(payload.type);
-    },
+  created(payload) {
+    this.get('restless').get('/api/notifications/' + payload.id).then(data => {
+      this.get('_data').pushObject(data.notification);
+    });
+  },
 
-    destroyed(payload) {
-      console.log(payload.type);
-    }
+  destroyed(payload) {
+    this.get('_data')
+        .removeObject( this.get('_data').findBy('id', payload.id) );
   }
 });

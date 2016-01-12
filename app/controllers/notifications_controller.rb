@@ -4,11 +4,16 @@ class NotificationsController < ApplicationController
   # no enforce_policy! check since all actions are scoped to current_user
 
   def destroy
-    notification = current_user.find(params[:id]).destroy
-    respond_with notification
+    notifications = current_user.notifications.find(params[:ids])
+    notifications.destroy_all
+    head :no_content
   end
 
   def index
     respond_with current_user.notifications
+  end
+
+  def show
+    respond_with current_user.notifications.find(params[:id])
   end
 end

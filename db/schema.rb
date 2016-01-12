@@ -294,7 +294,6 @@ ActiveRecord::Schema.define(version: 20160114152935) do
     t.string   "target_type"
     t.integer  "parent_id"
     t.string   "parent_type"
-    t.string   "state"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end

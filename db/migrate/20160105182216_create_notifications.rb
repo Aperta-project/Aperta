@@ -7,7 +7,6 @@ class CreateNotifications < ActiveRecord::Migration
       t.string :target_type
       t.integer :parent_id
       t.string :parent_type
-      t.string :state
 
       t.timestamps null: false
     end

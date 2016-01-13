@@ -1,7 +1,7 @@
 {{#if uploadInProgress}}
   {{upload-preview upload=fileUpload}}
 {{else}}
-  <a href="#" class="file-link">
+  <a href="{{attachment.src}}" class="file-link" target="_blank">
     <i class="fa {{fileTypeClass}}"></i> {{attachment.filename}}
   </a>
 

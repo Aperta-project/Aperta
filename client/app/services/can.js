@@ -31,7 +31,6 @@ export default CanService.extend({
 
   can(abilityString, resource, properties) {
     const ability = this.build(abilityString, resource, properties);
-    const abilityPropertyName = Ember.String.camelize(`can`);
-    return ability.get(abilityPropertyName);
+    return ability.get('can');
   }
 });

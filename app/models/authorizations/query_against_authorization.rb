@@ -29,26 +29,6 @@ module Authorizations
       @permissible_states = permissible_states
     end
 
-    def base_query
-      assigned_to_klass
-        .joins(authorization.via.to_sym).includes(authorization.via.to_sym)
-        .where(id: assignments.map(&:assigned_to_id))
-    end
-
-    def query_against_specific_model
-      query = base_query.where(@klass.table_name => { id: @target.id } )
-
-      if @target.class.column_names.include?('required_permission_id')
-        field = "#{@target.class.table_name}.required_permission_id"
-        assigned_permission_ids = assignments.flat_map(&:permissions).map(&:id)
-        query.where(
-          "#{field} IS NULL OR #{field} IN (:permission_ids)",
-          permission_ids: assigned_permission_ids
-        )
-      end
-      query
-    end
-
     def query
       if @target.is_a?(ActiveRecord::Base)
         query = query_against_specific_model
@@ -68,6 +48,26 @@ module Authorizations
     end
 
     private
+
+    def base_query
+      assigned_to_klass
+        .joins(authorization.via.to_sym).includes(authorization.via.to_sym)
+        .where(id: assignments.map(&:assigned_to_id))
+    end
+
+    def query_against_specific_model
+      query = base_query.where(@klass.table_name => { id: @target.id } )
+
+      if @target.class.column_names.include?('required_permission_id')
+        field = "#{@target.class.table_name}.required_permission_id"
+        assigned_permission_ids = assignments.flat_map(&:permissions).map(&:id)
+        query.where(
+          "#{field} IS NULL OR #{field} IN (:permission_ids)",
+          permission_ids: assigned_permission_ids
+        )
+      end
+      query
+    end
 
     def query_against_active_record_relation
       query = base_query

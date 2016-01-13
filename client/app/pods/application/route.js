@@ -91,7 +91,7 @@ export default Ember.Route.extend({
       debug(`Pusher: created ${payload.type} ${payload.id}`);
 
       if(payload.type === 'notification') {
-        this.notificationAction('created', payload);
+        this.send('notificationAction', 'created', payload);
         return;
       }
 
@@ -110,7 +110,7 @@ export default Ember.Route.extend({
       debug(`Pusher: destroyed ${payload.type} ${payload.id}`, payload);
 
       if(payload.type === 'notification') {
-        this.notificationAction('destroyed', payload);
+        this.send('notificationAction', 'destroyed', payload);
         return;
       }
 

@@ -129,7 +129,7 @@ test('#count', function(assert) {
   assert.equal(count, 2, 'DiscussionTopic and child');
 });
 
-test('#removeNotificationsById', function(assert) {
+test('#removeNotificationsFromStoreById', function(assert) {
   let count;
   let notifications;
   const service = this.subject({
@@ -142,7 +142,7 @@ test('#removeNotificationsById', function(assert) {
     'Data loaded'
   );
 
-  service.removeNotificationsById([1,2]);
+  service.removeNotificationsFromStoreById([1,2]);
   count = service.count();
   notifications = service.peekNotifications();
 

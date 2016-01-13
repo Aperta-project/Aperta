@@ -78,7 +78,7 @@ export default Ember.Service.extend(Ember.Evented, {
   _persistRemoval(ids) {
     this.get('restless')
         .delete('/api/notifications/destroy?ids=' + ids.toString()).then(()=> {
-          this.removeNotificationsById(ids);
+          this.removeNotificationsFromStoreById(ids);
         });
   },
 
@@ -105,7 +105,11 @@ export default Ember.Service.extend(Ember.Evented, {
   },
 
   peekParentNotifications(type, id) {
-    return this.peekByKeys(this.get('_data'), 'parent_type', type, 'parent_id', id);
+    return this.peekByKeys(
+      this.get('_data'),
+      'parent_type', type,
+      'parent_id', id
+    );
   },
 
   peekByKeys(data, typeKey, type, idKey, id) {
@@ -158,10 +162,18 @@ export default Ember.Service.extend(Ember.Evented, {
   **/
 
   destroyed(payload) {
-    this.removeNotificationsById([payload.id]);
+    this.removeNotificationsFromStoreById([payload.id]);
   },
 
-  removeNotificationsById(ids) {
+  /**
+   *  Get count of notifications. Sending `isParent` as true will also
+   *
+   *  @method removeNotificationsFromStoreById
+   *  @param {Array} ids
+   *  @private
+  **/
+
+  removeNotificationsFromStoreById(ids) {
     this.get('_data')
         .removeObjects(this.get('_data').map(function(n) {
           if(ids.contains(n.id)) {

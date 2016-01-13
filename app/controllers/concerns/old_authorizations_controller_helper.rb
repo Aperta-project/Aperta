@@ -1,4 +1,4 @@
-module Authorizations
+module OldAuthorizationsControllerHelper
   extend ActiveSupport::Concern
 
   class AuthorizationError < StandardError; end;

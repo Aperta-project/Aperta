@@ -11,7 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160105163051) do
+ActiveRecord::Schema.define(version: 20160113151023) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_trgm"
@@ -54,6 +55,18 @@ ActiveRecord::Schema.define(version: 20160105163051) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "assignments", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "role_id"
+    t.integer  "assigned_to_id"
+    t.string   "assigned_to_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "assignments", ["role_id"], name: "index_assignments_on_role_id", using: :btree
+  add_index "assignments", ["user_id"], name: "index_assignments_on_user_id", using: :btree
 
   create_table "attachments", force: :cascade do |t|
     t.string   "file"
@@ -341,6 +354,41 @@ ActiveRecord::Schema.define(version: 20160105163051) do
   add_index "participations", ["task_id"], name: "index_participations_on_task_id", using: :btree
   add_index "participations", ["user_id"], name: "index_participations_on_user_id", using: :btree
 
+  create_table "permission_states", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "permission_states_permissions", force: :cascade do |t|
+    t.integer  "permission_id"
+    t.integer  "permission_state_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "permission_states_permissions", ["permission_id"], name: "index_permission_states_permissions_on_permission_id", using: :btree
+
+  create_table "permissions", force: :cascade do |t|
+    t.string   "action"
+    t.string   "applies_to"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "permissions", ["action", "applies_to"], name: "index_permissions_on_action_and_applies_to", using: :btree
+  add_index "permissions", ["applies_to"], name: "index_permissions_on_applies_to", using: :btree
+
+  create_table "permissions_roles", force: :cascade do |t|
+    t.integer  "permission_id"
+    t.integer  "role_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "permissions_roles", ["permission_id"], name: "index_permissions_roles_on_permission_id", using: :btree
+  add_index "permissions_roles", ["role_id"], name: "index_permissions_roles_on_role_id", using: :btree
+
   create_table "phase_templates", force: :cascade do |t|
     t.string   "name"
     t.integer  "manuscript_manager_template_id"
@@ -371,6 +419,18 @@ ActiveRecord::Schema.define(version: 20160105163051) do
   end
 
   add_index "question_attachments", ["nested_question_answer_id"], name: "index_question_attachments_on_nested_question_answer_id", using: :btree
+
+  create_table "roles", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "journal_id"
+    t.boolean  "participates_in_papers", default: false, null: false
+    t.boolean  "participates_in_tasks",  default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "roles", ["participates_in_papers"], name: "index_roles_on_participates_in_papers", using: :btree
+  add_index "roles", ["participates_in_tasks"], name: "index_roles_on_participates_in_tasks", using: :btree
 
   create_table "snapshots", force: :cascade do |t|
     t.string   "source_type"
@@ -478,10 +538,12 @@ ActiveRecord::Schema.define(version: 20160105163051) do
     t.string   "old_role",                    null: false
     t.json     "body",       default: [],     null: false
     t.integer  "position",   default: 0
+    t.integer  "required_permission_id"
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
+  add_index "tasks", ["required_permission_id"], name: "index_tasks_on_required_permission_id", using: :btree
 
   create_table "user_flows", force: :cascade do |t|
     t.datetime "created_at"

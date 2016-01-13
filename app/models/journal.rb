@@ -1,8 +1,13 @@
 class Journal < ActiveRecord::Base
   has_many :papers, inverse_of: :journal
+  has_many :tasks, through: :papers
+  has_many :roles, inverse_of: :journal
+
+  # Old Roles and Permissions
   has_many :old_roles, inverse_of: :journal
   has_many :user_roles, through: :old_roles
   has_many :users, through: :user_roles
+
   has_many :manuscript_manager_templates, dependent: :destroy
   has_many :journal_task_types, inverse_of: :journal, dependent: :destroy
 

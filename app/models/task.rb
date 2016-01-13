@@ -21,6 +21,7 @@ class Task < ActiveRecord::Base
 
   scope :on_journals, ->(journals) { joins(:journal).where("journals.id" => journals.map(&:id)) }
 
+  belongs_to :required_permission, class_name: 'Permission'
   has_one :paper, through: :phase
   has_one :journal, through: :paper
   has_many :attachments

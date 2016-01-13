@@ -19,6 +19,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "ember-can": "0.7.0",
     "ember-cli": "1.13.13"
   },
   "dependencies": {
@@ -26,6 +27,7 @@
     "broccoli-asset-rev": "^2.2.0",
     "broccoli-funnel": "0.2.3",
     "broccoli-merge-trees": "0.2.1",
+    "ember-can": "0.7.0",
     "ember-cli-app-version": "^1.0.0",
     "ember-cli-babel": "^5.1.5",
     "ember-cli-coffeescript": "1.13.0",

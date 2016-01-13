@@ -3,6 +3,8 @@ module Authorizations
   # QueryAgainstAuthorization builds the query for finding authorized
   # objects against an Authorizations::Authorization object.
   class QueryAgainstAuthorization
+    WILDCARD_STATE = Authorizations::Query::WILDCARD_STATE
+
     attr_reader :assignments, :assigned_to_klass, :authorization, :permissible_states
 
     # == Constructor Arguments
@@ -36,27 +38,47 @@ module Authorizations
         query = query_against_active_record_relation
       end
 
-      if !permissible_states.include?('*') && @klass.column_names.include?("publishing_state")
+      if !permissible_states.include?(WILDCARD_STATE) && @klass.column_names.include?('publishing_state')
         query = query.where(@klass.table_name => { publishing_state: permissible_states } )
       end
 
-      authorized_objects = if @authorization.via != :self
-        query.flat_map(&authorization.via).uniq
-      else
-        query.uniq
-      end
+      query.flatten.uniq
     end
 
     private
 
-    def base_query
-      assigned_to_klass
-        .joins(authorization.via.to_sym).includes(authorization.via.to_sym)
-        .where(id: assignments.map(&:assigned_to_id))
+    def base_query_for_active_record_relations
+      inverse_association = assigned_to_klass.reflections[authorization.via.to_s].inverse_of
+
+      if !inverse_association
+        raise CannotFindInverseAssociation, <<-MSG.strip_heredoc
+          From looking at the association #{authorization.via.inspect} on
+          #{assigned_to_klass} its inverse cannot be determined.
+
+          You may need to specify an an :inverse_of option on that association
+          as well as ensure that the inverse association on #{@klass} does
+          indeed exist.
+
+          So sorry to be difficult here, but this information will really help
+          us – the authorization sub-system minions – return the right
+          records.
+
+          Yours truly,
+
+          The Authorization Sub-System Minions
+        MSG
+      end
+      inverse_association_name = inverse_association.name.to_sym
+
+      @target.joins(inverse_association_name)
+        .includes(inverse_association_name)
+        .where(
+          inverse_association.table_name => { id: @assigned_to_ids }
+        )
     end
 
     def query_against_specific_model
-      query = base_query.where(@klass.table_name => { id: @target.id } )
+      query = @target.class.where(id: @target.id)
 
       if @target.class.column_names.include?('required_permission_id')
         field = "#{@target.class.table_name}.required_permission_id"
@@ -70,15 +92,7 @@ module Authorizations
     end
 
     def query_against_active_record_relation
-      query = base_query
-      reflection = authorization.assignment_to.reflections[authorization.via.to_s]
-      new_arel_values = update_arel_values(query.values)
-      query = ActiveRecord::Relation.new(
-        query.model,
-        query.model.arel_table,
-        new_arel_values
-      )
-
+      query = base_query_for_active_record_relations
       if @target.model.column_names.include?('required_permission_id')
         field = "#{@target.table.name}.required_permission_id"
         query = query.where(
@@ -88,43 +102,6 @@ module Authorizations
       end
       query
     end
-
-    def update_arel_values(arel_values)
-      new_arel_values = arel_values.dup
-      @target.values.each_pair do |key, values|
-        next unless values
-
-        if key == :joins
-          update_arel_joins_values(new_arel_values, values)
-        elsif new_arel_values[key]
-          new_arel_values[key] += values
-        else
-          new_arel_values[key] = values
-        end
-      end
-      new_arel_values
-    end
-
-    def update_arel_joins_values(arel_values, joins_values)
-      arel_values[:joins] ||= []
-      joins_values.each do |join_value|
-        if arel_values[:joins].include?(join_value)
-          # skip it we already have it
-        elsif base_query.model.reflections.keys.include?(join_value.to_s)
-          arel_values[:joins] << join_value.to_sym
-        elsif join_value.is_a?(Arel::Node)
-          arel_values[:joins] << join_value.left.name.to_sym
-        else
-          join_thru_model = base_query.model.reflections[@authorization.via.to_s]
-          join_thru = join_thru_model.name
-          arel_values[:joins] << { join_thru_model.name => join_value }
-        end
-      end
-      arel_values
-    end
-
   end
-
-
 end
 # rubocop:enable all

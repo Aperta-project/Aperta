@@ -1,10 +1,15 @@
 # rubocop:disable all
 module Authorizations
+  class Error < ::StandardError ; end
+  class QueryError < Error ; end
+  class CannotFindInverseAssociation < QueryError ; end
+
   # Query represents the quer(y|ies) for finding the authorized objects from
   # the database based on how the authorizations sub-system is configured,
   # what the user is assigned to, what roles the person has, and what
   # permissions they have thru those roles.
   class Query
+    # WILDCARD_STATE represents the notion that any state is valid.
     WILDCARD_STATE = '*'
 
     attr_reader :permission, :klass, :user
@@ -121,7 +126,7 @@ module Authorizations
 
         # This is to make sure that if no permission states were hooked up
         # that we accept any state. It's more a fallback.
-        permissible_states = ['*'] if permissible_states.empty?
+        permissible_states = [WILDCARD_STATE] if permissible_states.empty?
 
         # determine how this kind of thing relates to what we're interested in
         if assigned_to_klass <= @klass

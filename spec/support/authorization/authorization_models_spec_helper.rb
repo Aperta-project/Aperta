@@ -42,11 +42,11 @@ module Authorizations
   class FakePaper < ActiveRecord::Base
     belongs_to :fake_journal
     has_many :fake_tasks
-    has_many :fake_task_things, through: :fake_tasks
+    has_many :fake_task_things, through: :fake_tasks, inverse_of: :fake_paper
   end
 
   class FakeTask < ActiveRecord::Base
-    belongs_to :fake_paper
+    belongs_to :fake_paper, inverse_of: :fake_tasks
     has_one :fake_journal, through: :fake_paper
     has_one :fake_task_thing
     belongs_to :required_permission, class_name: ::Permission.name
@@ -54,5 +54,6 @@ module Authorizations
 
   class FakeTaskThing < ActiveRecord::Base
     belongs_to :fake_task
+    has_one :fake_paper, through: :fake_task
   end
 end

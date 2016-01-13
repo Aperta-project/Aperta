@@ -38,12 +38,6 @@ describe DiscussionParticipantsController do
       expect(participant['discussion_topic_id']).to eq(topic_a.id)
       expect(participant['user_id']).to eq(another_user.id)
     end
-
-    it 'sends a notification email' do
-      xhr :post, :create, format: :json, **creation_params
-
-      expect(enqueued_jobs.size).to eq 1
-    end
   end
 
   describe 'DELETE destroy' do

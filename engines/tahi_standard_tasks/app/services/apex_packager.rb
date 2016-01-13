@@ -37,7 +37,7 @@ class ApexPackager
   def add_striking_image(package)
     return unless @paper.striking_image
 
-    package.put_next_entry(figure_apex_filename(@paper.striking_image))
+    package.put_next_entry(attachment_apex_filename(@paper.striking_image))
     package.write(@paper.striking_image.attachment.read)
   end
 
@@ -45,15 +45,15 @@ class ApexPackager
     @paper.figures.each do |figure|
       fail ApexPackagerError, 'Figures do not comply' unless figures_comply?
       next if @paper.striking_image == figure
-      package.put_next_entry(figure_apex_filename(figure))
+      package.put_next_entry(attachment_apex_filename(figure))
       package.write(figure.attachment.read)
     end
   end
 
-  def figure_apex_filename(figure)
-    return figure.filename unless figure == @paper.striking_image
+  def attachment_apex_filename(attachment)
+    return attachment.filename unless attachment == @paper.striking_image
 
-    extension = figure.filename.split('.').last
+    extension = attachment.filename.split('.').last
     "Strikingimage.#{extension}"
   end
 

@@ -3,6 +3,7 @@ import FileUploadMixin from 'tahi/mixins/file-upload';
 import Ember from 'ember';
 
 export default TaskComponent.extend(FileUploadMixin, {
+  classNames: ['supporting-information-task'],
   uploadUrl: Ember.computed('task.paper.id', function() {
     const id = this.get('task.paper.id');
     return '/api/supporting_information_files?paper_id=' + id;

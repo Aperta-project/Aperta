@@ -1,26 +1,31 @@
 class Decision < ActiveRecord::Base
   include EventStream::Notifiable
 
+  VERDICTS = %w(minor_revision major_revision accept reject
+                invite_full_submission)
+
   belongs_to :paper
   has_many :invitations
   has_many :nested_question_answers
 
   before_validation :increment_revision_number
 
-  default_scope { order('revision_number DESC') }
+  # @deprecated - use recent_ordered explictly where needed
+  default_scope { self.recent_ordered }
 
   validates :revision_number, uniqueness: { scope: :paper_id }
-  validate :verdict_valid?, if: -> { verdict }
+  validates :verdict, inclusion: { in: VERDICTS, message: 'must be a valid choice' }, if: -> { verdict }
 
-  VERDICTS = %w(minor_revision major_revision accept reject
-                invite_full_submission)
-
-  def verdict_valid?
-    VERDICTS.include?(verdict) || errors.add(:verdict, 'must be a valid choice')
+  def self.recent_ordered
+    order(revision_number: :desc)
   end
 
   def self.latest
-    first
+    recent_ordered.limit(1).first
+  end
+
+  def self.completed
+    where.not(verdict: nil)
   end
 
   def self.pending

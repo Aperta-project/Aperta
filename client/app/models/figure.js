@@ -14,12 +14,7 @@ export default DS.Model.extend({
   src: DS.attr('string'),
   status: DS.attr('string'),
   title: DS.attr('string'),
-
-  isStrikingImage: false,
-
-  strikingImageDidChange: function() {
-    this.set('isStrikingImage', this.get('paper.strikingImageId') === this.get('id'));
-  }.observes('paper.strikingImageId').on('didLoad'),
+  strikingImage: DS.attr('boolean'),
 
   saveDebounced() {
     return Ember.run.debounce(this, this.save, 2000);

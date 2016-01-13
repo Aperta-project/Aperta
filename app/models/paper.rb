@@ -8,7 +8,7 @@ class Paper < ActiveRecord::Base
 
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
-  belongs_to :striking_image, class_name: 'Figure'
+  belongs_to :striking_image, polymorphic: true
   belongs_to :creator,
              inverse_of: :submitted_papers,
              class_name: 'User',
@@ -55,12 +55,13 @@ class Paper < ActiveRecord::Base
 
   after_create :assign_doi!
   after_create :create_versioned_texts
+  after_commit :state_transition_notifications
 
   aasm column: :publishing_state do
     state :unsubmitted, initial: true # currently being authored
     state :initially_submitted
     state :invited_for_full_submission
-    state :submitted, after_enter: :paper_has_been_submitted
+    state :submitted
     state :checking # small change that does not require resubmission, as in a tech check
     state :in_revision # has revised decision and requires resubmission
     state :accepted
@@ -386,10 +387,16 @@ class Paper < ActiveRecord::Base
     versioned_texts.create!(major_version: 0, minor_version: 0, text: (@new_body || ''))
   end
 
-  def paper_has_been_submitted
-    notify action: "submitted"
-    if resubmitted?
-      notify action: "resubmitted"
-    end
+  def state_changed?
+    previous_changes &&
+      previous_changes.key?(:publishing_state) &&
+      previous_changes[:publishing_state] != publishing_state
+  end
+
+  def state_transition_notifications
+    return unless state_changed?
+
+    notify action: publishing_state
+    notify action: 'resubmitted' if submitted? && resubmitted?
   end
 end

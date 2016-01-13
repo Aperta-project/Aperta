@@ -25,46 +25,42 @@ feature "Upload Supporting Information", js: true, selenium: true do
   end
 
   scenario "Author uploads supporting information" do
-    supporing_info_task = paper.tasks.first
+    supporting_info_task = paper.tasks.first
 
     # upload file
-    overlay = Page.view_task_overlay(paper, supporing_info_task)
-    overlay.attach_supporting_information
-    expect(overlay).to have_no_content('Loading')
-    expect(overlay).to have_no_content('Upload Complete!')
-    expect(overlay).to have_file 'yeti.jpg'
+    task = Page.view_task_overlay(paper, supporting_info_task)
+    task.attach_supporting_information
+    expect(task).to have_no_content('Loading')
+    expect(task).to have_no_content('Upload Complete!')
+    expect(task).to have_file 'yeti.jpg'
 
     # edit file
-    overlay = Page.view_task_overlay(paper, supporing_info_task)
-    find('.attachment-thumbnail .edit-icons .fa-pencil').click
-    title = find('.attachment-thumbnail .edit-info input[type=text]')
-    caption = find('.attachment-thumbnail .edit-info textarea')
+    task.edit_file_info
 
-    title.set 'new_file_title'
-    caption.set 'New file caption'
-    find('.attachment-thumbnail .edit-info .button-primary').click
+    task.file_title_input = 'new_file_title'
+    task.file_caption_input = 'New file caption'
+    task.file_label_input = 'F4'
+    task.file_category_dropdown = 'Figure'
+    task.toggle_file_striking_image
+    task.toggle_for_publication
 
-    expect(find('.attachment-thumbnail .info .title').text).to eq 'new_file_title'
-    expect(find('.attachment-thumbnail .info .caption').text).to eq 'New file caption'
+    task.save_file_info
 
+    expect(task.file_title).to eq 'F4 Figure. new_file_title'
+    expect(task.file_caption).to eq 'New file caption'
+
+    paper.reload
     file = paper.supporting_information_files.last
+
     expect(file.title).to eq 'new_file_title'
     expect(file.caption).to eq 'New file caption'
-
-    # edit publishable state
-    overlay = Page.view_task_overlay(paper, supporing_info_task)
-    expect(file.publishable).to eq true
-    overlay.publishable_checkbox.click
-    wait_for_ajax
-
-    visit current_path
-    expect(file.reload.publishable).to eq false
+    expect(file.label).to eq 'F4'
+    expect(file.category).to eq 'Figure'
+    expect(file.striking_image).to be(true)
+    expect(file.publishable).to be(false)
 
     # delete file
-    overlay = Page.view_task_overlay(paper, supporing_info_task)
-    find('.attachment-thumbnail').hover
-    find('.fa-trash').click
-    find('.attachment-delete-button').click
-    expect(overlay).to_not have_selector('.attachment-image')
+    task.delete_file
+    expect(task).to_not have_selector('.si-file')
   end
 end

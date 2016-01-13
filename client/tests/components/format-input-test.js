@@ -57,7 +57,7 @@ test('value is formatted with bold', function(assert) {
   );
 
   selectElementText(this.$('.format-input-field').get(0));
-  this.$('.format-input-button:first').click();
+  this.$('.format-input-button:last').click();
 
   assert.equal(
     this.$('.format-input-field').html().trim(),

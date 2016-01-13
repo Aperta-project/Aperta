@@ -195,6 +195,17 @@ describe TahiStandardTasks::RegisterDecisionTask do
       end
     end
 
+    describe "#send_email" do
+      let(:task) { FactoryGirl.create(:register_decision_task, paper: paper) }
+      let!(:decision_one) { FactoryGirl.create(:decision, :major_revision, paper: paper) }
+      let!(:decision_pending) { FactoryGirl.create(:decision, :pending, paper: paper) }
+
+      it "will email using latest non-pending decision" do
+        expect(TahiStandardTasks::RegisterDecisionMailer).to receive_message_chain(:delay, :notify_author_email).with(decision_id: decision_one)
+        task.send_email
+      end
+    end
+
     describe "#complete_decision" do
       let(:decision) { paper.decisions.first }
 
@@ -216,18 +227,6 @@ describe TahiStandardTasks::RegisterDecisionTask do
         expect {
           task.complete_decision
         }.to change { paper.tasks.where(type: task_type).count }.by(1)
-      end
-    end
-
-    describe "#decision_content" do
-      let(:decision) { Decision.create(paper: paper, verdict: "major_revision") }
-      let(:latest_decision) { Decision.create(paper: paper, verdict: "minor_revision") }
-
-      it "gets the made decision" do
-        paper.decisions << decision
-        paper.decisions << latest_decision
-
-        expect(task.decision_content).to eq(latest_decision)
       end
     end
   end

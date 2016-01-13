@@ -12,6 +12,7 @@ export default Ember.Service.extend(Ember.Evented, {
     this._super(...arguments);
 
     this._fetchData().then(response => {
+      if(isEmpty(response.notifications)) { return; }
       this.set('_data', response.notifications);
     });
   },
@@ -100,19 +101,16 @@ export default Ember.Service.extend(Ember.Evented, {
       return data.filterBy('paper_id', parseInt(id));
     }
 
-    // Return all for a type
-    if(notEmpty(type) && isEmpty(id)) {
-      return data.filterBy('target_type', type);
-    }
-
-    return data.filter(n => {
-      return parseInt(n.target_id) === parseInt(id) && n.target_type === type;
-    });
+    return this.peekByKeys(data, 'target_type', type, 'target_id', id);
   },
 
   peekParentNotifications(type, id) {
-    return this.get('_data').filter(n => {
-      return parseInt(n.parent_id) === parseInt(id) && n.parent_type === type;
+    return this.peekByKeys(this.get('_data'), 'parent_type', type, 'parent_id', id);
+  },
+
+  peekByKeys(data, typeKey, type, idKey, id) {
+    return data.filter(n => {
+      return parseInt(n[idKey]) === parseInt(id) && n[typeKey] === type;
     });
   },
 

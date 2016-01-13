@@ -101,7 +101,7 @@ class UserMailer < ActionMailer::Base
 
   def notify_mention_in_discussion(user_id, topic_id, reply_id = nil)
     @user = User.find(user_id)
-    @reply = DiscussionReply.find(reply_id)
+    @reply = DiscussionReply.find(reply_id) if reply_id
     @topic = DiscussionTopic.find(topic_id)
     @paper = Paper.find(@topic.paper.id)
 

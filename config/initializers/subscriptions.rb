@@ -9,4 +9,8 @@ Subscriptions.configure do
   add 'paper:submitted', Paper::Submitted::EmailCreator, Paper::Submitted::EmailAdmins, Paper::Submitted::SnapshotMetadata
   add 'paper:initially_submitted', Paper::Submitted::SnapshotMetadata
   add 'paper:resubmitted', Paper::Resubmitted::EmailEditor
+
+  add 'discussion_reply:created', DiscussionReply::Created::EmailPeopleMentioned
+  add 'discussion_participant:created', \
+      DiscussionParticipant::Created::EmailNewParticipant
 end

@@ -213,6 +213,10 @@ DESC
     context <<-DESC do
       when an inverse association is missing  definitions
     DESC
+      let!(:association_options) do
+        Authorizations::FakeTask.reflections['fake_paper'].options.dup
+      end
+
       before do
         Authorizations.reset_configuration
         Authorizations.configure do |config|
@@ -226,6 +230,12 @@ DESC
 
         # Clear out any options (including inverse_of) that may exist
         Authorizations::FakeTask.reflections['fake_paper'].options.clear
+      end
+
+      after do
+        Authorizations::FakeTask.reflections['fake_paper'].options.update(
+          association_options
+        )
       end
 
       it 'raises a CannotFindInverseAssociation' do

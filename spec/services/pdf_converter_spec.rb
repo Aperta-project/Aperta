@@ -86,7 +86,7 @@ describe PDFConverter do
         paper.body = "<img id='figure_#{figure.id}' src='foo'/>"
 
         img = doc.css("img#figure_#{figure.id}").first
-        expect(img['src']).to have_s3_url(figure.attachment.url)
+        expect(img['src']).to have_s3_url(figure.attachment.url(:detail))
       end
 
       it 'works with orphan figures' do

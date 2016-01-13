@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe <<-DESC.strip_heredoc do
   It is possible for a user to get access to the same object thru multiple
-  assignments. We only want to return the object ocne
+  assignments. We only want to return the object once.
 DESC
   include AuthorizationSpecHelper
 

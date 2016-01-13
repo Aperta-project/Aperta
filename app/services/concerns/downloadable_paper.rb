@@ -57,7 +57,8 @@ module DownloadablePaper
       @paper.figures.each do |figure|
         img = doc.css("img#figure_#{figure.id}").first
         next unless img
-        img.set_attribute 'src', figure.non_expiring_proxy_url(only_path: false)
+        img.set_attribute 'src', figure.non_expiring_proxy_url(
+          version: :detail, only_path: false)
       end
     end.to_s
   end

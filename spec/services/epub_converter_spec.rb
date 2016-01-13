@@ -29,7 +29,6 @@ describe EpubConverter do
 
   describe '#epub_html' do
     context 'a paper' do
-
       after { expect(doc.errors.length).to be 0 }
 
       it 'displays HTML in the papers title' do
@@ -93,7 +92,8 @@ describe EpubConverter do
 
           img = doc.css("img#figure_#{figure.id}").first
           expect(img['src'])
-          .to eq(figure.non_expiring_proxy_url(only_path: false))
+            .to eq(figure.non_expiring_proxy_url(
+                     version: :detail, only_path: false))
         end
 
         it 'works with orphan figures' do

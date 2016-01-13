@@ -14,34 +14,34 @@
         </header>
         <div class="overlay-body">
           <div id="versioned-metadata">
-            {{#unless isLoading}}
+            {{#util/promise-loader promise=selectedSnapshots as |snapshots| }}
               <div class="versioned-metadata-version">
                 <span class="grey">Viewing</span>
                 <span class="versioned-metadata-version-string">
-                  Version {{ selectedVersion1Snapshot.versionString }}
+                  Version {{ snapshots.v1.versionString }}
                   &mdash;
-                  {{format-date selectedVersion1Snapshot.createdAt format='MMM D, YYYY'}}
+                  {{format-date snapshots.v1.createdAt format='MMM D, YYYY'}}
                 </span>
-                {{#if selectedVersion2Snapshot}}
+                {{#if snapshots.selectedVersion2Snapshot}}
                   <span class="grey">comparing with</span>
                   <span class="versioned-metadata-version-string">
-                    Version {{ selectedVersion2Snapshot.versionString }}
+                    Version {{ snapshots.v2.versionString }}
                     &mdash;
-                    {{format-date selectedVersion2Snapshot.createdAt format='MMM D, YYYY'}}
+                    {{format-date snapshots.v2.createdAt format='MMM D, YYYY'}}
                   </span>
                 {{/if}}
               </div>
-            {{/unless}}
+            {{/util/promise-loader}}
 
             <h2>{{model.title}}</h2>
 
-            {{#if isLoading}}
-              {{partial "task-loading-section"}}
-            {{else}}
+            {{#util/promise-loader promise=selectedSnapshots as |snapshots|}}
               {{nested-snapshot
-                snapshot1=selectedVersion1Snapshot.contents
-                snapshot2=selectedVersion2Snapshot.contents}}
-            {{/if}}
+                snapshot1=snapshots.v1.contents
+                snapshot2=snapshots.v2.contents}}
+            {{else}}
+              {{progress-spinner visible=true size="large" center=true}}
+            {{/util/promise-loader}}
           </div>
         </div>
         <footer class="overlay-footer">

@@ -11,24 +11,17 @@ export default Ember.Component.extend({
   **/
   outAnimationComplete: null,
 
-  isLoading: false,
-
-  selectedVersion1Snapshot: null,
-  selectedVersion2Snapshot: null,
-
   init() {
     this._super(...arguments);
     this._assertions();
     const task = this.get('model');
 
-    this.set('isLoading', true);
-    this.fetchSnapshots().then(()=> {
-      this.setProperties({
-        selectedVersion1Snapshot: task.getSnapshotForVersion(this.get('selectedVersion1')),
-        selectedVersion2Snapshot: task.getSnapshotForVersion(this.get('selectedVersion2'))
-      });
-      this.set('isLoading', false);
-    });
+    this.set('selectedSnapshots', this.fetchSnapshots().then(()=> {
+      return {
+        v1: task.getSnapshotForVersion(this.get('selectedVersion1')),
+        v2: task.getSnapshotForVersion(this.get('selectedVersion2'))
+      };
+    }));
   },
 
   fetchSnapshots() {

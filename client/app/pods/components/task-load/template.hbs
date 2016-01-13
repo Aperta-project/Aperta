@@ -1,7 +1,7 @@
-{{#if dataLoading}}
-  {{partial "task-loading-section"}}
-{{else}}
+{{#util/promise-loader promise=taskLoad}}
   <div class="animation-fade-in">
-    {{yield}}
+    {{yield promiseProxy.content}}
   </div>
-{{/if}}
+{{else}}
+  {{yield to="inverse"}}
+{{/util/promise-loader}}

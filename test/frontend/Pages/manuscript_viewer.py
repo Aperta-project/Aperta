@@ -17,7 +17,7 @@ from frontend.Cards.authors_card import AuthorsCard
 from frontend.Cards.basecard import BaseCard
 from frontend.Tasks.basetask import BaseTask
 from frontend.Tasks.authors_task import AuthorsTask
-from frontend.Tasks.prq_task import PRQTask
+from frontend.Tasks.additional_information_task import AITask
 from frontend.Tasks.initial_decision_task import InitialDecisionTask
 from frontend.Tasks.register_decision_task import RegisterDecisionTask
 from frontend.Cards.billing_card import BillingCard
@@ -416,9 +416,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
         self._get(base_task._completed_cb).click()
       task.click()
       time.sleep(1)
-    elif task_name == 'Publishing Related Questions':
-      prq_task = PRQTask(self._driver)
-      prq_task.complete_prq(data)
+    elif task_name == 'Additional Information':
+      ai_task = AITask(self._driver)
+      ai_task.complete_prq(data)
       #complete_prq
       if not base_task.completed_cb_is_selected():
         self._get(base_task._completed_cb).click()

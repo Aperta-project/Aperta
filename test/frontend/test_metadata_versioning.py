@@ -7,7 +7,6 @@ __author__ = 'sbassi@plos.org'
 
 import time
 import random
-import pdb
 
 from selenium.common.exceptions import NoAlertPresentException
 
@@ -69,7 +68,7 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer.complete_task('Figures')
     paper_viewer.complete_task('Supporting Info')
     paper_viewer.complete_task('Authors')
-    paper_viewer.complete_task('Publishing Related Questions')
+    paper_viewer.complete_task('Additional Information')
     time.sleep(3)
     # get title
     # check after manuscript is uploaded

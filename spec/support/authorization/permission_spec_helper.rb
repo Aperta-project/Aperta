@@ -17,7 +17,7 @@ class PermissionSpecHelper
   end
 
   def permission(action:, applies_to:, states: ['*'])
-    states = states.map { |state_name| State.where(name: state_name).first_or_create }
+    states = states.map { |state_name| PermissionState.where(name: state_name).first_or_create }
     perm = FactoryGirl.create(:permission, action: action, applies_to: applies_to, states: states)
     @permissions.push perm
     perm

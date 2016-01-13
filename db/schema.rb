@@ -11,7 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160105163051) do
+ActiveRecord::Schema.define(version: 20160113151023) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_trgm"
@@ -353,6 +354,21 @@ ActiveRecord::Schema.define(version: 20160105163051) do
   add_index "participations", ["task_id"], name: "index_participations_on_task_id", using: :btree
   add_index "participations", ["user_id"], name: "index_participations_on_user_id", using: :btree
 
+  create_table "permission_states", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "permission_states_permissions", force: :cascade do |t|
+    t.integer  "permission_id"
+    t.integer  "permission_state_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "permission_states_permissions", ["permission_id"], name: "index_permission_states_permissions_on_permission_id", using: :btree
+
   create_table "permissions", force: :cascade do |t|
     t.string   "action"
     t.string   "applies_to"
@@ -372,15 +388,6 @@ ActiveRecord::Schema.define(version: 20160105163051) do
 
   add_index "permissions_roles", ["permission_id"], name: "index_permissions_roles_on_permission_id", using: :btree
   add_index "permissions_roles", ["role_id"], name: "index_permissions_roles_on_role_id", using: :btree
-
-  create_table "permissions_states", force: :cascade do |t|
-    t.integer  "permission_id"
-    t.integer  "state_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "permissions_states", ["permission_id"], name: "index_permissions_states_on_permission_id", using: :btree
 
   create_table "phase_templates", force: :cascade do |t|
     t.string   "name"
@@ -434,12 +441,6 @@ ActiveRecord::Schema.define(version: 20160105163051) do
     t.json     "contents"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
-  end
-
-  create_table "states", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "supporting_information_files", force: :cascade do |t|

@@ -69,10 +69,12 @@ export default Ember.Component.extend({
     },
 
     uploadFinished(s3Url){
-      this.set('fileUpload', null)
       if (this.attrs.uploadFinished) {
-        this.attrs.uploadFinished(s3Url);
+        this.attrs.uploadFinished(s3Url,
+                                  this.get('fileUpload.file'),
+                                  this.get('attachment'));
       }
+      this.set('fileUpload', null)
     },
 
     uploadFailed(reason){

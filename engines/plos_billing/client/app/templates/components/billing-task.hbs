@@ -153,14 +153,14 @@
         {{nested-question-display ident="plos_billing--payment_method" owner=task}}
       </h3>
 
-      <div class="form-group author-half author-bump payment-method {{if validationErrors.affiliation "error"}}">
+      <div class="form-group author-bump payment-method {{if validationErrors.affiliation "error"}}">
         {{nested-question-select ident="plos_billing--payment_method"
                           owner=task
                           displayQuestionText=false
                           class="affiliation-field"
                           selectionSelected="paymentMethodSelected"
                           source=responses
-                          width="350"
+                          width="100%"
                           enable=isSubmissionTaskEditable}}
       </div>
     </li>

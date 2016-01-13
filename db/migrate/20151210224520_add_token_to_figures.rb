@@ -1,7 +1,7 @@
 # Adds necessary field for include ProxyableResource, namely token and
 # then updating previous figures
 class AddTokenToFigures < ActiveRecord::Migration
-  # A Mock
+  # stands in for model, ensures that regenerate_token is defined
   class Figure < ActiveRecord::Base
     def regenerate_token
       update_attributes! token: SecureRandom.hex(24)

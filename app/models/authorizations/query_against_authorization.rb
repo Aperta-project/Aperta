@@ -1,8 +1,24 @@
 # rubocop:disable all
 module Authorizations
+  # QueryAgainstAuthorization builds the query for finding authorized
+  # objects against an Authorizations::Authorization object.
   class QueryAgainstAuthorization
     attr_reader :assignments, :assigned_to_klass, :authorization, :permissible_states
 
+    # == Constructor Arguments
+    # * authorization - the Authorizations::Authorization object we should
+    #           query against
+    # * klass - the class that we're looking for authorization against. This \
+    #           is expected to be the model class for the 'target' argument.
+    # * target - the target object, scope (ActiveRecord::Relation), or class \
+    #            that we are querying against.
+    # * assignments - a collection of assignments for the user that provide
+    #            access to objects that we're looking for (e.g. see klass)
+    # * assigned_to_klass - the class the user is assigned. This is often \
+    #            the same as +authorization.assignment_to+ but may differ if
+    #            we were assigned to a subclass so it's passed in separately
+    # * permissible_states - a collection of states (as strings) that should
+    #            be queried against
     def initialize(authorization:, klass:, target:, assignments:, assigned_to_klass:, permissible_states:)
       @authorization = authorization
       @klass = klass

@@ -1,10 +1,20 @@
 # rubocop:disable all
 module Authorizations
+  # Query represents the quer(y|ies) for finding the authorized objects from
+  # the database based on how the authorizations sub-system is configured,
+  # what the user is assigned to, what roles the person has, and what
+  # permissions they have thru those roles.
   class Query
     WILDCARD_STATE = '*'
 
     attr_reader :permission, :klass, :user
 
+    # == Constructor Arguments
+    # * permission - is the permission you are checking for authorization \
+    #                against
+    # * target - is the object, class, or ActiveRecord::Relation that is being \
+    #            being authorized
+    # * user - is the user who the query will be check for authorization against
     def initialize(permission:, target:, user:)
       @permission = permission.to_sym
       @user = user

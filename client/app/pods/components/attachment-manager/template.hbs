@@ -1,0 +1,31 @@
+<p class="description">
+  {{{description}}}
+</p>
+
+{{#each attachments as |attachment|}}
+  {{attachment-item accept=accept
+                    attachment=attachment
+                    filePath=filePath
+                    hasCaption=hasCaption
+                    deleteFile=attrs.deleteFile
+                    noteChanged=attrs.noteChanged
+                    uploadFinished=attrs.updateAttachment}}
+{{/each}}
+
+{{#if uploadInProgress}}
+  {{upload-preview upload=fileUpload}}
+{{else}}
+
+  {{#if showAddButton}}
+    <div class="button-secondary button--green fileinput-button">
+      {{buttonText}}
+      {{s3-file-uploader elementId="add-new-attachment"
+                         accept=accept
+                         filePath=filePath
+                         uploadProgress=(action "uploadProgress")
+                         uploadFinished=(action "uploadFinished")
+                         uploadFailed=(action "uploadFailed")
+                         fileAdded=(action "fileAdded")}}
+    </div>
+  {{/if}}
+{{/if}}

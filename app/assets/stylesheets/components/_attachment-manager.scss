@@ -1,0 +1,35 @@
+.attachment-manager {
+  margin-bottom: 10px;
+
+  .attachment-item {
+    margin-bottom: 10px;
+  }
+
+  p.description {
+    font-style: italic;
+  }
+
+  .file-action {
+    color: $tahi-grey-dark;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  .file-link {
+    font-size: 18px;
+  }
+
+  .progress {
+    margin: 0px;
+  }
+
+  .s3-file-uploader {
+    width: 0px;
+    height: 0px;
+    overflow: hidden;
+  }
+
+  input.form-control {
+    margin-top: 10px;
+  }
+}

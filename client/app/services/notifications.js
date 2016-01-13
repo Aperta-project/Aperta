@@ -136,11 +136,28 @@ export default Ember.Service.extend(Ember.Evented, {
     return this.peekNotifications(type, id).get('length');
   },
 
+  /**
+   *  Method called after Pusher update. Only an ID is provided,
+   *  this method fetches the payload from the server
+   *
+   *  @method created
+   *  @param {Object} payload with type and id keys
+   *  @private
+  **/
+
   created(payload) {
     this.get('restless').get('/api/notifications/' + payload.id).then(data => {
       this.get('_data').pushObject(data.notification);
     });
   },
+
+  /**
+   *  Method called after Pusher update.
+   *
+   *  @method destroyed
+   *  @param {Object} payload with type and id keys
+   *  @private
+  **/
 
   destroyed(payload) {
     this.removeNotificationsById([payload.id]);

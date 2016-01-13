@@ -91,10 +91,11 @@ export default Ember.Route.extend({
       debug(`Pusher: created ${payload.type} ${payload.id}`);
 
       if(payload.type === 'notification') {
-        this.get('notifications').created(payload);
-      } else {
-        this.store.fetchById(payload.type, payload.id);
+        this.notificationAction('created', payload);
+        return;
       }
+
+      this.store.fetchById(payload.type, payload.id);
     },
 
     updated(payload) {
@@ -109,13 +110,18 @@ export default Ember.Route.extend({
       debug(`Pusher: destroyed ${payload.type} ${payload.id}`, payload);
 
       if(payload.type === 'notification') {
-        this.get('notifications').destroyed(payload);
-      } else {
-        const record = this.store.getPolymorphic(payload.type, payload.id);
-        if(record) {
-          record.unloadRecord();
-        }
+        this.notificationAction('destroyed', payload);
+        return;
       }
+
+      const record = this.store.getPolymorphic(payload.type, payload.id);
+      if(record) {
+        record.unloadRecord();
+      }
+    },
+
+    notificationAction(action, payload) {
+      this.get('notifications')[action](payload);
     },
 
     flashMessage(payload) {

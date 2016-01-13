@@ -18,11 +18,13 @@ DESC
   end
 
   permissions do
+    permission action: 'view', applies_to: Authorizations::FakePaper.name
     permission action: 'view', applies_to: Authorizations::FakeTask.name
     permission action: 'view', applies_to: Authorizations::FakeTaskThing.name
   end
 
   role :for_viewing do
+    has_permission action: 'view', applies_to: Authorizations::FakePaper.name
     has_permission action: 'view', applies_to: Authorizations::FakeTask.name
     has_permission \
       action: 'view',
@@ -205,6 +207,31 @@ DESC
         expect(
           user.filter_authorized(:view, task_thing.fake_task).objects
         ).to eq([task])
+      end
+    end
+
+    context <<-DESC do
+      when an inverse association is missing  definitions
+    DESC
+      before do
+        Authorizations.reset_configuration
+        Authorizations.configure do |config|
+          config.assignment_to(
+            Authorizations::FakeTask,
+            authorizes: Authorizations::FakePaper,
+            via: :fake_paper
+          )
+        end
+        assign_user user, to: task, with_role: role_for_viewing
+
+        # Clear out any options (including inverse_of) that may exist
+        Authorizations::FakeTask.reflections['fake_paper'].options.clear
+      end
+
+      it 'raises a CannotFindInverseAssociation' do
+        expect {
+          user.filter_authorized(:view, Authorizations::FakePaper.all).objects
+        }.to raise_error(Authorizations::CannotFindInverseAssociation)
       end
     end
   end

@@ -12,27 +12,36 @@ export default TaskComponent.extend({
     return Ember.isEmpty(this.get('letterBody'));
   }),
 
+  attachmentsPath: Ember.computed('task.id', function() {
+    return `/api/tasks/${this.get('task.id')}/attachments`;
+  }),
+
+  attachmentsRequest(path, method, s3Url, file) {
+    const store = this.container.lookup('store:main');
+    const restless = this.get('restless');
+    restless.ajaxPromise(method, path, {url: s3Url}).then((response) => {
+      response.attachment.filename = file.name
+      store.pushPayload(response);
+    });
+  },
+
   actions: {
     saveCoverLetter() {
       this.set('task.body', [this.get('letterBody')]);
       this.get('task').save();
     },
 
-    uploadFinished(s3Url, file) {
-      const store = this.container.lookup('store:main');
-      const path = `/api/tasks/${this.get('task.id')}/attachments`;
-      this.get('restless').post(path, {url: s3Url}).then((response) => {
-        response.attachment.filename = file.name
-        store.pushPayload(response);
-      });
+    updateAttachment(s3Url, file, attachment) {
+      const path = `${this.get('attachmentsPath')}/${attachment.id}/update_attachment`;
+      this.attachmentsRequest(path, 'PUT', s3Url, file);
+    },
+
+    createAttachment(s3Url, file) {
+      this.attachmentsRequest(this.get('attachmentsPath'), 'POST', s3Url, file);
     },
 
     deleteAttachment(attachment){
       attachment.destroyRecord();
-    },
-
-    noteChanged(note){
-      console.log(note);
     }
   }
 });

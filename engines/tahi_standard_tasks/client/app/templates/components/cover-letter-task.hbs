@@ -29,9 +29,9 @@
 
           {{attachment-manager filePath="tasks/attachment"
                                attachments=task.attachments
-                               noteChanged=(action "noteChanged")
                                deleteFile=(action "deleteAttachment")
-                               uploadFinished=(action "uploadFinished")}}
+                               uploadFinished=(action "createAttachment")
+                               updateAttachment=(action "updateAttachment")}}
 
           <button class="button-primary button--green"
                   disabled={{isSubmissionTaskNotEditable}}

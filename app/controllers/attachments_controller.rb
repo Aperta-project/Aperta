@@ -30,7 +30,7 @@ class AttachmentsController < ApplicationController
   def update_attachment
     attachment = task.attachments.find(params[:id])
     DownloadAdhocTaskAttachmentWorker.perform_async(attachment.id, params[:url])
-    respond_with attachment
+    render json: attachment
   end
 
   private

@@ -40,7 +40,7 @@ DESC
 
     before do
       assign_user user, to: paper, with_role: role_with_access_to_edit
-      paper.update! state: nil
+      paper.update! publishing_state: nil
     end
 
     it 'denies them access' do
@@ -60,7 +60,7 @@ DESC
   DESC
     before do
       assign_user user, to: paper, with_role: role_with_access_to_edit
-      paper.update! state: 'unsubmitted'
+      paper.update! publishing_state: 'unsubmitted'
     end
 
     it 'grants them access' do
@@ -88,7 +88,7 @@ DESC
       end
 
       assign_user user, to: task, with_role: role_with_access_to_edit
-      paper.update! state: 'in_revision'
+      paper.update! publishing_state: 'in_revision'
     end
 
     it 'grants them access' do

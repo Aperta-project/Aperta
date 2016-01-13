@@ -3,6 +3,8 @@ module Authorizations
   # QueryAgainstAssignedObject builds the query for finding authorized
   # objects.
   class QueryAgainstAssignedObject
+    WILDCARD_STATE = Authorizations::Query::WILDCARD_STATE
+
     attr_reader :assignments, :permissible_states
 
     # == Constructor Arguments
@@ -14,12 +16,15 @@ module Authorizations
     #            access to objects that we're looking for (e.g. see klass)
     # * permissible_states - a collection of states (as strings) that should
     #            be queried against
-    def initialize(klass:, target:, assignments:, permissible_states:)
+    # * state_column - the name of the state column on +klass+ to check
+    #            +permissible_states+ against
+    def initialize(klass:, target:, assignments:, permissible_states:, state_column:)
       @klass = klass
       @target = target
       @assignments = assignments
       @assigned_to_ids = assignments.map(&:assigned_to_id)
       @permissible_states = permissible_states.dup
+      @state_column = state_column.to_s
     end
 
     def query
@@ -42,10 +47,10 @@ module Authorizations
     def short_circuit_query_for_specific_model
       return [] unless @assigned_to_ids.include?(@target.id)
 
-      has_state_column = @target.class.column_names.include?('state')
-      has_state = has_state_column && permissible_states.include?(@target.state)
+      has_state_column = @target.class.column_names.include?(@state_column)
+      has_state = has_state_column && permissible_states.include?(@target.send(@state_column))
 
-      if permissible_states.include?('*')
+      if permissible_states.include?(WILDCARD_STATE)
         [@target]
       elsif has_state_column
         has_state ? [@target] : []
@@ -70,9 +75,11 @@ module Authorizations
       query
     end
 
+    # If the klass we're querying against doesn't have the @state_column
+    # then this won't add any permission/state conditions to the query.
     def add_permissible_state_conditions_to_query(query)
-      if !permissible_states.include?('*') && @klass.column_names.include?('state')
-        query.where(state: permissible_states)
+      if !permissible_states.include?(WILDCARD_STATE) && @klass.column_names.include?(@state_column)
+        query.where(@state_column => permissible_states)
       else
         query
       end

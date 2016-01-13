@@ -21,7 +21,9 @@ module Authorizations
     #            we were assigned to a subclass so it's passed in separately
     # * permissible_states - a collection of states (as strings) that should
     #            be queried against
-    def initialize(authorization:, klass:, target:, assignments:, assigned_to_klass:, permissible_states:)
+    # * state_column - the name of the state column on +klass+ to check
+    #            +permissible_states+ against
+    def initialize(authorization:, klass:, target:, assignments:, assigned_to_klass:, permissible_states:, state_column:)
       @authorization = authorization
       @klass = klass
       @target = target
@@ -29,6 +31,7 @@ module Authorizations
       @assigned_to_ids = assignments.map(&:assigned_to_id)
       @assigned_to_klass = assigned_to_klass
       @permissible_states = permissible_states
+      @state_column = state_column.to_s
     end
 
     def query
@@ -37,15 +40,22 @@ module Authorizations
       elsif @target.is_a?(ActiveRecord::Relation)
         query = query_against_active_record_relation
       end
-
-      if !permissible_states.include?(WILDCARD_STATE) && @klass.column_names.include?('publishing_state')
-        query = query.where(@klass.table_name => { publishing_state: permissible_states } )
-      end
-
+      query = add_permissible_state_conditions_to_query(query)
       query.flatten.uniq
     end
 
+
     private
+
+    # If the klass we're querying against doesn't have the @state_column
+    # then this won't add any permission/state conditions to the query.
+    def add_permissible_state_conditions_to_query(query)
+      if !permissible_states.include?(WILDCARD_STATE) && @klass.column_names.include?(@state_column)
+        query = query.where(@klass.table_name => { @state_column => permissible_states } )
+      else
+        query
+      end
+    end
 
     def base_query_for_active_record_relations
       inverse_association = assigned_to_klass.reflections[authorization.via.to_s].inverse_of

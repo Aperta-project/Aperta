@@ -16,7 +16,7 @@ module AuthorizationModelsSpecHelper
         create_table :fake_papers, force: true do |t|
           t.integer :fake_journal_id
           t.string :name
-          t.string :state
+          t.string :publishing_state
         end
 
         create_table :fake_tasks, force: true do |t|

@@ -55,8 +55,23 @@ module Authorizations
 
     private
 
+    # +permission_state_column+ should return the column that houses 
+    # a model's state.
+    #
+    # This is so permissions that are tied to states can add a
+    # WHERE condition in the query for matching against the right states.
+    #
+    # Right now this is set up to work for Paper(s). If the system needs to
+    # evolve to work with other kinds of models this is the entry point for
+    # refactoring, replacing, or removing.
+    def permission_state_column
+      :publishing_state
+    end
+
     def allowed?(object, states)
-      states.include?(WILDCARD_STATE) || !object.respond_to?(:publishing_state) || states.member?(object.send(:publishing_state))
+      states.include?(WILDCARD_STATE) ||
+        !object.respond_to?(permission_state_column) ||
+        states.member?(object.send(permission_state_column))
     end
 
     def load_authorized_objects
@@ -134,7 +149,8 @@ module Authorizations
             klass: @klass,
             target: @target,
             assignments: assignments,
-            permissible_states: permissible_states
+            permissible_states: permissible_states,
+            state_column: permission_state_column
           ).query
           result_set.add_objects(authorized_objects, with_permissions: all_permissions)
         else
@@ -154,7 +170,8 @@ module Authorizations
               target: @target,
               assigned_to_klass: assigned_to_klass,
               assignments: assignments,
-              permissible_states: permissible_states
+              permissible_states: permissible_states,
+              state_column: permission_state_column
             ).query
             result_set.add_objects(authorized_objects, with_permissions: all_permissions)
           end

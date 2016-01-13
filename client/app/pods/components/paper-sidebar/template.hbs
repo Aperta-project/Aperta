@@ -48,6 +48,8 @@
         {{#task-disclosure title=task.title completed=task.completed class=(task-component-name task.type)}}
           {{#task-load task=task}}
             {{component (task-component-name task.type) task=task}}
+          {{else}}
+            {{partial "task-loading-section"}}
           {{/task-load}}
         {{/task-disclosure}}
       {{/each}}
@@ -60,6 +62,8 @@
         {{#task-disclosure title=task.title completed=task.completed class=(task-component-name task.type)}}
           {{#task-load task=task}}
             {{component (task-component-name task.type) task=task}}
+          {{else}}
+            {{partial "task-loading-section"}}
           {{/task-load}}
         {{/task-disclosure}}
       {{/each}}

@@ -17,7 +17,6 @@ describe EpubConverter do
 
   let(:doc) { Nokogiri::HTML(converter.epub_html) }
 
-
   def read_epub_stream(stream)
     entries = []
     Zip::InputStream.open(stream) do |io|
@@ -30,7 +29,6 @@ describe EpubConverter do
 
   describe '#epub_html' do
     context 'a paper' do
-
       after { expect(doc.errors.length).to be 0 }
 
       it 'displays HTML in the papers title' do
@@ -52,10 +50,8 @@ describe EpubConverter do
 
       context 'when paper has supporting information files' do
         let(:file) do
-          with_aws_cassette 'supporting_info_files_controller' do
-            paper.supporting_information_files
-              .create! attachment: ::File.open('spec/fixtures/yeti.tiff')
-          end
+          paper.supporting_information_files
+            .create! attachment: ::File.open('spec/fixtures/yeti.tiff')
         end
 
         it 'has have supporting information' do
@@ -70,7 +66,8 @@ describe EpubConverter do
           expect(file)
           expect(doc.css('.si_preview').count).to be 1
           expect(doc.css('.si_preview').first['src'])
-            .to eq file.non_expiring_proxy_url(only_path: false)
+            .to eq(file.non_expiring_proxy_url(
+                     version: :preview, only_path: false))
         end
 
         it 'the si_link urls are full-path non-expiring proxy urls' do
@@ -78,6 +75,40 @@ describe EpubConverter do
           expect(doc.css('.si_link').count).to be 1
           expect(doc.css('.si_link').first['href'])
             .to eq file.non_expiring_proxy_url(only_path: false)
+        end
+      end
+
+      context 'when paper has figures' do
+        before do
+          paper.figures
+            .create attachment: File.open('spec/fixtures/yeti.tiff'),
+                    status: 'done'
+        end
+
+        it 'replaces img src urls (which are normally relative proxied) with
+          full-path proxy urls' do
+          figure = paper.figures.first
+          paper.body = "<img id='figure_#{figure.id}' src='foo'/>"
+
+          img = doc.css("img#figure_#{figure.id}").first
+          expect(img['src'])
+            .to eq(figure.non_expiring_proxy_url(
+                     version: :detail, only_path: false))
+        end
+
+        it 'works with orphan figures' do
+          # add another figure
+          paper.figures
+            .create attachment: File.open('spec/fixtures/yeti.tiff'),
+                    status: 'done'
+          fig1, fig2 = paper.figures
+          paper.body = "<img id='figure_#{fig1.id}' src='foo'/>"
+          expect(converter.orphan_figures).to eq([fig2])
+
+          expect(doc.css("img#figure_#{fig2.id}").first['src'])
+            .to eq(fig2.non_expiring_proxy_url(
+                     version: :preview,
+                     only_path: false))
         end
       end
     end
@@ -88,7 +119,7 @@ describe EpubConverter do
       let(:paper) { FactoryGirl.build(:paper, short_title: nil) }
 
       it 'return empty title' do
-        expect(EpubConverter.new(paper, nil).title).to eq('')
+        expect(converter.title).to eq('')
       end
     end
 
@@ -96,8 +127,7 @@ describe EpubConverter do
       let(:paper) { FactoryGirl.build(:paper, short_title: '<b>my title</b>') }
 
       it 'return empty title' do
-        expect(EpubConverter.new(paper, nil).title)
-          .to eq('&lt;b&gt;my title&lt;/b&gt;')
+        expect(converter.title).to eq('&lt;b&gt;my title&lt;/b&gt;')
       end
     end
   end

@@ -12,7 +12,7 @@ class VersionedText < ActiveRecord::Base
 
   scope :version_desc, -> { order('major_version DESC, minor_version DESC') }
 
-  mount_uploader :source, SourceUploader
+  mount_uploader :source, SourceUploader # CarrierWave obj
 
   before_update do
     fail ActiveRecord::ReadOnlyRecord unless

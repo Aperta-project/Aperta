@@ -13,6 +13,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Changed
 - NestedQuestions have unique identifiers
 - Revamped the Summporting Information task.
+- Figures use non-expiring resource proxy urls
 
 ### Deprecated
 -

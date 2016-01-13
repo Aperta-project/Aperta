@@ -37,6 +37,11 @@ class PaperConversionsController < ApplicationController
   # If done, return a 200 and a download url.
   # If errored, return 500.
   # If pending, return 202.
+  # Historical Note:
+  # This was written when docx was being converted from user-edited html
+  # This is now not happening but rather we are linking directly to the
+  # original docx file. This method should probably be updated to reflect
+  # that. That may mean that the entire controller is unnecessary.
   def status
     if params[:job_id] == 'source'
       # Direct download, redirect to download link.

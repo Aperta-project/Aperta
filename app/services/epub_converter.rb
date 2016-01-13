@@ -28,8 +28,9 @@ class EpubConverter
               locals: {
                 paper: paper,
                 paper_body: paper_body,
+                orphan_figures: orphan_figures,
                 title: title,
-                needs_non_redirecting_preview_url: false
+                converter: self
               })
   end
 

@@ -17,7 +17,7 @@ RSpec::Matchers.define :have_s3_url do |url|
   end
 
   match do |text|
-    !text.at(parse(url)).nil?
+    text.include? parse(url)
   end
 
   failure_message do |text|

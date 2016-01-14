@@ -3,8 +3,7 @@ require 'rails_helper'
 describe CommentsPolicy do
   let(:journal) { FactoryGirl.create(:journal) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
-  let(:phase) { FactoryGirl.create(:phase, paper: paper) }
-  let(:task) { FactoryGirl.create(:task, phase: phase) }
+  let(:task) { FactoryGirl.create(:task, paper: paper) }
   let(:user) { FactoryGirl.create(:user) }
   let(:comment) { FactoryGirl.create(:comment, task: task) }
   let(:policy) { CommentsPolicy.new(current_user: user, resource: comment) }

@@ -15,6 +15,7 @@ describe TahiStandardTasks::ReviewerReportMailer do
                          title: "Reviewer Report",
                          old_role: 'reviewer',
                          type: "TahiStandardTasks::ReviewerReportTask",
+                         paper: paper,
                          completed: true)
     }
 
@@ -31,9 +32,6 @@ describe TahiStandardTasks::ReviewerReportMailer do
       allow(paper).to receive(:creator).and_return(user)
       allow(paper).to receive(:editors).and_return([editor])
       allow(paper).to receive(:journal).and_return(journal)
-
-      phase = Phase.create paper: paper
-      task.update phase: phase
 
       allow_any_instance_of(MailerHelper).to receive(:app_name).and_return app_name
       allow_any_instance_of(TemplateHelper).to receive(:app_name).and_return app_name

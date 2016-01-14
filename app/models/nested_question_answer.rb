@@ -8,6 +8,7 @@ class NestedQuestionAnswer < ActiveRecord::Base
 
   class_attribute :disable_owner_verification
 
+  belongs_to :paper
   belongs_to :decision
   belongs_to :nested_question, inverse_of: :nested_question_answers
   belongs_to :owner, polymorphic: true

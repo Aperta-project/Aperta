@@ -265,6 +265,7 @@ ActiveRecord::Schema.define(version: 20160121151634) do
     t.datetime "updated_at",         null: false
     t.json     "additional_data"
     t.integer  "decision_id"
+    t.integer  "paper_id"
   end
 
   add_index "nested_question_answers", ["decision_id"], name: "index_nested_question_answers_on_decision_id", using: :btree

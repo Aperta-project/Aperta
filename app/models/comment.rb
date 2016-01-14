@@ -9,8 +9,6 @@ class Comment < ActiveRecord::Base
   validates :task, :body, presence: true
   validates_presence_of :commenter
 
-  after_save :notify_mentioned_people
-
   def paper
     task.paper
   end

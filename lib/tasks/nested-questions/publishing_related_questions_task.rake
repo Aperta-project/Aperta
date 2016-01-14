@@ -1,3 +1,10 @@
+# rubocop:disable Metrics/LineLength, Style/StringLiterals
+# I'm disabling line-length in this file because it consists almost
+# entirely of long strings where extraneous whitespace of heredocs is
+# unwanted. I'm disabling strinkgLiteral checking because these are
+# all english text, and many of them include apostophes.
+# - sam@mutuallyhuman.com
+
 namespace 'nested-questions:seed' do
   task 'publishing-related-questions-task': :environment do
     questions = []
@@ -147,8 +154,19 @@ namespace 'nested-questions:seed' do
       position: 7
     }
 
+    questions << {
+      owner_id: nil,
+      owner_type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
+      ident: "publishing_related_questions--short-title",
+      value_type: "text",
+      text: "Please give your paper a short title. Short titles are used as the running header on published PDFs.",
+      position: 8
+    }
+
     NestedQuestion.where(
       owner_type: TahiStandardTasks::PublishingRelatedQuestionsTask.name
     ).update_all_exactly!(questions)
   end
 end
+
+# rubocop:enable Metrics/LineLength, Style/StringLiterals

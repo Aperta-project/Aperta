@@ -119,21 +119,17 @@
     <li class="question">
       {{nested-question-input ident="publishing_related_questions--intended_collection"
                         owner=task
-                        label="Name of PLOS Collection"
                         placeholder="Collection Name"
+                        inputClassNames="form-control"
                         disabled=isSubmissionTaskNotEditable}}
 
     </li>
     <li class="question">
-      <div class="question-text">Please give your paper a short title</div>
-      <ul class="question-help">
-        Short titles are used as the running header on published PDFs.
-      </ul>
-
-      {{format-input value=task.paper.shortTitle
-                     class="publishing-related-questions-short-title"
-                     displayBold=false
-                     focus-out=(action "savePaperShortTitle")}}
+      {{nested-question-input ident="publishing_related_questions--short-title"
+                        formatted=true
+                        owner=task
+                        inputClassNames="form-control"
+                        disabled=isSubmissionTaskNotEditable}}
     </li>
   </ol>
 </div>

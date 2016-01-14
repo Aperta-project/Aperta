@@ -374,7 +374,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :task_name: The name of the task to conmplete (str)
     :click_override:
     :data:
-    returns None
     """
     tasks = self._gets(self._task_headings)
     # if task is marked as complete, leave is at is.
@@ -387,15 +386,19 @@ class ManuscriptViewerPage(AuthenticatedPage):
           break
         elif task.text == task_name and 'active' \
             in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
+          print 389
           return None
       else:
+        print 389
         return None
     else:
+      print 395
       for task in tasks:
         if task.text == task_name:
           task.click()
           break
       else:
+        print 401
         return None
     base_task = BaseTask(self._driver)
     if task_name == 'Initial Decision':
@@ -418,7 +421,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       time.sleep(1)
     elif task_name == 'Additional Information':
       ai_task = AITask(self._driver)
-      ai_task.complete_prq(data)
+      ai_task.complete_ai(data)
       #complete_prq
       if not base_task.completed_cb_is_selected():
         self._get(base_task._completed_cb).click()
@@ -439,6 +442,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
         self._get(base_task._completed_cb).click()
       task.click()
       time.sleep(1)
+    else:
+      raise ValueError('No information on this card: {}'.format(task_name))
     #elif task_name == 'Billing':
     #  billing = BillingTask(self._driver)
     #  billing.add_billing_data(billing_data)

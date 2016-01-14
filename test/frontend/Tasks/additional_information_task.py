@@ -19,8 +19,7 @@ class AITask(BaseTask):
   data = {'q1':'No', 'q2':'No', 'q3': [0,0,0,0], 'q4':'', 'q5':''}
 
   def __init__(self, driver, url_suffix='/'):
-    super(PRQTask, self).__init__(driver)
-
+    super(AITask, self).__init__(driver)
 
     #Locators - Instance members
     self._questions = (By.CSS_SELECTOR, 'li.question')
@@ -32,9 +31,9 @@ class AITask(BaseTask):
     self._send_invitation_button = (By.CLASS_NAME, 'invite-editor-button')
 
    #POM Actions
-  def complete_prq(self, data=data):
+  def complete_ai(self, data=data):
     """
-    This method completes the task Publishing Related Data
+    This method completes the task Additional Information
     :data: A dictionary with the answers to all questions
     """
     #import pdb

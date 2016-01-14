@@ -114,6 +114,16 @@ export default Ember.Component.extend({
   _subscriptActive: false,
 
   /**
+   *  Disable the input
+   *
+   *  @property disabled
+   *  @type Boolean
+   *  @default false
+   *  @optional
+  **/
+  disabled: false,
+
+  /**
    *  This will pass the formatted content
    *  down to the content-editable component
    *

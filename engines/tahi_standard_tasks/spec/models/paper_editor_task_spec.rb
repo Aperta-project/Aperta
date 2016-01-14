@@ -8,6 +8,7 @@ describe TahiStandardTasks::PaperEditorTask do
   describe "#invitation_invited" do
     let!(:task) do
       TahiStandardTasks::PaperEditorTask.create!({
+        paper: paper,
         phase: paper.phases.first,
         title: "Invite Editor",
         old_role: "admin"
@@ -33,6 +34,7 @@ describe TahiStandardTasks::PaperEditorTask do
 
     let!(:sample_editor_task) do
       Task.create!({
+        paper: paper,
         phase: paper.phases.first,
         title: "Sample Editor Task",
         old_role: "editor"
@@ -41,6 +43,7 @@ describe TahiStandardTasks::PaperEditorTask do
 
     let!(:sample_reviewer_report_task) do
       TahiStandardTasks::ReviewerReportTask.create!({
+        paper: paper,
         phase: paper.phases.first,
         title: "Sample Report Task",
         old_role: "reviewer"
@@ -49,6 +52,7 @@ describe TahiStandardTasks::PaperEditorTask do
 
     let!(:sample_reviewer_recommendation_task) do
       TahiStandardTasks::ReviewerRecommendationsTask.create!({
+        paper: paper,
         phase: paper.phases.first,
         title: "Sample Rec Task",
         old_role: "author"
@@ -57,6 +61,7 @@ describe TahiStandardTasks::PaperEditorTask do
 
     let!(:task) do
       TahiStandardTasks::PaperEditorTask.create!({
+        paper: paper,        
         phase: paper.phases.first,
         title: "Invite Editor",
         old_role: "admin"

@@ -8,7 +8,15 @@ describe TahiStandardTasks::PaperAdminTask do
     let(:paper) { create(:paper, :with_tasks) }
     let!(:old_role) { create(:paper_role, old_role: 'admin', user: bob, paper: paper) } # make bob an admin for the paper
     let(:phase) { paper.phases.first }
-    let(:task)  { TahiStandardTasks::PaperAdminTask.create(phase: phase, admin_id: bob.id, old_role: "admin", title: "Assign Admin") }
+    let(:task) do
+      TahiStandardTasks::PaperAdminTask.create(
+        paper: paper,
+        phase: phase,
+        admin_id: bob.id,
+        old_role: "admin",
+        title: "Assign Admin"
+      )
+    end
 
     context "when paper admin is changed" do
       it "will update paper and tasks" do

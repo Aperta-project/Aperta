@@ -2,9 +2,10 @@ require 'rails_helper'
 
 describe PlosBioTechCheck::InitialTechCheckTask do
   let(:author) { FactoryGirl.create :user }
-  let(:paper) { FactoryGirl.create :paper, :submitted, :with_tasks, creator: author }
-  let(:task) { FactoryGirl.create :initial_tech_check_task, paper: paper }
-  let(:subject) { described_class.new(paper: paper, title: "new task", old_role: PaperRole::COLLABORATOR) }
+  let(:paper) { FactoryGirl.create :paper_with_phases, :submitted, :with_tasks, creator: author }
+  let(:phase) { FactoryGirl.create :phase, paper: paper }
+  let(:task) { FactoryGirl.create :initial_tech_check_task, paper: paper, phase: phase }
+  let(:subject) { described_class.new(paper: paper, phase: phase, title: "new task", old_role: PaperRole::COLLABORATOR) }
   describe '#round' do
     it 'initializes with the round 1' do
       expect(task.round).to eq 1

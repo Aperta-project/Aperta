@@ -6,7 +6,13 @@ module TahiStandardTasks
 
     let(:user) { paper.creator }
     let(:paper) { FactoryGirl.create(:paper_with_phases) }
-    let(:task) { FactoryGirl.create(:reviewer_recommendations_task, phase: paper.phases.last) }
+    let(:task) do
+      FactoryGirl.create(
+        :reviewer_recommendations_task,
+        paper: paper,
+        phase: paper.phases.last
+      )
+    end
 
     before do
       sign_in user

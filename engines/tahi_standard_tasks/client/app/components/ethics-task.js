@@ -24,6 +24,11 @@ export default TaskComponent.extend({
                .findQuestion('ethics--animal_subjects--field_permit');
   }),
 
+  fieldArriveQuestion: computed('task', function(){
+    return this.get('task')
+               .findQuestion('ethics--animal_subjects--field_arrive');
+  }),
+
   fieldStudyQuestion: computed(function(){
     return this.get('task')
               .findQuestion('ethics--field_study');
@@ -35,10 +40,6 @@ export default TaskComponent.extend({
   }),
 
   actions: {
-    destroyAttachment(attachment) {
-      attachment.destroyRecord();
-    },
-
     userSelectedNoOnHumanSubjects() {
       const question = this.get('participantsQuestion');
       const answer = question.answerForOwner(this.get('task'));

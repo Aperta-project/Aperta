@@ -44,9 +44,10 @@
         displayContent=selected.yes
         disabled=isSubmissionTaskNotEditable}}
 
-        <div class="question-info">
-          <p>We encourage authors to comply with the <a href="http://www.nc3rs.org.uk/arrive-guidelines" target="_blank"> Animal Research: Reporting In Vivo Experiments (ARRIVE) guidelines</a>.</p>
-        </div>
+        {{nested-question-uploader-manager model=fieldArriveQuestion
+                                           buttonText="upload arrive checklist"
+                                           description="We encourage authors to comply with the <a href='http://www.nc3rs.org.uk/arrive-guidelines' target='_blank'> Animal Research: Reporting In Vivo Experiments (ARRIVE) guidelines</a>, developed by the NationalCentro for the Replacement, Refinement &amp; Reduction of Animals in Research (NC3Rs). If you have an ARRIVE checklist, please upload it here:"
+                                           owner=task}}
       </div>
       {{/if}}
       {{/nested-question-radio}}

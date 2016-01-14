@@ -48,6 +48,7 @@ class PaperFactory
   def create_task_from_template(task_template, phase)
     task = TaskFactory.create(task_template.journal_task_type.kind,
                               phase: phase,
+                              paper: phase.paper,
                               creator: creator,
                               title: task_template.title,
                               body: task_template.template,

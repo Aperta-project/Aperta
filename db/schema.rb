@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160113151023) do
+ActiveRecord::Schema.define(version: 20160114152935) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -539,9 +539,11 @@ ActiveRecord::Schema.define(version: 20160113151023) do
     t.json     "body",       default: [],     null: false
     t.integer  "position",   default: 0
     t.integer  "required_permission_id"
+    t.integer  "paper_id",                                            null: false
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
+  add_index "tasks", ["paper_id"], name: "index_tasks_on_paper_id", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
   add_index "tasks", ["required_permission_id"], name: "index_tasks_on_required_permission_id", using: :btree
 

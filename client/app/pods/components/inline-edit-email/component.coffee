@@ -30,7 +30,7 @@ InlineEditEmailComponent = Ember.Component.extend
       @get('emailSentStates').contains(key)
     else
       false
-  ).property('keyForStates', 'emailSentStates.@each')
+  ).property('keyForStates', 'emailSentStates.[]')
 
   setSentState: ->
     key = @get('keyForStates')

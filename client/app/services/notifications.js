@@ -12,7 +12,7 @@ export default Ember.Service.extend(Ember.Evented, {
     this._super(...arguments);
 
     this._fetchData().then(response => {
-      if(isEmpty(response.notifications)) { return; }
+      if(isEmpty(response) || isEmpty(response.notifications)) { return; }
       this.set('_data', response.notifications);
     });
   },

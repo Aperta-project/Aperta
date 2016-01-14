@@ -7,10 +7,9 @@ class DiscussionReply::Created::EmailPeopleMentioned
     people_mentioned = UserMentions.new(reply.body,
                                         reply.replier).people_mentioned
     people_mentioned.each do |mentionee|
-      UserMailer.notify_mention_in_discussion(mentionee.id,
-                                              reply.discussion_topic.id,
-                                              reply.id)
-        .deliver_later
+      UserMailer.delay.notify_mention_in_discussion(mentionee.id,
+                                                    reply.discussion_topic.id,
+                                                    reply.id)
     end
   end
 end

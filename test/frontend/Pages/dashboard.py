@@ -11,43 +11,16 @@ import random
 import string
 import time
 import uuid
-import pdb
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
+from Base.Resources import docs
 from Base.PostgreSQL import PgSQL
 from authenticated_page import AuthenticatedPage, application_typeface
 
 
 __author__ = 'jgray@plos.org'
-
-docx = ['2014_04_27 Bakowski et al main text_subm.docx',
-        '120220_PLoS_Genetics_review.docx',
-        'CRX.pone.0103411.docx',
-        'GIANT-gender-main_20130310.docx',
-        'NF-kB-Paper_manuscript.docx',
-        'NorenzayanetalPLOS.docx',
-        'pgen.1004127.docx',
-        'PGENETICS-D-13-02065R1_FTC.docx',
-        'PLosOne_Main_Body_Ravi_Bansal_Brad_REVISED.docx',
-        'PONE-D-12-25504.docx',
-        'PONE-D-12-27950.docx',
-        'PONE-D-13-02344.docx',
-        'PONE-D-13-14162.docx',
-        'PONE-D-13-19782.docx',
-        'PONE-D-13-38666.docx',
-        'PONE-D-14-12686.docx',
-        'PONE-D-14-17217.docx',
-        'pone.0100365.docx',
-        'pone.0100948.docx',
-        'ppat.1004210.docx',
-        'PPATHOGENS-D-14-01213.docx',
-        'RTN.pone.0072333.docx',
-        'Schallmo_PLOS_RevisedManuscript.docx',
-        'Spindler_2014_rerevised.docx',
-        'Thammasri_PONE_D13_12078_wo.docx',
-        ]
 
 
 class DashboardPage(AuthenticatedPage):
@@ -105,9 +78,8 @@ class DashboardPage(AuthenticatedPage):
     self._cns_manuscript_superscript_icon = (By.CLASS_NAME, 'fa-superscript')
     self._cns_manuscript_subscript_icon = (By.CLASS_NAME, 'fa-subscript')
     self._cns_journal_chooser_label = (By.XPATH, "//div[@class='overlay-body']/div/div[3]/label")
-
     self._cns_journal_chooser = (By.CSS_SELECTOR, 'div.paper-new-select-trigger')
-
+    self._cns_paper_type_dd = (By.ID, 'paper-new-paper-type-select')
     self._cns_opened_option_dropdown = (By.CSS_SELECTOR, 'div.select-box-list')
     self._cns_option_dropdown_item = (By.CSS_SELECTOR, 'div.select-box-item')
     self._cns_paper_type_chooser_label = (By.XPATH, "//div[@class='overlay-body']/div/div[4]/label")
@@ -443,7 +415,6 @@ class DashboardPage(AuthenticatedPage):
     """
     Enter title for the publication
     :param title: Title you wish to use for your paper
-    :return: None
     """
     title_field = self._get(self._cns_title_field)
     title_field.click()
@@ -458,11 +429,11 @@ class DashboardPage(AuthenticatedPage):
     """Click X link"""
     self._get(self._overlay_header_close).click()
 
-  def select_journal_and_type(self, journal, type_):
+  def select_journal_and_type(self, journal, paper_type):
     """
     Select a journal with its type
     journal: Title of the journal
-    type_: Manuscript type
+    paper_type: Paper type
     """
     #div = self._get(self._cns_journal_chooser_dd)
     journal_dd, type_dd = self._gets((By.CLASS_NAME, 'ember-basic-dropdown-trigger'))
@@ -487,12 +458,12 @@ class DashboardPage(AuthenticatedPage):
     parent_div = self._get((By.ID, 'ember-basic-dropdown-wormhole'))
     #div.find_element_by_class_name('ember-power-select-options').click()
     for item in self._gets((By.CLASS_NAME, 'ember-power-select-option')):
-      if item.text == type_:
+      if item.text == paper_type:
         item.click()
         time.sleep(1)
         break
-    selected_type = self._gets(self._cns_paper_type_chooser)[1]
-    assert type_ in selected_type.text, '{0} != {1}'.format(selected_type.text, type_)
+    selected_type = self._gets(self._cns_paper_type_dd)
+    assert paper_type in selected_type[0].text, '{0} != {1}'.format(selected_type.text, paper_type)
 
   @staticmethod
   def title_generator(prefix='', random_bit=True):
@@ -603,12 +574,9 @@ class DashboardPage(AuthenticatedPage):
     paper_type_chooser_label = self._get(self._cns_paper_type_chooser_label)
     assert "Choose the type of paper you're submitting" in paper_type_chooser_label.text, paper_type_chooser_label.text
     paper_type_chooser = self._get(self._cns_paper_type_chooser)
-
     assert "Select a paper type" in paper_type_chooser.text, paper_type_chooser.text
-
-
     self._get(self._upload_btn)
-    doc2upload = random.choice(docx)
+    doc2upload = random.choice(docs)
     print('Sending document: ' + os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload))
     fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
     if os.path.isfile(fn):

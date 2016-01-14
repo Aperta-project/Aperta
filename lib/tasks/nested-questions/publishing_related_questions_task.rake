@@ -157,7 +157,7 @@ namespace 'nested-questions:seed' do
     questions << {
       owner_id: nil,
       owner_type: TahiStandardTasks::PublishingRelatedQuestionsTask.name,
-      ident: "publishing_related_questions--short-title",
+      ident: "publishing_related_questions--short_title",
       value_type: "text",
       text: "Please give your paper a short title. Short titles are used as the running header on published PDFs.",
       position: 8

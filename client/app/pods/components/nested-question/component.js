@@ -78,6 +78,12 @@ NestedQuestionComponent = Ember.Component.extend({
     } else {
       answer.destroyRecord();
     }
+  },
+
+  actions: {
+    save: function() {
+      this.save();
+    }
   }
 });
 

@@ -36,13 +36,12 @@ class Paper < ActiveRecord::Base
   has_many :discussion_topics, inverse_of: :paper, dependent: :destroy
   has_many :snapshots, dependent: :destroy
   has_many :notifications, inverse_of: :paper
+  has_many :nested_question_answers
 
   serialize :withdrawals, ArrayHashSerializer
 
   validates :paper_type, presence: true
   validates :journal, presence: true
-
-  validates :short_title, length: { maximum: 255 }
 
   scope :active,   -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
@@ -244,7 +243,7 @@ class Paper < ActiveRecord::Base
     admins.first
   end
 
-  # Public: Returns one of the editors from the paper.
+  # Public: Returns the academic editor of the paper
   #
   # Examples
   #
@@ -254,6 +253,16 @@ class Paper < ActiveRecord::Base
   # Returns a User object.
   def editor
     editors.first
+  end
+
+  def answer_for(ident)
+    nested_question_answers.includes(:nested_question)
+      .find_by(nested_questions: { ident: ident })
+  end
+
+  def short_title
+    answer = answer_for('publishing_related_questions--short_title')
+    answer ? answer.value : ''
   end
 
   def latest_withdrawal_reason

@@ -156,7 +156,7 @@ class PapersController < ApplicationController
 
   def paper_params
     params.require(:paper).permit(
-      :short_title, :title, :abstract,
+      :title, :abstract,
       :body, :paper_type, :submitted, :editable,
       :journal_id,
       :striking_image_id,
@@ -175,7 +175,7 @@ class PapersController < ApplicationController
   def update_paper_params
     # paper params excluding :submitted and :editable
     params.require(:paper).permit(
-      :short_title, :title, :abstract,
+      :title, :abstract,
       :paper_type,
       :journal_id,
       :striking_image_id,

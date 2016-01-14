@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe AuthorsController do
   let(:user) { paper.creator }
-  let(:paper) { FactoryGirl.create(:paper_with_phases) }
-  let(:task) { FactoryGirl.create(:authors_task, phase: paper.phases.last) }
+  let(:paper) { FactoryGirl.create(:paper) }
+  let(:task) { FactoryGirl.create(:authors_task, paper: paper) }
 
   before do
     sign_in user

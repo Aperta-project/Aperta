@@ -109,4 +109,15 @@ class UserMailer < ActionMailer::Base
       to: @user.email,
       subject: "You've been mentioned on the manuscript, \"#{@paper.title}\"")
   end
+
+  def notify_added_to_topic(user_id, topic_id)
+    @user = User.find(user_id)
+    @topic = DiscussionTopic.find(topic_id)
+    @paper = Paper.find(@topic.paper.id)
+
+    mail(
+      to: @user.email,
+      subject: "You've been added to a conversation on the manuscript," \
+        "\"#{@paper.title}\"")
+  end
 end

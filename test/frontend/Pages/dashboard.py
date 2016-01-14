@@ -105,13 +105,14 @@ class DashboardPage(AuthenticatedPage):
     self._cns_manuscript_superscript_icon = (By.CLASS_NAME, 'fa-superscript')
     self._cns_manuscript_subscript_icon = (By.CLASS_NAME, 'fa-subscript')
     self._cns_journal_chooser_label = (By.XPATH, "//div[@class='overlay-body']/div/div[3]/label")
+
     self._cns_journal_chooser = (By.CSS_SELECTOR, 'div.paper-new-select-trigger')
+
     self._cns_opened_option_dropdown = (By.CSS_SELECTOR, 'div.select-box-list')
     self._cns_option_dropdown_item = (By.CSS_SELECTOR, 'div.select-box-item')
     self._cns_paper_type_chooser_label = (By.XPATH, "//div[@class='overlay-body']/div/div[4]/label")
-    self._cns_paper_type_chooser = (By.XPATH, "//div[contains(@class, 'paper-new-select-trigger')]")
+    self._cns_paper_type_chooser = (By.ID, 'paper-new-paper-type-select')
     self._cns_journal_chooser_dd = (By.ID, 'paper-new-journal-select')
-    self._cns_papertype_chooser_dd = (By.ID, 'paper-new-paper-type-select')
     self._cns_journal_chooser_active = (By.CLASS_NAME, 'select-box-element--active')
     self._cns_chooser_chosen = (By.CLASS_NAME, 'select-box-item')
     self._cns_chooser_dropdown_arrow = (By.CLASS_NAME, 'select2-arrow')
@@ -156,7 +157,11 @@ class DashboardPage(AuthenticatedPage):
     Accepts a given invitation
     :title: Title of the publication to accept the invitation
     """
-    h3 = self._driver.find_element_by_xpath("//*[contains(text(), '{}')]".format(title))
+    try:
+      h3 = self._driver.find_element_by_xpath("//*[contains(text(), '{}')]".format(title))
+    except UnicodeEncodeError:
+      h3 = self._driver.find_element_by_xpath("//*[contains(text(), '{}')]".format(
+        title.encode('utf8')))
     btn = h3.find_element_by_xpath("./following-sibling::button")
     btn.click()
 
@@ -592,13 +597,16 @@ class DashboardPage(AuthenticatedPage):
     self._get(self._cns_manuscript_superscript_icon)
     self._get(self._cns_manuscript_subscript_icon)
     journal_chooser_label = self._get(self._cns_journal_chooser_label)
-    journal_chooser = self._get(self._cns_journal_chooser)
     assert 'What journal are you submitting to?' in journal_chooser_label.text, journal_chooser_label.text
+    journal_chooser = self._get(self._cns_journal_chooser)
     assert 'Select a journal' in journal_chooser.text, journal_chooser.text
     paper_type_chooser_label = self._get(self._cns_paper_type_chooser_label)
-    paper_type_chooser = self._get(self._cns_paper_type_chooser)
     assert "Choose the type of paper you're submitting" in paper_type_chooser_label.text, paper_type_chooser_label.text
+    paper_type_chooser = self._get(self._cns_paper_type_chooser)
+
     assert "Select a paper type" in paper_type_chooser.text, paper_type_chooser.text
+
+
     self._get(self._upload_btn)
     doc2upload = random.choice(docx)
     print('Sending document: ' + os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload))

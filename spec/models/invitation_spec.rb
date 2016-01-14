@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe Invitation do
-  let(:phase) { FactoryGirl.create :phase }
-  let(:task) { FactoryGirl.create :invitable_task, phase: phase }
+  let(:paper) { FactoryGirl.create :paper }
+  let(:task) { FactoryGirl.create :invitable_task, paper: paper }
   let(:invitation) { FactoryGirl.build :invitation, task: task }
 
   describe ".invited" do
@@ -22,16 +22,16 @@ describe Invitation do
   describe '#create' do
     it "belongs to the paper's latest decision" do
       invitation.save!
-      expect(phase.paper.decisions.latest.invitations).to include invitation
+      expect(paper.decisions.latest.invitations).to include invitation
     end
 
     context 'when there is more than one decision' do
       it 'is associated with the latest decision' do
-        latest_decision = FactoryGirl.create :decision, paper: phase.paper
+        latest_decision = FactoryGirl.create :decision, paper: paper
         invitation.save!
-        latest_revision_number = (phase.paper.decisions.pluck :revision_number).max
+        latest_revision_number = (paper.decisions.pluck :revision_number).max
         expect(invitation.decision).to eq latest_decision
-        expect(invitation.decision).to eq phase.paper.decisions.latest
+        expect(invitation.decision).to eq paper.decisions.latest
         expect(invitation.decision.revision_number).to eq latest_revision_number
       end
     end

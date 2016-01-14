@@ -69,12 +69,17 @@ describe SalesforceServices::API do
     end
   end
 
-  describe "#create_billing_and_pfa_case" do
-
+  describe '#create_billing_and_pfa_case' do
     let(:paper) { FactoryGirl.create(:paper) }
 
-    it "creates and returns a salesforce case object" do
-      paper = FactoryGirl.create :paper_with_task, { task_params: { title: "Billing", type: "PlosBilling::BillingTask", old_role: "author" } }
+    it 'creates and returns a salesforce case object' do
+      task_params = {
+        title: 'Billing',
+        type: 'PlosBilling::BillingTask',
+        paper_id: paper.id,
+        old_role: 'author'
+      }
+      paper = FactoryGirl.create(:paper_with_task,task_params: task_params)
 
       #delete_vcr_file  "salesforce_create_billing_and_pfa"
 
@@ -112,6 +117,6 @@ end
 def delete_vcr_file(file) # useful when writing new specs that require vcr, and need the http request need to be made multiple times until correct
   file = "spec/fixtures/vcr_cassettes/#{file}.yml"
   if File.exists?(file)
-    ap "deleting #{file}" if File.delete(file) 
+    ap "deleting #{file}" if File.delete(file)
   end
 end

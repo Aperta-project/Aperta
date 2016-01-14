@@ -50,8 +50,6 @@ describe Invitation do
       expect(task).to receive(:invite_allowed?).with(invitation).and_return(true)
       expect(task).to receive(:invitation_invited).with(invitation)
       invitation.invite!
-      # DatabaseCleaner transaction strategy won't commit. Do it manually :(
-      invitation.run_callbacks(:commit)
     end
 
     it "prevents transition to invited" do

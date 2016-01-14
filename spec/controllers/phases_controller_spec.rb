@@ -29,7 +29,11 @@ describe PhasesController do
 
   describe 'DELETE destroy' do
     it "with tasks" do
-      phase = Phase.create tasks: [Task.new(title: "task", old_role: "author")], paper_id: paper.id, position: 1
+      phase = Phase.create(
+        tasks: [Task.new(title: "task", old_role: "author", paper: paper)],
+        paper_id: paper.id,
+        position: 1
+      )
       delete :destroy, format: :json, id: phase.id
       expect(response).to_not be_success
     end

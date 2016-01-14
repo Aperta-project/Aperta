@@ -1,7 +1,7 @@
 namespace :'roles-and-permissions' do
   desc 'Creates base roles and permissions'
   task seed: 'environment' do
-    state = State.where(name: '*').first_or_create!
+    state = PermissionState.where(name: '*').first_or_create!
     permission = Permission.where(
       action: :view_profile,
       applies_to: 'User'

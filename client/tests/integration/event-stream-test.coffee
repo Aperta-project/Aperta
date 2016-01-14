@@ -11,6 +11,7 @@ module 'Integration: Pusher',
 
   beforeEach: ->
     app = startApp()
+    $.mockjax({url: '/api/comments/12', status: 204})
     return null # hangs if we return app, so return null
 
 test 'action:created calls fetchById', (assert) ->

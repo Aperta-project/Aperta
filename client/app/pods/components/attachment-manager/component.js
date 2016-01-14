@@ -27,9 +27,9 @@ export default Ember.Component.extend({
   fileUpload: null,
   uploadInProgress: Ember.computed.notEmpty('fileUpload'),
   multiple: false,
-  hasUploads: Ember.computed.notEmpty('attachments'),
-  showAddButton: Ember.computed('multiple', 'hasUploads', function() {
-    if (this.get('hasUploads') && !this.get('multiple')) return false;
+  hasAttachments: Ember.computed.notEmpty('attachments'),
+  showAddButton: Ember.computed('multiple', 'hasAttachments', function() {
+    if (this.get('hasAttachments') && !this.get('multiple')) return false;
     return true;
   }),
 

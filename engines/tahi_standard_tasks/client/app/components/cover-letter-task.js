@@ -20,7 +20,7 @@ export default TaskComponent.extend({
     const store = this.container.lookup('store:main');
     const restless = this.get('restless');
     restless.ajaxPromise(method, path, {url: s3Url}).then((response) => {
-      response.attachment.filename = file.name
+      response.attachment.filename = file.name;
       store.pushPayload(response);
     });
   },

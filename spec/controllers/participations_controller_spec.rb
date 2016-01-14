@@ -5,8 +5,7 @@ describe ParticipationsController do
   let(:user) { create(:user) }
   let(:participant) { create(:user) }
   let!(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: user) }
-  let(:phase) { paper.phases.first }
-  let(:task) { create(:task, phase: phase) }
+  let(:task) { create(:task, paper: paper) }
 
   before { sign_in user }
 

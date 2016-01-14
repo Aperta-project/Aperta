@@ -4,6 +4,7 @@ import Ember from 'ember';
 const { computed } = Ember;
 
 export default TaskComponent.extend({
+  classNames: ['ethics-task'],
   humanSubjectsQuestion: computed('task', function(){
     return this.get('task')
                .findQuestion('ethics--human_subjects');

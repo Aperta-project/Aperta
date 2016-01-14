@@ -10,7 +10,7 @@ export default Ember.View.extend(PaperIndexMixin, {
 
   didRender: function() {
     this.refreshEquations();
-  },
+  }.observes('controller.model.body'),
 
   loadMathJax: function() {
     if (this.renderEquations()) {

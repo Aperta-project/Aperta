@@ -7,6 +7,7 @@ feature "Submitting a paper", js: true do
     FactoryGirl.create(
       :competing_interests_task,
       completed: true,
+      paper: paper,
       phase_id: paper.phases.first.id
     )
   end

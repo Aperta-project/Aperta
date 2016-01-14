@@ -6,11 +6,11 @@ describe Typesetter::MetadataSerializer do
   let(:paper) { FactoryGirl.create(:paper_with_phases) }
   let(:metadata_tasks) do
     [
-      FactoryGirl.create(:competing_interests_task),
-      FactoryGirl.create(:data_availability_task),
-      FactoryGirl.create(:financial_disclosure_task),
-      FactoryGirl.create(:production_metadata_task),
-      FactoryGirl.create(:publishing_related_questions_task)
+      FactoryGirl.create(:competing_interests_task, paper: paper),
+      FactoryGirl.create(:data_availability_task, paper: paper),
+      FactoryGirl.create(:financial_disclosure_task, paper: paper),
+      FactoryGirl.create(:production_metadata_task, paper: paper),
+      FactoryGirl.create(:publishing_related_questions_task, paper: paper)
     ]
   end
 

@@ -4902,10 +4902,10 @@ nested_questions:
     - ethics--animal_subjects
     - 
     - '56'
-    - '62'
+    - '64'
     - '2'
     - '2015-10-29 20:16:38.278707'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::EthicsTask
     - 
   - - '34'
@@ -4926,11 +4926,11 @@ nested_questions:
     - boolean
     - data_availability--data_fully_available
     - 
-    - '63'
-    - '64'
+    - '65'
+    - '66'
     - '1'
     - '2015-10-29 20:16:38.306078'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::DataAvailabilityTask
     - 
   - - '37'
@@ -4938,11 +4938,11 @@ nested_questions:
     - text
     - data_availability--data_location
     - 
-    - '65'
-    - '66'
+    - '67'
+    - '68'
     - '2'
     - '2015-10-29 20:16:38.311531'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::DataAvailabilityTask
     - 
   - - '38'
@@ -4952,11 +4952,11 @@ nested_questions:
     - boolean
     - competing_interests--has_competing_interests
     - 
-    - '67'
-    - '70'
+    - '69'
+    - '72'
     - '1'
     - '2015-10-29 20:16:38.334465'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::CompetingInterestsTask
     - 
   - - '39'
@@ -4966,11 +4966,11 @@ nested_questions:
     - text
     - competing_interests--statement
     - '38'
-    - '68'
-    - '69'
+    - '70'
+    - '71'
     - '2'
     - '2015-10-29 20:16:38.337495'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::CompetingInterestsTask
     - 
   - - '42'
@@ -4978,11 +4978,11 @@ nested_questions:
     - text
     - plos_billing--first_name
     - 
-    - '75'
-    - '76'
+    - '77'
+    - '78'
     - '1'
     - '2015-10-29 20:16:38.364376'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '43'
@@ -4990,11 +4990,11 @@ nested_questions:
     - text
     - plos_billing--last_name
     - 
-    - '77'
-    - '78'
+    - '79'
+    - '80'
     - '2'
     - '2015-10-29 20:16:38.369577'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '44'
@@ -5002,11 +5002,11 @@ nested_questions:
     - text
     - plos_billing--title
     - 
-    - '79'
-    - '80'
+    - '81'
+    - '82'
     - '3'
     - '2015-10-29 20:16:38.374389'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '45'
@@ -5014,11 +5014,11 @@ nested_questions:
     - text
     - plos_billing--department
     - 
-    - '81'
-    - '82'
+    - '83'
+    - '84'
     - '4'
     - '2015-10-29 20:16:38.379993'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '46'
@@ -5026,11 +5026,11 @@ nested_questions:
     - text
     - plos_billing--phone_number
     - 
-    - '83'
-    - '84'
+    - '85'
+    - '86'
     - '5'
     - '2015-10-29 20:16:38.384534'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '48'
@@ -5038,11 +5038,11 @@ nested_questions:
     - text
     - plos_billing--email
     - 
-    - '85'
-    - '86'
+    - '87'
+    - '88'
     - '6'
     - '2015-10-29 20:16:38.38892'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '50'
@@ -5050,11 +5050,11 @@ nested_questions:
     - text
     - plos_billing--address1
     - 
-    - '87'
-    - '88'
+    - '89'
+    - '90'
     - '7'
     - '2015-10-29 20:16:38.396858'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '52'
@@ -5062,11 +5062,11 @@ nested_questions:
     - text
     - plos_billing--address2
     - 
-    - '89'
-    - '90'
+    - '91'
+    - '92'
     - '8'
     - '2015-10-29 20:16:38.402836'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '54'
@@ -5074,11 +5074,11 @@ nested_questions:
     - text
     - plos_billing--city
     - 
-    - '91'
-    - '92'
+    - '93'
+    - '94'
     - '9'
     - '2015-10-29 20:16:38.409232'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '56'
@@ -5086,11 +5086,11 @@ nested_questions:
     - text
     - plos_billing--state
     - 
-    - '93'
-    - '94'
+    - '95'
+    - '96'
     - '10'
     - '2015-10-29 20:16:38.416189'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '58'
@@ -5098,11 +5098,11 @@ nested_questions:
     - text
     - plos_billing--postal_code
     - 
-    - '95'
-    - '96'
+    - '97'
+    - '98'
     - '11'
     - '2015-10-29 20:16:38.422462'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '60'
@@ -5110,11 +5110,11 @@ nested_questions:
     - text
     - plos_billing--country
     - 
-    - '97'
-    - '98'
+    - '99'
+    - '100'
     - '12'
     - '2015-10-29 20:16:38.428989'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '62'
@@ -5122,11 +5122,11 @@ nested_questions:
     - text
     - plos_billing--affiliation1
     - 
-    - '99'
-    - '100'
+    - '101'
+    - '102'
     - '13'
     - '2015-10-29 20:16:38.435351'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '64'
@@ -5134,11 +5134,11 @@ nested_questions:
     - text
     - plos_billing--affiliation2
     - 
-    - '101'
-    - '102'
+    - '103'
+    - '104'
     - '14'
     - '2015-10-29 20:16:38.442201'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '66'
@@ -5146,11 +5146,11 @@ nested_questions:
     - text
     - plos_billing--payment_method
     - 
-    - '103'
-    - '104'
+    - '105'
+    - '106'
     - '15'
     - '2015-10-29 20:16:38.448591'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '68'
@@ -5159,11 +5159,11 @@ nested_questions:
     - boolean
     - plos_billing--pfa_question_1
     - 
-    - '105'
-    - '106'
+    - '107'
+    - '108'
     - '16'
     - '2015-10-29 20:16:38.455117'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '70'
@@ -5172,11 +5172,11 @@ nested_questions:
     - text
     - plos_billing--pfa_question_1a
     - 
-    - '107'
-    - '108'
+    - '109'
+    - '110'
     - '17'
     - '2015-10-29 20:16:38.461795'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '72'
@@ -5186,11 +5186,11 @@ nested_questions:
     - text
     - plos_billing--pfa_question_1b
     - 
-    - '109'
-    - '110'
+    - '111'
+    - '112'
     - '18'
     - '2015-10-29 20:16:38.467758'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '74'
@@ -5199,11 +5199,11 @@ nested_questions:
     - boolean
     - plos_billing--pfa_question_2
     - 
-    - '111'
-    - '112'
+    - '113'
+    - '114'
     - '19'
     - '2015-10-29 20:16:38.474299'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '76'
@@ -5212,11 +5212,11 @@ nested_questions:
     - text
     - plos_billing--pfa_question_2a
     - 
-    - '113'
-    - '114'
+    - '115'
+    - '116'
     - '20'
     - '2015-10-29 20:16:38.481446'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '78'
@@ -5225,11 +5225,11 @@ nested_questions:
     - text
     - plos_billing--pfa_question_2b
     - 
-    - '115'
-    - '116'
+    - '117'
+    - '118'
     - '21'
     - '2015-10-29 20:16:38.487319'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '80'
@@ -5238,11 +5238,11 @@ nested_questions:
     - boolean
     - plos_billing--pfa_question_3
     - 
-    - '117'
-    - '118'
+    - '119'
+    - '120'
     - '22'
     - '2015-10-29 20:16:38.493986'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '82'
@@ -5250,11 +5250,11 @@ nested_questions:
     - text
     - plos_billing--pfa_question_3a
     - 
-    - '119'
-    - '120'
+    - '121'
+    - '122'
     - '23'
     - '2015-10-29 20:16:38.500687'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '84'
@@ -5263,11 +5263,11 @@ nested_questions:
     - boolean
     - plos_billing--pfa_question_4
     - 
-    - '121'
-    - '122'
+    - '123'
+    - '124'
     - '24'
     - '2015-10-29 20:16:38.50671'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '86'
@@ -5275,11 +5275,11 @@ nested_questions:
     - text
     - plos_billing--pfa_question_4a
     - 
-    - '123'
-    - '124'
+    - '125'
+    - '126'
     - '25'
     - '2015-10-29 20:16:38.513546'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '88'
@@ -5289,11 +5289,11 @@ nested_questions:
     - text
     - plos_billing--pfa_amount_to_pay
     - 
-    - '125'
-    - '126'
+    - '127'
+    - '128'
     - '26'
     - '2015-10-29 20:16:38.519496'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '90'
@@ -5304,11 +5304,11 @@ nested_questions:
     - boolean
     - plos_billing--pfa_supporting_docs
     - 
-    - '127'
-    - '128'
+    - '129'
+    - '130'
     - '27'
     - '2015-10-29 20:16:38.525749'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '92'
@@ -5317,11 +5317,11 @@ nested_questions:
     - text
     - plos_billing--pfa_additional_comments
     - 
-    - '129'
-    - '130'
+    - '131'
+    - '132'
     - '29'
     - '2015-10-29 20:16:38.532891'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '94'
@@ -5330,11 +5330,11 @@ nested_questions:
     - boolean
     - plos_billing--affirm_true_and_complete
     - 
-    - '131'
-    - '132'
+    - '133'
+    - '134'
     - '30'
     - '2015-10-29 20:16:38.538115'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '96'
@@ -5342,11 +5342,11 @@ nested_questions:
     - boolean
     - plos_billing--agree_to_collections
     - 
-    - '133'
-    - '134'
+    - '135'
+    - '136'
     - '31'
     - '2015-10-29 20:16:38.545463'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '98'
@@ -5354,11 +5354,11 @@ nested_questions:
     - text
     - plos_billing--gpi_country
     - 
-    - '137'
-    - '138'
+    - '139'
+    - '140'
     - '32'
     - '2015-10-29 20:16:38.555212'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '99'
@@ -5366,11 +5366,11 @@ nested_questions:
     - text
     - plos_billing--ringgold_institution
     - 
-    - '139'
-    - '140'
+    - '141'
+    - '142'
     - '33'
     - '2015-10-29 20:16:38.561639'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
     - 
   - - '101'
@@ -5378,11 +5378,11 @@ nested_questions:
     - boolean
     - author--published_as_corresponding_author
     - 
-    - '141'
-    - '142'
+    - '143'
+    - '144'
     - '1'
     - '2015-10-29 20:16:38.672785'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - Author
     - 
   - - '102'
@@ -5390,11 +5390,11 @@ nested_questions:
     - boolean
     - author--deceased
     - 
-    - '143'
-    - '144'
+    - '145'
+    - '146'
     - '2'
     - '2015-10-29 20:16:38.681046'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - Author
     - 
   - - '104'
@@ -5402,11 +5402,11 @@ nested_questions:
     - question-set
     - author--contributions
     - 
-    - '145'
-    - '170'
+    - '147'
+    - '172'
     - '3'
     - '2015-10-29 20:16:38.687781'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - Author
     - 
   - - '105'
@@ -5414,11 +5414,11 @@ nested_questions:
     - boolean
     - author--contributions--conceived_and_designed_experiments
     - '104'
-    - '158'
-    - '159'
+    - '160'
+    - '161'
     - '1'
     - '2015-10-29 20:16:38.691902'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - Author
     - 
   - - '106'
@@ -5426,11 +5426,11 @@ nested_questions:
     - boolean
     - author--contributions--performed_the_experiments
     - '104'
-    - '160'
-    - '161'
+    - '162'
+    - '163'
     - '2'
     - '2015-10-29 20:16:38.702202'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - Author
     - 
   - - '107'
@@ -5438,11 +5438,11 @@ nested_questions:
     - boolean
     - author--contributions--analyzed_data
     - '104'
-    - '162'
-    - '163'
+    - '164'
+    - '165'
     - '3'
     - '2015-10-29 20:16:38.712577'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - Author
     - 
   - - '108'
@@ -5450,11 +5450,11 @@ nested_questions:
     - boolean
     - author--contributions--contributed_tools
     - '104'
-    - '164'
-    - '165'
+    - '166'
+    - '167'
     - '4'
     - '2015-10-29 20:16:38.722145'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - Author
     - 
   - - '109'
@@ -5462,11 +5462,11 @@ nested_questions:
     - boolean
     - author--contributions--contributed_writing
     - '104'
-    - '166'
-    - '167'
+    - '168'
+    - '169'
     - '5'
     - '2015-10-29 20:16:38.732929'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - Author
     - 
   - - '110'
@@ -5474,11 +5474,11 @@ nested_questions:
     - text
     - author--contributions--other
     - '104'
-    - '168'
-    - '169'
+    - '170'
+    - '171'
     - '6'
     - '2015-10-29 20:16:38.743536'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - Author
     - 
   - - '118'
@@ -5487,11 +5487,11 @@ nested_questions:
     - boolean
     - funder--had_influence
     - 
-    - '171'
-    - '174'
+    - '173'
+    - '176'
     - '1'
     - '2015-10-30 19:51:03.420015'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::Funder
     - 
   - - '119'
@@ -5500,11 +5500,11 @@ nested_questions:
     - text
     - funder--had_influence--role_description
     - '118'
-    - '172'
-    - '173'
+    - '174'
+    - '175'
     - '1'
     - '2015-10-30 19:51:03.424486'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::Funder
     - 
   - - '120'
@@ -5512,11 +5512,11 @@ nested_questions:
     - text
     - production_metadata--publication_date
     - 
-    - '175'
-    - '176'
+    - '177'
+    - '178'
     - '1'
     - '2015-10-30 19:51:03.462062'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ProductionMetadataTask
     - 
   - - '121'
@@ -5524,11 +5524,11 @@ nested_questions:
     - text
     - production_metadata--volume_number
     - 
-    - '177'
-    - '178'
+    - '179'
+    - '180'
     - '2'
     - '2015-10-30 19:51:03.466022'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ProductionMetadataTask
     - 
   - - '122'
@@ -5536,11 +5536,11 @@ nested_questions:
     - text
     - production_metadata--issue_number
     - 
-    - '179'
-    - '180'
+    - '181'
+    - '182'
     - '3'
     - '2015-10-30 19:51:03.469673'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ProductionMetadataTask
     - 
   - - '123'
@@ -5548,11 +5548,11 @@ nested_questions:
     - text
     - production_metadata--production_notes
     - 
-    - '181'
-    - '182'
+    - '183'
+    - '184'
     - '4'
     - '2015-10-30 19:51:03.473215'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ProductionMetadataTask
     - 
   - - '124'
@@ -5561,11 +5561,11 @@ nested_questions:
     - text
     - reviewer_report--competing_interests
     - 
-    - '183'
-    - '184'
+    - '185'
+    - '186'
     - '2'
     - '2015-10-30 19:51:03.496382'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '125'
@@ -5573,11 +5573,11 @@ nested_questions:
     - boolean
     - reviewer_report--support_conclusions
     - 
-    - '185'
-    - '188'
+    - '187'
+    - '190'
     - '3'
     - '2015-10-30 19:51:03.500418'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '126'
@@ -5585,11 +5585,11 @@ nested_questions:
     - text
     - reviewer_report--support_conclusions--explanation
     - '125'
-    - '186'
-    - '187'
+    - '188'
+    - '189'
     - '1'
     - '2015-10-30 19:51:03.502707'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '127'
@@ -5597,11 +5597,11 @@ nested_questions:
     - boolean
     - reviewer_report--statistical_analysis
     - 
-    - '189'
-    - '192'
+    - '191'
+    - '194'
     - '4'
     - '2015-10-30 19:51:03.511001'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '128'
@@ -5609,11 +5609,11 @@ nested_questions:
     - text
     - reviewer_report--statistical_analysis--explanation
     - '127'
-    - '190'
-    - '191'
+    - '192'
+    - '193'
     - '1'
     - '2015-10-30 19:51:03.513191'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '129'
@@ -5621,11 +5621,11 @@ nested_questions:
     - boolean
     - reviewer_report--standards
     - 
-    - '193'
-    - '196'
+    - '195'
+    - '198'
     - '5'
     - '2015-10-30 19:51:03.521073'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '130'
@@ -5633,11 +5633,11 @@ nested_questions:
     - text
     - reviewer_report--standards--explanation
     - '129'
-    - '194'
-    - '195'
+    - '196'
+    - '197'
     - '1'
     - '2015-10-30 19:51:03.523338'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '131'
@@ -5645,11 +5645,11 @@ nested_questions:
     - text
     - reviewer_report--additional_comments
     - 
-    - '197'
-    - '198'
+    - '199'
+    - '200'
     - '6'
     - '2015-10-30 19:51:03.531234'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '132'
@@ -5658,11 +5658,11 @@ nested_questions:
     - text
     - reviewer_report--identity
     - 
-    - '199'
-    - '200'
+    - '201'
+    - '202'
     - '7'
     - '2015-10-30 19:51:03.534949'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerReportTask
     - 
   - - '133'
@@ -5670,11 +5670,11 @@ nested_questions:
     - boolean
     - taxon--zoological
     - 
-    - '201'
-    - '204'
+    - '203'
+    - '206'
     - '1'
     - '2015-10-30 19:51:03.541213'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::TaxonTask
     - 
   - - '134'
@@ -5682,11 +5682,11 @@ nested_questions:
     - boolean
     - taxon--zoological--complies
     - '133'
-    - '202'
-    - '203'
+    - '204'
+    - '205'
     - '1'
     - '2015-10-30 19:51:03.543667'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::TaxonTask
     - 
   - - '135'
@@ -5694,11 +5694,11 @@ nested_questions:
     - boolean
     - taxon--botanical
     - 
-    - '205'
-    - '208'
+    - '207'
+    - '210'
     - '2'
     - '2015-10-30 19:51:03.55182'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::TaxonTask
     - 
   - - '136'
@@ -5706,11 +5706,11 @@ nested_questions:
     - boolean
     - taxon--botanical--complies
     - '135'
-    - '206'
-    - '207'
+    - '208'
+    - '209'
     - '1'
     - '2015-10-30 19:51:03.554061'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::TaxonTask
     - 
   - - '137'
@@ -5718,11 +5718,11 @@ nested_questions:
     - boolean
     - reviewer_recommendations--recommend_or_oppose
     - 
-    - '209'
-    - '210'
+    - '211'
+    - '212'
     - '1'
     - '2015-11-02 13:38:26.272946'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerRecommendation
     - 
   - - '138'
@@ -5730,11 +5730,11 @@ nested_questions:
     - text
     - reviewer_recommendations--reason
     - 
-    - '211'
-    - '212'
+    - '213'
+    - '214'
     - '2'
     - '2015-11-02 13:38:26.280143'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerRecommendation
     - 
   - - '139'
@@ -5745,11 +5745,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--open_rejects
     - 
-    - '213'
-    - '214'
+    - '215'
+    - '216'
     - '1'
     - '2015-11-02 13:38:26.296091'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '140'
@@ -5758,11 +5758,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--human_subjects
     - 
-    - '215'
-    - '216'
+    - '217'
+    - '218'
     - '2'
     - '2015-11-02 13:38:26.300112'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '141'
@@ -5772,11 +5772,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--ethics_needed
     - 
-    - '217'
-    - '218'
+    - '219'
+    - '220'
     - '3'
     - '2015-11-02 13:38:26.30383'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '142'
@@ -5785,11 +5785,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--data_available
     - 
-    - '219'
-    - '220'
+    - '221'
+    - '222'
     - '4'
     - '2015-11-02 13:38:26.307755'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '143'
@@ -5799,11 +5799,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--supporting_information
     - 
-    - '221'
-    - '222'
+    - '223'
+    - '224'
     - '5'
     - '2015-11-02 13:38:26.311478'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '144'
@@ -5812,11 +5812,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--dryad_url
     - 
-    - '223'
-    - '224'
+    - '225'
+    - '226'
     - '6'
     - '2015-11-02 13:38:26.315087'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '145'
@@ -5825,11 +5825,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--financial_disclosure
     - 
-    - '225'
-    - '226'
+    - '227'
+    - '228'
     - '7'
     - '2015-11-02 13:38:26.319212'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '146'
@@ -5838,11 +5838,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--tobacco
     - 
-    - '227'
-    - '228'
+    - '229'
+    - '230'
     - '8'
     - '2015-11-02 13:38:26.322791'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '147'
@@ -5850,11 +5850,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--figures_legible
     - 
-    - '229'
-    - '230'
+    - '231'
+    - '232'
     - '9'
     - '2015-11-02 13:38:26.326519'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '148'
@@ -5863,11 +5863,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--cited
     - 
-    - '231'
-    - '232'
+    - '233'
+    - '234'
     - '10'
     - '2015-11-02 13:38:26.330182'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '149'
@@ -5876,11 +5876,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--cover_letter
     - 
-    - '233'
-    - '234'
+    - '235'
+    - '236'
     - '11'
     - '2015-11-02 13:38:26.333792'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '150'
@@ -5889,11 +5889,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--billing_inquiries
     - 
-    - '235'
-    - '236'
+    - '237'
+    - '238'
     - '12'
     - '2015-11-02 13:38:26.337417'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '151'
@@ -5901,11 +5901,11 @@ nested_questions:
     - boolean
     - plos_bio_initial_tech_check--ethics_statement
     - 
-    - '237'
-    - '238'
+    - '239'
+    - '240'
     - '13'
     - '2015-11-02 13:38:26.340953'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '152'
@@ -5916,11 +5916,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--open_rejects
     - 
-    - '239'
-    - '240'
+    - '241'
+    - '242'
     - '1'
     - '2015-11-02 13:38:26.346485'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '153'
@@ -5929,11 +5929,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--human_subjects
     - 
-    - '241'
-    - '242'
+    - '243'
+    - '244'
     - '2'
     - '2015-11-02 13:38:26.350087'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '154'
@@ -5943,11 +5943,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--ethics_needed
     - 
-    - '243'
-    - '244'
+    - '245'
+    - '246'
     - '3'
     - '2015-11-02 13:38:26.355497'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '155'
@@ -5956,11 +5956,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--data_available
     - 
-    - '245'
-    - '246'
+    - '247'
+    - '248'
     - '4'
     - '2015-11-02 13:38:26.359242'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '156'
@@ -5970,11 +5970,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--supporting_information
     - 
-    - '247'
-    - '248'
+    - '249'
+    - '250'
     - '5'
     - '2015-11-02 13:38:26.3628'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '157'
@@ -5983,11 +5983,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--dryad_url
     - 
-    - '249'
-    - '250'
+    - '251'
+    - '252'
     - '6'
     - '2015-11-02 13:38:26.366706'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '158'
@@ -5996,11 +5996,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--financial_disclosure
     - 
-    - '251'
-    - '252'
+    - '253'
+    - '254'
     - '7'
     - '2015-11-02 13:38:26.370339'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '159'
@@ -6009,11 +6009,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--tobacco
     - 
-    - '253'
-    - '254'
+    - '255'
+    - '256'
     - '8'
     - '2015-11-02 13:38:26.373836'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '160'
@@ -6021,11 +6021,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--figures_legible
     - 
-    - '255'
-    - '256'
+    - '257'
+    - '258'
     - '9'
     - '2015-11-02 13:38:26.37734'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '161'
@@ -6034,11 +6034,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--cited
     - 
-    - '257'
-    - '258'
+    - '259'
+    - '260'
     - '10'
     - '2015-11-02 13:38:26.380912'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '162'
@@ -6047,11 +6047,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--cover_letter
     - 
-    - '259'
-    - '260'
+    - '261'
+    - '262'
     - '11'
     - '2015-11-02 13:38:26.384466'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '163'
@@ -6060,11 +6060,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--billing_inquiries
     - 
-    - '261'
-    - '262'
+    - '263'
+    - '264'
     - '12'
     - '2015-11-02 13:38:26.387949'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '164'
@@ -6072,11 +6072,11 @@ nested_questions:
     - boolean
     - plos_bio_revision_tech_check--ethics_statement
     - 
-    - '263'
-    - '264'
+    - '265'
+    - '266'
     - '13'
     - '2015-11-02 13:38:26.39145'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '165'
@@ -6087,11 +6087,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--open_rejects
     - 
-    - '265'
-    - '266'
+    - '267'
+    - '268'
     - '1'
     - '2015-11-02 13:38:26.396833'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '166'
@@ -6100,11 +6100,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--human_subjects
     - 
-    - '267'
-    - '268'
+    - '269'
+    - '270'
     - '2'
     - '2015-11-02 13:38:26.400512'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '167'
@@ -6114,11 +6114,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--ethics_needed
     - 
-    - '269'
-    - '270'
+    - '271'
+    - '272'
     - '3'
     - '2015-11-02 13:38:26.403989'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '168'
@@ -6127,11 +6127,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--data_available
     - 
-    - '271'
-    - '272'
+    - '273'
+    - '274'
     - '4'
     - '2015-11-02 13:38:26.407564'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '169'
@@ -6141,11 +6141,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--supporting_information
     - 
-    - '273'
-    - '274'
+    - '275'
+    - '276'
     - '5'
     - '2015-11-02 13:38:26.411338'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '170'
@@ -6154,11 +6154,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--dryad_url
     - 
-    - '275'
-    - '276'
+    - '277'
+    - '278'
     - '6'
     - '2015-11-02 13:38:26.415031'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '171'
@@ -6167,11 +6167,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--financial_disclosure
     - 
-    - '277'
-    - '278'
+    - '279'
+    - '280'
     - '7'
     - '2015-11-02 13:38:26.418577'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '172'
@@ -6180,11 +6180,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--tobacco
     - 
-    - '279'
-    - '280'
+    - '281'
+    - '282'
     - '8'
     - '2015-11-02 13:38:26.422021'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '173'
@@ -6192,11 +6192,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--figures_legible
     - 
-    - '281'
-    - '282'
+    - '283'
+    - '284'
     - '9'
     - '2015-11-02 13:38:26.425661'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '174'
@@ -6205,11 +6205,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--cited
     - 
-    - '283'
-    - '284'
+    - '285'
+    - '286'
     - '10'
     - '2015-11-02 13:38:26.429237'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '175'
@@ -6218,11 +6218,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--cover_letter
     - 
-    - '285'
-    - '286'
+    - '287'
+    - '288'
     - '11'
     - '2015-11-02 13:38:26.433036'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '176'
@@ -6231,11 +6231,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--billing_inquiries
     - 
-    - '287'
-    - '288'
+    - '289'
+    - '290'
     - '12'
     - '2015-11-02 13:38:26.436669'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '177'
@@ -6243,11 +6243,11 @@ nested_questions:
     - boolean
     - plos_bio_final_tech_check--ethics_statement
     - 
-    - '289'
-    - '290'
+    - '291'
+    - '292'
     - '13'
     - '2015-11-02 13:38:26.440221'
-    - '2015-12-17 21:19:25.092392'
+    - '2016-01-15 18:04:22.865691'
     - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '178'
@@ -6256,11 +6256,11 @@ nested_questions:
     - text
     - ethics--field_study--field_permit_number
     - '179'
-    - '290'
-    - '291'
+    - '292'
+    - '293'
     - '1'
     - '2015-12-21 16:53:24.223742'
-    - '2015-12-21 16:53:24.236384'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::EthicsTask
     - 
   - - '179'
@@ -6269,11 +6269,11 @@ nested_questions:
     - boolean
     - ethics--field_study
     - 
-    - '289'
-    - '292'
+    - '291'
+    - '294'
     - '3'
     - '2015-12-21 16:53:24.230439'
-    - '2015-12-21 16:53:24.236384'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::EthicsTask
     - 
   - - '180'
@@ -6305,12 +6305,24 @@ nested_questions:
     - text
     - reviewer_report--decision_term
     - 
-    - '289'
-    - '290'
+    - '291'
+    - '292'
     - '1'
     - '2015-12-23 17:34:57.06078'
-    - '2015-12-23 17:34:57.06078'
+    - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerReportTask
+    - 
+  - - '183'
+    - ARRIVE checklist
+    - attachment
+    - ethics--animal_subjects--field_arrive
+    - '33'
+    - '62'
+    - '63'
+    - '2'
+    - '2016-01-15 18:04:22.842134'
+    - '2016-01-15 18:04:22.865691'
+    - TahiStandardTasks::EthicsTask
     - 
 
 ---

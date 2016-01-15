@@ -84,7 +84,7 @@ export default Ember.Component.extend({
       if (this.attrs.uploadFinished) {
         // S3 will return XML with url
         let uploadedS3Url = $(data.result).find('Location')[0].textContent;
-        uploadedS3Url = decodeURIComponent(uploadedS3Url);
+        uploadedS3Url = uploadedS3Url.replace(/%2F/g, '/');
 
         this.attrs.uploadFinished(uploadedS3Url);
       }

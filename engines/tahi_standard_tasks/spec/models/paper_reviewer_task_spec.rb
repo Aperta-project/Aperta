@@ -17,6 +17,7 @@ describe TahiStandardTasks::PaperReviewerTask do
   let(:neil) { create :user }
   let!(:task) do
     TahiStandardTasks::PaperReviewerTask.create!({
+      paper: paper,
       phase: paper.phases.first,
       title: "Invite Reviewers",
       old_role: "editor"

@@ -25,7 +25,7 @@ class Paper < ActiveRecord::Base
   has_many :phases, -> { order 'phases.position ASC' },
            dependent: :destroy,
            inverse_of: :paper
-  has_many :tasks, through: :phases
+  has_many :tasks, inverse_of: :paper
   has_many :comments, through: :tasks
   has_many :comment_looks, through: :comments
   has_many :participants, through: :tasks

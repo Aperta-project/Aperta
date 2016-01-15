@@ -4,23 +4,24 @@ describe DefaultAuthorCreator do
 
   describe 'set_default_author' do
     let(:creator) { FactoryGirl.create(:user) }
-    let(:phase) { FactoryGirl.create(:phase) }
+    let(:paper) { FactoryGirl.create(:paper) }
+    let(:phase) { FactoryGirl.create(:phase, paper: paper) }
 
     it 'Creates an author' do
 
       expect {
-        DefaultAuthorCreator.new(phase.paper, creator).create!
+        DefaultAuthorCreator.new(paper, creator).create!
       }.to change(Author, :count).by(1)
     end
 
     it 'Author created have the same values as creator' do
-      DefaultAuthorCreator.new(phase.paper, creator).create!
+      DefaultAuthorCreator.new(paper, creator).create!
 
       author = Author.last
       expect(author.first_name).to eq(creator.first_name)
       expect(author.last_name).to eq(creator.last_name)
       expect(author.email).to eq(creator.email)
-      expect(author.paper).to eq(phase.paper)
+      expect(author.paper).to eq(paper)
     end
 
     it 'Author have the affiliation info from the creator' do
@@ -32,7 +33,7 @@ describe DefaultAuthorCreator do
         title: 'Señor Developero'
       )
 
-      DefaultAuthorCreator.new(phase.paper, creator).create!
+      DefaultAuthorCreator.new(paper, creator).create!
 
       author = Author.last
 
@@ -42,14 +43,14 @@ describe DefaultAuthorCreator do
     end
 
     it 'Author record has the association with the paper Authors Task' do
-
       authors_task = TahiStandardTasks::AuthorsTask.create(
         title: "Authors",
         old_role: "author",
+        paper: paper,
         phase: phase
       )
 
-      DefaultAuthorCreator.new(phase.paper, creator).create!
+      DefaultAuthorCreator.new(paper, creator).create!
       author = Author.last
 
       expect(author.authors_task).to eq(authors_task)

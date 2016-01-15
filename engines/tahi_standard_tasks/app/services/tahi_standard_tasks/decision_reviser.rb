@@ -36,6 +36,7 @@ module TahiStandardTasks
       participants = [paper.creator, paper.editor].compact.uniq
 
       TaskFactory.create("TahiStandardTasks::ReviseTask",
+                         paper: task.paper,
                          phase: task.phase,
                          title: "Revise Manuscript",
                          old_role: "author",

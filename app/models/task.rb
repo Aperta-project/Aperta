@@ -22,7 +22,7 @@ class Task < ActiveRecord::Base
   scope :on_journals, ->(journals) { joins(:journal).where("journals.id" => journals.map(&:id)) }
 
   belongs_to :required_permission, class_name: 'Permission'
-  has_one :paper, through: :phase
+  belongs_to :paper, inverse_of: :tasks
   has_one :journal, through: :paper
   has_many :attachments
   has_many :participations, inverse_of: :task, dependent: :destroy
@@ -33,6 +33,7 @@ class Task < ActiveRecord::Base
 
   acts_as_list scope: :phase
 
+  validates :paper_id, presence: true
   validates :title, :old_role, presence: true
   validates :title, length: { maximum: 255 }
 
@@ -62,7 +63,7 @@ class Task < ActiveRecord::Base
     #
     # Returns ActiveRecord::Relation with tasks.
     def for_paper(paper)
-      joins(:phase).where(phases: { paper_id: paper })
+      where(paper_id: paper.id)
     end
 
     # Public: Scopes the tasks without the given task

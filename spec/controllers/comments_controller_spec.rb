@@ -4,13 +4,22 @@ describe CommentsController do
   render_views
   let(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: user) }
   let(:phase) { paper.phases.first }
-  let(:user) { create(:user, tasks: []) }
+  let(:user) { FactoryGirl.create(:user, tasks: []) }
 
   let(:journal) { paper.journal }
   let(:journal_admin) { FactoryGirl.create(:user) }
   let!(:old_role) { assign_journal_role(journal, journal_admin, :admin) }
 
-  let(:task) { create(:task, phase: phase, participants: [user], title: "Task", old_role: "admin") }
+  let(:task) do
+    FactoryGirl.create(
+      :task,
+      paper: paper,
+      phase: phase,
+      participants: [user],
+      title: "Task",
+      old_role: "admin")
+  end
+
   before { sign_in user }
 
   describe "#index" do
@@ -73,7 +82,15 @@ describe CommentsController do
       end
 
       context "the user is not a participant on the card" do
-        let(:task) { create(:task, phase: phase, participants: [], title: "Task", old_role: "admin") }
+        let(:task) do
+          FactoryGirl.create(
+            :task,
+            paper: paper,
+            phase: phase,
+            participants: [],
+            title: "Task",
+            old_role: "admin")
+        end
 
         it "adds the user as a participant" do
           expect(user.tasks).to_not include(task)
@@ -83,7 +100,15 @@ describe CommentsController do
       end
 
       context "the user is a journal admin" do
-        let(:task) { create(:task, phase: phase, participants: [], title: "Task", old_role: "admin") }
+        let(:task) do
+          FactoryGirl.create(
+            :task,
+            paper: paper,
+            phase: phase,
+            participants: [],
+            title: "Task",
+            old_role: "admin")
+        end
 
         it "does not add the journal admin as a participant" do
           expect(journal_admin.tasks).to_not include(task)

@@ -3,8 +3,8 @@ require 'rails_helper'
 feature "Invite Editor", js: true do
   let(:admin) { FactoryGirl.create(:user, site_admin: true) }
   let(:editor) { FactoryGirl.create(:user) }
-  let(:paper) { FactoryGirl.create(:paper, :submitted, creator: admin) }
-  let!(:task) { FactoryGirl.create(:paper_editor_task, paper: paper) }
+  let(:paper) { FactoryGirl.create(:paper_with_phases, :submitted, creator: admin) }
+  let!(:task) { FactoryGirl.create(:paper_editor_task, paper: paper, phase: paper.phases.first) }
 
   before do
     assign_journal_role(paper.journal, admin, :editor)

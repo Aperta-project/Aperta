@@ -11,7 +11,14 @@ feature 'Comments on cards', js: true do
   end
 
   describe "being made aware of commenting" do
-    let!(:task) { create :task, phase: paper.phases.first, participants: [admin, albert] }
+    let!(:task) do
+      FactoryGirl.create(
+        :task,
+        paper: paper,
+        phase: paper.phases.first,
+        participants: [admin, albert]
+      )
+    end
 
     before do
       task.comments.create(commenter: albert, body: "Lorem\nipsum dolor\nsit amet")

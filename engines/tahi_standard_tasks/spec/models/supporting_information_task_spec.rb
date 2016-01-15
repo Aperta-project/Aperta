@@ -12,10 +12,13 @@ module TahiStandardTasks
       end
 
       let(:supporting_information_task) do
-        ::TahiStandardTasks::SupportingInformationTask.create! completed: true,
+        ::TahiStandardTasks::SupportingInformationTask.create!(
+          completed: true,
+          paper: paper,
           phase: paper.phases.first,
           title: "Supporting Info",
           old_role: "author"
+        )
       end
 
       it "returns a JSON object of access details from figures" do

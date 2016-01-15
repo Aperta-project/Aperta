@@ -5,7 +5,7 @@ feature 'Production Metadata Card', js: true do
   let(:author) { create :user, first_name: 'Author' }
   let!(:paper)  { create :paper, :with_tasks, creator: author }
   let(:production_metadata_task) do
-    create :production_metadata_task, phase: paper.phases.first
+    create :production_metadata_task, paper: paper, phase: paper.phases.first
   end
 
   before do

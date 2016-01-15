@@ -285,15 +285,16 @@ describe PapersController do
   end
 
   describe "GET 'snapshots'" do
+    let(:phase) { FactoryGirl.create(:phase, paper: paper) }
     let(:task1) do
       FactoryGirl.create :ethics_task,
                          paper: paper,
-                         phase: paper.phases.first
+                         phase: phase
     end
     let(:task2) do
       FactoryGirl.create :publishing_related_questions_task,
                          paper: paper,
-                         phase: paper.phases.first
+                         phase: phase
     end
 
     before do

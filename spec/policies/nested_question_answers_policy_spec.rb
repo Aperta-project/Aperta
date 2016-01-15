@@ -4,9 +4,8 @@ describe NestedQuestionAnswersPolicy do
   subject(:policy) { NestedQuestionAnswersPolicy.new(current_user: user, nested_question_answer: nested_question_answer) }
   let(:journal) { FactoryGirl.create(:journal) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
-  let(:phase) { FactoryGirl.create(:phase, paper: paper) }
   let(:user) { FactoryGirl.create(:user) }
-  let(:task) { FactoryGirl.create(:task, phase: phase) }
+  let(:task) { FactoryGirl.create(:task, paper: paper) }
   let(:nested_question_answer) { fail NotImplementedError("Must provide :nested_question_answer in context") }
 
   context "and the resource is owned by a task" do

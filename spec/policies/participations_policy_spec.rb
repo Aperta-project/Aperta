@@ -3,8 +3,7 @@ require 'rails_helper'
 describe ParticipationsPolicy do
   let(:journal) { FactoryGirl.create(:journal) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
-  let(:phase) { FactoryGirl.create(:phase, paper: paper) }
-  let(:task) { FactoryGirl.create(:task, phase: phase) }
+  let(:task) { FactoryGirl.create(:task, paper: paper) }
   let(:user) { FactoryGirl.create(:user) }
   let(:participation) { FactoryGirl.create(:participation, task: task) }
   let(:policy) { ParticipationsPolicy.new(current_user: user, resource: participation) }

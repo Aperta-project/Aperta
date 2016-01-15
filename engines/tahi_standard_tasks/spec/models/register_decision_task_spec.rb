@@ -4,7 +4,14 @@ describe TahiStandardTasks::RegisterDecisionTask do
   let!(:paper) do
     FactoryGirl.create :paper, :with_tasks, title: "Crazy stubbing tests on rats"
   end
-  let!(:task) { TahiStandardTasks::RegisterDecisionTask.create!(title: "Register Decision", old_role: "editor", phase: paper.phases.first) }
+  let!(:task) do
+    TahiStandardTasks::RegisterDecisionTask.create!(
+      title: "Register Decision",
+      old_role: "editor",
+      paper: paper,
+      phase: paper.phases.first
+    )
+  end
 
   context "letters" do
     before do

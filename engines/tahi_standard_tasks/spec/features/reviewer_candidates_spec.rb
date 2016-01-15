@@ -6,6 +6,7 @@ feature "User adding reviewer candidates", js: true do
   let!(:reviewer_recommendations_task) do
     FactoryGirl.create(
       :reviewer_recommendations_task,
+      paper: paper,
       phase: paper.phases.first
     )
   end

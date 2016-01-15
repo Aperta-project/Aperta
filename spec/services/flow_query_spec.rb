@@ -19,7 +19,7 @@ describe FlowQuery do
   describe "#tasks" do
 
     context "query is empty" do
-      let!(:task) { FactoryGirl.create(:task, phase: phase) } # this test always passes unless a Task exists...
+      let!(:task) { FactoryGirl.create(:task, paper: paper, phase: phase) } # this test always passes unless a Task exists...
       let(:query) { {} }
       let(:flow) { FactoryGirl.build(:flow, journal: user_journal, query: query) }
 
@@ -30,7 +30,7 @@ describe FlowQuery do
     end
 
     context "scoping tasks by journal" do
-      let!(:user_task) { FactoryGirl.create(:task, phase: phase, completed: true, participants: [user]) }
+      let!(:user_task) { FactoryGirl.create(:task, paper: paper, phase: phase, completed: true, participants: [user]) }
       let!(:other_task) { FactoryGirl.create(:task, completed: true, participants: [user]) }
 
       context "for a site admin" do
@@ -78,8 +78,8 @@ describe FlowQuery do
     end
 
     context "scoping tasks by assigned" do
-      let!(:assigned_task) { FactoryGirl.create(:task, participants: [user], phase: phase, completed: true) }
-      let!(:unassigned_task) { FactoryGirl.create(:task, participants: [], phase: phase, completed: true) }
+      let!(:assigned_task) { FactoryGirl.create(:task, participants: [user], paper: paper, phase: phase, completed: true) }
+      let!(:unassigned_task) { FactoryGirl.create(:task, participants: [], paper: paper, phase: phase, completed: true) }
       context "assigned query is true" do
         it "scopes tasks to assigned to the user" do
           flow = FactoryGirl.build(:flow, :default, title: 'My tasks', query: {assigned: true})
@@ -102,8 +102,8 @@ describe FlowQuery do
     end
 
     context "scoping tasks by state" do
-      let!(:complete) { FactoryGirl.create(:task, completed: true, phase: phase, participants: [user]) }
-      let!(:incomplete) { FactoryGirl.create(:task, completed: false, phase: phase, participants: [user]) }
+      let!(:complete) { FactoryGirl.create(:task, completed: true, paper: paper, phase: phase, participants: [user]) }
+      let!(:incomplete) { FactoryGirl.create(:task, completed: false, paper: paper, phase: phase, participants: [user]) }
 
       context "state query is complete" do
         it "scopes tasks to completed task" do
@@ -127,8 +127,8 @@ describe FlowQuery do
     end
 
     context "scoping tasks by old_role" do
-      let!(:admin_task) { FactoryGirl.create(:task, phase: phase, participants: [user], old_role: "Admin") }
-      let!(:generic_task) { FactoryGirl.create(:task, phase: phase, participants: [user]) }
+      let!(:admin_task) { FactoryGirl.create(:task, paper: paper, phase: phase, participants: [user], old_role: "Admin") }
+      let!(:generic_task) { FactoryGirl.create(:task, paper: paper, phase: phase, participants: [user]) }
 
       it "it scopes tasks by old_role if old_role is given" do
         flow = FactoryGirl.build(:flow, :default, title: 'My tasks', query: {old_role: "Admin"})
@@ -141,7 +141,7 @@ describe FlowQuery do
 
     context "scoping tasks by type" do
       let!(:admin_task) { FactoryGirl.create(:paper_admin_task) }
-      let!(:generic_task) { FactoryGirl.create(:task) }
+      let!(:generic_task) { FactoryGirl.create(:task, paper: paper) }
 
       it "scopes tasks by type" do
         flow = FactoryGirl.build(:flow, :default, query: {type: "TahiStandardTasks::PaperAdminTask"})
@@ -154,9 +154,9 @@ describe FlowQuery do
 
 
     context "default scopes" do
-      let(:up_for_grabs) { FactoryGirl.create(:task, phase: phase, completed: false, participants: []) }
-      let(:my_tasks) { FactoryGirl.create(:task, phase: phase, completed: false, participants: [user]) }
-      let(:done) { FactoryGirl.create(:task, phase: phase, completed: true, participants: [user]) }
+      let(:up_for_grabs) { FactoryGirl.create(:task, paper: paper, phase: phase, completed: false, participants: []) }
+      let(:my_tasks) { FactoryGirl.create(:task, paper: paper, phase: phase, completed: false, participants: [user]) }
+      let(:done) { FactoryGirl.create(:task, paper: paper, phase: phase, completed: true, participants: [user]) }
 
       context "Up for grabs" do
         it "returns tasks that are up for grabs" do

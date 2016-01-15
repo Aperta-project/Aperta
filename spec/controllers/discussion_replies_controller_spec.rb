@@ -34,25 +34,6 @@ describe DiscussionRepliesController do
       expect(reply['body']).to eq(body)
       expect(reply['discussion_topic_id']).to eq(topic_a.id)
     end
-
-  end
-
-  describe 'PATCH update' do
-    let(:new_body) { "EDIT: add footnotes" }
-    let(:update_params) do
-      {
-        id: reply.id,
-        discussion_reply: {
-          body: new_body,
-        }
-      }
-    end
-
-    it "updates the reply" do
-      xhr :patch, :update, format: :json, **update_params
-      expect(reply.reload.body).to eq(new_body)
-    end
-
   end
 
   describe 'DELETE destroy' do

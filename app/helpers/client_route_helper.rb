@@ -16,4 +16,10 @@ module ClientRouteHelper
     "#{root_url}papers/#{paper.to_param}/#{query}"
   end
 
+  def client_discussion_url(discussion, paper, params = {})
+    query = "?#{params.to_query}" if params.present?
+
+    "#{root_url}papers/#{paper.to_param}/discussions/" \
+      "#{discussion.to_param}/#{query}"
+  end
 end

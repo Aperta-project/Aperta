@@ -12,11 +12,6 @@ class DiscussionRepliesController < ApplicationController
     respond_with(discussion_reply)
   end
 
-  def update
-    discussion_reply.update(update_params)
-    respond_with(discussion_reply)
-  end
-
   def destroy
     discussion_reply.destroy
     respond_with(discussion_reply)
@@ -25,11 +20,8 @@ class DiscussionRepliesController < ApplicationController
   private
 
   def creation_params
-    params.require(:discussion_reply).permit(:body, :discussion_topic_id).merge(replier: current_user)
-  end
-
-  def update_params
-    params.require(:discussion_reply).permit(:body)
+    params.require(:discussion_reply).permit(:body, :discussion_topic_id)
+      .merge(replier: current_user)
   end
 
   def discussion_reply

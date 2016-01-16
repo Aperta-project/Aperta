@@ -60,4 +60,40 @@ describe 'SeedHelpers' do
       end
     end
   end
+
+  describe 'with an existing role' do
+    before do
+      Role.ensure('role') do |role|
+        Permission.ensure(:view, role: role, applies_to: Task)
+      end
+    end
+
+    it 'can add a new permission' do
+      Role.ensure('role') do |role|
+        Permission.ensure(:edit, role: role, applies_to: Task)
+      end
+      expect(Role.where(name: 'role').first.permissions).to contain_exactly(
+        Permission.where(action: :view, applies_to: Task).first,
+        Permission.where(action: :edit, applies_to: Task).first)
+    end
+
+    it 'does nothing if the permission already exists' do
+      Role.ensure('role') do |role|
+        Permission.ensure(:view, role: role, applies_to: Task)
+      end
+      expect(Role.where(name: 'role').first.permissions).to contain_exactly(
+        Permission.where(action: :view, applies_to: Task).first)
+    end
+
+    it 'can will add a new permission if the states do not match' do
+      Role.ensure('role') do |role|
+        Permission.ensure(:view, role: role, applies_to: Task,
+                                 states: ['madness'])
+      end
+
+      perms = Role.where(name: 'role').first.permissions
+              .map { |p| p.states.map(&:name) }
+      expect(perms).to contain_exactly(['*'], ['madness'])
+    end
+  end
 end

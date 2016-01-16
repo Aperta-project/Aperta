@@ -38,7 +38,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # dashboard Link
     self._dashboard_link = (By.ID, 'nav-dashboard')
     # Main Viewer Div
-    self._paper_title = (By.ID, 'paper-title')
+    self._paper_title = (By.ID, 'control-bar-paper-title')
     self._paper_tracker_title = (By.CLASS_NAME, 'paper-tracker-message')
     self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[4]')
     self._card = (By.CLASS_NAME, 'card')
@@ -383,22 +383,19 @@ class ManuscriptViewerPage(AuthenticatedPage):
         if task.text == task_name and 'active' \
             not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
           task.click()
+          time.sleep(.5)
           break
         elif task.text == task_name and 'active' \
             in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
-          print 389
           return None
       else:
-        print 389
         return None
     else:
-      print 395
       for task in tasks:
         if task.text == task_name:
           task.click()
           break
       else:
-        print 401
         return None
     base_task = BaseTask(self._driver)
     if task_name == 'Initial Decision':
@@ -429,6 +426,11 @@ class ManuscriptViewerPage(AuthenticatedPage):
       time.sleep(1)
     elif task_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript',
                      'Revise Manuscript', 'Billing'):
+      # before checking that the complete is selected, in the accordion we need to
+      # check if it is open
+      if 'task-disclosure-open' not in task_div.get_attribute('class'):
+        # accordion is close it, open it:
+        task.click()
       # Check completed_check status
       if not base_task.completed_cb_is_selected():
         self._get(base_task._completed_cb).click()
@@ -444,9 +446,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
       time.sleep(1)
     else:
       raise ValueError('No information on this card: {}'.format(task_name))
-    #elif task_name == 'Billing':
-    #  billing = BillingTask(self._driver)
-    #  billing.add_billing_data(billing_data)
 
   def get_paper_title_from_page(self):
     """
@@ -454,7 +453,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :return: paper_title
     """
     paper_title = self._get(self._paper_title).text
-    print(paper_title)
     return paper_title
 
   def edit_paper_title(self):
@@ -582,7 +580,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     select_items = (By.CSS_SELECTOR, 'ul.select2-results')
     items = self._get(select_items)
     for item in items.find_elements_by_tag_name('li'):
-      print(item.text)
       if item.text == user['name']:
         item.click()
         time.sleep(.5)

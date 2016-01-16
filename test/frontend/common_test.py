@@ -61,7 +61,7 @@ class CommonTest(FrontEndTest):
     dashboard.click_create_new_submission_button()
     # Create new submission
     title = dashboard.title_generator(prefix=title, random_bit=random_bit)
-    print('Creating paper in {} journal, in {} type with {} as title'.format(journal,
+    logging.info('Creating paper in {} journal, in {} type with {} as title'.format(journal,
           type_, title))
     dashboard.enter_title_field(title)
     dashboard.select_journal_and_type(journal, type_)

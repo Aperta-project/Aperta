@@ -120,16 +120,19 @@ describe Paper do
     end
 
     describe "short_title" do
-      it "is within 255 chars" do
-        paper = FactoryGirl.build(:paper, title: "Example", short_title: "a" * 256)
-        expect(paper).to_not be_valid
-        expect(paper).to have(1).errors_on(:short_title)
+      let(:title) { "Hi there! i'm a title!" }
 
-        paper.short_title = "a" * 254
-        expect(paper).to be_valid
+      # short_title has a custom setter! So please don't laugh at this
+      # silly-looking test
+      it 'has get and set' do
+        paper.short_title = title
+        expect(paper.short_title).to eq(title)
+      end
 
-        paper.short_title = "a" * 255
-        expect(paper).to be_valid
+      it 'is set to a short title' do
+        paper.short_title = title
+        answer = paper.answer_for('publishing_related_questions--short_title')
+        expect(answer.value).to eq(title)
       end
     end
 

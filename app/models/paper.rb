@@ -265,6 +265,15 @@ class Paper < ActiveRecord::Base
     answer ? answer.value : ''
   end
 
+  def short_title=(value)
+    question = NestedQuestion.find_by(
+      ident: 'publishing_related_questions--short_title')
+    answer = nested_question_answers.find_or_build(
+      nested_question: question
+    )
+    answer.update(value: value)
+  end
+
   def latest_withdrawal_reason
     withdrawals.last[:reason] if withdrawals.present?
   end

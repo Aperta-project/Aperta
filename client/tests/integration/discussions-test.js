@@ -25,6 +25,11 @@ module('Integration: Discussions', {
     $.mockjax({url: /\/api\/papers\/\d+\/manuscript_manager/, status: 204});
     TestHelper.handleFind(paper);
     TestHelper.handleFindAll('discussion-topic', 1);
+
+    const restless = App.__container__.lookup('service:restless');
+    restless['delete'] = function() {
+      return Ember.RSVP.resolve({});
+    };
   }
 });
 

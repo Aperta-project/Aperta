@@ -10,6 +10,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - New component attachment-item to be used within attachment-manager, to handle previews of attachment, replace and deletion
 - New component s3-file-uploader that wraps the jquery fileupload plugin to make direct uploads to Amazon S3
 - Email notifications on discussion forum posts and participations
+- Discussion Notifications displayed when user is added as participant
 
 ### Changed
 - NestedQuestions have unique identifiers

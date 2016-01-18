@@ -7,9 +7,7 @@
 
   {{#each paperTopics as |topic|}}
     {{#link-to topicsShowPath topic.id class="discussions-index-topic"}}
-      {{#if topic.unreadCount}}
-        <span class="badge badge--red">{{topic.unreadCount}}</span>
-      {{/if}}
+      {{notification type="DiscussionTopic" id=topic.id is-parent=true}}
       {{topic.title}}
     {{/link-to}}
   {{else}}

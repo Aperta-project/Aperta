@@ -90,6 +90,7 @@ Tahi::Application.routes.draw do
       end
     end
     resources :manuscript_manager_templates, only: [:create, :show, :update, :destroy]
+    resources :notifications, only: [:index, :show, :destroy]
     resources :assignments, only: [:index, :create, :destroy]
     resources :papers, only: [:index, :create, :show, :update] do
       resources :old_roles, only: :index, controller: 'paper_roles' do

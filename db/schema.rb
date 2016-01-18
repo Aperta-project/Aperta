@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160113151023) do
+ActiveRecord::Schema.define(version: 20160114152935) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -369,6 +369,7 @@ ActiveRecord::Schema.define(version: 20160113151023) do
   end
 
   add_index "permission_states_permissions", ["permission_id"], name: "index_permission_states_permissions_on_permission_id", using: :btree
+  add_index "permission_states_permissions", ["permission_state_id", "permission_id"], name: "permission_states_ids_idx", unique: true, using: :btree
 
   create_table "permissions", force: :cascade do |t|
     t.string   "action"
@@ -391,18 +392,8 @@ ActiveRecord::Schema.define(version: 20160113151023) do
   add_index "permissions_roles", ["role_id", "permission_id"], name: "index_permissions_roles_on_role_id_and_permission_id", unique: true, using: :btree
   add_index "permissions_roles", ["role_id"], name: "index_permissions_roles_on_role_id", using: :btree
 
-  create_table "permissions_states", force: :cascade do |t|
-    t.integer  "permission_id"
-    t.integer  "state_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "permissions_states", ["permission_id"], name: "index_permissions_states_on_permission_id", using: :btree
-  add_index "permissions_states", ["state_id", "permission_id"], name: "index_permissions_states_on_state_id_and_permission_id", unique: true, using: :btree
-
   create_table "phase_templates", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",                           limit: 255
     t.integer  "manuscript_manager_template_id"
     t.datetime "created_at"
     t.datetime "updated_at"

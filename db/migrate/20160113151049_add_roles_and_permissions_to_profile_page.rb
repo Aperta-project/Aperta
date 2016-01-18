@@ -1,11 +1,11 @@
 # rubocop:disable all
 # Add basic User role, and assign user to themselves.
 class AddRolesAndPermissionsToProfilePage < ActiveRecord::Migration
-  class State < ActiveRecord::Base
+  class PermissionState < ActiveRecord::Base
   end
 
   class Permission < ActiveRecord::Base
-    has_and_belongs_to_many :states
+    has_and_belongs_to_many :states, class_name: 'PermissionState'
   end
 
   class Role < ActiveRecord::Base
@@ -19,13 +19,13 @@ class AddRolesAndPermissionsToProfilePage < ActiveRecord::Migration
   end
 
   def up
-    # Add '*' state
+    # Add '*' permission state
     # Add :view_profile permission
     # Add User role
     # Assign every User to User role
 
-    State.reset_column_information
-    state = State.where(name: '*').first_or_create!
+    PermissionState.reset_column_information
+    state = PermissionState.where(name: '*').first_or_create!
 
     Permission.reset_column_information
     permission = Permission.where(
@@ -55,7 +55,7 @@ class AddRolesAndPermissionsToProfilePage < ActiveRecord::Migration
 
   def down
     # We only delete the assignment because we don't know for certain if we
-    # created the Role, Permission, or State.
+    # created the Role, Permission, or PermissionState.
     Assignment.reset_column_information
     Assignment.delete_all
   end

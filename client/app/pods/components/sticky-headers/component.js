@@ -33,23 +33,31 @@ export default Ember.Component.extend({
 
   _teardown: Ember.on('willDestroyElement', function() {
     this.$().off('scroll.' + this.elementId);
+    $(window).off('resize.' + this.elementId);
   }),
 
   _setup: Ember.on('didInsertElement', function() {
     const sectionSelector = this.get('sectionSelector');
     const stickySelector  = this.get('stickySelector');
     const position = this._position;
+    const handleEvent = function(sections) {
+      sections.each(function() {
+        const section = $(this);
+        const sticky  = section.find(stickySelector);
+        position(section, sticky);
+      });
+    };
 
     Ember.run.scheduleOnce('afterRender', ()=> {
       const sections = this.$().find(sectionSelector);
 
       // Note: This element needs to be scrollable!
       this.$().on('scroll.' + this.elementId, function() {
-        sections.each(function() {
-          const section = $(this);
-          const sticky  = section.find(stickySelector);
-          position(section, sticky);
-        });
+        handleEvent(sections);
+      });
+
+      $(window).on('resize.' + this.elementId, function() {
+        handleEvent(sections);
       });
     });
   }),

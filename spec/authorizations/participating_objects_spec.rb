@@ -24,10 +24,12 @@ DESC
   let!(:paper) { Authorizations::FakePaper.create! }
   let!(:task) { Authorizations::FakeTask.create!(fake_paper: paper) }
 
-  before(:each) do
+  before(:all) do
     Authorizations.reset_configuration
     AuthorizationModelsSpecHelper.create_db_tables
+  end
 
+  before(:each) do
     ActiveRecord::Schema.define do
       add_column(
         :roles,

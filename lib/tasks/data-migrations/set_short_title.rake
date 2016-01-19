@@ -4,11 +4,14 @@ namespace :data do
       desc "Sets the paper short title *answer* to be the paper's short title"
       task set_short_title: :environment do
         Paper.all.each do |paper|
-          # OK this line looks very strange; but we're moving the
-          # paper's short title *from* a string column on paper *to* a
-          # nested question answer; the setting and getting of that
-          # answer is transparent on Paper, so we can short_title = ...
-          paper.short_title = paper.read_attribute(:short_title)
+          task = paper.tasks_for_type(
+            TahiStandardTasks::PublishingRelatedQuestionsTask).first
+          question = task.nested_questions.find_by(
+            ident: 'publishing_related_questions--short_title')
+          answer = task.find_or_build_answer_for(
+            nested_question: question)
+          answer.value = paper.read_attribute(:short_title) || ''
+          answer.save!
         end
       end
     end

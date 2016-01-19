@@ -165,159 +165,62 @@ authors:
     - 
 
 ---
-journal_task_types:
+permission_states:
   columns:
   - id
-  - journal_id
-  - title
-  - old_role
-  - kind
+  - name
+  - created_at
+  - updated_at
+  records: 
+  - - '1'
+    - "*"
+    - '2016-01-19 15:28:32.700099'
+    - '2016-01-19 15:28:32.700099'
+
+---
+permission_states_permissions:
+  columns:
+  - id
+  - permission_id
+  - permission_state_id
+  - created_at
+  - updated_at
   records: 
   - - '1'
     - '1'
-    - Ad-hoc
-    - user
-    - Task
-  - - '2'
     - '1'
-    - Authors
-    - author
-    - TahiStandardTasks::AuthorsTask
-  - - '3'
+    - '2016-01-19 15:28:32.748896'
+    - '2016-01-19 15:28:32.748896'
+
+---
+permissions:
+  columns:
+  - id
+  - action
+  - applies_to
+  - created_at
+  - updated_at
+  records: 
+  - - '1'
+    - view_profile
+    - User
+    - '2016-01-19 15:28:32.714515'
+    - '2016-01-19 15:28:32.714515'
+
+---
+permissions_roles:
+  columns:
+  - id
+  - permission_id
+  - role_id
+  - created_at
+  - updated_at
+  records: 
+  - - '1'
     - '1'
-    - Competing Interests
-    - author
-    - TahiStandardTasks::CompetingInterestsTask
-  - - '4'
     - '1'
-    - Cover Letter
-    - author
-    - TahiStandardTasks::CoverLetterTask
-  - - '5'
-    - '1'
-    - Data Availability
-    - author
-    - TahiStandardTasks::DataAvailabilityTask
-  - - '6'
-    - '1'
-    - Ethics Statement
-    - author
-    - TahiStandardTasks::EthicsTask
-  - - '7'
-    - '1'
-    - Figures
-    - author
-    - TahiStandardTasks::FigureTask
-  - - '8'
-    - '1'
-    - Financial Disclosure
-    - author
-    - TahiStandardTasks::FinancialDisclosureTask
-  - - '9'
-    - '1'
-    - Assign Admin
-    - admin
-    - TahiStandardTasks::PaperAdminTask
-  - - '10'
-    - '1'
-    - Invite Editor
-    - admin
-    - TahiStandardTasks::PaperEditorTask
-  - - '11'
-    - '1'
-    - Invite Reviewers
-    - custom
-    - TahiStandardTasks::PaperReviewerTask
-  - - '12'
-    - '1'
-    - Production Metadata
-    - editor
-    - TahiStandardTasks::ProductionMetadataTask
-  - - '13'
-    - '1'
-    - Additional Information
-    - author
-    - TahiStandardTasks::PublishingRelatedQuestionsTask
-  - - '14'
-    - '1'
-    - Register Decision
-    - editor
-    - TahiStandardTasks::RegisterDecisionTask
-  - - '15'
-    - '1'
-    - Reporting Guidelines
-    - author
-    - TahiStandardTasks::ReportingGuidelinesTask
-  - - '16'
-    - '1'
-    - Reviewer Candidates
-    - author
-    - TahiStandardTasks::ReviewerRecommendationsTask
-  - - '17'
-    - '1'
-    - Reviewer Report
-    - reviewer
-    - TahiStandardTasks::ReviewerReportTask
-  - - '18'
-    - '1'
-    - Revise Task
-    - author
-    - TahiStandardTasks::ReviseTask
-  - - '19'
-    - '1'
-    - Supporting Info
-    - author
-    - TahiStandardTasks::SupportingInformationTask
-  - - '20'
-    - '1'
-    - New Taxon
-    - author
-    - TahiStandardTasks::TaxonTask
-  - - '21'
-    - '1'
-    - Upload Manuscript
-    - author
-    - TahiStandardTasks::UploadManuscriptTask
-  - - '22'
-    - '1'
-    - Changes For Author
-    - author
-    - PlosBioTechCheck::ChangesForAuthorTask
-  - - '23'
-    - '1'
-    - Final Tech Check
-    - custom
-    - PlosBioTechCheck::FinalTechCheckTask
-  - - '24'
-    - '1'
-    - Initial Tech Check
-    - custom
-    - PlosBioTechCheck::InitialTechCheckTask
-  - - '25'
-    - '1'
-    - Revision Tech Check
-    - custom
-    - PlosBioTechCheck::RevisionTechCheckTask
-  - - '26'
-    - '1'
-    - Editor Discussion
-    - editor
-    - PlosBioInternalReview::EditorsDiscussionTask
-  - - '27'
-    - '1'
-    - Billing
-    - author
-    - PlosBilling::BillingTask
-  - - '28'
-    - '1'
-    - Assign Team
-    - admin
-    - Tahi::AssignTeam::AssignTeamTask
-  - - '29'
-    - '1'
-    - Test Task
-    - user
-    - InvitableTask
+    - '2016-01-19 15:28:32.776821'
+    - '2016-01-19 15:28:32.776821'
 
 ---
 question_attachments:
@@ -351,6 +254,25 @@ question_attachments:
     - done
     - '2015-11-02 15:12:01.338942'
     - '2015-11-02 15:12:01.520148'
+
+---
+roles:
+  columns:
+  - id
+  - name
+  - journal_id
+  - participates_in_papers
+  - participates_in_tasks
+  - created_at
+  - updated_at
+  records: 
+  - - '1'
+    - User
+    - 
+    - false
+    - false
+    - '2016-01-19 15:28:32.762483'
+    - '2016-01-19 15:28:32.762483'
 
 ---
 supporting_information_files:
@@ -595,6 +517,161 @@ papers:
     - 
     - 
     - 
+
+---
+journal_task_types:
+  columns:
+  - id
+  - journal_id
+  - title
+  - old_role
+  - kind
+  records: 
+  - - '1'
+    - '1'
+    - Ad-hoc
+    - user
+    - Task
+  - - '2'
+    - '1'
+    - Authors
+    - author
+    - TahiStandardTasks::AuthorsTask
+  - - '3'
+    - '1'
+    - Competing Interests
+    - author
+    - TahiStandardTasks::CompetingInterestsTask
+  - - '4'
+    - '1'
+    - Cover Letter
+    - author
+    - TahiStandardTasks::CoverLetterTask
+  - - '5'
+    - '1'
+    - Data Availability
+    - author
+    - TahiStandardTasks::DataAvailabilityTask
+  - - '6'
+    - '1'
+    - Ethics Statement
+    - author
+    - TahiStandardTasks::EthicsTask
+  - - '7'
+    - '1'
+    - Figures
+    - author
+    - TahiStandardTasks::FigureTask
+  - - '8'
+    - '1'
+    - Financial Disclosure
+    - author
+    - TahiStandardTasks::FinancialDisclosureTask
+  - - '9'
+    - '1'
+    - Assign Admin
+    - admin
+    - TahiStandardTasks::PaperAdminTask
+  - - '10'
+    - '1'
+    - Invite Editor
+    - admin
+    - TahiStandardTasks::PaperEditorTask
+  - - '11'
+    - '1'
+    - Invite Reviewers
+    - custom
+    - TahiStandardTasks::PaperReviewerTask
+  - - '12'
+    - '1'
+    - Production Metadata
+    - editor
+    - TahiStandardTasks::ProductionMetadataTask
+  - - '13'
+    - '1'
+    - Additional Information
+    - author
+    - TahiStandardTasks::PublishingRelatedQuestionsTask
+  - - '14'
+    - '1'
+    - Register Decision
+    - editor
+    - TahiStandardTasks::RegisterDecisionTask
+  - - '15'
+    - '1'
+    - Reporting Guidelines
+    - author
+    - TahiStandardTasks::ReportingGuidelinesTask
+  - - '16'
+    - '1'
+    - Reviewer Candidates
+    - author
+    - TahiStandardTasks::ReviewerRecommendationsTask
+  - - '17'
+    - '1'
+    - Reviewer Report
+    - reviewer
+    - TahiStandardTasks::ReviewerReportTask
+  - - '18'
+    - '1'
+    - Revise Task
+    - author
+    - TahiStandardTasks::ReviseTask
+  - - '19'
+    - '1'
+    - Supporting Info
+    - author
+    - TahiStandardTasks::SupportingInformationTask
+  - - '20'
+    - '1'
+    - New Taxon
+    - author
+    - TahiStandardTasks::TaxonTask
+  - - '21'
+    - '1'
+    - Upload Manuscript
+    - author
+    - TahiStandardTasks::UploadManuscriptTask
+  - - '22'
+    - '1'
+    - Changes For Author
+    - author
+    - PlosBioTechCheck::ChangesForAuthorTask
+  - - '23'
+    - '1'
+    - Final Tech Check
+    - custom
+    - PlosBioTechCheck::FinalTechCheckTask
+  - - '24'
+    - '1'
+    - Initial Tech Check
+    - custom
+    - PlosBioTechCheck::InitialTechCheckTask
+  - - '25'
+    - '1'
+    - Revision Tech Check
+    - custom
+    - PlosBioTechCheck::RevisionTechCheckTask
+  - - '26'
+    - '1'
+    - Editor Discussion
+    - editor
+    - PlosBioInternalReview::EditorsDiscussionTask
+  - - '27'
+    - '1'
+    - Billing
+    - author
+    - PlosBilling::BillingTask
+  - - '28'
+    - '1'
+    - Assign Team
+    - admin
+    - Tahi::AssignTeam::AssignTeamTask
+  - - '29'
+    - '1'
+    - Test Task
+    - user
+    - InvitableTask
 
 ---
 versioned_texts:

@@ -2,7 +2,7 @@ class Role < ActiveRecord::Base
   belongs_to :journal
   has_and_belongs_to_many :permissions
 
-  def self.ensure(name, journal: nil, participates_in: [])
+  def self.ensure(name, journal: nil, participates_in: [], &block)
     role = Role.where(name: name, journal: journal).first_or_create!
 
     # Ensure user passed in valid participates_in

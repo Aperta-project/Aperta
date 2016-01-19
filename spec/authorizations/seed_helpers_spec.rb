@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'SeedHelpers' do
   let(:journal) { FactoryGirl.create(:journal) }
 
-  describe 'Role#ensure' do
+  describe 'Role::ensure' do
     it 'creates a role' do
       role_q = Role.where(name: 'role')
       expect(role_q).not_to exist
@@ -35,7 +35,17 @@ describe 'SeedHelpers' do
     end
   end
 
-  describe 'Permission#ensure' do
+  describe 'Role#ensure_permission' do
+    it 'calls Permission::ensure with proper arguments' do
+      expect_any_instance_of(Role).to \
+        receive(:ensure_permission).with(:view, applies_to: Task)
+      Role.ensure('role') do |role|
+        role.ensure_permission(:view, applies_to: Task)
+      end
+    end
+  end
+
+  describe 'Permission::ensure' do
     it 'creates a permission' do
       perm_q = Permission.where(action: 'view', applies_to: Task)
       expect(perm_q).not_to exist

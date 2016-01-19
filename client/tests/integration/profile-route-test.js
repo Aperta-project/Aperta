@@ -63,7 +63,11 @@ test('transition to route without permission fails', function(assert){
 
     visit('/profile');
     andThen(function(){
-      assert.equal(currentPath(), 'dashboard.index');
+      assert.equal(
+        currentPath(),
+        'dashboard.index',
+        "Should have redirected to the dashboard"
+      );
     });
   });
 });
@@ -87,7 +91,11 @@ test('transition to route with permission succeedes', function(assert){
 
     visit('/profile');
     andThen(function(){
-      assert.equal(currentPath(), 'profile');
+      assert.equal(
+        currentPath(),
+        'profile',
+        'Should have visited the profile'
+      );
     });
   })
 });

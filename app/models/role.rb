@@ -16,4 +16,9 @@ class Role < ActiveRecord::Base
     yield(role) if block_given?
     role
   end
+
+  def ensure_permission(action, applies_to:, states: ['*'])
+    Permission.ensure(action, applies_to: applies_to, role: self,
+                              states: states)
+  end
 end

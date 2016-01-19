@@ -20,32 +20,39 @@ module Authorizations
     # * target - is the object, class, or ActiveRecord::Relation that is being \
     #            being authorized
     # * user - is the user who the query will be check for authorization against
-    def initialize(permission:, target:, user:)
+    # * participations_only - a boolean specifying if only targets a user
+    #                         participates in should be returned. If not
+    #                         specified, it depends on the target passed in. For
+    #                         Class or ActiveRecord::Relation, it is true, for
+    #                         Array or ActiveRecord::Base, it is false.
+    def initialize(permission:, target:, user:, participations_only: nil)
       @permission = permission.to_sym
       @user = user
       @target = target
       @specific_ids = nil
-      @include_only_participations = false
+      @participations_only = participations_only
 
       # we're looking for everything, e.g. Task got passed in
       if target.is_a?(Class)
         @klass = target
-        @include_only_participations = true
+        @participations_only = true if @participations_only.nil?
 
       # we're looking for a specific object, e.g. Task.first got passed in
       elsif target.is_a?(ActiveRecord::Base)
         @klass = target.class
         @specific_ids = [@target.id]
+        @participations_only = false if @participations_only.nil?
 
       # we're looking for a set of objects with a pre-existing query, e.g. Task.where(name: "Bar") got passed in
       elsif target.is_a?(ActiveRecord::Relation)
         @klass = target.model
-        @include_only_participations = true
+        @participations_only = true if @participations_only.nil?
 
       # we're looking for a specific of objects e.g. [Task.first, Task.last] got passed in
       elsif target.is_a?(Array)
         @klass = target.first.class
         @specific_ids = @target.map(&:id)
+        @participations_only = false if @participations_only.nil?
       end
     end
 
@@ -79,12 +86,12 @@ module Authorizations
       perm_q = { 'permissions.applies_to' => @klass.base_class.name }
       assignments = user.assignments.includes(permissions: :states).where(perm_q)
 
-      # If @include_only_participations is true then we want to use specific fields
+      # If @participations_only is true then we want to use specific fields
       # on Role to determine if we should consider these assignments. The purpose of this
       # is so users assigned to a paper with a role like Author (or Reviewer, etc) get papers
       # through assignments in their default list of papers (e.g. what they see on the dashboard).
       # But we don't want that for roles (e.g. Internal Editor assigned to a Journal).
-      if @include_only_participations
+      if @participations_only
         role_accessibility_method = "participates_in_#{@klass.table_name}"
         if Role.column_names.include?(role_accessibility_method)
           assignments = assignments.where(:roles => { role_accessibility_method => true })

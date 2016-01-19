@@ -117,6 +117,13 @@ DESC
         user.filter_authorized(:view, Authorizations::FakePaper.all).objects
       ).to_not include(paper)
     end
+
+    it 'does include the paper when filtering for authorization if participates_only is set to true' do
+      expect(
+        user.filter_authorized(:view, Authorizations::FakePaper.all,
+                               participations_only: false).objects
+      ).to include(paper)
+    end
   end
 
   context <<-DESC do
@@ -139,6 +146,13 @@ DESC
     it 'does not includes the paper when filtering for authorization' do
       expect(
         user.filter_authorized(:view, Authorizations::FakePaper.all).objects
+      ).to include(paper)
+    end
+
+    it 'does include the paper when filtering for authorization if participates_only is set to true' do
+      expect(
+        user.filter_authorized(:view, Authorizations::FakePaper.all,
+                               participations_only: false).objects
       ).to include(paper)
     end
   end

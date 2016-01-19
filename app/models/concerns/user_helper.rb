@@ -11,11 +11,12 @@ module UserHelper
     filter_authorized(permission, target).objects.length > 0
   end
 
-  def filter_authorized(permission, target)
+  def filter_authorized(permission, target, participations_only: nil)
     Authorizations::Query.new(
       permission: permission,
       target: target,
-      user: self
+      user: self,
+      participations_only: participations_only
     ).all
   end
 end

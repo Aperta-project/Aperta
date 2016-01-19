@@ -9,14 +9,8 @@ export default Ember.Component.extend(EscapeListenerMixin, {
   journals: null,
   paper: null,
   isSaving: false,
-
   journalEmpty: computed.empty('paper.journal.content'),
-
-  titleCharCount: computed('paper.title', function() {
-    return Ember.$('<div></div>')
-                .append(this.get('paper.title'))
-                .text().length;
-  }),
+  hasTitle: computed.notEmpty('paper.title'),
 
   actions: {
     selectJournal(journal) {

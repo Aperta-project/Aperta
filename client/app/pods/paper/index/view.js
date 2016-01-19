@@ -25,8 +25,9 @@ export default Ember.View.extend(PaperIndexMixin, {
     else if (!window.MathJax) { this.loadMathJax(); return; }
     else if (!window.MathJax.Hub) { return; }
 
+    var view = this.$()[0];
     Ember.run.next(() => {
-      MathJax.Hub.Queue(['Typeset', MathJax.Hub, this.$()[0]]);
+      MathJax.Hub.Queue(['Typeset', MathJax.Hub, view]);
     });
   }
 

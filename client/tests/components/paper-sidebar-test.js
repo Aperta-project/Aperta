@@ -6,7 +6,7 @@ import {
 import Ember from 'ember';
 
 moduleForComponent('paper-sidebar', 'PaperSidebarComponent', {
-  needs: ['component:sticky-headers']
+  needs: ['component:sticky-headers', 'service:event-bus']
 });
 
 test('Returns submitted message when paper is submitted', function(assert) {

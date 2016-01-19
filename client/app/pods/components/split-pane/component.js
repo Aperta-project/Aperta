@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  eventBus: Ember.inject.service('event-bus'),
   classNames: ['split-pane'],
 
   minimumWidthPercent: 25,
@@ -66,6 +67,7 @@ export default Ember.Component.extend({
         const rightTooSmall = rightPercentage * 100 < minWidth;
         if(leftTooSmall || rightTooSmall) { return; }
 
+        this.get('eventBus').publish('split-pane-resize');
         firstPane.css(this.flexCss(leftPercentage.toString()));
         lastPane.css(this.flexCss(rightPercentage.toString()));
       });

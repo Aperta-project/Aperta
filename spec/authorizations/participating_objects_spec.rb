@@ -24,7 +24,7 @@ DESC
   let!(:paper) { Authorizations::FakePaper.create! }
   let!(:task) { Authorizations::FakeTask.create!(fake_paper: paper) }
 
-  before(:all) do
+  before(:each) do
     Authorizations.reset_configuration
     AuthorizationModelsSpecHelper.create_db_tables
 
@@ -40,7 +40,7 @@ DESC
     Role.reset_column_information
   end
 
-  after(:all) do
+  after(:each) do
     ActiveRecord::Schema.define do
       remove_column :roles, :participates_in_fake_papers
     end

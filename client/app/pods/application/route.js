@@ -15,16 +15,22 @@ const debug = function(description, obj) {
 
 
 export default Ember.Route.extend({
-  restless: Ember.inject.service('restless'),
+  restless: Ember.inject.service(),
+  notifications: Ember.inject.service(),
 
   setupController(controller, model) {
     controller.set('model', model);
     if (this.currentUser) {
       // subscribe to user and system channels
-      let userChannelName = `private-user@${ this.currentUser.get('id') }`;
-      let pusher = this.get('pusher');
-      pusher.wire(this, userChannelName, ['created', 'updated', 'destroyed', 'flashMessage']);
+      const userChannelName = `private-user@${ this.currentUser.get('id') }`;
+      const pusher = this.get('pusher');
+
       pusher.wire(this, 'system', ['destroyed']);
+      pusher.wire(
+        this,
+        userChannelName,
+        ['created', 'updated', 'destroyed', 'flashMessage']
+      );
 
       this.get('restless').authorize(
         controller,
@@ -52,7 +58,7 @@ export default Ember.Route.extend({
 
       if (currentRouteController.get('isUploading')) {
         let q = 'You are uploading. Are you sure you want abort uploading?';
-        if (confirm(q)) {
+        if (window.confirm(q)) {
           currentRouteController.send('cancelUploads');
         } else {
           transition.abort();
@@ -82,29 +88,40 @@ export default Ember.Route.extend({
     },
 
     created(payload) {
-      let description = `Pusher: created ${payload.type} ${payload.id}`;
-      debug(description);
+      debug(`Pusher: created ${payload.type} ${payload.id}`);
+
+      if(payload.type === 'notification') {
+        this.send('notificationAction', 'created', payload);
+        return;
+      }
+
       this.store.fetchById(payload.type, payload.id);
     },
 
     updated(payload) {
-      let record = this.store.getPolymorphic(payload.type, payload.id);
+      const record = this.store.getPolymorphic(payload.type, payload.id);
       if (record) {
         record.reload();
-
-        let description = `Pusher: updated ${payload.type} ${payload.id}`;
-        debug(description);
+        debug(`Pusher: updated ${payload.type} ${payload.id}`);
       }
     },
 
     destroyed(payload) {
-      let record = this.store.getPolymorphic(payload.type, payload.id);
+      debug(`Pusher: destroyed ${payload.type} ${payload.id}`, payload);
+
+      if(payload.type === 'notification') {
+        this.send('notificationAction', 'destroyed', payload);
+        return;
+      }
+
+      const record = this.store.getPolymorphic(payload.type, payload.id);
       if(record) {
         record.unloadRecord();
-
-        let description = `Pusher: destroyed ${payload.type} ${payload.id}`;
-        debug(description, payload);
       }
+    },
+
+    notificationAction(action, payload) {
+      this.get('notifications')[action](payload);
     },
 
     flashMessage(payload) {
@@ -113,7 +130,8 @@ export default Ember.Route.extend({
   },
 
   _pusherEventsId() {
-    // needed for the `wire` and `unwire` method to think we have `ember-pusher/bindings` mixed in
+    // needed for the `wire` and `unwire` method
+    // to think we have `ember-pusher/bindings` mixed in
     return this.toString();
   }
 });

@@ -94,6 +94,7 @@
 .control-bar-item--last  { padding-right: 25px; }
 
 .control-bar-link {
+  position: relative;
   color: $tahi-green;
   font-size: 1.2rem;
   text-align: center;
@@ -113,6 +114,10 @@
   svg rect { fill: $tahi-green; }
 
   &:focus, &:hover { text-decoration: none; }
+
+  .badge {
+    @include position(absolute, 4px 7px auto auto);
+  }
 }
 
 .control-bar-link-icon {

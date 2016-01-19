@@ -70,8 +70,13 @@ $comments-animation-speed: 0.3s;
 }
 
 .message-comment {
+  position: relative;
   border-top: 1px solid #ddd;
   padding: 15px 0px;
+
+  .badge {
+    @include position(absolute, 5px auto auto -10px);
+  }
 }
 
 .comment-date,

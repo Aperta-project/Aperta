@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   include OldAuthorizationsControllerHelper
   include TahiPusher::SocketTracker
+  include TahiPusher::CurrentUserTracker
   include InvitationCodes
 
   # Prevent CSRF attacks by raising an exception.
@@ -11,6 +12,7 @@ class ApplicationController < ActionController::Base
 
   before_action :authenticate_with_basic_http
   before_action :set_pusher_socket
+  before_action :set_current_user_id
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   rescue_from ActiveRecord::RecordInvalid, with: :render_errors

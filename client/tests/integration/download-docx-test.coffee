@@ -52,6 +52,10 @@ test 'show download links on control bar', (assert) ->
     200, {"Content-Type": "application/json"}, JSON.stringify({
             url: "/api/papers/#{currentPaper.id}/download.docx" })
   ]
+  server.respondWith 'GET', "/api/notifications/", [
+    204, {"Content-Type": "application/json"}, JSON.stringify({})
+  ]
+
 
   mock = undefined
   visit "/papers/#{currentPaper.id}"

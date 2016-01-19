@@ -15,6 +15,11 @@ describe DiscussionParticipantsController do
   describe 'POST create' do
     render_views
 
+    include ActiveJob::TestHelper
+
+    before { ActionMailer::Base.deliveries.clear }
+    after  { clear_enqueued_jobs }
+
     let(:creation_params) do
       {
         discussion_participant: {
@@ -33,7 +38,6 @@ describe DiscussionParticipantsController do
       expect(participant['discussion_topic_id']).to eq(topic_a.id)
       expect(participant['user_id']).to eq(another_user.id)
     end
-
   end
 
   describe 'DELETE destroy' do

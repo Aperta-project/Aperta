@@ -6,8 +6,10 @@ describe TahiStandardTasks::RegisterDecisionTask do
   end
   let!(:task) do
     TahiStandardTasks::SendToApexTask.create!(
+      paper: paper,
       old_role: 'editor',
-      phase: paper.phases.first)
+      phase: paper.phases.first
+    )
   end
 
   describe '#send_to_apex' do

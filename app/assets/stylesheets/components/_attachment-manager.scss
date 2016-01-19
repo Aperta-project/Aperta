@@ -3,6 +3,7 @@
 
   .attachment-item {
     margin-bottom: 10px;
+    min-height: 30px;
   }
 
   p.description {
@@ -32,4 +33,17 @@
   input.form-control {
     margin-top: 10px;
   }
+
+  .processing-attachment {
+    height: 30px;
+    line-height: 30px;
+    color: $tahi-grey-dark;
+    font-size: 18px;
+
+    .progress-spinner {
+      float: left;
+      margin-right: 15px;
+    }
+  }
+
 }

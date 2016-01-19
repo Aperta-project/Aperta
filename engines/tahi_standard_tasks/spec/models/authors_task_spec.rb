@@ -4,7 +4,16 @@ describe TahiStandardTasks::AuthorsTask do
   describe "#validate_authors" do
     let(:invalid_author) { FactoryGirl.build_stubbed(:author, email: nil) }
     let(:valid_author) { FactoryGirl.build_stubbed(:author) }
-    let(:task) { TahiStandardTasks::AuthorsTask.new(completed: true, title: "Authors", old_role: "author", authors: [invalid_author, valid_author]) }
+    let(:paper) { FactoryGirl.build(:paper) }
+    let(:task) do
+      TahiStandardTasks::AuthorsTask.new(
+        completed: true,
+        title: "Authors",
+        old_role: "author",
+        paper: paper,
+        authors: [invalid_author, valid_author]
+      )
+    end
 
     it "validates individual authors" do
       expect(task).to_not be_valid

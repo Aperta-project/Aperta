@@ -5,7 +5,7 @@ feature 'Viewing Versions:', js: true do
 
   context 'When viewing a paper with more than one version,' do
     let(:paper) do
-      FactoryGirl.create :paper,
+      FactoryGirl.create :paper_with_phases,
                          :with_versions,
                          first_version_body:  '<p>OK first body</p>',
                          second_version_body: '<p>OK second body</p>',

@@ -35,6 +35,14 @@ namespace 'nested-questions:seed' do
           value_type: "text",
           text: "Please enter your statement below:",
           position: 1
+        },
+        {
+          owner_id: nil,
+          owner_type: TahiStandardTasks::EthicsTask.name,
+          ident: 'ethics--animal_subjects--field_arrive',
+          value_type: 'attachment',
+          text: 'ARRIVE checklist',
+          position: 2
         }
       ]
     }

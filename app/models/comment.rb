@@ -9,8 +9,6 @@ class Comment < ActiveRecord::Base
   validates :task, :body, presence: true
   validates_presence_of :commenter
 
-  before_save :set_mentions
-
   def paper
     task.paper
   end
@@ -20,24 +18,9 @@ class Comment < ActiveRecord::Base
   end
 
   def notify_mentioned_people
+    people_mentioned = UserMentions.new(body, commenter).people_mentioned
     people_mentioned.each do |mentionee|
       UserMailer.mention_collaborator(self.id, mentionee.id).deliver_later
     end
-  end
-
-  private
-
-  # uses the same format as
-  # https://dev.twitter.com/overview/api/entities-in-twitter-objects#user_mentions
-  def set_mentions
-    self.entities = { user_mentions: Twitter::Extractor.extract_mentioned_screen_names_with_indices(body) }
-  end
-
-  def people_mentioned
-    @people_mentioned ||= User.where(username: mentions_extracted_from_body)
-  end
-
-  def mentions_extracted_from_body
-    Twitter::Extractor.extract_mentioned_screen_names(body).uniq.map(&:downcase) - [commenter.username.downcase]
   end
 end

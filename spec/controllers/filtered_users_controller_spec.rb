@@ -20,8 +20,12 @@ class TestTask < Task
 end
 
 describe FilteredUsersController do
-  let(:user) { create :user, first_name: "Henry", last_name: "Marsh" }
-  let(:creator) { create :user, first_name: "Henry", last_name: "Bob" }
+  let(:user) do
+    FactoryGirl.create(:user, first_name: "Henry", last_name: "Marsh")
+  end
+  let(:creator) do
+    FactoryGirl.create(:user, first_name: "Henry", last_name: "Bob")
+  end
 
   let(:journal) { FactoryGirl.create(:journal) }
   let(:old_role) { FactoryGirl.create(:old_role, :editor, journal: journal) }
@@ -35,9 +39,12 @@ describe FilteredUsersController do
     let(:paper) { FactoryGirl.create(:paper, journal: journal) }
     let(:phase) { paper.phases.create! }
     let(:task) do
-      phase.tasks.create(type: "TestTask",
-                         title: "Test",
-                         old_role: "editor").extend Invitable
+      phase.tasks.create(
+        type: 'TestTask',
+        title: 'Test',
+        old_role: 'editor',
+        paper: paper
+      ).extend Invitable
     end
     let(:invitation) { create :invitation, task: task, invitee: user }
 

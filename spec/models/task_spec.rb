@@ -9,7 +9,8 @@ describe Task do
         Task.create! title: "Paper Admin",
           completed: true,
           old_role: 'admin',
-          phase_id: 3
+          phase_id: 3,
+          paper_id: 99
       end
     end
 
@@ -20,8 +21,8 @@ describe Task do
   end
 
   describe "#invitations" do
-    let(:phase) { FactoryGirl.create :phase }
-    let(:task) { FactoryGirl.create :invitable_task, phase: phase }
+    let(:paper) { FactoryGirl.create :paper }
+    let(:task) { FactoryGirl.create :invitable_task, paper: paper }
     let!(:invitation) { FactoryGirl.create :invitation, task: task }
 
     context "on #destroy" do
@@ -68,7 +69,8 @@ describe Task do
       Task.create! title: "Paper Admin",
         completed: true,
         old_role: 'admin',
-        phase_id: 3
+        phase_id: 3,
+        paper_id: 99
     }
 
     it "returns true" do

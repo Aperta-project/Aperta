@@ -32,5 +32,4 @@ class DiscussionParticipantsController < ApplicationController
   def enforce_policy
     authorize_action!(discussion_participant: discussion_participant)
   end
-
 end

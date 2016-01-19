@@ -25,6 +25,7 @@ module PlosBioTechCheck
         body: {},
         title: task_properties[:default_title],
         old_role: task_properties[:default_role],
+        paper: paper,
         phase: phase
       })
     end

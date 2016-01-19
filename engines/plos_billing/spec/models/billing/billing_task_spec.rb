@@ -4,10 +4,13 @@ module PlosBilling
   describe BillingTask do
     let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
     let(:billing_task) do
-      ::PlosBilling::BillingTask.create! completed: true,
-                                         phase: paper.phases.first,
-                                         title: "Billing",
-                                         old_role: "author"
+      ::PlosBilling::BillingTask.create!(
+        completed: true,
+        paper: paper,
+        phase: paper.phases.first,
+        title: "Billing",
+        old_role: "author"
+      )
     end
 
     describe '.create' do

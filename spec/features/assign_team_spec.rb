@@ -24,7 +24,13 @@ feature 'Assign team', js: true do
     end
   end
 
-  let!(:assign_team_task) { FactoryGirl.create(:assign_team_task, phase: paper.phases.first) }
+  let!(:assign_team_task) do
+    FactoryGirl.create(
+      :assign_team_task,
+      paper: paper,
+      phase: paper.phases.first
+    )
+  end
 
   scenario "Journal admin can assign a user with a journal old_role to a paper" do
     custom_reviewer_role_name = custom_reviewer.old_roles.first.name

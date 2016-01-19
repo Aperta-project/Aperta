@@ -53,15 +53,28 @@ describe TasksController, redis: true do
   end
 
   describe "PATCH 'update'" do
-    let(:task) { FactoryGirl.create(:task, phase: paper.phases.first) }
-    let(:cover_letter_task) { FactoryGirl.create(:cover_letter_task, phase: paper.phases.first) }
+    let(:task) do
+      FactoryGirl.create(:task, paper: paper, phase: paper.phases.first)
+    end
+    let(:cover_letter_task) do
+      FactoryGirl.create(
+        :cover_letter_task,
+        paper: paper,
+        phase: paper.phases.first)
+    end
 
     subject(:do_request) do
-      xhr :patch, :update, { format: 'json', paper_id: paper.to_param, id: task.to_param, task: { completed: '1' } }
+      xhr(
+        :patch,
+        :update, {
+          format: 'json',
+          paper_id: paper.to_param,
+          id: task.to_param, task: { completed: '1' } } )
     end
 
     subject(:do_unathorized_request) do
-      xhr :patch, :update, { format: 'json', paper_id: paper.to_param, id: cover_letter_task.to_param, task: { completed: '1' } }
+      xhr :patch, :update, {
+        format: 'json', paper_id: paper.to_param, id: cover_letter_task.to_param, task: { completed: '1' } }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -109,6 +122,7 @@ describe TasksController, redis: true do
         TahiStandardTasks::ReviewerReportTask.create!(title: "Reviewer Report",
         old_role: "reviewer",
         phase: paper.phases.first,
+        paper: paper,
         completed: false)
       }
 

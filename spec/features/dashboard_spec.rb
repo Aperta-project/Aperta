@@ -64,7 +64,13 @@ feature "Dashboard", js: true do
   feature "displaying invitations" do
     let(:active_paper_count) { 1 }
     let(:paper) { papers.first }
-    let(:task) { FactoryGirl.create(:paper_editor_task, phase: paper.phases.first) }
+    let(:task) do
+      FactoryGirl.create(
+        :paper_editor_task,
+        paper: paper,
+        phase: paper.phases.first
+      )
+    end
 
     before do
       decision = paper.decisions.create!

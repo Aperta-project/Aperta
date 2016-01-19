@@ -67,15 +67,15 @@ describe User do
     end
 
     it 'returns invitations from the latest revision cycle' do
-      phase = FactoryGirl.create :phase
-      decision = phase.paper.decisions.create!
-      task = FactoryGirl.create :invitable_task, phase: phase
+      paper = FactoryGirl.create :paper
+      decision = paper.decisions.create!
+      task = FactoryGirl.create :invitable_task, paper: paper
       inv1 = FactoryGirl.create :invitation, task: task, invitee: user, decision: decision
       inv2 = FactoryGirl.create :invitation, task: task, invitee: user, decision: decision
       inv1.invite!
       inv2.invite!
       expect(user.invitations_from_latest_revision).to match_array [inv1, inv2]
-      decision = phase.paper.decisions.create!
+      decision = paper.decisions.create!
       inv3 = FactoryGirl.create :invitation, task: task, invitee: user, decision: decision
       inv3.invite!
       expect(user.reload.invitations_from_latest_revision).to match_array [inv3]

@@ -29,8 +29,9 @@ class AttachmentsController < ApplicationController
 
   def update_attachment
     attachment = task.attachments.find(params[:id])
+    attachment.update_attribute(:status, 'processing')
     DownloadAdhocTaskAttachmentWorker.perform_async(attachment.id, params[:url])
-    respond_with attachment
+    render json: attachment
   end
 
   private

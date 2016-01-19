@@ -120,6 +120,7 @@ FactoryGirl.define do
         evaluator.task_params[:title] ||= "Ad Hoc"
         evaluator.task_params[:old_role] ||= "user"
         evaluator.task_params[:type] ||= "Task"
+        evaluator.task_params[:paper] ||= paper
 
         phase.tasks.create(evaluator.task_params)
         paper.reload
@@ -136,7 +137,7 @@ FactoryGirl.define do
         phase = create(:phase, paper: paper)
 
         # Authors
-        authors_task = FactoryGirl.create(:authors_task, phase: phase),
+        authors_task = FactoryGirl.create(:authors_task, paper: paper),
         author = FactoryGirl.create(:author, paper: paper, authors_task: authors_task)
         NestedQuestionableFactory.create(
           author,
@@ -172,7 +173,7 @@ FactoryGirl.define do
         )
 
         # Financial Disclosure
-        financial_task = create(:financial_disclosure_task, funders: [], phase: phase)
+        financial_task = create(:financial_disclosure_task, funders: [], paper: paper)
         NestedQuestionableFactory.create(
           financial_task,
           questions: [
@@ -186,7 +187,7 @@ FactoryGirl.define do
 
         # Competing interests
         NestedQuestionableFactory.create(
-          FactoryGirl.create(:competing_interests_task, phase: phase),
+          FactoryGirl.create(:competing_interests_task, paper: paper),
           questions: [
             {
               ident: 'competing_interests',
@@ -205,7 +206,7 @@ FactoryGirl.define do
 
         # data availability
         NestedQuestionableFactory.create(
-          FactoryGirl.create(:data_availability_task, phase: phase),
+          FactoryGirl.create(:data_availability_task, paper: paper),
           questions: [
             {
               ident: 'data_fully_available',
@@ -221,7 +222,7 @@ FactoryGirl.define do
         )
 
         NestedQuestionableFactory.create(
-          FactoryGirl.create(:production_metadata_task, phase: phase),
+          FactoryGirl.create(:production_metadata_task, paper: paper),
           questions: [
             {
               ident: 'publication_date',

@@ -98,4 +98,26 @@ class UserMailer < ActionMailer::Base
       to: @admin.email,
       subject: "New manuscript submitted to PLOS #{@journal.name}: \"#{@paper.display_title}\"")
   end
+
+  def notify_mention_in_discussion(user_id, topic_id, reply_id = nil)
+    @user = User.find(user_id)
+    @reply = DiscussionReply.find(reply_id) if reply_id
+    @topic = DiscussionTopic.find(topic_id)
+    @paper = Paper.find(@topic.paper.id)
+
+    mail(
+      to: @user.email,
+      subject: "You've been mentioned on the manuscript, \"#{@paper.title}\"")
+  end
+
+  def notify_added_to_topic(user_id, topic_id)
+    @user = User.find(user_id)
+    @topic = DiscussionTopic.find(topic_id)
+    @paper = Paper.find(@topic.paper.id)
+
+    mail(
+      to: @user.email,
+      subject: "You've been added to a conversation on the manuscript," \
+        "\"#{@paper.title}\"")
+  end
 end

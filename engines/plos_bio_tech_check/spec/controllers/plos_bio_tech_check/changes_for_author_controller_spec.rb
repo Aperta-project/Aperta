@@ -3,8 +3,14 @@ require 'rails_helper'
 describe PlosBioTechCheck::ChangesForAuthorController do
 
   let(:admin) { FactoryGirl.create :user, :site_admin, first_name: "Admin" }
-  let(:paper) { FactoryGirl.create(:paper_with_phases, :submitted, creator: admin) }
-  let(:task) { FactoryGirl.create :changes_for_author_task, phase: paper.phases.first, participants: [admin] }
+  let(:paper) { FactoryGirl.create(:paper, :submitted, creator: admin) }
+  let(:task) do
+    FactoryGirl.create(
+      :changes_for_author_task,
+      paper: paper,
+      participants: [admin]
+    )
+  end
 
   before do
     @routes = PlosBioTechCheck::Engine.routes

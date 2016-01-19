@@ -16,4 +16,18 @@ describe DiscussionTopic, type: :model do
       expect(DiscussionTopic.including(user).to_a).to contain_exactly(topic_a, topic_b)
     end
   end
+
+  describe "#has_participant?" do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:user2) { FactoryGirl.create(:user) }
+    let(:paper) { FactoryGirl.create(:paper) }
+    let(:topic_a) { paper.discussion_topics.create!(title: "Topic A") }
+
+    it "checks if a user is a participant" do
+      topic_a.discussion_participants.create!(user: user)
+
+      expect(topic_a.has_participant?(user)).to be(true)
+      expect(topic_a.has_participant?(user2)).to be(false)
+    end
+  end
 end

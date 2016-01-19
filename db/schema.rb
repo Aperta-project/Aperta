@@ -407,7 +407,7 @@ ActiveRecord::Schema.define(version: 20160114152935) do
   add_index "permissions_roles", ["role_id"], name: "index_permissions_roles_on_role_id", using: :btree
 
   create_table "phase_templates", force: :cascade do |t|
-    t.string   "name",                           limit: 255
+    t.string   "name"
     t.integer  "manuscript_manager_template_id"
     t.datetime "created_at"
     t.datetime "updated_at"

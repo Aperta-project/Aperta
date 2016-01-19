@@ -68,17 +68,11 @@
   {{/if}}
   <span class="{{if isSaving "button--disabled"}} paper-new-upload-button button-secondary button--green fileinput-button">
     <i class="fa fa-upload"></i> Upload Document
-    {{file-uploader id="upload-files"
-                    railsMethod="PUT"
-                    accept=".docx,.doc"
-                    uploadImmediately=false
-                    uploadReady="uploadReady"
-                    start="uploadStarted"
-                    progress="uploadProgress"
-                    done="uploadFinished"
-                    error="uploadError"
-                    filePrefix="paper/manuscript"
-                    disabled=isSaving
-                    url=manuscriptUploadUrl}}
+    {{s3-file-uploader elementId="upload-files"
+                       accept=".docx,.doc"
+                       filePath="paper/manuscript"
+                       fileAdded=(action "fileAdded")
+                       uploadFinished=(action "uploadFinished")
+                       uploadFailed=(action "uploadFailed")}}
   </span>
 </div>

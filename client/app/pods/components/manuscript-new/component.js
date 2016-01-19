@@ -1,10 +1,10 @@
 import Ember from 'ember';
-import FileUploadMixin from 'tahi/mixins/file-upload';
 import EscapeListenerMixin from 'tahi/mixins/escape-listener';
 
 const { computed } = Ember;
 
-export default Ember.Component.extend(FileUploadMixin, EscapeListenerMixin, {
+export default Ember.Component.extend(EscapeListenerMixin, {
+  restless: Ember.inject.service(),
   flash: Ember.inject.service(),
   journals: null,
   paper: null,
@@ -18,24 +18,7 @@ export default Ember.Component.extend(FileUploadMixin, EscapeListenerMixin, {
                 .text().length;
   }),
 
-  manuscriptUploadUrl: computed('paper.id', function() {
-    return '/api/papers/' + this.get('paper.id') + '/upload';
-  }),
-
   actions: {
-    createPaperWithUpload() {
-      if(this.get('isSaving')) { return; }
-
-      this.set('isSaving', true);
-
-      return this.get('paper').save().then(()=> {
-        this.get('uploadFunction')();
-      }, (response)=> {
-        this.set('isSaving', false);
-        this.get('flash').displayErrorMessagesFromResponse(response);
-      });
-    },
-
     selectJournal(journal) {
       this.set('paper.journal', journal);
       this.set('paper.paperType', null);
@@ -54,38 +37,25 @@ export default Ember.Component.extend(FileUploadMixin, EscapeListenerMixin, {
       this.set('paper.paperType', null);
     },
 
-    /**
-     *  Called by `file-uploader` in template
-     *  We're hanging on to the upload function to fire later
-     *  after the paper model is saved
-     *
-     *  @method uploadReady
-     *  @param {Function} [func] Function to trigger upload of file
-     *  @public
-    **/
-    uploadReady(func) {
-      this.set('uploadFunction', func);
-      this.send('createPaperWithUpload');
+    fileAdded(file){
+      this.set('isSaving', true);
     },
 
-    /**
-     *  Overrides action provided by FileUploadMixin
-     *  Called by `file-uploader` in template
-     *
-     *  @method uploadFinished
-     *  @param {Object} [data]
-     *  @param {String} [filename]
-     *  @public
-    **/
-    uploadFinished(data, filename) {
-      this.set('isSaving', false);
-      this.uploadFinished(data, filename);
-      this.attrs.complete(this.get('paper'));
+    uploadFinished(s3Url){
+      this.get('paper').save().then((paper) => {
+        const path = `/api/papers/${paper.id}/upload`;
+        this.get('restless').put(path, {url: s3Url}).then(() => {
+          this.attrs.complete(paper);
+        });
+      }, (response) => {
+        this.set('isSaving', false);
+        this.get('flash').displayErrorMessagesFromResponse(response);
+      });
     },
 
-    // TODO: need to handle errors from ihat
-    uploadError() {
+    uploadFailed(reason) {
       this.set('isSaving', false);
+      console.log(reason);
     },
 
     close() {

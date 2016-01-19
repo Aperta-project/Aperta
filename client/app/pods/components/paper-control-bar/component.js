@@ -1,16 +1,19 @@
 import Ember from 'ember';
 
+const { computed } = Ember;
+
 export default Ember.Component.extend({
   classNames: ['control-bar'],
   classNameBindings: ['submenuVisible:control-bar--sub-items-active'],
-  hasJournalLogo: Ember.computed.notEmpty('paper.journal.logoUrl'),
-  paperWithdrawn: Ember.computed.equal('paper.publishingState', 'withdrawn'),
+
+  hasJournalLogo: computed.notEmpty('paper.journal.logoUrl'),
+  paperWithdrawn: computed.equal('paper.publishingState', 'withdrawn'),
   submenuVisible: false,
   contributorsVisible: false,
   downloadsVisible: false,
   versionsVisible: false,
 
-  downloadLink: Ember.computed('paper.id', function() {
+  downloadLink: computed('paper.id', function() {
     return '/papers/' + this.get('paper.id') + '/download';
   }),
 

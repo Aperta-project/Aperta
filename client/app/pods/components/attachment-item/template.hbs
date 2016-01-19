@@ -1,31 +1,38 @@
 {{#if uploadInProgress}}
   {{upload-preview upload=fileUpload}}
 {{else}}
-  <a href="#" class="file-link">
-    <i class="fa {{fileTypeClass}}"></i> {{attachment.filename}}
-  </a>
 
-  <span {{action "triggerFileSelection"}} class="file-action">
-    <i class="fa fa-refresh"></i>
-    Replace
-  </span>
+  {{#if isProcessing}}
+    <div class="processing-attachment">
+      {{progress-spinner visible=true size="small"}} Processing {{attachment.filename}} ...
+    </div>
+  {{else}}
+    <a href="{{attachment.src}}" class="file-link" target="_blank">
+      <i class="fa {{fileTypeClass}}"></i> {{attachment.filename}}
+    </a>
 
-  <span {{action "deleteFile"}} class="file-action">
-    <i class="fa fa-trash"></i>
-    Delete
-  </span>
+    <span {{action "triggerFileSelection"}} class="file-action">
+      <i class="fa fa-refresh"></i>
+      Replace
+    </span>
 
-  {{#if hasCaption}}
-    {{input class="form-control " type="type" value=caption
-            placeholder="Please provide a brief description of this file"
-            action="captionChanged" on="focus-out"}}
+    <span {{action "deleteFile"}} class="file-action">
+      <i class="fa fa-trash"></i>
+      Delete
+    </span>
+
+    {{#if hasCaption}}
+      {{input class="form-control " type="type" value=caption
+              placeholder="Please provide a brief description of this file"
+              focus-out="captionChanged"}}
+    {{/if}}
+
+    {{s3-file-uploader accept=accept
+                       filePath=filePath
+                       class="s3-file-uploader"
+                       uploadProgress=(action "uploadProgress")
+                       uploadFinished=(action "uploadFinished")
+                       uploadFailed=(action "uploadFailed")
+                       fileAdded=(action "fileAdded")}}
   {{/if}}
-
-  {{s3-file-uploader accept=accept
-                     filePath=filePath
-                     class="s3-file-uploader"
-                     uploadProgress=(action "uploadProgress")
-                     uploadFinished=(action "uploadFinished")
-                     uploadFailed=(action "uploadFailed")
-                     fileAdded=(action "fileAdded")}}
 {{/if}}

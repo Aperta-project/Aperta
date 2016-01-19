@@ -287,6 +287,20 @@ ActiveRecord::Schema.define(version: 20160114152935) do
   add_index "nested_questions", ["parent_id"], name: "index_nested_questions_on_parent_id", using: :btree
   add_index "nested_questions", ["rgt"], name: "index_nested_questions_on_rgt", using: :btree
 
+  create_table "notifications", force: :cascade do |t|
+    t.integer  "paper_id"
+    t.integer  "user_id"
+    t.integer  "target_id"
+    t.string   "target_type"
+    t.integer  "parent_id"
+    t.string   "parent_type"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "notifications", ["paper_id"], name: "index_notifications_on_paper_id", using: :btree
+  add_index "notifications", ["target_id", "target_type"], name: "index_notifications_on_target_id_and_target_type", using: :btree
+  add_index "notifications", ["user_id"], name: "index_notifications_on_user_id", using: :btree
   create_table "old_roles", force: :cascade do |t|
     t.string   "name"
     t.integer  "journal_id"
@@ -608,4 +622,6 @@ ActiveRecord::Schema.define(version: 20160114152935) do
   add_foreign_key "discussion_participants", "users"
   add_foreign_key "discussion_replies", "discussion_topics"
   add_foreign_key "discussion_topics", "papers"
+  add_foreign_key "notifications", "papers"
+  add_foreign_key "notifications", "users"
 end

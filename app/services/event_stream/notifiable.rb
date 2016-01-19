@@ -18,7 +18,8 @@ module EventStream::Notifiable
       {
         action: action,
         record: self,
-        requester_socket_id: (RequestStore.store[:requester_pusher_socket_id] unless notify_requester)
+        requester_socket_id: (RequestStore.store[:requester_pusher_socket_id] unless notify_requester),
+        current_user_id: RequestStore.store[:requester_current_user_id]
       }
     end
 

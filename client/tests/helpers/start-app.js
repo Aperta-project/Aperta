@@ -69,5 +69,7 @@ export default function startApp(attrs) {
     application.injectTestHelpers();
   });
 
+  $.mockjax({url: /\/api\/notifications\/?/, status: 204});
+
   return application;
 }

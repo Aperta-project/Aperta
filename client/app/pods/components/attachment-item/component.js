@@ -28,6 +28,7 @@ export default Ember.Component.extend({
   hasCaption: false,
   fileUpload: null,
   caption: null,
+  isProcessing: Ember.computed.equal('attachment.status', 'processing'),
   uploadInProgress: Ember.computed.notEmpty('fileUpload'),
 
   fileTypeClass: Ember.computed('attachment.filename', function(){

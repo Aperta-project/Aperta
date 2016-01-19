@@ -4,6 +4,7 @@ describe EventStream::Notifiable do
 
   before do
     RequestStore.store[:requester_pusher_socket_id] = "test_socket"
+    RequestStore.store[:requester_current_user_id] = 1
   end
 
   describe "#notify" do
@@ -19,7 +20,8 @@ describe EventStream::Notifiable do
         event: "comment:created", data: {
           action: "created",
           record: model,
-          requester_socket_id: "test_socket"
+          requester_socket_id: "test_socket",
+          current_user_id: 1
         }
       )
       model.save!

@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
   has_many :discussion_replies, foreign_key: :replier_id, inverse_of: :replier, dependent: :destroy
   has_many :discussion_participants, inverse_of: :user, dependent: :destroy
   has_many :discussion_topics, through: :discussion_participants
+  has_many :notifications, inverse_of: :paper
 
   attr_accessor :login
 

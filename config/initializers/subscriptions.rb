@@ -13,4 +13,7 @@ Subscriptions.configure do
   add 'discussion_reply:created', DiscussionReply::Created::EmailPeopleMentioned
   add 'discussion_participant:created', \
       DiscussionParticipant::Created::EmailNewParticipant
+
+  add 'discussion_participant:created', Notification::Badger
+  add 'discussion_participant:destroyed', Notification::Unbadger
 end

@@ -14,7 +14,6 @@ describe LitePaperSerializer do
       expect(deserialized_content[:lite_paper])
         .to match(hash_including(title: /Feature Recognition from 2D Hints in \
 Extruded Solids/,
-                                 short_title: /Test Paper/,
                                  publishing_state: 'unsubmitted',
                                  editable: true,
                                  active: true))

@@ -255,23 +255,9 @@ class Paper < ActiveRecord::Base
     editors.first
   end
 
-  def answer_for(ident)
-    nested_question_answers.includes(:nested_question)
-      .find_by(nested_questions: { ident: ident })
-  end
-
   def short_title
     answer = answer_for('publishing_related_questions--short_title')
     answer ? answer.value : ''
-  end
-
-  def short_title=(value)
-    question = NestedQuestion.find_by(
-      ident: 'publishing_related_questions--short_title')
-    answer = nested_question_answers.find_or_build(
-      nested_question: question
-    )
-    answer.update(value: value)
   end
 
   def latest_withdrawal_reason
@@ -359,6 +345,11 @@ class Paper < ActiveRecord::Base
   end
 
   private
+
+  def answer_for(ident)
+    nested_question_answers.includes(:nested_question)
+      .find_by(nested_questions: { ident: ident })
+  end
 
   def new_major_version!
     latest_version.new_major_version!

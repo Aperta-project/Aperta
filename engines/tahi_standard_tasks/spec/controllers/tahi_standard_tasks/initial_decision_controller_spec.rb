@@ -25,7 +25,6 @@ describe TahiStandardTasks::InitialDecisionController do
     context 'Paper in a submitted state, with a valid Decision' do
       let(:paper) do
         FactoryGirl.create(:paper, :initially_submitted,
-                           short_title: 'Initially Submitted Paper',
                            title: 'Science - the Complete Works',
                            journal: journal,
                            creator: admin)

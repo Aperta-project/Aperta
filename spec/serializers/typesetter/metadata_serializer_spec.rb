@@ -3,7 +3,12 @@ require 'rails_helper'
 describe Typesetter::MetadataSerializer do
   subject(:serializer) { described_class.new(paper) }
   let(:output) { serializer.serializable_hash }
-  let(:paper) { FactoryGirl.create(:paper_with_phases) }
+  let(:paper) do
+    FactoryGirl.create(
+      :paper_with_phases,
+      :with_short_title,
+      short_title: 'my paper short')
+  end
   let(:metadata_tasks) do
     [
       FactoryGirl.create(:competing_interests_task, paper: paper),
@@ -30,7 +35,6 @@ describe Typesetter::MetadataSerializer do
   end
 
   it 'has short_title' do
-    paper.short_title = 'my paper short'
     expect(output[:short_title]).to eq('my paper short')
   end
 

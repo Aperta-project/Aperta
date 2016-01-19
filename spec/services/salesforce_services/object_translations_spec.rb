@@ -50,7 +50,6 @@ describe SalesforceServices::ObjectTranslations do
     paper = FactoryGirl.create :paper_with_task, {
       creator: FactoryGirl.create(:user, { first_name: 'lou', last_name: 'prima', email: 'pfa@pfa.com' }),
       journal: FactoryGirl.create(:journal, :with_doi, { name: 'journal name' }),
-      short_title: "my title",
       task_params: { title: "Billing", type: "PlosBilling::BillingTask", old_role: "author" }
     }
     make_questions paper

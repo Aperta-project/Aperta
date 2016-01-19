@@ -1,7 +1,29 @@
 require 'rails_helper'
 
 describe PapersController do
-  let(:permitted_params) { [:short_title, :title, :abstract, :body, :paper_type, :decision, :decision_letter, :journal_id, {authors: [:first_name, :last_name, :affiliation, :email], reviewer_ids: [], phase_ids: [], figure_ids: [], assignee_ids: [], editor_ids: []}] }
+  let(:permitted_params) do
+    [
+      :title,
+      :abstract,
+      :body,
+      :paper_type,
+      :decision,
+      :decision_letter,
+      :journal_id, {
+        authors: [
+          :first_name,
+          :last_name,
+          :affiliation,
+          :email
+        ],
+        reviewer_ids: [],
+        phase_ids: [],
+        figure_ids: [],
+        assignee_ids: [],
+        editor_ids: []
+      }
+    ]
+  end
 
   let(:user) { create :user, :site_admin }
 
@@ -112,7 +134,6 @@ describe PapersController do
 
     subject(:do_request) do
       post :create, { paper: { title: new_title,
-                               short_title: 'ABC101',
                                journal_id: journal.id,
                                paper_type: journal.paper_types.first },
                                format: :json }
@@ -125,7 +146,7 @@ describe PapersController do
 
       it "saves a new paper record" do
         do_request
-        expect(Paper.where(short_title: 'ABC101').count).to eq(1)
+        expect(Paper.where(title: new_title).count).to eq(1)
       end
 
       it "returns a 201 and the paper's id in json" do
@@ -135,7 +156,7 @@ describe PapersController do
       end
 
       it "renders the errors for the paper if it can't be saved" do
-        post :create, paper: { short_title: '', journal_id: journal.id },
+        post :create, paper: { journal_id: journal.id },
                       format: :json
 
         expect(response.status).to eq(422)
@@ -162,7 +183,10 @@ describe PapersController do
     let(:params) { {} }
     let(:new_title) { 'A title' }
     subject(:do_request) do
-      put :update, { id: paper.to_param, format: :json, paper: { title: new_title, short_title: 'ABC101' }.merge(params) }
+      put :update,
+          id: paper.to_param,
+          format: :json,
+          paper: { title: new_title }.merge(params)
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -171,7 +195,7 @@ describe PapersController do
       expect_policy_enforcement
       it "updates the paper" do
         do_request
-        expect(paper.reload.short_title).to eq('ABC101')
+        expect(paper.reload.title).to eq(new_title)
       end
 
       it "creates an Activity" do
@@ -182,8 +206,7 @@ describe PapersController do
         put :update, { id: paper.to_param,
                        format: :json,
                        paper: {
-                         title: new_title,
-                         short_title: 'ABC101' }.merge(params) }
+                         title: new_title }.merge(params) }
       end
 
       it "will not update the body if it is nil" do

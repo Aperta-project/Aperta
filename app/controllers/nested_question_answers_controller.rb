@@ -25,6 +25,7 @@ class NestedQuestionAnswersController < ApplicationController
     answer = fetch_answer
     answer.value = answer_params[:value]
     answer.additional_data = answer_params[:additional_data]
+    answer.save!
     answer
   end
 

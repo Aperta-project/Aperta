@@ -188,10 +188,14 @@ DESC
     end
 
     it 'includes the paper when filtering for authorization if
-        participates_only is set to true' do
+        participates_only is set to true or false' do
       expect(
         user.filter_authorized(:view, Authorizations::FakePaper.all,
                                participations_only: false).objects
+      ).to include(paper)
+      expect(
+        user.filter_authorized(:view, Authorizations::FakePaper.all,
+                               participations_only: true).objects
       ).to include(paper)
     end
   end

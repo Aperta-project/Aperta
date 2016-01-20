@@ -26,11 +26,12 @@ export default CanService.extend({
     }
 
     ability.set('action', abilityString);
-    var permission = this.store.all('permission').objectAt(0);
+    var permissionId = resource.constructor.typeKey + '+' + resource.id;
+    var permission = this.store.find('permission', permissionId);
 
     Ember.assert('No Permission provided. Permission must be set', permission);
 
-    ability.set('data', permission.get('table'));
+    ability.set('data', permission.get('permissions'));
 
     return ability;
   },

@@ -28,6 +28,10 @@ module TahiHelperMethods
     paper.reload
   end
 
+  def assign_author_role(paper, creator)
+    DefaultAuthorCreator.new(paper, creator).create!
+  end
+
   def assign_journal_role(journal, user, role_or_type)
     if role_or_type.is_a?(OldRole)
       old_role = role_or_type

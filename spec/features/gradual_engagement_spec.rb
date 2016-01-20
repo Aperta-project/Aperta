@@ -46,6 +46,7 @@ feature 'Gradual Engagement', js: true do
                                    :with_tasks,
                                    creator: user,
                                    gradual_engagement: true
+        assign_author_role(paper, user)
         visit "/papers/#{paper.id}"
         expect(find('#submission-process-toggle-box'))
           .to have_content(paper.journal.name)
@@ -79,6 +80,7 @@ feature 'Gradual Engagement', js: true do
                         creator: user,
                         publishing_state: :invited_for_full_submission,
                         gradual_engagement: true
+        assign_author_role(paper, user)
         visit "/papers/#{paper.id}"
         expect(find('#submission-process-toggle-box'))
           .to have_content(paper.journal.name)
@@ -98,6 +100,7 @@ feature 'Gradual Engagement', js: true do
                                    creator: user,
                                    publishing_state: :in_revision,
                                    gradual_engagement: true
+        assign_author_role(paper, user)
         visit "/papers/#{paper.id}"
         expect(find('.gradual-engagement-presubmission-messaging'))
           .to have_content('Please provide the following information to submit

@@ -20,6 +20,7 @@ feature 'Viewing Versions:', js: true do
     let(:version_1) { paper.versioned_texts.version_desc.first }
 
     before do
+      assign_author_role(paper, user)
       paper.reload
       login_as(user, scope: :user)
       visit '/'

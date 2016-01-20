@@ -9,6 +9,8 @@ feature "Invite Editor", js: true do
   before do
     assign_journal_role(paper.journal, admin, :editor)
     assign_journal_role(paper.journal, editor, :editor)
+    # Remove when site_admin has access to everything
+    assign_author_role(paper, admin)
 
     login_as(admin, scope: :user)
     visit "/"

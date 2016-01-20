@@ -117,7 +117,6 @@ FactoryGirl.define do
         role.ensure_permission_exists(:view, applies_to: 'Task')
         role.ensure_permission_exists(:view, applies_to: 'Paper')
       end
-      DefaultAuthorCreator.new(paper, paper.creator).create!
       paper.decisions.create!
 
       paper.body = evaluator.body

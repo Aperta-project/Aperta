@@ -10,10 +10,9 @@ Subscriptions.configure do
   add 'paper:initially_submitted', Paper::Submitted::SnapshotMetadata
   add 'paper:resubmitted', Paper::Resubmitted::EmailEditor
 
-  add 'discussion_reply:created', DiscussionReply::Created::EmailPeopleMentioned
+  add 'discussion_reply:created', \
+    DiscussionReply::Created::EmailPeopleMentioned, DiscussionReply::Created::NotifyPeopleMentioned
   add 'discussion_participant:created', \
-      DiscussionParticipant::Created::EmailNewParticipant
-
-  add 'discussion_participant:created', Notification::Badger
+      DiscussionParticipant::Created::EmailNewParticipant, Notification::Badger
   add 'discussion_participant:destroyed', Notification::Unbadger
 end

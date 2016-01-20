@@ -76,6 +76,8 @@ export default Ember.Service.extend(Ember.Evented, {
   **/
 
   _persistRemoval(ids) {
+    if(isEmpty(ids)) { return; }
+
     this.get('restless')
         .delete('/api/notifications/destroy?ids=' + ids.toString()).then(()=> {
           this.removeNotificationsFromStoreById(ids);

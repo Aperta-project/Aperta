@@ -455,21 +455,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     paper_title = self._get(self._paper_title).text
     return paper_title
 
-  def edit_paper_title(self):
-    """
-    Returns the encoded paper title as it appears on the manuscript_viewer page
-    :return: paper_title
-    """
-    paper_title = self._get(self._paper_title)
-    original_paper_title = paper_title.text
-    self._actions.click(paper_title).perform()
-    self._actions.send_keys(10 * u'\ue015').perform()
-    time.sleep(.5)
-    self._actions.send_keys_to_element(paper_title, ' edited' + u'\ue004').perform()
-    new_paper_title = self._get(self._paper_title)
-    assert new_paper_title.text == original_paper_title + ' edited', \
-        new_paper_title.text + ' != ' + original_paper_title + ' edited'
-
   def click_submit_btn(self):
     """Press the submit button"""
     self._get(self._submit_button).click()

@@ -125,8 +125,6 @@ class InitialDecisionCardTest(CommonTest):
     # open Image card
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     time.sleep(1)
-    manuscript_page.edit_paper_title()
-    time.sleep(1)
     manuscript_page.click_task('Figures')
     # test if editable
     figures_card = FiguresCard(self.getDriver())

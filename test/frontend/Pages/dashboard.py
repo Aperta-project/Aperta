@@ -69,6 +69,7 @@ class DashboardPage(AuthenticatedPage):
     self._view_invites_close = (By.CLASS_NAME, 'overlay-close-x')
 
     # Create New Submission Modal
+    self._cns_base_overlay_div = (By.CSS_SELECTOR, 'div.overlay--fullscreen')
     self._cns_error_div = (By.CLASS_NAME, 'flash-messages')
     self._cns_error_message = (By.CLASS_NAME, 'flash-message-content')
     self._cns_title_field = (By.XPATH, './/div[@id="new-paper-title"]/div')
@@ -145,7 +146,10 @@ class DashboardPage(AuthenticatedPage):
     return title
 
   def click_on_first_manuscript(self):
-    """Click on first available manuscript link"""
+    """
+    Click on first available manuscript link
+    :return: String with manuscript title
+    """
     first_article_link = self._get(self._first_paper)
     first_article_link.click()
     return first_article_link.text
@@ -157,7 +161,6 @@ class DashboardPage(AuthenticatedPage):
   def validate_initial_page_elements_styles(self):
     """
     Validates the static page elements existence and styles
-    :return: None
     """
     cns_btn = self._get(self._dashboard_create_new_submission_btn)
     assert cns_btn.text.lower() == 'create new submission'
@@ -167,7 +170,6 @@ class DashboardPage(AuthenticatedPage):
     """
     Validates the "view invites" stanza and function if present
     :param username: username
-    :return: None
     """
     invitation_count = self.is_invite_stanza_present(username)
     if invitation_count > 0:
@@ -423,7 +425,6 @@ class DashboardPage(AuthenticatedPage):
   def click_upload_button(self):
     """Click create button"""
     self._get(self._upload_btn).click()
-    self._actions.send_keys(Keys.ESCAPE)
 
   def close_cns_overlay(self):
     """Click X link"""
@@ -600,3 +601,7 @@ class DashboardPage(AuthenticatedPage):
     # Temporarily commented out per ticket APERTA-5413
     # assert 'Title can\'t be blank' in errors
     closer.click()
+
+  def return_cns_base_overlay_div(self):
+    """Method for debbuging purposes only"""
+    return self._get(self._cns_base_overlay_div)

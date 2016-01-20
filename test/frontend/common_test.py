@@ -74,6 +74,7 @@ class CommonTest(FrontEndTest):
     else:
       fn = os.path.join(os.getcwd(),'frontend/assets/docs/{}'.format(doc))
     logging.info('Sending document: {}'.format(fn))
+    time.sleep(1)
     self._driver.find_element_by_id('upload-files').send_keys(fn)
     dashboard.click_upload_button()
     # Time needed for script execution.

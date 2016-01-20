@@ -120,7 +120,7 @@ class ViewPaperTest(CommonTest):
       AC#7 on hold until APERTA-5718 is fixed.
       AC#10 on hold until APERTA-5725 is fixed
     """
-    print('Logging in as user: {}'.format(au_login))
+    logging.info('Logging in as user: {}'.format(au_login))
     login_page = LoginPage(self.getDriver())
     login_page.enter_login_field(au_login['user'])
     login_page.enter_password_field(login_valid_pw)
@@ -141,13 +141,6 @@ class ViewPaperTest(CommonTest):
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # Note: Request title to make sure the required page is loaded
-    try:
-      manuscript_page.get_paper_title_from_page()
-    except ElementDoesNotExistAssertionError:
-      logging.info('Problem with uploading of {}'.format(title))
-      # May be an upload problem. Try uploading again
-      dashboard_page.click_upload_button()
-      time.sleep(5)
     paper_url = manuscript_page.get_current_url()
     logging.info('The paper ID of this newly created paper is: {}'.format(paper_url))
     paper_id = paper_url.split('papers/')[1]
@@ -253,6 +246,7 @@ class ViewPaperTest(CommonTest):
     dashboard_page.go_to_manuscript(paper_id)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     #AC8: Message for full submission when is ready for submition
+    time.sleep(2)
     assert  "Your manuscript is ready for Full Submission." in \
       manuscript_page.get_submission_status_info_text(), \
       manuscript_page.get_submission_status_info_text()

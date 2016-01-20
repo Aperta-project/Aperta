@@ -15,6 +15,7 @@ module TahiHelperMethods
     paper_admin_task.save!
   end
 
+  # OLD ROLES
   def make_user_paper_editor(user, paper)
     assign_paper_role(paper, user, PaperRole::EDITOR)
   end
@@ -28,8 +29,17 @@ module TahiHelperMethods
     paper.reload
   end
 
+  # NEW ROLES
   def assign_author_role(paper, creator)
     DefaultAuthorCreator.new(paper, creator).create!
+  end
+
+  def assign_reviewer_role(paper, reviewer)
+    Assignment.create(
+      user: reviewer,
+      role: Role.where(name: 'Reviewer').first,
+      assigned_to: paper
+    )
   end
 
   def assign_journal_role(journal, user, role_or_type)

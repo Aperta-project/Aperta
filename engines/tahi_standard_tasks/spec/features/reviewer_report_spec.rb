@@ -22,6 +22,8 @@ feature "Reviewer filling out their reviewer report", js: true do
     manuscript_page = dashboard_page.view_submitted_paper paper
     overlay = Page.view_task_overlay(paper, task)
     overlay.paper_reviewers = [reviewer1]
+    assign_reviewer_role(paper, reviewer1)
+
     manuscript_page.sign_out
 
     # Accept invitation

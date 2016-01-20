@@ -101,6 +101,12 @@ DESC
     is FALSE
   DESC
 
+    let(:participations_only) { :default }
+    let(:filtered) do
+      user.filter_authorized(:view, target,
+                             participations_only: participations_only).objects
+    end
+
     before do
       assign_user user, to: paper, with_role: role_author
       expect(Authorizations::FakePaper.column_names).to_not \
@@ -112,17 +118,49 @@ DESC
       expect(user.can?(:view, paper)).to be(true)
     end
 
-    it 'does not includes the paper when filtering for authorization' do
-      expect(
-        user.filter_authorized(:view, Authorizations::FakePaper.all).objects
-      ).to_not include(paper)
+    context 'ActiveRecord::Base class passed in as target' do
+      let(:target) { Authorizations::FakePaper }
+
+      it 'does not include the paper when filtering for authorization' do
+        expect(filtered).to_not include(paper)
+      end
+
+      context 'participations_only overridden (=false)' do
+        let(:participations_only) { false }
+        it 'includes the paper when filtering for authorization' do
+          expect(filtered).to include(paper)
+        end
+      end
     end
 
-    it 'does include the paper when filtering for authorization if participates_only is set to true' do
-      expect(
-        user.filter_authorized(:view, Authorizations::FakePaper.all,
-                               participations_only: false).objects
-      ).to include(paper)
+    context 'ActiveRecord::Relation passed in as target' do
+      let(:target) { Authorizations::FakePaper.all }
+
+      it 'does not includes the paper when filtering for authorization' do
+        expect(filtered).to_not include(paper)
+      end
+
+      context 'participations_only overridden (=false)' do
+        let(:participations_only) { false }
+        it 'includes the paper when filtering for authorization' do
+          expect(filtered).to include(paper)
+        end
+      end
+    end
+
+    context 'ActiveRecord::Base instance passed in as target' do
+      let(:target) { paper }
+
+      it 'includes the paper when filtering for authorization by default' do
+        expect(filtered).to include(paper)
+      end
+
+      context 'participations_only overridden (=true)' do
+        let(:participations_only) { true }
+        it 'does not include the paper when filtering for authorization' do
+          expect(filtered).to_not include(paper)
+        end
+      end
     end
   end
 
@@ -149,7 +187,8 @@ DESC
       ).to include(paper)
     end
 
-    it 'does include the paper when filtering for authorization if participates_only is set to true' do
+    it 'includes the paper when filtering for authorization if
+        participates_only is set to true' do
       expect(
         user.filter_authorized(:view, Authorizations::FakePaper.all,
                                participations_only: false).objects

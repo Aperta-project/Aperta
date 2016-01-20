@@ -143,7 +143,7 @@ DESC
       expect(user.can?(:view, paper)).to be(true)
     end
 
-    it 'does not includes the paper when filtering for authorization' do
+    it 'includes the paper when filtering for authorization' do
       expect(
         user.filter_authorized(:view, Authorizations::FakePaper.all).objects
       ).to include(paper)

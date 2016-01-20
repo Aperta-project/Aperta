@@ -11,4 +11,8 @@ class DiscussionTopic < ActiveRecord::Base
   def self.including(user)
     includes(:discussion_participants).where(discussion_participants: { user_id: user.id })
   end
+
+  def has_participant?(user)
+    participants.include? user
+  end
 end

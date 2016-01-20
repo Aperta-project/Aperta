@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  eventBus: Ember.inject.service('event-bus'),
   /**
    *  jquery selector for elements that should be sticky
    *
@@ -33,41 +34,56 @@ export default Ember.Component.extend({
 
   _teardown: Ember.on('willDestroyElement', function() {
     this.$().off('scroll.' + this.elementId);
+    $(window).off('resize.' + this.elementId);
+    this.get('eventBus').unsubscribe('split-pane-resize', this);
   }),
 
   _setup: Ember.on('didInsertElement', function() {
-    const sectionSelector = this.get('sectionSelector');
-    const stickySelector  = this.get('stickySelector');
-    const position = this._position;
+    const position = this._positionAll.bind(this);
 
     Ember.run.scheduleOnce('afterRender', ()=> {
-      const sections = this.$().find(sectionSelector);
-
       // Note: This element needs to be scrollable!
       this.$().on('scroll.' + this.elementId, function() {
-        sections.each(function() {
-          const section = $(this);
-          const sticky  = section.find(stickySelector);
-          position(section, sticky);
-        });
+        position();
+      });
+
+      $(window).on('resize.' + this.elementId, function() {
+        position();
+      });
+
+      this.get('eventBus').subscribe('split-pane-resize', this, function() {
+        position();
       });
     });
   }),
 
-  _position(section, sticky) {
+  _positionAll() {
+    const sections = this.$(this.get('sectionSelector'));
+    const position = this._positionSingle;
+    const stickySelector = this.get('stickySelector');
+
+    sections.each(function() {
+      const stickyElement = $(this).find(stickySelector);
+      position($(this), stickyElement);
+    });
+  },
+
+  _positionSingle(section, stickyElement) {
     const amountAboveTop = section.position().top;
 
     if(amountAboveTop > 0) {
-      sticky.css('top', '');
+      stickyElement.css('top', '');
       return;
     }
 
     const top = amountAboveTop * -1,
-          height = section.outerHeight(),
-          stickyHeight = sticky.outerHeight(),
-          noRoomForSticky = (height + amountAboveTop) < stickyHeight,
-          Y = (noRoomForSticky ? top - (top-height) - stickyHeight : top);
+          sectionHeight = section.outerHeight(),
+          stickyHeight = stickyElement.outerHeight(),
+          noRoomForSticky = (sectionHeight + amountAboveTop) < stickyHeight;
 
-    sticky.css('top', Y);
+    stickyElement.css(
+      'top',
+      noRoomForSticky ? top - (top-sectionHeight) - stickyHeight : top
+    );
   }
 });

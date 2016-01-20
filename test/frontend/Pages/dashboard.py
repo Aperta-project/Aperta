@@ -570,7 +570,7 @@ class DashboardPage(AuthenticatedPage):
     self._get(self._cns_manuscript_subscript_icon)
     journal_chooser_label = self._get(self._cns_journal_chooser_label)
     assert 'What journal are you submitting to?' in journal_chooser_label.text, journal_chooser_label.text
-    journal_chooser = self._get(self._cns_journal_chooser)
+    journal_chooser = self._get(self._cns_journal_chooser_dd)
     assert 'Select a journal' in journal_chooser.text, journal_chooser.text
     paper_type_chooser_label = self._get(self._cns_paper_type_chooser_label)
     assert "Choose the type of paper you're submitting" in paper_type_chooser_label.text, paper_type_chooser_label.text

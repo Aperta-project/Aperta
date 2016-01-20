@@ -8,24 +8,32 @@ export default NestedQuestionComponent.extend({
     return this.get('model.answer.attachments');
   }),
 
+  // Do not propagate to parent component as this component is in charge
+  // of saving itself (otherwise the parent component may issue another
+  // attempt to save the attachment).
+  change: function(){
+    return false;
+  },
+
   actions: {
     updateAttachment(s3Url, file, attachment) {
-      if(attachment){
-        attachment.setProperties({
-          src: s3Url,
-          filename: file.name
-        });
-        attachment.save();
+      Ember.assert(s3Url, "Must provide an s3Url");
+      Ember.assert(file, "Must provide a file");
+
+      if(!attachment){
+        attachment = this.container.lookup("store:main").createRecord("question-attachment");
+        this.get('model.answer.attachments').addObject(attachment);
       }
-      else {
-        let attachments = this.get('model.answer.attachments');
-        var a = this.container.lookup("store:main").createRecord("question-attachment", {
-          src: s3Url,
-          filename: file.name
-        });
-        attachments.addObject(a);
-        a.save();
-      }
+      attachment.setProperties({
+        src: s3Url,
+        filename: file.name
+      });
+      attachment.save();
+    },
+
+    updateAttachmentTitle(title, attachment) {
+      attachment.set('title', title);
+      attachment.save();
     },
 
     deleteAttachment(attachment){

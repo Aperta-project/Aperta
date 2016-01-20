@@ -25,8 +25,13 @@ class ReviewerReportTaskCreator
         title: "Review by #{assignee.full_name}"
       )
 
-      ParticipationFactory.create(task: task, assignee: assignee)
-      ParticipationFactory.create(task: task, assignee: paper.editor) if paper.editor.present?
+      ParticipationFactory.create(task: task, assignee: assignee, notify: false)
+      ParticipationFactory.create(task: task, assignee: paper.editor) if
+        paper.editor.present?
+      TahiStandardTasks::ReviewerMailer
+        .welcome_reviewer(assignee_id: assignee.id,
+                          task_id: task.id)
+        .deliver_now
     else
       existing_reviewer_report_task.first.incomplete!
     end

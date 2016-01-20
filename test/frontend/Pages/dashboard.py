@@ -86,6 +86,7 @@ class DashboardPage(AuthenticatedPage):
     self._cns_paper_type_chooser_label = (By.XPATH, "//div[@class='overlay-body']/div/div[4]/label")
     self._cns_paper_type_chooser = (By.ID, 'paper-new-paper-type-select')
     self._cns_journal_chooser_dd = (By.ID, 'paper-new-journal-select')
+    self._cns_journal_chooser_placeholder = (By.CLASS_NAME, 'ember-power-select-placeholder')
     self._cns_journal_chooser_active = (By.CLASS_NAME, 'select-box-element--active')
     self._cns_chooser_chosen = (By.CLASS_NAME, 'select-box-item')
     self._cns_chooser_dropdown_arrow = (By.CLASS_NAME, 'select2-arrow')
@@ -436,12 +437,9 @@ class DashboardPage(AuthenticatedPage):
     journal: Title of the journal
     paper_type: Paper type
     """
-    #div = self._get(self._cns_journal_chooser_dd)
     journal_dd, type_dd = self._gets((By.CLASS_NAME, 'ember-basic-dropdown-trigger'))
     journal_dd.click()
     time.sleep(.5)
-    #div.find_element_by_class_name('select-box-element').click()
-    #parent_div.find_element_by_class_name('ember-power-select-optionss')
     parent_div = self._get((By.ID, 'ember-basic-dropdown-wormhole'))
 
     #for item in self._gets((By.CLASS_NAME, 'select-box-item')):
@@ -570,7 +568,7 @@ class DashboardPage(AuthenticatedPage):
     self._get(self._cns_manuscript_subscript_icon)
     journal_chooser_label = self._get(self._cns_journal_chooser_label)
     assert 'What journal are you submitting to?' in journal_chooser_label.text, journal_chooser_label.text
-    journal_chooser = self._get(self._cns_journal_chooser_dd)
+    journal_chooser = self._get(self._cns_journal_chooser_placeholder)
     assert 'Select a journal' in journal_chooser.text, journal_chooser.text
     paper_type_chooser_label = self._get(self._cns_paper_type_chooser_label)
     assert "Choose the type of paper you're submitting" in paper_type_chooser_label.text, paper_type_chooser_label.text

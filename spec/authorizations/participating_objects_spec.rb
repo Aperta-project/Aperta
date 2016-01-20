@@ -27,7 +27,9 @@ DESC
   before(:all) do
     Authorizations.reset_configuration
     AuthorizationModelsSpecHelper.create_db_tables
+  end
 
+  before(:each) do
     ActiveRecord::Schema.define do
       add_column(
         :roles,
@@ -40,7 +42,7 @@ DESC
     Role.reset_column_information
   end
 
-  after(:all) do
+  after(:each) do
     ActiveRecord::Schema.define do
       remove_column :roles, :participates_in_fake_papers
     end

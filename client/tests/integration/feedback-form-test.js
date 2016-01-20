@@ -29,16 +29,33 @@ module('Integration: Feedback Form', {
 });
 
 test('clicking the feedback button sends feedback', function(assert) {
-  visit('/profile');
-  click('#profile-dropdown-menu');
-  click('a:contains(Give Feedback on)');
-  fillIn('.overlay textarea', 'My feedback');
-  click('.overlay-footer-content .button-primary');
+  Ember.run(function(){
 
-  andThen(function() {
-    assert.ok(
-      find('.feedback-overlay-thanks').length,
-      'Thank you message visible'
-    );
+    var store = getStore();
+    store.createRecord('permission',{
+      table: [
+        {
+          object:{id: 1, type: 'User'},
+          permissions:{
+            view_profile:{
+              states: ['*']
+            }
+          }
+        }
+      ]
+    });
+    
+    visit('/profile');
+    click('#profile-dropdown-menu');
+    click('a:contains(Give Feedback on)');
+    fillIn('.overlay textarea', 'My feedback');
+    click('.overlay-footer-content .button-primary');
+
+    andThen(function() {
+      assert.ok(
+        find('.feedback-overlay-thanks').length,
+        'Thank you message visible'
+      );
+    });
   });
 });

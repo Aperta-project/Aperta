@@ -23,7 +23,7 @@ module AuthorizationSpecHelper
   end
 
   def assign_user(user, to:, with_role:)
-    user.assignments.create(assigned_to: to, role: with_role)
+    user.assignments.where(assigned_to: to, role: with_role).first_or_create
   end
 
   def count_queries(message, &blk)

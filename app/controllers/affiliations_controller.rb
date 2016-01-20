@@ -1,4 +1,6 @@
 class AffiliationsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     query = params.get(:query)
     if not query

@@ -18,7 +18,6 @@ module 'Integration: Pusher',
     store = getStore()
     route = getContainer().lookup('route:application')
     route.router = null # this is needed for ember integration testing when calling internal methods
-
     return null # hangs if we return app, so return null
 
 test 'action:created calls fetchById', (assert) ->

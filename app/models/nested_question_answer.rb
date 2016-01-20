@@ -1,4 +1,7 @@
 class NestedQuestionAnswer < ActiveRecord::Base
+  SUPPORTED_VALUE_TYPES = ::NestedQuestion::SUPPORTED_VALUE_TYPES
+  VALUE_REQUIRED_FOR_TYPES = ::NestedQuestion::VALUE_REQUIRED_FOR_TYPES
+
   TRUTHY_VALUES_RGX = /^(t|true|y|yes|1)/i
   YES = "Yes"
   NO = "No"
@@ -10,8 +13,8 @@ class NestedQuestionAnswer < ActiveRecord::Base
   belongs_to :owner, polymorphic: true
   has_many :attachments, dependent: :destroy, class_name: 'QuestionAttachment'
 
-  validates :value_type, presence: true, inclusion: { in: ::NestedQuestion::SUPPORTED_VALUE_TYPES }
-  validates :value, presence: true, if: -> (answer) { answer.value.nil? }
+  validates :value_type, presence: true, inclusion: { in: SUPPORTED_VALUE_TYPES }
+  validates :value, presence: true, if: :value_is_required?
 
   validate :verify_from_owner
 
@@ -43,6 +46,10 @@ class NestedQuestionAnswer < ActiveRecord::Base
   end
 
   private
+
+  def value_is_required?
+    VALUE_REQUIRED_FOR_TYPES.include?(value_type) && value.nil?
+  end
 
   def verify_from_owner
     return if disable_owner_verification

@@ -8,5 +8,21 @@ namespace :'roles-and-permissions' do
         states: ['*']
       )
     end
+
+    Role.ensure_exists('Author') do |role|
+      role.ensure_permission_exists(
+        :withdraw_manuscript,
+        applies_to: 'Paper',
+        states: ['*']
+      )
+    end
+
+    Role.ensure_exists('JournalStaff') do |role|
+      role.ensure_permission_exists(
+        :withdraw_manuscript,
+        applies_to: 'Paper',
+        states: ['*']
+      )
+    end
   end
 end

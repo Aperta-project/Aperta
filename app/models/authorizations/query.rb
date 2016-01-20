@@ -29,7 +29,6 @@ module Authorizations
       @permission = permission.to_sym
       @user = user
       @target = target
-      @specific_ids = nil
       @participations_only = participations_only
 
       # we're looking for everything, e.g. Task got passed in
@@ -40,7 +39,6 @@ module Authorizations
       # we're looking for a specific object, e.g. Task.first got passed in
       elsif target.is_a?(ActiveRecord::Base)
         @klass = target.class
-        @specific_ids = [@target.id]
         @participations_only = false if @participations_only == :default
 
       # we're looking for a set of objects with a pre-existing query, e.g. Task.where(name: "Bar") got passed in
@@ -51,7 +49,6 @@ module Authorizations
       # we're looking for a specific of objects e.g. [Task.first, Task.last] got passed in
       elsif target.is_a?(Array)
         @klass = target.first.class
-        @specific_ids = @target.map(&:id)
         @participations_only = false if @participations_only == :default
       end
     end

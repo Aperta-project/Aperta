@@ -17,13 +17,3 @@ moduleForComponent('manuscript-new', 'Unit: Manuscript New Component', {
     c = null;
   }
 });
-
-test('it returns correct title count', function(assert) {
-  c.set('paper.title', 'Test');
-  assert.equal(c.get('titleCharCount'), 4, 'Char count is correct');
-});
-
-test('it returns correct title count with html', function(assert) {
-  c.set('paper.title', '<p>Test</p>');
-  assert.equal(c.get('titleCharCount'), 4, 'Char count is correct');
-});

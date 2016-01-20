@@ -16,12 +16,11 @@
                          textClassNames=""
                          disabled=isSubmissionTaskNotEditable}}
         <br>
-        {{nested-question-uploader ident="publishing_related_questions--published_elsewhere--upload_related_work"
-                         owner=task
-                         displayContent=selected.yes
-                         updateStore="updateStore"
-                         accept=".docx,.pdf"
-                         disabled=isSubmissionTaskNotEditable}}
+        {{nested-question-uploader-manager model=publishedElsewhereRelatedWorkQuestion
+                         buttonText="upload file"
+                         description="We encourage authors to comply with the <a href='http://www.nc3rs.org.uk/arrive-guidelines' target='_blank'> Animal Research: Reporting In Vivo Experiments (ARRIVE) guidelines</a>, developed by the NationalCentro for the Replacement, Refinement &amp; Reduction of Animals in Research (NC3Rs). If you have an ARRIVE checklist, please upload it here:"
+                         multiple=true
+                         owner=task}}
       </div>
     {{/nested-question-radio}}
     </li>

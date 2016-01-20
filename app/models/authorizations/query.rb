@@ -25,7 +25,7 @@ module Authorizations
     #                         specified, it depends on the target passed in. For
     #                         Class or ActiveRecord::Relation, it is true, for
     #                         Array or ActiveRecord::Base, it is false.
-    def initialize(permission:, target:, user:, participations_only: nil)
+    def initialize(permission:, target:, user:, participations_only: :default)
       @permission = permission.to_sym
       @user = user
       @target = target
@@ -35,24 +35,24 @@ module Authorizations
       # we're looking for everything, e.g. Task got passed in
       if target.is_a?(Class)
         @klass = target
-        @participations_only = true if @participations_only.nil?
+        @participations_only = true if @participations_only == :default
 
       # we're looking for a specific object, e.g. Task.first got passed in
       elsif target.is_a?(ActiveRecord::Base)
         @klass = target.class
         @specific_ids = [@target.id]
-        @participations_only = false if @participations_only.nil?
+        @participations_only = false if @participations_only == :default
 
       # we're looking for a set of objects with a pre-existing query, e.g. Task.where(name: "Bar") got passed in
       elsif target.is_a?(ActiveRecord::Relation)
         @klass = target.model
-        @participations_only = true if @participations_only.nil?
+        @participations_only = true if @participations_only == :default
 
       # we're looking for a specific of objects e.g. [Task.first, Task.last] got passed in
       elsif target.is_a?(Array)
         @klass = target.first.class
         @specific_ids = @target.map(&:id)
-        @participations_only = false if @participations_only.nil?
+        @participations_only = false if @participations_only == :default
       end
     end
 
@@ -62,7 +62,7 @@ module Authorizations
 
     private
 
-    # +permission_state_column+ should return the column that houses 
+    # +permission_state_column+ should return the column that houses
     # a model's state.
     #
     # This is so permissions that are tied to states can add a

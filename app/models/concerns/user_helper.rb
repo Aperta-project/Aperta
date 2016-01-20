@@ -11,7 +11,7 @@ module UserHelper
     filter_authorized(permission, target).objects.length > 0
   end
 
-  def filter_authorized(permission, target, participations_only: nil)
+  def filter_authorized(permission, target, participations_only: :default)
     Authorizations::Query.new(
       permission: permission,
       target: target,

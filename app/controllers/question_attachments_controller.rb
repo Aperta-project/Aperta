@@ -1,23 +1,15 @@
 class QuestionAttachmentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy, except: [:create, :update]
+  before_action :enforce_policy
   respond_to :json
 
   def create
-    answer = NestedQuestionAnswer.where(
-      id: attachment_params[:nested_question_answer_id]
-    ).first!
-
-    question_attachment = answer.attachments.create(
-      title: attachment_params[:title]
-    )
-
+    question_attachment.update(title: attachment_params[:title])
     process_attachments(question_attachment, attachment_params[:src])
     render json: { "question-attachment": { id: question_attachment.id } }
   end
 
   def update
-    question_attachment = QuestionAttachment.find(params[:id])
     question_attachment.update title: attachment_params[:title]
 
     process_attachments(question_attachment, attachment_params[:src])
@@ -36,7 +28,16 @@ class QuestionAttachmentsController < ApplicationController
   private
 
   def question_attachment
-    @question_attachment ||= QuestionAttachment.find(params[:id])
+    @question_attachment ||= begin
+      if params[:id]
+        QuestionAttachment.find(params[:id])
+      elsif attachment_params[:nested_question_answer_id]
+        answer = NestedQuestionAnswer.where(
+          id: attachment_params[:nested_question_answer_id]
+        ).first!
+        answer.attachments.build
+      end
+    end
   end
 
   def enforce_policy

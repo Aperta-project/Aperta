@@ -20,15 +20,18 @@ export default NestedQuestionComponent.extend({
       Ember.assert(s3Url, "Must provide an s3Url");
       Ember.assert(file, "Must provide a file");
 
-      if(!attachment){
-        attachment = this.container.lookup("store:main").createRecord("question-attachment");
-        this.get('model.answer.attachments').addObject(attachment);
-      }
-      attachment.setProperties({
-        src: s3Url,
-        filename: file.name
+      let answer = this.get('model.answer');
+      answer.save().then( (savedAnswer) => {
+        if(!attachment){
+          attachment = this.container.lookup("store:main").createRecord("question-attachment");
+          savedAnswer.get('attachments').addObject(attachment);
+        }
+        attachment.setProperties({
+          src: s3Url,
+          filename: file.name
+        });
+        attachment.save();
       });
-      attachment.save();
     },
 
     updateAttachmentTitle(title, attachment) {

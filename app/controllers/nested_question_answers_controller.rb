@@ -5,13 +5,11 @@ class NestedQuestionAnswersController < ApplicationController
 
   def create
     answer = fetch_and_update_answer
-    process_attachment(answer) if answer.save!
     render json: answer, serializer: NestedQuestionAnswerSerializer
   end
 
   def update
     answer = fetch_and_update_answer
-    process_attachment(answer) if answer.save!
     render json: answer, serializer: NestedQuestionAnswerSerializer
   end
 

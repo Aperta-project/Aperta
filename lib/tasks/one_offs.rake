@@ -22,4 +22,10 @@ namespace :one_off do
     end
   end
 
+  desc 'Removes all email and password only logins for launch'
+  # rubocop:disable HashSyntax
+  task :remove_non_cas_logins => :environment do
+    User.eager_load(:credentials).select { |u| u.credentials.count == 0 }
+      .destroy_all!
+  end
 end

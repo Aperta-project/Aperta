@@ -14,7 +14,7 @@ describe Snapshot::NestedQuestionSerializer do
           title: "What up?",
           answer_type: "text",
           answer: nil,
-          attachment: nil
+          attachments: []
         },
         children: []
       )
@@ -40,15 +40,15 @@ describe Snapshot::NestedQuestionSerializer do
         expect(serializer.as_json).to eq(
           name: "my-question",
           type: "question",
-          value: { title: "What up?", answer_type: "text", answer: nil, attachment: nil },
+          value: { title: "What up?", answer_type: "text", answer: nil, attachments: [] },
           children: [{
             name: "1st_question",
             type: "question",
-            value: { title: "1st level child question", answer_type: "text", answer: nil, attachment: nil },
+            value: { title: "1st level child question", answer_type: "text", answer: nil, attachments: [] },
             children: [{
               name: "2nd_question",
               type: "question",
-              value: { title: "2nd level child question", answer_type: "text", answer: nil, attachment: nil },
+              value: { title: "2nd level child question", answer_type: "text", answer: nil, attachments: [] },
               children: []
             }]
           }]
@@ -71,7 +71,7 @@ describe Snapshot::NestedQuestionSerializer do
           title: "What up?",
           answer_type: "text",
           answer: "Answer Value",
-          attachment: nil
+          attachments: []
         },
         children: []
       )
@@ -83,10 +83,10 @@ describe Snapshot::NestedQuestionSerializer do
         owner: owner,
         value: "The man was diseased with garrulity.",
         nested_question: nested_question,
-        attachment: FactoryGirl.build(:question_attachment, :with_fake_attachment)
+        attachments: [FactoryGirl.build(:question_attachment, :with_fake_attachment)]
       )
 
-      expect(serializer.as_json[:value][:attachment]).to eq(
+      expect(serializer.as_json[:value][:attachments]).to eq([
         name: "question-attachment",
         type: "properties",
         children: [
@@ -95,7 +95,7 @@ describe Snapshot::NestedQuestionSerializer do
           { name: "caption", type: "text", value: nil },
           { name: "status", type: "text", value: nil }
         ]
-      )
+      ])
     end
   end
 end

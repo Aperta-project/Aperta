@@ -1,3 +1,5 @@
+# QuestionAttachmentsController is responsible for uploading files/attachments
+# for nested question answers.
 class QuestionAttachmentsController < ApplicationController
   before_action :authenticate_user!
   before_action :enforce_policy
@@ -6,14 +8,14 @@ class QuestionAttachmentsController < ApplicationController
   def create
     question_attachment.update(title: attachment_params[:title])
     process_attachments(question_attachment, attachment_params[:src])
-    render json: { "question-attachment": { id: question_attachment.id } }
+    render json: { 'question-attachment': { id: question_attachment.id } }
   end
 
   def update
     question_attachment.update title: attachment_params[:title]
 
     process_attachments(question_attachment, attachment_params[:src])
-    render json: { "question-attachment": { id: question_attachment.id } }
+    render json: { 'question-attachment': { id: question_attachment.id } }
   end
 
   def show

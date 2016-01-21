@@ -8,7 +8,7 @@ test('humanizes snake case', function(assert) {
   assert.equal(result, 'Snake case', 'humanize from snake_case');
 });
 
-test('humanizes snake case', function(assert) {
+test('humanizes undefined value', function(assert) {
   let result = humanize(undefined);
   assert.equal(result, '', 'humanize for undefined');
 });

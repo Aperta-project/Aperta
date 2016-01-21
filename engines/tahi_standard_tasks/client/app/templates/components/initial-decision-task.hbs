@@ -1,9 +1,11 @@
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
-  <div class="register-decision-saving-cover {{if isSavingData "is-saving-data"}}">
-    {{progress-spinner visible=true size="large" center=true}}
-  </div>
+  {{#if isSavingData}}
+    <div class="register-decision-saving-cover is-saving-data">
+      {{progress-spinner visible=true size="large" center=true}}
+    </div>
+  {{/if}}
 
   {{#if isTaskCompleted}}
     <div class="alert alert-info">
@@ -46,7 +48,8 @@
              disabled=nonPublishable
              value=initialDecision.letter}}
 
-  <button class="button-primary button--green send-email-action" disabled={{cannotRegisterDecision}} {{action "registerDecision"}}>
+  <button class="button-primary button--green send-email-action {{if cannotRegisterDecision "button--disabled"}}"
+          disabled={{cannotRegisterDecision}} {{action "registerDecision"}}>
     Register Decision and Email the Author
   </button>
 </div>

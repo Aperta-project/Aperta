@@ -15,7 +15,7 @@ const {
 export default TaskComponent.extend({
   restless: Ember.inject.service(),
 
-  isSavingData: alias('initialDecision.isSaving'),
+  isSavingData: false,
   paper: alias('task.paper'),
   isTaskCompleted: equal('task.completed', true),
   isTaskUncompleted: not('isTaskCompleted'),
@@ -36,13 +36,15 @@ export default TaskComponent.extend({
 
   actions: {
     registerDecision() {
-      const path = '/api/initial_decision/' + this.get('task.id');
-
+      this.set('isSavingData', true);
       this.get('initialDecision').save().then(() => {
+        const path = `/api/initial_decision/${this.get('task.id')}`;
         return this.get('restless').post(path);
       }).then(() => {
         this.set('task.completed', true);
-        this.get('task').save();
+        return this.get('task').save();
+      }).then(() => {
+        this.set('isSavingData', false);
       });
     },
 

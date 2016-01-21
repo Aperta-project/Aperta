@@ -46,6 +46,7 @@ export default DS.Model.extend({
   submittedAt: attr('date'),
   gradualEngagement: attr('boolean'),
   publishingState: attr('string'),
+  permissionState: Ember.computed.alias('publishingState'),
   title: attr('string'),
   withdrawalReason: attr('string'),
   manuscript_id: attr('string'),

@@ -8,6 +8,8 @@ module UserHelper
   end
 
   def can?(permission, target)
+    # TODO: Remove this when site_admin is no more
+    return true if site_admin
     filter_authorized(permission, target).objects.length > 0
   end
 

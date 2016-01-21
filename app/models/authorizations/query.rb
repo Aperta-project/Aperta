@@ -54,7 +54,12 @@ module Authorizations
     end
 
     def all
-      load_authorized_objects
+      if user.site_admin
+        # TODO: Remove this when site_admin is no more
+        load_all_objects
+      else
+        load_authorized_objects
+      end
     end
 
     private
@@ -76,6 +81,23 @@ module Authorizations
       states.include?(WILDCARD_STATE) ||
         !object.respond_to?(permission_state_column) ||
         states.member?(object.send(permission_state_column))
+    end
+
+    def load_all_objects
+      result_set = ResultSet.new
+      permission_names = Permission.where(applies_to: @klass.to_s).pluck(:action)
+      permission_hsh = {}
+      permission_names.each do |name|
+        permission_hsh[name.to_sym] = { states: ['*'] }
+      end
+      if @target.is_a?(Class)
+        result_set.add_objects(@target.all, with_permissions: permission_hsh)
+      elsif @target.is_a?(ActiveRecord::Base)
+        result_set.add_objects([@target], with_permissions: permission_hsh)
+      elsif @target.is_a?(ActiveRecord::Relation)
+        result_set.add_objects(@target.all, with_permissions: permission_hsh)
+      end
+      return result_set
     end
 
     def load_authorized_objects

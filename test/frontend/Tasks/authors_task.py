@@ -160,8 +160,7 @@ class AuthorsTask(BaseTask):
     # Get author to delete
     authors = self._gets(self._author_items)
     self._actions.move_to_element(authors[n-1]).perform()
-    time.sleep(2)
-    #authors = self._gets(self._author_items)
+    time.sleep(5)
     trash = authors[n-1].find_element_by_css_selector('span.fa-trash')
     trash.click()
     # get buttons

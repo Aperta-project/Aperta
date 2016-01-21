@@ -302,7 +302,6 @@ ActiveRecord::Schema.define(version: 20160120221642) do
   add_index "notifications", ["paper_id"], name: "index_notifications_on_paper_id", using: :btree
   add_index "notifications", ["target_id", "target_type"], name: "index_notifications_on_target_id_and_target_type", using: :btree
   add_index "notifications", ["user_id"], name: "index_notifications_on_user_id", using: :btree
-
   create_table "old_roles", force: :cascade do |t|
     t.string   "name"
     t.integer  "journal_id"
@@ -547,17 +546,17 @@ ActiveRecord::Schema.define(version: 20160120221642) do
   add_index "task_templates", ["phase_template_id"], name: "index_task_templates_on_phase_template_id", using: :btree
 
   create_table "tasks", force: :cascade do |t|
-    t.string   "title",                                   null: false
-    t.string   "type",                   default: "Task"
-    t.integer  "phase_id",                                null: false
-    t.boolean  "completed",              default: false,  null: false
+    t.string   "title",                       null: false
+    t.string   "type",       default: "Task"
+    t.integer  "phase_id",                    null: false
+    t.boolean  "completed",  default: false,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "old_role",                                null: false
-    t.json     "body",                   default: [],     null: false
-    t.integer  "position",               default: 0
+    t.string   "old_role",                    null: false
+    t.json     "body",       default: [],     null: false
+    t.integer  "position",   default: 0
     t.integer  "required_permission_id"
-    t.integer  "paper_id",                                null: false
+    t.integer  "paper_id",                                            null: false
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree

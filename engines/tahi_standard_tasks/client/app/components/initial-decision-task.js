@@ -14,7 +14,7 @@ const {
 
 export default TaskComponent.extend({
   restless: Ember.inject.service(),
-  initialDecision: alias('task.paper.decisions.firstObject'),
+
   isSavingData: alias('initialDecision.isSaving'),
   paper: alias('task.paper'),
   isTaskCompleted: equal('task.completed', true),
@@ -30,10 +30,8 @@ export default TaskComponent.extend({
                              'hasNoVerdict',
                              'isTaskCompleted'),
 
-  verdict: computed('initialDecision.verdict', function() {
-    if (this.get('initialDecision.verdict')) {
-      return this.get('initialDecision.verdict').replace(/_/g, ' ');
-    }
+  initialDecision: computed('task.paper.decisions.[]', function() {
+    return this.get('task.paper.decisions').findBy('revisionNumber', 0);
   }),
 
   actions: {

@@ -1,10 +1,18 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  queryParams: ['page'],
-  page: null,       // is set in route w server meta data
-  perPage: null,    // is set in route w server meta data
-  totalCount: null, // is set in route w server meta data
+  queryParams: ['page', 'query', 'orderBy', 'orderDir'],
+
+  // are set in route when in url
+  // are reset on user page events
+  page:     null,
+  query:    null,
+  orderBy:  null,
+  orderDir: null,
+
+  // are set in route w server meta data
+  perPage:    null,
+  totalCount: null,
 
   actions: {
     setPage(page) {

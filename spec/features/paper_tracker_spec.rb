@@ -47,8 +47,20 @@ feature 'Paper Tracker', js: true do
     expect(find('.pagination')).to have_content('Page 3 of 3')
   end
 
-  def make_matchable_paper
-    paper = FactoryGirl.create(:paper, :submitted)
+  scenario 'user can search by fuzzy paper title' do
+  end
+
+  scenario 'user can search by doi' do
+  end
+
+  scenario 'user can clear search box' do
+  end
+
+  scenario 'user can sort results by field asc/desc' do
+  end
+
+  def make_matchable_paper(attrs={})
+    paper = FactoryGirl.create(:paper, :submitted, attrs)
     assign_journal_role(paper.journal, user, :admin)
     paper
   end

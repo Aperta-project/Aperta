@@ -8,7 +8,7 @@ class Snapshot::NestedQuestionSerializer
   def as_json
     {
       name: @nested_question.ident,
-      type: "question",
+      type: 'question',
       value: {
         title: @nested_question.text,
         answer_type: @nested_question.value_type,

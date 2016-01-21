@@ -6,6 +6,7 @@ and style and functionality of the View Invitations and Create New Submission fl
 without executing an invitation accept or reject, and without a CNS creation.
 """
 
+import logging
 import os
 import random
 import string
@@ -520,15 +521,17 @@ class DashboardPage(AuthenticatedPage):
       tasks.append(invite[0])
     count = 1
     for task in tasks:
-      paper_id = PgSQL().query('SELECT paper_id FROM phases '
-                               'INNER JOIN tasks ON tasks.phase_id = phases.id '
+      #paper_id = PgSQL().query('SELECT paper_id FROM phases '
+      #                       'INNER JOIN tasks ON tasks.phase_id = phases.id '
+      #                       'WHERE tasks.id = %s;', (task,))[0][0]
+      paper_id = PgSQL().query('SELECT paper_id FROM tasks '
                                'WHERE tasks.id = %s;', (task,))[0][0]
       title = PgSQL().query('SELECT title FROM papers WHERE id = %s;', (paper_id,))[0][0]
       # The ultimate plan here is to compare titles from the database to those presented on the page,
       # however, the ordering of the presentation of the invite blocks is currently non-deterministic, so this
       # can't currently be done. https://www.pivotaltracker.com/n/projects/880854/stories/100832196
       # For the time being, just printing the titles to the test run log
-      print('Title from the database: \n' + title)
+      logging.info('Title from the database: \n{}'.format(title))
       # The following locators are dynamically assigned and must be defined inline in this loop to succeed.
       self._view_invites_pending_invite_div = (By.XPATH, '//div[@class="pending-invitation"][' + str(count) + ']')
       self._view_invites_pending_invite_heading = (By.TAG_NAME, 'h4')
@@ -540,7 +543,7 @@ class DashboardPage(AuthenticatedPage):
 
       self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_heading)
       pt = self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_paper_title)
-      print('Title presented on the page: \n' + pt.text)
+      logging.info('Title presented on the page: \n{}'.format(pt.text))
       self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_manuscript_icon)
       self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_abstract)
       self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_yes_btn)

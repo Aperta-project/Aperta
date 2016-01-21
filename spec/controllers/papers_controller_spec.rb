@@ -36,7 +36,10 @@ describe PapersController do
     end
   end
 
-  before { sign_in user }
+  before do
+    setup_author_role
+    sign_in user
+  end
 
   describe "GET index" do
     let(:active_paper_count) { 3 }

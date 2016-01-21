@@ -15,6 +15,10 @@ describe PaperFactory do
 
   let(:user) { FactoryGirl.create :user }
 
+  before do
+    setup_author_role
+  end
+
   describe ".create" do
     let(:paper_attrs) { FactoryGirl.attributes_for(:paper, journal_id: journal.id, paper_type: mmt.paper_type) }
     subject do

@@ -34,6 +34,13 @@ module TahiHelperMethods
     DefaultAuthorCreator.new(paper, creator).create!
   end
 
+  def setup_author_role
+    Role.ensure_exists('Author', participates_in: [Task]) do |role|
+      role.ensure_permission_exists(:view, applies_to: 'Task')
+      role.ensure_permission_exists(:view, applies_to: 'Paper')
+    end
+  end
+
   def assign_reviewer_role(paper, reviewer)
     Assignment.create(
       user: reviewer,

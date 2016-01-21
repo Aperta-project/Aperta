@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160114152935) do
+ActiveRecord::Schema.define(version: 20160120221642) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,12 +57,12 @@ ActiveRecord::Schema.define(version: 20160114152935) do
   end
 
   create_table "assignments", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "role_id"
-    t.integer  "assigned_to_id"
-    t.string   "assigned_to_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer  "user_id",          null: false
+    t.integer  "role_id",          null: false
+    t.integer  "assigned_to_id",   null: false
+    t.string   "assigned_to_type", null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
   add_index "assignments", ["role_id"], name: "index_assignments_on_role_id", using: :btree
@@ -370,36 +370,36 @@ ActiveRecord::Schema.define(version: 20160114152935) do
   add_index "participations", ["user_id"], name: "index_participations_on_user_id", using: :btree
 
   create_table "permission_states", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string   "name",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "permission_states_permissions", force: :cascade do |t|
-    t.integer  "permission_id"
-    t.integer  "permission_state_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer  "permission_id",       null: false
+    t.integer  "permission_state_id", null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
   end
 
   add_index "permission_states_permissions", ["permission_id"], name: "index_permission_states_permissions_on_permission_id", using: :btree
   add_index "permission_states_permissions", ["permission_state_id", "permission_id"], name: "permission_states_ids_idx", unique: true, using: :btree
 
   create_table "permissions", force: :cascade do |t|
-    t.string   "action"
-    t.string   "applies_to"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string   "action",     null: false
+    t.string   "applies_to", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "permissions", ["action", "applies_to"], name: "index_permissions_on_action_and_applies_to", using: :btree
   add_index "permissions", ["applies_to"], name: "index_permissions_on_applies_to", using: :btree
 
   create_table "permissions_roles", force: :cascade do |t|
-    t.integer  "permission_id"
-    t.integer  "role_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer  "permission_id", null: false
+    t.integer  "role_id",       null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   add_index "permissions_roles", ["permission_id"], name: "index_permissions_roles_on_permission_id", using: :btree
@@ -438,12 +438,12 @@ ActiveRecord::Schema.define(version: 20160114152935) do
   add_index "question_attachments", ["nested_question_answer_id"], name: "index_question_attachments_on_nested_question_answer_id", using: :btree
 
   create_table "roles", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",                                   null: false
     t.integer  "journal_id"
     t.boolean  "participates_in_papers", default: false, null: false
     t.boolean  "participates_in_tasks",  default: false, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
   end
 
   add_index "roles", ["participates_in_papers"], name: "index_roles_on_participates_in_papers", using: :btree

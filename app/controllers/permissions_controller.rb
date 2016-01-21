@@ -15,6 +15,15 @@ class PermissionsController < ApplicationController
     permissions = current_user.filter_authorized(
       :*, target, participations_only: false
     ).serializable
+    if permissions.count == 0
+      render json: {
+        permissions: [{
+          id: params[:id],
+          permissions: []
+        }]
+      }
+      return
+    end
     render json: permissions,
            each_serializer: PermissionResultSerializer,
            root: 'permissions'

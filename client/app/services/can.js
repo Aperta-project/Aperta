@@ -1,43 +1,50 @@
 import Ember from 'ember';
-import { CanService } from 'ember-can';
 
-export default CanService.extend({
-  build(abilityString, resource, properties) {
-    const abilityName = 'ability:permissions';
-    const ability = this.container.lookup(abilityName);
+var Ability = Ember.Object.extend({
+  name: null,
+  resource: null,
+  permissions:null,
+
+  can: Ember.computed('name', 'resource', 'permissions', function(){
+    if (!this.get('permissions')){
+      return false;
+    }
+    var permissionHash = this.get('permissions.permissions');
+    if (!permissionHash){
+      return false;
+    }
+
+    var states = permissionHash[this.get('name')];
+    if (!states){
+      return false;
+    }
+
+    states = states.states;
+    if (states.contains('*')){
+      return true;
+    }
+
+    return states.contains(this.get('resource.permissionState'));
+  })
+});
+
+export default Ember.Service.extend({
+  build(abilityString, resource) {
+
     this.store = this.container.lookup('store:main');
 
-    Ember.assert('No ability type found for ' + abilityName, ability);
-
-    // see if we've been given properties instead of resource
-    if (!properties && resource && !(resource instanceof Ember.Object)) {
-      properties = resource;
-      resource   = null;
-    }
-
-    Ember.assert('No resource provided. Must provide resource when checking permissions.', resource);
-
-    if (resource) {
-      ability.set('model', resource);
-    }
-
-    if (properties) {
-      ability.setProperties(properties);
-    }
-
-    ability.set('action', abilityString);
     var permissionId = resource.constructor.typeKey + '+' + resource.id;
-    var permission = this.store.find('permission', permissionId);
+    var ability = Ability.create({name:abilityString, resource: resource});
 
-    Ember.assert('No Permission provided. Permission must be set', permission);
-
-    ability.set('data', permission.get('permissions'));
+    this.store.find('permission', permissionId).then(function(value){
+      ability.set('permissions', value);
+    });
 
     return ability;
   },
 
-  can(abilityString, resource, properties) {
-    const ability = this.build(abilityString, resource, properties);
+  can(abilityString, resource) {
+    var ability = this.build(abilityString, resource);
     return ability.get('can');
   }
 });

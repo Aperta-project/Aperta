@@ -36,7 +36,7 @@ module UserHelper
 
   private
 
-  def role_for_assignment(role, journal)
+  def role_for_assignment(role_name, journal)
     role = journal.roles.find_by(name: role_name) ||
            Role.find_by(name: role_name, journal: nil)
 

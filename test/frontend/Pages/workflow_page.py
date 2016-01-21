@@ -184,16 +184,16 @@ class WorkflowPage(AuthenticatedPage):
     # APERTA-5513 AC 1 and 2
     author_col, staff_col = self._gets(self._add_card_overlay_columns)
     author_cards = author_col.find_elements_by_tag_name('label')
-    assert author_cards[0].text == 'Authors', author_cards[0].text
-    assert author_cards[1].text == 'Billing', author_cards[1].text
-    assert author_cards[2].text == 'Competing Interests', author_cards[2].text
-    assert author_cards[3].text == 'Cover Letter', author_cards[3].text
-    assert author_cards[4].text == 'Data Availability', author_cards[4].text
-    assert author_cards[5].text == 'Ethics Statement', author_cards[5].text
-    assert author_cards[6].text == 'Figures', author_cards[6].text
-    assert author_cards[7].text == 'Financial Disclosure', author_cards[7].text
-    assert author_cards[8].text == 'New Taxon', author_cards[8].text
-    assert author_cards[9].text == 'Publishing Related Questions', author_cards[9].text
+    assert author_cards[0].text == 'Additional Information', author_cards[0].text
+    assert author_cards[1].text == 'Authors', author_cards[0].text
+    assert author_cards[2].text == 'Billing', author_cards[1].text
+    assert author_cards[3].text == 'Competing Interests', author_cards[2].text
+    assert author_cards[4].text == 'Cover Letter', author_cards[3].text
+    assert author_cards[5].text == 'Data Availability', author_cards[4].text
+    assert author_cards[6].text == 'Ethics Statement', author_cards[5].text
+    assert author_cards[7].text == 'Figures', author_cards[6].text
+    assert author_cards[8].text == 'Financial Disclosure', author_cards[7].text
+    assert author_cards[9].text == 'New Taxon', author_cards[8].text
     assert author_cards[10].text == 'Reporting Guidelines', author_cards[10].text
     assert author_cards[11].text == 'Reviewer Candidates', author_cards[11].text
     assert author_cards[12].text == 'Supporting Info', author_cards[12].text

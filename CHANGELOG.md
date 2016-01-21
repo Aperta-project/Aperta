@@ -11,11 +11,11 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - New component s3-file-uploader that wraps the jquery fileupload plugin to make direct uploads to Amazon S3
 - Email notifications on discussion forum posts and participations
 - Discussion Notifications displayed when user is added as participant
-- Ability to add multiple attachments to an answer
+- Ability to upload multiple Related Manuscripts to indicate what information has been published elsewhere
 
 ### Changed
 - NestedQuestions have unique identifiers
-- Revamped the Summporting Information task.
+- Revamped the Supporting Information task.
 - Figures use non-expiring resource proxy urls
 - Additional Information card uses standard file uploader
 

@@ -17,7 +17,7 @@ export default Ember.Component.extend({
 
   pagesUI: Ember.computed(function(){
     if (this.get('totalCount') == 0) { return '?'; }
-    return this.get('totalCount');
+    return this.get('pages');
   }),
 
   hasPrev: Ember.computed(function(){

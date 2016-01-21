@@ -521,9 +521,6 @@ class DashboardPage(AuthenticatedPage):
       tasks.append(invite[0])
     count = 1
     for task in tasks:
-      #paper_id = PgSQL().query('SELECT paper_id FROM phases '
-      #                       'INNER JOIN tasks ON tasks.phase_id = phases.id '
-      #                       'WHERE tasks.id = %s;', (task,))[0][0]
       paper_id = PgSQL().query('SELECT paper_id FROM tasks '
                                'WHERE tasks.id = %s;', (task,))[0][0]
       title = PgSQL().query('SELECT title FROM papers WHERE id = %s;', (paper_id,))[0][0]

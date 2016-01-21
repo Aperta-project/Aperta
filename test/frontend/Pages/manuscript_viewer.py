@@ -5,6 +5,7 @@ Page Object Model for the Paper Editor Page. Validates global and dynamic elemen
 NOTE: This POM will be outdated when the Paper Editor is removed.
 """
 
+import logging
 import time
 
 from selenium.webdriver.common.by import By
@@ -428,8 +429,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
                      'Revise Manuscript', 'Billing'):
       # before checking that the complete is selected, in the accordion we need to
       # check if it is open
-      if 'task-disclosure-open' not in task_div.get_attribute('class'):
+      if 'task-disclosure--open' not in task_div.get_attribute('class'):
         # accordion is close it, open it:
+        logging.info('Accordion was closed, opening: {}'.format(task.text))
         task.click()
       # Check completed_check status
       if not base_task.completed_cb_is_selected():

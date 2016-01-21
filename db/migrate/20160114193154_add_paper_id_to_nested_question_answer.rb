@@ -7,5 +7,6 @@
 class AddPaperIdToNestedQuestionAnswer < ActiveRecord::Migration
   def change
     add_column :nested_question_answers, :paper_id, :integer
+    add_index :nested_question_answers, :paper_id
   end
 end

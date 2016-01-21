@@ -269,6 +269,7 @@ ActiveRecord::Schema.define(version: 20160121151634) do
   end
 
   add_index "nested_question_answers", ["decision_id"], name: "index_nested_question_answers_on_decision_id", using: :btree
+  add_index "nested_question_answers", ["paper_id"], name: "index_nested_question_answers_on_paper_id", using: :btree
 
   create_table "nested_questions", force: :cascade do |t|
     t.string   "text"

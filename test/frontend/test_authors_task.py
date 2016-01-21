@@ -16,7 +16,7 @@ from frontend.common_test import CommonTest
 class AuthorsTaskTest(CommonTest):
   """
   Self imposed AC:
-     - validate cards elements and styles
+     - validate tasks elements and styles
      - validate adding and deleting an author
      - validate trying to close a task without completing author profile
   """

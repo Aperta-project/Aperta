@@ -1,10 +1,10 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  page: null,
-  totalCount: null, // should be overwritten in route w server meta data
-  perPage: null,   // should be overwritten in route w server meta data
-  setPage() {},  // pass in as closure action
+  page: null,       // pass in
+  totalCount: null, // pass in
+  perPage: null,    // pass in
+  setPage() {},     // pass in as closure action
 
   init() {
     this._super(...arguments);

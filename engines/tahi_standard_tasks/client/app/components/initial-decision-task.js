@@ -3,7 +3,6 @@ import TaskComponent from 'tahi/pods/components/task-base/component';
 
 const { computed } = Ember;
 const {
-  alias,
   and,
   empty,
   equal,
@@ -14,16 +13,14 @@ const {
 
 export default TaskComponent.extend({
   restless: Ember.inject.service(),
-
   isSavingData: false,
-  paper: alias('task.paper'),
   isTaskCompleted: equal('task.completed', true),
   isTaskUncompleted: not('isTaskCompleted'),
   publishable: and('isPaperInitiallySubmitted', 'isTaskUncompleted'),
   nonPublishable: not('publishable'),
   hasNoLetter: empty('initialDecision.letter'),
   hasNoVerdict: none('initialDecision.verdict'),
-  isPaperInitiallySubmitted: equal('paper.publishingState',
+  isPaperInitiallySubmitted: equal('task.paper.publishingState',
                                    'initially_submitted'),
 
   cannotRegisterDecision: or('hasNoLetter',

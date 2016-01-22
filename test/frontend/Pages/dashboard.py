@@ -540,7 +540,7 @@ class DashboardPage(AuthenticatedPage):
 
       self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_heading)
       pt = self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_paper_title)
-      logging.info('Title presented on the page: \n{}'.format(pt.text))
+      logging.info('Title presented on the page: \n{}'.format(pt.text.encode('utf-8')))
       self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_manuscript_icon)
       self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_abstract)
       self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_yes_btn)

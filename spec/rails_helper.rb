@@ -51,6 +51,7 @@ Tahi::Application.load_tasks
 # Load question seeds before any tests start since we don't want them
 # to be rolled back as part of a transaction
 Rake::Task['nested-questions:seed'].invoke
+Rake::Task['roles-and-permissions:seed'].invoke
 
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -88,7 +89,9 @@ RSpec.configure do |config|
     # around.
     # Ensure this come after the generic setup (see above)
     DatabaseCleaner[:active_record].strategy = :truncation, {
-      except: %w(task_types nested_questions) }
+      except: %w(task_types nested_questions roles permissions
+                 permission_states assignments permissions_states_permissions
+                 permissions_roles) }
 
     # Fix to make sure this happens only once
     # This cannot be a :suite block, because that does not know if a js feature

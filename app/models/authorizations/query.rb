@@ -137,7 +137,7 @@ module Authorizations
         permissible_actions = permissions.flat_map(&:action).map(&:to_sym)
         permissible_state_names = permissions.flat_map(&:states).flat_map(&:name)
         all_permissions = permissions_by_assignment_id[assignment.id].reduce({}) do |h, permission|
-          h[permission.action.to_sym] = { states: permission.states.map(&:name) }
+          h[permission.action.to_sym] = { states: permission.states.map(&:name).sort }
           h
         end
 

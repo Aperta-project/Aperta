@@ -37,7 +37,6 @@ describe PapersController do
   end
 
   before do
-    setup_author_role
     sign_in user
   end
 

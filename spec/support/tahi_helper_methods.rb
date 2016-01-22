@@ -31,18 +31,15 @@ module TahiHelperMethods
 
   # NEW ROLES
   def assign_author_role(paper, creator)
-    DefaultAuthorCreator.new(paper, creator).create!
-  end
-
-  def setup_author_role
-    Role.ensure_exists('Author', participates_in: [Task]) do |role|
-      role.ensure_permission_exists(:view, applies_to: 'Task')
-      role.ensure_permission_exists(:view, applies_to: 'Paper')
-    end
+    Assignment.first_or_create!(
+      user: creator,
+      role: Role.where(name: 'Author').first,
+      assigned_to: paper
+    )
   end
 
   def assign_reviewer_role(paper, reviewer)
-    Assignment.create(
+    Assignment.first_or_create!(
       user: reviewer,
       role: Role.where(name: 'Reviewer').first,
       assigned_to: paper

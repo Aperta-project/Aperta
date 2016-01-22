@@ -113,14 +113,6 @@ FactoryGirl.define do
 
     after(:create) do |paper, evaluator|
       paper.paper_roles.create!(user: paper.creator, old_role: PaperRole::COLLABORATOR)
-      Role.ensure_exists('Author', participates_in: [Task]) do |role|
-        role.ensure_permission_exists(:view, applies_to: 'Task')
-        role.ensure_permission_exists(:view, applies_to: 'Paper')
-      end
-      Role.ensure_exists('Reviewer', participates_in: [Task]) do |role|
-        role.ensure_permission_exists(:view, applies_to: 'Task')
-        role.ensure_permission_exists(:view, applies_to: 'Paper')
-      end
       paper.decisions.create!
 
       paper.body = evaluator.body

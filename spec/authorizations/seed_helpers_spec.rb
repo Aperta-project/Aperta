@@ -47,9 +47,9 @@ describe 'SeedHelpers' do
 
   describe 'Permission::ensure_exists' do
     it 'creates a permission' do
-      perm_q = Permission.where(action: 'view', applies_to: Task)
+      perm_q = Permission.where(action: 'viewSomething', applies_to: Task)
       expect(perm_q).not_to exist
-      Permission.ensure_exists('view', applies_to: Task)
+      Permission.ensure_exists('viewSomething', applies_to: Task)
       expect(perm_q).to exist
     end
 
@@ -65,7 +65,7 @@ describe 'SeedHelpers' do
 
     it 'sets role' do
       Role.ensure_exists('role') do |role|
-        perm = Permission.ensure_exists('view', role: role, applies_to: Task)
+        perm = Permission.ensure_exists('viewTask', role: role, applies_to: Task)
         expect(perm.reload.roles).to match([role])
       end
     end

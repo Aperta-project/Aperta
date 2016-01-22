@@ -6,48 +6,22 @@ and style and functionality of the View Invitations and Create New Submission fl
 without executing an invitation accept or reject, and without a CNS creation.
 """
 
+import logging
 import os
 import random
 import string
 import time
 import uuid
-import pdb
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
+from Base.Resources import docs
 from Base.PostgreSQL import PgSQL
 from authenticated_page import AuthenticatedPage, application_typeface
 
 
 __author__ = 'jgray@plos.org'
-
-docx = ['2014_04_27 Bakowski et al main text_subm.docx',
-        '120220_PLoS_Genetics_review.docx',
-        'CRX.pone.0103411.docx',
-        'GIANT-gender-main_20130310.docx',
-        'NF-kB-Paper_manuscript.docx',
-        'NorenzayanetalPLOS.docx',
-        'pgen.1004127.docx',
-        'PGENETICS-D-13-02065R1_FTC.docx',
-        'PLosOne_Main_Body_Ravi_Bansal_Brad_REVISED.docx',
-        'PONE-D-12-25504.docx',
-        'PONE-D-12-27950.docx',
-        'PONE-D-13-02344.docx',
-        'PONE-D-13-14162.docx',
-        'PONE-D-13-19782.docx',
-        'PONE-D-13-38666.docx',
-        'PONE-D-14-12686.docx',
-        'PONE-D-14-17217.docx',
-        'pone.0100365.docx',
-        'pone.0100948.docx',
-        'ppat.1004210.docx',
-        'PPATHOGENS-D-14-01213.docx',
-        'RTN.pone.0072333.docx',
-        'Schallmo_PLOS_RevisedManuscript.docx',
-        'Spindler_2014_rerevised.docx',
-        'Thammasri_PONE_D13_12078_wo.docx',
-        ]
 
 
 class DashboardPage(AuthenticatedPage):
@@ -96,6 +70,7 @@ class DashboardPage(AuthenticatedPage):
     self._view_invites_close = (By.CLASS_NAME, 'overlay-close-x')
 
     # Create New Submission Modal
+    self._cns_base_overlay_div = (By.CSS_SELECTOR, 'div.overlay--fullscreen')
     self._cns_error_div = (By.CLASS_NAME, 'flash-messages')
     self._cns_error_message = (By.CLASS_NAME, 'flash-message-content')
     self._cns_title_field = (By.XPATH, './/div[@id="new-paper-title"]/div')
@@ -106,12 +81,13 @@ class DashboardPage(AuthenticatedPage):
     self._cns_manuscript_subscript_icon = (By.CLASS_NAME, 'fa-subscript')
     self._cns_journal_chooser_label = (By.XPATH, "//div[@class='overlay-body']/div/div[3]/label")
     self._cns_journal_chooser = (By.CSS_SELECTOR, 'div.paper-new-select-trigger')
+    self._cns_paper_type_dd = (By.ID, 'paper-new-paper-type-select')
     self._cns_opened_option_dropdown = (By.CSS_SELECTOR, 'div.select-box-list')
     self._cns_option_dropdown_item = (By.CSS_SELECTOR, 'div.select-box-item')
     self._cns_paper_type_chooser_label = (By.XPATH, "//div[@class='overlay-body']/div/div[4]/label")
-    self._cns_paper_type_chooser = (By.XPATH, "//div[contains(@class, 'paper-new-select-trigger')]")
+    self._cns_paper_type_chooser = (By.ID, 'paper-new-paper-type-select')
     self._cns_journal_chooser_dd = (By.ID, 'paper-new-journal-select')
-    self._cns_papertype_chooser_dd = (By.ID, 'paper-new-paper-type-select')
+    self._cns_journal_chooser_placeholder = (By.CLASS_NAME, 'ember-power-select-placeholder')
     self._cns_journal_chooser_active = (By.CLASS_NAME, 'select-box-element--active')
     self._cns_chooser_chosen = (By.CLASS_NAME, 'select-box-item')
     self._cns_chooser_dropdown_arrow = (By.CLASS_NAME, 'select2-arrow')
@@ -156,7 +132,11 @@ class DashboardPage(AuthenticatedPage):
     Accepts a given invitation
     :title: Title of the publication to accept the invitation
     """
-    h3 = self._driver.find_element_by_xpath("//*[contains(text(), '{}')]".format(title))
+    try:
+      h3 = self._driver.find_element_by_xpath("//*[contains(text(), '{}')]".format(title))
+    except UnicodeEncodeError:
+      h3 = self._driver.find_element_by_xpath("//*[contains(text(), '{}')]".format(
+        title.encode('utf8')))
     btn = h3.find_element_by_xpath("./following-sibling::button")
     btn.click()
 
@@ -168,7 +148,10 @@ class DashboardPage(AuthenticatedPage):
     return title
 
   def click_on_first_manuscript(self):
-    """Click on first available manuscript link"""
+    """
+    Click on first available manuscript link
+    :return: String with manuscript title
+    """
     first_article_link = self._get(self._first_paper)
     first_article_link.click()
     return first_article_link.text
@@ -180,7 +163,6 @@ class DashboardPage(AuthenticatedPage):
   def validate_initial_page_elements_styles(self):
     """
     Validates the static page elements existence and styles
-    :return: None
     """
     cns_btn = self._get(self._dashboard_create_new_submission_btn)
     assert cns_btn.text.lower() == 'create new submission'
@@ -190,7 +172,6 @@ class DashboardPage(AuthenticatedPage):
     """
     Validates the "view invites" stanza and function if present
     :param username: username
-    :return: None
     """
     invitation_count = self.is_invite_stanza_present(username)
     if invitation_count > 0:
@@ -438,7 +419,6 @@ class DashboardPage(AuthenticatedPage):
     """
     Enter title for the publication
     :param title: Title you wish to use for your paper
-    :return: None
     """
     title_field = self._get(self._cns_title_field)
     title_field.click()
@@ -447,24 +427,20 @@ class DashboardPage(AuthenticatedPage):
   def click_upload_button(self):
     """Click create button"""
     self._get(self._upload_btn).click()
-    self._actions.send_keys(Keys.ESCAPE)
 
   def close_cns_overlay(self):
     """Click X link"""
     self._get(self._overlay_header_close).click()
 
-  def select_journal_and_type(self, journal, type_):
+  def select_journal_and_type(self, journal, paper_type):
     """
     Select a journal with its type
     journal: Title of the journal
-    type_: Manuscript type
+    paper_type: Paper type
     """
-    #div = self._get(self._cns_journal_chooser_dd)
     journal_dd, type_dd = self._gets((By.CLASS_NAME, 'ember-basic-dropdown-trigger'))
     journal_dd.click()
     time.sleep(.5)
-    #div.find_element_by_class_name('select-box-element').click()
-    #parent_div.find_element_by_class_name('ember-power-select-optionss')
     parent_div = self._get((By.ID, 'ember-basic-dropdown-wormhole'))
 
     #for item in self._gets((By.CLASS_NAME, 'select-box-item')):
@@ -482,12 +458,12 @@ class DashboardPage(AuthenticatedPage):
     parent_div = self._get((By.ID, 'ember-basic-dropdown-wormhole'))
     #div.find_element_by_class_name('ember-power-select-options').click()
     for item in self._gets((By.CLASS_NAME, 'ember-power-select-option')):
-      if item.text == type_:
+      if item.text == paper_type:
         item.click()
         time.sleep(1)
         break
-    selected_type = self._gets(self._cns_paper_type_chooser)[1]
-    assert type_ in selected_type.text, '{0} != {1}'.format(selected_type.text, type_)
+    selected_type = self._gets(self._cns_paper_type_dd)
+    assert paper_type in selected_type[0].text, '{0} != {1}'.format(selected_type.text, paper_type)
 
   @staticmethod
   def title_generator(prefix='', random_bit=True):
@@ -545,15 +521,14 @@ class DashboardPage(AuthenticatedPage):
       tasks.append(invite[0])
     count = 1
     for task in tasks:
-      paper_id = PgSQL().query('SELECT paper_id FROM phases '
-                               'INNER JOIN tasks ON tasks.phase_id = phases.id '
+      paper_id = PgSQL().query('SELECT paper_id FROM tasks '
                                'WHERE tasks.id = %s;', (task,))[0][0]
       title = PgSQL().query('SELECT title FROM papers WHERE id = %s;', (paper_id,))[0][0]
       # The ultimate plan here is to compare titles from the database to those presented on the page,
       # however, the ordering of the presentation of the invite blocks is currently non-deterministic, so this
       # can't currently be done. https://www.pivotaltracker.com/n/projects/880854/stories/100832196
       # For the time being, just printing the titles to the test run log
-      print('Title from the database: \n' + title)
+      logging.info('Title from the database: \n{}'.format(title))
       # The following locators are dynamically assigned and must be defined inline in this loop to succeed.
       self._view_invites_pending_invite_div = (By.XPATH, '//div[@class="pending-invitation"][' + str(count) + ']')
       self._view_invites_pending_invite_heading = (By.TAG_NAME, 'h4')
@@ -565,7 +540,7 @@ class DashboardPage(AuthenticatedPage):
 
       self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_heading)
       pt = self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_paper_title)
-      print('Title presented on the page: \n' + pt.text)
+      logging.info('Title presented on the page: \n{}'.format(pt.text.encode('utf-8')))
       self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_manuscript_icon)
       self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_abstract)
       self._get(self._view_invites_pending_invite_div).find_element(*self._view_invites_pending_invite_yes_btn)
@@ -592,15 +567,17 @@ class DashboardPage(AuthenticatedPage):
     self._get(self._cns_manuscript_superscript_icon)
     self._get(self._cns_manuscript_subscript_icon)
     journal_chooser_label = self._get(self._cns_journal_chooser_label)
-    journal_chooser = self._get(self._cns_journal_chooser)
     assert 'What journal are you submitting to?' in journal_chooser_label.text, journal_chooser_label.text
+    ## TEST
+    ##journal_chooser = self._get(self._cns_journal_chooser_placeholder)
+    journal_chooser = self._get((By.CLASS_NAME, 'ember-power-select-placeholder'))
     assert 'Select a journal' in journal_chooser.text, journal_chooser.text
     paper_type_chooser_label = self._get(self._cns_paper_type_chooser_label)
-    paper_type_chooser = self._get(self._cns_paper_type_chooser)
     assert "Choose the type of paper you're submitting" in paper_type_chooser_label.text, paper_type_chooser_label.text
+    paper_type_chooser = self._get(self._cns_paper_type_chooser)
     assert "Select a paper type" in paper_type_chooser.text, paper_type_chooser.text
     self._get(self._upload_btn)
-    doc2upload = random.choice(docx)
+    doc2upload = random.choice(docs)
     print('Sending document: ' + os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload))
     fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
     if os.path.isfile(fn):
@@ -624,3 +601,7 @@ class DashboardPage(AuthenticatedPage):
     # Temporarily commented out per ticket APERTA-5413
     # assert 'Title can\'t be blank' in errors
     closer.click()
+
+  def return_cns_base_overlay_div(self):
+    """Method for debbuging purposes only"""
+    return self._get(self._cns_base_overlay_div)

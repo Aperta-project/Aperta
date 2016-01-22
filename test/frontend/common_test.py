@@ -4,9 +4,11 @@
 
 """
 
-import time
+import logging
 import os
 import random
+import time
+
 
 from Base.FrontEndTest import FrontEndTest
 from Base.Resources import login_valid_email, login_valid_pw, docs
@@ -59,24 +61,22 @@ class CommonTest(FrontEndTest):
     dashboard.click_create_new_submission_button()
     # Create new submission
     title = dashboard.title_generator(prefix=title, random_bit=random_bit)
-    print('Creating paper in {} journal, in {} type with {} as title'.format(journal,
+    logging.info('Creating paper in {} journal, in {} type with {} as title'.format(journal,
           type_, title))
     dashboard.enter_title_field(title)
     dashboard.select_journal_and_type(journal, type_)
-    time.sleep(2)
+    # This time helps to avoid random upload failures
+    time.sleep(3)
 
-    #fn = os.path.join(os.getcwd()+'/frontend/assets/docs/sample.docx')
-    #self._driver.find_element_by_id('upload-files').send_keys(fn)
-    #dashboard.click_upload_button()
     if doc == 'random':
       doc2upload = random.choice(docs)
-      print('Sending document: ' + os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload))
-      fn = os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload)
+      fn = os.path.join(os.getcwd(), 'frontend/assets/docs/{}'.format(doc2upload))
     else:
-      fn = os.path.join(os.getcwd(),'/frontend/assets/docs/{}'.format(doc))
+      fn = os.path.join(os.getcwd(),'frontend/assets/docs/{}'.format(doc))
+    logging.info('Sending document: {}'.format(fn))
+    time.sleep(1)
     self._driver.find_element_by_id('upload-files').send_keys(fn)
     dashboard.click_upload_button()
-
     # Time needed for script execution.
     time.sleep(10)
     return title

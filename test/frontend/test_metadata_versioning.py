@@ -7,7 +7,6 @@ __author__ = 'sbassi@plos.org'
 
 import time
 import random
-import pdb
 
 from selenium.common.exceptions import NoAlertPresentException
 
@@ -49,19 +48,16 @@ class MetadataVersioningTest(CommonTest):
     journal_type = random.choice(types)
     new_prq = {'q1':'Yes', 'q2':'Yes', 'q3': [0,1,0,0], 'q4':'New Data',
                'q5':'More Data'}
-    if self.check_article(title, user='jgray_author'):
-      init = True if 'users/sign_in' in self._driver.current_url else False
-      article = self.select_preexisting_article(title=title, init=init)
-    else:
-      # Create new article
-      title = self.create_article(title=title,
-                                 journal='PLOS Wombat',
-                                 type_=journal_type,
-                                 random_bit=True,
-                                 init=False,
-                                 user='jgray_author')
+    dashboard_page = self.login(email=au_login['user'], password=login_valid_pw)
+    title = self.create_article(title=title,
+                                journal='PLOS Wombat',
+                                type_=journal_type,
+                                random_bit=True,
+                                init=False,
+                                user='jgray_author')
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_id = paper_viewer.get_current_url().split('/')[-1]
+    paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
     print("Assigned paper id: {}".format(paper_id))
     paper_viewer.complete_task('Billing')
     time.sleep(.1)
@@ -69,7 +65,7 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer.complete_task('Figures')
     paper_viewer.complete_task('Supporting Info')
     paper_viewer.complete_task('Authors')
-    paper_viewer.complete_task('Publishing Related Questions')
+    paper_viewer.complete_task('Additional Information')
     time.sleep(3)
     # get title
     # check after manuscript is uploaded

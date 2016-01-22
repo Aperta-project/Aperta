@@ -5,6 +5,7 @@ Page Object Model for the Paper Editor Page. Validates global and dynamic elemen
 NOTE: This POM will be outdated when the Paper Editor is removed.
 """
 
+import logging
 import time
 
 from selenium.webdriver.common.by import By
@@ -17,7 +18,7 @@ from frontend.Cards.authors_card import AuthorsCard
 from frontend.Cards.basecard import BaseCard
 from frontend.Tasks.basetask import BaseTask
 from frontend.Tasks.authors_task import AuthorsTask
-from frontend.Tasks.prq_task import PRQTask
+from frontend.Tasks.additional_information_task import AITask
 from frontend.Tasks.initial_decision_task import InitialDecisionTask
 from frontend.Tasks.register_decision_task import RegisterDecisionTask
 from frontend.Cards.billing_card import BillingCard
@@ -38,7 +39,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     # dashboard Link
     self._dashboard_link = (By.ID, 'nav-dashboard')
     # Main Viewer Div
-    self._paper_title = (By.ID, 'paper-title')
+    self._paper_title = (By.ID, 'control-bar-paper-title')
     self._paper_tracker_title = (By.CLASS_NAME, 'paper-tracker-message')
     self._paper_tracker_table_submit_date_th = (By.XPATH, '//th[4]')
     self._card = (By.CLASS_NAME, 'card')
@@ -374,7 +375,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :task_name: The name of the task to conmplete (str)
     :click_override:
     :data:
-    returns None
     """
     tasks = self._gets(self._task_headings)
     # if task is marked as complete, leave is at is.
@@ -384,6 +384,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
         if task.text == task_name and 'active' \
             not in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
           task.click()
+          time.sleep(.5)
           break
         elif task.text == task_name and 'active' \
             in task_div.find_element(*self._task_heading_status_icon).get_attribute('class'):
@@ -416,9 +417,9 @@ class ManuscriptViewerPage(AuthenticatedPage):
         self._get(base_task._completed_cb).click()
       task.click()
       time.sleep(1)
-    elif task_name == 'Publishing Related Questions':
-      prq_task = PRQTask(self._driver)
-      prq_task.complete_prq(data)
+    elif task_name == 'Additional Information':
+      ai_task = AITask(self._driver)
+      ai_task.complete_ai(data)
       #complete_prq
       if not base_task.completed_cb_is_selected():
         self._get(base_task._completed_cb).click()
@@ -426,6 +427,12 @@ class ManuscriptViewerPage(AuthenticatedPage):
       time.sleep(1)
     elif task_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript',
                      'Revise Manuscript', 'Billing'):
+      # before checking that the complete is selected, in the accordion we need to
+      # check if it is open
+      if 'task-disclosure--open' not in task_div.get_attribute('class'):
+        # accordion is close it, open it:
+        logging.info('Accordion was closed, opening: {}'.format(task.text))
+        task.click()
       # Check completed_check status
       if not base_task.completed_cb_is_selected():
         self._get(base_task._completed_cb).click()
@@ -439,9 +446,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
         self._get(base_task._completed_cb).click()
       task.click()
       time.sleep(1)
-    #elif task_name == 'Billing':
-    #  billing = BillingTask(self._driver)
-    #  billing.add_billing_data(billing_data)
+    else:
+      raise ValueError('No information on this card: {}'.format(task_name))
 
   def get_paper_title_from_page(self):
     """
@@ -449,23 +455,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     :return: paper_title
     """
     paper_title = self._get(self._paper_title).text
-    print(paper_title)
     return paper_title
-
-  def edit_paper_title(self):
-    """
-    Returns the encoded paper title as it appears on the manuscript_viewer page
-    :return: paper_title
-    """
-    paper_title = self._get(self._paper_title)
-    original_paper_title = paper_title.text
-    self._actions.click(paper_title).perform()
-    self._actions.send_keys(10 * u'\ue015').perform()
-    time.sleep(.5)
-    self._actions.send_keys_to_element(paper_title, ' edited' + u'\ue004').perform()
-    new_paper_title = self._get(self._paper_title)
-    assert new_paper_title.text == original_paper_title + ' edited', \
-        new_paper_title.text + ' != ' + original_paper_title + ' edited'
 
   def click_submit_btn(self):
     """Press the submit button"""
@@ -577,7 +567,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     select_items = (By.CSS_SELECTOR, 'ul.select2-results')
     items = self._get(select_items)
     for item in items.find_elements_by_tag_name('li'):
-      print(item.text)
       if item.text == user['name']:
         item.click()
         time.sleep(.5)

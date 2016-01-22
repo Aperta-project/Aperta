@@ -80,7 +80,7 @@ class ApertaDashboardTest(CommonTest):
     # Validate Create New Submissions modal
     dashboard_page.click_create_new_submission_button()
     # We recently became slow drawing this overlay (20151006)
-    time.sleep(2)
+    time.sleep(5)
     dashboard_page.validate_create_new_submission()
 
 

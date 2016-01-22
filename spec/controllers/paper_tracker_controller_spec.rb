@@ -147,15 +147,32 @@ describe PaperTrackerController do
     end
 
     context 'when order param is sent with request' do
-      it 'orders the results' do
-      end
-
-      it 'orders the results by defaults' do
-        # default field
-        # default dir asc
+      it 'orders the results via orderBy' do
+        make_matchable_paper(title: 'aaa foo')
+        make_matchable_paper(title: 'bbb foo')
+        make_matchable_paper(title: 'aaa foo')
+        get :index, format: :json, query: 'foo', orderBy: :title
+        json = JSON.parse(response.body)
+        expect(Paper.count).to eq(3)
+        expect(json['papers'][0]['title']).to eq('aaa foo')
+        expect(json['papers'][1]['title']).to eq('aaa foo')
+        expect(json['papers'][2]['title']).to eq('bbb foo')
       end
 
       it 'orders the results by orderDir when sent' do
+        make_matchable_paper(title: 'aaa foo')
+        make_matchable_paper(title: 'bbb foo')
+        make_matchable_paper(title: 'aaa foo')
+        get :index,
+            format: :json,
+            query: 'foo',
+            orderBy: :title,
+            orderDir: :desc
+        json = JSON.parse(response.body)
+        expect(Paper.count).to eq(3)
+        expect(json['papers'][0]['title']).to eq('bbb foo')
+        expect(json['papers'][1]['title']).to eq('aaa foo')
+        expect(json['papers'][2]['title']).to eq('aaa foo')
       end
     end
   end

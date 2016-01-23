@@ -85,17 +85,12 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     # We recently became slow drawing this overlay (20151006)
     time.sleep(.5)
-    title = dashboard_page.title_generator(prefix='full submit', random_bit=True)
-    dashboard_page.enter_title_field(title)
-    dashboard_page.select_journal_and_type('PLOS Wombat', 'NoCards')
-    doc2upload = random.choice(docs)
-    print('Sending document: ' + os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload))
-    fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
-    if os.path.isfile(fn):
-      self._driver.find_element_by_id('upload-files').send_keys(fn)
-    else:
-      raise IOError('Doc file: {} not found'.format(doc2upload))
-    dashboard_page.click_upload_button()
+    title = self.create_article(journal='PLOS Wombat',
+                                type_='NoCards',
+                                random_bit=True,
+                                init=False,
+                                title='full submit',
+                                )
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
@@ -115,7 +110,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay
-    time.sleep(1)
+    time.sleep(2)
     manuscript_page.validate_so_overlay_elements_styles('congrats', paper_title_from_page)
     manuscript_page.close_submit_overlay()
     manuscript_page.validate_submit_success()
@@ -186,17 +181,12 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     # We recently became slow drawing this overlay (20151006)
     time.sleep(.5)
-    title = dashboard_page.title_generator(prefix='initial submit', random_bit=True)
-    dashboard_page.enter_title_field(title)
-    dashboard_page.select_journal_and_type('PLOS Wombat', 'OnlyInitialDecisionCard')
-    doc2upload = random.choice(docs)
-    print('Sending document: ' + os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload))
-    fn = os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload)
-    if os.path.isfile(fn):
-      self._driver.find_element_by_id('upload-files').send_keys(fn)
-    else:
-      raise IOError('Document file not found: ' + fn)
-    dashboard_page.click_upload_button()
+    title = self.create_article(journal='PLOS Wombat',
+                                type_='OnlyInitialDecisionCard',
+                                random_bit=True,
+                                init=False,
+                                title='full submit',
+                                )
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(7)
     manuscript_page = ManuscriptViewerPage(self.getDriver())

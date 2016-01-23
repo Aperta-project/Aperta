@@ -30,9 +30,6 @@ all_users = [sa_login,
              ]
 
 user_search = ['OA', 'FM', 'MM', 'RV']
-user_search = ['OA',]
-user_search = ['FM',]
-user_search = ['MM',]
 
 @MultiBrowserFixture
 class ApertaAdminTest(CommonTest):
@@ -47,7 +44,7 @@ class ApertaAdminTest(CommonTest):
      Validate Add New Journal
      Validate Edit existing journal
   """
-  def _test_validate_components_styles(self):
+  def test_validate_components_styles(self):
     """
     Validates the presence UI elements of base admin page
     """
@@ -58,10 +55,8 @@ class ApertaAdminTest(CommonTest):
     login_page.enter_login_field(user_type['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
-
     dashboard_page = DashboardPage(self.getDriver())
     dashboard_page.click_admin_link()
-
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_page_elements_styles(user_type['user'])
     logging.info('Validating journal block display for {0}'.format(user_type['user']))
@@ -77,11 +72,10 @@ class ApertaAdminTest(CommonTest):
     logging.info('Logging in as user: {}'.format(user_type))
     dashboard_page = self.login(email=sa_login['user'], password=login_valid_pw)
     dashboard_page.click_admin_link()
-
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_search_edit_user(random.choice(user_search))
 
-  def _test_validate_add_new_journal(self):
+  def test_validate_add_new_journal(self):
     """
     Validates adding a new journal is available to superadmin
     """
@@ -93,7 +87,7 @@ class ApertaAdminTest(CommonTest):
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_add_new_journal(user_type['user'])
 
-  def _test_validate_edit_journal(self):
+  def test_validate_edit_journal(self):
     """
     Validates editing a journal is available to superadmin
     """

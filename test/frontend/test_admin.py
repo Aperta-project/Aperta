@@ -30,6 +30,9 @@ all_users = [sa_login,
              ]
 
 user_search = ['OA', 'FM', 'MM', 'RV']
+user_search = ['OA',]
+user_search = ['FM',]
+user_search = ['MM',]
 
 @MultiBrowserFixture
 class ApertaAdminTest(CommonTest):
@@ -44,7 +47,7 @@ class ApertaAdminTest(CommonTest):
      Validate Add New Journal
      Validate Edit existing journal
   """
-  def test_validate_components_styles(self):
+  def _test_validate_components_styles(self):
     """
     Validates the presence UI elements of base admin page
     """
@@ -78,7 +81,7 @@ class ApertaAdminTest(CommonTest):
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_search_edit_user(random.choice(user_search))
 
-  def test_validate_add_new_journal(self):
+  def _test_validate_add_new_journal(self):
     """
     Validates adding a new journal is available to superadmin
     """
@@ -90,7 +93,7 @@ class ApertaAdminTest(CommonTest):
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_add_new_journal(user_type['user'])
 
-  def test_validate_edit_journal(self):
+  def _test_validate_edit_journal(self):
     """
     Validates editing a journal is available to superadmin
     """

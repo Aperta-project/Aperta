@@ -291,6 +291,7 @@ class AdminPage(AuthenticatedPage):
     for result in result_set:
       if username in result.text:
         success_count += 1
+      time.sleep(1)
       result.click()
       # TODO: Validate Styles for these elements
       time.sleep(1)

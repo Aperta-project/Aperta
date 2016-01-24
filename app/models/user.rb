@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  include AssignableUser
   include UserHelper
   include UserDevise
 
@@ -52,7 +53,7 @@ class User < ActiveRecord::Base
   end
 
   def created_papers
-    assignments.assigned_to_with_roles(Paper, Role::CREATOR_ROLE)
+    Paper.assignments_for(user: self, role: [Role.creator])
   end
 
   def password_required?

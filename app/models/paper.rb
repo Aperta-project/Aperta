@@ -6,6 +6,7 @@ class Paper < ActiveRecord::Base
   include AASM
   include ActionView::Helpers::SanitizeHelper
   include PgSearch
+  include AssignableTo
 
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
@@ -289,11 +290,16 @@ class Paper < ActiveRecord::Base
   end
 
   def creator
-    assignments.users_with_roles(Role::CREATOR_ROLE).first
+    User.assigned_to(self, role: Role.creator).first
+  end
+
+  def creator=(user)
+    assignments.where(role: Role.creator).destroy_all
+    assignments.build(role: Role.creator, user: user, assigned_to: self)
   end
 
   def collaborators
-    assignments.users_with_roles(Role::CREATOR_ROLE, Role::COLLABORATOR_ROLE)
+    User.assigned_to(self, role: [Role.creator, Role.collaborator])
   end
 
   %w(admins editors reviewers).each do |relation|

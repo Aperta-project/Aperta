@@ -7,11 +7,11 @@ class Role < ActiveRecord::Base
   COLLABORATOR_ROLE = 'Collaborator'
 
   def self.creator
-    where(name: CREATOR_ROLE).first!
+    where(name: CREATOR_ROLE).first_or_create!
   end
 
   def self.collaborator
-    where(name: COLLABORATOR_ROLE).first!
+    where(name: COLLABORATOR_ROLE).first_or_create!
   end
 
   AUTHOR_ROLE = 'Author'

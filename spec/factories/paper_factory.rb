@@ -63,23 +63,6 @@ FactoryGirl.define do
       editable = true
     end
 
-    trait(:with_creator) do
-      transient do
-        creator_params {}
-      end
-
-      before(:create) do |paper, evaluator|
-        evaluator.creator_params[:user] ||= FactoryGirl.create(:user)
-        evaluator.creator_params[:role] ||= FactoryGirl.create(:role, :creator)
-        paper.save!
-        paper.assignments.create!(
-          role: evaluator.creator_params[:role],
-          user: evaluator.creator_params[:user],
-          assigned_to: paper
-        )
-      end
-    end
-
     trait(:with_tasks) do
       after(:create) do |paper|
         PaperFactory.new(paper, paper.creator).add_phases_and_tasks

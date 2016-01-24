@@ -1,6 +1,18 @@
 class Role < ActiveRecord::Base
   belongs_to :journal
   has_and_belongs_to_many :permissions
+  has_many :assignments, dependent: :destroy
+
+  CREATOR_ROLE = 'Creator'
+  COLLABORATOR_ROLE = 'Collaborator'
+
+  def self.creator
+    where(name: CREATOR_ROLE).first!
+  end
+
+  def self.collaborator
+    where(name: COLLABORATOR_ROLE).first!
+  end
 
   AUTHOR_ROLE = 'Author'
   REVIEWER_ROLE = 'Reviewer'

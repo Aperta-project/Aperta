@@ -10,10 +10,6 @@ class Paper < ActiveRecord::Base
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
   belongs_to :striking_image, polymorphic: true
-  belongs_to :creator,
-             inverse_of: :submitted_papers,
-             class_name: 'User',
-             foreign_key: :user_id
 
   has_many :figures, dependent: :destroy
   has_many :versioned_texts, dependent: :destroy
@@ -38,6 +34,7 @@ class Paper < ActiveRecord::Base
   has_many :snapshots, dependent: :destroy
   has_many :notifications, inverse_of: :paper
   has_many :nested_question_answers
+  has_many :assignments, as: :assigned_to
 
   serialize :withdrawals, ArrayHashSerializer
 
@@ -291,7 +288,15 @@ class Paper < ActiveRecord::Base
     update!(editable: true)
   end
 
-  %w(admins editors reviewers collaborators).each do |relation|
+  def creator
+    assignments.users_with_roles(Role::CREATOR_ROLE).first
+  end
+
+  def collaborators
+    assignments.users_with_roles(Role::CREATOR_ROLE, Role::COLLABORATOR_ROLE)
+  end
+
+  %w(admins editors reviewers).each do |relation|
     ###
     # :method: <old_roles>
     # Public: Return user records by old_role in the paper.

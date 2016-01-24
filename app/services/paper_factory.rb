@@ -3,7 +3,8 @@ class PaperFactory
 
   def self.create(paper_params, creator)
     paper_params[:title] = 'Untitled' if paper_params[:title].blank?
-    paper = creator.submitted_papers.build(paper_params)
+    paper = Paper.new(paper_params)
+
     pf = new(paper, creator)
     pf.create
     pf.paper
@@ -16,18 +17,10 @@ class PaperFactory
 
   def create
     Paper.transaction do
-      add_creator_as_collaborator
       return unless paper.valid?
         if template
           paper.save!
-
-          # TODO: This should be replaced with creator code.
-          Assignment.where(
-            role: paper.journal.roles.author,
-            assigned_to: paper,
-            user: paper.creator
-          ).create!
-
+          add_creator_assignment!
           add_decision
           add_phases_and_tasks
           add_creator_as_author!
@@ -69,15 +62,18 @@ class PaperFactory
     task.paper_creation_hook(paper) if task.respond_to?(:paper_creation_hook)
   end
 
+  def add_creator_assignment!
+    creator.assignments.create!(
+      assigned_to: paper,
+      role: paper.journal.roles.creator
+    )
+  end
+
   def add_creator_as_author!
     DefaultAuthorCreator.new(paper, creator).create!
   end
 
   def add_decision
     paper.decisions.create!
-  end
-
-  def add_creator_as_collaborator
-    paper.paper_roles.build(user: creator, old_role: PaperRole::COLLABORATOR)
   end
 end

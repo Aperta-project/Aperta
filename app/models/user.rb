@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
     using: { tsearch: { prefix: true }, trigram: { threshold: 0.3 } }
 
   has_many :affiliations, inverse_of: :user
-  has_many :submitted_papers, inverse_of: :creator, class_name: 'Paper'
+
   has_many :paper_roles
   has_many :papers, -> { uniq }, through: :paper_roles
   has_many :user_roles, inverse_of: :user
@@ -49,6 +49,10 @@ class User < ActiveRecord::Base
       authentication_keys: [:login], omniauth_providers: Rails.configuration.omniauth_providers
   else
     devise :trackable, :omniauthable, omniauth_providers: Rails.configuration.omniauth_providers
+  end
+
+  def created_papers
+    assignments.assigned_to_with_roles(Paper, Role::CREATOR_ROLE)
   end
 
   def password_required?

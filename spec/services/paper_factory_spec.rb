@@ -13,6 +13,8 @@ describe PaperFactory do
     end
   end
 
+  let!(:role) { FactoryGirl.create(:role, name: Role::CREATOR_ROLE, journal: journal) }
+
   let(:user) { FactoryGirl.create :user }
 
   describe ".create" do

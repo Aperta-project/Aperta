@@ -512,26 +512,39 @@ describe Paper do
   end
 
   describe "callbacks" do
-    let(:user) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.build :paper, creator: user }
+    let(:paper) { FactoryGirl.build :paper, :with_creator }
+    let(:creator) { paper.creator }
 
-    it "assigns all author tasks to the paper author" do
+    it "assigns all author tasks to the paper's creator" do
       paper.save!
       author_tasks = Task.where(old_role: 'author', phase_id: paper.phases.pluck(:id))
       other_tasks = Task.where("old_role != 'author'", phase_id: paper.phases.pluck(:id))
-      expect(author_tasks.all? { |t| t.assignee == user }).to eq true
-      expect(other_tasks.all? { |t| t.assignee != user }).to eq true
+      expect(author_tasks.all? { |t| t.assignee == creator }).to eq true
+      expect(other_tasks.all? { |t| t.assignee != creator }).to eq true
+    end
+  end
+
+  describe '#collaborators' do
+    let(:creator) { FactoryGirl.create(:user) }
+    let(:collaborator) { FactoryGirl.create(:user) }
+    let(:other_user) { FactoryGirl.create(:user) }
+
+    let(:creator_role) { FactoryGirl.create(:role, :creator) }
+    let(:collaborator_role) { FactoryGirl.create(:role, :collaborator) }
+    let(:other_role) { FactoryGirl.create(:role, name: 'Other Role') }
+
+    before do
+      paper.assignments.create!(role: creator_role, user: creator)
+      paper.assignments.create!(role: collaborator_role, user: collaborator)
+      paper.assignments.create!(role: other_role, user: other_user)
     end
 
-    context "when the paper is persisted" do
-      before { paper.save! }
+    it 'returns only users assigned with the Creator and Collaborator role' do
+      expect(paper.collaborators).to contain_exactly(creator, collaborator)
+    end
 
-      it "assigns all author tasks to the paper author" do
-        tasks = Task.where(old_role: 'author', phase_id: paper.phases.map(&:id))
-        not_author = FactoryGirl.create(:user)
-        paper.update! creator: not_author
-        expect(tasks.all? { |t| t.assignee == user }).to eq true
-      end
+    it 'does not return users assigned with other roles' do
+      expect(paper.collaborators).to_not include(other_user)
     end
   end
 

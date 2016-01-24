@@ -20,7 +20,6 @@ FactoryGirl.define do
     end
 
     journal
-    creator factory: User
 
     sequence :title do |n|
       "Feature Recognition from 2D Hints in Extruded Solids - #{n}-#{SecureRandom.hex(3)}"
@@ -48,13 +47,37 @@ FactoryGirl.define do
 
     trait(:submitted) do
       after(:create) do |paper|
-        paper.submit! paper.creator
+        creator = FactoryGirl.create(:user)
+        creator_role = FactoryGirl.create(:role, :creator)
+        paper.assignments.create!(
+          role: creator_role,
+          user: creator,
+          assigned_to: paper
+        )
+        paper.submit! creator
       end
     end
 
     trait(:unsubmitted) do
       publishing_state "unsubmitted"
       editable = true
+    end
+
+    trait(:with_creator) do
+      transient do
+        creator_params {}
+      end
+
+      before(:create) do |paper, evaluator|
+        evaluator.creator_params[:user] ||= FactoryGirl.create(:user)
+        evaluator.creator_params[:role] ||= FactoryGirl.create(:role, :creator)
+        paper.save!
+        paper.assignments.create!(
+          role: evaluator.creator_params[:role],
+          user: evaluator.creator_params[:user],
+          assigned_to: paper
+        )
+      end
     end
 
     trait(:with_tasks) do
@@ -124,7 +147,6 @@ FactoryGirl.define do
     end
 
     after(:create) do |paper, evaluator|
-      paper.paper_roles.create!(user: paper.creator, old_role: PaperRole::COLLABORATOR)
       paper.decisions.create!
 
       paper.body = evaluator.body

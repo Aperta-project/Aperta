@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 describe PapersController do
+  include AuthorizationSpecHelper
+
   let(:permitted_params) { [:short_title, :title, :abstract, :body, :paper_type, :decision, :decision_letter, :journal_id, {authors: [:first_name, :last_name, :affiliation, :email], reviewer_ids: [], phase_ids: [], figure_ids: [], assignee_ids: [], editor_ids: []}] }
 
   let(:user) { create :user, :site_admin }
@@ -226,12 +228,63 @@ describe PapersController do
   end
 
   describe "PUT 'withdraw'" do
-    it "withdraws the paper" do
-      put :withdraw, id: paper.id, reason:'Conflict of interest', format: :json
-      expect(response.status).to eq(200)
-      expect(paper.reload.latest_withdrawal_reason).to eq('Conflict of interest')
-      expect(paper.withdrawn?).to eq true
-      expect(paper.editable).to eq false
+    permission action: :withdraw_manuscript, applies_to: 'Paper', states: ['*']
+    role 'Author' do
+      has_permission action: 'withdraw_manuscript', applies_to: 'Paper'
+    end
+
+    role 'JournalStaff' do
+      has_permission action: 'withdraw_manuscript', applies_to: 'Paper'
+    end
+
+    context 'has withdraw_manuscript permission' do
+      context 'as the author' do
+        before do
+          assign_user user, to: paper, with_role: role_Author
+        end
+
+        it 'withdraws the paper' do
+          put :withdraw,
+              id: paper.id,
+              reason: 'Conflict of interest',
+              format: :json
+          expect(response.status).to eq(200)
+          reason = paper.reload.latest_withdrawal_reason
+          expect(reason).to eq('Conflict of interest')
+
+          expect(paper.withdrawn?).to eq true
+          expect(paper.editable).to eq false
+        end
+      end
+
+      context 'as journal staff' do
+        before do
+          assign_user user, to: paper.journal, with_role: role_JournalStaff
+        end
+
+        it 'withdraws the paper' do
+          put :withdraw,
+              id: paper.id,
+              reason: 'Conflict of interest',
+              format: :json
+          expect(response.status).to eq(200)
+          reason = paper.reload.latest_withdrawal_reason
+          expect(reason).to eq('Conflict of interest')
+
+          expect(paper.withdrawn?).to eq true
+          expect(paper.editable).to eq false
+        end
+      end
+    end
+
+    context 'does not have withdraw_manuscript permission' do
+      it 'does not withdraw the paper' do
+        put :withdraw,
+            id: paper.id,
+            reason: 'Conflict of interest',
+            format: :json
+        expect(response.status).to eq(403)
+      end
     end
   end
 

@@ -1,6 +1,16 @@
 require 'rails_helper'
 
 describe PaperConversionsPolicy do
+  include AuthorizationSpecHelper
+
+  permissions do
+    permission action: 'view', applies_to: Paper.name
+  end
+
+  role :with_access_to_view_paper do
+    has_permission action: 'view', applies_to: Paper.name
+  end
+
   let(:policy) { described_class.new(current_user: user, paper: paper) }
   let(:user) { FactoryGirl.create(:user) }
   let(:paper) { FactoryGirl.create(:paper) }
@@ -19,6 +29,20 @@ describe PaperConversionsPolicy do
 
   context "authors" do
     let(:paper) { FactoryGirl.create(:paper, creator: user) }
+
+    role 'Creator' do
+      has_permission action: 'view', applies_to: Paper.name
+    end
+
+    include_examples "can export paper"
+  end
+
+  context "users who can :view the paper" do
+    let(:paper) { FactoryGirl.create(:paper, creator: user) }
+
+    before do
+      assign_user user, to: paper, with_role: role_with_access_to_view_paper
+    end
 
     include_examples "can export paper"
   end

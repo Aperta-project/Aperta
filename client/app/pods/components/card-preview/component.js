@@ -7,6 +7,7 @@ export default Ember.Component.extend({
   classNameBindings: ['task.completed:card--completed', 'classComponentName'],
 
   classComponentName: Ember.computed('task.type', function() {
+    if (!this.get('task.type')) return '';
     return taskComponentName(this.get('task.type'));
   }),
 

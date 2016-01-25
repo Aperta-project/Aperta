@@ -1,5 +1,6 @@
 class NestedQuestion < ActiveRecord::Base
   SUPPORTED_VALUE_TYPES = %w(attachment boolean question-set text)
+  VALUE_REQUIRED_FOR_TYPES = %w(boolean question-set text)
 
   acts_as_nested_set order_column: :position
   belongs_to :owner, polymorphic: true

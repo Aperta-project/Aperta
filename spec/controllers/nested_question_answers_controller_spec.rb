@@ -10,20 +10,6 @@ describe NestedQuestionAnswersController do
     sign_in user
   end
 
-  shared_examples_for "processing attachments for NestedQuestionAnswersController" do
-    let(:nested_question) { FactoryGirl.create(:nested_question, value_type: "attachment") }
-    let(:attachment_params) { { value: "http://example.com/image.png" } }
-
-    it "creates an question attachment" do
-      expect { do_request(params: attachment_params) }.to change { QuestionAttachment.count }.by(1)
-    end
-
-    it "queues a download worker" do
-      do_request(params: attachment_params)
-      expect(DownloadQuestionAttachmentWorker).to have_queued_job(NestedQuestionAnswer.last.attachment.id, attachment_params[:value])
-    end
-  end
-
   describe "#create" do
     let(:owner) { nested_question.owner }
 
@@ -56,8 +42,6 @@ describe NestedQuestionAnswersController do
       do_request
       expect(response.status).to eq(200)
     end
-
-    include_examples "processing attachments for NestedQuestionAnswersController"
   end
 
   describe "#create with an existing answer for the owner" do
@@ -124,8 +108,6 @@ describe NestedQuestionAnswersController do
       do_request
       expect(response.status).to eq(200)
     end
-
-    include_examples "processing attachments for NestedQuestionAnswersController"
   end
 
   describe "#destroy" do

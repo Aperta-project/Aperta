@@ -3,6 +3,14 @@ class QuestionAttachmentsPolicy < ApplicationPolicy
 
   include TaskAccessCriteria
 
+  def create?
+    authorized_to_modify_task?
+  end
+
+  def update?
+    authorized_to_modify_task?
+  end
+
   def show?
     authorized_to_modify_task?
   end

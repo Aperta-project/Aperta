@@ -8,12 +8,12 @@ class Snapshot::NestedQuestionSerializer
   def as_json
     {
       name: @nested_question.ident,
-      type: "question",
+      type: 'question',
       value: {
         title: @nested_question.text,
         answer_type: @nested_question.value_type,
         answer: @answer.try(:value),
-        attachment: serialized_attachment_json
+        attachments: serialized_attachments_json
       },
       children: serialized_children_json
     }
@@ -27,11 +27,11 @@ class Snapshot::NestedQuestionSerializer
     end
   end
 
-  def serialized_attachment_json
-    if @answer
-      if @answer.attachment
-        Snapshot::QuestionAttachmentSerializer.new(@answer.attachment).as_json
-      end
+  def serialized_attachments_json
+    attachments = []
+    attachments = @answer.attachments if @answer
+    attachments.map do |attachment|
+      Snapshot::QuestionAttachmentSerializer.new(attachment).as_json
     end
   end
 

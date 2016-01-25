@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Authors card', js: true do
+feature 'Publishing Related Questions Card', js: true do
   let(:author) { create :user, first_name: 'Author' }
   let!(:paper) { FactoryGirl.create(:paper, :with_tasks) }
   let!(:task) do

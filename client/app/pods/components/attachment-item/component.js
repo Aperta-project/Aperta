@@ -50,7 +50,7 @@ export default Ember.Component.extend({
 
     captionChanged() {
       if (this.attrs.captionChanged) {
-        this.attrs.captionChanged(this.get('caption'));
+        this.attrs.captionChanged(this.get('caption'), this.get('attachment'));
       }
     },
 

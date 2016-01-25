@@ -5,13 +5,11 @@ class NestedQuestionAnswersController < ApplicationController
 
   def create
     answer = fetch_and_update_answer
-    process_attachment(answer) if answer.save!
     render json: answer, serializer: NestedQuestionAnswerSerializer
   end
 
   def update
     answer = fetch_and_update_answer
-    process_attachment(answer) if answer.save!
     render json: answer, serializer: NestedQuestionAnswerSerializer
   end
 
@@ -27,6 +25,7 @@ class NestedQuestionAnswersController < ApplicationController
     answer = fetch_answer
     answer.value = answer_params[:value]
     answer.additional_data = answer_params[:additional_data]
+    answer.save!
     answer
   end
 
@@ -64,17 +63,4 @@ class NestedQuestionAnswersController < ApplicationController
   def enforce_policy
     authorize_action!(nested_question_answer: fetch_answer)
   end
-
-  def has_attachment?
-    nested_question.attachment? && answer_params[:value].present?
-  end
-
-  def process_attachment(answer)
-    return unless has_attachment?
-
-    attachment = answer.attachment || answer.build_attachment
-    attachment.update_attribute :status, "processing"
-    DownloadQuestionAttachmentWorker.perform_async attachment.id, answer_params[:value]
-  end
-
 end

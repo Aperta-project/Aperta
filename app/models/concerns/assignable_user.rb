@@ -6,8 +6,7 @@ module AssignableUser
       joins(:assignments).where(
         assignments: {
           assigned_to: resource,
-          role_id: role,
-          user_id: user
+          role_id: role
         }
       )
     end

@@ -512,7 +512,7 @@ describe Paper do
   end
 
   describe "callbacks" do
-    let(:paper) { FactoryGirl.build :paper, :with_creator }
+    let(:paper) { FactoryGirl.build :paper }
     let(:creator) { paper.creator }
 
     it "assigns all author tasks to the paper's creator" do

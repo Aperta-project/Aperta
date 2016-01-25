@@ -308,7 +308,7 @@ class Paper < ActiveRecord::Base
     )
   end
 
-  def participants
+  def participations
     Assignment.where(
       role: [
         journal.roles.creator,

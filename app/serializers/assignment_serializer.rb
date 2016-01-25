@@ -1,6 +1,11 @@
 class AssignmentSerializer < ActiveModel::Serializer
-  attributes :id, :old_role, :created_at
+  attributes :id, :created_at
 
   has_one :paper, embed: :id
   has_one :user, embed: :id, include: true
+
+  def paper
+    object.assigned_to
+  end
+
 end

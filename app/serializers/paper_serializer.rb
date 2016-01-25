@@ -11,7 +11,7 @@ class PaperSerializer < LitePaperSerializer
   has_many :collaborations,
            embed: :ids,
            include: true,
-           serializer: CollaborationSerializer
+           serializer: AssignmentSerializer
 
   has_one :journal, embed: :id
   has_one :striking_image, embed: :id

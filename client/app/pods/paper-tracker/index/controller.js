@@ -17,6 +17,12 @@ export default Ember.Controller.extend({
   actions: {
     setPage(page) {
       this.set('page', page); // triggers route reload
+    },
+
+    sort(orderBy, orderDir) {
+      this.set('orderBy',  orderBy);
+      this.set('orderDir', orderDir);
+      this.set('page',     page); // triggers route reload
     }
   }
 });

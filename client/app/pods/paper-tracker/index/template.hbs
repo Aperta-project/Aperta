@@ -5,35 +5,44 @@
 
   {{pagination-simple page=page totalCount=totalCount perPage=perPage setPage=(action "setPage")}}
 
-  {{#sortable-table class="paper-tracker-table"
-                    content=model
-                    sortProperty="submittedAt" as |table|}}
+  <table class="paper-tracker-table">
     <thead>
       <tr>
         <th></th>
-        {{sortable-table-header text="Title"
-                                sortProperty="displayTitle"
-                                sortAscending=table.sortAscending
-                                activeSortProperty=table.sortProperty}}
-        {{sortable-table-header text="Manuscript Number"
-                                sortProperty="id"
-                                sortAscending=table.sortAscending
-                                activeSortProperty=table.sortProperty}}
-        {{sortable-table-header text="Date Submitted"
-                                sortProperty="submittedAt"
-                                sortAscending=table.sortAscending
-                                activeSortProperty=table.sortProperty}}
-        {{sortable-table-header text="Article Type"
-                                sortProperty="paperType"
-                                sortAscending=table.sortAscending
-                                activeSortProperty=table.sortProperty}}
+        <th>{{sort-link text="Title"
+                        orderBy="display_title"
+                        activeOrderBy=orderBy
+                        activeOrderDir=orderDir
+                        sortAction=(action "sort")
+        }}</th>
+        <th>{{sort-link text="Manuscript ID"
+                        orderBy="id"
+                        activeOrderBy=orderBy
+                        activeOrderDir=orderDir
+                        sortAction=(action "sort")
+        }}</th>
+        <th>{{sort-link text="Date Submitted"
+                        orderBy="submitted_at"
+                        activeOrderBy=orderBy
+                        activeOrderDir=orderDir
+                        sortAction=(action "sort")
+        }}</th>
+        <th>{{sort-link text="Article Type"
+                        orderBy="paper_type"
+                        activeOrderBy=orderBy
+                        activeOrderDir=orderDir
+                        sortAction=(action "sort")
+        }}</th>
+
         <th>Members</th>
       </tr>
     </thead>
+
     <tbody>
-      {{#each table.arrangedContent as |paper|}}
+      {{#each model as |paper|}}
         {{partial "paper-tracker/row"}}
       {{/each}}
     </tbody>
-  {{/sortable-table}}
+
+  </table>
 </div>

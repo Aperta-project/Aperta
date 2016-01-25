@@ -1,12 +1,16 @@
 require 'rails_helper'
 
 describe SupportingInformationFilesController, redis: true do
-  let(:user) { create :user }
-  let(:paper) do
+  let!(:user) { create :user }
+  let!(:paper) do
     FactoryGirl.create(:paper, creator: user)
   end
 
-  before { sign_in user }
+  authorize_policy(SupportingInformationFilesPolicy, true)
+
+  before do
+    sign_in user
+  end
 
   describe "DELETE 'destroy'" do
     context "when authorized" do

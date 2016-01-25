@@ -8,6 +8,8 @@ describe FiguresController do
 
   before { sign_in user }
 
+  authorize_policy(FiguresPolicy, true)
+
   describe "#index" do
     let!(:figure1) { FactoryGirl.create(:figure, paper: paper) }
     let!(:figure2) { FactoryGirl.create(:figure, paper: paper) }

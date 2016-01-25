@@ -4,13 +4,9 @@ describe PaperTrackerSerializer do
   include AuthorizationSpecHelper
 
   describe 'related_users' do
-    role 'Internal Editor'
-    role 'Reviewer'
-    role 'Creator'
-    role 'Collaborator'
-
     let!(:creator) { FactoryGirl.create :user }
     let!(:paper) { FactoryGirl.create :paper, creator: creator }
+    let!(:journal) { paper.journal }
     let!(:collaborator) { FactoryGirl.create :user }
     let!(:internal_editor) { FactoryGirl.create :user }
     let!(:reviewer) { FactoryGirl.create :user }
@@ -24,14 +20,15 @@ describe PaperTrackerSerializer do
 
     before do
       # Ensure the roles are scoped to the paper's journal
-      role_Collaborator.update(journal: paper.journal)
-      role_Reviewer.update(journal: paper.journal)
-      role_Creator.update(journal: paper.journal)
-      role_Internal_Editor.update(journal: paper.journal)
+      Role.ensure_exists('Creator', journal: journal)
+      Role.ensure_exists('Internal Editor', journal: journal)
+      Role.ensure_exists('Reviewer', journal: journal)
+      Role.ensure_exists('Collaborator', journal: journal)
 
-      assign_user collaborator, to: paper, with_role: role_Collaborator
-      assign_user internal_editor, to: paper, with_role: role_Internal_Editor
-      assign_user reviewer, to: paper, with_role: role_Reviewer
+      roles = paper.journal.roles
+      assign_user collaborator, to: paper, with_role: roles.collaborator
+      assign_user internal_editor, to: paper, with_role: roles.internal_editor
+      assign_user reviewer, to: paper, with_role: roles.reviewer
     end
 
     it 'lists the author' do

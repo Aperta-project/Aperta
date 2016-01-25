@@ -3,16 +3,17 @@ require 'securerandom'
 FactoryGirl.define do
   factory :paper do
     after(:create) do |paper|
-      if paper.creator
+      creator = paper.creator
+      if creator
         Assignment.where(
           role: paper.journal.roles.creator,
           assigned_to: paper
         ).destroy_all
-        Assignment.where(
+        Assignment.create!(
           role: paper.journal.roles.creator,
           assigned_to: paper,
-          user: paper.creator
-        ).create!
+          user: creator
+        )
       end
 
       paper.save!

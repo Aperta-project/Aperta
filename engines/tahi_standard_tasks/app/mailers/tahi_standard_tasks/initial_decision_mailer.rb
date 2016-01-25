@@ -9,7 +9,7 @@ module TahiStandardTasks
     def notify(decision_id:)
       @decision = Decision.find(decision_id)
       @paper = @decision.paper
-      @recipient = User.find(@paper.user_id)
+      @recipient = User.find(@paper.creator.id)
 
       mail(to: @recipient.email,
            subject: "A decision has been registered on the manuscript, \"#{@paper.display_title}\"")

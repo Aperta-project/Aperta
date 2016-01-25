@@ -75,13 +75,13 @@ shared_examples_for "snapshot serializes related nested questions" do |opts|
         {
           name: "question_2",
           type: "question",
-          value: { title: "Question 2?", answer_type: "text", answer: nil, attachment: nil },
+          value: { title: "Question 2?", answer_type: "text", answer: nil, attachments: [] },
           children: []
         },
         {
           name: "question_1",
           type: "question",
-          value: { title: "Question 1?", answer_type: "text", answer: nil, attachment: nil },
+          value: { title: "Question 1?", answer_type: "text", answer: nil, attachments: [] },
           children: []
         }
       )

@@ -30,9 +30,9 @@ describe NestedQuestionAnswer do
         expect(nested_question_answer.valid?).to be true
       end
 
-      it "is not valid without a value" do
+      it "is valid without a value" do
         nested_question_answer.value = nil
-        expect(nested_question_answer.valid?).to be false
+        expect(nested_question_answer.valid?).to be true
       end
     end
   end

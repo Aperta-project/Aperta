@@ -30,12 +30,16 @@
         </div>
       {{/if}}
 
-      {{#if snapshot1.value.attachment}}
-        {{attachment-snapshot snapshot=snapshot1.value.attachment}}
-      {{/if}}
-      {{#if snapshot2.value.attachment}}
-        {{attachment-snapshot snapshot=snapshot2.value.attachment}}
-      {{/if}}
+      {{#each snapshot1.value.attachments as |attachment| }}
+        {{#if attachment}}
+          {{attachment-snapshot snapshot=attachment}}
+        {{/if}}
+      {{/each}}
+      {{#each snapshot2.value.attachments as |attachment| }}
+        {{#if attachment}}
+          {{attachment-snapshot snapshot=attachment}}
+        {{/if}}
+      {{/each}}
     </li>
   {{/if}}
 

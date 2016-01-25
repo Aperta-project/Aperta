@@ -133,13 +133,14 @@ class ApplicationPolicy
   end
 
   def author_of_paper?(paper)
-    current_user.submitted_papers.where(id: paper.id).present?
+    current_user.created_papers.where(id: paper.id).present?
   end
 
   def can_view_paper?(paper)
     (current_user.site_admin? ||
-     paper.assigned_users.where(id: current_user.id).exists? ||
-     can_view_manuscript_manager?(paper))
+      current_user.can?(:view, paper) ||
+      paper.assigned_users.where(id: current_user.id).exists? ||
+      can_view_manuscript_manager?(paper))
   end
 
   def can_view_manuscript_manager?(paper)

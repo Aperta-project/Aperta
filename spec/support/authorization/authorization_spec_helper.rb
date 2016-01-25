@@ -16,9 +16,11 @@ module AuthorizationSpecHelper
       end
     end
 
-    def role(name, &blk)
+    def role(name, participates_in: [], &blk)
       let_name = ['role', name].compact.join('_')
-      let!(let_name) { RoleSpecHelper.create_role(name, &blk) }
+      let!(let_name) do
+        RoleSpecHelper.create_role(name, participates_in: participates_in, &blk)
+      end
     end
   end
 

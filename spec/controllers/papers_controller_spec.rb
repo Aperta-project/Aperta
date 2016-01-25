@@ -3,6 +3,7 @@ require 'rails_helper'
 describe PapersController do
   let(:permitted_params) do
     [
+      :short_title,
       :title,
       :abstract,
       :body,
@@ -23,6 +24,15 @@ describe PapersController do
         editor_ids: []
       }
     ]
+
+  include AuthorizationSpecHelper
+
+  permissions do
+    permission action: 'view', applies_to: Paper.name
+  end
+
+  role 'Creator', participates_in: [Paper] do
+    has_permission action: 'view', applies_to: Paper.name
   end
 
   let(:user) { create :user, :site_admin }
@@ -40,6 +50,8 @@ describe PapersController do
     sign_in user
   end
 
+  authorize_policy(PapersPolicy, true)
+
   describe "GET index" do
     let(:active_paper_count) { 3 }
     let(:inactive_paper_count) { 2 }
@@ -52,7 +64,6 @@ describe PapersController do
     end
 
     context "when there are active and inactive papers owned by the user" do
-
       it "returns all papers" do
         get :index, format: :json
         expect(response.status).to eq(200)
@@ -283,28 +294,44 @@ describe PapersController do
     end
 
     context "for manuscript feed" do
-      it "returns the feed" do
-        get :manuscript_activities, { id: paper.to_param, format: :json }
-        expect(response.status).to eq(200)
+      context "and the user can view manuscript_activities" do
+        action_policy(PapersPolicy, :manuscript_activities, true)
+
+        it "returns the feed" do
+          get :manuscript_activities, { id: paper.to_param, format: :json }
+          expect(response.status).to eq(200)
+        end
       end
 
-      it "returns the feed even to paper-view-only users" do
-        sign_in weak_user
-        get :manuscript_activities, { id: paper.to_param, format: :json }
-        expect(response.status).to eq(200)
+      context "and the user cannot view manuscript_activities" do
+        action_policy(PapersPolicy, :manuscript_activities, false)
+
+        it "returns a 403" do
+          sign_in weak_user
+          get :manuscript_activities, { id: paper.to_param, format: :json }
+          expect(response.status).to eq(403)
+        end
       end
     end
 
     context "for workflow feed" do
-      it "returns the feed if authorized for the manuscript manager" do
-        get :workflow_activities, { id: paper.to_param, format: :json }
-        expect(response.status).to eq(200)
+      context "and the user can view workflow_activities" do
+        action_policy(PapersPolicy, :workflow_activities, true)
+
+        it "returns the feed" do
+          get :workflow_activities, { id: paper.to_param, format: :json }
+          expect(response.status).to eq(200)
+        end
       end
 
-      it "blocks paper-view-only users" do
-        sign_in weak_user
-        get :workflow_activities, { id: paper.to_param, format: :json }
-        expect(response.status).to eq(403)
+      context "and the user cannot view workflow_activities" do
+        action_policy(PapersPolicy, :workflow_activities, false)
+
+        it "returns a 403" do
+          sign_in weak_user
+          get :workflow_activities, { id: paper.to_param, format: :json }
+          expect(response.status).to eq(403)
+        end
       end
     end
   end

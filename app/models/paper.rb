@@ -180,6 +180,10 @@ class Paper < ActiveRecord::Base
     end
   end
 
+  def inactive?
+    !active?
+  end
+
   def previous_state_is?(event)
     withdrawals.last[:previous_publishing_state] == event.to_s
   end

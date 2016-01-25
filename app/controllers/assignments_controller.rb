@@ -6,7 +6,7 @@ class AssignmentsController < ApplicationController
     authorize_action! paper: paper
 
     assignments = PaperRole.includes(:user).where(paper: paper)
-    render json: assignments, each_serializer: AssignmentSerializer
+    render json: assignments, each_serializer: PaperRoleSerializer, root: :assignments
   end
 
   def create
@@ -18,7 +18,7 @@ class AssignmentsController < ApplicationController
 
     Activity.assignment_created!(assignment, user: current_user)
 
-    render json: assignment, serializer: AssignmentSerializer
+    render json: assignment, serializer: PaperRoleSerializer, root: :assignment
   end
 
   def destroy
@@ -26,6 +26,6 @@ class AssignmentsController < ApplicationController
     authorize_action! paper: assignment.paper
 
     assignment.destroy!
-    render json: assignment, serializer: AssignmentSerializer
+    render json: assignment, serializer: PaperRoleSerializer, root: :assignment
   end
 end

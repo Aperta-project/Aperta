@@ -49,14 +49,10 @@ FactoryGirl.define do
 
     trait(:submitted) do
       after(:create) do |paper|
-        creator = FactoryGirl.create(:user)
-        creator_role = Role.creator
-        paper.assignments.create!(
-          role: creator_role,
-          user: creator,
-          assigned_to: paper
-        )
-        paper.submit! creator
+        unless paper.creator
+          paper.update!(creator: FactoryGirl.create(:user))
+        end
+        paper.submit! paper.creator
       end
     end
 

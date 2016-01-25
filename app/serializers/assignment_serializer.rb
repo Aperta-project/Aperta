@@ -1,11 +1,6 @@
+# Used to serialize Assignment records.
 class AssignmentSerializer < ActiveModel::Serializer
-  attributes :id, :created_at
+  attributes :id, :created_at, :assigned_to_id, :assigned_to_type
 
-  has_one :paper, embed: :id
   has_one :user, embed: :id, include: true
-
-  def paper
-    object.assigned_to
-  end
-
 end

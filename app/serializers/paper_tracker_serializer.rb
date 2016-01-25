@@ -2,11 +2,11 @@ class PaperTrackerSerializer < LitePaperSerializer
   attributes :paper_type, :submitted_at, :related_users
 
   def related_users
-    role_hash = object.participants.group_by(&:role)
-    role_hash.map do |role, participants|
+    role_hash = object.participations.group_by(&:role)
+    role_hash.map do |role, participation|
       {
         name: role.name,
-        users: participants.map(&:user)
+        users: participation.map(&:user)
       }
     end
   end

@@ -18,7 +18,7 @@ class PaperSerializer < LitePaperSerializer
 
   def collaborations
     # we want the actual join record, not a list of users
-    object.paper_roles.collaborators
+    object.participations
   end
 
   def links

@@ -303,9 +303,16 @@ class Paper < ActiveRecord::Base
 
   def collaborations
     Assignment.where(
-      role: [Role.creator, Role.collaborator],
+      role: [
+        journal.roles.creator,
+        journal.roles.collaborator
+      ],
       assigned_to: self
     )
+  end
+
+  def collaborators
+    User.assigned_to(self, role: [Role.creator, Role.collaborator])
   end
 
   def participations
@@ -320,8 +327,16 @@ class Paper < ActiveRecord::Base
     ).includes(:role, :user)
   end
 
-  def collaborators
-    User.assigned_to(self, role: [Role.creator, Role.collaborator])
+  def participants
+    role_ids = [
+      journal.roles.creator,
+      journal.roles.collaborator,
+      journal.roles.internal_editor,
+      journal.roles.reviewer
+    ].map(&:id)
+    User.joins(:assignments).where(
+      assignments: { role_id: role_ids, assigned_to: self }
+    )
   end
 
   %w(admins editors reviewers).each do |relation|

@@ -525,16 +525,15 @@ describe Paper do
   end
 
   describe '#collaborators' do
-    let(:creator) { FactoryGirl.create(:user) }
+    let(:creator) { paper.creator }
     let(:collaborator) { FactoryGirl.create(:user) }
     let(:other_user) { FactoryGirl.create(:user) }
 
-    let(:creator_role) { FactoryGirl.create(:role, :creator) }
-    let(:collaborator_role) { FactoryGirl.create(:role, :collaborator) }
+    let(:creator_role) { Role.creator }
+    let(:collaborator_role) { Role.collaborator }
     let(:other_role) { FactoryGirl.create(:role, name: 'Other Role') }
 
     before do
-      paper.assignments.create!(role: creator_role, user: creator)
       paper.assignments.create!(role: collaborator_role, user: collaborator)
       paper.assignments.create!(role: other_role, user: other_user)
     end

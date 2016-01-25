@@ -49,7 +49,7 @@ FactoryGirl.define do
     trait(:submitted) do
       after(:create) do |paper|
         creator = FactoryGirl.create(:user)
-        creator_role = FactoryGirl.create(:role, :creator)
+        creator_role = Role.creator
         paper.assignments.create!(
           role: creator_role,
           user: creator,

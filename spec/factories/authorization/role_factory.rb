@@ -6,11 +6,11 @@ FactoryGirl.define do
     participates_in_tasks true
 
     trait :creator do
-      name Role::CREATOR_ROLE
+      fail 'Use Role.creator instead of this factory'
     end
 
     trait :collaborator do
-      name Role::CREATOR_ROLE
+      fail 'Use Role.collaborator instead of this factory'
     end
   end
 end

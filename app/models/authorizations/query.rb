@@ -10,7 +10,7 @@ module Authorizations
   # permissions they have thru those roles.
   class Query
     # WILDCARD_STATE represents the notion that any state is valid.
-    WILDCARD_STATE = '*'
+    WILDCARD_STATE = PermissionState::WILDCARD
 
     attr_reader :permission, :klass, :user
 

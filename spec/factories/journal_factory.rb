@@ -15,6 +15,10 @@ FactoryGirl.define do
         FactoryGirl.create(:paper, journal: journal)
       end
     end
+
+    after(:create) do |journal|
+      JournalFactory.ensure_default_roles_and_permissions_exist(journal)
+    end
   end
 
   sequence :doi_journal_prefix do

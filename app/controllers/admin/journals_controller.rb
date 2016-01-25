@@ -59,7 +59,7 @@ class Admin::JournalsController < ApplicationController
       if params[:id].present?
         Journal.find(params[:id])
       elsif params[:admin_journal].present?
-        Journal.new(journal_params)
+        JournalFactory.create(journal_params)
       end
     end
   end

@@ -9,22 +9,11 @@ namespace :'roles-and-permissions' do
       )
     end
 
-    Role.ensure_exists('Author', participates_in: [Task, Paper]) do |role|
-      role.ensure_permission_exists(:view, applies_to: 'Task')
-      role.ensure_permission_exists(:view, applies_to: 'Paper')
-      role.ensure_permission_exists(:view, applies_to: 'PlosBilling::BillingTask')
-    end
-
-    Role.ensure_exists('Reviewer', participates_in: [Task, Paper]) do |role|
-      role.ensure_permission_exists(:view, applies_to: 'Task')
-      role.ensure_permission_exists(:view, applies_to: 'Paper')
-    end
-
-    Role.ensure_exists('Staff Admin') do |role|
-      role.ensure_permission_exists(:administer, applies_to: 'Journal')
-      role.ensure_permission_exists(:manage_workflow, applies_to: 'Paper')
-      role.ensure_permission_exists(:view, applies_to: 'Paper')
-      role.ensure_permission_exists(:view, applies_to: 'Task')
+    Journal.all.each do |journal|
+      # JournalFactory is used to set up new journals. Rather than
+      # duplicate logic just expose the step that ensures journals are
+      # set up baseline roles and permissions.
+      JournalFactory.ensure_default_roles_and_permissions_exist(journal)
     end
   end
 end

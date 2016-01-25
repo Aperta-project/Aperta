@@ -11,6 +11,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - New component s3-file-uploader that wraps the jquery fileupload plugin to make direct uploads to Amazon S3
 - Email notifications on discussion forum posts and participations
 - Discussion Notifications displayed when user is added as participant
+- Removed option to log in with Aperta email and password from production environments.
 
 ### Changed
 - NestedQuestions have unique identifiers

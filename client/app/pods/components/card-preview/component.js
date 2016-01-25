@@ -4,8 +4,8 @@ import taskComponentName from 'tahi/lib/task-component-name';
 
 export default Ember.Component.extend({
   classNames: ['card'],
-  classNameBindings: ['task.completed:card--completed', 'classes', 'classComponentName'],
-  
+  classNameBindings: ['task.completed:card--completed', 'classComponentName'],
+
   classComponentName: Ember.computed('task.type', function() {
     return taskComponentName(this.get('task.type'));
   }),
@@ -15,7 +15,6 @@ export default Ember.Component.extend({
   }),
 
   task: null,
-  classes: '',
   canRemoveCard: false,
   version1: null,  // Will be a string like "1.2"
   version2: null,  // Will be a string like "1.2"

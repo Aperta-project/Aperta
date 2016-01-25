@@ -23,7 +23,7 @@ class ResourceProxyController < ApplicationController
   end
 
   def resource_whitelist
-    [:supporting_information_files, :figures]
+    [:supporting_information_files, :figures, :questions_attachments]
   end
 
   def enforce_whitelist

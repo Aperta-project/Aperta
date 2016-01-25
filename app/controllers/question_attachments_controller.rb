@@ -32,7 +32,7 @@ class QuestionAttachmentsController < ApplicationController
   def question_attachment
     @question_attachment ||= begin
       if params[:id]
-        QuestionAttachment.find(params[:id])
+        QuestionAttachment.find_by(id: params[:id])
       elsif attachment_params[:nested_question_answer_id]
         answer = NestedQuestionAnswer.where(
           id: attachment_params[:nested_question_answer_id]

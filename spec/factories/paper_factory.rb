@@ -5,11 +5,11 @@ FactoryGirl.define do
     after(:create) do |paper|
       if paper.creator
         Assignment.where(
-          role: paper.journal.roles.author,
+          role: paper.journal.roles.creator,
           assigned_to: paper
         ).destroy_all
         Assignment.where(
-          role: paper.journal.roles.author,
+          role: paper.journal.roles.creator,
           assigned_to: paper,
           user: paper.creator
         ).create!

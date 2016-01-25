@@ -8,7 +8,7 @@ namespace :data do
         # Assign every Author and Reviewer role
         Paper.all.each do |paper|
           journal = paper.journal
-          author_role = journal.roles.author
+          author_role = journal.roles.creator
           reviewer_role = journal.roles.reviewer
           user = paper.creator
           puts "Assigning #{user.full_name} <#{user.email}> as #{author_role.name} on paper ##{paper.id} on '#{journal.name}' Journal"
@@ -38,7 +38,7 @@ namespace :data do
 
         Paper.all.each do |paper|
           journal = paper.journal
-          author_role = journal.roles.author
+          author_role = journal.roles.creator
 
           # Remove invalid author roles for this paper and its journal
           author_roles_that_should_not_exist = all_author_roles - [author_role]

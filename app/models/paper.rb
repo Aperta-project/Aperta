@@ -26,7 +26,6 @@ class Paper < ActiveRecord::Base
   has_many :tasks, inverse_of: :paper
   has_many :comments, through: :tasks
   has_many :comment_looks, through: :comments
-  has_many :participants, through: :tasks
   has_many :journal_roles, through: :journal
   has_many :authors, -> { order 'authors.position ASC' }
   has_many :activities
@@ -300,6 +299,25 @@ class Paper < ActiveRecord::Base
   def creator=(user)
     assignments.where(role: Role.creator).destroy_all
     assignments.build(role: Role.creator, user: user, assigned_to: self)
+  end
+
+  def collaborations
+    Assignment.where(
+      role: [Role.creator, Role.collaborator],
+      assigned_to: self
+    )
+  end
+
+  def participants
+    Assignment.where(
+      role: [
+        journal.roles.creator,
+        journal.roles.collaborator,
+        journal.roles.internal_editor,
+        journal.roles.reviewer
+      ],
+      assigned_to: self
+    ).includes(:role, :user)
   end
 
   def collaborators

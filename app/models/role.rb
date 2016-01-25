@@ -5,6 +5,9 @@ class Role < ActiveRecord::Base
 
   CREATOR_ROLE = 'Creator'
   COLLABORATOR_ROLE = 'Collaborator'
+  INTERNAL_EDITOR_ROLE = 'Internal Editor'
+  REVIEWER_ROLE = 'Reviewer'
+  STAFF_ADMIN_ROLE = 'Staff Admin'
 
   def self.creator
     where(name: CREATOR_ROLE).first_or_create!
@@ -12,15 +15,6 @@ class Role < ActiveRecord::Base
 
   def self.collaborator
     where(name: COLLABORATOR_ROLE).first_or_create!
-  end
-
-  AUTHOR_ROLE = 'Author'
-  REVIEWER_ROLE = 'Reviewer'
-  INTERNAL_EDITOR_ROLE = 'Internal Editor'
-  STAFF_ADMIN_ROLE = 'Staff Admin'
-
-  def self.author
-    where(name: AUTHOR_ROLE).first_or_create!
   end
 
   def self.internal_editor

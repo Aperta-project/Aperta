@@ -260,6 +260,7 @@ end
 
 class PermissionResult
   attr_accessor :object, :permissions, :id
+  include ActiveModel::SerializerSupport
 
   def initialize(object:, permissions:, id:)
     @object = object

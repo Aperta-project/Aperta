@@ -16,20 +16,20 @@ namespace :data do
         # Assign every Author and Reviewer role
         Paper.all.each do |paper|
           p "Assigning author for #{paper.id}"
-          Assignment.first_or_create!(
+          Assignment.where(
             user: paper.creator,
             role: Role.where(name: 'Author').first,
             assigned_to: paper
-          )
+          ).first_or_create!
           paper.paper_roles.each do |paper_role|
             if paper_role.old_role == 'reviewer'
               p "Assigning reviewer
                 #{paper_role.user.first_name} to #{paper.id}"
-              Assignment.first_or_create!(
+              Assignment.where(
                 user: paper_role.user,
                 role: Role.where(name: 'Reviewer').first,
                 assigned_to: paper
-              )
+              ).first_or_create!
             else
               next
             end

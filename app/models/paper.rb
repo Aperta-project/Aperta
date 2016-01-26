@@ -42,6 +42,7 @@ class Paper < ActiveRecord::Base
 
   validates :paper_type, presence: true
   validates :journal, presence: true
+  validates :title, presence: true
 
   scope :active,   -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
@@ -227,8 +228,7 @@ class Paper < ActiveRecord::Base
   #
   # Returns a String.
   def display_title(sanitized: true)
-    raw = (title.present? ? title : short_title).to_s # always return string
-    sanitized ? strip_tags(raw) : raw.html_safe
+    sanitized ? strip_tags(title) : title.html_safe
   end
 
   # Public: Returns one of the admins from the paper.

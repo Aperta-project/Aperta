@@ -10,6 +10,7 @@ The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extr
 """
 __author__ = 'jgray@plos.org'
 
+import logging
 import os
 import random
 import time
@@ -66,7 +67,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
       publishing_state: submitted
       submitted_at: neither NULL nor ''
   """
-  def test_validate_full_submit(self):
+  def _test_validate_full_submit(self):
     """
     Validates the presence of the following elements:
       Optional Invitation Welcome text and button,
@@ -171,7 +172,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
       Modals: View Invites and Create New Submission
     """
     user_type = random.choice(users)
-    print('Logging in as user: {}'.format(user_type))
+    logging.info('Logging in as user: {}'.format(user_type))
     login_page = LoginPage(self.getDriver())
     login_page.enter_login_field(user_type['user'])
     login_page.enter_password_field(login_valid_pw)
@@ -197,7 +198,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     time.sleep(2)
     paper_title_from_page = manuscript_page.get_paper_title_from_page()
     paper_url = manuscript_page.get_current_url()
-    print('The paper ID of this newly created paper is: ' + paper_url)
+    logging.info('The paper ID of this newly created paper is: {}'.format(paper_url))
     paper_id = paper_url.split('papers/')[1]
     manuscript_page.click_submit_btn()
     manuscript_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)

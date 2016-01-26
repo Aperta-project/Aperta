@@ -76,7 +76,9 @@ class ViewPaperTest(CommonTest):
       login_page.click_sign_in_button()
       # the following call should only succeed for sa_login
       dashboard_page = DashboardPage(self.getDriver())
+      dashboard_page.set_timeout(120)
       if dashboard_page.validate_manuscript_section_main_title(user['user']) > 0:
+        dashboard_page.restore_timeout()
         self.select_preexisting_article(init=False, first=True)
         manuscript_viewer = ManuscriptViewerPage(self.getDriver())
         time.sleep(3) # needed to give time to retrieve new menu items
@@ -93,7 +95,8 @@ class ViewPaperTest(CommonTest):
         url = self._driver.current_url
         signout_url = url[:url.index('/papers/')] + '/users/sign_out'
       else:
-        print('No manuscripts present for user: {}'.format(user['user']))
+        dashboard_page.restore_timeout()
+        logging.info('No manuscripts present for user: {}'.format(user['user']))
         # Logout
         url = self._driver.current_url
         signout_url = '{}/users/sign_out'.format(url)

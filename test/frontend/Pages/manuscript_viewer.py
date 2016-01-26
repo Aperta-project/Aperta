@@ -515,6 +515,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
   def validate_so_overlay_elements_styles(self, type, paper_title):
     """
+    Validates styles and content on submit overlay
     :param type: full_submit, initial_submit, initial_submit_full, congrats, congrats_is, congrats_is_full
     :return:
     """

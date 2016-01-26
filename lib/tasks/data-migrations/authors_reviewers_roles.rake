@@ -15,7 +15,7 @@ namespace :data do
 
         # Assign every Author and Reviewer role
         Paper.all.each do |paper|
-          p "Assigning author for #{paper.id}"
+          puts "Assigning author for #{paper.id}"
           Assignment.where(
             user: paper.creator,
             role: Role.where(name: 'Author').first,
@@ -23,7 +23,7 @@ namespace :data do
           ).first_or_create!
           paper.paper_roles.each do |paper_role|
             if paper_role.old_role == 'reviewer'
-              p "Assigning reviewer
+              puts "Assigning reviewer
                 #{paper_role.user.first_name} to #{paper.id}"
               Assignment.where(
                 user: paper_role.user,

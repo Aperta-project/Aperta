@@ -33,16 +33,13 @@ test('clicking the feedback button sends feedback', function(assert) {
 
     var store = getStore();
     store.createRecord('permission',{
-      table: [
-        {
-          object:{id: 1, type: 'User'},
-          permissions:{
-            view_profile:{
-              states: ['*']
-            }
-          }
+      id: 'user+1',
+      object:{id: 1, type: 'User'},
+      permissions:{
+        view_profile:{
+          states: ['*']
         }
-      ]
+      }
     });
     
     visit('/profile');

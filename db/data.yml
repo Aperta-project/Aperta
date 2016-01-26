@@ -1,5 +1,1388 @@
 
 ---
+nested_question_answers:
+  columns:
+  - id
+  - nested_question_id
+  - owner_id
+  - owner_type
+  - value
+  - value_type
+  - created_at
+  - updated_at
+  - additional_data
+  - decision_id
+  - paper_id
+  records: 
+  - - '1'
+    - '42'
+    - '25'
+    - Task
+    - Moneybags
+    - text
+    - '2015-10-30 19:47:34.479555'
+    - '2015-10-30 19:47:34.479555'
+    - 
+    - 
+    - 
+  - - '2'
+    - '43'
+    - '25'
+    - Task
+    - McGee
+    - text
+    - '2015-10-30 19:47:35.880149'
+    - '2015-10-30 19:47:35.880149'
+    - 
+    - 
+    - 
+  - - '3'
+    - '44'
+    - '25'
+    - Task
+    - Forestry Expert
+    - text
+    - '2015-10-30 19:47:47.32842'
+    - '2015-10-30 19:47:47.32842'
+    - 
+    - 
+    - 
+  - - '4'
+    - '45'
+    - '25'
+    - Task
+    - Department of Forestry
+    - text
+    - '2015-10-30 19:47:53.978076'
+    - '2015-10-30 19:47:53.978076'
+    - 
+    - 
+    - 
+  - - '5'
+    - '62'
+    - '25'
+    - Task
+    - University of Florida
+    - text
+    - '2015-10-30 19:47:58.093155'
+    - '2015-10-30 19:47:58.093155'
+    - '{"answer":"University of Florida","additionalData":{"institution-id":3463,"city":"Gainesville","country":"US","name":"University
+      of Florida","state":"FL","type":"academic"}}'
+    - 
+    - 
+  - - '6'
+    - '64'
+    - '25'
+    - Task
+    - University of New Mexico
+    - text
+    - '2015-10-30 19:48:04.465141'
+    - '2015-10-30 19:48:04.465141'
+    - '{"answer":"University of New Mexico","additionalData":{"institution-id":1104,"city":"Albuquerque","country":"US","name":"University
+      of New Mexico","state":"NM","type":"academic"}}'
+    - 
+    - 
+  - - '7'
+    - '46'
+    - '25'
+    - Task
+    - 555-555-5555
+    - text
+    - '2015-10-30 19:48:09.249509'
+    - '2015-10-30 19:48:09.249509'
+    - 
+    - 
+    - 
+  - - '8'
+    - '48'
+    - '25'
+    - Task
+    - moneybags@example.com
+    - text
+    - '2015-10-30 19:48:14.659274'
+    - '2015-10-30 19:48:14.659274'
+    - 
+    - 
+    - 
+  - - '9'
+    - '50'
+    - '25'
+    - Task
+    - 123 Main Street
+    - text
+    - '2015-10-30 19:48:17.469142'
+    - '2015-10-30 19:48:17.469142'
+    - 
+    - 
+    - 
+  - - '10'
+    - '52'
+    - '25'
+    - Task
+    - Suite 200
+    - text
+    - '2015-10-30 19:48:19.690137'
+    - '2015-10-30 19:48:19.690137'
+    - 
+    - 
+    - 
+  - - '11'
+    - '54'
+    - '25'
+    - Task
+    - Miami
+    - text
+    - '2015-10-30 19:48:23.161037'
+    - '2015-10-30 19:48:23.161037'
+    - 
+    - 
+    - 
+  - - '12'
+    - '56'
+    - '25'
+    - Task
+    - FL
+    - text
+    - '2015-10-30 19:48:24.170518'
+    - '2015-10-30 19:48:24.170518'
+    - 
+    - 
+    - 
+  - - '13'
+    - '58'
+    - '25'
+    - Task
+    - '33333'
+    - text
+    - '2015-10-30 19:48:27.179442'
+    - '2015-10-30 19:48:27.179442'
+    - 
+    - 
+    - 
+  - - '14'
+    - '66'
+    - '25'
+    - Task
+    - institutional
+    - text
+    - '2015-10-30 19:48:29.783452'
+    - '2015-10-30 19:48:31.524184'
+    - 
+    - 
+    - 
+  - - '15'
+    - '99'
+    - '25'
+    - Task
+    - Ryerson University
+    - text
+    - '2015-10-30 19:48:34.365176'
+    - '2015-10-30 19:48:34.365176'
+    - 
+    - 
+    - 
+  - - '16'
+    - '101'
+    - '2'
+    - Author
+    - t
+    - boolean
+    - '2015-10-30 19:53:15.320617'
+    - '2015-10-30 19:53:15.320617'
+    - 
+    - 
+    - 
+  - - '17'
+    - '105'
+    - '2'
+    - Author
+    - t
+    - boolean
+    - '2015-10-30 19:53:17.606606'
+    - '2015-10-30 19:53:17.606606'
+    - 
+    - 
+    - 
+  - - '18'
+    - '106'
+    - '3'
+    - Author
+    - t
+    - boolean
+    - '2015-10-30 19:54:25.457224'
+    - '2015-10-30 19:54:25.457224'
+    - 
+    - 
+    - 
+  - - '19'
+    - '107'
+    - '3'
+    - Author
+    - t
+    - boolean
+    - '2015-10-30 19:54:25.563501'
+    - '2015-10-30 19:54:25.563501'
+    - 
+    - 
+    - 
+  - - '20'
+    - '109'
+    - '3'
+    - Author
+    - t
+    - boolean
+    - '2015-10-30 19:54:25.65219'
+    - '2015-10-30 19:54:25.65219'
+    - 
+    - 
+    - 
+  - - '21'
+    - '108'
+    - '3'
+    - Author
+    - t
+    - boolean
+    - '2015-10-30 19:54:25.738713'
+    - '2015-10-30 19:54:25.738713'
+    - 
+    - 
+    - 
+  - - '22'
+    - '39'
+    - '26'
+    - Task
+    - I accepted money from both Pepsi and Coca-Cola companies.
+    - text
+    - '2015-10-30 19:55:13.501798'
+    - '2015-10-30 19:55:31.391119'
+    - 
+    - 
+    - 
+  - - '23'
+    - '38'
+    - '26'
+    - Task
+    - t
+    - boolean
+    - '2015-10-30 19:55:13.717978'
+    - '2015-10-30 19:55:13.717978'
+    - 
+    - 
+    - 
+  - - '24'
+    - '36'
+    - '28'
+    - Task
+    - t
+    - boolean
+    - '2015-10-30 19:55:37.265702'
+    - '2015-10-30 19:55:37.265702'
+    - 
+    - 
+    - 
+  - - '25'
+    - '37'
+    - '28'
+    - Task
+    - My data may be found within Encyclopedia Britannica.  Just like in Ultima V.
+    - text
+    - '2015-10-30 19:56:03.331609'
+    - '2015-10-30 19:56:03.331609'
+    - 
+    - 
+    - 
+  - - '26'
+    - '30'
+    - '29'
+    - Task
+    - t
+    - boolean
+    - '2015-10-30 19:56:12.315615'
+    - '2015-10-30 19:56:12.315615'
+    - 
+    - 
+    - 
+  - - '27'
+    - '34'
+    - '29'
+    - Task
+    - ''
+    - text
+    - '2015-10-30 19:56:43.101348'
+    - '2015-10-30 19:56:43.101348'
+    - 
+    - 
+    - 
+  - - '28'
+    - '31'
+    - '29'
+    - Task
+    - I tested this experimental drug on myself and found that my hands now are twice
+      as large.
+    - text
+    - '2015-10-30 19:56:43.209596'
+    - '2015-10-30 19:56:43.209596'
+    - 
+    - 
+    - 
+  - - '29'
+    - '33'
+    - '29'
+    - Task
+    - f
+    - boolean
+    - '2015-10-30 19:56:43.377483'
+    - '2015-10-30 19:56:43.377483'
+    - 
+    - 
+    - 
+  - - '30'
+    - '28'
+    - '30'
+    - Task
+    - t
+    - boolean
+    - '2015-10-30 19:56:58.530208'
+    - '2015-10-30 19:56:58.530208'
+    - 
+    - 
+    - 
+  - - '31'
+    - '27'
+    - '31'
+    - Task
+    - t
+    - boolean
+    - '2015-10-30 19:57:11.928573'
+    - '2015-10-30 19:57:11.928573'
+    - 
+    - 
+    - 
+  - - '32'
+    - '119'
+    - '1'
+    - TahiStandardTasks::Funder
+    - The provide the money, we provide the research to support their hypothesis.
+    - text
+    - '2015-10-30 19:57:26.731948'
+    - '2015-10-30 19:57:45.012247'
+    - 
+    - 
+    - 
+  - - '33'
+    - '118'
+    - '1'
+    - TahiStandardTasks::Funder
+    - t
+    - boolean
+    - '2015-10-30 19:57:26.932469'
+    - '2015-10-30 19:57:26.932469'
+    - 
+    - 
+    - 
+  - - '34'
+    - '119'
+    - '2'
+    - TahiStandardTasks::Funder
+    - ''
+    - text
+    - '2015-10-30 19:58:03.018776'
+    - '2015-10-30 19:58:03.018776'
+    - 
+    - 
+    - 
+  - - '35'
+    - '118'
+    - '2'
+    - TahiStandardTasks::Funder
+    - f
+    - boolean
+    - '2015-10-30 19:58:03.118814'
+    - '2015-10-30 19:58:03.118814'
+    - 
+    - 
+    - 
+  - - '36'
+    - '9'
+    - '32'
+    - Task
+    - t
+    - boolean
+    - '2015-10-30 19:59:37.905765'
+    - '2015-10-30 19:59:37.905765'
+    - 
+    - 
+    - 
+  - - '37'
+    - '10'
+    - '32'
+    - Task
+    - Check out figure 5
+    - text
+    - '2015-10-30 19:59:45.52803'
+    - '2015-10-30 19:59:45.52803'
+    - 
+    - 
+    - 
+  - - '38'
+    - '12'
+    - '32'
+    - Task
+    - f
+    - boolean
+    - '2015-10-30 19:59:45.732425'
+    - '2015-10-30 19:59:45.732425'
+    - 
+    - 
+    - 
+  - - '39'
+    - '15'
+    - '32'
+    - Task
+    - t
+    - boolean
+    - '2015-10-30 19:59:46.983941'
+    - '2015-10-30 19:59:46.983941'
+    - 
+    - 
+    - 
+  - - '40'
+    - '16'
+    - '32'
+    - Task
+    - 333-333333, Editor was Angie Smith
+    - text
+    - '2015-10-30 19:59:59.553302'
+    - '2015-10-30 19:59:59.553302'
+    - 
+    - 
+    - 
+  - - '41'
+    - '24'
+    - '32'
+    - Task
+    - Collection Basket
+    - text
+    - '2015-10-30 20:00:09.286037'
+    - '2015-10-30 20:00:09.286037'
+    - 
+    - 
+    - 
+  - - '43'
+    - '1'
+    - '33'
+    - Task
+    - t
+    - boolean
+    - '2015-10-30 20:00:37.703208'
+    - '2015-10-30 20:00:37.703208'
+    - 
+    - 
+    - 
+  - - '46'
+    - '8'
+    - '33'
+    - Task
+    - t
+    - boolean
+    - '2015-10-30 20:00:41.891372'
+    - '2015-10-30 20:00:41.891372'
+    - 
+    - 
+    - 
+  - - '47'
+    - '42'
+    - '46'
+    - Task
+    - Jane
+    - text
+    - '2015-11-02 14:10:14.443118'
+    - '2015-11-02 14:10:14.443118'
+    - 
+    - 
+    - 
+  - - '48'
+    - '43'
+    - '46'
+    - Task
+    - Goodall
+    - text
+    - '2015-11-02 14:10:15.727622'
+    - '2015-11-02 14:10:15.727622'
+    - 
+    - 
+    - 
+  - - '49'
+    - '44'
+    - '46'
+    - Task
+    - World's Famous Biller
+    - text
+    - '2015-11-02 14:10:21.721775'
+    - '2015-11-02 14:10:21.721775'
+    - 
+    - 
+    - 
+  - - '50'
+    - '45'
+    - '46'
+    - Task
+    - Dept. of Billing
+    - text
+    - '2015-11-02 14:10:48.832771'
+    - '2015-11-02 14:10:48.832771'
+    - 
+    - 
+    - 
+  - - '51'
+    - '62'
+    - '46'
+    - Task
+    - Abraham Baldwin Agricultural College
+    - text
+    - '2015-11-02 14:11:04.219997'
+    - '2015-11-02 14:11:04.219997'
+    - '{"answer":"Abraham Baldwin Agricultural College","additionalData":{"institution-id":32237,"city":"Tifton","country":"US","name":"Abraham
+      Baldwin Agricultural College","state":"GA","type":"academic/ag"}}'
+    - 
+    - 
+  - - '52'
+    - '64'
+    - '46'
+    - Task
+    - Alabama A&M University
+    - text
+    - '2015-11-02 14:11:08.697677'
+    - '2015-11-02 14:11:08.697677'
+    - '{"answer":"Alabama A\u0026M University","additionalData":{"institution-id":6048,"city":"Normal","country":"US","name":"Alabama
+      A\u0026M University","state":"AL","type":"academic"}}'
+    - 
+    - 
+  - - '53'
+    - '46'
+    - '46'
+    - Task
+    - 555-555-5555
+    - text
+    - '2015-11-02 14:11:12.286959'
+    - '2015-11-02 14:11:12.286959'
+    - 
+    - 
+    - 
+  - - '54'
+    - '48'
+    - '46'
+    - Task
+    - jane@example.com
+    - text
+    - '2015-11-02 14:11:15.854661'
+    - '2015-11-02 14:11:15.854661'
+    - 
+    - 
+    - 
+  - - '55'
+    - '50'
+    - '46'
+    - Task
+    - 123 Main St.
+    - text
+    - '2015-11-02 14:11:20.145471'
+    - '2015-11-02 14:11:20.145471'
+    - 
+    - 
+    - 
+  - - '56'
+    - '54'
+    - '46'
+    - Task
+    - Columbus
+    - text
+    - '2015-11-02 14:11:24.715681'
+    - '2015-11-02 14:11:24.715681'
+    - 
+    - 
+    - 
+  - - '57'
+    - '56'
+    - '46'
+    - Task
+    - OH
+    - text
+    - '2015-11-02 14:11:25.372309'
+    - '2015-11-02 14:11:25.372309'
+    - 
+    - 
+    - 
+  - - '58'
+    - '58'
+    - '46'
+    - Task
+    - '43130'
+    - text
+    - '2015-11-02 14:11:28.616154'
+    - '2015-11-02 14:11:28.616154'
+    - 
+    - 
+    - 
+  - - '59'
+    - '66'
+    - '46'
+    - Task
+    - institutional
+    - text
+    - '2015-11-02 14:11:29.544501'
+    - '2015-11-02 14:11:29.544501'
+    - 
+    - 
+    - 
+  - - '60'
+    - '99'
+    - '46'
+    - Task
+    - Ryerson University
+    - text
+    - '2015-11-02 14:11:31.662814'
+    - '2015-11-02 14:11:31.662814'
+    - 
+    - 
+    - 
+  - - '61'
+    - '101'
+    - '4'
+    - Author
+    - t
+    - boolean
+    - '2015-11-02 14:14:19.024204'
+    - '2015-11-02 14:14:19.024204'
+    - 
+    - 
+    - 
+  - - '62'
+    - '105'
+    - '4'
+    - Author
+    - t
+    - boolean
+    - '2015-11-02 14:14:19.719167'
+    - '2015-11-02 14:14:19.719167'
+    - 
+    - 
+    - 
+  - - '63'
+    - '106'
+    - '5'
+    - Author
+    - t
+    - boolean
+    - '2015-11-02 14:15:06.157802'
+    - '2015-11-02 14:15:06.157802'
+    - 
+    - 
+    - 
+  - - '64'
+    - '107'
+    - '5'
+    - Author
+    - t
+    - boolean
+    - '2015-11-02 14:15:06.242944'
+    - '2015-11-02 14:15:06.242944'
+    - 
+    - 
+    - 
+  - - '65'
+    - '109'
+    - '5'
+    - Author
+    - t
+    - boolean
+    - '2015-11-02 14:15:06.329195'
+    - '2015-11-02 14:15:06.329195'
+    - 
+    - 
+    - 
+  - - '66'
+    - '108'
+    - '5'
+    - Author
+    - t
+    - boolean
+    - '2015-11-02 14:15:06.41443'
+    - '2015-11-02 14:15:06.41443'
+    - 
+    - 
+    - 
+  - - '67'
+    - '39'
+    - '47'
+    - Task
+    - Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+      Ipsum has been the industry's standard dummy text ever since the 1500s, when
+      an unknown printer took a galley of type and scrambled it to make a type specimen
+      book. It has survived not only five centuries, but also the leap into electronic
+      typesetting, remaining essentially unchanged. It was popularised in the 1960s
+      with the release of Letraset sheets containing Lorem Ipsum passages, and more
+      recently with desktop publishing software like Aldus PageMaker including versions
+      of Lorem Ipsum.
+    - text
+    - '2015-11-02 14:15:13.049571'
+    - '2015-11-02 14:15:20.10997'
+    - 
+    - 
+    - 
+  - - '68'
+    - '38'
+    - '47'
+    - Task
+    - t
+    - boolean
+    - '2015-11-02 14:15:13.261221'
+    - '2015-11-02 14:15:13.261221'
+    - 
+    - 
+    - 
+  - - '69'
+    - '36'
+    - '49'
+    - Task
+    - f
+    - boolean
+    - '2015-11-02 14:15:23.486642'
+    - '2015-11-02 14:15:23.486642'
+    - 
+    - 
+    - 
+  - - '70'
+    - '37'
+    - '49'
+    - Task
+    - Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+      Ipsum has been the industry's standard dummy text ever since the 1500s, when
+      an unknown printer took a galley of type and scrambled it to make a type specimen
+      book. It has survived not only five centuries, but also the leap into electronic
+      typesetting, remaining essentially unchanged. It was popularised in the 1960s
+      with the release of Letraset sheets containing Lorem Ipsum passages, and more
+      recently with desktop publishing software like Aldus PageMaker including versions
+      of Lorem Ipsum.
+    - text
+    - '2015-11-02 14:15:31.08089'
+    - '2015-11-02 14:15:31.08089'
+    - 
+    - 
+    - 
+  - - '71'
+    - '30'
+    - '50'
+    - Task
+    - t
+    - boolean
+    - '2015-11-02 14:15:35.415568'
+    - '2015-11-02 14:15:35.415568'
+    - 
+    - 
+    - 
+  - - '72'
+    - '34'
+    - '50'
+    - Task
+    - ''
+    - text
+    - '2015-11-02 14:15:37.459816'
+    - '2015-11-02 14:15:37.459816'
+    - 
+    - 
+    - 
+  - - '73'
+    - '31'
+    - '50'
+    - Task
+    - Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+      Ipsum has been the industry's standard dummy text ever since the 1500s, when
+      an unknown printer took a galley of type and scrambled it to make a type specimen
+      book. It has survived not only five centuries, but also the leap into electronic
+      typesetting, remaining essentially unchanged. It was popularised in the 1960s
+      with the release of Letraset sheets containing Lorem Ipsum passages, and more
+      recently with desktop publishing software like Aldus PageMaker including versions
+      of Lorem Ipsum.
+    - text
+    - '2015-11-02 14:15:37.552246'
+    - '2015-11-02 14:15:37.552246'
+    - 
+    - 
+    - 
+  - - '74'
+    - '33'
+    - '50'
+    - Task
+    - f
+    - boolean
+    - '2015-11-02 14:15:37.806959'
+    - '2015-11-02 14:15:37.806959'
+    - 
+    - 
+    - 
+  - - '75'
+    - '27'
+    - '52'
+    - Task
+    - f
+    - boolean
+    - '2015-11-02 14:16:11.35695'
+    - '2015-11-02 14:16:11.35695'
+    - 
+    - 
+    - 
+  - - '76'
+    - '9'
+    - '53'
+    - Task
+    - t
+    - boolean
+    - '2015-11-02 14:16:20.372967'
+    - '2015-11-02 14:16:20.372967'
+    - 
+    - 
+    - 
+  - - '77'
+    - '10'
+    - '53'
+    - Task
+    - FIgure 14
+    - text
+    - '2015-11-02 14:16:28.848665'
+    - '2015-11-02 14:16:28.848665'
+    - 
+    - 
+    - 
+  - - '78'
+    - '11'
+    - '53'
+    - Task
+    - http://tahi-development.s3.amazonaws.com/pending/3/question_attachmentc03c4d5c99323702cecc/turtles-are-amazing.docx
+    - attachment
+    - '2015-11-02 14:16:35.575667'
+    - '2015-11-02 14:16:35.575667'
+    - 
+    - 
+    - 
+  - - '79'
+    - '12'
+    - '53'
+    - Task
+    - f
+    - boolean
+    - '2015-11-02 14:16:41.251142'
+    - '2015-11-02 14:16:41.251142'
+    - 
+    - 
+    - 
+  - - '80'
+    - '15'
+    - '53'
+    - Task
+    - t
+    - boolean
+    - '2015-11-02 14:16:42.435919'
+    - '2015-11-02 14:16:42.435919'
+    - 
+    - 
+    - 
+  - - '81'
+    - '16'
+    - '53'
+    - Task
+    - 111-1111
+    - text
+    - '2015-11-02 14:16:47.546626'
+    - '2015-11-02 14:16:47.546626'
+    - 
+    - 
+    - 
+  - - '82'
+    - '23'
+    - '53'
+    - Task
+    - t
+    - boolean
+    - '2015-11-02 14:16:47.723962'
+    - '2015-11-02 14:16:47.723962'
+    - 
+    - 
+    - 
+  - - '83'
+    - '24'
+    - '53'
+    - Task
+    - Collection of Awesome
+    - text
+    - '2015-11-02 14:16:54.598805'
+    - '2015-11-02 14:16:54.598805'
+    - 
+    - 
+    - 
+  - - '85'
+    - '20'
+    - '53'
+    - Task
+    - t
+    - boolean
+    - '2015-11-02 14:17:07.435087'
+    - '2015-11-02 14:17:07.435087'
+    - 
+    - 
+    - 
+  - - '86'
+    - '1'
+    - '54'
+    - Task
+    - t
+    - boolean
+    - '2015-11-02 14:17:53.128785'
+    - '2015-11-02 14:17:53.128785'
+    - 
+    - 
+    - 
+  - - '87'
+    - '2'
+    - '54'
+    - Task
+    - t
+    - boolean
+    - '2015-11-02 14:17:56.012546'
+    - '2015-11-02 14:17:56.012546'
+    - 
+    - 
+    - 
+  - - '88'
+    - '3'
+    - '54'
+    - Task
+    - http://tahi-development.s3.amazonaws.com/pending/3/question_attachmentfdf19eeb54e065b8873b/turtles-are-amazing.docx
+    - attachment
+    - '2015-11-02 14:18:02.592308'
+    - '2015-11-02 14:18:02.592308'
+    - 
+    - 
+    - 
+  - - '89'
+    - '8'
+    - '54'
+    - Task
+    - t
+    - boolean
+    - '2015-11-02 14:18:07.968082'
+    - '2015-11-02 14:18:07.968082'
+    - 
+    - 
+    - 
+  - - '90'
+    - '39'
+    - '68'
+    - Task
+    - I have read the journal's policy and the authors of this manuscript have the
+      following competing interests.
+    - text
+    - '2015-11-02 14:47:12.252716'
+    - '2015-11-02 15:09:48.927499'
+    - 
+    - 
+    - 
+  - - '91'
+    - '38'
+    - '68'
+    - Task
+    - t
+    - boolean
+    - '2015-11-02 14:47:12.448129'
+    - '2015-11-02 14:47:40.137944'
+    - 
+    - 
+    - 
+  - - '92'
+    - '42'
+    - '67'
+    - Task
+    - Bill
+    - text
+    - '2015-11-02 14:55:36.360418'
+    - '2015-11-02 15:05:48.183796'
+    - 
+    - 
+    - 
+  - - '93'
+    - '43'
+    - '67'
+    - Task
+    - McBillster
+    - text
+    - '2015-11-02 14:55:38.212314'
+    - '2015-11-02 14:55:38.212314'
+    - 
+    - 
+    - 
+  - - '94'
+    - '44'
+    - '67'
+    - Task
+    - 'World''s Greatest Biller '
+    - text
+    - '2015-11-02 15:05:24.288106'
+    - '2015-11-02 15:05:24.288106'
+    - 
+    - 
+    - 
+  - - '95'
+    - '45'
+    - '67'
+    - Task
+    - Billing Department
+    - text
+    - '2015-11-02 15:05:29.128488'
+    - '2015-11-02 15:05:29.128488'
+    - 
+    - 
+    - 
+  - - '96'
+    - '62'
+    - '67'
+    - Task
+    - Abraham Baldwin Agricultural College
+    - text
+    - '2015-11-02 15:05:33.591289'
+    - '2015-11-02 15:05:33.591289'
+    - '{"answer":"Abraham Baldwin Agricultural College","additionalData":{"institution-id":32237,"city":"Tifton","country":"US","name":"Abraham
+      Baldwin Agricultural College","state":"GA","type":"academic/ag"}}'
+    - 
+    - 
+  - - '97'
+    - '64'
+    - '67'
+    - Task
+    - Academy of Art University
+    - text
+    - '2015-11-02 15:05:36.311535'
+    - '2015-11-02 15:05:36.311535'
+    - '{"answer":"Academy of Art University","additionalData":{"institution-id":52692,"city":"San
+      Francisco","country":"US","name":"Academy of Art University","state":"CA","type":"academic"}}'
+    - 
+    - 
+  - - '98'
+    - '46'
+    - '67'
+    - Task
+    - 555-555-5555
+    - text
+    - '2015-11-02 15:05:40.388416'
+    - '2015-11-02 15:05:40.388416'
+    - 
+    - 
+    - 
+  - - '99'
+    - '48'
+    - '67'
+    - Task
+    - bill@example.com
+    - text
+    - '2015-11-02 15:05:45.590661'
+    - '2015-11-02 15:05:52.180143'
+    - 
+    - 
+    - 
+  - - '100'
+    - '50'
+    - '67'
+    - Task
+    - 123 Main St.
+    - text
+    - '2015-11-02 15:05:56.835996'
+    - '2015-11-02 15:05:56.835996'
+    - 
+    - 
+    - 
+  - - '101'
+    - '54'
+    - '67'
+    - Task
+    - Anywhere
+    - text
+    - '2015-11-02 15:06:09.293544'
+    - '2015-11-02 15:06:09.293544'
+    - 
+    - 
+    - 
+  - - '102'
+    - '56'
+    - '67'
+    - Task
+    - OH
+    - text
+    - '2015-11-02 15:06:10.177738'
+    - '2015-11-02 15:06:10.177738'
+    - 
+    - 
+    - 
+  - - '103'
+    - '58'
+    - '67'
+    - Task
+    - '44444'
+    - text
+    - '2015-11-02 15:06:13.964882'
+    - '2015-11-02 15:06:13.964882'
+    - 
+    - 
+    - 
+  - - '104'
+    - '66'
+    - '67'
+    - Task
+    - institutional
+    - text
+    - '2015-11-02 15:06:14.828652'
+    - '2015-11-02 15:06:14.828652'
+    - 
+    - 
+    - 
+  - - '105'
+    - '99'
+    - '67'
+    - Task
+    - Odense University Hospital
+    - text
+    - '2015-11-02 15:06:16.661952'
+    - '2015-11-02 15:06:16.661952'
+    - 
+    - 
+    - 
+  - - '106'
+    - '101'
+    - '6'
+    - Author
+    - t
+    - boolean
+    - '2015-11-02 15:09:31.698714'
+    - '2015-11-02 15:09:31.698714'
+    - 
+    - 
+    - 
+  - - '107'
+    - '105'
+    - '6'
+    - Author
+    - t
+    - boolean
+    - '2015-11-02 15:09:32.31378'
+    - '2015-11-02 15:09:32.31378'
+    - 
+    - 
+    - 
+  - - '108'
+    - '36'
+    - '70'
+    - Task
+    - f
+    - boolean
+    - '2015-11-02 15:09:52.229468'
+    - '2015-11-02 15:09:52.229468'
+    - 
+    - 
+    - 
+  - - '109'
+    - '37'
+    - '70'
+    - Task
+    - All relevant data are within the paper and its Supporting Information files.
+    - text
+    - '2015-11-02 15:10:01.289637'
+    - '2015-11-02 15:10:01.289637'
+    - 
+    - 
+    - 
+  - - '110'
+    - '31'
+    - '71'
+    - Task
+    - ''
+    - text
+    - '2015-11-02 15:10:04.287277'
+    - '2015-11-02 15:10:04.287277'
+    - 
+    - 
+    - 
+  - - '111'
+    - '30'
+    - '71'
+    - Task
+    - f
+    - boolean
+    - '2015-11-02 15:10:04.491054'
+    - '2015-11-02 15:10:04.491054'
+    - 
+    - 
+    - 
+  - - '112'
+    - '33'
+    - '71'
+    - Task
+    - t
+    - boolean
+    - '2015-11-02 15:10:05.077639'
+    - '2015-11-02 15:10:05.077639'
+    - 
+    - 
+    - 
+  - - '113'
+    - '34'
+    - '71'
+    - Task
+    - Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+      Ipsum has been the industry's standard dummy text ever since the 1500s, when
+      an unknown printer took a galley of type and scrambled it to make a type specimen
+      book. It has survived not only five centuries, but also the leap into electronic
+      typesetting, remaining essentially unchanged. It was popularised in the 1960s
+      with the release of Letraset sheets containing Lorem Ipsum passages, and more
+      recently with desktop publishing software like Aldus PageMaker including versions
+      of Lorem Ipsum.
+    - text
+    - '2015-11-02 15:10:11.646135'
+    - '2015-11-02 15:10:22.588951'
+    - 
+    - 
+    - 
+  - - '114'
+    - '27'
+    - '73'
+    - Task
+    - f
+    - boolean
+    - '2015-11-02 15:10:54.670253'
+    - '2015-11-02 15:10:54.670253'
+    - 
+    - 
+    - 
+  - - '115'
+    - '9'
+    - '74'
+    - Task
+    - f
+    - boolean
+    - '2015-11-02 15:11:01.425209'
+    - '2015-11-02 15:11:14.465149'
+    - 
+    - 
+    - 
+  - - '116'
+    - '10'
+    - '74'
+    - Task
+    - Figure 1.2
+    - text
+    - '2015-11-02 15:11:05.726187'
+    - '2015-11-02 15:11:05.726187'
+    - 
+    - 
+    - 
+  - - '117'
+    - '12'
+    - '74'
+    - Task
+    - t
+    - boolean
+    - '2015-11-02 15:11:15.351959'
+    - '2015-11-02 15:11:15.351959'
+    - 
+    - 
+    - 
+  - - '118'
+    - '13'
+    - '74'
+    - Task
+    - Submission Title
+    - text
+    - '2015-11-02 15:11:20.542559'
+    - '2015-11-02 15:11:20.542559'
+    - 
+    - 
+    - 
+  - - '119'
+    - '14'
+    - '74'
+    - Task
+    - Ronald McDonald
+    - text
+    - '2015-11-02 15:11:26.788002'
+    - '2015-11-02 15:11:26.788002'
+    - 
+    - 
+    - 
+  - - '120'
+    - '15'
+    - '74'
+    - Task
+    - t
+    - boolean
+    - '2015-11-02 15:11:26.967013'
+    - '2015-11-02 15:11:26.967013'
+    - 
+    - 
+    - 
+  - - '121'
+    - '16'
+    - '74'
+    - Task
+    - 111.111, Fred Jones
+    - text
+    - '2015-11-02 15:11:35.454336'
+    - '2015-11-02 15:11:35.454336'
+    - 
+    - 
+    - 
+  - - '122'
+    - '24'
+    - '74'
+    - Task
+    - PLOS Collection
+    - text
+    - '2015-11-02 15:11:41.612583'
+    - '2015-11-02 15:11:41.612583'
+    - 
+    - 
+    - 
+  - - '124'
+    - '1'
+    - '75'
+    - Task
+    - t
+    - boolean
+    - '2015-11-02 15:11:53.982789'
+    - '2015-11-02 15:11:53.982789'
+    - 
+    - 
+    - 
+  - - '125'
+    - '4'
+    - '75'
+    - Task
+    - t
+    - boolean
+    - '2015-11-02 15:11:54.611386'
+    - '2015-11-02 15:11:54.611386'
+    - 
+    - 
+    - 
+  - - '126'
+    - '5'
+    - '75'
+    - Task
+    - http://tahi-development.s3.amazonaws.com/pending/3/question_attachmentb11bbc86155033557c3a/manuscript+%281%29.docx
+    - attachment
+    - '2015-11-02 15:12:01.328026'
+    - '2015-11-02 15:12:01.328026'
+    - 
+    - 
+    - 
+
+---
 assignments:
   columns:
   - id
@@ -101,6 +1484,216 @@ assignments:
     - User
     - '2016-01-19 15:41:48.832302'
     - '2016-01-19 15:41:48.832302'
+
+---
+roles:
+  columns:
+  - id
+  - name
+  - journal_id
+  - participates_in_papers
+  - participates_in_tasks
+  - created_at
+  - updated_at
+  records: 
+  - - '1'
+    - User
+    - 
+    - false
+    - false
+    - '2016-01-19 15:28:32.762483'
+    - '2016-01-19 15:28:32.762483'
+
+---
+papers:
+  columns:
+  - id
+  - short_title
+  - title
+  - abstract
+  - created_at
+  - updated_at
+  - user_id
+  - paper_type
+  - journal_id
+  - decision_letter
+  - published_at
+  - striking_image_id
+  - editable
+  - doi
+  - publishing_state
+  - submitted_at
+  - salesforce_manuscript_id
+  - withdrawals
+  - active
+  - gradual_engagement
+  - first_submitted_at
+  - accepted_at
+  - striking_image_type
+  records: 
+  - - '1'
+    - 
+    - "<b>Unstarted</b>: <i>No tasks filled out</i>"
+    - 
+    - '2015-10-29 20:16:37.363801'
+    - '2015-11-02 14:30:18.434152'
+    - '3'
+    - Research
+    - '1'
+    - 
+    - 
+    - 
+    - true
+    - 10.1371/devs.100001
+    - unsubmitted
+    - 
+    - 
+    - "{}"
+    - true
+    - false
+    - 
+    - 
+    - 
+  - - '2'
+    - '<h2 class="overlay-header-title overlay-header-title--with-icon" style="color:
+      rgb(51, 51, 51); width: 880.312px;"><a id="ember4696" href="http://localhost:5000/papers/2"
+      class="overlay-header-link ember-view"><i>All Tasks Filled Out</i></a></h2>'
+    - "<b>Partial:</b> &nbsp;<i>Tasks filled out, none marked complete</i>"
+    - 
+    - '2015-10-30 19:43:28.468043'
+    - '2015-11-02 14:30:18.451006'
+    - '3'
+    - Research
+    - '1'
+    - 
+    - 
+    - '2'
+    - true
+    - 10.1371/devs.100002
+    - unsubmitted
+    - 
+    - 
+    - "{}"
+    - true
+    - false
+    - 
+    - 
+    - Figure
+  - - '3'
+    - Ready to Submit
+    - "<b>Ready:</b>&nbsp;<i>Ready to submit</i>"
+    - 
+    - '2015-11-02 14:04:02.867243'
+    - '2015-11-02 15:13:36.520339'
+    - '3'
+    - Research
+    - '1'
+    - 
+    - 
+    - 
+    - true
+    - 10.1371/devs.100003
+    - unsubmitted
+    - 
+    - 
+    - "{}"
+    - true
+    - false
+    - 
+    - 
+    - 
+  - - '4'
+    - Editors Assigned
+    - "<b>With Editors:</b> <i>Paper submitted, editors assigned</i>"
+    - 
+    - '2015-11-02 14:46:23.765287'
+    - '2015-11-02 15:14:05.582372'
+    - '3'
+    - Research
+    - '1'
+    - 
+    - 
+    - 
+    - false
+    - 10.1371/devs.100004
+    - submitted
+    - '2015-11-02 15:14:05.576249'
+    - 
+    - "{}"
+    - true
+    - false
+    - 
+    - 
+    - 
+  - - '8'
+    - 
+    - Hendrik a011f9d4-0119-4611-88af-9838ff154cec
+    - ''
+    - '2015-11-03 22:59:20.931417'
+    - '2015-11-03 22:59:20.931417'
+    - '7'
+    - Research
+    - '1'
+    - 
+    - 
+    - 
+    - true
+    - 10.1371/devs.100008
+    - unsubmitted
+    - 
+    - 
+    - "{}"
+    - true
+    - false
+    - 
+    - 
+    - 
+  - - '9'
+    - 
+    - Hendrik 12de86c5-5afc-44cb-ab06-00a3411f66d5
+    - ''
+    - '2015-11-03 23:02:06.790805'
+    - '2015-11-03 23:02:06.790805'
+    - '7'
+    - Research
+    - '1'
+    - 
+    - 
+    - 
+    - true
+    - 10.1371/devs.100009
+    - unsubmitted
+    - 
+    - 
+    - "{}"
+    - true
+    - false
+    - 
+    - 
+    - 
+  - - '10'
+    - The great scientific paper of 2015
+    - The most scrumtrulescent scientific paper of 2015.
+    - We've discovered the rain in Spain tends to stay in the plain
+    - '2015-11-10 22:27:27.12482'
+    - '2015-11-10 22:27:27.12482'
+    - '1'
+    - Research
+    - '1'
+    - 
+    - 
+    - 
+    - true
+    - 10.1371/devs.100010
+    - unsubmitted
+    - 
+    - 
+    - "{}"
+    - true
+    - false
+    - 
+    - 
+    - 
 
 ---
 authors:
@@ -363,25 +1956,6 @@ question_attachments:
     - 9a83d979f72b3e973a01637015fbbd4c4d855461f3e60bcd
 
 ---
-roles:
-  columns:
-  - id
-  - name
-  - journal_id
-  - participates_in_papers
-  - participates_in_tasks
-  - created_at
-  - updated_at
-  records: 
-  - - '1'
-    - User
-    - 
-    - false
-    - false
-    - '2016-01-19 15:28:32.762483'
-    - '2016-01-19 15:28:32.762483'
-
----
 supporting_information_files:
   columns:
   - id
@@ -430,197 +2004,6 @@ supporting_information_files:
     - '2015-11-02 15:09:03.10794'
     - done
     - true
-    - 
-    - 
-    - 
-
----
-papers:
-  columns:
-  - id
-  - short_title
-  - title
-  - abstract
-  - created_at
-  - updated_at
-  - user_id
-  - paper_type
-  - journal_id
-  - decision_letter
-  - published_at
-  - striking_image_id
-  - editable
-  - doi
-  - publishing_state
-  - submitted_at
-  - salesforce_manuscript_id
-  - withdrawals
-  - active
-  - gradual_engagement
-  - first_submitted_at
-  - accepted_at
-  - striking_image_type
-  records: 
-  - - '1'
-    - 
-    - "<b>Unstarted</b>: <i>No tasks filled out</i>"
-    - 
-    - '2015-10-29 20:16:37.363801'
-    - '2015-11-02 14:30:18.434152'
-    - '3'
-    - Research
-    - '1'
-    - 
-    - 
-    - 
-    - true
-    - 10.1371/devs.100001
-    - unsubmitted
-    - 
-    - 
-    - "{}"
-    - true
-    - false
-    - 
-    - 
-    - 
-  - - '2'
-    - '<h2 class="overlay-header-title overlay-header-title--with-icon" style="color:
-      rgb(51, 51, 51); width: 880.312px;"><a id="ember4696" href="http://localhost:5000/papers/2"
-      class="overlay-header-link ember-view"><i>All Tasks Filled Out</i></a></h2>'
-    - "<b>Partial:</b> &nbsp;<i>Tasks filled out, none marked complete</i>"
-    - 
-    - '2015-10-30 19:43:28.468043'
-    - '2015-11-02 14:30:18.451006'
-    - '3'
-    - Research
-    - '1'
-    - 
-    - 
-    - '2'
-    - true
-    - 10.1371/devs.100002
-    - unsubmitted
-    - 
-    - 
-    - "{}"
-    - true
-    - false
-    - 
-    - 
-    - Figure
-  - - '3'
-    - Ready to Submit
-    - "<b>Ready:</b>&nbsp;<i>Ready to submit</i>"
-    - 
-    - '2015-11-02 14:04:02.867243'
-    - '2015-11-02 15:13:36.520339'
-    - '3'
-    - Research
-    - '1'
-    - 
-    - 
-    - 
-    - true
-    - 10.1371/devs.100003
-    - unsubmitted
-    - 
-    - 
-    - "{}"
-    - true
-    - false
-    - 
-    - 
-    - 
-  - - '4'
-    - Editors Assigned
-    - "<b>With Editors:</b> <i>Paper submitted, editors assigned</i>"
-    - 
-    - '2015-11-02 14:46:23.765287'
-    - '2015-11-02 15:14:05.582372'
-    - '3'
-    - Research
-    - '1'
-    - 
-    - 
-    - 
-    - false
-    - 10.1371/devs.100004
-    - submitted
-    - '2015-11-02 15:14:05.576249'
-    - 
-    - "{}"
-    - true
-    - false
-    - 
-    - 
-    - 
-  - - '8'
-    - 
-    - Hendrik a011f9d4-0119-4611-88af-9838ff154cec
-    - ''
-    - '2015-11-03 22:59:20.931417'
-    - '2015-11-03 22:59:20.931417'
-    - '7'
-    - Research
-    - '1'
-    - 
-    - 
-    - 
-    - true
-    - 10.1371/devs.100008
-    - unsubmitted
-    - 
-    - 
-    - "{}"
-    - true
-    - false
-    - 
-    - 
-    - 
-  - - '9'
-    - 
-    - Hendrik 12de86c5-5afc-44cb-ab06-00a3411f66d5
-    - ''
-    - '2015-11-03 23:02:06.790805'
-    - '2015-11-03 23:02:06.790805'
-    - '7'
-    - Research
-    - '1'
-    - 
-    - 
-    - 
-    - true
-    - 10.1371/devs.100009
-    - unsubmitted
-    - 
-    - 
-    - "{}"
-    - true
-    - false
-    - 
-    - 
-    - 
-  - - '10'
-    - The great scientific paper of 2015
-    - The most scrumtrulescent scientific paper of 2015.
-    - We've discovered the rain in Spain tends to stay in the plain
-    - '2015-11-10 22:27:27.12482'
-    - '2015-11-10 22:27:27.12482'
-    - '1'
-    - Research
-    - '1'
-    - 
-    - 
-    - 
-    - true
-    - 10.1371/devs.100010
-    - unsubmitted
-    - 
-    - 
-    - "{}"
-    - true
-    - false
     - 
     - 
     - 
@@ -3339,1267 +4722,6 @@ figures:
     - This cat is waiting
     - done
     - 2vM873Fqxyfm22GtB5VDqEND
-
----
-nested_question_answers:
-  columns:
-  - id
-  - nested_question_id
-  - owner_id
-  - owner_type
-  - value
-  - value_type
-  - created_at
-  - updated_at
-  - additional_data
-  - decision_id
-  records: 
-  - - '1'
-    - '42'
-    - '25'
-    - Task
-    - Moneybags
-    - text
-    - '2015-10-30 19:47:34.479555'
-    - '2015-10-30 19:47:34.479555'
-    - 
-    - 
-  - - '2'
-    - '43'
-    - '25'
-    - Task
-    - McGee
-    - text
-    - '2015-10-30 19:47:35.880149'
-    - '2015-10-30 19:47:35.880149'
-    - 
-    - 
-  - - '3'
-    - '44'
-    - '25'
-    - Task
-    - Forestry Expert
-    - text
-    - '2015-10-30 19:47:47.32842'
-    - '2015-10-30 19:47:47.32842'
-    - 
-    - 
-  - - '4'
-    - '45'
-    - '25'
-    - Task
-    - Department of Forestry
-    - text
-    - '2015-10-30 19:47:53.978076'
-    - '2015-10-30 19:47:53.978076'
-    - 
-    - 
-  - - '5'
-    - '62'
-    - '25'
-    - Task
-    - University of Florida
-    - text
-    - '2015-10-30 19:47:58.093155'
-    - '2015-10-30 19:47:58.093155'
-    - '{"answer":"University of Florida","additionalData":{"institution-id":3463,"city":"Gainesville","country":"US","name":"University
-      of Florida","state":"FL","type":"academic"}}'
-    - 
-  - - '6'
-    - '64'
-    - '25'
-    - Task
-    - University of New Mexico
-    - text
-    - '2015-10-30 19:48:04.465141'
-    - '2015-10-30 19:48:04.465141'
-    - '{"answer":"University of New Mexico","additionalData":{"institution-id":1104,"city":"Albuquerque","country":"US","name":"University
-      of New Mexico","state":"NM","type":"academic"}}'
-    - 
-  - - '7'
-    - '46'
-    - '25'
-    - Task
-    - 555-555-5555
-    - text
-    - '2015-10-30 19:48:09.249509'
-    - '2015-10-30 19:48:09.249509'
-    - 
-    - 
-  - - '8'
-    - '48'
-    - '25'
-    - Task
-    - moneybags@example.com
-    - text
-    - '2015-10-30 19:48:14.659274'
-    - '2015-10-30 19:48:14.659274'
-    - 
-    - 
-  - - '9'
-    - '50'
-    - '25'
-    - Task
-    - 123 Main Street
-    - text
-    - '2015-10-30 19:48:17.469142'
-    - '2015-10-30 19:48:17.469142'
-    - 
-    - 
-  - - '10'
-    - '52'
-    - '25'
-    - Task
-    - Suite 200
-    - text
-    - '2015-10-30 19:48:19.690137'
-    - '2015-10-30 19:48:19.690137'
-    - 
-    - 
-  - - '11'
-    - '54'
-    - '25'
-    - Task
-    - Miami
-    - text
-    - '2015-10-30 19:48:23.161037'
-    - '2015-10-30 19:48:23.161037'
-    - 
-    - 
-  - - '12'
-    - '56'
-    - '25'
-    - Task
-    - FL
-    - text
-    - '2015-10-30 19:48:24.170518'
-    - '2015-10-30 19:48:24.170518'
-    - 
-    - 
-  - - '13'
-    - '58'
-    - '25'
-    - Task
-    - '33333'
-    - text
-    - '2015-10-30 19:48:27.179442'
-    - '2015-10-30 19:48:27.179442'
-    - 
-    - 
-  - - '14'
-    - '66'
-    - '25'
-    - Task
-    - institutional
-    - text
-    - '2015-10-30 19:48:29.783452'
-    - '2015-10-30 19:48:31.524184'
-    - 
-    - 
-  - - '15'
-    - '99'
-    - '25'
-    - Task
-    - Ryerson University
-    - text
-    - '2015-10-30 19:48:34.365176'
-    - '2015-10-30 19:48:34.365176'
-    - 
-    - 
-  - - '16'
-    - '101'
-    - '2'
-    - Author
-    - t
-    - boolean
-    - '2015-10-30 19:53:15.320617'
-    - '2015-10-30 19:53:15.320617'
-    - 
-    - 
-  - - '17'
-    - '105'
-    - '2'
-    - Author
-    - t
-    - boolean
-    - '2015-10-30 19:53:17.606606'
-    - '2015-10-30 19:53:17.606606'
-    - 
-    - 
-  - - '18'
-    - '106'
-    - '3'
-    - Author
-    - t
-    - boolean
-    - '2015-10-30 19:54:25.457224'
-    - '2015-10-30 19:54:25.457224'
-    - 
-    - 
-  - - '19'
-    - '107'
-    - '3'
-    - Author
-    - t
-    - boolean
-    - '2015-10-30 19:54:25.563501'
-    - '2015-10-30 19:54:25.563501'
-    - 
-    - 
-  - - '20'
-    - '109'
-    - '3'
-    - Author
-    - t
-    - boolean
-    - '2015-10-30 19:54:25.65219'
-    - '2015-10-30 19:54:25.65219'
-    - 
-    - 
-  - - '21'
-    - '108'
-    - '3'
-    - Author
-    - t
-    - boolean
-    - '2015-10-30 19:54:25.738713'
-    - '2015-10-30 19:54:25.738713'
-    - 
-    - 
-  - - '22'
-    - '39'
-    - '26'
-    - Task
-    - I accepted money from both Pepsi and Coca-Cola companies.
-    - text
-    - '2015-10-30 19:55:13.501798'
-    - '2015-10-30 19:55:31.391119'
-    - 
-    - 
-  - - '23'
-    - '38'
-    - '26'
-    - Task
-    - t
-    - boolean
-    - '2015-10-30 19:55:13.717978'
-    - '2015-10-30 19:55:13.717978'
-    - 
-    - 
-  - - '24'
-    - '36'
-    - '28'
-    - Task
-    - t
-    - boolean
-    - '2015-10-30 19:55:37.265702'
-    - '2015-10-30 19:55:37.265702'
-    - 
-    - 
-  - - '25'
-    - '37'
-    - '28'
-    - Task
-    - My data may be found within Encyclopedia Britannica.  Just like in Ultima V.
-    - text
-    - '2015-10-30 19:56:03.331609'
-    - '2015-10-30 19:56:03.331609'
-    - 
-    - 
-  - - '26'
-    - '30'
-    - '29'
-    - Task
-    - t
-    - boolean
-    - '2015-10-30 19:56:12.315615'
-    - '2015-10-30 19:56:12.315615'
-    - 
-    - 
-  - - '27'
-    - '34'
-    - '29'
-    - Task
-    - ''
-    - text
-    - '2015-10-30 19:56:43.101348'
-    - '2015-10-30 19:56:43.101348'
-    - 
-    - 
-  - - '28'
-    - '31'
-    - '29'
-    - Task
-    - I tested this experimental drug on myself and found that my hands now are twice
-      as large.
-    - text
-    - '2015-10-30 19:56:43.209596'
-    - '2015-10-30 19:56:43.209596'
-    - 
-    - 
-  - - '29'
-    - '33'
-    - '29'
-    - Task
-    - f
-    - boolean
-    - '2015-10-30 19:56:43.377483'
-    - '2015-10-30 19:56:43.377483'
-    - 
-    - 
-  - - '30'
-    - '28'
-    - '30'
-    - Task
-    - t
-    - boolean
-    - '2015-10-30 19:56:58.530208'
-    - '2015-10-30 19:56:58.530208'
-    - 
-    - 
-  - - '31'
-    - '27'
-    - '31'
-    - Task
-    - t
-    - boolean
-    - '2015-10-30 19:57:11.928573'
-    - '2015-10-30 19:57:11.928573'
-    - 
-    - 
-  - - '32'
-    - '119'
-    - '1'
-    - TahiStandardTasks::Funder
-    - The provide the money, we provide the research to support their hypothesis.
-    - text
-    - '2015-10-30 19:57:26.731948'
-    - '2015-10-30 19:57:45.012247'
-    - 
-    - 
-  - - '33'
-    - '118'
-    - '1'
-    - TahiStandardTasks::Funder
-    - t
-    - boolean
-    - '2015-10-30 19:57:26.932469'
-    - '2015-10-30 19:57:26.932469'
-    - 
-    - 
-  - - '34'
-    - '119'
-    - '2'
-    - TahiStandardTasks::Funder
-    - ''
-    - text
-    - '2015-10-30 19:58:03.018776'
-    - '2015-10-30 19:58:03.018776'
-    - 
-    - 
-  - - '35'
-    - '118'
-    - '2'
-    - TahiStandardTasks::Funder
-    - f
-    - boolean
-    - '2015-10-30 19:58:03.118814'
-    - '2015-10-30 19:58:03.118814'
-    - 
-    - 
-  - - '36'
-    - '9'
-    - '32'
-    - Task
-    - t
-    - boolean
-    - '2015-10-30 19:59:37.905765'
-    - '2015-10-30 19:59:37.905765'
-    - 
-    - 
-  - - '37'
-    - '10'
-    - '32'
-    - Task
-    - Check out figure 5
-    - text
-    - '2015-10-30 19:59:45.52803'
-    - '2015-10-30 19:59:45.52803'
-    - 
-    - 
-  - - '38'
-    - '12'
-    - '32'
-    - Task
-    - f
-    - boolean
-    - '2015-10-30 19:59:45.732425'
-    - '2015-10-30 19:59:45.732425'
-    - 
-    - 
-  - - '39'
-    - '15'
-    - '32'
-    - Task
-    - t
-    - boolean
-    - '2015-10-30 19:59:46.983941'
-    - '2015-10-30 19:59:46.983941'
-    - 
-    - 
-  - - '40'
-    - '16'
-    - '32'
-    - Task
-    - 333-333333, Editor was Angie Smith
-    - text
-    - '2015-10-30 19:59:59.553302'
-    - '2015-10-30 19:59:59.553302'
-    - 
-    - 
-  - - '41'
-    - '24'
-    - '32'
-    - Task
-    - Collection Basket
-    - text
-    - '2015-10-30 20:00:09.286037'
-    - '2015-10-30 20:00:09.286037'
-    - 
-    - 
-  - - '43'
-    - '1'
-    - '33'
-    - Task
-    - t
-    - boolean
-    - '2015-10-30 20:00:37.703208'
-    - '2015-10-30 20:00:37.703208'
-    - 
-    - 
-  - - '46'
-    - '8'
-    - '33'
-    - Task
-    - t
-    - boolean
-    - '2015-10-30 20:00:41.891372'
-    - '2015-10-30 20:00:41.891372'
-    - 
-    - 
-  - - '47'
-    - '42'
-    - '46'
-    - Task
-    - Jane
-    - text
-    - '2015-11-02 14:10:14.443118'
-    - '2015-11-02 14:10:14.443118'
-    - 
-    - 
-  - - '48'
-    - '43'
-    - '46'
-    - Task
-    - Goodall
-    - text
-    - '2015-11-02 14:10:15.727622'
-    - '2015-11-02 14:10:15.727622'
-    - 
-    - 
-  - - '49'
-    - '44'
-    - '46'
-    - Task
-    - World's Famous Biller
-    - text
-    - '2015-11-02 14:10:21.721775'
-    - '2015-11-02 14:10:21.721775'
-    - 
-    - 
-  - - '50'
-    - '45'
-    - '46'
-    - Task
-    - Dept. of Billing
-    - text
-    - '2015-11-02 14:10:48.832771'
-    - '2015-11-02 14:10:48.832771'
-    - 
-    - 
-  - - '51'
-    - '62'
-    - '46'
-    - Task
-    - Abraham Baldwin Agricultural College
-    - text
-    - '2015-11-02 14:11:04.219997'
-    - '2015-11-02 14:11:04.219997'
-    - '{"answer":"Abraham Baldwin Agricultural College","additionalData":{"institution-id":32237,"city":"Tifton","country":"US","name":"Abraham
-      Baldwin Agricultural College","state":"GA","type":"academic/ag"}}'
-    - 
-  - - '52'
-    - '64'
-    - '46'
-    - Task
-    - Alabama A&M University
-    - text
-    - '2015-11-02 14:11:08.697677'
-    - '2015-11-02 14:11:08.697677'
-    - '{"answer":"Alabama A\u0026M University","additionalData":{"institution-id":6048,"city":"Normal","country":"US","name":"Alabama
-      A\u0026M University","state":"AL","type":"academic"}}'
-    - 
-  - - '53'
-    - '46'
-    - '46'
-    - Task
-    - 555-555-5555
-    - text
-    - '2015-11-02 14:11:12.286959'
-    - '2015-11-02 14:11:12.286959'
-    - 
-    - 
-  - - '54'
-    - '48'
-    - '46'
-    - Task
-    - jane@example.com
-    - text
-    - '2015-11-02 14:11:15.854661'
-    - '2015-11-02 14:11:15.854661'
-    - 
-    - 
-  - - '55'
-    - '50'
-    - '46'
-    - Task
-    - 123 Main St.
-    - text
-    - '2015-11-02 14:11:20.145471'
-    - '2015-11-02 14:11:20.145471'
-    - 
-    - 
-  - - '56'
-    - '54'
-    - '46'
-    - Task
-    - Columbus
-    - text
-    - '2015-11-02 14:11:24.715681'
-    - '2015-11-02 14:11:24.715681'
-    - 
-    - 
-  - - '57'
-    - '56'
-    - '46'
-    - Task
-    - OH
-    - text
-    - '2015-11-02 14:11:25.372309'
-    - '2015-11-02 14:11:25.372309'
-    - 
-    - 
-  - - '58'
-    - '58'
-    - '46'
-    - Task
-    - '43130'
-    - text
-    - '2015-11-02 14:11:28.616154'
-    - '2015-11-02 14:11:28.616154'
-    - 
-    - 
-  - - '59'
-    - '66'
-    - '46'
-    - Task
-    - institutional
-    - text
-    - '2015-11-02 14:11:29.544501'
-    - '2015-11-02 14:11:29.544501'
-    - 
-    - 
-  - - '60'
-    - '99'
-    - '46'
-    - Task
-    - Ryerson University
-    - text
-    - '2015-11-02 14:11:31.662814'
-    - '2015-11-02 14:11:31.662814'
-    - 
-    - 
-  - - '61'
-    - '101'
-    - '4'
-    - Author
-    - t
-    - boolean
-    - '2015-11-02 14:14:19.024204'
-    - '2015-11-02 14:14:19.024204'
-    - 
-    - 
-  - - '62'
-    - '105'
-    - '4'
-    - Author
-    - t
-    - boolean
-    - '2015-11-02 14:14:19.719167'
-    - '2015-11-02 14:14:19.719167'
-    - 
-    - 
-  - - '63'
-    - '106'
-    - '5'
-    - Author
-    - t
-    - boolean
-    - '2015-11-02 14:15:06.157802'
-    - '2015-11-02 14:15:06.157802'
-    - 
-    - 
-  - - '64'
-    - '107'
-    - '5'
-    - Author
-    - t
-    - boolean
-    - '2015-11-02 14:15:06.242944'
-    - '2015-11-02 14:15:06.242944'
-    - 
-    - 
-  - - '65'
-    - '109'
-    - '5'
-    - Author
-    - t
-    - boolean
-    - '2015-11-02 14:15:06.329195'
-    - '2015-11-02 14:15:06.329195'
-    - 
-    - 
-  - - '66'
-    - '108'
-    - '5'
-    - Author
-    - t
-    - boolean
-    - '2015-11-02 14:15:06.41443'
-    - '2015-11-02 14:15:06.41443'
-    - 
-    - 
-  - - '67'
-    - '39'
-    - '47'
-    - Task
-    - Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-      Ipsum has been the industry's standard dummy text ever since the 1500s, when
-      an unknown printer took a galley of type and scrambled it to make a type specimen
-      book. It has survived not only five centuries, but also the leap into electronic
-      typesetting, remaining essentially unchanged. It was popularised in the 1960s
-      with the release of Letraset sheets containing Lorem Ipsum passages, and more
-      recently with desktop publishing software like Aldus PageMaker including versions
-      of Lorem Ipsum.
-    - text
-    - '2015-11-02 14:15:13.049571'
-    - '2015-11-02 14:15:20.10997'
-    - 
-    - 
-  - - '68'
-    - '38'
-    - '47'
-    - Task
-    - t
-    - boolean
-    - '2015-11-02 14:15:13.261221'
-    - '2015-11-02 14:15:13.261221'
-    - 
-    - 
-  - - '69'
-    - '36'
-    - '49'
-    - Task
-    - f
-    - boolean
-    - '2015-11-02 14:15:23.486642'
-    - '2015-11-02 14:15:23.486642'
-    - 
-    - 
-  - - '70'
-    - '37'
-    - '49'
-    - Task
-    - Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-      Ipsum has been the industry's standard dummy text ever since the 1500s, when
-      an unknown printer took a galley of type and scrambled it to make a type specimen
-      book. It has survived not only five centuries, but also the leap into electronic
-      typesetting, remaining essentially unchanged. It was popularised in the 1960s
-      with the release of Letraset sheets containing Lorem Ipsum passages, and more
-      recently with desktop publishing software like Aldus PageMaker including versions
-      of Lorem Ipsum.
-    - text
-    - '2015-11-02 14:15:31.08089'
-    - '2015-11-02 14:15:31.08089'
-    - 
-    - 
-  - - '71'
-    - '30'
-    - '50'
-    - Task
-    - t
-    - boolean
-    - '2015-11-02 14:15:35.415568'
-    - '2015-11-02 14:15:35.415568'
-    - 
-    - 
-  - - '72'
-    - '34'
-    - '50'
-    - Task
-    - ''
-    - text
-    - '2015-11-02 14:15:37.459816'
-    - '2015-11-02 14:15:37.459816'
-    - 
-    - 
-  - - '73'
-    - '31'
-    - '50'
-    - Task
-    - Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-      Ipsum has been the industry's standard dummy text ever since the 1500s, when
-      an unknown printer took a galley of type and scrambled it to make a type specimen
-      book. It has survived not only five centuries, but also the leap into electronic
-      typesetting, remaining essentially unchanged. It was popularised in the 1960s
-      with the release of Letraset sheets containing Lorem Ipsum passages, and more
-      recently with desktop publishing software like Aldus PageMaker including versions
-      of Lorem Ipsum.
-    - text
-    - '2015-11-02 14:15:37.552246'
-    - '2015-11-02 14:15:37.552246'
-    - 
-    - 
-  - - '74'
-    - '33'
-    - '50'
-    - Task
-    - f
-    - boolean
-    - '2015-11-02 14:15:37.806959'
-    - '2015-11-02 14:15:37.806959'
-    - 
-    - 
-  - - '75'
-    - '27'
-    - '52'
-    - Task
-    - f
-    - boolean
-    - '2015-11-02 14:16:11.35695'
-    - '2015-11-02 14:16:11.35695'
-    - 
-    - 
-  - - '76'
-    - '9'
-    - '53'
-    - Task
-    - t
-    - boolean
-    - '2015-11-02 14:16:20.372967'
-    - '2015-11-02 14:16:20.372967'
-    - 
-    - 
-  - - '77'
-    - '10'
-    - '53'
-    - Task
-    - FIgure 14
-    - text
-    - '2015-11-02 14:16:28.848665'
-    - '2015-11-02 14:16:28.848665'
-    - 
-    - 
-  - - '78'
-    - '11'
-    - '53'
-    - Task
-    - http://tahi-development.s3.amazonaws.com/pending/3/question_attachmentc03c4d5c99323702cecc/turtles-are-amazing.docx
-    - attachment
-    - '2015-11-02 14:16:35.575667'
-    - '2015-11-02 14:16:35.575667'
-    - 
-    - 
-  - - '79'
-    - '12'
-    - '53'
-    - Task
-    - f
-    - boolean
-    - '2015-11-02 14:16:41.251142'
-    - '2015-11-02 14:16:41.251142'
-    - 
-    - 
-  - - '80'
-    - '15'
-    - '53'
-    - Task
-    - t
-    - boolean
-    - '2015-11-02 14:16:42.435919'
-    - '2015-11-02 14:16:42.435919'
-    - 
-    - 
-  - - '81'
-    - '16'
-    - '53'
-    - Task
-    - 111-1111
-    - text
-    - '2015-11-02 14:16:47.546626'
-    - '2015-11-02 14:16:47.546626'
-    - 
-    - 
-  - - '82'
-    - '23'
-    - '53'
-    - Task
-    - t
-    - boolean
-    - '2015-11-02 14:16:47.723962'
-    - '2015-11-02 14:16:47.723962'
-    - 
-    - 
-  - - '83'
-    - '24'
-    - '53'
-    - Task
-    - Collection of Awesome
-    - text
-    - '2015-11-02 14:16:54.598805'
-    - '2015-11-02 14:16:54.598805'
-    - 
-    - 
-  - - '85'
-    - '20'
-    - '53'
-    - Task
-    - t
-    - boolean
-    - '2015-11-02 14:17:07.435087'
-    - '2015-11-02 14:17:07.435087'
-    - 
-    - 
-  - - '86'
-    - '1'
-    - '54'
-    - Task
-    - t
-    - boolean
-    - '2015-11-02 14:17:53.128785'
-    - '2015-11-02 14:17:53.128785'
-    - 
-    - 
-  - - '87'
-    - '2'
-    - '54'
-    - Task
-    - t
-    - boolean
-    - '2015-11-02 14:17:56.012546'
-    - '2015-11-02 14:17:56.012546'
-    - 
-    - 
-  - - '88'
-    - '3'
-    - '54'
-    - Task
-    - http://tahi-development.s3.amazonaws.com/pending/3/question_attachmentfdf19eeb54e065b8873b/turtles-are-amazing.docx
-    - attachment
-    - '2015-11-02 14:18:02.592308'
-    - '2015-11-02 14:18:02.592308'
-    - 
-    - 
-  - - '89'
-    - '8'
-    - '54'
-    - Task
-    - t
-    - boolean
-    - '2015-11-02 14:18:07.968082'
-    - '2015-11-02 14:18:07.968082'
-    - 
-    - 
-  - - '90'
-    - '39'
-    - '68'
-    - Task
-    - I have read the journal's policy and the authors of this manuscript have the
-      following competing interests.
-    - text
-    - '2015-11-02 14:47:12.252716'
-    - '2015-11-02 15:09:48.927499'
-    - 
-    - 
-  - - '91'
-    - '38'
-    - '68'
-    - Task
-    - t
-    - boolean
-    - '2015-11-02 14:47:12.448129'
-    - '2015-11-02 14:47:40.137944'
-    - 
-    - 
-  - - '92'
-    - '42'
-    - '67'
-    - Task
-    - Bill
-    - text
-    - '2015-11-02 14:55:36.360418'
-    - '2015-11-02 15:05:48.183796'
-    - 
-    - 
-  - - '93'
-    - '43'
-    - '67'
-    - Task
-    - McBillster
-    - text
-    - '2015-11-02 14:55:38.212314'
-    - '2015-11-02 14:55:38.212314'
-    - 
-    - 
-  - - '94'
-    - '44'
-    - '67'
-    - Task
-    - 'World''s Greatest Biller '
-    - text
-    - '2015-11-02 15:05:24.288106'
-    - '2015-11-02 15:05:24.288106'
-    - 
-    - 
-  - - '95'
-    - '45'
-    - '67'
-    - Task
-    - Billing Department
-    - text
-    - '2015-11-02 15:05:29.128488'
-    - '2015-11-02 15:05:29.128488'
-    - 
-    - 
-  - - '96'
-    - '62'
-    - '67'
-    - Task
-    - Abraham Baldwin Agricultural College
-    - text
-    - '2015-11-02 15:05:33.591289'
-    - '2015-11-02 15:05:33.591289'
-    - '{"answer":"Abraham Baldwin Agricultural College","additionalData":{"institution-id":32237,"city":"Tifton","country":"US","name":"Abraham
-      Baldwin Agricultural College","state":"GA","type":"academic/ag"}}'
-    - 
-  - - '97'
-    - '64'
-    - '67'
-    - Task
-    - Academy of Art University
-    - text
-    - '2015-11-02 15:05:36.311535'
-    - '2015-11-02 15:05:36.311535'
-    - '{"answer":"Academy of Art University","additionalData":{"institution-id":52692,"city":"San
-      Francisco","country":"US","name":"Academy of Art University","state":"CA","type":"academic"}}'
-    - 
-  - - '98'
-    - '46'
-    - '67'
-    - Task
-    - 555-555-5555
-    - text
-    - '2015-11-02 15:05:40.388416'
-    - '2015-11-02 15:05:40.388416'
-    - 
-    - 
-  - - '99'
-    - '48'
-    - '67'
-    - Task
-    - bill@example.com
-    - text
-    - '2015-11-02 15:05:45.590661'
-    - '2015-11-02 15:05:52.180143'
-    - 
-    - 
-  - - '100'
-    - '50'
-    - '67'
-    - Task
-    - 123 Main St.
-    - text
-    - '2015-11-02 15:05:56.835996'
-    - '2015-11-02 15:05:56.835996'
-    - 
-    - 
-  - - '101'
-    - '54'
-    - '67'
-    - Task
-    - Anywhere
-    - text
-    - '2015-11-02 15:06:09.293544'
-    - '2015-11-02 15:06:09.293544'
-    - 
-    - 
-  - - '102'
-    - '56'
-    - '67'
-    - Task
-    - OH
-    - text
-    - '2015-11-02 15:06:10.177738'
-    - '2015-11-02 15:06:10.177738'
-    - 
-    - 
-  - - '103'
-    - '58'
-    - '67'
-    - Task
-    - '44444'
-    - text
-    - '2015-11-02 15:06:13.964882'
-    - '2015-11-02 15:06:13.964882'
-    - 
-    - 
-  - - '104'
-    - '66'
-    - '67'
-    - Task
-    - institutional
-    - text
-    - '2015-11-02 15:06:14.828652'
-    - '2015-11-02 15:06:14.828652'
-    - 
-    - 
-  - - '105'
-    - '99'
-    - '67'
-    - Task
-    - Odense University Hospital
-    - text
-    - '2015-11-02 15:06:16.661952'
-    - '2015-11-02 15:06:16.661952'
-    - 
-    - 
-  - - '106'
-    - '101'
-    - '6'
-    - Author
-    - t
-    - boolean
-    - '2015-11-02 15:09:31.698714'
-    - '2015-11-02 15:09:31.698714'
-    - 
-    - 
-  - - '107'
-    - '105'
-    - '6'
-    - Author
-    - t
-    - boolean
-    - '2015-11-02 15:09:32.31378'
-    - '2015-11-02 15:09:32.31378'
-    - 
-    - 
-  - - '108'
-    - '36'
-    - '70'
-    - Task
-    - f
-    - boolean
-    - '2015-11-02 15:09:52.229468'
-    - '2015-11-02 15:09:52.229468'
-    - 
-    - 
-  - - '109'
-    - '37'
-    - '70'
-    - Task
-    - All relevant data are within the paper and its Supporting Information files.
-    - text
-    - '2015-11-02 15:10:01.289637'
-    - '2015-11-02 15:10:01.289637'
-    - 
-    - 
-  - - '110'
-    - '31'
-    - '71'
-    - Task
-    - ''
-    - text
-    - '2015-11-02 15:10:04.287277'
-    - '2015-11-02 15:10:04.287277'
-    - 
-    - 
-  - - '111'
-    - '30'
-    - '71'
-    - Task
-    - f
-    - boolean
-    - '2015-11-02 15:10:04.491054'
-    - '2015-11-02 15:10:04.491054'
-    - 
-    - 
-  - - '112'
-    - '33'
-    - '71'
-    - Task
-    - t
-    - boolean
-    - '2015-11-02 15:10:05.077639'
-    - '2015-11-02 15:10:05.077639'
-    - 
-    - 
-  - - '113'
-    - '34'
-    - '71'
-    - Task
-    - Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-      Ipsum has been the industry's standard dummy text ever since the 1500s, when
-      an unknown printer took a galley of type and scrambled it to make a type specimen
-      book. It has survived not only five centuries, but also the leap into electronic
-      typesetting, remaining essentially unchanged. It was popularised in the 1960s
-      with the release of Letraset sheets containing Lorem Ipsum passages, and more
-      recently with desktop publishing software like Aldus PageMaker including versions
-      of Lorem Ipsum.
-    - text
-    - '2015-11-02 15:10:11.646135'
-    - '2015-11-02 15:10:22.588951'
-    - 
-    - 
-  - - '114'
-    - '27'
-    - '73'
-    - Task
-    - f
-    - boolean
-    - '2015-11-02 15:10:54.670253'
-    - '2015-11-02 15:10:54.670253'
-    - 
-    - 
-  - - '115'
-    - '9'
-    - '74'
-    - Task
-    - f
-    - boolean
-    - '2015-11-02 15:11:01.425209'
-    - '2015-11-02 15:11:14.465149'
-    - 
-    - 
-  - - '116'
-    - '10'
-    - '74'
-    - Task
-    - Figure 1.2
-    - text
-    - '2015-11-02 15:11:05.726187'
-    - '2015-11-02 15:11:05.726187'
-    - 
-    - 
-  - - '117'
-    - '12'
-    - '74'
-    - Task
-    - t
-    - boolean
-    - '2015-11-02 15:11:15.351959'
-    - '2015-11-02 15:11:15.351959'
-    - 
-    - 
-  - - '118'
-    - '13'
-    - '74'
-    - Task
-    - Submission Title
-    - text
-    - '2015-11-02 15:11:20.542559'
-    - '2015-11-02 15:11:20.542559'
-    - 
-    - 
-  - - '119'
-    - '14'
-    - '74'
-    - Task
-    - Ronald McDonald
-    - text
-    - '2015-11-02 15:11:26.788002'
-    - '2015-11-02 15:11:26.788002'
-    - 
-    - 
-  - - '120'
-    - '15'
-    - '74'
-    - Task
-    - t
-    - boolean
-    - '2015-11-02 15:11:26.967013'
-    - '2015-11-02 15:11:26.967013'
-    - 
-    - 
-  - - '121'
-    - '16'
-    - '74'
-    - Task
-    - 111.111, Fred Jones
-    - text
-    - '2015-11-02 15:11:35.454336'
-    - '2015-11-02 15:11:35.454336'
-    - 
-    - 
-  - - '122'
-    - '24'
-    - '74'
-    - Task
-    - PLOS Collection
-    - text
-    - '2015-11-02 15:11:41.612583'
-    - '2015-11-02 15:11:41.612583'
-    - 
-    - 
-  - - '124'
-    - '1'
-    - '75'
-    - Task
-    - t
-    - boolean
-    - '2015-11-02 15:11:53.982789'
-    - '2015-11-02 15:11:53.982789'
-    - 
-    - 
-  - - '125'
-    - '4'
-    - '75'
-    - Task
-    - t
-    - boolean
-    - '2015-11-02 15:11:54.611386'
-    - '2015-11-02 15:11:54.611386'
-    - 
-    - 
-  - - '126'
-    - '5'
-    - '75'
-    - Task
-    - http://tahi-development.s3.amazonaws.com/pending/3/question_attachmentb11bbc86155033557c3a/manuscript+%281%29.docx
-    - attachment
-    - '2015-11-02 15:12:01.328026'
-    - '2015-11-02 15:12:01.328026'
-    - 
-    - 
 
 ---
 task_templates:

@@ -131,12 +131,14 @@ class ViewPaperTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     # We recently became slow drawing this overlay (20151006)
     time.sleep(.5)
-
+    # Temporary changing timeout
+    dashboard_page.set_timeout(120)
     title = self.create_article(journal='PLOS Wombat',
                                 type_='Images+InitialDecision',
                                 random_bit=True,
                                 init=False,
                                 )
+    dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())

@@ -81,8 +81,8 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     login_page.click_sign_in_button()
 
     dashboard_page = DashboardPage(self.getDriver())
-    # Validate Create New Submissions modal
-    dashboard_page.click_create_new_submission_button()
+    # Temporary changing timeout
+    dashboard_page.set_timeout(120)
     # We recently became slow drawing this overlay (20151006)
     time.sleep(.5)
     title = self.create_article(journal='PLOS Wombat',
@@ -91,6 +91,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
                                 init=False,
                                 title='full submit',
                                 )
+    dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
@@ -177,8 +178,8 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     login_page.click_sign_in_button()
 
     dashboard_page = DashboardPage(self.getDriver())
-    # Validate Create New Submissions modal
-    dashboard_page.click_create_new_submission_button()
+    # Temporary changing timeout
+    dashboard_page.set_timeout(120)
     # We recently became slow drawing this overlay (20151006)
     time.sleep(.5)
     title = self.create_article(journal='PLOS Wombat',
@@ -187,6 +188,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
                                 init=False,
                                 title='full submit',
                                 )
+    dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(7)
     manuscript_page = ManuscriptViewerPage(self.getDriver())

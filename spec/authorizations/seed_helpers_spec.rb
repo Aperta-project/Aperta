@@ -4,7 +4,9 @@ describe 'SeedHelpers' do
   let(:journal) { FactoryGirl.create(:journal) }
 
   before do
-    # It is safe to clear out of the existing roles and permissions
+    # This is intended to remove the baseline seeds that were created
+    # by rails helper. It is safe to clear out since unit tests are
+    # wrapped in a transaction
     Role.delete_all
     Permission.delete_all
     PermissionState.delete_all

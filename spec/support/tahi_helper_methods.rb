@@ -31,19 +31,19 @@ module TahiHelperMethods
 
   # NEW ROLES
   def assign_author_role(paper, creator)
-    Assignment.first_or_create!(
+    Assignment.where(
       user: creator,
       role: Role.where(name: 'Author').first,
       assigned_to: paper
-    )
+    ).first_or_create!
   end
 
   def assign_reviewer_role(paper, reviewer)
-    Assignment.first_or_create!(
+    Assignment.where(
       user: reviewer,
       role: Role.where(name: 'Reviewer').first,
       assigned_to: paper
-    )
+    ).first_or_create!
   end
 
   def assign_journal_role(journal, user, role_or_type)

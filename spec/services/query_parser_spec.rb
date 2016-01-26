@@ -75,16 +75,4 @@ describe QueryParser do
         ParsedQuery.new(not_status: 'unsubmitted'))
     end
   end
-
-  describe 'Query#build' do
-    it 'builds a query' do
-      q = '(TYPE IS neat OR (TYPE IS awesome)) AND STATUS IS freddy mercury'
-      parse = QueryParser.parse q
-      expect(parse.build 'x').to eq([
-        'x.where(paper_type: awesome).where(publishing_state: freddy mercury)',
-        ' UNION? ',
-        'x.where(paper_type: neat).where(publishing_state: freddy mercury)'
-      ].join(''))
-    end
-  end
 end

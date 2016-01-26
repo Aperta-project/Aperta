@@ -358,7 +358,6 @@ class DashboardPage(AuthenticatedPage):
         db_papers_list.append(current_paper)
     # Keeping this around but commented out as it is key to debugging issues with dirty paper data
     # print(db_papers_list)
-
     if db_papers_list:
       count = 0
       for paper in papers:  # List of papers for section from page
@@ -373,6 +372,7 @@ class DashboardPage(AuthenticatedPage):
         # print(db_title)
         # print(paper_text)
         if not title:
+          logging.info('Paper id: {}'.format(db_papers_list[count]))
           raise ValueError('Error: No title in db! Illogical, Illogical, Norman Coordinate: Invalid document')
         if isinstance(title, unicode) and isinstance(paper.text, unicode):
           assert db_title == paper_text, unicode(title) + unicode(' is not equal to ') + unicode(paper.text)

@@ -32,7 +32,13 @@ describe TahiStandardTasks::ReviewerRecommendation do
   end
 
   describe '#task' do
-    let(:recommendation) { FactoryGirl.create(:reviewer_recommendation) }
+    let!(:task) { FactoryGirl.create(:reviewer_recommendations_task) }
+    let!(:recommendation) do
+      FactoryGirl.create(
+        :reviewer_recommendation,
+        reviewer_recommendations_task: task
+      )
+    end
 
     it 'always proxies to reviewer_recommendations_task' do
       expect(recommendation.task)

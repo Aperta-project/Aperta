@@ -49,12 +49,16 @@ class MetadataVersioningTest(CommonTest):
     new_prq = {'q1':'Yes', 'q2':'Yes', 'q3': [0,1,0,0], 'q4':'New Data',
                'q5':'More Data'}
     dashboard_page = self.login(email=au_login['user'], password=login_valid_pw)
+    # With a dashboard with several articles, this takes time to load and timeout
+    # Big timeout for this step due to large number of papers
+    dashboard_page.set_timeout(120)
     title = self.create_article(title=title,
                                 journal='PLOS Wombat',
                                 type_=journal_type,
                                 random_bit=True,
                                 init=False,
                                 user='jgray_author')
+    dashboard_page.restore_timeout()
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_id = paper_viewer.get_current_url().split('/')[-1]
     paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
@@ -89,6 +93,7 @@ class MetadataVersioningTest(CommonTest):
     invite_editor_card = InviteEditorCard(self.getDriver())
     invite_editor_card.invite_editor(he_login)
     paper_viewer.logout()
+    import pdb; pdb.set_trace()
     # log as editor jgray_editor to accept invitation and accept initial submission
     dashboard_page = self.login(email=he_login['user'], password=login_valid_pw)
     dashboard_page.click_view_invitations()

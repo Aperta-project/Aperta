@@ -50,12 +50,16 @@ class InitialDecisionCardTest(CommonTest):
     login_page.enter_login_field(au_login['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
+    # Time needed for log in
+    #time.sleep(5)
     dashboard_page = DashboardPage(self.getDriver())
+    dashboard_page.set_timeout(60)
     self.create_article(journal = 'PLOS Wombat',
                         type_ = 'Images+InitialDecision',
                         random_bit = True,
                         init = False,
                         )
+    dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())

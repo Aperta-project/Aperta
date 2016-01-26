@@ -43,12 +43,4 @@ class ParsedQuery
       end).join('')
     end
   end
-
-  def status(_)
-    ".where(publishing_state: #{values[:status]})"
-  end
-
-  def type(_)
-    ".where(paper_type: #{values[:type]})"
-  end
 end

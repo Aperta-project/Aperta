@@ -27,7 +27,6 @@ feature "Flow Manager", js: true, selenium: true do
 
   let!(:paper1) do
     FactoryGirl.create(:paper, :submitted, :with_tasks,
-      short_title: 'foobar',
       title: 'Foo bar',
       journal: journal,
       creator: author)
@@ -35,7 +34,6 @@ feature "Flow Manager", js: true, selenium: true do
 
   let!(:paper2) do
     FactoryGirl.create(:paper, :submitted, :with_tasks,
-      short_title: 'bazqux',
       title: 'Baz Qux',
       journal: journal,
       creator: author)

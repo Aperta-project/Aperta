@@ -11,7 +11,7 @@ describe NestedQuestionAnswersController do
   end
 
   describe "#create" do
-    let(:owner) { nested_question.owner }
+    let!(:owner) { nested_question.owner }
 
     def do_request(params: {})
       post_params = {

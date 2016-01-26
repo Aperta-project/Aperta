@@ -10,10 +10,6 @@ FactoryGirl.define do
     journal
     creator factory: User
 
-    sequence :short_title do |n|
-      "Test Paper - #{n}-#{SecureRandom.hex(3)}"
-    end
-
     sequence :title do |n|
       "Feature Recognition from 2D Hints in Extruded Solids - #{n}-#{SecureRandom.hex(3)}"
     end
@@ -52,6 +48,28 @@ FactoryGirl.define do
     trait(:with_tasks) do
       after(:create) do |paper|
         PaperFactory.new(paper, paper.creator).add_phases_and_tasks
+      end
+    end
+
+    trait(:with_short_title) do
+      # Paper#short title is stored in a NestedQuestionAnswer; so ya
+      # better build one.
+      transient do
+        short_title ''
+      end
+
+      after(:create) do |paper, evaluator|
+        task = FactoryGirl.create(
+          :publishing_related_questions_task,
+          paper: paper)
+        question = NestedQuestion.find_by(
+          ident: 'publishing_related_questions--short_title')
+        FactoryGirl.create(
+          :nested_question_answer,
+          paper: paper,
+          value: evaluator.short_title,
+          nested_question: question,
+          owner: task)
       end
     end
 

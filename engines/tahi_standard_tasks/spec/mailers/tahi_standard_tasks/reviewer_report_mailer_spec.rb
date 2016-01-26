@@ -4,11 +4,11 @@ describe TahiStandardTasks::ReviewerReportMailer do
   describe ".notify_editor_email" do
     let(:app_name) { 'TEST-APP-NAME' }
 
-    let(:paper) {
-      FactoryGirl.create(:paper,
-                         title: "Studies on the effects of saying Abracadabra",
-                         short_title: "Magic")
-    }
+    let(:paper) do
+      FactoryGirl.create(
+        :paper,
+        title: 'Studies on the effects of saying Abracadabra')
+    end
 
     let(:task) {
       FactoryGirl.create(:task,

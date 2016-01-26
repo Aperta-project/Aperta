@@ -116,7 +116,7 @@ describe EpubConverter do
 
   describe '#title' do
     context 'short_title is nil because it has not been set yet' do
-      let(:paper) { FactoryGirl.build(:paper, short_title: nil) }
+      let(:paper) { FactoryGirl.build(:paper) }
 
       it 'return empty title' do
         expect(converter.title).to eq('')
@@ -124,7 +124,12 @@ describe EpubConverter do
     end
 
     context 'short_title is safely escaped' do
-      let(:paper) { FactoryGirl.build(:paper, short_title: '<b>my title</b>') }
+      let(:paper) do
+        FactoryGirl.create(
+          :paper,
+          :with_short_title,
+          short_title: '<b>my title</b>')
+      end
 
       it 'return empty title' do
         expect(converter.title).to eq('&lt;b&gt;my title&lt;/b&gt;')

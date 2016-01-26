@@ -22,10 +22,13 @@ module NestedQuestionable
   #  * decision - if provided, will scope the answer to the given :decision.
   #
   def find_or_build_answer_for(nested_question:, decision: nil)
-    nested_question_answers.find_or_build(
+    answer = nested_question_answers.find_or_build(
       nested_question: nested_question,
       decision: decision
     )
+    answer.paper = paper if respond_to?(:paper)
+
+    answer
   end
 
   # Returns the answer for a given +ident+ path.

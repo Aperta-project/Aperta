@@ -119,17 +119,14 @@ describe Paper do
       end
     end
 
-    describe "short_title" do
-      it "is within 255 chars" do
-        paper = FactoryGirl.build(:paper, title: "Example", short_title: "a" * 256)
-        expect(paper).to_not be_valid
-        expect(paper).to have(1).errors_on(:short_title)
+    describe 'short_title' do
+      let(:title) { "Hi! I'm a title!" }
+      let(:paper) do
+        FactoryGirl.create(:paper, :with_short_title, short_title: title)
+      end
 
-        paper.short_title = "a" * 254
-        expect(paper).to be_valid
-
-        paper.short_title = "a" * 255
-        expect(paper).to be_valid
+      it 'fetches short title from a NestedQuestionAnswer' do
+        expect(paper.short_title).to eq(title)
       end
     end
 
@@ -632,7 +629,7 @@ describe Paper do
     context "title and short_title are nil" do
       # user has not provided a title and is expecting ihat to extract one,
       # but ihat could not find one
-      let(:paper) { FactoryGirl.build(:paper, title: nil, short_title: nil) }
+      let(:paper) { FactoryGirl.build(:paper, title: nil) }
 
       context "with sanitization" do
         it "is an empty string" do
@@ -648,7 +645,7 @@ describe Paper do
     end
 
     context "title is present, short title is nil" do
-      let(:paper) { FactoryGirl.build(:paper, title: "<b>my long paper</b>", short_title: nil) }
+      let(:paper) { FactoryGirl.build(:paper, title: '<b>my long paper</b>') }
 
       context "with sanitization" do
         it "it is sanitized title" do
@@ -664,7 +661,13 @@ describe Paper do
     end
 
     context "title is nil, short title is present" do
-      let(:paper) { FactoryGirl.build(:paper, title: nil, short_title: "<b>my paper</b>") }
+      let(:paper) do
+        FactoryGirl.create(
+          :paper,
+          :with_short_title,
+          short_title: '<b>my paper</b>',
+          title: nil)
+      end
 
       context "with sanitization" do
         it "it is sanitized title" do
@@ -680,7 +683,13 @@ describe Paper do
     end
 
     context "title is present, short title is present" do
-      let(:paper) { FactoryGirl.build(:paper, title: "<b>my long paper</b>", short_title: "<b>my paper</b>") }
+      let(:paper) do
+        FactoryGirl.create(
+          :paper,
+          :with_short_title,
+          short_title: '<b>my paper</b>',
+          title: '<b>my long paper</b>')
+      end
 
       context "with sanitization" do
         it "it is sanitized title" do

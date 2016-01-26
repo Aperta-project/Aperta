@@ -25,7 +25,6 @@ describe TahiStandardTasks::RegisterDecisionController do
     context "Paper in a submitted state, with a valid Decision" do
       let(:paper) {
         FactoryGirl.create(:paper, :submitted, :with_tasks,
-          short_title: 'Submitted Paper',
           title: 'Science - the Complete Works',
           journal: journal,
           creator: admin)
@@ -63,7 +62,6 @@ describe TahiStandardTasks::RegisterDecisionController do
     context "Paper in a non-submitted state" do
       let(:paper) {
         FactoryGirl.create(:paper, :with_tasks,
-          short_title: 'Non-submitted Paper',
           title: 'Work in Progress',
           journal: journal,
           creator: admin)

@@ -12,7 +12,7 @@ feature "Manuscript CSS", js: true do
   end
 
   context "when editing the paper" do
-    let(:paper) { FactoryGirl.create :paper, journal: journal, short_title: 'foo bar', creator: author }
+    let(:paper) { FactoryGirl.create :paper, journal: journal, creator: author }
 
     scenario "CSS is applied when editing a paper" do
       edit_paper = PaperPage.new
@@ -21,7 +21,9 @@ feature "Manuscript CSS", js: true do
   end
 
   context "when the paper is submitted" do
-    let(:paper) { FactoryGirl.create :paper, :submitted, journal: journal, short_title: 'submitted foo bar', creator: author }
+    let(:paper) do
+      FactoryGirl.create :paper, :submitted, journal: journal, creator: author
+    end
 
     scenario "CSS is applied when viewing a paper" do
       paper_page = PaperPage.new

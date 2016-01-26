@@ -143,6 +143,7 @@ RSpec.configure do |config|
   # Load subscriptions for feature specs. Make sure this comes *after*
   # unsubscribe_all. We need to add these back.
   config.before(:each, type: :feature) do
+    Authorizations.reload_configuration
     Subscriptions.reload
   end
 

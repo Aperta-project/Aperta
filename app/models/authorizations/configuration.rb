@@ -22,5 +22,10 @@ module Authorizations
     def reset
       @authorizations = []
     end
+
+    def reload
+      reset
+      load 'config/initializers/z_authorizations.rb'
+    end
   end
 end

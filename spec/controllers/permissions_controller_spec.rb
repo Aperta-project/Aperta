@@ -9,6 +9,10 @@ describe PermissionsController do
   before { sign_in user }
 
   describe '#show' do
+    before :all do
+      Authorizations::Configuration.reload
+    end
+
     permission action: :withdraw_manuscript, applies_to: 'Paper', states: ['*']
     role 'Author' do
       has_permission action: 'withdraw_manuscript', applies_to: 'Paper'
@@ -34,7 +38,7 @@ describe PermissionsController do
     end
 
     context 'has one permission at the journal level' do
-      context 'as the author' do
+      context 'as the JournalStaff' do
         before do
           assign_user user, to: paper.journal, with_role: role_JournalStaff
         end

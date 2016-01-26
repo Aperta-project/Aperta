@@ -1,9 +1,10 @@
 namespace :data do
-  desc "Create default task types for all journals"
-  task :create_task_types => :environment do
+  desc 'Update or Create JournalTaskType records for all journals'
+  task update_journal_task_types: :environment do
     Rails.application.config.eager_load_namespaces.each(&:eager_load!)
     Journal.all.each do |journal|
-      JournalServices::CreateDefaultTaskTypes.call(journal)
+      JournalServices::CreateDefaultTaskTypes.call(journal,
+                                                   override_existing: true)
     end
   end
 

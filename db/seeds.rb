@@ -1,6 +1,6 @@
 class ManualSeeds #Use this class to run seeds the old way
   def run
-    Rake::Task['data:create_task_types'].invoke
+    Rake::Task['data:update_journal_task_types'].invoke
     # Create Journal
     plos_journal = Journal.first_or_create!(name: 'PLOS Yeti', logo: '', doi_publisher_prefix: "yetipub", doi_journal_prefix: "yetijour", last_doi_issued: "1000000")
 
@@ -161,7 +161,7 @@ class ManualSeeds #Use this class to run seeds the old way
       ).save!
     end
 
-    Rake::Task['data:create_task_types'].invoke
+    Rake::Task['data:update_journal_task_types'].invoke
     Rake::Task['journal:create_default_templates'].invoke
     Rake::Task['nested-questions:seed'].invoke
     Rake::Task['roles-and-permissions:seed'].invoke

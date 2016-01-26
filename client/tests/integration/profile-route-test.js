@@ -59,7 +59,7 @@ test('transition to route without permission fails', function(assert){
   expect(1);
   Ember.run.later(function(){
     var store = getStore();
-    store.createRecord('permission', { table: [] });
+    store.createRecord('permission', {id:'user+1'});
 
     visit('/profile');
     andThen(function(){
@@ -77,16 +77,13 @@ test('transition to route with permission succeedes', function(assert){
   Ember.run.later(function(){
     var store = getStore();
     store.createRecord('permission',{
-      table: [
-        {
-          object:{id: 1, type: 'User'},
-          permissions:{
-            view_profile:{
-              states: ['*']
-            }
-          }
+      id: 'user+1',
+      object:{id: 1, type: 'User'},
+      permissions:{
+        view_profile:{
+          states: ['*']
         }
-      ]
+      }
     });
 
     visit('/profile');

@@ -5,17 +5,10 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
-- New component attachment-manager to handle attachments, to be used on used on multiple cards.
-- New component attachment-item to be used within attachment-manager, to handle previews of attachment, replace and deletion
-- New component s3-file-uploader that wraps the jquery fileupload plugin to make direct uploads to Amazon S3
-- Email notifications on discussion forum posts and participations
-- Discussion Notifications displayed when user is added as participant
-- Ability to upload multiple Related Manuscripts to indicate what information has been published elsewhere
+-
 
 ### Changed
-- Revamped the Supporting Information task.
-- Figures use non-expiring resource proxy urls
-- Additional Information card uses standard file uploader
+-
 
 ### Deprecated
 -
@@ -28,6 +21,20 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ### Security
 -
+
+## [1.3.8] - 2015-01-26
+### Added
+- New component attachment-manager to handle attachments, to be used on used on multiple cards.
+- New component attachment-item to be used within attachment-manager, to handle previews of attachment, replace and deletion
+- New component s3-file-uploader that wraps the jquery fileupload plugin to make direct uploads to Amazon S3
+- Email notifications on discussion forum posts and participations
+- Discussion Notifications displayed when user is added as participant
+- Ability to upload multiple Related Manuscripts to indicate what information has been published elsewhere
+
+### Changed
+- Revamped the Supporting Information task.
+- Figures use non-expiring resource proxy urls
+- Additional Information card uses standard file uploader
 
 ## [1.3.7] - 2015-12-29
 ### Added

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 // Receives info on current order state
-//   activeorderBy:  null,
+//   activeOrderBy:  null,
 //   activeOrderDir: null,
 //
 // Calls a closure action when clicked, saying what the new
@@ -15,25 +15,35 @@ import Ember from 'ember';
 // since we want the response from server to set the state
 export default Ember.Component.extend({
   tagName: 'a',
+  classNames: ['sort-link'],
   classNameBindings: [
-    'active:sort-link-active:sort-link',
+    'active:active',
   ],
-  title:           'testing',
+  attributeBindings: ['title'],
+
 
   // attrs
   text:           null,
   orderBy:        null,
-  activeorderBy:  null,
+  activeOrderBy:  null,
   activeOrderDir: null,
 
   // action
   sortAction:     null,
 
-  isAsc: Ember.computed('activeorderBy', function(){
-    return Ember.isEqual(this.get('activeorderBy'), 'asc');
+  isAsc: Ember.computed('activeOrderDir', function(){
+    return Ember.isEqual(this.get('activeOrderDir'), 'asc');
   }),
 
-  orderDir: Ember.computed('isAsc', function(){
+  title: Ember.computed('activeOrderDir', function(){
+    return "sort by " + this.get('text')
+  }),
+
+  caretDir: Ember.computed('activeOrderDir', function(){
+    return this.get('isAsc') ? 'up' : 'down';
+  }),
+
+  orderDir: Ember.computed('activeOrderDir', function(){
     if (this.get('active')) {
       return this.get('isAsc') ? 'desc' : 'asc';
     } else {
@@ -41,8 +51,8 @@ export default Ember.Component.extend({
     }
   }),
 
-  active: Ember.computed('orderBy', 'activeorderBy', function() {
-    return Ember.isEqual(this.get('orderBy'), this.get('activeorderBy'));
+  active: Ember.computed('orderBy', 'activeOrderBy', function() {
+    return Ember.isEqual(this.get('orderBy'), this.get('activeOrderBy'));
   }),
 
   click() {

@@ -1,22 +1,44 @@
 <div class="base-screen">
   <h2 class="paper-tracker-message">Hello, {{currentUser.firstName}}!</h2>
   <p class="paper-tracker-paper-count">You have {{pluralize model.length "paper"}} in your tracker.</p>
-  <br><br><br>
 
-  {{pagination-simple page=page totalCount=totalCount perPage=perPage setPage=(action "setPage")}}
+  <div class='row' id='search-controls'>
+    <div class='col-sm-6' id='search-col'>
+      <div class="navbar-form">
+        <div class="input-group">
+          <div id='clearSearch' class="input-group-addon" {{action 'clearSearch'}}><i class="fa fa-remove"></i></div>
+
+          {{input type="text"
+                  class="form-control"
+                  id="query-input"
+                  value=queryInput
+                  enter="search"
+                  placeholder="Title keyword or Manuscript ID number"}}
+
+          <div class="input-group-btn">
+            <button class="btn btn-primary" {{action 'search'}}><i class="fa fa-search"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class='col-sm-6' class='pagination-col'>
+      {{pagination-simple page=page totalCount=totalCount perPage=perPage setPage=(action "setPage")}}
+    </div>
+  </div>
 
   <table class="paper-tracker-table">
     <thead>
       <tr>
         <th></th>
         <th>{{sort-link text="Title"
-                        orderBy="display_title"
+                        orderBy="title"
                         activeOrderBy=orderBy
                         activeOrderDir=orderDir
                         sortAction=(action "sort")
         }}</th>
         <th>{{sort-link text="Manuscript ID"
-                        orderBy="id"
+                        orderBy="doi"
                         activeOrderBy=orderBy
                         activeOrderDir=orderDir
                         sortAction=(action "sort")
@@ -45,4 +67,14 @@
     </tbody>
 
   </table>
+
+  <div class='row' id='search-controls'>
+    <div class='col-sm-6' id='search-col'> </div>
+
+    <div class='col-sm-6' class='pagination-col'>
+      {{pagination-simple page=page totalCount=totalCount perPage=perPage setPage=(action "setPage")}}
+    </div>
+  </div>
 </div>
+
+

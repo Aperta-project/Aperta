@@ -14,15 +14,33 @@ export default Ember.Controller.extend({
   perPage:    null,
   totalCount: null,
 
+  //on-page props
+  queryInput: null,
+
   actions: {
     setPage(page) {
-      this.set('page', page); // triggers route reload
+      this.set('page', page);
     },
 
     sort(orderBy, orderDir) {
       this.set('orderBy',  orderBy);
       this.set('orderDir', orderDir);
-      this.set('page',     page); // triggers route reload
-    }
+      this.set('page',     1);
+    },
+
+    search() {
+      this.set('orderBy',  null);
+      this.set('orderDir', null);
+      this.set('page',     null);
+      this.set('query', this.get('queryInput'));
+    },
+
+    clearSearch() {
+      console.log('clearSearch');
+      this.set('orderBy',  null);
+      this.set('orderDir', null);
+      this.set('page',     null);
+      this.set('query',    null);
+    },
   }
 });

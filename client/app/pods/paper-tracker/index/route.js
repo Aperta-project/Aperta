@@ -7,6 +7,15 @@ export default Ember.Route.extend({
     page: {
       refreshModel: true
     },
+    orderBy: {
+      refreshModel: true
+    },
+    orderDir: {
+      refreshModel: true
+    },
+    query: {
+      refreshModel: true
+    },
   },
 
   model(params) {
@@ -42,4 +51,12 @@ export default Ember.Route.extend({
     controller.set('totalCount', this.get('metaData.totalCount'));
     controller.set('perPage', this.get('metaData.perPage'));
   },
+
+  actions: {
+    didTransition: function() {
+      //keeps search box up to date if entering url cold
+      this.controller.set('queryInput', this.controller.get('query'));
+      return true; // Bubble the didTransition event
+    }
+  }
 });

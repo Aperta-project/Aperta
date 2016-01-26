@@ -17,85 +17,86 @@ createJournalWithTaskTemplate = (taskType) ->
 module 'Integration: Manuscript Manager Templates',
 
   beforeEach: ->
-    app = startApp()
-    server = setupMockServer()
-    app.saveTemplateActionFunction = app.__container__.lookup(
-      'controller:admin/journal/manuscript-manager-template/edit'
-    )._actions.saveTemplateOnClick
+    Ember.run =>
+      app = startApp()
+      server = setupMockServer()
+      app.saveTemplateActionFunction = app.__container__.lookup(
+        'controller:admin/journal/manuscript-manager-template/edit'
+      )._actions.saveTemplateOnClick
 
-    app.__container__.lookup(
-      'controller:admin/journal/manuscript-manager-template/edit'
-    )._actions.saveTemplateOnClick = -> console.log 'No Action'
+      app.__container__.lookup(
+        'controller:admin/journal/manuscript-manager-template/edit'
+      )._actions.saveTemplateOnClick = -> console.log 'No Action'
 
-    records = createJournalWithTaskTemplate
-      kind: "Task"
-      title: "Ad Hoc"
-      id: 1
+      records = createJournalWithTaskTemplate
+        kind: "Task"
+        title: "Ad Hoc"
+        id: 1
 
-    adminJournalPayload = Factory.createPayload('admin_journal')
-    adminJournalPayload.addRecords(records)
-    adminJournalResponse = adminJournalPayload.toJSON()
-    admin = Factory.createRecord('User', siteAdmin: true)
+      adminJournalPayload = Factory.createPayload('admin_journal')
+      adminJournalPayload.addRecords(records)
+      adminJournalResponse = adminJournalPayload.toJSON()
+      admin = Factory.createRecord('User', siteAdmin: true)
 
-    # let us see the manuscript template manager
-    server.respondWith 'GET', /\/api\/flows\/authorization/, [
-      204, 'Tahi-Authorization-Check': 'true', ""
-    ]
+      # let us see the manuscript template manager
+      server.respondWith 'GET', /\/api\/flows\/authorization/, [
+        204, 'Tahi-Authorization-Check': 'true', ""
+      ]
 
-    server.respondWith 'GET', "/api/admin/journals/1", [
-      200, {"Content-Type": "application/json"}, JSON.stringify(adminJournalResponse)
-    ]
+      server.respondWith 'GET', "/api/admin/journals/1", [
+        200, {"Content-Type": "application/json"}, JSON.stringify(adminJournalResponse)
+      ]
 
-    server.respondWith 'GET', "/api/admin/journals/authorization", [
-      204, "Content-Type": "application/html", ""
-    ]
+      server.respondWith 'GET', "/api/admin/journals/authorization", [
+        204, "Content-Type": "application/html", ""
+      ]
 
-    server.respondWith 'GET', "/api/users/#{admin.id}", [
-      200, 'Content-Type': 'application/json', JSON.stringify {user: admin}
-    ]
+      server.respondWith 'GET', "/api/users/#{admin.id}", [
+        200, 'Content-Type': 'application/json', JSON.stringify {user: admin}
+      ]
 
-    server.respondWith 'DELETE', "/api/task_templates/1", [
-      204, "Content-Type": "application/json", JSON.stringify {}
-    ]
+      server.respondWith 'DELETE', "/api/task_templates/1", [
+        204, "Content-Type": "application/json", JSON.stringify {}
+      ]
 
-    # related to "save templates" button
-    server.respondWith 'PUT', "/api/manuscript_manager_templates/1", [
-      200, {"Content-Type": "application/json"}, '{}'
-    ]
+      # related to "save templates" button
+      server.respondWith 'PUT', "/api/manuscript_manager_templates/1", [
+        200, {"Content-Type": "application/json"}, '{}'
+      ]
 
-    server.respondWith 'PUT', "/api/phase_templates/1", [
-      200, {"Content-Type": "application/json"}, '{}'
-    ]
+      server.respondWith 'PUT', "/api/phase_templates/1", [
+        200, {"Content-Type": "application/json"}, '{}'
+      ]
 
-    server.respondWith 'POST', "/api/manuscript_manager_templates/1", [
-      200, {"Content-Type": "application/json"}, '{}'
-    ]
+      server.respondWith 'POST', "/api/manuscript_manager_templates/1", [
+        200, {"Content-Type": "application/json"}, '{}'
+      ]
 
-    server.respondWith 'POST', "/api/phase_templates/1", [
-      200, {"Content-Type": "application/json"}, '{}'
-    ]
-    response = {
-      "journal_task_types": [
-        {
+      server.respondWith 'POST', "/api/phase_templates/1", [
+        200, {"Content-Type": "application/json"}, '{}'
+      ]
+      response = {
+        "journal_task_types": [
+          {
+            "id": 1,
+            "title": "Ad-hoc",
+            "old_role": "user",
+            "kind": "Task",
+            "journal_id": 1
+          }
+        ],
+        "task_template": {
           "id": 1,
+          "template": [],
           "title": "Ad-hoc",
-          "old_role": "user",
-          "kind": "Task",
-          "journal_id": 1
+          "phase_template_id": 1,
+          "journal_task_type_id": 1
         }
-      ],
-      "task_template": {
-        "id": 1,
-        "template": [],
-        "title": "Ad-hoc",
-        "phase_template_id": 1,
-        "journal_task_type_id": 1
       }
-    }
 
-    server.respondWith 'POST', "/api/task_templates", [
-      200, {"Content-Type": "application/json"}, JSON.stringify(response)
-    ]
+      server.respondWith 'POST', "/api/task_templates", [
+        200, {"Content-Type": "application/json"}, JSON.stringify(response)
+      ]
 
   afterEach: ->
     server.restore()
@@ -113,33 +114,41 @@ test 'Changing phase name', (assert) ->
     assert.ok find('h2.column-title:contains("Shazam!")').length
 
 test 'Adding an Ad-Hoc card', (assert) ->
-  visit("/admin/journals/1/manuscript_manager_templates/1/edit").then ->
-    click('.button--green:contains("Add New Card")')
-    click('label:contains("Ad Hoc")')
-    click('.overlay .button--green:contains("Add")')
+  Ember.run =>
+    visit("/admin/journals/1/manuscript_manager_templates/1/edit").then ->
+      click('.button--green:contains("Add New Card")')
+      click('label:contains("Ad Hoc")')
+      andThen ->
+        Ember.run ->
+          click('.overlay .button--green:contains("Add")')
 
-  andThen ->
-    assert.ok find('h1.inline-edit:contains("Ad Hoc")').length
-    assert.ok(
-      find('h1.inline-edit').hasClass('editing'),
-      "The title should be editable to start"
-    )
+      andThen ->
+        assert.ok find('h1.inline-edit:contains("Ad Hoc")').length
+        assert.ok(
+          find('h1.inline-edit').hasClass('editing'),
+          "The title should be editable to start"
+        )
 
-  click('.adhoc-content-toolbar .fa-plus')
-  click('.adhoc-content-toolbar .adhoc-toolbar-item--text')
+      click('.adhoc-content-toolbar .fa-plus')
+      click('.adhoc-content-toolbar .adhoc-toolbar-item--text')
 
-  andThen ->
-    Ember.$('.inline-edit-form div[contenteditable]')
-    .html("New contenteditable, yahoo!")
-    .trigger('keyup')
-    click('.task-body .inline-edit-body-part .button--green:contains("Save")')
+      andThen ->
+        Ember.run =>
+          Ember.$('.inline-edit-form div[contenteditable]')
+          .html("New contenteditable, yahoo!")
+          .trigger('keyup')
+      andThen ->
+        Ember.run ->
+          click('.task-body .inline-edit-body-part .button--green:contains("Save")')
 
-  andThen ->
-    assert.textPresent('.inline-edit', 'yahoo')
-    click('.inline-edit-body-part .fa-trash')
-  andThen ->
-    assert.textPresent('.inline-edit-body-part', 'Are you sure?')
-    click('.inline-edit-body-part .delete-button')
-  andThen ->
-    assert.textNotPresent('.inline-edit', 'yahoo')
-    click('.overlay-close-button:first')
+      andThen ->
+        assert.textPresent('.inline-edit', 'yahoo')
+        click('.inline-edit-body-part .fa-trash')
+      andThen ->
+        assert.textPresent('.inline-edit-body-part', 'Are you sure?')
+      andThen ->
+        Ember.run ->
+          click('.inline-edit-body-part .delete-button')
+      andThen ->
+        assert.textNotPresent('.inline-edit', 'yahoo')
+        click('.overlay-close-button:first')

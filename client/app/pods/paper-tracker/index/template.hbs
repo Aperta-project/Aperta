@@ -3,6 +3,8 @@
   <p class="paper-tracker-paper-count">You have {{pluralize model.length "paper"}} in your tracker.</p>
   <br><br><br>
 
+  {{pagination-simple page=page totalCount=totalCount perPage=perPage setPage=(action "setPage")}}
+
   {{#sortable-table class="paper-tracker-table"
                     content=model
                     sortProperty="submittedAt" as |table|}}

@@ -65,7 +65,10 @@
         {{/if}}
         <div id="paper-metadata-tasks">
           {{#each model.sortedMetadataTasks as |task|}}
-            {{card-preview task=task version1=selectedVersion1 version2=selectedVersion2 action="viewCard"}}
+            {{card-preview task=task
+                           action="viewCard"
+                           version1=selectedVersion1
+                           version2=selectedVersion2}}
           {{/each}}
         </div>
       </div>

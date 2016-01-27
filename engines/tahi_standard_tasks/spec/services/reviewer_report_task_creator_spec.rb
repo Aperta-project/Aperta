@@ -76,4 +76,12 @@ describe ReviewerReportTaskCreator do
     subject.process
     expect(paper.tasks_for_type("TahiStandardTasks::ReviewerReportTask").first.participants).to match_array([assignee])
   end
+
+  context 'when assigning a new reviewer' do
+    it 'sends the welcome email' do
+      expect(TahiStandardTasks::ReviewerMailer).to \
+        receive_message_chain('delay.welcome_reviewer')
+      subject.process
+    end
+  end
 end

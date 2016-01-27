@@ -4,6 +4,19 @@ describe Paper do
   let(:paper) { FactoryGirl.create :paper }
   let(:user) { FactoryGirl.create :user }
 
+  describe 'validations' do
+    let(:paper) { FactoryGirl.build :paper }
+
+    it 'is valid' do
+      expect(paper.valid?).to be(true)
+    end
+
+    it 'is not valid without a title' do
+      paper.title = nil
+      expect(paper.valid?).to be(false)
+    end
+  end
+
   context "#create" do
     it "also create Decision" do
       expect(paper.decisions.length).to eq 1
@@ -626,24 +639,6 @@ describe Paper do
   end
 
   describe "#display_title" do
-    context "title and short_title are nil" do
-      # user has not provided a title and is expecting ihat to extract one,
-      # but ihat could not find one
-      let(:paper) { FactoryGirl.build(:paper, title: nil) }
-
-      context "with sanitization" do
-        it "is an empty string" do
-          expect(paper.display_title).to eq("")
-        end
-      end
-
-      context "without sanitization" do
-        it "is an empty string" do
-          expect(paper.display_title(sanitized: false)).to eq("")
-        end
-      end
-    end
-
     context "title is present, short title is nil" do
       let(:paper) { FactoryGirl.build(:paper, title: '<b>my long paper</b>') }
 
@@ -656,28 +651,6 @@ describe Paper do
       context "without sanitization" do
         it "is is unsanitized title" do
           expect(paper.display_title(sanitized: false)).to eq("<b>my long paper</b>")
-        end
-      end
-    end
-
-    context "title is nil, short title is present" do
-      let(:paper) do
-        FactoryGirl.create(
-          :paper,
-          :with_short_title,
-          short_title: '<b>my paper</b>',
-          title: nil)
-      end
-
-      context "with sanitization" do
-        it "it is sanitized title" do
-          expect(paper.display_title).to eq("my paper")
-        end
-      end
-
-      context "without sanitization" do
-        it "is is unsanitized title" do
-          expect(paper.display_title(sanitized: false)).to eq("<b>my paper</b>")
         end
       end
     end

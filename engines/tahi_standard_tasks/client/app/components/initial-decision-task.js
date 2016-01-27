@@ -3,7 +3,6 @@ import TaskComponent from 'tahi/pods/components/task-base/component';
 
 const { computed } = Ember;
 const {
-  alias,
   and,
   empty,
   equal,
@@ -14,37 +13,35 @@ const {
 
 export default TaskComponent.extend({
   restless: Ember.inject.service(),
-  initialDecision: alias('task.paper.decisions.firstObject'),
-  isSavingData: alias('initialDecision.isSaving'),
-  paper: alias('task.paper'),
+  isSavingData: false,
   isTaskCompleted: equal('task.completed', true),
   isTaskUncompleted: not('isTaskCompleted'),
   publishable: and('isPaperInitiallySubmitted', 'isTaskUncompleted'),
   nonPublishable: not('publishable'),
   hasNoLetter: empty('initialDecision.letter'),
   hasNoVerdict: none('initialDecision.verdict'),
-  isPaperInitiallySubmitted: equal('paper.publishingState',
+  isPaperInitiallySubmitted: equal('task.paper.publishingState',
                                    'initially_submitted'),
 
   cannotRegisterDecision: or('hasNoLetter',
                              'hasNoVerdict',
                              'isTaskCompleted'),
 
-  verdict: computed('initialDecision.verdict', function() {
-    if (this.get('initialDecision.verdict')) {
-      return this.get('initialDecision.verdict').replace(/_/g, ' ');
-    }
+  initialDecision: computed('task.paper.decisions.[]', function() {
+    return this.get('task.paper.decisions').findBy('revisionNumber', 0);
   }),
 
   actions: {
     registerDecision() {
-      const path = '/api/initial_decision/' + this.get('task.id');
-
+      this.set('isSavingData', true);
       this.get('initialDecision').save().then(() => {
+        const path = `/api/initial_decision/${this.get('task.id')}`;
         return this.get('restless').post(path);
       }).then(() => {
         this.set('task.completed', true);
-        this.get('task').save();
+        return this.get('task').save();
+      }).then(() => {
+        this.set('isSavingData', false);
       });
     },
 

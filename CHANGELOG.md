@@ -12,12 +12,15 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Email notifications on discussion forum posts and participations
 - Discussion Notifications displayed when user is added as participant
 - Ability to upload multiple Related Manuscripts to indicate what information has been published elsewhere
+- Reviewers get a welcome email when accepting an invitation to review a manuscript
+- Paper Tracker pagination
 
 ### Changed
 - NestedQuestions have unique identifiers
 - Revamped the Supporting Information task.
 - Figures use non-expiring resource proxy urls
 - Additional Information card uses standard file uploader
+- Broken link to docx download fixed after major/minor version creation (docx files are now duplicated on S3)
 
 ### Deprecated
 -

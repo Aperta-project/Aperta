@@ -1,157 +1,5 @@
 
 ---
-assignments:
-  columns:
-  - id
-  - user_id
-  - role_id
-  - assigned_to_id
-  - assigned_to_type
-  - created_at
-  - updated_at
-  records: 
-  - - '1'
-    - '1'
-    - '1'
-    - '1'
-    - User
-    - '2016-01-19 15:41:48.799621'
-    - '2016-01-19 15:41:48.799621'
-  - - '2'
-    - '2'
-    - '1'
-    - '2'
-    - User
-    - '2016-01-19 15:41:48.804467'
-    - '2016-01-19 15:41:48.804467'
-  - - '3'
-    - '4'
-    - '1'
-    - '4'
-    - User
-    - '2016-01-19 15:41:48.806594'
-    - '2016-01-19 15:41:48.806594'
-  - - '4'
-    - '5'
-    - '1'
-    - '5'
-    - User
-    - '2016-01-19 15:41:48.808529'
-    - '2016-01-19 15:41:48.808529'
-  - - '5'
-    - '6'
-    - '1'
-    - '6'
-    - User
-    - '2016-01-19 15:41:48.817779'
-    - '2016-01-19 15:41:48.817779'
-  - - '6'
-    - '7'
-    - '1'
-    - '7'
-    - User
-    - '2016-01-19 15:41:48.819795'
-    - '2016-01-19 15:41:48.819795'
-  - - '7'
-    - '8'
-    - '1'
-    - '8'
-    - User
-    - '2016-01-19 15:41:48.821669'
-    - '2016-01-19 15:41:48.821669'
-  - - '8'
-    - '9'
-    - '1'
-    - '9'
-    - User
-    - '2016-01-19 15:41:48.823446'
-    - '2016-01-19 15:41:48.823446'
-  - - '9'
-    - '10'
-    - '1'
-    - '10'
-    - User
-    - '2016-01-19 15:41:48.825343'
-    - '2016-01-19 15:41:48.825343'
-  - - '10'
-    - '11'
-    - '1'
-    - '11'
-    - User
-    - '2016-01-19 15:41:48.827059'
-    - '2016-01-19 15:41:48.827059'
-  - - '11'
-    - '12'
-    - '1'
-    - '12'
-    - User
-    - '2016-01-19 15:41:48.828822'
-    - '2016-01-19 15:41:48.828822'
-  - - '12'
-    - '13'
-    - '1'
-    - '13'
-    - User
-    - '2016-01-19 15:41:48.830623'
-    - '2016-01-19 15:41:48.830623'
-  - - '13'
-    - '3'
-    - '1'
-    - '3'
-    - User
-    - '2016-01-19 15:41:48.832302'
-    - '2016-01-19 15:41:48.832302'
-  - - '14'
-    - '3'
-    - '2'
-    - '1'
-    - Paper
-    - '2016-01-26 21:39:21.391883'
-    - '2016-01-26 21:39:21.391883'
-  - - '15'
-    - '3'
-    - '2'
-    - '2'
-    - Paper
-    - '2016-01-26 21:39:21.416958'
-    - '2016-01-26 21:39:21.416958'
-  - - '16'
-    - '3'
-    - '2'
-    - '3'
-    - Paper
-    - '2016-01-26 21:39:21.432084'
-    - '2016-01-26 21:39:21.432084'
-  - - '17'
-    - '3'
-    - '2'
-    - '4'
-    - Paper
-    - '2016-01-26 21:39:21.453823'
-    - '2016-01-26 21:39:21.453823'
-  - - '18'
-    - '7'
-    - '2'
-    - '8'
-    - Paper
-    - '2016-01-26 21:39:21.474906'
-    - '2016-01-26 21:39:21.474906'
-  - - '19'
-    - '7'
-    - '2'
-    - '9'
-    - Paper
-    - '2016-01-26 21:39:21.505274'
-    - '2016-01-26 21:39:21.505274'
-  - - '20'
-    - '1'
-    - '2'
-    - '10'
-    - Paper
-    - '2016-01-26 21:39:21.537627'
-    - '2016-01-26 21:39:21.537627'
-
----
 nested_question_answers:
   columns:
   - id
@@ -1614,6 +1462,81 @@ nested_question_answers:
     - '10'
 
 ---
+tahi_standard_tasks_reviewer_recommendations:
+  columns:
+  - id
+  - reviewer_recommendations_task_id
+  - first_name
+  - last_name
+  - middle_initial
+  - email
+  - department
+  - title
+  - affiliation
+  - recommend_or_oppose
+  - reason
+  - created_at
+  - updated_at
+  - ringgold_id
+  records: 
+  - - '2'
+    - '34'
+    - Candy
+    - Canderson
+    - ''
+    - candy@example.com
+    - Department of Thinking
+    - Thinker
+    - Adelphi University
+    - 
+    - 
+    - '2015-11-02 13:41:37.871138'
+    - '2015-11-02 13:42:13.77282'
+    - '3479'
+  - - '3'
+    - '34'
+    - Dennis
+    - Anger
+    - ''
+    - dennis@example.com
+    - Department of Pessisism
+    - Pessimist
+    - Air University
+    - 
+    - 
+    - '2015-11-02 13:43:20.530731'
+    - '2015-11-02 13:43:20.530731'
+    - '53427'
+  - - '4'
+    - '55'
+    - Shelley
+    - Reviewer
+    - ''
+    - shelley@example.com
+    - Department of Critiquography
+    - Critiquer
+    - Adams State College Bookstore
+    - 
+    - 
+    - '2015-11-02 14:12:53.204262'
+    - '2015-11-02 14:12:53.204262'
+    - '295612'
+  - - '5'
+    - '76'
+    - Ronald
+    - McReviewer
+    - ''
+    - ronald@example.com
+    - Department of Zoology
+    - Zoo Director
+    - Adler Graduate School
+    - 
+    - 
+    - '2015-11-02 15:07:41.253665'
+    - '2015-11-02 15:07:41.253665'
+    - '32835'
+
+---
 papers:
   columns:
   - id
@@ -1805,6 +1728,214 @@ papers:
     - 
 
 ---
+assignments:
+  columns:
+  - id
+  - user_id
+  - role_id
+  - assigned_to_id
+  - assigned_to_type
+  - created_at
+  - updated_at
+  records: 
+  - - '1'
+    - '1'
+    - '1'
+    - '1'
+    - User
+    - '2016-01-19 15:41:48.799621'
+    - '2016-01-19 15:41:48.799621'
+  - - '2'
+    - '2'
+    - '1'
+    - '2'
+    - User
+    - '2016-01-19 15:41:48.804467'
+    - '2016-01-19 15:41:48.804467'
+  - - '3'
+    - '4'
+    - '1'
+    - '4'
+    - User
+    - '2016-01-19 15:41:48.806594'
+    - '2016-01-19 15:41:48.806594'
+  - - '4'
+    - '5'
+    - '1'
+    - '5'
+    - User
+    - '2016-01-19 15:41:48.808529'
+    - '2016-01-19 15:41:48.808529'
+  - - '5'
+    - '6'
+    - '1'
+    - '6'
+    - User
+    - '2016-01-19 15:41:48.817779'
+    - '2016-01-19 15:41:48.817779'
+  - - '6'
+    - '7'
+    - '1'
+    - '7'
+    - User
+    - '2016-01-19 15:41:48.819795'
+    - '2016-01-19 15:41:48.819795'
+  - - '7'
+    - '8'
+    - '1'
+    - '8'
+    - User
+    - '2016-01-19 15:41:48.821669'
+    - '2016-01-19 15:41:48.821669'
+  - - '8'
+    - '9'
+    - '1'
+    - '9'
+    - User
+    - '2016-01-19 15:41:48.823446'
+    - '2016-01-19 15:41:48.823446'
+  - - '9'
+    - '10'
+    - '1'
+    - '10'
+    - User
+    - '2016-01-19 15:41:48.825343'
+    - '2016-01-19 15:41:48.825343'
+  - - '10'
+    - '11'
+    - '1'
+    - '11'
+    - User
+    - '2016-01-19 15:41:48.827059'
+    - '2016-01-19 15:41:48.827059'
+  - - '11'
+    - '12'
+    - '1'
+    - '12'
+    - User
+    - '2016-01-19 15:41:48.828822'
+    - '2016-01-19 15:41:48.828822'
+  - - '12'
+    - '13'
+    - '1'
+    - '13'
+    - User
+    - '2016-01-19 15:41:48.830623'
+    - '2016-01-19 15:41:48.830623'
+  - - '13'
+    - '3'
+    - '1'
+    - '3'
+    - User
+    - '2016-01-19 15:41:48.832302'
+    - '2016-01-19 15:41:48.832302'
+  - - '14'
+    - '3'
+    - '2'
+    - '1'
+    - Paper
+    - '2016-01-26 21:39:21.391883'
+    - '2016-01-26 21:39:21.391883'
+  - - '15'
+    - '3'
+    - '2'
+    - '2'
+    - Paper
+    - '2016-01-26 21:39:21.416958'
+    - '2016-01-26 21:39:21.416958'
+  - - '16'
+    - '3'
+    - '2'
+    - '3'
+    - Paper
+    - '2016-01-26 21:39:21.432084'
+    - '2016-01-26 21:39:21.432084'
+  - - '17'
+    - '3'
+    - '2'
+    - '4'
+    - Paper
+    - '2016-01-26 21:39:21.453823'
+    - '2016-01-26 21:39:21.453823'
+  - - '18'
+    - '7'
+    - '2'
+    - '8'
+    - Paper
+    - '2016-01-26 21:39:21.474906'
+    - '2016-01-26 21:39:21.474906'
+  - - '19'
+    - '7'
+    - '2'
+    - '9'
+    - Paper
+    - '2016-01-26 21:39:21.505274'
+    - '2016-01-26 21:39:21.505274'
+  - - '20'
+    - '1'
+    - '2'
+    - '10'
+    - Paper
+    - '2016-01-26 21:39:21.537627'
+    - '2016-01-26 21:39:21.537627'
+  - - '21'
+    - '3'
+    - '5'
+    - '1'
+    - Paper
+    - '2016-01-27 23:53:58.387742'
+    - '2016-01-27 23:53:58.387742'
+  - - '22'
+    - '3'
+    - '5'
+    - '2'
+    - Paper
+    - '2016-01-27 23:53:58.408029'
+    - '2016-01-27 23:53:58.408029'
+  - - '23'
+    - '3'
+    - '5'
+    - '3'
+    - Paper
+    - '2016-01-27 23:53:58.424491'
+    - '2016-01-27 23:53:58.424491'
+  - - '24'
+    - '3'
+    - '5'
+    - '4'
+    - Paper
+    - '2016-01-27 23:53:58.446364'
+    - '2016-01-27 23:53:58.446364'
+  - - '25'
+    - '7'
+    - '5'
+    - '8'
+    - Paper
+    - '2016-01-27 23:53:58.466443'
+    - '2016-01-27 23:53:58.466443'
+  - - '26'
+    - '7'
+    - '5'
+    - '9'
+    - Paper
+    - '2016-01-27 23:53:58.482356'
+    - '2016-01-27 23:53:58.482356'
+  - - '27'
+    - '1'
+    - '5'
+    - '10'
+    - Paper
+    - '2016-01-27 23:53:58.493709'
+    - '2016-01-27 23:53:58.493709'
+  - - '28'
+    - '1'
+    - '4'
+    - '1'
+    - Journal
+    - '2016-01-27 23:53:58.55943'
+    - '2016-01-27 23:53:58.55943'
+
+---
 permissions_roles:
   columns:
   - id
@@ -1838,6 +1969,31 @@ permissions_roles:
     - '3'
     - '2016-01-26 19:43:53.054149'
     - '2016-01-26 19:43:53.054149'
+  - - '6'
+    - '4'
+    - '2'
+    - '2016-01-27 23:53:58.244965'
+    - '2016-01-27 23:53:58.244965'
+  - - '7'
+    - '5'
+    - '4'
+    - '2016-01-27 23:53:58.294551'
+    - '2016-01-27 23:53:58.294551'
+  - - '8'
+    - '6'
+    - '4'
+    - '2016-01-27 23:53:58.306457'
+    - '2016-01-27 23:53:58.306457'
+  - - '9'
+    - '3'
+    - '4'
+    - '2016-01-27 23:53:58.313798'
+    - '2016-01-27 23:53:58.313798'
+  - - '10'
+    - '2'
+    - '4'
+    - '2016-01-27 23:53:58.320618'
+    - '2016-01-27 23:53:58.320618'
 
 ---
 phase_templates:
@@ -2133,6 +2289,27 @@ roles:
     - true
     - '2016-01-26 19:43:53.005087'
     - '2016-01-26 22:16:13.25792'
+  - - '4'
+    - Staff Admin
+    - 
+    - false
+    - false
+    - '2016-01-27 23:53:58.263042'
+    - '2016-01-27 23:53:58.263042'
+  - - '5'
+    - Author
+    - '1'
+    - false
+    - false
+    - '2016-01-27 23:53:58.35486'
+    - '2016-01-27 23:53:58.35486'
+  - - '6'
+    - Reviewer
+    - '1'
+    - false
+    - false
+    - '2016-01-27 23:53:58.358666'
+    - '2016-01-27 23:53:58.358666'
 
 ---
 question_attachments:
@@ -2170,81 +2347,6 @@ question_attachments:
     - '2015-11-02 15:12:01.338942'
     - '2016-01-21 17:58:45.060737'
     - 9a83d979f72b3e973a01637015fbbd4c4d855461f3e60bcd
-
----
-tahi_standard_tasks_reviewer_recommendations:
-  columns:
-  - id
-  - reviewer_recommendations_task_id
-  - first_name
-  - last_name
-  - middle_initial
-  - email
-  - department
-  - title
-  - affiliation
-  - recommend_or_oppose
-  - reason
-  - created_at
-  - updated_at
-  - ringgold_id
-  records: 
-  - - '2'
-    - '34'
-    - Candy
-    - Canderson
-    - ''
-    - candy@example.com
-    - Department of Thinking
-    - Thinker
-    - Adelphi University
-    - 
-    - 
-    - '2015-11-02 13:41:37.871138'
-    - '2015-11-02 13:42:13.77282'
-    - '3479'
-  - - '3'
-    - '34'
-    - Dennis
-    - Anger
-    - ''
-    - dennis@example.com
-    - Department of Pessisism
-    - Pessimist
-    - Air University
-    - 
-    - 
-    - '2015-11-02 13:43:20.530731'
-    - '2015-11-02 13:43:20.530731'
-    - '53427'
-  - - '4'
-    - '55'
-    - Shelley
-    - Reviewer
-    - ''
-    - shelley@example.com
-    - Department of Critiquography
-    - Critiquer
-    - Adams State College Bookstore
-    - 
-    - 
-    - '2015-11-02 14:12:53.204262'
-    - '2015-11-02 14:12:53.204262'
-    - '295612'
-  - - '5'
-    - '76'
-    - Ronald
-    - McReviewer
-    - ''
-    - ronald@example.com
-    - Department of Zoology
-    - Zoo Director
-    - Adler Graduate School
-    - 
-    - 
-    - '2015-11-02 15:07:41.253665'
-    - '2015-11-02 15:07:41.253665'
-    - '32835'
 
 ---
 versioned_texts:
@@ -3169,6 +3271,21 @@ permission_states_permissions:
     - '1'
     - '2016-01-26 19:43:52.986776'
     - '2016-01-26 19:43:52.986776'
+  - - '4'
+    - '4'
+    - '1'
+    - '2016-01-27 23:53:58.236673'
+    - '2016-01-27 23:53:58.236673'
+  - - '5'
+    - '5'
+    - '1'
+    - '2016-01-27 23:53:58.284776'
+    - '2016-01-27 23:53:58.284776'
+  - - '6'
+    - '6'
+    - '1'
+    - '2016-01-27 23:53:58.303191'
+    - '2016-01-27 23:53:58.303191'
 
 ---
 permissions:
@@ -3194,6 +3311,21 @@ permissions:
     - Paper
     - '2016-01-26 19:43:52.969497'
     - '2016-01-26 19:43:52.969497'
+  - - '4'
+    - view
+    - PlosBilling::BillingTask
+    - '2016-01-27 23:53:58.224484'
+    - '2016-01-27 23:53:58.224484'
+  - - '5'
+    - administer
+    - Journal
+    - '2016-01-27 23:53:58.27475'
+    - '2016-01-27 23:53:58.27475'
+  - - '6'
+    - manage_workflow
+    - Paper
+    - '2016-01-27 23:53:58.299409'
+    - '2016-01-27 23:53:58.299409'
 
 ---
 supporting_information_files:
@@ -3247,171 +3379,6 @@ supporting_information_files:
     - 
     - 
     - 
-
----
-journal_task_types:
-  columns:
-  - id
-  - journal_id
-  - title
-  - old_role
-  - kind
-  records: 
-  - - '1'
-    - '1'
-    - Ad-hoc
-    - user
-    - Task
-  - - '2'
-    - '1'
-    - Authors
-    - author
-    - TahiStandardTasks::AuthorsTask
-  - - '3'
-    - '1'
-    - Competing Interests
-    - author
-    - TahiStandardTasks::CompetingInterestsTask
-  - - '4'
-    - '1'
-    - Cover Letter
-    - author
-    - TahiStandardTasks::CoverLetterTask
-  - - '5'
-    - '1'
-    - Data Availability
-    - author
-    - TahiStandardTasks::DataAvailabilityTask
-  - - '6'
-    - '1'
-    - Ethics Statement
-    - author
-    - TahiStandardTasks::EthicsTask
-  - - '7'
-    - '1'
-    - Figures
-    - author
-    - TahiStandardTasks::FigureTask
-  - - '8'
-    - '1'
-    - Financial Disclosure
-    - author
-    - TahiStandardTasks::FinancialDisclosureTask
-  - - '9'
-    - '1'
-    - Assign Admin
-    - admin
-    - TahiStandardTasks::PaperAdminTask
-  - - '10'
-    - '1'
-    - Invite Editor
-    - admin
-    - TahiStandardTasks::PaperEditorTask
-  - - '11'
-    - '1'
-    - Invite Reviewers
-    - custom
-    - TahiStandardTasks::PaperReviewerTask
-  - - '12'
-    - '1'
-    - Production Metadata
-    - editor
-    - TahiStandardTasks::ProductionMetadataTask
-  - - '13'
-    - '1'
-    - Additional Information
-    - author
-    - TahiStandardTasks::PublishingRelatedQuestionsTask
-  - - '14'
-    - '1'
-    - Register Decision
-    - editor
-    - TahiStandardTasks::RegisterDecisionTask
-  - - '15'
-    - '1'
-    - Reporting Guidelines
-    - author
-    - TahiStandardTasks::ReportingGuidelinesTask
-  - - '16'
-    - '1'
-    - Reviewer Candidates
-    - author
-    - TahiStandardTasks::ReviewerRecommendationsTask
-  - - '17'
-    - '1'
-    - Reviewer Report
-    - reviewer
-    - TahiStandardTasks::ReviewerReportTask
-  - - '18'
-    - '1'
-    - Revise Task
-    - author
-    - TahiStandardTasks::ReviseTask
-  - - '19'
-    - '1'
-    - Supporting Info
-    - author
-    - TahiStandardTasks::SupportingInformationTask
-  - - '20'
-    - '1'
-    - New Taxon
-    - author
-    - TahiStandardTasks::TaxonTask
-  - - '21'
-    - '1'
-    - Upload Manuscript
-    - author
-    - TahiStandardTasks::UploadManuscriptTask
-  - - '22'
-    - '1'
-    - Changes For Author
-    - author
-    - PlosBioTechCheck::ChangesForAuthorTask
-  - - '23'
-    - '1'
-    - Final Tech Check
-    - custom
-    - PlosBioTechCheck::FinalTechCheckTask
-  - - '24'
-    - '1'
-    - Initial Tech Check
-    - custom
-    - PlosBioTechCheck::InitialTechCheckTask
-  - - '25'
-    - '1'
-    - Revision Tech Check
-    - custom
-    - PlosBioTechCheck::RevisionTechCheckTask
-  - - '26'
-    - '1'
-    - Editor Discussion
-    - editor
-    - PlosBioInternalReview::EditorsDiscussionTask
-  - - '27'
-    - '1'
-    - Billing
-    - author
-    - PlosBilling::BillingTask
-  - - '28'
-    - '1'
-    - Assign Team
-    - admin
-    - Tahi::AssignTeam::AssignTeamTask
-  - - '29'
-    - '1'
-    - Test Task
-    - user
-    - InvitableTask
-  - - '30'
-    - '1'
-    - Initial Decision
-    - editor
-    - TahiStandardTasks::InitialDecisionTask
-  - - '31'
-    - '1'
-    - Send to Apex
-    - editor
-    - TahiStandardTasks::SendToApexTask
 
 ---
 affiliations:
@@ -7172,8 +7139,8 @@ users:
   - created_at
   - updated_at
   - username
-  - site_admin
   - avatar
+  - site_admin
   - em_guid
   records: 
   - - '1'
@@ -7192,8 +7159,8 @@ users:
     - '2015-10-29 19:36:19.627844'
     - '2016-01-26 21:41:00.625502'
     - admin
-    - false
     - 
+    - false
     - 
   - - '2'
     - Steve
@@ -7211,8 +7178,8 @@ users:
     - '2015-10-29 20:07:28.341906'
     - '2015-10-29 20:53:17.020456'
     - site_admin
-    - true
     - 
+    - true
     - 
   - - '3'
     - Arthur
@@ -7230,8 +7197,8 @@ users:
     - '2015-10-29 20:11:22.705226'
     - '2016-01-19 15:39:48.056016'
     - author
-    - false
     - 
+    - false
     - 
   - - '4'
     - Edith
@@ -7249,8 +7216,8 @@ users:
     - '2015-11-02 15:15:33.644561'
     - '2015-11-02 15:15:33.650134'
     - editor
-    - false
     - 
+    - false
     - 
   - - '5'
     - Reviewer
@@ -7268,8 +7235,8 @@ users:
     - '2015-11-03 19:54:58.406233'
     - '2015-11-03 19:54:58.406233'
     - reviewer
-    - false
     - 
+    - false
     - 
   - - '6'
     - FlowManager
@@ -7287,8 +7254,8 @@ users:
     - '2015-11-03 19:54:58.518834'
     - '2015-11-03 19:54:58.518834'
     - flow_manager
-    - false
     - 
+    - false
     - 
   - - '7'
     - Jeffrey SA
@@ -7306,8 +7273,8 @@ users:
     - '2015-11-03 19:54:58.612514'
     - '2015-11-03 19:54:58.612514'
     - jgray_sa
-    - true
     - 
+    - true
     - 
   - - '8'
     - Jeffrey OA
@@ -7325,8 +7292,8 @@ users:
     - '2015-11-03 19:54:58.707548'
     - '2015-11-03 19:54:58.707548'
     - jgray_oa
-    - false
     - 
+    - false
     - 
   - - '9'
     - Jeffrey FM
@@ -7344,8 +7311,8 @@ users:
     - '2015-11-03 19:54:58.791185'
     - '2015-11-03 19:54:58.791185'
     - jgray_flowmgr
-    - false
     - 
+    - false
     - 
   - - '10'
     - Jeffrey AMM
@@ -7363,8 +7330,8 @@ users:
     - '2015-11-03 19:54:58.877324'
     - '2015-11-03 19:54:58.877324'
     - jgray_editor
-    - false
     - 
+    - false
     - 
   - - '11'
     - Jeffrey MM
@@ -7382,8 +7349,8 @@ users:
     - '2015-11-03 19:54:58.961825'
     - '2015-11-03 19:54:58.961825'
     - jgray_assoceditor
-    - false
     - 
+    - false
     - 
   - - '12'
     - Jeffrey RV
@@ -7401,8 +7368,8 @@ users:
     - '2015-11-03 19:54:59.052702'
     - '2015-11-03 19:54:59.052702'
     - jgray_reviewer
-    - false
     - 
+    - false
     - 
   - - '13'
     - Jeffrey AU
@@ -7420,8 +7387,8 @@ users:
     - '2015-11-03 19:54:59.135286'
     - '2015-11-03 19:54:59.135286'
     - jgray_author
-    - false
     - 
+    - false
     - 
 
 ---
@@ -7486,7 +7453,7 @@ tasks:
     - author
     - "[]"
     - '4'
-    - 
+    - '4'
     - '1'
   - - '5'
     - Competing Interests
@@ -7738,7 +7705,7 @@ tasks:
     - author
     - "[]"
     - '4'
-    - 
+    - '4'
     - '2'
   - - '26'
     - Competing Interests
@@ -8003,7 +7970,7 @@ tasks:
     - author
     - "[]"
     - '4'
-    - 
+    - '4'
     - '3'
   - - '47'
     - Competing Interests
@@ -8262,7 +8229,7 @@ tasks:
     - author
     - "[]"
     - '4'
-    - 
+    - '4'
     - '4'
   - - '68'
     - Competing Interests
@@ -8524,7 +8491,7 @@ tasks:
     - author
     - "[]"
     - '4'
-    - 
+    - '4'
     - '8'
   - - '89'
     - Competing Interests
@@ -8776,7 +8743,7 @@ tasks:
     - author
     - "[]"
     - '4'
-    - 
+    - '4'
     - '9'
   - - '110'
     - Competing Interests
@@ -9028,7 +8995,7 @@ tasks:
     - author
     - "[]"
     - '4'
-    - 
+    - '4'
     - '10'
   - - '131'
     - Competing Interests
@@ -9234,3 +9201,232 @@ tasks:
     - '1'
     - 
     - '10'
+
+---
+journal_task_types:
+  columns:
+  - id
+  - journal_id
+  - title
+  - old_role
+  - kind
+  - required_permission_action
+  - required_permission_applies_to
+  records: 
+  - - '1'
+    - '1'
+    - Ad-hoc
+    - user
+    - Task
+    - 
+    - 
+  - - '2'
+    - '1'
+    - Authors
+    - author
+    - TahiStandardTasks::AuthorsTask
+    - 
+    - 
+  - - '3'
+    - '1'
+    - Competing Interests
+    - author
+    - TahiStandardTasks::CompetingInterestsTask
+    - 
+    - 
+  - - '4'
+    - '1'
+    - Cover Letter
+    - author
+    - TahiStandardTasks::CoverLetterTask
+    - 
+    - 
+  - - '5'
+    - '1'
+    - Data Availability
+    - author
+    - TahiStandardTasks::DataAvailabilityTask
+    - 
+    - 
+  - - '6'
+    - '1'
+    - Ethics Statement
+    - author
+    - TahiStandardTasks::EthicsTask
+    - 
+    - 
+  - - '7'
+    - '1'
+    - Figures
+    - author
+    - TahiStandardTasks::FigureTask
+    - 
+    - 
+  - - '8'
+    - '1'
+    - Financial Disclosure
+    - author
+    - TahiStandardTasks::FinancialDisclosureTask
+    - 
+    - 
+  - - '9'
+    - '1'
+    - Assign Admin
+    - admin
+    - TahiStandardTasks::PaperAdminTask
+    - 
+    - 
+  - - '10'
+    - '1'
+    - Invite Editor
+    - admin
+    - TahiStandardTasks::PaperEditorTask
+    - 
+    - 
+  - - '11'
+    - '1'
+    - Invite Reviewers
+    - custom
+    - TahiStandardTasks::PaperReviewerTask
+    - 
+    - 
+  - - '12'
+    - '1'
+    - Production Metadata
+    - editor
+    - TahiStandardTasks::ProductionMetadataTask
+    - 
+    - 
+  - - '13'
+    - '1'
+    - Additional Information
+    - author
+    - TahiStandardTasks::PublishingRelatedQuestionsTask
+    - 
+    - 
+  - - '14'
+    - '1'
+    - Register Decision
+    - editor
+    - TahiStandardTasks::RegisterDecisionTask
+    - 
+    - 
+  - - '15'
+    - '1'
+    - Reporting Guidelines
+    - author
+    - TahiStandardTasks::ReportingGuidelinesTask
+    - 
+    - 
+  - - '16'
+    - '1'
+    - Reviewer Candidates
+    - author
+    - TahiStandardTasks::ReviewerRecommendationsTask
+    - 
+    - 
+  - - '17'
+    - '1'
+    - Reviewer Report
+    - reviewer
+    - TahiStandardTasks::ReviewerReportTask
+    - 
+    - 
+  - - '18'
+    - '1'
+    - Revise Task
+    - author
+    - TahiStandardTasks::ReviseTask
+    - 
+    - 
+  - - '19'
+    - '1'
+    - Supporting Info
+    - author
+    - TahiStandardTasks::SupportingInformationTask
+    - 
+    - 
+  - - '20'
+    - '1'
+    - New Taxon
+    - author
+    - TahiStandardTasks::TaxonTask
+    - 
+    - 
+  - - '21'
+    - '1'
+    - Upload Manuscript
+    - author
+    - TahiStandardTasks::UploadManuscriptTask
+    - 
+    - 
+  - - '22'
+    - '1'
+    - Changes For Author
+    - author
+    - PlosBioTechCheck::ChangesForAuthorTask
+    - 
+    - 
+  - - '23'
+    - '1'
+    - Final Tech Check
+    - custom
+    - PlosBioTechCheck::FinalTechCheckTask
+    - 
+    - 
+  - - '24'
+    - '1'
+    - Initial Tech Check
+    - custom
+    - PlosBioTechCheck::InitialTechCheckTask
+    - 
+    - 
+  - - '25'
+    - '1'
+    - Revision Tech Check
+    - custom
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - 
+    - 
+  - - '26'
+    - '1'
+    - Editor Discussion
+    - editor
+    - PlosBioInternalReview::EditorsDiscussionTask
+    - 
+    - 
+  - - '27'
+    - '1'
+    - Billing
+    - author
+    - PlosBilling::BillingTask
+    - view
+    - PlosBilling::BillingTask
+  - - '28'
+    - '1'
+    - Assign Team
+    - admin
+    - Tahi::AssignTeam::AssignTeamTask
+    - 
+    - 
+  - - '29'
+    - '1'
+    - Test Task
+    - user
+    - InvitableTask
+    - 
+    - 
+  - - '30'
+    - '1'
+    - Initial Decision
+    - editor
+    - TahiStandardTasks::InitialDecisionTask
+    - 
+    - 
+  - - '31'
+    - '1'
+    - Send to Apex
+    - editor
+    - TahiStandardTasks::SendToApexTask
+    - 
+    - 

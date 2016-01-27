@@ -3,8 +3,7 @@ namespace :data do
   task update_journal_task_types: :environment do
     Rails.application.config.eager_load_namespaces.each(&:eager_load!)
     Journal.all.each do |journal|
-      JournalServices::CreateDefaultTaskTypes.call(journal,
-                                                   override_existing: true)
+      JournalServices::CreateDefaultTaskTypes.call(journal)
     end
   end
 

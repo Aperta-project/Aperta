@@ -102,7 +102,11 @@ module Authorizations
 
     def load_authorized_objects
       # Find all assignments for the current user states eligible based on the requested permission and class
-      perm_q = { 'permissions.applies_to' => @klass.base_class.name }
+      eligible_applies_to = (
+        [@klass.base_class.name].concat @klass.subclasses.map(&:name)
+      ).uniq
+
+      perm_q = { 'permissions.applies_to' => eligible_applies_to }
       assignments = user.assignments.includes(permissions: :states).where(perm_q)
 
       # If @participations_only is true then we want to use specific fields

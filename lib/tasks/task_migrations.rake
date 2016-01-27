@@ -8,11 +8,7 @@ namespace :data do
     end
 
     Rails.logger.info 'Updating existing tasks title and old_role attributes...'
-    all_registered_task_types = TaskType.types
-    all_registered_task_types.each do |klass, defaults|
-      klass.constantize.update_all old_role: defaults[:default_role],
-                                   title: defaults[:default_title]
-    end
+    JournalServices::UpdateDefaultTasks.call
   end
 
   desc "Destroy and recreate manuscript manager templates"

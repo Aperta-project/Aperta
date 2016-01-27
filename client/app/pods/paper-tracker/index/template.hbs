@@ -2,11 +2,11 @@
   <h2 class="paper-tracker-message">Hello, {{currentUser.firstName}}!</h2>
   <p class="paper-tracker-paper-count">You have {{pluralize model.length "paper"}} in your tracker.</p>
 
-  <div class='row' id='search-controls'>
-    <div class='col-sm-6' id='search-col'>
+  <div class='row' class='search-controls' id='search-controls-top'>
+    <div class='col-sm-6 search-col'>
       <div class="navbar-form">
         <div class="input-group">
-          <div id='clearSearch' class="input-group-addon" {{action 'clearSearch'}}><i class="fa fa-remove"></i></div>
+          <div id='clear-search' class="input-group-addon" {{action 'clearSearch'}}><i class="fa fa-remove"></i></div>
 
           {{input type="text"
                   class="form-control"
@@ -16,7 +16,7 @@
                   placeholder="Title keyword or Manuscript ID number"}}
 
           <div class="input-group-btn">
-            <button class="btn btn-primary" {{action 'search'}}><i class="fa fa-search"></i></button>
+            <button id='search' class="btn btn-primary" {{action 'search'}}><i class="fa fa-search"></i></button>
           </div>
         </div>
       </div>
@@ -68,10 +68,10 @@
 
   </table>
 
-  <div class='row' id='search-controls'>
-    <div class='col-sm-6' id='search-col'> </div>
+  <div class='row' class='search-controls'>
+    <div class='col-sm-6 search-col'> </div>
 
-    <div class='col-sm-6' class='pagination-col'>
+    <div class='col-sm-6 pagination-col'>
       {{pagination-simple page=page totalCount=totalCount perPage=perPage setPage=(action "setPage")}}
     </div>
   </div>

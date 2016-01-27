@@ -15,14 +15,14 @@
   span { font-weight: bold; }
 }
 
-#search-controls {
+.search-controls {
   #query-input {
     width: 300px;
   }
   padding: 10px 0;
   background-color: #f9f9f9;
   margin: 50px 0 20px;
-  #clearSearch {
+  #clear-search {
     cursor: pointer;
   }
   .pagination-col {

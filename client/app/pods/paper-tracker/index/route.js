@@ -20,13 +20,12 @@ export default Ember.Route.extend({
 
   model(params) {
     return this.get('restless').get('/api/paper_tracker', params).then((data)=> {
+      console.log(data);
       this.prepMetaData(data);
       this.store.pushPayload('paper', data);
       let paperIds = data.papers.mapBy('id');
-      return this.store.all('paper').filter(function(p) {
-        if(paperIds.contains( parseInt(p.get('id')) )) {
-          return p;
-        }
+      return _.collect(paperIds, (id) => {
+        return this.store.find('paper', id);
       });
     });
   },

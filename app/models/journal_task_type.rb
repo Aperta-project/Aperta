@@ -4,10 +4,11 @@ class JournalTaskType < ActiveRecord::Base
   validates :old_role, :title, presence: true
 
   def required_permission
-    return if required_permission_action && required_permission_applies_to
+    return if required_permission_action.blank? ||
+      required_permission_applies_to.blank?
     Permission.where(
       action: required_permission_action,
       applies_to: required_permission_applies_to
-    ).first
+    ).first!
   end
 end

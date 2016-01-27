@@ -43,7 +43,7 @@ class ReviewerReportTaskCreator
     # New Role
     Assignment.where(
       user: assignee,
-      role: Role.where(name: 'Reviewer').first,
+      role: paper.journal.roles.reviewer,
       assigned_to: paper
     ).first_or_create!
   end

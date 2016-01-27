@@ -10,26 +10,12 @@ class TaskRoleUpdater
 
   def update
     paper.transaction do
-      assign_paper_role!
-      assign_related_tasks
+      # only one `assignee` can exist on `paper` with the same `paper_role_name`
+      paper.paper_roles.for_old_role(paper_role_name).destroy_all
+      paper.paper_roles.for_old_role(paper_role_name).create!(user: assignee)
+      paper.tasks.for_old_role(paper_role_name).incomplete.each do |task|
+        ParticipationFactory.create(task: task, assignee: assignee)
+      end
     end
-  end
-
-  private
-
-  def assign_related_tasks
-    related_tasks.each do |task|
-      ParticipationFactory.create(task: task, assignee: assignee)
-    end
-  end
-
-  # only one `assignee` can exist on `paper` with the same `paper_role_name`
-  def assign_paper_role!
-    paper.paper_roles.for_old_role(paper_role_name).destroy_all
-    paper.paper_roles.for_old_role(paper_role_name).create!(user: assignee)
-  end
-
-  def related_tasks
-    paper.tasks.for_old_role(paper_role_name).incomplete
   end
 end

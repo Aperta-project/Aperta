@@ -2,7 +2,12 @@ class Role < ActiveRecord::Base
   belongs_to :journal
   has_and_belongs_to_many :permissions
 
+  AUTHOR_ROLE = 'Author'
   REVIEWER_ROLE = 'Reviewer'
+
+  def self.author
+    where(name: AUTHOR_ROLE).first_or_create!
+  end
 
   def self.reviewer
     where(name: REVIEWER_ROLE).first_or_create!

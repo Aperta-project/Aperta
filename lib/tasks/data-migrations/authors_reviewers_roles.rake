@@ -3,31 +3,24 @@ namespace :data do
     namespace :author_reviewers do
       desc 'Migrates the Author and Reviewer old_roles to the new roles'
       task make_into_new_roles: :environment do
-        # Add Author and Reviewer role
-        Role.ensure_exists('Author', participates_in: [Task]) do |role|
-          role.ensure_permission_exists(:view, applies_to: 'Task')
-          role.ensure_permission_exists(:view, applies_to: 'Paper')
-        end
-        Role.ensure_exists('Reviewer', participates_in: [Task]) do |role|
-          role.ensure_permission_exists(:view, applies_to: 'Task')
-          role.ensure_permission_exists(:view, applies_to: 'Paper')
-        end
-
         # Assign every Author and Reviewer role
         Paper.all.each do |paper|
-          puts "Assigning author for #{paper.id}"
+          journal = paper.journal
+          author_role = journal.roles.author
+          reviewer_role = journal.roles.reviewer
+          user = paper.creator
+          puts "Assigning #{user.full_name} <#{user.email}> as #{author_role.name} on paper ##{paper.id} on '#{journal.name}' Journal"
           Assignment.where(
             user: paper.creator,
-            role: Role.where(name: 'Author').first,
+            role: author_role,
             assigned_to: paper
           ).first_or_create!
           paper.paper_roles.each do |paper_role|
             if paper_role.old_role == 'reviewer'
-              puts "Assigning reviewer
-                #{paper_role.user.first_name} to #{paper.id}"
+              puts "Assigning #{user.full_name} <#{user.email}> as #{reviewer_role.name} on paper ##{paper.id} on '#{journal.name}' Journal"
               Assignment.where(
                 user: paper_role.user,
-                role: Role.where(name: 'Reviewer').first,
+                role: reviewer_role,
                 assigned_to: paper
               ).first_or_create!
             else
@@ -39,7 +32,7 @@ namespace :data do
 
       desc 'Sets billing task permission on JournalTaskType'
       task make_billing_only_for_author: :environment do
-        permission = Permission.find_by(applies_to: 'PlosBilling::BillingTask')
+        permission = Permission.find_by!(applies_to: 'PlosBilling::BillingTask')
         PlosBilling::BillingTask.update_all(
           required_permission_id: permission.id
         )

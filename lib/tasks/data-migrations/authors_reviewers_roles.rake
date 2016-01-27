@@ -36,6 +36,15 @@ namespace :data do
           end
         end
       end
+
+      desc 'Sets billing task permission on JournalTaskType'
+      task make_billing_only_for_author: :environment do
+        PlosBilling::BillingTask.update_all(
+          required_permission_id: Permission.where(applies_to: 'PlosBilling::BillingTask').first!)
+        billing = JournalTaskType.where(kind: "PlosBilling::BillingTask").first
+        billing.update_column(:required_permission_action, 'view')
+        billing.update_column(:required_permission_applies_to, 'PlosBilling::BillingTask')
+      end
     end
   end
 end

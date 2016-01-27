@@ -13,6 +13,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Discussion Notifications displayed when user is added as participant
 - Ability to upload multiple Related Manuscripts to indicate what information has been published elsewhere
 - Reviewers get a welcome email when accepting an invitation to review a manuscript
+- Paper Tracker pagination
 
 ### Changed
 - NestedQuestions have unique identifiers

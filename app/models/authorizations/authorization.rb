@@ -25,14 +25,14 @@ module Authorizations
       @via = via
     end
 
-    # 'assignment_to' is what a person is assigned to for this authorization \
-    # to apply. It should be the name or (STI name) of the class
+    # 'assignment_to' returns the class that this authorization instance
+    # requires an assignment for.
     def assignment_to
       @assignment_to.constantize
     end
 
-    # 'authorizes' is what this authorization is authorizing. It should be \
-    # the name or (STI name) of the ActiveRecord class
+    # 'authorizes' returns the class that this authorization instance
+    # authorizes.
     def authorizes
       @authorizes.constantize
     end

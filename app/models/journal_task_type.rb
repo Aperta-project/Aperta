@@ -7,6 +7,7 @@ class JournalTaskType < ActiveRecord::Base
     return if required_permission_action && required_permission_applies_to
     Permission.where(
       action: required_permission_action,
-      applies_to: required_permission_applies_to)
+      applies_to: required_permission_applies_to
+    ).first
   end
 end

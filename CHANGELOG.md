@@ -18,6 +18,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Revamped the Supporting Information task.
 - Figures use non-expiring resource proxy urls
 - Additional Information card uses standard file uploader
+- Broken link to docx download fixed after major/minor version creation (docx files are now duplicated on S3)
 
 ### Deprecated
 -

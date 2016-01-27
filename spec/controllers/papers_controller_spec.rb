@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe PapersController do
+  include AuthorizationSpecHelper
   let(:permitted_params) do
     [
       :short_title,
@@ -48,6 +49,7 @@ describe PapersController do
   end
 
   before do
+    Authorizations::Configuration.reload
     sign_in user
   end
 

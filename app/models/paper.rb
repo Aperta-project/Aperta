@@ -309,30 +309,6 @@ class Paper < ActiveRecord::Base
     define_method relation.to_sym do
       assigned_users.merge(PaperRole.send(relation))
     end
-
-    ###
-    # :method: <old_role>?
-    # Public: Checks whether the given user belongs to the old_role.
-    #
-    # user - The user record
-    #
-    # Examples
-    #
-    #   editor?(user)        # => true
-    #   collaborator?(user)  # => false
-    #
-    # Returns true if the user has the old_role on the paper, false otherwise.
-    #
-    # Signature
-    #
-    #   #<old_role>?(arg)
-    #
-    # old_role - A old_role name on the paper
-    #
-    define_method("#{relation.singularize}?".to_sym) do |user|
-      return false unless user.present?
-      send(relation).exists?(user.id)
-    end
   end
 
   # overload this method for use in emails

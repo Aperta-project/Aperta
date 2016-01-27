@@ -1,14 +1,13 @@
 namespace :data do
-  desc 'Update or Create JournalTaskType records for all journals'
+  desc 'Update or Create JournalTaskType and Tasks records for all journals'
   task update_journal_task_types: :environment do
     Rails.application.config.eager_load_namespaces.each(&:eager_load!)
+    Rails.logger.info 'Updating JournalTaskType records for all journals...'
     Journal.all.each do |journal|
       JournalServices::CreateDefaultTaskTypes.call(journal)
     end
-  end
 
-  desc 'Update all existing tasks attributes old_role and title with defaults'
-  task update_existing_tasks_defaults: :environment do
+    Rails.logger.info 'Updating existing tasks title and old_role attributes...'
     all_registered_task_types = TaskType.types
     all_registered_task_types.each do |klass, defaults|
       klass.constantize.update_all old_role: defaults[:default_role],

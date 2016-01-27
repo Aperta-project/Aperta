@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160121151634) do
+ActiveRecord::Schema.define(version: 20160127001441) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -229,6 +229,8 @@ ActiveRecord::Schema.define(version: 20160121151634) do
     t.string  "title"
     t.string  "old_role"
     t.string  "kind"
+    t.string  "required_permission_action"
+    t.string  "required_permission_applies_to"
   end
 
   add_index "journal_task_types", ["journal_id"], name: "index_journal_task_types_on_journal_id", using: :btree

@@ -78,7 +78,7 @@ class User < ActiveRecord::Base
     if site_admin?
       Journal.all
     else
-      journals.merge(OldRole.can_administer_journal)
+      filter_authorized(:administer, Journal.all).objects
     end
   end
 

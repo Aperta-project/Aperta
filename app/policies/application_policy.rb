@@ -129,7 +129,7 @@ class ApplicationPolicy
   end
 
   def can_administer_journal?(journal)
-    super_admin? || administered_journals.exists?(journal.id)
+    super_admin? || administered_journals.include?(journal)
   end
 
   def author_of_paper?(paper)

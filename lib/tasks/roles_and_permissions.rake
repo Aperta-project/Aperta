@@ -19,5 +19,12 @@ namespace :'roles-and-permissions' do
       role.ensure_permission_exists(:view, applies_to: 'Task')
       role.ensure_permission_exists(:view, applies_to: 'Paper')
     end
+
+    Role.ensure_exists('Staff Admin') do |role|
+      role.ensure_permission_exists(:administer, applies_to: 'Journal')
+      role.ensure_permission_exists(:manage_workflow, applies_to: 'Paper')
+      role.ensure_permission_exists(:view, applies_to: 'Paper')
+      role.ensure_permission_exists(:view, applies_to: 'Task')
+    end
   end
 end

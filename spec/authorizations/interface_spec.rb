@@ -66,6 +66,14 @@ DESC
       assign_user user, to: paper, with_role: role_for_viewing
     end
 
+    it 'returns false when the user does not have permission to the object' do
+      expect(user.can?(:view, journal)).to be(false)
+    end
+
+    it 'returns true when the user has permission to the object' do
+      expect(user.can?(:view, paper)).to be(true)
+    end
+
     it 'can filter authorized models when given a class (least performant)' do
       expect(filtered.objects).to eq([paper])
     end

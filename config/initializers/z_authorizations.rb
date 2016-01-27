@@ -4,4 +4,10 @@ Authorizations.configure do |config|
     authorizes: Task,
     via: :tasks
   )
+
+  config.assignment_to(
+    Journal,
+    authorizes: Paper,
+    via: :papers
+  )
 end

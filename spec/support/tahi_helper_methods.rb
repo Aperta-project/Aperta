@@ -47,14 +47,24 @@ module TahiHelperMethods
   end
 
   def assign_journal_role(journal, user, role_or_type)
+    # New Roles
+    if role_or_type == :admin
+      Assignment.where(
+        user: user,
+        role: Role.where(name: 'Staff Admin').first,
+        assigned_to: journal
+      ).first_or_create!
+    end
+
+    # Old Roles
     if role_or_type.is_a?(OldRole)
       old_role = role_or_type
+      UserRole.create!(user: user, old_role: old_role).old_role
     else
       old_role = journal.old_roles.where(kind: role_or_type).first
       old_role ||= FactoryGirl.create(:old_role, role_or_type, journal: journal)
+      UserRole.create!(user: user, old_role: old_role).old_role
     end
-    UserRole.create!(user: user, old_role: old_role)
-    old_role
   end
 
   def with_aws_cassette(name)

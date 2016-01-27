@@ -12,6 +12,7 @@ namespace :'roles-and-permissions' do
     Role.ensure_exists('Author', participates_in: [Task, Paper]) do |role|
       role.ensure_permission_exists(:view, applies_to: 'Task')
       role.ensure_permission_exists(:view, applies_to: 'Paper')
+      role.ensure_permission_exists(:view, applies_to: 'PlosBilling::BillingTask')
     end
 
     Role.ensure_exists('Reviewer', participates_in: [Task, Paper]) do |role|

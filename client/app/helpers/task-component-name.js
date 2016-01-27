@@ -1,6 +1,6 @@
 import Ember from 'ember';
+import taskComponentName from 'tahi/lib/task-component-name';
 
 export default Ember.Helper.helper(function(params) {
-  if(params[0] === 'Task') { return 'ad-hoc-task'; }
-  return Ember.String.dasherize(params[0]);
+  return taskComponentName(params[0]);
 });

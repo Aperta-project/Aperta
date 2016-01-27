@@ -1,11 +1,13 @@
-<label class="task-completed-section">
+<label class="task-completed-section" {{action "toggleTaskCompletion"}}>
   {{#if isEditable}}
-    {{check-box class="task-completed" name="task_completed" checked=task.completed action="save"}}
+    {{#if task.completed}}
+      <button class="task-completed" name="task_completed">Make changes to this task</button>
+    {{else}}
+      <button class="task-completed" name="task_completed">I am done with this task</button>
+    {{/if}}
   {{else}}
     {{check-box class="task-completed" name="task_completed" checked=task.completed disabled="disabled"}}
   {{/if}}
-
-  I am finished with this task
 
   {{#if validationErrors.completed}}
     {{error-message message=validationErrors.completed}}

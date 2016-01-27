@@ -1,40 +1,44 @@
 import Ember from 'ember';
 import NestedQuestionProxy from 'tahi/models/nested-question-proxy';
-var NestedQuestionComponent;
 
-NestedQuestionComponent = Ember.Component.extend({
+const { Component, computed } = Ember;
+
+export default Component.extend({
   displayQuestionText: true,
   displayQuestionAsPlaceholder: false,
   helpText: null,
   inputClassNames: null,
   disabled: false,
-  noResponseText: "[No response]",
+  noResponseText: '[No response]',
   additionalData: null,
 
   placeholder: null,
-  textClassNames: ["question-text"],
+  textClassNames: ['question-text'],
 
-  init: function(){
-    this._super.apply(this, arguments);
+  init(){
+    this._super(...arguments);
 
-    let ident = this.get('ident');
-    let model = this.get('model');
-    Ember.assert(`Expecting to be given an ident or a model, but wasn't given either`, (ident || model));
+    const ident = this.get('ident');
+    const model = this.get('model');
+    Ember.assert(
+      'Expecting to be given an ident or a model, but wasn\'t given either',
+      (ident || model)
+    );
 
-    let owner = this.get('owner');
-    Ember.assert(`Expecting to be given a owner, but wasn't`, owner);
+    const owner = this.get('owner');
+    Ember.assert('Expecting to be given a owner, but wasn\'t', owner);
 
-    let decision = this.get('decision');
+    const decision = this.get('decision');
 
-    let question = owner.findQuestion(ident);
-    Ember.assert(`Expecting to find question matching ident '${ident}' but didn't. Make
-      sure the owner's questions are loaded before this initializer is
-      called.`,
+    const question = owner.findQuestion(ident);
+    Ember.assert(`Expecting to find question matching ident '${ident}' but
+      didn't. Make sure the owner's questions are loaded before this
+      initializer is called.`,
       question
     );
-    
-    if (this.get("additionalData")) {
-      question.set("additionalData", this.get("additionalData"));
+
+    if (this.get('additionalData')) {
+      question.set('additionalData', this.get('additionalData'));
     }
 
     this.set('model', NestedQuestionProxy.create({
@@ -49,31 +53,41 @@ NestedQuestionComponent = Ember.Component.extend({
     }
   },
 
-  ident: Ember.computed('model', function(){
+  ident: computed('model', function(){
     return this.get('model.ident');
   }),
 
-  questionText: Ember.computed("model", function(){
-    return this.get("model.text");
+  questionText: computed('model', function(){
+    return this.get('model.text');
   }),
 
-  shouldDisplayQuestionText: Ember.computed('model', 'displayQuestionText', function(){
-    return this.get('model') && this.get('displayQuestionText');
+  shouldDisplayQuestionText: computed('model', 'displayQuestionText',
+    function(){
+      return this.get('model') && this.get('displayQuestionText');
+    }
+  ),
+
+  errorPresent: computed('errors', function() {
+    return !Ember.isEmpty(this.get('errors'));
   }),
 
-  change: function(){
+  change(){
     this.save();
   },
 
-  save: function(){
+  save(){
+    if(this.attrs.validate) {
+      this.attrs.validate(this.get('ident'), this.get('model.answer.value'));
+    }
+
     Ember.run.debounce(this, this._saveAnswer, this.get('model.answer'), 200);
     return false;
   },
 
-  _saveAnswer: function(answer){
-    if(answer.get("owner.isNew")){
+  _saveAnswer(answer){
+    if(answer.get('owner.isNew')){
       // no-op
-    } else if(answer.get("wasAnswered")){
+    } else if(answer.get('wasAnswered')){
       answer.save();
     } else {
       answer.destroyRecord();
@@ -81,10 +95,8 @@ NestedQuestionComponent = Ember.Component.extend({
   },
 
   actions: {
-    save: function() {
+    save() {
       this.save();
     }
   }
 });
-
-export default NestedQuestionComponent;

@@ -1,29 +1,12 @@
-{{#if readonly}}
+<label class="{{labelClassNames}}">
+  {{check-box name=ident checked=isChecked disabled=disabled action="checkboxToggled"}}
   {{#if shouldDisplayQuestionText}}
     <p class="{{textClassNames}}">{{{questionText}}}</p>
-  {{/if}}
-
-  {{#if model.answer.value}}
-    <div class="answer-text">{{model.answer.value}}</div>
   {{else}}
-    <div class="answer-text no-answer">{{noResponseText}}</div>
+    {{yield textYieldValue}}
   {{/if}}
+</label>
 
-  {{#if hasBlock}}
-    <div class="additional-data">{{yield additionalDataYieldValue}}</div>
-  {{/if}}
-
-{{else}}
-  <label class="{{labelClassNames}}">
-    {{check-box name=ident checked=isChecked disabled=disabled action="checkboxToggled"}}
-    {{#if shouldDisplayQuestionText}}
-      <p class="{{textClassNames}}">{{{questionText}}}</p>
-    {{else}}
-      {{yield textYieldValue}}
-    {{/if}}
-  </label>
-
-  {{#if hasBlock}}
-    <div class="additional-data">{{yield additionalDataYieldValue}}</div>
-  {{/if}}
+{{#if hasBlock}}
+  <div class="additional-data">{{yield additionalDataYieldValue}}</div>
 {{/if}}

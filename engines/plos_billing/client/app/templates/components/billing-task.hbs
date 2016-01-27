@@ -5,116 +5,134 @@
 
   <div class="flex-form">
     <div class="flex-group flex-group--divider">
-      <div class="flex-element {{if validationErrors.firstName "error"}}">
+      <div class="flex-element">
         {{nested-question-input ident="plos_billing--first_name"
-                         owner=task
-                         placeholder="Jane"
-                         disabled=isSubmissionTaskNotEditable
-                         textClassNames="text-field-title"}}
+                                owner=task
+                                placeholder="Jane"
+                                disabled=fieldsDisabled
+                                textClassNames="text-field-title required"
+                                validate=(action "validateQuestion")
+                                errors=validationErrors.plos_billing--first_name}}
       </div>
 
-      <div class="flex-element {{if validationErrors.lastName "error"}}">
+      <div class="flex-element">
         {{nested-question-input ident="plos_billing--last_name"
-                         owner=task
-                         placeholder="Goodall"
-                         disabled=isSubmissionTaskNotEditable
-                         textClassNames="text-field-title"}}
+                                owner=task
+                                placeholder="Goodall"
+                                disabled=fieldsDisabled
+                                textClassNames="text-field-title required"
+                                validate=(action "validateQuestion")
+                                errors=validationErrors.plos_billing--last_name}}
       </div>
     </div>
 
     <div class="flex-group">
-      <div class="flex-element {{if validationErrors.title "error"}}">
+      <div class="flex-element">
         {{nested-question-input ident="plos_billing--title"
-                         owner=task
-                         placeholder="World's Foremost Expert on Chimpanzees"
-                         disabled=isSubmissionTaskNotEditable
-                         textClassNames="text-field-title"}}
+                                owner=task
+                                placeholder="World's Foremost Expert on Chimpanzees"
+                                disabled=fieldsDisabled
+                                textClassNames="text-field-title"}}
       </div>
 
-      <div class="flex-element {{if validationErrors.department "error"}}">
+      <div class="flex-element">
         {{nested-question-input ident="plos_billing--department"
-                         owner=task
-                         placeholder="Primatology"
-                         disabled=isSubmissionTaskNotEditable
-                         textClassNames="text-field-title"}}
+                                owner=task
+                                placeholder="Primatology"
+                                disabled=fieldsDisabled
+                                textClassNames="text-field-title required"
+                                validate=(action "validateQuestion")
+                                errors=validationErrors.plos_billing--department}}
       </div>
     </div>
 
     <div class="flex-group flex-group--divider">
-      <div class="flex-element {{if validationErrors.affiliation "error"}}">
+      <div class="flex-element">
         {{institution-search value=affiliation1Proxy
                              institutionSelected="affiliation1Selected"
                              placeholder="Affiliation"
-                             disabled=isSubmissionTaskNotEditable}}
+                             disabled=fieldsDisabled
+                             validate=(action "validateQuestion")
+                             errors=validationErrors.plos_billing--affiliation1}}
       </div>
 
-      <div class="flex-element {{if validationErrors.secondaryAffiliation "error"}}">
+      <div class="flex-element">
         {{institution-search value=affiliation2Proxy
                              institutionSelected="affiliation2Selected"
                              placeholder="Secondary Affiliation (optional)"
-                             disabled=isSubmissionTaskNotEditable}}
+                             disabled=fieldsDisabled}}
       </div>
     </div>
 
     <div class="flex-group">
-      <div class="flex-element {{if validationErrors.phone "error"}}">
+      <div class="flex-element">
         {{nested-question-input ident="plos_billing--phone_number"
-                         owner=task
-                         placeholder="415-555-5555"
-                         disabled=isSubmissionTaskNotEditable
-                         textClassNames="text-field-title"}}
+                                owner=task
+                                placeholder="415-555-5555"
+                                disabled=fieldsDisabled
+                                textClassNames="text-field-title required"
+                                validate=(action "validateQuestion")
+                                errors=validationErrors.plos_billing--phone_number}}
 
       </div>
-      <div class="flex-element {{if validationErrors.email "error"}}">
+      <div class="flex-element">
         {{nested-question-input ident="plos_billing--email"
-                         owner=task
-                         placeholder="jane.goodll@science.com"
-                         disabled=isSubmissionTaskNotEditable
-                         textClassNames="text-field-title"}}
+                                owner=task
+                                placeholder="jane.goodll@science.com"
+                                disabled=fieldsDisabled
+                                textClassNames="text-field-title required"
+                                validate=(action "validateQuestion")
+                                errors=validationErrors.plos_billing--email}}
 
       </div>
     </div>
 
     <div class="flex-group">
-      <div class="flex-element {{if validationErrors.address1 "error"}}">
+      <div class="flex-element">
         {{nested-question-input ident="plos_billing--address1"
-                         owner=task
-                         placeholder="1581 Le Roy Ave"
-                         disabled=isSubmissionTaskNotEditable
-                         textClassNames="text-field-title"}}
+                                owner=task
+                                placeholder="1581 Le Roy Ave"
+                                disabled=fieldsDisabled
+                                textClassNames="text-field-title required"
+                                validate=(action "validateQuestion")
+                                errors=validationErrors.plos_billing--address1}}
       </div>
-      <div class="flex-element {{if validationErrors.address2 "error"}}">
+      <div class="flex-element">
         {{nested-question-input ident="plos_billing--address2"
-                         owner=task
-                         placeholder="Suite 3"
-                         disabled=isSubmissionTaskNotEditable
-                         textClassNames="text-field-title"}}
+                                owner=task
+                                placeholder="Suite 3"
+                                disabled=fieldsDisabled
+                                textClassNames="text-field-title"}}
       </div>
     </div>
 
     <div class="flex-group">
-      <div class="flex-element billing-payee-city {{if validationErrors.city "error"}}">
+      <div class="flex-element billing-payee-city">
         {{nested-question-input ident="plos_billing--city"
-                         owner=task
-                         placeholder="Berkeley"
-                         disabled=isSubmissionTaskNotEditable
-                         textClassNames="text-field-title"}}
+                                owner=task
+                                placeholder="Berkeley"
+                                disabled=fieldsDisabled
+                                textClassNames="text-field-title required"
+                                validate=(action "validateQuestion")
+                                errors=validationErrors.plos_billing--city}}
       </div>
 
       <div class="flex-group flex-element billing-payee-state-postal">
-        <div class="flex-element {{if validationErrors.state "error"}}">
+        <div class="flex-element">
           {{nested-question-input ident="plos_billing--state"
-                           owner=task
-                           placeholder="State or Province"
-                           disabled=isSubmissionTaskNotEditable
-                           textClassNames="text-field-title"}}
+                                  owner=task
+                                  placeholder="State or Province"
+                                  disabled=fieldsDisabled
+                                  textClassNames="text-field-title"}}
         </div>
-        <div class="flex-element {{if validationErrors.postal_code "error"}}">
+        <div class="flex-element">
           {{nested-question-input ident="plos_billing--postal_code"
-                           owner=task
-                           placeholder="94708"
-                           disabled=isSubmissionTaskNotEditable
-                           textClassNames="text-field-title"}}
+                                  owner=task
+                                  placeholder="94708"
+                                  disabled=fieldsDisabled
+                                  textClassNames="text-field-title required"
+                                  validate=(action "validateQuestion")
+                                  errors=validationErrors.plos_billing--postal_code}}
         </div>
       </div>
     </div>
@@ -126,7 +144,7 @@
                           placeholder="Select Your Country"
                           displayQuestionText=false
                           source=formattedCountries
-                          enable=isSubmissionTaskEditable}}
+                          enable=(not fieldsDisabled)}}
       {{/if}}
       {{#if countries.loading}}
         {{progress-spinner visible=true size="mini"}}
@@ -155,13 +173,13 @@
 
       <div class="form-group author-bump payment-method {{if validationErrors.affiliation "error"}}">
         {{nested-question-select ident="plos_billing--payment_method"
-                          owner=task
-                          displayQuestionText=false
-                          class="affiliation-field"
-                          selectionSelected="paymentMethodSelected"
-                          source=responses
-                          width="100%"
-                          enable=isSubmissionTaskEditable}}
+                                 owner=task
+                                 displayQuestionText=false
+                                 class="affiliation-field"
+                                 selectionSelected="paymentMethodSelected"
+                                 source=responses
+                                 width="100%"
+                                 enable=(not fieldsDisabled)}}
       </div>
     </li>
 

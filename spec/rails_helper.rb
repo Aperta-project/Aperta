@@ -20,8 +20,6 @@ require_relative 'support/pages/page'
 require_relative 'support/pages/overlay'
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
-Tahi.service_log = Logger.new "#{::Rails.root}/log/service.log"
-
 # Load support & factories for installed Tahi plugins
 TahiPlugin.plugins.each do |gem|
   Dir[File.join(gem.full_gem_path, 'spec', 'support', '**', '*.rb')].each { |f| require f }

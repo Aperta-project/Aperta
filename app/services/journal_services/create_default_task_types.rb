@@ -1,7 +1,7 @@
 module JournalServices
   class CreateDefaultTaskTypes < BaseService
     def self.call(journal)
-      Tahi.service_log.info "Processing journal: #{journal.name}..."
+      Rails.logger.info "Processing journal: #{journal.name}..."
       with_noisy_errors do
         TaskType.types.each do |klass, details|
           jtt = journal.journal_task_types.find_or_initialize_by(kind: klass)

@@ -15,6 +15,6 @@ class JournalTaskType < ActiveRecord::Base
   private
 
   def log_created_record
-    Tahi.service_log.info "Created #{kind} JournalTaskType"
+    Rails.logger.info "Created #{kind} JournalTaskType"
   end
 end

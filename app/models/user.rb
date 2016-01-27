@@ -14,7 +14,12 @@ class User < ActiveRecord::Base
   has_many :papers, -> { uniq }, through: :paper_roles
   has_many :user_roles, inverse_of: :user
   has_many :old_roles, through: :user_roles
-  has_many :journals, ->{ uniq }, through: :old_roles
+  has_many(
+    :journals_thru_old_roles,
+    ->{ uniq },
+    through: :old_roles,
+    source: :journal
+  )
   has_many :user_flows, inverse_of: :user, dependent: :destroy
   has_many :flows, through: :user_flows
   has_many :comments, inverse_of: :commenter, foreign_key: 'commenter_id'
@@ -74,16 +79,21 @@ class User < ActiveRecord::Base
     administered_journals.include? journal
   end
 
-  def administered_journals
+  # Returns the journals that this user administers. If you pass a block
+  # this will yield an ActiveRecord::Relation query object that you can
+  # use to put further conditions on.
+  def administered_journals(&blk)
+    journal_query = Journal.all
+    journal_query = blk.call(journal_query) if block_given?
     if site_admin?
-      Journal.all
+      journal_query
     else
-      filter_authorized(:administer, Journal.all).objects
+      filter_authorized(:administer, journal_query).objects
     end
   end
 
   def accessible_journals
-    site_admin? ? Journal.all : journals
+    site_admin? ? Journal.all : journals_thru_old_roles
   end
 
   def invitations_from_latest_revision

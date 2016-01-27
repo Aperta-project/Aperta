@@ -29,6 +29,8 @@ feature "Journal Administration", js: true do
       before { assign_journal_role(journal, user, :admin) }
 
       scenario "shows assigned journal" do
+        # refresh page since we've assigned the journal role
+        visit "/"
         expect(admin_page).to have_journal_names(journal.name)
       end
     end

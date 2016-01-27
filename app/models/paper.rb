@@ -56,7 +56,6 @@ class Paper < ActiveRecord::Base
                     tsearch: {dictionary: "english"} # stems
                   }
 
-  delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
   delegate :major_version, :minor_version, to: :latest_version, allow_nil: true
 
   def manuscript_id

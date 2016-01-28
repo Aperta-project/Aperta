@@ -39,6 +39,7 @@ module Authorizations
       # we're looking for a specific object, e.g. Task.first got passed in
       elsif target.is_a?(ActiveRecord::Base)
         @klass = target.class
+        @target = @klass.where(id: target.id)
         @participations_only = false if @participations_only == :default
 
       # we're looking for a set of objects with a pre-existing query, e.g. Task.where(name: "Bar") got passed in

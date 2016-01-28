@@ -11,7 +11,8 @@ class TasksController < ApplicationController
   def index
     tasks = current_user.filter_authorized(
       :view,
-      paper.tasks.includes(:participations, :paper)
+      paper.tasks.includes(:participations, :paper),
+      participations_only: false
     ).objects
     respond_with tasks, each_serializer: TaskSerializer
   end

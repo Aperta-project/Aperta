@@ -23,6 +23,11 @@ class TaskFactory
   private
 
   def default_options
+    # Temporary fix for register tasks not being called on reload
+    unless TaskType.types[task_klass]
+      eval "#{task_klass.constantize}.register_task"
+    end
+
     {
       title: TaskType.types[task_klass].fetch(:default_title),
       old_role: TaskType.types[task_klass].fetch(:default_role)

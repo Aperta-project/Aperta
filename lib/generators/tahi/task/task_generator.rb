@@ -38,7 +38,7 @@ module Tahi
         run "ember generate tahi-task #{name} #{engine_path}"
       end
 
-      rake 'data:create_task_types'
+      rake 'data:update_journal_task_types'
     end
 
     private

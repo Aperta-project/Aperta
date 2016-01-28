@@ -10,7 +10,7 @@ Description:
     The tahi-task Ember blueprint is automatically invoked, and will generate
     all of the JavaScript files relevant to the task.
 
-    The data:create_task_types Rake task is automatically invoked, and will add
+    The data:update_journal_task_types Rake task is automatically invoked, and will add
     the new task to all journals.
 
 Example:

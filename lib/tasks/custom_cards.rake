@@ -31,7 +31,7 @@ namespace :tahi do
       end
 
       # tahi magic installer
-      sh "bundle exec rake data:create_task_types"
+      sh 'bundle exec rake data:update_journal_task_types'
     end
 
     # modify route

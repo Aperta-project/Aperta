@@ -35,8 +35,8 @@ module QueryLanguageParser
 
   def statement
     unit = expression | '('.r >> lazy { or_expr } << ')'
-    and_expr = boolean_join(unit, 'AND', :&)
-    or_expr = boolean_join(and_expr, 'OR', :|)
+    and_expr = boolean_join(unit, 'AND', :and)
+    or_expr = boolean_join(and_expr, 'OR', :or)
   end
 
   def add_statement(parser)

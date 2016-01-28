@@ -35,6 +35,14 @@ class JournalFactory
       role.ensure_permission_exists(:manage_workflow, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Task', states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: 'PlosBilling::BillingTask', states: ['*'])
+    end
+
+    Role.ensure_exists('Publishing Services and Production Staff', journal: @journal) do |role|
+      role.ensure_permission_exists(:manage_workflow, applies_to: 'Paper', states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: 'Paper', states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: 'Task', states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: 'PlosBilling::BillingTask', states: ['*'])
     end
   end
 end

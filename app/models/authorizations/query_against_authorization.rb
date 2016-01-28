@@ -93,7 +93,7 @@ module Authorizations
       if @target.class.column_names.include?('required_permission_id')
         field = "#{@target.class.table_name}.required_permission_id"
         assigned_permission_ids = assignments.flat_map(&:permissions).map(&:id)
-        query.where(
+        query = query.where(
           "#{field} IS NULL OR #{field} IN (:permission_ids)",
           permission_ids: assigned_permission_ids
         )

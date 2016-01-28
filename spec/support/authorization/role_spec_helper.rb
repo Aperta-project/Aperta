@@ -13,7 +13,7 @@ class RoleSpecHelper
   end
 
   def has_permission(action:, applies_to:)
-    @role.permissions << Permission.find_by_action_and_applies_to!(action, applies_to)
+    @role.permissions |= [Permission.find_by_action_and_applies_to!(action, applies_to)]
     @role
   end
 end

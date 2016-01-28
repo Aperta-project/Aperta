@@ -30,6 +30,7 @@ DESC
   before(:all) do
     Authorizations.reset_configuration
     AuthorizationModelsSpecHelper.create_db_tables
+    clear_roles_and_permissions
   end
 
   permissions do

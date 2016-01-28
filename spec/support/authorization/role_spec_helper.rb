@@ -7,7 +7,7 @@ class RoleSpecHelper
 
   def initialize(name, &blk)
     @name = name
-    @role = FactoryGirl.create(:role, name: name)
+    @role = Role.ensure_exists(name)
     instance_exec &blk if blk
     self
   end

@@ -2,6 +2,12 @@ require 'rails_helper'
 
 describe JournalFactory do
   describe '.create' do
+    include AuthorizationSpecHelper
+
+    before do
+      clear_roles_and_permissions
+    end
+
     it 'creates a new journal' do
       expect do
         JournalFactory.create(name: 'Journal of the Stars')

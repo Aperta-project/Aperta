@@ -7,13 +7,13 @@ class RoleSpecHelper
 
   def initialize(name, &blk)
     @name = name
-    @role = FactoryGirl.create(:role, name: name)
+    @role = Role.ensure_exists(name)
     instance_exec &blk if blk
     self
   end
 
   def has_permission(action:, applies_to:)
-    @role.permissions << Permission.find_by_action_and_applies_to!(action, applies_to)
+    @role.permissions |= [Permission.find_by_action_and_applies_to!(action, applies_to)]
     @role
   end
 end

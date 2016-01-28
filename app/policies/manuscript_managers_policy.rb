@@ -3,7 +3,10 @@ class ManuscriptManagersPolicy < ApplicationPolicy
   require_params :paper
 
   def can_manage_manuscript?
-    super_admin? || can_manage_all_manuscripts? || can_manage_this_manuscript?
+    super_admin? ||
+      current_user.can?(:manage_workflow, paper) ||
+      can_manage_all_manuscripts? ||
+      can_manage_this_manuscript?
   end
 
   alias_method :show?, :can_manage_manuscript?

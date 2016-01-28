@@ -90,11 +90,11 @@ module BenchmarkSuite
     end
 
     def big_journal
-      @big_journal ||= Journal.create! name: '80% paper journal'
+      @big_journal ||= JournalFactory.create(name: '80% paper journal')
     end
 
     def small_journal
-      @small_journal ||= Journal.create! name: '20% paper journal'
+      @small_journal ||= JournalFactory.create(name: '20% paper journal')
     end
 
     def journals

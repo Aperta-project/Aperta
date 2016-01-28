@@ -23,5 +23,9 @@ module Authorizations
     def reset_configuration
       Authorizations::Configuration.reset
     end
+
+    def reload_configuration
+      Authorizations::Configuration.reload
+    end
   end
 end

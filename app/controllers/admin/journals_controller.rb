@@ -5,9 +5,17 @@ class Admin::JournalsController < ApplicationController
   respond_to :json
 
   def index
-    journals = current_user.administered_journals
-      .includes(:journal_task_types, old_roles: :flows, manuscript_manager_templates: { phase_templates: { task_templates: :journal_task_type } })
-
+    journals = current_user.administered_journals do |journal_query|
+      journal_query.includes(
+        :journal_task_types,
+        old_roles: :flows,
+        manuscript_manager_templates: {
+          phase_templates: {
+            task_templates: :journal_task_type
+          }
+        }
+      )
+    end
     respond_with journals, each_serializer: AdminJournalSerializer, root: 'admin_journals'
   end
 
@@ -51,7 +59,7 @@ class Admin::JournalsController < ApplicationController
       if params[:id].present?
         Journal.find(params[:id])
       elsif params[:admin_journal].present?
-        Journal.new(journal_params)
+        JournalFactory.create(journal_params)
       end
     end
   end

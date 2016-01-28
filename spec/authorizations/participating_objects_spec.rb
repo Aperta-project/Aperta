@@ -21,7 +21,8 @@ DESC
   include AuthorizationSpecHelper
 
   let!(:user) { FactoryGirl.create(:user) }
-  let!(:paper) { Authorizations::FakePaper.create! }
+  let!(:journal) { Authorizations::FakeJournal.create! }
+  let!(:paper) { Authorizations::FakePaper.create!(fake_journal: journal) }
   let!(:task) { Authorizations::FakeTask.create!(fake_paper: paper) }
 
   before(:all) do
@@ -61,6 +62,11 @@ DESC
 
   before do
     Authorizations.configure do |config|
+      config.assignment_to(
+        Authorizations::FakeJournal,
+        authorizes: Authorizations::FakePaper,
+        via: :fake_papers
+      )
       config.assignment_to(
         Authorizations::FakePaper,
         authorizes: Authorizations::FakeTask,
@@ -114,8 +120,26 @@ DESC
       role_author.update! participates_in_fake_papers: false
     end
 
-    it 'grants them access' do
-      expect(user.can?(:view, paper)).to be(true)
+    context 'and the user is assigned directly to the target' do
+      before do
+        expect(user.assignments.where(assigned_to: paper).first).to be
+      end
+
+      it 'grants them access' do
+        expect(user.can?(:view, paper)).to be(true)
+      end
+    end
+
+    context 'and the user is not assigned directly to the target' do
+      before do
+        user.assignments.destroy_all
+        expect(user.assignments.where(assigned_to: paper).first).to_not be
+        assign_user user, to: journal, with_role: role_author
+      end
+
+      it 'grants them access' do
+        expect(user.can?(:view, paper)).to be(true)
+      end
     end
 
     context 'ActiveRecord::Base class passed in as target' do

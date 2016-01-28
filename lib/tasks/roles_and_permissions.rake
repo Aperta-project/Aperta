@@ -8,5 +8,12 @@ namespace :'roles-and-permissions' do
         states: ['*']
       )
     end
+
+    Journal.all.each do |journal|
+      # JournalFactory is used to set up new journals. Rather than
+      # duplicate logic just expose the step that ensures journals are
+      # set up baseline roles and permissions.
+      JournalFactory.ensure_default_roles_and_permissions_exist(journal)
+    end
   end
 end

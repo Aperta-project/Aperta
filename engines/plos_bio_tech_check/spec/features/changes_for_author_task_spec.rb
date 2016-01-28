@@ -2,7 +2,6 @@ require 'rails_helper'
 
 feature 'Changes For Author', js: true do
   let(:journal) { create :journal }
-  let(:admin) { create :user, site_admin: true }
   let(:author) { create :user }
   let(:paper) { create :paper, :submitted, journal: journal, creator: author }
   let(:task) { create :changes_for_author_task, paper: paper }
@@ -10,10 +9,10 @@ feature 'Changes For Author', js: true do
   let(:manuscript_page) { dashboard.view_submitted_paper paper }
 
   before do
-    assign_journal_role journal, admin, :admin
-    task.participants << admin
+    task.participants << author
+    assign_author_role(paper, author)
 
-    SignInPage.visit.sign_in admin
+    SignInPage.visit.sign_in author
   end
 
   scenario "paper is editable but not submittable" do

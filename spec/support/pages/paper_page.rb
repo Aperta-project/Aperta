@@ -57,7 +57,6 @@ class PaperPage < Page
 
   def click_contributors_link
     add_contributors_link.click
-    add_contributors_link.click
   end
 
   def contributors_link

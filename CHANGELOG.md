@@ -14,6 +14,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 - Ability to upload multiple Related Manuscripts to indicate what information has been published elsewhere
 - Reviewers get a welcome email when accepting an invitation to review a manuscript
 - Paper Tracker pagination
+- Paper Tracker pagination, title search, DOI search
 
 ### Changed
 - NestedQuestions have unique identifiers

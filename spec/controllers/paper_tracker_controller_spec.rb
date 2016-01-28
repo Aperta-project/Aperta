@@ -89,10 +89,96 @@ describe PaperTrackerController do
         end
       end
     end
+
+    context 'when search query (simple) is sent in params' do
+      it 'properly detects when its meant as a title,
+          returns nothing when no match' do
+        make_matchable_paper title: 'no can find'
+        get :index, format: :json, query: 'please find'
+        json = JSON.parse(response.body)
+        expect(Paper.count).to eq 1
+        expect(json['papers'].count).to eq 0
+      end
+
+      it 'properly detects when its meant as a title,
+          returns good match' do
+        make_matchable_paper title: 'tin roof blues'
+        get :index, format: :json, query: 'tin roof blues' # not fuzzy
+        json = JSON.parse(response.body)
+        expect(Paper.count).to eq 1
+        expect(json['papers'].count).to eq 1
+        expect(json['papers'].first['title']).to eq 'tin roof blues'
+      end
+
+      it 'allows title text to be fuzzy' do
+        make_matchable_paper title: 'making friends'
+        get :index, format: :json, query: 'friend make' # fuzzy
+        json = JSON.parse(response.body)
+        expect(Paper.count).to eq 1
+        expect(json['papers'].count).to eq 1
+        expect(json['papers'].first['title']).to eq 'making friends'
+      end
+
+      it 'properly detects when its meant as a DOI,
+          returns nothing when no match' do
+        make_matchable_paper(title: 'title 123', doi: '456')
+        get :index, format: :json, query: '123'
+        json = JSON.parse(response.body)
+        expect(Paper.count).to eq 1
+        expect(json['papers'].count).to eq 0
+      end
+
+      it 'properly detects when its meant as a DOI, results are good' do
+        make_matchable_paper(title: 'title 123', doi: '456')
+        get :index, format: :json, query: '456'
+        json = JSON.parse(response.body)
+        expect(Paper.count).to eq 1
+        expect(json['papers'].count).to eq 1
+        expect(json['papers'].first['manuscript_id']).to eq '456'
+      end
+
+      it 'respects pagination when there are more matches than per_page' do
+        (per_page + 1).times { make_matchable_paper(title: 'foo') }
+        get :index, format: :json, query: 'foo'
+        json = JSON.parse(response.body)
+        expect(Paper.count).to eq(per_page + 1)
+        expect(json['papers'].count).to eq per_page
+      end
+    end
+
+    context 'when order param is sent with request' do
+      it 'orders the results via orderBy' do
+        make_matchable_paper(title: 'aaa foo')
+        make_matchable_paper(title: 'bbb foo')
+        make_matchable_paper(title: 'aaa foo')
+        get :index, format: :json, query: 'foo', orderBy: :title
+        json = JSON.parse(response.body)
+        expect(Paper.count).to eq(3)
+        expect(json['papers'][0]['title']).to eq('aaa foo')
+        expect(json['papers'][1]['title']).to eq('aaa foo')
+        expect(json['papers'][2]['title']).to eq('bbb foo')
+      end
+
+      it 'orders the results by orderDir when sent' do
+        make_matchable_paper(title: 'aaa foo')
+        make_matchable_paper(title: 'bbb foo')
+        make_matchable_paper(title: 'aaa foo')
+        get :index,
+            format: :json,
+            query: 'foo',
+            orderBy: :title,
+            orderDir: :desc
+        json = JSON.parse(response.body)
+        expect(Paper.count).to eq(3)
+        expect(json['papers'][0]['title']).to eq('bbb foo')
+        expect(json['papers'][1]['title']).to eq('aaa foo')
+        expect(json['papers'][2]['title']).to eq('aaa foo')
+      end
+    end
   end
 
-  def make_matchable_paper
-    paper = FactoryGirl.create(:paper, :submitted)
+  def make_matchable_paper(attrs={})
+    paper = FactoryGirl.create(:paper, :submitted, attrs)
     assign_journal_role(paper.journal, user, :admin)
     paper
   end

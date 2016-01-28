@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  classNames: ['simple-pagination'],
   page: null,       // pass in
   totalCount: null, // pass in
   perPage: null,    // pass in
@@ -16,7 +17,8 @@ export default Ember.Component.extend({
   }),
 
   pagesUI: Ember.computed(function(){
-    if (this.get('totalCount') == 0) { return '?'; }
+    if (this.get('totalCount') == 0) { return '1'; }
+    if (!this.get('totalCount')) { return '?'; }
     return this.get('pages');
   }),
 

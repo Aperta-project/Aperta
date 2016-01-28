@@ -35,14 +35,14 @@ class InviteEditorCard(BaseCard):
     selector = self._get(self._email_selector)
     # click on the selector to open input box
     selector.find_element_by_tag_name('a').click()
-    time.sleep(1)
+    time.sleep(2)
     self._get(self._invite_input).send_keys(user['email'] + Keys.ENTER)
     self._get(self._invite_input).send_keys(Keys.ENTER)
-    time.sleep(1)
+    time.sleep(2)
     self._get(self._drop_down).find_element_by_tag_name('li').click()
-    time.sleep(1)
+    time.sleep(2)
     self._get(self._invite_editor_text).find_element_by_tag_name('button').click()
-    time.sleep(1)
+    time.sleep(2)
     self._get(self._send_invitation_button).click()
     #give some time to allow complete to check automatically,
     time.sleep(.5)

@@ -93,7 +93,6 @@ class MetadataVersioningTest(CommonTest):
     invite_editor_card = InviteEditorCard(self.getDriver())
     invite_editor_card.invite_editor(he_login)
     paper_viewer.logout()
-    import pdb; pdb.set_trace()
     # log as editor jgray_editor to accept invitation and accept initial submission
     dashboard_page = self.login(email=he_login['user'], password=login_valid_pw)
     dashboard_page.click_view_invitations()

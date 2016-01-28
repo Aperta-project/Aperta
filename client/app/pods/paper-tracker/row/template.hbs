@@ -6,11 +6,11 @@
   </td>
   <td class="paper-tracker-title-column">
     {{#link-to "paper.index" paper.id}}
-      {{{paper.displayTitle}}}
+      {{{paper.title}}}
     {{/link-to}}
   </td>
   <td class="paper-tracker-paper-id-column">
-    {{link-to paper.id "paper.index" paper.id}}
+    {{link-to paper.manuscript_id "paper.index" paper.id}}
   </td>
   <td class="paper-tracker-date-column">
     {{format-date paper.submittedAt}}<br>

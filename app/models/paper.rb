@@ -5,6 +5,7 @@ class Paper < ActiveRecord::Base
   include PaperTaskFinders
   include AASM
   include ActionView::Helpers::SanitizeHelper
+  include PgSearch
 
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
@@ -46,6 +47,14 @@ class Paper < ActiveRecord::Base
 
   scope :active,   -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
+
+  # we will want an index on this at some point, maybe not this point
+  # https://github.com/Casecommons/pg_search/wiki/Building-indexes
+  pg_search_scope :pg_title_search,
+                  against: :title,
+                  using: {
+                    tsearch: {dictionary: "english"} # stems
+                  }
 
   delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
   delegate :major_version, :minor_version, to: :latest_version, allow_nil: true

@@ -1,11 +1,9 @@
-<div class='pagination'>
-  {{#if hasPrev}}
-    <button class='btn btn-link prev' {{action 'prev'}}> <i class='fa fa-chevron-circle-left'></i> Prev </button>
-  {{/if}}
+{{#if hasPrev}}
+  <button class='btn btn-link prev' {{action 'prev'}}> <i class='fa fa-chevron-circle-left'></i> Prev </button>
+{{/if}}
 
-  Page {{page}} of {{pagesUI}}
+Page {{page}} of {{pagesUI}}
 
-  {{#if hasNext}}
-    <button class='btn btn-link next' {{action 'next'}}>Next <i class='fa fa-chevron-circle-right'></i></button>
-  {{/if}}
-</div>
+{{#if hasNext}}
+  <button class='btn btn-link next' {{action 'next'}}>Next <i class='fa fa-chevron-circle-right'></i></button>
+{{/if}}

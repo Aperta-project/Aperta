@@ -16,11 +16,7 @@
 }
 
 .search-controls {
-  #query-input {
-    width: 300px;
-  }
-  padding: 10px 0;
-  background-color: #f9f9f9;
+  padding: 0px;
   margin: 50px 0 20px;
   #clear-search {
     cursor: pointer;
@@ -45,8 +41,6 @@
   }
 
   th, td {
-    padding-right: 5px;
-    padding-left: 5px;
     font-size: 14px;
     vertical-align: top;
   }
@@ -54,7 +48,7 @@
   th {
     border-bottom: 1px solid $tahi-grey-light;
     font-weight: bold;
-    padding: 2px 13px;
+    padding: 0;
   }
 
   td {

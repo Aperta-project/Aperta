@@ -87,17 +87,6 @@ feature 'Paper Tracker', js: true do
     expect(find('.paper-tracker-table')).to have_content('paper about dogs')
   end
 
-  scenario 'user can clear search' do
-    make_matchable_paper(title: 'paper about dogs')
-    login_as(user, scope: :user)
-    visit '/paper_tracker'
-    fill_in('query-input', with: 'unfindable wordage')
-    find('button#search').click
-    expect(find('.paper-tracker-table')).not_to have_content('paper about dogs')
-    find('#clear-search').click
-    expect(find('.paper-tracker-table')).to have_content('paper about dogs')
-  end
-
   scenario 'user can sort results by field asc/desc' do
     rows = '.paper-tracker-table tbody tr'
     make_matchable_paper(title: 'AAA')

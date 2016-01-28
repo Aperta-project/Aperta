@@ -241,6 +241,10 @@ module Authorizations
 
       delegate :each, :map, :length, to: :@object_permission_map
 
+      def as_json
+        serializable.as_json
+      end
+
       def serializable
         results = []
         each do |object, permissions|

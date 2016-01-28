@@ -3,26 +3,21 @@
   <p class="paper-tracker-paper-count">You have {{pluralize model.length "paper"}} in your tracker.</p>
 
   <div class='row' class='search-controls' id='search-controls-top'>
-    <div class='col-sm-6 search-col'>
-      <div class="navbar-form">
-        <div class="input-group">
-          <div id='clear-search' class="input-group-addon" {{action 'clearSearch'}}><i class="fa fa-remove"></i></div>
+    <div class="input-group">
 
-          {{input type="text"
-                  class="form-control"
-                  id="query-input"
-                  value=queryInput
-                  enter="search"
-                  placeholder="Title keyword or Manuscript ID number"}}
+      {{input type="text"
+      class="form-control"
+      id="query-input"
+      value=queryInput
+      enter="search"
+      placeholder="Title keyword or Manuscript ID number"}}
 
-          <div class="input-group-btn">
-            <button id='search' class="btn btn-primary" {{action 'search'}}><i class="fa fa-search"></i></button>
-          </div>
-        </div>
+      <div class="input-group-btn">
+        <button id='search' class="btn btn-primary" {{action 'search'}}><i class="fa fa-search"></i></button>
       </div>
     </div>
 
-    <div class='col-sm-6' class='pagination-col'>
+    <div class='pagination-col'>
       {{pagination-simple page=page totalCount=totalCount perPage=perPage setPage=(action "setPage")}}
     </div>
   </div>
@@ -76,5 +71,3 @@
     </div>
   </div>
 </div>
-
-

@@ -25,8 +25,12 @@ class ReviewerReportTaskCreator
         title: "Review by #{assignee.full_name}"
       )
 
-      ParticipationFactory.create(task: task, assignee: assignee)
-      ParticipationFactory.create(task: task, assignee: paper.editor) if paper.editor.present?
+      ParticipationFactory.create(task: task, assignee: assignee, notify: false)
+      ParticipationFactory.create(task: task, assignee: paper.editor) if
+        paper.editor.present?
+      TahiStandardTasks::ReviewerMailer
+        .delay.welcome_reviewer(assignee_id: assignee.id,
+                                task_id: task.id)
     else
       existing_reviewer_report_task.first.incomplete!
     end
@@ -38,7 +42,14 @@ class ReviewerReportTaskCreator
 
   # multiple `assignee` can exist on `paper` as a reviewer
   def assign_paper_role!
+    # Old Role
     paper.paper_roles.for_old_role(PaperRole::REVIEWER).where(user: assignee).first_or_create!
+    # New Role
+    Assignment.where(
+      user: assignee,
+      role: paper.journal.roles.reviewer,
+      assigned_to: paper
+    ).first_or_create!
   end
 
   def default_phase

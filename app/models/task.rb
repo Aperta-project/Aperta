@@ -23,7 +23,7 @@ class Task < ActiveRecord::Base
 
   belongs_to :required_permission, class_name: 'Permission'
   belongs_to :paper, inverse_of: :tasks
-  has_one :journal, through: :paper
+  has_one :journal, through: :paper, inverse_of: :tasks
   has_many :attachments
   has_many :participations, inverse_of: :task, dependent: :destroy
   has_many :participants, through: :participations, source: :user

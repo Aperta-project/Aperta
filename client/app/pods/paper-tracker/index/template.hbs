@@ -1,37 +1,73 @@
 <div class="base-screen">
   <h2 class="paper-tracker-message">Hello, {{currentUser.firstName}}!</h2>
   <p class="paper-tracker-paper-count">You have {{pluralize model.length "paper"}} in your tracker.</p>
-  <br><br><br>
 
-  {{#sortable-table class="paper-tracker-table"
-                    content=model
-                    sortProperty="submittedAt" as |table|}}
+  <div class='row' class='search-controls' id='search-controls-top'>
+    <div class="input-group">
+
+      {{input type="text"
+      class="form-control"
+      id="query-input"
+      value=queryInput
+      enter="search"
+      placeholder="Title keyword or Manuscript ID number"}}
+
+      <div class="input-group-btn">
+        <button id='search' class="btn btn-primary" {{action 'search'}}><i class="fa fa-search"></i></button>
+      </div>
+    </div>
+
+    <div class='pagination-col'>
+      {{pagination-simple page=page totalCount=totalCount perPage=perPage setPage=(action "setPage")}}
+    </div>
+  </div>
+
+  <table class="paper-tracker-table">
     <thead>
       <tr>
         <th></th>
-        {{sortable-table-header text="Title"
-                                sortProperty="displayTitle"
-                                sortAscending=table.sortAscending
-                                activeSortProperty=table.sortProperty}}
-        {{sortable-table-header text="Manuscript Number"
-                                sortProperty="id"
-                                sortAscending=table.sortAscending
-                                activeSortProperty=table.sortProperty}}
-        {{sortable-table-header text="Date Submitted"
-                                sortProperty="submittedAt"
-                                sortAscending=table.sortAscending
-                                activeSortProperty=table.sortProperty}}
-        {{sortable-table-header text="Article Type"
-                                sortProperty="paperType"
-                                sortAscending=table.sortAscending
-                                activeSortProperty=table.sortProperty}}
+        <th>{{sort-link text="Title"
+                        orderBy="title"
+                        activeOrderBy=orderBy
+                        activeOrderDir=orderDir
+                        sortAction=(action "sort")
+        }}</th>
+        <th>{{sort-link text="Manuscript ID"
+                        orderBy="doi"
+                        activeOrderBy=orderBy
+                        activeOrderDir=orderDir
+                        sortAction=(action "sort")
+        }}</th>
+        <th>{{sort-link text="Date Submitted"
+                        orderBy="submitted_at"
+                        activeOrderBy=orderBy
+                        activeOrderDir=orderDir
+                        sortAction=(action "sort")
+        }}</th>
+        <th>{{sort-link text="Article Type"
+                        orderBy="paper_type"
+                        activeOrderBy=orderBy
+                        activeOrderDir=orderDir
+                        sortAction=(action "sort")
+        }}</th>
+
         <th>Members</th>
       </tr>
     </thead>
+
     <tbody>
-      {{#each table.arrangedContent as |paper|}}
+      {{#each model as |paper|}}
         {{partial "paper-tracker/row"}}
       {{/each}}
     </tbody>
-  {{/sortable-table}}
+
+  </table>
+
+  <div class='row' class='search-controls'>
+    <div class='col-sm-6 search-col'> </div>
+
+    <div class='col-sm-6 pagination-col'>
+      {{pagination-simple page=page totalCount=totalCount perPage=perPage setPage=(action "setPage")}}
+    </div>
+  </div>
 </div>

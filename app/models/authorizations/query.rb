@@ -10,7 +10,7 @@ module Authorizations
   # permissions they have thru those roles.
   class Query
     # WILDCARD_STATE represents the notion that any state is valid.
-    WILDCARD_STATE = '*'
+    WILDCARD_STATE = PermissionState::WILDCARD
 
     attr_reader :permission, :klass, :user
 
@@ -102,7 +102,11 @@ module Authorizations
 
     def load_authorized_objects
       # Find all assignments for the current user states eligible based on the requested permission and class
-      perm_q = { 'permissions.applies_to' => @klass.base_class.name }
+      eligible_applies_to = (
+        [@klass.base_class.name].concat @klass.subclasses.map(&:name)
+      ).uniq
+
+      perm_q = { 'permissions.applies_to' => eligible_applies_to }
       assignments = user.assignments.includes(permissions: :states).where(perm_q)
 
       # If @participations_only is true then we want to use specific fields
@@ -137,7 +141,7 @@ module Authorizations
         permissible_actions = permissions.flat_map(&:action).map(&:to_sym)
         permissible_state_names = permissions.flat_map(&:states).flat_map(&:name)
         all_permissions = permissions_by_assignment_id[assignment.id].reduce({}) do |h, permission|
-          h[permission.action.to_sym] = { states: permission.states.map(&:name) }
+          h[permission.action.to_sym] = { states: permission.states.map(&:name).sort }
           h
         end
 

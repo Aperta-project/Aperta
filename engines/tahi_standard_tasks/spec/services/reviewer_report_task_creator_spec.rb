@@ -16,6 +16,16 @@ describe ReviewerReportTaskCreator do
         expect(paper.role_for(user: assignee, old_role: PaperRole::REVIEWER)).to exist
       end
 
+      it "assigns the reviewer the reviewer role for the journal" do
+        subject.process
+        assignment = Assignment.where(
+          user: assignee,
+          role: paper.journal.roles.reviewer,
+          assigned_to: paper
+        ).first!
+        expect(assignment).to be
+      end
+
       it "creates a ReviewerReportTask" do
         expect {
           subject.process
@@ -65,5 +75,13 @@ describe ReviewerReportTaskCreator do
   it "adds the assignee as a participant to the ReviewerReportTask" do
     subject.process
     expect(paper.tasks_for_type("TahiStandardTasks::ReviewerReportTask").first.participants).to match_array([assignee])
+  end
+
+  context 'when assigning a new reviewer' do
+    it 'sends the welcome email' do
+      expect(TahiStandardTasks::ReviewerMailer).to \
+        receive_message_chain('delay.welcome_reviewer')
+      subject.process
+    end
   end
 end

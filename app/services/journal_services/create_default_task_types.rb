@@ -11,9 +11,13 @@ module JournalServices
           if override_existing
             jtt.old_role = details[:default_role]
             jtt.title = details[:default_title]
+            jtt.required_permission_action = details[:required_permission_action]
+            jtt.required_permission_applies_to = details[:required_permission_applies_to]
           else
             jtt.old_role ||= details[:default_role]
             jtt.title ||= details[:default_title]
+            jtt.required_permission_action ||= details[:required_permission_action]
+            jtt.required_permission_applies_to ||= details[:required_permission_applies_to]
           end
           jtt.save!
         end

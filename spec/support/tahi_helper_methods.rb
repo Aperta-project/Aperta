@@ -15,6 +15,7 @@ module TahiHelperMethods
     paper_admin_task.save!
   end
 
+  # OLD ROLES
   def make_user_paper_editor(user, paper)
     assign_paper_role(paper, user, PaperRole::EDITOR)
   end
@@ -28,15 +29,42 @@ module TahiHelperMethods
     paper.reload
   end
 
+  # NEW ROLES
+  def assign_author_role(paper, creator)
+    Assignment.where(
+      user: creator,
+      role: Role.where(name: 'Author').first,
+      assigned_to: paper
+    ).first_or_create!
+  end
+
+  def assign_reviewer_role(paper, reviewer)
+    Assignment.where(
+      user: reviewer,
+      role: Role.where(name: 'Reviewer').first,
+      assigned_to: paper
+    ).first_or_create!
+  end
+
   def assign_journal_role(journal, user, role_or_type)
+    # New Roles
+    if role_or_type == :admin
+      Assignment.where(
+        user: user,
+        role: Role.where(name: 'Staff Admin').first,
+        assigned_to: journal
+      ).first_or_create!
+    end
+
+    # Old Roles
     if role_or_type.is_a?(OldRole)
       old_role = role_or_type
+      UserRole.create!(user: user, old_role: old_role).old_role
     else
       old_role = journal.old_roles.where(kind: role_or_type).first
       old_role ||= FactoryGirl.create(:old_role, role_or_type, journal: journal)
+      UserRole.create!(user: user, old_role: old_role).old_role
     end
-    UserRole.create!(user: user, old_role: old_role)
-    old_role
   end
 
   def with_aws_cassette(name)

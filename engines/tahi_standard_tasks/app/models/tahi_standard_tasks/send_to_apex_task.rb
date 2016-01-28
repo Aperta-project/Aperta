@@ -10,7 +10,7 @@ module TahiStandardTasks
   # This task works hand-in-hand with the ApexDelivery model.
   #
   class SendToApexTask < Task
-    has_many :apex_deliveries, foreign_key: 'task_id'
+    has_many :apex_deliveries, foreign_key: 'task_id', dependent: :destroy
 
     register_task default_title: 'Send to Apex', default_role: 'editor'
   end

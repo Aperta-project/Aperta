@@ -15,6 +15,19 @@
   span { font-weight: bold; }
 }
 
+.search-controls {
+  padding: 0px;
+  margin: 50px 0 20px;
+  #clear-search {
+    cursor: pointer;
+  }
+  .pagination-col {
+    text-align:right;
+    padding-top: 10px;
+    padding-right: 15px;
+  }
+}
+
 .paper-tracker-members-column  { width: 380px; }
 .paper-tracker-date-column     { min-width: 150px; }
 .paper-tracker-type-column     { min-width: 110px; }
@@ -28,22 +41,14 @@
   }
 
   th, td {
-    padding-right: 5px;
-    padding-left: 5px;
     font-size: 14px;
     vertical-align: top;
   }
 
   th {
     border-bottom: 1px solid $tahi-grey-light;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
     font-weight: bold;
-
-    .fa {
-      color: $tahi-green;
-      margin-left: 8px;
-    }
+    padding: 0;
   }
 
   td {

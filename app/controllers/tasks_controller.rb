@@ -9,7 +9,12 @@ class TasksController < ApplicationController
 
   ## /paper/tasks/
   def index
-    respond_with paper.tasks.includes(:participations, :paper), each_serializer: TaskSerializer
+    tasks = current_user.filter_authorized(
+      :view,
+      paper.tasks.includes(:participations, :paper),
+      participations_only: false
+    ).objects
+    respond_with tasks, each_serializer: TaskSerializer
   end
 
   def show

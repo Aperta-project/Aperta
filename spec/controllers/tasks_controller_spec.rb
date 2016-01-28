@@ -8,6 +8,7 @@ describe TasksController, redis: true do
   end
 
   before do
+    assign_author_role(paper, user)
     sign_in user
   end
 

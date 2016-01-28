@@ -9,6 +9,7 @@ class DefaultAuthorCreator
 
   def create!
     build_author
+    assign_author_role
     add_affiliation_information
     add_authors_task_association
     author.save!
@@ -22,6 +23,14 @@ class DefaultAuthorCreator
                                 email: creator.email)
   end
 
+  def assign_author_role
+    Assignment.create(
+      user: creator,
+      role: Role.where(name: 'Author').first,
+      assigned_to: paper
+    )
+  end
+
   def add_affiliation_information
     if creator_affiliation = creator.affiliations.by_date.first
       author.affiliation = creator_affiliation.name
@@ -31,6 +40,7 @@ class DefaultAuthorCreator
   end
 
   def add_authors_task_association
-    author.authors_task = paper.tasks.find_by(type: 'TahiStandardTasks::AuthorsTask')
+    author.authors_task =
+      paper.tasks.find_by(type: 'TahiStandardTasks::AuthorsTask')
   end
 end

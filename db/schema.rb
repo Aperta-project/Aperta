@@ -11,13 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160121151634) do
+ActiveRecord::Schema.define(version: 20160127001441) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_stat_statements"
   enable_extension "pg_trgm"
   enable_extension "unaccent"
-  enable_extension "pg_stat_statements"
 
   create_table "activities", force: :cascade do |t|
     t.string   "feed_name"
@@ -36,12 +36,12 @@ ActiveRecord::Schema.define(version: 20160121151634) do
 
   create_table "affiliations", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "name"
+    t.string   "name",        limit: 255
     t.date     "start_date"
     t.date     "end_date"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "email"
+    t.string   "email",       limit: 255
     t.string   "department"
     t.string   "title"
     t.string   "country"
@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 20160121151634) do
   add_index "affiliations", ["user_id"], name: "index_affiliations_on_user_id", using: :btree
 
   create_table "api_keys", force: :cascade do |t|
-    t.string   "access_token"
+    t.string   "access_token", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -70,19 +70,19 @@ ActiveRecord::Schema.define(version: 20160121151634) do
   add_index "assignments", ["user_id"], name: "index_assignments_on_user_id", using: :btree
 
   create_table "attachments", force: :cascade do |t|
-    t.string   "file"
+    t.string   "file",       limit: 255
     t.integer  "task_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "title"
-    t.string   "caption"
-    t.string   "status",     default: "processing"
+    t.string   "title",      limit: 255
+    t.string   "caption",    limit: 255
+    t.string   "status",     limit: 255, default: "processing"
     t.string   "kind"
   end
 
   create_table "authors", force: :cascade do |t|
-    t.string   "first_name"
-    t.string   "last_name"
+    t.string   "first_name",            limit: 255
+    t.string   "last_name",             limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "position"
@@ -132,8 +132,8 @@ ActiveRecord::Schema.define(version: 20160121151634) do
   add_index "comments", ["task_id"], name: "index_comments_on_task_id", using: :btree
 
   create_table "credentials", force: :cascade do |t|
-    t.string  "provider"
-    t.string  "uid"
+    t.string  "provider", limit: 255
+    t.string  "uid",      limit: 255
     t.integer "user_id"
   end
 
@@ -183,13 +183,13 @@ ActiveRecord::Schema.define(version: 20160121151634) do
   add_index "discussion_topics", ["paper_id"], name: "index_discussion_topics_on_paper_id", using: :btree
 
   create_table "figures", force: :cascade do |t|
-    t.string   "attachment"
+    t.string   "attachment", limit: 255
     t.integer  "paper_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "title"
+    t.string   "title",      limit: 255
     t.text     "caption"
-    t.string   "status",     default: "processing"
+    t.string   "status",     limit: 255, default: "processing"
     t.string   "token"
   end
 
@@ -197,7 +197,7 @@ ActiveRecord::Schema.define(version: 20160121151634) do
   add_index "figures", ["token"], name: "index_figures_on_token", unique: true, using: :btree
 
   create_table "flows", force: :cascade do |t|
-    t.string  "title"
+    t.string  "title",       limit: 255
     t.integer "old_role_id"
     t.integer "position"
     t.text    "query"
@@ -226,30 +226,32 @@ ActiveRecord::Schema.define(version: 20160121151634) do
 
   create_table "journal_task_types", force: :cascade do |t|
     t.integer "journal_id"
-    t.string  "title"
-    t.string  "old_role"
-    t.string  "kind"
+    t.string  "title",                          limit: 255
+    t.string  "old_role",                       limit: 255
+    t.string  "kind",                           limit: 255
+    t.string  "required_permission_action"
+    t.string  "required_permission_applies_to"
   end
 
   add_index "journal_task_types", ["journal_id"], name: "index_journal_task_types_on_journal_id", using: :btree
 
   create_table "journals", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",                 limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "logo"
-    t.string   "epub_cover"
+    t.string   "logo",                 limit: 255
+    t.string   "epub_cover",           limit: 255
     t.text     "epub_css"
     t.text     "pdf_css"
     t.text     "manuscript_css"
     t.text     "description"
-    t.string   "doi_publisher_prefix"
-    t.string   "doi_journal_prefix"
-    t.string   "last_doi_issued",      default: "0"
+    t.string   "doi_publisher_prefix", limit: 255
+    t.string   "doi_journal_prefix",   limit: 255
+    t.string   "last_doi_issued",      limit: 255, default: "0"
   end
 
   create_table "manuscript_manager_templates", force: :cascade do |t|
-    t.string  "paper_type"
+    t.string  "paper_type", limit: 255
     t.integer "journal_id"
   end
 
@@ -304,16 +306,17 @@ ActiveRecord::Schema.define(version: 20160121151634) do
   add_index "notifications", ["paper_id"], name: "index_notifications_on_paper_id", using: :btree
   add_index "notifications", ["target_id", "target_type"], name: "index_notifications_on_target_id_and_target_type", using: :btree
   add_index "notifications", ["user_id"], name: "index_notifications_on_user_id", using: :btree
+
   create_table "old_roles", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",                                  limit: 255
     t.integer  "journal_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "can_administer_journal",                default: false,    null: false
-    t.boolean  "can_view_assigned_manuscript_managers", default: false,    null: false
-    t.boolean  "can_view_all_manuscript_managers",      default: false,    null: false
-    t.string   "kind",                                  default: "custom", null: false
-    t.boolean  "can_view_flow_manager",                 default: false,    null: false
+    t.boolean  "can_administer_journal",                            default: false,    null: false
+    t.boolean  "can_view_assigned_manuscript_managers",             default: false,    null: false
+    t.boolean  "can_view_all_manuscript_managers",                  default: false,    null: false
+    t.string   "kind",                                  limit: 255, default: "custom", null: false
+    t.boolean  "can_view_flow_manager",                             default: false,    null: false
   end
 
   add_index "old_roles", ["kind"], name: "index_old_roles_on_kind", using: :btree
@@ -323,7 +326,7 @@ ActiveRecord::Schema.define(version: 20160121151634) do
     t.integer  "paper_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "old_role"
+    t.string   "old_role",   limit: 255
   end
 
   add_index "paper_roles", ["old_role"], name: "index_paper_roles_on_old_role", using: :btree
@@ -332,25 +335,25 @@ ActiveRecord::Schema.define(version: 20160121151634) do
   add_index "paper_roles", ["user_id"], name: "index_paper_roles_on_user_id", using: :btree
 
   create_table "papers", force: :cascade do |t|
-    t.string   "short_title"
-    t.text     "title"
-    t.text     "abstract",                 default: ""
+    t.string   "short_title",              limit: 255
+    t.text     "title",                                                null: false
+    t.text     "abstract",                             default: ""
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
-    t.string   "paper_type"
-    t.integer  "journal_id",                               null: false
+    t.string   "paper_type",               limit: 255
+    t.integer  "journal_id",                                           null: false
     t.text     "decision_letter"
     t.datetime "published_at"
     t.integer  "striking_image_id"
-    t.boolean  "editable",                 default: true
+    t.boolean  "editable",                             default: true
     t.text     "doi"
     t.string   "publishing_state"
     t.datetime "submitted_at"
     t.string   "salesforce_manuscript_id"
-    t.jsonb    "withdrawals",              default: [],                 array: true
-    t.boolean  "active",                   default: true
-    t.boolean  "gradual_engagement",       default: false
+    t.jsonb    "withdrawals",                          default: [],                 array: true
+    t.boolean  "active",                               default: true
+    t.boolean  "gradual_engagement",                   default: false
     t.datetime "first_submitted_at"
     t.datetime "accepted_at"
     t.string   "striking_image_type"
@@ -409,7 +412,7 @@ ActiveRecord::Schema.define(version: 20160121151634) do
   add_index "permissions_roles", ["role_id"], name: "index_permissions_roles_on_role_id", using: :btree
 
   create_table "phase_templates", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",                           limit: 255
     t.integer  "manuscript_manager_template_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -419,20 +422,20 @@ ActiveRecord::Schema.define(version: 20160121151634) do
   add_index "phase_templates", ["manuscript_manager_template_id"], name: "index_phase_templates_on_manuscript_manager_template_id", using: :btree
 
   create_table "phases", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "position"
-    t.integer  "paper_id",   null: false
+    t.integer  "paper_id",               null: false
   end
 
   add_index "phases", ["paper_id"], name: "index_phases_on_paper_id", using: :btree
 
   create_table "question_attachments", force: :cascade do |t|
     t.integer  "nested_question_answer_id"
-    t.string   "attachment"
-    t.string   "title"
-    t.string   "status"
+    t.string   "attachment",                limit: 255
+    t.string   "title",                     limit: 255
+    t.string   "status",                    limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "token"
@@ -466,13 +469,13 @@ ActiveRecord::Schema.define(version: 20160121151634) do
 
   create_table "supporting_information_files", force: :cascade do |t|
     t.integer  "paper_id"
-    t.string   "title"
-    t.string   "caption"
-    t.string   "attachment"
+    t.string   "title",       limit: 255
+    t.string   "caption",     limit: 255
+    t.string   "attachment",  limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "status",      default: "processing"
-    t.boolean  "publishable", default: true
+    t.string   "status",      limit: 255, default: "processing"
+    t.boolean  "publishable",             default: true
     t.string   "token"
     t.string   "label"
     t.string   "category"
@@ -512,9 +515,9 @@ ActiveRecord::Schema.define(version: 20160121151634) do
   add_index "tahi_standard_tasks_funded_authors", ["funder_id"], name: "index_tahi_standard_tasks_funded_authors_on_funder_id", using: :btree
 
   create_table "tahi_standard_tasks_funders", force: :cascade do |t|
-    t.string   "name"
-    t.string   "grant_number"
-    t.string   "website"
+    t.string   "name",         limit: 255
+    t.string   "grant_number", limit: 255
+    t.string   "website",      limit: 255
     t.integer  "task_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -527,7 +530,7 @@ ActiveRecord::Schema.define(version: 20160121151634) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "middle_initial"
-    t.string   "email",                            null: false
+    t.string   "email"
     t.string   "department"
     t.string   "title"
     t.string   "affiliation"
@@ -541,8 +544,8 @@ ActiveRecord::Schema.define(version: 20160121151634) do
   create_table "task_templates", force: :cascade do |t|
     t.integer "journal_task_type_id"
     t.integer "phase_template_id"
-    t.json    "template",             default: [], null: false
-    t.string  "title"
+    t.json    "template",                         default: [], null: false
+    t.string  "title",                limit: 255
     t.integer "position"
   end
 
@@ -550,15 +553,15 @@ ActiveRecord::Schema.define(version: 20160121151634) do
   add_index "task_templates", ["phase_template_id"], name: "index_task_templates_on_phase_template_id", using: :btree
 
   create_table "tasks", force: :cascade do |t|
-    t.string   "title",                       null: false
-    t.string   "type",       default: "Task"
-    t.integer  "phase_id",                    null: false
-    t.boolean  "completed",  default: false,  null: false
+    t.string   "title",                  limit: 255,                  null: false
+    t.string   "type",                   limit: 255, default: "Task"
+    t.integer  "phase_id",                                            null: false
+    t.boolean  "completed",                          default: false,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "old_role",                    null: false
-    t.json     "body",       default: [],     null: false
-    t.integer  "position",   default: 0
+    t.string   "old_role",               limit: 255,                  null: false
+    t.json     "body",                               default: [],     null: false
+    t.integer  "position",                           default: 0
     t.integer  "required_permission_id"
     t.integer  "paper_id",                                            null: false
   end
@@ -587,23 +590,23 @@ ActiveRecord::Schema.define(version: 20160121151634) do
   add_index "user_roles", ["user_id"], name: "index_user_roles_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "first_name",             default: "",    null: false
-    t.string   "last_name",              default: "",    null: false
-    t.string   "email",                  default: "",    null: false
-    t.string   "encrypted_password",     default: "",    null: false
-    t.string   "reset_password_token"
+    t.string   "first_name",             limit: 255, default: "",    null: false
+    t.string   "last_name",              limit: 255, default: "",    null: false
+    t.string   "email",                  limit: 255, default: "",    null: false
+    t.string   "encrypted_password",     limit: 255, default: "",    null: false
+    t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,     null: false
+    t.integer  "sign_in_count",                      default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
+    t.string   "current_sign_in_ip",     limit: 255
+    t.string   "last_sign_in_ip",        limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "username"
-    t.boolean  "site_admin",             default: false, null: false
-    t.string   "avatar"
+    t.string   "username",               limit: 255
+    t.string   "avatar",                 limit: 255
+    t.boolean  "site_admin",                         default: false
     t.string   "em_guid"
   end
 

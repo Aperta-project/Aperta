@@ -46,13 +46,17 @@ class PaperFactory
   end
 
   def create_task_from_template(task_template, phase)
+    journal_task_type = task_template.journal_task_type
     task = TaskFactory.create(task_template.journal_task_type.kind,
                               phase: phase,
                               paper: phase.paper,
                               creator: creator,
                               title: task_template.title,
                               body: task_template.template,
-                              old_role: task_template.journal_task_type.old_role,
+                              old_role:
+                                journal_task_type.old_role,
+                              required_permission:
+                                journal_task_type.required_permission,
                               notify: false)
     task.paper_creation_hook(paper) if task.respond_to?(:paper_creation_hook)
   end

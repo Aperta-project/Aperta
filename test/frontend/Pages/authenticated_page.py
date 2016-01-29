@@ -311,7 +311,7 @@ class AuthenticatedPage(PlosPage):
 
     :return: True or False, if cardname is unknown.
     """
-    self.set_timeout(1)
+    self.set_timeout(10)
     if cardname.lower() == 'cover_letter':
       card_title = self._get(self._billing_card)
     elif cardname.lower() == 'billing':

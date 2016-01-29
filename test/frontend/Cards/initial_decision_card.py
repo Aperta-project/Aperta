@@ -58,10 +58,12 @@ class InitialDecisionCard(BaseCard):
     if choice == 'reject':
       reject_input = self._get(self._reject_radio_button)
       reject_input.click()
+      time.sleep(.5)
       decision_letter_input.send_keys('Rejected')
     else:
       invite_input = self._get(self._invite_radio_button)
       invite_input.click()
+      time.sleep(.5)
       decision_letter_input.send_keys('Invited')
     # Time to allow the button to change to clickleable state
     time.sleep(.5)

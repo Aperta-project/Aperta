@@ -44,7 +44,9 @@ class InitialDecisionCard(BaseCard):
     self._get(self._invite_radio_button)
     self._get(self._decision_letter_textarea)
     reg_dcn_btn = self._get(self._register_decision_btn)
-    self.validate_primary_big_green_button_style(reg_dcn_btn)
+    # this button is disabled by default now
+    #TD: Disabled for testing until having answer from Design
+    ##self.validate_secondary_big_disabled_button_style(reg_dcn_btn)
 
   def execute_decision(self, choice='random'):
     """

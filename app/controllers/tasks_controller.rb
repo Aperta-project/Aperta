@@ -119,6 +119,8 @@ class TasksController < ApplicationController
   end
 
   def enforce_policy
-    authorize_action!(task: task)
+    if !current_user.can?(:view, task)
+      fail AuthorizationError
+    end
   end
 end

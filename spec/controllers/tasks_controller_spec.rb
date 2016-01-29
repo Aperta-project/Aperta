@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe TasksController, redis: true do
-  let(:user) { create :user, :site_admin }
+  let(:user) { create :user }
 
   let!(:paper) do
     FactoryGirl.create(:paper, :with_tasks, creator: user)
@@ -104,8 +104,10 @@ describe TasksController, redis: true do
       end
     end
 
-    context "when the user is not an admin or the assignee" do
-      before { user.update! site_admin: false }
+    context "when the user does not have access" do
+      before do
+        allow_any_instance_of(User).to receive(:can?).with(:view, task).and_return false
+      end
 
       it "returns a 403" do
         do_request
@@ -175,6 +177,12 @@ describe TasksController, redis: true do
   describe "GET 'show'" do
     let(:task) { FactoryGirl.create(:task) }
     subject(:do_request) { get :show, { id: task.id, format: format } }
+    let(:format) { :json }
+
+    before do
+      allow_any_instance_of(User).to \
+        receive(:can?).with(:view, task).and_return true
+    end
 
     context "html requests" do
       let(:format) { nil }
@@ -182,12 +190,22 @@ describe TasksController, redis: true do
     end
 
     context "json requests" do
-      let(:format) { :json }
-
       it "calls the Task subclass's appropriate serializer when rendering JSON" do
         do_request
         serializer = task.active_model_serializer.new(task, scope: user)
         expect(res_body.keys).to match_array(serializer.as_json.stringify_keys.keys)
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        allow_any_instance_of(User).to \
+          receive(:can?).with(:view, task).and_return false
+      end
+
+      it "returns a 403" do
+        do_request
+        expect(response.status).to eq 403
       end
     end
   end
@@ -196,6 +214,11 @@ describe TasksController, redis: true do
     let(:task) { FactoryGirl.create(:task) }
 
     subject(:do_request) { put :send_message, { id: task.id, format: "json", task: {subject: "Hello", body: "Greetings from Vulcan!", recepients: [user.id]} } }
+
+    before do
+      allow_any_instance_of(User).to \
+        receive(:can?).with(:view, task).and_return true
+    end
 
     it "adds an email to the SideKiq queue" do
       expect { do_request }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)

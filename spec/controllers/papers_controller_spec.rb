@@ -24,6 +24,7 @@ describe PapersController do
         editor_ids: []
       }
     ]
+  end
 
   include AuthorizationSpecHelper
 

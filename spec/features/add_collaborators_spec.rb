@@ -10,7 +10,6 @@ feature "Editing paper", js: true do
 
   before do
     make_user_paper_admin(author, paper)
-    assign_author_role(paper, author)
     login_as(author, scope: :user)
     visit "/"
   end

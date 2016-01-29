@@ -10,7 +10,6 @@ feature 'Changes For Author', js: true do
 
   before do
     task.participants << author
-    assign_author_role(paper, author)
 
     SignInPage.visit.sign_in author
   end

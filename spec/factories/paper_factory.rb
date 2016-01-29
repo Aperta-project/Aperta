@@ -3,6 +3,18 @@ require 'securerandom'
 FactoryGirl.define do
   factory :paper do
     after(:create) do |paper|
+      if paper.creator
+        Assignment.where(
+          role: paper.journal.roles.author,
+          assigned_to: paper
+        ).destroy_all
+        Assignment.where(
+          role: paper.journal.roles.author,
+          assigned_to: paper,
+          user: paper.creator
+        ).create!
+      end
+
       paper.save!
       paper.body = "I am the very model of a modern journal article"
     end

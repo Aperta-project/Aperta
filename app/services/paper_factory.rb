@@ -20,6 +20,14 @@ class PaperFactory
       return unless paper.valid?
         if template
           paper.save!
+
+          # TODO: This should be replaced with creator code.
+          Assignment.where(
+            role: paper.journal.roles.author,
+            assigned_to: paper,
+            user: paper.creator
+          ).create!
+
           add_decision
           add_phases_and_tasks
           add_creator_as_author!

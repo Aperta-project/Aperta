@@ -236,7 +236,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     id_card = InitialDecisionCard(self.getDriver())
     id_card.validate_styles()
     decision = id_card.execute_decision()
-    print(decision)
+    logging.info('Decision: {}'.format(decision))
     id_card.click_close_button()
     sub_data = workflow_page.get_db_submission_data(paper_id)
     if decision == 'reject':

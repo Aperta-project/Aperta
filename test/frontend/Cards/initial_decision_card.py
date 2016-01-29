@@ -68,6 +68,6 @@ class InitialDecisionCard(BaseCard):
       time.sleep(.5)
       decision_letter_input.send_keys('Invited')
     # Time to allow the button to change to clickleable state
-    time.sleep(.5)
+    time.sleep(1)
     self._get(self._register_decision_btn).click()
     return choice

@@ -98,6 +98,8 @@ billing_data = {'first': 'Jane', 'last': 'Doe',
           'phone': '123-4567-8900', 'city': 'Azul',
           'state': 'CABA', 'ZIP': '12345', 'country':'Argentina'}
 
+
+# Note: Commented out doc until APERTA-5935 is addressed
 docs = ['10yearsRabiesSL20140723.doc',
         '11-OvCa-Collab-HeightBMI-paper-July.doc',
         '120220_PLoS_Genetics_review.docx',
@@ -118,7 +120,7 @@ docs = ['10yearsRabiesSL20140723.doc',
         'Institutional Predictors - 8 14 clean copy (1)_HB_MW.docx',
         'July Blue Marble Editorial final for accept 16June.docx',
         'LifeExpectancyART10 PM RM edits_FINAL.doc',
-        'Manuscript Monitoring HIV Viral Load in Resource Limited PLoSONE-1_MA 28082012.docx',
+        #'Manuscript Monitoring HIV Viral Load in Resource Limited PLoSONE-1_MA 28082012.docx',
         'Manuscript revised final.doc',
         'Manuscript_resubmission_1 April2014_REVISED.docx',
         'ModularModeling-PLoSCompBioPerspective_2ndREVISION.doc',

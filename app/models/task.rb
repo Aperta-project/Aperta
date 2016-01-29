@@ -126,6 +126,17 @@ class Task < ActiveRecord::Base
           )
       end
     end
+
+    def all_task_types
+      Rails.application.config.eager_load_namespaces.each(&:eager_load!)
+      Task.descendants + [Task]
+    end
+
+    def safe_constantize(str)
+      fail StandardError, 'Attempted to constantize disallowed value' \
+        unless Task.all_task_types.map(&:to_s).member?(str)
+      str.constantize
+    end
   end
 
   def journal_task_type

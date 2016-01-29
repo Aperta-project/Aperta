@@ -153,6 +153,40 @@ describe Task do
     end
   end
 
+  describe 'Task.all_task_types' do
+    it 'includes a new subclass of Task' do
+      class NewTask < Task; end
+      expect(Task.all_task_types).to include(NewTask)
+    end
+
+    it 'returns all the tasks' do
+      tasks_from_source = Dir[Rails.root.join('**/*.rb')]
+                          .select { |path| path.match(%r{models/.*task.rb}) }
+                          .reject { |path| path.match(/concerns/) }
+                          .map { |path| path.match(%r{models/(.*).rb})[1] }
+
+      tasks = Task.all_task_types.map { |c| c.to_s.underscore }.sort -
+              %w(mock_metadata_task test_task invitable_task new_task)
+      expect(tasks).to eq((tasks_from_source).sort)
+    end
+  end
+
+  describe 'Task.safe_constantize' do
+    it 'works with Task' do
+      expect(Task.safe_constantize('Task')).to eq(Task)
+    end
+
+    it 'works with Task descendants' do
+      expect(Task.safe_constantize('TahiStandardTasks::TaxonTask'))
+        .to eq(TahiStandardTasks::TaxonTask)
+    end
+
+    it 'fails with non-tasks' do
+      expect { Task.safe_constantize('User') }
+        .to raise_error(/constantize disallowed/)
+    end
+  end
+
   describe "#can_change?: associations can use this method to update based on task" do
     let(:task) {
       Task.create! title: "Paper Admin",

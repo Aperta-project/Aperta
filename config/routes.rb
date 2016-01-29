@@ -81,7 +81,6 @@ Tahi::Application.routes.draw do
       put :accept, on: :member
       put :reject, on: :member
     end
-    resources :journal_task_types, only: :update
     resources :journals, only: [:index, :show] do
       resources :old_roles, only: :index, shallow: true do
         namespace 'old_roles', path: '' do

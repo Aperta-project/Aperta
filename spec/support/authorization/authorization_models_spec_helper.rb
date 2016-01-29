@@ -53,6 +53,9 @@ module Authorizations
   class SpecializedFakeTask < FakeTask
   end
 
+  class EvenMoreSpecializedFakeTask < SpecializedFakeTask
+  end
+
   class FakeTaskThing < ActiveRecord::Base
     belongs_to :fake_task
     has_one :fake_paper, through: :fake_task

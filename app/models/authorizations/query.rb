@@ -86,7 +86,7 @@ module Authorizations
 
     def load_all_objects
       result_set = ResultSet.new
-      permission_names = Permission.where(applies_to: @klass.to_s).pluck(:action)
+      permission_names = Permission.where(applies_to: eligible_applies_to).pluck(:action)
       permission_hsh = {}
       permission_names.each do |name|
         permission_hsh[name.to_sym] = { states: ['*'] }
@@ -101,12 +101,20 @@ module Authorizations
       return result_set
     end
 
-    def load_authorized_objects
-      # Find all assignments for the current user states eligible based on the requested permission and class
-      eligible_applies_to = (
-        [@klass.base_class.name].concat @klass.subclasses.map(&:name)
-      ).uniq
+    # Returns all the eligible values for a permission applies_to given then
+    # @klass being queried. This searches the class, any of its descendants,
+    # as well as any ancesors in the lineage from the @klass to its base-class.
+    def eligible_applies_to
+      eligible_ancestors = @klass.ancestors & @klass.base_class.descendants
+      [
+        @klass.descendants,
+        @klass,
+        eligible_ancestors,
+        @klass.base_class
+      ].flatten.map(&:name).uniq
+    end
 
+    def load_authorized_objects
       perm_q = { 'permissions.applies_to' => eligible_applies_to }
       assignments = user.assignments.includes(permissions: :states).where(perm_q)
 
@@ -194,7 +202,6 @@ module Authorizations
               auth.assignment_to >= assigned_to_klass # if what you're assigned to is the same class
             }
             .each do |auth|
-
             authorized_objects = QueryAgainstAuthorization.new(
               authorization: auth,
               klass: @klass,

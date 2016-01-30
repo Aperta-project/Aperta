@@ -26,7 +26,13 @@ class CommentsController < ApplicationController
   private
 
   def task
-    @task ||= Task.find(comment_params[:task_id])
+    @task ||= begin
+      if params[:id].present?
+        comment.task
+      else
+        Task.find(comment_params[:task_id])
+      end
+    end
   end
 
   def comment
@@ -49,10 +55,14 @@ class CommentsController < ApplicationController
 
   def enforce_index_policy
     @task = Task.find(params[:task_id])
-    authorize_action!(comment: nil, for_task: @task)
+    if !current_user.can?(:view, @task)
+      fail AuthorizationError
+    end
   end
 
   def enforce_policy
-    authorize_action!(comment: comment)
+    if !current_user.can?(:view, task)
+      fail AuthorizationError
+    end
   end
 end

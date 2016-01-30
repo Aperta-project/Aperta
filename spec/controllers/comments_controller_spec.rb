@@ -58,7 +58,10 @@ describe CommentsController do
     end
 
     context "the user isn't authorized" do
-      authorize_policy(CommentsPolicy, false)
+      before do
+        allow_any_instance_of(User).to \
+          receive(:can?).with(:view, task).and_return false
+      end
 
       it "renders 403" do
         do_request
@@ -67,7 +70,11 @@ describe CommentsController do
     end
 
     context "the user is authorized" do
-      authorize_policy(CommentsPolicy, true)
+      before do
+        allow_any_instance_of(User).to \
+          receive(:can?).with(:view, task).and_return true
+      end
+
 
       context "the user tries to create a blank comment" do
         it "doesn't work" do

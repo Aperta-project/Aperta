@@ -22,15 +22,22 @@ describe ParticipationsController do
 
     it_behaves_like "an unauthenticated json request"
 
-    it "returns the task's participations" do
-      do_request
-
-      participation_ids = res_body['participations'].map do |participation|
-        participation['id']
+    context "and the user authorized" do
+      before do
+        allow_any_instance_of(User).to \
+          receive(:can?).with(:view, task).and_return true
       end
 
-      expect(res_body['participations'].count).to eq(2)
-      expect(participation_ids).to include(participation1.id, participation2.id)
+      it "returns the task's participations" do
+        do_request
+
+        participation_ids = res_body['participations'].map do |participation|
+          participation['id']
+        end
+
+        expect(res_body['participations'].count).to eq(2)
+        expect(participation_ids).to include(participation1.id, participation2.id)
+      end
     end
   end
 
@@ -42,7 +49,10 @@ describe ParticipationsController do
     end
 
     context "the user isn't authorized" do
-      authorize_policy(ParticipationsPolicy, false)
+      before do
+        allow_any_instance_of(User).to \
+          receive(:can?).with(:view, task).and_return false
+      end
 
       it "renders 403" do
         do_request
@@ -51,7 +61,10 @@ describe ParticipationsController do
     end
 
     context "the user is authorized" do
-      authorize_policy(ParticipationsPolicy, true)
+      before do
+        allow_any_instance_of(User).to \
+          receive(:can?).with(:view, task).and_return true
+      end
 
       context "the user does not pass a participant" do
         it "doesn't work" do
@@ -87,40 +100,61 @@ describe ParticipationsController do
   end
 
   describe "DELETE #destroy" do
-    authorize_policy(ParticipationsPolicy, true)
-
-    context "with a valid participation id" do
+    context "the user isn't authorized" do
       let(:do_request) do
         delete :destroy, format: :json, id: participation.id
       end
 
-      let!(:participation) { FactoryGirl.create :participation }
+      let!(:participation) { FactoryGirl.create :participation, task: task }
 
-      it "destroys the associated author" do
-        expect {
-          do_request
-        }.to change { Participation.count }.by -1
+      before do
+        allow_any_instance_of(User).to \
+          receive(:can?).with(:view, task).and_return false
       end
 
-      it "creates an activity" do
-        expect{ do_request }.to change(Activity, :count).by(1)
+      it "renders 403" do
+        do_request
+        expect(response.status).to eq(403)
       end
     end
 
-    context "with an invalid participation id" do
-      let(:do_request) do
-        delete :destroy, format: :json, id: 9999
+    context "the user is authorized" do
+      before do
+        allow_any_instance_of(User).to \
+          receive(:can?).with(:view, task).and_return true
       end
 
-      it "returns a 404" do
-        expect(do_request.status).to eq(404)
+      context "with a valid participation id" do
+        let(:do_request) do
+          delete :destroy, format: :json, id: participation.id
+        end
+
+        let!(:participation) { FactoryGirl.create :participation, task: task }
+
+        it "destroys the associated author" do
+          expect {
+            do_request
+          }.to change { Participation.count }.by -1
+        end
+
+        it "creates an activity" do
+          expect{ do_request }.to change(Activity, :count).by(1)
+        end
+      end
+
+      context "with an invalid participation id" do
+        let(:do_request) do
+          delete :destroy, format: :json, id: 9999
+        end
+
+        it "returns a 404" do
+          expect(do_request.status).to eq(404)
+        end
       end
     end
   end
 
   context "participants" do
-    authorize_policy(ParticipationsPolicy, true)
-
     let(:task) { FactoryGirl.create(:task) }
     let(:editors_discussion_task) { FactoryGirl.create :editors_discussion_task }
     let(:new_participant) { FactoryGirl.create(:user) }
@@ -129,28 +163,52 @@ describe ParticipationsController do
       post :create, format: 'json', participation: { user_id: new_participant.id, task_id: task.id, task_type: 'AdHocTask' }
     end
 
-    it "calls the task's #notify_new_participant method" do
-      expect_any_instance_of(Task).to receive :notify_new_participant
-      do_request
-    end
+    context "the user isn't authorized" do
+      before do
+        allow_any_instance_of(User).to \
+          receive(:can?).with(:view, task).and_return false
+      end
 
-    context "when the task type is not EditorDiscussionTask" do
-      it "adds an email to the sidekiq queue if new participant is not current user" do
-        expect { do_request }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
+      it "renders 403" do
+        do_request
+        expect(response.status).to eq(403)
       end
     end
 
-    context "when the task type is EditorsDiscussionTask" do
-      it "sends a different email to the editor participants" do
-        expect(UserMailer).to receive_message_chain(:delay, :add_editor_to_editors_discussion)
-        post :create, format: 'json', participation: { user_id: new_participant.id, task_id: editors_discussion_task.id }
+    context "the user is authorized" do
+      before do
+        allow_any_instance_of(User).to \
+          receive(:can?).with(:view, task).and_return true
       end
-    end
 
-    it "does not add an email to the sidekiq queue if new participant is the current user" do
-      expect {
-        post :create, format: 'json', participation: { user_id: user.id, task_id: task.id }
-      }.to_not change(Sidekiq::Extensions::DelayedMailer.jobs, :size)
+      it "calls the task's #notify_new_participant method" do
+        expect_any_instance_of(Task).to receive :notify_new_participant
+        do_request
+      end
+
+      context "when the task type is not EditorDiscussionTask" do
+        it "adds an email to the sidekiq queue if new participant is not current user" do
+          expect { do_request }.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
+        end
+      end
+
+      context "when the task type is EditorsDiscussionTask" do
+        before do
+          allow_any_instance_of(User).to \
+            receive(:can?).with(:view, editors_discussion_task).and_return true
+        end
+
+        it "sends a different email to the editor participants" do
+          expect(UserMailer).to receive_message_chain(:delay, :add_editor_to_editors_discussion)
+          post :create, format: 'json', participation: { user_id: new_participant.id, task_id: editors_discussion_task.id }
+        end
+      end
+
+      it "does not add an email to the sidekiq queue if new participant is the current user" do
+        expect {
+          post :create, format: 'json', participation: { user_id: user.id, task_id: task.id }
+        }.to_not change(Sidekiq::Extensions::DelayedMailer.jobs, :size)
+      end
     end
   end
 end

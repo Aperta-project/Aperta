@@ -35,7 +35,13 @@ class ParticipationsController < ApplicationController
   private
 
   def task
-    @task ||= Task.find(participation_params[:task_id])
+    @task ||= begin
+      if params[:id].present?
+        participation.task
+      else
+        Task.find(participation_params[:task_id])
+      end
+    end
   end
 
   def participation
@@ -58,10 +64,14 @@ class ParticipationsController < ApplicationController
 
   def enforce_index_policy
     @task = Task.find(params[:task_id])
-    authorize_action!(participation: nil, for_task: @task)
+    if !current_user.can?(:view, @task)
+      fail AuthorizationError
+    end
   end
 
   def enforce_policy
-    authorize_action!(participation: participation)
+    if !current_user.can?(:view, task)
+      fail AuthorizationError
+    end
   end
 end

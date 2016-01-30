@@ -4,13 +4,23 @@ class Role < ActiveRecord::Base
 
   AUTHOR_ROLE = 'Author'
   REVIEWER_ROLE = 'Reviewer'
+  INTERNAL_EDITOR_ROLE = 'Internal Editor'
+  STAFF_ADMIN_ROLE = 'Staff Admin'
 
   def self.author
     where(name: AUTHOR_ROLE).first_or_create!
   end
 
+  def self.internal_editor
+    where(name: INTERNAL_EDITOR_ROLE).first_or_create!
+  end
+
   def self.reviewer
     where(name: REVIEWER_ROLE).first_or_create!
+  end
+
+  def self.staff_admin
+    where(name: STAFF_ADMIN_ROLE).first_or_create!
   end
 
   def self.ensure_exists(name, journal: nil, participates_in: [], &block)

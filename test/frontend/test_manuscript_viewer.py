@@ -222,9 +222,9 @@ class ViewPaperTest(CommonTest):
     manuscript_page.close_modal()
     # Aprove initial Decision
     manuscript_page.logout()
-    print('Logging in as user: {}'.format(he_login))
+    logging.info('Logging in as user: {}'.format(sa_login))
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(he_login['user'])
+    login_page.enter_login_field(sa_login['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
     # the following call should only succeed for sa_login

@@ -1,7 +1,8 @@
 module TahiStandardTasks
   class ProductionMetadataTask < Task
 
-    register_task default_title: 'Production Metadata', default_role: 'admin'
+    DEFAULT_TITLE = 'Production Metadata'
+    DEFAULT_ROLE = 'admin'
 
     with_options(if: :newly_complete?) do
       validates :volume_number, :issue_number,

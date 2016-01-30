@@ -1,10 +1,11 @@
 class Task < ActiveRecord::Base
   include EventStream::Notifiable
   include NestedQuestionable
-  include TaskTypeRegistration
   include Commentable
 
-  register_task default_title: 'Ad-hoc', default_role: 'user'
+  DEFAULT_TITLE = 'Ad-hoc'
+  DEFAULT_ROLE = 'user'
+  REQUIRED_PERMISSIONS = {}
 
   cattr_accessor :metadata_types
   cattr_accessor :submission_types

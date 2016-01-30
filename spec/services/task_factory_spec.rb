@@ -4,7 +4,7 @@ describe TaskFactory do
 
   let(:paper) { FactoryGirl.create(:paper) }
   let(:phase) { FactoryGirl.create(:phase, paper: paper) }
-  let(:klass) {'TahiStandardTasks::ReviseTask'}
+  let(:klass) { TahiStandardTasks::ReviseTask }
 
   it "Creates a task" do
     expect {

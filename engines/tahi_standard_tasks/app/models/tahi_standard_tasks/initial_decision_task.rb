@@ -1,7 +1,8 @@
 module TahiStandardTasks
   class InitialDecisionTask < Task
 
-    register_task default_title: 'Initial Decision', default_role: 'editor'
+    DEFAULT_TITLE = 'Initial Decision'
+    DEFAULT_ROLE = 'editor'
 
     def initial_decision
       paper.decisions.last

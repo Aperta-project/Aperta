@@ -2,7 +2,8 @@ module TahiStandardTasks
   class FigureTask < Task
     include MetadataTask
 
-    register_task default_title: "Figures", default_role: "author"
+    DEFAULT_TITLE = 'Figures'
+    DEFAULT_ROLE = 'author'
 
     def figure_access_details
       paper.figures.map(&:access_details)

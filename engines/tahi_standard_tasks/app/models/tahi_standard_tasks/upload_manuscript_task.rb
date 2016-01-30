@@ -2,7 +2,8 @@ module TahiStandardTasks
   class UploadManuscriptTask < ::Task
     include ::MetadataTask
 
-    register_task default_title: 'Upload Manuscript', default_role: 'author'
+    DEFAULT_TITLE = 'Upload Manuscript'
+    DEFAULT_ROLE = 'author'
     def active_model_serializer
       TaskSerializer
     end

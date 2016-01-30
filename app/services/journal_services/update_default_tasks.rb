@@ -1,13 +1,12 @@
 module JournalServices
   # This service class will allow update all the tasks old_role and title attrs
   # to their default values defined in the task class, except for Ad-hoc tasks
-  # TaskType.types keeps a reference of all the task registered.
   class UpdateDefaultTasks < BaseService
     def self.call
-      TaskType.types.each do |klass, defaults|
-        next if klass == 'Task'
-        klass.constantize.update_all old_role: defaults[:default_role],
-                                     title: defaults[:default_title]
+      Task.all_task_types.each do |klass|
+        next if klass == Task
+        klass.update_all old_role: klass::DEFAULT_ROLE,
+                         title: klass::DEFAULT_TITLE
       end
     end
   end

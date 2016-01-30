@@ -1,6 +1,7 @@
 module TahiStandardTasks
   class PaperReviewerTask < ::Task
-    register_task default_title: "Invite Reviewers", default_role: "editor"
+    DEFAULT_TITLE = 'Invite Reviewers'
+    DEFAULT_ROLE = 'editor'
 
     include Invitable
 

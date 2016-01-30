@@ -13,7 +13,8 @@ module TahiStandardTasks
   end
 
   class PaperAdminTask < Task
-    register_task default_title: "Assign Admin", default_role: "admin"
+    DEFAULT_TITLE = 'Assign Admin'
+    DEFAULT_ROLE = 'admin'
 
     attr_accessor :admin_id
 

@@ -1,6 +1,7 @@
 module TahiStandardTasks
   class EthicsTask < Task
     include MetadataTask
-    register_task default_title: "Ethics Statement", default_role: "author"
+    DEFAULT_TITLE = 'Ethics Statement'
+    DEFAULT_ROLE = 'author'
   end
 end

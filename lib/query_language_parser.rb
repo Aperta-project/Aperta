@@ -24,7 +24,16 @@ class QueryLanguageParser
     def add_simple_expression(keyword, &block)
       add_expression(keywords: [keyword]) do |predicate|
         (symbol(keyword) >> predicate).map do |parsed_string|
-          call_block_with_parsed_string(block, parsed_string)
+          call_block_with_parsed_strings(block, [parsed_string])
+        end
+      end
+    end
+
+    def add_two_part_expression(keyword, argument, &block)
+      add_expression(keywords: [:keyword]) do |predicate|
+        seq(symbol(keyword) >> /.*?(?=#{argument})/,
+            symbol(argument) >> predicate).map do |seq|
+          call_block_with_parsed_strings(block, [seq[0].strip, seq[1].strip])
         end
       end
     end
@@ -42,11 +51,11 @@ class QueryLanguageParser
 
   private
 
-  def call_block_with_parsed_string(block, parsed_string)
+  def call_block_with_parsed_strings(block, parsed_strings)
     # Instance exec because these blocks are defined at the class
     # level (using, e.g., add_simple_expression), but they must be run
     # at the instance level.
-    instance_exec(parsed_string, &block)
+    instance_exec(*parsed_strings, &block)
   end
 
   def boolean_join(unit, keyword, method)
@@ -58,7 +67,7 @@ class QueryLanguageParser
   def statements
     self.class.statements.map do |statement|
       statement[:parser].map do |parsed_string|
-        call_block_with_parsed_string(statement[:block], parsed_string)
+        call_block_with_parsed_strings(statement[:block], [parsed_string])
       end
     end
   end

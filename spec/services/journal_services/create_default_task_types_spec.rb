@@ -3,28 +3,20 @@ require 'rails_helper'
 describe JournalServices::CreateDefaultTaskTypes do
   let(:journal) { FactoryGirl.create(:journal) }
 
-  it "creates missing task types for an existing journal" do
-    jtt = journal.journal_task_types.first
-    jtt.destroy!
+  it 'Creates missing task types for an existing journal' do
+    journal.journal_task_types.first.destroy
     expect {
       JournalServices::CreateDefaultTaskTypes.call(journal)
-    }.to change {
-      journal.reload.journal_task_types.count
-    }.by 1
+    }.to change { journal.reload.journal_task_types.count }.by 1
   end
 
-  it "doesn't change task types that exist on an existing journal" do
-    jtt = journal.journal_task_types.first
-    jtt.title = "dont change me"
-    jtt.old_role = "dictator"
-    jtt.save!
-    expect {
-      JournalServices::CreateDefaultTaskTypes.call(journal)
-    }.to change {
-      journal.reload.journal_task_types.count
-    }.by 0
+  it 'Updates title and old_role on an existing journal' do
+    jtt = journal.journal_task_types.find_by(title: 'Ad-hoc')
+    jtt.update(title: 'Old Title', old_role: 'author') # Simulate old values
 
-    expect(jtt.reload.title).to eq("dont change me")
-    expect(jtt.old_role).to eq("dictator")
+    JournalServices::CreateDefaultTaskTypes.call(journal)
+
+    expect(jtt.reload.title).to eq('Ad-hoc')
+    expect(jtt.old_role).to eq('user')
   end
 end

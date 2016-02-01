@@ -8,14 +8,6 @@ require "sprockets/railtie"
 Bundler.require(:default, Rails.env)
 
 module Tahi
-  def self.service_log
-    @@service_log ||= Logger.new(STDOUT)
-  end
-
-  def self.service_log=(log)
-    @@service_log = log
-  end
-
   class Application < Rails::Application
     config.eager_load = true
 
@@ -47,6 +39,11 @@ module Tahi
     if config.basic_auth_required
       config.basic_auth_user = ENV.fetch('BASIC_HTTP_USERNAME')
       config.basic_auth_password = ENV.fetch('BASIC_HTTP_PASSWORD')
+    end
+
+    unless Rails.env.test?
+      config.logger = Logger.new(STDOUT)
+      config.log_level = :info
     end
 
     config.omniauth_providers = []

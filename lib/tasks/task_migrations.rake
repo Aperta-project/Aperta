@@ -1,27 +1,14 @@
 namespace :data do
-  desc "Create default task types for all journals"
-  task :create_task_types => :environment do
+  desc 'Update or Create JournalTaskType and Tasks records for all journals'
+  task update_journal_task_types: :environment do
     Rails.application.config.eager_load_namespaces.each(&:eager_load!)
+    Rails.logger.info 'Updating JournalTaskType records for all journals...'
     Journal.all.each do |journal|
       JournalServices::CreateDefaultTaskTypes.call(journal)
     end
-  end
 
-  desc "Update task types to each tasks's default task type for all journals"
-  task :update_task_types => :environment do
-    Rails.application.config.eager_load_namespaces.each(&:eager_load!)
-    Journal.all.each do |journal|
-      JournalServices::CreateDefaultTaskTypes.call journal, override_existing: true
-    end
-
-    TaskType.types.each do |task_class, defaults|
-      task_class.constantize.update_all role: defaults[:default_role],
-                                        title: defaults[:default_title]
-    end
-  end
-
-  task :shorten_supporting_information do
-    Task.where(title: "Supporting Information").update_all(title: "Supporting Info")
+    Rails.logger.info 'Updating existing tasks title and old_role attributes...'
+    JournalServices::UpdateDefaultTasks.call
   end
 
   desc "Destroy and recreate manuscript manager templates"

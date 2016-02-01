@@ -267,7 +267,7 @@ describe PapersController do
   describe "PUT 'withdraw'" do
     let(:user) { create :user }
     permission action: :withdraw_manuscript, applies_to: 'Paper', states: ['*']
-    role 'Author' do
+    role 'Creator' do
       has_permission action: 'withdraw_manuscript', applies_to: 'Paper'
     end
 
@@ -276,9 +276,9 @@ describe PapersController do
     end
 
     context 'has withdraw_manuscript permission' do
-      context 'as the author' do
+      context 'as the creator' do
         before do
-          assign_user user, to: paper, with_role: role_Author
+          assign_user user, to: paper, with_role: role_Creator
         end
 
         it 'withdraws the paper' do

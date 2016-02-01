@@ -14,7 +14,7 @@ describe PermissionsController do
     end
 
     permission action: :withdraw_manuscript, applies_to: 'Paper', states: ['*']
-    role 'Author' do
+    role 'Creator' do
       has_permission action: 'withdraw_manuscript', applies_to: 'Paper'
     end
     role 'JournalStaff' do
@@ -22,9 +22,9 @@ describe PermissionsController do
     end
 
     context 'has one assignment to the object' do
-      context 'as the author' do
+      context 'as the creator' do
         before do
-          assign_user user, to: paper, with_role: role_Author
+          assign_user user, to: paper, with_role: role_Creator
         end
 
         it 'returns the permission' do

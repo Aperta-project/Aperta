@@ -22,6 +22,14 @@ class DefaultAuthorCreator
                                 email: creator.email)
   end
 
+  def assign_author_role
+    Assignment.create(
+      user: creator,
+      role: paper.journal.roles.creator,
+      assigned_to: paper
+    )
+  end
+
   def add_affiliation_information
     if creator_affiliation = creator.affiliations.by_date.first
       author.affiliation = creator_affiliation.name

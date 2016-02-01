@@ -12,12 +12,9 @@
 
 <div class="button-secondary button--green adhoc-toolbar-item--image fileinput-button">
   <span class="fa fa-paperclip"></span>
-  {{file-uploader id="file_attachment"
-                  filePrefix="ad-hoc"
-                  url=imageUploadUrl
-                  accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps,.docx,.odt,.epub,.pdf"
-                  start="uploadStarted"
-                  done="uploadFinished"
-                  cancel="cancelUploads"
-                  progress="uploadProgress"}}
+  {{s3-file-uploader elementId="file_attachment"
+                     accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps,.docx,.odt,.epub,.pdf"
+                     filePath="ad-hoc"
+                     uploadFinished=(action "uploadFinished")
+                     uploadFailed=(action "uploadFailed")}}
 </div>

@@ -4,10 +4,6 @@
   {{inline-edit-h1 title=task.title setTitle="setTitle"}}
 
   <div class="task-body">
-    {{#each uploads as |upload|}}
-      {{upload-preview upload=upload}}
-    {{/each}}
-
     {{#each blocks as |block|}}
       {{#inline-edit-body-part block=block
                                editing=false

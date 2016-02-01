@@ -13,12 +13,12 @@ describe PermissionsController do
       Authorizations::Configuration.reload
     end
 
-    permission action: :withdraw_manuscript, applies_to: 'Paper', states: ['*']
+    permission action: :withdraw, applies_to: 'Paper', states: ['*']
     role 'Creator' do
-      has_permission action: 'withdraw_manuscript', applies_to: 'Paper'
+      has_permission action: 'withdraw', applies_to: 'Paper'
     end
     role 'JournalStaff' do
-      has_permission action: 'withdraw_manuscript', applies_to: 'Paper'
+      has_permission action: 'withdraw', applies_to: 'Paper'
     end
 
     context 'has one assignment to the object' do

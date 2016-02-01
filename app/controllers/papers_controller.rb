@@ -139,7 +139,7 @@ class PapersController < ApplicationController
   end
 
   def withdraw
-    requires_user_can :withdraw_manuscript, paper
+    requires_user_can :withdraw, paper
     paper.withdraw! withdrawal_params[:reason]
     render json: paper, status: :ok
   end

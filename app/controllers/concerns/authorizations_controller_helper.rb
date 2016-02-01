@@ -1,5 +1,5 @@
 # Controller helper for roles and permissions
-# ex: requires_user_can :withdraw_manuscript, paper
+# ex: requires_user_can :withdraw, paper
 module AuthorizationsControllerHelper
   extend ActiveSupport::Concern
 

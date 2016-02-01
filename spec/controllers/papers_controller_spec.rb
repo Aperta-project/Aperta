@@ -266,16 +266,16 @@ describe PapersController do
 
   describe "PUT 'withdraw'" do
     let(:user) { create :user }
-    permission action: :withdraw_manuscript, applies_to: 'Paper', states: ['*']
+    permission action: :withdraw, applies_to: 'Paper', states: ['*']
     role 'Creator' do
-      has_permission action: 'withdraw_manuscript', applies_to: 'Paper'
+      has_permission action: 'withdraw', applies_to: 'Paper'
     end
 
     role 'JournalStaff' do
-      has_permission action: 'withdraw_manuscript', applies_to: 'Paper'
+      has_permission action: 'withdraw', applies_to: 'Paper'
     end
 
-    context 'has withdraw_manuscript permission' do
+    context 'has withdraw permission' do
       context 'as the creator' do
         before do
           assign_user user, to: paper, with_role: role_Creator
@@ -315,7 +315,7 @@ describe PapersController do
       end
     end
 
-    context 'does not have withdraw_manuscript permission' do
+    context 'does not have withdraw permission' do
       it 'does not withdraw the paper' do
         put :withdraw,
             id: paper.id,

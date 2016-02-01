@@ -18,6 +18,13 @@ class SupportingInformationFile < ActiveRecord::Base
 
   mount_uploader :attachment, AdhocAttachmentUploader
 
+  validates :category, :title, presence: true, if: :task_completed?
+
+  belongs_to :supporting_information_task,
+             class_name: 'TahiStandardTasks::SupportingInformationTask',
+             inverse_of: :supporting_information_files,
+             foreign_key: :si_task_id
+
   IMAGE_TYPES = %w{jpg jpeg tiff tif gif png eps tif}
 
   def ensure_striking_image_category_is_figure
@@ -67,5 +74,11 @@ class SupportingInformationFile < ActiveRecord::Base
 
   def insert_title
     self.title = "#{attachment.filename}" if attachment.present?
+  end
+
+  private
+
+  def task_completed?
+    supporting_information_task.completed?
   end
 end

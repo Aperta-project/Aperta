@@ -140,11 +140,11 @@
     <div class="flex-element billing-payee-country {{if validationErrors.country "error"}}">
       {{#if countries.loaded}}
         {{nested-question-select ident="plos_billing--country"
-                          owner=task
-                          placeholder="Select Your Country"
-                          displayQuestionText=false
-                          source=formattedCountries
-                          enable=(not fieldsDisabled)}}
+                                 owner=task
+                                 placeholder="Select Your Country"
+                                 displayQuestionText=false
+                                 source=formattedCountries
+                                 enable=(not fieldsDisabled)}}
       {{/if}}
       {{#if countries.loading}}
         {{progress-spinner visible=true size="mini"}}
@@ -159,9 +159,7 @@
 
   <hr>
 
-  <h2>
-    Payment Options
-  </h2>
+  <h2>Payment Options</h2>
 
   {{partial "intro"}}
 

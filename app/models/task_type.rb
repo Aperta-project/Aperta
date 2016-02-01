@@ -8,6 +8,10 @@ class TaskType
       required_permission_applies_to: required_permission_applies_to}
   end
 
+  def self.deregister(task_klass)
+    types.delete(task_klass.name)
+  end
+
   def self.constantize!(type)
     raise "#{type} is not a registered TaskType" unless types.keys.include?(type)
     type.constantize

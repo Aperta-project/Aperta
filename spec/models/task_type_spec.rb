@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 describe TaskType do
+  after do
+    TaskType.deregister(SampleTask)
+  end
 
   describe ".register" do
     before do

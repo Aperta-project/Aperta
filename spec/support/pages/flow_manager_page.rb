@@ -34,16 +34,6 @@ class FlowManagerPage < Page
     end
   end
 
-  class CardFragment < PageFragment
-    def title
-      text
-    end
-
-    def completed?
-      has_css?('.card-completed-icon')
-    end
-  end
-
   class PaperProfile < PageFragment
     def title
       find('.paper-profile-title')
@@ -52,14 +42,6 @@ class FlowManagerPage < Page
     def view
       click_link title
       TaskManagerPage.new
-    end
-
-    def cards
-      find_all('.card').map { |c| CardFragment.new c }
-    end
-
-    def card_by_title(card_title)
-      cards.find { |card| card.title == card_title }
     end
   end
 

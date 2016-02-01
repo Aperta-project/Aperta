@@ -183,7 +183,7 @@ module Authorizations
         permissible_states = [WILDCARD_STATE] if permissible_states.empty?
 
         # determine how this kind of thing relates to what we're interested in
-        if assigned_to_klass <= @klass
+        if assigned_to_klass <=> @klass
           authorized_objects = QueryAgainstAssignedObject.new(
             klass: @klass,
             target: @target,

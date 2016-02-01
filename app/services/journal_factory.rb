@@ -27,7 +27,8 @@ class JournalFactory
     end
 
     Role.ensure_exists('Reviewer', journal: @journal, participates_in: [Task, Paper]) do |role|
-      role.ensure_permission_exists(:view, applies_to: 'Task', states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: 'TahiStandardTasks::ReviewerReportTask', states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: 'TahiStandardTasks::ReviewerReportTask', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Paper', states: ['*'])
     end
 

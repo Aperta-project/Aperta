@@ -22,10 +22,8 @@ class JournalPage < Page
   end
 
   def mmt_thumbnail(mmt)
-    find(".mmt-thumbnail", match: :first)
-    all(".mmt-thumbnail").detect do |ele|
-      ele.first(".mmt-thumbnail-title", text: mmt.paper_type)
-    end
+    find('.mmt-thumbnail .mmt-thumbnail-title', text: mmt.paper_type)
+      .find(:xpath, '..')
   end
 
   def visit_mmt(mmt)

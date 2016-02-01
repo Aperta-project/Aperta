@@ -64,9 +64,11 @@ feature "Flow Manager", js: true, selenium: true do
       dashboard_page = DashboardPage.new
       flow_manager_page = dashboard_page.view_flow_manager
 
-      expect { flow_manager_page.add_column "Up for grabs" }.to change {
-        flow_manager_page.columns("Up for grabs").count
-      }.by(1)
+      expect(flow_manager_page).to \
+        have_css('.column h2', text: 'Up for grabs', count: 1)
+      flow_manager_page.add_column 'Up for grabs'
+      expect(flow_manager_page).to \
+        have_css('.column h2', text: 'Up for grabs', count: 2)
 
       expect(flow_manager_page).to have_no_application_error
     end

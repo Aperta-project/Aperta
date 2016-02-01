@@ -8,13 +8,8 @@ class FlowManagerPage < Page
 
   def column title
     session.has_content? title
-    el = all('.column').detect { |c| c.find('h2').text == title }
+    el = find('.column h2', text: title).find(:xpath, '../../..')
     Column.new el if el
-  end
-
-  def columns title
-    session.has_content? title
-    all('.column').select { |c| c.find('h2').text == title }
   end
 
   def has_column? title

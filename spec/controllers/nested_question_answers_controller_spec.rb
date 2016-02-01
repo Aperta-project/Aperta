@@ -22,7 +22,7 @@ describe NestedQuestionAnswersController do
           additional_data: { "insitution-id" => "123" }
         }.merge(params)
       }
-      post(:create, post_params, format: :json)
+      post(:create, post_params)
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -68,6 +68,7 @@ describe NestedQuestionAnswersController do
 
     def do_request(params: {})
       post_params = {
+        format: 'json',
         nested_question_id: nested_question.to_param,
         nested_question_answer: {
           value: "bar",
@@ -76,7 +77,7 @@ describe NestedQuestionAnswersController do
           additional_data: { "insitution-id" => "123" }
         }.merge(params)
       }
-      post(:create, post_params, format: :json)
+      post(:create, post_params)
     end
 
     context "when the user has access" do
@@ -119,6 +120,7 @@ describe NestedQuestionAnswersController do
 
     def do_request(params:{})
       put_params = {
+        format: 'json',
         id: nested_question_answer.to_param,
         nested_question_id: nested_question.to_param,
         nested_question_answer: {
@@ -128,7 +130,7 @@ describe NestedQuestionAnswersController do
           additional_data: { "insitution-id" => "234" }
         }.merge(params)
       }
-      put(:update, put_params, format: :json)
+      put(:update, put_params)
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -174,6 +176,7 @@ describe NestedQuestionAnswersController do
 
     def do_request(params:{})
       delete_params = {
+        format: 'json',
         id: nested_question_answer.to_param,
         nested_question_id: nested_question.to_param,
         nested_question_answer: {
@@ -183,7 +186,7 @@ describe NestedQuestionAnswersController do
           additional_data: { "insitution-id" => "234" }
         }.merge(params)
       }
-      delete(:destroy, delete_params, format: :json)
+      delete(:destroy, delete_params)
     end
 
     it_behaves_like "an unauthenticated json request"

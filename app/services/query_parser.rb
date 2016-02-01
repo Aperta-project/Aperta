@@ -1,40 +1,45 @@
 ##
 # This defines our particular query language.
 #
-# ORDER MATTERS! Expressions earlier on the page will take
-# precedence.
+# It uses arel queries instead of ActiveRelations, which may look odd.
+# Unfortunately, ActiveRelation doesn't support the AND/OR boolean
+# logic our query language uses.
+#
+# When adding expressions and statements, ORDER MATTERS! Expressions
+# earlier on the page will take precedence over those later, so (for
+# example) X IS NOT should come before X IS.
+#
 class QueryParser
   extend QueryLanguageParser
   extend Rsec::Helpers
 
-  def self.join(klass)
-    unless @joins.include? klass
-      @root = @root
-              .join(klass.arel_table)
-              .on(klass.arel_table[:paper_id].eq(Paper.arel_table[:id]))
-      @joins.push klass
-    end
+  def self.build(str)
+    clear_joins
+    query = parse str
+    @root.where(query)
   end
 
+  paper_table = Paper.arel_table
+
   add_simple_expression(keyword: 'STATUS IS NOT') do |status|
-    Paper.arel_table[:publishing_state].not_eq(status)
+    paper_table[:publishing_state].not_eq(status)
   end
 
   add_simple_expression(keyword: 'STATUS IS') do |status|
-    Paper.arel_table[:publishing_state].eq(status)
+    paper_table[:publishing_state].eq(status)
   end
 
   add_simple_expression(keyword: 'TYPE IS NOT') do |type|
-    Paper.arel_table[:paper_type].not_eq(type)
+    paper_table[:paper_type].not_eq(type)
   end
 
   add_simple_expression(keyword: 'TYPE IS') do |type|
-    Paper.arel_table[:paper_type].eq(type)
+    paper_table[:paper_type].eq(type)
   end
 
   add_expression(keywords: ['TITLE IS']) do |_|
     symbol('TITLE IS') >> /.*/.r.map do |title|
-      Paper.arel_table[:title].eq(title)
+      title_query(title)
     end
   end
 
@@ -49,17 +54,46 @@ class QueryParser
   end
 
   add_simple_expression(keyword: 'DOI IS') do |doi|
-    Paper.arel_table[:doi].eq(doi)
+    paper_table[:doi].matches("%#{doi}%")
   end
 
-  add_statement(/^\d+/.r.map { Paper.arel_table[:doi].eq(doi) })
+  add_statement(/^\d+/.r.map { |doi| paper_table[:doi].matches("%#{doi}%") })
 
-  add_statement(/^.+/.r.map { Paper.arel_table[:title].eq(title) })
+  add_statement(/^.+/.r.map { |title| title_query(title) })
 
-  def self.build(str)
-    @joins = []
-    @root = Paper.arel_table
-    query = parse str
-    @root.where(query)
+  add_statement(/^$/.r.map { paper_table[:id].not_eq(nil) })
+
+  class << self
+    def clear_joins
+      @joins = []
+      @root = Paper
+    end
+
+    private
+
+    def join(klass)
+      return if @joins.include? klass
+      @root = @root.joins(klass.table_name.to_sym)
+      @joins.push klass
+    end
+
+    def title_query(title)
+      ##
+      # Arel doesn't have a built-in text search node, so we have to
+      # build our own.
+      #
+      title_col = Paper.arel_table[:title]
+      language = Arel::Nodes.build_quoted('english')
+      title_vector = Arel::Nodes::NamedFunction.new(
+        'to_tsvector',
+        [language, title_col])
+
+      quoted_query_str = Arel::Nodes.build_quoted(title.gsub(/\s/, '&'))
+      query_vector = Arel::Nodes::NamedFunction.new(
+        'to_tsquery',
+        [language, quoted_query_str])
+
+      Arel::Nodes::InfixOperation.new('@@', title_vector, query_vector)
+    end
   end
 end

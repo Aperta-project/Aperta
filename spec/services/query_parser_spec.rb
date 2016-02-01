@@ -93,5 +93,35 @@ describe QueryParser do
         SQL
       end
     end
+
+    describe 'task queries' do
+      it 'parses TASK x IS COMPLETE' do
+        parse = QueryParser.new.parse 'TASK anytask IS COMPLETE'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "tasks"."title" ILIKE 'anytask' AND "tasks"."completed" = 't'
+        SQL
+      end
+
+      it 'parses TASK x IS INCOMPLETE' do
+        parse = QueryParser.new.parse 'TASK anytask IS INCOMPLETE'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "tasks"."title" ILIKE 'anytask' AND "tasks"."completed" = 'f'
+        SQL
+      end
+
+      it 'parses HAS TASK x' do
+        parse = QueryParser.new.parse 'HAS TASK anytask'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "tasks"."title" ILIKE 'anytask'
+        SQL
+      end
+
+      it 'parses HAS NO TASK x' do
+        parse = QueryParser.new.parse 'HAS NO TASK anytask'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "tasks"."title" NOT ILIKE 'anytask'
+        SQL
+      end
+    end
   end
 end

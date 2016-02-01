@@ -44,6 +44,28 @@ class QueryParser < QueryLanguageParser
     paper_table[:doi].matches("%#{doi}%")
   end
 
+  add_two_part_expression('TASK', 'IS COMPLETE') do |task, _|
+    join Task
+    Task.arel_table[:title].matches(task)
+      .and(Task.arel_table[:completed].eq(true))
+  end
+
+  add_two_part_expression('TASK', 'IS INCOMPLETE') do |task, _|
+    join Task
+    Task.arel_table[:title].matches(task)
+      .and(Task.arel_table[:completed].eq(false))
+  end
+
+  add_simple_expression('HAS TASK') do |task|
+    join Task
+    Task.arel_table[:title].matches(task)
+  end
+
+  add_simple_expression('HAS NO TASK') do |task|
+    join Task
+    Task.arel_table[:title].does_not_match(task)
+  end
+
   add_statement(/^\d+/.r) do |doi|
     paper_table[:doi].matches("%#{doi}%")
   end

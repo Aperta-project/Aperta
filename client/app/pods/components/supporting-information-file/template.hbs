@@ -1,99 +1,100 @@
-{{#unless (eq uiState 'edit')}}
-<div class="si-file-viewing" {{action 'enterEditState' on='doubleClick'}}>
+{{#if editionMode}}
+  <div class="si-file-editor flex-form visible">
+    <div class="si-file-filename">
+      <a href="{{ file.src }}"><i class="fa {{iconClass}}"></i>{{ file.filename }}</a>
 
-  {{#if isEditable}}
-    <div class="si-file-control-icons">
-      <i class="fa fa-pencil si-file-edit-icon" {{action 'enterEditState' on='click'}}></i>
-      <i class="fa fa-trash si-file-delete-icon" {{action 'enterDeleteState' on='click'}}></i>
+      <button class="fileinput-button">
+        <i class="fa fa-refresh"></i>
+        <span>Replace File</span>
+        {{file-uploader
+          url=attachmentUrl
+          railsMethod="PUT"
+          multiple=false
+          filePrefix="supporting-info"
+          start="uploadStarted"
+          progress="uploadProgress"
+          done="uploadFinished"
+          cancel="cancelUploads"}}
+      </button>
     </div>
-  {{/if}}
+    <div class="flex-group">
+      {{input class="form-control flex-element si-file-label-input"
+              placeholder="E.g. S1"
+              name="label"
+              value=file.label}}
+      {{power-select-other class="form-control flex-element si-file-category-input"
+              otherText="Other"
+              selectPlaceholder="Select category"
+              inputPlaceholder="Please specify"
+              name="category"
+              options=categories
+              searchEnabled=false
+              value=file.category}}
+    </div>
+    <div class="flex-group">
+      {{format-input class="form-control flex-element si-file-title-input"
+              placeholder="Enter a title"
+              name="title"
+              value=file.title
+              focus-out=(action "validateTitle")
+              errors=validationErrors.category
+              displayBold=false}}
+      {{format-input placeholder="Enter a legend (optional)"
+              name="caption"
+              class="form-control flex-element si-file-caption-textbox"
+              value=file.caption
+              displayBold=false}}
+    </div>
+    <label class="si-file-publishable-checkbox">{{input type="checkbox" checked=file.publishable}} For publication</label>
+    {{#if (eq file.category 'Figure')}}
+      <label class="si-file-striking-image-checkbox">{{input type="checkbox" checked=file.strikingImage}} Nominate as striking image</label>
+    {{/if}}
 
-  <a href="{{ file.src }}" class="si-file-filename">
-    <i class="fa {{iconClass}}"></i>{{ file.filename }}
-  </a>
-
-  <div class="si-file-title">
-    {{ file.label }} {{ file.category }}{{if file.category '.' ''}} {{{ file.title }}}
+    <div class="si-file-actions">
+      <button class="button--green button-link si-file-cancel-edit-button"
+        {{action "cancelEdit"}}>
+        Cancel
+      </button>
+      <button class="button-secondary button--green si-file-save-edit-button"
+        {{action "saveEdit"}}>
+        Save
+      </button>
+    </div>
   </div>
 
-  {{#if file.caption}}
-    <div class="si-file-caption">{{{ file.caption }}}</div>
-  {{/if}}
+{{else}}
+  <div class="si-file-viewing" {{action 'enterEditState' on='doubleClick'}}>
 
-  <div class="{{if (eq uiState 'delete') 'visible'}}
-              si-file-delete
-              {{if file.caption '' 'si-file-full-height'}}">
-    <button class="button si-file-cancel-delete-button" {{action "cancelDelete"}}>
-      Cancel
-    </button>
+    {{#if isEditable}}
+      <div class="si-file-control-icons">
+        <i class="fa fa-pencil si-file-edit-icon" {{action 'enterEditState' on='click'}}></i>
+        <i class="fa fa-trash si-file-delete-icon" {{action 'enterDeleteState' on='click'}}></i>
+      </div>
+    {{/if}}
 
-    <button class="button si-file-delete-button" {{action "delete"}}>
-      Delete Forever
-    </button>
+    <a href="{{ file.src }}" class="si-file-filename">
+      <i class="fa {{iconClass}}"></i>{{ file.filename }}
+    </a>
+
+    <div class="si-file-title">
+      {{ file.label }} {{ file.category }}{{if file.category '.' ''}} {{{ file.title }}}
+    </div>
+
+    {{#if file.caption}}
+      <div class="si-file-caption">{{{ file.caption }}}</div>
+    {{/if}}
+
+    <div class="{{if (eq uiState 'delete') 'visible'}}
+                si-file-delete
+                {{if file.caption '' 'si-file-full-height'}}">
+      <button class="button si-file-cancel-delete-button" {{action "cancelDelete"}}>
+        Cancel
+      </button>
+
+      <button class="button si-file-delete-button" {{action "delete"}}>
+        Delete Forever
+      </button>
+    </div>
   </div>
-</div>
-{{/unless}}
 
-<div class="si-file-editor flex-form {{if (eq uiState 'edit') 'visible' ''}}">
-  <div class="si-file-filename">
-    <a href="{{ file.src }}"><i class="fa {{iconClass}}"></i>{{ file.filename }}</a>
-
-    <button class="fileinput-button">
-      <i class="fa fa-refresh"></i>
-      <span>Replace File</span>
-      {{file-uploader
-        url=attachmentUrl
-        railsMethod="PUT"
-        multiple=false
-        filePrefix="supporting-info"
-        start="uploadStarted"
-        progress="uploadProgress"
-        done="uploadFinished"
-        cancel="cancelUploads"}}
-    </button>
-  </div>
-  <div class="flex-group">
-    {{input class="form-control flex-element si-file-label-input"
-            placeholder="E.g. S1"
-            name="label"
-            value=file.label}}
-    {{power-select-other class="form-control flex-element si-file-category-input"
-            otherText="Other"
-            selectPlaceholder="Select category"
-            inputPlaceholder="Please specify"
-            name="category"
-            options=categories
-            searchEnabled=false
-            value=file.category}}
-  </div>
-  <div class="flex-group">
-    {{format-input class="form-control flex-element si-file-title-input"
-            placeholder="Enter a title"
-            name="title"
-            value=file.title
-            focus-out=(action "validateTitle")
-            errors=validationErrors.title
-            displayBold=false}}
-    {{format-input placeholder="Enter a legend (optional)"
-            name="caption"
-            class="form-control flex-element si-file-caption-textbox"
-            value=file.caption
-            displayBold=false}}
-  </div>
-  <label class="si-file-publishable-checkbox">{{input type="checkbox" checked=file.publishable}} For publication</label>
-
-  {{#if (eq file.category 'Figure')}}
-  <label class="si-file-striking-image-checkbox">{{input type="checkbox" checked=file.strikingImage}} Nominate as striking image</label>
-  {{/if}}
-
-  <div class="si-file-actions">
-    <button class="button--green button-link si-file-cancel-edit-button"
-      {{action "cancelEdit"}}>
-      Cancel
-    </button>
-    <button class="button-secondary button--green si-file-save-edit-button"
-      {{action "saveEdit"}}>
-      Save
-    </button>
-  </div>
-</div>
+{{/if}}

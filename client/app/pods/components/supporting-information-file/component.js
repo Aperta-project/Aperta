@@ -10,6 +10,11 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   uiState: 'view', // view, edit, delete
   deleteState: false,
   editState: false,
+  editionMode: Ember.computed('validationErrors', 'uiState', function(){
+    if (this.validationErrorsPresent()) return true;
+    if (this.get('uiState') === 'edit') return true;
+    return false;
+  }),
 
   categories: [
     'Table',
@@ -76,7 +81,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
 
     validateTitle() {
       this.validate('title', this.get('file.title'),
-                           this.get('validations.title'));
+                             this.get('validations.title'));
     },
 
     saveEdit(){

@@ -1,7 +1,9 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy, except: [:index]
-  before_action :enforce_index_policy, only: [:index]
+
+  before_action :must_be_able_to_view_paper, only: [:index]
+  before_action :must_be_able_to_view_task, except: [:index]
+  before_action :must_be_able_to_edit_task, only: [:update, :destroy]
 
   before_action :unmunge_empty_arrays, only: [:update]
 
@@ -114,13 +116,15 @@ class TasksController < ApplicationController
     end
   end
 
-  def enforce_index_policy
-    authorize_action!(task: nil, for_paper: paper)
+  def must_be_able_to_view_paper
+    fail AuthorizationError unless current_user.can?(:view, paper)
   end
 
-  def enforce_policy
-    if !current_user.can?(:view, task)
-      fail AuthorizationError
-    end
+  def must_be_able_to_view_task
+    fail AuthorizationError unless current_user.can?(:view, task)
+  end
+
+  def must_be_able_to_edit_task
+    fail AuthorizationError unless current_user.can?(:edit, task)
   end
 end

@@ -23,6 +23,7 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: 'Task', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'PlosBilling::BillingTask', states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: 'PlosBilling::BillingTask', states: ['*'])
     end
 
     Role.ensure_exists('Reviewer', journal: @journal, participates_in: [Task, Paper]) do |role|
@@ -36,6 +37,7 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Task', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'PlosBilling::BillingTask', states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: 'PlosBilling::BillingTask', states: ['*'])
     end
 
     Role.ensure_exists('Internal Editor', journal: @journal) do |role|
@@ -49,6 +51,7 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Task', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'PlosBilling::BillingTask', states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: 'PlosBilling::BillingTask', states: ['*'])
     end
   end
 end

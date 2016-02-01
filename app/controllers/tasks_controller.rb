@@ -2,8 +2,10 @@ class TasksController < ApplicationController
   before_action :authenticate_user!
 
   before_action :must_be_able_to_view_paper, only: [:index]
-  before_action :must_be_able_to_view_task, except: [:index]
-  before_action :must_be_able_to_edit_task, only: [:update, :destroy]
+  before_action :must_be_able_to_manage_workflow_on_paper, only: [:create]
+
+  before_action :must_be_able_to_view_task, only: [:show, :nested_questions, :nested_question_answers]
+  before_action :must_be_able_to_edit_task, only: [:update, :destroy, :send_message]
 
   before_action :unmunge_empty_arrays, only: [:update]
 
@@ -72,7 +74,7 @@ class TasksController < ApplicationController
   private
 
   def paper
-    @paper ||= Paper.find(params[:paper_id])
+    @paper ||= Paper.find(params[:paper_id] || params[:task][:paper_id])
   end
 
   def task
@@ -114,6 +116,10 @@ class TasksController < ApplicationController
       whitelisted[:body] ||= "Nothing to see here."
       whitelisted[:recipients] ||= []
     end
+  end
+
+  def must_be_able_to_manage_workflow_on_paper
+    fail AuthorizationError unless current_user.can?(:manage_workflow, paper)
   end
 
   def must_be_able_to_view_paper

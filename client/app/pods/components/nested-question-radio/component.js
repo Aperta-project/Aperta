@@ -19,8 +19,8 @@ export default NestedQuestionComponent.extend({
   }),
 
   yieldingForAdditionalData: computed('model.answer.value', function() {
-    const yes  = this.get('yesSelected');
-    const no   = this.get('noSelected');
+    const yes = this.get('yesSelected');
+    const no  = this.get('noSelected');
 
     return {
       yes: yes,

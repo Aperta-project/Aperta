@@ -2,7 +2,7 @@ import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 const { computed } = Ember;
-const { alias } = computed;
+const { alias, or } = computed;
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
   classNames: ['task'],
@@ -17,8 +17,8 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   isSubmissionTask: alias('task.isSubmissionTask'),
   isSubmissionTaskEditable: alias('task.paper.editable'),
   isSubmissionTaskNotEditable: computed.not('task.paper.editable'),
-  isEditable: computed.or('isUserEditable', 'currentUser.siteAdmin'),
-  fieldsDisabled: computed.or('isSubmissionTaskNotEditable', 'task.completed'),
+  isEditable: or('isUserEditable', 'currentUser.siteAdmin'),
+  fieldsDisabled: or('isSubmissionTaskNotEditable', 'task.completed'),
   isUserEditable: computed('task.paper.editable', 'isSubmissionTask',
     function() {
       return this.get('task.paper.editable') || !this.get('isSubmissionTask');
@@ -31,6 +31,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
 
     if(this.validationErrorsPresent()) {
       this.set('task.completed', false);
+      this.set('validationErrors.completed', 'Please fix all errors');
       return;
     }
 
@@ -42,21 +43,8 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     });
   },
 
-  answers: computed('task.nestedQuestions.[]', function() {
-    return this.get('task.nestedQuestions').map(q => {
-      return q.answerForOwner(
-        this.get('task'), this.get('task.paper.latestDecision')
-      );
-    });
-  }),
-
-  isValid: computed('answers.@each.value', function() {
-    this.validateQuestions();
-    return !this.validationErrorsPresent();
-  }),
-
   validateQuestions() {
-    this.get('answers').forEach(answer => {
+    this.get('task.nestedQuestionAnswers').forEach(answer => {
       const key = answer.get('nestedQuestion.ident');
       const validations = this.get('validations')[key];
       if(Ember.isEmpty(validations)) { return; }

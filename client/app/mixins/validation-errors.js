@@ -211,7 +211,7 @@ export default Ember.Mixin.create({
   */
 
   validate(key, value, types) {
-    const messages = validator.validate(value, types);
+    const messages = validator.validate.call(this, value, types);
     this.displayValidationError(key, messages);
   },
 
@@ -221,15 +221,21 @@ export default Ember.Mixin.create({
   */
 
   validationErrorsPresent() {
+    return !isEmpty(this.currentValidationErrors());
+  },
+
+  currentValidationErrors() {
     const errors = this.get('validationErrors');
     const keys = _.keys(errors);
 
-    const errorsByKey = _.filter(_.map(keys, key => {
-      return isEmpty(errors[key]) ? false : errors[key];
+    return _.filter(_.map(keys, key => {
+      if(isEmpty(errors[key])) { return false; }
+
+      let hash = {};
+      hash[key] = errors[key];
+      return hash;
     }), function(m) {
       return m;
     });
-
-    return !isEmpty(errorsByKey);
   }
 });

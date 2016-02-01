@@ -16,6 +16,21 @@ describe TaskType do
     end
   end
 
+  describe ".deregister" do
+    before do
+      class SampleTask; end
+    end
+
+    before do
+      TaskType.register(SampleTask, "title", "old_role")
+    end
+
+    it "will remove the class from the list of registered task types" do
+      TaskType.deregister(SampleTask)
+      expect(TaskType.types.keys).to_not include("SampleTask")
+    end
+  end
+
   describe ".constantize!" do
 
     context "with a registered class" do

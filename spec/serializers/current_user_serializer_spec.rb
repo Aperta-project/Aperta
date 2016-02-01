@@ -3,8 +3,14 @@ require 'rails_helper'
 describe CurrentUserSerializer do
   include AuthorizationSpecHelper
 
+  before do
+    Authorizations::Configuration.reset
+    clear_roles_and_permissions
+  end
+
   subject(:serializer){ described_class.new(user) }
   let(:user) { FactoryGirl.create(:user) }
+  
   permission action: :view_profile, applies_to: 'User', states: ['*']
   role 'User' do
     has_permission action: 'view_profile', applies_to: 'User'

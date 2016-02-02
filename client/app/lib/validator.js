@@ -5,18 +5,22 @@ import number   from 'tahi/lib/validations/number';
 const { isEmpty } = Ember;
 
 const TYPES = {
-  'presence': presence,
-  'number': number
+  'presence': presence.validation,
+  'number': number.validation
 };
 
 const DEFAULT_MESSAGES = {
-  'presence': 'can\'t be blank',
-  'number': 'must be a number'
+  'presence': presence.defaultMessage,
+  'number': number.defaultMessage
 };
 
 const generateErrorMessage = function(type, customMessage) {
   if(isEmpty(customMessage)) {
     return DEFAULT_MESSAGES[type];
+  }
+
+  if(typeof customMessage === 'function') {
+    return customMessage.call(this, type);
   }
 
   return customMessage;
@@ -49,7 +53,7 @@ export default {
 
           const pass = TYPES[type](value, options);
           if(!pass) {
-            return generateErrorMessage(type, options.message);
+            return generateErrorMessage.call(context, type, options.message);
           }
         }
       })

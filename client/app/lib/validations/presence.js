@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
-export default function(value, options) {
+export const defaultMessage = 'can\'t be blank';
+
+export const validation = function(value, options) {
   return !Ember.isEmpty(value);
-}
+};

@@ -16,10 +16,10 @@ namespace :data do
           journal = paper.journal
           creator_role = journal.roles.creator
           reviewer_role = journal.roles.reviewer
-          user = paper.creator
+          user = User.find(paper.user_id)
           puts "Assigning #{user.full_name} <#{user.email}> as #{creator_role.name} on paper ##{paper.id} on '#{journal.name}' Journal"
           Assignment.where(
-            user: paper.creator,
+            user: user,
             role: creator_role,
             assigned_to: paper
           ).first_or_create!

@@ -1,8 +1,6 @@
 class ParticipationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy, except: [:index]
-  before_action :enforce_index_policy, only: [:index]
-
+  before_action :must_be_able_to_view_task
   respond_to :json
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
@@ -38,6 +36,8 @@ class ParticipationsController < ApplicationController
     @task ||= begin
       if params[:id].present?
         participation.task
+      elsif params[:task_id]
+        Task.find(params[:task_id])
       else
         Task.find(participation_params[:task_id])
       end
@@ -62,16 +62,7 @@ class ParticipationsController < ApplicationController
     head 404
   end
 
-  def enforce_index_policy
-    @task = Task.find(params[:task_id])
-    if !current_user.can?(:view, @task)
-      fail AuthorizationError
-    end
-  end
-
-  def enforce_policy
-    if !current_user.can?(:view, task)
-      fail AuthorizationError
-    end
+  def must_be_able_to_view_task
+    fail AuthorizationError unless current_user.can?(:view, task)
   end
 end

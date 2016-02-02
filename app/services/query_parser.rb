@@ -21,20 +21,20 @@ class QueryParser
 
   paper_table = Paper.arel_table
 
-  add_simple_expression(keyword: 'STATUS IS NOT') do |status|
-    paper_table[:publishing_state].not_eq(status)
+  add_simple_expression('STATUS IS NOT') do |status|
+    paper_table[:publishing_state].not_eq(status.parameterize.underscore)
   end
 
-  add_simple_expression(keyword: 'STATUS IS') do |status|
-    paper_table[:publishing_state].eq(status)
+  add_simple_expression('STATUS IS') do |status|
+    paper_table[:publishing_state].eq(status.parameterize.underscore)
   end
 
-  add_simple_expression(keyword: 'TYPE IS NOT') do |type|
-    paper_table[:paper_type].not_eq(type)
+  add_simple_expression('TYPE IS NOT') do |type|
+    paper_table[:paper_type].not_matches(type)
   end
 
-  add_simple_expression(keyword: 'TYPE IS') do |type|
-    paper_table[:paper_type].eq(type)
+  add_simple_expression('TYPE IS') do |type|
+    paper_table[:paper_type].matches(type)
   end
 
   add_expression(keywords: ['TITLE IS']) do |_|
@@ -43,17 +43,17 @@ class QueryParser
     end
   end
 
-  add_simple_expression(keyword: 'DECISION IS NOT') do |decision|
+  add_simple_expression('DECISION IS NOT') do |decision|
     join Decision
-    Decision.arel_table[:verdict].not_eq(decision)
+    Decision.arel_table[:verdict].not_eq(decision.parameterize.underscore)
   end
 
-  add_simple_expression(keyword: 'DECISION IS') do |decision|
+  add_simple_expression('DECISION IS') do |decision|
     join Decision
-    Decision.arel_table[:verdict].eq(decision)
+    Decision.arel_table[:verdict].eq(decision.parameterize.underscore)
   end
 
-  add_simple_expression(keyword: 'DOI IS') do |doi|
+  add_simple_expression('DOI IS') do |doi|
     paper_table[:doi].matches("%#{doi}%")
   end
 

@@ -21,8 +21,8 @@ module QueryLanguageParser
     @expressions.push block
   end
 
-  def add_simple_expression(keyword:, &block)
-    add_expression(keywords: [:keyword]) do |predicate|
+  def add_simple_expression(keyword, &block)
+    add_expression(keywords: [keyword]) do |predicate|
       (symbol(keyword) >> predicate).map(&block)
     end
   end

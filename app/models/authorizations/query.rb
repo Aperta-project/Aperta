@@ -101,9 +101,9 @@ module Authorizations
       return result_set
     end
 
-    # Returns all the eligible values for a permission applies_to given then
+    # Returns the eligible values for a permission applies_to given the
     # @klass being queried. This searches the class, any of its descendants,
-    # as well as any ancesors in the lineage from the @klass to its base-class.
+    # as well as any ancestors in the lineage from the @klass to its base-class.
     def eligible_applies_to
       eligible_ancestors = @klass.ancestors & @klass.base_class.descendants
       [

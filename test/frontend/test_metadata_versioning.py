@@ -5,8 +5,9 @@ This test case validates metadata versioning for Aperta.
 """
 __author__ = 'sbassi@plos.org'
 
-import time
+import logging
 import random
+import time
 
 from selenium.common.exceptions import NoAlertPresentException
 
@@ -62,7 +63,7 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_id = paper_viewer.get_current_url().split('/')[-1]
     paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
-    print("Assigned paper id: {}".format(paper_id))
+    logging.info("Assigned paper id: {}".format(paper_id))
     paper_viewer.complete_task('Billing')
     time.sleep(.1)
     paper_viewer.complete_task('Cover Letter')

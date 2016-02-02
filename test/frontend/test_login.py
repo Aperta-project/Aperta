@@ -6,6 +6,7 @@ This test case validates the Aperta login page and associated forgot password pa
 """
 __author__ = 'jgray@plos.org'
 
+import logging
 import time
 
 from Base.Decorators import MultiBrowserFixture
@@ -125,7 +126,7 @@ class ApertaCASLoginTest(CommonTest):
     """
     login_page = LoginPage(self.getDriver())
     environment_url = login_page.get_current_url()
-    print(environment_url)
+    logging.info(environment_url)
     # Valid email, valid pw
     login_page.signup_cas()
     akita_signup = AkitaSignupPage(self.getDriver())

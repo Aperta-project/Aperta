@@ -25,7 +25,7 @@ describe ParticipationsController do
     context "and the user authorized" do
       before do
         allow_any_instance_of(User).to \
-          receive(:can?).with(:view, task).and_return true
+          receive(:can?).with(:edit, task).and_return true
       end
 
       it "returns the task's participations" do
@@ -39,6 +39,16 @@ describe ParticipationsController do
         expect(participation_ids).to include(participation1.id, participation2.id)
       end
     end
+
+    context "when the user does not have access" do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:edit, task)
+          .and_return false
+      end
+
+      it { responds_with(403) }
+    end
   end
 
   describe 'POST create' do
@@ -48,22 +58,10 @@ describe ParticipationsController do
                         task_id: task.id}
     end
 
-    context "the user isn't authorized" do
-      before do
-        allow_any_instance_of(User).to \
-          receive(:can?).with(:view, task).and_return false
-      end
-
-      it "renders 403" do
-        do_request
-        expect(response.status).to eq(403)
-      end
-    end
-
     context "the user is authorized" do
       before do
         allow_any_instance_of(User).to \
-          receive(:can?).with(:view, task).and_return true
+          receive(:can?).with(:edit, task).and_return true
       end
 
       context "the user does not pass a participant" do
@@ -97,31 +95,29 @@ describe ParticipationsController do
       end
       it_behaves_like "an unauthenticated json request"
     end
+
+    context "when the user does not have access" do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:edit, task)
+          .and_return false
+      end
+
+      it { responds_with(403) }
+    end
   end
 
   describe "DELETE #destroy" do
-    context "the user isn't authorized" do
-      let(:do_request) do
-        delete :destroy, format: :json, id: participation.id
-      end
-
-      let!(:participation) { FactoryGirl.create :participation, task: task }
-
-      before do
-        allow_any_instance_of(User).to \
-          receive(:can?).with(:view, task).and_return false
-      end
-
-      it "renders 403" do
-        do_request
-        expect(response.status).to eq(403)
-      end
+    let(:do_request) do
+      delete :destroy, format: :json, id: participation.id
     end
+
+    let!(:participation) { FactoryGirl.create :participation, task: task }
 
     context "the user is authorized" do
       before do
         allow_any_instance_of(User).to \
-          receive(:can?).with(:view, task).and_return true
+          receive(:can?).with(:edit, task).and_return true
       end
 
       context "with a valid participation id" do
@@ -152,6 +148,16 @@ describe ParticipationsController do
         end
       end
     end
+
+    context "when the user does not have access" do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:edit, task)
+          .and_return false
+      end
+
+      it { responds_with(403) }
+    end
   end
 
   context "participants" do
@@ -163,22 +169,10 @@ describe ParticipationsController do
       post :create, format: 'json', participation: { user_id: new_participant.id, task_id: task.id, task_type: 'AdHocTask' }
     end
 
-    context "the user isn't authorized" do
-      before do
-        allow_any_instance_of(User).to \
-          receive(:can?).with(:view, task).and_return false
-      end
-
-      it "renders 403" do
-        do_request
-        expect(response.status).to eq(403)
-      end
-    end
-
     context "the user is authorized" do
       before do
         allow_any_instance_of(User).to \
-          receive(:can?).with(:view, task).and_return true
+          receive(:can?).with(:edit, task).and_return true
       end
 
       it "calls the task's #notify_new_participant method" do
@@ -195,7 +189,7 @@ describe ParticipationsController do
       context "when the task type is EditorsDiscussionTask" do
         before do
           allow_any_instance_of(User).to \
-            receive(:can?).with(:view, editors_discussion_task).and_return true
+            receive(:can?).with(:edit, editors_discussion_task).and_return true
         end
 
         it "sends a different email to the editor participants" do
@@ -209,6 +203,16 @@ describe ParticipationsController do
           post :create, format: 'json', participation: { user_id: user.id, task_id: task.id }
         }.to_not change(Sidekiq::Extensions::DelayedMailer.jobs, :size)
       end
+    end
+
+    context "when the user does not have access" do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:edit, task)
+          .and_return false
+      end
+
+      it { responds_with(403) }
     end
   end
 end

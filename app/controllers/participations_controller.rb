@@ -1,6 +1,6 @@
 class ParticipationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :must_be_able_to_view_task
+  before_action :must_be_able_to_edit_task
   respond_to :json
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
@@ -62,7 +62,7 @@ class ParticipationsController < ApplicationController
     head 404
   end
 
-  def must_be_able_to_view_task
-    fail AuthorizationError unless current_user.can?(:view, task)
+  def must_be_able_to_edit_task
+    fail AuthorizationError unless current_user.can?(:edit, task)
   end
 end

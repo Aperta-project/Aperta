@@ -537,12 +537,11 @@ describe Paper do
 
   describe '#editor' do
     let(:user) { FactoryGirl.create(:user) }
-    let!(:role) { FactoryGirl.create(:role, name: Role::ACADEMIC_EDITOR_ROLE) }
 
     context 'when the paper has an editor' do
       let!(:assignment) do
         FactoryGirl.create(:assignment,
-                           role: role,
+                           role: paper.journal.roles.academic_editor,
                            user: user,
                            assigned_to: paper)
       end

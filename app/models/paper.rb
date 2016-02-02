@@ -271,7 +271,7 @@ class Paper < ActiveRecord::Base
   end
 
   def editors
-    users_with_role(Role.editor)
+    users_with_role(paper.journal.roles.editor)
   end
 
   def short_title

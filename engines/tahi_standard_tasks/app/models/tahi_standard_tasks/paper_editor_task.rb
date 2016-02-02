@@ -51,11 +51,11 @@ module TahiStandardTasks
 
     def replace_editor_and_follow_tasks(invitation)
       user = User.find(invitation.invitee_id)
+      role = paper.journal.roles.editor
       ParticipationFactory.create(task: self, assignee: user)
       # Remove any old editors
-      paper.assignments.where(role: Role.editor).destroy_all
-      paper.assignments.where(user: user, role: Role.editor)
-        .first_or_create!
+      paper.assignments.where(role: role).destroy_all
+      paper.assignments.where(user: user, role: role).first_or_create!
     end
 
     def follow_reviewer_reports(invitation)

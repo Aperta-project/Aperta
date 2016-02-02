@@ -7,8 +7,7 @@ module JournalServices
           jtt = journal.journal_task_types.find_or_initialize_by(kind: klass)
           jtt.title = details[:default_title]
           jtt.old_role = details[:default_role]
-          jtt.required_permission_action = details[:required_permission_action]
-          jtt.required_permission_applies_to = details[:required_permission_applies_to]
+          jtt.required_permissions = details[:required_permissions]
           jtt.save!
         end
       end

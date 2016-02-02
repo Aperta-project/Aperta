@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe ReviewerReportTaskCreator do
-  let(:paper) { FactoryGirl.create(:paper) }
-  let(:paper_reviewer_task) { FactoryGirl.create(:paper_reviewer_task, paper: paper) }
-  let(:assignee) { FactoryGirl.create(:user) }
+  let!(:paper) { FactoryGirl.create(:paper) }
+  let!(:paper_reviewer_task) { FactoryGirl.create(:paper_reviewer_task, paper: paper) }
+  let!(:assignee) { FactoryGirl.create(:user) }
 
   subject do
     ReviewerReportTaskCreator.new(originating_task: paper_reviewer_task, assignee_id: assignee.id)
@@ -16,20 +16,22 @@ describe ReviewerReportTaskCreator do
         expect(paper.role_for(user: assignee, old_role: PaperRole::REVIEWER)).to exist
       end
 
-      it "assigns the reviewer the reviewer role for the journal" do
-        subject.process
-        assignment = Assignment.where(
-          user: assignee,
-          role: paper.journal.roles.reviewer,
-          assigned_to: paper
-        ).first!
-        expect(assignment).to be
-      end
-
       it "creates a ReviewerReportTask" do
         expect {
           subject.process
         }.to change { TahiStandardTasks::ReviewerReportTask.count }.by(1)
+      end
+
+      it "assigns the user as a Reviewer on thhe ReviewerReportTask" do
+        expect { subject.process }.to change(Assignment, :count).by(1)
+
+        task = TahiStandardTasks::ReviewerReportTask.last
+        assignment = Assignment.where(
+          user: assignee,
+          role: paper.journal.roles.reviewer,
+          assigned_to: task
+        ).first!
+        expect(assignment).to be
       end
     end
 

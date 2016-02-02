@@ -40,6 +40,16 @@ describe CommentsController do
       expect(res_body['comments'].count).to eq(2)
       expect(res_body['comments'][0]['id']).to eq(comment1.id)
     end
+
+    context "when the user does not have access" do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:view, task)
+          .and_return false
+      end
+
+      it { responds_with(403) }
+    end
   end
 
   describe 'POST create' do
@@ -57,17 +67,11 @@ describe CommentsController do
                   task_id: task.id}
     end
 
-    context "the user isn't authorized" do
-      authorize_policy(CommentsPolicy, false)
-
-      it "renders 403" do
-        do_request
-        expect(response.status).to eq(403)
-      end
-    end
-
     context "the user is authorized" do
-      authorize_policy(CommentsPolicy, true)
+      before do
+        allow_any_instance_of(User).to \
+          receive(:can?).with(:view, task).and_return true
+      end
 
       context "the user tries to create a blank comment" do
         it "doesn't work" do
@@ -148,5 +152,52 @@ describe CommentsController do
 
       it_behaves_like "an unauthenticated json request"
     end
+
+    context "when the user does not have access" do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:view, task)
+          .and_return false
+      end
+
+      it { responds_with(403) }
+    end
   end
+
+  describe "#show" do
+    let!(:comment) { FactoryGirl.create(:comment, task: task) }
+
+    subject(:do_request) do
+      get :show, {
+            format: 'json',
+            task_id: task.to_param,
+            id: comment.to_param
+          }
+    end
+
+    it_behaves_like "an unauthenticated json request"
+
+    context "the user has access" do
+      before do
+        allow_any_instance_of(User).to \
+          receive(:can?).with(:view, task).and_return true
+      end
+
+      it "returns the tasks comments" do
+        do_request
+        expect(res_body['comment']['id']).to eq(comment.id)
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:view, task)
+          .and_return false
+      end
+
+      it { responds_with(403) }
+    end
+  end
+
 end

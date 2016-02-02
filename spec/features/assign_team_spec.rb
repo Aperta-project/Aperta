@@ -43,22 +43,33 @@ feature 'Assign team', js: true do
     end
   end
 
-  scenario "A user who can view all manuscript managers can assign members to a paper" do
-    custom_reviewer_role_name = custom_reviewer.old_roles.first.name
+  scenario "A user who cannot view the assign team task cannot view the overlay" do
+    skip "need to revisit if this is valid with JIRA issue: APERTA-5648" do
 
-    login_as(journal_editor, scope: :user)
+      custom_reviewer_role_name = custom_reviewer.old_roles.first.name
 
-    AssignTeamOverlay.visit(assign_team_task)
-    expect(page).to have_content("You don't have access to that content")
+      login_as(journal_editor, scope: :user)
 
-    journal_editor.old_roles.first.update_attribute :can_view_all_manuscript_managers, true
-    AssignTeamOverlay.visit(assign_team_task) do |overlay|
-      overlay.assign_old_role_for_user custom_reviewer_role_name, custom_reviewer
-      expect(overlay).to have_content("#{custom_reviewer.full_name} has been assigned as #{custom_reviewer_role_name}")
+      # Remove the ability to view task(s)
+      view_task_permission = plos_journal.roles.internal_editor.permissions
+        .find_by!(action: 'view', applies_to: 'Task')
+      plos_journal.roles.internal_editor.permissions -= [view_task_permission]
+
+      AssignTeamOverlay.visit(assign_team_task)
+      expect(page).to have_content("You don't have access to that content")
+
+      # Add back in the ability to view task(s)
+      plos_journal.roles.internal_editor.permissions += [view_task_permission]
+      AssignTeamOverlay.visit(assign_team_task) do |overlay|
+        overlay.assign_old_role_for_user custom_reviewer_role_name, custom_reviewer
+        expect(overlay).to have_content("#{custom_reviewer.full_name} has been assigned as #{custom_reviewer_role_name}")
+      end
     end
   end
 
   scenario "A user who can view assigned manuscript managers can assign members on a paper they themselves are assigned to" do
+    skip "need to revisit if this is valid with JIRA issue: APERTA-5648"
+
     custom_reviewer_role_name = custom_reviewer.old_roles.first.name
     journal_editor.old_roles.first.update_attribute :can_view_assigned_manuscript_managers, true
 

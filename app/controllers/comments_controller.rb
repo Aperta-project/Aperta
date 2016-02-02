@@ -1,8 +1,6 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy, except: [:index]
-  before_action :enforce_index_policy, only: [:index]
-
+  before_action :must_be_able_to_view_task
   respond_to :json
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
@@ -26,7 +24,15 @@ class CommentsController < ApplicationController
   private
 
   def task
-    @task ||= Task.find(comment_params[:task_id])
+    @task ||= begin
+      if params[:id].present?
+        comment.task
+      elsif params[:task_id]
+        Task.find(params[:task_id])
+      else
+        Task.find(comment_params[:task_id])
+      end
+    end
   end
 
   def comment
@@ -47,12 +53,7 @@ class CommentsController < ApplicationController
     head 404
   end
 
-  def enforce_index_policy
-    @task = Task.find(params[:task_id])
-    authorize_action!(comment: nil, for_task: @task)
-  end
-
-  def enforce_policy
-    authorize_action!(comment: comment)
+  def must_be_able_to_view_task
+    fail AuthorizationError unless current_user.can?(:view, task)
   end
 end

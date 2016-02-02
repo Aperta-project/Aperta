@@ -20,13 +20,17 @@ class JournalFactory
 
   def ensure_default_roles_and_permissions_exist
     Role.ensure_exists('Author', journal: @journal, participates_in: [Task, Paper]) do |role|
-      role.ensure_permission_exists(:view, applies_to: 'Task', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Paper', states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: 'Paper', states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: 'Task', states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: 'Task', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'PlosBilling::BillingTask', states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: 'PlosBilling::BillingTask', states: ['*'])
     end
 
     Role.ensure_exists('Reviewer', journal: @journal, participates_in: [Task, Paper]) do |role|
-      role.ensure_permission_exists(:view, applies_to: 'Task', states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: 'TahiStandardTasks::ReviewerReportTask', states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: 'TahiStandardTasks::ReviewerReportTask', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Paper', states: ['*'])
     end
 
@@ -34,15 +38,29 @@ class JournalFactory
       role.ensure_permission_exists(:administer, applies_to: 'Journal', states: ['*'])
       role.ensure_permission_exists(:manage_workflow, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Paper', states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Task', states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: 'Task', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'PlosBilling::BillingTask', states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: 'PlosBilling::BillingTask', states: ['*'])
+    end
+
+    Role.ensure_exists('Internal Editor', journal: @journal) do |role|
+      role.ensure_permission_exists(:manage_workflow, applies_to: 'Paper', states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: 'Paper', states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: 'Paper', states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: 'Task', states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: 'Task', states: ['*'])
     end
 
     Role.ensure_exists('Publishing Services and Production Staff', journal: @journal) do |role|
       role.ensure_permission_exists(:manage_workflow, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Paper', states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Task', states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: 'Task', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'PlosBilling::BillingTask', states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: 'PlosBilling::BillingTask', states: ['*'])
     end
   end
 end

@@ -1,6 +1,6 @@
 class NestedQuestionAnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy
+  before_action :must_be_able_to_edit_task
   respond_to :json
 
   def create
@@ -60,7 +60,7 @@ class NestedQuestionAnswersController < ApplicationController
     end
   end
 
-  def enforce_policy
-    authorize_action!(nested_question_answer: fetch_answer)
+  def must_be_able_to_edit_task
+    fail AuthorizationError unless current_user.can?(:edit, fetch_answer.owner)
   end
 end

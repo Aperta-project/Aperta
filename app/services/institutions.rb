@@ -31,7 +31,7 @@ class Institutions
   end
 
   def search_ned(query)
-    conn.get("/institutionsearch/", substring: query).body
+    conn.get('institutionsearch', substring: query).body
   rescue Faraday::ClientError => e
     ned_error = InstitutionsConnectionError.new(e.response[:body])
     Bugsnag.notify(ned_error)

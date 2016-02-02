@@ -2,7 +2,10 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   restless: Ember.inject.service('restless'),
-  classNames: ['did-you-mean'],
+  classNameBindings: [
+    ':did-you-mean',
+    'errorPresent:error'
+  ],
   // attrs:
   endpoint: null,
   queryParameter: null,
@@ -22,6 +25,10 @@ export default Ember.Component.extend({
   recognized: false,
   searching: 0,
   focused: false,
+
+  errorPresent: Ember.computed('errors', function() {
+    return !Ember.isEmpty(this.get('errors'));
+  }),
 
   selectItem(item) {
     this.set('selectedItem', item);

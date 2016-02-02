@@ -24,19 +24,19 @@ const PFA_VALIDATION = {
 
 export default TaskComponent.extend({
   validations: {
-    'plos_billing--first_name':   ['presence'],
-    'plos_billing--last_name':    ['presence'],
-    'plos_billing--department':   ['presence'],
-    'plos_billing--affiliation1': ['presence'],
-    'plos_billing--phone_number': ['presence'],
-    'plos_billing--email':        ['presence'],
-    'plos_billing--address1':     ['presence'],
-    'plos_billing--city':         ['presence'],
-    'plos_billing--postal_code':  ['presence'],
-    'plos_billing--pfa_question_1b': [PFA_VALIDATION],
-    'plos_billing--pfa_question_2b': [PFA_VALIDATION],
-    'plos_billing--pfa_question_3a': [PFA_VALIDATION],
-    'plos_billing--pfa_question_4a': [PFA_VALIDATION],
+    'plos_billing--first_name':        ['presence'],
+    'plos_billing--last_name':         ['presence'],
+    'plos_billing--department':        ['presence'],
+    'plos_billing--affiliation1':      ['presence'],
+    'plos_billing--phone_number':      ['presence'],
+    'plos_billing--email':             ['presence'],
+    'plos_billing--address1':          ['presence'],
+    'plos_billing--city':              ['presence'],
+    'plos_billing--postal_code':       ['presence'],
+    'plos_billing--pfa_question_1b':   [PFA_VALIDATION],
+    'plos_billing--pfa_question_2b':   [PFA_VALIDATION],
+    'plos_billing--pfa_question_3a':   [PFA_VALIDATION],
+    'plos_billing--pfa_question_4a':   [PFA_VALIDATION],
     'plos_billing--pfa_amount_to_pay': [PFA_VALIDATION],
   },
 
@@ -128,7 +128,15 @@ export default TaskComponent.extend({
       this.set('selectedPaymentMethod', selection.id);
     },
 
-    affiliation1Selected(answer) { this.setAffiliationAnswer('1', answer); },
+    affiliation1Selected(answer) {
+      this.setAffiliationAnswer('1', answer);
+
+      this.validateQuestion(
+        this.get('affiliation1Question.ident'),
+        answer
+      );
+    },
+
     affiliation2Selected(answer) { this.setAffiliationAnswer('2', answer); }
   }
 });

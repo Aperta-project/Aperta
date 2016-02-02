@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
-const { computed } = Ember;
+const { computed, isEmpty } = Ember;
 const { alias, or } = computed;
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
@@ -43,13 +43,19 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     });
   },
 
+  validateQuestion(key, value) {
+    this.validate(key, value, this.get('validations.' + key));
+  },
+
   validateQuestions() {
+    const allValidations = this.get('validations');
+    if(isEmpty(allValidations)) { return; }
+
     this.get('task.nestedQuestionAnswers').forEach(answer => {
       const key = answer.get('nestedQuestion.ident');
-      const validations = this.get('validations')[key];
-      if(Ember.isEmpty(validations)) { return; }
+      const validations = allValidations[key];
+      if(isEmpty(validations)) { return; }
 
-      // answers is a hasMany
       const value = answer.get('value');
       this.validate(key, value, validations);
     });
@@ -60,7 +66,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     close() { this.attrs.close(); },
 
     validateQuestion(key, value) {
-      this.validate(key, value, this.get('validations.' + key));
+      this.validateQuestion(key, value);
     },
 
     toggleTaskCompletion() {

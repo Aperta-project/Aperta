@@ -224,18 +224,22 @@ export default Ember.Mixin.create({
     return !isEmpty(this.currentValidationErrors());
   },
 
+  /**
+    @method currentValidationErrors
+    @return {Array} array of key/value(error message) pairs
+  */
+
   currentValidationErrors() {
     const errors = this.get('validationErrors');
-    const keys = _.keys(errors);
 
-    return _.filter(_.map(keys, key => {
-      if(isEmpty(errors[key])) { return false; }
+    return _.compact(
+      _.map(_.keys(errors), key => {
+        if(isEmpty(errors[key])) { return false; }
 
-      let hash = {};
-      hash[key] = errors[key];
-      return hash;
-    }), function(m) {
-      return m;
-    });
+        let hash = {};
+        hash[key] = errors[key];
+        return hash;
+      })
+    );
   }
 });

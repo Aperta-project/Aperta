@@ -141,7 +141,7 @@ textarea { resize: none; }
 }
 
 .error {
-  input, select, textarea {
+  input, select, textarea, .did-you-mean-input {
     border: 1px solid $tahi-error-red;
   }
 }

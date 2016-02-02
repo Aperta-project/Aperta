@@ -169,6 +169,13 @@ describe Task do
               %w(mock_metadata_task test_task invitable_task new_task)
       expect(tasks).to eq((tasks_from_source).sort)
     end
+
+    it 'works across reload' do
+      expect do
+        ActionDispatch::Reloader.cleanup!
+        ActionDispatch::Reloader.prepare!
+      end.not_to change { Task.all_task_types.count }
+    end
   end
 
   describe 'Task.safe_constantize' do

@@ -6,11 +6,6 @@ class JournalPage < Page
     new
   end
 
-  def add_new_template
-    find("button", text: "ADD NEW TEMPLATE").click
-    ManuscriptManagerTemplatePage.new
-  end
-
   def initialize(*args)
     super
     session.has_content? 'Manuscript Manager Templates'
@@ -22,10 +17,8 @@ class JournalPage < Page
   end
 
   def mmt_thumbnail(mmt)
-    find(".mmt-thumbnail", match: :first)
-    all(".mmt-thumbnail").detect do |ele|
-      ele.first(".mmt-thumbnail-title", text: mmt.paper_type)
-    end
+    find('.mmt-thumbnail .mmt-thumbnail-title', text: mmt.paper_type)
+      .find(:xpath, '..')
   end
 
   def visit_mmt(mmt)
@@ -53,37 +46,8 @@ class JournalPage < Page
     RoleFragment.new(find('.admin-role', text: name))
   end
 
-  def upload_epub_cover
-    attach_file('epub-cover-upload', Rails.root.join('spec', 'fixtures', 'yeti.jpg'), visible: false)
-  end
-
-  def update_epub_css css
-    find('button', text: 'EDIT EPUB CSS').click
-    find('textarea').set css
-    click_on 'Save'
-  end
-
   def epub_cover
     find('.epub-cover-image a').text
-  end
-
-  def search_user query
-    fill_in 'Admin Search Input', with: query
-    find('.admin-user-search-button').click
-    self
-  end
-
-  def admin_user_roles user
-    user_result_row(user).all('.assigned-role')
-                         .map { |role_label| role_label.text }
-  end
-
-  def remove_role user, old_role
-    old_role = user_result_row(user).all('.assigned-role')
-                                .detect { |row_label| row_label.text == old_role.name }
-    old_role.hover
-    old_role.find('.token-remove').click
-    self
   end
 
   def add_flow
@@ -94,11 +58,5 @@ class JournalPage < Page
     end
 
     find(".control-bar-link-icon").click
-  end
-
-  private
-
-  def user_result_row user
-    all('tr.user-row').detect { |tr| tr.all('td').first.text == user.username }
   end
 end

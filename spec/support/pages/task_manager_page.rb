@@ -10,11 +10,9 @@ class TaskManagerPage < Page
     end
   end
 
-  def phase phase_name
-    expect(page).to have_css(".column-title", text: phase_name) # use have_content/css/stuff assertion to avoid sleeps.
-    retry_stale_element do
-      PhaseFragment.new(all('.column').detect { |p| p.has_css?('h2', text: phase_name) })
-    end
+  def phase(phase_name)
+    PhaseFragment.new(
+      find('.column h2', text: phase_name).find(:xpath, '../../..'))
   end
 
   def phase_count

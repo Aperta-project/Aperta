@@ -8,13 +8,8 @@ class FlowManagerPage < Page
 
   def column title
     session.has_content? title
-    el = all('.column').detect { |c| c.find('h2').text == title }
+    el = find('.column h2', text: title).find(:xpath, '../../..')
     Column.new el if el
-  end
-
-  def columns title
-    session.has_content? title
-    all('.column').select { |c| c.find('h2').text == title }
   end
 
   def has_column? title
@@ -39,16 +34,6 @@ class FlowManagerPage < Page
     end
   end
 
-  class CardFragment < PageFragment
-    def title
-      text
-    end
-
-    def completed?
-      has_css?('.card-completed-icon')
-    end
-  end
-
   class PaperProfile < PageFragment
     def title
       find('.paper-profile-title')
@@ -57,14 +42,6 @@ class FlowManagerPage < Page
     def view
       click_link title
       TaskManagerPage.new
-    end
-
-    def cards
-      find_all('.card').map { |c| CardFragment.new c }
-    end
-
-    def card_by_title(card_title)
-      cards.find { |card| card.title == card_title }
     end
   end
 

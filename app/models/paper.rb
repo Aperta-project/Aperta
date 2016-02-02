@@ -38,7 +38,7 @@ class Paper < ActiveRecord::Base
   has_many :snapshots, dependent: :destroy
   has_many :notifications, inverse_of: :paper
   has_many :nested_question_answers
-
+  has_many :assignments, as: :assigned_to
   serialize :withdrawals, ArrayHashSerializer
 
   validates :paper_type, presence: true
@@ -263,6 +263,11 @@ class Paper < ActiveRecord::Base
     editors.first
   end
 
+  def editors
+    assignments.where(role: Role.find_by(name: Role::ACADEMIC_EDITOR_ROLE))
+      .map(&:user)
+  end
+
   def short_title
     answer = answer_for('publishing_related_questions--short_title')
     answer ? answer.value : ''
@@ -290,7 +295,7 @@ class Paper < ActiveRecord::Base
     update!(editable: true)
   end
 
-  %w(admins editors reviewers collaborators).each do |relation|
+  %w(admins reviewers collaborators).each do |relation|
     ###
     # :method: <old_roles>
     # Public: Return user records by old_role in the paper.

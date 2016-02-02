@@ -535,15 +535,22 @@ describe Paper do
     end
   end
 
-  describe "#editor" do
+  describe '#editor' do
     let(:user) { FactoryGirl.create(:user) }
-    context "when the paper has an editor" do
-      before { create(:paper_role, :editor, paper: paper, user: user) }
-      specify { expect(paper.editors).to include(user) }
+    let!(:role) { FactoryGirl.create(:role, name: Role::ACADEMIC_EDITOR_ROLE) }
+
+    context 'when the paper has an editor' do
+      let!(:assignment) do
+        FactoryGirl.create(:assignment,
+                           role: role,
+                           user: user,
+                           assigned_to: paper)
+      end
+      specify { expect(paper.editors).to eq([user]) }
     end
 
     context "when the paper doesn't have an editor" do
-      specify { expect(paper.editors).to be_empty }
+      specify { expect(paper.editors).to be_blank }
     end
   end
 
@@ -551,11 +558,11 @@ describe Paper do
     let(:user) { FactoryGirl.create :user }
 
     before do
-      create(:paper_role, :editor, paper: paper, user: user)
+      create(:paper_role, :reviewer, paper: paper, user: user)
     end
 
     it "returns old_roles if the old_role exist for the given user and old_role type" do
-      expect(paper.role_for(user: user, old_role: 'editor')).to be_present
+      expect(paper.role_for(user: user, old_role: 'reviewer')).to be_present
     end
 
     context "when the old_role isn't found" do

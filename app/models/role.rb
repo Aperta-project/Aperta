@@ -6,6 +6,7 @@ class Role < ActiveRecord::Base
   REVIEWER_ROLE = 'Reviewer'
   INTERNAL_EDITOR_ROLE = 'Internal Editor'
   STAFF_ADMIN_ROLE = 'Staff Admin'
+  ACADEMIC_EDITOR_ROLE = 'Academic Editor'
 
   def self.author
     where(name: AUTHOR_ROLE).first_or_create!

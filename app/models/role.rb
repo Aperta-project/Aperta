@@ -24,6 +24,10 @@ class Role < ActiveRecord::Base
     where(name: STAFF_ADMIN_ROLE).first_or_create!
   end
 
+  def self.editor
+    where(name: ACADEMIC_EDITOR_ROLE).first_or_create!
+  end
+
   def self.ensure_exists(name, journal: nil,
                                participates_in: [],
                                delete_stray_permissions: false,

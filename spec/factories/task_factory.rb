@@ -172,7 +172,10 @@ end
 
 class MockMetadataTask < Task
   include MetadataTask
+
+  DEFAULT_TITLE = 'Mock Metadata Task'
 end
+
 class MetadataTaskPolicy < TasksPolicy; end
 
 class InvitableTask < Task

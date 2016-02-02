@@ -1,8 +1,6 @@
 class ParticipationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy, except: [:index]
-  before_action :enforce_index_policy, only: [:index]
-
+  before_action :must_be_able_to_edit_task
   respond_to :json
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
@@ -35,7 +33,15 @@ class ParticipationsController < ApplicationController
   private
 
   def task
-    @task ||= Task.find(participation_params[:task_id])
+    @task ||= begin
+      if params[:id].present?
+        participation.task
+      elsif params[:task_id]
+        Task.find(params[:task_id])
+      else
+        Task.find(participation_params[:task_id])
+      end
+    end
   end
 
   def participation
@@ -56,12 +62,7 @@ class ParticipationsController < ApplicationController
     head 404
   end
 
-  def enforce_index_policy
-    @task = Task.find(params[:task_id])
-    authorize_action!(participation: nil, for_task: @task)
-  end
-
-  def enforce_policy
-    authorize_action!(participation: participation)
+  def must_be_able_to_edit_task
+    fail AuthorizationError unless current_user.can?(:edit, task)
   end
 end

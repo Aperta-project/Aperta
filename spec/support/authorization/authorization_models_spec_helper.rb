@@ -21,7 +21,6 @@ module AuthorizationModelsSpecHelper
       create_table :fake_tasks, force: true do |t|
         t.string :name
         t.integer :fake_paper_id
-        t.integer :required_permission_id
         t.string :type
       end
 
@@ -47,10 +46,14 @@ module Authorizations
     belongs_to :fake_paper, inverse_of: :fake_tasks
     has_one :fake_journal, through: :fake_paper
     has_one :fake_task_thing
-    belongs_to :required_permission, class_name: ::Permission.name
+    has_many :permission_requirements, as: :required_on
+    has_many :required_permissions, through: :permission_requirements, source: :permission
   end
 
   class SpecializedFakeTask < FakeTask
+  end
+
+  class EvenMoreSpecializedFakeTask < SpecializedFakeTask
   end
 
   class FakeTaskThing < ActiveRecord::Base

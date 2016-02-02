@@ -8,7 +8,8 @@ DESC
   include AuthorizationSpecHelper
 
   let!(:user) { FactoryGirl.create(:user) }
-  let!(:paper) { Authorizations::FakePaper.create! }
+  let!(:journal){ Authorizations::FakeJournal.create! }
+  let!(:paper) { Authorizations::FakePaper.create!(fake_journal: journal) }
   let!(:task) { Authorizations::FakeTask.create!(fake_paper: paper) }
   let!(:task_thing) { Authorizations::FakeTaskThing.create!(fake_task: task) }
 
@@ -99,6 +100,13 @@ DESC
 
       it 'grants them access' do
         expect(user.can?(:view, task)).to be(true)
+      end
+
+      it 'does not grant access to a model when the user the permssion on another model of the same type' do
+        inaccessible_paper = Authorizations::FakeTask.create!(
+          fake_journal: journal
+        )
+        expect(user.can?(:view, inaccessible_paper)).to be(false)
       end
 
       it 'includes the objects when filtering for authorization' do

@@ -11,7 +11,7 @@ DESC
   let!(:paper) { Authorizations::FakePaper.create! }
   let!(:generic_task) { Authorizations::FakeTask.create!(fake_paper: paper) }
   let!(:specialized_task) { Authorizations::SpecializedFakeTask.create!(fake_paper: paper) }
-
+  let!(:even_more_specialized_task) { Authorizations::EvenMoreSpecializedFakeTask.create!(fake_paper: paper) }
 
   before(:all) do
     Authorizations.reset_configuration
@@ -22,7 +22,7 @@ DESC
     Authorizations.reset_configuration
   end
 
-  context 'when you have permissions to a parent class' do
+  context 'when you have permissions to an ancestor' do
     permissions do
       permission action: 'view', applies_to: Authorizations::FakeTask.name
     end
@@ -43,20 +43,28 @@ DESC
       assign_user user, to: paper, with_role: role_for_viewing
     end
 
-    it 'grants them access' do
+    it 'grants access to a subclass' do
       expect(user.can?(:view, specialized_task)).to be(true)
     end
 
-    it 'includes the subclass objects when filtering for authorization of the parent class' do
-      expect(
-        user.filter_authorized(:view, Authorizations::FakeTask.all).objects
-      ).to contain_exactly(generic_task, specialized_task)
+    it 'grants access to a descendant (subclass of a subclass and so on)' do
+      expect(user.can?(:view, even_more_specialized_task)).to be(true)
     end
 
-    it 'includes the only subclass objects when filtering for authorization of the subclass' do
+    it 'includes the descendnant objects when filtering for authorization of the parent class' do
+      expect(
+        user.filter_authorized(:view, Authorizations::FakeTask.all).objects
+      ).to contain_exactly(generic_task, specialized_task, even_more_specialized_task)
+    end
+
+    it 'includes the only subclass objects and its descendants when filtering for authorization of the subclass' do
       expect(
         user.filter_authorized(:view, Authorizations::SpecializedFakeTask.all).objects
-      ).to contain_exactly(specialized_task)
+      ).to contain_exactly(specialized_task, even_more_specialized_task)
+
+      expect(
+        user.filter_authorized(:view, Authorizations::EvenMoreSpecializedFakeTask.all).objects
+      ).to contain_exactly(even_more_specialized_task)
     end
   end
 end

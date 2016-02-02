@@ -9,7 +9,6 @@ class DefaultAuthorCreator
 
   def create!
     build_author
-    assign_author_role
     add_affiliation_information
     add_authors_task_association
     author.save!
@@ -21,14 +20,6 @@ class DefaultAuthorCreator
     @author = paper.authors.new(first_name: creator.first_name,
                                 last_name: creator.last_name,
                                 email: creator.email)
-  end
-
-  def assign_author_role
-    Assignment.create(
-      user: creator,
-      role: Role.where(name: 'Author').first,
-      assigned_to: paper
-    )
   end
 
   def add_affiliation_information

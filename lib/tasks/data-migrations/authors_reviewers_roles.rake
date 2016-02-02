@@ -1,20 +1,26 @@
 namespace :data do
   namespace :migrate do
-    namespace :author_reviewers do
-      desc 'Migrates the Author and Reviewer old_roles to the new roles'
-      task make_into_new_roles: :environment do
-        Rake::Task['data:migrate:author_reviewers:remove_invalid_assignments'].invoke
+    desc 'Runs all of the tasks to migrate authors and reviewers to new R&P'
+    task author_reviewers: [
+      'author_reviewers:rename_creator_to_creator',
+      'author_reviewers:remove_invalid_assignments',
+      'author_reviewers:make_into_new_roles',
+      'author_reviewers:make_billing_only_for_creator'
+    ]
 
-        # Assign every Author and Reviewer role
+    namespace :author_reviewers do
+      # desc 'Migrates the Author and Reviewer old_roles to the new roles'
+      task make_into_new_roles: :environment do
+        # Assign every Creator and Reviewer role
         Paper.all.each do |paper|
           journal = paper.journal
-          author_role = journal.roles.creator
+          creator_role = journal.roles.creator
           reviewer_role = journal.roles.reviewer
           user = paper.creator
-          puts "Assigning #{user.full_name} <#{user.email}> as #{author_role.name} on paper ##{paper.id} on '#{journal.name}' Journal"
+          puts "Assigning #{user.full_name} <#{user.email}> as #{creator_role.name} on paper ##{paper.id} on '#{journal.name}' Journal"
           Assignment.where(
             user: paper.creator,
-            role: author_role,
+            role: creator_role,
             assigned_to: paper
           ).first_or_create!
           paper.paper_roles.each do |paper_role|
@@ -32,25 +38,25 @@ namespace :data do
         end
       end
 
-      desc 'Removes invalid author role assignments'
+      # desc 'Removes invalid creator role assignments'
       task remove_invalid_assignments: :environment do
-        all_author_roles = Role.where(name: 'Author').all
+        all_creator_roles = Role.where(name: 'Creator').all
 
         Paper.all.each do |paper|
           journal = paper.journal
-          author_role = journal.roles.creator
+          creator_role = journal.roles.creator
 
-          # Remove invalid author roles for this paper and its journal
-          author_roles_that_should_not_exist = all_author_roles - [author_role]
+          # Remove invalid creator roles for this paper and its journal
+          creator_roles_that_should_not_exist = all_creator_roles - [creator_role]
           Assignment.where(
-            role_id: author_roles_that_should_not_exist,
+            role_id: creator_roles_that_should_not_exist,
             assigned_to: paper
           ).destroy_all
         end
       end
 
-      desc 'Sets billing task permission on JournalTaskType'
-      task make_billing_only_for_author: :environment do
+      # desc 'Sets billing task permission on JournalTaskType'
+      task make_billing_only_for_creator: :environment do
         view_permission = Permission.find_by!(
           applies_to: 'PlosBilling::BillingTask', action: 'view'
         )
@@ -73,6 +79,11 @@ namespace :data do
             { action: 'view', applies_to: 'PlosBilling::BillingTask' }
           ]
         )
+      end
+
+      # desc 'Rename Author role to Creator'
+      task rename_creator_to_creator: :environment do
+        Role.where(name: 'Author').update_all(name: 'Creator')
       end
     end
   end

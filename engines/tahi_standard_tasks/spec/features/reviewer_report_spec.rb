@@ -10,7 +10,8 @@ feature "Reviewer filling out their reviewer report", js: true do
 
   before do
     assign_journal_role journal, editor, :editor
-    paper.paper_roles.create user: editor, old_role: PaperRole::EDITOR
+    assign_handling_editor_role paper, editor
+
     task.participants << editor
 
     login_as(editor, scope: :user)

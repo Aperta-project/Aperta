@@ -17,9 +17,9 @@ class ManuscriptManagerTemplatePage < Page
     end
   end
 
-  def find_phase phase_name
-    expect(page).to have_content(phase_name) # use have_content/css/stuff assertion to avoid sleeps.
-    PhaseFragment.new(all('.column').detect {|p| p.find('h2').text == phase_name })
+  def find_phase(phase_name)
+    PhaseFragment.new(
+      find('.column h2', text: phase_name).find(:xpath, '../../..'))
   end
 
   def add_new_template

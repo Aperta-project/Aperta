@@ -2,10 +2,8 @@ module TaskTypeRegistration
   extend ActiveSupport::Concern
 
   module ClassMethods
-    def register_task(default_title:, default_role:,
-      required_permission_action: nil, required_permission_applies_to: nil)
-      TaskType.register(self, default_title, default_role,
-        required_permission_action, required_permission_applies_to)
+    def register_task(default_title:, default_role:, required_permissions:[])
+      TaskType.register(self, default_title, default_role, required_permissions)
     end
   end
 end

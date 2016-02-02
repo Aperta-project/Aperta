@@ -41,9 +41,10 @@ module Authorizations
         query = query_against_active_record_relation
       end
       query = add_permissible_state_conditions_to_query(query)
-      query.flatten.uniq
-    end
 
+      results = filter_down_permissible_items(query.flatten.uniq)
+      results
+    end
 
     private
 
@@ -87,28 +88,41 @@ module Authorizations
         )
     end
 
+    # Filters down the given list of items based on permission_requirements.
+    # If there are no permission_requirements then the item is considered
+    # permissible otherwise an item is only included in the returned collection
+    # if the user has a matching permission based on their assignments.
+    #
+    # Note: This is done in Ruby because we have all the data we need already
+    # and because it is difficult to determine if an entire set of joined
+    # permission_requirements is empty or has at least one value.
+    def filter_down_permissible_items(items)
+      user_permission_ids = assignments.flat_map(&:permissions).map(&:id)
+
+      items.select do |item|
+        if item.respond_to?(:permission_requirements)
+          item_permission_ids = \
+            item.permission_requirements.map(&:permission_id)
+          intersect_of_permissions = item_permission_ids & user_permission_ids
+          item.permission_requirements.empty? || intersect_of_permissions.any?
+        else
+          item
+        end
+      end
+    end
+
     def query_against_specific_model
       query = @target.class.where(id: @target.id)
-
-      if @target.class.column_names.include?('required_permission_id')
-        field = "#{@target.class.table_name}.required_permission_id"
-        assigned_permission_ids = assignments.flat_map(&:permissions).map(&:id)
-        query = query.where(
-          "#{field} IS NULL OR #{field} IN (:permission_ids)",
-          permission_ids: assigned_permission_ids
-        )
+      if @target.respond_to?(:required_permissions)
+        query = query.includes(:permission_requirements)
       end
       query
     end
 
     def query_against_active_record_relation
       query = base_query_for_active_record_relations
-      if @target.model.column_names.include?('required_permission_id')
-        field = "#{@target.table.name}.required_permission_id"
-        query = query.where(
-          "#{field} IS NULL OR #{field} IN (:permission_ids)",
-          permission_ids: assignments.flat_map(&:permissions).map(&:id)
-        )
+      if @target.model.reflections['required_permissions']
+        query = query.includes(:permission_requirements)
       end
       query
     end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160127001441) do
+ActiveRecord::Schema.define(version: 20160201174136) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -229,8 +229,7 @@ ActiveRecord::Schema.define(version: 20160127001441) do
     t.string  "title",                          limit: 255
     t.string  "old_role",                       limit: 255
     t.string  "kind",                           limit: 255
-    t.string  "required_permission_action"
-    t.string  "required_permission_applies_to"
+    t.json    "required_permissions"
   end
 
   add_index "journal_task_types", ["journal_id"], name: "index_journal_task_types_on_journal_id", using: :btree
@@ -373,6 +372,16 @@ ActiveRecord::Schema.define(version: 20160127001441) do
 
   add_index "participations", ["task_id"], name: "index_participations_on_task_id", using: :btree
   add_index "participations", ["user_id"], name: "index_participations_on_user_id", using: :btree
+
+  create_table "permission_requirements", force: :cascade do |t|
+    t.integer  "permission_id"
+    t.integer  "required_on_id"
+    t.string   "required_on_type"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  add_index "permission_requirements", ["permission_id", "required_on_id", "required_on_type"], name: "permission_requirements_uniq_idx", unique: true, using: :btree
 
   create_table "permission_states", force: :cascade do |t|
     t.string   "name",       null: false
@@ -562,14 +571,12 @@ ActiveRecord::Schema.define(version: 20160127001441) do
     t.string   "old_role",               limit: 255,                  null: false
     t.json     "body",                               default: [],     null: false
     t.integer  "position",                           default: 0
-    t.integer  "required_permission_id"
     t.integer  "paper_id",                                            null: false
   end
 
   add_index "tasks", ["id", "type"], name: "index_tasks_on_id_and_type", using: :btree
   add_index "tasks", ["paper_id"], name: "index_tasks_on_paper_id", using: :btree
   add_index "tasks", ["phase_id"], name: "index_tasks_on_phase_id", using: :btree
-  add_index "tasks", ["required_permission_id"], name: "index_tasks_on_required_permission_id", using: :btree
 
   create_table "user_flows", force: :cascade do |t|
     t.datetime "created_at"

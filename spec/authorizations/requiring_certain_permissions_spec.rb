@@ -5,8 +5,8 @@ describe <<-DESC.strip_heredoc do
   access to them all. However, there are times when you need to restrict
   access to certain objects (e.g. BillingTask).
 
-  Any object that implements a required_permission_id column and
-  required_permission association can restrict access to a specific permission.
+  Any object that has one or more PermissionRequirement(s) can restrict
+  access to that object to those specific permissions.
 DESC
   include AuthorizationSpecHelper
 
@@ -54,10 +54,11 @@ DESC
   end
 
   context <<-DESC do
-    when a user has access to an object that has no required_permission
+    when a user has access to an object that has no required_permissions
   DESC
 
     before do
+      expect(task.required_permissions.empty?).to be(true)
       assign_user user, to: paper, with_role: role_with_access_to_generic_tasks
     end
 
@@ -79,7 +80,9 @@ DESC
 
     before do
       required_permission = Permission.find_by_action!('view_reserved_task')
-      reserved_task.update! required_permission: required_permission
+      reserved_task.permission_requirements.create!(
+        permission: required_permission
+      )
       assign_user user, to: paper, with_role: role_with_access_to_generic_tasks
     end
 
@@ -102,7 +105,9 @@ DESC
 
     before do
       required_permission = Permission.find_by_action!('view_reserved_task')
-      reserved_task.update! required_permission: required_permission
+      reserved_task.permission_requirements.create!(
+        permission: required_permission
+      )
       assign_user user, to: paper, with_role: role_with_access_to_reserved_tasks
     end
 

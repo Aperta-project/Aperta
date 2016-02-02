@@ -1,5 +1,2032 @@
 
 ---
+tasks:
+  columns:
+  - id
+  - title
+  - type
+  - phase_id
+  - completed
+  - created_at
+  - updated_at
+  - old_role
+  - body
+  - position
+  - required_permission_id
+  - paper_id
+  - completed_at
+  records: 
+  - - '1'
+    - Supporting Info
+    - TahiStandardTasks::SupportingInformationTask
+    - '1'
+    - false
+    - '2015-10-29 20:16:37.447196'
+    - '2015-10-29 20:16:37.447196'
+    - author
+    - "[]"
+    - '1'
+    - 
+    - '1'
+    - 
+  - - '2'
+    - Authors
+    - TahiStandardTasks::AuthorsTask
+    - '1'
+    - false
+    - '2015-10-29 20:16:37.481345'
+    - '2015-10-29 20:16:37.481345'
+    - author
+    - "[]"
+    - '2'
+    - 
+    - '1'
+    - 
+  - - '3'
+    - Upload Manuscript
+    - TahiStandardTasks::UploadManuscriptTask
+    - '1'
+    - false
+    - '2015-10-29 20:16:37.500407'
+    - '2015-10-30 21:12:06.814054'
+    - author
+    - "[]"
+    - '3'
+    - 
+    - '1'
+    - 
+  - - '4'
+    - Billing
+    - PlosBilling::BillingTask
+    - '1'
+    - false
+    - '2015-10-29 20:16:37.518922'
+    - '2015-10-29 20:16:37.518922'
+    - author
+    - "[]"
+    - '4'
+    - '10'
+    - '1'
+    - 
+  - - '5'
+    - Competing Interests
+    - TahiStandardTasks::CompetingInterestsTask
+    - '1'
+    - false
+    - '2015-10-29 20:16:37.538292'
+    - '2015-10-29 20:16:37.538292'
+    - author
+    - "[]"
+    - '5'
+    - 
+    - '1'
+    - 
+  - - '6'
+    - Cover Letter
+    - TahiStandardTasks::CoverLetterTask
+    - '1'
+    - false
+    - '2015-10-29 20:16:37.558023'
+    - '2015-10-29 20:16:37.558023'
+    - author
+    - "[]"
+    - '6'
+    - 
+    - '1'
+    - 
+  - - '7'
+    - Data Availability
+    - TahiStandardTasks::DataAvailabilityTask
+    - '1'
+    - false
+    - '2015-10-29 20:16:37.576768'
+    - '2015-10-29 20:16:37.576768'
+    - author
+    - "[]"
+    - '7'
+    - 
+    - '1'
+    - 
+  - - '8'
+    - Ethics Statement
+    - TahiStandardTasks::EthicsTask
+    - '1'
+    - false
+    - '2015-10-29 20:16:37.595139'
+    - '2015-10-29 20:16:37.595139'
+    - author
+    - "[]"
+    - '8'
+    - 
+    - '1'
+    - 
+  - - '9'
+    - Figures
+    - TahiStandardTasks::FigureTask
+    - '1'
+    - false
+    - '2015-10-29 20:16:37.612859'
+    - '2015-10-29 20:16:37.612859'
+    - author
+    - "[]"
+    - '9'
+    - 
+    - '1'
+    - 
+  - - '10'
+    - Financial Disclosure
+    - TahiStandardTasks::FinancialDisclosureTask
+    - '1'
+    - false
+    - '2015-10-29 20:16:37.631128'
+    - '2015-10-29 20:16:37.631128'
+    - author
+    - "[]"
+    - '10'
+    - 
+    - '1'
+    - 
+  - - '11'
+    - Additional Information
+    - TahiStandardTasks::PublishingRelatedQuestionsTask
+    - '1'
+    - false
+    - '2015-10-29 20:16:37.649691'
+    - '2015-10-29 20:16:37.649691'
+    - author
+    - "[]"
+    - '11'
+    - 
+    - '1'
+    - 
+  - - '12'
+    - Reporting Guidelines
+    - TahiStandardTasks::ReportingGuidelinesTask
+    - '1'
+    - false
+    - '2015-10-29 20:16:37.667692'
+    - '2015-10-29 20:16:37.667692'
+    - author
+    - "[]"
+    - '12'
+    - 
+    - '1'
+    - 
+  - - '13'
+    - Reviewer Candidates
+    - TahiStandardTasks::ReviewerRecommendationsTask
+    - '1'
+    - false
+    - '2015-10-29 20:16:37.686525'
+    - '2015-10-29 20:16:37.686525'
+    - author
+    - "[]"
+    - '13'
+    - 
+    - '1'
+    - 
+  - - '14'
+    - Initial Tech Check
+    - PlosBioTechCheck::InitialTechCheckTask
+    - '2'
+    - false
+    - '2015-10-29 20:16:37.707252'
+    - '2015-10-29 20:16:37.707252'
+    - custom
+    - '{"round":1}'
+    - '1'
+    - 
+    - '1'
+    - 
+  - - '15'
+    - Revision Tech Check
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - '2'
+    - false
+    - '2015-10-29 20:16:37.717232'
+    - '2015-10-29 20:16:37.717232'
+    - custom
+    - "[]"
+    - '2'
+    - 
+    - '1'
+    - 
+  - - '16'
+    - Final Tech Check
+    - PlosBioTechCheck::FinalTechCheckTask
+    - '2'
+    - false
+    - '2015-10-29 20:16:37.726562'
+    - '2015-10-29 20:16:37.726562'
+    - custom
+    - "[]"
+    - '3'
+    - 
+    - '1'
+    - 
+  - - '17'
+    - Assign Team
+    - Tahi::AssignTeam::AssignTeamTask
+    - '3'
+    - false
+    - '2015-10-29 20:16:37.741643'
+    - '2015-10-29 20:16:37.741643'
+    - admin
+    - "[]"
+    - '1'
+    - 
+    - '1'
+    - 
+  - - '18'
+    - Editor Discussion
+    - PlosBioInternalReview::EditorsDiscussionTask
+    - '3'
+    - false
+    - '2015-10-29 20:16:37.750782'
+    - '2015-10-29 20:16:37.750782'
+    - editor
+    - "[]"
+    - '2'
+    - 
+    - '1'
+    - 
+  - - '19'
+    - Invite Reviewers
+    - TahiStandardTasks::PaperReviewerTask
+    - '4'
+    - false
+    - '2015-10-29 20:16:37.765286'
+    - '2015-10-29 20:16:37.765286'
+    - custom
+    - "[]"
+    - '1'
+    - 
+    - '1'
+    - 
+  - - '20'
+    - Academic Editor Feedback
+    - Task
+    - '4'
+    - false
+    - '2015-10-29 20:16:37.770082'
+    - '2015-10-29 20:16:37.770082'
+    - user
+    - "[]"
+    - '2'
+    - 
+    - '1'
+    - 
+  - - '21'
+    - Register Decision
+    - TahiStandardTasks::RegisterDecisionTask
+    - '5'
+    - false
+    - '2015-10-29 20:16:37.788649'
+    - '2015-10-29 20:16:37.788649'
+    - editor
+    - "[]"
+    - '1'
+    - 
+    - '1'
+    - 
+  - - '22'
+    - Supporting Info
+    - TahiStandardTasks::SupportingInformationTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.513727'
+    - '2015-10-30 19:43:28.513727'
+    - author
+    - "[]"
+    - '1'
+    - 
+    - '2'
+    - 
+  - - '23'
+    - Authors
+    - TahiStandardTasks::AuthorsTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.540717'
+    - '2015-10-30 19:54:34.391249'
+    - author
+    - "[]"
+    - '2'
+    - 
+    - '2'
+    - 
+  - - '24'
+    - Upload Manuscript
+    - TahiStandardTasks::UploadManuscriptTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.556461'
+    - '2015-10-30 19:54:39.331122'
+    - author
+    - "[]"
+    - '3'
+    - 
+    - '2'
+    - 
+  - - '25'
+    - Billing
+    - PlosBilling::BillingTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.571079'
+    - '2015-10-30 19:48:47.180823'
+    - author
+    - "[]"
+    - '4'
+    - '10'
+    - '2'
+    - 
+  - - '26'
+    - Competing Interests
+    - TahiStandardTasks::CompetingInterestsTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.585311'
+    - '2015-10-30 19:43:28.585311'
+    - author
+    - "[]"
+    - '5'
+    - 
+    - '2'
+    - 
+  - - '27'
+    - Cover Letter
+    - TahiStandardTasks::CoverLetterTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.600041'
+    - '2015-10-30 19:49:44.740631'
+    - author
+    - '["\u003cdiv\u003e\u003cb style=\"color: rgb(0, 0, 0); font-family: Arial, Helvetica,
+      sans; font-size: 11px; line-height: 14px; text-align: justify;\"\u003eMy Cover
+      Letter\u003c/b\u003e\u003cbr\u003e\u003c/div\u003e\u003cspan style=\"color:
+      rgb(0, 0, 0); font-family: Arial, Helvetica, sans; font-size: 11px; line-height:
+      14px; text-align: justify;\"\u003eLorem Ipsum\u003c/span\u003e\u003cspan style=\"color:
+      rgb(0, 0, 0); font-family: Arial, Helvetica, sans; font-size: 11px; line-height:
+      14px; text-align: justify;\"\u003e\u0026nbsp;is simply dummy text of the printing
+      and typesetting industry. Lorem Ipsum has been the industry''s standard dummy
+      text ever since the 1500s, when an unknown printer took a galley of type and
+      scrambled it to make a type specimen book. It has survived not only five centuries,
+      but also the leap into electronic typesetting, remaining essentially unchanged.
+      It was popularised in the 1960s with the release of Letraset sheets containing
+      Lorem Ipsum passages, and more recently with desktop publishing software like
+      Aldus PageMaker including versions of Lorem Ipsum.\u003c/span\u003e"]'
+    - '6'
+    - 
+    - '2'
+    - 
+  - - '28'
+    - Data Availability
+    - TahiStandardTasks::DataAvailabilityTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.614811'
+    - '2015-10-30 19:43:28.614811'
+    - author
+    - "[]"
+    - '7'
+    - 
+    - '2'
+    - 
+  - - '29'
+    - Ethics Statement
+    - TahiStandardTasks::EthicsTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.628148'
+    - '2015-10-30 19:43:28.628148'
+    - author
+    - "[]"
+    - '8'
+    - 
+    - '2'
+    - 
+  - - '30'
+    - Figures
+    - TahiStandardTasks::FigureTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.641504'
+    - '2015-10-30 19:43:28.641504'
+    - author
+    - "[]"
+    - '9'
+    - 
+    - '2'
+    - 
+  - - '31'
+    - Financial Disclosure
+    - TahiStandardTasks::FinancialDisclosureTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.655468'
+    - '2015-10-30 19:43:28.655468'
+    - author
+    - "[]"
+    - '10'
+    - 
+    - '2'
+    - 
+  - - '32'
+    - Additional Information
+    - TahiStandardTasks::PublishingRelatedQuestionsTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.668712'
+    - '2015-10-30 19:43:28.668712'
+    - author
+    - "[]"
+    - '11'
+    - 
+    - '2'
+    - 
+  - - '33'
+    - Reporting Guidelines
+    - TahiStandardTasks::ReportingGuidelinesTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.682411'
+    - '2015-10-30 19:43:28.682411'
+    - author
+    - "[]"
+    - '12'
+    - 
+    - '2'
+    - 
+  - - '34'
+    - Reviewer Candidates
+    - TahiStandardTasks::ReviewerRecommendationsTask
+    - '6'
+    - false
+    - '2015-10-30 19:43:28.696454'
+    - '2015-10-30 19:43:28.696454'
+    - author
+    - "[]"
+    - '13'
+    - 
+    - '2'
+    - 
+  - - '35'
+    - Initial Tech Check
+    - PlosBioTechCheck::InitialTechCheckTask
+    - '7'
+    - false
+    - '2015-10-30 19:43:28.71276'
+    - '2015-10-30 19:43:28.71276'
+    - custom
+    - '{"round":1}'
+    - '1'
+    - 
+    - '2'
+    - 
+  - - '36'
+    - Revision Tech Check
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - '7'
+    - false
+    - '2015-10-30 19:43:28.717952'
+    - '2015-10-30 19:43:28.717952'
+    - custom
+    - "[]"
+    - '2'
+    - 
+    - '2'
+    - 
+  - - '37'
+    - Final Tech Check
+    - PlosBioTechCheck::FinalTechCheckTask
+    - '7'
+    - false
+    - '2015-10-30 19:43:28.723485'
+    - '2015-10-30 19:43:28.723485'
+    - custom
+    - "[]"
+    - '3'
+    - 
+    - '2'
+    - 
+  - - '38'
+    - Assign Team
+    - Tahi::AssignTeam::AssignTeamTask
+    - '8'
+    - false
+    - '2015-10-30 19:43:28.733583'
+    - '2015-11-02 15:19:08.231937'
+    - admin
+    - "[]"
+    - '1'
+    - 
+    - '2'
+    - 
+  - - '39'
+    - Editor Discussion
+    - PlosBioInternalReview::EditorsDiscussionTask
+    - '8'
+    - false
+    - '2015-10-30 19:43:28.738473'
+    - '2015-10-30 19:43:28.738473'
+    - editor
+    - "[]"
+    - '2'
+    - 
+    - '2'
+    - 
+  - - '40'
+    - Invite Reviewers
+    - TahiStandardTasks::PaperReviewerTask
+    - '9'
+    - false
+    - '2015-10-30 19:43:28.74865'
+    - '2015-10-30 19:43:28.74865'
+    - custom
+    - "[]"
+    - '1'
+    - 
+    - '2'
+    - 
+  - - '41'
+    - Academic Editor Feedback
+    - Task
+    - '9'
+    - false
+    - '2015-10-30 19:43:28.753676'
+    - '2015-10-30 19:43:28.753676'
+    - user
+    - "[]"
+    - '2'
+    - 
+    - '2'
+    - 
+  - - '42'
+    - Register Decision
+    - TahiStandardTasks::RegisterDecisionTask
+    - '10'
+    - false
+    - '2015-10-30 19:43:28.767156'
+    - '2015-10-30 19:43:28.767156'
+    - editor
+    - "[]"
+    - '1'
+    - 
+    - '2'
+    - 
+  - - '43'
+    - Supporting Info
+    - TahiStandardTasks::SupportingInformationTask
+    - '11'
+    - true
+    - '2015-11-02 14:04:02.948249'
+    - '2015-11-02 14:13:47.22972'
+    - author
+    - "[]"
+    - '1'
+    - 
+    - '3'
+    - '2016-02-02 16:28:13'
+  - - '44'
+    - Authors
+    - TahiStandardTasks::AuthorsTask
+    - '11'
+    - true
+    - '2015-11-02 14:04:02.99332'
+    - '2015-11-02 14:15:08.969496'
+    - author
+    - "[]"
+    - '2'
+    - 
+    - '3'
+    - '2016-02-02 16:28:13'
+  - - '45'
+    - Upload Manuscript
+    - TahiStandardTasks::UploadManuscriptTask
+    - '11'
+    - true
+    - '2015-11-02 14:04:03.010843'
+    - '2015-11-02 14:08:06.760205'
+    - author
+    - "[]"
+    - '3'
+    - 
+    - '3'
+    - '2016-02-02 16:28:13'
+  - - '46'
+    - Billing
+    - PlosBilling::BillingTask
+    - '11'
+    - true
+    - '2015-11-02 14:04:03.029095'
+    - '2015-11-02 14:11:35.529725'
+    - author
+    - "[]"
+    - '4'
+    - '10'
+    - '3'
+    - '2016-02-02 16:28:13'
+  - - '47'
+    - Competing Interests
+    - TahiStandardTasks::CompetingInterestsTask
+    - '11'
+    - true
+    - '2015-11-02 14:04:03.046654'
+    - '2015-11-02 14:15:20.503569'
+    - author
+    - "[]"
+    - '5'
+    - 
+    - '3'
+    - '2016-02-02 16:28:13'
+  - - '48'
+    - Cover Letter
+    - TahiStandardTasks::CoverLetterTask
+    - '11'
+    - true
+    - '2015-11-02 14:04:03.064308'
+    - '2015-11-02 14:12:02.291254'
+    - author
+    - '["Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+      Lorem Ipsum has been the industry''s standard dummy text ever since the 1500s,
+      when an unknown printer took a galley of type and scrambled it to make a type
+      specimen book. It has survived not only five centuries, but also the leap into
+      electronic typesetting, remaining essentially unchanged. It was popularised
+      in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+      and more recently with desktop publishing software like Aldus PageMaker including
+      versions of Lorem Ipsum."]'
+    - '6'
+    - 
+    - '3'
+    - '2016-02-02 16:28:13'
+  - - '49'
+    - Data Availability
+    - TahiStandardTasks::DataAvailabilityTask
+    - '11'
+    - true
+    - '2015-11-02 14:04:03.080743'
+    - '2015-11-02 14:15:31.458101'
+    - author
+    - "[]"
+    - '7'
+    - 
+    - '3'
+    - '2016-02-02 16:28:13'
+  - - '50'
+    - Ethics Statement
+    - TahiStandardTasks::EthicsTask
+    - '11'
+    - true
+    - '2015-11-02 14:04:03.095882'
+    - '2015-11-02 14:15:39.843929'
+    - author
+    - "[]"
+    - '8'
+    - 
+    - '3'
+    - '2016-02-02 16:28:13'
+  - - '51'
+    - Figures
+    - TahiStandardTasks::FigureTask
+    - '11'
+    - true
+    - '2015-11-02 14:04:03.111405'
+    - '2015-11-02 14:16:07.185038'
+    - author
+    - "[]"
+    - '9'
+    - 
+    - '3'
+    - '2016-02-02 16:28:13'
+  - - '52'
+    - Financial Disclosure
+    - TahiStandardTasks::FinancialDisclosureTask
+    - '11'
+    - true
+    - '2015-11-02 14:04:03.126435'
+    - '2015-11-02 14:16:15.469464'
+    - author
+    - "[]"
+    - '10'
+    - 
+    - '3'
+    - '2016-02-02 16:28:13'
+  - - '53'
+    - Additional Information
+    - TahiStandardTasks::PublishingRelatedQuestionsTask
+    - '11'
+    - true
+    - '2015-11-02 14:04:03.141948'
+    - '2015-11-02 14:17:21.863603'
+    - author
+    - "[]"
+    - '11'
+    - 
+    - '3'
+    - '2016-02-02 16:28:13'
+  - - '54'
+    - Reporting Guidelines
+    - TahiStandardTasks::ReportingGuidelinesTask
+    - '11'
+    - true
+    - '2015-11-02 14:04:03.157242'
+    - '2015-11-02 14:18:10.051361'
+    - author
+    - "[]"
+    - '12'
+    - 
+    - '3'
+    - '2016-02-02 16:28:13'
+  - - '55'
+    - Reviewer Candidates
+    - TahiStandardTasks::ReviewerRecommendationsTask
+    - '11'
+    - true
+    - '2015-11-02 14:04:03.172924'
+    - '2015-11-02 14:12:55.136726'
+    - author
+    - "[]"
+    - '13'
+    - 
+    - '3'
+    - '2016-02-02 16:28:13'
+  - - '56'
+    - Initial Tech Check
+    - PlosBioTechCheck::InitialTechCheckTask
+    - '12'
+    - false
+    - '2015-11-02 14:04:03.193998'
+    - '2015-11-02 14:04:03.193998'
+    - custom
+    - '{"round":1}'
+    - '1'
+    - 
+    - '3'
+    - 
+  - - '57'
+    - Revision Tech Check
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - '12'
+    - false
+    - '2015-11-02 14:04:03.199552'
+    - '2015-11-02 14:04:03.199552'
+    - custom
+    - "[]"
+    - '2'
+    - 
+    - '3'
+    - 
+  - - '58'
+    - Final Tech Check
+    - PlosBioTechCheck::FinalTechCheckTask
+    - '12'
+    - false
+    - '2015-11-02 14:04:03.205185'
+    - '2015-11-02 14:04:03.205185'
+    - custom
+    - "[]"
+    - '3'
+    - 
+    - '3'
+    - 
+  - - '59'
+    - Assign Team
+    - Tahi::AssignTeam::AssignTeamTask
+    - '13'
+    - false
+    - '2015-11-02 14:04:03.215497'
+    - '2015-11-02 14:04:03.215497'
+    - admin
+    - "[]"
+    - '1'
+    - 
+    - '3'
+    - 
+  - - '60'
+    - Editor Discussion
+    - PlosBioInternalReview::EditorsDiscussionTask
+    - '13'
+    - false
+    - '2015-11-02 14:04:03.221057'
+    - '2015-11-02 14:04:03.221057'
+    - editor
+    - "[]"
+    - '2'
+    - 
+    - '3'
+    - 
+  - - '61'
+    - Invite Reviewers
+    - TahiStandardTasks::PaperReviewerTask
+    - '14'
+    - false
+    - '2015-11-02 14:04:03.231264'
+    - '2015-11-02 14:04:03.231264'
+    - custom
+    - "[]"
+    - '1'
+    - 
+    - '3'
+    - 
+  - - '62'
+    - Academic Editor Feedback
+    - Task
+    - '14'
+    - false
+    - '2015-11-02 14:04:03.236117'
+    - '2015-11-02 14:04:03.236117'
+    - user
+    - "[]"
+    - '2'
+    - 
+    - '3'
+    - 
+  - - '63'
+    - Register Decision
+    - TahiStandardTasks::RegisterDecisionTask
+    - '15'
+    - false
+    - '2015-11-02 14:04:03.24948'
+    - '2015-11-02 14:04:03.24948'
+    - editor
+    - "[]"
+    - '1'
+    - 
+    - '3'
+    - 
+  - - '64'
+    - Supporting Info
+    - TahiStandardTasks::SupportingInformationTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:23.8548'
+    - '2015-11-02 15:09:07.082342'
+    - author
+    - "[]"
+    - '1'
+    - 
+    - '4'
+    - '2016-02-02 16:28:13'
+  - - '65'
+    - Authors
+    - TahiStandardTasks::AuthorsTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:23.904316'
+    - '2015-11-02 15:09:36.277238'
+    - author
+    - "[]"
+    - '2'
+    - 
+    - '4'
+    - '2016-02-02 16:28:13'
+  - - '66'
+    - Upload Manuscript
+    - TahiStandardTasks::UploadManuscriptTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:23.923178'
+    - '2015-11-02 15:08:12.18594'
+    - author
+    - "[]"
+    - '3'
+    - 
+    - '4'
+    - '2016-02-02 16:28:13'
+  - - '67'
+    - Billing
+    - PlosBilling::BillingTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:23.937966'
+    - '2015-11-02 15:06:25.129713'
+    - author
+    - "[]"
+    - '4'
+    - '10'
+    - '4'
+    - '2016-02-02 16:28:13'
+  - - '68'
+    - Competing Interests
+    - TahiStandardTasks::CompetingInterestsTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:23.953399'
+    - '2015-11-02 15:09:49.305375'
+    - author
+    - "[]"
+    - '5'
+    - 
+    - '4'
+    - '2016-02-02 16:28:13'
+  - - '69'
+    - Cover Letter
+    - TahiStandardTasks::CoverLetterTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:23.968686'
+    - '2015-11-02 15:06:40.102327'
+    - author
+    - '["\u003cstrong style=\"color: rgb(0, 0, 0); font-family: Arial, Helvetica,
+      sans; font-size: 11px; line-height: 14px; text-align: justify;\"\u003eLorem
+      Ipsum\u003c/strong\u003e\u003cspan style=\"color: rgb(0, 0, 0); font-family:
+      Arial, Helvetica, sans; font-size: 11px; line-height: 14px; text-align: justify;\"\u003e\u0026nbsp;is
+      simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+      been the industry''s standard dummy text ever since the 1500s, when an unknown
+      printer took a galley of type and scrambled it to make a type specimen book.
+      It has survived not only five centuries, but also the leap into electronic typesetting,
+      remaining essentially unchanged. It was popularised in the 1960s with the release
+      of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
+      publishing software like Aldus PageMaker including versions of Lorem Ipsum.\u003c/span\u003e"]'
+    - '6'
+    - 
+    - '4'
+    - '2016-02-02 16:28:13'
+  - - '70'
+    - Data Availability
+    - TahiStandardTasks::DataAvailabilityTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:23.985016'
+    - '2015-11-02 15:10:01.673227'
+    - author
+    - "[]"
+    - '7'
+    - 
+    - '4'
+    - '2016-02-02 16:28:13'
+  - - '71'
+    - Ethics Statement
+    - TahiStandardTasks::EthicsTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:24.001655'
+    - '2015-11-02 15:10:23.39056'
+    - author
+    - "[]"
+    - '8'
+    - 
+    - '4'
+    - '2016-02-02 16:28:13'
+  - - '72'
+    - Figures
+    - TahiStandardTasks::FigureTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:24.017385'
+    - '2015-11-02 15:10:50.452332'
+    - author
+    - "[]"
+    - '9'
+    - 
+    - '4'
+    - '2016-02-02 16:28:13'
+  - - '73'
+    - Financial Disclosure
+    - TahiStandardTasks::FinancialDisclosureTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:24.033101'
+    - '2015-11-02 15:10:56.785584'
+    - author
+    - "[]"
+    - '10'
+    - 
+    - '4'
+    - '2016-02-02 16:28:13'
+  - - '74'
+    - Additional Information
+    - TahiStandardTasks::PublishingRelatedQuestionsTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:24.0489'
+    - '2015-11-02 15:11:50.536703'
+    - author
+    - "[]"
+    - '11'
+    - 
+    - '4'
+    - '2016-02-02 16:28:13'
+  - - '75'
+    - Reporting Guidelines
+    - TahiStandardTasks::ReportingGuidelinesTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:24.064242'
+    - '2015-11-02 15:12:05.240609'
+    - author
+    - "[]"
+    - '12'
+    - 
+    - '4'
+    - '2016-02-02 16:28:13'
+  - - '76'
+    - Reviewer Candidates
+    - TahiStandardTasks::ReviewerRecommendationsTask
+    - '16'
+    - true
+    - '2015-11-02 14:46:24.080175'
+    - '2015-11-02 15:07:44.439698'
+    - author
+    - "[]"
+    - '13'
+    - 
+    - '4'
+    - '2016-02-02 16:28:13'
+  - - '77'
+    - Initial Tech Check
+    - PlosBioTechCheck::InitialTechCheckTask
+    - '17'
+    - false
+    - '2015-11-02 14:46:24.100782'
+    - '2015-11-02 14:46:24.100782'
+    - custom
+    - '{"round":1}'
+    - '1'
+    - 
+    - '4'
+    - 
+  - - '78'
+    - Revision Tech Check
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - '17'
+    - false
+    - '2015-11-02 14:46:24.107141'
+    - '2015-11-02 14:46:24.107141'
+    - custom
+    - "[]"
+    - '2'
+    - 
+    - '4'
+    - 
+  - - '79'
+    - Final Tech Check
+    - PlosBioTechCheck::FinalTechCheckTask
+    - '17'
+    - false
+    - '2015-11-02 14:46:24.112501'
+    - '2015-11-02 14:46:24.112501'
+    - custom
+    - "[]"
+    - '3'
+    - 
+    - '4'
+    - 
+  - - '80'
+    - Assign Team
+    - Tahi::AssignTeam::AssignTeamTask
+    - '18'
+    - true
+    - '2015-11-02 14:46:24.122907'
+    - '2015-11-02 15:18:57.481784'
+    - admin
+    - "[]"
+    - '1'
+    - 
+    - '4'
+    - '2016-02-02 16:28:13'
+  - - '81'
+    - Editor Discussion
+    - PlosBioInternalReview::EditorsDiscussionTask
+    - '18'
+    - false
+    - '2015-11-02 14:46:24.128177'
+    - '2015-11-02 14:46:24.128177'
+    - editor
+    - "[]"
+    - '2'
+    - 
+    - '4'
+    - 
+  - - '82'
+    - Invite Reviewers
+    - TahiStandardTasks::PaperReviewerTask
+    - '19'
+    - false
+    - '2015-11-02 14:46:24.137957'
+    - '2015-11-02 14:46:24.137957'
+    - custom
+    - "[]"
+    - '1'
+    - 
+    - '4'
+    - 
+  - - '83'
+    - Academic Editor Feedback
+    - Task
+    - '19'
+    - false
+    - '2015-11-02 14:46:24.143576'
+    - '2015-11-02 14:46:24.143576'
+    - user
+    - "[]"
+    - '2'
+    - 
+    - '4'
+    - 
+  - - '84'
+    - Register Decision
+    - TahiStandardTasks::RegisterDecisionTask
+    - '20'
+    - false
+    - '2015-11-02 14:46:24.157807'
+    - '2015-11-02 14:46:24.157807'
+    - editor
+    - "[]"
+    - '1'
+    - 
+    - '4'
+    - 
+  - - '85'
+    - Supporting Info
+    - TahiStandardTasks::SupportingInformationTask
+    - '21'
+    - false
+    - '2015-11-03 22:59:20.980483'
+    - '2015-11-03 22:59:20.980483'
+    - author
+    - "[]"
+    - '1'
+    - 
+    - '8'
+    - 
+  - - '86'
+    - Authors
+    - TahiStandardTasks::AuthorsTask
+    - '21'
+    - false
+    - '2015-11-03 22:59:21.01633'
+    - '2015-11-03 22:59:21.01633'
+    - author
+    - "[]"
+    - '2'
+    - 
+    - '8'
+    - 
+  - - '87'
+    - Upload Manuscript
+    - TahiStandardTasks::UploadManuscriptTask
+    - '21'
+    - false
+    - '2015-11-03 22:59:21.036416'
+    - '2015-11-03 22:59:21.036416'
+    - author
+    - "[]"
+    - '3'
+    - 
+    - '8'
+    - 
+  - - '88'
+    - Billing
+    - PlosBilling::BillingTask
+    - '21'
+    - false
+    - '2015-11-03 22:59:21.058004'
+    - '2015-11-03 22:59:21.058004'
+    - author
+    - "[]"
+    - '4'
+    - '10'
+    - '8'
+    - 
+  - - '89'
+    - Competing Interests
+    - TahiStandardTasks::CompetingInterestsTask
+    - '21'
+    - false
+    - '2015-11-03 22:59:21.079375'
+    - '2015-11-03 22:59:21.079375'
+    - author
+    - "[]"
+    - '5'
+    - 
+    - '8'
+    - 
+  - - '90'
+    - Cover Letter
+    - TahiStandardTasks::CoverLetterTask
+    - '21'
+    - false
+    - '2015-11-03 22:59:21.102626'
+    - '2015-11-03 22:59:21.102626'
+    - author
+    - "[]"
+    - '6'
+    - 
+    - '8'
+    - 
+  - - '91'
+    - Data Availability
+    - TahiStandardTasks::DataAvailabilityTask
+    - '21'
+    - false
+    - '2015-11-03 22:59:21.127689'
+    - '2015-11-03 22:59:21.127689'
+    - author
+    - "[]"
+    - '7'
+    - 
+    - '8'
+    - 
+  - - '92'
+    - Ethics Statement
+    - TahiStandardTasks::EthicsTask
+    - '21'
+    - false
+    - '2015-11-03 22:59:21.15205'
+    - '2015-11-03 22:59:21.15205'
+    - author
+    - "[]"
+    - '8'
+    - 
+    - '8'
+    - 
+  - - '93'
+    - Figures
+    - TahiStandardTasks::FigureTask
+    - '21'
+    - false
+    - '2015-11-03 22:59:21.172223'
+    - '2015-11-03 22:59:21.172223'
+    - author
+    - "[]"
+    - '9'
+    - 
+    - '8'
+    - 
+  - - '94'
+    - Financial Disclosure
+    - TahiStandardTasks::FinancialDisclosureTask
+    - '21'
+    - false
+    - '2015-11-03 22:59:21.190159'
+    - '2015-11-03 22:59:21.190159'
+    - author
+    - "[]"
+    - '10'
+    - 
+    - '8'
+    - 
+  - - '95'
+    - Additional Information
+    - TahiStandardTasks::PublishingRelatedQuestionsTask
+    - '21'
+    - false
+    - '2015-11-03 22:59:21.209533'
+    - '2015-11-03 22:59:21.209533'
+    - author
+    - "[]"
+    - '11'
+    - 
+    - '8'
+    - 
+  - - '96'
+    - Reporting Guidelines
+    - TahiStandardTasks::ReportingGuidelinesTask
+    - '21'
+    - false
+    - '2015-11-03 22:59:21.226767'
+    - '2015-11-03 22:59:21.226767'
+    - author
+    - "[]"
+    - '12'
+    - 
+    - '8'
+    - 
+  - - '97'
+    - Reviewer Candidates
+    - TahiStandardTasks::ReviewerRecommendationsTask
+    - '21'
+    - false
+    - '2015-11-03 22:59:21.244285'
+    - '2015-11-03 22:59:21.244285'
+    - author
+    - "[]"
+    - '13'
+    - 
+    - '8'
+    - 
+  - - '98'
+    - Initial Tech Check
+    - PlosBioTechCheck::InitialTechCheckTask
+    - '22'
+    - false
+    - '2015-11-03 22:59:21.270475'
+    - '2015-11-03 22:59:21.270475'
+    - custom
+    - '{"round":1}'
+    - '1'
+    - 
+    - '8'
+    - 
+  - - '99'
+    - Revision Tech Check
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - '22'
+    - false
+    - '2015-11-03 22:59:21.278714'
+    - '2015-11-03 22:59:21.278714'
+    - custom
+    - "[]"
+    - '2'
+    - 
+    - '8'
+    - 
+  - - '100'
+    - Final Tech Check
+    - PlosBioTechCheck::FinalTechCheckTask
+    - '22'
+    - false
+    - '2015-11-03 22:59:21.284243'
+    - '2015-11-03 22:59:21.284243'
+    - custom
+    - "[]"
+    - '3'
+    - 
+    - '8'
+    - 
+  - - '101'
+    - Assign Team
+    - Tahi::AssignTeam::AssignTeamTask
+    - '23'
+    - false
+    - '2015-11-03 22:59:21.296607'
+    - '2015-11-03 22:59:21.296607'
+    - admin
+    - "[]"
+    - '1'
+    - 
+    - '8'
+    - 
+  - - '102'
+    - Editor Discussion
+    - PlosBioInternalReview::EditorsDiscussionTask
+    - '23'
+    - false
+    - '2015-11-03 22:59:21.302115'
+    - '2015-11-03 22:59:21.302115'
+    - editor
+    - "[]"
+    - '2'
+    - 
+    - '8'
+    - 
+  - - '103'
+    - Invite Reviewers
+    - TahiStandardTasks::PaperReviewerTask
+    - '24'
+    - false
+    - '2015-11-03 22:59:21.315358'
+    - '2015-11-03 22:59:21.315358'
+    - custom
+    - "[]"
+    - '1'
+    - 
+    - '8'
+    - 
+  - - '104'
+    - Academic Editor Feedback
+    - Task
+    - '24'
+    - false
+    - '2015-11-03 22:59:21.321385'
+    - '2015-11-03 22:59:21.321385'
+    - user
+    - "[]"
+    - '2'
+    - 
+    - '8'
+    - 
+  - - '105'
+    - Register Decision
+    - TahiStandardTasks::RegisterDecisionTask
+    - '25'
+    - false
+    - '2015-11-03 22:59:21.336956'
+    - '2015-11-03 22:59:21.336956'
+    - editor
+    - "[]"
+    - '1'
+    - 
+    - '8'
+    - 
+  - - '106'
+    - Supporting Info
+    - TahiStandardTasks::SupportingInformationTask
+    - '26'
+    - false
+    - '2015-11-03 23:02:06.837723'
+    - '2015-11-03 23:02:06.837723'
+    - author
+    - "[]"
+    - '1'
+    - 
+    - '9'
+    - 
+  - - '107'
+    - Authors
+    - TahiStandardTasks::AuthorsTask
+    - '26'
+    - false
+    - '2015-11-03 23:02:06.869846'
+    - '2015-11-03 23:02:06.869846'
+    - author
+    - "[]"
+    - '2'
+    - 
+    - '9'
+    - 
+  - - '108'
+    - Upload Manuscript
+    - TahiStandardTasks::UploadManuscriptTask
+    - '26'
+    - false
+    - '2015-11-03 23:02:06.891704'
+    - '2015-11-03 23:02:06.891704'
+    - author
+    - "[]"
+    - '3'
+    - 
+    - '9'
+    - 
+  - - '109'
+    - Billing
+    - PlosBilling::BillingTask
+    - '26'
+    - false
+    - '2015-11-03 23:02:06.915971'
+    - '2015-11-03 23:02:06.915971'
+    - author
+    - "[]"
+    - '4'
+    - '10'
+    - '9'
+    - 
+  - - '110'
+    - Competing Interests
+    - TahiStandardTasks::CompetingInterestsTask
+    - '26'
+    - false
+    - '2015-11-03 23:02:06.936789'
+    - '2015-11-03 23:02:06.936789'
+    - author
+    - "[]"
+    - '5'
+    - 
+    - '9'
+    - 
+  - - '111'
+    - Cover Letter
+    - TahiStandardTasks::CoverLetterTask
+    - '26'
+    - false
+    - '2015-11-03 23:02:06.956045'
+    - '2015-11-03 23:02:06.956045'
+    - author
+    - "[]"
+    - '6'
+    - 
+    - '9'
+    - 
+  - - '112'
+    - Data Availability
+    - TahiStandardTasks::DataAvailabilityTask
+    - '26'
+    - false
+    - '2015-11-03 23:02:06.977881'
+    - '2015-11-03 23:02:06.977881'
+    - author
+    - "[]"
+    - '7'
+    - 
+    - '9'
+    - 
+  - - '113'
+    - Ethics Statement
+    - TahiStandardTasks::EthicsTask
+    - '26'
+    - false
+    - '2015-11-03 23:02:06.99521'
+    - '2015-11-03 23:02:06.99521'
+    - author
+    - "[]"
+    - '8'
+    - 
+    - '9'
+    - 
+  - - '114'
+    - Figures
+    - TahiStandardTasks::FigureTask
+    - '26'
+    - false
+    - '2015-11-03 23:02:07.013688'
+    - '2015-11-03 23:02:07.013688'
+    - author
+    - "[]"
+    - '9'
+    - 
+    - '9'
+    - 
+  - - '115'
+    - Financial Disclosure
+    - TahiStandardTasks::FinancialDisclosureTask
+    - '26'
+    - false
+    - '2015-11-03 23:02:07.030914'
+    - '2015-11-03 23:02:07.030914'
+    - author
+    - "[]"
+    - '10'
+    - 
+    - '9'
+    - 
+  - - '116'
+    - Additional Information
+    - TahiStandardTasks::PublishingRelatedQuestionsTask
+    - '26'
+    - false
+    - '2015-11-03 23:02:07.074433'
+    - '2015-11-03 23:02:07.074433'
+    - author
+    - "[]"
+    - '11'
+    - 
+    - '9'
+    - 
+  - - '117'
+    - Reporting Guidelines
+    - TahiStandardTasks::ReportingGuidelinesTask
+    - '26'
+    - false
+    - '2015-11-03 23:02:07.09131'
+    - '2015-11-03 23:02:07.09131'
+    - author
+    - "[]"
+    - '12'
+    - 
+    - '9'
+    - 
+  - - '118'
+    - Reviewer Candidates
+    - TahiStandardTasks::ReviewerRecommendationsTask
+    - '26'
+    - false
+    - '2015-11-03 23:02:07.109614'
+    - '2015-11-03 23:02:07.109614'
+    - author
+    - "[]"
+    - '13'
+    - 
+    - '9'
+    - 
+  - - '119'
+    - Initial Tech Check
+    - PlosBioTechCheck::InitialTechCheckTask
+    - '27'
+    - false
+    - '2015-11-03 23:02:07.136355'
+    - '2015-11-03 23:02:07.136355'
+    - custom
+    - '{"round":1}'
+    - '1'
+    - 
+    - '9'
+    - 
+  - - '120'
+    - Revision Tech Check
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - '27'
+    - false
+    - '2015-11-03 23:02:07.142415'
+    - '2015-11-03 23:02:07.142415'
+    - custom
+    - "[]"
+    - '2'
+    - 
+    - '9'
+    - 
+  - - '121'
+    - Final Tech Check
+    - PlosBioTechCheck::FinalTechCheckTask
+    - '27'
+    - false
+    - '2015-11-03 23:02:07.148881'
+    - '2015-11-03 23:02:07.148881'
+    - custom
+    - "[]"
+    - '3'
+    - 
+    - '9'
+    - 
+  - - '122'
+    - Assign Team
+    - Tahi::AssignTeam::AssignTeamTask
+    - '28'
+    - false
+    - '2015-11-03 23:02:07.162883'
+    - '2015-11-03 23:02:07.162883'
+    - admin
+    - "[]"
+    - '1'
+    - 
+    - '9'
+    - 
+  - - '123'
+    - Editor Discussion
+    - PlosBioInternalReview::EditorsDiscussionTask
+    - '28'
+    - false
+    - '2015-11-03 23:02:07.168945'
+    - '2015-11-03 23:02:07.168945'
+    - editor
+    - "[]"
+    - '2'
+    - 
+    - '9'
+    - 
+  - - '124'
+    - Invite Reviewers
+    - TahiStandardTasks::PaperReviewerTask
+    - '29'
+    - false
+    - '2015-11-03 23:02:07.181434'
+    - '2015-11-03 23:02:07.181434'
+    - custom
+    - "[]"
+    - '1'
+    - 
+    - '9'
+    - 
+  - - '125'
+    - Academic Editor Feedback
+    - Task
+    - '29'
+    - false
+    - '2015-11-03 23:02:07.186712'
+    - '2015-11-03 23:02:07.186712'
+    - user
+    - "[]"
+    - '2'
+    - 
+    - '9'
+    - 
+  - - '126'
+    - Register Decision
+    - TahiStandardTasks::RegisterDecisionTask
+    - '30'
+    - false
+    - '2015-11-03 23:02:07.202088'
+    - '2015-11-03 23:02:07.202088'
+    - editor
+    - "[]"
+    - '1'
+    - 
+    - '9'
+    - 
+  - - '127'
+    - Supporting Info
+    - TahiStandardTasks::SupportingInformationTask
+    - '31'
+    - false
+    - '2015-11-10 22:27:27.230045'
+    - '2015-11-10 22:27:27.230045'
+    - author
+    - "[]"
+    - '1'
+    - 
+    - '10'
+    - 
+  - - '128'
+    - Authors
+    - TahiStandardTasks::AuthorsTask
+    - '31'
+    - false
+    - '2015-11-10 22:27:27.294743'
+    - '2015-11-10 22:27:27.294743'
+    - author
+    - "[]"
+    - '2'
+    - 
+    - '10'
+    - 
+  - - '129'
+    - Upload Manuscript
+    - TahiStandardTasks::UploadManuscriptTask
+    - '31'
+    - false
+    - '2015-11-10 22:27:27.324684'
+    - '2015-11-10 22:27:27.324684'
+    - author
+    - "[]"
+    - '3'
+    - 
+    - '10'
+    - 
+  - - '130'
+    - Billing
+    - PlosBilling::BillingTask
+    - '31'
+    - false
+    - '2015-11-10 22:27:27.352394'
+    - '2015-11-10 22:27:27.352394'
+    - author
+    - "[]"
+    - '4'
+    - '10'
+    - '10'
+    - 
+  - - '131'
+    - Competing Interests
+    - TahiStandardTasks::CompetingInterestsTask
+    - '31'
+    - false
+    - '2015-11-10 22:27:27.373549'
+    - '2015-11-10 22:27:27.373549'
+    - author
+    - "[]"
+    - '5'
+    - 
+    - '10'
+    - 
+  - - '132'
+    - Cover Letter
+    - TahiStandardTasks::CoverLetterTask
+    - '31'
+    - false
+    - '2015-11-10 22:27:27.39163'
+    - '2015-11-10 22:27:27.39163'
+    - author
+    - "[]"
+    - '6'
+    - 
+    - '10'
+    - 
+  - - '133'
+    - Data Availability
+    - TahiStandardTasks::DataAvailabilityTask
+    - '31'
+    - false
+    - '2015-11-10 22:27:27.410447'
+    - '2015-11-10 22:27:27.410447'
+    - author
+    - "[]"
+    - '7'
+    - 
+    - '10'
+    - 
+  - - '134'
+    - Ethics Statement
+    - TahiStandardTasks::EthicsTask
+    - '31'
+    - false
+    - '2015-11-10 22:27:27.427936'
+    - '2015-11-10 22:27:27.427936'
+    - author
+    - "[]"
+    - '8'
+    - 
+    - '10'
+    - 
+  - - '135'
+    - Figures
+    - TahiStandardTasks::FigureTask
+    - '31'
+    - false
+    - '2015-11-10 22:27:27.447163'
+    - '2015-11-10 22:27:27.447163'
+    - author
+    - "[]"
+    - '9'
+    - 
+    - '10'
+    - 
+  - - '136'
+    - Financial Disclosure
+    - TahiStandardTasks::FinancialDisclosureTask
+    - '31'
+    - false
+    - '2015-11-10 22:27:27.462783'
+    - '2015-11-10 22:27:27.462783'
+    - author
+    - "[]"
+    - '10'
+    - 
+    - '10'
+    - 
+  - - '137'
+    - Additional Information
+    - TahiStandardTasks::PublishingRelatedQuestionsTask
+    - '31'
+    - false
+    - '2015-11-10 22:27:27.478535'
+    - '2015-11-10 22:27:27.478535'
+    - author
+    - "[]"
+    - '11'
+    - 
+    - '10'
+    - 
+  - - '138'
+    - Reporting Guidelines
+    - TahiStandardTasks::ReportingGuidelinesTask
+    - '31'
+    - false
+    - '2015-11-10 22:27:27.49438'
+    - '2015-11-10 22:27:27.49438'
+    - author
+    - "[]"
+    - '12'
+    - 
+    - '10'
+    - 
+  - - '139'
+    - Reviewer Candidates
+    - TahiStandardTasks::ReviewerRecommendationsTask
+    - '31'
+    - false
+    - '2015-11-10 22:27:27.510321'
+    - '2015-11-10 22:27:27.510321'
+    - author
+    - "[]"
+    - '13'
+    - 
+    - '10'
+    - 
+  - - '140'
+    - Initial Tech Check
+    - PlosBioTechCheck::InitialTechCheckTask
+    - '32'
+    - false
+    - '2015-11-10 22:27:27.535272'
+    - '2015-11-10 22:27:27.535272'
+    - custom
+    - '{"round":1}'
+    - '1'
+    - 
+    - '10'
+    - 
+  - - '141'
+    - Revision Tech Check
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - '32'
+    - false
+    - '2015-11-10 22:27:27.545741'
+    - '2015-11-10 22:27:27.545741'
+    - custom
+    - "[]"
+    - '2'
+    - 
+    - '10'
+    - 
+  - - '142'
+    - Final Tech Check
+    - PlosBioTechCheck::FinalTechCheckTask
+    - '32'
+    - false
+    - '2015-11-10 22:27:27.554406'
+    - '2015-11-10 22:27:27.554406'
+    - custom
+    - "[]"
+    - '3'
+    - 
+    - '10'
+    - 
+  - - '143'
+    - Assign Team
+    - Tahi::AssignTeam::AssignTeamTask
+    - '33'
+    - false
+    - '2015-11-10 22:27:27.570117'
+    - '2015-11-10 22:27:27.570117'
+    - admin
+    - "[]"
+    - '1'
+    - 
+    - '10'
+    - 
+  - - '144'
+    - Editor Discussion
+    - PlosBioInternalReview::EditorsDiscussionTask
+    - '33'
+    - false
+    - '2015-11-10 22:27:27.579306'
+    - '2015-11-10 22:27:27.579306'
+    - editor
+    - "[]"
+    - '2'
+    - 
+    - '10'
+    - 
+  - - '145'
+    - Invite Reviewers
+    - TahiStandardTasks::PaperReviewerTask
+    - '34'
+    - false
+    - '2015-11-10 22:27:27.59137'
+    - '2015-11-10 22:27:27.59137'
+    - custom
+    - "[]"
+    - '1'
+    - 
+    - '10'
+    - 
+  - - '146'
+    - Academic Editor Feedback
+    - Task
+    - '34'
+    - false
+    - '2015-11-10 22:27:27.595453'
+    - '2015-11-10 22:27:27.595453'
+    - user
+    - "[]"
+    - '2'
+    - 
+    - '10'
+    - 
+  - - '147'
+    - Register Decision
+    - TahiStandardTasks::RegisterDecisionTask
+    - '35'
+    - false
+    - '2015-11-10 22:27:27.612997'
+    - '2015-11-10 22:27:27.612997'
+    - editor
+    - "[]"
+    - '1'
+    - 
+    - '10'
+    - 
+
+---
+assignments:
+  columns:
+  - id
+  - user_id
+  - role_id
+  - assigned_to_id
+  - assigned_to_type
+  - created_at
+  - updated_at
+  records: 
+  - - '29'
+    - '3'
+    - '8'
+    - '1'
+    - Paper
+    - '2016-01-28 17:12:42.030464'
+    - '2016-01-28 17:12:42.030464'
+  - - '30'
+    - '3'
+    - '8'
+    - '2'
+    - Paper
+    - '2016-01-28 17:12:42.050154'
+    - '2016-01-28 17:12:42.050154'
+  - - '31'
+    - '3'
+    - '8'
+    - '3'
+    - Paper
+    - '2016-01-28 17:12:42.058813'
+    - '2016-01-28 17:12:42.058813'
+  - - '32'
+    - '3'
+    - '8'
+    - '4'
+    - Paper
+    - '2016-01-28 17:12:42.068226'
+    - '2016-01-28 17:12:42.068226'
+  - - '33'
+    - '7'
+    - '8'
+    - '8'
+    - Paper
+    - '2016-01-28 17:12:42.080871'
+    - '2016-01-28 17:12:42.080871'
+  - - '34'
+    - '7'
+    - '8'
+    - '9'
+    - Paper
+    - '2016-01-28 17:12:42.091433'
+    - '2016-01-28 17:12:42.091433'
+  - - '35'
+    - '1'
+    - '8'
+    - '10'
+    - Paper
+    - '2016-01-28 17:12:42.101763'
+    - '2016-01-28 17:12:42.101763'
+  - - '36'
+    - '1'
+    - '10'
+    - '1'
+    - Journal
+    - '2016-01-28 17:12:42.163645'
+    - '2016-01-28 17:12:42.163645'
+
+---
 nested_question_answers:
   columns:
   - id
@@ -1462,6 +3489,66 @@ nested_question_answers:
     - '10'
 
 ---
+permissions_roles:
+  columns:
+  - id
+  - permission_id
+  - role_id
+  - created_at
+  - updated_at
+  records: 
+  - - '11'
+    - '7'
+    - '7'
+    - '2016-01-28 17:12:41.867168'
+    - '2016-01-28 17:12:41.867168'
+  - - '12'
+    - '8'
+    - '8'
+    - '2016-01-28 17:12:41.898698'
+    - '2016-01-28 17:12:41.898698'
+  - - '13'
+    - '9'
+    - '8'
+    - '2016-01-28 17:12:41.912481'
+    - '2016-01-28 17:12:41.912481'
+  - - '14'
+    - '10'
+    - '8'
+    - '2016-01-28 17:12:41.923576'
+    - '2016-01-28 17:12:41.923576'
+  - - '15'
+    - '8'
+    - '9'
+    - '2016-01-28 17:12:41.937619'
+    - '2016-01-28 17:12:41.937619'
+  - - '16'
+    - '9'
+    - '9'
+    - '2016-01-28 17:12:41.943974'
+    - '2016-01-28 17:12:41.943974'
+  - - '17'
+    - '11'
+    - '10'
+    - '2016-01-28 17:12:41.958086'
+    - '2016-01-28 17:12:41.958086'
+  - - '18'
+    - '12'
+    - '10'
+    - '2016-01-28 17:12:41.968029'
+    - '2016-01-28 17:12:41.968029'
+  - - '19'
+    - '9'
+    - '10'
+    - '2016-01-28 17:12:41.973866'
+    - '2016-01-28 17:12:41.973866'
+  - - '20'
+    - '8'
+    - '10'
+    - '2016-01-28 17:12:41.979723'
+    - '2016-01-28 17:12:41.979723'
+
+---
 tahi_standard_tasks_reviewer_recommendations:
   columns:
   - id
@@ -1726,134 +3813,6 @@ papers:
     - 
     - 
     - 
-
----
-assignments:
-  columns:
-  - id
-  - user_id
-  - role_id
-  - assigned_to_id
-  - assigned_to_type
-  - created_at
-  - updated_at
-  records: 
-  - - '29'
-    - '3'
-    - '8'
-    - '1'
-    - Paper
-    - '2016-01-28 17:12:42.030464'
-    - '2016-01-28 17:12:42.030464'
-  - - '30'
-    - '3'
-    - '8'
-    - '2'
-    - Paper
-    - '2016-01-28 17:12:42.050154'
-    - '2016-01-28 17:12:42.050154'
-  - - '31'
-    - '3'
-    - '8'
-    - '3'
-    - Paper
-    - '2016-01-28 17:12:42.058813'
-    - '2016-01-28 17:12:42.058813'
-  - - '32'
-    - '3'
-    - '8'
-    - '4'
-    - Paper
-    - '2016-01-28 17:12:42.068226'
-    - '2016-01-28 17:12:42.068226'
-  - - '33'
-    - '7'
-    - '8'
-    - '8'
-    - Paper
-    - '2016-01-28 17:12:42.080871'
-    - '2016-01-28 17:12:42.080871'
-  - - '34'
-    - '7'
-    - '8'
-    - '9'
-    - Paper
-    - '2016-01-28 17:12:42.091433'
-    - '2016-01-28 17:12:42.091433'
-  - - '35'
-    - '1'
-    - '8'
-    - '10'
-    - Paper
-    - '2016-01-28 17:12:42.101763'
-    - '2016-01-28 17:12:42.101763'
-  - - '36'
-    - '1'
-    - '10'
-    - '1'
-    - Journal
-    - '2016-01-28 17:12:42.163645'
-    - '2016-01-28 17:12:42.163645'
-
----
-permissions_roles:
-  columns:
-  - id
-  - permission_id
-  - role_id
-  - created_at
-  - updated_at
-  records: 
-  - - '11'
-    - '7'
-    - '7'
-    - '2016-01-28 17:12:41.867168'
-    - '2016-01-28 17:12:41.867168'
-  - - '12'
-    - '8'
-    - '8'
-    - '2016-01-28 17:12:41.898698'
-    - '2016-01-28 17:12:41.898698'
-  - - '13'
-    - '9'
-    - '8'
-    - '2016-01-28 17:12:41.912481'
-    - '2016-01-28 17:12:41.912481'
-  - - '14'
-    - '10'
-    - '8'
-    - '2016-01-28 17:12:41.923576'
-    - '2016-01-28 17:12:41.923576'
-  - - '15'
-    - '8'
-    - '9'
-    - '2016-01-28 17:12:41.937619'
-    - '2016-01-28 17:12:41.937619'
-  - - '16'
-    - '9'
-    - '9'
-    - '2016-01-28 17:12:41.943974'
-    - '2016-01-28 17:12:41.943974'
-  - - '17'
-    - '11'
-    - '10'
-    - '2016-01-28 17:12:41.958086'
-    - '2016-01-28 17:12:41.958086'
-  - - '18'
-    - '12'
-    - '10'
-    - '2016-01-28 17:12:41.968029'
-    - '2016-01-28 17:12:41.968029'
-  - - '19'
-    - '9'
-    - '10'
-    - '2016-01-28 17:12:41.973866'
-    - '2016-01-28 17:12:41.973866'
-  - - '20'
-    - '8'
-    - '10'
-    - '2016-01-28 17:12:41.979723'
-    - '2016-01-28 17:12:41.979723'
 
 ---
 phase_templates:
@@ -7236,1817 +9195,6 @@ users:
     - 
     - false
     - 
-
----
-tasks:
-  columns:
-  - id
-  - title
-  - type
-  - phase_id
-  - completed
-  - created_at
-  - updated_at
-  - old_role
-  - body
-  - position
-  - required_permission_id
-  - paper_id
-  records: 
-  - - '1'
-    - Supporting Info
-    - TahiStandardTasks::SupportingInformationTask
-    - '1'
-    - false
-    - '2015-10-29 20:16:37.447196'
-    - '2015-10-29 20:16:37.447196'
-    - author
-    - "[]"
-    - '1'
-    - 
-    - '1'
-  - - '2'
-    - Authors
-    - TahiStandardTasks::AuthorsTask
-    - '1'
-    - false
-    - '2015-10-29 20:16:37.481345'
-    - '2015-10-29 20:16:37.481345'
-    - author
-    - "[]"
-    - '2'
-    - 
-    - '1'
-  - - '3'
-    - Upload Manuscript
-    - TahiStandardTasks::UploadManuscriptTask
-    - '1'
-    - false
-    - '2015-10-29 20:16:37.500407'
-    - '2015-10-30 21:12:06.814054'
-    - author
-    - "[]"
-    - '3'
-    - 
-    - '1'
-  - - '4'
-    - Billing
-    - PlosBilling::BillingTask
-    - '1'
-    - false
-    - '2015-10-29 20:16:37.518922'
-    - '2015-10-29 20:16:37.518922'
-    - author
-    - "[]"
-    - '4'
-    - '10'
-    - '1'
-  - - '5'
-    - Competing Interests
-    - TahiStandardTasks::CompetingInterestsTask
-    - '1'
-    - false
-    - '2015-10-29 20:16:37.538292'
-    - '2015-10-29 20:16:37.538292'
-    - author
-    - "[]"
-    - '5'
-    - 
-    - '1'
-  - - '6'
-    - Cover Letter
-    - TahiStandardTasks::CoverLetterTask
-    - '1'
-    - false
-    - '2015-10-29 20:16:37.558023'
-    - '2015-10-29 20:16:37.558023'
-    - author
-    - "[]"
-    - '6'
-    - 
-    - '1'
-  - - '7'
-    - Data Availability
-    - TahiStandardTasks::DataAvailabilityTask
-    - '1'
-    - false
-    - '2015-10-29 20:16:37.576768'
-    - '2015-10-29 20:16:37.576768'
-    - author
-    - "[]"
-    - '7'
-    - 
-    - '1'
-  - - '8'
-    - Ethics Statement
-    - TahiStandardTasks::EthicsTask
-    - '1'
-    - false
-    - '2015-10-29 20:16:37.595139'
-    - '2015-10-29 20:16:37.595139'
-    - author
-    - "[]"
-    - '8'
-    - 
-    - '1'
-  - - '9'
-    - Figures
-    - TahiStandardTasks::FigureTask
-    - '1'
-    - false
-    - '2015-10-29 20:16:37.612859'
-    - '2015-10-29 20:16:37.612859'
-    - author
-    - "[]"
-    - '9'
-    - 
-    - '1'
-  - - '10'
-    - Financial Disclosure
-    - TahiStandardTasks::FinancialDisclosureTask
-    - '1'
-    - false
-    - '2015-10-29 20:16:37.631128'
-    - '2015-10-29 20:16:37.631128'
-    - author
-    - "[]"
-    - '10'
-    - 
-    - '1'
-  - - '11'
-    - Additional Information
-    - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - '1'
-    - false
-    - '2015-10-29 20:16:37.649691'
-    - '2015-10-29 20:16:37.649691'
-    - author
-    - "[]"
-    - '11'
-    - 
-    - '1'
-  - - '12'
-    - Reporting Guidelines
-    - TahiStandardTasks::ReportingGuidelinesTask
-    - '1'
-    - false
-    - '2015-10-29 20:16:37.667692'
-    - '2015-10-29 20:16:37.667692'
-    - author
-    - "[]"
-    - '12'
-    - 
-    - '1'
-  - - '13'
-    - Reviewer Candidates
-    - TahiStandardTasks::ReviewerRecommendationsTask
-    - '1'
-    - false
-    - '2015-10-29 20:16:37.686525'
-    - '2015-10-29 20:16:37.686525'
-    - author
-    - "[]"
-    - '13'
-    - 
-    - '1'
-  - - '14'
-    - Initial Tech Check
-    - PlosBioTechCheck::InitialTechCheckTask
-    - '2'
-    - false
-    - '2015-10-29 20:16:37.707252'
-    - '2015-10-29 20:16:37.707252'
-    - custom
-    - '{"round":1}'
-    - '1'
-    - 
-    - '1'
-  - - '15'
-    - Revision Tech Check
-    - PlosBioTechCheck::RevisionTechCheckTask
-    - '2'
-    - false
-    - '2015-10-29 20:16:37.717232'
-    - '2015-10-29 20:16:37.717232'
-    - custom
-    - "[]"
-    - '2'
-    - 
-    - '1'
-  - - '16'
-    - Final Tech Check
-    - PlosBioTechCheck::FinalTechCheckTask
-    - '2'
-    - false
-    - '2015-10-29 20:16:37.726562'
-    - '2015-10-29 20:16:37.726562'
-    - custom
-    - "[]"
-    - '3'
-    - 
-    - '1'
-  - - '17'
-    - Assign Team
-    - Tahi::AssignTeam::AssignTeamTask
-    - '3'
-    - false
-    - '2015-10-29 20:16:37.741643'
-    - '2015-10-29 20:16:37.741643'
-    - admin
-    - "[]"
-    - '1'
-    - 
-    - '1'
-  - - '18'
-    - Editor Discussion
-    - PlosBioInternalReview::EditorsDiscussionTask
-    - '3'
-    - false
-    - '2015-10-29 20:16:37.750782'
-    - '2015-10-29 20:16:37.750782'
-    - editor
-    - "[]"
-    - '2'
-    - 
-    - '1'
-  - - '19'
-    - Invite Reviewers
-    - TahiStandardTasks::PaperReviewerTask
-    - '4'
-    - false
-    - '2015-10-29 20:16:37.765286'
-    - '2015-10-29 20:16:37.765286'
-    - custom
-    - "[]"
-    - '1'
-    - 
-    - '1'
-  - - '20'
-    - Academic Editor Feedback
-    - Task
-    - '4'
-    - false
-    - '2015-10-29 20:16:37.770082'
-    - '2015-10-29 20:16:37.770082'
-    - user
-    - "[]"
-    - '2'
-    - 
-    - '1'
-  - - '21'
-    - Register Decision
-    - TahiStandardTasks::RegisterDecisionTask
-    - '5'
-    - false
-    - '2015-10-29 20:16:37.788649'
-    - '2015-10-29 20:16:37.788649'
-    - editor
-    - "[]"
-    - '1'
-    - 
-    - '1'
-  - - '22'
-    - Supporting Info
-    - TahiStandardTasks::SupportingInformationTask
-    - '6'
-    - false
-    - '2015-10-30 19:43:28.513727'
-    - '2015-10-30 19:43:28.513727'
-    - author
-    - "[]"
-    - '1'
-    - 
-    - '2'
-  - - '23'
-    - Authors
-    - TahiStandardTasks::AuthorsTask
-    - '6'
-    - false
-    - '2015-10-30 19:43:28.540717'
-    - '2015-10-30 19:54:34.391249'
-    - author
-    - "[]"
-    - '2'
-    - 
-    - '2'
-  - - '24'
-    - Upload Manuscript
-    - TahiStandardTasks::UploadManuscriptTask
-    - '6'
-    - false
-    - '2015-10-30 19:43:28.556461'
-    - '2015-10-30 19:54:39.331122'
-    - author
-    - "[]"
-    - '3'
-    - 
-    - '2'
-  - - '25'
-    - Billing
-    - PlosBilling::BillingTask
-    - '6'
-    - false
-    - '2015-10-30 19:43:28.571079'
-    - '2015-10-30 19:48:47.180823'
-    - author
-    - "[]"
-    - '4'
-    - '10'
-    - '2'
-  - - '26'
-    - Competing Interests
-    - TahiStandardTasks::CompetingInterestsTask
-    - '6'
-    - false
-    - '2015-10-30 19:43:28.585311'
-    - '2015-10-30 19:43:28.585311'
-    - author
-    - "[]"
-    - '5'
-    - 
-    - '2'
-  - - '27'
-    - Cover Letter
-    - TahiStandardTasks::CoverLetterTask
-    - '6'
-    - false
-    - '2015-10-30 19:43:28.600041'
-    - '2015-10-30 19:49:44.740631'
-    - author
-    - '["\u003cdiv\u003e\u003cb style=\"color: rgb(0, 0, 0); font-family: Arial, Helvetica,
-      sans; font-size: 11px; line-height: 14px; text-align: justify;\"\u003eMy Cover
-      Letter\u003c/b\u003e\u003cbr\u003e\u003c/div\u003e\u003cspan style=\"color:
-      rgb(0, 0, 0); font-family: Arial, Helvetica, sans; font-size: 11px; line-height:
-      14px; text-align: justify;\"\u003eLorem Ipsum\u003c/span\u003e\u003cspan style=\"color:
-      rgb(0, 0, 0); font-family: Arial, Helvetica, sans; font-size: 11px; line-height:
-      14px; text-align: justify;\"\u003e\u0026nbsp;is simply dummy text of the printing
-      and typesetting industry. Lorem Ipsum has been the industry''s standard dummy
-      text ever since the 1500s, when an unknown printer took a galley of type and
-      scrambled it to make a type specimen book. It has survived not only five centuries,
-      but also the leap into electronic typesetting, remaining essentially unchanged.
-      It was popularised in the 1960s with the release of Letraset sheets containing
-      Lorem Ipsum passages, and more recently with desktop publishing software like
-      Aldus PageMaker including versions of Lorem Ipsum.\u003c/span\u003e"]'
-    - '6'
-    - 
-    - '2'
-  - - '28'
-    - Data Availability
-    - TahiStandardTasks::DataAvailabilityTask
-    - '6'
-    - false
-    - '2015-10-30 19:43:28.614811'
-    - '2015-10-30 19:43:28.614811'
-    - author
-    - "[]"
-    - '7'
-    - 
-    - '2'
-  - - '29'
-    - Ethics Statement
-    - TahiStandardTasks::EthicsTask
-    - '6'
-    - false
-    - '2015-10-30 19:43:28.628148'
-    - '2015-10-30 19:43:28.628148'
-    - author
-    - "[]"
-    - '8'
-    - 
-    - '2'
-  - - '30'
-    - Figures
-    - TahiStandardTasks::FigureTask
-    - '6'
-    - false
-    - '2015-10-30 19:43:28.641504'
-    - '2015-10-30 19:43:28.641504'
-    - author
-    - "[]"
-    - '9'
-    - 
-    - '2'
-  - - '31'
-    - Financial Disclosure
-    - TahiStandardTasks::FinancialDisclosureTask
-    - '6'
-    - false
-    - '2015-10-30 19:43:28.655468'
-    - '2015-10-30 19:43:28.655468'
-    - author
-    - "[]"
-    - '10'
-    - 
-    - '2'
-  - - '32'
-    - Additional Information
-    - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - '6'
-    - false
-    - '2015-10-30 19:43:28.668712'
-    - '2015-10-30 19:43:28.668712'
-    - author
-    - "[]"
-    - '11'
-    - 
-    - '2'
-  - - '33'
-    - Reporting Guidelines
-    - TahiStandardTasks::ReportingGuidelinesTask
-    - '6'
-    - false
-    - '2015-10-30 19:43:28.682411'
-    - '2015-10-30 19:43:28.682411'
-    - author
-    - "[]"
-    - '12'
-    - 
-    - '2'
-  - - '34'
-    - Reviewer Candidates
-    - TahiStandardTasks::ReviewerRecommendationsTask
-    - '6'
-    - false
-    - '2015-10-30 19:43:28.696454'
-    - '2015-10-30 19:43:28.696454'
-    - author
-    - "[]"
-    - '13'
-    - 
-    - '2'
-  - - '35'
-    - Initial Tech Check
-    - PlosBioTechCheck::InitialTechCheckTask
-    - '7'
-    - false
-    - '2015-10-30 19:43:28.71276'
-    - '2015-10-30 19:43:28.71276'
-    - custom
-    - '{"round":1}'
-    - '1'
-    - 
-    - '2'
-  - - '36'
-    - Revision Tech Check
-    - PlosBioTechCheck::RevisionTechCheckTask
-    - '7'
-    - false
-    - '2015-10-30 19:43:28.717952'
-    - '2015-10-30 19:43:28.717952'
-    - custom
-    - "[]"
-    - '2'
-    - 
-    - '2'
-  - - '37'
-    - Final Tech Check
-    - PlosBioTechCheck::FinalTechCheckTask
-    - '7'
-    - false
-    - '2015-10-30 19:43:28.723485'
-    - '2015-10-30 19:43:28.723485'
-    - custom
-    - "[]"
-    - '3'
-    - 
-    - '2'
-  - - '38'
-    - Assign Team
-    - Tahi::AssignTeam::AssignTeamTask
-    - '8'
-    - false
-    - '2015-10-30 19:43:28.733583'
-    - '2015-11-02 15:19:08.231937'
-    - admin
-    - "[]"
-    - '1'
-    - 
-    - '2'
-  - - '39'
-    - Editor Discussion
-    - PlosBioInternalReview::EditorsDiscussionTask
-    - '8'
-    - false
-    - '2015-10-30 19:43:28.738473'
-    - '2015-10-30 19:43:28.738473'
-    - editor
-    - "[]"
-    - '2'
-    - 
-    - '2'
-  - - '40'
-    - Invite Reviewers
-    - TahiStandardTasks::PaperReviewerTask
-    - '9'
-    - false
-    - '2015-10-30 19:43:28.74865'
-    - '2015-10-30 19:43:28.74865'
-    - custom
-    - "[]"
-    - '1'
-    - 
-    - '2'
-  - - '41'
-    - Academic Editor Feedback
-    - Task
-    - '9'
-    - false
-    - '2015-10-30 19:43:28.753676'
-    - '2015-10-30 19:43:28.753676'
-    - user
-    - "[]"
-    - '2'
-    - 
-    - '2'
-  - - '42'
-    - Register Decision
-    - TahiStandardTasks::RegisterDecisionTask
-    - '10'
-    - false
-    - '2015-10-30 19:43:28.767156'
-    - '2015-10-30 19:43:28.767156'
-    - editor
-    - "[]"
-    - '1'
-    - 
-    - '2'
-  - - '43'
-    - Supporting Info
-    - TahiStandardTasks::SupportingInformationTask
-    - '11'
-    - true
-    - '2015-11-02 14:04:02.948249'
-    - '2015-11-02 14:13:47.22972'
-    - author
-    - "[]"
-    - '1'
-    - 
-    - '3'
-  - - '44'
-    - Authors
-    - TahiStandardTasks::AuthorsTask
-    - '11'
-    - true
-    - '2015-11-02 14:04:02.99332'
-    - '2015-11-02 14:15:08.969496'
-    - author
-    - "[]"
-    - '2'
-    - 
-    - '3'
-  - - '45'
-    - Upload Manuscript
-    - TahiStandardTasks::UploadManuscriptTask
-    - '11'
-    - true
-    - '2015-11-02 14:04:03.010843'
-    - '2015-11-02 14:08:06.760205'
-    - author
-    - "[]"
-    - '3'
-    - 
-    - '3'
-  - - '46'
-    - Billing
-    - PlosBilling::BillingTask
-    - '11'
-    - true
-    - '2015-11-02 14:04:03.029095'
-    - '2015-11-02 14:11:35.529725'
-    - author
-    - "[]"
-    - '4'
-    - '10'
-    - '3'
-  - - '47'
-    - Competing Interests
-    - TahiStandardTasks::CompetingInterestsTask
-    - '11'
-    - true
-    - '2015-11-02 14:04:03.046654'
-    - '2015-11-02 14:15:20.503569'
-    - author
-    - "[]"
-    - '5'
-    - 
-    - '3'
-  - - '48'
-    - Cover Letter
-    - TahiStandardTasks::CoverLetterTask
-    - '11'
-    - true
-    - '2015-11-02 14:04:03.064308'
-    - '2015-11-02 14:12:02.291254'
-    - author
-    - '["Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-      Lorem Ipsum has been the industry''s standard dummy text ever since the 1500s,
-      when an unknown printer took a galley of type and scrambled it to make a type
-      specimen book. It has survived not only five centuries, but also the leap into
-      electronic typesetting, remaining essentially unchanged. It was popularised
-      in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-      and more recently with desktop publishing software like Aldus PageMaker including
-      versions of Lorem Ipsum."]'
-    - '6'
-    - 
-    - '3'
-  - - '49'
-    - Data Availability
-    - TahiStandardTasks::DataAvailabilityTask
-    - '11'
-    - true
-    - '2015-11-02 14:04:03.080743'
-    - '2015-11-02 14:15:31.458101'
-    - author
-    - "[]"
-    - '7'
-    - 
-    - '3'
-  - - '50'
-    - Ethics Statement
-    - TahiStandardTasks::EthicsTask
-    - '11'
-    - true
-    - '2015-11-02 14:04:03.095882'
-    - '2015-11-02 14:15:39.843929'
-    - author
-    - "[]"
-    - '8'
-    - 
-    - '3'
-  - - '51'
-    - Figures
-    - TahiStandardTasks::FigureTask
-    - '11'
-    - true
-    - '2015-11-02 14:04:03.111405'
-    - '2015-11-02 14:16:07.185038'
-    - author
-    - "[]"
-    - '9'
-    - 
-    - '3'
-  - - '52'
-    - Financial Disclosure
-    - TahiStandardTasks::FinancialDisclosureTask
-    - '11'
-    - true
-    - '2015-11-02 14:04:03.126435'
-    - '2015-11-02 14:16:15.469464'
-    - author
-    - "[]"
-    - '10'
-    - 
-    - '3'
-  - - '53'
-    - Additional Information
-    - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - '11'
-    - true
-    - '2015-11-02 14:04:03.141948'
-    - '2015-11-02 14:17:21.863603'
-    - author
-    - "[]"
-    - '11'
-    - 
-    - '3'
-  - - '54'
-    - Reporting Guidelines
-    - TahiStandardTasks::ReportingGuidelinesTask
-    - '11'
-    - true
-    - '2015-11-02 14:04:03.157242'
-    - '2015-11-02 14:18:10.051361'
-    - author
-    - "[]"
-    - '12'
-    - 
-    - '3'
-  - - '55'
-    - Reviewer Candidates
-    - TahiStandardTasks::ReviewerRecommendationsTask
-    - '11'
-    - true
-    - '2015-11-02 14:04:03.172924'
-    - '2015-11-02 14:12:55.136726'
-    - author
-    - "[]"
-    - '13'
-    - 
-    - '3'
-  - - '56'
-    - Initial Tech Check
-    - PlosBioTechCheck::InitialTechCheckTask
-    - '12'
-    - false
-    - '2015-11-02 14:04:03.193998'
-    - '2015-11-02 14:04:03.193998'
-    - custom
-    - '{"round":1}'
-    - '1'
-    - 
-    - '3'
-  - - '57'
-    - Revision Tech Check
-    - PlosBioTechCheck::RevisionTechCheckTask
-    - '12'
-    - false
-    - '2015-11-02 14:04:03.199552'
-    - '2015-11-02 14:04:03.199552'
-    - custom
-    - "[]"
-    - '2'
-    - 
-    - '3'
-  - - '58'
-    - Final Tech Check
-    - PlosBioTechCheck::FinalTechCheckTask
-    - '12'
-    - false
-    - '2015-11-02 14:04:03.205185'
-    - '2015-11-02 14:04:03.205185'
-    - custom
-    - "[]"
-    - '3'
-    - 
-    - '3'
-  - - '59'
-    - Assign Team
-    - Tahi::AssignTeam::AssignTeamTask
-    - '13'
-    - false
-    - '2015-11-02 14:04:03.215497'
-    - '2015-11-02 14:04:03.215497'
-    - admin
-    - "[]"
-    - '1'
-    - 
-    - '3'
-  - - '60'
-    - Editor Discussion
-    - PlosBioInternalReview::EditorsDiscussionTask
-    - '13'
-    - false
-    - '2015-11-02 14:04:03.221057'
-    - '2015-11-02 14:04:03.221057'
-    - editor
-    - "[]"
-    - '2'
-    - 
-    - '3'
-  - - '61'
-    - Invite Reviewers
-    - TahiStandardTasks::PaperReviewerTask
-    - '14'
-    - false
-    - '2015-11-02 14:04:03.231264'
-    - '2015-11-02 14:04:03.231264'
-    - custom
-    - "[]"
-    - '1'
-    - 
-    - '3'
-  - - '62'
-    - Academic Editor Feedback
-    - Task
-    - '14'
-    - false
-    - '2015-11-02 14:04:03.236117'
-    - '2015-11-02 14:04:03.236117'
-    - user
-    - "[]"
-    - '2'
-    - 
-    - '3'
-  - - '63'
-    - Register Decision
-    - TahiStandardTasks::RegisterDecisionTask
-    - '15'
-    - false
-    - '2015-11-02 14:04:03.24948'
-    - '2015-11-02 14:04:03.24948'
-    - editor
-    - "[]"
-    - '1'
-    - 
-    - '3'
-  - - '64'
-    - Supporting Info
-    - TahiStandardTasks::SupportingInformationTask
-    - '16'
-    - true
-    - '2015-11-02 14:46:23.8548'
-    - '2015-11-02 15:09:07.082342'
-    - author
-    - "[]"
-    - '1'
-    - 
-    - '4'
-  - - '65'
-    - Authors
-    - TahiStandardTasks::AuthorsTask
-    - '16'
-    - true
-    - '2015-11-02 14:46:23.904316'
-    - '2015-11-02 15:09:36.277238'
-    - author
-    - "[]"
-    - '2'
-    - 
-    - '4'
-  - - '66'
-    - Upload Manuscript
-    - TahiStandardTasks::UploadManuscriptTask
-    - '16'
-    - true
-    - '2015-11-02 14:46:23.923178'
-    - '2015-11-02 15:08:12.18594'
-    - author
-    - "[]"
-    - '3'
-    - 
-    - '4'
-  - - '67'
-    - Billing
-    - PlosBilling::BillingTask
-    - '16'
-    - true
-    - '2015-11-02 14:46:23.937966'
-    - '2015-11-02 15:06:25.129713'
-    - author
-    - "[]"
-    - '4'
-    - '10'
-    - '4'
-  - - '68'
-    - Competing Interests
-    - TahiStandardTasks::CompetingInterestsTask
-    - '16'
-    - true
-    - '2015-11-02 14:46:23.953399'
-    - '2015-11-02 15:09:49.305375'
-    - author
-    - "[]"
-    - '5'
-    - 
-    - '4'
-  - - '69'
-    - Cover Letter
-    - TahiStandardTasks::CoverLetterTask
-    - '16'
-    - true
-    - '2015-11-02 14:46:23.968686'
-    - '2015-11-02 15:06:40.102327'
-    - author
-    - '["\u003cstrong style=\"color: rgb(0, 0, 0); font-family: Arial, Helvetica,
-      sans; font-size: 11px; line-height: 14px; text-align: justify;\"\u003eLorem
-      Ipsum\u003c/strong\u003e\u003cspan style=\"color: rgb(0, 0, 0); font-family:
-      Arial, Helvetica, sans; font-size: 11px; line-height: 14px; text-align: justify;\"\u003e\u0026nbsp;is
-      simply dummy text of the printing and typesetting industry. Lorem Ipsum has
-      been the industry''s standard dummy text ever since the 1500s, when an unknown
-      printer took a galley of type and scrambled it to make a type specimen book.
-      It has survived not only five centuries, but also the leap into electronic typesetting,
-      remaining essentially unchanged. It was popularised in the 1960s with the release
-      of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-      publishing software like Aldus PageMaker including versions of Lorem Ipsum.\u003c/span\u003e"]'
-    - '6'
-    - 
-    - '4'
-  - - '70'
-    - Data Availability
-    - TahiStandardTasks::DataAvailabilityTask
-    - '16'
-    - true
-    - '2015-11-02 14:46:23.985016'
-    - '2015-11-02 15:10:01.673227'
-    - author
-    - "[]"
-    - '7'
-    - 
-    - '4'
-  - - '71'
-    - Ethics Statement
-    - TahiStandardTasks::EthicsTask
-    - '16'
-    - true
-    - '2015-11-02 14:46:24.001655'
-    - '2015-11-02 15:10:23.39056'
-    - author
-    - "[]"
-    - '8'
-    - 
-    - '4'
-  - - '72'
-    - Figures
-    - TahiStandardTasks::FigureTask
-    - '16'
-    - true
-    - '2015-11-02 14:46:24.017385'
-    - '2015-11-02 15:10:50.452332'
-    - author
-    - "[]"
-    - '9'
-    - 
-    - '4'
-  - - '73'
-    - Financial Disclosure
-    - TahiStandardTasks::FinancialDisclosureTask
-    - '16'
-    - true
-    - '2015-11-02 14:46:24.033101'
-    - '2015-11-02 15:10:56.785584'
-    - author
-    - "[]"
-    - '10'
-    - 
-    - '4'
-  - - '74'
-    - Additional Information
-    - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - '16'
-    - true
-    - '2015-11-02 14:46:24.0489'
-    - '2015-11-02 15:11:50.536703'
-    - author
-    - "[]"
-    - '11'
-    - 
-    - '4'
-  - - '75'
-    - Reporting Guidelines
-    - TahiStandardTasks::ReportingGuidelinesTask
-    - '16'
-    - true
-    - '2015-11-02 14:46:24.064242'
-    - '2015-11-02 15:12:05.240609'
-    - author
-    - "[]"
-    - '12'
-    - 
-    - '4'
-  - - '76'
-    - Reviewer Candidates
-    - TahiStandardTasks::ReviewerRecommendationsTask
-    - '16'
-    - true
-    - '2015-11-02 14:46:24.080175'
-    - '2015-11-02 15:07:44.439698'
-    - author
-    - "[]"
-    - '13'
-    - 
-    - '4'
-  - - '77'
-    - Initial Tech Check
-    - PlosBioTechCheck::InitialTechCheckTask
-    - '17'
-    - false
-    - '2015-11-02 14:46:24.100782'
-    - '2015-11-02 14:46:24.100782'
-    - custom
-    - '{"round":1}'
-    - '1'
-    - 
-    - '4'
-  - - '78'
-    - Revision Tech Check
-    - PlosBioTechCheck::RevisionTechCheckTask
-    - '17'
-    - false
-    - '2015-11-02 14:46:24.107141'
-    - '2015-11-02 14:46:24.107141'
-    - custom
-    - "[]"
-    - '2'
-    - 
-    - '4'
-  - - '79'
-    - Final Tech Check
-    - PlosBioTechCheck::FinalTechCheckTask
-    - '17'
-    - false
-    - '2015-11-02 14:46:24.112501'
-    - '2015-11-02 14:46:24.112501'
-    - custom
-    - "[]"
-    - '3'
-    - 
-    - '4'
-  - - '80'
-    - Assign Team
-    - Tahi::AssignTeam::AssignTeamTask
-    - '18'
-    - true
-    - '2015-11-02 14:46:24.122907'
-    - '2015-11-02 15:18:57.481784'
-    - admin
-    - "[]"
-    - '1'
-    - 
-    - '4'
-  - - '81'
-    - Editor Discussion
-    - PlosBioInternalReview::EditorsDiscussionTask
-    - '18'
-    - false
-    - '2015-11-02 14:46:24.128177'
-    - '2015-11-02 14:46:24.128177'
-    - editor
-    - "[]"
-    - '2'
-    - 
-    - '4'
-  - - '82'
-    - Invite Reviewers
-    - TahiStandardTasks::PaperReviewerTask
-    - '19'
-    - false
-    - '2015-11-02 14:46:24.137957'
-    - '2015-11-02 14:46:24.137957'
-    - custom
-    - "[]"
-    - '1'
-    - 
-    - '4'
-  - - '83'
-    - Academic Editor Feedback
-    - Task
-    - '19'
-    - false
-    - '2015-11-02 14:46:24.143576'
-    - '2015-11-02 14:46:24.143576'
-    - user
-    - "[]"
-    - '2'
-    - 
-    - '4'
-  - - '84'
-    - Register Decision
-    - TahiStandardTasks::RegisterDecisionTask
-    - '20'
-    - false
-    - '2015-11-02 14:46:24.157807'
-    - '2015-11-02 14:46:24.157807'
-    - editor
-    - "[]"
-    - '1'
-    - 
-    - '4'
-  - - '85'
-    - Supporting Info
-    - TahiStandardTasks::SupportingInformationTask
-    - '21'
-    - false
-    - '2015-11-03 22:59:20.980483'
-    - '2015-11-03 22:59:20.980483'
-    - author
-    - "[]"
-    - '1'
-    - 
-    - '8'
-  - - '86'
-    - Authors
-    - TahiStandardTasks::AuthorsTask
-    - '21'
-    - false
-    - '2015-11-03 22:59:21.01633'
-    - '2015-11-03 22:59:21.01633'
-    - author
-    - "[]"
-    - '2'
-    - 
-    - '8'
-  - - '87'
-    - Upload Manuscript
-    - TahiStandardTasks::UploadManuscriptTask
-    - '21'
-    - false
-    - '2015-11-03 22:59:21.036416'
-    - '2015-11-03 22:59:21.036416'
-    - author
-    - "[]"
-    - '3'
-    - 
-    - '8'
-  - - '88'
-    - Billing
-    - PlosBilling::BillingTask
-    - '21'
-    - false
-    - '2015-11-03 22:59:21.058004'
-    - '2015-11-03 22:59:21.058004'
-    - author
-    - "[]"
-    - '4'
-    - '10'
-    - '8'
-  - - '89'
-    - Competing Interests
-    - TahiStandardTasks::CompetingInterestsTask
-    - '21'
-    - false
-    - '2015-11-03 22:59:21.079375'
-    - '2015-11-03 22:59:21.079375'
-    - author
-    - "[]"
-    - '5'
-    - 
-    - '8'
-  - - '90'
-    - Cover Letter
-    - TahiStandardTasks::CoverLetterTask
-    - '21'
-    - false
-    - '2015-11-03 22:59:21.102626'
-    - '2015-11-03 22:59:21.102626'
-    - author
-    - "[]"
-    - '6'
-    - 
-    - '8'
-  - - '91'
-    - Data Availability
-    - TahiStandardTasks::DataAvailabilityTask
-    - '21'
-    - false
-    - '2015-11-03 22:59:21.127689'
-    - '2015-11-03 22:59:21.127689'
-    - author
-    - "[]"
-    - '7'
-    - 
-    - '8'
-  - - '92'
-    - Ethics Statement
-    - TahiStandardTasks::EthicsTask
-    - '21'
-    - false
-    - '2015-11-03 22:59:21.15205'
-    - '2015-11-03 22:59:21.15205'
-    - author
-    - "[]"
-    - '8'
-    - 
-    - '8'
-  - - '93'
-    - Figures
-    - TahiStandardTasks::FigureTask
-    - '21'
-    - false
-    - '2015-11-03 22:59:21.172223'
-    - '2015-11-03 22:59:21.172223'
-    - author
-    - "[]"
-    - '9'
-    - 
-    - '8'
-  - - '94'
-    - Financial Disclosure
-    - TahiStandardTasks::FinancialDisclosureTask
-    - '21'
-    - false
-    - '2015-11-03 22:59:21.190159'
-    - '2015-11-03 22:59:21.190159'
-    - author
-    - "[]"
-    - '10'
-    - 
-    - '8'
-  - - '95'
-    - Additional Information
-    - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - '21'
-    - false
-    - '2015-11-03 22:59:21.209533'
-    - '2015-11-03 22:59:21.209533'
-    - author
-    - "[]"
-    - '11'
-    - 
-    - '8'
-  - - '96'
-    - Reporting Guidelines
-    - TahiStandardTasks::ReportingGuidelinesTask
-    - '21'
-    - false
-    - '2015-11-03 22:59:21.226767'
-    - '2015-11-03 22:59:21.226767'
-    - author
-    - "[]"
-    - '12'
-    - 
-    - '8'
-  - - '97'
-    - Reviewer Candidates
-    - TahiStandardTasks::ReviewerRecommendationsTask
-    - '21'
-    - false
-    - '2015-11-03 22:59:21.244285'
-    - '2015-11-03 22:59:21.244285'
-    - author
-    - "[]"
-    - '13'
-    - 
-    - '8'
-  - - '98'
-    - Initial Tech Check
-    - PlosBioTechCheck::InitialTechCheckTask
-    - '22'
-    - false
-    - '2015-11-03 22:59:21.270475'
-    - '2015-11-03 22:59:21.270475'
-    - custom
-    - '{"round":1}'
-    - '1'
-    - 
-    - '8'
-  - - '99'
-    - Revision Tech Check
-    - PlosBioTechCheck::RevisionTechCheckTask
-    - '22'
-    - false
-    - '2015-11-03 22:59:21.278714'
-    - '2015-11-03 22:59:21.278714'
-    - custom
-    - "[]"
-    - '2'
-    - 
-    - '8'
-  - - '100'
-    - Final Tech Check
-    - PlosBioTechCheck::FinalTechCheckTask
-    - '22'
-    - false
-    - '2015-11-03 22:59:21.284243'
-    - '2015-11-03 22:59:21.284243'
-    - custom
-    - "[]"
-    - '3'
-    - 
-    - '8'
-  - - '101'
-    - Assign Team
-    - Tahi::AssignTeam::AssignTeamTask
-    - '23'
-    - false
-    - '2015-11-03 22:59:21.296607'
-    - '2015-11-03 22:59:21.296607'
-    - admin
-    - "[]"
-    - '1'
-    - 
-    - '8'
-  - - '102'
-    - Editor Discussion
-    - PlosBioInternalReview::EditorsDiscussionTask
-    - '23'
-    - false
-    - '2015-11-03 22:59:21.302115'
-    - '2015-11-03 22:59:21.302115'
-    - editor
-    - "[]"
-    - '2'
-    - 
-    - '8'
-  - - '103'
-    - Invite Reviewers
-    - TahiStandardTasks::PaperReviewerTask
-    - '24'
-    - false
-    - '2015-11-03 22:59:21.315358'
-    - '2015-11-03 22:59:21.315358'
-    - custom
-    - "[]"
-    - '1'
-    - 
-    - '8'
-  - - '104'
-    - Academic Editor Feedback
-    - Task
-    - '24'
-    - false
-    - '2015-11-03 22:59:21.321385'
-    - '2015-11-03 22:59:21.321385'
-    - user
-    - "[]"
-    - '2'
-    - 
-    - '8'
-  - - '105'
-    - Register Decision
-    - TahiStandardTasks::RegisterDecisionTask
-    - '25'
-    - false
-    - '2015-11-03 22:59:21.336956'
-    - '2015-11-03 22:59:21.336956'
-    - editor
-    - "[]"
-    - '1'
-    - 
-    - '8'
-  - - '106'
-    - Supporting Info
-    - TahiStandardTasks::SupportingInformationTask
-    - '26'
-    - false
-    - '2015-11-03 23:02:06.837723'
-    - '2015-11-03 23:02:06.837723'
-    - author
-    - "[]"
-    - '1'
-    - 
-    - '9'
-  - - '107'
-    - Authors
-    - TahiStandardTasks::AuthorsTask
-    - '26'
-    - false
-    - '2015-11-03 23:02:06.869846'
-    - '2015-11-03 23:02:06.869846'
-    - author
-    - "[]"
-    - '2'
-    - 
-    - '9'
-  - - '108'
-    - Upload Manuscript
-    - TahiStandardTasks::UploadManuscriptTask
-    - '26'
-    - false
-    - '2015-11-03 23:02:06.891704'
-    - '2015-11-03 23:02:06.891704'
-    - author
-    - "[]"
-    - '3'
-    - 
-    - '9'
-  - - '109'
-    - Billing
-    - PlosBilling::BillingTask
-    - '26'
-    - false
-    - '2015-11-03 23:02:06.915971'
-    - '2015-11-03 23:02:06.915971'
-    - author
-    - "[]"
-    - '4'
-    - '10'
-    - '9'
-  - - '110'
-    - Competing Interests
-    - TahiStandardTasks::CompetingInterestsTask
-    - '26'
-    - false
-    - '2015-11-03 23:02:06.936789'
-    - '2015-11-03 23:02:06.936789'
-    - author
-    - "[]"
-    - '5'
-    - 
-    - '9'
-  - - '111'
-    - Cover Letter
-    - TahiStandardTasks::CoverLetterTask
-    - '26'
-    - false
-    - '2015-11-03 23:02:06.956045'
-    - '2015-11-03 23:02:06.956045'
-    - author
-    - "[]"
-    - '6'
-    - 
-    - '9'
-  - - '112'
-    - Data Availability
-    - TahiStandardTasks::DataAvailabilityTask
-    - '26'
-    - false
-    - '2015-11-03 23:02:06.977881'
-    - '2015-11-03 23:02:06.977881'
-    - author
-    - "[]"
-    - '7'
-    - 
-    - '9'
-  - - '113'
-    - Ethics Statement
-    - TahiStandardTasks::EthicsTask
-    - '26'
-    - false
-    - '2015-11-03 23:02:06.99521'
-    - '2015-11-03 23:02:06.99521'
-    - author
-    - "[]"
-    - '8'
-    - 
-    - '9'
-  - - '114'
-    - Figures
-    - TahiStandardTasks::FigureTask
-    - '26'
-    - false
-    - '2015-11-03 23:02:07.013688'
-    - '2015-11-03 23:02:07.013688'
-    - author
-    - "[]"
-    - '9'
-    - 
-    - '9'
-  - - '115'
-    - Financial Disclosure
-    - TahiStandardTasks::FinancialDisclosureTask
-    - '26'
-    - false
-    - '2015-11-03 23:02:07.030914'
-    - '2015-11-03 23:02:07.030914'
-    - author
-    - "[]"
-    - '10'
-    - 
-    - '9'
-  - - '116'
-    - Additional Information
-    - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - '26'
-    - false
-    - '2015-11-03 23:02:07.074433'
-    - '2015-11-03 23:02:07.074433'
-    - author
-    - "[]"
-    - '11'
-    - 
-    - '9'
-  - - '117'
-    - Reporting Guidelines
-    - TahiStandardTasks::ReportingGuidelinesTask
-    - '26'
-    - false
-    - '2015-11-03 23:02:07.09131'
-    - '2015-11-03 23:02:07.09131'
-    - author
-    - "[]"
-    - '12'
-    - 
-    - '9'
-  - - '118'
-    - Reviewer Candidates
-    - TahiStandardTasks::ReviewerRecommendationsTask
-    - '26'
-    - false
-    - '2015-11-03 23:02:07.109614'
-    - '2015-11-03 23:02:07.109614'
-    - author
-    - "[]"
-    - '13'
-    - 
-    - '9'
-  - - '119'
-    - Initial Tech Check
-    - PlosBioTechCheck::InitialTechCheckTask
-    - '27'
-    - false
-    - '2015-11-03 23:02:07.136355'
-    - '2015-11-03 23:02:07.136355'
-    - custom
-    - '{"round":1}'
-    - '1'
-    - 
-    - '9'
-  - - '120'
-    - Revision Tech Check
-    - PlosBioTechCheck::RevisionTechCheckTask
-    - '27'
-    - false
-    - '2015-11-03 23:02:07.142415'
-    - '2015-11-03 23:02:07.142415'
-    - custom
-    - "[]"
-    - '2'
-    - 
-    - '9'
-  - - '121'
-    - Final Tech Check
-    - PlosBioTechCheck::FinalTechCheckTask
-    - '27'
-    - false
-    - '2015-11-03 23:02:07.148881'
-    - '2015-11-03 23:02:07.148881'
-    - custom
-    - "[]"
-    - '3'
-    - 
-    - '9'
-  - - '122'
-    - Assign Team
-    - Tahi::AssignTeam::AssignTeamTask
-    - '28'
-    - false
-    - '2015-11-03 23:02:07.162883'
-    - '2015-11-03 23:02:07.162883'
-    - admin
-    - "[]"
-    - '1'
-    - 
-    - '9'
-  - - '123'
-    - Editor Discussion
-    - PlosBioInternalReview::EditorsDiscussionTask
-    - '28'
-    - false
-    - '2015-11-03 23:02:07.168945'
-    - '2015-11-03 23:02:07.168945'
-    - editor
-    - "[]"
-    - '2'
-    - 
-    - '9'
-  - - '124'
-    - Invite Reviewers
-    - TahiStandardTasks::PaperReviewerTask
-    - '29'
-    - false
-    - '2015-11-03 23:02:07.181434'
-    - '2015-11-03 23:02:07.181434'
-    - custom
-    - "[]"
-    - '1'
-    - 
-    - '9'
-  - - '125'
-    - Academic Editor Feedback
-    - Task
-    - '29'
-    - false
-    - '2015-11-03 23:02:07.186712'
-    - '2015-11-03 23:02:07.186712'
-    - user
-    - "[]"
-    - '2'
-    - 
-    - '9'
-  - - '126'
-    - Register Decision
-    - TahiStandardTasks::RegisterDecisionTask
-    - '30'
-    - false
-    - '2015-11-03 23:02:07.202088'
-    - '2015-11-03 23:02:07.202088'
-    - editor
-    - "[]"
-    - '1'
-    - 
-    - '9'
-  - - '127'
-    - Supporting Info
-    - TahiStandardTasks::SupportingInformationTask
-    - '31'
-    - false
-    - '2015-11-10 22:27:27.230045'
-    - '2015-11-10 22:27:27.230045'
-    - author
-    - "[]"
-    - '1'
-    - 
-    - '10'
-  - - '128'
-    - Authors
-    - TahiStandardTasks::AuthorsTask
-    - '31'
-    - false
-    - '2015-11-10 22:27:27.294743'
-    - '2015-11-10 22:27:27.294743'
-    - author
-    - "[]"
-    - '2'
-    - 
-    - '10'
-  - - '129'
-    - Upload Manuscript
-    - TahiStandardTasks::UploadManuscriptTask
-    - '31'
-    - false
-    - '2015-11-10 22:27:27.324684'
-    - '2015-11-10 22:27:27.324684'
-    - author
-    - "[]"
-    - '3'
-    - 
-    - '10'
-  - - '130'
-    - Billing
-    - PlosBilling::BillingTask
-    - '31'
-    - false
-    - '2015-11-10 22:27:27.352394'
-    - '2015-11-10 22:27:27.352394'
-    - author
-    - "[]"
-    - '4'
-    - '10'
-    - '10'
-  - - '131'
-    - Competing Interests
-    - TahiStandardTasks::CompetingInterestsTask
-    - '31'
-    - false
-    - '2015-11-10 22:27:27.373549'
-    - '2015-11-10 22:27:27.373549'
-    - author
-    - "[]"
-    - '5'
-    - 
-    - '10'
-  - - '132'
-    - Cover Letter
-    - TahiStandardTasks::CoverLetterTask
-    - '31'
-    - false
-    - '2015-11-10 22:27:27.39163'
-    - '2015-11-10 22:27:27.39163'
-    - author
-    - "[]"
-    - '6'
-    - 
-    - '10'
-  - - '133'
-    - Data Availability
-    - TahiStandardTasks::DataAvailabilityTask
-    - '31'
-    - false
-    - '2015-11-10 22:27:27.410447'
-    - '2015-11-10 22:27:27.410447'
-    - author
-    - "[]"
-    - '7'
-    - 
-    - '10'
-  - - '134'
-    - Ethics Statement
-    - TahiStandardTasks::EthicsTask
-    - '31'
-    - false
-    - '2015-11-10 22:27:27.427936'
-    - '2015-11-10 22:27:27.427936'
-    - author
-    - "[]"
-    - '8'
-    - 
-    - '10'
-  - - '135'
-    - Figures
-    - TahiStandardTasks::FigureTask
-    - '31'
-    - false
-    - '2015-11-10 22:27:27.447163'
-    - '2015-11-10 22:27:27.447163'
-    - author
-    - "[]"
-    - '9'
-    - 
-    - '10'
-  - - '136'
-    - Financial Disclosure
-    - TahiStandardTasks::FinancialDisclosureTask
-    - '31'
-    - false
-    - '2015-11-10 22:27:27.462783'
-    - '2015-11-10 22:27:27.462783'
-    - author
-    - "[]"
-    - '10'
-    - 
-    - '10'
-  - - '137'
-    - Additional Information
-    - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - '31'
-    - false
-    - '2015-11-10 22:27:27.478535'
-    - '2015-11-10 22:27:27.478535'
-    - author
-    - "[]"
-    - '11'
-    - 
-    - '10'
-  - - '138'
-    - Reporting Guidelines
-    - TahiStandardTasks::ReportingGuidelinesTask
-    - '31'
-    - false
-    - '2015-11-10 22:27:27.49438'
-    - '2015-11-10 22:27:27.49438'
-    - author
-    - "[]"
-    - '12'
-    - 
-    - '10'
-  - - '139'
-    - Reviewer Candidates
-    - TahiStandardTasks::ReviewerRecommendationsTask
-    - '31'
-    - false
-    - '2015-11-10 22:27:27.510321'
-    - '2015-11-10 22:27:27.510321'
-    - author
-    - "[]"
-    - '13'
-    - 
-    - '10'
-  - - '140'
-    - Initial Tech Check
-    - PlosBioTechCheck::InitialTechCheckTask
-    - '32'
-    - false
-    - '2015-11-10 22:27:27.535272'
-    - '2015-11-10 22:27:27.535272'
-    - custom
-    - '{"round":1}'
-    - '1'
-    - 
-    - '10'
-  - - '141'
-    - Revision Tech Check
-    - PlosBioTechCheck::RevisionTechCheckTask
-    - '32'
-    - false
-    - '2015-11-10 22:27:27.545741'
-    - '2015-11-10 22:27:27.545741'
-    - custom
-    - "[]"
-    - '2'
-    - 
-    - '10'
-  - - '142'
-    - Final Tech Check
-    - PlosBioTechCheck::FinalTechCheckTask
-    - '32'
-    - false
-    - '2015-11-10 22:27:27.554406'
-    - '2015-11-10 22:27:27.554406'
-    - custom
-    - "[]"
-    - '3'
-    - 
-    - '10'
-  - - '143'
-    - Assign Team
-    - Tahi::AssignTeam::AssignTeamTask
-    - '33'
-    - false
-    - '2015-11-10 22:27:27.570117'
-    - '2015-11-10 22:27:27.570117'
-    - admin
-    - "[]"
-    - '1'
-    - 
-    - '10'
-  - - '144'
-    - Editor Discussion
-    - PlosBioInternalReview::EditorsDiscussionTask
-    - '33'
-    - false
-    - '2015-11-10 22:27:27.579306'
-    - '2015-11-10 22:27:27.579306'
-    - editor
-    - "[]"
-    - '2'
-    - 
-    - '10'
-  - - '145'
-    - Invite Reviewers
-    - TahiStandardTasks::PaperReviewerTask
-    - '34'
-    - false
-    - '2015-11-10 22:27:27.59137'
-    - '2015-11-10 22:27:27.59137'
-    - custom
-    - "[]"
-    - '1'
-    - 
-    - '10'
-  - - '146'
-    - Academic Editor Feedback
-    - Task
-    - '34'
-    - false
-    - '2015-11-10 22:27:27.595453'
-    - '2015-11-10 22:27:27.595453'
-    - user
-    - "[]"
-    - '2'
-    - 
-    - '10'
-  - - '147'
-    - Register Decision
-    - TahiStandardTasks::RegisterDecisionTask
-    - '35'
-    - false
-    - '2015-11-10 22:27:27.612997'
-    - '2015-11-10 22:27:27.612997'
-    - editor
-    - "[]"
-    - '1'
-    - 
-    - '10'
 
 ---
 journal_task_types:

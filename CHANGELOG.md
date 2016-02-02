@@ -8,7 +8,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Changed
--
+- The billing card has been moved to the new roles and permissions framework. This is being inherited by many of the other cards as well.
 
 ### Deprecated
 -

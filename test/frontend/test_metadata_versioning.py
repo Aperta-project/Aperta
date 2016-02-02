@@ -72,7 +72,6 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer.complete_task('Additional Information')
     time.sleep(3)
     # get title
-    # check after manuscript is uploaded
     title = paper_viewer.get_title()
     # make initial submission
     paper_viewer.click_submit_btn()

@@ -62,5 +62,11 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: 'PlosBilling::BillingTask', states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: 'PlosBilling::BillingTask', states: ['*'])
     end
+
+    Role.ensure_exists('Academic Editor',
+                       participates_in: [Task, Paper]) do |role|
+      role.ensure_permission_exists(:view, applies_to: Paper)
+      role.ensure_permission_exists(:view, applies_to: Task)
+    end
   end
 end

@@ -33,11 +33,13 @@
                                owner=task
                                yesLabel="Partial"
                                noLabel="None"
+                               disabled=fieldsDisabled
                                as |selected|}}
         {{#if selected.yes}}
           {{nested-question-input ident="plos_billing--pfa_question_1b"
                                   owner=task
                                   textClassNames=""
+                                  disabled=fieldsDisabled
                                   validate=(action "validateQuestion")
                                   errors=validationErrors.plos_billing--pfa_question_1b}}
           {{error-message id="error-for-plos_billing--pfa_question_1b"
@@ -46,6 +48,7 @@
         {{#if selected.no}}
           {{nested-question-textarea ident="plos_billing--pfa_question_1a"
                                      owner=task
+                                     disabled=fieldsDisabled
                                      textClassNames=""}}
         {{/if}}
       {{/nested-question-radio}}
@@ -55,11 +58,13 @@
                                owner=task
                                yesLabel="Partial"
                                noLabel="None"
+                               disabled=fieldsDisabled
                                as |selected|}}
         {{#if selected.yes}}
           {{nested-question-input ident="plos_billing--pfa_question_2b"
                                   owner=task
                                   textClassNames=""
+                                  disabled=fieldsDisabled
                                   validate=(action "validateQuestion")
                                   errors=validationErrors.plos_billing--pfa_question_2b}}
           {{error-message id="error-for-plos_billing--pfa_question_2b"
@@ -68,6 +73,7 @@
         {{#if selected.no}}
           {{nested-question-textarea ident="plos_billing--pfa_question_2a"
                                      owner=task
+                                     disabled=fieldsDisabled
                                      textClassNames=""}}
         {{/if}}
       {{/nested-question-radio}}
@@ -75,11 +81,13 @@
 
       {{#nested-question-radio ident="plos_billing--pfa_question_3"
                                owner=task
+                               disabled=fieldsDisabled
                                as |selected|}}
         {{#if selected.yes}}
           {{nested-question-input ident="plos_billing--pfa_question_3a"
                                   owner=task
                                   textClassNames=""
+                                  disabled=fieldsDisabled
                                   validate=(action "validateQuestion")
                                   errors=validationErrors.plos_billing--pfa_question_3a}}
           {{error-message id="error-for-plos_billing--pfa_question_3a"
@@ -90,11 +98,13 @@
 
       {{#nested-question-radio ident="plos_billing--pfa_question_4"
                                owner=task
+                               disabled=fieldsDisabled
                                as |selected|}}
         {{#if selected.yes}}
           {{nested-question-input ident="plos_billing--pfa_question_4a"
                                   owner=task
                                   textClassNames=""
+                                  disabled=fieldsDisabled
                                   validate=(action "validateQuestion")
                                   errors=validationErrors.plos_billing--pfa_question_4a}}
           {{error-message id="error-for-plos_billing--pfa_question_4a"
@@ -106,6 +116,7 @@
       <div>
         {{nested-question-input ident="plos_billing--pfa_amount_to_pay"
                                 owner=task
+                                disabled=fieldsDisabled
                                 validate=(action "validateQuestion")
                                 errors=validationErrors.plos_billing--pfa_amount_to_pay}}
         {{error-message id="error-for-plos_billing--pfa_amount_to_pay"
@@ -116,6 +127,7 @@
 
       <div>
         {{nested-question-radio ident="plos_billing--pfa_supporting_docs"
+                                disabled=fieldsDisabled
                                 owner=task}}
       </div>
 
@@ -123,6 +135,7 @@
 
       <div>
         {{nested-question-textarea ident="plos_billing--pfa_additional_comments"
+                                   disabled=fieldsDisabled
                                    owner=task}}
       </div>
 
@@ -132,6 +145,7 @@
       <p>
         {{nested-question-check ident="plos_billing--affirm_true_and_complete"
                                 owner=task
+                                disabled=fieldsDisabled
                                 questionText="By checking this box, you are acknowledging that you have read and agree to the following statement:<br><strong>I affirm that the information provided in this application is true and complete.</strong>"}}
       </p>
     </div>

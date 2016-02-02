@@ -211,7 +211,7 @@ export default Ember.Mixin.create({
   */
 
   validate(key, value, types) {
-    const messages = validator.validate.call(this, value, types);
+    const messages = validator.validate.call(this, key, value, types);
     this.displayValidationError(key, messages);
   },
 

@@ -23,7 +23,7 @@ const generateErrorMessage = function(type, customMessage) {
 };
 
 export default {
-  validate(value, validations) {
+  validate(key, value, validations) {
     const context = this;
 
     return validations.map(function(validation) {
@@ -42,7 +42,7 @@ export default {
         const type = options.type;
         delete options.type;
 
-        if(options.dependentCheck && options.dependentCheck.call(context)) {
+        if(options.skipCheck && options.skipCheck.call(context, key, value)) {
           return false;
         }
 

@@ -46,5 +46,10 @@ export default NestedQuestionOwner.extend(CardThumbnailObserver, {
 
   getSnapshotForVersion: function(fullVersion) {
     return this.get('snapshots').findBy('fullVersion', fullVersion);
+  },
+
+  responseToQuestion(key) {
+    return this.answerForQuestion(key)
+               .get('value');
   }
 });

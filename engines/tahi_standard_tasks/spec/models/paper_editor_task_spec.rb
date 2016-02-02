@@ -16,7 +16,8 @@ describe TahiStandardTasks::PaperEditorTask do
     end
     let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
 
-    it_behaves_like 'a task that sends out invitations', invitee_role: 'editor'
+    it_behaves_like 'a task that sends out invitations',
+                    invitee_role: 'Academic Editor'
 
     it "notifies the invited editor" do
       expect {
@@ -73,11 +74,6 @@ describe TahiStandardTasks::PaperEditorTask do
     it "replaces the old editor" do
       invitation.accept!
       expect(paper.reload.editor).to eq(invitation.invitee)
-    end
-
-    it "follows tasks with editor old_role to the new editor" do
-      invitation.accept!
-      expect(sample_editor_task.participations.map(&:user)).to include(invitation.invitee)
     end
 
     it "follows all tasks that are reviewer reports" do

@@ -293,12 +293,14 @@ class Paper < ActiveRecord::Base
   end
 
   def creator
-    User.assigned_to(self, role: Role.creator).first
+    User.assigned_to(self, role: journal.roles.creator).first
   end
 
   def creator=(user)
-    assignments.where(role: Role.creator).destroy_all
-    assignments.build(role: Role.creator, user: user, assigned_to: self)
+    assignments.where(role: journal.roles.creator).destroy_all
+    assignments.build(role: journal.roles.creator,
+                      user: user,
+                      assigned_to: self)
   end
 
   def collaborations
@@ -312,7 +314,9 @@ class Paper < ActiveRecord::Base
   end
 
   def collaborators
-    User.assigned_to(self, role: [Role.creator, Role.collaborator])
+    User.assigned_to(self,
+                     role: [journal.roles.creator,
+                            journal.roles.collaborator])
   end
 
   def participations

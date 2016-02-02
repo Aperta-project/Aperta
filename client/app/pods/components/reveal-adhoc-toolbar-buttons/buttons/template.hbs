@@ -10,11 +10,6 @@
   <span class="fa fa-envelope"></span>
 </div>
 
-<div class="button-secondary button--green adhoc-toolbar-item--image fileinput-button">
+<div class="button-secondary button--green adhoc-toolbar-item--image" {{action "addAttachmentsBlock"}}>
   <span class="fa fa-paperclip"></span>
-  {{s3-file-uploader elementId="file_attachment"
-                     accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps,.docx,.odt,.epub,.pdf"
-                     filePath="ad-hoc"
-                     uploadFinished=(action "uploadFinished")
-                     uploadFailed=(action "uploadFailed")}}
 </div>

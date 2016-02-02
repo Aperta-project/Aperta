@@ -36,7 +36,7 @@ describe PapersController do
     has_permission action: 'view', applies_to: Paper.name
   end
 
-  let(:user) { create :user, :site_admin }
+  let(:user) { create :user}
 
   let(:submitted) { false }
   let(:paper) do

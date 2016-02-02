@@ -145,6 +145,10 @@ RSpec.configure do |config|
     Subscriptions.reload
   end
 
+  config.before(:each, type: :controller) do
+    Authorizations.reload_configuration
+  end
+
   config.append_after(:each) do
     DatabaseCleaner.clean
   end

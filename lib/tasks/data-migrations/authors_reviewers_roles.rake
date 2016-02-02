@@ -32,12 +32,22 @@ namespace :data do
 
       desc 'Sets billing task permission on JournalTaskType'
       task make_billing_only_for_author: :environment do
-        permission = Permission.find_by!(applies_to: 'PlosBilling::BillingTask')
+        view_permission = Permission.find_by!(
+          applies_to: 'PlosBilling::BillingTask', action: 'view'
+        )
+        edit_permission = Permission.find_by!(
+          applies_to: 'PlosBilling::BillingTask', action: 'edit'
+        )
+
         PlosBilling::BillingTask.all.each do |task|
           task.permission_requirements.where(
-            permission_id: permission.id
+            permission_id: view_permission.id
+          ).first_or_create!
+          task.permission_requirements.where(
+            permission_id: edit_permission.id
           ).first_or_create!
         end
+
         billing = JournalTaskType.find_by(kind: "PlosBilling::BillingTask")
         billing.update_columns(
           required_permissions: [

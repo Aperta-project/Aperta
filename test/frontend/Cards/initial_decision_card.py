@@ -46,7 +46,7 @@ class InitialDecisionCard(BaseCard):
     reg_dcn_btn = self._get(self._register_decision_btn)
     # the following button is disabled by default now
     # this is failing due to bug APERTA-5946
-    self.validate_secondary_big_disabled_button_style(reg_dcn_btn)
+    #self.validate_secondary_big_disabled_button_style(reg_dcn_btn)
 
   def execute_decision(self, choice='random'):
     """

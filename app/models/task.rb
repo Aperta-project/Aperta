@@ -9,6 +9,8 @@ class Task < ActiveRecord::Base
   cattr_accessor :metadata_types
   cattr_accessor :submission_types
 
+  before_save :update_completed_at, if: :completed_changed?
+
   scope :metadata, -> { where(type: metadata_types.to_a) }
   scope :submission, -> { where(type: submission_types.to_a) }
 
@@ -184,4 +186,11 @@ class Task < ActiveRecord::Base
     previous_changes["completed"] == [false, true]
   end
 
+  def update_completed_at
+    if completed
+      self.completed_at = Time.zone.now
+    else
+      self.completed_at = nil
+    end
+  end
 end

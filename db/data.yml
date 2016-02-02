@@ -1,5 +1,87 @@
 
 ---
+assignments:
+  columns:
+  - id
+  - user_id
+  - role_id
+  - assigned_to_id
+  - assigned_to_type
+  - created_at
+  - updated_at
+  records: 
+  - - '29'
+    - '3'
+    - '8'
+    - '1'
+    - Paper
+    - '2016-01-28 17:12:42.030464'
+    - '2016-01-28 17:12:42.030464'
+  - - '30'
+    - '3'
+    - '8'
+    - '2'
+    - Paper
+    - '2016-01-28 17:12:42.050154'
+    - '2016-01-28 17:12:42.050154'
+  - - '31'
+    - '3'
+    - '8'
+    - '3'
+    - Paper
+    - '2016-01-28 17:12:42.058813'
+    - '2016-01-28 17:12:42.058813'
+  - - '32'
+    - '3'
+    - '8'
+    - '4'
+    - Paper
+    - '2016-01-28 17:12:42.068226'
+    - '2016-01-28 17:12:42.068226'
+  - - '33'
+    - '7'
+    - '8'
+    - '8'
+    - Paper
+    - '2016-01-28 17:12:42.080871'
+    - '2016-01-28 17:12:42.080871'
+  - - '34'
+    - '7'
+    - '8'
+    - '9'
+    - Paper
+    - '2016-01-28 17:12:42.091433'
+    - '2016-01-28 17:12:42.091433'
+  - - '35'
+    - '1'
+    - '8'
+    - '10'
+    - Paper
+    - '2016-01-28 17:12:42.101763'
+    - '2016-01-28 17:12:42.101763'
+  - - '36'
+    - '1'
+    - '10'
+    - '1'
+    - Journal
+    - '2016-01-28 17:12:42.163645'
+    - '2016-01-28 17:12:42.163645'
+  - - '37'
+    - '10'
+    - '11'
+    - '1'
+    - Journal
+    - '2016-01-30 23:30:43.431537'
+    - '2016-01-30 23:30:43.431537'
+  - - '38'
+    - '11'
+    - '11'
+    - '1'
+    - Journal
+    - '2016-01-30 23:30:43.442362'
+    - '2016-01-30 23:30:43.442362'
+
+---
 nested_question_answers:
   columns:
   - id
@@ -1557,6 +1639,81 @@ permission_requirements:
     - '2016-02-02 17:28:59.829198'
 
 ---
+tahi_standard_tasks_reviewer_recommendations:
+  columns:
+  - id
+  - reviewer_recommendations_task_id
+  - first_name
+  - last_name
+  - middle_initial
+  - email
+  - department
+  - title
+  - affiliation
+  - recommend_or_oppose
+  - reason
+  - created_at
+  - updated_at
+  - ringgold_id
+  records: 
+  - - '2'
+    - '34'
+    - Candy
+    - Canderson
+    - ''
+    - candy@example.com
+    - Department of Thinking
+    - Thinker
+    - Adelphi University
+    - 
+    - 
+    - '2015-11-02 13:41:37.871138'
+    - '2015-11-02 13:42:13.77282'
+    - '3479'
+  - - '3'
+    - '34'
+    - Dennis
+    - Anger
+    - ''
+    - dennis@example.com
+    - Department of Pessisism
+    - Pessimist
+    - Air University
+    - 
+    - 
+    - '2015-11-02 13:43:20.530731'
+    - '2015-11-02 13:43:20.530731'
+    - '53427'
+  - - '4'
+    - '55'
+    - Shelley
+    - Reviewer
+    - ''
+    - shelley@example.com
+    - Department of Critiquography
+    - Critiquer
+    - Adams State College Bookstore
+    - 
+    - 
+    - '2015-11-02 14:12:53.204262'
+    - '2015-11-02 14:12:53.204262'
+    - '295612'
+  - - '5'
+    - '76'
+    - Ronald
+    - McReviewer
+    - ''
+    - ronald@example.com
+    - Department of Zoology
+    - Zoo Director
+    - Adler Graduate School
+    - 
+    - 
+    - '2015-11-02 15:07:41.253665'
+    - '2015-11-02 15:07:41.253665'
+    - '32835'
+
+---
 journal_task_types:
   columns:
   - id
@@ -2935,163 +3092,6 @@ users:
     - 
     - false
     - 
-
----
-tahi_standard_tasks_reviewer_recommendations:
-  columns:
-  - id
-  - reviewer_recommendations_task_id
-  - first_name
-  - last_name
-  - middle_initial
-  - email
-  - department
-  - title
-  - affiliation
-  - recommend_or_oppose
-  - reason
-  - created_at
-  - updated_at
-  - ringgold_id
-  records: 
-  - - '2'
-    - '34'
-    - Candy
-    - Canderson
-    - ''
-    - candy@example.com
-    - Department of Thinking
-    - Thinker
-    - Adelphi University
-    - 
-    - 
-    - '2015-11-02 13:41:37.871138'
-    - '2015-11-02 13:42:13.77282'
-    - '3479'
-  - - '3'
-    - '34'
-    - Dennis
-    - Anger
-    - ''
-    - dennis@example.com
-    - Department of Pessisism
-    - Pessimist
-    - Air University
-    - 
-    - 
-    - '2015-11-02 13:43:20.530731'
-    - '2015-11-02 13:43:20.530731'
-    - '53427'
-  - - '4'
-    - '55'
-    - Shelley
-    - Reviewer
-    - ''
-    - shelley@example.com
-    - Department of Critiquography
-    - Critiquer
-    - Adams State College Bookstore
-    - 
-    - 
-    - '2015-11-02 14:12:53.204262'
-    - '2015-11-02 14:12:53.204262'
-    - '295612'
-  - - '5'
-    - '76'
-    - Ronald
-    - McReviewer
-    - ''
-    - ronald@example.com
-    - Department of Zoology
-    - Zoo Director
-    - Adler Graduate School
-    - 
-    - 
-    - '2015-11-02 15:07:41.253665'
-    - '2015-11-02 15:07:41.253665'
-    - '32835'
-
----
-assignments:
-  columns:
-  - id
-  - user_id
-  - role_id
-  - assigned_to_id
-  - assigned_to_type
-  - created_at
-  - updated_at
-  records: 
-  - - '29'
-    - '3'
-    - '8'
-    - '1'
-    - Paper
-    - '2016-01-28 17:12:42.030464'
-    - '2016-01-28 17:12:42.030464'
-  - - '30'
-    - '3'
-    - '8'
-    - '2'
-    - Paper
-    - '2016-01-28 17:12:42.050154'
-    - '2016-01-28 17:12:42.050154'
-  - - '31'
-    - '3'
-    - '8'
-    - '3'
-    - Paper
-    - '2016-01-28 17:12:42.058813'
-    - '2016-01-28 17:12:42.058813'
-  - - '32'
-    - '3'
-    - '8'
-    - '4'
-    - Paper
-    - '2016-01-28 17:12:42.068226'
-    - '2016-01-28 17:12:42.068226'
-  - - '33'
-    - '7'
-    - '8'
-    - '8'
-    - Paper
-    - '2016-01-28 17:12:42.080871'
-    - '2016-01-28 17:12:42.080871'
-  - - '34'
-    - '7'
-    - '8'
-    - '9'
-    - Paper
-    - '2016-01-28 17:12:42.091433'
-    - '2016-01-28 17:12:42.091433'
-  - - '35'
-    - '1'
-    - '8'
-    - '10'
-    - Paper
-    - '2016-01-28 17:12:42.101763'
-    - '2016-01-28 17:12:42.101763'
-  - - '36'
-    - '1'
-    - '10'
-    - '1'
-    - Journal
-    - '2016-01-28 17:12:42.163645'
-    - '2016-01-28 17:12:42.163645'
-  - - '37'
-    - '10'
-    - '11'
-    - '1'
-    - Journal
-    - '2016-01-30 23:30:43.431537'
-    - '2016-01-30 23:30:43.431537'
-  - - '38'
-    - '11'
-    - '11'
-    - '1'
-    - Journal
-    - '2016-01-30 23:30:43.442362'
-    - '2016-01-30 23:30:43.442362'
 
 ---
 permissions_roles:
@@ -7726,6 +7726,7 @@ tasks:
   - body
   - position
   - paper_id
+  - completed_at
   records: 
   - - '1'
     - Supporting Info
@@ -7738,6 +7739,7 @@ tasks:
     - "[]"
     - '1'
     - '1'
+    - 
   - - '2'
     - Authors
     - TahiStandardTasks::AuthorsTask
@@ -7749,6 +7751,7 @@ tasks:
     - "[]"
     - '2'
     - '1'
+    - 
   - - '3'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
@@ -7760,6 +7763,7 @@ tasks:
     - "[]"
     - '3'
     - '1'
+    - 
   - - '4'
     - Billing
     - PlosBilling::BillingTask
@@ -7771,6 +7775,7 @@ tasks:
     - "[]"
     - '4'
     - '1'
+    - 
   - - '5'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
@@ -7782,6 +7787,7 @@ tasks:
     - "[]"
     - '5'
     - '1'
+    - 
   - - '6'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -7793,6 +7799,7 @@ tasks:
     - "[]"
     - '6'
     - '1'
+    - 
   - - '7'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
@@ -7804,6 +7811,7 @@ tasks:
     - "[]"
     - '7'
     - '1'
+    - 
   - - '8'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
@@ -7815,6 +7823,7 @@ tasks:
     - "[]"
     - '8'
     - '1'
+    - 
   - - '9'
     - Figures
     - TahiStandardTasks::FigureTask
@@ -7826,6 +7835,7 @@ tasks:
     - "[]"
     - '9'
     - '1'
+    - 
   - - '10'
     - Financial Disclosure
     - TahiStandardTasks::FinancialDisclosureTask
@@ -7837,6 +7847,7 @@ tasks:
     - "[]"
     - '10'
     - '1'
+    - 
   - - '11'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
@@ -7848,6 +7859,7 @@ tasks:
     - "[]"
     - '11'
     - '1'
+    - 
   - - '12'
     - Reporting Guidelines
     - TahiStandardTasks::ReportingGuidelinesTask
@@ -7859,6 +7871,7 @@ tasks:
     - "[]"
     - '12'
     - '1'
+    - 
   - - '13'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
@@ -7870,6 +7883,7 @@ tasks:
     - "[]"
     - '13'
     - '1'
+    - 
   - - '14'
     - Initial Tech Check
     - PlosBioTechCheck::InitialTechCheckTask
@@ -7881,6 +7895,7 @@ tasks:
     - '{"round":1}'
     - '1'
     - '1'
+    - 
   - - '15'
     - Revision Tech Check
     - PlosBioTechCheck::RevisionTechCheckTask
@@ -7892,6 +7907,7 @@ tasks:
     - "[]"
     - '2'
     - '1'
+    - 
   - - '16'
     - Final Tech Check
     - PlosBioTechCheck::FinalTechCheckTask
@@ -7903,6 +7919,7 @@ tasks:
     - "[]"
     - '3'
     - '1'
+    - 
   - - '17'
     - Assign Team
     - Tahi::AssignTeam::AssignTeamTask
@@ -7914,6 +7931,7 @@ tasks:
     - "[]"
     - '1'
     - '1'
+    - 
   - - '18'
     - Editor Discussion
     - PlosBioInternalReview::EditorsDiscussionTask
@@ -7925,6 +7943,7 @@ tasks:
     - "[]"
     - '2'
     - '1'
+    - 
   - - '19'
     - Invite Reviewers
     - TahiStandardTasks::PaperReviewerTask
@@ -7936,6 +7955,7 @@ tasks:
     - "[]"
     - '1'
     - '1'
+    - 
   - - '20'
     - Academic Editor Feedback
     - Task
@@ -7947,6 +7967,7 @@ tasks:
     - "[]"
     - '2'
     - '1'
+    - 
   - - '21'
     - Register Decision
     - TahiStandardTasks::RegisterDecisionTask
@@ -7958,6 +7979,7 @@ tasks:
     - "[]"
     - '1'
     - '1'
+    - 
   - - '22'
     - Supporting Info
     - TahiStandardTasks::SupportingInformationTask
@@ -7969,6 +7991,7 @@ tasks:
     - "[]"
     - '1'
     - '2'
+    - 
   - - '23'
     - Authors
     - TahiStandardTasks::AuthorsTask
@@ -7980,6 +8003,7 @@ tasks:
     - "[]"
     - '2'
     - '2'
+    - 
   - - '24'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
@@ -7991,6 +8015,7 @@ tasks:
     - "[]"
     - '3'
     - '2'
+    - 
   - - '25'
     - Billing
     - PlosBilling::BillingTask
@@ -8002,6 +8027,7 @@ tasks:
     - "[]"
     - '4'
     - '2'
+    - 
   - - '26'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
@@ -8013,6 +8039,7 @@ tasks:
     - "[]"
     - '5'
     - '2'
+    - 
   - - '27'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -8037,6 +8064,7 @@ tasks:
       Aldus PageMaker including versions of Lorem Ipsum.\u003c/span\u003e"]'
     - '6'
     - '2'
+    - 
   - - '28'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
@@ -8048,6 +8076,7 @@ tasks:
     - "[]"
     - '7'
     - '2'
+    - 
   - - '29'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
@@ -8059,6 +8088,7 @@ tasks:
     - "[]"
     - '8'
     - '2'
+    - 
   - - '30'
     - Figures
     - TahiStandardTasks::FigureTask
@@ -8070,6 +8100,7 @@ tasks:
     - "[]"
     - '9'
     - '2'
+    - 
   - - '31'
     - Financial Disclosure
     - TahiStandardTasks::FinancialDisclosureTask
@@ -8081,6 +8112,7 @@ tasks:
     - "[]"
     - '10'
     - '2'
+    - 
   - - '32'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
@@ -8092,6 +8124,7 @@ tasks:
     - "[]"
     - '11'
     - '2'
+    - 
   - - '33'
     - Reporting Guidelines
     - TahiStandardTasks::ReportingGuidelinesTask
@@ -8103,6 +8136,7 @@ tasks:
     - "[]"
     - '12'
     - '2'
+    - 
   - - '34'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
@@ -8114,6 +8148,7 @@ tasks:
     - "[]"
     - '13'
     - '2'
+    - 
   - - '35'
     - Initial Tech Check
     - PlosBioTechCheck::InitialTechCheckTask
@@ -8125,6 +8160,7 @@ tasks:
     - '{"round":1}'
     - '1'
     - '2'
+    - 
   - - '36'
     - Revision Tech Check
     - PlosBioTechCheck::RevisionTechCheckTask
@@ -8136,6 +8172,7 @@ tasks:
     - "[]"
     - '2'
     - '2'
+    - 
   - - '37'
     - Final Tech Check
     - PlosBioTechCheck::FinalTechCheckTask
@@ -8147,6 +8184,7 @@ tasks:
     - "[]"
     - '3'
     - '2'
+    - 
   - - '38'
     - Assign Team
     - Tahi::AssignTeam::AssignTeamTask
@@ -8158,6 +8196,7 @@ tasks:
     - "[]"
     - '1'
     - '2'
+    - 
   - - '39'
     - Editor Discussion
     - PlosBioInternalReview::EditorsDiscussionTask
@@ -8169,6 +8208,7 @@ tasks:
     - "[]"
     - '2'
     - '2'
+    - 
   - - '40'
     - Invite Reviewers
     - TahiStandardTasks::PaperReviewerTask
@@ -8180,6 +8220,7 @@ tasks:
     - "[]"
     - '1'
     - '2'
+    - 
   - - '41'
     - Academic Editor Feedback
     - Task
@@ -8191,6 +8232,7 @@ tasks:
     - "[]"
     - '2'
     - '2'
+    - 
   - - '42'
     - Register Decision
     - TahiStandardTasks::RegisterDecisionTask
@@ -8202,6 +8244,7 @@ tasks:
     - "[]"
     - '1'
     - '2'
+    - 
   - - '43'
     - Supporting Info
     - TahiStandardTasks::SupportingInformationTask
@@ -8213,6 +8256,7 @@ tasks:
     - "[]"
     - '1'
     - '3'
+    - '2016-02-02 19:33:00'
   - - '44'
     - Authors
     - TahiStandardTasks::AuthorsTask
@@ -8224,6 +8268,7 @@ tasks:
     - "[]"
     - '2'
     - '3'
+    - '2016-02-02 19:33:00'
   - - '45'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
@@ -8235,6 +8280,7 @@ tasks:
     - "[]"
     - '3'
     - '3'
+    - '2016-02-02 19:33:00'
   - - '46'
     - Billing
     - PlosBilling::BillingTask
@@ -8246,6 +8292,7 @@ tasks:
     - "[]"
     - '4'
     - '3'
+    - '2016-02-02 19:33:00'
   - - '47'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
@@ -8257,6 +8304,7 @@ tasks:
     - "[]"
     - '5'
     - '3'
+    - '2016-02-02 19:33:00'
   - - '48'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -8275,6 +8323,7 @@ tasks:
       versions of Lorem Ipsum."]'
     - '6'
     - '3'
+    - '2016-02-02 19:33:00'
   - - '49'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
@@ -8286,6 +8335,7 @@ tasks:
     - "[]"
     - '7'
     - '3'
+    - '2016-02-02 19:33:00'
   - - '50'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
@@ -8297,6 +8347,7 @@ tasks:
     - "[]"
     - '8'
     - '3'
+    - '2016-02-02 19:33:00'
   - - '51'
     - Figures
     - TahiStandardTasks::FigureTask
@@ -8308,6 +8359,7 @@ tasks:
     - "[]"
     - '9'
     - '3'
+    - '2016-02-02 19:33:00'
   - - '52'
     - Financial Disclosure
     - TahiStandardTasks::FinancialDisclosureTask
@@ -8319,6 +8371,7 @@ tasks:
     - "[]"
     - '10'
     - '3'
+    - '2016-02-02 19:33:00'
   - - '53'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
@@ -8330,6 +8383,7 @@ tasks:
     - "[]"
     - '11'
     - '3'
+    - '2016-02-02 19:33:00'
   - - '54'
     - Reporting Guidelines
     - TahiStandardTasks::ReportingGuidelinesTask
@@ -8341,6 +8395,7 @@ tasks:
     - "[]"
     - '12'
     - '3'
+    - '2016-02-02 19:33:00'
   - - '55'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
@@ -8352,6 +8407,7 @@ tasks:
     - "[]"
     - '13'
     - '3'
+    - '2016-02-02 19:33:00'
   - - '56'
     - Initial Tech Check
     - PlosBioTechCheck::InitialTechCheckTask
@@ -8363,6 +8419,7 @@ tasks:
     - '{"round":1}'
     - '1'
     - '3'
+    - 
   - - '57'
     - Revision Tech Check
     - PlosBioTechCheck::RevisionTechCheckTask
@@ -8374,6 +8431,7 @@ tasks:
     - "[]"
     - '2'
     - '3'
+    - 
   - - '58'
     - Final Tech Check
     - PlosBioTechCheck::FinalTechCheckTask
@@ -8385,6 +8443,7 @@ tasks:
     - "[]"
     - '3'
     - '3'
+    - 
   - - '59'
     - Assign Team
     - Tahi::AssignTeam::AssignTeamTask
@@ -8396,6 +8455,7 @@ tasks:
     - "[]"
     - '1'
     - '3'
+    - 
   - - '60'
     - Editor Discussion
     - PlosBioInternalReview::EditorsDiscussionTask
@@ -8407,6 +8467,7 @@ tasks:
     - "[]"
     - '2'
     - '3'
+    - 
   - - '61'
     - Invite Reviewers
     - TahiStandardTasks::PaperReviewerTask
@@ -8418,6 +8479,7 @@ tasks:
     - "[]"
     - '1'
     - '3'
+    - 
   - - '62'
     - Academic Editor Feedback
     - Task
@@ -8429,6 +8491,7 @@ tasks:
     - "[]"
     - '2'
     - '3'
+    - 
   - - '63'
     - Register Decision
     - TahiStandardTasks::RegisterDecisionTask
@@ -8440,6 +8503,7 @@ tasks:
     - "[]"
     - '1'
     - '3'
+    - 
   - - '64'
     - Supporting Info
     - TahiStandardTasks::SupportingInformationTask
@@ -8451,6 +8515,7 @@ tasks:
     - "[]"
     - '1'
     - '4'
+    - '2016-02-02 19:33:00'
   - - '65'
     - Authors
     - TahiStandardTasks::AuthorsTask
@@ -8462,6 +8527,7 @@ tasks:
     - "[]"
     - '2'
     - '4'
+    - '2016-02-02 19:33:00'
   - - '66'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
@@ -8473,6 +8539,7 @@ tasks:
     - "[]"
     - '3'
     - '4'
+    - '2016-02-02 19:33:00'
   - - '67'
     - Billing
     - PlosBilling::BillingTask
@@ -8484,6 +8551,7 @@ tasks:
     - "[]"
     - '4'
     - '4'
+    - '2016-02-02 19:33:00'
   - - '68'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
@@ -8495,6 +8563,7 @@ tasks:
     - "[]"
     - '5'
     - '4'
+    - '2016-02-02 19:33:00'
   - - '69'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -8516,6 +8585,7 @@ tasks:
       publishing software like Aldus PageMaker including versions of Lorem Ipsum.\u003c/span\u003e"]'
     - '6'
     - '4'
+    - '2016-02-02 19:33:00'
   - - '70'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
@@ -8527,6 +8597,7 @@ tasks:
     - "[]"
     - '7'
     - '4'
+    - '2016-02-02 19:33:00'
   - - '71'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
@@ -8538,6 +8609,7 @@ tasks:
     - "[]"
     - '8'
     - '4'
+    - '2016-02-02 19:33:00'
   - - '72'
     - Figures
     - TahiStandardTasks::FigureTask
@@ -8549,6 +8621,7 @@ tasks:
     - "[]"
     - '9'
     - '4'
+    - '2016-02-02 19:33:00'
   - - '73'
     - Financial Disclosure
     - TahiStandardTasks::FinancialDisclosureTask
@@ -8560,6 +8633,7 @@ tasks:
     - "[]"
     - '10'
     - '4'
+    - '2016-02-02 19:33:00'
   - - '74'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
@@ -8571,6 +8645,7 @@ tasks:
     - "[]"
     - '11'
     - '4'
+    - '2016-02-02 19:33:00'
   - - '75'
     - Reporting Guidelines
     - TahiStandardTasks::ReportingGuidelinesTask
@@ -8582,6 +8657,7 @@ tasks:
     - "[]"
     - '12'
     - '4'
+    - '2016-02-02 19:33:00'
   - - '76'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
@@ -8593,6 +8669,7 @@ tasks:
     - "[]"
     - '13'
     - '4'
+    - '2016-02-02 19:33:00'
   - - '77'
     - Initial Tech Check
     - PlosBioTechCheck::InitialTechCheckTask
@@ -8604,6 +8681,7 @@ tasks:
     - '{"round":1}'
     - '1'
     - '4'
+    - 
   - - '78'
     - Revision Tech Check
     - PlosBioTechCheck::RevisionTechCheckTask
@@ -8615,6 +8693,7 @@ tasks:
     - "[]"
     - '2'
     - '4'
+    - 
   - - '79'
     - Final Tech Check
     - PlosBioTechCheck::FinalTechCheckTask
@@ -8626,6 +8705,7 @@ tasks:
     - "[]"
     - '3'
     - '4'
+    - 
   - - '80'
     - Assign Team
     - Tahi::AssignTeam::AssignTeamTask
@@ -8637,6 +8717,7 @@ tasks:
     - "[]"
     - '1'
     - '4'
+    - '2016-02-02 19:33:00'
   - - '81'
     - Editor Discussion
     - PlosBioInternalReview::EditorsDiscussionTask
@@ -8648,6 +8729,7 @@ tasks:
     - "[]"
     - '2'
     - '4'
+    - 
   - - '82'
     - Invite Reviewers
     - TahiStandardTasks::PaperReviewerTask
@@ -8659,6 +8741,7 @@ tasks:
     - "[]"
     - '1'
     - '4'
+    - 
   - - '83'
     - Academic Editor Feedback
     - Task
@@ -8670,6 +8753,7 @@ tasks:
     - "[]"
     - '2'
     - '4'
+    - 
   - - '84'
     - Register Decision
     - TahiStandardTasks::RegisterDecisionTask
@@ -8681,6 +8765,7 @@ tasks:
     - "[]"
     - '1'
     - '4'
+    - 
   - - '85'
     - Supporting Info
     - TahiStandardTasks::SupportingInformationTask
@@ -8692,6 +8777,7 @@ tasks:
     - "[]"
     - '1'
     - '8'
+    - 
   - - '86'
     - Authors
     - TahiStandardTasks::AuthorsTask
@@ -8703,6 +8789,7 @@ tasks:
     - "[]"
     - '2'
     - '8'
+    - 
   - - '87'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
@@ -8714,6 +8801,7 @@ tasks:
     - "[]"
     - '3'
     - '8'
+    - 
   - - '88'
     - Billing
     - PlosBilling::BillingTask
@@ -8725,6 +8813,7 @@ tasks:
     - "[]"
     - '4'
     - '8'
+    - 
   - - '89'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
@@ -8736,6 +8825,7 @@ tasks:
     - "[]"
     - '5'
     - '8'
+    - 
   - - '90'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -8747,6 +8837,7 @@ tasks:
     - "[]"
     - '6'
     - '8'
+    - 
   - - '91'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
@@ -8758,6 +8849,7 @@ tasks:
     - "[]"
     - '7'
     - '8'
+    - 
   - - '92'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
@@ -8769,6 +8861,7 @@ tasks:
     - "[]"
     - '8'
     - '8'
+    - 
   - - '93'
     - Figures
     - TahiStandardTasks::FigureTask
@@ -8780,6 +8873,7 @@ tasks:
     - "[]"
     - '9'
     - '8'
+    - 
   - - '94'
     - Financial Disclosure
     - TahiStandardTasks::FinancialDisclosureTask
@@ -8791,6 +8885,7 @@ tasks:
     - "[]"
     - '10'
     - '8'
+    - 
   - - '95'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
@@ -8802,6 +8897,7 @@ tasks:
     - "[]"
     - '11'
     - '8'
+    - 
   - - '96'
     - Reporting Guidelines
     - TahiStandardTasks::ReportingGuidelinesTask
@@ -8813,6 +8909,7 @@ tasks:
     - "[]"
     - '12'
     - '8'
+    - 
   - - '97'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
@@ -8824,6 +8921,7 @@ tasks:
     - "[]"
     - '13'
     - '8'
+    - 
   - - '98'
     - Initial Tech Check
     - PlosBioTechCheck::InitialTechCheckTask
@@ -8835,6 +8933,7 @@ tasks:
     - '{"round":1}'
     - '1'
     - '8'
+    - 
   - - '99'
     - Revision Tech Check
     - PlosBioTechCheck::RevisionTechCheckTask
@@ -8846,6 +8945,7 @@ tasks:
     - "[]"
     - '2'
     - '8'
+    - 
   - - '100'
     - Final Tech Check
     - PlosBioTechCheck::FinalTechCheckTask
@@ -8857,6 +8957,7 @@ tasks:
     - "[]"
     - '3'
     - '8'
+    - 
   - - '101'
     - Assign Team
     - Tahi::AssignTeam::AssignTeamTask
@@ -8868,6 +8969,7 @@ tasks:
     - "[]"
     - '1'
     - '8'
+    - 
   - - '102'
     - Editor Discussion
     - PlosBioInternalReview::EditorsDiscussionTask
@@ -8879,6 +8981,7 @@ tasks:
     - "[]"
     - '2'
     - '8'
+    - 
   - - '103'
     - Invite Reviewers
     - TahiStandardTasks::PaperReviewerTask
@@ -8890,6 +8993,7 @@ tasks:
     - "[]"
     - '1'
     - '8'
+    - 
   - - '104'
     - Academic Editor Feedback
     - Task
@@ -8901,6 +9005,7 @@ tasks:
     - "[]"
     - '2'
     - '8'
+    - 
   - - '105'
     - Register Decision
     - TahiStandardTasks::RegisterDecisionTask
@@ -8912,6 +9017,7 @@ tasks:
     - "[]"
     - '1'
     - '8'
+    - 
   - - '106'
     - Supporting Info
     - TahiStandardTasks::SupportingInformationTask
@@ -8923,6 +9029,7 @@ tasks:
     - "[]"
     - '1'
     - '9'
+    - 
   - - '107'
     - Authors
     - TahiStandardTasks::AuthorsTask
@@ -8934,6 +9041,7 @@ tasks:
     - "[]"
     - '2'
     - '9'
+    - 
   - - '108'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
@@ -8945,6 +9053,7 @@ tasks:
     - "[]"
     - '3'
     - '9'
+    - 
   - - '109'
     - Billing
     - PlosBilling::BillingTask
@@ -8956,6 +9065,7 @@ tasks:
     - "[]"
     - '4'
     - '9'
+    - 
   - - '110'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
@@ -8967,6 +9077,7 @@ tasks:
     - "[]"
     - '5'
     - '9'
+    - 
   - - '111'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -8978,6 +9089,7 @@ tasks:
     - "[]"
     - '6'
     - '9'
+    - 
   - - '112'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
@@ -8989,6 +9101,7 @@ tasks:
     - "[]"
     - '7'
     - '9'
+    - 
   - - '113'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
@@ -9000,6 +9113,7 @@ tasks:
     - "[]"
     - '8'
     - '9'
+    - 
   - - '114'
     - Figures
     - TahiStandardTasks::FigureTask
@@ -9011,6 +9125,7 @@ tasks:
     - "[]"
     - '9'
     - '9'
+    - 
   - - '115'
     - Financial Disclosure
     - TahiStandardTasks::FinancialDisclosureTask
@@ -9022,6 +9137,7 @@ tasks:
     - "[]"
     - '10'
     - '9'
+    - 
   - - '116'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
@@ -9033,6 +9149,7 @@ tasks:
     - "[]"
     - '11'
     - '9'
+    - 
   - - '117'
     - Reporting Guidelines
     - TahiStandardTasks::ReportingGuidelinesTask
@@ -9044,6 +9161,7 @@ tasks:
     - "[]"
     - '12'
     - '9'
+    - 
   - - '118'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
@@ -9055,6 +9173,7 @@ tasks:
     - "[]"
     - '13'
     - '9'
+    - 
   - - '119'
     - Initial Tech Check
     - PlosBioTechCheck::InitialTechCheckTask
@@ -9066,6 +9185,7 @@ tasks:
     - '{"round":1}'
     - '1'
     - '9'
+    - 
   - - '120'
     - Revision Tech Check
     - PlosBioTechCheck::RevisionTechCheckTask
@@ -9077,6 +9197,7 @@ tasks:
     - "[]"
     - '2'
     - '9'
+    - 
   - - '121'
     - Final Tech Check
     - PlosBioTechCheck::FinalTechCheckTask
@@ -9088,6 +9209,7 @@ tasks:
     - "[]"
     - '3'
     - '9'
+    - 
   - - '122'
     - Assign Team
     - Tahi::AssignTeam::AssignTeamTask
@@ -9099,6 +9221,7 @@ tasks:
     - "[]"
     - '1'
     - '9'
+    - 
   - - '123'
     - Editor Discussion
     - PlosBioInternalReview::EditorsDiscussionTask
@@ -9110,6 +9233,7 @@ tasks:
     - "[]"
     - '2'
     - '9'
+    - 
   - - '124'
     - Invite Reviewers
     - TahiStandardTasks::PaperReviewerTask
@@ -9121,6 +9245,7 @@ tasks:
     - "[]"
     - '1'
     - '9'
+    - 
   - - '125'
     - Academic Editor Feedback
     - Task
@@ -9132,6 +9257,7 @@ tasks:
     - "[]"
     - '2'
     - '9'
+    - 
   - - '126'
     - Register Decision
     - TahiStandardTasks::RegisterDecisionTask
@@ -9143,6 +9269,7 @@ tasks:
     - "[]"
     - '1'
     - '9'
+    - 
   - - '127'
     - Supporting Info
     - TahiStandardTasks::SupportingInformationTask
@@ -9154,6 +9281,7 @@ tasks:
     - "[]"
     - '1'
     - '10'
+    - 
   - - '128'
     - Authors
     - TahiStandardTasks::AuthorsTask
@@ -9165,6 +9293,7 @@ tasks:
     - "[]"
     - '2'
     - '10'
+    - 
   - - '129'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
@@ -9176,6 +9305,7 @@ tasks:
     - "[]"
     - '3'
     - '10'
+    - 
   - - '130'
     - Billing
     - PlosBilling::BillingTask
@@ -9187,6 +9317,7 @@ tasks:
     - "[]"
     - '4'
     - '10'
+    - 
   - - '131'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
@@ -9198,6 +9329,7 @@ tasks:
     - "[]"
     - '5'
     - '10'
+    - 
   - - '132'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -9209,6 +9341,7 @@ tasks:
     - "[]"
     - '6'
     - '10'
+    - 
   - - '133'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
@@ -9220,6 +9353,7 @@ tasks:
     - "[]"
     - '7'
     - '10'
+    - 
   - - '134'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
@@ -9231,6 +9365,7 @@ tasks:
     - "[]"
     - '8'
     - '10'
+    - 
   - - '135'
     - Figures
     - TahiStandardTasks::FigureTask
@@ -9242,6 +9377,7 @@ tasks:
     - "[]"
     - '9'
     - '10'
+    - 
   - - '136'
     - Financial Disclosure
     - TahiStandardTasks::FinancialDisclosureTask
@@ -9253,6 +9389,7 @@ tasks:
     - "[]"
     - '10'
     - '10'
+    - 
   - - '137'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
@@ -9264,6 +9401,7 @@ tasks:
     - "[]"
     - '11'
     - '10'
+    - 
   - - '138'
     - Reporting Guidelines
     - TahiStandardTasks::ReportingGuidelinesTask
@@ -9275,6 +9413,7 @@ tasks:
     - "[]"
     - '12'
     - '10'
+    - 
   - - '139'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
@@ -9286,6 +9425,7 @@ tasks:
     - "[]"
     - '13'
     - '10'
+    - 
   - - '140'
     - Initial Tech Check
     - PlosBioTechCheck::InitialTechCheckTask
@@ -9297,6 +9437,7 @@ tasks:
     - '{"round":1}'
     - '1'
     - '10'
+    - 
   - - '141'
     - Revision Tech Check
     - PlosBioTechCheck::RevisionTechCheckTask
@@ -9308,6 +9449,7 @@ tasks:
     - "[]"
     - '2'
     - '10'
+    - 
   - - '142'
     - Final Tech Check
     - PlosBioTechCheck::FinalTechCheckTask
@@ -9319,6 +9461,7 @@ tasks:
     - "[]"
     - '3'
     - '10'
+    - 
   - - '143'
     - Assign Team
     - Tahi::AssignTeam::AssignTeamTask
@@ -9330,6 +9473,7 @@ tasks:
     - "[]"
     - '1'
     - '10'
+    - 
   - - '144'
     - Editor Discussion
     - PlosBioInternalReview::EditorsDiscussionTask
@@ -9341,6 +9485,7 @@ tasks:
     - "[]"
     - '2'
     - '10'
+    - 
   - - '145'
     - Invite Reviewers
     - TahiStandardTasks::PaperReviewerTask
@@ -9352,6 +9497,7 @@ tasks:
     - "[]"
     - '1'
     - '10'
+    - 
   - - '146'
     - Academic Editor Feedback
     - Task
@@ -9363,6 +9509,7 @@ tasks:
     - "[]"
     - '2'
     - '10'
+    - 
   - - '147'
     - Register Decision
     - TahiStandardTasks::RegisterDecisionTask
@@ -9374,3 +9521,4 @@ tasks:
     - "[]"
     - '1'
     - '10'
+    - 

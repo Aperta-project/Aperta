@@ -24,7 +24,7 @@ module TahiStandardTasks
     end
 
     def invitee_role
-      'editor'
+      Role::ACADEMIC_EDITOR_ROLE
     end
 
     def invite_letter
@@ -50,9 +50,10 @@ module TahiStandardTasks
     end
 
     def replace_editor_and_follow_tasks(invitation)
-      TaskRoleUpdater.new(task: self,
-                          assignee_id: invitation.invitee_id,
-                          paper_role_name: PaperRole::EDITOR).update
+      user = User.find(invitation.invitee_id)
+      ParticipationFactory.create(task: self, assignee: user)
+      paper.assignments.where(user: user, role: Role.editor)
+        .first_or_create!
     end
 
     def follow_reviewer_reports(invitation)

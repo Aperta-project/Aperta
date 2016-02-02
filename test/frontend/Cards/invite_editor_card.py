@@ -19,7 +19,6 @@ class InviteEditorCard(BaseCard):
 
     #Locators - Instance members
     self._email_selector = (By.CLASS_NAME, 'select2-container')
-    #self._invite_input = (By.CLASS_NAME, 'select2-focused')
     self._invite_input = (By.CLASS_NAME, 'select2-search')
     self._drop_down = (By.CLASS_NAME, 'select2-drop-active')
     self._invite_editor_text = (By.CLASS_NAME, 'invite-editor-text')
@@ -49,5 +48,3 @@ class InviteEditorCard(BaseCard):
     time.sleep(.5)
     self.click_completed_checkbox()
     self.click_close_button()
-
-    #self._get((By.CLASS_NAME, 'select2-search'))

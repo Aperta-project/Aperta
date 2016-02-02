@@ -122,6 +122,26 @@ describe QueryParser do
           "tasks"."title" NOT ILIKE 'anytask'
         SQL
       end
+
+      it 'parses TASK x HAS BEEN COMPLETE >' do
+        parse = QueryParser.new.parse 'TASK anytask HAS BEEN COMPLETE > 1'
+        Timecop.freeze do
+          start_time = Time.zone.now.utc.days_ago(1).to_formatted_s(:db)
+          expect(parse.to_sql).to eq(<<-SQL.strip)
+            "tasks"."title" ILIKE 'anytask' AND "tasks"."completed_at" < '#{start_time}'
+          SQL
+        end
+      end
+
+      it 'parses TASK x HAS BEEN COMPLETED >' do
+        parse = QueryParser.new.parse 'TASK anytask HAS BEEN COMPLETED > 1'
+        Timecop.freeze do
+          start_time = Time.zone.now.utc.days_ago(1).to_formatted_s(:db)
+          expect(parse.to_sql).to eq(<<-SQL.strip)
+            "tasks"."title" ILIKE 'anytask' AND "tasks"."completed_at" < '#{start_time}'
+          SQL
+        end
+      end
     end
   end
 end

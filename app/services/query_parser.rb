@@ -56,6 +56,13 @@ class QueryParser < QueryLanguageParser
       .and(Task.arel_table[:completed].eq(false))
   end
 
+  add_two_part_expression('TASK', /HAS BEEN COMPLETED? \>/) do |task, days_ago|
+    join Task
+    start_time = Time.zone.now.utc.days_ago(days_ago.to_i).to_formatted_s(:db)
+    Task.arel_table[:title].matches(task)
+      .and(Task.arel_table[:completed_at].lt(start_time))
+  end
+
   add_simple_expression('HAS TASK') do |task|
     join Task
     Task.arel_table[:title].matches(task)

@@ -181,6 +181,13 @@ class Paper < ActiveRecord::Base
     end
   end
 
+  def users_with_role(role)
+    User.joins(:assignments).where(
+      'assignments.role_id' => role.id,
+      'assignments.assigned_to_id' => id,
+      'assignments.assigned_to_type' => 'Paper')
+  end
+
   def previous_state_is?(event)
     withdrawals.last[:previous_publishing_state] == event.to_s
   end
@@ -264,8 +271,7 @@ class Paper < ActiveRecord::Base
   end
 
   def editors
-    assignments.where(role: Role.find_by(name: Role::ACADEMIC_EDITOR_ROLE))
-      .map(&:user)
+    users_with_role(Role.editor)
   end
 
   def short_title

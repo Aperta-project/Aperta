@@ -55,6 +55,11 @@ export default TaskComponent.extend(BuildsTaskTemplate, {
       this.send('save');
     },
 
+    updateAttachmentCaption(caption, attachment) {
+      attachment.set('caption', caption);
+      attachment.save();
+    },
+
     updateAttachment(s3Url, file, attachment) {
       const path = `${this.get('attachmentsPath')}/${attachment.id}/update_attachment`;
       this.attachmentsRequest(path, 'PUT', s3Url, file);

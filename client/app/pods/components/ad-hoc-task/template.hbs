@@ -56,7 +56,9 @@
       {{attachment-manager filePath="ad-hoc"
                            attachments=task.attachments
                            multiple=true
+                           hasCaption=true
                            accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps,.docx,.odt,.epub,.pdf"
+                           captionChanged=(action "updateAttachmentCaption")
                            deleteFile=(action "deleteAttachment")
                            uploadFinished=(action "createAttachment")
                            updateAttachment=(action "updateAttachment")}}

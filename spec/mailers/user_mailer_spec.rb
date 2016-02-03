@@ -173,7 +173,7 @@ describe UserMailer, redis: true do
     let(:email) { UserMailer.notify_editor_of_paper_resubmission(paper.id) }
 
     before do
-      make_user_paper_editor(editor, paper)
+      assign_academic_editor_role(paper, editor)
     end
 
     it "send email to the paper's editor" do

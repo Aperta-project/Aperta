@@ -545,11 +545,11 @@ describe Paper do
                            user: user,
                            assigned_to: paper)
       end
-      specify { expect(paper.editors).to eq([user]) }
+      specify { expect(paper.academic_editors).to eq([user]) }
     end
 
     context "when the paper doesn't have an editor" do
-      specify { expect(paper.editors).to be_blank }
+      specify { expect(paper.academic_editors).to be_blank }
     end
   end
 

@@ -30,15 +30,15 @@
             placeholder="Select editor"
             remoteSource=select2RemoteSource
             resultsTemplate=resultsTemplate
-            selectedData=task.editor
+            selectedData=task.academicEditor
             selectedTemplate=resultsTemplate
             selectionSelected="didSelectEditor"
             value=""}}
         <button class="button-primary button--green compose-invite-button" {{action "composeInvite"}}>Compose Invite</button>
       {{else}}
-        {{#if task.editor}}
+        {{#if task.academicEditor}}
           {{user-thumbnail user=editor}}
-          {{task.editor.name}}&nbsp;is now the Editor.
+          {{task.academicEditor.name}}&nbsp;is now the Editor.
           <div class="fa fa-trash invite-editor-remove" {{action "removeEditor"}}></div>
         {{else}}
           {{#if hasRejectedInvitation}}

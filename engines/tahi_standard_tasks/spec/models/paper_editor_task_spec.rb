@@ -73,7 +73,7 @@ describe TahiStandardTasks::PaperEditorTask do
 
     it "replaces the old editor" do
       invitation.accept!
-      expect(paper.reload.editor).to eq(invitation.invitee)
+      expect(paper.reload.academic_editor).to eq(invitation.invitee)
     end
 
     it "follows all tasks that are reviewer reports" do
@@ -91,7 +91,7 @@ describe TahiStandardTasks::PaperEditorTask do
 
       it "replaces the old editor" do
         invitation.accept!
-        expect(paper.reload.editor).to eq(invitation.invitee)
+        expect(paper.reload.academic_editor).to eq(invitation.invitee)
       end
     end
   end

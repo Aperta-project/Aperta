@@ -24,7 +24,7 @@ class Role < ActiveRecord::Base
     where(name: STAFF_ADMIN_ROLE).first_or_create!
   end
 
-  def self.editor
+  def self.academic_editor
     where(name: ACADEMIC_EDITOR_ROLE).first_or_create!
   end
 

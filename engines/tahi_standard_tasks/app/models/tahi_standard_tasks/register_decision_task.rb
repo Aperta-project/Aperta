@@ -152,7 +152,7 @@ module TahiStandardTasks
     private
 
     def template_data
-      paper_editor = paper.editor
+      paper_editor = paper.academic_editor
       editor_name = paper_editor.present? ? paper_editor.full_name : "***\nEditor not assigned\n***"
       { author_last_name: paper.creator.last_name,
         manuscript_title: paper.display_title(sanitized: false),

@@ -266,12 +266,12 @@ class Paper < ActiveRecord::Base
   #   # => <#124: User>
   #
   # Returns a User object.
-  def editor
-    editors.first
+  def academic_editor
+    academic_editors.first
   end
 
-  def editors
-    users_with_role(paper.journal.roles.editor)
+  def academic_editors
+    users_with_role(journal.roles.academic_editor)
   end
 
   def short_title

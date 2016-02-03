@@ -17,7 +17,7 @@ class Participation < ActiveRecord::Base
   end
 
   def remove_paper_role
-    if user.present? && paper.participants.where(users: {id: user.id}).none?
+    if user.present? && !paper.participants.include?(user)
       paper.paper_roles.participants.where(
         paper_roles: { user_id: user.id }
       ).destroy_all

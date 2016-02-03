@@ -20,6 +20,76 @@ describe Task do
     end
   end
 
+  describe '#assignments' do
+    subject(:task) { FactoryGirl.create :task }
+
+    before do
+      Assignment.create!(
+        user: FactoryGirl.create(:user),
+        role: FactoryGirl.create(:role),
+        assigned_to: task
+      )
+    end
+
+    context 'on #destroy' do
+      it 'destroy assignments' do
+        expect {
+          task.destroy!
+        }.to change { task.assignments.count }.by(-1)
+      end
+    end
+  end
+
+  describe '#participations' do
+    subject(:task) { FactoryGirl.create :task }
+
+    let!(:participant_assignment) do
+      Assignment.create!(
+        user: FactoryGirl.create(:user),
+        role: task.journal.roles.participant,
+        assigned_to: task
+      )
+    end
+
+    let!(:other_assignment) do
+      Assignment.create!(
+        user: FactoryGirl.create(:user),
+        role: FactoryGirl.create(:role),
+        assigned_to: task
+      )
+    end
+
+    it 'returns the assignments where the role is participant' do
+      expect(task.participations).to contain_exactly(participant_assignment)
+      expect(task.participations).to_not include(other_assignment)
+    end
+  end
+
+  describe '#participants' do
+    subject(:task) { FactoryGirl.create :task }
+
+    let!(:participant_assignment) do
+      Assignment.create!(
+        user: FactoryGirl.create(:user),
+        role: task.journal.roles.participant,
+        assigned_to: task
+      )
+    end
+
+    let!(:other_assignment) do
+      Assignment.create!(
+        user: FactoryGirl.create(:user),
+        role: FactoryGirl.create(:role),
+        assigned_to: task
+      )
+    end
+
+    it 'returns the users who are assigned to the task as a participant' do
+      expect(task.participants).to contain_exactly(participant_assignment.user)
+      expect(task.participants).to_not include(other_assignment.user)
+    end
+  end
+
   describe "#invitations" do
     let(:paper) { FactoryGirl.create :paper }
     let(:task) { FactoryGirl.create :invitable_task, paper: paper }

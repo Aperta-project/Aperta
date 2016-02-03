@@ -23,14 +23,18 @@ class Task < ActiveRecord::Base
 
   scope :on_journals, ->(journals) { joins(:journal).where("journals.id" => journals.map(&:id)) }
 
+  scope :participations_for, -> (task:) do
+    journal = task.journal
+    task.assignments.where(role_id: journal.roles.participant)
+  end
+
   has_many :permission_requirements, as: :required_on
   has_many :required_permissions, through: :permission_requirements, source: :permission
   belongs_to :paper, inverse_of: :tasks
   has_one :journal, through: :paper, inverse_of: :tasks
-  has_many :assignments, as: :assigned_to
+  has_many :assignments, as: :assigned_to, dependent: :destroy
   has_many :attachments
-  has_many :participations, inverse_of: :task, dependent: :destroy
-  has_many :participants, through: :participations, source: :user
+
   has_many :snapshots, as: :source
 
   belongs_to :phase, inverse_of: :tasks
@@ -131,6 +135,14 @@ class Task < ActiveRecord::Base
 
   def incomplete!
     update!(completed: false)
+  end
+
+  def participations
+    self.class.participations_for(task: self)
+  end
+
+  def participants
+    User.assigned_to(self, role: journal.roles.participant)
   end
 
   def update_responder

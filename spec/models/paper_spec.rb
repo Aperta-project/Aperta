@@ -151,6 +151,90 @@ describe Paper do
     end
   end
 
+  context 'participation' do
+    let(:journal) { paper.journal }
+    let(:creator_role) { journal.roles.creator }
+    let(:collaborator_role) { journal.roles.collaborator }
+    let(:handling_editor_role) { journal.roles.handling_editor }
+    let(:reviewer_role) { journal.roles.reviewer }
+
+    let(:creator) { user }
+    let(:collaborator) { FactoryGirl.create(:user) }
+    let(:handling_editor) { FactoryGirl.create(:user) }
+    let(:reviewer) { FactoryGirl.create(:user) }
+
+    let!(:creator_assignment) do
+      paper.update(creator: user)
+      paper.assignments.where(role: creator_role).first!
+    end
+    let!(:collaborator_assignment) do
+      paper.assignments.create!(user: collaborator, role: collaborator_role)
+    end
+    let!(:handling_editor_assignment) do
+      paper.assignments.create!(
+        user: handling_editor,
+        role: handling_editor_role
+      )
+    end
+    let!(:reviewer_assignment) do
+      paper.assignments.create!(user: reviewer, role: reviewer_role)
+    end
+
+    describe '#participations' do
+      it 'returns the assignments for the participants on this paper' do
+        expect(paper.participations).to be
+      end
+
+      it 'includes the user assigned as the creator of the paper' do
+        expect(paper.participations).to include(creator_assignment)
+      end
+
+      it 'includes users assigned as collaborators on the paper' do
+        expect(paper.participations).to include(collaborator_assignment)
+      end
+
+      it 'includes users assigned as the handling editor on the paper' do
+        expect(paper.participations).to include(handling_editor_assignment)
+      end
+
+      it 'includes users assigned as the reviewer on the paper' do
+        expect(paper.participations).to include(reviewer_assignment)
+      end
+
+      it 'includes users assigned as participants on tasks for the paper' do
+        task = FactoryGirl.create(:task, paper: paper)
+        task_assignment = task.assignments.create!(
+          user: FactoryGirl.create(:user), role: FactoryGirl.create(:role)
+        )
+        expect(paper.participations).to include(task_assignment)
+      end
+    end
+
+    describe '#participants' do
+      let(:task){ FactoryGirl.create(:task, paper: paper) }
+      let(:task_user) { FactoryGirl.create(:user) }
+      let(:task_assignment) do
+        task.assignments.create!(
+          user:task_user,
+          role: FactoryGirl.create(:role)
+        )
+      end
+
+      before do
+        task = FactoryGirl.create(:task, paper: paper)
+        task_assignment = task.assignments.create!(
+          user:task_user, role: FactoryGirl.create(:role)
+        )
+      end
+
+      it 'returns the users for all of the participations' do
+        expect(paper.participants).to contain_exactly(
+          creator, collaborator, handling_editor, reviewer, task_user
+        )
+      end
+    end
+  end
+
   context 'State Machine' do
     describe '#initial_submit' do
       it 'transitions to initially_submitted' do

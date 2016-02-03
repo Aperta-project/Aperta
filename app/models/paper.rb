@@ -319,28 +319,39 @@ class Paper < ActiveRecord::Base
                             journal.roles.collaborator])
   end
 
+  def paper_participation_roles
+    [
+      journal.roles.creator,
+      journal.roles.collaborator,
+      journal.roles.handling_editor,
+      journal.roles.reviewer
+    ]
+  end
+
+  def task_participation_roles
+    [ journal.roles.participant ]
+  end
+
   def participations
-    Assignment.where(
-      role: [
-        journal.roles.creator,
-        journal.roles.collaborator,
-        journal.roles.internal_editor,
-        journal.roles.reviewer
-      ],
-      assigned_to: self
-    ).includes(:role, :user)
+    root = Assignment.arel_table
+    arel_query = (
+      root[:assigned_to_type].eq(Paper.sti_name)
+        .and(root[:assigned_to_id].eq(id)
+        .and(root[:role_id].in(paper_participation_roles.map(&:id)))
+    ))
+
+    if task_ids.present?
+      arel_query = arel_query.or(
+        root[:assigned_to_type].eq(Task.sti_name)
+        .and(root[:assigned_to_id].in(task_ids))
+      )
+    end
+
+    Assignment.where(arel_query).includes(:role, :user)
   end
 
   def participants
-    role_ids = [
-      journal.roles.creator,
-      journal.roles.collaborator,
-      journal.roles.internal_editor,
-      journal.roles.reviewer
-    ].map(&:id)
-    User.joins(:assignments).where(
-      assignments: { role_id: role_ids, assigned_to: self }
-    )
+    participations.map(&:user)
   end
 
   %w(admins editors reviewers).each do |relation|

@@ -75,5 +75,8 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: 'PlosBilling::BillingTask', states: ['*'])
     end
 
+    Role.ensure_exists('Participant', journal: @journal) do |role|
+    end
+
   end
 end

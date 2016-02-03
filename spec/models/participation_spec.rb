@@ -41,7 +41,11 @@ describe "Participation" do
       before do
         FactoryGirl.create(:paper_role, :participant, paper: paper, user: user)
         tasks.each do |task|
-          FactoryGirl.create(:participation, task: task, user: user)
+          Assignment.where(
+            assigned_to: task,
+            user: user,
+            role: paper.journal.roles.participant
+          ).first_or_create!
         end
       end
 
@@ -53,15 +57,19 @@ describe "Participation" do
     end
 
     context "user is participant on one paper task" do
+      let(:task) { tasks.first }
       before do
-        FactoryGirl.create(:paper_role, :participant, paper: paper, user: user)
-        FactoryGirl.create(:participation, task: tasks.first, user: user)
+        Assignment.create!(
+          user: user,
+          assigned_to: task,
+          role: task.journal.roles.participant
+        )
       end
 
-      it "will remove the participant paper old_role when destroying the only participation" do
+      it "will remove the participant assignment when destroying the only participation" do
         expect do
-          tasks.first.participations.first.destroy
-        end.to change { PaperRole.participants.count }.by(-1)
+          task.participations.first.destroy
+        end.to change { task.participants.count }.by(-1)
       end
     end
   end

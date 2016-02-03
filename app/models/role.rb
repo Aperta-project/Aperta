@@ -7,6 +7,7 @@ class Role < ActiveRecord::Base
   COLLABORATOR_ROLE = 'Collaborator'
   INTERNAL_EDITOR_ROLE = 'Internal Editor'
   HANDLING_EDITOR_ROLE = 'Handling Editor'
+  PARTICIPANT_ROLE = 'Participant'
   REVIEWER_ROLE = 'Reviewer'
   STAFF_ADMIN_ROLE = 'Staff Admin'
 
@@ -24,6 +25,10 @@ class Role < ActiveRecord::Base
 
   def self.handling_editor
     where(name: HANDLING_EDITOR_ROLE).first_or_create!
+  end
+
+  def self.participant
+    where(name: PARTICIPANT_ROLE).first_or_create!
   end
 
   def self.reviewer

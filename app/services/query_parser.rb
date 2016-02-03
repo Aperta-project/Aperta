@@ -64,6 +64,12 @@ class QueryParser < QueryLanguageParser
     Assignment.arel_table['role_id'].eq(role_id)
   end
 
+  add_two_part_expression('NO ONE', 'HAS ROLE') do |user, role|
+    join Assignment
+    role_id = Role.where('lower(name) = ?', role.downcase).first.id
+    Assignment.arel_table['role_id'].not_eq(role_id)
+  end
+
   add_two_part_expression('TASK', 'IS COMPLETE') do |task, _|
     table = join Task
     table[:title].matches(task).and(table[:completed].eq(true))

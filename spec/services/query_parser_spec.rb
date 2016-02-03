@@ -184,6 +184,13 @@ describe QueryParser do
           "assignments"."role_id" = #{author_role.id}
         SQL
       end
+
+      it 'parses NO ONE HAS ROLE x' do
+        parse = QueryParser.new.parse 'NO ONE HAS ROLE author'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "assignments"."role_id" != #{author_role.id}
+        SQL
+      end
     end
   end
 end

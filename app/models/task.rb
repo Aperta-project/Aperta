@@ -30,7 +30,7 @@ class Task < ActiveRecord::Base
     },
     class_name: 'Assignment',
     as: :assigned_to
-  has_many :participants, -> { joins(:roles) }, through: :participations, source: :user
+  has_many :participants, -> { joins(:roles).uniq }, through: :participations, source: :user
 
   has_many :permission_requirements, as: :required_on
   has_many :required_permissions, through: :permission_requirements, source: :permission

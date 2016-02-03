@@ -29,6 +29,7 @@ class Paper < ActiveRecord::Base
   has_many :journal_roles, through: :journal
   has_many :authors, -> { order 'authors.position ASC' }
   has_many :activities
+  has_many :assignments, through: :users
   has_many :decisions, -> { order 'revision_number DESC' }, dependent: :destroy
   has_many :discussion_topics, inverse_of: :paper, dependent: :destroy
   has_many :snapshots, dependent: :destroy

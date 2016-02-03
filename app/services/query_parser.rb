@@ -44,6 +44,14 @@ class QueryParser < QueryLanguageParser
     paper_table[:doi].matches("%#{doi}%")
   end
 
+  add_two_part_expression('USER', 'HAS ROLE') do |user, role|
+    user_id = User.find_by(username: user).id
+    role_id = Role.where('lower(name) = ?', role.downcase).first.id
+    join Assignment
+    Assignment.arel_table['user_id'].eq(user_id).and(
+      Assignment.arel_table['role_id'].eq(role_id))
+  end
+
   add_two_part_expression('TASK', 'IS COMPLETE') do |task, _|
     table = join Task
     table[:title].matches(task).and(table[:completed].eq(true))

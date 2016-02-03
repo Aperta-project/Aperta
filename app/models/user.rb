@@ -52,8 +52,8 @@ class User < ActiveRecord::Base
     devise :trackable, :omniauthable, omniauth_providers: Rails.configuration.omniauth_providers
   end
 
-  def created_papers
-    Paper.assignments_for(user: self, role: [Role.creator])
+  def created_papers_for_journal(journal)
+    Paper.assignments_for(user: self, role: journal.roles.creator)
   end
 
   def password_required?

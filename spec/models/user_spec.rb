@@ -19,30 +19,32 @@ describe User do
     end
   end
 
-  describe '#created_papers' do
+  describe '#created_papers_for_journal' do
     subject(:user) { FactoryGirl.create(:user) }
     let(:journal) { FactoryGirl.create(:journal) }
+    let!(:other_user) { FactoryGirl.create(:user) }
+
     let!(:created_paper_1) do
       FactoryGirl.create(:paper, journal: journal, creator: user)
     end
     let!(:created_paper_2) do
       FactoryGirl.create(:paper, journal: journal, creator: user)
     end
-
-    let!(:other_user) { FactoryGirl.create(:user) }
     let!(:not_my_paper) do
       FactoryGirl.create(:paper, journal: journal, creator: other_user)
     end
 
     it 'returns papers where this user is its creator' do
-      expect(user.created_papers).to contain_exactly(
+      created_papers = user.created_papers_for_journal(journal)
+      expect(created_papers).to contain_exactly(
         created_paper_1,
         created_paper_2
       )
     end
 
     it 'does not return other papers' do
-      expect(user.created_papers).to_not include(not_my_paper)
+      created_papers = user.created_papers_for_journal(journal)
+      expect(created_papers).to_not include(not_my_paper)
     end
   end
 

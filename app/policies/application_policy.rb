@@ -133,7 +133,8 @@ class ApplicationPolicy
   end
 
   def author_of_paper?(paper)
-    current_user.created_papers.where(id: paper.id).present?
+    papers = current_user.created_papers_for_journal(paper.journal)
+    papers.where(id: paper.id).present?
   end
 
   def can_view_paper?(paper)

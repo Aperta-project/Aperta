@@ -9,7 +9,7 @@ assignments:
   - assigned_to_type
   - created_at
   - updated_at
-  records: 
+  records:
   - - '29'
     - '3'
     - '8'
@@ -95,7 +95,7 @@ nested_question_answers:
   - additional_data
   - decision_id
   - paper_id
-  records: 
+  records:
   - - '1'
     - '42'
     - '25'
@@ -104,8 +104,8 @@ nested_question_answers:
     - text
     - '2015-10-30 19:47:34.479555'
     - '2016-01-26 17:38:10.506507'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '2'
     - '43'
@@ -115,8 +115,8 @@ nested_question_answers:
     - text
     - '2015-10-30 19:47:35.880149'
     - '2016-01-26 17:38:10.524706'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '3'
     - '44'
@@ -126,8 +126,8 @@ nested_question_answers:
     - text
     - '2015-10-30 19:47:47.32842'
     - '2016-01-26 17:38:10.53177'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '4'
     - '45'
@@ -137,8 +137,8 @@ nested_question_answers:
     - text
     - '2015-10-30 19:47:53.978076'
     - '2016-01-26 17:38:10.537937'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '5'
     - '62'
@@ -150,7 +150,7 @@ nested_question_answers:
     - '2016-01-26 17:38:10.544162'
     - '{"answer":"University of Florida","additionalData":{"institution-id":3463,"city":"Gainesville","country":"US","name":"University
       of Florida","state":"FL","type":"academic"}}'
-    - 
+    -
     - '2'
   - - '6'
     - '64'
@@ -162,7 +162,7 @@ nested_question_answers:
     - '2016-01-26 17:38:10.550299'
     - '{"answer":"University of New Mexico","additionalData":{"institution-id":1104,"city":"Albuquerque","country":"US","name":"University
       of New Mexico","state":"NM","type":"academic"}}'
-    - 
+    -
     - '2'
   - - '7'
     - '46'
@@ -172,8 +172,8 @@ nested_question_answers:
     - text
     - '2015-10-30 19:48:09.249509'
     - '2016-01-26 17:38:10.556246'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '8'
     - '48'
@@ -183,8 +183,8 @@ nested_question_answers:
     - text
     - '2015-10-30 19:48:14.659274'
     - '2016-01-26 17:38:10.561766'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '9'
     - '50'
@@ -194,8 +194,8 @@ nested_question_answers:
     - text
     - '2015-10-30 19:48:17.469142'
     - '2016-01-26 17:38:10.567123'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '10'
     - '52'
@@ -205,8 +205,8 @@ nested_question_answers:
     - text
     - '2015-10-30 19:48:19.690137'
     - '2016-01-26 17:38:10.572615'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '11'
     - '54'
@@ -216,8 +216,8 @@ nested_question_answers:
     - text
     - '2015-10-30 19:48:23.161037'
     - '2016-01-26 17:38:10.577972'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '12'
     - '56'
@@ -227,8 +227,8 @@ nested_question_answers:
     - text
     - '2015-10-30 19:48:24.170518'
     - '2016-01-26 17:38:10.583351'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '13'
     - '58'
@@ -238,8 +238,8 @@ nested_question_answers:
     - text
     - '2015-10-30 19:48:27.179442'
     - '2016-01-26 17:38:10.588814'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '14'
     - '66'
@@ -249,8 +249,8 @@ nested_question_answers:
     - text
     - '2015-10-30 19:48:29.783452'
     - '2016-01-26 17:38:10.594405'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '15'
     - '99'
@@ -260,8 +260,8 @@ nested_question_answers:
     - text
     - '2015-10-30 19:48:34.365176'
     - '2016-01-26 17:38:10.600206'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '16'
     - '101'
@@ -271,8 +271,8 @@ nested_question_answers:
     - boolean
     - '2015-10-30 19:53:15.320617'
     - '2016-01-26 17:38:10.620811'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '17'
     - '105'
@@ -282,8 +282,8 @@ nested_question_answers:
     - boolean
     - '2015-10-30 19:53:17.606606'
     - '2016-01-26 17:38:10.627995'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '18'
     - '106'
@@ -293,8 +293,8 @@ nested_question_answers:
     - boolean
     - '2015-10-30 19:54:25.457224'
     - '2016-01-26 17:38:10.634424'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '19'
     - '107'
@@ -304,8 +304,8 @@ nested_question_answers:
     - boolean
     - '2015-10-30 19:54:25.563501'
     - '2016-01-26 17:38:10.640788'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '20'
     - '109'
@@ -315,8 +315,8 @@ nested_question_answers:
     - boolean
     - '2015-10-30 19:54:25.65219'
     - '2016-01-26 17:38:10.646571'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '21'
     - '108'
@@ -326,8 +326,8 @@ nested_question_answers:
     - boolean
     - '2015-10-30 19:54:25.738713'
     - '2016-01-26 17:38:10.652581'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '22'
     - '39'
@@ -337,8 +337,8 @@ nested_question_answers:
     - text
     - '2015-10-30 19:55:13.501798'
     - '2016-01-26 17:38:10.684296'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '23'
     - '38'
@@ -348,8 +348,8 @@ nested_question_answers:
     - boolean
     - '2015-10-30 19:55:13.717978'
     - '2016-01-26 17:38:10.691757'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '24'
     - '36'
@@ -359,8 +359,8 @@ nested_question_answers:
     - boolean
     - '2015-10-30 19:55:37.265702'
     - '2016-01-26 17:38:10.705124'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '25'
     - '37'
@@ -370,8 +370,8 @@ nested_question_answers:
     - text
     - '2015-10-30 19:56:03.331609'
     - '2016-01-26 17:38:10.711038'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '26'
     - '30'
@@ -381,8 +381,8 @@ nested_question_answers:
     - boolean
     - '2015-10-30 19:56:12.315615'
     - '2016-01-26 17:38:10.723097'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '27'
     - '34'
@@ -392,8 +392,8 @@ nested_question_answers:
     - text
     - '2015-10-30 19:56:43.101348'
     - '2016-01-26 17:38:10.728578'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '28'
     - '31'
@@ -404,8 +404,8 @@ nested_question_answers:
     - text
     - '2015-10-30 19:56:43.209596'
     - '2016-01-26 17:38:10.734149'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '29'
     - '33'
@@ -415,8 +415,8 @@ nested_question_answers:
     - boolean
     - '2015-10-30 19:56:43.377483'
     - '2016-01-26 17:38:10.740471'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '30'
     - '28'
@@ -426,8 +426,8 @@ nested_question_answers:
     - boolean
     - '2015-10-30 19:56:58.530208'
     - '2016-01-26 17:38:10.75362'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '31'
     - '27'
@@ -437,8 +437,8 @@ nested_question_answers:
     - boolean
     - '2015-10-30 19:57:11.928573'
     - '2016-01-26 17:38:10.766147'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '32'
     - '119'
@@ -448,8 +448,8 @@ nested_question_answers:
     - text
     - '2015-10-30 19:57:26.731948'
     - '2016-01-26 17:38:10.783983'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '33'
     - '118'
@@ -459,8 +459,8 @@ nested_question_answers:
     - boolean
     - '2015-10-30 19:57:26.932469'
     - '2016-01-26 17:38:10.791147'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '34'
     - '119'
@@ -470,8 +470,8 @@ nested_question_answers:
     - text
     - '2015-10-30 19:58:03.018776'
     - '2016-01-26 17:38:10.797761'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '35'
     - '118'
@@ -481,8 +481,8 @@ nested_question_answers:
     - boolean
     - '2015-10-30 19:58:03.118814'
     - '2016-01-26 17:38:10.804311'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '36'
     - '9'
@@ -492,8 +492,8 @@ nested_question_answers:
     - boolean
     - '2015-10-30 19:59:37.905765'
     - '2016-01-26 17:38:10.8173'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '37'
     - '10'
@@ -503,8 +503,8 @@ nested_question_answers:
     - text
     - '2015-10-30 19:59:45.52803'
     - '2016-01-26 17:38:10.823347'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '38'
     - '12'
@@ -514,8 +514,8 @@ nested_question_answers:
     - boolean
     - '2015-10-30 19:59:45.732425'
     - '2016-01-26 17:38:10.828935'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '39'
     - '15'
@@ -525,8 +525,8 @@ nested_question_answers:
     - boolean
     - '2015-10-30 19:59:46.983941'
     - '2016-01-26 17:38:10.834487'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '40'
     - '16'
@@ -536,8 +536,8 @@ nested_question_answers:
     - text
     - '2015-10-30 19:59:59.553302'
     - '2016-01-26 17:38:10.8405'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '41'
     - '24'
@@ -547,8 +547,8 @@ nested_question_answers:
     - text
     - '2015-10-30 20:00:09.286037'
     - '2016-01-26 17:38:10.846018'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '43'
     - '1'
@@ -558,8 +558,8 @@ nested_question_answers:
     - boolean
     - '2015-10-30 20:00:37.703208'
     - '2016-01-26 17:38:10.85834'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '46'
     - '8'
@@ -569,8 +569,8 @@ nested_question_answers:
     - boolean
     - '2015-10-30 20:00:41.891372'
     - '2016-01-26 17:38:10.86384'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '47'
     - '42'
@@ -580,8 +580,8 @@ nested_question_answers:
     - text
     - '2015-11-02 14:10:14.443118'
     - '2016-01-26 17:38:10.869377'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '48'
     - '43'
@@ -591,8 +591,8 @@ nested_question_answers:
     - text
     - '2015-11-02 14:10:15.727622'
     - '2016-01-26 17:38:10.875613'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '49'
     - '44'
@@ -602,8 +602,8 @@ nested_question_answers:
     - text
     - '2015-11-02 14:10:21.721775'
     - '2016-01-26 17:38:10.881226'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '50'
     - '45'
@@ -613,8 +613,8 @@ nested_question_answers:
     - text
     - '2015-11-02 14:10:48.832771'
     - '2016-01-26 17:38:10.88653'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '51'
     - '62'
@@ -626,7 +626,7 @@ nested_question_answers:
     - '2016-01-26 17:38:10.892969'
     - '{"answer":"Abraham Baldwin Agricultural College","additionalData":{"institution-id":32237,"city":"Tifton","country":"US","name":"Abraham
       Baldwin Agricultural College","state":"GA","type":"academic/ag"}}'
-    - 
+    -
     - '3'
   - - '52'
     - '64'
@@ -638,7 +638,7 @@ nested_question_answers:
     - '2016-01-26 17:38:10.898797'
     - '{"answer":"Alabama A\u0026M University","additionalData":{"institution-id":6048,"city":"Normal","country":"US","name":"Alabama
       A\u0026M University","state":"AL","type":"academic"}}'
-    - 
+    -
     - '3'
   - - '53'
     - '46'
@@ -648,8 +648,8 @@ nested_question_answers:
     - text
     - '2015-11-02 14:11:12.286959'
     - '2016-01-26 17:38:10.904347'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '54'
     - '48'
@@ -659,8 +659,8 @@ nested_question_answers:
     - text
     - '2015-11-02 14:11:15.854661'
     - '2016-01-26 17:38:10.90984'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '55'
     - '50'
@@ -670,8 +670,8 @@ nested_question_answers:
     - text
     - '2015-11-02 14:11:20.145471'
     - '2016-01-26 17:38:10.915367'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '56'
     - '54'
@@ -681,8 +681,8 @@ nested_question_answers:
     - text
     - '2015-11-02 14:11:24.715681'
     - '2016-01-26 17:38:10.920692'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '57'
     - '56'
@@ -692,8 +692,8 @@ nested_question_answers:
     - text
     - '2015-11-02 14:11:25.372309'
     - '2016-01-26 17:38:10.926741'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '58'
     - '58'
@@ -703,8 +703,8 @@ nested_question_answers:
     - text
     - '2015-11-02 14:11:28.616154'
     - '2016-01-26 17:38:10.932516'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '59'
     - '66'
@@ -714,8 +714,8 @@ nested_question_answers:
     - text
     - '2015-11-02 14:11:29.544501'
     - '2016-01-26 17:38:10.937952'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '60'
     - '99'
@@ -725,8 +725,8 @@ nested_question_answers:
     - text
     - '2015-11-02 14:11:31.662814'
     - '2016-01-26 17:38:10.943425'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '61'
     - '101'
@@ -736,8 +736,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 14:14:19.024204'
     - '2016-01-26 17:38:10.948907'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '62'
     - '105'
@@ -747,8 +747,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 14:14:19.719167'
     - '2016-01-26 17:38:10.954527'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '63'
     - '106'
@@ -758,8 +758,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 14:15:06.157802'
     - '2016-01-26 17:38:10.960128'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '64'
     - '107'
@@ -769,8 +769,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 14:15:06.242944'
     - '2016-01-26 17:38:10.965921'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '65'
     - '109'
@@ -780,8 +780,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 14:15:06.329195'
     - '2016-01-26 17:38:10.971454'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '66'
     - '108'
@@ -791,8 +791,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 14:15:06.41443'
     - '2016-01-26 17:38:10.976904'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '67'
     - '39'
@@ -809,8 +809,8 @@ nested_question_answers:
     - text
     - '2015-11-02 14:15:13.049571'
     - '2016-01-26 17:38:10.982384'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '68'
     - '38'
@@ -820,8 +820,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 14:15:13.261221'
     - '2016-01-26 17:38:10.987968'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '69'
     - '36'
@@ -831,8 +831,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 14:15:23.486642'
     - '2016-01-26 17:38:10.993692'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '70'
     - '37'
@@ -849,8 +849,8 @@ nested_question_answers:
     - text
     - '2015-11-02 14:15:31.08089'
     - '2016-01-26 17:38:10.999408'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '71'
     - '30'
@@ -860,8 +860,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 14:15:35.415568'
     - '2016-01-26 17:38:11.004912'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '72'
     - '34'
@@ -871,8 +871,8 @@ nested_question_answers:
     - text
     - '2015-11-02 14:15:37.459816'
     - '2016-01-26 17:38:11.010498'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '73'
     - '31'
@@ -889,8 +889,8 @@ nested_question_answers:
     - text
     - '2015-11-02 14:15:37.552246'
     - '2016-01-26 17:38:11.015996'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '74'
     - '33'
@@ -900,8 +900,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 14:15:37.806959'
     - '2016-01-26 17:38:11.021461'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '75'
     - '27'
@@ -911,8 +911,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 14:16:11.35695'
     - '2016-01-26 17:38:11.026938'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '76'
     - '9'
@@ -922,8 +922,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 14:16:20.372967'
     - '2016-01-26 17:38:11.032511'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '77'
     - '10'
@@ -933,8 +933,8 @@ nested_question_answers:
     - text
     - '2015-11-02 14:16:28.848665'
     - '2016-01-26 17:38:11.037943'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '78'
     - '11'
@@ -944,8 +944,8 @@ nested_question_answers:
     - attachment
     - '2015-11-02 14:16:35.575667'
     - '2016-01-26 17:38:11.043427'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '79'
     - '12'
@@ -955,8 +955,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 14:16:41.251142'
     - '2016-01-26 17:38:11.049159'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '80'
     - '15'
@@ -966,8 +966,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 14:16:42.435919'
     - '2016-01-26 17:38:11.054621'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '81'
     - '16'
@@ -977,8 +977,8 @@ nested_question_answers:
     - text
     - '2015-11-02 14:16:47.546626'
     - '2016-01-26 17:38:11.060106'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '82'
     - '23'
@@ -988,8 +988,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 14:16:47.723962'
     - '2016-01-26 17:38:11.065784'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '83'
     - '24'
@@ -999,8 +999,8 @@ nested_question_answers:
     - text
     - '2015-11-02 14:16:54.598805'
     - '2016-01-26 17:38:11.071181'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '85'
     - '20'
@@ -1010,8 +1010,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 14:17:07.435087'
     - '2016-01-26 17:38:11.076934'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '86'
     - '1'
@@ -1021,8 +1021,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 14:17:53.128785'
     - '2016-01-26 17:38:11.082481'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '87'
     - '2'
@@ -1032,8 +1032,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 14:17:56.012546'
     - '2016-01-26 17:38:11.088123'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '88'
     - '3'
@@ -1043,8 +1043,8 @@ nested_question_answers:
     - attachment
     - '2015-11-02 14:18:02.592308'
     - '2016-01-26 17:38:11.093765'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '89'
     - '8'
@@ -1054,8 +1054,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 14:18:07.968082'
     - '2016-01-26 17:38:11.0993'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '90'
     - '39'
@@ -1066,8 +1066,8 @@ nested_question_answers:
     - text
     - '2015-11-02 14:47:12.252716'
     - '2016-01-26 17:38:11.105159'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '91'
     - '38'
@@ -1077,8 +1077,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 14:47:12.448129'
     - '2016-01-26 17:38:11.110813'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '92'
     - '42'
@@ -1088,8 +1088,8 @@ nested_question_answers:
     - text
     - '2015-11-02 14:55:36.360418'
     - '2016-01-26 17:38:11.11651'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '93'
     - '43'
@@ -1099,8 +1099,8 @@ nested_question_answers:
     - text
     - '2015-11-02 14:55:38.212314'
     - '2016-01-26 17:38:11.122079'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '94'
     - '44'
@@ -1110,8 +1110,8 @@ nested_question_answers:
     - text
     - '2015-11-02 15:05:24.288106'
     - '2016-01-26 17:38:11.127709'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '95'
     - '45'
@@ -1121,8 +1121,8 @@ nested_question_answers:
     - text
     - '2015-11-02 15:05:29.128488'
     - '2016-01-26 17:38:11.133312'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '96'
     - '62'
@@ -1134,7 +1134,7 @@ nested_question_answers:
     - '2016-01-26 17:38:11.13892'
     - '{"answer":"Abraham Baldwin Agricultural College","additionalData":{"institution-id":32237,"city":"Tifton","country":"US","name":"Abraham
       Baldwin Agricultural College","state":"GA","type":"academic/ag"}}'
-    - 
+    -
     - '4'
   - - '97'
     - '64'
@@ -1146,7 +1146,7 @@ nested_question_answers:
     - '2016-01-26 17:38:11.144544'
     - '{"answer":"Academy of Art University","additionalData":{"institution-id":52692,"city":"San
       Francisco","country":"US","name":"Academy of Art University","state":"CA","type":"academic"}}'
-    - 
+    -
     - '4'
   - - '98'
     - '46'
@@ -1156,8 +1156,8 @@ nested_question_answers:
     - text
     - '2015-11-02 15:05:40.388416'
     - '2016-01-26 17:38:11.15026'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '99'
     - '48'
@@ -1167,8 +1167,8 @@ nested_question_answers:
     - text
     - '2015-11-02 15:05:45.590661'
     - '2016-01-26 17:38:11.155903'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '100'
     - '50'
@@ -1178,8 +1178,8 @@ nested_question_answers:
     - text
     - '2015-11-02 15:05:56.835996'
     - '2016-01-26 17:38:11.161524'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '101'
     - '54'
@@ -1189,8 +1189,8 @@ nested_question_answers:
     - text
     - '2015-11-02 15:06:09.293544'
     - '2016-01-26 17:38:11.167191'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '102'
     - '56'
@@ -1200,8 +1200,8 @@ nested_question_answers:
     - text
     - '2015-11-02 15:06:10.177738'
     - '2016-01-26 17:38:11.172808'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '103'
     - '58'
@@ -1211,8 +1211,8 @@ nested_question_answers:
     - text
     - '2015-11-02 15:06:13.964882'
     - '2016-01-26 17:38:11.178276'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '104'
     - '66'
@@ -1222,8 +1222,8 @@ nested_question_answers:
     - text
     - '2015-11-02 15:06:14.828652'
     - '2016-01-26 17:38:11.18386'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '105'
     - '99'
@@ -1233,8 +1233,8 @@ nested_question_answers:
     - text
     - '2015-11-02 15:06:16.661952'
     - '2016-01-26 17:38:11.189461'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '106'
     - '101'
@@ -1244,8 +1244,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 15:09:31.698714'
     - '2016-01-26 17:38:11.195156'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '107'
     - '105'
@@ -1255,8 +1255,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 15:09:32.31378'
     - '2016-01-26 17:38:11.20068'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '108'
     - '36'
@@ -1266,8 +1266,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 15:09:52.229468'
     - '2016-01-26 17:38:11.206276'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '109'
     - '37'
@@ -1277,8 +1277,8 @@ nested_question_answers:
     - text
     - '2015-11-02 15:10:01.289637'
     - '2016-01-26 17:38:11.211779'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '110'
     - '31'
@@ -1288,8 +1288,8 @@ nested_question_answers:
     - text
     - '2015-11-02 15:10:04.287277'
     - '2016-01-26 17:38:11.21724'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '111'
     - '30'
@@ -1299,8 +1299,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 15:10:04.491054'
     - '2016-01-26 17:38:11.222654'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '112'
     - '33'
@@ -1310,8 +1310,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 15:10:05.077639'
     - '2016-01-26 17:38:11.228186'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '113'
     - '34'
@@ -1328,8 +1328,8 @@ nested_question_answers:
     - text
     - '2015-11-02 15:10:11.646135'
     - '2016-01-26 17:38:11.234184'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '114'
     - '27'
@@ -1339,8 +1339,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 15:10:54.670253'
     - '2016-01-26 17:38:11.240152'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '115'
     - '9'
@@ -1350,8 +1350,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 15:11:01.425209'
     - '2016-01-26 17:38:11.245868'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '116'
     - '10'
@@ -1361,8 +1361,8 @@ nested_question_answers:
     - text
     - '2015-11-02 15:11:05.726187'
     - '2016-01-26 17:38:11.251255'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '117'
     - '12'
@@ -1372,8 +1372,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 15:11:15.351959'
     - '2016-01-26 17:38:11.256624'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '118'
     - '13'
@@ -1383,8 +1383,8 @@ nested_question_answers:
     - text
     - '2015-11-02 15:11:20.542559'
     - '2016-01-26 17:38:11.262089'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '119'
     - '14'
@@ -1394,8 +1394,8 @@ nested_question_answers:
     - text
     - '2015-11-02 15:11:26.788002'
     - '2016-01-26 17:38:11.267518'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '120'
     - '15'
@@ -1405,8 +1405,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 15:11:26.967013'
     - '2016-01-26 17:38:11.272971'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '121'
     - '16'
@@ -1416,8 +1416,8 @@ nested_question_answers:
     - text
     - '2015-11-02 15:11:35.454336'
     - '2016-01-26 17:38:11.278368'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '122'
     - '24'
@@ -1427,8 +1427,8 @@ nested_question_answers:
     - text
     - '2015-11-02 15:11:41.612583'
     - '2016-01-26 17:38:11.283874'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '124'
     - '1'
@@ -1438,8 +1438,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 15:11:53.982789'
     - '2016-01-26 17:38:11.289339'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '125'
     - '4'
@@ -1449,8 +1449,8 @@ nested_question_answers:
     - boolean
     - '2015-11-02 15:11:54.611386'
     - '2016-01-26 17:38:11.29498'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '126'
     - '5'
@@ -1460,8 +1460,8 @@ nested_question_answers:
     - attachment
     - '2015-11-02 15:12:01.328026'
     - '2016-01-26 17:38:11.300482'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '127'
     - '184'
@@ -1471,8 +1471,8 @@ nested_question_answers:
     - text
     - '2016-01-26 17:38:25.762112'
     - '2016-01-26 17:38:25.762112'
-    - 
-    - 
+    -
+    -
     - '1'
   - - '128'
     - '184'
@@ -1484,8 +1484,8 @@ nested_question_answers:
     - text
     - '2016-01-26 17:38:25.774414'
     - '2016-01-26 17:38:25.774414'
-    - 
-    - 
+    -
+    -
     - '2'
   - - '129'
     - '184'
@@ -1495,8 +1495,8 @@ nested_question_answers:
     - text
     - '2016-01-26 17:38:25.785519'
     - '2016-01-26 17:38:25.785519'
-    - 
-    - 
+    -
+    -
     - '3'
   - - '130'
     - '184'
@@ -1506,8 +1506,8 @@ nested_question_answers:
     - text
     - '2016-01-26 17:38:25.797325'
     - '2016-01-26 17:38:25.797325'
-    - 
-    - 
+    -
+    -
     - '4'
   - - '131'
     - '184'
@@ -1517,8 +1517,8 @@ nested_question_answers:
     - text
     - '2016-01-26 17:38:25.808853'
     - '2016-01-26 17:38:25.808853'
-    - 
-    - 
+    -
+    -
     - '8'
   - - '132'
     - '184'
@@ -1528,8 +1528,8 @@ nested_question_answers:
     - text
     - '2016-01-26 17:38:25.819652'
     - '2016-01-26 17:38:25.819652'
-    - 
-    - 
+    -
+    -
     - '9'
   - - '133'
     - '184'
@@ -1539,8 +1539,8 @@ nested_question_answers:
     - text
     - '2016-01-26 17:38:25.829391'
     - '2016-01-26 17:38:25.829391'
-    - 
-    - 
+    -
+    -
     - '10'
 
 ---
@@ -1552,7 +1552,7 @@ permission_requirements:
   - required_on_type
   - created_at
   - updated_at
-  records: 
+  records:
   - - '1'
     - '10'
     - '4'
@@ -1655,7 +1655,7 @@ tahi_standard_tasks_reviewer_recommendations:
   - created_at
   - updated_at
   - ringgold_id
-  records: 
+  records:
   - - '2'
     - '34'
     - Candy
@@ -1665,8 +1665,8 @@ tahi_standard_tasks_reviewer_recommendations:
     - Department of Thinking
     - Thinker
     - Adelphi University
-    - 
-    - 
+    -
+    -
     - '2015-11-02 13:41:37.871138'
     - '2015-11-02 13:42:13.77282'
     - '3479'
@@ -1679,8 +1679,8 @@ tahi_standard_tasks_reviewer_recommendations:
     - Department of Pessisism
     - Pessimist
     - Air University
-    - 
-    - 
+    -
+    -
     - '2015-11-02 13:43:20.530731'
     - '2015-11-02 13:43:20.530731'
     - '53427'
@@ -1693,8 +1693,8 @@ tahi_standard_tasks_reviewer_recommendations:
     - Department of Critiquography
     - Critiquer
     - Adams State College Bookstore
-    - 
-    - 
+    -
+    -
     - '2015-11-02 14:12:53.204262'
     - '2015-11-02 14:12:53.204262'
     - '295612'
@@ -1707,8 +1707,8 @@ tahi_standard_tasks_reviewer_recommendations:
     - Department of Zoology
     - Zoo Director
     - Adler Graduate School
-    - 
-    - 
+    -
+    -
     - '2015-11-02 15:07:41.253665'
     - '2015-11-02 15:07:41.253665'
     - '32835'
@@ -1722,7 +1722,7 @@ journal_task_types:
   - old_role
   - kind
   - required_permissions
-  records: 
+  records:
   - - '1'
     - '1'
     - Ad-hoc
@@ -1853,31 +1853,31 @@ journal_task_types:
     - '1'
     - Changes For Author
     - author
-    - PlosBioTechCheck::ChangesForAuthorTask
+    - PlosBio::ChangesForAuthorTask
     - "[]"
   - - '23'
     - '1'
     - Final Tech Check
     - editor
-    - PlosBioTechCheck::FinalTechCheckTask
+    - PlosBio::FinalTechCheckTask
     - "[]"
   - - '24'
     - '1'
     - Initial Tech Check
     - editor
-    - PlosBioTechCheck::InitialTechCheckTask
+    - PlosBio::InitialTechCheckTask
     - "[]"
   - - '25'
     - '1'
     - Revision Tech Check
     - editor
-    - PlosBioTechCheck::RevisionTechCheckTask
+    - PlosBio::RevisionTechCheckTask
     - "[]"
   - - '26'
     - '1'
     - Editor Discussion
     - admin
-    - PlosBioInternalReview::EditorsDiscussionTask
+    - PlosBio::EditorsDiscussionTask
     - "[]"
   - - '27'
     - '1'
@@ -1896,7 +1896,7 @@ journal_task_types:
     - Test Task
     - user
     - InvitableTask
-    - 
+    -
   - - '30'
     - '1'
     - Initial Decision
@@ -1936,103 +1936,103 @@ papers:
   - first_submitted_at
   - accepted_at
   - striking_image_type
-  records: 
+  records:
   - - '1'
-    - 
+    -
     - "<b>Unstarted</b>: <i>No tasks filled out</i>"
-    - 
+    -
     - '2015-10-29 20:16:37.363801'
     - '2015-11-02 14:30:18.434152'
     - '3'
     - Research
     - '1'
-    - 
-    - 
-    - 
+    -
+    -
+    -
     - true
     - 10.1371/devs.100001
     - unsubmitted
-    - 
-    - 
+    -
+    -
     - "{}"
     - true
     - false
-    - 
-    - 
-    - 
+    -
+    -
+    -
   - - '2'
     - '<h2 class="overlay-header-title overlay-header-title--with-icon" style="color:
       rgb(51, 51, 51); width: 880.312px;"><a id="ember4696" href="http://localhost:5000/papers/2"
       class="overlay-header-link ember-view"><i>All Tasks Filled Out</i></a></h2>'
     - "<b>Partial:</b> &nbsp;<i>Tasks filled out, none marked complete</i>"
-    - 
+    -
     - '2015-10-30 19:43:28.468043'
     - '2015-11-02 14:30:18.451006'
     - '3'
     - Research
     - '1'
-    - 
-    - 
+    -
+    -
     - '2'
     - true
     - 10.1371/devs.100002
     - unsubmitted
-    - 
-    - 
+    -
+    -
     - "{}"
     - true
     - false
-    - 
-    - 
+    -
+    -
     - Figure
   - - '3'
     - Ready to Submit
     - "<b>Ready:</b>&nbsp;<i>Ready to submit</i>"
-    - 
+    -
     - '2015-11-02 14:04:02.867243'
     - '2015-11-02 15:13:36.520339'
     - '3'
     - Research
     - '1'
-    - 
-    - 
-    - 
+    -
+    -
+    -
     - true
     - 10.1371/devs.100003
     - unsubmitted
-    - 
-    - 
+    -
+    -
     - "{}"
     - true
     - false
-    - 
-    - 
-    - 
+    -
+    -
+    -
   - - '4'
     - Editors Assigned
     - "<b>With Editors:</b> <i>Paper submitted, editors assigned</i>"
-    - 
+    -
     - '2015-11-02 14:46:23.765287'
     - '2015-11-02 15:14:05.582372'
     - '3'
     - Research
     - '1'
-    - 
-    - 
-    - 
+    -
+    -
+    -
     - false
     - 10.1371/devs.100004
     - submitted
     - '2015-11-02 15:14:05.576249'
-    - 
+    -
     - "{}"
     - true
     - false
-    - 
-    - 
-    - 
+    -
+    -
+    -
   - - '8'
-    - 
+    -
     - Hendrik a011f9d4-0119-4611-88af-9838ff154cec
     - ''
     - '2015-11-03 22:59:20.931417'
@@ -2040,22 +2040,22 @@ papers:
     - '7'
     - Research
     - '1'
-    - 
-    - 
-    - 
+    -
+    -
+    -
     - true
     - 10.1371/devs.100008
     - unsubmitted
-    - 
-    - 
+    -
+    -
     - "{}"
     - true
     - false
-    - 
-    - 
-    - 
+    -
+    -
+    -
   - - '9'
-    - 
+    -
     - Hendrik 12de86c5-5afc-44cb-ab06-00a3411f66d5
     - ''
     - '2015-11-03 23:02:06.790805'
@@ -2063,20 +2063,20 @@ papers:
     - '7'
     - Research
     - '1'
-    - 
-    - 
-    - 
+    -
+    -
+    -
     - true
     - 10.1371/devs.100009
     - unsubmitted
-    - 
-    - 
+    -
+    -
     - "{}"
     - true
     - false
-    - 
-    - 
-    - 
+    -
+    -
+    -
   - - '10'
     - The great scientific paper of 2015
     - The most scrumtrulescent scientific paper of 2015.
@@ -2086,20 +2086,20 @@ papers:
     - '1'
     - Research
     - '1'
-    - 
-    - 
-    - 
+    -
+    -
+    -
     - true
     - 10.1371/devs.100010
     - unsubmitted
-    - 
-    - 
+    -
+    -
     - "{}"
     - true
     - false
-    - 
-    - 
-    - 
+    -
+    -
+    -
 
 ---
 versioned_texts:
@@ -2113,9 +2113,9 @@ versioned_texts:
   - created_at
   - updated_at
   - source
-  records: 
+  records:
   - - '1'
-    - 
+    -
     - '1'
     - '0'
     - '0'
@@ -2214,9 +2214,9 @@ versioned_texts:
       </div><!--TEI back-->
     - '2015-10-29 20:16:37.381749'
     - '2015-10-30 18:09:55.679504'
-    - 
+    -
   - - '2'
-    - 
+    -
     - '2'
     - '0'
     - '0'
@@ -2315,9 +2315,9 @@ versioned_texts:
       </div><!--TEI back-->
     - '2015-10-30 19:43:28.478909'
     - '2015-10-30 19:45:16.009354'
-    - 
+    -
   - - '3'
-    - 
+    -
     - '3'
     - '0'
     - '0'
@@ -2416,7 +2416,7 @@ versioned_texts:
       </div><!--TEI back-->
     - '2015-11-02 14:04:02.881043'
     - '2015-11-02 14:08:05.326102'
-    - 
+    -
   - - '4'
     - '3'
     - '4'
@@ -2517,9 +2517,9 @@ versioned_texts:
       </div><!--TEI back-->
     - '2015-11-02 14:46:23.785261'
     - '2015-11-02 15:14:05.574878'
-    - 
+    -
   - - '8'
-    - 
+    -
     - '8'
     - '0'
     - '0'
@@ -2618,9 +2618,9 @@ versioned_texts:
       </div><!--TEI back-->
     - '2015-11-03 22:59:20.951303'
     - '2015-11-03 23:01:20.682733'
-    - 
+    -
   - - '9'
-    - 
+    -
     - '9'
     - '0'
     - '0'
@@ -2719,9 +2719,9 @@ versioned_texts:
       </div><!--TEI back-->
     - '2015-11-03 23:02:06.811068'
     - '2015-11-03 23:03:02.680454'
-    - 
+    -
   - - '10'
-    - 
+    -
     - '10'
     - '0'
     - '0'
@@ -2820,7 +2820,7 @@ versioned_texts:
       </div><!--TEI back-->
     - '2015-11-10 22:27:27.140473'
     - '2015-11-10 22:27:27.140473'
-    - 
+    -
 
 ---
 users:
@@ -2844,15 +2844,15 @@ users:
   - avatar
   - site_admin
   - em_guid
-  records: 
+  records:
   - - '1'
     - Adam
     - Administrator
     - admin@example.com
     - "$2a$10$WN1mcbro3hjAKU3jBgG5Vuuu1ZMI7mj37EmqaUsxHaX0CHlGgvAoq"
-    - 
-    - 
-    - 
+    -
+    -
+    -
     - '10'
     - '2016-01-26 21:41:00.622951'
     - '2016-01-26 19:52:48.420195'
@@ -2861,17 +2861,17 @@ users:
     - '2015-10-29 19:36:19.627844'
     - '2016-01-26 21:41:00.625502'
     - admin
-    - 
+    -
     - false
-    - 
+    -
   - - '2'
     - Steve
     - SiteAdmin
     - site_admin@example.com
     - "$2a$10$92o9T1L2mMcm/SNkkKNDSOri9Z2TvdITsybS2lhbuGbADPFFCYI8u"
-    - 
-    - 
-    - 
+    -
+    -
+    -
     - '2'
     - '2015-10-29 20:53:17.01872'
     - '2015-10-29 20:07:28.345844'
@@ -2880,17 +2880,17 @@ users:
     - '2015-10-29 20:07:28.341906'
     - '2015-10-29 20:53:17.020456'
     - site_admin
-    - 
+    -
     - true
-    - 
+    -
   - - '3'
     - Arthur
     - Author
     - author@example.com
     - "$2a$10$yLuG497ZW1IrZadwuDt23O6qYu.lT2SLUyCLxuQR7/JU2X9zCyE3W"
-    - 
-    - 
-    - 
+    -
+    -
+    -
     - '5'
     - '2016-01-19 15:39:48.053966'
     - '2015-12-14 20:48:03.544734'
@@ -2899,17 +2899,17 @@ users:
     - '2015-10-29 20:11:22.705226'
     - '2016-01-19 15:39:48.056016'
     - author
-    - 
+    -
     - false
-    - 
+    -
   - - '4'
     - Edith
     - Editor
     - editor@example.com
     - "$2a$10$96lyXKNq36ErEx732.FYpOWJkfCCUBnTJ/DbGX96PdzbsbLbqpSZa"
-    - 
-    - 
-    - 
+    -
+    -
+    -
     - '1'
     - '2015-11-02 15:15:33.649157'
     - '2015-11-02 15:15:33.649157'
@@ -2918,180 +2918,180 @@ users:
     - '2015-11-02 15:15:33.644561'
     - '2015-11-02 15:15:33.650134'
     - editor
-    - 
+    -
     - false
-    - 
+    -
   - - '5'
     - Reviewer
     - User
     - reviewer@example.com
     - "$2a$10$mEBowWHfZZKNiDLehUjcyuS1j5dV/QfSATvFObvXni54XJZS2onPa"
-    - 
-    - 
-    - 
+    -
+    -
+    -
     - '0'
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
     - '2015-11-03 19:54:58.406233'
     - '2015-11-03 19:54:58.406233'
     - reviewer
-    - 
+    -
     - false
-    - 
+    -
   - - '6'
     - FlowManager
     - User
     - flow_manager@example.com
     - "$2a$10$er0.fIv6HKSTJDkv/RVGw.YvKAHnDFgGCE6jfOKUcleS0LrJNE.ma"
-    - 
-    - 
-    - 
+    -
+    -
+    -
     - '0'
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
     - '2015-11-03 19:54:58.518834'
     - '2015-11-03 19:54:58.518834'
     - flow_manager
-    - 
+    -
     - false
-    - 
+    -
   - - '7'
     - Jeffrey SA
     - Gray
     - sealresq+7@gmail.com
     - "$2a$10$RkSdD9IRLubb36YPrd3eIeoS074Y5cFO1TXPYj71NOJqhoQipUUfS"
-    - 
-    - 
-    - 
+    -
+    -
+    -
     - '0'
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
     - '2015-11-03 19:54:58.612514'
     - '2015-11-03 19:54:58.612514'
     - jgray_sa
-    - 
+    -
     - true
-    - 
+    -
   - - '8'
     - Jeffrey OA
     - Gray
     - sealresq+6@gmail.com
     - "$2a$10$VnC6O73EVUGJG.9hwT026OOu/1x4xnCu99doaIQAkNQoqk4hPzyke"
-    - 
-    - 
-    - 
+    -
+    -
+    -
     - '0'
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
     - '2015-11-03 19:54:58.707548'
     - '2015-11-03 19:54:58.707548'
     - jgray_oa
-    - 
+    -
     - false
-    - 
+    -
   - - '9'
     - Jeffrey FM
     - Gray
     - sealresq+5@gmail.com
     - "$2a$10$lal/W.pXwbQEW0JTcuTBUuCbRdYdKp.WkNnUp9UbMjOk7SWv0jtg2"
-    - 
-    - 
-    - 
+    -
+    -
+    -
     - '0'
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
     - '2015-11-03 19:54:58.791185'
     - '2015-11-03 19:54:58.791185'
     - jgray_flowmgr
-    - 
+    -
     - false
-    - 
+    -
   - - '10'
     - Jeffrey AMM
     - Gray
     - sealresq+4@gmail.com
     - "$2a$10$2tUP0DsRJd1eQCdFhxfinORHmBjD/KCRQKcNFb51p9bxHl7pc0qu2"
-    - 
-    - 
-    - 
+    -
+    -
+    -
     - '0'
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
     - '2015-11-03 19:54:58.877324'
     - '2015-11-03 19:54:58.877324'
     - jgray_editor
-    - 
+    -
     - false
-    - 
+    -
   - - '11'
     - Jeffrey MM
     - Gray
     - sealresq+3@gmail.com
     - "$2a$10$4oixsexl0aIfAwhazMXhf.bYcD8DPVxaDYYAe63Uzvr4WCttaEeMq"
-    - 
-    - 
-    - 
+    -
+    -
+    -
     - '0'
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
     - '2015-11-03 19:54:58.961825'
     - '2015-11-03 19:54:58.961825'
     - jgray_assoceditor
-    - 
+    -
     - false
-    - 
+    -
   - - '12'
     - Jeffrey RV
     - Gray
     - sealresq+2@gmail.com
     - "$2a$10$j6aMPw2vLkffUlYI/GjwXubkGKjlzYCjEAVqnaLzEXvfieiwknb0i"
-    - 
-    - 
-    - 
+    -
+    -
+    -
     - '0'
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
     - '2015-11-03 19:54:59.052702'
     - '2015-11-03 19:54:59.052702'
     - jgray_reviewer
-    - 
+    -
     - false
-    - 
+    -
   - - '13'
     - Jeffrey AU
     - Gray
     - sealresq+1@gmail.com
     - "$2a$10$FaFRuwomV2twYKGnglSRK.YMfgwhrDywzq6D3ox.2oJE7IyPEPHVS"
-    - 
-    - 
-    - 
+    -
+    -
+    -
     - '0'
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
     - '2015-11-03 19:54:59.135286'
     - '2015-11-03 19:54:59.135286'
     - jgray_author
-    - 
+    -
     - false
-    - 
+    -
 
 ---
 permissions_roles:
@@ -3101,7 +3101,7 @@ permissions_roles:
   - role_id
   - created_at
   - updated_at
-  records: 
+  records:
   - - '11'
     - '7'
     - '7'
@@ -3267,7 +3267,7 @@ phase_templates:
   - created_at
   - updated_at
   - position
-  records: 
+  records:
   - - '61'
     - Submission
     - '1'
@@ -3308,7 +3308,7 @@ phases:
   - updated_at
   - position
   - paper_id
-  records: 
+  records:
   - - '1'
     - Submission
     - '2015-10-29 20:16:37.412841'
@@ -3530,10 +3530,10 @@ roles:
   - participates_in_tasks
   - created_at
   - updated_at
-  records: 
+  records:
   - - '7'
     - User
-    - 
+    -
     - false
     - false
     - '2016-01-28 17:12:41.755784'
@@ -3585,11 +3585,11 @@ question_attachments:
   - created_at
   - updated_at
   - token
-  records: 
+  records:
   - - '1'
     - '78'
     - turtles-are-amazing.docx
-    - 
+    -
     - done
     - '2015-11-02 14:16:35.584565'
     - '2016-01-21 17:58:45.04696'
@@ -3597,7 +3597,7 @@ question_attachments:
   - - '2'
     - '88'
     - turtles-are-amazing.docx
-    - 
+    -
     - done
     - '2015-11-02 14:18:02.598388'
     - '2016-01-21 17:58:45.059148'
@@ -3605,7 +3605,7 @@ question_attachments:
   - - '3'
     - '126'
     - manuscript+_281_29.docx
-    - 
+    -
     - done
     - '2015-11-02 15:12:01.338942'
     - '2016-01-21 17:58:45.060737'
@@ -3630,7 +3630,7 @@ authors:
   - secondary_affiliation
   - ringgold_id
   - secondary_ringgold_id
-  records: 
+  records:
   - - '1'
     - Arthur
     - Author
@@ -3639,14 +3639,14 @@ authors:
     - '3'
     - '1'
     - '2'
-    - 
+    -
     - author@example.com
-    - 
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
+    -
   - - '2'
     - Arthur
     - Author
@@ -3655,14 +3655,14 @@ authors:
     - '4'
     - '2'
     - '23'
-    - 
+    -
     - author@example.com
     - Department of Authoring
     - Greatest American Author
     - Michigan State University
     - University of Michigan
-    - 
-    - 
+    -
+    -
   - - '3'
     - Jane
     - Janesford
@@ -3677,8 +3677,8 @@ authors:
     - Second Greatest Author
     - Vanguard University of Southern California
     - Northwestern Oklahoma State University
-    - 
-    - 
+    -
+    -
   - - '4'
     - Arthur
     - Author
@@ -3687,14 +3687,14 @@ authors:
     - '6'
     - '3'
     - '44'
-    - 
+    -
     - author@example.com
     - Dept. of Authoring
     - Authoring
     - Florida State College at Jacksonville
     - Adler Graduate School
-    - 
-    - 
+    -
+    -
   - - '5'
     - Barb
     - Jones
@@ -3709,8 +3709,8 @@ authors:
     - World's Best Author
     - Abraham Baldwin Agricultural College
     - Adler Graduate School
-    - 
-    - 
+    -
+    -
   - - '6'
     - Arthur
     - Author
@@ -3719,14 +3719,14 @@ authors:
     - '7'
     - '4'
     - '65'
-    - 
+    -
     - author@example.com
     - Dept. of authoring
     - My favorite author
     - Academy of Art University
     - Adelphi University
-    - 
-    - 
+    -
+    -
   - - '7'
     - Jeffrey SA
     - Gray
@@ -3735,14 +3735,14 @@ authors:
     - '8'
     - '8'
     - '86'
-    - 
+    -
     - sealresq+7@gmail.com
-    - 
-    - 
+    -
+    -
     - Affiliation 1
-    - 
-    - 
-    - 
+    -
+    -
+    -
   - - '8'
     - Jeffrey SA
     - Gray
@@ -3751,14 +3751,14 @@ authors:
     - '9'
     - '9'
     - '107'
-    - 
+    -
     - sealresq+7@gmail.com
-    - 
-    - 
+    -
+    -
     - Affiliation 1
-    - 
-    - 
-    - 
+    -
+    -
+    -
   - - '9'
     - Adam
     - Administrator
@@ -3767,14 +3767,14 @@ authors:
     - '10'
     - '10'
     - '128'
-    - 
+    -
     - admin@example.com
-    - 
-    - 
+    -
+    -
     - PLOS
-    - 
-    - 
-    - 
+    -
+    -
+    -
 
 ---
 permission_states:
@@ -3783,7 +3783,7 @@ permission_states:
   - name
   - created_at
   - updated_at
-  records: 
+  records:
   - - '2'
     - "*"
     - '2016-01-28 17:12:41.784598'
@@ -3797,7 +3797,7 @@ permission_states_permissions:
   - permission_state_id
   - created_at
   - updated_at
-  records: 
+  records:
   - - '7'
     - '7'
     - '2'
@@ -3862,7 +3862,7 @@ permissions:
   - applies_to
   - created_at
   - updated_at
-  records: 
+  records:
   - - '7'
     - view_profile
     - User
@@ -3934,43 +3934,43 @@ supporting_information_files:
   - token
   - label
   - category
-  records: 
+  records:
   - - '1'
     - '2'
     - 'Title: sample.doc'
-    - 
+    -
     - sample.doc
     - '2015-10-30 19:52:32.177953'
     - '2015-10-30 19:52:32.793467'
     - done
     - true
-    - 
-    - 
-    - 
+    -
+    -
+    -
   - - '2'
     - '3'
     - 'Title: turtles-are-amazing.docx'
-    - 
+    -
     - turtles-are-amazing.docx
     - '2015-11-02 14:13:19.427337'
     - '2015-11-02 14:13:19.701157'
     - done
     - true
-    - 
-    - 
-    - 
+    -
+    -
+    -
   - - '3'
     - '4'
     - 'Title: turtles-are-amazing.docx'
-    - 
+    -
     - turtles-are-amazing.docx
     - '2015-11-02 15:09:02.825204'
     - '2015-11-02 15:09:03.10794'
     - done
     - true
-    - 
-    - 
-    - 
+    -
+    -
+    -
 
 ---
 affiliations:
@@ -3987,319 +3987,319 @@ affiliations:
   - title
   - country
   - ringgold_id
-  records: 
+  records:
   - - '1'
     - '1'
     - PLOS
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:46:06.600149'
     - '2015-11-03 19:46:06.600149'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '2'
     - '2'
     - PLOS
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:46:06.697328'
     - '2015-11-03 19:46:06.697328'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '3'
     - '3'
     - PLOS
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:46:06.790467'
     - '2015-11-03 19:46:06.790467'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '4'
     - '4'
     - PLOS
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:46:06.870427'
     - '2015-11-03 19:46:06.870427'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '5'
     - '5'
     - PLOS
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:46:06.965816'
     - '2015-11-03 19:46:06.965816'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '6'
     - '6'
     - Affiliation 0
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:46:07.359982'
     - '2015-11-03 19:46:07.359982'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '7'
     - '7'
     - Affiliation 1
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:46:07.44714'
     - '2015-11-03 19:46:07.44714'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '8'
     - '8'
     - Affiliation 2
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:46:07.53888'
     - '2015-11-03 19:46:07.53888'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '9'
     - '9'
     - Affiliation 3
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:46:07.627576'
     - '2015-11-03 19:46:07.627576'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '10'
     - '10'
     - Affiliation 4
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:46:07.715229'
     - '2015-11-03 19:46:07.715229'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '11'
     - '11'
     - Affiliation 5
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:46:07.804222'
     - '2015-11-03 19:46:07.804222'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '12'
     - '12'
     - Affiliation 6
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:46:07.899526'
     - '2015-11-03 19:46:07.899526'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '13'
     - '13'
     - Affiliation 7
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:46:07.987548'
     - '2015-11-03 19:46:07.987548'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '14'
     - '14'
     - Affiliation 8
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:46:08.068161'
     - '2015-11-03 19:46:08.068161'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '15'
     - '15'
     - Affiliation 9
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:46:08.154925'
     - '2015-11-03 19:46:08.154925'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '16'
     - '16'
     - Affiliation 10
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:46:08.23926'
     - '2015-11-03 19:46:08.23926'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '17'
     - '17'
     - PLOS
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:54:22.207287'
     - '2015-11-03 19:54:22.207287'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '18'
     - '5'
     - PLOS
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:54:58.407609'
     - '2015-11-03 19:54:58.407609'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '19'
     - '6'
     - PLOS
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:54:58.52018'
     - '2015-11-03 19:54:58.52018'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '20'
     - '7'
     - PLOS
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:54:58.613947'
     - '2015-11-03 19:54:58.613947'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '21'
     - '8'
     - PLOS
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:54:58.708746'
     - '2015-11-03 19:54:58.708746'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '22'
     - '9'
     - PLOS
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:54:58.792444'
     - '2015-11-03 19:54:58.792444'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '23'
     - '10'
     - PLOS
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:54:58.87849'
     - '2015-11-03 19:54:58.87849'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '24'
     - '11'
     - PLOS
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:54:58.962999'
     - '2015-11-03 19:54:58.962999'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '25'
     - '12'
     - PLOS
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:54:59.053744'
     - '2015-11-03 19:54:59.053744'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
   - - '26'
     - '13'
     - PLOS
-    - 
-    - 
+    -
+    -
     - '2015-11-03 19:54:59.13637'
     - '2015-11-03 19:54:59.13637'
-    - 
-    - 
-    - 
-    - 
-    - 
+    -
+    -
+    -
+    -
+    -
 
 ---
 comments:
@@ -4311,7 +4311,7 @@ comments:
   - commenter_id
   - task_id
   - entities
-  records: 
+  records:
   - - '1'
     - Manuscript has already been submitted!
     - '2015-10-30 19:55:03.777732'
@@ -4328,7 +4328,7 @@ participations:
   - user_id
   - created_at
   - updated_at
-  records: 
+  records:
   - - '1'
     - '1'
     - '3'
@@ -4795,7 +4795,7 @@ tahi_standard_tasks_funders:
   - task_id
   - created_at
   - updated_at
-  records: 
+  records:
   - - '1'
     - Money McMunster
     - 555-5555555
@@ -4824,7 +4824,7 @@ old_roles:
   - can_view_all_manuscript_managers
   - kind
   - can_view_flow_manager
-  records: 
+  records:
   - - '1'
     - Journal Admin
     - '1'
@@ -4918,7 +4918,7 @@ activities:
   - user_id
   - created_at
   - updated_at
-  records: 
+  records:
   - - '1'
     - manuscript
     - '1'
@@ -5487,7 +5487,7 @@ paper_roles:
   - created_at
   - updated_at
   - old_role
-  records: 
+  records:
   - - '1'
     - '3'
     - '1'
@@ -5590,31 +5590,31 @@ decisions:
   - created_at
   - updated_at
   - author_response
-  records: 
+  records:
   - - '4'
     - '8'
     - '0'
-    - 
-    - 
+    -
+    -
     - '2015-11-03 22:59:20.962592'
     - '2015-11-03 22:59:20.962592'
-    - 
+    -
   - - '5'
     - '9'
     - '0'
-    - 
-    - 
+    -
+    -
     - '2015-11-03 23:02:06.820421'
     - '2015-11-03 23:02:06.820421'
-    - 
+    -
   - - '6'
     - '10'
     - '0'
-    - 
-    - 
+    -
+    -
     - '2015-11-10 22:27:27.160872'
     - '2015-11-10 22:27:27.160872'
-    - 
+    -
 
 ---
 journals:
@@ -5632,16 +5632,16 @@ journals:
   - doi_publisher_prefix
   - doi_journal_prefix
   - last_doi_issued
-  records: 
+  records:
   - - '1'
     - PLOS Yeti
     - '2015-10-29 19:40:11.853622'
     - '2015-11-10 22:27:27.134575'
     - images/no-journal-image.gif
     - developersdevelopersdevelopers.jpg
-    - 
-    - 
-    - 
+    -
+    -
+    -
     - If you are a developer, you are in the right place for fun, for science, and
       for publication.
     - yetipub
@@ -5654,7 +5654,7 @@ manuscript_manager_templates:
   - id
   - paper_type
   - journal_id
-  records: 
+  records:
   - - '1'
     - Research
     - '1'
@@ -5671,14 +5671,14 @@ figures:
   - caption
   - status
   - token
-  records: 
+  records:
   - - '1'
     - cover_image.jpg
     - '1'
     - '2015-10-30 18:09:55.844755'
     - '2015-12-28 21:19:52.285992'
     - cover_image.jpg
-    - 
+    -
     - done
     - 4JRhTr616NQ4JW3AnmutrWPX
   - - '2'
@@ -5705,7 +5705,7 @@ figures:
     - '2015-11-02 14:08:05.496311'
     - '2015-12-28 21:19:52.328685'
     - cover_image.jpg
-    - 
+    -
     - done
     - w3qHf38vMDCqKFXfcrCZE2LK
   - - '5'
@@ -5723,7 +5723,7 @@ figures:
     - '2015-11-02 15:08:10.833865'
     - '2015-12-28 21:19:52.337508'
     - cover_image.jpg
-    - 
+    -
     - done
     - qt3FhbrR5Q4KNM1F35DXTHNx
   - - '7'
@@ -5745,7 +5745,7 @@ task_templates:
   - template
   - title
   - position
-  records: 
+  records:
   - - '181'
     - '19'
     - '61'
@@ -5888,31 +5888,31 @@ nested_questions:
   - updated_at
   - owner_type
   - owner_id
-  records: 
+  records:
   - - '1'
     - Clinical Trial
     - boolean
     - reporting_guidelines--clinical_trial
-    - 
+    -
     - '1'
     - '2'
     - '1'
     - '2015-10-29 20:16:37.932423'
     - '2015-12-15 15:54:23.16653'
     - TahiStandardTasks::ReportingGuidelinesTask
-    - 
+    -
   - - '2'
     - Systematic Reviews
     - boolean
     - reporting_guidelines--systematic_reviews
-    - 
+    -
     - '3'
     - '6'
     - '2'
     - '2015-10-29 20:16:37.938852'
     - '2015-12-15 15:54:23.169471'
     - TahiStandardTasks::ReportingGuidelinesTask
-    - 
+    -
   - - '3'
     - Provide a completed PRISMA checklist as supporting information.  You can <a
       href='http://www.prisma-statement.org/' target='_blank'>download it here</a>.
@@ -5925,19 +5925,19 @@ nested_questions:
     - '2015-10-29 20:16:37.94416'
     - '2015-12-15 15:54:23.172619'
     - TahiStandardTasks::ReportingGuidelinesTask
-    - 
+    -
   - - '4'
     - Meta-analyses
     - boolean
     - reporting_guidelines--meta_analyses
-    - 
+    -
     - '7'
     - '10'
     - '3'
     - '2015-10-29 20:16:37.958963'
     - '2015-12-15 15:54:23.175276'
     - TahiStandardTasks::ReportingGuidelinesTask
-    - 
+    -
   - - '5'
     - Provide a completed PRISMA checklist as supporting information.  You can <a
       href='http://www.prisma-statement.org/' target='_blank'>download it here</a>.
@@ -5950,56 +5950,56 @@ nested_questions:
     - '2015-10-29 20:16:37.963314'
     - '2015-12-15 15:54:23.178171'
     - TahiStandardTasks::ReportingGuidelinesTask
-    - 
+    -
   - - '6'
     - Diagnostic studies
     - boolean
     - reporting_guidelines--diagnostic_studies
-    - 
+    -
     - '11'
     - '12'
     - '4'
     - '2015-10-29 20:16:37.97752'
     - '2015-12-15 15:54:23.180888'
     - TahiStandardTasks::ReportingGuidelinesTask
-    - 
+    -
   - - '7'
     - Epidemiological studies
     - boolean
     - reporting_guidelines--epidemiological_studies
-    - 
+    -
     - '13'
     - '14'
     - '5'
     - '2015-10-29 20:16:37.983692'
     - '2015-12-15 15:54:23.183622'
     - TahiStandardTasks::ReportingGuidelinesTask
-    - 
+    -
   - - '8'
     - Microarray studies
     - boolean
     - reporting_guidelines--microarray_studies
-    - 
+    -
     - '15'
     - '16'
     - '6'
     - '2015-10-29 20:16:38.010316'
     - '2015-12-15 15:54:23.186469'
     - TahiStandardTasks::ReportingGuidelinesTask
-    - 
+    -
   - - '9'
     - Have the results, data, or figures in this manuscript been published elsewhere?
       Are they under consideration for publication elsewhere?
     - boolean
     - publishing_related_questions--published_elsewhere
-    - 
+    -
     - '17'
     - '22'
     - '1'
     - '2015-10-29 20:16:38.047215'
     - '2015-12-15 15:54:23.125043'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - 
+    -
   - - '10'
     - Please identify which results, data, or figures have been taken from other published
       or pending manuscripts, and explain why inclusion in this submission does not
@@ -6013,7 +6013,7 @@ nested_questions:
     - '2015-10-29 20:16:38.051204'
     - '2015-12-15 15:54:23.128102'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - 
+    -
   - - '11'
     - Please also upload a copy of the related work with your submission as a 'Related
       Manuscript' item. Note that reviewers may be asked to comment on the overlap
@@ -6027,19 +6027,19 @@ nested_questions:
     - '2015-10-29 20:16:38.062415'
     - '2015-12-15 15:54:23.13079'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - 
+    -
   - - '12'
     - Is this manuscript being submitted in conjunction with another submission?
     - boolean
     - publishing_related_questions--submitted_in_conjunction
-    - 
+    -
     - '23'
     - '32'
     - '2'
     - '2015-10-29 20:16:38.076166'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - 
+    -
   - - '13'
     - Title
     - text
@@ -6051,7 +6051,7 @@ nested_questions:
     - '2015-10-29 20:16:38.079831'
     - '2015-12-15 15:54:23.136459'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - 
+    -
   - - '14'
     - Corresponding author
     - text
@@ -6063,20 +6063,20 @@ nested_questions:
     - '2015-10-29 20:16:38.090158'
     - '2015-12-15 15:54:23.139157'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - 
+    -
   - - '15'
     - I have had previous interactions about this manuscript with a staff editor or
       Academic Editor of this journal.
     - boolean
     - publishing_related_questions--previous_interactions_with_this_manuscript
-    - 
+    -
     - '33'
     - '36'
     - '3'
     - '2015-10-29 20:16:38.103461'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - 
+    -
   - - '16'
     - Please enter manuscript number and editor name, if known
     - text
@@ -6088,19 +6088,19 @@ nested_questions:
     - '2015-10-29 20:16:38.106897'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - 
+    -
   - - '17'
     - I submitted a presubmission inquiry for this manuscript.
     - boolean
     - publishing_related_questions--presubmission_inquiry
-    - 
+    -
     - '37'
     - '42'
     - '4'
     - '2015-10-29 20:16:38.146339'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - 
+    -
   - - '18'
     - Please enter manuscript number and editor name, if known
     - text
@@ -6112,20 +6112,20 @@ nested_questions:
     - '2015-10-29 20:16:38.150193'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - 
+    -
   - - '20'
     - This manuscript was previously submitted to a different PLOS journal as either
       a presubmission inquiry or a full submission.
     - boolean
     - publishing_related_questions--other_journal_submission
-    - 
+    -
     - '38'
     - '44'
     - '5'
     - '2015-10-29 20:16:38.163276'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - 
+    -
   - - '21'
     - Please enter manuscript number and editor name, if known
     - text
@@ -6137,70 +6137,70 @@ nested_questions:
     - '2015-10-29 20:16:38.167053'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - 
+    -
   - - '23'
     - One or more of the authors (including myself) currently serve, or have previously
       served, as an Academic Editor or Guest Editor for this journal.
     - boolean
     - publishing_related_questions--author_was_previous_journal_editor
-    - 
+    -
     - '45'
     - '46'
     - '6'
     - '2015-10-29 20:16:38.180646'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - 
+    -
   - - '24'
     - If your submission is intended for a <a target='_blank' href='http://collections.plos.org/'>PLOS
       Collection</a>, enter the name of the collection in the box below. Please also
       ensure the name of the collection is included in your cover letter.
     - text
     - publishing_related_questions--intended_collection
-    - 
+    -
     - '47'
     - '48'
     - '7'
     - '2015-10-29 20:16:38.186747'
     - '2015-12-17 21:19:25.158156'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - 
+    -
   - - '27'
     - Did any of the authors receive specific funding for this work?
     - boolean
     - financial_disclosures--author_received_funding
-    - 
+    -
     - '49'
     - '50'
     - '1'
     - '2015-10-29 20:16:38.228326'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::FinancialDisclosureTask
-    - 
+    -
   - - '28'
     - Yes - I confirm our figures comply with the guidelines.
     - boolean
     - figures--complies
-    - 
+    -
     - '51'
     - '52'
     - '1'
     - '2015-10-29 20:16:38.248353'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::FigureTask
-    - 
+    -
   - - '30'
     - Does your study involve human participants and/or tissue?
     - boolean
     - ethics--human_subjects
-    - 
+    -
     - '55'
     - '60'
     - '1'
     - '2015-10-29 20:16:38.264507'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::EthicsTask
-    - 
+    -
   - - '31'
     - Please enter the name of the IRB or Ethics Committee that approved this study
       in the space below. Include the approval number and/or a statement indicating
@@ -6214,19 +6214,19 @@ nested_questions:
     - '2015-10-29 20:16:38.267638'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::EthicsTask
-    - 
+    -
   - - '33'
     - Does your study involve animal research (vertebrate animals, embryos or tissues)?
     - boolean
     - ethics--animal_subjects
-    - 
+    -
     - '56'
     - '64'
     - '2'
     - '2015-10-29 20:16:38.278707'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::EthicsTask
-    - 
+    -
   - - '34'
     - 'Please enter your statement below:'
     - text
@@ -6238,46 +6238,46 @@ nested_questions:
     - '2015-10-29 20:16:38.281644'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::EthicsTask
-    - 
+    -
   - - '36'
     - Do the authors confirm that all the data underlying the findings described in
       their manuscript are fully available without restriction?
     - boolean
     - data_availability--data_fully_available
-    - 
+    -
     - '65'
     - '66'
     - '1'
     - '2015-10-29 20:16:38.306078'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::DataAvailabilityTask
-    - 
+    -
   - - '37'
     - Please describe where your data may be found, writing in full sentences.
     - text
     - data_availability--data_location
-    - 
+    -
     - '67'
     - '68'
     - '2'
     - '2015-10-29 20:16:38.311531'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::DataAvailabilityTask
-    - 
+    -
   - - '38'
     - Do any authors of this manuscript have competing interests (as described in
       the <a target='_blank' href='http://www.plosbiology.org/static/policies#competing'>PLOS
       Policy on Declaration and Evaluation of Competing Interests</a>)?
     - boolean
     - competing_interests--has_competing_interests
-    - 
+    -
     - '69'
     - '72'
     - '1'
     - '2015-10-29 20:16:38.334465'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::CompetingInterestsTask
-    - 
+    -
   - - '39'
     - 'Please provide details about any and all competing interests in the box below.
       Your response should begin with this statement: "I have read the journal''s
@@ -6291,330 +6291,330 @@ nested_questions:
     - '2015-10-29 20:16:38.337495'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::CompetingInterestsTask
-    - 
+    -
   - - '42'
     - First Name
     - text
     - plos_billing--first_name
-    - 
+    -
     - '77'
     - '78'
     - '1'
     - '2015-10-29 20:16:38.364376'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '43'
     - Last Name
     - text
     - plos_billing--last_name
-    - 
+    -
     - '79'
     - '80'
     - '2'
     - '2015-10-29 20:16:38.369577'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '44'
     - Title
     - text
     - plos_billing--title
-    - 
+    -
     - '81'
     - '82'
     - '3'
     - '2015-10-29 20:16:38.374389'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '45'
     - Department
     - text
     - plos_billing--department
-    - 
+    -
     - '83'
     - '84'
     - '4'
     - '2015-10-29 20:16:38.379993'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '46'
     - Phone
     - text
     - plos_billing--phone_number
-    - 
+    -
     - '85'
     - '86'
     - '5'
     - '2015-10-29 20:16:38.384534'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '48'
     - Email
     - text
     - plos_billing--email
-    - 
+    -
     - '87'
     - '88'
     - '6'
     - '2015-10-29 20:16:38.38892'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '50'
     - Address Line 1 (optional)
     - text
     - plos_billing--address1
-    - 
+    -
     - '89'
     - '90'
     - '7'
     - '2015-10-29 20:16:38.396858'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '52'
     - Address Line 2 (optional)
     - text
     - plos_billing--address2
-    - 
+    -
     - '91'
     - '92'
     - '8'
     - '2015-10-29 20:16:38.402836'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '54'
     - City
     - text
     - plos_billing--city
-    - 
+    -
     - '93'
     - '94'
     - '9'
     - '2015-10-29 20:16:38.409232'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '56'
     - State or Province
     - text
     - plos_billing--state
-    - 
+    -
     - '95'
     - '96'
     - '10'
     - '2015-10-29 20:16:38.416189'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '58'
     - ZIP or Postal Code
     - text
     - plos_billing--postal_code
-    - 
+    -
     - '97'
     - '98'
     - '11'
     - '2015-10-29 20:16:38.422462'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '60'
     - Country
     - text
     - plos_billing--country
-    - 
+    -
     - '99'
     - '100'
     - '12'
     - '2015-10-29 20:16:38.428989'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '62'
     - 'Affiliation #1'
     - text
     - plos_billing--affiliation1
-    - 
+    -
     - '101'
     - '102'
     - '13'
     - '2015-10-29 20:16:38.435351'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '64'
     - 'Affiliation #2'
     - text
     - plos_billing--affiliation2
-    - 
+    -
     - '103'
     - '104'
     - '14'
     - '2015-10-29 20:16:38.442201'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '66'
     - How would you like to pay?
     - text
     - plos_billing--payment_method
-    - 
+    -
     - '105'
     - '106'
     - '15'
     - '2015-10-29 20:16:38.448591'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '68'
     - Have you investigated if funding is available from your co-authors' institutions
       to pay the publication fee?
     - boolean
     - plos_billing--pfa_question_1
-    - 
+    -
     - '107'
     - '108'
     - '16'
     - '2015-10-29 20:16:38.455117'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '70'
     - If your co-authors' institutions will not provide any funding to publish the
       article, indicate why.
     - text
     - plos_billing--pfa_question_1a
-    - 
+    -
     - '109'
     - '110'
     - '17'
     - '2015-10-29 20:16:38.461795'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '72'
     - If your coauthors' institutions will provide partial funding to publish the
       article, indicate the amount they will pay towards your publication fee (in
       USD).
     - text
     - plos_billing--pfa_question_1b
-    - 
+    -
     - '111'
     - '112'
     - '18'
     - '2015-10-29 20:16:38.467758'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '74'
     - Have you investigated if funding is available from your institution to pay the
       publication fee?
     - boolean
     - plos_billing--pfa_question_2
-    - 
+    -
     - '113'
     - '114'
     - '19'
     - '2015-10-29 20:16:38.474299'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '76'
     - If your institution cannot provide any funding to publish the article, indicate
       why.
     - text
     - plos_billing--pfa_question_2a
-    - 
+    -
     - '115'
     - '116'
     - '20'
     - '2015-10-29 20:16:38.481446'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '78'
     - If your institution will provide partial funding to publish the article, indicate
       the amount it will pay toward your publication fee (in USD).
     - text
     - plos_billing--pfa_question_2b
-    - 
+    -
     - '117'
     - '118'
     - '21'
     - '2015-10-29 20:16:38.487319'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '80'
     - Do your co-authors have any other sources of funding that can be used towards
       the publication fee?
     - boolean
     - plos_billing--pfa_question_3
-    - 
+    -
     - '119'
     - '120'
     - '22'
     - '2015-10-29 20:16:38.493986'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '82'
     - Indicate the amount that they can pay (in USD).
     - text
     - plos_billing--pfa_question_3a
-    - 
+    -
     - '121'
     - '122'
     - '23'
     - '2015-10-29 20:16:38.500687'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '84'
     - Do you have any other sources of funding that can be used towards the publication
       fee?
     - boolean
     - plos_billing--pfa_question_4
-    - 
+    -
     - '123'
     - '124'
     - '24'
     - '2015-10-29 20:16:38.50671'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '86'
     - Indicate the amount that they can pay (in USD).
     - text
     - plos_billing--pfa_question_4a
-    - 
+    -
     - '125'
     - '126'
     - '25'
     - '2015-10-29 20:16:38.513546'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '88'
     - Given your answers to the above questions on your funding availability, what
       is the amount that you and your co-authors can jointly pay for publication?
       (Specify in USD.)
     - text
     - plos_billing--pfa_amount_to_pay
-    - 
+    -
     - '127'
     - '128'
     - '28'
     - '2015-10-29 20:16:38.519496'
     - '2016-01-26 17:37:47.635212'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '90'
     - If you would like to provide documents to assist in demonstrating your request,
       you will have the opportunity to do so. After PLOS has received the completed
@@ -6622,112 +6622,112 @@ nested_questions:
       supplemental documents. Do you intend to supply supplemental documents?
     - boolean
     - plos_billing--pfa_supporting_docs
-    - 
+    -
     - '129'
     - '130'
     - '27'
     - '2015-10-29 20:16:38.525749'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '92'
     - If you wish to make additional comments to support your request, provide them
       below. If you have no additional comments, enter "None" in the box.
     - text
     - plos_billing--pfa_additional_comments
-    - 
+    -
     - '131'
     - '132'
     - '29'
     - '2015-10-29 20:16:38.532891'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '94'
     - 'You are acknowledging that you have read and agree to the following statement:
       I affirm that the information provided in this application is true and complete.'
     - boolean
     - plos_billing--affirm_true_and_complete
-    - 
+    -
     - '133'
     - '134'
     - '30'
     - '2015-10-29 20:16:38.538115'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '96'
     - I have read and agree to the Terms of Submission to PLOS Collections
     - boolean
     - plos_billing--agree_to_collections
-    - 
+    -
     - '135'
     - '136'
     - '31'
     - '2015-10-29 20:16:38.545463'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '98'
     - Global Participation Initiative Country
     - text
     - plos_billing--gpi_country
-    - 
+    -
     - '139'
     - '140'
     - '32'
     - '2015-10-29 20:16:38.555212'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '99'
     - Ringgold Institution
     - text
     - plos_billing--ringgold_institution
-    - 
+    -
     - '141'
     - '142'
     - '33'
     - '2015-10-29 20:16:38.561639'
     - '2016-01-15 18:04:22.865691'
     - PlosBilling::BillingTask
-    - 
+    -
   - - '101'
     - This person will be listed as the corresponding author on the published article
     - boolean
     - author--published_as_corresponding_author
-    - 
+    -
     - '143'
     - '144'
     - '1'
     - '2015-10-29 20:16:38.672785'
     - '2016-01-15 18:04:22.865691'
     - Author
-    - 
+    -
   - - '102'
     - This person is deceased
     - boolean
     - author--deceased
-    - 
+    -
     - '145'
     - '146'
     - '2'
     - '2015-10-29 20:16:38.681046'
     - '2016-01-15 18:04:22.865691'
     - Author
-    - 
+    -
   - - '104'
     - Author Contributions
     - question-set
     - author--contributions
-    - 
+    -
     - '147'
     - '172'
     - '3'
     - '2015-10-29 20:16:38.687781'
     - '2016-01-15 18:04:22.865691'
     - Author
-    - 
+    -
   - - '105'
     - Conceived and designed the experiments
     - boolean
@@ -6739,7 +6739,7 @@ nested_questions:
     - '2015-10-29 20:16:38.691902'
     - '2016-01-15 18:04:22.865691'
     - Author
-    - 
+    -
   - - '106'
     - Performed the experiments
     - boolean
@@ -6751,7 +6751,7 @@ nested_questions:
     - '2015-10-29 20:16:38.702202'
     - '2016-01-15 18:04:22.865691'
     - Author
-    - 
+    -
   - - '107'
     - Analyzed the data
     - boolean
@@ -6763,7 +6763,7 @@ nested_questions:
     - '2015-10-29 20:16:38.712577'
     - '2016-01-15 18:04:22.865691'
     - Author
-    - 
+    -
   - - '108'
     - Contributed reagents/materials/analysis tools
     - boolean
@@ -6775,7 +6775,7 @@ nested_questions:
     - '2015-10-29 20:16:38.722145'
     - '2016-01-15 18:04:22.865691'
     - Author
-    - 
+    -
   - - '109'
     - Contributed to the writing of the manuscript
     - boolean
@@ -6787,7 +6787,7 @@ nested_questions:
     - '2015-10-29 20:16:38.732929'
     - '2016-01-15 18:04:22.865691'
     - Author
-    - 
+    -
   - - '110'
     - Other
     - text
@@ -6799,20 +6799,20 @@ nested_questions:
     - '2015-10-29 20:16:38.743536'
     - '2016-01-15 18:04:22.865691'
     - Author
-    - 
+    -
   - - '118'
     - Did the funder have a role in study design, data collection and analysis, decision
       to publish, or preparation of the manuscript?
     - boolean
     - funder--had_influence
-    - 
+    -
     - '173'
     - '176'
     - '1'
     - '2015-10-30 19:51:03.420015'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::Funder
-    - 
+    -
   - - '119'
     - Describe the role of any sponsors or funders in the study design, data collection
       and analysis, decision to publish, or preparation of the manuscript.
@@ -6825,80 +6825,80 @@ nested_questions:
     - '2015-10-30 19:51:03.424486'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::Funder
-    - 
+    -
   - - '120'
     - Publication Date
     - text
     - production_metadata--publication_date
-    - 
+    -
     - '177'
     - '178'
     - '1'
     - '2015-10-30 19:51:03.462062'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ProductionMetadataTask
-    - 
+    -
   - - '121'
     - Volume Number
     - text
     - production_metadata--volume_number
-    - 
+    -
     - '179'
     - '180'
     - '2'
     - '2015-10-30 19:51:03.466022'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ProductionMetadataTask
-    - 
+    -
   - - '122'
     - Issue Number
     - text
     - production_metadata--issue_number
-    - 
+    -
     - '181'
     - '182'
     - '3'
     - '2015-10-30 19:51:03.469673'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ProductionMetadataTask
-    - 
+    -
   - - '123'
     - Production Notes
     - text
     - production_metadata--production_notes
-    - 
+    -
     - '183'
     - '184'
     - '4'
     - '2015-10-30 19:51:03.473215'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ProductionMetadataTask
-    - 
+    -
   - - '124'
     - Do you have any potential or perceived competing interests that may influence
       your review?
     - text
     - reviewer_report--competing_interests
-    - 
+    -
     - '185'
     - '186'
     - '2'
     - '2015-10-30 19:51:03.496382'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerReportTask
-    - 
+    -
   - - '125'
     - Is the manuscript technically sound, and do the data support the conclusions?
     - boolean
     - reviewer_report--support_conclusions
-    - 
+    -
     - '187'
     - '190'
     - '3'
     - '2015-10-30 19:51:03.500418'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerReportTask
-    - 
+    -
   - - '126'
     - Explanation
     - text
@@ -6910,19 +6910,19 @@ nested_questions:
     - '2015-10-30 19:51:03.502707'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerReportTask
-    - 
+    -
   - - '127'
     - Has the statistical analysis been performed appropriately and rigorously?
     - boolean
     - reviewer_report--statistical_analysis
-    - 
+    -
     - '191'
     - '194'
     - '4'
     - '2015-10-30 19:51:03.511001'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerReportTask
-    - 
+    -
   - - '128'
     - Statistical Analysis Explanation
     - text
@@ -6934,19 +6934,19 @@ nested_questions:
     - '2015-10-30 19:51:03.513191'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerReportTask
-    - 
+    -
   - - '129'
     - Does the manuscript adhere to standards in this field for data availability?
     - boolean
     - reviewer_report--standards
-    - 
+    -
     - '195'
     - '198'
     - '5'
     - '2015-10-30 19:51:03.521073'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerReportTask
-    - 
+    -
   - - '130'
     - Standards Explanation
     - text
@@ -6958,44 +6958,44 @@ nested_questions:
     - '2015-10-30 19:51:03.523338'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerReportTask
-    - 
+    -
   - - '131'
     - "(Optional) Please offer any additional comments to the author."
     - text
     - reviewer_report--additional_comments
-    - 
+    -
     - '199'
     - '200'
     - '6'
     - '2015-10-30 19:51:03.531234'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerReportTask
-    - 
+    -
   - - '132'
     - "(Optional) If you'd like your identity to be revealed to the authors, please
       include your name here."
     - text
     - reviewer_report--identity
-    - 
+    -
     - '201'
     - '202'
     - '7'
     - '2015-10-30 19:51:03.534949'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerReportTask
-    - 
+    -
   - - '133'
     - Does this manuscript describe a new zoological taxon name?
     - boolean
     - taxon--zoological
-    - 
+    -
     - '203'
     - '206'
     - '1'
     - '2015-10-30 19:51:03.541213'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::TaxonTask
-    - 
+    -
   - - '134'
     - All authors comply with the Policies Regarding Submission of a new Taxon Name
     - boolean
@@ -7007,19 +7007,19 @@ nested_questions:
     - '2015-10-30 19:51:03.543667'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::TaxonTask
-    - 
+    -
   - - '135'
     - Does this manuscript describe a new botanical taxon name?
     - boolean
     - taxon--botanical
-    - 
+    -
     - '207'
     - '210'
     - '2'
     - '2015-10-30 19:51:03.55182'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::TaxonTask
-    - 
+    -
   - - '136'
     - All authors comply with the Policies Regarding Submission of a new Taxon Name
     - boolean
@@ -7031,31 +7031,31 @@ nested_questions:
     - '2015-10-30 19:51:03.554061'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::TaxonTask
-    - 
+    -
   - - '137'
     - Are you recommending or opposing this reviewer? (required)
     - boolean
     - reviewer_recommendations--recommend_or_oppose
-    - 
+    -
     - '211'
     - '212'
     - '1'
     - '2015-11-02 13:38:26.272946'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerRecommendation
-    - 
+    -
   - - '138'
     - 'Optional: reason for recommending or opposing this reviewer'
     - text
     - reviewer_recommendations--reason
-    - 
+    -
     - '213'
     - '214'
     - '2'
     - '2015-11-02 13:38:26.280143'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerRecommendation
-    - 
+    -
   - - '139'
     - 'Check Section Headings of all new submissions (including Open Rejects). Should
       broadly follow: Title, Authors, Affiliations, Abstract, Introduction, Results,
@@ -7063,170 +7063,170 @@ nested_questions:
       Legends.'
     - boolean
     - plos_bio_initial_tech_check--open_rejects
-    - 
+    -
     - '215'
     - '216'
     - '1'
     - '2015-11-02 13:38:26.296091'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    - PlosBio::InitialTechCheckTask
+    -
   - - '140'
     - Check the ethics statement - does it mention Human Participants? If so, flag
       this with the editor in the discussion below.
     - boolean
     - plos_bio_initial_tech_check--human_subjects
-    - 
+    -
     - '217'
     - '218'
     - '2'
     - '2015-11-02 13:38:26.300112'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    - PlosBio::InitialTechCheckTask
+    -
   - - '141'
     - Check if there are any obvious ethical flags (mentions of animal/human work
       in the title/abstract), check that there's an ethics statement. If not, ask
       the authors about this.
     - boolean
     - plos_bio_initial_tech_check--ethics_needed
-    - 
+    -
     - '219'
     - '220'
     - '3'
     - '2015-11-02 13:38:26.30383'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    - PlosBio::InitialTechCheckTask
+    -
   - - '142'
     - Is the data available? If not, or it's only available by contacting an author
       or the institution, make a note in the discussion below.
     - boolean
     - plos_bio_initial_tech_check--data_available
-    - 
+    -
     - '221'
     - '222'
     - '4'
     - '2015-11-02 13:38:26.307755'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    - PlosBio::InitialTechCheckTask
+    -
   - - '143'
     - If author indicates the data is available in Supporting Information, check to
       make sure there are Supporting Information files in the submission (don't need
       to check for specifics at this stage).
     - boolean
     - plos_bio_initial_tech_check--supporting_information
-    - 
+    -
     - '223'
     - '224'
     - '5'
     - '2015-11-02 13:38:26.311478'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    - PlosBio::InitialTechCheckTask
+    -
   - - '144'
     - If the author has mentioned Dryad in their Data statement, check that they've
       included the Dryad reviewer URL. If not, make a note in the discussion below.
     - boolean
     - plos_bio_initial_tech_check--dryad_url
-    - 
+    -
     - '225'
     - '226'
     - '6'
     - '2015-11-02 13:38:26.315087'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    - PlosBio::InitialTechCheckTask
+    -
   - - '145'
     - If Financial Disclosure Statement is not complete (they've written N/A or something
       similar), message author.
     - boolean
     - plos_bio_initial_tech_check--financial_disclosure
-    - 
+    -
     - '227'
     - '228'
     - '7'
     - '2015-11-02 13:38:26.319212'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    - PlosBio::InitialTechCheckTask
+    -
   - - '146'
     - If the Financial Disclosure Statement includes any companies from the Tobacco
       Industry, make a note in the discussion below.
     - boolean
     - plos_bio_initial_tech_check--tobacco
-    - 
+    -
     - '229'
     - '230'
     - '8'
     - '2015-11-02 13:38:26.322791'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    - PlosBio::InitialTechCheckTask
+    -
   - - '147'
     - If any figures are completely illegible, contact the author.
     - boolean
     - plos_bio_initial_tech_check--figures_legible
-    - 
+    -
     - '231'
     - '232'
     - '9'
     - '2015-11-02 13:38:26.326519'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    - PlosBio::InitialTechCheckTask
+    -
   - - '148'
     - If any files or figures are cited but not included in the submission, message
       the author.
     - boolean
     - plos_bio_initial_tech_check--cited
-    - 
+    -
     - '233'
     - '234'
     - '10'
     - '2015-11-02 13:38:26.330182'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    - PlosBio::InitialTechCheckTask
+    -
   - - '149'
     - Have the authors asked any questions in the cover letter? If yes, contact the
       editor/journal team.
     - boolean
     - plos_bio_initial_tech_check--cover_letter
-    - 
+    -
     - '235'
     - '236'
     - '11'
     - '2015-11-02 13:38:26.333792'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    - PlosBio::InitialTechCheckTask
+    -
   - - '150'
     - Have the authors mentioned any billing information in the cover letter? If yes,
       contact the editor/journal team.
     - boolean
     - plos_bio_initial_tech_check--billing_inquiries
-    - 
+    -
     - '237'
     - '238'
     - '12'
     - '2015-11-02 13:38:26.337417'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    - PlosBio::InitialTechCheckTask
+    -
   - - '151'
     - If an Ethics Statement is present, make a note in the discussion below.
     - boolean
     - plos_bio_initial_tech_check--ethics_statement
-    - 
+    -
     - '239'
     - '240'
     - '13'
     - '2015-11-02 13:38:26.340953'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::InitialTechCheckTask
-    - 
+    - PlosBio::InitialTechCheckTask
+    -
   - - '152'
     - 'Check Section Headings of all new submissions (including Open Rejects). Should
       broadly follow: Title, Authors, Affiliations, Abstract, Introduction, Results,
@@ -7234,170 +7234,170 @@ nested_questions:
       Legends.'
     - boolean
     - plos_bio_revision_tech_check--open_rejects
-    - 
+    -
     - '241'
     - '242'
     - '1'
     - '2015-11-02 13:38:26.346485'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::RevisionTechCheckTask
-    - 
+    - PlosBio::RevisionTechCheckTask
+    -
   - - '153'
     - Check the ethics statement - does it mention Human Participants? If so, flag
       this with the editor in the discussion below.
     - boolean
     - plos_bio_revision_tech_check--human_subjects
-    - 
+    -
     - '243'
     - '244'
     - '2'
     - '2015-11-02 13:38:26.350087'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::RevisionTechCheckTask
-    - 
+    - PlosBio::RevisionTechCheckTask
+    -
   - - '154'
     - Check if there are any obvious ethical flags (mentions of animal/human work
       in the title/abstract), check that there's an ethics statement. If not, ask
       the authors about this.
     - boolean
     - plos_bio_revision_tech_check--ethics_needed
-    - 
+    -
     - '245'
     - '246'
     - '3'
     - '2015-11-02 13:38:26.355497'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::RevisionTechCheckTask
-    - 
+    - PlosBio::RevisionTechCheckTask
+    -
   - - '155'
     - Is the data available? If not, or it's only available by contacting an author
       or the institution, make a note in the discussion below.
     - boolean
     - plos_bio_revision_tech_check--data_available
-    - 
+    -
     - '247'
     - '248'
     - '4'
     - '2015-11-02 13:38:26.359242'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::RevisionTechCheckTask
-    - 
+    - PlosBio::RevisionTechCheckTask
+    -
   - - '156'
     - If author indicates the data is available in Supporting Information, check to
       make sure there are Supporting Information files in the submission (don't need
       to check for specifics at this stage).
     - boolean
     - plos_bio_revision_tech_check--supporting_information
-    - 
+    -
     - '249'
     - '250'
     - '5'
     - '2015-11-02 13:38:26.3628'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::RevisionTechCheckTask
-    - 
+    - PlosBio::RevisionTechCheckTask
+    -
   - - '157'
     - If the author has mentioned Dryad in their Data statement, check that they've
       included the Dryad reviewer URL. If not, make a note in the discussion below.
     - boolean
     - plos_bio_revision_tech_check--dryad_url
-    - 
+    -
     - '251'
     - '252'
     - '6'
     - '2015-11-02 13:38:26.366706'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::RevisionTechCheckTask
-    - 
+    - PlosBio::RevisionTechCheckTask
+    -
   - - '158'
     - If Financial Disclosure Statement is not complete (they've written N/A or something
       similar), message author.
     - boolean
     - plos_bio_revision_tech_check--financial_disclosure
-    - 
+    -
     - '253'
     - '254'
     - '7'
     - '2015-11-02 13:38:26.370339'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::RevisionTechCheckTask
-    - 
+    - PlosBio::RevisionTechCheckTask
+    -
   - - '159'
     - If the Financial Disclosure Statement includes any companies from the Tobacco
       Industry, make a note in the discussion below.
     - boolean
     - plos_bio_revision_tech_check--tobacco
-    - 
+    -
     - '255'
     - '256'
     - '8'
     - '2015-11-02 13:38:26.373836'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::RevisionTechCheckTask
-    - 
+    - PlosBio::RevisionTechCheckTask
+    -
   - - '160'
     - If any figures are completely illegible, contact the author.
     - boolean
     - plos_bio_revision_tech_check--figures_legible
-    - 
+    -
     - '257'
     - '258'
     - '9'
     - '2015-11-02 13:38:26.37734'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::RevisionTechCheckTask
-    - 
+    - PlosBio::RevisionTechCheckTask
+    -
   - - '161'
     - If any files or figures are cited but not included in the submission, message
       the author.
     - boolean
     - plos_bio_revision_tech_check--cited
-    - 
+    -
     - '259'
     - '260'
     - '10'
     - '2015-11-02 13:38:26.380912'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::RevisionTechCheckTask
-    - 
+    - PlosBio::RevisionTechCheckTask
+    -
   - - '162'
     - Have the authors asked any questions in the cover letter? If yes, contact the
       editor/journal team.
     - boolean
     - plos_bio_revision_tech_check--cover_letter
-    - 
+    -
     - '261'
     - '262'
     - '11'
     - '2015-11-02 13:38:26.384466'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::RevisionTechCheckTask
-    - 
+    - PlosBio::RevisionTechCheckTask
+    -
   - - '163'
     - Have the authors mentioned any billing information in the cover letter? If yes,
       contact the editor/journal team.
     - boolean
     - plos_bio_revision_tech_check--billing_inquiries
-    - 
+    -
     - '263'
     - '264'
     - '12'
     - '2015-11-02 13:38:26.387949'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::RevisionTechCheckTask
-    - 
+    - PlosBio::RevisionTechCheckTask
+    -
   - - '164'
     - If an Ethics Statement is present, make a note in the discussion below.
     - boolean
     - plos_bio_revision_tech_check--ethics_statement
-    - 
+    -
     - '265'
     - '266'
     - '13'
     - '2015-11-02 13:38:26.39145'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::RevisionTechCheckTask
-    - 
+    - PlosBio::RevisionTechCheckTask
+    -
   - - '165'
     - 'Check Section Headings of all new submissions (including Open Rejects). Should
       broadly follow: Title, Authors, Affiliations, Abstract, Introduction, Results,
@@ -7405,170 +7405,170 @@ nested_questions:
       Legends.'
     - boolean
     - plos_bio_final_tech_check--open_rejects
-    - 
+    -
     - '267'
     - '268'
     - '1'
     - '2015-11-02 13:38:26.396833'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::FinalTechCheckTask
-    - 
+    - PlosBio::FinalTechCheckTask
+    -
   - - '166'
     - Check the ethics statement - does it mention Human Participants? If so, flag
       this with the editor in the discussion below.
     - boolean
     - plos_bio_final_tech_check--human_subjects
-    - 
+    -
     - '269'
     - '270'
     - '2'
     - '2015-11-02 13:38:26.400512'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::FinalTechCheckTask
-    - 
+    - PlosBio::FinalTechCheckTask
+    -
   - - '167'
     - Check if there are any obvious ethical flags (mentions of animal/human work
       in the title/abstract), check that there's an ethics statement. If not, ask
       the authors about this.
     - boolean
     - plos_bio_final_tech_check--ethics_needed
-    - 
+    -
     - '271'
     - '272'
     - '3'
     - '2015-11-02 13:38:26.403989'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::FinalTechCheckTask
-    - 
+    - PlosBio::FinalTechCheckTask
+    -
   - - '168'
     - Is the data available? If not, or it's only available by contacting an author
       or the institution, make a note in the discussion below.
     - boolean
     - plos_bio_final_tech_check--data_available
-    - 
+    -
     - '273'
     - '274'
     - '4'
     - '2015-11-02 13:38:26.407564'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::FinalTechCheckTask
-    - 
+    - PlosBio::FinalTechCheckTask
+    -
   - - '169'
     - If author indicates the data is available in Supporting Information, check to
       make sure there are Supporting Information files in the submission (don't need
       to check for specifics at this stage).
     - boolean
     - plos_bio_final_tech_check--supporting_information
-    - 
+    -
     - '275'
     - '276'
     - '5'
     - '2015-11-02 13:38:26.411338'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::FinalTechCheckTask
-    - 
+    - PlosBio::FinalTechCheckTask
+    -
   - - '170'
     - If the author has mentioned Dryad in their Data statement, check that they've
       included the Dryad reviewer URL. If not, make a note in the discussion below.
     - boolean
     - plos_bio_final_tech_check--dryad_url
-    - 
+    -
     - '277'
     - '278'
     - '6'
     - '2015-11-02 13:38:26.415031'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::FinalTechCheckTask
-    - 
+    - PlosBio::FinalTechCheckTask
+    -
   - - '171'
     - If Financial Disclosure Statement is not complete (they've written N/A or something
       similar), message author.
     - boolean
     - plos_bio_final_tech_check--financial_disclosure
-    - 
+    -
     - '279'
     - '280'
     - '7'
     - '2015-11-02 13:38:26.418577'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::FinalTechCheckTask
-    - 
+    - PlosBio::FinalTechCheckTask
+    -
   - - '172'
     - If the Financial Disclosure Statement includes any companies from the Tobacco
       Industry, make a note in the discussion below.
     - boolean
     - plos_bio_final_tech_check--tobacco
-    - 
+    -
     - '281'
     - '282'
     - '8'
     - '2015-11-02 13:38:26.422021'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::FinalTechCheckTask
-    - 
+    - PlosBio::FinalTechCheckTask
+    -
   - - '173'
     - If any figures are completely illegible, contact the author.
     - boolean
     - plos_bio_final_tech_check--figures_legible
-    - 
+    -
     - '283'
     - '284'
     - '9'
     - '2015-11-02 13:38:26.425661'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::FinalTechCheckTask
-    - 
+    - PlosBio::FinalTechCheckTask
+    -
   - - '174'
     - If any files or figures are cited but not included in the submission, message
       the author.
     - boolean
     - plos_bio_final_tech_check--cited
-    - 
+    -
     - '285'
     - '286'
     - '10'
     - '2015-11-02 13:38:26.429237'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::FinalTechCheckTask
-    - 
+    - PlosBio::FinalTechCheckTask
+    -
   - - '175'
     - Have the authors asked any questions in the cover letter? If yes, contact the
       editor/journal team.
     - boolean
     - plos_bio_final_tech_check--cover_letter
-    - 
+    -
     - '287'
     - '288'
     - '11'
     - '2015-11-02 13:38:26.433036'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::FinalTechCheckTask
-    - 
+    - PlosBio::FinalTechCheckTask
+    -
   - - '176'
     - Have the authors mentioned any billing information in the cover letter? If yes,
       contact the editor/journal team.
     - boolean
     - plos_bio_final_tech_check--billing_inquiries
-    - 
+    -
     - '289'
     - '290'
     - '12'
     - '2015-11-02 13:38:26.436669'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::FinalTechCheckTask
-    - 
+    - PlosBio::FinalTechCheckTask
+    -
   - - '177'
     - If an Ethics Statement is present, make a note in the discussion below.
     - boolean
     - plos_bio_final_tech_check--ethics_statement
-    - 
+    -
     - '291'
     - '292'
     - '13'
     - '2015-11-02 13:38:26.440221'
     - '2016-01-15 18:04:22.865691'
-    - PlosBioTechCheck::FinalTechCheckTask
-    - 
+    - PlosBio::FinalTechCheckTask
+    -
   - - '178'
     - Please provide your field permit number and indicate the institution or relevant
       body that granted permission for use of the land or materials collected.
@@ -7581,20 +7581,20 @@ nested_questions:
     - '2015-12-21 16:53:24.223742'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::EthicsTask
-    - 
+    -
   - - '179'
     - Is this a field study, or does it involve collection of plant, animal, or other
       materials collected from a natural setting?
     - boolean
     - ethics--field_study
-    - 
+    -
     - '291'
     - '294'
     - '3'
     - '2015-12-21 16:53:24.230439'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::EthicsTask
-    - 
+    -
   - - '180'
     - Corresponding journal
     - text
@@ -7606,7 +7606,7 @@ nested_questions:
     - '2015-12-17 21:19:25.045724'
     - '2015-12-17 21:19:25.073212'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - 
+    -
   - - '181'
     - This submission and the manuscript I'm submitting should be handled together
     - boolean
@@ -7618,19 +7618,19 @@ nested_questions:
     - '2015-12-17 21:19:25.056959'
     - '2015-12-17 21:19:25.092392'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - 
+    -
   - - '182'
     - 'Please provide your publication recommendation:'
     - text
     - reviewer_report--decision_term
-    - 
+    -
     - '291'
     - '292'
     - '1'
     - '2015-12-23 17:34:57.06078'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::ReviewerReportTask
-    - 
+    -
   - - '183'
     - ARRIVE checklist
     - attachment
@@ -7642,20 +7642,20 @@ nested_questions:
     - '2016-01-15 18:04:22.842134'
     - '2016-01-15 18:04:22.865691'
     - TahiStandardTasks::EthicsTask
-    - 
+    -
   - - '184'
     - Please give your paper a short title. Short titles are used as the running header
       on published PDFs.
     - text
     - publishing_related_questions--short_title
-    - 
+    -
     - '295'
     - '296'
     - '8'
     - '2016-01-26 17:37:47.789077'
     - '2016-01-26 17:37:47.789077'
     - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - 
+    -
 
 ---
 user_roles:
@@ -7665,7 +7665,7 @@ user_roles:
   - created_at
   - updated_at
   - old_role_id
-  records: 
+  records:
   - - '1'
     - '1'
     - '2015-10-29 20:09:49.75711'
@@ -7727,7 +7727,7 @@ tasks:
   - position
   - paper_id
   - completed_at
-  records: 
+  records:
   - - '1'
     - Supporting Info
     - TahiStandardTasks::SupportingInformationTask
@@ -7739,7 +7739,7 @@ tasks:
     - "[]"
     - '1'
     - '1'
-    - 
+    -
   - - '2'
     - Authors
     - TahiStandardTasks::AuthorsTask
@@ -7751,7 +7751,7 @@ tasks:
     - "[]"
     - '2'
     - '1'
-    - 
+    -
   - - '3'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
@@ -7763,7 +7763,7 @@ tasks:
     - "[]"
     - '3'
     - '1'
-    - 
+    -
   - - '4'
     - Billing
     - PlosBilling::BillingTask
@@ -7775,7 +7775,7 @@ tasks:
     - "[]"
     - '4'
     - '1'
-    - 
+    -
   - - '5'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
@@ -7787,7 +7787,7 @@ tasks:
     - "[]"
     - '5'
     - '1'
-    - 
+    -
   - - '6'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -7799,7 +7799,7 @@ tasks:
     - "[]"
     - '6'
     - '1'
-    - 
+    -
   - - '7'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
@@ -7811,7 +7811,7 @@ tasks:
     - "[]"
     - '7'
     - '1'
-    - 
+    -
   - - '8'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
@@ -7823,7 +7823,7 @@ tasks:
     - "[]"
     - '8'
     - '1'
-    - 
+    -
   - - '9'
     - Figures
     - TahiStandardTasks::FigureTask
@@ -7835,7 +7835,7 @@ tasks:
     - "[]"
     - '9'
     - '1'
-    - 
+    -
   - - '10'
     - Financial Disclosure
     - TahiStandardTasks::FinancialDisclosureTask
@@ -7847,7 +7847,7 @@ tasks:
     - "[]"
     - '10'
     - '1'
-    - 
+    -
   - - '11'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
@@ -7859,7 +7859,7 @@ tasks:
     - "[]"
     - '11'
     - '1'
-    - 
+    -
   - - '12'
     - Reporting Guidelines
     - TahiStandardTasks::ReportingGuidelinesTask
@@ -7871,7 +7871,7 @@ tasks:
     - "[]"
     - '12'
     - '1'
-    - 
+    -
   - - '13'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
@@ -7883,10 +7883,10 @@ tasks:
     - "[]"
     - '13'
     - '1'
-    - 
+    -
   - - '14'
     - Initial Tech Check
-    - PlosBioTechCheck::InitialTechCheckTask
+    - PlosBio::InitialTechCheckTask
     - '2'
     - false
     - '2015-10-29 20:16:37.707252'
@@ -7895,10 +7895,10 @@ tasks:
     - '{"round":1}'
     - '1'
     - '1'
-    - 
+    -
   - - '15'
     - Revision Tech Check
-    - PlosBioTechCheck::RevisionTechCheckTask
+    - PlosBio::RevisionTechCheckTask
     - '2'
     - false
     - '2015-10-29 20:16:37.717232'
@@ -7907,10 +7907,10 @@ tasks:
     - "[]"
     - '2'
     - '1'
-    - 
+    -
   - - '16'
     - Final Tech Check
-    - PlosBioTechCheck::FinalTechCheckTask
+    - PlosBio::FinalTechCheckTask
     - '2'
     - false
     - '2015-10-29 20:16:37.726562'
@@ -7919,7 +7919,7 @@ tasks:
     - "[]"
     - '3'
     - '1'
-    - 
+    -
   - - '17'
     - Assign Team
     - Tahi::AssignTeam::AssignTeamTask
@@ -7931,10 +7931,10 @@ tasks:
     - "[]"
     - '1'
     - '1'
-    - 
+    -
   - - '18'
     - Editor Discussion
-    - PlosBioInternalReview::EditorsDiscussionTask
+    - PlosBio::EditorsDiscussionTask
     - '3'
     - false
     - '2015-10-29 20:16:37.750782'
@@ -7943,7 +7943,7 @@ tasks:
     - "[]"
     - '2'
     - '1'
-    - 
+    -
   - - '19'
     - Invite Reviewers
     - TahiStandardTasks::PaperReviewerTask
@@ -7955,7 +7955,7 @@ tasks:
     - "[]"
     - '1'
     - '1'
-    - 
+    -
   - - '20'
     - Academic Editor Feedback
     - Task
@@ -7967,7 +7967,7 @@ tasks:
     - "[]"
     - '2'
     - '1'
-    - 
+    -
   - - '21'
     - Register Decision
     - TahiStandardTasks::RegisterDecisionTask
@@ -7979,7 +7979,7 @@ tasks:
     - "[]"
     - '1'
     - '1'
-    - 
+    -
   - - '22'
     - Supporting Info
     - TahiStandardTasks::SupportingInformationTask
@@ -7991,7 +7991,7 @@ tasks:
     - "[]"
     - '1'
     - '2'
-    - 
+    -
   - - '23'
     - Authors
     - TahiStandardTasks::AuthorsTask
@@ -8003,7 +8003,7 @@ tasks:
     - "[]"
     - '2'
     - '2'
-    - 
+    -
   - - '24'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
@@ -8015,7 +8015,7 @@ tasks:
     - "[]"
     - '3'
     - '2'
-    - 
+    -
   - - '25'
     - Billing
     - PlosBilling::BillingTask
@@ -8027,7 +8027,7 @@ tasks:
     - "[]"
     - '4'
     - '2'
-    - 
+    -
   - - '26'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
@@ -8039,7 +8039,7 @@ tasks:
     - "[]"
     - '5'
     - '2'
-    - 
+    -
   - - '27'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -8064,7 +8064,7 @@ tasks:
       Aldus PageMaker including versions of Lorem Ipsum.\u003c/span\u003e"]'
     - '6'
     - '2'
-    - 
+    -
   - - '28'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
@@ -8076,7 +8076,7 @@ tasks:
     - "[]"
     - '7'
     - '2'
-    - 
+    -
   - - '29'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
@@ -8088,7 +8088,7 @@ tasks:
     - "[]"
     - '8'
     - '2'
-    - 
+    -
   - - '30'
     - Figures
     - TahiStandardTasks::FigureTask
@@ -8100,7 +8100,7 @@ tasks:
     - "[]"
     - '9'
     - '2'
-    - 
+    -
   - - '31'
     - Financial Disclosure
     - TahiStandardTasks::FinancialDisclosureTask
@@ -8112,7 +8112,7 @@ tasks:
     - "[]"
     - '10'
     - '2'
-    - 
+    -
   - - '32'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
@@ -8124,7 +8124,7 @@ tasks:
     - "[]"
     - '11'
     - '2'
-    - 
+    -
   - - '33'
     - Reporting Guidelines
     - TahiStandardTasks::ReportingGuidelinesTask
@@ -8136,7 +8136,7 @@ tasks:
     - "[]"
     - '12'
     - '2'
-    - 
+    -
   - - '34'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
@@ -8148,10 +8148,10 @@ tasks:
     - "[]"
     - '13'
     - '2'
-    - 
+    -
   - - '35'
     - Initial Tech Check
-    - PlosBioTechCheck::InitialTechCheckTask
+    - PlosBio::InitialTechCheckTask
     - '7'
     - false
     - '2015-10-30 19:43:28.71276'
@@ -8160,10 +8160,10 @@ tasks:
     - '{"round":1}'
     - '1'
     - '2'
-    - 
+    -
   - - '36'
     - Revision Tech Check
-    - PlosBioTechCheck::RevisionTechCheckTask
+    - PlosBio::RevisionTechCheckTask
     - '7'
     - false
     - '2015-10-30 19:43:28.717952'
@@ -8172,10 +8172,10 @@ tasks:
     - "[]"
     - '2'
     - '2'
-    - 
+    -
   - - '37'
     - Final Tech Check
-    - PlosBioTechCheck::FinalTechCheckTask
+    - PlosBio::FinalTechCheckTask
     - '7'
     - false
     - '2015-10-30 19:43:28.723485'
@@ -8184,7 +8184,7 @@ tasks:
     - "[]"
     - '3'
     - '2'
-    - 
+    -
   - - '38'
     - Assign Team
     - Tahi::AssignTeam::AssignTeamTask
@@ -8196,10 +8196,10 @@ tasks:
     - "[]"
     - '1'
     - '2'
-    - 
+    -
   - - '39'
     - Editor Discussion
-    - PlosBioInternalReview::EditorsDiscussionTask
+    - PlosBio::EditorsDiscussionTask
     - '8'
     - false
     - '2015-10-30 19:43:28.738473'
@@ -8208,7 +8208,7 @@ tasks:
     - "[]"
     - '2'
     - '2'
-    - 
+    -
   - - '40'
     - Invite Reviewers
     - TahiStandardTasks::PaperReviewerTask
@@ -8220,7 +8220,7 @@ tasks:
     - "[]"
     - '1'
     - '2'
-    - 
+    -
   - - '41'
     - Academic Editor Feedback
     - Task
@@ -8232,7 +8232,7 @@ tasks:
     - "[]"
     - '2'
     - '2'
-    - 
+    -
   - - '42'
     - Register Decision
     - TahiStandardTasks::RegisterDecisionTask
@@ -8244,7 +8244,7 @@ tasks:
     - "[]"
     - '1'
     - '2'
-    - 
+    -
   - - '43'
     - Supporting Info
     - TahiStandardTasks::SupportingInformationTask
@@ -8410,7 +8410,7 @@ tasks:
     - '2016-02-02 19:33:00'
   - - '56'
     - Initial Tech Check
-    - PlosBioTechCheck::InitialTechCheckTask
+    - PlosBio::InitialTechCheckTask
     - '12'
     - false
     - '2015-11-02 14:04:03.193998'
@@ -8419,10 +8419,10 @@ tasks:
     - '{"round":1}'
     - '1'
     - '3'
-    - 
+    -
   - - '57'
     - Revision Tech Check
-    - PlosBioTechCheck::RevisionTechCheckTask
+    - PlosBio::RevisionTechCheckTask
     - '12'
     - false
     - '2015-11-02 14:04:03.199552'
@@ -8431,10 +8431,10 @@ tasks:
     - "[]"
     - '2'
     - '3'
-    - 
+    -
   - - '58'
     - Final Tech Check
-    - PlosBioTechCheck::FinalTechCheckTask
+    - PlosBio::FinalTechCheckTask
     - '12'
     - false
     - '2015-11-02 14:04:03.205185'
@@ -8443,7 +8443,7 @@ tasks:
     - "[]"
     - '3'
     - '3'
-    - 
+    -
   - - '59'
     - Assign Team
     - Tahi::AssignTeam::AssignTeamTask
@@ -8455,10 +8455,10 @@ tasks:
     - "[]"
     - '1'
     - '3'
-    - 
+    -
   - - '60'
     - Editor Discussion
-    - PlosBioInternalReview::EditorsDiscussionTask
+    - PlosBio::EditorsDiscussionTask
     - '13'
     - false
     - '2015-11-02 14:04:03.221057'
@@ -8467,7 +8467,7 @@ tasks:
     - "[]"
     - '2'
     - '3'
-    - 
+    -
   - - '61'
     - Invite Reviewers
     - TahiStandardTasks::PaperReviewerTask
@@ -8479,7 +8479,7 @@ tasks:
     - "[]"
     - '1'
     - '3'
-    - 
+    -
   - - '62'
     - Academic Editor Feedback
     - Task
@@ -8491,7 +8491,7 @@ tasks:
     - "[]"
     - '2'
     - '3'
-    - 
+    -
   - - '63'
     - Register Decision
     - TahiStandardTasks::RegisterDecisionTask
@@ -8503,7 +8503,7 @@ tasks:
     - "[]"
     - '1'
     - '3'
-    - 
+    -
   - - '64'
     - Supporting Info
     - TahiStandardTasks::SupportingInformationTask
@@ -8672,7 +8672,7 @@ tasks:
     - '2016-02-02 19:33:00'
   - - '77'
     - Initial Tech Check
-    - PlosBioTechCheck::InitialTechCheckTask
+    - PlosBio::InitialTechCheckTask
     - '17'
     - false
     - '2015-11-02 14:46:24.100782'
@@ -8681,10 +8681,10 @@ tasks:
     - '{"round":1}'
     - '1'
     - '4'
-    - 
+    -
   - - '78'
     - Revision Tech Check
-    - PlosBioTechCheck::RevisionTechCheckTask
+    - PlosBio::RevisionTechCheckTask
     - '17'
     - false
     - '2015-11-02 14:46:24.107141'
@@ -8693,10 +8693,10 @@ tasks:
     - "[]"
     - '2'
     - '4'
-    - 
+    -
   - - '79'
     - Final Tech Check
-    - PlosBioTechCheck::FinalTechCheckTask
+    - PlosBio::FinalTechCheckTask
     - '17'
     - false
     - '2015-11-02 14:46:24.112501'
@@ -8705,7 +8705,7 @@ tasks:
     - "[]"
     - '3'
     - '4'
-    - 
+    -
   - - '80'
     - Assign Team
     - Tahi::AssignTeam::AssignTeamTask
@@ -8720,7 +8720,7 @@ tasks:
     - '2016-02-02 19:33:00'
   - - '81'
     - Editor Discussion
-    - PlosBioInternalReview::EditorsDiscussionTask
+    - PlosBio::EditorsDiscussionTask
     - '18'
     - false
     - '2015-11-02 14:46:24.128177'
@@ -8729,7 +8729,7 @@ tasks:
     - "[]"
     - '2'
     - '4'
-    - 
+    -
   - - '82'
     - Invite Reviewers
     - TahiStandardTasks::PaperReviewerTask
@@ -8741,7 +8741,7 @@ tasks:
     - "[]"
     - '1'
     - '4'
-    - 
+    -
   - - '83'
     - Academic Editor Feedback
     - Task
@@ -8753,7 +8753,7 @@ tasks:
     - "[]"
     - '2'
     - '4'
-    - 
+    -
   - - '84'
     - Register Decision
     - TahiStandardTasks::RegisterDecisionTask
@@ -8765,7 +8765,7 @@ tasks:
     - "[]"
     - '1'
     - '4'
-    - 
+    -
   - - '85'
     - Supporting Info
     - TahiStandardTasks::SupportingInformationTask
@@ -8777,7 +8777,7 @@ tasks:
     - "[]"
     - '1'
     - '8'
-    - 
+    -
   - - '86'
     - Authors
     - TahiStandardTasks::AuthorsTask
@@ -8789,7 +8789,7 @@ tasks:
     - "[]"
     - '2'
     - '8'
-    - 
+    -
   - - '87'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
@@ -8801,7 +8801,7 @@ tasks:
     - "[]"
     - '3'
     - '8'
-    - 
+    -
   - - '88'
     - Billing
     - PlosBilling::BillingTask
@@ -8813,7 +8813,7 @@ tasks:
     - "[]"
     - '4'
     - '8'
-    - 
+    -
   - - '89'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
@@ -8825,7 +8825,7 @@ tasks:
     - "[]"
     - '5'
     - '8'
-    - 
+    -
   - - '90'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -8837,7 +8837,7 @@ tasks:
     - "[]"
     - '6'
     - '8'
-    - 
+    -
   - - '91'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
@@ -8849,7 +8849,7 @@ tasks:
     - "[]"
     - '7'
     - '8'
-    - 
+    -
   - - '92'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
@@ -8861,7 +8861,7 @@ tasks:
     - "[]"
     - '8'
     - '8'
-    - 
+    -
   - - '93'
     - Figures
     - TahiStandardTasks::FigureTask
@@ -8873,7 +8873,7 @@ tasks:
     - "[]"
     - '9'
     - '8'
-    - 
+    -
   - - '94'
     - Financial Disclosure
     - TahiStandardTasks::FinancialDisclosureTask
@@ -8885,7 +8885,7 @@ tasks:
     - "[]"
     - '10'
     - '8'
-    - 
+    -
   - - '95'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
@@ -8897,7 +8897,7 @@ tasks:
     - "[]"
     - '11'
     - '8'
-    - 
+    -
   - - '96'
     - Reporting Guidelines
     - TahiStandardTasks::ReportingGuidelinesTask
@@ -8909,7 +8909,7 @@ tasks:
     - "[]"
     - '12'
     - '8'
-    - 
+    -
   - - '97'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
@@ -8921,10 +8921,10 @@ tasks:
     - "[]"
     - '13'
     - '8'
-    - 
+    -
   - - '98'
     - Initial Tech Check
-    - PlosBioTechCheck::InitialTechCheckTask
+    - PlosBio::InitialTechCheckTask
     - '22'
     - false
     - '2015-11-03 22:59:21.270475'
@@ -8933,10 +8933,10 @@ tasks:
     - '{"round":1}'
     - '1'
     - '8'
-    - 
+    -
   - - '99'
     - Revision Tech Check
-    - PlosBioTechCheck::RevisionTechCheckTask
+    - PlosBio::RevisionTechCheckTask
     - '22'
     - false
     - '2015-11-03 22:59:21.278714'
@@ -8945,10 +8945,10 @@ tasks:
     - "[]"
     - '2'
     - '8'
-    - 
+    -
   - - '100'
     - Final Tech Check
-    - PlosBioTechCheck::FinalTechCheckTask
+    - PlosBio::FinalTechCheckTask
     - '22'
     - false
     - '2015-11-03 22:59:21.284243'
@@ -8957,7 +8957,7 @@ tasks:
     - "[]"
     - '3'
     - '8'
-    - 
+    -
   - - '101'
     - Assign Team
     - Tahi::AssignTeam::AssignTeamTask
@@ -8969,10 +8969,10 @@ tasks:
     - "[]"
     - '1'
     - '8'
-    - 
+    -
   - - '102'
     - Editor Discussion
-    - PlosBioInternalReview::EditorsDiscussionTask
+    - PlosBio::EditorsDiscussionTask
     - '23'
     - false
     - '2015-11-03 22:59:21.302115'
@@ -8981,7 +8981,7 @@ tasks:
     - "[]"
     - '2'
     - '8'
-    - 
+    -
   - - '103'
     - Invite Reviewers
     - TahiStandardTasks::PaperReviewerTask
@@ -8993,7 +8993,7 @@ tasks:
     - "[]"
     - '1'
     - '8'
-    - 
+    -
   - - '104'
     - Academic Editor Feedback
     - Task
@@ -9005,7 +9005,7 @@ tasks:
     - "[]"
     - '2'
     - '8'
-    - 
+    -
   - - '105'
     - Register Decision
     - TahiStandardTasks::RegisterDecisionTask
@@ -9017,7 +9017,7 @@ tasks:
     - "[]"
     - '1'
     - '8'
-    - 
+    -
   - - '106'
     - Supporting Info
     - TahiStandardTasks::SupportingInformationTask
@@ -9029,7 +9029,7 @@ tasks:
     - "[]"
     - '1'
     - '9'
-    - 
+    -
   - - '107'
     - Authors
     - TahiStandardTasks::AuthorsTask
@@ -9041,7 +9041,7 @@ tasks:
     - "[]"
     - '2'
     - '9'
-    - 
+    -
   - - '108'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
@@ -9053,7 +9053,7 @@ tasks:
     - "[]"
     - '3'
     - '9'
-    - 
+    -
   - - '109'
     - Billing
     - PlosBilling::BillingTask
@@ -9065,7 +9065,7 @@ tasks:
     - "[]"
     - '4'
     - '9'
-    - 
+    -
   - - '110'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
@@ -9077,7 +9077,7 @@ tasks:
     - "[]"
     - '5'
     - '9'
-    - 
+    -
   - - '111'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -9089,7 +9089,7 @@ tasks:
     - "[]"
     - '6'
     - '9'
-    - 
+    -
   - - '112'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
@@ -9101,7 +9101,7 @@ tasks:
     - "[]"
     - '7'
     - '9'
-    - 
+    -
   - - '113'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
@@ -9113,7 +9113,7 @@ tasks:
     - "[]"
     - '8'
     - '9'
-    - 
+    -
   - - '114'
     - Figures
     - TahiStandardTasks::FigureTask
@@ -9125,7 +9125,7 @@ tasks:
     - "[]"
     - '9'
     - '9'
-    - 
+    -
   - - '115'
     - Financial Disclosure
     - TahiStandardTasks::FinancialDisclosureTask
@@ -9137,7 +9137,7 @@ tasks:
     - "[]"
     - '10'
     - '9'
-    - 
+    -
   - - '116'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
@@ -9149,7 +9149,7 @@ tasks:
     - "[]"
     - '11'
     - '9'
-    - 
+    -
   - - '117'
     - Reporting Guidelines
     - TahiStandardTasks::ReportingGuidelinesTask
@@ -9161,7 +9161,7 @@ tasks:
     - "[]"
     - '12'
     - '9'
-    - 
+    -
   - - '118'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
@@ -9173,10 +9173,10 @@ tasks:
     - "[]"
     - '13'
     - '9'
-    - 
+    -
   - - '119'
     - Initial Tech Check
-    - PlosBioTechCheck::InitialTechCheckTask
+    - PlosBio::InitialTechCheckTask
     - '27'
     - false
     - '2015-11-03 23:02:07.136355'
@@ -9185,10 +9185,10 @@ tasks:
     - '{"round":1}'
     - '1'
     - '9'
-    - 
+    -
   - - '120'
     - Revision Tech Check
-    - PlosBioTechCheck::RevisionTechCheckTask
+    - PlosBio::RevisionTechCheckTask
     - '27'
     - false
     - '2015-11-03 23:02:07.142415'
@@ -9197,10 +9197,10 @@ tasks:
     - "[]"
     - '2'
     - '9'
-    - 
+    -
   - - '121'
     - Final Tech Check
-    - PlosBioTechCheck::FinalTechCheckTask
+    - PlosBio::FinalTechCheckTask
     - '27'
     - false
     - '2015-11-03 23:02:07.148881'
@@ -9209,7 +9209,7 @@ tasks:
     - "[]"
     - '3'
     - '9'
-    - 
+    -
   - - '122'
     - Assign Team
     - Tahi::AssignTeam::AssignTeamTask
@@ -9221,10 +9221,10 @@ tasks:
     - "[]"
     - '1'
     - '9'
-    - 
+    -
   - - '123'
     - Editor Discussion
-    - PlosBioInternalReview::EditorsDiscussionTask
+    - PlosBio::EditorsDiscussionTask
     - '28'
     - false
     - '2015-11-03 23:02:07.168945'
@@ -9233,7 +9233,7 @@ tasks:
     - "[]"
     - '2'
     - '9'
-    - 
+    -
   - - '124'
     - Invite Reviewers
     - TahiStandardTasks::PaperReviewerTask
@@ -9245,7 +9245,7 @@ tasks:
     - "[]"
     - '1'
     - '9'
-    - 
+    -
   - - '125'
     - Academic Editor Feedback
     - Task
@@ -9257,7 +9257,7 @@ tasks:
     - "[]"
     - '2'
     - '9'
-    - 
+    -
   - - '126'
     - Register Decision
     - TahiStandardTasks::RegisterDecisionTask
@@ -9269,7 +9269,7 @@ tasks:
     - "[]"
     - '1'
     - '9'
-    - 
+    -
   - - '127'
     - Supporting Info
     - TahiStandardTasks::SupportingInformationTask
@@ -9281,7 +9281,7 @@ tasks:
     - "[]"
     - '1'
     - '10'
-    - 
+    -
   - - '128'
     - Authors
     - TahiStandardTasks::AuthorsTask
@@ -9293,7 +9293,7 @@ tasks:
     - "[]"
     - '2'
     - '10'
-    - 
+    -
   - - '129'
     - Upload Manuscript
     - TahiStandardTasks::UploadManuscriptTask
@@ -9305,7 +9305,7 @@ tasks:
     - "[]"
     - '3'
     - '10'
-    - 
+    -
   - - '130'
     - Billing
     - PlosBilling::BillingTask
@@ -9317,7 +9317,7 @@ tasks:
     - "[]"
     - '4'
     - '10'
-    - 
+    -
   - - '131'
     - Competing Interests
     - TahiStandardTasks::CompetingInterestsTask
@@ -9329,7 +9329,7 @@ tasks:
     - "[]"
     - '5'
     - '10'
-    - 
+    -
   - - '132'
     - Cover Letter
     - TahiStandardTasks::CoverLetterTask
@@ -9341,7 +9341,7 @@ tasks:
     - "[]"
     - '6'
     - '10'
-    - 
+    -
   - - '133'
     - Data Availability
     - TahiStandardTasks::DataAvailabilityTask
@@ -9353,7 +9353,7 @@ tasks:
     - "[]"
     - '7'
     - '10'
-    - 
+    -
   - - '134'
     - Ethics Statement
     - TahiStandardTasks::EthicsTask
@@ -9365,7 +9365,7 @@ tasks:
     - "[]"
     - '8'
     - '10'
-    - 
+    -
   - - '135'
     - Figures
     - TahiStandardTasks::FigureTask
@@ -9377,7 +9377,7 @@ tasks:
     - "[]"
     - '9'
     - '10'
-    - 
+    -
   - - '136'
     - Financial Disclosure
     - TahiStandardTasks::FinancialDisclosureTask
@@ -9389,7 +9389,7 @@ tasks:
     - "[]"
     - '10'
     - '10'
-    - 
+    -
   - - '137'
     - Additional Information
     - TahiStandardTasks::PublishingRelatedQuestionsTask
@@ -9401,7 +9401,7 @@ tasks:
     - "[]"
     - '11'
     - '10'
-    - 
+    -
   - - '138'
     - Reporting Guidelines
     - TahiStandardTasks::ReportingGuidelinesTask
@@ -9413,7 +9413,7 @@ tasks:
     - "[]"
     - '12'
     - '10'
-    - 
+    -
   - - '139'
     - Reviewer Candidates
     - TahiStandardTasks::ReviewerRecommendationsTask
@@ -9425,10 +9425,10 @@ tasks:
     - "[]"
     - '13'
     - '10'
-    - 
+    -
   - - '140'
     - Initial Tech Check
-    - PlosBioTechCheck::InitialTechCheckTask
+    - PlosBio::InitialTechCheckTask
     - '32'
     - false
     - '2015-11-10 22:27:27.535272'
@@ -9437,10 +9437,10 @@ tasks:
     - '{"round":1}'
     - '1'
     - '10'
-    - 
+    -
   - - '141'
     - Revision Tech Check
-    - PlosBioTechCheck::RevisionTechCheckTask
+    - PlosBio::RevisionTechCheckTask
     - '32'
     - false
     - '2015-11-10 22:27:27.545741'
@@ -9449,10 +9449,10 @@ tasks:
     - "[]"
     - '2'
     - '10'
-    - 
+    -
   - - '142'
     - Final Tech Check
-    - PlosBioTechCheck::FinalTechCheckTask
+    - PlosBio::FinalTechCheckTask
     - '32'
     - false
     - '2015-11-10 22:27:27.554406'
@@ -9461,7 +9461,7 @@ tasks:
     - "[]"
     - '3'
     - '10'
-    - 
+    -
   - - '143'
     - Assign Team
     - Tahi::AssignTeam::AssignTeamTask
@@ -9473,10 +9473,10 @@ tasks:
     - "[]"
     - '1'
     - '10'
-    - 
+    -
   - - '144'
     - Editor Discussion
-    - PlosBioInternalReview::EditorsDiscussionTask
+    - PlosBio::EditorsDiscussionTask
     - '33'
     - false
     - '2015-11-10 22:27:27.579306'
@@ -9485,7 +9485,7 @@ tasks:
     - "[]"
     - '2'
     - '10'
-    - 
+    -
   - - '145'
     - Invite Reviewers
     - TahiStandardTasks::PaperReviewerTask
@@ -9497,7 +9497,7 @@ tasks:
     - "[]"
     - '1'
     - '10'
-    - 
+    -
   - - '146'
     - Academic Editor Feedback
     - Task
@@ -9509,7 +9509,7 @@ tasks:
     - "[]"
     - '2'
     - '10'
-    - 
+    -
   - - '147'
     - Register Decision
     - TahiStandardTasks::RegisterDecisionTask
@@ -9521,4 +9521,4 @@ tasks:
     - "[]"
     - '1'
     - '10'
-    - 
+    -

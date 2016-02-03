@@ -8,7 +8,7 @@ describe PaperTrackerSerializer do
     let!(:paper) { FactoryGirl.create :paper, creator: creator }
     let!(:journal) { paper.journal }
     let!(:collaborator) { FactoryGirl.create :user }
-    let!(:internal_editor) { FactoryGirl.create :user }
+    let!(:handling_editor) { FactoryGirl.create :user }
     let!(:reviewer) { FactoryGirl.create :user }
 
     let(:roles) do
@@ -21,13 +21,13 @@ describe PaperTrackerSerializer do
     before do
       # Ensure the roles are scoped to the paper's journal
       Role.ensure_exists('Creator', journal: journal)
-      Role.ensure_exists('Internal Editor', journal: journal)
+      Role.ensure_exists('Handling Editor', journal: journal)
       Role.ensure_exists('Reviewer', journal: journal)
       Role.ensure_exists('Collaborator', journal: journal)
 
       roles = paper.journal.roles
       assign_user collaborator, to: paper, with_role: roles.collaborator
-      assign_user internal_editor, to: paper, with_role: roles.internal_editor
+      assign_user handling_editor, to: paper, with_role: roles.handling_editor
       assign_user reviewer, to: paper, with_role: roles.reviewer
     end
 
@@ -46,9 +46,9 @@ describe PaperTrackerSerializer do
       expect(reviewers[0][:id]).to be(reviewer.id)
     end
 
-    it 'lists the internal_editor' do
-      internal_editors = roles.find { |r| r[:name] == 'Internal Editor' }[:users]
-      expect(internal_editors[0][:id]).to be(internal_editor.id)
+    it 'lists the handling_editor' do
+      handling_editors = roles.find { |r| r[:name] == 'Handling Editor' }[:users]
+      expect(handling_editors[0][:id]).to be(handling_editor.id)
     end
   end
 end

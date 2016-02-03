@@ -33,8 +33,10 @@ module TaskAccessCriteria
   end
 
   def can_view_manuscript_manager_for_paper?
-    (paper.tasks.assigned_to(current_user).exists? ||
-    PaperRole.for_user(current_user).where(paper: paper).exists?) &&
+    (
+      Participation.where(task_id: paper.task_ids, user_id: current_user).exists? ||
+      PaperRole.for_user(current_user).where(paper: paper).exists?
+    ) &&
     journal_roles.merge(OldRole.can_view_assigned_manuscript_managers).exists?
   end
 

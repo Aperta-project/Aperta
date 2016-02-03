@@ -43,7 +43,7 @@ class QueryLanguageParser
   private
 
   def call_block_with_parsed_string(block, parsed_string)
-    # Instance exec because these blocks are defined at hte class
+    # Instance exec because these blocks are defined at the class
     # level (using, e.g., add_simple_expression), but they must be run
     # at the instance level.
     instance_exec(parsed_string, &block)

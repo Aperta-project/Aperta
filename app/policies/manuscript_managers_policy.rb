@@ -27,8 +27,9 @@ class ManuscriptManagersPolicy < ApplicationPolicy
   end
 
   def user_assigned_to_paper?(user, paper)
-    (paper.tasks.assigned_to(user).exists? ||
-      PaperRole.for_user(user).where(paper: paper).exists?)
+    paper.participants.include?(user) ||
+    Participation.where(task_id: paper.task_ids, user_id: current_user).exists? ||
+      PaperRole.for_user(user).where(paper: paper).exists?
   end
 
   def journal_roles

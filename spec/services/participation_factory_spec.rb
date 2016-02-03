@@ -20,10 +20,16 @@ describe ParticipationFactory do
     end
 
     it 'Does not create a participation if already participant' do
-      Participation.create(task: task, user: assignee)
+      task.participations.create!(user: assignee)
       expect do
         ParticipationFactory.create(full_params)
       end.to_not change(Participation, :count)
+    end
+
+    it 'Creates a new participation assignment' do
+      expect do
+        ParticipationFactory.create(full_params)
+      end.to change { task.participations.count }.by(1)
     end
 
     it 'Creates a participation that does not notify the assigner' do

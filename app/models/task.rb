@@ -28,6 +28,11 @@ class Task < ActiveRecord::Base
     task.assignments.where(role_id: journal.roles.participant)
   end
 
+  has_many :participations,
+    -> (task) { where(role_id: task.journal.roles.participant) },
+    class_name: 'Assignment',
+    as: :assigned_to
+
   has_many :permission_requirements, as: :required_on
   has_many :required_permissions, through: :permission_requirements, source: :permission
   belongs_to :paper, inverse_of: :tasks
@@ -137,12 +142,9 @@ class Task < ActiveRecord::Base
     update!(completed: false)
   end
 
-  def participations
-    self.class.participations_for(task: self)
-  end
-
   def participants
-    User.assigned_to(self, role: journal.roles.participant)
+    participations.includes(:user).map(&:user)
+    # User.assigned_to(self, role: journal.roles.participant)
   end
 
   def participants=(users)

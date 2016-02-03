@@ -161,12 +161,20 @@ describe QueryParser do
 
     describe 'people queries' do
       let!(:author_role) { create(:role, name: 'author') }
+      let!(:reviewer_role) { create(:role, name: 'reviewer') }
       let!(:user) { create(:user, username: 'someuser') }
 
       it 'parses USER x HAS ROLE author' do
         parse = QueryParser.new.parse 'USER someuser HAS ROLE author'
         expect(parse.to_sql).to eq(<<-SQL.strip)
           "assignments"."user_id" = #{user.id} AND "assignments"."role_id" = #{author_role.id}
+        SQL
+      end
+
+      it 'parses USER x HAS ANY ROLE' do
+        parse = QueryParser.new.parse 'USER someuser HAS ANY ROLE'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "assignments"."user_id" = #{user.id}
         SQL
       end
     end

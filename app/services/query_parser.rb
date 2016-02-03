@@ -52,6 +52,12 @@ class QueryParser < QueryLanguageParser
       Assignment.arel_table['role_id'].eq(role_id))
   end
 
+  add_two_part_expression('USER', 'HAS ANY ROLE') do |user, role|
+    user_id = User.find_by(username: user).id
+    join Assignment
+    Assignment.arel_table['user_id'].eq(user_id)
+  end
+
   add_two_part_expression('TASK', 'IS COMPLETE') do |task, _|
     table = join Task
     table[:title].matches(task).and(table[:completed].eq(true))

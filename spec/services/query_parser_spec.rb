@@ -177,6 +177,13 @@ describe QueryParser do
           "assignments"."user_id" = #{user.id}
         SQL
       end
+
+      it 'parses ANYONE HAS ROLE x' do
+        parse = QueryParser.new.parse 'ANYONE HAS ROLE author'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "assignments"."role_id" = #{author_role.id}
+        SQL
+      end
     end
   end
 end

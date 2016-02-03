@@ -15,7 +15,9 @@ class Task < ActiveRecord::Base
   scope :submission, -> { where(type: submission_types.to_a) }
 
   # Scopes based on assignment
-  scope :unassigned, -> { includes(:participations).where(participations: { id: nil }) }
+  scope :unassigned, -> {
+    includes(:assignments).where(assignments: { id: nil })
+  }
 
   # Scopes based on state
   scope :completed, -> { where(completed: true) }

@@ -152,11 +152,10 @@ describe FlowQuery do
       end
     end
 
-
     context "default scopes" do
-      let(:up_for_grabs) { FactoryGirl.create(:task, paper: paper, phase: phase, completed: false, participants: []) }
-      let(:my_tasks) { FactoryGirl.create(:task, paper: paper, phase: phase, completed: false, participants: [user]) }
-      let(:done) { FactoryGirl.create(:task, paper: paper, phase: phase, completed: true, participants: [user]) }
+      let!(:up_for_grabs) { FactoryGirl.create(:task, paper: paper, phase: phase, completed: false, participants: []) }
+      let!(:my_tasks) { FactoryGirl.create(:task, paper: paper, phase: phase, completed: false, participants: [user]) }
+      let!(:done) { FactoryGirl.create(:task, paper: paper, phase: phase, completed: true, participants: [user]) }
 
       context "Up for grabs" do
         it "returns tasks that are up for grabs" do

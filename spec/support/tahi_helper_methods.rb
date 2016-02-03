@@ -11,7 +11,7 @@ module TahiHelperMethods
     assign_journal_role(paper.journal, user, :admin)
     paper_admin_task = paper.tasks.where(title: 'Assign Admin').first
     paper_admin_task.admin_id = user.id
-    paper_admin_task.participants << user
+    paper_admin_task.add_participant(user)
     paper_admin_task.save!
   end
 

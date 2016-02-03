@@ -23,15 +23,12 @@ class Task < ActiveRecord::Base
 
   scope :on_journals, ->(journals) { joins(:journal).where("journals.id" => journals.map(&:id)) }
 
-  scope :participations_for, -> (task:) do
-    journal = task.journal
-    task.assignments.where(role_id: journal.roles.participant)
-  end
-
-  has_many :participations,
-    -> (task) { where(role_id: task.journal.roles.participant) },
+  has_many :participations, -> {
+      joins(:role).where(roles: { name: Role::PARTICIPANT_ROLE })
+    },
     class_name: 'Assignment',
     as: :assigned_to
+  has_many :participants, -> { joins(:roles) }, through: :participations, source: :user
 
   has_many :permission_requirements, as: :required_on
   has_many :required_permissions, through: :permission_requirements, source: :permission
@@ -142,20 +139,17 @@ class Task < ActiveRecord::Base
     update!(completed: false)
   end
 
-  def participants
-    participations.includes(:user).map(&:user)
-    # User.assigned_to(self, role: journal.roles.participant)
+  def add_participant(user)
+    participations.create!(
+      user: user,
+      role: journal.roles.participant
+    )
   end
 
   def participants=(users)
     participations.destroy_all
     save! if new_record?
-    users.each do |user|
-      assignments.create!(
-        user: user,
-        role: journal.roles.participant
-      )
-    end
+    users.each { |user| add_participant user }
   end
 
   def update_responder

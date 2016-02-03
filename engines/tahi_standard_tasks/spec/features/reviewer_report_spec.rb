@@ -12,7 +12,7 @@ feature "Reviewer filling out their reviewer report", js: true do
     assign_journal_role journal, editor, :editor
     assign_handling_editor_role paper, editor
 
-    task.participants << editor
+    task.add_participant(editor)
 
     login_as(editor, scope: :user)
     visit "/"

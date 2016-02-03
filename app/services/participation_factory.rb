@@ -23,10 +23,7 @@ class ParticipationFactory
 
   def create_participation
     # New roles
-    task.participations.create!(
-      user: assignee,
-      role: task.journal.roles.participant
-    )
+    task.add_participant(assignee)
 
     # Old roles
     Participation.create!(

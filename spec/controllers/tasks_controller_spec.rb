@@ -126,7 +126,7 @@ describe TasksController, redis: true do
 
         before do
           user.update! site_admin: false
-          task.participants << user
+          task.add_participant(user)
         end
 
         it "updates the task" do

@@ -9,7 +9,7 @@ feature 'Changes For Author', js: true do
   let(:manuscript_page) { dashboard.view_submitted_paper paper }
 
   before do
-    task.participants << author
+    task.add_participant(author)
 
     SignInPage.visit.sign_in author
   end

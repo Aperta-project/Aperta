@@ -11,7 +11,7 @@ feature "Inviting a new reviewer", js: true do
   before do
     assign_journal_role paper.journal, editor, :editor
     assign_handling_editor_role paper, editor
-    task.participants << editor
+    task.add_participant(editor)
 
     login_as(editor, scope: :user)
     visit "/"

@@ -15,7 +15,7 @@ feature 'Send to Apex task', js: true, selenium: true do
       request_1.uri.start_with?(request_2.uri)
     end
     server.start
-    task.participants << user
+    task.add_participant(user)
     paper.paper_roles.create!(user: user, old_role: PaperRole::COLLABORATOR)
     login_as(user, scope: :user)
     visit '/'

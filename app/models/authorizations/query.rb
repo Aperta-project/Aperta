@@ -34,6 +34,7 @@ module Authorizations
       # we're looking for everything, e.g. Task got passed in
       if target.is_a?(Class)
         @klass = target
+        @target = target.all
         @participations_only = true if @participations_only == :default
 
       # we're looking for a specific object, e.g. Task.first got passed in

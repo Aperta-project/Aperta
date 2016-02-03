@@ -47,7 +47,9 @@ describe AssignmentsController, type: :controller do
     let(:admin) { create :user, :site_admin }
     let(:journal) { FactoryGirl.create(:journal) }
     let(:paper) { FactoryGirl.create(:paper, journal: journal) }
-    let!(:old_role) { OldRole.where(name: 'Admin').first_or_create! }
+    let!(:old_role) do
+      OldRole.where(name: 'Custom Role', journal: journal).first_or_create!
+    end
 
     before do
       Role.ensure_exists(Role::HANDLING_EDITOR_ROLE, journal: journal)
@@ -108,7 +110,7 @@ describe AssignmentsController, type: :controller do
     let!(:old_role) do
       OldRole.where(name: old_role_name, journal: journal).first_or_create!
     end
-    let!(:old_role_name) { 'Admin' }
+    let!(:old_role_name) { 'Custom Role' }
     let!(:paper_role) do
       PaperRole.create!(old_role: old_role_name, user: assignee, paper: paper)
     end

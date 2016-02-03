@@ -145,6 +145,17 @@ class Task < ActiveRecord::Base
     User.assigned_to(self, role: journal.roles.participant)
   end
 
+  def participants=(users)
+    participations.destroy_all
+    save! if new_record?
+    users.each do |user|
+      assignments.create!(
+        user: user,
+        role: journal.roles.participant
+      )
+    end
+  end
+
   def update_responder
     UpdateResponders::Task
   end

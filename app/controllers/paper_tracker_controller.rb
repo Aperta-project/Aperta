@@ -6,7 +6,7 @@ class PaperTrackerController < ApplicationController
 
   def index
     # show all papers that user is connected to across all journals
-    papers = QueryParser
+    papers = QueryParser.new
              .build(params[:query] || '')
              .where(journal_id: journal_ids)
              .where.not(publishing_state: :unsubmitted)

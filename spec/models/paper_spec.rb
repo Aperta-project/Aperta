@@ -215,7 +215,7 @@ describe Paper do
       let(:task_user) { FactoryGirl.create(:user) }
       let(:task_assignment) do
         task.assignments.create!(
-          user:task_user,
+          user: task_user,
           role: FactoryGirl.create(:role)
         )
       end
@@ -231,6 +231,19 @@ describe Paper do
         expect(paper.participants).to contain_exactly(
           creator, collaborator, handling_editor, reviewer, task_user
         )
+      end
+
+      context 'and has a user assigned multiple times to the paper' do
+        it 'returns the users only once' do
+          task.assignments.create!(
+            user: paper.creator,
+            role: paper.journal.roles.participant
+          )
+
+          expect(paper.participants).to contain_exactly(
+            creator, collaborator, handling_editor, reviewer, task_user
+          )
+        end
       end
     end
   end

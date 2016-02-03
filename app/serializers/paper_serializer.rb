@@ -16,11 +16,6 @@ class PaperSerializer < LitePaperSerializer
   has_one :journal, embed: :id
   has_one :striking_image, embed: :id
 
-  def collaborations
-    # we want the actual join record, not a list of users
-    object.participations
-  end
-
   def links
     {
       comment_looks: comment_looks_paper_path(object),

@@ -351,7 +351,7 @@ class Paper < ActiveRecord::Base
   end
 
   def participants
-    participations.map(&:user)
+    participations.map(&:user).uniq
   end
 
   %w(admins editors reviewers).each do |relation|

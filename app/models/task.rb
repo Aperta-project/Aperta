@@ -108,7 +108,11 @@ class Task < ActiveRecord::Base
       if users.empty?
         Task.none
       else
-        joins(participations: :user).where("participations.user_id" => users)
+        joins(assignments: [:role, :user])
+          .where(
+            "assignments.user_id" => users,
+            "roles.name" => Role::PARTICIPANT_ROLE
+          )
       end
     end
   end

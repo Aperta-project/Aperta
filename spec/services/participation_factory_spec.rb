@@ -20,7 +20,7 @@ describe ParticipationFactory do
     end
 
     it 'Does not create a participation if already participant' do
-      task.participations.create!(user: assignee)
+      task.add_participant assignee
       expect do
         ParticipationFactory.create(full_params)
       end.to_not change(Participation, :count)

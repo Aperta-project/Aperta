@@ -29,8 +29,7 @@ class CardOverlay < Page
   end
 
   def mark_as_complete
-    check "I am finished with this task"
-    check "I am finished with this task" unless completed?
+    find('#task-not-completed').click
   end
 
   def completed?

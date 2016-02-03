@@ -3,15 +3,14 @@ import NestedQuestionComponent from 'tahi/pods/components/nested-question/compon
 
 export default NestedQuestionComponent.extend({
   selectedData: Ember.computed('model.answer', function() {
-    var id;
-    id = parseInt(this.get('model.answer.value')) || this.get('model.answer.value');
+    const id = parseInt(this.get('model.answer.value')) || this.get('model.answer.value');
     return this.get('source').findBy('id', id);
   }),
 
   actions: {
     selectionSelected: function(selection) {
-      this.set("model.answer.value", selection.id);
-      this.sendAction("selectionSelected", selection);
+      this.set('model.answer.value', selection.id);
+      this.sendAction('selectionSelected', selection);
     }
   }
 });

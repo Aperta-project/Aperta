@@ -51,7 +51,18 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     const allValidations = this.get('validations');
     if(isEmpty(allValidations)) { return; }
 
-    this.get('task.nestedQuestionAnswers').forEach(answer => {
+    const nestedQuestionAnswers = this.get('task.nestedQuestions')
+                                      .mapProperty('answers');
+
+    // NOTE: nested-questions.answers is hasMany relationship
+    // so we need to flatten
+    const answers = _.flatten(nestedQuestionAnswers.map(function(arr) {
+      return _.compact( arr.map(function(a) {
+        return a;
+      }) );
+    }) );
+
+    answers.forEach(answer => {
       const key = answer.get('nestedQuestion.ident');
       const validations = allValidations[key];
       if(isEmpty(validations)) { return; }

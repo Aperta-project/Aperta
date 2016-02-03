@@ -136,7 +136,7 @@
       </div>
     </div>
 
-    <div class="flex-element billing-payee-country {{if validationErrors.country "error"}}">
+    <div class="flex-element billing-payee-country">
       {{#if countries.loaded}}
         {{nested-question-select ident="plos_billing--country"
                                  owner=task

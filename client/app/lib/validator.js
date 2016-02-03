@@ -1,20 +1,29 @@
 import Ember from 'ember';
+
+// 1. Import validation:
+
 import presence from 'tahi/lib/validations/presence';
 import number   from 'tahi/lib/validations/number';
 
 const { isEmpty } = Ember;
+
+// 2. Add imported validation to TYPES:
 
 const TYPES = {
   'presence': presence.validation,
   'number': number.validation
 };
 
+// 3. Add imported validation defaultMessage:
+
 const DEFAULT_MESSAGES = {
   'presence': presence.defaultMessage,
   'number': number.defaultMessage
 };
 
-const generateErrorMessage = function(type, customMessage) {
+// ---------------------------------
+
+const _generateErrorMessage = function(type, customMessage) {
   if(isEmpty(customMessage)) {
     return DEFAULT_MESSAGES[type];
   }
@@ -36,7 +45,7 @@ export default {
         if(typeof validation === 'string') {
           const pass = TYPES[validation](value);
           if(!pass) {
-            return generateErrorMessage(validation);
+            return _generateErrorMessage(validation);
           }
         }
 
@@ -48,12 +57,12 @@ export default {
           delete options.type;
 
           if(options.skipCheck && options.skipCheck.call(context, key, value)) {
-            return false;
+            return;
           }
 
           const pass = TYPES[type](value, options);
           if(!pass) {
-            return generateErrorMessage.call(context, type, options.message);
+            return _generateErrorMessage.call(context, type, options.message);
           }
         }
       })

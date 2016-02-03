@@ -6,7 +6,7 @@
       Make changes to this task
     </button>
   {{else}}
-    <button class="task-completed button-secondary button--green"
+    <button class="task-completed button-secondary {{if validationErrors.completed "button--red" "button--green"}}"
             name="task_completed"
             disabled={{not isEditable}}>
       I am done with this task

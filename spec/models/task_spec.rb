@@ -52,9 +52,9 @@ describe Task do
 
     context 'on #destroy' do
       it 'destroy assignments' do
-        expect {
+        expect do
           task.destroy!
-        }.to change { task.assignments.count }.by(-1)
+        end.to change { task.assignments.count }.by(-1)
       end
     end
   end

@@ -143,7 +143,7 @@ describe ParticipationsController do
           }.to change { Participation.count }.by -1
         end
 
-        it 'destroy the associated an Role.participant assignment on the task' do
+        it 'destroy the associated Role.participant assignment on the task' do
           Assignment.create!(
             user: participant,
             role: task.journal.roles.participant,

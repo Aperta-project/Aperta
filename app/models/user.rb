@@ -29,7 +29,9 @@ class User < ActiveRecord::Base
     },
     class_name: 'Assignment',
     inverse_of: :user
-  has_many :tasks, through: :participations, as: :assigned_to
+  has_many :tasks, -> {
+    joins(assignments: :role).where(roles: { name: Role::PARTICIPANT_ROLE })
+    }, through: :assignments, source: :assigned_to, source_type: 'Task'
   has_many :comment_looks, inverse_of: :user
   has_many :credentials, inverse_of: :user, dependent: :destroy
   has_many :assigned_papers, ->{ uniq }, through: :paper_roles, class_name: 'Paper', source: :paper

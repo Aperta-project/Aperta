@@ -88,6 +88,26 @@ describe User do
     end
   end
 
+  describe '#tasks' do
+    subject(:user) { FactoryGirl.create(:user) }
+    let!(:participating_task) { FactoryGirl.create(:task) }
+    let!(:not_participating_task) { FactoryGirl.create(:task) }
+    let!(:other_role) { FactoryGirl.create(:role) }
+
+    before do
+      participating_task.add_participant user
+      not_participating_task.assignments.create!(user: user, role: other_role)
+    end
+
+    it 'returns tasks the user is assigned to as a participant' do
+      expect(user.tasks).to contain_exactly(participating_task)
+    end
+
+    it 'does not return tasks the user is assigned with another role' do
+      expect(user.tasks).to_not include(not_participating_task)
+    end
+  end
+
   describe '#invitations_from_latest_revision' do
     let(:user) { FactoryGirl.create(:user) }
     before do

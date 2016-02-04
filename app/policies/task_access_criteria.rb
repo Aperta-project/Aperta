@@ -33,8 +33,12 @@ module TaskAccessCriteria
   end
 
   def can_view_manuscript_manager_for_paper?
+    participations_on_tasks_for_user = Participation.where(
+      task_id: paper.task_ids, user_id: current_user
+    )
+
     (
-      Participation.where(task_id: paper.task_ids, user_id: current_user).exists? ||
+      participations_on_tasks_for_user.exists? ||
       PaperRole.for_user(current_user).where(paper: paper).exists?
     ) &&
     journal_roles.merge(OldRole.can_view_assigned_manuscript_managers).exists?

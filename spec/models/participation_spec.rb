@@ -66,7 +66,7 @@ describe "Participation" do
         )
       end
 
-      it "will remove the participant assignment when destroying the only participation" do
+      it 'removes participant assignment when destroying the participation' do
         expect do
           task.participations.first.destroy
         end.to change { task.participants.count }.by(-1)

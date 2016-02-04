@@ -19,7 +19,7 @@ from frontend.common_test import CommonTest
 from Pages.dashboard import DashboardPage
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
-from Base.Resources import login_valid_pw, au_login, he_login, sa_login
+from Base.Resources import login_valid_pw, au_login, oa_login
 
 @MultiBrowserFixture
 class MetadataVersioningTest(CommonTest):
@@ -45,7 +45,9 @@ class MetadataVersioningTest(CommonTest):
     are not implemented in this method
     """
     title = 'For metadata versioning'
-    types = ('Research', 'Research w/Initial Decision Card')
+    # Commented out due to bug APERTA-5948
+    #types = ('Research', 'Research w/Initial Decision Card')
+    types = ('Research No Authors', 'Research IDC no authors')
     journal_type = random.choice(types)
     new_prq = {'q1':'Yes', 'q2':'Yes', 'q3': [0,1,0,0], 'q4':'New Data',
                'q5':'More Data'}
@@ -53,6 +55,7 @@ class MetadataVersioningTest(CommonTest):
     # With a dashboard with several articles, this takes time to load and timeout
     # Big timeout for this step due to large number of papers
     dashboard_page.set_timeout(120)
+
     title = self.create_article(title=title,
                                 journal='PLOS Wombat',
                                 type_=journal_type,
@@ -80,24 +83,7 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer.close_submit_overlay()
     # logout
     paper_viewer.logout()
-    # log as an Admin to ad jgray as editor to this paper
-    dashboard_page = self.login(email=sa_login['user'], password=login_valid_pw)
-    # go to article
-    dashboard_page.go_to_manuscript(paper_id)
-    paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer.click_workflow_lnk()
-    workflow_page = WorkflowPage(self.getDriver())
-    workflow_page.click_add_new_card()
-    workflow_page.add_invite_editor_card()
-    workflow_page.click_invite_editor_card()
-    invite_editor_card = InviteEditorCard(self.getDriver())
-    invite_editor_card.invite_editor(he_login)
-    paper_viewer.logout()
-    # log as editor jgray_editor to accept invitation and accept initial submission
-    dashboard_page = self.login(email=he_login['user'], password=login_valid_pw)
-    dashboard_page.click_view_invitations()
-    # the Editor should accept the assignation as editor
-    dashboard_page.accept_invitation(title)
+    dashboard_page = self.login(email=oa_login['user'], password=login_valid_pw)
     # go to article
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
@@ -112,6 +98,7 @@ class MetadataVersioningTest(CommonTest):
       paper_viewer = ManuscriptViewerPage(self.getDriver())
       time.sleep(2)
       # submit article
+      import pdb; pdb.set_trace()
       paper_viewer.click_submit_btn()
       paper_viewer.confirm_submit_btn()
       paper_viewer.close_submit_overlay()
@@ -135,7 +122,7 @@ class MetadataVersioningTest(CommonTest):
     version_btn.click()
     bar_items = paper_viewer._gets(paper_viewer._bar_items)
     # click on
-    bar_items[2].find_elements_by_tag_name('option')[2].click()
+    bar_items[2].find_elements_by_tag_name('option')[1].click()
     # Following command disabled due to bug APERTA-5849
     #paper_viewer.click_task('prq')
     return self

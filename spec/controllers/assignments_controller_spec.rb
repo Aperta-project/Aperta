@@ -40,7 +40,11 @@ describe AssignmentsController, type: :controller do
     subject(:do_request) { post :create, 'assignment' => assignment_attributes }
 
     let(:assignment_attributes) do
-      {'old_role' => old_role.name, 'user_id' => assignee.id, 'paper_id' => paper.id }
+      {
+        'old_role' => old_role.name,
+        'user_id' => assignee.id,
+        'paper_id' => paper.id
+      }
     end
 
     let(:assignee) { FactoryGirl.create(:user) }
@@ -129,7 +133,8 @@ describe AssignmentsController, type: :controller do
 
       it 'deletes an Role.staff_admin assignment' do
         expect { do_request }.to change(assignee.assignments, :count).by(-1)
-        expect { assignment.reload }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { assignment.reload }.to \
+          raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
@@ -145,18 +150,19 @@ describe AssignmentsController, type: :controller do
 
       it 'deletes an Role.staff_admin assignment' do
         expect { do_request }.to change(assignee.assignments, :count).by(-1)
-        expect { assignment.reload }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { assignment.reload }.to \
+          raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
     it 'destroys an the PaperRole assignment (old role)' do
       do_request
-      expect(res_body['assignment']).to include({
+      expect(res_body['assignment']).to include(
         'id' => paper_role.id,
         'old_role' => old_role.name,
         'paper_id' => paper.id,
         'user_id' => assignee.id
-      })
+      )
     end
   end
 end

@@ -4,7 +4,7 @@ class Task < ActiveRecord::Base
   include TaskTypeRegistration
   include Commentable
 
-  register_task default_title: "Ad-hoc", default_role: "user"
+  register_task default_title: 'Ad-hoc', default_role: 'user'
 
   cattr_accessor :metadata_types
   cattr_accessor :submission_types
@@ -15,7 +15,7 @@ class Task < ActiveRecord::Base
   scope :submission, -> { where(type: submission_types.to_a) }
 
   # Scopes based on assignment
-  scope :unassigned, -> {
+  scope :unassigned, lambda {
     includes(:assignments).where(assignments: { id: nil })
   }
 
@@ -23,17 +23,26 @@ class Task < ActiveRecord::Base
   scope :completed, -> { where(completed: true) }
   scope :incomplete, -> { where(completed: false) }
 
-  scope :on_journals, ->(journals) { joins(:journal).where("journals.id" => journals.map(&:id)) }
+  scope :on_journals, lambda { |journals|
+    joins(:journal).where('journals.id' => journals.map(&:id))
+  }
 
-  has_many :participations, -> {
-      joins(:role).where(roles: { name: Role::PARTICIPANT_ROLE })
-    },
+  has_many \
+    :participations,
+    -> { joins(:role).where(roles: { name: Role::PARTICIPANT_ROLE }) },
     class_name: 'Assignment',
     as: :assigned_to
-  has_many :participants, -> { joins(:roles).uniq }, through: :participations, source: :user
+  has_many \
+    :participants,
+    -> { joins(:roles).uniq },
+    through: :participations,
+    source: :user
 
   has_many :permission_requirements, as: :required_on
-  has_many :required_permissions, through: :permission_requirements, source: :permission
+  has_many \
+    :required_permissions,
+    through: :permission_requirements,
+    source: :permission
   belongs_to :paper, inverse_of: :tasks
   has_one :journal, through: :paper, inverse_of: :tasks
   has_many :assignments, as: :assigned_to, dependent: :destroy
@@ -112,8 +121,8 @@ class Task < ActiveRecord::Base
       else
         joins(assignments: [:role, :user])
           .where(
-            "assignments.user_id" => users,
-            "roles.name" => Role::PARTICIPANT_ROLE
+            'assignments.user_id' => users,
+            'roles.name' => Role::PARTICIPANT_ROLE
           )
       end
     end
@@ -208,7 +217,7 @@ class Task < ActiveRecord::Base
   private
 
   def on_card_completion?
-    previous_changes["completed"] == [false, true]
+    previous_changes['completed'] == [false, true]
   end
 
   def update_completed_at

@@ -1,3 +1,5 @@
+# Participation represents the old way of doing things. It is deprecated
+# and will be removed in the near future.
 class Participation < ActiveRecord::Base
   include EventStream::Notifiable
 
@@ -17,10 +19,9 @@ class Participation < ActiveRecord::Base
   end
 
   def remove_paper_role
-    if user.present? && !paper.participants.include?(user)
-      paper.paper_roles.participants.where(
-        paper_roles: { user_id: user.id }
-      ).destroy_all
-    end
+    return if user.blank? || paper.participants.include?(user)
+    paper.paper_roles.participants.where(
+      paper_roles: { user_id: user.id }
+    ).destroy_all
   end
 end

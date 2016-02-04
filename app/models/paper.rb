@@ -329,16 +329,20 @@ class Paper < ActiveRecord::Base
   end
 
   def task_participation_roles
-    [ journal.roles.participant ]
+    [journal.roles.participant]
   end
 
-  def participations
+  def participations # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     root = Assignment.arel_table
     arel_query = (
       root[:assigned_to_type].eq(Paper.sti_name)
-        .and(root[:assigned_to_id].eq(id)
-        .and(root[:role_id].in(paper_participation_roles.map(&:id)))
-    ))
+      .and(
+        root[:assigned_to_id].eq(id)
+        .and(
+          root[:role_id].in(paper_participation_roles.map(&:id))
+        )
+      )
+    )
 
     if task_ids.present?
       arel_query = arel_query.or(

@@ -18,9 +18,6 @@ feature "Billing feature", js: true do
       p = PageFragment.new(find('.overlay'))
       p.select2("PLOS Publication Fee Assistance Program (PFA)", css: '.payment-method')
 
-      expect(find(".task-completed")[:disabled]).to be(nil)
-      expect(page).not_to have_selector(".task-completed-section .error-message") # make sure no error msg
-
       within(".question-dataset") do
         find("input[id*='plos_billing--pfa_question_1-yes']").click
         find("input[id*='plos_billing--pfa_question_2-yes']").click
@@ -29,19 +26,11 @@ feature "Billing feature", js: true do
 
         # numeric fields
         ['plos_billing--pfa_question_1b', 'plos_billing--pfa_question_2b', 'plos_billing--pfa_question_3a', 'plos_billing--pfa_question_4a', 'plos_billing--pfa_amount_to_pay'].each do |ident|
-          find("input[name*='#{ident}']").set "foo"
+          find("input[name*='#{ident}']").set 'foo'
+          page.execute_script("$(\"input[name*='#{ident}']\").blur()")
           expect(find("#error-for-#{ident}")).to have_content("Must be a number and contain no symbols, or letters")
         end
       end
-
-      expect(find(".task-completed")[:disabled]).to be_truthy # complete is disabled
-      expect(find(".task-completed-section .error-message").text).to eq("Errors in form") # shows error
-
-      # change to a different payment system
-      find(".affiliation-field b[role='presentation']").click # open payment types dropdown
-      find("div.select2-result-label", :text => /I will pay the full fee/).click # change back to non-pfa
-      expect(find(".task-completed")[:disabled]).to be(nil) # not disabled after change
-      expect(page).not_to have_selector(".task-completed-section .error-message") # make sure no error msg
     end
   end
 end

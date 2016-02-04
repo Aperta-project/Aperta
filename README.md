@@ -111,7 +111,7 @@ specs for the application. Firefox will pop up to run integration tests.
 There are a number of Rails engines in the `engines/` directory. To run those point the `rspec` command to their `spec/` directory, e.g.:
 
 ```
-rspec engines/plos_bio_tech_check/spec/
+rspec engines/plos_bio/spec/
 ```
 
 It's important that the `rspec` command is run from the application directory and not the engine directory when running as they share dependencies that are loaded with the `RAILS_ROOT/spec/rails_helper.rb`

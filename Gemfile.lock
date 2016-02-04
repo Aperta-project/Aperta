@@ -22,16 +22,10 @@ PATH
       rails (~> 4.2.0)
 
 PATH
-  remote: engines/plos_bio_internal_review
+  remote: engines/plos_bio
   specs:
-    plos_bio_internal_review (0.0.1)
+    plos_bio (0.0.1)
       rails (~> 4.2.1)
-
-PATH
-  remote: engines/plos_bio_tech_check
-  specs:
-    plos_bio_tech_check (0.0.1)
-      rails (~> 4.2.0)
 
 PATH
   remote: engines/tahi-assign_team
@@ -664,8 +658,7 @@ DEPENDENCIES
   pg
   pg_search
   plos_billing!
-  plos_bio_internal_review!
-  plos_bio_tech_check!
+  plos_bio!
   premailer-rails
   progressbar
   pry-byebug

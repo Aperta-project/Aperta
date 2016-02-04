@@ -4,9 +4,9 @@ namespace :data do
       desc 'Sets the Task roles to editor'
       task set_roles_to_editor: :environment do
         types = [
-          'PlosBio::FinalTechCheckTask',
-          'PlosBio::InitialTechCheckTask',
-          'PlosBio::RevisionTechCheckTask'
+          'PlosBioTechCheck::FinalTechCheckTask',
+          'PlosBioTechCheck::InitialTechCheckTask',
+          'PlosBioTechCheck::RevisionTechCheckTask'
         ]
         Task.where(type: types).update_all(role: 'editor')
       end

@@ -18,7 +18,7 @@ describe EmberAddonsInstaller do
         after_file_contents = JSON.load File.open(package_file_path)
 
         expect(after_file_contents['ember-addon']['paths'].to_s).to match("engines/plos_billing/client")
-        expect(after_file_contents['ember-addon']['paths'].to_s).to match("plos_bio/client")
+        expect(after_file_contents['ember-addon']['paths'].to_s).to match("plos_bio_tech_check/client")
       end
 
       after(:each) do

@@ -4,9 +4,9 @@ namespace :data do
       desc 'Sets the Journal Task Type roles to the editor'
       task set_roles_to_editor: :environment do
         types = [
-          'PlosBio::FinalTechCheckTask',
-          'PlosBio::InitialTechCheckTask',
-          'PlosBio::RevisionTechCheckTask'
+          'PlosBioTechCheck::FinalTechCheckTask',
+          'PlosBioTechCheck::InitialTechCheckTask',
+          'PlosBioTechCheck::RevisionTechCheckTask'
         ]
         JournalTaskType.where(kind: types).update_all(role: 'editor')
       end

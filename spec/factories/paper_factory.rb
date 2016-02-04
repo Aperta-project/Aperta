@@ -49,9 +49,7 @@ FactoryGirl.define do
 
     trait(:submitted) do
       after(:create) do |paper|
-        unless paper.creator
-          paper.update!(creator: FactoryGirl.create(:user))
-        end
+        paper.update!(creator: FactoryGirl.create(:user)) unless paper.creator
         paper.submit! paper.creator
       end
     end

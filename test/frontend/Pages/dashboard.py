@@ -307,7 +307,7 @@ class DashboardPage(AuthenticatedPage):
     :param username, list_: username, list
     :return: None
     """
-    logging.info('Starting validation of {0} papers for {1}'.fotmat(list_, username))
+    logging.info('Starting validation of {0} papers for {1}'.format(list_, username))
     uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
     # We MUST validate that manuscript_count is > 0 for list before calling this
     if list == 'inactive':

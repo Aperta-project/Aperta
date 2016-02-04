@@ -55,9 +55,11 @@ class ViewPaperTest(CommonTest):
     manuscript_viewer.validate_page_elements_styles_functions()
     return self
 
-  def test_role_aware_menus(self):
+  def _test_role_aware_menus(self):
     """
     APERTA-3: Validates role aware menus
+
+    Note: Test disabled until APERTA-5992 is fixed
     """
     roles = {au_login['user']: 7,
              rv_login['user']: 7,
@@ -120,6 +122,7 @@ class ViewPaperTest(CommonTest):
       10. Clicking the question mark opens the "[Journal Name] submission process" info box
 
     Notes:
+      AC#4 disabled until APERTA-5987 is fixed
       AC#7 on hold until APERTA-5718 is fixed.
       AC#10 on hold until APERTA-5725 is fixed
     """
@@ -202,13 +205,15 @@ class ViewPaperTest(CommonTest):
             manuscript_page.get_submission_status_info_text(),\
             manuscript_page.get_submission_status_info_text()
     manuscript_page.logout()
+    # Following block disabled due to APERTA-5987
+    """
     # Loging as collaborator
     dashboard_page = self.login(email=rv_login['user'], password=login_valid_pw)
     dashboard_page.go_to_manuscript(paper_id)
     time.sleep(1)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.set_timeout(.5)
-    # AC4 Green info box does not appear for Collaborators
+    # AC4 Green info box does not appear for collaborators
     try:
       manuscript_page.get_infobox()
     except ElementDoesNotExistAssertionError:
@@ -217,6 +222,14 @@ class ViewPaperTest(CommonTest):
       assert False, "Infobox still open. AC4 fails"
     manuscript_page.restore_timeout()
     # Submit
+    """
+    # Start temporaty worfaround until APERTA-5987 is fixed
+    dashboard_page = self.login(email=sa_login['user'], password=login_valid_pw)
+    dashboard_page.go_to_manuscript(paper_id)
+    time.sleep(1)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    # End temporaty worfaround until APERTA-5987 is fixed
+
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_modal()

@@ -146,10 +146,10 @@ class Task < ActiveRecord::Base
   end
 
   def add_participant(user)
-    participations.create!(
+    participations.where(
       user: user,
       role: journal.roles.participant
-    )
+    ).first_or_create!
   end
 
   def participants=(users)

@@ -91,14 +91,14 @@ FactoryGirl.define do
     old_role "author"
   end
 
-  factory :initial_tech_check_task, class: 'PlosBio::InitialTechCheckTask' do
+  factory :initial_tech_check_task, class: 'PlosBioTechCheck::InitialTechCheckTask' do
     phase
     paper
     title 'Initial Tech Check'
     old_role 'admin'
   end
 
-  factory :changes_for_author_task, class: 'PlosBio::ChangesForAuthorTask' do
+  factory :changes_for_author_task, class: 'PlosBioTechCheck::ChangesForAuthorTask' do
     phase
     paper
     title "Changes for Author"
@@ -106,7 +106,7 @@ FactoryGirl.define do
     body initialTechCheckBody: 'Default changes for author body'
   end
 
-  factory :editors_discussion_task, class: 'PlosBio::EditorsDiscussionTask' do
+  factory :editors_discussion_task, class: 'PlosBioInternalReview::EditorsDiscussionTask' do
     phase
     paper
     title "Editor Discussion"

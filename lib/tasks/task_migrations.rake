@@ -24,7 +24,7 @@ namespace :data do
   end
 
   task :initialize_initial_tech_check_round => :environment do
-    PlosBio::InitialTechCheckTask.update_all body: { round: 1 }
-    puts 'All PlosBio::InitialTechCheckTask body attributes have been initialized to {round: 1}'
+    PlosBioTechCheck::InitialTechCheckTask.update_all body: { round: 1 }
+    puts 'All PlosBioTechCheck::InitialTechCheckTask body attributes have been initialized to {round: 1}'
   end
 end

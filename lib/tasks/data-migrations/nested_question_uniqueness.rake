@@ -350,237 +350,237 @@ namespace :data do
             },
 
             {
-              type: PlosBio::FinalTechCheckTask.name,
+              type: PlosBioTechCheck::FinalTechCheckTask.name,
               from: "open_rejects",
               to: "plos_bio_final_tech_check--open_rejects",
               children: []
             },
             {
-              type: PlosBio::FinalTechCheckTask.name,
+              type: PlosBioTechCheck::FinalTechCheckTask.name,
               from: "human_subjects",
               to: "plos_bio_final_tech_check--human_subjects",
               children: []
             },
             {
-              type: PlosBio::FinalTechCheckTask.name,
+              type: PlosBioTechCheck::FinalTechCheckTask.name,
               from: "ethics_needed",
               to: "plos_bio_final_tech_check--ethics_needed",
               children: []
             },
             {
-              type: PlosBio::FinalTechCheckTask.name,
+              type: PlosBioTechCheck::FinalTechCheckTask.name,
               from: "data_available",
               to: "plos_bio_final_tech_check--data_available",
               children: []
             },
             {
-              type: PlosBio::FinalTechCheckTask.name,
+              type: PlosBioTechCheck::FinalTechCheckTask.name,
               from: "supporting_information",
               to: "plos_bio_final_tech_check--supporting_information",
               children: []
             },
             {
-              type: PlosBio::FinalTechCheckTask.name,
+              type: PlosBioTechCheck::FinalTechCheckTask.name,
               from: "dryad_url",
               to: "plos_bio_final_tech_check--dryad_url",
               children: []
             },
             {
-              type: PlosBio::FinalTechCheckTask.name,
+              type: PlosBioTechCheck::FinalTechCheckTask.name,
               from: "financial_disclosure",
               to: "plos_bio_final_tech_check--financial_disclosure",
               children: []
             },
             {
-              type: PlosBio::FinalTechCheckTask.name,
+              type: PlosBioTechCheck::FinalTechCheckTask.name,
               from: "tobacco",
               to: "plos_bio_final_tech_check--tobacco",
               children: []
             },
             {
-              type: PlosBio::FinalTechCheckTask.name,
+              type: PlosBioTechCheck::FinalTechCheckTask.name,
               from: "figures_legible",
               to: "plos_bio_final_tech_check--figures_legible",
               children: []
             },
             {
-              type: PlosBio::FinalTechCheckTask.name,
+              type: PlosBioTechCheck::FinalTechCheckTask.name,
               from: "cited",
               to: "plos_bio_final_tech_check--cited",
               children: []
             },
             {
-              type: PlosBio::FinalTechCheckTask.name,
+              type: PlosBioTechCheck::FinalTechCheckTask.name,
               from: "cover_letter",
               to: "plos_bio_final_tech_check--cover_letter",
               children: []
             },
             {
-              type: PlosBio::FinalTechCheckTask.name,
+              type: PlosBioTechCheck::FinalTechCheckTask.name,
               from: "billing_inquiries",
               to: "plos_bio_final_tech_check--billing_inquiries",
               children: []
             },
             {
-              type: PlosBio::FinalTechCheckTask.name,
+              type: PlosBioTechCheck::FinalTechCheckTask.name,
               from: "ethics_statement",
               to: "plos_bio_final_tech_check--ethics_statement",
               children: []
             },
 
             {
-              type: PlosBio::InitialTechCheckTask.name,
+              type: PlosBioTechCheck::InitialTechCheckTask.name,
               from: "open_rejects",
               to: "plos_bio_initial_tech_check--open_rejects",
               children: []
             },
             {
-              type: PlosBio::InitialTechCheckTask.name,
+              type: PlosBioTechCheck::InitialTechCheckTask.name,
               from: "human_subjects",
               to: "plos_bio_initial_tech_check--human_subjects",
               children: []
             },
             {
-              type: PlosBio::InitialTechCheckTask.name,
+              type: PlosBioTechCheck::InitialTechCheckTask.name,
               from: "ethics_needed",
               to: "plos_bio_initial_tech_check--ethics_needed",
               children: []
             },
             {
-              type: PlosBio::InitialTechCheckTask.name,
+              type: PlosBioTechCheck::InitialTechCheckTask.name,
               from: "data_available",
               to: "plos_bio_initial_tech_check--data_available",
               children: []
             },
             {
-              type: PlosBio::InitialTechCheckTask.name,
+              type: PlosBioTechCheck::InitialTechCheckTask.name,
               from: "supporting_information",
               to: "plos_bio_initial_tech_check--supporting_information",
               children: []
             },
             {
-              type: PlosBio::InitialTechCheckTask.name,
+              type: PlosBioTechCheck::InitialTechCheckTask.name,
               from: "dryad_url",
               to: "plos_bio_initial_tech_check--dryad_url",
               children: []
             },
             {
-              type: PlosBio::InitialTechCheckTask.name,
+              type: PlosBioTechCheck::InitialTechCheckTask.name,
               from: "financial_disclosure",
               to: "plos_bio_initial_tech_check--financial_disclosure",
               children: []
             },
             {
-              type: PlosBio::InitialTechCheckTask.name,
+              type: PlosBioTechCheck::InitialTechCheckTask.name,
               from: "tobacco",
               to: "plos_bio_initial_tech_check--tobacco",
               children: []
             },
             {
-              type: PlosBio::InitialTechCheckTask.name,
+              type: PlosBioTechCheck::InitialTechCheckTask.name,
               from: "figures_legible",
               to: "plos_bio_initial_tech_check--figures_legible",
               children: []
             },
             {
-              type: PlosBio::InitialTechCheckTask.name,
+              type: PlosBioTechCheck::InitialTechCheckTask.name,
               from: "cited",
               to: "plos_bio_initial_tech_check--cited",
               children: []
             },
             {
-              type: PlosBio::InitialTechCheckTask.name,
+              type: PlosBioTechCheck::InitialTechCheckTask.name,
               from: "cover_letter",
               to: "plos_bio_initial_tech_check--cover_letter",
               children: []
             },
             {
-              type: PlosBio::InitialTechCheckTask.name,
+              type: PlosBioTechCheck::InitialTechCheckTask.name,
               from: "billing_inquiries",
               to: "plos_bio_initial_tech_check--billing_inquiries",
               children: []
             },
             {
-              type: PlosBio::InitialTechCheckTask.name,
+              type: PlosBioTechCheck::InitialTechCheckTask.name,
               from: "ethics_statement",
               to: "plos_bio_initial_tech_check--ethics_statement",
               children: []
             },
 
             {
-              type: PlosBio::RevisionTechCheckTask.name,
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
               from: "open_rejects",
               to: "plos_bio_revision_tech_check--open_rejects",
               children: []
             },
             {
-              type: PlosBio::RevisionTechCheckTask.name,
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
               from: "human_subjects",
               to: "plos_bio_revision_tech_check--human_subjects",
               children: []
             },
             {
-              type: PlosBio::RevisionTechCheckTask.name,
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
               from: "ethics_needed",
               to: "plos_bio_revision_tech_check--ethics_needed",
               children: []
             },
             {
-              type: PlosBio::RevisionTechCheckTask.name,
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
               from: "data_available",
               to: "plos_bio_revision_tech_check--data_available",
               children: []
             },
             {
-              type: PlosBio::RevisionTechCheckTask.name,
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
               from: "supporting_information",
               to: "plos_bio_revision_tech_check--supporting_information",
               children: []
             },
             {
-              type: PlosBio::RevisionTechCheckTask.name,
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
               from: "dryad_url",
               to: "plos_bio_revision_tech_check--dryad_url",
               children: []
             },
             {
-              type: PlosBio::RevisionTechCheckTask.name,
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
               from: "financial_disclosure",
               to: "plos_bio_revision_tech_check--financial_disclosure",
               children: []
             },
             {
-              type: PlosBio::RevisionTechCheckTask.name,
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
               from: "tobacco",
               to: "plos_bio_revision_tech_check--tobacco",
               children: []
             },
             {
-              type: PlosBio::RevisionTechCheckTask.name,
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
               from: "figures_legible",
               to: "plos_bio_revision_tech_check--figures_legible",
               children: []
             },
             {
-              type: PlosBio::RevisionTechCheckTask.name,
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
               from: "cited",
               to: "plos_bio_revision_tech_check--cited",
               children: []
             },
             {
-              type: PlosBio::RevisionTechCheckTask.name,
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
               from: "cover_letter",
               to: "plos_bio_revision_tech_check--cover_letter",
               children: []
             },
             {
-              type: PlosBio::RevisionTechCheckTask.name,
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
               from: "billing_inquiries",
               to: "plos_bio_revision_tech_check--billing_inquiries",
               children: []
             },
             {
-              type: PlosBio::RevisionTechCheckTask.name,
+              type: PlosBioTechCheck::RevisionTechCheckTask.name,
               from: "ethics_statement",
               to: "plos_bio_revision_tech_check--ethics_statement",
               children: []

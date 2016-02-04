@@ -82,203 +82,6 @@ assignments:
     - '2016-01-30 23:30:43.442362'
 
 ---
-journal_task_types:
-  columns:
-  - id
-  - journal_id
-  - title
-  - old_role
-  - kind
-  - required_permissions
-  records: 
-  - - '1'
-    - '1'
-    - Ad-hoc
-    - user
-    - Task
-    - "[]"
-  - - '2'
-    - '1'
-    - Authors
-    - author
-    - TahiStandardTasks::AuthorsTask
-    - "[]"
-  - - '3'
-    - '1'
-    - Competing Interests
-    - author
-    - TahiStandardTasks::CompetingInterestsTask
-    - "[]"
-  - - '4'
-    - '1'
-    - Cover Letter
-    - author
-    - TahiStandardTasks::CoverLetterTask
-    - "[]"
-  - - '5'
-    - '1'
-    - Data Availability
-    - author
-    - TahiStandardTasks::DataAvailabilityTask
-    - "[]"
-  - - '6'
-    - '1'
-    - Ethics Statement
-    - author
-    - TahiStandardTasks::EthicsTask
-    - "[]"
-  - - '7'
-    - '1'
-    - Figures
-    - author
-    - TahiStandardTasks::FigureTask
-    - "[]"
-  - - '8'
-    - '1'
-    - Financial Disclosure
-    - author
-    - TahiStandardTasks::FinancialDisclosureTask
-    - "[]"
-  - - '9'
-    - '1'
-    - Assign Admin
-    - admin
-    - TahiStandardTasks::PaperAdminTask
-    - "[]"
-  - - '10'
-    - '1'
-    - Invite Editor
-    - admin
-    - TahiStandardTasks::PaperEditorTask
-    - "[]"
-  - - '11'
-    - '1'
-    - Invite Reviewers
-    - editor
-    - TahiStandardTasks::PaperReviewerTask
-    - "[]"
-  - - '12'
-    - '1'
-    - Production Metadata
-    - admin
-    - TahiStandardTasks::ProductionMetadataTask
-    - "[]"
-  - - '13'
-    - '1'
-    - Additional Information
-    - author
-    - TahiStandardTasks::PublishingRelatedQuestionsTask
-    - "[]"
-  - - '14'
-    - '1'
-    - Register Decision
-    - editor
-    - TahiStandardTasks::RegisterDecisionTask
-    - "[]"
-  - - '15'
-    - '1'
-    - Reporting Guidelines
-    - author
-    - TahiStandardTasks::ReportingGuidelinesTask
-    - "[]"
-  - - '16'
-    - '1'
-    - Reviewer Candidates
-    - author
-    - TahiStandardTasks::ReviewerRecommendationsTask
-    - "[]"
-  - - '17'
-    - '1'
-    - Reviewer Report
-    - reviewer
-    - TahiStandardTasks::ReviewerReportTask
-    - "[]"
-  - - '18'
-    - '1'
-    - Revise Task
-    - author
-    - TahiStandardTasks::ReviseTask
-    - "[]"
-  - - '19'
-    - '1'
-    - Supporting Info
-    - author
-    - TahiStandardTasks::SupportingInformationTask
-    - "[]"
-  - - '20'
-    - '1'
-    - New Taxon
-    - author
-    - TahiStandardTasks::TaxonTask
-    - "[]"
-  - - '21'
-    - '1'
-    - Upload Manuscript
-    - author
-    - TahiStandardTasks::UploadManuscriptTask
-    - "[]"
-  - - '22'
-    - '1'
-    - Changes For Author
-    - author
-    - PlosBio::ChangesForAuthorTask
-    - "[]"
-  - - '23'
-    - '1'
-    - Final Tech Check
-    - editor
-    - PlosBio::FinalTechCheckTask
-    - "[]"
-  - - '24'
-    - '1'
-    - Initial Tech Check
-    - editor
-    - PlosBio::InitialTechCheckTask
-    - "[]"
-  - - '25'
-    - '1'
-    - Revision Tech Check
-    - editor
-    - PlosBio::RevisionTechCheckTask
-    - "[]"
-  - - '26'
-    - '1'
-    - Editor Discussion
-    - admin
-    - PlosBio::EditorsDiscussionTask
-    - "[]"
-  - - '27'
-    - '1'
-    - Billing
-    - author
-    - PlosBilling::BillingTask
-    - '[{"action":"view","applies_to":"PlosBilling::BillingTask"}]'
-  - - '28'
-    - '1'
-    - Assign Team
-    - admin
-    - Tahi::AssignTeam::AssignTeamTask
-    - "[]"
-  - - '29'
-    - '1'
-    - Test Task
-    - user
-    - InvitableTask
-    - 
-  - - '30'
-    - '1'
-    - Initial Decision
-    - editor
-    - TahiStandardTasks::InitialDecisionTask
-    - "[]"
-  - - '31'
-    - '1'
-    - Send to Apex
-    - editor
-    - TahiStandardTasks::SendToApexTask
-    - "[]"
-
----
 nested_question_answers:
   columns:
   - id
@@ -1836,412 +1639,6 @@ permission_requirements:
     - '2016-02-02 17:28:59.829198'
 
 ---
-phase_templates:
-  columns:
-  - id
-  - name
-  - manuscript_manager_template_id
-  - created_at
-  - updated_at
-  - position
-  records: 
-  - - '61'
-    - Submission
-    - '1'
-    - '2015-10-29 20:00:21.356193'
-    - '2015-10-29 20:00:21.356193'
-    - '1'
-  - - '62'
-    - Tech Check
-    - '1'
-    - '2015-10-29 20:00:21.389578'
-    - '2015-10-29 20:00:21.389578'
-    - '2'
-  - - '63'
-    - Internal Review
-    - '1'
-    - '2015-10-29 20:00:21.400526'
-    - '2015-10-29 20:00:21.400526'
-    - '3'
-  - - '64'
-    - External Review
-    - '1'
-    - '2015-10-29 20:00:21.408232'
-    - '2015-10-29 20:00:21.408232'
-    - '4'
-  - - '65'
-    - Make Decision
-    - '1'
-    - '2015-10-29 20:00:21.415546'
-    - '2015-10-29 20:00:21.415546'
-    - '5'
-
----
-phases:
-  columns:
-  - id
-  - name
-  - created_at
-  - updated_at
-  - position
-  - paper_id
-  records: 
-  - - '1'
-    - Submission
-    - '2015-10-29 20:16:37.412841'
-    - '2015-10-29 20:16:37.412841'
-    - '1'
-    - '1'
-  - - '2'
-    - Tech Check
-    - '2015-10-29 20:16:37.695856'
-    - '2015-10-29 20:16:37.695856'
-    - '2'
-    - '1'
-  - - '3'
-    - Internal Review
-    - '2015-10-29 20:16:37.730293'
-    - '2015-10-29 20:16:37.730293'
-    - '3'
-    - '1'
-  - - '4'
-    - External Review
-    - '2015-10-29 20:16:37.753901'
-    - '2015-10-29 20:16:37.753901'
-    - '4'
-    - '1'
-  - - '5'
-    - Make Decision
-    - '2015-10-29 20:16:37.77308'
-    - '2015-10-29 20:16:37.77308'
-    - '5'
-    - '1'
-  - - '6'
-    - Submission
-    - '2015-10-30 19:43:28.497968'
-    - '2015-10-30 19:43:28.497968'
-    - '1'
-    - '2'
-  - - '7'
-    - Tech Check
-    - '2015-10-30 19:43:28.705363'
-    - '2015-10-30 19:43:28.705363'
-    - '2'
-    - '2'
-  - - '8'
-    - Internal Review
-    - '2015-10-30 19:43:28.726752'
-    - '2015-10-30 19:43:28.726752'
-    - '3'
-    - '2'
-  - - '9'
-    - External Review
-    - '2015-10-30 19:43:28.741896'
-    - '2015-10-30 19:43:28.741896'
-    - '4'
-    - '2'
-  - - '10'
-    - Make Decision
-    - '2015-10-30 19:43:28.757472'
-    - '2015-10-30 19:43:28.757472'
-    - '5'
-    - '2'
-  - - '11'
-    - Submission
-    - '2015-11-02 14:04:02.917783'
-    - '2015-11-02 14:04:02.917783'
-    - '1'
-    - '3'
-  - - '12'
-    - Tech Check
-    - '2015-11-02 14:04:03.185394'
-    - '2015-11-02 14:04:03.185394'
-    - '2'
-    - '3'
-  - - '13'
-    - Internal Review
-    - '2015-11-02 14:04:03.208629'
-    - '2015-11-02 14:04:03.208629'
-    - '3'
-    - '3'
-  - - '14'
-    - External Review
-    - '2015-11-02 14:04:03.224569'
-    - '2015-11-02 14:04:03.224569'
-    - '4'
-    - '3'
-  - - '15'
-    - Make Decision
-    - '2015-11-02 14:04:03.239991'
-    - '2015-11-02 14:04:03.239991'
-    - '5'
-    - '3'
-  - - '16'
-    - Submission
-    - '2015-11-02 14:46:23.824127'
-    - '2015-11-02 14:46:23.824127'
-    - '1'
-    - '4'
-  - - '17'
-    - Tech Check
-    - '2015-11-02 14:46:24.092862'
-    - '2015-11-02 14:46:24.092862'
-    - '2'
-    - '4'
-  - - '18'
-    - Internal Review
-    - '2015-11-02 14:46:24.11566'
-    - '2015-11-02 14:46:24.11566'
-    - '3'
-    - '4'
-  - - '19'
-    - External Review
-    - '2015-11-02 14:46:24.131249'
-    - '2015-11-02 14:46:24.131249'
-    - '4'
-    - '4'
-  - - '20'
-    - Make Decision
-    - '2015-11-02 14:46:24.14677'
-    - '2015-11-02 14:46:24.14677'
-    - '5'
-    - '4'
-  - - '21'
-    - Submission
-    - '2015-11-03 22:59:20.967947'
-    - '2015-11-03 22:59:20.967947'
-    - '1'
-    - '8'
-  - - '22'
-    - Tech Check
-    - '2015-11-03 22:59:21.261964'
-    - '2015-11-03 22:59:21.261964'
-    - '2'
-    - '8'
-  - - '23'
-    - Internal Review
-    - '2015-11-03 22:59:21.288172'
-    - '2015-11-03 22:59:21.288172'
-    - '3'
-    - '8'
-  - - '24'
-    - External Review
-    - '2015-11-03 22:59:21.307044'
-    - '2015-11-03 22:59:21.307044'
-    - '4'
-    - '8'
-  - - '25'
-    - Make Decision
-    - '2015-11-03 22:59:21.32648'
-    - '2015-11-03 22:59:21.32648'
-    - '5'
-    - '8'
-  - - '26'
-    - Submission
-    - '2015-11-03 23:02:06.827202'
-    - '2015-11-03 23:02:06.827202'
-    - '1'
-    - '9'
-  - - '27'
-    - Tech Check
-    - '2015-11-03 23:02:07.126489'
-    - '2015-11-03 23:02:07.126489'
-    - '2'
-    - '9'
-  - - '28'
-    - Internal Review
-    - '2015-11-03 23:02:07.152564'
-    - '2015-11-03 23:02:07.152564'
-    - '3'
-    - '9'
-  - - '29'
-    - External Review
-    - '2015-11-03 23:02:07.172374'
-    - '2015-11-03 23:02:07.172374'
-    - '4'
-    - '9'
-  - - '30'
-    - Make Decision
-    - '2015-11-03 23:02:07.190858'
-    - '2015-11-03 23:02:07.190858'
-    - '5'
-    - '9'
-  - - '31'
-    - Submission
-    - '2015-11-10 22:27:27.188975'
-    - '2015-11-10 22:27:27.188975'
-    - '1'
-    - '10'
-  - - '32'
-    - Tech Check
-    - '2015-11-10 22:27:27.522541'
-    - '2015-11-10 22:27:27.522541'
-    - '2'
-    - '10'
-  - - '33'
-    - Internal Review
-    - '2015-11-10 22:27:27.560955'
-    - '2015-11-10 22:27:27.560955'
-    - '3'
-    - '10'
-  - - '34'
-    - External Review
-    - '2015-11-10 22:27:27.582396'
-    - '2015-11-10 22:27:27.582396'
-    - '4'
-    - '10'
-  - - '35'
-    - Make Decision
-    - '2015-11-10 22:27:27.59862'
-    - '2015-11-10 22:27:27.59862'
-    - '5'
-    - '10'
-
----
-question_attachments:
-  columns:
-  - id
-  - nested_question_answer_id
-  - attachment
-  - title
-  - status
-  - created_at
-  - updated_at
-  - token
-  records: 
-  - - '1'
-    - '78'
-    - turtles-are-amazing.docx
-    - 
-    - done
-    - '2015-11-02 14:16:35.584565'
-    - '2016-01-21 17:58:45.04696'
-    - 73b346c3a9fa14d2fcfd0734cb07a04dfb30c2be5e9f7270
-  - - '2'
-    - '88'
-    - turtles-are-amazing.docx
-    - 
-    - done
-    - '2015-11-02 14:18:02.598388'
-    - '2016-01-21 17:58:45.059148'
-    - 44129b4f5b13fbfe0c18acff578f54a0d985b9d68cc6af7d
-  - - '3'
-    - '126'
-    - manuscript+_281_29.docx
-    - 
-    - done
-    - '2015-11-02 15:12:01.338942'
-    - '2016-01-21 17:58:45.060737'
-    - 9a83d979f72b3e973a01637015fbbd4c4d855461f3e60bcd
-
----
-roles:
-  columns:
-  - id
-  - name
-  - journal_id
-  - participates_in_papers
-  - participates_in_tasks
-  - created_at
-  - updated_at
-  records: 
-  - - '7'
-    - User
-    - 
-    - false
-    - false
-    - '2016-01-28 17:12:41.755784'
-    - '2016-01-28 17:12:41.755784'
-  - - '8'
-    - Author
-    - '1'
-    - true
-    - true
-    - '2016-01-28 17:12:41.881702'
-    - '2016-01-28 17:12:41.886783'
-  - - '9'
-    - Reviewer
-    - '1'
-    - true
-    - true
-    - '2016-01-28 17:12:41.926508'
-    - '2016-01-28 17:12:41.930242'
-  - - '10'
-    - Staff Admin
-    - '1'
-    - false
-    - false
-    - '2016-01-28 17:12:41.947065'
-    - '2016-01-28 17:12:41.947065'
-  - - '11'
-    - Internal Editor
-    - '1'
-    - false
-    - false
-    - '2016-01-30 23:30:43.414744'
-    - '2016-01-30 23:30:43.414744'
-  - - '12'
-    - Publishing Services and Production Staff
-    - '1'
-    - false
-    - false
-    - '2016-02-01 15:50:31.460619'
-    - '2016-02-01 15:50:31.460619'
-
----
-supporting_information_files:
-  columns:
-  - id
-  - paper_id
-  - title
-  - caption
-  - attachment
-  - created_at
-  - updated_at
-  - status
-  - publishable
-  - token
-  - label
-  - category
-  records: 
-  - - '1'
-    - '2'
-    - 'Title: sample.doc'
-    - 
-    - sample.doc
-    - '2015-10-30 19:52:32.177953'
-    - '2015-10-30 19:52:32.793467'
-    - done
-    - true
-    - 
-    - 
-    - 
-  - - '2'
-    - '3'
-    - 'Title: turtles-are-amazing.docx'
-    - 
-    - turtles-are-amazing.docx
-    - '2015-11-02 14:13:19.427337'
-    - '2015-11-02 14:13:19.701157'
-    - done
-    - true
-    - 
-    - 
-    - 
-  - - '3'
-    - '4'
-    - 'Title: turtles-are-amazing.docx'
-    - 
-    - turtles-are-amazing.docx
-    - '2015-11-02 15:09:02.825204'
-    - '2015-11-02 15:09:03.10794'
-    - done
-    - true
-    - 
-    - 
-    - 
-
----
 tahi_standard_tasks_reviewer_recommendations:
   columns:
   - id
@@ -2317,275 +1714,201 @@ tahi_standard_tasks_reviewer_recommendations:
     - '32835'
 
 ---
-users:
+journal_task_types:
   columns:
   - id
-  - first_name
-  - last_name
-  - email
-  - encrypted_password
-  - reset_password_token
-  - reset_password_sent_at
-  - remember_created_at
-  - sign_in_count
-  - current_sign_in_at
-  - last_sign_in_at
-  - current_sign_in_ip
-  - last_sign_in_ip
-  - created_at
-  - updated_at
-  - username
-  - avatar
-  - site_admin
-  - em_guid
+  - journal_id
+  - title
+  - old_role
+  - kind
+  - required_permissions
   records: 
   - - '1'
-    - Adam
-    - Administrator
-    - admin@example.com
-    - "$2a$10$WN1mcbro3hjAKU3jBgG5Vuuu1ZMI7mj37EmqaUsxHaX0CHlGgvAoq"
-    - 
-    - 
-    - 
-    - '10'
-    - '2016-01-26 21:41:00.622951'
-    - '2016-01-26 19:52:48.420195'
-    - 127.0.0.1
-    - 127.0.0.1
-    - '2015-10-29 19:36:19.627844'
-    - '2016-01-26 21:41:00.625502'
-    - admin
-    - 
-    - false
-    - 
-  - - '2'
-    - Steve
-    - SiteAdmin
-    - site_admin@example.com
-    - "$2a$10$92o9T1L2mMcm/SNkkKNDSOri9Z2TvdITsybS2lhbuGbADPFFCYI8u"
-    - 
-    - 
-    - 
-    - '2'
-    - '2015-10-29 20:53:17.01872'
-    - '2015-10-29 20:07:28.345844'
-    - 127.0.0.1
-    - 127.0.0.1
-    - '2015-10-29 20:07:28.341906'
-    - '2015-10-29 20:53:17.020456'
-    - site_admin
-    - 
-    - true
-    - 
-  - - '3'
-    - Arthur
-    - Author
-    - author@example.com
-    - "$2a$10$yLuG497ZW1IrZadwuDt23O6qYu.lT2SLUyCLxuQR7/JU2X9zCyE3W"
-    - 
-    - 
-    - 
-    - '5'
-    - '2016-01-19 15:39:48.053966'
-    - '2015-12-14 20:48:03.544734'
-    - 127.0.0.1
-    - 127.0.0.1
-    - '2015-10-29 20:11:22.705226'
-    - '2016-01-19 15:39:48.056016'
-    - author
-    - 
-    - false
-    - 
-  - - '4'
-    - Edith
-    - Editor
-    - editor@example.com
-    - "$2a$10$96lyXKNq36ErEx732.FYpOWJkfCCUBnTJ/DbGX96PdzbsbLbqpSZa"
-    - 
-    - 
-    - 
     - '1'
-    - '2015-11-02 15:15:33.649157'
-    - '2015-11-02 15:15:33.649157'
-    - 127.0.0.1
-    - 127.0.0.1
-    - '2015-11-02 15:15:33.644561'
-    - '2015-11-02 15:15:33.650134'
-    - editor
-    - 
-    - false
-    - 
+    - Ad-hoc
+    - user
+    - Task
+    - "[]"
+  - - '2'
+    - '1'
+    - Authors
+    - author
+    - TahiStandardTasks::AuthorsTask
+    - "[]"
+  - - '3'
+    - '1'
+    - Competing Interests
+    - author
+    - TahiStandardTasks::CompetingInterestsTask
+    - "[]"
+  - - '4'
+    - '1'
+    - Cover Letter
+    - author
+    - TahiStandardTasks::CoverLetterTask
+    - "[]"
   - - '5'
-    - Reviewer
-    - User
-    - reviewer@example.com
-    - "$2a$10$mEBowWHfZZKNiDLehUjcyuS1j5dV/QfSATvFObvXni54XJZS2onPa"
-    - 
-    - 
-    - 
-    - '0'
-    - 
-    - 
-    - 
-    - 
-    - '2015-11-03 19:54:58.406233'
-    - '2015-11-03 19:54:58.406233'
-    - reviewer
-    - 
-    - false
-    - 
+    - '1'
+    - Data Availability
+    - author
+    - TahiStandardTasks::DataAvailabilityTask
+    - "[]"
   - - '6'
-    - FlowManager
-    - User
-    - flow_manager@example.com
-    - "$2a$10$er0.fIv6HKSTJDkv/RVGw.YvKAHnDFgGCE6jfOKUcleS0LrJNE.ma"
-    - 
-    - 
-    - 
-    - '0'
-    - 
-    - 
-    - 
-    - 
-    - '2015-11-03 19:54:58.518834'
-    - '2015-11-03 19:54:58.518834'
-    - flow_manager
-    - 
-    - false
-    - 
+    - '1'
+    - Ethics Statement
+    - author
+    - TahiStandardTasks::EthicsTask
+    - "[]"
   - - '7'
-    - Jeffrey SA
-    - Gray
-    - sealresq+7@gmail.com
-    - "$2a$10$RkSdD9IRLubb36YPrd3eIeoS074Y5cFO1TXPYj71NOJqhoQipUUfS"
-    - 
-    - 
-    - 
-    - '0'
-    - 
-    - 
-    - 
-    - 
-    - '2015-11-03 19:54:58.612514'
-    - '2015-11-03 19:54:58.612514'
-    - jgray_sa
-    - 
-    - true
-    - 
+    - '1'
+    - Figures
+    - author
+    - TahiStandardTasks::FigureTask
+    - "[]"
   - - '8'
-    - Jeffrey OA
-    - Gray
-    - sealresq+6@gmail.com
-    - "$2a$10$VnC6O73EVUGJG.9hwT026OOu/1x4xnCu99doaIQAkNQoqk4hPzyke"
-    - 
-    - 
-    - 
-    - '0'
-    - 
-    - 
-    - 
-    - 
-    - '2015-11-03 19:54:58.707548'
-    - '2015-11-03 19:54:58.707548'
-    - jgray_oa
-    - 
-    - false
-    - 
+    - '1'
+    - Financial Disclosure
+    - author
+    - TahiStandardTasks::FinancialDisclosureTask
+    - "[]"
   - - '9'
-    - Jeffrey FM
-    - Gray
-    - sealresq+5@gmail.com
-    - "$2a$10$lal/W.pXwbQEW0JTcuTBUuCbRdYdKp.WkNnUp9UbMjOk7SWv0jtg2"
-    - 
-    - 
-    - 
-    - '0'
-    - 
-    - 
-    - 
-    - 
-    - '2015-11-03 19:54:58.791185'
-    - '2015-11-03 19:54:58.791185'
-    - jgray_flowmgr
-    - 
-    - false
-    - 
+    - '1'
+    - Assign Admin
+    - admin
+    - TahiStandardTasks::PaperAdminTask
+    - "[]"
   - - '10'
-    - Jeffrey AMM
-    - Gray
-    - sealresq+4@gmail.com
-    - "$2a$10$2tUP0DsRJd1eQCdFhxfinORHmBjD/KCRQKcNFb51p9bxHl7pc0qu2"
-    - 
-    - 
-    - 
-    - '0'
-    - 
-    - 
-    - 
-    - 
-    - '2015-11-03 19:54:58.877324'
-    - '2015-11-03 19:54:58.877324'
-    - jgray_editor
-    - 
-    - false
-    - 
+    - '1'
+    - Invite Editor
+    - admin
+    - TahiStandardTasks::PaperEditorTask
+    - "[]"
   - - '11'
-    - Jeffrey MM
-    - Gray
-    - sealresq+3@gmail.com
-    - "$2a$10$4oixsexl0aIfAwhazMXhf.bYcD8DPVxaDYYAe63Uzvr4WCttaEeMq"
-    - 
-    - 
-    - 
-    - '0'
-    - 
-    - 
-    - 
-    - 
-    - '2015-11-03 19:54:58.961825'
-    - '2015-11-03 19:54:58.961825'
-    - jgray_assoceditor
-    - 
-    - false
-    - 
+    - '1'
+    - Invite Reviewers
+    - editor
+    - TahiStandardTasks::PaperReviewerTask
+    - "[]"
   - - '12'
-    - Jeffrey RV
-    - Gray
-    - sealresq+2@gmail.com
-    - "$2a$10$j6aMPw2vLkffUlYI/GjwXubkGKjlzYCjEAVqnaLzEXvfieiwknb0i"
-    - 
-    - 
-    - 
-    - '0'
-    - 
-    - 
-    - 
-    - 
-    - '2015-11-03 19:54:59.052702'
-    - '2015-11-03 19:54:59.052702'
-    - jgray_reviewer
-    - 
-    - false
-    - 
+    - '1'
+    - Production Metadata
+    - admin
+    - TahiStandardTasks::ProductionMetadataTask
+    - "[]"
   - - '13'
-    - Jeffrey AU
-    - Gray
-    - sealresq+1@gmail.com
-    - "$2a$10$FaFRuwomV2twYKGnglSRK.YMfgwhrDywzq6D3ox.2oJE7IyPEPHVS"
+    - '1'
+    - Additional Information
+    - author
+    - TahiStandardTasks::PublishingRelatedQuestionsTask
+    - "[]"
+  - - '14'
+    - '1'
+    - Register Decision
+    - editor
+    - TahiStandardTasks::RegisterDecisionTask
+    - "[]"
+  - - '15'
+    - '1'
+    - Reporting Guidelines
+    - author
+    - TahiStandardTasks::ReportingGuidelinesTask
+    - "[]"
+  - - '16'
+    - '1'
+    - Reviewer Candidates
+    - author
+    - TahiStandardTasks::ReviewerRecommendationsTask
+    - "[]"
+  - - '17'
+    - '1'
+    - Reviewer Report
+    - reviewer
+    - TahiStandardTasks::ReviewerReportTask
+    - "[]"
+  - - '18'
+    - '1'
+    - Revise Task
+    - author
+    - TahiStandardTasks::ReviseTask
+    - "[]"
+  - - '19'
+    - '1'
+    - Supporting Info
+    - author
+    - TahiStandardTasks::SupportingInformationTask
+    - "[]"
+  - - '20'
+    - '1'
+    - New Taxon
+    - author
+    - TahiStandardTasks::TaxonTask
+    - "[]"
+  - - '21'
+    - '1'
+    - Upload Manuscript
+    - author
+    - TahiStandardTasks::UploadManuscriptTask
+    - "[]"
+  - - '22'
+    - '1'
+    - Changes For Author
+    - author
+    - PlosBioTechCheck::ChangesForAuthorTask
+    - "[]"
+  - - '23'
+    - '1'
+    - Final Tech Check
+    - editor
+    - PlosBioTechCheck::FinalTechCheckTask
+    - "[]"
+  - - '24'
+    - '1'
+    - Initial Tech Check
+    - editor
+    - PlosBioTechCheck::InitialTechCheckTask
+    - "[]"
+  - - '25'
+    - '1'
+    - Revision Tech Check
+    - editor
+    - PlosBioTechCheck::RevisionTechCheckTask
+    - "[]"
+  - - '26'
+    - '1'
+    - Editor Discussion
+    - admin
+    - PlosBioInternalReview::EditorsDiscussionTask
+    - "[]"
+  - - '27'
+    - '1'
+    - Billing
+    - author
+    - PlosBilling::BillingTask
+    - '[{"action":"view","applies_to":"PlosBilling::BillingTask"}]'
+  - - '28'
+    - '1'
+    - Assign Team
+    - admin
+    - Tahi::AssignTeam::AssignTeamTask
+    - "[]"
+  - - '29'
+    - '1'
+    - Test Task
+    - user
+    - InvitableTask
     - 
-    - 
-    - 
-    - '0'
-    - 
-    - 
-    - 
-    - 
-    - '2015-11-03 19:54:59.135286'
-    - '2015-11-03 19:54:59.135286'
-    - jgray_author
-    - 
-    - false
-    - 
+  - - '30'
+    - '1'
+    - Initial Decision
+    - editor
+    - TahiStandardTasks::InitialDecisionTask
+    - "[]"
+  - - '31'
+    - '1'
+    - Send to Apex
+    - editor
+    - TahiStandardTasks::SendToApexTask
+    - "[]"
 
 ---
 papers:
@@ -3500,6 +2823,277 @@ versioned_texts:
     - 
 
 ---
+users:
+  columns:
+  - id
+  - first_name
+  - last_name
+  - email
+  - encrypted_password
+  - reset_password_token
+  - reset_password_sent_at
+  - remember_created_at
+  - sign_in_count
+  - current_sign_in_at
+  - last_sign_in_at
+  - current_sign_in_ip
+  - last_sign_in_ip
+  - created_at
+  - updated_at
+  - username
+  - avatar
+  - site_admin
+  - em_guid
+  records: 
+  - - '1'
+    - Adam
+    - Administrator
+    - admin@example.com
+    - "$2a$10$WN1mcbro3hjAKU3jBgG5Vuuu1ZMI7mj37EmqaUsxHaX0CHlGgvAoq"
+    - 
+    - 
+    - 
+    - '10'
+    - '2016-01-26 21:41:00.622951'
+    - '2016-01-26 19:52:48.420195'
+    - 127.0.0.1
+    - 127.0.0.1
+    - '2015-10-29 19:36:19.627844'
+    - '2016-01-26 21:41:00.625502'
+    - admin
+    - 
+    - false
+    - 
+  - - '2'
+    - Steve
+    - SiteAdmin
+    - site_admin@example.com
+    - "$2a$10$92o9T1L2mMcm/SNkkKNDSOri9Z2TvdITsybS2lhbuGbADPFFCYI8u"
+    - 
+    - 
+    - 
+    - '2'
+    - '2015-10-29 20:53:17.01872'
+    - '2015-10-29 20:07:28.345844'
+    - 127.0.0.1
+    - 127.0.0.1
+    - '2015-10-29 20:07:28.341906'
+    - '2015-10-29 20:53:17.020456'
+    - site_admin
+    - 
+    - true
+    - 
+  - - '3'
+    - Arthur
+    - Author
+    - author@example.com
+    - "$2a$10$yLuG497ZW1IrZadwuDt23O6qYu.lT2SLUyCLxuQR7/JU2X9zCyE3W"
+    - 
+    - 
+    - 
+    - '5'
+    - '2016-01-19 15:39:48.053966'
+    - '2015-12-14 20:48:03.544734'
+    - 127.0.0.1
+    - 127.0.0.1
+    - '2015-10-29 20:11:22.705226'
+    - '2016-01-19 15:39:48.056016'
+    - author
+    - 
+    - false
+    - 
+  - - '4'
+    - Edith
+    - Editor
+    - editor@example.com
+    - "$2a$10$96lyXKNq36ErEx732.FYpOWJkfCCUBnTJ/DbGX96PdzbsbLbqpSZa"
+    - 
+    - 
+    - 
+    - '1'
+    - '2015-11-02 15:15:33.649157'
+    - '2015-11-02 15:15:33.649157'
+    - 127.0.0.1
+    - 127.0.0.1
+    - '2015-11-02 15:15:33.644561'
+    - '2015-11-02 15:15:33.650134'
+    - editor
+    - 
+    - false
+    - 
+  - - '5'
+    - Reviewer
+    - User
+    - reviewer@example.com
+    - "$2a$10$mEBowWHfZZKNiDLehUjcyuS1j5dV/QfSATvFObvXni54XJZS2onPa"
+    - 
+    - 
+    - 
+    - '0'
+    - 
+    - 
+    - 
+    - 
+    - '2015-11-03 19:54:58.406233'
+    - '2015-11-03 19:54:58.406233'
+    - reviewer
+    - 
+    - false
+    - 
+  - - '6'
+    - FlowManager
+    - User
+    - flow_manager@example.com
+    - "$2a$10$er0.fIv6HKSTJDkv/RVGw.YvKAHnDFgGCE6jfOKUcleS0LrJNE.ma"
+    - 
+    - 
+    - 
+    - '0'
+    - 
+    - 
+    - 
+    - 
+    - '2015-11-03 19:54:58.518834'
+    - '2015-11-03 19:54:58.518834'
+    - flow_manager
+    - 
+    - false
+    - 
+  - - '7'
+    - Jeffrey SA
+    - Gray
+    - sealresq+7@gmail.com
+    - "$2a$10$RkSdD9IRLubb36YPrd3eIeoS074Y5cFO1TXPYj71NOJqhoQipUUfS"
+    - 
+    - 
+    - 
+    - '0'
+    - 
+    - 
+    - 
+    - 
+    - '2015-11-03 19:54:58.612514'
+    - '2015-11-03 19:54:58.612514'
+    - jgray_sa
+    - 
+    - true
+    - 
+  - - '8'
+    - Jeffrey OA
+    - Gray
+    - sealresq+6@gmail.com
+    - "$2a$10$VnC6O73EVUGJG.9hwT026OOu/1x4xnCu99doaIQAkNQoqk4hPzyke"
+    - 
+    - 
+    - 
+    - '0'
+    - 
+    - 
+    - 
+    - 
+    - '2015-11-03 19:54:58.707548'
+    - '2015-11-03 19:54:58.707548'
+    - jgray_oa
+    - 
+    - false
+    - 
+  - - '9'
+    - Jeffrey FM
+    - Gray
+    - sealresq+5@gmail.com
+    - "$2a$10$lal/W.pXwbQEW0JTcuTBUuCbRdYdKp.WkNnUp9UbMjOk7SWv0jtg2"
+    - 
+    - 
+    - 
+    - '0'
+    - 
+    - 
+    - 
+    - 
+    - '2015-11-03 19:54:58.791185'
+    - '2015-11-03 19:54:58.791185'
+    - jgray_flowmgr
+    - 
+    - false
+    - 
+  - - '10'
+    - Jeffrey AMM
+    - Gray
+    - sealresq+4@gmail.com
+    - "$2a$10$2tUP0DsRJd1eQCdFhxfinORHmBjD/KCRQKcNFb51p9bxHl7pc0qu2"
+    - 
+    - 
+    - 
+    - '0'
+    - 
+    - 
+    - 
+    - 
+    - '2015-11-03 19:54:58.877324'
+    - '2015-11-03 19:54:58.877324'
+    - jgray_editor
+    - 
+    - false
+    - 
+  - - '11'
+    - Jeffrey MM
+    - Gray
+    - sealresq+3@gmail.com
+    - "$2a$10$4oixsexl0aIfAwhazMXhf.bYcD8DPVxaDYYAe63Uzvr4WCttaEeMq"
+    - 
+    - 
+    - 
+    - '0'
+    - 
+    - 
+    - 
+    - 
+    - '2015-11-03 19:54:58.961825'
+    - '2015-11-03 19:54:58.961825'
+    - jgray_assoceditor
+    - 
+    - false
+    - 
+  - - '12'
+    - Jeffrey RV
+    - Gray
+    - sealresq+2@gmail.com
+    - "$2a$10$j6aMPw2vLkffUlYI/GjwXubkGKjlzYCjEAVqnaLzEXvfieiwknb0i"
+    - 
+    - 
+    - 
+    - '0'
+    - 
+    - 
+    - 
+    - 
+    - '2015-11-03 19:54:59.052702'
+    - '2015-11-03 19:54:59.052702'
+    - jgray_reviewer
+    - 
+    - false
+    - 
+  - - '13'
+    - Jeffrey AU
+    - Gray
+    - sealresq+1@gmail.com
+    - "$2a$10$FaFRuwomV2twYKGnglSRK.YMfgwhrDywzq6D3ox.2oJE7IyPEPHVS"
+    - 
+    - 
+    - 
+    - '0'
+    - 
+    - 
+    - 
+    - 
+    - '2015-11-03 19:54:59.135286'
+    - '2015-11-03 19:54:59.135286'
+    - jgray_author
+    - 
+    - false
+    - 
+
+---
 permissions_roles:
   columns:
   - id
@@ -3663,6 +3257,359 @@ permissions_roles:
     - '12'
     - '2016-02-02 01:27:07.755079'
     - '2016-02-02 01:27:07.755079'
+
+---
+phase_templates:
+  columns:
+  - id
+  - name
+  - manuscript_manager_template_id
+  - created_at
+  - updated_at
+  - position
+  records: 
+  - - '61'
+    - Submission
+    - '1'
+    - '2015-10-29 20:00:21.356193'
+    - '2015-10-29 20:00:21.356193'
+    - '1'
+  - - '62'
+    - Tech Check
+    - '1'
+    - '2015-10-29 20:00:21.389578'
+    - '2015-10-29 20:00:21.389578'
+    - '2'
+  - - '63'
+    - Internal Review
+    - '1'
+    - '2015-10-29 20:00:21.400526'
+    - '2015-10-29 20:00:21.400526'
+    - '3'
+  - - '64'
+    - External Review
+    - '1'
+    - '2015-10-29 20:00:21.408232'
+    - '2015-10-29 20:00:21.408232'
+    - '4'
+  - - '65'
+    - Make Decision
+    - '1'
+    - '2015-10-29 20:00:21.415546'
+    - '2015-10-29 20:00:21.415546'
+    - '5'
+
+---
+phases:
+  columns:
+  - id
+  - name
+  - created_at
+  - updated_at
+  - position
+  - paper_id
+  records: 
+  - - '1'
+    - Submission
+    - '2015-10-29 20:16:37.412841'
+    - '2015-10-29 20:16:37.412841'
+    - '1'
+    - '1'
+  - - '2'
+    - Tech Check
+    - '2015-10-29 20:16:37.695856'
+    - '2015-10-29 20:16:37.695856'
+    - '2'
+    - '1'
+  - - '3'
+    - Internal Review
+    - '2015-10-29 20:16:37.730293'
+    - '2015-10-29 20:16:37.730293'
+    - '3'
+    - '1'
+  - - '4'
+    - External Review
+    - '2015-10-29 20:16:37.753901'
+    - '2015-10-29 20:16:37.753901'
+    - '4'
+    - '1'
+  - - '5'
+    - Make Decision
+    - '2015-10-29 20:16:37.77308'
+    - '2015-10-29 20:16:37.77308'
+    - '5'
+    - '1'
+  - - '6'
+    - Submission
+    - '2015-10-30 19:43:28.497968'
+    - '2015-10-30 19:43:28.497968'
+    - '1'
+    - '2'
+  - - '7'
+    - Tech Check
+    - '2015-10-30 19:43:28.705363'
+    - '2015-10-30 19:43:28.705363'
+    - '2'
+    - '2'
+  - - '8'
+    - Internal Review
+    - '2015-10-30 19:43:28.726752'
+    - '2015-10-30 19:43:28.726752'
+    - '3'
+    - '2'
+  - - '9'
+    - External Review
+    - '2015-10-30 19:43:28.741896'
+    - '2015-10-30 19:43:28.741896'
+    - '4'
+    - '2'
+  - - '10'
+    - Make Decision
+    - '2015-10-30 19:43:28.757472'
+    - '2015-10-30 19:43:28.757472'
+    - '5'
+    - '2'
+  - - '11'
+    - Submission
+    - '2015-11-02 14:04:02.917783'
+    - '2015-11-02 14:04:02.917783'
+    - '1'
+    - '3'
+  - - '12'
+    - Tech Check
+    - '2015-11-02 14:04:03.185394'
+    - '2015-11-02 14:04:03.185394'
+    - '2'
+    - '3'
+  - - '13'
+    - Internal Review
+    - '2015-11-02 14:04:03.208629'
+    - '2015-11-02 14:04:03.208629'
+    - '3'
+    - '3'
+  - - '14'
+    - External Review
+    - '2015-11-02 14:04:03.224569'
+    - '2015-11-02 14:04:03.224569'
+    - '4'
+    - '3'
+  - - '15'
+    - Make Decision
+    - '2015-11-02 14:04:03.239991'
+    - '2015-11-02 14:04:03.239991'
+    - '5'
+    - '3'
+  - - '16'
+    - Submission
+    - '2015-11-02 14:46:23.824127'
+    - '2015-11-02 14:46:23.824127'
+    - '1'
+    - '4'
+  - - '17'
+    - Tech Check
+    - '2015-11-02 14:46:24.092862'
+    - '2015-11-02 14:46:24.092862'
+    - '2'
+    - '4'
+  - - '18'
+    - Internal Review
+    - '2015-11-02 14:46:24.11566'
+    - '2015-11-02 14:46:24.11566'
+    - '3'
+    - '4'
+  - - '19'
+    - External Review
+    - '2015-11-02 14:46:24.131249'
+    - '2015-11-02 14:46:24.131249'
+    - '4'
+    - '4'
+  - - '20'
+    - Make Decision
+    - '2015-11-02 14:46:24.14677'
+    - '2015-11-02 14:46:24.14677'
+    - '5'
+    - '4'
+  - - '21'
+    - Submission
+    - '2015-11-03 22:59:20.967947'
+    - '2015-11-03 22:59:20.967947'
+    - '1'
+    - '8'
+  - - '22'
+    - Tech Check
+    - '2015-11-03 22:59:21.261964'
+    - '2015-11-03 22:59:21.261964'
+    - '2'
+    - '8'
+  - - '23'
+    - Internal Review
+    - '2015-11-03 22:59:21.288172'
+    - '2015-11-03 22:59:21.288172'
+    - '3'
+    - '8'
+  - - '24'
+    - External Review
+    - '2015-11-03 22:59:21.307044'
+    - '2015-11-03 22:59:21.307044'
+    - '4'
+    - '8'
+  - - '25'
+    - Make Decision
+    - '2015-11-03 22:59:21.32648'
+    - '2015-11-03 22:59:21.32648'
+    - '5'
+    - '8'
+  - - '26'
+    - Submission
+    - '2015-11-03 23:02:06.827202'
+    - '2015-11-03 23:02:06.827202'
+    - '1'
+    - '9'
+  - - '27'
+    - Tech Check
+    - '2015-11-03 23:02:07.126489'
+    - '2015-11-03 23:02:07.126489'
+    - '2'
+    - '9'
+  - - '28'
+    - Internal Review
+    - '2015-11-03 23:02:07.152564'
+    - '2015-11-03 23:02:07.152564'
+    - '3'
+    - '9'
+  - - '29'
+    - External Review
+    - '2015-11-03 23:02:07.172374'
+    - '2015-11-03 23:02:07.172374'
+    - '4'
+    - '9'
+  - - '30'
+    - Make Decision
+    - '2015-11-03 23:02:07.190858'
+    - '2015-11-03 23:02:07.190858'
+    - '5'
+    - '9'
+  - - '31'
+    - Submission
+    - '2015-11-10 22:27:27.188975'
+    - '2015-11-10 22:27:27.188975'
+    - '1'
+    - '10'
+  - - '32'
+    - Tech Check
+    - '2015-11-10 22:27:27.522541'
+    - '2015-11-10 22:27:27.522541'
+    - '2'
+    - '10'
+  - - '33'
+    - Internal Review
+    - '2015-11-10 22:27:27.560955'
+    - '2015-11-10 22:27:27.560955'
+    - '3'
+    - '10'
+  - - '34'
+    - External Review
+    - '2015-11-10 22:27:27.582396'
+    - '2015-11-10 22:27:27.582396'
+    - '4'
+    - '10'
+  - - '35'
+    - Make Decision
+    - '2015-11-10 22:27:27.59862'
+    - '2015-11-10 22:27:27.59862'
+    - '5'
+    - '10'
+
+---
+roles:
+  columns:
+  - id
+  - name
+  - journal_id
+  - participates_in_papers
+  - participates_in_tasks
+  - created_at
+  - updated_at
+  records: 
+  - - '7'
+    - User
+    - 
+    - false
+    - false
+    - '2016-01-28 17:12:41.755784'
+    - '2016-01-28 17:12:41.755784'
+  - - '8'
+    - Author
+    - '1'
+    - true
+    - true
+    - '2016-01-28 17:12:41.881702'
+    - '2016-01-28 17:12:41.886783'
+  - - '9'
+    - Reviewer
+    - '1'
+    - true
+    - true
+    - '2016-01-28 17:12:41.926508'
+    - '2016-01-28 17:12:41.930242'
+  - - '10'
+    - Staff Admin
+    - '1'
+    - false
+    - false
+    - '2016-01-28 17:12:41.947065'
+    - '2016-01-28 17:12:41.947065'
+  - - '11'
+    - Internal Editor
+    - '1'
+    - false
+    - false
+    - '2016-01-30 23:30:43.414744'
+    - '2016-01-30 23:30:43.414744'
+  - - '12'
+    - Publishing Services and Production Staff
+    - '1'
+    - false
+    - false
+    - '2016-02-01 15:50:31.460619'
+    - '2016-02-01 15:50:31.460619'
+
+---
+question_attachments:
+  columns:
+  - id
+  - nested_question_answer_id
+  - attachment
+  - title
+  - status
+  - created_at
+  - updated_at
+  - token
+  records: 
+  - - '1'
+    - '78'
+    - turtles-are-amazing.docx
+    - 
+    - done
+    - '2015-11-02 14:16:35.584565'
+    - '2016-01-21 17:58:45.04696'
+    - 73b346c3a9fa14d2fcfd0734cb07a04dfb30c2be5e9f7270
+  - - '2'
+    - '88'
+    - turtles-are-amazing.docx
+    - 
+    - done
+    - '2015-11-02 14:18:02.598388'
+    - '2016-01-21 17:58:45.059148'
+    - 44129b4f5b13fbfe0c18acff578f54a0d985b9d68cc6af7d
+  - - '3'
+    - '126'
+    - manuscript+_281_29.docx
+    - 
+    - done
+    - '2015-11-02 15:12:01.338942'
+    - '2016-01-21 17:58:45.060737'
+    - 9a83d979f72b3e973a01637015fbbd4c4d855461f3e60bcd
 
 ---
 authors:
@@ -3971,6 +3918,59 @@ permissions:
     - TahiStandardTasks::ReviewerReportTask
     - '2016-02-02 01:27:07.653319'
     - '2016-02-02 01:27:07.653319'
+
+---
+supporting_information_files:
+  columns:
+  - id
+  - paper_id
+  - title
+  - caption
+  - attachment
+  - created_at
+  - updated_at
+  - status
+  - publishable
+  - token
+  - label
+  - category
+  records: 
+  - - '1'
+    - '2'
+    - 'Title: sample.doc'
+    - 
+    - sample.doc
+    - '2015-10-30 19:52:32.177953'
+    - '2015-10-30 19:52:32.793467'
+    - done
+    - true
+    - 
+    - 
+    - 
+  - - '2'
+    - '3'
+    - 'Title: turtles-are-amazing.docx'
+    - 
+    - turtles-are-amazing.docx
+    - '2015-11-02 14:13:19.427337'
+    - '2015-11-02 14:13:19.701157'
+    - done
+    - true
+    - 
+    - 
+    - 
+  - - '3'
+    - '4'
+    - 'Title: turtles-are-amazing.docx'
+    - 
+    - turtles-are-amazing.docx
+    - '2015-11-02 15:09:02.825204'
+    - '2015-11-02 15:09:03.10794'
+    - done
+    - true
+    - 
+    - 
+    - 
 
 ---
 affiliations:
@@ -7069,7 +7069,7 @@ nested_questions:
     - '1'
     - '2015-11-02 13:38:26.296091'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::InitialTechCheckTask
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '140'
     - Check the ethics statement - does it mention Human Participants? If so, flag
@@ -7082,7 +7082,7 @@ nested_questions:
     - '2'
     - '2015-11-02 13:38:26.300112'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::InitialTechCheckTask
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '141'
     - Check if there are any obvious ethical flags (mentions of animal/human work
@@ -7096,7 +7096,7 @@ nested_questions:
     - '3'
     - '2015-11-02 13:38:26.30383'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::InitialTechCheckTask
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '142'
     - Is the data available? If not, or it's only available by contacting an author
@@ -7109,7 +7109,7 @@ nested_questions:
     - '4'
     - '2015-11-02 13:38:26.307755'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::InitialTechCheckTask
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '143'
     - If author indicates the data is available in Supporting Information, check to
@@ -7123,7 +7123,7 @@ nested_questions:
     - '5'
     - '2015-11-02 13:38:26.311478'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::InitialTechCheckTask
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '144'
     - If the author has mentioned Dryad in their Data statement, check that they've
@@ -7136,7 +7136,7 @@ nested_questions:
     - '6'
     - '2015-11-02 13:38:26.315087'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::InitialTechCheckTask
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '145'
     - If Financial Disclosure Statement is not complete (they've written N/A or something
@@ -7149,7 +7149,7 @@ nested_questions:
     - '7'
     - '2015-11-02 13:38:26.319212'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::InitialTechCheckTask
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '146'
     - If the Financial Disclosure Statement includes any companies from the Tobacco
@@ -7162,7 +7162,7 @@ nested_questions:
     - '8'
     - '2015-11-02 13:38:26.322791'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::InitialTechCheckTask
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '147'
     - If any figures are completely illegible, contact the author.
@@ -7174,7 +7174,7 @@ nested_questions:
     - '9'
     - '2015-11-02 13:38:26.326519'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::InitialTechCheckTask
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '148'
     - If any files or figures are cited but not included in the submission, message
@@ -7187,7 +7187,7 @@ nested_questions:
     - '10'
     - '2015-11-02 13:38:26.330182'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::InitialTechCheckTask
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '149'
     - Have the authors asked any questions in the cover letter? If yes, contact the
@@ -7200,7 +7200,7 @@ nested_questions:
     - '11'
     - '2015-11-02 13:38:26.333792'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::InitialTechCheckTask
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '150'
     - Have the authors mentioned any billing information in the cover letter? If yes,
@@ -7213,7 +7213,7 @@ nested_questions:
     - '12'
     - '2015-11-02 13:38:26.337417'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::InitialTechCheckTask
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '151'
     - If an Ethics Statement is present, make a note in the discussion below.
@@ -7225,7 +7225,7 @@ nested_questions:
     - '13'
     - '2015-11-02 13:38:26.340953'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::InitialTechCheckTask
+    - PlosBioTechCheck::InitialTechCheckTask
     - 
   - - '152'
     - 'Check Section Headings of all new submissions (including Open Rejects). Should
@@ -7240,7 +7240,7 @@ nested_questions:
     - '1'
     - '2015-11-02 13:38:26.346485'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::RevisionTechCheckTask
+    - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '153'
     - Check the ethics statement - does it mention Human Participants? If so, flag
@@ -7253,7 +7253,7 @@ nested_questions:
     - '2'
     - '2015-11-02 13:38:26.350087'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::RevisionTechCheckTask
+    - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '154'
     - Check if there are any obvious ethical flags (mentions of animal/human work
@@ -7267,7 +7267,7 @@ nested_questions:
     - '3'
     - '2015-11-02 13:38:26.355497'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::RevisionTechCheckTask
+    - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '155'
     - Is the data available? If not, or it's only available by contacting an author
@@ -7280,7 +7280,7 @@ nested_questions:
     - '4'
     - '2015-11-02 13:38:26.359242'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::RevisionTechCheckTask
+    - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '156'
     - If author indicates the data is available in Supporting Information, check to
@@ -7294,7 +7294,7 @@ nested_questions:
     - '5'
     - '2015-11-02 13:38:26.3628'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::RevisionTechCheckTask
+    - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '157'
     - If the author has mentioned Dryad in their Data statement, check that they've
@@ -7307,7 +7307,7 @@ nested_questions:
     - '6'
     - '2015-11-02 13:38:26.366706'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::RevisionTechCheckTask
+    - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '158'
     - If Financial Disclosure Statement is not complete (they've written N/A or something
@@ -7320,7 +7320,7 @@ nested_questions:
     - '7'
     - '2015-11-02 13:38:26.370339'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::RevisionTechCheckTask
+    - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '159'
     - If the Financial Disclosure Statement includes any companies from the Tobacco
@@ -7333,7 +7333,7 @@ nested_questions:
     - '8'
     - '2015-11-02 13:38:26.373836'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::RevisionTechCheckTask
+    - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '160'
     - If any figures are completely illegible, contact the author.
@@ -7345,7 +7345,7 @@ nested_questions:
     - '9'
     - '2015-11-02 13:38:26.37734'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::RevisionTechCheckTask
+    - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '161'
     - If any files or figures are cited but not included in the submission, message
@@ -7358,7 +7358,7 @@ nested_questions:
     - '10'
     - '2015-11-02 13:38:26.380912'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::RevisionTechCheckTask
+    - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '162'
     - Have the authors asked any questions in the cover letter? If yes, contact the
@@ -7371,7 +7371,7 @@ nested_questions:
     - '11'
     - '2015-11-02 13:38:26.384466'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::RevisionTechCheckTask
+    - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '163'
     - Have the authors mentioned any billing information in the cover letter? If yes,
@@ -7384,7 +7384,7 @@ nested_questions:
     - '12'
     - '2015-11-02 13:38:26.387949'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::RevisionTechCheckTask
+    - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '164'
     - If an Ethics Statement is present, make a note in the discussion below.
@@ -7396,7 +7396,7 @@ nested_questions:
     - '13'
     - '2015-11-02 13:38:26.39145'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::RevisionTechCheckTask
+    - PlosBioTechCheck::RevisionTechCheckTask
     - 
   - - '165'
     - 'Check Section Headings of all new submissions (including Open Rejects). Should
@@ -7411,7 +7411,7 @@ nested_questions:
     - '1'
     - '2015-11-02 13:38:26.396833'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::FinalTechCheckTask
+    - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '166'
     - Check the ethics statement - does it mention Human Participants? If so, flag
@@ -7424,7 +7424,7 @@ nested_questions:
     - '2'
     - '2015-11-02 13:38:26.400512'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::FinalTechCheckTask
+    - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '167'
     - Check if there are any obvious ethical flags (mentions of animal/human work
@@ -7438,7 +7438,7 @@ nested_questions:
     - '3'
     - '2015-11-02 13:38:26.403989'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::FinalTechCheckTask
+    - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '168'
     - Is the data available? If not, or it's only available by contacting an author
@@ -7451,7 +7451,7 @@ nested_questions:
     - '4'
     - '2015-11-02 13:38:26.407564'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::FinalTechCheckTask
+    - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '169'
     - If author indicates the data is available in Supporting Information, check to
@@ -7465,7 +7465,7 @@ nested_questions:
     - '5'
     - '2015-11-02 13:38:26.411338'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::FinalTechCheckTask
+    - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '170'
     - If the author has mentioned Dryad in their Data statement, check that they've
@@ -7478,7 +7478,7 @@ nested_questions:
     - '6'
     - '2015-11-02 13:38:26.415031'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::FinalTechCheckTask
+    - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '171'
     - If Financial Disclosure Statement is not complete (they've written N/A or something
@@ -7491,7 +7491,7 @@ nested_questions:
     - '7'
     - '2015-11-02 13:38:26.418577'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::FinalTechCheckTask
+    - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '172'
     - If the Financial Disclosure Statement includes any companies from the Tobacco
@@ -7504,7 +7504,7 @@ nested_questions:
     - '8'
     - '2015-11-02 13:38:26.422021'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::FinalTechCheckTask
+    - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '173'
     - If any figures are completely illegible, contact the author.
@@ -7516,7 +7516,7 @@ nested_questions:
     - '9'
     - '2015-11-02 13:38:26.425661'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::FinalTechCheckTask
+    - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '174'
     - If any files or figures are cited but not included in the submission, message
@@ -7529,7 +7529,7 @@ nested_questions:
     - '10'
     - '2015-11-02 13:38:26.429237'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::FinalTechCheckTask
+    - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '175'
     - Have the authors asked any questions in the cover letter? If yes, contact the
@@ -7542,7 +7542,7 @@ nested_questions:
     - '11'
     - '2015-11-02 13:38:26.433036'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::FinalTechCheckTask
+    - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '176'
     - Have the authors mentioned any billing information in the cover letter? If yes,
@@ -7555,7 +7555,7 @@ nested_questions:
     - '12'
     - '2015-11-02 13:38:26.436669'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::FinalTechCheckTask
+    - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '177'
     - If an Ethics Statement is present, make a note in the discussion below.
@@ -7567,7 +7567,7 @@ nested_questions:
     - '13'
     - '2015-11-02 13:38:26.440221'
     - '2016-01-15 18:04:22.865691'
-    - PlosBio::FinalTechCheckTask
+    - PlosBioTechCheck::FinalTechCheckTask
     - 
   - - '178'
     - Please provide your field permit number and indicate the institution or relevant
@@ -7886,7 +7886,7 @@ tasks:
     - 
   - - '14'
     - Initial Tech Check
-    - PlosBio::InitialTechCheckTask
+    - PlosBioTechCheck::InitialTechCheckTask
     - '2'
     - false
     - '2015-10-29 20:16:37.707252'
@@ -7898,7 +7898,7 @@ tasks:
     - 
   - - '15'
     - Revision Tech Check
-    - PlosBio::RevisionTechCheckTask
+    - PlosBioTechCheck::RevisionTechCheckTask
     - '2'
     - false
     - '2015-10-29 20:16:37.717232'
@@ -7910,7 +7910,7 @@ tasks:
     - 
   - - '16'
     - Final Tech Check
-    - PlosBio::FinalTechCheckTask
+    - PlosBioTechCheck::FinalTechCheckTask
     - '2'
     - false
     - '2015-10-29 20:16:37.726562'
@@ -7934,7 +7934,7 @@ tasks:
     - 
   - - '18'
     - Editor Discussion
-    - PlosBio::EditorsDiscussionTask
+    - PlosBioInternalReview::EditorsDiscussionTask
     - '3'
     - false
     - '2015-10-29 20:16:37.750782'
@@ -8151,7 +8151,7 @@ tasks:
     - 
   - - '35'
     - Initial Tech Check
-    - PlosBio::InitialTechCheckTask
+    - PlosBioTechCheck::InitialTechCheckTask
     - '7'
     - false
     - '2015-10-30 19:43:28.71276'
@@ -8163,7 +8163,7 @@ tasks:
     - 
   - - '36'
     - Revision Tech Check
-    - PlosBio::RevisionTechCheckTask
+    - PlosBioTechCheck::RevisionTechCheckTask
     - '7'
     - false
     - '2015-10-30 19:43:28.717952'
@@ -8175,7 +8175,7 @@ tasks:
     - 
   - - '37'
     - Final Tech Check
-    - PlosBio::FinalTechCheckTask
+    - PlosBioTechCheck::FinalTechCheckTask
     - '7'
     - false
     - '2015-10-30 19:43:28.723485'
@@ -8199,7 +8199,7 @@ tasks:
     - 
   - - '39'
     - Editor Discussion
-    - PlosBio::EditorsDiscussionTask
+    - PlosBioInternalReview::EditorsDiscussionTask
     - '8'
     - false
     - '2015-10-30 19:43:28.738473'
@@ -8410,7 +8410,7 @@ tasks:
     - '2016-02-02 19:33:00'
   - - '56'
     - Initial Tech Check
-    - PlosBio::InitialTechCheckTask
+    - PlosBioTechCheck::InitialTechCheckTask
     - '12'
     - false
     - '2015-11-02 14:04:03.193998'
@@ -8422,7 +8422,7 @@ tasks:
     - 
   - - '57'
     - Revision Tech Check
-    - PlosBio::RevisionTechCheckTask
+    - PlosBioTechCheck::RevisionTechCheckTask
     - '12'
     - false
     - '2015-11-02 14:04:03.199552'
@@ -8434,7 +8434,7 @@ tasks:
     - 
   - - '58'
     - Final Tech Check
-    - PlosBio::FinalTechCheckTask
+    - PlosBioTechCheck::FinalTechCheckTask
     - '12'
     - false
     - '2015-11-02 14:04:03.205185'
@@ -8458,7 +8458,7 @@ tasks:
     - 
   - - '60'
     - Editor Discussion
-    - PlosBio::EditorsDiscussionTask
+    - PlosBioInternalReview::EditorsDiscussionTask
     - '13'
     - false
     - '2015-11-02 14:04:03.221057'
@@ -8672,7 +8672,7 @@ tasks:
     - '2016-02-02 19:33:00'
   - - '77'
     - Initial Tech Check
-    - PlosBio::InitialTechCheckTask
+    - PlosBioTechCheck::InitialTechCheckTask
     - '17'
     - false
     - '2015-11-02 14:46:24.100782'
@@ -8684,7 +8684,7 @@ tasks:
     - 
   - - '78'
     - Revision Tech Check
-    - PlosBio::RevisionTechCheckTask
+    - PlosBioTechCheck::RevisionTechCheckTask
     - '17'
     - false
     - '2015-11-02 14:46:24.107141'
@@ -8696,7 +8696,7 @@ tasks:
     - 
   - - '79'
     - Final Tech Check
-    - PlosBio::FinalTechCheckTask
+    - PlosBioTechCheck::FinalTechCheckTask
     - '17'
     - false
     - '2015-11-02 14:46:24.112501'
@@ -8720,7 +8720,7 @@ tasks:
     - '2016-02-02 19:33:00'
   - - '81'
     - Editor Discussion
-    - PlosBio::EditorsDiscussionTask
+    - PlosBioInternalReview::EditorsDiscussionTask
     - '18'
     - false
     - '2015-11-02 14:46:24.128177'
@@ -8924,7 +8924,7 @@ tasks:
     - 
   - - '98'
     - Initial Tech Check
-    - PlosBio::InitialTechCheckTask
+    - PlosBioTechCheck::InitialTechCheckTask
     - '22'
     - false
     - '2015-11-03 22:59:21.270475'
@@ -8936,7 +8936,7 @@ tasks:
     - 
   - - '99'
     - Revision Tech Check
-    - PlosBio::RevisionTechCheckTask
+    - PlosBioTechCheck::RevisionTechCheckTask
     - '22'
     - false
     - '2015-11-03 22:59:21.278714'
@@ -8948,7 +8948,7 @@ tasks:
     - 
   - - '100'
     - Final Tech Check
-    - PlosBio::FinalTechCheckTask
+    - PlosBioTechCheck::FinalTechCheckTask
     - '22'
     - false
     - '2015-11-03 22:59:21.284243'
@@ -8972,7 +8972,7 @@ tasks:
     - 
   - - '102'
     - Editor Discussion
-    - PlosBio::EditorsDiscussionTask
+    - PlosBioInternalReview::EditorsDiscussionTask
     - '23'
     - false
     - '2015-11-03 22:59:21.302115'
@@ -9176,7 +9176,7 @@ tasks:
     - 
   - - '119'
     - Initial Tech Check
-    - PlosBio::InitialTechCheckTask
+    - PlosBioTechCheck::InitialTechCheckTask
     - '27'
     - false
     - '2015-11-03 23:02:07.136355'
@@ -9188,7 +9188,7 @@ tasks:
     - 
   - - '120'
     - Revision Tech Check
-    - PlosBio::RevisionTechCheckTask
+    - PlosBioTechCheck::RevisionTechCheckTask
     - '27'
     - false
     - '2015-11-03 23:02:07.142415'
@@ -9200,7 +9200,7 @@ tasks:
     - 
   - - '121'
     - Final Tech Check
-    - PlosBio::FinalTechCheckTask
+    - PlosBioTechCheck::FinalTechCheckTask
     - '27'
     - false
     - '2015-11-03 23:02:07.148881'
@@ -9224,7 +9224,7 @@ tasks:
     - 
   - - '123'
     - Editor Discussion
-    - PlosBio::EditorsDiscussionTask
+    - PlosBioInternalReview::EditorsDiscussionTask
     - '28'
     - false
     - '2015-11-03 23:02:07.168945'
@@ -9428,7 +9428,7 @@ tasks:
     - 
   - - '140'
     - Initial Tech Check
-    - PlosBio::InitialTechCheckTask
+    - PlosBioTechCheck::InitialTechCheckTask
     - '32'
     - false
     - '2015-11-10 22:27:27.535272'
@@ -9440,7 +9440,7 @@ tasks:
     - 
   - - '141'
     - Revision Tech Check
-    - PlosBio::RevisionTechCheckTask
+    - PlosBioTechCheck::RevisionTechCheckTask
     - '32'
     - false
     - '2015-11-10 22:27:27.545741'
@@ -9452,7 +9452,7 @@ tasks:
     - 
   - - '142'
     - Final Tech Check
-    - PlosBio::FinalTechCheckTask
+    - PlosBioTechCheck::FinalTechCheckTask
     - '32'
     - false
     - '2015-11-10 22:27:27.554406'
@@ -9476,7 +9476,7 @@ tasks:
     - 
   - - '144'
     - Editor Discussion
-    - PlosBio::EditorsDiscussionTask
+    - PlosBioInternalReview::EditorsDiscussionTask
     - '33'
     - false
     - '2015-11-10 22:27:27.579306'
@@ -9520,53 +9520,5 @@ tasks:
     - editor
     - "[]"
     - '1'
-    - '10'
-    - 
-  - - '148'
-    - Initial Tech Check
-    - PlosBio::InitialTechCheckTask
-    - '32'
-    - false
-    - '2016-02-04 17:06:20.573017'
-    - '2016-02-04 17:06:20.573017'
-    - editor
-    - '{"round":1}'
-    - '4'
-    - '10'
-    - 
-  - - '149'
-    - Final Tech Check
-    - PlosBio::FinalTechCheckTask
-    - '32'
-    - false
-    - '2016-02-04 17:06:20.794433'
-    - '2016-02-04 17:06:20.794433'
-    - editor
-    - "[]"
-    - '5'
-    - '10'
-    - 
-  - - '150'
-    - Editor Discussion
-    - PlosBio::EditorsDiscussionTask
-    - '32'
-    - false
-    - '2016-02-04 17:06:21.011337'
-    - '2016-02-04 17:06:21.011337'
-    - admin
-    - "[]"
-    - '6'
-    - '10'
-    - 
-  - - '151'
-    - Revision Tech Check
-    - PlosBio::RevisionTechCheckTask
-    - '32'
-    - false
-    - '2016-02-04 17:06:21.144872'
-    - '2016-02-04 17:06:21.144872'
-    - editor
-    - "[]"
-    - '7'
     - '10'
     - 

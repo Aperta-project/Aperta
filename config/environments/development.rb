@@ -46,6 +46,7 @@ Tahi::Application.configure do
     Bullet.console = true
     Bullet.rails_logger = true
     Bullet.add_footer = true
-    Bullet.stacktrace_includes = ['tahi_standard_tasks', 'plos_bio', 'plos_billing', 'tahi-assign_team']
+    Bullet.stacktrace_includes = ['tahi_standard_tasks', 'plos_bio_tech_check', 'plos_bio_internal_review', 'plos_billing', 'tahi-assign_team']
   end
 end
+

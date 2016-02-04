@@ -46,7 +46,9 @@ class ReviewerReportTaskCreator
     @existing_reviewer_report_task ||= begin
       TahiStandardTasks::ReviewerReportTask.joins(assignments: :role).where(
         paper_id: paper.id,
-        assignments: { role_id: paper.journal.roles.reviewer, user_id: assignee.id }
+        assignments: {
+          role_id: paper.journal.roles.reviewer, user_id: assignee.id
+        }
       ).first
     end
   end

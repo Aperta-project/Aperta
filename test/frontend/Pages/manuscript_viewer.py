@@ -510,7 +510,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     paper_url = self.get_current_url()
     paper_id = int(paper_url.split('papers/')[1])
-    print('The paper DB ID is: {}'.format(paper_id))
+    print('The paper DB ID is: {0}'.format(paper_id))
     return paper_id
 
   def validate_so_overlay_elements_styles(self, type_, paper_title):

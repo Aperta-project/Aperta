@@ -75,7 +75,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
       Modals: View Invites and Create New Submission
     """
     user_type = random.choice(users)
-    print('Logging in as user: {}'.format(user_type))
+    logging.info('Logging in as user: {}'.format(user_type))
     login_page = LoginPage(self.getDriver())
     login_page.enter_login_field(user_type['user'])
     login_page.enter_password_field(login_valid_pw)
@@ -100,9 +100,11 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     manuscript_page.close_flash_message()
     time.sleep(2)
     paper_title_from_page = manuscript_page.get_paper_title_from_page()
+    logging.info('paper_title_from_page: '.format(paper_title_from_page))
     paper_id = manuscript_page.get_current_url().split('papers/')[1].split('?')[0]
-    print(paper_id)
+    logging.info('paper_id: '.format(paper_id))
     manuscript_page.click_submit_btn()
+    time.sleep(3)
     manuscript_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
     manuscript_page.confirm_submit_cancel()
     # The overlay mush be cleared to interact with the submit button

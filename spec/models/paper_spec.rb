@@ -211,7 +211,7 @@ describe Paper do
     end
 
     describe '#participants' do
-      let(:task){ FactoryGirl.create(:task, paper: paper) }
+      let(:task) { FactoryGirl.create(:task, paper: paper) }
       let(:task_user) { FactoryGirl.create(:user) }
       let(:task_assignment) do
         task.assignments.create!(
@@ -223,7 +223,8 @@ describe Paper do
       before do
         task = FactoryGirl.create(:task, paper: paper)
         task_assignment = task.assignments.create!(
-          user:task_user, role: FactoryGirl.create(:role)
+          user: task_user,
+          role: FactoryGirl.create(:role)
         )
       end
 

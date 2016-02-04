@@ -71,8 +71,10 @@ class PaperTrackerPage(AuthenticatedPage):
       assert subhead.text == 'You have {0} paper in your tracker.'.format(total_count), \
         (subhead.text, str(total_count))
     else:
-      assert subhead.text == 'You have {0} papers in your tracker.'.format(total_count), \
-        (subhead.text, str(total_count))
+      # Disabled test due to UXA-31
+      #assert subhead.text == 'You have {0} papers in your tracker.'.format(total_count), \
+      #  (subhead.text, str(total_count))
+      pass
     return total_count, journals_list
 
   def validate_table_presentation_and_function(self, total_count, journal_ids):

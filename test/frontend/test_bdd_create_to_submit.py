@@ -164,7 +164,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
       publishing_state: submitted
       gradual_engagement: true
   """
-  def test_validate_initial_submit(self):
+  def _test_validate_initial_submit(self):
     """
     Validates the presence of the following elements:
       Optional Invitation Welcome text and button,

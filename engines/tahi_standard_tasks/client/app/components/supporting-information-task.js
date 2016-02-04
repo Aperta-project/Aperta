@@ -28,8 +28,13 @@ export default TaskComponent.extend(FileUploadMixin, {
       this.get('files').pushObject(file);
     },
 
-    destroyAttachment(attachment) {
-      attachment.destroyRecord();
+    deleteFile(file) {
+      file.destroyRecord();
+    },
+
+    updateFile(file) {
+      this.clearAllValidationErrorsForModel(file);
+      file.save();
     }
   }
 });

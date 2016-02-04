@@ -1,3 +1,4 @@
+# rubocop:disable all
 namespace :data do
   namespace :migrate do
     desc 'Runs all of the tasks to migrate authors and reviewers to new R&P'

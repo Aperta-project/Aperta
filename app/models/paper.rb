@@ -6,7 +6,7 @@ class Paper < ActiveRecord::Base
   include AASM
   include ActionView::Helpers::SanitizeHelper
   include PgSearch
-  include AssignableTo
+  include Assignable::Model
 
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow

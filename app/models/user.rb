@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  include AssignableUser
+  include Assignable::User
   include UserHelper
   include UserDevise
 

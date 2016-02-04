@@ -8,10 +8,9 @@ class RoleSpecHelper
   def initialize(name, participates_in: [], &blk)
     @name = name
 
-    attrs = participates_in.reduce({}) do |hsh, klass|
+    attrs = participates_in.each_with_object({}) do |hsh, klass|
       column = "participates_in_#{klass.name.underscore.downcase.pluralize}"
       hsh[column] = true
-      hsh
     end
 
     @role = FactoryGirl.create(:role, attrs.merge(name: name))

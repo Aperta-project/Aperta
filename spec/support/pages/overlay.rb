@@ -24,16 +24,12 @@ class CardOverlay < Page
     find('main > p')
   end
 
-  def completed_checkbox
-    find(checkbox_selector)
-  end
-
   def mark_as_complete
     find('#task-not-completed').click
   end
 
   def completed?
-    find(checkbox_selector).checked?
+    has_css?('#task-is-completed')
   end
 
   # This method takes advantage of Capybara's default wait time to ensure
@@ -106,11 +102,5 @@ class CardOverlay < Page
 
   def unread_comments
     all('li.unread')
-  end
-
-  private
-
-  def checkbox_selector
-    '.task-completed'
   end
 end

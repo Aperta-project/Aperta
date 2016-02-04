@@ -81,7 +81,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     },
 
     toggleTaskCompletion() {
-      this.set('task.completed', !this.get('task.completed'));
+      this.toggleProperty('task.completed');
       this.save();
     }
   }

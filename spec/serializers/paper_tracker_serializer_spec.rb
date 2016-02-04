@@ -47,8 +47,11 @@ describe PaperTrackerSerializer do
     end
 
     it 'lists the handling_editor' do
-      handling_editors = roles.find { |r| r[:name] == 'Handling Editor' }[:users]
-      expect(handling_editors[0][:id]).to be(handling_editor.id)
+      handling_editors = roles.find do |roles_hash|
+        roles_hash[:name] == 'Handling Editor'
+      end
+      handling_editor_user = handling_editors[:users][0]
+      expect(handling_editor_user[:id]).to be(handling_editor.id)
     end
   end
 end

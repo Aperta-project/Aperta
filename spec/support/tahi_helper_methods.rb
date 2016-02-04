@@ -40,7 +40,7 @@ module TahiHelperMethods
 
   def assign_handling_editor_role(paper, editor)
     Assignment.where(
-      user:editor,
+      user: editor,
       role: paper.journal.roles.handling_editor,
       assigned_to: paper
     ).first_or_create!

@@ -53,13 +53,13 @@ module TahiHelperMethods
     if role_or_type == :admin
       Assignment.where(
         user: user,
-        role: Role.staff_admin,
+        role: journal.roles.staff_admin,
         assigned_to: journal
       ).first_or_create!
     elsif role_or_type == :editor
       Assignment.where(
         user: user,
-        role: journal.roles.internal_editor,
+        role: journal.roles.handling_editor,
         assigned_to: journal
       ).first_or_create!
     end

@@ -626,9 +626,15 @@ describe Paper do
     let(:collaborator) { FactoryGirl.create(:user) }
     let(:other_user) { FactoryGirl.create(:user) }
 
-    let(:creator_role) { Role.creator }
-    let(:collaborator_role) { Role.collaborator }
-    let(:other_role) { FactoryGirl.create(:role, name: 'Other Role') }
+    let(:creator_role) do
+      Role.ensure_exists(Role::CREATOR_ROLE, journal: paper.journal)
+    end
+    let(:collaborator_role) do
+      Role.ensure_exists(Role::COLLABORATOR_ROLE, journal: paper.journal)
+    end
+    let(:other_role) do
+      FactoryGirl.create(:role, name: 'Other Role', journal: paper.journal)
+    end
 
     before do
       paper.assignments.create!(role: collaborator_role, user: collaborator)

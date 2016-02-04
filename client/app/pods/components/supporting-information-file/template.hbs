@@ -1,4 +1,4 @@
-{{#if editionMode}}
+{{#if isEditing}}
   <div class="si-file-editor flex-form visible">
     <div class="si-file-filename">
       <a href="{{ file.src }}"><i class="fa {{iconClass}}"></i>{{ file.filename }}</a>
@@ -72,8 +72,8 @@
       </div>
     {{/if}}
 
-    <a href="{{ file.src }}" class="si-file-filename">
-      <i class="fa {{iconClass}}"></i>{{ file.filename }}
+    <a href="{{file.src}}" class="si-file-filename">
+      <i class="fa {{fileIconClass}}"></i>{{ file.filename }}
     </a>
 
     <div class="si-file-title">
@@ -91,7 +91,7 @@
         Cancel
       </button>
 
-      <button class="button si-file-delete-button" {{action "delete"}}>
+      <button class="button si-file-delete-button" {{action "deleteFile"}}>
         Delete Forever
       </button>
     </div>

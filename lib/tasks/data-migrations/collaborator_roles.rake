@@ -11,12 +11,14 @@ namespace :data do
           collaborator_role = paper.journal.roles.collaborator
 
           if paper && user
-            puts "Assigning #{user.full_name} <#{user.email}> as Collaborator on '#{paper.title}' Paper"
-            Assignment.where(
-              assigned_to: paper,
-              user: user,
-              role: collaborator_role
-            ).first_or_create!
+            if user != paper.creator
+              puts "Assigning #{user.full_name} <#{user.email}> as Collaborator on '#{paper.title}' Paper"
+              Assignment.where(
+                assigned_to: paper,
+                user: user,
+                role: collaborator_role
+              ).first_or_create!
+            end
           else
             paper_role.destroy
           end

@@ -6,7 +6,11 @@ class AssignmentsController < ApplicationController
     authorize_action! paper: paper
 
     assignments = PaperRole.includes(:user).where(paper: paper)
-    render json: assignments, each_serializer: PaperRoleSerializer, root: :assignments
+    render(
+      json: assignments,
+      each_serializer: PaperRoleSerializer,
+      root: :assignments
+    )
   end
 
   def create

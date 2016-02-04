@@ -6,4 +6,8 @@ class CollaborationSerializer < ActiveModel::Serializer
   def id
     object.id
   end
+
+  def paper
+    object.assigned_to
+  end
 end

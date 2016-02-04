@@ -1,3 +1,5 @@
+# rubocop:disable Metrics/LineLength
+
 require 'rails_helper'
 
 describe Activity do
@@ -176,34 +178,38 @@ describe Activity do
     end
   end
 
-  describe "#collaborator_added!" do
-    subject(:activity) { Activity.collaborator_added!(paper_role, user: user) }
-    let!(:paper_role) { FactoryGirl.create(:paper_role, :collaborator) }
+  describe '#collaborator_added!' do
+    subject(:activity) { Activity.collaborator_added!(collaboration, user: user) }
+    let!(:paper) { FactoryGirl.create(:paper) }
+    let!(:collaboration) { paper.add_collaboration(collaborator) }
+    let!(:collaborator) { FactoryGirl.create(:user) }
 
-    it {
+    it do
       is_expected.to have_attributes(
-        feed_name: "manuscript",
-        activity_key: "collaborator.added",
-        subject: paper_role.paper,
+        feed_name: 'manuscript',
+        activity_key: 'collaborator.added',
+        subject: paper,
         user: user,
-        message: "#{paper_role.user.full_name} has been assigned as collaborator"
+        message: "#{collaboration.user.full_name} has been assigned as collaborator"
       )
-    }
+    end
   end
 
-  describe "#collaborator_added!" do
-    subject(:activity) { Activity.collaborator_removed!(paper_role, user: user) }
-    let!(:paper_role) { FactoryGirl.create(:paper_role, :collaborator) }
+  describe '#collaborator_removed!' do
+    subject(:activity) { Activity.collaborator_removed!(collaboration, user: user) }
+    let!(:paper) { FactoryGirl.create(:paper) }
+    let!(:collaboration) { paper.add_collaboration(collaborator) }
+    let!(:collaborator) { FactoryGirl.create(:user) }
 
-    it {
+    it do
       is_expected.to have_attributes(
-        feed_name: "manuscript",
-        activity_key: "collaborator.removed",
-        subject: paper_role.paper,
+        feed_name: 'manuscript',
+        activity_key: 'collaborator.removed',
+        subject: paper,
         user: user,
-        message: "#{paper_role.user.full_name} has been removed as collaborator"
+        message: "#{collaboration.user.full_name} has been removed as collaborator"
       )
-    }
+    end
   end
 
   describe "#paper_submitted!" do

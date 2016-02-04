@@ -319,6 +319,19 @@ class Paper < ActiveRecord::Base
                             journal.roles.collaborator])
   end
 
+  def add_collaboration(user)
+    assignments.create(user: user, role: journal.roles.collaborator)
+  end
+
+  def remove_collaboration(collaboration)
+    unless collaboration.is_a?(Assignment)
+      collaboration = collaborations.find(collaboration)
+    end
+
+    collaboration.destroy if collaboration.role == journal.roles.collaborator
+    collaboration
+  end
+
   def paper_participation_roles
     [
       journal.roles.creator,

@@ -28,23 +28,32 @@ class Activity < ActiveRecord::Base
     )
   end
 
-  def self.collaborator_added!(collaborator_paper_role, user:)
+  def self.collaborator_added!(collaboration_assignment, user:)
+    msg = [
+      collaboration_assignment.user.full_name,
+      'has been assigned as collaborator'
+    ].join(' ')
+
     create(
-      feed_name: "manuscript",
-      activity_key: "collaborator.added",
-      subject: collaborator_paper_role.paper,
+      feed_name: 'manuscript',
+      activity_key: 'collaborator.added',
+      subject: collaboration_assignment.assigned_to,
       user: user,
-      message: "#{collaborator_paper_role.user.full_name} has been assigned as collaborator"
+      message: msg
     )
   end
 
-  def self.collaborator_removed!(collaborator_paper_role, user:)
+  def self.collaborator_removed!(collaboration_assignment, user:)
+    msg = [
+      collaboration_assignment.user.full_name,
+      'has been removed as collaborator'
+    ].join(' ')
     create(
-      feed_name: "manuscript",
-      activity_key: "collaborator.removed",
-      subject: collaborator_paper_role.paper,
+      feed_name: 'manuscript',
+      activity_key: 'collaborator.removed',
+      subject: collaboration_assignment.assigned_to,
       user: user,
-      message: "#{collaborator_paper_role.user.full_name} has been removed as collaborator"
+      message: msg
     )
   end
 

@@ -8,7 +8,7 @@ class RoleSpecHelper
   def initialize(name, participates_in: [], &blk)
     @name = name
 
-    attrs = participates_in.each_with_object({}) do |hsh, klass|
+    attrs = participates_in.each_with_object({}) do |klass, hsh|
       column = "participates_in_#{klass.name.underscore.downcase.pluralize}"
       hsh[column] = true
     end

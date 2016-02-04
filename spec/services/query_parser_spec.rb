@@ -5,6 +5,13 @@
 require 'rails_helper'
 
 describe QueryParser do
+  before do
+    # This is intended to remove rails helper seeds which is
+    # safe to delete since unit tests are in a transaction
+    Role.delete_all
+    User.delete_all
+  end
+
   describe '#parse' do
     describe 'paper metadata queries' do
       it 'parses type queries' do

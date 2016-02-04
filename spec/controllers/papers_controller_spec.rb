@@ -36,7 +36,7 @@ describe PapersController do
     has_permission action: 'view', applies_to: Paper.name
   end
 
-  let(:user) { create :user}
+  let(:user) { create :user }
 
   let(:submitted) { false }
   let(:paper) do
@@ -266,7 +266,8 @@ describe PapersController do
     it "withdraws the paper" do
       put :withdraw, id: paper.id, reason:'Conflict of interest', format: :json
       expect(response.status).to eq(200)
-      expect(paper.reload.latest_withdrawal_reason).to eq('Conflict of interest')
+      expect(paper.reload.latest_withdrawal_reason).to \
+        eq('Conflict of interest')
       expect(paper.withdrawn?).to eq true
       expect(paper.editable).to eq false
     end
@@ -295,42 +296,42 @@ describe PapersController do
     end
 
     context "for manuscript feed" do
-      context "and the user can view manuscript_activities" do
+      context 'and the user can view manuscript_activities' do
         action_policy(PapersPolicy, :manuscript_activities, true)
 
-        it "returns the feed" do
-          get :manuscript_activities, { id: paper.to_param, format: :json }
+        it 'returns the feed' do
+          get :manuscript_activities, id: paper.to_param, format: :json
           expect(response.status).to eq(200)
         end
       end
 
-      context "and the user cannot view manuscript_activities" do
+      context 'and the user cannot view manuscript_activities' do
         action_policy(PapersPolicy, :manuscript_activities, false)
 
-        it "returns a 403" do
+        it 'returns a 403' do
           sign_in weak_user
-          get :manuscript_activities, { id: paper.to_param, format: :json }
+          get :manuscript_activities, id: paper.to_param, format: :json
           expect(response.status).to eq(403)
         end
       end
     end
 
-    context "for workflow feed" do
-      context "and the user can view workflow_activities" do
+    context 'for workflow feed' do
+      context 'and the user can view workflow_activities' do
         action_policy(PapersPolicy, :workflow_activities, true)
 
-        it "returns the feed" do
-          get :workflow_activities, { id: paper.to_param, format: :json }
+        it 'returns the feed' do
+          get :workflow_activities, id: paper.to_param, format: :json
           expect(response.status).to eq(200)
         end
       end
 
-      context "and the user cannot view workflow_activities" do
+      context 'and the user cannot view workflow_activities' do
         action_policy(PapersPolicy, :workflow_activities, false)
 
-        it "returns a 403" do
+        it 'returns a 403' do
           sign_in weak_user
-          get :workflow_activities, { id: paper.to_param, format: :json }
+          get :workflow_activities, id: paper.to_param, format: :json
           expect(response.status).to eq(403)
         end
       end

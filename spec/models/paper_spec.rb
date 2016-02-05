@@ -151,6 +151,64 @@ describe Paper do
     end
   end
 
+  context 'collaboration' do
+    let(:user) { FactoryGirl.create(:user) }
+
+    describe '#add_collaboration' do
+      it 'adds the user as a collaborator, returning an assignment' do
+        expect do
+          collaboration = paper.add_collaboration(user)
+          expect(collaboration).to eq(Assignment.last)
+        end.to change(paper.collaborators, :count).by(1)
+      end
+    end
+
+    describe '#remove_collaboration' do
+      let!(:collaboration) { paper.add_collaboration(user) }
+
+      it 'removes the collaboration given its id' do
+        expect do
+          paper.remove_collaboration(collaboration.id)
+        end.to change(paper.collaborators, :count).by(-1)
+        expect { collaboration.reload }.to \
+          raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'removes the collaboration given a collaborator' do
+        expect do
+          paper.remove_collaboration(collaboration.user)
+        end.to change(paper.collaborators, :count).by(-1)
+        expect { collaboration.reload }.to \
+          raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'removes the collaboration given the collaboration' do
+        expect do
+          paper.remove_collaboration(collaboration)
+        end.to change(paper.collaborators, :count).by(-1)
+        expect { collaboration.reload }.to \
+          raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'does not remove the creator' do
+        expect do
+          paper.remove_collaboration(paper.creator)
+        end.to_not change(paper.collaborators, :count)
+
+        collaboration = paper.collaborations.find_by(user: paper.creator)
+        expect do
+          paper.remove_collaboration(collaboration)
+        end.to_not change(paper.collaborators, :count)
+
+        expect do
+          paper.remove_collaboration(collaboration.id)
+        end.to_not change(paper.collaborators, :count)
+
+        expect { collaboration.reload }.to_not raise_error
+      end
+    end
+  end
+
   context 'participation' do
     let(:journal) { paper.journal }
     let(:creator_role) { journal.roles.creator }

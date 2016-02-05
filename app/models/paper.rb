@@ -324,8 +324,10 @@ class Paper < ActiveRecord::Base
   end
 
   def remove_collaboration(collaboration)
-    unless collaboration.is_a?(Assignment)
-      collaboration = collaborations.find(collaboration)
+    if collaboration.is_a?(User)
+      collaboration = collaborations.find_by(user: collaboration)
+    elsif !collaboration.is_a?(Assignment)
+      collaboration = collaborations.find_by(id: collaboration)
     end
 
     collaboration.destroy if collaboration.role == journal.roles.collaborator

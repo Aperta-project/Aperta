@@ -22,8 +22,10 @@ const { computed, observer } = Ember;
 export default Ember.Component.extend({
   classNameBindings: [
     ':power-select-other',
+    'errorPresent:error',
     '_otherOptionSelected:power-select-other--other-selected'
   ],
+  errorPresent: Ember.computed.notEmpty('errors'),
 
   /**
    *  @property value

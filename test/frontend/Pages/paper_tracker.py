@@ -154,15 +154,16 @@ class PaperTrackerPage(AuthenticatedPage):
             # Split both to eliminate differences in whitespace
             db_title = db_title.split()
             page_title = page_title.split()
-            assert db_title == page_title
+            assert db_title == page_title, (db_title, page_title)
           else:
             raise TypeError('Database title or Page title are not both unicode objects')
         manid = self._get(self._paper_tracker_table_tbody_manid)
-        assert '/papers/%s' % manid.text in title.get_attribute('href'), \
-          (manid.tex, title.get_attribute('href'))
-        assert int(manid.text) == papers[count][1]
-        assert '/papers/%s' % manid.text in manid.get_attribute('href'), \
-          (manid.text, title.get_attribute('href'))
+        manid.number = manid.get_attribute('href').split('/')[-1]
+        assert '/papers/%s' % manid.number in title.get_attribute('href'), \
+          (manid.number, title.get_attribute('href'))
+        assert int(manid.number) == papers[count][1]
+        assert '/papers/%s' % manid.number in manid.get_attribute('href'), \
+          (manid.number, title.get_attribute('href'))
         self._get(self._paper_tracker_table_tbody_subdate)
         paptype = self._get(self._paper_tracker_table_tbody_paptype)
         assert paptype.text == papers[count][3]
@@ -175,7 +176,7 @@ class PaperTrackerPage(AuthenticatedPage):
             db_participants = PgSQL().query('SELECT users.first_name, users.last_name '
                                             'FROM paper_roles INNER JOIN users '
                                             'ON paper_roles.user_id = users.id '
-                                            'WHERE paper_id= %s AND paper_roles.old_role = %s;', (manid.text, 'participant'))
+                                            'WHERE paper_id= %s AND paper_roles.old_role = %s;', (manid.number, 'participant'))
             name = []
             for participant in db_participants:
               name.append(participant[0] + ' ' + participant[1])
@@ -189,7 +190,7 @@ class PaperTrackerPage(AuthenticatedPage):
             db_collaborators = PgSQL().query('SELECT users.first_name, users.last_name '
                                              'FROM paper_roles INNER JOIN users '
                                              'ON paper_roles.user_id = users.id '
-                                             'WHERE paper_id= %s AND paper_roles.old_role = %s;', (manid.text, 'collaborator'))
+                                             'WHERE paper_id= %s AND paper_roles.old_role = %s;', (manid.number, 'collaborator'))
             name = []
             for collaborator in db_collaborators:
               name.append(collaborator[0] + ' ' + collaborator[1])
@@ -203,7 +204,7 @@ class PaperTrackerPage(AuthenticatedPage):
             db_reviewers = PgSQL().query('SELECT users.first_name, users.last_name '
                                          'FROM paper_roles INNER JOIN users '
                                          'ON paper_roles.user_id = users.id '
-                                         'WHERE paper_id= %s AND paper_roles.old_role = %s;', (manid.text, 'reviewer'))
+                                         'WHERE paper_id= %s AND paper_roles.old_role = %s;', (manid.number, 'reviewer'))
             name = []
             for reviewer in db_reviewers:
               name.append(reviewer[0] + ' ' + reviewer[1])
@@ -217,7 +218,7 @@ class PaperTrackerPage(AuthenticatedPage):
             db_editors = PgSQL().query('SELECT users.first_name, users.last_name '
                                        'FROM paper_roles INNER JOIN users '
                                        'ON paper_roles.user_id = users.id '
-                                       'WHERE paper_id= %s AND paper_roles.old_role = %s;', (manid.text, 'editor'))
+                                       'WHERE paper_id= %s AND paper_roles.old_role = %s;', (manid.number, 'editor'))
             name = []
             for editor in db_editors:
               name.append(editor[0] + ' ' + editor[1])
@@ -231,7 +232,7 @@ class PaperTrackerPage(AuthenticatedPage):
             db_admins = PgSQL().query('SELECT users.first_name, users.last_name '
                                        'FROM paper_roles INNER JOIN users '
                                        'ON paper_roles.user_id = users.id '
-                                       'WHERE paper_id= %s AND paper_roles.old_role = %s;', (manid.text, 'admin'))
+                                       'WHERE paper_id= %s AND paper_roles.old_role = %s;', (manid.number, 'admin'))
             name = []
             for admin in db_admins:
               name.append(admin[0] + ' ' + admin[1])
@@ -262,13 +263,13 @@ class PaperTrackerPage(AuthenticatedPage):
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       manid = self._get(self._paper_tracker_table_tbody_manid)
       if total_count > 1:
-        assert int(manid.text) != int(orig_manid.text), manid.text + '==' + orig_manid.text
+        assert int(manid.number) != int(orig_manid.text), manid.text + '==' + orig_manid.text
       else:
-        assert int(manid.text) == int(orig_manid.text), manid.text + '!=' + orig_manid.text
+        assert int(manid.number) == int(orig_manid.text), manid.text + '!=' + orig_manid.text
       self._get(self._paper_tracker_table_header_sort_down).click()
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       manid = self._get(self._paper_tracker_table_tbody_manid)
-      assert int(manid.text) == int(orig_manid.text), manid.text + '!=' + orig_manid.text
+      assert int(manid.number) == int(orig_manid.text), manid.text + '!=' + orig_manid.text
 
       print('Sorting by Title')
       title_th.click()
@@ -290,13 +291,13 @@ class PaperTrackerPage(AuthenticatedPage):
       print('Sorting by Paper Type')
       paptype_th.click()
       self._paper_tracker_table_tbody_paptype = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-type-column"]')
-      type = self._get(self._paper_tracker_table_tbody_paptype)
-      orig_type = type
+      type_ = self._get(self._paper_tracker_table_tbody_paptype)
+      orig_type = type_
       self._get(self._paper_tracker_table_header_sort_up).click()
       self._paper_tracker_table_tbody_paptype = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-type-column"]')
-      type = self._get(self._paper_tracker_table_tbody_paptype)
-      assert type.text.lower() >= orig_type.text.lower(), type.text + '<' + orig_type.text
+      type_ = self._get(self._paper_tracker_table_tbody_paptype)
+      assert type_.text.lower() >= orig_type.text.lower(), type.text + '<' + orig_type.text
       self._get(self._paper_tracker_table_header_sort_down).click()
       self._paper_tracker_table_tbody_paptype = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-type-column"]')
-      type = self._get(self._paper_tracker_table_tbody_paptype)
-      assert type.text == orig_type.text, type.text + '!=' + orig_type.text
+      type_ = self._get(self._paper_tracker_table_tbody_paptype)
+      assert type_.text == orig_type.text, type_.text + '!=' + orig_type.text

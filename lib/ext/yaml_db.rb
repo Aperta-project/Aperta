@@ -33,6 +33,12 @@ module YamlDb
         end
       end
     end
+
+    class Dump
+      def self.tables
+        ActiveRecord::Base.connection.tables.reject { |table| ['schema_info', 'schema_migrations'].include?(table) }.sort
+      end
+    end
   end
 end
 # rubocop:enable all

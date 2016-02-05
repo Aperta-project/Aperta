@@ -16,8 +16,13 @@ describe ReviewerReportTaskCreator do
     context "with no existing reviewer" do
       it "assigns reviewer old_role to the assignee" do
         subject.process
-        expect(paper.role_for(user: assignee, old_role: PaperRole::REVIEWER))
-          .to exist
+        expect(
+          PaperRole.where(
+            paper: paper,
+            user: assignee,
+            old_role: PaperRole::REVIEWER
+          )
+        ).to exist
       end
 
       it "creates a ReviewerReportTask" do
@@ -47,7 +52,13 @@ describe ReviewerReportTaskCreator do
 
       it "assigns reviewer old_role to the assignee" do
         subject.process
-        expect(paper.role_for(user: assignee, old_role: PaperRole::REVIEWER)).to exist
+        expect(
+          PaperRole.where(
+            paper: paper,
+            user: assignee,
+            old_role: PaperRole::REVIEWER
+          )
+        ).to exist
       end
 
       it "creates a ReviewerReportTask" do

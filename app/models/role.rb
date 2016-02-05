@@ -39,6 +39,21 @@ class Role < ActiveRecord::Base
     where(name: STAFF_ADMIN_ROLE).first_or_create!
   end
 
+  def self.for_old_role(old_role, paper:) # rubocop:disable Metrics/MethodLength
+    case old_role
+    when /^admin$/i then paper.journal.roles.staff_admin
+    when /^editor$/i then paper.journal.roles.handling_editor
+    when /^collaborator$/i then paper.journal.roles.collaborator
+    when /^reviewer$/i then paper.journal.roles.reviewer
+    else
+      fail NotImplementedError, <<-MSG.strip_heredoc
+        Not sure how to match up old role '#{old_role}' with a new role.
+        Do no fret though. This just needs to be implemented until we are
+        done migrating away from the old roles.
+      MSG
+    end
+  end
+
   def self.ensure_exists(name, journal: nil, participates_in: [], &block)
     role = Role.where(name: name, journal: journal).first_or_create!
 

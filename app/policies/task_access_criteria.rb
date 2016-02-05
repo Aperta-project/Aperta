@@ -53,7 +53,8 @@ module TaskAccessCriteria
   end
 
   def allowed_reviewer_task?
-    task.old_role == 'reviewer' && paper.role_for(old_role: ['editor', 'reviewer'], user: current_user).exists?
+    roles = [paper.journal.roles.handling_editor, paper.journal.roles.reviewer]
+    paper.roles_for(user: current_user, roles: roles).exists?
   end
 
   def has_paper_role?

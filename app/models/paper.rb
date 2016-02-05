@@ -35,6 +35,7 @@ class Paper < ActiveRecord::Base
   has_many :notifications, inverse_of: :paper
   has_many :nested_question_answers
   has_many :assignments, as: :assigned_to
+  has_many :roles, through: :assignments
 
   serialize :withdrawals, ArrayHashSerializer
 
@@ -208,19 +209,28 @@ class Paper < ActiveRecord::Base
     end
   end
 
-  # Public: Find `PaperRole`s for the given old_role and user.
-  #
-  # old_role  - The old_role to search for.
-  # user  - The user to search `PaperRole` against.
+  # Public: Find `Role`s for the given user on this paper.
   #
   # Examples
   #
-  #   Paper.role_for(old_role: 'editor', user: User.first)
-  #   # => [<#123: PaperRole>, <#124: PaperRole>]
+  #   Paper.roles_for(user: User.first)
+  #   Paper.roles_for(user: User.first, roles: [Role.first])
   #
-  # Returns an ActiveRelation with <tt>PaperRole</tt>s.
-  def role_for(old_role:, user:)
-    paper_roles.where(old_role: old_role, user_id: user.id)
+  # Returns an ActiveRelation with <tt>Role</tt>s.
+  def roles_for(user:, roles: nil)
+    args = { assignments: { user_id: user } }
+    args[:assignments][:role_id] = roles.map(&:id) if roles
+    self.roles.where(args)
+  end
+
+  def role_descriptions_for(user:)
+    roles_for(user: user).map do |role|
+      if role == journal.roles.creator
+        'My Paper'
+      else
+        role.name
+      end
+    end
   end
 
   def tasks_for_type(klass_name)

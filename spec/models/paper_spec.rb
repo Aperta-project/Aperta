@@ -721,21 +721,60 @@ describe Paper do
     end
   end
 
-  describe "#role_for" do
-    let(:user) { FactoryGirl.create :user }
+  describe '#roles_for' do
+    let!(:user) { FactoryGirl.create(:user) }
+    let!(:role_1_assigned) { FactoryGirl.create(:role) }
+    let!(:role_2_assigned) { FactoryGirl.create(:role) }
+    let!(:role_3_not_assigned) { FactoryGirl.create(:role) }
 
     before do
-      create(:paper_role, :editor, paper: paper, user: user)
+      paper.assignments.create!(user: user, role: role_1_assigned)
+      paper.assignments.create!(user: user, role: role_2_assigned)
     end
 
-    it "returns old_roles if the old_role exist for the given user and old_role type" do
-      expect(paper.role_for(user: user, old_role: 'editor')).to be_present
+    it "returns the user's roles on the paper" do
+      expect(
+        paper.roles_for(user: user)
+      ).to contain_exactly(role_1_assigned, role_2_assigned)
     end
 
-    context "when the old_role isn't found" do
-      it "returns nothing" do
-        expect(paper.role_for(user: user, old_role: 'chucknorris')).to_not be_present
+    context "when the user isn't assigned to any roles" do
+      before { paper.assignments.destroy_all }
+
+      it 'returns nothing' do
+        expect(paper.roles_for(user: user)).to be_empty
       end
+    end
+
+    context 'when called with the optional :roles parameter' do
+      it "returns the user's roles on the paper scoped to the given roles" do
+        expect(
+          paper.roles_for(user: user, roles: [role_2_assigned])
+        ).to contain_exactly(role_2_assigned)
+      end
+
+      it "returns nothing when the user isn't assigned to the given roles" do
+        expect(
+          paper.roles_for(user: user, roles: [role_3_not_assigned])
+        ).to be_empty
+      end
+    end
+  end
+
+  describe '#role_descriptions_for' do
+    let!(:user) { FactoryGirl.create(:user) }
+    let!(:role) { FactoryGirl.create(:role, name: 'ABC') }
+
+    it 'returns the names of the roles the user is assigned to' do
+      paper.assignments.create!(user: user, role: role)
+      expect(paper.role_descriptions_for(user: user)).to contain_exactly('ABC')
+    end
+
+    it 'returns "My Paper" when the role is the journal creator' do
+      paper.assignments.create!(user: user, role: paper.journal.roles.creator)
+      expect(
+        paper.role_descriptions_for(user: user)
+      ).to contain_exactly('My Paper')
     end
   end
 

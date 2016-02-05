@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 describe ProxyableResource, redis: true do
-  let(:paper) { FactoryGirl.create :paper }
   let(:file) do
     with_aws_cassette 'supporting_info_files_controller' do
       # SupportingInformationFile includes ProxyableResource
-      paper.supporting_information_files.create! attachment: ::File.open('spec/fixtures/yeti.tiff')
+      FactoryGirl.create :supporting_information_file,
+                         attachment: File.open('spec/fixtures/yeti.tiff')
     end
   end
 

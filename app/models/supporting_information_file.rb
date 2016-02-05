@@ -79,6 +79,6 @@ class SupportingInformationFile < ActiveRecord::Base
   private
 
   def task_completed?
-    supporting_information_task.completed?
+    supporting_information_task && supporting_information_task.completed?
   end
 end

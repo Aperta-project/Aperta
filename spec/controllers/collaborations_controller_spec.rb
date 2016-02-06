@@ -29,9 +29,21 @@ describe CollaborationsController do
           do_request
         end.to change(paper.assignments, :count).by(1)
 
-        expect(paper.assignments.where(
+        expect(paper.assignments.find_by(
           role: paper.journal.roles.collaborator,
           user: collaborator
+        )).to be
+      end
+
+      it 'adds the user as a collaborator using paper role' do
+        expect do
+          do_request
+        end.to change(PaperRole, :count).by(1)
+
+        expect(PaperRole.find_by(
+          paper: paper,
+          user: collaborator,
+          old_role: PaperRole::COLLABORATOR
         )).to be
       end
 
@@ -85,6 +97,23 @@ describe CollaborationsController do
         expect(paper.assignments.find_by(
           role: paper.journal.roles.collaborator,
           user: collaborator
+        )).to_not be
+      end
+
+      it 'removes the remove as a collaborator using paper role' do
+        PaperRole.create!(
+          paper: paper,
+          user: collaborator,
+          old_role: PaperRole::COLLABORATOR
+        )
+        expect do
+          do_request
+        end.to change(PaperRole, :count).by(-1)
+
+        expect(PaperRole.find_by(
+          paper: paper,
+          user: collaborator,
+          old_role: PaperRole::COLLABORATOR
         )).to_not be
       end
 

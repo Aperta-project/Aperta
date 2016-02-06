@@ -13,6 +13,12 @@ class CollaborationsController < ApplicationController
       paper.id
     )
 
+    # This only exists to preserve sending events to the new collaborator
+    # thru the event stream about a paper they have access to.
+    PaperRole.create!(
+      collaborator_params.merge(old_role: PaperRole::COLLABORATOR)
+    )
+
     respond_with(
       collaboration,
       serializer: CollaborationSerializer,
@@ -23,6 +29,15 @@ class CollaborationsController < ApplicationController
   def destroy
     collaboration = paper.remove_collaboration(params[:id])
     Activity.collaborator_removed!(collaboration, user: current_user)
+
+    # This only exists to preserve sending events to the collaborator's
+    # browser thru the event stream so the paper is removed
+    PaperRole.where(
+      user_id: collaboration.user_id,
+      paper_id: collaboration.assigned_to_id,
+      old_role: PaperRole::COLLABORATOR
+    ).destroy_all
+
     respond_with collaboration, serializer: CollaborationSerializer
   end
 

@@ -46,19 +46,29 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
 
       scenario "access to papers" do
         # added as a collaborator
+        collaborator_paper.add_collaboration(admin)
         collaborator_paper.paper_roles.collaborators.create(user: admin)
         expect(page).to have_text(collaborator_paper.title)
 
         # removed as a collaborator
+        collaborator_paper.remove_collaboration(admin)
         collaborator_paper.paper_roles.collaborators.where(user: admin).destroy_all
         expect(page).to_not have_text(collaborator_paper.title)
 
-        # added as a participant
+        # added as a task participant
+        participant_paper.assignments.create!(
+          user: admin,
+          role: participant_paper.journal.roles.participant
+        )
         participant_paper.paper_roles.participants.create(user: admin)
         expect(page).to have_text(participant_paper.title)
 
-        # removed as a participant
-        participant_paper.paper_roles.participants.destroy_all
+        # removed as a task participant
+        participant_paper.assignments.find_by!(
+          user: admin,
+          role: participant_paper.journal.roles.participant
+        ).destroy
+        participant_paper.paper_roles.participants.find_by(user: admin).destroy
         expect(page).to_not have_text(participant_paper.title)
       end
     end

@@ -4,11 +4,14 @@
 Page Object Model for the Paper Tracker Page. Validates global and dynamic elements and their styles
 """
 
+import logging
+import time
+
 from Base.PostgreSQL import PgSQL
 from Base.Resources import psql_uname, psql_pw
 from selenium.webdriver.common.by import By
 from authenticated_page import AuthenticatedPage, application_typeface, manuscript_typeface
-import time
+
 
 __author__ = 'jgray@plos.org'
 
@@ -83,6 +86,7 @@ class PaperTrackerPage(AuthenticatedPage):
     manid_th = self._get(self._paper_tracker_table_paper_id_th)
     self.validate_table_heading_style(manid_th)
     subdate_th = self._get(self._paper_tracker_table_submit_date_th)
+    subdate_th_a = self._get(self._paper_tracker_table_submit_date_th).find_element_by_tag_name('a')
     self.validate_table_heading_style(subdate_th)
     paptype_th = self._get(self._paper_tracker_table_paper_type_th)
     self.validate_table_heading_style(paptype_th)
@@ -97,24 +101,25 @@ class PaperTrackerPage(AuthenticatedPage):
     submitted_papers = []
     if total_count > 0:
       for journal in journal_ids:
-        journal_papers = PgSQL().query('SELECT title, id, submitted_at, paper_type, short_title '
+        journal_papers = PgSQL().query('SELECT title, id, submitted_at, paper_type, short_title, doi '
                                        'FROM papers '
                                        'WHERE journal_id IN (%s) AND publishing_state != %s '
                                        'AND submitted_at IS NOT NULL '
-                                       'ORDER BY submitted_at ASC;', (journal, 'unsubmitted'))
+                                       'ORDER BY journal_id ASC;', (journal, 'unsubmitted'))
         for paper in journal_papers:
           submitted_papers.append(paper)
       # Now I need to resort this list by the datetime.datetime() objects ASC
       # only trouble is this pukes on the none type objects for papers that are unsubmitted but in other states
       #   (withdrawn)
-      submitted_papers = sorted(submitted_papers, key=lambda x: x[2])
+      ##import pdb; pdb.set_trace()
+      submitted_papers = sorted(submitted_papers, key=lambda x: x[1])
     # next the papers with no submitted_at populated (I think this is limited to withdrawn papers with NULL s_a date)
     # https://www.pivotaltracker.com/story/show/105325884 - this ordering is non-deterministic at present so this case
     # will fail until this defect is resolved and the test case updated as needed.
     withdrawn_papers = []
     if total_count > 0:
       for journal in journal_ids:
-        journal_papers = PgSQL().query('SELECT title, id, submitted_at, paper_type, short_title '
+        journal_papers = PgSQL().query('SELECT title, id, submitted_at, paper_type, short_title, doi '
                                        'FROM papers '
                                        'WHERE journal_id IN (%s) AND publishing_state = %s '
                                        'AND submitted_at IS NULL '
@@ -123,7 +128,7 @@ class PaperTrackerPage(AuthenticatedPage):
           withdrawn_papers.append(paper)
     # finally combine the two lists, NULL submitted_at first
     papers = withdrawn_papers + submitted_papers
-
+    #import pdb; pdb.set_trace()
     if total_count > 0:
       table_rows = self._gets(self._paper_tracker_table_tbody_row)
       count = 0
@@ -244,32 +249,45 @@ class PaperTrackerPage(AuthenticatedPage):
             return False
         count += 1
       # Validate sort function
-      print('Validating sort function for Date Submitted')
-      self._get(self._paper_tracker_table_header_sort_up).click()
+      logging.info('Validating sort function for Date Submitted')
+      ##subdate_th.click()
+      subdate_th_a.click()
+      #print "BEFORE 1 CLK"
+      #time.sleep(20)
+      #print "AFTER 1 CLK BEFORE 2 CLK"
+      #time.sleep(20)
+      time.sleep(2)
+      subdate_th_a = self._get(self._paper_tracker_table_submit_date_th).find_element_by_tag_name('a')
+      subdate_th_a.click()
+      #subdate_th.click()
+      #print "AFTER 2 CLK"
+      #time.sleep(20)
+      ##self._get(self._paper_tracker_table_header_sort_up).click()
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
-      manid = int(self._get(self._paper_tracker_table_tbody_manid).text)
-      assert manid == papers[len(papers) - 1][1], str(manid) + '!=' + papers[len(papers) - 1][1]
+      ##manid = int(self._get(self._paper_tracker_table_tbody_manid).text)
+      manid = self._get(self._paper_tracker_table_tbody_manid).text
+      print papers[len(papers) - 1]
+      doi = papers[len(papers) - 1][5].split('/')[1]
+      assert manid == doi, '{0} != {1}'.format(manid, doi)
       self._get(self._paper_tracker_table_header_sort_down).click()
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
-      manid = int(self._get(self._paper_tracker_table_tbody_manid).text)
-      assert manid == papers[0][1], str(manid) + '!=' + papers[0][1]
+      manid = self._get(self._paper_tracker_table_tbody_manid).text
+      assert manid == papers[0][5], str(manid) + '!=' + papers[0][5]
 
-      print('Sorting by Manuscript ID')
+      logging.info('Sorting by Manuscript ID')
+      manid_th = self._get(self._paper_tracker_table_paper_id_th)
       manid_th.click()
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       manid = self._get(self._paper_tracker_table_tbody_manid)
       orig_manid = manid
       self._get(self._paper_tracker_table_header_sort_up).click()
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
-      manid = self._get(self._paper_tracker_table_tbody_manid)
-      if total_count > 1:
-        assert int(manid.number) != int(orig_manid.text), manid.text + '==' + orig_manid.text
-      else:
-        assert int(manid.number) == int(orig_manid.text), manid.text + '!=' + orig_manid.text
       self._get(self._paper_tracker_table_header_sort_down).click()
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       manid = self._get(self._paper_tracker_table_tbody_manid)
-      assert int(manid.number) == int(orig_manid.text), manid.text + '!=' + orig_manid.text
+      print manid
+      print orig_manid.text
+      assert manid.text == orig_manid.text, manid.text + '!=' + orig_manid.text
 
       print('Sorting by Title')
       title_th.click()

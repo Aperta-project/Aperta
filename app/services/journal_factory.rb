@@ -35,9 +35,7 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: 'Paper', states: ['*'])
     end
 
-    Role.ensure_exists('Reviewer', journal: @journal, participates_in: [Task, Paper]) do |role|
-      role.ensure_permission_exists(:view, applies_to: 'TahiStandardTasks::ReviewerReportTask', states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: 'TahiStandardTasks::ReviewerReportTask', states: ['*'])
+    Role.ensure_exists('Reviewer', journal: @journal, participates_in: [Paper]) do |role|
       role.ensure_permission_exists(:view, applies_to: 'Paper', states: ['*'])
     end
 
@@ -78,7 +76,9 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: 'PlosBilling::BillingTask', states: ['*'])
     end
 
-    Role.ensure_exists('Participant', journal: @journal) do |_|
+    Role.ensure_exists('Participant', journal: @journal, participates_in: [Task]) do |role|
+      role.ensure_permission_exists(:view, applies_to: 'Task', states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: 'Task', states: ['*'])
     end
   end
 end

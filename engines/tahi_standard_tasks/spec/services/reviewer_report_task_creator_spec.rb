@@ -31,13 +31,24 @@ describe ReviewerReportTaskCreator do
         }.to change { TahiStandardTasks::ReviewerReportTask.count }.by(1)
       end
 
-      it 'assigns the user as a Reviewer on the ReviewerReportTask' do
+      it 'assigns the user as a Participant on the Paper' do
+        expect { subject.process }.to change { Assignment.count }
+
+        assignment = Assignment.where(
+          user: assignee,
+          role: paper.journal.roles.reviewer,
+          assigned_to: paper
+        ).first!
+        expect(assignment).to be
+      end
+
+      it 'assigns the user as a Participant on the ReviewerReportTask' do
         expect { subject.process }.to change { Assignment.count }
 
         task = TahiStandardTasks::ReviewerReportTask.last
         assignment = Assignment.where(
           user: assignee,
-          role: paper.journal.roles.reviewer,
+          role: paper.journal.roles.participant,
           assigned_to: task
         ).first!
         expect(assignment).to be

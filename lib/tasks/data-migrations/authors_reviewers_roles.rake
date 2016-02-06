@@ -5,6 +5,7 @@ namespace :data do
     task author_reviewers: [
       'author_reviewers:rename_creator_to_creator',
       'author_reviewers:remove_invalid_assignments',
+      'author_reviewers:remove_invalid_permissions',
       'author_reviewers:make_into_new_roles',
       'author_reviewers:make_billing_only_for_creator'
     ]
@@ -52,6 +53,21 @@ namespace :data do
           Assignment.where(
             role_id: creator_roles_that_should_not_exist,
             assigned_to: paper
+          ).destroy_all
+        end
+      end
+
+      # desc 'Removes permissions that got moved to the participant role'
+      task remove_invalid_permissions: :environment do
+        Role.where(name: Role::REVIEWER_ROLE).each do |role|
+          role.permissions.where(
+            applies_to: 'TahiStandardTasks::ReviewerReportTask',
+            action: %w(view edit)
+          ).destroy_all
+
+          role.permissions.where(
+            applies_to: 'Task',
+            action: %w(view edit)
           ).destroy_all
         end
       end

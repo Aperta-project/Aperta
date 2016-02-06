@@ -12,14 +12,14 @@ describe ParticipationsController do
   before { sign_in user }
 
   describe "#index" do
-    let!(:participation1) { FactoryGirl.create :participation, task: task, user: user }
-    let!(:participation2) { FactoryGirl.create :participation, task: task }
+    let!(:participation1) { task.add_participant(user) }
+    let!(:participation2) { task.add_participant(FactoryGirl.create(:user)) }
 
     subject(:do_request) do
       get :index, {
-            format: 'json',
-            task_id: task.to_param,
-          }
+        format: 'json',
+        task_id: task.to_param
+      }
     end
 
     it_behaves_like "an unauthenticated json request"
@@ -27,7 +27,7 @@ describe ParticipationsController do
     context "and the user authorized" do
       before do
         allow_any_instance_of(User).to \
-          receive(:can?).with(:edit, task).and_return true
+          receive(:can?).with(:view_participants, task).and_return true
       end
 
       it "returns the task's participations" do
@@ -45,7 +45,7 @@ describe ParticipationsController do
     context "when the user does not have access" do
       before do
         allow_any_instance_of(User).to receive(:can?)
-          .with(:edit, task)
+          .with(:view_participants, task)
           .and_return false
       end
 
@@ -68,8 +68,10 @@ describe ParticipationsController do
     context "the user is authorized" do
       before do
         allow_any_instance_of(User).to \
-          receive(:can?).with(:edit, task).and_return true
+          receive(:can?).with(:add_participants, task).and_return true
       end
+
+      it_behaves_like "an unauthenticated json request"
 
       context "the user does not pass a participant" do
         it "doesn't work" do
@@ -110,13 +112,75 @@ describe ParticipationsController do
         expect(response.status).to eq(201)
         expect(res_body["participation"]["id"]).to eq(Participation.last.id)
       end
-      it_behaves_like "an unauthenticated json request"
+
+      context "participants" do
+        let(:task) { FactoryGirl.create(:task) }
+        let(:editors_discussion_task) do
+          FactoryGirl.create(:editors_discussion_task)
+        end
+        let(:new_participant) { FactoryGirl.create(:user) }
+
+        subject :do_request do
+          post(
+            :create,
+            format: 'json',
+            participation: {
+              user_id: new_participant.id,
+              task_id: task.id,
+              task_type: 'AdHocTask'
+            }
+          )
+        end
+
+        it "calls the task's #notify_new_participant method" do
+          expect_any_instance_of(Task).to receive :notify_new_participant
+          do_request
+        end
+
+        context "when the task type is not EditorDiscussionTask" do
+          it "adds an email to the sidekiq queue if new participant != current user" do
+            expect do
+              do_request
+            end.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
+          end
+        end
+
+        context "when the task type is EditorsDiscussionTask" do
+          before do
+            allow_any_instance_of(User).to \
+              receive(:can?).with(:add_participants, editors_discussion_task)
+              .and_return true
+          end
+
+          it "sends a different email to the editor participants" do
+            expect(UserMailer).to \
+              receive_message_chain(:delay, :add_editor_to_editors_discussion)
+            post(
+              :create,
+              format: 'json',
+              participation: {
+                user_id: new_participant.id, task_id: editors_discussion_task.id
+              }
+            )
+          end
+
+          it "does not add an email to the sidekiq queue if new participant is the current user" do
+            expect do
+              post(
+                :create,
+                format: 'json',
+                participation: { user_id: user.id, task_id: task.id }
+              )
+            end.to_not change(Sidekiq::Extensions::DelayedMailer.jobs, :size)
+          end
+        end
+      end
     end
 
     context "when the user does not have access" do
       before do
         allow_any_instance_of(User).to receive(:can?)
-          .with(:edit, task)
+          .with(:add_participants, task)
           .and_return false
       end
 
@@ -136,7 +200,7 @@ describe ParticipationsController do
     context "the user is authorized" do
       before do
         allow_any_instance_of(User).to \
-          receive(:can?).with(:edit, task).and_return true
+          receive(:can?).with(:remove_participants, task).and_return true
       end
 
       context "with a valid participation id" do
@@ -178,7 +242,7 @@ describe ParticipationsController do
     context "when the user does not have access" do
       before do
         allow_any_instance_of(User).to receive(:can?)
-          .with(:edit, task)
+          .with(:remove_participants, task)
           .and_return false
       end
 

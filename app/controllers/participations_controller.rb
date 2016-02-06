@@ -1,13 +1,17 @@
 class ParticipationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :must_be_able_to_edit_task, except: [:index]
+
+  before_action :must_be_able_to_view_participants, only: [:show]
+  before_action :must_be_able_to_add_participants, only: [:create]
+  before_action :must_be_able_to_remove_participants, only: [:destroy]
+
   respond_to :json
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def index
-    if current_user.can?(:edit, task)
-      participations = Participation.where(task_id: task).all
+    if current_user.can?(:view_participants, task)
+      participations = task.participations
     else
       participations = []
     end
@@ -81,7 +85,15 @@ class ParticipationsController < ApplicationController
     head 404
   end
 
-  def must_be_able_to_edit_task
-    fail AuthorizationError unless current_user.can?(:edit, task)
+  def must_be_able_to_view_participants
+    fail AuthorizationError unless current_user.can?(:view_participants, task)
+  end
+
+  def must_be_able_to_add_participants
+    fail AuthorizationError unless current_user.can?(:add_participants, task)
+  end
+
+  def must_be_able_to_remove_participants
+    fail AuthorizationError unless current_user.can?(:remove_participants, task)
   end
 end

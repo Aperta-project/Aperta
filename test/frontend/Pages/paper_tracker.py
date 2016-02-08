@@ -248,25 +248,13 @@ class PaperTrackerPage(AuthenticatedPage):
           else:
             return False
         count += 1
-      # Validate sort function
       logging.info('Validating sort function for Date Submitted')
-      ##subdate_th.click()
       subdate_th_a.click()
-      #print "BEFORE 1 CLK"
-      #time.sleep(20)
-      #print "AFTER 1 CLK BEFORE 2 CLK"
-      #time.sleep(20)
       time.sleep(2)
       subdate_th_a = self._get(self._paper_tracker_table_submit_date_th).find_element_by_tag_name('a')
       subdate_th_a.click()
-      #subdate_th.click()
-      #print "AFTER 2 CLK"
-      #time.sleep(20)
-      ##self._get(self._paper_tracker_table_header_sort_up).click()
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
-      ##manid = int(self._get(self._paper_tracker_table_tbody_manid).text)
       manid = self._get(self._paper_tracker_table_tbody_manid).text
-      print papers[len(papers) - 1]
       doi = papers[len(papers) - 1][5].split('/')[1]
       assert manid == doi, '{0} != {1}'.format(manid, doi)
       self._get(self._paper_tracker_table_header_sort_down).click()
@@ -278,22 +266,23 @@ class PaperTrackerPage(AuthenticatedPage):
       manid_th = self._get(self._paper_tracker_table_paper_id_th)
       manid_th.click()
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
-      manid = self._get(self._paper_tracker_table_tbody_manid)
+      manid = self._get(self._paper_tracker_table_tbody_manid).text
       orig_manid = manid
       self._get(self._paper_tracker_table_header_sort_up).click()
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
-      self._get(self._paper_tracker_table_header_sort_down).click()
-      self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
-      manid = self._get(self._paper_tracker_table_tbody_manid)
-      print manid
-      print orig_manid.text
-      assert manid.text == orig_manid.text, manid.text + '!=' + orig_manid.text
+      manid = self._get(self._paper_tracker_table_tbody_manid).text
+      if total_count > 1:
+          assert manid > orig_manid, manid + '<=' + orig_manid
+      else:
+          assert manid == orig_manid, manid + '!=' + orig_manid
 
       print('Sorting by Title')
+      title_th = self._get(self._paper_tracker_table_title_th)
       title_th.click()
       self._paper_tracker_table_tbody_title = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-title-column"]/a')
       title = self._get(self._paper_tracker_table_tbody_title)
       orig_title = title
+      self._paper_tracker_table_tbody_title = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-title-column"]/a')
       self._get(self._paper_tracker_table_header_sort_up).click()
       self._paper_tracker_table_tbody_title = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-title-column"]/a')
       title = self._get(self._paper_tracker_table_tbody_title)

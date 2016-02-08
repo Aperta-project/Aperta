@@ -77,25 +77,9 @@ describe TasksPolicy do
 
   context "task participant" do
     before do
-      FactoryGirl.create(:participation, user: user, task: task)
+      task.add_participant user
     end
 
     include_examples "person who can edit but not create a task"
-  end
-
-  context "allowed reviewer" do
-    %i(reviewer editor).each do |old_role|
-      let(:user) do
-        user = FactoryGirl.create(:user)
-        FactoryGirl.create(:paper_role, old_role, user: user, paper: paper)
-        user
-      end
-
-      before do
-        task.update_attribute(:old_role, 'reviewer')
-      end
-
-      include_examples "person who can edit but not create a task"
-    end
   end
 end

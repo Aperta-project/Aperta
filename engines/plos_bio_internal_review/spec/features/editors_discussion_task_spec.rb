@@ -9,7 +9,7 @@ feature "Editor Discussion", js: true do
 
   before do
     assign_journal_role journal, journal_admin, :admin
-    task.participants << journal_admin
+    task.add_participant(journal_admin)
 
     SignInPage.visit.sign_in journal_admin
   end

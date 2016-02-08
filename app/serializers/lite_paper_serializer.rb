@@ -5,23 +5,20 @@ class LitePaperSerializer < ActiveModel::Serializer
 
   def related_at_date
     return unless scoped_user.present?
-    first_role = my_roles.order(created_at: :desc).first
+    first_role = my_roles.order('assignments.created_at desc').first
     return unless first_role.present?
     first_role.created_at
   end
 
   def old_roles
     return unless scoped_user.present?
-
-    old_roles = my_roles.map(&:description)
-    old_roles << 'My Paper' if object.creator == scoped_user
-    old_roles
+    object.role_descriptions_for(user: scoped_user)
   end
 
   private
 
   def my_roles
-    object.paper_roles.where(user: scoped_user)
+    @my_roles ||= object.roles_for(user: scoped_user)
   end
 
   def scoped_user

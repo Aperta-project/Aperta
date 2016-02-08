@@ -8,7 +8,6 @@ describe TasksController, redis: true do
   end
 
   before do
-    assign_author_role(paper, user)
     sign_in user
   end
 
@@ -127,7 +126,7 @@ describe TasksController, redis: true do
 
         before do
           user.update! site_admin: false
-          task.participants << user
+          task.add_participant(user)
         end
 
         it "updates the task" do

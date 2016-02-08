@@ -88,6 +88,16 @@ describe ParticipationsController do
         do_request
       end
 
+      it 'creates an Role.participant assignment on the task' do
+        expect { do_request }.to change(task.participations, :count).by(1)
+        expect(task.participations.last).to eq \
+          Assignment.where(
+            user: participant,
+            role: task.journal.roles.participant,
+            assigned_to: task
+          ).first
+      end
+
       it "returns the new participation as json" do
         do_request
         expect(response.status).to eq(201)
@@ -112,7 +122,9 @@ describe ParticipationsController do
       delete :destroy, format: :json, id: participation.id
     end
 
-    let!(:participation) { FactoryGirl.create :participation, task: task }
+    let!(:participation) do
+      FactoryGirl.create(:participation, task: task, user: participant)
+    end
 
     context "the user is authorized" do
       before do
@@ -125,12 +137,19 @@ describe ParticipationsController do
           delete :destroy, format: :json, id: participation.id
         end
 
-        let!(:participation) { FactoryGirl.create :participation, task: task }
-
         it "destroys the associated author" do
           expect {
             do_request
           }.to change { Participation.count }.by -1
+        end
+
+        it 'destroy the associated Role.participant assignment on the task' do
+          Assignment.create!(
+            user: participant,
+            role: task.journal.roles.participant,
+            assigned_to: participation.task
+          )
+          expect { do_request }.to change(task.participations, :count).by(-1)
         end
 
         it "creates an activity" do

@@ -2,18 +2,27 @@ require 'rails_helper'
 
 describe ReviewerReportTaskCreator do
   let!(:paper) { FactoryGirl.create(:paper) }
-  let!(:paper_reviewer_task) { FactoryGirl.create(:paper_reviewer_task, paper: paper) }
+  let!(:task) { FactoryGirl.create(:task, paper: paper) }
   let!(:assignee) { FactoryGirl.create(:user) }
 
   subject do
-    ReviewerReportTaskCreator.new(originating_task: paper_reviewer_task, assignee_id: assignee.id)
+    ReviewerReportTaskCreator.new(
+      originating_task: task,
+      assignee_id: assignee.id
+    )
   end
 
   context "assigning reviewer old_role" do
     context "with no existing reviewer" do
       it "assigns reviewer old_role to the assignee" do
         subject.process
-        expect(paper.role_for(user: assignee, old_role: PaperRole::REVIEWER)).to exist
+        expect(
+          PaperRole.where(
+            paper: paper,
+            user: assignee,
+            old_role: PaperRole::REVIEWER
+          )
+        ).to exist
       end
 
       it "creates a ReviewerReportTask" do
@@ -22,13 +31,24 @@ describe ReviewerReportTaskCreator do
         }.to change { TahiStandardTasks::ReviewerReportTask.count }.by(1)
       end
 
-      it "assigns the user as a Reviewer on thhe ReviewerReportTask" do
-        expect { subject.process }.to change(Assignment, :count).by(1)
+      it 'assigns the user as a Participant on the Paper' do
+        expect { subject.process }.to change { Assignment.count }
+
+        assignment = Assignment.where(
+          user: assignee,
+          role: paper.journal.roles.reviewer,
+          assigned_to: paper
+        ).first!
+        expect(assignment).to be
+      end
+
+      it 'assigns the user as a Participant on the ReviewerReportTask' do
+        expect { subject.process }.to change { Assignment.count }
 
         task = TahiStandardTasks::ReviewerReportTask.last
         assignment = Assignment.where(
           user: assignee,
-          role: paper.journal.roles.reviewer,
+          role: paper.journal.roles.participant,
           assigned_to: task
         ).first!
         expect(assignment).to be
@@ -43,7 +63,13 @@ describe ReviewerReportTaskCreator do
 
       it "assigns reviewer old_role to the assignee" do
         subject.process
-        expect(paper.role_for(user: assignee, old_role: PaperRole::REVIEWER)).to exist
+        expect(
+          PaperRole.where(
+            paper: paper,
+            user: assignee,
+            old_role: PaperRole::REVIEWER
+          )
+        ).to exist
       end
 
       it "creates a ReviewerReportTask" do
@@ -67,7 +93,9 @@ describe ReviewerReportTaskCreator do
     end
 
     it "uncompletes and unsubmits ReviewerReportTask" do
-      ReviewerReportTaskCreator.new(originating_task: paper_reviewer_task, assignee_id: assignee.id).process
+      ReviewerReportTaskCreator.new(
+        originating_task: task, assignee_id: assignee.id
+      ).process
       expect(TahiStandardTasks::ReviewerReportTask.count).to eq 1
       expect(TahiStandardTasks::ReviewerReportTask.first.completed).to eq false
       expect(TahiStandardTasks::ReviewerReportTask.first.submitted?).to eq false

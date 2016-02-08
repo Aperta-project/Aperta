@@ -97,6 +97,24 @@ DESC
       assign_user user, to: paper, with_role: role_for_viewing
     end
 
+    context 'when given an ActiveRecord class' do
+      let(:filtered) do
+        user.filter_authorized(:view, Authorizations::FakeTask)
+      end
+
+      it 'can filter authorized models' do
+        expect(filtered.objects).to eq(paper.fake_tasks)
+      end
+
+      it 'does not include unauthorized items' do
+        expect(filtered.objects).to_not include(other_task)
+      end
+
+      it 'generates the correct json' do
+        expect(filtered.as_json).to eq(task_json)
+      end
+    end
+
     context 'when given a simple ActiveRecord::Relation' do
       let(:filtered) do
         user.filter_authorized(:view, Authorizations::FakeTask.all)

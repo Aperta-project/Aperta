@@ -14,7 +14,7 @@ feature "Register Decision", js: true do
   let(:manuscript_page) { dashboard_page.view_submitted_paper paper }
 
   before do
-    task.participants << user
+    task.add_participant(user)
     assign_journal_role paper.journal, user, :editor
     login_as(user, scope: :user)
     visit "/"

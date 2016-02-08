@@ -42,7 +42,7 @@ feature "Flow Manager", js: true, selenium: true do
   let!(:old_role) { assign_journal_role(journal, admin, :admin) }
 
   def assign_tasks_to_user(paper, user, titles)
-    paper.tasks.each { |t| t.participants << user if titles.include? t.title }
+    paper.tasks.each { |t| t.add_participant(user) if titles.include? t.title }
   end
 
   def complete_tasks(paper, titles)
@@ -87,7 +87,7 @@ feature "Flow Manager", js: true, selenium: true do
       paper1.tasks.where(type: "TahiStandardTasks::PaperAdminTask").update_all(completed: false)
       task = paper1.tasks.where(type: "TahiStandardTasks::PaperAdminTask", completed: false).first
 
-      task.participants << admin
+      task.add_participant(admin)
       task.comments << FactoryGirl.create(:comment, body: "Hi", commenter: FactoryGirl.create(:user))
 
       CommentLookManager.sync_task(task)

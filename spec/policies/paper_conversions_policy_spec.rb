@@ -1,73 +1,97 @@
 require 'rails_helper'
 
 describe PaperConversionsPolicy do
+  include AuthorizationSpecHelper
+
+  permissions do
+    permission action: 'view', applies_to: Paper.name
+  end
+
+  role :with_access_to_view_paper do
+    has_permission action: 'view', applies_to: Paper.name
+  end
+
   let(:policy) { described_class.new(current_user: user, paper: paper) }
   let(:user) { FactoryGirl.create(:user) }
   let(:paper) { FactoryGirl.create(:paper) }
 
-  context "relationships" do
-    it "belongs to PapersPolicy" do
+  context 'relationships' do
+    it 'belongs to PapersPolicy' do
       expect(described_class < PapersPolicy).to eq true
     end
   end
 
-  context "site admin" do
+  context 'site admin' do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
 
-    include_examples "can export paper"
+    include_examples 'can export paper'
   end
 
-  context "authors" do
+  context 'authors' do
     let(:paper) { FactoryGirl.create(:paper, creator: user) }
 
-    include_examples "can export paper"
+    role 'Creator' do
+      has_permission action: 'view', applies_to: Paper.name
+    end
+
+    include_examples 'can export paper'
   end
 
-  context "paper admins" do
+  context 'users who can :view the paper' do
+    let(:paper) { FactoryGirl.create(:paper, creator: user) }
+
+    before do
+      assign_user user, to: paper, with_role: role_with_access_to_view_paper
+    end
+
+    include_examples 'can export paper'
+  end
+
+  context 'paper admins' do
     before do
       create(:paper_role, :admin, user: user, paper: paper)
     end
 
-    include_examples "can export paper"
+    include_examples 'can export paper'
   end
 
-  context "paper editors" do
+  context 'paper editors' do
     before do
       create(:paper_role, :editor, user: user, paper: paper)
     end
 
-    include_examples "can export paper"
+    include_examples 'can export paper'
   end
 
-  context "paper reviewers" do
+  context 'paper reviewers' do
     before do
       create(:paper_role, :reviewer, user: user, paper: paper)
     end
 
-    include_examples "can export paper"
+    include_examples 'can export paper'
   end
 
-  context "paper participant" do
+  context 'paper participant' do
     before do
       create(:paper_role, :participant, user: user, paper: paper)
     end
 
-    include_examples "can export paper"
+    include_examples 'can export paper'
   end
 
-  context "paper collaborators" do
+  context 'paper collaborators' do
     before do
       create(:paper_role, :collaborator, user: user, paper: paper)
     end
 
-    include_examples "can export paper"
+    include_examples 'can export paper'
   end
 
-  context "non-associated user" do
-    include_examples "cannot export paper"
+  context 'non-associated user' do
+    include_examples 'cannot export paper'
   end
 
-  context "admin on different journal" do
+  context 'admin on different journal' do
     let(:journal) { FactoryGirl.create(:journal) }
     let(:user) do
       FactoryGirl.create(:user,
@@ -76,6 +100,6 @@ describe PaperConversionsPolicy do
                                                      journal: journal) ],)
     end
 
-    include_examples "cannot export paper"
+    include_examples 'cannot export paper'
   end
 end

@@ -46,6 +46,20 @@ shared_examples_for "administrator for paper" do
 end
 
 shared_examples_for "author for paper" do
+  include AuthorizationSpecHelper
+
+  permissions do
+    permission action: 'view', applies_to: Paper.name
+  end
+
+  role 'Creator' do
+    has_permission action: 'view', applies_to: Paper.name
+  end
+
+  before do
+    assign_user user, to: paper, with_role: role_Creator
+  end
+
   it "lets them do everything except manage, keep the paper open and toggle edit mode" do
     expect(policy.show?).to be(true)
     expect(policy.create?).to be(true)

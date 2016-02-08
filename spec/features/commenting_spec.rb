@@ -6,8 +6,6 @@ feature 'Comments on cards', js: true do
   let!(:paper) { FactoryGirl.create(:paper_with_phases, :submitted, creator: admin) }
 
   before do
-    # Remove when site_admin has access to everything
-    assign_author_role(paper, admin)
     login_as(admin, scope: :user)
     visit "/"
   end

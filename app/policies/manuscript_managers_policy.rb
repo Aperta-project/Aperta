@@ -1,5 +1,4 @@
 class ManuscriptManagersPolicy < ApplicationPolicy
-
   require_params :paper
 
   def can_manage_manuscript?
@@ -27,8 +26,14 @@ class ManuscriptManagersPolicy < ApplicationPolicy
   end
 
   def user_assigned_to_paper?(user, paper)
-    (paper.tasks.assigned_to(user).exists? ||
-      PaperRole.for_user(user).where(paper: paper).exists?)
+    participations_on_tasks_for_user = Participation.where(
+      task_id: paper.task_ids,
+      user_id: current_user
+    )
+
+    paper.participants.include?(user) ||
+      participations_on_tasks_for_user.exists? ||
+      PaperRole.for_user(user).where(paper: paper).exists?
   end
 
   def journal_roles

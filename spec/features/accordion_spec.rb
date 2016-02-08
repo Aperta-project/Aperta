@@ -12,8 +12,7 @@ feature 'Accordion cards', js: true do
   }
 
   before do
-    assign_author_role(paper, author)
-    paper.tasks.each { |t| t.participants << author }
+    paper.tasks.each { |t| t.add_participant(author) }
   end
 
   context 'As a participant' do

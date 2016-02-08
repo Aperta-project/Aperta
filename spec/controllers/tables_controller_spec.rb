@@ -6,6 +6,8 @@ describe TablesController do
 
   before { sign_in user }
 
+  authorize_policy(TablesPolicy, true)
+
   describe "#create" do
     let(:table_attributes) { FactoryGirl.attributes_for(:table) }
 

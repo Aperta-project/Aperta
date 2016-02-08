@@ -40,7 +40,7 @@ module PlosBioTechCheck
         paper: paper,
         phase: phase
       })
-      @_task.participants << User.find(paper.user_id)
+      @_task.add_participant(User.find(paper.creator.id))
       @_task.save!
       @_task
     end

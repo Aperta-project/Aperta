@@ -1,44 +1,34 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe PaperTrackerSerializer do
-  describe "related_users" do
-    let(:creator) { FactoryGirl.create :user }
-    let(:paper) { FactoryGirl.create :paper, creator: creator }
+  include AuthorizationSpecHelper
 
-    let(:editor) { FactoryGirl.create :user }
-    let!(:editor_role) do
-      FactoryGirl.create :paper_role, :editor,
-                         paper: paper,
-                         user: editor
-    end
+  describe 'related_users' do
+    let!(:paper) { FactoryGirl.create :paper }
 
-    let(:reviewer) { FactoryGirl.create :user }
-    let!(:reviewer_role) do
-      FactoryGirl.create :paper_role, :reviewer,
-                         paper: paper,
-                         user: reviewer
-    end
+    let!(:creator) { FactoryGirl.create :user }
+    let!(:collaborator) { FactoryGirl.create :user }
 
-    let(:old_roles) do
+    let(:roles) do
       serialized_paper = JSON.parse(
         PaperTrackerSerializer.new(paper).to_json,
         symbolize_names: true)
       serialized_paper[:paper_tracker][:related_users]
     end
 
-    it "lists the author" do
-      authors = old_roles.find { |r| r[:name] == "Collaborator" }[:users]
-      expect(authors[0][:id]).to be(creator.id)
+    before do
+      allow(paper).to receive(:participants_by_role).and_return(
+        'Creator' => [creator],
+        'Collaborator' => [collaborator]
+      )
     end
 
-    it "lists the reviewer" do
-      reviewers = old_roles.find { |r| r[:name] == "Reviewer" }[:users]
-      expect(reviewers[0][:id]).to be(reviewer.id)
-    end
+    it 'returns an array of hashes contain the role name and user list' do
+      creator_users = roles.find { |r| r[:name] == 'Creator' }[:users]
+      expect(creator_users.first[:id]).to eq(creator.id)
 
-    it "lists the editor" do
-      editors = old_roles.find { |r| r[:name] == "Editor" }[:users]
-      expect(editors[0][:id]).to be(editor.id)
+      collaborator_users = roles.find { |r| r[:name] == 'Collaborator' }[:users]
+      expect(collaborator_users.last[:id]).to eq(collaborator.id)
     end
   end
 end

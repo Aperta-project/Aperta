@@ -43,7 +43,7 @@ describe AuthorsPolicy do
   context "task participant" do
     let(:user) { FactoryGirl.create(:user, :site_admin) }
     before do
-      FactoryGirl.create(:participation, user: user, task: task)
+      task.add_participant(user)
     end
 
     include_examples "person who can manage authors"

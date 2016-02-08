@@ -3,8 +3,8 @@ module Tahi
     class AssignTeamTaskSerializer < ::TaskSerializer
       has_many :assignments, embed: :ids,
                              include: true,
-                             each_serializer: AssignmentSerializer,
-                             serializer: AssignmentSerializer
+                             each_serializer: PaperRoleSerializer,
+                             serializer: PaperRoleSerializer
     end
   end
 end

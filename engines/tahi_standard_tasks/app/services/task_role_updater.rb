@@ -25,6 +25,12 @@ class TaskRoleUpdater
 
   # only one `assignee` can exist on `paper` with the same `paper_role_name`
   def assign_paper_role!
+    # New
+    role = Role.for_old_role(paper_role_name, paper: paper)
+    paper.assignments.where(role: role).destroy_all
+    paper.assignments.create!(user: assignee, role: role)
+
+    # Old
     paper.paper_roles.for_old_role(paper_role_name).destroy_all
     paper.paper_roles.for_old_role(paper_role_name).create!(user: assignee)
   end

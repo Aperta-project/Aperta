@@ -21,22 +21,41 @@ describe JournalFactory do
 
     context 'creating the default roles and permission for the journal' do
       let(:journal) { JournalFactory.create(name: 'Genetics Journal') }
-      let(:journal_author_role) do
-        journal.roles.where(name: Role::AUTHOR_ROLE).first
+
+      let(:journal_creator_role) do
+        journal.roles.where(name: Role::CREATOR_ROLE).first
+      end
+      let(:journal_collaborator_role) do
+        journal.roles.where(name: Role::COLLABORATOR_ROLE).first
       end
 
       let(:view_paper_permission) do
-        Permission.where(action: 'view', applies_to: 'Paper').first!
+        Permission.where(action: 'view', applies_to: 'Paper').first
       end
 
       it 'gives the journal its own Creator role' do
-        expect(journal_author_role).to be
+        expect(journal_creator_role).to be
       end
 
-      context 'Author role' do
+      context 'Creator role' do
         it 'gets the :view Paper permission with no state requirements' do
-          expect(journal_author_role.permissions).to include(
+          expect(journal_creator_role.permissions).to include(
             view_paper_permission
+          )
+          expect(view_paper_permission.states).to contain_exactly(
+            PermissionState.wildcard
+          )
+        end
+      end
+
+      it 'gives the journal its own Collaborator role' do
+        expect(journal_collaborator_role).to be
+      end
+
+      context 'Collaborator role' do
+        it 'gets the :view Paper permission with no state requirements' do
+          expect(journal_collaborator_role.permissions).to include(
+            Permission.where(action: 'view', applies_to: 'Paper').first
           )
           expect(view_paper_permission.states).to contain_exactly(
             PermissionState.wildcard

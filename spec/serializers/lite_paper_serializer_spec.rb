@@ -28,19 +28,18 @@ Extruded Solids/,
     end
   end
 
-  describe 'for a paper with multiple old_roles' do
+  describe 'for a paper with multiple roles' do
     let(:early_date) { Time.now.utc - 10 }
     let(:later_date) { Time.now.utc }
-    let!(:paper_role1) do
-      FactoryGirl.create(:paper_role, :editor, created_at: early_date,
-                                               user: user, paper: paper)
-    end
-    let!(:paper_role2) do
-      FactoryGirl.create(:paper_role, :admin, created_at: later_date,
-                                              user: user, paper: paper)
+    let!(:older_role) { FactoryGirl.create(:role, created_at: early_date) }
+    let!(:newer_role) { FactoryGirl.create(:role, created_at: later_date) }
+
+    before do
+      paper.assignments.create!(user: user, role: older_role)
+      paper.assignments.create!(user: user, role: newer_role)
     end
 
-    it 'should use the latest old_role for the related_at_date' do
+    it 'should use the latest role assignment date for the related_at_date' do
       expect(deserialized_content[:lite_paper])
         .to match(hash_including(related_at_date: later_date.as_json))
     end

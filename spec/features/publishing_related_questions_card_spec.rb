@@ -8,7 +8,7 @@ feature 'Publishing Related Questions Card', js: true do
   end
 
   before do
-    paper.tasks.each { |t| t.participants << author }
+    paper.tasks.each { |t| t.add_participant(author) }
   end
 
   def short_title_selector

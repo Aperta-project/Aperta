@@ -1,18 +1,34 @@
 class Role < ActiveRecord::Base
   belongs_to :journal
   has_and_belongs_to_many :permissions
+  has_many :assignments, dependent: :destroy
 
-  AUTHOR_ROLE = 'Author'
-  REVIEWER_ROLE = 'Reviewer'
+  CREATOR_ROLE = 'Creator'
+  COLLABORATOR_ROLE = 'Collaborator'
   INTERNAL_EDITOR_ROLE = 'Internal Editor'
+  HANDLING_EDITOR_ROLE = 'Handling Editor'
+  PARTICIPANT_ROLE = 'Participant'
+  REVIEWER_ROLE = 'Reviewer'
   STAFF_ADMIN_ROLE = 'Staff Admin'
 
-  def self.author
-    where(name: AUTHOR_ROLE).first_or_create!
+  def self.creator
+    where(name: CREATOR_ROLE).first_or_create!
+  end
+
+  def self.collaborator
+    where(name: COLLABORATOR_ROLE).first_or_create!
   end
 
   def self.internal_editor
     where(name: INTERNAL_EDITOR_ROLE).first_or_create!
+  end
+
+  def self.handling_editor
+    where(name: HANDLING_EDITOR_ROLE).first_or_create!
+  end
+
+  def self.participant
+    where(name: PARTICIPANT_ROLE).first_or_create!
   end
 
   def self.reviewer
@@ -21,6 +37,21 @@ class Role < ActiveRecord::Base
 
   def self.staff_admin
     where(name: STAFF_ADMIN_ROLE).first_or_create!
+  end
+
+  def self.for_old_role(old_role, paper:) # rubocop:disable Metrics/MethodLength
+    case old_role
+    when /^admin$/i then paper.journal.roles.staff_admin
+    when /^editor$/i then paper.journal.roles.handling_editor
+    when /^collaborator$/i then paper.journal.roles.collaborator
+    when /^reviewer$/i then paper.journal.roles.reviewer
+    else
+      fail NotImplementedError, <<-MSG.strip_heredoc
+        Not sure how to match up old role '#{old_role}' with a new role.
+        Do no fret though. This just needs to be implemented until we are
+        done migrating away from the old roles.
+      MSG
+    end
   end
 
   def self.ensure_exists(name, journal: nil, participates_in: [], &block)

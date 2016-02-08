@@ -11,7 +11,7 @@ module TahiHelperMethods
     assign_journal_role(paper.journal, user, :admin)
     paper_admin_task = paper.tasks.where(title: 'Assign Admin').first
     paper_admin_task.admin_id = user.id
-    paper_admin_task.participants << user
+    paper_admin_task.add_participant(user)
     paper_admin_task.save!
   end
 
@@ -30,20 +30,22 @@ module TahiHelperMethods
   end
 
   # NEW ROLES
-  def assign_author_role(paper, creator)
+  def assign_reviewer_role(paper, reviewer)
     Assignment.where(
-      user: creator,
-      role: Role.where(name: 'Author').first,
+      user: reviewer,
+      role: paper.journal.roles.reviewer,
       assigned_to: paper
     ).first_or_create!
   end
 
-  def assign_reviewer_role(paper, reviewer)
+  def assign_handling_editor_role(paper, editor)
     Assignment.where(
-      user: reviewer,
-      role: Role.where(name: 'Reviewer').first,
+      user: editor,
+      role: paper.journal.roles.handling_editor,
       assigned_to: paper
     ).first_or_create!
+    # this is an old role:
+    paper.paper_roles.create user: editor, old_role: PaperRole::EDITOR
   end
 
   def assign_journal_role(journal, user, role_or_type)
@@ -51,13 +53,13 @@ module TahiHelperMethods
     if role_or_type == :admin
       Assignment.where(
         user: user,
-        role: Role.staff_admin,
+        role: journal.roles.staff_admin,
         assigned_to: journal
       ).first_or_create!
     elsif role_or_type == :editor
       Assignment.where(
         user: user,
-        role: journal.roles.internal_editor,
+        role: journal.roles.handling_editor,
         assigned_to: journal
       ).first_or_create!
     end

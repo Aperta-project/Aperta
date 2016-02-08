@@ -18,7 +18,9 @@ class PageFragment
   class << self
     def text_assertions(name, selector, block=nil)
       define_method "has_#{name}?" do |text|
-        has_css?(selector, text: block ? block.call(text) : text)
+        retry_stale_element do
+          has_css?(selector, text: block ? block.call(text) : text)
+        end
       end
       define_method "has_no_#{name}?" do |text|
         has_no_css?(selector, text: block ? block.call(text) : text)

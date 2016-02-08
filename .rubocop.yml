@@ -30,7 +30,7 @@ Metrics/LineLength:
   Exclude:
     # Nested questions contain, mostly, long strings of english text,
     # which need consistent spacing.
-    - 'lib/tasks/nested-questions/**/*'
+    - 'lib/tasks/**/*'
 
     # The it 'some string' line of specs should be allowed to be as
     # long as neccessary to describe the test.

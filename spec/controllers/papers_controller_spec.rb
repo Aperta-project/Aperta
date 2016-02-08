@@ -49,7 +49,6 @@ describe PapersController do
   end
 
   before do
-    Authorizations::Configuration.reload
     sign_in user
   end
 

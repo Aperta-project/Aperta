@@ -8,24 +8,31 @@ class PermissionsController < ApplicationController
 
   def show
     # Both class and id are packed into one value to allow ember-data
-    # to request and store permissions tables autmatically.
+    # to request and store permissions tables automatically.
     class_name, id = params[:id].split('+')
     klass = class_name.camelize.constantize
     target = klass.where(id: id)
     permissions = current_user.filter_authorized(
       :*, target, participations_only: false
     ).serializable
-    if permissions.count == 0
-      render json: {
-        permissions: [{
-          id: params[:id],
-          permissions: []
-        }]
-      }
-      return
+
+    if permissions.empty?
+      render_empty_permissions
+    else
+      render json: permissions,
+             each_serializer: PermissionResultSerializer,
+             root: 'permissions'
     end
-    render json: permissions,
-           each_serializer: PermissionResultSerializer,
-           root: 'permissions'
+  end
+
+  private
+
+  def render_empty_permissions
+    render json: {
+      permissions: [{
+        id: params[:id],
+        permissions: []
+      }]
+    }
   end
 end

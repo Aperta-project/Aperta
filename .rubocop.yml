@@ -2,3 +2,45 @@ AllCops:
   RunRailsCops: true
   Exclude:
     - 'db/schema.rb'
+
+Metrics/AbcSize:
+  # This is a good metric; rails gives us a few more .'s per line
+  # than occurs in raw ruby, so we bump this number up from the
+  # default of 15.
+  Max: 20
+
+Metrics/MethodLength:
+  # The linux kernel styleguide puts this number at 24; the rubocop
+  # default is 10 (!). Seeking a happy medium; particularly for those
+  # methods which are all one case statement, or return a single
+  # (but long) hash.
+  CountComments: false
+  Max: 20
+
+Style/StringLiterals:
+  # English text needs double quotes, to avoid escaping the very
+  # common apostrophe.
+  Enabled: false
+
+Style/StringLiteralsInInterpolation:
+  # Ditto above
+  Enabled: false
+
+Metrics/LineLength:
+  Exclude:
+    # Nested questions contain, mostly, long strings of english text,
+    # which need consistent spacing.
+    - 'lib/tasks/**/*'
+
+    # The it 'some string' line of specs should be allowed to be as
+    # long as neccessary to describe the test.
+    - 'spec/**/*'
+
+Style/ClassCheck:
+  # Sometimes is_a? is better, sometimes 'kind_of?'.
+  Enabled: false
+
+Rails/Delegate:
+  # This cop is not rigorously written, and flags cases where delegate
+  # cannot replace the flagged method.
+  Enabled: false

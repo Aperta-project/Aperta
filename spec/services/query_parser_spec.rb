@@ -109,6 +109,13 @@ describe QueryParser do
         SQL
       end
 
+      it 'parses TASK x IS NOT COMPLETE' do
+        parse = QueryParser.new.parse 'TASK anytask IS NOT COMPLETE'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "tasks"."title" ILIKE 'anytask' AND "tasks"."completed" = 'f'
+        SQL
+      end
+
       it 'parses HAS TASK x' do
         parse = QueryParser.new.parse 'HAS TASK anytask'
         expect(parse.to_sql).to eq(<<-SQL.strip)

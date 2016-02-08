@@ -50,7 +50,8 @@ class QueryParser < QueryLanguageParser
       .and(Task.arel_table[:completed].eq(true))
   end
 
-  add_two_part_expression('TASK', 'IS INCOMPLETE') do |task, _|
+  add_two_part_expression('TASK',
+                          /IS NOT COMPLETE|IS INCOMPLETE/) do |task, _|
     join Task
     Task.arel_table[:title].matches(task)
       .and(Task.arel_table[:completed].eq(false))
@@ -98,7 +99,7 @@ class QueryParser < QueryLanguageParser
 
   def build(str)
     query = parse str
-    @root.where(query)
+    @root.where(query).uniq
   end
 
   private

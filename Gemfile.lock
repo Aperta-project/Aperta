@@ -178,12 +178,11 @@ GEM
       activesupport
       json
       multipart-post (~> 1.1)
-    devise (3.5.2)
+    devise (4.0.0.rc1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
-      railties (>= 3.2.6, < 5)
+      railties (>= 4.1.0, < 5.1)
       responders
-      thread_safe (~> 0.1)
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
     docile (1.1.5)
@@ -504,8 +503,8 @@ GEM
     redis-namespace (1.5.2)
       redis (~> 3.0, >= 3.0.4)
     request_store (1.2.0)
-    responders (2.1.0)
-      railties (>= 4.2.0, < 5)
+    responders (2.1.1)
+      railties (>= 4.2.0, < 5.1)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
@@ -618,7 +617,7 @@ GEM
     unicode_utils (1.4.0)
     uniform_notifier (1.9.0)
     vcr (2.9.3)
-    warden (1.2.3)
+    warden (1.2.6)
       rack (>= 1.0)
     webmock (1.21.0)
       addressable (>= 2.3.6)
@@ -652,7 +651,7 @@ DEPENDENCIES
   codeclimate-test-reporter
   database_cleaner
   databasedotcom
-  devise
+  devise (~> 4.0.0.rc1)
   dotenv-rails
   email_spec
   ember-cli-rails

@@ -1,7 +1,6 @@
 require 'sidekiq/web'
 
 Tahi::Application.routes.draw do
-  mount_ember_app :tahi, to: '/'
   root to: 'ember_cli/ember#index'
   mount TahiStandardTasks::Engine => '/api', as: 'standard_tasks'
   ### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###
@@ -37,6 +36,7 @@ Tahi::Application.routes.draw do
     get 'users/sign_out' => 'devise/sessions#destroy'
   end
 
+  mount_ember_app :tahi, to: '/'
   authenticate :user, ->(u) { u.site_admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end

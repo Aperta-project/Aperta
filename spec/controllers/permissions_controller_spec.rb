@@ -9,9 +9,6 @@ describe PermissionsController do
   before { sign_in user }
 
   describe '#show' do
-    before :all do
-      Authorizations::Configuration.reload
-    end
 
     permission action: :withdraw, applies_to: 'Paper', states: ['*']
     role 'Creator' do

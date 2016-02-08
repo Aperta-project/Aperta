@@ -25,6 +25,7 @@ moduleFor('service:can', 'Unit: Can Service Permissions', {
 });
 
 test('permission is denied when permissions are empty', function(assert){
+  expect(1);
   let can = this.subject();
   let resource = this.resource;
   let permission = this.permission
@@ -38,6 +39,7 @@ test('permission is denied when permissions are empty', function(assert){
 });
 
 test('permission is granted when `action` is allowed', function(assert){
+  expect(1);
   let can = this.subject();
   let resource = this.resource;
   let permission = this.permission
@@ -57,6 +59,7 @@ test('permission is granted when `action` is allowed', function(assert){
 });
 
 test('permission is denied when `action` is not allowed', function(assert){
+  expect(1);
   let can = this.subject();
   let resource = this.resource;
   let permission = this.permission
@@ -75,6 +78,7 @@ test('permission is denied when `action` is not allowed', function(assert){
 });
 
 test('permission is granted when `action` is allowed for state', function(assert){
+  expect(1);
   let can = this.subject();
   let resource = this.resource;
   let permission = this.permission
@@ -94,6 +98,7 @@ test('permission is granted when `action` is allowed for state', function(assert
 });
 
 test('permission is denied when `action` is not allowed for state', function(assert){
+  expect(1);
   let can = this.subject();
   let resource = this.resource;
   let permission = this.permission

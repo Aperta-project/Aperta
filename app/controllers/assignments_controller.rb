@@ -2,6 +2,7 @@ class AssignmentsController < ApplicationController
   before_action :authenticate_user!
 
   def index
+    binding.pry
     paper = Paper.find(params[:paper_id])
     authorize_action! paper: paper
 

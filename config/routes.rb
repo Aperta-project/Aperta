@@ -2,6 +2,7 @@ require 'sidekiq/web'
 
 Tahi::Application.routes.draw do
   mount_ember_app :tahi, to: '/'
+  root to: 'ember_cli/ember#index'
   mount TahiStandardTasks::Engine => '/api', as: 'standard_tasks'
   ### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###
   mount PlosBioInternalReview::Engine => '/api'

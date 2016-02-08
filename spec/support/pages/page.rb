@@ -162,7 +162,7 @@ class Page < PageFragment
       inspector = ActionDispatch::Routing::RoutesInspector.new(all_routes)
       route = inspector.instance_variable_get(:@routes).detect { |p| p.name == path_sym.to_s }
       @_path = "#{path_sym}_path"
-      # @_path_regex = ActionDispatch::Routing::RouteWrapper.new(route).json_regexp
+      @_path_regex = ActionDispatch::Routing::RouteWrapper.new(route).json_regexp
     end
 
     def visit args = [], sync_on:nil

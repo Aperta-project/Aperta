@@ -315,6 +315,12 @@ describe PapersController do
     end
 
     context 'does not have withdraw permission' do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:withdraw, paper)
+          .and_return false
+      end
+
       it 'does not withdraw the paper' do
         put :withdraw,
             id: paper.id,

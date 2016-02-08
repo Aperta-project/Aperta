@@ -383,6 +383,13 @@ class Paper < ActiveRecord::Base
     participations.map(&:user).uniq
   end
 
+  def participants_by_role
+    by_role_hsh = participations.group_by(&:role)
+    by_role_hsh.each_with_object({}) do |(role, participation), hsh|
+      hsh[role.name] = participation.map(&:user).uniq
+    end
+  end
+
   %w(admins editors reviewers).each do |relation|
     ###
     # :method: <old_roles>

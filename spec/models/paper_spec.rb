@@ -305,6 +305,70 @@ describe Paper do
         end
       end
     end
+
+    describe '#participants_by_role' do
+      let(:paper_user) { FactoryGirl.create(:user) }
+      let(:task_user) { FactoryGirl.create(:user) }
+      let(:task) { FactoryGirl.create(:task, paper: paper) }
+      let(:sanitation_role) { FactoryGirl.create(:role, name: 'Sanitation') }
+
+      before do
+        paper.assignments.destroy_all
+        paper.assignments.create!(
+          user: paper_user,
+          role: paper.journal.roles.creator
+        )
+        task.assignments.create!(
+          user: task_user,
+          role: FactoryGirl.create(:role, name: 'Sanitation')
+        )
+      end
+
+      it 'returns a hash of <role> => [user1, user2, ...]' do
+        expect(paper.participants_by_role).to eq(
+          'Creator' => [paper_user],
+          sanitation_role.name => [task_user]
+        )
+      end
+
+      context 'when a user is assigned multiple tasks with the same role on the paper' do
+        let(:another_task) { FactoryGirl.create(:task, paper: paper) }
+
+        before do
+          another_task.assignments.create!(
+            user: task_user,
+            role: sanitation_role
+          )
+        end
+
+        it 'returns the user only once per role' do
+          expect(paper.participants_by_role).to eq(
+            'Creator' => [paper_user],
+            sanitation_role.name => [task_user]
+          )
+        end
+      end
+
+      context 'when a user is assigned different roles on different tasks' do
+        let(:another_task) { FactoryGirl.create(:task, paper: paper) }
+        let(:foobar_role) { FactoryGirl.create(:role, name: 'Foobar') }
+
+        before do
+          another_task.assignments.create!(
+            user: task_user,
+            role: FactoryGirl.create(:role, name: 'Foobar')
+          )
+        end
+
+        it 'returns the user only once per role' do
+          expect(paper.participants_by_role).to eq(
+            'Creator' => [paper_user],
+            sanitation_role.name => [task_user],
+            foobar_role.name => [task_user]
+          )
+        end
+      end
+    end
   end
 
   context 'State Machine' do

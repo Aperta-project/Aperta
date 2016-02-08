@@ -4,12 +4,10 @@ describe PaperTrackerSerializer do
   include AuthorizationSpecHelper
 
   describe 'related_users' do
+    let!(:paper) { FactoryGirl.create :paper }
+
     let!(:creator) { FactoryGirl.create :user }
-    let!(:paper) { FactoryGirl.create :paper, creator: creator }
-    let!(:journal) { paper.journal }
     let!(:collaborator) { FactoryGirl.create :user }
-    let!(:handling_editor) { FactoryGirl.create :user }
-    let!(:reviewer) { FactoryGirl.create :user }
 
     let(:roles) do
       serialized_paper = JSON.parse(
@@ -19,39 +17,18 @@ describe PaperTrackerSerializer do
     end
 
     before do
-      # Ensure the roles are scoped to the paper's journal
-      Role.ensure_exists('Creator', journal: journal)
-      Role.ensure_exists('Handling Editor', journal: journal)
-      Role.ensure_exists('Reviewer', journal: journal)
-      Role.ensure_exists('Collaborator', journal: journal)
-
-      roles = paper.journal.roles
-      assign_user collaborator, to: paper, with_role: roles.collaborator
-      assign_user handling_editor, to: paper, with_role: roles.handling_editor
-      assign_user reviewer, to: paper, with_role: roles.reviewer
+      allow(paper).to receive(:participants_by_role).and_return(
+        'Creator' => [creator],
+        'Collaborator' => [collaborator]
+      )
     end
 
-    it 'lists the author' do
-      authors = roles.find { |r| r[:name] == 'Creator' }[:users]
-      expect(authors[0][:id]).to be(creator.id)
-    end
+    it 'returns an array of hashes contain the role name and user list' do
+      creator_users = roles.find { |r| r[:name] == 'Creator' }[:users]
+      expect(creator_users.first[:id]).to eq(creator.id)
 
-    it 'lists the collaborators' do
-      collaborators = roles.find { |r| r[:name] == 'Collaborator' }[:users]
-      expect(collaborators[0][:id]).to be(collaborator.id)
-    end
-
-    it 'lists the reviewer' do
-      reviewers = roles.find { |r| r[:name] == 'Reviewer' }[:users]
-      expect(reviewers[0][:id]).to be(reviewer.id)
-    end
-
-    it 'lists the handling_editor' do
-      handling_editors = roles.find do |roles_hash|
-        roles_hash[:name] == 'Handling Editor'
-      end
-      handling_editor_user = handling_editors[:users][0]
-      expect(handling_editor_user[:id]).to be(handling_editor.id)
+      collaborator_users = roles.find { |r| r[:name] == 'Collaborator' }[:users]
+      expect(collaborator_users.last[:id]).to eq(collaborator.id)
     end
   end
 end

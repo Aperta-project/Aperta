@@ -61,6 +61,6 @@ class NestedQuestionAnswersController < ApplicationController
   end
 
   def must_be_able_to_edit_task
-    fail AuthorizationError unless current_user.can?(:edit, fetch_answer.owner)
+    fail AuthorizationError unless current_user.can?(:edit, fetch_answer.task)
   end
 end

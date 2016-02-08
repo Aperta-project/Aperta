@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "Editing paper", selenium: true, js: true do
+feature "Paper DOI Generation", selenium: true, js: true do
   let(:user) { FactoryGirl.create :user }
 
   context "As an author on the paper page" do

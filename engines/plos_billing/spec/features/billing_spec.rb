@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "Editing paper", js: true do
+feature "Billing feature", js: true do
   let(:user) { FactoryGirl.create :user }
 
   context "with a billing task" do
@@ -45,4 +45,3 @@ feature "Editing paper", js: true do
     end
   end
 end
-

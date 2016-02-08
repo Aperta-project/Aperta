@@ -111,7 +111,7 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
     Hit SUBMIT and confirm
 
   """
-  def _test_validate_components_styles(self):
+  def test_validate_components_styles(self):
     """
     Validates the presence of the following elements:
       Optional Invitation Welcome text and button,

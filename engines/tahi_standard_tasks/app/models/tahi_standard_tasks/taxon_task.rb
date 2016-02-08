@@ -1,6 +1,7 @@
 module TahiStandardTasks
   class TaxonTask < ::Task
     include MetadataTask
-    register_task default_title: "New Taxon", default_role: "author"
+    DEFAULT_TITLE = 'New Taxon'
+    DEFAULT_ROLE = 'author'
   end
 end

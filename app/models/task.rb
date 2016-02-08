@@ -1,10 +1,11 @@
 class Task < ActiveRecord::Base
   include EventStream::Notifiable
   include NestedQuestionable
-  include TaskTypeRegistration
   include Commentable
 
-  register_task default_title: 'Ad-hoc', default_role: 'user'
+  DEFAULT_TITLE = 'Ad-hoc'
+  DEFAULT_ROLE = 'user'
+  REQUIRED_PERMISSIONS = {}
 
   cattr_accessor :metadata_types
   cattr_accessor :submission_types
@@ -125,6 +126,17 @@ class Task < ActiveRecord::Base
             'roles.name' => Role::PARTICIPANT_ROLE
           )
       end
+    end
+
+    def all_task_types
+      Rails.application.config.eager_load_namespaces.each(&:eager_load!)
+      Task.descendants + [Task]
+    end
+
+    def safe_constantize(str)
+      fail StandardError, 'Attempted to constantize disallowed value' \
+        unless Task.all_task_types.map(&:to_s).member?(str)
+      str.constantize
     end
   end
 

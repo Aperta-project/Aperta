@@ -7,7 +7,8 @@ module PlosBioTechCheck
 
     after_update :uncomplete_task, if: :body_changed?
 
-    register_task default_title: "Changes For Author", default_role: "author"
+    DEFAULT_TITLE = 'Changes For Author'
+    DEFAULT_ROLE = 'author'
 
     def active_model_serializer
       TaskSerializer

@@ -2,7 +2,7 @@ module TahiStandardTasks
   class PublishingRelatedQuestionsTask < Task
     include MetadataTask
 
-    register_task default_title: 'Additional Information',
-                  default_role: 'author'
+    DEFAULT_TITLE = 'Additional Information'
+    DEFAULT_ROLE = 'author'
   end
 end

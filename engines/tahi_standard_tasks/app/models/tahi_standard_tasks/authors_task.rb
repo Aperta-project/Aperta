@@ -1,6 +1,7 @@
 module TahiStandardTasks
   class AuthorsTask < Task
-    register_task default_title: "Authors", default_role: "author"
+    DEFAULT_TITLE = 'Authors'
+    DEFAULT_ROLE = 'author'
 
     include MetadataTask
 

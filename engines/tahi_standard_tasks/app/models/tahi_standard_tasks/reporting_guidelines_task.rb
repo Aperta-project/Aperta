@@ -1,6 +1,7 @@
 module TahiStandardTasks
   class ReportingGuidelinesTask < ::Task
     include MetadataTask
-    register_task default_title: "Reporting Guidelines", default_role: "author"
+    DEFAULT_TITLE = 'Reporting Guidelines'
+    DEFAULT_ROLE = 'author'
   end
 end

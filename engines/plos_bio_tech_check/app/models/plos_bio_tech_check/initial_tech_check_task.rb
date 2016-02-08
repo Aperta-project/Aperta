@@ -3,7 +3,9 @@ module PlosBioTechCheck
     # uncomment the following line if you want to enable event streaming for this model
     # include EventStreamNotifier
 
-    register_task default_title: 'Initial Tech Check', default_role: 'editor'
+    DEFAULT_TITLE = 'Initial Tech Check'
+    DEFAULT_ROLE = 'editor'
+
     before_create :initialize_round
 
     def active_model_serializer
@@ -32,11 +34,10 @@ module PlosBioTechCheck
               }
       return @_task if @_task.present?
 
-      task_properties = TaskType.types["PlosBioTechCheck::ChangesForAuthorTask"]
       @_task = PlosBioTechCheck::ChangesForAuthorTask.create!({
         body: {},
-        title: task_properties[:default_title],
-        old_role: task_properties[:default_role],
+        title: PlosBioTechCheck::ChangesForAuthorTask::DEFAULT_TITLE,
+        old_role: PlosBioTechCheck::ChangesForAuthorTask::DEFAULT_ROLE,
         paper: paper,
         phase: phase
       })

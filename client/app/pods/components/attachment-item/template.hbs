@@ -24,7 +24,7 @@
     {{#if hasCaption}}
       {{input class="form-control " type="type" value=caption
               placeholder="Please provide a brief description of this file"
-              focus-out="captionChanged"}}
+              focus-out="captionChanged" name="attachment-caption"}}
     {{/if}}
 
     {{s3-file-uploader accept=accept

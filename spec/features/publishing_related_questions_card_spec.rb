@@ -1,30 +1,28 @@
 require 'rails_helper'
 
 feature 'Publishing Related Questions Card', js: true do
-  let(:author) { create :user, first_name: 'Author' }
-  let!(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: author) }
+  let(:creator) { create :user, first_name: 'Creator' }
+  let!(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: creator) }
   let!(:task) do
     FactoryGirl.create(:publishing_related_questions_task, paper: paper)
   end
 
-  before do
-    paper.tasks.each { |t| t.add_participant(author) }
-  end
-
   def short_title_selector
-    "//div[contains(@class, 'publishing-related-questions-short-title')]" \
-      "//div[@contenteditable='true']"
+    '.publishing-related-questions-short-title .format-input-field'
   end
 
-  context 'As an author' do
-    scenario 'sets the short title properly', selenium: true do
-      login_as(author, scope: :user)
+  context 'As creator' do
+    before do
+      login_as(creator, scope: :user)
       visit "/papers/#{paper.id}"
+    end
 
-      overlay = Page.view_task_overlay(paper, task)
-      content_editable = find(:xpath, short_title_selector)
+    let!(:overlay) { Page.view_task_overlay(paper, task) }
+
+    scenario 'sets the short title properly' do
+      content_editable = find(short_title_selector)
+
       # <br> tags are only added when the space key is hit. So we clear the
-      # field first then type in known text.
       content_editable.set('T')
       content_editable.send_keys('his is a short title', :tab)
       wait_for_ajax
@@ -36,6 +34,24 @@ feature 'Publishing Related Questions Card', js: true do
 
       expect(paper.short_title).not_to include('<br')
       expect(paper.short_title).to eq('This is a short title')
+    end
+
+    scenario 'upload attachent' do
+      within '#published-elsewhere' do
+        choose 'Yes'
+        find('.fileinput-button').click
+        overlay.upload_file(
+          element_id: "add-new-attachment",
+          file_name: 'yeti.jpg',
+          sentinel: proc { QuestionAttachment.count }
+        )
+        within('.attachment-item') do
+          expect(page).to have_css('.file-link', text: 'yeti.jpg')
+        end
+
+        fill_in('attachment-caption', with: 'Great caption')
+        expect(find_field('attachment-caption').value).to eq('Great caption')
+      end
     end
   end
 end

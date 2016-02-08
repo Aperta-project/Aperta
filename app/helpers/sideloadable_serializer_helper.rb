@@ -1,5 +1,6 @@
 # This helper method makes it easy to side load permissions (or other
 # resources) into the JSON response.
+#
 # Usage:
 #   side_load :example_method_to_side_load
 #
@@ -10,6 +11,7 @@
 #
 #  JSON Returned from serializer:
 #  {example_method_to_side_load: {example_property: 'example_key'} }
+
 module SideloadableSerializerHelper
   def self.included(base)
     base.extend ClassMethods

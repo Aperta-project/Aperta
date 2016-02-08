@@ -18,9 +18,7 @@ class PageFragment
   class << self
     def text_assertions(name, selector, block=nil)
       define_method "has_#{name}?" do |text|
-        retry_stale_element do
-          has_css?(selector, text: block ? block.call(text) : text)
-        end
+        has_css?(selector, text: block ? block.call(text) : text)
       end
       define_method "has_no_#{name}?" do |text|
         has_no_css?(selector, text: block ? block.call(text) : text)
@@ -68,10 +66,14 @@ class PageFragment
   end
 
   def retry_stale_element
-    yield
-  rescue Selenium::WebDriver::Error::StaleElementReferenceError
-    Rails.logger.warn "Rescue stale element"
-    retry
+    Timeout.timeout(Capybara.default_max_wait_time) do
+      begin
+        yield
+      rescue Selenium::WebDriver::Error::StaleElementReferenceError
+        Rails.logger.warn "Rescue stale element"
+        retry
+      end
+    end
   end
 
   def has_application_error?

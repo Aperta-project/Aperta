@@ -19,10 +19,8 @@ class AddCollaboratorsOverlay < PageFragment
 
   def remove_collaborators(*collaborators)
     collaborators.map(&:full_name).each do |name|
-      retry_stale_element do
-        first('.collaborator .email').hover
-        first('.collaborator .email .delete-button').click
-      end
+      first('.collaborator .email').hover
+      first('.collaborator .email .delete-button').click
     end
   end
 

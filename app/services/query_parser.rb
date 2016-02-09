@@ -31,13 +31,13 @@ class QueryParser < QueryLanguageParser
   end
 
   add_simple_expression('DECISION IS NOT') do |decision|
-    join Decision
-    Decision.arel_table[:verdict].not_eq(decision.parameterize.underscore)
+    table = join Decision
+    table[:verdict].not_eq(decision.parameterize.underscore)
   end
 
   add_simple_expression('DECISION IS') do |decision|
-    join Decision
-    Decision.arel_table[:verdict].eq(decision.parameterize.underscore)
+    table = join Decision
+    table[:verdict].eq(decision.parameterize.underscore)
   end
 
   add_simple_expression('DOI IS') do |doi|
@@ -45,33 +45,30 @@ class QueryParser < QueryLanguageParser
   end
 
   add_two_part_expression('TASK', 'IS COMPLETE') do |task, _|
-    join Task
-    Task.arel_table[:title].matches(task)
-      .and(Task.arel_table[:completed].eq(true))
+    table = join Task
+    table[:title].matches(task).and(table[:completed].eq(true))
   end
 
   add_two_part_expression('TASK',
                           /IS NOT COMPLETE|IS INCOMPLETE/) do |task, _|
-    join Task
-    Task.arel_table[:title].matches(task)
-      .and(Task.arel_table[:completed].eq(false))
+    table = join Task
+    table[:title].matches(task).and(table[:completed].eq(false))
   end
 
   add_two_part_expression('TASK', /HAS BEEN COMPLETED? \>/) do |task, days_ago|
-    join Task
+    table = join Task
     start_time = Time.zone.now.utc.days_ago(days_ago.to_i).to_formatted_s(:db)
-    Task.arel_table[:title].matches(task)
-      .and(Task.arel_table[:completed_at].lt(start_time))
+    table[:title].matches(task).and(table[:completed_at].lt(start_time))
   end
 
   add_simple_expression('HAS TASK') do |task|
-    join Task
-    Task.arel_table[:title].matches(task)
+    table = join Task
+    table[:title].matches(task)
   end
 
   add_simple_expression('HAS NO TASK') do |task|
-    join Task
-    Task.arel_table[:title].does_not_match(task)
+    table = join Task
+    table[:title].does_not_match(task)
   end
 
   add_statement(/^\d+/.r) do |doi|
@@ -93,7 +90,7 @@ class QueryParser < QueryLanguageParser
   end
 
   def initialize
-    @joins = []
+    @join_counter = 0
     @root = Paper
   end
 
@@ -105,9 +102,13 @@ class QueryParser < QueryLanguageParser
   private
 
   def join(klass)
-    return if @joins.include? klass
-    @root = @root.joins(klass.table_name.to_sym)
-    @joins.push klass
+    table = klass.table_name
+    name = "#{table}_#{@join_counter}"
+    @root = @root.joins(<<-SQL)
+        INNER JOIN #{table} AS #{name} ON #{name}.paper_id = papers.id
+    SQL
+    @join_counter += 1
+    klass.arel_table.alias(name)
   end
 
   def title_query(title)

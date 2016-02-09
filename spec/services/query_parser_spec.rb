@@ -24,7 +24,7 @@ describe QueryParser do
       it 'parses decision queries' do
         parse = QueryParser.new.parse 'DECISION IS major revision'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "decisions"."verdict" = 'major_revision'
+          "decisions_0"."verdict" = 'major_revision'
         SQL
       end
 
@@ -98,35 +98,35 @@ describe QueryParser do
       it 'parses TASK x IS COMPLETE' do
         parse = QueryParser.new.parse 'TASK anytask IS COMPLETE'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "tasks"."title" ILIKE 'anytask' AND "tasks"."completed" = 't'
+          "tasks_0"."title" ILIKE 'anytask' AND "tasks_0"."completed" = 't'
         SQL
       end
 
       it 'parses TASK x IS INCOMPLETE' do
         parse = QueryParser.new.parse 'TASK anytask IS INCOMPLETE'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "tasks"."title" ILIKE 'anytask' AND "tasks"."completed" = 'f'
+          "tasks_0"."title" ILIKE 'anytask' AND "tasks_0"."completed" = 'f'
         SQL
       end
 
       it 'parses TASK x IS NOT COMPLETE' do
         parse = QueryParser.new.parse 'TASK anytask IS NOT COMPLETE'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "tasks"."title" ILIKE 'anytask' AND "tasks"."completed" = 'f'
+          "tasks_0"."title" ILIKE 'anytask' AND "tasks_0"."completed" = 'f'
         SQL
       end
 
       it 'parses HAS TASK x' do
         parse = QueryParser.new.parse 'HAS TASK anytask'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "tasks"."title" ILIKE 'anytask'
+          "tasks_0"."title" ILIKE 'anytask'
         SQL
       end
 
       it 'parses HAS NO TASK x' do
         parse = QueryParser.new.parse 'HAS NO TASK anytask'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "tasks"."title" NOT ILIKE 'anytask'
+          "tasks_0"."title" NOT ILIKE 'anytask'
         SQL
       end
 
@@ -135,7 +135,7 @@ describe QueryParser do
         Timecop.freeze do
           start_time = Time.zone.now.utc.days_ago(1).to_formatted_s(:db)
           expect(parse.to_sql).to eq(<<-SQL.strip)
-            "tasks"."title" ILIKE 'anytask' AND "tasks"."completed_at" < '#{start_time}'
+            "tasks_0"."title" ILIKE 'anytask' AND "tasks_0"."completed_at" < '#{start_time}'
           SQL
         end
       end
@@ -145,9 +145,17 @@ describe QueryParser do
         Timecop.freeze do
           start_time = Time.zone.now.utc.days_ago(1).to_formatted_s(:db)
           expect(parse.to_sql).to eq(<<-SQL.strip)
-            "tasks"."title" ILIKE 'anytask' AND "tasks"."completed_at" < '#{start_time}'
+            "tasks_0"."title" ILIKE 'anytask' AND "tasks_0"."completed_at" < '#{start_time}'
           SQL
         end
+      end
+
+      it 'parses ANDed TASK queries as multiple joins' do
+        query = 'TASK anytask IS COMPLETE AND TASK someothertask IS INCOMPLETE'
+        parse = QueryParser.new.parse query
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+           "tasks_0"."title" ILIKE 'anytask' AND "tasks_0"."completed" = 't' AND "tasks_1"."title" ILIKE 'someothertask' AND "tasks_1"."completed" = 'f'
+        SQL
       end
     end
   end

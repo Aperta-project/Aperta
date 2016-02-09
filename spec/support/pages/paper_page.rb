@@ -49,10 +49,12 @@ class PaperPage < Page
   end
 
   def show_contributors
-    downloads_link.click
-    contributors_link.click
-    click_contributors_link
-    AddCollaboratorsOverlay.new(find('.show-collaborators-overlay'))
+    retry_stale_element do
+      downloads_link.click
+      contributors_link.click
+      click_contributors_link
+      AddCollaboratorsOverlay.new(find('.show-collaborators-overlay'))
+    end
   end
 
   def click_contributors_link

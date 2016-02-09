@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "Editing paper", js: true do
+feature "Adding collaborators", js: true do
   let(:author) { FactoryGirl.create :user }
   let(:journal) { FactoryGirl.create :journal }
   let(:paper) do
@@ -25,9 +25,10 @@ feature "Editing paper", js: true do
     expect(page).to have_content "Upload Manuscript"
 
     collaborators_overlay = edit_paper.show_contributors
-
     expect(collaborators_overlay).to have_collaborators(user)
 
+    # The overlay may not be visible so make sure it is being shown
+    collaborators_overlay = edit_paper.show_contributors
     collaborators_overlay.remove_collaborators(user, author)
     collaborators_overlay.save
 
@@ -35,7 +36,6 @@ feature "Editing paper", js: true do
     expect(page).to have_content "Upload Manuscript"
 
     collaborators_overlay = edit_paper.show_contributors
-
     expect(collaborators_overlay).to have_no_collaborators
   end
 end

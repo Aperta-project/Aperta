@@ -5,7 +5,7 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
--
+- Paper tracker search: by title, DOI, status, and task status
 
 ### Changed
 - The billing card has been moved to the new roles and permissions framework. This is being inherited by many of the other cards as well.

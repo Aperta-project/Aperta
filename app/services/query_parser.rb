@@ -31,17 +31,46 @@ class QueryParser < QueryLanguageParser
   end
 
   add_simple_expression('DECISION IS NOT') do |decision|
-    join Decision
-    Decision.arel_table[:verdict].not_eq(decision.parameterize.underscore)
+    table = join Decision
+    table[:verdict].not_eq(decision.parameterize.underscore)
   end
 
   add_simple_expression('DECISION IS') do |decision|
-    join Decision
-    Decision.arel_table[:verdict].eq(decision.parameterize.underscore)
+    table = join Decision
+    table[:verdict].eq(decision.parameterize.underscore)
   end
 
   add_simple_expression('DOI IS') do |doi|
     paper_table[:doi].matches("%#{doi}%")
+  end
+
+  add_two_part_expression('TASK', 'IS COMPLETE') do |task, _|
+    table = join Task
+    table[:title].matches(task).and(table[:completed].eq(true))
+  end
+
+  add_two_part_expression('TASK',
+                          /IS NOT COMPLETE|IS INCOMPLETE/) do |task, _|
+    table = join Task
+    table[:title].matches(task).and(table[:completed].eq(false))
+  end
+
+  add_two_part_expression('TASK', /HAS BEEN COMPLETED? \>/) do |task, days_ago|
+    table = join Task
+    start_time = Time.zone.now.utc.days_ago(days_ago.to_i).to_formatted_s(:db)
+    table[:title].matches(task).and(table[:completed_at].lt(start_time))
+  end
+
+  add_simple_expression('HAS TASK') do |task|
+    table = join Task
+    table[:title].matches(task)
+  end
+
+  add_simple_expression('HAS NO TASK') do |task|
+    paper_table[:id].not_in(
+      Arel::Nodes::SqlLiteral.new(
+        Task.arel_table.project(:paper_id).where(
+          Task.arel_table[:title].matches(task)).to_sql))
   end
 
   add_statement(/^\d+/.r) do |doi|
@@ -63,21 +92,25 @@ class QueryParser < QueryLanguageParser
   end
 
   def initialize
-    @joins = []
+    @join_counter = 0
     @root = Paper
   end
 
   def build(str)
     query = parse str
-    @root.where(query)
+    @root.where(query).uniq
   end
 
   private
 
   def join(klass)
-    return if @joins.include? klass
-    @root = @root.joins(klass.table_name.to_sym)
-    @joins.push klass
+    table = klass.table_name
+    name = "#{table}_#{@join_counter}"
+    @root = @root.joins(<<-SQL)
+      INNER JOIN #{table} AS #{name} ON #{name}.paper_id = papers.id
+    SQL
+    @join_counter += 1
+    klass.arel_table.alias(name)
   end
 
   def title_query(title)

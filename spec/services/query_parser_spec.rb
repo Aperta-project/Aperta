@@ -5,13 +5,6 @@
 require 'rails_helper'
 
 describe QueryParser do
-  before do
-    # This is intended to remove rails helper seeds which is
-    # safe to delete since unit tests are in a transaction
-    Role.delete_all
-    User.delete_all
-  end
-
   describe '#parse' do
     describe 'paper metadata queries' do
       it 'parses type queries' do
@@ -167,14 +160,13 @@ describe QueryParser do
     end
 
     describe 'people queries' do
-      let!(:author_role) { create(:role, name: 'author') }
-      let!(:reviewer_role) { create(:role, name: 'reviewer') }
+      let!(:president_role) { create(:role, name: 'president') }
       let!(:user) { create(:user, username: 'someuser') }
 
-      it 'parses USER x HAS ROLE author' do
-        parse = QueryParser.new.parse 'USER someuser HAS ROLE author'
+      it 'parses USER x HAS ROLE president' do
+        parse = QueryParser.new.parse 'USER someuser HAS ROLE president'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" = #{author_role.id}
+          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" = #{president_role.id}
         SQL
       end
 
@@ -186,16 +178,16 @@ describe QueryParser do
       end
 
       it 'parses ANYONE HAS ROLE x' do
-        parse = QueryParser.new.parse 'ANYONE HAS ROLE author'
+        parse = QueryParser.new.parse 'ANYONE HAS ROLE president'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."role_id" = #{author_role.id}
+          "assignments_0"."role_id" = #{president_role.id}
         SQL
       end
 
       it 'parses NO ONE HAS ROLE x' do
-        parse = QueryParser.new.parse 'NO ONE HAS ROLE author'
+        parse = QueryParser.new.parse 'NO ONE HAS ROLE president'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."role_id" != #{author_role.id}
+          "assignments_0"."role_id" != #{president_role.id}
         SQL
       end
     end

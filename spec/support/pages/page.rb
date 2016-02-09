@@ -66,7 +66,7 @@ class PageFragment
   end
 
   def retry_stale_element
-    max_retries = 100
+    max_retries = 500
     retries = 0
     begin
       yield

@@ -11,7 +11,7 @@ namespace :data do
           kind='admin' OR can_view_all_manuscript_managers = 't'
         ").all.each do |old_role|
           old_role.users.each do |user|
-            staff_admin_role = Role.find_by!(name: 'Staff Admin')
+            staff_admin_role = Role.staff_admin
             journals_administered = user.journals_thru_old_roles.merge(
               OldRole.can_administer_journal
             )

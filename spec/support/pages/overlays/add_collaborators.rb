@@ -18,14 +18,16 @@ class AddCollaboratorsOverlay < PageFragment
   end
 
   def remove_collaborators(*collaborators)
-    collaborators.map(&:full_name).each do |name|
-      first('.collaborator .email').hover
-      first('.collaborator .email .delete-button').click
+    collaborators.map(&:email).each do |email|
+      node = first('.collaborator .email', text: email)
+      node.hover
+      node.first('.delete-button').click
     end
   end
 
   def save
     find('.button-primary', text: 'SAVE').click
+    element.reload
     expect(element).to have_no_css('.show-collaborators-overlay')
   end
 end

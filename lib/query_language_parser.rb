@@ -30,8 +30,8 @@ class QueryLanguageParser
     end
 
     def add_two_part_expression(keyword, argument, &block)
-      add_expression(keywords: [:keyword]) do |predicate|
-        seq(symbol(keyword) >> /.*?(?=#{argument})/,
+      add_expression(keywords: [keyword, argument]) do |predicate|
+        seq(symbol(keyword) >> predicate,
             symbol(argument) >> predicate).map do |seq|
           call_block_with_parsed_strings(block, [seq[0].strip, seq[1].strip])
         end

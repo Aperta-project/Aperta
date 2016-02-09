@@ -3,15 +3,15 @@ class Role < ActiveRecord::Base
   has_and_belongs_to_many :permissions
   has_many :assignments, dependent: :destroy
 
-  CREATOR_ROLE = 'Creator'
+  ACADEMIC_EDITOR_ROLE = 'Academic Editor'
   COLLABORATOR_ROLE = 'Collaborator'
-  INTERNAL_EDITOR_ROLE = 'Internal Editor'
+  CREATOR_ROLE = 'Creator'
   HANDLING_EDITOR_ROLE = 'Handling Editor'
+  INTERNAL_EDITOR_ROLE = 'Internal Editor'
   PARTICIPANT_ROLE = 'Participant'
   PUBLISHING_SERVICES_ROLE = 'Publishing Services and Production Staff'
   REVIEWER_ROLE = 'Reviewer'
   STAFF_ADMIN_ROLE = 'Staff Admin'
-  ACADEMIC_EDITOR_ROLE = 'Academic Editor'
   USER_ROLE = 'User'
 
   def self.creator

@@ -23,7 +23,7 @@ class QueryParser < QueryLanguageParser
   end
 
   add_simple_expression('TYPE IS NOT') do |type|
-    paper_table[:paper_type].not_matches(type)
+    paper_table[:paper_type].does_not_match(type)
   end
 
   add_simple_expression('TYPE IS') do |type|

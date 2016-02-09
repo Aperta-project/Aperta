@@ -14,6 +14,13 @@ describe QueryParser do
         SQL
       end
 
+      it 'parses type NOT queries' do
+        parse = QueryParser.new.parse 'TYPE IS NOT research'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "papers"."paper_type" NOT ILIKE 'research'
+        SQL
+      end
+
       it 'parses decision queries' do
         parse = QueryParser.new.parse 'DECISION IS major revision'
         expect(parse.to_sql).to eq(<<-SQL.strip)

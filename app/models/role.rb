@@ -8,6 +8,7 @@ class Role < ActiveRecord::Base
   INTERNAL_EDITOR_ROLE = 'Internal Editor'
   HANDLING_EDITOR_ROLE = 'Handling Editor'
   PARTICIPANT_ROLE = 'Participant'
+  PUBLISHING_SERVICES_ROLE = 'Publishing Services and Production Staff'
   REVIEWER_ROLE = 'Reviewer'
   STAFF_ADMIN_ROLE = 'Staff Admin'
   USER_ROLE = 'User'
@@ -30,6 +31,10 @@ class Role < ActiveRecord::Base
 
   def self.participant
     where(name: PARTICIPANT_ROLE).first_or_create!
+  end
+
+  def self.publishing_services
+    where(name: PUBLISHING_SERVICES_ROLE)
   end
 
   def self.reviewer

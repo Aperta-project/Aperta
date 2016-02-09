@@ -14,6 +14,7 @@ export default DS.Model.extend({
   fullName: DS.attr('string'),
   siteAdmin: DS.attr('boolean'),
   username: DS.attr('string'),
+  canViewPaperTracker: DS.attr('boolean'),
 
   name: Ember.computed.alias('fullName'),
   affiliationSort: ['isCurrent:desc', 'endDate:desc', 'startDate:asc'],

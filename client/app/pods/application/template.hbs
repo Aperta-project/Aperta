@@ -16,6 +16,9 @@
 
       {{#if canViewFlowManagerLink}}
         {{link-to "Flow Manager" "flow_manager" class="main-nav-item" id="nav-flow-manager"}}
+      {{/if}}
+
+      {{#if currentUser.canViewPaperTracker}}
         {{link-to "Paper Tracker" "paper_tracker" class="main-nav-item" id="nav-paper-tracker"}}
       {{/if}}
 

@@ -166,28 +166,28 @@ describe QueryParser do
       it 'parses USER x HAS ROLE president' do
         parse = QueryParser.new.parse 'USER someuser HAS ROLE president'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" = #{president_role.id}
+          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" = #{president_role.id} AND "assignments_0"."assigned_to_type" = 'Paper'
         SQL
       end
 
       it 'parses USER x HAS ANY ROLE' do
         parse = QueryParser.new.parse 'USER someuser HAS ANY ROLE'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id}
+          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."assigned_to_type" = 'Paper'
         SQL
       end
 
       it 'parses ANYONE HAS ROLE x' do
         parse = QueryParser.new.parse 'ANYONE HAS ROLE president'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."role_id" = #{president_role.id}
+          "assignments_0"."role_id" = #{president_role.id} AND "assignments_0"."assigned_to_type" = 'Paper'
         SQL
       end
 
       it 'parses NO ONE HAS ROLE x' do
         parse = QueryParser.new.parse 'NO ONE HAS ROLE president'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."role_id" != #{president_role.id}
+          "assignments_0"."role_id" != #{president_role.id} AND "assignments_0"."assigned_to_type" = 'Paper'
         SQL
       end
     end

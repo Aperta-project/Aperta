@@ -45,28 +45,40 @@ class QueryParser < QueryLanguageParser
   end
 
   add_two_part_expression('USER', 'HAS ROLE') do |user, role|
-    user_id = User.find_by(username: user).id
-    role_id = Role.where('lower(name) = ?', role.downcase).first.id
-    table = join Assignment
-    table['user_id'].eq(user_id).and(table['role_id'].eq(role_id))
+    user = User.find_by(username: user)
+    user_id = user ? user.id : -1
+
+    role = Role.where('lower(name) = ?', role.downcase).first
+    role_id = role ? role.id : -1
+
+    table = join(Assignment, 'assigned_to_id')
+    table['user_id'].eq(user_id)
+      .and(table['role_id'].eq(role_id))
+      .and(table['assigned_to_type'].eq('Paper'))
   end
 
   add_two_part_expression('USER', 'HAS ANY ROLE') do |user, _|
-    user_id = User.find_by(username: user).id
-    table = join Assignment
-    table['user_id'].eq(user_id)
+    user = User.find_by(username: user)
+    user_id = user ? user.id : -1
+
+    table = join(Assignment, 'assigned_to_id')
+    table['user_id'].eq(user_id).and(table['assigned_to_type'].eq('Paper'))
   end
 
   add_simple_expression('ANYONE HAS ROLE') do |role|
-    table = join Assignment
-    role_id = Role.where('lower(name) = ?', role.downcase).first.id
-    table['role_id'].eq(role_id)
+    role = Role.where('lower(name) = ?', role.downcase).first
+    role_id = role ? role.id : -1
+
+    table = join(Assignment, 'assigned_to_id')
+    table['role_id'].eq(role_id).and(table['assigned_to_type'].eq('Paper'))
   end
 
   add_simple_expression('NO ONE HAS ROLE') do |role|
-    table = join Assignment
-    role_id = Role.where('lower(name) = ?', role.downcase).first.id
-    table['role_id'].not_eq(role_id)
+    role = Role.where('lower(name) = ?', role.downcase).first
+    role_id = role ? role.id : -1
+
+    table = join(Assignment, 'assigned_to_id')
+    table['role_id'].not_eq(role_id).and(table['assigned_to_type'].eq('Paper'))
   end
 
   add_two_part_expression('TASK', 'IS COMPLETE') do |task, _|
@@ -128,11 +140,11 @@ class QueryParser < QueryLanguageParser
 
   private
 
-  def join(klass)
+  def join(klass, id = "paper_id")
     table = klass.table_name
     name = "#{table}_#{@join_counter}"
     @root = @root.joins(<<-SQL)
-      INNER JOIN #{table} AS #{name} ON #{name}.paper_id = papers.id
+      INNER JOIN #{table} AS #{name} ON #{name}.#{id} = papers.id
     SQL
     @join_counter += 1
     klass.arel_table.alias(name)

@@ -36,23 +36,21 @@ feature 'Publishing Related Questions Card', js: true do
       expect(paper.short_title).to eq('This is a short title')
     end
 
-    context 'published elsewhere' do
-      scenario 'upload attachent' do
-        within '#published-elsewhere' do
-          choose 'Yes'
-          find('.fileinput-button').click
-          overlay.upload_file(
-            element_id: "add-new-attachment",
-            file_name: 'yeti.jpg',
-            sentinel: proc { QuestionAttachment.count }
-          )
-          within('.attachment-item') do
-            expect(page).to have_css('.file-link', text: 'yeti.jpg')
-          end
-
-          fill_in('attachment-caption', with: 'Great caption')
-          expect(find_field('attachment-caption').value).to eq('Great caption')
+    scenario 'upload attachent' do
+      within '#published-elsewhere' do
+        choose 'Yes'
+        find('.fileinput-button').click
+        overlay.upload_file(
+          element_id: "add-new-attachment",
+          file_name: 'yeti.jpg',
+          sentinel: proc { QuestionAttachment.count }
+        )
+        within('.attachment-item') do
+          expect(page).to have_css('.file-link', text: 'yeti.jpg')
         end
+
+        fill_in('attachment-caption', with: 'Great caption')
+        expect(find_field('attachment-caption').value).to eq('Great caption')
       end
     end
   end

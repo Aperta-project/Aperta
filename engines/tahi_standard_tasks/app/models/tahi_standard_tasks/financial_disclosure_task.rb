@@ -2,7 +2,8 @@ module TahiStandardTasks
   class FinancialDisclosureTask < ::Task
     include MetadataTask
 
-    register_task default_title: "Financial Disclosure", default_role: "author"
+    DEFAULT_TITLE = 'Financial Disclosure'
+    DEFAULT_ROLE = 'author'
 
     has_many(
       :funders,

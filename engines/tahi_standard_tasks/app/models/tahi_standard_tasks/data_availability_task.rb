@@ -1,6 +1,7 @@
 module TahiStandardTasks
   class DataAvailabilityTask < ::Task
     include MetadataTask
-    register_task default_title: "Data Availability", default_role: "author"
+    DEFAULT_TITLE = 'Data Availability'
+    DEFAULT_ROLE = 'author'
   end
 end

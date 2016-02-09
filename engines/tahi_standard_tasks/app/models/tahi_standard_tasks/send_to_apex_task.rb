@@ -12,6 +12,7 @@ module TahiStandardTasks
   class SendToApexTask < Task
     has_many :apex_deliveries, foreign_key: 'task_id', dependent: :destroy
 
-    register_task default_title: 'Send to Apex', default_role: 'editor'
+    DEFAULT_TITLE = 'Send to Apex'
+    DEFAULT_ROLE = 'editor'
   end
 end

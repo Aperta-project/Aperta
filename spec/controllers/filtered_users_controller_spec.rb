@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 class TestTask < Task
-  include TaskTypeRegistration
   include Invitable
 
-  register_task default_title: "Test Task", default_role: "user"
+  DEFAULT_TITLE = 'Test Task'
+  DEFAULT_ROLE = 'user'
 
   def invitation_invited(_invitation)
     "invited"

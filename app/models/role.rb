@@ -10,6 +10,7 @@ class Role < ActiveRecord::Base
   PARTICIPANT_ROLE = 'Participant'
   REVIEWER_ROLE = 'Reviewer'
   STAFF_ADMIN_ROLE = 'Staff Admin'
+  USER_ROLE = 'User'
 
   def self.creator
     where(name: CREATOR_ROLE).first_or_create!
@@ -37,6 +38,10 @@ class Role < ActiveRecord::Base
 
   def self.staff_admin
     where(name: STAFF_ADMIN_ROLE).first_or_create!
+  end
+
+  def self.user
+    where(name: USER_ROLE, journal_id: nil).first_or_create!
   end
 
   def self.for_old_role(old_role, paper:) # rubocop:disable Metrics/MethodLength

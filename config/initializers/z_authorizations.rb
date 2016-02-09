@@ -1,3 +1,7 @@
+# This file must load after the devise initializer
+
+# This configuration defines how you get access to object based on your
+# assignments
 Authorizations.configure do |config|
   config.assignment_to(
     Paper,

@@ -27,6 +27,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Task', states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: 'Task', states: ['*'])
+      role.ensure_permission_exists(:withdraw, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'PlosBilling::BillingTask', states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: 'PlosBilling::BillingTask', states: ['*'])
     end
@@ -70,6 +71,7 @@ class JournalFactory
       role.ensure_permission_exists(:manage_workflow, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: 'Paper', states: ['*'])
+      role.ensure_permission_exists(:withdraw, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Task', states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: 'Task', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'PlosBilling::BillingTask', states: ['*'])

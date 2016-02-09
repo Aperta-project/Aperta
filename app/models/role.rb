@@ -8,8 +8,10 @@ class Role < ActiveRecord::Base
   INTERNAL_EDITOR_ROLE = 'Internal Editor'
   HANDLING_EDITOR_ROLE = 'Handling Editor'
   PARTICIPANT_ROLE = 'Participant'
+  PUBLISHING_SERVICES_ROLE = 'Publishing Services and Production Staff'
   REVIEWER_ROLE = 'Reviewer'
   STAFF_ADMIN_ROLE = 'Staff Admin'
+  USER_ROLE = 'User'
 
   def self.creator
     where(name: CREATOR_ROLE).first_or_create!
@@ -31,12 +33,20 @@ class Role < ActiveRecord::Base
     where(name: PARTICIPANT_ROLE).first_or_create!
   end
 
+  def self.publishing_services
+    where(name: PUBLISHING_SERVICES_ROLE)
+  end
+
   def self.reviewer
     where(name: REVIEWER_ROLE).first_or_create!
   end
 
   def self.staff_admin
     where(name: STAFF_ADMIN_ROLE).first_or_create!
+  end
+
+  def self.user
+    where(name: USER_ROLE, journal_id: nil).first_or_create!
   end
 
   def self.for_old_role(old_role, paper:) # rubocop:disable Metrics/MethodLength

@@ -132,7 +132,11 @@ module Authorizations
       end
 
       # Load all assignments the user has a permissible assignment for
-      permissible_assignments = assignments.where('permissions.action' => @permission)
+      if @permission == :*
+        permissible_assignments = assignments.all
+      else
+        permissible_assignments = assignments.where('permissions.action' => @permission)
+      end
 
       # Load all assignments (including permissions and permission states)
       # based on the permissible assignments, but DO NOT limit it to the
@@ -155,7 +159,7 @@ module Authorizations
           h
         end
 
-        if permissible_actions.include?(@permission)
+        if permissible_actions.include?(@permission) || @permission == :*
           group_by_key = {
             type: assignment.assigned_to_type,
             permissible_states: permissible_state_names,
@@ -238,18 +242,34 @@ module Authorizations
       delegate :each, :map, :length, to: :@object_permission_map
 
       def as_json
+        serializable.as_json
+      end
+
+      def serializable
         results = []
         each do |object, permissions|
-          item = {
+          item = PermissionResult.new(
             object: { id: object.id, type: object.class.sti_name },
-            permissions: permissions
-          }
+            permissions: permissions,
+            id: "#{Emberize.class_name(object.class)}+#{object.id}"
+          )
 
           results.push item
         end
         results
       end
     end
+  end
+end
+
+class PermissionResult
+  attr_accessor :object, :permissions, :id
+  include ActiveModel::SerializerSupport
+
+  def initialize(object:, permissions:, id:)
+    @object = object
+    @permissions = permissions
+    @id = id
   end
 end
 # rubocop:enable all

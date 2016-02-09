@@ -1,14 +1,16 @@
 import Ember from 'ember';
-import { CanMixin } from 'ember-can';
 import AuthorizedRoute from 'tahi/routes/authorized'
 
-export default AuthorizedRoute.extend(CanMixin, {
+export default AuthorizedRoute.extend( {
+  can: Ember.inject.service('can'),
   model() { return this.currentUser; },
 
   beforeModel(transition){
-    if (!this.can('view_profile', this.currentUser)){
-      return this.handleUnauthorizedRequest(transition);
-    }
+    this.get('can').can('view_profile', this.currentUser).then( (value)=> {
+      if (!value){
+        return this.handleUnauthorizedRequest(transition);
+      }
+    })
   },
 
   afterModel(model) {

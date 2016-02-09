@@ -2,6 +2,10 @@ import DS from 'ember-data';
 
 export default DS.Store.extend({
   push(type, data, _partial) {
+    if (!data){
+      return;
+    }
+
     let oldRecord;
     let oldType = type;
     let dataType = data.type;

@@ -14,7 +14,8 @@ describe 'For the time being, site admins should have ALL permissions.' do
     [object:
        { id: paper.id,
          type: 'Authorizations::FakePaper' },
-     permissions: { view: { states: ['*'] } }]
+     permissions: { view: { states: ['*'] } },
+     id: "fake-paper+#{paper.id}"]
   end
 
   before(:all) do
@@ -52,7 +53,7 @@ describe 'For the time being, site admins should have ALL permissions.' do
       it 'generates the correct json' do
         expect(admin.filter_authorized(
           :view, Authorizations::FakePaper.all.first).as_json)
-          .to eq(paper_json)
+          .to eq(paper_json.as_json)
       end
     end
   end

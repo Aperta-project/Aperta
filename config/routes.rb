@@ -126,6 +126,7 @@ Tahi::Application.routes.draw do
     resources :participations, only: [:create, :show, :destroy]
     resources :phase_templates
     resources :phases, only: [:create, :update, :show, :destroy]
+    resources :permissions, only: [:show]
     resources :question_attachments, only: [:create, :update, :show, :destroy]
     resources :questions, only: [:create, :update]
 

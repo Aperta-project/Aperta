@@ -14,17 +14,21 @@ DESC
   let!(:task_thing) { Authorizations::FakeTaskThing.create!(fake_task: task) }
   let!(:other_task_thing) { Authorizations::FakeTaskThing.create!(fake_task: task) }
   let(:task_json) do
-    [object:
+    [
+      id: "fake-task+#{task.id}",
+      object:
        { id: task.id,
          type: 'Authorizations::FakeTask' },
-     permissions: { view: { states: ['*'] } }]
+      permissions: { view: { states: ['*'] } }].as_json
   end
 
   let(:paper_json) do
-    [object:
+    [
+      id: "fake-paper+#{paper.id}",
+      object:
        { id: paper.id,
          type: 'Authorizations::FakePaper' },
-     permissions: { view: { states: ['*'] } }]
+      permissions: { view: { states: ['*'] } }].as_json
   end
 
   before(:all) do

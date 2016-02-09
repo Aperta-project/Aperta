@@ -1,17 +1,13 @@
 class CurrentUserSerializer < ActiveModel::Serializer
+  include SideloadableSerializerHelper
+
   has_many :affiliations, include: true, embed: :ids
-  has_one :permissions, include: true, embed: :ids
-  attributes :id,
-    :full_name,
-    :first_name,
-    :avatar_url,
-    :username,
-    :email,
-    :site_admin
+  attributes :id, :full_name, :first_name, :avatar_url, :username,
+             :email, :site_admin
+
+  side_load :permissions
 
   def permissions
-    PermissionsSerializer.new(
-      'table' => object.filter_authorized(:view_profile, object).as_json
-    )
+    object.filter_authorized(:view_profile, object).serializable
   end
 end

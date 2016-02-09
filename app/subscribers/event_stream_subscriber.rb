@@ -32,11 +32,8 @@ class EventStreamSubscriber
   private
 
   def payload_for_record(record)
-    classname = record.class.base_class.name.demodulize
-    ember_name = classname.singularize.underscore.dasherize.downcase # sheesh
-
     {
-      type: ember_name,
+      type: Emberize.class_name(record.class),
       id: record.id
     }
   end

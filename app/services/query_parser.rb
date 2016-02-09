@@ -67,8 +67,10 @@ class QueryParser < QueryLanguageParser
   end
 
   add_simple_expression('HAS NO TASK') do |task|
-    table = join Task
-    table[:title].does_not_match(task)
+    paper_table[:id].not_in(
+      Arel::Nodes::SqlLiteral.new(
+        Task.arel_table.project(:paper_id).where(
+          Task.arel_table[:title].matches(task)).to_sql))
   end
 
   add_statement(/^\d+/.r) do |doi|
@@ -105,7 +107,7 @@ class QueryParser < QueryLanguageParser
     table = klass.table_name
     name = "#{table}_#{@join_counter}"
     @root = @root.joins(<<-SQL)
-        INNER JOIN #{table} AS #{name} ON #{name}.paper_id = papers.id
+      INNER JOIN #{table} AS #{name} ON #{name}.paper_id = papers.id
     SQL
     @join_counter += 1
     klass.arel_table.alias(name)

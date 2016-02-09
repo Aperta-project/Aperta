@@ -126,7 +126,7 @@ describe QueryParser do
       it 'parses HAS NO TASK x' do
         parse = QueryParser.new.parse 'HAS NO TASK anytask'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "tasks_0"."title" NOT ILIKE 'anytask'
+          "papers"."id" NOT IN (SELECT paper_id FROM "tasks" WHERE "tasks"."title" ILIKE 'anytask')
         SQL
       end
 

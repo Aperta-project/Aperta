@@ -66,13 +66,15 @@ class PageFragment
   end
 
   def retry_stale_element
-    Timeout.timeout(Capybara.default_max_wait_time) do
-      begin
-        yield
-      rescue Selenium::WebDriver::Error::StaleElementReferenceError
-        Rails.logger.warn "Rescue stale element"
-        retry
-      end
+    max_retries = 100
+    retries = 0
+    begin
+      yield
+    rescue Selenium::WebDriver::Error::StaleElementReferenceError
+      Rails.logger.warn "Rescue stale element"
+      sleep 0.1
+      retries += 1
+      retry if retries <= max_retries
     end
   end
 

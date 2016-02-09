@@ -28,7 +28,11 @@ export default DS.Model.extend({
 
   hasDiff(otherSnapshot) {
     let string1 = JSON.stringify(this.get('contents'));
-    let string2 = JSON.stringify(otherSnapshot.get('contents'));
-    return string1 !== string2;
+    if(otherSnapshot){
+      let string2 = JSON.stringify(otherSnapshot.get('contents'));
+      return string1 !== string2;
+    } else {
+      return false;
+    }
   }
 });

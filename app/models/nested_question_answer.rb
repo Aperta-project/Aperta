@@ -28,6 +28,20 @@ class NestedQuestionAnswer < ActiveRecord::Base
     )
   end
 
+  def task
+    if owner.is_a?(Task)
+      owner
+    elsif owner.respond_to?(:task)
+      owner.task
+    else
+      fail NotImplementedError, <<-ERROR.strip_heredoc
+        The owner (#{owner.inspect}) does is not a Task and does not respond to
+        #task. This is currently unsupported on #{self.class.name} and if you
+        meant it to work you may need to update the implementation.
+      ERROR
+    end
+  end
+
   def value
     return nil unless value_type.present?
     read_value_method = "#{value_type.underscore}_value_type".to_sym

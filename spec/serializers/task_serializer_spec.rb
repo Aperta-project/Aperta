@@ -42,7 +42,7 @@ describe TaskSerializer do
       let(:user) { create(:user) }
 
       before do
-        task.participations << create(:participation, user: user)
+        task.add_participant user
       end
 
       context 'setting the user option in the serializer call' do

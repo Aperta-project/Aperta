@@ -1,6 +1,7 @@
 module TahiStandardTasks
   class PaperEditorTask < Task
-    register_task default_title: "Invite Editor", default_role: "admin"
+    DEFAULT_TITLE = 'Invite Editor'
+    DEFAULT_ROLE = 'admin'
 
     include Invitable
 

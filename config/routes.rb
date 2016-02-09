@@ -81,7 +81,6 @@ Tahi::Application.routes.draw do
       put :accept, on: :member
       put :reject, on: :member
     end
-    resources :journal_task_types, only: :update
     resources :journals, only: [:index, :show] do
       resources :old_roles, only: :index, shallow: true do
         namespace 'old_roles', path: '' do
@@ -127,6 +126,7 @@ Tahi::Application.routes.draw do
     resources :participations, only: [:create, :show, :destroy]
     resources :phase_templates
     resources :phases, only: [:create, :update, :show, :destroy]
+    resources :permissions, only: [:show]
     resources :question_attachments, only: [:create, :update, :show, :destroy]
     resources :questions, only: [:create, :update]
 

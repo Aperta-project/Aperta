@@ -2,11 +2,12 @@ module PlosBilling
   class BillingTask < ::Task
     include SubmissionTask
 
-    register_task default_title: "Billing", default_role: "author",
-      required_permissions: [
-        { action: 'view', applies_to: 'PlosBilling::BillingTask' },
-        { action: 'edit', applies_to: 'PlosBilling::BillingTask' }
-      ]
+    DEFAULT_TITLE = 'Billing'
+    DEFAULT_ROLE = 'author'
+    REQUIRED_PERMISSIONS = [
+      { action: 'view', applies_to: 'PlosBilling::BillingTask' },
+      { action: 'edit', applies_to: 'PlosBilling::BillingTask' }
+    ]
 
     def active_model_serializer
       TaskSerializer

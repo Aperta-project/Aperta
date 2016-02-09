@@ -4,7 +4,8 @@ module TahiStandardTasks
     # include EventStreamNotifier
     include SubmissionTask
 
-    register_task default_title: "Reviewer Candidates", default_role: "author"
+    DEFAULT_TITLE = 'Reviewer Candidates'
+    DEFAULT_ROLE = 'author'
 
     has_many :reviewer_recommendations,
       dependent: :destroy,

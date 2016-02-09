@@ -151,6 +151,226 @@ describe Paper do
     end
   end
 
+  context 'collaboration' do
+    let(:user) { FactoryGirl.create(:user) }
+
+    describe '#add_collaboration' do
+      it 'adds the user as a collaborator, returning an assignment' do
+        expect do
+          collaboration = paper.add_collaboration(user)
+          expect(collaboration).to eq(Assignment.last)
+        end.to change(paper.collaborators, :count).by(1)
+      end
+    end
+
+    describe '#remove_collaboration' do
+      let!(:collaboration) { paper.add_collaboration(user) }
+
+      it 'removes the collaboration given its id' do
+        expect do
+          paper.remove_collaboration(collaboration.id)
+        end.to change(paper.collaborators, :count).by(-1)
+        expect { collaboration.reload }.to \
+          raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'removes the collaboration given a collaborator' do
+        expect do
+          paper.remove_collaboration(collaboration.user)
+        end.to change(paper.collaborators, :count).by(-1)
+        expect { collaboration.reload }.to \
+          raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'removes the collaboration given the collaboration' do
+        expect do
+          paper.remove_collaboration(collaboration)
+        end.to change(paper.collaborators, :count).by(-1)
+        expect { collaboration.reload }.to \
+          raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it 'does not remove the creator' do
+        expect do
+          paper.remove_collaboration(paper.creator)
+        end.to_not change(paper.collaborators, :count)
+
+        collaboration = paper.collaborations.find_by(user: paper.creator)
+        expect do
+          paper.remove_collaboration(collaboration)
+        end.to_not change(paper.collaborators, :count)
+
+        expect do
+          paper.remove_collaboration(collaboration.id)
+        end.to_not change(paper.collaborators, :count)
+
+        expect { collaboration.reload }.to_not raise_error
+      end
+    end
+  end
+
+  context 'participation' do
+    let(:journal) { paper.journal }
+    let(:creator_role) { journal.roles.creator }
+    let(:collaborator_role) { journal.roles.collaborator }
+    let(:handling_editor_role) { journal.roles.handling_editor }
+    let(:reviewer_role) { journal.roles.reviewer }
+
+    let(:creator) { user }
+    let(:collaborator) { FactoryGirl.create(:user) }
+    let(:handling_editor) { FactoryGirl.create(:user) }
+    let(:reviewer) { FactoryGirl.create(:user) }
+
+    let!(:creator_assignment) do
+      paper.update(creator: user)
+      paper.assignments.where(role: creator_role).first!
+    end
+    let!(:collaborator_assignment) do
+      paper.assignments.create!(user: collaborator, role: collaborator_role)
+    end
+    let!(:handling_editor_assignment) do
+      paper.assignments.create!(
+        user: handling_editor,
+        role: handling_editor_role
+      )
+    end
+    let!(:reviewer_assignment) do
+      paper.assignments.create!(user: reviewer, role: reviewer_role)
+    end
+
+    describe '#participations' do
+      it 'returns the assignments for the participants on this paper' do
+        expect(paper.participations).to be
+      end
+
+      it 'includes the user assigned as the creator of the paper' do
+        expect(paper.participations).to include(creator_assignment)
+      end
+
+      it 'includes users assigned as collaborators on the paper' do
+        expect(paper.participations).to include(collaborator_assignment)
+      end
+
+      it 'includes users assigned as the handling editor on the paper' do
+        expect(paper.participations).to include(handling_editor_assignment)
+      end
+
+      it 'includes users assigned as the reviewer on the paper' do
+        expect(paper.participations).to include(reviewer_assignment)
+      end
+
+      it 'includes users assigned as participants on tasks for the paper' do
+        task = FactoryGirl.create(:task, paper: paper)
+        task_assignment = task.assignments.create!(
+          user: FactoryGirl.create(:user), role: FactoryGirl.create(:role)
+        )
+        expect(paper.participations).to include(task_assignment)
+      end
+    end
+
+    describe '#participants' do
+      let(:task) { FactoryGirl.create(:task, paper: paper) }
+      let(:task_user) { FactoryGirl.create(:user) }
+      let(:task_assignment) do
+        task.assignments.create!(
+          user: task_user,
+          role: FactoryGirl.create(:role)
+        )
+      end
+
+      before do
+        task = FactoryGirl.create(:task, paper: paper)
+        task_assignment = task.assignments.create!(
+          user: task_user,
+          role: FactoryGirl.create(:role)
+        )
+      end
+
+      it 'returns the users for all of the participations' do
+        expect(paper.participants).to contain_exactly(
+          creator, collaborator, handling_editor, reviewer, task_user
+        )
+      end
+
+      context 'and has a user assigned multiple times to the paper' do
+        it 'returns the users only once' do
+          task.assignments.create!(
+            user: paper.creator,
+            role: paper.journal.roles.participant
+          )
+
+          expect(paper.participants).to contain_exactly(
+            creator, collaborator, handling_editor, reviewer, task_user
+          )
+        end
+      end
+    end
+
+    describe '#participants_by_role' do
+      let(:paper_user) { FactoryGirl.create(:user) }
+      let(:task_user) { FactoryGirl.create(:user) }
+      let(:task) { FactoryGirl.create(:task, paper: paper) }
+      let(:sanitation_role) { FactoryGirl.create(:role, name: 'Sanitation') }
+
+      before do
+        paper.assignments.destroy_all
+        paper.assignments.create!(
+          user: paper_user,
+          role: paper.journal.roles.creator
+        )
+        task.assignments.create!(
+          user: task_user,
+          role: FactoryGirl.create(:role, name: 'Sanitation')
+        )
+      end
+
+      it 'returns a hash of <role> => [user1, user2, ...]' do
+        expect(paper.participants_by_role).to eq(
+          'Creator' => [paper_user],
+          sanitation_role.name => [task_user]
+        )
+      end
+
+      context 'when a user is assigned multiple tasks with the same role on the paper' do
+        let(:another_task) { FactoryGirl.create(:task, paper: paper) }
+
+        before do
+          another_task.assignments.create!(
+            user: task_user,
+            role: sanitation_role
+          )
+        end
+
+        it 'returns the user only once per role' do
+          expect(paper.participants_by_role).to eq(
+            'Creator' => [paper_user],
+            sanitation_role.name => [task_user]
+          )
+        end
+      end
+
+      context 'when a user is assigned different roles on different tasks' do
+        let(:another_task) { FactoryGirl.create(:task, paper: paper) }
+        let(:foobar_role) { FactoryGirl.create(:role, name: 'Foobar') }
+
+        before do
+          another_task.assignments.create!(
+            user: task_user,
+            role: FactoryGirl.create(:role, name: 'Foobar')
+          )
+        end
+
+        it 'returns the user only once per role' do
+          expect(paper.participants_by_role).to eq(
+            'Creator' => [paper_user],
+            sanitation_role.name => [task_user],
+            foobar_role.name => [task_user]
+          )
+        end
+      end
+    end
+  end
+
   context 'State Machine' do
     describe '#initial_submit' do
       it 'transitions to initially_submitted' do
@@ -512,26 +732,44 @@ describe Paper do
   end
 
   describe "callbacks" do
-    let(:user) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.build :paper, creator: user }
+    let(:paper) { FactoryGirl.build :paper }
+    let(:creator) { paper.creator }
 
-    it "assigns all author tasks to the paper author" do
+    it "assigns all author tasks to the paper's creator" do
       paper.save!
       author_tasks = Task.where(old_role: 'author', phase_id: paper.phases.pluck(:id))
       other_tasks = Task.where("old_role != 'author'", phase_id: paper.phases.pluck(:id))
-      expect(author_tasks.all? { |t| t.assignee == user }).to eq true
-      expect(other_tasks.all? { |t| t.assignee != user }).to eq true
+      expect(author_tasks.all? { |t| t.assignee == creator }).to eq true
+      expect(other_tasks.all? { |t| t.assignee != creator }).to eq true
+    end
+  end
+
+  describe '#collaborators' do
+    let(:creator) { paper.creator }
+    let(:collaborator) { FactoryGirl.create(:user) }
+    let(:other_user) { FactoryGirl.create(:user) }
+
+    let(:creator_role) do
+      Role.ensure_exists(Role::CREATOR_ROLE, journal: paper.journal)
+    end
+    let(:collaborator_role) do
+      Role.ensure_exists(Role::COLLABORATOR_ROLE, journal: paper.journal)
+    end
+    let(:other_role) do
+      FactoryGirl.create(:role, name: 'Other Role', journal: paper.journal)
     end
 
-    context "when the paper is persisted" do
-      before { paper.save! }
+    before do
+      paper.assignments.create!(role: collaborator_role, user: collaborator)
+      paper.assignments.create!(role: other_role, user: other_user)
+    end
 
-      it "assigns all author tasks to the paper author" do
-        tasks = Task.where(old_role: 'author', phase_id: paper.phases.map(&:id))
-        not_author = FactoryGirl.create(:user)
-        paper.update! creator: not_author
-        expect(tasks.all? { |t| t.assignee == user }).to eq true
-      end
+    it 'returns only users assigned with the Creator and Collaborator role' do
+      expect(paper.collaborators).to contain_exactly(creator, collaborator)
+    end
+
+    it 'does not return users assigned with other roles' do
+      expect(paper.collaborators).to_not include(other_user)
     end
   end
 
@@ -553,21 +791,60 @@ describe Paper do
     end
   end
 
-  describe "#role_for" do
-    let(:user) { FactoryGirl.create :user }
+  describe '#roles_for' do
+    let!(:user) { FactoryGirl.create(:user) }
+    let!(:role_1_assigned) { FactoryGirl.create(:role) }
+    let!(:role_2_assigned) { FactoryGirl.create(:role) }
+    let!(:role_3_not_assigned) { FactoryGirl.create(:role) }
 
     before do
-      create(:paper_role, :reviewer, paper: paper, user: user)
+      paper.assignments.create!(user: user, role: role_1_assigned)
+      paper.assignments.create!(user: user, role: role_2_assigned)
     end
 
-    it "returns old_roles if the old_role exist for the given user and old_role type" do
-      expect(paper.role_for(user: user, old_role: 'reviewer')).to be_present
+    it "returns the user's roles on the paper" do
+      expect(
+        paper.roles_for(user: user)
+      ).to contain_exactly(role_1_assigned, role_2_assigned)
     end
 
-    context "when the old_role isn't found" do
-      it "returns nothing" do
-        expect(paper.role_for(user: user, old_role: 'chucknorris')).to_not be_present
+    context "when the user isn't assigned to any roles" do
+      before { paper.assignments.destroy_all }
+
+      it 'returns nothing' do
+        expect(paper.roles_for(user: user)).to be_empty
       end
+    end
+
+    context 'when called with the optional :roles parameter' do
+      it "returns the user's roles on the paper scoped to the given roles" do
+        expect(
+          paper.roles_for(user: user, roles: [role_2_assigned])
+        ).to contain_exactly(role_2_assigned)
+      end
+
+      it "returns nothing when the user isn't assigned to the given roles" do
+        expect(
+          paper.roles_for(user: user, roles: [role_3_not_assigned])
+        ).to be_empty
+      end
+    end
+  end
+
+  describe '#role_descriptions_for' do
+    let!(:user) { FactoryGirl.create(:user) }
+    let!(:role) { FactoryGirl.create(:role, name: 'ABC') }
+
+    it 'returns the names of the roles the user is assigned to' do
+      paper.assignments.create!(user: user, role: role)
+      expect(paper.role_descriptions_for(user: user)).to contain_exactly('ABC')
+    end
+
+    it 'returns "My Paper" when the role is the journal creator' do
+      paper.assignments.create!(user: user, role: paper.journal.roles.creator)
+      expect(
+        paper.role_descriptions_for(user: user)
+      ).to contain_exactly('My Paper')
     end
   end
 

@@ -1,7 +1,8 @@
 module PlosBioTechCheck
   class RevisionTechCheckTask < Task
 
-    register_task default_title: 'Revision Tech Check', default_role: 'editor'
+    DEFAULT_TITLE = 'Revision Tech Check'
+    DEFAULT_ROLE = 'editor'
 
     def active_model_serializer
       RevisionTechCheckTaskSerializer
@@ -20,11 +21,10 @@ module PlosBioTechCheck
               }
       return @_task if @_task.present?
 
-      task_properties = TaskType.types["PlosBioTechCheck::ChangesForAuthorTask"]
       @_task = PlosBioTechCheck::ChangesForAuthorTask.create!({
         body: {},
-        title: task_properties[:default_title],
-        old_role: task_properties[:default_role],
+        title: PlosBioTechCheck::ChangesForAuthorTask::DEFAULT_TITLE,
+        old_role: PlosBioTechCheck::ChangesForAuthorTask::DEFAULT_ROLE,
         paper: paper,
         phase: phase
       })

@@ -17,7 +17,7 @@ class ReviewerReportTaskCreator
   private
 
   def find_or_create_related_task
-    if existing_reviewer_report_task.empty?
+    if existing_reviewer_report_task.blank?
       task = TahiStandardTasks::ReviewerReportTask.create!(
         paper: paper,
         phase: default_phase,
@@ -27,7 +27,7 @@ class ReviewerReportTaskCreator
 
       Assignment.where(
         user: assignee,
-        role: paper.journal.roles.reviewer,
+        role: paper.journal.roles.participant,
         assigned_to: task
       ).first_or_create!
 
@@ -38,16 +38,31 @@ class ReviewerReportTaskCreator
         .delay.welcome_reviewer(assignee_id: assignee.id,
                                 task_id: task.id)
     else
-      existing_reviewer_report_task.first.incomplete!
+      existing_reviewer_report_task.incomplete!
     end
   end
 
   def existing_reviewer_report_task
-    paper.tasks.includes(:participations).where type: "TahiStandardTasks::ReviewerReportTask", participations: { user_id: assignee.id }
+    @existing_reviewer_report_task ||= begin
+      TahiStandardTasks::ReviewerReportTask.joins(assignments: :role).where(
+        paper_id: paper.id,
+        assignments: {
+          role_id: paper.journal.roles.participant, user_id: assignee.id
+        }
+      ).first
+    end
   end
 
   # multiple `assignee` can exist on `paper` as a reviewer
   def assign_paper_role!
+    # New R&P
+    Assignment.where(
+      user: assignee,
+      role: paper.journal.roles.reviewer,
+      assigned_to: paper
+    ).first_or_create!
+
+    # Old roles
     paper.paper_roles.for_old_role(PaperRole::REVIEWER).where(user: assignee).first_or_create!
   end
 

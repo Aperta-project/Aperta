@@ -1,10 +1,11 @@
 class Task < ActiveRecord::Base
   include EventStream::Notifiable
   include NestedQuestionable
-  include TaskTypeRegistration
   include Commentable
 
-  register_task default_title: "Ad-hoc", default_role: "user"
+  DEFAULT_TITLE = 'Ad-hoc'
+  DEFAULT_ROLE = 'user'
+  REQUIRED_PERMISSIONS = {}
 
   cattr_accessor :metadata_types
   cattr_accessor :submission_types
@@ -15,22 +16,39 @@ class Task < ActiveRecord::Base
   scope :submission, -> { where(type: submission_types.to_a) }
 
   # Scopes based on assignment
-  scope :unassigned, -> { includes(:participations).where(participations: { id: nil }) }
+  scope :unassigned, lambda {
+    includes(:assignments).where(assignments: { id: nil })
+  }
 
   # Scopes based on state
   scope :completed, -> { where(completed: true) }
   scope :incomplete, -> { where(completed: false) }
 
-  scope :on_journals, ->(journals) { joins(:journal).where("journals.id" => journals.map(&:id)) }
+  scope :on_journals, lambda { |journals|
+    joins(:journal).where('journals.id' => journals.map(&:id))
+  }
+
+  has_many \
+    :participations,
+    -> { joins(:role).where(roles: { name: Role::PARTICIPANT_ROLE }) },
+    class_name: 'Assignment',
+    as: :assigned_to
+  has_many \
+    :participants,
+    -> { joins(:roles).uniq },
+    through: :participations,
+    source: :user
 
   has_many :permission_requirements, as: :required_on
-  has_many :required_permissions, through: :permission_requirements, source: :permission
+  has_many \
+    :required_permissions,
+    through: :permission_requirements,
+    source: :permission
   belongs_to :paper, inverse_of: :tasks
   has_one :journal, through: :paper, inverse_of: :tasks
-  has_many :assignments, as: :assigned_to
+  has_many :assignments, as: :assigned_to, dependent: :destroy
   has_many :attachments
-  has_many :participations, inverse_of: :task, dependent: :destroy
-  has_many :participants, through: :participations, source: :user
+
   has_many :snapshots, as: :source
 
   belongs_to :phase, inverse_of: :tasks
@@ -102,8 +120,23 @@ class Task < ActiveRecord::Base
       if users.empty?
         Task.none
       else
-        joins(participations: :user).where("participations.user_id" => users)
+        joins(assignments: [:role, :user])
+          .where(
+            'assignments.user_id' => users,
+            'roles.name' => Role::PARTICIPANT_ROLE
+          )
       end
+    end
+
+    def all_task_types
+      Rails.application.config.eager_load_namespaces.each(&:eager_load!)
+      Task.descendants + [Task]
+    end
+
+    def safe_constantize(str)
+      fail StandardError, 'Attempted to constantize disallowed value' \
+        unless Task.all_task_types.map(&:to_s).member?(str)
+      str.constantize
     end
   end
 
@@ -131,6 +164,19 @@ class Task < ActiveRecord::Base
 
   def incomplete!
     update!(completed: false)
+  end
+
+  def add_participant(user)
+    participations.where(
+      user: user,
+      role: journal.roles.participant
+    ).first_or_create!
+  end
+
+  def participants=(users)
+    participations.destroy_all
+    save! if new_record?
+    users.each { |user| add_participant user }
   end
 
   def update_responder
@@ -183,7 +229,7 @@ class Task < ActiveRecord::Base
   private
 
   def on_card_completion?
-    previous_changes["completed"] == [false, true]
+    previous_changes['completed'] == [false, true]
   end
 
   def update_completed_at

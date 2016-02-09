@@ -6,6 +6,8 @@ describe BibitemsController do
 
   before { sign_in user }
 
+  authorize_policy(BibitemsPolicy, true)
+
   describe "#create" do
     let(:bibitem_attributes) { FactoryGirl.attributes_for(:bibitem) }
 

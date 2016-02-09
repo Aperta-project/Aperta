@@ -1,7 +1,8 @@
 module TahiStandardTasks
   class RegisterDecisionTask < Task
     include UrlBuilder
-    register_task default_title: 'Register Decision', default_role: 'editor'
+    DEFAULT_TITLE = 'Register Decision'
+    DEFAULT_ROLE = 'editor'
 
     # TODO: move these attributes from paper to this task model (https://www.pivotaltracker.com/story/show/84690814)
     delegate :decision_letter, :decision_letter=, to: :paper, prefix: :paper

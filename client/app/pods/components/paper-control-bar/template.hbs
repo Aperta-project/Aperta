@@ -60,12 +60,14 @@
           Appeal
         </a>
       </li>
+      {{#if (can 'withdraw' paper)}}
       <li>
         <a href="#" class="withdraw-link" {{action "withdrawManuscript"}}  id="nav-withdraw-manuscript">
           <span class="fa fa-trash fa-lg"></span>
           Withdraw Manuscript
         </a>
       </li>
+      {{/if}}
     {{/unless}}
   </ul>
 </div>

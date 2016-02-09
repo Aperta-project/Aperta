@@ -19,7 +19,7 @@ describe CommentLookManager do
     comment = FactoryGirl.create(:comment, commenter: user, task: task)
 
     participant = FactoryGirl.create(:user)
-    task.participants << participant
+    task.add_participant(participant)
 
     look = CommentLookManager.create_comment_look(participant, comment)
 

@@ -15,9 +15,10 @@ class TasksController < ApplicationController
   def index
     tasks = current_user.filter_authorized(
       :view,
-      paper.tasks.includes(:participations, :paper),
+      paper.tasks.includes(:paper),
       participations_only: false
     ).objects
+
     respond_with tasks, each_serializer: TaskSerializer
   end
 
@@ -90,13 +91,12 @@ class TasksController < ApplicationController
   end
 
   def task_type
-    params[:task][:type]
+    Task.safe_constantize(params[:task][:type])
   end
 
   def new_task_params
-    task_klass = TaskType.constantize!(task_type)
     paper = Paper.find params[:task][:paper_id]
-    task_params(task_klass).merge(paper: paper, creator: paper.creator)
+    task_params(task_type).merge(paper: paper, creator: paper.creator)
   end
 
   def unmunge_empty_arrays

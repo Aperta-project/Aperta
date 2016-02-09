@@ -14,17 +14,21 @@ DESC
   let!(:task_thing) { Authorizations::FakeTaskThing.create!(fake_task: task) }
   let!(:other_task_thing) { Authorizations::FakeTaskThing.create!(fake_task: task) }
   let(:task_json) do
-    [object:
+    [
+      id: "fake-task+#{task.id}",
+      object:
        { id: task.id,
          type: 'Authorizations::FakeTask' },
-     permissions: { view: { states: ['*'] } }]
+      permissions: { view: { states: ['*'] } }].as_json
   end
 
   let(:paper_json) do
-    [object:
+    [
+      id: "fake-paper+#{paper.id}",
+      object:
        { id: paper.id,
          type: 'Authorizations::FakePaper' },
-     permissions: { view: { states: ['*'] } }]
+      permissions: { view: { states: ['*'] } }].as_json
   end
 
   before(:all) do
@@ -95,6 +99,24 @@ DESC
 
     before do
       assign_user user, to: paper, with_role: role_for_viewing
+    end
+
+    context 'when given an ActiveRecord class' do
+      let(:filtered) do
+        user.filter_authorized(:view, Authorizations::FakeTask)
+      end
+
+      it 'can filter authorized models' do
+        expect(filtered.objects).to eq(paper.fake_tasks)
+      end
+
+      it 'does not include unauthorized items' do
+        expect(filtered.objects).to_not include(other_task)
+      end
+
+      it 'generates the correct json' do
+        expect(filtered.as_json).to eq(task_json)
+      end
     end
 
     context 'when given a simple ActiveRecord::Relation' do

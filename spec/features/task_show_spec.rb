@@ -13,7 +13,6 @@ feature "Displaying task", js: true do
   end
 
   before do
-    assign_author_role(paper, admin)
     login_as(admin, scope: :user)
     visit "/"
     click_link paper.title

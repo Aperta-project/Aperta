@@ -6,14 +6,11 @@ class Paper < ActiveRecord::Base
   include AASM
   include ActionView::Helpers::SanitizeHelper
   include PgSearch
+  include Assignable::Model
 
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
   belongs_to :striking_image, polymorphic: true
-  belongs_to :creator,
-             inverse_of: :submitted_papers,
-             class_name: 'User',
-             foreign_key: :user_id
 
   has_many :figures, dependent: :destroy
   has_many :versioned_texts, dependent: :destroy
@@ -29,7 +26,6 @@ class Paper < ActiveRecord::Base
   has_many :tasks, inverse_of: :paper
   has_many :comments, through: :tasks
   has_many :comment_looks, through: :comments
-  has_many :participants, through: :tasks
   has_many :journal_roles, through: :journal
   has_many :authors, -> { order 'authors.position ASC' }
   has_many :activities
@@ -39,6 +35,8 @@ class Paper < ActiveRecord::Base
   has_many :notifications, inverse_of: :paper
   has_many :nested_question_answers
   has_many :assignments, as: :assigned_to
+  has_many :roles, through: :assignments
+
   serialize :withdrawals, ArrayHashSerializer
 
   validates :paper_type, presence: true
@@ -188,6 +186,10 @@ class Paper < ActiveRecord::Base
       'assignments.assigned_to_type' => 'Paper')
   end
 
+  def inactive?
+    !active?
+  end
+
   def previous_state_is?(event)
     withdrawals.last[:previous_publishing_state] == event.to_s
   end
@@ -213,19 +215,28 @@ class Paper < ActiveRecord::Base
     end
   end
 
-  # Public: Find `PaperRole`s for the given old_role and user.
-  #
-  # old_role  - The old_role to search for.
-  # user  - The user to search `PaperRole` against.
+  # Public: Find `Role`s for the given user on this paper.
   #
   # Examples
   #
-  #   Paper.role_for(old_role: 'editor', user: User.first)
-  #   # => [<#123: PaperRole>, <#124: PaperRole>]
+  #   Paper.roles_for(user: User.first)
+  #   Paper.roles_for(user: User.first, roles: [Role.first])
   #
-  # Returns an ActiveRelation with <tt>PaperRole</tt>s.
-  def role_for(old_role:, user:)
-    paper_roles.where(old_role: old_role, user_id: user.id)
+  # Returns an ActiveRelation with <tt>Role</tt>s.
+  def roles_for(user:, roles: nil)
+    args = { assignments: { user_id: user } }
+    args[:assignments][:role_id] = roles.map(&:id) if roles
+    self.roles.where(args)
+  end
+
+  def role_descriptions_for(user:)
+    roles_for(user: user).map do |role|
+      if role == journal.roles.creator
+        'My Paper'
+      else
+        role.name
+      end
+    end
   end
 
   def tasks_for_type(klass_name)
@@ -301,7 +312,95 @@ class Paper < ActiveRecord::Base
     update!(editable: true)
   end
 
-  %w(admins reviewers collaborators).each do |relation|
+  def creator
+    User.assigned_to(self, role: journal.roles.creator).first
+  end
+
+  def creator=(user)
+    assignments.where(role: journal.roles.creator).destroy_all
+    assignments.build(role: journal.roles.creator,
+                      user: user,
+                      assigned_to: self)
+  end
+
+  def collaborations
+    Assignment.where(
+      role: [
+        journal.roles.creator,
+        journal.roles.collaborator
+      ],
+      assigned_to: self
+    )
+  end
+
+  def collaborators
+    User.assigned_to(self,
+                     role: [journal.roles.creator,
+                            journal.roles.collaborator])
+  end
+
+  def add_collaboration(user)
+    assignments.create(user: user, role: journal.roles.collaborator)
+  end
+
+  def remove_collaboration(collaboration)
+    if collaboration.is_a?(User)
+      collaboration = collaborations.find_by(user: collaboration)
+    elsif !collaboration.is_a?(Assignment)
+      collaboration = collaborations.find_by(id: collaboration)
+    end
+
+    collaboration.destroy if collaboration.role == journal.roles.collaborator
+    collaboration
+  end
+
+  def paper_participation_roles
+    [
+      journal.roles.creator,
+      journal.roles.collaborator,
+      journal.roles.handling_editor,
+      journal.roles.reviewer
+    ]
+  end
+
+  def task_participation_roles
+    [journal.roles.participant]
+  end
+
+  def participations # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    root = Assignment.arel_table
+    arel_query = (
+      root[:assigned_to_type].eq(Paper.sti_name)
+      .and(
+        root[:assigned_to_id].eq(id)
+        .and(
+          root[:role_id].in(paper_participation_roles.map(&:id))
+        )
+      )
+    )
+
+    if task_ids.present?
+      arel_query = arel_query.or(
+        root[:assigned_to_type].eq(Task.sti_name)
+        .and(root[:assigned_to_id].in(task_ids))
+      )
+    end
+
+    Assignment.where(arel_query).includes(:role, :user)
+  end
+
+  def participants
+    participations.map(&:user).uniq
+  end
+
+  def participants_by_role
+    by_role_hsh = participations.group_by(&:role)
+    by_role_hsh.each_with_object({}) do |(role, participation), hsh|
+      hsh[role.name] = participation.map(&:user).uniq
+    end
+  end
+
+  %w(admins reviewers).each do |relation|
     ###
     # :method: <old_roles>
     # Public: Return user records by old_role in the paper.

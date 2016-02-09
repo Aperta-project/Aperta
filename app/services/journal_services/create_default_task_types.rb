@@ -3,11 +3,11 @@ module JournalServices
     def self.call(journal)
       Rails.logger.info "Processing journal: #{journal.name}..."
       with_noisy_errors do
-        TaskType.types.each do |klass, details|
+        Task.all_task_types.each do |klass|
           jtt = journal.journal_task_types.find_or_initialize_by(kind: klass)
-          jtt.title = details[:default_title]
-          jtt.old_role = details[:default_role]
-          jtt.required_permissions = details[:required_permissions]
+          jtt.title = klass::DEFAULT_TITLE
+          jtt.old_role = klass::DEFAULT_ROLE
+          jtt.required_permissions = klass::REQUIRED_PERMISSIONS
           jtt.save!
         end
       end

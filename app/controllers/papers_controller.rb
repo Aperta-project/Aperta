@@ -7,11 +7,12 @@ class PapersController < ApplicationController
 
   def index
     page = (params[:page_number] || 1).to_i
-    papers = current_user.papers.includes(:paper_roles)
+    papers = current_user.filter_authorized(:view, Paper).objects
+    active_papers, inactive_papers = papers.partition(&:active?)
     respond_with(papers, {
       each_serializer: LitePaperSerializer,
-      meta: { total_active_papers: papers.active.count,
-              total_inactive_papers: papers.inactive.count }
+      meta: { total_active_papers: active_papers.length,
+              total_inactive_papers: inactive_papers.length }
     })
   end
 
@@ -138,6 +139,7 @@ class PapersController < ApplicationController
   end
 
   def withdraw
+    requires_user_can :withdraw, paper
     paper.withdraw! withdrawal_params[:reason]
     render json: paper, status: :ok
   end

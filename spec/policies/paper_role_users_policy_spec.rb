@@ -26,7 +26,7 @@ describe PaperRoleUsersPolicy do
     before do
       assign_journal_role(paper.journal, user, old_role)
       task = paper.tasks.first
-      task.participants << user
+      task.add_participant user
     end
 
     it { expect(policy.index?).to be(true) }

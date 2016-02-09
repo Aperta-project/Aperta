@@ -58,6 +58,8 @@ gem 'tiny_tds'
 gem 'twitter-text'
 gem 'uglifier'
 gem 'unf'
+gem 'rsec'
+
 # We need any version of yaml_db after 0.3.0 since it will
 # namespace SerializationHelper
 gem 'yaml_db',

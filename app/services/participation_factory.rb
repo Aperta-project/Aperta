@@ -22,9 +22,15 @@ class ParticipationFactory
   private
 
   def create_participation
-    Participation.create!(task: task,
-                          user: assignee,
-                          notify_requester: self_assigned?).tap do
+    # New roles
+    task.add_participant(assignee)
+
+    # Old roles
+    Participation.create!(
+      task: task,
+      user: assignee,
+      notify_requester: self_assigned?
+    ).tap do
       send_notification if notify
       CommentLookManager.sync_task(task)
     end

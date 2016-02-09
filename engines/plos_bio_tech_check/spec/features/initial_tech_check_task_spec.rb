@@ -11,7 +11,7 @@ feature 'Initial Tech Check', js: true do
 
   before do
     assign_journal_role journal, admin, :admin
-    task.participants << admin
+    task.add_participant(admin)
 
     SignInPage.visit.sign_in admin
   end

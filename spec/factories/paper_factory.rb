@@ -3,16 +3,17 @@ require 'securerandom'
 FactoryGirl.define do
   factory :paper do
     after(:create) do |paper|
-      if paper.creator
+      creator = paper.creator
+      if creator
         Assignment.where(
-          role: paper.journal.roles.author,
+          role: paper.journal.roles.creator,
           assigned_to: paper
         ).destroy_all
-        Assignment.where(
-          role: paper.journal.roles.author,
+        Assignment.create!(
+          role: paper.journal.roles.creator,
           assigned_to: paper,
-          user: paper.creator
-        ).create!
+          user: creator
+        )
       end
 
       paper.save!
@@ -20,7 +21,7 @@ FactoryGirl.define do
     end
 
     journal
-    creator factory: User
+    creator factory: :user
 
     sequence :title do |n|
       "Feature Recognition from 2D Hints in Extruded Solids - #{n}-#{SecureRandom.hex(3)}"
@@ -48,6 +49,7 @@ FactoryGirl.define do
 
     trait(:submitted) do
       after(:create) do |paper|
+        paper.update!(creator: FactoryGirl.create(:user)) unless paper.creator
         paper.submit! paper.creator
       end
     end
@@ -126,7 +128,6 @@ FactoryGirl.define do
     end
 
     after(:create) do |paper, evaluator|
-      paper.paper_roles.create!(user: paper.creator, old_role: PaperRole::COLLABORATOR)
       paper.decisions.create!
 
       paper.body = evaluator.body

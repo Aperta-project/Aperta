@@ -8,7 +8,7 @@ feature 'Publishing Related Questions Card', js: true do
   end
 
   before do
-    paper.tasks.each { |t| t.participants << author }
+    paper.tasks.each { |t| t.add_participant(author) }
   end
 
   def short_title_selector
@@ -28,7 +28,11 @@ feature 'Publishing Related Questions Card', js: true do
       content_editable.set('T')
       content_editable.send_keys('his is a short title', :tab)
       wait_for_ajax
-      paper.reload
+
+      wait_for_condition do
+        paper.reload
+        !paper.short_title.blank?
+      end
 
       expect(paper.short_title).not_to include('<br')
       expect(paper.short_title).to eq('This is a short title')

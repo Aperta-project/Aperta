@@ -79,11 +79,12 @@ DESC
     assign_user user, to: other_paper_on_same_journal, with_role: role_editor
   end
 
-  describe '#as_json' do
+  describe '#serializable' do
     it "returns a hash of all the user's permissions for the returned object" do
       results = user.filter_authorized(:view, Authorizations::FakePaper.all)
-      expect(results.as_json).to eq([
+      expect(results.serializable.map(&:as_json)).to eq([
         {
+          id: 'fake-paper+1',
           object: {
             id: paper_assigned_to_journal.id,
             type: Authorizations::FakePaper.name
@@ -96,6 +97,7 @@ DESC
           }
         },
         {
+          id: 'fake-paper+2',
           object: {
             id: other_paper_on_same_journal.id,
             type: Authorizations::FakePaper.name
@@ -107,7 +109,7 @@ DESC
             talk: { states: %w(in_progress in_review) }
           }
         }
-      ])
+      ].as_json)
     end
 
     describe <<-DESC do
@@ -130,8 +132,9 @@ DESC
 
       it 'returns the permissions for all permissible assignments' do
         results = user.filter_authorized(:view, Authorizations::FakeTask.all)
-        expect(results.as_json).to eq([
+        expect(results.serializable.map(&:as_json)).to eq([
           {
+            id: 'fake-task+1',
             object: {
               id: task.id,
               type: Authorizations::FakeTask.name
@@ -148,7 +151,7 @@ DESC
               }
             }
           }
-        ])
+        ].as_json)
       end
     end
   end

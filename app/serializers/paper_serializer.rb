@@ -11,15 +11,10 @@ class PaperSerializer < LitePaperSerializer
   has_many :collaborations,
            embed: :ids,
            include: true,
-           serializer: CollaborationSerializer
+           serializer: AssignmentSerializer
 
   has_one :journal, embed: :id
   has_one :striking_image, embed: :id
-
-  def collaborations
-    # we want the actual join record, not a list of users
-    object.paper_roles.collaborators
-  end
 
   def links
     {

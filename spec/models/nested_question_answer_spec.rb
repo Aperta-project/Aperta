@@ -37,6 +37,35 @@ describe NestedQuestionAnswer do
     end
   end
 
+  describe '#task' do
+    context 'and the owner is a Task' do
+      let(:task) { Task.new }
+
+      it 'returns the owner' do
+        nested_question_answer.owner = task
+        expect(nested_question_answer.task).to eq(task)
+      end
+    end
+
+    context 'and the owner is not a Task, but responds to #task' do
+      let(:task) { Task.new }
+      let(:owner) { FactoryGirl.build(:author) }
+
+      it 'returns the owner#task' do
+        nested_question_answer.owner = owner
+        expect(nested_question_answer.task).to eq(owner.task)
+      end
+    end
+
+    context 'and the owner is something else entirely' do
+      it 'raises an exception' do
+        expect do
+          nested_question_answer.task
+        end.to raise_error(NotImplementedError)
+      end
+    end
+  end
+
   describe "#value_type" do
     context "valid values" do
       it "can set to attachment" do

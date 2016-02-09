@@ -6,26 +6,65 @@ class AssignmentsController < ApplicationController
     authorize_action! paper: paper
 
     assignments = PaperRole.includes(:user).where(paper: paper)
-    render json: assignments, each_serializer: AssignmentSerializer
+    render(
+      json: assignments,
+      each_serializer: PaperRoleSerializer,
+      root: :assignments
+    )
   end
 
   def create
     paper = Paper.find(params[:assignment][:paper_id])
+    target_user = User.find(params[:assignment][:user_id])
     authorize_action! paper: paper
 
-    assignment = PaperRole.new(params.require(:assignment).permit(:old_role, :user_id, :paper_id))
-    assignment.save!
+    # old assignment TODO: remove this!
+    paper_role = PaperRole.new(assignment_params)
+    paper_role.save!
+    new_role_from_old = {
+      'Editor' => paper.journal.roles.handling_editor,
+      'Admin' => paper.journal.roles.staff_admin
+    }
 
-    Activity.assignment_created!(assignment, user: current_user)
+    if new_role_from_old[paper_role.old_role]
+      # create new R&P assignment
+      Assignment.where(
+        user: target_user,
+        role: new_role_from_old[paper_role.old_role],
+        assigned_to: paper
+      ).first_or_create!
+    end
 
-    render json: assignment, serializer: AssignmentSerializer
+    Activity.assignment_created!(paper_role, user: current_user)
+    render json: paper_role, serializer: PaperRoleSerializer, root: :assignment
   end
 
   def destroy
-    assignment = PaperRole.find(params[:id])
-    authorize_action! paper: assignment.paper
+    paper_role = PaperRole.find(params[:id])
+    authorize_action! paper: paper_role.paper
 
-    assignment.destroy!
-    render json: assignment, serializer: AssignmentSerializer
+    paper = paper_role.paper
+    new_role_from_old = {
+      'Editor' => paper.journal.roles.handling_editor,
+      'Admin' => paper.journal.roles.staff_admin
+    }
+
+    if new_role_from_old[paper_role.old_role]
+      # destroy new R&P assignment
+      Assignment.where(
+        user: paper_role.user,
+        role: new_role_from_old[paper_role.old_role],
+        assigned_to: paper
+      ).map(&:destroy!)
+    end
+
+    paper_role.destroy!
+    render json: paper_role, serializer: PaperRoleSerializer, root: :assignment
+  end
+
+  private
+
+  def assignment_params
+    params.require(:assignment).permit(:old_role, :user_id, :paper_id)
   end
 end

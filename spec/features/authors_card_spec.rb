@@ -5,7 +5,7 @@ feature 'Authors card', js: true do
   let!(:paper) { FactoryGirl.create(:paper_with_task, task_params: { type: "TahiStandardTasks::AuthorsTask" }, creator: author) }
 
   before do
-    paper.tasks.each { |t| t.participants << author }
+    paper.tasks.each { |t| t.add_participant(author) }
   end
 
   context 'As an author' do

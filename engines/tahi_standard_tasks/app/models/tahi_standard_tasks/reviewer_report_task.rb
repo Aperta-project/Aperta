@@ -1,6 +1,7 @@
 module TahiStandardTasks
   class ReviewerReportTask < Task
-    register_task default_title: 'Reviewer Report', default_role: 'reviewer'
+    DEFAULT_TITLE = 'Reviewer Report'
+    DEFAULT_ROLE = 'reviewer'
 
     before_create :assign_to_latest_decision
     has_many :decisions, -> { uniq }, through: :paper

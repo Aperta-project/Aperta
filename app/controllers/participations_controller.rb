@@ -6,11 +6,18 @@ class ParticipationsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def index
-    respond_with task.participations, root: :participations
+    respond_with Participation.where(task_id: task).all, root: :participations
   end
 
   def create
     if participation.save
+      # create new R&P assignment
+      Assignment.where(
+        user: participation.user,
+        role: task.journal.roles.participant,
+        assigned_to: participation.task
+      ).first_or_create!
+
       CommentLookManager.sync_task(task)
       if participation.user_id != current_user.id
         participation.task.notify_new_participant(current_user, participation)
@@ -25,6 +32,13 @@ class ParticipationsController < ApplicationController
   end
 
   def destroy
+    # destroy new R&P assignment
+    Assignment.where(
+      user: participation.user,
+      role: task.journal.roles.participant,
+      assigned_to: participation.task
+    ).destroy_all
+
     participation.destroy
     Activity.participation_destroyed! participation, user: current_user
     respond_with participation
@@ -49,7 +63,7 @@ class ParticipationsController < ApplicationController
       if params[:id].present?
         Participation.find(params[:id])
       else
-        task.participations.build(participation_params)
+        Participation.new(participation_params)
       end
     end
   end

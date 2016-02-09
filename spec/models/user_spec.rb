@@ -19,6 +19,35 @@ describe User do
     end
   end
 
+  describe '#created_papers_for_journal' do
+    subject(:user) { FactoryGirl.create(:user) }
+    let(:journal) { FactoryGirl.create(:journal) }
+    let!(:other_user) { FactoryGirl.create(:user) }
+
+    let!(:created_paper_1) do
+      FactoryGirl.create(:paper, journal: journal, creator: user)
+    end
+    let!(:created_paper_2) do
+      FactoryGirl.create(:paper, journal: journal, creator: user)
+    end
+    let!(:not_my_paper) do
+      FactoryGirl.create(:paper, journal: journal, creator: other_user)
+    end
+
+    it 'returns papers where this user is its creator' do
+      created_papers = user.created_papers_for_journal(journal)
+      expect(created_papers).to contain_exactly(
+        created_paper_1,
+        created_paper_2
+      )
+    end
+
+    it 'does not return other papers' do
+      created_papers = user.created_papers_for_journal(journal)
+      expect(created_papers).to_not include(not_my_paper)
+    end
+  end
+
   describe "#possible_flows" do
     it "returns all flows assigned to the user's old_roles" do
       old_role = FactoryGirl.create(:old_role)
@@ -56,6 +85,26 @@ describe User do
       expect(user).to_not be_valid
       expect(user.errors.size).to eq 1
       expect(user.errors.first).to eq [:username, "is invalid"]
+    end
+  end
+
+  describe '#tasks' do
+    subject(:user) { FactoryGirl.create(:user) }
+    let!(:participating_task) { FactoryGirl.create(:task) }
+    let!(:not_participating_task) { FactoryGirl.create(:task) }
+    let!(:other_role) { FactoryGirl.create(:role) }
+
+    before do
+      participating_task.add_participant user
+      not_participating_task.assignments.create!(user: user, role: other_role)
+    end
+
+    it 'returns tasks the user is assigned to as a participant' do
+      expect(user.tasks).to contain_exactly(participating_task)
+    end
+
+    it 'does not return tasks the user is assigned with another role' do
+      expect(user.tasks).to_not include(not_participating_task)
     end
   end
 

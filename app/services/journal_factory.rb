@@ -84,7 +84,10 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: 'Task', states: ['*'])
     end
 
-    Role.ensure_exists(Role::ACADEMIC_EDITOR_ROLE, journal: @journal, delete_stray_permissions: true) do |role|
+    Role.ensure_exists(Role::ACADEMIC_EDITOR_ROLE,
+                       journal: @journal,
+                       participates_in: [Paper],
+                       delete_stray_permissions: true) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper)
       role.ensure_permission_exists(:view, applies_to: Task)
       # TODO: Remove this when APERTA-5996 is fixed

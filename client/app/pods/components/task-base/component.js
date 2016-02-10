@@ -2,7 +2,7 @@ import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 const { computed, isEmpty } = Ember;
-const { alias, or } = computed;
+const { alias, not, or } = computed;
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
   classNames: ['task'],
@@ -16,7 +16,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   isMetadataTask: alias('task.isMetadataTask'),
   isSubmissionTask: alias('task.isSubmissionTask'),
   isSubmissionTaskEditable: alias('task.paper.editable'),
-  isSubmissionTaskNotEditable: computed.not('task.paper.editable'),
+  isSubmissionTaskNotEditable: not('isSubmissionTaskEditable'),
   isEditable: or('isUserEditable', 'currentUser.siteAdmin'),
   fieldsDisabled: or('isSubmissionTaskNotEditable', 'task.completed'),
   isUserEditable: computed('task.paper.editable', 'isSubmissionTask',

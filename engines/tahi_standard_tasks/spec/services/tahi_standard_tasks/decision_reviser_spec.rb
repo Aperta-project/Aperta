@@ -51,7 +51,7 @@ describe "TahiStandardTasks::DecisionReviser" do
             }.to change(paper.tasks.where(type: "TahiStandardTasks::ReviseTask"), :count).by(1)
           end
 
-          it "has participants of paper editor and paper creator" do
+          it "has academic editor and paper creator participants" do
             subject
             expect(revise_task.participants).to \
               match_array([paper.academic_editor, paper.creator])

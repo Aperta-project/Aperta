@@ -773,7 +773,7 @@ describe Paper do
     end
   end
 
-  describe '#editor' do
+  describe '#academic_editor' do
     let(:user) { FactoryGirl.create(:user) }
 
     context 'when the paper has an editor' do
@@ -786,7 +786,7 @@ describe Paper do
       specify { expect(paper.academic_editors).to eq([user]) }
     end
 
-    context "when the paper doesn't have an editor" do
+    context "when the paper doesn't have an academic editor" do
       specify { expect(paper.academic_editors).to be_blank }
     end
   end

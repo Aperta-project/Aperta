@@ -65,11 +65,11 @@ class QueryParser < QueryLanguageParser
   end
 
   add_simple_expression('ANYONE HAS ROLE') do |role|
-    role = Role.where('lower(name) = ?', role.downcase).first
-    role_id = role ? role.id : -1
+    role_ids = Role.where('lower(name) = ?', role.downcase)
+                   .pluck(:id)
 
     table = join(Assignment, 'assigned_to_id')
-    table['role_id'].eq(role_id).and(table['assigned_to_type'].eq('Paper'))
+    table['role_id'].in(role_ids).and(table['assigned_to_type'].eq('Paper'))
   end
 
   add_simple_expression('NO ONE HAS ROLE') do |role|

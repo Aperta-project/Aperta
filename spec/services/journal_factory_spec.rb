@@ -21,25 +21,17 @@ describe JournalFactory do
 
     context 'creating the default roles and permission for the journal' do
       let(:journal) { JournalFactory.create(name: 'Genetics Journal') }
-
-      let(:journal_creator_role) do
-        journal.roles.where(name: Role::CREATOR_ROLE).first
-      end
-      let(:journal_collaborator_role) do
-        journal.roles.where(name: Role::COLLABORATOR_ROLE).first
-      end
-
       let(:view_paper_permission) do
         Permission.where(action: 'view', applies_to: 'Paper').first
       end
 
       it 'gives the journal its own Creator role' do
-        expect(journal_creator_role).to be
+        expect(journal.roles.creator).to be
       end
 
       context 'Creator role' do
         it 'gets the :view Paper permission with no state requirements' do
-          expect(journal_creator_role.permissions).to include(
+          expect(journal.roles.collaborator.permissions).to include(
             view_paper_permission
           )
           expect(view_paper_permission.states).to contain_exactly(
@@ -49,17 +41,107 @@ describe JournalFactory do
       end
 
       it 'gives the journal its own Collaborator role' do
-        expect(journal_collaborator_role).to be
+        expect(journal.roles.collaborator).to be
       end
 
       context 'Collaborator role' do
         it 'gets the :view Paper permission with no state requirements' do
-          expect(journal_collaborator_role.permissions).to include(
+          expect(journal.roles.collaborator.permissions).to include(
             Permission.where(action: 'view', applies_to: 'Paper').first
           )
           expect(view_paper_permission.states).to contain_exactly(
             PermissionState.wildcard
           )
+        end
+      end
+
+      context 'Internal Editor' do
+        context 'has DisscussionTopic permission to' do
+          let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
+
+          it ':view' do
+            expect(journal.roles.internal_editor.permissions).to include(
+              permissions.find_by(action: 'view')
+            )
+          end
+
+          it ':create' do
+            expect(journal.roles.internal_editor.permissions).to include(
+              permissions.find_by(action: 'create')
+            )
+          end
+
+          it ':edit' do
+            expect(journal.roles.internal_editor.permissions).to include(
+              permissions.find_by(action: 'edit')
+            )
+          end
+
+          it ':add_participant' do
+            expect(journal.roles.internal_editor.permissions).to include(
+              permissions.find_by(action: 'add_participant')
+            )
+          end
+
+          it ':reply' do
+            expect(journal.roles.internal_editor.permissions).to include(
+              permissions.find_by(action: 'reply')
+            )
+          end
+        end
+      end
+
+      context 'Publishing Services and Production Staff' do
+        context 'has DisscussionTopic permission to' do
+          let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
+
+          it ':view' do
+            expect(journal.roles.internal_editor.permissions).to include(
+              permissions.find_by(action: 'view')
+            )
+          end
+
+          it ':create' do
+            expect(journal.roles.internal_editor.permissions).to include(
+              permissions.find_by(action: 'create')
+            )
+          end
+
+          it ':edit' do
+            expect(journal.roles.internal_editor.permissions).to include(
+              permissions.find_by(action: 'edit')
+            )
+          end
+
+          it ':add_participant' do
+            expect(journal.roles.internal_editor.permissions).to include(
+              permissions.find_by(action: 'add_participant')
+            )
+          end
+
+          it ':reply' do
+            expect(journal.roles.internal_editor.permissions).to include(
+              permissions.find_by(action: 'reply')
+            )
+          end
+        end
+      end
+
+      context 'Discussion Particiapnt' do
+        context 'has DisscussionTopic permission to' do
+          let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
+
+          it ':view' do
+            expect(journal.roles.internal_editor.permissions).to include(
+              permissions.find_by(action: 'view')
+            )
+          end
+
+          it ':reply' do
+            expect(journal.roles.internal_editor.permissions).to include(
+              permissions.find_by(action: 'reply')
+            )
+          end
         end
       end
     end

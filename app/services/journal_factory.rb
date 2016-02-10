@@ -31,6 +31,12 @@ class JournalFactory
       role.ensure_permission_exists(:withdraw, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
+
+      role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:create, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:add_participant, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
     end
 
     Role.ensure_exists(Role::COLLABORATOR_ROLE, journal: @journal, participates_in: [Paper]) do |role|
@@ -63,6 +69,12 @@ class JournalFactory
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
+
+      role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:create, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:add_participant, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
     end
 
     Role.ensure_exists(Role::HANDLING_EDITOR_ROLE, journal: @journal, participates_in: [Paper]) do |role|
@@ -85,8 +97,15 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
+
+      role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:create, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:add_participant, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
     end
 
+    # This should likely be renamed to "Task Participant"
     Role.ensure_exists(Role::PARTICIPANT_ROLE, journal: @journal, participates_in: [Task], delete_stray_permissions: true) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
@@ -112,6 +131,11 @@ class JournalFactory
 
       # AEs can ONLY view reviewer report tasks
       role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::ReviewerReportTask)
+    end
+
+    Role.ensure_exists(Role::DISCUSSION_PARTICIPANT, journal: @journal) do |role|
+      role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
     end
   end
 end

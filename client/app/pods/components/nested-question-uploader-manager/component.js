@@ -35,8 +35,8 @@ export default NestedQuestionComponent.extend({
       });
     },
 
-    updateAttachmentTitle(title, attachment) {
-      attachment.set('title', title);
+    updateAttachmentCaption(caption, attachment) {
+      attachment.set('caption', caption);
       attachment.save();
     },
 

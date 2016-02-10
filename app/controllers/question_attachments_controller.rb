@@ -6,13 +6,13 @@ class QuestionAttachmentsController < ApplicationController
   respond_to :json
 
   def create
-    question_attachment.update(title: attachment_params[:title])
+    question_attachment.update(caption: attachment_params[:caption])
     process_attachments(question_attachment, attachment_params[:src])
     render json: { 'question-attachment': { id: question_attachment.id } }
   end
 
   def update
-    question_attachment.update title: attachment_params[:title]
+    question_attachment.update caption: attachment_params[:caption]
 
     process_attachments(question_attachment, attachment_params[:src])
     render json: { 'question-attachment': { id: question_attachment.id } }
@@ -52,7 +52,12 @@ class QuestionAttachmentsController < ApplicationController
 
   def attachment_params
     params.permit(
-      question_attachment: [:nested_question_answer_id, :src, :filename, :title]
+      question_attachment: [
+        :nested_question_answer_id,
+        :src, :filename,
+        :title,
+        :caption
+      ]
     )[:question_attachment]
   end
 end

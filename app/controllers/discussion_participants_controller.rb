@@ -1,13 +1,14 @@
 class DiscussionParticipantsController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy
   respond_to :json
 
   def create
+    requires_user_can :add_participant, discussion_participant.discussion_topic
     discussion_participant.save
     respond_with discussion_participant
   end
 
+  # TODO: add permission
   def destroy
     discussion_participant.destroy
     respond_with discussion_participant
@@ -27,9 +28,5 @@ class DiscussionParticipantsController < ApplicationController
         DiscussionParticipant.new(creation_params)
       end
     end
-  end
-
-  def enforce_policy
-    authorize_action!(discussion_participant: discussion_participant)
   end
 end

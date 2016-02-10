@@ -1,6 +1,5 @@
 class DiscussionTopicsController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy
   respond_to :json
 
   def index
@@ -9,21 +8,25 @@ class DiscussionTopicsController < ApplicationController
   end
 
   def show
+    requires_user_can :view, discussion_topic
     respond_with discussion_topic
   end
 
   def create
+    requires_user_can :start_discussion, discussion_topic.paper
     discussion_topic.discussion_participants.build(user: current_user)
     discussion_topic.save
     respond_with discussion_topic
   end
 
   def update
+    requires_user_can :edit, discussion_topic
     discussion_topic.update(update_params)
     respond_with discussion_topic
   end
 
   def destroy
+    requires_user_can :edit, discussion_topic
     discussion_topic.destroy
     respond_with discussion_topic
   end
@@ -50,15 +53,6 @@ class DiscussionTopicsController < ApplicationController
 
   def paper
     @paper ||= Paper.find(params[:paper_id])
-  end
-
-  def enforce_policy
-    if discussion_topic
-      authorize_action!(discussion_topic: discussion_topic, paper: discussion_topic.paper)
-    else
-      # index won't have a singluar topic, but we'll know the paper
-      authorize_action!(discussion_topic: nil, paper: paper)
-    end
   end
 
 end

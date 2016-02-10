@@ -29,14 +29,33 @@ describe DiscussionParticipantsController do
       }
     end
 
-    it "adds a user to a discussion" do
-      expect {
-        xhr :post, :create, format: :json, **creation_params
-      }.to change { DiscussionParticipant.count }.by(1)
+    context "when the user has access" do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:add_participant, topic_a)
+          .and_return true
+      end
 
-      participant = json["discussion_participant"]
-      expect(participant['discussion_topic_id']).to eq(topic_a.id)
-      expect(participant['user_id']).to eq(another_user.id)
+      it "adds a user to a discussion" do
+        expect do
+          xhr :post, :create, format: :json, **creation_params
+        end.to change { DiscussionParticipant.count }.by(1)
+
+        participant = json["discussion_participant"]
+        expect(participant['discussion_topic_id']).to eq(topic_a.id)
+        expect(participant['user_id']).to eq(another_user.id)
+      end
+    end
+
+    context "when the user does not have access" do
+      let!(:do_request) { post :create, creation_params }
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:add_participant, topic_a)
+          .and_return false
+      end
+
+      it { responds_with(403) }
     end
   end
 

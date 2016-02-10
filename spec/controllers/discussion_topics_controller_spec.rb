@@ -16,14 +16,12 @@ describe DiscussionTopicsController do
   before { sign_in user }
 
   describe 'GET index' do
-
     it "includes the paper's discussion topics" do
       xhr :get, :index, format: :json, paper_id: paper.id
       topics = json["discussion_topics"]
       expect(topics.count).to eq(1)
       expect(topics[0]['id']).to eq(topic_a.id)
     end
-
   end
 
   describe 'GET show' do
@@ -31,15 +29,33 @@ describe DiscussionTopicsController do
     let!(:first_reply) { FactoryGirl.create(:discussion_reply, discussion_topic: topic_a) }
     let!(:last_reply) { FactoryGirl.create(:discussion_reply, discussion_topic: topic_a) }
 
-    it "includes the discussion topic's replies" do
-      xhr :get, :show, format: :json, id: topic_a.id
+    context "when the user has access" do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:view, topic_a)
+          .and_return true
+      end
 
-      topic = json["discussion_topic"]
-      expect(topic['id']).to eq(topic_a.id)
+      it "includes the discussion topic's replies" do
+        xhr :get, :show, format: :json, id: topic_a.id
 
-      replies = json['discussion_replies']
-      expect(replies[0]['id']).to eq(first_reply.id)
-      expect(replies[1]['id']).to eq(last_reply.id)
+        topic = json["discussion_topic"]
+        expect(topic['id']).to eq(topic_a.id)
+
+        replies = json['discussion_replies']
+        expect(replies[0]['id']).to eq(first_reply.id)
+        expect(replies[1]['id']).to eq(last_reply.id)
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:view, topic_a)
+          .and_return false
+      end
+
+      it { responds_with(403) }
     end
 
   end
@@ -56,14 +72,33 @@ describe DiscussionTopicsController do
       }
     end
 
-    it "creates a topic" do
-      expect {
-        xhr :post, :create, format: :json, **creation_params
-      }.to change { DiscussionTopic.count }.by(1)
+    context "when the user has access" do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:start_discussion, paper)
+          .and_return true
+      end
 
-      topic = json["discussion_topic"]
-      expect(topic['title']).to eq(title)
-      expect(topic['paper_id']).to eq(paper.id)
+      it "creates a topic" do
+        expect do
+          xhr :post, :create, format: :json, **creation_params
+        end.to change { DiscussionTopic.count }.by(1)
+
+        topic = json["discussion_topic"]
+        expect(topic['title']).to eq(title)
+        expect(topic['paper_id']).to eq(paper.id)
+      end
+    end
+
+    context "when the user does not have access" do
+      let!(:do_request) { post :create, creation_params }
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:start_discussion, paper)
+          .and_return false
+      end
+
+      it { responds_with(403) }
     end
 
   end
@@ -79,21 +114,56 @@ describe DiscussionTopicsController do
       }
     end
 
-    it "updates the topic" do
-      xhr :patch, :update, format: :json, **update_params
-      expect(topic_a.reload.title).to eq(new_title)
+    context "when the user has access" do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:edit, topic_a)
+          .and_return true
+      end
+
+      it "updates the topic" do
+        xhr :patch, :update, format: :json, **update_params
+        expect(topic_a.reload.title).to eq(new_title)
+      end
     end
 
+    context "when the user does not have access" do
+      let!(:do_request) { patch :update, update_params }
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:edit, topic_a)
+          .and_return false
+      end
+
+      it { responds_with(403) }
+    end
   end
 
   describe 'DELETE destroy' do
+    context "when the user has access" do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:edit, topic_a)
+          .and_return true
+      end
 
-    it "destroys a topic" do
-      expect {
-        xhr :delete, :destroy, format: :json, id: topic_a.id
-      }.to change { DiscussionTopic.count }.by(-1)
+      it "destroys a topic" do
+        expect do
+          xhr :delete, :destroy, format: :json, id: topic_a.id
+        end.to change { DiscussionTopic.count }.by(-1)
+      end
     end
 
+    context "when the user does not have access" do
+      let!(:do_request) { delete :destroy, id: topic_a.id }
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:edit, topic_a)
+          .and_return false
+      end
+
+      it { responds_with(403) }
+    end
   end
 
 

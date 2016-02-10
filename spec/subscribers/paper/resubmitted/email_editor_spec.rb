@@ -4,7 +4,7 @@ describe Paper::Resubmitted::EmailEditor do
   include EventStreamMatchers
 
   let(:mailer) { mock_delayed_class(UserMailer) }
-  let!(:paper) { FactoryGirl.create(:paper, :with_editor) }
+  let!(:paper) { FactoryGirl.create(:paper, :with_academic_editor) }
   let!(:user) { FactoryGirl.create(:user) }
 
   before { assign_paper_role(paper, user, PaperRole::EDITOR) }

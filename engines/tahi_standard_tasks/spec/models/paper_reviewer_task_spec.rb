@@ -10,7 +10,7 @@ describe TahiStandardTasks::PaperReviewerTask do
     journal
   end
 
-  let(:paper) { create :paper, :with_tasks, :with_editor, journal: journal }
+  let(:paper) { create :paper, :with_tasks, :with_academic_editor, journal: journal }
   let(:phase) { paper.phases.first }
 
   let(:albert) { create :user, :site_admin }

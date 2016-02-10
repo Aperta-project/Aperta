@@ -166,7 +166,15 @@ describe QueryParser do
       it 'parses USER x HAS ROLE president' do
         parse = QueryParser.new.parse 'USER someuser HAS ROLE president'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" = #{president_role.id} AND "assignments_0"."assigned_to_type" = 'Paper'
+          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{president_role.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
+        SQL
+      end
+
+      it 'parses across multiple roles of same name for USER x HAS ROLE president' do
+        president_role2 = create(:role, name: 'president')
+        parse = QueryParser.new.parse 'USER someuser HAS ROLE president'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{president_role.id}, #{president_role2.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
         SQL
       end
 

@@ -46,14 +46,8 @@ class QueryParser < QueryLanguageParser
 
   add_two_part_expression('USER', 'HAS ROLE') do |username, role|
     user = User.find_by(username: username)
-    if user
-      journal_ids = user.papers.pluck(:journal_id)
-      user_id = user.id
-    else
-      user_id = -1
-    end
+    user_id = user ? user.id : -1
     role_ids = Role.where('lower(name) = ?', role.downcase)
-                   .where(journal_id: journal_ids)
                    .pluck(:id)
 
     table = join(Assignment, 'assigned_to_id')

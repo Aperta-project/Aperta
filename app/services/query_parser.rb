@@ -76,8 +76,12 @@ class QueryParser < QueryLanguageParser
     role_ids = Role.where('lower(name) = ?', role.downcase)
                    .pluck(:id)
 
-    table = join(Assignment, 'assigned_to_id')
-    table['role_id'].not_in(role_ids).and(table['assigned_to_type'].eq('Paper'))
+    assignment = Assignment.arel_table
+    paper_table[:id].not_in(
+      Arel::Nodes::SqlLiteral.new(
+        assignment.project(:assigned_to_id)
+                  .where(assignment[:role_id].in(role_ids)
+                  .and(assignment[:assigned_to_type].eq('Paper'))).to_sql))
   end
 
   add_two_part_expression('TASK', 'IS COMPLETE') do |task, _|

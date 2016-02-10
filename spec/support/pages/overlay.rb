@@ -25,11 +25,11 @@ class CardOverlay < Page
   end
 
   def mark_as_complete
-    find('#task-not-completed').click
+    find('.task-not-completed').click
   end
 
   def completed?
-    has_css?('#task-is-completed')
+    has_css?('.task-is-completed')
   end
 
   # This method takes advantage of Capybara's default wait time to ensure
@@ -38,8 +38,7 @@ class CardOverlay < Page
   # By expecting the state in the checkbox selector Capybara handles all
   # of the waiting and retries which helps us avoid sleep calls in our code.
   def expect_task_to_be_incomplete
-    expect(self).to have_selector(
-      '.task-completed:not(:checked)')
+    expect(self).to have_selector('.task-not-completed')
   end
 
   def view_paper

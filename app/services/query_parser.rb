@@ -44,16 +44,21 @@ class QueryParser < QueryLanguageParser
     paper_table[:doi].matches("%#{doi}%")
   end
 
-  add_two_part_expression('USER', 'HAS ROLE') do |user, role|
-    user = User.find_by(username: user)
-    user_id = user ? user.id : -1
-
-    role = Role.where('lower(name) = ?', role.downcase).first
-    role_id = role ? role.id : -1
+  add_two_part_expression('USER', 'HAS ROLE') do |username, role|
+    user = User.find_by(username: username)
+    if user
+      journal_ids = user.papers.pluck(:journal_id)
+      user_id = user.id
+    else
+      user_id = -1
+    end
+    role_ids = Role.where('lower(name) = ?', role.downcase)
+                   .where(journal_id: journal_ids)
+                   .pluck(:id)
 
     table = join(Assignment, 'assigned_to_id')
     table['user_id'].eq(user_id)
-      .and(table['role_id'].eq(role_id))
+      .and(table['role_id'].in(role_ids))
       .and(table['assigned_to_type'].eq('Paper'))
   end
 

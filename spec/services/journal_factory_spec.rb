@@ -56,18 +56,20 @@ describe JournalFactory do
       end
 
       context 'Internal Editor' do
+        it 'has :start_discussion permissions on Paper' do
+          permissions = Permission.joins(:states).where(applies_to: 'Paper', permission_states: { id: PermissionState.wildcard })
+
+          expect(journal.roles.internal_editor.permissions).to include(
+            permissions.find_by(action: 'start_discussion')
+          )
+        end
+
         context 'has DisscussionTopic permission to' do
           let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
 
           it ':view' do
             expect(journal.roles.internal_editor.permissions).to include(
               permissions.find_by(action: 'view')
-            )
-          end
-
-          it ':create' do
-            expect(journal.roles.internal_editor.permissions).to include(
-              permissions.find_by(action: 'create')
             )
           end
 
@@ -92,18 +94,20 @@ describe JournalFactory do
       end
 
       context 'Publishing Services and Production Staff' do
+        it 'has :start_discussion permissions on Paper' do
+          permissions = Permission.joins(:states).where(applies_to: 'Paper', permission_states: { id: PermissionState.wildcard })
+
+          expect(journal.roles.internal_editor.permissions).to include(
+            permissions.find_by(action: 'start_discussion')
+          )
+        end
+
         context 'has DisscussionTopic permission to' do
           let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
 
           it ':view' do
             expect(journal.roles.internal_editor.permissions).to include(
               permissions.find_by(action: 'view')
-            )
-          end
-
-          it ':create' do
-            expect(journal.roles.internal_editor.permissions).to include(
-              permissions.find_by(action: 'create')
             )
           end
 

@@ -195,7 +195,7 @@ describe QueryParser do
       it 'parses NO ONE HAS ROLE x' do
         parse = QueryParser.new.parse 'NO ONE HAS ROLE president'
         expect(parse.to_sql).to eq(<<-SQL.strip)
-          "assignments_0"."role_id" != #{president_role.id} AND "assignments_0"."assigned_to_type" = 'Paper'
+          "assignments_0"."role_id" NOT IN (#{president_role.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
         SQL
       end
     end

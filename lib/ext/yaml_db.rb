@@ -26,8 +26,13 @@ module YamlDb
       def self.truncate_table(table)
         begin
           ActiveRecord::Base.connection.execute("SAVEPOINT before_truncation")
-          ActiveRecord::Base.connection.execute("TRUNCATE #{SerializationHelper::Utils.quote_table(table)} CASCADE")
-        rescue Exception
+          ActiveRecord::Base.connection.execute("TRUNCATE #{SerializationHelper::Utils.quote_table(table)}")
+        rescue Exception => ex
+          puts <<-MSG.strip_heredoc
+            Recovering from the DB not being able to TRUNCATE. Falling back to DELETE.
+            Please ignore any errors previous errors about not being able to truncate table '#{table}'.
+          MSG
+
           ActiveRecord::Base.connection.execute("ROLLBACK TO SAVEPOINT before_truncation")
           ActiveRecord::Base.connection.execute("DELETE FROM #{SerializationHelper::Utils.quote_table(table)}")
         end

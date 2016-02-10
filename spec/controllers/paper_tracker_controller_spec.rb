@@ -1,19 +1,30 @@
 require 'rails_helper'
 
 describe PaperTrackerController do
-  let(:user) { FactoryGirl.create :user, site_admin: true }
   let(:per_page) { Kaminari.config.default_per_page }
 
   before { sign_in user }
 
   describe 'let(per_page)' do
+    let(:user) { FactoryGirl.create :user, site_admin: true }
+
     it 'is available and useful' do
       expect(per_page).to be_truthy
       expect(per_page.instance_of?(Fixnum)).to eq(true)
     end
   end
 
+  describe 'without the permission' do
+    let(:user) { FactoryGirl.create :user, site_admin: false }
+    it 'returns a 403' do
+      get :index, format: :json
+      expect(response.status).to eq(403)
+    end
+  end
+
   describe 'on GET #index' do
+    let(:user) { FactoryGirl.create :user, site_admin: true }
+
     it 'list the paper in journal that user belongs to' do
       paper = make_matchable_paper
       get :index, format: :json

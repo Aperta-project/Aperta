@@ -43,7 +43,7 @@ class PaperTrackerController < ApplicationController
   end
 
   def journal_ids
-    current_user.filter_authorized(:view_paper_tracker, Journal)
+    current_user.filter_authorized(:view_paper_tracker, Journal).objects
   end
 
   def papers_submitted

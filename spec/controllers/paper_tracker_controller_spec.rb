@@ -30,15 +30,9 @@ describe PaperTrackerController do
       expect(json['papers'].size).to eq 0
     end
 
-    it 'do not list the paper where user do not have a old_role' do
-      FactoryGirl.create(:paper, :submitted)
-      get :index, format: :json
-      json = JSON.parse(response.body)
-      expect(json['papers'].size).to eq 0
-    end
-
     context 'meta data' do
       it 'returns meta data about the results' do
+        FactoryGirl.create(:paper, :submitted)
         get :index, format: :json
         json = JSON.parse(response.body)
         expect(json['meta']).to be_truthy
@@ -48,18 +42,21 @@ describe PaperTrackerController do
       end
 
       it 'meta[page] is 1 when not sent in params' do
+        FactoryGirl.create(:paper, :submitted)
         get :index, format: :json
         json = JSON.parse(response.body)
         expect(json['meta']['page']).to eq(1)
       end
 
       it 'meta[page] is eq to param[page]' do
+        FactoryGirl.create(:paper, :submitted)
         get :index, format: :json, page: 7
         json = JSON.parse(response.body)
         expect(json['meta']['page']).to eq(7)
       end
 
       it 'returns per_page info needed for client pagination' do
+        FactoryGirl.create(:paper, :submitted)
         get :index, format: :json
         json = JSON.parse(response.body)
         expect(json['meta']['perPage']).to eq(per_page)

@@ -33,7 +33,7 @@ export default {
   'plos_billing--department':        ['presence'],
   'plos_billing--affiliation1':      ['presence'],
   'plos_billing--phone_number':      ['presence'],
-  'plos_billing--email':             ['presence'],
+  'plos_billing--email':             ['presence', 'email'],
   'plos_billing--address1':          ['presence'],
   'plos_billing--city':              ['presence'],
   'plos_billing--postal_code':       ['presence'],

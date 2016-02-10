@@ -5,19 +5,22 @@ const { isEmpty } = Ember;
 
 import presence from 'tahi/lib/validations/presence';
 import number   from 'tahi/lib/validations/number';
+import email    from 'tahi/lib/validations/email';
 
 // 2. Add imported validation to TYPES:
 
 const TYPES = {
   'presence': presence.validation,
-  'number': number.validation
+  'number': number.validation,
+  'email': email.validation
 };
 
 // 3. Add imported validation defaultMessage:
 
 const DEFAULT_MESSAGES = {
   'presence': presence.defaultMessage,
-  'number': number.defaultMessage
+  'number': number.defaultMessage,
+  'email': email.defaultMessage
 };
 
 // ---------------------------------

@@ -165,10 +165,12 @@
   <ol class="question-list">
     <li class="question">
       <h3>
-        {{nested-question-display ident="plos_billing--payment_method" owner=task}}
+        {{nested-question-display ident="plos_billing--payment_method"
+                                  owner=task
+                                  errors=validationErrors.plos_billing--payment_method}}
       </h3>
 
-      <div class="form-group author-bump payment-method {{if validationErrors.affiliation "error"}}">
+      <div class="form-group author-bump payment-method">
         {{nested-question-select ident="plos_billing--payment_method"
                                  owner=task
                                  displayQuestionText=false
@@ -176,7 +178,9 @@
                                  selectionSelected="paymentMethodSelected"
                                  source=responses
                                  width="100%"
-                                 enable=(not fieldsDisabled)}}
+                                 enable=(not fieldsDisabled)
+                                 validate=(action "validateQuestion")
+                                 errors=validationErrors.plos_billing--payment_method}}
       </div>
     </li>
 

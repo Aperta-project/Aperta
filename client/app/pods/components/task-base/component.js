@@ -26,8 +26,8 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   ),
 
   save() {
-    this.validateQuestions();
     this.set('validationErrors.completed', '');
+    if(this.validateData) { this.validateData(); }
 
     if(this.validationErrorsPresent()) {
       this.set('task.completed', false);

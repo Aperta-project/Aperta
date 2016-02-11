@@ -28,7 +28,7 @@
                            inputPlaceholder="Please specify"
                            name="category"
                            options=categories
-                           errors=validationErrors.category
+                           errors=model.validationErrors.category
                            searchEnabled=false
                            validate=(action "validateCategory")
                            value=file.category}}
@@ -39,7 +39,7 @@
                      name="title"
                      value=file.title
                      focus-out=(action "validateTitle")
-                     errors=validationErrors.title
+                     errors=model.validationErrors.title
                      displayBold=false}}
 
       {{format-input placeholder="Enter a legend (optional)"

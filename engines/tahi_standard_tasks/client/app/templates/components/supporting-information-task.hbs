@@ -3,8 +3,7 @@
 <div class="task-main-content">
   <div class="supporting-information-files">
     {{#each filesWithErrors as |fileWithErrors|}}
-      {{supporting-information-file file=fileWithErrors.model
-                                    validationErrors=fileWithErrors.errors
+      {{supporting-information-file model=fileWithErrors
                                     updateFile=(action "updateFile")
                                     deleteFile=(action "deleteFile")
                                     isEditable=isEditable}}

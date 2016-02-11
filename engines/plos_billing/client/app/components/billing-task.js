@@ -5,9 +5,11 @@ import validations from 'tahi/billing-task-validations';
 
 const { computed } = Ember;
 
-
 export default TaskComponent.extend({
   validations: validations,
+  validateData() {
+    this.validateQuestions();
+  },
 
   init() {
     this._super(...arguments);

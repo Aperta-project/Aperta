@@ -1,5 +1,6 @@
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import FileUploadMixin from 'tahi/mixins/file-upload';
+import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
 import Ember from 'ember';
 
 const { computed } = Ember;
@@ -11,8 +12,30 @@ export default TaskComponent.extend(FileUploadMixin, {
     return `/api/supporting_information_files?task_id=${this.get('task.id')}`;
   }),
 
-  filesWithErrors: computed('files.[]', 'validationErrors', function() {
-    return this.createModelProxyObjectWithErrors(this.get('files'));
+  validateData() {
+    const objs = this.get('filesWithErrors');
+
+    objs.invoke('validateAllKeys');
+
+    const errorsPresent = _.compact(objs.map(function(obj) {
+      return obj.get('errorsPresent');
+    }));
+
+    if(errorsPresent.length) {
+      this.set('validationErrors.completed', 'Please fix all errors');
+    }
+  },
+
+  filesWithErrors: computed('files.[]', function() {
+    return this.get('files').map(function(f) {
+      return ObjectProxyWithErrors.create({
+        object: f,
+        validations: {
+          'title': ['presence'],
+          'category': ['presence']
+        }
+      });
+    });
   }),
 
   actions: {

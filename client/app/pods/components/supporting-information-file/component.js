@@ -1,24 +1,23 @@
 import Ember from 'ember';
-import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
-export default Ember.Component.extend(ValidationErrorsMixin, {
+const { Component, computed } = Ember;
+
+export default Component.extend({
   classNames: ['si-file'],
   classNameBindings: ['uiStateClass'],
-  file: null, // passed-in
+  file: computed.alias('model.object'),
   isEditable: false, // passed-in
   uiState: 'view', // view, edit, delete
+  errorsPresent: computed.alias('model.errorsPresent'),
 
-  validations: {
-    'title': ['presence'],
-    'category': ['presence']
-  },
-
-  isEditing: Ember.computed('validationErrors', 'uiState', function(){
-    if (this.validationErrorsPresent()) {
+  isEditing: computed('errorsPresent', 'uiState', function(){
+    if (this.get('errorsPresent')) {
       this.set('uiState', 'edit');
       return true;
     }
-    if (this.get('uiState') === 'edit') return true;
+
+    if (this.get('uiState') === 'edit') { return true; }
+
     return false;
   }),
 
@@ -29,11 +28,11 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     'Figure'
   ],
 
-  uiStateClass: Ember.computed('uiState', function() {
+  uiStateClass: computed('uiState', function() {
     return `si-file-${this.get('uiState')}`;
   }),
 
-  fileIconClass: Ember.computed('file.category', function() {
+  fileIconClass: computed('file.category', function() {
     const klass = {
        'Figure': 'fa-file-image-o',
        'Text': 'fa-file-text-o',
@@ -43,18 +42,11 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     return klass[this.get('file.category')] || 'fa-file-o';
   }),
 
-  attachmentUrl: Ember.computed('file.id', 'figure', function() {
+  attachmentUrl: computed('file.id', 'figure', function() {
     return ('/api/supporting_information_files/' +
             this.get('file.id') +
             '/update_attachment');
   }),
-
-  validateFields() {
-    Ember.keys(this.get('validations')).forEach(field => {
-      this.validate(field, this.get(`file.${field}`),
-                           this.get(`validations.${field}`));
-    });
-  },
 
   actions: {
     enterDeleteState() {
@@ -75,23 +67,25 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     },
 
     validateTitle() {
-      this.validate('title', this.get('file.title'),
-                             this.get('validations.title'));
+      this.get('model').validateKey('title');
     },
 
     validateCategory() {
-      this.validate('category', this.get('file.category'),
-                                this.get('validations.category'));
+      this.get('model').validateKey('category');
     },
 
     cancelEdit(){
       this.get('file').rollback();
+      this.get('model').validateAllKeys();
+      if(this.get('model').validationErrorsPresent()) { return; }
+
       this.set('uiState', 'view');
     },
 
     saveEdit(){
-      this.validateFields();
-      if(this.validationErrorsPresent()) return;
+      this.get('model').validateAllKeys();
+      if(this.get('model').validationErrorsPresent()) { return; }
+
       this.attrs.updateFile(this.get('file'));
       this.set('uiState', 'view');
     }

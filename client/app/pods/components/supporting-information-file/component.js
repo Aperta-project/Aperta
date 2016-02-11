@@ -79,6 +79,11 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
                              this.get('validations.title'));
     },
 
+    validateCategory() {
+      this.validate('category', this.get('file.category'),
+                                this.get('validations.category'));
+    },
+
     cancelEdit(){
       this.get('file').rollback();
       this.set('uiState', 'view');

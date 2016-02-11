@@ -129,6 +129,16 @@ export default Ember.Component.extend({
       }
 
       this.set('value', value);
+
+      if(this.attrs.validate) {
+        this.attrs.validate(this.get('value'));
+      }
+    },
+
+    validate() {
+      if(this.attrs.validate) {
+        this.attrs.validate(this.get('value'));
+      }
     },
 
     otherTrigger() {

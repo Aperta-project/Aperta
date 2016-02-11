@@ -6,15 +6,14 @@
       <button class="fileinput-button">
         <i class="fa fa-refresh"></i>
         <span>Replace File</span>
-        {{file-uploader
-          url=attachmentUrl
-          railsMethod="PUT"
-          multiple=false
-          filePrefix="supporting-info"
-          start="uploadStarted"
-          progress="uploadProgress"
-          done="uploadFinished"
-          cancel="cancelUploads"}}
+        {{file-uploader url=attachmentUrl
+                        railsMethod="PUT"
+                        multiple=false
+                        filePrefix="supporting-info"
+                        start="uploadStarted"
+                        progress="uploadProgress"
+                        done="uploadFinished"
+                        cancel="cancelUploads"}}
       </button>
     </div>
     <div class="flex-group">
@@ -22,32 +21,35 @@
               placeholder="E.g. S1"
               name="label"
               value=file.label}}
+
       {{power-select-other class="form-control flex-element si-file-category-input"
-              otherText="Other"
-              selectPlaceholder="Select category"
-              inputPlaceholder="Please specify"
-              name="category"
-              options=categories
-              errors=validationErrors.category
-              searchEnabled=false
-              value=file.category}}
+                           otherText="Other"
+                           selectPlaceholder="Select category"
+                           inputPlaceholder="Please specify"
+                           name="category"
+                           options=categories
+                           errors=validationErrors.category
+                           searchEnabled=false
+                           validate=(action "validateCategory")
+                           value=file.category}}
     </div>
     <div class="flex-group">
       {{format-input class="form-control flex-element si-file-title-input"
-              placeholder="Enter a title"
-              name="title"
-              value=file.title
-              focus-out=(action "validateTitle")
-              errors=validationErrors.title
-              displayBold=false}}
+                     placeholder="Enter a title"
+                     name="title"
+                     value=file.title
+                     focus-out=(action "validateTitle")
+                     errors=validationErrors.title
+                     displayBold=false}}
+
       {{format-input placeholder="Enter a legend (optional)"
-              name="caption"
-              class="form-control flex-element si-file-caption-textbox"
-              value=file.caption
-              displayBold=false}}
+                     name="caption"
+                     class="form-control flex-element si-file-caption-textbox"
+                     value=file.caption
+                     displayBold=false}}
     </div>
     <label class="si-file-publishable-checkbox">{{input type="checkbox" checked=file.publishable}} For publication</label>
-    {{#if (eq file.category 'Figure')}}
+    {{#if (eq file.category "Figure")}}
       <label class="si-file-striking-image-checkbox">{{input type="checkbox" checked=file.strikingImage}} Nominate as striking image</label>
     {{/if}}
 
@@ -64,12 +66,12 @@
   </div>
 
 {{else}}
-  <div class="si-file-viewing" {{action 'enterEditState' on='doubleClick'}}>
+  <div class="si-file-viewing" {{action "enterEditState" on="doubleClick"}}>
 
     {{#if isEditable}}
       <div class="si-file-control-icons">
-        <i class="fa fa-pencil si-file-edit-icon" {{action 'enterEditState' on='click'}}></i>
-        <i class="fa fa-trash si-file-delete-icon" {{action 'enterDeleteState' on='click'}}></i>
+        <i class="fa fa-pencil si-file-edit-icon" {{action "enterEditState" on="click"}}></i>
+        <i class="fa fa-trash si-file-delete-icon" {{action "enterDeleteState" on="click"}}></i>
       </div>
     {{/if}}
 
@@ -78,16 +80,16 @@
     </a>
 
     <div class="si-file-title">
-      {{ file.label }} {{ file.category }}{{if file.category '.' ''}} {{{ file.title }}}
+      {{ file.label }} {{ file.category }}{{if file.category "." ""}} {{{ file.title }}}
     </div>
 
     {{#if file.caption}}
       <div class="si-file-caption">{{{ file.caption }}}</div>
     {{/if}}
 
-    <div class="{{if (eq uiState 'delete') 'visible'}}
+    <div class="{{if (eq uiState "delete") "visible"}}
                 si-file-delete
-                {{if file.caption '' 'si-file-full-height'}}">
+                {{if file.caption "" "si-file-full-height"}}">
       <button class="button si-file-cancel-delete-button" {{action "cancelDelete"}}>
         Cancel
       </button>

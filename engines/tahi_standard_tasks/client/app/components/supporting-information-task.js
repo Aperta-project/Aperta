@@ -2,14 +2,16 @@ import TaskComponent from 'tahi/pods/components/task-base/component';
 import FileUploadMixin from 'tahi/mixins/file-upload';
 import Ember from 'ember';
 
+const { computed } = Ember;
+
 export default TaskComponent.extend(FileUploadMixin, {
   classNames: ['supporting-information-task'],
-  files: Ember.computed.alias('task.paper.supportingInformationFiles'),
-  uploadUrl: Ember.computed('task', function() {
+  files: computed.alias('task.paper.supportingInformationFiles'),
+  uploadUrl: computed('task', function() {
     return `/api/supporting_information_files?task_id=${this.get('task.id')}`;
   }),
 
-  filesWithErrors: Ember.computed('files.[]', 'validationErrors', function() {
+  filesWithErrors: computed('files.[]', 'validationErrors', function() {
     return this.createModelProxyObjectWithErrors(this.get('files'));
   }),
 

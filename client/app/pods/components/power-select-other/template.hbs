@@ -4,11 +4,13 @@
     {{format-input placeholder=inputPlaceholder
                    value=value
                    class="power-select-other-input"
+                   focus-out=(action "validate")
                    autofocus=true}}
   {{else}}
     {{input placeholder=inputPlaceholder
             value=value
             class="power-select-other-input"
+            focus-out=(action "validate")
             autofocus=true}}
   {{/if}}
 

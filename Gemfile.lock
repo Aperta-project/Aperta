@@ -131,6 +131,9 @@ GEM
     capybara-screenshot (1.0.11)
       capybara (>= 1.0, < 3)
       launchy
+    capybara-select2 (1.0.1)
+      capybara
+      rspec
     carrierwave (0.10.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
@@ -633,6 +636,7 @@ DEPENDENCIES
   bullet
   capybara
   capybara-screenshot
+  capybara-select2
   carrierwave
   codeclimate-test-reporter
   database_cleaner

@@ -1,0 +1,10 @@
+.nested-question {
+  position: relative;
+
+  .fa-exclamation-triangle {
+    position: absolute;
+    color: #D0021B;
+    bottom: 5px;
+    right: 8px;
+  }
+}

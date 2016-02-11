@@ -29,7 +29,7 @@ test('no promise', function(assert) {
 
   assert.equal(
     this.$().text().trim(),
-    'loading',
+    'resolved value is',
     'loading state'
   );
 });

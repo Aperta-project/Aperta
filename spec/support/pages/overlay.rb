@@ -24,17 +24,12 @@ class CardOverlay < Page
     find('main > p')
   end
 
-  def completed_checkbox
-    find(checkbox_selector)
-  end
-
   def mark_as_complete
-    check "I am finished with this task"
-    check "I am finished with this task" unless completed?
+    find('.task-not-completed').click
   end
 
   def completed?
-    find(checkbox_selector).checked?
+    has_css?('.task-is-completed')
   end
 
   # This method takes advantage of Capybara's default wait time to ensure
@@ -43,8 +38,7 @@ class CardOverlay < Page
   # By expecting the state in the checkbox selector Capybara handles all
   # of the waiting and retries which helps us avoid sleep calls in our code.
   def expect_task_to_be_incomplete
-    expect(self).to have_selector(
-      '.task-completed:not(:checked)')
+    expect(self).to have_selector('.task-not-completed')
   end
 
   def view_paper
@@ -107,11 +101,5 @@ class CardOverlay < Page
 
   def unread_comments
     all('li.unread')
-  end
-
-  private
-
-  def checkbox_selector
-    '.task-completed'
   end
 end

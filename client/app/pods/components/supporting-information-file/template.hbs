@@ -1,4 +1,4 @@
-{{#unless (is-equal uiState 'edit')}}
+{{#unless (eq uiState 'edit')}}
 <div class="si-file-viewing" {{action 'enterEditState' on='doubleClick'}}>
 
   {{#if isEditable}}
@@ -20,7 +20,7 @@
     <div class="si-file-caption">{{{ file.caption }}}</div>
   {{/if}}
 
-  <div class="{{if (is-equal uiState 'delete') 'visible'}}
+  <div class="{{if (eq uiState 'delete') 'visible'}}
               si-file-delete
               {{if file.caption '' 'si-file-full-height'}}">
     <button class="button si-file-cancel-delete-button" {{action "cancelDelete"}}>
@@ -34,7 +34,7 @@
 </div>
 {{/unless}}
 
-<div class="si-file-editor flex-form {{if (is-equal uiState 'edit') 'visible' ''}}">
+<div class="si-file-editor flex-form {{if (eq uiState 'edit') 'visible' ''}}">
   <div class="si-file-filename">
     <a href="{{ file.src }}"><i class="fa {{iconClass}}"></i>{{ file.filename }}</a>
 
@@ -80,7 +80,7 @@
   </div>
   <label class="si-file-publishable-checkbox">{{input type="checkbox" checked=file.publishable}} For publication</label>
 
-  {{#if (is-equal file.category 'Figure')}}
+  {{#if (eq file.category 'Figure')}}
   <label class="si-file-striking-image-checkbox">{{input type="checkbox" checked=file.strikingImage}} Nominate as striking image</label>
   {{/if}}
 

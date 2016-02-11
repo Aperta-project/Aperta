@@ -39,7 +39,7 @@ feature 'Initial Decision', js: true do
     find('.decision-letter-field').set('Accepting this because I can')
     find('.send-email-action').click
     expect(page).to have_selector('.alert', text: 'An initial decision of')
-    expect(find('.task-completed')).to be_checked
+    expect(page).to have_selector(".task-is-completed")
     expect(first('.decision-letter-field')).to be_disabled
     expect(first('input[type=radio]')).to be_disabled
   end

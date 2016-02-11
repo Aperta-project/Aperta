@@ -1,109 +1,153 @@
-{{#if pfa}}
-  {{#billing-pfa billingController=this}}
-    <li class="question">
+{{#if (eq selectedPaymentMethod 'pfa')}}
+  <li class="question">
+    <div>
+      <h3>PLOS Publication Fee Assistance (PFA Program)</h3>
+
+      <p>
+        PLOS believes that lack of funds should not be a barrier to Open Access publication.
+        PFA is intended for authors who do not have sufficient fund
+        available to support publication fees. PLOS expects authors to exhaust all
+        alternative funding sources before applying for PFA.
+      </p>
+
+      <ul>
+        <li>
+          Have you investigated if Open Access Funds are available from your institutional library?
+        </li>
+        <li>
+          Have you investigated if institutional discretionary funds are available to support your research publishing?
+          For example, have you asked your Dean or Department Head for funding support?
+        </li>
+        <li>
+          Have you investigated if there are discretionary funds in your co-authors’ grant to support your fee?
+        </li>
+        <li>
+          For European researchers, have you asked your librarian if article processing grants from research funders are available?
+          For example, from Research Councils UK (RCUK), the German Research Foundation (DFG) or The Netherlands Organization for Scientific Research (NWO).
+        </li>
+      </ul>
+    </div>
+
+    <div class="question-dataset">
+      {{#nested-question-radio ident="plos_billing--pfa_question_1"
+                               owner=task
+                               yesLabel="Partial"
+                               noLabel="None"
+                               disabled=fieldsDisabled
+                               as |selected|}}
+        {{#if selected.yes}}
+          {{nested-question-input ident="plos_billing--pfa_question_1b"
+                                  owner=task
+                                  textClassNames=""
+                                  disabled=fieldsDisabled
+                                  validate=(action "validateQuestion")
+                                  errors=validationErrors.plos_billing--pfa_question_1b}}
+          {{error-message id="error-for-plos_billing--pfa_question_1b"
+                          message=validationErrors.plos_billing--pfa_question_1b}}
+        {{/if}}
+        {{#if selected.no}}
+          {{nested-question-textarea ident="plos_billing--pfa_question_1a"
+                                     owner=task
+                                     disabled=fieldsDisabled
+                                     textClassNames=""}}
+        {{/if}}
+      {{/nested-question-radio}}
+      <br>
+
+      {{#nested-question-radio ident="plos_billing--pfa_question_2"
+                               owner=task
+                               yesLabel="Partial"
+                               noLabel="None"
+                               disabled=fieldsDisabled
+                               as |selected|}}
+        {{#if selected.yes}}
+          {{nested-question-input ident="plos_billing--pfa_question_2b"
+                                  owner=task
+                                  textClassNames=""
+                                  disabled=fieldsDisabled
+                                  validate=(action "validateQuestion")
+                                  errors=validationErrors.plos_billing--pfa_question_2b}}
+          {{error-message id="error-for-plos_billing--pfa_question_2b"
+                          message=validationErrors.plos_billing--pfa_question_2b}}
+        {{/if}}
+        {{#if selected.no}}
+          {{nested-question-textarea ident="plos_billing--pfa_question_2a"
+                                     owner=task
+                                     disabled=fieldsDisabled
+                                     textClassNames=""}}
+        {{/if}}
+      {{/nested-question-radio}}
+      <br>
+
+      {{#nested-question-radio ident="plos_billing--pfa_question_3"
+                               owner=task
+                               disabled=fieldsDisabled
+                               as |selected|}}
+        {{#if selected.yes}}
+          {{nested-question-input ident="plos_billing--pfa_question_3a"
+                                  owner=task
+                                  textClassNames=""
+                                  disabled=fieldsDisabled
+                                  validate=(action "validateQuestion")
+                                  errors=validationErrors.plos_billing--pfa_question_3a}}
+          {{error-message id="error-for-plos_billing--pfa_question_3a"
+                          message=validationErrors.plos_billing--pfa_question_3a}}
+        {{/if}}
+      {{/nested-question-radio}}
+      <br>
+
+      {{#nested-question-radio ident="plos_billing--pfa_question_4"
+                               owner=task
+                               disabled=fieldsDisabled
+                               as |selected|}}
+        {{#if selected.yes}}
+          {{nested-question-input ident="plos_billing--pfa_question_4a"
+                                  owner=task
+                                  textClassNames=""
+                                  disabled=fieldsDisabled
+                                  validate=(action "validateQuestion")
+                                  errors=validationErrors.plos_billing--pfa_question_4a}}
+          {{error-message id="error-for-plos_billing--pfa_question_4a"
+                          message=validationErrors.plos_billing--pfa_question_4a}}
+        {{/if}}
+      {{/nested-question-radio}}
+      <br>
+
       <div>
-        <h3>
-          PLOS Publication Fee Assistance (PFA Program)
-        </h3>
-
-        <p>
-          PLOS believes that lack of funds should not be a barrier to Open Access publication.
-          PFA is intended for authors who do not have sufficient fund
-          available to support publication fees. PLOS expects authors to exhaust all
-          alternative funding sources before applying for PFA.
-        </p>
-
-        <ul>
-          <li>
-            Have you investigated if Open Access Funds are available from your institutional library?
-          </li>
-          <li>
-            Have you investigated if institutional discretionary funds are available to support your research publishing?
-            For example, have you asked your Dean or Department Head for funding support?
-          </li>
-          <li>
-            Have you investigated if there are discretionary funds in your co-authors’ grant to support your fee?
-          </li>
-          <li>
-            For European researchers, have you asked your librarian if article processing grants from research funders are available?
-            For example, from Research Councils UK (RCUK), the German Research Foundation (DFG) or The Netherlands Organization for Scientific Research (NWO).
-          </li>
-        </ul>
+        {{nested-question-input ident="plos_billing--pfa_amount_to_pay"
+                                owner=task
+                                disabled=fieldsDisabled
+                                validate=(action "validateQuestion")
+                                errors=validationErrors.plos_billing--pfa_amount_to_pay}}
+        {{error-message id="error-for-plos_billing--pfa_amount_to_pay"
+                        message=validationErrors.plos_billing--pfa_amount_to_pay}}
       </div>
 
-      <div class="question-dataset">
-        {{#nested-question-radio
-            ident="plos_billing--pfa_question_1"
-            owner=task
-            yesLabel="Partial"
-            noLabel="None" as |selected|}}
-          {{#if selected.yes}}
-            {{nested-question-input ident="plos_billing--pfa_question_1b" owner=task textClassNames=""}}
-            {{error-message elementId="error-for-plos_billing--pfa_question_1b" message=pfaData.errors.plos_billing--pfa_question_1b.value}}
-          {{/if}}
-          {{#if selected.no}}
-            {{nested-question-textarea ident="plos_billing--pfa_question_1a" owner=task textClassNames=""}}
-          {{/if}}
-        {{/nested-question-radio}}
-        <br>
+      <br>
 
-        {{#nested-question-radio
-            ident="plos_billing--pfa_question_2"
-            owner=task
-            yesLabel="Partial"
-            noLabel="None" as |selected|}}
-          {{#if selected.yes}}
-            {{nested-question-input ident="plos_billing--pfa_question_2b" owner=task textClassNames=""}}
-            {{error-message elementId="error-for-plos_billing--pfa_question_2b" message=pfaData.errors.plos_billing--pfa_question_2b.value}}
-          {{/if}}
-          {{#if selected.no}}
-            {{nested-question-textarea ident="plos_billing--pfa_question_2a" owner=task textClassNames=""}}
-          {{/if}}
-        {{/nested-question-radio}}
-        <br>
-
-        {{#nested-question-radio ident="plos_billing--pfa_question_3" owner=task as |selected|}}
-          {{#if selected.yes}}
-            {{nested-question-input ident="plos_billing--pfa_question_3a" owner=task textClassNames=""}}
-            {{error-message elementId="error-for-plos_billing--pfa_question_3a" message=pfaData.errors.plos_billing--pfa_question_3a.value}}
-          {{/if}}
-        {{/nested-question-radio}}
-        <br>
-
-        {{#nested-question-radio ident="plos_billing--pfa_question_4" owner=task as |selected|}}
-          {{#if selected.yes}}
-            {{nested-question-input ident="plos_billing--pfa_question_4a" owner=task textClassNames=""}}
-            {{error-message elementId="error-for-plos_billing--pfa_question_4a" message=pfaData.errors.plos_billing--pfa_question_4a.value}}
-          {{/if}}
-        {{/nested-question-radio}}
-        <br>
-
-        <div>
-          {{nested-question-input ident="plos_billing--pfa_amount_to_pay" owner=task}}
-          {{error-message elementId="error-for-plos_billing--pfa_amount_to_pay" message=pfaData.errors.plos_billing--pfa_amount_to_pay.value}}
-        </div>
-
-        <br>
-        <div>
-          {{nested-question-radio ident="plos_billing--pfa_supporting_docs" owner=task}}
-        </div>
-
-        <br>
-
-        <div>
-          {{nested-question-textarea ident="plos_billing--pfa_additional_comments" owner=task}}
-        </div>
-
-        <br>
-        <h3>
-          Author confirmation
-        </h3>
-        <p>
-          {{nested-question-check ident="plos_billing--affirm_true_and_complete"
-              owner=task
-              questionText="By checking this box, you are acknowledging that you have read and agree to the following statement:<br><strong>I affirm that the information provided in this application is true and complete.</strong>"}}
-        </p>
+      <div>
+        {{nested-question-radio ident="plos_billing--pfa_supporting_docs"
+                                disabled=fieldsDisabled
+                                owner=task}}
       </div>
-    </li>
-  {{/billing-pfa}}
+
+      <br>
+
+      <div>
+        {{nested-question-textarea ident="plos_billing--pfa_additional_comments"
+                                   disabled=fieldsDisabled
+                                   owner=task}}
+      </div>
+
+      <br>
+
+      <h3>Author confirmation</h3>
+      <p>
+        {{nested-question-check ident="plos_billing--affirm_true_and_complete"
+                                owner=task
+                                disabled=fieldsDisabled
+                                questionText="By checking this box, you are acknowledging that you have read and agree to the following statement:<br><strong>I affirm that the information provided in this application is true and complete.</strong>"}}
+      </p>
+    </div>
+  </li>
 {{/if}}

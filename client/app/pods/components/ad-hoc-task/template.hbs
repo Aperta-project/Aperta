@@ -4,10 +4,6 @@
   {{inline-edit-h1 title=task.title setTitle="setTitle"}}
 
   <div class="task-body">
-    {{#each uploads as |upload|}}
-      {{upload-preview upload=upload}}
-    {{/each}}
-
     {{#each blocks as |block|}}
       {{#inline-edit-body-part block=block
                                editing=false
@@ -56,11 +52,17 @@
       {{/inline-edit-body-part}}
     {{/each}}
 
-    {{#each task.attachments as |attachment|}}
-      {{attachment-thumbnail attachment=attachment
-                             destroyAttachment="destroyAttachment"
-                             isEditable=task.paper.editable}}
-    {{/each}}
+    {{#if showAttachmentsBlock}}
+      {{attachment-manager filePath="ad-hoc"
+                           attachments=task.attachments
+                           multiple=true
+                           hasCaption=true
+                           accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps,.docx,.odt,.epub,.pdf"
+                           captionChanged=(action "updateAttachmentCaption")
+                           deleteFile=(action "deleteAttachment")
+                           uploadFinished=(action "createAttachment")
+                           updateAttachment=(action "updateAttachment")}}
+    {{/if}}
   </div>
 
   {{#reveal-adhoc-toolbar-buttons}}

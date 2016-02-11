@@ -5,11 +5,11 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
 ### Added
-- Paper tracker search: by title, DOI, status, and task status
+- Paper tracker search: by user and role, anyone, no one, and any role
 - Billing Task validations
 
 ### Changed
-- The billing card has been moved to the new roles and permissions framework. This is being inherited by many of the other cards as well.
+- 
 
 ### Deprecated
 -
@@ -23,7 +23,14 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 ### Security
 -
 
-## [1.3.8] - 2015-01-26
+## [1.3.9] - 2016-02-10
+### Added
+- Paper tracker search: by title, DOI, status, and task status
+
+### Changed
+- The billing card has been moved to the new roles and permissions framework. This is being inherited by many of the other cards as well.
+
+## [1.3.8] - 2016-01-26
 ### Added
 - New component attachment-manager to handle attachments, to be used on used on multiple cards.
 - New component attachment-item to be used within attachment-manager, to handle previews of attachment, replace and deletion

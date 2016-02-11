@@ -10,6 +10,7 @@ class PageFragment
   include SidekiqHelperMethods
   extend WaitForAjax
   include WaitForAjax
+  include Capybara::Select2
 
   attr_reader :element
 
@@ -135,43 +136,6 @@ class PageFragment
     find(".ember-power-select-option", text: value).click
   end
 
-  def select2(value, options = {})
-    raise "Must pass a hash containing 'from' or 'xpath' or 'css'" unless options.is_a?(Hash) and [:from, :xpath, :css].any? { |k| options.has_key? k }
-
-    if options.has_key? :xpath
-      select2_container = first(:xpath, options[:xpath])
-    elsif options.has_key? :css
-      select2_container = first(:css, options[:css])
-    else
-      select_name = options[:from]
-      select2_container = find("label", text: select_name).find(:xpath, '..').find(".select2-container")
-    end
-
-    drop_container = ".select2-drop"
-    drop_specifier = "li.select2-result-selectable"
-    # Open select2 field
-    if select2_container.has_selector?(".select-box-element")
-      select2_container.find(".select-box-element").click
-      drop_container = ".select-box-item"
-      drop_specifier = ""
-    elsif select2_container.has_selector?(".select2-choice")
-      select2_container.find(".select2-choice").click
-    else
-      select2_container.find(".select2-choices").click
-    end
-
-    if options.has_key? :search
-      find(:xpath, "//body").find(".select2-with-searchbox input.select2-input").set(value)
-      page.execute_script(%|$("input.select2-input:visible").keyup();|)
-      drop_container = ".select2-results"
-    end
-
-    [value].flatten.each do |value|
-      find(:xpath, "//body").find("#{drop_container} #{drop_specifier}", text: value).click
-    end
-  end
-
-
   private
 
   def synchronize_no_content!(content)
@@ -186,6 +150,7 @@ end
 #
 class Page < PageFragment
   include Capybara::DSL
+  include Capybara::Select2
 
   class << self
     include Capybara::DSL

@@ -6,5 +6,6 @@ export default DS.Model.extend({
   filename: DS.attr('string'),
   src: DS.attr('string'),
   status: DS.attr('string'),
-  title: DS.attr('string')
+  title: DS.attr('string'),
+  caption: DS.attr('string')
 });

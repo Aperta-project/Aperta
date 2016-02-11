@@ -49,7 +49,10 @@ feature 'Publishing Related Questions Card', js: true do
           expect(page).to have_css('.file-link', text: 'yeti.jpg')
         end
 
-        fill_in('attachment-caption', with: 'Great caption')
+        attachment_caption = find('input[name=\'attachment-caption\']')
+        attachment_caption.send_keys('Great caption', :tab)
+
+        overlay.reload
         expect(find_field('attachment-caption').value).to eq('Great caption')
       end
     end

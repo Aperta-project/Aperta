@@ -10,14 +10,6 @@
   <span class="fa fa-envelope"></span>
 </div>
 
-<div class="button-secondary button--green adhoc-toolbar-item--image fileinput-button">
+<div class="button-secondary button--green adhoc-toolbar-item--image" {{action "addAttachmentsBlock"}}>
   <span class="fa fa-paperclip"></span>
-  {{file-uploader id="file_attachment"
-                  filePrefix="ad-hoc"
-                  url=imageUploadUrl
-                  accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps,.docx,.odt,.epub,.pdf"
-                  start="uploadStarted"
-                  done="uploadFinished"
-                  cancel="cancelUploads"
-                  progress="uploadProgress"}}
 </div>

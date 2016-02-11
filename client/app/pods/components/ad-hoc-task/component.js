@@ -1,15 +1,26 @@
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import Ember from 'ember';
 import BuildsTaskTemplate from 'tahi/mixins/controllers/builds-task-template';
-import FileUploadMixin from 'tahi/mixins/file-upload';
 
-export default TaskComponent.extend(BuildsTaskTemplate, FileUploadMixin, {
-  restless: Ember.inject.service('restless'),
+export default TaskComponent.extend(BuildsTaskTemplate, {
+  restless: Ember.inject.service(),
   blocks: Ember.computed.alias('task.body'),
+  hasAttachments: Ember.computed.notEmpty('task.attachments'),
+  showAttachments: false,
+  showAttachmentsBlock: Ember.computed.or('hasAttachments', 'showAttachments'),
 
-  imageUploadUrl: Ember.computed('task.id', function() {
-    return '/api/tasks/' + this.get('task.id') + '/attachments';
+  attachmentsPath: Ember.computed('task.id', function() {
+    return `/api/tasks/${this.get('task.id')}/attachments`;
   }),
+
+  attachmentsRequest(path, method, s3Url, file) {
+    const store = this.container.lookup('store:main');
+    const restless = this.get('restless');
+    restless.ajaxPromise(method, path, {url: s3Url}).then((response) => {
+      response.attachment.filename = file.name;
+      store.pushPayload(response);
+    });
+  },
 
   actions: {
     setTitle(title) {
@@ -44,18 +55,30 @@ export default TaskComponent.extend(BuildsTaskTemplate, FileUploadMixin, {
       this.send('save');
     },
 
-    destroyAttachment(attachment) {
+    updateAttachmentCaption(caption, attachment) {
+      attachment.set('caption', caption);
+      attachment.save();
+    },
+
+    updateAttachment(s3Url, file, attachment) {
+      const path = `${this.get('attachmentsPath')}/${attachment.id}/update_attachment`;
+      this.attachmentsRequest(path, 'PUT', s3Url, file);
+    },
+
+    createAttachment(s3Url, file) {
+      this.attachmentsRequest(this.get('attachmentsPath'), 'POST', s3Url, file);
+    },
+
+    deleteAttachment(attachment) {
       attachment.destroyRecord();
     },
 
-    uploadFinished(data, filename) {
-      const store = this.container.lookup('store:main');
+    uploadFailed(reason) {
+      console.log(reason);
+    },
 
-      this.uploadFinished(data, filename);
-      store.pushPayload('attachment', data);
-
-      const attachment = store.getById('attachment', data.attachment.id);
-      this.get('task.attachments').pushObject(attachment);
+    addAttachmentsBlock() {
+      this.set('showAttachments', true);
     }
   }
 });

@@ -18,7 +18,6 @@ module("Integration: Inviting an editor", {
 
     $.mockjax({url: "/api/admin/journals/authorization", status: 204});
     $.mockjax({url: "/api/user_flows/authorization", status: 204});
-    $.mockjax({url: /\/api\/papers\/\d+\/manuscript_manager/, status: 204});
     $.mockjax({url: "/api/formats", status: 200, responseText: {
       import_formats: [],
       export_formats: []

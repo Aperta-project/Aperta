@@ -10,12 +10,6 @@ export default Ember.Route.extend({
     });
   },
 
-  setFlagViewManuscriptManager(controller, model){
-    if(!this.currentUser) { return; }
-    const url = `/api/papers/${model.get('id')}/manuscript_manager`;
-    this.get('restless').authorize(controller, url, 'canViewManuscriptManager');
-  },
-
   actions: {
     error(response, transition) {
       console.log(response);

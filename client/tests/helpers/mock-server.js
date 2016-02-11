@@ -25,11 +25,5 @@ export default function() {
     xhr.respond(200, { 'Content-Type': 'application/json' }, json)
   });
 
-  server.respondWith(
-    'GET',
-    /\/api\/papers\/\d+\/manuscript_manager/,
-    [403, {}, JSON.stringify({})]
-  );
-
   return server;
 }

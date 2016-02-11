@@ -48,7 +48,6 @@ module('Integration: adding a new card', {
       }
     };
 
-    server.respondWith('GET', /\/api\/papers\/\d+\/manuscript_manager/, [204, {}, '']);
     server.respondWith('GET', '\/api\/papers/1', [
       200, {
         'Content-Type': 'application/json'

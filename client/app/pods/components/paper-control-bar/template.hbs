@@ -5,7 +5,7 @@
 
   <div class="control-bar-item-spacer"></div>
 
-  {{#if canViewManuscriptManager}}
+  {{#if (can 'manage_workflow' paper)}}
     {{#link-to "paper.workflow" paper class="control-bar-item control-bar-link paper-navigation-link" id="go-to-workflow"}}
       Go to Workflow
     {{/link-to}}

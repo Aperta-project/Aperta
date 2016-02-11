@@ -31,7 +31,6 @@ module('Integration: Paper Workflow page', {
         lite_paper_id: 1
       }
     };
-    server.respondWith('GET', /\/api\/papers\/\d+\/manuscript_manager/, [204, {}, '']);
 
     server.respondWith('GET', '/api/papers/1', [
       200, {

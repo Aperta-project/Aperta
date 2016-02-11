@@ -3,7 +3,7 @@ class CurrentUserSerializer < ActiveModel::Serializer
 
   has_many :affiliations, include: true, embed: :ids
   attributes :id, :full_name, :first_name, :avatar_url, :username,
-             :email, :site_admin, :can_view_paper_tracker
+             :email, :site_admin
 
   side_load :permissions
 

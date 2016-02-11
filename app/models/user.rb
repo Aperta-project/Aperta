@@ -116,10 +116,6 @@ class User < ActiveRecord::Base
     administered_journals.include? journal
   end
 
-  def can_view_paper_tracker
-    can_anywhere?(:view_paper_tracker, Journal)
-  end
-
   # Returns the journals that this user administers. If you pass a block
   # this will yield an ActiveRecord::Relation query object that you can
   # use to put further conditions on.

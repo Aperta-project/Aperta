@@ -1,7 +1,5 @@
 module TahiStandardTasks
   class SupportingInformationTask < Task
-    register_task default_title: 'Supporting Info', default_role: 'author'
-
     include MetadataTask
 
     DEFAULT_TITLE = 'Supporting Info'

@@ -33,7 +33,7 @@
 
   &.error {
     .ember-power-select-trigger {
-      border: 1px solid #BB0000;
+      border: 1px solid $tahi-error-red;
     }
   }
 }

@@ -41,7 +41,7 @@
   }
 
   &.error {
-    border: 1px solid #BB0000;
+    border: 1px solid $tahi-error-red;
     color: #555555;
   }
 }

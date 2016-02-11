@@ -292,4 +292,74 @@ describe TasksController, redis: true do
       it { responds_with(403) }
     end
   end
+
+  describe "GET 'nested_questions'" do
+    let(:task) { FactoryGirl.create(:task) }
+    subject(:do_request) do
+      get :nested_questions, { task_id: task.id, format: format }
+    end
+    let(:format) { :json }
+
+    context "when the user has access" do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:view, task)
+          .and_return true
+      end
+
+      context "html requests" do
+        let(:format) { nil }
+        it_behaves_like "when the user is not signed in"
+      end
+
+      context "json requests" do
+        it { responds_with(200) }
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:view, task)
+          .and_return false
+      end
+
+      it { responds_with(403) }
+    end
+  end
+
+  describe "GET 'nested_question_answers'" do
+    let(:task) { FactoryGirl.create(:task) }
+    subject(:do_request) do
+      get :nested_question_answers, { task_id: task.id, format: format }
+    end
+    let(:format) { :json }
+
+    context "when the user has access" do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:view, task)
+          .and_return true
+      end
+
+      context "html requests" do
+        let(:format) { nil }
+        it_behaves_like "when the user is not signed in"
+      end
+
+      context "json requests" do
+        it { responds_with(200) }
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:view, task)
+          .and_return false
+      end
+
+      it { responds_with(403) }
+    end
+  end
 end

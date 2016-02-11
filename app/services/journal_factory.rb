@@ -1,5 +1,7 @@
 # JournalFactory is for creating new journals in Aperta. It gets them all
 # set up: nice and right.
+#
+# rubocop:disable Metrics/ClassLength
 class JournalFactory
   def self.create(journal_params)
     journal = Journal.new(journal_params)

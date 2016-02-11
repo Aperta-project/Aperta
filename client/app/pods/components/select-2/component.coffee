@@ -68,8 +68,7 @@ Select2Component = Ember.TextField.extend
     options[opt] = @get(opt) for opt in passThroughOptions when @get(opt)
 
     @.$().select2(options)
-    if @get('enable') == false
-      @.$().select2('enable', false)
+    @.$().select2('enable', @get('enable'))
     @setupSelectedListener()
     @setupRemovedListener()
     @setupClosedListener()
@@ -77,6 +76,7 @@ Select2Component = Ember.TextField.extend
     @setSelectedData()
 
     @addObserver('source', @, @repaint)
+    @addObserver('enable', @, @repaint)
   ).on('didInsertElement')
 
   teardown: (->
@@ -84,6 +84,7 @@ Select2Component = Ember.TextField.extend
     @.$().off 'select2-removing'
     @.$().off 'select2-close'
     @removeObserver('source', @, @repaint)
+    @removeObserver('enable', @, @repaint)
   ).on('willDestroyElement')
 
 `export default Select2Component`

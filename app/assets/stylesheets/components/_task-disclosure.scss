@@ -80,9 +80,8 @@ $task-disclosure-radius: 4px;
 
 .task-disclosure .task {
   .task-completed-section {
-    display: block;
+    display: inline-block;
     padding: 10px 15px;
-    opacity: 0.7;
     color: #666;
     cursor: pointer;
     @include transition(opacity 0.2s);
@@ -91,7 +90,9 @@ $task-disclosure-radius: 4px;
     // Bootstrap override :-\
     margin-bottom: 0;
 
-    &:hover { opacity: 1.0; }
+    .button-secondary {
+      text-transform: none;
+    }
   }
 
   .task-main-content {

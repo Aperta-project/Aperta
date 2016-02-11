@@ -1,10 +1,8 @@
 import Ember from 'ember';
 import { test, moduleFor } from 'ember-qunit';
 
-moduleFor('controller:paper/task', 'TaskController', {
-  needs: ['controller:application'],
-
-  beforeEach: function() {
+moduleFor('component:task-base', 'TaskBaseComponent', {
+  beforeEach() {
     this.paper = Ember.Object.create({
       editable: true
     });
@@ -19,7 +17,7 @@ moduleFor('controller:paper/task', 'TaskController', {
     });
 
     Ember.run(()=> {
-      this.subject().set('model', this.task);
+      this.subject().set('task', this.task);
       this.subject().set('currentUser', this.currentUser);
     });
   }

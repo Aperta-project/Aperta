@@ -9,7 +9,10 @@ export default QuestionAttachmentOwner.extend({
     async: true,
     inverse: 'nestedQuestionAnswers'
   }),
-  nestedQuestion: DS.belongsTo('nested-question', { async: true, inverse: 'answers' }),
+  nestedQuestion: DS.belongsTo('nested-question', {
+    async: true,
+    inverse: 'answers'
+  }),
   value: DS.attr(),
   additionalData: DS.attr(),
   createdAt: DS.attr('date'),
@@ -17,6 +20,5 @@ export default QuestionAttachmentOwner.extend({
 
   wasAnswered: Ember.computed('value', function(){
     return Ember.isPresent(this.get('value')) || this.get('value') === false;
-  }),
-
+  })
 });

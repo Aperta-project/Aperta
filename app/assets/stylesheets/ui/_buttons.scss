@@ -89,6 +89,7 @@
   &.button--green { @include button-primary-modifier($tahi-green, $tahi-green-dark); }
   &.button--blue  { @include button-primary-modifier($tahi-blue, $tahi-blue-dark); }
   &.button--grey  { @include button-primary-modifier($tahi-grey, $tahi-grey-dark); }
+  &.button--red   { @include button-primary-modifier($tahi-error-red, $tahi-error-red); }
 }
 
 .button-secondary {
@@ -98,6 +99,7 @@
   &.button--green { @include button-secondary-modifier($tahi-green, $tahi-green-light, $tahi-green-dark); }
   &.button--blue  { @include button-secondary-modifier($tahi-blue, $tahi-blue-light, $tahi-blue-dark); }
   &.button--grey  { @include button-secondary-modifier($tahi-grey, $tahi-grey-light, $tahi-grey-dark); }
+  &.button--red   { @include button-secondary-modifier($tahi-error-red, $tahi-error-background-red, $tahi-error-red); }
 }
 
 .button-link {
@@ -109,6 +111,7 @@
   &.button--blue  { @include button-link-modifier($tahi-blue, $tahi-blue-dark); }
   &.button--grey  { @include button-link-modifier($tahi-grey, $tahi-grey-dark); }
   &.button--white { @include button-link-modifier($tahi-white, $tahi-white); }
+  &.button--red   { @include button-link-modifier($tahi-error-red, $tahi-error-red); }
 
   &:hover {
     text-decoration: underline;

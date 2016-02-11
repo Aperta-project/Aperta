@@ -1,11 +1,14 @@
 .overlay--card {
   .task-completed-section {
     position: absolute;
-    bottom: -5.5rem;
-    right: 16.5rem;
+    bottom: calc(-6rem + 1px);
+    right: 18rem;
 
     .error-message {
       display: block;
+      position: absolute;
+      right: 0;
+      bottom: -2rem;
     }
   }
 }

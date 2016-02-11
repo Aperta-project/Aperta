@@ -1,6 +1,9 @@
 import Ember from 'ember';
 import deepJoinArrays from 'tahi/lib/deep-join-arrays';
 import deepCamelizeKeys from 'tahi/lib/deep-camelize-keys';
+import validator from 'tahi/lib/validator';
+
+const { isArray, isEmpty, on } = Ember;
 
 /**
   ## How to Use
@@ -47,7 +50,7 @@ export default Ember.Mixin.create({
   */
 
   validationErrors: null,
-  _initValidationErrors: Ember.on('init', function() {
+  _initValidationErrors: on('init', function() {
     this.set('validationErrors', {});
   }),
 
@@ -56,6 +59,8 @@ export default Ember.Mixin.create({
 
     @private
     @method _prepareResponseErrors
+    @param {Object} errors
+    @param {Object} options
     @return {Object}
   */
 
@@ -132,12 +137,15 @@ export default Ember.Mixin.create({
   */
 
   displayValidationError(key, value) {
-    this.set('validationErrors.' + key, (Ember.isArray(value) ? value.join(', ') : value));
+    this.set(
+      'validationErrors.' + key,
+      (isArray(value) ? value.join(', ') : value)
+    );
   },
 
   /**
-    Remove all validation errors.
-    Should be called on a successful save, for example.
+    Display validation errors.
+    Should be called on a unsuccessful save, for example.
 
     ```
     this.get('model').save().then(() => {
@@ -154,15 +162,21 @@ export default Ember.Mixin.create({
     ```
 
     @method displayValidationErrorsFromResponse
-    @param {Object} response Hash from Ember Data `save` failure. Expected to be in format Rails sends.
+    @param {Object} response Hash from Ember Data `save` failure.
+    @param {Object} options
   */
 
   displayValidationErrorsFromResponse(response, options) {
-    this.set('validationErrors', this._prepareResponseErrors(response.errors, options));
+    this.set(
+      'validationErrors',
+      this._prepareResponseErrors(response.errors, options)
+    );
   },
 
   /**
-    Remove all validation errors. Should be called on a successful save, for example.
+    Remove all validation errors.
+    Should be called on a successful save, for example.
+
     ```
     this.get('model').save().then(() => {
       this.clearAllValidationErrors();
@@ -185,5 +199,47 @@ export default Ember.Mixin.create({
 
   clearAllValidationErrorsForModel(model) {
     delete this.validationErrorsForType(model)[model.get('id')];
+  },
+
+  /**
+    Validate key
+
+    @method validate
+    @param {String} key
+    @param {Anything} value
+    @param {Array} types names of validations to run
+  */
+
+  validate(key, value, types) {
+    const messages = validator.validate.call(this, key, value, types);
+    this.displayValidationError(key, messages);
+  },
+
+  /**
+    @method validationErrorsPresent
+    @return {Boolean}
+  */
+
+  validationErrorsPresent() {
+    return !isEmpty(this.currentValidationErrors());
+  },
+
+  /**
+    @method currentValidationErrors
+    @return {Array} array of key/value(error message) pairs
+  */
+
+  currentValidationErrors() {
+    const errors = this.get('validationErrors');
+
+    return _.compact(
+      _.map(_.keys(errors), key => {
+        if(isEmpty(errors[key])) { return false; }
+
+        let hash = {};
+        hash[key] = errors[key];
+        return hash;
+      })
+    );
   }
 });

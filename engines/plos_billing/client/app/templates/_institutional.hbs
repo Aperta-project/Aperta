@@ -1,4 +1,4 @@
-{{#if institutional}}
+{{#if (eq selectedPaymentMethod 'institutional')}}
 <div>
   <h3>
     Institutional Fee Support
@@ -29,6 +29,7 @@
                       owner=task
                       placeholder="Select an Institution"
                       source=institutionalAccountProgramList
+                      enable=(not fieldsDisabled)
                       width="350"}}
   </div>
 </div>

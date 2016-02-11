@@ -16,12 +16,29 @@
   margin-top: 4px;
   margin-left: 13px;
   pointer-events: none;
+
+  &.required {
+    label { padding-left: 12px; }
+
+    &::after {
+      position: absolute;
+      top: -0.1rem;
+      right: -1.15rem;
+      content: '*';
+      color: $tahi-green;
+      font-size: 24px;
+    }
+  }
+}
+
+.form-inline .text-field-title.required::after {
+  display: none;
 }
 
 /*
   .inset-form-control
     .inset-form-control-text
-      input
+      label
       .error-message
     .inset-form-control-input
 */

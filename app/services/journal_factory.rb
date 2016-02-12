@@ -25,6 +25,7 @@ class JournalFactory
     Role.ensure_exists(Role::CREATOR_ROLE, journal: @journal, participates_in: [Task, Paper]) do |role|
       role.ensure_permission_exists(:view, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: 'Paper', states: ['*'])
+      role.ensure_permission_exists(:manage_collaborators, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Task', states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: 'Task', states: ['*'])
       role.ensure_permission_exists(:withdraw, applies_to: 'Paper', states: ['*'])
@@ -45,6 +46,7 @@ class JournalFactory
       role.ensure_permission_exists(:manage_workflow, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: 'Paper', states: ['*'])
+      role.ensure_permission_exists(:manage_collaborators, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Task', states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: 'Task', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'PlosBilling::BillingTask', states: ['*'])
@@ -55,6 +57,7 @@ class JournalFactory
       role.ensure_permission_exists(:manage_workflow, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: 'Paper', states: ['*'])
+      role.ensure_permission_exists(:manage_collaborators, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Task', states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: 'Task', states: ['*'])
     end
@@ -72,6 +75,7 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:withdraw, applies_to: 'Paper', states: ['*'])
+      role.ensure_permission_exists(:manage_collaborators, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Task', states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: 'Task', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'PlosBilling::BillingTask', states: ['*'])
@@ -80,6 +84,7 @@ class JournalFactory
 
     Role.ensure_exists(Role::PARTICIPANT_ROLE, journal: @journal, participates_in: [Task]) do |role|
       role.ensure_permission_exists(:view, applies_to: 'Paper', states: ['*'])
+      role.ensure_permission_exists(:manage_collaborators, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Task', states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: 'Task', states: ['*'])
     end

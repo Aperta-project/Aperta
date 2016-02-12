@@ -105,7 +105,7 @@ test('#validateAllKeys with error', function(assert) {
   proxyObject.validateAllKeys();
 
   const errors = proxyObject.currentValidationErrors();
-  assert.equal(errors.length, 2, 'errors found');
+  assert.equal(errors.length, 3, 'errors found');
   assert.equal(
     proxyObject.get('errorsPresent'),
     true,

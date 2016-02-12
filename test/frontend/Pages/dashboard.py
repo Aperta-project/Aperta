@@ -300,14 +300,14 @@ class DashboardPage(AuthenticatedPage):
     assert info_text.value_of_css_property('line-height') == '24px'
     assert info_text.value_of_css_property('color') == 'rgba(128, 128, 128, 1)'
 
-  def validate_manu_dynamic_content(self, username, list):
+  def validate_manu_dynamic_content(self, username, list_):
     """
     Validates the manuscript listings dynamic display based on assigned roles for papers. Papers should be ordered by
     paper_role.created_at DESC
-    :param username, list: username, list
+    :param username, list_: username, list
     :return: None
     """
-    print('Starting validation of ' + list + ' papers for ' + username)
+    logging.info('Starting validation of {0} papers for {1}'.format(list_, username))
     uid = PgSQL().query('SELECT id FROM users WHERE username = %s;', (username,))[0][0]
     # We MUST validate that manuscript_count is > 0 for list before calling this
     if list == 'inactive':
@@ -358,7 +358,6 @@ class DashboardPage(AuthenticatedPage):
         db_papers_list.append(current_paper)
     # Keeping this around but commented out as it is key to debugging issues with dirty paper data
     # print(db_papers_list)
-
     if db_papers_list:
       count = 0
       for paper in papers:  # List of papers for section from page
@@ -370,9 +369,10 @@ class DashboardPage(AuthenticatedPage):
         # Split both to eliminate differences in whitespace
         db_title = title.split()
         paper_text = paper.text.split()
-        # print(db_title)
-        # print(paper_text)
+        logging.error('db_title: {}'.format(db_title))
+        logging.error('paper_text: {}'.format(paper_text))
         if not title:
+          logging.info('Paper id: {}'.format(db_papers_list[count]))
           raise ValueError('Error: No title in db! Illogical, Illogical, Norman Coordinate: Invalid document')
         if isinstance(title, unicode) and isinstance(paper.text, unicode):
           assert db_title == paper_text, unicode(title) + unicode(' is not equal to ') + unicode(paper.text)

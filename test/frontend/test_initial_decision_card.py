@@ -15,7 +15,7 @@ import time
 
 from selenium.webdriver.common.by import By
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, au_login, he_login, docs
+from Base.Resources import login_valid_pw, au_login, sa_login, docs
 from frontend.common_test import CommonTest
 from Cards.initial_decision_card import InitialDecisionCard
 from Cards.figures_card import FiguresCard
@@ -50,12 +50,16 @@ class InitialDecisionCardTest(CommonTest):
     login_page.enter_login_field(au_login['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
+    # Time needed for log in
+    #time.sleep(5)
     dashboard_page = DashboardPage(self.getDriver())
+    dashboard_page.set_timeout(60)
     self.create_article(journal = 'PLOS Wombat',
                         type_ = 'Images+InitialDecision',
                         random_bit = True,
                         init = False,
                         )
+    dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
@@ -81,7 +85,7 @@ class InitialDecisionCardTest(CommonTest):
     manuscript_page.logout()
     # login as editor
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(he_login['user'])
+    login_page.enter_login_field(sa_login['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
     dashboard_page = DashboardPage(self.getDriver())
@@ -104,7 +108,7 @@ class InitialDecisionCardTest(CommonTest):
     initial_decision.execute_decision('invite')
     # look for alert info
     alert_msg = initial_decision._get(initial_decision._alert_info)
-    assert "An initial decision of 'invite full submission' decision has been made." in \
+    assert "An initial decision of 'Invite full submission' decision has been made." in \
       alert_msg.text, alert_msg.text
     # Test that card is editable by author
     manuscript_page.logout()

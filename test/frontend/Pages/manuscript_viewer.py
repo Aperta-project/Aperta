@@ -510,11 +510,12 @@ class ManuscriptViewerPage(AuthenticatedPage):
     """
     paper_url = self.get_current_url()
     paper_id = int(paper_url.split('papers/')[1])
-    print('The paper DB ID is: {}'.format(paper_id))
+    print('The paper DB ID is: {0}'.format(paper_id))
     return paper_id
 
-  def validate_so_overlay_elements_styles(self, type, paper_title):
+  def validate_so_overlay_elements_styles(self, type_, paper_title):
     """
+    Validates styles and content on submit overlay
     :param type: full_submit, initial_submit, initial_submit_full, congrats, congrats_is, congrats_is_full
     :return:
     """
@@ -523,21 +524,21 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._so_paper_submit_subhead_text_submit = (By.CSS_SELECTOR, 'div.overlay-title-text-submit + h5')
     main_head = self._get(self._so_paper_submit_title_text_submit)
     subhead = self._get(self._so_paper_submit_subhead_text_submit)
-    if type == 'full_submit':
+    if type_ == 'full_submit':
       assert 'Are you sure?' in main_head.text, main_head.text
       assert 'You are about to submit the paper' in subhead.text, subhead.text
-    elif type == 'congrats':
+    elif type_ == 'congrats':
       #assert 'Congratulations' in main_head.text, main_head.text
       self._get(self._so_paper_submit_icon)
       assert 'You\'ve successfully submitted your paper!' in subhead.text, subhead.text
       self._get(self._so_submit_cancel)
-    elif type == 'congrats_is':
+    elif type_ == 'congrats_is':
       assert 'You have successfully submitted your manuscript for initial review. If the initial review is ' \
              'favorable, we will invite you to add some information to facilitate peer review.' in subhead.text, \
              subhead.text
-    elif type == 'congrats_full':
+    elif type_ == 'congrats_full':
       assert 'You have successfully submitted your manuscript. We will start the peer review process.'
-    if type in ('full_submit', 'initial_submit', 'initial_submit_full'):
+    if type_ in ('full_submit', 'initial_submit', 'initial_submit_full'):
       title = self._get(self._so_paper_title)
       assert paper_title in title.text, '{0} vs {1}'.format(paper_title, title.text)
       self._get(self._so_submit_confirm)

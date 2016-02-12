@@ -55,10 +55,8 @@ class ApertaAdminTest(CommonTest):
     login_page.enter_login_field(user_type['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
-
     dashboard_page = DashboardPage(self.getDriver())
     dashboard_page.click_admin_link()
-
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_page_elements_styles(user_type['user'])
     logging.info('Validating journal block display for {0}'.format(user_type['user']))
@@ -74,7 +72,6 @@ class ApertaAdminTest(CommonTest):
     logging.info('Logging in as user: {}'.format(user_type))
     dashboard_page = self.login(email=sa_login['user'], password=login_valid_pw)
     dashboard_page.click_admin_link()
-
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_search_edit_user(random.choice(user_search))
 

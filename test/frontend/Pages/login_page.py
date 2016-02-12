@@ -4,6 +4,7 @@
 Page Object Model for the Login page and the Forgot Your Password page.
 """
 
+import logging
 import time
 
 from selenium.webdriver.common.by import By
@@ -79,14 +80,15 @@ class LoginPage(AuthenticatedPage):
     # APERTA-5717
     # self.validate_primary_big_green_button_style(orcid_signin)
 
-  def enter_login_field(self, email):
+  def enter_login_field(self, username):
     """
     Inputs the Email or Username for the test user
     :param email: email address or username
     :return: None
     """
     self._get(self._login_textbox).clear()
-    self._get(self._login_textbox).send_keys(email)
+    logging.info('Login as {}'.format(username))
+    self._get(self._login_textbox).send_keys(username)
 
   def enter_password_field(self, password):
     """

@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 import random
+import time
 
 from selenium.webdriver.common.by import By
 
@@ -21,7 +22,9 @@ class InitialDecisionCard(BaseCard):
     self._reject_radio_button = (By.XPATH, '//input[@value=\'reject\']')
     self._invite_radio_button = (By.XPATH, '//input[@value=\'invite_full_submission\']')
     self._decision_letter_textarea = (By.TAG_NAME, 'textarea')
-    self._register_decision_btn = (By.CSS_SELECTOR, 'textarea + button.button-primary')
+    self._register_decision_btn = (By.XPATH, '//textarea/following-sibling::button')
+    #TD: Find out why classn_name and tag_name locator not working here
+    #self._register_decision_btn = (By.CLASS_NAME, 'button-primary')
     self._alert_info = (By.CLASS_NAME, 'alert-info')
 
    #POM Actions
@@ -60,5 +63,7 @@ class InitialDecisionCard(BaseCard):
       invite_input = self._get(self._invite_radio_button)
       invite_input.click()
       decision_letter_input.send_keys('Invited')
+    # Time to allow the button to change to clickleable state
+    time.sleep(.5)
     self._get(self._register_decision_btn).click()
     return choice

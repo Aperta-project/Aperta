@@ -47,7 +47,8 @@ co_login = {'user': 'jgray_collab', 'name': 'Jeffrey Collaborator',
             'password': login_invalid_pw}  # collaborator login
 rv_login = {'user': 'jgray_reviewer', 'name': 'Jeffrey RV Gray'}  # reviewer login
 ae_login = {'user': 'jgray_assocedit'} # associate editor login mm permissions
-he_login = {'user':'jgray_editor'}     # handling editor login amm permissions
+he_login = {'user':'jgray_editor', 'name': 'Jeffrey AMM Gray',
+            'email': 'sealresq+4@gmail.com'}  # handling editor login amm permissions
 fm_login = {'user': 'jgray_flowmgr'}   # flow manager permissions
 oa_login = {'user': 'jgray_oa'}        # ordinary admin login
 sa_login = {'user': 'jgray_sa'}        # super admin login

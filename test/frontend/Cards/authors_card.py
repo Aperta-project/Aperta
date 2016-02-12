@@ -41,7 +41,8 @@ class AuthorsCard(BaseCard):
     self._institution_div = (By.CLASS_NAME, 'did-you-mean-input')
     self._author_lbls = (By.CLASS_NAME, 'author-label')
     self._designed_chkbx = (By.XPATH,
-      ".//input[@name='contributions.conceived_and_designed_experiments']/following-sibling::span")
+      './/input[@name=\'author--contributions--conceived_and_designed_experiments\']/'
+      'following-sibling::span')
     self._author_contrib_lbl = (By.CSS_SELECTOR, 'h4.required')
     self._add_author_cancel_lnk = (By.CSS_SELECTOR, 'span.author-form-buttons a')
     self._add_author_add_btn = (By.CSS_SELECTOR, 'span.author-form-buttons button')
@@ -49,7 +50,7 @@ class AuthorsCard(BaseCard):
     self._delete_author_div = (By.CLASS_NAME, 'authors-overlay-item--delete')
     self._edit_author = (By.CLASS_NAME, 'fa-pencil')
     self._corresponding = (By.XPATH,
-      ".//input[@name='published_as_corresponding_author']")
+      ".//input[@name='author--published_as_corresponding_author']")
 
    #POM Actions
   def click_task_completed_checkbox(self):

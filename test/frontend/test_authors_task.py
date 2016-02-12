@@ -16,8 +16,9 @@ from frontend.common_test import CommonTest
 class AuthorsTaskTest(CommonTest):
   """
   Self imposed AC:
-     - validate cards elements and styles
-     -
+     - validate tasks elements and styles
+     - validate adding and deleting an author
+     - validate trying to close a task without completing author profile
   """
 
   def _go_to_authors_task(self, init=True):
@@ -38,9 +39,6 @@ class AuthorsTaskTest(CommonTest):
     # Attempting to close authors task without a complete author should fail
     assert not authors_task.completed_cb_is_selected()
     authors_task.validate_completion_error()
-    manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.click_task('authors')
-    manuscript_page.logout()
     return self
 
 if __name__ == '__main__':

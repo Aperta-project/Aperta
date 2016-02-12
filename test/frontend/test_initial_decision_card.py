@@ -7,10 +7,11 @@ The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extr
 """
 __author__ = 'sbassi@plos.org'
 
+from decimal import Decimal
+import logging
 import os
 import random
 import time
-from decimal import Decimal
 
 from selenium.webdriver.common.by import By
 from Base.Decorators import MultiBrowserFixture
@@ -49,29 +50,21 @@ class InitialDecisionCardTest(CommonTest):
     login_page.enter_login_field(au_login['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
-
     dashboard_page = DashboardPage(self.getDriver())
-    # Validate Create New Submissions modal
-    dashboard_page.click_create_new_submission_button()
-    # We recently became slow drawing this overlay (20151006)
-    time.sleep(.5)
-    title = dashboard_page.title_generator()
-    dashboard_page.enter_title_field(title)
-    dashboard_page.select_journal_and_type('PLOS Wombat', 'Images+InitialDecision')
-    doc2upload = random.choice(docs)
-    fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
-    if os.path.isfile(fn):
-      self._driver.find_element_by_id('upload-files').send_keys(fn)
-    else:
-      raise IOError('Docx file not found: {}'.format(fn))
-    dashboard_page.click_upload_button()
+    self.create_article(journal = 'PLOS Wombat',
+                        type_ = 'Images+InitialDecision',
+                        random_bit = True,
+                        init = False,
+                        )
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.validate_ihat_conversions_success()
+    # Note: Request title to make sure the required page is loaded
     paper_url = manuscript_page.get_current_url()
-    print('The paper ID of this newly created paper is: ' + paper_url)
+    logging.info('The paper ID of this newly created paper is: {}'.format(paper_url))
     paper_id = paper_url.split('papers/')[1]
+
     # Get paper version for AC 6
     version_before = Decimal(manuscript_page.get_manuscript_version()[1:])
     # figures
@@ -124,8 +117,6 @@ class InitialDecisionCardTest(CommonTest):
     self._driver.navigated = True
     # open Image card
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    time.sleep(1)
-    manuscript_page.edit_paper_title()
     time.sleep(1)
     manuscript_page.click_task('Figures')
     # test if editable

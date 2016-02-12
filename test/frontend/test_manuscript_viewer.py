@@ -5,6 +5,7 @@ This test case validates the article editor page and its associated overlays.
 """
 __author__ = 'sbassi@plos.org'
 
+import logging
 import time
 import random
 import os
@@ -66,8 +67,8 @@ class ViewPaperTest(CommonTest):
              oa_login['user']: 8}
 
     for user in users:
-      print('Logging in as user: {}'.format(user))
-      print('role: {}'.format(roles[user['user']]))
+      logging.info('Logging in as user: {}'.format(user))
+      logging.info('role: {}'.format(roles[user['user']]))
       uid = PgSQL().query('SELECT id FROM users where username = %s;', (user['user'],))[0][0]
       login_page = LoginPage(self.getDriver())
       login_page.enter_login_field(user['user'])
@@ -119,7 +120,7 @@ class ViewPaperTest(CommonTest):
       AC#7 on hold until APERTA-5718 is fixed.
       AC#10 on hold until APERTA-5725 is fixed
     """
-    print('Logging in as user: {}'.format(au_login))
+    logging.info('Logging in as user: {}'.format(au_login))
     login_page = LoginPage(self.getDriver())
     login_page.enter_login_field(au_login['user'])
     login_page.enter_password_field(login_valid_pw)
@@ -130,27 +131,18 @@ class ViewPaperTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     # We recently became slow drawing this overlay (20151006)
     time.sleep(.5)
-    title = dashboard_page.title_generator()
-    dashboard_page.enter_title_field(title)
-    dashboard_page.select_journal_and_type('PLOS Wombat', 'Images+InitialDecision')
-    doc2upload = random.choice(docs)
-    fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
-    print('Uploading: {}'.format(fn))
-    if os.path.isfile(fn):
-      self._driver.find_element_by_id('upload-files').send_keys(fn)
-    else:
-      raise IOError('Docx file not found: {}'.format(fn))
-    dashboard_page.click_upload_button()
+
+    title = self.create_article(journal='PLOS Wombat',
+                                type_='Images+InitialDecision',
+                                random_bit=True,
+                                init=False,
+                                )
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # Note: Request title to make sure the required page is loaded
-    try:
-      manuscript_page.get_paper_title_from_page()
-    except ElementDoesNotExistAssertionError:
-      print('Problem with conversion of {}'.format(fn))
     paper_url = manuscript_page.get_current_url()
-    print('The paper ID of this newly created paper is: {}'.format(paper_url))
+    logging.info('The paper ID of this newly created paper is: {}'.format(paper_url))
     paper_id = paper_url.split('papers/')[1]
     # AC1 Test for info box
     infobox = manuscript_page.get_infobox()
@@ -205,14 +197,8 @@ class ViewPaperTest(CommonTest):
             manuscript_page.get_submission_status_info_text(),\
             manuscript_page.get_submission_status_info_text()
     manuscript_page.logout()
-
-    print('Logging in as user: {}'.format(rv_login))
-    login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(rv_login['user'])
-    login_page.enter_password_field(login_valid_pw)
-    login_page.click_sign_in_button()
-    # the following call should only succeed for sa_login
-    dashboard_page = DashboardPage(self.getDriver())
+    # Loging as collaborator
+    dashboard_page = self.login(email=rv_login['user'], password=login_valid_pw)
     dashboard_page.go_to_manuscript(paper_id)
     time.sleep(1)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
@@ -260,6 +246,7 @@ class ViewPaperTest(CommonTest):
     dashboard_page.go_to_manuscript(paper_id)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     #AC8: Message for full submission when is ready for submition
+    time.sleep(2)
     assert  "Your manuscript is ready for Full Submission." in \
       manuscript_page.get_submission_status_info_text(), \
       manuscript_page.get_submission_status_info_text()

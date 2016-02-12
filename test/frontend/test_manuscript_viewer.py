@@ -50,7 +50,7 @@ class ViewPaperTest(CommonTest):
       - button for worflow
       - button for more options
     """
-    article_title = self.select_preexisting_article()
+    article_title = self.select_preexisting_article(first=True)
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
     manuscript_viewer.validate_page_elements_styles_functions()
     return self
@@ -144,16 +144,16 @@ class ViewPaperTest(CommonTest):
                                 random_bit=True,
                                 init=False,
                                 )
-    dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
+    # AC1 Test for info box
+    infobox = manuscript_page.get_infobox()
+    dashboard_page.restore_timeout()
     # Note: Request title to make sure the required page is loaded
     paper_url = manuscript_page.get_current_url()
     logging.info('The paper ID of this newly created paper is: {}'.format(paper_url))
     paper_id = paper_url.split('papers/')[1]
-    # AC1 Test for info box
-    infobox = manuscript_page.get_infobox()
     # AC5 Test for Message for initial submission
     assert "Please provide the following information to submit your manuscript for "\
             "Initial Submission." in manuscript_page.get_submission_status_info_text(),\
@@ -170,11 +170,13 @@ class ViewPaperTest(CommonTest):
       assert False, "Infobox still open. AC2 fails"
     manuscript_page.restore_timeout()
     # AC3 Green info box appears for initial manuscript view only - whether the user closes or leaves it open
-    manuscript_page.click_dashboard_link()
+    #####manuscript_page.click_dashboard_link()
     self._driver.get(paper_url)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # Note: Request title to make sure the required page is loaded
+    manuscript_page.set_timeout(20)
     manuscript_page.get_paper_title_from_page()
+    manuscript_page.restore_timeout()
     manuscript_page.set_timeout(.5)
     try:
       manuscript_page.get_infobox()
@@ -229,7 +231,6 @@ class ViewPaperTest(CommonTest):
     time.sleep(1)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # End temporaty worfaround until APERTA-5987 is fixed
-
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_modal()
@@ -254,7 +255,7 @@ class ViewPaperTest(CommonTest):
     time.sleep(2)
     manuscript_page.logout()
     # Test for AC8
-    print('Logging in as user: {}'.format(au_login))
+    logging.info('Logging in as user: {}'.format(au_login))
     login_page = LoginPage(self.getDriver())
     login_page.enter_login_field(au_login['user'])
     login_page.enter_password_field(login_valid_pw)
@@ -264,7 +265,8 @@ class ViewPaperTest(CommonTest):
     dashboard_page.go_to_manuscript(paper_id)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     #AC8: Message for full submission when is ready for submition
-    time.sleep(2)
+    manuscript_page._get(manuscript_page._nav_dashboard_link)
+    time.sleep(5)
     assert  "Your manuscript is ready for Full Submission." in \
       manuscript_page.get_submission_status_info_text(), \
       manuscript_page.get_submission_status_info_text()

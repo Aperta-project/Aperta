@@ -38,7 +38,6 @@ class BaseTask(AuthenticatedPage):
     """Returns the selected state of the task completed checkbox as a boolean"""
     time.sleep(.5)
     completed_checkbox_state = self._get(self._completed_cb).is_selected()
-    #import pdb; pdb.set_trace() 
     return completed_checkbox_state
 
   def validate_completion_error(self):
@@ -52,7 +51,7 @@ class BaseTask(AuthenticatedPage):
   def validate_common_elements_styles(self):
     """Validate styles from elements common to all cards"""
     completed_lbl = self._get(self._completed_label)
-    assert 'I am finished with this task' in completed_lbl.text, completed_lbl.text
+    assert 'I am done with this task' in completed_lbl.text, completed_lbl.text
     completed_check = self._get(self._completed_cb)
     # TODO: When styleguide catches up, assert this checkbox and label matches that guide
 

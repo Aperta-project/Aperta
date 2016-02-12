@@ -3,10 +3,10 @@ import DiscussionsRoutePathsMixin from 'tahi/mixins/discussions/route-paths';
 
 export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
 
-  paperId: undefined,
+  paper: undefined,
 
   filteredTopics: Ember.computed('model.[]', 'paperId', function() {
-    return this.get('model').filterBy('paperId', this.get('paperId'));
+    return this.get('model').filterBy('paperId', this.get('paper.id'));
   }),
 
   topicSort: ['createdAt:desc'],

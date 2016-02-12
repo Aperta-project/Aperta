@@ -13,7 +13,7 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
 
   setupController(controller, model) {
     this._super(controller, model);
-    controller.set('paperId', this.modelFor('paper').get('id'));
+    controller.set('paper', this.modelFor('paper'))
   },
 
 });

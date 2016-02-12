@@ -27,4 +27,9 @@ Authorizations.configure do |config|
     via: :paper
   )
 
+  config.assignment_to(
+    Paper,
+    authorizes: DiscussionTopic,
+    via: :discussion_topics
+  )
 end

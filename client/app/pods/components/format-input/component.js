@@ -36,8 +36,10 @@ const ELEMENT_NAME_MAP = {
 export default Ember.Component.extend({
   classNameBindings: [
     ':format-input',
+    'errorPresent:error',
     'active:format-input--active'
   ],
+  errorPresent: Ember.computed.notEmpty('errors'),
 
   /**
    *  Text displayed in content-editable component

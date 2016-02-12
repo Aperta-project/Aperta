@@ -67,6 +67,12 @@
 
     .si-file-actions {
       float: right;
+      text-align: right;
+
+      .error-message {
+        display: block;
+        margin-bottom: 1rem;
+      }
     }
 
     .si-file-label-input {

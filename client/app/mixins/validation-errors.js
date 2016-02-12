@@ -51,7 +51,9 @@ export default Ember.Mixin.create({
 
   validationErrors: null,
   _initValidationErrors: on('init', function() {
-    this.set('validationErrors', {});
+    if (!this.get('validationErrors')) {
+      this.set('validationErrors', {});
+    }
   }),
 
   /**
@@ -225,6 +227,15 @@ export default Ember.Mixin.create({
   },
 
   /**
+    @method validationErrorsPresentForKey
+    @return {Boolean}
+  */
+
+  validationErrorsPresentForKey(key) {
+    return !isEmpty(this.get('validationErrors')[key]);
+  },
+
+  /**
     @method currentValidationErrors
     @return {Array} array of key/value(error message) pairs
   */
@@ -234,7 +245,9 @@ export default Ember.Mixin.create({
 
     return _.compact(
       _.map(_.keys(errors), key => {
-        if(isEmpty(errors[key])) { return false; }
+        if(isEmpty(errors[key]) || Ember.keys(errors[key]).length === 0) {
+          return false;
+        }
 
         let hash = {};
         hash[key] = errors[key];

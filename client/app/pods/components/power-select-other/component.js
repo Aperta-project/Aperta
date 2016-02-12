@@ -22,8 +22,10 @@ const { computed, observer } = Ember;
 export default Ember.Component.extend({
   classNameBindings: [
     ':power-select-other',
+    'errorPresent:error',
     '_otherOptionSelected:power-select-other--other-selected'
   ],
+  errorPresent: Ember.computed.notEmpty('errors'),
 
   /**
    *  @property value
@@ -127,6 +129,16 @@ export default Ember.Component.extend({
       }
 
       this.set('value', value);
+
+      if(this.attrs.validate) {
+        this.attrs.validate(this.get('value'));
+      }
+    },
+
+    validate() {
+      if(this.attrs.validate) {
+        this.attrs.validate(this.get('value'));
+      }
     },
 
     otherTrigger() {

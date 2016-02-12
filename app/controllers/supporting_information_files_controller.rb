@@ -43,8 +43,7 @@ class SupportingInformationFilesController < ApplicationController
 
   def build_new_supporting_information_file
     task = TahiStandardTasks::SupportingInformationTask.find(params[:task_id])
-    si_file = task.supporting_information_files.new(paper_id: task.paper_id)
-    si_file
+    task.supporting_information_files.new(paper_id: task.paper_id)
   end
 
   def enforce_policy

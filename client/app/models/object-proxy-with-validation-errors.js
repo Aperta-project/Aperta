@@ -21,11 +21,19 @@ export default Ember.Object.extend(ValidationErrorsMixin, {
   },
 
   validateAllKeys() {
+    this.set('validationErrors.save', '');
+
     _.keys(this.get('validations')).forEach((key) => {
       this.validateKey(key);
     });
 
-    this.set('errorsPresent', this.validationErrorsPresent());
+    const errorsPresent = this.validationErrorsPresent();
+
+    this.set('errorsPresent', errorsPresent);
+
+    if(errorsPresent) {
+      this.set('validationErrors.save', 'Please fix the errors above');
+    }
   },
 
   validateKey(key) {

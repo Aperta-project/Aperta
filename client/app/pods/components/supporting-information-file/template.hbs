@@ -54,11 +54,14 @@
     {{/if}}
 
     <div class="si-file-actions">
+      {{#if model.validationErrors.save}}
+        {{error-message message=model.validationErrors.save}}
+      {{/if}}
       <button class="button--green button-link si-file-cancel-edit-button"
         {{action "cancelEdit"}}>
         Cancel
       </button>
-      <button class="button-secondary button--green si-file-save-edit-button"
+      <button class="button-secondary {{if model.validationErrors.save "button--red" "button--green"}} si-file-save-edit-button"
         {{action "saveEdit"}}>
         Save
       </button>

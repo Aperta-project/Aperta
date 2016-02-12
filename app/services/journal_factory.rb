@@ -94,9 +94,14 @@ class JournalFactory
                        participates_in: [Paper],
                        delete_stray_permissions: true) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper)
-      role.ensure_permission_exists(:view, applies_to: Task)
-      # TODO: Remove this when APERTA-5996 is fixed
-      role.ensure_permission_exists(:edit, applies_to: Task)
+      classes = Task.metadata_task_types
+      classes -= [PlosBilling::BillingTask]
+      classes << TahiStandardTasks::RegisterDecisionTask
+      classes.each do |klass|
+        role.ensure_permission_exists(:view, applies_to: klass)
+        # TODO: Remove this when APERTA-5996 is fixed
+        role.ensure_permission_exists(:edit, applies_to: klass)
+      end
     end
   end
 end

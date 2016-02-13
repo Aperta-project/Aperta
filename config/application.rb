@@ -41,10 +41,10 @@ module Tahi
       config.basic_auth_password = ENV.fetch('BASIC_HTTP_PASSWORD')
     end
 
-    unless Rails.env.test?
-      config.logger = Logger.new(STDOUT)
-      config.log_level = :info
-    end
+    # unless Rails.env.test?
+    #   config.logger = Logger.new(STDOUT)
+    #   config.log_level = :info
+    # end
 
     config.omniauth_providers = []
   end

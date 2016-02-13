@@ -11,7 +11,7 @@ namespace :data do
             # tries to look up the paper which it no longer has access to
             participation.delete
           else
-            participant_role = participation.task.journal.roles.participant
+            participant_role = participation.task.journal.participant_role
             user = participation.user
             task = participation.task
             puts "Assigning #{user.full_name} <#{user.email}> as #{participant_role.name} on '#{task.title}' Task"

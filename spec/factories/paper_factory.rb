@@ -6,7 +6,7 @@ FactoryGirl.define do
       creator = paper.creator
       if creator
         Assignment.where(
-          role: paper.journal.roles.creator,
+          role: paper.journal.creator_role,
           assigned_to: paper
         ).first_or_create!
       end

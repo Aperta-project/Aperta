@@ -70,7 +70,7 @@ describe AssignmentsController, type: :controller do
         expect(assignee.assignments.last).to eq \
           Assignment.where(
             user: assignee,
-            role: journal.roles.staff_admin,
+            role: journal.staff_admin_role,
             assigned_to: paper
           ).first
       end
@@ -84,7 +84,7 @@ describe AssignmentsController, type: :controller do
         expect(assignee.assignments.last).to eq \
           Assignment.where(
             user: assignee,
-            role: journal.roles.handling_editor,
+            role: journal.handling_editor_role,
             assigned_to: paper
           ).first
       end
@@ -126,7 +126,7 @@ describe AssignmentsController, type: :controller do
       let!(:assignment) do
         Assignment.where(
           user: assignee,
-          role: journal.roles.staff_admin,
+          role: journal.staff_admin_role,
           assigned_to: paper
         ).first_or_create!
       end
@@ -143,7 +143,7 @@ describe AssignmentsController, type: :controller do
       let!(:assignment) do
         Assignment.where(
           user: assignee,
-          role: journal.roles.handling_editor,
+          role: journal.handling_editor_role,
           assigned_to: paper
         ).first_or_create!
       end

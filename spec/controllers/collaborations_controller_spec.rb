@@ -30,7 +30,7 @@ describe CollaborationsController do
         end.to change(paper.assignments, :count).by(1)
 
         expect(paper.assignments.find_by(
-          role: paper.journal.roles.collaborator,
+          role: paper.journal.collaborator_role,
           user: collaborator
         )).to be
       end
@@ -95,7 +95,7 @@ describe CollaborationsController do
         end.to change(paper.assignments, :count).by(-1)
 
         expect(paper.assignments.find_by(
-          role: paper.journal.roles.collaborator,
+          role: paper.journal.collaborator_role,
           user: collaborator
         )).to_not be
       end

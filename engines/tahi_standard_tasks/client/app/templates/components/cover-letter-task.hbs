@@ -44,7 +44,7 @@
         <h4>Here is your cover letter:</h4>
           <div class="cover-letter">{{{letterBody}}}</div>
           <button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}"
-                  disabled={{isSubmissionTaskNotEditable}}
+                  disabled={{isNotEditable}}
                   {{action startEditing}}>
             Make Changes
           </button>

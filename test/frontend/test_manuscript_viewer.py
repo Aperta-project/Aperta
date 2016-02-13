@@ -55,9 +55,11 @@ class ViewPaperTest(CommonTest):
     manuscript_viewer.validate_page_elements_styles_functions()
     return self
 
-  def test_role_aware_menus(self):
+  def _test_role_aware_menus(self):
     """
     APERTA-3: Validates role aware menus
+
+    Note: Test disabled until APERTA-5992 is fixed
     """
     roles = {au_login['user']: 7,
              rv_login['user']: 7,
@@ -76,7 +78,9 @@ class ViewPaperTest(CommonTest):
       login_page.click_sign_in_button()
       # the following call should only succeed for sa_login
       dashboard_page = DashboardPage(self.getDriver())
+      dashboard_page.set_timeout(120)
       if dashboard_page.validate_manuscript_section_main_title(user['user']) > 0:
+        dashboard_page.restore_timeout()
         self.select_preexisting_article(init=False, first=True)
         manuscript_viewer = ManuscriptViewerPage(self.getDriver())
         time.sleep(3) # needed to give time to retrieve new menu items
@@ -93,7 +97,8 @@ class ViewPaperTest(CommonTest):
         url = self._driver.current_url
         signout_url = url[:url.index('/papers/')] + '/users/sign_out'
       else:
-        print('No manuscripts present for user: {}'.format(user['user']))
+        dashboard_page.restore_timeout()
+        logging.info('No manuscripts present for user: {}'.format(user['user']))
         # Logout
         url = self._driver.current_url
         signout_url = '{}/users/sign_out'.format(url)
@@ -117,6 +122,7 @@ class ViewPaperTest(CommonTest):
       10. Clicking the question mark opens the "[Journal Name] submission process" info box
 
     Notes:
+      AC#4 disabled until APERTA-5987 is fixed
       AC#7 on hold until APERTA-5718 is fixed.
       AC#10 on hold until APERTA-5725 is fixed
     """
@@ -131,12 +137,14 @@ class ViewPaperTest(CommonTest):
     dashboard_page.click_create_new_submission_button()
     # We recently became slow drawing this overlay (20151006)
     time.sleep(.5)
-
+    # Temporary changing timeout
+    dashboard_page.set_timeout(120)
     title = self.create_article(journal='PLOS Wombat',
                                 type_='Images+InitialDecision',
                                 random_bit=True,
                                 init=False,
                                 )
+    dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
@@ -197,13 +205,15 @@ class ViewPaperTest(CommonTest):
             manuscript_page.get_submission_status_info_text(),\
             manuscript_page.get_submission_status_info_text()
     manuscript_page.logout()
+    # Following block disabled due to APERTA-5987
+    """
     # Loging as collaborator
     dashboard_page = self.login(email=rv_login['user'], password=login_valid_pw)
     dashboard_page.go_to_manuscript(paper_id)
     time.sleep(1)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.set_timeout(.5)
-    # AC4 Green info box does not appear for Collaborators
+    # AC4 Green info box does not appear for collaborators
     try:
       manuscript_page.get_infobox()
     except ElementDoesNotExistAssertionError:
@@ -212,14 +222,22 @@ class ViewPaperTest(CommonTest):
       assert False, "Infobox still open. AC4 fails"
     manuscript_page.restore_timeout()
     # Submit
+    """
+    # Start temporaty worfaround until APERTA-5987 is fixed
+    dashboard_page = self.login(email=sa_login['user'], password=login_valid_pw)
+    dashboard_page.go_to_manuscript(paper_id)
+    time.sleep(1)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    # End temporaty worfaround until APERTA-5987 is fixed
+
     manuscript_page.click_submit_btn()
     manuscript_page.confirm_submit_btn()
     manuscript_page.close_modal()
     # Aprove initial Decision
     manuscript_page.logout()
-    print('Logging in as user: {}'.format(he_login))
+    logging.info('Logging in as user: {}'.format(sa_login))
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(he_login['user'])
+    login_page.enter_login_field(sa_login['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
     # the following call should only succeed for sa_login

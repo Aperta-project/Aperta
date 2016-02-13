@@ -43,6 +43,7 @@ class InitialDecisionTask(BaseTask):
     # Check for the alert
     alert = self._get(self._alert_info).text
     if data[0] == 'Invite':
-      assert 'An initial decision of \'invite full submission\' decision has been made.' in alert
+      assert 'An initial decision of \'Invite full submission\' decision has been made.' in \
+        alert, alert
     else:
-      assert 'An initial decision of \'reject\' decision has been made.' in alert
+      assert 'An initial decision of \'Reject\' decision has been made.' in alert, alert

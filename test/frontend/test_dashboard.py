@@ -29,7 +29,6 @@ users = [ # au_login,
          oa_login
          ]
 
-
 @MultiBrowserFixture
 class ApertaDashboardTest(CommonTest):
   """

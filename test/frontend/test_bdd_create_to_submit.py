@@ -10,6 +10,7 @@ The test document tarball from http://bighector.plos.org/aperta/docs.tar.gz extr
 """
 __author__ = 'jgray@plos.org'
 
+import logging
 import os
 import random
 import time
@@ -74,28 +75,24 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
       Modals: View Invites and Create New Submission
     """
     user_type = random.choice(users)
-    print('Logging in as user: {}'.format(user_type))
+    logging.info('Logging in as user: {}'.format(user_type))
     login_page = LoginPage(self.getDriver())
     login_page.enter_login_field(user_type['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
 
     dashboard_page = DashboardPage(self.getDriver())
-    # Validate Create New Submissions modal
-    dashboard_page.click_create_new_submission_button()
+    # Temporary changing timeout
+    dashboard_page.set_timeout(120)
     # We recently became slow drawing this overlay (20151006)
     time.sleep(.5)
-    title = dashboard_page.title_generator(prefix='full submit', random_bit=True)
-    dashboard_page.enter_title_field(title)
-    dashboard_page.select_journal_and_type('PLOS Wombat', 'NoCards')
-    doc2upload = random.choice(docs)
-    print('Sending document: ' + os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload))
-    fn = os.path.join(os.getcwd(), 'frontend/assets/docs/', doc2upload)
-    if os.path.isfile(fn):
-      self._driver.find_element_by_id('upload-files').send_keys(fn)
-    else:
-      raise IOError('Doc file: {} not found'.format(doc2upload))
-    dashboard_page.click_upload_button()
+    title = self.create_article(journal='PLOS Wombat',
+                                type_='NoCards',
+                                random_bit=True,
+                                init=False,
+                                title='full submit',
+                                )
+    dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
@@ -103,9 +100,11 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     manuscript_page.close_flash_message()
     time.sleep(2)
     paper_title_from_page = manuscript_page.get_paper_title_from_page()
+    logging.info('paper_title_from_page: '.format(paper_title_from_page))
     paper_id = manuscript_page.get_current_url().split('papers/')[1].split('?')[0]
-    print(paper_id)
+    logging.info('paper_id: '.format(paper_id))
     manuscript_page.click_submit_btn()
+    time.sleep(3)
     manuscript_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
     manuscript_page.confirm_submit_cancel()
     # The overlay mush be cleared to interact with the submit button
@@ -115,7 +114,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay
-    time.sleep(1)
+    time.sleep(2)
     manuscript_page.validate_so_overlay_elements_styles('congrats', paper_title_from_page)
     manuscript_page.close_submit_overlay()
     manuscript_page.validate_submit_success()
@@ -175,28 +174,24 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
       Modals: View Invites and Create New Submission
     """
     user_type = random.choice(users)
-    print('Logging in as user: {}'.format(user_type))
+    logging.info('Logging in as user: {}'.format(user_type))
     login_page = LoginPage(self.getDriver())
     login_page.enter_login_field(user_type['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
 
     dashboard_page = DashboardPage(self.getDriver())
-    # Validate Create New Submissions modal
-    dashboard_page.click_create_new_submission_button()
+    # Temporary changing timeout
+    dashboard_page.set_timeout(120)
     # We recently became slow drawing this overlay (20151006)
     time.sleep(.5)
-    title = dashboard_page.title_generator(prefix='initial submit', random_bit=True)
-    dashboard_page.enter_title_field(title)
-    dashboard_page.select_journal_and_type('PLOS Wombat', 'OnlyInitialDecisionCard')
-    doc2upload = random.choice(docs)
-    print('Sending document: ' + os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload))
-    fn = os.path.join(os.getcwd() + '/frontend/assets/docs/' + doc2upload)
-    if os.path.isfile(fn):
-      self._driver.find_element_by_id('upload-files').send_keys(fn)
-    else:
-      raise IOError('Document file not found: ' + fn)
-    dashboard_page.click_upload_button()
+    title = self.create_article(journal='PLOS Wombat',
+                                type_='OnlyInitialDecisionCard',
+                                random_bit=True,
+                                init=False,
+                                title='full submit',
+                                )
+    dashboard_page.restore_timeout()
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(7)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
@@ -205,7 +200,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     time.sleep(2)
     paper_title_from_page = manuscript_page.get_paper_title_from_page()
     paper_url = manuscript_page.get_current_url()
-    print('The paper ID of this newly created paper is: ' + paper_url)
+    logging.info('The paper ID of this newly created paper is: {}'.format(paper_url))
     paper_id = paper_url.split('papers/')[1]
     manuscript_page.click_submit_btn()
     manuscript_page.validate_so_overlay_elements_styles('full_submit', paper_title_from_page)
@@ -243,7 +238,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     id_card = InitialDecisionCard(self.getDriver())
     id_card.validate_styles()
     decision = id_card.execute_decision()
-    print(decision)
+    logging.info('Decision: {}'.format(decision))
     id_card.click_close_button()
     sub_data = workflow_page.get_db_submission_data(paper_id)
     if decision == 'reject':

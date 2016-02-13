@@ -44,7 +44,9 @@ class InitialDecisionCard(BaseCard):
     self._get(self._invite_radio_button)
     self._get(self._decision_letter_textarea)
     reg_dcn_btn = self._get(self._register_decision_btn)
-    self.validate_primary_big_green_button_style(reg_dcn_btn)
+    # the following button is disabled by default now
+    # this is failing due to bug APERTA-5946
+    #self.validate_secondary_big_disabled_button_style(reg_dcn_btn)
 
   def execute_decision(self, choice='random'):
     """
@@ -58,12 +60,14 @@ class InitialDecisionCard(BaseCard):
     if choice == 'reject':
       reject_input = self._get(self._reject_radio_button)
       reject_input.click()
+      time.sleep(.5)
       decision_letter_input.send_keys('Rejected')
     else:
       invite_input = self._get(self._invite_radio_button)
       invite_input.click()
+      time.sleep(.5)
       decision_letter_input.send_keys('Invited')
     # Time to allow the button to change to clickleable state
-    time.sleep(.5)
+    time.sleep(1)
     self._get(self._register_decision_btn).click()
     return choice

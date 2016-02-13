@@ -11,6 +11,7 @@ from Pages.dashboard import DashboardPage
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from frontend.common_test import CommonTest
 
+import time
 
 @MultiBrowserFixture
 class AuthorsTaskTest(CommonTest):
@@ -37,6 +38,8 @@ class AuthorsTaskTest(CommonTest):
     authors_task.validate_delete_author()
     authors_task.click_completed_checkbox()
     # Attempting to close authors task without a complete author should fail
+    # Time for GUI to automatically unselect complete checkbox
+    time.sleep(1)
     assert not authors_task.completed_cb_is_selected()
     authors_task.validate_completion_error()
     return self

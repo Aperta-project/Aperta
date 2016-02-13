@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { test, moduleFor } from 'ember-qunit';
+import FakeCanService from '../helpers/fake-can-service';
 
 moduleFor('component:task-base', 'TaskBaseComponent', {
   beforeEach() {
@@ -16,12 +17,24 @@ moduleFor('component:task-base', 'TaskBaseComponent', {
       paper: this.paper
     });
 
+    this.fakeCanService = FakeCanService.create()
+      .allowPermission('view', this.task);
+
     Ember.run(()=> {
+      this.subject().set('can', this.fakeCanService);
       this.subject().set('task', this.task);
       this.subject().set('currentUser', this.currentUser);
     });
   }
 });
+
+test('#isEditable: false the user does not have permission', function(assert) {
+  Ember.run(()=> {
+    this.subject().set('userHasPermission', false);
+    assert.equal(this.subject().get('isEditable'), false);
+  });
+});
+
 
 test('#isEditable: true when the task is not a metadata task', function(assert) {
   Ember.run(()=> {

@@ -6,14 +6,14 @@
     <li class="question">
       {{#nested-question-radio model=humanSubjectsQuestion
       owner=task
-      disabled=isSubmissionTaskNotEditable
+      disabled=isNotEditable
       noAction="userSelectedNoOnHumanSubjects"
       as |selected|}}
           <div class="question-dataset {{if selected.no 'hidden'}} {{if selected.none 'hidden'}}">
             {{nested-question-textarea model=participantsQuestion
                 displayContent=selected.yes
                 owner=task
-                disabled=isSubmissionTaskNotEditable}}
+                disabled=isNotEditable}}
 
             <div class="question-info">
               <div class="question-info-header">Human Subject Research (involved human participants and/or tissue)</div>
@@ -27,7 +27,7 @@
     <li class="question">
       {{#nested-question-radio model=animalSubjectsQuestion
       owner=task
-      disabled=isSubmissionTaskNotEditable
+      disabled=isNotEditable
       noAction="userSelectedNoOnAnimalSubjects"
       as |selected|}}
 
@@ -42,7 +42,7 @@
         {{nested-question-textarea model=fieldPermitQuestion
         owner=task
         displayContent=selected.yes
-        disabled=isSubmissionTaskNotEditable}}
+        disabled=isNotEditable}}
 
         {{nested-question-uploader-manager model=fieldArriveQuestion
                                            buttonText="upload arrive checklist"
@@ -57,7 +57,7 @@
    <li class="question">
       {{#nested-question-radio model=fieldStudyQuestion
         owner=task
-        disabled=isSubmissionTaskNotEditable
+        disabled=isNotEditable
         noAction="userSelectedNoOnFieldStudy"
         as |selected|}}
         {{#if selected.yes}}
@@ -65,7 +65,7 @@
             {{nested-question-textarea model=fieldPermitNumberQuestion
             displayContent=selected.yes
             owner=task
-            disabled=isSubmissionTaskNotEditable}}
+            disabled=isNotEditable}}
           </div>
         {{/if}}
       {{/nested-question-radio}}

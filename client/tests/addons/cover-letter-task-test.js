@@ -3,6 +3,7 @@ import {
   moduleForComponent,
   test
 } from 'ember-qunit';
+import FakeCanService from '../helpers/fake-can-service';
 
 let c;
 
@@ -22,7 +23,11 @@ moduleForComponent('cover-letter-task', 'CoverLetterTaskComponent', {
       }
     });
 
+    this.fakeCanService = FakeCanService.create()
+      .allowPermission('view', this.task);
+
     c = this.subject();
+    c.set('can', this.fakeCanService);
     c.set('task', this.task);
   },
 

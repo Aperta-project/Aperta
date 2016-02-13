@@ -17,6 +17,16 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   isMetadataTask: alias('task.isMetadataTask'),
   isSubmissionTask: alias('task.isSubmissionTask'),
 
+  isSubmissionTaskEditable: computed('task', function(){
+    console.warn("isSubmissionTaskEditable called which is deprecated. Please use isEditable. Called on ", this._debugContainerKey, this);
+    return this.get('isEditable');
+  }),
+
+  isSubmissionTaskEditable: computed('task', function(){
+    console.warn("isSubmissionTaskNotEditable called which is deprecated. Please use isNotEditable. Called on ", this._debugContainerKey, this);
+    return this.get('isNotEditable');
+  }),
+
   fieldsDisabled: or('isNotEditable', 'task.completed'),
   isEditable: or('isUserEditable', 'currentUser.siteAdmin'),
   isNotEditable: not('isEditable'),

@@ -7,7 +7,12 @@ class PapersController < ApplicationController
 
   def index
     page = (params[:page_number] || 1).to_i
-    papers = current_user.filter_authorized(:view, Paper).objects
+    papers = current_user.filter_authorized(
+      :view,
+      # TODO: we should also eager load short_title_answer, but if a paper does
+      # not have any nested_questiona_answers that breaks the filtered query
+      Paper.all.includes(:roles, journal: :creator_role)
+    ).objects
     active_papers, inactive_papers = papers.partition(&:active?)
     respond_with(papers, {
       each_serializer: LitePaperSerializer,

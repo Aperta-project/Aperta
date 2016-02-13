@@ -223,11 +223,18 @@ class Paper < ActiveRecord::Base
   #   Paper.roles_for(user: User.first)
   #   Paper.roles_for(user: User.first, roles: [Role.first])
   #
-  # Returns an ActiveRelation with <tt>Role</tt>s.
+  # Returns an Array with <tt>Role</tt>s.
   def roles_for(user:, roles: nil)
+    role_ids = roles.map(&:id) if roles
+    # Do not hit the database again if the roles are eager-loaded
+    if self.roles.loaded?
+      retval = assignments.select { |a| a.user_id == user.id }.map(&:role)
+      retval = retval.select { |r| role_ids.member?(r.id) } if role_ids
+      return retval
+    end
     args = { assignments: { user_id: user } }
-    args[:assignments][:role_id] = roles.map(&:id) if roles
-    self.roles.where(args)
+    args[:assignments][:role_id] = role_ids if role_ids
+    self.roles.where(args).to_a
   end
 
   def role_descriptions_for(user:)

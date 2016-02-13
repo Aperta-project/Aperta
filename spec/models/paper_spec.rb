@@ -790,6 +790,9 @@ describe Paper do
     let!(:role_1_assigned) { FactoryGirl.create(:role) }
     let!(:role_2_assigned) { FactoryGirl.create(:role) }
     let!(:role_3_not_assigned) { FactoryGirl.create(:role) }
+    let(:paper_with_roles) do
+      Paper.where(id: paper.id).includes(:roles).first
+    end
 
     before do
       paper.assignments.create!(user: user, role: role_1_assigned)
@@ -800,6 +803,12 @@ describe Paper do
       expect(
         paper.roles_for(user: user)
       ).to contain_exactly(role_1_assigned, role_2_assigned)
+    end
+
+    it "returns the user's roles on the paper when roles are eager loaded" do
+      expect(paper_with_roles.roles.loaded?).to be(true)
+      expect(paper_with_roles.roles_for(user: user)).to \
+        contain_exactly(role_1_assigned, role_2_assigned)
     end
 
     context "when the user isn't assigned to any roles" do

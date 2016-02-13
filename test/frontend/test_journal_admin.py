@@ -43,7 +43,7 @@ class ApertaJournalAdminTest(CommonTest):
            - Edit PDF CSS
            - Edit Manuscript CSS
   """
-  def rest_validate_journal_admin_components_styles(self):
+  def test_validate_journal_admin_components_styles(self):
     """
     Validates the presence of the following elements:
       toolbar elements
@@ -62,7 +62,7 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page.validate_page_elements_styles()
     ja_page.validate_nav_toolbar_elements(user_type['user'])
 
-  def rest_validate_journal_admin_user_search_display_function(self):
+  def test_validate_journal_admin_user_search_display_function(self):
     """
     Validates the presence of the following elements:
       user section heading and user search form elements, user search icon
@@ -80,7 +80,7 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_users_section(journal)
 
-  def rest_validate_journal_admin_roles_display_function(self):
+  def test_validate_journal_admin_roles_display_function(self):
     """
     Validates the presence of the following elements:
       role section heading
@@ -99,7 +99,7 @@ class ApertaJournalAdminTest(CommonTest):
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_roles_section()
 
-  def rest_validate_task_types_display_function(self):
+  def test_validate_task_types_display_function(self):
     """
     Validates the presence of the following elements:
       Section Heading
@@ -150,6 +150,38 @@ class ApertaJournalAdminTest(CommonTest):
 
     ja_page = JournalAdminPage(self.getDriver())
     ja_page.validate_mmt_section(journal)
+
+  def test_validate_style_settings_display_function(self):
+    """
+    Validates the presence of the following elements:
+      Section Heading
+      Upload Epub Cover and status text
+      Edit EPUB CSS button
+      Edit PDF CSS button
+      Edit Manuscript CSS button
+    Validates the function of the:
+      Upload EPUB Cover button
+      Edit * CSS buttons
+    Validates the elements of the * CSS types overlay
+      Title
+      Closer
+      Field Label
+      Textarea
+      Cancel link
+      Save button
+    :return: void function
+    """
+    logging.info('Validating Journal Style Settings display and function')
+    user_type = random.choice(users)
+    print('Logging in as user: {}'.format(user_type))
+    dashboard_page = self.login(email=user_type['user'], password=login_valid_pw)
+    dashboard_page.click_admin_link()
+
+    adm_page = AdminPage(self.getDriver())
+    adm_page.select_random_journal()
+
+    ja_page = JournalAdminPage(self.getDriver())
+    ja_page.validate_style_settings_section()
 
 if __name__ == '__main__':
   CommonTest._run_tests_randomly()

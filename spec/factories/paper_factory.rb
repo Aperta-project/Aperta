@@ -8,12 +8,7 @@ FactoryGirl.define do
         Assignment.where(
           role: paper.journal.roles.creator,
           assigned_to: paper
-        ).destroy_all
-        Assignment.create!(
-          role: paper.journal.roles.creator,
-          assigned_to: paper,
-          user: creator
-        )
+        ).first_or_create!
       end
 
       paper.save!

@@ -1,12 +1,41 @@
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import FileUploadMixin from 'tahi/mixins/file-upload';
+import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
 import Ember from 'ember';
+
+const { computed } = Ember;
 
 export default TaskComponent.extend(FileUploadMixin, {
   classNames: ['supporting-information-task'],
-  uploadUrl: Ember.computed('task.paper.id', function() {
-    const id = this.get('task.paper.id');
-    return '/api/supporting_information_files?paper_id=' + id;
+  files: computed.alias('task.paper.supportingInformationFiles'),
+  uploadUrl: computed('task', function() {
+    return `/api/supporting_information_files?task_id=${this.get('task.id')}`;
+  }),
+
+  validateData() {
+    const objs = this.get('filesWithErrors');
+
+    objs.invoke('validateAllKeys');
+
+    const errorsPresent = _.compact(objs.map(function(obj) {
+      return obj.get('errorsPresent');
+    }));
+
+    if(errorsPresent.length) {
+      this.set('validationErrors.completed', 'Please fix all errors');
+    }
+  },
+
+  filesWithErrors: computed('files.[]', function() {
+    return this.get('files').map(function(f) {
+      return ObjectProxyWithErrors.create({
+        object: f,
+        validations: {
+          'title': ['presence'],
+          'category': ['presence']
+        }
+      });
+    });
   }),
 
   actions: {
@@ -21,11 +50,16 @@ export default TaskComponent.extend(FileUploadMixin, {
         data.supporting_information_file.id
       );
 
-      this.get('task.paper.supportingInformationFiles').pushObject(file);
+      this.get('files').pushObject(file);
     },
 
-    destroyAttachment(attachment) {
-      attachment.destroyRecord();
+    deleteFile(file) {
+      file.destroyRecord();
+    },
+
+    updateFile(file) {
+      this.clearAllValidationErrorsForModel(file);
+      file.save();
     }
   }
 });

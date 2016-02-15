@@ -44,6 +44,46 @@ class QueryParser < QueryLanguageParser
     paper_table[:doi].matches("%#{doi}%")
   end
 
+  add_two_part_expression('USER', 'HAS ROLE') do |username, role|
+    user = User.find_by(username: username)
+    user_id = user ? user.id : -1
+    role_ids = Role.where('lower(name) = ?', role.downcase)
+                   .pluck(:id)
+
+    table = join(Assignment, 'assigned_to_id')
+    table['user_id'].eq(user_id)
+      .and(table['role_id'].in(role_ids))
+      .and(table['assigned_to_type'].eq('Paper'))
+  end
+
+  add_two_part_expression('USER', 'HAS ANY ROLE') do |user, _|
+    user = User.find_by(username: user)
+    user_id = user ? user.id : -1
+
+    table = join(Assignment, 'assigned_to_id')
+    table['user_id'].eq(user_id).and(table['assigned_to_type'].eq('Paper'))
+  end
+
+  add_simple_expression('ANYONE HAS ROLE') do |role|
+    role_ids = Role.where('lower(name) = ?', role.downcase)
+                   .pluck(:id)
+
+    table = join(Assignment, 'assigned_to_id')
+    table['role_id'].in(role_ids).and(table['assigned_to_type'].eq('Paper'))
+  end
+
+  add_simple_expression('NO ONE HAS ROLE') do |role|
+    role_ids = Role.where('lower(name) = ?', role.downcase)
+                   .pluck(:id)
+
+    assignment = Assignment.arel_table
+    paper_table[:id].not_in(
+      Arel::Nodes::SqlLiteral.new(
+        assignment.project(:assigned_to_id)
+                  .where(assignment[:role_id].in(role_ids)
+                  .and(assignment[:assigned_to_type].eq('Paper'))).to_sql))
+  end
+
   add_two_part_expression('TASK', 'IS COMPLETE') do |task, _|
     table = join Task
     table[:title].matches(task).and(table[:completed].eq(true))
@@ -103,11 +143,11 @@ class QueryParser < QueryLanguageParser
 
   private
 
-  def join(klass)
+  def join(klass, id = "paper_id")
     table = klass.table_name
     name = "#{table}_#{@join_counter}"
     @root = @root.joins(<<-SQL)
-      INNER JOIN #{table} AS #{name} ON #{name}.paper_id = papers.id
+      INNER JOIN #{table} AS #{name} ON #{name}.#{id} = papers.id
     SQL
     @join_counter += 1
     klass.arel_table.alias(name)

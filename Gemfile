@@ -104,6 +104,7 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'capybara-select2'
   gem 'capybara-screenshot'
   gem 'codeclimate-test-reporter', require: nil
   gem 'database_cleaner'

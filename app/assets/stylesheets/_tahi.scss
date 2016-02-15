@@ -140,8 +140,13 @@ textarea { resize: none; }
   }
 }
 
+.power-select-other.error .power-select-other-input {
+  border: 1px solid $tahi-error-red;
+}
+
 .error {
-  input, select, textarea, .did-you-mean-input, .select2-container .select2-choice {
+  input, select, textarea,
+  .did-you-mean-input, .select2-container .select2-choice {
     border: 1px solid $tahi-error-red;
   }
 }

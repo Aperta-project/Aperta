@@ -2,10 +2,10 @@ require 'rails_helper'
 require 'models/concerns/striking_image_shared_examples'
 
 describe SupportingInformationFile, redis: true do
-  let(:paper) { FactoryGirl.create :paper }
   let(:file) do
     with_aws_cassette 'supporting_info_files_controller' do
-      paper.supporting_information_files.create! attachment: ::File.open('spec/fixtures/yeti.tiff')
+      FactoryGirl.create :supporting_information_file,
+                         attachment: File.open('spec/fixtures/yeti.tiff')
     end
   end
 

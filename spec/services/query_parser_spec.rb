@@ -158,5 +158,54 @@ describe QueryParser do
         SQL
       end
     end
+
+    describe 'people queries' do
+      let!(:president_role) { create(:role, name: 'president') }
+      let!(:user) { create(:user, username: 'someuser') }
+
+      it 'parses USER x HAS ROLE president' do
+        parse = QueryParser.new.parse 'USER someuser HAS ROLE president'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{president_role.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
+        SQL
+      end
+
+      it 'parses across multiple roles of same name for USER x HAS ROLE president' do
+        president_role2 = create(:role, name: 'president')
+        parse = QueryParser.new.parse 'USER someuser HAS ROLE president'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{president_role.id}, #{president_role2.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
+        SQL
+      end
+
+      it 'parses USER x HAS ANY ROLE' do
+        parse = QueryParser.new.parse 'USER someuser HAS ANY ROLE'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."assigned_to_type" = 'Paper'
+        SQL
+      end
+
+      it 'parses ANYONE HAS ROLE x' do
+        parse = QueryParser.new.parse 'ANYONE HAS ROLE president'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "assignments_0"."role_id" IN (#{president_role.id}) AND "assignments_0"."assigned_to_type" = 'Paper'
+        SQL
+      end
+
+      it 'parses NO ONE HAS ROLE x' do
+        parse = QueryParser.new.parse 'NO ONE HAS ROLE president'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{president_role.id}) AND "assignments"."assigned_to_type" = 'Paper')
+        SQL
+      end
+
+      it 'parses USER x HAS ROLE x AND NO ONE HAS ROLE president' do
+        janitor_role = create(:role, name: 'janitor')
+        parse = QueryParser.new.parse 'USER someuser HAS ROLE janitor AND NO ONE HAS ROLE president'
+        expect(parse.to_sql).to eq(<<-SQL.strip)
+          "assignments_0"."user_id" = #{user.id} AND "assignments_0"."role_id" IN (#{janitor_role.id}) AND "assignments_0"."assigned_to_type" = 'Paper' AND "papers"."id" NOT IN (SELECT assigned_to_id FROM "assignments" WHERE "assignments"."role_id" IN (#{president_role.id}) AND "assignments"."assigned_to_type" = 'Paper')
+        SQL
+      end
+    end
   end
 end

@@ -7109,6 +7109,7 @@ question_attachments:
   - created_at
   - updated_at
   - token
+  - caption
   records: 
   - - '1'
     - '78'
@@ -7118,6 +7119,7 @@ question_attachments:
     - '2015-11-02 14:16:35.584565'
     - '2016-01-21 17:58:45.04696'
     - 73b346c3a9fa14d2fcfd0734cb07a04dfb30c2be5e9f7270
+    - 
   - - '2'
     - '88'
     - turtles-are-amazing.docx
@@ -7126,6 +7128,7 @@ question_attachments:
     - '2015-11-02 14:18:02.598388'
     - '2016-01-21 17:58:45.059148'
     - 44129b4f5b13fbfe0c18acff578f54a0d985b9d68cc6af7d
+    - 
   - - '3'
     - '126'
     - manuscript+_281_29.docx
@@ -7134,6 +7137,7 @@ question_attachments:
     - '2015-11-02 15:12:01.338942'
     - '2016-01-21 17:58:45.060737'
     - 9a83d979f72b3e973a01637015fbbd4c4d855461f3e60bcd
+    - 
 
 ---
 roles:
@@ -7232,6 +7236,7 @@ supporting_information_files:
   - token
   - label
   - category
+  - si_task_id
   records: 
   - - '1'
     - '2'
@@ -7245,6 +7250,7 @@ supporting_information_files:
     - 
     - 
     - 
+    - '22'
   - - '2'
     - '3'
     - 'Title: turtles-are-amazing.docx'
@@ -7257,6 +7263,7 @@ supporting_information_files:
     - 
     - 
     - 
+    - '43'
   - - '3'
     - '4'
     - 'Title: turtles-are-amazing.docx'
@@ -7269,6 +7276,7 @@ supporting_information_files:
     - 
     - 
     - 
+    - '64'
 
 ---
 tahi_standard_tasks_funders:

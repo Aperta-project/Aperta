@@ -2,10 +2,11 @@
 
 <div class="task-main-content">
   <div class="supporting-information-files">
-    {{#each task.paper.supportingInformationFiles as |file|}}
-    {{supporting-information-file
-        file=file
-        isEditable=isEditable}}
+    {{#each filesWithErrors as |fileWithErrors|}}
+      {{supporting-information-file model=fileWithErrors
+                                    updateFile=(action "updateFile")
+                                    deleteFile=(action "deleteFile")
+                                    isEditable=isEditable}}
     {{/each}}
   </div>
 

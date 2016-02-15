@@ -3,6 +3,10 @@ import AuthorizedRoute from 'tahi/routes/authorized';
 import deNamespaceTaskType from 'tahi/lib/de-namespace-task-type';
 
 export default AuthorizedRoute.extend({
+  afterModel(model) {
+    return model.get('tasks');
+  },
+
   actions: {
     addTaskTypeToPhase(phase, taskTypeList) {
       if (!taskTypeList) { return; }

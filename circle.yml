@@ -47,6 +47,7 @@ database:
 test:
   override:
     - bundle exec rspec --format RspecJunitFormatter --out $CIRCLE_TEST_REPORTS/rspec.xml:
+        timeout: 1800
         parallel: true
         files:
           - "spec/**/*_spec.rb"

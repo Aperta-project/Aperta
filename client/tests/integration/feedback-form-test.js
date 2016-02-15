@@ -14,6 +14,13 @@ module('Integration: Feedback Form', {
     $.mockjax({url: '/api/user_flows/authorization', status: 204});
     $.mockjax({url: '/api/admin/journals/authorization', status: 204});
     $.mockjax({url: '/api/affiliations', status: 304 });
+
+    $.mockjax({
+      url: '/api/journals',
+      method: 'GET',
+      status: 200,
+      responseText: { journals: [] }
+    });
     $.mockjax({
       url: '/api/feedback',
       method: 'POST',

@@ -30,6 +30,7 @@ module('Integration: Paper Tracker', {
     $.mockjax({url: '/api/admin/journals/authorization', status: 204});
     $.mockjax({url: '/api/user_flows/authorization', status: 204});
     $.mockjax({url: '/api/comment_looks', status: 200, responseText: {comment_looks: []}});
+    $.mockjax({url: '/api/journals', status: 200, responseText: { journals: [] }});
   }
 });
 

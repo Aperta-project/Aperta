@@ -16,6 +16,8 @@ module 'Integration: Commenting',
     TestHelper.setup(App)
     $.mockjax(url: "/api/admin/journals/authorization", status: 204)
     $.mockjax(url: "/api/user_flows/authorization", status: 204)
+    $.mockjax(url: "/api/journals", status: 200, responseText: { journals: [] })
+
     TestHelper.handleFindAll('discussion-topic', 1)
 
 

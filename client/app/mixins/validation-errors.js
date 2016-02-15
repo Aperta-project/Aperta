@@ -212,8 +212,9 @@ export default Ember.Mixin.create({
     @param {Array} types names of validations to run
   */
 
-  validate(key, value, types) {
-    const messages = validator.validate.call(this, key, value, types);
+  validate(key, value) {
+    const validations = this.get('validations')[key];
+    const messages = validator.validate.call(this, key, value, validations);
     this.displayValidationError(key, messages);
   },
 

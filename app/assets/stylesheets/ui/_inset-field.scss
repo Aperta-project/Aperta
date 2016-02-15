@@ -72,8 +72,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    @include flex-grow(0);
+    @include flex-grow(1);
     @include flex-shrink(0);
+  }
+
+  .fa {
+    pointer-events: auto;
+    cursor: help;
   }
 
   .error-message {

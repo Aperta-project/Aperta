@@ -51,6 +51,45 @@ describe ParticipationsController do
     end
   end
 
+  describe "#show" do
+    let!(:participation1) { FactoryGirl.create(:participation, task: task) }
+
+    subject(:do_request) do
+      get :show, format: 'json', id: participation1.to_param
+    end
+
+    it_behaves_like "an unauthenticated json request"
+
+    context "and the user authorized" do
+      before do
+        allow_any_instance_of(User).to \
+          receive(:can?).with(:view_participants, task).and_return true
+      end
+
+      it "returns the participation" do
+        do_request
+
+        expect(res_body['participation']).to be
+        expect(res_body['participation']['id']).to eq(participation1.id)
+      end
+
+      context "and the participation does not exist" do
+        it { responds_with(404) }
+      end
+    end
+
+    context "when the user does not have access" do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:view_participants, task)
+          .and_return false
+      end
+
+      it { responds_with(403) }
+    end
+  end
+
+
   describe 'POST create' do
     subject(:do_request) do
       xhr :post, :create, format: :json,

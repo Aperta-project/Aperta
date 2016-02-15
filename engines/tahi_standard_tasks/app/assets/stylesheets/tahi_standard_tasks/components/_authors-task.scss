@@ -104,11 +104,6 @@
 }
 
 .add-author-form {
-  margin: 15px 0;
-  padding: 30px;
-  background: rgba(213, 213, 213, 0.8);
-  width: 915px;
-
   .affiliation-field, .secondary-affiliation-field {
     border-radius: 4px;
     width: 418px;
@@ -126,16 +121,44 @@
   .form-inline .form-group {
     vertical-align: top;
   }
+
+  .author-middle-initial {
+    @include flex-basis(7rem);
+    min-width: 7rem;
+  }
+
+  .author-affiliation {
+    @include flex-basis(50%);
+    min-width: 260px;
+  }
+
+  .author-corresponding, .author-deceased {
+    @include flex-basis(50%);
+  }
+
+  .author-contribution {
+    position: relative;
+    @include flex-basis(50%);
+    min-width: 185px;
+
+    input {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    label {
+      padding-right: 0; // .overlay--card .overlay-body label override
+      padding-left: 1.25rem;
+    }
+  }
 }
 
 .authors-overlay-item .add-author-form { margin: 0; }
 
+// DELETE?
 .author-half {
   width: 418px;
-}
-
-.author-name {
-  width: 176px;
 }
 
 .author-form-buttons {
@@ -143,15 +166,18 @@
   padding-top: 10px;
 }
 
+// DELETE?
 .author-bump {
   margin-left: 14px;
 }
 
+// DELETE?
 .author-top {
   border-bottom: 1px solid $tahi-grey-dark;
   padding-bottom: 15px;
 }
 
+// DELETE?
 .author-middle {
   width: 42px;
   margin: 0 9px;

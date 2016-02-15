@@ -29,7 +29,7 @@ export default TaskComponent.extend({
     });
   }),
 
-  clearNewAuthorAnswers: function(){
+  clearNewAuthorAnswers(){
     this.get('nestedQuestionsForNewAuthor').forEach( (nestedQuestion) => {
       nestedQuestion.clearAnswerForOwner(this.get('newAuthor'));
     });
@@ -55,7 +55,7 @@ export default TaskComponent.extend({
     },
 
     saveNewAuthor() {
-      let author = this.get('newAuthor');
+      const author = this.get('newAuthor');
 
       // set this here, not when initially built so it doesn't show up in
       // the list of existing authors as the user fills out the form
@@ -63,7 +63,7 @@ export default TaskComponent.extend({
 
       author.save().then( (savedAuthor) => {
         author.get('nestedQuestionAnswers').toArray().forEach(function(answer){
-          let value = answer.get('value');
+          const value = answer.get('value');
           if(value || value === false){
             answer.set('owner', savedAuthor);
             answer.save();

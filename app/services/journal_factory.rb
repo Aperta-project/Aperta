@@ -35,6 +35,7 @@ class JournalFactory
 
     Role.ensure_exists(Role::COLLABORATOR_ROLE, journal: @journal, participates_in: [Paper]) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
     end
 
     Role.ensure_exists(Role::REVIEWER_ROLE, journal: @journal, participates_in: [Paper]) do |role|
@@ -66,6 +67,7 @@ class JournalFactory
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
     end
@@ -82,9 +84,8 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
     end
 
-    Role.ensure_exists(Role::PARTICIPANT_ROLE, journal: @journal, participates_in: [Task]) do |role|
+    Role.ensure_exists(Role::PARTICIPANT_ROLE, journal: @journal, participates_in: [Task], delete_stray_permissions: true) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
     end

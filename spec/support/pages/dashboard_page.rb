@@ -29,6 +29,7 @@ class DashboardPage < Page
   def view_submitted_paper(paper)
     title = paper.title || paper.short_title
     click_link title
+    wait_for_ajax
     PaperPage.new
   end
 

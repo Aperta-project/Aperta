@@ -27,15 +27,14 @@ feature "Adding collaborators", js: true do
     collaborators_overlay = edit_paper.show_contributors
     expect(collaborators_overlay).to have_collaborators(user)
 
-    # The overlay may not be visible so make sure it is being shown
     collaborators_overlay = edit_paper.show_contributors
-    collaborators_overlay.remove_collaborators(user, author)
+    collaborators_overlay.remove_collaborators(user)
     collaborators_overlay.save
 
     expect(edit_paper).to have_no_application_error
     expect(page).to have_content "Upload Manuscript"
 
     collaborators_overlay = edit_paper.show_contributors
-    expect(collaborators_overlay).to have_no_collaborators
+    expect(collaborators_overlay).to_not have_collaborators(user)
   end
 end

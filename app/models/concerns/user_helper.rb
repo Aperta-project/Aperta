@@ -13,15 +13,6 @@ module UserHelper
     filter_authorized(permission, target).objects.length > 0
   end
 
-  def can_anywhere?(permission, type)
-    return true if site_admin
-    Authorizations::Query.new(
-      permission: permission,
-      target: type,
-      user: self
-    ).all.length > 0
-  end
-
   def filter_authorized(permission, target, participations_only: :default)
     Authorizations::Query.new(
       permission: permission,

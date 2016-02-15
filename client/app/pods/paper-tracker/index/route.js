@@ -25,7 +25,6 @@ export default AuthorizedRoute.extend({
 
   model(params) {
     return this.get('restless').get('/api/paper_tracker', params).then((data)=> {
-      console.log(data);
       this.prepMetaData(data);
       this.store.pushPayload('paper', data);
       let paperIds = data.papers.mapBy('id');

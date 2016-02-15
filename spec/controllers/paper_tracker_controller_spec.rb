@@ -6,7 +6,7 @@ describe PaperTrackerController do
   before { sign_in user }
 
   describe 'let(per_page)' do
-    let(:user) { FactoryGirl.create :user, site_admin: true }
+    let(:user) { FactoryGirl.create :user }
 
     it 'is available and useful' do
       expect(per_page).to be_truthy
@@ -15,7 +15,20 @@ describe PaperTrackerController do
   end
 
   describe 'without the permission' do
-    let(:user) { FactoryGirl.create :user, site_admin: false }
+    let(:user) { FactoryGirl.create :user }
+
+    class ResultSet
+      def objects
+        []
+      end
+    end
+
+    before do
+      allow_any_instance_of(User).to receive(:filter_authorized)
+        .with(:view_paper_tracker, Journal)
+        .and_return ResultSet.new
+    end
+
     it 'returns a 403' do
       get :index, format: :json
       expect(response.status).to eq(403)
@@ -185,7 +198,7 @@ describe PaperTrackerController do
     end
   end
 
-  def make_matchable_paper(attrs={})
+  def make_matchable_paper(attrs = {})
     paper = FactoryGirl.create(:paper, :submitted, attrs)
     assign_journal_role(paper.journal, user, :admin)
     paper

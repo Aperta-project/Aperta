@@ -109,9 +109,9 @@ module('Integration: FinancialDisclosure', {
       }, JSON.stringify([])
     ]);
 
-    server.respondWith('GET', "/api/nested_questions?type=Funder", [200, { 'Content-Type': 'application/json' }, JSON.stringify(
+    server.respondWith('GET', '/api/nested_questions?type=Funder', [200, { 'Content-Type': 'application/json' }, JSON.stringify(
       { nested_questions: [
-        {id: 120, text: "A question to be checked", value_type: "boolean", ident: "funder--had_influence" },
+        {id: 120, text: 'A question to be checked', value_type: 'boolean', ident: 'funder--had_influence' },
       ] }
     ) ]);
 
@@ -127,7 +127,7 @@ module('Integration: FinancialDisclosure', {
       }, ""
     ]);
 
-    server.respondWith('GET', "/api/journals", [200, { 'Content-Type': 'application/json' }, JSON.stringify({journals:[]})]);
+    server.respondWith('GET', '/api/journals', [200, { 'Content-Type': 'application/json' }, JSON.stringify({journals:[]})]);
 
     mirrorCreateResponse = function(key, newId) {
       return function(xhr) {
@@ -140,7 +140,7 @@ module('Integration: FinancialDisclosure', {
         }, response);
       };
     };
-    return server.respondWith('POST', "/api/funders", mirrorCreateResponse('funder', 1));
+    return server.respondWith('POST', '/api/funders', mirrorCreateResponse('funder', 1));
   }
 });
 

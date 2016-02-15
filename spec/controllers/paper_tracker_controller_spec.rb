@@ -17,16 +17,10 @@ describe PaperTrackerController do
   describe 'without the permission' do
     let(:user) { FactoryGirl.create :user }
 
-    class ResultSet
-      def objects
-        []
-      end
-    end
-
     before do
       allow_any_instance_of(User).to receive(:filter_authorized)
         .with(:view_paper_tracker, Journal)
-        .and_return ResultSet.new
+        .and_return double('ResultSet', objects: [])
     end
 
     it 'returns a 403' do

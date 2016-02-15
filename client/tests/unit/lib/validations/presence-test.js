@@ -21,7 +21,7 @@ test('string with space', function(assert) {
   const value = ' ';
   const pass = validation(value);
 
-  assert.equal(pass, true, 'validation passed');
+  assert.equal(pass, false, 'validation failed');
 });
 
 test('integer of zero', function(assert) {

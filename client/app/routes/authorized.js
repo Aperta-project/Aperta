@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  can: Ember.inject.service('can'),
   restless: Ember.inject.service('restless'),
 
   handleUnauthorizedRequest(transition) {

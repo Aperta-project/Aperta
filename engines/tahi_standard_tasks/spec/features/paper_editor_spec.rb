@@ -1,31 +1,44 @@
 require 'rails_helper'
 
-feature "Invite Editor", js: true do
-  let(:admin) { FactoryGirl.create(:user, site_admin: true) }
+feature 'Invite Editor', js: true do
+  let(:admin) { FactoryGirl.create(:user) }
   let(:editor) { FactoryGirl.create(:user) }
-  let(:paper) { FactoryGirl.create(:paper_with_phases, :submitted, creator: admin) }
-  let!(:task) { FactoryGirl.create(:paper_editor_task, paper: paper, phase: paper.phases.first) }
+  let(:creator) { FactoryGirl.create(:user) }
+  let(:paper) { FactoryGirl.create(:paper, creator: creator) }
+  let!(:task) do
+    FactoryGirl.create(:paper_editor_task, paper: paper)
+  end
 
   before do
-    assign_journal_role(paper.journal, admin, :editor)
+    assign_journal_role(paper.journal, admin, :admin)
     assign_journal_role(paper.journal, editor, :editor)
 
     login_as(admin, scope: :user)
-    visit "/"
+    visit "/papers/#{paper.id}/tasks/#{task.id}"
   end
 
-  scenario "Admin can invite an editor to a paper", selenium: true do
-    dashboard_page = DashboardPage.new
-    paper_page = dashboard_page.view_submitted_paper(paper)
-    task_manager_page = paper_page.visit_task_manager
+  scenario 'Editor can be invited be an Academic Editor on a paper', selenium: true do
+    overlay = InviteEditorOverlay.new
+    expect(overlay).to_not be_completed
+    overlay.paper_editor = editor
+    overlay.mark_as_complete
+    expect(overlay).to be_completed
+    expect(overlay).to have_editor editor
+    overlay.sign_out
 
-    needs_editor_phase = task_manager_page.phase(task.phase.name)
-    needs_editor_phase.view_card(task.title) do |overlay|
-      expect(overlay).to_not be_completed
-      overlay.paper_editor = editor
-      overlay.mark_as_complete
-      expect(overlay).to be_completed
-      expect(overlay).to have_editor editor
+    login_as(editor)
+    visit '/'
+
+    dashboard = DashboardPage.new
+    dashboard.view_invitations do |invitations|
+      expect(invitations.count).to eq 1
+      invitations.first.accept
+      expect(dashboard.pending_invitations.count).to eq 0
+    end
+    dashboard.reload
+
+    within('.active-paper-table-row') do
+      expect(page).to have_content('Academic Editor')
     end
   end
 end

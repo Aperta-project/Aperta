@@ -26,7 +26,7 @@ class DashboardPage < Page
     has_css?('.dashboard-paper-title', text: submission_name)
   end
 
-  def view_submitted_paper paper
+  def view_submitted_paper(paper)
     title = paper.title || paper.short_title
     click_link title
     PaperPage.new

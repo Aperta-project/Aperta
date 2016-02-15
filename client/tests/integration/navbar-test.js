@@ -37,6 +37,12 @@ module('Integration: Navbar', {
         'Content-Type': 'application/json'
       }, JSON.stringify(dashboardResponse)
     ]);
+
+    server.respondWith('GET', "/api/journals", [
+      200, {
+        'Content-Type': 'application/json' },
+        JSON.stringify({journals:[]})
+    ]);
   }
 });
 
@@ -62,6 +68,7 @@ respondAuthorized = function() {
       'Content-Type': 'application/html'
     }, ''
   ]);
+
 
   return server.respondWith('GET', '/api/user_flows/authorization', [
     204, {

@@ -75,6 +75,11 @@ module 'Integration: Manuscript Manager Templates',
       server.respondWith 'POST', "/api/phase_templates/1", [
         200, {"Content-Type": "application/json"}, '{}'
       ]
+
+      server.respondWith 'GET', "/api/journals", [
+        200, {'Content-Type': 'application/json'}, JSON.stringify({journals:[]})
+      ]
+
       response = {
         "journal_task_types": [
           {

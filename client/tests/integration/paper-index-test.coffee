@@ -75,6 +75,10 @@ module 'Integration: PaperIndex',
     server.respondWith 'GET', "/api/tasks/#{figureTaskId}/nested_question_answers", [
       200, {"Content-Type": "application/json"} , JSON.stringify({nested_question_answers: []})
     ]
+    server.respondWith 'GET', "/api/journals", [
+      200, {'Content-Type': 'application/json'}, JSON.stringify({journals:[]})
+    ]
+
 
 test 'on paper.index as a participant on a task but not author of paper', (assert) ->
   expect(1)

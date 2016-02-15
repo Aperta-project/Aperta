@@ -52,6 +52,10 @@ module 'Integration: Flow Manager Administration',
       200, 'content-type': 'application/json', JSON.stringify({ flows: [] })
     ]
 
+    server.respondWith 'GET', "/api/journals", [
+      200, {'Content-Type': 'application/json'}, JSON.stringify({journals:[]})
+    ]
+
 test 'Flow manager edit link should show up on a oldRole with permission in edit mode', (assert) ->
   visit "/admin/journals/#{journal.id}"
   click('.admin-role-action-button.fa.fa-pencil')

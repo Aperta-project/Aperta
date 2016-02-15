@@ -25,6 +25,21 @@ module('Integration: Discussions', {
     TestHelper.handleFind(paper);
     TestHelper.handleFindAll('discussion-topic', 1);
 
+    // Grant permissions to access workflow on paper
+    Ember.run(function(){
+      // Provide access to the paper
+      var store = getStore();
+      store.createRecord('permission',{
+        id: 'paper+1',
+        object:{id: 1, type: 'Paper'},
+        permissions:{
+          manage_workflow:{
+            states: ['*']
+          }
+        }
+      });
+    });
+
     const restless = App.__container__.lookup('service:restless');
     restless['delete'] = function() {
       return Ember.RSVP.resolve({});

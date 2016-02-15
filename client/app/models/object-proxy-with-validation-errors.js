@@ -1,9 +1,8 @@
 import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
-export default Ember.Object.extend(ValidationErrorsMixin, {
+const ObjectProxy = Ember.Object.extend(ValidationErrorsMixin, {
   errorsPresent: false,
-
   validations: null,
 
   init() {
@@ -37,14 +36,22 @@ export default Ember.Object.extend(ValidationErrorsMixin, {
   },
 
   validateKey(key) {
-    this.validate(
-      key,
-      this.get(`object.${key}`),
-      this.get(`validations.${key}`)
-    );
+    this.validate(key, this.get(`object.${key}`));
 
     if(this.validationErrorsPresentForKey(key)) {
       this.set('errorsPresent', true);
     }
   }
 });
+
+ObjectProxy.reopenClass({
+  errorsPresentInCollection(collection) {
+    return !!(
+      _.compact(collection.map(function(obj) {
+        return obj.get('errorsPresent');
+      }))
+    ).length;
+  }
+});
+
+export default ObjectProxy;

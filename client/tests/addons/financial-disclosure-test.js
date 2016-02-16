@@ -1,12 +1,13 @@
 import Ember from 'ember';
-import { module, test } from "qunit";
+import { module, test } from 'qunit';
 import startApp from '../helpers/start-app';
 import { paperWithTask, addUserAsParticipant, addNestedQuestionToTask } from '../helpers/setups';
 import setupMockServer from '../helpers/mock-server';
 import Factory from '../helpers/factory';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 
-var app, currentPaper, fakeUser, financialDisclosureTask, financialDisclosureTaskId, paperPayload, server;
+var app, currentPaper, fakeUser, financialDisclosureTask,
+    financialDisclosureTaskId, paperPayload, server;
 
 app = null;
 server = null;
@@ -23,7 +24,8 @@ module('Integration: FinancialDisclosure', {
   },
 
   setup: function() {
-    var collaborators, journal, mirrorCreateResponse, paperResponse, phase, records, taskPayload;
+    var collaborators, journal, mirrorCreateResponse, paperResponse,
+        phase, records, taskPayload;
     app = startApp();
     server = setupMockServer();
     fakeUser = window.currentUserData.user;
@@ -31,7 +33,7 @@ module('Integration: FinancialDisclosure', {
 
     records = paperWithTask('FinancialDisclosureTask', {
       id: financialDisclosureTaskId,
-      oldRole: "author"
+      oldRole: 'author'
     });
 
     currentPaper = records[0];
@@ -42,12 +44,15 @@ module('Integration: FinancialDisclosure', {
     paperPayload = Factory.createPayload('paper');
     paperPayload.addRecords(records.concat([fakeUser]));
     paperResponse = paperPayload.toJSON();
-    paperResponse.participations = [addUserAsParticipant(financialDisclosureTask, fakeUser)];
+    paperResponse.participations =
+      [addUserAsParticipant(financialDisclosureTask, fakeUser)];
 
     taskPayload = Factory.createPayload('task');
 
     var nestedQuestion;
-    nestedQuestion = Factory.createRecord('NestedQuestion', { ident: 'financial_disclosures--author_received_funding' });
+    nestedQuestion = Factory.createRecord(
+      'NestedQuestion',
+      { ident: 'financial_disclosures--author_received_funding' });
     addNestedQuestionToTask(nestedQuestion, financialDisclosureTask);
     var nestedQuestionsPayload = Factory.createPayload('nested_questions');
     nestedQuestionsPayload.addRecords([nestedQuestion]);
@@ -57,9 +62,9 @@ module('Integration: FinancialDisclosure', {
     financialDisclosureTask = taskPayload.toJSON();
     collaborators = [
       {
-        id: "35",
-        full_name: "Aaron Baker",
-        info: "testroles2, collaborator"
+        id: '35',
+        full_name: 'Aaron Baker',
+        info: 'testroles2, collaborator'
       }
     ];
 
@@ -104,9 +109,9 @@ module('Integration: FinancialDisclosure', {
       }, JSON.stringify([])
     ]);
 
-    server.respondWith('GET', "/api/nested_questions?type=Funder", [200, { 'Content-Type': 'application/json' }, JSON.stringify(
+    server.respondWith('GET', '/api/nested_questions?type=Funder', [200, { 'Content-Type': 'application/json' }, JSON.stringify(
       { nested_questions: [
-        {id: 120, text: "A question to be checked", value_type: "boolean", ident: "funder--had_influence" },
+        {id: 120, text: 'A question to be checked', value_type: 'boolean', ident: 'funder--had_influence' },
       ] }
     ) ]);
 
@@ -122,6 +127,8 @@ module('Integration: FinancialDisclosure', {
       }, ""
     ]);
 
+    server.respondWith('GET', '/api/journals', [200, { 'Content-Type': 'application/json' }, JSON.stringify({journals:[]})]);
+
     mirrorCreateResponse = function(key, newId) {
       return function(xhr) {
         var createdItem, response;
@@ -133,7 +140,7 @@ module('Integration: FinancialDisclosure', {
         }, response);
       };
     };
-    return server.respondWith('POST', "/api/funders", mirrorCreateResponse('funder', 1));
+    return server.respondWith('POST', '/api/funders', mirrorCreateResponse('funder', 1));
   }
 });
 

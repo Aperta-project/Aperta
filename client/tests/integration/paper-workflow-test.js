@@ -50,6 +50,11 @@ module('Integration: Paper Workflow page', {
         'Content-Type': 'application/json'
       }, '{}'
     ]);
+
+    server.respondWith('GET', '/api/journals', [
+      200, { 'Content-Type': 'application/json' },
+      JSON.stringify({journals:[]})
+    ]);
   }
 });
 

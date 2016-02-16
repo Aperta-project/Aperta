@@ -24,6 +24,7 @@ module("Integration: Inviting an editor", {
       export_formats: []
     }});
     $.mockjax({url: /\/api\/tasks\/\d+/, type: 'PUT', status: 200, responseText: {}});
+    $.mockjax({url: /\/api\/journals/, type: 'GET', status: 200, responseText: { journals: [] }});
 
     inviteeEmail = window.currentUserData.user.email;
     $.mockjax({

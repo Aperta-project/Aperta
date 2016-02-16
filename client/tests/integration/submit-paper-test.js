@@ -64,6 +64,12 @@ module('Integration: Submitting Paper', {
         papers: []
       })
     ]);
+
+    server.respondWith('GET', '/api/journals', [
+      200, { 'Content-Type': 'application/json' },
+      JSON.stringify({journals:[]})
+    ]);
+
     return server.respondWith('GET', '/api/dashboards', [
       200, {
         'Content-Type': 'application/json'

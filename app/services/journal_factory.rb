@@ -49,6 +49,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: 'Task', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'PlosBilling::BillingTask', states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: 'PlosBilling::BillingTask', states: ['*'])
+      role.ensure_permission_exists(:view_paper_tracker, applies_to: 'Journal', states: ['*'])
     end
 
     Role.ensure_exists('Internal Editor', journal: @journal) do |role|
@@ -57,6 +58,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Task', states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: 'Task', states: ['*'])
+      role.ensure_permission_exists(:view_paper_tracker, applies_to: 'Journal', states: ['*'])
     end
 
     Role.ensure_exists('Handling Editor', journal: @journal, participates_in: [Paper]) do |role|
@@ -65,6 +67,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: 'Paper', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'Task', states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: 'Task', states: ['*'])
+      role.ensure_permission_exists(:view_paper_tracker, applies_to: 'Journal', states: ['*'])
     end
 
     Role.ensure_exists('Publishing Services and Production Staff', journal: @journal) do |role|
@@ -76,6 +79,7 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: 'Task', states: ['*'])
       role.ensure_permission_exists(:view, applies_to: 'PlosBilling::BillingTask', states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: 'PlosBilling::BillingTask', states: ['*'])
+      role.ensure_permission_exists(:view_paper_tracker, applies_to: 'Journal', states: ['*'])
     end
 
     Role.ensure_exists('Participant', journal: @journal, participates_in: [Task]) do |role|

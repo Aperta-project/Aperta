@@ -1,10 +1,19 @@
 import Ember from 'ember';
 import { test, moduleFor } from 'ember-qunit';
+import startApp from '../helpers/start-app';
+import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import setupMockServer from '../helpers/mock-server';
+
+let app = null;
+let server = null;
 
 moduleFor('controller:paper/workflow', 'PaperWorkflowController', {
   needs: ['controller:application'],
 
   beforeEach() {
+    app = startApp();
+    server = setupMockServer();
+
     this.phase1 = Ember.Object.create({ position: 1 });
     this.phase2 = Ember.Object.create({ position: 2 });
     this.phase3 = Ember.Object.create({ position: 3 });
@@ -14,7 +23,18 @@ moduleFor('controller:paper/workflow', 'PaperWorkflowController', {
       title: 'test paper',
       phases: []
     });
+
+    server.respondWith('GET', '/api/journals', [
+      200, { 'Content-Type': 'application/json' },
+      JSON.stringify({journals:[]})
+    ]);
+  },
+
+  afterEach() {
+    Ember.run(app, 'destroy');
+    server.restore();
   }
+
 });
 
 test('#sortedPhases: phases are sorted by position', function(assert) {

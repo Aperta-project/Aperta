@@ -33,6 +33,7 @@ module("Integration: adding an author", {
     server.respondWith('GET', "/api/admin/journals/authorization", [204, { 'Content-Type': 'application/json' }, "" ]);
     server.respondWith('GET', "/api/user_flows/authorization", [204, { 'Content-Type': 'application/json' }, "" ]);
     server.respondWith('GET', "/api/affiliations", [200, { 'Content-Type': 'application/json' }, JSON.stringify([]) ]);
+    server.respondWith('GET', "/api/journals", [200, { 'Content-Type': 'application/json' }, JSON.stringify({journals:[]})]);
 
     phase = FactoryGuy.make("phase");
     task = FactoryGuy.make("authors-task", { phase: phase });

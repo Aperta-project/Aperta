@@ -18,6 +18,8 @@ module SalesforceServices
                           password: Rails.configuration.salesforce_password
       Rails.logger.info("established Salesforce client connection")
 
+      client.materialize("Manuscript__c")
+      client.materialize("Case")
       client
     end
 
@@ -29,8 +31,7 @@ module SalesforceServices
       paper = Paper.find(paper_id)
 
       mt = ManuscriptTranslator.new(user_id: client.user_id, paper: paper)
-      manuscript = client.materialize("Manuscript__c")
-      sf_paper = manuscript.create(mt.paper_to_manuscript_hash)
+      sf_paper = Manuscript__c.create(mt.paper_to_manuscript_hash)
       Rails.logger.info("Salesforce Manuscript created: #{sf_paper.Id}")
 
       paper.update_attribute(:salesforce_manuscript_id, sf_paper.Id)
@@ -41,8 +42,7 @@ module SalesforceServices
       paper = Paper.find(paper_id)
 
       mt         = ManuscriptTranslator.new(user_id: client.user_id, paper: paper)
-      manuscript = client.materialize("Manuscript__c")
-      sf_paper   = manuscript.find(paper.salesforce_manuscript_id)
+      sf_paper   = Manuscript__c.find(paper.salesforce_manuscript_id)
       Rails.logger.info("Salesforce Manuscript updated: #{sf_paper.Id}")
 
       sf_paper.update_attributes mt.paper_to_manuscript_hash
@@ -65,9 +65,8 @@ module SalesforceServices
 
     def self.create_billing_and_pfa_case(paper_id:) # assumes paper.billing_card
       paper    = Paper.find(paper_id)
-      kase_mgr = self.client.materialize("Case")
       bt       = BillingTranslator.new(paper: paper)
-      kase     = kase_mgr.create(bt.paper_to_billing_hash)
+      kase     = Case.create(bt.paper_to_billing_hash)
       Rails.logger.info("Salesforce Case created: #{kase.Id}")
       kase
     end

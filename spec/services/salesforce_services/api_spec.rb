@@ -27,24 +27,26 @@ describe SalesforceServices::API do
   end
 
   describe "#create_manuscript" do
-    it "returns a Salesforce Manuscript__c object" do
-      VCR.use_cassette("salesforce_create_manuscript") do
-        @manuscript = @api.create_manuscript(paper_id: paper.id)
-      end
-      expect(@manuscript.class).to eq Manuscript__c
+    it "calls create on a Salesforce Manuscript__c object" do
+      mock_manuscript = instance_double("Manuscript__c", Id: 'sfdc')
+      expect(Manuscript__c).to receive(:create).and_return(mock_manuscript)
+      manuscript = @api.create_manuscript(paper_id: paper.id)
+      expect(manuscript).to eq mock_manuscript
     end
   end
 
   describe "#update_manuscript" do
-    it "updates a Salesforce Manuscript__c object" do
-      VCR.use_cassette("salesforce_create_manuscript") do
-        @manuscript = @api.create_manuscript(paper_id: paper.id)
-      end
-      VCR.use_cassette("salesforce_update_manuscript") do
-        @manuscript = @api.update_manuscript(paper_id: paper.id)
-      end
-
-      expect(@manuscript.class).to eq Manuscript__c
+    let(:paper) do
+      FactoryGirl.create(:paper, salesforce_manuscript_id: "sfdc_id_1")
+    end
+    it "finds then updates a Salesforce Manuscript__c object" do
+      mock_manuscript = instance_double("Manuscript__c", Id: 'sfdc')
+      expect(Manuscript__c).to receive(:find)
+        .with(paper.salesforce_manuscript_id)
+        .and_return(mock_manuscript)
+      expect(mock_manuscript).to receive(:update_attributes)
+      manuscript = @api.update_manuscript(paper_id: paper.id)
+      expect(manuscript).to eq mock_manuscript
     end
   end
 
@@ -78,8 +80,6 @@ describe SalesforceServices::API do
         old_role: 'author'
       }
       paper = FactoryGirl.create(:paper_with_task, :with_integration_journal, :with_creator, task_params: task_params)
-
-      #delete_vcr_file  "salesforce_create_billing_and_pfa"
 
       VCR.use_cassette("salesforce_instantiate_client") do
         @api = SalesforceServices::API

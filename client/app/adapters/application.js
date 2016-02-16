@@ -13,7 +13,7 @@ export default DS.ActiveModelAdapter.extend({
     let status     = jqXHR.status;
 
     // don't blow up in case of a 403 from rails
-    if (status === 403) { return; }
+    if (status === 403 || event.status === 403) { return; }
 
     return this._super(...arguments);
   }

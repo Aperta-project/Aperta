@@ -7,6 +7,9 @@ class DiscussionTopic < ActiveRecord::Base
   has_many :participants, through: :discussion_participants, source: :user, class_name: 'User'
   has_many :discussion_replies, inverse_of: :discussion_topic, dependent: :destroy
   has_many :notifications, as: :target
+  has_many :assignments, as: :assigned_to
+
+  delegate :journal, to: :paper
 
   def self.including(user)
     includes(:discussion_participants).where(discussion_participants: { user_id: user.id })

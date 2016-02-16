@@ -8,12 +8,14 @@
       {{input value=model.title focus-out="saveTopic"}}
     </h1>
 
-    {{participant-selector currentParticipants=participants
-                           everyone=allUsers
-                           paperId=model.paperId
-                           label="Participants:"
-                           onRemove=(action "removeParticipantByUserId")
-                           onSelect=(action "addParticipantByUserId")}}
+    {{#if (can 'add_participant' model)}}
+      {{participant-selector currentParticipants=participants
+                             everyone=allUsers
+                             paperId=model.paperId
+                             label="Participants:"
+                             onRemove=(action "removeParticipantByUserId")
+                             onSelect=(action "addParticipantByUserId")}}
+    {{/if}}
   </div>
 
   <div class="discussions-show-form">

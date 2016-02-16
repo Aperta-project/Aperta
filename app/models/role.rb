@@ -6,6 +6,7 @@ class Role < ActiveRecord::Base
   ACADEMIC_EDITOR_ROLE = 'Academic Editor'
   COLLABORATOR_ROLE = 'Collaborator'
   CREATOR_ROLE = 'Creator'
+  DISCUSSION_PARTICIPANT = 'Discussion Participant'
   HANDLING_EDITOR_ROLE = 'Handling Editor'
   INTERNAL_EDITOR_ROLE = 'Internal Editor'
   PARTICIPANT_ROLE = 'Participant'

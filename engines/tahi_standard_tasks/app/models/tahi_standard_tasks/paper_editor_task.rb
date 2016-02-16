@@ -16,8 +16,6 @@ module TahiStandardTasks
 
     def invitation_accepted(invitation)
       replace_editor_and_follow_tasks invitation
-      follow_reviewer_reports invitation
-      follow_reviewer_recommendations invitation
       PaperAdminMailer.delay.notify_admin_of_editor_invite_accepted(
         paper_id:  invitation.paper.id,
         editor_id: invitation.invitee.id
@@ -57,18 +55,6 @@ module TahiStandardTasks
       # Remove any old editors
       paper.assignments.where(role: role).destroy_all
       paper.assignments.where(user: user, role: role).first_or_create!
-    end
-
-    def follow_reviewer_reports(invitation)
-      paper.tasks.where(type: 'TahiStandardTasks::ReviewerReportTask').each do |task|
-        ParticipationFactory.create(task: task, assignee: User.find(invitation.invitee_id))
-      end
-    end
-
-    def follow_reviewer_recommendations(invitation)
-      paper.tasks.where(type: 'TahiStandardTasks::ReviewerRecommendationsTask').each do |task|
-        ParticipationFactory.create(task: task, assignee: User.find(invitation.invitee_id))
-      end
     end
   end
 end

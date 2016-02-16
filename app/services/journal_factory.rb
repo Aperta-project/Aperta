@@ -95,14 +95,23 @@ class JournalFactory
                        participates_in: [Paper],
                        delete_stray_permissions: true) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper)
-      classes = Task.metadata_task_types
+
+      classes = Task.submission_task_types
+
+      # AEs cannot view billing task or reviewer recommendation tasks
       classes -= [PlosBilling::BillingTask]
+      classes -= [TahiStandardTasks::ReviewerRecommendationsTask]
+      classes -= [TahiStandardTasks::ReviewerReportTask]
       classes << TahiStandardTasks::RegisterDecisionTask
       classes.each do |klass|
+        puts "Giving permission to #{klass.name} for AE"
         role.ensure_permission_exists(:view, applies_to: klass)
         # TODO: Remove this when APERTA-5996 is fixed
         role.ensure_permission_exists(:edit, applies_to: klass)
       end
+
+      # AEs can ONLY view reviewer report tasks
+      role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::ReviewerReportTask)
     end
   end
 end

@@ -42,27 +42,9 @@ describe TahiStandardTasks::PaperEditorTask do
       })
     end
 
-    let!(:sample_reviewer_report_task) do
-      TahiStandardTasks::ReviewerReportTask.create!({
-        paper: paper,
-        phase: paper.phases.first,
-        title: "Sample Report Task",
-        old_role: "reviewer"
-      })
-    end
-
-    let!(:sample_reviewer_recommendation_task) do
-      TahiStandardTasks::ReviewerRecommendationsTask.create!({
-        paper: paper,
-        phase: paper.phases.first,
-        title: "Sample Rec Task",
-        old_role: "author"
-      })
-    end
-
     let!(:task) do
       TahiStandardTasks::PaperEditorTask.create!({
-        paper: paper,        
+        paper: paper,
         phase: paper.phases.first,
         title: "Invite Editor",
         old_role: "admin"
@@ -74,16 +56,6 @@ describe TahiStandardTasks::PaperEditorTask do
     it "replaces the old editor" do
       invitation.accept!
       expect(paper.reload.academic_editor).to eq(invitation.invitee)
-    end
-
-    it "follows all tasks that are reviewer reports" do
-      invitation.accept!
-      expect(sample_reviewer_report_task.participations.map(&:user)).to include(invitation.invitee)
-    end
-
-    it "follows reviewer recommendations task" do
-      invitation.accept!
-      expect(sample_reviewer_recommendation_task.participations.map(&:user)).to include(invitation.invitee)
     end
 
     context "when there's an existing editor" do

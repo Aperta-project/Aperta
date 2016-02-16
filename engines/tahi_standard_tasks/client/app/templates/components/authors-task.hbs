@@ -9,17 +9,21 @@
   </p>
 
   <div>
-    {{#if (and isEditable (not fieldsDisabled))}}
-      <button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "toggleAuthorForm" group}}>
-        Add a New Author
-      </button>
+    {{#if isEditable}}
+      {{#unless fieldsDisabled}}
+        <button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "toggleAuthorForm" group}}>
+          Add a New Author
+        </button>
+      {{/unless}}
       <br>
 
       {{error-message message=validationErrors.corresponding}}
 
       {{#if newAuthorFormVisible}}
         {{add-author-form institutions=task.institutions
-                          author=newAuthor
+                          author=newAuthor.object
+                          validationErrors=newAuthor.validationErrors
+                          validateField=(action "validateField" newAuthor)
                           hideAuthorForm="toggleAuthorForm"
                           saveAuthor="saveNewAuthor"}}
       {{/if}}

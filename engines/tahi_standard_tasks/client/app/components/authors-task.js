@@ -12,9 +12,19 @@ export default TaskComponent.extend({
     const objs = this.get('sortedAuthorsWithErrors');
     objs.invoke('validateAllKeys');
 
-    const errors = ObjectProxyWithErrors.errorsPresentInCollection(objs);
+    const authorsErrors = ObjectProxyWithErrors.errorsPresentInCollection(objs);
+    let newAuthorErrors = false;
 
-    if(errors) {
+    if(this.get('newAuthorFormVisible')) {
+      const newAuthor= this.get('newAuthor');
+      newAuthor.validateAllKeys();
+
+      if(newAuthor.validationErrorsPresent()) {
+        newAuthorErrors = true;
+      }
+    }
+
+    if(authorsErrors || newAuthorErrors) {
       this.set('validationErrors.completed', 'Please fix all errors');
     }
   },
@@ -43,16 +53,21 @@ export default TaskComponent.extend({
   }),
 
   newAuthor: computed('newAuthorFormVisible', function(){
-    return this.store.createRecord('author', {
+    const newAuthor = this.store.createRecord('author', {
         paper: this.get('task.paper'),
         position: 0,
         nestedQuestions: this.get('nestedQuestionsForNewAuthor')
+    });
+
+    return ObjectProxyWithErrors.create({
+      object: newAuthor,
+      validations: validations
     });
   }),
 
   clearNewAuthorAnswers(){
     this.get('nestedQuestionsForNewAuthor').forEach( (nestedQuestion) => {
-      nestedQuestion.clearAnswerForOwner(this.get('newAuthor'));
+      nestedQuestion.clearAnswerForOwner(this.get('newAuthor.object'));
     });
   },
 
@@ -71,14 +86,18 @@ export default TaskComponent.extend({
     },
 
     saveNewAuthor() {
-      const author = this.get('newAuthor');
+      const proxy = this.get('newAuthor');
+      const model = proxy.get('object');
+
+      proxy.validateAllKeys();
+      if(proxy.validationErrorsPresent()) { return; }
 
       // set this here, not when initially built so it doesn't show up in
       // the list of existing authors as the user fills out the form
-      author.set('authorsTask', this.get('task'));
+      model.set('authorsTask', this.get('task'));
 
-      author.save().then( (savedAuthor) => {
-        author.get('nestedQuestionAnswers').toArray().forEach(function(answer){
+      model.save().then( (savedAuthor) => {
+        model.get('nestedQuestionAnswers').toArray().forEach(function(answer){
           const value = answer.get('value');
           if(value || value === false){
             answer.set('owner', savedAuthor);
@@ -95,6 +114,10 @@ export default TaskComponent.extend({
 
     removeAuthor(author) {
       author.destroyRecord();
+    },
+
+    validateField(model, key, value) {
+      model.validate(key, value);
     }
   }
 });

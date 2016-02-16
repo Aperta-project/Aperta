@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
+const { assert, isEmpty } = Ember;
+
 const ObjectProxy = Ember.Object.extend(ValidationErrorsMixin, {
   errorsPresent: false,
   validations: null,
@@ -9,15 +11,17 @@ const ObjectProxy = Ember.Object.extend(ValidationErrorsMixin, {
     this._super(...arguments);
 
     const klass = 'ObjectProxyWithValidationErrors';
+    const validationsEmpty = isEmpty(this.get('validations'));
+    const questionValidationsEmpty = isEmpty(this.get('questionValidations'));
 
-    Ember.assert(
+    assert(
       `the 'object' property must be set for #{klass}`,
-      !Ember.isEmpty(this.get('object'))
+      !isEmpty(this.get('object'))
     );
 
-    Ember.assert(
-      `the 'validations' property must be set for ${klass}`,
-      !Ember.isEmpty(this.get('validations'))
+    assert(
+      `the 'validations' or 'questionValidations' property must be set for ${klass}`,
+      !validationsEmpty || !questionValidationsEmpty
     );
   },
 

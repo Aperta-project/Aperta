@@ -136,7 +136,7 @@ class JournalAdminPage(AdminPage):
       logging.info('Verifying added user')
       self._validate_user_with_role('jgray_author', 'Flow Manager')
       logging.info('Deleting newly added user')
-      self._delete_user_with_role('jgray_author', 'Flow Manager')
+      self._delete_user_with_role()
       time.sleep(3)
 
   def _add_user_with_role(self, user, role):
@@ -169,11 +169,9 @@ class JournalAdminPage(AdminPage):
       assert user in row.text, row.text
       assert role in row.text, row.text
 
-  def _delete_user_with_role(self, user, role):
+  def _delete_user_with_role(self):
     """
-    For named user and role, delete user role
-    :param user: user to search for
-    :param role: role to delete
+    Delete user role
     :return: void function
     """
     user_role_pill = self._get(self._journal_admin_user_row_roles)
@@ -263,11 +261,10 @@ class JournalAdminPage(AdminPage):
       task.find_element(*self._journal_admin_att_overlay_row_selector)
       task.find_element(*self._journal_admin_att_overlay_row_clear_btn)
 
-  def validate_mmt_section(self, journal):
+  def validate_mmt_section(self):
     """
     Assert the existence and function of the elements of the Manuscript Manager Templates section.
     Validate Add new template, edit and delete existing templates, validate presentation of staging.
-    :param journal: name of journal to choose to validate this section
     :return: void function
     """
     dbmmts = []

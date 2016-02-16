@@ -7,14 +7,17 @@
     "node": "4.2.1"
   },
   "//": "We keep our ember app in client/",
-  "cacheDirectories": ["client/node_modules", "client/bower_components"],
+  "cacheDirectories": ["client/node_modules", "client/bower_components", "node_modules"],
+  "devDependencies": {
+    "bower": "*"
+  },
   "directories": {
     "doc": "doc",
     "test": "test"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "cd client; npm install; ./node_modules/.bin/bower install -p",
+    "postinstall": "./bin/heroku_install",
     "clean": "rm -rf client/tmp client/node_modules client/bower_components; npm install"
   },
   "repository": {

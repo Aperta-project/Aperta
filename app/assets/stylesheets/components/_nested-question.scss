@@ -8,3 +8,9 @@
     right: 8px;
   }
 }
+
+.nested-question-display.required::after {
+  content: '*';
+  color: $tahi-green;
+  font-size: 24px;
+}

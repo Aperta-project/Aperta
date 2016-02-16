@@ -5,10 +5,7 @@ class LitePaperSerializer < ActiveModel::Serializer
 
   def related_at_date
     return unless scoped_user.present?
-    first_role = my_roles.select { |a| a.created_at }
-                 .sort_by(&:created_at).last
-    return unless first_role.present?
-    first_role.created_at
+    my_roles.map(&:created_at).sort.last
   end
 
   def old_roles

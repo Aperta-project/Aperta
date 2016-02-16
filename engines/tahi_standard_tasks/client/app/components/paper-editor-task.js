@@ -13,8 +13,8 @@ export default TaskComponent.extend(Select2Assignees, {
   hasRejectedInvitation: computed.equal('task.invitation.state', 'rejected'),
 
   showEditorSelect: computed(
-    'task.editor', 'task.invitation', 'task.invitation.state', function() {
-      if (this.get('task.editor')) {
+    'task.academicEditor', 'task.invitation', 'task.invitation.state', function() {
+      if (this.get('task.academicEditor')) {
         return false;
       } else if (Ember.isEmpty(this.get('task.invitation'))) {
         return true;
@@ -83,7 +83,7 @@ export default TaskComponent.extend(Select2Assignees, {
         promises.push(this.get('task.invitation').destroyRecord());
       }
       return Ember.RSVP.all(promises).then(() => {
-        const editor = this.get('task')._relationships.editor;
+        const editor = this.get('task')._relationships.academicEditor;
         return editor.setCanonicalRecord(null);
       });
     },

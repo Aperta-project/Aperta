@@ -133,6 +133,10 @@ class Task < ActiveRecord::Base
       Task.descendants + [Task]
     end
 
+    def metadata_task_types
+      all_task_types.select { |klass| klass <=> MetadataTask }
+    end
+
     def safe_constantize(str)
       fail StandardError, 'Attempted to constantize disallowed value' \
         unless Task.all_task_types.map(&:to_s).member?(str)

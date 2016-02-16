@@ -26,9 +26,10 @@ class DashboardPage < Page
     has_css?('.dashboard-paper-title', text: submission_name)
   end
 
-  def view_submitted_paper paper
+  def view_submitted_paper(paper)
     title = paper.title || paper.short_title
     click_link title
+    wait_for_ajax
     PaperPage.new
   end
 
@@ -101,6 +102,9 @@ class DashboardPage < Page
         invitation.accept
       end
       process_sidekiq_jobs
+      wait_for_condition do
+        has_submission?(paper.title)
+      end
     end
   end
 

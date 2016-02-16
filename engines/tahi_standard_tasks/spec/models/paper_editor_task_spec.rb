@@ -16,7 +16,8 @@ describe TahiStandardTasks::PaperEditorTask do
     end
     let(:invitation) { FactoryGirl.create(:invitation, :invited, task: task) }
 
-    it_behaves_like 'a task that sends out invitations', invitee_role: 'editor'
+    it_behaves_like 'a task that sends out invitations',
+                    invitee_role: Role::ACADEMIC_EDITOR_ROLE
 
     it "notifies the invited editor" do
       expect {
@@ -72,12 +73,7 @@ describe TahiStandardTasks::PaperEditorTask do
 
     it "replaces the old editor" do
       invitation.accept!
-      expect(paper.reload.editor).to eq(invitation.invitee)
-    end
-
-    it "follows tasks with editor old_role to the new editor" do
-      invitation.accept!
-      expect(sample_editor_task.participations.map(&:user)).to include(invitation.invitee)
+      expect(paper.reload.academic_editor).to eq(invitation.invitee)
     end
 
     it "follows all tasks that are reviewer reports" do
@@ -91,11 +87,11 @@ describe TahiStandardTasks::PaperEditorTask do
     end
 
     context "when there's an existing editor" do
-      before { FactoryGirl.create(:paper_role, :editor, paper: paper, user: FactoryGirl.create(:user)) }
+      let(:paper) { FactoryGirl.create(:paper, :with_academic_editor, :with_tasks) }
 
       it "replaces the old editor" do
         invitation.accept!
-        expect(paper.reload.editor).to eq(invitation.invitee)
+        expect(paper.reload.academic_editor).to eq(invitation.invitee)
       end
     end
   end

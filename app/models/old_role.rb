@@ -23,10 +23,6 @@ class OldRole < ActiveRecord::Base
     where(kind: ADMIN)
   end
 
-  def self.editors
-    where(kind: EDITOR)
-  end
-
   def self.flow_managers
     where(kind: FLOW_MANAGER)
   end

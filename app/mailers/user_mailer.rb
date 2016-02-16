@@ -58,7 +58,7 @@ class UserMailer < ActionMailer::Base
 
   def notify_editor_of_paper_resubmission(paper_id)
     @paper = Paper.find(paper_id)
-    @editor = @paper.editor
+    @editor = @paper.academic_editor
     @author = @paper.creator
 
     mail(

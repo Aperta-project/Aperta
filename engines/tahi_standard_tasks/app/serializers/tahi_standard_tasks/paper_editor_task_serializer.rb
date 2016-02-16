@@ -6,7 +6,7 @@ module TahiStandardTasks
     attributes :letter
 
     def editor
-      object.paper.editor
+      object.paper.academic_editor
     end
 
     def invitation

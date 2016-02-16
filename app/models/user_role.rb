@@ -13,10 +13,6 @@ class UserRole < ActiveRecord::Base
     joins(:old_role).merge(OldRole.admins)
   end
 
-  def self.editors
-    joins(:old_role).merge(OldRole.editors)
-  end
-
   def self.reviewers
     joins(:old_role).merge(OldRole.reviewers)
   end

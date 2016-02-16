@@ -42,6 +42,49 @@ describe 'SeedHelpers' do
       role = Role.ensure_exists('role', journal: journal)
       expect(role.reload.journal).to eq(journal)
     end
+
+    it 'removes stray permissions from the role if asked to' do
+      Role.ensure_exists('role', journal: journal) do |role|
+        role.ensure_permission_exists(:view, applies_to: Task)
+        role.ensure_permission_exists(:edit, applies_to: Task)
+      end
+      expect(Role.where(name: 'role').first.reload.permissions
+              .map(&:action)).to match(%w(view edit))
+
+      Role.ensure_exists('role',
+                         journal: journal,
+                         delete_stray_permissions: true) do |role|
+        role.ensure_permission_exists(:view, applies_to: Task)
+      end
+      expect(Role.where(name: 'role').first.permissions.map(&:action))
+        .to match(%w(view))
+
+      # The permission should still exist though
+      expect(Permission.where(action: 'edit', applies_to: Task)).to exist
+    end
+
+    it 'fails when delete_stray_permissions set and no permissions created' do
+      expect do
+        Role.ensure_exists('role',
+                           journal: journal,
+                           delete_stray_permissions: true)
+      end.to raise_error(StandardError, /delete_stray_permissions/)
+
+      expect do
+        Role.ensure_exists('role',
+                           journal: journal,
+                           delete_stray_permissions: true) do |role|
+        end
+      end.to raise_error(StandardError, /delete_stray_permissions/)
+
+      expect do
+        Role.ensure_exists('role',
+                           journal: journal,
+                           delete_stray_permissions: true) do |role|
+          Permission.ensure_exists(:view, role: role, applies_to: Task)
+        end
+      end.to raise_error(StandardError, /delete_stray_permissions/)
+    end
   end
 
   describe 'Role#ensure_exists_permission' do
@@ -63,7 +106,8 @@ describe 'SeedHelpers' do
     end
 
     it 'sets states' do
-      perm = Permission.ensure_exists('view', applies_to: Task, states: ['madness'])
+      perm = Permission.ensure_exists('view', applies_to: Task,
+                                              states: ['madness'])
       expect(perm.reload.states.map(&:name)).to match(['madness'])
     end
 
@@ -107,7 +151,7 @@ describe 'SeedHelpers' do
     it 'can will add a new permission if the states do not match' do
       Role.ensure_exists('role') do |role|
         Permission.ensure_exists(:view, role: role, applies_to: Task,
-                                 states: ['madness'])
+                                        states: ['madness'])
       end
 
       perms = Role.where(name: 'role').first.permissions

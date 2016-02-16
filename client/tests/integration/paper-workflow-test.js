@@ -31,7 +31,12 @@ module('Integration: Paper Workflow page', {
         lite_paper_id: 1
       }
     };
-    server.respondWith('GET', /\/api\/papers\/\d+\/manuscript_manager/, [204, {}, '']);
+
+    server.respondWith('GET', '/api/papers', [
+      200, {
+        'Content-Type': 'application/json'
+      }, JSON.stringify({papers:[]})
+    ]);
 
     server.respondWith('GET', '/api/papers/1', [
       200, {
@@ -50,7 +55,63 @@ module('Integration: Paper Workflow page', {
         'Content-Type': 'application/json'
       }, '{}'
     ]);
+
+    server.respondWith(
+      'GET',
+      '/api/invitations',
+      [
+        200,
+        { 'content-type': 'application/json'},
+        JSON.stringify({invitations:[]})
+      ]
+    );
+
+    Ember.run(function(){
+      // Provide access to the paper
+      var store = getStore();
+      store.createRecord('permission',{
+        id: 'paper+1',
+        object:{id: 1, type: 'Paper'},
+        permissions:{
+          manage_workflow:{
+            states: ['*']
+          }
+        }
+      });
+    });
   }
+});
+
+test('transition to route without permission fails', function(assert){
+  expect(1);
+  Ember.run.later(function(){
+    var store = getStore();
+    store.all('permission').invoke('destroyRecord');
+
+    visit('/papers/1/workflow');
+    andThen(function(){
+      assert.equal(
+        currentPath(),
+        'dashboard.index',
+        "Should have redirected to the dashboard"
+      );
+    });
+  });
+});
+
+test('transition to route with permission succeeds', function(assert){
+  expect(1);
+  Ember.run.later(function(){
+    visit('/papers/1/workflow');
+
+    andThen(function(){
+      assert.equal(
+        currentPath(),
+        'paper.workflow.index',
+        'Should have visited the workflow page'
+      );
+    });
+  });
 });
 
 test('show delete confirmation overlay on deletion of a Task', function(assert) {

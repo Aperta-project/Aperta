@@ -12,17 +12,31 @@ feature 'Ethics Task', js: true, selenium: true do
                        }
   end
 
+  def view_ethics_card_on_the_manuscript_page
+    visit "/papers/#{paper.id}"
+    page = DashboardPage.new
+    page.view_card_in_task_sidebar 'Ethics Statement'
+  end
+
+  def view_ethics_card_directly
+    visit "/papers/#{paper.id}/tasks/#{paper.tasks.last.id}"
+  end
+
   background do
     login_as(author, scope: :user)
-    visit "/papers/#{paper.id}/tasks/#{paper.tasks.first.id}"
   end
 
   scenario 'It shows 3 questions' do
+    view_ethics_card_on_the_manuscript_page
+    expect(page).to have_selector('.question-text', count: 3)
+
+    view_ethics_card_directly
     expect(page).to have_selector('.question-text', count: 3)
   end
 
   feature 'Animal research question' do
     scenario 'have a sub-question permit' do
+      view_ethics_card_on_the_manuscript_page
       within '.question-text', text: 'animal research' do
         within(:xpath, '..') do
           choose('Yes')
@@ -32,6 +46,7 @@ feature 'Ethics Task', js: true, selenium: true do
     end
 
     scenario 'have a sub-question upload ARRIVE guidelines' do
+      view_ethics_card_on_the_manuscript_page
       within '.question-text', text: 'animal research' do
         within(:xpath, '..') do
           choose('Yes')
@@ -41,6 +56,7 @@ feature 'Ethics Task', js: true, selenium: true do
     end
 
     scenario 'Uploading an attachment' do
+      view_ethics_card_on_the_manuscript_page
       within '.question-text', text: 'animal research' do
         within(:xpath, '..') do
           choose('Yes')

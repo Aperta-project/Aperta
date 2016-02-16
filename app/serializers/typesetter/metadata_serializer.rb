@@ -8,7 +8,7 @@ module Typesetter
     attribute :accepted_at, key: :accepted_date
     attribute :title, key: :paper_title
 
-    has_one :editor, serializer: Typesetter::EditorSerializer
+    has_one :academic_editor, serializer: Typesetter::EditorSerializer
     has_one :competing_interests,
             serializer: Typesetter::CompetingInterestsSerializer
     has_one :financial_disclosure,

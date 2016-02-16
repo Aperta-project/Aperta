@@ -1,15 +1,16 @@
 class ParticipationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :must_be_able_to_edit_task
   respond_to :json
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def index
-    respond_with Participation.where(task_id: task).all, root: :participations
+    requires_user_can(:view_participants, task)
+    respond_with task.participations, root: :participations
   end
 
   def create
+    requires_user_can(:add_participants, task)
     if participation.save
       # create new R&P assignment
       Assignment.where(
@@ -28,10 +29,12 @@ class ParticipationsController < ApplicationController
   end
 
   def show
+    requires_user_can(:view_participants, task)
     respond_with participation
   end
 
   def destroy
+    requires_user_can(:remove_participants, task)
     # destroy new R&P assignment
     Assignment.where(
       user: participation.user,
@@ -48,10 +51,10 @@ class ParticipationsController < ApplicationController
 
   def task
     @task ||= begin
-      if params[:id].present?
-        participation.task
-      elsif params[:task_id]
+      if params[:task_id]
         Task.find(params[:task_id])
+      elsif params[:id].present?
+        participation.task
       else
         Task.find(participation_params[:task_id])
       end
@@ -74,9 +77,5 @@ class ParticipationsController < ApplicationController
 
   def render_404
     head 404
-  end
-
-  def must_be_able_to_edit_task
-    fail AuthorizationError unless current_user.can?(:edit, task)
   end
 end

@@ -5,6 +5,7 @@ const { computed, isEmpty } = Ember;
 const { alias, not, or } = computed;
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
+  can: Ember.inject.service('can'),
   classNames: ['task'],
   dataLoading: true,
 
@@ -15,15 +16,31 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
 
   isMetadataTask: alias('task.isMetadataTask'),
   isSubmissionTask: alias('task.isSubmissionTask'),
-  isSubmissionTaskEditable: alias('task.paper.editable'),
-  isSubmissionTaskNotEditable: not('isSubmissionTaskEditable'),
+
+  isSubmissionTaskEditable: computed('task', function(){
+    console.warn("isSubmissionTaskEditable called which is deprecated. Please use isEditable. Called on ", this._debugContainerKey, this);
+    return this.get('isEditable');
+  }),
+
+  isSubmissionTaskEditable: computed('task', function(){
+    console.warn("isSubmissionTaskNotEditable called which is deprecated. Please use isNotEditable. Called on ", this._debugContainerKey, this);
+    return this.get('isNotEditable');
+  }),
+
+  fieldsDisabled: or('isNotEditable', 'task.completed'),
   isEditable: or('isUserEditable', 'currentUser.siteAdmin'),
-  fieldsDisabled: or('isSubmissionTaskNotEditable', 'task.completed'),
-  isUserEditable: computed('task.paper.editable', 'isSubmissionTask',
-    function() {
-      return this.get('task.paper.editable') || !this.get('isSubmissionTask');
-    }
-  ),
+  isNotEditable: not('isEditable'),
+  isUserEditable: computed('userHasPermission', 'task.paper.editable', 'isSubmissionTask', function(){
+    return this.get('userHasPermission') && (
+      this.get('task.paper.editable') || !this.get('isSubmissionTask')
+    );
+  }),
+  userHasPermission: Ember.observer('task', function(){
+    this.get('can').can('view', this.get('task')).then( (value)=> {
+      this.set('userHasPermission', value);
+    });
+    return false;
+  }),
 
   save() {
     this.set('validationErrors.completed', '');

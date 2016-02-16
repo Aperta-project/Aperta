@@ -773,15 +773,21 @@ describe Paper do
     end
   end
 
-  describe "#editor" do
+  describe '#academic_editor' do
     let(:user) { FactoryGirl.create(:user) }
-    context "when the paper has an editor" do
-      before { create(:paper_role, :editor, paper: paper, user: user) }
-      specify { expect(paper.editors).to include(user) }
+
+    context 'when the paper has an editor' do
+      let!(:assignment) do
+        FactoryGirl.create(:assignment,
+                           role: paper.journal.roles.academic_editor,
+                           user: user,
+                           assigned_to: paper)
+      end
+      specify { expect(paper.academic_editors).to eq([user]) }
     end
 
-    context "when the paper doesn't have an editor" do
-      specify { expect(paper.editors).to be_empty }
+    context "when the paper doesn't have an academic editor" do
+      specify { expect(paper.academic_editors).to be_blank }
     end
   end
 

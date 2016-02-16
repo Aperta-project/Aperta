@@ -28,6 +28,7 @@ feature "Inviting a new reviewer", js: true do
 
     dashboard_page = sign_up_as("malz@example.com")
     dashboard_page.accept_invitation_for_paper(paper)
+
     expect(dashboard_page).to have_submission(paper.title)
   end
 

@@ -4,7 +4,7 @@ class Capybara::Session
   # transaction result isn't immediately visible to the Capybara
   # thread/connection.
 
-  def wait_for_condition(loop_sleep, &blk)
+  def wait_for_condition(loop_sleep = 0.001, &blk)
     Timeout.timeout(Capybara.default_max_wait_time) do
       loop do
         break if yield blk

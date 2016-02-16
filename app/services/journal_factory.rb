@@ -104,10 +104,7 @@ class JournalFactory
       classes -= [TahiStandardTasks::ReviewerReportTask]
       classes << TahiStandardTasks::RegisterDecisionTask
       classes.each do |klass|
-        puts "Giving permission to #{klass.name} for AE"
         role.ensure_permission_exists(:view, applies_to: klass)
-        # TODO: Remove this when APERTA-5996 is fixed
-        role.ensure_permission_exists(:edit, applies_to: klass)
       end
 
       # AEs can ONLY view reviewer report tasks

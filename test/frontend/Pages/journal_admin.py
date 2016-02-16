@@ -60,19 +60,53 @@ class JournalAdminPage(AdminPage):
 
 
     self._journal_admin_avail_task_types_title = (By.XPATH, '//div[@class="admin-section"][2]/h2')
+    self._journal_admin_avail_task_types_edit_btn = (By.XPATH, '//div[@class="admin-section"][2]/div')
+
+    self._journal_admin_att_overlay_task_title_heading = (By.CSS_SELECTOR, 'div.task-headers h3')
+    self._journal_admin_att_overlay_role_heading = (By.CSS_SELECTOR, 'div.task-headers h3 + h3')
+    self._journal_admin_att_overlay_row = (By.CSS_SELECTOR, '.individual-task-type')
+    self._journal_admin_att_overlay_row_taskname = (By.TAG_NAME, 'p')
+    self._journal_admin_att_overlay_row_selector = (By.CSS_SELECTOR, 'div div.select2-container')
+    self._journal_admin_att_overlay_row_clear_btn = (By.CSS_SELECTOR, 'div button')
+
     self._journal_admin_manu_mgr_templates_title = (By.XPATH, '//div[@class="admin-section"][3]/h2')
+    self._journal_admin_manu_mgr_templates_button = (By.XPATH, '//div[@class="admin-section"][3]/button')
+    self._journal_admin_manu_mgr_thumbnail = (By.CLASS_NAME, 'mmt-thumbnail')
+    self._journal_admin_manu_mgr_thumb_title = (By.CSS_SELECTOR, 'h3.mmt-thumbnail-title')
+    self._journal_admin_manu_mgr_thumb_phases = (By.TAG_NAME, 'span')
+
     self._journal_admin_style_settings_title = (By.XPATH, '//div[@class="admin-section"][4]/h2')
+    self._journal_admin_upload_epub_cvr_btn = (By.CSS_SELECTOR, 'span.epub-cover-upload span.fileinput-button')
+    self._journal_admin_epub_cvr_image_text = (By.CSS_SELECTOR, 'span.epub-cover-image p')
+    self._journal_admin_epub_cvr_image_link = (By.CSS_SELECTOR, 'a.epub-cover')
+    self._journal_admin_edit_epub_css_btn = (By.ID, 'edit-epub-css')
+    self._journal_admin_edit_pdf_css_btn = (By.ID, 'edit-pdf-css')
+    self._journal_admin_edit_ms_css_btn = (By.ID, 'edit-manuscript-css')
+
+    self._journal_styles_css_overlay_field_label = (By.CSS_SELECTOR, 'div.overlay-header + p')
+    self._journal_styles_css_overlay_field = (By.CSS_SELECTOR, 'div.overlay-header + p + textarea')
+    self._journal_styles_css_overlay_cancel = (By.CSS_SELECTOR, 'div.overlay-action-buttons a')
+    self._journal_styles_css_overlay_save = (By.CSS_SELECTOR, 'div.overlay-action-buttons a + button')
+
+
+
+    self._mmt_template_name_field = (By.CSS_SELECTOR, 'input.edit-paper-type-field')
+    self._mmt_template_save_button = (By.CSS_SELECTOR, 'div.paper-type-form a.paper-type-save-button')
+    self._mmt_template_cancel_link = (By.CSS_SELECTOR, 'div.paper-type-form a.paper-type-cancel-button')
+    self._mmt_template_add_phase_icons = (By.CSS_SELECTOR, 'i.fa-plus-square-o')
+    self._mmt_template_columns = (By.CSS_SELECTOR, 'div.ember-view.column')
+    self._mmt_template_column_title = (By.CSS_SELECTOR, 'div.column-header div h2')
+    self._mmt_template_column_no_cards_card = (By.CSS_SELECTOR, 'div.sortable-no-cards')
+    self._mmt_template_column_add_new_card_btn = (By.CSS_SELECTOR, 'a.button-secondary')
+
 
   # POM Actions
-  def validate_page_elements_styles(self):
-    att_title = self._get(self._journal_admin_avail_task_types_title)
-    self.validate_application_h2_style(att_title)
-    manu_mgr_title = self._get(self._journal_admin_manu_mgr_templates_title)
-    self.validate_application_h2_style(manu_mgr_title)
-    style_settings_title = self._get(self._journal_admin_style_settings_title)
-    self.validate_application_h2_style(style_settings_title)
-
   def validate_users_section(self, journal):
+    """
+    Validate the elements and functions of the User search and role assignment areas of the page
+    :param journal: journal to which to validate this section
+    :return: void function
+    """
     users_title = self._get(self._journal_admin_users_title)
     self.validate_application_h2_style(users_title)
     jid = PgSQL().query('SELECT id FROM journals WHERE name = %s;', (journal,))[0][0]
@@ -81,7 +115,7 @@ class JournalAdminPage(AdminPage):
     logging.debug(role_list)
     roles_count = 0
     for role in role_list:
-      rcount = PgSQL().query('SELECT count(user_id) from user_roles WHERE role_id in (%s);', (role[0],))[0][0]
+      rcount = PgSQL().query('SELECT count(user_id) from user_roles WHERE old_role_id in (%s);', (role[0],))[0][0]
       roles_count = roles_count + rcount
     logging.debug(roles_count)
     self._get(self._journal_admin_user_search_field)
@@ -102,10 +136,16 @@ class JournalAdminPage(AdminPage):
       logging.info('Verifying added user')
       self._validate_user_with_role('jgray_author', 'Flow Manager')
       logging.info('Deleting newly added user')
-      self._delete_user_with_role('jgray_author', 'Flow Manager')
+      self._delete_user_with_role()
       time.sleep(3)
 
   def _add_user_with_role(self, user, role):
+    """
+    For user and role names, add to current journal
+    :param user: existing user
+    :param role: existing role
+    :return: void function
+    """
     user_title = self._get(self._journal_admin_users_title)
     self._actions.move_to_element(user_title).perform()
     user_input = self._get(self._journal_admin_user_search_field)
@@ -118,12 +158,22 @@ class JournalAdminPage(AdminPage):
     self._actions.send_keys_to_element(role_search_field, role + Keys.RETURN).perform()
 
   def _validate_user_with_role(self, user, role):
+    """
+    For named user and role, ensure this exists for current journal
+    :param user: user to validate
+    :param role: role to validate
+    :return: void function
+    """
     page_user_list = self._gets(self._journal_admin_user_search_results_row)
     for row in page_user_list:
       assert user in row.text, row.text
       assert role in row.text, row.text
 
-  def _delete_user_with_role(self, user, role):
+  def _delete_user_with_role(self):
+    """
+    Delete user role
+    :return: void function
+    """
     user_role_pill = self._get(self._journal_admin_user_row_roles)
     # For whatever reason, using action chains move_to_element() is failing here so doing a simple click
     user_role_pill.click()
@@ -131,6 +181,10 @@ class JournalAdminPage(AdminPage):
     delete_role.click()
 
   def validate_roles_section(self):
+    """
+    Validate the elements and function of the Roles section of the journal admin page
+    :return: void function
+    """
     roles_title = self._get(self._journal_admin_roles_title)
     self._actions.move_to_element(roles_title).perform()
     self.validate_application_h2_style(roles_title)
@@ -166,10 +220,229 @@ class JournalAdminPage(AdminPage):
         logging.warning('No permissions found for role {}'.format(role_name.text))
       try:
         role_perms = self._get(self._role_permissions_div).find_elements(*self._role_assigned_permission)
-        # print(role_perms.text)
-        # for role in role_perms:
-          # print(role.text)
       except ElementDoesNotExistAssertionError:
         logging.warning('No permissions found for role: {}'.format(role_name.text))
       self.restore_timeout()
       count += 1
+
+  def validate_task_types_section(self):
+    """
+    Assert the existence and function of the elements of the Available Task Types section and overlay.
+    It is expected that this section will change radically following the roles and permissions work,
+    so not investing too much here at present.
+    :return: void function
+    """
+    task_names = ['Ad-hoc', 'Additional Information', 'Assign Admin', 'Assign Team', 'Authors', 'Billing',
+                  'Competing Interests', 'Cover Letter', 'Data Availability', 'Editor Discussion', 'Ethics Statement',
+                  'Figures', 'Final Tech Check', 'Financial Disclosure', 'Initial Decision', 'Initial Tech Check',
+                  'Invite Editor', 'Invite Reviewers', 'New Taxon', 'Production Metadata', 'Register Decision',
+                  'Reporting Guidelines', 'Reviewer Candidates', 'Revision Tech Check', 'Send to Apex',
+                  'Supporting Info', 'Upload Manuscript']
+    att_title = self._get(self._journal_admin_avail_task_types_title)
+    self.validate_application_h2_style(att_title)
+    assert 'Available Task Types' in att_title.text, att_title.text
+    edit_tt_btn = self._get(self._journal_admin_avail_task_types_edit_btn)
+    assert 'EDIT TASK TYPES' in edit_tt_btn.text
+    self._actions.move_to_element(edit_tt_btn)
+    time.sleep(1)
+    edit_tt_btn.click()
+    # time for animation of overlay
+    time.sleep(.5)
+    closer = self._get(self._overlay_header_close)
+    title = self._get(self._overlay_header_title)
+    assert 'Available Task Types' in title.text, title.text
+    task_title_heading = self._get(self._journal_admin_att_overlay_task_title_heading)
+    assert 'Title' in task_title_heading.text
+    role_heading = self._get(self._journal_admin_att_overlay_role_heading)
+    assert 'Role' in role_heading.text, role_heading.text
+    tasks = self._gets(self._journal_admin_att_overlay_row)
+    for task in tasks:
+      # There is little value in validating anything other than name as role assignment is up in the air.
+      name = task.find_element(*self._journal_admin_att_overlay_row_taskname)
+      assert name.text in task_names, name.text
+      task.find_element(*self._journal_admin_att_overlay_row_selector)
+      task.find_element(*self._journal_admin_att_overlay_row_clear_btn)
+
+  def validate_mmt_section(self):
+    """
+    Assert the existence and function of the elements of the Manuscript Manager Templates section.
+    Validate Add new template, edit and delete existing templates, validate presentation of staging.
+    :return: void function
+    """
+    dbmmts = []
+    dbids = []
+    manu_mgr_title = self._get(self._journal_admin_manu_mgr_templates_title)
+    self.validate_application_h2_style(manu_mgr_title)
+    assert 'Manuscript Manager Templates' in manu_mgr_title.text, manu_mgr_title.text
+    add_mmt_btn = self._get(self._journal_admin_manu_mgr_templates_button)
+    assert 'ADD NEW TEMPLATE' in add_mmt_btn.text, add_mmt_btn.text
+    try:
+      mmts = self._gets(self._journal_admin_manu_mgr_thumbnail)
+    except ElementDoesNotExistAssertionError:
+      logging.warning('No extant MMT found for Journal')
+    curr_journal_id = self._driver.current_url.split('/')[-1]
+    db_mmts = PgSQL().query('SELECT paper_type, id '
+                            'FROM manuscript_manager_templates '
+                            'WHERE journal_id = %s;', (curr_journal_id,))
+    for dbmmt in db_mmts:
+      dbmmts.append(dbmmt[0])
+      dbids.append(dbmmt[1])
+    if mmts:
+      count = 0
+      for mmt in mmts:
+        name = mmt.find_element(*self._journal_admin_manu_mgr_thumb_title)
+        logging.info(name.text)
+        assert name.text in dbmmts
+        phases = mmt.find_element(*self._journal_admin_manu_mgr_thumb_phases)
+        db_phase_count = PgSQL().query('SELECT count(*) '
+                                       'FROM phase_templates '
+                                       'WHERE manuscript_manager_template_id = %s;', (dbids[count],))[0][0]
+        assert phases.text == str(db_phase_count), phases.text + ' != ' + str(db_phase_count)
+        self._actions.move_to_element(mmt).perform()
+        self._journal_admin_manu_mgr_thumb_edit = (By.CSS_SELECTOR, 'a.fa-pencil')
+        mmt.find_element(*self._journal_admin_manu_mgr_thumb_edit)
+        # Journals must have at least one MMT, so if only one, no delete icon is present
+        if len(mmts) > 1:
+          self._journal_admin_manu_mgr_thumb_delete = (By.CSS_SELECTOR, 'span.fa.fa-trash.animation-scale-in')
+          if name.text == 'Research<-False':
+            logging.info('Found MMT to delete - moving to trash icon')
+            time.sleep(1)
+            delete_mmt = mmt.find_element(*self._journal_admin_manu_mgr_thumb_delete)
+            logging.info('Clicking on MMT trash icon')
+            self._actions.click(delete_mmt).perform()
+            time.sleep(1)
+            self._journal_admin_manu_mgr_delete_confirm_paragraph = (By.CSS_SELECTOR, 'div.mmt-thumbnail-overlay-confirm-destroy p')
+            confirm_text = self._get(self._journal_admin_manu_mgr_delete_confirm_paragraph)
+            assert 'This will permanently delete your template. Are you sure?' in confirm_text.text, confirm_text.text
+            self._journal_admin_manu_mgr_thumb_delete_cancel = (By.CSS_SELECTOR, 'div.mmt-thumbnail-overlay-confirm-destroy p + button')
+            self._journal_admin_manu_mgr_thumb_delete_confirm = (By.CSS_SELECTOR, 'button.mmt-thumbnail-delete-button')
+            time.sleep(1)
+            cancel_delete = self._get(self._journal_admin_manu_mgr_thumb_delete_cancel)
+            confirm_delete = self._get(self._journal_admin_manu_mgr_thumb_delete_confirm)
+            confirm_delete.click()
+            # If this mmt is found before the end of the list of mmt, the DOM will be stale so
+            break
+          else:
+            mmt.find_element(*self._journal_admin_manu_mgr_thumb_delete)
+        count += 1
+    time.sleep(2)
+    add_mmt_btn.click()
+    time.sleep(2)
+    assert 'manuscript_manager_templates/new' in self._driver.current_url, self._driver.current_url
+    self._validate_mmt_template_items()
+    template = self._add_new_mmt_template()
+
+
+  def validate_style_settings_section(self):
+    """
+    Validate the Roles section elements and permission assignment functions of the journal admin page
+    :return: void function
+    """
+    styles_title = self._get(self._journal_admin_style_settings_title)
+    self.validate_application_h2_style(styles_title)
+    assert 'Style Settings' in styles_title.text, styles_title.text
+    upload_epub_cover_btn = self._get(self._journal_admin_upload_epub_cvr_btn)
+    self._actions.move_to_element(upload_epub_cover_btn).perform()
+    assert 'UPLOAD EPUB COVER' in upload_epub_cover_btn.text
+    self.set_timeout(1)
+    try:
+      epub_cvr_status_text = self._get(self._journal_admin_epub_cvr_image_text)
+      assert epub_cvr_status_text.text == 'There is currently no default ePub cover.', epub_cvr_status_text.text
+    except ElementDoesNotExistAssertionError:
+      epub_cvr_img = self._get(self._journal_admin_epub_cvr_image_link)
+      logging.info('An ePub Cover image has been uploaded for this journal: {0}'.format(epub_cvr_img.text))
+    self.restore_timeout()
+    edit_epub_css_btn = self._get(self._journal_admin_edit_epub_css_btn)
+    assert edit_epub_css_btn.text == 'EDIT EPUB CSS', edit_epub_css_btn.text
+    edit_epub_css_btn.click()
+    time.sleep(.5)
+    closer = self._get(self._overlay_header_close)
+    title = self._get(self._overlay_header_title)
+    assert 'ePub CSS' in title.text, title.text
+    label = self._get(self._journal_styles_css_overlay_field_label)
+    assert label.text == 'Enter or edit CSS to format the ePub output for this journal\'s papers.', label.text
+    css_input = self._get(self._journal_styles_css_overlay_field)
+    cancel = self._get(self._journal_styles_css_overlay_cancel)
+    save = self._get(self._journal_styles_css_overlay_save)
+    closer.click()
+    time.sleep(.5)
+    edit_pdf_css_btn = self._get(self._journal_admin_edit_pdf_css_btn)
+    assert edit_pdf_css_btn.text == 'EDIT PDF CSS', edit_pdf_css_btn.text
+    edit_pdf_css_btn.click()
+    time.sleep(.5)
+    closer = self._get(self._overlay_header_close)
+    title = self._get(self._overlay_header_title)
+    assert 'PDF CSS' in title.text, title.text
+    label = self._get(self._journal_styles_css_overlay_field_label)
+    assert label.text == 'Enter or edit CSS to format the PDF output for this journal\'s papers.', label.text
+    css_input = self._get(self._journal_styles_css_overlay_field)
+    cancel = self._get(self._journal_styles_css_overlay_cancel)
+    save = self._get(self._journal_styles_css_overlay_save)
+    cancel.click()
+    time.sleep(.5)
+    edit_ms_css_btn = self._get(self._journal_admin_edit_ms_css_btn)
+    assert edit_ms_css_btn.text == 'EDIT MANUSCRIPT CSS', edit_ms_css_btn.text
+    edit_ms_css_btn.click()
+    time.sleep(.5)
+    closer = self._get(self._overlay_header_close)
+    title = self._get(self._overlay_header_title)
+    assert 'Manuscript CSS' in title.text, title.text
+    label = self._get(self._journal_styles_css_overlay_field_label)
+    assert label.text == 'Enter or edit CSS to format the manuscript editor and output for this journal.', label.text
+    css_input = self._get(self._journal_styles_css_overlay_field)
+    cancel = self._get(self._journal_styles_css_overlay_cancel)
+    save = self._get(self._journal_styles_css_overlay_save)
+    save.click()
+
+  def _validate_mmt_template_items(self):
+    """
+    Validate the elements of the manuscript manager template (aka paper type)
+    :return: void function
+    """
+    time.sleep(.5)
+    template_field = self._get(self._mmt_template_name_field)
+    assert 'Research' in template_field.get_attribute('value'), template_field.get_attribute('value')
+    self._get(self._mmt_template_save_button)
+    template_cancel = self._get(self._mmt_template_cancel_link)
+    self._gets(self._mmt_template_add_phase_icons)
+    columns = self._gets(self._mmt_template_columns)
+    for column in columns:
+      col_title = column.find_element(*self._mmt_template_column_title)
+      time.sleep(.5)
+      col_title.click()
+      self._mmt_template_column_delete = (By.CSS_SELECTOR, 'span.remove-icon')
+      column.find_element(*self._mmt_template_column_delete)
+      self._mmt_template_column_title_edit_cancel_btn = (By.CSS_SELECTOR, 'button.column-header-update-cancel')
+      self._mmt_template_column_title_edit_save_btn = (By.CSS_SELECTOR, 'button.column-header-update-save')
+      col_cancel = column.find_element(*self._mmt_template_column_title_edit_cancel_btn)
+      column.find_element(*self._mmt_template_column_title_edit_save_btn)
+      col_cancel.click()
+      column.find_element(*self._mmt_template_column_no_cards_card)
+      column.find_element(*self._mmt_template_column_add_new_card_btn)
+    template_cancel.click()
+    time.sleep(.5)
+
+  def _add_new_mmt_template(self):
+    """
+    A function to add a new mmt (paper type) template to a journal)
+    :return: the name of the added template
+    """
+    logging.info('Add New Template called')
+    add_mmt_btn = self._get(self._journal_admin_manu_mgr_templates_button)
+    add_mmt_btn.click()
+    time.sleep(.5)
+    template_field = self._get(self._mmt_template_name_field)
+    save_template_button = self._get(self._mmt_template_save_button)
+    template_field.click()
+    template_field.send_keys(Keys.ARROW_DOWN + '<-False')
+    time.sleep(1)
+    save_template_button.click()
+    time.sleep(1)
+    self._mmt_template_name_link = (By.CSS_SELECTOR, 'div.paper-type-name')
+    template_link = self._get(self._mmt_template_name_link)
+    template_name = template_link.text
+    self._journal_admin_manu_mgr_back_link = (By.CSS_SELECTOR, 'div.paper-type-form div + a')
+    back_btn = self._get(self._journal_admin_manu_mgr_back_link)
+    back_btn.click()
+    time.sleep(.5)
+    return template_name

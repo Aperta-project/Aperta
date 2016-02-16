@@ -10,7 +10,9 @@ __author__ = 'jgray@plos.org'
 import time
 
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException
 
+from Base.CustomException import ElementDoesNotExistAssertionError
 from Base.PlosPage import PlosPage
 from Base.PostgreSQL import PgSQL
 from Base.Resources import fm_login, oa_login, sa_login
@@ -86,6 +88,8 @@ class AuthenticatedPage(PlosPage):
     self._sheet_close_x = (By.CLASS_NAME, 'sheet-close-x')
     # Flash Messages
     self._flash_success_msg = (By.CSS_SELECTOR, 'div.flash-message--success div.flash-message-content')
+    self._flash_error_msg = (By.CSS_SELECTOR, 'div.flash-message--error div.flash-message-content')
+
     self._flash_closer = (By.CLASS_NAME, 'flash-message-remove')
     # Cards - placeholder locators - these are over-ridden by definitions in the workflow and manuscript_viewer pages
     self._billing_card = None
@@ -264,9 +268,22 @@ class AuthenticatedPage(PlosPage):
     Validate ihat conversion success
     """
     self.set_timeout(30)
-    ihat_msg = self._get(self._flash_success_msg)
+    try:
+      ihat_msg = self._get(self._flash_success_msg)
+    except Exception as e:
+      self.restore_timeout()
+      return e
     self.restore_timeout()
     assert 'Finished loading Word file.' in ihat_msg.text, ihat_msg.text
+
+  def validate_ihat_conversions_failure(self):
+    """
+    Validate ihat conversion failure
+    """
+    self.set_timeout(30)
+    ihat_msg = self._get(self._flash_error_msg)
+    self.restore_timeout()
+    assert 'There was an error loading your Word file.' in ihat_msg.text, ihat_msg.text
 
   def close_flash_message(self):
     """

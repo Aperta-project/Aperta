@@ -291,24 +291,23 @@ class AdminPage(AuthenticatedPage):
     for result in result_set:
       if username in result.text:
         success_count += 1
-      time.sleep(1)
-      result.click()
-      # TODO: Validate Styles for these elements
-      time.sleep(1)
-      user_details_title = self._get(self._overlay_header_title)
-      user_details_closer = self._get(self._overlay_header_close)
-      user_details_fname_label = self._get(self._ud_overlay_fname_label)
-      user_details_fname_field = self._get(self._ud_overlay_fname_field)
-      user_details_lname_label = self._get(self._ud_overlay_lname_label)
-      user_details_lname_field = self._get(self._ud_overlay_lname_field)
-      user_details_uname_label = self._get(self._ud_overlay_uname_label)
-      user_details_uname_field = self._get(self._ud_overlay_uname_field)
-      user_details_reset_pw_btn = self._get(self._ud_overlay_reset_pw_btn)
-      user_details_reset_pw_btn.click()
-      user_details_reset_pw_success_msg = self._get(self._ud_overlay_reset_pw_success_msg)
-      user_details_cancel_link = self._get(self._overlay_action_button_cancel)
-      user_details_save_btn = self._get(self._overlay_action_button_save)
-      user_details_closer.click()
+        result.click()
+        # TODO: Validate Styles for these elements
+        time.sleep(1)
+        user_details_title = self._get(self._overlay_header_title)
+        user_details_closer = self._get(self._overlay_header_close)
+        user_details_fname_label = self._get(self._ud_overlay_fname_label)
+        user_details_fname_field = self._get(self._ud_overlay_fname_field)
+        user_details_lname_label = self._get(self._ud_overlay_lname_label)
+        user_details_lname_field = self._get(self._ud_overlay_lname_field)
+        user_details_uname_label = self._get(self._ud_overlay_uname_label)
+        user_details_uname_field = self._get(self._ud_overlay_uname_field)
+        user_details_reset_pw_btn = self._get(self._ud_overlay_reset_pw_btn)
+        user_details_reset_pw_btn.click()
+        user_details_reset_pw_success_msg = self._get(self._ud_overlay_reset_pw_success_msg)
+        user_details_cancel_link = self._get(self._overlay_action_button_cancel)
+        user_details_save_btn = self._get(self._overlay_action_button_save)
+        user_details_closer.click()
     assert success_count > 0
 
   def _search_user(self, username):

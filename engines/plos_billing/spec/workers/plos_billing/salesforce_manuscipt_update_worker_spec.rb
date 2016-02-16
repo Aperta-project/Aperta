@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe PlosBilling::ManuscriptUpdateWorker do
+describe PlosBilling::SalesforceManuscriptUpdateWorker do
   describe "#email_admin_on_error" do
     let(:dbl) { double }
     let(:msg) do
@@ -18,7 +18,7 @@ describe PlosBilling::ManuscriptUpdateWorker do
       expect(PlosBilling::BillingSalesforceMailer).to receive(:delay) { dbl }
       expect(dbl).to receive(:notify_journal_admin_sfdc_error)
         .with(4, error_message)
-      PlosBilling::ManuscriptUpdateWorker.email_admin_on_error(msg)
+      PlosBilling::SalesforceManuscriptUpdateWorker.email_admin_on_error(msg)
     end
   end
 end

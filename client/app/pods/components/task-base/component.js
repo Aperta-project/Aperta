@@ -2,45 +2,41 @@ import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 const { computed, isEmpty } = Ember;
-const { alias, not, or } = computed;
+const { alias, not, or, and } = computed;
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
   can: Ember.inject.service('can'),
   classNames: ['task'],
+  classNameBindings: [
+    'isNotEditable:read-only',
+    'taskStateToggleable:user-can-make-editable'
+  ],
   dataLoading: true,
 
   init() {
     this._super(...arguments);
     this.set('store', this.container.lookup('store:main'));
+    this.set('editAbility', this.get('can').build('edit', this.get('task')));
   },
 
   isMetadataTask: alias('task.isMetadataTask'),
   isSubmissionTask: alias('task.isSubmissionTask'),
 
-  isSubmissionTaskEditable: computed('task', function(){
-    console.warn("isSubmissionTaskEditable called which is deprecated. Please use isEditable. Called on ", this._debugContainerKey, this);
-    return this.get('isEditable');
-  }),
+  isEditableDueToPermissions: alias('editAbility.can'),
+  isEditableDueToPaperState: computed(
+    'task.paper.editable', 'isSubmissionTask',
+    function() {
+      return !this.get('isSubmissionTask') || this.get('task.paper.editable');
+    }),
+  isEditableDueToTaskState: not('task.completed'),
 
-  isSubmissionTaskEditable: computed('task', function(){
-    console.warn("isSubmissionTaskNotEditable called which is deprecated. Please use isNotEditable. Called on ", this._debugContainerKey, this);
-    return this.get('isNotEditable');
-  }),
-
-  fieldsDisabled: or('isNotEditable', 'task.completed'),
-  isEditable: or('isUserEditable', 'currentUser.siteAdmin'),
+  isEditable: and(
+    'isEditableDueToPaperState',
+    'isEditableDueToPermissions',
+    'isEditableDueToTaskState'),
   isNotEditable: not('isEditable'),
-  isUserEditable: computed('userHasPermission', 'task.paper.editable', 'isSubmissionTask', function(){
-    return this.get('userHasPermission') && (
-      this.get('task.paper.editable') || !this.get('isSubmissionTask')
-    );
-  }),
-  userHasPermission: Ember.observer('task', function(){
-    this.get('can').can('view', this.get('task')).then( (value)=> {
-      this.set('userHasPermission', value);
-    });
-    return false;
-  }),
+
+  taskStateToggleable: and('isEditableDueToPermissions', 'isEditableDueToPaperState'),
 
   save() {
     this.set('validationErrors.completed', '');

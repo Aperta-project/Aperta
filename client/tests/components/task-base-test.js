@@ -30,7 +30,7 @@ moduleFor('component:task-base', 'TaskBaseComponent', {
 
 test('#isEditable: false the user does not have permission', function(assert) {
   Ember.run(()=> {
-    this.subject().set('userHasPermission', false);
+    this.subject().set('userMayView', false);
     assert.equal(this.subject().get('isEditable'), false);
   });
 });

@@ -101,11 +101,12 @@ class JournalAdminPage(AdminPage):
 
 
   # POM Actions
-  def validate_page_elements_styles(self):
-    style_settings_title = self._get(self._journal_admin_style_settings_title)
-    self.validate_application_h2_style(style_settings_title)
-
   def validate_users_section(self, journal):
+    """
+    Validate the elements and functions of the User search and role assignment areas of the page
+    :param journal: journal to which to validate this section
+    :return: void function
+    """
     users_title = self._get(self._journal_admin_users_title)
     self.validate_application_h2_style(users_title)
     jid = PgSQL().query('SELECT id FROM journals WHERE name = %s;', (journal,))[0][0]
@@ -139,6 +140,12 @@ class JournalAdminPage(AdminPage):
       time.sleep(3)
 
   def _add_user_with_role(self, user, role):
+    """
+    For user and role names, add to current journal
+    :param user: existing user
+    :param role: existing role
+    :return: void function
+    """
     user_title = self._get(self._journal_admin_users_title)
     self._actions.move_to_element(user_title).perform()
     user_input = self._get(self._journal_admin_user_search_field)
@@ -151,12 +158,24 @@ class JournalAdminPage(AdminPage):
     self._actions.send_keys_to_element(role_search_field, role + Keys.RETURN).perform()
 
   def _validate_user_with_role(self, user, role):
+    """
+    For named user and role, ensure this exists for current journal
+    :param user: user to validate
+    :param role: role to validate
+    :return: void function
+    """
     page_user_list = self._gets(self._journal_admin_user_search_results_row)
     for row in page_user_list:
       assert user in row.text, row.text
       assert role in row.text, row.text
 
   def _delete_user_with_role(self, user, role):
+    """
+    For named user and role, delete user role
+    :param user: user to search for
+    :param role: role to delete
+    :return: void function
+    """
     user_role_pill = self._get(self._journal_admin_user_row_roles)
     # For whatever reason, using action chains move_to_element() is failing here so doing a simple click
     user_role_pill.click()
@@ -164,6 +183,10 @@ class JournalAdminPage(AdminPage):
     delete_role.click()
 
   def validate_roles_section(self):
+    """
+    Validate the elements and function of the Roles section of the journal admin page
+    :return: void function
+    """
     roles_title = self._get(self._journal_admin_roles_title)
     self._actions.move_to_element(roles_title).perform()
     self.validate_application_h2_style(roles_title)
@@ -205,6 +228,12 @@ class JournalAdminPage(AdminPage):
       count += 1
 
   def validate_task_types_section(self):
+    """
+    Assert the existence and function of the elements of the Available Task Types section and overlay.
+    It is expected that this section will change radically following the roles and permissions work,
+    so not investing too much here at present.
+    :return: void function
+    """
     task_names = ['Ad-hoc', 'Additional Information', 'Assign Admin', 'Assign Team', 'Authors', 'Billing',
                   'Competing Interests', 'Cover Letter', 'Data Availability', 'Editor Discussion', 'Ethics Statement',
                   'Figures', 'Final Tech Check', 'Financial Disclosure', 'Initial Decision', 'Initial Tech Check',
@@ -235,6 +264,12 @@ class JournalAdminPage(AdminPage):
       task.find_element(*self._journal_admin_att_overlay_row_clear_btn)
 
   def validate_mmt_section(self, journal):
+    """
+    Assert the existence and function of the elements of the Manuscript Manager Templates section.
+    Validate Add new template, edit and delete existing templates, validate presentation of staging.
+    :param journal: name of journal to choose to validate this section
+    :return: void function
+    """
     dbmmts = []
     dbids = []
     manu_mgr_title = self._get(self._journal_admin_manu_mgr_templates_title)
@@ -300,6 +335,10 @@ class JournalAdminPage(AdminPage):
 
 
   def validate_style_settings_section(self):
+    """
+    Validate the Roles section elements and permission assignment functions of the journal admin page
+    :return: void function
+    """
     styles_title = self._get(self._journal_admin_style_settings_title)
     self.validate_application_h2_style(styles_title)
     assert 'Style Settings' in styles_title.text, styles_title.text
@@ -310,7 +349,7 @@ class JournalAdminPage(AdminPage):
     try:
       epub_cvr_status_text = self._get(self._journal_admin_epub_cvr_image_text)
       assert epub_cvr_status_text.text == 'There is currently no default ePub cover.', epub_cvr_status_text.text
-    except:
+    except ElementDoesNotExistAssertionError:
       epub_cvr_img = self._get(self._journal_admin_epub_cvr_image_link)
       logging.info('An ePub Cover image has been uploaded for this journal: {0}'.format(epub_cvr_img.text))
     self.restore_timeout()
@@ -323,7 +362,7 @@ class JournalAdminPage(AdminPage):
     assert 'ePub CSS' in title.text, title.text
     label = self._get(self._journal_styles_css_overlay_field_label)
     assert label.text == 'Enter or edit CSS to format the ePub output for this journal\'s papers.', label.text
-    input = self._get(self._journal_styles_css_overlay_field)
+    css_input = self._get(self._journal_styles_css_overlay_field)
     cancel = self._get(self._journal_styles_css_overlay_cancel)
     save = self._get(self._journal_styles_css_overlay_save)
     closer.click()
@@ -337,7 +376,7 @@ class JournalAdminPage(AdminPage):
     assert 'PDF CSS' in title.text, title.text
     label = self._get(self._journal_styles_css_overlay_field_label)
     assert label.text == 'Enter or edit CSS to format the PDF output for this journal\'s papers.', label.text
-    input = self._get(self._journal_styles_css_overlay_field)
+    css_input = self._get(self._journal_styles_css_overlay_field)
     cancel = self._get(self._journal_styles_css_overlay_cancel)
     save = self._get(self._journal_styles_css_overlay_save)
     cancel.click()
@@ -351,12 +390,16 @@ class JournalAdminPage(AdminPage):
     assert 'Manuscript CSS' in title.text, title.text
     label = self._get(self._journal_styles_css_overlay_field_label)
     assert label.text == 'Enter or edit CSS to format the manuscript editor and output for this journal.', label.text
-    input = self._get(self._journal_styles_css_overlay_field)
+    css_input = self._get(self._journal_styles_css_overlay_field)
     cancel = self._get(self._journal_styles_css_overlay_cancel)
     save = self._get(self._journal_styles_css_overlay_save)
     save.click()
 
   def _validate_mmt_template_items(self):
+    """
+    Validate the elements of the manuscript manager template (aka paper type)
+    :return: void function
+    """
     time.sleep(.5)
     template_field = self._get(self._mmt_template_name_field)
     assert 'Research' in template_field.get_attribute('value'), template_field.get_attribute('value')
@@ -381,6 +424,10 @@ class JournalAdminPage(AdminPage):
     time.sleep(.5)
 
   def _add_new_mmt_template(self):
+    """
+    A function to add a new mmt (paper type) template to a journal)
+    :return: the name of the added template
+    """
     logging.info('Add New Template called')
     add_mmt_btn = self._get(self._journal_admin_manu_mgr_templates_button)
     add_mmt_btn.click()

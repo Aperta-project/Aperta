@@ -8,13 +8,15 @@ const ObjectProxy = Ember.Object.extend(ValidationErrorsMixin, {
   init() {
     this._super(...arguments);
 
+    const klass = 'ObjectProxyWithValidationErrors';
+
     Ember.assert(
-      'an `object` must be set for ObjectProxyWithValidationErrors',
+      `the 'object' property must be set for #{klass}`,
       !Ember.isEmpty(this.get('object'))
     );
 
     Ember.assert(
-      'validations must be defined for ObjectProxyWithValidationErrors',
+      `the 'validations' property must be set for ${klass}`,
       !Ember.isEmpty(this.get('validations'))
     );
   },

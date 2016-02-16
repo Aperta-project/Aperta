@@ -96,6 +96,12 @@ export default Ember.Component.extend({
                            .answerForQuestion('author--contributions--other');
         answer.destroyRecord();
       }
+    },
+
+    validateField(key, value) {
+      if(this.attrs.validateField) {
+        this.attrs.validateField(key, value);
+      }
     }
   }
 });

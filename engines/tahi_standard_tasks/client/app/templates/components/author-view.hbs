@@ -25,6 +25,7 @@
 {{#if editState}}
   {{add-author-form author=author
                     validationErrors=errors
+                    validateField=(action "validateField")
                     hideAuthorForm="toggleEditForm"
                     saveAuthor="save"}}
 {{/if}}

@@ -33,9 +33,9 @@
       {{author-view isEditable=isEditable
                     delete="removeAuthor"
                     save="saveAuthor"
-                    author=authorWithErrors.model
-                    errors=authorWithErrors.errors
+                    model=authorWithErrors
                     disabled=isSubmissionTaskNotEditable}}
+
       {{author-drop-target index=authorWithErrors.model.position
                            isEditable=isEditable
                            changePosition=(action "changeAuthorPosition")}}

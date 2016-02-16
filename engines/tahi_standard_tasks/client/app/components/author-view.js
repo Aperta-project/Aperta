@@ -1,32 +1,34 @@
 import Ember from 'ember';
 import DragNDrop from 'tahi/services/drag-n-drop';
 
+const { computed, on } = Ember;
+const { alias } = computed;
+
 export default Ember.Component.extend(DragNDrop.DraggableMixin, {
-  layoutName: 'components/author-view',
   classNames: ['authors-overlay-item'],
   classNameBindings: ['hoverState:__hover', 'isEditable:__editable'],
   hoverState: false,
   deleteState: false,
+  author: alias('model.object'),
+  errors: alias('model.validationErrors'),
+  errorsPresent: alias('model.errorsPresent'),
+  editState: alias('errorsPresent'),
 
-  editState: function() {
-    return !!this.get('errors');
-  }.property('author.errors'),
-
-  attachHoverEvent: function() {
+  attachHoverEvent: on('didInsertElement', function() {
     if (this.get('disabled')) { return; }
-    let self = this;
-    let toggleHoverClass = function() {
+    const self = this;
+    const toggleHoverClass = function() {
       self.toggleProperty('hoverState');
     };
 
     this.$().hover(toggleHoverClass, toggleHoverClass);
-  }.on('didInsertElement'),
+  }),
 
-  teardownHoverEvent: function() {
+  teardownHoverEvent: on('willDestroyElement', function() {
     this.$().off('mouseenter mouseleave');
-  }.on('willDestroyElement'),
+  }),
 
-  dragStart: function(e) {
+  dragStart(e) {
     e.dataTransfer.effectAllowed = 'move';
     DragNDrop.dragItem = this.get('author');
   },
@@ -39,6 +41,9 @@ export default Ember.Component.extend(DragNDrop.DraggableMixin, {
     },
 
     save() {
+      this.get('model').validateAllKeys();
+      if(this.get('errorsPresent')) { return; }
+
       this.sendAction('save', this.get('author'));
       this.set('editState', false);
     },
@@ -49,6 +54,10 @@ export default Ember.Component.extend(DragNDrop.DraggableMixin, {
 
     toggleDeleteConfirmation() {
       this.toggleProperty('deleteState');
+    },
+
+    validateField(key, value) {
+      this.get('model').validate(key, value);
     }
   }
 });

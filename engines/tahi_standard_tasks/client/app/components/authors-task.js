@@ -1,10 +1,22 @@
-import TaskComponent from 'tahi/pods/components/task-base/component';
 import Ember from 'ember';
+import TaskComponent from 'tahi/pods/components/task-base/component';
+import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
 
 const { computed, on } = Ember;
 
 export default TaskComponent.extend({
   newAuthorFormVisible: false,
+
+  validateData() {
+    const objs = this.get('sortedAuthorsWithErrors');
+    objs.invoke('validateAllKeys');
+
+    const errors = ObjectProxyWithErrors.errorsPresentInCollection(objs);
+
+    if(errors) {
+      this.set('validationErrors.completed', 'Please fix all errors');
+    }
+  },
 
   authors: computed('task.authors.@each.paper', function() {
     return this.get('task.authors').filterBy('paper', this.get('paper'));
@@ -12,6 +24,16 @@ export default TaskComponent.extend({
 
   authorSort: ['position:asc'],
   sortedAuthors: computed.sort('task.authors', 'authorSort'),
+  sortedAuthorsWithErrors: computed('sortedAuthors.[]', function() {
+    return this.get('sortedAuthors').map(function(a) {
+      return ObjectProxyWithErrors.create({
+        object: a,
+        validations: {
+          'firstName': ['presence']
+        }
+      });
+    });
+  }),
 
   nestedQuestionsForNewAuthor: Ember.A(),
   newAuthorQuestions: on('init', function(){
@@ -34,11 +56,6 @@ export default TaskComponent.extend({
       nestedQuestion.clearAnswerForOwner(this.get('newAuthor'));
     });
   },
-
-  sortedAuthorsWithErrors: computed(
-    'sortedAuthors.[]', 'validationErrors', function() {
-    return this.createModelProxyObjectWithErrors(this.get('sortedAuthors'));
-  }),
 
   shiftAuthorPositions(author, newPosition) {
     author.set('position', newPosition).save();
@@ -74,7 +91,6 @@ export default TaskComponent.extend({
     },
 
     saveAuthor(author) {
-      this.clearAllValidationErrorsForModel(author);
       author.save();
     },
 

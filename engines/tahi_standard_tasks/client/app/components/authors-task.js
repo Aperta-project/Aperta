@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import TaskComponent from 'tahi/pods/components/task-base/component';
 import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
+import validations from 'tahi/authors-task-validations';
 
 const { computed, on } = Ember;
 
@@ -28,9 +29,7 @@ export default TaskComponent.extend({
     return this.get('sortedAuthors').map(function(a) {
       return ObjectProxyWithErrors.create({
         object: a,
-        validations: {
-          'firstName': ['presence']
-        }
+        validations: validations
       });
     });
   }),

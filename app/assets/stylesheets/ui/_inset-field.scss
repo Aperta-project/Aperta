@@ -87,6 +87,7 @@
     white-space: nowrap;
     font-size: 14px;
     @include ellipsis;
+    width: auto; // override ellipsis above
   }
 }
 

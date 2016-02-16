@@ -3,9 +3,9 @@
     <div class="flex-element inset-form-control required author-name {{if validationErrors.firstName "error"}}">
       <div class="inset-form-control-text">
         <label>First Name</label>
-        {{#if validationErrors.firstName}}
-          <i class="fa fa-exclamation-triangle" title={{validationErrors.firstName}}></i>
-        {{/if}}
+        {{error-message message=validationErrors.firstName
+                        icon=true
+                        text=false}}
       </div>
       {{input type="text"
               value=author.firstName
@@ -17,7 +17,9 @@
     <div class="flex-element inset-form-control author-middle-initial {{if validationErrors.middleInitial "error"}}">
       <div class="inset-form-control-text">
         <label>MI</label>
-        {{error-message message=validationErrors.middleInitial}}
+        {{error-message message=validationErrors.middleInitial
+                        icon=true
+                        text=false}}
       </div>
       {{input type="text"
               value=author.middleInitial
@@ -28,22 +30,28 @@
     <div class="flex-element inset-form-control required author-name {{if validationErrors.lastName "error"}}">
       <div class="inset-form-control-text">
         <label>Last Name</label>
-        {{error-message message=validationErrors.lastName}}
+        {{error-message message=validationErrors.lastName
+                        icon=true
+                        text=false}}
       </div>
       {{input type="text"
               value=author.lastName
               class="author-last inset-form-control-input"
+              focus-out=(action "validateField" "lastName")
               placeholder="Goodall"}}
     </div>
 
     <div class="flex-element inset-form-control required {{if validationErrors.email "error"}}">
       <div class="inset-form-control-text">
         <label>Email</label>
-        {{error-message message=validationErrors.email}}
+        {{error-message message=validationErrors.email
+                        icon=true
+                        text=false}}
       </div>
       {{input type="text"
               value=author.email
               class="author-email inset-form-control-input"
+              focus-out=(action "validateField" "email")
               placeholder="jane.goodall@science.com"}}
 
     </div>
@@ -53,22 +61,28 @@
     <div class="flex-element inset-form-control required {{if validationErrors.title "error"}}">
       <div class="inset-form-control-text">
         <label>Title</label>
-        {{error-message message=validationErrors.title}}
+        {{error-message message=validationErrors.title
+                        icon=true
+                        text=false}}
       </div>
       {{input type="text"
               value=author.title
               class="author-title inset-form-control-input"
+              focus-out=(action "validateField" "title")
               placeholder="World's Foremost Expert on Chimpanzees"}}
     </div>
 
     <div class="flex-element inset-form-control required {{if validationErrors.department "error"}}">
       <div class="inset-form-control-text">
         <label>Department</label>
-        {{error-message message=validationErrors.department}}
+        {{error-message message=validationErrors.department
+                        icon=true
+                        text=false}}
       </div>
       {{input type="text"
               value=author.department
               class="author-department inset-form-control-input"
+              focus-out=(action "validateField" "department")
               placeholder="Primatology"}}
     </div>
   </div>
@@ -117,7 +131,9 @@
 
   <div class="form-group author-contributions form-inline">
     <h4 class="required">Author Contributions</h4>
-    {{error-message message=validationErrors.contributions}}
+    {{error-message message=validationErrors.contributions
+                    icon=true
+                    text=true}}
     <div class="flex-group">
       {{#each authorContributionIdents as |contributionIdent|}}
         {{#nested-question-check ident=contributionIdent
@@ -146,13 +162,13 @@
                               class="author-label-other"
                               tagName="span"}}
     {{/if}}
+  </div>
 
-    <span class="pull-right author-form-buttons">
-      {{#if validationErrors.save}}
-        {{error-message message=validationErrors.save}}
-      {{/if}}
-      <a class="button-link button--green author-cancel" {{action "cancelEdit" bubbles=false}}>cancel</a>
-      <button class="button-secondary button--green knockout" {{action "saveNewAuthor"}}>done</button>
-    </span>
+  <div class="author-form-buttons">
+    {{#if validationErrors.save}}
+      {{error-message message=validationErrors.save}}
+    {{/if}}
+    <a class="button-link button--green author-cancel" {{action "cancelEdit" bubbles=false}}>cancel</a>
+    <button class="button-secondary button--green knockout" {{action "saveNewAuthor"}}>done</button>
   </div>
 </div>

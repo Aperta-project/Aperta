@@ -1,8 +1,10 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  classNames: ['error-message'],
-  classNameBindings: ['visible'],
+  classNameBindings: [ ':error-message', 'visible' ],
+
+  icon: false,
+  text: true,
 
   visible: Ember.computed('message', function() {
     return this.get('message') ? '' : 'error-message--hidden';

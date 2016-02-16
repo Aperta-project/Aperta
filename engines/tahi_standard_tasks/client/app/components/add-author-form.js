@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { contributionIdents } from 'tahi/authors-task-validations';
 
 const { computed } = Ember;
 
@@ -6,13 +7,7 @@ export default Ember.Component.extend({
   classNames: ['add-author-form'],
   author: null,
 
-  authorContributionIdents: [
-    'author--contributions--conceived_and_designed_experiments',
-    'author--contributions--performed_the_experiments',
-    'author--contributions--analyzed_data',
-    'author--contributions--contributed_tools',
-    'author--contributions--contributed_writing'
-  ],
+  authorContributionIdents: contributionIdents,
 
   isOtherContributionSelected: computed('author.nestedQuestions', function(){
     const answer = this.get('author')

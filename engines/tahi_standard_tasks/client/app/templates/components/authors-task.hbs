@@ -9,7 +9,7 @@
   </p>
 
   <div>
-    {{#if isEditable}}
+    {{#if (and isEditable (not fieldsDisabled))}}
       <button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "toggleAuthorForm" group}}>
         Add a New Author
       </button>
@@ -34,6 +34,7 @@
                     delete="removeAuthor"
                     save="saveAuthor"
                     model=authorWithErrors
+                    fieldsDisabled=fieldsDisabled
                     disabled=isSubmissionTaskNotEditable}}
 
       {{author-drop-target index=authorWithErrors.model.position

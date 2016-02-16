@@ -2,6 +2,7 @@ import NestedQuestionComponent from 'tahi/pods/components/nested-question/compon
 
 export default NestedQuestionComponent.extend({
   classNameBindings: [
+    ':nested-question-display',
     'errorPresent:error' // errorPresent defined in NestedQuestionComponent
   ],
   tagName: 'span'

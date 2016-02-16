@@ -51,8 +51,7 @@
         {{institution-search value=affiliation1Proxy
                              institutionSelected="affiliation1Selected"
                              placeholder="Affiliation"
-                             disabled=fieldsDisabled
-                             errors=validationErrors.plos_billing--affiliation1}}
+                             disabled=fieldsDisabled}}
       </div>
 
       <div class="flex-element">
@@ -167,6 +166,7 @@
       <h3>
         {{nested-question-display ident="plos_billing--payment_method"
                                   owner=task
+                                  class="required"
                                   errors=validationErrors.plos_billing--payment_method}}
       </h3>
 

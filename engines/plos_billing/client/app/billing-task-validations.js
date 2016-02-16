@@ -31,7 +31,6 @@ export default {
   'plos_billing--first_name':        ['presence'],
   'plos_billing--last_name':         ['presence'],
   'plos_billing--department':        ['presence'],
-  'plos_billing--affiliation1':      ['presence'],
   'plos_billing--phone_number':      ['presence'],
   'plos_billing--email':             ['presence', 'email'],
   'plos_billing--address1':          ['presence'],

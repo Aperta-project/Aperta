@@ -323,7 +323,7 @@ class JournalAdminPage(AdminPage):
           else:
             mmt.find_element(*self._journal_admin_manu_mgr_thumb_delete)
         count += 1
-    time.sleep(1)
+    time.sleep(2)
     add_mmt_btn.click()
     time.sleep(.5)
     assert 'manuscript_manager_templates/new' in self._driver.current_url, self._driver.current_url

@@ -19,11 +19,13 @@ export default Ember.Controller.extend({
     }
     var that = this;
     this.journals.toArray().forEach(function(journal) {
-       that.get('can').can('view_paper_tracker', journal).then( (value)=> {
-        if (value) {
-          that.set('canViewPaperTracker', true);
-        }
-      });
+      that.get('can').can('view_paper_tracker', journal).then( (value) =>
+        Ember.run(function() {
+          if (value) {
+            that.set('canViewPaperTracker', true);
+          }
+        })
+      );
     });
   },
 

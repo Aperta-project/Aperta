@@ -153,3 +153,51 @@ test('(403 response) cannot see the Flow Manager link', function(assert) {
     assert.equal(find('.main-nav:contains("Flow Manager")').length, 0);
   });
 });
+
+test('(200 response) with permission can see Paper Tracker link', function(assert) {
+  Ember.run(function(){
+    var store = getStore();
+    store.createRecord('journal', {
+      id: 1,
+      name: 'Test Journal of America'
+    });
+
+    store.createRecord('permission',{
+      id: 'journal+1',
+      object:{id: 1, type: 'Journal'},
+      permissions:{
+        view_paper_tracker:{
+          states: ['*']
+        }
+      }
+    });
+    andThen(function() {
+      respondAuthorized();
+      visit('/');
+      andThen(function() {
+        assert.equal(find('#nav-paper-tracker').length, 1,
+                     'paper tracker link is shown');
+      });
+    });
+  });
+});
+
+test('(200 response) without permission Paper Tracker link is hidden', function(assert) {
+  Ember.run(function(){
+    var store = getStore();
+    store.createRecord('journal', {
+      id: 1,
+      name: 'Test Journal of America'
+    });
+
+    andThen(function() {
+      respondAuthorized();
+      visit('/');
+      andThen(function() {
+        assert.equal(find('#nav-paper-tracker').length, 0,
+                     'paper tracker link is shown');
+      });
+    });
+  });
+});
+

@@ -29,9 +29,7 @@ feature "Inviting a new reviewer", js: true do
     dashboard_page = sign_up_as("malz@example.com")
     dashboard_page.accept_invitation_for_paper(paper)
 
-    skip
-    # # this next line is flaky
-    # expect(dashboard_page).to have_submission(paper.title)
+    expect(dashboard_page).to have_submission(paper.title)
   end
 
   scenario "Invitation code cannot be re-used" do

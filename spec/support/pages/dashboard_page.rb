@@ -102,6 +102,9 @@ class DashboardPage < Page
         invitation.accept
       end
       process_sidekiq_jobs
+      wait_for_condition do
+        has_submission?(paper.title)
+      end
     end
   end
 

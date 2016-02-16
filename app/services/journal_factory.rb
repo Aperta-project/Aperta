@@ -42,6 +42,15 @@ class JournalFactory
       role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
+
+      # Collaborators can view and edit any metadata card except billing
+      metadata_task_klasses = Task.descendants.select { |klass| klass <=> MetadataTask }
+      metadata_task_klasses -= [PlosBilling::BillingTask]
+      metadata_task_klasses.each do |klass|
+        role.ensure_permission_exists(:view, applies_to: klass.name, states: ['*'])
+        role.ensure_permission_exists(:edit, applies_to: klass.name, states: ['*'])
+        role.ensure_permission_exists(:view_participants, applies_to: klass.name, states: ['*'])
+      end
     end
 
     Role.ensure_exists(Role::REVIEWER_ROLE, journal: @journal, participates_in: [Paper]) do |role|

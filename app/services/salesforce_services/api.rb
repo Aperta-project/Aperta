@@ -24,7 +24,7 @@ module SalesforceServices
     end
 
     def self.client
-      @@client ||= self.get_client # TODO: reauthenticate when 'Session Expired'?
+      @@client ||= self.get_client
     end
 
     def self.create_manuscript(paper_id:)
@@ -63,7 +63,7 @@ module SalesforceServices
       end
     end
 
-    def self.create_billing_and_pfa_case(paper_id:) # assumes paper.billing_card
+    def self.create_billing_and_pfa_case(paper_id:)
       paper    = Paper.find(paper_id)
       bt       = BillingTranslator.new(paper: paper)
       kase     = Case.create(bt.paper_to_billing_hash)

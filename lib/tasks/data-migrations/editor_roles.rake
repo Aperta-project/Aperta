@@ -20,6 +20,46 @@ namespace :data do
             ).first_or_create!
           end
         end
+
+        OldRole.where(name: 'Handling Editor').all.each do |old_role|
+          old_role.users.each do |user|
+            puts "Assigning #{user.full_name} <#{user.email}> as #{old_role.name} on '#{old_role.journal.name}' Journal"
+            Assignment.where(
+              user: user,
+              role: old_role.journal.roles.internal_editor,
+              assigned_to: old_role.journal
+            ).first_or_create!
+          end
+        end
+
+        OldRole.where(name: 'Admin').all.each do |old_role|
+          old_role.users.each do |user|
+            puts "Assigning #{user.full_name} <#{user.email}> as #{old_role.name} on '#{old_role.journal.name}' Journal"
+            Assignment.where(
+              user: user,
+              role: old_role.journal.roles.staff_admin,
+              assigned_to: old_role.journal
+            ).first_or_create!
+          end
+        end
+
+        PaperRole.where(old_role: 'Handling Editor').includes(:user, :paper).all.each do |paper_role|
+          paper = paper_role.paper
+          user = paper_role.user
+          Assignment.where(user: user, role: paper.journal.roles.handling_editor, assigned_to: paper).first_or_create!
+        end
+
+        PaperRole.where(old_role: ['Reviewer', 'reviewer']).includes(:user, :paper).all.each do |paper_role|
+          paper = paper_role.paper
+          user = paper_role.user
+          Assignment.where(user: user, role: paper.journal.roles.reviewer, assigned_to: paper).first_or_create!
+        end
+
+        PaperRole.where(old_role: ['Admin', 'admin', 'Bio Staff/Admin']).includes(:user, :paper).all.each do |paper_role|
+          paper = paper_role.paper
+          user = paper_role.user
+          Assignment.where(user: user, role: paper.journal.roles.staff_admin, assigned_to: paper).first_or_create!
+        end
       end
 
       # desc 'Migrates the Paper Editor to new R&P Academic Editor role'

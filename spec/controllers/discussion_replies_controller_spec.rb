@@ -71,12 +71,13 @@ describe DiscussionRepliesController do
     end
 
     context "when the user does not have access" do
-      let!(:do_request) { post :create, creation_params }
       before do
         allow_any_instance_of(User).to receive(:can?)
           .with(:reply, topic_a)
           .and_return false
       end
+
+      let!(:do_request) { post :create, creation_params }
 
       it { responds_with(403) }
     end

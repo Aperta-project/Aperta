@@ -69,7 +69,7 @@ describe DiscussionParticipantsController do
 
       it "destroys a participant" do
         expect do
-          xhr :delete, :destroy, format: :json, id: topic_a.id
+          xhr :delete, :destroy, format: :json, id: participation.id
         end.to change { DiscussionParticipant.count }.by(-1)
       end
     end

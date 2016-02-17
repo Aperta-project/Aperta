@@ -15,7 +15,7 @@ module TahiStandardTasks
     end
 
     def invitation_accepted(invitation)
-      replace_editor_and_follow_tasks invitation
+      replace_editor invitation
       PaperAdminMailer.delay.notify_admin_of_editor_invite_accepted(
         paper_id:  invitation.paper.id,
         editor_id: invitation.invitee.id
@@ -48,7 +48,7 @@ module TahiStandardTasks
         journal_name: paper.journal.name }
     end
 
-    def replace_editor_and_follow_tasks(invitation)
+    def replace_editor(invitation)
       user = User.find(invitation.invitee_id)
       role = paper.journal.roles.academic_editor
 

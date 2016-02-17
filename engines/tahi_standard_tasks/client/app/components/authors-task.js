@@ -89,9 +89,6 @@ export default TaskComponent.extend({
       const proxy = this.get('newAuthor');
       const model = proxy.get('object');
 
-      proxy.validateAllKeys();
-      if(proxy.validationErrorsPresent()) { return; }
-
       // set this here, not when initially built so it doesn't show up in
       // the list of existing authors as the user fills out the form
       model.set('authorsTask', this.get('task'));

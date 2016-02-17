@@ -36,7 +36,7 @@ class JournalFactory
       role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:add_participant, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic, states: ['*'])
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
     end
 
@@ -75,7 +75,7 @@ class JournalFactory
       role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:add_participant, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic, states: ['*'])
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
     end
 
@@ -104,7 +104,7 @@ class JournalFactory
       role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:add_participant, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic, states: ['*'])
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
     end
 

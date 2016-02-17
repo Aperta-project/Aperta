@@ -79,9 +79,9 @@ describe JournalFactory do
             )
           end
 
-          it ':add_participant' do
+          it ':manage_participant' do
             expect(journal.roles.internal_editor.permissions).to include(
-              permissions.find_by(action: 'add_participant')
+              permissions.find_by(action: 'manage_participant')
             )
           end
 
@@ -117,9 +117,9 @@ describe JournalFactory do
             )
           end
 
-          it ':add_participant' do
+          it ':manage_participant' do
             expect(journal.roles.internal_editor.permissions).to include(
-              permissions.find_by(action: 'add_participant')
+              permissions.find_by(action: 'manage_participant')
             )
           end
 

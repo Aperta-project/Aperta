@@ -32,7 +32,7 @@ describe DiscussionParticipantsController do
     context "when the user has access" do
       before do
         allow_any_instance_of(User).to receive(:can?)
-          .with(:add_participant, topic_a)
+          .with(:manage_participant, topic_a)
           .and_return true
       end
 
@@ -51,7 +51,34 @@ describe DiscussionParticipantsController do
       let!(:do_request) { post :create, creation_params }
       before do
         allow_any_instance_of(User).to receive(:can?)
-          .with(:add_participant, topic_a)
+          .with(:manage_participant, topic_a)
+          .and_return false
+      end
+
+      it { responds_with(403) }
+    end
+  end
+
+  describe 'DELETE destroy' do
+    context "when the user has access" do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:manage_participant, topic_a)
+          .and_return true
+      end
+
+      it "destroys a participant" do
+        expect do
+          xhr :delete, :destroy, format: :json, id: topic_a.id
+        end.to change { DiscussionParticipant.count }.by(-1)
+      end
+    end
+
+    context "when the user does not have access" do
+      let!(:do_request) { delete :destroy, id: topic_a.id }
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:manage_participant, topic_a)
           .and_return false
       end
 

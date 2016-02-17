@@ -1,14 +1,13 @@
 class DiscussionParticipantsController < ApplicationController
   before_action :authenticate_user!
+  before_action :able_to_manage_participants
   respond_to :json
 
   def create
-    requires_user_can :add_participant, discussion_participant.discussion_topic
     discussion_participant.save
     respond_with discussion_participant
   end
 
-  # TODO: add permission
   def destroy
     discussion_participant.destroy
     respond_with discussion_participant
@@ -17,7 +16,10 @@ class DiscussionParticipantsController < ApplicationController
   private
 
   def creation_params
-    params.require(:discussion_participant).permit(:discussion_topic_id, :user_id)
+    params.require(:discussion_participant).permit(
+      :discussion_topic_id,
+      :user_id
+    )
   end
 
   def discussion_participant
@@ -28,5 +30,13 @@ class DiscussionParticipantsController < ApplicationController
         DiscussionParticipant.new(creation_params)
       end
     end
+  end
+
+  def discussion_topic
+    discussion_participant.discussion_topic
+  end
+
+  def able_to_manage_participants
+    requires_user_can :manage_participant, discussion_topic
   end
 end

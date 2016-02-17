@@ -1,3 +1,4 @@
+# coding: utf-8
 module TahiStandardTasks
   class PaperReviewerTask < ::Task
     DEFAULT_TITLE = 'Invite Reviewers'
@@ -11,11 +12,11 @@ module TahiStandardTasks
 
     def invitation_accepted(invitation)
       ReviewerReportTaskCreator.new(originating_task: self, assignee_id: invitation.invitee_id).process
-      ReviewerMailer.delay.reviewer_accepted(invite_reviewer_task_id: id, assigner_id: paper.editor.try(:id), reviewer_id: invitation.try(:invitee_id))
+      ReviewerMailer.delay.reviewer_accepted(invite_reviewer_task_id: id, assigner_id: paper.academic_editor.try(:id), reviewer_id: invitation.try(:invitee_id))
     end
 
     def invitation_rejected(invitation)
-      ReviewerMailer.delay.reviewer_declined(invite_reviewer_task_id: id, assigner_id: paper.editor.try(:id), reviewer_id: invitation.try(:invitee_id))
+      ReviewerMailer.delay.reviewer_declined(invite_reviewer_task_id: id, assigner_id: paper.academic_editor.try(:id), reviewer_id: invitation.try(:invitee_id))
     end
 
     def invitation_rescinded(invitation)

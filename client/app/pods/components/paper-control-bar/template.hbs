@@ -5,7 +5,7 @@
 
   <div class="control-bar-item-spacer"></div>
 
-  {{#if canViewManuscriptManager}}
+  {{#if (can 'manage_workflow' paper)}}
     {{#link-to "paper.workflow" paper class="control-bar-item control-bar-link paper-navigation-link" id="go-to-workflow"}}
       Go to Workflow
     {{/link-to}}
@@ -75,7 +75,9 @@
 <div class="control-bar-sub-items">
   {{#if contributorsVisible}}
     <div class="contributors active">
-      <a class="contributors-add" {{action "addContributors"}} id="nav-add-collaborators">Add Collaborators</a>
+      {{#if (can 'manage_collaborators' paper)}}
+        <a class="contributors-add" {{action "addContributors"}} id="nav-add-collaborators">Add Collaborators</a>
+      {{/if}}
 
       {{#each paper.collaborators as |contributor|}}
         <div class="contributor">{{unbound contributor.fullName}}</div>

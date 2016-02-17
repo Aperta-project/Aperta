@@ -1,6 +1,6 @@
 require 'rails_helper'
 RSpec.shared_examples 'editor fields' do
-  let!(:editor) do
+  let!(:academic_editor) do
     FactoryGirl.create(
       :user,
       first_name: first_name,
@@ -31,7 +31,7 @@ RSpec.shared_examples 'editor fields' do
 end
 
 describe Typesetter::EditorSerializer do
-  subject(:serializer) { described_class.new(editor) }
+  subject(:serializer) { described_class.new(academic_editor) }
   let(:output) { serializer.serializable_hash }
 
   context 'no affiliation' do
@@ -49,7 +49,7 @@ describe Typesetter::EditorSerializer do
     let!(:affiliation) do
       FactoryGirl.create(
         :affiliation,
-        user: editor,
+        user: academic_editor,
         name: affiliation_name,
         title: affiliation_title,
         department: affiliation_department

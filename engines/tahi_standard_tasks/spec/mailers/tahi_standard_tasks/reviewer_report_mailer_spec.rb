@@ -19,7 +19,7 @@ describe TahiStandardTasks::ReviewerReportMailer do
                          completed: true)
     }
 
-    let(:editor) {
+    let(:academic_editor) {
       FactoryGirl.create(:user,
                          first_name: 'Andi',
                          last_name: 'Plantenberg',
@@ -30,21 +30,21 @@ describe TahiStandardTasks::ReviewerReportMailer do
       user = double(:user, last_name: 'Mazur')
       journal = double(:journal, name: 'PLOS Yeti')
       allow(paper).to receive(:creator).and_return(user)
-      allow(paper).to receive(:editors).and_return([editor])
+      allow(paper).to receive(:academic_editors).and_return([academic_editor])
       allow(paper).to receive(:journal).and_return(journal)
 
       allow_any_instance_of(MailerHelper).to receive(:app_name).and_return app_name
       allow_any_instance_of(TemplateHelper).to receive(:app_name).and_return app_name
     end
 
-    let(:email) { described_class.notify_editor_email(task_id: task.id, recipient_id: editor.id) }
+    let(:email) { described_class.notify_editor_email(task_id: task.id, recipient_id: academic_editor.id) }
 
     it "has correct subject line" do
       expect(email.subject).to eq "Reviewer has completed the review on #{app_name}"
     end
 
     it "sends to paper's editors" do
-      expect(email.to).to eq(paper.editors.map(&:email))
+      expect(email.to).to eq(paper.academic_editors.map(&:email))
     end
 
     it "contains link to the task" do

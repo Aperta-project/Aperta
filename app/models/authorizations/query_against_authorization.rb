@@ -121,10 +121,29 @@ module Authorizations
 
     def query_against_active_record_relation
       query = base_query_for_active_record_relations
+
       if @target.model.reflections['required_permissions']
         query = query.includes(:permission_requirements)
       end
+
+      if klass_supports_single_table_inheritance?(@target.model)
+        applies_to_including_descendants = assignments
+          .flat_map(&:permissions)
+          .flat_map(&:applies_to)
+          .flat_map do |str|
+            [str, str.constantize.descendants.map(&:name)]
+        end
+        query = query.where(
+          type: applies_to_including_descendants.flatten
+        )
+      end
+
       query
+    end
+
+    def klass_supports_single_table_inheritance?(klass)
+      @target.model.base_class != @target.model.base_class ||
+        klass.descendants.any?
     end
   end
 end

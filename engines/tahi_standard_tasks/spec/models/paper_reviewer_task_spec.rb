@@ -10,7 +10,7 @@ describe TahiStandardTasks::PaperReviewerTask do
     journal
   end
 
-  let(:paper) { create :paper, :with_tasks, :with_editor, journal: journal }
+  let(:paper) { create :paper, :with_tasks, :with_academic_editor, journal: journal }
   let(:phase) { paper.phases.first }
 
   let(:albert) { create :user, :site_admin }
@@ -51,7 +51,10 @@ describe TahiStandardTasks::PaperReviewerTask do
     end
 
     context "without a paper editor" do
-      before { paper.paper_roles.editors.delete_all }
+      before do
+        paper.assignments.where(role: paper.journal.roles.academic_editor)
+          .destroy_all
+      end
       it "queues the email" do
         expect {task.invitation_accepted invitation}.to change {
           Sidekiq::Extensions::DelayedMailer.jobs.length
@@ -72,7 +75,10 @@ describe TahiStandardTasks::PaperReviewerTask do
     end
 
     context "without a paper editor" do
-      before { paper.paper_roles.editors.delete_all }
+      before do
+        paper.assignments.where(role: paper.journal.roles.academic_editor)
+          .destroy_all
+      end
       it "queues the email" do
         expect {task.invitation_rejected invitation}.to change {
           Sidekiq::Extensions::DelayedMailer.jobs.length

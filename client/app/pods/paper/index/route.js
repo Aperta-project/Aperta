@@ -11,7 +11,6 @@ export default AuthorizedRoute.extend({
   setupController(controller, model) {
     this._super(...arguments);
     controller.set('commentLooks', this.store.all('commentLook'));
-    this.setFlagViewManuscriptManager(controller, model);
   },
 
   updateShowSubmissionProcess: Ember.on('deactivate', function() {

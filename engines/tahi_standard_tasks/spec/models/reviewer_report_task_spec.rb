@@ -5,11 +5,11 @@ describe TahiStandardTasks::ReviewerReportTask do
   let(:paper) { task.paper }
 
   describe "#send_emails" do
-    let(:editors) { [FactoryGirl.create(:user)] }
+    let(:academic_editors) { [FactoryGirl.create(:user)] }
 
     before do
       # make sure we have editors for sending emails to
-      allow(paper).to receive(:editors).and_return editors
+      allow(paper).to receive(:academic_editors).and_return academic_editors
     end
 
     context "when the task transitions to completed" do
@@ -17,7 +17,7 @@ describe TahiStandardTasks::ReviewerReportTask do
         allow(TahiStandardTasks::ReviewerReportMailer).to receive_message_chain("delay.notify_editor_email") { true }
         task.completed = true
         task.save!
-        expect(task.send_emails).to eq(paper.editors)
+        expect(task.send_emails).to eq(paper.academic_editors)
       end
     end
 

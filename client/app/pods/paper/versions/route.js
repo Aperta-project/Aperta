@@ -31,8 +31,6 @@ var PaperVersionsRoute = AuthorizedRoute.extend({
         controller.get('selectedVersion2')
       ));
     }
-
-    this.setFlagViewManuscriptManager(controller, model);
   },
 
   actions: {

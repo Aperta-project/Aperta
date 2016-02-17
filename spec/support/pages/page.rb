@@ -191,6 +191,7 @@ class Page < PageFragment
 
   def navigate_to_dashboard
     find('.main-nav-item-app-name').click
+    wait_for_ajax
     DashboardPage.new
   end
 

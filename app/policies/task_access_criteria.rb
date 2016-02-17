@@ -58,6 +58,6 @@ module TaskAccessCriteria
   end
 
   def has_paper_role?
-    paper.assigned_users.exists?(current_user.id)
+    paper.old_assigned_users.exists?(current_user.id)
   end
 end

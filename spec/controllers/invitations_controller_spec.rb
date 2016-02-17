@@ -165,7 +165,7 @@ describe InvitationsController do
         expect(invitation.state).to eq("accepted")
         expect(invitation.actor).to eq(invitee)
         expect(task.paper.assigned_users).to include(invitee)
-        expect(task.paper.editor).to eq(invitee)
+        expect(task.paper.academic_editor).to eq(invitee)
       end
 
       it "creates an Activity" do

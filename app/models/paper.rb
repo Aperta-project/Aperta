@@ -19,7 +19,8 @@ class Paper < ActiveRecord::Base
   has_many :supporting_information_files, dependent: :destroy
   has_many :paper_roles, dependent: :destroy
   has_many :users, -> { uniq }, through: :paper_roles
-  has_many :assigned_users, -> { uniq }, through: :paper_roles, source: :user
+  has_many :old_assigned_users, -> { uniq }, through: :paper_roles, source: :user
+  has_many :assigned_users, -> { uniq }, through: :assignments, source: :user
   has_many :phases, -> { order 'phases.position ASC' },
            dependent: :destroy,
            inverse_of: :paper
@@ -54,7 +55,6 @@ class Paper < ActiveRecord::Base
                     tsearch: {dictionary: "english"} # stems
                   }
 
-  delegate :admins, :editors, :reviewers, to: :journal, prefix: :possible
   delegate :major_version, :minor_version, to: :latest_version, allow_nil: true
 
   def manuscript_id
@@ -180,6 +180,13 @@ class Paper < ActiveRecord::Base
     end
   end
 
+  def users_with_role(role)
+    User.joins(:assignments).where(
+      'assignments.role_id' => role.id,
+      'assignments.assigned_to_id' => id,
+      'assignments.assigned_to_type' => 'Paper')
+  end
+
   def inactive?
     !active?
   end
@@ -271,8 +278,12 @@ class Paper < ActiveRecord::Base
   #   # => <#124: User>
   #
   # Returns a User object.
-  def editor
-    editors.first
+  def academic_editor
+    academic_editors.first
+  end
+
+  def academic_editors
+    users_with_role(journal.roles.academic_editor)
   end
 
   def short_title
@@ -390,7 +401,7 @@ class Paper < ActiveRecord::Base
     end
   end
 
-  %w(admins editors reviewers).each do |relation|
+  %w(admins reviewers).each do |relation|
     ###
     # :method: <old_roles>
     # Public: Return user records by old_role in the paper.
@@ -407,31 +418,7 @@ class Paper < ActiveRecord::Base
     #
     # old_role - A old_role name on the paper
     define_method relation.to_sym do
-      assigned_users.merge(PaperRole.send(relation))
-    end
-
-    ###
-    # :method: <old_role>?
-    # Public: Checks whether the given user belongs to the old_role.
-    #
-    # user - The user record
-    #
-    # Examples
-    #
-    #   editor?(user)        # => true
-    #   collaborator?(user)  # => false
-    #
-    # Returns true if the user has the old_role on the paper, false otherwise.
-    #
-    # Signature
-    #
-    #   #<old_role>?(arg)
-    #
-    # old_role - A old_role name on the paper
-    #
-    define_method("#{relation.singularize}?".to_sym) do |user|
-      return false unless user.present?
-      send(relation).exists?(user.id)
+      old_assigned_users.merge(PaperRole.send(relation))
     end
   end
 

@@ -11,17 +11,29 @@ import time
 
 
 from Base.FrontEndTest import FrontEndTest
-from Base.Resources import login_valid_email, login_valid_pw, docs
+from Base.Resources import login_valid_pw, docs, au_login, co_login, rv_login, ae_login, he_login, fm_login, oa_login, sa_login
+
 from Pages.login_page import LoginPage
 from Pages.dashboard import DashboardPage
 
 
 class CommonTest(FrontEndTest):
   """
-  Model an aperta paper editor page
+  Model an aperta page
   """
 
-  def login(self, email=login_valid_email, password=login_valid_pw):
+  def login(self, email='', password=login_valid_pw):
+    logins = (au_login['user'],
+              co_login['user'],
+              rv_login['user'],
+              ae_login['user'],
+              he_login['user'],
+              fm_login['user'],
+              oa_login['user'],
+              # sa_login['user'],
+              )
+    if not email:
+      email = random.choice(logins)
     """Login into Aperta"""
     print('Logging in as user: {}'.format(email))
     login_page = LoginPage(self.getDriver())
@@ -44,7 +56,7 @@ class CommonTest(FrontEndTest):
       return dashboard.click_on_existing_manuscript_link_partial_title(title)
 
   def create_article(self, title='', journal='journal', type_='Research1',
-      random_bit=False, init=True, doc='random', user='jgray_author'):
+      random_bit=False, init=True, doc='random'):
     """
     Create a new article.
     title: Title of the article.
@@ -57,7 +69,7 @@ class CommonTest(FrontEndTest):
     user: Username
     Return the title of the article.
     """
-    dashboard = self.login() if init else DashboardPage(self.getDriver())
+    dashboard = DashboardPage(self.getDriver())
     dashboard.click_create_new_submission_button()
     # Create new submission
     title = dashboard.title_generator(prefix=title, random_bit=random_bit)

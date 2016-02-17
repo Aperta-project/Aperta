@@ -24,7 +24,7 @@ class BaseTask(AuthenticatedPage):
     self._completed_cb = (By.CLASS_NAME, 'task-completed')
     self._completed_label = (By.CLASS_NAME, 'task-completed-section')
     # Error Messaging
-    self._task_error_msg = (By.CSS_SELECTOR, 'label.task-completed-section div.error-message')
+    self._task_error_msg = (By.CSS_SELECTOR, 'span.task-completed-section div.error-message')
     # Versioning locators - only applicable to metadata cards
     self._versioned_metadata_div = (By.CLASS_NAME, 'versioned-metadata-version')
     self._versioned_metadata_version_string = (By.CLASS_NAME, 'versioned-metadata-version-string')
@@ -52,7 +52,7 @@ class BaseTask(AuthenticatedPage):
   def validate_common_elements_styles(self):
     """Validate styles from elements common to all cards"""
     completed_lbl = self._get(self._completed_label)
-    assert 'I am finished with this task' in completed_lbl.text, completed_lbl.text
+    assert 'I am done with this task' in completed_lbl.text, completed_lbl.text
     completed_check = self._get(self._completed_cb)
     # TODO: When styleguide catches up, assert this checkbox and label matches that guide
 

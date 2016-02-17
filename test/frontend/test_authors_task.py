@@ -25,7 +25,7 @@ class AuthorsTaskTest(CommonTest):
   def _go_to_authors_task(self, init=True):
     """Go to the authors task"""
     dashboard = self.login() if init else DashboardPage(self.getDriver())
-    article_name = self.select_preexisting_article(init=False)
+    article_name = self.create_article(journal="PLOS Wombat", type_="generateCompleteApexData", init=False)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     manuscript_page.click_task('authors')
     return AuthorsTask(self.getDriver()), article_name

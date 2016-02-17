@@ -263,7 +263,7 @@ class AuthenticatedPage(PlosPage):
     """
     Validate ihat conversion success
     """
-    self.set_timeout(30)
+    self.set_timeout(60)
     ihat_msg = self._get(self._flash_success_msg)
     self.restore_timeout()
     assert 'Finished loading Word file.' in ihat_msg.text, ihat_msg.text

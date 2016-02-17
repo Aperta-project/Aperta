@@ -66,6 +66,11 @@ module('Integration: Paper Workflow page', {
       ]
     );
 
+    server.respondWith('GET', '/api/journals', [
+      200, { 'Content-Type': 'application/json' },
+      JSON.stringify({journals:[]})
+    ]);
+
     Ember.run(function(){
       // Provide access to the paper
       var store = getStore();

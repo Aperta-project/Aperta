@@ -1,19 +1,37 @@
 require 'rails_helper'
 
 describe PaperTrackerController do
-  let(:user) { FactoryGirl.create :user, site_admin: true }
   let(:per_page) { Kaminari.config.default_per_page }
 
   before { sign_in user }
 
   describe 'let(per_page)' do
+    let(:user) { FactoryGirl.create :user }
+
     it 'is available and useful' do
       expect(per_page).to be_truthy
       expect(per_page.instance_of?(Fixnum)).to eq(true)
     end
   end
 
+  describe 'without the permission' do
+    let(:user) { FactoryGirl.create :user }
+
+    before do
+      allow_any_instance_of(User).to receive(:filter_authorized)
+        .with(:view_paper_tracker, Journal)
+        .and_return double('ResultSet', objects: [])
+    end
+
+    it 'returns a 403' do
+      get :index, format: :json
+      expect(response.status).to eq(403)
+    end
+  end
+
   describe 'on GET #index' do
+    let(:user) { FactoryGirl.create :user, site_admin: true }
+
     it 'list the paper in journal that user belongs to' do
       paper = make_matchable_paper
       get :index, format: :json
@@ -30,15 +48,9 @@ describe PaperTrackerController do
       expect(json['papers'].size).to eq 0
     end
 
-    it 'do not list the paper where user do not have a old_role' do
-      FactoryGirl.create(:paper, :submitted)
-      get :index, format: :json
-      json = JSON.parse(response.body)
-      expect(json['papers'].size).to eq 0
-    end
-
     context 'meta data' do
       it 'returns meta data about the results' do
+        FactoryGirl.create(:paper, :submitted)
         get :index, format: :json
         json = JSON.parse(response.body)
         expect(json['meta']).to be_truthy
@@ -48,18 +60,21 @@ describe PaperTrackerController do
       end
 
       it 'meta[page] is 1 when not sent in params' do
+        FactoryGirl.create(:paper, :submitted)
         get :index, format: :json
         json = JSON.parse(response.body)
         expect(json['meta']['page']).to eq(1)
       end
 
       it 'meta[page] is eq to param[page]' do
+        FactoryGirl.create(:paper, :submitted)
         get :index, format: :json, page: 7
         json = JSON.parse(response.body)
         expect(json['meta']['page']).to eq(7)
       end
 
       it 'returns per_page info needed for client pagination' do
+        FactoryGirl.create(:paper, :submitted)
         get :index, format: :json
         json = JSON.parse(response.body)
         expect(json['meta']['perPage']).to eq(per_page)
@@ -177,7 +192,7 @@ describe PaperTrackerController do
     end
   end
 
-  def make_matchable_paper(attrs={})
+  def make_matchable_paper(attrs = {})
     paper = FactoryGirl.create(:paper, :submitted, attrs)
     assign_journal_role(paper.journal, user, :admin)
     paper

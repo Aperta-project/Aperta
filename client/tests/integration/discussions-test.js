@@ -22,6 +22,9 @@ module('Integration: Discussions', {
 
     $.mockjax({url: '/api/user_flows/authorization', status: 204});
     $.mockjax({url: '/api/admin/journals/authorization', status: 204});
+    $.mockjax({url: /\/api\/papers\/\d+\/manuscript_manager/, status: 204});
+    $.mockjax({url: /\/api\/journals/, type: 'GET', status: 200, responseText: { journals: [] }});
+
     TestHelper.handleFind(paper);
     TestHelper.handleFindAll('discussion-topic', 1);
 

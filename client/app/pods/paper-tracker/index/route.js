@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import AuthorizedRoute from 'tahi/routes/authorized';
 
-export default Ember.Route.extend({
+export default AuthorizedRoute.extend({
   restless: Ember.inject.service('restless'),
 
   queryParams: {
@@ -18,15 +19,20 @@ export default Ember.Route.extend({
     },
   },
 
+  beforeModel(transition) {
+    this.set('transition', transition);
+  },
+
   model(params) {
     return this.get('restless').get('/api/paper_tracker', params).then((data)=> {
-      console.log(data);
       this.prepMetaData(data);
       this.store.pushPayload('paper', data);
       let paperIds = data.papers.mapBy('id');
       return _.collect(paperIds, (id) => {
         return this.store.find('paper', id);
       });
+    }, (reason) => {
+      return this.handleUnauthorizedRequest(this.get('transition'));
     });
   },
 

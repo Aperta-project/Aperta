@@ -49,6 +49,10 @@ module 'Integration: Admin Test',
       JSON.stringify adminJournalPayload
     ]
 
+    server.respondWith 'GET', "/api/journals", [
+      200, 'Content-Type': 'application/json', JSON.stringify {journals:[]}
+    ]
+
 test 'site admin can see the Add New Journal button', (assert) ->
   visit("/admin/").then ->
     Ember.run =>

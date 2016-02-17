@@ -23,7 +23,9 @@ import fontAwesomeFiletypeClass from 'tahi/lib/font-awesome-fyletype-class';
 **/
 
 export default Ember.Component.extend({
+  can: Ember.inject.service('can'),
   classNames: ['attachment-item'],
+  canEdit: false,
   attachment: null, // passed-in
   hasCaption: false,
   fileUpload: null,
@@ -38,6 +40,20 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
     Ember.assert('Please provide filePath property', this.get('filePath'));
+    this.setCanEdit(this.attachment.get('task'), this);
+  },
+
+  setCanEdit: function(task, context) {
+    var that = context;
+    if (!task) {
+      this.attachment.get('nestedQuestionAnswer').get('owner').then((value)=>{
+        that.setCanEdit(value, that);
+      });
+      return;
+    }
+    this.get('can').can('edit', task).then((value)=>{
+      that.set('canEdit', value);
+    });
   },
 
   actions: {
@@ -75,7 +91,7 @@ export default Ember.Component.extend({
                                   this.get('fileUpload.file'),
                                   this.get('attachment'));
       }
-      this.set('fileUpload', null)
+      this.set('fileUpload', null);
     },
 
     uploadFailed(reason){

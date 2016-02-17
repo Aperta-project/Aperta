@@ -7,8 +7,9 @@ class AttachmentsController < ApplicationController
   end
 
   def show
-    requires_user_can :view, task
-    respond_with Attachment.find(params[:id])
+    attachment = Attachment.find(params[:id])
+    requires_user_can :view, attachment.task
+    respond_with attachment
   end
 
   def create
@@ -26,15 +27,15 @@ class AttachmentsController < ApplicationController
   end
 
   def update
-    requires_user_can :edit, task
     attachment = Attachment.find(params[:id])
+    requires_user_can :edit, attachment.task
     attachment.update_attributes attachment_params
     respond_with attachment
   end
 
   def update_attachment
-    requires_user_can :edit, task
     attachment = task.attachments.find(params[:id])
+    requires_user_can :edit, attachment.task
     attachment.update_attribute(:status, 'processing')
     DownloadAdhocTaskAttachmentWorker.perform_async(attachment.id, params[:url])
     render json: attachment

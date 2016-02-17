@@ -1,6 +1,7 @@
 require 'sidekiq/web'
 
 Tahi::Application.routes.draw do
+  root to: 'ember_cli/ember#index'
   mount TahiStandardTasks::Engine => '/api', as: 'standard_tasks'
   ### DO NOT DELETE OR EDIT. AUTOMATICALLY MOUNTED CUSTOM TASK CARDS GO HERE ###
   mount PlosBioInternalReview::Engine => '/api'
@@ -35,6 +36,7 @@ Tahi::Application.routes.draw do
     get 'users/sign_out' => 'devise/sessions#destroy'
   end
 
+  mount_ember_app :tahi, to: '/'
   authenticate :user, ->(u) { u.site_admin? } do
     mount Sidekiq::Web => '/sidekiq'
   end
@@ -199,10 +201,4 @@ Tahi::Application.routes.draw do
 
   get '/resource_proxy/:resource/:token(/:version)', to: 'resource_proxy#url',
                                                      as: :resource_proxy
-
-  # Fall through to ember app
-  #
-  get '*route', to: 'ember#index', constraints: { format: /html/ }
-
-  root 'ember#index'
 end

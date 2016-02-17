@@ -1,0 +1,32 @@
+<%= render_ember_app :tahi do |head, body| %>
+  <% head.append do %>
+    <script type='text/javascript'>
+      window.appName = "<%= app_name %>"
+    </script>
+    <title><%= app_name %></title>
+    <%= stylesheet_link_tag "application", media: "all" %>
+
+    <%= csrf_meta_tags %>
+
+    <% if !(Rails.env.test? || Rails.env.development?) %>
+      <%= render "shared/segment_io" %>
+      <%= render "shared/bugsnag_javascript" %>
+    <% end %>
+  <% end %>
+
+  <% body.append do %>
+
+    <script type="text/javascript">
+      window.eventStreamConfig = <%= TahiPusher::Config.to_json.html_safe %>;
+      <% if current_user %>
+          window.currentUserData = <%= CurrentUserSerializer.new(current_user, root: :user).to_json.html_safe %>;
+      <% end %>
+    </script>
+
+    <% if Rails.env.test? %>
+      <% # disable jquery animations %>
+      <%= javascript_tag "$.fx.off = true" %>
+    <% end %>
+
+  <% end %>
+<% end %>

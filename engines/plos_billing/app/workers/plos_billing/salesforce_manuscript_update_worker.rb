@@ -16,7 +16,7 @@ module PlosBilling
     end
 
     def self.email_admin_on_error(msg)
-      error_message = <<-ERROR.strip_heredoc
+      error_message = <<-ERROR.strip_heredoc.chomp
         Failed #{msg['class']} with #{msg['args']}: #{msg['error_message']}
       ERROR
       paper_id = msg['args'][0]

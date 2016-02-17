@@ -63,6 +63,9 @@
       }
     }
 
+    .cannot-clear a.select2-search-choice-close {
+      display: none !important;
+    }
   }
 
   .bodypart-overlay {

@@ -2,14 +2,17 @@ class AttachmentsController < ApplicationController
   respond_to :json
 
   def index
+    requires_user_can :view, task
     respond_with task.attachments
   end
 
   def show
+    requires_user_can :view, task
     respond_with Attachment.find(params[:id])
   end
 
   def create
+    requires_user_can :edit, task
     attachment = task.attachments.create
     DownloadAdhocTaskAttachmentWorker.perform_async(attachment.id, params[:url])
     render json: attachment
@@ -17,17 +20,20 @@ class AttachmentsController < ApplicationController
 
   def destroy
     attachment = Attachment.find(params[:id])
+    requires_user_can :edit, attachment.task
     attachment.destroy
     head :no_content
   end
 
   def update
+    requires_user_can :edit, task
     attachment = Attachment.find(params[:id])
     attachment.update_attributes attachment_params
     respond_with attachment
   end
 
   def update_attachment
+    requires_user_can :edit, task
     attachment = task.attachments.find(params[:id])
     attachment.update_attribute(:status, 'processing')
     DownloadAdhocTaskAttachmentWorker.perform_async(attachment.id, params[:url])

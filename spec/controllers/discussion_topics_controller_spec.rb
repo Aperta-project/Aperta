@@ -139,32 +139,4 @@ describe DiscussionTopicsController do
     end
   end
 
-  describe 'DELETE destroy' do
-    context "when the user has access" do
-      before do
-        allow_any_instance_of(User).to receive(:can?)
-          .with(:edit, topic_a)
-          .and_return true
-      end
-
-      it "destroys a topic" do
-        expect do
-          xhr :delete, :destroy, format: :json, id: topic_a.id
-        end.to change { DiscussionTopic.count }.by(-1)
-      end
-    end
-
-    context "when the user does not have access" do
-      let!(:do_request) { delete :destroy, id: topic_a.id }
-      before do
-        allow_any_instance_of(User).to receive(:can?)
-          .with(:edit, topic_a)
-          .and_return false
-      end
-
-      it { responds_with(403) }
-    end
-  end
-
-
 end

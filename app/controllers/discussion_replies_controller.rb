@@ -13,12 +13,6 @@ class DiscussionRepliesController < ApplicationController
     respond_with(discussion_reply)
   end
 
-  # TODO: add permission or remove?
-  def destroy
-    discussion_reply.destroy
-    respond_with(discussion_reply)
-  end
-
   private
 
   def creation_params

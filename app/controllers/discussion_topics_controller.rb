@@ -25,12 +25,6 @@ class DiscussionTopicsController < ApplicationController
     respond_with discussion_topic
   end
 
-  def destroy
-    requires_user_can :edit, discussion_topic
-    discussion_topic.destroy
-    respond_with discussion_topic
-  end
-
   private
 
   def creation_params

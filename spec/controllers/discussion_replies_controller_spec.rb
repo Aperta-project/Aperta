@@ -82,15 +82,4 @@ describe DiscussionRepliesController do
     end
   end
 
-  describe 'DELETE destroy' do
-
-    it "destroys a reply" do
-      expect {
-        xhr :delete, :destroy, format: :json, id: reply.id
-      }.to change { DiscussionReply.count }.by(-1)
-    end
-
-  end
-
-
 end

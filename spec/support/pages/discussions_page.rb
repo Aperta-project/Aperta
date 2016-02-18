@@ -40,6 +40,7 @@ class DiscussionsPage < Page
 
   def add_reply
     find('.discussions-show-form .new-comment-field').set('new reply')
+    find('.discussions-show-form .new-comment-field').send_keys(:tab)
     wait_for_ajax
     find('button.new-comment-submit-button').click
     wait_for_ajax

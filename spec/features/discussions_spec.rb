@@ -59,6 +59,7 @@ feature "Discussions", js: true, selenium: true do
 
       discussion_page.expect_no_create_button
       discussion_page.click_topic
+      wait_for_ajax
       discussion_page.expect_view_topic
       discussion_page.expect_view_only_participants
       discussion_page.add_reply

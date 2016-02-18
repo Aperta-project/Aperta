@@ -85,7 +85,7 @@ class User < ActiveRecord::Base
   end
 
   def created_papers_for_journal(journal)
-    Paper.assignments_for(user: self, role: journal.roles.creator)
+    Paper.assignments_for(user: self, role: journal.creator_role)
   end
 
   def password_required?

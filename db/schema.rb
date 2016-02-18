@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160210011320) do
+ActiveRecord::Schema.define(version: 20160213225024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,6 +65,8 @@ ActiveRecord::Schema.define(version: 20160210011320) do
     t.datetime "updated_at",       null: false
   end
 
+  add_index "assignments", ["assigned_to_id"], name: "index_assignments_on_assigned_to_id", using: :btree
+  add_index "assignments", ["assigned_to_type"], name: "index_assignments_on_assigned_to_type", using: :btree
   add_index "assignments", ["role_id"], name: "index_assignments_on_role_id", using: :btree
   add_index "assignments", ["user_id", "role_id", "assigned_to_type", "assigned_to_id"], name: "uniq_assigment_idx", unique: true, using: :btree
   add_index "assignments", ["user_id"], name: "index_assignments_on_user_id", using: :btree
@@ -463,6 +465,7 @@ ActiveRecord::Schema.define(version: 20160210011320) do
     t.datetime "updated_at",                             null: false
   end
 
+  add_index "roles", ["journal_id"], name: "index_roles_on_journal_id", using: :btree
   add_index "roles", ["participates_in_papers"], name: "index_roles_on_participates_in_papers", using: :btree
   add_index "roles", ["participates_in_tasks"], name: "index_roles_on_participates_in_tasks", using: :btree
 

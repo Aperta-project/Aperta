@@ -50,7 +50,7 @@ module TahiStandardTasks
 
     def replace_editor(invitation)
       user = User.find(invitation.invitee_id)
-      role = paper.journal.roles.academic_editor
+      role = paper.journal.academic_editor_role
 
       # Remove any old editors
       paper.assignments.where(role: role).destroy_all

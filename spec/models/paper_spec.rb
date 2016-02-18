@@ -211,10 +211,10 @@ describe Paper do
 
   context 'participation' do
     let(:journal) { paper.journal }
-    let(:creator_role) { journal.roles.creator }
-    let(:collaborator_role) { journal.roles.collaborator }
-    let(:handling_editor_role) { journal.roles.handling_editor }
-    let(:reviewer_role) { journal.roles.reviewer }
+    let(:creator_role) { journal.creator_role }
+    let(:collaborator_role) { journal.collaborator_role }
+    let(:handling_editor_role) { journal.handling_editor_role }
+    let(:reviewer_role) { journal.reviewer_role }
 
     let(:creator) { user }
     let(:collaborator) { FactoryGirl.create(:user) }
@@ -296,7 +296,7 @@ describe Paper do
         it 'returns the users only once' do
           task.assignments.create!(
             user: paper.creator,
-            role: paper.journal.roles.participant
+            role: paper.journal.participant_role
           )
 
           expect(paper.participants).to contain_exactly(
@@ -316,7 +316,7 @@ describe Paper do
         paper.assignments.destroy_all
         paper.assignments.create!(
           user: paper_user,
-          role: paper.journal.roles.creator
+          role: paper.journal.creator_role
         )
         task.assignments.create!(
           user: task_user,
@@ -779,7 +779,7 @@ describe Paper do
     context 'when the paper has an editor' do
       let!(:assignment) do
         FactoryGirl.create(:assignment,
-                           role: paper.journal.roles.academic_editor,
+                           role: paper.journal.academic_editor_role,
                            user: user,
                            assigned_to: paper)
       end
@@ -796,6 +796,9 @@ describe Paper do
     let!(:role_1_assigned) { FactoryGirl.create(:role) }
     let!(:role_2_assigned) { FactoryGirl.create(:role) }
     let!(:role_3_not_assigned) { FactoryGirl.create(:role) }
+    let(:paper_with_roles) do
+      Paper.where(id: paper.id).includes(:roles).first
+    end
 
     before do
       paper.assignments.create!(user: user, role: role_1_assigned)
@@ -806,6 +809,12 @@ describe Paper do
       expect(
         paper.roles_for(user: user)
       ).to contain_exactly(role_1_assigned, role_2_assigned)
+    end
+
+    it "returns the user's roles on the paper when roles are eager loaded" do
+      expect(paper_with_roles.roles.loaded?).to be(true)
+      expect(paper_with_roles.roles_for(user: user)).to \
+        contain_exactly(role_1_assigned, role_2_assigned)
     end
 
     context "when the user isn't assigned to any roles" do
@@ -841,7 +850,7 @@ describe Paper do
     end
 
     it 'returns "My Paper" when the role is the journal creator' do
-      paper.assignments.create!(user: user, role: paper.journal.roles.creator)
+      paper.assignments.create!(user: user, role: paper.journal.creator_role)
       expect(
         paper.role_descriptions_for(user: user)
       ).to contain_exactly('My Paper')

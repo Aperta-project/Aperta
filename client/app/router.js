@@ -48,8 +48,6 @@ Router.map(function() {
 
     });
   });
-
-  this.route('styleguide');
 });
 
 export default Router;

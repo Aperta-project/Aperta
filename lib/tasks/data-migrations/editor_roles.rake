@@ -15,7 +15,7 @@ namespace :data do
             puts "Assigning #{user.full_name} <#{user.email}> as #{old_role.name} on '#{old_role.journal.name}' Journal"
             Assignment.where(
               user: user,
-              role: old_role.journal.roles.internal_editor,
+              role: old_role.journal.internal_editor_role,
               assigned_to: old_role.journal
             ).first_or_create!
           end
@@ -71,7 +71,7 @@ namespace :data do
           puts "Assigning #{user.full_name} <#{user.email}> as Academic Editor on Paper #{paper.id}"
           Assignment.where(
             user: user,
-            role: paper.journal.roles.academic_editor,
+            role: paper.journal.academic_editor_role,
             assigned_to: paper
           ).first_or_create!
         end

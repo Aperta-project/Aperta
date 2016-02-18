@@ -1,13 +1,11 @@
 class LitePaperSerializer < ActiveModel::Serializer
-  attributes :id, :title, :short_title, :publishing_state, :old_roles,
+  attributes :id, :title, :publishing_state, :old_roles,
              :related_at_date, :editable, :manuscript_id, :active,
              :created_at, :updated_at
 
   def related_at_date
     return unless scoped_user.present?
-    first_role = my_roles.order('assignments.created_at desc').first
-    return unless first_role.present?
-    first_role.created_at
+    my_roles.map(&:created_at).sort.last
   end
 
   def old_roles

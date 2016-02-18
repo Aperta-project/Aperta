@@ -13,7 +13,7 @@ describe TaskRoleUpdater do
     subject.update
     roles = paper.roles_for(
       user: assignee,
-      roles: [paper.journal.roles.staff_admin]
+      roles: [paper.journal.staff_admin_role]
     )
     expect(roles).to be_present
   end

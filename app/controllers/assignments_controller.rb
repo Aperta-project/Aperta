@@ -22,8 +22,8 @@ class AssignmentsController < ApplicationController
     paper_role = PaperRole.new(assignment_params)
     paper_role.save!
     new_role_from_old = {
-      'Editor' => paper.journal.roles.handling_editor,
-      'Admin' => paper.journal.roles.staff_admin
+      'Editor' => paper.journal.handling_editor_role,
+      'Admin' => paper.journal.staff_admin_role
     }
 
     if new_role_from_old[paper_role.old_role]
@@ -45,8 +45,8 @@ class AssignmentsController < ApplicationController
 
     paper = paper_role.paper
     new_role_from_old = {
-      'Editor' => paper.journal.roles.handling_editor,
-      'Admin' => paper.journal.roles.staff_admin
+      'Editor' => paper.journal.handling_editor_role,
+      'Admin' => paper.journal.staff_admin_role
     }
 
     if new_role_from_old[paper_role.old_role]

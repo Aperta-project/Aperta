@@ -176,7 +176,7 @@ class Task < ActiveRecord::Base
   def add_participant(user)
     participations.where(
       user: user,
-      role: journal.roles.participant
+      role: journal.participant_role
     ).first_or_create!
   end
 

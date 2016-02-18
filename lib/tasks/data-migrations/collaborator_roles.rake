@@ -8,7 +8,7 @@ namespace :data do
         PaperRole.collaborators.each do |paper_role|
           paper = paper_role.paper
           user = paper_role.user
-          collaborator_role = paper.journal.roles.collaborator
+          collaborator_role = paper.journal.collaborator_role
 
           if paper && user
             if user != paper.creator

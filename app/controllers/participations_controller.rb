@@ -19,7 +19,7 @@ class ParticipationsController < ApplicationController
       # create new R&P assignment
       Assignment.where(
         user: participation.user,
-        role: task.journal.roles.participant,
+        role: task.journal.participant_role,
         assigned_to: participation.task
       ).first_or_create!
 
@@ -42,7 +42,7 @@ class ParticipationsController < ApplicationController
     # destroy new R&P assignment
     Assignment.where(
       user: participation.user,
-      role: task.journal.roles.participant,
+      role: task.journal.participant_role,
       assigned_to: participation.task
     ).destroy_all
 

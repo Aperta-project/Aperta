@@ -11,7 +11,7 @@
     <% end %>
     <%= csrf_meta_tags %>
     <% if !(Rails.env.test? || Rails.env.development?) %>
-      <%= render "layouts/segment_io" %>
+      <%= render "shared/segment_io" %>
       <%= render "shared/bugsnag_javascript" %>
     <% end %>
   </head>

@@ -14,52 +14,12 @@ class Role < ActiveRecord::Base
   STAFF_ADMIN_ROLE = 'Staff Admin'
   USER_ROLE = 'User'
 
-  def self.creator
-    where(name: CREATOR_ROLE).first_or_create!
-  end
-
-  def self.collaborator
-    where(name: COLLABORATOR_ROLE).first_or_create!
-  end
-
-  def self.internal_editor
-    where(name: INTERNAL_EDITOR_ROLE).first_or_create!
-  end
-
-  def self.handling_editor
-    where(name: HANDLING_EDITOR_ROLE).first_or_create!
-  end
-
-  def self.participant
-    where(name: PARTICIPANT_ROLE).first_or_create!
-  end
-
-  def self.publishing_services
-    where(name: PUBLISHING_SERVICES_ROLE)
-  end
-
-  def self.reviewer
-    where(name: REVIEWER_ROLE).first_or_create!
-  end
-
-  def self.staff_admin
-    where(name: STAFF_ADMIN_ROLE).first_or_create!
-  end
-
-  def self.academic_editor
-    where(name: ACADEMIC_EDITOR_ROLE).first_or_create!
-  end
-
-  def self.user
-    where(name: USER_ROLE, journal_id: nil).first_or_create!
-  end
-
   def self.for_old_role(old_role, paper:) # rubocop:disable Metrics/MethodLength
     case old_role
-    when /^admin$/i then paper.journal.roles.staff_admin
-    when /^editor$/i then paper.journal.roles.handling_editor
-    when /^collaborator$/i then paper.journal.roles.collaborator
-    when /^reviewer$/i then paper.journal.roles.reviewer
+    when /^admin$/i then paper.journal.staff_admin_role
+    when /^editor$/i then paper.journal.handling_editor_role
+    when /^collaborator$/i then paper.journal.collaborator_role
+    when /^reviewer$/i then paper.journal.reviewer_role
     else
       fail NotImplementedError, <<-MSG.strip_heredoc
         Not sure how to match up old role '#{old_role}' with a new role.

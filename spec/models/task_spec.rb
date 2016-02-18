@@ -65,7 +65,7 @@ describe Task do
     let!(:participant_assignment) do
       Assignment.create!(
         user: FactoryGirl.create(:user),
-        role: task.journal.roles.participant,
+        role: task.journal.participant_role,
         assigned_to: task
       )
     end
@@ -90,7 +90,7 @@ describe Task do
     let!(:participant_assignment) do
       Assignment.create!(
         user: FactoryGirl.create(:user),
-        role: task.journal.roles.participant,
+        role: task.journal.participant_role,
         assigned_to: task
       )
     end

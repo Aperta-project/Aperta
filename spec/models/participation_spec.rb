@@ -44,7 +44,7 @@ describe "Participation" do
           Assignment.where(
             assigned_to: task,
             user: user,
-            role: paper.journal.roles.participant
+            role: paper.journal.participant_role
           ).first_or_create!
         end
       end
@@ -62,7 +62,7 @@ describe "Participation" do
         Assignment.create!(
           user: user,
           assigned_to: task,
-          role: task.journal.roles.participant
+          role: task.journal.participant_role
         )
       end
 

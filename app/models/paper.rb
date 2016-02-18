@@ -223,16 +223,23 @@ class Paper < ActiveRecord::Base
   #   Paper.roles_for(user: User.first)
   #   Paper.roles_for(user: User.first, roles: [Role.first])
   #
-  # Returns an ActiveRelation with <tt>Role</tt>s.
+  # Returns an Array with <tt>Role</tt>s.
   def roles_for(user:, roles: nil)
+    role_ids = roles.map(&:id) if roles
+    # Do not hit the database again if the roles are eager-loaded
+    if self.roles.loaded?
+      retval = assignments.select { |a| a.user_id == user.id }.map(&:role)
+      retval = retval.select { |r| role_ids.member?(r.id) } if role_ids
+      return retval
+    end
     args = { assignments: { user_id: user } }
-    args[:assignments][:role_id] = roles.map(&:id) if roles
-    self.roles.where(args)
+    args[:assignments][:role_id] = role_ids if role_ids
+    self.roles.where(args).to_a
   end
 
   def role_descriptions_for(user:)
     roles_for(user: user).map do |role|
-      if role == journal.roles.creator
+      if role == journal.creator_role
         'My Paper'
       else
         role.name
@@ -283,7 +290,7 @@ class Paper < ActiveRecord::Base
   end
 
   def academic_editors
-    users_with_role(journal.roles.academic_editor)
+    users_with_role(journal.academic_editor_role)
   end
 
   def short_title
@@ -314,12 +321,12 @@ class Paper < ActiveRecord::Base
   end
 
   def creator
-    User.assigned_to(self, role: journal.roles.creator).first
+    User.assigned_to(self, role: journal.creator_role).first
   end
 
   def creator=(user)
-    assignments.where(role: journal.roles.creator).destroy_all
-    assignments.build(role: journal.roles.creator,
+    assignments.where(role: journal.creator_role).destroy_all
+    assignments.build(role: journal.creator_role,
                       user: user,
                       assigned_to: self)
   end
@@ -327,8 +334,8 @@ class Paper < ActiveRecord::Base
   def collaborations
     Assignment.where(
       role: [
-        journal.roles.creator,
-        journal.roles.collaborator
+        journal.creator_role,
+        journal.collaborator_role
       ],
       assigned_to: self
     )
@@ -336,12 +343,12 @@ class Paper < ActiveRecord::Base
 
   def collaborators
     User.assigned_to(self,
-                     role: [journal.roles.creator,
-                            journal.roles.collaborator])
+                     role: [journal.creator_role,
+                            journal.collaborator_role])
   end
 
   def add_collaboration(user)
-    assignments.create(user: user, role: journal.roles.collaborator)
+    assignments.create(user: user, role: journal.collaborator_role)
   end
 
   def remove_collaboration(collaboration)
@@ -351,21 +358,21 @@ class Paper < ActiveRecord::Base
       collaboration = collaborations.find_by(id: collaboration)
     end
 
-    collaboration.destroy if collaboration.role == journal.roles.collaborator
+    collaboration.destroy if collaboration.role == journal.collaborator_role
     collaboration
   end
 
   def paper_participation_roles
     [
-      journal.roles.creator,
-      journal.roles.collaborator,
-      journal.roles.handling_editor,
-      journal.roles.reviewer
+      journal.creator_role,
+      journal.collaborator_role,
+      journal.handling_editor_role,
+      journal.reviewer_role
     ]
   end
 
   def task_participation_roles
-    [journal.roles.participant]
+    [journal.participant_role]
   end
 
   def participations # rubocop:disable Metrics/AbcSize,Metrics/MethodLength

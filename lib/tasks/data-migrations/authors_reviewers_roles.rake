@@ -16,8 +16,8 @@ namespace :data do
         # Assign every Creator and Reviewer role
         Paper.all.each do |paper|
           journal = paper.journal
-          creator_role = journal.roles.creator
-          reviewer_role = journal.roles.reviewer
+          creator_role = journal.creator_role
+          reviewer_role = journal.reviewer_role
           user = User.find(paper.user_id)
           puts "Assigning #{user.full_name} <#{user.email}> as #{creator_role.name} on paper ##{paper.id} on '#{journal.name}' Journal"
           Assignment.where(
@@ -46,7 +46,7 @@ namespace :data do
 
         Paper.all.each do |paper|
           journal = paper.journal
-          creator_role = journal.roles.creator
+          creator_role = journal.creator_role
 
           # Remove invalid creator roles for this paper and its journal
           creator_roles_that_should_not_exist = all_creator_roles - [creator_role]

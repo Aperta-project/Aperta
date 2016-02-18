@@ -31,10 +31,7 @@ class AITask(BaseTask):
     self._q2_corresponding_author_input = (By.NAME, 'publishing_related_questions--submitted_in_conjunction--corresponding_author')
     self._q2_journal_input = (By.NAME, 'publishing_related_questions--submitted_in_conjunction--corresponding_journal')
     self._q2_handle_together_cb = (By.NAME, 'publishing_related_questions--submitted_in_conjunction--handled_together')
-    self._invite_input = (By.CLASS_NAME, 'select2-focused')
-    self._drop_down = (By.CLASS_NAME, 'select2-drop-active')
-    self._invite_editor_text = (By.CLASS_NAME, 'invite-editor-text')
-    self._send_invitation_button = (By.CLASS_NAME, 'invite-editor-button')
+
 
    #POM Actions
   def complete_ai(self):
@@ -96,7 +93,7 @@ class AITask(BaseTask):
       questions[1].find_elements_by_tag_name('input')[1].click()
 
     q3ans = random.choice(q3_answers)
-    logging.debug('The answers to question 3 are {0}'.format(q3ans))
+    logging.info('The answers to question 3 are {0}'.format(q3ans))
     if q3ans != [0, 0, 0, 0]:
       # wait for the element to be attached to the DOM
       time.sleep(2)
@@ -105,7 +102,12 @@ class AITask(BaseTask):
         if cbx == 1:
           checkboxes[order].click()
           q3cans = random.choice(q3_child_answer)
-          questions[2].find_elements_by_tag_name('textarea')[order].send_keys(q3cans)
+          try:
+            # This is a rather brute force method, but, I don't have time for filligree here
+            for i in range(order, 0, -1):
+              questions[2].find_elements_by_tag_name('textarea')[i].send_keys(q3cans)
+          except IndexError:
+            continue
 
     q4ans = random.choice(q4_answers)
     logging.debug('The answers to question 4 is {0}'.format(q4ans))

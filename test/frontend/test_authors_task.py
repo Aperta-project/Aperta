@@ -38,9 +38,12 @@ class AuthorsTaskTest(CommonTest):
 
     user_type = random.choice(users)
     logging.info('Logging in as user: {}'.format(user_type))
+    login_page = LoginPage(self.getDriver())
+    login_page.enter_login_field(user_type['user'])
+    login_page.enter_password_field(login_valid_pw)
+    login_page.click_sign_in_button()
     title = self.create_article(journal='PLOS Wombat',
                                 type_='Research',
-                                user=user_type['user'],
                                 )
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)

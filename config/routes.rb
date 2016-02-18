@@ -13,11 +13,6 @@ Tahi::Application.routes.draw do
   if Rails.env.test?
     require_relative '../spec/support/upload_server/upload_server'
     mount UploadServer, at: '/fake_s3/'
-  elsif Rails.env.development?
-    get '/styleguide' => 'styleguide#index'
-    mount EmberCLI::Engine => 'ember-tests'
-  elsif Rails.env.staging?
-    get '/styleguide' => 'styleguide#index'
   end
 
 

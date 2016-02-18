@@ -32,7 +32,7 @@ module TahiHelperMethods
   # NEW ROLES
   def assign_academic_editor_role(paper, user)
     FactoryGirl.create(:assignment,
-                       role: paper.journal.roles.academic_editor,
+                       role: paper.journal.academic_editor_role,
                        user: user,
                        assigned_to: paper)
   end

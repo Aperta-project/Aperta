@@ -95,7 +95,7 @@ FactoryGirl.define do
     trait(:with_academic_editor) do
       after(:create) do |paper|
         FactoryGirl.create(:assignment,
-                           role: paper.journal.roles.academic_editor,
+                           role: paper.journal.academic_editor_role,
                            user: FactoryGirl.build(:user),
                            assigned_to: paper)
       end

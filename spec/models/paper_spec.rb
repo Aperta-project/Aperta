@@ -779,7 +779,7 @@ describe Paper do
     context 'when the paper has an editor' do
       let!(:assignment) do
         FactoryGirl.create(:assignment,
-                           role: paper.journal.roles.academic_editor,
+                           role: paper.journal.academic_editor_role,
                            user: user,
                            assigned_to: paper)
       end

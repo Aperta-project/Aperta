@@ -52,7 +52,7 @@ describe TahiStandardTasks::PaperReviewerTask do
 
     context "without a paper editor" do
       before do
-        paper.assignments.where(role: paper.journal.roles.academic_editor)
+        paper.assignments.where(role: paper.journal.academic_editor_role)
           .destroy_all
       end
       it "queues the email" do
@@ -76,7 +76,7 @@ describe TahiStandardTasks::PaperReviewerTask do
 
     context "without a paper editor" do
       before do
-        paper.assignments.where(role: paper.journal.roles.academic_editor)
+        paper.assignments.where(role: paper.journal.academic_editor_role)
           .destroy_all
       end
       it "queues the email" do

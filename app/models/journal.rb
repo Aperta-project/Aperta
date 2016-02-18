@@ -27,6 +27,8 @@ class Journal < ActiveRecord::Base
   mount_uploader :logo,       LogoUploader
   mount_uploader :epub_cover, EpubCoverUploader
 
+  has_one :academic_editor_role, -> { where(name: Role::ACADEMIC_EDITOR_ROLE) },
+          class_name: 'Role'
   has_one :creator_role, -> { where(name: Role::CREATOR_ROLE) },
           class_name: 'Role'
   has_one :collaborator_role, -> { where(name: Role::COLLABORATOR_ROLE) },

@@ -10,7 +10,6 @@ module PlosBilling
     def notify_journal_admin_sfdc_error(paper_id, message)
       @paper = ::Paper.find(paper_id)
       journal_admin_emails = @paper.journal.admins.map(&:email).compact
-      @journal = @paper.journal
       @message = message
 
       mail(to: journal_admin_emails, subject: <<-SUBJECT.strip_heredoc)

@@ -4,10 +4,10 @@
   <ol class="question-list">
     <li class="question">
       {{nested-question-radio
-          model=fullyAvailableQuestion
+          ident='data_availability--data_fully_available'
           owner=task
           helpText="<li>Please see the <a target='_blank' href='http://www.plosbiology.org/static/policies#sharing' title='PLOS Data Policy'>PLOS Data Policy</a> for details.</li>"
-          disabled=isSubmissionTaskNotEditable}}
+          disabled=isNotEditable}}
     </li>
 
     <li class="question">
@@ -34,10 +34,10 @@
       </ul>
       <div class="question-dataset">
         {{nested-question-textarea
-            model=dataLocationQuestion
+            ident='data_availability--data_location'
             owner=task
             displayQuestionText=false
-            disabled=isSubmissionTaskNotEditable}}
+            disabled=isNotEditable}}
       </div>
     </li>
   </ol>

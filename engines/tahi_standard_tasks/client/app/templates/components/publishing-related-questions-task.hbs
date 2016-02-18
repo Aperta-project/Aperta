@@ -5,7 +5,7 @@
     <li class="question" id="published-elsewhere">
     {{#nested-question-radio ident="publishing_related_questions--published_elsewhere"
                       owner=task
-                      disabled=isSubmissionTaskNotEditable
+                      disabled=isNotEditable
                       as |selected|}}
       <div class="question-dataset {{if selected.no 'hidden'}} {{if selected.none 'hidden'}}">
         {{nested-question-input ident="publishing_related_questions--published_elsewhere--taken_from_manuscripts"
@@ -14,9 +14,9 @@
                          label="Results, data or figures"
                          placeholder="Figure 1.2 - contains new data points"
                          textClassNames=""
-                         disabled=isSubmissionTaskNotEditable}}
+                         disabled=isNotEditable}}
         <br>
-        {{nested-question-uploader-manager model=publishedElsewhereRelatedWorkQuestion
+        {{nested-question-uploader-manager ident='publishing_related_questions--published_elsewhere--upload_related_work'
                          buttonText="upload file"
                          hasCaption=true
                          description=publishedElsewhereRelatedWorkQuestion.text
@@ -28,7 +28,7 @@
     <li class="question">
     {{#nested-question-radio ident="publishing_related_questions--submitted_in_conjunction"
                       owner=task
-                      disabled=isSubmissionTaskNotEditable
+                      disabled=isNotEditable
                       as |selected|}}
 
       <div class="question-dataset {{if selected.no 'hidden'}} {{if selected.none 'hidden'}}">
@@ -40,7 +40,7 @@
                            displayContent=selected.yes
                            label="Title"
                            placeholder="Submission Title"
-                           disabled=isSubmissionTaskNotEditable}}
+                           disabled=isNotEditable}}
 
           <br>
           {{nested-question-input ident="publishing_related_questions--submitted_in_conjunction--corresponding_author"
@@ -50,7 +50,7 @@
                            displayContent=selected.yes
                            label="Corresponding Author"
                            placeholder="Corresponding Author Name"
-                           disabled=isSubmissionTaskNotEditable}}
+                           disabled=isNotEditable}}
           <br>
           {{nested-question-input ident="publishing_related_questions--submitted_in_conjunction--corresponding_journal"
                            class="sub-question"
@@ -59,11 +59,11 @@
                            displayContent=selected.yes
                            label="Journal"
                            placeholder="Journal Name"
-                           disabled=isSubmissionTaskNotEditable}}
+                           disabled=isNotEditable}}
           <br>
           {{nested-question-check ident="publishing_related_questions--submitted_in_conjunction--handled_together"
                                  owner=task
-                                 disabled=isSubmissionTaskNotEditable}}
+                                 disabled=isNotEditable}}
         </div>
     {{/nested-question-radio}}
     </li>
@@ -72,56 +72,56 @@
         <div class="question-text">Check all that apply.</div>
         {{#nested-question-check ident="publishing_related_questions--previous_interactions_with_this_manuscript"
                           owner=task
-                          disabled=isSubmissionTaskNotEditable
+                          disabled=isNotEditable
                           as |selection|}}
           {{#if selection.yieldingForAdditionalData }}
               <div class="question-dataset {{if selection.unchecked 'hidden'}}">
                 {{nested-question-textarea ident="publishing_related_questions--previous_interactions_with_this_manuscript--submission_details"
                                     displayContent=selection.checked
                                     owner=task
-                                    disabled=isSubmissionTaskNotEditable}}
+                                    disabled=isNotEditable}}
               </div>
           {{/if}}
         {{/nested-question-check}}
 
         {{#nested-question-check ident="publishing_related_questions--presubmission_inquiry"
                           owner=task
-                          disabled=isSubmissionTaskNotEditable
+                          disabled=isNotEditable
                           as |selection|}}
           {{#if selection.yieldingForAdditionalData }}
             <div class="question-dataset {{if selection.unchecked 'hidden'}}">
               {{nested-question-textarea ident="publishing_related_questions--presubmission_inquiry--submission_details"
                                   owner=task
                                   displayContent=selection.checked
-                                  disabled=isSubmissionTaskNotEditable}}
+                                  disabled=isNotEditable}}
             </div>
           {{/if}}
         {{/nested-question-check}}
 
         {{#nested-question-check ident="publishing_related_questions--other_journal_submission"
                           owner=task
-                          disabled=isSubmissionTaskNotEditable
+                          disabled=isNotEditable
                           as |selection|}}
           {{#if selection.yieldingForAdditionalData }}
             <div class="question-dataset {{if selection.unchecked 'hidden'}}">
               {{nested-question-textarea ident="publishing_related_questions--other_journal_submission--submission_details"
                                   owner=task
                                   displayContent=selection.checked
-                                  disabled=isSubmissionTaskNotEditable}}
+                                  disabled=isNotEditable}}
             </div>
           {{/if}}
         {{/nested-question-check}}
 
         {{nested-question-check ident="publishing_related_questions--author_was_previous_journal_editor"
                          owner=task
-                         disabled=isSubmissionTaskNotEditable}}
+                         disabled=isNotEditable}}
     </li>
     <li class="question">
       {{nested-question-input ident="publishing_related_questions--intended_collection"
                         owner=task
                         placeholder="Collection Name"
                         inputClassNames="form-control"
-                        disabled=isSubmissionTaskNotEditable}}
+                        disabled=isNotEditable}}
 
     </li>
     <li class="question">
@@ -129,7 +129,7 @@
                         formatted=true
                         owner=task
                         inputClassNames="form-control publishing-related-questions-short-title"
-                        disabled=isSubmissionTaskNotEditable}}
+                        disabled=isNotEditable}}
     </li>
   </ol>
 </div>

@@ -7,17 +7,12 @@ export default TaskComponent.extend({
   declareNoCompeteCopy:
     'The authors have declared that no competing interests exist.',
 
-  anyCompetingInterestsQuestion: computed(function(){
-    return this.get('task')
-               .findQuestion('competing_interests--has_competing_interests');
-  }),
-
-  competingInterestsStatementQuestion: computed(function(){
+  competingInterestsStatementQuestion(){
     return this.get('task').findQuestion('competing_interests--statement');
-  }),
+  },
 
   setCompetingInterestStatement(text) {
-    const question = this.get('competingInterestsStatementQuestion');
+    const question = this.competingInterestsStatementQuestion();
     const answer = question.answerForOwner(this.get('task'));
     answer.set('value', text);
     answer.save();

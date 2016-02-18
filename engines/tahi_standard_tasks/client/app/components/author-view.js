@@ -4,27 +4,26 @@ import DragNDrop from 'tahi/services/drag-n-drop';
 export default Ember.Component.extend(DragNDrop.DraggableMixin, {
   layoutName: 'components/author-view',
   classNames: ['authors-overlay-item'],
-  classNameBindings: ['hoverState:__hover', 'isEditable:__editable'],
-  hoverState: false,
-  deleteState: false,
+  classNameBindings: ['showHover:__hover', 'isEditable:__editable'],
+
 
   editState: function() {
     return !!this.get('errors');
   }.property('author.errors'),
 
-  attachHoverEvent: function() {
-    if (this.get('disabled')) { return; }
-    let self = this;
-    let toggleHoverClass = function() {
-      self.toggleProperty('hoverState');
-    };
+  canHover: Ember.computed.alias('isEditable'),
+  isHovering: false,
+  showHover: Ember.computed.and('isHovering', 'canHover'),
 
-    this.$().hover(toggleHoverClass, toggleHoverClass);
-  }.on('didInsertElement'),
+  _setupHover: Ember.on('didInsertElement', function(){
+    this.$().hover(() => {
+      this.toggleProperty('isHovering');
+    });
+  }),
 
-  teardownHoverEvent: function() {
+  _destroyHover: Ember.on('willDestroyElement', function(){
     this.$().off('mouseenter mouseleave');
-  }.on('willDestroyElement'),
+  }),
 
   dragStart: function(e) {
     e.dataTransfer.effectAllowed = 'move';

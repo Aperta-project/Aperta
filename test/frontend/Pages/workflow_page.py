@@ -179,7 +179,6 @@ class WorkflowPage(AuthenticatedPage):
     On the add new task overlay, select a card
     For APERTA-5513, check cards
     """
-
     # Get card list
     # APERTA-5513 AC 1 and 2
     author_col, staff_col = self._gets(self._add_card_overlay_columns)

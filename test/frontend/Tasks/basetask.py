@@ -24,7 +24,7 @@ class BaseTask(AuthenticatedPage):
     self._completed_cb = (By.CLASS_NAME, 'task-completed')
     self._completed_label = (By.CLASS_NAME, 'task-completed-section')
     # Error Messaging
-    self._task_error_msg = (By.CSS_SELECTOR, 'span.task-completed-section div.error-message') #
+    self._task_error_msg = (By.CSS_SELECTOR, 'span.task-completed-section div.error-message')
     # Versioning locators - only applicable to metadata cards
     self._versioned_metadata_div = (By.CLASS_NAME, 'versioned-metadata-version')
     self._versioned_metadata_version_string = (By.CLASS_NAME, 'versioned-metadata-version-string')

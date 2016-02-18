@@ -6,12 +6,23 @@ This test case validates the Authors Task.
 __author__ = 'sbassi@plos.org'
 
 from Base.Decorators import MultiBrowserFixture
+from Base.Resources import login_valid_pw, rv_login, fm_login, ae_login, he_login, oa_login, au_login
 from frontend.Tasks.authors_task import AuthorsTask
 from Pages.dashboard import DashboardPage
+from Pages.login_page import LoginPage
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from frontend.common_test import CommonTest
 
+import logging
+import random
 import time
+
+users = [au_login,
+         rv_login,
+         fm_login,
+         ae_login,
+         he_login,
+         oa_login]
 
 @MultiBrowserFixture
 class AuthorsTaskTest(CommonTest):
@@ -22,17 +33,20 @@ class AuthorsTaskTest(CommonTest):
      - validate trying to close a task without completing author profile
   """
 
-  def _go_to_authors_task(self, init=True):
-    """Go to the authors task"""
-    dashboard = self.login() if init else DashboardPage(self.getDriver())
-    article_name = self.select_preexisting_article(init=False)
-    manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.click_task('authors')
-    return AuthorsTask(self.getDriver()), article_name
-
   def test_validate_components(self):
     """Validates styles for the author task"""
-    authors_task, title = self._go_to_authors_task()
+
+    user_type = random.choice(users)
+    logging.info('Logging in as user: {}'.format(user_type))
+    title = self.create_article(journal='PLOS Wombat',
+                                type_='Research',
+                                user=user_type['user'],
+                                )
+    # Time needed for iHat conversion. This is not quite enough time in all circumstances
+    time.sleep(5)
+    manuscript_page = ManuscriptViewerPage(self.getDriver())
+    manuscript_page.click_task('authors')
+    authors_task = AuthorsTask(self.getDriver())
     authors_task.validate_styles()
     authors_task.validate_author_task_action()
     authors_task.validate_delete_author()

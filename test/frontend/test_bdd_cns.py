@@ -127,7 +127,10 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
 
     dashboard_page = DashboardPage(self.getDriver())
     # Validate Create New Submissions modal
+    # Set long timeout due to the time it takes to load this page
+    dashboard_page.set_timeout(120)
     dashboard_page.click_create_new_submission_button()
+    dashboard_page.restore_timeout()
     # We recently became slow drawing this overlay (20151006)
     time.sleep(2)
     title = dashboard_page.title_generator()

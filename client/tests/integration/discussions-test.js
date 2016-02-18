@@ -2,6 +2,7 @@ import Ember from 'ember';
 import { module, test } from 'qunit';
 import startApp from 'tahi/tests/helpers/start-app';
 import { make } from 'ember-data-factory-guy';
+import Factory from '../helpers/factory';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 
 let App = null;
@@ -28,20 +29,7 @@ module('Integration: Discussions', {
     TestHelper.handleFind(paper);
     TestHelper.handleFindAll('discussion-topic', 1);
 
-    // Grant permissions to access workflow on paper
-    Ember.run(function(){
-      // Provide access to the paper
-      var store = getStore();
-      store.createRecord('permission',{
-        id: 'paper+1',
-        object:{id: 1, type: 'Paper'},
-        permissions:{
-          manage_workflow:{
-            states: ['*']
-          }
-        }
-      });
-    });
+    Factory.createPermission('Paper', paper.id, ['manage_workflow']);
 
     const restless = App.__container__.lookup('service:restless');
     restless['delete'] = function() {

@@ -2,6 +2,7 @@
 `import startApp from '../helpers/start-app'`
 `import { test } from 'ember-qunit'`
 `import FactoryGuy from 'ember-data-factory-guy'`
+`import Factory from '../helpers/factory'`
 `import TestHelper from "ember-data-factory-guy/factory-guy-test-helper"`
 
 App = null
@@ -27,6 +28,8 @@ test 'A card with more than 5 comments has the show all comments button', (asser
   paper = FactoryGuy.make("paper")
   comments = FactoryGuy.makeList("comment", 10)
   task = FactoryGuy.make("task", paper: paper, comments: comments)
+  Factory.createPermission('Paper', paper.id, ['view'])
+  Factory.createPermission('Task', task.id, ['view', 'edit'])
 
   TestHelper.handleFind(paper)
   TestHelper.handleFind(task)
@@ -48,6 +51,8 @@ test 'A card with less than 5 comments doesnt have the show all comments button'
   paper = FactoryGuy.make("paper")
   comments = FactoryGuy.makeList("comment", 3)
   task = FactoryGuy.make("task", paper: paper, comments: comments)
+  Factory.createPermission('Paper', paper.id, ['view'])
+  Factory.createPermission('Task', task.id, ['view', 'edit'])
 
   TestHelper.handleFind(paper)
   TestHelper.handleFind(task)
@@ -65,6 +70,8 @@ test 'A task with a commentLook shows up as unread and deletes its comment look'
   paper = FactoryGuy.make("paper")
   comments = FactoryGuy.makeList("comment", 2, "unread")
   task = FactoryGuy.make("task", paper: paper, comments: comments)
+  Factory.createPermission('Paper', paper.id, ['view'])
+  Factory.createPermission('Task', task.id, ['view', 'edit'])
 
   TestHelper.handleFind(paper)
   TestHelper.handleFind(task)

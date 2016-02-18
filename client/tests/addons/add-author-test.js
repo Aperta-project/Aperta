@@ -3,6 +3,7 @@ import { module, test } from "qunit";
 import startApp from "tahi/tests/helpers/start-app";
 import setupMockServer from '../helpers/mock-server';
 import FactoryGuy from "ember-data-factory-guy";
+import Factory from '../helpers/factory';
 import TestHelper from "ember-data-factory-guy/factory-guy-test-helper";
 
 let App, paper, phase, task, server;
@@ -40,6 +41,7 @@ module("Integration: adding an author", {
     paper = FactoryGuy.make("paper", { phases: [phase], tasks: [task], editable: true });
     TestHelper.handleFind(paper);
     TestHelper.handleFindAll("discussion-topic", 1);
+    Factory.createPermission('AuthorsTask', task.id, ['edit']);
   }
 });
 

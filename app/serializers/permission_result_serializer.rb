@@ -6,7 +6,8 @@ class PermissionResultSerializer < ActiveModel::Serializer
   def serializable_hash(*args)
     hash = super(*args)
     hash.merge(
-      id: "#{object.object[:type].demodulize}+#{object.object[:id]}",
+      id: "#{object.object[:type].demodulize
+                                 .camelize(:lower)}+#{object.object[:id]}",
       object: {
         id: object.object[:id],
         type: object.object[:type].demodulize

@@ -85,6 +85,8 @@ module('Integration: Reporting Guidelines Card', {
       }, JSON.stringify({nested_question_answers: []})
     ]);
 
+    server.respondWith('GET', "/api/journals", [200, { 'Content-Type': 'application/json' }, JSON.stringify({journals:[]})]);
+
     return server.respondWith('POST', "/api/nested_questions/" + nestedQuestions[1].id + "/answers", [
       200, {
         "Content-Type": "application/json"

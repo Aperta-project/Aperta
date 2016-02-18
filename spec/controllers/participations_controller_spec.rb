@@ -47,7 +47,12 @@ describe ParticipationsController do
           .and_return false
       end
 
-      it { responds_with(403) }
+      it { responds_with(200) }
+
+      it 'responds with an empty list of participations' do
+        do_request
+        expect(res_body['participations']).to be_empty
+      end
     end
   end
 

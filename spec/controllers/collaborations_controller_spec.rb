@@ -20,7 +20,7 @@ describe CollaborationsController do
     context 'when the user has access' do
       before do
         allow_any_instance_of(User).to receive(:can?)
-          .with(:edit, paper)
+          .with(:manage_collaborators, paper)
           .and_return true
       end
 
@@ -63,7 +63,7 @@ describe CollaborationsController do
     context 'when the user does not have access' do
       before do
         allow_any_instance_of(User).to receive(:can?)
-          .with(:edit, paper)
+          .with(:manage_collaborators, paper)
           .and_return false
       end
 
@@ -85,7 +85,7 @@ describe CollaborationsController do
     context 'when the user has access' do
       before do
         allow_any_instance_of(User).to receive(:can?)
-          .with(:edit, paper)
+          .with(:manage_collaborators, paper)
           .and_return true
       end
 
@@ -127,7 +127,7 @@ describe CollaborationsController do
     context 'when the user does not have access' do
       before do
         allow_any_instance_of(User).to receive(:can?)
-          .with(:edit, paper)
+          .with(:manage_collaborators, paper)
           .and_return false
       end
 

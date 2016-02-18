@@ -3,7 +3,7 @@ require 'rails_helper'
 describe "TahiStandardTasks::DecisionReviser" do
 
   let(:task) { FactoryGirl.create(:register_decision_task, paper: paper) }
-  let(:paper) { FactoryGirl.create(:paper) }
+  let(:paper) { FactoryGirl.create(:paper, :with_academic_editor) }
   let(:service) { TahiStandardTasks::DecisionReviser.new(task, double(:decision, verdict: "major_revision")) }
 
   describe "#process!" do
@@ -51,15 +51,15 @@ describe "TahiStandardTasks::DecisionReviser" do
             }.to change(paper.tasks.where(type: "TahiStandardTasks::ReviseTask"), :count).by(1)
           end
 
-          it "has participants of paper editor and paper creator" do
-            FactoryGirl.create(:paper_role, :editor, paper: paper)
+          it "has academic editor and paper creator participants" do
             subject
-            expect(revise_task.participants).to match_array([ paper.editor, paper.creator ])
+            expect(revise_task.participants).to \
+              match_array([paper.academic_editor, paper.creator])
           end
 
           it "task participants include the paper's author" do
             subject
-            expect(revise_task.participants).to eq [paper.creator]
+            expect(revise_task.participants).to include(paper.creator)
           end
 
           it "task body includes the revise letter" do

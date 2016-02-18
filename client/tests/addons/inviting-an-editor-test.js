@@ -18,12 +18,12 @@ module("Integration: Inviting an editor", {
 
     $.mockjax({url: "/api/admin/journals/authorization", status: 204});
     $.mockjax({url: "/api/user_flows/authorization", status: 204});
-    $.mockjax({url: /\/api\/papers\/\d+\/manuscript_manager/, status: 204});
     $.mockjax({url: "/api/formats", status: 200, responseText: {
       import_formats: [],
       export_formats: []
     }});
     $.mockjax({url: /\/api\/tasks\/\d+/, type: 'PUT', status: 200, responseText: {}});
+    $.mockjax({url: /\/api\/journals/, type: 'GET', status: 200, responseText: { journals: [] }});
 
     inviteeEmail = window.currentUserData.user.email;
     $.mockjax({
@@ -40,6 +40,21 @@ module("Integration: Inviting an editor", {
     paper = FactoryGuy.make("paper", { phases: [phase], tasks: [task] });
     TestHelper.handleFind(paper);
     TestHelper.handleFindAll("discussion-topic", 1);
+
+    // Grant permissions to access workflow on paper
+    Ember.run(function(){
+      // Provide access to the paper
+      var store = getStore();
+      store.createRecord('permission',{
+        id: 'paper+1',
+        object:{id: 1, type: 'Paper'},
+        permissions:{
+          manage_workflow:{
+            states: ['*']
+          }
+        }
+      });
+    });
   }
 });
 

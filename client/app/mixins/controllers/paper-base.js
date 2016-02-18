@@ -10,7 +10,6 @@ export default Ember.Mixin.create({
 
   subRouteName: 'index',
   versioningMode: false,
-  canViewManuscriptManager: false,
 
   activityIsLoading: false,
   showActivityOverlay: false,

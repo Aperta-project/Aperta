@@ -10,7 +10,7 @@ class PermissionsController < ApplicationController
     # Both class and id are packed into one value to allow ember-data
     # to request and store permissions tables automatically.
     class_name, id = params[:id].split('+')
-    klass = class_name.camelize.constantize
+    klass = lookup_task_klass(class_name.camelize)
     target = klass.where(id: id)
     permissions = current_user.filter_authorized(
       :*, target, participations_only: false
@@ -26,6 +26,21 @@ class PermissionsController < ApplicationController
   end
 
   private
+
+  # Lookup does a best effort attempt at finding the intended klass
+  # based on what the front-end sent in. For example, ember will pass in
+  # ethicsTask, but the EthicsTask is not a top-level class. It belongs inside
+  # the TahiStandardTasks namespace. So we need to find it. Right now we assume
+  # if we cannot find it then limit the scope to task.
+  def lookup_task_klass(klass_name)
+    if Object.const_defined?(klass_name)
+      klass_name.constantize
+    else
+      Task.descendants.find do |descendant|
+        descendant.name.demodulize == klass_name
+      end
+    end
+  end
 
   def render_empty_permissions
     render json: {

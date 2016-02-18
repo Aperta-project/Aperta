@@ -23,8 +23,25 @@ module('Integration: Discussions', {
     $.mockjax({url: '/api/user_flows/authorization', status: 204});
     $.mockjax({url: '/api/admin/journals/authorization', status: 204});
     $.mockjax({url: /\/api\/papers\/\d+\/manuscript_manager/, status: 204});
+    $.mockjax({url: /\/api\/journals/, type: 'GET', status: 200, responseText: { journals: [] }});
+
     TestHelper.handleFind(paper);
     TestHelper.handleFindAll('discussion-topic', 1);
+
+    // Grant permissions to access workflow on paper
+    Ember.run(function(){
+      // Provide access to the paper
+      var store = getStore();
+      store.createRecord('permission',{
+        id: 'paper+1',
+        object:{id: 1, type: 'Paper'},
+        permissions:{
+          manage_workflow:{
+            states: ['*']
+          }
+        }
+      });
+    });
 
     const restless = App.__container__.lookup('service:restless');
     restless['delete'] = function() {

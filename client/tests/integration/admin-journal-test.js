@@ -56,6 +56,8 @@ module('Integration: Admin Journal Test', {
         'Content-Type': 'application/json'
       }, JSON.stringify(stubbedAdminJournalUserResponse)
     ]);
+
+    server.respondWith('GET', "/api/journals", [200, { 'Content-Type': 'application/json' }, JSON.stringify({journals:[]})]);
   }
 });
 

@@ -140,7 +140,7 @@ class ApplicationPolicy
   def can_view_paper?(paper)
     (current_user.site_admin? ||
       current_user.can?(:view, paper) ||
-      paper.assigned_users.where(id: current_user.id).exists? ||
+      paper.old_assigned_users.where(id: current_user.id).exists? ||
       can_view_manuscript_manager?(paper))
   end
 

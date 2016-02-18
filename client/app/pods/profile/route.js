@@ -2,7 +2,6 @@ import Ember from 'ember';
 import AuthorizedRoute from 'tahi/routes/authorized'
 
 export default AuthorizedRoute.extend( {
-  can: Ember.inject.service('can'),
   model() { return this.currentUser; },
 
   beforeModel(transition){

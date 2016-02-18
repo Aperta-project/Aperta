@@ -1,7 +1,10 @@
 # End-point for adding and removing collaborators on a paper
 class CollaborationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :must_be_able_to_edit_paper
+  before_action do
+    fail AuthorizationError unless
+      current_user.can?(:manage_collaborators, paper)
+  end
   respond_to :json
 
   def create # rubocop:disable Metrics/MethodLength
@@ -61,9 +64,5 @@ class CollaborationsController < ApplicationController
         Paper.find(collaborator_params[:paper_id])
       end
     end
-  end
-
-  def must_be_able_to_edit_paper
-    fail AuthorizationError unless current_user.can?(:edit, paper)
   end
 end

@@ -9,17 +9,19 @@ export default {
     let logError = instance.container.lookup('logError:main');
 
     // The global error handler for internal ember errors
-    Ember.onerror = function(error) {
-      if (ENV.environment === 'production') {
-        if (typeof Bugsnag !== 'undefined' && Bugsnag && Bugsnag.notifyException) {
-          return Bugsnag.notifyException(error, 'Uncaught Ember Error');
+    if (!Ember.testing) {
+      Ember.onerror = function(error) {
+        if (ENV.environment === 'production') {
+          if (typeof Bugsnag !== 'undefined' && Bugsnag && Bugsnag.notifyException) {
+            return Bugsnag.notifyException(error, 'Uncaught Ember Error');
+          }
+        } else {
+          flash.displayMessage('error', error);
+          logError(error);
+          throw error;
         }
-      } else {
-        flash.displayMessage('error', error);
-        logError(error);
-        throw error;
-      }
-    };
+      };
+    }
 
     // Server response error handler
     $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {

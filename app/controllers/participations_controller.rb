@@ -1,12 +1,17 @@
 class ParticipationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :must_be_able_to_edit_task
+  before_action :must_be_able_to_edit_task, except: [:index]
   respond_to :json
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
 
   def index
-    respond_with Participation.where(task_id: task).all, root: :participations
+    if current_user.can?(:edit, task)
+      participations = Participation.where(task_id: task).all
+    else
+      participations = []
+    end
+    respond_with participations, root: :participations
   end
 
   def create

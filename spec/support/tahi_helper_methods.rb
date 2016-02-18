@@ -16,10 +16,6 @@ module TahiHelperMethods
   end
 
   # OLD ROLES
-  def make_user_paper_editor(user, paper)
-    assign_paper_role(paper, user, PaperRole::EDITOR)
-  end
-
   def make_user_paper_reviewer(user, paper)
     assign_paper_role(paper, user, PaperRole::REVIEWER)
   end
@@ -29,7 +25,18 @@ module TahiHelperMethods
     paper.reload
   end
 
+  def make_user_paper_editor(user, paper)
+    assign_paper_role(paper, user, PaperRole::EDITOR)
+  end
+
   # NEW ROLES
+  def assign_academic_editor_role(paper, user)
+    FactoryGirl.create(:assignment,
+                       role: paper.journal.roles.academic_editor,
+                       user: user,
+                       assigned_to: paper)
+  end
+
   def assign_author_role(paper, creator)
     Assignment.where(
       user: creator,

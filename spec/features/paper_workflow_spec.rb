@@ -1,15 +1,16 @@
 require 'rails_helper'
 
-feature "Paper workflow", js: true, selenium: true do
-  let(:admin) { create :user, :site_admin }
+feature "Paper workflow", js: true, selenium: true, skip: true do
+  let(:admin) { FactoryGirl.create :user }
   let!(:journal) { FactoryGirl.create :journal }
-  let!(:paper) { FactoryGirl.create :paper, :submitted, :with_tasks, creator: admin, journal: journal }
+  let!(:paper) { FactoryGirl.create :paper, :submitted, :with_tasks, journal: journal }
 
   before do
     assign_journal_role(journal, admin, :admin)
 
     login_as(admin, scope: :user)
     visit "/papers/#{paper.id}/workflow"
+    wait_for_ajax
   end
 
   describe "navigation" do
@@ -77,7 +78,6 @@ feature "Paper workflow", js: true, selenium: true do
 
   scenario 'Removing a task' do
     task_manager_page = TaskManagerPage.new
-
     phase = task_manager_page.phase 'Submission Data'
     expect(task_manager_page).to have_no_application_error
     before = task_manager_page.card_count

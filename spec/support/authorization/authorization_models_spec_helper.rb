@@ -21,7 +21,7 @@ module AuthorizationModelsSpecHelper
       create_table :fake_tasks, force: true do |t|
         t.string :name
         t.integer :fake_paper_id
-        t.string :type
+        t.string :type, default: 'Authorizations::FakeTask'
       end
 
       create_table :fake_task_things, force: true do |t|

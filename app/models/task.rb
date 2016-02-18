@@ -129,8 +129,15 @@ class Task < ActiveRecord::Base
     end
 
     def all_task_types
-      Rails.application.config.eager_load_namespaces.each(&:eager_load!)
       Task.descendants + [Task]
+    end
+
+    def metadata_task_types
+      all_task_types.select { |klass| klass <=> MetadataTask }
+    end
+
+    def submission_task_types
+      all_task_types.select { |klass| klass <=> SubmissionTask }
     end
 
     def safe_constantize(str)
@@ -240,3 +247,5 @@ class Task < ActiveRecord::Base
     end
   end
 end
+
+Rails.application.config.eager_load_namespaces.each(&:eager_load!)

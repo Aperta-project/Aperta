@@ -9,7 +9,8 @@ class FilteredUsersController < ApplicationController
   end
 
   def editors
-    render_selectable_users(:editors)
+    # TODO: Restrict this to editors.
+    uninvited_users
   end
 
   def admins

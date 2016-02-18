@@ -104,10 +104,10 @@ describe Typesetter::MetadataSerializer do
   end
 
   describe 'editor' do
-    let(:editor) { FactoryGirl.build(:user) }
+    let(:academic_editor) { FactoryGirl.build(:user) }
     let(:fake_serialized_editor) { 'Fake editor' }
     before do
-      allow(paper).to receive(:editor).and_return editor
+      allow(paper).to receive(:academic_editor).and_return academic_editor
       expect(Typesetter::EditorSerializer)
         .to receive(:new).and_return(
           instance_double('TypeSetter::EditorSerialiser',
@@ -115,7 +115,7 @@ describe Typesetter::MetadataSerializer do
     end
 
     it 'serializes the editors using the typesetter serializer' do
-      expect(output[:editor]).to eq(fake_serialized_editor)
+      expect(output[:academic_editor]).to eq(fake_serialized_editor)
     end
   end
 

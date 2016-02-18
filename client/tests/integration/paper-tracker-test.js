@@ -1,8 +1,14 @@
 import Ember from 'ember';
-import { module, test } from 'qunit';
+import { test } from 'ember-qunit';
 import startApp from 'tahi/tests/helpers/start-app';
+import setupMockServer from '../helpers/mock-server';
+import { paperWithParticipant } from '../helpers/setups';
+import Factory from '../helpers/factory';
+import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 
 let App = null;
+let server = null;
+
 let payload = {
   'papers': [{
     'id': 4,
@@ -19,17 +25,21 @@ let payload = {
 
 module('Integration: Paper Tracker', {
   afterEach: function() {
+    server.restore();
     Ember.run(function() {
       App.destroy();
     });
   },
 
   beforeEach: function() {
+    Factory.resetFactoryIds();
     App = startApp();
+    server = setupMockServer();
     $.mockjax({url: '/api/paper_tracker', status: 200, responseText: payload});
     $.mockjax({url: '/api/admin/journals/authorization', status: 204});
     $.mockjax({url: '/api/user_flows/authorization', status: 204});
     $.mockjax({url: '/api/comment_looks', status: 200, responseText: {comment_looks: []}});
+    $.mockjax({url: '/api/journals', status: 200, responseText: JSON.stringify({ 'journals':[{'id':1}] })});
   }
 });
 

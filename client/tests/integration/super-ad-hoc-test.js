@@ -95,6 +95,8 @@ module('Integration: Super AdHoc Card', {
       }, JSON.stringify([])
     ]);
 
+    server.respondWith('GET', "/api/journals", [200, { 'Content-Type': 'application/json' }, JSON.stringify({journals:[]})]);
+
     $.mockjax({
       url: '/api/countries',
       status: 200,

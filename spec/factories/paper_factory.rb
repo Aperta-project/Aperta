@@ -92,10 +92,12 @@ FactoryGirl.define do
       end
     end
 
-    trait(:with_editor) do
+    trait(:with_academic_editor) do
       after(:create) do |paper|
-        editor = FactoryGirl.build(:user)
-        FactoryGirl.create(:paper_role, :editor, paper: paper, user: editor)
+        FactoryGirl.create(:assignment,
+                           role: paper.journal.roles.academic_editor,
+                           user: FactoryGirl.build(:user),
+                           assigned_to: paper)
       end
     end
 

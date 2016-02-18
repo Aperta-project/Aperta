@@ -50,10 +50,6 @@ class Journal < ActiveRecord::Base
     users.merge(OldRole.admins)
   end
 
-  def editors
-    users.merge(OldRole.editors)
-  end
-
   def reviewers
     users.merge(OldRole.reviewers)
   end

@@ -7,7 +7,7 @@ ParticipantSelectorComponent = Ember.Component.extend({
 
   init: function(){
     this._super(...arguments);
-    this.set('selectedTemplate', this.getSelectedTemplate());
+    this.set('selectedTemplate', this.selectedTemplateFn());
   },
 
   setupTooltips: (function() {
@@ -30,7 +30,9 @@ ParticipantSelectorComponent = Ember.Component.extend({
     return '<strong>' + user.full_name + '</strong><br><div class="suggestion-sub-value">' + userInfo + '</div>';
   },
 
-  getSelectedTemplate: function() {
+  // Return function resolved when "this" in the context of this component, as opposed to
+  // resolving later in select-2 where "this" has a context within the select-2 object.
+  selectedTemplateFn: function() {
     return (user) => {
       var name, url;
       name = user.full_name || user.get('fullName');

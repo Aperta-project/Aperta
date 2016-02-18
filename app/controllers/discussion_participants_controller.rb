@@ -1,14 +1,15 @@
 class DiscussionParticipantsController < ApplicationController
   before_action :authenticate_user!
-  before_action :able_to_manage_participants
   respond_to :json
 
   def create
+    requires_user_can :manage_participant, discussion_topic
     discussion_participant.save
     respond_with discussion_participant
   end
 
   def destroy
+    requires_user_can :manage_participant, discussion_topic
     discussion_participant.destroy
     respond_with discussion_participant
   end
@@ -34,9 +35,5 @@ class DiscussionParticipantsController < ApplicationController
 
   def discussion_topic
     discussion_participant.discussion_topic
-  end
-
-  def able_to_manage_participants
-    requires_user_can :manage_participant, discussion_topic
   end
 end

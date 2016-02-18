@@ -9,7 +9,7 @@ feature "Discussions", js: true, selenium: true do
   context 'access paper and manage discussions' do
     let!(:user) { FactoryGirl.create :user }
 
-    scenario 'can create discussions, replies and add participants' do
+    scenario 'can add topics, participants, and replies' do
       login_as(creator, scope: :user)
       visit "/papers/#{paper.id}"
       wait_for_ajax

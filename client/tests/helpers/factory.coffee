@@ -25,6 +25,18 @@ Factory =
     throw "No factory exists in FactoryAttributes for type: #{type}. You may need to define this." unless baseAttrs
     _.defaults(recordAttrs, baseAttrs)
 
+  createPermission: (klass, id, permissions) ->
+    Ember.run ->
+      permissions_hash = {}
+      _.each permissions, (p) ->
+        permissions_hash[p] = {states: ['*']}
+
+      getStore().createRecord 'permission',
+        id: "#{klass}+#{id}",
+        object: {id: id, type: klass},
+        permissions: permissions_hash
+
+
   createList: (numberOfRecords, type) ->
     _(numberOfRecords).times -> @createRecord(type)
 

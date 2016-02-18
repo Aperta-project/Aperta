@@ -115,7 +115,6 @@
     <div class="author-corresponding {{if validationErrors.affiliation "error"}}">
       {{#nested-question-check ident="author--published_as_corresponding_author"
                                owner=author
-                               labelClassNames="author-label"
                                displayQuestionText=false
                                disabled=fieldsDisabled
                                inputClassNames="author-corresponding" as |check|}}
@@ -128,7 +127,6 @@
     <div class="author-deceased {{if validationErrors.secondaryAffiliation "error"}}">
       {{#nested-question-check ident="author--deceased"
                                owner=author
-                               labelClassNames="author-label"
                                displayQuestionText=false
                                disabled=fieldsDisabled
                                inputClassNames="author-deceased" as |check|}}
@@ -149,7 +147,6 @@
         {{#nested-question-check ident=contributionIdent
                                  owner=author
                                  class="flex-element author-contribution"
-                                 labelClassNames="author-label"
                                  displayQuestionText=false
                                  disabled=fieldsDisabled
                                  inputClassNames="author-contribution" as |check|}}
@@ -160,7 +157,7 @@
       {{/each}}
     </div>
 
-    <label class="author-label">
+    <label>
       {{check-box checked=isOtherContributionSelected
                   action="toggleOtherContribution"
                   class="author-contribution-other"

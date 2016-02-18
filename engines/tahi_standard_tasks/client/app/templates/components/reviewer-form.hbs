@@ -1,116 +1,121 @@
-<div class="add-author-form reviewer-form">
-  <div class="form-group form-inline author-top">
-    <div class="form-group author-name first-name {{if validationErrors.firstName "error"}}">
-      <span class="text-field-title required">
-        First Name
-        {{error-message message=validationErrors.firstName}}
-      </span>
+<div class="add-author-form reviewer-form flex-form">
+  <div class="flex-group flex-group--divider">
+    <div class="flex-element inset-form-control required author-name first-name {{if validationErrors.firstName "error"}}">
+      <div class="inset-form-control-text">
+        <label>First Name</label>
+        {{error-message message=validationErrors.firstName
+                        icon=true
+                        text=false}}
+      </div>
       {{input type="text"
               value=reviewerRecommendation.firstName
-              class="form-control tall-text-field"
+              class="inset-form-control-input"
               placeholder="Jane"
-              disabled=isSubmissionTaskNotEditable}}
+              disabled=fieldsDisabled}}
     </div>
 
-    <div class="form-group author-middle middle-name {{if validationErrors.middleInitial "error"}}">
-      <span class="text-field-title">
-        MI
-        {{error-message message=validationErrors.middleInitial}}
-      </span>
+    <div class="flex-element inset-form-control author-middle-initial middle-name {{if validationErrors.middleInitial "error"}}">
+      <div class="inset-form-control-text">
+        <label>MI</label>
+        {{error-message message=validationErrors.middleInitial
+                        icon=true
+                        text=false}}
+      </div>
       {{input type="text"
               value=reviewerRecommendation.middleInitial
-              class="form-control tall-text-field"
+              class="inset-form-control-input"
               placeholder="M"
-              disabled=isSubmissionTaskNotEditable}}
+              disabled=fieldsDisabled}}
     </div>
 
-    <div class="form-group author-name last-name {{if validationErrors.lastName "error"}}">
-      <span class="text-field-title required">
-        Last Name
-        {{error-message message=validationErrors.lastName}}
-      </span>
+    <div class="flex-element inset-form-control author-name required last-name {{if validationErrors.lastName "error"}}">
+      <div class="inset-form-control-text">
+        <label>Last Name</label>
+        {{error-message message=validationErrors.lastName
+                        icon=true
+                        text=false}}
+      </div>
       {{input type="text"
               value=reviewerRecommendation.lastName
-              class="form-control tall-text-field"
+              class="inset-form-control-input"
               placeholder="Goodall"
-              disabled=isSubmissionTaskNotEditable}}
+              disabled=fieldsDisabled}}
     </div>
 
-    <div class="form-group author-half author-bump email {{if validationErrors.email "error"}}">
-      <span class="text-field-title required">
-        Email
-        {{error-message message=validationErrors.email}}
-      </span>
+    <div class="flex-element inset-form-control required email {{if validationErrors.email "error"}}">
+      <div class="text-field-title required">
+        <label>Email</label>
+        {{error-message message=validationErrors.email
+                        icon=true
+                        text=false}}
+      </div>
       {{input type="text"
               value=reviewerRecommendation.email
-              class="form-control tall-text-field"
+              class="inset-form-control-input"
               placeholder="jane.goodall@science.com"
-              disabled=isSubmissionTaskNotEditable}}
+              disabled=fieldsDisabled}}
     </div>
   </div>
 
-  <div class="form-group form-inline">
-    <div class="form-group author-half title {{if validationErrors.title "error"}}">
-      <span class="text-field-title">
-        Title
-        {{error-message message=validationErrors.title}}
-      </span>
+  <div class="flex-group">
+    <div class="flex-element inset-form-control title {{if validationErrors.title "error"}}">
+      <div class="inset-form-control-text">
+        <label>Title</label>
+        {{error-message message=validationErrors.title
+                        icon=true
+                        text=false}}
+      </div>
       {{input type="text"
               value=reviewerRecommendation.title
-              class="form-control tall-text-field"
+              class="inset-form-control-input"
               placeholder="World's Foremost Expert on Chimpanzees"
-              disabled=isSubmissionTaskNotEditable}}
+              disabled=fieldsDisabled}}
     </div>
 
-    <div class="form-group author-half author-bump department {{if validationErrors.department "error"}}">
-      <span class="text-field-title">
-        Department
-        {{error-message message=validationErrors.department}}
-      </span>
+    <div class="flex-element inset-form-control department {{if validationErrors.department "error"}}">
+      <div class="text-field-title">
+        <label>Department</label>
+        {{error-message message=validationErrors.department
+                        icon=true
+                        text=false}}
+      </div>
       {{input type="text"
               value=reviewerRecommendation.department
-              class="form-control tall-text-field"
+              class="inset-form-control-input"
               placeholder="Primatology"
-              disabled=isSubmissionTaskNotEditable}}
+              disabled=fieldsDisabled}}
     </div>
   </div>
 
-  <div class="form-group form-inline">
-    <div class="form-group author-half insitution {{if validationErrors.affiliation "error"}}">
+  <div class="flex-group">
+    <div class="flex-element insitution {{if validationErrors.affiliation "error"}}">
       {{error-message message=validationErrors.affiliation}}
-      {{institution-search
-        value=affiliation
-        institutionSelected="institutionSelected"
-        placeholder="Institution"
-        disabled=isSubmissionTaskNotEditable}}
+      {{institution-search value=affiliation
+                           institutionSelected="institutionSelected"
+                           placeholder="Institution"
+                           disabled=fieldsDisabled}}
     </div>
   </div>
 
   <div class="form-group">
-    {{nested-question-radio
-      ident="reviewer_recommendations--recommend_or_oppose"
-      owner=reviewerRecommendation
-      yesLabel="Recommend"
-      noLabel="Oppose"
-      disabled=isSubmissionTaskNotEditable
-    }}
+    {{nested-question-radio ident="reviewer_recommendations--recommend_or_oppose"
+                            owner=reviewerRecommendation
+                            yesLabel="Recommend"
+                            noLabel="Oppose"
+                            disabled=fieldsDisabled}}
     {{error-message message=validationErrors.recommendOrOppose}}
   </div>
 
   <div class="form-group">
-    {{nested-question-textarea
-      ident="reviewer_recommendations--reason"
-      owner=reviewerRecommendation
-      displayContent=true
-      disabled=isSubmissionTaskNotEditable
-      displayQuestionAsPlaceholder=true
-    }}
+    {{nested-question-textarea ident="reviewer_recommendations--reason"
+                               owner=reviewerRecommendation
+                               displayContent=true
+                               disabled=fieldsDisabled
+                               displayQuestionAsPlaceholder=true}}
   </div>
 
-  <div class="form-group control-buttons">
-    <span class="pull-right author-form-buttons">
-      <a class="button-link button--green author-cancel cancel" disabled={{isSubmissionTaskNotEditable}} {{action "cancelRecommendation"}}>cancel</a>
-      <button class="button-secondary button--green knockout" disabled={{isSubmissionTaskNotEditable}} {{action "saveRecommendation"}}>done</button>
-    </span>
+  <div class="author-form-buttons control-buttons">
+    <a class="button-link button--green author-cancel cancel" disabled={{fieldsDisabled}} {{action "cancelRecommendation"}}>cancel</a>
+    <button class="button-secondary button--green knockout" disabled={{fieldsDisabled}} {{action "saveRecommendation"}}>done</button>
   </div>
 </div>

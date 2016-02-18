@@ -11,7 +11,7 @@
               value=reviewerRecommendation.firstName
               class="inset-form-control-input"
               placeholder="Jane"
-              disabled=fieldsDisabled}}
+              disabled=isNotEditable}}
     </div>
 
     <div class="flex-element inset-form-control author-middle-initial middle-name {{if validationErrors.middleInitial "error"}}">
@@ -25,7 +25,7 @@
               value=reviewerRecommendation.middleInitial
               class="inset-form-control-input"
               placeholder="M"
-              disabled=fieldsDisabled}}
+              disabled=isNotEditable}}
     </div>
 
     <div class="flex-element inset-form-control author-name required last-name {{if validationErrors.lastName "error"}}">
@@ -39,7 +39,7 @@
               value=reviewerRecommendation.lastName
               class="inset-form-control-input"
               placeholder="Goodall"
-              disabled=fieldsDisabled}}
+              disabled=isNotEditable}}
     </div>
 
     <div class="flex-element inset-form-control required email {{if validationErrors.email "error"}}">
@@ -53,7 +53,7 @@
               value=reviewerRecommendation.email
               class="inset-form-control-input"
               placeholder="jane.goodall@science.com"
-              disabled=fieldsDisabled}}
+              disabled=isNotEditable}}
     </div>
   </div>
 
@@ -69,7 +69,7 @@
               value=reviewerRecommendation.title
               class="inset-form-control-input"
               placeholder="World's Foremost Expert on Chimpanzees"
-              disabled=fieldsDisabled}}
+              disabled=isNotEditable}}
     </div>
 
     <div class="flex-element inset-form-control department {{if validationErrors.department "error"}}">
@@ -83,7 +83,7 @@
               value=reviewerRecommendation.department
               class="inset-form-control-input"
               placeholder="Primatology"
-              disabled=fieldsDisabled}}
+              disabled=isNotEditable}}
     </div>
   </div>
 
@@ -93,8 +93,7 @@
       {{institution-search value=affiliation
                            institutionSelected="institutionSelected"
                            placeholder="Institution"
-                           disabled=fieldsDisabled}}
-    </div>
+                           disabled=isNotEditable}}
   </div>
 
   <div class="form-group">
@@ -102,7 +101,7 @@
                             owner=reviewerRecommendation
                             yesLabel="Recommend"
                             noLabel="Oppose"
-                            disabled=fieldsDisabled}}
+                            disabled=isNotEditable}}
     {{error-message message=validationErrors.recommendOrOppose}}
   </div>
 
@@ -110,12 +109,12 @@
     {{nested-question-textarea ident="reviewer_recommendations--reason"
                                owner=reviewerRecommendation
                                displayContent=true
-                               disabled=fieldsDisabled
+                               disabled=isNotEditable
                                displayQuestionAsPlaceholder=true}}
   </div>
 
   <div class="author-form-buttons control-buttons">
-    <a class="button-link button--green author-cancel cancel" disabled={{fieldsDisabled}} {{action "cancelRecommendation"}}>cancel</a>
-    <button class="button-secondary button--green knockout" disabled={{fieldsDisabled}} {{action "saveRecommendation"}}>done</button>
+    <a class="button-link button--green author-cancel cancel" disabled={{isNotEditable}} {{action "cancelRecommendation"}}>cancel</a>
+    <button class="button-secondary button--green knockout" disabled={{isNotEditable}} {{action "saveRecommendation"}}>done</button>
   </div>
 </div>

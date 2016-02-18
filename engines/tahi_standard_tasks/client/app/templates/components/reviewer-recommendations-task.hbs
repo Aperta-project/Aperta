@@ -10,8 +10,8 @@
 
   <div class="reviewer-canditates-wrapper">
     {{#if isEditable}}
-      <button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}"
-              disabled={{isSubmissionTaskNotEditable}} {{action "addNewReviewer"}}>
+      <button class="button-primary button--green {{if isNotEditable 'button--disabled'}}"
+              disabled={{isNotEditable}} {{action "addNewReviewer"}}>
         New Reviewer Candidate
       </button>
 
@@ -20,14 +20,14 @@
                         validationErrors=validationErrors
                         saveRecommendation=(action "saveRecommendation")
                         cancelRecommendation=(action "cancelNewRecommendation")
-                        isSubmissionTaskNotEditable=isSubmissionTaskNotEditable}}
+                        isNotEditable=isNotEditable}}
       {{/if}}
     {{/if}}
 
     {{#each validReviewerRecommendations as |reviewerRecommendation|}}
       {{reviewer-row reviewerRecommendation=reviewerRecommendation
                      isEditable=isEditable
-                     isSubmissionTaskNotEditable=isSubmissionTaskNotEditable}}
+                     isNotEditable=isNotEditable}}
     {{/each}}
   </div>
 </div>

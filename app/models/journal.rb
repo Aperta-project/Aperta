@@ -27,6 +27,27 @@ class Journal < ActiveRecord::Base
   mount_uploader :logo,       LogoUploader
   mount_uploader :epub_cover, EpubCoverUploader
 
+  has_one :academic_editor_role, -> { where(name: Role::ACADEMIC_EDITOR_ROLE) },
+          class_name: 'Role'
+  has_one :creator_role, -> { where(name: Role::CREATOR_ROLE) },
+          class_name: 'Role'
+  has_one :collaborator_role, -> { where(name: Role::COLLABORATOR_ROLE) },
+          class_name: 'Role'
+  has_one :internal_editor_role, -> { where(name: Role::INTERNAL_EDITOR_ROLE) },
+          class_name: 'Role'
+  has_one :handling_editor_role, -> { where(name: Role::HANDLING_EDITOR_ROLE) },
+          class_name: 'Role'
+  has_one :participant_role, -> { where(name: Role::PARTICIPANT_ROLE) },
+          class_name: 'Role'
+  has_one :publishing_services_role, -> { where(name: Role::PUBLISHING_SERVICES_ROLE) },
+          class_name: 'Role'
+  has_one :reviewer_role, -> { where(name: Role::REVIEWER_ROLE) },
+          class_name: 'Role'
+  has_one :staff_admin_role, -> { where(name: Role::STAFF_ADMIN_ROLE) },
+          class_name: 'Role'
+  has_one :user_role, -> { where(name: Role::USER_ROLE, journal_id: nil) },
+          class_name: 'Role'
+
   def admins
     users.merge(OldRole.admins)
   end

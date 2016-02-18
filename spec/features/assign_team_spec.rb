@@ -51,15 +51,15 @@ feature 'Assign team', js: true do
       login_as(journal_editor, scope: :user)
 
       # Remove the ability to view task(s)
-      view_task_permission = plos_journal.roles.internal_editor.permissions
+      view_task_permission = plos_journal.internal_editor_role.permissions
         .find_by!(action: 'view', applies_to: 'Task')
-      plos_journal.roles.internal_editor.permissions -= [view_task_permission]
+      plos_journal.internal_editor_role.permissions -= [view_task_permission]
 
       AssignTeamOverlay.visit(assign_team_task)
       expect(page).to have_content("You don't have access to that content")
 
       # Add back in the ability to view task(s)
-      plos_journal.roles.internal_editor.permissions += [view_task_permission]
+      plos_journal.internal_editor_role.permissions += [view_task_permission]
       AssignTeamOverlay.visit(assign_team_task) do |overlay|
         overlay.assign_old_role_for_user custom_reviewer_role_name, custom_reviewer
         expect(overlay).to have_content("#{custom_reviewer.full_name} has been assigned as #{custom_reviewer_role_name}")

@@ -58,7 +58,7 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
         # added as a task participant
         participant_paper.assignments.create!(
           user: admin,
-          role: participant_paper.journal.roles.participant
+          role: participant_paper.journal.participant_role
         )
         participant_paper.paper_roles.participants.create(user: admin)
         expect(page).to have_text(participant_paper.title)
@@ -66,7 +66,7 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
         # removed as a task participant
         participant_paper.assignments.find_by!(
           user: admin,
-          role: participant_paper.journal.roles.participant
+          role: participant_paper.journal.participant_role
         ).destroy
         participant_paper.paper_roles.participants.find_by(user: admin).destroy
         expect(page).to_not have_text(participant_paper.title)

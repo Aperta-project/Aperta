@@ -32,7 +32,7 @@ module TahiHelperMethods
   # NEW ROLES
   def assign_academic_editor_role(paper, user)
     FactoryGirl.create(:assignment,
-                       role: paper.journal.roles.academic_editor,
+                       role: paper.journal.academic_editor_role,
                        user: user,
                        assigned_to: paper)
   end
@@ -40,7 +40,7 @@ module TahiHelperMethods
   def assign_author_role(paper, creator)
     Assignment.where(
       user: creator,
-      role: paper.journal.roles.creator,
+      role: paper.journal.creator_role,
       assigned_to: paper
     ).first_or_create!
   end
@@ -48,7 +48,7 @@ module TahiHelperMethods
   def assign_reviewer_role(paper, reviewer)
     Assignment.where(
       user: reviewer,
-      role: paper.journal.roles.reviewer,
+      role: paper.journal.reviewer_role,
       assigned_to: paper
     ).first_or_create!
   end
@@ -56,7 +56,7 @@ module TahiHelperMethods
   def assign_handling_editor_role(paper, editor)
     Assignment.where(
       user: editor,
-      role: paper.journal.roles.handling_editor,
+      role: paper.journal.handling_editor_role,
       assigned_to: paper
     ).first_or_create!
     # this is an old role:
@@ -68,13 +68,13 @@ module TahiHelperMethods
     if role_or_type == :admin
       Assignment.where(
         user: user,
-        role: journal.roles.staff_admin,
+        role: journal.staff_admin_role,
         assigned_to: journal
       ).first_or_create!
     elsif role_or_type == :editor
       Assignment.where(
         user: user,
-        role: journal.roles.handling_editor,
+        role: journal.handling_editor_role,
         assigned_to: journal
       ).first_or_create!
     end

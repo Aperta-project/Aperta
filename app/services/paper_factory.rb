@@ -64,7 +64,7 @@ class PaperFactory
   def add_creator_assignment!
     creator.assignments.create!(
       assigned_to: paper,
-      role: paper.journal.roles.creator
+      role: paper.journal.creator_role
     )
   end
 

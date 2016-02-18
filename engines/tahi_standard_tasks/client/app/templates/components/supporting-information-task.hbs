@@ -16,7 +16,7 @@
     {{/each}}
   </div>
   {{#if isEditable}}
-    <span class="button-primary button--green fileinput-button si-files-upload-button {{if isSubmissionTaskNotEditable 'button--disabled'}}">
+    <span class="button-primary button--green fileinput-button si-files-upload-button">
       <span>Add Files</span>
       {{file-uploader id="file_attachment"
                       filePrefix="supporting-info"
@@ -26,7 +26,7 @@
                       cancel="cancelUploads"
                       progress="uploadProgress"
                       multiple=true
-                      disabled=isSubmissionTaskNotEditable}}
+                      disabled=notEditable}}
     </span>
 
     <div>

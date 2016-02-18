@@ -4,7 +4,7 @@
                   validationErrors=validationErrors
                   saveRecommendation=(action "saveRecommendation")
                   cancelRecommendation=(action "cancelRecommendation")
-                  isSubmissionTaskNotEditable=isSubmissionTaskNotEditable}}
+                  isNotEditable=isNotEditable}}
 
 {{else}}
 
@@ -26,7 +26,7 @@
     <span class="reason">{{nested-question-answer ident="reviewer_recommendations--reason" owner=reviewerRecommendation}}</span>
   </div>
 
-  {{#if isHovered}}
+  {{#if showHover}}
     <div class="authors-overlay-item--actions">
       <div class="actions">
         <div class="action" {{action "edit"}}>

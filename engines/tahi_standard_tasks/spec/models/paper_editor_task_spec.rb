@@ -59,7 +59,9 @@ describe TahiStandardTasks::PaperEditorTask do
     end
 
     context "when there's an existing editor" do
-      let(:paper) { FactoryGirl.create(:paper, :with_academic_editor, :with_tasks) }
+      let(:paper) do
+        FactoryGirl.create(:paper, :with_academic_editor_user, :with_tasks)
+      end
 
       it "replaces the old editor" do
         invitation.accept!

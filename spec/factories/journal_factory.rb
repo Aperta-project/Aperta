@@ -19,6 +19,17 @@ FactoryGirl.define do
     after(:create) do |journal|
       JournalFactory.ensure_default_roles_and_permissions_exist(journal)
     end
+
+    %w(publishing_services staff_admin).each do |role|
+      trait("with_#{role}_user".to_sym) do
+        after(:create) do |journal|
+          FactoryGirl.create(:assignment,
+                             role: journal.send("#{role}_role".to_sym),
+                             user: FactoryGirl.build(:user),
+                             assigned_to: journal)
+        end
+      end
+    end
   end
 
   sequence :doi_journal_prefix do

@@ -3,7 +3,7 @@ require 'rails_helper'
 describe "TahiStandardTasks::DecisionReviser" do
 
   let(:task) { FactoryGirl.create(:register_decision_task, paper: paper) }
-  let(:paper) { FactoryGirl.create(:paper, :with_academic_editor) }
+  let(:paper) { FactoryGirl.create(:paper, :with_academic_editor_user) }
   let(:service) { TahiStandardTasks::DecisionReviser.new(task, double(:decision, verdict: "major_revision")) }
 
   describe "#process!" do

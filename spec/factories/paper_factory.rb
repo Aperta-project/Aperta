@@ -92,12 +92,14 @@ FactoryGirl.define do
       end
     end
 
-    trait(:with_academic_editor) do
-      after(:create) do |paper|
-        FactoryGirl.create(:assignment,
-                           role: paper.journal.academic_editor_role,
-                           user: FactoryGirl.build(:user),
-                           assigned_to: paper)
+    %w(academic_editor collaborator reviewer internal_editor handling_editor participant).each do |role|
+      trait("with_#{role}_user".to_sym) do
+        after(:create) do |paper|
+          FactoryGirl.create(:assignment,
+                             role: paper.journal.send("#{role}_role".to_sym),
+                             user: FactoryGirl.build(:user),
+                             assigned_to: paper)
+        end
       end
     end
 

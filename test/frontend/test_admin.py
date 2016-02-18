@@ -17,10 +17,10 @@ from frontend.common_test import CommonTest
 
 
 users = [oa_login,
-         sa_login,
+         #sa_login,
          ]
 
-all_users = [sa_login,
+all_users = [#sa_login,
              oa_login,
              au_login,
              rv_login,
@@ -70,12 +70,12 @@ class ApertaAdminTest(CommonTest):
     logging.info('Validating base admin page user search function')
     user_type = random.choice(users)
     logging.info('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=sa_login['user'], password=login_valid_pw)
+    dashboard_page = self.login(email=oa_login['user'], password=login_valid_pw)
     dashboard_page.click_admin_link()
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_search_edit_user(random.choice(user_search))
 
-  def test_validate_add_new_journal(self):
+  def rest_validate_add_new_journal(self):
     """
     Validates adding a new journal is available to superadmin
     """
@@ -87,7 +87,7 @@ class ApertaAdminTest(CommonTest):
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_add_new_journal(user_type['user'])
 
-  def test_validate_edit_journal(self):
+  def rest_validate_edit_journal(self):
     """
     Validates editing a journal is available to superadmin
     """

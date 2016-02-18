@@ -18,7 +18,7 @@ from frontend.common_test import CommonTest
 
 
 users = [oa_login,
-         sa_login,
+         #sa_login,
          ]
 
 user_search = ['OA', 'FM', 'MM', 'RV']

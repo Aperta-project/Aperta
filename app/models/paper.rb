@@ -57,13 +57,6 @@ class Paper < ActiveRecord::Base
 
   delegate :major_version, :minor_version, to: :latest_version, allow_nil: true
 
-  has_one(:short_title_answer,
-          lambda do
-            includes(:nested_question).where(
-              nested_questions: { ident: 'publishing_related_questions--short_title' })
-          end,
-          class_name: 'NestedQuestionAnswer')
-
   def manuscript_id
     doi.split('/').last if doi
   end
@@ -301,7 +294,7 @@ class Paper < ActiveRecord::Base
   end
 
   def short_title
-    answer = short_title_answer
+    answer = answer_for('publishing_related_questions--short_title')
     answer ? answer.value : ''
   end
 

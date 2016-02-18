@@ -64,7 +64,7 @@ describe JournalFactory do
           )
         end
 
-        context 'has DisscussionTopic permission to' do
+        context 'has DiscussionTopic permission to' do
           let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
 
           it ':view' do
@@ -102,7 +102,7 @@ describe JournalFactory do
           )
         end
 
-        context 'has DisscussionTopic permission to' do
+        context 'has DiscussionTopic permission to' do
           let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
 
           it ':view' do
@@ -131,8 +131,8 @@ describe JournalFactory do
         end
       end
 
-      context 'Discussion Particiapnt' do
-        context 'has DisscussionTopic permission to' do
+      context 'Discussion Participant' do
+        context 'has DiscussionTopic permission to' do
           let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
 
           it ':view' do

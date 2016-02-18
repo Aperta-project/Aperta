@@ -84,9 +84,12 @@
 
 .question-checkbox {
   position: relative;
+  padding-left: 1.75rem;
+
   input {
     position: absolute;
-    top: 0px;
+    top: 0;
+    left: 0;
   }
 
   .model-question {

@@ -45,8 +45,8 @@ describe 'SeedHelpers' do
 
     it 'removes stray permissions from the role if asked to' do
       Role.ensure_exists('role', journal: journal) do |role|
-        role.ensure_permission_exists(:view, applies_to: Task)
         role.ensure_permission_exists(:edit, applies_to: Task)
+        role.ensure_permission_exists(:view, applies_to: Task)
       end
       expect(Role.where(name: 'role').first.reload.permissions
               .map(&:action)).to contain_exactly('view', 'edit')

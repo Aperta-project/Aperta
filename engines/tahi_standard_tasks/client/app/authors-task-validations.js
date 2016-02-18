@@ -12,6 +12,7 @@ export default {
   'email': ['presence', 'email'],
   'title': ['presence'],
   'department': ['presence'],
+  'affiliation': ['presence'],
   'contributions': [{
     type: 'presence',
     message: 'One must be selected',

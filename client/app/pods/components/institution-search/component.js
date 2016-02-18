@@ -20,6 +20,9 @@ export default Ember.Component.extend({
 
   actions: {
     institutionSelected(institution) {
+      if(this.attrs.validate) {
+        this.attrs.validate(institution.name);
+      }
       this.sendAction('institutionSelected', institution);
     }
   }

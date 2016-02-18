@@ -94,11 +94,15 @@
   </div>
 
   <div class="flex-group">
-    <div class="flex-element author-affiliation {{if validationErrors.affiliation "error"}}">
-      {{error-message message=validationErrors.affiliation}}
+    <div class="flex-element author-affiliation required {{if validationErrors.affiliation "error"}}">
+      {{error-message message=validationErrors.affiliation
+                      icon=true
+                      text=true}}
       {{institution-search value=affiliation
                            institutionSelected="institutionSelected"
                            disabled=fieldsDisabled
+                           validate=(action "validateField" "affiliation")
+                           errors=validationErrors.affiliation
                            placeholder="Institution"}}
     </div>
 
@@ -112,7 +116,7 @@
   </div>
 
   <div>
-    <div class="author-corresponding {{if validationErrors.affiliation "error"}}">
+    <div class="author-corresponding {{if validationErrors.corresponding "error"}}">
       {{#nested-question-check ident="author--published_as_corresponding_author"
                                owner=author
                                displayQuestionText=false
@@ -124,7 +128,7 @@
       {{/nested-question-check}}
     </div>
 
-    <div class="author-deceased {{if validationErrors.secondaryAffiliation "error"}}">
+    <div class="author-deceased {{if validationErrors.deceased "error"}}">
       {{#nested-question-check ident="author--deceased"
                                owner=author
                                displayQuestionText=false
@@ -157,23 +161,27 @@
       {{/each}}
     </div>
 
-    <label>
-      {{check-box checked=isOtherContributionSelected
-                  action="toggleOtherContribution"
-                  class="author-contribution-other"
-                  disabled=fieldsDisabled}}
-      Other
-    </label>
-    {{#if isOtherContributionSelected}}
-      {{nested-question-input ident="author--contributions--other"
-                              owner=author
-                              displayQuestionText=false
-                              inputClassNames="form-control"
-                              placeholder="Please specify"
-                              disabled=fieldsDisabled
-                              class="author-label-other"
-                              tagName="span"}}
-    {{/if}}
+    <div class="flex-group">
+      <div class="flex-element">
+        <label>
+          {{check-box checked=isOtherContributionSelected
+                      action="toggleOtherContribution"
+                      class="author-contribution-other"
+                      disabled=fieldsDisabled}}
+          Other
+        </label>
+        {{#if isOtherContributionSelected}}
+          {{nested-question-input ident="author--contributions--other"
+                                  owner=author
+                                  displayQuestionText=false
+                                  inputClassNames="form-control"
+                                  placeholder="Please specify"
+                                  disabled=fieldsDisabled
+                                  class="author-label-other"
+                                  tagName="span"}}
+        {{/if}}
+      </div>
+    </div>
   </div>
 
   <div class="author-form-buttons">

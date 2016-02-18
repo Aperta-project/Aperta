@@ -182,7 +182,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
 
     dashboard_page = DashboardPage(self.getDriver())
     # Temporary changing timeout
-    dashboard_page.set_timeout(120)
+    dashboard_page.set_timeout(60)
     # We recently became slow drawing this overlay (20151006)
     time.sleep(.5)
     title = self.create_article(journal='PLOS Wombat',

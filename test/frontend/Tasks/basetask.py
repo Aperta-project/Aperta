@@ -38,7 +38,6 @@ class BaseTask(AuthenticatedPage):
     """Returns the selected state of the task completed checkbox as a boolean"""
     time.sleep(.5)
     completed_checkbox_state = self._get(self._completed_cb).is_selected()
-    #import pdb; pdb.set_trace() 
     return completed_checkbox_state
 
   def validate_completion_error(self):

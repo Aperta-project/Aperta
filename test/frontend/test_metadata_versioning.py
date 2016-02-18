@@ -98,7 +98,6 @@ class MetadataVersioningTest(CommonTest):
       paper_viewer = ManuscriptViewerPage(self.getDriver())
       time.sleep(2)
       # submit article
-      import pdb; pdb.set_trace()
       paper_viewer.click_submit_btn()
       paper_viewer.confirm_submit_btn()
       paper_viewer.close_submit_overlay()

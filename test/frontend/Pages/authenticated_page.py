@@ -92,6 +92,7 @@ class AuthenticatedPage(PlosPage):
 
     self._flash_closer = (By.CLASS_NAME, 'flash-message-remove')
     # Cards - placeholder locators - these are over-ridden by definitions in the workflow and manuscript_viewer pages
+    self._addl_info_card = None
     self._billing_card = None
     self._cover_letter_card = None
     self._review_cands_card = None
@@ -107,9 +108,9 @@ class AuthenticatedPage(PlosPage):
     self._report_guide_card = None
     self._supporting_info_card = None
     self._upload_manu_card = None
-    self._prq_card = None
     self._initial_decision_card = None
     # Tasks - placeholder locators - these are over-ridden by definitions in the workflow and manuscript_viewer pages
+    self._addl_info_task = None
     self._billing_task = None
     self._cover_letter_task = None
     self._review_cands_task = None
@@ -125,7 +126,6 @@ class AuthenticatedPage(PlosPage):
     self._report_guide_task = None
     self._supporting_info_task = None
     self._upload_manu_task = None
-    self._prq_task = None
     self._initial_decision_task = None
     # Global Overlay Locators
     self._overlay_header_title = (By.CLASS_NAME, 'overlay-header-title')
@@ -341,8 +341,8 @@ class AuthenticatedPage(PlosPage):
       card_title = self._get(self._supporting_info_card)
     elif cardname.lower() == 'upload_manuscript':
       card_title = self._get(self._upload_manu_card)
-    elif cardname.lower() == 'prq':
-      card_title = self._get(self._prq_card)
+    elif cardname.lower() == 'addl_info':
+      card_title = self._get(self._addl_info_card)
     elif cardname.lower() == 'review_candidates':
       card_title = self._get(self._review_cands_card)
     elif cardname.lower() == 'revise_task':
@@ -374,7 +374,7 @@ class AuthenticatedPage(PlosPage):
   def click_task(self, taskname):
     """
     Passed a task name, opens the relevant task
-    :param taskname: any one of: cover_letter, billing, figures, authors, supporting_info, upload_manuscript, prq,
+    :param taskname: any one of: cover_letter, billing, figures, authors, supporting_info, upload_manuscript, addl_info,
         review_candidates, revise_task, competing_interests, data_availability, ethics_statement, financial_disclosure,
         new_taxon, reporting_guidelines, changes_for_author
     NOTE: this covers only the author facing tasks, with the exception of initial_decision
@@ -386,7 +386,9 @@ class AuthenticatedPage(PlosPage):
     :return: True or False, if taskname is unknown.
     """
     self.set_timeout(5)
-    if taskname.lower() == 'billing':
+    if taskname.lower() == 'addl_info':
+      task_title = self._get(self._addl_info_task)
+    elif taskname.lower() == 'billing':
       task_title = self._get(self._billing_task)
     elif taskname.lower() == 'cover_letter':
       task_title = self._get(self._cover_letter_task)
@@ -398,8 +400,6 @@ class AuthenticatedPage(PlosPage):
       task_title = self._get(self._supporting_info_task)
     elif taskname.lower() == 'upload_manuscript':
       task_title = self._get(self._upload_manu_task)
-    elif taskname.lower() == 'prq':
-      task_title = self._get(self._prq_task)
     elif taskname.lower() == 'review_candidates':
       task_title = self._get(self._review_cands_task)
     elif taskname.lower() == 'revise_task':

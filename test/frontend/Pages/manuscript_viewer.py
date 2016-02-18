@@ -106,6 +106,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._revise_task_task = (By.CLASS_NAME, 'revise-task')
     self._cfa_task = (By.CLASS_NAME, 'changes-for-author-task')
     # Metadata Tasks
+    self._addl_info_task = (By.CLASS_NAME, 'publishing-related-questions-task')
     self._authors_task = (By.CLASS_NAME, 'authors-task')
     self._competing_ints_task = (By.CLASS_NAME, 'competing-interests-task')
     self._data_avail_task = (By.CLASS_NAME, 'data-availability-task')
@@ -113,7 +114,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     self._figures_task = (By.CLASS_NAME, 'figure-task')
     self._fin_disclose_task = (By.CLASS_NAME, 'financial-disclosure-task')
     self._new_taxon_task = (By.CLASS_NAME, 'new-taxon-task')
-    self._prq_task = (By.CLASS_NAME, 'publishing-related-questions-task')
     self._report_guide_task = (By.CLASS_NAME, 'reporting-guidelines-task')
     self._supporting_info_task = (By.CLASS_NAME, 'supporting-info-task')
     self._upload_manu_task = (By.CLASS_NAME, 'upload-manuscript-task')

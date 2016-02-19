@@ -180,6 +180,13 @@ class Paper < ActiveRecord::Base
     end
   end
 
+  # States which should generally be editable by the creator
+  EDITABLE_STATES = [:unsubmitted, :in_revision, :invited_for_full_submission,
+                     :checking]
+  # States which should generally NOT be editable by the creator
+  UNEDITABLE_STATES = [:initially_submitted, :submitted, :accepted, :rejected,
+                       :published, :withdrawn]
+
   def users_with_role(role)
     User.joins(:assignments).where(
       'assignments.role_id' => role.id,

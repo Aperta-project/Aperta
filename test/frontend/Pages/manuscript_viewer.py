@@ -583,5 +583,6 @@ class ManuscriptViewerPage(AuthenticatedPage):
     return self._get(self._submission_status_info).text
 
   def wait_for_viewer_page_population(self):
+    self.set_timeout(60)
     self._get(self._paper_sidebar_state_information)
-    time.sleep(5)
+    self.restore_timeout()

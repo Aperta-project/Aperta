@@ -28,7 +28,7 @@ class AddlInfoTaskTest(CommonTest):
     logging.info('Calling Create new Article')
     article_name = self.create_article(journal='PLOS Wombat', type_='generateCompleteApexData')
     manuscript_viewer = ManuscriptViewerPage(self.getDriver())
-
+    time.sleep(9)
     manuscript_viewer.click_task('addl_info')
     return AITask(self.getDriver()), article_name
 

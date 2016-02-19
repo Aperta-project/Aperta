@@ -409,6 +409,7 @@ class JournalAdminPage(AdminPage):
       col_title = column.find_element(*self._mmt_template_column_title)
       time.sleep(.5)
       col_title.click()
+      time.sleep(.5)
       self._mmt_template_column_delete = (By.CSS_SELECTOR, 'span.remove-icon')
       column.find_element(*self._mmt_template_column_delete)
       self._mmt_template_column_title_edit_cancel_btn = (By.CSS_SELECTOR, 'button.column-header-update-cancel')

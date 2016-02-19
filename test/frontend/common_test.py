@@ -90,7 +90,7 @@ class CommonTest(FrontEndTest):
     self._driver.find_element_by_id('upload-files').send_keys(fn)
     dashboard.click_upload_button()
     # Time needed for script execution.
-    time.sleep(10)
+    time.sleep(30)
     return title
 
   def check_article(self, title, user='jgray_author'):

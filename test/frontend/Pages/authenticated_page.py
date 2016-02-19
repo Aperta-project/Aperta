@@ -385,7 +385,6 @@ class AuthenticatedPage(PlosPage):
 
     :return: True or False, if taskname is unknown.
     """
-    self.set_timeout(5)
     if taskname.lower() == 'addl_info':
       task_title = self._get(self._addl_info_task)
     elif taskname.lower() == 'billing':
@@ -422,11 +421,9 @@ class AuthenticatedPage(PlosPage):
       task_title = self._get(self._initial_decision_card)
     else:
       print('Unknown Task')
-      self.restore_timeout()
       return False
     # For whatever reason, selenium can't grok a simple click() here
     self._actions.click_and_hold(task_title).release().perform()
-    self.restore_timeout()
     return True
 
   # Style Validations

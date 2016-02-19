@@ -1,13 +1,14 @@
 class AuthorsController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy
   respond_to :json
 
   def show
+    requires_user_can :view, author.paper
     render json: author
   end
 
   def create
+    requires_user_can :edit_authors, author.paper
     author.save!
 
     # render all authors, since position is controlled by acts_as_list
@@ -15,6 +16,7 @@ class AuthorsController < ApplicationController
   end
 
   def update
+    requires_user_can :edit_authors, author.paper
     author.update!(author_params)
 
     # render all authors, since position is controlled by acts_as_list
@@ -22,6 +24,7 @@ class AuthorsController < ApplicationController
   end
 
   def destroy
+    requires_user_can :edit_authors, author.paper
     author.destroy!
 
     # render all authors, since position is controlled by acts_as_list
@@ -29,10 +32,6 @@ class AuthorsController < ApplicationController
   end
 
   private
-
-  def enforce_policy
-    authorize_action!(author: author)
-  end
 
   def author
     @author ||= begin

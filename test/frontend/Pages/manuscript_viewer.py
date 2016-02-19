@@ -7,6 +7,7 @@ NOTE: This POM will be outdated when the Paper Editor is removed.
 
 import logging
 import time
+from datetime import datetime
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -583,6 +584,8 @@ class ManuscriptViewerPage(AuthenticatedPage):
     return self._get(self._submission_status_info).text
 
   def wait_for_viewer_page_population(self):
+    logging.info(datetime.now())
     self.set_timeout(230)
     self._get(self._paper_sidebar_state_information)
+    logging.info(datetime.now())
     self.restore_timeout()

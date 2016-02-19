@@ -51,7 +51,7 @@ feature 'Ethics Task', js: true, selenium: true do
 
           expect(DownloadQuestionAttachmentWorker).to receive(:perform_async)
           file_path = Rails.root.join('spec/fixtures/about_turtles.docx')
-          attach_file 'add-new-attachment', file_path, visible: false
+          attach_file 'file', file_path, visible: false
 
           expect(page).to have_css('.attachment-item')
           expect(page).to have_no_content('UPLOAD ARRIVE CHECKLIST')

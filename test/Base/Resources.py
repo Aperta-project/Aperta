@@ -95,6 +95,7 @@ billing_data = {'first': 'Jane', 'last': 'Doe',
           'title': 'Dr.', 'email': 'test@test.org',
           'department':'Molecular Biology', 'affiliation':'Universidad Del Este',
           '2_institution': 'Universidad Nacional del Sur',
+          'address1': 'Codoba 2231',
           'phone': '123-4567-8900', 'city': 'Azul',
           'state': 'CABA', 'ZIP': '12345', 'country':'Argentina'}
 

@@ -5,36 +5,29 @@
 # By default, if there are foreign key constraints that are enforced at the
 # database, it will fail because the foreign record does not yet exist.  The
 # fix for this is to defer foreign key constraints so that they are not
-# enforced until the transaction is committed. In addition, changes need made
-# to yaml_db to support defered constraints.
+# enforced until the transaction is committed.
 #
-# See:
-# https://github.com/SchemaPlus/schema_plus/wiki/Making-yaml_db-work-with-foreign-key-constraints-in-PostgreSQL
 module YamlDb
   module SerializationHelper
-    class Base
-      def load(filename, truncate = true)
-        disable_logger
-        ActiveRecord::Base.connection.disable_referential_integrity do
-          @loader.load(File.new(filename, "r"), truncate)
-        end
-        reenable_logger
-      end
-    end
-
     class Load
-      def self.truncate_table(table)
-        begin
-          ActiveRecord::Base.connection.execute("SAVEPOINT before_truncation")
-          ActiveRecord::Base.connection.execute("TRUNCATE #{SerializationHelper::Utils.quote_table(table)}")
-        rescue Exception => ex
-          puts <<-MSG.strip_heredoc
-            Recovering from the DB not being able to TRUNCATE. Falling back to DELETE.
-            Please ignore any errors previous errors about not being able to truncate table '#{table}'.
-          MSG
+      def self.load(io, truncate = true)
+        # First, make all foreign key constraints deferrable
+        tc = Arel::Table.new('information_schema.table_constraints')
+        arel = tc.project(tc[:constraint_name], tc[:table_name])
+               .where(tc[:constraint_type].eq('FOREIGN KEY'))
+        ActiveRecord::Base.connection.execute(arel.to_sql).each do |row|
+          ActiveRecord::Base.connection.execute(
+            # Set the deferrable flag on each constraint
+            "ALTER TABLE #{row['table_name']} ALTER CONSTRAINT #{row['constraint_name']} DEFERRABLE INITIALLY DEFERRED")
+        end
 
-          ActiveRecord::Base.connection.execute("ROLLBACK TO SAVEPOINT before_truncation")
-          ActiveRecord::Base.connection.execute("DELETE FROM #{SerializationHelper::Utils.quote_table(table)}")
+        # Now load everything in a transaction
+        ActiveRecord::Base.connection.transaction do
+          # Disable truncation when loading for three reasons:
+          # 1. The database should already be empty, we are seeding it.
+          # 2. A rake task called db:load should not delete data.
+          # 3. It doesn't work properly with foreign key constraints.
+          load_documents(io, false)
         end
       end
     end

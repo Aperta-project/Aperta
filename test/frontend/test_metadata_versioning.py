@@ -61,7 +61,7 @@ class MetadataVersioningTest(CommonTest):
                                 type_=journal_type,
                                 random_bit=True,
                                 init=False,
-                                user='jgray_author')
+                                )
     dashboard_page.restore_timeout()
     paper_viewer = ManuscriptViewerPage(self.getDriver())
     paper_id = paper_viewer.get_current_url().split('/')[-1]

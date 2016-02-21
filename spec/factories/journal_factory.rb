@@ -16,8 +16,10 @@ FactoryGirl.define do
       end
     end
 
-    after(:create) do |journal|
-      JournalFactory.ensure_default_roles_and_permissions_exist(journal)
+    trait(:with_roles_and_permissions) do
+      after(:create) do |journal|
+        JournalFactory.ensure_default_roles_and_permissions_exist(journal)
+      end
     end
   end
 

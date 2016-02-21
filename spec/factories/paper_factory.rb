@@ -2,21 +2,24 @@ require 'securerandom'
 
 FactoryGirl.define do
   factory :paper do
-    after(:create) do |paper|
-      creator = paper.creator
-      if creator
-        Assignment.where(
-          role: paper.journal.creator_role,
-          assigned_to: paper
-        ).first_or_create!
+    journal
+
+    trait :with_creator do
+      after(:create) do |paper|
+        creator = paper.creator
+        if creator
+          Assignment.where(
+            role: paper.journal.creator_role,
+            assigned_to: paper
+          ).first_or_create!
+        end
+
+        paper.save!
+        paper.body = "I am the very model of a modern journal article"
       end
 
-      paper.save!
-      paper.body = "I am the very model of a modern journal article"
+      creator factory: :user
     end
-
-    journal
-    creator factory: :user
 
     sequence :title do |n|
       "Feature Recognition from 2D Hints in Extruded Solids - #{n}-#{SecureRandom.hex(3)}"

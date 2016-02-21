@@ -23,6 +23,7 @@ describe AssignmentsPolicy do
 
   context "non admin who does not administer the journal" do
     let(:user) { FactoryGirl.create(:user) }
+    let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
 
     it "can modify everything" do
       expect(policy.can_manage_manuscript?).to be(false)
@@ -34,6 +35,7 @@ describe AssignmentsPolicy do
 
   context "user who administers the journal" do
     let(:user) { FactoryGirl.create(:user) }
+    let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
 
     before do
       assign_journal_role(journal, user, :admin)

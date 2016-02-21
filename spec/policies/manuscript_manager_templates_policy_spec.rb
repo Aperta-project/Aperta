@@ -19,6 +19,7 @@ describe ManuscriptManagerTemplatesPolicy do
 
   context "user who administers the journal" do
     let(:user) { FactoryGirl.create(:user) }
+    let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
 
     before do
       assign_journal_role(journal, user, :admin)

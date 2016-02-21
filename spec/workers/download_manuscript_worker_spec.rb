@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe DownloadManuscriptWorker, redis: true do
-  let(:paper) { FactoryGirl.create(:paper) }
+  let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
   let(:url) { 'https://example.com/temp/about_equations.docx' }
 
   before do

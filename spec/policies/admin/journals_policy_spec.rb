@@ -11,6 +11,7 @@ describe Admin::JournalsPolicy do
   end
 
   context "non site admin" do
+    let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
     let(:user) { FactoryGirl.create(:user) }
 
     context "who doesn't administer any journals" do
@@ -26,7 +27,9 @@ describe Admin::JournalsPolicy do
     end
 
     context "who administers a journal, but not this journal" do
-      let(:other_journal) { FactoryGirl.create(:journal) }
+      let(:other_journal) do
+        FactoryGirl.create(:journal, :with_roles_and_permissions)
+      end
 
       before do
         assign_journal_role(other_journal, user, :admin)

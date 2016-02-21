@@ -15,6 +15,7 @@ describe TasksPolicy do
   end
 
   context "paper collaborator" do
+    let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
     let!(:paper_role) { create(:paper_role, :collaborator, user: user, paper: paper) }
 
     before do
@@ -33,6 +34,7 @@ describe TasksPolicy do
   end
 
   context "user with can_view_all_manuscript_managers on this journal" do
+    let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
     let(:user) do
       FactoryGirl.create(
         :user,
@@ -44,12 +46,15 @@ describe TasksPolicy do
   end
 
   context "user no old_role" do
-
+    let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
     include_examples "person who cannot see a task"
   end
 
   context "user with old_role on different journal" do
-    let(:other_journal) { FactoryGirl.create(:journal) }
+    let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
+    let(:other_journal) do
+      FactoryGirl.create(:journal, :with_roles_and_permissions)
+    end
     let(:user) do
       FactoryGirl.create(
         :user,
@@ -76,6 +81,8 @@ describe TasksPolicy do
   end
 
   context "task participant" do
+    let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
+
     before do
       task.add_participant user
     end

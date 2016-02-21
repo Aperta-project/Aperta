@@ -1,9 +1,15 @@
 require 'rails_helper'
 
 describe EpubConverter do
-  let(:user) { create :user }
-  let(:journal) { create :journal, pdf_css: 'body { background-color: red; }' }
-  let(:paper) { create :paper, creator: create(:user), journal: journal }
+  let(:user) { FactoryGirl.create :user }
+  let(:journal) do
+    FactoryGirl.create(
+      :journal,
+      :with_roles_and_permissions,
+      pdf_css: 'body { background-color: red; }'
+    )
+  end
+  let(:paper) { FactoryGirl.create :paper, :with_creator, journal: journal }
   let(:include_source) { false }
   let(:include_cover_image) { true }
 

@@ -21,7 +21,9 @@ Extruded Solids/,
   end
 
   describe 'a paper created by a user' do
-    let(:paper) { FactoryGirl.create :paper, creator: user }
+    let(:paper) do
+      FactoryGirl.create(:paper, :with_integration_journal, creator: user)
+    end
     it "includes the 'My Paper' old_role" do
       expect(deserialized_content[:lite_paper])
         .to match(hash_including(old_roles: include('My Paper')))

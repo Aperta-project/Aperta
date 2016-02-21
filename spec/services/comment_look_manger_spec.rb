@@ -1,11 +1,13 @@
 require 'rails_helper'
 
 describe CommentLookManager do
+  let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
+
   it "creates a comment look if the user was already a participant" do
     user = FactoryGirl.create(:user)
     participant = FactoryGirl.create(:user)
 
-    task = FactoryGirl.create(:task, participants: [participant])
+    task = FactoryGirl.create(:task, paper: paper, participants: [participant])
     comment = FactoryGirl.create(:comment, commenter: user, task: task)
 
     look = CommentLookManager.create_comment_look(participant, comment)
@@ -15,7 +17,7 @@ describe CommentLookManager do
 
   it "doesn't create a comment look if the comment was created before the user became a participant" do
     user = FactoryGirl.create(:user)
-    task = FactoryGirl.create(:task)
+    task = FactoryGirl.create(:task, paper: paper)
     comment = FactoryGirl.create(:comment, commenter: user, task: task)
 
     participant = FactoryGirl.create(:user)
@@ -29,7 +31,7 @@ describe CommentLookManager do
   it "does not create a comment look for the user that created the comment" do
     user = FactoryGirl.create(:user)
 
-    task = FactoryGirl.create(:task, participants: [user])
+    task = FactoryGirl.create(:task, paper: paper, participants: [user])
     comment = FactoryGirl.create(:comment, commenter: user, task: task)
 
     look = CommentLookManager.create_comment_look(user, comment)
@@ -40,7 +42,7 @@ describe CommentLookManager do
     participant = FactoryGirl.create(:user)
     commenter = FactoryGirl.create(:user)
 
-    task = FactoryGirl.create(:task, participants: [participant])
+    task = FactoryGirl.create(:task, paper: paper, participants: [participant])
     comment = FactoryGirl.create(:comment, commenter: commenter, task: task)
 
     look = CommentLookManager.create_comment_look(commenter, comment)

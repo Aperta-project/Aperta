@@ -46,10 +46,14 @@ describe SalesforceServices::ObjectTranslations do
   end
 
   def make_paper
-    journal = FactoryGirl.create(:journal, { name: 'journal name' })
+    journal = FactoryGirl.create(
+      :journal,
+      :with_roles_and_permissions,
+      name: 'journal name'
+    )
     paper = FactoryGirl.create :paper_with_task, {
       creator: FactoryGirl.create(:user, { first_name: 'lou', last_name: 'prima', email: 'pfa@pfa.com' }),
-      journal: FactoryGirl.create(:journal, :with_doi, { name: 'journal name' }),
+      journal: journal,
       task_params: { title: "Billing", type: "PlosBilling::BillingTask", old_role: "author" }
     }
     make_questions paper

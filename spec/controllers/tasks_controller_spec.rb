@@ -1,10 +1,9 @@
 require 'rails_helper'
 
 describe TasksController, redis: true do
-  let(:user) { create :user }
-
+  let(:user) { FactoryGirl.create :user }
   let!(:paper) do
-    FactoryGirl.create(:paper, :with_tasks, creator: user)
+    FactoryGirl.create(:paper, :with_integration_journal, :with_tasks)
   end
 
   before do

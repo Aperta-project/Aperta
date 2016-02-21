@@ -2,7 +2,9 @@ require 'rails_helper'
 
 describe SupportingInformationFilesController, redis: true do
   let(:user) { create :user }
-  let(:paper) { FactoryGirl.create(:paper, creator: user) }
+  let(:paper) do
+    FactoryGirl.create(:paper, :with_integration_journal, creator: user)
+  end
   let(:task) { FactoryGirl.create(:supporting_information_task, paper: paper) }
   let(:file) { FactoryGirl.create(:supporting_information_file, paper: paper) }
   before { sign_in user }

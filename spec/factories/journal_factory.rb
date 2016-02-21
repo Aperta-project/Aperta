@@ -21,6 +21,8 @@ FactoryGirl.define do
         JournalFactory.ensure_default_roles_and_permissions_exist(journal)
       end
     end
+
+    factory :journal_with_roles_and_permissions, traits: [:with_roles_and_permissions]
   end
 
   sequence :doi_journal_prefix do

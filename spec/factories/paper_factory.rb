@@ -4,6 +4,10 @@ FactoryGirl.define do
   factory :paper do
     journal
 
+    trait :with_integration_journal do
+      association :journal, factory: :journal_with_roles_and_permissions
+    end
+
     trait :with_creator do
       after(:create) do |paper|
         creator = paper.creator

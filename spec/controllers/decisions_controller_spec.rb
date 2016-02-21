@@ -1,9 +1,10 @@
 require 'rails_helper'
 
 describe DecisionsController do
-
   let(:user) { FactoryGirl.create(:user, :site_admin) }
-  let(:paper) { FactoryGirl.create(:paper, creator: user) }
+  let(:paper) do
+    FactoryGirl.create(:paper, :with_integration_journal, creator: user)
+  end
 
   before do
     paper.decisions.destroy_all # force remove Paper's Decisions for testing

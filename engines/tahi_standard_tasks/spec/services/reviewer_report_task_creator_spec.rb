@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe ReviewerReportTaskCreator do
-  let!(:paper) { FactoryGirl.create(:paper) }
+  let!(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
   let!(:task) { FactoryGirl.create(:task, paper: paper) }
   let!(:assignee) { FactoryGirl.create(:user) }
 

@@ -2,7 +2,9 @@ require 'rails_helper'
 
 feature 'Publishing Related Questions Card', js: true do
   let(:creator) { create :user, first_name: 'Creator' }
-  let!(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: creator) }
+  let!(:paper) do
+    FactoryGirl.create(:paper, :with_integration_journal, :with_tasks, creator: creator)
+  end
   let!(:task) do
     FactoryGirl.create(:publishing_related_questions_task, paper: paper)
   end

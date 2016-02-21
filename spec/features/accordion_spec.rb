@@ -7,6 +7,7 @@ feature 'Accordion cards', js: true do
   let!(:paper) {
     FactoryGirl.create(
       :paper_with_task,
+      :with_integration_journal,
       task_params: { type: 'Task' },
       creator: author)
   }

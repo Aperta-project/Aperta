@@ -2,7 +2,9 @@ require 'rails_helper'
 
 describe PlosBioTechCheck::ChangesForAuthorMailer do
   let(:author) { create :user }
-  let(:paper) { create :paper, :submitted, creator: author }
+  let(:paper) do
+    create :paper, :with_integration_journal, :submitted, creator: author
+  end
   let(:task) { create :changes_for_author_task, paper: paper }
   let(:email) { described_class.notify_changes_for_author author_id: author.id, task_id: task.id }
 

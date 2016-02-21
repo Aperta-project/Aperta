@@ -3,7 +3,14 @@ require 'rails_helper'
 describe PlosBioTechCheck::ChangesForAuthorController do
 
   let(:admin) { FactoryGirl.create :user, :site_admin, first_name: "Admin" }
-  let(:paper) { FactoryGirl.create(:paper, :submitted, creator: admin) }
+  let(:paper) do
+    FactoryGirl.create(
+      :paper,
+      :with_integration_journal,
+      :submitted,
+      creator: admin
+    )
+  end
   let(:task) do
     FactoryGirl.create(
       :changes_for_author_task,

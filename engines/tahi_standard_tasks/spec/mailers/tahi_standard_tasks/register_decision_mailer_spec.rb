@@ -4,6 +4,8 @@ describe TahiStandardTasks::RegisterDecisionMailer do
 
   let(:paper) {
     FactoryGirl.create(:paper,
+                       :with_integration_journal,
+                       :with_creator,
                        title: "Paper Title",
                        short_title: "Short Paper Title")
   }

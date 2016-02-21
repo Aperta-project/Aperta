@@ -2,7 +2,15 @@ require 'rails_helper'
 
 describe PlosBioTechCheck::InitialTechCheckTask do
   let(:author) { FactoryGirl.create :user }
-  let(:paper) { FactoryGirl.create :paper_with_phases, :submitted, :with_tasks, creator: author }
+  let(:paper) do
+    FactoryGirl.create(
+      :paper_with_phases,
+      :with_integration_journal,
+      :submitted,
+      :with_tasks,
+      creator: author
+    )
+  end
   let(:phase) { FactoryGirl.create :phase, paper: paper }
   let(:task) { FactoryGirl.create :initial_tech_check_task, paper: paper, phase: phase }
   let(:subject) { described_class.new(paper: paper, phase: phase, title: "new task", old_role: PaperRole::COLLABORATOR) }

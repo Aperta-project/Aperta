@@ -5,7 +5,13 @@ module TahiStandardTasks
     routes { TahiStandardTasks::Engine.routes }
 
     let(:user) { paper.creator }
-    let(:paper) { FactoryGirl.create(:paper_with_phases) }
+    let(:paper) do
+      FactoryGirl.create(
+        :paper_with_phases,
+        :with_integration_journal,
+        :with_creator
+      )
+    end
     let(:task) do
       FactoryGirl.create(
         :reviewer_recommendations_task,

@@ -49,6 +49,7 @@ describe SalesforceServices::ObjectTranslations do
     journal = FactoryGirl.create(
       :journal,
       :with_roles_and_permissions,
+      :with_doi,
       name: 'journal name'
     )
     paper = FactoryGirl.create :paper_with_task, {

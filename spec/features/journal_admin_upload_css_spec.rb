@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'Upload default CSS on journal admin page', js: true do
   let(:admin) { create :user, :site_admin }
-  let!(:journal) { create :journal }
+  let!(:journal) { create :journal, :with_roles_and_permissions }
   let(:css) { 'body { background-color: red; }' }
 
   before do

@@ -4,6 +4,7 @@ feature 'Cover Letter Task', js: true, selenium: true do
   let(:author) { FactoryGirl.create :user }
   let!(:paper) do
     FactoryGirl.create :paper_with_task,
+                       :with_integration_journal,
                        creator: author,
                        task_params: {
                          title: 'Cover Letter',

@@ -4,6 +4,7 @@ feature 'Ethics Task', js: true, selenium: true do
   given(:author) { FactoryGirl.create :user }
   given!(:paper) do
     FactoryGirl.create :paper_with_task,
+                       :with_integration_journal,
                        creator: author,
                        task_params: {
                          title: 'Ethics Statement',

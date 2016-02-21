@@ -32,7 +32,7 @@ describe UserMailer, redis: true do
   describe '#add_collaborator' do
     let(:invitor) { FactoryGirl.create(:user) }
     let(:invitee) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create(:paper) }
+    let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
     let(:email) { UserMailer.add_collaborator(invitor.id, invitee.id, paper.id) }
 
     it_behaves_like "invitor is not available"
@@ -120,8 +120,8 @@ describe UserMailer, redis: true do
 
   describe '#mention_collaborator' do
     let(:invitee) { FactoryGirl.create(:user) }
-    let(:task) { FactoryGirl.create(:task) }
-    let(:paper) { task.paper }
+    let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
+    let(:task) { FactoryGirl.create(:task, paper: paper) }
     let(:comment) { FactoryGirl.create(:comment, task: task) }
 
     let(:email) { UserMailer.mention_collaborator(comment.id, invitee.id) }
@@ -147,7 +147,9 @@ describe UserMailer, redis: true do
 
   describe '#notify_creator_of_paper_submission' do
     let(:author) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create :paper, :submitted, :with_tasks, creator: author }
+    let(:paper) do
+      FactoryGirl.create(:paper, :submitted, :with_integration_journal, creator: author)
+    end
     let(:email) { UserMailer.notify_creator_of_paper_submission(paper.id) }
 
     it 'has correct subject line' do
@@ -169,7 +171,9 @@ describe UserMailer, redis: true do
   describe '#notify_editor_of_paper_resubmission' do
     let(:author) { FactoryGirl.create(:user) }
     let(:editor) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create :paper, :submitted, :with_tasks, creator: author}
+    let(:paper) do
+      FactoryGirl.create(:paper, :submitted, :with_integration_journal, creator: author)
+    end
     let(:email) { UserMailer.notify_editor_of_paper_resubmission(paper.id) }
 
     before do
@@ -196,12 +200,15 @@ describe UserMailer, redis: true do
   describe '#notify_admin_of_paper_submission' do
     let(:author) { FactoryGirl.create(:user) }
     let(:admin) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create :paper, :submitted, :with_tasks, creator: author }
-    let(:email) { UserMailer.notify_admin_of_paper_submission(paper.id, admin.id) }
-
-    before do
-      make_user_paper_admin(admin, paper)
+    let(:paper) do
+      FactoryGirl.create(
+        :paper,
+        :submitted,
+        :with_integration_journal,
+        creator: author
+      )
     end
+    let(:email) { UserMailer.notify_admin_of_paper_submission(paper.id, admin.id) }
 
     it "send email to the paper's admin" do
       expect(email.to).to eq [admin.email]

@@ -40,11 +40,12 @@ describe PapersController do
   let(:user) { create :user }
 
   let(:submitted) { false }
+  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
   let(:paper) do
     if submitted
-      FactoryGirl.create(:paper, :submitted, creator: user, body: "This is the body")
+      FactoryGirl.create(:paper, :submitted, journal: journal, creator: user, body: "This is the body")
     else
-      FactoryGirl.create(:paper, creator: user, body: "This is the body")
+      FactoryGirl.create(:paper, journal: journal, creator: user, body: "This is the body")
     end
   end
 
@@ -61,8 +62,12 @@ describe PapersController do
     let(:response_meta) { res_body['meta'] }
 
     before do
-      active_paper_count.times { FactoryGirl.create :paper, :active, creator: user }
-      inactive_paper_count.times { FactoryGirl.create :paper, :inactive, creator: user }
+      active_paper_count.times do
+        FactoryGirl.create(:paper, :active, journal: journal, creator: user)
+      end
+      inactive_paper_count.times do
+        FactoryGirl.create(:paper, :inactive, journal: journal, creator: user)
+      end
     end
 
     context "when there are active and inactive papers owned by the user" do
@@ -84,7 +89,7 @@ describe PapersController do
 
       it "returns just the user's papers" do
         other_user = FactoryGirl.create(:user)
-        other_paper = FactoryGirl.create :paper, creator: other_user
+        other_paper = FactoryGirl.create :paper, journal: journal, creator: other_user
         get :index, format: :json
         expect(response.status).to eq(200)
         expect(Paper.count).to eq(6)
@@ -144,7 +149,6 @@ describe PapersController do
   end
 
   describe "POST 'create'" do
-    let(:journal) { FactoryGirl.create :journal }
     let(:new_title) { 'A full title' }
 
     subject(:do_request) do
@@ -264,53 +268,30 @@ describe PapersController do
   end
 
   describe "PUT 'withdraw'" do
+    let!(:paper) do
+      FactoryGirl.create(:paper, journal: journal, creator: user, body: "This is the body")
+    end
+
     let(:user) { create :user }
-    permission action: :withdraw, applies_to: 'Paper', states: ['*']
-    role 'Creator' do
-      has_permission action: 'withdraw', applies_to: 'Paper'
-    end
 
-    role 'JournalStaff' do
-      has_permission action: 'withdraw', applies_to: 'Paper'
-    end
-
-    context 'has withdraw permission' do
-      context 'as the creator' do
-        before do
-          assign_user user, to: paper, with_role: role_Creator
-        end
-
-        it 'withdraws the paper' do
-          put :withdraw,
-              id: paper.id,
-              reason: 'Conflict of interest',
-              format: :json
-          expect(response.status).to eq(200)
-          reason = paper.reload.latest_withdrawal_reason
-          expect(reason).to eq('Conflict of interest')
-
-          expect(paper.withdrawn?).to eq true
-          expect(paper.editable).to eq false
-        end
+    context 'and the user has withdraw permission' do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:withdraw, paper)
+          .and_return true
       end
 
-      context 'as journal staff' do
-        before do
-          assign_user user, to: paper.journal, with_role: role_JournalStaff
-        end
+      it 'withdraws the paper' do
+        put :withdraw,
+            id: paper.id,
+            reason: 'Conflict of interest',
+            format: :json
+        expect(response.status).to eq(200)
+        reason = paper.reload.latest_withdrawal_reason
+        expect(reason).to eq('Conflict of interest')
 
-        it 'withdraws the paper' do
-          put :withdraw,
-              id: paper.id,
-              reason: 'Conflict of interest',
-              format: :json
-          expect(response.status).to eq(200)
-          reason = paper.reload.latest_withdrawal_reason
-          expect(reason).to eq('Conflict of interest')
-
-          expect(paper.withdrawn?).to eq true
-          expect(paper.editable).to eq false
-        end
+        expect(paper.withdrawn?).to eq true
+        expect(paper.editable).to eq false
       end
     end
 

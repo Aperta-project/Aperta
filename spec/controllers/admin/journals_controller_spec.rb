@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Admin::JournalsController, redis: true do
-  let(:journal) { create(:journal) }
+  let(:journal) { create(:journal_with_roles_and_permissions) }
   let(:admin) { create :user, :site_admin }
   let(:image_file) { fixture_file_upload 'yeti.jpg' }
 
@@ -63,7 +63,6 @@ describe Admin::JournalsController, redis: true do
       end
 
       let(:url) { "http://someawesomeurl.com" }
-      let(:journal) { create :journal }
       it "is successful" do
         expect(DownloadEpubCover).to receive(:call).with(journal, url).and_return(journal)
         put :upload_epub_cover, format: "json", id: journal.id, url: url

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature "Manuscript CSS", js: true do
   let(:author) { FactoryGirl.create :user }
-  let(:journal) { FactoryGirl.create :journal, manuscript_css: "background: magenta;" }
+  let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions, manuscript_css: "background: magenta;" }
 
   before do
     paper

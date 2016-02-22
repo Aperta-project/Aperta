@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 describe TahiStandardTasks::PaperEditorTask do
-  let(:paper) { FactoryGirl.create :paper, :with_tasks }
+  let(:paper) do
+    FactoryGirl.create :paper, :with_integration_journal, :with_tasks
+  end
 
   let!(:author) { FactoryGirl.create :author, paper: paper }
 
@@ -59,7 +61,14 @@ describe TahiStandardTasks::PaperEditorTask do
     end
 
     context "when there's an existing editor" do
-      let(:paper) { FactoryGirl.create(:paper, :with_academic_editor, :with_tasks) }
+      let(:paper) do
+        FactoryGirl.create(
+          :paper,
+          :with_integration_journal,
+          :with_academic_editor,
+          :with_tasks
+        )
+      end
 
       it "replaces the old editor" do
         invitation.accept!

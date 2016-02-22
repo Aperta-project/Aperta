@@ -3,7 +3,7 @@ require 'rails_helper'
 describe FiguresController do
   let(:user) { create :user }
   let(:paper) do
-    FactoryGirl.create(:paper, creator: user)
+    FactoryGirl.create(:paper, :with_integration_journal, creator: user)
   end
 
   before { sign_in user }

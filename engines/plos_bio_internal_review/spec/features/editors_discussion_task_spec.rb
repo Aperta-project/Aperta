@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature "Editor Discussion", js: true do
-  let(:journal) { create :journal }
+  let(:journal) { create :journal, :with_roles_and_permissions }
   let(:journal_admin) { create :user }
   let(:paper) { create :paper, journal: journal }
   let(:task) { create :editors_discussion_task, paper: paper }

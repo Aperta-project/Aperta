@@ -4,6 +4,7 @@ feature 'Initial Decision', js: true do
   given(:admin) { FactoryGirl.create(:user, site_admin: true) }
   given(:paper) do
     FactoryGirl.create :paper_with_task,
+                       :with_integration_journal,
                        publishing_state: 'initially_submitted',
                        task_params: {
                          title: 'Initial Decision',
@@ -19,6 +20,7 @@ feature 'Initial Decision', js: true do
   context 'with a non-submitted Paper' do
     given(:paper) do
       FactoryGirl.create :paper_with_task,
+                         :with_integration_journal,
                          task_params: {
                            title: 'Initial Decision',
                            type: 'TahiStandardTasks::InitialDecisionTask',

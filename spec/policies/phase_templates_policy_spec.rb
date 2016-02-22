@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe PhaseTemplatesPolicy do
-  let(:journal) { FactoryGirl.create(:journal) }
+  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
   let(:manuscript_manager_template) { FactoryGirl.create(:manuscript_manager_template, journal: journal) }
   let(:phase_template) { FactoryGirl.create(:phase_template, manuscript_manager_template: manuscript_manager_template) }
   let(:policy) { PhaseTemplatesPolicy.new(current_user: user, phase_template: phase_template) }

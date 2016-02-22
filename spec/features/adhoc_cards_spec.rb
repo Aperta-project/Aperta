@@ -4,6 +4,7 @@ feature 'Adhoc cards', js: true do
   let(:author) { create :user, first_name: 'Author' }
   let(:paper) do
     FactoryGirl.create :paper_with_task,
+                       :with_integration_journal,
                        task_params: { type: 'Task' },
                        creator: author
   end

@@ -3,7 +3,14 @@ require 'rails_helper'
 feature "Invite Admin", js: true do
   let(:site_admin) { FactoryGirl.create(:user, site_admin: true) }
   let(:admin) { FactoryGirl.create(:user) }
-  let(:paper) { FactoryGirl.create(:paper_with_phases, :submitted, creator: site_admin) }
+  let(:paper) do
+    FactoryGirl.create(
+      :paper_with_phases,
+      :with_integration_journal,
+      :submitted,
+      creator: site_admin
+    )
+  end
   let!(:task) { FactoryGirl.create(:paper_admin_task, paper: paper, phase: paper.phases.first) }
 
   before do

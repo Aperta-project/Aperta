@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature "Invite Reviewer", js: true do
-  let(:journal) { FactoryGirl.create :journal }
+  let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
   let(:paper) { FactoryGirl.create :paper, journal: journal }
   let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
 

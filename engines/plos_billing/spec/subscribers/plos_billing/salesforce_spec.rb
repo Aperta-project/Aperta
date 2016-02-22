@@ -5,7 +5,9 @@ describe PlosBilling::Paper::Submitted::Salesforce do
   let(:user) { FactoryGirl.create(:user) }
 
   context "paper without a billing task" do
-    let(:paper) { FactoryGirl.create(:paper, creator: user) }
+    let(:paper) do
+      FactoryGirl.create(:paper, :with_integration_journal, creator: user)
+    end
 
     it "find or create Salesforce Manuscript" do
       expect(salesforce_api).to receive(:find_or_create_manuscript).with(paper_id: paper.id).once

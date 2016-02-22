@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature "Adding collaborators", js: true do
   let(:author) { FactoryGirl.create :user }
-  let(:journal) { FactoryGirl.create :journal }
+  let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
   let(:paper) do
     FactoryGirl.create :paper, :with_tasks, journal: journal, creator: author
   end

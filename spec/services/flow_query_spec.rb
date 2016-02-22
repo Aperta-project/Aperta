@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 describe FlowQuery do
-  let(:user_journal) { FactoryGirl.create(:journal) }
+  let(:user_journal) do
+    FactoryGirl.create(:journal, :with_roles_and_permissions)
+  end
   let(:user) { FactoryGirl.create(:user) }
   let(:site_admin) { FactoryGirl.create(:user, :site_admin) }
 
@@ -17,7 +19,6 @@ describe FlowQuery do
   end
 
   describe "#tasks" do
-
     context "query is empty" do
       let!(:task) { FactoryGirl.create(:task, paper: paper, phase: phase) } # this test always passes unless a Task exists...
       let(:query) { {} }
@@ -31,7 +32,17 @@ describe FlowQuery do
 
     context "scoping tasks by journal" do
       let!(:user_task) { FactoryGirl.create(:task, paper: paper, phase: phase, completed: true, participants: [user]) }
-      let!(:other_task) { FactoryGirl.create(:task, completed: true, participants: [user]) }
+      let!(:other_paper_on_other_journal) do
+        FactoryGirl.create(:paper, :with_integration_journal)
+      end
+      let!(:other_task) do
+        FactoryGirl.create(
+          :task,
+          paper: other_paper_on_other_journal,
+          completed: true,
+          participants: [user]
+        )
+      end
 
       context "for a site admin" do
         context "for a default flow" do
@@ -140,7 +151,7 @@ describe FlowQuery do
     end
 
     context "scoping tasks by type" do
-      let!(:admin_task) { FactoryGirl.create(:paper_admin_task) }
+      let!(:admin_task) { FactoryGirl.create(:paper_admin_task, paper: paper) }
       let!(:generic_task) { FactoryGirl.create(:task, paper: paper) }
 
       it "scopes tasks by type" do

@@ -4,8 +4,10 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
 
   context "as an admin" do
     let!(:admin) { FactoryGirl.create :user, :site_admin }
-    let!(:journal) { FactoryGirl.create :journal }
-    let!(:paper) { FactoryGirl.create :paper, :with_tasks, creator: admin, journal: journal }
+    let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
+    let!(:paper) do
+      FactoryGirl.create :paper, :with_tasks, creator: admin, journal: journal
+    end
     let(:text_body) { { type: "text", value: "Hi there!" } }
 
     before do
@@ -76,7 +78,7 @@ feature "Event streaming", js: true, selenium: true, sidekiq: :inline! do
 
   context "as a regular user" do
     let!(:user) { FactoryGirl.create :user }
-    let!(:journal) { FactoryGirl.create :journal }
+    let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
     let!(:paper) { FactoryGirl.create :paper, :with_tasks, creator: user, journal: journal }
     let(:task) { paper.tasks_for_type(TahiStandardTasks::UploadManuscriptTask).first }
 

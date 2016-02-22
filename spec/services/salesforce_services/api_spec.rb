@@ -70,8 +70,6 @@ describe SalesforceServices::API do
   end
 
   describe '#create_billing_and_pfa_case' do
-    let(:paper) { FactoryGirl.create(:paper) }
-
     it 'creates and returns a salesforce case object' do
       task_params = {
         title: 'Billing',
@@ -79,7 +77,7 @@ describe SalesforceServices::API do
         paper_id: paper.id,
         old_role: 'author'
       }
-      paper = FactoryGirl.create(:paper_with_task,task_params: task_params)
+      paper = FactoryGirl.create(:paper_with_task, :with_integration_journal, :with_creator, task_params: task_params)
 
       #delete_vcr_file  "salesforce_create_billing_and_pfa"
 

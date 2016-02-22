@@ -6,6 +6,7 @@ feature 'Viewing Versions:', js: true do
   context 'When viewing a paper with more than one version,' do
     let(:paper) do
       FactoryGirl.create :paper_with_phases,
+                         :with_integration_journal,
                          :with_versions,
                          first_version_body:  '<p>OK first body</p>',
                          second_version_body: '<p>OK second body</p>',
@@ -101,7 +102,7 @@ feature 'Viewing manuscript control bar', js: true do
 
   context 'as an admin' do
     let(:user) { FactoryGirl.create :user, :site_admin }
-    let(:paper) { FactoryGirl.create :paper }
+    let(:paper) { FactoryGirl.create :paper, :with_integration_journal }
 
     scenario 'can view the Go to Workflow link' do
       expect(page).to have_css('#go-to-workflow')
@@ -110,7 +111,9 @@ feature 'Viewing manuscript control bar', js: true do
 
   context 'as an author' do
     let(:user) { FactoryGirl.create :user }
-    let(:paper) { FactoryGirl.create :paper, creator: user }
+    let(:paper) do
+      FactoryGirl.create :paper, :with_integration_journal, creator: user
+    end
 
     scenario 'can not view the Go to Workflow link' do
       expect(page).to_not have_css('#go-to-workflow')

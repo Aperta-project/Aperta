@@ -1,9 +1,14 @@
 require 'rails_helper'
 
 describe CommentsController do
-  render_views
-  let(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: user) }
-  let(:phase) { paper.phases.first }
+  let(:paper) do
+     FactoryGirl.create(
+       :paper,
+       :with_tasks,
+       :with_integration_journal,
+       creator: user
+     )
+  end
   let(:user) { FactoryGirl.create(:user, tasks: []) }
 
   let(:journal) { paper.journal }
@@ -14,10 +19,10 @@ describe CommentsController do
     FactoryGirl.create(
       :task,
       paper: paper,
-      phase: phase,
       participants: [user],
       title: "Task",
-      old_role: "admin")
+      old_role: "admin"
+    )
   end
 
   before { sign_in user }
@@ -90,7 +95,6 @@ describe CommentsController do
           FactoryGirl.create(
             :task,
             paper: paper,
-            phase: phase,
             participants: [],
             title: "Task",
             old_role: "admin")
@@ -108,7 +112,6 @@ describe CommentsController do
           FactoryGirl.create(
             :task,
             paper: paper,
-            phase: phase,
             participants: [],
             title: "Task",
             old_role: "admin")

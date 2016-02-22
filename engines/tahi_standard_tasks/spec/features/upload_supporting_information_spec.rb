@@ -4,6 +4,7 @@ feature "Upload Supporting Information", js: true, selenium: true do
   let(:author) { create :user }
   let!(:paper) do
     FactoryGirl.create :paper_with_task,
+      :with_integration_journal,
       creator: author,
       task_params: {
         title: "Supporting Info",

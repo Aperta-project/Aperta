@@ -4,7 +4,9 @@ feature 'Invite Editor', js: true do
   let(:admin) { FactoryGirl.create(:user) }
   let(:editor) { FactoryGirl.create(:user) }
   let(:creator) { FactoryGirl.create(:user) }
-  let(:paper) { FactoryGirl.create(:paper, creator: creator) }
+  let(:paper) do
+    FactoryGirl.create(:paper, :with_integration_journal, creator: creator)
+  end
   let!(:task) do
     FactoryGirl.create(:paper_editor_task, paper: paper)
   end

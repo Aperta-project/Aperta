@@ -6,6 +6,7 @@ describe Typesetter::MetadataSerializer do
   let(:paper) do
     FactoryGirl.create(
       :paper_with_phases,
+      :with_integration_journal,
       :with_short_title,
       short_title: 'my paper short')
   end

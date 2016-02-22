@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature "Search Users on Admin Dashboard", js: true do
   let(:user) { create :user, :site_admin, first_name: "Test", last_name: "User", username: "testuser" }
-  let!(:journal) { create :journal }
+  let!(:journal) { create :journal, :with_roles_and_permissions }
 
   before do
     create :user, first_name: "Bob", last_name: "Merlyn", username: 'shadow_missing2010'

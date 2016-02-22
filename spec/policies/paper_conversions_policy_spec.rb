@@ -28,7 +28,9 @@ describe PaperConversionsPolicy do
   end
 
   context 'authors' do
-    let(:paper) { FactoryGirl.create(:paper, creator: user) }
+    let(:paper) do
+      FactoryGirl.create(:paper, :with_integration_journal, creator: user)
+    end
 
     role 'Creator' do
       has_permission action: 'view', applies_to: Paper.name
@@ -38,7 +40,9 @@ describe PaperConversionsPolicy do
   end
 
   context 'users who can :view the paper' do
-    let(:paper) { FactoryGirl.create(:paper, creator: user) }
+    let(:paper) do
+      FactoryGirl.create(:paper, :with_integration_journal, creator: user)
+    end
 
     before do
       assign_user user, to: paper, with_role: role_with_access_to_view_paper

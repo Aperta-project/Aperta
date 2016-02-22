@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe ManuscriptManagerTemplatesController do
-
   expect_policy_enforcement
 
   def validate_template_json(test_params)
@@ -12,8 +11,8 @@ describe ManuscriptManagerTemplatesController do
     end
   end
 
-  let(:admin) { create :user, :site_admin }
-  let(:journal) { create :journal }
+  let(:admin) { FactoryGirl.create(:user, :site_admin) }
+  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
   let(:mmt) { journal.manuscript_manager_templates.first }
 
   before do

@@ -154,8 +154,11 @@ describe InvitationsController do
   end
 
   context "transitioning state" do
-    let(:task) { FactoryGirl.create(:paper_editor_task) }
-    let(:invitation) { FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task) }
+    let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
+    let(:task) { FactoryGirl.create(:paper_editor_task, paper: paper) }
+    let(:invitation) do
+      FactoryGirl.create(:invitation, :invited, invitee: invitee, task: task)
+    end
 
     describe "PUT /invitations/:id/accept" do
      it "gives access to the user as the editor" do

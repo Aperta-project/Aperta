@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe UserFlowsPolicy do
-  let(:journal) { FactoryGirl.create(:journal) }
+  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
   let(:policy) { UserFlowsPolicy.new(current_user: user, journal: journal) }
 
   context "user has a flow manager journal old_role" do

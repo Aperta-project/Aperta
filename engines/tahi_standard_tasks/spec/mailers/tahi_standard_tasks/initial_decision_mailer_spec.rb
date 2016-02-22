@@ -2,7 +2,14 @@ require 'rails_helper'
 
 describe TahiStandardTasks::InitialDecisionMailer do
 
-  let(:paper) { FactoryGirl.create(:paper, title: 'Paper Title') }
+  let(:paper) do
+    FactoryGirl.create(
+      :paper,
+      :with_integration_journal,
+      :with_creator,
+      title: 'Paper Title'
+    )
+  end
 
   let(:task) do
     FactoryGirl.create(:initial_decision_task,

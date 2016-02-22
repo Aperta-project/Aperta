@@ -26,12 +26,12 @@ describe JournalFactory do
       end
 
       it 'gives the journal its own Creator role' do
-        expect(journal.roles.creator).to be
+        expect(journal.creator_role).to be
       end
 
       context 'Creator role' do
         it 'gets the :view Paper permission with no state requirements' do
-          expect(journal.roles.collaborator.permissions).to include(
+          expect(journal.collaborator_role.permissions).to include(
             view_paper_permission
           )
           expect(view_paper_permission.states).to contain_exactly(
@@ -41,12 +41,12 @@ describe JournalFactory do
       end
 
       it 'gives the journal its own Collaborator role' do
-        expect(journal.roles.collaborator).to be
+        expect(journal.collaborator_role).to be
       end
 
       context 'Collaborator role' do
         it 'gets the :view Paper permission with no state requirements' do
-          expect(journal.roles.collaborator.permissions).to include(
+          expect(journal.collaborator_role.permissions).to include(
             Permission.where(action: 'view', applies_to: 'Paper').first
           )
           expect(view_paper_permission.states).to contain_exactly(
@@ -59,7 +59,7 @@ describe JournalFactory do
         it 'has :start_discussion permissions on Paper' do
           permissions = Permission.joins(:states).where(applies_to: 'Paper', permission_states: { id: PermissionState.wildcard })
 
-          expect(journal.roles.internal_editor.permissions).to include(
+          expect(journal.internal_editor_role.permissions).to include(
             permissions.find_by(action: 'start_discussion')
           )
         end
@@ -68,25 +68,25 @@ describe JournalFactory do
           let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
 
           it ':view' do
-            expect(journal.roles.internal_editor.permissions).to include(
+            expect(journal.internal_editor_role.permissions).to include(
               permissions.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.roles.internal_editor.permissions).to include(
+            expect(journal.internal_editor_role.permissions).to include(
               permissions.find_by(action: 'edit')
             )
           end
 
           it ':manage_participant' do
-            expect(journal.roles.internal_editor.permissions).to include(
+            expect(journal.internal_editor_role.permissions).to include(
               permissions.find_by(action: 'manage_participant')
             )
           end
 
           it ':reply' do
-            expect(journal.roles.internal_editor.permissions).to include(
+            expect(journal.internal_editor_role.permissions).to include(
               permissions.find_by(action: 'reply')
             )
           end
@@ -97,7 +97,7 @@ describe JournalFactory do
         it 'has :start_discussion permissions on Paper' do
           permissions = Permission.joins(:states).where(applies_to: 'Paper', permission_states: { id: PermissionState.wildcard })
 
-          expect(journal.roles.internal_editor.permissions).to include(
+          expect(journal.internal_editor_role.permissions).to include(
             permissions.find_by(action: 'start_discussion')
           )
         end
@@ -106,25 +106,25 @@ describe JournalFactory do
           let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
 
           it ':view' do
-            expect(journal.roles.internal_editor.permissions).to include(
+            expect(journal.internal_editor_role.permissions).to include(
               permissions.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.roles.internal_editor.permissions).to include(
+            expect(journal.internal_editor_role.permissions).to include(
               permissions.find_by(action: 'edit')
             )
           end
 
           it ':manage_participant' do
-            expect(journal.roles.internal_editor.permissions).to include(
+            expect(journal.internal_editor_role.permissions).to include(
               permissions.find_by(action: 'manage_participant')
             )
           end
 
           it ':reply' do
-            expect(journal.roles.internal_editor.permissions).to include(
+            expect(journal.internal_editor_role.permissions).to include(
               permissions.find_by(action: 'reply')
             )
           end
@@ -136,13 +136,13 @@ describe JournalFactory do
           let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
 
           it ':view' do
-            expect(journal.roles.internal_editor.permissions).to include(
+            expect(journal.internal_editor_role.permissions).to include(
               permissions.find_by(action: 'view')
             )
           end
 
           it ':reply' do
-            expect(journal.roles.internal_editor.permissions).to include(
+            expect(journal.internal_editor_role.permissions).to include(
               permissions.find_by(action: 'reply')
             )
           end

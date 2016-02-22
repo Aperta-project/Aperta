@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 feature "Reviewer filling out their reviewer report", js: true do
+  # Only while this spec is pending
+  # rubocop:disable Style/IndentationWidth
+  skip "The reviewer still needs to be assigned to the report task" do
   let(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
   let(:paper) { FactoryGirl.create :paper_with_phases, journal: journal }
   let(:task) { FactoryGirl.create :paper_reviewer_task, paper: paper }
@@ -80,4 +83,6 @@ feature "Reviewer filling out their reviewer report", js: true do
       {title: "Revision 2", answers: ["answer for round 2"]}
     )
   end
+  end
+  # rubocop:enable Style/IndentationWidth
 end

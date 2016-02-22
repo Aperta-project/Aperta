@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature "Discussions", js: true, selenium: true do
   let(:creator) { create :user }
-  let!(:journal) { FactoryGirl.create :journal }
+  let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
   let!(:paper) { FactoryGirl.create :paper, :submitted, :with_tasks, creator: creator, journal: journal }
   let(:discussion_page) { DiscussionsPage.new }
 
@@ -13,6 +13,7 @@ feature "Discussions", js: true, selenium: true do
       login_as(creator, scope: :user)
       visit "/papers/#{paper.id}"
       wait_for_ajax
+
       find('#nav-discussions').click
       wait_for_ajax
 
@@ -48,7 +49,10 @@ feature "Discussions", js: true, selenium: true do
     let!(:discussion_topic) { FactoryGirl.create :discussion_topic, paper: paper }
     let!(:discussion_participant) { FactoryGirl.create :discussion_participant, user: user, discussion_topic: discussion_topic }
 
-    before { paper.add_collaboration(user) }
+    before do
+      paper.add_collaboration(user)
+      discussion_topic.add_discussion_participant(discussion_participant)
+    end
 
     scenario 'can see discussion and add reply' do
       login_as(user, scope: :user)
@@ -60,6 +64,7 @@ feature "Discussions", js: true, selenium: true do
       discussion_page.expect_no_create_button
       discussion_page.click_topic
       wait_for_ajax
+
       discussion_page.expect_view_topic
       discussion_page.expect_view_only_participants
       discussion_page.add_reply

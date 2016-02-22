@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe DiscussionTopic, type: :model do
   let(:user) { FactoryGirl.create(:user) }
-  let(:paper) { FactoryGirl.create(:paper) }
+  let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
   let(:topic_a) { paper.discussion_topics.create!(title: "Topic A") }
 
   describe ".including" do

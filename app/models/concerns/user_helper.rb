@@ -10,7 +10,10 @@ module UserHelper
   def can?(permission, target)
     # TODO: Remove this when site_admin is no more
     return true if site_admin
-    filter_authorized(permission, target).objects.length > 0
+    Rails.cache.fetch("can_#{permission}_#{target.class}_#{target.id}",
+                      namespace: permissions_cache_namespace) do
+      filter_authorized(permission, target).objects.length > 0
+    end
   end
 
   def filter_authorized(permission, target, participations_only: :default)
@@ -32,6 +35,14 @@ module UserHelper
 
     role = role_for_assignment(role_name, to.journal)
     assignments.create(role: role, assigned_to: to)
+  end
+
+  def clear_permissions_cache
+    Rails.cache.clear(namespace: permissions_cache_namespace)
+  end
+
+  def permissions_cache_namespace
+    "user_#{id}_permissions"
   end
 
   private

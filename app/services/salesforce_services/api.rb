@@ -2,13 +2,8 @@ module SalesforceServices
   class API
     include ObjectTranslations
 
-    def self.get_client
-      unless has_valid_creds?
-        Rails.logger.warn "SalesForce credentials are not set. Information will NOT be synced to SalesForce"
-        return
-      end
-
-      begin
+    def self.client
+      @@client ||= begin
         client = Databasedotcom::Client.new(
           host: Rails.configuration.salesforce_host,
           client_id: Rails.configuration.salesforce_client_id,
@@ -18,23 +13,20 @@ module SalesforceServices
         client.authenticate username: Rails.configuration.salesforce_username,
                             password: Rails.configuration.salesforce_password
         Rails.logger.info("established Salesforce client connection")
-      rescue
-        Rails.logger.warn("Failed authentication to SalesForce API")
-        return
-      end
-      client
-    end
 
-    def self.client
-      @@client ||= self.get_client # TODO: reauthenticate when 'Session Expired'?
+        client.materialize("Manuscript__c")
+        client.materialize("Case")
+        client
+      end
     end
 
     def self.create_manuscript(paper_id:)
+      return unless salesforce_active
+
       paper = Paper.find(paper_id)
 
       mt = ManuscriptTranslator.new(user_id: client.user_id, paper: paper)
-      manuscript = client.materialize("Manuscript__c")
-      sf_paper = manuscript.create(mt.paper_to_manuscript_hash)
+      sf_paper = Manuscript__c.create(mt.paper_to_manuscript_hash)
       Rails.logger.info("Salesforce Manuscript created: #{sf_paper.Id}")
 
       paper.update_attribute(:salesforce_manuscript_id, sf_paper.Id)
@@ -42,11 +34,11 @@ module SalesforceServices
     end
 
     def self.update_manuscript(paper_id:)
-      paper = Paper.find(paper_id)
+      return unless salesforce_active
 
+      paper = Paper.find(paper_id)
       mt         = ManuscriptTranslator.new(user_id: client.user_id, paper: paper)
-      manuscript = client.materialize("Manuscript__c")
-      sf_paper   = manuscript.find(paper.salesforce_manuscript_id)
+      sf_paper   = Manuscript__c.find(paper.salesforce_manuscript_id)
       Rails.logger.info("Salesforce Manuscript updated: #{sf_paper.Id}")
 
       sf_paper.update_attributes mt.paper_to_manuscript_hash
@@ -54,10 +46,7 @@ module SalesforceServices
     end
 
     def self.find_or_create_manuscript(paper_id:)
-      unless client
-        Rails.logger.warn "No valid SalesForce client. Information will NOT be synced to SalesForce"
-        return
-      end
+      return unless salesforce_active
 
       p = Paper.find(paper_id)
       if p.salesforce_manuscript_id
@@ -67,21 +56,23 @@ module SalesforceServices
       end
     end
 
-    def self.create_billing_and_pfa_case(paper_id:) # assumes paper.billing_card
+    def self.create_billing_and_pfa_case(paper_id:)
+      return unless salesforce_active
+
       paper    = Paper.find(paper_id)
-      kase_mgr = self.client.materialize("Case")
       bt       = BillingTranslator.new(paper: paper)
-      kase     = kase_mgr.create(bt.paper_to_billing_hash)
+      kase     = Case.create(bt.paper_to_billing_hash)
       Rails.logger.info("Salesforce Case created: #{kase.Id}")
       kase
     end
 
-    def self.has_valid_creds?
-      [ :salesforce_client_id, :salesforce_host, :salesforce_client_secret, :salesforce_username, :salesforce_password ].each do |key|
-        return false if !Rails.configuration.respond_to?(key) || Rails.configuration.send(key) == :not_set
-      end
-      true
+    def self.salesforce_active
+      active = ENV['DATEBASEDOTCOM_DISABLED'] == 'true' ? false : true
+      Rails.logger.warn(<<-INFO.strip_heredoc.chomp)
+        Salesforce integration disabled due to ENV['DATEBASEDOTCOM_DISABLED]'
+      INFO
+      client if active
+      active
     end
-
   end
 end

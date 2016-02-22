@@ -3,7 +3,9 @@ require 'rails_helper'
 describe PaperConversionsController, type: :controller do
   include Rails.application.routes.url_helpers
 
-  let(:paper) { create(:paper) }
+  let(:paper) do
+    FactoryGirl.create(:paper, :with_integration_journal, :with_creator)
+  end
   let(:job_id) { 'd5ee706f-a473-46ed-9777-3b7cd2905d08' }
   let(:user) { create :user, :site_admin }
 

@@ -17,7 +17,7 @@ shared_examples_for "person who cannot manage authors" do
 end
 
 describe AuthorsPolicy do
-  let(:paper) { FactoryGirl.create(:paper) }
+  let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
   let(:journal) { paper.journal }
   let(:task) { FactoryGirl.create(:authors_task, paper: paper) }
   let(:user) { FactoryGirl.create(:user) }

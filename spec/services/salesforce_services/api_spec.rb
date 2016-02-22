@@ -17,44 +17,60 @@ describe SalesforceServices::API do
         expect(@client.class).to eq Databasedotcom::Client
       end
     end
+  end
 
-    context "returns nil and logs message when valid credentials are not present" do
-      it "instantiates a Salesforce client" do
-        expect(SalesforceServices::API).to receive(:has_valid_creds?).and_return(false)
-        expect(SalesforceServices::API.get_client).to eq(nil)  #bypasses memoization
+  describe "salesforce_active" do
+    context "DATEBASEDOTCOM_DISABLED is set to true" do
+      before do
+        ENV["DATEBASEDOTCOM_DISABLED"] = 'true'
+      end
+      after do
+        ENV["DATEBASEDOTCOM_DISABLED"] = nil
+      end
+
+      it "salesforce_active returns false" do
+        expect(SalesforceServices::API.salesforce_active).to eq(false)
       end
     end
+
+    context "DATEBASEDOTCOM_DISABLED is nil" do
+      before do
+        ENV["DATEBASEDOTCOM_DISABLED"] = nil
+      end
+
+      it "creates the salesforce client" do
+        expect(SalesforceServices::API).to receive(:client)
+        expect(SalesforceServices::API.salesforce_active).to eq(true)
+      end
+    end
+
   end
 
   describe "#create_manuscript" do
-    it "returns a Salesforce Manuscript__c object" do
-      VCR.use_cassette("salesforce_create_manuscript") do
-        @manuscript = @api.create_manuscript(paper_id: paper.id)
-      end
-      expect(@manuscript.class).to eq Manuscript__c
+    it "calls create on a Salesforce Manuscript__c object" do
+      mock_manuscript = instance_double("Manuscript__c", Id: 'sfdc')
+      expect(Manuscript__c).to receive(:create).and_return(mock_manuscript)
+      manuscript = @api.create_manuscript(paper_id: paper.id)
+      expect(manuscript).to eq mock_manuscript
     end
   end
 
   describe "#update_manuscript" do
-    it "updates a Salesforce Manuscript__c object" do
-      VCR.use_cassette("salesforce_create_manuscript") do
-        @manuscript = @api.create_manuscript(paper_id: paper.id)
-      end
-      VCR.use_cassette("salesforce_update_manuscript") do
-        @manuscript = @api.update_manuscript(paper_id: paper.id)
-      end
-
-      expect(@manuscript.class).to eq Manuscript__c
+    let(:paper) do
+      FactoryGirl.create(:paper, salesforce_manuscript_id: "sfdc_id_1")
+    end
+    it "finds then updates a Salesforce Manuscript__c object" do
+      mock_manuscript = instance_double("Manuscript__c", Id: 'sfdc')
+      expect(Manuscript__c).to receive(:find)
+        .with(paper.salesforce_manuscript_id)
+        .and_return(mock_manuscript)
+      expect(mock_manuscript).to receive(:update_attributes)
+      manuscript = @api.update_manuscript(paper_id: paper.id)
+      expect(manuscript).to eq mock_manuscript
     end
   end
 
   describe "#find_or_create_manuscript" do
-    it "Fails silently with log message when there is no client" do
-      expect(SalesforceServices::API).to receive(:client).and_return(nil)
-      expect(Paper).not_to receive(:find)
-      SalesforceServices::API.find_or_create_manuscript(paper_id: paper.id)
-    end
-
     it "calls create when salesforce_manuscript_id is not present" do
       expect(paper.salesforce_manuscript_id).to be_nil
       expect(SalesforceServices::API).to receive(:create_manuscript).and_return(true)
@@ -70,8 +86,6 @@ describe SalesforceServices::API do
   end
 
   describe '#create_billing_and_pfa_case' do
-    let(:paper) { FactoryGirl.create(:paper) }
-
     it 'creates and returns a salesforce case object' do
       task_params = {
         title: 'Billing',
@@ -79,9 +93,7 @@ describe SalesforceServices::API do
         paper_id: paper.id,
         old_role: 'author'
       }
-      paper = FactoryGirl.create(:paper_with_task,task_params: task_params)
-
-      #delete_vcr_file  "salesforce_create_billing_and_pfa"
+      paper = FactoryGirl.create(:paper_with_task, :with_integration_journal, :with_creator, task_params: task_params)
 
       VCR.use_cassette("salesforce_instantiate_client") do
         @api = SalesforceServices::API
@@ -94,22 +106,6 @@ describe SalesforceServices::API do
         expect(@kase.persisted?).to eq true
       end
 
-    end
-  end
-
-  describe "#has_valid_creds?" do
-    it "returns true when all credentials are set to something that is not :not_set" do
-      Rails.configuration.salesforce_host          = :foo
-      Rails.configuration.salesforce_client_id     = :foo
-      Rails.configuration.salesforce_client_secret = :foo
-      Rails.configuration.salesforce_username      = :foo
-      Rails.configuration.salesforce_password      = :foo
-      expect( SalesforceServices::API.has_valid_creds?).to be(true)
-    end
-
-    it "returns false if any credentials are not_set" do
-      Rails.configuration.salesforce_host = :not_set
-      expect( SalesforceServices::API.has_valid_creds?).to be(false)
     end
   end
 end

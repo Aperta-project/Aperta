@@ -2,7 +2,9 @@ require 'rails_helper'
 
 describe BibitemsController do
   let(:user)  { create :user }
-  let(:paper) { FactoryGirl.create(:paper, creator: user) }
+  let(:paper) do
+    FactoryGirl.create(:paper, :with_integration_journal, creator: user)
+  end
 
   before { sign_in user }
 

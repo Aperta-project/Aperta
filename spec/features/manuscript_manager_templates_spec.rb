@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'Manuscript Manager Templates', js: true, selenium: true do
   let(:admin) { create :user, :site_admin }
-  let!(:journal) { FactoryGirl.create :journal }
+  let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
   let(:mmt) { journal.manuscript_manager_templates.first }
   let(:mmt_page) { ManuscriptManagerTemplatePage.new }
   let(:task_manager_page) { TaskManagerPage.new }

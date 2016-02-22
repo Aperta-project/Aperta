@@ -4,7 +4,7 @@ feature 'Create a new Manuscript', js: true do
   let!(:user) { FactoryGirl.create :user, :site_admin }
   let(:inactive_paper_count) { 0 }
   let(:active_paper_count) { 0 }
-  let!(:journal) { FactoryGirl.create :journal }
+  let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
   let!(:papers) { [] }
 
   let(:dashboard) { DashboardPage.new }

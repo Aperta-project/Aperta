@@ -2,7 +2,10 @@ require 'rails_helper'
 
 feature "Submitting a paper", js: true do
   let(:admin) { create :user, :site_admin }
-  let!(:paper) { FactoryGirl.create(:paper_with_phases, creator: admin) }
+  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
+  let!(:paper) do
+    FactoryGirl.create(:paper_with_phases, creator: admin, journal: journal)
+  end
   let!(:competing_interests_task) do
     FactoryGirl.create(
       :competing_interests_task,

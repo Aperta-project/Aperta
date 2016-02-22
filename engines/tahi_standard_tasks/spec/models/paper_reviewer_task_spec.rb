@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe TahiStandardTasks::PaperReviewerTask do
   let!(:journal) do
-    journal = create :journal
+    journal = create :journal, :with_roles_and_permissions
     journal.manuscript_manager_templates.destroy_all
     mmt = create :manuscript_manager_template, journal: journal
     mmt.phase_templates.create! name: "Collect Info"

@@ -21,7 +21,8 @@ describe Task do
   end
 
   describe '#add_participant' do
-    subject(:task) { FactoryGirl.create :task }
+    subject(:task) { FactoryGirl.create :task, paper: paper }
+    let(:paper) { FactoryGirl.create :paper, :with_integration_journal }
     let(:user) { FactoryGirl.create :user }
 
     it 'adds the user as a participant on the task' do
@@ -60,7 +61,8 @@ describe Task do
   end
 
   describe '#participations' do
-    subject(:task) { FactoryGirl.create :task }
+    subject(:task) { FactoryGirl.create :task, paper: paper }
+    let(:paper) { FactoryGirl.create :paper, :with_integration_journal }
 
     let!(:participant_assignment) do
       Assignment.create!(
@@ -85,7 +87,8 @@ describe Task do
   end
 
   describe '#participants' do
-    subject(:task) { FactoryGirl.create :task }
+    subject(:task) { FactoryGirl.create :task, paper: paper }
+    let(:paper) { FactoryGirl.create :paper, :with_integration_journal }
 
     let!(:participant_assignment) do
       Assignment.create!(

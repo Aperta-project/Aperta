@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe AuthorsController do
   let(:user) { paper.creator }
-  let(:paper) { FactoryGirl.create(:paper) }
+  let(:paper) { FactoryGirl.create(:paper, :with_creator, :with_integration_journal) }
   let(:task) { FactoryGirl.create(:authors_task, paper: paper) }
 
   before do

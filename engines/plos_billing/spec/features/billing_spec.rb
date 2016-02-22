@@ -4,6 +4,7 @@ feature 'Billing Task', js: true do
   before do
     user  = create :user, :site_admin
     paper = create :paper_with_task,
+                   :with_integration_journal,
                    creator: user,
                    task_params: { title: 'Billing',
                                   type: 'PlosBilling::BillingTask',

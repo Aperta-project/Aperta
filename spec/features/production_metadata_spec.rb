@@ -3,7 +3,9 @@ require 'rails_helper'
 feature 'Production Metadata Card', js: true do
   let(:admin) { create :user, site_admin: true, first_name: 'Admin' }
   let(:author) { create :user, first_name: 'Author' }
-  let!(:paper)  { create :paper, :with_tasks, creator: author }
+  let!(:paper) do
+     create :paper, :with_integration_journal, :with_tasks, creator: author
+   end
   let(:production_metadata_task) do
     create :production_metadata_task, paper: paper, phase: paper.phases.first
   end

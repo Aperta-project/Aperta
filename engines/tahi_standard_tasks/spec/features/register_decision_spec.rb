@@ -2,14 +2,8 @@ require 'rails_helper'
 
 feature "Register Decision", js: true do
   let(:user) { FactoryGirl.create(:user) }
-  let(:task) { FactoryGirl.create(:register_decision_task) }
-  let!(:paper) do
-    task.paper.update_attributes(
-      creator: user,
-      publishing_state: "submitted"
-    )
-    task.paper
-  end
+  let(:paper) { FactoryGirl.create(:paper, :with_integration_journal, :submitted, creator: user) }
+  let(:task) { FactoryGirl.create(:register_decision_task, paper: paper) }
   let(:dashboard_page) { DashboardPage.new }
   let(:manuscript_page) { dashboard_page.view_submitted_paper paper }
 

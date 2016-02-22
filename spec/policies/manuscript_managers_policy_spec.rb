@@ -13,7 +13,7 @@ describe ManuscriptManagersPolicy do
 
   context "non admin" do
     let(:user) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create(:paper) }
+    let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
 
     it { expect(policy.show?).to be(false) }
     it { expect(policy.can_manage_manuscript?).to be(false) }
@@ -21,7 +21,9 @@ describe ManuscriptManagersPolicy do
 
   context "user with manuscript manager old_role who is assigned to a paper task" do
     let(:user) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
+    let(:paper) do
+      FactoryGirl.create(:paper, :with_integration_journal, :with_tasks)
+    end
     let(:old_role) { FactoryGirl.create(:old_role, journal: paper.journal, can_view_assigned_manuscript_managers: true) }
 
     before do
@@ -36,7 +38,9 @@ describe ManuscriptManagersPolicy do
 
   context "user with manuscript manager old_role who is assigned to the paper" do
     let(:user) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
+    let(:paper) do
+      FactoryGirl.create(:paper, :with_integration_journal, :with_tasks)
+    end
     let(:old_role) { FactoryGirl.create(:old_role, journal: paper.journal, can_view_assigned_manuscript_managers: true) }
 
     before do
@@ -51,7 +55,9 @@ describe ManuscriptManagersPolicy do
 
   context "user with manuscript manager old_role who is not assigned to a paper task" do
     let(:user) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
+    let(:paper) do
+      FactoryGirl.create(:paper, :with_integration_journal, :with_tasks)
+    end
     let(:old_role) { FactoryGirl.create(:old_role, journal: paper.journal, can_view_assigned_manuscript_managers: true) }
 
     before do
@@ -64,7 +70,7 @@ describe ManuscriptManagersPolicy do
 
   context "user with all manuscript managers old_role" do
     let(:user) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create(:paper) }
+    let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
     let(:old_role) { FactoryGirl.create(:old_role, journal: paper.journal, can_view_all_manuscript_managers: true) }
 
     before do

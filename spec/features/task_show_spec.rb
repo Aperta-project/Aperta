@@ -5,6 +5,7 @@ feature "Displaying task", js: true do
   let(:task) { paper.tasks.first }
   let!(:paper) do
     FactoryGirl.create(:paper_with_task,
+      :with_integration_journal,
       creator: admin,
       task_params: {
         title: "Assign Admin"

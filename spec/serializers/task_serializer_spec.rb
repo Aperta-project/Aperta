@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe TaskSerializer do
-
-  let(:task) { create(:task) }
+  let(:paper) { FactoryGirl.create(:paper) }
+  let(:task) { FactoryGirl.create(:task, paper: paper) }
   let(:serializer) { TaskSerializer.new(task) }
 
   subject do
@@ -34,12 +34,14 @@ describe TaskSerializer do
   end
 
   describe '#assigned_to_me' do
+    let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
+
     it 'returns false if current_user does not exists in the context' do
       expect(subject[:task][:assigned_to_me]).to eq(false)
     end
 
     context 'task with participations' do
-      let(:user) { create(:user) }
+      let(:user) { FactoryGirl.create(:user) }
 
       before do
         task.add_participant user

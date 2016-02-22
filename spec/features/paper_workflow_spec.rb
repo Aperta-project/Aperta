@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature "Paper workflow", js: true, selenium: true, skip: true do
   let(:admin) { FactoryGirl.create :user }
-  let!(:journal) { FactoryGirl.create :journal }
+  let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
   let!(:paper) { FactoryGirl.create :paper, :submitted, :with_tasks, journal: journal }
 
   before do

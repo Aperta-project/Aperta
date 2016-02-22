@@ -1,11 +1,13 @@
 require 'rails_helper'
 
 describe ParticipationsController do
-  render_views
-  let(:user) { create(:user) }
-  let(:participant) { create(:user) }
-  let!(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: user) }
-  let(:task) { create(:task, paper: paper) }
+  let(:user) { FactoryGirl.create(:user) }
+  let(:participant) { FactoryGirl.create(:user) }
+  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
+  let!(:paper) do
+    FactoryGirl.create(:paper, creator: user, journal: journal)
+  end
+  let(:task) { FactoryGirl.create(:task, paper: paper) }
 
   before { sign_in user }
 
@@ -185,8 +187,9 @@ describe ParticipationsController do
   end
 
   context "participants" do
-    let(:task) { FactoryGirl.create(:task) }
-    let(:editors_discussion_task) { FactoryGirl.create :editors_discussion_task }
+    let(:editors_discussion_task) do
+      FactoryGirl.create(:editors_discussion_task, paper: paper)
+    end
     let(:new_participant) { FactoryGirl.create(:user) }
 
     subject :do_request do

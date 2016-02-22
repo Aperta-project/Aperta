@@ -1,7 +1,8 @@
 require "rails_helper"
 
 describe ParticipationFactory do
-  let(:task) { FactoryGirl.create(:task) }
+  let(:paper) { FactoryGirl.create(:paper, :with_integration_journal)}
+  let(:task) { FactoryGirl.create(:task, paper: paper) }
 
   describe '.create' do
     let(:assignee) { FactoryGirl.create(:user) }

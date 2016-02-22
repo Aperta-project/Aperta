@@ -4,7 +4,9 @@ feature 'Send to Apex task', js: true, selenium: true do
   include SidekiqHelperMethods
 
   let!(:user) { FactoryGirl.create(:user, :site_admin) }
-  let!(:paper) { FactoryGirl.create(:paper_ready_for_export) }
+  let!(:paper) do
+    FactoryGirl.create(:paper_ready_for_export, :with_integration_journal)
+  end
   let!(:task) { FactoryGirl.create(:send_to_apex_task, paper: paper, phase: paper.phases.first) }
   let(:dashboard_page) { DashboardPage.new }
   let(:manuscript_page) { dashboard_page.view_submitted_paper paper }

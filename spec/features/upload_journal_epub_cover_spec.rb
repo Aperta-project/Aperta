@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature "Upload default ePub cover for journal", js: true do
   let(:admin) { create :user, :site_admin }
-  let!(:journal) { create :journal }
+  let!(:journal) { create :journal, :with_roles_and_permissions }
 
   before do
     login_as(admin, scope: :user)

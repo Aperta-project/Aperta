@@ -115,7 +115,7 @@ feature 'Paper Tracker', js: true do
   end
 
   def make_matchable_paper(attrs = {})
-    paper = FactoryGirl.create(:paper, :submitted, attrs)
+    paper = FactoryGirl.create(:paper, :with_integration_journal, :submitted, attrs)
     assign_journal_role(paper.journal, user, :admin)
     paper
   end

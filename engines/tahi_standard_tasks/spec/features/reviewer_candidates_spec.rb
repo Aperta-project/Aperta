@@ -2,7 +2,9 @@ require 'rails_helper'
 
 feature "User adding reviewer candidates", js: true do
   let(:admin) { create :user, site_admin: true, first_name: 'Admin' }
-  let!(:paper)  { create :paper, :with_tasks, creator: admin }
+  let!(:paper) do
+    create :paper,:with_integration_journal, :with_tasks, creator: admin
+  end
   let!(:reviewer_recommendations_task) do
     FactoryGirl.create(
       :reviewer_recommendations_task,

@@ -21,7 +21,7 @@
   {{#if showAddButton}}
     <div class="button-secondary button--green fileinput-button">
       {{buttonText}}
-      {{s3-file-uploader elementId="add-new-attachment"
+      {{s3-file-uploader class="add-new-attachment"
                          accept=accept
                          filePath=filePath
                          uploadProgress=(action "uploadProgress")

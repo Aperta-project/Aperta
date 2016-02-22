@@ -43,7 +43,7 @@ feature 'Publishing Related Questions Card', js: true do
         choose 'Yes'
         find('.fileinput-button').click
         overlay.upload_file(
-          element_id: "add-new-attachment",
+          element_id: 'file',
           file_name: 'yeti.jpg',
           sentinel: proc { QuestionAttachment.count }
         )

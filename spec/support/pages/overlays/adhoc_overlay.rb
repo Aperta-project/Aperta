@@ -3,7 +3,7 @@ class AdhocOverlay < CardOverlay
   def upload_attachment(file_name)
     find('.adhoc-content-toolbar .fa-plus').click
     find('.adhoc-toolbar-item--image').click
-    upload_file(element_id: 'add-new-attachment',
+    upload_file(element_id: 'file',
                 file_name: file_name,
                 sentinel: proc { Attachment.count })
   end

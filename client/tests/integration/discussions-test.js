@@ -41,6 +41,16 @@ module('Integration: Discussions', {
           }
         }
       });
+
+      store.createRecord('permission',{
+        id: 'discussionTopic+1',
+        object:{id: 1, type: 'DiscussionTopic'},
+        permissions:{
+          view:{
+            states: ['*']
+          }
+        }
+      });
     });
 
     const restless = App.__container__.lookup('service:restless');

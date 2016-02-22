@@ -10,16 +10,10 @@ module SalesforceServices
       def paper_to_manuscript_hash
         {
           "RecordTypeId"               => "012U0000000E4ASIA0", # TODO: make this dynamic
-          "OwnerId"                    => @user_id,
-          "Editorial_Process_Close__c" => false,
-          "Display_Technical_Notes__c" => false,
-          "CreatedByDeltaMigration__c" => false,
           "Editorial_Status_Date__c"   => Time.now.utc,
           "Revision__c"                => @paper.decisions.latest.revision_number,
           "Title__c"                   => @paper.title,
-          "Initial_Date_Submitted__c"  => @paper.submitted_at,
           "DOI__c"                     => @paper.doi,
-          "Manuscript_Number__c"       => @paper.manuscript_id,
           "Name"                       => @paper.manuscript_id, # Manuscript#/Doc ID, in SF
           "OriginalSubmissionDate__c"  => @paper.submitted_at,
         }

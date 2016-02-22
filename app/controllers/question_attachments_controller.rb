@@ -44,10 +44,21 @@ class QuestionAttachmentsController < ApplicationController
     end
   end
 
+  # rubocop:disable Style/CyclomaticComplexity,Stle/PerceivedComplexity
   def task_for(question_attachment)
     @task ||= begin
-      owner = question_attachment.nested_question_answer.nested_question.owner
-      owner = owner.owner until owner.class <= Task
+      owner = question_attachment
+      until owner.class <= Task
+        if owner.respond_to?(:owner) && !owner.owner.nil?
+          owner = owner.owner
+        elsif owner.respond_to?(:nested_question) && !owner.nested_question.nil?
+          owner = owner.nested_question
+        elsif owner.respond_to? :nested_question_answer
+          owner = owner.nested_question_answer
+        else
+          fail ArgumentError "Cannot find task for question attachment"
+        end
+      end
     end
     owner
   end

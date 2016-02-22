@@ -58,6 +58,11 @@ feature 'Ethics Task', js: true, selenium: true do
 
     scenario 'Uploading an attachment' do
       view_ethics_card_on_the_manuscript_page
+#      allow_any_instance_of(User).to receive(:can?).and_return(true)
+#      ethics_question = NestedQuestion.where(
+#        ident: "ethics--animal_subjects--field_arrive").first
+#      ethics_question.owner = paper.tasks.first
+#      ethics_question.save!
       within '.question-text', text: 'animal research' do
         within(:xpath, '..') do
           choose('Yes')

@@ -49,7 +49,7 @@ describe 'SeedHelpers' do
         role.ensure_permission_exists(:edit, applies_to: Task)
       end
       expect(Role.where(name: 'role').first.reload.permissions
-              .map(&:action)).to match(%w(view edit))
+              .map(&:action)).to contain_exactly('view', 'edit')
 
       Role.ensure_exists('role',
                          journal: journal,

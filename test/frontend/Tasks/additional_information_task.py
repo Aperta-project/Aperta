@@ -56,6 +56,7 @@ class AITask(BaseTask):
     q4_answers = ('CollectionName', '')
     q5_answers = ('ShortTitle', 'Alternate Short Title', 'A super long running head for this brilliant manuscript')
 
+    self.set_timeout(120)
     questions = self._gets(self._questions)
     q1ans = random.choice(q1_answers)
     logging.debug('The answer to question 1 is {0}'.format(q1ans))
@@ -123,3 +124,5 @@ class AITask(BaseTask):
 
     if not self.completed_cb_is_selected():
       self._get(self._completed_cb).click()
+
+    self.restore_timeout()

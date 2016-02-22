@@ -17,10 +17,10 @@ from frontend.common_test import CommonTest
 
 
 users = [oa_login,
-         #sa_login,
+         sa_login,
          ]
 
-all_users = [#sa_login,
+all_users = [sa_login,
              oa_login,
              au_login,
              rv_login,
@@ -75,7 +75,7 @@ class ApertaAdminTest(CommonTest):
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_search_edit_user(random.choice(user_search))
 
-  def rest_validate_add_new_journal(self):
+  def test_validate_add_new_journal(self):
     """
     Validates adding a new journal is available to superadmin
     """
@@ -87,7 +87,7 @@ class ApertaAdminTest(CommonTest):
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_add_new_journal(user_type['user'])
 
-  def rest_validate_edit_journal(self):
+  def test_validate_edit_journal(self):
     """
     Validates editing a journal is available to superadmin
     """

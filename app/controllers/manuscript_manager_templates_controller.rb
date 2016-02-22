@@ -37,7 +37,23 @@ class ManuscriptManagerTemplatesController < ApplicationController
   end
 
   def new_template_params
-    params.require(:manuscript_manager_template).permit(:paper_type, :journal_id, phase_templates: [:name, :position, task_templates: [:title, :journal_task_type_id, :position]])
+    params.require(:manuscript_manager_template).permit(
+      :paper_type,
+      :journal_id,
+      phase_templates: [
+        :name, :position, task_templates: [
+          :title, :journal_task_type_id, :position
+        ]
+      ]
+    ).tap do |whitelisted|
+      whitelisted[:phase_templates].try(:each_index) do |i|
+        pt = whitelisted[:phase_templates][i]
+        pt[:task_templates].try(:each_index) do |j|
+          value = params[:manuscript_manager_template][:phase_templates][i][:task_templates][j][:template]
+          whitelisted[:phase_templates][i][:task_templates][j][:template] = value || []
+        end
+      end
+    end
   end
 
   def enforce_policy

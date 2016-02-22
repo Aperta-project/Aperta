@@ -46,8 +46,8 @@ class QuestionAttachmentsController < ApplicationController
 
   def task_for(question_attachment)
     @task ||= begin
-      owner = question_attachment.nested_question_answer.owner
-      owner = owner.owner until owner.class < Task
+      owner = question_attachment.nested_question_answer.nested_question.owner
+      owner = owner.owner until owner.class <= Task
     end
     owner
   end

@@ -1,9 +1,6 @@
 require 'rails_helper'
 
 describe QuestionAttachmentsController do
-
-  expect_policy_enforcement
-
   let(:user) { create :user, :site_admin }
 
   before do
@@ -14,6 +11,10 @@ describe QuestionAttachmentsController do
     let!(:question_attachment) { FactoryGirl.create(:question_attachment) }
     subject(:do_request) do
       get :show, format: :json, id: question_attachment.id
+    end
+
+    before do
+      allow_any_instance_of(User).to receive(:can?).and_return(true)
     end
 
     it "succeeds" do

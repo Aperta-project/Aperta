@@ -61,6 +61,8 @@ describe CollaborationsController do
         expect do
           post :create, format: :json, collaboration: collaborator_params
         end.to change(Sidekiq::Extensions::DelayedMailer.jobs, :size).by(1)
+        expect(UserMailer).to receive(:add_collaborator).with(user.id, collaborator.id, paper.id).and_call_original
+        Sidekiq::Extensions::DelayedMailer.drain
       end
     end
 

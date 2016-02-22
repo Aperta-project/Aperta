@@ -96,11 +96,8 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(5)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    # The flash success message is not loading in all cases, even for successful conversion
-    #   temporarily disabling it. replacing with a sleep
-    time.sleep(15)
-    # manuscript_page.validate_ihat_conversions_success()
-    # manuscript_page.close_flash_message()
+    manuscript_page.validate_ihat_conversions_success()
+    manuscript_page.close_flash_message()
     time.sleep(2)
     paper_title_from_page = manuscript_page.get_paper_title_from_page()
     logging.info('paper_title_from_page: '.format(paper_title_from_page))
@@ -114,10 +111,10 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     # and it takes time
     time.sleep(.5)
     manuscript_page.click_submit_btn()
-    time.sleep(1)
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay
+    time.sleep(2)
     manuscript_page.validate_so_overlay_elements_styles('congrats', paper_title_from_page)
     manuscript_page.close_submit_overlay()
     manuscript_page.validate_submit_success()
@@ -198,11 +195,8 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     # Time needed for iHat conversion. This is not quite enough time in all circumstances
     time.sleep(7)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
-    # The flash success message is not loading in all cases, even for successful conversion
-    #   temporarily disabling it. replacing with a sleep
-    time.sleep(15)
-    # manuscript_page.validate_ihat_conversions_success()
-    # manuscript_page.close_flash_message()
+    manuscript_page.validate_ihat_conversions_success()
+    manuscript_page.close_flash_message()
     time.sleep(2)
     paper_title_from_page = manuscript_page.get_paper_title_from_page()
     paper_url = manuscript_page.get_current_url()
@@ -218,6 +212,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay
+    time.sleep(2)
     manuscript_page.validate_so_overlay_elements_styles('congrats_is', paper_title_from_page)
     manuscript_page.close_submit_overlay()
     manuscript_page.validate_initial_submit_success()
@@ -237,7 +232,7 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     new_paper_url = paper_url + '/workflow'
     self._driver.get(new_paper_url)
     self._driver.navigated = True
-    time.sleep(10)
+    # time.sleep(20)
     workflow_page = WorkflowPage(self.getDriver())
     workflow_page.click_card('initial_decision')
     id_card = InitialDecisionCard(self.getDriver())
@@ -245,7 +240,6 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     decision = id_card.execute_decision()
     logging.info('Decision: {}'.format(decision))
     id_card.click_close_button()
-    time.sleep(5)
     sub_data = workflow_page.get_db_submission_data(paper_id)
     if decision == 'reject':
       assert sub_data[0][0] == 'rejected', sub_data[0][0]
@@ -283,7 +277,6 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     time.sleep(2)
     manuscript_page.click_submit_btn()
     time.sleep(1)
-
     manuscript_page.confirm_submit_btn()
     # Now we get the submit confirmation overlay
     # Sadly, we take time to switch the overlay

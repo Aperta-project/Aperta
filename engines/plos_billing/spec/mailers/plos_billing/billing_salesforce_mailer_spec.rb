@@ -3,7 +3,7 @@ require 'rails_helper'
 describe PlosBilling::BillingSalesforceMailer do
   let(:doi) { "fake_doi" }
   let(:paper) { FactoryGirl.create(:paper, doi: doi, journal: journal) }
-  let(:journal) { FactoryGirl.create(:journal) }
+  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
   let(:admin1) { FactoryGirl.create(:user) }
   let(:admin2) { FactoryGirl.create(:user) }
 

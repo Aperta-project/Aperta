@@ -7,16 +7,35 @@ module SalesforceServices
         @paper = paper
       end
 
+      def editorial
+        status = @paper.publishing_state
+        sfdc_status = {
+          submitted: status_hash("Manuscript Submitted", :submitted_at),
+          accepted: status_hash("Completed Accept", :accepted_at),
+          rejected: status_hash("Completed Reject", :updated_at)
+        }[status.to_sym]
+
+        sfdc_status || status_hash("Manuscript Submitted", :submitted_at)
+      end
+
       def paper_to_manuscript_hash
         {
-          "RecordTypeId"               => "012U0000000E4ASIA0", # TODO: make this dynamic
-          "Editorial_Status_Date__c"   => Time.now.utc,
+          "RecordTypeId"               => "012U0000000E4ASIA0",
+          "Editorial_Status_Date__c"   => editorial[:date],
           "Revision__c"                => @paper.decisions.latest.revision_number,
           "Title__c"                   => @paper.title,
           "DOI__c"                     => @paper.doi,
-          "Name"                       => @paper.manuscript_id, # Manuscript#/Doc ID, in SF
+          "Name"                       => @paper.manuscript_id,
           "OriginalSubmissionDate__c"  => @paper.submitted_at,
+          "Abstract__c"                => @paper.abstract,
+          "Current_Editorial_Status__c" => editorial[:status]
         }
+      end
+
+      private
+
+      def status_hash(sfdc_value, local_datetime_field)
+        { status: sfdc_value, date: @paper.send(local_datetime_field) }
       end
     end
 

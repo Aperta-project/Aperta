@@ -17,4 +17,20 @@ class DiscussionTopic < ActiveRecord::Base
   def has_participant?(user)
     participants.include? user
   end
+
+  def add_discussion_participant(discussion_participant)
+    assignments.create(
+      user: discussion_participant.user,
+      role: journal.discussion_participant_role
+    )
+    discussion_participant.save
+  end
+
+  def remove_discussion_participant(discussion_participant)
+    assignments.find_by(
+      user: discussion_participant.user,
+      role: journal.discussion_participant_role
+    ).try(&:destroy)
+    discussion_participant.destroy
+  end
 end

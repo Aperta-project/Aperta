@@ -4,13 +4,13 @@ class DiscussionParticipantsController < ApplicationController
 
   def create
     requires_user_can :manage_participant, discussion_topic
-    discussion_participant.save
+    discussion_topic.add_discussion_participant(discussion_participant)
     respond_with discussion_participant
   end
 
   def destroy
     requires_user_can :manage_participant, discussion_topic
-    discussion_participant.destroy
+    discussion_topic.remove_discussion_participant(discussion_participant)
     respond_with discussion_participant
   end
 

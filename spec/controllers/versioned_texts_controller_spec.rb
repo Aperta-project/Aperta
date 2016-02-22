@@ -3,11 +3,18 @@ require 'rails_helper'
 require 'rails_helper'
 
 describe VersionedTextsController do
-  let(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: user) }
-  let(:user) { create(:user, tasks: []) }
+  let(:paper) do
+    FactoryGirl.create(
+      :paper,
+      :with_integration_journal,
+      :with_tasks,
+      creator: user
+    )
+  end
+  let(:user) { FactoryGirl.create(:user) }
   # this will have been automagically created by setting the paper
   # body
-  let(:versioned_text) { VersionedText.where(paper: paper).first }
+  let(:versioned_text) { VersionedText.where(paper: paper).first! }
 
   before { sign_in user }
 

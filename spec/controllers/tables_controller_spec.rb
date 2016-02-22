@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 describe TablesController do
-  let(:user)  { create :user }
-  let(:paper) { FactoryGirl.create(:paper, creator: user) }
+  let(:user) { FactoryGirl.create :user }
+  let(:paper) do
+    FactoryGirl.create(:paper, :with_integration_journal)
+  end
 
   before { sign_in user }
 

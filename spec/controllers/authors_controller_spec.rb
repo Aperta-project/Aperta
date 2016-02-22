@@ -11,7 +11,7 @@ describe AuthorsController do
     FactoryGirl.create(:paper,
                        :with_handling_editor_user,
                        :with_internal_editor_user,
-                       journal: journal)
+                       :with_integration_journal)
   end
   let(:post_request) do
     post :create,

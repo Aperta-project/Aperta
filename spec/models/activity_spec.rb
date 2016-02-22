@@ -180,7 +180,7 @@ describe Activity do
 
   describe '#collaborator_added!' do
     subject(:activity) { Activity.collaborator_added!(collaboration, user: user) }
-    let!(:paper) { FactoryGirl.create(:paper) }
+    let!(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
     let!(:collaboration) { paper.add_collaboration(collaborator) }
     let!(:collaborator) { FactoryGirl.create(:user) }
 
@@ -197,7 +197,7 @@ describe Activity do
 
   describe '#collaborator_removed!' do
     subject(:activity) { Activity.collaborator_removed!(collaboration, user: user) }
-    let!(:paper) { FactoryGirl.create(:paper) }
+    let!(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
     let!(:collaboration) { paper.add_collaboration(collaborator) }
     let!(:collaborator) { FactoryGirl.create(:user) }
 

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'Assign team', js: true do
-  let!(:plos_journal) { create(:journal) }
+  let!(:plos_journal) { create(:journal, :with_roles_and_permissions) }
   let!(:paper) { create(:paper_with_phases, journal: plos_journal, creator: author) }
 
   let!(:author) { create :user, first_name: "Albert", last_name: "Author" }

@@ -27,7 +27,7 @@ describe FilteredUsersController do
     FactoryGirl.create(:user, first_name: "Henry", last_name: "Bob")
   end
 
-  let(:journal) { FactoryGirl.create(:journal) }
+  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
   let(:old_role) { FactoryGirl.create(:old_role, :editor, journal: journal) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal, creator: creator) }
 
@@ -36,17 +36,18 @@ describe FilteredUsersController do
   end
 
   describe "inviting reviewers" do
-    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
     let(:phase) { paper.phases.create! }
     let(:task) do
-      phase.tasks.create(
-        type: 'TestTask',
+      TestTask.create!(
         title: 'Test',
         old_role: 'editor',
-        paper: paper
-      ).extend Invitable
+        paper: paper,
+        phase: phase
+      )
     end
-    let(:invitation) { create :invitation, task: task, invitee: user }
+    let(:invitation) do
+      FactoryGirl.create(:invitation, task: task, invitee: user)
+    end
 
     context "when a user has any invitation for expired revision cycles" do
       before do
@@ -59,7 +60,7 @@ describe FilteredUsersController do
 
       it "sends the user after a new round of revision cycle starts" do
         get :uninvited_users, paper_id: paper.id, query: 'Henry', format: :json
-        expect(res_body["filtered_users"].count).to eq 4
+        expect(res_body["filtered_users"].count).to eq 3
         expect(res_body["filtered_users"].map { |user| user["id"] }).to include user.id
       end
 
@@ -68,7 +69,7 @@ describe FilteredUsersController do
 
         it "sends the user" do
           get :uninvited_users, paper_id: paper.id, query: 'Henry', format: :json
-          expect(res_body["filtered_users"].count).to eq 4
+          expect(res_body["filtered_users"].count).to eq 3
           expect(res_body["filtered_users"].first["id"]).to eq user.id
         end
       end
@@ -79,7 +80,7 @@ describe FilteredUsersController do
 
       it "does not send the user" do
         get :uninvited_users, paper_id: paper.id, query: 'Henry', format: :json
-        expect(res_body["filtered_users"].count).to eq 3
+        expect(res_body["filtered_users"].count).to eq 2
         expect(res_body["filtered_users"].map { |user| user["id"] }).to_not include user.id
       end
     end
@@ -97,7 +98,7 @@ describe FilteredUsersController do
 
         expect(user.invitations.first).to eq invitation
 
-        expect(res_body["filtered_users"].count).to eq 3
+        expect(res_body["filtered_users"].count).to eq 2
         expect(res_body["filtered_users"].map { |user| user["id"] }).to_not include user.id
       end
     end

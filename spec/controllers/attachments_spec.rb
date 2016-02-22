@@ -2,9 +2,10 @@ require 'rails_helper'
 
 describe AttachmentsController do
   let(:user) { create :user }
-  let(:paper) { FactoryGirl.create(:paper, creator: user) }
+  let(:paper) do
+    FactoryGirl.create(:paper, :with_integration_journal, creator: user)
+  end
   let(:task) { FactoryGirl.create(:task, paper: paper) }
-  # let(:attachment) {FactoryGirl.create(:attachment, task: task) }
 
   before { sign_in user }
 

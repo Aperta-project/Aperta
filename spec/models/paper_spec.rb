@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 describe Paper do
-  let(:paper) { FactoryGirl.create :paper }
+  let(:paper) do
+    FactoryGirl.create :paper, :with_integration_journal, :with_creator
+  end
   let(:user) { FactoryGirl.create :user }
 
   describe 'validations' do
@@ -494,7 +496,9 @@ describe Paper do
     end
 
     describe '#withdraw!' do
-      let(:paper) { FactoryGirl.create(:paper, :submitted) }
+      let(:paper) do
+        FactoryGirl.create(:paper, :submitted, :with_integration_journal)
+      end
 
       it "transitions to withdrawn without a reason" do
         paper.withdraw!
@@ -513,7 +517,9 @@ describe Paper do
     end
 
     describe '#invite_full_submission' do
-      let(:paper) { FactoryGirl.create(:paper, :initially_submitted) }
+      let(:paper) do
+        FactoryGirl.create(:paper, :initially_submitted, :with_integration_journal)
+      end
 
       it 'transitions to invited_for_full_submission' do
         paper.invite_full_submission!
@@ -535,7 +541,9 @@ describe Paper do
     end
 
     describe '#reactivate!' do
-      let(:paper) { FactoryGirl.create(:paper, :submitted) }
+      let(:paper) do
+        FactoryGirl.create(:paper, :submitted, :with_integration_journal)
+      end
 
       it "transitions to the previous state" do
         paper.withdraw!
@@ -564,7 +572,9 @@ describe Paper do
     end
 
     describe '#minor_check!' do
-      let(:paper) { FactoryGirl.create(:paper, :submitted) }
+      let(:paper) do
+        FactoryGirl.create(:paper, :submitted, :with_integration_journal)
+      end
 
       it "marks the paper editable" do
         paper.minor_check!
@@ -581,7 +591,9 @@ describe Paper do
     end
 
     describe '#submit_minor_check!' do
-      let(:paper) { FactoryGirl.create(:paper, :submitted) }
+      let(:paper) do
+        FactoryGirl.create(:paper, :submitted, :with_integration_journal)
+      end
 
       it "marks the paper uneditable" do
         paper.minor_check!
@@ -605,20 +617,22 @@ describe Paper do
 
     describe '#reject' do
       it 'transitions to rejected state from submitted' do
-        paper = FactoryGirl.create(:paper, :submitted)
+        paper = FactoryGirl.create(:paper, :submitted, :with_integration_journal)
         paper.reject!
         expect(paper.rejected?).to be true
       end
 
       it 'transitions to rejected state from initially_submitted' do
-        paper = FactoryGirl.create(:paper, :initially_submitted)
+        paper = FactoryGirl.create(:paper, :initially_submitted, :with_integration_journal)
         paper.reject!
         expect(paper.rejected?).to be true
       end
     end
 
     describe '#publish!' do
-      let(:paper) { FactoryGirl.create(:paper, :submitted) }
+      let(:paper) do
+        FactoryGirl.create(:paper, :submitted, :with_integration_journal)
+      end
 
       it "marks the paper uneditable" do
         paper.publish!
@@ -628,7 +642,9 @@ describe Paper do
   end
 
   describe "#make_decision" do
-    let(:paper) { FactoryGirl.create(:paper, :submitted) }
+    let(:paper) do
+      FactoryGirl.create(:paper, :submitted, :with_integration_journal)
+    end
 
     context "acceptance" do
       let(:decision) do
@@ -732,7 +748,7 @@ describe Paper do
   end
 
   describe "callbacks" do
-    let(:paper) { FactoryGirl.build :paper }
+    let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
     let(:creator) { paper.creator }
 
     it "assigns all author tasks to the paper's creator" do

@@ -16,8 +16,10 @@ FactoryGirl.define do
       end
     end
 
-    after(:create) do |journal|
-      JournalFactory.ensure_default_roles_and_permissions_exist(journal)
+    trait(:with_roles_and_permissions) do
+      after(:create) do |journal|
+        JournalFactory.ensure_default_roles_and_permissions_exist(journal)
+      end
     end
 
     %w(publishing_services staff_admin).each do |role|
@@ -30,6 +32,8 @@ FactoryGirl.define do
         end
       end
     end
+
+    factory :journal_with_roles_and_permissions, traits: [:with_roles_and_permissions]
   end
 
   sequence :doi_journal_prefix do

@@ -1,12 +1,10 @@
 require 'rails_helper'
 
 describe SnapshotsController do
-  render_views
-  let(:user) { create(:user) }
-  let(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: user) }
-  let(:phase) { paper.phases.first }
+  let(:user) { FactoryGirl.create(:user) }
+  let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
   let(:task) do
-    FactoryGirl.create(:ethics_task, phase: phase, participants: [user])
+    FactoryGirl.create(:ethics_task, paper: paper, participants: [user])
   end
   let(:preview) { SnapshotService.new(paper).preview(task) }
 

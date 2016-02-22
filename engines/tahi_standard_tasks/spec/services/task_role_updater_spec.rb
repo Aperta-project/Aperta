@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe TaskRoleUpdater do
-  let(:paper) { FactoryGirl.create(:paper) }
+  let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
   let(:assignee) { FactoryGirl.create(:user) }
   let(:task) { FactoryGirl.create(:task, old_role: PaperRole::ADMIN, paper: paper) }
 

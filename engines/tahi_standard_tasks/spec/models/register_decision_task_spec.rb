@@ -2,7 +2,13 @@ require 'rails_helper'
 
 describe TahiStandardTasks::RegisterDecisionTask do
   let!(:paper) do
-    FactoryGirl.create :paper, :with_tasks, title: "Crazy stubbing tests on rats"
+    FactoryGirl.create(
+      :paper,
+      :with_integration_journal,
+      :with_creator,
+      :with_tasks,
+      title: "Crazy stubbing tests on rats"
+    )
   end
   let!(:task) do
     TahiStandardTasks::RegisterDecisionTask.create!(
@@ -116,11 +122,16 @@ describe TahiStandardTasks::RegisterDecisionTask do
   end
 
   describe "save and retrieve paper decision and decision letter" do
-    let(:paper) {
-      FactoryGirl.create(:paper, :with_tasks,
+    let(:paper) do
+      FactoryGirl.create(
+        :paper,
+        :with_integration_journal,
+        :with_creator,
+        :with_tasks,
         title: "Crazy stubbing tests on rats",
-        decision_letter: "Lorem Ipsum")
-    }
+        decision_letter: "Lorem Ipsum"
+      )
+    end
 
     let(:decision) {
       paper.decisions.first

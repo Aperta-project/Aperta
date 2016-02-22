@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe QuestionAttachmentsPolicy do
-  let(:journal) { FactoryGirl.create(:journal) }
+  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
   let(:task) { FactoryGirl.create(:task, paper: paper) }
   let(:user) { FactoryGirl.create(:user) }
@@ -52,7 +52,9 @@ describe QuestionAttachmentsPolicy do
   end
 
   context "user with old_role on different journal" do
-    let(:other_journal) { FactoryGirl.create(:journal) }
+    let(:other_journal) do
+      FactoryGirl.create(:journal, :with_roles_and_permissions)
+    end
     let(:user) do
       FactoryGirl.create(
         :user,

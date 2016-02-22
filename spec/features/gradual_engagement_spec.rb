@@ -15,6 +15,7 @@ feature 'Gradual Engagement', js: true do
                   The submission process is not automatically shown on
                   subsequent page views' do
           paper = FactoryGirl.create :paper,
+                                     :with_integration_journal,
                                      creator: user,
                                      gradual_engagement: true
           visit "/papers/#{paper.id}?firstView=true"
@@ -28,6 +29,7 @@ feature 'Gradual Engagement', js: true do
 
         scenario 'the X in the submission process box closes the box' do
           paper = FactoryGirl.create :paper,
+                                     :with_integration_journal,
                                      creator: user,
                                      gradual_engagement: true
           visit "/papers/#{paper.id}?firstView=true"
@@ -43,6 +45,7 @@ feature 'Gradual Engagement', js: true do
       scenario 'the sidebar submission text shows journal name, message to fill
                 out info and INITIAL submission state information' do
         paper = FactoryGirl.create :paper,
+                                   :with_integration_journal,
                                    :with_tasks,
                                    creator: user,
                                    gradual_engagement: true
@@ -61,6 +64,7 @@ feature 'Gradual Engagement', js: true do
       scenario 'the sidebar submission text shows journal name and message to
                 fill out info and INITIAL submission state information' do
         paper = FactoryGirl.create :paper,
+                                   :with_integration_journal,
                                    creator: user,
                                    gradual_engagement: true
         visit "/papers/#{paper.id}"
@@ -75,6 +79,7 @@ feature 'Gradual Engagement', js: true do
                 fill out info and FULL submission state information' do
         paper = FactoryGirl
                 .create :paper,
+                        :with_integration_journal,
                         :with_tasks,
                         creator: user,
                         publishing_state: :invited_for_full_submission,
@@ -94,6 +99,7 @@ feature 'Gradual Engagement', js: true do
       scenario 'the sidebar submission text shows journal name and message to
                 fill out remaining tasks.' do
         paper = FactoryGirl.create :paper,
+                                   :with_integration_journal,
                                    :with_tasks,
                                    creator: user,
                                    publishing_state: :in_revision,
@@ -110,6 +116,7 @@ feature 'Gradual Engagement', js: true do
       scenario 'the sidebar submission text shows journal name and message to
                 fill out info FULL submission state information' do
         paper = FactoryGirl.create :paper,
+                                   :with_integration_journal,
                                    creator: user,
                                    publishing_state: :in_revision,
                                    gradual_engagement: true
@@ -125,6 +132,7 @@ feature 'Gradual Engagement', js: true do
       scenario 'the circled ? toggles the visibility of the submission process
                 box' do
         paper = FactoryGirl.create :paper,
+                                   :with_integration_journal,
                                    creator: user,
                                    gradual_engagement: true
         visit "/papers/#{paper.id}"
@@ -141,7 +149,12 @@ feature 'Gradual Engagement', js: true do
     context 'when a paper is in a gradual engagement workflow' do
       context 'On initial submission' do
         let(:paper) do
-          FactoryGirl.create :paper, creator: user, gradual_engagement: true
+          FactoryGirl.create(
+            :paper,
+            :with_integration_journal,
+            creator: user,
+            gradual_engagement: true
+          )
         end
 
         scenario 'sees initial submit confirmation overlay on submit' do
@@ -156,10 +169,13 @@ feature 'Gradual Engagement', js: true do
 
       context 'after invitation (on full submit) ' do
         let(:paper) do
-          FactoryGirl.create :paper,
-                             creator: user,
-                             gradual_engagement: true,
-                             publishing_state: :invited_for_full_submission
+          FactoryGirl.create(
+            :paper,
+            :with_integration_journal,
+            creator: user,
+            gradual_engagement: true,
+            publishing_state: :invited_for_full_submission
+          )
         end
 
         scenario 'user sees full submit confirmation overlay' do
@@ -176,10 +192,13 @@ feature 'Gradual Engagement', js: true do
 
       context 'when submitting after revision' do
         let(:paper) do
-          FactoryGirl.create :paper,
-                             creator: user,
-                             gradual_engagement: true,
-                             publishing_state: :in_revision
+          FactoryGirl.create(
+            :paper,
+            :with_integration_journal,
+            creator: user,
+            gradual_engagement: true,
+            publishing_state: :in_revision
+          )
         end
 
         scenario 'user sees full submit confirmation overlay' do
@@ -195,7 +214,12 @@ feature 'Gradual Engagement', js: true do
 
     context 'when a paper is NOT in a gradual engagement workflow' do
       let(:paper) do
-        FactoryGirl.create :paper, creator: user, gradual_engagement: false
+        FactoryGirl.create(
+          :paper,
+          :with_integration_journal,
+          creator: user,
+          gradual_engagement: false
+        )
       end
 
       scenario 'User sees standard submit confirmation overlay' do

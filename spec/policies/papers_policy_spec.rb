@@ -12,7 +12,9 @@ describe PapersPolicy do
   end
 
   context "authors" do
-    let(:paper) { FactoryGirl.create(:paper, creator: user) }
+    let(:paper) do
+      FactoryGirl.create(:paper, :with_integration_journal, creator: user)
+    end
 
     include_examples "author for paper"
   end

@@ -18,7 +18,9 @@ end
 
 describe TahiStandardTasks::FundersPolicy do
   let(:policy) { TahiStandardTasks::FundersPolicy.new(current_user: user, funder: funder) }
-  let(:paper) { FactoryGirl.create(:paper, :with_tasks) }
+  let(:paper) do
+    FactoryGirl.create(:paper, :with_integration_journal, :with_creator, :with_tasks)
+  end
   let(:task) { paper.phases.first.tasks.first }
   let(:funder) { TahiStandardTasks::Funder.new(task: task) }
 

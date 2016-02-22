@@ -3,7 +3,14 @@ require 'rails_helper'
 feature 'Comments on cards', js: true do
   let(:admin) { create :user, :site_admin, first_name: "Admin" }
   let(:albert) { create :user, first_name: "Albert" }
-  let!(:paper) { FactoryGirl.create(:paper_with_phases, :submitted, creator: admin) }
+  let!(:paper) do
+    FactoryGirl.create(
+      :paper_with_phases,
+      :with_integration_journal,
+      :submitted,
+      creator: admin
+    )
+  end
 
   before do
     login_as(admin, scope: :user)

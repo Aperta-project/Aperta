@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 describe PlosBioTechCheck::ChangesForAuthorTask do
-  let(:paper) { FactoryGirl.create :paper, :submitted }
+  let(:paper) do
+    FactoryGirl.create :paper, :with_integration_journal, :submitted
+  end
   let(:task) { FactoryGirl.build :changes_for_author_task, paper: paper }
   let(:user) { FactoryGirl.create :user }
 

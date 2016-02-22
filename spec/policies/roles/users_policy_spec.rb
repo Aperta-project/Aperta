@@ -22,6 +22,7 @@ describe OldRoles::UsersPolicy do
   end
 
   context "user who administers the journal" do
+    let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
     let(:user) { FactoryGirl.create(:user) }
 
     before do

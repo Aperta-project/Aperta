@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature "Dashboard", js: true do
   let!(:user) { FactoryGirl.create :user, :site_admin }
-  let!(:journal) { FactoryGirl.create :journal }
+  let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
   let(:inactive_paper_count) { 0 }
   let(:active_paper_count) { 1 }
   let!(:papers) do

@@ -40,8 +40,8 @@ describe PaperTrackerController do
       expect(json['papers'][0]['title']).to eq paper.title
     end
 
-    it 'do not list the paper if is not submitted' do
-      paper = FactoryGirl.create(:paper)
+    it 'does not list the paper if is not submitted' do
+      paper = FactoryGirl.create(:paper, :with_integration_journal)
       assign_journal_role(paper.journal, user, :admin)
       get :index, format: :json
       json = JSON.parse(response.body)
@@ -50,7 +50,7 @@ describe PaperTrackerController do
 
     context 'meta data' do
       it 'returns meta data about the results' do
-        FactoryGirl.create(:paper, :submitted)
+        FactoryGirl.create(:paper, :submitted, :with_integration_journal)
         get :index, format: :json
         json = JSON.parse(response.body)
         expect(json['meta']).to be_truthy
@@ -60,21 +60,21 @@ describe PaperTrackerController do
       end
 
       it 'meta[page] is 1 when not sent in params' do
-        FactoryGirl.create(:paper, :submitted)
+        FactoryGirl.create(:paper, :submitted, :with_integration_journal)
         get :index, format: :json
         json = JSON.parse(response.body)
         expect(json['meta']['page']).to eq(1)
       end
 
       it 'meta[page] is eq to param[page]' do
-        FactoryGirl.create(:paper, :submitted)
+        FactoryGirl.create(:paper, :submitted, :with_integration_journal)
         get :index, format: :json, page: 7
         json = JSON.parse(response.body)
         expect(json['meta']['page']).to eq(7)
       end
 
       it 'returns per_page info needed for client pagination' do
-        FactoryGirl.create(:paper, :submitted)
+        FactoryGirl.create(:paper, :submitted, :with_integration_journal)
         get :index, format: :json
         json = JSON.parse(response.body)
         expect(json['meta']['perPage']).to eq(per_page)
@@ -193,7 +193,12 @@ describe PaperTrackerController do
   end
 
   def make_matchable_paper(attrs = {})
-    paper = FactoryGirl.create(:paper, :submitted, attrs)
+    paper = FactoryGirl.create(
+      :paper,
+      :submitted,
+      :with_integration_journal,
+      attrs
+    )
     assign_journal_role(paper.journal, user, :admin)
     paper
   end

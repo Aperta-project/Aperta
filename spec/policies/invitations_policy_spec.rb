@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 describe InvitationsPolicy do
-  let(:invitation) { FactoryGirl.create(:invitation) }
+  let(:paper) { FactoryGirl.create(:paper, :with_integration_journal) }
+  let(:invitation) { FactoryGirl.create(:invitation, paper: paper) }
   let(:policy) { InvitationsPolicy.new(current_user: user, invitation: invitation) }
 
   context "invitee" do

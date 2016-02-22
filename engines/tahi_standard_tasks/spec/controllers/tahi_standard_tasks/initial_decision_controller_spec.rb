@@ -3,7 +3,7 @@ require 'rails_helper'
 describe TahiStandardTasks::InitialDecisionController do
   routes { TahiStandardTasks::Engine.routes }
 
-  let(:journal) { FactoryGirl.create(:journal) }
+  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
   let(:admin) { FactoryGirl.create :user, :site_admin }
   let(:author) { FactoryGirl.create :author }
   let(:task) { FactoryGirl.create :initial_decision_task, paper: paper }

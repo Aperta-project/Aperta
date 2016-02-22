@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'Initial Tech Check', js: true do
-  let(:journal) { create :journal }
+  let(:journal) { create :journal, :with_roles_and_permissions }
   let(:admin) { create :user, site_admin: true }
   let(:author) { create :user }
   let(:paper) { create :paper, :submitted, journal: journal, creator: author }

@@ -4,13 +4,17 @@ require 'rails_helper'
 require 'sidekiq/testing'
 
 describe CollaborationsController do
+  let(:user) { FactoryGirl.create(:user) }
+  let(:collaborator) { FactoryGirl.create(:user) }
+  let(:paper) do
+    FactoryGirl.create(:paper, :with_integration_journal, creator: user)
+  end
+
   describe '#create' do
     subject(:do_request) do
       post :create, format: :json, collaboration: collaborator_params
     end
-    let(:user) { FactoryGirl.create(:user) }
-    let(:collaborator) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create(:paper, creator: user) }
+
     let(:collaborator_params) do
       { user_id: collaborator.id, paper_id: paper.id }
     end
@@ -75,9 +79,6 @@ describe CollaborationsController do
     subject(:do_request) do
       delete :destroy, format: :json, id: collaboration.id
     end
-    let(:user) { FactoryGirl.create(:user) }
-    let(:paper) { FactoryGirl.create(:paper, creator: user) }
-    let(:collaborator) { FactoryGirl.create(:user) }
     let!(:collaboration) { paper.add_collaboration(collaborator) }
 
     before { sign_in user }

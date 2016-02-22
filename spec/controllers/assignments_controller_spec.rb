@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe AssignmentsController, type: :controller do
   let(:admin) { create :user, :site_admin }
-  let(:journal) { FactoryGirl.create(:journal) }
+  let(:journal) { FactoryGirl.create(:journal_with_roles_and_permissions) }
   let(:paper) { FactoryGirl.create(:paper, journal: journal) }
   let!(:old_role) { FactoryGirl.create(:old_role, journal: journal) }
 
@@ -48,8 +48,6 @@ describe AssignmentsController, type: :controller do
     end
 
     let(:assignee) { FactoryGirl.create(:user) }
-    let(:admin) { create :user, :site_admin }
-    let(:journal) { FactoryGirl.create(:journal) }
     let(:paper) { FactoryGirl.create(:paper, journal: journal) }
     let!(:old_role) do
       OldRole.where(name: 'Custom Role', journal: journal).first_or_create!
@@ -109,8 +107,6 @@ describe AssignmentsController, type: :controller do
     subject(:do_request) { delete :destroy, id: paper_role.id }
 
     let(:assignee) { FactoryGirl.create :user }
-    let(:journal) { FactoryGirl.create(:journal) }
-    let(:paper) { FactoryGirl.create(:paper, journal: journal) }
     let!(:old_role) do
       OldRole.where(name: old_role_name, journal: journal).first_or_create!
     end

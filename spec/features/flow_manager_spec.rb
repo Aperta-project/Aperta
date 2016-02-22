@@ -23,7 +23,7 @@ feature "Flow Manager", js: true, selenium: true do
     visit "/"
   end
 
-  let(:journal) { FactoryGirl.create(:journal) }
+  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
 
   let!(:paper1) do
     FactoryGirl.create(:paper, :submitted, :with_tasks,

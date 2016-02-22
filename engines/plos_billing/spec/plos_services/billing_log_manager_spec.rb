@@ -96,7 +96,11 @@ describe PlosServices::BillingLogManager do
   end
 
   def make_paper
-    journal = FactoryGirl.create(:journal, :with_doi, { name: 'journal name' })
+    journal = FactoryGirl.create(
+      :journal,
+      :with_roles_and_permissions,
+      :with_doi, { name: 'journal name' }
+    )
     paper = FactoryGirl.create :paper_with_task, {
       creator: FactoryGirl.create(:user, { first_name: 'lou', last_name: 'prima', email: 'pfa@pfa.com' }),
       journal: journal,

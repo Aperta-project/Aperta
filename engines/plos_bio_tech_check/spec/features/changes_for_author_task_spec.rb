@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'Changes For Author', js: true do
-  let(:journal) { create :journal }
+  let(:journal) { create :journal, :with_roles_and_permissions }
   let(:author) { create :user }
   let(:paper) { create :paper, :submitted, journal: journal, creator: author }
   let(:task) { create :changes_for_author_task, paper: paper }

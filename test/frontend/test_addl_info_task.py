@@ -22,14 +22,14 @@ class AddlInfoTaskTest(CommonTest):
      - validate tasks elements and styles
      - validate closing task
   """
-
   def _go_to_addl_info_task(self, init=True):
     """Go to the addl info task"""
     dashboard = self.login() if init else DashboardPage(self.getDriver())
     logging.info('Calling Create new Article')
     article_name = self.create_article(journal='PLOS Wombat', type_='generateCompleteApexData')
-    manuscript_page = ManuscriptViewerPage(self.getDriver())
-    manuscript_page.click_task('addl_info')
+    manuscript_viewer = ManuscriptViewerPage(self.getDriver())
+    manuscript_viewer.wait_for_viewer_page_population()
+    manuscript_viewer.click_task('addl_info')
     return AITask(self.getDriver()), article_name
 
   def test_validate_components(self):

@@ -8,7 +8,7 @@ from inspect import getfile
 from os.path import abspath, dirname
 
 from selenium.webdriver.support.events import AbstractEventListener
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, WebDriverException
 
 from Base.CustomException import ElementDoesNotExistAssertionError
 
@@ -70,7 +70,10 @@ class WebDriverListener(AbstractEventListener):
     self._log('Navigating to %s...' % url)
 
   def on_exception(self, exception, driver):
-    if type(exception) in (NoSuchElementException, ElementDoesNotExistAssertionError, AssertionError):
+    if type(exception) in (NoSuchElementException,
+                           ElementDoesNotExistAssertionError,
+                           AssertionError,
+                           WebDriverException):
       self._log('The locator provided did not match any element in the page. %s' % exception.msg)
     driver.save_screenshot(self._generate_png_filename(exception))
 

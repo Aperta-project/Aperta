@@ -243,7 +243,7 @@ class JournalAdminPage(AdminPage):
     assert 'Available Task Types' in att_title.text, att_title.text
     edit_tt_btn = self._get(self._journal_admin_avail_task_types_edit_btn)
     assert 'EDIT TASK TYPES' in edit_tt_btn.text
-    self._actions.move_to_element(edit_tt_btn)
+    self._actions.move_to_element(att_title).perform()
     time.sleep(1)
     edit_tt_btn.click()
     # time for animation of overlay
@@ -328,7 +328,6 @@ class JournalAdminPage(AdminPage):
     time.sleep(2)
     add_mmt_btn.click()
     time.sleep(2)
-    assert 'manuscript_manager_templates/new' in self._driver.current_url, self._driver.current_url
     self._validate_mmt_template_items()
     template = self._add_new_mmt_template()
 
@@ -410,6 +409,7 @@ class JournalAdminPage(AdminPage):
       col_title = column.find_element(*self._mmt_template_column_title)
       time.sleep(.5)
       col_title.click()
+      time.sleep(.5)
       self._mmt_template_column_delete = (By.CSS_SELECTOR, 'span.remove-icon')
       column.find_element(*self._mmt_template_column_delete)
       self._mmt_template_column_title_edit_cancel_btn = (By.CSS_SELECTOR, 'button.column-header-update-cancel')

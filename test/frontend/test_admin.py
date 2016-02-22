@@ -70,7 +70,7 @@ class ApertaAdminTest(CommonTest):
     logging.info('Validating base admin page user search function')
     user_type = random.choice(users)
     logging.info('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=sa_login['user'], password=login_valid_pw)
+    dashboard_page = self.login(email=oa_login['user'], password=login_valid_pw)
     dashboard_page.click_admin_link()
     adm_page = AdminPage(self.getDriver())
     adm_page.validate_search_edit_user(random.choice(user_search))

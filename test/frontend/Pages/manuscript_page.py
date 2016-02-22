@@ -29,7 +29,6 @@ class ManuscriptPage(AuthenticatedPage):
     """Click submit button"""
     self._get(self._submit_button).click()
 
-
   def click_authors_card(self):
     """ """
     authors_card_title = self._get(self._authors_card)

@@ -3,6 +3,7 @@ import { test } from 'ember-qunit';
 import startApp from '../helpers/start-app';
 import setupMockServer from '../helpers/mock-server';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
+import Factory from '../helpers/factory';
 
 var respondAuthorized, respondUnauthorized, setCurrentUserAdmin;
 
@@ -162,15 +163,8 @@ test('(200 response) with permission can see Paper Tracker link', function(asser
       name: 'Test Journal of America'
     });
 
-    store.createRecord('permission',{
-      id: 'journal+1',
-      object:{id: 1, type: 'Journal'},
-      permissions:{
-        view_paper_tracker:{
-          states: ['*']
-        }
-      }
-    });
+    Factory.createPermission('Journal', 1, ['view_paper_tracker']);
+    Ember.run(function() {
     andThen(function() {
       respondAuthorized();
       visit('/');
@@ -179,6 +173,7 @@ test('(200 response) with permission can see Paper Tracker link', function(asser
                      'paper tracker link is shown');
       });
     });
+});
   });
 });
 
@@ -200,4 +195,3 @@ test('(200 response) without permission Paper Tracker link is hidden', function(
     });
   });
 });
-

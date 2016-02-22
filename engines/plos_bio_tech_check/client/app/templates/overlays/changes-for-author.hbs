@@ -7,7 +7,7 @@
 
 <button {{action "submitTechChanges"}}
         id="submit-tech-fix"
-        class="button-primary button--green {{if isSubmissionTaskNotEditable "button--disabled"}} {{if isLoading "button--disabled"}}"
+        class="button-primary button--green {{if isNotEditable "button--disabled"}} {{if isLoading "button--disabled"}}"
         disabled={{isLoading}}>
   These changes have been made
 </button>

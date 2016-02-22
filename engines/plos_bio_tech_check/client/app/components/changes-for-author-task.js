@@ -17,7 +17,7 @@ export default TaskComponent.extend({
 
   actions: {
     submitTechChanges() {
-      if (this.get('isSubmissionTaskNotEditable')) { return; }
+      if (this.get('isNotEditable')) { return; }
       if (!this.get('allSubmissionTasksCompleted')) {
         this.flash.displayMessage('error', 'At least one required Task remains incomplete. Please complete all required Tasks.');
       } else {

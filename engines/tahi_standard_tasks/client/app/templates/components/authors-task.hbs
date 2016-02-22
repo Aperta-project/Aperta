@@ -10,7 +10,7 @@
 
   <div>
     {{#if isEditable}}
-      <button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "toggleAuthorForm" group}}>
+      <button class="button-primary button--green {{if isNotEditable 'button--disabled'}}" disabled={{isNotEditable}} {{action "toggleAuthorForm" group}}>
         Add a New Author
       </button>
       <br>
@@ -35,7 +35,7 @@
                     save="saveAuthor"
                     author=authorWithErrors.model
                     errors=authorWithErrors.errors
-                    disabled=isSubmissionTaskNotEditable}}
+                    disabled=isNotEditable}}
       {{author-drop-target index=authorWithErrors.model.position
                            isEditable=isEditable
                            changePosition=(action "changeAuthorPosition")}}

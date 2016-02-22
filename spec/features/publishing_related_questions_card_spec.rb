@@ -1,10 +1,19 @@
 require 'rails_helper'
 
 feature 'Publishing Related Questions Card', js: true do
+  include AuthorizationSpecHelper
+
   let(:creator) { create :user, first_name: 'Creator' }
   let!(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: creator) }
   let!(:task) do
     FactoryGirl.create(:publishing_related_questions_task, paper: paper)
+  end
+  role Role::CREATOR_ROLE do
+    has_permission action: 'edit', applies_to: 'Task'
+  end
+
+  before do
+    assign_user creator, to: paper, with_role: role_Creator
   end
 
   def short_title_selector
@@ -20,6 +29,7 @@ feature 'Publishing Related Questions Card', js: true do
     let!(:overlay) { Page.view_task_overlay(paper, task) }
 
     scenario 'sets the short title properly' do
+      wait_for_ajax
       content_editable = find(short_title_selector)
 
       # <br> tags are only added when the space key is hit. So we clear the
@@ -37,6 +47,7 @@ feature 'Publishing Related Questions Card', js: true do
     end
 
     scenario 'upload attachent' do
+      wait_for_ajax
       within '#published-elsewhere' do
         choose 'Yes'
         find('.fileinput-button').click

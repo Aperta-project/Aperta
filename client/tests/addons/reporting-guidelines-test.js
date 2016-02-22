@@ -33,6 +33,8 @@ module('Integration: Reporting Guidelines Card', {
       oldRole: "author"
     });
 
+    Factory.createPermission('ReportingGuidelinesTask', taskId, ['edit']);
+
     currentPaper = records[0];
     task = records[1];
 

@@ -29,17 +29,18 @@ var Ability = Ember.Object.extend({
 });
 
 export default Ember.Service.extend({
-  build(abilityString, resource, promise) {
+  build(abilityString, resource, callback) {
 
     this.store = this.container.lookup('store:main');
-
-    var permissionId = resource.constructor.typeKey + '+' + resource.id;
+    var classname = resource.constructor.typeKey;
+    classname = classname.charAt(0).toUpperCase() + classname.slice(1);
+    var permissionId =  classname + '+' + resource.id;
     var ability = Ability.create({name:abilityString, resource: resource});
 
     this.store.find('permission', permissionId).then(function(value){
       ability.set('permissions', value);
-      if (promise){
-        promise.resolve();
+      if (callback){
+        callback(ability);
       }
     });
 
@@ -47,13 +48,11 @@ export default Ember.Service.extend({
   },
 
   can(abilityString, resource) {
-    var ability
-    var abilityPromise =  new Promise((resolve, reject)=> {
-      var promise = {resolve: resolve, reject: reject};
-      ability = this.build(abilityString, resource, promise);
-    });
-    return abilityPromise.then(function (value) {
+    return new Promise((resolve) => {
+      this.build(abilityString, resource, resolve);
+    }).then(function (ability) {
+      console.log('ability', ability, ability.get('can'));
       return ability.get('can');
-    })
+    });
   }
 });

@@ -4,8 +4,8 @@
       <div class="inset-form-control-text">
         <label>First Name</label>
         {{error-message message=validationErrors.firstName
-                        icon=true
-                        text=false}}
+                        displayIcon=true
+                        displayText=false}}
       </div>
       {{input type="text"
               value=author.firstName
@@ -19,8 +19,8 @@
       <div class="inset-form-control-text">
         <label>MI</label>
         {{error-message message=validationErrors.middleInitial
-                        icon=true
-                        text=false}}
+                        displayIcon=true
+                        displayText=false}}
       </div>
       {{input type="text"
               value=author.middleInitial
@@ -33,8 +33,8 @@
       <div class="inset-form-control-text">
         <label>Last Name</label>
         {{error-message message=validationErrors.lastName
-                        icon=true
-                        text=false}}
+                        displayIcon=true
+                        displayText=false}}
       </div>
       {{input type="text"
               value=author.lastName
@@ -48,8 +48,8 @@
       <div class="inset-form-control-text">
         <label>Email</label>
         {{error-message message=validationErrors.email
-                        icon=true
-                        text=false}}
+                        displayIcon=true
+                        displayText=false}}
       </div>
       {{input type="text"
               value=author.email
@@ -66,8 +66,8 @@
       <div class="inset-form-control-text">
         <label>Title</label>
         {{error-message message=validationErrors.title
-                        icon=true
-                        text=false}}
+                        displayIcon=true
+                        displayText=false}}
       </div>
       {{input type="text"
               value=author.title
@@ -81,8 +81,8 @@
       <div class="inset-form-control-text">
         <label>Department</label>
         {{error-message message=validationErrors.department
-                        icon=true
-                        text=false}}
+                        displayIcon=true
+                        displayText=false}}
       </div>
       {{input type="text"
               value=author.department
@@ -96,8 +96,8 @@
   <div class="flex-group">
     <div class="flex-element author-affiliation required {{if validationErrors.affiliation "error"}}">
       {{error-message message=validationErrors.affiliation
-                      icon=true
-                      text=true}}
+                      displayIcon=true
+                      displayText=true}}
       {{institution-search value=affiliation
                            institutionSelected="institutionSelected"
                            disabled=fieldsDisabled
@@ -144,8 +144,8 @@
   <div class="form-group author-contributions form-inline">
     <h4 class="required">Author Contributions</h4>
     {{error-message message=validationErrors.contributions
-                    icon=true
-                    text=true}}
+                    displayIcon=true
+                    displayText=true}}
     <div class="flex-group">
       {{#each authorContributionIdents as |contributionIdent|}}
         {{#nested-question-check ident=contributionIdent

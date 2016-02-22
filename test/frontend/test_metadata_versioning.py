@@ -64,19 +64,22 @@ class MetadataVersioningTest(CommonTest):
                                 )
     dashboard_page.restore_timeout()
     paper_viewer = ManuscriptViewerPage(self.getDriver())
+    # check for flash message
+    paper_viewer.validate_ihat_conversions_success()
     paper_id = paper_viewer.get_current_url().split('/')[-1]
     paper_id = paper_id.split('?')[0] if '?' in paper_id else paper_id
     logging.info("Assigned paper id: {}".format(paper_id))
     paper_viewer.complete_task('Billing')
-    time.sleep(.1)
+    time.sleep(.2)
     paper_viewer.complete_task('Cover Letter')
     paper_viewer.complete_task('Figures')
     paper_viewer.complete_task('Supporting Info')
     paper_viewer.complete_task('Authors')
     paper_viewer.complete_task('Additional Information')
+    # refresh !!
+    paper_viewer.refresh()
     time.sleep(3)
-    # get title
-    title = paper_viewer.get_title()
+
     # make initial submission
     paper_viewer.click_submit_btn()
     paper_viewer.confirm_submit_btn()

@@ -18,11 +18,11 @@ from Base.PostgreSQL import PgSQL
 from frontend.Cards.authors_card import AuthorsCard
 from frontend.Cards.basecard import BaseCard
 from frontend.Tasks.basetask import BaseTask
-from frontend.Tasks.authors_task import AuthorsTask
 from frontend.Tasks.additional_information_task import AITask
+from frontend.Tasks.authors_task import AuthorsTask
+from frontend.Tasks.billing_task import BillingTask
 from frontend.Tasks.initial_decision_task import InitialDecisionTask
 from frontend.Tasks.register_decision_task import RegisterDecisionTask
-from frontend.Cards.billing_card import BillingCard
 from frontend.Cards.figures_card import FiguresCard
 from frontend.Cards.revise_manuscript_card import ReviseManuscriptCard
 
@@ -400,6 +400,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       else:
         return None
     base_task = BaseTask(self._driver)
+    base_task.set_timeout(60)
     if task_name == 'Initial Decision':
       initial_decision_task = InitialDecisionTask(self._driver)
       initial_decision_task.execute_decision()
@@ -426,8 +427,16 @@ class ManuscriptViewerPage(AuthenticatedPage):
         self._get(base_task._completed_cb).click()
       task.click()
       time.sleep(1)
+    elif task_name == 'Billing':
+      billing_task = BillingTask(self._driver)
+      billing_task.complete(data)
+      #complete_prq
+      if not base_task.completed_cb_is_selected():
+        self._get(base_task._completed_cb).click()
+      task.click()
+      time.sleep(1)
     elif task_name in ('Cover Letter', 'Figures', 'Supporting Info', 'Upload Manuscript',
-                     'Revise Manuscript', 'Billing'):
+                     'Revise Manuscript', ):
       # before checking that the complete is selected, in the accordion we need to
       # check if it is open
       if 'task-disclosure--open' not in task_div.get_attribute('class'):
@@ -449,6 +458,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
       time.sleep(1)
     else:
       raise ValueError('No information on this card: {}'.format(task_name))
+    base_task.restore_timeout()
 
   def get_paper_title_from_page(self):
     """

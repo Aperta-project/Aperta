@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 feature 'Publishing Related Questions Card', js: true do
+  include AuthorizationSpecHelper
+
   let(:creator) { create :user, first_name: 'Creator' }
-  let!(:paper) { FactoryGirl.create(:paper, :with_tasks, creator: creator) }
+  let!(:paper) { FactoryGirl.create(:paper, creator: creator) }
   let!(:task) do
     FactoryGirl.create(:publishing_related_questions_task, paper: paper)
   end
@@ -25,7 +27,6 @@ feature 'Publishing Related Questions Card', js: true do
       # <br> tags are only added when the space key is hit. So we clear the
       content_editable.set('T')
       content_editable.send_keys('his is a short title', :tab)
-      wait_for_ajax
 
       wait_for_condition do
         paper.reload

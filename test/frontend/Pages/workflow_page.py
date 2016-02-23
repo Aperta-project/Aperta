@@ -152,7 +152,7 @@ class WorkflowPage(AuthenticatedPage):
     """
     card_overlay = self._get(self._add_card_overlay)
     assert card_overlay.text == 'Pick the type of card to add'
-    #self.validate_application_h1_style(card_overlay)
+    self.validate_application_title_style(card_overlay)
     assert card_overlay.value_of_css_property('text-align') == 'center'
     close_icon_overlay = self._get(self._close_icon_overlay)
     # TODO: Change following line after bug #102078080 is solved
@@ -242,7 +242,7 @@ class WorkflowPage(AuthenticatedPage):
     """
     remove_title = self._get(self._remove_confirmation_title)
     assert remove_title.text == "You're about to delete this card forever."
-    self.validate_application_h1_style(remove_title)
+    self.validate_application_title_style(remove_title)
     remove_subtitle = self._get(self._remove_confirmation_subtitle)
     assert remove_subtitle.text == "Are you sure?"
     assert remove_subtitle.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'

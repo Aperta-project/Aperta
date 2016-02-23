@@ -173,42 +173,64 @@ class AdminPage(AuthenticatedPage):
       self.validate_blue_on_blue_button_style(upload_button)
       self._actions.move_to_element(upload_button).perform()
       time.sleep(2)
-      assert upload_button.value_of_css_property('color') == tahi_blue
-      assert upload_button.value_of_css_property('background-color') == white
+      assert upload_button.value_of_css_property('color') == tahi_blue, upload_button.value_of_css_property('color')
+      assert upload_button.value_of_css_property('background-color') == white, \
+          upload_button.value_of_css_property('background-color')
       upload_note = self._get(self._base_admin_journals_edit_logo_upload_note)
-      assert upload_note.text == '(250px x 40px)'
-      assert application_typeface in upload_note.value_of_css_property('font-family')
-      assert upload_note.value_of_css_property('font-size') == '14px'
-      assert upload_note.value_of_css_property('font-style') == 'italic'
-      assert upload_note.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
-      assert upload_note.value_of_css_property('line-height') == '40px'
-      assert upload_note.value_of_css_property('padding-left') == '10px'
+      assert upload_note.text == '(250px x 40px)', upload_note.text
+      assert application_typeface in upload_note.value_of_css_property('font-family'), \
+          upload_note.value_of_css_property('font-family')
+      assert upload_note.value_of_css_property('font-size') == '14px', upload_note.value_of_css_property('font-size')
+      assert upload_note.value_of_css_property('font-style') == 'italic', \
+          upload_note.value_of_css_property('font-style')
+      assert upload_note.value_of_css_property('color') == 'rgba(255, 255, 255, 1)', \
+          upload_note.value_of_css_property('color')
+      assert upload_note.value_of_css_property('line-height') == '40px', \
+          upload_note.value_of_css_property('line-height')
+      assert upload_note.value_of_css_property('padding-left') == '10px', \
+          upload_note.value_of_css_property('padding-left')
       journal_title_label = self._get(self._base_admin_journals_edit_title_label)
-      assert journal_title_label.text == 'Journal Title'
+      assert journal_title_label.text == 'Journal Title', journal_title_label.text
       self.validate_input_field_label_style(journal_title_label)
       journal_title_field = self._get(self._base_admin_journals_edit_title_field)
-      assert journal_title_field.get_attribute('placeholder') == 'PLOS Yeti'
-      assert application_typeface in journal_title_field.value_of_css_property('font-family')
-      assert journal_title_field.value_of_css_property('font-size') == '14px'
-      assert journal_title_field.value_of_css_property('font-weight') == '400'
-      assert journal_title_field.value_of_css_property('font-style') == 'normal'
-      assert journal_title_field.value_of_css_property('color') == 'rgba(85, 85, 85, 1)'
-      assert journal_title_field.value_of_css_property('line-height') == '20px'
-      assert journal_title_field.value_of_css_property('padding-left') == '12px'
+      assert journal_title_field.get_attribute('placeholder') == 'PLOS Yeti', \
+          journal_title_field.get_attribute('placeholder')
+      assert application_typeface in journal_title_field.value_of_css_property('font-family'), \
+          journal_title_field.value_of_css_property('font-family')
+      assert journal_title_field.value_of_css_property('font-size') == '14px', \
+          journal_title_field.value_of_css_property('font-size')
+      assert journal_title_field.value_of_css_property('font-weight') == '400', \
+          journal_title_field.value_of_css_property('font-weight')
+      assert journal_title_field.value_of_css_property('font-style') == 'normal', \
+          journal_title_field.value_of_css_property('font-style')
+      assert journal_title_field.value_of_css_property('color') == 'rgba(85, 85, 85, 1)', \
+          journal_title_field.value_of_css_property('color')
+      assert journal_title_field.value_of_css_property('line-height') == '20px', \
+          journal_title_field.value_of_css_property('line-height')
+      assert journal_title_field.value_of_css_property('padding-left') == '12px', \
+          journal_title_field.value_of_css_property('padding-left')
       journal_desc_label = self._get(self._base_admin_journals_edit_desc_label)
-      assert journal_desc_label.text == 'Journal Description'
+      assert journal_desc_label.text == 'Journal Description', journal_desc_label.text
       self.validate_input_field_label_style(journal_desc_label)
       journal_desc_field = self._get(self._base_admin_journals_edit_desc_field)
-      assert journal_desc_field.get_attribute('placeholder') == 'Accelerating the publication of peer-reviewed science'
-      assert application_typeface in journal_desc_field.value_of_css_property('font-family')
-      assert journal_desc_field.value_of_css_property('font-size') == '14px'
-      assert journal_desc_field.value_of_css_property('font-weight') == '400'
-      assert journal_desc_field.value_of_css_property('font-style') == 'normal'
-      assert journal_desc_field.value_of_css_property('color') == 'rgba(85, 85, 85, 1)'
-      assert journal_desc_field.value_of_css_property('line-height') == '20px'
-      assert journal_desc_field.value_of_css_property('padding-left') == '12px'
+      assert journal_desc_field.get_attribute('placeholder') == \
+             'Accelerating the publication of peer-reviewed science', journal_desc_field.get_attribute('placeholder')
+      assert application_typeface in journal_desc_field.value_of_css_property('font-family'), \
+          journal_desc_field.value_of_css_property('font-family')
+      assert journal_desc_field.value_of_css_property('font-size') == '14px', \
+          journal_desc_field.value_of_css_property('font-size')
+      assert journal_desc_field.value_of_css_property('font-weight') == '400', \
+          journal_desc_field.value_of_css_property('font-weight')
+      assert journal_desc_field.value_of_css_property('font-style') == 'normal', \
+          journal_desc_field.value_of_css_property('font-style')
+      assert journal_desc_field.value_of_css_property('color') == 'rgba(85, 85, 85, 1)', \
+          journal_desc_field.value_of_css_property('color')
+      assert journal_desc_field.value_of_css_property('line-height') == '20px', \
+          journal_desc_field.value_of_css_property('line-height')
+      assert journal_desc_field.value_of_css_property('padding-left') == '12px', \
+          journal_desc_field.value_of_css_property('padding-left')
       save_button = self._get(self._base_admin_journals_edit_save_button)
-      assert save_button.text == 'SAVE'
+      assert save_button.text == 'SAVE', save_button.text
       self.validate_blue_on_blue_button_style(save_button)
       self._actions.move_to_element(anj_button).perform()
       self._actions.move_to_element(save_button).perform()
@@ -217,18 +239,25 @@ class AdminPage(AuthenticatedPage):
       assert save_button.value_of_css_property('background-color') == white, \
           save_button.value_of_css_property('background-color')
       cancel_link = self._get(self._base_admin_journals_edit_cancel_link)
-      assert cancel_link.text == 'Cancel'
-      assert application_typeface in cancel_link.value_of_css_property('font-family')
-      assert cancel_link.value_of_css_property('font-size') == '14px'
-      assert cancel_link.value_of_css_property('font-weight') == '400'
-      assert cancel_link.value_of_css_property('color') == 'rgba(255, 255, 255, 1)'
-      assert cancel_link.value_of_css_property('background-color') == 'transparent'
-      assert cancel_link.value_of_css_property('line-height') == '20px'
-      assert cancel_link.value_of_css_property('text-align') == 'center'
-      assert cancel_link.value_of_css_property('vertical-align') == 'middle'
+      assert cancel_link.text == 'Cancel', cancel_link.text
+      assert application_typeface in cancel_link.value_of_css_property('font-family'), \
+          cancel_link.value_of_css_property('font-family')
+      assert cancel_link.value_of_css_property('font-size') == '14px', cancel_link.value_of_css_property('font-size')
+      assert cancel_link.value_of_css_property('font-weight') == '400', cancel_link.value_of_css_property('font-weight')
+      assert cancel_link.value_of_css_property('color') == 'rgba(255, 255, 255, 1)', \
+          cancel_link.value_of_css_property('color')
+      assert cancel_link.value_of_css_property('background-color') == 'transparent', \
+          cancel_link.value_of_css_property('background-color')
+      assert cancel_link.value_of_css_property('line-height') == '20px', \
+          cancel_link.value_of_css_property('line-height')
+      assert cancel_link.value_of_css_property('text-align') == 'center', \
+          cancel_link.value_of_css_property('text-align')
+      assert cancel_link.value_of_css_property('vertical-align') == 'middle', \
+          cancel_link.value_of_css_property('vertical-align')
       self._actions.move_to_element(cancel_link).perform()
       time.sleep(1)
-      assert cancel_link.value_of_css_property('text-decoration') == 'underline'
+      assert cancel_link.value_of_css_property('text-decoration') == 'underline', \
+          cancel_link.value_of_css_property('text-decoration')
       self._actions.move_to_element(cancel_link).perform()
       cancel_link.click()
       page_tertiary_journal_count = self._gets(self._base_admin_journals_section_journal_block)

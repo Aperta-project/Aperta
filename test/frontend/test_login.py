@@ -143,7 +143,7 @@ class ApertaORCIDLoginTest(CommonTest):
   Self imposed AC:
      - validate sign in and sign out using ORCID and accompanying error messages
   """
-  def test_validate_orcid_login(self):
+  def rest_validate_orcid_login(self):
     """
     Validates the Signin via pre-existing ORCID account link
     Note, this is currently not correctly wired in, so just doing a minimal test

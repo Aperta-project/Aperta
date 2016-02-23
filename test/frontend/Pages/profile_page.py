@@ -84,9 +84,7 @@ class ProfilePage(AuthenticatedPage):
     assert 'First and last name:' in name_title.text
     self.validate_profile_title_style(name_title)
     name = self._get(self._profile_name)
-    # This is actually an h2 tag in the document, so we should not be trying to validate it via the h1 style
-    # https://www.pivotaltracker.com/story/show/103368442
-    # self.validate_application_h1_style(name)
+    self.validate_application_title_style(name)
     username_title = self._get(self._profile_username_title)
     assert 'Username:' in username_title.text
     self.validate_profile_title_style(username_title)

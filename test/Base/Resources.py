@@ -53,6 +53,19 @@ fm_login = {'user': 'jgray_flowmgr'}   # flow manager permissions
 oa_login = {'user': 'jgray_oa'}        # ordinary admin login
 sa_login = {'user': 'jgray_sa'}        # super admin login
 
+# Accounts for new permissions scheme
+# These are native logins for now - need to be migrated to NED logins when PS-1199 is resolved.
+creator_login = {'user': 'jgray_author', 'name': ''}
+collaborator_login = {'user': 'jgray_collab', 'name': 'Jeffrey Collaborator'}
+reviewer_login = {'user': 'jgray_reviewer', 'name': 'Jeffrey RV Gray'}
+staff_admin_login = {'user': 'jgray_oa'}
+internal_editor_login = {'user': 'jgray_assocedit'}
+handling_editor_login = {'user': 'jgray_handedit'}
+pub_svcs_login = {'user': 'jgray_pubsvcs'}
+acad_editor_login = {'user':'jgray_editor', 'name': 'Jeffrey AMM Gray', 'email': 'sealresq+4@gmail.com'}
+# anyone can be a participant
+# everyone has a user role for their own profile page
+
 # Define connector information for Aperta's Tahi component postgres instance
 # Lean data
 # psql_hname = getenv('APERTA_PSQL_HOST', 'ec2-54-163-228-35.compute-1.amazonaws.com')

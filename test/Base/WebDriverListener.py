@@ -70,10 +70,10 @@ class WebDriverListener(AbstractEventListener):
     self._log('Navigating to %s...' % url)
 
   def on_exception(self, exception, driver):
-    if type(exception) in (NoSuchElementException,
+    if type(exception) in [NoSuchElementException,
                            ElementDoesNotExistAssertionError,
                            AssertionError,
-                           WebDriverException):
+                           WebDriverException]:
       self._log('The locator provided did not match any element in the page. %s' % exception.msg)
     driver.save_screenshot(self._generate_png_filename(exception))
 

@@ -85,8 +85,7 @@ class AuthorsCard(BaseCard):
     """Validate"""
     authors_title = self._get(self._authors_title)
     assert authors_title.text == 'Authors', authors_title.text
-    # Commented out until bug APERTA-3090 is fixed
-    #self.validate_application_h1_style(authors_title)
+    self.validate_application_title_style(authors_title)
     authors_text = self._get(self._authors_text)
     assert authors_text.text == (
     "Our criteria for authorship are based on the 'Uniform Requirements for Manuscripts "

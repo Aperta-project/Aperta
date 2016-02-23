@@ -181,7 +181,7 @@ class DashboardPage(AuthenticatedPage):
       else:
         assert welcome_msg.text == 'You have {0} invitations.'.format(invitation_count), \
                                    '{0} {1}'.format(welcome_msg.text, str(invitation_count))
-      # self.validate_application_h1_style(welcome_msg)
+      self.validate_application_title_style(welcome_msg)
       view_invites_btn = self._get(self._dashboard_view_invitations_btn)
       self.validate_primary_big_green_button_style(view_invites_btn)
 
@@ -218,7 +218,7 @@ class DashboardPage(AuthenticatedPage):
     else:
       manuscript_count = 0
       assert 'Hi, ' + first_name + '. You have no manuscripts.' in welcome_msg.text, welcome_msg.text
-    # self.validate_application_h1_style(welcome_msg)
+    self.validate_application_title_style(welcome_msg)
     return manuscript_count
 
   def validate_active_manuscript_section(self, username, active_manuscript_count):
@@ -500,10 +500,7 @@ class DashboardPage(AuthenticatedPage):
     """
     # global elements
     modal_title = self._get(self._view_invites_title)
-    # The following call will fail because of an inconsistent implementation of the style of this heading
-    # thus for the time being, I am using the one off validations. These should be removed when the bug
-    # is fixed.
-    # self.validate_application_h1_style(modal_title)
+    self.validate_application_title_style(modal_title)
     assert application_typeface in modal_title.value_of_css_property('font-family')
     assert modal_title.value_of_css_property('font-size') == '48px'
     assert modal_title.value_of_css_property('font-weight') == '500'

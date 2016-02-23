@@ -227,8 +227,7 @@ class ManuscriptViewerPage(AuthenticatedPage):
     time.sleep(.5)
     self._get(self._recent_activity_modal)
     modal_title = self._get(self._overlay_header_title)
-    #Temporary disable due to bad style
-    #self.validate_application_h1_style(modal_title)
+    self.validate_application_title_style(modal_title)
     close_icon_overlay = self._get(self._overlay_header_close)
     # TODO: Change following line after bug #102078080 is solved
     assert close_icon_overlay.value_of_css_property('font-size') in ('80px', '90px')

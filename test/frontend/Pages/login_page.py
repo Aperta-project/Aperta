@@ -58,7 +58,8 @@ class LoginPage(AuthenticatedPage):
     """
     welcome_msg = self._get(self._welcome_message)
     assert welcome_msg.text == 'Welcome to Aperta', welcome_msg.text
-    #self.validate_application_h1_style(welcome_msg)
+    # APERTA-6107 Filed for the following
+    # self.validate_application_title_style(welcome_msg)
     # inside the app, it seems we use a dark grey (51, 51, 51) Why is this different?
     assert welcome_msg.value_of_css_property('color') == 'rgba(0, 0, 0, 1)'
     forgot_msg = self._get(self._forgot_pw_link)
@@ -182,7 +183,8 @@ class LoginPage(AuthenticatedPage):
     """
     pw_reset_ttl = self._get(self._fyp_title)
     assert pw_reset_ttl.text == 'Forgot your password?'
-    #self.validate_application_h1_style(pw_reset_ttl)
+    # APERTA-6107 has been filed for the font-size mismatch
+    # self.validate_application_title_style(pw_reset_ttl)
     email_input = self._get(self._fyp_email_field)
     assert email_input.get_attribute('placeholder') == 'Email'
     assert email_input.value_of_css_property('width') == '205px'

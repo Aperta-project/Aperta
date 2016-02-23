@@ -112,7 +112,7 @@ class BaseCard(AuthenticatedPage):
     """Validate styles from elements common to all cards"""
     completed_lbl = self._get(self._completed_label)
     header_link = self._get(self._header_link)
-    #self.validate_application_h1_style(header_link)
+    self.validate_accordion_task_title(header_link)
     manuscript_icon = self._get(self._manuscript_icon)
     icon_svg = manuscript_icon.find_element_by_xpath(
       "//*[local-name() = 'path']").get_attribute('d')

@@ -452,18 +452,18 @@ class AuthenticatedPage(PlosPage):
 
   # Heading Styles ===========================
   @staticmethod
-  def validate_application_h1_style(title):
+  def validate_application_title_style(title):
     """
     Ensure consistency in rendering page and overlay main headings across the application
     Not used for the Manuscript Title!
     :param title: title to validate
+    Updated for new style guide: https://app.zeplin.io/project.html
     """
     assert application_typeface in title.value_of_css_property('font-family'), \
         title.value_of_css_property('font-family')
-    assert title.value_of_css_property('font-size') == '36px', title.value_of_css_property('font-size')
+    assert title.value_of_css_property('font-size') == '48px', title.value_of_css_property('font-size')
     assert title.value_of_css_property('font-weight') == '500', title.value_of_css_property('font-weight')
-    assert title.value_of_css_property('line-height') == '39.6px', title.value_of_css_property('line-height')
-    # This color is not represented in the tahi palette
+    assert title.value_of_css_property('line-height') == '52.8px', title.value_of_css_property('line-height')
     assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', title.value_of_css_property('color')
 
   @staticmethod
@@ -594,6 +594,21 @@ class AuthenticatedPage(PlosPage):
     assert title.value_of_css_property('font-weight') == font_weight
     assert title.value_of_css_property('line-height') == line_height
     assert title.value_of_css_property('color') == color
+
+  @staticmethod
+  def validate_accordion_task_title(title):
+    """
+    Ensure consistency in rendering accordion headings across the application
+    :param title: title to validate
+    Updated for new style guide: https://app.zeplin.io/project.html
+    """
+    assert application_typeface in title.value_of_css_property('font-family'), \
+        title.value_of_css_property('font-family')
+    assert title.value_of_css_property('font-size') == '18px', title.value_of_css_property('font-size')
+    assert title.value_of_css_property('line-height') == '40px', title.value_of_css_property('line-height')
+    assert title.value_of_css_property('color') == 'rgba(51, 51, 51, 1)', title.value_of_css_property('color')
+
+
 
   # Ordinary Text Styles ============================
   @staticmethod

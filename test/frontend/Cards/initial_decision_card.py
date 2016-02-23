@@ -35,8 +35,7 @@ class InitialDecisionCard(BaseCard):
     """
     card_title = self._get(self._card_title)
     assert card_title.text == 'Initial Decision'
-    # Commented out until bug APERTA-3090 is fixed
-    #self.validate_application_h1_style(card_title)
+    self.validate_application_title_style(card_title)
     intro_text = self._get(self._intro_text)
     self.validate_application_ptext(intro_text)
     assert intro_text.text == 'Please write your decision letter in the area below', intro_text.text

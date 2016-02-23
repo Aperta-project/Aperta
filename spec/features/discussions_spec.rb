@@ -56,10 +56,7 @@ feature "Discussions", js: true, selenium: true do
 
     scenario 'can see discussion and add reply' do
       login_as(user, scope: :user)
-      visit "/papers/#{paper.id}"
-      wait_for_ajax
-      find('#nav-discussions').click
-      wait_for_ajax
+      visit "/papers/#{paper.id}/discussions"
 
       discussion_page.expect_no_create_button
       discussion_page.click_topic

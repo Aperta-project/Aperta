@@ -13,7 +13,7 @@ export default Ember.Component.extend(DragNDrop.DraggableMixin, {
   errorsPresent: alias('model.errorsPresent'),
   editState: alias('errorsPresent'),
 
-  fieldsDisabled: Ember.computed.alias('isEditable'),
+  fieldsDisabled: Ember.computed.not('isEditable'),
 
   // canHover is true, now, but should be Ember.computed.alias('isEditable')
   // once the read-only author-view contains all needed information.

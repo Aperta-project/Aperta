@@ -1,0 +1,19 @@
+.task.read-only {
+  button, .button {
+    display: none;
+  }
+
+  .task-completed-section {
+    display: none;
+  }
+
+  &.user-can-make-editable {
+    .task-completed-section {
+      display: block;
+
+      button, .button {
+        display: inline;
+      }
+    }
+  }
+}

@@ -32,7 +32,7 @@ class Role < ActiveRecord::Base
 
   def self.ensure_exists(name, journal: nil,
                                participates_in: [],
-                               delete_stray_permissions: false,
+                               delete_stray_permissions: true,
                          &block)
     role = Role.where(name: name, journal: journal).first_or_create!
 
@@ -65,9 +65,6 @@ class Role < ActiveRecord::Base
   end
 
   def delete_stray_permissions
-    fail StandardError, "Role.ensure_exists called with
-delete_stray_permissions, but no permissions created." \
-                        if @ensured_permission_ids.blank?
     permissions.delete(permissions.where.not(id: @ensured_permission_ids))
     reset_tracked_permissions
   end

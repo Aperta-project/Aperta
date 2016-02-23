@@ -1,9 +1,9 @@
 {{partial "task-completed-section"}}
 
 <div class="task-main-content">
-  {{#if isEditable}}
+  {{#if taskStateToggleable}}
     <p>You may upload a manuscript at any time.</p>
-    <span class="button-primary button--green fileinput-button {{if isSubmissionTaskNotEditable 'button--disabled'}}">
+    <span class="button-primary button--green fileinput-button {{if isNotEditable 'button--disabled'}}">
       Select and upload a document
       {{file-uploader id="upload-files"
                       railsMethod="PUT"
@@ -14,7 +14,7 @@
                       error="uploadError"
                       filePrefix="paper/manuscript"
                       url=manuscriptUploadUrl
-                      disabled=isSubmissionTaskNotEditable}}
+                      disabled=isNotEditable}}
     </span>
   {{else}}
     <p>You are unable to upload a new manuscript while your submission is under review.</p>

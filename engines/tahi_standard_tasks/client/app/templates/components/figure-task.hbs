@@ -10,7 +10,7 @@
 
   {{nested-question-check ident="figures--complies"
                    owner=task
-                   disabled=isSubmissionTaskNotEditable}}
+                   disabled=isNotEditable}}
 
   <hr>
 
@@ -23,7 +23,7 @@
                            uploadFinished="uploadFinished"
                            uploadStarted="uploadStarted"
                            uploadProgress="uploadProgress"
-                           isEditable=isSubmissionTaskEditable}}
+                           isEditable=isEditable}}
   {{/each}}
 
 
@@ -34,7 +34,7 @@
   </div>
 
 
-  <span class="button-primary button--green fileinput-button {{if isSubmissionTaskNotEditable 'button--disabled'}}">
+  <span class="button-primary button--green fileinput-button {{if isNotEditable 'button--disabled'}}">
     <span>Add new Figures</span>
     {{file-uploader id="figure_attachment"
                     accept=".jpg,.jpeg,.tiff,.tif,.gif,.png,.eps"
@@ -44,6 +44,6 @@
                     done="uploadFinished"
                     progress="uploadProgress"
                     multiple=true
-                    disabled=isSubmissionTaskNotEditable}}
+                    disabled=isNotEditable}}
   </span>
 </div>

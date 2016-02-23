@@ -3,8 +3,8 @@ import {
   moduleForComponent,
   test
 } from 'ember-qunit';
+import FakeCanService from '../helpers/fake-can-service';
 
-let c;
 
 moduleForComponent('cover-letter-task', 'CoverLetterTaskComponent', {
   integration: false,
@@ -22,25 +22,25 @@ moduleForComponent('cover-letter-task', 'CoverLetterTaskComponent', {
       }
     });
 
-    c = this.subject();
-    c.set('task', this.task);
-  },
 
-  afterEach() {
-    c = null;
+    this.register('service:can', FakeCanService);
+    this.inject.service('can', { as: 'can' });
+    this.subject().set('task', this.task);
   }
 });
 
 test('#letterBody: returns the content of the cover letter', function(assert) {
-  assert.equal(c.get('letterBody'), 'hi');
+  assert.equal(this.subject().get('letterBody'), 'hi');
 });
 
 test('#saveCoverLetter: model got saved back', function(assert) {
+  this.subject().set('editAbility.can', true);
+
   const handler = function() {};
   sinon.stub(this.task, 'save').returns(
     new Ember.RSVP.Promise(handler, handler)
   );
 
-  c.send('saveCoverLetter');
+  this.subject().send('saveCoverLetter');
   assert.ok(this.task.save.called);
 });

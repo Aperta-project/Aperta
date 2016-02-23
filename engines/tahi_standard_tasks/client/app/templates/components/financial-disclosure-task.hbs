@@ -3,11 +3,11 @@
 <div class="task-main-content">
   <div class="question-list">
     <div class="question">
-      {{#nested-question-radio model=authorReceivedFundingQuestion
+      {{#nested-question-radio ident='financial_disclosures--author_received_funding'
           owner=task
           yesAction="choseFundingReceived"
           noAction="choseFundingNotReceived"
-          disabled=isSubmissionTaskNotEditable
+          disabled=isNotEditable
           as |selected|}}
 
         {{#if selected.yes}}
@@ -24,12 +24,12 @@
     {{#each funders as |funder|}}
       <div class="question-dataset">
         {{funder-dataset model=funder
-                         disabled=isSubmissionTaskNotEditable}}
+                         disabled=isNotEditable}}
       </div>
     {{/each}}
 
     {{#if receivedFunding}}
-      <button class="button-secondary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "addFunder"}}>Add Another Funder</button>
+      <button class="button-secondary button--green {{if isNotEditable 'button--disabled'}}" disabled={{isNotEditable}} {{action "addFunder"}}>Add Another Funder</button>
 
       <hr>
 

@@ -36,6 +36,11 @@ module('Integration: FinancialDisclosure', {
       oldRole: 'author'
     });
 
+    Factory.createPermission(
+      'FinancialDisclosureTask',
+      financialDisclosureTaskId,
+      ['edit']);
+
     currentPaper = records[0];
     financialDisclosureTask = records[1];
     journal = records[2];

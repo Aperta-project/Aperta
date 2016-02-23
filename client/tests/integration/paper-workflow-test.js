@@ -71,19 +71,8 @@ module('Integration: Paper Workflow page', {
       JSON.stringify({journals:[]})
     ]);
 
-    Ember.run(function(){
-      // Provide access to the paper
-      var store = getStore();
-      store.createRecord('permission',{
-        id: 'paper+1',
-        object:{id: 1, type: 'Paper'},
-        permissions:{
-          manage_workflow:{
-            states: ['*']
-          }
-        }
-      });
-    });
+    Factory.createPermission('Paper', 1, ['manage_workflow']);
+
   }
 });
 

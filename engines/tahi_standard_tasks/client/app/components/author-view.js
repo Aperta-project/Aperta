@@ -6,25 +6,28 @@ const { alias } = computed;
 
 export default Ember.Component.extend(DragNDrop.DraggableMixin, {
   classNames: ['authors-overlay-item'],
-  classNameBindings: ['hoverState:__hover', 'isEditable:__editable'],
-  hoverState: false,
-  deleteState: false,
+  classNameBindings: ['showHover:__hover', 'isEditable:__editable'],
+
   author: alias('model.object'),
   errors: alias('model.validationErrors'),
   errorsPresent: alias('model.errorsPresent'),
   editState: alias('errorsPresent'),
 
-  attachHoverEvent: on('didInsertElement', function() {
-    if (this.get('disabled')) { return; }
-    const self = this;
-    const toggleHoverClass = function() {
-      self.toggleProperty('hoverState');
-    };
+  fieldsDisabled: Ember.computed.alias('isEditable'),
 
-    this.$().hover(toggleHoverClass, toggleHoverClass);
+  // canHover is true, now, but should be Ember.computed.alias('isEditable')
+  // once the read-only author-view contains all needed information.
+  canHover: true,
+  isHovering: false,
+  showHover: Ember.computed.and('isHovering', 'canHover'),
+
+  _setupHover: Ember.on('didInsertElement', function(){
+    this.$().hover(() => {
+      this.toggleProperty('isHovering');
+    });
   }),
 
-  teardownHoverEvent: on('willDestroyElement', function() {
+  _destroyHover: Ember.on('willDestroyElement', function(){
     this.$().off('mouseenter mouseleave');
   }),
 

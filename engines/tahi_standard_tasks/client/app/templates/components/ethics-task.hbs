@@ -4,16 +4,15 @@
   <p>You must provide an ethics statement if your study involved human participants, specimens or tissue samples, or vertebrate animals, embryos or tissues. In addition, you should provide field permit information if your study requires it. It is your responsibility to provide this information and by completing this card, you confirm responsibility. All information entered here should also be included in the Methods section of your manuscript.</p>
   <ol class="question-list">
     <li class="question">
-      {{#nested-question-radio model=humanSubjectsQuestion
+      {{#nested-question-radio ident='ethics--human_subjects'
       owner=task
-      disabled=isSubmissionTaskNotEditable
-      noAction="userSelectedNoOnHumanSubjects"
+      disabled=isNotEditable
       as |selected|}}
           <div class="question-dataset {{if selected.no 'hidden'}} {{if selected.none 'hidden'}}">
-            {{nested-question-textarea model=participantsQuestion
+            {{nested-question-textarea ident='ethics--human_subjects--participants'
                 displayContent=selected.yes
                 owner=task
-                disabled=isSubmissionTaskNotEditable}}
+                disabled=isNotEditable}}
 
             <div class="question-info">
               <div class="question-info-header">Human Subject Research (involved human participants and/or tissue)</div>
@@ -25,10 +24,9 @@
     </li>
 
     <li class="question">
-      {{#nested-question-radio model=animalSubjectsQuestion
+      {{#nested-question-radio ident='ethics--animal_subjects'
       owner=task
-      disabled=isSubmissionTaskNotEditable
-      noAction="userSelectedNoOnAnimalSubjects"
+      disabled=isNotEditable
       as |selected|}}
 
       {{#if selected.yes}}
@@ -39,12 +37,12 @@
           <p>Please enter the name of your Institutional Animal Care and Use Committee (IACUC) or other relevant ethics board, and indicate whether they approved this research or granted a formal waiver of ethical approval. Also include an approval number if one was obtained.</p>
         </div>
 
-        {{nested-question-textarea model=fieldPermitQuestion
+        {{nested-question-textarea ident='ethics--animal_subjects--field_permit'
         owner=task
         displayContent=selected.yes
-        disabled=isSubmissionTaskNotEditable}}
+        disabled=isNotEditable}}
 
-        {{nested-question-uploader-manager model=fieldArriveQuestion
+        {{nested-question-uploader-manager ident='ethics--animal_subjects--field_arrive'
                                            buttonText="upload arrive checklist"
                                            hasCaption=false
                                            description="We encourage authors to comply with the <a href='http://www.nc3rs.org.uk/arrive-guidelines' target='_blank'> Animal Research: Reporting In Vivo Experiments (ARRIVE) guidelines</a>, developed by the NationalCentro for the Replacement, Refinement &amp; Reduction of Animals in Research (NC3Rs). If you have an ARRIVE checklist, please upload it here:"
@@ -55,17 +53,16 @@
     </li>
 
    <li class="question">
-      {{#nested-question-radio model=fieldStudyQuestion
+      {{#nested-question-radio ident='ethics--field_study'
         owner=task
-        disabled=isSubmissionTaskNotEditable
-        noAction="userSelectedNoOnFieldStudy"
+        disabled=isNotEditable
         as |selected|}}
         {{#if selected.yes}}
           <div class="question-dataset">
-            {{nested-question-textarea model=fieldPermitNumberQuestion
+            {{nested-question-textarea ident='ethics--field_study--field_permit_number'
             displayContent=selected.yes
             owner=task
-            disabled=isSubmissionTaskNotEditable}}
+            disabled=isNotEditable}}
           </div>
         {{/if}}
       {{/nested-question-radio}}

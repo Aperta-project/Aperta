@@ -9,7 +9,7 @@
         {{nested-question-input ident="plos_billing--first_name"
                                 owner=task
                                 placeholder="Jane"
-                                disabled=fieldsDisabled
+                                disabled=isNotEditable
                                 textClassNames="text-field-title required"
                                 validate=(action "validateQuestion")
                                 errors=validationErrors.plos_billing--first_name}}
@@ -19,7 +19,7 @@
         {{nested-question-input ident="plos_billing--last_name"
                                 owner=task
                                 placeholder="Goodall"
-                                disabled=fieldsDisabled
+                                disabled=isNotEditable
                                 textClassNames="text-field-title required"
                                 validate=(action "validateQuestion")
                                 errors=validationErrors.plos_billing--last_name}}
@@ -31,7 +31,7 @@
         {{nested-question-input ident="plos_billing--title"
                                 owner=task
                                 placeholder="World's Foremost Expert on Chimpanzees"
-                                disabled=fieldsDisabled
+                                disabled=isNotEditable
                                 textClassNames="text-field-title"}}
       </div>
 
@@ -39,7 +39,7 @@
         {{nested-question-input ident="plos_billing--department"
                                 owner=task
                                 placeholder="Primatology"
-                                disabled=fieldsDisabled
+                                disabled=isNotEditable
                                 textClassNames="text-field-title required"
                                 validate=(action "validateQuestion")
                                 errors=validationErrors.plos_billing--department}}
@@ -51,14 +51,14 @@
         {{institution-search value=affiliation1Proxy
                              institutionSelected="affiliation1Selected"
                              placeholder="Affiliation"
-                             disabled=fieldsDisabled}}
+                             disabled=isNotEditable}}
       </div>
 
       <div class="flex-element">
         {{institution-search value=affiliation2Proxy
                              institutionSelected="affiliation2Selected"
                              placeholder="Secondary Affiliation (optional)"
-                             disabled=fieldsDisabled}}
+                             disabled=isNotEditable}}
       </div>
     </div>
 
@@ -67,7 +67,7 @@
         {{nested-question-input ident="plos_billing--phone_number"
                                 owner=task
                                 placeholder="415-555-5555"
-                                disabled=fieldsDisabled
+                                disabled=isNotEditable
                                 textClassNames="text-field-title required"
                                 validate=(action "validateQuestion")
                                 errors=validationErrors.plos_billing--phone_number}}
@@ -77,7 +77,7 @@
         {{nested-question-input ident="plos_billing--email"
                                 owner=task
                                 placeholder="jane.goodll@science.com"
-                                disabled=fieldsDisabled
+                                disabled=isNotEditable
                                 textClassNames="text-field-title required"
                                 validate=(action "validateQuestion")
                                 errors=validationErrors.plos_billing--email}}
@@ -90,7 +90,7 @@
         {{nested-question-input ident="plos_billing--address1"
                                 owner=task
                                 placeholder="1581 Le Roy Ave"
-                                disabled=fieldsDisabled
+                                disabled=isNotEditable
                                 textClassNames="text-field-title required"
                                 validate=(action "validateQuestion")
                                 errors=validationErrors.plos_billing--address1}}
@@ -99,7 +99,7 @@
         {{nested-question-input ident="plos_billing--address2"
                                 owner=task
                                 placeholder="Suite 3"
-                                disabled=fieldsDisabled
+                                disabled=isNotEditable
                                 textClassNames="text-field-title"}}
       </div>
     </div>
@@ -109,7 +109,7 @@
         {{nested-question-input ident="plos_billing--city"
                                 owner=task
                                 placeholder="Berkeley"
-                                disabled=fieldsDisabled
+                                disabled=isNotEditable
                                 textClassNames="text-field-title required"
                                 validate=(action "validateQuestion")
                                 errors=validationErrors.plos_billing--city}}
@@ -120,14 +120,14 @@
           {{nested-question-input ident="plos_billing--state"
                                   owner=task
                                   placeholder="State or Province"
-                                  disabled=fieldsDisabled
+                                  disabled=isNotEditable
                                   textClassNames="text-field-title"}}
         </div>
         <div class="flex-element">
           {{nested-question-input ident="plos_billing--postal_code"
                                   owner=task
                                   placeholder="94708"
-                                  disabled=fieldsDisabled
+                                  disabled=isNotEditable
                                   textClassNames="text-field-title required"
                                   validate=(action "validateQuestion")
                                   errors=validationErrors.plos_billing--postal_code}}
@@ -142,7 +142,7 @@
                                  placeholder="Select Your Country"
                                  displayQuestionText=false
                                  source=formattedCountries
-                                 enable=(not fieldsDisabled)}}
+                                 enable=(not isNotEditable)}}
       {{/if}}
       {{#if countries.loading}}
         {{progress-spinner visible=true size="mini"}}
@@ -178,7 +178,7 @@
                                  selectionSelected="paymentMethodSelected"
                                  source=responses
                                  width="100%"
-                                 enable=(not fieldsDisabled)
+                                 enable=isEditable
                                  validate=(action "validateQuestion")
                                  errors=validationErrors.plos_billing--payment_method}}
       </div>

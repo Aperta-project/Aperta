@@ -83,6 +83,12 @@ class PageFragment
     session.has_css?("#application-error")
   end
 
+  def view_card_in_task_sidebar(card_name, &block)
+    el = find('#paper-metadata-tasks .task-disclosure-heading', text: card_name)
+    el.click
+    yield if block_given?
+  end
+
   def view_card(card_name, overlay_class=nil, &block)
     find('.card-content', text: card_name).click
 

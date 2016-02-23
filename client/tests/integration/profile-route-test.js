@@ -3,6 +3,7 @@ import startApp from '../helpers/start-app';
 import Ember from 'ember';
 import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 import setupMockServer from '../helpers/mock-server';
+import Factory from '../helpers/factory';
 
 server = null
 
@@ -48,9 +49,9 @@ module('Integration: Authorized Profile View', {
       ]
     );
     server.respondWith('GET',
-                       '/api/journals', 
+                       '/api/journals',
                        [
-                         200, 
+                         200,
                          { 'Content-Type': 'application/json' },
                          JSON.stringify({journals:[]})
                        ]
@@ -68,7 +69,7 @@ test('transition to route without permission fails', function(assert){
   expect(1);
   Ember.run.later(function(){
     var store = getStore();
-    store.createRecord('permission', {id:'user+1'});
+    Factory.createPermission('User', 1, []);
 
     visit('/profile');
     andThen(function(){
@@ -85,15 +86,7 @@ test('transition to route with permission succeedes', function(assert){
   expect(1);
   Ember.run.later(function(){
     var store = getStore();
-    store.createRecord('permission',{
-      id: 'user+1',
-      object:{id: 1, type: 'User'},
-      permissions:{
-        view_profile:{
-          states: ['*']
-        }
-      }
-    });
+    Factory.createPermission('User', 1, ['view_profile']);
 
     visit('/profile');
     andThen(function(){
@@ -103,5 +96,5 @@ test('transition to route with permission succeedes', function(assert){
         'Should have visited the profile'
       );
     });
-  })
+  });
 });

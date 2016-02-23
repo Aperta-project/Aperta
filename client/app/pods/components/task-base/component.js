@@ -2,28 +2,41 @@ import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 const { computed, isEmpty } = Ember;
-const { alias, not, or } = computed;
+const { alias, not, or, and } = computed;
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
+  can: Ember.inject.service('can'),
   classNames: ['task'],
+  classNameBindings: [
+    'isNotEditable:read-only',
+    'taskStateToggleable:user-can-make-editable'
+  ],
   dataLoading: true,
 
   init() {
     this._super(...arguments);
     this.set('store', this.container.lookup('store:main'));
+    this.set('editAbility', this.get('can').build('edit', this.get('task')));
   },
 
   isMetadataTask: alias('task.isMetadataTask'),
   isSubmissionTask: alias('task.isSubmissionTask'),
-  isSubmissionTaskEditable: alias('task.paper.editable'),
-  isSubmissionTaskNotEditable: not('isSubmissionTaskEditable'),
-  isEditable: or('isUserEditable', 'currentUser.siteAdmin'),
-  fieldsDisabled: or('isSubmissionTaskNotEditable', 'task.completed'),
-  isUserEditable: computed('task.paper.editable', 'isSubmissionTask',
+
+  isEditableDueToPermissions: alias('editAbility.can'),
+  isEditableDueToPaperState: computed(
+    'task.paper.editable', 'isSubmissionTask',
     function() {
-      return this.get('task.paper.editable') || !this.get('isSubmissionTask');
-    }
-  ),
+      return !this.get('isSubmissionTask') || this.get('task.paper.editable');
+    }),
+  isEditableDueToTaskState: not('task.completed'),
+
+  isEditable: and(
+    'isEditableDueToPaperState',
+    'isEditableDueToPermissions',
+    'isEditableDueToTaskState'),
+  isNotEditable: not('isEditable'),
+
+  taskStateToggleable: and('isEditableDueToPermissions', 'isEditableDueToPaperState'),
 
   save() {
     this.set('validationErrors.completed', '');

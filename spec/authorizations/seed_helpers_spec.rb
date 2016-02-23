@@ -43,7 +43,7 @@ describe 'SeedHelpers' do
       expect(role.reload.journal).to eq(journal)
     end
 
-    it 'removes stray permissions from the role if asked to' do
+    it 'removes stray permissions from the role' do
       Role.ensure_exists('role', journal: journal) do |role|
         role.ensure_permission_exists(:edit, applies_to: Task)
         role.ensure_permission_exists(:view, applies_to: Task)
@@ -51,9 +51,7 @@ describe 'SeedHelpers' do
       expect(Role.where(name: 'role').first.reload.permissions
               .map(&:action)).to contain_exactly('view', 'edit')
 
-      Role.ensure_exists('role',
-                         journal: journal,
-                         delete_stray_permissions: true) do |role|
+      Role.ensure_exists('role', journal: journal) do |role|
         role.ensure_permission_exists(:view, applies_to: Task)
       end
       expect(Role.where(name: 'role').first.permissions.map(&:action))
@@ -61,29 +59,6 @@ describe 'SeedHelpers' do
 
       # The permission should still exist though
       expect(Permission.where(action: 'edit', applies_to: Task)).to exist
-    end
-
-    it 'fails when delete_stray_permissions set and no permissions created' do
-      expect do
-        Role.ensure_exists('role',
-                           journal: journal,
-                           delete_stray_permissions: true)
-      end.to raise_error(StandardError, /delete_stray_permissions/)
-
-      expect do
-        Role.ensure_exists('role',
-                           journal: journal,
-                           delete_stray_permissions: true) do |role|
-        end
-      end.to raise_error(StandardError, /delete_stray_permissions/)
-
-      expect do
-        Role.ensure_exists('role',
-                           journal: journal,
-                           delete_stray_permissions: true) do |role|
-          Permission.ensure_exists(:view, role: role, applies_to: Task)
-        end
-      end.to raise_error(StandardError, /delete_stray_permissions/)
     end
   end
 
@@ -126,13 +101,13 @@ describe 'SeedHelpers' do
 
   describe 'with an existing role' do
     before do
-      Role.ensure_exists('role') do |role|
+      Role.ensure_exists('role', delete_stray_permissions: false) do |role|
         Permission.ensure_exists(:view, role: role, applies_to: Task)
       end
     end
 
     it 'can add a new permission' do
-      Role.ensure_exists('role') do |role|
+      Role.ensure_exists('role', delete_stray_permissions: false) do |role|
         Permission.ensure_exists(:edit, role: role, applies_to: Task)
       end
       expect(Role.where(name: 'role').first.permissions).to contain_exactly(
@@ -141,7 +116,7 @@ describe 'SeedHelpers' do
     end
 
     it 'does nothing if the permission already exists' do
-      Role.ensure_exists('role') do |role|
+      Role.ensure_exists('role', delete_stray_permissions: false) do |role|
         Permission.ensure_exists(:view, role: role, applies_to: Task)
       end
       expect(Role.where(name: 'role').first.permissions).to contain_exactly(
@@ -149,7 +124,7 @@ describe 'SeedHelpers' do
     end
 
     it 'can will add a new permission if the states do not match' do
-      Role.ensure_exists('role') do |role|
+      Role.ensure_exists('role', delete_stray_permissions: false) do |role|
         Permission.ensure_exists(:view, role: role, applies_to: Task,
                                         states: ['madness'])
       end

@@ -3,15 +3,17 @@ import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
 export default Ember.Component.extend(ValidationErrorsMixin, {
   classNames: ['authors-overlay-item'],
-  classNameBindings: ['isHovered:__hover', 'isEditable:__editable'],
-  isHovered: false,
+  classNameBindings: ['showHover:__hover', 'isEditable:__editable'],
   isDeleting: false,
   isEditing: false,
 
+  canHover: Ember.computed.alias('isEditable'),
+  isHovering: false,
+  showHover: Ember.computed.and('isHovering', 'canHover'),
+
   _setupHover: Ember.on('didInsertElement', function(){
-    if (this.get('isSubmissionTaskNotEditable')) { return; }
     this.$().hover(() => {
-      this.toggleProperty('isHovered');
+      this.toggleProperty('isHovering');
     });
   }),
 

@@ -7,17 +7,6 @@ module SalesforceServices
         @paper = paper
       end
 
-      def editorial
-        status = @paper.publishing_state
-        sfdc_status = {
-          submitted: status_hash("Manuscript Submitted", :submitted_at),
-          accepted: status_hash("Completed Accept", :accepted_at),
-          rejected: status_hash("Completed Reject", :updated_at)
-        }[status.to_sym]
-
-        sfdc_status || status_hash("Manuscript Submitted", :submitted_at)
-      end
-
       def paper_to_manuscript_hash
         hash = {
           "RecordTypeId"               => "012U0000000E4ASIA0",
@@ -38,6 +27,17 @@ module SalesforceServices
       end
 
       private
+
+      def editorial
+        status = @paper.publishing_state
+        sfdc_status = {
+          submitted: status_hash("Manuscript Submitted", :submitted_at),
+          accepted: status_hash("Completed Accept", :accepted_at),
+          rejected: status_hash("Completed Reject", :updated_at)
+        }[status.to_sym]
+
+        sfdc_status || status_hash("Manuscript Submitted", :submitted_at)
+      end
 
       def new_sfdc_record?
         !@paper.salesforce_manuscript_id

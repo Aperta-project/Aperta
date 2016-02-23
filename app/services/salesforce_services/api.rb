@@ -43,6 +43,14 @@ module SalesforceServices
 
       sf_paper.update_attributes mt.paper_to_manuscript_hash
       sf_paper
+    rescue Databasedotcom::SalesForceError => ex
+      if ex.message == "The requested resource does not exist"
+        Rails.logger.warn(
+          "Paper #{paper_id} not found on SFDC. Removing SFDC Id from paper."
+        )
+        paper.update_attribute(:salesforce_manuscript_id, nil)
+      end
+      raise ex
     end
 
     def self.find_or_create_manuscript(paper_id:)

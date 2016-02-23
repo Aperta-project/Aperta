@@ -29,14 +29,22 @@ module SalesforceServices
       private
 
       def editorial
-        status = @paper.publishing_state
         sfdc_status = {
-          submitted: status_hash("Manuscript Submitted", :submitted_at),
-          accepted: status_hash("Completed Accept", :accepted_at),
-          rejected: status_hash("Completed Reject", :updated_at)
-        }[status.to_sym]
-
-        sfdc_status || status_hash("Manuscript Submitted", :submitted_at)
+          submitted: {
+            status: "Manuscript Submitted",
+            date: @paper.submitted_at
+          },
+          accepted: {
+            status: "Completed Accept",
+            date: @paper.accepted_at
+          },
+          rejected: {
+            status: "Completed Reject",
+            date: @paper.updated_at
+          }
+        }
+        default = { status: "Manuscript Submitted", date: @paper.submitted_at }
+        sfdc_status.fetch(@paper.publishing_state.to_sym, default)
       end
 
       def new_sfdc_record?

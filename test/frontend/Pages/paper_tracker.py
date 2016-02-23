@@ -38,20 +38,6 @@ class PaperTrackerPage(AuthenticatedPage):
 
   # POM Actions
   def validate_heading_and_subhead(self, username):
-    # Validating Main Heading
-    title = self._get(self._paper_tracker_title)
-    # The following call to validate consistency in title styles across the app
-    # fails due to https://www.pivotaltracker.com/n/projects/880854/stories/100948640
-    # self.validate_application_h1_style(title)
-    first_name = PgSQL().query('SELECT first_name FROM users WHERE username = %s;', (username,))[0][0]
-    assert title.text == 'Hello, %s!' % first_name, 'Incorrect Tracker Title: ' + title.text
-    # Validate Subhead
-    subhead = self._get(self._paper_tracker_subhead)
-    # https://www.pivotaltracker.com/story/show/105230462
-    assert application_typeface in subhead.value_of_css_property('font-family')
-    assert subhead.value_of_css_property('font-size') == '18px'
-    assert subhead.value_of_css_property('line-height') == '25.7167px'
-    assert subhead.value_of_css_property('color') == 'rgba(51, 51, 51, 1)'
     # Get total number of papers for users tracker
     uid = PgSQL().query('SELECT id FROM users where username = %s;', (username,))[0][0]
     journal_ids = PgSQL().query('SELECT old_roles.journal_id FROM old_roles INNER JOIN user_roles '
@@ -69,15 +55,6 @@ class PaperTrackerPage(AuthenticatedPage):
                                   'WHERE journal_id IN (%s) AND publishing_state != %s;',
                                   (journal, 'unsubmitted'))[0][0]
       total_count += int(paper_count)
-
-    if total_count == 1:
-      assert subhead.text == 'You have {0} paper in your tracker.'.format(total_count), \
-        (subhead.text, str(total_count))
-    else:
-      # Disabled test due to UXA-31
-      #assert subhead.text == 'You have {0} papers in your tracker.'.format(total_count), \
-      #  (subhead.text, str(total_count))
-      pass
     return total_count, journals_list
 
   def validate_table_presentation_and_function(self, total_count, journal_ids):
@@ -105,13 +82,12 @@ class PaperTrackerPage(AuthenticatedPage):
                                        'FROM papers '
                                        'WHERE journal_id IN (%s) AND publishing_state != %s '
                                        'AND submitted_at IS NOT NULL '
-                                       'ORDER BY journal_id ASC;', (journal, 'unsubmitted'))
+                                       'ORDER BY id ASC;', (journal, 'unsubmitted'))
         for paper in journal_papers:
           submitted_papers.append(paper)
       # Now I need to resort this list by the datetime.datetime() objects ASC
       # only trouble is this pukes on the none type objects for papers that are unsubmitted but in other states
       #   (withdrawn)
-      ##import pdb; pdb.set_trace()
       submitted_papers = sorted(submitted_papers, key=lambda x: x[1])
     # next the papers with no submitted_at populated (I think this is limited to withdrawn papers with NULL s_a date)
     # https://www.pivotaltracker.com/story/show/105325884 - this ordering is non-deterministic at present so this case
@@ -127,8 +103,7 @@ class PaperTrackerPage(AuthenticatedPage):
         for paper in journal_papers:
           withdrawn_papers.append(paper)
     # finally combine the two lists, NULL submitted_at first
-    papers = withdrawn_papers + submitted_papers
-    #import pdb; pdb.set_trace()
+    papers = sorted(withdrawn_papers + submitted_papers, key=lambda x: x[1])
     if total_count > 0:
       table_rows = self._gets(self._paper_tracker_table_tbody_row)
       count = 0

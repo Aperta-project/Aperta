@@ -1,1 +1,6 @@
-{{capitalize message}}
+{{#if displayIcon}}
+  <i class="fa fa-exclamation-triangle" title={{capitalize message}}></i>
+{{/if}}
+{{#if displayText}}
+  {{capitalize message}}
+{{/if}}

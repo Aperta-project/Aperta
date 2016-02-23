@@ -1,113 +1,139 @@
-<div class="add-author-form">
-
-  <div class="form-group form-inline author-top">
-    <div class="form-group author-name {{if validationErrors.firstName "error"}}">
-      <span class="text-field-title required">
-        First Name
-        {{error-message message=validationErrors.firstName}}
-      </span>
+<div class="flex-form">
+  <div class="flex-group flex-group--divider">
+    <div class="flex-element inset-form-control required author-name {{if validationErrors.firstName "error"}}">
+      <div class="inset-form-control-text">
+        <label>First Name</label>
+        {{error-message message=validationErrors.firstName
+                        displayIcon=true
+                        displayText=false}}
+      </div>
       {{input type="text"
               value=author.firstName
-              class="author-first form-control tall-text-field"
+              class="author-first inset-form-control-input"
+              disabled=fieldsDisabled
+              focus-out=(action "validateField" "firstName")
               placeholder="Jane"}}
     </div>
 
-    <div class="form-group author-middle {{if validationErrors.middleInitial "error"}}">
-      <span class="text-field-title">
-        MI
-        {{error-message message=validationErrors.middleInitial}}
-      </span>
+    <div class="flex-element inset-form-control author-middle-initial {{if validationErrors.middleInitial "error"}}">
+      <div class="inset-form-control-text">
+        <label>MI</label>
+        {{error-message message=validationErrors.middleInitial
+                        displayIcon=true
+                        displayText=false}}
+      </div>
       {{input type="text"
               value=author.middleInitial
-              class="author-middle form-control tall-text-field"
+              class="inset-form-control-input"
+              disabled=fieldsDisabled
               placeholder="M"}}
     </div>
 
-    <div class="form-group author-name {{if validationErrors.lastName "error"}}">
-      <span class="text-field-title required">
-        Last Name
-        {{error-message message=validationErrors.lastName}}
-      </span>
+    <div class="flex-element inset-form-control required author-name {{if validationErrors.lastName "error"}}">
+      <div class="inset-form-control-text">
+        <label>Last Name</label>
+        {{error-message message=validationErrors.lastName
+                        displayIcon=true
+                        displayText=false}}
+      </div>
       {{input type="text"
               value=author.lastName
-              class="author-last form-control tall-text-field"
+              class="author-last inset-form-control-input"
+              disabled=fieldsDisabled
+              focus-out=(action "validateField" "lastName")
               placeholder="Goodall"}}
     </div>
 
-    <div class="form-group author-half author-bump {{if validationErrors.email "error"}}">
-      <span class="text-field-title required">
-        Email
-        {{error-message message=validationErrors.email}}
-      </span>
+    <div class="flex-element inset-form-control required {{if validationErrors.email "error"}}">
+      <div class="inset-form-control-text">
+        <label>Email</label>
+        {{error-message message=validationErrors.email
+                        displayIcon=true
+                        displayText=false}}
+      </div>
       {{input type="text"
               value=author.email
-              class="author-email form-control tall-text-field"
+              class="author-email inset-form-control-input"
+              disabled=fieldsDisabled
+              focus-out=(action "validateField" "email")
               placeholder="jane.goodall@science.com"}}
 
     </div>
   </div>
 
-  <div class="form-group form-inline">
-    <div class="form-group author-half {{if validationErrors.title "error"}}">
-      <span class="text-field-title required">
-        Title
-        {{error-message message=validationErrors.title}}
-      </span>
+  <div class="flex-group">
+    <div class="flex-element inset-form-control required {{if validationErrors.title "error"}}">
+      <div class="inset-form-control-text">
+        <label>Title</label>
+        {{error-message message=validationErrors.title
+                        displayIcon=true
+                        displayText=false}}
+      </div>
       {{input type="text"
               value=author.title
-              class="author-title form-control tall-text-field"
+              class="author-title inset-form-control-input"
+              disabled=fieldsDisabled
+              focus-out=(action "validateField" "title")
               placeholder="World's Foremost Expert on Chimpanzees"}}
     </div>
 
-    <div class="form-group author-half author-bump {{if validationErrors.department "error"}}">
-      <span class="text-field-title required">
-        Department
-        {{error-message message=validationErrors.department}}
-      </span>
+    <div class="flex-element inset-form-control required {{if validationErrors.department "error"}}">
+      <div class="inset-form-control-text">
+        <label>Department</label>
+        {{error-message message=validationErrors.department
+                        displayIcon=true
+                        displayText=false}}
+      </div>
       {{input type="text"
               value=author.department
-              class="author-department form-control tall-text-field"
+              class="author-department inset-form-control-input"
+              disabled=fieldsDisabled
+              focus-out=(action "validateField" "department")
               placeholder="Primatology"}}
     </div>
   </div>
 
-  <div class="form-group form-inline">
-    <div class="form-group author-half {{if validationErrors.affiliation "error"}}">
-      {{error-message message=validationErrors.affiliation}}
-      {{institution-search
-        value=affiliation
-        institutionSelected="institutionSelected"
-        placeholder="Institution"}}
+  <div class="flex-group">
+    <div class="flex-element author-affiliation required {{if validationErrors.affiliation "error"}}">
+      {{error-message message=validationErrors.affiliation
+                      displayIcon=true
+                      displayText=true}}
+      {{institution-search value=affiliation
+                           institutionSelected="institutionSelected"
+                           disabled=fieldsDisabled
+                           validate=(action "validateField" "affiliation")
+                           errors=validationErrors.affiliation
+                           placeholder="Institution"}}
     </div>
 
-    <div class="form-group author-half author-bump {{if validationErrors.secondaryAffiliation "error"}}">
+    <div class="flex-element author-affiliation {{if validationErrors.secondaryAffiliation "error"}}">
       {{error-message message=validationErrors.secondaryAffiliation}}
-      {{institution-search
-        value=secondaryAffiliation
-        institutionSelected="secondaryInstitutionSelected"
-        placeholder="Secondary Institution"}}
+      {{institution-search value=secondaryAffiliation
+                           institutionSelected="secondaryInstitutionSelected"
+                           disabled=fieldsDisabled
+                           placeholder="Secondary Institution"}}
     </div>
   </div>
 
-  <div class="form-group form-inline">
-    <div class="form-group author-half {{if validationErrors.affiliation "error"}}">
+  <div>
+    <div class="author-corresponding {{if validationErrors.corresponding "error"}}">
       {{#nested-question-check ident="author--published_as_corresponding_author"
-          owner=author
-          labelClassNames="author-label"
-          displayQuestionText=false
-          inputClassNames="author-corresponding" as |check|}}
+                               owner=author
+                               displayQuestionText=false
+                               disabled=fieldsDisabled
+                               inputClassNames="author-corresponding" as |check|}}
         {{#if check.yieldingForText}}
           {{nested-question-display ident="author--published_as_corresponding_author" owner=author}}
         {{/if}}
       {{/nested-question-check}}
     </div>
 
-    <div class="form-group author-half author-bump {{if validationErrors.secondaryAffiliation "error"}}">
+    <div class="author-deceased {{if validationErrors.deceased "error"}}">
       {{#nested-question-check ident="author--deceased"
-          owner=author
-          labelClassNames="author-label"
-          displayQuestionText=false
-          inputClassNames="author-deceased" as |check|}}
+                               owner=author
+                               displayQuestionText=false
+                               disabled=fieldsDisabled
+                               inputClassNames="author-deceased" as |check|}}
         {{#if check.yieldingForText}}
           {{nested-question-display ident="author--deceased" owner=author}}
         {{/if}}
@@ -117,36 +143,52 @@
 
   <div class="form-group author-contributions form-inline">
     <h4 class="required">Author Contributions</h4>
-    {{error-message message=validationErrors.contributions}}
-    {{#each authorContributionIdents as |contributionIdent|}}
+    {{error-message message=validationErrors.contributions
+                    displayIcon=true
+                    displayText=true}}
+    <div class="flex-group">
+      {{#each authorContributionIdents as |contributionIdent|}}
         {{#nested-question-check ident=contributionIdent
-            owner=author
-            labelClassNames="author-label"
-            displayQuestionText=false
-            inputClassNames="author-contribution" as |check|}}
+                                 owner=author
+                                 class="flex-element author-contribution"
+                                 displayQuestionText=false
+                                 disabled=fieldsDisabled
+                                 inputClassNames="author-contribution" as |check|}}
           {{#if check.yieldingForText}}
             {{nested-question-display ident=contributionIdent owner=author}}
           {{/if}}
         {{/nested-question-check}}
-    {{/each}}
+      {{/each}}
+    </div>
 
-    <label class="author-label">
-      {{check-box checked=isOtherContributionSelected action="toggleOtherContribution" class="author-contribution-other"}}
-      Other
-    </label>
-    {{#if isOtherContributionSelected}}
-      {{nested-question-input ident="author--contributions--other"
-          owner=author
-          displayQuestionText=false
-          inputClassNames="form-control"
-          placeholder="Please specify"
-          class="author-label-other"
-          tagName="span"}}
+    <div class="flex-group">
+      <div class="flex-element">
+        <label>
+          {{check-box checked=isOtherContributionSelected
+                      action="toggleOtherContribution"
+                      class="author-contribution-other"
+                      disabled=fieldsDisabled}}
+          Other
+        </label>
+        {{#if isOtherContributionSelected}}
+          {{nested-question-input ident="author--contributions--other"
+                                  owner=author
+                                  displayQuestionText=false
+                                  inputClassNames="form-control"
+                                  placeholder="Please specify"
+                                  disabled=fieldsDisabled
+                                  class="author-label-other"
+                                  tagName="span"}}
+        {{/if}}
+      </div>
+    </div>
+  </div>
+
+  <div class="author-form-buttons">
+    {{#if validationErrors.save}}
+      {{error-message message=validationErrors.save}}
     {{/if}}
-
-    <span class="pull-right author-form-buttons">
-      <a class="button-link button--green author-cancel" {{action "cancelEdit" bubbles=false}}>cancel</a>
-      <button class="button-secondary button--green knockout" {{action "saveNewAuthor"}}>done</button>
-    </span>
+    <a class="button-link button--green author-cancel" {{action "cancelEdit" bubbles=false}}>cancel</a>
+    <button class="button-secondary button--green knockout" {{action "saveNewAuthor"}}>done</button>
   </div>
 </div>

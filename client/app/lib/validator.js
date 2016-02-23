@@ -62,7 +62,13 @@ export default {
             return;
           }
 
-          const pass = TYPES[type](value, options);
+          let pass = false;
+          if(options.validation) {
+            pass = options.validation.call(context, key, value);
+          } else {
+            pass = TYPES[type](value, options);
+          }
+
           if(!pass) {
             return _generateErrorMessage.call(context, type, options.message);
           }

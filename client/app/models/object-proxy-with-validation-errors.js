@@ -1,22 +1,27 @@
 import Ember from 'ember';
 import ValidationErrorsMixin from 'tahi/mixins/validation-errors';
 
-export default Ember.Object.extend(ValidationErrorsMixin, {
-  errorsPresent: false,
+const { assert, isEmpty } = Ember;
 
+const ObjectProxy = Ember.Object.extend(ValidationErrorsMixin, {
+  errorsPresent: false,
   validations: null,
 
   init() {
     this._super(...arguments);
 
-    Ember.assert(
-      'an `object` must be set for ObjectProxyWithValidationErrors',
-      !Ember.isEmpty(this.get('object'))
+    const klass = 'ObjectProxyWithValidationErrors';
+    const validationsEmpty = isEmpty(this.get('validations'));
+    const questionValidationsEmpty = isEmpty(this.get('questionValidations'));
+
+    assert(
+      `the 'object' property must be set for #{klass}`,
+      !isEmpty(this.get('object'))
     );
 
-    Ember.assert(
-      'validations must be defined for ObjectProxyWithValidationErrors',
-      !Ember.isEmpty(this.get('validations'))
+    assert(
+      `the 'validations' or 'questionValidations' property must be set for ${klass}`,
+      !validationsEmpty || !questionValidationsEmpty
     );
   },
 
@@ -37,14 +42,22 @@ export default Ember.Object.extend(ValidationErrorsMixin, {
   },
 
   validateKey(key) {
-    this.validate(
-      key,
-      this.get(`object.${key}`),
-      this.get(`validations.${key}`)
-    );
+    this.validate(key, this.get(`object.${key}`));
 
     if(this.validationErrorsPresentForKey(key)) {
       this.set('errorsPresent', true);
     }
   }
 });
+
+ObjectProxy.reopenClass({
+  errorsPresentInCollection(collection) {
+    return !!(
+      _.compact(collection.map(function(obj) {
+        return obj.get('errorsPresent');
+      }))
+    ).length;
+  }
+});
+
+export default ObjectProxy;

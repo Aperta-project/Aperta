@@ -108,3 +108,29 @@ test('one validation, options with custom message function', function(assert) {
 
   assert.equal(messages[0], customMessage, 'Custom message function');
 });
+
+test('options with custom validation, errors', function(assert) {
+  const key = 'key';
+  const value = null;
+  const validations = [{
+    type: 'presence',
+    validation: function() { return false; }
+  }];
+
+  const messages = validator.validate(key, value, validations);
+
+  assert.equal(messages.length, 1, 'custom function found errors');
+});
+
+test('options with custom validation, no errors', function(assert) {
+  const key = 'key';
+  const value = null;
+  const validations = [{
+    type: 'presence',
+    validation: function() { return true; }
+  }];
+
+  const messages = validator.validate(key, value, validations);
+
+  assert.equal(messages.length, 0, 'custom function found no errors');
+});

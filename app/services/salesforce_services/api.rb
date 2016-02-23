@@ -67,11 +67,15 @@ module SalesforceServices
     end
 
     def self.salesforce_active
-      active = ENV['DATEBASEDOTCOM_DISABLED'] == 'true' ? false : true
-      Rails.logger.warn(<<-INFO.strip_heredoc.chomp)
-        Salesforce integration disabled due to ENV['DATEBASEDOTCOM_DISABLED]'
-      INFO
-      client if active
+      active = ENV['DATABASEDOTCOM_DISABLED'] == 'true' ? false : true
+      if active
+        # ensure client has a session with SObjects materialized
+        client
+      else
+        Rails.logger.warn(<<-INFO.strip_heredoc.chomp)
+          Salesforce integration disabled due to ENV['DATABASEDOTCOM_DISABLED]'
+        INFO
+      end
       active
     end
   end

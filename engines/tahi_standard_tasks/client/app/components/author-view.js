@@ -2,34 +2,16 @@ import Ember from 'ember';
 import DragNDrop from 'tahi/services/drag-n-drop';
 
 const { computed, on } = Ember;
-const { alias } = computed;
+const { alias, not } = computed;
 
 export default Ember.Component.extend(DragNDrop.DraggableMixin, {
-  classNames: ['authors-overlay-item'],
-  classNameBindings: ['showHover:__hover', 'isEditable:__editable'],
-
+  classNames: ['author-task-item'],
+  deleteState: false,
   author: alias('model.object'),
   errors: alias('model.validationErrors'),
   errorsPresent: alias('model.errorsPresent'),
   editState: alias('errorsPresent'),
-
-  fieldsDisabled: Ember.computed.not('isEditable'),
-
-  // canHover is true, now, but should be Ember.computed.alias('isEditable')
-  // once the read-only author-view contains all needed information.
-  canHover: true,
-  isHovering: false,
-  showHover: Ember.computed.and('isHovering', 'canHover'),
-
-  _setupHover: Ember.on('didInsertElement', function(){
-    this.$().hover(() => {
-      this.toggleProperty('isHovering');
-    });
-  }),
-
-  _destroyHover: Ember.on('willDestroyElement', function(){
-    this.$().off('mouseenter mouseleave');
-  }),
+  draggable: not('isNotEditable'),
 
   dragStart(e) {
     e.dataTransfer.effectAllowed = 'move';

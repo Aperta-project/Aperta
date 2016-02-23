@@ -79,7 +79,7 @@
 }
 
 .control-bar-item-spacer {
-  flex-grow: 1;
+  @include flex-grow(1);
 }
 
 .control-bar-item {

@@ -10,7 +10,7 @@
       {{input type="text"
               value=author.firstName
               class="author-first inset-form-control-input"
-              disabled=fieldsDisabled
+              disabled=isNotEditable
               focus-out=(action "validateField" "firstName")
               placeholder="Jane"}}
     </div>
@@ -25,7 +25,7 @@
       {{input type="text"
               value=author.middleInitial
               class="inset-form-control-input"
-              disabled=fieldsDisabled
+              disabled=isNotEditable
               placeholder="M"}}
     </div>
 
@@ -39,7 +39,7 @@
       {{input type="text"
               value=author.lastName
               class="author-last inset-form-control-input"
-              disabled=fieldsDisabled
+              disabled=isNotEditable
               focus-out=(action "validateField" "lastName")
               placeholder="Goodall"}}
     </div>
@@ -54,7 +54,7 @@
       {{input type="text"
               value=author.email
               class="author-email inset-form-control-input"
-              disabled=fieldsDisabled
+              disabled=isNotEditable
               focus-out=(action "validateField" "email")
               placeholder="jane.goodall@science.com"}}
 
@@ -72,7 +72,7 @@
       {{input type="text"
               value=author.title
               class="author-title inset-form-control-input"
-              disabled=fieldsDisabled
+              disabled=isNotEditable
               focus-out=(action "validateField" "title")
               placeholder="World's Foremost Expert on Chimpanzees"}}
     </div>
@@ -87,7 +87,7 @@
       {{input type="text"
               value=author.department
               class="author-department inset-form-control-input"
-              disabled=fieldsDisabled
+              disabled=isNotEditable
               focus-out=(action "validateField" "department")
               placeholder="Primatology"}}
     </div>
@@ -100,7 +100,7 @@
                       displayText=true}}
       {{institution-search value=affiliation
                            institutionSelected="institutionSelected"
-                           disabled=fieldsDisabled
+                           disabled=isNotEditable
                            validate=(action "validateField" "affiliation")
                            errors=validationErrors.affiliation
                            placeholder="Institution"}}
@@ -110,7 +110,7 @@
       {{error-message message=validationErrors.secondaryAffiliation}}
       {{institution-search value=secondaryAffiliation
                            institutionSelected="secondaryInstitutionSelected"
-                           disabled=fieldsDisabled
+                           disabled=isNotEditable
                            placeholder="Secondary Institution"}}
     </div>
   </div>
@@ -120,7 +120,7 @@
       {{#nested-question-check ident="author--published_as_corresponding_author"
                                owner=author
                                displayQuestionText=false
-                               disabled=fieldsDisabled
+                               disabled=isNotEditable
                                inputClassNames="author-corresponding" as |check|}}
         {{#if check.yieldingForText}}
           {{nested-question-display ident="author--published_as_corresponding_author" owner=author}}
@@ -132,7 +132,7 @@
       {{#nested-question-check ident="author--deceased"
                                owner=author
                                displayQuestionText=false
-                               disabled=fieldsDisabled
+                               disabled=isNotEditable
                                inputClassNames="author-deceased" as |check|}}
         {{#if check.yieldingForText}}
           {{nested-question-display ident="author--deceased" owner=author}}
@@ -152,7 +152,7 @@
                                  owner=author
                                  class="flex-element author-contribution"
                                  displayQuestionText=false
-                                 disabled=fieldsDisabled
+                                 disabled=isNotEditable
                                  inputClassNames="author-contribution" as |check|}}
           {{#if check.yieldingForText}}
             {{nested-question-display ident=contributionIdent owner=author}}
@@ -167,7 +167,7 @@
           {{check-box checked=isOtherContributionSelected
                       action="toggleOtherContribution"
                       class="author-contribution-other"
-                      disabled=fieldsDisabled}}
+                      disabled=isNotEditable}}
           Other
         </label>
         {{#if isOtherContributionSelected}}
@@ -176,7 +176,7 @@
                                   displayQuestionText=false
                                   inputClassNames="form-control"
                                   placeholder="Please specify"
-                                  disabled=fieldsDisabled
+                                  disabled=isNotEditable
                                   class="author-label-other"
                                   tagName="span"}}
         {{/if}}

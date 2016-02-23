@@ -64,7 +64,7 @@ test('can add a new author', function(assert) {
     click('.author-form-buttons .button-secondary:contains("done")');
 
     andThen(function() {
-      assert.ok(find(`.authors-overlay-item .author-name:contains('${firstName}')`).length);
+      assert.ok(find(`.author-task-item .author-name:contains('${firstName}')`).length);
     });
   });
 });

@@ -298,7 +298,7 @@ describe Paper do
         it 'returns the users only once' do
           task.assignments.create!(
             user: paper.creator,
-            role: paper.journal.participant_role
+            role: paper.journal.task_participant_role
           )
 
           expect(paper.participants).to contain_exactly(

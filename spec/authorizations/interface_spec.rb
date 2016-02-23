@@ -15,7 +15,7 @@ DESC
   let!(:other_task_thing) { Authorizations::FakeTaskThing.create!(fake_task: task) }
   let(:task_json) do
     [
-      id: "fake-task+#{task.id}",
+      id: "fakeTask+#{task.id}",
       object:
        { id: task.id,
          type: 'Authorizations::FakeTask' },
@@ -24,7 +24,7 @@ DESC
 
   let(:paper_json) do
     [
-      id: "fake-paper+#{paper.id}",
+      id: "fakePaper+#{paper.id}",
       object:
        { id: paper.id,
          type: 'Authorizations::FakePaper' },

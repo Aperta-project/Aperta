@@ -1,19 +1,15 @@
 class DiscussionRepliesController < ApplicationController
   before_action :authenticate_user!
-  before_action :enforce_policy
   respond_to :json
 
   def show
+    requires_user_can :view, discussion_reply.discussion_topic
     respond_with(discussion_reply)
   end
 
   def create
+    requires_user_can :reply, discussion_reply.discussion_topic
     discussion_reply.save
-    respond_with(discussion_reply)
-  end
-
-  def destroy
-    discussion_reply.destroy
     respond_with(discussion_reply)
   end
 
@@ -32,9 +28,5 @@ class DiscussionRepliesController < ApplicationController
         DiscussionReply.new(creation_params)
       end
     end
-  end
-
-  def enforce_policy
-    authorize_action!(discussion_reply: discussion_reply)
   end
 end

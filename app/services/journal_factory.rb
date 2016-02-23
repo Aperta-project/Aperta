@@ -80,6 +80,13 @@ class JournalFactory
       role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
+
+      # Discussions
+      role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
     end
 
     Role.ensure_exists(Role::INTERNAL_EDITOR_ROLE, journal: @journal) do |role|
@@ -93,6 +100,13 @@ class JournalFactory
       role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
+
+      # Discussions
+      role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
     end
 
     Role.ensure_exists(Role::HANDLING_EDITOR_ROLE, journal: @journal, participates_in: [Paper]) do |role|
@@ -104,6 +118,13 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
+
+      # Discussions
+      role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
     end
 
     Role.ensure_exists(Role::PUBLISHING_SERVICES_ROLE, journal: @journal) do |role|
@@ -120,9 +141,16 @@ class JournalFactory
       role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
+
+      # Discussions
+      role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
     end
 
-    Role.ensure_exists(Role::PARTICIPANT_ROLE, journal: @journal, participates_in: [Task]) do |role|
+    Role.ensure_exists(Role::TASK_PARTICIPANT_ROLE, journal: @journal, participates_in: [Task]) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
@@ -150,6 +178,18 @@ class JournalFactory
 
       # AEs can ONLY view reviewer report tasks
       role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::ReviewerReportTask)
+
+      # Discussions
+      role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
+    end
+
+    Role.ensure_exists(Role::DISCUSSION_PARTICIPANT, journal: @journal) do |role|
+      role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
     end
   end
 end

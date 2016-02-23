@@ -21,25 +21,17 @@ describe JournalFactory do
 
     context 'creating the default roles and permission for the journal' do
       let(:journal) { JournalFactory.create(name: 'Genetics Journal') }
-
-      let(:journal_creator_role) do
-        journal.roles.where(name: Role::CREATOR_ROLE).first
-      end
-      let(:journal_collaborator_role) do
-        journal.roles.where(name: Role::COLLABORATOR_ROLE).first
-      end
-
       let(:view_paper_permission) do
         Permission.where(action: 'view', applies_to: 'Paper').first
       end
 
       it 'gives the journal its own Creator role' do
-        expect(journal_creator_role).to be
+        expect(journal.creator_role).to be
       end
 
       context 'Creator role' do
         it 'gets the :view Paper permission with no state requirements' do
-          expect(journal_creator_role.permissions).to include(
+          expect(journal.collaborator_role.permissions).to include(
             view_paper_permission
           )
           expect(view_paper_permission.states).to contain_exactly(
@@ -49,17 +41,225 @@ describe JournalFactory do
       end
 
       it 'gives the journal its own Collaborator role' do
-        expect(journal_collaborator_role).to be
+        expect(journal.collaborator_role).to be
       end
 
       context 'Collaborator role' do
         it 'gets the :view Paper permission with no state requirements' do
-          expect(journal_collaborator_role.permissions).to include(
+          expect(journal.collaborator_role.permissions).to include(
             Permission.where(action: 'view', applies_to: 'Paper').first
           )
           expect(view_paper_permission.states).to contain_exactly(
             PermissionState.wildcard
           )
+        end
+      end
+
+      context 'Academic Editor' do
+        it 'has :start_discussion permissions on Paper' do
+          permissions = Permission.joins(:states).where(applies_to: 'Paper', permission_states: { id: PermissionState.wildcard })
+
+          expect(journal.academic_editor_role.permissions).to include(
+            permissions.find_by(action: 'start_discussion')
+          )
+        end
+
+        context 'has DiscussionTopic permission to' do
+          let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
+
+          it ':view' do
+            expect(journal.academic_editor_role.permissions).to include(
+              permissions.find_by(action: 'view')
+            )
+          end
+
+          it ':edit' do
+            expect(journal.academic_editor_role.permissions).to include(
+              permissions.find_by(action: 'edit')
+            )
+          end
+
+          it ':manage_participant' do
+            expect(journal.academic_editor_role.permissions).to include(
+              permissions.find_by(action: 'manage_participant')
+            )
+          end
+
+          it ':reply' do
+            expect(journal.academic_editor_role.permissions).to include(
+              permissions.find_by(action: 'reply')
+            )
+          end
+        end
+      end
+
+      context 'Handling Editor' do
+        it 'has :start_discussion permissions on Paper' do
+          permissions = Permission.joins(:states).where(applies_to: 'Paper', permission_states: { id: PermissionState.wildcard })
+
+          expect(journal.handling_editor_role.permissions).to include(
+            permissions.find_by(action: 'start_discussion')
+          )
+        end
+
+        context 'has DiscussionTopic permission to' do
+          let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
+
+          it ':view' do
+            expect(journal.handling_editor_role.permissions).to include(
+              permissions.find_by(action: 'view')
+            )
+          end
+
+          it ':edit' do
+            expect(journal.handling_editor_role.permissions).to include(
+              permissions.find_by(action: 'edit')
+            )
+          end
+
+          it ':manage_participant' do
+            expect(journal.handling_editor_role.permissions).to include(
+              permissions.find_by(action: 'manage_participant')
+            )
+          end
+
+          it ':reply' do
+            expect(journal.handling_editor_role.permissions).to include(
+              permissions.find_by(action: 'reply')
+            )
+          end
+        end
+      end
+
+      context 'Internal Editor' do
+        it 'has :start_discussion permissions on Paper' do
+          permissions = Permission.joins(:states).where(applies_to: 'Paper', permission_states: { id: PermissionState.wildcard })
+
+          expect(journal.internal_editor_role.permissions).to include(
+            permissions.find_by(action: 'start_discussion')
+          )
+        end
+
+        context 'has DiscussionTopic permission to' do
+          let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
+
+          it ':view' do
+            expect(journal.internal_editor_role.permissions).to include(
+              permissions.find_by(action: 'view')
+            )
+          end
+
+          it ':edit' do
+            expect(journal.internal_editor_role.permissions).to include(
+              permissions.find_by(action: 'edit')
+            )
+          end
+
+          it ':manage_participant' do
+            expect(journal.internal_editor_role.permissions).to include(
+              permissions.find_by(action: 'manage_participant')
+            )
+          end
+
+          it ':reply' do
+            expect(journal.internal_editor_role.permissions).to include(
+              permissions.find_by(action: 'reply')
+            )
+          end
+        end
+      end
+
+      context 'Publishing Services and Production Staff' do
+        it 'has :start_discussion permissions on Paper' do
+          permissions = Permission.joins(:states).where(applies_to: 'Paper', permission_states: { id: PermissionState.wildcard })
+
+          expect(journal.internal_editor_role.permissions).to include(
+            permissions.find_by(action: 'start_discussion')
+          )
+        end
+
+        context 'has DiscussionTopic permission to' do
+          let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
+
+          it ':view' do
+            expect(journal.internal_editor_role.permissions).to include(
+              permissions.find_by(action: 'view')
+            )
+          end
+
+          it ':edit' do
+            expect(journal.internal_editor_role.permissions).to include(
+              permissions.find_by(action: 'edit')
+            )
+          end
+
+          it ':manage_participant' do
+            expect(journal.internal_editor_role.permissions).to include(
+              permissions.find_by(action: 'manage_participant')
+            )
+          end
+
+          it ':reply' do
+            expect(journal.internal_editor_role.permissions).to include(
+              permissions.find_by(action: 'reply')
+            )
+          end
+        end
+      end
+
+      context 'Discussion Participant' do
+        context 'has DiscussionTopic permission to' do
+          let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
+
+          it ':view' do
+            expect(journal.internal_editor_role.permissions).to include(
+              permissions.find_by(action: 'view')
+            )
+          end
+
+          it ':reply' do
+            expect(journal.internal_editor_role.permissions).to include(
+              permissions.find_by(action: 'reply')
+            )
+          end
+        end
+      end
+
+      context 'Staff Admin' do
+        it 'has :start_discussion permissions on Paper' do
+          permissions = Permission.joins(:states).where(applies_to: 'Paper', permission_states: { id: PermissionState.wildcard })
+
+          expect(journal.staff_admin_role.permissions).to include(
+            permissions.find_by(action: 'start_discussion')
+          )
+        end
+
+        context 'has DiscussionTopic permission to' do
+          let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
+
+          it ':view' do
+            expect(journal.staff_admin_role.permissions).to include(
+              permissions.find_by(action: 'view')
+            )
+          end
+
+          it ':edit' do
+            expect(journal.staff_admin_role.permissions).to include(
+              permissions.find_by(action: 'edit')
+            )
+          end
+
+          it ':manage_participant' do
+            expect(journal.staff_admin_role.permissions).to include(
+              permissions.find_by(action: 'manage_participant')
+            )
+          end
+
+          it ':reply' do
+            expect(journal.staff_admin_role.permissions).to include(
+              permissions.find_by(action: 'reply')
+            )
+          end
         end
       end
     end

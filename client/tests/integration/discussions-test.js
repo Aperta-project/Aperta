@@ -49,7 +49,9 @@ test('can see a list of topics', function(assert) {
   });
 });
 
-test('can see a topic and a reply', function(assert) {
+test('can see a topic and a reply with permissions', function(assert) {
+  Factory.createPermission('DiscussionTopic', 1, ['view']);
+
   Ember.run(function() {
     TestHelper.handleFind(topic);
     visit('/papers/' + paper.id + '/workflow/discussions/' + topic.get('id'));

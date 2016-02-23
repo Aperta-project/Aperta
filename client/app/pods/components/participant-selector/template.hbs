@@ -12,10 +12,12 @@
                     selectedTemplate=selectedTemplate
                     resultsTemplate=resultsTemplate
                     closeOnSelect=true
-                    allowClear=false
+                    allowClear=canManage
                     minimumInputLength=3
                     remoteSource=remoteSource
                     dropdownClass="participant-dropdown"
                     placeholder="Add People"}}
 
-<div class="add-participant-button" data-toggle="tooltip" title="Add Someone" {{action "activateDropdown"}}>+</div>
+{{#if canManage}}
+  <div class="add-participant-button" data-toggle="tooltip" title="Add Someone" {{action "activateDropdown"}}>+</div>
+{{/if}}

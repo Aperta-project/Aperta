@@ -15,7 +15,7 @@ describe 'For the time being, site admins should have ALL permissions.' do
        { id: paper.id,
          type: 'Authorizations::FakePaper' },
      permissions: { view: { states: ['*'] } },
-     id: "fake-paper+#{paper.id}"]
+     id: "fakePaper+#{paper.id}"]
   end
 
   before(:all) do

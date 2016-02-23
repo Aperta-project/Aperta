@@ -6,12 +6,13 @@ class Role < ActiveRecord::Base
   ACADEMIC_EDITOR_ROLE = 'Academic Editor'
   COLLABORATOR_ROLE = 'Collaborator'
   CREATOR_ROLE = 'Creator'
+  DISCUSSION_PARTICIPANT = 'Discussion Participant'
   HANDLING_EDITOR_ROLE = 'Handling Editor'
   INTERNAL_EDITOR_ROLE = 'Internal Editor'
-  PARTICIPANT_ROLE = 'Participant'
   PUBLISHING_SERVICES_ROLE = 'Publishing Services and Production Staff'
   REVIEWER_ROLE = 'Reviewer'
   STAFF_ADMIN_ROLE = 'Staff Admin'
+  TASK_PARTICIPANT_ROLE = 'Participant'
   USER_ROLE = 'User'
 
   def self.for_old_role(old_role, paper:) # rubocop:disable Metrics/MethodLength

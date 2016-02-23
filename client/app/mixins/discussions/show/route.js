@@ -10,6 +10,10 @@ export default Ember.Mixin.create(DiscussionsRoutePathsMixin, {
   },
 
   afterModel(model) {
+    this.setModelChannel(model);
+  },
+
+  setModelChannel(model) {
     this.set('modelId', model.get('id'));
     const name = 'private-discussion_topic@' + model.get('id');
 

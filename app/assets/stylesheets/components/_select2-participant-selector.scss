@@ -63,6 +63,9 @@
       }
     }
 
+    .cannot-clear a.select2-search-choice-close {
+      display: none !important;
+    }
   }
 
   .bodypart-overlay {
@@ -75,6 +78,10 @@
         background: white !important;
       }
     }
+  }
+
+  .participant-select2 {
+    display: inline-block;
   }
 }
 

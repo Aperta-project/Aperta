@@ -13,12 +13,10 @@ export default Ember.Route.extend({
 
   actions: {
     error(response, transition) {
-      console.log(response);
       switch (response.status) {
         case 403:
           this.handleUnauthorizedRequest(transition);
       }
-      console.log('Error in transition to ' + transition.targetName);
       return true;
     },
     _pusherEventsId() {

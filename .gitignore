@@ -46,3 +46,5 @@ spring
 
 # ignore Gemfile.lock in engines/
 engines/*/Gemfile.lock
+
+.byebug_history

@@ -19,20 +19,29 @@ module SalesforceServices
       end
 
       def paper_to_manuscript_hash
-        {
+        hash = {
           "RecordTypeId"               => "012U0000000E4ASIA0",
           "Editorial_Status_Date__c"   => editorial[:date],
           "Revision__c"                => @paper.decisions.latest.revision_number,
           "Title__c"                   => @paper.title,
           "DOI__c"                     => @paper.doi,
           "Name"                       => @paper.manuscript_id,
-          "OriginalSubmissionDate__c"  => @paper.submitted_at,
           "Abstract__c"                => @paper.abstract,
           "Current_Editorial_Status__c" => editorial[:status]
         }
+
+        if new_sfdc_record?
+          hash["OriginalSubmissionDate__c"] = @paper.submitted_at
+        end
+
+        hash
       end
 
       private
+
+      def new_sfdc_record?
+        !@paper.salesforce_manuscript_id
+      end
 
       def status_hash(sfdc_value, local_datetime_field)
         { status: sfdc_value, date: @paper.send(local_datetime_field) }

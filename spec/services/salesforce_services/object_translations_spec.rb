@@ -2,14 +2,86 @@ require 'rails_helper'
 
 describe SalesforceServices::ObjectTranslations do
   let(:user) { FactoryGirl.create(:user) }
-  let(:paper) { FactoryGirl.create(:paper) }
+  let(:paper) { FactoryGirl.create(:paper, :submitted, :with_integration_journal) }
   let(:mt) do
     SalesforceServices::ObjectTranslations::ManuscriptTranslator.new(user_id: user.id, paper: paper)
   end
 
   describe "ManuscriptTranslator#paper_to_manuscript_hash" do
-    it "return a hash" do
+    let(:submit_time) { Time.now.utc + 20 }
+    let(:accepted_time) { Time.now.utc + 30 }
+
+    it "returns a hash" do
       expect(mt.paper_to_manuscript_hash.class).to eq Hash
+    end
+
+    context 'new manuscript' do
+      subject { mt.paper_to_manuscript_hash }
+      before do
+        paper.salesforce_manuscript_id = nil
+      end
+
+      it 'sends OriginalSubmissionDate__c' do
+        is_expected.to include("OriginalSubmissionDate__c")
+      end
+    end
+
+    context 'existing manuscript' do
+      subject { mt.paper_to_manuscript_hash }
+      before do
+        paper.salesforce_manuscript_id = "foreign_id"
+        paper.save
+      end
+      it 'does not send OriginalSubmissionDate__c' do
+        is_expected.not_to include("OriginalSubmissionDate__c")
+      end
+    end
+
+    it "returns a hash with the required fields" do
+      paper.update_attributes(submitted_at: submit_time)
+
+      hash = {
+        "RecordTypeId"               => "012U0000000E4ASIA0",
+        "Editorial_Status_Date__c"   => submit_time,
+        "Revision__c"                => 0,
+        "Title__c"                   => paper.title,
+        "DOI__c"                     => paper.doi,
+        "Name"                       => paper.manuscript_id,
+        "OriginalSubmissionDate__c"  => submit_time,
+        "Abstract__c"                => paper.abstract,
+        "Current_Editorial_Status__c" => "Manuscript Submitted"
+      }
+
+      expect(mt.paper_to_manuscript_hash).to eq(hash)
+    end
+
+    context "publishing states" do
+      let(:states_config) do
+        [
+          { state: "submitted", time: submit_time, status: "Manuscript Submitted" },
+          { state: "unknown_state", time: submit_time, status: "Manuscript Submitted" },
+          { state: "accepted", time: accepted_time, status: "Completed Accept" },
+          { state: "rejected", time: paper.updated_at, status: "Completed Reject" }
+        ]
+      end
+      before do
+        paper.update_attributes(submitted_at: submit_time, accepted_at: accepted_time)
+      end
+
+      it "uses the correct Editorial_Status_Date__c" do
+        states_config.each do |config|
+          paper.update_attributes(publishing_state: config[:state])
+          expect(mt.paper_to_manuscript_hash["Editorial_Status_Date__c"])
+            .to be_within(1.second).of(config[:time])
+        end
+      end
+      it "uses the correct Current_Editorial_Status__c" do
+        states_config.each do |config|
+          paper.update_attributes(publishing_state: config[:state])
+          expect(mt.paper_to_manuscript_hash["Current_Editorial_Status__c"])
+            .to eq(config[:status])
+        end
+      end
     end
   end
 

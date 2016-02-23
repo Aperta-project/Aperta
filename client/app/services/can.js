@@ -51,7 +51,6 @@ export default Ember.Service.extend({
     return new Promise((resolve) => {
       this.build(abilityString, resource, resolve);
     }).then(function (ability) {
-      console.log('ability', ability, ability.get('can'));
       return ability.get('can');
     });
   }

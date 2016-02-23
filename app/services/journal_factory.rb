@@ -155,6 +155,22 @@ class JournalFactory
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
     end
 
+    Role.ensure_exists(Role::PRODUCTION_STAFF_ROLE, journal: @journal) do |role|
+      role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal, states: ['*'])
+      role.ensure_permission_exists(:manage_workflow, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:withdraw, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
+    end
+
     Role.ensure_exists(Role::TASK_PARTICIPANT_ROLE, journal: @journal, participates_in: [Task]) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])

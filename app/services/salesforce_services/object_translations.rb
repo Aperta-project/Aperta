@@ -50,10 +50,6 @@ module SalesforceServices
       def new_sfdc_record?
         !@paper.salesforce_manuscript_id
       end
-
-      def status_hash(sfdc_value, local_datetime_field)
-        { status: sfdc_value, date: @paper.send(local_datetime_field) }
-      end
     end
 
     class BillingTranslator

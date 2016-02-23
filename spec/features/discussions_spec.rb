@@ -1,16 +1,17 @@
 require 'rails_helper'
 
 feature "Discussions", js: true, selenium: true do
-  let(:creator) { create :user }
+  let(:admin) { FactoryGirl.create :user }
+  let(:creator) { FactoryGirl.create :user }
   let!(:journal) { FactoryGirl.create :journal, :with_roles_and_permissions }
   let!(:paper) { FactoryGirl.create :paper, :submitted, :with_tasks, creator: creator, journal: journal }
   let(:discussion_page) { DiscussionsPage.new }
 
   context 'access paper and manage discussions' do
-    let!(:user) { FactoryGirl.create :user }
-
     scenario 'can add topics, participants, and replies' do
-      login_as(creator, scope: :user)
+      assign_journal_role journal, admin, :admin
+
+      login_as(admin, scope: :user)
       visit "/papers/#{paper.id}"
       wait_for_ajax
 
@@ -20,10 +21,10 @@ feature "Discussions", js: true, selenium: true do
       discussion_page.new_topic
       discussion_page.fill_in_topic
       discussion_page.create_topic
-      discussion_page.expect_topic_created_succesfully(creator)
+      discussion_page.expect_topic_created_succesfully(admin)
       discussion_page.expect_can_add_participant
       discussion_page.add_reply
-      discussion_page.expect_reply_created(creator, 2)
+      discussion_page.expect_reply_created(admin, 2)
     end
   end
 

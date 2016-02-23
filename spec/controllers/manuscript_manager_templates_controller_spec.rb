@@ -44,7 +44,25 @@ describe ManuscriptManagerTemplatesController do
   end
 
   describe "PUT update" do
-    let(:new_params) { {name: 'New name', paper_type: 'new type', journal_id: journal.id} }
+    let(:template_params) {
+      [ [{type: 'text', value: 'text here'}] ]
+    }
+
+    let(:new_params) { {
+      name: 'New name',
+      paper_type: 'new type',
+      journal_id: journal.id,
+      phase_templates: [
+        manuscript_manager_template_id: mmt.id,
+        name: 'Phase title',
+        position: 1,
+        task_templates: [
+          journal_task_type_id: journal.id,
+          title: 'Ad-hoc',
+          template: template_params
+        ]
+      ]
+    } }
 
     subject(:do_request) do
       put :update, {format: 'json', id: mmt.id,
@@ -58,7 +76,10 @@ describe ManuscriptManagerTemplatesController do
 
     it "updates the model" do
       do_request
-      expect(ManuscriptManagerTemplate.last.paper_type).to eq(new_params[:paper_type])
+      mmt = ManuscriptManagerTemplate.last
+      template = mmt.phase_templates.last.task_templates.last.template
+      expect(mmt.paper_type).to eq(new_params[:paper_type])
+      expect(template.to_json).to eq(template_params.to_json)
     end
 
     context "with invalid params" do

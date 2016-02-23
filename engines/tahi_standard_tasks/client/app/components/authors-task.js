@@ -1,10 +1,33 @@
-import TaskComponent from 'tahi/pods/components/task-base/component';
 import Ember from 'ember';
+import TaskComponent from 'tahi/pods/components/task-base/component';
+import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
+import validations from 'tahi/authors-task-validations';
 
 const { computed, on } = Ember;
 
 export default TaskComponent.extend({
   newAuthorFormVisible: false,
+
+  validateData() {
+    const objs = this.get('sortedAuthorsWithErrors');
+    objs.invoke('validateAllKeys');
+
+    const authorsErrors = ObjectProxyWithErrors.errorsPresentInCollection(objs);
+    let newAuthorErrors = false;
+
+    if(this.get('newAuthorFormVisible')) {
+      const newAuthor= this.get('newAuthor');
+      newAuthor.validateAllKeys();
+
+      if(newAuthor.validationErrorsPresent()) {
+        newAuthorErrors = true;
+      }
+    }
+
+    if(authorsErrors || newAuthorErrors) {
+      this.set('validationErrors.completed', 'Please fix all errors');
+    }
+  },
 
   authors: computed('task.authors.@each.paper', function() {
     return this.get('task.authors').filterBy('paper', this.get('paper'));
@@ -12,6 +35,14 @@ export default TaskComponent.extend({
 
   authorSort: ['position:asc'],
   sortedAuthors: computed.sort('task.authors', 'authorSort'),
+  sortedAuthorsWithErrors: computed('sortedAuthors.[]', function() {
+    return this.get('sortedAuthors').map(function(a) {
+      return ObjectProxyWithErrors.create({
+        object: a,
+        validations: validations
+      });
+    });
+  }),
 
   nestedQuestionsForNewAuthor: Ember.A(),
   newAuthorQuestions: on('init', function(){
@@ -22,23 +53,23 @@ export default TaskComponent.extend({
   }),
 
   newAuthor: computed('newAuthorFormVisible', function(){
-    return this.store.createRecord('author', {
+    const newAuthor = this.store.createRecord('author', {
         paper: this.get('task.paper'),
         position: 0,
         nestedQuestions: this.get('nestedQuestionsForNewAuthor')
     });
+
+    return ObjectProxyWithErrors.create({
+      object: newAuthor,
+      validations: validations
+    });
   }),
 
-  clearNewAuthorAnswers: function(){
+  clearNewAuthorAnswers(){
     this.get('nestedQuestionsForNewAuthor').forEach( (nestedQuestion) => {
-      nestedQuestion.clearAnswerForOwner(this.get('newAuthor'));
+      nestedQuestion.clearAnswerForOwner(this.get('newAuthor.object'));
     });
   },
-
-  sortedAuthorsWithErrors: computed(
-    'sortedAuthors.[]', 'validationErrors', function() {
-    return this.createModelProxyObjectWithErrors(this.get('sortedAuthors'));
-  }),
 
   shiftAuthorPositions(author, newPosition) {
     author.set('position', newPosition).save();
@@ -55,15 +86,16 @@ export default TaskComponent.extend({
     },
 
     saveNewAuthor() {
-      let author = this.get('newAuthor');
+      const proxy = this.get('newAuthor');
+      const model = proxy.get('object');
 
       // set this here, not when initially built so it doesn't show up in
       // the list of existing authors as the user fills out the form
-      author.set('authorsTask', this.get('task'));
+      model.set('authorsTask', this.get('task'));
 
-      author.save().then( (savedAuthor) => {
-        author.get('nestedQuestionAnswers').toArray().forEach(function(answer){
-          let value = answer.get('value');
+      model.save().then( (savedAuthor) => {
+        model.get('nestedQuestionAnswers').toArray().forEach(function(answer){
+          const value = answer.get('value');
           if(value || value === false){
             answer.set('owner', savedAuthor);
             answer.save();
@@ -74,12 +106,15 @@ export default TaskComponent.extend({
     },
 
     saveAuthor(author) {
-      this.clearAllValidationErrorsForModel(author);
       author.save();
     },
 
     removeAuthor(author) {
       author.destroyRecord();
+    },
+
+    validateField(model, key, value) {
+      model.validate(key, value);
     }
   }
 });

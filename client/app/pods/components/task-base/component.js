@@ -44,7 +44,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
   },
 
   validateQuestion(key, value) {
-    this.validate(key, value, this.get('validations.' + key));
+    this.validate(key, value);
   },
 
   validateQuestions() {
@@ -64,11 +64,9 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
 
     answers.forEach(answer => {
       const key = answer.get('nestedQuestion.ident');
-      const validations = allValidations[key];
-      if(isEmpty(validations)) { return; }
-
       const value = answer.get('value');
-      this.validate(key, value, validations);
+
+      this.validate(key, value);
     });
   },
 
@@ -77,7 +75,7 @@ export default Ember.Component.extend(ValidationErrorsMixin, {
     close() { this.attrs.close(); },
 
     validateQuestion(key, value) {
-      this.validateQuestion(key, value);
+      this.validate(key, value);
     },
 
     toggleTaskCompletion() {

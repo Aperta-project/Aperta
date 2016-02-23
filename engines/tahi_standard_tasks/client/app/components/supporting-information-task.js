@@ -14,14 +14,11 @@ export default TaskComponent.extend(FileUploadMixin, {
 
   validateData() {
     const objs = this.get('filesWithErrors');
-
     objs.invoke('validateAllKeys');
 
-    const errorsPresent = _.compact(objs.map(function(obj) {
-      return obj.get('errorsPresent');
-    }));
+    const errors = ObjectProxyWithErrors.errorsPresentInCollection(objs);
 
-    if(errorsPresent.length) {
+    if(errors) {
       this.set('validationErrors.completed', 'Please fix all errors');
     }
   },

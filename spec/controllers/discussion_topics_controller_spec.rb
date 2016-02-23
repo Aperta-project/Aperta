@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe DiscussionTopicsController do
-  render_views
-
   let(:user) { FactoryGirl.create(:user) }
   let(:paper) { FactoryGirl.create(:paper) }
   let!(:paper_role) { FactoryGirl.create(:paper_role, :editor, paper: paper, user: user) }
@@ -16,6 +14,15 @@ describe DiscussionTopicsController do
   before { sign_in user }
 
   describe 'GET index' do
+    before do
+      allow_any_instance_of(User).to receive(:filter_authorized)
+        .with(:view, paper.discussion_topics)
+        .and_return instance_double(
+          'Authorizations::Query::Result',
+          objects: [topic_a]
+        )
+    end
+
     it "includes the paper's discussion topics" do
       xhr :get, :index, format: :json, paper_id: paper.id
       topics = json["discussion_topics"]

@@ -3,7 +3,9 @@ class DiscussionTopicsController < ApplicationController
   respond_to :json
 
   def index
-    topics = paper.discussion_topics.including(current_user)
+    topics = current_user
+      .filter_authorized(:view, paper.discussion_topics)
+      .objects
     respond_with topics, each_serializer: DiscussionTopicIndexSerializer
   end
 

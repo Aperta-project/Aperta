@@ -32,4 +32,10 @@ Authorizations.configure do |config|
     authorizes: DiscussionTopic,
     via: :discussion_topics
   )
+
+  config.assignment_to(
+    Journal,
+    authorizes: DiscussionTopic,
+    via: :discussion_topics
+  )
 end

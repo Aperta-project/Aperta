@@ -100,7 +100,7 @@ describe ParticipationsController do
         expect(task.participations.last).to eq \
           Assignment.where(
             user: participant,
-            role: task.journal.participant_role,
+            role: task.journal.task_participant_role,
             assigned_to: task
           ).first
       end
@@ -153,7 +153,7 @@ describe ParticipationsController do
         it 'destroy the associated Role.participant assignment on the task' do
           Assignment.create!(
             user: participant,
-            role: task.journal.participant_role,
+            role: task.journal.task_participant_role,
             assigned_to: participation.task
           )
           expect { do_request }.to change(task.participations, :count).by(-1)

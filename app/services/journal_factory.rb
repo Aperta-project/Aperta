@@ -122,8 +122,7 @@ class JournalFactory
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
     end
 
-    # This should likely be renamed to "Task Participant"
-    Role.ensure_exists(Role::PARTICIPANT_ROLE, journal: @journal, participates_in: [Task], delete_stray_permissions: true) do |role|
+    Role.ensure_exists(Role::TASK_PARTICIPANT_ROLE, journal: @journal, participates_in: [Task], delete_stray_permissions: true) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])

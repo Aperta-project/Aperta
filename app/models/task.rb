@@ -30,7 +30,7 @@ class Task < ActiveRecord::Base
 
   has_many \
     :participations,
-    -> { joins(:role).where(roles: { name: Role::PARTICIPANT_ROLE }) },
+    -> { joins(:role).where(roles: { name: Role::TASK_PARTICIPANT_ROLE }) },
     class_name: 'Assignment',
     as: :assigned_to
   has_many \
@@ -123,7 +123,7 @@ class Task < ActiveRecord::Base
         joins(assignments: [:role, :user])
           .where(
             'assignments.user_id' => users,
-            'roles.name' => Role::PARTICIPANT_ROLE
+            'roles.name' => Role::TASK_PARTICIPANT_ROLE
           )
       end
     end
@@ -176,7 +176,7 @@ class Task < ActiveRecord::Base
   def add_participant(user)
     participations.where(
       user: user,
-      role: journal.participant_role
+      role: journal.task_participant_role
     ).first_or_create!
   end
 

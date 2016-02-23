@@ -474,7 +474,10 @@ class ManuscriptViewerPage(AuthenticatedPage):
 
   def confirm_submit_btn(self):
     """Confirm paper submission"""
-    self._get(self._so_submit_confirm).click()
+    # There is a lot going on under the covers in submittal - we need this pregnant delay
+    confirm_btn = self._get(self._so_submit_confirm)
+    confirm_btn.click()
+    time.sleep(15)
 
   def confirm_submit_cancel(self):
     """Cancel on confirm paper submission"""

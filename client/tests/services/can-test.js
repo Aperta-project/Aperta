@@ -11,7 +11,7 @@ moduleFor('service:can', 'Unit: Can Service Permissions', {
     let store = this.store;
 
     this.permission = Ember.run(function(){
-      return store.createRecord('permission', {id:'Paper+1'});
+      return store.createRecord('permission', {id:'paper+1'});
     });
     this.resource = Ember.run(function(){
       return store.createRecord('Paper', {id:1});

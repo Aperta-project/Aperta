@@ -11,7 +11,7 @@
     <a href="{{attachment.src}}" class="file-link" target="_blank">
       <i class="fa {{fileTypeClass}}"></i> {{attachment.filename}}
     </a>
-    {{#if canEdit}}
+    {{#if isEditable}}
       <span {{action "triggerFileSelection"}} class="file-action replace-attachment">
         <i class="fa fa-refresh"></i>
         Replace

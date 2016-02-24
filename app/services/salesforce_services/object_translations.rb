@@ -29,22 +29,16 @@ module SalesforceServices
       private
 
       def editorial
-        sfdc_status = {
-          submitted: {
-            status: "Manuscript Submitted",
-            date: @paper.submitted_at
-          },
-          accepted: {
-            status: "Completed Accept",
-            date: @paper.accepted_at
-          },
-          rejected: {
-            status: "Completed Reject",
-            date: @paper.updated_at
-          }
-        }
-        default = { status: "Manuscript Submitted", date: @paper.submitted_at }
-        sfdc_status.fetch(@paper.publishing_state.to_sym, default)
+        case @paper.publishing_state
+        when 'submitted'
+          { status: "Manuscript Submitted", date: @paper.submitted_at }
+        when 'accepted'
+          { status: "Completed Accept", date: @paper.accepted_at }
+        when 'rejected'
+          { status: "Completed Reject", date: @paper.updated_at }
+        else
+          { status: "Manuscript Submitted", date: @paper.submitted_at }
+        end
       end
 
       def new_sfdc_record?

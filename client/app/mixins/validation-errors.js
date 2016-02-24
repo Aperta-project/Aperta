@@ -212,9 +212,23 @@ export default Ember.Mixin.create({
     @param {Array} types names of validations to run
   */
 
-  validate(key, value, types) {
-    const messages = validator.validate.call(this, key, value, types);
+  validate(key, value) {
+    const validations = this._getValidationsForKey(key);
+    const messages = validator.validate.call(this, key, value, validations);
     this.displayValidationError(key, messages);
+  },
+
+  /**
+    Find validations in validations or questionValidations object
+
+    @method _getValidationsForKey
+    @param {String} key
+    @return {Array} validations
+    @private
+  */
+
+  _getValidationsForKey(key) {
+    return this.get('validations')[key];
   },
 
   /**

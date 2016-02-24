@@ -27,7 +27,7 @@ class ReviewerReportTaskCreator
 
       Assignment.where(
         user: assignee,
-        role: paper.journal.participant_role,
+        role: paper.journal.task_participant_role,
         assigned_to: task
       ).first_or_create!
 
@@ -45,7 +45,7 @@ class ReviewerReportTaskCreator
       TahiStandardTasks::ReviewerReportTask.joins(assignments: :role).where(
         paper_id: paper.id,
         assignments: {
-          role_id: paper.journal.participant_role, user_id: assignee.id
+          role_id: paper.journal.task_participant_role, user_id: assignee.id
         }
       ).first
     end

@@ -379,7 +379,7 @@ class Paper < ActiveRecord::Base
   end
 
   def task_participation_roles
-    [journal.participant_role]
+    [journal.task_participant_role]
   end
 
   def participations # rubocop:disable Metrics/AbcSize,Metrics/MethodLength

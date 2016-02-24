@@ -7,10 +7,10 @@ class CollaborationsController < ApplicationController
   end
   respond_to :json
 
-  def create # rubocop:disable Metrics/MethodLength
+  def create
     collaboration = paper.add_collaboration(collaborator)
     Activity.collaborator_added!(collaboration, user: current_user)
-    UserMailer.delay.add_collaboration(
+    UserMailer.delay.add_collaborator(
       current_user.id,
       collaboration.user_id,
       paper.id

@@ -6,12 +6,13 @@ class Role < ActiveRecord::Base
   ACADEMIC_EDITOR_ROLE = 'Academic Editor'
   COLLABORATOR_ROLE = 'Collaborator'
   CREATOR_ROLE = 'Creator'
+  DISCUSSION_PARTICIPANT = 'Discussion Participant'
   HANDLING_EDITOR_ROLE = 'Handling Editor'
   INTERNAL_EDITOR_ROLE = 'Internal Editor'
-  PARTICIPANT_ROLE = 'Participant'
   PUBLISHING_SERVICES_ROLE = 'Publishing Services and Production Staff'
   REVIEWER_ROLE = 'Reviewer'
   STAFF_ADMIN_ROLE = 'Staff Admin'
+  TASK_PARTICIPANT_ROLE = 'Participant'
   USER_ROLE = 'User'
 
   def self.for_old_role(old_role, paper:) # rubocop:disable Metrics/MethodLength
@@ -31,7 +32,7 @@ class Role < ActiveRecord::Base
 
   def self.ensure_exists(name, journal: nil,
                                participates_in: [],
-                               delete_stray_permissions: false,
+                               delete_stray_permissions: true,
                          &block)
     role = Role.where(name: name, journal: journal).first_or_create!
 
@@ -64,9 +65,6 @@ class Role < ActiveRecord::Base
   end
 
   def delete_stray_permissions
-    fail StandardError, "Role.ensure_exists called with
-delete_stray_permissions, but no permissions created." \
-                        if @ensured_permission_ids.blank?
     permissions.delete(permissions.where.not(id: @ensured_permission_ids))
     reset_tracked_permissions
   end

@@ -12,6 +12,7 @@
                            everyone=allUsers
                            paperId=model.paperId
                            label="Participants:"
+                           canManage=(can 'manage_participant' model)
                            onRemove=(action "removeParticipantByUserId")
                            onSelect=(action "addParticipantByUserId")}}
   </div>

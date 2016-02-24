@@ -1,9 +1,11 @@
 require 'rails_helper'
 
 feature 'Publishing Related Questions Card', js: true do
+  include AuthorizationSpecHelper
+
   let(:creator) { create :user, first_name: 'Creator' }
   let!(:paper) do
-    FactoryGirl.create(:paper, :with_integration_journal, :with_tasks, creator: creator)
+    FactoryGirl.create(:paper, :with_integration_journal, creator: creator)
   end
   let!(:task) do
     FactoryGirl.create(:publishing_related_questions_task, paper: paper)
@@ -27,7 +29,6 @@ feature 'Publishing Related Questions Card', js: true do
       # <br> tags are only added when the space key is hit. So we clear the
       content_editable.set('T')
       content_editable.send_keys('his is a short title', :tab)
-      wait_for_ajax
 
       wait_for_condition do
         paper.reload
@@ -43,7 +44,7 @@ feature 'Publishing Related Questions Card', js: true do
         choose 'Yes'
         find('.fileinput-button').click
         overlay.upload_file(
-          element_id: "add-new-attachment",
+          element_id: 'file',
           file_name: 'yeti.jpg',
           sentinel: proc { QuestionAttachment.count }
         )

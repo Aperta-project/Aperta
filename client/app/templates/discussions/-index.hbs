@@ -1,7 +1,9 @@
 <div class="sheet-content">
   <div class="discussions-index-header">
     <h1>Discussions</h1>
-    {{link-to "Create New Topic" topicsNewPath class="button-secondary button--green"}}
+    {{#if (can 'start_discussion' paper)}}
+      {{link-to "Create New Topic" topicsNewPath class="button-secondary button--green"}}
+    {{/if}}
   </div>
   <br><br>
 

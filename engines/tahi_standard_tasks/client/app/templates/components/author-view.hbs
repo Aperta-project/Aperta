@@ -7,16 +7,18 @@
     {{author.affiliation}} &nbsp; &nbsp; {{author.secondaryAffiliation}}
   </div>
 
-  {{#if hoverState}}
+  {{#if showHover}}
     <div class="authors-overlay-item--actions">
       <div class="drag"></div>
       <div class="actions">
         <div class="action" {{action "toggleEditForm"}}>
           <span class="fa fa-pencil scaleIn"></span>
         </div>
-        <div class="action" {{action "toggleDeleteConfirmation"}}>
-          <span class="fa fa-trash scaleIn"></span>
-        </div>
+        {{#unless fieldsDisabled}}
+          <div class="action" {{action "toggleDeleteConfirmation"}}>
+            <span class="fa fa-trash scaleIn"></span>
+          </div>
+        {{/unless}}
       </div>
     </div>
   {{/if}}
@@ -25,7 +27,9 @@
 {{#if editState}}
   {{add-author-form author=author
                     validationErrors=errors
+                    validateField=(action "validateField")
                     hideAuthorForm="toggleEditForm"
+                    fieldsDisabled=fieldsDisabled
                     saveAuthor="save"}}
 {{/if}}
 

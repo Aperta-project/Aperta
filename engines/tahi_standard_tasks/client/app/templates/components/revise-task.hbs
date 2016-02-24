@@ -27,10 +27,10 @@
         value=latestDecision.authorResponse
         class="revise-overlay-response-field"
         placeholder="Please detail the changes you've made to your submission here"
-        editable=isSubmissionTaskEditable}}
+        editable=isEditable}}
       <button
-        class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}"
-        disabled={{isSubmissionTaskNotEditable}}
+        class="button-primary button--green {{if isNotEditable 'button--disabled'}}"
+        disabled={{isNotEditable}}
         {{action "saveAuthorResponse"}}>
         Save
       </button>

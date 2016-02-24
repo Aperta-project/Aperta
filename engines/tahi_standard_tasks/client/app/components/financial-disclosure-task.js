@@ -20,11 +20,6 @@ export default TaskComponent.extend({
     });
   }),
 
-  authorReceivedFundingQuestion: computed('task', function(){
-    return this.get('task')
-               .findQuestion('financial_disclosures--author_received_funding');
-  }),
-
   numFundersObserver: observer('funders.[]', function() {
     if (this.get('receivedFunding') === false) {
       return;

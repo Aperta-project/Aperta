@@ -10,7 +10,7 @@
 
   <div>
     {{#if isEditable}}
-      <button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "toggleAuthorForm" group}}>
+      <button class="button-primary button--green" {{action "toggleAuthorForm" group}}>
         Add a New Author
       </button>
       <br>
@@ -19,7 +19,8 @@
 
       {{#if newAuthorFormVisible}}
         {{add-author-form institutions=task.institutions
-                          author=newAuthor
+                          author=newAuthor.object
+                          validationErrors=newAuthor.validationErrors
                           hideAuthorForm="toggleAuthorForm"
                           saveAuthor="saveNewAuthor"}}
       {{/if}}
@@ -33,9 +34,9 @@
       {{author-view isEditable=isEditable
                     delete="removeAuthor"
                     save="saveAuthor"
-                    author=authorWithErrors.model
-                    errors=authorWithErrors.errors
-                    disabled=isSubmissionTaskNotEditable}}
+                    model=authorWithErrors
+                    isEditable=isEditable}}
+
       {{author-drop-target index=authorWithErrors.model.position
                            isEditable=isEditable
                            changePosition=(action "changeAuthorPosition")}}

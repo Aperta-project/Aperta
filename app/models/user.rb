@@ -27,13 +27,14 @@ class User < ActiveRecord::Base
   has_many :comments, inverse_of: :commenter, foreign_key: 'commenter_id'
   has_many \
     :participations,
-    -> { joins(:role).where(roles: { name: Role::PARTICIPANT_ROLE }) },
+    -> { joins(:role).where(roles: { name: Role::TASK_PARTICIPANT_ROLE }) },
     class_name: 'Assignment',
     inverse_of: :user
   has_many \
     :tasks,
     lambda {
-      joins(assignments: :role).where(roles: { name: Role::PARTICIPANT_ROLE })
+      joins(assignments: :role)
+        .where(roles: { name: Role::TASK_PARTICIPANT_ROLE })
     },
     through: :assignments,
     source: :assigned_to,

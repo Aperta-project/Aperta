@@ -48,7 +48,7 @@ describe ReviewerReportTaskCreator do
         task = TahiStandardTasks::ReviewerReportTask.last
         assignment = Assignment.where(
           user: assignee,
-          role: paper.journal.participant_role,
+          role: paper.journal.task_participant_role,
           assigned_to: task
         ).first!
         expect(assignment).to be

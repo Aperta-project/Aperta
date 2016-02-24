@@ -20,14 +20,14 @@
   </p>
 
   <div class="form-group form-inline">
-    <div class="required form-group author-half {{if validationErrors.department "error"}}">
+    <div class="required form-group {{if validationErrors.department "error"}}">
       {{error-message message=null}}
       {{nested-question-select ident="plos_billing--gpi_country"
                         owner=task
                         displayQuestionText=false
                         placeholder="Select your Country"
                         source=groupOneAndTwoCountries
-                        enable=(not fieldsDisabled)
+                        enable=isEditable
                         width="300"}}
     </div>
   </div>

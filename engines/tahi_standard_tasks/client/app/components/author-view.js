@@ -1,32 +1,37 @@
 import Ember from 'ember';
 import DragNDrop from 'tahi/services/drag-n-drop';
 
+const { computed, on } = Ember;
+const { alias } = computed;
+
 export default Ember.Component.extend(DragNDrop.DraggableMixin, {
-  layoutName: 'components/author-view',
   classNames: ['authors-overlay-item'],
-  classNameBindings: ['hoverState:__hover', 'isEditable:__editable'],
-  hoverState: false,
-  deleteState: false,
+  classNameBindings: ['showHover:__hover', 'isEditable:__editable'],
 
-  editState: function() {
-    return !!this.get('errors');
-  }.property('author.errors'),
+  author: alias('model.object'),
+  errors: alias('model.validationErrors'),
+  errorsPresent: alias('model.errorsPresent'),
+  editState: alias('errorsPresent'),
 
-  attachHoverEvent: function() {
-    if (this.get('disabled')) { return; }
-    let self = this;
-    let toggleHoverClass = function() {
-      self.toggleProperty('hoverState');
-    };
+  fieldsDisabled: Ember.computed.not('isEditable'),
 
-    this.$().hover(toggleHoverClass, toggleHoverClass);
-  }.on('didInsertElement'),
+  // canHover is true, now, but should be Ember.computed.alias('isEditable')
+  // once the read-only author-view contains all needed information.
+  canHover: true,
+  isHovering: false,
+  showHover: Ember.computed.and('isHovering', 'canHover'),
 
-  teardownHoverEvent: function() {
+  _setupHover: Ember.on('didInsertElement', function(){
+    this.$().hover(() => {
+      this.toggleProperty('isHovering');
+    });
+  }),
+
+  _destroyHover: Ember.on('willDestroyElement', function(){
     this.$().off('mouseenter mouseleave');
-  }.on('willDestroyElement'),
+  }),
 
-  dragStart: function(e) {
+  dragStart(e) {
     e.dataTransfer.effectAllowed = 'move';
     DragNDrop.dragItem = this.get('author');
   },
@@ -39,6 +44,9 @@ export default Ember.Component.extend(DragNDrop.DraggableMixin, {
     },
 
     save() {
+      this.get('model').validateAllKeys();
+      if(this.get('errorsPresent')) { return; }
+
       this.sendAction('save', this.get('author'));
       this.set('editState', false);
     },
@@ -49,6 +57,10 @@ export default Ember.Component.extend(DragNDrop.DraggableMixin, {
 
     toggleDeleteConfirmation() {
       this.toggleProperty('deleteState');
+    },
+
+    validateField(key, value) {
+      this.get('model').validate(key, value);
     }
   }
 });

@@ -3,6 +3,7 @@ class Journal < ActiveRecord::Base
   has_many :tasks, through: :papers, inverse_of: :journal
   has_many :roles, inverse_of: :journal
   has_many :assignments, as: :assigned_to
+  has_many :discussion_topics, through: :papers, inverse_of: :journal
 
   # Old Roles and Permissions
   has_many :old_roles, inverse_of: :journal
@@ -28,17 +29,18 @@ class Journal < ActiveRecord::Base
   mount_uploader :logo,       LogoUploader
   mount_uploader :epub_cover, EpubCoverUploader
 
+  # rubocop:disable Metrics/LineLength
   has_one :academic_editor_role, -> { where(name: Role::ACADEMIC_EDITOR_ROLE) },
           class_name: 'Role'
   has_one :creator_role, -> { where(name: Role::CREATOR_ROLE) },
           class_name: 'Role'
   has_one :collaborator_role, -> { where(name: Role::COLLABORATOR_ROLE) },
           class_name: 'Role'
+  has_one :discussion_participant_role, -> { where(name: Role::DISCUSSION_PARTICIPANT) },
+          class_name: 'Role'
   has_one :internal_editor_role, -> { where(name: Role::INTERNAL_EDITOR_ROLE) },
           class_name: 'Role'
   has_one :handling_editor_role, -> { where(name: Role::HANDLING_EDITOR_ROLE) },
-          class_name: 'Role'
-  has_one :participant_role, -> { where(name: Role::PARTICIPANT_ROLE) },
           class_name: 'Role'
   has_one :publishing_services_role, -> { where(name: Role::PUBLISHING_SERVICES_ROLE) },
           class_name: 'Role'
@@ -46,8 +48,11 @@ class Journal < ActiveRecord::Base
           class_name: 'Role'
   has_one :staff_admin_role, -> { where(name: Role::STAFF_ADMIN_ROLE) },
           class_name: 'Role'
+  has_one :task_participant_role, -> { where(name: Role::TASK_PARTICIPANT_ROLE) },
+          class_name: 'Role'
   has_one :user_role, -> { where(name: Role::USER_ROLE, journal_id: nil) },
           class_name: 'Role'
+  # rubocop:enable Metrics/LineLength
 
   def admins
     users.merge(OldRole.admins)

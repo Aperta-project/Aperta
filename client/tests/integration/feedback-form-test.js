@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { module, test } from 'qunit';
 import startApp from 'tahi/tests/helpers/start-app';
+import Factory from '../helpers/factory';
 
 let App = null;
 
@@ -37,18 +38,8 @@ module('Integration: Feedback Form', {
 
 test('clicking the feedback button sends feedback', function(assert) {
   Ember.run(function(){
+    Factory.createPermission('User', 1, ['view_profile']);
 
-    var store = getStore();
-    store.createRecord('permission',{
-      id: 'user+1',
-      object:{id: 1, type: 'User'},
-      permissions:{
-        view_profile:{
-          states: ['*']
-        }
-      }
-    });
-    
     visit('/profile');
     click('#profile-dropdown-menu');
     click('a:contains(Give Feedback on)');

@@ -49,7 +49,7 @@ test('can see a list of topics', function(assert) {
   });
 });
 
-test('can see a topic and a reply with permissions', function(assert) {
+test('can see a non-editable topic with view permissions', function(assert) {
   Factory.createPermission('DiscussionTopic', 1, ['view']);
 
   Ember.run(function() {
@@ -57,11 +57,37 @@ test('can see a topic and a reply with permissions', function(assert) {
     visit('/papers/' + paper.id + '/workflow/discussions/' + topic.get('id'));
 
     andThen(function() {
-      let titleText = find('.discussions-show-title input').val();
-      let replyText = find('.comment-body:first').text();
-
+      let titleText = find('.discussions-show-title').text().trim();
       assert.equal(titleText, 'Hipster Ipsum Dolor', 'Topic title is found: ' + titleText);
+    });
+  });
+});
+
+test('can reply to a topic with view permissions', function(assert) {
+  Factory.createPermission('DiscussionTopic', 1, ['view']);
+
+  Ember.run(function() {
+    TestHelper.handleFind(topic);
+    visit('/papers/' + paper.id + '/workflow/discussions/' + topic.get('id'));
+
+    andThen(function() {
+      let replyText = find('.comment-body:first').text();
       assert.ok(replyText, 'Reply is found: ' + replyText);
+    });
+  });
+});
+
+
+test('can see an editable topic with edit permissions', function(assert) {
+  Factory.createPermission('DiscussionTopic', 1, ['view', 'edit']);
+
+  Ember.run(function() {
+    TestHelper.handleFind(topic);
+    visit('/papers/' + paper.id + '/workflow/discussions/' + topic.get('id'));
+
+    andThen(function() {
+      let titleText = find('.discussions-show-title input').val();
+      assert.equal(titleText, 'Hipster Ipsum Dolor', 'Topic title is found: ' + titleText);
     });
   });
 });

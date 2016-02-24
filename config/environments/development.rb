@@ -40,6 +40,13 @@ Tahi::Application.configure do
 
   config.action_mailer.default_url_options = {host: "localhost", port: 5000, protocol: "http://"}
 
+  # Define how root_url should behave by default
+  routes.default_url_options = {
+    host: "localhost",
+    port: 5000,
+    protocol: "http://"
+  }
+
   config.after_initialize do
     Bullet.enable = true
     Bullet.bullet_logger = true
@@ -49,4 +56,3 @@ Tahi::Application.configure do
     Bullet.stacktrace_includes = ['tahi_standard_tasks', 'plos_bio_tech_check', 'plos_bio_internal_review', 'plos_billing', 'tahi-assign_team']
   end
 end
-

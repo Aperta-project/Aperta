@@ -117,6 +117,18 @@ class Activity < ActiveRecord::Base
     )
   end
 
+  def self.invitation_withdrawn!(invitation, user:)
+    role = invitation.task.invitee_role.capitalize
+    invitee = invitation.recipient_name
+    create(
+      feed_name: "workflow",
+      activity_key: "invitation.withdrawn",
+      subject: invitation.paper,
+      user: user,
+      message: "#{invitee}'s invitation as #{role} was withdrawn"
+    )
+  end
+
   def self.paper_created!(paper, user:)
     create(
       feed_name: "manuscript",

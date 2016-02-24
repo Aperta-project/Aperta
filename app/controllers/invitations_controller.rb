@@ -21,6 +21,7 @@ class InvitationsController < ApplicationController
 
   def destroy
     invitation.destroy
+    Activity.invitation_withdrawn!(invitation, user: current_user)
     respond_with(invitation)
   end
 

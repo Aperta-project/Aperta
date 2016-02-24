@@ -1,5 +1,6 @@
 {{#if uploadInProgress}}
   {{upload-preview upload=fileUpload}}
+
 {{else}}
 
   {{#if isProcessing}}
@@ -10,21 +11,27 @@
     <a href="{{attachment.src}}" class="file-link" target="_blank">
       <i class="fa {{fileTypeClass}}"></i> {{attachment.filename}}
     </a>
+    {{#if isEditable}}
+      <span {{action "triggerFileSelection"}} class="file-action replace-attachment">
+        <i class="fa fa-refresh"></i>
+        Replace
+      </span>
 
-    <span {{action "triggerFileSelection"}} class="file-action replace-attachment">
-      <i class="fa fa-refresh"></i>
-      Replace
-    </span>
+      <span {{action "deleteFile"}} class="file-action delete-attachment">
+        <i class="fa fa-trash"></i>
+        Delete
+      </span>
 
-    <span {{action "deleteFile"}} class="file-action delete-attachment">
-      <i class="fa fa-trash"></i>
-      Delete
-    </span>
-
-    {{#if hasCaption}}
-      {{input class="form-control" type="type" value=caption
-              placeholder="Please provide a brief description of this file"
-              focus-out="captionChanged" name="attachment-caption"}}
+      {{#if hasCaption}}
+        {{input class="form-control" type="type" value=caption
+                placeholder="Please provide a brief description of this file"
+                focus-out="captionChanged" name="attachment-caption"}}
+      {{/if}}
+    {{else}}
+      {{#if hasCaption}}
+        {{input class="form-control" type="type" value=caption
+                name="attachment-caption" disabled=true}}
+        {{/if}}
     {{/if}}
 
     {{s3-file-uploader accept=accept

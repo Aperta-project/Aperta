@@ -59,9 +59,8 @@ test('can add a new author', function(assert) {
     TestHelper.handleCreate('author');
 
     visit(`/papers/${paper.id}/tasks/${task.id}`);
-    click('.button-primary:contains("Add a New Author")')
+    click('.button-primary:contains("Add a New Author")');
     fillIn('.author-first', firstName);
-
     click('.author-form-buttons .button-secondary:contains("done")');
 
     andThen(function() {

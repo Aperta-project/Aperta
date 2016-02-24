@@ -138,6 +138,9 @@ You can run the javascript specs via the command line with `rake ember:test`.
 You can also run the javascript specs from the browser. To do this run
 `ember test --serve` from `client/` to see the results in the
 browser.
+You can run a particular test with '--module'. For example, running: 
+`ember test --serve --module="Integration:Discussions"
+will run the Ember test that starts with `module('Integration:Discussions', {`
 
 For help writing ember tests please see the [ember-cli testing section](http://www.ember-cli.com/#testing)
 

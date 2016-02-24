@@ -11,6 +11,9 @@ export default Ember.Component.extend(DragNDrop.DraggableMixin, {
   errors: alias('model.validationErrors'),
   errorsPresent: alias('model.errorsPresent'),
   editState: alias('errorsPresent'),
+  viewState: computed('editState', 'deleteState', function() {
+    return !this.get('editState') && !this.get('deleteState');
+  }),
   draggable: not('isNotEditable'),
 
   dragStart(e) {

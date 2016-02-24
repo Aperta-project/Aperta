@@ -1,45 +1,30 @@
 {{#if isEditing}}
-
   {{reviewer-form reviewerRecommendation=reviewerRecommendation
                   validationErrors=validationErrors
                   saveRecommendation=(action "saveRecommendation")
                   cancelRecommendation=(action "cancelRecommendation")
                   isNotEditable=isNotEditable}}
+{{/if}}
 
-{{else}}
+{{#unless (or isEditing isDeleting)}}
+  <div class="author-task-item-view flex-group">
+    <div class="author-task-item-view-text flex-element flex-group" {{action "edit"}}>
+      <div class="flex-element author-name full-name">{{reviewerRecommendation.fullName}}</div>
+      <span class="flex-element email">{{reviewerRecommendation.email}}</span>
 
-  <div class="authors-overlay-item--text reviewer">
-    <div class="author-name full-name">{{reviewerRecommendation.fullName}}</div>
-    <span class="email">{{reviewerRecommendation.email}}</span><br>
-    <span class="title">{{reviewerRecommendation.title}}</span> &nbsp; &nbsp; <span class="department">{{reviewerRecommendation.department}}</span>
-    <br>
-    <span class="affiliation">{{reviewerRecommendation.affiliation}}</span>
-    <div class="decision">
-      {{nested-question-display ident="reviewer_recommendations--recommend_or_oppose" owner=reviewerRecommendation}}:
-      {{nested-question-answer
-        ident="reviewer_recommendations--recommend_or_oppose"
-        owner=reviewerRecommendation
-        yesLabel="Recommend"
-        noLabel="Oppose"
-      }}
-    </div>
-    <span class="reason">{{nested-question-answer ident="reviewer_recommendations--reason" owner=reviewerRecommendation}}</span>
-  </div>
-
-  {{#if showHover}}
-    <div class="authors-overlay-item--actions">
-      <div class="actions">
-        <div class="action" {{action "edit"}}>
-          <span class="fa fa-pencil scaleIn"></span>
-        </div>
-        <div class="action" {{action "delete"}}>
-          <span class="fa fa-trash scaleIn"></span>
-        </div>
+      <div class="flex-element decision">
+        {{nested-question-answer ident="reviewer_recommendations--recommend_or_oppose"
+                                 owner=reviewerRecommendation
+                                 yesLabel="Recommend"
+                                 noLabel="Oppose"}}
       </div>
     </div>
-  {{/if}}
 
-{{/if}}
+    <div class="author-task-item-view-actions flex-element">
+      <span class="fa fa-trash scaleIn" {{action "delete"}}></span>
+    </div>
+  </div>
+{{/unless}}
 
 {{#if isDeleting}}
   <div class="authors-overlay-item-delete">

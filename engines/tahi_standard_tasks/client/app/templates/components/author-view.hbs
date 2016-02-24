@@ -1,4 +1,4 @@
-{{#unless (or editState deleteState)}}
+{{#if viewState}}
   <div class="author-task-item-view flex-group">
     {{#unless isNotEditable}}
       <div class="author-task-item-view-drag-handle flex-element"></div>
@@ -23,7 +23,7 @@
       </div>
     {{/unless}}
   </div>
-{{/unless}}
+{{/if}}
 
 {{#if editState}}
   {{add-author-form author=author

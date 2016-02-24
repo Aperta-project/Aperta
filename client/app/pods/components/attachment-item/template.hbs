@@ -11,28 +11,33 @@
       <i class="fa {{fileTypeClass}}"></i> {{attachment.filename}}
     </a>
 
-    <span {{action "triggerFileSelection"}} class="file-action replace-attachment">
-      <i class="fa fa-refresh"></i>
-      Replace
-    </span>
+    {{#unless disabled}}
+      <span {{action "triggerFileSelection"}} class="file-action replace-attachment">
+        <i class="fa fa-refresh"></i>
+        Replace
+      </span>
 
-    <span {{action "deleteFile"}} class="file-action delete-attachment">
-      <i class="fa fa-trash"></i>
-      Delete
-    </span>
+      <span {{action "deleteFile"}} class="file-action delete-attachment">
+        <i class="fa fa-trash"></i>
+        Delete
+      </span>
+    {{/unless}}
 
     {{#if hasCaption}}
       {{input class="form-control" type="type" value=caption
+              disabled=disabled
               placeholder="Please provide a brief description of this file"
               focus-out="captionChanged" name="attachment-caption"}}
     {{/if}}
 
-    {{s3-file-uploader accept=accept
-                       filePath=filePath
-                       class="s3-file-uploader"
-                       uploadProgress=(action "uploadProgress")
-                       uploadFinished=(action "uploadFinished")
-                       uploadFailed=(action "uploadFailed")
-                       fileAdded=(action "fileAdded")}}
+    {{#unless disabled}}
+      {{s3-file-uploader accept=accept
+                         filePath=filePath
+                         class="s3-file-uploader"
+                         uploadProgress=(action "uploadProgress")
+                         uploadFinished=(action "uploadFinished")
+                         uploadFailed=(action "uploadFailed")
+                         fileAdded=(action "fileAdded")}}
+    {{/unless}}
   {{/if}}
 {{/if}}

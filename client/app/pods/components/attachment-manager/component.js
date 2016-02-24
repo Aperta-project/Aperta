@@ -22,6 +22,7 @@ import FileUpload from 'tahi/models/file-upload';
 
 export default Ember.Component.extend({
   classNames: ['attachment-manager'],
+  classNameBindings: ['disabled:read-only'],
   description: 'Please select a file.',
   buttonText: 'Upload File',
   fileUpload: null,
@@ -29,7 +30,7 @@ export default Ember.Component.extend({
   uploadInProgress: Ember.computed.notEmpty('fileUpload'),
   hasAttachments: Ember.computed.notEmpty('attachments'),
   showAddButton: Ember.computed('multiple', 'hasAttachments', function() {
-    if (this.get('hasAttachments') && !this.get('multiple')) return false;
+    if (!this.get('disabled') && this.get('hasAttachments') && !this.get('multiple')) return false;
     return true;
   }),
 

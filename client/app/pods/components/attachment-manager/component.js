@@ -24,14 +24,20 @@ export default Ember.Component.extend({
   classNames: ['attachment-manager'],
   classNameBindings: ['disabled:read-only'],
   description: 'Please select a file.',
+  disabled: false,
   buttonText: 'Upload File',
   fileUpload: null,
   multiple: false,
   uploadInProgress: Ember.computed.notEmpty('fileUpload'),
   hasAttachments: Ember.computed.notEmpty('attachments'),
-  showAddButton: Ember.computed('multiple', 'hasAttachments', function() {
-    if (!this.get('disabled') && this.get('hasAttachments') && !this.get('multiple')) return false;
-    return true;
+  showAddButton: Ember.computed('disabled', 'multiple', 'hasAttachments', function() {
+    if (this.get('disabled')){
+      return false;
+    } else if(this.get('hasAttachments') && !this.get('multiple')){
+      return false;
+    } else {
+      return true;
+    }
   }),
 
   init() {

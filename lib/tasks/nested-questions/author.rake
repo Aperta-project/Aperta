@@ -7,7 +7,7 @@ namespace 'nested-questions:seed' do
       owner_type: Author.name,
       ident: "author--published_as_corresponding_author",
       value_type: "boolean",
-      text: "This person will be listed as the corresponding author on the published article",
+      text: "This is a post publication corresponding author",
       position: 1
     }
 
@@ -141,6 +141,15 @@ namespace 'nested-questions:seed' do
           position: 14
         }
       ]
+    }
+
+    questions << {
+      owner_id: nil,
+      owner_type: Author.name,
+      ident: "author--government-employee",
+      value_type: "boolean",
+      text: "Is this author an employee of the United States Government?",
+      position: 4
     }
 
     NestedQuestion.where(owner_type: Author.name).update_all_exactly!(questions)

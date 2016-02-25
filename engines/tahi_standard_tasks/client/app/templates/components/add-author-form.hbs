@@ -1,123 +1,212 @@
 <div class="flex-form">
-  <div class="flex-group flex-group--divider">
-    <div class="flex-element inset-form-control required author-name {{if validationErrors.firstName "error"}}">
-      <div class="inset-form-control-text">
-        <label>First Name</label>
-        {{error-message message=validationErrors.firstName
-                        displayIcon=true
-                        displayText=false}}
+  <fieldset>
+    <legend class="flex-element">Individual Author</legend>
+
+    <div class="flex-group">
+      <div class="flex-element inset-form-control required author-name {{if validationErrors.firstName "error"}}">
+        <div class="inset-form-control-text">
+          <label>First Name</label>
+          {{error-message message=validationErrors.firstName
+                          displayIcon=true
+                          displayText=false}}
+        </div>
+        {{input type="text"
+                value=author.firstName
+                class="author-first inset-form-control-input"
+                disabled=isNotEditable
+                focus-out=(action "validateField" "firstName")
+                placeholder="Jane"}}
       </div>
-      {{input type="text"
-              value=author.firstName
-              class="author-first inset-form-control-input"
-              disabled=isNotEditable
-              focus-out=(action "validateField" "firstName")
-              placeholder="Jane"}}
-    </div>
 
-    <div class="flex-element inset-form-control author-middle-initial {{if validationErrors.middleInitial "error"}}">
-      <div class="inset-form-control-text">
-        <label>MI</label>
-        {{error-message message=validationErrors.middleInitial
-                        displayIcon=true
-                        displayText=false}}
+      <div class="flex-element inset-form-control author-middle-initial {{if validationErrors.middleInitial "error"}}">
+        <div class="inset-form-control-text">
+          <label>Middle name</label>
+          {{error-message message=validationErrors.middleInitial
+                          displayIcon=true
+                          displayText=false}}
+        </div>
+        {{input type="text"
+                value=author.middleInitial
+                class="inset-form-control-input"
+                disabled=isNotEditable
+                placeholder="M"}}
       </div>
-      {{input type="text"
-              value=author.middleInitial
-              class="inset-form-control-input"
-              disabled=isNotEditable
-              placeholder="M"}}
-    </div>
 
-    <div class="flex-element inset-form-control required author-name {{if validationErrors.lastName "error"}}">
-      <div class="inset-form-control-text">
-        <label>Last Name</label>
-        {{error-message message=validationErrors.lastName
-                        displayIcon=true
-                        displayText=false}}
+      <div class="flex-element inset-form-control required author-name {{if validationErrors.lastName "error"}}">
+        <div class="inset-form-control-text">
+          <label>Last Name</label>
+          {{error-message message=validationErrors.lastName
+                          displayIcon=true
+                          displayText=false}}
+        </div>
+        {{input type="text"
+                value=author.lastName
+                class="author-last inset-form-control-input"
+                disabled=isNotEditable
+                focus-out=(action "validateField" "lastName")
+                placeholder="Goodall"}}
       </div>
-      {{input type="text"
-              value=author.lastName
-              class="author-last inset-form-control-input"
-              disabled=isNotEditable
-              focus-out=(action "validateField" "lastName")
-              placeholder="Goodall"}}
-    </div>
 
-    <div class="flex-element inset-form-control required {{if validationErrors.email "error"}}">
-      <div class="inset-form-control-text">
-        <label>Email</label>
-        {{error-message message=validationErrors.email
-                        displayIcon=true
-                        displayText=false}}
+      <div class="flex-element inset-form-control author-initial">
+        <div class="inset-form-control-text">
+          <label>Author initial</label>
+        </div>
+        {{input type="text"
+                value=author.authorInitial
+                class="author-initial inset-form-control-input"
+                disabled=isNotEditable}}
       </div>
-      {{input type="text"
-              value=author.email
-              class="author-email inset-form-control-input"
-              disabled=isNotEditable
-              focus-out=(action "validateField" "email")
-              placeholder="jane.goodall@science.com"}}
-
     </div>
-  </div>
-
-  <div class="flex-group">
-    <div class="flex-element inset-form-control required {{if validationErrors.title "error"}}">
-      <div class="inset-form-control-text">
-        <label>Title</label>
-        {{error-message message=validationErrors.title
-                        displayIcon=true
-                        displayText=false}}
+    <div class="flex-group">
+      <div class="flex-element inset-form-control required {{if validationErrors.title "error"}}">
+        <div class="inset-form-control-text">
+          <label>Title</label>
+          {{error-message message=validationErrors.title
+                          displayIcon=true
+                          displayText=false}}
+        </div>
+        {{input type="text"
+                value=author.title
+                class="author-title inset-form-control-input"
+                disabled=isNotEditable
+                focus-out=(action "validateField" "title")
+                placeholder="World's Foremost Expert on Chimpanzees"}}
       </div>
-      {{input type="text"
-              value=author.title
-              class="author-title inset-form-control-input"
-              disabled=isNotEditable
-              focus-out=(action "validateField" "title")
-              placeholder="World's Foremost Expert on Chimpanzees"}}
-    </div>
 
-    <div class="flex-element inset-form-control required {{if validationErrors.department "error"}}">
-      <div class="inset-form-control-text">
-        <label>Department</label>
-        {{error-message message=validationErrors.department
-                        displayIcon=true
-                        displayText=false}}
+      <div class="flex-element inset-form-control required {{if validationErrors.department "error"}}">
+        <div class="inset-form-control-text">
+          <label>Department</label>
+          {{error-message message=validationErrors.department
+                          displayIcon=true
+                          displayText=false}}
+        </div>
+        {{input type="text"
+                value=author.department
+                class="author-department inset-form-control-input"
+                disabled=isNotEditable
+                focus-out=(action "validateField" "department")
+                placeholder="Primatology"}}
       </div>
-      {{input type="text"
-              value=author.department
-              class="author-department inset-form-control-input"
-              disabled=isNotEditable
-              focus-out=(action "validateField" "department")
-              placeholder="Primatology"}}
-    </div>
-  </div>
 
-  <div class="flex-group">
-    <div class="flex-element author-affiliation required {{if validationErrors.affiliation "error"}}">
-      {{error-message message=validationErrors.affiliation
-                      displayIcon=true
-                      displayText=true}}
-
-      {{institution-search value=affiliation
-                           institutionSelected="institutionSelected"
-                           disabled=isNotEditable
-                           validate=(action "validateField" "affiliation")
-                           errors=validationErrors.affiliation
-                           placeholder="Institution"}}
+      <div class="flex-element inset-form-control required {{if validationErrors.email "error"}}">
+        <div class="inset-form-control-text">
+          <label>Email</label>
+          {{error-message message=validationErrors.email
+                          displayIcon=true
+                          displayText=false}}
+        </div>
+        {{input type="text"
+                value=author.email
+                class="author-email inset-form-control-input"
+                disabled=isNotEditable
+                focus-out=(action "validateField" "email")
+                placeholder="jane.goodall@science.com"}}
+      </div>
     </div>
 
-    <div class="flex-element author-affiliation {{if validationErrors.secondaryAffiliation "error"}}">
-      {{error-message message=validationErrors.secondaryAffiliation}}
+    <div class="flex-group">
+      <div class="flex-element author-affiliation required {{if validationErrors.affiliation "error"}}">
+        {{error-message message=validationErrors.affiliation
+                        displayIcon=true
+                        displayText=true}}
 
-      {{institution-search value=secondaryAffiliation
-                           institutionSelected="secondaryInstitutionSelected"
-                           disabled=isNotEditable
-                           placeholder="Secondary Institution"}}
+        {{institution-search value=affiliation
+                             institutionSelected="institutionSelected"
+                             disabled=isNotEditable
+                             validate=(action "validateField" "affiliation")
+                             errors=validationErrors.affiliation
+                             placeholder="Institution"}}
+      </div>
+
+      <div class="flex-element author-affiliation {{if validationErrors.secondaryAffiliation "error"}}">
+        {{error-message message=validationErrors.secondaryAffiliation}}
+
+        {{institution-search value=secondaryAffiliation
+                             institutionSelected="secondaryInstitutionSelected"
+                             disabled=isNotEditable
+                             placeholder="Secondary Institution"}}
+      </div>
     </div>
-  </div>
+  </fieldset>
 
-  <div>
+  <fieldset>
+    <legend class="flex-element">Current Address</legend>
+
+    <div class="flex-group">
+      <div class="flex-element inset-form-control author-current-address-street">
+        <div class="inset-form-control-text">
+          <label>Address Line 1</label>
+        </div>
+        {{input type="text"
+                value=author.currentAddressStreet
+                class="author-current-address-street-input inset-form-control-input"
+                disabled=isNotEditable}}
+      </div>
+
+      <div class="flex-element inset-form-control author-current-address-street2">
+        <div class="inset-form-control-text">
+          <label>Address Line 2</label>
+        </div>
+        {{input type="text"
+                value=author.currentAddressStreet2
+                class="author-current-address-street2-input inset-form-control-input"
+                disabled=isNotEditable}}
+      </div>
+
+      <div class="flex-element inset-form-control author-current-address-city">
+        <div class="inset-form-control-text">
+          <label>City</label>
+        </div>
+        {{input type="text"
+                value=author.currentAddressCity
+                class="author-current-address-city-input inset-form-control-input"
+                disabled=isNotEditable}}
+      </div>
+    </div>
+    <div class="flex-group">
+      <div class="flex-element inset-form-control author-current-address-state">
+        <div class="inset-form-control-text">
+          <label>State / Province / Region</label>
+        </div>
+        {{input type="text"
+                value=author.currentAddressState
+                class="author-current-address-state-input inset-form-control-input"
+                disabled=isNotEditable}}
+      </div>
+
+      <div class="flex-element author-current-address-country">
+        {{#if countries.loaded}}
+          <label>Country</label><br>
+          {{select-2-single selectedData=selectedCurrentAddressCountry
+                            selectionSelected="currentAddressCountrySelected"
+                            source=formattedCountries
+                            value=author.currentAddressCountry
+                            width="100%"
+                            enable=(not isNotEditable)}}
+        {{/if}}
+        {{#if countries.loading}}
+          {{progress-spinner visible=true size="mini"}}
+          Loading countries
+        {{/if}}
+        {{#if countries.error}}
+          <i class="fa fa-exclamation-triangle"></i>
+          Error loading countries
+        {{/if}}
+      </div>
+
+      <div class="flex-element inset-form-control author-current-address-postal">
+        <div class="inset-form-control-text">
+          <label>Zip/Postal Code</label>
+        </div>
+        {{input type="text"
+                value=author.currentAddressPostal
+                class="author-current-address-postal-input inset-form-control-input"
+                disabled=isNotEditable}}
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
     <div class="author-corresponding {{if validationErrors.corresponding "error"}}">
       {{#nested-question-check ident="author--published_as_corresponding_author"
                                owner=author
@@ -141,30 +230,42 @@
         {{/if}}
       {{/nested-question-check}}
     </div>
+  </fieldset>
+
+  <fieldset class="author-contributions">
+    <legend class="flex-element required">
+      Author
+      <a href="http://www.cell.com/pb/assets/raw/shared/guidelines/CRediT-Taxonomy.pdf" target="_blank">Contributions</a>
+      {{error-message message=validationErrors.contributions
+                      displayIcon=true
+                      displayText=true}}
+    </legend>
+
+    <div class="form-group form-inline">
+      <div class="flex-group">
+        {{#each authorContributionIdents as |contributionIdent|}}
+          {{#nested-question-check ident=contributionIdent
+                                   owner=author
+                                   class="flex-element author-contribution"
+                                   displayQuestionText=false
+                                   disabled=isNotEditable
+                                   inputClassNames="author-contribution" as |check|}}
+            {{#if check.yieldingForText}}
+              {{nested-question-display ident=contributionIdent owner=author}}
+            {{/if}}
+          {{/nested-question-check}}
+        {{/each}}
+      </div>
+    </div>
+  </fieldset>
+
+  <div class="author-government">
+    {{nested-question-radio ident="author--government-employee"
+                            owner=author
+                            helpText="Papers authored by one or more U.S. government employees are not copyrighted, but are licensed under a <a href='https://creativecommons.org/publicdomain/zero/1.0/' target='_blank'>CC0 Public Domain Dedication</a>, which allows unlimited distribution and reuse of the article for any lawful purpose. This is a legal requirement for U.S. government employees."
+                            disabled=isNotEditable}}
   </div>
 
-  <div class="form-group author-contributions form-inline">
-    <h4 class="required">
-      Author <a href="http://www.cell.com/pb/assets/raw/shared/guidelines/CRediT-Taxonomy.pdf" target="_blank">Contributions</a>
-    </h4>
-    {{error-message message=validationErrors.contributions
-                    displayIcon=true
-                    displayText=true}}
-    <div class="flex-group">
-      {{#each authorContributionIdents as |contributionIdent|}}
-        {{#nested-question-check ident=contributionIdent
-                                 owner=author
-                                 class="flex-element author-contribution"
-                                 displayQuestionText=false
-                                 disabled=isNotEditable
-                                 inputClassNames="author-contribution" as |check|}}
-          {{#if check.yieldingForText}}
-            {{nested-question-display ident=contributionIdent owner=author}}
-          {{/if}}
-        {{/nested-question-check}}
-      {{/each}}
-    </div>
-  </div>
 
   <div class="author-form-buttons">
     {{#if validationErrors.save}}

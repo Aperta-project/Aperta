@@ -4,6 +4,7 @@
 
 .author-task-item {
   position: relative;
+  counter-increment: authorTaskItem;
 }
 
 .author-task-item-view {
@@ -31,7 +32,6 @@
   margin-left: 1rem;
 
   &:before {
-    counter-increment: authorTaskItem;
     content: counter(authorTaskItem);
   }
 }
@@ -100,8 +100,27 @@
     width: 418px;
   }
 
+  .author-government label {
+    margin-right: 1.5rem;
+  }
+
+  .author-current-address-country {
+    min-width: 100px;
+  }
+
   .author-contributions {
-    margin-bottom: 40px;
+    legend {
+      position: relative;
+      margin-bottom: 0.5rem;
+
+      &::after {
+        content: '*';
+        position: relative;
+        top: 0.75rem;
+        font-size: 21pt;
+        color: $tahi-green;
+      }
+    }
 
     a {
       color: #000;
@@ -118,9 +137,10 @@
     vertical-align: top;
   }
 
+  .author-initial,
   .author-middle-initial {
-    @include flex-basis(7rem);
-    min-width: 7rem;
+    @include flex-basis(10rem);
+    min-width: 10rem;
   }
 
   .author-affiliation {
@@ -135,7 +155,8 @@
   .author-contribution {
     position: relative;
     @include flex-basis(50%);
-    min-width: 185px;
+    min-width: 160px;
+    margin-bottom: 0.25rem;
 
     input {
       position: absolute;

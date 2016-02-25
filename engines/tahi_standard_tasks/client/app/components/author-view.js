@@ -14,7 +14,9 @@ export default Ember.Component.extend(DragNDrop.DraggableMixin, {
   viewState: computed('editState', 'deleteState', function() {
     return !this.get('editState') && !this.get('deleteState');
   }),
-  draggable: not('isNotEditable'),
+  draggable: computed('isNotEditable', 'editState', function() {
+    return !this.get('isNotEditable') && !this.get('editState');
+  }),
 
   dragStart(e) {
     e.dataTransfer.effectAllowed = 'move';

@@ -1,11 +1,27 @@
 import Ember from 'ember';
 import { contributionIdents } from 'tahi/authors-task-validations';
 
-const { computed } = Ember;
+const {
+  Component,
+  computed,
+  inject: { service }
+} = Ember;
 
-export default Ember.Component.extend({
+export default Component.extend({
+  countries: service(),
   classNames: ['add-author-form'],
   author: null,
+
+  init() {
+    this._super(...arguments);
+    this.get('countries').fetch();
+  },
+
+  formattedCountries: computed('countries.data', function() {
+    return this.get('countries.data').map(function(c) {
+      return { id: c, text: c };
+    });
+  }),
 
   authorContributionIdents: contributionIdents,
 
@@ -25,6 +41,13 @@ export default Ember.Component.extend({
         name: this.get('author.secondaryAffiliation')
       };
     }
+  }),
+
+  selectedCurrentAddressCountry: computed('author.currentAddressCountry', function() {
+    return this.get('formattedCountries').findBy(
+      'text',
+      this.get('author.currentAddressCountry')
+    );
   }),
 
   resetAuthor() {
@@ -72,6 +95,10 @@ export default Ember.Component.extend({
     unknownSecondaryInstitutionSelected(institutionName) {
       this.set('author.secondaryAffiliation', institutionName);
       this.set('author.secondaryRinggoldId', '');
+    },
+
+    currentAddressCountrySelected(data) {
+      this.set('author.currentAddressCountry', data.text);
     },
 
     validateField(key, value) {

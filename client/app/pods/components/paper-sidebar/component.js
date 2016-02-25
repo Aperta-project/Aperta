@@ -40,8 +40,11 @@ export default Ember.Component.extend({
   sortedMetadataTasks: sort('metadataTasks', 'taskSorting'),
   sortedAssignedTasks: sort('assignedTasks', 'taskSorting'),
   metadataTasks: filterBy('tasks', 'isMetadataTask', true),
-  assignedTasks: setDiff('currentUserTasks', 'metadataTasks'),
+  allAssignedTasks: setDiff('currentUserTasks', 'metadataTasks'),
+  assignedTasks: Ember.computed.union('allAssignedTasks','sidebarTasks'),
   submissionTasks: filterBy('tasks', 'isSubmissionTask', true),
+  sidebarTasks: filterBy('tasks', 'isSidebarTask', true),
+  sortedSidebarTasks: sort('sidebarTasks', 'taskSorting'),
   submittableState: or(
     'isUnsubmitted',
     'isInRevision',

@@ -3,7 +3,11 @@ import TaskComponent from 'tahi/pods/components/task-base/component';
 import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-errors';
 import validations from 'tahi/authors-task-validations';
 
-const { computed, on } = Ember;
+const {
+  computed,
+  computed: { sort },
+  on
+} = Ember;
 
 export default TaskComponent.extend({
   newAuthorFormVisible: false,
@@ -34,7 +38,7 @@ export default TaskComponent.extend({
   }),
 
   authorSort: ['position:asc'],
-  sortedAuthors: computed.sort('task.authors', 'authorSort'),
+  sortedAuthors: sort('task.authors', 'authorSort'),
   sortedAuthorsWithErrors: computed('sortedAuthors.[]', function() {
     return this.get('sortedAuthors').map(function(a) {
       return ObjectProxyWithErrors.create({
@@ -54,9 +58,9 @@ export default TaskComponent.extend({
 
   newAuthor: computed('newAuthorFormVisible', function(){
     const newAuthor = this.store.createRecord('author', {
-        paper: this.get('task.paper'),
-        position: 0,
-        nestedQuestions: this.get('nestedQuestionsForNewAuthor')
+      paper: this.get('task.paper'),
+      position: 0,
+      nestedQuestions: this.get('nestedQuestionsForNewAuthor')
     });
 
     return ObjectProxyWithErrors.create({

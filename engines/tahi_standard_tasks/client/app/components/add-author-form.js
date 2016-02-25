@@ -9,17 +9,6 @@ export default Ember.Component.extend({
 
   authorContributionIdents: contributionIdents,
 
-  isOtherContributionSelected: computed('author.nestedQuestions', function(){
-    const answer = this.get('author')
-                       .answerForQuestion('author--contributions--other');
-
-    if(answer){
-      return answer.get('value');
-    }
-
-    return false;
-  }),
-
   affiliation: computed('author', function() {
     if (this.get('author.affiliation')) {
       return {
@@ -83,14 +72,6 @@ export default Ember.Component.extend({
     unknownSecondaryInstitutionSelected(institutionName) {
       this.set('author.secondaryAffiliation', institutionName);
       this.set('author.secondaryRinggoldId', '');
-    },
-
-    toggleOtherContribution(checkbox){
-      if(!checkbox.get('checked')){
-        const answer = this.get('author')
-                           .answerForQuestion('author--contributions--other');
-        answer.destroyRecord();
-      }
     },
 
     validateField(key, value) {

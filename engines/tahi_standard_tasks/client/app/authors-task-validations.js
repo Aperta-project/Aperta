@@ -1,9 +1,18 @@
 export const contributionIdents = [
-  'author--contributions--conceived_and_designed_experiments',
-  'author--contributions--performed_the_experiments',
-  'author--contributions--analyzed_data',
-  'author--contributions--contributed_tools',
-  'author--contributions--contributed_writing'
+  'author--contributions--conceptualization',
+  'author--contributions--investigation',
+  'author--contributions--visualization',
+  'author--contributions--methodology',
+  'author--contributions--resources',
+  'author--contributions--supervision',
+  'author--contributions--software',
+  'author--contributions--data-curation',
+  'author--contributions--project-administration',
+  'author--contributions--validation',
+  'author--contributions--writing-original-draft',
+  'author--contributions--writing-review-and-editing',
+  'author--contributions--funding-acquisition',
+  'author--contributions--formal-analysis',
 ];
 
 export default {
@@ -18,11 +27,8 @@ export default {
     message: 'One must be selected',
     validation() {
       const author = this.get('object');
-      const idents = contributionIdents.concat(
-        ['author--contributions--other']
-      );
 
-      return _.some(idents, (ident) => {
+      return _.some(contributionIdents, (ident) => {
         return author.answerForQuestion(ident).get('value');
       });
     }

@@ -98,6 +98,7 @@
       {{error-message message=validationErrors.affiliation
                       displayIcon=true
                       displayText=true}}
+
       {{institution-search value=affiliation
                            institutionSelected="institutionSelected"
                            disabled=isNotEditable
@@ -108,6 +109,7 @@
 
     <div class="flex-element author-affiliation {{if validationErrors.secondaryAffiliation "error"}}">
       {{error-message message=validationErrors.secondaryAffiliation}}
+
       {{institution-search value=secondaryAffiliation
                            institutionSelected="secondaryInstitutionSelected"
                            disabled=isNotEditable
@@ -142,7 +144,9 @@
   </div>
 
   <div class="form-group author-contributions form-inline">
-    <h4 class="required">Author Contributions</h4>
+    <h4 class="required">
+      Author <a href="http://www.cell.com/pb/assets/raw/shared/guidelines/CRediT-Taxonomy.pdf" target="_blank">Contributions</a>
+    </h4>
     {{error-message message=validationErrors.contributions
                     displayIcon=true
                     displayText=true}}
@@ -159,28 +163,6 @@
           {{/if}}
         {{/nested-question-check}}
       {{/each}}
-    </div>
-
-    <div class="flex-group">
-      <div class="flex-element">
-        <label>
-          {{check-box checked=isOtherContributionSelected
-                      action="toggleOtherContribution"
-                      class="author-contribution-other"
-                      disabled=isNotEditable}}
-          Other
-        </label>
-        {{#if isOtherContributionSelected}}
-          {{nested-question-input ident="author--contributions--other"
-                                  owner=author
-                                  displayQuestionText=false
-                                  inputClassNames="form-control"
-                                  placeholder="Please specify"
-                                  disabled=isNotEditable
-                                  class="author-label-other"
-                                  tagName="span"}}
-        {{/if}}
-      </div>
     </div>
   </div>
 

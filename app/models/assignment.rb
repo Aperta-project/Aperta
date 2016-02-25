@@ -4,6 +4,6 @@ class Assignment < ActiveRecord::Base
   belongs_to :assigned_to, polymorphic: true
   has_many :permissions, through: :role
   after_save do
-    user.clear_permissions_cache
+    user.expire_cache_key
   end
 end

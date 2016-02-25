@@ -7,6 +7,7 @@ class Paper < ActiveRecord::Base
   include ActionView::Helpers::SanitizeHelper
   include PgSearch
   include Assignable::Model
+  include ExpiringCacheKey
 
   belongs_to :journal, inverse_of: :papers
   belongs_to :flow
@@ -77,12 +78,18 @@ class Paper < ActiveRecord::Base
     state :published
     state :withdrawn
 
+    # TODO: When we upgrade aasm, use new after_all_tranisitions to ensure that
+    # expire_permissions_cache is run after all transitions.
+    #
+    # In the meantime, be sure to add expire_permissions_cache to your after
+    # list if you add a new transition.
     event(:initial_submit) do
       transitions from: :unsubmitted,
                   to: :initially_submitted,
                   after: [:set_submitted_at!,
                           :set_first_submitted_at!,
-                          :prevent_edits!]
+                          :prevent_edits!,
+                          :expire_permissions_cache]
     end
 
     event(:submit) do
@@ -95,28 +102,34 @@ class Paper < ActiveRecord::Base
                   after: [:set_submitting_user_and_touch!,
                           :set_submitted_at!,
                           :set_first_submitted_at!,
-                          :prevent_edits!]
+                          :prevent_edits!,
+                          :expire_permissions_cache]
+
     end
 
     event(:invite_full_submission) do
       transitions from: :initially_submitted,
                   to: :invited_for_full_submission,
                   after: [:allow_edits!,
-                          :new_minor_version!]
+                          :new_minor_version!,
+                          :expire_permissions_cache]
+
     end
 
     event(:minor_check) do
       transitions from: :submitted,
                   to: :checking,
                   after: [:allow_edits!,
-                          :new_minor_version!]
+                          :new_minor_version!,
+                          :expire_permissions_cache]
     end
 
     event(:submit_minor_check) do
       transitions from: :checking,
                   to: :submitted,
                   after: [:set_submitting_user_and_touch!,
-                          :prevent_edits!]
+                          :prevent_edits!,
+                          :expire_permissions_cache]
     end
 
     event(:minor_revision) do
@@ -127,25 +140,29 @@ class Paper < ActiveRecord::Base
                           # needs MINOR revision but we use a MAJOR
                           # version to track all papers send back
                           # after peer review.
-                          :new_major_version!]
+                          :new_major_version!,
+                          :expire_permissions_cache]
     end
 
     event(:major_revision) do
       transitions from: :submitted,
                   to: :in_revision,
                   after: [:allow_edits!,
-                          :new_major_version!]
+                          :new_major_version!,
+                          :expire_permissions_cache]
     end
 
     event(:accept) do
       transitions from: :submitted,
                   to: :accepted,
-                  after: [:set_accepted_at!]
+                  after: [:set_accepted_at!,
+                          :expire_permissions_cache]
     end
 
     event(:reject) do
       transitions from: [:initially_submitted, :submitted],
-                  to: :rejected
+                  to: :rejected,
+                  after: [:expire_permissions_cache]
       before do
         update(active: false)
       end
@@ -154,12 +171,14 @@ class Paper < ActiveRecord::Base
     event(:publish) do
       transitions from: :submitted,
                   to: :published,
-                  after: :set_published_at!
+                  after: [:set_published_at!,
+                          :expire_permissions_cache]
     end
 
     event(:withdraw) do
       transitions to: :withdrawn,
-                  after: :prevent_edits!
+                  after: [:prevent_edits!,
+                          :expire_permissions_cache]
       before do |withdrawal_reason|
         update(active: false)
         withdrawals << { previous_publishing_state: publishing_state,
@@ -172,7 +191,11 @@ class Paper < ActiveRecord::Base
       # AASM doesn't currently allow transitions to dynamic states, so this iterator
       # explicitly defines each transition
       Paper.aasm.states.map(&:name).each do |state|
-        transitions from: :withdrawn, to: state, after: :set_editable!, if: Proc.new { previous_state_is?(state) }
+        transitions from: :withdrawn,
+                    to: state,
+                    after: [:set_editable!,
+                            :expire_permissions_cache],
+                            if: Proc.new { previous_state_is?(state) }
       end
       before do
         update(active: true)
@@ -447,6 +470,12 @@ class Paper < ActiveRecord::Base
   end
 
   private
+
+  def expire_permissions_cache
+    expire_cache_key
+    tasks.each(&:expire_cache_key)
+    discussion_topics.each(&:expire_cache_key)
+  end
 
   def answer_for(ident)
     nested_question_answers.includes(:nested_question)

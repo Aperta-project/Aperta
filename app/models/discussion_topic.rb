@@ -1,5 +1,6 @@
 class DiscussionTopic < ActiveRecord::Base
   include EventStream::Notifiable
+  include ExpiringCacheKey
 
   belongs_to :paper, inverse_of: :discussion_topics
 

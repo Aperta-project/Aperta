@@ -2,8 +2,9 @@ class User < ActiveRecord::Base
   include Assignable::User
   include UserHelper
   include UserDevise
-
+  include ExpiringCacheKey
   include PgSearch
+
   pg_search_scope \
     :fuzzy_search,
     against: [:first_name, :last_name, :email, :username],

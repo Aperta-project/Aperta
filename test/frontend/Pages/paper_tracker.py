@@ -111,15 +111,15 @@ class PaperTrackerPage(AuthenticatedPage):
         print('Validating Row: {0}'.format(count))
         # Once again, while less than ideal, these must be defined on the fly
         self._paper_tracker_table_tbody_title = (By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-title-column"]/a'
-                                                 % str(count + 1))
+                                                 % (count + 1))
         self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-paper-id-column"]/a'
-                                                 % str(count + 1))
+                                                 % (count + 1))
         self._paper_tracker_table_tbody_subdate = (By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-date-column"]'
-                                                   % str(count + 1))
+                                                   % (count + 1))
         self._paper_tracker_table_tbody_paptype = (By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-type-column"]'
-                                                   % str(count + 1))
+                                                   % (count + 1))
         self._paper_tracker_table_tbody_members = (By.XPATH, '//tbody/tr[%s]/td[@class="paper-tracker-members-column"]'
-                                                   % str(count + 1))
+                                                   % (count + 1))
 
         title = self._get(self._paper_tracker_table_tbody_title)
         if not title:
@@ -134,7 +134,7 @@ class PaperTrackerPage(AuthenticatedPage):
             # Split both to eliminate differences in whitespace
             db_title = db_title.split()
             page_title = page_title.split()
-            assert db_title == page_title, (db_title, page_title)
+            assert db_title == page_title, 'DB: {}\nPage: {}\nRow: {}'.format(db_title, page_title, count)
           else:
             raise TypeError('Database title or Page title are not both unicode objects')
         manid = self._get(self._paper_tracker_table_tbody_manid)
@@ -163,7 +163,7 @@ class PaperTrackerPage(AuthenticatedPage):
             db_participants = name
             participants.sort()
             db_participants.sort()
-            assert participants == db_participants
+            assert participants == db_participants, (participants, db_participants)
           elif role.startswith('Collaborator'):
             role = role.split(': ')[1]
             collaborators = role.split(', ')
@@ -177,7 +177,7 @@ class PaperTrackerPage(AuthenticatedPage):
             db_collaborators = name
             collaborators.sort()
             db_collaborators.sort()
-            assert collaborators == db_collaborators
+            assert collaborators == db_collaborators, (collaborators, db_collaborators, count+1)
           elif role.startswith('Reviewer'):
             role = role.split(': ')[1]
             reviewers = role.split(', ')
@@ -191,7 +191,7 @@ class PaperTrackerPage(AuthenticatedPage):
             db_reviewers = name
             reviewers.sort()
             db_reviewers.sort()
-            assert reviewers == db_reviewers
+            assert reviewers == db_reviewers, (reviewers, db_reviewers)
           elif role.startswith('Editor'):
             role = role.split(': ')[1]
             editors = role.split(', ')
@@ -205,7 +205,7 @@ class PaperTrackerPage(AuthenticatedPage):
             db_editors = name
             editors.sort()
             db_editors.sort()
-            assert editors == db_editors
+            assert editors == db_editors, (editors, db_editors)
           elif role.startswith('Admin'):
             role = role.split(': ')[1]
             admins = role.split(', ')
@@ -221,7 +221,8 @@ class PaperTrackerPage(AuthenticatedPage):
             db_admins.sort()
             assert admins == db_admins
           else:
-            return False
+            # ASK: Can we have an empty here?
+            pass
         count += 1
       logging.info('Validating sort function for Date Submitted')
       subdate_th_a.click()
@@ -231,6 +232,7 @@ class PaperTrackerPage(AuthenticatedPage):
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       manid = self._get(self._paper_tracker_table_tbody_manid).text
       doi = papers[len(papers) - 1][5].split('/')[1]
+      import pdb;pdb.set_trace()
       assert manid == doi, '{0} != {1}'.format(manid, doi)
       self._get(self._paper_tracker_table_header_sort_down).click()
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
@@ -290,3 +292,4 @@ class PaperTrackerPage(AuthenticatedPage):
       self._paper_tracker_table_tbody_paptype = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-type-column"]')
       type_ = self._get(self._paper_tracker_table_tbody_paptype)
       assert type_.text == orig_type, type_.text + '!=' + orig_type
+      print '******************************** 296'

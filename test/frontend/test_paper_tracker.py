@@ -20,8 +20,7 @@ from frontend.common_test import CommonTest
 
 # Because we are not deterministically sorting unsubmitted manuscripts, he, oa and sa logins are failing
 # APERTA-3023
-users = [#fm_login,
-         oa_login,
+users = [##oa_login, ##FOIR TESTING
          sa_login,
          ]
 

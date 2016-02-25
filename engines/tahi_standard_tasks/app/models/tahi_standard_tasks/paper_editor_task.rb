@@ -64,9 +64,9 @@ Authors:
 Abstract:
 %{abstract}
 
-To view this manuscript, please use the URL presented above in the body of the e-mail.
+To view this manuscript, please use the link presented above in the body of the e-mail.
 
-Clicking the button to accept this assignment will allow you to access the full submission from the Dashboard link in your main menu. Clicking on the title will take you to the Manuscript page, where you can view and/or download the manuscript along with associated figures and any SI files. You can view this information from your Dashboard at any time by logging into your account. You will be asked to provide your thoughts and comments in a discussion forum on the Manuscript page.
+You will be directed to your dashboard in Aperta, where you will see your invitation. Selecting "yes" confirms your assignment as Academic Editor. Selecting "yes" to accept this assignment will allow you to access the full submission from the Dashboard link in your main menu.
 
       TEXT
       template % template_data

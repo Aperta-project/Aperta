@@ -23,14 +23,18 @@
       </span>
     {{/unless}}
 
-    {{#if hasCaption}}
-      {{input class="form-control" type="type" value=caption
-              disabled=disabled
-              placeholder="Please provide a brief description of this file"
-              focus-out="captionChanged" name="attachment-caption"}}
-    {{/if}}
+    {{#if disabled}}
+      {{#if hasCaption}}
+        <div>{{caption}}</div>
+      {{/if}}
+    {{else}}
+      {{#if hasCaption}}
+        {{input class="form-control" type="type" value=caption
+                disabled=disabled
+                placeholder="Please provide a brief description of this file"
+                focus-out="captionChanged" name="attachment-caption"}}
+      {{/if}}
 
-    {{#unless disabled}}
       {{s3-file-uploader accept=accept
                          filePath=filePath
                          class="s3-file-uploader"
@@ -38,6 +42,6 @@
                          uploadFinished=(action "uploadFinished")
                          uploadFailed=(action "uploadFailed")
                          fileAdded=(action "fileAdded")}}
-    {{/unless}}
+    {{/if}}
   {{/if}}
 {{/if}}

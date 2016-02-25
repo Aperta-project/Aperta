@@ -25,20 +25,15 @@ export default Ember.Component.extend({
   classNameBindings: ['disabled:read-only'],
   description: 'Please select a file.',
   disabled: false,
+  notDisabled: Ember.computed.not('disable'),
   buttonText: 'Upload File',
   fileUpload: null,
   multiple: false,
   uploadInProgress: Ember.computed.notEmpty('fileUpload'),
   hasAttachments: Ember.computed.notEmpty('attachments'),
-  showAddButton: Ember.computed('disabled', 'multiple', 'hasAttachments', function() {
-    if (this.get('disabled')){
-      return false;
-    } else if(this.get('hasAttachments') && !this.get('multiple')){
-      return false;
-    } else {
-      return true;
-    }
-  }),
+  noAttachments: Ember.computed.not('hasAttachments'),
+  canUploadFile: Ember.computed.or('noAttachments', 'multiple'),
+  showAddButton: Ember.computed.and('notDisabled', 'canUploadFile'),
 
   init() {
     this._super(...arguments);

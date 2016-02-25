@@ -11,7 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160225184558) do
+
+ActiveRecord::Schema.define(version: 20160225165251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -341,6 +342,14 @@ ActiveRecord::Schema.define(version: 20160225184558) do
   add_index "paper_roles", ["paper_id"], name: "index_paper_roles_on_paper_id", using: :btree
   add_index "paper_roles", ["user_id", "paper_id"], name: "index_paper_roles_on_user_id_and_paper_id", using: :btree
   add_index "paper_roles", ["user_id"], name: "index_paper_roles_on_user_id", using: :btree
+
+  create_table "paper_tracker_queries", force: :cascade do |t|
+    t.string   "query"
+    t.string   "title"
+    t.boolean  "deleted",    default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "papers", force: :cascade do |t|
     t.string   "short_title",              limit: 255

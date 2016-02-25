@@ -505,7 +505,7 @@ ActiveRecord::Schema.define(version: 20160428184601) do
     t.datetime "updated_at",                             null: false
   end
 
-  add_index "roles", ["journal_id"], name: "index_roles_on_journal_id", using: :btree
+  add_index "roles", ["journal_id", "name"], name: "index_roles_on_journal_id_and_name", unique: true, using: :btree
   add_index "roles", ["participates_in_papers"], name: "index_roles_on_participates_in_papers", using: :btree
   add_index "roles", ["participates_in_tasks"], name: "index_roles_on_participates_in_tasks", using: :btree
 

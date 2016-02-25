@@ -29,6 +29,7 @@
 
           {{attachment-manager filePath="tasks/attachment"
                                attachments=task.attachments
+                               disabled=isNotEditable
                                deleteFile=(action "deleteAttachment")
                                uploadFinished=(action "createAttachment")
                                updateAttachment=(action "updateAttachment")

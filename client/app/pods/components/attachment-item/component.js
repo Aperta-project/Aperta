@@ -24,7 +24,9 @@ import fontAwesomeFiletypeClass from 'tahi/lib/font-awesome-fyletype-class';
 
 export default Ember.Component.extend({
   classNames: ['attachment-item'],
+  classNameBindings: ['disabled:read-only'],
   attachment: null, // passed-in
+  disabled: false,
   hasCaption: false,
   fileUpload: null,
   caption: null,

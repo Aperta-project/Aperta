@@ -35,6 +35,7 @@ const ELEMENT_NAME_MAP = {
 
 export default Ember.Component.extend({
   classNameBindings: [
+    'disabled:read-only',
     ':format-input',
     'errorPresent:error',
     'active:format-input--active'

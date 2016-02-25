@@ -54,8 +54,8 @@ feature 'Publishing Related Questions Card', js: true do
 
         attachment_caption = find('input[name=\'attachment-caption\']')
         attachment_caption.send_keys('Great caption', :tab)
+        wait_for_ajax
 
-        overlay.reload
         expect(find_field('attachment-caption').value).to eq('Great caption')
       end
     end

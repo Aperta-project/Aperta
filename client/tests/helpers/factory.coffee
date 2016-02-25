@@ -32,7 +32,7 @@ Factory =
         permissions_hash[p] = {states: ['*']}
 
       getStore().createRecord 'permission',
-        id: "#{klass}+#{id}",
+        id: "#{klass.charAt(0).toLowerCase() + klass.slice(1)}+#{id}",
         object: {id: id, type: klass},
         permissions: permissions_hash
 

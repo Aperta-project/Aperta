@@ -77,7 +77,7 @@ export default Ember.Component.extend({
                                   this.get('fileUpload.file'),
                                   this.get('attachment'));
       }
-      this.set('fileUpload', null)
+      this.set('fileUpload', null);
     },
 
     uploadFailed(reason){

@@ -45,6 +45,7 @@ describe PlosBioTechCheck::InitialTechCheckTask do
   describe "#changes_for_author_task" do
     it "returns the existing changes for author task" do
       existing_task = create :changes_for_author_task, paper: paper
+      paper.reload
       expect(subject.changes_for_author_task).to eq(existing_task)
     end
 

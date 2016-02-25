@@ -4,7 +4,7 @@ describe TahiStandardTasks::FundersController do
   routes { TahiStandardTasks::Engine.routes }
 
   let(:user) { FactoryGirl.create(:user, :site_admin) }
-  let(:task) { FactoryGirl.create(:task, type: "TahiStandardTasks::FinancialDisclosureTask") }
+  let(:task) { FactoryGirl.create(:financial_disclosure_task) }
   let!(:funder) { TahiStandardTasks::Funder.create!(name: "Starfleet", task_id: task.id) }
 
   before do
@@ -18,18 +18,20 @@ describe TahiStandardTasks::FundersController do
 
     it "creates a funder" do
       funder_count = TahiStandardTasks::Funder.count
+      allow_any_instance_of(User).to receive(:can?).with(:edit, task)
+        .and_return(true)
       do_request
-      expect(TahiStandardTasks::Funder.count).to eq(2)
+
+      expect(TahiStandardTasks::Funder.count).to eq(funder_count + 1)
       expect(response).to be_success
     end
 
     context "without permission" do
-      before do
-        allow_any_instance_of(User).to receive(:can?).and_return(false)
-      end
-
-      it 'returns a 403 without permission' do
+      it "returns a 403 without permission" do
+        allow_any_instance_of(User).to receive(:can?).with(:edit, task)
+          .and_return(false)
         do_request
+
         expect(response.status).to eq(403)
       end
     end
@@ -42,18 +44,20 @@ describe TahiStandardTasks::FundersController do
     end
 
     it "patches the funder" do
+      allow_any_instance_of(User).to receive(:can?).with(:edit, task)
+        .and_return(true)
       do_request
+
       expect(response).to be_success
       expect(funder.reload.name).to eq("Galactic Empire")
     end
 
     context "without permission" do
-      before do
-        allow_any_instance_of(User).to receive(:can?).and_return(false)
-      end
-
       it 'returns a 403 without permission' do
+        allow_any_instance_of(User).to receive(:can?).with(:edit, task)
+          .and_return(false)
         do_request
+
         expect(response.status).to eq(403)
       end
     end
@@ -65,18 +69,21 @@ describe TahiStandardTasks::FundersController do
     end
 
     it "eliminates the funder" do
+      funder_count = TahiStandardTasks::Funder.count
+      allow_any_instance_of(User).to receive(:can?).with(:edit, task)
+        .and_return(true)
       do_request
-      expect(TahiStandardTasks::Funder.count).to eq(0)
+
+      expect(TahiStandardTasks::Funder.count).to eq(funder_count - 1)
       expect(response).to be_success
     end
 
     context "without permission" do
-      before do
-        allow_any_instance_of(User).to receive(:can?).and_return(false)
-      end
-
       it 'returns a 403 without permission' do
+        allow_any_instance_of(User).to receive(:can?).with(:edit, task)
+          .and_return(false)
         do_request
+
         expect(response.status).to eq(403)
       end
     end

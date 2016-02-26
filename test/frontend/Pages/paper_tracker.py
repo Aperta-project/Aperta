@@ -42,20 +42,15 @@ class PaperTrackerPage(AuthenticatedPage):
     uid = PgSQL().query('SELECT id FROM users where username = %s;', (username,))[0][0]
     journal_ids = PgSQL().query('SELECT old_roles.journal_id FROM old_roles INNER JOIN user_roles '
                                 'ON old_roles.id = user_roles.old_role_id '
-                                'WHERE user_roles.user_id = %s '
-                                'AND old_roles.kind IN %s;', (uid, ('flow manager', 'admin', 'editor')))
-    journals_list = []
-    for journal_id in journal_ids:
-      current_journal = journal_id[0]
-      if current_journal not in journals_list:
-        journals_list.append(current_journal)
+                                'WHERE user_roles.user_id = %s;',(uid,))
+    journals_set = set(journal_ids)
     total_count = 0
-    for journal in journals_list:
+    for journal in journals_set:
       paper_count = PgSQL().query('SELECT count(*) FROM papers '
                                   'WHERE journal_id IN (%s) AND publishing_state != %s;',
                                   (journal, 'unsubmitted'))[0][0]
       total_count += int(paper_count)
-    return total_count, journals_list
+    return total_count, journals_set
 
   def validate_table_presentation_and_function(self, total_count, journal_ids):
     title_th = self._get(self._paper_tracker_table_title_th)
@@ -227,12 +222,12 @@ class PaperTrackerPage(AuthenticatedPage):
       logging.info('Validating sort function for Date Submitted')
       subdate_th_a.click()
       time.sleep(2)
-      subdate_th_a = self._get(self._paper_tracker_table_submit_date_th).find_element_by_tag_name('a')
-      subdate_th_a.click()
+      #subdate_th_a = self._get(self._paper_tracker_table_submit_date_th).find_element_by_tag_name('a')
+      #subdate_th_a.click()
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
       manid = self._get(self._paper_tracker_table_tbody_manid).text
       doi = papers[len(papers) - 1][5].split('/')[1]
-      import pdb;pdb.set_trace()
+      import pdb; pdb.set_trace()
       assert manid == doi, '{0} != {1}'.format(manid, doi)
       self._get(self._paper_tracker_table_header_sort_down).click()
       self._paper_tracker_table_tbody_manid = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-paper-id-column"]/a')
@@ -292,4 +287,3 @@ class PaperTrackerPage(AuthenticatedPage):
       self._paper_tracker_table_tbody_paptype = (By.XPATH, '//tbody/tr[1]/td[@class="paper-tracker-type-column"]')
       type_ = self._get(self._paper_tracker_table_tbody_paptype)
       assert type_.text == orig_type, type_.text + '!=' + orig_type
-      print '******************************** 296'

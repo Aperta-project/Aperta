@@ -1,5 +1,7 @@
 <h4 class="block-title">FUNDER</h4>
-<span {{action "removeFunder" isNotEditable}} class="remove-funder fa fa-trash small"></span>
+{{#if enabled}}
+  <span {{action "removeFunder" isNotEditable}} class="remove-funder fa fa-trash small"></span>
+{{/if}}
 <div class="form-group">
   <span class="text-field-title">Funder</span>
   {{input
@@ -35,6 +37,7 @@
 
 {{#nested-question-radio ident="funder--had_influence"
     owner=model
+    disabled=disabled
     yesAction="userSelectedYesForFunderInfluence"
     noAction="userSelectedNoForFunderInfluence" as |selected|}}
 

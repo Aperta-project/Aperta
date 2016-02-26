@@ -2,7 +2,7 @@
 # rubocop:disable Style/PredicateName
 class TaskSerializer < ActiveModel::Serializer
   attributes :id, :title, :type, :completed, :body, :old_role, :position,
-             :is_metadata_task, :is_submission_task, :is_sidebar_task, :links,
+             :is_metadata_task, :is_submission_task, :links,
              :phase_id, :assigned_to_me
   has_one :paper, embed: :id
 
@@ -14,10 +14,6 @@ class TaskSerializer < ActiveModel::Serializer
 
   def is_submission_task
     object.submission_task?
-  end
-
-  def is_sidebar_task
-    object.sidebar_task?
   end
 
   def assigned_to_me

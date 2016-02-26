@@ -9,13 +9,11 @@ class Task < ActiveRecord::Base
 
   cattr_accessor :metadata_types
   cattr_accessor :submission_types
-  cattr_accessor :sidebar_types
 
   before_save :update_completed_at, if: :completed_changed?
 
   scope :metadata, -> { where(type: metadata_types.to_a) }
   scope :submission, -> { where(type: submission_types.to_a) }
-  scope :sidebar, -> { where(type: sidebar_types.to_a) }
 
   # Scopes based on assignment
   scope :unassigned, lambda {
@@ -142,10 +140,6 @@ class Task < ActiveRecord::Base
       all_task_types.select { |klass| klass <=> SubmissionTask }
     end
 
-    def sidebar_task_types
-      [TahiStandardTasks::CoverLetterTask]
-    end
-
     def safe_constantize(str)
       fail StandardError, 'Attempted to constantize disallowed value' \
         unless Task.all_task_types.map(&:to_s).member?(str)
@@ -165,11 +159,6 @@ class Task < ActiveRecord::Base
   def submission_task?
     return false if Task.submission_types.blank?
     Task.submission_types.include?(self.class.name)
-  end
-
-  def sidebar_task?
-    return false if Task.sidebar_task_types.blank?
-    Task.sidebar_task_types.include?(self.class)
   end
 
   def array_attributes

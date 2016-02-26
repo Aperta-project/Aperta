@@ -26,7 +26,7 @@ namespace :data do
             puts "Assigning #{user.full_name} <#{user.email}> as #{old_role.name} on '#{old_role.journal.name}' Journal"
             Assignment.where(
               user: user,
-              role: old_role.journal.roles.internal_editor,
+              role: old_role.journal.internal_editor_role,
               assigned_to: old_role.journal
             ).first_or_create!
           end
@@ -37,7 +37,7 @@ namespace :data do
             puts "Assigning #{user.full_name} <#{user.email}> as #{old_role.name} on '#{old_role.journal.name}' Journal"
             Assignment.where(
               user: user,
-              role: old_role.journal.roles.staff_admin,
+              role: old_role.journal.staff_admin_role,
               assigned_to: old_role.journal
             ).first_or_create!
           end
@@ -46,19 +46,19 @@ namespace :data do
         PaperRole.where(old_role: 'Handling Editor').includes(:user, :paper).all.each do |paper_role|
           paper = paper_role.paper
           user = paper_role.user
-          Assignment.where(user: user, role: paper.journal.roles.handling_editor, assigned_to: paper).first_or_create!
+          Assignment.where(user: user, role: paper.journal.handling_editor_role, assigned_to: paper).first_or_create!
         end
 
         PaperRole.where(old_role: ['Reviewer', 'reviewer']).includes(:user, :paper).all.each do |paper_role|
           paper = paper_role.paper
           user = paper_role.user
-          Assignment.where(user: user, role: paper.journal.roles.reviewer, assigned_to: paper).first_or_create!
+          Assignment.where(user: user, role: paper.journal.reviewer_role, assigned_to: paper).first_or_create!
         end
 
         PaperRole.where(old_role: ['Admin', 'admin', 'Bio Staff/Admin']).includes(:user, :paper).all.each do |paper_role|
           paper = paper_role.paper
           user = paper_role.user
-          Assignment.where(user: user, role: paper.journal.roles.staff_admin, assigned_to: paper).first_or_create!
+          Assignment.where(user: user, role: paper.journal.staff_admin_role, assigned_to: paper).first_or_create!
         end
       end
 

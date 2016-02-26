@@ -53,9 +53,38 @@ describe JournalFactory do
             PermissionState.wildcard
           )
         end
+
+        it 'is able to see most metadata_tasks like the Data Availability Task' do
+          expect(Task.descendants.select { |klass| klass <=> MetadataTask }
+                                 .select { |klass| klass.name == 'TahiStandardTasks::DataAvailabilityTask' }
+                ).to be_present
+          expect(journal.collaborator_role.permissions).to include(
+            Permission.where(action: 'view', applies_to: 'TahiStandardTasks::DataAvailabilityTask').first
+          )
+        end
+
+        it 'but should not be able to see the Billing Task' do
+          expect(journal.collaborator_role.permissions).not_to include(
+            Permission.where(action: 'view', applies_to: 'PlosBilling::BillingTask').first
+          )
+        end
       end
 
       context 'Academic Editor' do
+        it 'is able to see most metadata_tasks like the Data Availability Task' do
+          expect(Task.descendants.select { |klass| klass <=> MetadataTask }
+                                 .select { |klass| klass.name == 'TahiStandardTasks::DataAvailabilityTask' }
+                ).to be_present
+          expect(journal.academic_editor_role.permissions).to include(
+            Permission.where(action: 'view', applies_to: 'TahiStandardTasks::DataAvailabilityTask').first
+          )
+        end
+
+        it 'but should not be able to see the Billing Task' do
+          expect(journal.academic_editor_role.permissions).not_to include(
+            Permission.where(action: 'view', applies_to: 'PlosBilling::BillingTask').first
+          )
+        end
       end
 
       context 'Handling Editor' do
@@ -196,6 +225,18 @@ describe JournalFactory do
 
           expect(journal.staff_admin_role.permissions).to include(
             permissions.find_by(action: 'start_discussion')
+          )
+        end
+
+        it 'is able to see Tasks in general' do
+          expect(journal.staff_admin_role.permissions).to include(
+            Permission.where(action: 'view', applies_to: 'Task').first
+          )
+        end
+
+        it 'but should not be able to see the Billing Task' do
+          expect(journal.staff_admin_role.permissions).to include(
+            Permission.where(action: 'view', applies_to: 'PlosBilling::BillingTask').first
           )
         end
 

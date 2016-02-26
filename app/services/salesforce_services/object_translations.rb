@@ -60,9 +60,6 @@ module SalesforceServices
           'Subject'                    => @paper.manuscript_id,
           'Description'                => "#{@paper.creator.full_name} has applied for PFA with submission #{@paper.manuscript_id}",
           'Origin'                     => "PFA Request",
-
-          #'PFA_Funding_Statement__c'   => billing_question "", # Unknown field? from financial disclosure card
-
           'PFA_Question_1__c'          => yes_no_answer_for("plos_billing--pfa_question_1"),
           'PFA_Question_1a__c'         => answer_for("plos_billing--pfa_question_1a"),
           'PFA_Question_1b__c'         => float_answer_for("plos_billing--pfa_question_1b"),
@@ -98,10 +95,6 @@ module SalesforceServices
 
       def billing_card
         @paper.billing_card
-      end
-
-      def manuscript_id # TODO ask product what to do in case of no DOI
-        @paper.doi || "doi_missing_for_id_#{@paper.id}"
       end
     end
   end

@@ -10,7 +10,8 @@ module PlosBilling
 
     def perform(paper_id)
       paper = ::Paper.find(paper_id)
-      return unless paper.billing_card
+      return unless SalesforceServices.send_to_salesforce?(paper: paper)
+
       SalesforceServices::API.find_or_create_manuscript(paper_id: paper.id)
       SalesforceServices::API.create_billing_and_pfa_case(paper_id: paper.id)
     end

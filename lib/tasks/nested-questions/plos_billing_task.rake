@@ -61,7 +61,7 @@ namespace 'nested-questions:seed' do
       owner_type: PlosBilling::BillingTask.name,
       ident: "plos_billing--address1",
       value_type: "text",
-      text: "Address Line 1 (optional)",
+      text: "Address Line 1",
       position: 7
     }
 

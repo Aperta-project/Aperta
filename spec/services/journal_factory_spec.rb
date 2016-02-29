@@ -36,7 +36,7 @@ describe JournalFactory do
 
       context 'Creator role' do
         it 'gets the :view Paper permission with no state requirements' do
-          expect(journal.collaborator_role.permissions).to include(
+          expect(journal.creator_role.permissions).to include(
             view_paper_permission
           )
           expect(view_paper_permission.states).to contain_exactly(
@@ -85,7 +85,6 @@ describe JournalFactory do
               )
             end
           end
-
         end
       end
 
@@ -125,6 +124,22 @@ describe JournalFactory do
           expect(journal.collaborator_role.permissions).not_to include(
             Permission.where(action: 'view', applies_to: 'PlosBilling::BillingTask').first
           )
+        end
+
+        context 'have FinalTechCheck permission to' do
+          let(:permissions) { Permission.joins(:states).where(applies_to: 'PlosBioTechCheck::FinalTechCheckTask', permission_states: { id: PermissionState.wildcard }) }
+
+          it ':view' do
+            expect(journal.collaborator_role.permissions).to include(
+              permissions.find_by(action: 'view')
+            )
+          end
+
+          it 'not :edit' do
+            expect(journal.collaborator_role.permissions).not_to include(
+              permissions.find_by(action: 'edit')
+            )
+          end
         end
       end
 
@@ -282,6 +297,22 @@ describe JournalFactory do
             )
           end
         end
+
+        context 'have FinalTechCheck permission to' do
+          let(:permissions) { Permission.joins(:states).where(applies_to: 'PlosBioTechCheck::FinalTechCheckTask', permission_states: { id: PermissionState.wildcard }) }
+
+          it ':view' do
+            expect(journal.academic_editor_role.permissions).to include(
+              permissions.find_by(action: 'view')
+            )
+          end
+
+          it 'not :edit' do
+            expect(journal.academic_editor_role.permissions).not_to include(
+              permissions.find_by(action: 'edit')
+            )
+          end
+        end
       end
 
       context 'Internal Editor' do
@@ -317,6 +348,22 @@ describe JournalFactory do
           it ':reply' do
             expect(journal.internal_editor_role.permissions).to include(
               permissions.find_by(action: 'reply')
+            )
+          end
+        end
+
+        context 'have FinalTechCheck permission to' do
+          let(:permissions) { Permission.joins(:states).where(applies_to: 'PlosBioTechCheck::FinalTechCheckTask', permission_states: { id: PermissionState.wildcard }) }
+
+          it 'not :view' do
+            expect(journal.handling_editor_role.permissions).not_to include(
+              permissions.find_by(action: 'view')
+            )
+          end
+
+          it 'not :edit' do
+            expect(journal.handling_editor_role.permissions).not_to include(
+              permissions.find_by(action: 'edit')
             )
           end
         end
@@ -411,6 +458,24 @@ describe JournalFactory do
           it ':reply' do
             expect(journal.discussion_participant_role.permissions).to include(
               permissions.find_by(action: 'reply')
+            )
+          end
+        end
+      end
+
+      context 'Reviewer' do
+        context 'does not have FinalTechCheck permission to' do
+          let(:permissions) { Permission.joins(:states).where(applies_to: 'PlosBioTechCheck::FinalTechCheckTask', permission_states: { id: PermissionState.wildcard }) }
+
+          it ':view' do
+            expect(journal.reviewer_role.permissions).to include(
+              permissions.find_by(action: 'view')
+            )
+          end
+
+          it 'not :edit' do
+            expect(journal.reviewer_role.permissions).not_to include(
+              permissions.find_by(action: 'edit')
             )
           end
         end

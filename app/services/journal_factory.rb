@@ -60,6 +60,7 @@ class JournalFactory
       # Collaborators can view and edit any submission card except billing
       metadata_task_klasses = Task.descendants.select { |klass| klass <=> SubmissionTask }
       metadata_task_klasses -= [PlosBilling::BillingTask]
+      task_klasses << TahiStandardTasks::CoverLetterTask
       metadata_task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass.name, states: ['*'])
         role.ensure_permission_exists(:edit, applies_to: klass.name, states: ['*'])
@@ -145,13 +146,6 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
       role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic, states: ['*'])
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
-
-      # Tech Check Classes
-      tech_check_task_klasses = [PlosBioTechCheck::FinalTechCheckTask]
-      tech_check_task_klasses.each do |klass|
-        role.ensure_permission_exists(:view, applies_to: klass.name, states: ['*'])
-        role.ensure_permission_exists(:edit, applies_to: klass.name, states: ['*'])
-      end
     end
 
     Role.ensure_exists(Role::HANDLING_EDITOR_ROLE, journal: @journal, participates_in: [Paper]) do |role|
@@ -220,13 +214,6 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
       role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic, states: ['*'])
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
-
-      # Tech Check Classes
-      tech_check_task_klasses = [PlosBioTechCheck::FinalTechCheckTask]
-      tech_check_task_klasses.each do |klass|
-        role.ensure_permission_exists(:view, applies_to: klass.name, states: ['*'])
-        role.ensure_permission_exists(:edit, applies_to: klass.name, states: ['*'])
-      end
     end
 
     Role.ensure_exists(Role::TASK_PARTICIPANT_ROLE, journal: @journal, participates_in: [Task]) do |role|

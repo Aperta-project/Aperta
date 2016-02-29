@@ -2,7 +2,7 @@
 # retrieving a task's AdhocAttachment(s).
 class AdhocAttachmentsController < ApplicationController
   before_action :authenticate_user!
-  respond_to :json
+  respond_to :json, :csv
 
   def index
     requires_user_can :view, task
@@ -55,6 +55,13 @@ class AdhocAttachmentsController < ApplicationController
     attachment.cancel_download
 
     head :no_content
+  end
+
+  def test_csv
+    bl = PlosServices::ExampleData.new
+    respond_with do |format|
+      format.csv { render text: bl.to_csv }
+    end
   end
 
   private

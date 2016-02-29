@@ -1,10 +1,4 @@
 <div class='container'>
-  <div class='greeting'>
-    <p class='message'>
-      You've been invited as an editor on a manuscript
-    </p>
-  </div>
-  <hr>
   <div class='paper-info'>
     <div class='journal-info'>
       <% if @journal.logo_url %>
@@ -15,17 +9,9 @@
         </div>
       <% end %>
     </div>
-    <div class='paper-name'>
-      <%= @paper.display_title(sanitized: false) %>
-    </div>
     <div class='paper-abstract'>
-      <%= simple_format @invitation.task.body[0] %>
+      <%= simple_format @invitation.body %>
     </div>
-    <% if @invitation.information.present? %>
-      <div class='invitation-information'>
-        <%= simple_format @invitation.information %>
-      </div>
-    <% end %>
     <p>
       <a class='button' href='<%= client_dashboard_url %>' target='_blank'>
         View Invitation
@@ -34,8 +20,6 @@
   </div>
   <hr>
   <div class='footer'>
-    Sincerely,
-    <br>
     <%= @paper.journal.name %> Team
   </div>
 </div>

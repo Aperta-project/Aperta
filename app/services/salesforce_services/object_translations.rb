@@ -8,21 +8,41 @@ module SalesforceServices
       end
 
       def paper_to_manuscript_hash
-        {
-          "RecordTypeId"               => "012U0000000E4ASIA0", # TODO: make this dynamic
-          "OwnerId"                    => @user_id,
-          "Editorial_Process_Close__c" => false,
-          "Display_Technical_Notes__c" => false,
-          "CreatedByDeltaMigration__c" => false,
-          "Editorial_Status_Date__c"   => Time.now.utc,
+        hash = {
+          "RecordTypeId"               => "012U0000000E4ASIA0",
+          "Editorial_Status_Date__c"   => editorial[:date],
           "Revision__c"                => @paper.decisions.latest.revision_number,
           "Title__c"                   => @paper.title,
-          "Initial_Date_Submitted__c"  => @paper.submitted_at,
           "DOI__c"                     => @paper.doi,
-          "Manuscript_Number__c"       => @paper.manuscript_id,
-          "Name"                       => @paper.manuscript_id, # Manuscript#/Doc ID, in SF
-          "OriginalSubmissionDate__c"  => @paper.submitted_at,
+          "Name"                       => @paper.manuscript_id,
+          "Abstract__c"                => @paper.abstract,
+          "Current_Editorial_Status__c" => editorial[:status]
         }
+
+        if new_sfdc_record?
+          hash["OriginalSubmissionDate__c"] = @paper.submitted_at
+        end
+
+        hash
+      end
+
+      private
+
+      def editorial
+        case @paper.publishing_state
+        when 'submitted'
+          { status: "Manuscript Submitted", date: @paper.submitted_at }
+        when 'accepted'
+          { status: "Completed Accept", date: @paper.accepted_at }
+        when 'rejected'
+          { status: "Completed Reject", date: @paper.updated_at }
+        else
+          { status: "Manuscript Submitted", date: @paper.submitted_at }
+        end
+      end
+
+      def new_sfdc_record?
+        !@paper.salesforce_manuscript_id
       end
     end
 

@@ -43,6 +43,14 @@ module SalesforceServices
 
       sf_paper.update_attributes mt.paper_to_manuscript_hash
       sf_paper
+    rescue Databasedotcom::SalesForceError => ex
+      if ex.message == "The requested resource does not exist"
+        Rails.logger.warn(
+          "Paper #{paper_id} not found on SFDC. Removing SFDC Id from paper."
+        )
+        paper.update_attribute(:salesforce_manuscript_id, nil)
+      end
+      raise ex
     end
 
     def self.find_or_create_manuscript(paper_id:)
@@ -67,11 +75,15 @@ module SalesforceServices
     end
 
     def self.salesforce_active
-      active = ENV['DATEBASEDOTCOM_DISABLED'] == 'true' ? false : true
-      Rails.logger.warn(<<-INFO.strip_heredoc.chomp)
-        Salesforce integration disabled due to ENV['DATEBASEDOTCOM_DISABLED]'
-      INFO
-      client if active
+      active = ENV['DATABASEDOTCOM_DISABLED'] == 'true' ? false : true
+      if active
+        # ensure client has a session with SObjects materialized
+        client
+      else
+        Rails.logger.warn(<<-INFO.strip_heredoc.chomp)
+          Salesforce integration disabled due to ENV['DATABASEDOTCOM_DISABLED]'
+        INFO
+      end
       active
     end
   end

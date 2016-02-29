@@ -1729,6 +1729,13 @@ authors:
   - secondary_affiliation
   - ringgold_id
   - secondary_ringgold_id
+  - author_initial
+  - current_address_street
+  - current_address_street2
+  - current_address_city
+  - current_address_state
+  - current_address_country
+  - current_address_postal
   records: 
   - - '1'
     - Arthur

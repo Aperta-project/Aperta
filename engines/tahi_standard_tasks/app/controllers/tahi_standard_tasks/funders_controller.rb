@@ -6,15 +6,15 @@ module TahiStandardTasks
 
     def create
       task = Task.find(funder_params[:task_id])
+      requires_user_can :edit, task
       funder = task.funders.new(funder_params)
-      authorize_action!(funder: funder)
       funder.save
       respond_with funder
     end
 
     def update
       funder = Funder.find(params[:id])
-      authorize_action!(funder: funder)
+      requires_user_can :edit, funder.task
       unmunge_empty_arrays!(:funder, [:author_ids])
       funder.update_attributes(funder_params)
       respond_with funder
@@ -22,7 +22,7 @@ module TahiStandardTasks
 
     def destroy
       funder = Funder.find(params[:id])
-      authorize_action!(funder: funder)
+      requires_user_can :edit, funder.task
       funder.destroy
       respond_with funder
     end

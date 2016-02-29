@@ -5,13 +5,15 @@
 {{#each attachments as |attachment|}}
   {{attachment-item accept=accept
                     attachment=attachment
+                    disabled=disabled
                     filePath=filePath
                     hasCaption=hasCaption
                     caption=attachment.caption
                     captionChanged=attrs.captionChanged
                     deleteFile=attrs.deleteFile
                     noteChanged=attrs.noteChanged
-                    uploadFinished=attrs.updateAttachment}}
+                    uploadFinished=attrs.updateAttachment
+                    isEditable=isEditable}}
 {{/each}}
 
 {{#if uploadInProgress}}

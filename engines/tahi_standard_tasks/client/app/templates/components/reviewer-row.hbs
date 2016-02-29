@@ -9,14 +9,21 @@
 {{#unless (or isEditing isDeleting)}}
   <div class="author-task-item-view flex-group">
     <div class="author-task-item-view-text flex-element flex-group" {{action "edit"}}>
-      <div class="flex-element author-name full-name">{{reviewerRecommendation.fullName}}</div>
-      <span class="flex-element email">{{reviewerRecommendation.email}}</span>
-
+      <div class="flex-element">
+        <div class="author-name full-name">{{reviewerRecommendation.fullName}}</div>
+        <div class="email">{{reviewerRecommendation.email}}</div>
+      </div>
       <div class="flex-element decision">
-        {{nested-question-answer ident="reviewer_recommendations--recommend_or_oppose"
-                                 owner=reviewerRecommendation
-                                 yesLabel="Recommend"
-                                 noLabel="Oppose"}}
+        <div class="decision">
+          {{nested-question-answer ident="reviewer_recommendations--recommend_or_oppose"
+                                   owner=reviewerRecommendation
+                                   yesLabel="Recommend"
+                                   noLabel="Oppose"}}
+        </div>
+        <div class="reason">
+          {{nested-question-answer ident="reviewer_recommendations--reason"
+                                   owner=reviewerRecommendation}}
+        </div>
       </div>
     </div>
 

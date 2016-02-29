@@ -1,8 +1,11 @@
 import Ember from 'ember';
 import DragNDrop from 'tahi/services/drag-n-drop';
 
-const { computed, on } = Ember;
-const { alias, not } = computed;
+const {
+  computed,
+  computed: { alias, not },
+  on
+} = Ember;
 
 export default Ember.Component.extend(DragNDrop.DraggableMixin, {
   classNames: ['author-task-item'],

@@ -143,3 +143,19 @@ test('can add a new author', function(assert) {
     });
   });
 });
+
+test('validation works', function(assert) {
+  Ember.run(function() {
+    TestHelper.handleCreate('author');
+
+    visit(`/papers/${paperId}/tasks/${taskId}`);
+    click('.button-primary:contains("Add a New Author")');
+    click('.author-form-buttons .button-secondary:contains("done")');
+    click('.author-task-item-view-text');
+    click('.author-form-buttons .button-secondary:contains("done")');
+
+    andThen(function() {
+      assert.ok(find('.author-task-item .error').length, 'Errors found');
+    });
+  });
+});

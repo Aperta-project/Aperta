@@ -10,6 +10,10 @@
 .author-task-item-view {
   @include align-items(center);
   background: $tahi-grey-xlight;
+
+  .flex-group {
+    margin-left: 1rem;
+  }
 }
 
 .author-task-item-view-checkbox {
@@ -29,7 +33,6 @@
 
 .author-task-item-position {
   max-width: 1rem;
-  margin-left: 1rem;
 
   &:before {
     content: counter(authorTaskItem);

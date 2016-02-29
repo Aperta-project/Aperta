@@ -58,8 +58,7 @@ feature "User adding reviewer candidates", js: true do
     end
 
     # Edit the reviewer
-    find(".reviewer").hover
-    find(".fa-pencil").click
+    find(".author-task-item-view-text").click
 
     # We can cancel the edit
     within ".reviewer-form" do
@@ -68,8 +67,7 @@ feature "User adding reviewer candidates", js: true do
     expect(page).to_not have_selector(".reviewer-form")
 
     # We can edit the reviewer
-    find(".reviewer").hover
-    find(".fa-pencil").click
+    find(".author-task-item-view-text").click
     within ".reviewer-form" do
       first_name_input = find(".first-name input[type=text]")
       expect(first_name_input.value).to eq("Barb")

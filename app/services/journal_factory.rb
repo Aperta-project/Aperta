@@ -26,10 +26,11 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
 
-      # Creator(s) cannot view/edit production metadata tasks
-      classes = Task.descendants
-      classes -= [TahiStandardTasks::ProductionMetadataTask]
-      classes.each do |klass|
+      # Creator(s) cannot view/edit production metadata or final tech check tasks
+      task_klasses = Task.descendants
+      task_klasses -= [TahiStandardTasks::ProductionMetadataTask]
+      task_klasses -= [PlosBioTechCheck::FinalTechCheckTask]
+      task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass)
         role.ensure_permission_exists(:view_participants, applies_to: klass, states: ['*'])
@@ -47,24 +48,13 @@ class JournalFactory
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
 
       # Collaborators can view and edit any metadata card except billing
-      metadata_task_klasses = Task.descendants.select { |klass| klass <=> MetadataTask }
-      metadata_task_klasses -= [PlosBilling::BillingTask]
-      metadata_task_klasses.each do |klass|
+      task_klasses = Task.descendants.select { |klass| klass <=> MetadataTask }
+      task_klasses -= [PlosBilling::BillingTask]
+      task_klasses << TahiStandardTasks::CoverLetterTask
+      task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass, states: ['*'])
         role.ensure_permission_exists(:edit, applies_to: klass, states: ['*'])
         role.ensure_permission_exists(:view_participants, applies_to: klass, states: ['*'])
-        role.ensure_permission_exists(:add_participants, applies_to: klass, states: ['*'])
-        role.ensure_permission_exists(:remove_participants, applies_to: klass, states: ['*'])
-      end
-
-      # Collaborators can view and edit any submission card except billing
-      metadata_task_klasses = Task.descendants.select { |klass| klass <=> SubmissionTask }
-      metadata_task_klasses -= [PlosBilling::BillingTask]
-      task_klasses << TahiStandardTasks::CoverLetterTask
-      metadata_task_klasses.each do |klass|
-        role.ensure_permission_exists(:view, applies_to: klass.name, states: ['*'])
-        role.ensure_permission_exists(:edit, applies_to: klass.name, states: ['*'])
-        role.ensure_permission_exists(:view_participants, applies_to: klass.name, states: ['*'])
         role.ensure_permission_exists(:add_participants, applies_to: klass, states: ['*'])
         role.ensure_permission_exists(:remove_participants, applies_to: klass, states: ['*'])
       end
@@ -92,12 +82,12 @@ class JournalFactory
 
     Role.ensure_exists(Role::REVIEWER_ROLE, journal: @journal, participates_in: [Paper]) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::ReviseTask.name, states: ['*'])
 
       # Reviewer(s) get access to all metadata cards, but not billing.
-      metadata_task_klasses = Task.descendants.select { |klass| klass <=> MetadataTask }
-      metadata_task_klasses -= [PlosBilling::BillingTask]
-      metadata_task_klasses.each do |klass|
+      task_klasses = Task.descendants.select { |klass| klass <=> MetadataTask }
+      task_klasses -= [PlosBilling::BillingTask]
+      task_klasses << TahiStandardTasks::ReviseTask
+      task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass.name, states: ['*'])
         role.ensure_permission_exists(:view_participants, applies_to: klass.name, states: ['*'])
       end
@@ -110,14 +100,14 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
+
+      # Tasks
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
-      role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
 
       # Discussions
       role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
@@ -125,14 +115,6 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
       role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic, states: ['*'])
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
-
-      # Tech Check Classes
-      tech_check_task_klasses = [PlosBioTechCheck::FinalTechCheckTask]
-      tech_check_task_klasses.each do |klass|
-        Rails.logger.info "klass: #{klass.name}"
-        role.ensure_permission_exists(:view, applies_to: klass.name, states: ['*'])
-        role.ensure_permission_exists(:edit, applies_to: klass.name, states: ['*'])
-      end
     end
 
     Role.ensure_exists(Role::INTERNAL_EDITOR_ROLE, journal: @journal) do |role|
@@ -141,9 +123,11 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
+
+      # Tasks
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
       role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
@@ -161,9 +145,11 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
+
+      # Tasks
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
       role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
@@ -183,14 +169,14 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:withdraw, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
+
+      # Tasks
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
-      role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
 
       # Discussions
       role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
@@ -207,14 +193,14 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:withdraw, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
+
+      # Tasks
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
-      role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
 
       # Discussions
       role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
@@ -239,19 +225,17 @@ class JournalFactory
                        delete_stray_permissions: true) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper)
 
-      classes = Task.submission_task_types
+      task_klasses = Task.submission_task_types
 
-      # AEs cannot view billing task reviewer report tasks
-      classes -= [PlosBilling::BillingTask]
-      classes -= [TahiStandardTasks::ReviewerReportTask]
-      classes << TahiStandardTasks::RegisterDecisionTask
-      classes.each do |klass|
+      # AEs cannot view billing task or reviewer recommendation tasks
+      task_klasses -= [PlosBilling::BillingTask]
+      task_klasses << [TahiStandardTasks::ReviewerReportTask]
+      task_klasses << TahiStandardTasks::RegisterDecisionTask
+      task_klasses.each do |klass|
         role.ensure_permission_exists(:view, applies_to: klass)
       end
 
       role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::ReviewerRecommendationsTask)
-      # AEs can ONLY view reviewer report tasks
-      role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::ReviewerReportTask)
     end
 
     Role.ensure_exists(Role::DISCUSSION_PARTICIPANT, journal: @journal) do |role|

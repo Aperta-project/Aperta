@@ -7,7 +7,6 @@ const { computed } = Ember;
 export default NestedQuestionComponent.extend({
   labelClassNames: ['question-checkbox'],
   textClassNames: ['model-question'],
-  disabled: false,
 
   additionalDataYieldValue: computed('checked', 'model.answer.value',
     function(){

@@ -113,8 +113,6 @@ class JournalFactory
       role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
 
       # Discussions
       role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
@@ -134,8 +132,6 @@ class JournalFactory
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
       role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
 
       # Discussions
       role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
@@ -225,16 +221,6 @@ class JournalFactory
 
       # AEs can ONLY view reviewer report tasks
       role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::ReviewerReportTask)
-
-      # AEs can also view some other tasks
-      role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
-
-      # Discussions
-      role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic, states: ['*'])
-      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
     end
 
     Role.ensure_exists(Role::DISCUSSION_PARTICIPANT, journal: @journal) do |role|

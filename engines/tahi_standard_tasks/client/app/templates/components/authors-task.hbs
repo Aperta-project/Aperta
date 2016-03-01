@@ -12,9 +12,19 @@
 
   <div>
     {{#if isEditable}}
-      <button class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}" disabled={{isSubmissionTaskNotEditable}} {{action "toggleAuthorForm" group}}>
-        Add a New Author
-      </button>
+      <div class="add-new-author-button-container">
+        <button id="add-new-author-button"
+                class="button-primary button--green {{if isSubmissionTaskNotEditable 'button--disabled'}}"
+                disabled={{isSubmissionTaskNotEditable}}
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Add a New Author &nbsp; {{fa-icon "caret-down"}}
+        </button>
+
+        <ul id="add-new-author-dropdown" class="dropdown-menu animation-fade-in" aria-labelledby="add-new-author-button">
+          <li><a href="#" id="add-new-individual-author-link" {{action "toggleAuthorForm" group}}>Add individual Author</a></li>
+          <li><a href="#" id="add-new-group-author-link">Add Group Author</a></li>
+        </ul>
+      </div>
       <br><br>
 
       {{error-message message=validationErrors.corresponding}}

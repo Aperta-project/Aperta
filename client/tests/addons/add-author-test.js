@@ -14,6 +14,11 @@ let fakeUser = null;
 let paperId  = null;
 const taskId = 90210;
 
+const openNewAuthorForm = function() {
+  click('#add-new-author-button');
+  click('#add-new-individual-author-link');
+};
+
 module('Integration: adding an author', {
   afterEach() {
     server.restore();
@@ -134,7 +139,7 @@ test('can add a new author', function(assert) {
     TestHelper.handleCreate('author');
 
     visit(`/papers/${paperId}/tasks/${taskId}`);
-    click('.button-primary:contains("Add a New Author")');
+    openNewAuthorForm();
     fillIn('.author-first', firstName);
     click('.author-form-buttons .button-secondary:contains("done")');
 
@@ -149,7 +154,7 @@ test('validation works', function(assert) {
     TestHelper.handleCreate('author');
 
     visit(`/papers/${paperId}/tasks/${taskId}`);
-    click('.button-primary:contains("Add a New Author")');
+    openNewAuthorForm();
     click('.author-form-buttons .button-secondary:contains("done")');
     click('.author-task-item-view-text');
     click('.author-form-buttons .button-secondary:contains("done")');

@@ -2,6 +2,12 @@
   counter-reset: authorTaskItem;
 }
 
+.add-new-author-button-container {
+  position: relative;
+
+  .dropdown-menu { left: -5px; }
+}
+
 .author-task-item {
   position: relative;
   counter-increment: authorTaskItem;

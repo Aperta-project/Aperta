@@ -13,6 +13,7 @@ const {
 export default TaskComponent.extend({
   validations: taskValidations,
   newAuthorFormVisible: false,
+  newGroupAuthorFormVisible: false,
 
   validateData() {
     this.validateAll();
@@ -87,6 +88,10 @@ export default TaskComponent.extend({
     toggleAuthorForm() {
       this.clearNewAuthorAnswers();
       this.toggleProperty('newAuthorFormVisible');
+    },
+
+    toggleGroupAuthorForm() {
+      this.toggleProperty('newGroupAuthorFormVisible');
     },
 
     changeAuthorPosition(author, newPosition) {

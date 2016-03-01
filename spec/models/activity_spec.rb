@@ -1,5 +1,6 @@
-# rubocop:disable Metrics/LineLength
-
+# Disabling line length for english text, block delimiters for
+# "it { is_expected" blocks
+# rubocop:disable Metrics/LineLength, Style/BlockDelimiters
 require 'rails_helper'
 
 describe Activity do
@@ -115,6 +116,24 @@ describe Activity do
         user: user,
         message: "#{invitation.recipient_name} declined invitation as #{invitation.task.invitee_role.capitalize}"
     )}
+  end
+
+  describe "#invitation_withdrawn!" do
+    subject(:activity) { Activity.invitation_withdrawn!(invitation, user: user) }
+    let(:invitation) { FactoryGirl.build(:invitation) }
+
+    let(:role) { invitation.task.invitee_role.capitalize }
+    let(:invitee) { invitation.recipient_name }
+
+    it {
+      is_expected.to have_attributes(
+        feed_name: "workflow",
+        activity_key: "invitation.withdrawn",
+        subject: invitation.paper,
+        user: user,
+        message: "#{invitee}'s invitation as #{role} was withdrawn"
+      )
+    }
   end
 
   describe "#paper_created!" do

@@ -88,16 +88,11 @@ export default TaskComponent.extend(Select2Assignees, {
       });
     },
 
-    setLetterBody() {
-      this.set('task.body', [this.get('updatedTemplate')]);
-      this.get('task').save();
-      return this.send('inviteEditor');
-    },
-
     inviteEditor() {
       const invitation = this.store.createRecord('invitation', {
         task: this.get('task'),
-        email: this.get('selectedUser.email')
+        email: this.get('selectedUser.email'),
+        body: this.get('updatedTemplate')
       });
 
       invitation.save();

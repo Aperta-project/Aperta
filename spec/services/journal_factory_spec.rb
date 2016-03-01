@@ -464,7 +464,7 @@ describe JournalFactory do
       end
 
       context 'Reviewer' do
-        context 'does not have FinalTechCheck permission to' do
+        context 'has FinalTechCheck permission to' do
           let(:permissions) { Permission.joins(:states).where(applies_to: 'PlosBioTechCheck::FinalTechCheckTask', permission_states: { id: PermissionState.wildcard }) }
 
           it ':view' do
@@ -526,6 +526,22 @@ describe JournalFactory do
           it ':reply' do
             expect(journal.staff_admin_role.permissions).to include(
               permissions.find_by(action: 'reply')
+            )
+          end
+        end
+
+        context 'has FinalTechCheck permission to' do
+          let(:permissions) { Permission.joins(:states).where(applies_to: 'PlosBioTechCheck::FinalTechCheckTask', permission_states: { id: PermissionState.wildcard }) }
+
+          it ':view' do
+            expect(journal.staff_admin_role.permissions).to include(
+              permissions.find_by(action: 'view')
+            )
+          end
+
+          it ':edit' do
+            expect(journal.staff_admin_role.permissions).to include(
+              permissions.find_by(action: 'edit')
             )
           end
         end

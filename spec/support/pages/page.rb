@@ -84,7 +84,7 @@ class PageFragment
   end
 
   def view_card_in_task_sidebar(card_name, &block)
-    el = find('#paper-metadata-tasks .task-disclosure-heading', text: card_name)
+    el = find('#paper-submission-tasks .task-disclosure-heading', text: card_name)
     el.click
     yield if block_given?
   end

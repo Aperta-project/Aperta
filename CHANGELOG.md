@@ -1,15 +1,22 @@
 # Change Log
-All notable changes to this project will be documented in this file.
-This project adheres to [Semantic Versioning](http://semver.org/). Follow
+All notable changes to this project will be documented in this file. Follow
 guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 
 ## [Unreleased][unreleased]
+
+## [1.4.0] - 2016-02-23
 ### Added
 - Paper tracker search: by user and role, anyone, no one, and any role
 - Billing Task validations
+- Applying new roles and permissions to paper tracker
+- Applying new roles and permissions to paper discussions
+- Applying new roles and permissions to ethics card
+- Academic Editor role for the PLOS Bio journal has been implemented with new roles and permissions
+- Journal admins will receive an email if a manuscript fails to be sent to Salesforce after ~1.5 days
 
 ### Changed
-- 
+- The Authors card now enforces validations
+- The Supporting Information now enforces validations
 
 ### Deprecated
 -
@@ -18,7 +25,8 @@ guidelines from here: https://github.com/olivierlacan/keep-a-changelog
 -
 
 ### Fixed
--
+- Fixing an issue where the content stored on an adhoc card was not be preserved
+- Fixing an issue where an email was not being sent out to collaborators when they were added to a paper
 
 ### Security
 -

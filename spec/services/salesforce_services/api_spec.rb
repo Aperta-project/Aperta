@@ -20,12 +20,12 @@ describe SalesforceServices::API do
   end
 
   describe "salesforce_active" do
-    context "DATEBASEDOTCOM_DISABLED is set to true" do
+    context "DATABASEDOTCOM_DISABLED is set to true" do
       before do
-        ENV["DATEBASEDOTCOM_DISABLED"] = 'true'
+        ENV["DATABASEDOTCOM_DISABLED"] = 'true'
       end
       after do
-        ENV["DATEBASEDOTCOM_DISABLED"] = nil
+        ENV["DATABASEDOTCOM_DISABLED"] = nil
       end
 
       it "salesforce_active returns false" do
@@ -33,9 +33,9 @@ describe SalesforceServices::API do
       end
     end
 
-    context "DATEBASEDOTCOM_DISABLED is nil" do
+    context "DATABASEDOTCOM_DISABLED is nil" do
       before do
-        ENV["DATEBASEDOTCOM_DISABLED"] = nil
+        ENV["DATABASEDOTCOM_DISABLED"] = nil
       end
 
       it "creates the salesforce client" do

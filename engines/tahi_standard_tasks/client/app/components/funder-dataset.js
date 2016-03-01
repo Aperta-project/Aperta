@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default  Ember.Component.extend({
   classNames: ['dataset'],
+  enabled: Ember.computed.not('disabled'),
 
   _saveModel() {
     return this.get('model').save();

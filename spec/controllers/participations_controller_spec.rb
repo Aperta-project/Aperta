@@ -1,9 +1,17 @@
 require 'rails_helper'
 
 describe ParticipationsController do
+  # Since journals w/R&P are expensive create once for the entire test then remove.
+  before(:all) do
+    FactoryGirl.create(:journal, :with_roles_and_permissions)
+  end
+  after(:all) do
+    Journal.destroy_all
+  end
+
   let(:user) { FactoryGirl.create(:user) }
   let(:participant) { FactoryGirl.create(:user) }
-  let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
+  let(:journal) { Journal.first! }
   let!(:paper) do
     FactoryGirl.create(:paper, creator: user, journal: journal)
   end
@@ -107,7 +115,7 @@ describe ParticipationsController do
     context "the user is authorized" do
       before do
         allow_any_instance_of(User).to \
-          receive(:can?).with(:add_participants, task).and_return true
+          receive(:can?).with(:manage_participant, task).and_return true
       end
 
       it_behaves_like "an unauthenticated json request"
@@ -187,7 +195,7 @@ describe ParticipationsController do
         context "when the task type is EditorsDiscussionTask" do
           before do
             allow_any_instance_of(User).to \
-              receive(:can?).with(:add_participants, editors_discussion_task)
+              receive(:can?).with(:manage_participant, editors_discussion_task)
               .and_return true
           end
 
@@ -219,7 +227,7 @@ describe ParticipationsController do
     context "when the user does not have access" do
       before do
         allow_any_instance_of(User).to receive(:can?)
-          .with(:add_participants, task)
+          .with(:manage_participant, task)
           .and_return false
       end
 
@@ -239,7 +247,7 @@ describe ParticipationsController do
     context "the user is authorized" do
       before do
         allow_any_instance_of(User).to \
-          receive(:can?).with(:remove_participants, task).and_return true
+          receive(:can?).with(:manage_participant, task).and_return true
       end
 
       context "with a valid participation id" do
@@ -281,7 +289,7 @@ describe ParticipationsController do
     context "when the user does not have access" do
       before do
         allow_any_instance_of(User).to receive(:can?)
-          .with(:remove_participants, task)
+          .with(:manage_participant, task)
           .and_return false
       end
 
@@ -302,7 +310,7 @@ describe ParticipationsController do
     context "the user is authorized" do
       before do
         allow_any_instance_of(User).to \
-          receive(:can?).with(:add_participants, task).and_return true
+          receive(:can?).with(:manage_participant, task).and_return true
       end
 
       it "calls the task's #notify_new_participant method" do
@@ -319,7 +327,7 @@ describe ParticipationsController do
       context "when the task type is EditorsDiscussionTask" do
         before do
           allow_any_instance_of(User).to \
-            receive(:can?).with(:add_participants, editors_discussion_task).and_return true
+            receive(:can?).with(:manage_participant, editors_discussion_task).and_return true
         end
 
         it "sends a different email to the editor participants" do

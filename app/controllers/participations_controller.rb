@@ -14,7 +14,7 @@ class ParticipationsController < ApplicationController
   end
 
   def create
-    requires_user_can(:add_participants, task)
+    requires_user_can(:manage_participant, task)
     if participation.save
       # create new R&P assignment
       Assignment.where(
@@ -38,7 +38,7 @@ class ParticipationsController < ApplicationController
   end
 
   def destroy
-    requires_user_can(:remove_participants, task)
+    requires_user_can(:manage_participant, task)
     # destroy new R&P assignment
     Assignment.where(
       user: participation.user,

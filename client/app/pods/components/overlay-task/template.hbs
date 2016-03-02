@@ -32,6 +32,7 @@
             {{participant-selector currentParticipants=participants
                                    onRemove=(action "removeParticipant")
                                    onSelect=(action "saveNewParticipant")
+                                   canManage=(can 'manage_participant' task)
                                    label="Following:"
                                    paperId=task.paper.id}}
             <a class="button-secondary button--green overlay-close-button" {{action animateOut}}>Close</a>

@@ -76,16 +76,14 @@ describe JournalFactory do
             accessible_task_klasses.each do |klass|
               expect(journal.creator_role.permissions).to include(
                 Permission.find_by(action: :view_participants, applies_to: klass.name),
-                Permission.find_by(action: :add_participants, applies_to: klass.name),
-                Permission.find_by(action: :remove_participants, applies_to: klass.name)
+                Permission.find_by(action: :manage_participant, applies_to: klass.name)
               )
             end
 
             inaccessible_task_klasses.each do |klass|
               expect(journal.creator_role.permissions).to_not include(
                 Permission.find_by(action: :view_participants, applies_to: klass.name),
-                Permission.find_by(action: :add_participants, applies_to: klass.name),
-                Permission.find_by(action: :remove_participants, applies_to: klass.name)
+                Permission.find_by(action: :manage_participant, applies_to: klass.name)
               )
             end
           end
@@ -134,20 +132,18 @@ describe JournalFactory do
             end
           end
 
-          it 'can view/add/remove participants on all accessible_task_klasses' do
+          it 'can view/manage participants on all accessible_task_klasses' do
             accessible_task_klasses.each do |klass|
               expect(journal.collaborator_role.permissions).to include(
                 Permission.find_by(action: :view_participants, applies_to: klass.name),
-                Permission.find_by(action: :add_participants, applies_to: klass.name),
-                Permission.find_by(action: :remove_participants, applies_to: klass.name)
+                Permission.find_by(action: :manage_participant, applies_to: klass.name),
               )
             end
 
             all_inaccessible_task_klasses.each do |klass|
               expect(journal.collaborator_role.permissions).to_not include(
                 Permission.find_by(action: :view_participants, applies_to: klass.name),
-                Permission.find_by(action: :add_participants, applies_to: klass.name),
-                Permission.find_by(action: :remove_participants, applies_to: klass.name)
+                Permission.find_by(action: :manage_participant, applies_to: klass.name)
               )
             end
           end
@@ -204,15 +200,9 @@ describe JournalFactory do
             )
           end
 
-          it ':add_participants' do
+          it ':manage_participant' do
             expect(journal.cover_editor_role.permissions).to include(
-              permissions.find_by(action: 'add_participants')
-            )
-          end
-
-          it ':remove_participants' do
-            expect(journal.cover_editor_role.permissions).to include(
-              permissions.find_by(action: 'remove_participants')
+              permissions.find_by(action: 'manage_participant')
             )
           end
         end
@@ -337,11 +327,10 @@ describe JournalFactory do
             )
           end
 
-          it 'can view/add/remove participants on Task' do
+          it 'can view/manage participants on Task' do
             expect(journal.handling_editor_role.permissions).to include(
               Permission.find_by(action: :view_participants, applies_to: 'Task'),
-              Permission.find_by(action: :add_participants, applies_to: 'Task'),
-              Permission.find_by(action: :remove_participants, applies_to: 'Task')
+              Permission.find_by(action: :manage_participant, applies_to: 'Task')
             )
           end
         end
@@ -408,11 +397,10 @@ describe JournalFactory do
             )
           end
 
-          it 'can view/add/remove participants on Task' do
+          it 'can view/manage participants on Task' do
             expect(journal.internal_editor_role.permissions).to include(
               Permission.find_by(action: :view_participants, applies_to: 'Task'),
-              Permission.find_by(action: :add_participants, applies_to: 'Task'),
-              Permission.find_by(action: :remove_participants, applies_to: 'Task')
+              Permission.find_by(action: :manage_participant, applies_to: 'Task')
             )
           end
         end
@@ -480,11 +468,10 @@ describe JournalFactory do
             )
           end
 
-          it 'can view/add/remove participants on Task' do
+          it 'can view/manage participants on Task' do
             expect(journal.production_staff_role.permissions).to include(
               Permission.find_by(action: :view_participants, applies_to: 'Task'),
-              Permission.find_by(action: :add_participants, applies_to: 'Task'),
-              Permission.find_by(action: :remove_participants, applies_to: 'Task')
+              Permission.find_by(action: :manage_participant, applies_to: 'Task')
             )
           end
         end
@@ -552,11 +539,10 @@ describe JournalFactory do
             )
           end
 
-          it 'can view/add/remove participants on Task' do
+          it 'can view/manage participants on Task' do
             expect(journal.publishing_services_role.permissions).to include(
               Permission.find_by(action: :view_participants, applies_to: 'Task'),
-              Permission.find_by(action: :add_participants, applies_to: 'Task'),
-              Permission.find_by(action: :remove_participants, applies_to: 'Task')
+              Permission.find_by(action: :manage_participant, applies_to: 'Task')
             )
           end
         end
@@ -665,11 +651,10 @@ describe JournalFactory do
             )
           end
 
-          it 'can view/add/remove participants on Task' do
+          it 'can view/manage participants on Task' do
             expect(journal.staff_admin_role.permissions).to include(
               Permission.find_by(action: :view_participants, applies_to: 'Task'),
-              Permission.find_by(action: :add_participants, applies_to: 'Task'),
-              Permission.find_by(action: :remove_participants, applies_to: 'Task')
+              Permission.find_by(action: :manage_participant, applies_to: 'Task')
             )
           end
         end

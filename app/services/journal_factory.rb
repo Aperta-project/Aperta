@@ -37,8 +37,7 @@ class JournalFactory
         role.ensure_permission_exists(:view, applies_to: klass)
         role.ensure_permission_exists(:edit, applies_to: klass)
         role.ensure_permission_exists(:view_participants, applies_to: klass, states: ['*'])
-        role.ensure_permission_exists(:add_participants, applies_to: klass, states: ['*'])
-        role.ensure_permission_exists(:remove_participants, applies_to: klass, states: ['*'])
+        role.ensure_permission_exists(:manage_participant, applies_to: klass, states: ['*'])
       end
 
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
@@ -58,8 +57,7 @@ class JournalFactory
         role.ensure_permission_exists(:view, applies_to: klass, states: ['*'])
         role.ensure_permission_exists(:edit, applies_to: klass, states: ['*'])
         role.ensure_permission_exists(:view_participants, applies_to: klass, states: ['*'])
-        role.ensure_permission_exists(:add_participants, applies_to: klass, states: ['*'])
-        role.ensure_permission_exists(:remove_participants, applies_to: klass, states: ['*'])
+        role.ensure_permission_exists(:manage_participant, applies_to: klass, states: ['*'])
       end
     end
 
@@ -69,14 +67,13 @@ class JournalFactory
       role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
+      role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
 
       # Tasks
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:register_decision, applies_to: Paper, states: ['submitted'])
+      role.ensure_permission_exists(:manage_participant, applies_to: Task, states: ['*'])
 
       # Discussions
       role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
@@ -113,8 +110,7 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:manage_participant, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:manage_invitations, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
@@ -140,8 +136,7 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:manage_participant, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:manage_invitations, applies_to: Task, states: ['*'])
 
       # Discussions
@@ -164,8 +159,7 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:manage_participant, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:manage_invitations, applies_to: Task, states: ['*'])
 
       # Discussions
@@ -190,8 +184,7 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:manage_participant, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:manage_invitations, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
@@ -218,8 +211,7 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:manage_participant, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:manage_invitations, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
@@ -237,8 +229,7 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:manage_participant, applies_to: Task, states: ['*'])
     end
 
     Role.ensure_exists(Role::ACADEMIC_EDITOR_ROLE,

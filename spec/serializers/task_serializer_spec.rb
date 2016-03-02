@@ -14,10 +14,12 @@ describe TaskSerializer do
       expect(subject[:task][:is_metadata_task]).to eq(false)
     end
 
-    it 'returns true if task is a metadata type' do
-      Task.metadata_types << 'Task'
-      expect(subject[:task][:is_metadata_task]).to eq(true)
-      Task.metadata_types.delete('Task')
+    context 'task is a metadata task' do
+      let(:task) { FactoryGirl.create(:metadata_task) }
+
+      it 'returns true if task is a metadata type' do
+        expect(subject[:task][:is_metadata_task]).to eq(true)
+      end
     end
   end
 
@@ -26,10 +28,12 @@ describe TaskSerializer do
       expect(subject[:task][:is_submission_task]).to eq(false)
     end
 
-    it 'returns true if task is a submission type' do
-      Task.submission_types << 'Task'
-      expect(subject[:task][:is_submission_task]).to eq(true)
-      Task.submission_types.delete('Task')
+    context 'task is a metadata task' do
+      let(:task) { FactoryGirl.create(:submission_task) }
+
+      it 'returns true if task is a submission type' do
+        expect(subject[:task][:is_submission_task]).to eq(true)
+      end
     end
   end
 

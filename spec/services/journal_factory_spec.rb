@@ -4,10 +4,6 @@ describe JournalFactory do
   describe '.create' do
     include AuthorizationSpecHelper
 
-    before do
-      clear_roles_and_permissions
-    end
-
     it 'creates a new journal' do
       expect do
         JournalFactory.create(name: 'Journal of the Stars')
@@ -20,7 +16,16 @@ describe JournalFactory do
     end
 
     context 'creating the default roles and permission for the journal' do
-      let(:journal) { JournalFactory.create(name: 'Genetics Journal') }
+      before(:all) do
+        clear_roles_and_permissions
+        JournalFactory.create(name: 'Genetics Journal')
+      end
+
+      after(:all) do
+        clear_roles_and_permissions
+      end
+
+      let!(:journal) { Journal.first! }
       let(:view_paper_permission) do
         Permission.where(action: 'view', applies_to: 'Paper').first
       end

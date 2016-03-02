@@ -4,17 +4,23 @@ describe TahiStandardTasks::RegisterDecisionController do
   routes { TahiStandardTasks::Engine.routes }
 
   let(:journal) { FactoryGirl.create(:journal, :with_roles_and_permissions) }
-  let(:admin) { FactoryGirl.create :user, :site_admin }
-  let(:author) { FactoryGirl.create :author }
+  let(:user) { FactoryGirl.create :user }
+  let(:creator) { FactoryGirl.create :user }
   let(:task) { FactoryGirl.create :register_decision_task, paper: paper }
 
   before do
-    sign_in admin
+    allow(request.env['warden']).to receive(:authenticate!).and_return(user)
+    allow(controller).to receive(:current_user).and_return(user)
   end
 
   describe "POST #decide" do
+    let(:can_register_decision) { true }
 
     before do
+      allow(user).to(
+        receive(:can?)
+        .with(:register_decision, paper)
+        .and_return(can_register_decision))
       allow(Task).to receive(:find).with(task.to_param).and_return(task)
     end
 
@@ -23,12 +29,12 @@ describe TahiStandardTasks::RegisterDecisionController do
     end
 
     context "Paper in a submitted state, with a valid Decision" do
-      let(:paper) {
-        FactoryGirl.create(:paper, :submitted, :with_tasks,
+      let(:paper) do
+        FactoryGirl.create(
+          :paper, :submitted, :with_tasks,
           title: 'Science - the Complete Works',
-          journal: journal,
-          creator: admin)
-      }
+          journal: journal)
+      end
 
       before do
         paper.decisions.first.update(verdict: "major_revision")
@@ -37,11 +43,13 @@ describe TahiStandardTasks::RegisterDecisionController do
       it "invoke complete_decision on task" do
         expect(task).to receive(:complete_decision)
         do_request
+        expect(response).to be_success
       end
 
       it "invoke send_email on task" do
         expect(task).to receive(:send_email)
         do_request
+        expect(response).to be_success
       end
 
       it "creates an activity" do
@@ -51,21 +59,25 @@ describe TahiStandardTasks::RegisterDecisionController do
         }
         expect(Activity).to receive(:create).with(hash_including(activity))
         do_request
+        expect(response).to be_success
       end
 
-      it "return head ok" do
-        do_request
-        expect(response).to be_success
+      context 'user does not have :can_register_decision permission' do
+        let(:can_register_decision) { false }
+        it 'returns 403 status' do
+          do_request
+          expect(response).to have_http_status(:forbidden)
+        end
       end
     end
 
     context "Paper in a non-submitted state" do
-      let(:paper) {
-        FactoryGirl.create(:paper, :with_tasks,
+      let(:paper) do
+        FactoryGirl.create(
+          :paper, :with_tasks,
           title: 'Work in Progress',
-          journal: journal,
-          creator: admin)
-      }
+          journal: journal)
+      end
 
       it "does not invoke complete_decision on task" do
         expect(task).to_not receive(:complete_decision)

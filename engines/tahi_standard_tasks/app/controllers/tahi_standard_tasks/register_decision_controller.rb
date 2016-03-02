@@ -1,6 +1,5 @@
 module TahiStandardTasks
   class RegisterDecisionController < ApplicationController
-
     def decide
       task = Task.find(params[:id])
 
@@ -11,6 +10,7 @@ module TahiStandardTasks
         render json: { error: "You must register a verdict, first" }, status: 422
 
       else
+        requires_user_can :register_decision, task.paper
         decision = task.latest_decision
         task.complete_decision
         task.send_email
@@ -18,6 +18,5 @@ module TahiStandardTasks
         render json: {}, status: :created
       end
     end
-
   end
 end

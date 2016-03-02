@@ -20,6 +20,8 @@ class PaperFactory
       return unless paper.valid?
         if template
           paper.save!
+          # TODO: This requires roles & permissions tables to exist. It should
+          # be possible to create a paper for testing without them.
           add_creator_assignment!
           add_decision
           add_phases_and_tasks

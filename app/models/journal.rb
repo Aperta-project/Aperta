@@ -36,6 +36,8 @@ class Journal < ActiveRecord::Base
           class_name: 'Role'
   has_one :collaborator_role, -> { where(name: Role::COLLABORATOR_ROLE) },
           class_name: 'Role'
+  has_one :cover_editor_role, -> { where(name: Role::COVER_EDITOR_ROLE) },
+          class_name: 'Role'
   has_one :discussion_participant_role, -> { where(name: Role::DISCUSSION_PARTICIPANT) },
           class_name: 'Role'
   has_one :internal_editor_role, -> { where(name: Role::INTERNAL_EDITOR_ROLE) },

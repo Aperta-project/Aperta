@@ -128,6 +128,98 @@ describe JournalFactory do
         end
       end
 
+      context 'Cover Editor role' do
+        context 'has Paper permission to' do
+          let(:permissions) { Permission.joins(:states).where(applies_to: 'Paper', permission_states: { id: PermissionState.wildcard }) }
+
+          it ':view' do
+            expect(journal.cover_editor_role.permissions).to include(
+              permissions.find_by(action: 'view')
+            )
+          end
+
+          it ':edit' do
+            expect(journal.cover_editor_role.permissions).to include(
+              permissions.find_by(action: 'edit')
+            )
+          end
+
+          it ':manage_workflow' do
+            expect(journal.cover_editor_role.permissions).to include(
+              permissions.find_by(action: 'manage_workflow')
+            )
+          end
+
+          it ':manage_collaborators' do
+            expect(journal.cover_editor_role.permissions).to include(
+              permissions.find_by(action: 'manage_collaborators')
+            )
+          end
+
+          it ':start_discussion' do
+            expect(journal.cover_editor_role.permissions).to include(
+              permissions.find_by(action: 'start_discussion')
+            )
+          end
+        end
+
+        context 'has Task permission to' do
+          let(:permissions) { Permission.joins(:states).where(applies_to: 'Task', permission_states: { id: PermissionState.wildcard }) }
+
+          it ':view' do
+            expect(journal.cover_editor_role.permissions).to include(
+              permissions.find_by(action: 'view')
+            )
+          end
+
+          it ':edit' do
+            expect(journal.cover_editor_role.permissions).to include(
+              permissions.find_by(action: 'edit')
+            )
+          end
+
+          it ':add_participants' do
+            expect(journal.cover_editor_role.permissions).to include(
+              permissions.find_by(action: 'add_participants')
+            )
+          end
+
+          it ':remove_participants' do
+            expect(journal.cover_editor_role.permissions).to include(
+              permissions.find_by(action: 'remove_participants')
+            )
+          end
+        end
+
+        context 'has DiscussionTopic permission to' do
+          let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
+
+          it ':view' do
+            expect(journal.cover_editor_role.permissions).to include(
+              permissions.find_by(action: 'view')
+            )
+          end
+
+          it ':edit' do
+            expect(journal.cover_editor_role.permissions).to include(
+              permissions.find_by(action: 'edit')
+            )
+          end
+
+          it ':manage_participant' do
+            expect(journal.cover_editor_role.permissions).to include(
+              permissions.find_by(action: 'manage_participant')
+            )
+          end
+
+          it ':reply' do
+            expect(journal.cover_editor_role.permissions).to include(
+              permissions.find_by(action: 'reply')
+            )
+          end
+        end
+      end
+
       context 'Academic Editor' do
         it 'is able to see most metadata_tasks like the Data Availability Task' do
           expect(Task.descendants.select { |klass| klass <=> MetadataTask }

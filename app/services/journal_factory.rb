@@ -69,6 +69,24 @@ class JournalFactory
       end
     end
 
+    Role.ensure_exists(Role::COVER_EDITOR_ROLE, journal: @journal, participates_in: [Paper]) do |role|
+      role.ensure_permission_exists(:manage_workflow, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
+
+      # Discussions
+      role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
+    end
+
     Role.ensure_exists(Role::REVIEWER_ROLE, journal: @journal, participates_in: [Paper]) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::ReviseTask.name, states: ['*'])

@@ -10,5 +10,9 @@ module TahiStandardTasks
     def paper
       task.paper
     end
+
+    def funding_statement
+      "This work was supported by #{name} (grant number #{grant_number})."
+    end
   end
 end

@@ -9,4 +9,20 @@ describe TahiStandardTasks::Funder do
       expect(funder.paper).to eq(task.paper)
     end
   end
+
+  describe "#funding_statement" do
+    let(:funder) do
+      FactoryGirl.create(:funder,
+                         task: task,
+                         name: 'Something Foundation',
+                         grant_number: '00-3324-23498')
+    end
+    it "includes funder name" do
+      expect(funder.funding_statement).to include(funder.name)
+    end
+
+    it "includes funder's grant number" do
+      expect(funder.funding_statement).to include(funder.grant_number)
+    end
+  end
 end

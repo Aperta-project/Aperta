@@ -1,3 +1,4 @@
+# rubocop:disable LineLength
 module SalesforceServices
   module ObjectTranslations
 
@@ -72,11 +73,23 @@ module SalesforceServices
           'PFA_Question_4a__c'         => float_answer_for("plos_billing--pfa_question_4a"),
           'PFA_Able_to_Pay_R__c'       => float_answer_for("plos_billing--pfa_amount_to_pay"),
           'PFA_Additional_Comments__c' => answer_for("plos_billing--pfa_additional_comments"),
-          'PFA_Supporting_Docs__c'     => answer_for("plos_billing--pfa_supporting_docs")
+          'PFA_Supporting_Docs__c'     => answer_for("plos_billing--pfa_supporting_docs"),
+          'PFA_Funding_Statement__c'   => funding_statement
         }
       end
 
       private
+
+      def funding_statement
+        financial_disclosure_task.funding_statement
+      end
+
+      def financial_disclosure_task
+        @paper
+          .tasks
+          .where(type: 'TahiStandardTasks::FinancialDisclosureTask')
+          .first
+      end
 
       def answer_for(ident)
         answer = billing_card.answer_for(ident)

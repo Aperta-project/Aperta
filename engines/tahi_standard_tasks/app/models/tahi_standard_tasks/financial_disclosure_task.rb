@@ -11,5 +11,17 @@ module TahiStandardTasks
       foreign_key: :task_id,
       dependent: :destroy,
     )
+
+    def funding_statement
+      statement = funders.map do |funder|
+        "#{funder.funding_statement}"
+      end
+
+      if statement
+        statement.join("\n")
+      else
+        "The author(s) received no specific funding for this work."
+      end
+    end
   end
 end

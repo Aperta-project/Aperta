@@ -4,7 +4,7 @@ import ObjectProxyWithErrors from 'tahi/models/object-proxy-with-validation-erro
 
 module('ObjectProxyWithValidationErrors');
 
-test('#validateKey with error', function(assert) {
+test('#validateProperty with error', function(assert) {
   const proxyObject = ObjectProxyWithErrors.create({
     object: {
       'key': ''
@@ -15,13 +15,13 @@ test('#validateKey with error', function(assert) {
     }
   });
 
-  proxyObject.validateKey('key');
+  proxyObject.validateProperty('key');
 
   const errors = proxyObject.currentValidationErrors();
   assert.equal(errors.length, 1, 'errors found');
 });
 
-test('#validateKey without error', function(assert) {
+test('#validateProperty without error', function(assert) {
   const proxyObject = ObjectProxyWithErrors.create({
     object: {
       'key': 'string'
@@ -32,7 +32,7 @@ test('#validateKey without error', function(assert) {
     }
   });
 
-  proxyObject.validateKey('key');
+  proxyObject.validateProperty('key');
 
   const errors = proxyObject.currentValidationErrors();
   assert.equal(errors.length, 0, 'no error found');
@@ -43,7 +43,7 @@ test('#validateKey without error', function(assert) {
   );
 });
 
-test('#validateKey with error', function(assert) {
+test('#validateProperty with error', function(assert) {
   const proxyObject = ObjectProxyWithErrors.create({
     object: {
       'key': ''
@@ -54,7 +54,7 @@ test('#validateKey with error', function(assert) {
     }
   });
 
-  proxyObject.validateKey('key');
+  proxyObject.validateProperty('key');
 
   const errors = proxyObject.currentValidationErrors();
   assert.equal(errors.length, 1, 'errors found');
@@ -65,20 +65,29 @@ test('#validateKey with error', function(assert) {
   );
 });
 
-test('#validateAllKeys without error', function(assert) {
+test('#validateAll without error', function(assert) {
   const proxyObject = ObjectProxyWithErrors.create({
+
     object: {
       'key':  'string',
-      'key2': 'string'
+      'key2': 'string',
+      'ident--key': 'string',
+      'ident--key2': 'string',
+      findQuestion() { return 'string'; },
     },
 
     validations: {
       'key':  ['presence'],
       'key2': ['presence']
+    },
+
+    questionValidations: {
+      'ident--key':  ['presence'],
+      'ident--key2': ['presence']
     }
   });
 
-  proxyObject.validateAllKeys();
+  proxyObject.validateAll();
 
   const errors = proxyObject.currentValidationErrors();
   assert.equal(errors.length, 0, 'no error found');
@@ -89,23 +98,31 @@ test('#validateAllKeys without error', function(assert) {
   );
 });
 
-test('#validateAllKeys with error', function(assert) {
+test('#validateAll with error', function(assert) {
   const proxyObject = ObjectProxyWithErrors.create({
     object: {
       'key':  '',
-      'key2': ''
+      'key2': '',
+      'ident--key': '',
+      'ident--key2': '',
+      findQuestion() { return ''; },
     },
 
     validations: {
       'key':  ['presence'],
       'key2': ['presence']
+    },
+
+    questionValidations: {
+      'ident--key':  ['presence'],
+      'ident--key2': ['presence']
     }
   });
 
-  proxyObject.validateAllKeys();
+  proxyObject.validateAll();
 
   const errors = proxyObject.currentValidationErrors();
-  assert.equal(errors.length, 3, 'errors found');
+  assert.equal(errors.length, 5, 'errors found');
   assert.equal(
     proxyObject.get('errorsPresent'),
     true,

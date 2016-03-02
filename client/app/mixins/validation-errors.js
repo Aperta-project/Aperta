@@ -3,7 +3,12 @@ import deepJoinArrays from 'tahi/lib/deep-join-arrays';
 import deepCamelizeKeys from 'tahi/lib/deep-camelize-keys';
 import validator from 'tahi/lib/validator';
 
-const { isArray, isEmpty, on } = Ember;
+const {
+  isArray,
+  isEmpty,
+  Mixin,
+  on
+} = Ember;
 
 /**
   ## How to Use
@@ -41,7 +46,7 @@ const { isArray, isEmpty, on } = Ember;
   The mixin adds a `validationErrors` property to your Object.
 */
 
-export default Ember.Mixin.create({
+export default Mixin.create({
   /**
     Create validationErrors property.
 
@@ -228,7 +233,9 @@ export default Ember.Mixin.create({
   */
 
   _getValidationsForKey(key) {
-    return this.get('validations')[key];
+    const validations = this.get('validations') || {};
+    const questionValidations = this.get('questionValidations') || {};
+    return validations[key] || questionValidations[key];
   },
 
   /**

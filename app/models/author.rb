@@ -7,6 +7,7 @@ class Author < ActiveRecord::Base
   acts_as_list
 
   belongs_to :paper
+  has_one :list_item, as: :item, dependent: :destroy
 
   belongs_to :authors_task, class_name: "TahiStandardTasks::AuthorsTask", inverse_of: :authors
   delegate :completed?, to: :authors_task, prefix: :task, allow_nil: true

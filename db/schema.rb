@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160302232300) do
+ActiveRecord::Schema.define(version: 20160303203916) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,14 +82,22 @@ ActiveRecord::Schema.define(version: 20160302232300) do
     t.string   "kind"
   end
 
+  create_table "author_list_items", force: :cascade do |t|
+    t.integer  "position"
+    t.integer  "author_id",   null: false
+    t.string   "author_type", null: false
+    t.integer  "task_id",     null: false
+    t.string   "task_type",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "authors", force: :cascade do |t|
     t.string   "first_name",            limit: 255
     t.string   "last_name",             limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "position"
     t.integer  "paper_id"
-    t.integer  "authors_task_id"
     t.string   "middle_initial"
     t.string   "email"
     t.string   "department"

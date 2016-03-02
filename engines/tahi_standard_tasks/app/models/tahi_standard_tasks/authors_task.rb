@@ -6,6 +6,7 @@ module TahiStandardTasks
     include MetadataTask
 
     has_many :authors, inverse_of: :authors_task
+    has_many :list_item, as: :owner
 
     validates_with AssociationValidator, association: :authors, fail: :set_completion_error, if: :completed?
 

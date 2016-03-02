@@ -6,7 +6,7 @@ namespace 'nested-questions:seed' do
       owner_type: TahiStandardTasks::CompetingInterestsTask.name,
       ident: "competing_interests--has_competing_interests",
       value_type: "boolean",
-      text: "Do any authors of this manuscript have competing interests (as described in the <a target='_blank' href='http://www.plosbiology.org/static/policies#competing'>PLOS Policy on Declaration and Evaluation of Competing Interests</a>)?",
+      text: "Do any authors of this manuscript have competing interests (as described in the <a target='_blank' href='http://journals.plos.org/plosbiology/s/competing-interests'>PLOS Policy on Declaration and Evaluation of Competing Interests</a>)?",
       position: 1,
       children: []
     }

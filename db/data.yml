@@ -4135,7 +4135,7 @@ nested_questions:
     - 
   - - '38'
     - Do any authors of this manuscript have competing interests (as described in
-      the <a target='_blank' href='http://www.plosbiology.org/static/policies#competing'>PLOS
+      the <a target='_blank' href='http://journals.plos.org/plosbiology/s/competing-interests'>PLOS
       Policy on Declaration and Evaluation of Competing Interests</a>)?
     - boolean
     - competing_interests--has_competing_interests
@@ -4144,7 +4144,7 @@ nested_questions:
     - '72'
     - '1'
     - '2015-10-29 20:16:38.334465'
-    - '2016-01-15 18:04:22.865691'
+    - '2016-03-02 18:04:17.807273'
     - TahiStandardTasks::CompetingInterestsTask
     - 
   - - '39'
@@ -4481,7 +4481,7 @@ nested_questions:
     - '128'
     - '28'
     - '2015-10-29 20:16:38.519496'
-    - '2016-01-26 17:37:47.635212'
+    - '2016-03-02 18:04:17.969663'
     - PlosBilling::BillingTask
     - 
   - - '90'

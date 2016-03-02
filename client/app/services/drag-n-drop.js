@@ -13,6 +13,10 @@ import Ember from 'ember';
   export default Ember.Component.extend(DragNDrop.DraggableMixin, {
     dragStart: function(e) {
       DragNDrop.dragItem = this.get('model');
+
+      // REQUIRED for Firefox to let something drag
+      // http://html5doctor.com/native-drag-and-drop
+      e.dataTransfer.setData('Text', 'something');
     }
   });
   ```
@@ -60,11 +64,16 @@ import Ember from 'ember';
   1. Drop event -> Send DragNDrop.dragItem through action
 */
 
-let cancelDragEvent = function(e) {
+const cancelDragEvent = function(e) {
   e.preventDefault();
   e.stopPropagation();
   return false;
 };
+
+const {
+  Mixin,
+  on
+} = Ember;
 
 export default {
   /**
@@ -90,7 +99,7 @@ export default {
     return cancelDragEvent(e);
   },
 
-  DraggableMixin: Ember.Mixin.create({
+  DraggableMixin: Mixin.create({
     attributeBindings: ['draggable'],
     draggable: true,
 
@@ -98,6 +107,10 @@ export default {
       ```
       dragStart: function(e) {
         DragNDrop.dragItem = this.get('model');
+
+        // REQUIRED for Firefox to let something drag
+        // http://html5doctor.com/native-drag-and-drop
+        e.dataTransfer.setData('Text', 'something');
       }
       ```
 
@@ -105,10 +118,10 @@ export default {
       @param {Object} event jQuery event
     */
 
-    dragStart() { throw new Error("Implement dragStart"); }
+    dragStart() { throw new Error('Implement dragStart'); }
   }),
 
-  DroppableMixin: Ember.Mixin.create({
+  DroppableMixin: Mixin.create({
     /**
       Prevent annoying HTML5 drag-n-drop nonsense
 
@@ -117,7 +130,7 @@ export default {
       @param {Object} event jQuery event to stop
       @return {Boolean} false
     */
-    _dragEnter: Ember.on('dragEnter', function(e) {
+    _dragEnter: on('dragEnter', function(e) {
       return cancelDragEvent(e);
     }),
 
@@ -130,7 +143,7 @@ export default {
       @return {Boolean} false
     */
 
-    _dragOver: Ember.on('dragOver', function(e) {
+    _dragOver: on('dragOver', function(e) {
       return cancelDragEvent(e);
     }),
 
@@ -148,6 +161,6 @@ export default {
       @param {Object} event jQuery
     */
 
-    drop() { throw new Error("Implement drop"); }
+    drop() { throw new Error('Implement drop'); }
   })
 };

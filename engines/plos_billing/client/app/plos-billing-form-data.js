@@ -290,7 +290,7 @@ export default {
     },
     {
       name: 'PLOS ONE',
-      price: 1350,
+      price: 1495,
       collectionSurcharge: 500,
       totalPrice: 1850
     },

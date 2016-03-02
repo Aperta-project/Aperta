@@ -9,17 +9,10 @@ import logging
 import random
 import time
 
-from selenium.common.exceptions import NoAlertPresentException
-
 from Base.Decorators import MultiBrowserFixture
-from Cards.basecard import BaseCard
-from Cards.register_decision_card import RegisterDecisionCard
-from Cards.invite_editor_card import InviteEditorCard
 from frontend.common_test import CommonTest
-from Pages.dashboard import DashboardPage
 from Pages.manuscript_viewer import ManuscriptViewerPage
-from Pages.workflow_page import WorkflowPage
-from Base.Resources import login_valid_pw, au_login, oa_login
+from Base.Resources import login_valid_pw, creator_login3, staff_admin_login, internal_editor_login
 
 @MultiBrowserFixture
 class MetadataVersioningTest(CommonTest):
@@ -51,7 +44,7 @@ class MetadataVersioningTest(CommonTest):
     journal_type = random.choice(types)
     new_prq = {'q1':'Yes', 'q2':'Yes', 'q3': [0,1,0,0], 'q4':'New Data',
                'q5':'More Data'}
-    dashboard_page = self.login(email=au_login['user'], password=login_valid_pw)
+    dashboard_page = self.login(email=creator_login3['email'], password=login_valid_pw)
     # With a dashboard with several articles, this takes time to load and timeout
     # Big timeout for this step due to large number of papers
     dashboard_page.set_timeout(120)
@@ -86,7 +79,7 @@ class MetadataVersioningTest(CommonTest):
     paper_viewer.close_submit_overlay()
     # logout
     paper_viewer.logout()
-    dashboard_page = self.login(email=oa_login['user'], password=login_valid_pw)
+    dashboard_page = self.login(email=staff_admin_login['email'], password=login_valid_pw)
     # go to article
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
@@ -96,7 +89,7 @@ class MetadataVersioningTest(CommonTest):
       time.sleep(1)
       paper_viewer.logout()
       # Log in as a author to make first final submission
-      dashboard_page = self.login(email=au_login['user'], password=login_valid_pw)
+      dashboard_page = self.login(email=creator_login3['email'], password=login_valid_pw)
       dashboard_page.go_to_manuscript(paper_id)
       paper_viewer = ManuscriptViewerPage(self.getDriver())
       time.sleep(2)
@@ -107,7 +100,7 @@ class MetadataVersioningTest(CommonTest):
       # logout
       paper_viewer.logout()
       # Log as editor to approve the manuscript with modifications
-      dashboard_page = self.login(email=he_login['user'], password=login_valid_pw)
+      dashboard_page = self.login(email=internal_editor_login['email'], password=login_valid_pw)
       # go to article
       dashboard_page.go_to_manuscript(paper_id)
       paper_viewer = ManuscriptViewerPage(self.getDriver())
@@ -115,10 +108,10 @@ class MetadataVersioningTest(CommonTest):
     time.sleep(1)
     paper_viewer.logout()
     # Log in as a author to make some changes
-    dashboard_page = self.login(email=au_login['user'], password=login_valid_pw)
+    dashboard_page = self.login(email=creator_login3['user'], password=login_valid_pw)
     dashboard_page.go_to_manuscript(paper_id)
     paper_viewer = ManuscriptViewerPage(self.getDriver())
-    paper_viewer.complete_task('Publishing Related Questions', click_override=True, data=new_prq, click=True)
+    paper_viewer.complete_task('Additional Information', click_override=True, data=new_prq, click=True)
     # check versioning
     version_btn = paper_viewer._get(paper_viewer._tb_versions_link)
     version_btn.click()

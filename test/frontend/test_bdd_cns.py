@@ -10,18 +10,21 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, au_login
-from frontend.Cards.figures_card import FiguresCard
-# from frontend.Cards.supporting_info_card import SupportingInfoCard
-# from frontend.Cards.upload_manuscript_card import UploadManuscriptCard
+from Base.Resources import login_valid_pw, creator_login1, creator_login2, creator_login3, creator_login4, \
+    creator_login5
+
 from frontend.common_test import CommonTest
 from Base.Resources import docs
 from Pages.dashboard import DashboardPage
 from Pages.login_page import LoginPage
-from Pages.manuscript_page import ManuscriptPage
 
-# au and sa are commented out because they run into APERTA-5415 which is a code bug
-users = [au_login]
+
+users = [creator_login1,
+         creator_login2,
+         creator_login3,
+         creator_login4,
+         creator_login5
+         ]
 
 cards = ['cover_letter',
          'billing',
@@ -29,7 +32,7 @@ cards = ['cover_letter',
          'authors',
          'supporting_info',
          'upload_manuscript',
-         'prq',
+         'addl_info_task',
          'review_candidates',
          'revise_task',
          'competing_interests',
@@ -121,7 +124,7 @@ class ApertaBDDCNStoSubmitTest(CommonTest):
     user_type = random.choice(users)
     print('Logging in as user: {}'.format(user_type))
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type['user'])
+    login_page.enter_login_field(user_type['email'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
 

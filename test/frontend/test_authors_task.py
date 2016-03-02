@@ -6,9 +6,10 @@ This test case validates the Authors Task.
 __author__ = 'sbassi@plos.org'
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, rv_login, fm_login, ae_login, he_login, oa_login, au_login
+from Base.Resources import login_valid_pw, staff_admin_login, super_admin_login, creator_login1, creator_login2, \
+    creator_login3, creator_login4, creator_login5, reviewer_login, academic_editor_login, handling_editor_login, \
+    internal_editor_login, pub_svcs_login
 from frontend.Tasks.authors_task import AuthorsTask
-from Pages.dashboard import DashboardPage
 from Pages.login_page import LoginPage
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from frontend.common_test import CommonTest
@@ -17,12 +18,19 @@ import logging
 import random
 import time
 
-users = [au_login,
-         rv_login,
-         fm_login,
-         ae_login,
-         he_login,
-         oa_login]
+users = [creator_login1,
+         creator_login2,
+         creator_login3,
+         creator_login4,
+         creator_login5,
+         reviewer_login,
+         handling_editor_login,
+         academic_editor_login,
+         internal_editor_login,
+         staff_admin_login,
+         pub_svcs_login,
+         super_admin_login,
+         ]
 
 @MultiBrowserFixture
 class AuthorsTaskTest(CommonTest):
@@ -35,11 +43,10 @@ class AuthorsTaskTest(CommonTest):
 
   def test_validate_components(self):
     """Validates styles for the author task"""
-
     user_type = random.choice(users)
     logging.info('Logging in as user: {}'.format(user_type))
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type['user'])
+    login_page.enter_login_field(user_type['email'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
     title = self.create_article(journal='PLOS Wombat',

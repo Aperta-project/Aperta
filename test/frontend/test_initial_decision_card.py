@@ -9,13 +9,12 @@ __author__ = 'sbassi@plos.org'
 
 from decimal import Decimal
 import logging
-import os
 import random
 import time
 
-from selenium.webdriver.common.by import By
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, au_login, sa_login, docs
+from Base.Resources import login_valid_pw, creator_login1, creator_login2, creator_login3, creator_login4, \
+    creator_login5, staff_admin_login
 from frontend.common_test import CommonTest
 from Cards.initial_decision_card import InitialDecisionCard
 from Cards.figures_card import FiguresCard
@@ -24,6 +23,12 @@ from Pages.login_page import LoginPage
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
+users = [creator_login1,
+         creator_login2,
+         creator_login3,
+         creator_login4,
+         creator_login5,
+         ]
 
 @MultiBrowserFixture
 class InitialDecisionCardTest(CommonTest):
@@ -45,9 +50,10 @@ class InitialDecisionCardTest(CommonTest):
     """
     Validates AC 1, 2, 3, 5 and 6 from APERTA-5400
     """
-    # Users logs in and make a submition
+    # Users logs in and make a submission
+    creator_user = random.choice(users)
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(au_login['user'])
+    login_page.enter_login_field(creator_user['email'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
     # Time needed for log in
@@ -85,7 +91,7 @@ class InitialDecisionCardTest(CommonTest):
     manuscript_page.logout()
     # login as editor
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(sa_login['user'])
+    login_page.enter_login_field(staff_admin_login['email'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
     dashboard_page = DashboardPage(self.getDriver())
@@ -113,7 +119,7 @@ class InitialDecisionCardTest(CommonTest):
     # Test that card is editable by author
     manuscript_page.logout()
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(au_login['user'])
+    login_page.enter_login_field(creator_user['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
     time.sleep(2)

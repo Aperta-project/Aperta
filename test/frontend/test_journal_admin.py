@@ -9,19 +9,17 @@ import logging
 import random
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, sa_login, oa_login
+from Base.Resources import login_valid_pw, staff_admin_login, super_admin_login
 from Pages.admin import AdminPage
-from Pages.dashboard import DashboardPage
 from Pages.journal_admin import JournalAdminPage
-from Pages.login_page import LoginPage
 from frontend.common_test import CommonTest
 
 
-users = [oa_login,
-         #sa_login,
+users = [staff_admin_login,
+         super_admin_login,
          ]
 
-user_search = ['OA', 'FM', 'MM', 'RV']
+user_search = ['apubsvcs', 'areviewer', 'aintedit', 'ahandedit']
 
 
 @MultiBrowserFixture
@@ -52,14 +50,14 @@ class ApertaJournalAdminTest(CommonTest):
     logging.info('Validating journal admin component display and function')
     user_type = random.choice(users)
     print('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=user_type['user'], password=login_valid_pw)
+    dashboard_page = self.login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
     adm_page.select_random_journal()
 
     ja_page = JournalAdminPage(self.getDriver())
-    ja_page.validate_nav_toolbar_elements(user_type['user'])
+    ja_page.validate_nav_toolbar_elements(user_type['email'])
 
   def test_validate_journal_admin_user_search_display_function(self):
     """
@@ -70,7 +68,7 @@ class ApertaJournalAdminTest(CommonTest):
     logging.info('Validating journal user search display and function')
     user_type = random.choice(users)
     print('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=user_type['user'], password=login_valid_pw)
+    dashboard_page = self.login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -89,7 +87,7 @@ class ApertaJournalAdminTest(CommonTest):
     logging.info('Validating journal role display and function')
     user_type = random.choice(users)
     print('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=user_type['user'], password=login_valid_pw)
+    dashboard_page = self.login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -117,7 +115,7 @@ class ApertaJournalAdminTest(CommonTest):
     logging.info('Validating journal task types display and function')
     user_type = random.choice(users)
     print('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=user_type['user'], password=login_valid_pw)
+    dashboard_page = self.login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -141,7 +139,7 @@ class ApertaJournalAdminTest(CommonTest):
     logging.info('Validating journal mmt (paper type) display and function')
     user_type = random.choice(users)
     print('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=user_type['user'], password=login_valid_pw)
+    dashboard_page = self.login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())
@@ -173,7 +171,7 @@ class ApertaJournalAdminTest(CommonTest):
     logging.info('Validating Journal Style Settings display and function')
     user_type = random.choice(users)
     print('Logging in as user: {}'.format(user_type))
-    dashboard_page = self.login(email=user_type['user'], password=login_valid_pw)
+    dashboard_page = self.login(email=user_type['email'], password=login_valid_pw)
     dashboard_page.click_admin_link()
 
     adm_page = AdminPage(self.getDriver())

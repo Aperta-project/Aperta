@@ -27,7 +27,7 @@ else:
 friendly_testhostname = 'https://plos:shrimp@tahi-assess.herokuapp.com/'
 
 
-# Aperta registration resources
+# Aperta native registration resources
 user_email = 'admin'
 user_pw = 'yetishrimp'
 
@@ -54,16 +54,20 @@ oa_login = {'user': 'jgray_oa'}        # ordinary admin login
 sa_login = {'user': 'jgray_sa'}        # super admin login
 
 # Accounts for new permissions scheme
-# These are native logins for now - need to be migrated to NED logins when PS-1199 is resolved.
-creator_login = {'user': 'jgray_author', 'name': ''}
-collaborator_login = {'user': 'jgray_collab', 'name': 'Jeffrey Collaborator'}
-reviewer_login = {'user': 'jgray_reviewer', 'name': 'Jeffrey RV Gray'}
-staff_admin_login = {'user': 'jgray_oa'}
-internal_editor_login = {'user': 'jgray_assocedit'}
-handling_editor_login = {'user': 'jgray_handedit'}
-pub_svcs_login = {'user': 'jgray_pubsvcs'}
-acad_editor_login = {'user':'jgray_editor', 'name': 'Jeffrey AMM Gray', 'email': 'sealresq+4@gmail.com'}
-# anyone can be a participant
+# These are NED CAS logins.
+creator_login1 = {'user': 'aauthor1', 'name': 'Atest Author1', 'email': 'sealresq+1000@gmail.com'}
+creator_login2 = {'user': 'aauthor1', 'name': 'Atest Author1', 'email': 'sealresq+1001@gmail.com'}
+creator_login3 = {'user': 'aauthor1', 'name': 'Atest Author1', 'email': 'sealresq+1002@gmail.com'}
+creator_login4 = {'user': 'aauthor1', 'name': 'Atest Author1', 'email': 'sealresq+1003@gmail.com'}
+creator_login5 = {'user': 'aauthor1', 'name': 'Atest Author1', 'email': 'sealresq+1004@gmail.com'}
+reviewer_login = {'user': 'areviewer', 'name': 'Atest Reviewer', 'email': 'sealresq+1005@gmail.com'}
+staff_admin_login = {'user': 'astaffadmin', 'name': 'Atest Staffadmin', 'email': 'sealresq+1006@gmail.com'}
+handling_editor_login = {'user': 'ahandedit', 'name': 'Atest Handedit', 'email': 'sealresq+1007@gmail.com'}
+pub_svcs_login = {'user': 'apubsvcs', 'name': 'Atest Pubsvcs', 'email': 'sealresq+1008@gmail.com'}
+academic_editor_login = {'user':'aacadedit', 'name': 'Atest Acadedit', 'email': 'sealresq+1009@gmail.com'}
+internal_editor_login = {'user':'aintedit', 'name': 'Atest Intedit', 'email': 'sealresq+1010@gmail.com'}
+super_admin_login = {'user':'asuperadm', 'name': 'Atest Superadm', 'email': 'sealresq+1011@gmail.com'}
+# anyone can be a discussion_participant
 # everyone has a user role for their own profile page
 
 # Define connector information for Aperta's Tahi component postgres instance

@@ -9,7 +9,7 @@ __author__ = 'sbassi@plos.org'
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_uid, affiliation
+from Base.Resources import login_valid_uid
 from frontend.common_test import CommonTest
 from frontend.Pages.profile_page import ProfilePage
 from Pages.dashboard import DashboardPage
@@ -28,7 +28,7 @@ class ApertaProfileTest(CommonTest):
 
   def _go_to_profile(self, init=True):
     """Go to the profile page"""
-    dashboard = self.login() if init else DashboardPage(self.getDriver())
+    dashboard = self.cas_login() if init else DashboardPage(self.getDriver())
     dashboard.click_profile_link()
     return ProfilePage(self.getDriver())
 

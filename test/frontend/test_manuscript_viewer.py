@@ -8,13 +8,13 @@ __author__ = 'sbassi@plos.org'
 import logging
 import time
 import random
-import os
 
 from Base.Decorators import MultiBrowserFixture
 from Base.CustomException import ElementDoesNotExistAssertionError
 from Pages.login_page import LoginPage
-from Base.Resources import login_valid_pw, au_login, rv_login, fm_login, ae_login, \
-  he_login, sa_login, oa_login, co_login
+from Base.Resources import login_valid_pw, creator_login1, creator_login2, creator_login3, creator_login4, \
+    creator_login5, reviewer_login, handling_editor_login, academic_editor_login, internal_editor_login, \
+    staff_admin_login, pub_svcs_login, super_admin_login
 from Base.PostgreSQL import PgSQL
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.dashboard import DashboardPage
@@ -22,12 +22,19 @@ from Pages.workflow_page import WorkflowPage
 from Cards.initial_decision_card import InitialDecisionCard
 from frontend.common_test import CommonTest, docs
 
-users = (au_login,
-         rv_login,
-         ae_login,
-         he_login,
-         sa_login,
-         oa_login)
+users = [creator_login1,
+         creator_login2,
+         creator_login3,
+         creator_login4,
+         creator_login5,
+         reviewer_login,
+         handling_editor_login,
+         academic_editor_login,
+         internal_editor_login,
+         staff_admin_login,
+         pub_svcs_login,
+         super_admin_login,
+         ]
 
 @MultiBrowserFixture
 class ViewPaperTest(CommonTest):
@@ -61,19 +68,26 @@ class ViewPaperTest(CommonTest):
 
     Note: Test disabled until APERTA-5992 is fixed
     """
-    roles = {au_login['user']: 7,
-             rv_login['user']: 7,
-             ae_login['user']: 7,
-             he_login['user']: 8,
-             sa_login['user']: 8,
-             oa_login['user']: 8}
+    roles = {creator_login1['email']: 7,
+             creator_login2['email']: 7,
+             creator_login3['email']: 7,
+             creator_login4['email']: 7,
+             creator_login5['email']: 7,
+             reviewer_login['email']: 7,
+             academic_editor_login['email']: 7,
+             handling_editor_login['email']: 8,
+             super_admin_login['email']: 8,
+             staff_admin_login['email']: 8,
+             pub_svcs_login['email']: 7,
+             internal_editor_login['email']: 8,
+             }
 
     for user in users:
       logging.info('Logging in as user: {}'.format(user))
       logging.info('role: {}'.format(roles[user['user']]))
       uid = PgSQL().query('SELECT id FROM users where username = %s;', (user['user'],))[0][0]
       login_page = LoginPage(self.getDriver())
-      login_page.enter_login_field(user['user'])
+      login_page.enter_login_field(user['email'])
       login_page.enter_password_field(login_valid_pw)
       login_page.click_sign_in_button()
       # the following call should only succeed for sa_login
@@ -84,7 +98,7 @@ class ViewPaperTest(CommonTest):
         self.select_preexisting_article(init=False, first=True)
         manuscript_viewer = ManuscriptViewerPage(self.getDriver())
         time.sleep(3) # needed to give time to retrieve new menu items
-        if user['user'] == ae_login['user']:
+        if user['user'] == academic_editor_login['user']:
           paper_id = manuscript_viewer.get_paper_db_id()
           permissions = PgSQL().query('SELECT paper_roles.old_role FROM paper_roles '
                               'where user_id = %s and paper_id = %s;',
@@ -126,9 +140,9 @@ class ViewPaperTest(CommonTest):
       AC#7 on hold until APERTA-5718 is fixed.
       AC#10 on hold until APERTA-5725 is fixed
     """
-    logging.info('Logging in as user: {}'.format(au_login))
+    logging.info('Logging in as user: {}'.format(creator_login5))
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(au_login['user'])
+    login_page.enter_login_field(creator_login5['email'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
     # the following call should only succeed for sa_login
@@ -192,7 +206,7 @@ class ViewPaperTest(CommonTest):
     ##dashboard_page.click_on_first_manuscript()
     manuscript_page = ManuscriptViewerPage(self.getDriver())
     # Add a collaborator (for AC4)
-    manuscript_page.add_collaborators(rv_login)
+    manuscript_page.add_collaborators(creator_login4)
     paper_id = manuscript_page.get_current_url().split('/')[-1]
     # Complete IMG card to force display of submission status project
     time.sleep(1)
@@ -210,7 +224,7 @@ class ViewPaperTest(CommonTest):
     # Following block disabled due to APERTA-5987
     """
     # Loging as collaborator
-    dashboard_page = self.login(email=rv_login['user'], password=login_valid_pw)
+    dashboard_page = self.login(email=creator_login4['email'], password=login_valid_pw)
     dashboard_page.go_to_manuscript(paper_id)
     time.sleep(1)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
@@ -226,7 +240,7 @@ class ViewPaperTest(CommonTest):
     # Submit
     """
     # Start temporaty worfaround until APERTA-5987 is fixed
-    dashboard_page = self.login(email=sa_login['user'], password=login_valid_pw)
+    dashboard_page = self.login(email=super_admin_login['email'], password=login_valid_pw)
     dashboard_page.go_to_manuscript(paper_id)
     time.sleep(1)
     manuscript_page = ManuscriptViewerPage(self.getDriver())
@@ -236,9 +250,9 @@ class ViewPaperTest(CommonTest):
     manuscript_page.close_modal()
     # Aprove initial Decision
     manuscript_page.logout()
-    logging.info('Logging in as user: {}'.format(sa_login))
+    logging.info('Logging in as user: {}'.format(super_admin_login['user']))
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(sa_login['user'])
+    login_page.enter_login_field(super_admin_login['user'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
     # the following call should only succeed for sa_login
@@ -255,9 +269,9 @@ class ViewPaperTest(CommonTest):
     time.sleep(2)
     manuscript_page.logout()
     # Test for AC8
-    logging.info('Logging in as user: {}'.format(au_login))
+    logging.info('Logging in as user: {}'.format(creator_login5))
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(au_login['user'])
+    login_page.enter_login_field(creator_login5['email'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
     # the following call should only succeed for sa_login

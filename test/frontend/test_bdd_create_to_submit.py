@@ -16,7 +16,8 @@ import random
 import time
 
 from Base.Decorators import MultiBrowserFixture
-from Base.Resources import login_valid_pw, au_login, sa_login, oa_login, docs
+from Base.Resources import login_valid_pw, creator_login1, creator_login2, creator_login3, creator_login4, \
+    creator_login5, staff_admin_login, super_admin_login
 from frontend.common_test import CommonTest
 from Cards.initial_decision_card import InitialDecisionCard
 from Pages.dashboard import DashboardPage
@@ -24,8 +25,13 @@ from Pages.login_page import LoginPage
 from Pages.manuscript_viewer import ManuscriptViewerPage
 from Pages.workflow_page import WorkflowPage
 
-users = [au_login]
-admin_users = [oa_login, sa_login]
+users = [creator_login1,
+         creator_login2,
+         creator_login3,
+         creator_login4,
+         creator_login5,
+         ]
+admin_users = [staff_admin_login, super_admin_login]
 
 cards = ['cover_letter',
          'billing',
@@ -33,7 +39,7 @@ cards = ['cover_letter',
          'authors',
          'supporting_info',
          'upload_manuscript',
-         'prq',
+         'addl_info_task',
          'review_candidates',
          'revise_task',
          'competing_interests',
@@ -77,7 +83,7 @@ class ApertaBDDCreatetoNormalSubmitTest(CommonTest):
     user_type = random.choice(users)
     logging.info('Logging in as user: {}'.format(user_type))
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type['user'])
+    login_page.enter_login_field(user_type['email'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
 
@@ -177,10 +183,10 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
       My Submissions Welcome Text, button, info text and manuscript display
       Modals: View Invites and Create New Submission
     """
-    user_type = random.choice(users)
-    logging.info('Logging in as user: {}'.format(user_type))
+    creator_user = random.choice(users)
+    logging.info('Logging in as user: {}'.format(creator_user))
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type['user'])
+    login_page.enter_login_field(creator_user['email'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
 
@@ -229,9 +235,9 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
     assert sub_data[0][2], sub_data[0][2]
     manuscript_page.logout()
     time.sleep(2)
-    user_type = random.choice(admin_users)
+    admin_user = random.choice(admin_users)
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type['user'])
+    login_page.enter_login_field(admin_user['email'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
     # Need time to finish initial redirect to dashboard page
@@ -264,9 +270,8 @@ class ApertaBDDCreatetoInitialSubmitTest(CommonTest):
       return False
     workflow_page.logout()
     time.sleep(2)
-    user_type = random.choice(users)
     login_page = LoginPage(self.getDriver())
-    login_page.enter_login_field(user_type['user'])
+    login_page.enter_login_field(creator_user['email'])
     login_page.enter_password_field(login_valid_pw)
     login_page.click_sign_in_button()
     # Need time to finish initial redirect to dashboard page

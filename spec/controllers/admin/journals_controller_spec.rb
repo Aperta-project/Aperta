@@ -2,13 +2,18 @@ require 'rails_helper'
 
 describe Admin::JournalsController, redis: true do
   let(:journal) { create(:journal_with_roles_and_permissions) }
-  let(:admin) { create :user, :site_admin }
+  let(:site_admin) { create :user, :site_admin }
+  let(:journal_admin) do
+    ja = create :user
+    assign_journal_role(journal, ja, :admin)
+    ja
+  end
   let(:image_file) { fixture_file_upload 'yeti.jpg' }
 
   describe '#create' do
     context 'when the user is authorized' do
       before do
-        sign_in admin
+        sign_in site_admin
       end
 
       it 'creates a journal' do
@@ -45,7 +50,7 @@ describe Admin::JournalsController, redis: true do
   describe '#update' do
     context "when the journal is updated successfully" do
       before do
-        sign_in admin
+        sign_in site_admin
       end
 
       it "renders status 2xx" do
@@ -57,13 +62,16 @@ describe Admin::JournalsController, redis: true do
     end
 
     context "uploading epub cover" do
-      before do
-        assign_journal_role journal, admin, :admin
-        sign_in admin
+      let(:url) { "http://someawesomeurl.com" }
+      it "is successful for site_admin" do
+        sign_in site_admin
+        expect(DownloadEpubCover).to receive(:call).with(journal, url).and_return(journal)
+        put :upload_epub_cover, format: "json", id: journal.id, url: url
+        expect(response).to be_success
       end
 
-      let(:url) { "http://someawesomeurl.com" }
-      it "is successful" do
+      it "is successful for journal_admin" do
+        sign_in journal_admin
         expect(DownloadEpubCover).to receive(:call).with(journal, url).and_return(journal)
         put :upload_epub_cover, format: "json", id: journal.id, url: url
         expect(response).to be_success

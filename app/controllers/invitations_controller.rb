@@ -13,7 +13,7 @@ class InvitationsController < ApplicationController
   end
 
   def create
-    require_user_can(:manage_invitations, task)
+    requires_user_can(:manage_invitations, task)
     invitation = task.invitations.build(invitation_params)
     invitation.invite!
     Activity.invitation_created!(invitation, user: current_user)
@@ -21,7 +21,8 @@ class InvitationsController < ApplicationController
   end
 
   def destroy
-    require_user_can(:manage_invitations, task)
+    task = invitation.task
+    requires_user_can(:manage_invitations, task)
     invitation.destroy
     Activity.invitation_withdrawn!(invitation, user: current_user)
     respond_with(invitation)

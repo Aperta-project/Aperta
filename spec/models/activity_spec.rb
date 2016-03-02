@@ -262,13 +262,13 @@ describe Activity do
 
   describe "#participation_created!" do
     subject(:activity) { Activity.participation_created!(participation, user: user) }
-    let(:participation) { FactoryGirl.build(:participation) }
+    let(:participation) { FactoryGirl.build(:assignment, :assigned_to_task) }
 
     it {
       is_expected.to have_attributes(
         feed_name: "workflow",
         activity_key: "participation.created",
-        subject: participation.paper,
+        subject: participation.assigned_to.paper,
         user: user,
         message: "Added Contributor: #{participation.user.full_name}"
     )}
@@ -276,13 +276,13 @@ describe Activity do
 
   describe "#participation_destroyed!" do
     subject(:activity) { Activity.participation_destroyed!(participation, user: user) }
-    let(:participation) { FactoryGirl.build(:participation) }
+    let(:participation) { FactoryGirl.build(:assignment, :assigned_to_task) }
 
     it {
       is_expected.to have_attributes(
         feed_name: "workflow",
         activity_key: "particpation.destroyed",
-        subject: participation.paper,
+        subject: participation.assigned_to.paper,
         user: user,
         message: "Removed Contributor: #{participation.user.full_name}"
     )}

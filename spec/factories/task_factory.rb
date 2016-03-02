@@ -134,6 +134,13 @@ FactoryGirl.define do
     old_role "author"
   end
 
+  factory :submission_task, class: 'MockMetadataTask' do
+    phase
+    paper
+    title "Metadata Task"
+    old_role "author"
+  end
+
   factory :billing_task, class: 'PlosBilling::BillingTask' do
     phase
     paper
@@ -174,6 +181,12 @@ class MockMetadataTask < Task
   include MetadataTask
 
   DEFAULT_TITLE = 'Mock Metadata Task'
+end
+
+class MockSubmissionTask < Task
+  include SubmissionTask
+
+  DEFAULT_TITLE = 'Mock Submission Task'
 end
 
 class MetadataTaskPolicy < TasksPolicy; end

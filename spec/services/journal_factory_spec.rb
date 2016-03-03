@@ -53,9 +53,38 @@ describe JournalFactory do
             PermissionState.wildcard
           )
         end
+
+        it 'is able to see most metadata_tasks like the Data Availability Task' do
+          expect(Task.descendants.select { |klass| klass <=> MetadataTask }
+                                 .select { |klass| klass.name == 'TahiStandardTasks::DataAvailabilityTask' }
+                ).to be_present
+          expect(journal.collaborator_role.permissions).to include(
+            Permission.where(action: 'view', applies_to: 'TahiStandardTasks::DataAvailabilityTask').first
+          )
+        end
+
+        it 'but should not be able to see the Billing Task' do
+          expect(journal.collaborator_role.permissions).not_to include(
+            Permission.where(action: 'view', applies_to: 'PlosBilling::BillingTask').first
+          )
+        end
       end
 
       context 'Academic Editor' do
+        it 'is able to see most metadata_tasks like the Data Availability Task' do
+          expect(Task.descendants.select { |klass| klass <=> MetadataTask }
+                                 .select { |klass| klass.name == 'TahiStandardTasks::DataAvailabilityTask' }
+                ).to be_present
+          expect(journal.academic_editor_role.permissions).to include(
+            Permission.where(action: 'view', applies_to: 'TahiStandardTasks::DataAvailabilityTask').first
+          )
+        end
+
+        it 'but should not be able to see the Billing Task' do
+          expect(journal.academic_editor_role.permissions).not_to include(
+            Permission.where(action: 'view', applies_to: 'PlosBilling::BillingTask').first
+          )
+        end
       end
 
       context 'Handling Editor' do
@@ -134,11 +163,11 @@ describe JournalFactory do
         end
       end
 
-      context 'Publishing Services and Production Staff' do
+      context 'Production Staff' do
         it 'has :start_discussion permissions on Paper' do
           permissions = Permission.joins(:states).where(applies_to: 'Paper', permission_states: { id: PermissionState.wildcard })
 
-          expect(journal.internal_editor_role.permissions).to include(
+          expect(journal.production_staff_role.permissions).to include(
             permissions.find_by(action: 'start_discussion')
           )
         end
@@ -147,25 +176,63 @@ describe JournalFactory do
           let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
 
           it ':view' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(journal.production_staff_role.permissions).to include(
               permissions.find_by(action: 'view')
             )
           end
 
           it ':edit' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(journal.production_staff_role.permissions).to include(
               permissions.find_by(action: 'edit')
             )
           end
 
           it ':manage_participant' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(journal.production_staff_role.permissions).to include(
               permissions.find_by(action: 'manage_participant')
             )
           end
 
           it ':reply' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(journal.production_staff_role.permissions).to include(
+              permissions.find_by(action: 'reply')
+            )
+          end
+        end
+      end
+
+      context 'Publishing Services' do
+        it 'has :start_discussion permissions on Paper' do
+          permissions = Permission.joins(:states).where(applies_to: 'Paper', permission_states: { id: PermissionState.wildcard })
+
+          expect(journal.publishing_services_role.permissions).to include(
+            permissions.find_by(action: 'start_discussion')
+          )
+        end
+
+        context 'has DiscussionTopic permission to' do
+          let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
+
+          it ':view' do
+            expect(journal.publishing_services_role.permissions).to include(
+              permissions.find_by(action: 'view')
+            )
+          end
+
+          it ':edit' do
+            expect(journal.publishing_services_role.permissions).to include(
+              permissions.find_by(action: 'edit')
+            )
+          end
+
+          it ':manage_participant' do
+            expect(journal.publishing_services_role.permissions).to include(
+              permissions.find_by(action: 'manage_participant')
+            )
+          end
+
+          it ':reply' do
+            expect(journal.publishing_services_role.permissions).to include(
               permissions.find_by(action: 'reply')
             )
           end
@@ -177,13 +244,13 @@ describe JournalFactory do
           let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
 
           it ':view' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(journal.discussion_participant_role.permissions).to include(
               permissions.find_by(action: 'view')
             )
           end
 
           it ':reply' do
-            expect(journal.internal_editor_role.permissions).to include(
+            expect(journal.discussion_participant_role.permissions).to include(
               permissions.find_by(action: 'reply')
             )
           end
@@ -196,6 +263,18 @@ describe JournalFactory do
 
           expect(journal.staff_admin_role.permissions).to include(
             permissions.find_by(action: 'start_discussion')
+          )
+        end
+
+        it 'is able to see Tasks in general' do
+          expect(journal.staff_admin_role.permissions).to include(
+            Permission.where(action: 'view', applies_to: 'Task').first
+          )
+        end
+
+        it 'but should not be able to see the Billing Task' do
+          expect(journal.staff_admin_role.permissions).to include(
+            Permission.where(action: 'view', applies_to: 'PlosBilling::BillingTask').first
           )
         end
 

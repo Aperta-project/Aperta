@@ -42,6 +42,8 @@ class Journal < ActiveRecord::Base
           class_name: 'Role'
   has_one :handling_editor_role, -> { where(name: Role::HANDLING_EDITOR_ROLE) },
           class_name: 'Role'
+  has_one :production_staff_role, -> { where(name: Role::PRODUCTION_STAFF_ROLE) },
+          class_name: 'Role'
   has_one :publishing_services_role, -> { where(name: Role::PUBLISHING_SERVICES_ROLE) },
           class_name: 'Role'
   has_one :reviewer_role, -> { where(name: Role::REVIEWER_ROLE) },

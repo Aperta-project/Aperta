@@ -7,7 +7,7 @@ import registerPowerSelectHelpers from '../../tests/helpers/ember-power-select';
 
 import registerCustomAssertions from './custom-assertions';
 import registerAsyncHelpers     from './async-helpers';
-import regsiterStoreHelpers     from './store-helpers';
+import registerStoreHelpers     from './store-helpers';
 import registerContainerHelpers from './container-helpers';
 import registerSelectHelpers    from './select-native-helper';
 import registerSelect2Helpers   from './select2-helpers';
@@ -18,7 +18,7 @@ import TestHelper from 'ember-data-factory-guy/factory-guy-test-helper';
 registerPowerSelectHelpers();
 registerCustomAssertions();
 registerAsyncHelpers();
-regsiterStoreHelpers();
+registerStoreHelpers();
 registerContainerHelpers();
 registerSelectHelpers();
 registerSelect2Helpers();

@@ -63,6 +63,30 @@ module TahiHelperMethods
     paper.paper_roles.create user: editor, old_role: PaperRole::EDITOR
   end
 
+  def assign_internal_editor_role(paper, editor)
+    Assignment.where(
+      user: editor,
+      role: paper.journal.internal_editor_role,
+      assigned_to: paper
+    ).first_or_create!
+  end
+
+  def assign_production_staff_role(journal, user)
+    Assignment.where(
+      user: user,
+      role: journal.production_staff_role,
+      assigned_to: journal
+    ).first_or_create!
+  end
+
+  def assign_publishing_services_role(journal, user)
+    Assignment.where(
+      user: user,
+      role: journal.publishing_services_role,
+      assigned_to: journal
+    ).first_or_create!
+  end
+
   def assign_journal_role(journal, user, role_or_type)
     # New Roles
     if role_or_type == :admin

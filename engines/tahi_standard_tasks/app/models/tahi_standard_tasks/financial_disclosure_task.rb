@@ -13,12 +13,9 @@ module TahiStandardTasks
     )
 
     def funding_statement
-      statement = funders.map do |funder|
-        "#{funder.funding_statement}"
-      end
-
-      if !statement.empty?
-        statement.join("\n")
+      statement = funders.map(&:funding_statement).join("\n")
+      if statement.present?
+        statement
       else
         "The author(s) received no specific funding for this work."
       end

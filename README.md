@@ -135,7 +135,9 @@ You can run the javascript specs via the command line with `rake ember:test`.
 
 ## Running qunit tests from the browser
 
-You can also run the javascript specs from the browser. To do this, visit http://localhost:5000/ember-tests/tahi.
+You can also run the javascript specs from the browser. To do this run
+`ember test --serve` from `client/` to see the results in the
+browser.
 
 For help writing ember tests please see the [ember-cli testing section](http://www.ember-cli.com/#testing)
 
@@ -265,12 +267,10 @@ heroku pgbackups:restore HEROKUPOSTGRESQL_ROSE_URL b020
 
 # Documentation
 
-Open the generated documentation from `doc/rdoc/index.html` in your browser.
-
 To generate documentation, run the following command from the application root:
 
 ```
-sdoc -g --markup=tomdoc --title="Tahi Documentation" --main="README.md" -o doc/rdoc -T sdoc app/models/**/*.rb
+sdoc -g --title="Tahi Documentation" --main="README.md" -o doc/rdoc -T sdoc app/models/**/*.rb
 ```
 
-We are using [Tomdoc](http://tomdoc.org/) documentation specification format. We are currently aiming to have all models documented.
+Open the generated documentation from `doc/rdoc/index.html` in your browser.

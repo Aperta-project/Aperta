@@ -1,9 +1,6 @@
 require 'rails_helper'
 
 describe QuestionAttachmentsController do
-
-  expect_policy_enforcement
-
   let(:user) { create :user, :site_admin }
 
   before do
@@ -16,6 +13,10 @@ describe QuestionAttachmentsController do
       get :show, format: :json, id: question_attachment.id
     end
 
+    before do
+      allow_any_instance_of(User).to receive(:can?).and_return(true)
+    end
+
     it "succeeds" do
       do_request
       expect(response.status).to be(200)
@@ -24,6 +25,17 @@ describe QuestionAttachmentsController do
     it 'returns the question attachment' do
       do_request
       expect(res_body['question_attachment']['id']).to be(question_attachment.id)
+    end
+
+    context 'without permission' do
+      before do
+        allow_any_instance_of(User).to receive(:can?).and_return(false)
+      end
+
+      it 'returns a 403' do
+        do_request
+        expect(response.status).to eq(403)
+      end
     end
   end
 
@@ -34,6 +46,17 @@ describe QuestionAttachmentsController do
       expect {
         put :destroy, format: :json, id: question_attachment.id
       }.to change { QuestionAttachment.count }.by(-1)
+    end
+
+    context 'without permission' do
+      before do
+        allow_any_instance_of(User).to receive(:can?).and_return(false)
+      end
+
+      it 'returns a 403' do
+        put :destroy, format: :json, id: question_attachment.id
+        expect(response.status).to eq(403)
+      end
     end
   end
 
@@ -71,6 +94,17 @@ describe QuestionAttachmentsController do
         'question-attachment': { id: question_attachment.id }
       }.as_json)
     end
+
+    context 'without permission' do
+      before do
+        allow_any_instance_of(User).to receive(:can?).and_return(false)
+      end
+
+      it 'returns a 403' do
+        do_request
+        expect(response.status).to eq(403)
+      end
+    end
   end
 
   describe '#update' do
@@ -105,6 +139,17 @@ describe QuestionAttachmentsController do
       expect(JSON.parse(response.body)).to eq({
         'question-attachment': { id: question_attachment.id }
       }.as_json)
+    end
+
+    context 'without permission' do
+      before do
+        allow_any_instance_of(User).to receive(:can?).and_return(false)
+      end
+
+      it 'returns a 403' do
+        do_request
+        expect(response.status).to eq(403)
+      end
     end
   end
 end

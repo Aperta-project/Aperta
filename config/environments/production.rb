@@ -64,6 +64,9 @@ Tahi::Application.configure do
   # Define how ActionMailer should generate URLs within email body
   config.action_mailer.default_url_options = { host: ENV.fetch('DEFAULT_MAILER_URL') }
 
+  # Define how root_url should behave by default
+  routes.default_url_options = { host: ENV.fetch('DEFAULT_MAILER_URL') }
+
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false

@@ -5,7 +5,11 @@
 <div class="sheet-content discussions-show-content">
   <div class="discussions-show-header">
     <h1 class="discussions-show-title">
-      {{input value=model.title focus-out="saveTopic"}}
+      {{#if (can 'edit' model)}}
+        {{input value=model.title focus-out="saveTopic"}}
+      {{else}}
+        {{model.title}}
+      {{/if}}
     </h1>
 
     {{participant-selector currentParticipants=participants
@@ -29,7 +33,7 @@
       {{user-thumbnail user=reply.replier}}
       <span class="comment-name">{{reply.replier.fullName}}</span>
       <span class="comment-date">posted {{format-date reply.createdAt}}</span>
-      <div class="comment-body">{{url-to-href text=reply.body}}</div>
+      <div class="comment-body">{{url-to-href text=(break-to-tag reply.body)}}</div>
     </div>
   {{/each}}
 </div>

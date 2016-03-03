@@ -2,6 +2,12 @@
   border: 1px solid #d5d5d5;
   background: #fff;
 
+  &.read-only {
+    cursor: not-allowed;
+    background-color: #eee;
+    opacity: 1;
+  }
+
   .format-input-field {
     min-height: 20px;
     border-top-left-radius: 5px;

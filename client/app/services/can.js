@@ -33,7 +33,7 @@ export default Ember.Service.extend({
 
     this.store = this.container.lookup('store:main');
     var classname = resource.constructor.typeKey;
-    classname = classname.charAt(0).toUpperCase() + classname.slice(1);
+    classname = classname.charAt(0).toLowerCase() + classname.slice(1);
     var permissionId =  classname + '+' + resource.id;
     var ability = Ability.create({name:abilityString, resource: resource});
 

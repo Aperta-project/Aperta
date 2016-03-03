@@ -56,41 +56,6 @@ describe JournalFactory do
       end
 
       context 'Academic Editor' do
-        it 'has :start_discussion permissions on Paper' do
-          permissions = Permission.joins(:states).where(applies_to: 'Paper', permission_states: { id: PermissionState.wildcard })
-
-          expect(journal.academic_editor_role.permissions).to include(
-            permissions.find_by(action: 'start_discussion')
-          )
-        end
-
-        context 'has DiscussionTopic permission to' do
-          let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
-
-          it ':view' do
-            expect(journal.academic_editor_role.permissions).to include(
-              permissions.find_by(action: 'view')
-            )
-          end
-
-          it ':edit' do
-            expect(journal.academic_editor_role.permissions).to include(
-              permissions.find_by(action: 'edit')
-            )
-          end
-
-          it ':manage_participant' do
-            expect(journal.academic_editor_role.permissions).to include(
-              permissions.find_by(action: 'manage_participant')
-            )
-          end
-
-          it ':reply' do
-            expect(journal.academic_editor_role.permissions).to include(
-              permissions.find_by(action: 'reply')
-            )
-          end
-        end
       end
 
       context 'Handling Editor' do

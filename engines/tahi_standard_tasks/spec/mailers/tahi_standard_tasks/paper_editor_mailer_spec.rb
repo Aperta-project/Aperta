@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe TahiStandardTasks::PaperEditorMailer do
 
-  let(:invitation) { FactoryGirl.create(:invitation) }
+  let(:invitation) { FactoryGirl.create(:invitation, body: "Hiya, chief!") }
 
   let(:email) { described_class.notify_invited(invitation_id:invitation.id) }
 
@@ -12,7 +12,7 @@ describe TahiStandardTasks::PaperEditorMailer do
     end
 
     it "has correct body content" do
-      expect(email.body).to include "You've been invited as an editor on a manuscript"
+      expect(email.body).to include invitation.body
     end
 
     it "sends email to the invitations email" do

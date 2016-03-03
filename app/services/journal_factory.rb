@@ -64,6 +64,8 @@ class JournalFactory
         role.ensure_permission_exists(:view, applies_to: klass.name, states: ['*'])
         role.ensure_permission_exists(:edit, applies_to: klass.name, states: ['*'])
         role.ensure_permission_exists(:view_participants, applies_to: klass.name, states: ['*'])
+        role.ensure_permission_exists(:add_participants, applies_to: klass, states: ['*'])
+        role.ensure_permission_exists(:remove_participants, applies_to: klass, states: ['*'])
       end
     end
 
@@ -209,7 +211,7 @@ class JournalFactory
 
       classes = Task.submission_task_types
 
-      # AEs cannot view billing task or reviewer recommendation tasks
+      # AEs cannot view billing task reviewer report tasks
       classes -= [PlosBilling::BillingTask]
       classes -= [TahiStandardTasks::ReviewerReportTask]
       classes << TahiStandardTasks::RegisterDecisionTask

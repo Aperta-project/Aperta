@@ -95,8 +95,6 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
-      role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
 
       # Discussions
       role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
@@ -161,8 +159,6 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
-      role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
 
       # Discussions
       role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
@@ -187,8 +183,6 @@ class JournalFactory
       role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
-      role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::CoverLetterTask, states: ['*'])
 
       # Discussions
       role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
@@ -224,6 +218,7 @@ class JournalFactory
         role.ensure_permission_exists(:view, applies_to: klass)
       end
 
+      role.ensure_permission_exists(:edit, applies_to: TahiStandardTasks::ReviewerRecommendationsTask)
       # AEs can ONLY view reviewer report tasks
       role.ensure_permission_exists(:view, applies_to: TahiStandardTasks::ReviewerReportTask)
     end

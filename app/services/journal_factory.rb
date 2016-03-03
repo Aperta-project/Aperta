@@ -55,7 +55,6 @@ class JournalFactory
         role.ensure_permission_exists(:view, applies_to: klass, states: ['*'])
         role.ensure_permission_exists(:edit, applies_to: klass, states: ['*'])
         role.ensure_permission_exists(:view_participants, applies_to: klass, states: ['*'])
-        role.ensure_permission_exists(:view_participants, applies_to: klass, states: ['*'])
         role.ensure_permission_exists(:add_participants, applies_to: klass, states: ['*'])
         role.ensure_permission_exists(:remove_participants, applies_to: klass, states: ['*'])
       end

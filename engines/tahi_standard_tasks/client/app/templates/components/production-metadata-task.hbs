@@ -4,10 +4,12 @@
   <div class="production-metadata">
     <div class="form-group">
       <div class="inset-form-control publication-date {{if validationErrors.publicationDate "error"}}">
-        {{error-message message=validationErrors.publicationDate class="inset-form-control-text"}}
-        <label class="inset-form-control-text">
-          {{nested-question-display ident="production_metadata--publication_date" owner=task}}
-        </label>
+        <div class="inset-form-control-text">
+          {{error-message message=validationErrors.publicationDate class="inset-form-control-text"}}
+          <label>
+            {{nested-question-display ident="production_metadata--publication_date" owner=task}}
+          </label>
+        </div>
         {{nested-question-date-picker
           ident="production_metadata--publication_date"
           owner=task
@@ -19,11 +21,12 @@
     </div>
     <div class="form-group">
       <div class="inset-form-control required volume-number {{if validationErrors.volumeNumber "error"}}">
-        <label class="inset-form-control-text">
-          {{nested-question-display ident="production_metadata--volume_number" owner=task}}
-        </label>
-        {{error-message message=validationErrors.volumeNumber class="inset-form-control-text"}}
-        <label class="inset-form-control-text">Volume Number</label>
+        <div class="inset-form-control-text">
+          <label>
+            {{nested-question-display ident="production_metadata--volume_number" owner=task}}
+          </label>
+          {{error-message message=validationErrors.volumeNumber class="inset-form-control-text"}}
+        </div>
         {{nested-question-input
           ident="production_metadata--volume_number"
           owner=task
@@ -33,10 +36,12 @@
       </div>
 
       <div class="inset-form-control required issue-number {{if validationErrors.issueNumber "error"}}">
-        <label class="inset-form-control-text">
-          {{nested-question-display ident="production_metadata--issue_number" owner=task}}
-        </label>
-        {{error-message message=validationErrors.issueNumber class="inset-form-control-text"}}
+        <div  class="inset-form-control-text">
+          <label>
+            {{nested-question-display ident="production_metadata--issue_number" owner=task}}
+          </label>
+          {{error-message message=validationErrors.issueNumber class="inset-form-control-text"}}
+        </div>
         {{nested-question-input
           ident="production_metadata--issue_number"
           owner=task

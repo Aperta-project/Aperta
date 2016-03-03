@@ -25,32 +25,36 @@ class JournalFactory
     Role.ensure_exists(Role::CREATOR_ROLE, journal: @journal, participates_in: [Task, Paper]) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: Task, states: ['*'])
+
+      # Creator(s) cannot view/edit production metadata tasks
+      classes = Task.descendants
+      classes -= [TahiStandardTasks::ProductionMetadataTask]
+      classes.each do |klass|
+        role.ensure_permission_exists(:view, applies_to: klass)
+        role.ensure_permission_exists(:edit, applies_to: klass)
+        role.ensure_permission_exists(:view_participants, applies_to: klass, states: ['*'])
+        role.ensure_permission_exists(:add_participants, applies_to: klass, states: ['*'])
+        role.ensure_permission_exists(:remove_participants, applies_to: klass, states: ['*'])
+      end
+
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:withdraw, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
-      role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
     end
 
     Role.ensure_exists(Role::COLLABORATOR_ROLE, journal: @journal, participates_in: [Paper]) do |role|
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:manage_collaborators, applies_to: Paper, states: ['*'])
-      role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
-      role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
 
       # Collaborators can view and edit any metadata card except billing
       metadata_task_klasses = Task.descendants.select { |klass| klass <=> MetadataTask }
       metadata_task_klasses -= [PlosBilling::BillingTask]
       metadata_task_klasses.each do |klass|
-        role.ensure_permission_exists(:view, applies_to: klass.name, states: ['*'])
-        role.ensure_permission_exists(:edit, applies_to: klass.name, states: ['*'])
-        role.ensure_permission_exists(:view_participants, applies_to: klass.name, states: ['*'])
+        role.ensure_permission_exists(:view, applies_to: klass, states: ['*'])
+        role.ensure_permission_exists(:edit, applies_to: klass, states: ['*'])
+        role.ensure_permission_exists(:view_participants, applies_to: klass, states: ['*'])
+        role.ensure_permission_exists(:add_participants, applies_to: klass, states: ['*'])
+        role.ensure_permission_exists(:remove_participants, applies_to: klass, states: ['*'])
       end
 
       # Collaborators can view and edit some other cards too

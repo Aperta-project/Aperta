@@ -131,7 +131,7 @@ class JournalFactory
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
     end
 
-    Role.ensure_exists(Role::PUBLISHING_SERVICES_ROLE, journal: @journal) do |role|
+    Role.ensure_exists(Role::PRODUCTION_STAFF_ROLE, journal: @journal) do |role|
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal, states: ['*'])
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
@@ -155,7 +155,7 @@ class JournalFactory
       role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
     end
 
-    Role.ensure_exists(Role::PRODUCTION_STAFF_ROLE, journal: @journal) do |role|
+    Role.ensure_exists(Role::PUBLISHING_SERVICES_ROLE, journal: @journal) do |role|
       role.ensure_permission_exists(:view_paper_tracker, applies_to: Journal, states: ['*'])
       role.ensure_permission_exists(:manage_workflow, applies_to: Paper, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: Paper, states: ['*'])
@@ -169,6 +169,14 @@ class JournalFactory
       role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
+      role.ensure_permission_exists(:edit_authors, applies_to: Paper, states: Paper::EDITABLE_STATES)
+
+      # Discussions
+      role.ensure_permission_exists(:start_discussion, applies_to: Paper, states: ['*'])
+      role.ensure_permission_exists(:view, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:edit, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:manage_participant, applies_to: DiscussionTopic, states: ['*'])
+      role.ensure_permission_exists(:reply, applies_to: DiscussionTopic, states: ['*'])
     end
 
     Role.ensure_exists(Role::TASK_PARTICIPANT_ROLE, journal: @journal, participates_in: [Task]) do |role|

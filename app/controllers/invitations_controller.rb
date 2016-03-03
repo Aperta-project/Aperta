@@ -9,6 +9,9 @@ class InvitationsController < ApplicationController
   end
 
   def show
+    fail AuthorizationError unless current_user == invitation.invitee ||
+                                   current_user.can?(:manage_invitations,
+                                                     invitation.task)
     respond_with invitation
   end
 

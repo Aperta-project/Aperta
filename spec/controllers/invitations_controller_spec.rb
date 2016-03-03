@@ -54,6 +54,32 @@ describe InvitationsController do
       expect(invitation_json).to have_key(:state)
       expect(invitation_json).to have_key(:invitation_type)
     end
+
+    it 'works if this is the invitee' do
+      allow_any_instance_of(User).to receive(:can?).with(:manage_invitations, task)
+        .and_return(false)
+
+      get(:show, format: :json, id: invitation.id)
+      expect(response.status).to eq(200)
+    end
+
+    it 'works when the caller has manage_invitations permission' do
+      allow_any_instance_of(User).to receive(:can?).with(:manage_invitations, task)
+        .and_return(true)
+      new_user = FactoryGirl.create(:user)
+
+      get(:show, format: :json, id: invitation.id, user: new_user)
+      expect(response.status).to eq(200)
+    end
+
+    it 'returns a 403 when the caller can not manage invitations and is not the invitee' do
+      allow_any_instance_of(User).to receive(:can?).and_return(false)
+      new_user = FactoryGirl.create(:user)
+      sign_in(new_user)
+
+      get(:show, format: :json, id: invitation.id)
+      expect(response.status).to eq(403)
+    end
   end
 
   describe "POST /invitations" do

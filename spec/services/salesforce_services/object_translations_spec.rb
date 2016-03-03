@@ -23,8 +23,8 @@ describe SalesforceServices::ObjectTranslations do
         paper.salesforce_manuscript_id = nil
       end
 
-      it 'sends OriginalSubmissionDate__c' do
-        is_expected.to include("OriginalSubmissionDate__c")
+      it 'sends Initial_Date_Submitted__c' do
+        is_expected.to include("Initial_Date_Submitted__c")
       end
     end
 
@@ -34,8 +34,8 @@ describe SalesforceServices::ObjectTranslations do
         paper.salesforce_manuscript_id = "foreign_id"
         paper.save
       end
-      it 'does not send OriginalSubmissionDate__c' do
-        is_expected.not_to include("OriginalSubmissionDate__c")
+      it 'does not send Initial_Date_Submitted__c' do
+        is_expected.not_to include("Initial_Date_Submitted__c")
       end
     end
 
@@ -49,7 +49,7 @@ describe SalesforceServices::ObjectTranslations do
         "Title__c"                   => paper.title,
         "DOI__c"                     => paper.doi,
         "Name"                       => paper.manuscript_id,
-        "OriginalSubmissionDate__c"  => submit_time,
+        "Initial_Date_Submitted__c"  => submit_time,
         "Abstract__c"                => paper.abstract,
         "Current_Editorial_Status__c" => "Manuscript Submitted"
       }

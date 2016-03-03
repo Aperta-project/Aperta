@@ -21,7 +21,7 @@ module SalesforceServices
         }
 
         if new_sfdc_record?
-          hash["OriginalSubmissionDate__c"] = @paper.submitted_at
+          hash["Initial_Date_Submitted__c"] = @paper.submitted_at
         end
 
         hash

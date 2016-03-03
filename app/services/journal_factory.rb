@@ -211,6 +211,7 @@ class JournalFactory
       role.ensure_permission_exists(:view_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:add_participants, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:remove_participants, applies_to: Task, states: ['*'])
+      role.ensure_permission_exists(:manage_invitations, applies_to: Task, states: ['*'])
       role.ensure_permission_exists(:view, applies_to: PlosBilling::BillingTask, states: ['*'])
       role.ensure_permission_exists(:edit, applies_to: PlosBilling::BillingTask, states: ['*'])
 

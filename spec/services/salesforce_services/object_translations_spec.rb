@@ -1,3 +1,4 @@
+# rubocop:disable LineLength
 require 'rails_helper'
 
 describe SalesforceServices::ObjectTranslations do
@@ -90,12 +91,20 @@ describe SalesforceServices::ObjectTranslations do
   end
 
   describe "BillingTranslator#paper_to_billing_hash" do
+    let!(:funder) do
+      FactoryGirl.create(:funder,
+                         name: "funder001",
+                         grant_number: '000-2222-111')
+    end
     it "return a hash" do
       paper = make_paper
+      FactoryGirl.create(:financial_disclosure_task,
+                         funders: [funder],
+                         paper: paper)
 
       bt    = SalesforceServices::ObjectTranslations::BillingTranslator.new(paper: paper)
       data  = bt.paper_to_billing_hash
-
+      # rubocop:disable Style/SingleSpaceBeforeFirstArg
       expect(data.class).to                          eq Hash
       expect(data['SuppliedEmail']).to               eq('pfa@pfa.com' )
       expect(data['Exclude_from_EM__c']).to          eq(true)
@@ -118,6 +127,8 @@ describe SalesforceServices::ObjectTranslations do
       expect(data['PFA_Able_to_Pay_R__c']).to        eq (100.00)
       expect(data['PFA_Additional_Comments__c']).to  eq ('my comments')
       expect(data['PFA_Supporting_Docs__c']).to      eq (true) #indirectly tests private method boolean_from_yes_no
+      expect(data['PFA_Funding_Statement__c']).to    eq ("This work was supported by funder001 (grant number 000-2222-111).")
+      # rubocop:enable Style/SingleSpaceBeforeFirstArg
     end
   end
 

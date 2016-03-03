@@ -31,36 +31,39 @@ describe TahiStandardTasks::FinancialDisclosureTask do
 
     context "with funder(s)" do
       context "single funder" do
-        let(:funders) { [double(TahiStandardTasks::Funder)] }
+        let(:funders) do
+          [FactoryGirl.create(:funder, name: "funder1", grant_number: "001")]
+        end
 
         it "returns the funder's statement" do
           funder1 = funders.first
-          expect(funder1)
-            .to receive(:funding_statement) { "Funding statement1" }
+          expect(funder1.funding_statement) .to include("001")
 
           expect(task.funding_statement)
-            .to eq("Funding statement1")
+            .to eq(funder1.funding_statement)
         end
       end
 
       context "multiple funders" do
         let(:funders) do
           [
-            double(TahiStandardTasks::Funder),
-            double(TahiStandardTasks::Funder)
+            FactoryGirl.create(:funder, name: "funder1", grant_number: "001"),
+            FactoryGirl.create(:funder, name: "funder2", grant_number: "002")
           ]
         end
 
         it "returns both of the funder's statement" do
           funder1 = funders.first
           funder2 = funders.second
-          expect(funder1)
-            .to receive(:funding_statement) { "Funding statement1" }
-          expect(funder2)
-            .to receive(:funding_statement) { "Funding statement2" }
+          expect(funder1.funding_statement) .to include("001")
+          expect(funder2.funding_statement) .to include("002")
+
+          expected_statement = [
+            funder1.funding_statement, funder2.funding_statement
+          ].join("\n")
 
           expect(task.funding_statement)
-            .to eq("Funding statement1\nFunding statement2")
+            .to eq(expected_statement)
         end
       end
     end

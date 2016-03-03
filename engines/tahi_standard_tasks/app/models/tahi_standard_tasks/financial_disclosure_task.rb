@@ -17,7 +17,7 @@ module TahiStandardTasks
         "#{funder.funding_statement}"
       end
 
-      if statement
+      if !statement.empty?
         statement.join("\n")
       else
         "The author(s) received no specific funding for this work."

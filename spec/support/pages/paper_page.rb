@@ -125,7 +125,7 @@ class PaperPage < Page
 
   def cards
     {
-      metadata: all('#paper-metadata-tasks .card-content').map(&:text),
+      metadata: all('#paper-submission-tasks .card-content').map(&:text),
       assigned: all('#paper-assigned-tasks .card-content').map(&:text),
       editor: all('#paper-editor-tasks .card-content').map(&:text)
     }

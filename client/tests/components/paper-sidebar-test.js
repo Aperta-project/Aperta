@@ -35,8 +35,7 @@ test('Shows submit if all task completed and submittable', function(assert) {
   assert.expect(1);
 
   let fakeSubmittableTask = Ember.Object.create({
-    isSubmissionTask: true,
-    completed: true,
+    isSubmissionTask: false,
     participations: []
   });
 
@@ -50,25 +49,4 @@ test('Shows submit if all task completed and submittable', function(assert) {
 
   let buttonText = $.trim(this.$().find('button').text());
   assert.equal(buttonText, 'Submit');
-});
-
-test('Shows remaining tasks to complete message', function(assert) {
-  assert.expect(1);
-
-  let fakeSubmittableTask = Ember.Object.create({
-    isSubmissionTask: true,
-    completed: false,
-    participations: []
-  });
-
-  let fakeSubmittablePaper = Ember.Object.create({
-    publishingState: 'unsubmitted',
-    tasks: [fakeSubmittableTask]
-  });
-
-  this.subject({paper: fakeSubmittablePaper});
-  this.render();
-
-  let msg = $.trim(this.$().text());
-  assert.equal(msg, 'You must complete the following tasks before submitting:');
 });

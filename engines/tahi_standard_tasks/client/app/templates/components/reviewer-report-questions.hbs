@@ -38,7 +38,6 @@
     {{#nested-question-radio ident="reviewer_report--statistical_analysis"
                       owner=model
                       decision=decision
-                      helpText="<li>Authors must follow field-specific standards for data deposition in publicly available resources and should include accession numbers in the manuscript when relevant. The manuscript should explain what steps have been taken to make data available, particularly in cases where the data cannot be publicly deposited.</li>"
                       wrapperClass="yes-no-with-comments"
                       readonly=readonly as |radio|}}
       {{#if radio.yieldingForAdditionalData}}
@@ -57,7 +56,7 @@
     {{#nested-question-radio ident="reviewer_report--standards"
                       owner=model
                       decision=decision
-                      helpText="<li>The manuscript should explain what steps have been taken to make data available, particularly in cases where the data cannot be publicly deposited.</li>"
+                      helpText="<li>Authors must follow field-specific standards for data deposition in publicly available resources and should include accession numbers in the manuscript when relevant. The manuscript should explain what steps have been taken to make data available, particularly in cases where the data cannot be publicly deposited.</li>"
                       wrapperClass="yes-no-with-comments"
                       readonly=readonly as |radio|}}
       {{#if radio.yieldingForAdditionalData}}

@@ -8,4 +8,8 @@ module SubmissionTask
   def submission_task?
     true
   end
+
+  def activity_feed_name
+    'manuscript'
+  end
 end

@@ -149,6 +149,10 @@ class Task < ActiveRecord::Base
     false
   end
 
+  def activity_feed_name
+    'workflow'
+  end
+
   def journal_task_type
     journal.journal_task_types.find_by(kind: self.class.name)
   end

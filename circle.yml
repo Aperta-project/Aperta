@@ -63,4 +63,4 @@ deployment:
     commands:
       - git push git@heroku.com:tahi-staging.git $CIRCLE_SHA1:refs/heads/master
       - heroku run rake db:migrate --app tahi-staging
-      - heroku run rake nested-questions:seed --app tahi-staging
+      - heroku run rake nested-questions:seed roles-and-permissions:seed --app tahi-staging

@@ -211,7 +211,6 @@ class JournalFactory
 
       # AEs cannot view billing task or reviewer recommendation tasks
       classes -= [PlosBilling::BillingTask]
-      classes -= [TahiStandardTasks::ReviewerRecommendationsTask]
       classes -= [TahiStandardTasks::ReviewerReportTask]
       classes << TahiStandardTasks::RegisterDecisionTask
       classes.each do |klass|

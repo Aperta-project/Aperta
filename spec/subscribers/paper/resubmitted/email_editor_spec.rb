@@ -5,7 +5,7 @@ describe Paper::Resubmitted::EmailEditor do
 
   let(:mailer) { mock_delayed_class(UserMailer) }
   let!(:paper) do
-    FactoryGirl.create(:paper, :with_integration_journal, :with_academic_editor)
+    FactoryGirl.create(:paper, :with_integration_journal, :with_academic_editor_user)
   end
   let!(:user) { FactoryGirl.create(:user) }
 

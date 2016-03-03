@@ -65,7 +65,7 @@ describe TahiStandardTasks::PaperEditorTask do
         FactoryGirl.create(
           :paper,
           :with_integration_journal,
-          :with_academic_editor,
+          :with_academic_editor_user,
           :with_tasks
         )
       end

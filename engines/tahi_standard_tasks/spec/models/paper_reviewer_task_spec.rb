@@ -9,8 +9,10 @@ describe TahiStandardTasks::PaperReviewerTask do
     mmt.phase_templates.create! name: "Get Reviews"
     journal
   end
-
-  let(:paper) { create :paper, :with_tasks, :with_academic_editor, journal: journal }
+  let(:paper) do
+    FactoryGirl.create(:paper, :with_tasks, :with_academic_editor_user,
+                       journal: journal)
+  end
   let(:phase) { paper.phases.first }
 
   let(:albert) { create :user, :site_admin }

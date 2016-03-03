@@ -985,4 +985,16 @@ describe Paper do
       end
     end
   end
+
+  describe 'Paper::(UN)EDITABLE_STATES' do
+    it 'should contain the right states' do
+      expect(Paper::EDITABLE_STATES).to contain_exactly(:unsubmitted, :in_revision, :invited_for_full_submission, :checking)
+      expect(Paper::UNEDITABLE_STATES).to contain_exactly(:submitted, :accepted, :initially_submitted, :published, :rejected, :withdrawn)
+    end
+
+    it 'editable + uneditable should be ALL the states' do
+      expect(Paper::EDITABLE_STATES + Paper::UNEDITABLE_STATES)
+        .to contain_exactly(*Paper.aasm.states.map(&:name))
+    end
+  end
 end

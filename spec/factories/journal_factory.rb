@@ -22,6 +22,17 @@ FactoryGirl.define do
       end
     end
 
+    %w(publishing_services staff_admin).each do |role|
+      trait("with_#{role}_user".to_sym) do
+        after(:create) do |journal|
+          FactoryGirl.create(:assignment,
+                             role: journal.send("#{role}_role".to_sym),
+                             user: FactoryGirl.build(:user),
+                             assigned_to: journal)
+        end
+      end
+    end
+
     factory :journal_with_roles_and_permissions, traits: [:with_roles_and_permissions]
   end
 

@@ -37,10 +37,11 @@ export default Ember.Component.extend({
     'invited_for_full_submission'
   ),
   isSubmitted: equal('paper.publishingState', 'submitted'),
-  sortedMetadataTasks: sort('metadataTasks', 'taskSorting'),
   sortedAssignedTasks: sort('assignedTasks', 'taskSorting'),
+  sortedMetadataTasks: sort('metadataTasks', 'taskSorting'),
+  sortedSubmissionTasks: sort('submissionTasks', 'taskSorting'),
+  assignedTasks: setDiff('currentUserTasks', 'submissionTasks'),
   metadataTasks: filterBy('tasks', 'isMetadataTask', true),
-  assignedTasks: setDiff('currentUserTasks', 'metadataTasks'),
   submissionTasks: filterBy('tasks', 'isSubmissionTask', true),
   submittableState: or(
     'isUnsubmitted',

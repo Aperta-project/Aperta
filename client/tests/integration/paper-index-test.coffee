@@ -137,7 +137,7 @@ test 'visiting /paper: Author completes all metadata cards', (assert) ->
       submitButton = find('button:contains("Submit")')
       assert.ok(!submitButton.length, "Submit is disabled")
     .then ->
-      for card in find('#paper-metadata-tasks .card-content')
+      for card in find('#paper-submission-tasks .card-content')
         click card
         click '.task-completed'
         click '.overlay-close-button:first'

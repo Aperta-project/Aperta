@@ -280,6 +280,14 @@ describe JournalFactory do
           )
         end
 
+        it ':manage_invitations' do
+          permissions = Permission.joins(:states).where(applies_to: 'Task', permission_states: { id: PermissionState.wildcard })
+
+          expect(journal.handling_editor_role.permissions).to include(
+            permissions.find_by(action: 'manage_invitations')
+          )
+        end
+
         context 'has DiscussionTopic permission to' do
           let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
 
@@ -341,6 +349,13 @@ describe JournalFactory do
 
           expect(journal.internal_editor_role.permissions).to include(
             permissions.find_by(action: 'start_discussion')
+          )
+        end
+
+        it ':manage_invitations' do
+          permissions = Permission.joins(:states).where(applies_to: 'Task', permission_states: { id: PermissionState.wildcard })
+          expect(journal.internal_editor_role.permissions).to include(
+            permissions.find_by(action: 'manage_invitations')
           )
         end
 
@@ -408,6 +423,14 @@ describe JournalFactory do
           )
         end
 
+        it ':manage_invitations' do
+          permissions = Permission.joins(:states).where(applies_to: 'Task', permission_states: { id: PermissionState.wildcard })
+
+          expect(journal.internal_editor_role.permissions).to include(
+            permissions.find_by(action: 'manage_invitations')
+          )
+        end
+
         context 'has DiscussionTopic permission to' do
           let(:permissions) { Permission.joins(:states).where(applies_to: 'DiscussionTopic', permission_states: { id: PermissionState.wildcard }) }
 
@@ -469,6 +492,14 @@ describe JournalFactory do
 
           expect(journal.publishing_services_role.permissions).to include(
             permissions.find_by(action: 'start_discussion')
+          )
+        end
+
+        it 'has :manage_invitations permission on Task' do
+          permissions = Permission.joins(:states).where(applies_to: 'Task', permission_states: { id: PermissionState.wildcard })
+
+          expect(journal.staff_admin_role.permissions).to include(
+            permissions.find_by(action: 'manage_invitations')
           )
         end
 

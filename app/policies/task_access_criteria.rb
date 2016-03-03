@@ -25,7 +25,8 @@ module TaskAccessCriteria
 
   # criteria used by this mixin
   def submission_task_collaborator?
-    task.submission_task? && paper.collaborators.exists?(current_user.id)
+    (task.class <=> SubmissionTask) &&
+      paper.collaborators.exists?(current_user.id)
   end
 
   def can_view_all_manuscript_managers_for_journal?
@@ -49,7 +50,7 @@ module TaskAccessCriteria
   end
 
   def allowed_submission_task?
-    task.submission_task? && has_paper_role?
+    (task.class <=> SubmissionTask) && has_paper_role?
   end
 
   def allowed_reviewer_task?

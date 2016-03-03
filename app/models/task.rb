@@ -144,11 +144,6 @@ class Task < ActiveRecord::Base
     end
   end
 
-  def submission_task?
-    # Override in subclass
-    false
-  end
-
   def activity_feed_name
     'workflow'
   end

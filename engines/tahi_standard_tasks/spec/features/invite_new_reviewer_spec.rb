@@ -11,7 +11,6 @@ feature "Inviting a new reviewer", js: true do
   before do
     assign_journal_role paper.journal, editor, :editor
     assign_handling_editor_role paper, editor
-    allow_any_instance_of(User).to receive(:can?).and_return(true)
     task.add_participant(editor)
 
     login_as(editor, scope: :user)

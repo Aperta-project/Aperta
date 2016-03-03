@@ -119,6 +119,19 @@ describe InvitationsController do
         do_request
       end
     end
+
+    context 'without manage_invitations permission' do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:manage_invitations, task).and_return(false)
+      end
+
+      it 'returns a 403' do
+        do_request
+
+        expect(response.status).to eq(403)
+      end
+    end
   end
 
   describe "DELETE /invitations/:id", redis: true do
@@ -163,6 +176,22 @@ describe InvitationsController do
           expect(response.status).to eq 204
           expect(Invitation.exists?(id: invitation.id)).to eq(false)
         end
+      end
+    end
+
+    context 'without manage_invitations permission' do
+      before do
+        allow_any_instance_of(User).to receive(:can?)
+          .with(:manage_invitations, task).and_return(false)
+      end
+
+      it 'returns a 403' do
+        delete(:destroy,
+               format: "json",
+               id: invitation.id
+              )
+
+        expect(response.status).to eq(403)
       end
     end
   end

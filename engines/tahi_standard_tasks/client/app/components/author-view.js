@@ -38,7 +38,7 @@ export default Ember.Component.extend(DragNDrop.DraggableMixin, {
     },
 
     save() {
-      this.get('model').validateAllKeys();
+      this.get('model').validateAll();
       if(this.get('errorsPresent')) { return; }
 
       this.sendAction('save', this.get('author'));

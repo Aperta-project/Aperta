@@ -46,7 +46,11 @@
 
     <br>
 
-    <p>Please select the relevant acknowledgments and agreements from the following</p>
+    <p class="authors-task-acknowledgements">
+      To submit your manuscript, please acknowledge each statement below
+      {{error-message message=validationErrors.acknowledgements
+                      displayIcon=true}}
+    </p>
 
     {{nested-question-check ident="authors--persons_agreed_to_be_named"
                             owner=task

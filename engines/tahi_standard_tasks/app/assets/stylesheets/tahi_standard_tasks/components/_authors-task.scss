@@ -88,6 +88,10 @@
   p { margin-left: 0; }
 }
 
+.authors-task-acknowledgements .error-message {
+  margin-left: 0; // override default
+}
+
 .author-drop-target {
   height: 6px;
 

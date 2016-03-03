@@ -61,6 +61,11 @@ export default Component.extend(ValidationErrorsMixin, {
     });
   },
 
+  validateAll() {
+    this.validateProperties();
+    this.validateQuestions();
+  },
+
   validateProperty(key) {
     this.validate(key, this.get(`task.${key}`));
   },

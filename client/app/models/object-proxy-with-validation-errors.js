@@ -38,7 +38,7 @@ const ObjectProxy = Object.extend(ValidationErrorsMixin, {
     });
 
     _.keys(this.get('questionValidations')).forEach((key) => {
-      this.validateIdent(key);
+      this.validateQuestion(key);
     });
 
     const errorsPresent = this.validationErrorsPresent();
@@ -58,7 +58,7 @@ const ObjectProxy = Object.extend(ValidationErrorsMixin, {
     }
   },
 
-  validateIdent(ident) {
+  validateQuestion(ident) {
     const value = this.get('object').findQuestion(ident);
     this.validate(ident, value);
 

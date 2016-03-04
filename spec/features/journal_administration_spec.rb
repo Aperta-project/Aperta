@@ -20,7 +20,7 @@ feature "Journal Administration", js: true do
 
       scenario "shows all journals" do
         journal_names = [journal, another_journal].map(&:name)
-        expect(admin_page.journal_names).to match_array(journal_names)
+        expect(admin_page).to have_journal_names(*journal_names)
       end
     end
 

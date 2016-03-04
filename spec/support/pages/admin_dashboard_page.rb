@@ -19,8 +19,8 @@ class AdminDashboardPage < Page
     session.has_content? self.class.admin_section
   end
 
-  def journal_names
-    all('.journal-thumbnail-name').map &:text
+  def has_journal_name?(name)
+    page.has_css?('.journal-thumbnail-name', text: name)
   end
 
   def has_journal_names?(*names)
@@ -35,12 +35,11 @@ class AdminDashboardPage < Page
     end
   end
 
-  def journal_descriptions
-    all('.journal-thumbnail-show p').map &:text
-  end
-
-  def journal_paper_counts
-    all('.journal-thumbnail-paper-count').map { |el| el.text.split(' ')[0].to_i }
+  def has_journal_paper_counts?(*counts)
+    counts.all? do |count|
+      count_text = count == 1 ? "#{count} article" : "#{count} articles"
+      find('.journal-thumbnail-paper-count', text: count_text)
+    end
   end
 
   def create_journal
@@ -109,6 +108,7 @@ class EditModal < PageFragment
 
   def save
     click_on "Save"
+    wait_for_ajax
     AdminDashboardPage.new(context: context)
   end
 

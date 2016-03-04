@@ -24,22 +24,24 @@ class AdminDashboardPage < Page
   end
 
   def has_journal_names?(*names)
-    names.all? do |name_text|
-      has_journal_name? name_text
-    end
+    names.all? { |name_text| has_journal_name? name_text }
+  end
+
+  def has_journal_description?(description)
+    page.has_css? '.journal-thumbnail-show p', text: description
   end
 
   def has_journal_descriptions?(*descriptions)
-    descriptions.all? do |description_text|
-      page.has_css? '.journal-thumbnail-show p', text: description_text
-    end
+    descriptions.all? { |description| has_journal_description?(description) }
+  end
+
+  def has_journal_paper_count?(count)
+    count_text = count == 1 ? "#{count} article" : "#{count} articles"
+    find('.journal-thumbnail-paper-count', text: count_text)
   end
 
   def has_journal_paper_counts?(*counts)
-    counts.all? do |count|
-      count_text = count == 1 ? "#{count} article" : "#{count} articles"
-      find('.journal-thumbnail-paper-count', text: count_text)
-    end
+    counts.all? { |count| has_journal_paper_count?(count) }
   end
 
   def create_journal

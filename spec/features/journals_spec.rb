@@ -16,7 +16,18 @@ feature "Journal Administration", js: true do
   scenario "shows a list of journal thumbnails with name and description for each", selenium: true do
     expect(admin_page).to have_journal_names(journal.name, journal2.name)
     expect(admin_page).to have_journal_descriptions(journal.description, journal2.description)
-    expect(admin_page).to have_journal_paper_counts(journal.papers.count, journal2.papers.count)
+
+    within("#journal-#{journal.id}") do
+      expect(admin_page).to have_journal_paper_count(journal.papers.count)
+      expect(admin_page).to have_journal_name(journal.name)
+      expect(admin_page).to have_journal_description(journal.description)
+    end
+
+    within("#journal-#{journal2.id}") do
+      expect(admin_page).to have_journal_paper_count(journal2.papers.count)
+      expect(admin_page).to have_journal_name(journal2.name)
+      expect(admin_page).to have_journal_description(journal2.description)
+    end
   end
 
   describe "creating a journal" do

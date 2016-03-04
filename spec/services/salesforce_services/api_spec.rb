@@ -93,7 +93,10 @@ describe SalesforceServices::API do
         paper_id: paper.id,
         old_role: 'author'
       }
-      paper = FactoryGirl.create(:paper_with_task, :with_integration_journal, :with_creator, task_params: task_params)
+      journal = FactoryGirl.create(:journal)
+      paper = FactoryGirl.create(:paper_with_task, task_params: task_params, journal: journal)
+      allow(Paper).to receive(:find).with(paper.id).and_return(paper)
+      allow(paper).to receive(:creator) { FactoryGirl.build(:user) }
       FactoryGirl.create(:financial_disclosure_task, paper: paper)
 
       VCR.use_cassette("salesforce_instantiate_client") do

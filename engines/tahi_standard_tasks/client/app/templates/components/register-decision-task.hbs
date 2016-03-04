@@ -4,6 +4,7 @@
   <div class="register-decision-saving-cover {{if isSavingData "is-saving-data"}}">
     {{progress-spinner visible=true size="large" center=true}}
   </div>
+  {{error-message message=validationErrors.errors}}
 
   {{#if task.completed}}
     {{#if finalDecision}}
